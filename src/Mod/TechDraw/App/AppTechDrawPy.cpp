@@ -639,7 +639,7 @@ private:
                         double parentX = dvp->X.getValue() + grandParentX;
                         double parentY = dvp->Y.getValue() + grandParentY;
                         Base::Vector3d parentPos(parentX,parentY,0.0);
-                        std::string sDimText = dvd->getFormatedValue();
+                        std::string sDimText = dvd->getFormattedDimensionValue();
                         char* dimText = &sDimText[0u];                  //hack for const-ness
                         float gap = 5.0;                                //hack. don't know font size here.
                         layerName = dvd->getNameInDocument();

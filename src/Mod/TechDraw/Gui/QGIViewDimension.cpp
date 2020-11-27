@@ -352,7 +352,7 @@ void QGIDatumLabel::setTolString()
     }
     QString tolSuffix;
     if ((dim->Type.isValue("Angle")) || (dim->Type.isValue("Angle3Pt"))) {
-        tolSuffix = QString::fromUtf8(dim->getFormatedValue(2).c_str()); //just the unit
+        tolSuffix = QString::fromUtf8(dim->getFormattedDimensionValue(2).c_str()); //just the unit
     }
 
     QString overFormat;
@@ -626,18 +626,18 @@ void QGIViewDimension::updateDim()
         return;
     }
  
-//    QString labelText = QString::fromUtf8(dim->getFormatedValue().c_str());
+//    QString labelText = QString::fromUtf8(dim->getFormattedDimensionValue().c_str());
     //want this split into value and unit
     QString labelText;
     QString unitText;
     if (dim->Arbitrary.getValue()) {
-        labelText = QString::fromUtf8(dim->getFormatedValue(1).c_str()); //just the number pref/spec/suf
+        labelText = QString::fromUtf8(dim->getFormattedDimensionValue(1).c_str()); //just the number pref/spec/suf
     } else {
         if (dim->isMultiValueSchema()) {
-            labelText = QString::fromUtf8(dim->getFormatedValue(0).c_str()); //don't format multis
+            labelText = QString::fromUtf8(dim->getFormattedDimensionValue(0).c_str()); //don't format multis
         } else {
-            labelText = QString::fromUtf8(dim->getFormatedValue(1).c_str()); //just the number pref/spec/suf
-            unitText  = QString::fromUtf8(dim->getFormatedValue(2).c_str()); //just the unit
+            labelText = QString::fromUtf8(dim->getFormattedDimensionValue(1).c_str()); //just the number pref/spec/suf
+            unitText  = QString::fromUtf8(dim->getFormattedDimensionValue(2).c_str()); //just the unit
         }
     }
     QFont font = datumLabel->getFont();

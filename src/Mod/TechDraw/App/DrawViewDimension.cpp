@@ -530,23 +530,17 @@ bool DrawViewDimension::isMultiValueSchema(void) const
     return result;
 }
 
-std::string  DrawViewDimension::getFormatedValue(int partial)
+std::string DrawViewDimension::formatValue(qreal value, QString qFormatSpec, int partial)
 {
-//    Base::Console().Message("DVD::getFormatedValue(%d)\n", partial);
     std::string result;
-    if (Arbitrary.getValue()) {
-        return FormatSpec.getStrValue();
-    }
     bool multiValueSchema = false;
 
-    QString qFormatSpec = QString::fromUtf8(FormatSpec.getStrValue().data(),FormatSpec.getStrValue().size());
-    double val = getDimValue();
     QString qUserStringUnits;
     QString formattedValue;
 
     bool angularMeasure = false;
     Base::Quantity asQuantity;
-    asQuantity.setValue(val);
+    asQuantity.setValue(value);
     if ( (Type.isValue("Angle")) ||
          (Type.isValue("Angle3Pt")) ) {
         angularMeasure = true;
@@ -686,8 +680,20 @@ std::string  DrawViewDimension::getFormatedValue(int partial)
     }
 
     return result;
+
 }
 
+std::string DrawViewDimension::getFormattedDimensionValue(int partial)
+{
+//    Base::Console().Message("DVD::getFormattedValue(%d)\n", partial);
+    QString qFormatSpec = QString::fromUtf8(FormatSpec.getStrValue().data(),FormatSpec.getStrValue().size());
+
+    if (Arbitrary.getValue()) {
+        return FormatSpec.getStrValue();
+    }
+
+    return formatValue(getDimValue(), qFormatSpec, partial);
+}
 
 QStringList DrawViewDimension::getPrefixSuffixSpec(QString fSpec)
 {
