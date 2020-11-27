@@ -577,6 +577,7 @@ std::string DrawViewDimension::formatValue(qreal value, QString qFormatSpec, int
             //qUserString from Quantity includes units - prefix + R + nnn ft + suffix
             qMultiValueStr = formatPrefix + qGenPrefix + qUserString + formatSuffix;
         }
+        formattedValue = qMultiValueStr;
     } else if ((unitSystem == Base::UnitSystem::ImperialCivil) &&
                 angularMeasure) {
         QString dispMinute = QString::fromUtf8("\'");
@@ -591,6 +592,7 @@ std::string DrawViewDimension::formatValue(qreal value, QString qFormatSpec, int
             // prefix + 48*30'30" + suffix
             qMultiValueStr = formatPrefix + qGenPrefix + displaySub + formatSuffix;
         }
+        formattedValue = qMultiValueStr;
     } else {
     //handle single value schemes
         if (formatSpecifier.isEmpty()) {
@@ -702,7 +704,7 @@ QStringList DrawViewDimension::getPrefixSuffixSpec(QString fSpec)
     QString formatSuffix;
     QString formatted;
     //find the %x.y tag in FormatSpec
-    QRegExp rxFormat(QString::fromUtf8("%[0-9]*\\.*[0-9]*[aefgAEFG]"));     //printf double format spec
+    QRegExp rxFormat(QString::fromUtf8("%[+-]*[0-9]*\\.*[0-9]*[aefgAEFG]"));     //printf double format spec
     QString match;
     int pos = 0;
     if ((pos = rxFormat.indexIn(fSpec, 0)) != -1)  {
