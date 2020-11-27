@@ -145,6 +145,10 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
             processed = true;
             viewer->saveHomePosition();
             break;
+        case SoKeyboardEvent::R:
+            processed = true;
+            viewer->resetToHomePosition();
+            break;
         case SoKeyboardEvent::S:
         case SoKeyboardEvent::HOME:
         case SoKeyboardEvent::LEFT_ARROW:
