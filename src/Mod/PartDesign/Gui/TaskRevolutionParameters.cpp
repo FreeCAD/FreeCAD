@@ -75,7 +75,6 @@ TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* 
     connect(ui->checkBoxReversed, SIGNAL(toggled(bool)),
             this, SLOT(onReversed(bool)));
 
-    this->addNewSolidCheckBox(proxy);
     this->initUI(proxy);
     this->groupLayout()->addWidget(proxy);
 

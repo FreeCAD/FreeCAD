@@ -189,10 +189,6 @@ void TaskFeatureParameters::addNewSolidCheckBox(QWidget *widget)
     if (!vp || !vp->getObject())
         return;
 
-    auto *addsub = Base::freecad_dynamic_cast<PartDesign::FeatureAddSub>(vp->getObject());
-    if (addsub && addsub->getAddSubType() != PartDesign::FeatureAddSub::Additive)
-        return;
-
     QBoxLayout * layout = qobject_cast<QBoxLayout*>(widget->layout());
     if (layout) {
         checkBoxNewSolid = new QCheckBox(widget);

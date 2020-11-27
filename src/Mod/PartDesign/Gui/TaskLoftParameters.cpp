@@ -89,7 +89,6 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView,bool /*newObj*
     connect(ui->listWidgetReferences->model(),
         SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), this, SLOT(indexesMoved()));
 
-    this->addNewSolidCheckBox(proxy);
     this->initUI(proxy);
     this->groupLayout()->addWidget(proxy);
     refresh();

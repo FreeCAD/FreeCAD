@@ -86,7 +86,6 @@ void TaskPadParameters::setupUI(bool newObj)
 #endif
     }
 
-    this->addNewSolidCheckBox(proxy);
     this->initUI(proxy);
     this->groupLayout()->addWidget(proxy);
 

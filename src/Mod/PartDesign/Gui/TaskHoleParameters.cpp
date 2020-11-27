@@ -67,6 +67,10 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *pare
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
+    addNewSolidCheckBox(proxy);
+    addUpdateViewCheckBox(proxy);
+    refresh();
+
     /* Remove actual threading parameters for now */
     ui->ModelActualThread->setVisible(false);
     ui->ThreadPitch->setVisible(false);
@@ -198,8 +202,6 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *pare
     connect(ui->Tapered, SIGNAL(clicked(bool)), this, SLOT(taperedChanged()));
     connect(ui->Reversed, SIGNAL(clicked(bool)), this, SLOT(reversedChanged()));
     connect(ui->TaperedAngle, SIGNAL(valueChanged(double)), this, SLOT(taperedAngleChanged(double)));
-
-    vp->show();
 
     ui->ThreadPitch->bind(pcHole->ThreadPitch);
     ui->ThreadAngle->bind(pcHole->ThreadAngle);

@@ -80,6 +80,8 @@ void TaskSketchBasedParameters::initUI(QWidget *widget) {
     if (!boxLayout)
         return;
 
+    addNewSolidCheckBox(widget);
+
     PartDesign::ProfileBased* pcSketchBased = static_cast<PartDesign::ProfileBased*>(vp->getObject());
 
     QHBoxLayout *layout = new QHBoxLayout();

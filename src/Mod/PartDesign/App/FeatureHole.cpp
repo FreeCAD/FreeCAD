@@ -1131,7 +1131,8 @@ App::DocumentObjectExecReturn *Hole::execute(void)
     // Find the base shape
     TopoShape base;
     try {
-        base = getBaseShape();
+        if (!NewSolid.getValue())
+            base = getBaseShape();
     }
     catch (const Base::Exception&) {
         std::string text(QT_TR_NOOP("The requested feature cannot be created. The reason may be that:\n"
@@ -1443,7 +1444,7 @@ App::DocumentObjectExecReturn *Hole::execute(void)
             holes.push_back(hole);
         }
 
-        TopoShape compound = TopoShape().makECompound(holes, "", false);
+        TopoShape compound = TopoShape().makECompound(holes);
 
         // set the subtractive shape property for later usage in e.g. pattern
         this->AddSubShape.setValue(compound);

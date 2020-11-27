@@ -102,7 +102,6 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe *PipeView, bool /*newObj
     connect(remove, SIGNAL(triggered()), this, SLOT(onDeleteEdge()));
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
 
-    this->addNewSolidCheckBox(proxy);
     this->initUI(proxy);
     this->groupLayout()->addWidget(proxy);
 
