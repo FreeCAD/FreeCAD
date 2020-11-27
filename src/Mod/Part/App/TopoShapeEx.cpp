@@ -569,7 +569,7 @@ std::vector<TopoShape> TopoShape::searchSubShape(
         std::vector<TopoDS_Shape> vertices;
         TopoShape wire;
         if(shapeType == TopAbs_FACE) {
-            wire = ShapeAnalysis::OuterWire(TopoDS::Face(subshape.getShape()));
+            wire = subshape.getOuterWire();
             vertices = wire.getSubShapes(TopAbs_VERTEX);
         } else
             vertices = subshape.getSubShapes(TopAbs_VERTEX);
@@ -593,7 +593,7 @@ std::vector<TopoShape> TopoShape::searchSubShape(
                 TopoShape otherWire;
                 std::vector<TopoDS_Shape> otherVertices;
                 if (shapeType == TopAbs_FACE) {
-                    otherWire = ShapeAnalysis::OuterWire(TopoDS::Face(s.getShape()));
+                    otherWire = s.getOuterWire();
                     if (wire.countSubShapes(TopAbs_EDGE) != otherWire.countSubShapes(TopAbs_EDGE))
                         continue;
                     otherVertices = otherWire.getSubShapes(TopAbs_VERTEX);
@@ -1113,7 +1113,7 @@ static std::vector<TopoShape> prepareProfiles(const std::vector<TopoShape> &shap
             shape = sh.getShape();
         }
         if (shape.ShapeType() == TopAbs_FACE) {
-            shape = ShapeAnalysis::OuterWire(TopoDS::Face(shape));
+            shape = sh.getOuterWire().getShape();
         } else if (shape.ShapeType() == TopAbs_WIRE) {
             BRepBuilderAPI_MakeWire mkWire(TopoDS::Wire(shape));
             shape = mkWire.Wire();
@@ -3179,7 +3179,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                 std::map<std::string,std::string,Data::ElementNameComp> names;
                 TopExp_Explorer xp;
                 if(info.type == TopAbs_FACE)
-                    xp.Init(ShapeAnalysis::OuterWire(TopoDS::Face(info.find(i))),TopAbs_EDGE);
+                    xp.Init(BRepTools::OuterWire(TopoDS::Face(info.find(i))),TopAbs_EDGE);
                 else
                     xp.Init(info.find(i),prev.type);
                 for(;xp.More();xp.Next()) {
@@ -4090,9 +4090,47 @@ std::size_t TopoShape::Cache::getMemSize()
     return this->memsize;
 }
 
-
 unsigned int TopoShape::getMemSize (void) const
 {
     INIT_SHAPE_CACHE();
     return _Cache->getMemSize() + Data::ComplexGeoData::getMemSize();
+}
+
+TopoShape TopoShape::getOuterWire(std::vector<TopoShape> *inner) const
+{
+    // ShapeAnalysis::OuterWire() is un-reliable for some reason. OCC source
+    // code shows it works by creating face using each wire, and then test using
+    // BRepTopAdaptor_FClass2d::PerformInfinitePoint() to check if it is an out
+    // bound wire. And practice shows it sometimes returns the in correct
+    // result.  Need more investigation. Note that this may be related to
+    // unreliable solid face orientation
+    // (https://forum.freecadweb.org/viewtopic.php?p=446006#p445674)
+    //
+    // Use BrepTools::OuterWire() instead. OCC source code shows it is
+    // implemented using simple bound box checking. This should be a
+    // reliable method, especially so for a planar face.
+
+    TopoDS_Shape tmp;
+    if (shapeType(true) == TopAbs_FACE)
+        tmp = BRepTools::OuterWire(TopoDS::Face(_Shape));
+    else if (countSubShapes(TopAbs_FACE) != 1)
+        tmp = BRepTools::OuterWire(
+                TopoDS::Face(getSubShape(TopAbs_FACE, 1)));
+    if (tmp.IsNull())
+        return TopoShape();
+    const auto & wires = getSubTopoShapes(TopAbs_WIRE);
+    auto it = wires.begin();
+    for (; it != wires.end(); ++it) {
+        auto & wire = *it;
+        if (wire.getShape().IsSame(tmp)) {
+            if (inner) {
+                for (++it; it != wires.end(); ++it)
+                    inner->push_back(*it);
+            }
+            return wire;
+        }
+        if (inner)
+            inner->push_back(wire);
+    }
+    return TopoShape();
 }

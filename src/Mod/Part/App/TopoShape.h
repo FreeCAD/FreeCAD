@@ -317,6 +317,8 @@ public:
     TopoDS_Shape defeaturing(const std::vector<TopoDS_Shape>& s) const;
     TopoDS_Shape makeShell(const TopoDS_Shape&) const;
     //@}
+    
+    TopoShape getOuterWire(std::vector<TopoShape> *inner = nullptr) const;
 
     /** @name Getting basic geometric entities */
     //@{
