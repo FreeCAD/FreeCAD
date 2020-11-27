@@ -75,10 +75,14 @@ protected:
 protected Q_SLOTS:
     void onFitChanged(double);
     void onFitJoinChanged(int);
+    void onInnerFitChanged(double);
+    void onInnerFitJoinChanged(int);
 
 protected:
     Gui::PrefQuantitySpinBox * fitEdit = nullptr;
     QComboBox *fitJoinType = nullptr;
+    Gui::PrefQuantitySpinBox * innerFitEdit = nullptr;
+    QComboBox *innerFitJoinType = nullptr;
 };
 
 class TaskDlgSketchBasedParameters : public PartDesignGui::TaskDlgFeatureParameters

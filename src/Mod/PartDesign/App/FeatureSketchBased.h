@@ -62,6 +62,9 @@ public:
     App::PropertyDistance    Fit;
     App::PropertyEnumeration FitJoin;
 
+    App::PropertyDistance    InnerFit;
+    App::PropertyEnumeration InnerFitJoin;
+
     short mustExecute() const;
 
     void setupObject();

@@ -102,6 +102,10 @@ ProfileBased::ProfileBased()
     ADD_PROPERTY_TYPE(Fit, (0.0), "SketchBased", App::Prop_None, "Shrink or expand the profile for fitting");
     ADD_PROPERTY_TYPE(FitJoin,(long(0)),"SketchBased",App::Prop_None,"Fit join type");
     FitJoin.setEnums(Part::Offset::JoinEnums);
+
+    ADD_PROPERTY_TYPE(InnerFit, (0.0), "SketchBased", App::Prop_None, "Shrink or expand the profile inner holes for fitting");
+    ADD_PROPERTY_TYPE(InnerFitJoin,(long(0)),"SketchBased",App::Prop_None,"Fit join type of inner holes");
+    InnerFitJoin.setEnums(Part::Offset::JoinEnums);
 }
 
 short ProfileBased::mustExecute() const
@@ -237,12 +241,13 @@ TopoShape ProfileBased::getVerifiedFace(bool silent) const {
             throw Base::CADKernelError("Cannot make face from profile");
         }
 
-        if (std::abs(Fit.getValue()) > Precision::Confusion()) {
-            shape = shape.makEOffset2D(Fit.getValue(),
-                                       static_cast<short>(FitJoin.getValue()),
-                                       false,
-                                       false,
-                                       false);
+        if (std::abs(Fit.getValue()) > Precision::Confusion()
+                || std::abs(InnerFit.getValue()) > Precision::Confusion()) {
+
+            shape = shape.makEOffsetFace(Fit.getValue(),
+                                         InnerFit.getValue(),
+                                         static_cast<short>(FitJoin.getValue()),
+                                         static_cast<short>(InnerFitJoin.getValue()));
         }
 
         if(count>1) {

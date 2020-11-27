@@ -108,6 +108,30 @@ void TaskSketchBasedParameters::initUI(QWidget *widget) {
     layout->addWidget(fitJoinType);
     boxLayout->addLayout(layout);
 
+    layout = new QHBoxLayout();
+    layout->addWidget(new QLabel(tr("Inner fit"), this));
+    innerFitEdit = new Gui::PrefQuantitySpinBox(this);
+    innerFitEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/ProfileInnerFit"));
+    innerFitEdit->bind(pcSketchBased->InnerFit);
+    innerFitEdit->setUnit(Base::Unit::Length);
+    innerFitEdit->setKeyboardTracking(false);
+    layout->addWidget(innerFitEdit);
+    connect(innerFitEdit, SIGNAL(valueChanged(double)), this, SLOT(onInnerFitChanged(double)));
+    boxLayout->addLayout(layout);
+
+    layout = new QHBoxLayout();
+    layout->addWidget(new QLabel(tr("Inner fit join type")));
+    innerFitJoinType = new QComboBox(this);
+    for (int i=0;;++i) {
+        const char * type = Part::Offset::JoinEnums[i];
+        if (!type)
+            break;
+        innerFitJoinType->addItem(tr(type));
+    }
+    connect(innerFitJoinType, SIGNAL(currentIndexChanged(int)), this, SLOT(onInnerFitJoinChanged(int)));
+    layout->addWidget(innerFitJoinType);
+    boxLayout->addLayout(layout);
+
     addUpdateViewCheckBox(widget);
 }
 
@@ -127,6 +151,15 @@ void TaskSketchBasedParameters::refresh()
         fitJoinType->setCurrentIndex(pcSketchBased->FitJoin.getValue());
     }
 
+    if (innerFitEdit) {
+        QSignalBlocker guard(innerFitEdit);
+        innerFitEdit->setValue(pcSketchBased->InnerFit.getValue());
+    }
+
+    if (innerFitJoinType) {
+        QSignalBlocker guard(innerFitJoinType);
+        innerFitJoinType->setCurrentIndex(pcSketchBased->InnerFitJoin.getValue());
+    }
     TaskFeatureParameters::refresh();
 }
 
@@ -134,6 +167,8 @@ void TaskSketchBasedParameters::saveHistory(void)
 {
     if (fitEdit)
         fitEdit->pushToHistory();
+    if (innerFitEdit)
+        innerFitEdit->pushToHistory();
     TaskFeatureParameters::saveHistory();
 }
 
@@ -148,6 +183,20 @@ void TaskSketchBasedParameters::onFitJoinChanged(int v)
 {
     PartDesign::ProfileBased* pcSketchBased = static_cast<PartDesign::ProfileBased*>(vp->getObject());
     pcSketchBased->FitJoin.setValue((long)v);
+    recomputeFeature();
+}
+
+void TaskSketchBasedParameters::onInnerFitChanged(double v)
+{
+    PartDesign::ProfileBased* pcSketchBased = static_cast<PartDesign::ProfileBased*>(vp->getObject());
+    pcSketchBased->InnerFit.setValue(v);
+    recomputeFeature();
+}
+
+void TaskSketchBasedParameters::onInnerFitJoinChanged(int v)
+{
+    PartDesign::ProfileBased* pcSketchBased = static_cast<PartDesign::ProfileBased*>(vp->getObject());
+    pcSketchBased->InnerFitJoin.setValue((long)v);
     recomputeFeature();
 }
 
