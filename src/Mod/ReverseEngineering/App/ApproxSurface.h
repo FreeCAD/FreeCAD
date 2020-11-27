@@ -122,8 +122,8 @@ public:
 
     /**
      * Setzt den Knotenvektor und die Ordnung fest. uebergeben wird der Knotenvektor der Form
-     * (Wert, Vielfachheit). Intern wird dieser in einen Knotenvektor der Form (Wert,1) 
-     * umgerechnet. Die Groesse dieses neuen Vektors muss exakt so gross sein, wie im Konstruktor 
+     * (Wert, Vielfachheit). Intern wird dieser in einen Knotenvektor der Form (Wert,1)
+     * umgerechnet. Die Groesse dieses neuen Vektors muss exakt so gross sein, wie im Konstruktor
      * festgelegt.
      */
     virtual void SetKnots(TColStd_Array1OfReal& vKnots, TColStd_Array1OfInteger& vMults, int iOrder=1);
@@ -172,7 +172,7 @@ public:
     virtual int FindSpan(double fParam);
 
     /**
-     * Berechnet die Funktionswerte der an der Stelle fParam 
+     * Berechnet die Funktionswerte der an der Stelle fParam
      * nicht verschwindenden Basisfunktionen. Es muss darauf geachtet werden, dass
      * die Liste fuer d(=Grad des B-Splines) Elemente (0,...,d-1) ausreicht.
      * (aus: Piegl/Tiller 96 The NURBS-Book)
@@ -221,7 +221,7 @@ public:
     virtual double DerivativeOfBasisFunction(int iIndex, int k, double fParam);
 
     /**
-     * Berechnet das Integral des Produkts zweier B-Splines bzw. deren Ableitungen. 
+     * Berechnet das Integral des Produkts zweier B-Splines bzw. deren Ableitungen.
      * Der Integrationsbereich erstreckt sich ueber den ganzen Definitionsbereich.
      * Berechnet wird das Integral mittels der Gauss'schen Quadraturformeln.
      */
@@ -280,10 +280,10 @@ protected:
     void ProjectControlPointsOnPlane();
 
     /**
-     * Berechnet eine initiale Flaeche zu Beginn des Algorithmus. Dazu wird die Ausgleichsebene zu der 
+     * Berechnet eine initiale Flaeche zu Beginn des Algorithmus. Dazu wird die Ausgleichsebene zu der
      * Punktwolke berechnet.
-     * Die Punkte werden bzgl. der Basis bestehend aus den Eigenvektoren der Kovarianzmatrix berechnet und 
-     * auf die Ausgleichsebene projiziert. Von diesen Punkten wird die Boundingbox berechnet, dann werden 
+     * Die Punkte werden bzgl. der Basis bestehend aus den Eigenvektoren der Kovarianzmatrix berechnet und
+     * auf die Ausgleichsebene projiziert. Von diesen Punkten wird die Boundingbox berechnet, dann werden
      * die u/v-Parameter fuer die Punkte berechnet.
      */
     virtual bool DoInitialParameterCorrection(double fSizeFactor=0.0f);
@@ -427,7 +427,7 @@ public:
     virtual const math_Matrix& GetThirdSmoothMatrix() const;
 
     /**
-     * Setzt die erste Matrix der Glaettungsterme 
+     * Setzt die erste Matrix der Glaettungsterme
      */
     virtual void SetFirstSmoothMatrix(const math_Matrix& rclMat);
 

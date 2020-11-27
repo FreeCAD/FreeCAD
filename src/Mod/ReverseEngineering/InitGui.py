@@ -1,10 +1,3 @@
-# ReverseEngineering gui init module
-# (c) 2003 Juergen Riegel
-#
-# Gathering all the information to start FreeCAD
-# This is the second one of three init scripts, the third one
-# runs when the gui is up
-
 #***************************************************************************
 #*   Copyright (c) 2002 Juergen Riegel <juergen.riegel@web.de>             *
 #*                                                                         *
@@ -27,6 +20,12 @@
 #*   USA                                                                   *
 #*                                                                         *
 #***************************************************************************/
+
+# ReverseEngineering gui init module
+#
+# Gathering all the information to start FreeCAD
+# This is the second one of three init scripts, the third one
+# runs when the gui is up
 
 
 class ReverseEngineeringWorkbench ( Workbench ):

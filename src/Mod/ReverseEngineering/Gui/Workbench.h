@@ -48,4 +48,4 @@ protected:
 } // namespace ReverseEngineeringGui
 
 
-#endif // REENGUI_WORKBENCH_H 
+#endif // REENGUI_WORKBENCH_H
