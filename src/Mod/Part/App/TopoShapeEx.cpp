@@ -3752,33 +3752,36 @@ bool TopoShape::findPlane(gp_Pln &pln, double tol) const {
     if(_Shape.IsNull())
         return false;
     TopoDS_Shape shape = _Shape;
-    TopExp_Explorer exp(_Shape,TopAbs_FACE);
-    if(exp.More()) {
-        auto face = exp.Current();
-        exp.Next();
-        if(!exp.More()) {
-            BRepAdaptor_Surface adapt(TopoDS::Face(face));
-            if(adapt.GetType() != GeomAbs_Plane)
-                return false;
+    if (countSubShapes(TopAbs_FACE) == 1) {
+        shape = getSubShape(TopAbs_FACE,1);
+        BRepAdaptor_Surface adapt(TopoDS::Face(shape));
+        if(adapt.GetType() == GeomAbs_Plane) {
             pln = adapt.Plane();
             return true;
         }
-    }else{
-        TopExp_Explorer exp(_Shape,TopAbs_EDGE);
-        if(exp.More()) {
-            TopoDS_Shape edge = exp.Current();
-            exp.Next();
-            if(!exp.More()) {
-                // To deal with OCCT bug of wrong edge transformation
-                shape = BRepBuilderAPI_Copy(edge).Shape();
-            }
-        }
+    } else if (countSubShapes(TopAbs_EDGE) == 1) {
+        // To deal with OCCT bug of wrong edge transformation
+        shape = BRepBuilderAPI_Copy(shape).Shape();
     }
     try {
         BRepLib_FindSurface finder(shape,tol,Standard_True);
         if (!finder.Found())
             return false;
         pln = GeomAdaptor_Surface(finder.Surface()).Plane();
+        if (shape.ShapeType() == TopAbs_FACE) {
+            BRepAdaptor_Surface adapt(TopoDS::Face(shape));
+            double u = adapt.FirstUParameter()
+                + (adapt.LastUParameter() - adapt.FirstUParameter())/2.;
+            double v = adapt.FirstVParameter()
+                + (adapt.LastVParameter() - adapt.FirstVParameter())/2.;
+            BRepLProp_SLProps prop(adapt,u,v,2,Precision::Confusion());
+            if(prop.IsNormalDefined()) {
+                gp_Pnt pnt; gp_Vec vec;
+                // handles the orientation state of the shape
+                BRepGProp_Face(TopoDS::Face(shape)).Normal(u,v,pnt,vec);
+                pln = gp_Pln(pnt, gp_Dir(vec));
+            }
+        }
         return true;
     }catch (Standard_Failure &e) {
         // For some reason the above BRepBuilderAPI_Copy failed to copy
