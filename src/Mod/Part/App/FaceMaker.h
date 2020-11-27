@@ -74,6 +74,8 @@ public:
      */
     virtual void useCompound(const TopoDS_Compound &comp);
 
+    virtual void setPlane(const gp_Pln &) {}
+
     /**
      * @brief Face: returns the face (result). If result is not a single face,
      * throws Base::TypeError. (hint: use .Shape() instead)

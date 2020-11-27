@@ -1780,17 +1780,68 @@ TopoShape &TopoShape::makEOffset(const TopoShape &shape,
     return *this;
 }
 
+TopoShape &TopoShape::makEOffsetFace(const TopoShape &shape,
+                                     double offset,
+                                     double innerOffset,
+                                     short joinType, 
+                                     short innerJoinType, 
+                                     const char *op)
+{
+    if (std::abs(innerOffset) < Precision::Confusion()
+            && std::abs(offset) < Precision::Confusion()) {
+        *this = shape;
+        return *this;
+    }
+
+    if (shape.isNull())
+        FC_THROWM(Base::ValueError, "makeOffsetFace: input shape is null!");
+    if (!shape.hasSubShape(TopAbs_FACE))
+        FC_THROWM(Base::ValueError, "makeOffsetFace: no face found");
+
+    std::vector<TopoShape> res;
+    for (auto & face : shape.getSubTopoShapes(TopAbs_FACE)) {
+        if (!ShapeAnalysis::IsOuterBound(TopoDS::Face(face.getShape())))
+            FC_THROWM(Base::CADKernelError, "makeOffsetFace: no outer wire found!");
+        std::vector<TopoShape> wires;
+        TopoShape outerWire = face.getOuterWire(&wires);
+        if (wires.empty()) {
+            res.push_back(makEOffset2D(face, offset, joinType, false, false, false, op));
+            continue;
+        }
+
+        if (outerWire.isNull())
+            FC_THROWM(Base::CADKernelError, "makeOffsetFace: missing outer wire!");
+
+        if (std::abs(offset) > Precision::Confusion())
+            outerWire = outerWire.makEOffset2D(offset, joinType, false, false, false, op);
+
+        if (std::abs(innerOffset) > Precision::Confusion()) {
+            TopoShape innerWires(0, Hasher);
+            innerWires.makECompound(wires, "", false);
+            innerWires = innerWires.makEOffset2D(innerOffset, innerJoinType, false, false, false, op);
+            wires = innerWires.getSubTopoShapes(TopAbs_WIRE);
+        }
+        wires.push_back(outerWire);
+        gp_Pln pln;
+        res.push_back(TopoShape(0, Hasher).makEFace(wires,
+                                                    nullptr,
+                                                    nullptr,
+                                                    face.findPlane(pln) ? &pln : nullptr));
+    }
+    return makECompound(res, "", false);
+}
+
 TopoShape &TopoShape::makEOffset2D(const TopoShape &shape, double offset, short joinType, 
         bool fill, bool allowOpenResult, bool intersection, const char *op)
 {
-    if(!op) op = TOPOP_OFFSET2D;
-    _Shape.Nullify();
-    resetElementMap();
-
     if(shape.isNull())
         FC_THROWM(Base::ValueError, "makeOffset2D: input shape is null!");
     if (allowOpenResult && OCC_VERSION_HEX < 0x060900)
         FC_THROWM(Base::AttributeError, "openResult argument is not supported on OCC < 6.9.0.");
+
+    if(!op) op = TOPOP_OFFSET2D;
+    _Shape.Nullify();
+    resetElementMap();
 
     // OUTLINE OF MAKEOFFSET2D
     // * Prepare shapes to process
@@ -2052,19 +2103,9 @@ TopoShape &TopoShape::makEOffset2D(const TopoShape &shape, double offset, short 
 
         //make faces
         if (wiresForMakingFaces.size()>0) {
-            FaceMakerBullseye mkFace;
-            mkFace.MyHasher = Hasher;
-            mkFace.setPlane(workingPlane);
-            for(auto &s : wiresForMakingFaces) {
-                if (s.getShape().ShapeType() == TopAbs_COMPOUND)
-                    mkFace.useTopoCompound(s);
-                else
-                    mkFace.addTopoShape(s);
-            }
-            mkFace.Build();
-            auto res = mkFace.getTopoShape();
-            res.Tag = Tag;
-            expandCompound(res, shapesToReturn);
+            TopoShape face(0, Hasher);
+            face.makEFace(wiresForMakingFaces, nullptr, nullptr, &workingPlane);
+            expandCompound(face, shapesToReturn);
         }
     }
 
@@ -2223,17 +2264,23 @@ TopoShape &TopoShape::makEWires(const TopoShape &shape, const char *op, bool fix
 #endif
 }
 
-TopoShape &TopoShape::makEFace(const TopoShape &shape, const char *op, const char *maker)
+TopoShape &TopoShape::makEFace(const TopoShape &shape,
+                               const char *op,
+                               const char *maker,
+                               const gp_Pln *pln)
 {
     std::vector<TopoShape> shapes;
     if(shape.getShape().ShapeType() == TopAbs_COMPOUND)
         shapes = shape.getSubTopoShapes();
     else
         shapes.push_back(shape);
-    return makEFace(shapes,op,maker);
+    return makEFace(shapes,op,maker,pln);
 }
 
-TopoShape &TopoShape::makEFace(const std::vector<TopoShape> &shapes, const char *op, const char *maker)
+TopoShape &TopoShape::makEFace(const std::vector<TopoShape> &shapes,
+                               const char *op,
+                               const char *maker,
+                               const gp_Pln *pln)
 {
     _Shape.Nullify();
     resetElementMap();
@@ -2242,6 +2289,8 @@ TopoShape &TopoShape::makEFace(const std::vector<TopoShape> &shapes, const char 
     std::unique_ptr<FaceMaker> mkFace = FaceMaker::ConstructFromType(maker);
     mkFace->MyHasher = Hasher;
     mkFace->MyOp = op;
+    if (pln)
+        mkFace->setPlane(*pln);
 
     for(auto &s : shapes) {
         if (s.getShape().ShapeType() == TopAbs_COMPOUND)

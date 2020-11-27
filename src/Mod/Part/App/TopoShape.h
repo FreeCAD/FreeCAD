@@ -347,10 +347,18 @@ public:
         return TopoShape(0,Hasher).makEWires(*this,op,fix,tol);
     }
 
-    TopoShape &makEFace(const std::vector<TopoShape> &shapes, const char *op=0, const char *maker=0);
-    TopoShape &makEFace(const TopoShape &shape, const char *op=0, const char *maker=0);
-    TopoShape makEFace(const char *op=0, const char *maker=0) const {
-        return TopoShape(0,Hasher).makEFace(*this,op,maker);
+    TopoShape &makEFace(const std::vector<TopoShape> &shapes,
+                        const char *op = nullptr,
+                        const char *maker = nullptr,
+                        const gp_Pln *pln = nullptr);
+    TopoShape &makEFace(const TopoShape &shape,
+                        const char *op = nullptr,
+                        const char *maker = nullptr,
+                        const gp_Pln *pln = nullptr);
+    TopoShape makEFace(const char *op = nullptr,
+                       const char *maker = nullptr,
+                        const gp_Pln *pln = nullptr) const {
+        return TopoShape(0,Hasher).makEFace(*this,op,maker,pln);
     }
 
     enum FillingStyle {
@@ -542,6 +550,21 @@ public:
     TopoShape makEOffset2D(double offset, short joinType=0, bool fill=false, bool allowOpenResult=false, 
             bool intersection=false, const char *op=0) const {
         return TopoShape(0,Hasher).makEOffset2D(*this,offset,joinType,fill,allowOpenResult,intersection,op);
+    }
+
+    TopoShape &makEOffsetFace(const TopoShape &shape,
+                              double offset,
+                              double innerOffset,
+                              short joinType = 0, 
+                              short innerJoinType = 0, 
+                              const char *op = nullptr);
+    TopoShape makEOffsetFace(double offset,
+                             double innerOffset,
+                             short joinType = 0,
+                             short innerJoinType = 0,
+                             const char *op = nullptr) const
+    {
+        return TopoShape(0,Hasher).makEOffsetFace(*this,offset,innerOffset,joinType,innerJoinType,op);
     }
 
     TopoShape &makEPipeShell(const std::vector<TopoShape> &shapes, const Standard_Boolean make_solid,
