@@ -333,8 +333,8 @@ void TaskRichAnno::onEditorExit(void)
 
 double TaskRichAnno::prefWeight() const
 {
-    std::string lgName = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
+    int lgNumber = Preferences::lineGroup();
+    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
     double weight = lg->getWeight("Graphic");
     delete lg;                                   //Coverity CID 174670
     return weight;

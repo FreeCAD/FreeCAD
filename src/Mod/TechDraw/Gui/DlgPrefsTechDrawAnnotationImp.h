@@ -39,6 +39,9 @@ public:
     DlgPrefsTechDrawAnnotationImp( QWidget* parent = 0 );
     ~DlgPrefsTechDrawAnnotationImp();
 
+public Q_SLOTS:
+    void onLineGroupChanged(int);
+
 protected:
     void saveSettings();
     void loadSettings();

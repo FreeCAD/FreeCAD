@@ -189,8 +189,8 @@ double ViewProviderRichAnno::getDefFontSize()
 double ViewProviderRichAnno::getDefLineWeight(void)
 {
     double result = 0.0;
-    std::string lgName = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
+    int lgNumber = Preferences::lineGroup();
+    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
     result = lg->getWeight("Graphics");
     delete lg;
     return result;
