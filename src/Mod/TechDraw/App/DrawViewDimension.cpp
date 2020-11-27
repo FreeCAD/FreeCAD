@@ -92,7 +92,10 @@ DrawViewDimension::DrawViewDimension(void)
     References3D.setScope(App::LinkScope::Global);
 
     ADD_PROPERTY_TYPE(FormatSpec,(getDefaultFormatSpec()) , "Format", App::Prop_Output,"Dimension Format");
+    ADD_PROPERTY_TYPE(FormatSpecOverTolerance,("%+g") , "Format", App::Prop_Output,"Dimension Overtolerance Format");
+    ADD_PROPERTY_TYPE(FormatSpecUnderTolerance,("%+g") , "Format", App::Prop_Output,"Dimension Undertolerance Format");
     ADD_PROPERTY_TYPE(Arbitrary,(false) ,"Format", App::Prop_Output,"Value overridden by user");
+    ADD_PROPERTY_TYPE(ArbitraryTolerances,(false) ,"Format", App::Prop_Output,"Tolerance values overridden by user");
 
     Type.setEnums(TypeEnums);                                          //dimension type: length, radius etc
     ADD_PROPERTY(Type,((long)0));
@@ -685,10 +688,31 @@ std::string DrawViewDimension::formatValue(qreal value, QString qFormatSpec, int
 
 }
 
+QStringList DrawViewDimension::getFormattedToleranceValues(int partial)
+{
+    QString underFormatSpec = QString::fromUtf8(FormatSpecUnderTolerance.getStrValue().data());
+    QString overFormatSpec = QString::fromUtf8(FormatSpecOverTolerance.getStrValue().data());
+    QStringList tolerances;
+    QString underTolerance, overTolerance;
+
+    if (ArbitraryTolerances.getValue()) {
+        underTolerance = underFormatSpec;
+        overTolerance = overFormatSpec;
+    } else {
+        underTolerance = QString::fromUtf8(formatValue(UnderTolerance.getValue(), underFormatSpec, partial).c_str());
+        overTolerance = QString::fromUtf8(formatValue(OverTolerance.getValue(), overFormatSpec, partial).c_str());
+    }
+
+    tolerances << underTolerance << overTolerance;
+
+    return tolerances;
+}
+
+
 std::string DrawViewDimension::getFormattedDimensionValue(int partial)
 {
 //    Base::Console().Message("DVD::getFormattedValue(%d)\n", partial);
-    QString qFormatSpec = QString::fromUtf8(FormatSpec.getStrValue().data(),FormatSpec.getStrValue().size());
+    QString qFormatSpec = QString::fromUtf8(FormatSpec.getStrValue().data());
 
     if (Arbitrary.getValue()) {
         return FormatSpec.getStrValue();

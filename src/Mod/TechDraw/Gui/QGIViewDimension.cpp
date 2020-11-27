@@ -328,46 +328,28 @@ void QGIDatumLabel::setTolString()
     m_tolTextOver->show();
     m_tolTextUnder->show();
 
-    double overTol = dim->OverTolerance.getValue();
-    double underTol = dim->UnderTolerance.getValue();
-
-    int precision = getPrecision();
-    QString qsPrecision = QString::number(precision);
-    QString qsFormatOver = QString::fromUtf8("%+.") +            //show sign
-                           qsPrecision +
-                           QString::fromUtf8("g");               //trim trailing zeroes
-    if (DrawUtil::fpCompare(overTol, 0.0, pow(10.0, -precision))) {
-        qsFormatOver = QString::fromUtf8("%.") +            //no sign
-                           qsPrecision +
-                           QString::fromUtf8("g");
-    }
-    
-    QString qsFormatUnder = QString::fromUtf8("%+.") +            //show sign
-                              qsPrecision +
-                              QString::fromUtf8("g");               //trim trailing zeroes
-    if (DrawUtil::fpCompare(underTol, 0.0, pow(10.0, -precision))) {
-        qsFormatUnder = QString::fromUtf8("%.") +            //no sign
-                           qsPrecision +
-                           QString::fromUtf8("g");               //trim trailing zeroes
-    }
     QString tolSuffix;
     if ((dim->Type.isValue("Angle")) || (dim->Type.isValue("Angle3Pt"))) {
         tolSuffix = QString::fromUtf8(dim->getFormattedDimensionValue(2).c_str()); //just the unit
     }
 
-    QString overFormat;
-    QString underFormat;
+    QStringList labelTexts, unitTexts;
 
-    if (dim->isMultiValueSchema()) {
-        overFormat = QString::fromUtf8(dim->formatValue(overTol, qsFormatOver, 0).c_str());
-        underFormat = QString::fromUtf8(dim->formatValue(underTol, qsFormatUnder, 0).c_str());
+    if (dim->ArbitraryTolerances.getValue()) {
+        labelTexts = dim->getFormattedToleranceValues(1); //just the number pref/spec/suf
+        unitTexts << QString::fromLatin1("") << QString::fromLatin1("");
     } else {
-        overFormat = QString::fromUtf8(dim->formatValue(overTol, qsFormatOver, 1).c_str());
-        underFormat = QString::fromUtf8(dim->formatValue(underTol, qsFormatUnder, 1).c_str());
+        if (dim->isMultiValueSchema()) {
+            labelTexts = dim->getFormattedToleranceValues(0); //don't format multis
+            unitTexts << QString::fromLatin1("") << QString::fromLatin1("");
+        } else {
+            labelTexts = dim->getFormattedToleranceValues(1); //just the number pref/spec/suf
+            unitTexts  = dim->getFormattedToleranceValues(2); //just the unit
+        }
     }
 
-    m_tolTextOver->setPlainText(overFormat + tolSuffix);
-    m_tolTextUnder->setPlainText(underFormat + tolSuffix);
+    m_tolTextUnder->setPlainText(labelTexts[0] + unitTexts[0]);
+    m_tolTextOver->setPlainText(labelTexts[1] + unitTexts[1]);
 
     return;
 } 

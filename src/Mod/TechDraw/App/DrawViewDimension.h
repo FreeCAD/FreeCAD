@@ -101,7 +101,10 @@ public:
     App::PropertyBool              TheoreticalExact;
     App::PropertyBool              Inverted;
     App::PropertyString            FormatSpec;
+    App::PropertyString            FormatSpecUnderTolerance;
+    App::PropertyString            FormatSpecOverTolerance;
     App::PropertyBool              Arbitrary;
+    App::PropertyBool              ArbitraryTolerances;
     App::PropertyFloat             OverTolerance;
     App::PropertyFloat             UnderTolerance;
 
@@ -133,6 +136,7 @@ public:
     //return PyObject as DrawViewDimensionPy
     virtual PyObject *getPyObject(void) override;
 
+    virtual QStringList getFormattedToleranceValues(int partial = 0);
     virtual std::string getFormattedDimensionValue(int partial = 0);
     virtual std::string formatValue(qreal value, QString qFormatSpec, int partial = 0);
 
