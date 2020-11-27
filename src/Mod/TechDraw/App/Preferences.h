@@ -59,7 +59,7 @@ static bool        useGlobalDecimals();
 static bool        keepPagesUpToDate();
 
 static int         projectionAngle();
-static std::string lineGroup();
+static int         lineGroup();
 
 static int         balloonArrow();
 

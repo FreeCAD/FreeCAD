@@ -789,8 +789,8 @@ int TaskLeaderLine::getPrefArrowStyle()
 
 double TaskLeaderLine::prefWeight() const
 {
-    std::string lgName = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
+    int lgNumber = Preferences::lineGroup();
+    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
     double weight = lg->getWeight("Thin");
     delete lg;                                   //Coverity CID 174670
     return weight;
