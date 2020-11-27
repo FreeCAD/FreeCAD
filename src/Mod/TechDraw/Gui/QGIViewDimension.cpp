@@ -357,14 +357,14 @@ void QGIDatumLabel::setTolString()
 
     QString overFormat;
     QString underFormat;
-    #if QT_VERSION >= 0x050000
-        overFormat = QString::asprintf(qsFormatOver.toStdString().c_str(), overTol);
-        underFormat = QString::asprintf(qsFormatUnder.toStdString().c_str(), underTol);
-    #else
-        QString qs2;
-        overFormat = qs2.sprintf(qsFormatOver.toStdString().c_str(), overTol);
-        underFormat = qs2.sprintf(qsFormatUnder.toStdString().c_str(), underTol);
-    #endif
+
+    if (dim->isMultiValueSchema()) {
+        overFormat = QString::fromUtf8(dim->formatValue(overTol, qsFormatOver, 0).c_str());
+        underFormat = QString::fromUtf8(dim->formatValue(underTol, qsFormatUnder, 0).c_str());
+    } else {
+        overFormat = QString::fromUtf8(dim->formatValue(overTol, qsFormatOver, 1).c_str());
+        underFormat = QString::fromUtf8(dim->formatValue(underTol, qsFormatUnder, 1).c_str());
+    }
 
     m_tolTextOver->setPlainText(overFormat + tolSuffix);
     m_tolTextUnder->setPlainText(underFormat + tolSuffix);
