@@ -108,8 +108,9 @@ void ViewProviderAddSub::attach(App::DocumentObject* obj) {
 }
 
 void ViewProviderAddSub::updateAddSubShapeIndicator() {
-    TopoDS_Shape cShape(static_cast<PartDesign::FeatureAddSub*>(getObject())->AddSubShape.getValue());
-    updateAddSubShape(cShape);
+    auto feat = Base::freecad_dynamic_cast<PartDesign::FeatureAddSub>(getObject());
+    if (feat)
+        updateAddSubShape(feat->AddSubShape.getValue());
 }
 
 void ViewProviderAddSub::onChanged(const App::Property *p)
@@ -125,7 +126,7 @@ void ViewProviderAddSub::onChanged(const App::Property *p)
                 t = 0.7;
             previewMaterial->transparency = t;
         } else {
-            auto feat = static_cast<PartDesign::FeatureAddSub*>(getObject());
+            auto feat = Base::freecad_dynamic_cast<PartDesign::FeatureAddSub>(getObject());
             if (feat) {
                 if (feat->isDerivedFrom(PartDesign::DressUp::getClassTypeId())) {
                     previewMaterial->diffuseColor = SbColor(1,0,1);
@@ -179,7 +180,7 @@ void ViewProviderAddSub::updateAddSubShape(const TopoDS_Shape &_shape)
         // We must reset the location here because the transformation data
         // are set in the placement property
         TopLoc_Location aLoc;
-        cShape.Location(aLoc);
+        // cShape.Location(aLoc);
 
         // count triangles and nodes in the mesh
         TopExp_Explorer Ex;
@@ -306,11 +307,34 @@ void ViewProviderAddSub::updateAddSubShape(const TopoDS_Shape &_shape)
 }
 
 void ViewProviderAddSub::updateData(const App::Property* p) {
-
-    if(p && p->getName() && strcmp(p->getName(), "AddSubShape")==0)
-        updateAddSubShapeIndicator();
-
+    auto feat = Base::freecad_dynamic_cast<PartDesign::FeatureAddSub>(getObject());
+    if (feat) {
+        if (p == &feat->AddSubShape)
+            updateAddSubShapeIndicator();
+        else if (p == &feat->BaseFeature) {
+            auto base = baseFeature.getObject();
+            if (base) {
+                baseFeature = App::DocumentObjectT();
+                base->Visibility.setValue(false);
+            }
+            if (isPreviewMode())  {
+                base = feat->BaseFeature.getValue();
+                baseFeature = base;
+                if (base)
+                    base->Visibility.setValue(true);
+            }
+        }
+    }
     PartDesignGui::ViewProvider::updateData(p);
+}
+
+bool ViewProviderAddSub::isPreviewMode() const
+{
+    int mode = getDefaultMode(true);
+    return pcModeSwitch
+        && mode >= 0
+        && pcModeSwitch->getNumChildren() > mode
+        && pcModeSwitch->getChild(mode) == previewShape;
 }
 
 void ViewProviderAddSub::setPreviewDisplayMode(bool onoff) {
@@ -320,7 +344,7 @@ void ViewProviderAddSub::setPreviewDisplayMode(bool onoff) {
     // not sufficient to only revert the mask mode. Also the child
     // number of the switch node must be reverted.
     if (onoff) {
-        if(pcModeSwitch->getChild(getDefaultMode()) == previewShape) 
+        if(isPreviewMode()) 
             return;
         displayMode = getActiveDisplayMode();
         if (pcModeSwitch->isOfType(Gui::SoFCSwitch::getClassTypeId()))
@@ -332,7 +356,7 @@ void ViewProviderAddSub::setPreviewDisplayMode(bool onoff) {
     }
 
     if (!onoff) {
-        if(pcModeSwitch->getChild(getDefaultMode()) != previewShape) 
+        if(!isPreviewMode()) 
             return;
         setDisplayMaskMode(displayMode.c_str());
         if (!Visibility.getValue())
@@ -341,9 +365,28 @@ void ViewProviderAddSub::setPreviewDisplayMode(bool onoff) {
             static_cast<Gui::SoFCSwitch*>(pcModeSwitch)->defaultChild.setValue(defaultChild);
     }
 
-    App::DocumentObject* obj = static_cast<PartDesign::Feature*>(getObject())->BaseFeature.getValue();
-    if (obj)
-        static_cast<PartDesignGui::ViewProvider*>(Gui::Application::Instance->getViewProvider(obj))->makeTemporaryVisible(onoff);
+    if (onoff) {
+        auto feat = Base::freecad_dynamic_cast<PartDesign::FeatureAddSub>(getObject());
+        if (feat && feat->BaseFeature.getValue()) {
+            auto base = feat->BaseFeature.getValue();
+            baseFeature = App::DocumentObjectT(base);
+            base->Visibility.setValue(true);
+            makeTemporaryVisible(true);
+        }
+    } else if (!onoff) {
+        auto base = baseFeature.getObject();
+        baseFeature = App::DocumentObjectT();
+        if (base)
+            base->Visibility.setValue(false);
+    }
+
+}
+
+void ViewProviderAddSub::hide(void)
+{
+    ViewProvider::hide();
+    if(isPreviewMode())
+        makeTemporaryVisible(true);
 }
 
 bool ViewProviderAddSub::setEdit(int ModNum)

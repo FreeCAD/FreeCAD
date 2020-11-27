@@ -24,6 +24,7 @@
 #ifndef PARTGUI_ViewProviderAddSub_H
 #define PARTGUI_ViewProviderAddSub_H
 
+#include <App/DocumentObserver.h>
 #include "ViewProvider.h"
 #include <Mod/Part/Gui/SoBrepFaceSet.h>
 
@@ -46,6 +47,8 @@ public:
     virtual void onChanged(const App::Property *p);
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
+    virtual void hide(void);
+    bool isPreviewMode() const;
     
 protected: 
     virtual void updateAddSubShapeIndicator();
@@ -61,6 +64,7 @@ protected:
 private:
     int                         defaultChild;
     std::string                 displayMode;
+    App::DocumentObjectT        baseFeature;
 };
 
 } // namespace PartDesignGui
