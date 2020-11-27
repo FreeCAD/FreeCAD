@@ -398,7 +398,7 @@ void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> converted)
 
     std::string PageName = m_basePage->getNameInDocument();
 
-    Gui::Command::openCommand("Create Leader");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Leader"));
     Command::doCommand(Command::Doc,"App.activeDocument().addObject('%s','%s')",
                        m_leaderType.c_str(),m_leaderName.c_str());
     Command::doCommand(Command::Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",
@@ -452,7 +452,7 @@ void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> converted)
 void TaskLeaderLine::updateLeaderFeature(void)
 {
 //    Base::Console().Message("TTL::updateLeaderFeature()\n");
-    Gui::Command::openCommand("Edit Leader");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit Leader"));
     //waypoints & x,y are updated by QGILeaderLine (for edits only!)
     commonFeatureUpdate();
     App::Color ac;

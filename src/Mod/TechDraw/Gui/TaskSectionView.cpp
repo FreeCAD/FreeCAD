@@ -352,7 +352,7 @@ bool TaskSectionView::apply(void)
 void TaskSectionView::applyQuick(std::string dir)
 {
 //    Base::Console().Message("TSV::applyQuick(%s)\n", dir.c_str());
-    Gui::Command::openCommand("Apply Quick");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Apply Quick"));
     m_dirName = dir;
     if (m_section == nullptr) {
         createSectionView();
@@ -378,7 +378,7 @@ void TaskSectionView::applyQuick(std::string dir)
 void TaskSectionView::applyAligned(void) 
 {
     Base::Console().Message("TSV::applyAligned() - not implemented yet\n");
-    Gui::Command::openCommand("Apply Aligned");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Apply Aligned"));
     m_dirName = "Aligned";
     //fiddle with directions here
 
@@ -401,7 +401,7 @@ void TaskSectionView::createSectionView(void)
     std::string baseName = m_base->getNameInDocument();
     double baseScale = m_base->getScale();
 
-    Gui::Command::openCommand("Create SectionView");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create SectionView"));
     if (m_section == nullptr) {
         m_sectionName = m_base->getDocument()->getUniqueObjectName("SectionView");
         std::string sectionType = "TechDraw::DrawViewSection";
