@@ -204,10 +204,6 @@ Action * StdPerspectiveCamera::createAction(void)
 // The two commands below are provided for convenience so that they can be bound
 // to a button of a space mouse
 
-namespace {
-    std::string globalCameraPosition;
-}
-
 //===========================================================================
 // Std_ViewSaveCamera
 //===========================================================================
@@ -229,15 +225,16 @@ void StdCmdViewSaveCamera::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    const char* ppReturn=0;
-    if (getGuiApplication()->sendMsgToActiveView("GetCamera",&ppReturn))
-        globalCameraPosition = ppReturn;
+    Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow());
+    if (view) {
+        view->getViewer()->saveHomePosition();
+    }
 }
 
 //===========================================================================
 // Std_ViewRestoreCamera
 //===========================================================================
-DEF_STD_CMD_A(StdCmdViewRestoreCamera)
+DEF_3DV_CMD(StdCmdViewRestoreCamera)
 
 StdCmdViewRestoreCamera::StdCmdViewRestoreCamera()
   : Command("Std_ViewRestoreCamera")
@@ -254,17 +251,10 @@ void StdCmdViewRestoreCamera::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    std::string camera = globalCameraPosition;
-    std::string setCamera = std::string("SetCamera ") + camera;
-    getGuiApplication()->sendMsgToActiveView(setCamera.c_str());
-}
-
-bool StdCmdViewRestoreCamera::isActive()
-{
-    if (globalCameraPosition.empty())
-        return false;
-    Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-    return view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId());
+    Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow());
+    if (view) {
+        view->getViewer()->resetToHomePosition();
+    }
 }
 
 //===========================================================================
