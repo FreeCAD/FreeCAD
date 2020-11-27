@@ -115,7 +115,7 @@ void SoBrepPointSet::GLRender(SoGLRenderAction *action)
 
 void SoBrepPointSet::GLRenderInPath(SoGLRenderAction *action)
 {
-    glRender(action, action->isRenderingDelayedPaths());
+    glRender(action, true);
 }
 
 void SoBrepPointSet::glRender(SoGLRenderAction *action, bool inpath)
@@ -129,7 +129,9 @@ void SoBrepPointSet::glRender(SoGLRenderAction *action, bool inpath)
         return;
     }
 
-    if (inpath) {
+    bool delayrendering = action->isRenderingDelayedPaths();
+
+    if (!delayrendering) {
         ///////////////////////////////////////////////////////////////////////////////////////////////
         // Copied from SoShape::shouldGLRender(). Put here for early render skipping
         const SoShapeStyleElement * shapestyle = SoShapeStyleElement::get(state);
@@ -160,14 +162,14 @@ void SoBrepPointSet::glRender(SoGLRenderAction *action, bool inpath)
     }
 
     Gui::FCDepthFunc depthGuard;
-    if(!action->isRenderingDelayedPaths()) {
+    if(!inpath && !delayrendering) {
         if (ctx && (ctx->isSelected() || ctx->isHighlighted())) {
             action->addDelayedPath(action->getCurPath()->copy());
             if (ctx->isHighlightAll() || ctx->isSelectAll())
                 return;
         }
         depthGuard.set(GL_LEQUAL);
-    } else if (inpath)
+    } else if (delayrendering)
         depthGuard.set(GL_LEQUAL);
 
     if(ctx && ctx->isHighlightAll()
@@ -212,9 +214,9 @@ void SoBrepPointSet::glRender(SoGLRenderAction *action, bool inpath)
         }
     }
 
-    if(!inpath && ctx2 && ctx2->isSelected())
+    if(!delayrendering && ctx2 && ctx2->isSelected())
         renderSelection(action,ctx2,false);
-    else if (!inpath) {
+    else if (!delayrendering) {
         uint32_t color;
         SoColorPacker packer;
         float trans = 0.0;
