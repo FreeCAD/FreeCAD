@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>241</width>
-    <height>292</height>
+    <width>318</width>
+    <height>399</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -163,6 +163,60 @@
     </layout>
    </item>
    <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_10">
+     <item>
+      <widget class="QLabel" name="labelInnerTaperAngle">
+       <property name="text">
+        <string>Inner tape angle</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefQuantitySpinBox" name="innerTaperAngleEdit" native="true">
+       <property name="keyboardTracking" stdset="0">
+        <bool>false</bool>
+       </property>
+       <property name="unit" stdset="0">
+        <string>deg</string>
+       </property>
+       <property name="maximum" stdset="0">
+        <double>360.000000000000000</double>
+       </property>
+       <property name="singleStep" stdset="0">
+        <double>10.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_11">
+     <item>
+      <widget class="QLabel" name="labelInnerTaperAngle2">
+       <property name="text">
+        <string>2nd inner tape angle</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefQuantitySpinBox" name="innerTaperAngleEdit2" native="true">
+       <property name="keyboardTracking" stdset="0">
+        <bool>false</bool>
+       </property>
+       <property name="unit" stdset="0">
+        <string>deg</string>
+       </property>
+       <property name="maximum" stdset="0">
+        <double>360.000000000000000</double>
+       </property>
+       <property name="singleStep" stdset="0">
+        <double>10.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
       <widget class="QPushButton" name="buttonFace">
@@ -190,6 +244,13 @@
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>changeMode</tabstop>
+  <tabstop>checkBoxMidplane</tabstop>
+  <tabstop>checkBoxReversed</tabstop>
+  <tabstop>buttonFace</tabstop>
+  <tabstop>lineFaceName</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

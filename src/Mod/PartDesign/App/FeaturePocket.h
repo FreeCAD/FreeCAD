@@ -41,8 +41,10 @@ public:
     App::PropertyLength         Length;
     App::PropertyLength         Length2;
     App::PropertyLength         Offset;
-    App::PropertyAngle       TaperAngle;
-    App::PropertyAngle       TaperAngleRev;
+    App::PropertyAngle          TaperAngle;
+    App::PropertyAngle          TaperAngleRev;
+    App::PropertyAngle          InnerTaperAngle;
+    App::PropertyAngle          InnerTaperAngleRev;
 
     /** @name methods override feature */
     //@{

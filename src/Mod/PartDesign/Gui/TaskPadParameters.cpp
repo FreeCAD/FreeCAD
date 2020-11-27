@@ -97,12 +97,16 @@ void TaskPadParameters::setupUI(bool newObj)
     ui->offsetEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PadOffset"));
     ui->taperAngleEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/TaperAngle"));
     ui->taperAngleEdit2->setParamGrpPath(QByteArray("User parameter:BaseApp/History/TaperAngle2"));
+    ui->innerTaperAngleEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/InnerTaperAngle"));
+    ui->innerTaperAngleEdit2->setParamGrpPath(QByteArray("User parameter:BaseApp/History/InnerTaperAngle2"));
 
     // Bind input fields to properties
     ui->lengthEdit->bind(pcPad->Length);
     ui->lengthEdit2->bind(pcPad->Length2);
     ui->taperAngleEdit->bind(pcPad->TaperAngle);
     ui->taperAngleEdit2->bind(pcPad->TaperAngleRev);
+    ui->innerTaperAngleEdit->bind(pcPad->InnerTaperAngle);
+    ui->innerTaperAngleEdit2->bind(pcPad->InnerTaperAngleRev);
 
     ui->XDirectionEdit->bind(App::ObjectIdentifier::parse(pcPad, std::string("Direction.x")));
     ui->YDirectionEdit->bind(App::ObjectIdentifier::parse(pcPad, std::string("Direction.y")));
@@ -136,6 +140,10 @@ void TaskPadParameters::setupUI(bool newObj)
             this, SLOT(onAngleChanged(double)));
     connect(ui->taperAngleEdit2, SIGNAL(valueChanged(double)),
             this, SLOT(onAngle2Changed(double)));
+    connect(ui->innerTaperAngleEdit, SIGNAL(valueChanged(double)),
+            this, SLOT(onInnerAngleChanged(double)));
+    connect(ui->innerTaperAngleEdit2, SIGNAL(valueChanged(double)),
+            this, SLOT(onInnerAngle2Changed(double)));
     connect(ui->groupBoxDirection, SIGNAL(toggled(bool)),
         this, SLOT(onGBDirectionChanged(bool)));
     connect(ui->XDirectionEdit, SIGNAL(valueChanged(double)),
@@ -172,6 +180,10 @@ void TaskPadParameters::setupUI(bool newObj)
         ui->taperAngleEdit->selectNumber();
         ui->taperAngleEdit2->setToLastUsedValue();
         ui->taperAngleEdit2->selectNumber();
+        ui->innerTaperAngleEdit->setToLastUsedValue();
+        ui->innerTaperAngleEdit->selectNumber();
+        ui->innerTaperAngleEdit2->setToLastUsedValue();
+        ui->innerTaperAngleEdit2->selectNumber();
     }
 }
 
@@ -194,6 +206,8 @@ void TaskPadParameters::refresh()
     int index = pcPad->Type.getValue(); // must extract value here, clear() kills it!
     double angle = pcPad->TaperAngle.getValue();
     double angle2 = pcPad->TaperAngleRev.getValue();
+    double innerAngle = pcPad->InnerTaperAngle.getValue();
+    double innerAngle2 = pcPad->InnerTaperAngleRev.getValue();
 
     // Temporarily prevent unnecessary feature recomputes
     for (QWidget* child : proxy->findChildren<QWidget*>())
@@ -209,6 +223,8 @@ void TaskPadParameters::refresh()
     ui->offsetEdit->setValue(off);
     ui->taperAngleEdit->setValue(angle);
     ui->taperAngleEdit2->setValue(angle2);
+    ui->innerTaperAngleEdit->setValue(innerAngle);
+    ui->innerTaperAngleEdit2->setValue(innerAngle2);
 
     ui->checkBoxMidplane->setChecked(midplane);
     // According to bug #0000521 the reversed option
@@ -311,6 +327,12 @@ void TaskPadParameters::updateUI(int index)
     ui->taperAngleEdit2->setVisible( angleVisible );
     ui->taperAngleEdit2->setEnabled( angleVisible );
     ui->labelTaperAngle2->setVisible( angleVisible );
+    ui->innerTaperAngleEdit->setVisible( angleVisible );
+    ui->innerTaperAngleEdit->setEnabled( angleVisible );
+    ui->labelInnerTaperAngle->setVisible( angleVisible );
+    ui->innerTaperAngleEdit2->setVisible( angleVisible );
+    ui->innerTaperAngleEdit2->setEnabled( angleVisible );
+    ui->labelInnerTaperAngle2->setVisible( angleVisible );
 
     ui->buttonFace->setEnabled( isFaceEditEnabled );
     ui->lineFaceName->setEnabled( isFaceEditEnabled );
@@ -372,6 +394,20 @@ void TaskPadParameters::onAngle2Changed(double angle)
 {
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
     pcPad->TaperAngleRev.setValue(angle);
+    recomputeFeature();
+}
+
+void TaskPadParameters::onInnerAngleChanged(double angle)
+{
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
+    pcPad->InnerTaperAngle.setValue(angle);
+    recomputeFeature();
+}
+
+void TaskPadParameters::onInnerAngle2Changed(double angle)
+{
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
+    pcPad->InnerTaperAngleRev.setValue(angle);
     recomputeFeature();
 }
 
@@ -632,6 +668,8 @@ void TaskPadParameters::saveHistory(void)
     ui->offsetEdit->pushToHistory();
     ui->taperAngleEdit->pushToHistory();
     ui->taperAngleEdit2->pushToHistory();
+    ui->innerTaperAngleEdit->pushToHistory();
+    ui->innerTaperAngleEdit2->pushToHistory();
 
     TaskSketchBasedParameters::saveHistory();
 }

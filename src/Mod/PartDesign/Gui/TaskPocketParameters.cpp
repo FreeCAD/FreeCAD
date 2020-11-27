@@ -73,6 +73,8 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
     ui->offsetEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PocketOffset"));
     ui->taperAngleEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/TaperAngle"));
     ui->taperAngleEdit2->setParamGrpPath(QByteArray("User parameter:BaseApp/History/TaperAngle2"));
+    ui->innerTaperAngleEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/InnerTaperAngle"));
+    ui->innerTaperAngleEdit2->setParamGrpPath(QByteArray("User parameter:BaseApp/History/InnerTaperAngle2"));
 
     ui->changeMode->clear();
     ui->changeMode->insertItem(0, tr("Dimension"));
@@ -89,6 +91,8 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
     ui->offsetEdit->bind(pcPocket->Offset);
     ui->taperAngleEdit->bind(pcPocket->TaperAngle);
     ui->taperAngleEdit2->bind(pcPocket->TaperAngleRev);
+    ui->innerTaperAngleEdit->bind(pcPocket->InnerTaperAngle);
+    ui->innerTaperAngleEdit2->bind(pcPocket->InnerTaperAngleRev);
 
     QMetaObject::connectSlotsByName(this);
 
@@ -100,6 +104,10 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
             this, SLOT(onAngleChanged(double)));
     connect(ui->taperAngleEdit2, SIGNAL(valueChanged(double)),
             this, SLOT(onAngle2Changed(double)));
+    connect(ui->innerTaperAngleEdit, SIGNAL(valueChanged(double)),
+            this, SLOT(onInnerAngleChanged(double)));
+    connect(ui->innerTaperAngleEdit2, SIGNAL(valueChanged(double)),
+            this, SLOT(onInnerAngle2Changed(double)));
     connect(ui->offsetEdit, SIGNAL(valueChanged(double)),
             this, SLOT(onOffsetChanged(double)));
     connect(ui->checkBoxMidplane, SIGNAL(toggled(bool)),
@@ -129,6 +137,10 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
         ui->taperAngleEdit->selectNumber();
         ui->taperAngleEdit2->setToLastUsedValue();
         ui->taperAngleEdit2->selectNumber();
+        ui->innerTaperAngleEdit->setToLastUsedValue();
+        ui->innerTaperAngleEdit->selectNumber();
+        ui->innerTaperAngleEdit2->setToLastUsedValue();
+        ui->innerTaperAngleEdit2->selectNumber();
     }
 }
 
@@ -156,6 +168,8 @@ void TaskPocketParameters::refresh()
     }
     double angle = pcPocket->TaperAngle.getValue();
     double angle2 = pcPocket->TaperAngleRev.getValue();
+    double innerAngle = pcPocket->InnerTaperAngle.getValue();
+    double innerAngle2 = pcPocket->InnerTaperAngleRev.getValue();
 
     // Temporarily prevent unnecessary feature recomputes
     for (QWidget* child : proxy->findChildren<QWidget*>())
@@ -169,6 +183,8 @@ void TaskPocketParameters::refresh()
     ui->checkBoxReversed->setChecked(reversed);
     ui->taperAngleEdit->setValue(angle);
     ui->taperAngleEdit2->setValue(angle2);
+    ui->innerTaperAngleEdit->setValue(innerAngle);
+    ui->innerTaperAngleEdit2->setValue(innerAngle2);
 
     // Set object labels
     if (obj && PartDesign::Feature::isDatum(obj)) {
@@ -282,6 +298,12 @@ void TaskPocketParameters::updateUI(int index)
     ui->taperAngleEdit2->setVisible( angleVisible );
     ui->taperAngleEdit2->setEnabled( angleVisible );
     ui->labelTaperAngle2->setVisible( angleVisible );
+    ui->innerTaperAngleEdit->setVisible( angleVisible );
+    ui->innerTaperAngleEdit->setEnabled( angleVisible );
+    ui->labelInnerTaperAngle->setVisible( angleVisible );
+    ui->innerTaperAngleEdit2->setVisible( angleVisible );
+    ui->innerTaperAngleEdit2->setEnabled( angleVisible );
+    ui->labelInnerTaperAngle2->setVisible( angleVisible );
 }
 
 void TaskPocketParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -337,6 +359,20 @@ void TaskPocketParameters::onAngle2Changed(double angle)
 {
     PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
     pcPocket->TaperAngleRev.setValue(angle);
+    recomputeFeature();
+}
+
+void TaskPocketParameters::onInnerAngleChanged(double angle)
+{
+    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
+    pcPocket->InnerTaperAngle.setValue(angle);
+    recomputeFeature();
+}
+
+void TaskPocketParameters::onInnerAngle2Changed(double angle)
+{
+    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
+    pcPocket->InnerTaperAngleRev.setValue(angle);
     recomputeFeature();
 }
 
@@ -542,6 +578,8 @@ void TaskPocketParameters::saveHistory(void)
     ui->offsetEdit->pushToHistory();
     ui->taperAngleEdit->pushToHistory();
     ui->taperAngleEdit2->pushToHistory();
+    ui->innerTaperAngleEdit->pushToHistory();
+    ui->innerTaperAngleEdit2->pushToHistory();
 }
 
 void TaskPocketParameters::apply()

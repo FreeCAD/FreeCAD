@@ -86,6 +86,8 @@ Pad::Pad()
 
     ADD_PROPERTY_TYPE(TaperAngle,(0.0), "Pad", App::Prop_None, "Sets the angle of slope (draft) to apply to the sides. The angle is for outward taper; negative value yields inward tapering.");
     ADD_PROPERTY_TYPE(TaperAngleRev,(0.0), "Pad", App::Prop_None, "Taper angle of reverse part of padding.");
+    ADD_PROPERTY_TYPE(InnerTaperAngle,(0.0), "Pad", App::Prop_None, "Taper angle of inner holes.");
+    ADD_PROPERTY_TYPE(InnerTaperAngleRev,(0.0), "Pad", App::Prop_None, "Taper angle of the reverse part for inner holes.");
 }
 
 short Pad::mustExecute() const
@@ -351,8 +353,11 @@ App::DocumentObjectExecReturn *Pad::_execute(bool makeface, bool fuse)
         } else {
             Part::Extrusion::ExtrusionParameters params;
             params.dir = dir;
+            params.solid = true;
             params.taperAngleFwd = this->TaperAngle.getValue() * M_PI / 180.0;
             params.taperAngleRev = this->TaperAngleRev.getValue() * M_PI / 180.0;
+            params.innerTaperAngleFwd = this->InnerTaperAngle.getValue() * M_PI / 180.0;
+            params.innerTaperAngleRev = this->InnerTaperAngleRev.getValue() * M_PI / 180.0;
             if (L2 == 0.0 && Midplane.getValue()) {
                 params.lengthFwd = L/2;
                 params.lengthRev = L/2;
@@ -362,13 +367,18 @@ App::DocumentObjectExecReturn *Pad::_execute(bool makeface, bool fuse)
                 params.lengthFwd = L;
                 params.lengthRev = L2;
             }
-            params.solid = true;
-            if (std::fabs(params.taperAngleFwd) >= Precision::Angular() ||
-                    std::fabs(params.taperAngleRev) >= Precision::Angular() ) {
+            if (std::fabs(params.taperAngleFwd) >= Precision::Angular()
+                    || std::fabs(params.taperAngleRev) >= Precision::Angular()
+                    || std::fabs(params.innerTaperAngleFwd) >= Precision::Angular()
+                    || std::fabs(params.innerTaperAngleRev) >= Precision::Angular()) {
                 if (fabs(params.taperAngleFwd) > M_PI * 0.5 - Precision::Angular()
                         || fabs(params.taperAngleRev) > M_PI * 0.5 - Precision::Angular())
-                    return new App::DocumentObjectExecReturn("Magnitude of taper angle matches or exceeds 90 degrees. That is too much.");
-
+                    return new App::DocumentObjectExecReturn(
+                            "Magnitude of taper angle matches or exceeds 90 degrees");
+                if (fabs(params.innerTaperAngleFwd) > M_PI * 0.5 - Precision::Angular()
+                        || fabs(params.innerTaperAngleRev) > M_PI * 0.5 - Precision::Angular())
+                    return new App::DocumentObjectExecReturn(
+                            "Magnitude of inner taper angle matches or exceeds 90 degrees");
                 if (Reversed.getValue())
                     params.dir.Reverse();
                 std::vector<TopoShape> drafts;

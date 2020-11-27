@@ -74,6 +74,8 @@ private Q_SLOTS:
     void onModeChanged(int);
     void onAngleChanged(double);
     void onAngle2Changed(double);
+    void onInnerAngleChanged(double);
+    void onInnerAngle2Changed(double);
 
 protected:
     void changeEvent(QEvent *e) override;

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>280</width>
-    <height>431</height>
+    <width>312</width>
+    <height>510</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -243,7 +243,7 @@ the sketch plane's normal vector will be used</string>
      <item>
       <widget class="QLabel" name="labelTaperAngle">
        <property name="text">
-        <string>Tape angle</string>
+        <string>Taper angle</string>
        </property>
       </widget>
      </item>
@@ -270,12 +270,66 @@ the sketch plane's normal vector will be used</string>
      <item>
       <widget class="QLabel" name="labelTaperAngle2">
        <property name="text">
-        <string>2nd tape angle</string>
+        <string>2nd taper angle</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="Gui::PrefQuantitySpinBox" name="taperAngleEdit2" native="true">
+       <property name="keyboardTracking" stdset="0">
+        <bool>false</bool>
+       </property>
+       <property name="unit" stdset="0">
+        <string>deg</string>
+       </property>
+       <property name="maximum" stdset="0">
+        <double>360.000000000000000</double>
+       </property>
+       <property name="singleStep" stdset="0">
+        <double>10.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_13">
+     <item>
+      <widget class="QLabel" name="labelInnerTaperAngle">
+       <property name="text">
+        <string>Inner taper angle</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefQuantitySpinBox" name="innerTaperAngleEdit" native="true">
+       <property name="keyboardTracking" stdset="0">
+        <bool>false</bool>
+       </property>
+       <property name="unit" stdset="0">
+        <string>deg</string>
+       </property>
+       <property name="maximum" stdset="0">
+        <double>360.000000000000000</double>
+       </property>
+       <property name="singleStep" stdset="0">
+        <double>10.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_12">
+     <item>
+      <widget class="QLabel" name="labelInnerTaperAngle2">
+       <property name="text">
+        <string>2nd inner taper angle</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefQuantitySpinBox" name="innerTaperAngleEdit2" native="true">
        <property name="keyboardTracking" stdset="0">
         <bool>false</bool>
        </property>
@@ -325,6 +379,17 @@ the sketch plane's normal vector will be used</string>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>changeMode</tabstop>
+  <tabstop>groupBoxDirection</tabstop>
+  <tabstop>XDirectionEdit</tabstop>
+  <tabstop>YDirectionEdit</tabstop>
+  <tabstop>ZDirectionEdit</tabstop>
+  <tabstop>checkBoxMidplane</tabstop>
+  <tabstop>checkBoxReversed</tabstop>
+  <tabstop>buttonFace</tabstop>
+  <tabstop>lineFaceName</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

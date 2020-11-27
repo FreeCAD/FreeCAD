@@ -42,6 +42,7 @@
 # include <TopExp_Explorer.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
 # include <BRepLib_FindSurface.hxx>
+# include <BRepTools.hxx>
 #endif
 
 
@@ -49,6 +50,7 @@
 #include "FeatureExtrusion.h"
 #include <Base/Tools.h>
 #include <Base/Exception.h>
+#include <App/Application.h>
 #include <App/Document.h>
 #include "Part2DObject.h"
 
@@ -79,6 +81,8 @@ Extrusion::Extrusion()
     ADD_PROPERTY_TYPE(Symmetric,(false), "Extrude", App::Prop_None, "If true, extrusion is done in both directions to a total of LengthFwd. LengthRev is ignored.");
     ADD_PROPERTY_TYPE(TaperAngle,(0.0), "Extrude", App::Prop_None, "Sets the angle of slope (draft) to apply to the sides. The angle is for outward taper; negative value yields inward tapering.");
     ADD_PROPERTY_TYPE(TaperAngleRev,(0.0), "Extrude", App::Prop_None, "Taper angle of reverse part of extrusion.");
+    ADD_PROPERTY_TYPE(InnerTaperAngle,(0.0), "Extrude", App::Prop_None, "Taper angle of inner holes.");
+    ADD_PROPERTY_TYPE(InnerTaperAngleRev,(0.0), "Extrude", App::Prop_None, "Taper angle of the reverse part for inner holes.");
     ADD_PROPERTY_TYPE(FaceMakerClass,("Part::FaceMakerExtrusion"), "Extrude", App::Prop_None, "If Solid is true, this sets the facemaker class to use when converting wires to faces. Otherwise, ignored."); //default for old documents. See setupObject for default for new extrusions.
 }
 
@@ -186,6 +190,12 @@ Extrusion::ExtrusionParameters Extrusion::computeFinalParameters()
     result.taperAngleRev = this->TaperAngleRev.getValue() * M_PI / 180.0;
     if (fabs(result.taperAngleRev) > M_PI * 0.5 - Precision::Angular() )
         throw Base::ValueError("Magnitude of taper angle matches or exceeds 90 degrees. That is too much.");
+    result.innerTaperAngleFwd = this->InnerTaperAngle.getValue() * M_PI / 180.0;
+    if (fabs(result.innerTaperAngleFwd) > M_PI * 0.5 - Precision::Angular() )
+        throw Base::ValueError("Magnitude of inner taper angle matches or exceeds 90 degrees. That is too much.");
+    result.innerTaperAngleRev = this->InnerTaperAngleRev.getValue() * M_PI / 180.0;
+    if (fabs(result.innerTaperAngleRev) > M_PI * 0.5 - Precision::Angular() )
+        throw Base::ValueError("Magnitude of inner taper angle matches or exceeds 90 degrees. That is too much.");
 
     result.faceMakerClass = this->FaceMakerClass.getValue();
 
@@ -325,29 +335,52 @@ void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoShape& _s
     bool bRev = fabs(params.lengthRev) > Precision::Confusion();
     bool bMid = !bFwd || !bRev || params.lengthFwd*params.lengthRev > 0.0; //include the source shape as loft section?
 
-    const auto &shape = _shape.getShape();
+    TopoDS_Shape shape = _shape.getShape();
     TopoShape sourceWire;
     if (shape.IsNull())
         Standard_Failure::Raise("Not a valid shape");
-    if (shape.ShapeType() == TopAbs_WIRE || shape.ShapeType() == TopAbs_FACE) {
-        if (shape.ShapeType() == TopAbs_WIRE) {
-            ShapeFix_Wire aFix;
-            aFix.Load(TopoDS::Wire(shape));
-            aFix.FixReorder();
-            aFix.FixConnected();
-            aFix.FixClosed();
-            sourceWire.setShape(aFix.Wire());
-        } else {
-            TopoDS_Wire outerWire = ShapeAnalysis::OuterWire(TopoDS::Face(shape));
-            sourceWire.setShape(outerWire);
+
+    if (shape.ShapeType() == TopAbs_FACE) {
+        shape = BRepTools::OuterWire(TopoDS::Face(shape));
+        if (shape.IsNull())
+            Standard_Failure::Raise("No outer wire found");
+        std::vector<TopoShape> wires;
+        TopoShape outerWire = _shape.getOuterWire(&wires);
+        if (outerWire.isNull())
+            Standard_Failure::Raise("Missing outer wire");
+        if (wires.size()) {
+            unsigned pos = drafts.size();
+            makeDraft(params, outerWire, drafts, hasher);
+            if (drafts.size() != pos+1)
+                Standard_Failure::Raise("Failed to make drafted extrusion");
+            std::vector<TopoShape> inner;
+            TopoShape innerWires(0, hasher);
+            innerWires.makECompound(wires,"",false);
+            ExtrusionParameters copy = params;
+            copy.taperAngleFwd = params.innerTaperAngleFwd;
+            copy.taperAngleRev = params.innerTaperAngleRev;
+            makeDraft(copy, innerWires, inner, hasher);
+            if (inner.empty())
+                Standard_Failure::Raise("Failed to make drafted extrusion with inner hole");
+            inner.insert(inner.begin(), drafts.back());
+            drafts.back().makECut(inner);
+            return;
         }
+    }
+
+    if (shape.ShapeType() == TopAbs_WIRE) {
+        ShapeFix_Wire aFix;
+        aFix.Load(TopoDS::Wire(shape));
+        aFix.FixReorder();
+        aFix.FixConnected();
+        aFix.FixClosed();
+        sourceWire.setShape(aFix.Wire());
         sourceWire.Tag = _shape.Tag;
         sourceWire.mapSubElement(_shape);
     }
     else if (shape.ShapeType() == TopAbs_COMPOUND) {
-        for(auto &s : _shape.getSubTopoShapes()) {
+        for(auto &s : _shape.getSubTopoShapes())
             makeDraft(params, s, drafts, hasher);
-        }
     }
     else {
         Standard_Failure::Raise("Only a wire or a face is supported");
@@ -355,16 +388,7 @@ void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoShape& _s
 
     if (!sourceWire.isNull()) {
         std::vector<TopoShape> list_of_sections;
-
-        // if the wire consists of a single edge which has applied a placement
-        // then this placement must be reset because otherwise the
-        // BRepOffsetAPI_MakeOffset shows weird behaviour by applying the placement
-        // twice on the output shape
-        //
-        // count all edges of the wire
-        int numEdges = sourceWire.countSubShapes(TopAbs_EDGE);
-
-        auto makeOffset = [&numEdges,&sourceWire](const gp_Vec& translation, double offset) -> TopoShape {
+        auto makeOffset = [&sourceWire](const gp_Vec& translation, double offset) -> TopoShape {
             gp_Trsf mat;
             mat.SetTranslation(translation);
             TopoShape offsetShape(sourceWire.makETransform(mat,"RV"));

@@ -52,8 +52,9 @@ public:
     App::PropertyBool Symmetric;
     App::PropertyAngle TaperAngle;
     App::PropertyAngle TaperAngleRev;
+    App::PropertyAngle InnerTaperAngle;
+    App::PropertyAngle InnerTaperAngleRev;
     App::PropertyString FaceMakerClass;
-
 
     /**
      * @brief The ExtrusionParameters struct is supposed to be filled with final
@@ -65,10 +66,21 @@ public:
         double lengthFwd;
         double lengthRev;
         bool solid;
+        bool innertaper;
         double taperAngleFwd; //in radians
         double taperAngleRev;
+        double innerTaperAngleFwd; //in radians
+        double innerTaperAngleRev;
         std::string faceMakerClass;
-        ExtrusionParameters(): lengthFwd(0), lengthRev(0), solid(false), taperAngleFwd(0), taperAngleRev(0) {}// constructor to keep garbage out
+        ExtrusionParameters()
+            : lengthFwd(0)
+            , lengthRev(0)
+            , solid(false)
+            , taperAngleFwd(0)
+            , taperAngleRev(0)
+            , innerTaperAngleFwd(0)
+            , innerTaperAngleRev(0)
+        {}// constructor to keep garbage out
     };
 
     /** @name methods override feature */
