@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2015 Eivind Kvedalen (eivind@kvedalen.name)             *
  *   Copyright (c) 2006 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *

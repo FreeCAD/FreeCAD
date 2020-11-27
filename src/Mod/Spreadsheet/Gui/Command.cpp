@@ -1,12 +1,21 @@
 /***************************************************************************
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU Library General Public License as       *
- *   published by the Free Software Foundation; either version 2 of the    *
- *   License, or (at your option) any later version.                       *
- *   for detail see the LICENCE text file.                                 *
- *   Jürgen Riegel 2002                                                    *
- *   Eivind Kvedalen 2015                                                  *
+ *   This library is free software; you can redistribute it and/or         *
+ *   modify it under the terms of the GNU Library General Public           *
+ *   License as published by the Free Software Foundation; either          *
+ *   version 2 of the License, or (at your option) any later version.      *
+ *                                                                         *
+ *   This library  is distributed in the hope that it will be useful,      *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU Library General Public License for more details.                  *
+ *                                                                         *
+ *   You should have received a copy of the GNU Library General Public     *
+ *   License along with this library; see the file COPYING.LIB. If not,    *
+ *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
+ *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
 
@@ -43,14 +52,14 @@
 #include "ViewProviderSpreadsheet.h"
 #include "PropertiesDialog.h"
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;
 using namespace Base;
 using namespace App;
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 DEF_STD_CMD_A(CmdSpreadsheetMergeCells)
 
@@ -103,7 +112,7 @@ bool CmdSpreadsheetMergeCells::isActive()
     return false;
 }
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 DEF_STD_CMD_A(CmdSpreadsheetSplitCell)
 
@@ -159,7 +168,7 @@ bool CmdSpreadsheetSplitCell::isActive()
     return false;
 }
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 DEF_STD_CMD_A(CmdSpreadsheetImport)
 
@@ -199,7 +208,7 @@ bool CmdSpreadsheetImport::isActive()
     return getActiveGuiDocument() ? true : false;
 }
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 DEF_STD_CMD_A(CmdSpreadsheetExport)
 
@@ -248,7 +257,7 @@ bool CmdSpreadsheetExport::isActive()
     return false;
 }
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 DEF_STD_CMD_A(CmdSpreadsheetAlignLeft)
 
@@ -300,7 +309,7 @@ bool CmdSpreadsheetAlignLeft::isActive()
     return false;
 }
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 DEF_STD_CMD_A(CmdSpreadsheetAlignCenter)
 
@@ -352,7 +361,7 @@ bool CmdSpreadsheetAlignCenter::isActive()
     return false;
 }
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 DEF_STD_CMD_A(CmdSpreadsheetAlignRight)
 
@@ -404,7 +413,7 @@ bool CmdSpreadsheetAlignRight::isActive()
     return false;
 }
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 DEF_STD_CMD_A(CmdSpreadsheetAlignTop)
 
@@ -456,7 +465,7 @@ bool CmdSpreadsheetAlignTop::isActive()
     return false;
 }
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 DEF_STD_CMD_A(CmdSpreadsheetAlignBottom)
 
@@ -508,7 +517,7 @@ bool CmdSpreadsheetAlignBottom::isActive()
     return false;
 }
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 DEF_STD_CMD_A(CmdSpreadsheetAlignVCenter)
 
@@ -560,7 +569,7 @@ bool CmdSpreadsheetAlignVCenter::isActive()
     return false;
 }
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 DEF_STD_CMD_A(CmdSpreadsheetStyleBold)
 
@@ -634,7 +643,7 @@ bool CmdSpreadsheetStyleBold::isActive()
     return false;
 }
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 DEF_STD_CMD_A(CmdSpreadsheetStyleItalic)
 
@@ -708,7 +717,7 @@ bool CmdSpreadsheetStyleItalic::isActive()
     return false;
 }
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 DEF_STD_CMD_A(CmdSpreadsheetStyleUnderline)
 
@@ -781,7 +790,7 @@ bool CmdSpreadsheetStyleUnderline::isActive()
     return false;
 }
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 DEF_STD_CMD_A(CmdSpreadsheetSetAlias)
 
@@ -845,7 +854,7 @@ bool CmdSpreadsheetSetAlias::isActive()
     return false;
 }
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 DEF_STD_CMD_A(CmdCreateSpreadsheet)
 
@@ -878,7 +887,7 @@ bool CmdCreateSpreadsheet::isActive()
     return App::GetApplication().getActiveDocument();
 }
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 void CreateSpreadsheetCommands(void)
 {
