@@ -195,13 +195,11 @@ QRectF QGCustomText::boundingRect() const
 {
     if (toPlainText().isEmpty()) {
         return QRectF();
-    }
-
-    if (tightBounding) {
+    } else if (tightBounding) {
         return tightBoundingRect();
+    } else {
+        return QGraphicsTextItem::boundingRect();
     }
-
-    return QGraphicsTextItem::boundingRect();
 }
 
 QRectF QGCustomText::tightBoundingRect() const
@@ -253,5 +251,4 @@ void QGCustomText::makeMark(Base::Vector3d v)
 {
     makeMark(v.x,v.y);
 }
-
 
