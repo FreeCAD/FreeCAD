@@ -138,7 +138,7 @@ void SoBrepEdgeSet::glRender(SoGLRenderAction *action, bool inpath)
     auto state = action->getState();
 
     bool delayrendering = action->isRenderingDelayedPaths();
-    if (!delayrendering) {
+    if (!inpath && !delayrendering) {
         ///////////////////////////////////////////////////////////////////////////////////////////////
         // Copied from SoShape::shouldGLRender(). Put here for early render skipping
         const SoShapeStyleElement * shapestyle = SoShapeStyleElement::get(state);
@@ -178,7 +178,7 @@ void SoBrepEdgeSet::glRender(SoGLRenderAction *action, bool inpath)
                 return;
         }
         depthGuard.set(GL_LEQUAL);
-    } else if (delayrendering)
+    } else if (inpath && delayrendering)
         depthGuard.set(GL_LEQUAL);
 
     if(ctx && ctx->isHighlightAll()
@@ -210,8 +210,8 @@ void SoBrepEdgeSet::glRender(SoGLRenderAction *action, bool inpath)
         //
         // The second pass renables depth test, and set depth function to
         // GL_LEQUAL to render the outline.
-        if(action->isRenderingDelayedPaths()) {
-            if (!delayrendering)
+        if(delayrendering) {
+            if (!inpath)
                 pass = 0;
         } else if (isSelected(ctx)) {
             // If we are selected but not rendering inside the group on top.
@@ -267,9 +267,9 @@ void SoBrepEdgeSet::glRender(SoGLRenderAction *action, bool inpath)
                 continue;
             }
         }
-        if(!delayrendering && ctx2 && ctx2->isSelected())
+        if(!inpath && ctx2 && ctx2->isSelected())
             renderSelection(action,ctx2,false);
-        else if (!delayrendering) {
+        else if (!inpath) {
             uint32_t color;
             SoColorPacker packer;
             float trans = 0.0;
@@ -387,6 +387,10 @@ void SoBrepEdgeSet::renderHighlight(SoGLRenderAction *action, SelContextPtr ctx)
 {
     if(!ctx || !ctx->isHighlighted())
         return;
+
+    Gui::FCDepthFunc depthGuard;
+    if (action->isRenderingDelayedPaths())
+        depthGuard.set(GL_ALWAYS);
 
     SbColor color = ctx->highlightColor;
     bool checkColor = true;

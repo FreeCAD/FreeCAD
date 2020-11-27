@@ -131,7 +131,7 @@ void SoBrepPointSet::glRender(SoGLRenderAction *action, bool inpath)
 
     bool delayrendering = action->isRenderingDelayedPaths();
 
-    if (!delayrendering) {
+    if (!inpath && !delayrendering) {
         ///////////////////////////////////////////////////////////////////////////////////////////////
         // Copied from SoShape::shouldGLRender(). Put here for early render skipping
         const SoShapeStyleElement * shapestyle = SoShapeStyleElement::get(state);
@@ -163,13 +163,14 @@ void SoBrepPointSet::glRender(SoGLRenderAction *action, bool inpath)
 
     Gui::FCDepthFunc depthGuard;
     if(!inpath && !delayrendering) {
-        if (ctx && (ctx->isSelected() || ctx->isHighlighted())) {
+        if (ctx && ((!Gui::ViewParams::getShowSelectionOnTop() && ctx->isSelected())
+                    || ctx->isHighlighted())) {
             action->addDelayedPath(action->getCurPath()->copy());
             if (ctx->isHighlightAll() || ctx->isSelectAll())
                 return;
         }
         depthGuard.set(GL_LEQUAL);
-    } else if (delayrendering)
+    } else if (inpath && delayrendering)
         depthGuard.set(GL_LEQUAL);
 
     if(ctx && ctx->isHighlightAll()
@@ -186,7 +187,7 @@ void SoBrepPointSet::glRender(SoGLRenderAction *action, bool inpath)
 
     if(Gui::ViewParams::getShowSelectionOnTop()
             && !Gui::SoFCUnifiedSelection::getShowSelectionBoundingBox()
-            && !action->isRenderingDelayedPaths()
+            && !delayrendering
             && !ctx2 
             && isSelected(ctx))
     {
@@ -214,9 +215,9 @@ void SoBrepPointSet::glRender(SoGLRenderAction *action, bool inpath)
         }
     }
 
-    if(!delayrendering && ctx2 && ctx2->isSelected())
+    if(!inpath && ctx2 && ctx2->isSelected())
         renderSelection(action,ctx2,false);
-    else if (!delayrendering) {
+    else if (!inpath) {
         uint32_t color;
         SoColorPacker packer;
         float trans = 0.0;
@@ -300,6 +301,10 @@ void SoBrepPointSet::renderHighlight(SoGLRenderAction *action, SelContextPtr ctx
 {
     if(!ctx || !ctx->isHighlighted())
         return;
+
+    Gui::FCDepthFunc depthGuard;
+    if (action->isRenderingDelayedPaths())
+        depthGuard.set(GL_ALWAYS);
 
     RenderIndices.clear();
     bool checkColor = true;
