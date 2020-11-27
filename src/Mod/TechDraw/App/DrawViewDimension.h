@@ -133,7 +133,9 @@ public:
     //return PyObject as DrawViewDimensionPy
     virtual PyObject *getPyObject(void) override;
 
-    virtual std::string getFormatedValue(int partial = 0);
+    virtual std::string getFormattedDimensionValue(int partial = 0);
+    virtual std::string formatValue(qreal value, QString qFormatSpec, int partial = 0);
+
     virtual double getDimValue();
     QStringList getPrefixSuffixSpec(QString fSpec);
 
