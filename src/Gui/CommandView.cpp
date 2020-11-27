@@ -200,6 +200,74 @@ Action * StdPerspectiveCamera::createAction(void)
 }
 
 //===========================================================================
+
+// The two commands below are provided for convenience so that they can be bound
+// to a button of a space mouse
+
+namespace {
+    std::string globalCameraPosition;
+}
+
+//===========================================================================
+// Std_ViewSaveCamera
+//===========================================================================
+
+DEF_3DV_CMD(StdCmdViewSaveCamera)
+
+StdCmdViewSaveCamera::StdCmdViewSaveCamera()
+  : Command("Std_ViewSaveCamera")
+{
+    sGroup        = QT_TR_NOOP("Standard-View");
+    sMenuText     = QT_TR_NOOP("Save current camera");
+    sToolTipText  = QT_TR_NOOP("Save current camera settings");
+    sStatusTip    = QT_TR_NOOP("Save current camera settings");
+    sWhatsThis    = "Std_ViewSaveCamera";
+    eType         = Alter3DView;
+}
+
+void StdCmdViewSaveCamera::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    const char* ppReturn=0;
+    if (getGuiApplication()->sendMsgToActiveView("GetCamera",&ppReturn))
+        globalCameraPosition = ppReturn;
+}
+
+//===========================================================================
+// Std_ViewRestoreCamera
+//===========================================================================
+DEF_STD_CMD_A(StdCmdViewRestoreCamera)
+
+StdCmdViewRestoreCamera::StdCmdViewRestoreCamera()
+  : Command("Std_ViewRestoreCamera")
+{
+    sGroup        = QT_TR_NOOP("Standard-View");
+    sMenuText     = QT_TR_NOOP("Restore saved camera");
+    sToolTipText  = QT_TR_NOOP("Restore saved camera settings");
+    sStatusTip    = QT_TR_NOOP("Restore saved camera settings");
+    sWhatsThis    = "Std_ViewRestoreCamera";
+    eType         = Alter3DView;
+}
+
+void StdCmdViewRestoreCamera::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    std::string camera = globalCameraPosition;
+    std::string setCamera = std::string("SetCamera ") + camera;
+    getGuiApplication()->sendMsgToActiveView(setCamera.c_str());
+}
+
+bool StdCmdViewRestoreCamera::isActive()
+{
+    if (globalCameraPosition.empty())
+        return false;
+    Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
+    return view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId());
+}
+
+//===========================================================================
 // Std_FreezeViews
 //===========================================================================
 class StdCmdFreezeViews : public Gui::Command
@@ -3554,6 +3622,8 @@ void CreateViewStdCommands(void)
     rcCmdMgr.addCommand(new StdPerspectiveCamera());
     rcCmdMgr.addCommand(new StdCmdToggleClipPlane());
     rcCmdMgr.addCommand(new StdCmdDrawStyle());
+    rcCmdMgr.addCommand(new StdCmdViewSaveCamera());
+    rcCmdMgr.addCommand(new StdCmdViewRestoreCamera());
     rcCmdMgr.addCommand(new StdCmdFreezeViews());
     rcCmdMgr.addCommand(new StdViewZoomIn());
     rcCmdMgr.addCommand(new StdViewZoomOut());
