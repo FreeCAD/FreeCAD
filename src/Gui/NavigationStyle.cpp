@@ -238,9 +238,17 @@ void NavigationStyle::initialize()
         ("User parameter:BaseApp/Preferences/View")->GetBool("ZoomAtCursor",true);
     this->zoomStep = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View")->GetFloat("ZoomStep",0.2f);
-    bool dragAtCursor = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/View")->GetBool("DragAtCursor", false);
-    setRotationCenterMode(dragAtCursor ? ScenePointAtCursor : WindowCenter);
+    long mode = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/View")->GetInt("RotationMode", 1);
+    if (mode == 0) {
+        setRotationCenterMode(NavigationStyle::WindowCenter);
+    }
+    else if (mode == 1) {
+        setRotationCenterMode(NavigationStyle::ScenePointAtCursor);
+    }
+    else if (mode == 2) {
+        setRotationCenterMode(NavigationStyle::BoundingBoxCenter);
+    }
 }
 
 void NavigationStyle::finalize()

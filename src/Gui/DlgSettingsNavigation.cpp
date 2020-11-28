@@ -84,11 +84,13 @@ void DlgSettingsNavigation::saveSettings()
     index = ui->naviCubeCorner->currentIndex();
     hGrp->SetInt("CornerNaviCube", index);
 
+    index = ui->comboRotationMode->currentIndex();
+    hGrp->SetInt("RotationMode", index);
+
     ui->checkBoxZoomAtCursor->onSave();
     ui->checkBoxInvertZoom->onSave();
     ui->checkBoxDisableTilt->onSave();
     ui->spinBoxZoomStep->onSave();
-    ui->checkBoxDragAtCursor->onSave();
     ui->CheckBox_UseAutoRotation->onSave();
     ui->qspinNewDocScale->onSave();
     ui->prefStepByTurn->onSave();
@@ -113,7 +115,6 @@ void DlgSettingsNavigation::loadSettings()
     ui->checkBoxInvertZoom->onRestore();
     ui->checkBoxDisableTilt->onRestore();
     ui->spinBoxZoomStep->onRestore();
-    ui->checkBoxDragAtCursor->onRestore();
     ui->CheckBox_UseAutoRotation->onRestore();
     ui->qspinNewDocScale->onRestore();
     ui->prefStepByTurn->onRestore();
@@ -130,6 +131,9 @@ void DlgSettingsNavigation::loadSettings()
 
     index = hGrp->GetInt("CornerNaviCube", 1);
     ui->naviCubeCorner->setCurrentIndex(index);
+
+    index = hGrp->GetInt("RotationMode", 1);
+    ui->comboRotationMode->setCurrentIndex(index);
 
     bool showNaviCube = hGrp->GetBool("ShowNaviCube", true);
     ui->groupBoxNaviCube->setChecked(showNaviCube);
