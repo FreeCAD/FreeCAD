@@ -144,7 +144,7 @@ CmdPartBox2::CmdPartBox2()
 void CmdPartBox2::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    openCommand("Part Box Create");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Part Box Create"));
     doCommand(Doc,"from FreeCAD import Base");
     doCommand(Doc,"import Part");
     doCommand(Doc,"__fb__ = App.ActiveDocument.addObject(\"Part::Box\",\"PartBox\")");
@@ -185,7 +185,7 @@ CmdPartBox3::CmdPartBox3()
 void CmdPartBox3::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    openCommand("Part Box Create");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Part Box Create"));
     doCommand(Doc,"from FreeCAD import Base");
     doCommand(Doc,"import Part");
     doCommand(Doc,"__fb__ = App.ActiveDocument.addObject(\"Part::Box\",\"PartBox\")");
@@ -304,7 +304,7 @@ void CmdPartCut::activated(int iMsg)
 
     std::string FeatName = getUniqueObjectName("Cut");
 
-    openCommand("Part Cut");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Part Cut"));
     doCommand(Doc,"App.activeDocument().addObject(\"Part::Cut\",\"%s\")",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Base = App.activeDocument().%s",FeatName.c_str(),Sel[0].getFeatName());
     doCommand(Doc,"App.activeDocument().%s.Tool = App.activeDocument().%s",FeatName.c_str(),Sel[1].getFeatName());
@@ -405,7 +405,7 @@ void CmdPartCommon::activated(int iMsg)
     }
     str << "]";
 
-    openCommand("Common");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Common"));
     doCommand(Doc,"App.activeDocument().addObject(\"Part::MultiCommon\",\"%s\")",FeatName.c_str());
     runCommand(Doc,str.str().c_str());
 
@@ -505,7 +505,7 @@ void CmdPartFuse::activated(int iMsg)
     }
     str << "]";
 
-    openCommand("Fusion");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Fusion"));
     doCommand(Doc,"App.activeDocument().addObject(\"Part::MultiFuse\",\"%s\")",FeatName.c_str());
     runCommand(Doc,str.str().c_str());
 
@@ -918,7 +918,7 @@ void CmdPartCompound::activated(int iMsg)
     }
     str << "]";
 
-    openCommand("Compound");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Compound"));
     doCommand(Doc,"App.activeDocument().addObject(\"Part::Compound\",\"%s\")",FeatName.c_str());
     runCommand(Doc,str.str().c_str());
     updateActive();
@@ -963,7 +963,7 @@ void CmdPartSection::activated(int iMsg)
     std::string BaseName  = Sel[0].getFeatName();
     std::string ToolName  = Sel[1].getFeatName();
 
-    openCommand("Section");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Section"));
     doCommand(Doc,"App.activeDocument().addObject(\"Part::Section\",\"%s\")",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Base = App.activeDocument().%s",FeatName.c_str(),BaseName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Tool = App.activeDocument().%s",FeatName.c_str(),ToolName.c_str());
@@ -1014,7 +1014,7 @@ void CmdPartImport::activated(int iMsg)
         if (!pDoc) return; // no document
 
         fn = Base::Tools::escapeEncodeFilename(fn);
-        openCommand("Import Part");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Import Part"));
         if (select == filter[1] ||
             select == filter[3]) {
             doCommand(Doc, "import ImportGui");
@@ -1120,7 +1120,7 @@ void CmdPartImportCurveNet::activated(int iMsg)
     QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), filter.join(QLatin1String(";;")));
     if (!fn.isEmpty()) {
         QFileInfo fi; fi.setFile(fn);
-        openCommand("Part Import Curve Net");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Part Import Curve Net"));
         doCommand(Doc,"f = App.activeDocument().addObject(\"Part::CurveNet\",\"%s\")", (const char*)fi.baseName().toLatin1());
         doCommand(Doc,"f.FileName = \"%s\"",(const char*)fn.toLatin1());
         commitCommand();
@@ -1236,7 +1236,7 @@ void CmdPartReverseShape::activated(int iMsg)
     Q_UNUSED(iMsg);
     std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType
         (Part::Feature::getClassTypeId());
-    openCommand("Reverse");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Reverse"));
     for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it != objs.end(); ++it) {
         const TopoDS_Shape& shape = Part::Feature::getShape(*it);
         if (!shape.IsNull()) {
@@ -1358,7 +1358,7 @@ void CmdPartMakeFace::activated(int iMsg)
     auto sketches = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId(),0,3);
     if(sketches.empty())
         return;
-    openCommand("Make face");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Make face"));
 
     try {
         App::DocumentT doc(sketches.front()->getDocument());
@@ -1652,7 +1652,7 @@ void CmdPartOffset::activated(int iMsg)
     App::DocumentObject* shape = shapes.front();
     std::string offset = getUniqueObjectName("Offset");
 
-    openCommand("Make Offset");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Make Offset"));
     doCommand(Doc,"App.ActiveDocument.addObject(\"Part::Offset\",\"%s\")",offset.c_str());
     doCommand(Doc,"App.ActiveDocument.%s.Source = App.ActiveDocument.%s" ,offset.c_str(), shape->getNameInDocument());
     doCommand(Doc,"App.ActiveDocument.%s.Value = 1.0",offset.c_str());
@@ -1704,7 +1704,7 @@ void CmdPartOffset2D::activated(int iMsg)
     App::DocumentObject* shape = shapes.front();
     std::string offset = getUniqueObjectName("Offset2D");
 
-    openCommand("Make 2D Offset");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Make 2D Offset"));
     doCommand(Doc,"App.ActiveDocument.addObject(\"Part::Offset2D\",\"%s\")",offset.c_str());
     doCommand(Doc,"App.ActiveDocument.%s.Source = App.ActiveDocument.%s" ,offset.c_str(), shape->getNameInDocument());
     doCommand(Doc,"App.ActiveDocument.%s.Value = 1.0",offset.c_str());
@@ -1872,7 +1872,7 @@ void CmdPartThickness::activated(int iMsg)
 
     std::string thick = getUniqueObjectName("Thickness");
 
-    openCommand("Make Thickness");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Make Thickness"));
     doCommand(Doc,"App.ActiveDocument.addObject(\"Part::Thickness\",\"%s\")",thick.c_str());
     doCommand(Doc,"App.ActiveDocument.%s.Faces = %s" ,thick.c_str(), selection.c_str());
     doCommand(Doc,"App.ActiveDocument.%s.Value = 1.0",thick.c_str());
@@ -2097,7 +2097,7 @@ void CmdPartRuledSurface::activated(int iMsg)
         return;
     }
 
-    openCommand("Create ruled surface");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create ruled surface"));
     doCommand(Doc, "FreeCAD.ActiveDocument.addObject('Part::RuledSurface', 'Ruled Surface')");
     doCommand(Doc, "FreeCAD.ActiveDocument.ActiveObject.Curve1=(FreeCAD.ActiveDocument.%s,['%s'])"
                  ,obj1.c_str(), link1.c_str());
