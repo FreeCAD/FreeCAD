@@ -101,7 +101,8 @@ App::DocumentObjectExecReturn *Groove::execute(void)
     // if the Base property has a valid shape, fuse the prism into it
     TopoShape base;
     try {
-        base = getBaseShape();
+        if (!NewSolid.getValue())
+            base = getBaseShape();
     }
     catch (const Base::Exception&) {
         std::string text(QT_TR_NOOP("The requested feature cannot be created. The reason may be that:\n"

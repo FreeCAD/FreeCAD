@@ -128,16 +128,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
 
     // if the Base property has a valid shape, fuse the prism into it
     TopoShape base;
-    try {
-        base = getBaseShape();
-    }
-    catch (const Base::Exception&) {
-        std::string text(QT_TR_NOOP("The requested feature cannot be created. The reason may be that:\n"
-                                    "  - the active Body does not contain a base shape, so there is no\n"
-                                    "  material to be removed;\n"
-                                    "  - the selected sketch does not belong to the active Body."));
-        return new App::DocumentObjectExecReturn(text);
-    }
+    base = getBaseShape(true, true);
 
     // get the Sketch plane
     Base::Placement SketchPos    = obj->Placement.getValue();
@@ -214,7 +205,10 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
                 return new App::DocumentObjectExecReturn("Pocket: Up to face: Could not get SubShape!");
             }
 
+            if (NewSolid.getValue())
+                prism = this->AddSubShape.getShape();
             this->Shape.setValue(getSolid(prism));
+
         } else {
             TopoShape prism(0,getDocument()->getStringHasher());
 
@@ -269,7 +263,10 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             // Cut the SubShape out of the base feature
             TopoShape result(0,getDocument()->getStringHasher());
             try {
-                result.makECut({base,prism});
+                if (NewSolid.getValue())
+                    result = prism;
+                else
+                    result.makECut({base,prism});
             }catch(Standard_Failure &){
                 return new App::DocumentObjectExecReturn("Pocket: Cut out of base feature failed");
             }
