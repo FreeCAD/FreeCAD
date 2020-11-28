@@ -210,9 +210,20 @@ QRectF QGCustomText::tightBoundingRect() const
     qreal x_adj = (result.width() - tight.width())/4.0;
     qreal y_adj = (result.height() - tight.height())/4.0;
 
+    // Adjust the bounding box 50% towards the Qt tightBoundingRect(),
+    // except chomp some extra empty space above the font (2*y_adj)
     result.adjust(x_adj, 2*y_adj, -x_adj, -y_adj);
 
     return result;
+}
+
+// Calculate the amount of difference between tight and relaxed bounding boxes
+QPointF QGCustomText::tightBoundingAdjust() const
+{
+    QRectF original = QGraphicsTextItem::boundingRect();
+    QRectF tight = tightBoundingRect();
+
+    return QPointF(tight.x()-original.x(), tight.y()-original.y());
 }
 
 QColor QGCustomText::getNormalColor()    //preference!

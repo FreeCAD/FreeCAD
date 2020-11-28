@@ -49,6 +49,7 @@ public:
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
     virtual QRectF boundingRect() const override;
     QRectF tightBoundingRect() const;
+    QPointF tightBoundingAdjust() const;
 
     void setHighlighted(bool state);
     virtual void setPrettyNormal();
@@ -83,7 +84,7 @@ protected:
     Base::Reference<ParameterGrp> getParmGroup(void);
 
     bool isHighlighted;
-    bool tightBounding;
+    bool tightBounding;  // Option to use tighter boundingRect(), works only for plaintext QGCustomText
     QColor m_colCurrent;
     QColor m_colNormal;
 

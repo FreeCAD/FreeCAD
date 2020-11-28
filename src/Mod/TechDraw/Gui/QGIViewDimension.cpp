@@ -270,9 +270,11 @@ void QGIDatumLabel::setPosFromCenter(const double &xCenter, const double &yCente
     }
     double tolRight = unitRight + width;
 
-    m_tolTextOver->justifyRightAt(tolRight, middle - overBox.height() + underBox.height()/4, false);
-    m_tolTextUnder->justifyRightAt(tolRight, middle + underBox.height()/4, false);
-
+    // Adjust for difference in tight and original bounding box sizes, note the y-coord down system
+    QPointF tol_adj = m_tolTextOver->tightBoundingAdjust();
+    m_tolTextOver->justifyRightAt(tolRight + tol_adj.x(), middle - tol_adj.y(), false);
+    tol_adj = m_tolTextUnder->tightBoundingAdjust();
+    m_tolTextUnder->justifyRightAt(tolRight + tol_adj.x(), middle + overBox.height() - tol_adj.y(), false);
 }
 
 void QGIDatumLabel::setLabelCenter()
