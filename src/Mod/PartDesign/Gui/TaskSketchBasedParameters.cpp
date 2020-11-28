@@ -91,6 +91,7 @@ void TaskSketchBasedParameters::initUI(QWidget *widget) {
     fitEdit->bind(pcSketchBased->Fit);
     fitEdit->setUnit(Base::Unit::Length);
     fitEdit->setKeyboardTracking(false);
+    fitEdit->setToolTip(QApplication::translate("Property", pcSketchBased->Fit.getDocumentation()));
     layout->addWidget(fitEdit);
     connect(fitEdit, SIGNAL(valueChanged(double)), this, SLOT(onFitChanged(double)));
     boxLayout->addLayout(layout);
@@ -115,6 +116,8 @@ void TaskSketchBasedParameters::initUI(QWidget *widget) {
     innerFitEdit->bind(pcSketchBased->InnerFit);
     innerFitEdit->setUnit(Base::Unit::Length);
     innerFitEdit->setKeyboardTracking(false);
+    innerFitEdit->setToolTip(QApplication::translate(
+                "Property", pcSketchBased->InnerFit.getDocumentation()));
     layout->addWidget(innerFitEdit);
     connect(innerFitEdit, SIGNAL(valueChanged(double)), this, SLOT(onInnerFitChanged(double)));
     boxLayout->addLayout(layout);

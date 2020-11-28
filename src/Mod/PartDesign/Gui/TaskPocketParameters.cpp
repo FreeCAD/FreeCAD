@@ -85,6 +85,15 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
 
     PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
 
+    ui->taperAngleEdit->setToolTip(QApplication::translate(
+                "Property", pcPocket->TaperAngle.getDocumentation()));
+    ui->taperAngleEdit2->setToolTip(QApplication::translate(
+                "Property", pcPocket->TaperAngleRev.getDocumentation()));
+    ui->innerTaperAngleEdit->setToolTip(QApplication::translate(
+                "Property", pcPocket->InnerTaperAngle.getDocumentation()));
+    ui->innerTaperAngleEdit2->setToolTip(QApplication::translate(
+                "Property", pcPocket->InnerTaperAngleRev.getDocumentation()));
+
     // Bind input fields to properties
     ui->lengthEdit->bind(pcPocket->Length);
     ui->lengthEdit2->bind(pcPocket->Length2);

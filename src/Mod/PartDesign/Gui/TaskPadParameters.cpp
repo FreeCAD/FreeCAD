@@ -100,6 +100,15 @@ void TaskPadParameters::setupUI(bool newObj)
     ui->innerTaperAngleEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/InnerTaperAngle"));
     ui->innerTaperAngleEdit2->setParamGrpPath(QByteArray("User parameter:BaseApp/History/InnerTaperAngle2"));
 
+    ui->taperAngleEdit->setToolTip(QApplication::translate(
+                "Property", pcPad->TaperAngle.getDocumentation()));
+    ui->taperAngleEdit2->setToolTip(QApplication::translate(
+                "Property", pcPad->TaperAngleRev.getDocumentation()));
+    ui->innerTaperAngleEdit->setToolTip(QApplication::translate(
+                "Property", pcPad->InnerTaperAngle.getDocumentation()));
+    ui->innerTaperAngleEdit2->setToolTip(QApplication::translate(
+                "Property", pcPad->InnerTaperAngleRev.getDocumentation()));
+
     // Bind input fields to properties
     ui->lengthEdit->bind(pcPad->Length);
     ui->lengthEdit2->bind(pcPad->Length2);
