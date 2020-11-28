@@ -1222,19 +1222,6 @@ Base::Vector3d ProfileBased::getProfileNormal(const TopoShape &profileShape) con
     if (shape.isNull())
         shape = getVerifiedFace(true);
 
-    if (shape.hasSubShape(TopAbs_FACE)) {
-        BRepAdaptor_Surface adapt(TopoDS::Face(shape.getSubShape(TopAbs_FACE, 1)));
-        double u = adapt.FirstUParameter() + (adapt.LastUParameter() - adapt.FirstUParameter())/2.;
-        double v = adapt.FirstVParameter() + (adapt.LastVParameter() - adapt.FirstVParameter())/2.;
-        BRepLProp_SLProps prop(adapt,u,v,2,Precision::Confusion());
-        if(prop.IsNormalDefined()) {
-            gp_Pnt pnt; gp_Vec vec;
-            // handles the orientation state of the shape
-            BRepGProp_Face(TopoDS::Face(shape.getShape())).Normal(u,v,pnt,vec);
-            return Base::Vector3d(vec.X(), vec.Y(), vec.Z());
-        }
-    }
-
     gp_Pln pln;
     if (shape.findPlane(pln)) {
         gp_Dir dir = pln.Axis().Direction();
