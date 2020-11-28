@@ -222,7 +222,10 @@ TopoShape ProfileBased::getVerifiedFace(bool silent) const {
                     shape = shape.makEWires();
                 if(shape.hasSubShape(TopAbs_WIRE)) {
                     shape.Hasher = getDocument()->getStringHasher();
-                    shape = shape.makEFace(0,"Part::FaceMakerCheese");
+                    if (AllowMultiFace.getValue())
+                        shape = shape.makEFace(); // default to use FaceMakerBullseye
+                    else
+                        shape = shape.makEFace(0,"Part::FaceMakerCheese");
                 }
             } catch (const Base::Exception &) {
                 if (silent)
