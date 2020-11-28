@@ -120,15 +120,15 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         '''getFields(obj) ... transfers values from UI to obj's proprties'''
         if obj.Discretize != self.form.discretize.value():
             obj.Discretize = self.form.discretize.value()
-        if obj.Threshold != self.form.threshold.value():
-            obj.Threshold = self.form.threshold.value()
+        if obj.Colinear != self.form.colinearFilter.value():
+            obj.Colinear = self.form.colinearFilter.value()
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
 
     def setFields(self, obj):
         '''setFields(obj) ... transfers obj's property values to UI'''
         self.form.discretize.setValue(obj.Discretize)
-        self.form.threshold.setValue(obj.Threshold)
+        self.form.colinearFilter.setValue(obj.Colinear)
         self.setupToolController(obj, self.form.toolController)
         self.setupCoolant(obj, self.form.coolantController)
 
@@ -136,7 +136,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         '''getSignalsForUpdate(obj) ... return list of signals for updating obj'''
         signals = []
         signals.append(self.form.discretize.editingFinished)
-        signals.append(self.form.threshold.editingFinished)
+        signals.append(self.form.colinearFilter.editingFinished)
         signals.append(self.form.toolController.currentIndexChanged)
         signals.append(self.form.coolantController.currentIndexChanged)
         return signals
