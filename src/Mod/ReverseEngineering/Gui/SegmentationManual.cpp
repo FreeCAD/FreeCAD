@@ -231,7 +231,7 @@ void SegmentationManual::createSegment()
         return;
     // delete all selected faces
     App::Document* adoc = gdoc->getDocument();
-    gdoc->openCommand("Segmentation");
+    gdoc->openCommand(QT_TRANSLATE_NOOP("Command", "Segmentation"));
 
     std::vector<Mesh::Feature*> meshes = adoc->getObjectsOfType<Mesh::Feature>();
     bool selected = false;
