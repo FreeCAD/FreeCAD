@@ -31,6 +31,10 @@
     {
       "nr": 8,
       "path": "probe.fctb"
+    },
+    {
+      "nr": 9,
+      "path": "5mm-thread-cutter.fctb"
     }
   ],
   "version": 1
