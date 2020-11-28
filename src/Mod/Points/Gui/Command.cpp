@@ -85,7 +85,7 @@ void CmdPointsImport::activated(int iMsg)
     if (!fn.isEmpty()) {
         fn = Base::Tools::escapeEncodeFilename(fn);
         Gui::Document* doc = getActiveGuiDocument();
-        openCommand("Import points");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Import points"));
         addModule(Command::App, "Points");
         doCommand(Command::Doc, "Points.insert(\"%s\", \"%s\")",
                   fn.toUtf8().data(), doc->getDocument()->getName());
@@ -165,7 +165,7 @@ void CmdPointsTransform::activated(int iMsg)
     Base::Placement trans;
     trans.setRotation(Base::Rotation(Base::Vector3d(0.0, 0.0, 1.0), 1.570796));
 
-    openCommand("Transform points");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Transform points"));
     //std::vector<App::DocumentObject*> points = getSelection().getObjectsOfType(Points::Feature::getClassTypeId());
     //for (std::vector<App::DocumentObject*>::const_iterator it = points.begin(); it != points.end(); ++it) {
     //    Base::Placement p = static_cast<Points::Feature*>(*it)->Placement.getValue();
@@ -205,7 +205,7 @@ void CmdPointsConvert::activated(int iMsg)
         return;
 
     Gui::WaitCursor wc;
-    openCommand("Convert to points");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Convert to points"));
     std::vector<App::DocumentObject*> geoObject = getSelection().getObjectsOfType(Base::Type::fromName("App::GeoFeature"));
 
     bool addedPoints = false;
