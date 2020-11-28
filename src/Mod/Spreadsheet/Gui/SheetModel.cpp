@@ -529,7 +529,7 @@ bool SheetModel::setData(const QModelIndex & index, const QVariant & value, int 
 
         try {
             QString str = value.toString();
-            Gui::Command::openCommand("Edit cell");
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit cell"));
             // Because of possible complication of recursively escaped
             // characters, let's take a shortcut and bypass the command
             // interface for now.

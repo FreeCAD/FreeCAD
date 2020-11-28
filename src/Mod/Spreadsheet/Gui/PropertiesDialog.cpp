@@ -225,7 +225,7 @@ PropertiesDialog::~PropertiesDialog()
 void PropertiesDialog::apply()
 {
     if (ranges.size() > 0) {
-        Gui::Command::openCommand("Set cell properties");
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Set cell properties"));
         std::vector<Range>::const_iterator i = ranges.begin();
         bool changes = false;
 
