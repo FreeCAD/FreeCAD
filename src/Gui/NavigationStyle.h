@@ -100,6 +100,7 @@ public:
     };
 
     enum RotationCenterMode {
+        WindowCenter,           /**< The center of the window */
         ScenePointAtCursor,     /**< Find the point in the scene at the cursor position. If there is no point then the focal plane is used */
         FocalPointAtCursor,     /**< Find the point on the focal plane at the cursor position. */
         BoundingBoxCenter       /**< Find the center point of the bounding box of the scene. */
@@ -132,8 +133,6 @@ public:
     SbBool isZoomAtCursor() const;
     void zoomIn();
     void zoomOut();
-    void setDragAtCursor(SbBool);
-    SbBool isDragAtCursor() const;
     void setRotationCenterMode(RotationCenterMode);
     RotationCenterMode getRotationCenterMode() const;
     void setRotationCenter(const SbVec3f& cnt);

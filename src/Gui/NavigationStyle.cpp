@@ -55,7 +55,6 @@ struct NavigationStyleP {
     SbVec3f rotationCenter;
     SbBool rotationCenterFound;
     NavigationStyle::RotationCenterMode rotationCenterMode;
-    SbBool dragAtCursor;
     SbRotation endRotation;
     SoTimerSensor * animsensor;
     float sensitivity;
@@ -70,7 +69,6 @@ struct NavigationStyleP {
         this->resetcursorpos = false;
         this->rotationCenterFound = false;
         this->rotationCenterMode = NavigationStyle::ScenePointAtCursor;
-        this->dragAtCursor = false;
     }
     static void viewAnimationCB(void * data, SoSensor * sensor);
 };
@@ -240,8 +238,9 @@ void NavigationStyle::initialize()
         ("User parameter:BaseApp/Preferences/View")->GetBool("ZoomAtCursor",true);
     this->zoomStep = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View")->GetFloat("ZoomStep",0.2f);
-    PRIVATE(this)->dragAtCursor = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/View")->GetBool("DragAtCursor",false);
+    bool dragAtCursor = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/View")->GetBool("DragAtCursor", false);
+    setRotationCenterMode(dragAtCursor ? ScenePointAtCursor : WindowCenter);
 }
 
 void NavigationStyle::finalize()
@@ -885,7 +884,8 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
     lastpos[0] = float(this->log.position[1][0]) / float(std::max((int)(glsize[0]-1), 1));
     lastpos[1] = float(this->log.position[1][1]) / float(std::max((int)(glsize[1]-1), 1));
 
-    if (PRIVATE(this)->dragAtCursor && PRIVATE(this)->rotationCenterFound) {
+    if (PRIVATE(this)->rotationCenterMode != RotationCenterMode::WindowCenter &&
+        PRIVATE(this)->rotationCenterFound) {
         SbVec3f hitpoint = PRIVATE(this)->rotationCenter;
 
         // set to the given position
@@ -913,7 +913,8 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
     r.invert();
     this->reorientCamera(viewer->getSoRenderManager()->getCamera(), r);
 
-    if (PRIVATE(this)->dragAtCursor && PRIVATE(this)->rotationCenterFound) {
+    if (PRIVATE(this)->rotationCenterMode != RotationCenterMode::WindowCenter &&
+        PRIVATE(this)->rotationCenterFound) {
         float ratio = vp.getViewportAspectRatio();
         SbViewVolume vv = viewer->getSoRenderManager()->getCamera()->getViewVolume(vp.getViewportAspectRatio());
         SbPlane panplane = vv.getPlane(viewer->getSoRenderManager()->getCamera()->focalDistance.getValue());
@@ -1013,73 +1014,70 @@ void NavigationStyle::saveCursorPosition(const SoEvent * const ev)
     this->globalPos.setValue(QCursor::pos().x(), QCursor::pos().y());
     this->localPos = ev->getPosition();
 
-    // get the 3d point to the screen position, if possible
-    if (PRIVATE(this)->dragAtCursor) {
-        //Option to get point on model (slow) or always on focal plane (fast)
-        switch (PRIVATE(this)->rotationCenterMode) {
-        case ScenePointAtCursor:
-            {
-                SoRayPickAction rpaction(viewer->getSoRenderManager()->getViewportRegion());
-                rpaction.setPoint(this->localPos);
-                rpaction.setRadius(viewer->getPickRadius());
-                rpaction.apply(viewer->getSoRenderManager()->getSceneGraph());
+    //Option to get point on model (slow) or always on focal plane (fast)
+    switch (PRIVATE(this)->rotationCenterMode) {
+    case ScenePointAtCursor:
+        {
+            SoRayPickAction rpaction(viewer->getSoRenderManager()->getViewportRegion());
+            rpaction.setPoint(this->localPos);
+            rpaction.setRadius(viewer->getPickRadius());
+            rpaction.apply(viewer->getSoRenderManager()->getSceneGraph());
 
-                SoPickedPoint * picked = rpaction.getPickedPoint();
-                if (picked) {
-                    setRotationCenter(picked->getPoint());
-                    break;
-                }
-            }
-        /* FALLTHRU */
-        // mode is FocalPointAtCursor or a ScenePointAtCursor failed
-        case FocalPointAtCursor:
-            {
-                // get the intersection point of the ray and the focal plane
-                const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
-                float ratio = vp.getViewportAspectRatio();
-
-                SoCamera* cam = viewer->getSoRenderManager()->getCamera();
-                if (!cam) return; // no camera
-                SbViewVolume vv = cam->getViewVolume(ratio);
-
-                SbLine line;
-                SbVec2f currpos = ev->getNormalizedPosition(vp);
-                vv.projectPointToLine(currpos, line);
-                SbVec3f current_planept;
-                SbPlane panplane = vv.getPlane(cam->focalDistance.getValue());
-                panplane.intersect(line, current_planept);
-
-                setRotationCenter(current_planept);
+            SoPickedPoint * picked = rpaction.getPickedPoint();
+            if (picked) {
+                setRotationCenter(picked->getPoint());
                 break;
             }
-        case BoundingBoxCenter:
-            {
-                const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
-                float ratio = vp.getViewportAspectRatio();
+        }
+    /* FALLTHRU */
+    // mode is FocalPointAtCursor or a ScenePointAtCursor failed
+    case FocalPointAtCursor:
+        {
+            // get the intersection point of the ray and the focal plane
+            const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
+            float ratio = vp.getViewportAspectRatio();
 
-                SoCamera* cam = viewer->getSoRenderManager()->getCamera();
-                if (!cam) break; // no camera
+            SoCamera* cam = viewer->getSoRenderManager()->getCamera();
+            if (!cam) return; // no camera
+            SbViewVolume vv = cam->getViewVolume(ratio);
 
-                SoGetBoundingBoxAction action(viewer->getSoRenderManager()->getViewportRegion());
-                action.apply(viewer->getSceneGraph());
-                SbBox3f boundingBox = action.getBoundingBox();
-                SbVec3f boundingBoxCenter = boundingBox.getCenter();
-                setRotationCenter(boundingBoxCenter);
+            SbLine line;
+            SbVec2f currpos = ev->getNormalizedPosition(vp);
+            vv.projectPointToLine(currpos, line);
+            SbVec3f current_planept;
+            SbPlane panplane = vv.getPlane(cam->focalDistance.getValue());
+            panplane.intersect(line, current_planept);
 
-                // To drag around the center point of the bbox we have to determine
-                // its projection on the screen becaue this information is used in
-                // NavigationStyle::spin() for the panning
-                SbViewVolume vv = cam->getViewVolume(ratio);
-                vv.projectToScreen(boundingBoxCenter, boundingBoxCenter);
-                SbVec2s size = vp.getViewportSizePixels();
-                short tox = static_cast<short>(boundingBoxCenter[0] * size[0]);
-                short toy = static_cast<short>(boundingBoxCenter[1] * size[1]);
-                this->localPos.setValue(tox, toy);
-                break;
-            }
-        default:
+            setRotationCenter(current_planept);
             break;
         }
+    case BoundingBoxCenter:
+        {
+            const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
+            float ratio = vp.getViewportAspectRatio();
+
+            SoCamera* cam = viewer->getSoRenderManager()->getCamera();
+            if (!cam) break; // no camera
+
+            SoGetBoundingBoxAction action(viewer->getSoRenderManager()->getViewportRegion());
+            action.apply(viewer->getSceneGraph());
+            SbBox3f boundingBox = action.getBoundingBox();
+            SbVec3f boundingBoxCenter = boundingBox.getCenter();
+            setRotationCenter(boundingBoxCenter);
+
+            // To drag around the center point of the bbox we have to determine
+            // its projection on the screen becaue this information is used in
+            // NavigationStyle::spin() for the panning
+            SbViewVolume vv = cam->getViewVolume(ratio);
+            vv.projectToScreen(boundingBoxCenter, boundingBoxCenter);
+            SbVec2s size = vp.getViewportSizePixels();
+            short tox = static_cast<short>(boundingBoxCenter[0] * size[0]);
+            short toy = static_cast<short>(boundingBoxCenter[1] * size[1]);
+            this->localPos.setValue(tox, toy);
+            break;
+        }
+    default:
+        break;
     }
 }
 
@@ -1255,16 +1253,6 @@ void NavigationStyle::setRotationCenterMode(NavigationStyle::RotationCenterMode 
 NavigationStyle::RotationCenterMode NavigationStyle::getRotationCenterMode() const
 {
     return PRIVATE(this)->rotationCenterMode;
-}
-
-void NavigationStyle::setDragAtCursor(SbBool on)
-{
-    PRIVATE(this)->dragAtCursor = on;
-}
-
-SbBool NavigationStyle::isDragAtCursor() const
-{
-    return PRIVATE(this)->dragAtCursor;
 }
 
 void NavigationStyle::startSelection(AbstractMouseSelection* mouse)

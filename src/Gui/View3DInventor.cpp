@@ -359,7 +359,8 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     }
     else if (strcmp(Reason,"DragAtCursor") == 0) {
         bool on = rGrp.GetBool("DragAtCursor", false);
-        _viewer->navigationStyle()->setDragAtCursor(on);
+        _viewer->navigationStyle()->setRotationCenterMode(on ? NavigationStyle::ScenePointAtCursor
+                                                             : NavigationStyle::WindowCenter);
     }
     else if (strcmp(Reason,"EyeDistance") == 0) {
         _viewer->getSoRenderManager()->setStereoOffset(rGrp.GetFloat("EyeDistance",5.0));
