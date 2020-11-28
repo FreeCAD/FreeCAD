@@ -36,6 +36,7 @@
 #include <Base/Tools.h>
 #include <Base/Parameter.h>
 #include <App/Application.h>
+#include <App/AutoTransaction.h>
 #include <App/Document.h>
 #include <Mod/Part/App/PartPyCXX.h>
 
@@ -340,7 +341,24 @@ App::DocumentObject *Split::getSubObject(const char *subname,
 
 int Split::isElementVisible(const char * element) const
 {
-    if (Solids.find(element))
-        return 1;
+    auto solid = Base::freecad_dynamic_cast<Solid>(
+            Solids.find(element));
+    if (solid)
+        return solid->Active.getValue() ? 1 : 0;
     return -1;
+}
+
+int Split::setElementVisible(const char * element, bool visible)
+{
+    auto solid = Base::freecad_dynamic_cast<Solid>(
+            Solids.find(element));
+    if (solid) {
+        if (!App::GetApplication().getActiveTransaction()) {
+            App::AutoTransaction guard("Toggle split solid");
+            solid->Active.setValue(visible);
+        } else
+            solid->Active.setValue(visible);
+        return 1;
+    }
+    return 0;
 }

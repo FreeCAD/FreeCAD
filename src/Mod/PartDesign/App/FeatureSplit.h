@@ -67,6 +67,7 @@ public:
     virtual bool isElementGenerated(const TopoShape &shape, const char *name) const override;
 
     virtual int isElementVisible(const char *element) const override;
+    virtual int setElementVisible(const char *element, bool visible) override;
 
 private:
     std::size_t newSolidCount = 0;
