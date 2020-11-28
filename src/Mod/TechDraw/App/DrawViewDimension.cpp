@@ -213,7 +213,6 @@ short DrawViewDimension::mustExecute() const
 
 App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
 {
-//    Base::Console().Message("DVD::execute() - %s\n", getNameInDocument());
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
@@ -685,14 +684,13 @@ std::string DrawViewDimension::formatValue(qreal value, QString qFormatSpec, int
     }
 
     return result;
-
 }
 
-QStringList DrawViewDimension::getFormattedToleranceValues(int partial)
+std::pair<std::string, std::string> DrawViewDimension::getFormattedToleranceValues(int partial)
 {
     QString underFormatSpec = QString::fromUtf8(FormatSpecUnderTolerance.getStrValue().data());
     QString overFormatSpec = QString::fromUtf8(FormatSpecOverTolerance.getStrValue().data());
-    QStringList tolerances;
+    std::pair<std::string, std::string> tolerances;
     QString underTolerance, overTolerance;
 
     if (ArbitraryTolerances.getValue()) {
@@ -703,7 +701,8 @@ QStringList DrawViewDimension::getFormattedToleranceValues(int partial)
         overTolerance = QString::fromUtf8(formatValue(OverTolerance.getValue(), overFormatSpec, partial).c_str());
     }
 
-    tolerances << underTolerance << overTolerance;
+    tolerances.first = underTolerance.toStdString();
+    tolerances.second = overTolerance.toStdString();
 
     return tolerances;
 }
@@ -728,7 +727,7 @@ QStringList DrawViewDimension::getPrefixSuffixSpec(QString fSpec)
     QString formatSuffix;
     QString formatted;
     //find the %x.y tag in FormatSpec
-    QRegExp rxFormat(QString::fromUtf8("%[+-]*[0-9]*\\.*[0-9]*[aefgAEFG]"));     //printf double format spec
+    QRegExp rxFormat(QString::fromUtf8("%[+-]?[0-9]*\\.*[0-9]*[aefgAEFG]"));     //printf double format spec
     QString match;
     int pos = 0;
     if ((pos = rxFormat.indexIn(fSpec, 0)) != -1)  {

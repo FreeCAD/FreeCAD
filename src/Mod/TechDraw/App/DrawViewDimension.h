@@ -136,7 +136,7 @@ public:
     //return PyObject as DrawViewDimensionPy
     virtual PyObject *getPyObject(void) override;
 
-    virtual QStringList getFormattedToleranceValues(int partial = 0);
+    virtual std::pair<std::string, std::string> getFormattedToleranceValues(int partial = 0);
     virtual std::string getFormattedDimensionValue(int partial = 0);
     virtual std::string formatValue(qreal value, QString qFormatSpec, int partial = 0);
 

@@ -333,23 +333,25 @@ void QGIDatumLabel::setTolString()
         tolSuffix = QString::fromUtf8(dim->getFormattedDimensionValue(2).c_str()); //just the unit
     }
 
-    QStringList labelTexts, unitTexts;
+    std::pair<std::string, std::string> labelTexts, unitTexts;
 
     if (dim->ArbitraryTolerances.getValue()) {
         labelTexts = dim->getFormattedToleranceValues(1); //just the number pref/spec/suf
-        unitTexts << QString::fromLatin1("") << QString::fromLatin1("");
+        unitTexts.first = "";
+        unitTexts.second = "";
     } else {
         if (dim->isMultiValueSchema()) {
             labelTexts = dim->getFormattedToleranceValues(0); //don't format multis
-            unitTexts << QString::fromLatin1("") << QString::fromLatin1("");
+            unitTexts.first = "";
+            unitTexts.second = "";
         } else {
             labelTexts = dim->getFormattedToleranceValues(1); //just the number pref/spec/suf
             unitTexts  = dim->getFormattedToleranceValues(2); //just the unit
         }
     }
 
-    m_tolTextUnder->setPlainText(labelTexts[0] + unitTexts[0]);
-    m_tolTextOver->setPlainText(labelTexts[1] + unitTexts[1]);
+    m_tolTextUnder->setPlainText(QString::fromUtf8(labelTexts.first.c_str()) + QString::fromUtf8(unitTexts.first.c_str()));
+    m_tolTextOver->setPlainText(QString::fromUtf8(labelTexts.second.c_str()) + QString::fromUtf8(unitTexts.second.c_str()));
 
     return;
 } 
