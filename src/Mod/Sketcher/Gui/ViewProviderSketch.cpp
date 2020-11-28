@@ -808,7 +808,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         Sketcher::PointPos PosId;
                         getSketchObject()->getGeoVertexIndex(edit->DragPoint, GeoId, PosId);
                         if (GeoId != Sketcher::Constraint::GeoUndef && PosId != Sketcher::none) {
-                            getDocument()->openCommand("Drag Point");
+                            getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Drag Point"));
                             try {
                                 Gui::cmdAppObjectArgs(getObject(), "movePoint(%i,%i,App.Vector(%f,%f,0),%i)"
                                         ,GeoId, PosId, x-xInit, y-yInit, 0);
@@ -839,7 +839,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                             geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()||
                             geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()||
                             geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
-                            getDocument()->openCommand("Drag Curve");
+                            getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Drag Curve"));
                             try {
                                 Gui::cmdAppObjectArgs(getObject(), "movePoint(%i,%i,App.Vector(%f,%f,0),%i)"
                                         ,edit->DragCurve, Sketcher::none, x-xInit, y-yInit, relative ? 1 : 0);
@@ -861,7 +861,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     return true;
                 case STATUS_SKETCH_DragConstraint:
                     if (edit->DragConstraintSet.empty() == false) {
-                        getDocument()->openCommand("Drag Constraint");
+                        getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Drag Constraint"));
                         auto idset = edit->DragConstraintSet;
                         for(int id : idset) {
                             moveConstraint(id, Base::Vector2d(x, y));
@@ -1037,7 +1037,7 @@ void ViewProviderSketch::editDoubleClicked(void)
 
             // if its the right constraint
             if (Constr->isDimensional()) {
-                Gui::Command::openCommand("Modify sketch constraints");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Modify sketch constraints"));
                 EditDatumDialog editDatumDialog(this, id);
                 editDatumDialog.exec();
             }

@@ -140,7 +140,7 @@ void CmdSketcherCloseShape::activated(int iMsg)
     int GeoIdLast = -1;
 
     // undo command open
-    openCommand("Add coincident constraint");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Add coincident constraint"));
     // go through the selected subelements
     for (size_t i=0; i < (SubNames.size() - 1); i++) {
         // only handle edges
@@ -246,7 +246,7 @@ void CmdSketcherConnect::activated(int iMsg)
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     // undo command open
-    openCommand("Add coincident constraint");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Add coincident constraint"));
 
     // go through the selected subelements
     for (unsigned int i=0; i<(SubNames.size()-1); i++ ) {
@@ -873,7 +873,7 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
                 int currentgeoid = Obj->getHighestCurveIndex();
 
                 try {
-                    Gui::Command::openCommand("Exposing Internal Geometry");
+                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Exposing Internal Geometry"));
                     Gui::cmdAppObjectArgs(Obj, "exposeInternalGeometry(%d)", GeoId);
 
                     int aftergeoid = Obj->getHighestCurveIndex();
@@ -1083,7 +1083,7 @@ void CmdSketcherSymmetry::activated(int iMsg)
     geoIdList.insert(0, 1, '[');
     geoIdList.append(1, ']');
 
-    Gui::Command::openCommand("Create symmetric geometry");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create symmetric geometry"));
 
     try{
         Gui::cmdAppObjectArgs(Obj,
@@ -1225,7 +1225,7 @@ public:
             resetPositionText();
 
             int currentgeoid = static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->getHighestCurveIndex();
-            Gui::Command::openCommand("Copy/clone/move geometry");
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Copy/clone/move geometry"));
 
             try{
                 if (Op != SketcherCopy::Move) {
@@ -1749,7 +1749,7 @@ public:
             unsetCursor();
             resetPositionText();
 
-            Gui::Command::openCommand("Create copy of geometry");
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create copy of geometry"));
 
             try {
                 Gui::cmdAppObjectArgs(sketchgui->getObject(),
@@ -1969,7 +1969,7 @@ void CmdSketcherDeleteAllGeometry::activated(int iMsg)
         Sketcher::SketchObject* Obj= vp->getSketchObject();
 
         try {
-            Gui::Command::openCommand("Delete all geometry");
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Delete all geometry"));
             Gui::cmdAppObjectArgs(Obj, "deleteAllGeometry()");
             Gui::Command::commitCommand();
         }
@@ -2029,7 +2029,7 @@ void CmdSketcherDeleteAllConstraints::activated(int iMsg)
         Sketcher::SketchObject* Obj= vp->getSketchObject();
 
         try {
-            Gui::Command::openCommand("Delete All Constraints");
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Delete All Constraints"));
             Gui::cmdAppObjectArgs(Obj, "deleteAllConstraints()");
             Gui::Command::commitCommand();
         }
