@@ -235,7 +235,7 @@ void TaskFilletParameters::apply()
 {
     std::string name = getDressUpView()->getObject()->getNameInDocument();
 
-    //Gui::Command::openCommand("Fillet changed");
+    //Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Fillet changed"));
     ui->filletRadius->apply();
 }
 
