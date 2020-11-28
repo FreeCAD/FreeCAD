@@ -192,7 +192,7 @@ void CmdPartDesignBody::activated(int iMsg)
     }
 
 
-    openCommand("Add a Body");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Add a Body"));
 
     std::string bodyName = getUniqueObjectName("Body");
 
@@ -428,7 +428,7 @@ void CmdPartDesignMigrate::activated(int iMsg)
     }
 
     // do the actual migration
-    Gui::Command::openCommand("Migrate legacy part design features to Bodies");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Migrate legacy part design features to Bodies"));
 
     for ( auto chainIt = featureChains.begin(); !featureChains.empty();
             featureChains.erase (chainIt), chainIt = featureChains.begin () ) {
@@ -573,7 +573,7 @@ void CmdPartDesignMoveTip::activated(int iMsg)
         return;
     }
 
-    openCommand("Move tip to selected feature");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Move tip to selected feature"));
 
     if (selFeature == body) {
         FCMD_OBJ_CMD(body,"Tip = None");
@@ -618,7 +618,7 @@ void CmdPartDesignDuplicateSelection::activated(int iMsg)
 
     std::vector<App::DocumentObject*> beforeFeatures = getDocument()->getObjects();
 
-    openCommand("Duplicate a PartDesign object");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Duplicate a PartDesign object"));
     doCommand(Doc,"FreeCADGui.runCommand('Std_DuplicateSelection')");
 
     if (pcActiveBody) {
@@ -736,7 +736,7 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
 
     PartDesign::Body* target = static_cast<PartDesign::Body*>(target_bodies[index]);
 
-    openCommand("Move an object");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Move an object"));
 
     std::stringstream stream;
     stream << "features_ = [" << getObjectCmd(features.back());
@@ -885,7 +885,7 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
     // first object is the beginning of the body
     App::DocumentObject* target = index != 0 ? model[index-1] : nullptr;
 
-    openCommand("Move an object inside tree");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Move an object inside tree"));
 
     App::DocumentObject* lastObject = nullptr;
     for ( auto feat: features ) {
