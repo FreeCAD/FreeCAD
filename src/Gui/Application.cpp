@@ -675,7 +675,7 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
                 if (doc) {
                     pendingCommand = doc->hasPendingCommand();
                     if (!pendingCommand)
-                        doc->openCommand("Import");
+                        doc->openCommand(QT_TRANSLATE_NOOP("Command", "Import"));
                 }
 
                 if (DocName) {

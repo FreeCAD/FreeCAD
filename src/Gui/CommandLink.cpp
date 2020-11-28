@@ -140,7 +140,7 @@ void StdCmdLinkMakeGroup::activated(int option) {
     Selection().selStackPush();
     Selection().clearCompleteSelection();
 
-    Command::openCommand("Make link group");
+    Command::openCommand(QT_TRANSLATE_NOOP("Command", "Make link group"));
     try {
         std::string groupName = doc->getUniqueObjectName("LinkGroup");
         Command::doCommand(Command::Doc,
@@ -236,7 +236,7 @@ void StdCmdLinkMake::activated(int) {
     Selection().selStackPush();
     Selection().clearCompleteSelection();
 
-    Command::openCommand("Make link");
+    Command::openCommand(QT_TRANSLATE_NOOP("Command", "Make link"));
     try {
         if(objs.empty()) {
             std::string name = doc->getUniqueObjectName("Link");
@@ -289,7 +289,7 @@ void StdCmdLinkMakeRelative::activated(int) {
         FC_ERR("no active document");
         return;
     }
-    Command::openCommand("Make sub-link");
+    Command::openCommand(QT_TRANSLATE_NOOP("Command", "Make sub-link"));
     try {
         std::map<std::pair<App::DocumentObject*,std::string>,
                  std::pair<App::DocumentObject*, std::vector<std::string> > > linkInfo;
@@ -576,7 +576,7 @@ bool StdCmdLinkImport::isActive() {
 }
 
 void StdCmdLinkImport::activated(int) {
-    Command::openCommand("Import links");
+    Command::openCommand(QT_TRANSLATE_NOOP("Command", "Import links"));
     try {
         WaitCursor wc;
         wc.setIgnoreEvents(WaitCursor::NoEvents);
@@ -617,7 +617,7 @@ bool StdCmdLinkImportAll::isActive() {
 }
 
 void StdCmdLinkImportAll::activated(int) {
-    Command::openCommand("Import all links");
+    Command::openCommand(QT_TRANSLATE_NOOP("Command", "Import all links"));
     try {
         WaitCursor wc;
         wc.setIgnoreEvents(WaitCursor::NoEvents);
