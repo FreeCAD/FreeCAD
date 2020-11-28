@@ -1974,12 +1974,13 @@ TopoShape &TopoShape::makEOffset2D(const TopoShape &shape, double offset, short 
             catch (...) {
                 FC_THROWM(Base::CADKernelError,"BRepOffsetAPI_MakeOffset has crashed! (Unknown exception caught)");
             }
+            if(mkOffset.Shape().IsNull())
+                FC_THROWM(NullShapeException, "makeOffset2D: result of offsetting is null!");
+
             //Copying shape to fix strange orientation behavior, OCC7.0.0. See bug #2699
             // http://www.freecadweb.org/tracker/view.php?id=2699
             offsetShape = shape.makEShape(mkOffset,op).makECopy();
 
-            if(offsetShape.isNull())
-                FC_THROWM(NullShapeException, "makeOffset2D: result of offsetting is null!");
         } else {
             offsetShape = TopoShape(Tag,Hasher).makECompound(sourceWires,0,false);
         }
