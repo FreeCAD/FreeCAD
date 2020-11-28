@@ -2717,7 +2717,7 @@ void ViewProviderLink::dragStartCallback(void *data, SoDragger *) {
     me->dragCtx->initialPlacement = me->currentDraggingPlacement();
     if(!me->callDraggerProxy("onDragStart",false)) {
         me->dragCtx->cmdPending = true;
-        me->getDocument()->openCommand("Link Transform");
+        me->getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Link Transform"));
     }else
         me->dragCtx->cmdPending = false;
 }

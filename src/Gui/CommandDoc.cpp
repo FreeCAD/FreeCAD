@@ -1131,7 +1131,7 @@ void StdCmdDelete::activated(int iMsg)
 
     std::set<App::Document*> docs;
     try {
-        openCommand("Delete");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Delete"));
         if (getGuiApplication()->sendHasMsgToFocusView(getName())) {
             commitCommand();
             return;
@@ -1710,7 +1710,7 @@ protected:
             return;
         }
 
-        openCommand("Paste expressions");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Paste expressions"));
         try {
             for(auto &v : exprs) {
                 for(auto &v2 : v.second) {
