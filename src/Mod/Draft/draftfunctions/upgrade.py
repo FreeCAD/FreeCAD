@@ -42,6 +42,7 @@ import draftmake.make_block as make_block
 
 from draftutils.messages import _msg, _err
 from draftutils.translate import _tr
+from draftgeoutils.geometry import is_straight_line
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
@@ -159,6 +160,8 @@ def upgrade(objects, delete=False, force=None):
         if len(obj.Shape.Wires) != 1:
             return None
         if len(obj.Shape.Edges) == 1:
+            return None
+        if is_straight_line(obj.Shape) == True:
             return None
         if utils.get_type(obj) == "Wire":
             obj.Closed = True
@@ -333,26 +336,35 @@ def upgrade(objects, delete=False, force=None):
     def makeWires(objectslist):
         """Join edges in the given objects list into wires."""
         edges = []
-        for o in objectslist:
-            for e in o.Shape.Edges:
-                edges.append(e)
+        for object in objectslist:
+            for edge in object.Shape.Edges:
+                edges.append(edge)
+
         try:
-            nedges = Part.__sortEdges__(edges[:])
+            sorted_edges = Part.sortEdges(edges)
             if _DEBUG:
-                for e in nedges:
-                    print("Curve: {}".format(e.Curve))
-                    print("first: {}, last: {}".format(e.Vertexes[0].Point,
+                for item_sorted_edges in sorted_edges:
+                    for e in item_sorted_edges:
+                        print("Curve: {}".format(e.Curve))
+                        print("first: {}, last: {}".format(e.Vertexes[0].Point,
                                                        e.Vertexes[-1].Point))
-            w = Part.Wire(nedges)
+            wires = [Part.Wire(e) for e in sorted_edges]
         except Part.OCCError:
             return None
         else:
-            if len(w.Edges) == len(edges):
+            for wire in wires:
                 newobj = doc.addObject("Part::Feature", "Wire")
-                newobj.Shape = w
+                newobj.Shape = wire
                 add_list.append(newobj)
-                delete_list.extend(objectslist)
-                return True
+            # delete object only if there are no links to it
+            # TODO: A more refined criteria to delete object
+            for object in objectslist:
+                if object.InList:
+                    if App.GuiUp:
+                        object.ViewObject.Visibility = False
+                else:
+                    delete_list.append(object)
+            return True
         return None
 
     # analyzing what we have in our selection
@@ -475,54 +487,56 @@ def upgrade(objects, delete=False, force=None):
                     _msg(_tr("Found 1 non-parametric objects: "
                              "draftifying it"))
 
-        # we have only one object that contains one edge
-        elif not faces and len(objects) == 1 and len(edges) == 1:
-            # we have a closed sketch: extract a face
-            if (objects[0].isDerivedFrom("Sketcher::SketchObject")
-                    and len(edges[0].Vertexes) == 1):
-                result = makeSketchFace(objects[0])
+        # in the following cases there are no faces
+        elif not faces:
+            # we have only closed wires
+            if wires and not openwires and not loneedges:
+                # we have a sketch: extract a face
+                if (len(objects) == 1
+                    and objects[0].isDerivedFrom("Sketcher::SketchObject")):
+                    result = makeSketchFace(objects[0])
+                    if result:
+                        _msg(_tr("Found 1 closed sketch object: "
+                                 "creating a face from it"))
+                # only closed wires
+                else:
+                    result = makeFaces(objects)
+                    if result:
+                        _msg(_tr("Found closed wires: creating faces"))
+            # wires or edges: we try to join them
+            elif len(wires) > 1 or len(loneedges) > 1:
+                result = makeWires(objects)
                 if result:
-                    _msg(_tr("Found 1 closed sketch object: "
-                             "creating a face from it"))
-            else:
+                    _msg(_tr("Found several wires or edges: wiring them"))
+            # TODO: improve draftify function
+            # only one object: if not parametric, we "draftify" it
+            # elif (len(objects) == 1
+            #       and not objects[0].isDerivedFrom("Part::Part2DObjectPython")):
+            #     result = ext_draftify.draftify(objects[0])
+            #     if result:
+            #         _msg(_tr("Found 1 non-parametric objects: "
+            #                  "draftifying it"))
+            # special case, we have only one open wire. We close it,
+            # unless it has only 1 edge!
+            elif len(objects) == 1 and len(openwires) == 1:
+                result = closeWire(objects[0])
+                _msg(_tr("trying: closing it"))
+                if result:
+                    _msg(_tr("Found 1 open wire: closing it"))
+            # we have only one object that contains one edge
+            # TODO: this case should be considered in draftify
+            elif len(objects) == 1 and len(edges) == 1:
                 # turn to Draft Line
                 e = objects[0].Shape.Edges[0]
                 if isinstance(e.Curve, (Part.LineSegment, Part.Line)):
                     result = turnToLine(objects[0])
                     if result:
                         _msg(_tr("Found 1 linear object: converting to line"))
-
-        # we have only closed wires, no faces
-        elif wires and not faces and not openwires:
-            # we have a sketch: extract a face
-            if (len(objects) == 1
-                    and objects[0].isDerivedFrom("Sketcher::SketchObject")):
-                result = makeSketchFace(objects[0])
+            # only points, no edges
+            elif not edges and len(objects) > 1:
+                result = makeCompound(objects)
                 if result:
-                    _msg(_tr("Found 1 closed sketch object: "
-                             "creating a face from it"))
-            # only closed wires
-            else:
-                result = makeFaces(objects)
-                if result:
-                    _msg(_tr("Found closed wires: creating faces"))
-
-        # special case, we have only one open wire. We close it,
-        # unless it has only 1 edge!
-        elif len(openwires) == 1 and not faces and not loneedges:
-            result = closeWire(objects[0])
-            if result:
-                _msg(_tr("Found 1 open wire: closing it"))
-        # only open wires and edges: we try to join their edges
-        elif openwires and not wires and not faces:
-            result = makeWires(objects)
-            if result:
-                _msg(_tr("Found several open wires: joining them"))
-        # only loneedges: we try to join them
-        elif loneedges and not facewires:
-            result = makeWires(objects)
-            if result:
-                _msg(_tr("Found several edges: wiring them"))
+                    _msg(_tr("Found points: creating compound"))
         # all other cases, if more than 1 object, make a compound
         elif len(objects) > 1:
             result = makeCompound(objects)
