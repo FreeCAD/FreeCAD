@@ -127,6 +127,12 @@ deprecated -- please use OuterWire</UserDocu>
 			</Documentation>
 			<Parameter Name="OuterWire" Type="Object"/>
 		</Attribute>
+		<Attribute Name="WireSplits" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Return a tuple(outer_wire, list(inner_wire))</UserDocu>
+			</Documentation>
+			<Parameter Name="WireSplits" Type="Tuple"/>
+		</Attribute>
 	<Attribute Name="Mass" ReadOnly="true">
 	  <Documentation>
 		<UserDocu>Returns the mass of the current system.</UserDocu>

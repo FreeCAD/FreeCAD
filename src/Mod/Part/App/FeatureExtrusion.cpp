@@ -341,14 +341,13 @@ void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoShape& _s
         Standard_Failure::Raise("Not a valid shape");
 
     if (shape.ShapeType() == TopAbs_FACE) {
-        shape = BRepTools::OuterWire(TopoDS::Face(shape));
-        if (shape.IsNull())
-            Standard_Failure::Raise("No outer wire found");
         std::vector<TopoShape> wires;
-        TopoShape outerWire = _shape.getOuterWire(&wires);
+        TopoShape outerWire = _shape.splitWires(&wires);
         if (outerWire.isNull())
             Standard_Failure::Raise("Missing outer wire");
-        if (wires.size()) {
+        if (wires.empty())
+            shape = outerWire.getShape();
+        else {
             unsigned pos = drafts.size();
             makeDraft(params, outerWire, drafts, hasher);
             if (drafts.size() != pos+1)

@@ -552,10 +552,10 @@ void ProfileBased::getUpToFace(TopoShape& upToFace,
         // Remove the limits of the upToFace so that the extrusion works even if sketchshape is larger
         // than the upToFace
         bool remove_limits = false;
-        for (auto &sketchface : sketchshape.getSubShapes(TopAbs_FACE)) {
+        for (auto &sketchface : sketchshape.getSubTopoShapes(TopAbs_FACE)) {
             // Get outermost wire of sketch face
-            TopoDS_Wire outerWire = ShapeAnalysis::OuterWire(TopoDS::Face(sketchface));
-            if (!checkWireInsideFace(outerWire, face, dir)) {
+            TopoShape outerWire = sketchface.splitWires();
+            if (!checkWireInsideFace(TopoDS::Wire(outerWire.getShape()), face, dir)) {
                 remove_limits = true;
                 break;
             }
@@ -565,14 +565,13 @@ void ProfileBased::getUpToFace(TopoShape& upToFace,
         // lie outside the sketch shape. If this is not the case then the sketch
         // shape is not completely covered by the upToFace. See #0003141
         if (!remove_limits) {
-            TopoDS_Wire outerWire = ShapeAnalysis::OuterWire(face);
-            for (auto &w : upToFace.getSubShapes(TopAbs_WIRE)) {
-                if (!outerWire.IsSame(w)) {
-                    BRepProj_Projection proj(TopoDS::Wire(w), sketchshape.getShape(), -dir);
-                    if (proj.More()) {
-                        remove_limits = true;
-                        break;
-                    }
+            std::vector<TopoShape> wires;
+            upToFace.splitWires(&wires);
+            for (auto & w : wires) {
+                BRepProj_Projection proj(TopoDS::Wire(w.getShape()), sketchshape.getShape(), -dir);
+                if (proj.More()) {
+                    remove_limits = true;
+                    break;
                 }
             }
         }

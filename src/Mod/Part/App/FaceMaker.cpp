@@ -185,7 +185,7 @@ void Part::FaceMaker::postBuild() {
     // name the face using the edges of its outer wire
     for(auto &face : faces) {
         ++i;
-        TopoShape wire(ShapeAnalysis::OuterWire(TopoDS::Face(face.getShape())));
+        TopoShape wire = face.splitWires();
         wire.mapSubElement(face);
         std::set<ElementName> edgeNames;
         int count = wire.countSubShapes(TopAbs_EDGE);

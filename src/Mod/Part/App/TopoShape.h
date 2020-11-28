@@ -318,7 +318,15 @@ public:
     TopoDS_Shape makeShell(const TopoDS_Shape&) const;
     //@}
     
-    TopoShape getOuterWire(std::vector<TopoShape> *inner = nullptr) const;
+    /** Return the outer and inner wires of a face
+     *
+     * @param inner: optional output of inner wires
+     * @param reorient: if true, make sure the outer wire is forward, and inner
+     * wires are reversed
+     *
+     * @return Return the outer wire
+     */
+    TopoShape splitWires(std::vector<TopoShape> *inner = nullptr, bool reorient=true) const;
 
     /** @name Getting basic geometric entities */
     //@{

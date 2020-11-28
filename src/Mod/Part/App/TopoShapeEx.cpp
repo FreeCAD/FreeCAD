@@ -569,7 +569,7 @@ std::vector<TopoShape> TopoShape::searchSubShape(
         std::vector<TopoDS_Shape> vertices;
         TopoShape wire;
         if(shapeType == TopAbs_FACE) {
-            wire = subshape.getOuterWire();
+            wire = subshape.splitWires();
             vertices = wire.getSubShapes(TopAbs_VERTEX);
         } else
             vertices = subshape.getSubShapes(TopAbs_VERTEX);
@@ -593,7 +593,7 @@ std::vector<TopoShape> TopoShape::searchSubShape(
                 TopoShape otherWire;
                 std::vector<TopoDS_Shape> otherVertices;
                 if (shapeType == TopAbs_FACE) {
-                    otherWire = s.getOuterWire();
+                    otherWire = s.splitWires();
                     if (wire.countSubShapes(TopAbs_EDGE) != otherWire.countSubShapes(TopAbs_EDGE))
                         continue;
                     otherVertices = otherWire.getSubShapes(TopAbs_VERTEX);
@@ -1113,7 +1113,7 @@ static std::vector<TopoShape> prepareProfiles(const std::vector<TopoShape> &shap
             shape = sh.getShape();
         }
         if (shape.ShapeType() == TopAbs_FACE) {
-            shape = sh.getOuterWire().getShape();
+            shape = sh.splitWires().getShape();
         } else if (shape.ShapeType() == TopAbs_WIRE) {
             BRepBuilderAPI_MakeWire mkWire(TopoDS::Wire(shape));
             shape = mkWire.Wire();
@@ -1800,10 +1800,8 @@ TopoShape &TopoShape::makEOffsetFace(const TopoShape &shape,
 
     std::vector<TopoShape> res;
     for (auto & face : shape.getSubTopoShapes(TopAbs_FACE)) {
-        if (!ShapeAnalysis::IsOuterBound(TopoDS::Face(face.getShape())))
-            FC_THROWM(Base::CADKernelError, "makeOffsetFace: no outer wire found!");
         std::vector<TopoShape> wires;
-        TopoShape outerWire = face.getOuterWire(&wires);
+        TopoShape outerWire = face.splitWires(&wires);
         if (wires.empty()) {
             res.push_back(makEOffset2D(face, offset, joinType, false, false, false, op));
             continue;
@@ -1906,8 +1904,8 @@ TopoShape &TopoShape::makEOffset2D(const TopoShape &shape, double offset, short 
                     haveWires = true;
                     break;
                 case TopAbs_FACE:{
-                    const auto &wires = s.getSubTopoShapes(TopAbs_WIRE);
-                    sourceWires.insert(sourceWires.end(),wires.begin(),wires.end());
+                    auto outerWire = s.splitWires(&sourceWires);
+                    sourceWires.push_back(outerWire);
                     haveFaces = true;
                 }break;
                 default:
@@ -4146,7 +4144,7 @@ unsigned int TopoShape::getMemSize (void) const
     return _Cache->getMemSize() + Data::ComplexGeoData::getMemSize();
 }
 
-TopoShape TopoShape::getOuterWire(std::vector<TopoShape> *inner) const
+TopoShape TopoShape::splitWires(std::vector<TopoShape> *inner, bool reorient) const
 {
     // ShapeAnalysis::OuterWire() is un-reliable for some reason. OCC source
     // code shows it works by creating face using each wire, and then test using
@@ -4163,7 +4161,7 @@ TopoShape TopoShape::getOuterWire(std::vector<TopoShape> *inner) const
     TopoDS_Shape tmp;
     if (shapeType(true) == TopAbs_FACE)
         tmp = BRepTools::OuterWire(TopoDS::Face(_Shape));
-    else if (countSubShapes(TopAbs_FACE) != 1)
+    else if (countSubShapes(TopAbs_FACE) == 1)
         tmp = BRepTools::OuterWire(
                 TopoDS::Face(getSubShape(TopAbs_FACE, 1)));
     if (tmp.IsNull())
@@ -4174,13 +4172,24 @@ TopoShape TopoShape::getOuterWire(std::vector<TopoShape> *inner) const
         auto & wire = *it;
         if (wire.getShape().IsSame(tmp)) {
             if (inner) {
-                for (++it; it != wires.end(); ++it)
+                for (++it; it != wires.end(); ++it) {
                     inner->push_back(*it);
+                    auto & w = inner->back();
+                    if (reorient && w.getShape().Orientation() == TopAbs_FORWARD)
+                        w.setShape(w.getShape().Reversed(), false);
+                }
             }
-            return wire;
+            auto res = wire;
+            if (reorient && res.getShape().Orientation() == TopAbs_REVERSED)
+                res.setShape(res.getShape().Reversed(), false);
+            return res;
         }
-        if (inner)
+        if (inner) {
             inner->push_back(wire);
+            auto & w = inner->back();
+            if (reorient && w.getShape().Orientation() == TopAbs_FORWARD)
+                w.setShape(w.getShape().Reversed(), false);
+        }
     }
     return TopoShape();
 }
