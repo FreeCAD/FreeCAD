@@ -1801,7 +1801,7 @@ TopoShape &TopoShape::makEOffsetFace(const TopoShape &shape,
     std::vector<TopoShape> res;
     for (auto & face : shape.getSubTopoShapes(TopAbs_FACE)) {
         std::vector<TopoShape> wires;
-        TopoShape outerWire = face.splitWires(&wires);
+        TopoShape outerWire = face.splitWires(&wires, ReorientForward);
         if (wires.empty()) {
             res.push_back(makEOffset2D(face, offset, joinType, false, false, false, op));
             continue;
@@ -1816,7 +1816,7 @@ TopoShape &TopoShape::makEOffsetFace(const TopoShape &shape,
         if (std::abs(innerOffset) > Precision::Confusion()) {
             TopoShape innerWires(0, Hasher);
             innerWires.makECompound(wires, "", false);
-            innerWires = innerWires.makEOffset2D(innerOffset, innerJoinType, false, false, false, op);
+            innerWires = innerWires.makEOffset2D(innerOffset, innerJoinType, false, false, true, op);
             wires = innerWires.getSubTopoShapes(TopAbs_WIRE);
         }
         wires.push_back(outerWire);
@@ -1920,50 +1920,20 @@ TopoShape &TopoShape::makEOffset2D(const TopoShape &shape, double offset, short 
 
         //find plane.
         gp_Pln workingPlane;
-        TopoDS_Compound compoundSourceWires;
-        {
-            BRep_Builder builder;
-            builder.MakeCompound(compoundSourceWires);
-            for(auto &w : sourceWires)
-                builder.Add(compoundSourceWires, w.getShape());
-            BRepLib_FindSurface planefinder(compoundSourceWires, -1, Standard_True);
-            if (!planefinder.Found())
-                FC_THROWM(Base::CADKernelError,"makeOffset2D: wires are nonplanar or noncoplanar");
-            workingPlane = GeomAdaptor_Surface(planefinder.Surface()).Plane();
-            if (haveFaces){
-                //extract plane from first face (useful for preserving the plane
-                //of face precisely if dealing with only one face). To following
-                //code works for any shape, even non planar. Although we are
-                //only making planar face here, the underlying face may not be a
-                //Geom_Plane. It could be a Geom_BSplineSurface.
-                const TopoDS_Shape & s = shapesToProcess[0].getShape();
-                BRepAdaptor_Surface adapt(TopoDS::Face(s));
-                double u = adapt.FirstUParameter()
-                    + (adapt.LastUParameter() - adapt.FirstUParameter())/2.;
-                double v = adapt.FirstVParameter()
-                    + (adapt.LastVParameter() - adapt.FirstVParameter())/2.;
-                BRepLProp_SLProps prop(adapt,u,v,2,Precision::Confusion());
-                if(prop.IsNormalDefined()) {
-                    gp_Pnt pnt; gp_Vec vec;
-                    // handles the orientation state of the shape
-                    BRepGProp_Face(TopoDS::Face(s)).Normal(u,v,pnt,vec);
-                    workingPlane = gp_Pln(pnt, gp_Dir(vec));
-                }
-            }
-        }
+        if (!TopoShape().makECompound(sourceWires,"",false).findPlane(workingPlane))
+            FC_THROWM(Base::CADKernelError,"makeOffset2D: wires are nonplanar or noncoplanar");
 
         //do the offset..
         TopoShape offsetShape;
-        BRepOffsetAPI_MakeOffsetFix mkOffset(GeomAbs_JoinType(joinType), allowOpenResult);
-        for(auto &w : sourceWires) {
-            mkOffset.AddWire(TopoDS::Wire(w.getShape()));
-        }
-
         if (fabs(offset) > Precision::Confusion()){
+            BRepOffsetAPI_MakeOffsetFix mkOffset(GeomAbs_JoinType(joinType), allowOpenResult);
+            for(auto &w : sourceWires) {
+                mkOffset.AddWire(TopoDS::Wire(w.getShape()));
+            }
             try {
-    #if defined(__GNUC__) && defined (FC_OS_LINUX)
+#if defined(__GNUC__) && defined (FC_OS_LINUX)
                 Base::SignalException se;
-    #endif
+#endif
                 mkOffset.Perform(offset);
             }
             catch (Standard_Failure &){
@@ -4144,7 +4114,8 @@ unsigned int TopoShape::getMemSize (void) const
     return _Cache->getMemSize() + Data::ComplexGeoData::getMemSize();
 }
 
-TopoShape TopoShape::splitWires(std::vector<TopoShape> *inner, bool reorient) const
+TopoShape TopoShape::splitWires(std::vector<TopoShape> *inner,
+                                SplitWireReorient reorient) const
 {
     // ShapeAnalysis::OuterWire() is un-reliable for some reason. OCC source
     // code shows it works by creating face using each wire, and then test using
@@ -4168,27 +4139,60 @@ TopoShape TopoShape::splitWires(std::vector<TopoShape> *inner, bool reorient) co
         return TopoShape();
     const auto & wires = getSubTopoShapes(TopAbs_WIRE);
     auto it = wires.begin();
+
+    TopAbs_Orientation orientOuter, orientInner;
+    switch(reorient) {
+    case ReorientReversed:
+        orientOuter = orientInner = TopAbs_REVERSED;
+        break;
+    case ReorientForward:
+        orientOuter = orientInner = TopAbs_FORWARD;
+        break;
+    default:
+        orientOuter = TopAbs_FORWARD;
+        orientInner = TopAbs_REVERSED;
+        break;
+    }
+
+    auto doReorient = [](TopoShape &s, TopAbs_Orientation orient) {
+        // Speical case of single edge wire. Make sure the edge is in the
+        // required orientation. This is necessary because BRepFill_OffsetWire
+        // has special handling of cicular edge offset, which seem to only
+        // respect the edge orientation and disregard the wire orientation. The
+        // orientation is used to determin whether to shrink or expand.
+        if (s.countSubShapes(TopAbs_EDGE) == 1) {
+            TopoDS_Shape e = s.getSubShape(TopAbs_EDGE, 1);
+            if (e.Orientation() == orient) {
+                if (s._Shape.Orientation() == orient)
+                    return;
+            } else
+                e = e.Oriented(orient);
+            BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(e));
+            s.setShape(mkWire.Shape(), false);
+        }
+        else if (s._Shape.Orientation() != orient)
+            s.setShape(s._Shape.Oriented(orient), false);
+    };
+
     for (; it != wires.end(); ++it) {
         auto & wire = *it;
         if (wire.getShape().IsSame(tmp)) {
             if (inner) {
                 for (++it; it != wires.end(); ++it) {
                     inner->push_back(*it);
-                    auto & w = inner->back();
-                    if (reorient && w.getShape().Orientation() == TopAbs_FORWARD)
-                        w.setShape(w.getShape().Reversed(), false);
+                    if (reorient)
+                        doReorient(inner->back(), orientInner);
                 }
             }
             auto res = wire;
-            if (reorient && res.getShape().Orientation() == TopAbs_REVERSED)
-                res.setShape(res.getShape().Reversed(), false);
+            if (reorient)
+                doReorient(res, orientOuter);
             return res;
         }
         if (inner) {
             inner->push_back(wire);
-            auto & w = inner->back();
-            if (reorient && w.getShape().Orientation() == TopAbs_FORWARD)
-                w.setShape(w.getShape().Reversed(), false);
+            if (reorient)
+                doReorient(inner->back(), orientInner);
         }
     }
     return TopoShape();

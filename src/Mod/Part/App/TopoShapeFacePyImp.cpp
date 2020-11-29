@@ -953,17 +953,6 @@ Py::Object TopoShapeFacePy::getOuterWire(void) const
     }
 }
 
-Py::Tuple TopoShapeFacePy::getWireSplits(void) const
-{
-    std::vector<TopoShape> wires;
-    TopoShape outerWire = getTopoShapePtr()->splitWires(&wires);
-    Py::List list;
-    for (auto & w : wires)
-        list.append(Py::asObject(w.getPyObject()));
-    Py::TupleN res(Py::asObject(outerWire.getPyObject()), list);
-    return res;
-}
-
 Py::Object TopoShapeFacePy::getMass(void) const
 {
     GProp_GProps props;

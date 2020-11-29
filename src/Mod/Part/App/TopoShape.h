@@ -318,15 +318,26 @@ public:
     TopoDS_Shape makeShell(const TopoDS_Shape&) const;
     //@}
     
+    /// Wire re-orientation when calling splitWires()
+    enum SplitWireReorient {
+        /// Keep original reorientation
+        NoReorient,
+        /// Make outer wire forward, and inner wires reversed
+        Reorient,
+        /// Make both outer and inner wires forward
+        ReorientForward,
+        /// Make both outer and inner wires reversed
+        ReorientReversed,
+    };
     /** Return the outer and inner wires of a face
      *
      * @param inner: optional output of inner wires
-     * @param reorient: if true, make sure the outer wire is forward, and inner
-     * wires are reversed
+     * @param reorient: wire reorientation, see SplitWireReorient
      *
      * @return Return the outer wire
      */
-    TopoShape splitWires(std::vector<TopoShape> *inner = nullptr, bool reorient=true) const;
+    TopoShape splitWires(std::vector<TopoShape> *inner = nullptr,
+                         SplitWireReorient reorient = Reorient) const;
 
     /** @name Getting basic geometric entities */
     //@{

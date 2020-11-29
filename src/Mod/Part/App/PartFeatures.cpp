@@ -810,9 +810,10 @@ App::DocumentObjectExecReturn* Reverse::execute(void)
         return new App::DocumentObjectExecReturn("No part object linked.");
 
     try {
-        TopoDS_Shape myShape = source->Shape.getValue();
-        if (!myShape.IsNull())
-            this->Shape.setValue(myShape.Reversed());
+        TopoShape myShape = source->Shape.getShape();
+        if (!myShape.isNull())
+            myShape.setShape(myShape.getShape().Reversed(), false);
+        this->Shape.setValue(myShape);
         this->Placement.setValue(source->Placement.getValue());
         return Part::Feature::execute();
     }

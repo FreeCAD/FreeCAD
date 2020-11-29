@@ -342,7 +342,7 @@ void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoShape& _s
 
     if (shape.ShapeType() == TopAbs_FACE) {
         std::vector<TopoShape> wires;
-        TopoShape outerWire = _shape.splitWires(&wires);
+        TopoShape outerWire = _shape.splitWires(&wires, TopoShape::ReorientForward);
         if (outerWire.isNull())
             Standard_Failure::Raise("Missing outer wire");
         if (wires.empty())
