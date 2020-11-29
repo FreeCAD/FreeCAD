@@ -368,14 +368,27 @@ void Feature::updateSuppressedShape()
 App::DocumentObject *Feature::getSubObject(const char *subname, 
         PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const
 {
-    if(subname) {
+    if (subname && subname != Data::ComplexGeoData::findElementName(subname)) {
         const char * dot = strchr(subname,'.');
         if (dot) {
             auto body = PartDesign::Body::findBodyOf(this);
             if (body) {
                 auto feat = body->Group.find(std::string(subname, dot));
-                if (feat)
-                    return feat->getSubObject(dot+1, pyObj, pmat, transform, depth+1);
+                if (feat) {
+                    Base::Matrix4D _mat;
+                    if (!transform) {
+                        // If no transform is request, we must counter the
+                        // placement of this feature, because
+                        // PartDesign::Feature is not suppose to transform its
+                        // children
+                        _mat = Placement.getValue().inverse().toMatrix();
+                        if (pmat)
+                            *pmat *= _mat; 
+                        else
+                            pmat = &_mat;
+                    }
+                    return feat->getSubObject(dot+1, pyObj, pmat, true, depth+1);
+                }
             }
         }
     }
