@@ -83,10 +83,11 @@ public:
         const char * designation;
         double diameter;
         double pitch;
+        double CoreHole;
     } ThreadDescription;
     static const ThreadDescription threadDescription[][171];
 
-    static const double metricHoleDiameters[35][4];
+    static const double metricHoleDiameters[36][4];
 
     virtual void Restore(Base::XMLReader & reader);
 
