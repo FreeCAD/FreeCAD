@@ -180,6 +180,8 @@ void SoBrepEdgeSet::glRender(SoGLRenderAction *action, bool inpath)
         depthGuard.set(GL_LEQUAL);
     } else if (inpath && delayrendering)
         depthGuard.set(GL_LEQUAL);
+    else
+        inpath = false;
 
     if(ctx && ctx->isHighlightAll()
            && (!highlightIndices.getNum()
