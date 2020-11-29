@@ -99,12 +99,13 @@ public:
         Trackball
     };
 
-    enum RotationCenterMode {
-        WindowCenter,           /**< The center of the window */
-        ScenePointAtCursor,     /**< Find the point in the scene at the cursor position. If there is no point then the focal plane is used */
-        FocalPointAtCursor,     /**< Find the point on the focal plane at the cursor position. */
-        BoundingBoxCenter       /**< Find the center point of the bounding box of the scene. */
+    enum class RotationCenterMode {
+        WindowCenter       = 0, /**< The center of the window */
+        ScenePointAtCursor = 1, /**< Find the point in the scene at the cursor position. If there is no point then the focal plane is used */
+        FocalPointAtCursor = 2, /**< Find the point on the focal plane at the cursor position. */
+        BoundingBoxCenter  = 4  /**< Find the center point of the bounding box of the scene. */
     };
+    Q_DECLARE_FLAGS(RotationCenterModes, RotationCenterMode)
 
 public:
     NavigationStyle();
@@ -133,8 +134,8 @@ public:
     SbBool isZoomAtCursor() const;
     void zoomIn();
     void zoomOut();
-    void setRotationCenterMode(RotationCenterMode);
-    RotationCenterMode getRotationCenterMode() const;
+    void setRotationCenterMode(RotationCenterModes);
+    RotationCenterModes getRotationCenterMode() const;
     void setRotationCenter(const SbVec3f& cnt);
     SbVec3f getFocalPoint() const;
 
@@ -409,5 +410,7 @@ private:
 };
 
 } // namespace Gui
+
+Q_DECLARE_OPERATORS_FOR_FLAGS(Gui::NavigationStyle::RotationCenterModes)
 
 #endif // GUI_NAVIGATIONSTYLE_H

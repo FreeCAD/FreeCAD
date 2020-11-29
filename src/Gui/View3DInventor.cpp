@@ -360,13 +360,15 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     else if (strcmp(Reason,"RotationMode") == 0) {
         long mode = rGrp.GetInt("RotationMode", 1);
         if (mode == 0) {
-            _viewer->navigationStyle()->setRotationCenterMode(NavigationStyle::WindowCenter);
+            _viewer->navigationStyle()->setRotationCenterMode(NavigationStyle::RotationCenterMode::WindowCenter);
         }
         else if (mode == 1) {
-            _viewer->navigationStyle()->setRotationCenterMode(NavigationStyle::ScenePointAtCursor);
+            _viewer->navigationStyle()->setRotationCenterMode(NavigationStyle::RotationCenterMode::ScenePointAtCursor |
+                                                              NavigationStyle::RotationCenterMode::FocalPointAtCursor);
         }
         else if (mode == 2) {
-            _viewer->navigationStyle()->setRotationCenterMode(NavigationStyle::BoundingBoxCenter);
+            _viewer->navigationStyle()->setRotationCenterMode(NavigationStyle::RotationCenterMode::ScenePointAtCursor |
+                                                              NavigationStyle::RotationCenterMode::BoundingBoxCenter);
         }
     }
     else if (strcmp(Reason,"EyeDistance") == 0) {
