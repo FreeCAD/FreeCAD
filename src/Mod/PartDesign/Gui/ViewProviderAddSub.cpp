@@ -343,16 +343,22 @@ void ViewProviderAddSub::setPreviewDisplayMode(bool onoff) {
     // displays an object and when restoring the previous state it's
     // not sufficient to only revert the mask mode. Also the child
     // number of the switch node must be reverted.
+
+    Gui::SoFCSwitch *fcSwitch =  nullptr;
+    if (pcModeSwitch->isOfType(Gui::SoFCSwitch::getClassTypeId()))
+        fcSwitch = static_cast<Gui::SoFCSwitch*>(pcModeSwitch);
+
     if (onoff) {
         if(isPreviewMode()) 
             return;
         displayMode = getActiveDisplayMode();
-        if (pcModeSwitch->isOfType(Gui::SoFCSwitch::getClassTypeId()))
-            defaultChild = static_cast<Gui::SoFCSwitch*>(pcModeSwitch)->defaultChild.getValue();
+        if (fcSwitch) {
+            defaultChild = fcSwitch->defaultChild.getValue();
+            fcSwitch->allowNamedOverride = false;
+        }
         setDisplayMaskMode("Shape preview");
-        if (pcModeSwitch->isOfType(Gui::SoFCSwitch::getClassTypeId()))
-            static_cast<Gui::SoFCSwitch*>(pcModeSwitch)->defaultChild = 
-                pcModeSwitch->whichChild.getValue();
+        if (fcSwitch)
+            fcSwitch->defaultChild = pcModeSwitch->whichChild.getValue();
     }
 
     if (!onoff) {
@@ -361,8 +367,10 @@ void ViewProviderAddSub::setPreviewDisplayMode(bool onoff) {
         setDisplayMaskMode(displayMode.c_str());
         if (!Visibility.getValue())
             Gui::ViewProvider::hide();
-        if (pcModeSwitch->isOfType(Gui::SoFCSwitch::getClassTypeId()))
-            static_cast<Gui::SoFCSwitch*>(pcModeSwitch)->defaultChild.setValue(defaultChild);
+        if (fcSwitch) {
+            fcSwitch->defaultChild.setValue(defaultChild);
+            fcSwitch->allowNamedOverride = true;
+        }
     }
 
     if (onoff) {
