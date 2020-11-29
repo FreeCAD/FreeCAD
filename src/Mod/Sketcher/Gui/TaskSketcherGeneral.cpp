@@ -352,6 +352,7 @@ void TaskSketcherGeneral::onRenderOrderChanged()
 {
     widget->saveOrderingOrder();
     sketchView->updateColor();
+    sketchView->draw(false, false);
 }
 
 #include "moc_TaskSketcherGeneral.cpp"

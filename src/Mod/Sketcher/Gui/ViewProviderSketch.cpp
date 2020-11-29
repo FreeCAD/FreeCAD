@@ -235,7 +235,8 @@ struct EditData {
     std::set<int> SelCurvSet; // also holds cross axes at -1 and -2
     std::set<int> SelConstraintSet;
     std::vector<int> CurvIdToGeoId; // conversion of SoLineSet index to GeoId
-    std::vector<int> PointIdToGeoId; // conversion of SoCoordinate3 index to GeoId
+    std::vector<int> PointIdToVertexId; // conversion of SoCoordinate3 index to vertex Id
+    std::vector<unsigned> VertexIdToPointId; // conversion of vertex Id to SoCoordinate3 index
 
     // helper data structures for the constraint rendering
     std::vector<ConstraintType> vConstrType;
@@ -1913,7 +1914,7 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point,
             if (point_detail && point_detail->getTypeId() == SoPointDetail::getClassTypeId()) {
                 // get the index
                 PtIndex = static_cast<const SoPointDetail *>(point_detail)->getCoordinateIndex();
-                PtIndex -= 1; // shift corresponding to RootPoint
+                PtIndex = edit->PointIdToVertexId[PtIndex];
                 if (PtIndex == Sketcher::GeoEnum::RtPnt)
                     CrossIndex = 0; // RootPoint was hit
             }
@@ -2745,9 +2746,16 @@ void ViewProviderSketch::updateColor(void)
             pcolor[i] = VertexColor;
     }
 
+    auto sketch = getSketchObject();
     for (int  i=0; i < PtNum; i++) { // 0 is the origin
         pverts[i].getValue(x,y,z);
-        const Part::Geometry * tmp = getSketchObject()->getGeometry(edit->PointIdToGeoId[i]);
+        int GeoId;
+        PointPos PosId;
+        if (i == 0)
+            GeoId = Sketcher::GeoEnum::RtPnt;
+        else
+            sketch->getGeoVertexIndex(edit->PointIdToVertexId[i], GeoId, PosId);
+        const Part::Geometry * tmp = sketch->getGeometry(GeoId);
         if(tmp && z < zHighlight) {
             if(tmp->getConstruction())
                 pverts[i].setValue(x,y,zConstrPoint);
@@ -2762,17 +2770,23 @@ void ViewProviderSketch::updateColor(void)
         edit->PreSelectedPointSet->coordIndex.setValue(0);
     }
     else if (edit->PreselectPoint != -1) {
-        if (edit->PreselectPoint + 1 < PtNum) {
-            pcolor[edit->PreselectPoint + 1] = PreselectColor;
-            edit->PreSelectedPointSet->coordIndex.setValue(edit->PreselectPoint+1);
+        int PtId = edit->PreselectPoint + 1;
+        if (PtId && PtId <= (int)edit->VertexIdToPointId.size())
+            PtId = edit->VertexIdToPointId[PtId-1];
+        if (PtId < PtNum) {
+            pcolor[PtId] = PreselectColor;
+            edit->PreSelectedPointSet->coordIndex.setValue(PtId);
         }
     }
 
     int selcount = 0;
-    for (std::set<int>::iterator it = edit->SelPointSet.begin(); it != edit->SelPointSet.end(); ++it) {
-        if (*it < PtNum) {
+    for (int SelId : edit->SelPointSet) {
+        int PtId = SelId;
+        if (PtId && PtId <= (int)edit->VertexIdToPointId.size())
+            PtId = edit->VertexIdToPointId[PtId-1];
+        if (PtId < PtNum) {
             ++selcount;
-            pcolor[*it] = (*it==(edit->PreselectPoint + 1) && (edit->PreselectPoint != -1))
+            pcolor[PtId] = (SelId == (edit->PreselectPoint + 1) && (edit->PreselectPoint != -1))
                 ? PreselectSelectedColor : SelectColor;
         }
     }
@@ -2782,9 +2796,12 @@ void ViewProviderSketch::updateColor(void)
         auto mindices = edit->SelectedPointSet->markerIndex.startEditing();
         auto indices = edit->SelectedPointSet->coordIndex.startEditing();
         int i=0;
-        for (int idx : edit->SelPointSet) {
-            if (idx < PtNum) {
-                indices[i] = idx;
+        for (int SelId : edit->SelPointSet) {
+            int PtId = SelId;
+            if (PtId && PtId <= (int)edit->VertexIdToPointId.size())
+                PtId = edit->VertexIdToPointId[PtId-1];
+            if (PtId < PtNum) {
+                indices[i] = PtId;
                 mindices[i++] = edit->PointSet->markerIndex[0];
             }
         }
@@ -3659,25 +3676,54 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
     std::vector<Base::Vector3d> Points;
     std::vector<unsigned int> Index;
 
-    int intGeoCount = getSketchObject()->getHighestCurveIndex() + 1;
-    int extGeoCount = getSketchObject()->getExternalGeometryCount();
+    auto sketch = getSketchObject();
+    int intGeoCount = sketch->getHighestCurveIndex() + 1;
+    int extGeoCount = sketch->getExternalGeometryCount();
 
     const std::vector<Part::Geometry *> *geomlist;
     std::vector<Part::Geometry *> tempGeo;
     if (temp)
-        tempGeo = getSketchObject()->getSolvedSketch().extractGeometry(true, true); // with memory allocation
+        tempGeo = sketch->getSolvedSketch().extractGeometry(true, true); // with memory allocation
     else
-        tempGeo = getSketchObject()->getCompleteGeometry(); // without memory allocation
-    geomlist = &tempGeo;
+        tempGeo = sketch->getCompleteGeometry(); // without memory allocation
 
+    geomlist = &tempGeo;
 
     assert(int(geomlist->size()) == extGeoCount + intGeoCount);
     assert(int(geomlist->size()) >= 2);
 
-    edit->CurvIdToGeoId.clear();
-    edit->PointIdToGeoId.clear();
+    std::vector<int> geoIndices(tempGeo.size()-2);
+    for (int i=0; i<(int)geoIndices.size(); ++i)
+        geoIndices[i] = i;
 
-    edit->PointIdToGeoId.push_back(-1); // root point
+    ParameterGrp::handle hGrpsk = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+
+    int topid = hGrpsk->GetInt("TopRenderGeometryId",1);
+    int midid = hGrpsk->GetInt("MidRenderGeometryId",2);
+    int lowid = hGrpsk->GetInt("LowRenderGeometryId",3);
+    std::stable_sort(geoIndices.begin(), geoIndices.end(),
+        [&tempGeo, intGeoCount, topid, midid, lowid](int idx1, int idx2) {
+            int id1, id2;
+            if (idx1 >= intGeoCount)
+                id1 = lowid;
+            else if (tempGeo[idx1]->getConstruction())
+                id1 = midid;
+            else
+                id1 = topid;
+            if (idx2 >= intGeoCount)
+                id2 = lowid;
+            else if (tempGeo[idx2]->getConstruction())
+                id2 = midid;
+            else
+                id2 = topid;
+            return id1 > id2;
+        });
+
+    edit->CurvIdToGeoId.clear();
+    edit->PointIdToVertexId.clear();
+
+    edit->PointIdToVertexId.push_back(Sketcher::GeoEnum::RtPnt); // root point
+    edit->VertexIdToPointId.resize(sketch->getHighestVertexIndex()+1);
 
     // information layer
     if(rebuildinformationlayer) {
@@ -3690,15 +3736,11 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
     int currentInfoNode = 0;
 
-    ParameterGrp::handle hGrpsk = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-
     std::vector<int> bsplineGeoIds;
 
     double combrepscale = 0; // the repscale that would correspond to this comb based only on this calculation.
 
     // end information layer
-
-    int GeoId = 0;
 
     int stdcountsegments = hGrp->GetInt("SegmentsPerGeometry", 50);
     // value cannot be smaller than 3
@@ -3708,13 +3750,23 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
     // RootPoint
     Points.emplace_back(0.,0.,0.);
 
-    for (std::vector<Part::Geometry *>::const_iterator it = geomlist->begin(); it != geomlist->end()-2; ++it, GeoId++) {
+    auto setPointId = [this, sketch] (int GeoId, PointPos pos) {
+        int index = sketch->getVertexIndexGeoPos(GeoId, pos);
+        edit->PointIdToVertexId.push_back(index);
+        if (index < 0 || index >= (int)edit->VertexIdToPointId.size())
+            assert(0 && "invalid vertex index");
+        else
+            edit->VertexIdToPointId[index] = edit->PointIdToVertexId.size()-1;
+    };
+
+    for (int GeoId : geoIndices) {
+        auto it = tempGeo.begin() + GeoId;
         if (GeoId >= intGeoCount)
-            GeoId = -extGeoCount;
+            GeoId -= intGeoCount + extGeoCount;
         if ((*it)->getTypeId() == Part::GeomPoint::getClassTypeId()) { // add a point
             const Part::GeomPoint *point = static_cast<const Part::GeomPoint *>(*it);
             Points.push_back(point->getPoint());
-            edit->PointIdToGeoId.push_back(GeoId);
+            setPointId(GeoId, PointPos::start);
         }
         else if ((*it)->getTypeId() == Part::GeomLineSegment::getClassTypeId()) { // add a line
             const Part::GeomLineSegment *lineSeg = static_cast<const Part::GeomLineSegment *>(*it);
@@ -3725,8 +3777,8 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             Points.push_back(lineSeg->getEndPoint());
             Index.push_back(2);
             edit->CurvIdToGeoId.push_back(GeoId);
-            edit->PointIdToGeoId.push_back(GeoId);
-            edit->PointIdToGeoId.push_back(GeoId);
+            setPointId(GeoId, PointPos::start);
+            setPointId(GeoId, PointPos::end);
         }
         else if ((*it)->getTypeId() == Part::GeomCircle::getClassTypeId()) { // add a circle
             const Part::GeomCircle *circle = static_cast<const Part::GeomCircle *>(*it);
@@ -3746,7 +3798,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             Index.push_back(countSegments+1);
             edit->CurvIdToGeoId.push_back(GeoId);
             Points.push_back(center);
-            edit->PointIdToGeoId.push_back(GeoId);
+            setPointId(GeoId, PointPos::mid);
         }
         else if ((*it)->getTypeId() == Part::GeomEllipse::getClassTypeId()) { // add an ellipse
             const Part::GeomEllipse *ellipse = static_cast<const Part::GeomEllipse *>(*it);
@@ -3766,7 +3818,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             Index.push_back(countSegments+1);
             edit->CurvIdToGeoId.push_back(GeoId);
             Points.push_back(center);
-            edit->PointIdToGeoId.push_back(GeoId);
+            setPointId(GeoId, PointPos::mid);
         }
         else if ((*it)->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) { // add an arc
             const Part::GeomArcOfCircle *arc = static_cast<const Part::GeomArcOfCircle *>(*it);
@@ -3800,9 +3852,9 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             Points.push_back(start);
             Points.push_back(end);
             Points.push_back(center);
-            edit->PointIdToGeoId.push_back(GeoId);
-            edit->PointIdToGeoId.push_back(GeoId);
-            edit->PointIdToGeoId.push_back(GeoId);
+            setPointId(GeoId, PointPos::start);
+            setPointId(GeoId, PointPos::end);
+            setPointId(GeoId, PointPos::mid);
         }
         else if ((*it)->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) { // add an arc
             const Part::GeomArcOfEllipse *arc = static_cast<const Part::GeomArcOfEllipse *>(*it);
@@ -3836,9 +3888,9 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             Points.push_back(start);
             Points.push_back(end);
             Points.push_back(center);
-            edit->PointIdToGeoId.push_back(GeoId);
-            edit->PointIdToGeoId.push_back(GeoId);
-            edit->PointIdToGeoId.push_back(GeoId);
+            setPointId(GeoId, PointPos::start);
+            setPointId(GeoId, PointPos::end);
+            setPointId(GeoId, PointPos::mid);
         }
         else if ((*it)->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
             const Part::GeomArcOfHyperbola *aoh = static_cast<const Part::GeomArcOfHyperbola *>(*it);
@@ -3872,9 +3924,9 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             Points.push_back(start);
             Points.push_back(end);
             Points.push_back(center);
-            edit->PointIdToGeoId.push_back(GeoId);
-            edit->PointIdToGeoId.push_back(GeoId);
-            edit->PointIdToGeoId.push_back(GeoId);
+            setPointId(GeoId, PointPos::start);
+            setPointId(GeoId, PointPos::end);
+            setPointId(GeoId, PointPos::mid);
         }
         else if ((*it)->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
             const Part::GeomArcOfParabola *aop = static_cast<const Part::GeomArcOfParabola *>(*it);
@@ -3908,9 +3960,9 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             Points.push_back(start);
             Points.push_back(end);
             Points.push_back(center);
-            edit->PointIdToGeoId.push_back(GeoId);
-            edit->PointIdToGeoId.push_back(GeoId);
-            edit->PointIdToGeoId.push_back(GeoId);
+            setPointId(GeoId, PointPos::start);
+            setPointId(GeoId, PointPos::end);
+            setPointId(GeoId, PointPos::mid);
         }
         else if ((*it)->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) { // add a bspline
             bsplineGeoIds.push_back(GeoId);
@@ -3943,8 +3995,8 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             edit->CurvIdToGeoId.push_back(GeoId);
             Points.push_back(startp);
             Points.push_back(endp);
-            edit->PointIdToGeoId.push_back(GeoId);
-            edit->PointIdToGeoId.push_back(GeoId);
+            setPointId(GeoId, PointPos::start);
+            setPointId(GeoId, PointPos::end);
 
             //***************************************************************************************************************
             // global information gathering for geometry information layer
@@ -4015,6 +4067,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
     // geometry information layer for bsplines, as they need a second round now that max curvature is known
     for (std::vector<int>::const_iterator it = bsplineGeoIds.begin(); it != bsplineGeoIds.end(); ++it) {
 
+        int GeoId = *it;
         const Part::Geometry *geo = GeoById(*geomlist, *it);
 
         const Part::GeomBSplineCurve *spline = static_cast<const Part::GeomBSplineCurve *>(geo);
@@ -6552,26 +6605,20 @@ void ViewProviderSketch::resetPositionText(void)
 void ViewProviderSketch::setPreselectPoint(int PreselectPoint)
 {
     if (edit) {
-        int oldPtId = -1;
-        if (edit->PreselectPoint != -1)
-            oldPtId = edit->PreselectPoint + 1;
-        else if (edit->PreselectCross == 0)
-            oldPtId = 0;
-        int newPtId = PreselectPoint + 1;
-        SbVec3f *pverts = edit->PointsCoordinate->point.startEditing();
-        float x,y,z;
-        if (oldPtId != -1 &&
-            edit->SelPointSet.find(oldPtId) == edit->SelPointSet.end()) {
-            // send to background
-            pverts[oldPtId].getValue(x,y,z);
-            pverts[oldPtId].setValue(x,y,zLowPoints);
+        resetPreselectPoint();
+        int PtId = PreselectPoint + 1;
+        if (PtId && PtId <= (int)edit->VertexIdToPointId.size())
+            PtId = edit->VertexIdToPointId[PtId-1];
+        if (PtId >= 0 && PtId < edit->PointsCoordinate->point.getNum()) {
+            SbVec3f *pverts = edit->PointsCoordinate->point.startEditing();
+            float x,y,z;
+            // bring to foreground
+            pverts[PtId].getValue(x,y,z);
+            pverts[PtId].setValue(x,y,zHighlight);
+            edit->PreSelectedPointSet->coordIndex.setValue(PtId);
+            edit->PreselectPoint = PreselectPoint;
+            edit->PointsCoordinate->point.finishEditing();
         }
-        // bring to foreground
-        pverts[newPtId].getValue(x,y,z);
-        pverts[newPtId].setValue(x,y,zHighlight);
-        edit->PreselectPoint = PreselectPoint;
-        edit->PreSelectedPointSet->coordIndex.setValue(PreselectPoint+1);
-        edit->PointsCoordinate->point.finishEditing();
     }
 }
 
@@ -6580,17 +6627,21 @@ void ViewProviderSketch::resetPreselectPoint(void)
     if (edit) {
         int oldPtId = -1;
         if (edit->PreselectPoint != -1)
-            oldPtId = edit->PreselectPoint + 1;
+            oldPtId = edit->PreselectPoint;
         else if (edit->PreselectCross == 0)
             oldPtId = 0;
         if (oldPtId != -1 &&
             edit->SelPointSet.find(oldPtId) == edit->SelPointSet.end()) {
-            // send to background
-            SbVec3f *pverts = edit->PointsCoordinate->point.startEditing();
-            float x,y,z;
-            pverts[oldPtId].getValue(x,y,z);
-            pverts[oldPtId].setValue(x,y,zLowPoints);
-            edit->PointsCoordinate->point.finishEditing();
+            if (oldPtId && oldPtId <= (int)edit->VertexIdToPointId.size())
+                oldPtId = edit->VertexIdToPointId[oldPtId-1];
+            if (oldPtId >= 0 && oldPtId < edit->PointsCoordinate->point.getNum()) {
+                // send to background
+                SbVec3f *pverts = edit->PointsCoordinate->point.startEditing();
+                float x,y,z;
+                pverts[oldPtId].getValue(x,y,z);
+                pverts[oldPtId].setValue(x,y,zLowPoints);
+                edit->PointsCoordinate->point.finishEditing();
+            }
         }
         edit->PreSelectedPointSet->coordIndex.setNum(0);
         edit->PreselectPoint = -1;
@@ -6601,27 +6652,34 @@ void ViewProviderSketch::addSelectPoint(int SelectPoint)
 {
     if (edit) {
         int PtId = SelectPoint + 1;
-        SbVec3f *pverts = edit->PointsCoordinate->point.startEditing();
-        // bring to foreground
-        float x,y,z;
-        pverts[PtId].getValue(x,y,z);
-        pverts[PtId].setValue(x,y,zHighlight);
-        edit->SelPointSet.insert(PtId);
-        edit->PointsCoordinate->point.finishEditing();
+        edit->SelPointSet.insert(SelectPoint+1);
+        if (PtId && PtId <= (int)edit->VertexIdToPointId.size())
+            PtId = edit->VertexIdToPointId[PtId-1];
+        if (PtId >= 0 && PtId < edit->PointsCoordinate->point.getNum()) {
+            SbVec3f *pverts = edit->PointsCoordinate->point.startEditing();
+            // bring to foreground
+            float x,y,z;
+            pverts[PtId].getValue(x,y,z);
+            pverts[PtId].setValue(x,y,zHighlight);
+            edit->PointsCoordinate->point.finishEditing();
+        }
     }
 }
 
 void ViewProviderSketch::removeSelectPoint(int SelectPoint)
 {
-    if (edit) {
-        int PtId = SelectPoint + 1;
-        SbVec3f *pverts = edit->PointsCoordinate->point.startEditing();
-        // send to background
-        float x,y,z;
-        pverts[PtId].getValue(x,y,z);
-        pverts[PtId].setValue(x,y,zLowPoints);
-        edit->SelPointSet.erase(PtId);
-        edit->PointsCoordinate->point.finishEditing();
+    int PtId = SelectPoint + 1;
+    if (edit && edit->SelPointSet.erase(PtId)) {
+        if (PtId && PtId <= (int)edit->VertexIdToPointId.size())
+            PtId = edit->VertexIdToPointId[PtId-1];
+        if (PtId >= 0 && PtId < edit->PointsCoordinate->point.getNum()) {
+            SbVec3f *pverts = edit->PointsCoordinate->point.startEditing();
+            // send to background
+            float x,y,z;
+            pverts[PtId].getValue(x,y,z);
+            pverts[PtId].setValue(x,y,zLowPoints);
+            edit->PointsCoordinate->point.finishEditing();
+        }
     }
 }
 
@@ -6631,10 +6689,11 @@ void ViewProviderSketch::clearSelectPoints(void)
         SbVec3f *pverts = edit->PointsCoordinate->point.startEditing();
         // send to background
         float x,y,z;
-        for (std::set<int>::const_iterator it=edit->SelPointSet.begin();
-             it != edit->SelPointSet.end(); ++it) {
-            pverts[*it].getValue(x,y,z);
-            pverts[*it].setValue(x,y,zLowPoints);
+        for (int PtId : edit->SelPointSet) {
+            if (PtId && PtId <= (int)edit->VertexIdToPointId.size())
+                PtId = edit->VertexIdToPointId[PtId-1];
+            pverts[PtId].getValue(x,y,z);
+            pverts[PtId].setValue(x,y,zLowPoints);
         }
         edit->PointsCoordinate->point.finishEditing();
         edit->SelectedPointSet->coordIndex.setNum(0);
