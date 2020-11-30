@@ -138,7 +138,7 @@ const Hole::ThreadDescription Hole::threadDescription[][171] =
         { "M64", 	64.0,   6.00,   58.00 },
         { "M68", 	68.0,   6.00,   62.00 },
      },
-    /* ISO metric fine */
+    /* ISO metric fine (no core hole entry, it's calculated exactly by diameter - pitch) */
     {
         { "M1x0.2", 	1.0,    0.20 },
         { "M1.1x0.2", 	1.1,    0.20 },
