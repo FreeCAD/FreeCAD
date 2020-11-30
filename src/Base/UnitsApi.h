@@ -73,7 +73,7 @@ public:
 
     // set the number of decimals
     static void setDecimals(int);
-    // fet the number of decimals
+    // get the number of decimals
     static int getDecimals();
     /// set the application defaults
     //static void setDefaults(void);
