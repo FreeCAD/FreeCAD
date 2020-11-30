@@ -95,7 +95,7 @@ const Hole::ThreadDescription Hole::threadDescription[][171] =
 
     /* ISO metric regular */
     /* ISO metric threaded core hole diameters according to ISO 2306 */
-    // {name, thread diameter, thread pitch, cole hole diameter}
+    // {name, thread diameter, thread pitch, core hole diameter}
     {
         { "M1", 	1.0,    0.25,   0.75 },
         { "M1.1", 	1.1,    0.25,   0.85 },
