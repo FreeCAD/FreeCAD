@@ -27,6 +27,7 @@
 # include <App/DocumentObject.h>
 # include <App/FeaturePython.h>
 # include <App/PropertyLinks.h>
+# include <Base/UnitsApi.h>
 
 #include "DrawView.h"
 
@@ -156,6 +157,8 @@ public:
     bool leaderIntersectsArc(Base::Vector3d s, Base::Vector3d pointOnCircle);
 
     bool isMultiValueSchema(void) const;
+
+    std::string getBaseLengthUnit(Base::UnitSystem system);
 
     pointPair getArrowPositions(void);
     void saveArrowPositions(const Base::Vector2d positions[]);

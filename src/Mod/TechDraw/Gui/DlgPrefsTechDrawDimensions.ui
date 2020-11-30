@@ -112,6 +112,11 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
           <property name="toolTip">
            <string>Use system setting for number of decimals</string>
           </property>

@@ -581,6 +581,32 @@ bool DrawViewDimension::isMultiValueSchema(void) const
     return result;
 }
 
+std::string DrawViewDimension::getBaseLengthUnit(Base::UnitSystem system)
+{
+    switch (system) {
+    case Base::UnitSystem::SI1:
+        return "mm";
+    case Base::UnitSystem::SI2:
+        return "m";
+    case Base::UnitSystem::Imperial1:
+        return "in";
+    case Base::UnitSystem::ImperialDecimal:
+        return "in";
+    case Base::UnitSystem::Centimeters:
+        return "cm";
+    case Base::UnitSystem::ImperialBuilding:
+        return "ft";
+    case Base::UnitSystem::MmMin:
+        return "mm";
+    case Base::UnitSystem::ImperialCivil:
+        return "ft";
+    case Base::UnitSystem::FemMilliMeterNewton:
+        return "mm";
+    default:
+        return "Unknown schema";
+    }
+}
+
 std::string DrawViewDimension::formatValue(qreal value, QString qFormatSpec, int partial)
 {
     std::string result;
@@ -588,8 +614,8 @@ std::string DrawViewDimension::formatValue(qreal value, QString qFormatSpec, int
 
     QString qUserStringUnits;
     QString formattedValue;
-
     bool angularMeasure = false;
+
     Base::Quantity asQuantity;
     asQuantity.setValue(value);
     if ( (Type.isValue("Angle")) ||
@@ -600,7 +626,7 @@ std::string DrawViewDimension::formatValue(qreal value, QString qFormatSpec, int
         asQuantity.setUnit(Base::Unit::Length);
     }
 
-    QString qUserString = asQuantity.getUserString();      // this handles mm to inch/km/parsec etc
+    QString qUserString = asQuantity.getUserString();  // this handles mm to inch/km/parsec etc
                                                        // and decimal positions but won't give more than
                                                        // Global_Decimals precision
                                                        // really should be able to ask units for value
@@ -609,6 +635,9 @@ std::string DrawViewDimension::formatValue(qreal value, QString qFormatSpec, int
     //units api: get schema to figure out if this is multi-value schema(Imperial1, ImperialBuilding, etc)
     //if it is multi-unit schema, don't even try to use Alt Decimals
     Base::UnitSystem unitSystem = Base::UnitsApi::getSchema();
+
+    // we need to know what length unit is used by the scheme
+    std::string BaseLengthUnit = getBaseLengthUnit(unitSystem);
 
     //get formatSpec prefix/suffix/specifier
     QStringList qsl = getPrefixSuffixSpec(qFormatSpec);
@@ -619,24 +648,14 @@ std::string DrawViewDimension::formatValue(qreal value, QString qFormatSpec, int
     //handle multi value schemes (yd/ft/in, dms, etc)
     std::string genPrefix = getPrefix();     //general prefix - diameter, radius, etc
     QString qMultiValueStr;
-    QString qGenPrefix = QString::fromUtf8(genPrefix.data(),genPrefix.size());
-    if ( (unitSystem == Base::UnitSystem::ImperialBuilding)  &&
-         !angularMeasure ) {
-        multiValueSchema = true;
-        qMultiValueStr = qUserString;
-        if (!genPrefix.empty()) {
-            //qUserString from Quantity includes units - prefix + R + nnn ft + suffix
-            qMultiValueStr = formatPrefix + qGenPrefix + qUserString + formatSuffix;
-        }
-        formattedValue = qMultiValueStr;
-    } else if ((unitSystem == Base::UnitSystem::ImperialCivil) &&
-                angularMeasure) {
+    QString qGenPrefix = QString::fromUtf8(genPrefix.data(), genPrefix.size());
+    if ((unitSystem == Base::UnitSystem::ImperialCivil) && angularMeasure) {
         QString dispMinute = QString::fromUtf8("\'");
         QString dispSecond = QString::fromUtf8("\"");
         QString schemeMinute = QString::fromUtf8("M");
         QString schemeSecond = QString::fromUtf8("S");
-        QString displaySub = qUserString.replace(schemeMinute,dispMinute);
-        displaySub = displaySub.replace(schemeSecond,dispSecond);
+        QString displaySub = qUserString.replace(schemeMinute, dispMinute);
+        displaySub = displaySub.replace(schemeSecond, dispSecond);
         multiValueSchema = true;
         qMultiValueStr = displaySub;
         if (!genPrefix.empty()) {
@@ -645,85 +664,119 @@ std::string DrawViewDimension::formatValue(qreal value, QString qFormatSpec, int
         }
         formattedValue = qMultiValueStr;
     } else {
-    //handle single value schemes
         if (formatSpecifier.isEmpty()) {
             Base::Console().Warning("Warning - no numeric format in formatSpec %s - %s\n",
                                     qPrintable(qFormatSpec), getNameInDocument());
             return Base::Tools::toStdString(qFormatSpec);
         }
-        QRegExp rxUnits(QString::fromUtf8(" \\D*$"));   //space + any non digits at end of string
-        QString userVal = qUserString;
-        userVal.remove(rxUnits);                        //getUserString(defaultDecimals) without units
 
-        QLocale loc;
-        double userValNum = loc.toDouble(userVal);
-
+        // for older TD drawings the formatSpecifier "%g" was used, but the number of decimals was
+        // neverheless limited. To keep old drawings, we limit the number of decimals too
+        // if the TD preferences option to use the global decimal number is set
+        // the formatSpecifier can have a prefix and/or suffix
+        if (useDecimals() && formatSpecifier.contains(QString::fromLatin1("%g"), Qt::CaseInsensitive)) {
+                int globalPrecision = Base::UnitsApi::getDecimals();
+                // change formatSpecifier to e.g. "%.2f"
+                QString newSpecifier = QString::fromStdString("%." + std::to_string(globalPrecision) + "f");
+                formatSpecifier.replace(QString::fromLatin1("%g"), newSpecifier, Qt::CaseInsensitive);
+        }
+               
+        // qUserString is the value + unit with default decimals, so extract the unit
+        // we cannot just use unit.getString() because this would convert '°' to 'deg'
+        QRegExp rxUnits(QString::fromUtf8(" \\D*$")); // space + any non digits at end of string
         int pos = 0;
-        if ((pos = rxUnits.indexIn(qUserString, 0)) != -1)  {
-            qUserStringUnits = rxUnits.cap(0);                //entire capture - non numerics at end of qUserString
+        if ((pos = rxUnits.indexIn(qUserString, 0)) != -1) {
+            qUserStringUnits = rxUnits.cap(0); // entire capture - non numerics at end of qUserString
         }
-        formattedValue = userVal;                            //sensible default
-    #if QT_VERSION >= 0x050000
-        formattedValue = QString::asprintf(Base::Tools::toStdString(formatSpecifier).c_str(),userValNum);
-    #else
+
+        // we can have 2 possible results:
+        // - the value in the base unit but without displayed unit
+        // - the value + unit (not necessarily the base unit!)
+        // the user can overwrite the decimal settings, so we must in every case use the formatSpecifier
+        // if useDecimals(), then formatSpecifier = global decimals, otherwise it is %.2f
+        QLocale loc;
+        double userVal;
+        bool checkDecimals = true;
+        if (showUnits() || (Type.isValue("Angle")) || (Type.isValue("Angle3Pt"))) {
+            formattedValue = qUserString; // result value + unit (not necessarily base unit!)
+            // remove unit
+            formattedValue.remove(rxUnits);
+            // to number
+            userVal = loc.toDouble(formattedValue);
+            if (userVal >= 1.0)
+                // we can assure we didn't make an error > 10% via getUserString()
+                checkDecimals = false;
+        }
+        if (checkDecimals){
+            // get value in the base unit with default decimals
+            // for the conversion we use the same method as in DlgUnitsCalculator::valueChanged
+            // get the conversion factor for the unit
+            double convertValue = Base::Quantity::parse(QString::fromLatin1("1") + QString::fromStdString(BaseLengthUnit)).getValue();
+            // the result is now just val / convertValue because val is always in the base unit
+            userVal = asQuantity.getValue() / convertValue;
+        }
+        // we reformat the value
+#if QT_VERSION >= 0x050000
+        formattedValue = QString::asprintf(Base::Tools::toStdString(formatSpecifier).c_str(), userVal);
+#else
         QString qs2;
-        formattedValue = qs2.sprintf(Base::Tools::toStdString(formatSpecifier).c_str(),userValNum);
-    #endif
-
-        QString repl = userVal;
-        if (useDecimals()) {
-            if (showUnits() || (Type.isValue("Angle")) ||(Type.isValue("Angle3Pt")) ) {
-                repl = qUserString;
-            } else {
-                repl = userVal;
-            }
-        } else {
-            if (showUnits() || (Type.isValue("Angle")) || (Type.isValue("Angle3Pt"))) {
-                repl = formattedValue + qUserStringUnits;
-            } else {
-                repl = formattedValue;
-            }
+        formattedValue = qs2.sprintf(Base::Tools::toStdString(formatSpecifier).c_str(), userVal);
+#endif
+        // if abs(1 - userVal / formattedValue) > 0.1 we know that we make an error greater than 10%
+        // then we need more digits
+        if (abs(userVal - formattedValue.toDouble()) > 0.1 * userVal) {
+            int i = 1;
+            do { // increase decimals step by step until error is < 10 %
+                formattedValue = QLocale().toString(userVal, 'f', i);
+                ++i;
+            } while (abs(userVal - loc.toDouble(formattedValue)) > 0.1 * userVal);
+            // We purposely don't reset the formatSpecifier.
+            // Why "%.1f" is overwritten for a value of e.g. "0.001" is obvious,
+            // moreover such cases only occurs when
+            // changing unit schemes on existing drawings. Moreover a typical case is that
+            // you accidentally used e.g. a building scheme, see your mistake and go back
+            // then you would end up with e.g. "%.5f" and must manually correct this.
         }
 
-        qFormatSpec.replace(formatSpecifier,repl);
-        //this next bit is so inelegant!!!
+        // replace decimal sign if necessary
         QChar dp = QChar::fromLatin1('.');
         if (loc.decimalPoint() != dp) {
-            qFormatSpec.replace(dp,loc.decimalPoint());
-            formattedValue.replace(dp,loc.decimalPoint());
-        }
-        //Remove space between dimension and degree sign
-        if ((Type.isValue("Angle")) || (Type.isValue("Angle3Pt"))) {
-            QRegExp space(QString::fromUtf8("\\s"));
-            qFormatSpec.remove(space);
+            formattedValue.replace(dp, loc.decimalPoint());
         }
     }
-    //formattedValue   - formatted numeric value
-    //qUserStringUnits - unit abbrev
-    //qFormatSpec      - prefix + formattedValue w/units + suffix
 
-    //partial = 0 --> prefix + formattedValue w/units +suffix
-    // prefix 4' 11" suffix
-    result = qFormatSpec.toUtf8().constData();
+    if ((unitSystem == Base::UnitSystem::ImperialBuilding) &&
+        !angularMeasure) {
+        multiValueSchema = true;
+        qMultiValueStr = formattedValue;
+        if (!genPrefix.empty()) {
+            //qUserString from Quantity includes units - prefix + R + nnn ft + suffix
+            qMultiValueStr = formatPrefix + qGenPrefix + qUserString + formatSuffix;
+        }
 
-    std::string ssPrefix = Base::Tools::toStdString(formatPrefix);
-    std::string ssSuffix = Base::Tools::toStdString(formatSuffix);
-    std::string ssUnits  = Base::Tools::toStdString(qUserStringUnits);
-    if (multiValueSchema) {
-        result = ssPrefix +
-                 Base::Tools::toStdString(qMultiValueStr) +
-                 ssSuffix +
-                 ssUnits;
+        formattedValue = qMultiValueStr;
     }
 
-    if (partial == 1)  {                            //prefix number suffix
-        result = ssPrefix +
-                 Base::Tools::toStdString(formattedValue) +
-                 ssSuffix;
-    } else if (partial == 2) {                       //just the unit
+    result = formattedValue.toStdString();
+
+    if (partial == 0) { // then also multiValueSchema is true
+        result = Base::Tools::toStdString(formatPrefix) +
+            Base::Tools::toStdString(qMultiValueStr) +
+            Base::Tools::toStdString(formatSuffix) +
+            Base::Tools::toStdString(qUserStringUnits);
+    }
+    else if (partial == 1)  {            // prefix number suffix
+        result = Base::Tools::toStdString(formatPrefix) +
+            result +
+            Base::Tools::toStdString(formatSuffix);
+    }
+    else if (partial == 2) {             // just the unit
         if ((Type.isValue("Angle")) || (Type.isValue("Angle3Pt"))) {
-            QRegExp space(QString::fromUtf8("\\s"));
-            qUserStringUnits.remove(space);
+            // remove space between dimension and unit if unit is not "deg"
+            if ( !qUserStringUnits.contains(QString::fromLatin1("deg")) ) {
+                QRegExp space(QString::fromUtf8("\\s"));
+                qUserStringUnits.remove(space);
+            }
             result = Base::Tools::toStdString(qUserStringUnits);
         } else if (showUnits()) {
             result = Base::Tools::toStdString(qUserStringUnits);
@@ -759,7 +812,6 @@ std::pair<std::string, std::string> DrawViewDimension::getFormattedToleranceValu
 
 std::string DrawViewDimension::getFormattedDimensionValue(int partial)
 {
-//    Base::Console().Message("DVD::getFormattedValue(%d)\n", partial);
     QString qFormatSpec = QString::fromUtf8(FormatSpec.getStrValue().data());
 
     if (Arbitrary.getValue()) {
@@ -774,9 +826,8 @@ QStringList DrawViewDimension::getPrefixSuffixSpec(QString fSpec)
     QStringList result;
     QString formatPrefix;
     QString formatSuffix;
-    QString formatted;
     //find the %x.y tag in FormatSpec
-    QRegExp rxFormat(QString::fromUtf8("%[+-]?[0-9]*\\.*[0-9]*[aefgAEFG]"));     //printf double format spec
+    QRegExp rxFormat(QString::fromUtf8("%[+-]?[0-9]*\\.*[0-9]*[aefgAEFG]")); //printf double format spec
     QString match;
     int pos = 0;
     if ((pos = rxFormat.indexIn(fSpec, 0)) != -1)  {
