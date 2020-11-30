@@ -3289,7 +3289,8 @@ void TreeWidget::onUpdateStatus(void)
     }
 
     for(auto &v : DocumentMap) {
-        if(v.first->isPerformingTransaction()) {
+        if(v.first->isPerformingTransaction()
+                || v.second->document()->isPerformingTransaction()) {
             // We have to delay item creation until undo/redo is done, because the
             // object re-creation while in transaction may break tree view item
             // update logic. For example, a parent object re-created before its
