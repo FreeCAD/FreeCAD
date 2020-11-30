@@ -5053,7 +5053,7 @@ std::unique_ptr<GeomCurve> makeFromTrimmedCurve(const Handle(Geom_Curve)& c, dou
 {
     if (c->IsKind(STANDARD_TYPE(Geom_Circle))) {
         Handle(Geom_Circle) circ = Handle(Geom_Circle)::DownCast(c);
-        std::unique_ptr<GeomArcOfCircle> arc(new GeomArcOfCircle());
+        std::unique_ptr<GeomCurve> arc(new GeomArcOfCircle());
         Handle(Geom_TrimmedCurve) this_arc = Handle(Geom_TrimmedCurve)::DownCast
             (arc->handle());
         Handle(Geom_Circle) this_circ = Handle(Geom_Circle)::DownCast
@@ -5064,7 +5064,7 @@ std::unique_ptr<GeomCurve> makeFromTrimmedCurve(const Handle(Geom_Curve)& c, dou
     }
     else if (c->IsKind(STANDARD_TYPE(Geom_Ellipse))) {
         Handle(Geom_Ellipse) ellp = Handle(Geom_Ellipse)::DownCast(c);
-        std::unique_ptr<GeomArcOfEllipse> arc(new GeomArcOfEllipse());
+        std::unique_ptr<GeomCurve> arc(new GeomArcOfEllipse());
         Handle(Geom_TrimmedCurve) this_arc = Handle(Geom_TrimmedCurve)::DownCast
             (arc->handle());
         Handle(Geom_Ellipse) this_ellp = Handle(Geom_Ellipse)::DownCast
@@ -5075,7 +5075,7 @@ std::unique_ptr<GeomCurve> makeFromTrimmedCurve(const Handle(Geom_Curve)& c, dou
     }
     else if (c->IsKind(STANDARD_TYPE(Geom_Hyperbola))) {
         Handle(Geom_Hyperbola) hypr = Handle(Geom_Hyperbola)::DownCast(c);
-        std::unique_ptr<GeomArcOfHyperbola> arc(new GeomArcOfHyperbola());
+        std::unique_ptr<GeomCurve> arc(new GeomArcOfHyperbola());
         Handle(Geom_TrimmedCurve) this_arc = Handle(Geom_TrimmedCurve)::DownCast
             (arc->handle());
         Handle(Geom_Hyperbola) this_hypr = Handle(Geom_Hyperbola)::DownCast
@@ -5086,7 +5086,7 @@ std::unique_ptr<GeomCurve> makeFromTrimmedCurve(const Handle(Geom_Curve)& c, dou
     }
     else if (c->IsKind(STANDARD_TYPE(Geom_Line))) {
         Handle(Geom_Line) line = Handle(Geom_Line)::DownCast(c);
-        std::unique_ptr<GeomLineSegment> segm(new GeomLineSegment());
+        std::unique_ptr<GeomCurve> segm(new GeomLineSegment());
         Handle(Geom_TrimmedCurve) this_segm = Handle(Geom_TrimmedCurve)::DownCast
             (segm->handle());
         Handle(Geom_Line) this_line = Handle(Geom_Line)::DownCast
@@ -5097,7 +5097,7 @@ std::unique_ptr<GeomCurve> makeFromTrimmedCurve(const Handle(Geom_Curve)& c, dou
     }
     else if (c->IsKind(STANDARD_TYPE(Geom_Parabola))) {
         Handle(Geom_Parabola) para = Handle(Geom_Parabola)::DownCast(c);
-        std::unique_ptr<GeomArcOfParabola> arc(new GeomArcOfParabola());
+        std::unique_ptr<GeomCurve> arc(new GeomArcOfParabola());
         Handle(Geom_TrimmedCurve) this_arc = Handle(Geom_TrimmedCurve)::DownCast
             (arc->handle());
         Handle(Geom_Parabola) this_para = Handle(Geom_Parabola)::DownCast
@@ -5109,19 +5109,19 @@ std::unique_ptr<GeomCurve> makeFromTrimmedCurve(const Handle(Geom_Curve)& c, dou
     else if (c->IsKind(STANDARD_TYPE(Geom_BezierCurve))) {
         Handle(Geom_BezierCurve) bezier = Handle(Geom_BezierCurve)::DownCast(c->Copy());
         bezier->Segment(f, l);
-        return std::unique_ptr<GeomBezierCurve>(new GeomBezierCurve(bezier));
+        return std::unique_ptr<GeomCurve>(new GeomBezierCurve(bezier));
     }
     else if (c->IsKind(STANDARD_TYPE(Geom_BSplineCurve))) {
         Handle(Geom_BSplineCurve) bspline = Handle(Geom_BSplineCurve)::DownCast(c->Copy());
         bspline->Segment(f, l);
-        return std::unique_ptr<GeomBSplineCurve>(new GeomBSplineCurve(bspline));
+        return std::unique_ptr<GeomCurve>(new GeomBSplineCurve(bspline));
     }
     else if (c->IsKind(STANDARD_TYPE(Geom_OffsetCurve))) {
         Handle(Geom_OffsetCurve) oc = Handle(Geom_OffsetCurve)::DownCast(c);
         double v = oc->Offset();
         gp_Dir dir = oc->Direction();
         std::unique_ptr<GeomCurve> bc(makeFromTrimmedCurve(oc->BasisCurve(), f, l));
-        return std::unique_ptr<GeomOffsetCurve>(new GeomOffsetCurve(Handle(Geom_Curve)::DownCast(bc->handle()), v, dir));
+        return std::unique_ptr<GeomCurve>(new GeomOffsetCurve(Handle(Geom_Curve)::DownCast(bc->handle()), v, dir));
     }
     else if (c->IsKind(STANDARD_TYPE(Geom_TrimmedCurve))) {
         Handle(Geom_TrimmedCurve) trc = Handle(Geom_TrimmedCurve)::DownCast(c);
