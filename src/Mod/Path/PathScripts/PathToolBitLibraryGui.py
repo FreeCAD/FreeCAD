@@ -210,7 +210,7 @@ class ModelFactory(object):
                 libItem = QtGui.QStandardItem(fn)
                 libItem.setToolTip(loc)
                 libItem.setData(libFile, _PathRole)
-                libItem.setIcon(QtGui.QPixmap(':/icons/Path-ToolTable.svg'))
+                libItem.setIcon(QtGui.QPixmap(':/icons/Path_ToolTable.svg'))
                 model.appendRow(libItem)
 
         PathLog.debug('model rows: {}'.format(model.rowCount()))

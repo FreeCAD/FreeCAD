@@ -84,7 +84,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
 
 Command = PathOpGui.SetupOperation('Probe', PathProbe.Create, TaskPanelOpPage,
-                'Path-Probe',
+                'Path_Probe',
                 QtCore.QT_TRANSLATE_NOOP("Probe", "Probe"),
                 QtCore.QT_TRANSLATE_NOOP("Probe", "Create a Probing Grid from a job stock"),
                 PathProbe.SetupProperties)

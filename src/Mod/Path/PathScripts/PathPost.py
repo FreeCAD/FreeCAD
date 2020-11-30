@@ -176,7 +176,7 @@ class CommandPathPost:
         return dlg.exec_()
 
     def GetResources(self):
-        return {'Pixmap': 'Path-Post',
+        return {'Pixmap': 'Path_Post',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Post", "Post Process"),
                 'Accel': "P, P",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Post", "Post Process the selected Job")}

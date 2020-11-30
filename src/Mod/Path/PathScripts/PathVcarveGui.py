@@ -146,9 +146,12 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         return TaskPanelBaseGeometryPage(obj, features)
 
 
-Command = PathOpGui.SetupOperation('Vcarve', PathVcarve.Create, TaskPanelOpPage,
-        'Path-Vcarve', QtCore.QT_TRANSLATE_NOOP("PathVcarve", "Vcarve"),
-        QtCore.QT_TRANSLATE_NOOP("PathVcarve", "Creates a medial line engraving path"),
+Command = PathOpGui.SetupOperation('Vcarve',
+        PathVcarve.Create,
+        TaskPanelOpPage,
+        'Path_Vcarve',
+        QtCore.QT_TRANSLATE_NOOP("Path_Vcarve", "Vcarve"),
+        QtCore.QT_TRANSLATE_NOOP("Path_Vcarve", "Creates a medial line engraving path"),
         PathVcarve.SetupProperties)
 
 FreeCAD.Console.PrintLog("Loading PathVcarveGui... done\n")

@@ -539,7 +539,7 @@ class PathSimulation:
 class CommandPathSimulate:
 
     def GetResources(self):
-        return {'Pixmap': 'Path-Simulator',
+        return {'Pixmap': 'Path_Simulator',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Simulator", "CAM Simulator"),
                 'Accel': "P, M",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Simulator", "Simulate Path G-Code on stock")}

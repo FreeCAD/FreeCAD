@@ -36,7 +36,7 @@
        </property>
        <property name="icon">
         <iconset resource="../Path.qrc">
-         <normaloff>:/icons/Path-ToolBit.svg</normaloff>:/icons/Path-ToolBit.svg</iconset>
+         <normaloff>:/icons/Path_ToolBit.svg</normaloff>:/icons/Path_ToolBit.svg</iconset>
        </property>
       </widget>
      </item>
@@ -56,7 +56,7 @@
        </property>
        <property name="icon">
         <iconset resource="../Path.qrc">
-         <normaloff>:/icons/Path-ToolDuplicate.svg</normaloff>:/icons/Path-ToolDuplicate.svg</iconset>
+         <normaloff>:/icons/Path_ToolDuplicate.svg</normaloff>:/icons/Path_ToolDuplicate.svg</iconset>
        </property>
       </widget>
      </item>
