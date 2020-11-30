@@ -139,7 +139,7 @@
             <rdf:li>ellipsis</rdf:li>
           </rdf:Bag>
         </dc:subject>
-        <dc:title>Path-OperationA</dc:title>
+        <dc:title>Path_OperationA</dc:title>
         <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
       </cc:Work>
     </rdf:RDF>

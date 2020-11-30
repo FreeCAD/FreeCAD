@@ -14,7 +14,7 @@
    id="svg2816"
    version="1.1"
    inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
-   sodipodi:docname="Path-Waterline.svg">
+   sodipodi:docname="Path_Waterline.svg">
   <title
      id="title165">Path_Waterline</title>
   <sodipodi:namedview
@@ -176,7 +176,7 @@
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
         <dc:title>Path_Waterline</dc:title>
-        <dc:title>Path-Waterline</dc:title>
+        <dc:title>Path_Waterline</dc:title>
         <dc:date>2019-05-19</dc:date>
         <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:publisher>
@@ -184,7 +184,7 @@
             <dc:title>FreeCAD</dc:title>
           </cc:Agent>
         </dc:publisher>
-        <dc:identifier>FreeCAD/src/Mod/Path/Gui/Resources/icons/Path-Waterline.svg</dc:identifier>
+        <dc:identifier>FreeCAD/src/Mod/Path/Gui/Resources/icons/Path_Waterline.svg</dc:identifier>
         <dc:rights>
           <cc:Agent>
             <dc:title>FreeCAD LGPL2+</dc:title>
