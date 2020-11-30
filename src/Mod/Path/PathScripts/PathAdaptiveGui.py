@@ -219,5 +219,5 @@ Command = PathOpGui.SetupOperation('Adaptive',
         TaskPanelOpPage,
         'Path_Adaptive',
         QtCore.QT_TRANSLATE_NOOP("Path_Adaptive", "Adaptive"),
-        QtCore.QT_TRANSLATE_NOOP("Path_Pocket", "Adaptive clearing and profiling")
+        QtCore.QT_TRANSLATE_NOOP("Path_Adaptive", "Adaptive clearing and profiling")
         )
