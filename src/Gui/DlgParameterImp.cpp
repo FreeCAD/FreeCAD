@@ -242,12 +242,12 @@ void DlgParameterImp::on_checkSort_toggled(bool on)
     paramGroup->setSortingEnabled(on);
     paramGroup->sortByColumn(0, Qt::AscendingOrder);
     paramGroup->header()->setProperty("showSortIndicator", QVariant(on));
-#endif
 
-#if QT_VERSION >= 0x050000
     paramValue->setSortingEnabled(on);
     paramValue->sortByColumn(0, Qt::AscendingOrder);
     paramValue->header()->setProperty("showSortIndicator", QVariant(on));
+#else
+    Q_UNUSED(on)
 #endif
 }
 

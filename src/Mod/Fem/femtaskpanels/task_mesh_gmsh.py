@@ -231,7 +231,7 @@ class _TaskPanel:
                 if m.Name == self.mesh_obj.Name:
                     FreeCAD.Console.PrintMessage(
                         "Active analysis found: {}\n"
-                        .format(self.analysis.Name)
+                        .format(analysis.Name)
                     )
                     self.analysis = analysis  # group meshing
                     break
