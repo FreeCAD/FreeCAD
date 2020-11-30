@@ -15,7 +15,7 @@
    id="svg2726"
    sodipodi:version="0.32"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="Path-InactiveOp.svg"
+   sodipodi:docname="Path_InactiveOp.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.1">
   <defs
@@ -466,7 +466,7 @@
             <rdf:li>ellipsis</rdf:li>
           </rdf:Bag>
         </dc:subject>
-        <dc:title>Path-OperationA</dc:title>
+        <dc:title>Path_OperationA</dc:title>
         <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
       </cc:Work>
     </rdf:RDF>

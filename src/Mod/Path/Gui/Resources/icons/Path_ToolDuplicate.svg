@@ -15,7 +15,7 @@
    id="svg2816"
    version="1.1"
    inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
-   sodipodi:docname="Path-ToolDuplicate.svg">
+   sodipodi:docname="Path_ToolDuplicate.svg">
   <defs
      id="defs2818">
     <linearGradient
@@ -737,7 +737,7 @@
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
         <dc:title />
-        <dc:title>Path-ToolChange</dc:title>
+        <dc:title>Path_ToolChange</dc:title>
         <dc:date>2016-01-20</dc:date>
         <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:publisher>
@@ -745,7 +745,7 @@
             <dc:title>FreeCAD</dc:title>
           </cc:Agent>
         </dc:publisher>
-        <dc:identifier>FreeCAD/src/Mod/Path/Gui/Resources/icons/Path-ToolChange.svg</dc:identifier>
+        <dc:identifier>FreeCAD/src/Mod/Path/Gui/Resources/icons/Path_ToolChange.svg</dc:identifier>
         <dc:rights>
           <cc:Agent>
             <dc:title>FreeCAD LGPL2+</dc:title>

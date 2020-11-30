@@ -15,7 +15,7 @@
    id="svg2816"
    version="1.1"
    inkscape:version="0.92.3 (2405546, 2018-03-11)"
-   sodipodi:docname="Path-Vcarve.svg">
+   sodipodi:docname="Path_Vcarve.svg">
   <defs
      id="defs2818">
     <linearGradient
@@ -596,7 +596,7 @@
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
         <dc:title></dc:title>
-        <dc:title>Path-Engrave</dc:title>
+        <dc:title>Path_Engrave</dc:title>
         <dc:date>2016-02-24</dc:date>
         <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:publisher>
@@ -604,7 +604,7 @@
             <dc:title>FreeCAD</dc:title>
           </cc:Agent>
         </dc:publisher>
-        <dc:identifier>FreeCAD/src/Mod/Path/Gui/Resources/icons/Path-Engrave.svg</dc:identifier>
+        <dc:identifier>FreeCAD/src/Mod/Path/Gui/Resources/icons/Path_Engrave.svg</dc:identifier>
         <dc:rights>
           <cc:Agent>
             <dc:title>FreeCAD LGPL2+</dc:title>

@@ -14,7 +14,7 @@
    id="svg2816"
    version="1.1"
    inkscape:version="0.92.2 (5c3e80d, 2017-08-06)"
-   sodipodi:docname="Path-3DPocket.svg">
+   sodipodi:docname="Path_3DPocket.svg">
   <sodipodi:namedview
      pagecolor="#ffffff"
      bordercolor="#666666"
@@ -189,7 +189,7 @@
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
         <dc:title></dc:title>
-        <dc:title>Path-3DSurface</dc:title>
+        <dc:title>Path_3DSurface</dc:title>
         <dc:date>2016-05-15</dc:date>
         <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:publisher>
@@ -197,7 +197,7 @@
             <dc:title>FreeCAD</dc:title>
           </cc:Agent>
         </dc:publisher>
-        <dc:identifier>FreeCAD/src/Mod/Path/Gui/Resources/icons/Path-3DSurface.svg</dc:identifier>
+        <dc:identifier>FreeCAD/src/Mod/Path/Gui/Resources/icons/Path_3DSurface.svg</dc:identifier>
         <dc:rights>
           <cc:Agent>
             <dc:title>FreeCAD LGPL2+</dc:title>

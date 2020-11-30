@@ -15,7 +15,7 @@
    id="svg2816"
    version="1.1"
    inkscape:version="0.48.5 r10040"
-   sodipodi:docname="Path-Helix.svg"
+   sodipodi:docname="Path_Helix.svg"
    inkscape:export-filename="C:\Users\Alex Gryson\Desktop\Path-Helix_64.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
@@ -1399,7 +1399,7 @@
             <dc:title>[Lorenz Hüdepohl]</dc:title>
           </cc:Agent>
         </dc:creator>
-        <dc:title>Path-Helix</dc:title>
+        <dc:title>Path_Helix</dc:title>
         <dc:date>2016-05-10</dc:date>
         <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:publisher>
@@ -1407,7 +1407,7 @@
             <dc:title>FreeCAD</dc:title>
           </cc:Agent>
         </dc:publisher>
-        <dc:identifier>FreeCAD/src/Mod/Path/Gui/Resources/icons/Path-Helix.svg</dc:identifier>
+        <dc:identifier>FreeCAD/src/Mod/Path/Gui/Resources/icons/Path_Helix.svg</dc:identifier>
         <dc:rights>
           <cc:Agent>
             <dc:title>FreeCAD LGPL2+</dc:title>
