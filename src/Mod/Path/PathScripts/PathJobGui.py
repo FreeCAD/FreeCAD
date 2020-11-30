@@ -207,7 +207,7 @@ class ViewProvider:
         self.unsetEdit(None, None)
 
     def getIcon(self):
-        return ":/icons/Path-Job.svg"
+        return ":/icons/Path_Job.svg"
 
     def claimChildren(self):
         children = self.obj.ToolController

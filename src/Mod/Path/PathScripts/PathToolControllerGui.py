@@ -67,7 +67,7 @@ class ViewProvider:
         return None
 
     def getIcon(self):
-        return ":/icons/Path-ToolController.svg"
+        return ":/icons/Path_ToolController.svg"
 
     def onChanged(self, vobj, prop):
         # pylint: disable=unused-argument
@@ -141,7 +141,7 @@ class CommandPathToolController(object):
     # pylint: disable=no-init
 
     def GetResources(self):
-        return {'Pixmap': 'Path-LengthOffset',
+        return {'Pixmap': 'Path_LengthOffset',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_ToolController", "Add Tool Controller to the Job"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_ToolController", "Add Tool Controller")}
 

@@ -39,7 +39,7 @@ PROPERTY_SOURCE(PathGui::ViewProviderPathShape, PathGui::ViewProviderPath)
 
 QIcon ViewProviderPathShape::getIcon() const
 {
-    return Gui::BitmapFactory().pixmap("Path-Shape");
+    return Gui::BitmapFactory().pixmap("Path_Shape");
 }
 
 std::vector<App::DocumentObject*> ViewProviderPathShape::claimChildren(void) const

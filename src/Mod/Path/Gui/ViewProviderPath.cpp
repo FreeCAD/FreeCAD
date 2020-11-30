@@ -723,7 +723,7 @@ Base::BoundBox3d ViewProviderPath::_getBoundingBox(
 
 QIcon ViewProviderPath::getIcon() const
 {
-    return Gui::BitmapFactory().pixmap("Path-Toolpath");
+    return Gui::BitmapFactory().pixmap("Path_Toolpath");
 }
 
 // Python object -----------------------------------------------------------------------

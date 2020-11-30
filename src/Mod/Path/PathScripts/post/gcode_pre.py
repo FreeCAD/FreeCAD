@@ -112,7 +112,11 @@ def insert(filename, docname):
 
         # Create a custom and viewobject
         obj = PathCustom.Create("Custom")
-        res = PathOpGui.CommandResources('Custom', PathCustom.Create, PathCustomGui.TaskPanelOpPage, 'Path-Custom', 'Path-Custom', '', '')
+        res = PathOpGui.CommandResources('Custom',
+            PathCustom.Create, PathCustomGui.TaskPanelOpPage,
+            'Path_Custom', 
+            'Path_Custom', '', ''
+            )
         obj.ViewObject.Proxy = PathOpGui.ViewProvider(obj.ViewObject, res)
         obj.ViewObject.Proxy.setDeleteObjectsOnReject(False)
 
