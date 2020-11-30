@@ -4,8 +4,8 @@
         <file>icons/Path_ToolDuplicate.svg</file>
         <file>icons/Path_3DPocket.svg</file>
         <file>icons/Path_3DSurface.svg</file>
-        <file>icons/Path_Area-View.svg</file>
-        <file>icons/Path_Area-Workplane.svg</file>
+        <file>icons/Path_Area_View.svg</file>
+        <file>icons/Path_Area_Workplane.svg</file>
         <file>icons/Path_Area.svg</file>
         <file>icons/Path_Array.svg</file>
         <file>icons/Path_Axis.svg</file>
@@ -48,8 +48,8 @@
         <file>icons/Path_Pocket.svg</file>
         <file>icons/Path_Post.svg</file>
         <file>icons/Path_Probe.svg</file>
-        <file>icons/Path_Profile-Edges.svg</file>
-        <file>icons/Path_Profile-Face.svg</file>
+        <file>icons/Path_Profile_Edges.svg</file>
+        <file>icons/Path_Profile_Face.svg</file>
         <file>icons/Path_Profile.svg</file>
         <file>icons/Path_Sanity.svg</file>
         <file>icons/Path_SelectLoop.svg</file>
