@@ -116,7 +116,6 @@ protected:
     void setVisualBodyMode(bool bodymode);
 
 private:
-    std::vector<std::pair<App::DocumentObjectT, App::DocumentObjectT> > visibleFeatures;
     static const char* BodyModeEnum[];
     bool checkingSiblings = false;
 };

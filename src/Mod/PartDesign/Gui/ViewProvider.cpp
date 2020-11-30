@@ -208,9 +208,6 @@ bool ViewProvider::setEdit(int ModNum)
         // always change to PartDesign WB, remember where we come from
         oldWb = Gui::Command::assureWorkbench("PartDesignWorkbench");
 
-        auto bodyVp = Base::freecad_dynamic_cast<ViewProviderBody>(
-                Gui::Application::Instance->getViewProvider(
-                    PartDesign::Body::findBodyOf(getObject())));
         // start the edit dialog if
         if (!featureDlg) {
             featureDlg = this->getEditDialog();
@@ -218,9 +215,7 @@ bool ViewProvider::setEdit(int ModNum)
                 return false;
         }
 
-        if (bodyVp)
-            bodyVp->beforeEdit(this);
-
+        PartDesignGui::beforeEdit(getObject());
         Gui::Control().showDialog(featureDlg);
         return true;
     }
@@ -307,12 +302,6 @@ void ViewProvider::unsetEdit(int ModNum)
 
         // when pressing ESC make sure to close the dialog
         Gui::Control().closeDialog();
-
-        auto bodyVp = Base::freecad_dynamic_cast<ViewProviderBody>(
-                Gui::Application::Instance->getViewProvider(
-                    PartDesign::Body::findBodyOf(getObject())));
-        if (bodyVp)
-            bodyVp->afterEdit(this);
     }
     else {
         PartGui::ViewProviderPart::unsetEdit(ModNum);

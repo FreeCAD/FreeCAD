@@ -99,47 +99,6 @@ ViewProviderBody::~ViewProviderBody()
 {
 }
 
-void ViewProviderBody::beforeEdit(PartDesignGui::ViewProvider *vp)
-{
-    auto body = Base::freecad_dynamic_cast<PartDesign::Body>(getObject());
-    if (!body)
-        return;
-    visibleFeatures.clear();
-    if (!PartDesign::Body::isSolidFeature(vp->getObject())) {
-        vp->Visibility.setValue(true);
-        return;
-    }
-    for (auto obj : body->Group.getValues()) {
-        if (!obj->Visibility.getValue()
-                || !obj->isDerivedFrom(PartDesign::Feature::getClassTypeId())
-                || !PartDesign::Body::isSolidFeature(obj))
-            continue;
-        auto feature = static_cast<PartDesign::Feature*>(obj);
-        visibleFeatures.emplace_back(
-                App::DocumentObjectT(feature),
-                App::DocumentObjectT(feature->BaseFeature.getValue()));
-        feature->Visibility.setValue(false);
-    }
-    vp->Visibility.setValue(true);
-}
-
-void ViewProviderBody::afterEdit(PartDesignGui::ViewProvider *)
-{
-    auto body = Base::freecad_dynamic_cast<PartDesign::Body>(getObject());
-    if (!body)
-        return;
-    for (auto &pair : visibleFeatures) {
-        auto obj = pair.first.getObject();
-        if (!obj) {
-            obj = pair.second.getObject();
-            if (!obj)
-                continue;
-        }
-        obj->Visibility.setValue(true);
-    }
-    visibleFeatures.clear();
-}
-
 void ViewProviderBody::attach(App::DocumentObject *pcFeat)
 {
     // call parent attach method

@@ -661,7 +661,6 @@ public:
 
         Gui::Application::Instance->signalInEdit.connect(
             [this](const Gui::ViewProviderDocumentObject & vp) {
-                resetEdit();
                 auto doc = Gui::Application::Instance->editDocument();
                 if (!doc)
                     return;
@@ -707,7 +706,8 @@ public:
                 resetEdit();
             });
 
-        Gui::Control().signalShowDialog.connect(boost::bind(&Monitor::slotShowDialog, this, bp::_1, bp::_2));
+        Gui::Control().signalShowDialog.connect(
+                boost::bind(&Monitor::slotShowDialog, this, bp::_1, bp::_2));
 
         Gui::Control().signalRemoveDialog.connect(
             [this](QWidget *, std::vector<QWidget*> &contents) {
@@ -753,8 +753,20 @@ public:
 
     void resetEdit()
     {
+        for (auto & objs : visibleFeatures) {
+            for (auto & objT : objs) {
+                auto obj = objT.getObject();
+                if (obj) {
+                    obj->Visibility.setValue(true);
+                    break;
+                }
+            }
+        }
+        visibleFeatures.clear();
+
         if (!editView)
             return;
+
         auto doc = Gui::Application::Instance->getDocument(editObj.getDocument());
         if (doc) {
             doc->foreachView<Gui::View3DInventor>(
@@ -871,6 +883,43 @@ public:
         connDeletedObject.disconnect();
         connDeleteDocument.disconnect();
     }
+    
+    void beforeEdit(App::DocumentObject *editingObj)
+    {
+        auto body = PartDesign::Body::findBodyOf(editingObj);
+        if (!body)
+            return;
+        visibleFeatures.clear();
+        if (!PartDesign::Body::isSolidFeature(editingObj)) {
+            editingObj->Visibility.setValue(true);
+            return;
+        }
+        for (auto obj : body->Group.getValues()) {
+            if (!obj->Visibility.getValue()
+                    || !obj->isDerivedFrom(PartDesign::Feature::getClassTypeId())
+                    || !PartDesign::Body::isSolidFeature(obj))
+                continue;
+            visibleFeatures.emplace_back();
+            auto & objs = visibleFeatures.back();
+            auto siblings = body->getSiblings(obj);
+            objs.reserve(siblings.size());
+            for (auto it = siblings.begin(); it != siblings.end(); ++it) {
+                auto sibling = *it;
+                if (!objs.empty())
+                    objs.emplace_back(sibling);
+                else if (sibling == obj) {
+                    for (auto it2 = it; ;--it2) {
+                        objs.emplace_back(*it2);
+                        if (it2 == siblings.begin())
+                            break;
+                    }
+                }
+            }
+            if (obj != editingObj)
+                obj->Visibility.setValue(false);
+        }
+        editingObj->Visibility.setValue(true);
+    }
 
 public:
     boost::signals2::scoped_connection connChangedObject;
@@ -881,6 +930,8 @@ public:
     App::SubObjectT editObj;
     Gui::View3DInventor *editView = nullptr;
     QPointer<QWidget> taskWidget;
+
+    std::vector<std::vector<App::DocumentObjectT> > visibleFeatures;
 };
 
 static Monitor *_MonitorInstance;
@@ -888,6 +939,12 @@ void initMonitor()
 {
     if (!_MonitorInstance)
         _MonitorInstance = new Monitor;
+}
+
+void beforeEdit(App::DocumentObject *obj)
+{
+    initMonitor();
+    _MonitorInstance->beforeEdit(obj);
 }
 
 } /* PartDesignGui */
