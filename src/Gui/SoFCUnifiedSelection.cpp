@@ -371,7 +371,6 @@ SoFCUnifiedSelection::getPickedList(const SbVec2s &pos, const SbViewportRegion &
     pcRayPick->setViewportRegion(viewport);
     pcRayPick->setPoint(pos);
     pcRayPick->setPickAll(!singlePick || !ViewParams::instance()->getUseNewRayPick());
-    pcRayPick->setPickBackFace(singlePick ? pickBackFace : 0); 
 
     SoPickStyleElement::set(pcRayPick->getState(),
             (!pcRayPick->pickBackFace() && singlePick) ?
@@ -380,9 +379,15 @@ SoFCUnifiedSelection::getPickedList(const SbVec2s &pos, const SbViewportRegion &
 
     SoFCDisplayModeElement::set(pcRayPick->getState(),0,SbName::empty(),false);
 
+    if (ViewParams::getHiddenLineSelectionOnTop())
+        pcRayPick->setPickBackFace(singlePick ? (pickBackFace ? pickBackFace : -1) : 0); 
+    else
+        pcRayPick->setPickBackFace(singlePick ? pickBackFace : 0); 
+
     pcRayPick->cleanup();
     getPickedInfoOnTop(ret, singlePick, filter);
 
+    pcRayPick->setPickBackFace(singlePick ? pickBackFace : 0); 
     if(ret.empty() || !singlePick) {
         SoFCDisplayModeElement::set(pcRayPick->getState(),0,
                 overrideMode.getValue(), showHiddenLines.getValue());
