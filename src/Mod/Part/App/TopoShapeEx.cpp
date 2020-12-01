@@ -3769,24 +3769,22 @@ bool TopoShape::getRelatedElementsCached(const char *name, bool sameType,
 bool TopoShape::findPlane(gp_Pln &pln, double tol) const {
     if(_Shape.IsNull())
         return false;
-    TopoDS_Shape shape = _Shape;
-    if (countSubShapes(TopAbs_FACE) == 1) {
-        shape = getSubShape(TopAbs_FACE,1);
-        BRepAdaptor_Surface adapt(TopoDS::Face(shape));
-        if(adapt.GetType() == GeomAbs_Plane) {
-            pln = adapt.Plane();
-            return true;
-        }
-    } else if (countSubShapes(TopAbs_EDGE) == 1) {
+    TopoDS_Shape shape;
+    if (countSubShapes(TopAbs_EDGE) == 1) {
         // To deal with OCCT bug of wrong edge transformation
-        shape = BRepBuilderAPI_Copy(shape).Shape();
-    }
+        shape = BRepBuilderAPI_Copy(_Shape).Shape();
+    } else
+        shape = _Shape;
     try {
         BRepLib_FindSurface finder(shape,tol,Standard_True);
         if (!finder.Found())
             return false;
         pln = GeomAdaptor_Surface(finder.Surface()).Plane();
-        if (shape.ShapeType() == TopAbs_FACE) {
+
+        // To make the returned plane normal more stable, if the shape has any
+        // face, use the normal of the first face.
+        if (hasSubShape(TopAbs_FACE)) {
+            shape = getSubShape(TopAbs_FACE, 1);
             BRepAdaptor_Surface adapt(TopoDS::Face(shape));
             double u = adapt.FirstUParameter()
                 + (adapt.LastUParameter() - adapt.FirstUParameter())/2.;
