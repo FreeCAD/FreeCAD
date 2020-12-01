@@ -90,7 +90,7 @@ const Hole::ThreadDescription Hole::threadDescription[][171] =
 {
     /* None */
     {
-        { "---", 	6.0, 0.0 },
+        { "---", 	6.0, 0.0, 0.0 },
     },
 
     /* ISO metric regular */
