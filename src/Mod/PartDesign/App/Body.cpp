@@ -389,7 +389,9 @@ Body::newObjectAt(const char *type,
         if (i < j)
             setTip(obj);
     }
-    obj->Visibility.setValue(true);
+    auto siblings = getSiblings(obj);
+    if (siblings.empty() || siblings.back() == obj)
+        obj->Visibility.setValue(true);
     return obj;
 }
 
