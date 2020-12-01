@@ -2700,7 +2700,7 @@ void ViewProviderSketch::updateColor(void)
     auto isConstructionGeom = [](Sketcher::SketchObject* obj, int GeoId) -> bool {
         const Part::Geometry* geom = obj->getGeometry(GeoId);
         if (geom)
-            return geom->getConstruction();
+            return Sketcher::GeometryFacade::getConstruction(geom);
         return false;
     };
 
@@ -2733,7 +2733,7 @@ void ViewProviderSketch::updateColor(void)
         pverts[i].getValue(x,y,z);
         const Part::Geometry * tmp = getSketchObject()->getGeometry(edit->PointIdToGeoId[i]);
         if(tmp && z < zHighlight) {
-            if(tmp->getConstruction())
+            if(Sketcher::GeometryFacade::getConstruction(tmp))
                 pverts[i].setValue(x,y,zConstrPoint);
             else
                 pverts[i].setValue(x,y,zNormPoint);

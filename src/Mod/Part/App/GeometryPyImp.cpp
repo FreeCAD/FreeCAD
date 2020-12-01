@@ -433,17 +433,6 @@ PyObject* GeometryPy::getExtensions(PyObject *args)
 
 }
 
-Py::Boolean GeometryPy::getConstruction(void) const
-{
-    return Py::Boolean(getGeometryPtr()->getConstruction());
-}
-
-void  GeometryPy::setConstruction(Py::Boolean arg)
-{
-    if (getGeometryPtr()->getTypeId() != Part::GeomPoint::getClassTypeId())
-        getGeometryPtr()->setConstruction(arg);
-}
-
 Py::String GeometryPy::getTag(void) const
 {
     std::string tmp = boost::uuids::to_string(getGeometryPtr()->getTag());
