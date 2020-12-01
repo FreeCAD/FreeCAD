@@ -1055,7 +1055,8 @@ std::vector<Part::Geometry *> Sketch::extractGeometry(bool withConstructionEleme
     std::vector<Part::Geometry *> temp;
     temp.reserve(Geoms.size());
     for (std::vector<GeoDef>::const_iterator it=Geoms.begin(); it != Geoms.end(); ++it) {
-        if ((!it->external || withExternalElements) && (!it->geo->getConstruction() || withConstructionElements))
+        auto gf = GeometryFacade::getFacade(it->geo);
+        if ((!it->external || withExternalElements) && (!gf->getConstruction() || withConstructionElements))
             temp.push_back(it->geo->clone());
     }
 
@@ -3827,7 +3828,8 @@ TopoShape Sketch::toShape(void) const
 
     // collecting all (non constructive and non external) edges out of the sketch
     for (;it!=Geoms.end();++it) {
-        if (!it->external && !it->geo->getConstruction() && (it->type != Point)) {
+        auto gf = GeometryFacade::getFacade(it->geo);
+        if (!it->external && !gf->getConstruction() && (it->type != Point)) {
             edge_list.push_back(TopoDS::Edge(it->geo->toShape()));
         }
     }
