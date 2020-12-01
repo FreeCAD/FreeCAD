@@ -140,7 +140,10 @@
 #include <Base/Reader.h>
 #include <Base/Tools.h>
 
+#include "GeometryMigrationExtension.h"
+
 #include "Geometry.h"
+
 
 using namespace Part;
 
@@ -187,7 +190,6 @@ const char* gce_ErrorStatusText(gce_ErrorType et)
 TYPESYSTEM_SOURCE_ABSTRACT(Part::Geometry,Base::Persistence)
 
 Geometry::Geometry()
-  : Construction(false)
 {
     createNewTag();
 }
@@ -205,29 +207,26 @@ unsigned int Geometry::getMemSize (void) const
 
 void Geometry::Save(Base::Writer &writer) const
 {
-    if( extensions.size()>0 ) {
+    // We always store an extension array even if empty, so that restoring is consistent.
+    writer.Stream() << writer.ind() << "<GeoExtensions count=\"" << extensions.size() << "\">" << std::endl;
 
-        writer.incInd();
+    writer.incInd();
 
-        writer.Stream() << writer.ind() << "<GeoExtensions count=\"" << extensions.size() << "\">" << std::endl;
-
-        for(auto att:extensions) {
-            att->Save(writer);
-        }
-
-        writer.decInd();
-        writer.Stream() << writer.ind() << "</GeoExtensions>" << std::endl;
+    for(auto att:extensions) {
+        att->Save(writer);
     }
 
-    const char c = Construction?'1':'0';
-    writer.Stream() << writer.ind() << "<Construction value=\"" <<  c << "\"/>" << std::endl;
+    writer.decInd();
+    writer.Stream() << writer.ind() << "</GeoExtensions>" << std::endl;
 }
 
 void Geometry::Restore(Base::XMLReader &reader)
 {
+    // In legacy file format, there are no extensions and there is a construction XML tag
+    // In the new format, this is migrated into extensions, and we get an array with extensions
     reader.readElement();
 
-    if(strcmp(reader.localName(),"GeoExtensions") == 0) {
+    if(strcmp(reader.localName(),"GeoExtensions") == 0) { // new format
 
         int count = reader.getAttributeAsInteger("count");
 
@@ -242,14 +241,21 @@ void Geometry::Restore(Base::XMLReader &reader)
         }
 
         reader.readEndElement("GeoExtensions");
-
-        reader.readElement("Construction"); // prepare for reading construction attribute
     }
-    else if(strcmp(reader.localName(),"Construction") != 0) { // ignore anything not known
-        reader.readElement("Construction");
-    }
+    else if(strcmp(reader.localName(),"Construction") == 0) { // legacy
 
-    Construction = (int)reader.getAttributeAsInteger("value")==0?false:true;
+        bool construction = (int)reader.getAttributeAsInteger("value")==0?false:true;
+
+        // prepare migration
+        if(!this->hasExtension(GeometryMigrationExtension::getClassTypeId()))
+            this->setExtension(std::make_unique<GeometryMigrationExtension>());
+
+        auto ext = std::static_pointer_cast<GeometryMigrationExtension>(this->getExtension(GeometryMigrationExtension::getClassTypeId()).lock());
+
+        ext->setMigrationType(GeometryMigrationExtension::Construction);
+        ext->setConstruction(construction);
+
+    }
 
 }
 
@@ -385,8 +391,6 @@ void Geometry::assignTag(const Part::Geometry * geo)
 
 void Geometry::copyNonTag(const Part::Geometry * src)
 {
-    this->Construction = src->Construction;
-
     for(auto & ext: src->extensions)
         this->extensions.push_back(ext->copy());
 }

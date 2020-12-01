@@ -34,6 +34,8 @@
 
 #include <Mod/Sketcher/App/SketchAnalysis.h>
 
+#include "GeometryFacade.h"
+
 #include "Analyse.h"
 
 #include "Sketch.h"
@@ -146,6 +148,9 @@ public:
      *  id<=-3 for user defined projected external geometries,
      */
     const Part::Geometry* getGeometry(int GeoId) const;
+
+    std::unique_ptr<const GeometryFacade> getGeometryFacade(int GeoId) const;
+
     /// returns a list of all internal geometries
     const std::vector<Part::Geometry *> &getInternalGeometry(void) const { return Geometry.getValues(); }
     /// returns a list of projected external geometries
