@@ -45,8 +45,8 @@ public:
     ~QGCustomText() {}
 
     enum {Type = QGraphicsItem::UserType + 130};
-    int type() const { return Type;}
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
+    int type() const override { return Type;}
+    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 ) override;
     virtual QRectF boundingRect() const override;
     QRectF tightBoundingRect() const;
     QPointF tightBoundingAdjust() const;
@@ -77,9 +77,9 @@ public:
     void makeMark(Base::Vector3d v);
 
 protected:
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
+    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
+    QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
     Base::Reference<ParameterGrp> getParmGroup(void);
 
