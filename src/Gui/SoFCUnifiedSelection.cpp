@@ -103,6 +103,7 @@
 #include "ViewProviderGeometryObject.h"
 #include "ViewParams.h"
 #include "OverlayWidgets.h"
+#include "SoMouseWheelEvent.h"
 
 FC_LOG_LEVEL_INIT("SoFCUnifiedSelection",false,true)
 
@@ -982,30 +983,35 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
     }
 
     // mouse press events for (de)selection
-    if (event->isOfType(SoMouseButtonEvent::getClassTypeId()) && 
-             selectionMode.getValue() == SoFCUnifiedSelection::ON) {
-        const SoMouseButtonEvent* e = static_cast<const SoMouseButtonEvent *>(event);
-        if (SoMouseButtonEvent::isButtonReleaseEvent(e,SoMouseButtonEvent::BUTTON1)) {
-            // check to see if the mouse is over a geometry...
-            auto infos = this->getPickedList(action,!Selection().needPickedList());
-            if(setSelection(infos,event->wasCtrlDown(),event->wasShiftDown(),event->wasAltDown()))
-                action->setHandled();
-        } // mouse release
-        else if (shiftDown && event->wasCtrlDown()) {
-            if (SoMouseButtonEvent::isButtonPressEvent(e, SoMouseButtonEvent::BUTTON4)) {
-                if(pickBackFace == 1)
-                    pickBackFace = -1;
-                else
-                    --pickBackFace;
-                doPick = true;
-                FC_LOG("back face " << pickBackFace);
-            } else if (SoMouseButtonEvent::isButtonPressEvent(e, SoMouseButtonEvent::BUTTON5)) {
-                if(pickBackFace == -1)
-                    pickBackFace = 1;
-                else
-                    ++pickBackFace;
-                doPick = true;
-                FC_LOG("back face " << pickBackFace);
+    if (selectionMode.getValue() == SoFCUnifiedSelection::ON) {
+        if (event->isOfType(SoMouseButtonEvent::getClassTypeId())) {
+            const SoMouseButtonEvent* e = static_cast<const SoMouseButtonEvent *>(event);
+            if (SoMouseButtonEvent::isButtonReleaseEvent(e,SoMouseButtonEvent::BUTTON1)) {
+                // check to see if the mouse is over a geometry...
+                auto infos = this->getPickedList(action,!Selection().needPickedList());
+                if(setSelection(infos,event->wasCtrlDown(),event->wasShiftDown(),event->wasAltDown()))
+                    action->setHandled();
+            } // mouse release
+        } else if (event->isOfType(SoMouseWheelEvent::getClassTypeId())) {
+            if (shiftDown && event->wasCtrlDown()) {
+                auto wev = static_cast<const SoMouseWheelEvent*>(event);
+                if (wev->getDelta() > 0) {
+                    if(pickBackFace == 1)
+                        pickBackFace = -1;
+                    else
+                        --pickBackFace;
+                    doPick = true;
+                    FC_MSG("back face forward " << pickBackFace << " " << wev->getDelta());
+                    action->setHandled();
+                } else if (wev->getDelta() < 0) {
+                    if(pickBackFace == -1)
+                        pickBackFace = 1;
+                    else
+                        ++pickBackFace;
+                    doPick = true;
+                    FC_MSG("back face reverse " << pickBackFace << " " << wev->getDelta());
+                    action->setHandled();
+                }
             }
         }
     }

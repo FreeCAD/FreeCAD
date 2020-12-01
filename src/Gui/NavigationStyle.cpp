@@ -1469,13 +1469,14 @@ SbBool NavigationStyle::processEvent(const SoEvent * const ev)
 
 SbBool NavigationStyle::processSoEvent(const SoEvent * const ev)
 {
+    if(viewer->processSoEventBase(ev))
+        return TRUE;
+
     const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
     const SbVec2s size(vp.getViewportSizePixels());
     const SbVec2s pos(ev->getPosition());
     const SbVec2f posn((float) pos[0] / (float) std::max((int)(size[0] - 1), 1),
                        (float) pos[1] / (float) std::max((int)(size[1] - 1), 1));
-    bool processed = false;
-
     //handle mouse wheel zoom
     if(ev->isOfType(SoMouseWheelEvent::getClassTypeId())){
         doZoom(
@@ -1483,13 +1484,9 @@ SbBool NavigationStyle::processSoEvent(const SoEvent * const ev)
             static_cast<const SoMouseWheelEvent*>(ev)->getDelta(),
             posn
         );
-        processed = true;
+        return TRUE;
     }
-
-    if (! processed)
-        return viewer->processSoEventBase(ev);
-    else
-        return processed;
+    return FALSE;
 }
 
 void NavigationStyle::syncWithEvent(const SoEvent * const ev)

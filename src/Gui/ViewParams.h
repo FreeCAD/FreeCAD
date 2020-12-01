@@ -87,6 +87,8 @@ public:
                                       "if SelectionOnTop is enabled.")) \
     FC_VIEW_PARAM(TransparencyOnTop,double,Float,0.5, \
        QT_TRANSLATE_NOOP("ViewParams","Transparency for the selected object when being shown on top."))\
+    FC_VIEW_PARAM(HiddenLineSelectionOnTop,bool,Bool,true, \
+       QT_TRANSLATE_NOOP("ViewParams","Enable hidden line/point selection when SelectionOnTop is active."))\
     FC_VIEW_PARAM(PartialHighlightOnFullSelect,bool,Bool,false, \
        QT_TRANSLATE_NOOP("ViewParams","Enable partial highlight on full selection for object that supports it."))\
     FC_VIEW_PARAM(SelectionLineThicken,double,Float,1.0, \
