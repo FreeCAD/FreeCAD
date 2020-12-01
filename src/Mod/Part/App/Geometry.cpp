@@ -288,7 +288,7 @@ bool Geometry::hasExtension(std::string name) const
     return false;
 }
 
-std::weak_ptr<const GeometryExtension> Geometry::getExtension(Base::Type type) const
+std::weak_ptr<GeometryExtension> Geometry::getExtension(Base::Type type)
 {
     for( auto ext : extensions) {
         if(ext->getTypeId() == type)
@@ -298,7 +298,7 @@ std::weak_ptr<const GeometryExtension> Geometry::getExtension(Base::Type type) c
     throw Base::ValueError("No geometry extension of the requested type.");
 }
 
-std::weak_ptr<const GeometryExtension> Geometry::getExtension(std::string name) const
+std::weak_ptr<GeometryExtension> Geometry::getExtension(std::string name)
 {
     for( auto ext : extensions) {
         if(ext->getName() == name)
@@ -307,6 +307,17 @@ std::weak_ptr<const GeometryExtension> Geometry::getExtension(std::string name) 
 
     throw Base::ValueError("No geometry extension with the requested name.");
 }
+
+std::weak_ptr<const GeometryExtension> Geometry::getExtension(Base::Type type) const
+{
+    return const_cast<Geometry*>(this)->getExtension(type).lock();
+}
+
+std::weak_ptr<const GeometryExtension> Geometry::getExtension(std::string name) const
+{
+    return const_cast<Geometry*>(this)->getExtension(name).lock();
+}
+
 
 void Geometry::setExtension(std::unique_ptr<GeometryExtension> && geo)
 {
