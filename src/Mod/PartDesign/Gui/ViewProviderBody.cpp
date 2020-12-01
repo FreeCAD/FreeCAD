@@ -83,6 +83,7 @@ ViewProviderBody::ViewProviderBody()
     PartDesignGui::initMonitor();
 
     ADD_PROPERTY(DisplayModeBody,((long)0));
+    ADD_PROPERTY(RandomColor,(false));
     DisplayModeBody.setEnums(BodyModeEnum);
 
     sPixmap = "PartDesign_Body_Tree.svg";

@@ -62,6 +62,7 @@ public:
     virtual ~ViewProviderBody();
 
     App::PropertyEnumeration DisplayModeBody;
+    App::PropertyBool RandomColor;
     
     virtual void attach(App::DocumentObject *) override;
 

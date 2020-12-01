@@ -399,6 +399,9 @@ void ViewProvider::updateData(const App::Property* prop)
                         continue;
                     }
                     vp->IconColor.setValue(color);
+                    if (bodyVp->RandomColor.getValue()){
+                        bodyVp->ShapeColor.setValue(color);
+                    }
                 }
             }
         }
