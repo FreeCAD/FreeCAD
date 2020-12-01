@@ -389,9 +389,9 @@ class ToolBitLibrary(object):
             return True
 
         qm = PySide.QtGui.QMessageBox
-        ret = qm.question(None,'', "Please set up Toolbit Working Directory", qm.Ok | qm.Cancel)
+        ret = qm.question(None,'', "Toolbit working directory not set up. Do that now?", qm.Yes | qm.No)
 
-        if ret == qm.Cancel:
+        if ret == qm.No:
             return False
 
         msg = translate("Path", "Choose a writable location for your toolbits", None)

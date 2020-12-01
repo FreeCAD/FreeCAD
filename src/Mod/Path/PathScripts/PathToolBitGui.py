@@ -181,7 +181,7 @@ class ToolBitGuiFactory(PathToolBit.ToolBitFactory):
         FreeCAD.ActiveDocument.commitTransaction()
         return tool
 
-def isValidFile(filename):
+def isValidFileName(filename):
     print(filename)
     try:
         with open(filename, "w") as tempfile:
@@ -198,7 +198,7 @@ def GetNewToolFile(parent=None):
                                             PathPreferences.lastPathToolBit(),
                                             '*.fctb')
     if foo and foo[0]:
-        if not isValidFile(foo[0]):
+        if not isValidFileName(foo[0]):
             msgBox = QtGui.QMessageBox()
             msg = translate("Path", "Invalid Filename", None)
             msgBox.setText(msg)

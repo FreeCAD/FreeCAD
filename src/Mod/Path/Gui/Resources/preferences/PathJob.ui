@@ -656,10 +656,10 @@
        <item>
         <widget class="QCheckBox" name="toolsOpenLastLibrary">
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Causes the toollibrary manager to remember last directory.   This ONLY affects legacy tools. &lt;/p&gt;&lt;p&gt;This control will be deprecated and removed in future version&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Causes the toollibrary manager to remember last directory. This ONLY affects legacy tools. &lt;/p&gt;&lt;p&gt;This control is deprecated and will be removed in a future version&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="text">
-          <string>Remember last library</string>
+          <string>Remember last library (legacy)</string>
          </property>
         </widget>
        </item>
