@@ -106,6 +106,7 @@ class ObjectFace(PathPocketBase.ObjectPocket):
 
         if obj.Base:
             PathLog.debug("obj.Base: {}".format(obj.Base))
+            self.removalshapes = list()
             faces = []
             holes = []
             holeEnvs = []
@@ -217,7 +218,11 @@ class ObjectFace(PathPocketBase.ObjectPocket):
         else:
             PathLog.debug("Processing solid face ...")
             tup = env, False, 'pathMillFace', 0.0, 'X', obj.StartDepth.Value, obj.FinalDepth.Value
-        return [tup]
+
+        self.removalshapes.append(tup)
+        obj.removalshape = self.removalshapes[0][0]  # save removal shape
+
+        return self.removalshapes
 
     def areaOpSetDefaultValues(self, obj, job):
         '''areaOpSetDefaultValues(obj, job) ... initialize mill facing properties'''
