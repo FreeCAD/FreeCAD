@@ -203,9 +203,11 @@ class ObjectFace(PathPocketBase.ObjectPocket):
                                                 plane=planeshape)
             ofstShape.translate(FreeCAD.Vector(0.0, 0.0, psZMin - ofstShape.BoundBox.ZMin))
 
-            custDepthparams = self._customDepthParams(obj, obj.StartDepth.Value + 0.1, obj.FinalDepth.Value - 0.1)  # only an envelope
+            # Calculate custom depth params for removal shape envelope, with start and final depth buffers
+            custDepthparams = self._customDepthParams(obj, obj.StartDepth.Value + 0.2, obj.FinalDepth.Value - 0.1)  # only an envelope
             ofstShapeEnv = PathUtils.getEnvelope(partshape=ofstShape, depthparams=custDepthparams)
             env = ofstShapeEnv.cut(baseShape)
+            env.translate(FreeCAD.Vector(0.0, 0.0, -0.000001))  # lower removal shape into buffer zone
 
         if holeShape:
             PathLog.debug("Processing holes and face ...")
