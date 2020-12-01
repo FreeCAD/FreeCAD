@@ -100,7 +100,7 @@ void SoBrepEdgeSet::notify(SoNotList * list)
         this->segments.clear();
         for(int i=0;i<numcindices;i++) {
             if(cindices[i] < 0)
-                this->segments.push_back(i);
+                this->segments.push_back(i+1);
         }
     }
     SoIndexedLineSet::notify(list);
@@ -324,6 +324,7 @@ void SoBrepEdgeSet::getBoundingBox(SoGetBoundingBoxAction * action) {
 
     auto coords = SoCoordinateElement::getInstance(state);
     const SbVec3f *coords3d = coords->getArrayPtr3();
+    int numcoords = coords->getNum();
 
     const int32_t* indices = this->coordIndex.getValues(0);
     int numindices = this->coordIndex.getNum();
@@ -342,12 +343,9 @@ void SoBrepEdgeSet::getBoundingBox(SoGetBoundingBoxAction * action) {
         const int32_t *cindices = indices + offset;
         const int32_t *end = indices + num;
         while (cindices < end) {
-            bbox.extendBy(coords3d[*cindices++]);
-            i = (cindices < end) ? *cindices++ : -1;
-            while (i >= 0) {
+            i = *cindices++;
+            if (i >= 0 && i < numcoords)
                 bbox.extendBy(coords3d[i]);
-                i = cindices < end ? *cindices++ : -1;
-            }
         }
     }
 
