@@ -61,6 +61,7 @@
 
 //opencascade
 #include "OpenCascadeAll.h"
+#include <GeomFill_NSections.hxx>
 
 #endif //_PreComp_
 

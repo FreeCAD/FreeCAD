@@ -187,7 +187,7 @@ void CmdApproxPlane::activated(int)
                 << "Base.Vector(" << base.x << "," << base.y << "," << base.z << "),"
                 << "Base.Rotation(" << q0 << "," << q1 << "," << q2 << "," << q3 << "))" << std::endl;
 
-            openCommand("Fit plane");
+            openCommand(QT_TRANSLATE_NOOP("Command", "Fit plane"));
             runCommand(Gui::Command::Doc, str.str().c_str());
             commitCommand();
             updateActive();
@@ -218,7 +218,7 @@ CmdApproxCylinder::CmdApproxCylinder()
 void CmdApproxCylinder::activated(int)
 {
     std::vector<Mesh::Feature*> sel = getSelection().getObjectsOfType<Mesh::Feature>();
-    openCommand("Fit cylinder");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Fit cylinder"));
     for (auto it : sel) {
         const Mesh::MeshObject& mesh = it->Mesh.getValue();
         const MeshCore::MeshKernel& kernel = mesh.getKernel();
@@ -284,7 +284,7 @@ CmdApproxSphere::CmdApproxSphere()
 void CmdApproxSphere::activated(int)
 {
     std::vector<Mesh::Feature*> sel = getSelection().getObjectsOfType<Mesh::Feature>();
-    openCommand("Fit sphere");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Fit sphere"));
     for (auto it : sel) {
         const Mesh::MeshObject& mesh = it->Mesh.getValue();
         const MeshCore::MeshKernel& kernel = mesh.getKernel();
@@ -332,7 +332,7 @@ void CmdApproxPolynomial::activated(int)
 {
     std::vector<Mesh::Feature*> sel = getSelection().getObjectsOfType<Mesh::Feature>();
     App::Document* doc = App::GetApplication().getActiveDocument();
-    openCommand("Fit polynomial surface");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Fit polynomial surface"));
     for (auto it : sel) {
         const Mesh::MeshObject& mesh = it->Mesh.getValue();
         const MeshCore::MeshKernel& kernel = mesh.getKernel();
@@ -598,7 +598,7 @@ void CmdViewTriangulation::activated(int)
 {
     std::vector<App::DocumentObject*> obj = Gui::Selection().getObjectsOfType(Points::Structured::getClassTypeId());
     addModule(App,"ReverseEngineering");
-    openCommand("View triangulation");
+    openCommand(QT_TRANSLATE_NOOP("Command", "View triangulation"));
     try {
         for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it) {
             App::DocumentObjectT objT(*it);

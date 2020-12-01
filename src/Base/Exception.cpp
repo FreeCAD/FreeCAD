@@ -10,12 +10,12 @@
  *   for detail see the LICENCE text file.                                 *
  *                                                                         *
  *   FreeCAD is distributed in the hope that it will be useful,            *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        * 
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
  *   GNU Library General Public License for more details.                  *
  *                                                                         *
  *   You should have received a copy of the GNU Library General Public     *
- *   License along with FreeCAD; if not, write to the Free Software        * 
+ *   License along with FreeCAD; if not, write to the Free Software        *
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
  *   USA                                                                   *
  *                                                                         *
@@ -125,27 +125,32 @@ PyObject * Exception::getPyObject(void)
 
 void Exception::setPyObject( PyObject * pydict)
 {
-    if (pydict && Py::_Dict_Check(pydict)) {
-        Py::Dict edict(pydict);
-        if (edict.hasKey("sfile"))
-            _file = static_cast<std::string>(Py::String(edict.getItem("sfile")));
+    try {
+        if (pydict && Py::_Dict_Check(pydict)) {
+            Py::Dict edict(pydict);
+            if (edict.hasKey("sfile"))
+                _file = static_cast<std::string>(Py::String(edict.getItem("sfile")));
 
-        if (edict.hasKey("sfunction"))
-            _function = static_cast<std::string>(Py::String(edict.getItem("sfunction")));
+            if (edict.hasKey("sfunction"))
+                _function = static_cast<std::string>(Py::String(edict.getItem("sfunction")));
 
-        if (edict.hasKey("sErrMsg"))
-            _sErrMsg = static_cast<std::string>(Py::String(edict.getItem("sErrMsg")));
+            if (edict.hasKey("sErrMsg"))
+                _sErrMsg = static_cast<std::string>(Py::String(edict.getItem("sErrMsg")));
 
-        if (edict.hasKey("iline"))
+            if (edict.hasKey("iline"))
 #if PY_MAJOR_VERSION >= 3
-            _line = static_cast<long>(Py::Long(edict.getItem("iline")));
+                _line = static_cast<long>(Py::Long(edict.getItem("iline")));
 #else
-            _line = static_cast<int>(Py::Int(edict.getItem("iline")));
+                _line = static_cast<int>(Py::Int(edict.getItem("iline")));
 #endif
-        if (edict.hasKey("btranslatable"))
-            _isTranslatable = static_cast<bool>(Py::Boolean(edict.getItem("btranslatable")));
-        if (edict.hasKey("breported"))
-            _isReported = static_cast<bool>(Py::Boolean(edict.getItem("breported")));
+            if (edict.hasKey("btranslatable"))
+                _isTranslatable = static_cast<bool>(Py::Boolean(edict.getItem("btranslatable")));
+            if (edict.hasKey("breported"))
+                _isReported = static_cast<bool>(Py::Boolean(edict.getItem("breported")));
+        }
+    }
+    catch (Py::Exception& e) {
+        e.clear(); // should never happen
     }
 }
 

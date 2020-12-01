@@ -68,7 +68,7 @@
     </message>
     <message>
       <source>&lt;empty&gt;</source>
-      <translation>&lt;vuoto&gt;</translation>
+      <translation>&lt;empty&gt;</translation>
     </message>
     <message>
       <source>Angle</source>
@@ -118,6 +118,13 @@
     <message>
       <source>Toggle measurement</source>
       <translation>Attiva/disattiva le misure</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <source>Edit</source>
+      <translation>Modifica</translation>
     </message>
   </context>
   <context>
@@ -430,6 +437,14 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Out Of Range</source>
       <translation>Fuori portata</translation>
+    </message>
+    <message>
+      <source> "</source>
+      <translation> "</translation>
+    </message>
+    <message>
+      <source>"</source>
+      <translation>"</translation>
     </message>
   </context>
   <context>
@@ -1059,16 +1074,16 @@ Se questo non è spuntato, la proprietà deve avere un nome univoco e vi si acce
       <translation>Pulsanti</translation>
     </message>
     <message>
-      <source>Clear</source>
-      <translation>Pulisci</translation>
-    </message>
-    <message>
       <source>Print Reference</source>
       <translation>Stampa riferimento</translation>
     </message>
     <message>
       <source>Spaceball Buttons</source>
       <translation>Pulsanti Spaceball</translation>
+    </message>
+    <message>
+      <source>Reset</source>
+      <translation>Ripristina</translation>
     </message>
   </context>
   <context>
@@ -1785,7 +1800,7 @@ Nota: le modifiche verranno applicate al successivo cambio di ambiente di lavoro
     </message>
     <message>
       <source>Help viewer</source>
-      <translation>Visualizzatore Aiuto</translation>
+      <translation>Visualizzatore di aiuto</translation>
     </message>
     <message>
       <source>Location of start page</source>
@@ -2103,10 +2118,6 @@ Specificare un'altra cartella.</translation>
       <translation>Filtra per tipo</translation>
     </message>
     <message>
-      <source>If enabled, then 3D view selection will be sychronize with full object hierarchy.</source>
-      <translation>Se abilitato, la selezione della vista 3D sarà sincronizzata con la gerarchia completa degli oggetti.</translation>
-    </message>
-    <message>
       <source>Sync sub-object selection</source>
       <translation>Sincronizza la selezione dei sotto-oggetti</translation>
     </message>
@@ -2117,6 +2128,10 @@ Specificare un'altra cartella.</translation>
     <message>
       <source>Clear</source>
       <translation>Pulisci</translation>
+    </message>
+    <message>
+      <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
+      <translation>Se abilitato, la selezione della vista 3D sarà sincronizzata con la gerarchia completa degli oggetti.</translation>
     </message>
   </context>
   <context>
@@ -2267,11 +2282,11 @@ dalla console di Python al pannello vista Report</translation>
     </message>
     <message>
       <source>Normal messages will be recorded</source>
-      <translation type="unfinished">Normal messages will be recorded</translation>
+      <translation>I messaggi normali verranno registrati</translation>
     </message>
     <message>
       <source>Record normal messages</source>
-      <translation type="unfinished">Record normal messages</translation>
+      <translation>Registra i messaggi normali</translation>
     </message>
   </context>
   <context>
@@ -2524,6 +2539,18 @@ opening or creation</source>
     <message>
       <source>Show axis cross by default</source>
       <translation>Mostra di default il sistema di assi</translation>
+    </message>
+    <message>
+      <source>Pick radius (px):</source>
+      <translation>Raggio di selezione (px):</translation>
+    </message>
+    <message>
+      <source>Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </source>
+      <translation>Area per selezionare gli elementi nella vista 3D.
+Un valore maggiore facilita la selezione delle cose, ma può rendere impossibile la selezione di funzionalità piccole.
+               </translation>
     </message>
   </context>
   <context>
@@ -3214,6 +3241,34 @@ Si può anche utilizzare il modulo: John Doe &lt;john@doe.com&gt;</translation>
       <source>The directory in which the application will search for macros</source>
       <translation>La directory nella quale l'applicazione cercherà le macro</translation>
     </message>
+    <message>
+      <source>Recent macros menu</source>
+      <translation>Menu delle macro recenti</translation>
+    </message>
+    <message>
+      <source>Size of recent macro list</source>
+      <translation>Dimensione dell'elenco delle macro recenti</translation>
+    </message>
+    <message>
+      <source>How many macros should be listed in recent macros list</source>
+      <translation>Quante macro devono essere elencate nella lista delle macro recenti</translation>
+    </message>
+    <message>
+      <source>Shortcut count</source>
+      <translation>Conteggio scorciatoie</translation>
+    </message>
+    <message>
+      <source>How many recent macros should have shortcuts</source>
+      <translation>Quante macro recenti devono avere scorciatoie</translation>
+    </message>
+    <message>
+      <source>Keyboard Modifiers</source>
+      <translation>Modificatori tastiera</translation>
+    </message>
+    <message>
+      <source>Keyboard modifiers, default = Ctrl+Shift+</source>
+      <translation>Modificatori tastiera, predefinito = Ctrl+Maiusc+</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsNavigation</name>
@@ -3514,6 +3569,10 @@ Questa impostazione non disabilitata l'inclinazione tramite mouse.</translation>
       <source>Imperial for Civil Eng (ft, ft/sec)</source>
       <translation>Imperiale per Civil Eng (ft, ft/sec)</translation>
     </message>
+    <message>
+      <source>FEM (mm, N, sec)</source>
+      <translation>FEM (mm, N, sec)</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsViewColor</name>
@@ -3550,10 +3609,6 @@ Questa impostazione non disabilitata l'inclinazione tramite mouse.</translation>
       <translation>Colore semplice</translation>
     </message>
     <message>
-      <source>Pick radius (px):</source>
-      <translation>Raggio di selezione (px):</translation>
-    </message>
-    <message>
       <source>Object being edited</source>
       <translation>Oggetto in fase di modifica</translation>
     </message>
@@ -3568,12 +3623,6 @@ Questa impostazione non disabilitata l'inclinazione tramite mouse.</translation>
     <message>
       <source>Enable selection highlighting and use specified color</source>
       <translation>Abilita l'evidenziazione della selezione e usa il colore specificato</translation>
-    </message>
-    <message>
-      <source>Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.</source>
-      <translation>Area per la selezione degli elementi nella vista 3D.
-Un valore più grande facilita la selezione, ma può rendere impossibile la selezione di piccole funzioni.</translation>
     </message>
     <message>
       <source>Background color for the model view</source>
@@ -4493,27 +4542,27 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Display message types</source>
-      <translation type="unfinished">Display message types</translation>
+      <translation>Visualizza tipi di messaggi</translation>
     </message>
     <message>
       <source>Normal messages</source>
-      <translation type="unfinished">Normal messages</translation>
+      <translation>Messaggi normali</translation>
     </message>
     <message>
       <source>Log messages</source>
-      <translation type="unfinished">Log messages</translation>
+      <translation>Messaggi di log</translation>
     </message>
     <message>
       <source>Warnings</source>
-      <translation type="unfinished">Warnings</translation>
+      <translation>Avvertenze</translation>
     </message>
     <message>
       <source>Errors</source>
-      <translation type="unfinished">Errors</translation>
+      <translation>Errori</translation>
     </message>
     <message>
       <source>Show report view on</source>
-      <translation type="unfinished">Show report view on</translation>
+      <translation>Mostra la vista report in caso di</translation>
     </message>
   </context>
   <context>
@@ -4676,6 +4725,20 @@ Si desidera salvare le modifiche?</translation>
     <message>
       <source>PDF file</source>
       <translation>File PDF</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ExpressionLineEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation>Corrispondenza esatta</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ExpressionTextEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation>Corrispondenza esatta</translation>
     </message>
   </context>
   <context>
@@ -5301,6 +5364,21 @@ Vuoi uscire senza salvare i tuoi dati?</translation>
     <message>
       <source>Open file %1</source>
       <translation>Apri file %1</translation>
+    </message>
+    <message>
+      <source>File not found</source>
+      <translation>File non trovato</translation>
+    </message>
+    <message>
+      <source>The file '%1' cannot be opened.</source>
+      <translation>Il file '%1' non può essere aperto.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::RecentMacrosAction</name>
+    <message>
+      <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
+      <translation>Esegue la macro %1 (Maiusc+clic per modificare) scorciatoia: %2</translation>
     </message>
     <message>
       <source>File not found</source>
@@ -6642,6 +6720,50 @@ Scegli 'Annulla' per interrompere</translation>
       <source>Override colors...</source>
       <translation>Sostituisci colori...</translation>
     </message>
+    <message>
+      <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
+
+</source>
+      <translation>Identico percorso fisico rilevato. Può causare una sovrascrittura indesiderata del documento esistente!
+
+</translation>
+    </message>
+    <message>
+      <source>Are you sure you want to continue?</source>
+      <translation>Sei sicuro di voler continuare?</translation>
+    </message>
+    <message>
+      <source>
+
+Please check report view for more...</source>
+      <translation>
+
+Si prega di controllare la vista report per ulteriori informazioni...</translation>
+    </message>
+    <message>
+      <source>
+
+Pyhsical path: </source>
+      <translation>
+
+Percorso fisico: </translation>
+    </message>
+    <message>
+      <source>
+Document: </source>
+      <translation>
+Documento: </translation>
+    </message>
+    <message>
+      <source>
+  Path: </source>
+      <translation>
+  Percorso: </translation>
+    </message>
+    <message>
+      <source>Identical physical path</source>
+      <translation>Percorso fisico identico</translation>
+    </message>
   </context>
   <context>
     <name>SelectionFilter</name>
@@ -6961,7 +7083,7 @@ Scegli 'Annulla' per interrompere</translation>
     <name>StdCmdDlgMacroRecord</name>
     <message>
       <source>&amp;Macro recording ...</source>
-      <translation>Registra &amp;Macro...</translation>
+      <translation>Registra una &amp;macro...</translation>
     </message>
     <message>
       <source>Opens a dialog to record a macro</source>
@@ -7304,7 +7426,7 @@ Scegli 'Annulla' per interrompere</translation>
     </message>
     <message>
       <source>Import links</source>
-      <translation>Importa link</translation>
+      <translation>Importa un link</translation>
     </message>
     <message>
       <source>Import selected external link(s)</source>
@@ -7364,7 +7486,7 @@ Scegli 'Annulla' per interrompere</translation>
     </message>
     <message>
       <source>Make sub-link</source>
-      <translation>Crea un sotto-link</translation>
+      <translation>Crea un link relativo</translation>
     </message>
     <message>
       <source>Create a sub-object or sub-element link</source>
@@ -7454,11 +7576,11 @@ Scegli 'Annulla' per interrompere</translation>
     </message>
     <message>
       <source>Unlink</source>
-      <translation>Scollega</translation>
+      <translation>Annulla il link</translation>
     </message>
     <message>
       <source>Strip on level of link</source>
-      <translation>Pulisci i livelli dei collegamenti</translation>
+      <translation>Elimina il link e lo sostituisce con l'oggetto</translation>
     </message>
   </context>
   <context>
@@ -7846,6 +7968,21 @@ Scegli 'Annulla' per interrompere</translation>
     <message>
       <source>Recent file list</source>
       <translation>Lista dei file recenti</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdRecentMacros</name>
+    <message>
+      <source>Macro</source>
+      <translation>Macro</translation>
+    </message>
+    <message>
+      <source>Recent macros</source>
+      <translation>Macro recenti</translation>
+    </message>
+    <message>
+      <source>Recent macro list</source>
+      <translation>Elenco delle macro recenti</translation>
     </message>
   </context>
   <context>
@@ -8542,11 +8679,11 @@ Scegli 'Annulla' per interrompere</translation>
     </message>
     <message>
       <source>Home</source>
-      <translation type="unfinished">Home</translation>
+      <translation>Home</translation>
     </message>
     <message>
       <source>Set to default home view</source>
-      <translation type="unfinished">Set to default home view</translation>
+      <translation>Imposta come vista iniziale predefinita</translation>
     </message>
   </context>
   <context>

@@ -357,7 +357,7 @@ QVariant PropertyItem::toString(const QVariant& prop) const
         ss << '[';
         Py::Sequence seq(pyobj);
         bool first = true;
-        size_t i=0;
+        Py_ssize_t i=0;
         for (i=0; i<2 && i < seq.size(); ++i) {
             if (first)
                 first = false;

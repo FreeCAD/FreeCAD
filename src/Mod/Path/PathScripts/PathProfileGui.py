@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -39,6 +37,7 @@ __doc__ = "Profile operation page controller and command implementation."
 
 FeatureSide       = 0x01
 FeatureProcessing = 0x02
+
 
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
@@ -129,8 +128,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def updateVisibility(self):
         hasFace = False
-        hasGeom = False
-        fullModel = False
         objBase = list()
 
         if hasattr(self.obj, 'Base'):
@@ -142,8 +139,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
                     if sub[:4] == 'Face':
                         hasFace = True
                         break
-        else:
-            fullModel = True
 
         if hasFace:
             self.form.processCircles.show()
@@ -153,21 +148,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             self.form.processCircles.hide()
             self.form.processHoles.hide()
             self.form.processPerimeter.hide()
-
-        side = False
-        if self.form.useCompensation.isChecked() is True:
-            if not fullModel:
-                side = True
-
-        if side:
-            self.form.cutSide.show()
-            self.form.cutSideLabel.show()
-        else:
-            # Reset cutSide to 'Outside' for full model before hiding cutSide input
-            if self.form.cutSide.currentText() == 'Inside':
-                self.selectInComboBox('Outside', self.form.cutSide)
-            self.form.cutSide.hide()
-            self.form.cutSideLabel.hide()
 
     def registerSignalHandlers(self, obj):
         self.form.useCompensation.stateChanged.connect(self.updateVisibility)

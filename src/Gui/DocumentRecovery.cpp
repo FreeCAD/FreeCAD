@@ -362,28 +362,28 @@ void DocumentRecoveryPrivate::writeRecoveryInfo(const DocumentRecoveryPrivate::I
     if (file.open(QFile::WriteOnly)) {
         QTextStream str(&file);
         str.setCodec("UTF-8");
-        str << "<?xml version='1.0' encoding='utf-8'?>" << endl
-            << "<AutoRecovery SchemaVersion=\"1\">" << endl;
+        str << "<?xml version='1.0' encoding='utf-8'?>\n"
+            << "<AutoRecovery SchemaVersion=\"1\">\n";
         switch (info.status) {
         case Created:
-            str << "  <Status>Created</Status>" << endl;
+            str << "  <Status>Created</Status>\n";
             break;
         case Overage:
-            str << "  <Status>Deprecated</Status>" << endl;
+            str << "  <Status>Deprecated</Status>\n";
             break;
         case Success:
-            str << "  <Status>Success</Status>" << endl;
+            str << "  <Status>Success</Status>\n";
             break;
         case Failure:
-            str << "  <Status>Failure</Status>" << endl;
+            str << "  <Status>Failure</Status>\n";
             break;
         default:
-            str << "  <Status>Unknown</Status>" << endl;
+            str << "  <Status>Unknown</Status>\n";
             break;
         }
-        str << "  <Label>" << info.label << "</Label>" << endl;
-        str << "  <FileName>" << info.fileName << "</FileName>" << endl;
-        str << "</AutoRecovery>" << endl;
+        str << "  <Label>" << info.label << "</Label>\n";
+        str << "  <FileName>" << info.fileName << "</FileName>\n";
+        str << "</AutoRecovery>\n";
         file.close();
     }
 }

@@ -40,7 +40,7 @@ import draftmake.make_line as make_line
 import draftmake.make_wire as make_wire
 import draftmake.make_block as make_block
 
-from draftutils.messages import _msg
+from draftutils.messages import _msg, _err
 from draftutils.translate import _tr
 
 # Delay import of module until first use because it is heavy
@@ -145,7 +145,12 @@ def upgrade(objects, delete=False, force=None):
                     newobj.Shape = sol
                     add_list.append(newobj)
                     delete_list.append(obj)
-            return newobj
+                    return newobj
+                else:
+                    _err(_tr("Object must be a closed shape"))
+            else:
+                _err(_tr("No solid object created"))
+        return None
 
     def closeWire(obj):
         """Close a wire object, if possible."""
@@ -207,7 +212,7 @@ def upgrade(objects, delete=False, force=None):
         return None
 
     def makeShell(objectslist):
-        """Make a shell with the given objects."""
+        """Make a shell or compound with the given objects."""
         params = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
         preserveFaceColor = params.GetBool("preserveFaceColor")  # True
         preserveFaceNames = params.GetBool("preserveFaceNames")  # True
@@ -229,7 +234,7 @@ def upgrade(objects, delete=False, force=None):
         sh = Part.makeShell(faces)
         if sh:
             if sh.Faces:
-                newobj = doc.addObject("Part::Feature", "Shell")
+                newobj = doc.addObject("Part::Feature", str(sh.ShapeType))
                 newobj.Shape = sh
                 if preserveFaceNames:
                     firstName = objectslist[0].Label
@@ -255,35 +260,52 @@ def upgrade(objects, delete=False, force=None):
                 return newobj
         return None
 
-    def joinFaces(objectslist):
+    def joinFaces(objectslist, coplanarity=False, checked=False):
         """Make one big face from selected objects, if possible."""
         faces = []
         for obj in objectslist:
             faces.extend(obj.Shape.Faces)
-        u = faces.pop(0)
-        for f in faces:
-            u = u.fuse(f)
-        if DraftGeomUtils.isCoplanar(faces):
-            u = DraftGeomUtils.concatenate(u)
-            if not DraftGeomUtils.hasCurves(u):
-                # several coplanar and non-curved faces,
-                # they can become a Draft Wire
-                newobj = make_wire.make_wire(u.Wires[0],
+
+        # check coplanarity if needed
+        if not checked:
+            coplanarity = DraftGeomUtils.is_coplanar(faces, 1e-3)
+        if not coplanarity:
+             _err(_tr("Faces must be coplanar to be refined"))
+             return None
+
+        # fuse faces
+        fuse_face = faces.pop(0)
+        for face in faces:
+            fuse_face = fuse_face.fuse(face)
+
+        face = DraftGeomUtils.concatenate(fuse_face)
+        # to prevent create new object if concatenate fails
+        if face.isEqual(fuse_face):
+            face = None
+
+        if face:
+            # several coplanar and non-curved faces,
+            # they can become a Draft Wire
+            if (not DraftGeomUtils.hasCurves(face)
+                and len(face.Wires) == 1):
+                newobj = make_wire.make_wire(face.Wires[0],
                                              closed=True, face=True)
+            # if not possible, we do a non-parametric union
             else:
-                # if not possible, we do a non-parametric union
                 newobj = doc.addObject("Part::Feature", "Union")
-                newobj.Shape = u
+                newobj.Shape = face
             add_list.append(newobj)
             delete_list.extend(objectslist)
             return newobj
         return None
 
     def makeSketchFace(obj):
-        """Make a Draft Wire closed and filled out of a sketch."""
-        newobj = make_wire.make_wire(obj.Shape, closed=True)
-        if newobj:
-            newobj.Base = obj
+        """Make a face from a sketch."""
+        face = Part.makeFace(obj.Shape.Wires, "Part::FaceMakerBullseye")
+        if face:
+            newobj = doc.addObject("Part::Feature", "Face")
+            newobj.Shape = face
+
             add_list.append(newobj)
             if App.GuiUp:
                 obj.ViewObject.Visibility = False
@@ -365,7 +387,7 @@ def upgrade(objects, delete=False, force=None):
             for e in ob.Shape.Edges:
                 if DraftGeomUtils.geomType(e) != "Line":
                     curves.append(e)
-                if not e.hashCode() in wirededges:
+                if not e.hashCode() in wirededges and not e.isClosed():
                     loneedges.append(e)
         elif ob.isDerivedFrom("Mesh::Feature"):
             meshes.append(ob)
@@ -379,21 +401,33 @@ def upgrade(objects, delete=False, force=None):
         print("facewires: {}, loneedges: {}".format(facewires, loneedges))
 
     if force:
-        if force in ("makeCompound", "closeGroupWires", "makeSolid",
-                     "closeWire", "turnToParts", "makeFusion",
-                     "makeShell", "makeFaces", "draftify",
-                     "joinFaces", "makeSketchFace", "makeWires",
-                     "turnToLine"):
-            # TODO: Using eval to evaluate a string is not ideal
-            # and potentially a security risk.
-            # How do we execute the function without calling eval?
-            # Best case, a series of if-then statements.
-            draftify = ext_draftify.draftify
-            result = eval(force)(objects)
+        all_func = {"makeCompound" : makeCompound,
+                    "closeGroupWires" : closeGroupWires,
+                    "makeSolid" : makeSolid,
+                    "closeWire" : closeWire,
+                    "turnToParts" : turnToParts,
+                    "makeFusion" : makeFusion,
+                    "makeShell" : makeShell,
+                    "makeFaces" : makeFaces,
+                    "draftify" : ext_draftify.draftify,
+                    "joinFaces" : joinFaces,
+                    "makeSketchFace" : makeSketchFace,
+                    "makeWires" : makeWires,
+                    "turnToLine" : turnToLine}
+        if force in all_func:
+            result = all_func[force](objects)
         else:
             _msg(_tr("Upgrade: Unknown force method:") + " " + force)
             result = None
+
     else:
+        # checking faces coplanarity
+        # The precision needed in Part.makeFace is 1e-7. Here we use a
+        # higher value to let that function throw the exception when
+        # joinFaces is called if the precision is insufficient
+        if faces:
+            faces_coplanarity = DraftGeomUtils.is_coplanar(faces, 1e-3)
+
         # applying transformations automatically
         result = None
 
@@ -412,26 +446,27 @@ def upgrade(objects, delete=False, force=None):
         # we have only faces here, no lone edges
         elif faces and (len(wires) + len(openwires) == len(facewires)):
             # we have one shell: we try to make a solid
-            if len(objects) == 1 and len(faces) > 3:
+            if len(objects) == 1 and len(faces) > 3 and not faces_coplanarity:
                 result = makeSolid(objects[0])
                 if result:
                     _msg(_tr("Found 1 solidifiable object: solidifying it"))
             # we have exactly 2 objects: we fuse them
-            elif len(objects) == 2 and not curves:
+            elif len(objects) == 2 and not curves and not faces_coplanarity:
                 result = makeFusion(objects[0], objects[1])
                 if result:
                     _msg(_tr("Found 2 objects: fusing them"))
-            # we have many separate faces: we try to make a shell
-            elif len(objects) > 2 and len(faces) > 1 and not loneedges:
+            # we have many separate faces: we try to make a shell or compound
+            elif len(objects) >= 2 and len(faces) > 1 and not loneedges:
                 result = makeShell(objects)
                 if result:
-                    _msg(_tr("Found several objects: creating a shell"))
+                    _msg(_tr("Found several objects: creating a "
+                             + str(result.Shape.ShapeType)))
             # we have faces: we try to join them if they are coplanar
-            elif len(faces) > 1:
-                result = joinFaces(objects)
+            elif len(objects) == 1 and len(faces) > 1:
+                result = joinFaces(objects, faces_coplanarity, True)
                 if result:
-                    _msg(_tr("Found several coplanar objects or faces: "
-                             "creating one face"))
+                    _msg(_tr("Found object with several coplanar faces: "
+                             "refine them"))
             # only one object: if not parametric, we "draftify" it
             elif (len(objects) == 1
                   and not objects[0].isDerivedFrom("Part::Part2DObjectPython")):

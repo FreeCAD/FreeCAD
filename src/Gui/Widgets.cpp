@@ -66,7 +66,7 @@ using namespace Base;
 CommandIconView::CommandIconView ( QWidget * parent )
   : QListWidget(parent)
 {
-    connect(this, SIGNAL (currentItemChanged(QListWidgetItem *, QListWidgetItem *)), 
+    connect(this, SIGNAL (currentItemChanged(QListWidgetItem *, QListWidgetItem *)),
             this, SLOT (onSelectionChanged(QListWidgetItem *, QListWidgetItem *)) );
 }
 
@@ -78,7 +78,7 @@ CommandIconView::~CommandIconView ()
 }
 
 /**
- * Stores the name of the selected commands for drag and drop. 
+ * Stores the name of the selected commands for drag and drop.
  */
 void CommandIconView::startDrag (Qt::DropActions supportedActions)
 {
@@ -106,7 +106,7 @@ void CommandIconView::startDrag (Qt::DropActions supportedActions)
 }
 
 /**
- * This slot is called when a new item becomes current. \a item is the new current item 
+ * This slot is called when a new item becomes current. \a item is the new current item
  * (or 0 if no item is now current). This slot emits the emitSelectionChanged()
  * signal for its part.
  */
@@ -633,8 +633,8 @@ ColorButton::~ColorButton()
     delete d;
 }
 
-/** 
- * Sets the color \a c to the button. 
+/**
+ * Sets the color \a c to the button.
  */
 void ColorButton::setColor(const QColor& c)
 {
@@ -643,7 +643,7 @@ void ColorButton::setColor(const QColor& c)
     update();
 }
 
-/** 
+/**
  * Returns the current color of the button.
  */
 QColor ColorButton::color() const
@@ -716,7 +716,7 @@ void ColorButton::paintEvent (QPaintEvent * e)
         }
     }
 
-    // overpaint the rectangle to paint icon and text 
+    // overpaint the rectangle to paint icon and text
     QStyleOptionButton opt;
     opt.init(this);
     opt.text = text();
@@ -1023,7 +1023,7 @@ bool ToolTip::eventFilter(QObject* o, QEvent*e)
                 removeEventFilter();
                 this->hidden = true;
             }
-            else if (e->type() == QEvent::Timer && 
+            else if (e->type() == QEvent::Timer &&
                 !this->hidden && displayTime.elapsed() < 5000) {
                 return true;
             }
@@ -1035,7 +1035,7 @@ bool ToolTip::eventFilter(QObject* o, QEvent*e)
 // ----------------------------------------------------------------------
 
 StatusWidget::StatusWidget(QWidget* parent)
-  : QWidget(parent, Qt::Dialog | Qt::FramelessWindowHint)
+  : QDialog(parent, Qt::Dialog | Qt::FramelessWindowHint)
 {
     //setWindowModality(Qt::ApplicationModal);
     label = new QLabel(this);
@@ -1072,79 +1072,13 @@ QSize StatusWidget::sizeHint () const
     return QSize(250,100);
 }
 
-void StatusWidget::showEvent(QShowEvent*)
+void StatusWidget::showEvent(QShowEvent* event)
 {
-    adjustPosition(parentWidget());
+    QDialog::showEvent(event);
 }
 
 void StatusWidget::hideEvent(QHideEvent*)
 {
-}
-
-// taken from QDialog::adjustPosition(QWidget*)
-void StatusWidget::adjustPosition(QWidget* w)
-{
-    QPoint p(0, 0);
-    int extraw = 0, extrah = 0, scrn = 0;
-    if (w)
-        w = w->window();
-    QRect desk;
-    if (w) {
-        scrn = QApplication::desktop()->screenNumber(w);
-    } else if (QApplication::desktop()->isVirtualDesktop()) {
-        scrn = QApplication::desktop()->screenNumber(QCursor::pos());
-    } else {
-        scrn = QApplication::desktop()->screenNumber(this);
-    }
-    desk = QApplication::desktop()->availableGeometry(scrn);
-
-    QWidgetList list = QApplication::topLevelWidgets();
-    for (int i = 0; (extraw == 0 || extrah == 0) && i < list.size(); ++i) {
-        QWidget * current = list.at(i);
-        if (current->isVisible()) {
-            int framew = current->geometry().x() - current->x();
-            int frameh = current->geometry().y() - current->y();
-
-            extraw = qMax(extraw, framew);
-            extrah = qMax(extrah, frameh);
-        }
-    }
-
-    // sanity check for decoration frames. With embedding, we
-    // might get extraordinary values
-    if (extraw == 0 || extrah == 0 || extraw >= 10 || extrah >= 40) {
-        extrah = 40;
-        extraw = 10;
-    }
-
-
-    if (w) {
-        // Use mapToGlobal rather than geometry() in case w might
-        // be embedded in another application
-        QPoint pp = w->mapToGlobal(QPoint(0,0));
-        p = QPoint(pp.x() + w->width()/2,
-                    pp.y() + w->height()/ 2);
-    } else {
-        // p = middle of the desktop
-        p = QPoint(desk.x() + desk.width()/2, desk.y() + desk.height()/2);
-    }
-
-    // p = origin of this
-    p = QPoint(p.x()-width()/2 - extraw,
-                p.y()-height()/2 - extrah);
-
-
-    if (p.x() + extraw + width() > desk.x() + desk.width())
-        p.setX(desk.x() + desk.width() - width() - extraw);
-    if (p.x() < desk.x())
-        p.setX(desk.x());
-
-    if (p.y() + extrah + height() > desk.y() + desk.height())
-        p.setY(desk.y() + desk.height() - height() - extrah);
-    if (p.y() < desk.y())
-        p.setY(desk.y());
-
-    move(p);
 }
 
 // --------------------------------------------------------------------
@@ -1420,8 +1354,8 @@ void LabelEditor::setInputType(InputType t)
 
 // --------------------------------------------------------------------
 
-ExpLineEdit::ExpLineEdit(QWidget* parent, bool expressionOnly) 
-    : QLineEdit(parent), autoClose(expressionOnly) 
+ExpLineEdit::ExpLineEdit(QWidget* parent, bool expressionOnly)
+    : QLineEdit(parent), autoClose(expressionOnly)
 {
     defaultPalette = palette();
 
@@ -1438,12 +1372,12 @@ ExpLineEdit::ExpLineEdit(QWidget* parent, bool expressionOnly)
     setStyleSheet(QString::fromLatin1("QLineEdit { padding-right: %1px } ").arg(iconHeight+frameWidth));
 
     QObject::connect(iconLabel, SIGNAL(clicked()), this, SLOT(openFormulaDialog()));
-    if(expressionOnly) 
+    if(expressionOnly)
         QMetaObject::invokeMethod(this, "openFormulaDialog", Qt::QueuedConnection, QGenericReturnArgument());
 }
 
 bool ExpLineEdit::apply(const std::string& propName) {
-    
+
     if (!ExpressionBinding::apply(propName)) {
         if(!autoClose) {
             QString val = QString::fromUtf8(Base::Interpreter().strToPython(text().toUtf8()).c_str());
@@ -1456,7 +1390,7 @@ bool ExpLineEdit::apply(const std::string& propName) {
 }
 
 void ExpLineEdit::bind(const ObjectIdentifier& _path) {
-    
+
     ExpressionBinding::bind(_path);
 
     int frameWidth = style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
@@ -1482,7 +1416,7 @@ void ExpLineEdit::setExpression(boost::shared_ptr<Expression> expr)
 }
 
 void ExpLineEdit::onChange() {
-    
+
     if (getExpression()) {
         std::unique_ptr<Expression> result(getExpression()->eval());
         if(result->isDerivedFrom(App::StringExpression::getClassTypeId()))
@@ -1577,7 +1511,7 @@ void ExpLineEdit::finishFormulaDialog()
 
     box->deleteLater();
 
-    if(autoClose) 
+    if(autoClose)
         this->deleteLater();
 }
 

@@ -357,6 +357,11 @@ Mesh::MeshObject* Mesher::createMesh() const
                 hyp2d->SetNbSegPerRadius(nbSegPerRadius);
         }
 
+        if (maxLen > 0)
+            hyp2d->SetMaxSize(maxLen);
+        if (minLen > 0)
+            hyp2d->SetMinSize(maxLen);
+
         hyp2d->SetQuadAllowed(allowquad);
         hyp2d->SetOptimize(optimize);
         hyp2d->SetSecondOrder(secondOrder); // apply bisecting to create four triangles out of one

@@ -91,11 +91,13 @@ from draftutils.utils import (string_encode_coin,
                               svg_patterns,
                               svgpatterns,
                               get_rgb,
-                              getrgb,
-                              get_DXF,
-                              getDXF)
+                              getrgb)
 
-from getSVG import getSVG
+from draftfunctions.svg import (get_svg,
+                                getSVG)
+
+from draftfunctions.dxf import (get_dxf,
+                                getDXF)
 
 from draftutils.gui_utils import (get3DView,
                                   get_3d_view,
@@ -110,7 +112,8 @@ from draftutils.gui_utils import (get3DView,
                                   get_selection_ex,
                                   select,
                                   loadTexture,
-                                  load_texture)
+                                  load_texture,
+                                  get_bbox)
 
 from draftutils.gui_utils import (dim_symbol,
                                   dimSymbol,
@@ -311,7 +314,8 @@ from draftmake.make_circulararray import make_circular_array
 from draftobjects.patharray import (PathArray,
                                     _PathArray)
 from draftmake.make_patharray import (make_path_array,
-                                      makePathArray)
+                                      makePathArray,
+                                      make_path_twisted_array)
 
 from draftobjects.pointarray import (PointArray,
                                      _PointArray)

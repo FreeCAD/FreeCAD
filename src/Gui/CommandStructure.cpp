@@ -60,7 +60,7 @@ void StdCmdPart::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    openCommand("Add a part");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Add a part"));
     std::string FeatName = getUniqueObjectName("Part");
 
     std::string PartName;
@@ -101,7 +101,7 @@ void StdCmdGroup::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    openCommand("Add a group");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Add a group"));
 
     std::string GroupName;
     GroupName = getUniqueObjectName("Group");

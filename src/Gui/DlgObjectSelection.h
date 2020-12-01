@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (c) 2018 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
+ *   Copyright (c) 2018 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -32,8 +32,8 @@ class GuiExport DlgObjectSelection : public QDialog
     Q_OBJECT
 
 public:
-    DlgObjectSelection(const std::vector<App::DocumentObject*> &objs, 
-            QWidget* parent = 0, Qt::WindowFlags fl = 0);
+    DlgObjectSelection(const std::vector<App::DocumentObject*> &objs,
+            QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgObjectSelection();
 
     std::vector<App::DocumentObject*> getSelections() const;

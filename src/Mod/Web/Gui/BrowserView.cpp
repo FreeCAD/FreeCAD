@@ -277,7 +277,11 @@ void WebView::mousePressEvent(QMouseEvent *event)
 void WebView::wheelEvent(QWheelEvent *event)
 {
     if (QApplication::keyboardModifiers() & Qt::ControlModifier) {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+        qreal factor = zoomFactor() + (-event->angleDelta().y() / 800.0);
+#else
         qreal factor = zoomFactor() + (-event->delta() / 800.0);
+#endif
         setZoomFactor(factor);
         event->accept();
         return;
@@ -380,7 +384,7 @@ void WebView::triggerContextMenuAction(int id)
  *  name 'name'.
  */
 BrowserView::BrowserView(QWidget* parent)
-    : MDIView(0,parent,0),
+    : MDIView(0,parent,Qt::WindowFlags()),
       WindowParameter( "Browser" ),
       isLoading(false)
 {
@@ -568,7 +572,15 @@ bool BrowserView::chckHostAllowed(const QString& host)
 #ifdef QTWEBENGINE
 void BrowserView::onDownloadRequested(QWebEngineDownloadItem *request)
 {
-    Gui::Dialog::DownloadManager::getInstance()->download(request->url());
+    QUrl url = request->url();
+    if (!url.isLocalFile()) {
+        request->accept();
+        Gui::Dialog::DownloadManager::getInstance()->download(request->url());
+    }
+    else {
+        request->cancel();
+        Gui::getMainWindow()->loadUrls(App::GetApplication().getActiveDocument(), QList<QUrl>() << url);
+    }
 }
 
 void BrowserView::setWindowIcon(const QIcon &icon)
@@ -598,7 +610,13 @@ void BrowserView::onViewSource(const QUrl &url)
 #else
 void BrowserView::onDownloadRequested(const QNetworkRequest & request)
 {
-    Gui::Dialog::DownloadManager::getInstance()->download(request);
+    QUrl url = request.url();
+    if (!url.isLocalFile()) {
+        Gui::Dialog::DownloadManager::getInstance()->download(request);
+    }
+    else {
+        Gui::getMainWindow()->loadUrls(App::GetApplication().getActiveDocument(), QList<QUrl>() << url);
+    }
 }
 
 void BrowserView::onUnsupportedContent(QNetworkReply* reply)

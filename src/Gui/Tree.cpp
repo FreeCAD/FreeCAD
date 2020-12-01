@@ -164,7 +164,7 @@ struct Stats {
     int _name##_count;
 
     DEFINE_STATS
-    
+
     void init() {
 #undef DEFINE_STAT
 #define DEFINE_STAT(_name) \
@@ -288,39 +288,51 @@ public:
         std::set<App::DocumentObject *> newSet;
         bool updated = false;
         for (auto child : newChildren) {
+            auto childVp = docItem->getViewProvider(child);
+            if (!childVp)
+                continue;
             if(child && child->getNameInDocument()) {
                 if(!newSet.insert(child).second) {
-                    TREE_WARN("duplicate child item " << obj->getFullName() 
+                    TREE_WARN("duplicate child item " << obj->getFullName()
                         << '.' << child->getNameInDocument());
                 }else if(!childSet.erase(child)) {
                     // this means new child detected
                     updated = true;
-                    if(child->getDocument()==obj->getDocument() && 
+                    if(child->getDocument()==obj->getDocument() &&
                        child->getDocument()==docItem->document()->getDocument())
                     {
                         auto &parents = docItem->_ParentMap[child];
                         if(parents.insert(obj).second && child->Visibility.getValue()) {
                             bool showable = false;
-                            for(auto parent : parents) {  
-                                if(!parent->hasChildElement() 
+                            for(auto parent : parents) {
+                                if(!parent->hasChildElement()
                                         && parent->getLinkedObject(false)==parent)
                                 {
                                     showable = true;
                                     break;
                                 }
                             }
-                            if(!showable)
-                                child->Visibility.setValue(false);
+                            childVp->setShowable(showable);
                         }
                     }
                 }
             }
         }
         for (auto child : childSet) {
-            if(newSet.find(child) == newSet.end()) {
+            if (newSet.find(child) == newSet.end()) {
                 // this means old child removed
                 updated = true;
-                docItem->_ParentMap[child].erase(obj);
+                auto mapIt = docItem->_ParentMap.find(child);
+
+                // If 'child' is not part of the map then it has already been deleted
+                // in _slotDeleteObject.
+                if (mapIt != docItem->_ParentMap.end()) {
+                    docItem->_ParentMap[child].erase(obj);
+
+                    auto childVp = docItem->getViewProvider(child);
+                    if (childVp && child->getDocument() == obj->getDocument())
+                        childVp->setShowable(docItem->isObjectShowable(child));
+                }
             }
         }
         // We still need to check the order of the children
@@ -330,10 +342,9 @@ public:
 
         if(updated && checkVisibility) {
             for(auto child : children) {
-                if(!child || !child->getNameInDocument() || !child->Visibility.getValue())
-                    continue;
-                if(child->getDocument()==obj->getDocument() && !docItem->isObjectShowable(child))
-                    child->Visibility.setValue(false);
+                auto childVp = docItem->getViewProvider(child);
+                if (childVp && child->getDocument() == obj->getDocument())
+                    childVp->setShowable(docItem->isObjectShowable(child));
             }
         }
         return updated;
@@ -362,7 +373,7 @@ public:
 
 // ---------------------------------------------------------------------------
 
-class DocumentItem::ExpandInfo: 
+class DocumentItem::ExpandInfo:
     public std::unordered_map<std::string, DocumentItem::ExpandInfoPtr>
 {
 public:
@@ -389,7 +400,7 @@ TreeWidgetEditDelegate::TreeWidgetEditDelegate(QObject* parent)
 }
 
 QWidget* TreeWidgetEditDelegate::createEditor(
-        QWidget *parent, const QStyleOptionViewItem &, const QModelIndex &index) const 
+        QWidget *parent, const QStyleOptionViewItem &, const QModelIndex &index) const
 {
     auto ti = static_cast<QTreeWidgetItem*>(index.internalPointer());
     if(ti->type()!=TreeWidget::ObjectType || index.column()>1)
@@ -649,7 +660,7 @@ void TreeWidget::startItemSearch(QLineEdit *edit) {
             searchDoc = item->object()->getDocument();
             searchContextDoc = item->getOwnerDocument()->document();
         }
-    }else 
+    }else
         searchDoc = Application::Instance->activeDocument();
 
     App::DocumentObject *obj = 0;
@@ -780,7 +791,7 @@ void TreeWidget::updateStatus(bool delay) {
 
 void TreeWidget::_updateStatus(bool delay) {
     if(!delay) {
-        if(ChangedObjects.size() || NewObjects.size()) 
+        if(ChangedObjects.size() || NewObjects.size())
             onUpdateStatus();
         return;
     }
@@ -982,7 +993,7 @@ void TreeWidget::onStartEditing()
             int edit = action->data().toInt();
 
             App::DocumentObject* obj = objitem->object()->getObject();
-            if (!obj || !obj->getNameInDocument()) 
+            if (!obj || !obj->getNameInDocument())
                 return;
             auto doc = const_cast<Document*>(objitem->getOwnerDocument()->document());
             MDIView *view = doc->getActiveView();
@@ -1089,7 +1100,7 @@ DocumentItem *TreeWidget::getDocumentItem(const Gui::Document *doc) const {
 }
 
 void TreeWidget::selectAllInstances(const ViewProviderDocumentObject &vpd) {
-    if(!isConnectionAttached()) 
+    if(!isConnectionAttached())
         return;
 
     if(selectTimer->isActive())
@@ -1097,7 +1108,7 @@ void TreeWidget::selectAllInstances(const ViewProviderDocumentObject &vpd) {
     else
         _updateStatus(false);
 
-    for(const auto &v : DocumentMap) 
+    for(const auto &v : DocumentMap)
         v.second->selectAllInstances(vpd);
 }
 
@@ -1171,7 +1182,7 @@ std::vector<TreeWidget::SelInfo> TreeWidget::getSelection(App::Document *doc)
 }
 
 void TreeWidget::selectAllLinks(App::DocumentObject *obj) {
-    if(!isConnectionAttached()) 
+    if(!isConnectionAttached())
         return;
 
     if(!obj || !obj->getNameInDocument()) {
@@ -1184,7 +1195,7 @@ void TreeWidget::selectAllLinks(App::DocumentObject *obj) {
     else
         _updateStatus(false);
 
-    for(auto link: App::GetApplication().getLinksTo(obj,App::GetLinkRecursive)) 
+    for(auto link: App::GetApplication().getLinksTo(obj,App::GetLinkRecursive))
     {
         if(!link || !link->getNameInDocument()) {
             TREE_ERR("invalid linked object");
@@ -1242,8 +1253,8 @@ bool TreeWidget::eventFilter(QObject *, QEvent *ev) {
         if (ke->key() != Qt::Key_Escape) {
             // Qt 5 only recheck key modifier on mouse move, so generate a fake
             // event to trigger drag cursor change
-            QMouseEvent *mouseEvent = new QMouseEvent(QEvent::MouseMove, 
-                    mapFromGlobal(QCursor::pos()), QCursor::pos(), Qt::NoButton, 
+            QMouseEvent *mouseEvent = new QMouseEvent(QEvent::MouseMove,
+                    mapFromGlobal(QCursor::pos()), QCursor::pos(), Qt::NoButton,
                     QApplication::mouseButtons(), QApplication::queryKeyboardModifiers());
             QApplication::postEvent(this,mouseEvent);
         }
@@ -1304,22 +1315,36 @@ void TreeWidget::mouseDoubleClickEvent (QMouseEvent * event)
         }
         else if (item->type() == TreeWidget::ObjectType) {
             DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>(item);
-            objitem->getOwnerDocument()->document()->setActiveView(objitem->object());
+            ViewProviderDocumentObject* vp = objitem->object();
+
+            objitem->getOwnerDocument()->document()->setActiveView(vp);
             auto manager = Application::Instance->macroManager();
             auto lines = manager->getLines();
-            auto editDoc = Application::Instance->editDocument();
-            App::AutoTransaction committer("Double click", true);
-            std::ostringstream ss;
-            ss << Command::getObjectCmd(objitem->object()->getObject())
-                << ".ViewObject.doubleClicked()";
-            if (!objitem->object()->doubleClicked())
-                QTreeWidget::mouseDoubleClickEvent(event);
-            else if(lines == manager->getLines())
-                manager->addLine(MacroManager::Gui,ss.str().c_str());
 
-            // If the double click starts an editing, let the transaction persist
-            if(!editDoc && Application::Instance->editDocument())
-                committer.setEnable(false);
+            std::ostringstream ss;
+            ss << Command::getObjectCmd(vp->getObject())
+                << ".ViewObject.doubleClicked()";
+
+            const char* commandText = vp->getTransactionText();
+            if (commandText) {
+                auto editDoc = Application::Instance->editDocument();
+                App::AutoTransaction committer(commandText, true);
+
+                if (!vp->doubleClicked())
+                    QTreeWidget::mouseDoubleClickEvent(event);
+                else if (lines == manager->getLines())
+                    manager->addLine(MacroManager::Gui, ss.str().c_str());
+
+                // If the double click starts an editing, let the transaction persist
+                if (!editDoc && Application::Instance->editDocument())
+                    committer.setEnable(false);
+            }
+            else {
+                if (!vp->doubleClicked())
+                    QTreeWidget::mouseDoubleClickEvent(event);
+                else if (lines == manager->getLines())
+                    manager->addLine(MacroManager::Gui, ss.str().c_str());
+            }
         }
     } catch (Base::Exception &e) {
         e.ReportException();
@@ -1455,8 +1480,8 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
                 if(!dropOnly && !vp->canDragAndDropObject(obj)) {
                     // check if items can be dragged
                     auto parentItem = item->getParentItem();
-                    if(parentItem 
-                            && (!parentItem->object()->canDragObjects() 
+                    if(parentItem
+                            && (!parentItem->object()->canDragObjects()
                                 || !parentItem->object()->canDragObject(item->object()->getObject())))
                     {
                         if(!(event->possibleActions() & Qt::CopyAction)) {
@@ -1561,7 +1586,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
         if (ti->type() != TreeWidget::ObjectType)
             continue;
         // ignore child elements if the parent is selected
-        if(sels.contains(ti->parent())) 
+        if(sels.contains(ti->parent()))
             continue;
         if (ti == targetItem)
             continue;
@@ -1579,7 +1604,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
 
     if(QApplication::keyboardModifiers()== Qt::ControlModifier)
         event->setDropAction(Qt::CopyAction);
-    else if(QApplication::keyboardModifiers()== Qt::AltModifier 
+    else if(QApplication::keyboardModifiers()== Qt::AltModifier
             && (items.size()==1||targetItem->type()==TreeWidget::DocumentType))
         event->setDropAction(Qt::LinkAction);
     else
@@ -1654,15 +1679,15 @@ void TreeWidget::dropEvent(QDropEvent *event)
             info.subs.swap(v.second);
 
             // check if items can be dragged
-            if(!dropOnly && 
-               item->myOwner == targetItemObj->myOwner && 
+            if(!dropOnly &&
+               item->myOwner == targetItemObj->myOwner &&
                vp->canDragAndDropObject(item->object()->getObject()))
             {
                 // check if items can be dragged
                 auto parentItem = item->getParentItem();
                 if(!parentItem)
                     info.dragging = true;
-                else if(parentItem->object()->canDragObjects() 
+                else if(parentItem->object()->canDragObjects()
                         && parentItem->object()->canDragObject(item->object()->getObject()))
                 {
                     info.dragging = true;
@@ -1672,8 +1697,8 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 }
             }
 
-            if (da!=Qt::LinkAction 
-                    && !vp->canDropObjectEx(obj,owner,info.subname.c_str(),item->mySubs)) 
+            if (da!=Qt::LinkAction
+                    && !vp->canDropObjectEx(obj,owner,info.subname.c_str(),item->mySubs))
             {
                 if(event->possibleActions() & Qt::LinkAction) {
                     if(items.size()>1) {
@@ -1710,7 +1735,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 vp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
                         Application::Instance->getViewProvider(targetObj));
                 if(!vp) {
-                    FC_ERR("Cannot find drop traget object " << target);
+                    FC_ERR("Cannot find drop target object " << target);
                     break;
                 }
 
@@ -1744,7 +1769,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 App::DocumentObject *owner = 0;
                 if(info.ownerDoc.size()) {
                     auto ownerDoc = App::GetApplication().getDocument(info.ownerDoc.c_str());
-                    if(ownerDoc) 
+                    if(ownerDoc)
                         owner = ownerDoc->getObject(info.owner.c_str());
                     if(!owner) {
                         FC_WARN("Cannot find dragging object's top parent " << info.owner);
@@ -1834,9 +1859,9 @@ void TreeWidget::dropEvent(QDropEvent *event)
 
                         dropParent = 0;
                         parentItem->getSubName(ss,dropParent);
-                        if(dropParent) 
+                        if(dropParent)
                             ss << parentItem->object()->getObject()->getNameInDocument() << '.';
-                        else 
+                        else
                             dropParent = parentItem->object()->getObject();
                         ss << obj->getNameInDocument() << '.';
                         dropName = ss.str();
@@ -1846,7 +1871,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     }
 
                     Gui::Command::runCommand(Gui::Command::App, ss.str().c_str());
-                    
+
                 }else{
                     ss << Command::getObjectCmd(vp->getObject())
                         << ".ViewObject.dropObject(" << Command::getObjectCmd(obj);
@@ -1879,7 +1904,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 Base::Matrix4D newMat;
                 auto sobj = dropParent->getSubObject(dropName.c_str(),0,&newMat);
                 if(!sobj) {
-                    FC_LOG("failed to find dropped object " 
+                    FC_LOG("failed to find dropped object "
                             << dropParent->getFullName() << '.' << dropName);
                     setSelection = false;
                     continue;
@@ -1887,8 +1912,8 @@ void TreeWidget::dropEvent(QDropEvent *event)
 
                 if(da!=Qt::CopyAction && propPlacement) {
                     // try to adjust placement
-                    if((info.dragging && sobj==obj) || 
-                       (!info.dragging && sobj->getLinkedObject(false)==obj)) 
+                    if((info.dragging && sobj==obj) ||
+                       (!info.dragging && sobj->getLinkedObject(false)==obj))
                     {
                         if(!info.dragging)
                             propPlacement = Base::freecad_dynamic_cast<App::PropertyPlacement>(
@@ -1950,10 +1975,10 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 // key is held, or 2) the dragging item is not inside the
                 // dropping document tree.
                 parentItem = 0;
-            }else if(!parentItem->object()->canDragObjects() 
-                    || !parentItem->object()->canDragObject(obj)) 
+            }else if(!parentItem->object()->canDragObjects()
+                    || !parentItem->object()->canDragObject(obj))
             {
-                TREE_ERR("'" << obj->getFullName() << "' cannot be dragged out of '" << 
+                TREE_ERR("'" << obj->getFullName() << "' cannot be dragged out of '" <<
                     parentItem->object()->getObject()->getFullName() << "'");
                 return;
             }
@@ -2033,7 +2058,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                         continue;
                     FCMD_OBJ_CMD(link,"Label='" << obj->getLinkedObject(true)->Label.getValue() << "'");
                     propPlacement = dynamic_cast<App::PropertyPlacement*>(link->getPropertyByName("Placement"));
-                    if(propPlacement) 
+                    if(propPlacement)
                         propPlacement->setValueIfChanged(Base::Placement(mat));
                     droppedObjs.push_back(link);
                 }else if(info.parent.size()) {
@@ -2071,7 +2096,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     if(!obj || !obj->getNameInDocument())
                         continue;
                     droppedObjs.push_back(obj);
-                    if(propPlacement) 
+                    if(propPlacement)
                         propPlacement->setValueIfChanged(Base::Placement(mat));
                 } else {
                     std::ostringstream ss;
@@ -2088,7 +2113,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     if(res) {
                         propPlacement = dynamic_cast<App::PropertyPlacement*>(
                                 res->getPropertyByName("Placement"));
-                        if(propPlacement) 
+                        if(propPlacement)
                             propPlacement->setValueIfChanged(Base::Placement(mat));
                         droppedObjs.push_back(res);
                     }
@@ -2184,13 +2209,16 @@ void TreeWidget::onReloadDoc() {
     }
 }
 
-void TreeWidget::onCloseDoc() {
+void TreeWidget::onCloseDoc()
+{
     if (!this->contextItem || this->contextItem->type() != DocumentType)
         return;
-    DocumentItem* docitem = static_cast<DocumentItem*>(this->contextItem);
-    App::Document* doc = docitem->document()->getDocument();
     try {
-        Command::doCommand(Command::Doc, "App.closeDocument(\"%s\")", doc->getName());
+        DocumentItem* docitem = static_cast<DocumentItem*>(this->contextItem);
+        Gui::Document* gui = docitem->document();
+        App::Document* doc = gui->getDocument();
+        if (gui->canClose(true, true))
+            Command::doCommand(Command::Doc, "App.closeDocument(\"%s\")", doc->getName());
     } catch (const Base::Exception& e) {
         e.ReportException();
     } catch (std::exception &e) {
@@ -2209,7 +2237,7 @@ void TreeWidget::slotRenameDocument(const Gui::Document& Doc)
 void TreeWidget::slotChangedViewObject(const Gui::ViewProvider& vp, const App::Property &prop)
 {
     if(!App::GetApplication().isRestoring()
-            && vp.isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))  
+            && vp.isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))
     {
         const auto &vpd = static_cast<const ViewProviderDocumentObject&>(vp);
         if(&prop == &vpd.ShowInTree) {
@@ -2325,13 +2353,13 @@ void TreeWidget::onUpdateStatus(void)
     // Checking for new objects
     for(auto &v : NewObjects) {
         auto doc = App::GetApplication().getDocument(v.first.c_str());
-        if(!doc) 
+        if(!doc)
             continue;
         auto gdoc = Application::Instance->getDocument(doc);
-        if(!gdoc) 
+        if(!gdoc)
             continue;
         auto docItem = getDocumentItem(gdoc);
-        if(!docItem) 
+        if(!docItem)
             continue;
         for(auto id : v.second) {
             auto obj = doc->getObjectByID(id);
@@ -2365,7 +2393,7 @@ void TreeWidget::onUpdateStatus(void)
             if(data->itemHidden != itemHidden) {
                 for(auto &data : iter->second) {
                     data->itemHidden = itemHidden;
-                    if(data->docItem->showHidden()) 
+                    if(data->docItem->showHidden())
                         continue;
                     for(auto item : data->items)
                         item->setHidden(itemHidden);
@@ -2510,7 +2538,7 @@ void TreeWidget::onPreSelectTimer() {
     if(!TreeParams::Instance()->PreSelection())
         return;
     auto item = itemAt(viewport()->mapFromGlobal(QCursor::pos()));
-    if(!item || item->type()!=TreeWidget::ObjectType) 
+    if(!item || item->type()!=TreeWidget::ObjectType)
         return;
 
     preselectTime.restart();
@@ -2550,7 +2578,7 @@ void TreeWidget::scrollItemToTop()
 {
     auto doc = Application::Instance->activeDocument();
     for(auto tree : Instances) {
-        if(!tree->isConnectionAttached() || tree->isConnectionBlocked()) 
+        if(!tree->isConnectionAttached() || tree->isConnectionBlocked())
             continue;
 
         tree->_updateStatus(false);
@@ -2585,7 +2613,7 @@ void TreeWidget::scrollItemToTop()
 
 void TreeWidget::expandSelectedItems(TreeItemMode mode)
 {
-    if(!isConnectionAttached()) 
+    if(!isConnectionAttached())
         return;
 
     for(auto item : selectedItems()) {
@@ -2638,7 +2666,7 @@ void TreeWidget::setupText()
 
     this->closeDocAction->setText(tr("Close document"));
     this->closeDocAction->setStatusTip(tr("Close the document"));
-    
+
     this->reloadDocAction->setText(tr("Reload document"));
     this->reloadDocAction->setStatusTip(tr("Reload a partially loaded document"));
 
@@ -2696,7 +2724,7 @@ void TreeWidget::changeEvent(QEvent *e)
 
 void TreeWidget::onItemSelectionChanged ()
 {
-    if (!this->isConnectionAttached() 
+    if (!this->isConnectionAttached()
             || this->isConnectionBlocked()
             || updateBlocked)
         return;
@@ -2833,6 +2861,7 @@ TreePanel::TreePanel(const char *name, QWidget* parent)
             this, SLOT(showEditor()));
 
     this->searchBox = new Gui::ExpressionLineEdit(this,true);
+    static_cast<ExpressionLineEdit*>(this->searchBox)->setExactMatch(Gui::ExpressionParameter::instance()->isExactMatch());
     pLayout->addWidget(this->searchBox);
     this->searchBox->hide();
     this->searchBox->installEventFilter(this);
@@ -2913,24 +2942,19 @@ TreeDockWidget::TreeDockWidget(Gui::Document* pcDocument,QWidget *parent)
   : DockWindow(pcDocument,parent)
 {
     setWindowTitle(tr("Tree view"));
-    this->treeWidget = new TreeWidget("TreeView",this);
-    this->treeWidget->setRootIsDecorated(false);
-    int indent = TreeParams::Instance()->Indentation();
-    if(indent)
-        this->treeWidget->setIndentation(indent);
-
+    auto panel = new TreePanel("TreeView", this);
     QGridLayout* pLayout = new QGridLayout(this);
     pLayout->setSpacing(0);
     pLayout->setMargin (0);
-    pLayout->addWidget(this->treeWidget, 0, 0 );
+    pLayout->addWidget(panel, 0, 0 );
 }
 
 TreeDockWidget::~TreeDockWidget()
 {
 }
 
-void TreeWidget::selectLinkedObject(App::DocumentObject *linked) { 
-    if(!isConnectionAttached() || isConnectionBlocked()) 
+void TreeWidget::selectLinkedObject(App::DocumentObject *linked) {
+    if(!isConnectionAttached() || isConnectionBlocked())
         return;
 
     auto linkedVp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
@@ -2956,7 +2980,7 @@ void TreeWidget::selectLinkedObject(App::DocumentObject *linked) {
         return;
     }
     auto linkedItem = it->second->rootItem;
-    if(!linkedItem) 
+    if(!linkedItem)
         linkedItem = *it->second->items.begin();
 
     if(linkedDoc->showItem(linkedItem,true))
@@ -3097,7 +3121,7 @@ bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
             QTreeWidgetItem *parent, int index, DocumentObjectDataPtr data)
 {
     const char *name;
-    if (!obj.getObject() || 
+    if (!obj.getObject() ||
         !(name=obj.getObject()->getNameInDocument()) ||
         obj.getObject()->testStatus(App::PartialObject))
         return false;
@@ -3163,9 +3187,9 @@ ViewProviderDocumentObject *DocumentItem::getViewProvider(App::DocumentObject *o
     if(!obj || !obj->getNameInDocument()) return 0;
 
     ViewProvider *vp;
-    if(obj->getDocument() == pDocument->getDocument()) 
+    if(obj->getDocument() == pDocument->getDocument())
         vp = pDocument->getViewProvider(obj);
-    else 
+    else
         vp = Application::Instance->getViewProvider(obj);
     if(!vp || !vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))
         return 0;
@@ -3240,24 +3264,23 @@ void TreeWidget::_slotDeleteObject(const Gui::ViewProviderDocumentObject& view, 
         // Check for any child of the deleted object that is not in the tree, and put it
         // under document item.
         for(auto child : data->children) {
-            if(!child || !child->getNameInDocument() || child->getDocument()!=doc)
+            auto childVp = docItem->getViewProvider(child);
+            if (!childVp || child->getDocument() != doc)
                 continue;
             docItem->_ParentMap[child].erase(obj);
             auto cit = docItem->ObjectMap.find(child);
-            if(cit==docItem->ObjectMap.end() || cit->second->items.empty()) {
-                auto vpd = docItem->getViewProvider(child);
-                if(!vpd) continue;
-                if(docItem->createNewItem(*vpd))
+            if (cit==docItem->ObjectMap.end() || cit->second->items.empty()) {
+                if (docItem->createNewItem(*childVp))
                     needUpdate = true;
-            }else {
+            }
+            else {
                 auto childItem = *cit->second->items.begin();
-                if(childItem->requiredAtRoot(false)) {
-                    if(docItem->createNewItem(*childItem->object(),docItem,-1,childItem->myData))
+                if (childItem->requiredAtRoot(false)) {
+                    if (docItem->createNewItem(*childItem->object(),docItem,-1,childItem->myData))
                         needUpdate = true;
                 }
             }
-            if(child->Visibility.getValue() && !docItem->isObjectShowable(child))
-                child->Visibility.setValue(false);
+            childVp->setShowable(docItem->isObjectShowable(child));
         }
         docItem->ObjectMap.erase(obj);
     }
@@ -3335,8 +3358,8 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh, bool del
     bool updated = false;
 
     int i=-1;
-    // iterate through the claimed children, and try to synchronize them with the 
-    // children tree item with the same order of appearance. 
+    // iterate through the claimed children, and try to synchronize them with the
+    // children tree item with the same order of appearance.
     int childCount = item->childCount();
     for(auto child : item->myData->children) {
 
@@ -3363,7 +3386,7 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh, bool del
             }
 
             // Check if the item just changed its policy of whether to remove
-            // children item from the root. 
+            // children item from the root.
             if(item->myData->removeChildrenFromRoot) {
                 if(childItem->myData->rootItem) {
                     assert(childItem != childItem->myData->rootItem);
@@ -3403,7 +3426,7 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh, bool del
         }else {
             DocumentObjectItem *childItem = it->second->rootItem;
             if(item==childItem || item->isChildOfItem(childItem)) {
-                TREE_ERR("Cyclic dependency in " 
+                TREE_ERR("Cyclic dependency in "
                     << item->object()->getObject()->getFullName()
                     << '.' << childItem->object()->getObject()->getFullName());
                 --i;
@@ -3442,7 +3465,7 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh, bool del
         delete ci;
         getTree()->blockConnection(lock);
     }
-    if(updated) 
+    if(updated)
         getTree()->_updateStatus();
 }
 
@@ -3486,7 +3509,7 @@ int DocumentItem::findRootIndex(App::DocumentObject *childObj) {
     count = last-first;
     int pos;
     while (count > 0) {
-        int step = count / 2; 
+        int step = count / 2;
         pos = first + step;
         for(;pos<=last;++pos) {
             auto citem = this->child(pos);
@@ -3555,7 +3578,7 @@ void TreeWidget::slotChangeObject(
     }
 
     auto &s = ChangedObjects[obj];
-    if(prop.testStatus(App::Property::Output) 
+    if(prop.testStatus(App::Property::Output)
             || prop.testStatus(App::Property::NoRecompute))
     {
         s.set(CS_Output);
@@ -3618,7 +3641,7 @@ void TreeWidget::updateChildren(App::DocumentObject *obj,
         if(!selectTimer->isActive())
             onSelectionChanged(SelectionChanges());
 
-        //if the item is in a GeoFeatureGroup we may need to update that too, as the claim children 
+        //if the item is in a GeoFeatureGroup we may need to update that too, as the claim children
         //of the geofeaturegroup depends on what the childs claim
         auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(obj);
         if(grp && !ChangedObjects.count(grp)) {
@@ -3628,8 +3651,8 @@ void TreeWidget::updateChildren(App::DocumentObject *obj,
         }
     }
 }
-    
-void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& obj, 
+
+void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& obj,
     const Gui::HighlightMode& high, bool set, const App::DocumentObject *parent, const char *subname)
 {
     getTree()->_updateStatus(false);
@@ -3697,7 +3720,7 @@ static void saveExpandedItem(Base::Writer &writer, const QTreeWidgetItem *item) 
             continue;
         auto obj = static_cast<const DocumentObjectItem*>(citem)->object()->getObject();
         if(obj->getNameInDocument()) {
-            writer.Stream() << writer.ind() << "<Expand name=\"" 
+            writer.Stream() << writer.ind() << "<Expand name=\""
                 << obj->getNameInDocument() << "\"";
             saveExpandedItem(writer,static_cast<const DocumentObjectItem*>(citem));
         }
@@ -3782,9 +3805,9 @@ void DocumentItem::slotExpandObject (const Gui::ViewProviderDocumentObject& obj,
                 break;
             }
             // fall through
-        case TreeItemMode::ExpandItem: 
+        case TreeItemMode::ExpandItem:
             if(!parent) {
-                if(item->parent()->isExpanded()) 
+                if(item->parent()->isExpanded())
                     item->setExpanded(true);
             }else{
                 App::DocumentObject *topParent = 0;
@@ -3824,7 +3847,7 @@ void DocumentItem::slotScrollToObject(const Gui::ViewProviderDocumentObject& obj
     if(!obj.getObject() || !obj.getObject()->getNameInDocument())
         return;
     auto it = ObjectMap.find(obj.getObject());
-    if(it == ObjectMap.end() || it->second->items.empty()) 
+    if(it == ObjectMap.end() || it->second->items.empty())
         return;
     auto item = it->second->rootItem;
     if(!item)
@@ -3842,7 +3865,7 @@ void DocumentItem::slotRecomputedObject(const App::DocumentObject &obj) {
 void DocumentItem::slotRecomputed(const App::Document &, const std::vector<App::DocumentObject*> &objs) {
     auto tree = getTree();
     for(auto obj : objs) {
-        if(!obj->isValid()) 
+        if(!obj->isValid())
             tree->ChangedObjects[obj].set(TreeWidget::CS_Error);
     }
     if(tree->ChangedObjects.size())
@@ -3910,7 +3933,7 @@ void DocumentItem::updateSelection(QTreeWidgetItem *ti, bool unselect) {
         auto child = ti->child(i);
         if(child && child->type()==TreeWidget::ObjectType) {
             auto childItem = static_cast<DocumentObjectItem*>(child);
-            if(unselect) 
+            if(unselect)
                 childItem->setSelected(false);
             updateItemSelection(childItem);
             if(unselect && childItem->isGroup()) {
@@ -3921,7 +3944,7 @@ void DocumentItem::updateSelection(QTreeWidgetItem *ti, bool unselect) {
             }
         }
     }
-        
+
     if(unselect) return;
     for(int i=0,count=ti->childCount();i<count;++i)
         updateSelection(ti->child(i));
@@ -3929,7 +3952,7 @@ void DocumentItem::updateSelection(QTreeWidgetItem *ti, bool unselect) {
 
 void DocumentItem::updateItemSelection(DocumentObjectItem *item) {
     bool selected = item->isSelected();
-    if((selected && item->selected>0) || (!selected && !item->selected)) 
+    if((selected && item->selected>0) || (!selected && !item->selected))
         return;
     if(item->selected != -1)
         item->mySubs.clear();
@@ -3979,7 +4002,7 @@ void DocumentItem::updateItemSelection(DocumentObjectItem *item) {
     if(selected && item->isGroup()) {
         // Same reasoning as above. When a group item is newly selected, We
         // choose to force unselect all its children to void messing up the
-        // selection highlight 
+        // selection highlight
         //
         // UPDATE: same as above, child and parent selection is now re-enabled.
         //
@@ -4047,14 +4070,14 @@ App::DocumentObject *DocumentItem::getTopParent(App::DocumentObject *obj, std::s
         return obj;
     }
     ss << obj->getNameInDocument() << '.' << subname;
-    FC_LOG("Subname correction " << obj->getFullName() << '.' << subname 
+    FC_LOG("Subname correction " << obj->getFullName() << '.' << subname
             << " -> " << topParent->getFullName() << '.' << ss.str());
     subname = ss.str();
     return topParent;
 }
 
 DocumentObjectItem *DocumentItem::findItemByObject(
-        bool sync, App::DocumentObject *obj, const char *subname, bool select) 
+        bool sync, App::DocumentObject *obj, const char *subname, bool select)
 {
     if(!subname)
         subname = "";
@@ -4064,14 +4087,14 @@ DocumentObjectItem *DocumentItem::findItemByObject(
         return 0;
 
     // prefer top level item of this object
-    if(it->second->rootItem) 
+    if(it->second->rootItem)
         return findItem(sync,it->second->rootItem,subname,select);
 
     for(auto item : it->second->items) {
         // non group object do not provide a coordinate system, hence its
         // claimed child is still in the global coordinate space, so the
         // child can still be considered a top level object
-        if(!item->isParentGroup()) 
+        if(!item->isParentGroup())
             return findItem(sync,item,subname,select);
     }
 
@@ -4092,9 +4115,9 @@ DocumentObjectItem *DocumentItem::findItemByObject(
 }
 
 DocumentObjectItem *DocumentItem::findItem(
-        bool sync, DocumentObjectItem *item, const char *subname, bool select) 
+        bool sync, DocumentObjectItem *item, const char *subname, bool select)
 {
-    if(item->isHidden()) 
+    if(item->isHidden())
         item->setHidden(false);
 
     if(!subname || *subname==0) {
@@ -4110,7 +4133,7 @@ DocumentObjectItem *DocumentItem::findItem(
     // try to find the next level object name
     const char *nextsub = 0;
     const char *dot = 0;
-    if((dot=strchr(subname,'.'))) 
+    if((dot=strchr(subname,'.')))
         nextsub = dot+1;
     else {
         if(select) {
@@ -4126,7 +4149,7 @@ DocumentObjectItem *DocumentItem::findItem(
     auto subObj = obj->getSubObject(name.c_str());
     if(!subObj || subObj==obj) {
         if(!subObj && !getTree()->searchDoc)
-            TREE_WARN("sub object not found " << item->getName() << '.' << name.c_str());
+            TREE_LOG("sub object not found " << item->getName() << '.' << name.c_str());
         if(select) {
             item->selected += 2;
             if(std::find(item->mySubs.begin(),item->mySubs.end(),subname)==item->mySubs.end())
@@ -4149,7 +4172,7 @@ DocumentObjectItem *DocumentItem::findItem(
         if(!ti || ti->type()!=TreeWidget::ObjectType) continue;
         auto child = static_cast<DocumentObjectItem*>(ti);
 
-        if(child->object()->getObject() == subObj) 
+        if(child->object()->getObject() == subObj)
             return findItem(sync,child,nextsub,select);
     }
 
@@ -4227,7 +4250,7 @@ void DocumentItem::selectItems(SelectionReason reason) {
             newSelect = oldSelect;
         else
             getTree()->syncView(newSelect->object());
-        if(newSelect) 
+        if(newSelect)
             getTree()->scrollToItem(newSelect);
     }
 }
@@ -4261,7 +4284,7 @@ void DocumentItem::selectAllInstances(const ViewProviderDocumentObject &vpd) {
     // We are trying to select all items corresponding to a given view
     // provider, i.e. all appearance of the object inside all its parent items
     //
-    // Build a map of object to all its parent    
+    // Build a map of object to all its parent
     for(auto &v : ObjectMap) {
         if(v.second->viewObject == &vpd) continue;
         for(auto child : v.second->viewObject->claimChildren()) {
@@ -4303,8 +4326,8 @@ bool DocumentItem::showItem(DocumentObjectItem *item, bool select, bool force) {
             return false;
         item->setHidden(false);
     }
-    
-    if(parent->type()==TreeWidget::ObjectType) { 
+
+    if(parent->type()==TreeWidget::ObjectType) {
         if(!showItem(static_cast<DocumentObjectItem*>(parent),false))
             return false;
         auto pitem = static_cast<DocumentObjectItem*>(parent);
@@ -4325,7 +4348,7 @@ void DocumentItem::updateItemsVisibility(QTreeWidgetItem *item, bool show) {
         auto objitem = static_cast<DocumentObjectItem*>(item);
         objitem->setHidden(!show && !objitem->object()->showInTree());
     }
-    for(int i=0;i<item->childCount();++i) 
+    for(int i=0;i<item->childCount();++i)
         updateItemsVisibility(item->child(i),show);
 }
 
@@ -4461,7 +4484,7 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon &icon1, QIcon &icon2
         Timing(testStatus1);
         auto parent = parentItem->object()->getObject();
         auto ext = parent->getExtensionByType<App::GroupExtension>(true,false);
-        if(!ext) 
+        if(!ext)
             visible = parent->isElementVisible(pObject->getNameInDocument());
         else {
             // We are dealing with a plain group. It has special handling when
@@ -4710,7 +4733,7 @@ bool DocumentObjectItem::isChildOfItem(DocumentObjectItem* item)
 }
 
 bool DocumentObjectItem::requiredAtRoot(bool excludeSelf) const{
-    if(myData->rootItem || object()->getDocument()!=getOwnerDocument()->document()) 
+    if(myData->rootItem || object()->getDocument()!=getOwnerDocument()->document())
         return false;
     bool checkMap = true;
     for(auto item : myData->items) {
@@ -4728,7 +4751,7 @@ bool DocumentObjectItem::requiredAtRoot(bool excludeSelf) const{
             // still being referred to by some parent item that is not expanded
             // yet. So, we force populate at least one item of the parent
             // object to make sure that there is at least one corresponding
-            // item for each object. 
+            // item for each object.
             //
             // PS: practically speaking, it won't hurt much to delete all the
             // items, because the item will be auto created once the user
@@ -4794,10 +4817,10 @@ bool DocumentItem::isObjectShowable(App::DocumentObject *obj) {
     if(itParents == _ParentMap.end() || itParents->second.empty())
         return true;
     bool showable = true;
-    for(auto parent : itParents->second) {  
+    for(auto parent : itParents->second) {
         if(parent->getDocument() != obj->getDocument())
             continue;
-        if(!parent->hasChildElement() 
+        if(!parent->hasChildElement()
                 && parent->getLinkedObject(false)==parent)
             return true;
         showable = false;
@@ -4863,7 +4886,7 @@ int DocumentObjectItem::getSubName(std::ostringstream &str, App::DocumentObject 
 }
 
 App::DocumentObject *DocumentObjectItem::getFullSubName(
-        std::ostringstream &str, DocumentObjectItem *parent) const 
+        std::ostringstream &str, DocumentObjectItem *parent) const
 {
     auto pi = getParentItem();
     if(this==parent || !pi || (!parent && !pi->isGroup()))

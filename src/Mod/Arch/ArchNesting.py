@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 #***************************************************************************
 #*   Copyright (c) 2017 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
@@ -431,7 +430,7 @@ class Nester:
                             #for i,p in enumerate(faceverts):
                             #    Draft.makeText([str(i)],point=p)
                             return
-                            
+
                         if pol.isValid():
                             nofitpol.append(pol)
                             #Part.show(pol)

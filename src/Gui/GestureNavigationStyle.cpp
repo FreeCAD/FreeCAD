@@ -319,12 +319,12 @@ public:
                 break;
                 case SoKeyboardEvent::PAGE_UP:
                     if(!press){
-                        ns.doZoom(ns.viewer->getSoRenderManager()->getCamera(), true, posn);
+                        ns.doZoom(ns.viewer->getSoRenderManager()->getCamera(), ns.getDelta(), posn);
                     }
                 break;
                 case SoKeyboardEvent::PAGE_DOWN:
                     if(!press){
-                        ns.doZoom(ns.viewer->getSoRenderManager()->getCamera(), false, posn);
+                        ns.doZoom(ns.viewer->getSoRenderManager()->getCamera(), -ns.getDelta(), posn);
                     }
                 break;
                 default:

@@ -6,12 +6,12 @@
     <message>
       <location filename="../../InitGui.py" line="44"/>
       <source>Plot edition tools</source>
-      <translation>Алати за уређивање диаграма</translation>
+      <translation>Алати за уређивање дијаграма</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="47"/>
       <source>Plot</source>
-      <translation>Диаграм</translation>
+      <translation>Дијаграм</translation>
     </message>
   </context>
   <context>
@@ -344,7 +344,7 @@
     <message>
       <location filename="../../plotPositions/TaskPanel.py" line="135"/>
       <source>List of modifiable items</source>
-      <translation type="unfinished">List of modifiable items</translation>
+      <translation>Лиcта променљивих cтавки</translation>
     </message>
   </context>
   <context>
@@ -445,7 +445,7 @@
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="158"/>
       <source>Remove series</source>
-      <translation type="unfinished">Remove series</translation>
+      <translation>Уклони cерије</translation>
     </message>
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="183"/>
@@ -455,7 +455,7 @@
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="213"/>
       <source>Removes this series</source>
-      <translation type="unfinished">Removes this series</translation>
+      <translation>Уклања ову cерију</translation>
     </message>
   </context>
 </TS>

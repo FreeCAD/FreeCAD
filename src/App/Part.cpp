@@ -68,9 +68,9 @@ Part::~Part(void)
 }
 
 App::Part *Part::getPartOfObject (const DocumentObject* obj) {
-    
-    //as a Part is a geofeaturegroup it must directly link to all objects it contains, even 
-    //if they are in additional groups etc.
+
+    // as a Part is a geofeaturegroup it must directly link to all
+    // objects it contains, even if they are in additional groups etc.
     auto list = obj->getInList();
     for (auto obj : list) {
         if(obj->isDerivedFrom(App::Part::getClassTypeId()))

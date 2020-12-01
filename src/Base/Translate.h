@@ -19,7 +19,7 @@
  *   Fifth Floor, Boston, MA  02110-1301, USA                              *
  *                                                                         *
  ***************************************************************************/
- 
+
 
 #ifndef BASE_TRANSLATE_H
 #define BASE_TRANSLATE_H
@@ -42,6 +42,6 @@ private:
     Py::Object trNoop(const Py::Tuple& args);
 };
 
-} // namespace Base 
+} // namespace Base
 
 #endif // BASE_TRANSLATE_H

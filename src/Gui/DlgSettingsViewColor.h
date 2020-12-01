@@ -37,7 +37,7 @@ class Ui_DlgSettingsViewColor;
  * @author Werner Mayer
  */
 class DlgSettingsViewColor : public PreferencePage
-{ 
+{
   Q_OBJECT
 
 public:

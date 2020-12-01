@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2020 Wandererfan <wandererfan@gmail.com                 *
+ *   Copyright (c) 2020 WandererFan <wandererfan@gmail.com                 *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -80,6 +80,7 @@ TaskCosmeticLine::TaskCosmeticLine(TechDraw::DrawViewPart* partFeat,
     ui(new Ui_TaskCosmeticLine),
     m_partFeat(partFeat),
     m_edgeName(edgeName),
+    m_ce(nullptr),
     m_saveCE(nullptr),
     m_createMode(false)
 {
@@ -106,6 +107,7 @@ TaskCosmeticLine::TaskCosmeticLine(TechDraw::DrawViewPart* partFeat,
                                    std::vector<bool> is3d) :
     ui(new Ui_TaskCosmeticLine),
     m_partFeat(partFeat),
+    m_ce(nullptr),
     m_saveCE(nullptr),
     m_points(points),
     m_is3d(is3d),
@@ -211,14 +213,14 @@ void TaskCosmeticLine::createCosmeticLine(void)
     y = ui->qsby2->value().getValue();
     z = ui->qsbz2->value().getValue();
     Base::Vector3d p1(x, y, z);
-    
+
     Base::Vector3d centroid = m_partFeat->getOriginalCentroid();
 
     if (ui->rb3d1->isChecked()) {
         p0 = p0 - centroid;
         p0 = DrawUtil::invertY(m_partFeat->projectPoint(p0));
-    } 
-    
+    }
+
     if (ui->rb3d2->isChecked()) {
         p1 = p1 - centroid;
         p1 = DrawUtil::invertY(m_partFeat->projectPoint(p1));
@@ -267,7 +269,7 @@ bool TaskCosmeticLine::accept()
         m_partFeat->requestPaint();
     } else {
         //update mode
-        Gui::Command::openCommand("Update CosmeticLine");
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update CosmeticLine"));
         updateCosmeticLine();
         m_partFeat->refreshCEGeoms();
         m_partFeat->requestPaint();
@@ -282,7 +284,7 @@ bool TaskCosmeticLine::accept()
 
 bool TaskCosmeticLine::reject()
 {
-    //there's nothing to do. 
+    //there's nothing to do.
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
     return false;
 }

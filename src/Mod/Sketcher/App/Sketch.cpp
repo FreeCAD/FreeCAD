@@ -321,7 +321,7 @@ int Sketch::addGeometry(const Part::Geometry *geo, bool fixed)
     if (geo->getTypeId() == GeomPoint::getClassTypeId()) { // add a point
         const GeomPoint *point = static_cast<const GeomPoint*>(geo);
         // create the definition struct for that geom
-        if( point->Construction == false ) {
+        if( point->getConstruction() == false ) {
             return addPoint(*point, fixed);
         }
         else {
@@ -1047,7 +1047,7 @@ std::vector<Part::Geometry *> Sketch::extractGeometry(bool withConstructionEleme
     std::vector<Part::Geometry *> temp;
     temp.reserve(Geoms.size());
     for (std::vector<GeoDef>::const_iterator it=Geoms.begin(); it != Geoms.end(); ++it) {
-        if ((!it->external || withExternalElements) && (!it->geo->Construction || withConstructionElements))
+        if ((!it->external || withExternalElements) && (!it->geo->getConstruction() || withConstructionElements))
             temp.push_back(it->geo->clone());
     }
 
@@ -2899,7 +2899,7 @@ bool Sketch::updateGeometry()
             if (it->type == Point) {
                 GeomPoint *point = static_cast<GeomPoint*>(it->geo);
 
-                if(!point->Construction) {
+                if(!point->getConstruction()) {
                     point->setPoint(Vector3d(*Points[it->startPointId].x,
                                          *Points[it->startPointId].y,
                                          0.0)
@@ -3051,7 +3051,7 @@ bool Sketch::updateGeometry()
                         if (Geoms[*it5].type == Point) {
                             GeomPoint *point = static_cast<GeomPoint*>(Geoms[*it5].geo);
 
-                            if(point->Construction) {
+                            if(point->getConstruction()) {
                                 point->setPoint(bsp->pointAtParameter(knots[index]));
                             }
                         }
@@ -3802,7 +3802,7 @@ TopoShape Sketch::toShape(void) const
 
     // collecting all (non constructive and non external) edges out of the sketch
     for (;it!=Geoms.end();++it) {
-        if (!it->external && !it->geo->Construction && (it->type != Point)) {
+        if (!it->external && !it->geo->getConstruction() && (it->type != Point)) {
             edge_list.push_back(TopoDS::Edge(it->geo->toShape()));
         }
     }

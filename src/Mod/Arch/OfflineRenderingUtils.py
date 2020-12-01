@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 #***************************************************************************
 #*   Copyright (c) 2019 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
@@ -249,7 +248,7 @@ def saveDiffuseColor(colorlist):
         else:
             return bytes((i,))
     # if too many colors, bail out and use only the first one for now...
-    if len(colorlist) > 254: 
+    if len(colorlist) > 254:
         colorlist = colorlist[:1]
         print("debug: too many colors, reducing")
     output = tochr(len(colorlist))+3*tochr(0)
@@ -365,8 +364,8 @@ def render(outputfile,scene=None,camera=None,zoom=False,width=400,height=300,bac
         # create a default camera if none was given
         camera = coin.SoPerspectiveCamera()
         cameraRotation = coin.SbRotation.identity()
-        cameraRotation *= coin.SbRotation(coin.SbVec3f(1,0,0),-0.4)
-        cameraRotation *= coin.SbRotation(coin.SbVec3f(0,1,0), 0.4)
+        cameraRotation *= coin.SbRotation(coin.SbVec3f(1,0,0),1.0)
+        cameraRotation *= coin.SbRotation(coin.SbVec3f(0,0,1),0.4)
         camera.orientation = cameraRotation
         # make sure all objects get in the view later
         zoom = True
@@ -409,7 +408,7 @@ def buildScene(objects,colors=None):
     root = coin.SoSeparator()
     for o in objects:
         buf = None
-        if hasattr(o,'Shape'):
+        if hasattr(o,'Shape') and o.Shape and (not o.Shape.isNull()):
             # writeInventor of shapes needs tessellation values
             buf = o.Shape.writeInventor(2,0.01)
         elif o.isDerivedFrom("Mesh::Feature"):
@@ -444,7 +443,7 @@ def getCamera(filepath):
     guidata = getGuiData(filepath)
     if "GuiCameraSettings" in guidata:
         return guidata["GuiCameraSettings"].strip()
-    print("no camera found in file")
+    print("No camera found in file")
     return None
 
 

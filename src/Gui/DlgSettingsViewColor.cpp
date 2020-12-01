@@ -35,8 +35,8 @@ using namespace Gui::Dialog;
 /* TRANSLATOR Gui::Dialog::DlgSettingsViewColor */
 
 /**
- *  Constructs a DlgSettingsViewColor which is a child of 'parent', with the 
- *  name 'name' and widget flags set to 'f' 
+ *  Constructs a DlgSettingsViewColor which is a child of 'parent', with the
+ *  name 'name' and widget flags set to 'f'
  */
 DlgSettingsViewColor::DlgSettingsViewColor(QWidget* parent)
     : PreferencePage(parent)
@@ -47,7 +47,7 @@ DlgSettingsViewColor::DlgSettingsViewColor(QWidget* parent)
     ui->SelectionColor->setEnabled(ui->checkBoxSelection->isChecked());
 }
 
-/** 
+/**
  *  Destroys the object and frees any allocated resources
  */
 DlgSettingsViewColor::~DlgSettingsViewColor()
@@ -68,7 +68,6 @@ void DlgSettingsViewColor::saveSettings()
     ui->checkBoxSelection->onSave();
     ui->HighlightColor->onSave();
     ui->SelectionColor->onSave();
-    ui->spinPickRadius->onSave();
     ui->TreeEditColor->onSave();
     ui->TreeActiveColor->onSave();
 }
@@ -86,7 +85,6 @@ void DlgSettingsViewColor::loadSettings()
     ui->checkBoxSelection->onRestore();
     ui->HighlightColor->onRestore();
     ui->SelectionColor->onRestore();
-    ui->spinPickRadius->onRestore();
     ui->TreeEditColor->onRestore();
     ui->TreeActiveColor->onRestore();
 }

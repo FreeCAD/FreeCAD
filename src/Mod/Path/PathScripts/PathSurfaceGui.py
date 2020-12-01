@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -32,7 +30,7 @@ from PySide import QtCore
 
 __title__ = "Path Surface Operation UI"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 __doc__ = "Surface operation page controller and command implementation."
 
 
@@ -69,7 +67,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         The requirement is that the enumeration lists must
             be in the same order in both the opPropertyEnumerations() method
             and the UI panel QComboBox list.
-        Another step to ensure sychronization of the two lists is to
+        Another step to ensure synchronization of the two lists is to
             populate the list dynamically in this Gui module in `initPage()`
             using the property enumerations list when loading the UI panel.
             This type of dynamic combobox population is done for the
@@ -101,6 +99,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         if obj.UseStartPoint != self.form.useStartPoint.isChecked():
             obj.UseStartPoint = self.form.useStartPoint.isChecked()
+
+        if obj.BoundaryEnforcement != self.form.boundaryEnforcement.isChecked():
+            obj.BoundaryEnforcement = self.form.boundaryEnforcement.isChecked()
 
         if obj.OptimizeLinearPaths != self.form.optimizeEnabled.isChecked():
             obj.OptimizeLinearPaths = self.form.optimizeEnabled.isChecked()
@@ -144,6 +145,11 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         else:
             self.form.useStartPoint.setCheckState(QtCore.Qt.Unchecked)
 
+        if obj.BoundaryEnforcement:
+            self.form.boundaryEnforcement.setCheckState(QtCore.Qt.Checked)
+        else:
+            self.form.boundaryEnforcement.setCheckState(QtCore.Qt.Unchecked)
+
         if obj.OptimizeLinearPaths:
             self.form.optimizeEnabled.setCheckState(QtCore.Qt.Checked)
         else:
@@ -174,6 +180,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.stepOver.editingFinished)
         signals.append(self.form.sampleInterval.editingFinished)
         signals.append(self.form.useStartPoint.stateChanged)
+        signals.append(self.form.boundaryEnforcement.stateChanged)
         signals.append(self.form.optimizeEnabled.stateChanged)
         signals.append(self.form.optimizeStepOverTransitions.stateChanged)
 

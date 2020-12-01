@@ -132,6 +132,7 @@ DrawViewPart::DrawViewPart(void) :
     static const char *group = "Projection";
     static const char *sgroup = "HLR Parameters";
     nowUnsetting = false;
+    m_handleFaces = false;
 
     CosmeticExtension::initExtension(this);
 

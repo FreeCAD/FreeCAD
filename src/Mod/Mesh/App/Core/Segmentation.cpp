@@ -556,8 +556,10 @@ void MeshSegmentAlgorithm::FindSegments(std::vector<MeshSurfaceSegmentPtr>& segm
         cAlgo.ResetFacetsFlag(resetVisited, MeshCore::MeshFacet::VISIT);
         resetVisited.clear();
 
-        iCur = std::find_if(iBeg, iEnd, std::bind2nd(MeshCore::MeshIsNotFlag<MeshCore::MeshFacet>(),
-            MeshCore::MeshFacet::VISIT));
+        MeshCore::MeshIsNotFlag<MeshCore::MeshFacet> flag;
+        iCur = std::find_if(iBeg, iEnd, [flag](const MeshFacet& f) {
+            return flag(f, MeshFacet::VISIT);
+        });
         if (iCur < iEnd)
             startFacet = iCur - iBeg;
         else
@@ -580,8 +582,9 @@ void MeshSegmentAlgorithm::FindSegments(std::vector<MeshSurfaceSegmentPtr>& segm
             }
 
             // search for the next start facet
-            iCur = std::find_if(iCur, iEnd, std::bind2nd(MeshCore::MeshIsNotFlag<MeshCore::MeshFacet>(),
-                MeshCore::MeshFacet::VISIT));
+            iCur = std::find_if(iCur, iEnd, [flag](const MeshFacet& f) {
+                return flag(f, MeshFacet::VISIT);
+            });
             if (iCur < iEnd)
                 startFacet = iCur - iBeg;
             else

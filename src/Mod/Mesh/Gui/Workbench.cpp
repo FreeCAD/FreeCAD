@@ -120,9 +120,9 @@ public:
             numPoints->setText(QString::number(countPoints));
             numFacets->setText(QString::number(countFacets));
             numMin->setText(QString::fromLatin1("X: %1\tY: %2\tZ: %3")
-                .arg(bbox.MinX).arg(bbox.MinX).arg(bbox.MinX));
+                .arg(bbox.MinX).arg(bbox.MinY).arg(bbox.MinZ));
             numMax->setText(QString::fromLatin1("X: %1\tY: %2\tZ: %3")
-                .arg(bbox.MaxX).arg(bbox.MaxX).arg(bbox.MaxX));
+                .arg(bbox.MaxX).arg(bbox.MaxY).arg(bbox.MaxZ));
         }
         else {
             numPoints->setText(QString::fromLatin1(""));
@@ -226,6 +226,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << cutting
           << "Separator"
           << "Mesh_Merge"
+          << "Mesh_SplitComponents"
           << "Separator";
     Gui::CommandManager& mgr = Gui::Application::Instance->commandManager();
     if (mgr.getCommandByName("MeshPart_CreateFlatMesh"))

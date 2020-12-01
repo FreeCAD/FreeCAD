@@ -196,10 +196,15 @@ void TaskMultiTransformParameters::onFeatureDeleted(void)
 {
     PartDesign::Transformed* pcTransformed = getObject();
     std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
-    originals.erase(originals.begin() + ui->listWidgetFeatures->currentRow());
+    int currentRow = ui->listWidgetFeatures->currentRow();
+    if (currentRow < 0){
+        Base::Console().Error("PartDesign Multitransform: No feature selected for removing.\n");
+        return; //no current row selected
+    }
+    originals.erase(originals.begin() + currentRow);
     setupTransaction();
     pcTransformed->Originals.setValues(originals);
-    ui->listWidgetFeatures->model()->removeRow(ui->listWidgetFeatures->currentRow());
+    ui->listWidgetFeatures->model()->removeRow(currentRow);
     recomputeFeature();
 }
 
@@ -283,7 +288,7 @@ void TaskMultiTransformParameters::onTransformAddMirrored()
     auto pcActiveBody = PartDesignGui::getBody(false);
     if(!pcActiveBody) return;
 
-    Gui::Command::openCommand("Mirrored");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Mirrored"));
     FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::Mirrored','"<<newFeatName<<"')");
     auto Feat = pcActiveBody->getDocument()->getObject(newFeatName.c_str());
     //Gui::Command::updateActive();
@@ -303,7 +308,7 @@ void TaskMultiTransformParameters::onTransformAddLinearPattern()
     auto pcActiveBody = PartDesignGui::getBody(false);
     if(!pcActiveBody) return;
 
-    Gui::Command::openCommand("Make LinearPattern");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Make LinearPattern"));
     FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::LinearPattern','"<<newFeatName<<"')");
     auto Feat = pcActiveBody->getDocument()->getObject(newFeatName.c_str());
     //Gui::Command::updateActive();
@@ -333,7 +338,7 @@ void TaskMultiTransformParameters::onTransformAddPolarPattern()
     auto pcActiveBody = PartDesignGui::getBody(false);
     if(!pcActiveBody) return;
 
-    Gui::Command::openCommand("PolarPattern");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "PolarPattern"));
     FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::PolarPattern','"<<newFeatName<<"')");
     auto Feat = pcActiveBody->getDocument()->getObject(newFeatName.c_str());
     //Gui::Command::updateActive();
@@ -353,7 +358,7 @@ void TaskMultiTransformParameters::onTransformAddScaled()
     auto pcActiveBody = PartDesignGui::getBody(false);
     if(!pcActiveBody) return;
 
-    Gui::Command::openCommand("Scaled");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Scaled"));
     FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::Scaled','"<<newFeatName<<"')");
     auto Feat = pcActiveBody->getDocument()->getObject(newFeatName.c_str());
     //Gui::Command::updateActive();

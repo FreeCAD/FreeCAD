@@ -377,7 +377,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 self.working_dir
             )
             self.inp_file_name = inp_writer.write_calculix_input_file()
-        except:
+        except Exception:
             FreeCAD.Console.PrintError(
                 "Unexpected error when writing CalculiX input file: {}\n"
                 .format(sys.exc_info()[0])

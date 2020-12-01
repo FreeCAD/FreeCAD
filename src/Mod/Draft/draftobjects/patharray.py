@@ -70,6 +70,7 @@ import lazy_loader.lazy_loader as lz
 from draftutils.messages import _msg, _wrn, _err
 from draftutils.translate import _tr
 
+from draftobjects.base import DraftObject
 from draftobjects.draftlink import DraftLink
 
 # Delay import of module until first use because it is heavy
@@ -443,7 +444,10 @@ def placements_on_path(shapeRotation, pathwire, count, xlate, align,
     Each copy will be distributed evenly.
     """
     closedpath = DraftGeomUtils.isReallyClosed(pathwire)
-    normal = DraftGeomUtils.getNormal(pathwire)
+    normal = DraftGeomUtils.get_normal(pathwire)
+    # for backward compatibility with previous getNormal implementation
+    if normal == None:
+        normal = App.Vector(0, 0, 1)
 
     if forceNormal and normalOverride:
         normal = normalOverride

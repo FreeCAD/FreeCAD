@@ -65,6 +65,20 @@
                 <UserDocu>recompute(recursive=False): Recomputes this object</UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="getStatusString" const="True">
+            <Documentation>
+                <UserDocu>Returns the status of the object as string.
+If the object is invalid its error description will be returned.
+If the object is valid but touched then &apos;Touched&apos; will be returned,
+&apos;Valid&apos; otherwise.
+</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="isValid" const="True">
+            <Documentation>
+                <UserDocu>Returns True if the object is valid, False otherwise</UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="getSubObject" Keyword="true">
             <Documentation>
                 <UserDocu>

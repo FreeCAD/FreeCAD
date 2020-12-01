@@ -141,5 +141,5 @@ PyObject *ComplexGeoDataPy::getCustomAttributes(const char* /*attr*/) const
 
 int ComplexGeoDataPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

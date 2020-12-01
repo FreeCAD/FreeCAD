@@ -39,7 +39,9 @@
 
 #ifdef FC_OS_WIN32
 #define WIN32_LEAN_AND_MEAN
+#ifndef NOMINMAX
 #define NOMINMAX
+#endif
 #endif
 
 #ifdef _PreComp_
@@ -61,7 +63,7 @@
 #include <iostream>
 #include <sstream>
 
-// STL 
+// STL
 #include <string>
 #include <list>
 #include <map>

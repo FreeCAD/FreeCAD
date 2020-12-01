@@ -168,12 +168,17 @@ const SoEvent *
 MouseP::mouseWheelEvent(QWheelEvent * event)
 {
   PUBLIC(this)->setModifiers(this->wheel, event);
+#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+  QPoint pnt = event->position().toPoint();
+  SbVec2s pos(pnt.x(), PUBLIC(this)->windowsize[1] - pnt.y() - 1);
+#else
   SbVec2s pos(event->pos().x(), PUBLIC(this)->windowsize[1] - event->pos().y() - 1);
+#endif
   // the following corrects for high-dpi displays (e.g. mac retina)
 #if QT_VERSION >= 0x050000
   pos *= publ->quarter->devicePixelRatio();
 #endif
-  this->location2->setPosition(pos); //I don't know why location2 is assigned here, I assumend it important  --DeepSOIC
+  this->location2->setPosition(pos); //I don't know why location2 is assigned here, I assumed it important  --DeepSOIC
   this->wheel->setPosition(pos);
 
   // QWheelEvent::delta() returns the distance that the wheel is
@@ -182,7 +187,11 @@ MouseP::mouseWheelEvent(QWheelEvent * event)
   // value indicates that the wheel was rotated backwards toward the
   // user. A typical wheel click is 120, but values coming from touchpad
   // can be a lot lower
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+  this->wheel->setDelta(event->angleDelta().y());
+#else
   this->wheel->setDelta(event->delta());
+#endif
 
   return this->wheel;
 }

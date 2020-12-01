@@ -107,12 +107,16 @@ QGIDatumLabel::QGIDatumLabel()
     setFiltersChildEvents(true);
 
     m_dimText = new QGCustomText();
+    m_dimText->setTightBounding(true);
     m_dimText->setParentItem(this);
     m_tolTextOver = new QGCustomText();
+    m_tolTextOver->setTightBounding(true);
     m_tolTextOver->setParentItem(this);
     m_tolTextUnder = new QGCustomText();
+    m_tolTextUnder->setTightBounding(true);
     m_tolTextUnder->setParentItem(this);
     m_unitText = new QGCustomText();
+    m_unitText->setTightBounding(true);
     m_unitText->setParentItem(this);
 
     m_ctrl = false;
@@ -234,6 +238,15 @@ void QGIDatumLabel::setPosFromCenter(const double &xCenter, const double &yCente
     //set label's Qt position(top,left) given boundingRect center point
     setPos(xCenter - m_dimText->boundingRect().width() / 2., yCenter - m_dimText->boundingRect().height() / 2.);
 
+    QString uText = m_unitText->toPlainText();
+    if ( (uText.size() > 0) &&
+         (uText.at(0) != QChar::fromLatin1(' ')) ) {
+        QString vText = m_dimText->toPlainText();
+        vText = vText + uText;
+        m_dimText->setPlainText(vText);
+        m_unitText->setPlainText(QString());
+    }
+
     QRectF labelBox = m_dimText->boundingRect();
     double right = labelBox.right();
     double top   = labelBox.top();
@@ -257,9 +270,11 @@ void QGIDatumLabel::setPosFromCenter(const double &xCenter, const double &yCente
     }
     double tolRight = unitRight + width;
 
-    m_tolTextOver->justifyRightAt(tolRight, middle, false);
-    m_tolTextUnder->justifyRightAt(tolRight, middle + underBox.height(), false);
-
+    // Adjust for difference in tight and original bounding box sizes, note the y-coord down system
+    QPointF tol_adj = m_tolTextOver->tightBoundingAdjust();
+    m_tolTextOver->justifyRightAt(tolRight + tol_adj.x(), middle - tol_adj.y(), false);
+    tol_adj = m_tolTextUnder->tightBoundingAdjust();
+    m_tolTextUnder->justifyRightAt(tolRight + tol_adj.x(), middle + overBox.height() - tol_adj.y(), false);
 }
 
 void QGIDatumLabel::setLabelCenter()
@@ -513,6 +528,7 @@ void QGIViewDimension::setGroupSelection(bool b)
 
 void QGIViewDimension::select(bool state)
 {
+    Q_UNUSED(state)
 //    setSelected(state);
 //    draw();
 }
@@ -624,7 +640,6 @@ void QGIViewDimension::updateDim()
             unitText  = QString::fromUtf8(dim->getFormatedValue(2).c_str()); //just the unit
         }
     }
-    
     QFont font = datumLabel->getFont();
     font.setFamily(QString::fromUtf8(vp->Font.getValue()));
     font.setPixelSize(calculateFontPixelSize(vp->Fontsize.getValue()));
@@ -656,7 +671,7 @@ void QGIViewDimension::datumLabelDragFinished()
 
     double x = Rez::appX(datumLabel->X()),
            y = Rez::appX(datumLabel->Y());
-    Gui::Command::openCommand("Drag Dimension");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Drag Dimension"));
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.X = %f", dim->getNameInDocument(), x);
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Y = %f", dim->getNameInDocument(), -y);
     Gui::Command::commitCommand();

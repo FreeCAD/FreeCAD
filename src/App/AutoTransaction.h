@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (c) 2019 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
+ *   Copyright (c) 2019 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -70,10 +70,10 @@ public:
      *
      * Once disabled, any empty temporary named transaction is closed. If there
      * are non-empty or non-temporary named active transaction, it will not be
-     * auto closed. 
+     * auto closed.
      *
      * This function may be used in, for example, Gui::Document::setEdit() to
-     * allow a transaction live past any command scope. 
+     * allow a transaction live past any command scope.
      */
     static void setEnable(bool enable);
 

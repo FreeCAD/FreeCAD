@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Yorik van Havre (yorik@uncreated.net) 2014              *
+ *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -103,7 +103,7 @@ void CmdPathArea::activated(int iMsg)
     }
     if(addView && areaName.size()) {
         std::string FeatName = getUniqueObjectName("FeatureAreaView");
-        openCommand("Create Path Area View");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Create Path Area View"));
         doCommand(Doc,"FreeCAD.activeDocument().addObject('Path::FeatureAreaView','%s')",FeatName.c_str());
         doCommand(Doc,"FreeCAD.activeDocument().%s.Source = FreeCAD.activeDocument().%s",
                 FeatName.c_str(),areaName.c_str());
@@ -112,7 +112,7 @@ void CmdPathArea::activated(int iMsg)
         return;
     }
     std::string FeatName = getUniqueObjectName("FeatureArea");
-    openCommand("Create Path Area");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create Path Area"));
     doCommand(Doc,"import PathCommands");
     for(const std::string &cmd : cmds)
         doCommand(Doc,"%s", cmd.c_str());
@@ -200,7 +200,7 @@ void CmdPathAreaWorkplane::activated(int iMsg)
         return;
     }
 
-    openCommand("Select Workplane for Path Area");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Select Workplane for Path Area"));
     doCommand(Doc,"import PathCommands");
     doCommand(Doc,"FreeCAD.activeDocument().%s.WorkPlane = PathCommands.findShape("
             "FreeCAD.activeDocument().%s)", areaName.c_str(),planeSubname.c_str());
@@ -251,7 +251,7 @@ void CmdPathCompound::activated(int iMsg)
         }
         cmd << "]";
         std::string FeatName = getUniqueObjectName("PathCompound");
-        openCommand("Create Path Compound");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Create Path Compound"));
         doCommand(Doc,"FreeCAD.activeDocument().addObject('Path::FeatureCompound','%s')",FeatName.c_str());
         doCommand(Doc,"FreeCAD.activeDocument().%s.Group = %s",FeatName.c_str(),cmd.str().c_str());
         commitCommand();
@@ -321,7 +321,7 @@ void CmdPathShape::activated(int iMsg)
         }
     }
     std::string FeatName = getUniqueObjectName("PathShape");
-    openCommand("Create Path Shape");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create Path Shape"));
     doCommand(Doc,"import PathCommands");
     for(const std::string &cmd : cmds)
         doCommand(Doc, "%s", cmd.c_str());

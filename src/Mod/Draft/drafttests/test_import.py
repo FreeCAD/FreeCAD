@@ -65,7 +65,7 @@ class DraftImport(unittest.TestCase):
 
     def test_import_draft_svg(self):
         """Import Draft SVG utilities."""
-        module = "getSVG"
+        module = "draftfunctions.svg"
         imported = aux.import_test(module)
         self.assertTrue(imported, "Problem importing '{}'".format(module))
 

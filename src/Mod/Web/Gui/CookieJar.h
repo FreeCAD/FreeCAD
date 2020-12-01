@@ -31,22 +31,22 @@ class QNetworkCookieJar;
 namespace WebGui {
 
     class WebGuiExport FcCookieJar : public QNetworkCookieJar {
-        
+
         Q_OBJECT
-    
+
     public:
         FcCookieJar(QObject* parent = 0);
         virtual ~FcCookieJar();
         virtual bool setCookiesFromUrl(const QList<QNetworkCookie>&, const QUrl&);
-    
+
     public Q_SLOTS:
         void scheduleSaveToDisk();
         void loadFromDisk();
         void reset();
-    
+
     private Q_SLOTS:
         void saveToDisk();
-    
+
     private:
         void extractRawCookies();
         QList<QByteArray> m_rawCookies;

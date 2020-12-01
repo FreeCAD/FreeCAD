@@ -42,7 +42,7 @@ class SplashScreen : public QSplashScreen
     Q_OBJECT
 
 public:
-    SplashScreen(  const QPixmap & pixmap = QPixmap ( ), Qt::WindowFlags f = 0 );
+    SplashScreen(  const QPixmap & pixmap = QPixmap ( ), Qt::WindowFlags f = Qt::WindowFlags() );
     ~SplashScreen();
 
 protected:
@@ -87,8 +87,8 @@ private:
     QTextBrowser* browser;
 };
 
-/** This widget provides the "About dialog" of an application. 
- * This shows the current version, the build number and date. 
+/** This widget provides the "About dialog" of an application.
+ * This shows the current version, the build number and date.
  * \author Werner Mayer
  */
 class GuiExport AboutDialog : public QDialog

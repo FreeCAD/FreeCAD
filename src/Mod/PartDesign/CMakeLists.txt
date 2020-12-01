@@ -133,6 +133,37 @@ INSTALL(
         Mod/PartDesign/fcsprocket
 )
 
+set(PartDesignHoleDefines
+    Resources/Hole/din7984.json
+    Resources/Hole/iso10642.json
+    Resources/Hole/iso10642-fine.json
+    Resources/Hole/iso12474-fine.json
+    Resources/Hole/iso14583.json
+    Resources/Hole/iso14583part.json
+    Resources/Hole/iso2009.json
+    Resources/Hole/iso4762_7089.json
+    Resources/Hole/iso4762.json
+    Resources/Hole/iso4762-fine.json
+    Resources/Hole/iso7046.json
+)
+
+add_custom_target(PartDesignHole ALL SOURCES
+    ${PartDesignHoleDefines}
+)
+
+fc_target_copy_resource(PartDesignHole
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/PartDesign
+    ${PartDesignHoleDefines}
+)
+
+INSTALL(
+    FILES
+        ${PartDesignHoleDefines}
+    DESTINATION
+        ${CMAKE_INSTALL_DATADIR}/Mod/PartDesign/Resources/Hole
+)
+
 if(BUILD_FEM)
     SET(WizardShaft_SRCS
         ${PartDesign_WizardShaft}

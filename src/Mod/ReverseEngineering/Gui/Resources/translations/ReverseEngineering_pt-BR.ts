@@ -47,7 +47,7 @@
     <message>
       <location filename="../../Command.cpp" line="325"/>
       <source>Polynomial surface</source>
-      <translation type="unfinished">Polynomial surface</translation>
+      <translation>Superfície de polinômios</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="326"/>

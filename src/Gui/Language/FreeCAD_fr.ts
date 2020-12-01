@@ -121,6 +121,13 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Edit</source>
+      <translation>Éditer</translation>
+    </message>
+  </context>
+  <context>
     <name>DlgCustomizeSpNavSettings</name>
     <message>
       <source>Spaceball Motion</source>
@@ -431,6 +438,14 @@ while doing a left or right click and move the mouse up or down</source>
       <source>Out Of Range</source>
       <translation>Hors de portée</translation>
     </message>
+    <message>
+      <source> "</source>
+      <translation> «</translation>
+    </message>
+    <message>
+      <source>"</source>
+      <translation>»</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::CameraDialog</name>
@@ -622,15 +637,15 @@ In this case the prefix will be automatically trimmed when shown in the property
 However, the property is still used in a script with the full name, like 'obj.Group_Name'.
 
 If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</source>
-      <translation type="unfinished">Prefix the property name with the group name in the form 'Group_Name' to avoid conflicts with an existing property.
-In this case the prefix will be automatically trimmed when shown in the property editor.
-However, the property is still used in a script with the full name, like 'obj.Group_Name'.
+      <translation>Préfixer le nom de la propriété avec le nom du groupe sous la forme 'Group_Name' pour éviter les conflits avec une propriété existante.
+Dans ce cas, le préfixe sera automatiquement coupé lorsqu'il sera affiché dans l'éditeur de propriétés.
+Cependant, la propriété est toujours utilisée dans un script avec le nom complet, comme 'obj.Group_Name'.
 
-If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</translation>
+Si ce n'est pas coché, alors la propriété doit être nommée de manière unique et elle est accessible comme 'obj.Name'.</translation>
     </message>
     <message>
       <source>Prefix group name</source>
-      <translation type="unfinished">Prefix group name</translation>
+      <translation>Nom du groupe de préfixe</translation>
     </message>
   </context>
   <context>
@@ -1059,16 +1074,16 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>Boutons</translation>
     </message>
     <message>
-      <source>Clear</source>
-      <translation>Effacer</translation>
-    </message>
-    <message>
       <source>Print Reference</source>
       <translation>Imprimer les références</translation>
     </message>
     <message>
       <source>Spaceball Buttons</source>
       <translation>Boutons de la SpaceBall</translation>
+    </message>
+    <message>
+      <source>Reset</source>
+      <translation>Réinitialiser</translation>
     </message>
   </context>
   <context>
@@ -2100,10 +2115,6 @@ Veuillez spécifier un autre répertoire.</translation>
       <translation>Filtrer par type</translation>
     </message>
     <message>
-      <source>If enabled, then 3D view selection will be sychronize with full object hierarchy.</source>
-      <translation>Si activé, la sélection de la vue 3D sera synchronisée avec la hiérarchie complète des objets.</translation>
-    </message>
-    <message>
       <source>Sync sub-object selection</source>
       <translation>Synchroniser la sélection des sous-objets</translation>
     </message>
@@ -2114,6 +2125,10 @@ Veuillez spécifier un autre répertoire.</translation>
     <message>
       <source>Clear</source>
       <translation>Effacer</translation>
+    </message>
+    <message>
+      <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
+      <translation>Si activé, la sélection de la vue 3D sera synchronisée avec la hiérarchie complète des objets.</translation>
     </message>
   </context>
   <context>
@@ -2256,19 +2271,19 @@ depuis la console Python vers la fenêtre Rapport</translation>
     </message>
     <message>
       <source>Include a timecode for each report</source>
-      <translation type="unfinished">Include a timecode for each report</translation>
+      <translation>Inclure un timecode pour chaque rapport</translation>
     </message>
     <message>
       <source>Include a timecode for each entry</source>
-      <translation type="unfinished">Include a timecode for each entry</translation>
+      <translation>Inclure un timecode pour chaque entrée</translation>
     </message>
     <message>
       <source>Normal messages will be recorded</source>
-      <translation type="unfinished">Normal messages will be recorded</translation>
+      <translation>Les messages normaux seront enregistrés</translation>
     </message>
     <message>
       <source>Record normal messages</source>
-      <translation type="unfinished">Record normal messages</translation>
+      <translation>Enregistrer les messages normaux</translation>
     </message>
   </context>
   <context>
@@ -2516,12 +2531,23 @@ taille de la boîte englobante de l'objet 3D qui est actuellement affichée. </t
     <message>
       <source>Axis cross will be shown by default at file
 opening or creation</source>
-      <translation type="unfinished">Axis cross will be shown by default at file
-opening or creation</translation>
+      <translation>La croix des axes sera affichée par défaut lors de l'ouverture ou de la création du fichier</translation>
     </message>
     <message>
       <source>Show axis cross by default</source>
-      <translation type="unfinished">Show axis cross by default</translation>
+      <translation>Afficher la croix de l'axe par défaut</translation>
+    </message>
+    <message>
+      <source>Pick radius (px):</source>
+      <translation>Selectionner le rayon (px) :</translation>
+    </message>
+    <message>
+      <source>Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </source>
+      <translation>Zone de sélection des éléments dans la vue 3D.
+Une valeur plus grande facilite la sélection, mais peut rendre les petites fonctions difficiles, voire impossible à sélectionner.
+               </translation>
     </message>
   </context>
   <context>
@@ -3212,6 +3238,34 @@ Vous pouvez également utiliser la forme : John Doe &lt;john@doe.com&gt;</transl
       <source>The directory in which the application will search for macros</source>
       <translation>Le répertoire dans lequel l'application recherchera des macros</translation>
     </message>
+    <message>
+      <source>Recent macros menu</source>
+      <translation>Menu des macros récentes</translation>
+    </message>
+    <message>
+      <source>Size of recent macro list</source>
+      <translation>Taille de la liste des macros récentes</translation>
+    </message>
+    <message>
+      <source>How many macros should be listed in recent macros list</source>
+      <translation>Combien de macros doivent être listés dans la liste des macros récentes</translation>
+    </message>
+    <message>
+      <source>Shortcut count</source>
+      <translation>Nombre de raccourcis</translation>
+    </message>
+    <message>
+      <source>How many recent macros should have shortcuts</source>
+      <translation>Combien de macros récentes devraient avoir des raccourcis</translation>
+    </message>
+    <message>
+      <source>Keyboard Modifiers</source>
+      <translation>Modificateurs de clavier</translation>
+    </message>
+    <message>
+      <source>Keyboard modifiers, default = Ctrl+Shift+</source>
+      <translation>Modificateurs de clavier, par défaut = Ctrl+Maj+</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsNavigation</name>
@@ -3510,6 +3564,10 @@ Mouse tilting is not disabled by this setting.</source>
       <source>Imperial for Civil Eng (ft, ft/sec)</source>
       <translation>En impérial pour le génie civil (ft, ft/sec)</translation>
     </message>
+    <message>
+      <source>FEM (mm, N, sec)</source>
+      <translation>FEM (mm, N, sec)</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsViewColor</name>
@@ -3546,10 +3604,6 @@ Mouse tilting is not disabled by this setting.</source>
       <translation>Couleur simple</translation>
     </message>
     <message>
-      <source>Pick radius (px):</source>
-      <translation>Selectionner le rayon (px) :</translation>
-    </message>
-    <message>
       <source>Object being edited</source>
       <translation>Objet en cours de modification</translation>
     </message>
@@ -3564,11 +3618,6 @@ Mouse tilting is not disabled by this setting.</source>
     <message>
       <source>Enable selection highlighting and use specified color</source>
       <translation>Activer la mise en évidence de la sélection et l'utilisation de la couleur spécifiée</translation>
-    </message>
-    <message>
-      <source>Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.</source>
-      <translation>Zone de sélection des éléments en vue 3D. Une valeur plus importante facilite le choix des éléments mais peut rendre difficile voire impossible la sélection des petites composantes.</translation>
     </message>
     <message>
       <source>Background color for the model view</source>
@@ -4490,27 +4539,27 @@ La colonne « État » indique si le document peut être récupéré.</translati
     </message>
     <message>
       <source>Display message types</source>
-      <translation type="unfinished">Display message types</translation>
+      <translation>Afficher les types de messages</translation>
     </message>
     <message>
       <source>Normal messages</source>
-      <translation type="unfinished">Normal messages</translation>
+      <translation>Messages normaux</translation>
     </message>
     <message>
       <source>Log messages</source>
-      <translation type="unfinished">Log messages</translation>
+      <translation>Message du journal</translation>
     </message>
     <message>
       <source>Warnings</source>
-      <translation type="unfinished">Warnings</translation>
+      <translation>Avertissements</translation>
     </message>
     <message>
       <source>Errors</source>
-      <translation type="unfinished">Errors</translation>
+      <translation>Erreurs</translation>
     </message>
     <message>
       <source>Show report view on</source>
-      <translation type="unfinished">Show report view on</translation>
+      <translation>Afficher le rapport</translation>
     </message>
   </context>
   <context>
@@ -4673,6 +4722,20 @@ Voulez enregistrer les modifications ?</translation>
     <message>
       <source>PDF file</source>
       <translation>Fichier PDF</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ExpressionLineEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation>Correspondance exacte</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ExpressionTextEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation>Correspondance exacte</translation>
     </message>
   </context>
   <context>
@@ -5296,6 +5359,21 @@ Voulez vous quitter sans sauvegarder vos données?</translation>
     <message>
       <source>Open file %1</source>
       <translation>Ouvrir le fichier %1</translation>
+    </message>
+    <message>
+      <source>File not found</source>
+      <translation>Fichier introuvable</translation>
+    </message>
+    <message>
+      <source>The file '%1' cannot be opened.</source>
+      <translation>Impossible d'ouvrir le fichier '%1'.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::RecentMacrosAction</name>
+    <message>
+      <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
+      <translation>Exécuter la macro %1 (Maj+clic pour modifier) raccourci : %2</translation>
     </message>
     <message>
       <source>File not found</source>
@@ -6632,6 +6710,50 @@ Choisissez "Abandonner" pour annuler</translation>
       <source>Override colors...</source>
       <translation>Remplacer les couleurs...</translation>
     </message>
+    <message>
+      <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
+
+</source>
+      <translation>Chemin physique identique détecté. Cela peut causer un écrasement indésirable du document existant !
+
+</translation>
+    </message>
+    <message>
+      <source>Are you sure you want to continue?</source>
+      <translation>Êtes-vous sûr de vouloir continuer ?</translation>
+    </message>
+    <message>
+      <source>
+
+Please check report view for more...</source>
+      <translation>
+
+Veuillez consulter la vue rapport pour plus d'informations...</translation>
+    </message>
+    <message>
+      <source>
+
+Pyhsical path: </source>
+      <translation>
+
+Chemin physique : </translation>
+    </message>
+    <message>
+      <source>
+Document: </source>
+      <translation>
+Document : </translation>
+    </message>
+    <message>
+      <source>
+  Path: </source>
+      <translation>
+  Chemin : </translation>
+    </message>
+    <message>
+      <source>Identical physical path</source>
+      <translation>Chemin physique identique</translation>
+    </message>
   </context>
   <context>
     <name>SelectionFilter</name>
@@ -7019,7 +7141,7 @@ Choisissez "Abandonner" pour annuler</translation>
     </message>
     <message>
       <source>Change the draw style of the objects</source>
-      <translation type="unfinished">Change the draw style of the objects</translation>
+      <translation>Changer le style de dessin des objets</translation>
     </message>
   </context>
   <context>
@@ -7839,6 +7961,21 @@ Choisissez "Abandonner" pour annuler</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdRecentMacros</name>
+    <message>
+      <source>Macro</source>
+      <translation>Macro</translation>
+    </message>
+    <message>
+      <source>Recent macros</source>
+      <translation>Macros récentes</translation>
+    </message>
+    <message>
+      <source>Recent macro list</source>
+      <translation>Liste des macros récentes</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdRedo</name>
     <message>
       <source>Edit</source>
@@ -8337,7 +8474,7 @@ Choisissez "Abandonner" pour annuler</translation>
     </message>
     <message>
       <source>TreeView actions</source>
-      <translation>Actions de l'arboresence</translation>
+      <translation>Configuration de l'arborescence</translation>
     </message>
     <message>
       <source>TreeView behavior options and actions</source>

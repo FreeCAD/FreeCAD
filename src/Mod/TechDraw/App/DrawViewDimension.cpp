@@ -33,6 +33,7 @@
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
+#include <BRepBndLib.hxx>
 #include <gp_Pnt.hxx>
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Edge.hxx>
@@ -251,7 +252,7 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
          Type.isValue("DistanceY") )  {
         if (getRefType() == oneEdge) {
             m_linearPoints = getPointsOneEdge();
-        }else if (getRefType() == twoEdge) {
+        } else if (getRefType() == twoEdge) {
             m_linearPoints = getPointsTwoEdges();
         } else if (getRefType() == twoVertex) {
             m_linearPoints = getPointsTwoVerts();
@@ -882,10 +883,8 @@ pointPair DrawViewDimension::getPointsTwoVerts()
 
 pointPair DrawViewDimension::getPointsEdgeVert()
 {
-//    Base::Console().Message("DVD::getPointsEdgeVert() - %s\n",getNameInDocument());
     pointPair result;
     const std::vector<std::string> &subElements      = References2D.getSubValues();
-
     int idx0 = DrawUtil::getIndexFromName(subElements[0]);
     int idx1 = DrawUtil::getIndexFromName(subElements[1]);
     TechDraw::BaseGeom* e;
@@ -897,12 +896,13 @@ pointPair DrawViewDimension::getPointsEdgeVert()
         e = getViewPart()->getGeomByIndex(idx1);
         v = getViewPart()->getProjVertexByIndex(idx0);
     }
-    if ((v == nullptr) ||
-        (e == nullptr) ) {
-        Base::Console().Error("Error: DVD - %s - 2D references are corrupt (4)\n",getNameInDocument());
+    if ((v == nullptr) || (e == nullptr) ) {
+        Base::Console().Error("Error: DVD - %s - 2D references are corrupt (4)\n", getNameInDocument());
         return result;
     }
+
     result = closestPoints(e->occEdge,v->occVertex);
+
     return result;
 }
 
@@ -916,63 +916,27 @@ DrawViewPart* DrawViewDimension::getViewPart() const
 
 int DrawViewDimension::getRefType() const
 {
-    int refType = invalidRef;
-    const std::vector<std::string> &subElements      = References2D.getSubValues();
-    if (subElements.size() == 1) {
-        refType = getRefType1(subElements[0]);
-    } else if (subElements.size() == 2) {
-        refType = getRefType2(subElements[0],subElements[1]);
-    } else if (subElements.size() == 3) {
-        refType = getRefType3(subElements[0],subElements[1],subElements[2]);
-    }
-    return refType;
+    return getRefTypeSubElements(References2D.getSubValues());
 }
 
-//static
-int DrawViewDimension::getRefType1(const std::string g1)
+int DrawViewDimension::getRefTypeSubElements(const std::vector<std::string> &subElements)
 {
     int refType = invalidRef;
-    if (DrawUtil::getGeomTypeFromName(g1) == "Edge") {
-        refType = oneEdge;
-    }
-    return refType;
-}
+    int refEdges = 0, refVertices = 0;
 
-//static
-int DrawViewDimension::getRefType2(const std::string g1, const std::string g2)
-{
-    int refType = invalidRef;
-    if ((DrawUtil::getGeomTypeFromName(g1) == "Edge") &&
-        (DrawUtil::getGeomTypeFromName(g2) == "Edge")) {
-        refType = twoEdge;
-    } else if ((DrawUtil::getGeomTypeFromName(g1) == "Vertex") &&
-               (DrawUtil::getGeomTypeFromName(g2) == "Vertex")) {
-        refType = twoVertex;
-    } else if (((DrawUtil::getGeomTypeFromName(g1) == "Vertex") &&
-                (DrawUtil::getGeomTypeFromName(g2) == "Edge"))   ||
-               ((DrawUtil::getGeomTypeFromName(g1) == "Edge") &&
-               (DrawUtil::getGeomTypeFromName(g2) == "Vertex")) ) {
-        refType = vertexEdge;
+    for (const auto& se: subElements) {
+        if (DrawUtil::getGeomTypeFromName(se) == "Vertex") { refVertices++; }
+        if (DrawUtil::getGeomTypeFromName(se) == "Edge") { refEdges++; }
     }
-    //} else add different types here - Vertex-Face, ...
+
+    if (refEdges == 0 && refVertices == 2) { refType = twoVertex; }
+    if (refEdges == 0 && refVertices == 3) { refType = threeVertex; }
+    if (refEdges == 1 && refVertices == 0) { refType = oneEdge; }
+    if (refEdges == 1 && refVertices == 1) { refType = vertexEdge; }
+    if (refEdges == 2 && refVertices == 0) { refType = twoEdge; }
 
     return refType;
 }
-
-int DrawViewDimension::getRefType3(const std::string g1,
-                                   const std::string g2,
-                                   const std::string g3)
-{
-    int refType = invalidRef;
-    if ((DrawUtil::getGeomTypeFromName(g1) == "Vertex") &&
-        (DrawUtil::getGeomTypeFromName(g2) == "Vertex") &&
-        (DrawUtil::getGeomTypeFromName(g3) == "Vertex") ) {
-        refType = threeVertex;
-    }
-
-    return refType;
-}
-
 
 //! validate 2D references - only checks if the target exists
 bool DrawViewDimension::checkReferences2D() const

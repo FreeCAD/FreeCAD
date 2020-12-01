@@ -19,9 +19,9 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__="FreeCAD Arch External Reference"
+__title__  = "FreeCAD Arch External Reference"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 
 import FreeCAD
@@ -171,7 +171,7 @@ class ArchReference:
             self.reload = False
 
     def getFile(self,obj,filename=None):
-        
+
         "gets a valid file, if possible"
 
         if not filename:
@@ -202,7 +202,7 @@ class ArchReference:
         return filename
 
     def getPartsList(self,obj,filename=None):
-        
+
         "returns a list of Part-based objects in a FCStd file"
 
         parts = {}
@@ -291,9 +291,9 @@ class ArchReference:
         return None
 
     def splitall(self,path):
-    
+
         "splits a path between its components"
-    
+
         allparts = []
         while 1:
             parts = os.path.split(path)
@@ -369,7 +369,7 @@ class ViewProviderArchReference:
         return None
 
     def updateData(self,obj,prop):
-        
+
         if (prop == "Shape") and hasattr(obj.ViewObject,"UpdateColors") and obj.ViewObject.UpdateColors:
             if obj.Shape and not obj.Shape.isNull():
                 colors = obj.Proxy.getColors(obj)
@@ -379,7 +379,7 @@ class ViewProviderArchReference:
                 todo.delay(self.recolorize,obj.ViewObject)
 
     def recolorize(self,vobj):
-        
+
         if hasattr(vobj,"DiffuseColor") and hasattr(vobj,"UpdateColors") and vobj.UpdateColors:
             vobj.DiffuseColor = vobj.DiffuseColor
 
@@ -460,7 +460,7 @@ class ViewProviderArchReference:
                 FreeCAD.openDocument(self.Object.File)
 
     def loadInventor(self,obj):
-        
+
         "loads an openinventor file and replace the root node of this object"
 
         # check inventor contents
@@ -481,7 +481,7 @@ class ViewProviderArchReference:
         flatlines = lwnode
         shaded = lwnode.getChild(0)
         wireframe = lwnode.getChild(1)
-        
+
         # check node contents
         rootnode = obj.ViewObject.RootNode
         if rootnode.getNumChildren() < 3:
@@ -503,7 +503,7 @@ class ViewProviderArchReference:
         switch.replaceChild(2,wireframe)
 
     def unloadInventor(self,obj):
-        
+
         "restore original nodes"
 
         if (not hasattr(self,"orig_flatlines")) or (not self.orig_flatlines):
@@ -523,18 +523,18 @@ class ViewProviderArchReference:
             FreeCAD.Console.PrintError("Invalid root node in "+obj.Label+"\n")
             return
 
-        # replace root node of object        
+        # replace root node of object
         switch.replaceChild(0,self.orig_flatlines)
         switch.replaceChild(1,self.orig_shaded)
         switch.replaceChild(2,self.orig_wireframe)
-        
+
         # discard old content
         self.orig_flatlines = None
         self.orig_shaded = None
         self.orig_wireframe = None
 
     def getInventorString(self,obj):
-        
+
         "locates and loads an iv file saved together with an object, if existing"
 
         filename = obj.Proxy.getFile(obj)

@@ -23,17 +23,19 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QApplication>
 # include <QDebug>
-# include <QLineEdit>
 # include <QFocusEvent>
 # include <QFontMetrics>
 # include <QHBoxLayout>
 # include <QLabel>
-# include <QStyle>
-# include <QPixmapCache>
+# include <QLineEdit>
 # include <QMouseEvent>
+# include <QPixmapCache>
+# include <QStyle>
+# include <QStyleOptionSpinBox>
+# include <QStylePainter>
 # include <QToolTip>
-# include <QApplication>
 #endif
 
 #include "QuantitySpinBox.h"
@@ -225,7 +227,20 @@ public:
                     state = QValidator::Intermediate;
                 }
                 else if (res.getUnit() != this->unit) {
-                    state = QValidator::Invalid;
+                    // If the user input is of the form "number * unit", "number + unit"
+                    // or "number - unit" it's rejected by the quantity parser and it's
+                    // assumed that the user input is not complete yet (Intermediate).
+                    // However, if the user input is of the form "number / unit" it's accepted
+                    // by the parser but because the units mismatch it's considered as invalid
+                    // and the last valid input will be restored.
+                    // See #0004422: PartDesign value input does not accept trailing slash
+                    // To work around this issue of the quantity parser it's checked if the
+                    // inversed unit matches and if yes the input is also considered as not
+                    // complete.
+                    if (res.getUnit().pow(-1) == this->unit)
+                        state = QValidator::Intermediate;
+                    else
+                        state = QValidator::Invalid;
                 }
                 else {
                     state = QValidator::Acceptable;
@@ -294,7 +309,12 @@ QuantitySpinBox::QuantitySpinBox(QWidget *parent)
     iconLabel->hide();
     lineEdit()->setStyleSheet(QString::fromLatin1("QLineEdit { padding-right: %1px } ").arg(iconHeight+frameWidth));
     // When a style sheet is set the text margins for top/bottom must be set to avoid to squash the widget
+#ifndef Q_OS_MAC
     lineEdit()->setTextMargins(0, 2, 0, 2);
+#else
+    // https://forum.freecadweb.org/viewtopic.php?f=8&t=50615
+    lineEdit()->setTextMargins(0, 2, 0, 0);
+#endif
 
     QObject::connect(iconLabel, SIGNAL(clicked()), this, SLOT(openFormulaDialog()));
 }
@@ -402,7 +422,7 @@ QString Gui::QuantitySpinBox::expressionText() const
 void Gui::QuantitySpinBox::onChange()
 {
     Q_ASSERT(isBound());
-    
+
     if (getExpression()) {
         std::unique_ptr<Expression> result(getExpression()->eval());
         NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
@@ -443,7 +463,7 @@ bool QuantitySpinBox::apply(const std::string & propName)
         if (isBound()) {
             const App::ObjectIdentifier & path = getPath();
             const Property * prop = path.getProperty();
-            
+
             /* Skip update if property is bound and we know it is read-only */
             if (prop && prop->isReadOnly())
                 return true;
@@ -517,6 +537,20 @@ void Gui::QuantitySpinBox::keyPressEvent(QKeyEvent *event)
         QAbstractSpinBox::keyPressEvent(event);
 }
 
+void Gui::QuantitySpinBox::paintEvent(QPaintEvent*)
+{
+    QStyleOptionSpinBox opt;
+    initStyleOption(&opt);
+    if (hasExpression()) {
+        opt.activeSubControls &= ~QStyle::SC_SpinBoxUp;
+        opt.activeSubControls &= ~QStyle::SC_SpinBoxDown;
+        opt.state &= ~QStyle::State_Active;
+        opt.stepEnabled = StepNone;
+    }
+
+    QStylePainter p(this);
+    p.drawComplexControl(QStyle::CC_SpinBox, opt);
+}
 
 void QuantitySpinBox::updateText(const Quantity &quant)
 {

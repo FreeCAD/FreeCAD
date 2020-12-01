@@ -48,9 +48,9 @@ else:
 #  elements that have a structural function, that is, that
 #  support other parts of the building.
 
-__title__="FreeCAD Structure"
+__title__= "FreeCAD Structure"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 
 #Reads preset profiles and categorizes them
@@ -116,7 +116,7 @@ def makeStructure(baseobj=None,length=None,width=None,height=None,name="Structur
             elif height and not length:
                 obj.Width = w
                 obj.Length = h
-            
+
     if not height and not length:
         obj.IfcType = "Undefined"
     elif obj.Length > obj.Height:
@@ -344,7 +344,7 @@ class _CommandStructure:
             self.Activated()
 
     def _createItemlist(self, baselist):
-        
+
         "create nice labels for presets in the task panel"
 
         ilist=[]
@@ -739,7 +739,7 @@ class _Structure(ArchComponent.Component):
                     if obj.Base.Shape.Solids:
                         return None
                     elif obj.Base.Shape.Faces:
-                        if not DraftGeomUtils.isCoplanar(obj.Base.Shape.Faces,tolerance=0.01):
+                        if not DraftGeomUtils.isCoplanar(obj.Base.Shape.Faces,tol=0.01):
                             return None
                         else:
                             base,placement = self.rebase(obj.Base.Shape)

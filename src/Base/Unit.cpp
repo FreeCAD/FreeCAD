@@ -146,7 +146,7 @@ Unit Unit::pow(signed char exp) const
 
 bool Unit::isEmpty(void)const
 {
-    return (this->Sig.Length == 0) 
+    return (this->Sig.Length == 0)
         && (this->Sig.Mass == 0)
         && (this->Sig.Time == 0)
         && (this->Sig.ElectricCurrent == 0)
@@ -158,7 +158,7 @@ bool Unit::isEmpty(void)const
 
 bool Unit::operator ==(const Unit& that) const
 {
-    return (this->Sig.Length == that.Sig.Length) 
+    return (this->Sig.Length == that.Sig.Length)
         && (this->Sig.Mass == that.Sig.Mass)
         && (this->Sig.Time == that.Sig.Time)
         && (this->Sig.ElectricCurrent == that.Sig.ElectricCurrent)

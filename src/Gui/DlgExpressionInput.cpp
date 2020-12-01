@@ -59,7 +59,7 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
     // Connect signal(s)
     connect(ui->expression, SIGNAL(textChanged(QString)), this, SLOT(textChanged(QString)));
     connect(ui->discardBtn, SIGNAL(clicked()), this, SLOT(setDiscarded()));
-    
+
     if (expression) {
         ui->expression->setText(Base::Tools::fromStdString(expression->toString()));
     }
@@ -107,7 +107,6 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
             this->resize(ui->expression->width()+18,this->height());
     }
     ui->expression->setFocus();
-    ui->expression->activateWindow();
 }
 
 DlgExpressionInput::~DlgExpressionInput()
@@ -131,7 +130,7 @@ void DlgExpressionInput::textChanged(const QString &text)
             ui->expression->setMinimumWidth(minimumWidth);
         else
             ui->expression->setMinimumWidth(width);
-        
+
         if(this->width() < ui->expression->minimumWidth())
             setMinimumWidth(ui->expression->minimumWidth());
 
@@ -266,6 +265,13 @@ void DlgExpressionInput::mousePressEvent(QMouseEvent* ev)
         if (!on)
             this->reject();
     }
+}
+
+void DlgExpressionInput::show()
+{
+    QDialog::show();
+    this->activateWindow();
+    ui->expression->selectAll();
 }
 
 void DlgExpressionInput::showEvent(QShowEvent* ev)

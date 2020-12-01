@@ -19,9 +19,9 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__="FreeCAD Arch Stairs"
+__title__= "FreeCAD Arch Stairs"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 
 import FreeCAD,ArchComponent,ArchCommands,Draft,DraftVecUtils,math,ArchPipe

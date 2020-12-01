@@ -49,7 +49,7 @@ DlgParameterFind::DlgParameterFind(DlgParameterImp* parent)
     }
 }
 
-/** 
+/**
  *  Destroys the object and frees any allocated resources
  */
 DlgParameterFind::~DlgParameterFind()

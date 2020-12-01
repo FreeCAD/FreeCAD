@@ -19,9 +19,9 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__= "FreeCAD Profile"
+__title__  = "FreeCAD Profile"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## @package ArchProfile
 #  \ingroup ARCH
@@ -60,12 +60,12 @@ profilefiles = [os.path.join(FreeCAD.getResourceDir(),"Mod","Arch","Presets","pr
 def readPresets():
 
     Presets=[]
+    bid = 1 #Unique index
     for profilefile in profilefiles:
         if os.path.exists(profilefile):
             try:
                 with open(profilefile, "r") as csvfile:
                     beamreader = csv.reader(csvfile)
-                    bid=1 #Unique index
                     for row in beamreader:
                         if (not row) or row[0].startswith("#"):
                             continue
@@ -109,7 +109,7 @@ def makeProfile(profile=[0,'REC','REC100x100','R',100,100]):
 
 
 class Arch_Profile:
-    
+
     """The FreeCAD Arch_Profile command definition"""
 
     def GetResources(self):

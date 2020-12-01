@@ -121,6 +121,13 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Edit</source>
+      <translation>Редактировать</translation>
+    </message>
+  </context>
+  <context>
     <name>DlgCustomizeSpNavSettings</name>
     <message>
       <source>Spaceball Motion</source>
@@ -430,6 +437,14 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Out Of Range</source>
       <translation>Вне диапазона</translation>
+    </message>
+    <message>
+      <source> "</source>
+      <translation> "</translation>
+    </message>
+    <message>
+      <source>"</source>
+      <translation>"</translation>
     </message>
   </context>
   <context>
@@ -1060,16 +1075,16 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>Кнопки</translation>
     </message>
     <message>
-      <source>Clear</source>
-      <translation>Очистить</translation>
-    </message>
-    <message>
       <source>Print Reference</source>
       <translation>Напечатать шпаргалку</translation>
     </message>
     <message>
       <source>Spaceball Buttons</source>
       <translation>Кнопки пространственного манипулятора</translation>
+    </message>
+    <message>
+      <source>Reset</source>
+      <translation>Сброс</translation>
     </message>
   </context>
   <context>
@@ -1175,15 +1190,15 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Metalized</source>
-      <translation>Металлик</translation>
+      <translation>Металлизированный</translation>
     </message>
     <message>
       <source>Neon GNC</source>
-      <translation>Неон GNC</translation>
+      <translation>Neon GNC</translation>
     </message>
     <message>
       <source>Neon PHC</source>
-      <translation>Неон PHC</translation>
+      <translation>Neon PHC</translation>
     </message>
     <message>
       <source>Obsidian</source>
@@ -2102,10 +2117,6 @@ Specify another directory, please.</source>
       <translation>Фильтр по типу</translation>
     </message>
     <message>
-      <source>If enabled, then 3D view selection will be sychronize with full object hierarchy.</source>
-      <translation>Если включено, то выбор вида 3D будет синхронизироваться с полной иерархией объектов.</translation>
-    </message>
-    <message>
       <source>Sync sub-object selection</source>
       <translation>Синхронизировать выбор субобъектов</translation>
     </message>
@@ -2116,6 +2127,10 @@ Specify another directory, please.</source>
     <message>
       <source>Clear</source>
       <translation>Очистить</translation>
+    </message>
+    <message>
+      <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
+      <translation>Если включено, то выбор вида 3D будет синхронизироваться с полной иерархией объектов.</translation>
     </message>
   </context>
   <context>
@@ -2266,11 +2281,11 @@ from Python console to Report view panel</source>
     </message>
     <message>
       <source>Normal messages will be recorded</source>
-      <translation type="unfinished">Normal messages will be recorded</translation>
+      <translation>Обычные сообщения будут записаны</translation>
     </message>
     <message>
       <source>Record normal messages</source>
-      <translation type="unfinished">Record normal messages</translation>
+      <translation>Записывать обычные сообщения</translation>
     </message>
   </context>
   <context>
@@ -2434,10 +2449,10 @@ but slower response to any scene changes.</source>
       <translation>'Кэширование рендера' - по-другому называется 'Ускорение рендера'.
 Для его достижения доступно 3 опции: 
 1) 'Авто' (по умолчанию), пусть Coin3D сам решит, где кэшировать.
-2) 'Распределённое', вручную включает кэш для всех корневых узлов провайдера.
-3) 'Централизованное', вручную выключает кэш во всех узлах провайдера просмотра и
-только в корневом узле графа сцены. Это обеспечивает быструю скорость рендера-отрисовки,
-но медленнее реагирует на любые изменения сцены.</translation>
+2) 'Распределённый', вручную включает кэш для всех корневых узлов провайдера.
+3) 'Централизованный', вручную выключает кэш во всех узлах провайдера просмотра и
+кэширует только в корневом узле графа сцены. Это обеспечивает самую высокую скорость визуализации,
+но более медленную реакцию на любые изменения сцены.</translation>
     </message>
     <message>
       <source>Auto</source>
@@ -2445,7 +2460,7 @@ but slower response to any scene changes.</source>
     </message>
     <message>
       <source>Distributed</source>
-      <translation>Распределенно</translation>
+      <translation>Распределенный</translation>
     </message>
     <message>
       <source>Centralized</source>
@@ -2520,6 +2535,18 @@ opening or creation</source>
     <message>
       <source>Show axis cross by default</source>
       <translation>Показывать перекрестие осей по умолчанию</translation>
+    </message>
+    <message>
+      <source>Pick radius (px):</source>
+      <translation>Укажите радиус (пикс.):</translation>
+    </message>
+    <message>
+      <source>Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </source>
+      <translation>Область выбора элементов в 3D виде.
+Большее значение облегчает выбор элемента, но может сделать невозможным выбор небольших элементов.
+               </translation>
     </message>
   </context>
   <context>
@@ -2765,8 +2792,7 @@ opening or creation</source>
     </message>
     <message>
       <source>Save AutoRecovery information every</source>
-      <translation>Автосохранение каждые
-</translation>
+      <translation>Автосохранение каждые</translation>
     </message>
     <message>
       <source>Add the program logo to the generated thumbnail</source>
@@ -3126,7 +3152,7 @@ Opening mode: If you defined a hinge in this component or any other earlier in t
     <name>Gui::Dialog::DlgSettingsImageImp</name>
     <message>
       <source>Offscreen (New)</source>
-      <translation type="unfinished">Offscreen (New)</translation>
+      <translation>Offscreen (новый)</translation>
     </message>
     <message>
       <source>Offscreen (Old)</source>
@@ -3214,6 +3240,34 @@ Opening mode: If you defined a hinge in this component or any other earlier in t
     <message>
       <source>The directory in which the application will search for macros</source>
       <translation>Каталог, в котором приложение будет искать макросы</translation>
+    </message>
+    <message>
+      <source>Recent macros menu</source>
+      <translation>Меню недавних макросов</translation>
+    </message>
+    <message>
+      <source>Size of recent macro list</source>
+      <translation>Размер списка недавних макросов</translation>
+    </message>
+    <message>
+      <source>How many macros should be listed in recent macros list</source>
+      <translation>Количество файлов в списке последних файлов</translation>
+    </message>
+    <message>
+      <source>Shortcut count</source>
+      <translation>Количество ярлыков</translation>
+    </message>
+    <message>
+      <source>How many recent macros should have shortcuts</source>
+      <translation>Сколько последних макросов должно иметь ярлыки</translation>
+    </message>
+    <message>
+      <source>Keyboard Modifiers</source>
+      <translation>Модификаторы клавиатуры</translation>
+    </message>
+    <message>
+      <source>Keyboard modifiers, default = Ctrl+Shift+</source>
+      <translation>Модификаторы клавиатуры, по умолчанию = Ctrl+Shift+</translation>
     </message>
   </context>
   <context>
@@ -3515,6 +3569,10 @@ Mouse tilting is not disabled by this setting.</source>
       <source>Imperial for Civil Eng (ft, ft/sec)</source>
       <translation>Имперская для Гражданских инженеров (футы, футы/с)</translation>
     </message>
+    <message>
+      <source>FEM (mm, N, sec)</source>
+      <translation>Метод конечных элементов (мм, Н, с)</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsViewColor</name>
@@ -3551,10 +3609,6 @@ Mouse tilting is not disabled by this setting.</source>
       <translation>Один цвет</translation>
     </message>
     <message>
-      <source>Pick radius (px):</source>
-      <translation>Укажите радиус (пикс.):</translation>
-    </message>
-    <message>
       <source>Object being edited</source>
       <translation>Объект редактируется</translation>
     </message>
@@ -3569,12 +3623,6 @@ Mouse tilting is not disabled by this setting.</source>
     <message>
       <source>Enable selection highlighting and use specified color</source>
       <translation>Включить подсветку выделения и использовать указанный цвет</translation>
-    </message>
-    <message>
-      <source>Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.</source>
-      <translation>Область выбора элементов в 3D представлении.
-Большее значение облегчает выбор элементов, но может помешать выбрать небольшие элементы.</translation>
     </message>
     <message>
       <source>Background color for the model view</source>
@@ -4497,27 +4545,27 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Display message types</source>
-      <translation type="unfinished">Display message types</translation>
+      <translation>Показать типы сообщений</translation>
     </message>
     <message>
       <source>Normal messages</source>
-      <translation type="unfinished">Normal messages</translation>
+      <translation>Обычные сообщения</translation>
     </message>
     <message>
       <source>Log messages</source>
-      <translation type="unfinished">Log messages</translation>
+      <translation>Журнал сообщений</translation>
     </message>
     <message>
       <source>Warnings</source>
-      <translation type="unfinished">Warnings</translation>
+      <translation>Предупреждения</translation>
     </message>
     <message>
       <source>Errors</source>
-      <translation type="unfinished">Errors</translation>
+      <translation>Ошибки</translation>
     </message>
     <message>
       <source>Show report view on</source>
-      <translation type="unfinished">Show report view on</translation>
+      <translation>Показать отчет на</translation>
     </message>
   </context>
   <context>
@@ -4587,7 +4635,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Mark to recompute</source>
-      <translation>Пометьте для пересчета</translation>
+      <translation>Отметить для пересчета</translation>
     </message>
     <message>
       <source>Mark this object to be recomputed</source>
@@ -4679,6 +4727,20 @@ Do you want to save your changes?</source>
     <message>
       <source>PDF file</source>
       <translation>Файл PDF</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ExpressionLineEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation>Точное совпадение</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ExpressionTextEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation>Точное совпадение</translation>
     </message>
   </context>
   <context>
@@ -5314,6 +5376,21 @@ Do you want to exit without saving your data?</source>
     </message>
   </context>
   <context>
+    <name>Gui::RecentMacrosAction</name>
+    <message>
+      <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
+      <translation>Запуск макроса %1 (Shift+клик для редактирования): %2</translation>
+    </message>
+    <message>
+      <source>File not found</source>
+      <translation>Файл не найден</translation>
+    </message>
+    <message>
+      <source>The file '%1' cannot be opened.</source>
+      <translation>Не удаётся открыть файл '%1'.</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::RevitNavigationStyle</name>
     <message>
       <source>Press left mouse button</source>
@@ -5810,7 +5887,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Mark to recompute</source>
-      <translation>Пометьте для пересчета</translation>
+      <translation>Отметить для пересчета</translation>
     </message>
     <message>
       <source>Mark this object to be recomputed</source>
@@ -6638,6 +6715,50 @@ Choose 'Abort' to abort</source>
     <message>
       <source>Override colors...</source>
       <translation>Переопределить цвета...</translation>
+    </message>
+    <message>
+      <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
+
+</source>
+      <translation>Обнаружен идентичный физический путь. Это может привести к нежелательной перезаписи существующего документа!
+
+</translation>
+    </message>
+    <message>
+      <source>Are you sure you want to continue?</source>
+      <translation>Вы уверены, что хотите продолжить?</translation>
+    </message>
+    <message>
+      <source>
+
+Please check report view for more...</source>
+      <translation>
+
+Пожалуйста, ознакомьтесь с отчетом, чтобы узнать больше...</translation>
+    </message>
+    <message>
+      <source>
+
+Pyhsical path: </source>
+      <translation>
+
+Физический путь: </translation>
+    </message>
+    <message>
+      <source>
+Document: </source>
+      <translation>
+Документ: </translation>
+    </message>
+    <message>
+      <source>
+  Path: </source>
+      <translation>
+  Путь: </translation>
+    </message>
+    <message>
+      <source>Identical physical path</source>
+      <translation>Идентичная физическая траектория</translation>
     </message>
   </context>
   <context>
@@ -7846,6 +7967,21 @@ Choose 'Abort' to abort</source>
     </message>
   </context>
   <context>
+    <name>StdCmdRecentMacros</name>
+    <message>
+      <source>Macro</source>
+      <translation>Макрос</translation>
+    </message>
+    <message>
+      <source>Recent macros</source>
+      <translation>Недавние макросы</translation>
+    </message>
+    <message>
+      <source>Recent macro list</source>
+      <translation>Список недавних макросов</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdRedo</name>
     <message>
       <source>Edit</source>
@@ -8363,7 +8499,7 @@ Choose 'Abort' to abort</source>
     </message>
     <message>
       <source>Undo exactly one action</source>
-      <translation>Отменить ровно одно действие</translation>
+      <translation>Отменить только одно действие</translation>
     </message>
   </context>
   <context>

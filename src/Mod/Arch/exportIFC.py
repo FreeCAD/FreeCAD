@@ -53,9 +53,9 @@ from draftutils.messages import _msg, _err
 if FreeCAD.GuiUp:
     import FreeCADGui
 
-__title__ = "FreeCAD IFC export"
+__title__  = "FreeCAD IFC export"
 __author__ = ("Yorik van Havre", "Jonathan Wiedemann", "Bernd Hahnebach")
-__url__ = "https://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 # Save the Python open function because it will be redefined
 if open.__module__ in ['__builtin__', 'io']:
@@ -195,6 +195,16 @@ def export(exportList, filename, colors=None, preferences=None):
              "Visit https://wiki.freecadweb.org/IfcOpenShell "
              "to learn about installing it.")
         return
+    if filename.lower().endswith("json"):
+        import json
+        try:
+            from ifcjson import ifc2json5a
+        except:
+            try:
+                import ifc2json5a
+            except:
+                _err("Error: Unable to locate ifc2json5a module. Aborting.")
+                return
 
     starttime = time.time()
 
@@ -332,6 +342,7 @@ def export(exportList, filename, colors=None, preferences=None):
         description = getText("Description",obj)
         uid = getUID(obj,preferences)
         ifctype = getIfcTypeFromObj(obj)
+        # print(ifctype)
 
         if ifctype == "IfcGroup":
             groups[obj.Name] = [o.Name for o in obj.Group]
@@ -341,9 +352,13 @@ def export(exportList, filename, colors=None, preferences=None):
 
         assemblyElements = []
 
-        if ifctype == "IfcArray":
+        # if ifctype == "IfcArray":
+        # FIXME: the first array element is not placed correct if the array is not on coordinate origin
+        # https://forum.freecadweb.org/viewtopic.php?f=39&t=50085&p=431476#p431476
+        # workaround: do not use the assembly in ifc but a normal compound instead
+        if False:
+            clonedeltas = []
             if obj.ArrayType == "ortho":
-                clonedeltas = []
                 for i in range(obj.NumberX):
                     clonedeltas.append(obj.Placement.Base+(i*obj.IntervalX))
                     for j in range(obj.NumberY):
@@ -352,31 +367,39 @@ def export(exportList, filename, colors=None, preferences=None):
                         for k in range(obj.NumberZ):
                             if k > 0:
                                 clonedeltas.append(obj.Placement.Base+(i*obj.IntervalX)+(j*obj.IntervalY)+(k*obj.IntervalZ))
-            #print("clonedeltas:",clonedeltas)
-            for delta in clonedeltas:
-                representation,placement,shapetype = getRepresentation(
-                    ifcfile,
-                    context,
-                    obj.Base,
-                    forcebrep=(getBrepFlag(obj.Base,preferences)),
-                    colors=colors,
-                    preferences=preferences,
-                    forceclone=delta
-                )
-                subproduct = createProduct(
-                    ifcfile,
-                    obj.Base,
-                    getIfcTypeFromObj(obj.Base),
-                    getUID(obj.Base,preferences),
-                    history,
-                    getText("Name",obj.Base),
-                    getText("Description",obj.Base),
-                    placement,
-                    representation,
-                    preferences)
 
-                assemblyElements.append(subproduct)
+            #print("clonedeltas:",clonedeltas)
+            if clonedeltas:
                 ifctype = "IfcElementAssembly"
+                for delta in clonedeltas:
+                    # print("delta: {}".format(delta))
+                    representation,placement,shapetype = getRepresentation(
+                        ifcfile,
+                        context,
+                        obj.Base,
+                        forcebrep=(getBrepFlag(obj.Base,preferences)),
+                        colors=colors,
+                        preferences=preferences,
+                        forceclone=delta
+                    )
+                    subproduct = createProduct(
+                        ifcfile,
+                        obj.Base,
+                        getIfcTypeFromObj(obj.Base),
+                        getUID(obj.Base,preferences),
+                        history,
+                        getText("Name",obj.Base),
+                        getText("Description",obj.Base),
+                        placement,
+                        representation,
+                        preferences
+                    )
+                    assemblyElements.append(subproduct)
+            # if an array was handled assemblyElements is not empty
+            # if assemblyElements is not empty later on
+            # the own Shape is ignored if representation is retrieved
+            # this because we will build an assembly for the assemblyElements
+            # from here and the assembly itself should not have a representation
 
         elif ifctype == "IfcApp::Part":
             for subobj in [FreeCAD.ActiveDocument.getObject(n[:-1]) for n in obj.getSubObjects()]:
@@ -467,13 +490,20 @@ def export(exportList, filename, colors=None, preferences=None):
 
         # getting the representation
 
+        # ignore the own shape for assembly objects
+        skipshape = False
+        if assemblyElements:
+            # print("Assembly object: {}, thus own Shape will have no representation.".format(obj.Name))
+            skipshape = True
+
         representation,placement,shapetype = getRepresentation(
             ifcfile,
             context,
             obj,
             forcebrep=(getBrepFlag(obj,preferences)),
             colors=colors,
-            preferences=preferences
+            preferences=preferences,
+            skipshape=skipshape
         )
         if preferences['GET_STANDARD']:
             if isStandardCase(obj,ifctype):
@@ -1514,7 +1544,10 @@ def export(exportList, filename, colors=None, preferences=None):
 
     filename = decode(filename)
 
-    ifcfile.write(filename)
+    if filename.lower().endswith("json"):
+        writeJson(filename,ifcfile)
+    else:
+        ifcfile.write(filename)
 
     if preferences['STORE_UID']:
         # some properties might have been changed
@@ -1522,7 +1555,7 @@ def export(exportList, filename, colors=None, preferences=None):
 
     os.remove(templatefile)
 
-    if preferences['DEBUG'] and ifcbin.compress:
+    if preferences['DEBUG'] and ifcbin.compress and (not filename.lower().endswith("json")):
         f = pyopen(filename,"r")
         s = len(f.read().split("\n"))
         f.close()
@@ -1615,7 +1648,17 @@ def getIfcTypeFromObj(obj):
     if ifctype in translationtable.keys():
         ifctype = translationtable[ifctype]
 
-    return "Ifc" + ifctype
+    if not "::" in ifctype:
+        ifctype = "Ifc" + ifctype
+    elif ifctype == "IfcApp::DocumentObjctGroup":
+        ifctype = "IfcGroup"
+    else:
+        # it makes no sense to return IfcPart::Cylinder for a Part::Cylinder
+        # this is not a ifctype at all
+        ifctype = None
+
+    # print("Return value of getIfcTypeFromObj: {}".format(ifctype))
+    return ifctype
 
 
 def exportIFC2X3Attributes(obj, kwargs, scale=0.001):
@@ -1862,7 +1905,7 @@ def getProfile(ifcfile,p):
     return profile
 
 
-def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tessellation=1,colors=None,preferences=None,forceclone=False):
+def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tessellation=1,colors=None,preferences=None,forceclone=False,skipshape=False):
 
     """returns an IfcShapeRepresentation object or None. forceclone can be False (does nothing),
     "store" or True (stores the object as clone base) or a Vector (creates a clone)"""
@@ -1876,7 +1919,6 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
     shapetype = "no shape"
     tostore = False
     subplacement = None
-    skipshape = False
 
     # check for clones
 
@@ -1909,10 +1951,6 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
     # unhandled case: object is duplicated because of Axis
     if obj.isDerivedFrom("Part::Feature") and (len(obj.Shape.Solids) > 1) and hasattr(obj,"Axis") and obj.Axis:
         forcebrep = True
-
-    # specific cases that must ignore their own shape
-    if Draft.getType(obj) in ["Array"]:
-        skipshape = True
 
     if (not shapes) and (not forcebrep) and (not skipshape):
         profile = None
@@ -2093,10 +2131,12 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
 
                         if fcshape.Solids:
                             dataset = fcshape.Solids
-                        else:
+                        elif fcshape.Shells:
                             dataset = fcshape.Shells
                             #if preferences['DEBUG']: print("Warning! object contains no solids")
-
+                        else:
+                            if preferences['DEBUG']: print("Warning! object "+obj.Label+" contains no solids or shells")
+                            dataset = [fcshape]
                         for fcsolid in dataset:
                             fcsolid.scale(preferences['SCALE_FACTOR']) # to meters
                             faces = []
@@ -2298,6 +2338,12 @@ def createProduct(ifcfile,obj,ifctype,uid,history,name,description,placement,rep
         kwargs = exportIFC2X3Attributes(obj, kwargs, preferences['SCALE_FACTOR'])
     else:
         kwargs = exportIfcAttributes(obj, kwargs, preferences['SCALE_FACTOR'])
+    # in some cases object have wrong ifctypes, thus set it
+    # https://forum.freecadweb.org/viewtopic.php?f=39&t=50085
+    if ifctype not in ArchIFCSchema.IfcProducts.keys():
+        # print("Wrong IfcType: IfcBuildingElementProxy is used. {}".format(ifctype))
+        ifctype = "IfcBuildingElementProxy"
+    # print("createProduct: {}".format(ifctype))
     product = getattr(ifcfile,"create"+ifctype)(**kwargs)
     return product
 
@@ -2331,6 +2377,7 @@ def getText(field,obj):
         result = result.encode("utf8")
     return result
 
+
 def getAxisContext(ifcfile):
 
     """gets or creates an axis context"""
@@ -2346,6 +2393,7 @@ def getAxisContext(ifcfile):
     nctx = ifcfile.createIfcGeometricRepresentationSubContext('Axis','Model',None,None,None,None,ctx,None,"MODEL_VIEW",None);
     return nctx
 
+
 def createAxis(ifcfile,obj,preferences):
 
     """Creates an axis for a given wall, if applicable"""
@@ -2358,3 +2406,25 @@ def createAxis(ifcfile,obj,preferences):
                 axis = ifcfile.createIfcShapeRepresentation(ctx,'Axis','Curve2D',[curve])
                 return axis
     return None
+
+
+def writeJson(filename,ifcfile):
+
+    """writes an .ifcjson file"""
+
+    import json
+    try:
+        from ifcjson import ifc2json5a
+    except:
+        try:
+            import ifc2json5a
+        except:
+            print("Error: Unable to locate ifc2json5a module. Aborting.")
+            return
+    print("Converting IFC to JSON...")
+    jsonfile = ifc2json5a.IFC2JSON5a(ifcfile).spf2Json()
+    f = pyopen(filename,'w')
+    s = json.dumps(jsonfile,indent=4)
+    #print("json:",s)
+    f.write(s)
+    f.close()

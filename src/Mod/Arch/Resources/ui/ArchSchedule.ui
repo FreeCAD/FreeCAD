@@ -24,7 +24,11 @@
       </widget>
      </item>
      <item>
-      <widget class="Gui::PrefLineEdit" name="lineEditName"/>
+      <widget class="Gui::PrefLineEdit" name="lineEditName">
+       <property name="text">
+        <string>Unnamed schedule</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -124,23 +128,8 @@ Leave blank to use all objects from the document</string>
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QPushButton" name="buttonAdd">
-       <property name="toolTip">
-        <string>Adds a line below the selected line/cell</string>
-       </property>
-       <property name="text">
-        <string>Add row</string>
-       </property>
-       <property name="icon">
-        <iconset theme="add">
-         <normaloff/>
-        </iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="1">
       <widget class="QPushButton" name="buttonDel">
        <property name="toolTip">
         <string>Deletes the selected line</string>
@@ -155,7 +144,22 @@ Leave blank to use all objects from the document</string>
        </property>
       </widget>
      </item>
-     <item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="buttonAdd">
+       <property name="toolTip">
+        <string>Adds a line below the selected line/cell</string>
+       </property>
+       <property name="text">
+        <string>Add row</string>
+       </property>
+       <property name="icon">
+        <iconset theme="add">
+         <normaloff/>
+        </iconset>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
       <widget class="QPushButton" name="buttonClear">
        <property name="toolTip">
         <string>Clears the whole list</string>
@@ -170,11 +174,7 @@ Leave blank to use all objects from the document</string>
        </property>
       </widget>
      </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
+     <item row="1" column="0">
       <widget class="QPushButton" name="buttonSelect">
        <property name="toolTip">
         <string>Put selected objects into the &quot;Objects&quot; column of the selected row</string>
@@ -184,7 +184,7 @@ Leave blank to use all objects from the document</string>
        </property>
       </widget>
      </item>
-     <item>
+     <item row="1" column="1">
       <widget class="QPushButton" name="buttonImport">
        <property name="toolTip">
         <string>Imports the contents of a CSV file</string>
@@ -199,7 +199,7 @@ Leave blank to use all objects from the document</string>
        </property>
       </widget>
      </item>
-     <item>
+     <item row="1" column="2">
       <widget class="QPushButton" name="buttonExport">
        <property name="toolTip">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This exports the results to a CSV or Markdown file. &lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note for CSV export:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;In Libreoffice, you can keep this CSV file linked by right-clicking the Sheets tab bar -&amp;gt; New sheet -&amp;gt; From file -&amp;gt; Link (Note: as of LibreOffice v5.4.5.1 the correct path now is: Sheets tab bar -&amp;gt; Insert Sheet... -&amp;gt; From file -&amp;gt; Browse...)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>

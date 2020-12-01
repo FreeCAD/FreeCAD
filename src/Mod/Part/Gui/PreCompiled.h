@@ -36,7 +36,9 @@
 #endif
 
 #ifdef FC_OS_WIN32
+# ifndef NOMINMAX
 # define NOMINMAX
+# endif
 #endif
 
 // here get the warnings of too long specifiers disabled (needed for VC6)

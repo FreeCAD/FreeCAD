@@ -384,6 +384,7 @@ StdCmdDependencyGraph::StdCmdDependencyGraph()
     sStatusTip    = QT_TR_NOOP("Show the dependency graph of the objects in the active document");
     sWhatsThis    = "Std_DependencyGraph";
     eType         = 0;
+    sPixmap       = "Std_DependencyGraph";
 }
 
 void StdCmdDependencyGraph::activated(int iMsg)
@@ -564,7 +565,7 @@ StdCmdSaveAll::StdCmdSaveAll()
 
 void StdCmdSaveAll::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     Gui::Document::saveAll();
 }
 
@@ -658,6 +659,7 @@ StdCmdProjectUtil::StdCmdProjectUtil()
     sMenuText     = QT_TR_NOOP("Project utility...");
     sToolTipText  = QT_TR_NOOP("Utility to extract or create project files");
     sStatusTip    = QT_TR_NOOP("Utility to extract or create project files");
+    sPixmap       = "Std_ProjectUtil";
 }
 
 void StdCmdProjectUtil::activated(int iMsg)
@@ -687,6 +689,7 @@ StdCmdPrint::StdCmdPrint()
     sStatusTip    = QT_TR_NOOP("Print the document");
     sPixmap       = "document-print";
     sAccel        = keySequenceToAccel(QKeySequence::Print);
+    eType         = 0;
 }
 
 void StdCmdPrint::activated(int iMsg)
@@ -717,6 +720,7 @@ StdCmdPrintPreview::StdCmdPrintPreview()
     sWhatsThis    = "Std_PrintPreview";
     sStatusTip    = QT_TR_NOOP("Print preview");
     sPixmap       = "document-print-preview";
+    eType         = 0;
 }
 
 void StdCmdPrintPreview::activated(int iMsg)
@@ -745,6 +749,7 @@ StdCmdPrintPdf::StdCmdPrintPdf()
     sToolTipText  = QT_TR_NOOP("Export the document as PDF");
     sWhatsThis    = "Std_PrintPdf";
     sStatusTip    = QT_TR_NOOP("Export the document as PDF");
+    eType         = 0;
 }
 
 void StdCmdPrintPdf::activated(int iMsg)
@@ -992,6 +997,7 @@ StdCmdDuplicateSelection::StdCmdDuplicateSelection()
     sToolTipText  = QT_TR_NOOP("Put duplicates of the selected objects to the active document");
     sWhatsThis    = "Std_DuplicateSelection";
     sStatusTip    = QT_TR_NOOP("Put duplicates of the selected objects to the active document");
+    sPixmap       = "Std_DuplicateSelection";
 }
 
 void StdCmdDuplicateSelection::activated(int iMsg)
@@ -1044,7 +1050,7 @@ void StdCmdDuplicateSelection::activated(int iMsg)
                 "To link to external objects, the document must be saved at least once.\n"
                 "Do you want to save the document now?"),
                 QMessageBox::Yes,QMessageBox::No);
-            if(ret == QMessageBox::Yes) 
+            if(ret == QMessageBox::Yes)
                 proceed = Application::Instance->getDocument(doc)->saveAs();
         }
         if(proceed) {
@@ -1125,7 +1131,7 @@ void StdCmdDelete::activated(int iMsg)
 
     std::set<App::Document*> docs;
     try {
-        openCommand("Delete");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Delete"));
         if (getGuiApplication()->sendHasMsgToFocusView(getName())) {
             commitCommand();
             return;
@@ -1214,8 +1220,8 @@ void StdCmdDelete::activated(int iMsg)
                         bodyMessageStream << "\n";
                     }
                     std::string thisDoc = pGuiDoc->getDocument()->getName();
-                    bodyMessageStream << qApp->translate("Std_Delete", 
-                                            "These items are selected for deletion, but are not in the active document."); 
+                    bodyMessageStream << qApp->translate("Std_Delete",
+                                            "These items are selected for deletion, but are not in the active document.");
                     for (const auto &currentLabel : inactiveLabels)
                         bodyMessageStream << currentLabel << " / " << Base::Tools::fromStdString(thisDoc) << '\n';
                 }
@@ -1434,6 +1440,7 @@ StdCmdAlignment::StdCmdAlignment()
     sToolTipText  = QT_TR_NOOP("Align the selected objects");
     sStatusTip    = QT_TR_NOOP("Align the selected objects");
     sWhatsThis    = "Std_Alignment";
+    sPixmap       = "Std_Alignment";
 }
 
 void StdCmdAlignment::activated(int iMsg)
@@ -1613,7 +1620,7 @@ protected:
                            << " (" << obj->Label.getValue() << ')' << std::endl;
                         ss << "##@@";
                         if(v.second->comment.size()) {
-                            if(v.second->comment[0] == '&' 
+                            if(v.second->comment[0] == '&'
                                     || v.second->comment.find('\n') != std::string::npos
                                     || v.second->comment.find('\r') != std::string::npos)
                             {
@@ -1634,7 +1641,7 @@ protected:
     }
 
     void pasteExpressions() {
-        std::map<App::Document*, std::map<App::PropertyExpressionContainer*, 
+        std::map<App::Document*, std::map<App::PropertyExpressionContainer*,
             std::map<App::ObjectIdentifier, App::ExpressionPtr> > > exprs;
 
         bool failed = false;
@@ -1703,7 +1710,7 @@ protected:
             return;
         }
 
-        openCommand("Paste expressions");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Paste expressions"));
         try {
             for(auto &v : exprs) {
                 for(auto &v2 : v.second) {

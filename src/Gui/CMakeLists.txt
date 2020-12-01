@@ -224,6 +224,7 @@ generate_from_xml(DocumentPy)
 generate_from_xml(PythonWorkbenchPy)
 generate_from_xml(ViewProviderPy)
 generate_from_xml(ViewProviderDocumentObjectPy)
+generate_from_xml(ViewProviderExtensionPy)
 generate_from_xml(WorkbenchPy)
 generate_from_xml(SelectionObjectPy)
 generate_from_xml(LinkViewPy)
@@ -237,6 +238,7 @@ generate_from_py(FreeCADGuiInit GuiInitScript.h)
 SET(FreeCADGui_XML_SRCS
     ViewProviderDocumentObjectPy.xml
     ViewProviderPy.xml
+    ViewProviderExtensionPy.xml
     PythonWorkbenchPy.xml
     WorkbenchPy.xml
     SelectionObjectPy.xml
@@ -1004,6 +1006,7 @@ SOURCE_GROUP("Quarter" FILES ${Quarter_SRCS})
 SET(Viewprovider_CPP_SRCS
     ViewProvider.cpp
     ViewProviderExtension.cpp
+    ViewProviderExtensionPyImp.cpp
     ViewProviderGroupExtension.cpp
     ViewProviderGeoFeatureGroupExtension.cpp
     ViewProviderOriginGroupExtension.cpp

@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -27,6 +25,7 @@ import FreeCADGui
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathGetPoint as PathGetPoint
 import PathScripts.PathGui as PathGui
+import PathScripts.PathJob as PathJob
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathPreferences as PathPreferences
@@ -40,7 +39,7 @@ from PySide import QtCore, QtGui
 
 __title__ = "Path Operation UI base classes"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 __doc__ = "Base classes and framework for Path operation's UI"
 
 LOGLEVEL = False
@@ -213,6 +212,9 @@ class TaskPanelPage(object):
         self.parent = None
         self.panelTitle = 'Operation'
 
+        if hasattr(self.form, 'toolController'):
+            PathJob.Notification.updateTC.connect(self.resetToolController)
+
     def setParent(self, parent):
         '''setParent() ... used to transfer parent object link to child class.
         Do not overwrite.'''
@@ -362,6 +364,12 @@ class TaskPanelPage(object):
             combo.blockSignals(True)
             combo.setCurrentIndex(index)
             combo.blockSignals(False)
+
+    def resetToolController(self, job, tc):
+        if self.obj is not None:
+            self.obj.ToolController = tc
+            combo = self.form.toolController
+            self.setupToolController(self.obj, combo)
 
     def setupToolController(self, obj, combo):
         '''setupToolController(obj, combo) ...
@@ -537,7 +545,7 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
                     PathLog.error(translate("PathProject", "Faces are not supported"))
                 return False
         else:
-            if not self.supportsPanels() or not 'Panel' in sel.Object.Name:
+            if not self.supportsPanels() or 'Panel' not in sel.Object.Name:
                 if not ignoreErrors:
                     PathLog.error(translate("PathProject", "Please select %s of a solid" % self.featureName()))
                 return False
@@ -627,6 +635,7 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         col = qList.width()  # 300
         row = (qList.count() + qList.frameWidth()) * 15
         qList.setFixedSize(col, row)
+
 
 class TaskPanelBaseLocationPage(TaskPanelPage):
     '''Page controller for base locations. Uses PathGetPoint.'''
@@ -929,6 +938,45 @@ class TaskPanelDepthsPage(TaskPanelPage):
             self.form.finalDepthSet.setEnabled(False)
 
 
+class TaskPanelDiametersPage(TaskPanelPage):
+    '''Page controller for diameters.'''
+
+    def __init__(self, obj, features):
+        super(TaskPanelDiametersPage, self).__init__(obj, features)
+
+        # members initialized later
+        self.clearanceHeight = None
+        self.safeHeight = None
+
+    def getForm(self):
+        return FreeCADGui.PySideUic.loadUi(":/panels/PageDiametersEdit.ui")
+
+    def initPage(self, obj):
+        self.minDiameter = PathGui.QuantitySpinBox(self.form.minDiameter, obj, 'MinDiameter')
+        self.maxDiameter = PathGui.QuantitySpinBox(self.form.maxDiameter, obj, 'MaxDiameter')
+
+    def getTitle(self, obj):
+        return translate("Path", "Diameters")
+
+    def getFields(self, obj):
+        self.minDiameter.updateProperty()
+        self.maxDiameter.updateProperty()
+
+    def setFields(self, obj):
+        self.minDiameter.updateSpinBox()
+        self.maxDiameter.updateSpinBox()
+
+    def getSignalsForUpdate(self, obj):
+        signals = []
+        signals.append(self.form.minDiameter.editingFinished)
+        signals.append(self.form.maxDiameter.editingFinished)
+        return signals
+
+    def pageUpdateData(self, obj, prop):
+        if prop in ['MinDiameter', 'MaxDiameter']:
+            self.setFields(obj)
+
+
 class TaskPanel(object):
     '''
     Generic TaskPanel implementation handling the standard Path operation layout.
@@ -953,6 +1001,8 @@ class TaskPanel(object):
         self.finalDepth = None
         self.stepDown = None
         self.buttonBox = None
+        self.minDiameter = None
+        self.maxDiameter = None
 
         features = obj.Proxy.opFeatures(obj)
         opPage.features = features
@@ -980,6 +1030,12 @@ class TaskPanel(object):
                 self.featurePages.append(opPage.taskPanelHeightsPage(obj, features))
             else:
                 self.featurePages.append(TaskPanelHeightsPage(obj, features))
+
+        if PathOp.FeatureDiameters & features:
+            if hasattr(opPage, 'taskPanelDiametersPage'):
+                self.featurePages.append(opPage.taskPanelDiametersPage(obj, features))
+            else:
+                self.featurePages.append(TaskPanelDiametersPage(obj, features))
 
         self.featurePages.append(opPage)
 

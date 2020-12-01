@@ -125,32 +125,39 @@ if(OCC_FOUND)
     TKSTL
     TKShHealing
     TKXSBase
-    TKBin
     TKBool
     TKBO
-    TKCDF
     TKBRep
     TKTopAlgo
     TKGeomAlgo
     TKGeomBase
     TKOffset
     TKPrim
-    TKSTEP
     TKSTEPBase
     TKSTEPAttr
+    TKSTEP209
+    TKSTEP
     TKHLR
     TKFeat
   )
   set(OCC_OCAF_LIBRARIES
+    TKBin
+    TKBinL
     TKCAF
     TKXCAF
     TKLCAF
+    TKVCAF
+    TKCDF
     TKXDESTEP
     TKXDEIGES
     TKMeshVS
+    TKService
+    TKV3d
   )
   if(OCC_VERSION_STRING VERSION_LESS 6.7.3)
     list(APPEND OCC_OCAF_LIBRARIES TKAdvTools)
+  elseif(NOT OCC_VERSION_STRING VERSION_LESS 7.5.0)
+    list(APPEND OCC_OCAF_LIBRARIES TKRWMesh)
   endif(OCC_VERSION_STRING VERSION_LESS 6.7.3)
   message(STATUS "-- Found OCE/OpenCASCADE version: ${OCC_VERSION_STRING}")
   message(STATUS "-- OCE/OpenCASCADE include directory: ${OCC_INCLUDE_DIR}")

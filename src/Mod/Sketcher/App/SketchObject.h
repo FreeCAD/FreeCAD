@@ -105,6 +105,8 @@ public:
      \retval int - 0 if successful
      */
     int delGeometry(int GeoId, bool deleteinternalgeo = true);
+    /// Does the same as \a delGeometry but allows to delete several geometries in one step
+    int delGeometries(const std::vector<int>& GeoIds);
     /// deletes all the elements/constraints of the sketch except for external geometry
     int deleteAllGeometry();
     /// deletes all the constraints of the sketch
@@ -252,6 +254,14 @@ public:
      \retval bool - returns true if the increase in degree succeeded, or false if it did not succeed.
      */
     bool increaseBSplineDegree(int GeoId, int degreeincrement = 1);
+
+    /*!
+     \brief Decreases the degree of a BSpline by degreedecrement, which defaults to 1
+     \param GeoId - the geometry of type bspline to increase the degree
+     \param degreedecrement - the decrement in number of degrees to effect
+     \retval bool - returns true if the decrease in degree succeeded, or false if it did not succeed.
+     */
+    bool decreaseBSplineDegree(int GeoId, int degreedecrement = 1);
 
     /*!
      \brief Increases or Decreases the multiplicity of a BSpline knot by the multiplicityincr param, which defaults to 1, if the result is multiplicity zero, the knot is removed
@@ -409,6 +419,10 @@ public:
 
     // Validation routines
     std::vector<Base::Vector3d> getOpenVertices(void) const;
+
+public: // geometry extension functionalities for single element sketch object user convenience
+    int setGeometryId(int GeoId, long id);
+    int getGeometryId(int GeoId, long &id) const;
 
 protected:
     /// get called by the container when a property has changed

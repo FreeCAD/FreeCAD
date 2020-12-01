@@ -195,7 +195,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
             <string>When opening sketch, show objects the sketch is attached to</string>
            </property>
            <property name="text">
-            <string>Show object(s) sketch is attached to</string>
+            <string>Show objects that the sketch is attached to</string>
            </property>
            <property name="checked">
             <bool>true</bool>
@@ -236,7 +236,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Note: these settings are defaults applied to new sketches. The behavior is remembered for each sketch individually as properties on View tab.</string>
+            <string>Note: these settings are defaults applied to new sketches. The behavior is remembered for each sketch individually as properties on the View tab.</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>

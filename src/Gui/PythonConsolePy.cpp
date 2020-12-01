@@ -102,7 +102,7 @@ Py::Object PythonStdout::write(const Py::Tuple& args)
         }
     }
     catch (Py::Exception& e) {
-        // Do not provoke error messages 
+        // Do not provoke error messages
         e.clear();
     }
 

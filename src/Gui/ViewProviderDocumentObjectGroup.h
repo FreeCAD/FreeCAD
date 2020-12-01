@@ -31,7 +31,7 @@
 
 namespace Gui {
 
-class GuiExport ViewProviderDocumentObjectGroup : public ViewProviderDocumentObject, 
+class GuiExport ViewProviderDocumentObjectGroup : public ViewProviderDocumentObject,
                                                   public ViewProviderGroupExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(Gui::ViewProviderDocumentObjectGroup);

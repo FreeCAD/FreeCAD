@@ -35,12 +35,12 @@ using namespace std;
 //**************************************************************************
 // Construction/Destruction
 
-PROPERTY_SOURCE(PartGui::ViewProviderPrism, PartGui::ViewProviderPart)
+PROPERTY_SOURCE(PartGui::ViewProviderPrism, PartGui::ViewProviderPrimitive)
 
 
 ViewProviderPrism::ViewProviderPrism()
 {
-    sPixmap = "Tree_Part_Prism.svg";
+    sPixmap = "Part_Prism_Parametric";
 }
 
 ViewProviderPrism::~ViewProviderPrism()
@@ -67,12 +67,12 @@ std::vector<std::string> ViewProviderPrism::getDisplayModes(void) const
 //**************************************************************************
 // Construction/Destruction
 
-PROPERTY_SOURCE(PartGui::ViewProviderWedge, PartGui::ViewProviderPart)
+PROPERTY_SOURCE(PartGui::ViewProviderWedge, PartGui::ViewProviderPrimitive)
 
 
 ViewProviderWedge::ViewProviderWedge()
 {
-    sPixmap = "Tree_Part_Wedge.svg";
+    sPixmap = "Part_Wedge_Parametric";
 }
 
 ViewProviderWedge::~ViewProviderWedge()

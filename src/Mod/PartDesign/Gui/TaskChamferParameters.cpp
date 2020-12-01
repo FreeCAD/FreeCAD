@@ -332,7 +332,7 @@ void TaskChamferParameters::apply()
 {
     std::string name = DressUpView->getObject()->getNameInDocument();
 
-    //Gui::Command::openCommand("Chamfer changed");
+    //Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Chamfer changed"));
 
     PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
 

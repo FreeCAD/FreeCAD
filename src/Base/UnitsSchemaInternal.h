@@ -30,7 +30,7 @@
 #include "UnitsSchema.h"
 
 namespace Base {
-    
+
 
 /** The standard units schema
  *  Here is defined what internal (base) units FreeCAD uses.

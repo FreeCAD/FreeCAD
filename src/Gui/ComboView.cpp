@@ -52,7 +52,7 @@ ComboView::ComboView(bool showModel, Gui::Document* pcDocument, QWidget *parent)
 {
     setWindowTitle(tr("Combo View"));
 
-    QGridLayout* pLayout = new QGridLayout(this); 
+    QGridLayout* pLayout = new QGridLayout(this);
     pLayout->setSpacing( 0 );
     pLayout->setMargin ( 0 );
 

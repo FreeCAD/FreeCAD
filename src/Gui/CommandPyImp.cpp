@@ -31,6 +31,7 @@
 #include "MainWindow.h"
 #include "Selection.h"
 #include "Window.h"
+#include "WidgetFactory.h"
 
 // inclusion of the generated files (generated out of AreaPy.xml)
 #include "CommandPy.h"
@@ -304,6 +305,36 @@ PyObject* CommandPy::getInfo(PyObject *args)
         PyList_SetItem(pyList, 4, strPixMapTxt);
         PyList_SetItem(pyList, 5, strShortcutTxt);
         return pyList;
+    }
+    else {
+        PyErr_Format(Base::BaseExceptionFreeCADError, "No such command");
+        return nullptr;
+    }
+}
+
+PyObject* CommandPy::getAction(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    Command* cmd = this->getCommandPtr();
+    if (cmd) {
+        Action* action = cmd->getAction();
+        ActionGroup* group = qobject_cast<ActionGroup*>(action);
+
+        PythonWrapper wrap;
+        wrap.loadWidgetsModule();
+
+        Py::List list;
+        if (group) {
+            for (auto a : group->actions())
+                list.append(wrap.fromQObject(a));
+        }
+        else if (action) {
+            list.append(wrap.fromQObject(action->action()));
+        }
+
+        return Py::new_reference_to(list);
     }
     else {
         PyErr_Format(Base::BaseExceptionFreeCADError, "No such command");

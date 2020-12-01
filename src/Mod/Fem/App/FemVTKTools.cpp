@@ -25,6 +25,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <Python.h>
 # include <cstdlib>
 # include <memory>
 # include <cmath>
@@ -835,6 +836,7 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result, vtkSmar
             field = static_cast<App::PropertyVectorList*>(res->getPropertyByName(it->first.c_str()));
         else
             Base::Console().Error("    PropertyVectorList not found: %s\n", it->first.c_str());
+
         if (field && field->getSize() > 0) {
             //if (nPoints != field->getSize())
             //    Base::Console().Error("Size of PropertyVectorList = %d, not equal to vtk mesh node count %d \n", field->getSize(), nPoints);
@@ -862,8 +864,9 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result, vtkSmar
             grid->GetPointData()->AddArray(data);
             Base::Console().Log("    The PropertyVectorList %s was exported to VTK vector list: %s\n", it->first.c_str(), it->second.c_str());
         }
-        else
+        else if (field) {
             Base::Console().Log("    PropertyVectorList NOT exported to vtk: %s size is: %i\n", it->first.c_str(), field->getSize());
+        }
     }
 
     // scalars

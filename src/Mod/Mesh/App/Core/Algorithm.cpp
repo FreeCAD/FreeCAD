@@ -893,14 +893,16 @@ void MeshAlgorithm::ResetPointFlag (MeshPoint::TFlagType tF) const
 
 unsigned long MeshAlgorithm::CountFacetFlag (MeshFacet::TFlagType tF) const
 {
+    MeshIsFlag<MeshFacet> flag;
     return std::count_if(_rclMesh._aclFacetArray.begin(), _rclMesh._aclFacetArray.end(),
-                    std::bind2nd(MeshIsFlag<MeshFacet>(), tF));
+                         [flag, tF](const MeshFacet& f) { return flag(f, tF);});
 }
 
 unsigned long MeshAlgorithm::CountPointFlag (MeshPoint::TFlagType tF) const
 {
+    MeshIsFlag<MeshPoint> flag;
     return std::count_if(_rclMesh._aclPointArray.begin(), _rclMesh._aclPointArray.end(),
-                    std::bind2nd(MeshIsFlag<MeshPoint>(), tF));
+                         [flag, tF](const MeshPoint& f) { return flag(f, tF);});
 }
 
 void MeshAlgorithm::GetFacetsFromToolMesh( const MeshKernel& rToolMesh, const Base::Vector3f& rcDir, std::vector<unsigned long> &raclCutted ) const

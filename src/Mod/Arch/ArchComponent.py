@@ -27,9 +27,9 @@ Examples
 TODO put examples here.
 """
 
-__title__="FreeCAD Arch Component"
+__title__  = "FreeCAD Arch Component"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 import FreeCAD,Draft,ArchCommands,math,sys,json,os,ArchIFC,ArchIFCSchema
 from FreeCAD import Vector
@@ -615,6 +615,8 @@ class Component(ArchIFC.IfcProduct):
 
         # Get the object's normal.
         n = DraftGeomUtils.getNormal(shape[0])
+        if (not n) or (not n.Length):
+            n = FreeCAD.Vector(0, 0, 1)
 
         # Reverse the normal if the hint vector and the normal vector have more
         # than a 90 degree angle between them.
@@ -758,7 +760,7 @@ class Component(ArchIFC.IfcProduct):
                 for host in link.Hosts:
                     if host == obj:
                         subs.append(link)
-            elif hasattr(link,"Host"):
+            elif hasattr(link,"Host") and Draft.getType(link) != "Rebar":
                 if link.Host == obj:
                     subs.append(link)
         for o in subs:
@@ -779,7 +781,7 @@ class Component(ArchIFC.IfcProduct):
                     subvolume = o.Subvolume.Shape.copy()
                     if hasattr(o,"Placement"):
                         subvolume.Placement = subvolume.Placement.multiply(o.Placement)
-                    
+
                 if subvolume:
                     if base.Solids and subvolume.Solids:
                         if placement:
@@ -1805,11 +1807,13 @@ class ComponentTaskPanel:
         if hasattr(obj.ViewObject,"Proxy"):
             if hasattr(obj.ViewObject.Proxy,"getIcon"):
                 return QtGui.QIcon(obj.ViewObject.Proxy.getIcon())
-        if obj.isDerivedFrom("Sketcher::SketchObject"):
+        elif obj.isDerivedFrom("Sketcher::SketchObject"):
             return QtGui.QIcon(":/icons/Sketcher_Sketch.svg")
-        if obj.isDerivedFrom("App::DocumentObjectGroup"):
+        elif obj.isDerivedFrom("App::DocumentObjectGroup"):
             return QtGui.QApplication.style().standardIcon(QtGui.QStyle.SP_DirIcon)
-        return QtGui.QIcon(":/icons/Tree_Part.svg")
+        elif hasattr(obj.ViewObject, "Icon"):
+            return QtGui.QIcon(obj.ViewObject.Icon)
+        return QtGui.QIcon(":/icons/Part_3D_object.svg")
 
     def update(self):
         """Populate the treewidget with its various items.

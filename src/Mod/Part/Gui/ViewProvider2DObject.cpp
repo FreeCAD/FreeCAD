@@ -83,7 +83,7 @@ ViewProvider2DObjectGrid::ViewProvider2DObjectGrid()
 
     pcRoot->addChild(GridRoot);
 
-    sPixmap = "Tree_Part2D";
+    sPixmap = "Part_2D_object";
 }
 
 ViewProvider2DObjectGrid::~ViewProvider2DObjectGrid()

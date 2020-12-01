@@ -58,6 +58,10 @@ public:
 private Q_SLOTS:
     void onLengthChanged(double);
     void onLength2Changed(double);
+    void onGBDirectionChanged(bool);
+    void onXDirectionEditChanged(double);
+    void onYDirectionEditChanged(double);
+    void onZDirectionEditChanged(double);
     void onOffsetChanged(double);
     void onMidplaneChanged(bool);
     void onReversedChanged(bool);
@@ -71,6 +75,10 @@ protected:
 private:
     double getLength(void) const;
     double getLength2(void) const;
+    bool   getCustom(void) const;
+    double getXDirection(void) const;
+    double getYDirection(void) const;
+    double getZDirection(void) const;
     double getOffset(void) const;
     bool   getReversed(void) const;
     bool   getMidplane(void) const;
@@ -78,6 +86,7 @@ private:
     QString getFaceName(void) const;
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void updateUI(int index);
+    void updateDirectionEdits(void);
 
 private:
     QWidget* proxy;

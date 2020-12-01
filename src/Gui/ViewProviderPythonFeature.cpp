@@ -44,10 +44,10 @@
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoSwitch.h>
 # include <Inventor/nodes/SoDirectionalLight.h>
-# include <Inventor/sensors/SoNodeSensor.h> 
+# include <Inventor/sensors/SoNodeSensor.h>
 # include <Inventor/SoPickedPoint.h>
-# include <Inventor/actions/SoRayPickAction.h> 
-# include <Inventor/details/SoDetail.h> 
+# include <Inventor/actions/SoRayPickAction.h>
+# include <Inventor/details/SoDetail.h>
 #endif
 
 #include "ViewProviderDocumentObjectPy.h"
@@ -157,7 +157,7 @@ private:
             // original implementation didn't do that in every case, causing
             // memory leak. We now simply stores the python object with
             // reference counting, so no need to worry about deleting
-            
+
             Py::Object viewObject(const_cast<ViewProviderDocumentObject*>(pe->view)->getPyObject(),true);
             if(viewObject.ptr() != pe->info.viewObject.ptr()) {
                 if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
@@ -365,7 +365,7 @@ QIcon ViewProviderPythonFeatureImp::getIcon() const
             wrap.loadGuiModule();
             wrap.loadWidgetsModule();
             QIcon *picon = wrap.toQIcon(ret.ptr());
-            if(picon) 
+            if(picon)
                 return *picon;
         }
     }
@@ -381,7 +381,7 @@ QIcon ViewProviderPythonFeatureImp::getIcon() const
     return QIcon();
 }
 
-bool ViewProviderPythonFeatureImp::claimChildren(std::vector<App::DocumentObject*> &children) const 
+bool ViewProviderPythonFeatureImp::claimChildren(std::vector<App::DocumentObject*> &children) const
 {
     _FC_PY_CALL_CHECK(claimChildren,return(false));
 
@@ -891,7 +891,7 @@ void ViewProviderPythonFeatureImp::finishRestoring()
 ViewProviderPythonFeatureImp::ValueT
 ViewProviderPythonFeatureImp::onDelete(const std::vector<std::string> & sub)
 {
-    FC_PY_CALL_CHECK(onDelete); 
+    FC_PY_CALL_CHECK(onDelete);
 
     Base::PyGILStateLocker lock;
     try {
@@ -1263,7 +1263,7 @@ ViewProviderPythonFeatureImp::canDropObjectEx(App::DocumentObject* obj,
     return Rejected;
 }
 
-bool ViewProviderPythonFeatureImp::dropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner, 
+bool ViewProviderPythonFeatureImp::dropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner,
         const char *subname, const std::vector<std::string> &elements,std::string &ret)
 {
     _FC_PY_CALL_CHECK(dropObjectEx, return(false));
@@ -1318,7 +1318,7 @@ ViewProviderPythonFeatureImp::isShow() const
 }
 
 
-ViewProviderPythonFeatureImp::ValueT 
+ViewProviderPythonFeatureImp::ValueT
 ViewProviderPythonFeatureImp::canRemoveChildrenFromRoot() const {
 
     FC_PY_CALL_CHECK(canRemoveChildrenFromRoot);
@@ -1362,7 +1362,7 @@ bool ViewProviderPythonFeatureImp::getDropPrefix(std::string &prefix) const {
     return true;
 }
 
-ViewProviderPythonFeatureImp::ValueT 
+ViewProviderPythonFeatureImp::ValueT
 ViewProviderPythonFeatureImp::replaceObject(
         App::DocumentObject *oldObj, App::DocumentObject *newObj)
 {

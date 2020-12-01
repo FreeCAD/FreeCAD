@@ -48,8 +48,8 @@ std::string ViewProviderDocumentObjectPy::representation(void) const
 
 PyObject* ViewProviderDocumentObjectPy::update(PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
-        return NULL;                       // NULL triggers exception 
+    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
+        return NULL;                       // NULL triggers exception
     PY_TRY {
         getViewProviderDocumentObjectPtr()->updateView();
         Py_Return;
@@ -73,7 +73,7 @@ void ViewProviderDocumentObjectPy::setObject(Py::Object pyobj)
             static_cast<App::DocumentObjectPy*>(*pyobj)->getDocumentObjectPtr());
 }
 
-Py::Boolean ViewProviderDocumentObjectPy::getForceUpdate() const 
+Py::Boolean ViewProviderDocumentObjectPy::getForceUpdate() const
 {
     return Py::Boolean(getViewProviderDocumentObjectPtr()->isUpdateForced());
 }
@@ -96,5 +96,5 @@ PyObject *ViewProviderDocumentObjectPy::getCustomAttributes(const char* /*attr*/
 
 int ViewProviderDocumentObjectPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

@@ -53,6 +53,7 @@
 
 using namespace App;
 using namespace std;
+using namespace boost::placeholders;
 XERCES_CPP_NAMESPACE_USE
 
 /* Python entry */

@@ -1,21 +1,24 @@
-# FEM unit test information
-- Find in this fils some informatin how to run unit test for FEM
+# FEM Unit Test Information
 
-## more information 
-- how to run a specific test class or a test method see file
-- src/Mod/Test/__init__
-- forum https://forum.freecadweb.org/viewtopic.php?f=10&t=22190#p175546
+With these files one can find information on how to run unit tests for FEM
+
+## Specifically 
+
+- How to run a specific test class or a test method see file: `src/Mod/Test/__init__`
+- related [forum thread](https://forum.freecadweb.org/viewtopic.php?f=10&t=22190#p175546)
 
 ## let some test document stay open
+
 - run test method from inside FreeCAD
-- in tearDown method to not close the document
-- temporary comment FreeCAD.closeDocument(self.doc_name) and add pass
+- in `tearDown` method do not close the document
+- temporary comment out `FreeCAD.closeDocument(self.doc_name)` and add `pass`
 
 
 ## unit test command to copy
-- to run a specific FEM unit test to copy for fast tests :-)
-- they can be found in file test_commands_to_copy.md
-- create them by
+
+- To run a specific FEM unit test to copy for fast tests :-)
+- They can be found in the `test_commands_to_copy.md` file
+- create them by:
 
 ```python
 from femtest.app.support_utils import get_fem_test_defs
@@ -23,15 +26,18 @@ get_fem_test_defs()
 
 ```
 
-## examples from within FreeCAD:
-### create test command file in temp directory
+## Examples from within FreeCAD
+
+### Create test command file in temp directory
+
 ```python
 import Test, femtest.app.test_object
 Test.runTestsFromClass(femtest.app.test_object.TestObjectCreate)
 
 ```
 
-### all FEM tests
+### All FEM tests
+
 ```python
 import Test, TestFemApp
 Test.runTestsFromModule(TestFemApp)
@@ -42,6 +48,7 @@ Test.runTestsFromModule(TestFemGui)
 ```
 
 ### module
+
 ```python
 import Test, femtest.app.test_common
 Test.runTestsFromModule(femtest.app.test_common)
@@ -49,6 +56,7 @@ Test.runTestsFromModule(femtest.app.test_common)
 ```
 
 ### class
+
 ```python
 import Test, femtest.app.test_common
 Test.runTestsFromClass(femtest.app.test_common.TestFemCommon)
@@ -56,6 +64,7 @@ Test.runTestsFromClass(femtest.app.test_common.TestFemCommon)
 ```
 
 ### method
+
 ```python
 import unittest
 thetest = "femtest.app.test_common.TestFemCommon.test_pyimport_all_FEM_modules"
@@ -78,35 +87,42 @@ unittest.TextTestRunner().run(alltest)
 ```
 
 ### import Fem and FemGui
+
 ```bash
 ./bin/FreeCADCmd --run-test "femtest.app.test_femimport"
 ./bin/FreeCAD --run-test "femtest.app.test_femimport"
 ```
 
 ### module
+
 ```bash
 ./bin/FreeCAD --run-test "femtest.app.test_femimport"
 ```
 
 ### class
+
 ```bash
 ./bin/FreeCAD --run-test "femtest.app.test_common.TestFemCommon"
 ```
 
 ### method
+
 ```bash
 ./bin/FreeCAD --run-test "femtest.app.test_common.TestFemCommon.test_pyimport_all_FEM_modules"
 ```
 
 ### Gui
+
 ```bash
 ./bin/FreeCAD --run-test "femtest.gui.test_open.TestObjectOpen"
 ```
 
 
-## open files 
-### from FEM test suite source code
-- be careful on updating these files, they contain the original results!
+## Open files 
+
+### From FEM test suite source code
+
+- be careful when updating these files, they contain the original results!
 - TODO update files, because some of them have non-existing FEM object classes
 
 ```python
@@ -119,7 +135,8 @@ doc = FreeCAD.open(FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/femtest/data/ccx/
 ```
 
 
-### generated from test suite
+### Generated from test suite
+
 ```python
 import femtest.utilstest as ut
 ut.all_test_files()
@@ -131,7 +148,8 @@ doc = ut.multimat()
 doc = ut.spine_thermomech()
 ```
 
-### load std FEM example files
+### Load std FEM example files
+
 ```python
 app_home = FreeCAD.ConfigGet("AppHomePath")
 doc = FreeCAD.open(app_home + "data/examples/FemCalculixCantilever2D.FCStd")
@@ -141,7 +159,8 @@ doc = FreeCAD.open(app_home + "data/examples/Fem.FCStd")
 doc = FreeCAD.open(app_home + "data/examples/Fem2.FCStd")
 ```
 
-### load all documents files
+### Load all documents files
+
 ```python
 app_home = FreeCAD.ConfigGet("AppHomePath")
 doc = FreeCAD.open(FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/femtest/data/open/all_objects_de9b3fb438.FCStd')

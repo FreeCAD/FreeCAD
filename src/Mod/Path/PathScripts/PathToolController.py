@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2015 Dan Falck <ddfalck@gmail.com>                      *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -21,7 +19,8 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-''' Tool Controller defines tool, spindle speed and feed rates for Path Operations '''
+
+'''Tool Controller defines tool, spindle speed and feed rates for Path Operations'''
 
 import FreeCAD
 import Path
@@ -31,16 +30,17 @@ import PathScripts.PathToolBit as PathToolBit
 
 from PySide import QtCore
 
-#PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-#PathLog.trackModule(PathLog.thisModule())
+# PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+# PathLog.trackModule(PathLog.thisModule())
+
 
 # Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
+
 class ToolControllerTemplate:
     '''Attribute and sub element strings for template export/import.'''
-    # pylint: disable=no-init
 
     Expressions  = 'xengine'
     ExprExpr     = 'expr'
@@ -57,21 +57,36 @@ class ToolControllerTemplate:
     VertFeed     = 'vfeed'
     VertRapid    = 'vrapid'
 
+
 class ToolController:
 
     def __init__(self, obj, cTool=False):
         PathLog.track('tool: {}'.format(cTool))
 
-        obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", QtCore.QT_TRANSLATE_NOOP("PathToolController", "The active tool"))
+        obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber",
+                        "Tool", QtCore.QT_TRANSLATE_NOOP("PathToolController",
+                        "The active tool"))
         obj.ToolNumber = (0, 0, 10000, 1)
         self.ensureUseLegacyTool(obj, cTool)
-        obj.addProperty("App::PropertyFloat", "SpindleSpeed", "Tool", QtCore.QT_TRANSLATE_NOOP("PathToolController", "The speed of the cutting spindle in RPM"))
-        obj.addProperty("App::PropertyEnumeration", "SpindleDir", "Tool", QtCore.QT_TRANSLATE_NOOP("PathToolController", "Direction of spindle rotation"))
+        obj.addProperty("App::PropertyFloat", "SpindleSpeed", "Tool",
+                        QtCore.QT_TRANSLATE_NOOP("PathToolController",
+                        "The speed of the cutting spindle in RPM"))
+        obj.addProperty("App::PropertyEnumeration", "SpindleDir", "Tool",
+                        QtCore.QT_TRANSLATE_NOOP("PathToolController",
+                        "Direction of spindle rotation"))
         obj.SpindleDir = ['Forward', 'Reverse']
-        obj.addProperty("App::PropertySpeed", "VertFeed", "Feed", QtCore.QT_TRANSLATE_NOOP("PathToolController", "Feed rate for vertical moves in Z"))
-        obj.addProperty("App::PropertySpeed", "HorizFeed", "Feed", QtCore.QT_TRANSLATE_NOOP("PathToolController", "Feed rate for horizontal moves"))
-        obj.addProperty("App::PropertySpeed", "VertRapid", "Rapid", QtCore.QT_TRANSLATE_NOOP("PathToolController", "Rapid rate for vertical moves in Z"))
-        obj.addProperty("App::PropertySpeed", "HorizRapid", "Rapid", QtCore.QT_TRANSLATE_NOOP("PathToolController", "Rapid rate for horizontal moves"))
+        obj.addProperty("App::PropertySpeed", "VertFeed", "Feed",
+                        QtCore.QT_TRANSLATE_NOOP("PathToolController",
+                        "Feed rate for vertical moves in Z"))
+        obj.addProperty("App::PropertySpeed", "HorizFeed", "Feed",
+                        QtCore.QT_TRANSLATE_NOOP("PathToolController",
+                        "Feed rate for horizontal moves"))
+        obj.addProperty("App::PropertySpeed", "VertRapid", "Rapid",
+                        QtCore.QT_TRANSLATE_NOOP("PathToolController",
+                        "Rapid rate for vertical moves in Z"))
+        obj.addProperty("App::PropertySpeed", "HorizRapid", "Rapid",
+                        QtCore.QT_TRANSLATE_NOOP("PathToolController",
+                        "Rapid rate for horizontal moves"))
         obj.setEditorMode('Placement', 2)
 
     def onDocumentRestored(self, obj):
@@ -83,10 +98,12 @@ class ToolController:
             if hasattr(obj.Tool, 'InList') and len(obj.Tool.InList) == 1:
                 if hasattr(obj.Tool.Proxy, 'onDelete'):
                     obj.Tool.Proxy.onDelete(obj.Tool)
-                obj.Document.removeObject(obj.Tool.Name)
 
     def setFromTemplate(self, obj, template):
-        '''setFromTemplate(obj, xmlItem) ... extract properties from xmlItem and assign to receiver.'''
+        '''
+        setFromTemplate(obj, xmlItem) ... extract properties from xmlItem
+        and assign to receiver.
+        '''
         PathLog.track(obj.Name, template)
         version = 0
         if template.get(ToolControllerTemplate.Version):
@@ -159,10 +176,21 @@ class ToolController:
         commands += "(" + obj.Label + ")"+'\n'
         commands += 'M6 T'+str(obj.ToolNumber)+'\n'
 
-        if obj.SpindleDir == 'Forward':
-            commands += 'M3 S' + str(obj.SpindleSpeed) + '\n'
-        else:
-            commands += 'M4 S' + str(obj.SpindleSpeed) + '\n'
+        # If a toolbit is used, check to see if spindlepower is allowed.
+        # This is to prevent accidentally spinning the spindle with an
+        # unpowered tool like probe or dragknife
+
+        allowSpindlePower = True
+        if (not isinstance(obj.Tool, Path.Tool) and
+                hasattr(obj.Tool, "SpindlePower")):
+                    allowSpindlePower = obj.Tool.SpindlePower
+
+        if allowSpindlePower:
+            PathLog.debug('selected tool preventing spindle power')
+            if obj.SpindleDir == 'Forward':
+                commands += 'M3 S' + str(obj.SpindleSpeed) + '\n'
+            else:
+                commands += 'M4 S' + str(obj.SpindleSpeed) + '\n'
 
         if commands == "":
             commands += "(No commands processed)"
@@ -196,13 +224,14 @@ class ToolController:
             else:
                 obj.addProperty("App::PropertyLink", "Tool", "Base", QtCore.QT_TRANSLATE_NOOP("PathToolController", "The tool used by this controller"))
 
-def Create(name = 'Default Tool', tool=None, toolNumber=1, assignViewProvider=True):
+
+def Create(name='Default Tool', tool=None, toolNumber=1, assignViewProvider=True):
     legacyTool = PathPreferences.toolsReallyUseLegacyTools() if tool is None else isinstance(tool, Path.Tool)
 
     PathLog.track(tool, toolNumber, legacyTool)
 
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    obj.Label = name
+    obj.Label = "TC: {}".format(name)
     obj.Proxy = ToolController(obj, legacyTool)
 
     if FreeCAD.GuiUp and assignViewProvider:
@@ -225,6 +254,7 @@ def Create(name = 'Default Tool', tool=None, toolNumber=1, assignViewProvider=Tr
     obj.ToolNumber = toolNumber
     return obj
 
+
 def FromTemplate(template, assignViewProvider=True):
     # pylint: disable=unused-argument
     PathLog.track()
@@ -234,6 +264,7 @@ def FromTemplate(template, assignViewProvider=True):
     obj.Proxy.setFromTemplate(obj, template)
 
     return obj
+
 
 if FreeCAD.GuiUp:
     # need ViewProvider class in this file to support loading of old files

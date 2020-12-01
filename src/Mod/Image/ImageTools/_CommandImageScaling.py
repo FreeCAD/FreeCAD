@@ -36,7 +36,6 @@ if FreeCAD.GuiUp:
     import pivy.coin as pvy
 
     import FreeCADGui
-    import draftguitools.gui_trackers as trackers
 
 # Translation-related code
 # See forum thread "A new Part tool is being born... JoinFeatures!"
@@ -65,7 +64,8 @@ class _CommandImageScaling:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Image_Scaling", "Scales an image plane by defining a distance between two points")}
 
     def Activated(self):
-        cmdCreateImageScaling(name="ImageScaling")
+        import draftguitools.gui_trackers as trackers
+        cmdCreateImageScaling(name="ImageScaling", trackers=trackers)
         
     def IsActive(self):
         if FreeCAD.ActiveDocument:
@@ -78,7 +78,7 @@ if FreeCAD.GuiUp:
 
 
 # helper
-def cmdCreateImageScaling(name):
+def cmdCreateImageScaling(name, trackers):
 
     def distance(p1,p2):
         dx=p2[0]-p1[0]
@@ -162,7 +162,7 @@ def cmdCreateImageScaling(name):
                 s=d/self.distance
                 sel[0].XSize.Value=sel[0].XSize.Value*s
                 sel[0].YSize.Value=sel[0].YSize.Value*s
-                FreeCAD.Console.PrintMessage("Scale="+str(s))
+                FreeCAD.Console.PrintMessage("Image: Scale="+str(s)+"\n")
                 self.tracker.off()
                 self.tracker.finalize()
                 self.dialog.hide()

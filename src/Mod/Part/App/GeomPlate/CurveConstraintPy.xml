@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="PyObjectBase"
+      Name="CurveConstraintPy"
+      PythonName="Part.GeomPlate.CurveConstraintPy"
+      Twin="GeomPlate_CurveConstraint"
+      TwinPointer="GeomPlate_CurveConstraint"
+      Include="GeomPlate_CurveConstraint.hxx"
+      Namespace="Part"
+      FatherInclude="Base/PyObjectBase.h"
+      FatherNamespace="Base"
+      Constructor="true"
+      Delete="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+      <UserDocu>Defines curves as constraints to be used to deform a surface</UserDocu>
+    </Documentation>
+    <Methode Name="setOrder">
+      <Documentation>
+        <UserDocu>Allows you to set the order of continuity required for
+the constraints: G0, G1, and G2, controlled
+respectively by G0Criterion G1Criterion and G2Criterion.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="order">
+      <Documentation>
+        <UserDocu>Returns the order of constraint, one of G0, G1 or G2</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="G0Criterion">
+      <Documentation>
+        <UserDocu>Returns the G0 criterion at the parametric point U on
+the curve. This is the greatest distance allowed between
+the constraint and the target surface at U.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="G1Criterion">
+      <Documentation>
+        <UserDocu>Returns the G1 criterion at the parametric point U on
+the curve. This is the greatest angle allowed between
+the constraint and the target surface at U.
+Raises an exception if  the  curve  is  not  on  a  surface.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="G2Criterion">
+      <Documentation>
+        <UserDocu>Returns the G2 criterion at the parametric point U on
+the curve. This is the greatest difference in curvature
+allowed between the constraint and the target surface at U.
+Raises an exception if  the  curve  is  not  on  a  surface.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setG0Criterion">
+      <Documentation>
+        <UserDocu>Allows you to set the G0 criterion. This is the law
+defining the greatest distance allowed between the
+constraint and the target surface for each point of the
+constraint. If this criterion is not set, TolDist, the
+distance tolerance from the constructor, is used.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setG1Criterion">
+      <Documentation>
+        <UserDocu>Allows you to set the G1 criterion. This is the law
+defining the greatest angle allowed between the
+constraint and the target surface. If this criterion is not
+set, TolAng, the angular tolerance from the constructor, is used.
+Raises an exception if  the  curve  is  not  on  a  surface
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setG2Criterion">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="curve3d">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setCurve2dOnSurf">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="curve2dOnSurf">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setProjectedCurve">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="projectedCurve">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+    </Methode>
+    <Attribute Name="NbPoints">
+        <Documentation>
+            <UserDocu>The number of points on the curve used as a
+constraint. The default setting is 10. This parameter
+affects computation time, which increases by the cube of
+the number of points.</UserDocu>
+        </Documentation>
+        <Parameter Name="NbPoints" Type="Long"/>
+    </Attribute>
+    <Attribute Name="FirstParameter" ReadOnly="true">
+        <Documentation>
+            <UserDocu></UserDocu>
+        </Documentation>
+        <Parameter Name="FirstParameter" Type="Float"/>
+    </Attribute>
+    <Attribute Name="LastParameter" ReadOnly="true">
+        <Documentation>
+            <UserDocu></UserDocu>
+        </Documentation>
+        <Parameter Name="LastParameter" Type="Float"/>
+    </Attribute>
+    <Attribute Name="Length" ReadOnly="true">
+        <Documentation>
+            <UserDocu></UserDocu>
+        </Documentation>
+        <Parameter Name="Length" Type="Float"/>
+    </Attribute>
+  </PythonExport>
+</GenerateModel>

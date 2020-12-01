@@ -30,12 +30,12 @@
 namespace Gui {
 
 /** The console window class
- *  This class opens a console window when instantiated 
- *  and redirects the stdio streams to it as long it exists. 
+ *  This class opens a console window when instantiated
+ *  and redirects the stdio streams to it as long it exists.
  *  This is for Windows only!
  *  After instantiation it automatically registers itself at
  *  the FCConsole class and gets all the FCConsoleObserver
- *  messages. The class must not used directly! Only the 
+ *  messages. The class must not used directly! Only the
  *  FCConsole class is allowed!
  *  @see FCConsole
  *  \author Jürgen Riegel

@@ -17,9 +17,9 @@ macro(CompilerChecksAndSetups)
         add_definitions(-DHAVE_SNPRINTF)
     endif()
 
-    # Allow developers to use Boost < 1.48
+    # Allow developers to use Boost < 1.55
     if (NOT BOOST_MIN_VERSION)
-        set(BOOST_MIN_VERSION 1.48)
+        set(BOOST_MIN_VERSION 1.55)
     endif()
 
     # For older cmake versions the variable 'CMAKE_CXX_COMPILER_VERSION' is missing
@@ -95,6 +95,7 @@ macro(CompilerChecksAndSetups)
             if (NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 8.0)
                 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-undefined-var-template")
             endif()
+            add_definitions(-DGL_SILENCE_DEPRECATION)
         elseif (UNIX)
             if (NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 3.9)
                 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-undefined-var-template")

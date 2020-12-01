@@ -1,9 +1,5 @@
 # -*- coding: UTF-8 -*-
-
 #***************************************************************************
-#*                                                                         *
-#*   heidenhain_post.py     HEDENHAIN Post-Processor for FreeCAD           *
-#*                                                                         *
 #*   Copyright (C) 2020 Stefano Chiaro <stefano.chiaro@yahoo.com>          *
 #*                                                                         *
 #*   This library is free software; you can redistribute it and/or         *
@@ -21,6 +17,8 @@
 #*   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA         *
 #*   02110-1301  USA                                                       *
 #***************************************************************************
+
+# HEDENHAIN Post-Processor for FreeCAD
 
 import FreeCAD
 from FreeCAD import Units
@@ -219,7 +217,7 @@ def processArguments(argstring):
     global FIRST_LBL
     global SHOW_EDITOR
     global SKIP_WARNS
-    
+
     try:
         args = parser.parse_args(shlex.split(argstring))
         if args.skip_params:
@@ -248,7 +246,7 @@ def processArguments(argstring):
         return False
 
     return True
-    
+
 def export(objectslist, filename, argstring):
     if not processArguments(argstring):
         return None
@@ -261,7 +259,7 @@ def export(objectslist, filename, argstring):
     global STORED_COMPENSATED_OBJ
     global COMPENSATION_DIFF_STATUS
     global LBLIZE_STAUS
-    
+
     Object_Kind = None
     Feed_Rapid = False
     Feed = 0
@@ -275,7 +273,7 @@ def export(objectslist, filename, argstring):
         'I', 'J', 'K',
         'F', 'H', 'S', 'T', 'Q', 'R', 'L'
         ]
-    
+
     for obj in objectslist:
         if not hasattr(obj, "Path"):
             print(
@@ -289,7 +287,7 @@ def export(objectslist, filename, argstring):
     for obj in objectslist:
         Cmd_Count = 0 # command line number
         LBLIZE_STAUS = False
-        
+
         # useful to get idea of object kind
         if isinstance (obj.Proxy, PathScripts.PathToolController.ToolController):
             Object_Kind = "TOOL"
@@ -305,7 +303,7 @@ def export(objectslist, filename, argstring):
             if LBLIZE_ACTIVE: LBLIZE_STAUS = True
         elif isinstance (obj.Proxy, PathScripts.PathHelix.ObjectHelix):
             Object_Kind = "HELIX"
-        
+
         # If used compensated path, store, recompute and diff when asked
         if hasattr(obj, 'UseComp') and SOLVE_COMPENSATION_ACTIVE:
             if obj.UseComp:
@@ -313,7 +311,7 @@ def export(objectslist, filename, argstring):
                     # Take a copy of compensated path
                     STORED_COMPENSATED_OBJ = obj.Path.Commands
                 # Find mill compensation
-                if hasattr(obj, 'Side') and hasattr(obj, 'Direction'):    
+                if hasattr(obj, 'Side') and hasattr(obj, 'Direction'):
                     if obj.Side == "Outside" and obj.Direction == "CW":
                         Compensation = "L"
                     elif obj.Side == "Outside" and obj.Direction == "CCW":
@@ -358,8 +356,8 @@ def export(objectslist, filename, argstring):
                         )
                         # we can try to solve compensation
                         POSTGCODE.append("; COMPENSATION ACTIVE")
-                        COMPENSATION_DIFF_STATUS[0] = True                        
-                    
+                        COMPENSATION_DIFF_STATUS[0] = True
+
         for c in obj.Path.Commands:
             Cmd_Count += 1
             outstring = []
@@ -378,23 +376,23 @@ def export(objectslist, filename, argstring):
                         Spindle_RPM = c.Parameters['S'] # Could be deleted if tool it's OK
                     elif param == 'T':
                         ToolId = c.Parameters['T'] # Could be deleted if tool it's OK
-                        
+
             if command == 'G90':
                 G_FUNCTION_STORE['G90'] = True
                 G_FUNCTION_STORE['G91'] = False
-                
+
             if command == 'G91':
                 G_FUNCTION_STORE['G91'] = True
                 G_FUNCTION_STORE['G90'] = False
-                
+
             if command == 'G98':
                 G_FUNCTION_STORE['G98'] = True
                 G_FUNCTION_STORE['G99'] = False
-                
+
             if command == 'G99':
                 G_FUNCTION_STORE['G99'] = True
                 G_FUNCTION_STORE['G98'] = False
-                
+
             # Rapid movement
             if command == 'G0':
                 Spindle_Status = ""
@@ -411,7 +409,7 @@ def export(objectslist, filename, argstring):
                     c.Parameters, Compensation, Feed, True, Spindle_Status, Cmd_Count
                     )
                 if parsedElem != None: POSTGCODE.append(parsedElem)
-                
+
              # Linear movement
             if command == 'G1':
                 parsedElem = HEIDEN_Line(
@@ -426,12 +424,12 @@ def export(objectslist, filename, argstring):
                     )
                 if parsedElem != None:
                     POSTGCODE.extend(parsedElem)
-                    
+
             if command == 'G80': #Reset Canned Cycles
                 G_FUNCTION_STORE['G81'] = False
                 G_FUNCTION_STORE['G82'] = False
                 G_FUNCTION_STORE['G83'] = False
-            
+
             # Drilling, Dwell Drilling, Peck Drilling
             if command == 'G81' or command == 'G82' or command == 'G83':
                 parsedElem = HEIDEN_Drill(
@@ -439,21 +437,21 @@ def export(objectslist, filename, argstring):
                     )
                 if parsedElem != None:
                     POSTGCODE.extend(parsedElem)
-            
+
             # Tool change
             if command == 'M6':
                 parsedElem = HEIDEN_ToolCall(obj)
                 if parsedElem != None: POSTGCODE.append(parsedElem)
-                        
+
         if COMPENSATION_DIFF_STATUS[0]: #Restore the compensation if removed
             obj.UseComp = True
             obj.recompute()
             COMPENSATION_DIFF_STATUS[0] = False
-            
+
         if LBLIZE_STAUS:
             HEIDEN_LBL_Replace()
             LBLIZE_STAUS = False
-    
+
     if LBLIZE_ACTIVE:
         if not SKIP_WARNS: (
             PostUtils.editor(
@@ -467,9 +465,9 @@ def export(objectslist, filename, argstring):
         )
     POSTGCODE.append(HEIDEN_End(objectslist)) #add footer
     Program_Out = HEIDEN_Numberize(POSTGCODE) #add line number
-    
+
     if SHOW_EDITOR: PostUtils.editor(Program_Out)
-    
+
     gfile = pythonopen(filename, "w")
     gfile.write(Program_Out)
     gfile.close()
@@ -491,7 +489,7 @@ def HEIDEN_End(ActualJob): #use Label for program name
     else:
         program_id = "NEW"
     return "END PGM " + program_id + " " + UNITS
-       
+
 #def HEIDEN_ToolDef(tool_id, tool_lenght, tool_radius): # old machines don't have tool table, need tooldef list
 #    return "TOOL DEF  " + tool_id + " R" + "{:.3f}".format(tool_lenght) + " L" + "{:.3f}".format(tool_radius)
 
@@ -502,7 +500,7 @@ def HEIDEN_ToolCall(tool_Params):
     H_Tool_ID = "0"
     H_Tool_Speed = 0
     H_Tool_Comment = ""
-    
+
     if hasattr(tool_Params, "Label"): # use Label as tool comment
         H_Tool_Comment = tool_Params.Label
     if hasattr(tool_Params, "SpindleDir"): # get spindle direction for this tool
@@ -523,7 +521,7 @@ def HEIDEN_ToolCall(tool_Params):
             HEIDEN_Format(" S", H_Tool_Speed) + " ;" + str(H_Tool_Comment)
             )
 
-# create a linear movement             
+# create a linear movement
 def HEIDEN_Line(line_Params, line_comp, line_feed, line_rapid, line_M_funct, Cmd_Number):
     global FEED_MAX_SPEED
     global COMPENSATION_DIFF_STATUS
@@ -543,7 +541,7 @@ def HEIDEN_Line(line_Params, line_comp, line_feed, line_rapid, line_M_funct, Cmd
         }
     H_Line = "L"
     H_Line_Params = [['X', 'Y', 'Z'], ['R0', line_feed, line_M_funct]]
-    
+
     # check and hide duplicated axis movements, not last, update with new ones
     for i in H_Line_New:
         if G_FUNCTION_STORE['G91']: # incremental
@@ -559,10 +557,10 @@ def HEIDEN_Line(line_Params, line_comp, line_feed, line_rapid, line_M_funct, Cmd
                 if line_Params[i] != H_Line_New[i] or line_M_funct != '':
                     H_Line += " " + HEIDEN_Format(i, line_Params[i])
                     H_Line_New[i] = line_Params[i]
-        
+
     if H_Line == "L": #No movements no line
         return None
-    
+
     if COMPENSATION_DIFF_STATUS[0]: # Diff from compensated ad not compensated path
         if COMPENSATION_DIFF_STATUS[1]: # skip if already compensated, not active by now
             Cmd_Number -= 1 # align
@@ -578,13 +576,13 @@ def HEIDEN_Line(line_Params, line_comp, line_feed, line_rapid, line_M_funct, Cmd
 #                   COMPENSATION_DIFF_STATUS[1] = False
         else:
             H_Line_Params[1][0] = "R" + line_comp # not used by now
-        
+
     # check if we need to skip already active parameters
     # R parameter
     if MACHINE_SKIP_PARAMS == False or H_Line_Params[1][0] != MACHINE_STORED_PARAMS[0]:
         MACHINE_STORED_PARAMS[0] = H_Line_Params[1][0]
         H_Line += " " + H_Line_Params[1][0]
-    
+
     # F parameter (check rapid o feed)
     if line_rapid == True: H_Line_Params[1][1] = FEED_MAX_SPEED
     if MACHINE_USE_FMAX == True and line_rapid == True:
@@ -593,12 +591,12 @@ def HEIDEN_Line(line_Params, line_comp, line_feed, line_rapid, line_M_funct, Cmd
         if MACHINE_SKIP_PARAMS == False or H_Line_Params[1][1] != MACHINE_STORED_PARAMS[1]:
             MACHINE_STORED_PARAMS[1] = H_Line_Params[1][1]
             H_Line += HEIDEN_Format(" F", H_Line_Params[1][1])
-    
+
     # M parameter
     if MACHINE_SKIP_PARAMS == False or H_Line_Params[1][2] != MACHINE_STORED_PARAMS[2]:
         MACHINE_STORED_PARAMS[2] = H_Line_Params[1][2]
         H_Line += " M" + H_Line_Params[1][2]
-    
+
     # LBLIZE check and array creation
     if LBLIZE_STAUS:
         i = H_Line_Params[0][MACHINE_WORK_AXIS]
@@ -607,11 +605,11 @@ def HEIDEN_Line(line_Params, line_comp, line_feed, line_rapid, line_M_funct, Cmd
             HEIDEN_LBL_Get(MACHINE_LAST_POSITION, H_Line_New[i])
         else:
             HEIDEN_LBL_Get()
-    
+
     # update machine position with new values
     for i in H_Line_New:
         MACHINE_LAST_POSITION[i] = H_Line_New[i]
-    
+
     return H_Line
 
 # create a arc movement
@@ -641,7 +639,7 @@ def HEIDEN_Arc(arc_Params, arc_direction, arc_comp, arc_feed, arc_rapid, arc_M_f
         'Y': 99999,
         'Z': 99999
         }
-    
+
     # get command values
     if G_FUNCTION_STORE['G91']: # incremental
         H_ArcIncr = "I"
@@ -673,7 +671,7 @@ def HEIDEN_Arc(arc_Params, arc_direction, arc_comp, arc_feed, arc_rapid, arc_M_f
                 if b in arc_Params:
                     # to change if I J K are not always incremental
                     H_Arc_CC[a] = H_Arc_CC[a] + arc_Params[b]
-    
+
     def Axis_Select(a, b, c, incr):
         if a in arc_Params and b in arc_Params:
             _H_ArcCenter = (
@@ -693,7 +691,7 @@ def HEIDEN_Arc(arc_Params, arc_direction, arc_comp, arc_feed, arc_rapid, arc_M_f
             return [_H_ArcCenter, _H_ArcPoint]
         else:
             return ["", ""]
-    
+
     # set the right work plane based on tool direction
     if MACHINE_WORK_AXIS == 0: # tool on X axis
         Axis_Result = Axis_Select('Y', 'Z', 'X', H_ArcIncr)
@@ -707,7 +705,7 @@ def HEIDEN_Arc(arc_Params, arc_direction, arc_comp, arc_feed, arc_rapid, arc_M_f
 
     if H_ArcCenter == "CC ": #No movements no circle
         return None
-    
+
     if arc_direction == "G2": # set the right arc direction
         H_ArcPoint += " DR-"
     else:
@@ -728,12 +726,12 @@ def HEIDEN_Arc(arc_Params, arc_direction, arc_comp, arc_feed, arc_rapid, arc_M_f
             H_Arc_Params[1][0] = "R" + arc_comp # not used by now
 
     # check if we need to skip already active parameters
-    
+
     # R parameter
     if MACHINE_SKIP_PARAMS == False or H_Arc_Params[1][0] != MACHINE_STORED_PARAMS[0]:
         MACHINE_STORED_PARAMS[0] = H_Arc_Params[1][0]
         H_ArcPoint += " " + H_Arc_Params[1][0]
-        
+
     # F parameter
     if arc_rapid == True: H_Arc_Params[1][1] = FEED_MAX_SPEED
     if MACHINE_USE_FMAX == True and arc_rapid == True:
@@ -742,7 +740,7 @@ def HEIDEN_Arc(arc_Params, arc_direction, arc_comp, arc_feed, arc_rapid, arc_M_f
         if MACHINE_SKIP_PARAMS == False or H_Arc_Params[1][1] != MACHINE_STORED_PARAMS[1]:
             MACHINE_STORED_PARAMS[1] = H_Arc_Params[1][1]
             H_ArcPoint += HEIDEN_Format(" F", H_Arc_Params[1][1])
-    
+
     # M parameter
     if MACHINE_SKIP_PARAMS == False or H_Arc_Params[1][2] != MACHINE_STORED_PARAMS[2]:
         MACHINE_STORED_PARAMS[2] = H_Arc_Params[1][2]
@@ -753,7 +751,7 @@ def HEIDEN_Arc(arc_Params, arc_direction, arc_comp, arc_feed, arc_rapid, arc_M_f
         for i in H_Arc_Params[0]:
             H_Arc_P_NEW[i] = MACHINE_LAST_POSITION[i] + H_Arc_P_NEW[i]
             H_Arc_CC[i] = MACHINE_LAST_POSITION[i] + H_Arc_CC[i]
-    
+
     # check if we can skip CC print
     if(
         MACHINE_LAST_CENTER['X'] == H_Arc_CC['X'] and
@@ -761,7 +759,7 @@ def HEIDEN_Arc(arc_Params, arc_direction, arc_comp, arc_feed, arc_rapid, arc_M_f
         MACHINE_LAST_CENTER['Z'] == H_Arc_CC['Z']
     ):
         H_ArcSameCenter = True
-            
+
     # LBLIZE check and array creation
     if LBLIZE_STAUS:
         i = H_Arc_Params[0][MACHINE_WORK_AXIS]
@@ -773,29 +771,29 @@ def HEIDEN_Arc(arc_Params, arc_direction, arc_comp, arc_feed, arc_rapid, arc_M_f
                 HEIDEN_LBL_Get(MACHINE_LAST_POSITION, H_Arc_P_NEW[i], 1)
         else:
             HEIDEN_LBL_Get()
-            
+
     # update machine position with new values
     for i in H_Arc_Params[0]:
         MACHINE_LAST_CENTER[i] = H_Arc_CC[i]
         MACHINE_LAST_POSITION[i] = H_Arc_P_NEW[i]
-        
+
     # if the circle center is already the same we don't need to print it
     if H_ArcSameCenter:
         return [H_ArcPoint]
     else:
         return [H_ArcCenter, H_ArcPoint]
-        
+
 def HEIDEN_PolarArc(pol_cc_X, pol_cc_Y, pol_X, pol_Y, pol_Z, pol_Axis, pol_Incr):
     pol_Angle = 0
     pol_Result = ""
-    
+
     # get delta distance form point to circle center
     delta_X = pol_X - pol_cc_X
     delta_Y = pol_Y - pol_cc_Y
     # prevent undefined result of atan
     if delta_X != 0 or delta_Y != 0:
         pol_Angle = math.degrees(math.atan2(delta_X, delta_Y))
-        
+
     # set the appropriate zero and direction of angle
     # with X axis zero have the Y+ direction
     if pol_Axis == "X":
@@ -806,16 +804,16 @@ def HEIDEN_PolarArc(pol_cc_X, pol_cc_Y, pol_X, pol_Y, pol_Z, pol_Axis, pol_Incr)
     # with Z axis zero have the X+ direction
     elif pol_Axis == "Z":
         pol_Angle = 90 - pol_Angle
-        
+
     # set inside +0° +360° range
     if pol_Angle > 0:
         if pol_Angle >= 360: pol_Angle = pol_Angle - 360
     elif pol_Angle < 0:
         pol_Angle = pol_Angle + 360
         if pol_Angle < 0: pol_Angle = pol_Angle + 360
-        
+
     pol_Result = "P" + HEIDEN_Format(" PA+", pol_Angle) + " " + pol_Incr + HEIDEN_Format(pol_Axis, pol_Z)
-        
+
     return pol_Result
 
 def HEIDEN_Drill(drill_Obj, drill_Params, drill_Type, drill_feed): # create a drill cycle and movement
@@ -830,12 +828,12 @@ def HEIDEN_Drill(drill_Obj, drill_Params, drill_Type, drill_feed): # create a dr
     drill_Surface = None
     drill_SafePoint = 0
     drill_StartPoint = 0
-    
+
     # try to get the distance from Clearance Height and Start Depth
     if hasattr(drill_Obj, 'StartDepth') and hasattr(drill_Obj.StartDepth, 'Value'):
         drill_Surface = drill_Obj.StartDepth.Value
 
-    # initialize 
+    # initialize
     if 'R' in drill_Params:
         # SafePoint equals to R position
         if G_FUNCTION_STORE['G91']: # incremental
@@ -849,16 +847,16 @@ def HEIDEN_Drill(drill_Obj, drill_Params, drill_Type, drill_feed): # create a dr
         else:
             drill_Defs['DIST'] = 0
             drill_StartPoint = drill_SafePoint
-            
+
     if 'Z' in drill_Params:
         if G_FUNCTION_STORE['G91']: # incremental
             drill_Defs['DEPTH'] = drill_SafePoint + drill_Params['Z']
         else:
             drill_Defs['DEPTH'] = drill_Params['Z'] - drill_StartPoint
-    
+
     if drill_Defs['DEPTH'] > 0:
         drill_Output.append("; WARNING START DEPTH LOWER THAN FINAL DEPTH")
-        
+
     drill_Defs['INCR'] = drill_Defs['DEPTH']
     # overwrite
     if 'P' in drill_Params: drill_Defs['DWELL'] = drill_Params['P']
@@ -875,16 +873,16 @@ def HEIDEN_Drill(drill_Obj, drill_Params, drill_Type, drill_feed): # create a dr
             drill_Rapid = HEIDEN_Format(" F", FEED_MAX_SPEED)
         else:
             drill_Rapid = " R0" + HEIDEN_Format(" F", FEED_MAX_SPEED) + " M"
-    
+
     # move to drill location
     drill_Movement = "L"
     if G_FUNCTION_STORE['G91']: # incremental
         # update Z value to R + actual_Z if first call
-        if G_FUNCTION_STORE[drill_Type] == False: 
+        if G_FUNCTION_STORE[drill_Type] == False:
             MACHINE_LAST_POSITION['Z'] = drill_Defs['DIST'] + MACHINE_LAST_POSITION['Z']
             drill_Movement = "L" + HEIDEN_Format(" Z", MACHINE_LAST_POSITION['Z']) + drill_Rapid
             drill_Output.append(drill_Movement)
-            
+
         # update X and Y position
         if 'X' in drill_Params and drill_Params['X'] != 0:
             MACHINE_LAST_POSITION['X'] = drill_Params['X'] + MACHINE_LAST_POSITION['X']
@@ -900,7 +898,7 @@ def HEIDEN_Drill(drill_Obj, drill_Params, drill_Type, drill_feed): # create a dr
             drill_Movement = "L" + HEIDEN_Format(" Z", drill_SafePoint) + drill_Rapid
             drill_Output.append(drill_Movement)
             MACHINE_LAST_POSITION['Z'] = drill_SafePoint
-            
+
         # update X and Y position
         if 'X' in drill_Params and drill_Params['X'] != MACHINE_LAST_POSITION['X']:
             MACHINE_LAST_POSITION['X'] = drill_Params['X']
@@ -916,16 +914,16 @@ def HEIDEN_Drill(drill_Obj, drill_Params, drill_Type, drill_feed): # create a dr
             drill_Movement = "L" + HEIDEN_Format(" Z", drill_SafePoint) + drill_Rapid
             drill_Output.append(drill_Movement)
             MACHINE_LAST_POSITION['Z'] = drill_SafePoint
-            
+
     # check if cycle is already stored
     i = True
     for j in drill_Defs:
         if drill_Defs[j] != STORED_CANNED_PARAMS[j]: i = False
-        
+
     if i == False: # not same cycle, update and print
         for j in drill_Defs:
             STORED_CANNED_PARAMS[j] = drill_Defs[j]
-        
+
         # get the DEF template and replace the strings
         drill_CycleDef = MACHINE_CYCLE_DEF[1].format(
             DIST = str("{:.3f}".format(drill_Defs['DIST'])),
@@ -935,13 +933,13 @@ def HEIDEN_Drill(drill_Obj, drill_Params, drill_Type, drill_feed): # create a dr
             FEED = str("{:.0f}".format(drill_Defs['FEED']))
             )
         drill_Output.extend(drill_CycleDef.split("\n"))
-    
+
     # add the cycle call to do the drill
     if MACHINE_SKIP_PARAMS:
         drill_Output.append("CYCL CALL")
     else:
         drill_Output.append("CYCL CALL M")
-        
+
     # set already active cycle,    to do: check changes and movements until G80
     G_FUNCTION_STORE[drill_Type] = True
 
@@ -952,7 +950,7 @@ def HEIDEN_Format(formatType, formatValue):
     global FEED_DECIMALS
     global AXIS_DECIMALS
     returnString = ""
-    
+
     formatType = str(formatType)
     if formatType == "S" or formatType == " S":
         returnString = '%.*f' % (SPINDLE_DECIMALS, formatValue)
@@ -998,12 +996,12 @@ def HEIDEN_LBL_Get(GetPoint=None, GetLevel=None, GetAddit=0):
         if len(STORED_LBL) != 0 and len(STORED_LBL[-1][-1]) != 0:
             STORED_LBL[-1].append([])
     return
-    
+
 def HEIDEN_LBL_Replace():
     global POSTGCODE
     global STORED_LBL
     global FIRST_LBL
-    
+
     Gcode_Lenght = len(POSTGCODE)
 
     # this function look inside strings to find and replace it with LBL
@@ -1011,7 +1009,7 @@ def HEIDEN_LBL_Replace():
     # until the "Z" axis is moved or rapid movements are performed
     # these "planar with feed movements" create a new row with
     # the index of start and end POSTGCODE line
-    # to LBLize we need to diff with the first column backward 
+    # to LBLize we need to diff with the first column backward
     # from the last row in the last column of indexes
     Cols = len(STORED_LBL) - 1
     if Cols > 0:

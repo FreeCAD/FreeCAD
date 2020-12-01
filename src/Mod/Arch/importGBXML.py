@@ -19,9 +19,9 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__=   "FreeCAD GbXml exporter"
+__title__  = "FreeCAD GbXml exporter"
 __author__ = "Yorik van Havre"
-__url__ =    "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 import os,FreeCAD,Draft
 
@@ -32,15 +32,15 @@ else:
     def translate(ctx,txt):
         return txt
     # \endcond
-        
+
 ## @package importGBXML
 #  \ingroup ARCH
 #  \brief GBXML file format exporter
 #
 #  This module provides tools to export GBXML files.
-    
+
 def export(objectslist,filename):
-    
+
     if len(objectslist) != 1:
         FreeCAD.Console.PrintError(translate("Arch","This exporter can currently only export one site object")+"\n")
         return
@@ -48,13 +48,13 @@ def export(objectslist,filename):
     if Draft.getType(site) != "Site":
         FreeCAD.Console.PrintError(translate("Arch","This exporter can currently only export one site object")+"\n")
         return
-        
+
     filestream = pyopen(filename,"wb")
-        
+
     # header
     filestream.write( '<?xml version="1.0"?>\n' )
     filestream.write( '<!-- Exported by FreeCAD %s -->\n' % FreeCAD.Version()[0]+FreeCAD.Version()[1]+FreeCAD.Version()[2] )
-    filestream.write( '<gbXML\n' ) 
+    filestream.write( '<gbXML\n' )
     filestream.write( '  xmlns="http://www.gbxml.org/schema"\n' )
     filestream.write( '  xmlns:xhtml="http://www.w3.org/1999/xhtml"\n' )
     filestream.write( '  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n' )
@@ -83,7 +83,7 @@ def export(objectslist,filename):
         if Draft.getType(building) == "Building":
             filestream.write( '    <Building id="$s" buildingType="$s">\n' % (building.Name,building.BuildingType) )
             filestream.write( '        <Area>$f</Area>\n' % str(building.Area.getValueAs("m^2")) )
-            
+
             # spaces
             for space in Draft.getObjectsOfType(Draft.get_group_contents(building.Group, addgroups=True),
                                                 "Space"):
@@ -100,7 +100,7 @@ def export(objectslist,filename):
                 filestream.write( '            <Area>$f</Area>\n' % space.Area.getValueAs("m^2") )
                 filestream.write( '            <Volume>$f</Volume>\n' % FreeCAD.Units.Quantity(space.Shape.Volume,FreeCAD.Units.Volume).getValueAs("m^3") )
                 filestream.write( '            <ShellGeometry id="%s_geometry">\n' % space.Name )
-                
+
                 # shells
                 for solid in space.Shape.Solids:
                     filestream.write( '                <ClosedShell>\n' )
@@ -116,7 +116,7 @@ def export(objectslist,filename):
                     filestream.write( '                </ClosedShell>\n' )
                 filestream.write( '            </ShellGeometry>\n' )
                 filestream.write( '        </Space>\n' )
-                
+
                 # surfaces
                 for i,face in enumerate(space.Shape.Faces):
                     filestream.write( '            <SpaceBoundary isSecondLevelBoundary="false" surfaceIdRef="%s_Face%i"\n' % space.Name, i )
@@ -131,16 +131,16 @@ def export(objectslist,filename):
                     filestream.write( '                    </PolyLoop>\n' )
                     filestream.write( '                </PlanarGeometry>\n' )
                     filestream.write( '            </SpaceBoundary>\n' )
-                
+
                 filestream.write( '        </Space>\n' )
-            
+
             filestream.write( '    </Building>\n' )
-    
+
     filestream.write( '</Campus>\n' )
-    
+
     filestream.write( '</gbXML>' )
 
-'''    
+'''
         <Area>18000.00000</Area>
         <Space id="sp1_LabandCorridor_Labcorridor" spaceType="LaboratoryOffice" zoneIdRef="z1_LabandCorridor">
             <Name>Lab corridor</Name>
@@ -179,7 +179,7 @@ def export(objectslist,filename):
 
                 </ClosedShell>
             </ShellGeometry>
-            
+
             <SpaceBoundary isSecondLevelBoundary="false" surfaceIdRef="aim1095">
               <PlanarGeometry>
                 <PolyLoop>
@@ -206,19 +206,19 @@ def export(objectslist,filename):
                 </PolyLoop>
               </PlanarGeometry>
             </SpaceBoundary>
-            
-            
-            
-            
+
+
+
+
             <CADObjectId>21E2</CADObjectId>
         </Space>
 
         ... repeat
 
     </Building>
-    
-    
-    
+
+
+
     <Surface id="su1_Floor" surfaceType="UndergroundSlab" constructionIdRef="construction-1">
         <Name>Floor</Name>
         <AdjacentSpaceId spaceIdRef="sp1_LabandCorridor_Labcorridor"/>
@@ -268,8 +268,8 @@ def export(objectslist,filename):
             </PolyLoop>
         </PlanarGeometry>
     </Surface>
-    
-    
+
+
 
     <Surface id="su44_Surface4" surfaceType="ExteriorWall" constructionIdRef="construction-3">
         <Name>Surface 4</Name>
@@ -415,7 +415,7 @@ def export(objectslist,filename):
             </PlanarGeometry>
         </Opening>
     </Surface>
-    
+
 
     ... repeat
 

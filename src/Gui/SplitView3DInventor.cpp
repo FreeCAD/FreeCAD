@@ -48,7 +48,7 @@ AbstractSplitView::AbstractSplitView(Gui::Document* pcDocument, QWidget* parent,
   : MDIView(pcDocument,parent, wflags)
 {
     _viewerPy = 0;
-    // important for highlighting 
+    // important for highlighting
     setMouseTracking(true);
 }
 
@@ -296,7 +296,7 @@ void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp
 
 void AbstractSplitView::onUpdate(void)
 {
-    update();  
+    update();
 }
 
 const char *AbstractSplitView::getName(void) const
@@ -409,7 +409,7 @@ bool AbstractSplitView::onHasMsg(const char* pMsg) const
 
 void AbstractSplitView::setOverrideCursor(const QCursor& aCursor)
 {
-    Q_UNUSED(aCursor); 
+    Q_UNUSED(aCursor);
     //_viewer->getWidget()->setCursor(aCursor);
 }
 

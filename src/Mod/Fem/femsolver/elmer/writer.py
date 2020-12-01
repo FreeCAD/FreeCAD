@@ -68,7 +68,7 @@ class Writer(object):
         self.analysis = solver.getParentGroup()
         self.solver = solver
         self.directory = directory
-        Console.PrintMessage("Write elmer input files to: {}".format(self.directory))
+        Console.PrintMessage("Write elmer input files to: {}\n".format(self.directory))
         self.testmode = testmode
         self._usedVarNames = set()
         self._builder = sifio.Builder()
@@ -154,7 +154,10 @@ class Writer(object):
                 "N": "mol",
                 "J": "cd",
             }
-        elif self.unit_schema > Units.Scheme.SI2 and self.unit_schema != Units.Scheme.FemMilliMeterNewton:
+        elif (
+            self.unit_schema > Units.Scheme.SI2
+            and self.unit_schema != Units.Scheme.FemMilliMeterNewton
+        ):
             Console.PrintMessage(
                 "Unit schema: {} not supported by Elmer writer. "
                 "The FreeCAD standard unit schema mm/kg/s is used. "

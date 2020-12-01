@@ -113,7 +113,7 @@ protected:
     void setCrosshairCursor(const char* svgName);
 
     /**
-     * Returns contraints icons scaled to width.
+     * Returns constraints icons scaled to width.
      **/
     std::vector<QPixmap> suggestedConstraintsPixmaps(
             std::vector<AutoConstraint> &suggestedConstraints);

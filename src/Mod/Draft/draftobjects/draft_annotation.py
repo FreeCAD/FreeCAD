@@ -131,13 +131,13 @@ class DraftAnnotation(object):
                 # the 'DraftText' type was changed to 'Text' type
                 if state["Type"] == "DraftText":
                     state["Type"] = "Text"
-                    _info = "migrate 'DraftText' type to 'Text'"
+                    _info = "migrated 'DraftText' type to 'Text'"
                     _wrn("v0.19, " + _tr(_info))
                 self.Type = state["Type"]
             else:
                 if state == "DraftText":
                     state = "Text"
-                    _info = "migrate 'DraftText' type to 'Text'"
+                    _info = "migrated 'DraftText' type to 'Text'"
                     _wrn("v0.19, " + _tr(_info))
                 self.Type = state
 

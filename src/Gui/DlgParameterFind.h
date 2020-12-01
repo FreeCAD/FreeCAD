@@ -36,7 +36,7 @@ class Ui_DlgParameterFind;
 class DlgParameterImp;
 
 class GuiExport DlgParameterFind : public QDialog
-{ 
+{
     Q_OBJECT
 
 public:

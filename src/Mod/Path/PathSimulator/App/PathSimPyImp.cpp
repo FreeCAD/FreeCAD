@@ -1,5 +1,5 @@
-/***************************************************************************
-*   Copyright (c) 2017 Shai Seger         <shaise at gmail>               *
+/**************************************************************************
+*   Copyright (c) 2017 Shai Seger <shaise at gmail>                       *
 *                                                                         *
 *   This file is part of the FreeCAD CAx development system.              *
 *                                                                         *
@@ -44,7 +44,7 @@ std::string PathSimPy::representation(void) const
 
 PyObject *PathSimPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of PathSimPy and the Twin object 
+    // create a new instance of PathSimPy and the Twin object
     return new PathSimPy(new PathSim);
 }
 
@@ -135,7 +135,7 @@ PyObject *PathSimPy::getCustomAttributes(const char* /*attr*/) const
 
 int PathSimPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
 
 

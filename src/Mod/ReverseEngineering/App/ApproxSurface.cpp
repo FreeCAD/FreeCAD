@@ -188,7 +188,7 @@ BSplineBasis::ValueT BSplineBasis::LocalSupport(int iIndex, double fParam)
     int m = _vKnotVector.Length()-1;
     int p = _iOrder-1;
 
-    if ((iIndex == 0 && fParam == _vKnotVector(0)) || 
+    if ((iIndex == 0 && fParam == _vKnotVector(0)) ||
         (iIndex == m-p-1 && fParam == _vKnotVector(m))) {
         return BSplineBasis::Full;
     }
@@ -207,7 +207,7 @@ double BSplineBasis::BasisFunction(int iIndex, double fParam)
     double saved;
     TColStd_Array1OfReal N(0,p);
 
-    if ((iIndex == 0 && fParam == _vKnotVector(0)) || 
+    if ((iIndex == 0 && fParam == _vKnotVector(0)) ||
         (iIndex == m-p-1 && fParam == _vKnotVector(m))) {
         return 1.0;
     }
@@ -254,7 +254,7 @@ void BSplineBasis::DerivativesOfBasisFunction(int iIndex, int iMaxDer, double fP
     int iMax = iMaxDer;
     if (Derivat.Length() != iMax+1)
         Standard_RangeError::Raise("BSplineBasis");
-    //k-te Ableitungen (k>Grad) sind Null 
+    //k-te Ableitungen (k>Grad) sind Null
     if (iMax >= _iOrder) {
         for (int i=_iOrder; i<=iMaxDer; i++)
             Derivat(i) = 0.0;
@@ -277,7 +277,7 @@ void BSplineBasis::DerivativesOfBasisFunction(int iIndex, int iMaxDer, double fP
     for (int j=0; j<_iOrder; j++) {
         if (fParam >= _vKnotVector(iIndex+j) && fParam < _vKnotVector(iIndex+j+1))
             N(j,0) = 1.0;
-        else 
+        else
             N(j,0) = 0.0;
     }
 
@@ -345,7 +345,7 @@ double BSplineBasis::DerivativeOfBasisFunction(int iIndex, int iMaxDer, double f
     if (iMax == 0)
         return BasisFunction(iIndex, fParam);
 
-    //k-te Ableitungen (k>Grad) sind Null 
+    //k-te Ableitungen (k>Grad) sind Null
     if (iMax >= _iOrder) {
         return 0.0;
     }
@@ -364,7 +364,7 @@ double BSplineBasis::DerivativeOfBasisFunction(int iIndex, int iMaxDer, double f
     for (int j=0; j<_iOrder; j++) {
         if (fParam >= _vKnotVector(iIndex+j) && fParam < _vKnotVector(iIndex+j+1))
             N(j,0) = 1.0;
-        else 
+        else
             N(j,0) = 0.0;
     }
 
@@ -442,8 +442,8 @@ double BSplineBasis::GetIntegralOfProductOfBSplines(int iIdx1, int iIdx2, int iO
         if (fMax > fMin) {
             for (int i=0; i<=iMax; i++) {
                 double fParam = 0.5*(vRoots(i)+1)*(fMax-fMin)+fMin;
-                dIntegral += 0.5*(fMax-fMin)*vWeights(i) * 
-                             DerivativeOfBasisFunction(iIdx1, iOrd1, fParam) * 
+                dIntegral += 0.5*(fMax-fMin)*vWeights(i) *
+                             DerivativeOfBasisFunction(iIdx1, iOrd1, fParam) *
                              DerivativeOfBasisFunction(iIdx2, iOrd2, fParam);
             }
         }
@@ -716,7 +716,7 @@ void ParameterCorrection::ProjectControlPointsOnPlane()
     }
 }
 
-Handle(Geom_BSplineSurface) ParameterCorrection::CreateSurface(const TColgp_Array1OfPnt& points, 
+Handle(Geom_BSplineSurface) ParameterCorrection::CreateSurface(const TColgp_Array1OfPnt& points,
                                                                int iIter,
                                                                bool  bParaCor,
                                                                double fSizeFactor)
@@ -803,7 +803,7 @@ void BSplineParameterCorrection::Init()
 
     _vUMults(0) = _usUOrder;
     _vUMults(usUMax) = _usUOrder;
-    
+
     // v-Richtung
     for (unsigned i=0; i<=usVMax; i++) {
         _vVKnots(i) = static_cast<double>(i) / static_cast<double>(usVMax);

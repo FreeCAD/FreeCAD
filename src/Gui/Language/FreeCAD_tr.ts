@@ -121,6 +121,13 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Edit</source>
+      <translation>Düzenle</translation>
+    </message>
+  </context>
+  <context>
     <name>DlgCustomizeSpNavSettings</name>
     <message>
       <source>Spaceball Motion</source>
@@ -179,7 +186,7 @@
     </message>
     <message>
       <source>&amp;Clear</source>
-      <translation type="unfinished">&amp;Clear</translation>
+      <translation>&amp;Temizle</translation>
     </message>
     <message>
       <source>Revert to last calculated value (as constant)</source>
@@ -322,7 +329,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>&amp;Cancel</source>
-      <translation>&amp;İptal</translation>
+      <translation>İptal</translation>
     </message>
   </context>
   <context>
@@ -418,7 +425,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Collection</source>
-      <translation type="unfinished">Collection</translation>
+      <translation>Koleksiyon</translation>
     </message>
   </context>
   <context>
@@ -430,6 +437,14 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Out Of Range</source>
       <translation>Aralığın dışında</translation>
+    </message>
+    <message>
+      <source> "</source>
+      <translation> "</translation>
+    </message>
+    <message>
+      <source>"</source>
+      <translation>"</translation>
     </message>
   </context>
   <context>
@@ -594,7 +609,7 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::DlgAddProperty</name>
     <message>
       <source>Add property</source>
-      <translation type="unfinished">Add property</translation>
+      <translation>Özellik ekle</translation>
     </message>
     <message>
       <source>Type</source>
@@ -765,7 +780,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Sorry, couldn't find macro file '%1'.</source>
-      <translation>Üzgünüm, makro dosyası '% 1' bulunamadı.</translation>
+      <translation>Üzgünüm, '%1' makro dosyası bulunamadı.</translation>
     </message>
     <message>
       <source>Empty macro</source>
@@ -1003,7 +1018,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>The toolbar name '%1' is already used</source>
-      <translation>Araç çubuğu adı '%1' zaten kullanılıyor</translation>
+      <translation>'%1' Araç çubuğu adı zaten kullanılıyor</translation>
     </message>
     <message>
       <source>Rename toolbar</source>
@@ -1019,7 +1034,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>%1 module not loaded</source>
-      <translation type="unfinished">%1 module not loaded</translation>
+      <translation>%1 modül yüklenmedi</translation>
     </message>
   </context>
   <context>
@@ -1059,16 +1074,16 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>Düğmeler</translation>
     </message>
     <message>
-      <source>Clear</source>
-      <translation>Temizle</translation>
-    </message>
-    <message>
       <source>Print Reference</source>
       <translation>Başvuruyu yazdır</translation>
     </message>
     <message>
       <source>Spaceball Buttons</source>
       <translation>Uzaybol Hareketi</translation>
+    </message>
+    <message>
+      <source>Reset</source>
+      <translation>Sıfırla</translation>
     </message>
   </context>
   <context>
@@ -1385,8 +1400,8 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <source>Background of the main window will consist of tiles of a special image.
 See the FreeCAD Wiki for details about the image.</source>
-      <translation type="unfinished">Background of the main window will consist of tiles of a special image.
-See the FreeCAD Wiki for details about the image.</translation>
+      <translation>Ana pencerenin arka planı özel bir resimle döşenecektir.
+Resimle ilgili ayrıntılar için FreeCAD Wiki'ye bakın.</translation>
     </message>
     <message>
       <source>Style sheet how user interface will look like</source>
@@ -1400,7 +1415,7 @@ this according to your screen size or personal taste</translation>
     </message>
     <message>
       <source>Tree view mode:</source>
-      <translation type="unfinished">Tree view mode:</translation>
+      <translation>Unsur ağacı modu:</translation>
     </message>
     <message>
       <source>Customize how tree view is shown in the panel (restart required).
@@ -1471,7 +1486,7 @@ horizontal space in Python console</translation>
     </message>
     <message>
       <source>Both</source>
-      <translation type="unfinished">Both</translation>
+      <translation>İkisi</translation>
     </message>
   </context>
   <context>
@@ -1548,7 +1563,7 @@ horizontal space in Python console</translation>
     </message>
     <message>
       <source>Toolbar</source>
-      <translation type="unfinished">Toolbar</translation>
+      <translation>Araç çubuğu</translation>
     </message>
   </context>
   <context>
@@ -1635,11 +1650,11 @@ Belki bir dosya izni hatası vardır?</translation>
     </message>
     <message>
       <source>Do not show again</source>
-      <translation type="unfinished">Do not show again</translation>
+      <translation>Tekrar gösterme</translation>
     </message>
     <message>
       <source>Guided Walkthrough</source>
-      <translation type="unfinished">Guided Walkthrough</translation>
+      <translation>Kılavuzlu Çözüm Yolu</translation>
     </message>
     <message>
       <source>This will guide you in setting up this macro in a custom global toolbar.  Instructions will be in red text inside the dialog.
@@ -1692,7 +1707,7 @@ Note: your changes will be applied when you next switch workbenches
     </message>
     <message>
       <source>Cancel</source>
-      <translation>İptal et</translation>
+      <translation>İptal</translation>
     </message>
     <message>
       <source>Macro path:</source>
@@ -1802,7 +1817,7 @@ Note: your changes will be applied when you next switch workbenches
       <source>Access denied to '%1'
 
 Specify another directory, please.</source>
-      <translation>'% 1' e erişim reddedildi
+      <translation>'%1' e erişim reddedildi
 
 Lütfen başka bir dizin belirtin.</translation>
     </message>
@@ -1835,7 +1850,7 @@ Lütfen başka bir dizin belirtin.</translation>
     </message>
     <message>
       <source>Sorted</source>
-      <translation type="unfinished">Sorted</translation>
+      <translation>Sıralı</translation>
     </message>
     <message>
       <source>Quick search</source>
@@ -1843,11 +1858,11 @@ Lütfen başka bir dizin belirtin.</translation>
     </message>
     <message>
       <source>Type in a group name to find it</source>
-      <translation type="unfinished">Type in a group name to find it</translation>
+      <translation>Bulmak için bir grup adı yazın</translation>
     </message>
     <message>
       <source>Search Group</source>
-      <translation type="unfinished">Search Group</translation>
+      <translation>Arama Grubu</translation>
     </message>
   </context>
   <context>
@@ -1929,7 +1944,7 @@ Lütfen başka bir dizin belirtin.</translation>
     </message>
     <message>
       <source>Search Group</source>
-      <translation type="unfinished">Search Group</translation>
+      <translation>Arama Grubu</translation>
     </message>
   </context>
   <context>
@@ -2026,7 +2041,7 @@ Lütfen başka bir dizin belirtin.</translation>
     </message>
     <message>
       <source>Program version:</source>
-      <translation type="unfinished">Program version:</translation>
+      <translation>Program sürümü:</translation>
     </message>
   </context>
   <context>
@@ -2100,11 +2115,7 @@ Lütfen başka bir dizin belirtin.</translation>
     </message>
     <message>
       <source>Filter by type</source>
-      <translation type="unfinished">Filter by type</translation>
-    </message>
-    <message>
-      <source>If enabled, then 3D view selection will be sychronize with full object hierarchy.</source>
-      <translation type="unfinished">If enabled, then 3D view selection will be sychronize with full object hierarchy.</translation>
+      <translation>Türüne göre filtre</translation>
     </message>
     <message>
       <source>Sync sub-object selection</source>
@@ -2117,6 +2128,10 @@ Lütfen başka bir dizin belirtin.</translation>
     <message>
       <source>Clear</source>
       <translation>Temizle</translation>
+    </message>
+    <message>
+      <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
+      <translation>Etkinleştirilirse, 3B görünüm seçimi tam nesne hiyerarşisi ile senkronize edilecektir.</translation>
     </message>
   </context>
   <context>
@@ -2475,7 +2490,7 @@ but slower response to any scene changes.</translation>
     </message>
     <message>
       <source>Backface pass</source>
-      <translation type="unfinished">Backface pass</translation>
+      <translation>Arka yüz geçişi</translation>
     </message>
     <message>
       <source>Size of vertices in the Sketcher workbench</source>
@@ -2495,11 +2510,11 @@ bounding box size of the 3D object that is currently displayed. </translation>
     </message>
     <message>
       <source>Backlight is enabled with the defined color</source>
-      <translation type="unfinished">Backlight is enabled with the defined color</translation>
+      <translation>Arka ışık, tanımlanan renkle etkinleştirilir</translation>
     </message>
     <message>
       <source>Backlight color</source>
-      <translation type="unfinished">Backlight color</translation>
+      <translation>Arka ışık rengi</translation>
     </message>
     <message>
       <source>Intensity</source>
@@ -2507,7 +2522,7 @@ bounding box size of the 3D object that is currently displayed. </translation>
     </message>
     <message>
       <source>Intensity of the backlight</source>
-      <translation type="unfinished">Intensity of the backlight</translation>
+      <translation>Arka ışığın yoğunluğu</translation>
     </message>
     <message>
       <source>Objects will be projected in orthographic projection</source>
@@ -2527,6 +2542,18 @@ opening or creation</translation>
       <source>Show axis cross by default</source>
       <translation type="unfinished">Show axis cross by default</translation>
     </message>
+    <message>
+      <source>Pick radius (px):</source>
+      <translation>Radius (px) seçin:</translation>
+    </message>
+    <message>
+      <source>Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </source>
+      <translation type="unfinished">Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
@@ -2536,8 +2563,7 @@ opening or creation</translation>
     </message>
     <message>
       <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
-      <translation>92/5000
-Kenar yumuşatma değişiklikleri uygulamak için yeni bir görüntüleyici açın veya% 1'i yeniden başlatın.</translation>
+      <translation>%1 Kenar yumuşatma değişikliklerini uygulamak için yeni bir görüntüleyici açın veya yeniden başlatın.</translation>
     </message>
     <message>
       <source>5px</source>
@@ -2834,7 +2860,7 @@ Common sizes are 128, 256 and 512</translation>
     </message>
     <message>
       <source>How many backup files will be kept when saving document</source>
-      <translation type="unfinished">How many backup files will be kept when saving document</translation>
+      <translation>Belgeyi kaydederken kaç tane yedekleme dosyası tutulacak</translation>
     </message>
     <message>
       <source>Backup files will get extension '.FCbak' and file names
@@ -2848,7 +2874,7 @@ get date suffix according to the specified format</translation>
     </message>
     <message>
       <source>Date format</source>
-      <translation type="unfinished">Date format</translation>
+      <translation>Tarih biçimi</translation>
     </message>
     <message>
       <source>Allow objects to have same label/name</source>
@@ -2888,7 +2914,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Default license for new documents</source>
-      <translation type="unfinished">Default license for new documents</translation>
+      <translation>Yeni belgeler için varsayılan lisans</translation>
     </message>
     <message>
       <source>Creative Commons Attribution</source>
@@ -2931,7 +2957,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Format</source>
-      <translation type="unfinished">Format</translation>
+      <translation>Biçim</translation>
     </message>
   </context>
   <context>
@@ -3121,18 +3147,18 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Creation method:</source>
-      <translation type="unfinished">Creation method:</translation>
+      <translation>Oluşturma yöntemi:</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsImageImp</name>
     <message>
       <source>Offscreen (New)</source>
-      <translation type="unfinished">Offscreen (New)</translation>
+      <translation>Ekran Dışı (Yeni)</translation>
     </message>
     <message>
       <source>Offscreen (Old)</source>
-      <translation type="unfinished">Offscreen (Old)</translation>
+      <translation>Ekran Dışı (Eski)</translation>
     </message>
     <message>
       <source>Framebuffer (custom)</source>
@@ -3216,6 +3242,34 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <source>The directory in which the application will search for macros</source>
       <translation type="unfinished">The directory in which the application will search for macros</translation>
+    </message>
+    <message>
+      <source>Recent macros menu</source>
+      <translation>Son makrolar menüsü</translation>
+    </message>
+    <message>
+      <source>Size of recent macro list</source>
+      <translation>Son makro listesinin boyutu</translation>
+    </message>
+    <message>
+      <source>How many macros should be listed in recent macros list</source>
+      <translation>Son makrolar listesinde kaç tane makro listelenmeli</translation>
+    </message>
+    <message>
+      <source>Shortcut count</source>
+      <translation>Kısayol sayısı</translation>
+    </message>
+    <message>
+      <source>How many recent macros should have shortcuts</source>
+      <translation>Son makrolardan kaç tanesi kısayol içermeli</translation>
+    </message>
+    <message>
+      <source>Keyboard Modifiers</source>
+      <translation>Klavye Değiştiricileri</translation>
+    </message>
+    <message>
+      <source>Keyboard modifiers, default = Ctrl+Shift+</source>
+      <translation>Klavye değiştiricileri, varsayılan = Ctrl+Shift+</translation>
     </message>
   </context>
   <context>
@@ -3408,7 +3462,7 @@ Mouse tilting is not disabled by this setting.</translation>
     </message>
     <message>
       <source>Default camera orientation</source>
-      <translation type="unfinished">Default camera orientation</translation>
+      <translation>Varsayılan kamera yönü</translation>
     </message>
     <message>
       <source>Default camera orientation when creating a new document or selecting the home view</source>
@@ -3517,6 +3571,10 @@ Mouse tilting is not disabled by this setting.</translation>
       <source>Imperial for Civil Eng (ft, ft/sec)</source>
       <translation type="unfinished">Imperial for Civil Eng (ft, ft/sec)</translation>
     </message>
+    <message>
+      <source>FEM (mm, N, sec)</source>
+      <translation>FEM (mm, N, sn)</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsViewColor</name>
@@ -3553,10 +3611,6 @@ Mouse tilting is not disabled by this setting.</translation>
       <translation>Basit renk</translation>
     </message>
     <message>
-      <source>Pick radius (px):</source>
-      <translation>Radius (px) seçin:</translation>
-    </message>
-    <message>
       <source>Object being edited</source>
       <translation>Nesne düzenleniyor</translation>
     </message>
@@ -3573,18 +3627,12 @@ Mouse tilting is not disabled by this setting.</translation>
       <translation type="unfinished">Enable selection highlighting and use specified color</translation>
     </message>
     <message>
-      <source>Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.</source>
-      <translation type="unfinished">Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.</translation>
-    </message>
-    <message>
       <source>Background color for the model view</source>
-      <translation type="unfinished">Background color for the model view</translation>
+      <translation>Model görünümü için arka plan rengi</translation>
     </message>
     <message>
       <source>Background will have selected color</source>
-      <translation type="unfinished">Background will have selected color</translation>
+      <translation>Arka plan seçilen renge sahip olacak</translation>
     </message>
     <message>
       <source>Color gradient will get selected color as middle color</source>
@@ -3596,7 +3644,7 @@ Larger value eases to pick things, but can make small features impossible to sel
     </message>
     <message>
       <source>Background will have selected color gradient</source>
-      <translation type="unfinished">Background will have selected color gradient</translation>
+      <translation>Arka plan seçilen renk gradyanına sahip olacak</translation>
     </message>
     <message>
       <source>Top color</source>
@@ -3608,7 +3656,7 @@ Larger value eases to pick things, but can make small features impossible to sel
     </message>
     <message>
       <source>Background color for objects in tree view that are currently edited</source>
-      <translation type="unfinished">Background color for objects in tree view that are currently edited</translation>
+      <translation>Şu anda düzenlenen Unsur Ağacı nesneleri için arka plan rengi</translation>
     </message>
     <message>
       <source>Background color for active containers in tree view</source>
@@ -3818,7 +3866,7 @@ The preference system is the one set in the general preferences.</translation>
     </message>
     <message>
       <source>Successfully recovered</source>
-      <translation>%s başarıyla kurtarıldı</translation>
+      <translation>Başarıyla kurtarıldı</translation>
     </message>
     <message>
       <source>Finish</source>
@@ -3877,7 +3925,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Download canceled: %1</source>
-      <translation>Karşıdan yükleme iptal edildi</translation>
+      <translation>İndirme iptal edildi: %1</translation>
     </message>
     <message>
       <source>Open containing folder</source>
@@ -3885,15 +3933,15 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Error opening saved file: %1</source>
-      <translation>Toplu iş kütüğünü açma yanlışlığı\n</translation>
+      <translation>Kayıtlı dosya açılırken hata oluştu:%1</translation>
     </message>
     <message>
       <source>Error saving: %1</source>
-      <translation>Not kaydedilirken hata</translation>
+      <translation>Kaydetme hatası: %1</translation>
     </message>
     <message>
       <source>Network Error: %1</source>
-      <translation>Ağ hatası</translation>
+      <translation>Ağ hatası: %1</translation>
     </message>
     <message>
       <source>seconds</source>
@@ -3905,11 +3953,11 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>- %4 %5 remaining</source>
-      <translation>-kalan %4 %5</translation>
+      <translation>- %4 %5 kaldı</translation>
     </message>
     <message>
       <source>%1 of %2 (%3/sec) %4</source>
-      <translation>%2 (%3/sn) %4 %1</translation>
+      <translation>%1 / %2 (%3/sn) %4</translation>
     </message>
     <message>
       <source>?</source>
@@ -3917,7 +3965,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>%1 of %2 - Stopped</source>
-      <translation>Durdu %2 - %1</translation>
+      <translation>%1 /%2 - Durduruldu</translation>
     </message>
     <message>
       <source>bytes</source>
@@ -3956,7 +4004,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>%1 Downloads</source>
-      <translation>İndir</translation>
+      <translation>%1 İndirme</translation>
     </message>
   </context>
   <context>
@@ -4379,7 +4427,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <name>Gui::Dialog::Transform</name>
     <message>
       <source>Cancel</source>
-      <translation>İptal et</translation>
+      <translation>İptal</translation>
     </message>
     <message>
       <source>Transform</source>
@@ -4588,11 +4636,11 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Mark to recompute</source>
-      <translation>Mark tablosunu yeniden oluştur</translation>
+      <translation>Yeniden hesaplamak için işaretle</translation>
     </message>
     <message>
       <source>Mark this object to be recomputed</source>
-      <translation>Recomputed için bu nesneyi işaretlemek</translation>
+      <translation>Bu nesneyi yeniden hesaplanacak şekilde işaretleyin</translation>
     </message>
     <message>
       <source>Selection View</source>
@@ -4680,6 +4728,20 @@ Do you want to save your changes?</source>
     <message>
       <source>PDF file</source>
       <translation>PDF dosyası</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ExpressionLineEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation>Tam eşleşme</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ExpressionTextEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation>Tam eşleşme</translation>
     </message>
   </context>
   <context>
@@ -4824,7 +4886,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>Save value</source>
-      <translation>Değeri kaydetmek</translation>
+      <translation>Değeri kaydet</translation>
     </message>
   </context>
   <context>
@@ -5094,7 +5156,7 @@ sağ görünümde %2 nokta seçili.</translation>
     </message>
     <message>
       <source>Save value</source>
-      <translation>Değeri kaydetmek</translation>
+      <translation>Değeri kaydet</translation>
     </message>
     <message>
       <source>Clear list</source>
@@ -5165,7 +5227,7 @@ sağ görünümde %2 nokta seçili.</translation>
     </message>
     <message>
       <source>Add property</source>
-      <translation type="unfinished">Add property</translation>
+      <translation>Özellik ekle</translation>
     </message>
     <message>
       <source>Remove property</source>
@@ -5305,7 +5367,22 @@ Do you want to exit without saving your data?</source>
     <name>Gui::RecentFilesAction</name>
     <message>
       <source>Open file %1</source>
-      <translation>%1 Dosyasını aç</translation>
+      <translation>Dosyayı aç %1</translation>
+    </message>
+    <message>
+      <source>File not found</source>
+      <translation>Dosya bulunamadı</translation>
+    </message>
+    <message>
+      <source>The file '%1' cannot be opened.</source>
+      <translation>'%1' Dosyası açılamıyor.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::RecentMacrosAction</name>
+    <message>
+      <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
+      <translation>Makroyu çalıştır %1 (Shift+düzenlemek için tıklayın) kısayol: %2</translation>
     </message>
     <message>
       <source>File not found</source>
@@ -5464,7 +5541,7 @@ Başka bir dizin belirlemek ister misiniz?</translation>
     </message>
     <message>
       <source>Recompute after commit</source>
-      <translation type="unfinished">Recompute after commit</translation>
+      <translation>İşlemden sonra yeniden hesapla</translation>
     </message>
     <message>
       <source>Remove</source>
@@ -5806,7 +5883,7 @@ Başka bir dizin belirlemek ister misiniz?</translation>
     </message>
     <message>
       <source>Skip recomputes</source>
-      <translation>Yeniden tartışmaları atla</translation>
+      <translation>Yeniden hesaplamayı atla</translation>
     </message>
     <message>
       <source>Enable or disable recomputations of document</source>
@@ -5814,15 +5891,15 @@ Başka bir dizin belirlemek ister misiniz?</translation>
     </message>
     <message>
       <source>Mark to recompute</source>
-      <translation>Mark tablosunu yeniden oluştur</translation>
+      <translation>Yeniden hesaplamak için işaretle</translation>
     </message>
     <message>
       <source>Mark this object to be recomputed</source>
-      <translation>Recomputed için bu nesneyi işaretlemek</translation>
+      <translation>Bu nesneyi yeniden hesaplanacak şekilde işaretleyin</translation>
     </message>
     <message>
       <source>%1, Internal name: %2</source>
-      <translation>% 1, Dahili adı:% 2</translation>
+      <translation>%1, Dahili adı: %2</translation>
     </message>
     <message>
       <source>Search...</source>
@@ -5838,19 +5915,19 @@ Başka bir dizin belirlemek ister misiniz?</translation>
     </message>
     <message>
       <source>Show hidden items</source>
-      <translation type="unfinished">Show hidden items</translation>
+      <translation>Gizli öğeleri göster</translation>
     </message>
     <message>
       <source>Show hidden tree view items</source>
-      <translation type="unfinished">Show hidden tree view items</translation>
+      <translation>Unsur Ağacındaki gizli öğeleri göster</translation>
     </message>
     <message>
       <source>Hide item</source>
-      <translation type="unfinished">Hide item</translation>
+      <translation>Öğeyi gizle</translation>
     </message>
     <message>
       <source>Hide the item in tree</source>
-      <translation type="unfinished">Hide the item in tree</translation>
+      <translation>Öğeyi Unsur Ağacında gizle</translation>
     </message>
     <message>
       <source>Close document</source>
@@ -5870,7 +5947,7 @@ Başka bir dizin belirlemek ister misiniz?</translation>
     </message>
     <message>
       <source>Allow partial recomputes</source>
-      <translation type="unfinished">Allow partial recomputes</translation>
+      <translation>Kısmi yeniden hesaplamalara izin ver</translation>
     </message>
     <message>
       <source>Enable or disable recomputating editing object when 'skip recomputation' is enabled</source>
@@ -5878,11 +5955,11 @@ Başka bir dizin belirlemek ister misiniz?</translation>
     </message>
     <message>
       <source>Recompute object</source>
-      <translation type="unfinished">Recompute object</translation>
+      <translation>Nesneyi yeniden hesapla</translation>
     </message>
     <message>
       <source>Recompute the selected object</source>
-      <translation type="unfinished">Recompute the selected object</translation>
+      <translation>Seçili Nesneyi yeniden hesapla</translation>
     </message>
     <message>
       <source> (but must be executed)</source>
@@ -5927,7 +6004,7 @@ Başka bir dizin belirlemek ister misiniz?</translation>
     <name>Gui::WorkbenchGroup</name>
     <message>
       <source>Select the '%1' workbench</source>
-      <translation>'% 1' Tezgah seçin</translation>
+      <translation>'%1' tezgahını seçin</translation>
     </message>
   </context>
   <context>
@@ -6177,7 +6254,7 @@ Başka bir dizin belirlemek ister misiniz?</translation>
     </message>
     <message>
       <source>Restore view &amp;%1</source>
-      <translation>Görüş &amp;%1 geri yükleme</translation>
+      <translation>Görünümü geri yükle &amp;%1</translation>
     </message>
     <message>
       <source>Save frozen views</source>
@@ -6198,7 +6275,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Cannot open file '%1'.</source>
-      <translation>'% 1' Dosyasını açamıyor.</translation>
+      <translation>'%1' dosyası açılamıyor.</translation>
     </message>
     <message>
       <source>files</source>
@@ -6254,7 +6331,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>The group '%1' cannot be renamed.</source>
-      <translation>'% 1' Grubu yeniden adlandırılamaz.</translation>
+      <translation>'%1' grubu yeniden adlandırılamaz.</translation>
     </message>
     <message>
       <source>Existing group</source>
@@ -6294,7 +6371,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Cancel</source>
-      <translation>İptal et</translation>
+      <translation>İptal</translation>
     </message>
     <message>
       <source>Inner</source>
@@ -6352,7 +6429,7 @@ Please open a browser window and type in: http://localhost:%1.</source>
     </message>
     <message>
       <source>%1 document (*.FCStd)</source>
-      <translation>% 1 belgesi (*. FCStd)</translation>
+      <translation>%1 belgesi (*. FCStd)</translation>
     </message>
     <message>
       <source>Document not closable</source>
@@ -6584,7 +6661,7 @@ underscore, and must not start with a digit.</translation>
     </message>
     <message>
       <source>Add property</source>
-      <translation type="unfinished">Add property</translation>
+      <translation>Özellik ekle</translation>
     </message>
     <message>
       <source>Failed to add property to '%1': %2</source>
@@ -6641,6 +6718,50 @@ Choose 'Abort' to abort</translation>
     <message>
       <source>Override colors...</source>
       <translation type="unfinished">Override colors...</translation>
+    </message>
+    <message>
+      <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
+
+</source>
+      <translation type="unfinished">Identical physical path detected. It may cause unwanted overwrite of existing document!
+
+</translation>
+    </message>
+    <message>
+      <source>Are you sure you want to continue?</source>
+      <translation type="unfinished">Are you sure you want to continue?</translation>
+    </message>
+    <message>
+      <source>
+
+Please check report view for more...</source>
+      <translation>
+
+Daha fazlası için lütfen rapor görünümünü kontrol edin...</translation>
+    </message>
+    <message>
+      <source>
+
+Pyhsical path: </source>
+      <translation>
+
+Fiziksel yol: </translation>
+    </message>
+    <message>
+      <source>
+Document: </source>
+      <translation>
+Belge: </translation>
+    </message>
+    <message>
+      <source>
+  Path: </source>
+      <translation>
+  Yol: </translation>
+    </message>
+    <message>
+      <source>Identical physical path</source>
+      <translation>Özdeş fiziksel yol</translation>
     </message>
   </context>
   <context>
@@ -7112,7 +7233,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Recompute feature or document</source>
-      <translation>Dükümanı yada bir özelliği tekrar hesapla</translation>
+      <translation>Belgeyi ya da özelliği yeniden hesapla</translation>
     </message>
   </context>
   <context>
@@ -7368,7 +7489,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Create a sub-object or sub-element link</source>
-      <translation type="unfinished">Create a sub-object or sub-element link</translation>
+      <translation>Bir alt nesne veya alt öğe bağlantısı oluştur</translation>
     </message>
   </context>
   <context>
@@ -7551,7 +7672,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Measure distance</source>
-      <translation>Mesafeyi Ölç</translation>
+      <translation>Mesafe Ölç</translation>
     </message>
   </context>
   <context>
@@ -7566,7 +7687,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Measure distance</source>
-      <translation>Mesafeyi Ölç</translation>
+      <translation>Mesafe Ölç</translation>
     </message>
   </context>
   <context>
@@ -7589,7 +7710,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>%1 document (*.FCStd)</source>
-      <translation>% 1 belgesi (*. FCStd)</translation>
+      <translation>%1 belgesi (*. FCStd)</translation>
     </message>
   </context>
   <context>
@@ -7665,7 +7786,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Loading the file %1 is not supported</source>
-      <translation>Büyük boyutlu dosya yükleme desteklenmiyor</translation>
+      <translation>%1 dosyasının yüklenmesi desteklenmiyor</translation>
     </message>
   </context>
   <context>
@@ -7849,6 +7970,21 @@ Choose 'Abort' to abort</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdRecentMacros</name>
+    <message>
+      <source>Macro</source>
+      <translation>Makro</translation>
+    </message>
+    <message>
+      <source>Recent macros</source>
+      <translation>Son makrolar</translation>
+    </message>
+    <message>
+      <source>Recent macro list</source>
+      <translation>Son makro listesi</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdRedo</name>
     <message>
       <source>Edit</source>
@@ -7976,11 +8112,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>&amp;Back</source>
-      <translation type="unfinished">&amp;Back</translation>
+      <translation>Geri</translation>
     </message>
     <message>
       <source>Go back to previous selection</source>
-      <translation type="unfinished">Go back to previous selection</translation>
+      <translation>Önceki seçime geri dön</translation>
     </message>
   </context>
   <context>
@@ -7991,11 +8127,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>&amp;Bounding box</source>
-      <translation type="unfinished">&amp;Bounding box</translation>
+      <translation>Sınır kutusu</translation>
     </message>
     <message>
       <source>Show selection bounding box</source>
-      <translation type="unfinished">Show selection bounding box</translation>
+      <translation>Seçimin sınır kutusunu göster</translation>
     </message>
   </context>
   <context>
@@ -8497,7 +8633,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Fit all</source>
-      <translation>Tümünü uydur</translation>
+      <translation>Tümünü görüntüle</translation>
     </message>
     <message>
       <source>Fits the whole content on the screen</source>
@@ -8512,7 +8648,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Fit selection</source>
-      <translation>Seçimi uydur</translation>
+      <translation>Seçimi görüntüle</translation>
     </message>
     <message>
       <source>Fits the selected content on the screen</source>
@@ -9151,7 +9287,7 @@ Are you sure you want to continue?
     </message>
     <message>
       <source>These items are selected for deletion, but are not in the active document.</source>
-      <translation type="unfinished">These items are selected for deletion, but are not in the active document.</translation>
+      <translation>Bloklar seçildi ama etkin belge içinde değil.</translation>
     </message>
   </context>
   <context>
@@ -9344,7 +9480,7 @@ Do you still want to proceed?</translation>
     </message>
     <message>
       <source>&amp;Tools</source>
-      <translation>&amp;Eszközök</translation>
+      <translation>Araçlar</translation>
     </message>
     <message>
       <source>&amp;Macro</source>

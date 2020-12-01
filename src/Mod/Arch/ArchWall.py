@@ -53,11 +53,11 @@ else:
 #  usually vertical, typically obtained by giving a thickness to a base line,
 #  then extruding it vertically.
 
-__title__="FreeCAD Wall"
+__title__  = "FreeCAD Wall"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
-def makeWall(baseobj=None,height=None,length=None,width=None,align="Center",face=None,name="Wall"):
+def makeWall(baseobj=None,height=None,length=None,width=None,align="Center",face=None,name=None):
     """Create a wall based on a given object, and returns the generated wall.
 
     TODO: It is unclear what defines which units this function uses.
@@ -104,7 +104,10 @@ def makeWall(baseobj=None,height=None,length=None,width=None,align="Center",face
         return
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Wall")
-    obj.Label = translate("Arch",name)
+    if name:
+        obj.Label = name
+    else:
+        obj.Label = translate("Arch","Wall")
     _Wall(obj)
     if FreeCAD.GuiUp:
         _ViewProviderWall(obj.ViewObject)
@@ -165,7 +168,7 @@ def joinWalls(walls,delete=False):
     if base.Base:
         if base.Base.Shape.Faces:
             return None
-        if Draft.getType(base.Base) == "Sketch":
+        if Draft.getType(base.Base) == "Sketcher::SketchObject":
             sk = base.Base
         else:
             sk = Draft.makeSketch(base.Base,autoconstraints=True)
@@ -1017,7 +1020,7 @@ class _Wall(ArchComponent.Component):
                                 if Draft.getType(obj.Base) == "Wire":
                                     #print "modifying p2"
                                     obj.Base.End = p2
-                                elif Draft.getType(obj.Base) == "Sketch":
+                                elif Draft.getType(obj.Base) == "Sketcher::SketchObject":
                                     try:
                                         obj.Base.movePoint(0,2,p2,0)
                                     except:
@@ -1266,15 +1269,15 @@ class _Wall(ArchComponent.Component):
                     else:
                         self.basewires = obj.Base.Shape.Wires
 
-                        # Found case that after sorting below, direction of 
+                        # Found case that after sorting below, direction of
                         # edges sorted are not as 'expected' thus resulted in
-                        # bug - e.g. a Dwire with edges/vertexes in clockwise 
-                        # order, 1st vertex is Forward as expected.  After 
-                        # sorting below, edges sorted still in clockwise order 
-                        # - no problem, but 1st vertex of each edge become 
+                        # bug - e.g. a Dwire with edges/vertexes in clockwise
+                        # order, 1st vertex is Forward as expected.  After
+                        # sorting below, edges sorted still in clockwise order
+                        # - no problem, but 1st vertex of each edge become
                         # Reverse rather than Forward.
 
-                        # See FC discussion - 
+                        # See FC discussion -
                         # https://forum.freecadweb.org/viewtopic.php?f=23&t=48275&p=413745#p413745
 
                         #self.basewires = []
@@ -1327,7 +1330,7 @@ class _Wall(ArchComponent.Component):
                             # normal of the face/sketch and the direction the
                             # wire was drawn in. IE: along the width direction
                             # of the wall.
-                            if isinstance(e.Curve,Part.Circle):
+                            if isinstance(e.Curve,(Part.Circle,Part.Ellipse)):
                                 dvec = e.Vertexes[0].Point.sub(e.Curve.Center)
                             else:
                                 dvec = DraftGeomUtils.vec(e).cross(normal)
@@ -1342,7 +1345,9 @@ class _Wall(ArchComponent.Component):
                             if curAligns == "Left":
 
                                 if layers:
-                                    curWidth = [abs(layers[i])]
+                                    curWidth = []
+                                    for n in range(edgeNum):
+                                        curWidth.append(abs(layers[i]))
                                     off = off+layeroffset
                                     dvec.multiply(curWidth[0])
                                     layeroffset += abs(curWidth[0])
@@ -1386,7 +1391,9 @@ class _Wall(ArchComponent.Component):
                                 dvec = dvec.negative()
 
                                 if layers:
-                                    curWidth = [abs(layers[i])]
+                                    curWidth = []
+                                    for n in range(edgeNum):
+                                        curWidth.append(abs(layers[i]))
                                     off = off+layeroffset
                                     dvec.multiply(curWidth[0])
                                     layeroffset += abs(curWidth[0])

@@ -201,7 +201,7 @@ class _TaskPanel:
         error = ""
         try:
             error = gmsh_mesh.create_mesh()
-        except:
+        except Exception:
             import sys
             FreeCAD.Console.PrintMessage(
                 "Unexpected error when creating mesh: {}\n"
@@ -222,20 +222,22 @@ class _TaskPanel:
         QApplication.restoreOverrideCursor()
 
     def get_active_analysis(self):
-        self.analysis = FemGui.getActiveAnalysis()
-        if self.analysis:
-            for m in FemGui.getActiveAnalysis().Group:
+        analysis = FemGui.getActiveAnalysis()
+        if not analysis:
+            FreeCAD.Console.PrintLog("No active analysis, means no group meshing.\n")
+            self.analysis = None  # no group meshing
+        else:
+            for m in analysis.Group:
                 if m.Name == self.mesh_obj.Name:
                     FreeCAD.Console.PrintMessage(
                         "Active analysis found: {}\n"
-                        .format(self.analysis.Name)
+                        .format(analysis.Name)
                     )
-                    return
+                    self.analysis = analysis  # group meshing
+                    break
             else:
                 FreeCAD.Console.PrintLog(
                     "Mesh is not member of active analysis, means no group meshing.\n"
                 )
                 self.analysis = None  # no group meshing
-        else:
-            FreeCAD.Console.PrintLog("No active analysis, means no group meshing.\n")
-            self.analysis = None  # no group meshing
+        return

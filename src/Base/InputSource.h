@@ -65,7 +65,7 @@ private :
   //  Unimplemented constructors and operators
   // -----------------------------------------------------------------------
   StdInputStream(const StdInputStream&);
-  StdInputStream& operator=(const StdInputStream&);   
+  StdInputStream& operator=(const StdInputStream&);
 
   // -----------------------------------------------------------------------
   //  Private data members

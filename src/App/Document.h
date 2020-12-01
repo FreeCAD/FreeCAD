@@ -193,7 +193,7 @@ public:
     bool saveAs(const char* file);
     bool saveCopy(const char* file) const;
     /// Restore the document from the file in Property Path
-    void restore (const char *filename=0, 
+    void restore (const char *filename=0,
             bool delaySignal=false, const std::set<std::string> &objNames={});
     void afterRestore(bool checkPartial=false);
     bool afterRestore(const std::vector<App::DocumentObject *> &, bool checkPartial=false);
@@ -209,7 +209,7 @@ public:
      *
      * @param objs: input list of objects. Only objects belonging to this document will
      * be checked for external links. And all found external linked object will be imported
-     * to this document. Link type properties of those input objects will be automatically 
+     * to this document. Link type properties of those input objects will be automatically
      * reassigned to the imported objects. Note that the link properties of other objects
      * in the document but not included in the input list, will not be affected even if they
      * point to some object beining imported. To import all objects, simply pass in all objects
@@ -228,7 +228,7 @@ public:
     /// Get program version the project file was created with
     const char* getProgramVersion() const;
     /** Returned filename
-     * 
+     *
      * For saved document, this will be the content stored in property
      * 'Filename'. For unsaved temporary file, this will be the content of
      * property 'TransientDir'.
@@ -252,7 +252,7 @@ public:
      * @param viewType    override object's view provider name
      * @param isPartial   indicate if this object is meant to be partially loaded
      */
-    DocumentObject *addObject(const char* sType, const char* pObjectName=0, 
+    DocumentObject *addObject(const char* sType, const char* pObjectName=0,
             bool isNew=true, const char *viewType=0, bool isPartial=false);
     /** Add an array of features of the given types and names.
      * Unicode names are set through the Label property.
@@ -356,7 +356,7 @@ public:
     //@}
 
 
-    /** @name methods for the UNDO REDO and Transaction handling 
+    /** @name methods for the UNDO REDO and Transaction handling
      *
      * Introduce a new concept of transaction ID. Each transaction must be
      * unique inside the document. Multiple transactions from different
@@ -447,13 +447,13 @@ public:
         /// Raise exception on cycles
         DepNoCycle = 4,
     };
-    /** Get a complete list of all objects the given objects depend on. 
+    /** Get a complete list of all objects the given objects depend on.
      *
      * This function is defined as static because it accepts objects from
      * different documents, and the returned list will contain dependent
      * objects from all relevant documents
      *
-     * @param objs: input objects to query for dependency. 
+     * @param objs: input objects to query for dependency.
      * @param options: See DependencyOption
      */
     static std::vector<App::DocumentObject*> getDependencyList(
@@ -477,12 +477,12 @@ public:
      *
      * @param links: holds the links found
      * @param obj: the linked object. If NULL, then all links are returned.
-     * @param option: @sa App::GetLinkOptions
+     * @param option: @sa App::GetLinkOption
      * @param maxCount: limit the number of links returned, 0 means no limit
      * @param objs: optional objects to search for, if empty, then all objects
      * of this document are searched.
      */
-    void getLinksTo(std::set<DocumentObject*> &links, 
+    void getLinksTo(std::set<DocumentObject*> &links,
             const DocumentObject *obj, int options, int maxCount=0,
             const std::vector<DocumentObject*> &objs = {}) const;
 

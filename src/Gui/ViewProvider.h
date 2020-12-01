@@ -83,7 +83,7 @@ enum ViewStatus {
 };
 
 
-/** Convenience smart pointer to wrap coin node. 
+/** Convenience smart pointer to wrap coin node.
  *
  * It is basically boost::intrusive plus implicit pointer conversion to save the
  * trouble of typing get() all the time.
@@ -173,7 +173,7 @@ public:
      * @param subname: dot separated string reference to the sub element
      * @param pPath: output coin path leading to the returned element detail
      * @param append: If true, pPath will be first appended with the root node and
-     * the mode switch node of this view provider. 
+     * the mode switch node of this view provider.
      *
      * @return the coint detail of the subelement
      *
@@ -276,7 +276,7 @@ public:
     virtual bool canDragAndDropObject(App::DocumentObject*) const;
     /** Add an object to the view provider by drag and drop */
     virtual void dropObject(App::DocumentObject*);
-    /** Query object dropping with full quanlified name 
+    /** Query object dropping with full quanlified name
      *
      * Tree view now calls this function instead of canDropObject(), and may
      * query for objects from other document. The default implementation
@@ -298,7 +298,7 @@ public:
      *
      * @return Return whether the dropping action is allowed.
      * */
-    virtual bool canDropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, 
+    virtual bool canDropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner,
             const char *subname, const std::vector<std::string> &elements) const;
 
     /// return a subname referencing the sub-object holding the dropped objects
@@ -322,7 +322,7 @@ public:
      * object, which may or may not be the actual dropped object, e.g. it may be
      * a link.
      */
-    virtual std::string dropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, 
+    virtual std::string dropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner,
             const char *subname, const std::vector<std::string> &elements);
     /** Replace an object to the view provider by drag and drop
      *
@@ -393,7 +393,7 @@ public:
     const std::string getOverrideMode();
     //@}
 
-    /** @name Color management methods 
+    /** @name Color management methods
      */
     //@{
     virtual std::map<std::string, App::Color> getElementColors(const char *element=0) const {
@@ -446,7 +446,11 @@ public:
 
     /// is called when the provider is in edit and a key event occurs. Only ESC ends edit.
     virtual bool keyPressed(bool pressed, int key);
-    /// is called by the tree if the user double click on the object
+    /// Is called by the tree if the user double clicks on the object. It returns the string
+    /// for the transaction that will be shown in the undo/redo dialog.
+    /// If null is returned then no transaction will be opened.
+    virtual const char* getTransactionText() const { return nullptr; }
+    /// is called by the tree if the user double clicks on the object
     virtual bool doubleClicked(void) { return false; }
     /// is called when the provider is in edit and the mouse is moved
     virtual bool mouseMove(const SbVec2s &cursorPos, View3DInventorViewer* viewer);
@@ -454,7 +458,7 @@ public:
     virtual bool mouseButtonPressed(int button, bool pressed, const SbVec2s &cursorPos,
                                     const View3DInventorViewer* viewer);
     /// set up the context-menu with the supported edit modes
-    virtual void setupContextMenu(QMenu*, QObject*, const char*) {}
+    virtual void setupContextMenu(QMenu*, QObject*, const char*);
 
     /** @name direct handling methods
      *  This group of methods is to direct influence the
@@ -503,7 +507,7 @@ public:
     void setDefaultMode(int);
     int getDefaultMode() const;
     //@}
-    
+
     virtual void setRenderCacheMode(int);
 
 protected:
@@ -534,6 +538,9 @@ protected:
      */
     virtual QIcon mergeOverlayIcons (const QIcon & orig) const;
 
+    /// Turn on mode switch
+    virtual void setModeSwitch();
+
 protected:
     /// The root Separator of the ViewProvider
     SoSeparator *pcRoot;
@@ -549,7 +556,6 @@ protected:
     std::bitset<32> StatusBits;
 
 private:
-    void setModeSwitch();
     int _iActualMode;
     int _iEditMode;
     int viewOverrideMode;

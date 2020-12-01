@@ -24,6 +24,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QAction>
+# include <QMenu>
 #endif
 
 #include <Base/Console.h>
@@ -51,10 +53,9 @@ ViewProviderPart::~ViewProviderPart()
 
 bool ViewProviderPart::doubleClicked(void)
 {
-    std::string Msg("Edit ");
-    Msg += this->pcObject->Label.getValue();
     try {
-        Gui::Command::openCommand(Msg.c_str());
+        QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));
+        Gui::Command::openCommand(text.toUtf8());
         FCMD_SET_EDIT(pcObject);
         return true;
     }

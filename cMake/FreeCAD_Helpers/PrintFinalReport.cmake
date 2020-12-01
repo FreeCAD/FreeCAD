@@ -35,7 +35,7 @@ macro(PrintFinalReport)
 
     message(STATUS "PyCXX:               [${PYCXX_INCLUDE_DIR}]")
 
-    message(STATUS "OCC:                 ${OCC_VERSION_STRING} [${OCC_LIBRARIES}]")
+    message(STATUS "OCC:                 ${OCC_VERSION_STRING} [${OCC_LIBRARIES}] [${OCC_LIBRARY_DIR}] [${OCC_INCLUDE_DIR}]")
 
     if(BUILD_SMESH)
         if(FREECAD_USE_EXTERNAL_SMESH)
@@ -223,8 +223,7 @@ macro(PrintFinalReport)
                 file(COPY ${FREECAD_LIBPACK_DIR}/plugins/styles DESTINATION ${CMAKE_BINARY_DIR}/bin)
                 file(COPY ${FREECAD_LIBPACK_DIR}/plugins/printsupport DESTINATION ${CMAKE_BINARY_DIR}/bin)
                 file(COPY ${FREECAD_LIBPACK_DIR}/resources DESTINATION ${CMAKE_BINARY_DIR})
-                file(COPY ${FREECAD_LIBPACK_DIR}/bin/Lib/site-packages/PySide2/translations/qtwebengine_locales
-                    DESTINATION ${CMAKE_BINARY_DIR}/bin)
+                file(COPY ${FREECAD_LIBPACK_DIR}/translations/qtwebengine_locales DESTINATION ${CMAKE_BINARY_DIR}/translations)
                 message(STATUS "... end copying.\n=======================================\n")
             endif(FREECAD_COPY_DEPEND_DIRS_TO_BUILD)
 
@@ -258,7 +257,7 @@ macro(PrintFinalReport)
                 install(DIRECTORY ${FREECAD_LIBPACK_DIR}/plugins/sqldrivers DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
                 install(DIRECTORY ${FREECAD_LIBPACK_DIR}/plugins/styles DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
                 install(DIRECTORY ${FREECAD_LIBPACK_DIR}/plugins/printsupport DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
-                install(DIRECTORY ${FREECAD_LIBPACK_DIR}/bin/Lib/site-packages/PySide2/translations/qtwebengine_locales DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+                install(DIRECTORY ${FREECAD_LIBPACK_DIR}/translations/qtwebengine_locales DESTINATION ${CMAKE_INSTALL_PREFIX}/translations)
                 install(DIRECTORY ${FREECAD_LIBPACK_DIR}/resources DESTINATION ${CMAKE_INSTALL_PREFIX})
                 install(DIRECTORY ${FREECAD_LIBPACK_DIR}/bin DESTINATION ${CMAKE_INSTALL_PREFIX})
                 message(STATUS "Created install commands for INSTALL target.\n")

@@ -38,7 +38,6 @@ class VPElementRotation1D(view_base_femconstraint.VPBaseFemConstraint):
     A View Provider for the ElementRotation1D object
     """
 
-    pass
     """
     # do not activate the task panel, since rotation with reference shapes is not yet supported
     def setEdit(self, vobj, mode=0):

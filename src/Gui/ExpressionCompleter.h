@@ -1,3 +1,25 @@
+/***************************************************************************
+ *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
+ *                                                                         *
+ *   This file is part of the FreeCAD CAx development system.              *
+ *                                                                         *
+ *   This library is free software; you can redistribute it and/or         *
+ *   modify it under the terms of the GNU Library General Public           *
+ *   License as published by the Free Software Foundation; either          *
+ *   version 2 of the License, or (at your option) any later version.      *
+ *                                                                         *
+ *   This library  is distributed in the hope that it will be useful,      *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU Library General Public License for more details.                  *
+ *                                                                         *
+ *   You should have received a copy of the GNU Library General Public     *
+ *   License along with this library; see the file COPYING.LIB. If not,    *
+ *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
+ *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *                                                                         *
+ ***************************************************************************/
+
 #ifndef EXPRESSIONCOMPLETER_H
 #define EXPRESSIONCOMPLETER_H
 
@@ -28,10 +50,10 @@ class GuiExport ExpressionCompleter : public QCompleter
 {
     Q_OBJECT
 public:
-    ExpressionCompleter(const App::DocumentObject * currentDocObj, 
+    ExpressionCompleter(const App::DocumentObject * currentDocObj,
             QObject *parent = 0, bool noProperty = false);
 
-    void getPrefixRange(int &start, int &end) const { 
+    void getPrefixRange(int &start, int &end) const {
         start = prefixStart;
         end = prefixEnd;
     }
@@ -68,6 +90,7 @@ public:
     bool completerActive() const;
     void hideCompleter();
     void setNoProperty(bool enabled=true);
+    void setExactMatch(bool enabled=true);
 Q_SIGNALS:
     void textChanged2(QString text, int pos);
 public Q_SLOTS:
@@ -75,10 +98,12 @@ public Q_SLOTS:
     void slotCompleteText(const QString & completionPrefix);
 protected:
     void keyPressEvent(QKeyEvent * event);
+    void contextMenuEvent(QContextMenuEvent * event);
 private:
     ExpressionCompleter * completer;
     bool block;
     bool noProperty;
+    bool exactMatch;
 };
 
 class GuiExport ExpressionTextEdit : public QPlainTextEdit {
@@ -88,8 +113,10 @@ public:
     void setDocumentObject(const App::DocumentObject *currentDocObj);
     bool completerActive() const;
     void hideCompleter();
+    void setExactMatch(bool enabled=true);
 protected:
     void keyPressEvent(QKeyEvent * event);
+    void contextMenuEvent(QContextMenuEvent * event);
 Q_SIGNALS:
     void textChanged2(QString text, int pos);
 public Q_SLOTS:
@@ -98,6 +125,14 @@ public Q_SLOTS:
 private:
     ExpressionCompleter * completer;
     bool block;
+    bool exactMatch;
+};
+
+class GuiExport ExpressionParameter {
+public:
+    static ExpressionParameter *instance();
+    bool isCaseSensitive() const;
+    bool isExactMatch() const;
 };
 
 }

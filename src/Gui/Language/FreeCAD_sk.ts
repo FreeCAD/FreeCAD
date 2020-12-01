@@ -121,6 +121,13 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Edit</source>
+      <translation>Upraviť</translation>
+    </message>
+  </context>
+  <context>
     <name>DlgCustomizeSpNavSettings</name>
     <message>
       <source>Spaceball Motion</source>
@@ -430,6 +437,14 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Out Of Range</source>
       <translation>Mimo rozsahu</translation>
+    </message>
+    <message>
+      <source> "</source>
+      <translation> "</translation>
+    </message>
+    <message>
+      <source>"</source>
+      <translation>"</translation>
     </message>
   </context>
   <context>
@@ -1059,16 +1074,16 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>Tlačidlá</translation>
     </message>
     <message>
-      <source>Clear</source>
-      <translation>Vyčistiť</translation>
-    </message>
-    <message>
       <source>Print Reference</source>
       <translation>Tlač odkazu</translation>
     </message>
     <message>
       <source>Spaceball Buttons</source>
       <translation>Tlačidlá Spaceballu</translation>
+    </message>
+    <message>
+      <source>Reset</source>
+      <translation>Reset</translation>
     </message>
   </context>
   <context>
@@ -2098,10 +2113,6 @@ Určite iný adresár.</translation>
       <translation type="unfinished">Filter by type</translation>
     </message>
     <message>
-      <source>If enabled, then 3D view selection will be sychronize with full object hierarchy.</source>
-      <translation type="unfinished">If enabled, then 3D view selection will be sychronize with full object hierarchy.</translation>
-    </message>
-    <message>
       <source>Sync sub-object selection</source>
       <translation type="unfinished">Sync sub-object selection</translation>
     </message>
@@ -2112,6 +2123,10 @@ Určite iný adresár.</translation>
     <message>
       <source>Clear</source>
       <translation>Vyčistiť</translation>
+    </message>
+    <message>
+      <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
+      <translation>Ak je zapnuté, potom výber v 3D pohľade bude synchronizovaný s kompletnou hierarchiou objektov.</translation>
     </message>
   </context>
   <context>
@@ -2521,6 +2536,18 @@ opening or creation</translation>
     <message>
       <source>Show axis cross by default</source>
       <translation type="unfinished">Show axis cross by default</translation>
+    </message>
+    <message>
+      <source>Pick radius (px):</source>
+      <translation type="unfinished">Pick radius (px):</translation>
+    </message>
+    <message>
+      <source>Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </source>
+      <translation type="unfinished">Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </translation>
     </message>
   </context>
   <context>
@@ -3211,6 +3238,34 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
       <source>The directory in which the application will search for macros</source>
       <translation type="unfinished">The directory in which the application will search for macros</translation>
     </message>
+    <message>
+      <source>Recent macros menu</source>
+      <translation>Menu nedávnych makier</translation>
+    </message>
+    <message>
+      <source>Size of recent macro list</source>
+      <translation>Veľkosť zoznamu nedávnych makier</translation>
+    </message>
+    <message>
+      <source>How many macros should be listed in recent macros list</source>
+      <translation>Koľko makier má byť uvedených v zozname nedávnych makier</translation>
+    </message>
+    <message>
+      <source>Shortcut count</source>
+      <translation>Počet skratiek</translation>
+    </message>
+    <message>
+      <source>How many recent macros should have shortcuts</source>
+      <translation>Koľko nedávnych makier by malo mať skratky</translation>
+    </message>
+    <message>
+      <source>Keyboard Modifiers</source>
+      <translation>Modifikátory klávesnice</translation>
+    </message>
+    <message>
+      <source>Keyboard modifiers, default = Ctrl+Shift+</source>
+      <translation>Modifikátory klávesnice, predvolené = Ctrl+Shift+</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsNavigation</name>
@@ -3511,6 +3566,10 @@ Mouse tilting is not disabled by this setting.</translation>
       <source>Imperial for Civil Eng (ft, ft/sec)</source>
       <translation type="unfinished">Imperial for Civil Eng (ft, ft/sec)</translation>
     </message>
+    <message>
+      <source>FEM (mm, N, sec)</source>
+      <translation>FEM (mm, N, sek)</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsViewColor</name>
@@ -3547,10 +3606,6 @@ Mouse tilting is not disabled by this setting.</translation>
       <translation>Jednoduchá farba</translation>
     </message>
     <message>
-      <source>Pick radius (px):</source>
-      <translation type="unfinished">Pick radius (px):</translation>
-    </message>
-    <message>
       <source>Object being edited</source>
       <translation type="unfinished">Object being edited</translation>
     </message>
@@ -3565,12 +3620,6 @@ Mouse tilting is not disabled by this setting.</translation>
     <message>
       <source>Enable selection highlighting and use specified color</source>
       <translation type="unfinished">Enable selection highlighting and use specified color</translation>
-    </message>
-    <message>
-      <source>Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.</source>
-      <translation type="unfinished">Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.</translation>
     </message>
     <message>
       <source>Background color for the model view</source>
@@ -4678,6 +4727,20 @@ Chcete uložiť zmeny?</translation>
     </message>
   </context>
   <context>
+    <name>Gui::ExpressionLineEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation>Presná zhoda</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ExpressionTextEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation>Presná zhoda</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::FileChooser</name>
     <message>
       <source>Select a file</source>
@@ -5301,6 +5364,21 @@ Chcete skončiť bez uloženia vašich údajov?</translation>
     <message>
       <source>Open file %1</source>
       <translation>Otvoriť súbor %1</translation>
+    </message>
+    <message>
+      <source>File not found</source>
+      <translation>Súbor sa nenašiel</translation>
+    </message>
+    <message>
+      <source>The file '%1' cannot be opened.</source>
+      <translation>Súbor '%1' nemožno otvoriť.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::RecentMacrosAction</name>
+    <message>
+      <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
+      <translation>Spustiť makro %1 (Shift+klik pre úpravu) klávesová skratka %2</translation>
     </message>
     <message>
       <source>File not found</source>
@@ -6642,6 +6720,50 @@ Choose 'Abort' to abort</translation>
       <source>Override colors...</source>
       <translation type="unfinished">Override colors...</translation>
     </message>
+    <message>
+      <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
+
+</source>
+      <translation>Detekovaná identická fyzická dráha. Može spôsobiť nechcený prepis existujúceho dokumentu!
+
+</translation>
+    </message>
+    <message>
+      <source>Are you sure you want to continue?</source>
+      <translation type="unfinished">Are you sure you want to continue?</translation>
+    </message>
+    <message>
+      <source>
+
+Please check report view for more...</source>
+      <translation>
+
+Prosím skontroluj okno hlásení pre viac...</translation>
+    </message>
+    <message>
+      <source>
+
+Pyhsical path: </source>
+      <translation>
+
+Fyzická dráha: </translation>
+    </message>
+    <message>
+      <source>
+Document: </source>
+      <translation>
+Dokument: </translation>
+    </message>
+    <message>
+      <source>
+  Path: </source>
+      <translation>
+  Cesta: </translation>
+    </message>
+    <message>
+      <source>Identical physical path</source>
+      <translation>Identická fyzická dráha</translation>
+    </message>
   </context>
   <context>
     <name>SelectionFilter</name>
@@ -7846,6 +7968,21 @@ Choose 'Abort' to abort</translation>
     <message>
       <source>Recent file list</source>
       <translation>Zoznam obľúbených súborov</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdRecentMacros</name>
+    <message>
+      <source>Macro</source>
+      <translation>Makro</translation>
+    </message>
+    <message>
+      <source>Recent macros</source>
+      <translation>Nedávne makrá</translation>
+    </message>
+    <message>
+      <source>Recent macro list</source>
+      <translation>Zoznam nedávnych makier</translation>
     </message>
   </context>
   <context>

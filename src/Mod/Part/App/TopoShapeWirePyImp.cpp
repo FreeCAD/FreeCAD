@@ -85,6 +85,13 @@ PyObject *TopoShapeWirePy::PyMake(struct _typeobject *, PyObject *, PyObject *) 
 // constructor method
 int TopoShapeWirePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
+    if (PyArg_ParseTuple(args, "")) {
+        // Undefined Wire
+        getTopoShapePtr()->setShape(TopoDS_Wire());
+        return 0;
+    }
+
+    PyErr_Clear();
     PyObject *pcObj;
     if (PyArg_ParseTuple(args, "O!", &(Part::TopoShapePy::Type), &pcObj)) {
         BRepBuilderAPI_MakeWire mkWire;

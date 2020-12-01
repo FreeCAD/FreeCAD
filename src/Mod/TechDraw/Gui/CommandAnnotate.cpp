@@ -548,7 +548,7 @@ void CmdTechDrawAnnotation::activated(int iMsg)
     std::string PageName = page->getNameInDocument();
 
     std::string FeatName = getUniqueObjectName("Annotation");
-    openCommand("Create Annotation");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create Annotation"));
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewAnnotation','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
     updateActive();
@@ -1085,9 +1085,11 @@ void execLine2Points(Gui::Command* cmd)
         for (auto& v2d: vertexNames) {
             int idx = DrawUtil::getIndexFromName(v2d);
             TechDraw::Vertex* v = baseFeat->getProjVertexByIndex(idx);
-            Base::Vector3d p = DrawUtil::invertY(v->pnt);
-            points.push_back(p / scale);
-            is3d.push_back(false);
+            if (v) {
+                Base::Vector3d p = DrawUtil::invertY(v->pnt);
+                points.push_back(p / scale);
+                is3d.push_back(false);
+            }
         }
     }
     //get the 3D points

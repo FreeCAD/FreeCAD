@@ -63,7 +63,7 @@ Action * StdCmdDescription::createAction(void)
 
 void StdCmdDescription::activated(int iMsg)
 {
-  Q_UNUSED(iMsg); 
+  Q_UNUSED(iMsg);
   if ( !inDescriptionMode() )
     enterDescriptionMode();
   else

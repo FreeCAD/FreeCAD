@@ -86,8 +86,8 @@ SET(PathScripts_SRCS
     PathScripts/PathPreferences.py
     PathScripts/PathPreferencesPathDressup.py
     PathScripts/PathPreferencesPathJob.py
-	PathScripts/PathProbe.py
-	PathScripts/PathProbeGui.py
+    PathScripts/PathProbe.py
+    PathScripts/PathProbeGui.py
     PathScripts/PathProfile.py
     PathScripts/PathProfileContour.py
     PathScripts/PathProfileContourGui.py
@@ -125,6 +125,8 @@ SET(PathScripts_SRCS
     PathScripts/PathUtil.py
     PathScripts/PathUtils.py
     PathScripts/PathUtilsGui.py
+    PathScripts/PathVcarve.py
+    PathScripts/PathVcarveGui.py
     PathScripts/PathWaterline.py
     PathScripts/PathWaterlineGui.py
     PathScripts/PostUtils.py
@@ -142,6 +144,7 @@ SET(PathScripts_post_SRCS
     PathScripts/post/jtech_post.py
     PathScripts/post/linuxcnc_post.py
     PathScripts/post/mach3_mach4_post.py
+    PathScripts/post/nccad_post.py
     PathScripts/post/opensbp_post.py
     PathScripts/post/opensbp_pre.py
     PathScripts/post/philips_post.py
@@ -151,27 +154,29 @@ SET(PathScripts_post_SRCS
 )
 
 SET(Tools_Bit_SRCS
-  Tools/Bit/t1.fctb
-  Tools/Bit/t2.fctb
-  Tools/Bit/t3.fctb
-  Tools/Bit/t4.fctb
-  Tools/Bit/t5.fctb
-  Tools/Bit/t6.fctb
-  Tools/Bit/t7.fctb
-  Tools/Bit/t8.fctb
-  Tools/Bit/t9.fctb
+    Tools/Bit/45degree_chamfer.fctb
+    Tools/Bit/5mm_Drill.fctb
+    Tools/Bit/5mm_Endmill.fctb
+    Tools/Bit/60degree_Vbit.fctb
+    Tools/Bit/6mm_Ball_End.fctb
+    Tools/Bit/6mm_Bullnose.fctb
+    Tools/Bit/slittingsaw.fctb
+    Tools/Bit/probe.fctb
 )
 
 SET(Tools_Library_SRCS
-  Tools/Library/endmills.fctl
+    Tools/Library/Default.fctl
 )
 
 SET(Tools_Shape_SRCS
-  Tools/Shape/ballend.fcstd
-  Tools/Shape/bullnose.fcstd
-  Tools/Shape/drill.fcstd
-  Tools/Shape/endmill.fcstd
-  Tools/Shape/v-bit.fcstd
+    Tools/Shape/ballend.fcstd
+    Tools/Shape/bullnose.fcstd
+    Tools/Shape/drill.fcstd
+    Tools/Shape/chamfer.fcstd
+    Tools/Shape/endmill.fcstd
+    Tools/Shape/probe.fcstd
+    Tools/Shape/slittingsaw.fcstd
+    Tools/Shape/v-bit.fcstd
 )
 
 SET(PathTests_SRCS
@@ -195,6 +200,7 @@ SET(PathTests_SRCS
     PathTests/TestPathToolController.py
     PathTests/TestPathTooltable.py
     PathTests/TestPathUtil.py
+    PathTests/TestPathVoronoi.py
     PathTests/boxtest.fcstd
     PathTests/test_centroid_00.ngc
     PathTests/test_geomop.fcstd

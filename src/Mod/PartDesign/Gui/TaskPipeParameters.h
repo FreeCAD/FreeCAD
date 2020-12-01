@@ -65,6 +65,7 @@ private Q_SLOTS:
     void onButtonRefRemove(bool checked);
     void onBaseButton(bool checked);
     void onProfileButton(bool checked);
+    void onDeleteEdge();
   
 protected:
     enum selectionModes { none, refAdd, refRemove, refObjAdd, refProfile };
@@ -101,8 +102,10 @@ private Q_SLOTS:
     void onButtonRefRemove(bool checked);
     void updateUI(int idx);
     void onBaseButton(bool checked);
+    void onClearButton();
     void onCurvelinearChanged(bool checked);
     void onBinormalChanged(double);
+    void onDeleteItem();
   
 protected:
     enum selectionModes { none, refAdd, refRemove, refObjAdd };
@@ -138,6 +141,7 @@ private Q_SLOTS:
     void onButtonRefAdd(bool checked);
     void onButtonRefRemove(bool checked);
     void updateUI(int idx);
+    void onDeleteSection();
   
 protected:
     enum selectionModes { none, refAdd, refRemove };

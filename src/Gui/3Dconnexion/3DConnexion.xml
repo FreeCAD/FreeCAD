@@ -95,3 +95,40 @@
       <Map Description="PlusMinus"     KeyCode="30" DownTime="short" Command=""/>
    </Mapping>
 </ButtonMap>
+
+<ButtonMap DeviceName="SpaceMouse Enterprise">
+   <Mapping>
+      <Map Description="Menu"          KeyCode="0"  DownTime="short" Command=""/>
+      <Map Description="Fit"           KeyCode="1"  DownTime="short" Command=""/>
+      <Map Description="Top"           KeyCode="2"  DownTime="short" Command=""/>
+      <Map Description="Bottom"        KeyCode="3"  DownTime="long"  Command=""/>
+      <Map Description="Right"         KeyCode="4"  DownTime="short" Command=""/>
+      <Map Description="Left"          KeyCode="5"  DownTime="long"  Command=""/>
+      <Map Description="Front"         KeyCode="6"  DownTime="short" Command=""/>
+      <Map Description="Rear"          KeyCode="7"  DownTime="long"  Command=""/>
+      <Map Description="Clockwise"     KeyCode="8"  DownTime="short" Command=""/>
+      <Map Description="AntiClockwise" KeyCode="9"  DownTime="long"  Command=""/>
+      <Map Description="ISO1"          KeyCode="10" DownTime="short" Command=""/>
+      <Map Description="ISO2"          KeyCode="11" DownTime="long"  Command=""/>
+      <Map Description="1"             KeyCode="12" DownTime="short" Command=""/>
+      <Map Description="2"             KeyCode="13" DownTime="short" Command=""/>
+      <Map Description="3"             KeyCode="14" DownTime="short" Command=""/>
+      <Map Description="4"             KeyCode="15" DownTime="short" Command=""/>
+      <Map Description="5"             KeyCode="16" DownTime="short" Command=""/>
+      <Map Description="6"             KeyCode="17" DownTime="short" Command=""/>
+      <Map Description="7"             KeyCode="18" DownTime="short" Command=""/>
+      <Map Description="8"             KeyCode="19" DownTime="short" Command=""/>
+      <Map Description="9"             KeyCode="20" DownTime="short" Command=""/>
+      <Map Description="10"            KeyCode="21" DownTime="short" Command=""/>
+      <Map Description="11"            KeyCode="22" DownTime="short" Command=""/>
+      <Map Description="12"            KeyCode="23" DownTime="short" Command=""/>
+      <Map Description="ESC"           KeyCode="24" DownTime="short" Command=""/>
+      <Map Description="ALT"           KeyCode="25" DownTime="short" Command=""/>
+      <Map Description="SHIFT"         KeyCode="26" DownTime="short" Command=""/>
+      <Map Description="CTRL"          KeyCode="27" DownTime="short" Command=""/>
+      <Map Description="ENTER"         KeyCode="28" DownTime="short" Command=""/>
+      <Map Description="DELETE"        KeyCode="29" DownTime="short" Command=""/>
+      <Map Description="TAB"           KeyCode="30" DownTime="short" Command=""/>
+      <Map Description="SPACE"         KeyCode="31" DownTime="short" Command=""/>
+   </Mapping>
+</ButtonMap>

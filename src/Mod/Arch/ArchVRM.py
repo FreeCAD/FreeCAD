@@ -46,21 +46,21 @@ class Renderer:
         """
         Creates a renderer with a default Draft WorkingPlane
         Use like this:
-        
+
         import ArchVRM
         p = ArchVRM.Renderer()
         p.add(App.ActiveDocument.ActiveObject)
         p.sort()
         p.buildDummy()
         """
-        
+
         self.reset()
         if wp:
             self.wp = wp
         else:
             import WorkingPlane
             self.wp = WorkingPlane.plane()
-            
+
         if DEBUG: print("Renderer initialized on " + str(self.wp))
 
     def __str__(self):
@@ -155,7 +155,7 @@ class Renderer:
     def reorient(self):
         "reorients the faces on the WP"
         #print("VRM: start reorient")
-        if not self.faces: 
+        if not self.faces:
             return
         self.faces = [self.projectFace(f) for f in self.faces]
         if self.sections:
@@ -167,7 +167,7 @@ class Renderer:
 
     def removeHidden(self):
         "removes faces pointing outwards"
-        if not self.faces: 
+        if not self.faces:
             return
         faces = []
         for f in self.faces:
@@ -218,7 +218,7 @@ class Renderer:
             v2 = self.wp.getLocalCoords(edge.Vertexes[-1].Point)
             return Part.LineSegment(v1,v2).toShape()
         return edge
-        
+
     def flattenFace(self,face):
         "Returns a face where all vertices have Z = 0"
         wires = []
@@ -281,10 +281,10 @@ class Renderer:
 
     def isInside(self,vert,face):
         "Returns True if the vert is inside the face in Z projection"
-        
+
         if not face:
             return False
-    
+
         # http://paulbourke.net/geometry/insidepoly/
         count = 0
         p = self.wp.getLocalCoords(vert.Point)
@@ -307,10 +307,10 @@ class Renderer:
         "Checks if face1 overlaps face2 in Z direction"
         face1 = self.flattenFace(face1)
         face2 = self.flattenFace(face2)
-        
+
         if (not face1) or (not face2):
             return False
-        
+
         # first we check if one of the verts is inside the other face
         for v in face1[0].Vertexes:
             if self.isInside(v,face2):
@@ -648,4 +648,4 @@ class Renderer:
             svg += '"/>\n'
         svg += '</g>\n'
         return svg
-        
+

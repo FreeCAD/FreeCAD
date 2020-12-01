@@ -40,6 +40,9 @@
    </item>
    <item>
     <widget class="QListWidget" name="listWidgetFeatures">
+     <property name="toolTip">
+      <string>List can be reordered by dragging</string>
+     </property>
      <property name="dragDropMode">
       <enum>QAbstractItemView::InternalMove</enum>
      </property>
