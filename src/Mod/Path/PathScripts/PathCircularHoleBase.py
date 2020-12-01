@@ -605,7 +605,7 @@ class ObjectOp(PathOp.ObjectOp):
             xAx = 'xAxCyl'
             yAx = 'yAxCyl'
             # zAx = 'zAxCyl'
-            VA = fcad.addObject("App::DocumentObjectGroup", "visualAxis")
+            visual_axis_obj = fcad.addObject("App::DocumentObjectGroup", "visualAxis")
             if FreeCAD.GuiUp:
                 FreeCADGui.ActiveDocument.getObject('visualAxis').Visibility = False
             vaGrp = fcad.getObject("visualAxis")
@@ -637,7 +637,7 @@ class ObjectOp(PathOp.ObjectOp):
                 cylGui.Transparency = 85
                 cylGui.Visibility = False
             vaGrp.addObject(cyl)
-            VA.purgeTouched()
+            visual_axis_obj.purgeTouched()
 
     def useTempJobClones(self, cloneName):
         '''useTempJobClones(cloneName)
