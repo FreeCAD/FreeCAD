@@ -434,6 +434,9 @@ public:
 
     void toggleShadowLightManip(int toggle = -1);
 
+    struct Private;
+    friend struct Private;
+
 protected:
     GLenum getInternalTextureFormat() const;
     void renderScene();
@@ -496,9 +499,7 @@ private:
     SoMaterial  * pcRootMaterial;
     SoSeparator * pcViewProviderRoot;
 
-    struct ShadowInfo;
-    friend ShadowInfo;
-    std::unique_ptr<ShadowInfo> shadowInfo;
+    mutable std::unique_ptr<Private> _pimpl;
 
     SoFCSwitch        * pcGroupOnTopSwitch;
     SoFCSelectionRoot * pcGroupOnTopSel;

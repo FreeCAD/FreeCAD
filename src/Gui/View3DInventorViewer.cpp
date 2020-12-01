@@ -411,7 +411,7 @@ void _shadowSetParam(App::Document *doc, const char *_name, const ValueT &def) {
         });
 }
 
-struct View3DInventorViewer::ShadowInfo
+struct View3DInventorViewer::Private
 {
     View3DInventorViewer              *owner;
 
@@ -437,9 +437,18 @@ struct View3DInventorViewer::ShadowInfo
 
     QTimer                            timer;
 
+    CoinPtr<SoPath>         pickPath;
+    CoinPtr<SoTransform>    pickTransform;
+    CoinPtr<SoSeparator>    pickRoot;
+    CoinPtr<SoNode>         pickDummy;
+    SoSearchAction          pickSearch;
+    SoRayPickAction         pickAction;
+    SoGetMatrixAction       pickMatrixAction;
 
-    ShadowInfo(View3DInventorViewer *owner)
+    Private(View3DInventorViewer *owner)
         :owner(owner)
+        ,pickAction(SbViewportRegion())
+        ,pickMatrixAction(SbViewportRegion())
     {}
 
     void activate();
@@ -448,6 +457,8 @@ struct View3DInventorViewer::ShadowInfo
     void redraw();
     void onRender();
     void toggleDragger(int toggle);
+
+    SoPickedPoint* getPointOnRay(const SbVec2s& pos, ViewProvider* vp);
 
     void getBoundingBox(SbBox3f &box) {
         SoNode *node = nullptr;
@@ -496,9 +507,9 @@ View3DInventorViewer::View3DInventorViewer(const QtGLFormat& format, QWidget* pa
 
 void View3DInventorViewer::init()
 {
-    shadowInfo.reset(new ShadowInfo(this));
-    shadowInfo->timer.setSingleShot(true);
-    connect(&shadowInfo->timer,SIGNAL(timeout()),this,SLOT(redrawShadow()));
+    _pimpl.reset(new Private(this));
+    _pimpl->timer.setSingleShot(true);
+    connect(&_pimpl->timer,SIGNAL(timeout()),this,SLOT(redrawShadow()));
 
     static bool _cacheModeInited;
     if(!_cacheModeInited) {
@@ -1625,45 +1636,53 @@ void View3DInventorViewer::resetEditingRoot(bool updateLinks)
 
 SoPickedPoint* View3DInventorViewer::getPointOnRay(const SbVec2s& pos, ViewProvider* vp) const
 {
-    SoPath *path;
-    if(vp == editViewProvider && pcEditingRoot->getNumChildren()>1) {
-        path = new SoPath(1);
-        path->ref();
-        path->append(pcEditingRoot);
+    return _pimpl->getPointOnRay(pos, vp);
+}
+
+SoPickedPoint* View3DInventorViewer::Private::getPointOnRay(const SbVec2s& pos, ViewProvider* vp)
+{
+    if (!pickPath) {
+        pickPath = new SoPath(10);
+        pickRoot = new SoSeparator;
+        pickTransform = new SoTransform;
+        pickDummy = new SoGroup;
+        pickRoot->addChild(owner->getSoRenderManager()->getCamera());
+        pickRoot->addChild(pickTransform);
+        pickRoot->addChild(pickDummy);
+    }
+    CoinPtr<SoPath> path;
+    if(vp == owner->editViewProvider && owner->pcEditingRoot->getNumChildren()>1) {
+        path = pickPath;
+        pickPath->append(owner->pcEditingRoot);
     }else{
+        SoSearchAction &sa = pickSearch;
         //first get the path to this node and calculate the current transformation
-        SoSearchAction sa;
         sa.setNode(vp->getRoot());
         sa.setSearchingAll(true);
-        sa.apply(getSoRenderManager()->getSceneGraph());
+        sa.apply(owner->getSoRenderManager()->getSceneGraph());
         path = sa.getPath();
         if (!path)
             return nullptr;
-        path->ref();
     }
-    SoGetMatrixAction gm(getSoRenderManager()->getViewportRegion());
+    SoGetMatrixAction &gm = pickMatrixAction;
+    gm.setViewportRegion(owner->getSoRenderManager()->getViewportRegion());
     gm.apply(path);
 
-    SoTransform* trans = new SoTransform;
-    trans->setMatrix(gm.getMatrix());
-    trans->ref();
+    pickTransform->setMatrix(gm.getMatrix());
     
     // build a temporary scenegraph only keeping this viewproviders nodes and the accumulated 
     // transformation
-    SoSeparator* root = new SoSeparator;
-    root->ref();
-    root->addChild(getSoRenderManager()->getCamera());
-    root->addChild(trans);
-    root->addChild(path->getTail());
+    pickRoot->replaceChild(2, path->getTail());
+    pickPath->truncate(0);
 
     //get the picked point
-    SoRayPickAction rp(getSoRenderManager()->getViewportRegion());
+    SoRayPickAction &rp = pickAction;
+    rp.setViewportRegion(owner->getSoRenderManager()->getViewportRegion());
     rp.setPoint(pos);
-    rp.setRadius(getPickRadius());
-    rp.apply(root);
-    root->unref();
-    trans->unref();
-    path->unref();
+    rp.setRadius(owner->getPickRadius());
+    rp.apply(pickRoot);
+
+    // pickRoot->replaceChild(2, pickDummy);
 
     SoPickedPoint* pick = rp.getPickedPoint();
     return (pick ? new SoPickedPoint(*pick) : 0);
@@ -1759,7 +1778,7 @@ void View3DInventorViewer::setOverrideMode(const std::string& mode)
     if (mode == overrideMode)
         return;
 
-    shadowInfo->deactivate();
+    _pimpl->deactivate();
     overrideMode = mode;
     applyOverrideMode();
 }
@@ -1788,7 +1807,7 @@ void View3DInventorViewer::applyOverrideMode()
         this->getSoRenderManager()->setRenderMode(SoRenderManager::AS_IS);
     }
     else if (overrideMode == "Shadow") {
-        shadowInfo->activate();
+        _pimpl->activate();
     }
     else {
         this->shading = true;
@@ -1800,7 +1819,7 @@ void View3DInventorViewer::applyOverrideMode()
     }
 }
 
-void View3DInventorViewer::ShadowInfo::deactivate()
+void View3DInventorViewer::Private::deactivate()
 {
     if(pcShadowGroup) {
         auto superScene = static_cast<SoGroup*>(owner->getSoRenderManager()->getSceneGraph());
@@ -1812,7 +1831,7 @@ void View3DInventorViewer::ShadowInfo::deactivate()
     }
 }
 
-void View3DInventorViewer::ShadowInfo::activate()
+void View3DInventorViewer::Private::activate()
 {
     owner->shading = true;
     App::Document *doc = owner->guiDocument?owner->guiDocument->getDocument():nullptr;
@@ -2711,8 +2730,8 @@ void View3DInventorViewer::dump(const char *filename, bool onlyVisible) const
     action.setCanApproximate(true);
 
     SoNode *node;
-    if(overrideMode == "Shadow" && shadowInfo->pcShadowGroup)
-        node = shadowInfo->pcShadowGroup;
+    if(overrideMode == "Shadow" && _pimpl->pcShadowGroup)
+        node = _pimpl->pcShadowGroup;
     else
         node = pcViewProviderRoot;
 
@@ -3305,7 +3324,7 @@ void View3DInventorViewer::renderScene(void)
     if (this->isAnimating()) {
         this->getSoRenderManager()->scheduleRedraw();
     } else 
-        shadowInfo->onRender();
+        _pimpl->onRender();
 
 #if 0 // this breaks highlighting of edges
     glDisable(GL_LIGHTING);
@@ -3924,7 +3943,7 @@ void View3DInventorViewer::animatedViewAll(const SbBox3f &box, int steps, int ms
     timer.setSingleShot(true);
     QObject::connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
 
-    Base::StateLocker guard(shadowInfo->animating);
+    Base::StateLocker guard(_pimpl->animating);
     for (int i=0; i<steps; i++) {
         float s = float(i)/float(steps);
 
@@ -3938,7 +3957,7 @@ void View3DInventorViewer::animatedViewAll(const SbBox3f &box, int steps, int ms
         timer.start(Base::clamp<int>(ms,0,5000));
         loop.exec(QEventLoop::ExcludeUserInputEvents);
     }
-    shadowInfo->onRender();
+    _pimpl->onRender();
 }
 
 #if BUILD_VR
@@ -3972,7 +3991,7 @@ void View3DInventorViewer::viewAll()
     if(!getSceneBoundBox(box))
         return;
 
-    shadowInfo->updateShadowGround(box);
+    _pimpl->updateShadowGround(box);
 
     // Set the height angle to 45 deg
     SoCamera* cam = this->getSoRenderManager()->getCamera();
@@ -3986,7 +4005,7 @@ void View3DInventorViewer::viewAll()
     viewBoundBox(box);
 }
 
-void View3DInventorViewer::ShadowInfo::updateShadowGround(const SbBox3f &box)
+void View3DInventorViewer::Private::updateShadowGround(const SbBox3f &box)
 {
     App::Document *doc = owner->guiDocument?owner->guiDocument->getDocument():nullptr;
 
@@ -4981,7 +5000,7 @@ void View3DInventorViewer::callEventFilter(QEvent *e)
     getEventFilter()->eventFilter(this, e);
 }
 
-void View3DInventorViewer::ShadowInfo::onRender()
+void View3DInventorViewer::Private::onRender()
 {
     if (!pcShadowGroup)
         return;
@@ -4998,10 +5017,10 @@ void View3DInventorViewer::ShadowInfo::onRender()
 
 void View3DInventorViewer::redrawShadow()
 {
-    shadowInfo->redraw();
+    _pimpl->redraw();
 }
 
-void View3DInventorViewer::ShadowInfo::redraw()
+void View3DInventorViewer::Private::redraw()
 {
     if (animating) {
         timer.start(100);
@@ -5031,10 +5050,10 @@ void View3DInventorViewer::ShadowInfo::redraw()
 
 void View3DInventorViewer::toggleShadowLightManip(int toggle)
 {
-    shadowInfo->toggleDragger(toggle);
+    _pimpl->toggleDragger(toggle);
 }
 
-void View3DInventorViewer::ShadowInfo::toggleDragger(int toggle)
+void View3DInventorViewer::Private::toggleDragger(int toggle)
 {
     App::Document *doc = owner->guiDocument?owner->guiDocument->getDocument():nullptr;
     if (!pcShadowGroup || !doc)
