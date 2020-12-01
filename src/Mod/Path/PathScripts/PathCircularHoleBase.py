@@ -734,12 +734,6 @@ class ObjectOp(PathOp.ObjectOp):
         elif axis == 'Y':
             vect = FreeCAD.Vector(0, 1, 0)
 
-        # Commented out to fix PocketShape InverseAngle rotation problem
-        # if obj.InverseAngle is True:
-        #    angle = -1 * angle
-        #    if math.fabs(angle) == 0.0:
-        #        angle = 0.0
-
         # Create a temporary clone of model for rotational use.
         (clnBase, clnStock, tag) = self.cloneBaseAndStock(obj, base, angle, axis, subCount)
 
