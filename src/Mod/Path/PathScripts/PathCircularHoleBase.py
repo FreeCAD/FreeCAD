@@ -599,18 +599,19 @@ class ObjectOp(PathOp.ObjectOp):
         '''visualAxis()
             Create visual X & Y axis for use in orientation of rotational operations
             Triggered only for PathLog.debug'''
+        fcad = FreeCAD.ActiveDocument
 
-        if not FreeCAD.ActiveDocument.getObject('xAxCyl'):
+        if not fcad.getObject('xAxCyl'):
             xAx = 'xAxCyl'
             yAx = 'yAxCyl'
             # zAx = 'zAxCyl'
-            VA = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup", "visualAxis")
+            VA = fcad.addObject("App::DocumentObjectGroup", "visualAxis")
             if FreeCAD.GuiUp:
                 FreeCADGui.ActiveDocument.getObject('visualAxis').Visibility = False
-            vaGrp = FreeCAD.ActiveDocument.getObject("visualAxis")
+            vaGrp = fcad.getObject("visualAxis")
 
-            FreeCAD.ActiveDocument.addObject("Part::Cylinder", xAx)
-            cyl = FreeCAD.ActiveDocument.getObject(xAx)
+            fcad.addObject("Part::Cylinder", xAx)
+            cyl = fcad.getObject(xAx)
             cyl.Label = xAx
             cyl.Radius = self.xRotRad
             cyl.Height = 0.01
@@ -623,8 +624,8 @@ class ObjectOp(PathOp.ObjectOp):
                 cylGui.Visibility = False
             vaGrp.addObject(cyl)
 
-            FreeCAD.ActiveDocument.addObject("Part::Cylinder", yAx)
-            cyl = FreeCAD.ActiveDocument.getObject(yAx)
+            fcad.addObject("Part::Cylinder", yAx)
+            cyl = fcad.getObject(yAx)
             cyl.Label = yAx
             cyl.Radius = self.yRotRad
             cyl.Height = 0.01
@@ -642,25 +643,27 @@ class ObjectOp(PathOp.ObjectOp):
         '''useTempJobClones(cloneName)
             Manage use of temporary model clones for rotational operation calculations.
             Clones are stored in 'rotJobClones' group.'''
-        if FreeCAD.ActiveDocument.getObject('rotJobClones'):
+        fcad = FreeCAD.ActiveDocument
+
+        if fcad.getObject('rotJobClones'):
             if cloneName == 'Start':
                 if PathLog.getLevel(PathLog.thisModule()) < 4:
-                    for cln in FreeCAD.ActiveDocument.getObject('rotJobClones').Group:
-                        FreeCAD.ActiveDocument.removeObject(cln.Name)
+                    for cln in fcad.getObject('rotJobClones').Group:
+                        fcad.removeObject(cln.Name)
             elif cloneName == 'Delete':
                 if PathLog.getLevel(PathLog.thisModule()) < 4:
-                    for cln in FreeCAD.ActiveDocument.getObject('rotJobClones').Group:
-                        FreeCAD.ActiveDocument.removeObject(cln.Name)
-                    FreeCAD.ActiveDocument.removeObject('rotJobClones')
+                    for cln in fcad.getObject('rotJobClones').Group:
+                        fcad.removeObject(cln.Name)
+                    fcad.removeObject('rotJobClones')
                 else:
-                    FreeCAD.ActiveDocument.getObject('rotJobClones').purgeTouched()
+                    fcad.getObject('rotJobClones').purgeTouched()
         else:
-            FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup", "rotJobClones")
+            fcad.addObject("App::DocumentObjectGroup", "rotJobClones")
             if FreeCAD.GuiUp:
                 FreeCADGui.ActiveDocument.getObject('rotJobClones').Visibility = False
 
         if cloneName != 'Start' and cloneName != 'Delete':
-            FreeCAD.ActiveDocument.getObject('rotJobClones').addObject(FreeCAD.ActiveDocument.getObject(cloneName))
+            fcad.getObject('rotJobClones').addObject(fcad.getObject(cloneName))
             if FreeCAD.GuiUp:
                 FreeCADGui.ActiveDocument.getObject(cloneName).Visibility = False
 
@@ -669,6 +672,7 @@ class ObjectOp(PathOp.ObjectOp):
             Method called to create a temporary clone of the base and parent Job stock.
             Clones are destroyed after usage for calculations related to rotational operations.'''
         # Create a temporary clone and stock of model for rotational use.
+        fcad = FreeCAD.ActiveDocument
         rndAng = round(angle, 8)
         if rndAng < 0.0:  # neg sign is converted to underscore in clone name creation.
             tag = axis + '_' + axis + '_' + str(math.fabs(rndAng)).replace('.', '_')
@@ -679,21 +683,21 @@ class ObjectOp(PathOp.ObjectOp):
         if clnNm not in self.cloneNames:
             self.cloneNames.append(clnNm)
             self.cloneNames.append(stckClnNm)
-            if FreeCAD.ActiveDocument.getObject(clnNm):
-                FreeCAD.ActiveDocument.getObject(clnNm).Shape = base.Shape
+            if fcad.getObject(clnNm):
+                fcad.getObject(clnNm).Shape = base.Shape
             else:
-                FreeCAD.ActiveDocument.addObject('Part::Feature', clnNm).Shape = base.Shape
+                fcad.addObject('Part::Feature', clnNm).Shape = base.Shape
                 self.useTempJobClones(clnNm)
-            if FreeCAD.ActiveDocument.getObject(stckClnNm):
-                FreeCAD.ActiveDocument.getObject(stckClnNm).Shape = PathUtils.findParentJob(obj).Stock.Shape
+            if fcad.getObject(stckClnNm):
+                fcad.getObject(stckClnNm).Shape = PathUtils.findParentJob(obj).Stock.Shape
             else:
-                FreeCAD.ActiveDocument.addObject('Part::Feature', stckClnNm).Shape = PathUtils.findParentJob(obj).Stock.Shape
+                fcad.addObject('Part::Feature', stckClnNm).Shape = PathUtils.findParentJob(obj).Stock.Shape
                 self.useTempJobClones(stckClnNm)
             if FreeCAD.GuiUp:
                 FreeCADGui.ActiveDocument.getObject(stckClnNm).Transparency = 90
                 FreeCADGui.ActiveDocument.getObject(clnNm).ShapeColor = (1.000, 0.667, 0.000)
-        clnBase = FreeCAD.ActiveDocument.getObject(clnNm)
-        clnStock = FreeCAD.ActiveDocument.getObject(stckClnNm)
+        clnBase = fcad.getObject(clnNm)
+        clnStock = fcad.getObject(stckClnNm)
         tag = base.Name + '_' + tag
         return (clnBase, clnStock, tag)
 
