@@ -1,7 +1,6 @@
 <RCC>
     <qresource>
         <file>icons/Path_Adaptive.svg</file>
-        <file>icons/Path_ToolDuplicate.svg</file>
         <file>icons/Path_3DPocket.svg</file>
         <file>icons/Path_3DSurface.svg</file>
         <file>icons/Path_Area_View.svg</file>
@@ -64,6 +63,7 @@
         <file>icons/Path_ToolBit.svg</file>
         <file>icons/Path_ToolChange.svg</file>
         <file>icons/Path_ToolController.svg</file>
+        <file>icons/Path_ToolDuplicate.svg</file>
         <file>icons/Path_Toolpath.svg</file>
         <file>icons/Path_ToolTable.svg</file>
         <file>icons/Path_Vcarve.svg</file>
