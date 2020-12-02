@@ -133,6 +133,9 @@ public:
     bool getBlocked() const { return this->testGeometryMode(GeometryMode::Blocked);}
     void setBlocked(bool status = true) {this->setGeometryMode(GeometryMode::Blocked, status);}
 
+    inline bool getConstruction(void) const {return this->testGeometryMode(GeometryMode::Construction);};
+    inline void setConstruction(bool construction) {this->setGeometryMode(GeometryMode::Construction, construction);};
+
     bool isInternalAligned() const { return this->getInternalType() != InternalType::None; }
 
     // Geometry Extension Information
@@ -161,8 +164,6 @@ public:
     const Handle(Geom_Geometry)& handle() const {return getGeo()->handle();};
     Part::Geometry *copy(void) const {return getGeo()->copy();};
     Part::Geometry *clone(void) const {return getGeo()->clone();};
-    inline bool getConstruction(void) const {return getGeo()->getConstruction();};
-    inline void setConstruction(bool construction) {getGeo()->setConstruction(construction);};
     boost::uuids::uuid getTag() const {return getGeo()->getTag();};
 
     std::vector<std::weak_ptr<const Part::GeometryExtension>> getExtensions() const {return getGeo()->getExtensions();};
