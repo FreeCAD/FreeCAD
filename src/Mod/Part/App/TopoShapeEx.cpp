@@ -3349,6 +3349,9 @@ TopoShape &TopoShape::makEFilledFace(const std::vector<TopoShape> &_shapes,
     }
     if (!count) 
         FC_THROWM(Base::CADKernelError,"Failed to created face with no constraints");
+    maker.Build();
+    if (!maker.IsDone())
+        FC_THROWM(Base::CADKernelError,"Failed to created face by filling edges");
     return makEShape(maker,_shapes,op);
 }
 
