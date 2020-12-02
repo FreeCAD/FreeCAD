@@ -47,7 +47,8 @@ COLINEAR  = 4
 TWIN      = 5
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#PathLog.trackModule(PathLog.thisModule())
+# PathLog.trackModule(PathLog.thisModule())
+
 
 # Qt translation handling
 def translate(context, text, disambig=None):
@@ -58,6 +59,7 @@ VD = []
 Vertex = {}
 
 _sorting = 'global'
+
 
 def _collectVoronoiWires(vd):
     edges = [e for e in vd.Edges if e.Color == PRIMARY]
@@ -105,7 +107,7 @@ def _collectVoronoiWires(vd):
         vStart = vFirst
         vLast  = vFirst
         if len(vertex[vStart]):
-            while not vStart is None:
+            while vStart is not None:
                 vLast  = vStart
                 edges  = vertex[vStart]
                 if len(edges) > 0:
@@ -120,7 +122,8 @@ def _collectVoronoiWires(vd):
             knots = [v for v in knots if v != vLast]
     return wires
 
-def _sortVoronoiWires(wires, start = FreeCAD.Vector(0, 0, 0)):
+
+def _sortVoronoiWires(wires, start=FreeCAD.Vector(0, 0, 0)):
     def closestTo(start, point):
         p = None
         l = None
@@ -130,12 +133,11 @@ def _sortVoronoiWires(wires, start = FreeCAD.Vector(0, 0, 0)):
                 p = i
         return (p, l)
 
-
     begin = {}
     end   = {}
 
     for i, w in enumerate(wires):
-        begin[i] = w[ 0].Vertices[0].toPoint()
+        begin[i] = w[0].Vertices[0].toPoint()
         end[i]   = w[-1].Vertices[1].toPoint()
 
     result = []
@@ -155,12 +157,13 @@ def _sortVoronoiWires(wires, start = FreeCAD.Vector(0, 0, 0)):
 
     return result
 
+
 class ObjectVcarve(PathEngraveBase.ObjectOp):
     '''Proxy class for Vcarve operation.'''
 
     def opFeatures(self, obj):
         '''opFeatures(obj) ... return all standard features and edges based geomtries'''
-        return PathOp.FeatureTool | PathOp.FeatureHeights | PathOp.FeatureBaseFaces | PathOp.FeatureCoolant
+        return PathOp.FeatureTool | PathOp.FeatureHeights | PathOp.FeatureDepths | PathOp.FeatureBaseFaces | PathOp.FeatureCoolant
 
     def setupAdditionalProperties(self, obj):
         if not hasattr(obj, 'BaseShapes'):
@@ -194,16 +197,29 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         # upgrade ...
         self.setupAdditionalProperties(obj)
 
-    def _calculate_depth(self, MIC, zStart, zStop, zScale):
+    def _calculate_depth(self, MIC, zStart, zStop, zScale, finaldepth):
         # given a maximum inscribed circle (MIC) and tool angle,
         # return depth of cut relative to zStart.
         depth = zStart - round(MIC / zScale, 4)
         PathLog.debug('zStart value: {} depth: {}'.format(zStart, depth))
+
+        # Never go below the operation final depth.
+        zStop = zStop if zStop > finaldepth else finaldepth
+
         return depth if depth > zStop else zStop
 
-    def _getPartEdge(self, edge, zStart, zStop, zScale):
+    def _getPartEdge(self, edge, zStart, zStop, zScale, finaldepth):
         dist = edge.getDistances()
-        return edge.toShape(self._calculate_depth(dist[0], zStart, zStop, zScale), self._calculate_depth(dist[1], zStart, zStop, zScale))
+        return edge.toShape(self._calculate_depth(dist[0],
+                                                  zStart,
+                                                  zStop,
+                                                  zScale,
+                                                  finaldepth),
+                            self._calculate_depth(dist[1],
+                                                  zStart,
+                                                  zStop,
+                                                  zScale,
+                                                  finaldepth))
 
     def _getPartEdges(self, obj, vWire):
         # pre-calculate the depth limits - pre-mature optimisation ;)
@@ -212,10 +228,11 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         zStart = self.model[0].Shape.BoundBox.ZMin
         zStop  = zStart - r / math.tan(math.radians(toolangle/2))
         zScale = 1.0 / math.tan(math.radians(toolangle / 2))
+        finaldepth = obj.FinalDepth.Value
 
         edges = []
         for e in vWire:
-            edges.append(self._getPartEdge(e, zStart, zStop, zScale))
+            edges.append(self._getPartEdge(e, zStart, zStop, zScale, finaldepth))
         return edges
 
     def buildPathMedial(self, obj, Faces):
@@ -264,7 +281,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             vd.colorColinear(COLINEAR, obj.Colinear)
             vd.colorTwins(TWIN)
 
-            wires = _collectVoronoiWires(vd);
+            wires = _collectVoronoiWires(vd)
             if _sorting != 'global':
                 wires = _sortVoronoiWires(wires)
             voronoiWires.extend(wires)
@@ -327,6 +344,16 @@ operation will produce no output.'))
         '''updateDepths(obj) ... engraving is always done at the top most z-value'''
         job = PathUtils.findParentJob(obj)
         self.opSetDefaultValues(obj, job)
+
+    def opSetDefaultValues(self, obj, job):
+        '''opSetDefaultValues(obj) ... set depths for vcarving'''
+        if PathOp.FeatureDepths & self.opFeatures(obj):
+            if job and len(job.Model.Group) > 0:
+                bb = job.Proxy.modelBoundBox(job)
+                obj.OpStartDepth = bb.ZMax
+                obj.OpFinalDepth = job.Stock.Shape.BoundBox.ZMin
+            else:
+                obj.OpFinalDepth = -0.1
 
 
 def SetupProperties():
