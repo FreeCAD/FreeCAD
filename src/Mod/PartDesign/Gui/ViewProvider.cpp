@@ -144,7 +144,7 @@ void ViewProvider::setupContextMenu(QMenu* menu, QObject* receiver, const char* 
             act->setData(QVariant((int)EditExpandAll));
         }
 
-        if (IconColor.getValue().getPackedValue()) {
+        if (PartDesign::Body::isSolidFeature(feat)) {
             auto body = PartDesign::Body::findBodyOf(feat);
             if (body) {
                 auto siblings = body->getSiblings(feat);
@@ -270,13 +270,8 @@ bool ViewProvider::setEdit(int ModNum)
             App::SubObjectT objT(vpParent->getObject(), subname.c_str());
             objT = objT.getParent();
 
-            for (auto obj : body->Group.getValues()) {
-                auto vp = Base::freecad_dynamic_cast<PartDesignGui::ViewProvider>(
-                        Gui::Application::Instance->getViewProvider(obj));
-                if (!vp || vp->IconColor.getValue() != IconColor.getValue())
-                    continue;
+            for (auto obj : body->getSiblings(getObject()))
                 Gui::Selection().addSelection(objT.getChild(obj));
-            }
         }
         return false;
     }
@@ -389,14 +384,26 @@ void ViewProvider::updateData(const App::Property* prop)
             else {
                 if (!feature->BaseFeature.getValue())
                     color = bodyVp->generateIconColor();
+
+                bool first = true;
                 for (auto obj : body->getSiblings(feature)) {
                     auto vp = Base::freecad_dynamic_cast<ViewProvider>(
                             Gui::Application::Instance->getViewProvider(obj));
                     if (!vp)
                         continue;
-                    if (!color) { 
-                        color = vp->IconColor.getValue().getPackedValue();
-                        continue;
+                    if (first) {
+                        first = false;
+                        if (!color) {
+                            color = vp->IconColor.getValue().getPackedValue();
+                            if (!color) {
+                                color = IconColor.getValue().getPackedValue();
+                                if (!color) {
+                                    color = bodyVp->generateIconColor();
+                                    if (!color)
+                                        break;
+                                }
+                            }
+                        }
                     }
                     vp->IconColor.setValue(color);
                     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");

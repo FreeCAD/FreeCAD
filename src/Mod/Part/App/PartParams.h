@@ -63,6 +63,7 @@ public:
     FC_APP_PART_PARAM(CommandOverride, int, Int, 2) \
     FC_APP_PART_PARAM(EnableWrapFeature, int, Int, 2) \
     FC_APP_PART_PARAM(CopySubShape, bool, Bool, false) \
+    FC_APP_PART_PARAM(UseBrepToolsOuterWire, bool, Bool, true) \
 
 #undef FC_APP_PART_PARAM
 #define FC_APP_PART_PARAM(_name,_ctype,_type,_def) \

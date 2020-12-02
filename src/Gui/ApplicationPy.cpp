@@ -1638,6 +1638,22 @@ PyObject* Application::sLoadFile(PyObject * /*self*/, PyObject *args, PyObject *
             }
         }
 
+        App::Document *doc = App::GetApplication().getDocumentByPath(fi.filePath().c_str(), 1);
+        if (doc && fi.filePath() != doc->FileName.getValue()) {
+            int res = QMessageBox::warning (getMainWindow(), QObject::tr("Duplicate file path"), 
+                        QString::fromLatin1("%1\n\n%2\n  ->\n%3\n\n%4").arg(
+                            QObject::tr("You are about to load a file through some symbolic link "
+                                        "to an already loaded document. "),
+                            QString::fromUtf8(fi.filePath().c_str()),
+                            QString::fromUtf8(doc->FileName.getValue()),
+                            QObject::tr("Are you sure you want to continue?")),
+                        QMessageBox::Yes | QMessageBox::No);
+            if (res == QMessageBox::No) {
+                App::GetApplication().setActiveDocument(doc);
+                Py_Return;
+            }
+        }
+
         Application::Instance->open(fi.filePath().c_str(), module.c_str());
 
         Py_Return;
