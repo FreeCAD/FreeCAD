@@ -103,7 +103,9 @@ DrawViewDimension::DrawViewDimension(void)
     ADD_PROPERTY(MeasureType, ((long)1));                             //Projected (or True) measurement
     ADD_PROPERTY_TYPE(TheoreticalExact,(false),"", App::Prop_Output,"Set for theoretical exact (basic) dimension");
     ADD_PROPERTY_TYPE(OverTolerance ,(0.0),"", App::Prop_Output,"+ Tolerance value");
+    OverTolerance.setUnit(Base::Unit::Length);
     ADD_PROPERTY_TYPE(UnderTolerance ,(0.0),"", App::Prop_Output,"- Tolerance value");
+    UnderTolerance.setUnit(Base::Unit::Length);
     ADD_PROPERTY_TYPE(Inverted,(false),"", App::Prop_Output,"The dimensional value is displayed inverted");
 
     //hide the properties the user can't edit in the property editor
@@ -168,6 +170,16 @@ void DrawViewDimension::onChanged(const App::Property* prop)
             }
         } else if (prop == &Type) {                                    //why??
             FormatSpec.setValue(getDefaultFormatSpec().c_str());
+            long type = Type.getValue();
+            // Angle or Angle3Pt
+            if (type == 6 || type == 7) {
+                OverTolerance.setUnit(Base::Unit::Angle);
+                UnderTolerance.setUnit(Base::Unit::Angle);
+            }
+            else {
+                OverTolerance.setUnit(Base::Unit::Length);
+                UnderTolerance.setUnit(Base::Unit::Length);
+            }
         } else if ( (prop == &FormatSpec) ||
              (prop == &Arbitrary) ||
              (prop == &MeasureType) ||
@@ -186,6 +198,30 @@ void DrawViewDimension::onDocumentRestored()
 {
     if (has3DReferences()) {
         setAll3DMeasurement();
+    }
+
+    long type = Type.getValue();
+    // Angle or Angle3Pt
+    if (type == 6 || type == 7) {
+        OverTolerance.setUnit(Base::Unit::Angle);
+        UnderTolerance.setUnit(Base::Unit::Angle);
+    }
+}
+
+void DrawViewDimension::handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop)
+{
+    if (prop == &OverTolerance && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat v;
+        v.Restore(reader);
+        OverTolerance.setValue(v.getValue());
+    }
+    else if (prop == &UnderTolerance && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat v;
+        v.Restore(reader);
+        UnderTolerance.setValue(v.getValue());
+    }
+    else {
+        TechDraw::DrawView::handleChangedPropertyType(reader, TypeName, prop);
     }
 }
 

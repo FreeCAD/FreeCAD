@@ -105,8 +105,8 @@ public:
     App::PropertyString            FormatSpecOverTolerance;
     App::PropertyBool              Arbitrary;
     App::PropertyBool              ArbitraryTolerances;
-    App::PropertyFloat             OverTolerance;
-    App::PropertyFloat             UnderTolerance;
+    App::PropertyQuantity          OverTolerance;
+    App::PropertyQuantity          UnderTolerance;
 
     enum RefType{
             invalidRef,
@@ -164,6 +164,7 @@ public:
     bool useDecimals() const;
 
 protected:
+    virtual void handleChangedPropertyType(Base::XMLReader &, const char * , App::Property * ) override;
     virtual void onChanged(const App::Property* prop) override;
     virtual void onDocumentRestored() override;
     std::string getPrefix() const;
