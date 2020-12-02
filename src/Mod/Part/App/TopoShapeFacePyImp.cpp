@@ -97,6 +97,7 @@
 #include "Tools.h"
 #include "FaceMaker.h"
 #include "PartPyCXX.h"
+#include "PartParams.h"
 
 using namespace Part;
 
@@ -950,7 +951,11 @@ Py::Object TopoShapeFacePy::getOuterWire(void) const
         throw Py::RuntimeError("Null shape");
     if (clSh.ShapeType() == TopAbs_FACE) {
         TopoDS_Face clFace = (TopoDS_Face&)clSh;
-        TopoDS_Wire clWire = ShapeAnalysis::OuterWire(clFace);
+        TopoDS_Wire clWire;
+        if (PartParams::UseBrepToolsOuterWire())
+            clWire = BRepTools::OuterWire(clFace);
+        else
+            clWire = ShapeAnalysis::OuterWire(clFace);
         return Py::Object(new TopoShapeWirePy(new TopoShape(clWire)),true);
     }
     else {
