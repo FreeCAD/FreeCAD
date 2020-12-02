@@ -1901,18 +1901,21 @@ void Application::runApplication(void)
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 12, 0))
     QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
 #endif
-#if QT_VERSION >= 0x050600
-    //Enable automatic scaling based on pixel density of display (added in Qt 5.6)
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
-#ifdef FC_OS_WIN32
+    // Automatic scaling for legacy apps (disable once all parts of GUI are aware of HiDpi)
+#if QT_VERSION >= 0x050600
     ParameterGrp::handle hDPI = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/HighDPI");
     bool disableDpiScaling = hDPI->GetBool("DisableDpiScaling", false);
     if (disableDpiScaling) {
+#ifdef FC_OS_WIN32
         SetProcessDPIAware(); // call before the main event loop
+#endif
         QApplication::setAttribute(Qt::AA_DisableHighDpiScaling);
     }
-#endif
+    else {
+        // Enable automatic scaling based on pixel density of display (added in Qt 5.6)
+        QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    }
 #endif // QT_VERSION >= 0x050600
 
 #if QT_VERSION >= 0x050100
