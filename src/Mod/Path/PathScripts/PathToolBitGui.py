@@ -69,7 +69,7 @@ class ViewProvider(object):
             pixmap = QtGui.QPixmap()
             pixmap.loadFromData(png, 'PNG')
             return QtGui.QIcon(pixmap)
-        return ':/icons/Path-ToolBit.svg'
+        return ':/icons/Path_ToolBit.svg'
 
     def __getstate__(self):
         return None

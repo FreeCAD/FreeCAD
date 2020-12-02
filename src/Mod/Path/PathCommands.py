@@ -52,7 +52,7 @@ class _CommandSelectLoop:
         self.active = False
 
     def GetResources(self):
-        return {'Pixmap': 'Path-SelectLoop',
+        return {'Pixmap': 'Path_SelectLoop',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_SelectLoop", "Finish Selecting Loop"),
                 'Accel': "P, L",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_SelectLoop", "Complete loop selection from two edges"),
@@ -130,7 +130,7 @@ if FreeCAD.GuiUp:
 class _ToggleOperation:
     "command definition to toggle Operation Active state"
     def GetResources(self):
-        return {'Pixmap': 'Path-OpActive',
+        return {'Pixmap': 'Path_OpActive',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_OpActiveToggle", "Toggle the Active State of the Operation"),
                 'Accel': "P, X",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_OpActiveToggle", "Toggle the Active State of the Operation"),
@@ -163,7 +163,7 @@ if FreeCAD.GuiUp:
 class _CopyOperation:
     "the Path Copy Operation command definition"
     def GetResources(self):
-        return {'Pixmap': 'Path-OpCopy',
+        return {'Pixmap': 'Path_OpCopy',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_OperationCopy", "Copy the operation in the job"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_OperationCopy", "Copy the operation in the job"),
                 'CmdType': "ForEdit"}

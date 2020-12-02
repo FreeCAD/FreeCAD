@@ -36,7 +36,7 @@ class CommandToolBitCreate:
         pass
 
     def GetResources(self):
-        return {'Pixmap': 'Path-ToolBit',
+        return {'Pixmap': 'Path_ToolBit',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("PathToolBit", "Create Tool"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathToolBit", "Creates a new ToolBit object")}
 
@@ -60,7 +60,7 @@ class CommandToolBitSave:
             menuTxt = QtCore.QT_TRANSLATE_NOOP("PathToolBit", "Save Tool as...")
         else:
             menuTxt = QtCore.QT_TRANSLATE_NOOP("PathToolBit", "Save Tool")
-        return {'Pixmap': 'Path-ToolBit',
+        return {'Pixmap': 'Path_ToolBit',
                 'MenuText': menuTxt,
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathToolBit", "Save an existing ToolBit object to a file")}
 
@@ -109,7 +109,7 @@ class CommandToolBitLoad:
         pass
 
     def GetResources(self):
-        return {'Pixmap': 'Path-ToolBit',
+        return {'Pixmap': 'Path_ToolBit',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("PathToolBit", "Load Tool"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathToolBit", "Load an existing ToolBit object from a file")}
 

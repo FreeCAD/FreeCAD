@@ -479,9 +479,9 @@ class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
 Command = PathOpGui.SetupOperation('Pocket Shape',
         PathPocketShape.Create,
         TaskPanelOpPage,
-        'Path-Pocket',
-        QtCore.QT_TRANSLATE_NOOP("PathPocket", "Pocket Shape"),
-        QtCore.QT_TRANSLATE_NOOP("PathPocket", "Creates a Path Pocket object from a face or faces"),
+        'Path_Pocket',
+        QtCore.QT_TRANSLATE_NOOP("Path_Pocket", "Pocket Shape"),
+        QtCore.QT_TRANSLATE_NOOP("Path_Pocket", "Creates a Path Pocket object from a face or faces"),
         PathPocketShape.SetupProperties)
 
 FreeCAD.Console.PrintLog("Loading PathPocketShapeGui... done\n")

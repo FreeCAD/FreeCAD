@@ -235,7 +235,7 @@
          </property>
          <property name="icon">
           <iconset resource="../Path.qrc">
-           <normaloff>:/icons/Path-ToolController.svg</normaloff>:/icons/Path-ToolController.svg</iconset>
+           <normaloff>:/icons/Path_ToolController.svg</normaloff>:/icons/Path_ToolController.svg</iconset>
          </property>
         </widget>
        </item>
@@ -292,7 +292,7 @@
          </property>
          <property name="icon">
           <iconset resource="../Path.qrc">
-           <normaloff>:/icons/Path-ToolDuplicate.svg</normaloff>:/icons/Path-ToolDuplicate.svg</iconset>
+           <normaloff>:/icons/Path_ToolDuplicate.svg</normaloff>:/icons/Path_ToolDuplicate.svg</iconset>
          </property>
         </widget>
        </item>
@@ -372,7 +372,7 @@
      </property>
      <property name="icon">
       <iconset resource="../Path.qrc">
-       <normaloff>:/icons/Path-LengthOffset.svg</normaloff>:/icons/Path-LengthOffset.svg</iconset>
+       <normaloff>:/icons/Path_LengthOffset.svg</normaloff>:/icons/Path_LengthOffset.svg</iconset>
      </property>
     </widget>
    </item>

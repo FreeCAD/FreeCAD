@@ -97,7 +97,7 @@ class CommandPathSanity:
         return filepath + os.sep
 
     def GetResources(self):
-        return {'Pixmap': 'Path-Sanity',
+        return {'Pixmap': 'Path_Sanity',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Sanity",
                     "Check the path job for common errors"),
                 'Accel': "P, S",

@@ -214,6 +214,10 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         obj.setEditorMode('Stopped', 2)  # hide this property
 
 
-Command = PathOpGui.SetupOperation('Adaptive', PathAdaptive.Create, TaskPanelOpPage,
-                                   'Path-Adaptive', QtCore.QT_TRANSLATE_NOOP("PathAdaptive", "Adaptive"),
-                                   QtCore.QT_TRANSLATE_NOOP("PathPocket", "Adaptive clearing and profiling"))
+Command = PathOpGui.SetupOperation('Adaptive',
+        PathAdaptive.Create,
+        TaskPanelOpPage,
+        'Path_Adaptive',
+        QtCore.QT_TRANSLATE_NOOP("Path_Adaptive", "Adaptive"),
+        QtCore.QT_TRANSLATE_NOOP("Path_Adaptive", "Adaptive clearing and profiling")
+        )

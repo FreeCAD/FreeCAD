@@ -21,7 +21,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="../Path.qrc">
-    <normaloff>:/icons/Path-BaseGeometry.svg</normaloff>:/icons/Path-BaseGeometry.svg</iconset>
+    <normaloff>:/icons/Path_BaseGeometry.svg</normaloff>:/icons/Path_BaseGeometry.svg</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
