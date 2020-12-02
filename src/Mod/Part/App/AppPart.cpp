@@ -73,6 +73,7 @@
 #include "Geometry.h"
 #include "GeometryExtension.h"
 #include "GeometryDefaultExtension.h"
+#include "GeometryMigrationExtension.h"
 #include "Geometry2d.h"
 #include "Mod/Part/App/GeometryIntExtensionPy.h"
 #include "Mod/Part/App/GeometryStringExtensionPy.h"
@@ -404,45 +405,46 @@ PyMOD_INIT_FUNC(Part)
     Part::Reverse               ::init();
 
     // Geometry types
-    Part::GeometryExtension       ::init();
-    Part::GeometryIntExtension    ::init();
-    Part::GeometryStringExtension ::init();
-    Part::GeometryBoolExtension   ::init();
-    Part::GeometryDoubleExtension ::init();
-    Part::Geometry                ::init();
-    Part::GeomPoint               ::init();
-    Part::GeomCurve               ::init();
-    Part::GeomBoundedCurve        ::init();
-    Part::GeomBezierCurve         ::init();
-    Part::GeomBSplineCurve        ::init();
-    Part::GeomConic               ::init();
-    Part::GeomTrimmedCurve        ::init();
-    Part::GeomArcOfConic          ::init();
-    Part::GeomCircle              ::init();
-    Part::GeomArcOfCircle         ::init();
-    Part::GeomArcOfEllipse        ::init();
-    Part::GeomArcOfParabola       ::init();
-    Part::GeomArcOfHyperbola      ::init();
-    Part::GeomEllipse             ::init();
-    Part::GeomHyperbola           ::init();
-    Part::GeomParabola            ::init();
-    Part::GeomLine                ::init();
-    Part::GeomLineSegment         ::init();
-    Part::GeomOffsetCurve         ::init();
-    Part::GeomSurface             ::init();
-    Part::GeomBezierSurface       ::init();
-    Part::GeomBSplineSurface      ::init();
-    Part::GeomCylinder            ::init();
-    Part::GeomCone                ::init();
-    Part::GeomSphere              ::init();
-    Part::GeomToroid              ::init();
-    Part::GeomPlane               ::init();
-    Part::GeomOffsetSurface       ::init();
-    Part::GeomPlateSurface        ::init();
-    Part::GeomTrimmedSurface      ::init();
-    Part::GeomSurfaceOfRevolution ::init();
-    Part::GeomSurfaceOfExtrusion  ::init();
-    Part::Datum                   ::init();
+    Part::GeometryExtension       	::init();
+    Part::GeometryIntExtension    	::init();
+    Part::GeometryStringExtension 	::init();
+    Part::GeometryBoolExtension   	::init();
+    Part::GeometryDoubleExtension 	::init();
+    Part::GeometryMigrationExtension	::init();
+    Part::Geometry                	::init();
+    Part::GeomPoint               	::init();
+    Part::GeomCurve               	::init();
+    Part::GeomBoundedCurve        	::init();
+    Part::GeomBezierCurve         	::init();
+    Part::GeomBSplineCurve        	::init();
+    Part::GeomConic               	::init();
+    Part::GeomTrimmedCurve        	::init();
+    Part::GeomArcOfConic          	::init();
+    Part::GeomCircle              	::init();
+    Part::GeomArcOfCircle         	::init();
+    Part::GeomArcOfEllipse        	::init();
+    Part::GeomArcOfParabola       	::init();
+    Part::GeomArcOfHyperbola      	::init();
+    Part::GeomEllipse             	::init();
+    Part::GeomHyperbola           	::init();
+    Part::GeomParabola            	::init();
+    Part::GeomLine                	::init();
+    Part::GeomLineSegment         	::init();
+    Part::GeomOffsetCurve         	::init();
+    Part::GeomSurface             	::init();
+    Part::GeomBezierSurface       	::init();
+    Part::GeomBSplineSurface      	::init();
+    Part::GeomCylinder            	::init();
+    Part::GeomCone                	::init();
+    Part::GeomSphere              	::init();
+    Part::GeomToroid              	::init();
+    Part::GeomPlane               	::init();
+    Part::GeomOffsetSurface       	::init();
+    Part::GeomPlateSurface        	::init();
+    Part::GeomTrimmedSurface      	::init();
+    Part::GeomSurfaceOfRevolution 	::init();
+    Part::GeomSurfaceOfExtrusion  	::init();
+    Part::Datum                   	::init();
 
     // Geometry2d types
     Part::Geometry2d              ::init();
