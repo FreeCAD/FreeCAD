@@ -51,6 +51,7 @@ namespace Sketcher
     namespace GeometryMode {
         enum GeometryMode {
             Blocked                 = 0,
+            Construction            = 1,
             NumGeometryMode        // Must be the last
         };
     }
@@ -101,7 +102,7 @@ public:
 
     constexpr static std::array<const char *,InternalType::NumInternalGeometryType> internaltype2str {{ "None", "EllipseMajorDiameter", "EllipseMinorDiameter","EllipseFocus1", "EllipseFocus2", "HyperbolaMajor", "HyperbolaMinor", "HyperbolaFocus", "ParabolaFocus", "BSplineControlPoint", "BSplineKnotPoint" }};
 
-    constexpr static std::array<const char *,GeometryMode::NumGeometryMode> geometrymode2str {{ "Blocked" }};
+    constexpr static std::array<const char *,GeometryMode::NumGeometryMode> geometrymode2str {{ "Blocked", "Construction" }};
 
     static bool getInternalTypeFromName(std::string str, InternalType::InternalType &type);
 
