@@ -1904,11 +1904,17 @@ void Application::runApplication(void)
 #if QT_VERSION >= 0x050600
     //Enable automatic scaling based on pixel density of display (added in Qt 5.6)
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+
 #ifdef FC_OS_WIN32
-    SetProcessDPIAware(); // call before the main event loop
-    QApplication::setAttribute(Qt::AA_DisableHighDpiScaling);
+    ParameterGrp::handle hDPI = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/HighDPI");
+    bool disableDpiScaling = hDPI->GetBool("DisableDpiScaling", false);
+    if (disableDpiScaling) {
+        SetProcessDPIAware(); // call before the main event loop
+        QApplication::setAttribute(Qt::AA_DisableHighDpiScaling);
+    }
 #endif
-#endif
+#endif // QT_VERSION >= 0x050600
+
 #if QT_VERSION >= 0x050100
     //Enable support for highres images (added in Qt 5.1, but off by default)
     QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
