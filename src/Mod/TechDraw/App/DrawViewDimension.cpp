@@ -70,15 +70,29 @@ using namespace TechDraw;
 
 PROPERTY_SOURCE(TechDraw::DrawViewDimension, TechDraw::DrawView)
 
+namespace {
+    // keep this enum synchronized with TypeEnums
+    enum DrawViewType {
+        Distance,
+        DistanceX,
+        DistanceY,
+        DistanceZ,
+        Radius,
+        Diameter,
+        Angle,
+        Angle3Pt
+    };
+}
+
 const char* DrawViewDimension::TypeEnums[]= {"Distance",
-                                                "DistanceX",
-                                                "DistanceY",
-                                                "DistanceZ",
-                                                "Radius",
-                                                "Diameter",
-                                                "Angle",
-                                                "Angle3Pt",
-                                                NULL};
+                                             "DistanceX",
+                                             "DistanceY",
+                                             "DistanceZ",
+                                             "Radius",
+                                             "Diameter",
+                                             "Angle",
+                                             "Angle3Pt",
+                                             NULL};
 
 const char* DrawViewDimension::MeasureTypeEnums[]= {"True",
                                                     "Projected",
@@ -170,9 +184,9 @@ void DrawViewDimension::onChanged(const App::Property* prop)
             }
         } else if (prop == &Type) {                                    //why??
             FormatSpec.setValue(getDefaultFormatSpec().c_str());
-            long type = Type.getValue();
-            // Angle or Angle3Pt
-            if (type == 6 || type == 7) {
+
+            DrawViewType type = static_cast<DrawViewType>(Type.getValue());
+            if (type == DrawViewType::Angle || type == DrawViewType::Angle3Pt) {
                 OverTolerance.setUnit(Base::Unit::Angle);
                 UnderTolerance.setUnit(Base::Unit::Angle);
             }
@@ -200,9 +214,8 @@ void DrawViewDimension::onDocumentRestored()
         setAll3DMeasurement();
     }
 
-    long type = Type.getValue();
-    // Angle or Angle3Pt
-    if (type == 6 || type == 7) {
+    DrawViewType type = static_cast<DrawViewType>(Type.getValue());
+    if (type == DrawViewType::Angle || type == DrawViewType::Angle3Pt) {
         OverTolerance.setUnit(Base::Unit::Angle);
         UnderTolerance.setUnit(Base::Unit::Angle);
     }
