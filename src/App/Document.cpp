@@ -90,6 +90,7 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 #include <random>
 
 #include <QMap>
+#include <QFileInfo>
 #include <QCoreApplication>
 #include <QCryptographicHash>
 
@@ -2780,11 +2781,19 @@ bool Document::saveToFile(const char* filename) const
     bool archive = !Base::FileInfo(filename).isDir();
     bool policy = archive?DocumentParams::BackupPolicy():false;
 
+    std::string _realfile;
+    const char *realfile = filename;
+    QFileInfo qfi(QString::fromUtf8(filename));
+    if (qfi.isSymLink()) {
+        _realfile = qfi.symLinkTarget().toUtf8().constData();
+        realfile = _realfile.c_str();
+    }
+
     // make a tmp. file where to save the project data first and then rename to
     // the actual file name. This may be useful if overwriting an existing file
     // fails so that the data of the work up to now isn't lost.
     std::string uuid = Base::Uuid::createUuid();
-    std::string fn = filename;
+    std::string fn = realfile;
     if (policy) {
         fn += ".";
         fn += uuid;
@@ -2834,7 +2843,7 @@ bool Document::saveToFile(const char* filename) const
             policy.setPolicy(BackupPolicy::Standard);
         }
         policy.setNumberOfFiles(count_bak);
-        policy.apply(fn, filename);
+        policy.apply(fn, realfile);
     }
 
     signalFinishSave(*this, filename);
