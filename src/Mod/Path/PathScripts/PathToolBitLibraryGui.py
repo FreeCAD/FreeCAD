@@ -38,6 +38,7 @@ import os
 import glob
 import uuid as UUID
 from functools import partial
+import shutil
 
 # PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
 # PathLog.trackModule(PathLog.thisModule())
@@ -360,6 +361,9 @@ class ToolBitLibrary(object):
 
     def __init__(self):
         PathLog.track()
+        if not self.checkWorkingDir():
+            return
+
         self.factory = ModelFactory()
         self.temptool = None
         self.toolModel = PySide.QtGui.QStandardItemModel(0, len(self.columnNames()))
@@ -370,6 +374,55 @@ class ToolBitLibrary(object):
         self.form.toolTable.hide()
         self.setupUI()
         self.title = self.form.windowTitle()
+
+    def checkWorkingDir(self):
+        # users shouldn't use the example toolbits and libraries.
+        # working directory should be writable
+        PathLog.track()
+
+        workingdir = os.path.dirname(PathPreferences.lastPathToolLibrary())
+        defaultdir = os.path.dirname(PathPreferences.pathDefaultToolsPath())
+
+        dirOK = lambda : workingdir != defaultdir and (os.access(workingdir, os.W_OK))
+
+        if dirOK():
+            return True
+
+        qm = PySide.QtGui.QMessageBox
+        ret = qm.question(None,'', "Toolbit working directory not set up. Do that now?", qm.Yes | qm.No)
+
+        if ret == qm.No:
+            return False
+
+        msg = translate("Path", "Choose a writable location for your toolbits", None)
+        while not dirOK():
+            workingdir = PySide.QtGui.QFileDialog.getExistingDirectory(None, msg,
+                    PathPreferences.filePath())
+
+        PathPreferences.setLastPathToolLibrary("{}/Library".format(workingdir))
+
+        subdirlist = ['Bit', 'Library', 'Shape']
+        mode = 0o777
+        for dir in subdirlist:
+            subdir = "{}/{}".format(workingdir, dir)
+            if not os.path.exists(subdir):
+                qm = PySide.QtGui.QMessageBox
+                ret = qm.question(None,'', "Toolbit Working directory {} should contain a '{}' subdirectory. Create it?".format(workingdir, dir), qm.Yes | qm.No)
+
+                if ret == qm.Yes:
+                    os.mkdir(subdir, mode)
+                    qm = PySide.QtGui.QMessageBox
+                    ret = qm.question(None,'', "Copy example files to new {} directory?".format(dir), qm.Yes | qm.No)
+                    if ret == qm.Yes:
+                        src="{}/{}".format(defaultdir, dir)
+                        src_files = os.listdir(src)
+                        for file_name in src_files:
+                            full_file_name = os.path.join(src, file_name)
+                            if os.path.isfile(full_file_name):
+                                shutil.copy(full_file_name, subdir)
+
+        return True
+
 
     def toolBitNew(self):
         PathLog.track()
