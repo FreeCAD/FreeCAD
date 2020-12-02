@@ -106,7 +106,7 @@ class ObjectFace(PathPocketBase.ObjectPocket):
 
         if obj.Base:
             PathLog.debug("obj.Base: {}".format(obj.Base))
-            self.removalshapes = list()
+            self.removalshapes = []
             faces = []
             holes = []
             holeEnvs = []
@@ -239,7 +239,7 @@ class ObjectFace(PathPocketBase.ObjectPocket):
             # If the operation has a geometry identified the Finaldepth
             # is the top of the boundbox which includes all features.
             if len(obj.Base) >= 1:
-                shapes = list()
+                shapes = []
                 for base, subs in obj.Base:
                     for s in subs:
                         shapes.append(getattr(base.Shape, s))
