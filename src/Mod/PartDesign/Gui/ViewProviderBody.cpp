@@ -311,12 +311,22 @@ unsigned long ViewProviderBody::generateIconColor(App::DocumentObject *feat) con
     colors.insert(0x00ff00ff);
     colors.insert(0xff);
     colors.insert(0xffffffff);
+    int solid_count = 0;
     for (auto o : body->Group.getValue()) {
+        if (!PartDesign::Body::isSolidFeature(o))
+            continue;
+        auto feat = Base::freecad_dynamic_cast<PartDesign::Feature>(o);
+        if (!feat)
+            continue;
+        if (!feat->BaseFeature.getValue())
+            ++solid_count;
         auto vp = Base::freecad_dynamic_cast<PartDesignGui::ViewProvider>(
                 Gui::Application::Instance->getViewProvider(o));
         if (vp)
             colors.insert(vp->IconColor.getValue().getPackedValue() | 0xff);
     }
+    if (colors.size()==3 && solid_count <= 1)
+        return 0;
     std::vector<SbVec3f> hsvs;
     for (unsigned long color : colors) {
         SbColor c;
