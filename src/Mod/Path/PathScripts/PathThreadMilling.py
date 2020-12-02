@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2019 sliptonic <shopinthewoods@gmail.com>               *
@@ -63,7 +62,7 @@ def radiiInternal(majorDia, minorDia, toolDia, toolCrest = None):
     outerTip = majorDia / 2.0 + H / 8.0
     # Compensate for the crest of the tool
     toolTip = outerTip - toolCrest * 0.8660254037844386  # math.sqrt(3)/2 ... 60deg triangle height
-    return ((minorDia - toolDia) / 2, toolTip - toolDia / 2)
+    return ((minorDia - toolDia) / 2.0, toolTip - toolDia / 2.0)
 
 def threadPasses(count, radii, majorDia, minorDia, toolDia, toolCrest = None):
     PathLog.track(count, radii, majorDia, minorDia, toolDia, toolCrest)
