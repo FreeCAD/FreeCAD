@@ -399,7 +399,9 @@ void ViewProvider::updateData(const App::Property* prop)
                         continue;
                     }
                     vp->IconColor.setValue(color);
-                    if (bodyVp->RandomColor.getValue()){
+                    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+                    bool randomColor = hGrp->GetBool("RandomColor", false);
+                    if (randomColor){
                         bodyVp->ShapeColor.setValue(color);
                     }
                 }
