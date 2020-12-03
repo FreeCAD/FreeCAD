@@ -78,6 +78,7 @@
 # include <BRepOffsetAPI_ThruSections.hxx>
 # include <BRepPrimAPI_MakePrism.hxx>
 # include <BRepPrimAPI_MakeRevol.hxx>
+# include <BRepPrimAPI_MakeTorus.hxx>
 # include <BRepTools.hxx>
 # include <BRepTools_ReShape.hxx>
 # include <BRepTools_ShapeSet.hxx>
@@ -144,6 +145,7 @@
 # include <Standard_Failure.hxx>
 # include <StlAPI_Writer.hxx>
 # include <Standard_Failure.hxx>
+# include <gp_Circ.hxx>
 # include <gp_GTrsf.hxx>
 # include <gp_Pln.hxx>
 # include <ShapeAnalysis_Shell.hxx>
@@ -2285,6 +2287,48 @@ TopoDS_Shape TopoShape::makeSweep(const TopoDS_Shape& profile, double tol, int f
 #endif
     );
     return mkBuilder.Face();
+}
+
+TopoDS_Shape TopoShape::makeTorus(Standard_Real radius1, Standard_Real radius2,
+                                  Standard_Real angle1, Standard_Real angle2,
+                                  Standard_Real angle3, Standard_Boolean isSolid) const
+{
+    // https://forum.freecadweb.org/viewtopic.php?f=3&t=1445
+    // https://forum.freecadweb.org/viewtopic.php?f=3&t=52719
+#if 1
+    // Build a torus
+    gp_Circ circle;
+    circle.SetRadius(radius2);
+    gp_Pnt pos(radius1,0,0);
+    gp_Dir dir(0,1,0);
+    circle.SetAxis(gp_Ax1(pos, dir));
+
+    BRepBuilderAPI_MakeEdge mkEdge(circle, Base::toRadians<double>(angle1),
+                                           Base::toRadians<double>(angle2));
+    BRepBuilderAPI_MakeWire mkWire;
+    mkWire.Add(mkEdge.Edge());
+
+    if ((angle1 > -180.0 || angle2 < 180.0) && isSolid) {
+        BRepBuilderAPI_MakeVertex mkVertex(pos);
+        BRepBuilderAPI_MakeEdge mkEdge1(mkVertex.Vertex(), mkEdge.Vertex1());
+        BRepBuilderAPI_MakeEdge mkEdge2(mkVertex.Vertex(), mkEdge.Vertex2());
+        mkWire.Add(mkEdge1.Edge());
+        mkWire.Add(mkEdge2.Edge());
+    }
+
+    BRepBuilderAPI_MakeFace mkFace(mkWire.Wire());
+    BRepPrimAPI_MakeRevol mkRevol(mkFace.Face(), gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)),
+        Base::toRadians<double>(angle3), Standard_True);
+    return mkRevol.Shape();
+#else
+    (void)isSolid;
+    BRepPrimAPI_MakeTorus mkTorus(radius1,
+                                  radius2,
+                                  Base::toRadians<double>(angle1),
+                                  Base::toRadians<double>(angle2),
+                                  Base::toRadians<double>(angle3));
+    return mkTorus.Solid();
+#endif
 }
 
 TopoDS_Shape TopoShape::makeHelix(Standard_Real pitch, Standard_Real height,
