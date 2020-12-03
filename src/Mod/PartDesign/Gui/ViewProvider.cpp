@@ -40,6 +40,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/CommandT.h>
+#include <Gui/ViewParams.h>
 #include <Base/Exception.h>
 #include <Base/Tools.h>
 #include <Mod/Part/Gui/SoBrepFaceSet.h>
@@ -440,10 +441,20 @@ void ViewProvider::onChanged(const App::Property* prop) {
 
         auto feature = Base::freecad_dynamic_cast<PartDesign::Feature>(getObject());
         auto body = PartDesign::Body::findBodyOf(getObject());
-        if (feature && body && feature->_Siblings.getSize()) {
+        if (feature && body) {
             auto siblings = body->getSiblings(feature);
-            if (siblings.size() && siblings.front() == feature)
-                feature->_Siblings.setValues();
+            if(feature->_Siblings.getSize()) {
+                if (siblings.size() && siblings.front() == feature)
+                    feature->_Siblings.setValues();
+            }
+
+            if (IconColor.getValue().getPackedValue()
+                    && Gui::ViewParams::getRandomColor())
+            {
+                if (siblings.size() && siblings.front() == feature)
+                    MapFaceColor.setValue(false);
+                ShapeColor.setValue(IconColor.getValue());
+            }
         }
     }
 
