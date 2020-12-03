@@ -337,7 +337,7 @@ void SoBrepEdgeSet::getBoundingBox(SoGetBoundingBoxAction * action) {
             break;
         int offset = idx==0 ? 0 : segments[idx-1];
         int num = segments[idx];
-        if(num >= numindices)
+        if(num > numindices)
             break;
         int32_t i;
         const int32_t *cindices = indices + offset;
@@ -475,7 +475,7 @@ void SoBrepEdgeSet::_renderSelection(SoGLRenderAction *action,
         renderLines(static_cast<const SoGLCoordinateElement*>(coords), cindices, numcindices);
     else {
         for(int idx : RenderIndices) {
-            if (idx < 0 || idx >= (int)segments.size() || segments[idx] >= numcindices)
+            if (idx < 0 || idx >= (int)segments.size() || segments[idx] > numcindices)
                 break;
 
             int offset = idx==0 ? 0 : segments[idx-1];
