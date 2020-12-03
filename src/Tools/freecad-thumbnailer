@@ -44,7 +44,7 @@ try:
         image = zfile.read(image)
     else:
         # apps should have at least 48x48 icons
-        freecad = open("/usr/share/icons/hicolor/48x48/apps/freecad.png")
+        freecad = open("/usr/share/icons/hicolor/48x48/apps/freecad.png", "rb")
         image = freecad.read()
 
     # Write icon to output_file
