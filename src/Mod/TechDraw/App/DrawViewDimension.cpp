@@ -724,12 +724,12 @@ std::string DrawViewDimension::formatValue(qreal value, QString qFormatSpec, int
 #endif
         // if abs(1 - userVal / formattedValue) > 0.1 we know that we make an error greater than 10%
         // then we need more digits
-        if (abs(userVal - formattedValue.toDouble()) > 0.1 * userVal) {
+        if (abs(userVal - formattedValue.toDouble()) > 0.1 * abs(userVal)) {
             int i = 1;
             do { // increase decimals step by step until error is < 10 %
                 formattedValue = QLocale().toString(userVal, 'f', i);
                 ++i;
-            } while (abs(userVal - loc.toDouble(formattedValue)) > 0.1 * userVal);
+            } while (abs(userVal - loc.toDouble(formattedValue)) > 0.1 * abs(userVal));
             // We purposely don't reset the formatSpecifier.
             // Why "%.1f" is overwritten for a value of e.g. "0.001" is obvious,
             // moreover such cases only occurs when
