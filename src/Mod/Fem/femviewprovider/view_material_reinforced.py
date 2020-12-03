@@ -21,9 +21,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM material reinforced ViewProvider for the document object"
+__title__  = "FreeCAD FEM material reinforced ViewProvider for the document object"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## @package view_material_reinforced
 #  \ingroup FEM

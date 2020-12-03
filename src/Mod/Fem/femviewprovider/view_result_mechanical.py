@@ -22,9 +22,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD result mechanical ViewProvider for the document object"
+__title__  = "FreeCAD result mechanical ViewProvider for the document object"
 __author__ = "Qingfeng Xia, Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## @package view_result_mechanical
 #  \ingroup FEM

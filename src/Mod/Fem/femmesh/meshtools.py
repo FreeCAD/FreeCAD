@@ -20,9 +20,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "Tools for the work with finite element meshes"
+__title__  = "Tools for the work with finite element meshes"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## \addtogroup FEM
 #  @{

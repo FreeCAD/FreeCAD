@@ -21,9 +21,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD YAML and JSON mesh reader and writer"
+__title__  = "FreeCAD YAML and JSON mesh reader and writer"
 __author__ = "Johannes Hartung"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## @package importYAMLJSONMesh
 #  \ingroup FEM

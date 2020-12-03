@@ -36,9 +36,9 @@ But the import code line is used anyway to get flake8 quired.
 Since they are cached they will not be imported twice.
 """
 
-__title__ = "FEM module Gui init script"
+__title__  = "FEM module Gui init script"
 __author__ = "Juergen Riegel, Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 # imports to get flake8 quired
 import sys

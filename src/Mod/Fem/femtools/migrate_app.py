@@ -26,9 +26,9 @@ see module end as well as forum topic
 https://forum.freecadweb.org/viewtopic.php?&t=46218
 """
 
-__title__ = "migrate app"
+__title__  = "FEM class and methods that migrates old App objects"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 import FreeCAD
 
