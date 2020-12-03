@@ -328,7 +328,7 @@ bool DlgExpressionInput::eventFilter(QObject *obj, QEvent *ev)
 
 void DlgExpressionInput::adjustPosition()
 {
-    if (this->adjustingPosition)
+    if (this->adjustingPosition || !this->isVisible())
         return;
     auto parent = parentWidget();
     if (!parent)
@@ -345,10 +345,9 @@ void DlgExpressionInput::adjustPosition()
         pos += parentPos - expressionPos;
     } else {
         pos -= ui->expression->pos();
-        QPoint thisPos = mapToGlobal(QPoint(this->width(), this->height()));
         QPoint parentPos = parent->mapToGlobal(QPoint(parent->width(), parent->height()));
-        if (thisPos.x() > parentPos.x())
-            pos.setX(pos.x() + parentPos.x() - thisPos.x());
+        if (pos.x() + this->width() > parentPos.x())
+            pos.setX(parentPos.x() - this->width());
     }
     this->move(pos);
 }
