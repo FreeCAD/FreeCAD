@@ -257,7 +257,8 @@ void QGIDatumLabel::setPosFromCenter(const double &xCenter, const double &yCente
     QRectF unitBox = m_unitText->boundingRect();
     double unitWidth = unitBox.width();
     double unitRight = right + unitWidth;
-    m_unitText->setPos(right,top);
+    // Set the m_unitText font *baseline* at same height as the m_dimText font baseline
+    m_unitText->setPos(right, 0.0);
 
     //set tolerance position
     QRectF overBox = m_tolTextOver->boundingRect();
