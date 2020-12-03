@@ -77,6 +77,7 @@
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/DatumFeature.h>
 #include <Mod/Part/App/BodyBase.h>
+#include <Mod/Part/App/GeometryMigrationExtension.h>
 
 #include "SketchObject.h"
 #include "Sketch.h"
@@ -7533,6 +7534,24 @@ void SketchObject::migrateSketch(void)
                     }
                 }
             }
+        }
+
+        // Construction migration to extension
+        for( auto g : Geometry.getValues()) {
+
+            if(g->hasExtension(Part::GeometryMigrationExtension::getClassTypeId()))
+            {
+                auto ext = std::static_pointer_cast<Part::GeometryMigrationExtension>(
+                                g->getExtension(Part::GeometryMigrationExtension::getClassTypeId()).lock());
+
+                if(ext->testMigrationType(Part::GeometryMigrationExtension::Construction))
+                {
+                    GeometryFacade::setConstruction(g, ext->Construction);
+                }
+
+                g->deleteExtension(Part::GeometryMigrationExtension::getClassTypeId());
+            }
+
         }
     }
 }
