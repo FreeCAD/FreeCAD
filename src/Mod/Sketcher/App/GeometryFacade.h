@@ -70,6 +70,27 @@ class GeometryFacadePy;
 // Part::GeomBSplineCurve * gbsc = bspline.release();
 // GeometryFacade::copyId(geo, gbsc);
 //
+// Examples getting and setting the construction stations without creating a Facade:
+//
+//  if ((*geo) && GeometryFacade::getConstruction(*geo) &&
+//      (*geo)->getTypeId() == Part::GeomLineSegment::getClassTypeId())
+//            count++;
+//
+//  Part::Geometry* copy = v->copy();
+//
+//  if(construction && copy->getTypeId() != Part::GeomPoint::getClassTypeId()) {
+//      GeometryFacade::setConstruction(copy, construction);
+//  }
+//
+//
+// Note: The standard GeometryFacade stores Part::Geometry derived clases as a Part::Geometry *, while
+// it has the ability to return a dynamic_cast-ed version to a provided type as follows:
+//
+// HLine->getGeometry<Part::GeomLineSegment>();
+//
+// If for seamless operation it is convenient to have a given derived class of Part::Geometry, it is possible
+// to use GeometryTypedFacade (see below).
+//
 // Summary Remarks:
 // It is intended to have a separate type (not being a Geometry type).
 // it is intended to have the relevant interface in full for the sketcher extension only
@@ -78,7 +99,7 @@ class SketcherExport GeometryFacade : public Base::BaseClass, private ISketchGeo
 {
 TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
-private:
+protected:
     GeometryFacade(const Part::Geometry * geometry);
     GeometryFacade(); // As TYPESYSTEM requirement
 
@@ -91,6 +112,8 @@ public: // Factory methods
 public: // Utility methods
     static void ensureSketchGeometryExtension(Part::Geometry * geometry);
     static void copyId(const Part::Geometry * src, Part::Geometry * dst);
+    static bool getConstruction(const Part::Geometry * geometry);
+    static void setConstruction(Part::Geometry * geometry, bool construction);
 
 public:
     void setGeometry(Part::Geometry *geometry);
@@ -108,7 +131,7 @@ public:
                     std::is_base_of<Part::Geometry, typename std::decay<GeometryT>::type>::value
              >::type
     >
-    GeometryT * getGeometry() {return dynamic_cast<GeometryT *>(const_cast<GeometryT *>(Geo));}
+    GeometryT * getGeometry() {return dynamic_cast<GeometryT *>(const_cast<Part::Geometry *>(Geo));}
 
     // Geometry Element
     template <  typename GeometryT = Part::Geometry,
@@ -145,6 +168,9 @@ public:
     void transform(Base::Matrix4D mat) {return getGeo()->transform(mat);};
     void translate(Base::Vector3d vec) {return getGeo()->translate(vec);};
 
+    // convenience GeometryFunctions
+    bool isGeoType(const Base::Type &type) const { return getGeo()->getTypeId() == type;}
+
 private:
     void initExtension(void);
     void initExtension(void) const;
@@ -159,6 +185,61 @@ private:
     const Part::Geometry * Geo;
     std::shared_ptr<const SketchGeometryExtension> SketchGeoExtension;
 };
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////
+//
+// GeometryTypedFacade
+//
+// It provides all the funcionality of GeometryFacade (derives from it), but in addition
+// allows to indicate the type of a Part::Geometry derived class.
+//
+// auto HLineF = GeometryTypedFacade<Part::GeomLineSegment>::getTypedFacade(HLine);
+//
+// Then it is possible to get the typed geometry directly via:
+//
+// HLine->getTypedGeometry()->setPoints(Base::Vector3d(0,0,0),Base::Vector3d(1,0,0));
+//
+// If a facade is requested without passing an Part::Geometry derived object, the constructor
+// of the indicated geometry type is called with any parameter passed as argument (emplace style)
+//
+//  Example of seamless operation with a GeomLineSegment:
+//
+//    auto HLine = GeometryTypedFacade<Part::GeomLineSegment>::getTypedFacade();
+//    HLine->getTypedGeometry()->setPoints(Base::Vector3d(0,0,0),Base::Vector3d(1,0,0));
+//    HLine->setConstruction(true);
+//    ExternalGeo.push_back(HLine->getGeometry());
+
+template < typename GeometryT >
+class SketcherExport GeometryTypedFacade : public GeometryFacade
+{
+    static_assert(  std::is_base_of<Part::Geometry, typename std::decay<GeometryT>::type>::value &&
+                    !std::is_same<Part::Geometry, typename std::decay<GeometryT>::type>::value, "Only for classes derived from Geometry!");
+    private:
+    GeometryTypedFacade(const Part::Geometry * geometry):GeometryFacade(geometry) {};
+    GeometryTypedFacade():GeometryFacade() {};
+
+public: // Factory methods
+    static std::unique_ptr<GeometryTypedFacade<GeometryT>> getTypedFacade(GeometryT * geometry) {
+        return std::unique_ptr<GeometryTypedFacade<GeometryT>>(new GeometryTypedFacade(geometry));
+    }
+    static std::unique_ptr<const GeometryTypedFacade<GeometryT>> getTypedFacade(const GeometryT * geometry) {
+        return std::unique_ptr<const GeometryTypedFacade<GeometryT>>(new GeometryTypedFacade(geometry));
+    }
+
+    template < typename... Args >
+    static std::unique_ptr<GeometryTypedFacade<GeometryT>> getTypedFacade(Args&&... args) {
+        return GeometryTypedFacade::getTypedFacade(new GeometryT(std::forward<Args>(args)...));
+    }
+
+    // Geometry Element
+    GeometryT * getTypedGeometry() {return GeometryFacade::getGeometry<GeometryT>();}
+
+    // Geometry Element
+    GeometryT * getTypedGeometry() const {return GeometryFacade::getGeometry<GeometryT>();}
+};
+
 
 
 
