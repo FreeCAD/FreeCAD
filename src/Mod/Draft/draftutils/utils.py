@@ -167,7 +167,7 @@ def get_param_type(param):
                  "precision", "defaultWP", "snapRange", "gridEvery",
                  "linewidth", "UiMode", "modconstrain", "modsnap",
                  "maxSnapEdges", "modalt", "HatchPatternResolution",
-                 "snapStyle", "dimstyle", "gridSize"):
+                 "snapStyle", "dimstyle", "gridSize","gridTransparency"):
         return "int"
     elif param in ("constructiongroupname", "textfont",
                    "patternFile", "template", "snapModes",
@@ -183,7 +183,7 @@ def get_param_type(param):
                    "SvgLinesBlack", "dxfStdSize", "showSnapBar",
                    "hideSnapBar", "alwaysShowGrid", "renderPolylineWidth",
                    "showPlaneTracker", "UsePartPrimitives",
-                   "DiscretizeEllipses", "showUnit",
+                   "DiscretizeEllipses", "showUnit","coloredGridAxes",
                    "Draft_array_fuse", "Draft_array_Link", "gridBorder"):
         return "bool"
     elif param in ("color", "constructioncolor",

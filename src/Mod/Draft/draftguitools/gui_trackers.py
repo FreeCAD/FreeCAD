@@ -959,18 +959,31 @@ class gridTracker(Tracker):
     """A grid tracker."""
 
     def __init__(self):
-        GRID_TRANSPARENCY = 0
+
+        gtrans = Draft.getParam("gridTransparency",0)
         col = self.getGridColor()
+        if Draft.getParam("coloredGridAxes",True):
+            red = ((1.0+col[0])/2,0.0,0.0)
+            green = (0.0,(1.0+col[1])/2,0.0)
+            blue = (0.0,0.0,(1.0+col[2])/2)
+        else:
+            red = col
+            green = col
+            blue = col
         pick = coin.SoPickStyle()
         pick.style.setValue(coin.SoPickStyle.UNPICKABLE)
         self.trans = coin.SoTransform()
         self.trans.translation.setValue([0, 0, 0])
+
+        # small squares
         mat1 = coin.SoMaterial()
-        mat1.transparency.setValue(0.7*(1-GRID_TRANSPARENCY))
+        mat1.transparency.setValue(0.7*(1-gtrans))
         mat1.diffuseColor.setValue(col)
         self.font = coin.SoFont()
         self.coords1 = coin.SoCoordinate3()
-        self.lines1 = coin.SoLineSet()
+        self.lines1 = coin.SoLineSet() # small squares
+
+        # texts
         texts = coin.SoSeparator()
         t1 = coin.SoSeparator()
         self.textpos1 = coin.SoTransform()
@@ -988,16 +1001,25 @@ class gridTracker(Tracker):
         texts.addChild(self.font)
         texts.addChild(t1)
         texts.addChild(t2)
+
+        # big squares
         mat2 = coin.SoMaterial()
-        mat2.transparency.setValue(0.3*(1-GRID_TRANSPARENCY))
+        mat2.transparency.setValue(0.3*(1-gtrans))
         mat2.diffuseColor.setValue(col)
         self.coords2 = coin.SoCoordinate3()
-        self.lines2 = coin.SoLineSet()
+        self.lines2 = coin.SoLineSet() # big squares
+
+        # axes
         mat3 = coin.SoMaterial()
-        mat3.transparency.setValue(GRID_TRANSPARENCY)
-        mat3.diffuseColor.setValue(col)
+        mat3.transparency.setValue(gtrans)
+        mat3.diffuseColor.setValues([col,red,green,blue])
         self.coords3 = coin.SoCoordinate3()
-        self.lines3 = coin.SoLineSet()
+        self.lines3 = coin.SoIndexedLineSet() # axes
+        self.lines3.coordIndex.setValues(0,5,[0,1,-1,2,3])
+        self.lines3.materialIndex.setValues(0,2,[0,0])
+        mbind3 = coin.SoMaterialBinding()
+        mbind3.value = coin.SoMaterialBinding.PER_PART_INDEXED
+
         self.pts = []
         s = coin.SoSeparator()
         s.addChild(pick)
@@ -1008,6 +1030,7 @@ class gridTracker(Tracker):
         s.addChild(mat2)
         s.addChild(self.coords2)
         s.addChild(self.lines2)
+        s.addChild(mbind3)
         s.addChild(mat3)
         s.addChild(self.coords3)
         s.addChild(self.lines3)
@@ -1055,17 +1078,17 @@ class gridTracker(Tracker):
         if pts != self.pts:
             idx = []
             midx = []
-            aidx = []
+            #aidx = []
             cidx = []
             for p in range(0, len(pts), 2):
                 idx.append(2)
             for mp in range(0, len(mpts), 2):
                 midx.append(2)
-            for ap in range(0, len(apts), 2):
-                aidx.append(2)
+            #for ap in range(0, len(apts), 2):
+            #    aidx.append(2)
             for cp in range(0, len(cpts),2):
                 cidx.append(2)
-            
+
             if Draft.getParam("gridBorder", True):
                 # extra border
                 border = (numlines//2 + self.mainlines/2) * self.space
@@ -1096,17 +1119,37 @@ class gridTracker(Tracker):
             else:
                 self.text1.string = " "
                 self.text2.string = " "
-            
+
             self.lines1.numVertices.deleteValues(0)
             self.lines2.numVertices.deleteValues(0)
-            self.lines3.numVertices.deleteValues(0)
+            #self.lines3.numVertices.deleteValues(0)
             self.coords1.point.setValues(pts)
             self.lines1.numVertices.setValues(idx)
             self.coords2.point.setValues(mpts)
             self.lines2.numVertices.setValues(midx)
             self.coords3.point.setValues(apts)
-            self.lines3.numVertices.setValues(aidx)
+            #self.lines3.numVertices.setValues(aidx)
             self.pts = pts
+            self.setAxesColor()
+
+    def setAxesColor(self):
+        """set axes color"""
+        cols = [0,0]
+        if Draft.getParam("coloredGridAxes",True) and hasattr(FreeCAD,"DraftWorkingPlane"):
+            wp = FreeCAD.DraftWorkingPlane
+            if round(wp.u.getAngle(FreeCAD.Vector(1,0,0)),2) in (0,3.14):
+                cols[0] = 1
+            elif round(wp.u.getAngle(FreeCAD.Vector(0,1,0)),2) in (0,3.14):
+                cols[0] = 2
+            elif round(wp.u.getAngle(FreeCAD.Vector(0,0,1)),2) in (0,3.14):
+                cols[0] = 3
+            if round(wp.v.getAngle(FreeCAD.Vector(1,0,0)),2) in (0,3.14):
+                cols[1] = 1
+            elif round(wp.v.getAngle(FreeCAD.Vector(0,1,0)),2) in (0,3.14):
+                cols[1] = 2
+            elif round(wp.v.getAngle(FreeCAD.Vector(0,0,1)),2) in (0,3.14):
+                cols[1] = 3
+        self.lines3.materialIndex.setValues(0,2,cols)
 
     def setSize(self, size):
         """Set size of the lines and update."""
@@ -1137,6 +1180,7 @@ class gridTracker(Tracker):
         P = FreeCAD.DraftWorkingPlane.position
         self.trans.rotation.setValue([Q[0], Q[1], Q[2], Q[3]])
         self.trans.translation.setValue([P.x, P.y, P.z])
+        self.setAxesColor()
         self.on()
 
     def getClosestNode(self, point):
