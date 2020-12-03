@@ -1497,13 +1497,13 @@ PyObject* TopoShapePy::makeFillet(PyObject *args)
     PyObject *obj;
 #ifndef FC_NO_ELEMENT_MAP
     if (!PyArg_ParseTuple(args, "ddO", &radius1, &radius2, &obj)) {
+        PyErr_Clear();
         if (!PyArg_ParseTuple(args, "dO", &radius1, &obj)) {
             PyErr_SetString(PyExc_TypeError, "This method accepts:\n"
                     "-- one radius and a list of edges\n"
                     "-- two radii and a list of edges");
             return 0;
         }
-        PyErr_Clear();
         radius2 = radius1;
     }
     PY_TRY {
