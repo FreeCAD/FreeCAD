@@ -70,15 +70,29 @@ using namespace TechDraw;
 
 PROPERTY_SOURCE(TechDraw::DrawViewDimension, TechDraw::DrawView)
 
+namespace {
+    // keep this enum synchronized with TypeEnums
+    enum DrawViewType {
+        Distance,
+        DistanceX,
+        DistanceY,
+        DistanceZ,
+        Radius,
+        Diameter,
+        Angle,
+        Angle3Pt
+    };
+}
+
 const char* DrawViewDimension::TypeEnums[]= {"Distance",
-                                                "DistanceX",
-                                                "DistanceY",
-                                                "DistanceZ",
-                                                "Radius",
-                                                "Diameter",
-                                                "Angle",
-                                                "Angle3Pt",
-                                                NULL};
+                                             "DistanceX",
+                                             "DistanceY",
+                                             "DistanceZ",
+                                             "Radius",
+                                             "Diameter",
+                                             "Angle",
+                                             "Angle3Pt",
+                                             NULL};
 
 const char* DrawViewDimension::MeasureTypeEnums[]= {"True",
                                                     "Projected",
@@ -92,7 +106,10 @@ DrawViewDimension::DrawViewDimension(void)
     References3D.setScope(App::LinkScope::Global);
 
     ADD_PROPERTY_TYPE(FormatSpec,(getDefaultFormatSpec()) , "Format", App::Prop_Output,"Dimension Format");
+    ADD_PROPERTY_TYPE(FormatSpecOverTolerance,("%+g") , "Format", App::Prop_Output,"Dimension Overtolerance Format");
+    ADD_PROPERTY_TYPE(FormatSpecUnderTolerance,("%+g") , "Format", App::Prop_Output,"Dimension Undertolerance Format");
     ADD_PROPERTY_TYPE(Arbitrary,(false) ,"Format", App::Prop_Output,"Value overridden by user");
+    ADD_PROPERTY_TYPE(ArbitraryTolerances,(false) ,"Format", App::Prop_Output,"Tolerance values overridden by user");
 
     Type.setEnums(TypeEnums);                                          //dimension type: length, radius etc
     ADD_PROPERTY(Type,((long)0));
@@ -100,7 +117,9 @@ DrawViewDimension::DrawViewDimension(void)
     ADD_PROPERTY(MeasureType, ((long)1));                             //Projected (or True) measurement
     ADD_PROPERTY_TYPE(TheoreticalExact,(false),"", App::Prop_Output,"Set for theoretical exact (basic) dimension");
     ADD_PROPERTY_TYPE(OverTolerance ,(0.0),"", App::Prop_Output,"+ Tolerance value");
+    OverTolerance.setUnit(Base::Unit::Length);
     ADD_PROPERTY_TYPE(UnderTolerance ,(0.0),"", App::Prop_Output,"- Tolerance value");
+    UnderTolerance.setUnit(Base::Unit::Length);
     ADD_PROPERTY_TYPE(Inverted,(false),"", App::Prop_Output,"The dimensional value is displayed inverted");
 
     //hide the properties the user can't edit in the property editor
@@ -165,6 +184,16 @@ void DrawViewDimension::onChanged(const App::Property* prop)
             }
         } else if (prop == &Type) {                                    //why??
             FormatSpec.setValue(getDefaultFormatSpec().c_str());
+
+            DrawViewType type = static_cast<DrawViewType>(Type.getValue());
+            if (type == DrawViewType::Angle || type == DrawViewType::Angle3Pt) {
+                OverTolerance.setUnit(Base::Unit::Angle);
+                UnderTolerance.setUnit(Base::Unit::Angle);
+            }
+            else {
+                OverTolerance.setUnit(Base::Unit::Length);
+                UnderTolerance.setUnit(Base::Unit::Length);
+            }
         } else if ( (prop == &FormatSpec) ||
              (prop == &Arbitrary) ||
              (prop == &MeasureType) ||
@@ -183,6 +212,29 @@ void DrawViewDimension::onDocumentRestored()
 {
     if (has3DReferences()) {
         setAll3DMeasurement();
+    }
+
+    DrawViewType type = static_cast<DrawViewType>(Type.getValue());
+    if (type == DrawViewType::Angle || type == DrawViewType::Angle3Pt) {
+        OverTolerance.setUnit(Base::Unit::Angle);
+        UnderTolerance.setUnit(Base::Unit::Angle);
+    }
+}
+
+void DrawViewDimension::handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop)
+{
+    if (prop == &OverTolerance && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat v;
+        v.Restore(reader);
+        OverTolerance.setValue(v.getValue());
+    }
+    else if (prop == &UnderTolerance && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat v;
+        v.Restore(reader);
+        UnderTolerance.setValue(v.getValue());
+    }
+    else {
+        TechDraw::DrawView::handleChangedPropertyType(reader, TypeName, prop);
     }
 }
 
@@ -210,7 +262,6 @@ short DrawViewDimension::mustExecute() const
 
 App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
 {
-//    Base::Console().Message("DVD::execute() - %s\n", getNameInDocument());
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
@@ -556,22 +607,16 @@ std::string DrawViewDimension::getBaseLengthUnit(Base::UnitSystem system)
     }
 }
 
-std::string DrawViewDimension::getFormatedValue(int partial)
+std::string DrawViewDimension::formatValue(qreal value, QString qFormatSpec, int partial)
 {
     std::string result;
-    if (Arbitrary.getValue()) {
-        return FormatSpec.getStrValue();
-    }
     bool multiValueSchema = false;
-
-    QString qFormatSpec = QString::fromUtf8(FormatSpec.getStrValue().data(), FormatSpec.getStrValue().size());
-    double val = getDimValue();
     QString qUserStringUnits;
     QString formattedValue;
-
     bool angularMeasure = false;
+
     Base::Quantity asQuantity;
-    asQuantity.setValue(val);
+    asQuantity.setValue(value);
     if ( (Type.isValue("Angle")) ||
          (Type.isValue("Angle3Pt")) ) {
         angularMeasure = true;
@@ -616,6 +661,7 @@ std::string DrawViewDimension::getFormatedValue(int partial)
             // prefix + 48*30'30" + suffix
             qMultiValueStr = formatPrefix + qGenPrefix + displaySub + formatSuffix;
         }
+        formattedValue = qMultiValueStr;
     } else {
         if (formatSpecifier.isEmpty()) {
             Base::Console().Warning("Warning - no numeric format in formatSpec %s - %s\n",
@@ -706,6 +752,7 @@ std::string DrawViewDimension::getFormatedValue(int partial)
             //qUserString from Quantity includes units - prefix + R + nnn ft + suffix
             qMultiValueStr = formatPrefix + qGenPrefix + qUserString + formatSuffix;
         }
+        formattedValue = qMultiValueStr;
     }
 
     result = formattedValue.toStdString();
@@ -739,6 +786,38 @@ std::string DrawViewDimension::getFormatedValue(int partial)
     return result;
 }
 
+std::pair<std::string, std::string> DrawViewDimension::getFormattedToleranceValues(int partial)
+{
+    QString underFormatSpec = QString::fromUtf8(FormatSpecUnderTolerance.getStrValue().data());
+    QString overFormatSpec = QString::fromUtf8(FormatSpecOverTolerance.getStrValue().data());
+    std::pair<std::string, std::string> tolerances;
+    QString underTolerance, overTolerance;
+
+    if (ArbitraryTolerances.getValue()) {
+        underTolerance = underFormatSpec;
+        overTolerance = overFormatSpec;
+    } else {
+        underTolerance = QString::fromUtf8(formatValue(UnderTolerance.getValue(), underFormatSpec, partial).c_str());
+        overTolerance = QString::fromUtf8(formatValue(OverTolerance.getValue(), overFormatSpec, partial).c_str());
+    }
+
+    tolerances.first = underTolerance.toStdString();
+    tolerances.second = overTolerance.toStdString();
+
+    return tolerances;
+}
+
+
+std::string DrawViewDimension::getFormattedDimensionValue(int partial)
+{
+    QString qFormatSpec = QString::fromUtf8(FormatSpec.getStrValue().data());
+
+    if (Arbitrary.getValue()) {
+        return FormatSpec.getStrValue();
+    }
+
+    return formatValue(getDimValue(), qFormatSpec, partial);
+}
 
 QStringList DrawViewDimension::getPrefixSuffixSpec(QString fSpec)
 {
@@ -747,7 +826,7 @@ QStringList DrawViewDimension::getPrefixSuffixSpec(QString fSpec)
     QString formatSuffix;
     QString formatted;
     //find the %x.y tag in FormatSpec
-    QRegExp rxFormat(QString::fromUtf8("%[0-9]*\\.*[0-9]*[aefgAEFG]"));     //printf double format spec
+    QRegExp rxFormat(QString::fromUtf8("%[+-]?[0-9]*\\.*[0-9]*[aefgAEFG]")); //printf double format spec
     QString match;
     int pos = 0;
     if ((pos = rxFormat.indexIn(fSpec, 0)) != -1)  {

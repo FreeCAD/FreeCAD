@@ -230,7 +230,7 @@ def buildCard(filename,method,arg=None):
 
     result = encode("")
     if os.path.exists(filename) and isOpenableByFreeCAD(filename):
-        basename = os.path.basename(filename)
+        basename = encode(os.path.basename(filename))
         if not arg:
             arg = basename
         finfo = getInfo(filename)

@@ -724,7 +724,7 @@ void StdCmdMeasurementSimple::activated(int iMsg)
     name += "-";
     name += Sel[1].SubName;
 
-    openCommand("Insert measurement");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Insert measurement"));
     doCommand(Doc,"_f = App.activeDocument().addObject(\"App::MeasureDistance\",\"%s\")","Measurement");
     doCommand(Doc,"_f.Label ='%s'",name.c_str());
     doCommand(Doc,"_f.P1 = FreeCAD.Vector(%f,%f,%f)",Sel[0].x,Sel[0].y,Sel[0].z);
@@ -755,7 +755,7 @@ void StdCmdTextDocument::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    openCommand("Insert text document");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Insert text document"));
     doCommand(Doc, "App.ActiveDocument.addObject(\"App::TextDocument\",\"%s\").Label=\"%s\"","Text document","Text document");
     doCommand(Gui, "Gui.ActiveDocument.ActiveObject.doubleClicked()");
     updateActive();

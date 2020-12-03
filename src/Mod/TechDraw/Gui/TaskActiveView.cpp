@@ -193,7 +193,7 @@ void TaskActiveView::enableTaskButtons(bool b)
 bool TaskActiveView::accept()
 {
 //    Base::Console().Message("TAV::accept()\n");
-    Gui::Command::openCommand("Create ActiveView");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create ActiveView"));
     m_symbolFeat = createActiveView();
 //    m_symbolFeat->requestPaint();
     m_symbolFeat->recomputeFeature();

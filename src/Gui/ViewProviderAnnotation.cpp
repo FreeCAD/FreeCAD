@@ -414,7 +414,7 @@ void ViewProviderAnnotationLabel::setupContextMenu(QMenu* menu, QObject* receive
 void ViewProviderAnnotationLabel::dragStartCallback(void *, SoDragger *)
 {
     // This is called when a manipulator is about to manipulating
-    Gui::Application::Instance->activeDocument()->openCommand("Transform");
+    Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Transform"));
 }
 
 void ViewProviderAnnotationLabel::dragFinishCallback(void *, SoDragger *)

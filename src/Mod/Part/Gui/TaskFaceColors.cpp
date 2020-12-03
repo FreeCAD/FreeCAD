@@ -429,7 +429,7 @@ void FaceColors::updatePanel()
 void FaceColors::open()
 {
     Gui::Document* doc = Gui::Application::Instance->getDocument(d->vp->getObject()->getDocument());
-    doc->openCommand("Change face colors");
+    doc->openCommand(QT_TRANSLATE_NOOP("Command", "Change face colors"));
 }
 
 bool FaceColors::accept()

@@ -235,7 +235,7 @@ class ViewProviderArray:
 class CommandPathArray:
 
     def GetResources(self):
-        return {'Pixmap': 'Path-Array',
+        return {'Pixmap': 'Path_Array',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Array", "Array"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Array", "Creates an array from a selected path")}
 

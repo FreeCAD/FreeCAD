@@ -75,7 +75,7 @@ class _ViewProviderPlane:
         return None
 
     def getIcon(self):  # optional
-        return ":/icons/Path-Plane.svg"
+        return ":/icons/Path_Plane.svg"
 
     def onChanged(self, vobj, prop):  # optional
         # pylint: disable=unused-argument
@@ -106,7 +106,7 @@ class _ViewProviderPlane:
 class CommandPathPlane:
 
     def GetResources(self):
-        return {'Pixmap': 'Path-Plane',
+        return {'Pixmap': 'Path_Plane',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Plane", "Selection Plane"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Plane", "Create a Selection Plane object")}
 

@@ -78,7 +78,7 @@ class ViewProviderPathHop:
         self.Object = vobj.Object
 
     def getIcon(self):
-        return ":/icons/Path-Hop.svg"
+        return ":/icons/Path_Hop.svg"
 
     def __getstate__(self):
         return None
@@ -90,7 +90,7 @@ class ViewProviderPathHop:
 class CommandPathHop:
 
     def GetResources(self):
-        return {'Pixmap': 'Path-Hop',
+        return {'Pixmap': 'Path_Hop',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Hop", "Hop"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Hop", "Creates a Path Hop object")}
 

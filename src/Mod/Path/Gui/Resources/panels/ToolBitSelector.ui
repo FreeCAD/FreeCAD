@@ -57,7 +57,7 @@
          </property>
          <property name="icon">
           <iconset resource="../Path.qrc">
-           <normaloff>:/icons/Path-ToolTable.svg</normaloff>:/icons/Path-ToolTable.svg</iconset>
+           <normaloff>:/icons/Path_ToolTable.svg</normaloff>:/icons/Path_ToolTable.svg</iconset>
          </property>
          <property name="iconSize">
           <size>

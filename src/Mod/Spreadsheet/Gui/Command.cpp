@@ -88,7 +88,7 @@ void CmdSpreadsheetMergeCells::activated(int iMsg)
 
             // Execute mergeCells commands
             if (ranges.size() > 0) {
-                Gui::Command::openCommand("Merge cells");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Merge cells"));
                 std::vector<Range>::const_iterator i = ranges.begin();
                 for (; i != ranges.end(); ++i)
                     if (i->size() > 1)
@@ -141,7 +141,7 @@ void CmdSpreadsheetSplitCell::activated(int iMsg)
 
             if (current.isValid()) {
                 std::string address = CellAddress(current.row(), current.column()).toString();
-                Gui::Command::openCommand("Split cell");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Split cell"));
                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.splitCell('%s')", sheet->getNameInDocument(),
                                         address.c_str());
                 Gui::Command::commitCommand();
@@ -287,7 +287,7 @@ void CmdSpreadsheetAlignLeft::activated(int iMsg)
             if (ranges.size() > 0) {
                 std::vector<Range>::const_iterator i = ranges.begin();
 
-                Gui::Command::openCommand("Left-align cell");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Left-align cell"));
                 for (; i != ranges.end(); ++i)
                     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setAlignment('%s', 'left', 'keep')", sheet->getNameInDocument(),
                                             i->rangeString().c_str());
@@ -339,7 +339,7 @@ void CmdSpreadsheetAlignCenter::activated(int iMsg)
             if (ranges.size() > 0) {
                 std::vector<Range>::const_iterator i = ranges.begin();
 
-                Gui::Command::openCommand("Center cell");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Center cell"));
                 for (; i != ranges.end(); ++i)
                     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setAlignment('%s', 'center', 'keep')", sheet->getNameInDocument(),
                                             i->rangeString().c_str());
@@ -391,7 +391,7 @@ void CmdSpreadsheetAlignRight::activated(int iMsg)
             if (ranges.size() > 0) {
                 std::vector<Range>::const_iterator i = ranges.begin();
 
-                Gui::Command::openCommand("Right-align cell");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Right-align cell"));
                 for (; i != ranges.end(); ++i)
                     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setAlignment('%s', 'right', 'keep')", sheet->getNameInDocument(),
                                             i->rangeString().c_str());
@@ -443,7 +443,7 @@ void CmdSpreadsheetAlignTop::activated(int iMsg)
             if (ranges.size() > 0) {
                 std::vector<Range>::const_iterator i = ranges.begin();
 
-                Gui::Command::openCommand("Top-align cell");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Top-align cell"));
                 for (; i != ranges.end(); ++i)
                     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setAlignment('%s', 'top', 'keep')", sheet->getNameInDocument(),
                                             i->rangeString().c_str());
@@ -495,7 +495,7 @@ void CmdSpreadsheetAlignBottom::activated(int iMsg)
             if (ranges.size() > 0) {
                 std::vector<Range>::const_iterator i = ranges.begin();
 
-                Gui::Command::openCommand("Bottom-align cell");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Bottom-align cell"));
                 for (; i != ranges.end(); ++i)
                     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setAlignment('%s', 'bottom', 'keep')", sheet->getNameInDocument(),
                                             i->rangeString().c_str());
@@ -547,7 +547,7 @@ void CmdSpreadsheetAlignVCenter::activated(int iMsg)
             if (ranges.size() > 0) {
                 std::vector<Range>::const_iterator i = ranges.begin();
 
-                Gui::Command::openCommand("Vertically center cells");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Vertically center cells"));
                 for (; i != ranges.end(); ++i)
                     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setAlignment('%s', 'vcenter', 'keep')", sheet->getNameInDocument(),
                                             i->rangeString().c_str());
@@ -616,7 +616,7 @@ void CmdSpreadsheetStyleBold::activated(int iMsg)
                 std::vector<Range> ranges = sheetView->selectedRanges();
                 std::vector<Range>::const_iterator i = ranges.begin();
 
-                Gui::Command::openCommand("Set bold text");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Set bold text"));
                 for (; i != ranges.end(); ++i) {
                     if (!allBold)
                         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setStyle('%s', 'bold', 'add')", sheet->getNameInDocument(),
@@ -690,7 +690,7 @@ void CmdSpreadsheetStyleItalic::activated(int iMsg)
                 std::vector<Range> ranges = sheetView->selectedRanges();
                 std::vector<Range>::const_iterator i = ranges.begin();
 
-                Gui::Command::openCommand("Set italic text");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Set italic text"));
                 for (; i != ranges.end(); ++i) {
                     if (!allItalic)
                         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setStyle('%s', 'italic', 'add')", sheet->getNameInDocument(),
@@ -764,7 +764,7 @@ void CmdSpreadsheetStyleUnderline::activated(int iMsg)
                 std::vector<Range> ranges = sheetView->selectedRanges();
                 std::vector<Range>::const_iterator i = ranges.begin();
 
-                Gui::Command::openCommand("Set underline text");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Set underline text"));
                 for (; i != ranges.end(); ++i) {
                     if (!allUnderline)
                         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setStyle('%s', 'underline', 'add')", sheet->getNameInDocument(),
@@ -875,7 +875,7 @@ void CmdCreateSpreadsheet::activated(int iMsg)
     Q_UNUSED(iMsg);
     std::string FeatName = getUniqueObjectName("Spreadsheet");
 
-    openCommand("Create Spreadsheet");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create Spreadsheet"));
     doCommand(Doc,"App.activeDocument().addObject('Spreadsheet::Sheet','%s\')",FeatName.c_str());
     doCommand(Gui,"Gui.Selection.clearSelection()\n");
     doCommand(Gui,"Gui.Selection.addSelection(App.activeDocument().Name,'%s\')",FeatName.c_str());

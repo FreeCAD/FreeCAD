@@ -1202,8 +1202,8 @@ def cleanArchSplitter(objects=None):
 def rebuildArchShape(objects=None):
     """rebuildArchShape([objects]): takes the faces from the base shape of the given (or selected
     if objects is None) Arch objects, and tries to rebuild a valid solid from them."""
-    import FreeCAD,FreeCADGui,Part
-    if not objects:
+    import FreeCAD,Part
+    if not objects and FreeCAD.GuiUp:
         objects = FreeCADGui.Selection.getSelection()
     if not isinstance(objects,list):
         objects = [objects]

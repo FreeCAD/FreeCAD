@@ -126,7 +126,7 @@ void CmdMeshPartTrimByPlane::activated(int)
 
     Base::Placement plnPlacement = static_cast<App::GeoFeature*>(plane.front())->Placement.getValue();
 
-    openCommand("Trim with plane");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Trim with plane"));
     std::vector<App::DocumentObject*> docObj = Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
     for (std::vector<App::DocumentObject*>::iterator it = docObj.begin(); it != docObj.end(); ++it) {
         Base::Vector3d normal(0,0,1);
@@ -212,7 +212,7 @@ void CmdMeshPartSection::activated(int)
     plm.getRotation().multVec(normal, normal);
     Base::Vector3d base = plm.getPosition();
 
-    openCommand("Section with plane");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Section with plane"));
     std::vector<App::DocumentObject*> docObj = Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
     Mesh::MeshObject::TPlane tplane;
     tplane.first = Base::convertTo<Base::Vector3f>(base);

@@ -66,7 +66,7 @@ class _ViewProviderCollisionSim:
         return True
 
     def getIcon(self):
-        return ":/icons/Path-Contour.svg"
+        return ":/icons/Path_Contour.svg"
 
     def __getstate__(self):
         return None

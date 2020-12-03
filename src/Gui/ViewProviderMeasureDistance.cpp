@@ -265,7 +265,7 @@ int PointMarker::countPoints() const
 void PointMarker::customEvent(QEvent*)
 {
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    doc->openCommand("Measure distance");
+    doc->openCommand(QT_TRANSLATE_NOOP("Command", "Measure distance"));
     App::DocumentObject* obj = doc->getDocument()->addObject
         (App::MeasureDistance::getClassTypeId().getName(),"Distance");
 

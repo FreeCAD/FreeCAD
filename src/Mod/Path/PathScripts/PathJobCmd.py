@@ -50,7 +50,7 @@ class CommandJobCreate:
         pass
 
     def GetResources(self):
-        return {'Pixmap': 'Path-Job',
+        return {'Pixmap': 'Path_Job',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Job"),
                 'Accel': "P, J",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Creates a Path Job object")}
@@ -91,7 +91,7 @@ class CommandJobTemplateExport:
         pass
 
     def GetResources(self):
-        return {'Pixmap': 'Path-ExportTemplate',
+        return {'Pixmap': 'Path_ExportTemplate',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Export Template"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Exports Path Job as a template to be used for other jobs")}
 

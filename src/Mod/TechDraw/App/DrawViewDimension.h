@@ -102,9 +102,12 @@ public:
     App::PropertyBool              TheoreticalExact;
     App::PropertyBool              Inverted;
     App::PropertyString            FormatSpec;
+    App::PropertyString            FormatSpecUnderTolerance;
+    App::PropertyString            FormatSpecOverTolerance;
     App::PropertyBool              Arbitrary;
-    App::PropertyFloat             OverTolerance;
-    App::PropertyFloat             UnderTolerance;
+    App::PropertyBool              ArbitraryTolerances;
+    App::PropertyQuantity          OverTolerance;
+    App::PropertyQuantity          UnderTolerance;
 
     enum RefType{
             invalidRef,
@@ -134,7 +137,10 @@ public:
     //return PyObject as DrawViewDimensionPy
     virtual PyObject *getPyObject(void) override;
 
-    virtual std::string getFormatedValue(int partial = 0);
+    virtual std::pair<std::string, std::string> getFormattedToleranceValues(int partial = 0);
+    virtual std::string getFormattedDimensionValue(int partial = 0);
+    virtual std::string formatValue(qreal value, QString qFormatSpec, int partial = 0);
+
     virtual double getDimValue();
     QStringList getPrefixSuffixSpec(QString fSpec);
 
@@ -161,6 +167,7 @@ public:
     bool useDecimals() const;
 
 protected:
+    virtual void handleChangedPropertyType(Base::XMLReader &, const char * , App::Property * ) override;
     virtual void onChanged(const App::Property* prop) override;
     virtual void onDocumentRestored() override;
     std::string getPrefix() const;

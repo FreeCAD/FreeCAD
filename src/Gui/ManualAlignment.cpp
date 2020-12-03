@@ -996,7 +996,7 @@ void ManualAlignment::align()
         bool ok = computeAlignment(myAlignModel.activeGroup().getPoints(), myFixedGroup.getPoints());
         if (ok && myDocument) {
             // Align views
-            myDocument->openCommand("Align");
+            myDocument->openCommand(QT_TRANSLATE_NOOP("Command", "Align"));
             for (std::vector<App::DocumentObject*>::iterator it = pViews.begin(); it != pViews.end(); ++it)
                 alignObject(*it);
             myDocument->commitCommand();

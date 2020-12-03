@@ -36,7 +36,7 @@ def translate(context, text, disambig=None):
 class CommandPathSimpleCopy:
 
     def GetResources(self):
-        return {'Pixmap': 'Path-SimpleCopy',
+        return {'Pixmap': 'Path_SimpleCopy',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_SimpleCopy", "Simple Copy"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_SimpleCopy", "Creates a non-parametric copy of another path")}
 

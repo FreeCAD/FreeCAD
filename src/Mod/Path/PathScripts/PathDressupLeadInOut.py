@@ -508,7 +508,7 @@ class CommandPathDressupLeadInOut:
     # pylint: disable=no-init
 
     def GetResources(self):
-        return {'Pixmap': 'Path-Dressup',
+        return {'Pixmap': 'Path_Dressup',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_DressupLeadInOut", "LeadInOut Dressup"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_DressupLeadInOut", "Creates a Cutter Radius Compensation G41/G42 Entry Dressup object from a selected path")}
 

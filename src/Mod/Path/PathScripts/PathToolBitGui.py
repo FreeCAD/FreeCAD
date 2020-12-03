@@ -69,7 +69,7 @@ class ViewProvider(object):
             pixmap = QtGui.QPixmap()
             pixmap.loadFromData(png, 'PNG')
             return QtGui.QIcon(pixmap)
-        return ':/icons/Path-ToolBit.svg'
+        return ':/icons/Path_ToolBit.svg'
 
     def __getstate__(self):
         return None
@@ -181,16 +181,31 @@ class ToolBitGuiFactory(PathToolBit.ToolBitFactory):
         FreeCAD.ActiveDocument.commitTransaction()
         return tool
 
+def isValidFileName(filename):
+    print(filename)
+    try:
+        with open(filename, "w") as tempfile:
+            return True
+    except:
+        return False
+
 
 def GetNewToolFile(parent=None):
     if parent is None:
         parent = QtGui.QApplication.activeWindow()
+
     foo = QtGui.QFileDialog.getSaveFileName(parent, 'Tool',
                                             PathPreferences.lastPathToolBit(),
                                             '*.fctb')
     if foo and foo[0]:
-        PathPreferences.setLastPathToolBit(os.path.dirname(foo[0]))
-        return foo[0]
+        if not isValidFileName(foo[0]):
+            msgBox = QtGui.QMessageBox()
+            msg = translate("Path", "Invalid Filename", None)
+            msgBox.setText(msg)
+            msgBox.exec_()
+        else:
+            PathPreferences.setLastPathToolBit(os.path.dirname(foo[0]))
+            return foo[0]
     return None
 
 

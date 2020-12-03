@@ -484,7 +484,7 @@ void QGIViewBalloon::balloonLabelDragged(bool ctrl)
     //set feature position (x,y) from graphic position
     double x = Rez::appX(balloonLabel->X() / scale),
            y = Rez::appX(balloonLabel->Y() / scale);
-    Gui::Command::openCommand("Drag Balloon");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Drag Balloon"));
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.X = %f", dvb->getNameInDocument(), x);
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Y = %f", dvb->getNameInDocument(), -y);
     //if origin is also moving, calc new origin and update feature

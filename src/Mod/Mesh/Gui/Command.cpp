@@ -107,7 +107,7 @@ void CmdMeshTransform::activated(int)
   std::string fName = getUniqueObjectName("Move");
   std::vector<Gui::SelectionSingleton::SelObj> cSel = getSelection().getSelection();
 
-  openCommand("Mesh Mesh Create");
+  openCommand(QT_TRANSLATE_NOOP("Command", "Mesh Mesh Create"));
   doCommand(Doc,"App.activeDocument().addObject(\"Mesh::Transform\",\"%s\")",fName.c_str());
   doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",fName.c_str(),cSel[0].FeatName);
   doCommand(Gui,"Gui.hide(\"%s\")",cSel[0].FeatName);
@@ -146,7 +146,7 @@ void CmdMeshDemolding::activated(int)
   std::string fName = getUniqueObjectName("Demolding");
   std::vector<Gui::SelectionSingleton::SelObj> cSel = getSelection().getSelection();
 
-  openCommand("Mesh Mesh Create");
+  openCommand(QT_TRANSLATE_NOOP("Command", "Mesh Mesh Create"));
   doCommand(Doc,"App.activeDocument().addObject(\"Mesh::TransformDemolding\",\"%s\")",fName.c_str());
   doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",fName.c_str(),cSel[0].FeatName);
   doCommand(Gui,"Gui.hide(\"%s\")",cSel[0].FeatName);
@@ -185,7 +185,7 @@ void CmdMeshToolMesh::activated(int)
     App::DocumentObject* mesh = fea.front();
     App::DocumentObject* tool = fea.back();
 
-    openCommand("Segment by tool mesh");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Segment by tool mesh"));
     doCommand(Doc, "import Mesh");
     doCommand(Gui, "import MeshGui");
     doCommand(Doc,
@@ -240,7 +240,7 @@ void CmdMeshUnion::activated(int)
     std::string name3 = getUniqueObjectName("Union");
 
     try {
-        openCommand("Mesh union");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Mesh union"));
         doCommand(Doc,
             "import OpenSCADUtils\n"
             "mesh = OpenSCADUtils.meshoptempfile('union',(App.ActiveDocument.%s.Mesh,App.ActiveDocument.%s.Mesh))\n"
@@ -309,7 +309,7 @@ void CmdMeshDifference::activated(int)
     std::string name1 = obj.front()->getNameInDocument();
     std::string name2 = obj.back()->getNameInDocument();
     std::string name3 = getUniqueObjectName("Difference");
-    openCommand("Mesh difference");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Mesh difference"));
 
     try {
         doCommand(Doc,
@@ -380,7 +380,7 @@ void CmdMeshIntersection::activated(int)
     std::string name1 = obj.front()->getNameInDocument();
     std::string name2 = obj.back()->getNameInDocument();
     std::string name3 = getUniqueObjectName("Intersection");
-    openCommand("Mesh intersection");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Mesh intersection"));
 
     try {
         doCommand(Doc,
@@ -466,7 +466,7 @@ void CmdMeshImport::activated(int)
     for (QStringList::Iterator it = fn.begin(); it != fn.end(); ++it) {
         std::string unicodepath = Base::Tools::escapedUnicodeFromUtf8((*it).toUtf8().data());
         unicodepath = Base::Tools::escapeEncodeFilename(unicodepath);
-        openCommand("Import Mesh");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Import Mesh"));
         doCommand(Doc,"import Mesh");
         doCommand(Doc,"Mesh.insert(u\"%s\")",
                   unicodepath.c_str());
@@ -662,7 +662,7 @@ void CmdMeshVertexCurvature::activated(int)
         fName += "_Curvature";
         fName = getUniqueObjectName(fName.c_str());
 
-        openCommand("Mesh VertexCurvature");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Mesh VertexCurvature"));
         App::DocumentObject* grp = App::DocumentObjectGroup::getGroupOfObject( *it );
         if (grp)
             doCommand(Doc,"App.activeDocument().getObject(\"%s\").newObject(\"Mesh::Curvature\",\"%s\")",grp->getNameInDocument(), fName.c_str());
@@ -1411,7 +1411,7 @@ void CmdMeshSmoothing::activated(int)
     MeshGui::SmoothingDialog dlg(Gui::getMainWindow());
     if (dlg.exec() == QDialog::Accepted) {
         Gui::WaitCursor wc;
-        openCommand("Mesh Smoothing");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Mesh Smoothing"));
         std::vector<App::DocumentObject*> meshes = getSelection().getObjectsOfType(Mesh::Feature::getClassTypeId());
         for (std::vector<App::DocumentObject*>::const_iterator it = meshes.begin(); it != meshes.end(); ++it) {
             Mesh::Feature* mesh = (Mesh::Feature*)*it;
@@ -1502,7 +1502,7 @@ CmdMeshHarmonizeNormals::CmdMeshHarmonizeNormals()
 void CmdMeshHarmonizeNormals::activated(int)
 {
     std::vector<App::DocumentObject*> meshes = getSelection().getObjectsOfType(Mesh::Feature::getClassTypeId());
-    openCommand("Harmonize mesh normals");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Harmonize mesh normals"));
     for (std::vector<App::DocumentObject*>::const_iterator it = meshes.begin(); it != meshes.end(); ++it) {
         doCommand(Doc,"App.activeDocument().getObject(\"%s\").Mesh.harmonizeNormals()"
                      ,(*it)->getNameInDocument());
@@ -1536,7 +1536,7 @@ CmdMeshFlipNormals::CmdMeshFlipNormals()
 void CmdMeshFlipNormals::activated(int)
 {
     std::vector<App::DocumentObject*> meshes = getSelection().getObjectsOfType(Mesh::Feature::getClassTypeId());
-    openCommand("Flip mesh normals");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Flip mesh normals"));
     for (std::vector<App::DocumentObject*>::const_iterator it = meshes.begin(); it != meshes.end(); ++it) {
         doCommand(Doc,"App.activeDocument().getObject(\"%s\").Mesh.flipNormals()"
                      ,(*it)->getNameInDocument());
@@ -1647,7 +1647,7 @@ void CmdMeshFillupHoles::activated(int)
     int FillupHolesOfLength = QInputDialog::getInt(Gui::getMainWindow(), QObject::tr("Fill holes"),
                                 QObject::tr("Fill holes with maximum number of edges:"), 3, 3, 10000, 1, &ok);
     if (!ok) return;
-    openCommand("Fill up holes");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Fill up holes"));
     for (std::vector<App::DocumentObject*>::const_iterator it = meshes.begin(); it != meshes.end(); ++it) {
         doCommand(Doc,"App.activeDocument().getObject(\"%s\").Mesh.fillupHoles(%d)"
                      ,(*it)->getNameInDocument(), FillupHolesOfLength);
@@ -1798,7 +1798,7 @@ void CmdMeshMerge::activated(int)
     if (!pcDoc)
         return;
 
-    openCommand("Mesh merge");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Mesh merge"));
     Mesh::Feature *pcFeature = static_cast<Mesh::Feature*>(pcDoc->addObject("Mesh::Feature", "Mesh"));
     Mesh::MeshObject* newMesh = pcFeature->Mesh.startEditing();
     std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
@@ -1841,7 +1841,7 @@ void CmdMeshSplitComponents::activated(int)
     if (!pcDoc)
         return;
 
-    openCommand("Mesh split");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Mesh split"));
     std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
     for (std::vector<App::DocumentObject*>::const_iterator it = objs.begin(); it != objs.end(); ++it) {
         const MeshObject& mesh = static_cast<Mesh::Feature*>(*it)->Mesh.getValue();
@@ -1893,7 +1893,7 @@ void CmdMeshScale::activated(int)
     if (!ok || factor == 0)
         return;
 
-    openCommand("Mesh scale");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Mesh scale"));
     std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
     Base::Matrix4D mat;
     mat.scale(factor,factor,factor);

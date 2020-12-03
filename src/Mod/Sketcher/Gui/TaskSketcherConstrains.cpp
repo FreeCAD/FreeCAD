@@ -619,7 +619,7 @@ void ConstraintView::swapNamedOfSelectedItems()
     ss << "DummyConstraint" << rand();
     std::string tmpname = ss.str();
 
-    Gui::Command::openCommand("Swap constraint names");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Swap constraint names"));
     Gui::cmdAppObjectArgs(item1->sketch, "renameConstraint(%d, u'%s')",
                           item1->ConstraintNbr, tmpname.c_str());
     Gui::cmdAppObjectArgs(item2->sketch, "renameConstraint(%d, u'%s')",
@@ -842,7 +842,7 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemChanged(QListWidgetIte
     if (newName != currConstraintName && !basename.empty()) {
         std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(newName.c_str());
 
-        Gui::Command::openCommand("Rename sketch constraint");
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Rename sketch constraint"));
         try {
             Gui::cmdAppObjectArgs(sketch ,"renameConstraint(%d, u'%s')",
                                   it->ConstraintNbr, escapedstr.c_str());
@@ -857,7 +857,7 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemChanged(QListWidgetIte
     }
 
     // update constraint virtual space status
-    Gui::Command::openCommand("Update constraint's virtual space");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update constraint's virtual space"));
     try {
         Gui::cmdAppObjectArgs(sketch, "setVirtualSpace(%d, %s)",
                               it->ConstraintNbr,

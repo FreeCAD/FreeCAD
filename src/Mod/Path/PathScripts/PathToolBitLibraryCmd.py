@@ -35,7 +35,7 @@ class CommandToolBitSelectorOpen:
         pass
 
     def GetResources(self):
-        return {'Pixmap': 'Path-ToolTable',
+        return {'Pixmap': 'Path_ToolTable',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("PathToolBitLibrary", "ToolBit Dock"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathToolBitLibrary", "Toggle the Toolbit Dock"),
                 'Accel': "P, T",
@@ -65,7 +65,7 @@ class CommandToolBitLibraryOpen:
         pass
 
     def GetResources(self):
-        return {'Pixmap': 'Path-ToolTable',
+        return {'Pixmap': 'Path_ToolTable',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("PathToolBitLibrary", "ToolBit Library editor"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathToolBitLibrary", "Open an editor to manage ToolBit libraries"),
                 'CmdType': "ForEdit"}
@@ -93,7 +93,7 @@ class CommandToolBitLibraryOpen:
 #         pass
 
 #     def GetResources(self):
-#         return {'Pixmap': 'Path-ToolTable',
+#         return {'Pixmap': 'Path_ToolTable',
 #                 'MenuText': QtCore.QT_TRANSLATE_NOOP("PathToolBitLibrary", "Load ToolBit Library"),
 #                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathToolBitLibrary", "Load an entire ToolBit library or part of it into a job")}
 

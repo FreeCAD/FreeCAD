@@ -300,7 +300,7 @@ class ViewProviderDressup:
 class CommandPathDressup:
 
     def GetResources(self):
-        return {'Pixmap': 'Path-Dressup',
+        return {'Pixmap': 'Path_Dressup',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_DressupZCorrect", "Z Depth Correction Dress-up"),
                 'Accel': "",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_DressupZCorrect", "Use Probe Map to correct Z depth")}

@@ -226,9 +226,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 Command = PathOpGui.SetupOperation('Surface',
         PathSurface.Create,
         TaskPanelOpPage,
-        'Path-3DSurface',
-        QtCore.QT_TRANSLATE_NOOP("Surface", "3D Surface"),
-        QtCore.QT_TRANSLATE_NOOP("Surface", "Create a 3D Surface Operation from a model"),
+        'Path_3DSurface',
+        QtCore.QT_TRANSLATE_NOOP("Path_Surface", "3D Surface"),
+        QtCore.QT_TRANSLATE_NOOP("Path_Surface", "Create a 3D Surface Operation from a model"),
         PathSurface.SetupProperties)
 
 FreeCAD.Console.PrintLog("Loading PathSurfaceGui... done\n")

@@ -344,7 +344,7 @@ void TaskCenterLine::onFlipChanged()
 void TaskCenterLine::createCenterLine(void)
 {
 //    Base::Console().Message("TCL::createCenterLine() - m_type: %d\n", m_type);
-    Gui::Command::openCommand("Create CenterLine");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create CenterLine"));
 //    bool vertical = false;
     double hShift = ui->qsbHorizShift->rawValue();
     double vShift = ui->qsbVertShift->rawValue();
@@ -389,7 +389,7 @@ void TaskCenterLine::createCenterLine(void)
 void TaskCenterLine::updateCenterLine(void)
 {
 //    Base::Console().Message("TCL::updateCenterLine()\n");
-    Gui::Command::openCommand("Edit CenterLine");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit CenterLine"));
     m_cl->m_format.m_color.setValue<QColor>(ui->cpLineColor->color() );
     m_cl->m_format.m_weight = ui->dsbWeight->value().getValue();
     m_cl->m_format.m_style = ui->cboxStyle->currentIndex() + 1;

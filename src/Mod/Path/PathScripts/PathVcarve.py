@@ -179,13 +179,13 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         obj.addProperty("App::PropertyFloat", "Discretize", "Path",
                         QtCore.QT_TRANSLATE_NOOP("PathVcarve",
                         "The deflection value for discretizing arcs"))
-        obj.addProperty("App::PropertyFloat", "Threshold", "Path",
+        obj.addProperty("App::PropertyFloat", "Colinear", "Path",
                         QtCore.QT_TRANSLATE_NOOP("PathVcarve",
-                        "cutoff for removing colinear segments (degrees). \
+                        "Cutoff for removing colinear segments (degrees). \
                         default=10.0."))
         obj.addProperty("App::PropertyFloat", "Tolerance", "Path",
                 QtCore.QT_TRANSLATE_NOOP("PathVcarve", ""))
-        obj.Threshold = 10.0
+        obj.Colinear = 10.0
         obj.Discretize = 0.01
         obj.Tolerance = PathPreferences.defaultGeometryTolerance()
         self.setupAdditionalProperties(obj)
@@ -261,7 +261,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             vd.colorExterior(EXTERIOR2,
                 lambda v: not f.isInside(v.toPoint(f.BoundBox.ZMin),
                 obj.Tolerance, True))
-            vd.colorColinear(COLINEAR, obj.Threshold)
+            vd.colorColinear(COLINEAR, obj.Colinear)
             vd.colorTwins(TWIN)
 
             wires = _collectVoronoiWires(vd);
