@@ -1501,8 +1501,6 @@ void ExpLineEdit::openFormulaDialog()
     connect(box, SIGNAL(finished(int)), this, SLOT(finishFormulaDialog()));
     box->show();
 
-    QPoint pos = mapToGlobal(QPoint(0,0));
-    box->move(pos-box->expressionPosition());
     box->setExpressionInputSize(width(), height());
 }
 

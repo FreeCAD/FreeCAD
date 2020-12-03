@@ -58,7 +58,6 @@ public:
 
     bool discardedFormula() const { return discarded; }
 
-    QPoint expressionPosition() const;
     void   setExpressionInputSize(int width, int height);
 
     bool eventFilter(QObject *obj, QEvent *event);
@@ -70,6 +69,8 @@ protected:
     void showEvent(QShowEvent*);
     void mouseReleaseEvent(QMouseEvent*);
     void mousePressEvent(QMouseEvent*);
+
+    void adjustPosition();
 
 private Q_SLOTS:
     void textChanged(const QString & text);
@@ -83,6 +84,9 @@ private:
     const Base::Unit impliedUnit;
 
     int minimumWidth;
+    bool adjustingPosition = false;
+    bool noBackground;
+    bool leftAligned = true;
 };
 
 }
