@@ -113,6 +113,18 @@ void GeometryFacade::copyId(const Part::Geometry * src, Part::Geometry * dst)
     gfdst->setId(gfsrc->getId());
 }
 
+bool GeometryFacade::getConstruction(const Part::Geometry * geometry)
+{
+    auto gf = GeometryFacade::getFacade(geometry);
+    return gf->getConstruction();
+}
+
+void GeometryFacade::setConstruction(Part::Geometry * geometry, bool construction)
+{
+    auto gf = GeometryFacade::getFacade(geometry);
+    return gf->setConstruction(construction);
+}
+
 PyObject * GeometryFacade::getPyObject(void)
 {
     return new GeometryFacadePy(new GeometryFacade(this->Geo));
