@@ -8406,7 +8406,7 @@ App::DocumentObject *SketchObject::getSubObject(
             if(!child)
                 return 0;
             return child->getSubObject(dot+1,pyObj,pmat,true,depth+1);
-        }else if(boost::starts_with(subname,"Vertex") || boost::starts_with(subname,"Edge"))
+        } else if (Part::TopoShape::shapeTypeAndIndex(subname).second > 0)
             return Part2DObject::getSubObject(subname,pyObj,pmat,transform,depth);
     }
     else {
