@@ -138,7 +138,7 @@ DlgSettingsUI::DlgSettingsUI(QWidget* parent)
 #define FC_UI_PARAM(_name, _label, _type, _getter, _setter) do {\
         ui->_name = new _type(parent);\
         ui->label##_name = new QLabel(parent);\
-        ui->label##_name->setMinimumSize(240,0);\
+        ui->label##_name->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred);\
         layout->addWidget(ui->label##_name, row, 0);\
         layout->addWidget(ui->_name, row, 1);\
         ++row;\
@@ -155,20 +155,20 @@ DlgSettingsUI::DlgSettingsUI(QWidget* parent)
     auto group = new QGroupBox(tr("Dockable Overlay"), this);
     vlayout->addWidget(group);
     auto layout = new QGridLayout();
-    layout->setColumnStretch(0,1);
     group->setLayout(layout);
 
     int row = 0;
     FC_OVERLAY_PARAMS;
+    layout->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding), row-1, 2);
 
     group = new QGroupBox(tr("Pie Menu"), this);
     vlayout->addWidget(group);
     layout = new QGridLayout();
-    layout->setColumnStretch(0,1);
     group->setLayout(layout);
 
     row = 0;
     FC_PIEMENU_PARAMS;
+    layout->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding), row-1, 2);
 
     vlayout->addStretch();
 
@@ -258,8 +258,7 @@ void DlgSettingsUI::setOffset1(qreal t)
     if (ui->a1 == ui->b1) {
         ui->a1 = label->x();
         QPoint pos(width(), 0);
-        ui->b1 = ui->DockOverlayAnimationCurve->x()
-            - label->fontMetrics().boundingRect(label->text()).width() - 5;
+        ui->b1 = width() - label->fontMetrics().boundingRect(label->text()).width() - 5;
     }
     label->move(ui->a1 * (1-t) + ui->b1 * t, label->y());
 }
@@ -278,8 +277,7 @@ void DlgSettingsUI::setOffset2(qreal t)
     if (ui->a2 == ui->b2) {
         ui->a2 = label->x();
         QPoint pos(width(), 0);
-        ui->b2 = ui->PieMenuAnimationCurve->x()
-            - label->fontMetrics().boundingRect(label->text()).width();
+        ui->b2 = width() - label->fontMetrics().boundingRect(label->text()).width();
     }
     label->move(ui->a2 * (1-t) + ui->b2 * t, label->y());
 }
