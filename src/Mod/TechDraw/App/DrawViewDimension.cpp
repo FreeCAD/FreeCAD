@@ -610,7 +610,6 @@ std::string DrawViewDimension::getBaseLengthUnit(Base::UnitSystem system)
 std::string DrawViewDimension::formatValue(qreal value, QString qFormatSpec, int partial)
 {
     std::string result;
-    bool multiValueSchema = false;
 
     QString qUserStringUnits;
     QString formattedValue;
@@ -656,7 +655,6 @@ std::string DrawViewDimension::formatValue(qreal value, QString qFormatSpec, int
         QString schemeSecond = QString::fromUtf8("S");
         QString displaySub = qUserString.replace(schemeMinute, dispMinute);
         displaySub = displaySub.replace(schemeSecond, dispSecond);
-        multiValueSchema = true;
         qMultiValueStr = displaySub;
         if (!genPrefix.empty()) {
             // prefix + 48*30'30" + suffix
@@ -680,7 +678,7 @@ std::string DrawViewDimension::formatValue(qreal value, QString qFormatSpec, int
                 QString newSpecifier = QString::fromStdString("%." + std::to_string(globalPrecision) + "f");
                 formatSpecifier.replace(QString::fromLatin1("%g"), newSpecifier, Qt::CaseInsensitive);
         }
-               
+
         // qUserString is the value + unit with default decimals, so extract the unit
         // we cannot just use unit.getString() because this would convert '°' to 'deg'
         QRegExp rxUnits(QString::fromUtf8(" \\D*$")); // space + any non digits at end of string
@@ -747,7 +745,6 @@ std::string DrawViewDimension::formatValue(qreal value, QString qFormatSpec, int
 
     if ((unitSystem == Base::UnitSystem::ImperialBuilding) &&
         !angularMeasure) {
-        multiValueSchema = true;
         qMultiValueStr = formattedValue;
         if (!genPrefix.empty()) {
             //qUserString from Quantity includes units - prefix + R + nnn ft + suffix
@@ -759,7 +756,7 @@ std::string DrawViewDimension::formatValue(qreal value, QString qFormatSpec, int
 
     result = formattedValue.toStdString();
 
-    if (partial == 0) { // then also multiValueSchema is true
+    if (partial == 0) {
         result = Base::Tools::toStdString(formatPrefix) +
             Base::Tools::toStdString(qMultiValueStr) +
             Base::Tools::toStdString(formatSuffix) +
