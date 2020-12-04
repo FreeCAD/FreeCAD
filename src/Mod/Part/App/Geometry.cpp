@@ -208,12 +208,21 @@ unsigned int Geometry::getMemSize (void) const
 void Geometry::Save(Base::Writer &writer) const
 {
     // We always store an extension array even if empty, so that restoring is consistent.
-    writer.Stream() << writer.ind() << "<GeoExtensions count=\"" << extensions.size() << "\">" << std::endl;
+
+    // Get the number of persistent extensions
+    int counter = 0;
+    for(auto att:extensions) {
+        if(att->isDerivedFrom(Part::GeometryPersistenceExtension::getClassTypeId()))
+            counter++;
+    }
+
+    writer.Stream() << writer.ind() << "<GeoExtensions count=\"" << counter << "\">" << std::endl;
 
     writer.incInd();
 
     for(auto att:extensions) {
-        att->Save(writer);
+        if(att->isDerivedFrom(Part::GeometryPersistenceExtension::getClassTypeId()))
+            std::static_pointer_cast<Part::GeometryPersistenceExtension>(att)->Save(writer);
     }
 
     writer.decInd();
@@ -234,7 +243,7 @@ void Geometry::Restore(Base::XMLReader &reader)
             reader.readElement("GeoExtension");
             const char* TypeName = reader.getAttribute("type");
             Base::Type type = Base::Type::fromName(TypeName);
-            GeometryExtension *newE = (GeometryExtension *)type.createInstance();
+            GeometryPersistenceExtension *newE = (GeometryPersistenceExtension *)type.createInstance();
             newE->Restore(reader);
 
             extensions.push_back(std::shared_ptr<GeometryExtension>(newE));
