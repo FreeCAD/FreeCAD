@@ -36,7 +36,7 @@ using namespace Sketcher;
 constexpr std::array<const char *, InternalType::NumInternalGeometryType> SketchGeometryExtension::internaltype2str;
 constexpr std::array<const char *,GeometryMode::NumGeometryMode> SketchGeometryExtension::geometrymode2str;
 
-TYPESYSTEM_SOURCE(Sketcher::SketchGeometryExtension,Part::GeometryExtension)
+TYPESYSTEM_SOURCE(Sketcher::SketchGeometryExtension,Part::GeometryPersistenceExtension)
 
 // scoped within the class, multithread ready
 std::atomic<long> SketchGeometryExtension::_GeometryID;
@@ -52,11 +52,6 @@ SketchGeometryExtension::SketchGeometryExtension(long cid):Id(cid),InternalGeome
 }
 
 // Persistence implementer
-unsigned int SketchGeometryExtension::getMemSize (void) const
-{
-    return sizeof(long int);
-}
-
 void SketchGeometryExtension::Save(Base::Writer &writer) const
 {
     writer.Stream() << writer.ind() << "<GeoExtension type=\"" << this->getTypeId().getName();

@@ -46,7 +46,7 @@ public:
     virtual void setRef(const std::string & ref) = 0;
 };
 
-class SketcherExport ExternalGeometryExtension : public Part::GeometryExtension, private ISketchExternalGeometryExtension
+class SketcherExport ExternalGeometryExtension : public Part::GeometryPersistenceExtension, private ISketchExternalGeometryExtension
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
@@ -68,7 +68,6 @@ public:
     virtual ~ExternalGeometryExtension() override = default;
 
     // Persistence implementer ---------------------
-    virtual unsigned int getMemSize(void) const override;
     virtual void Save(Base::Writer &/*writer*/) const override;
     virtual void Restore(Base::XMLReader &/*reader*/) override;
 

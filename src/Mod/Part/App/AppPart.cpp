@@ -394,6 +394,7 @@ PyMOD_INIT_FUNC(Part)
 
     // Geometry types
     Part::GeometryExtension       	::init();
+    Part::GeometryPersistenceExtension	::init();
     Part::GeometryIntExtension    	::init();
     Part::GeometryStringExtension 	::init();
     Part::GeometryBoolExtension   	::init();

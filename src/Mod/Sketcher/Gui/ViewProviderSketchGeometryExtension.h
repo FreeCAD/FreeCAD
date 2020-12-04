@@ -35,11 +35,6 @@ public:
     ViewProviderSketchGeometryExtension();
     virtual ~ViewProviderSketchGeometryExtension() override = default;
 
-    // Persistence implementer ---------------------
-    virtual unsigned int getMemSize(void) const override;
-    virtual void Save(Base::Writer &/*writer*/) const override;
-    virtual void Restore(Base::XMLReader &/*reader*/) override;
-
     virtual std::unique_ptr<Part::GeometryExtension> copy(void) const override;
 
     virtual PyObject *getPyObject(void) override;

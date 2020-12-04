@@ -72,7 +72,7 @@ public:
     virtual void setGeometryMode(int flag, bool v=true) = 0;
 };
 
-class SketcherExport SketchGeometryExtension : public Part::GeometryExtension, private ISketchGeometryExtension
+class SketcherExport SketchGeometryExtension : public Part::GeometryPersistenceExtension, private ISketchGeometryExtension
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
@@ -82,7 +82,6 @@ public:
     virtual ~SketchGeometryExtension() override = default;
 
     // Persistence implementer ---------------------
-    virtual unsigned int getMemSize(void) const override;
     virtual void Save(Base::Writer &/*writer*/) const override;
     virtual void Restore(Base::XMLReader &/*reader*/) override;
 

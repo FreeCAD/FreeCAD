@@ -35,14 +35,9 @@ using namespace Sketcher;
 
 constexpr std::array<const char *, ExternalGeometryExtension::NumFlags> ExternalGeometryExtension::flag2str;
 
-TYPESYSTEM_SOURCE(Sketcher::ExternalGeometryExtension,Part::GeometryExtension)
+TYPESYSTEM_SOURCE(Sketcher::ExternalGeometryExtension,Part::GeometryPersistenceExtension)
 
 // Persistence implementer
-unsigned int ExternalGeometryExtension::getMemSize (void) const
-{
-    return sizeof(long int);
-}
-
 void ExternalGeometryExtension::Save(Base::Writer &writer) const
 {
     writer.Stream() << writer.ind() << "<GeoExtension type=\"" << this->getTypeId().getName();
