@@ -544,7 +544,7 @@ void BrowserView::onLinkClicked (const QUrl & url)
 #if PY_MAJOR_VERSION < 3
                     Gui::Command::doCommand(Gui::Command::Gui,"exec(open(unicode('%s', 'utf-8')).read())",(const char*) filename.toUtf8());
 #else
-                    Gui::Command::doCommand(Gui::Command::Gui,"exec(open('%s').read())",(const char*) filename.toUtf8());
+                    Gui::Command::doCommand(Gui::Command::Gui,"with open('%s') as file:\n\texec(file.read())",(const char*) filename.toUtf8());
 #endif
                 }
                 catch (const Base::Exception& e) {
