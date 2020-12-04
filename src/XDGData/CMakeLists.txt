@@ -15,10 +15,11 @@ endif()
 
 configure_file(
     org.freecadweb.FreeCAD.appdata.xml.in
-    ${CMAKE_BINARY_DIR}/org.freecadweb.FreeCAD.appdata.xml
+    org.freecadweb.FreeCAD.appdata.xml
 )
+
 install(
-    FILES ${CMAKE_BINARY_DIR}/org.freecadweb.FreeCAD.appdata.xml
+    FILES ${CMAKE_CURRENT_BINARY_DIR}/org.freecadweb.FreeCAD.appdata.xml
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/metainfo
 )
 
