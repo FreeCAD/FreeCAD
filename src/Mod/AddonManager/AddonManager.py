@@ -565,35 +565,31 @@ class UpdateWorker(QtCore.QThread):
     def run(self):
         "populates the list of addons"
         self.progressbar_show.emit(True)
-        u = urlopen("https://github.com/FreeCAD/FreeCAD-addons")
+        u = urlopen("https://raw.githubusercontent.com/FreeCAD/FreeCAD-addons/master/.gitmodules")
         p = u.read()
         if sys.version_info.major >= 3 and isinstance(p, bytes):
             p = p.decode("utf-8")
         u.close()
-        p = p.replace("\n"," ")
-        #p = re.findall("octicon-file-submodule(.*?)<time-ago datetime",p)
-
-        # Fix for github oct 2020 changes. This is not needed anymore in 0.19
-        # as this addon manager doesn't parse the html file anymore
-        # the line below retreives a list of "Owner/Repo" strings
-        p = ["/".join(e.split("/")[1:3]) for e in re.findall("href=\"(\/.*?tree.*?)\"",p) if not e.startswith("/FreeCAD/FreeCAD-addons")]
+        p1 = re.findall("url = (http.*?)\n",p)
+        names = re.findall("path = (.*?)\n",p)
+        links = []
+        for l in p1:
+            if l.endswith(".git"):
+                links.append(l[:-4])
+            else:
+                links.append(l)
         basedir = FreeCAD.getUserAppDataDir()
         moddir = basedir + os.sep + "Mod"
         repos = []
-        for l in p:
-            #name = re.findall("data-skip-pjax=\"true\">(.*?)<",l)[0]
-            #name = re.findall("title=\"(.*?) @",l)[0]
-            name = l.split("/")[1]
+        for i in range(len(links)):
+            name = names[i]
             self.info_label.emit(name)
-            #url = re.findall("title=\"(.*?) @",l)[0]
             try:
-                #url = "https://github.com/" + re.findall("href=\"\/(.*?)\/tree",l)[0]
-                url = "https://github.com/" + l
+                url = links[i]
             except:
                 pass
             else:
                 addondir = moddir + os.sep + name
-                #print ("found:",name," at ",url)
                 if not os.path.exists(addondir):
                     state = 0
                 else:
