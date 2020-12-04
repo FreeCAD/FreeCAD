@@ -1006,7 +1006,7 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
                     else
                         --pickBackFace;
                     doPick = true;
-                    FC_MSG("back face forward " << pickBackFace << " " << wev->getDelta());
+                    FC_LOG("back face forward " << pickBackFace << " " << wev->getDelta());
                     action->setHandled();
                 } else if (wev->getDelta() < 0) {
                     if(pickBackFace == -1)
@@ -1014,7 +1014,7 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
                     else
                         ++pickBackFace;
                     doPick = true;
-                    FC_MSG("back face reverse " << pickBackFace << " " << wev->getDelta());
+                    FC_LOG("back face reverse " << pickBackFace << " " << wev->getDelta());
                     action->setHandled();
                 }
             }
