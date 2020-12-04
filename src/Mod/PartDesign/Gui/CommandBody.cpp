@@ -54,7 +54,7 @@
 #include "TaskFeaturePick.h"
 #include "WorkflowManager.h"
 
-
+FC_LOG_LEVEL_INIT("PartDesign", true, true);
 
 //===========================================================================
 // Shared functions
@@ -120,7 +120,34 @@ void CmdPartDesignBody::activated(int iMsg)
 
     std::string support;
     std::string supportNames;
-    const auto &sels = Gui::Selection().getSelection("*",0);
+    auto sels = Gui::Selection().getSelectionT("*",0);
+    for(auto it=sels.begin(); it!=sels.end();) {
+        auto & sel = *it;
+        auto sobj = sel.getSubObject();
+        if (!sobj) {
+            FC_WARN("failed to get sub object " 
+                    << sel.getDocumentName() << '#' << sel.getObjectName()
+                    << '.' << sel.getSubName());
+            it = sels.erase(it);
+            continue;
+        }
+        if (sobj == actPart) {
+            it = sels.erase(it);
+            continue;
+        }
+        App::DocumentObject *owner = 0;
+        auto shape = Part::Feature::getTopoShape(
+                sel.getObject(), sel.getSubName().c_str(), true,0,&owner,false);
+        if(!owner || !shape.hasSubShape(TopAbs_SOLID)) {
+            FC_WARN("Ignore selection with no solid shape: " 
+                    << sel.getDocumentName() << '#' << sel.getObjectName()
+                    << '.' << sel.getSubName());
+            it = sels.erase(it);
+            continue;
+        }
+        ++it;
+    }
+
     if(sels.empty()) {
         viewAll = true;
     } else {
@@ -132,13 +159,15 @@ void CmdPartDesignBody::activated(int iMsg)
         ss << '[';
         for(auto &sel : sels) {
             App::DocumentObject *owner = 0;
-            auto shape = Part::Feature::getTopoShape(sel.pObject, sel.SubName, true,0,&owner,false);
+            App::DocumentObject *selObj = sel.getObject();
+            auto shape = Part::Feature::getTopoShape(
+                    selObj, sel.getSubName().c_str(), true,0,&owner,false);
             if(!owner || shape.isNull())
                 continue;
             auto part = App::Part::getPartOfObject(owner);
             if(!count // first object
                     && owner->getDocument() == activeDoc // not an external object
-                    && owner == sel.pObject // not a sub-object
+                    && owner == selObj // not a sub-object
                     && owner == owner->getLinkedObject(true) // not a link
                     && !owner->isDerivedFrom(PartDesign::Body::getClassTypeId()) // not a body
                     && !PartDesign::Body::findBodyOf(owner) // not in a body
@@ -154,8 +183,8 @@ void CmdPartDesignBody::activated(int iMsg)
             else
                 numShells += shape.countSubShapes(TopAbs_SHELL);
 
-            auto link = sel.pObject;
-            std::string subname(sel.SubName ? sel.SubName : "");
+            auto link = selObj;
+            std::string subname = sel.getSubName();
             if (topParent) {
                 std::string s(topSubName);
                 topParent->resolveRelativeLink(s, link, subname);
@@ -178,29 +207,6 @@ void CmdPartDesignBody::activated(int iMsg)
         }
         ss << "]";
 
-#if 0
-        QString warning;
-        if (numSolids > 1 && numShells == 0) {
-            warning = QObject::tr("The selected shape consists of multiple solids.\n"
-                    "This may lead to unexpected results.");
-        }
-        else if (numShells > 1 && numSolids == 0) {
-            warning = QObject::tr("The selected shape consists of multiple shells.\n"
-                    "This may lead to unexpected results.");
-        }
-        else if (numShells == 1 && numSolids == 0) {
-            warning = QObject::tr("The selected shape consists of only a shell.\n"
-                    "This may lead to unexpected results.");
-        }
-        else if (numSolids + numShells > 1) {
-            warning = QObject::tr("The selected shape consists of multiple solids or shells.\n"
-                    "This may lead to unexpected results.");
-        }
-        if (!warning.isEmpty()) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Base feature"), warning);
-        }
-#endif
-
         if(!baseFeature || count>1) {
             support = ss.str();
             baseFeature = 0;
@@ -211,7 +217,8 @@ void CmdPartDesignBody::activated(int iMsg)
     if(supportNames.size()) {
         auto res = QMessageBox::question(Gui::getMainWindow(), QObject::tr("Base feature"),
                 QObject::tr("You are about to use the following feature as base for the new body. "
-                            "Do you want to continue?\n")
+                            "Select 'Yes' to continue, 'No' to create the body without base feature, "
+                            "or 'Abort' to exit.\n")
                     + QString::fromUtf8(supportNames.c_str()),
                 QMessageBox::Yes|QMessageBox::No|QMessageBox::Abort,QMessageBox::No);
         if(res == QMessageBox::Abort)
