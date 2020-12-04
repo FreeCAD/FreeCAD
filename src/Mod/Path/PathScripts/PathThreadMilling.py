@@ -67,7 +67,7 @@ def radiiInternal(majorDia, minorDia, toolDia, toolCrest = None):
 def threadPasses(count, radii, majorDia, minorDia, toolDia, toolCrest = None):
     PathLog.track(count, radii, majorDia, minorDia, toolDia, toolCrest)
     minor, major = radii(majorDia, minorDia, toolDia, toolCrest)
-    dr  = (major - minor) / count
+    dr  = float(major - minor) / count
     return [major - dr * (count - (i + 1)) for i in range(count)]
 
 class _InternalThread(object):
