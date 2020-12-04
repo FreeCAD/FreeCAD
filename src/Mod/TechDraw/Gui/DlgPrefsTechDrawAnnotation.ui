@@ -696,7 +696,7 @@
            <string>Line group used to set line widths</string>
           </property>
           <property name="text">
-           <string>Line Group</string>
+           <string>Line Width Group</string>
           </property>
          </widget>
         </item>

@@ -156,7 +156,7 @@ void DlgPrefsTechDrawAnnotationImp::onLineGroupChanged(int index)
     }
     // format the tooltip
     std::stringstream TooltipText;
-    TooltipText << lgNames.at(0).substr(1) << " defines these line thicknesses:\n"
+    TooltipText << lgNames.at(0).substr(1) << " defines these line widths:\n"
         << "thin: " << lgNames.at(1) << "\n"
         << "graphic: " << lgNames.at(2) << "\n"
         << "thick: " << lgNames.at(3);
