@@ -1640,6 +1640,16 @@ QPixmap MainWindow::splashImage() const
         QFontMetrics metricVer(fontVer);
         int v = QtTools::horizontalAdvance(metricVer, version);
 
+        if (l + v + 20 > w) {
+            fontExe.setPointSize(18);
+            QFontMetrics metricExe(fontExe);
+            l = QtTools::horizontalAdvance(metricExe, title);
+
+            fontVer.setPointSize(10);
+            QFontMetrics metricVer(fontVer);
+            v = QtTools::horizontalAdvance(metricVer, version);
+        }
+
         int x = -1, y = -1;
         QRegExp rx(QLatin1String("(\\d+).(\\d+)"));
         if (rx.indexIn(position) != -1) {
