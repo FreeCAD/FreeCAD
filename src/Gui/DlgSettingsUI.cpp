@@ -60,6 +60,7 @@ public:
 
 #define FC_OVERLAY_PARAMS \
     FC_UI_CHECKBOX(DockOverlayHideTabBar,"Hide tab bar") \
+    FC_UI_CHECKBOX(DockOverlayHideScrollBar,"Hide scroll bar") \
     FC_UI_CHECKBOX(DockOverlayAutoView, "Auto hide in non 3D view") \
     FC_UI_CHECKBOX(DockOverlayMouseThrough, "Enable ALT + Mouse pass through") \
     FC_UI_CHECKBOX(DockOverlayAutoMouseThrough, "Auto mouse pass through") \

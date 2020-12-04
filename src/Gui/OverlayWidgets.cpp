@@ -39,6 +39,7 @@
 # include <QSpacerItem>
 # include <QSplitter>
 # include <QMenu>
+# include <QScrollBar>
 #endif
 
 #if QT_VERSION >= 0x050000
@@ -331,7 +332,7 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
 
     proxyWidget = new OverlayProxyWidget(this);
     proxyWidget->hide();
-    _setOverlayMode(proxyWidget,true);
+    _setOverlayMode(proxyWidget,1);
 
     setOverlayMode(true);
     hide();
@@ -1149,7 +1150,6 @@ public:
 
                 "QToolTip {background-color: rgba(250,250,250,180);}"
 
-                "Gui--TreeWidget QScrollBar:vertical { width: 0px; }"
                 "Gui--TreeWidget QHeaderView:section {"
                             "height: 0px;"
                             "background-color: transparent;"
@@ -1205,6 +1205,26 @@ void OverlayTabWidget::_setOverlayMode(QWidget *widget, int enable)
     else
         widget->setStyleSheet(OverlayStyleSheet::instance()->offStyleSheet);
 #endif
+
+    if (qobject_cast<QScrollBar*>(widget)) {
+        auto parent = widget->parentWidget();
+        if (parent) {
+            parent = parent->parentWidget();
+            if (qobject_cast<TreeWidget*>(parent)
+                    || qobject_cast<PropertyEditor::PropertyEditor*>(parent))
+            {
+                auto scrollArea = static_cast<QAbstractScrollArea*>(parent);
+                if (scrollArea->verticalScrollBar() == widget) {
+                    if (!ViewParams::getDockOverlayHideScrollBar() || enable==0)
+                        widget->setStyleSheet(QString());
+                    else {
+                        static QString _style = QLatin1String("*{width:0}");
+                        widget->setStyleSheet(_style);
+                    }
+                }
+            }
+        }
+    }
 
     auto tabbar = qobject_cast<QTabBar*>(widget);
     if(tabbar) {

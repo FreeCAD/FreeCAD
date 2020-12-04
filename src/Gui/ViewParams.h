@@ -154,6 +154,8 @@ public:
         QT_TRANSLATE_NOOP("ViewParams", "Auto hide animation duration, 0 to disable"))\
     FC_VIEW_PARAM(DockOverlayAnimationCurve,int,Int,7, \
         QT_TRANSLATE_NOOP("ViewParams", "Auto hide animation curve type"))\
+    FC_VIEW_PARAM(DockOverlayHideScrollBar,bool,Bool,true, \
+        QT_TRANSLATE_NOOP("ViewParams", "Show tree/property view scroll bar in dock overlay"))\
     FC_VIEW_PARAM(EditingTransparency,double,Float,0.5, \
        QT_TRANSLATE_NOOP("ViewParams", "Automatically make all object transparent except the one in edit"))\
     FC_VIEW_PARAM(EditingAutoTransparent,bool,Bool,true, "") \

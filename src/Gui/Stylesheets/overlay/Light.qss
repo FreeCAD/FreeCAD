@@ -117,10 +117,6 @@ Gui--PropertyEditor--PropertyEditor {
   qproperty-itemBackground: rgba(0, 0, 0, 0.01);
 }
 
-Gui--TreeWidget QScrollBar:vertical {
-  width: 0px;
-}
-
 Gui--TreeWidget QHeaderView:section {
   height: 0px;
   background-color: transparent;
