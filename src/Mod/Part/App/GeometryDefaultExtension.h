@@ -30,7 +30,7 @@
 namespace Part {
 
     template <typename T>
-    class PartExport GeometryDefaultExtension: public Part::GeometryExtension
+    class PartExport GeometryDefaultExtension: public Part::GeometryPersistenceExtension
     {
         TYPESYSTEM_HEADER_WITH_OVERRIDE();
     public:
@@ -42,7 +42,6 @@ namespace Part {
         inline const T &getValue() const {return value;};
 
         // Persistence implementer ---------------------
-        virtual unsigned int getMemSize(void) const override;
         virtual void Save(Base::Writer &/*writer*/) const override;
         virtual void Restore(Base::XMLReader &/*reader*/) override;
 

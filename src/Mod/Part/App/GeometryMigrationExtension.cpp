@@ -37,23 +37,6 @@ GeometryMigrationExtension::GeometryMigrationExtension():ConstructionState(false
 
 }
 
-
-// Persistence implementer
-unsigned int GeometryMigrationExtension::getMemSize (void) const
-{
-    return sizeof(long int);
-}
-
-void GeometryMigrationExtension::Save(Base::Writer &writer) const
-{
-    (void) writer;
-}
-
-void GeometryMigrationExtension::Restore(Base::XMLReader &reader)
-{
-    (void) reader;
-}
-
 std::unique_ptr<Part::GeometryExtension> GeometryMigrationExtension::copy(void) const
 {
     auto cpy = std::make_unique<GeometryMigrationExtension>();

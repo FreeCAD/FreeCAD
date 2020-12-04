@@ -39,25 +39,6 @@ ViewProviderSketchGeometryExtension::ViewProviderSketchGeometryExtension():Repre
 
 }
 
-
-// Persistence implementer
-unsigned int ViewProviderSketchGeometryExtension::getMemSize (void) const
-{
-    return sizeof(double);
-}
-
-void ViewProviderSketchGeometryExtension::Save(Base::Writer &writer) const
-{
-    (void) writer;
-    // So far only intended for runtime
-}
-
-void ViewProviderSketchGeometryExtension::Restore(Base::XMLReader &reader)
-{
-    (void) reader;
-    // So far only intended for runtime
-}
-
 std::unique_ptr<Part::GeometryExtension> ViewProviderSketchGeometryExtension::copy(void) const
 {
     auto cpy = std::make_unique<ViewProviderSketchGeometryExtension>();
