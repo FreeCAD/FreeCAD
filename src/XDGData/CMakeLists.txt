@@ -1,5 +1,3 @@
-include(GNUInstallDirs)
-
 if(NOT DEFINED APPDATA_RELEASE_DATE)
     if(EXISTS "${CMAKE_SOURCE_DIR}/.git")
         execute_process(COMMAND git log -1 --pretty=%cd --date=short
