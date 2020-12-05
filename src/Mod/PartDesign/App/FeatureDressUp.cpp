@@ -51,6 +51,9 @@ PROPERTY_SOURCE(PartDesign::DressUp, PartDesign::FeatureAddSub)
 
 DressUp::DressUp()
 {
+    ADD_PROPERTY_TYPE(DressUpShape,(TopoDS_Shape()),"Base",
+            (App::PropertyType)(App::Prop_NoPersist|App::Prop_Output), nullptr);
+
     ADD_PROPERTY(Base,(0));
     Placement.setStatus(App::Property::ReadOnly, true);
 

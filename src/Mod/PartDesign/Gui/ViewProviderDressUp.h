@@ -59,6 +59,7 @@ public:
 
     virtual void updateAddSubShapeIndicator();
     virtual void updateData(const App::Property*);
+    virtual void attach(App::DocumentObject*);
 
 protected:
     virtual bool setEdit(int ModNum);

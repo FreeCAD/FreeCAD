@@ -26,7 +26,6 @@
 
 #include <App/DocumentObserver.h>
 #include "ViewProvider.h"
-#include <Mod/Part/Gui/SoBrepFaceSet.h>
 
 namespace PartDesignGui {
 
@@ -49,22 +48,21 @@ public:
     virtual void unsetEdit(int ModNum);
     virtual void hide(void);
     bool isPreviewMode() const;
+    virtual void finishRestoring();
     
 protected: 
     virtual void updateAddSubShapeIndicator();
-    void updateAddSubShape(const TopoDS_Shape &shape);
     void setPreviewDisplayMode(bool);
     
-    SoSeparator*                previewShape;
-    PartGui::SoBrepFaceSet*     previewFaceSet;
-    SoCoordinate3*              previewCoords;
-    SoNormal*                   previewNorm;
-    SoMaterial*                 previewMaterial;
+protected:
+    std::unique_ptr<PartGui::ViewProviderPart> pAddSubView;
 
 private:
     int                         defaultChild;
     std::string                 displayMode;
     App::DocumentObjectT        baseFeature;
+    int                         baseTail;
+    SoSeparator                 *previewGroup;
 };
 
 } // namespace PartDesignGui

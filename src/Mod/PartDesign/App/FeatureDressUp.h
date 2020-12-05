@@ -44,6 +44,7 @@ public:
      */
     App::PropertyLinkSub Base;
     App::PropertyBool SupportTransform;
+    Part::PropertyPartShape   DressUpShape;
 
     short mustExecute() const;
     /// updates the Placement property from the Placement of the BaseFeature

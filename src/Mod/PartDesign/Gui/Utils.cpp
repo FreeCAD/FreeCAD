@@ -648,46 +648,7 @@ public:
             });
 
         Gui::Application::Instance->signalInEdit.connect(
-            [this](const Gui::ViewProviderDocumentObject & vp) {
-                auto doc = Gui::Application::Instance->editDocument();
-                if (!doc)
-                    return;
-                auto view = Base::freecad_dynamic_cast<Gui::View3DInventor>(doc->getEditingView());
-                if (!view)
-                    return;
-
-                for(auto obj : vp.getObject()->getInList()) {
-                    if (obj->isDerivedFrom(PartDesign::FeatureWrap::getClassTypeId())) {
-                        auto wrap = static_cast<PartDesign::FeatureWrap*>(obj);
-                        App::DocumentObject *parent = nullptr;
-                        Gui::ViewProviderDocumentObject *parentVp = nullptr;
-                        std::string subname;
-                        doc->getInEdit(&parentVp, &subname);
-                        if (parentVp)
-                            parent = parentVp->getObject();
-                        else if (activeBody && activeBody == PartDesign::Body::findBodyOf(wrap)) {
-                            parent = activeBodyT.getObject();
-                            subname = activeBodyT.getSubName() + wrap->getNameInDocument() + ".";
-                        } else
-                            return;
-                        editObj = App::SubObjectT(parent, subname.c_str());
-                        if (editObj.getSubObject() == wrap) {
-                            editObj.setSubName(editObj.getSubName()
-                                    + vp.getObject()->getNameInDocument() + ".");
-                        }
-                        break;
-                    }
-                }
-                if (!editObj.getObject())
-                    return;
-                editView = view;
-                view->getViewer()->checkGroupOnTop(
-                        Gui::SelectionChanges(
-                            Gui::SelectionChanges::AddSelection,
-                            editObj.getDocumentName().c_str(),
-                            editObj.getObjectName().c_str(),
-                            editObj.getSubName().c_str()), true);
-            });
+                boost::bind(&Monitor::slotInEdit, this, bp::_1));
 
         Gui::Application::Instance->signalResetEdit.connect(
             [this](const Gui::ViewProviderDocumentObject &) {
@@ -710,6 +671,69 @@ public:
                 }
             });
 
+    }
+
+    void slotInEdit(const Gui::ViewProviderDocumentObject & vp)
+    {
+        auto doc = Gui::Application::Instance->editDocument();
+        if (!doc)
+            return;
+        auto view = Base::freecad_dynamic_cast<Gui::View3DInventor>(doc->getEditingView());
+        if (!view)
+            return;
+
+        Gui::ViewProviderDocumentObject *parentVp = nullptr;
+        std::string subname;
+        doc->getInEdit(&parentVp, &subname);
+
+        if (parentVp) {
+            App::SubObjectT sobjT(parentVp->getObject(), subname.c_str());
+            auto objs = sobjT.getSubObjectList();
+            for (auto it=objs.begin(); it!=objs.end(); ++it) {
+                auto linked = (*it)->getLinkedObject(true);
+                if (linked->isDerivedFrom(PartDesign::Body::getClassTypeId())) {
+                    editBodyT = App::SubObjectT(objs.begin(), it+1);
+                    break;
+                }
+            }
+        }
+
+        for(auto obj : vp.getObject()->getInList()) {
+            if (obj->isDerivedFrom(PartDesign::FeatureWrap::getClassTypeId())) {
+                auto wrap = static_cast<PartDesign::FeatureWrap*>(obj);
+                App::DocumentObject *parent = nullptr;
+                if (parentVp)
+                    parent = parentVp->getObject();
+                else if (activeBody && activeBody == PartDesign::Body::findBodyOf(wrap)) {
+                    parent = activeBodyT.getObject();
+                    subname = activeBodyT.getSubName() + wrap->getNameInDocument() + ".";
+                } else
+                    return;
+                editObjT = App::SubObjectT(parent, subname.c_str());
+                if (editObjT.getSubObject() == wrap) {
+                    editObjT.setSubName(editObjT.getSubName()
+                            + vp.getObject()->getNameInDocument() + ".");
+                }
+                break;
+            }
+        }
+        editView = view;
+        if (editBodyT.getObject()) {
+            view->getViewer()->checkGroupOnTop(
+                    Gui::SelectionChanges(
+                        Gui::SelectionChanges::AddSelection,
+                        editBodyT.getDocumentName().c_str(),
+                        editBodyT.getObjectName().c_str(),
+                        editBodyT.getSubName().c_str()), true);
+        }
+        if (editObjT.getObject()) {
+            view->getViewer()->checkGroupOnTop(
+                    Gui::SelectionChanges(
+                        Gui::SelectionChanges::AddSelection,
+                        editObjT.getDocumentName().c_str(),
+                        editObjT.getObjectName().c_str(),
+                        editObjT.getSubName().c_str()), true);
+        }
     }
 
     void slotShowDialog(QWidget *parent, std::vector<QWidget*> &contents) {
@@ -752,24 +776,27 @@ public:
         }
         visibleFeatures.clear();
 
-        if (!editView)
-            return;
+        resetEdit(editObjT);
+        resetEdit(editBodyT);
+        editView = nullptr;
+    }
 
-        auto doc = Gui::Application::Instance->getDocument(editObj.getDocument());
+    void resetEdit(App::SubObjectT &objT)
+    {
+        auto doc = Gui::Application::Instance->getDocument(objT.getDocument());
         if (doc) {
             doc->foreachView<Gui::View3DInventor>(
-                [this](Gui::View3DInventor *view) {
+                [this, &objT](Gui::View3DInventor *view) {
                     if (view == editView)
                         view->getViewer()->checkGroupOnTop(
                                 Gui::SelectionChanges(
                                     Gui::SelectionChanges::RmvSelection,
-                                    editObj.getDocumentName().c_str(),
-                                    editObj.getObjectName().c_str(),
-                                    editObj.getSubName().c_str()), true);
+                                    objT.getDocumentName().c_str(),
+                                    objT.getObjectName().c_str(),
+                                    objT.getSubName().c_str()), true);
                 });
         }
-        editObj = App::SubObjectT();
-        editView = nullptr;
+        objT = App::SubObjectT();
     }
 
     void slotChangedObject(const App::DocumentObject &object, const App::Property &prop)
@@ -915,7 +942,9 @@ public:
     boost::signals2::scoped_connection connDeleteDocument;
     PartDesign::Body *activeBody = nullptr;
     App::SubObjectT activeBodyT;
-    App::SubObjectT editObj;
+    App::SubObjectT editObjT;
+    App::SubObjectT editBodyT;
+    
     Gui::View3DInventor *editView = nullptr;
     QPointer<QWidget> taskWidget;
 

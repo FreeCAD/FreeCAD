@@ -72,6 +72,9 @@ public:
     FC_PART_PARAM(MapPointColor, bool, Bool, false) \
     FC_PART_PARAM(MapTransparency, bool, Bool, false) \
     FC_PART_PARAM(AutoGridScale, bool, Bool, false) \
+    FC_PART_PARAM(PreviewAddColor,unsigned long,Unsigned,0xff00ff40) \
+    FC_PART_PARAM(PreviewSubColor,unsigned long,Unsigned,0x0000ff40) \
+    FC_PART_PARAM(PreviewDressColor,unsigned long,Unsigned,0x00ffff40) \
 
 #undef FC_PART_PARAM
 #define FC_PART_PARAM(_name,_ctype,_type,_def) \

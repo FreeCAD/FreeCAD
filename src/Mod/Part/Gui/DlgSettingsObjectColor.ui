@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>476</width>
-    <height>378</height>
+    <width>475</width>
+    <height>562</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,39 +22,6 @@
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <layout class="QGridLayout" name="gridLayout">
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_6">
-          <property name="minimumSize">
-           <size>
-            <width>182</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Shape color</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="Gui::PrefColorButton" name="DefaultShapeColor">
-          <property name="toolTip">
-           <string>The default color for new shapes</string>
-          </property>
-          <property name="color">
-           <color>
-            <red>204</red>
-            <green>204</green>
-            <blue>204</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>DefaultShapeColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="2">
          <widget class="Gui::PrefCheckBox" name="checkRandomColor">
           <property name="toolTip">
@@ -65,6 +32,26 @@
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>RandomColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="Gui::PrefColorButton" name="DefaultShapeColor">
+          <property name="toolTip">
+           <string>The default color for new shapes</string>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>204</red>
+            <green>204</green>
+            <blue>204</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>DefaultShapeColor</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>View</cstring>
@@ -89,7 +76,7 @@
           <property name="toolTip">
            <string>The default line color for new shapes</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>25</red>
             <green>25</green>
@@ -101,6 +88,19 @@
           </property>
           <property name="prefPath" stdset="0">
            <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_6">
+          <property name="minimumSize">
+           <size>
+            <width>182</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Shape color</string>
           </property>
          </widget>
         </item>
@@ -157,7 +157,7 @@
           <property name="toolTip">
            <string>The default color for new vertices</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>25</red>
             <green>25</green>
@@ -225,7 +225,7 @@
           <property name="toolTip">
            <string>The color of bounding boxes in the 3D view</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>255</red>
             <green>255</green>
@@ -323,6 +323,28 @@ will be used or black.</string>
        </layout>
       </item>
       <item>
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>Preview color for editing</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="0" column="2">
        <spacer name="horizontalSpacer_2">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -335,6 +357,105 @@ will be used or black.</string>
         </property>
        </spacer>
       </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_12">
+        <property name="minimumSize">
+         <size>
+          <width>182</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Additive color</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::PrefColorButton" name="AdditiveColor">
+        <property name="toolTip">
+         <string>The default color for new shapes</string>
+        </property>
+        <property name="color" stdset="0">
+         <color alpha="90">
+          <red>85</red>
+          <green>255</green>
+          <blue>255</blue>
+         </color>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>PreviewAddColor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Part</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::PrefColorButton" name="SubtractiveColor">
+        <property name="toolTip">
+         <string>The default color for new shapes</string>
+        </property>
+        <property name="color" stdset="0">
+         <color alpha="90">
+          <red>255</red>
+          <green>0</green>
+          <blue>0</blue>
+         </color>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>PreviewSubColor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Part</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_13">
+        <property name="minimumSize">
+         <size>
+          <width>182</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Subtractive color</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_14">
+        <property name="minimumSize">
+         <size>
+          <width>182</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Dress up color</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="Gui::PrefColorButton" name="DressUpColor">
+        <property name="toolTip">
+         <string>The default color for new shapes</string>
+        </property>
+        <property name="color" stdset="0">
+         <color alpha="90">
+          <red>255</red>
+          <green>0</green>
+          <blue>255</blue>
+         </color>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>PreviewDressColor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Part</cstring>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -346,7 +467,7 @@ will be used or black.</string>
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>217</height>
+       <height>71</height>
       </size>
      </property>
     </spacer>

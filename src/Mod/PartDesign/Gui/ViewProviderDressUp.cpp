@@ -148,7 +148,8 @@ void ViewProviderDressUp::updateAddSubShapeIndicator()
         std::vector<int> vertices;
         pcDressUp->getGeneratedIndices(faces,edges,vertices);
         if (faces.empty()) {
-            updateAddSubShape(TopoDS_Shape());
+            pcDressUp->DressUpShape.setValue(TopoDS_Shape());
+            pAddSubView->updateVisual();
             return;
         }
 
@@ -159,8 +160,14 @@ void ViewProviderDressUp::updateAddSubShapeIndicator()
         shape.setPlacement(Base::Placement());
         for (int idx : faces)
             builder.Add(comp, shape.getSubShape(TopAbs_FACE, idx+1));
-        updateAddSubShape(comp);
+        pcDressUp->DressUpShape.setValue(comp);
+        pAddSubView->updateVisual();
     }
+}
+
+void ViewProviderDressUp::attach(App::DocumentObject* obj) {
+    ViewProviderAddSub::attach(obj);
+    pAddSubView->setShapePropertyName("DressUpShape");
 }
 
 void ViewProviderDressUp::updateData(const App::Property* p) {

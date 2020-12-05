@@ -67,6 +67,10 @@ void DlgSettingsObjectColor::saveSettings()
     ui->twosideRendering->onSave();
     // Annotations
     ui->AnnotationTextColor->onSave();
+    // Preview
+    ui->AdditiveColor->onSave();
+    ui->SubtractiveColor->onSave();
+    ui->DressUpColor->onSave();
 }
 
 void DlgSettingsObjectColor::loadSettings()
@@ -82,6 +86,10 @@ void DlgSettingsObjectColor::loadSettings()
     ui->twosideRendering->onRestore();
     // Annotations
     ui->AnnotationTextColor->onRestore();
+    // Preview
+    ui->AdditiveColor->onSave();
+    ui->SubtractiveColor->onSave();
+    ui->DressUpColor->onSave();
 }
 
 /**
