@@ -127,6 +127,45 @@ void GeometryFacadePy::setBlocked(Py::Boolean arg)
     getGeometryFacadePtr()->setBlocked(arg);
 }
 
+PyObject* GeometryFacadePy::testGeometryMode(PyObject *args)
+{
+    char* flag;
+    if (PyArg_ParseTuple(args, "s",&flag)) {
+
+        GeometryMode::GeometryMode mode;
+
+        if(SketchGeometryExtension::getGeometryModeFromName(flag, mode))
+            return new_reference_to(Py::Boolean(getGeometryFacadePtr()->testGeometryMode(mode)));
+
+        PyErr_SetString(PyExc_TypeError, "Flag string does not exist.");
+        return NULL;
+    }
+
+    PyErr_SetString(PyExc_TypeError, "No flag string provided.");
+    return NULL;
+}
+
+PyObject* GeometryFacadePy::setGeometryMode(PyObject *args)
+{
+    char * flag;
+    PyObject * bflag = Py_True;
+    if (PyArg_ParseTuple(args, "s|O!", &flag, &PyBool_Type, &bflag)) {
+
+        GeometryMode::GeometryMode mode;
+
+        if(SketchGeometryExtension::getGeometryModeFromName(flag, mode)) {
+            getGeometryFacadePtr()->setGeometryMode(mode, PyObject_IsTrue(bflag) ? true : false);
+            Py_Return;
+        }
+
+        PyErr_SetString(PyExc_TypeError, "Flag string does not exist.");
+        return NULL;
+    }
+
+    PyErr_SetString(PyExc_TypeError, "No flag string provided.");
+    Py_Return;
+}
+
 
 PyObject* GeometryFacadePy::mirror(PyObject *args)
 {
