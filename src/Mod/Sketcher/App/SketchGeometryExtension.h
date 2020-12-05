@@ -103,6 +103,8 @@ public:
 
     static bool getInternalTypeFromName(std::string str, InternalType::InternalType &type);
 
+    static bool getGeometryModeFromName(std::string str, GeometryMode::GeometryMode &type);
+
 private:
     SketchGeometryExtension(const SketchGeometryExtension&) = default;
 
