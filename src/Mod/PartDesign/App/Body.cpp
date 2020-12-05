@@ -606,8 +606,6 @@ void Body::onChanged (const App::Property* prop) {
                 bf->BaseFeature.setValue(BaseFeature.getValue());
         }
         else if( prop == &Group ) {
-            checkChildren();
-
             //if the FeatureBase was deleted we set the BaseFeature link to nullptr
             if (BaseFeature.getValue() &&
                (Group.getValues().empty() || 
@@ -626,6 +624,12 @@ void Body::onChanged (const App::Property* prop) {
         else if (prop == &Tip) {
             FC_TRACE("tip changed");
         }
+    }
+
+    if (!this->isRestoring())  {
+        // Call checkChildren() even if we are performing undo/redo
+        if (prop == &Group)
+            checkChildren();
     }
 
     Part::BodyBase::onChanged(prop);
