@@ -124,6 +124,55 @@ void SketchGeometryExtensionPy::setBlocked(Py::Boolean arg)
     getSketchGeometryExtensionPtr()->setGeometryMode(GeometryMode::Blocked, arg);
 }
 
+Py::Boolean SketchGeometryExtensionPy::getConstruction(void) const
+{
+     return Py::Boolean(getSketchGeometryExtensionPtr()->testGeometryMode(GeometryMode::Construction));
+}
+
+void SketchGeometryExtensionPy::setConstruction(Py::Boolean arg)
+{
+    getSketchGeometryExtensionPtr()->setGeometryMode(GeometryMode::Construction, arg);
+}
+
+PyObject* SketchGeometryExtensionPy::testGeometryMode(PyObject *args)
+{
+    char* flag;
+    if (PyArg_ParseTuple(args, "s",&flag)) {
+
+        GeometryMode::GeometryMode mode;
+
+        if(getSketchGeometryExtensionPtr()->getGeometryModeFromName(flag, mode))
+            return new_reference_to(Py::Boolean(getSketchGeometryExtensionPtr()->testGeometryMode(mode)));
+
+        PyErr_SetString(PyExc_TypeError, "Flag string does not exist.");
+        return NULL;
+    }
+
+    PyErr_SetString(PyExc_TypeError, "No flag string provided.");
+    return NULL;
+}
+
+PyObject* SketchGeometryExtensionPy::setGeometryMode(PyObject *args)
+{
+    char * flag;
+    PyObject * bflag = Py_True;
+    if (PyArg_ParseTuple(args, "s|O!", &flag, &PyBool_Type, &bflag)) {
+
+        GeometryMode::GeometryMode mode;
+
+        if(getSketchGeometryExtensionPtr()->getGeometryModeFromName(flag, mode)) {
+            getSketchGeometryExtensionPtr()->setGeometryMode(mode, PyObject_IsTrue(bflag) ? true : false);
+            Py_Return;
+        }
+
+        PyErr_SetString(PyExc_TypeError, "Flag string does not exist.");
+        return NULL;
+    }
+
+    PyErr_SetString(PyExc_TypeError, "No flag string provided.");
+    Py_Return;
+}
+
 PyObject *SketchGeometryExtensionPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;
