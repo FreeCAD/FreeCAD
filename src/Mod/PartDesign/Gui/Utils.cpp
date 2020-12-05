@@ -40,7 +40,7 @@
 #include <App/Link.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
 #include <Gui/MDIView.h>
 #include <Gui/ViewProviderPart.h>
@@ -127,35 +127,23 @@ PartDesign::Body *getBody(bool messageIfNot, bool autoActivate, bool assertModer
     Gui::MDIView *activeView = Gui::Application::Instance->activeView();
 
     if (activeView) {
-        bool singleBodyDocument = activeView->getAppDocument()->
-            countObjectsOfType(PartDesign::Body::getClassTypeId()) == 1;
         if (assertModern && PartDesignGui::assureModernWorkflow ( activeView->getAppDocument() ) ) {
             activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY,topParent,subname);
 
-            if (!activeBody && singleBodyDocument && autoActivate) {
+            if (!activeBody && autoActivate) {
                 auto doc = activeView->getAppDocument();
-                auto bodies = doc->getObjectsOfType(PartDesign::Body::getClassTypeId());
-                App::DocumentObject *parent = 0;
-                App::DocumentObject *body = 0;
-                std::string sub;
-                if(bodies.size()==1) {
-                    body = bodies[0];
-                    for(auto &v : body->getParents()) {
-                        if(v.first->getDocument()!=doc)
-                            continue;
-                        if(parent) {
-                            body = 0;
-                            break;
+                for (auto & sel : Gui::Selection().getSelectionT(doc->getName(), 0)) {
+                    auto objs = sel.getSubObjectList();
+                    for (auto it = objs.begin(); it != objs.end(); ++it) {
+                        auto linked = (*it)->getLinkedObject(true);
+                        if (linked->isDerivedFrom(PartDesign::Body::getClassTypeId())) {
+                            App::SubObjectT sobjT(objs.begin(), it+1);
+                            Gui::cmdGuiDocument(doc, std::ostringstream()
+                                    << "ActiveView.setActiveObject('" << PDBODYKEY << "',"
+                                    << sobjT.getObjectPython() << ",'" << sobjT.getSubName() << "')");
+                            return activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY,topParent,subname);
                         }
-                        parent = v.first;
-                        sub = v.second;
                     }
-                }
-                if(body) {
-                    auto doc = parent?parent->getDocument():body->getDocument();
-                    _FCMD_DOC_CMD(Gui,doc,"ActiveView.setActiveObject('" << PDBODYKEY << "',"
-                            << Gui::Command::getObjectCmd(parent?parent:body) << ",'" << sub << "')");
-                    return activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY,topParent,subname);
                 }
             }
             if (!activeBody && messageIfNot) {
