@@ -748,13 +748,22 @@ void ColorButton::paintEvent (QPaintEvent * e)
         int w = pix.width();
         int h = pix.height();
         p.setPen(QPen(Qt::gray));
+
+        QColor c = d->col;
+        c.setAlpha(255);
         if (d->drawFrame) {
-            p.setBrush(d->col);
+            p.setBrush(c);
             p.drawRect(2, 2, w - 5, h - 5);
         }
         else {
-            p.fillRect(0, 0, w, h, QBrush(d->col));
+            p.fillRect(0, 0, w, h, QBrush(c));
         }
+        if (allowChangeAlpha() && d->col.alpha() != 255) {
+            p.setPen(QPen(Qt::white, 2));
+            p.setBrush(QBrush());
+            p.drawRect(4, 4, w-8, h-8);
+        }
+
         setIcon(QIcon(pix));
 
         d->dirty = false;
