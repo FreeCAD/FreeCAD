@@ -34,6 +34,7 @@ using namespace Sketcher;
 
 //---------- Geometry Extension
 constexpr std::array<const char *, InternalType::NumInternalGeometryType> SketchGeometryExtension::internaltype2str;
+constexpr std::array<const char *,GeometryMode::NumGeometryMode> SketchGeometryExtension::geometrymode2str;
 
 TYPESYSTEM_SOURCE(Sketcher::SketchGeometryExtension,Part::GeometryExtension)
 
@@ -115,6 +116,24 @@ bool SketchGeometryExtension::getInternalTypeFromName(std::string str, InternalT
             int index = std::distance( SketchGeometryExtension::internaltype2str.begin(), pos );
 
             type = static_cast<InternalType::InternalType>(index);
+            return true;
+    }
+
+    return false;
+}
+
+bool SketchGeometryExtension::getGeometryModeFromName(std::string str, GeometryMode::GeometryMode &type)
+{
+    auto pos = std::find_if(    SketchGeometryExtension::geometrymode2str.begin(),
+                                SketchGeometryExtension::geometrymode2str.end(),
+                                [str](const char * val) {
+                                    return strcmp(val,str.c_str())==0;}
+                                );
+
+    if( pos != SketchGeometryExtension::geometrymode2str.end()) {
+            int index = std::distance( SketchGeometryExtension::geometrymode2str.begin(), pos );
+
+            type = static_cast<GeometryMode::GeometryMode>(index);
             return true;
     }
 
