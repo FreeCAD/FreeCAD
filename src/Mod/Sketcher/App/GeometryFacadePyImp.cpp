@@ -436,8 +436,7 @@ Py::Boolean GeometryFacadePy::getConstruction(void) const
 
 void  GeometryFacadePy::setConstruction(Py::Boolean arg)
 {
-    if (getGeometryFacadePtr()->getTypeId() != Part::GeomPoint::getClassTypeId())
-        getGeometryFacadePtr()->setConstruction(arg);
+    getGeometryFacadePtr()->setConstruction(arg);
 }
 
 Py::String GeometryFacadePy::getTag(void) const
