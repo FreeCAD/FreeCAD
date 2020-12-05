@@ -44,6 +44,9 @@ DlgSettingsObjectColor::DlgSettingsObjectColor(QWidget* parent)
 {
     ui->setupUi(this);
     ui->DefaultShapeColor->setDisabled(ui->checkRandomColor->isChecked());
+    ui->DressUpColor->setAllowChangeAlpha(true);
+    ui->AdditiveColor->setAllowChangeAlpha(true);
+    ui->SubtractiveColor->setAllowChangeAlpha(true);
 }
 
 /** 
@@ -87,9 +90,9 @@ void DlgSettingsObjectColor::loadSettings()
     // Annotations
     ui->AnnotationTextColor->onRestore();
     // Preview
-    ui->AdditiveColor->onSave();
-    ui->SubtractiveColor->onSave();
-    ui->DressUpColor->onSave();
+    ui->AdditiveColor->onRestore();
+    ui->SubtractiveColor->onRestore();
+    ui->DressUpColor->onRestore();
 }
 
 /**
