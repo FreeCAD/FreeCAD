@@ -71,6 +71,8 @@ ViewProviderOriginFeature::ViewProviderOriginFeature () {
     pLabel = new SoAsciiText();
     pLabel->ref();
     pLabel->width.setValue(-1);
+
+    ShadowStyle.setValue(3);
 }
 
 
@@ -91,17 +93,34 @@ public:
     {}
 
     virtual void GLRenderBelowPath(SoGLRenderAction * action) {
-        Gui::FCDepthFunc guard(func);
-        inherited::GLRenderBelowPath(action);
+        render(action, false);
     }
 
     virtual void GLRenderInPath(SoGLRenderAction * action) {
-        Gui::FCDepthFunc guard(func);
-        inherited::GLRenderInPath(action);
+        render(action, true);
     }
+
+    void render(SoGLRenderAction *action, bool inpath) {
+        Gui::FCDepthFunc guard(func);
+        SoState *state = action->getState();
+        float t = SoLazyElement::getTransparency(state, 0);
+        if (t != 0.0f) {
+            state->push();
+            float trans = 0.0f;
+            SoLazyElement::setTransparency(state, this, 1, &trans, &packer);
+        }
+        if (inpath)
+            inherited::GLRenderInPath(action);
+        else
+            inherited::GLRenderBelowPath(action);
+        if (t != 0.0f)
+            state->pop();
+    }
+
 
 private:
     int32_t func;
+    SoColorPacker packer;
 };
 
 void ViewProviderOriginFeature::attach(App::DocumentObject* pcObject)
@@ -165,6 +184,7 @@ void ViewProviderOriginFeature::attach(App::DocumentObject* pcObject)
 
     // Hidden features
     auto *hidden = new SoAnnotation;
+    hidden->renderCaching = SoSeparator::OFF;
 
     // Style for hidden lines
     style = new SoDrawStyle ();
