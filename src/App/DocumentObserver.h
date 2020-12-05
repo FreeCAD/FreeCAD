@@ -176,6 +176,14 @@ public:
     /*! Constructor */
     SubObjectT(const char *docName, const char *objName, const char *subname);
 
+    /*! Constructor */
+    SubObjectT(const std::vector<App::DocumentObject*> & objs, const char *subname = nullptr);
+
+    /*! Constructor */
+    SubObjectT(std::vector<App::DocumentObject*>::const_iterator begin,
+               std::vector<App::DocumentObject*>::const_iterator end,
+               const char *subname = nullptr);
+
     /*! Assignment operator */
     SubObjectT &operator=(const SubObjectT&);
 
@@ -195,6 +203,12 @@ public:
 
     /// Return the subname path
     const std::string &getSubName() const;
+
+    /// Return docname#objname
+    std::string getObjectFullName() const;
+
+    /// Return docname#objname.subname.
+    std::string getSubObjectFullName() const;
 
     /// Return the subname path without sub-element
     std::string getSubNameNoElement() const;

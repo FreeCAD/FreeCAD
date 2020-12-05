@@ -294,6 +294,42 @@ SubObjectT::SubObjectT(const char *docName, const char *objName, const char *s)
 {
 }
 
+SubObjectT::SubObjectT(const std::vector<App::DocumentObject*> &objs, const char *s)
+{
+    if (objs.empty())
+        return;
+
+    static_cast<DocumentObjectT&>(*this) = objs.front();
+    std::ostringstream ss;
+    for (auto it = objs.begin()+1; it!=objs.end(); ++it) {
+        auto obj = *it;
+        if (!obj || !obj->getNameInDocument())
+            continue;
+        ss << obj->getNameInDocument() << ".";
+    }
+    if (s)
+        ss << s;
+}
+
+SubObjectT::SubObjectT(std::vector<App::DocumentObject*>::const_iterator begin,
+                       std::vector<App::DocumentObject*>::const_iterator end,
+                       const char *s)
+{
+    if (begin == end)
+        return;
+
+    static_cast<DocumentObjectT&>(*this) = *begin;
+    std::ostringstream ss;
+    for (auto it = begin+1; it != end; ++it) {
+        auto obj = *it;
+        if (!obj || !obj->getNameInDocument())
+            continue;
+        ss << obj->getNameInDocument() << ".";
+    }
+    if (s)
+        ss << s;
+}
+
 bool SubObjectT::operator<(const SubObjectT &other) const {
     if(getDocumentName() < other.getDocumentName())
         return true;
@@ -427,6 +463,18 @@ SubObjectT SubObjectT::getChild(const App::DocumentObject *child) const
     SubObjectT res = *this;
     res.setSubName(getSubNameNoElement() + child->getNameInDocument() + ".");
     return res;
+}
+
+std::string SubObjectT::getObjectFullName() const
+{
+    return getDocumentName() + "#" + getObjectName();
+}
+
+std::string SubObjectT::getSubObjectFullName() const
+{
+    if (subname.empty())
+        return getObjectFullName();
+    return getObjectFullName() + "." + subname;
 }
 // -----------------------------------------------------------------------------
 
