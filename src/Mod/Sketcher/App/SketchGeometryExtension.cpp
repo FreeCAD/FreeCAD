@@ -61,7 +61,7 @@ void SketchGeometryExtension::Save(Base::Writer &writer) const
     if(name.size() > 0)
         writer.Stream() << "\" name=\"" << name;
 
-    writer.Stream() << "\" id=\"" << Id
+    writer.Stream() // << "\" id=\"" << Id // This is removed as the stored Id is not used and it may interfere with RT's future implementation
                     << "\" internalGeometryType=\"" << (int) InternalGeometryType
                     << "\" geometryModeFlags=\""    << GeometryModeFlags.to_string()
                     << "\"/>" << std::endl;
@@ -71,7 +71,9 @@ void SketchGeometryExtension::Restore(Base::XMLReader &reader)
 {
     restoreNameAttribute(reader);
 
-    Id = reader.getAttributeAsInteger("id");
+    if(reader.hasAttribute("id"))
+        Id = reader.getAttributeAsInteger("id");
+
     InternalGeometryType = (InternalType::InternalType) reader.getAttributeAsInteger("internalGeometryType");
 
     GeometryModeFlags = GeometryModeFlagType(reader.getAttribute("geometryModeFlags"));
