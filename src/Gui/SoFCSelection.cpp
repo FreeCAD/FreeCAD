@@ -856,9 +856,12 @@ void SoFCSelection::glRender(SoGLRenderAction *action, bool inpath)
             ctx->removeHighlight();
     }
 
+    if (ctx && (ctx->isHighlighted() || ctx->isSelected()))
+        SoCacheElement::invalidate(state);
+
     HighlightModes mymode = (HighlightModes) this->highlightMode.getValue();
     bool preselected = ctx && ctx->isHighlighted() && (useNewSelection.getValue()||mymode == AUTO);
-    if (!preselected && mymode!=ON && (!ctx || !ctx->isSelected())) {
+    if (!preselected && mymode!=ON && (!ctx || !ctx->isSelected() || !ctx->hasSelectionColor())) {
         inherited::GLRender(action);
         return;
     }
@@ -874,8 +877,6 @@ void SoFCSelection::glRender(SoGLRenderAction *action, bool inpath)
     if (!action->isRenderingDelayedPaths()) {
         if (preselected || !ViewParams::getShowSelectionOnTop())
             action->addDelayedPath(action->getCurPath()->copy());
-        else
-            SoCacheElement::invalidate(state);
         return;
     }
 
