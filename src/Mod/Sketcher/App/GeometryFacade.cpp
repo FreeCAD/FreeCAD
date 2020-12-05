@@ -28,7 +28,7 @@
 
 #include "GeometryFacade.h"
 
-#include <Base/Console.h> // Only for Debug - To be removed
+//#include <Base/Console.h> // Only for Debug, when/if necessary
 #include <Base/Exception.h>
 #include <boost/uuid/uuid_io.hpp>
 
@@ -87,7 +87,7 @@ void GeometryFacade::initExtension()
 
         getGeo()->setExtension(std::make_unique<SketchGeometryExtension>()); // Create getExtension
 
-        Base::Console().Warning("%s\nSketcher Geometry without Extension: %s \n", boost::uuids::to_string(Geo->getTag()).c_str());
+        //Base::Console().Warning("%s\nSketcher Geometry without Extension: %s \n", boost::uuids::to_string(Geo->getTag()).c_str());
     }
 
     SketchGeoExtension =
