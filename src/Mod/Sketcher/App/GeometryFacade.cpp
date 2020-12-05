@@ -50,17 +50,24 @@ GeometryFacade::GeometryFacade(const Part::Geometry * geometry)
         initExtension();
     else
         THROWM(Base::ValueError, "GeometryFacade initialized with Geometry null pointer");
+
 }
 
 std::unique_ptr<GeometryFacade> GeometryFacade::getFacade(Part::Geometry * geometry)
 {
-    return std::unique_ptr<GeometryFacade>(new GeometryFacade(geometry));
+    if(geometry != nullptr)
+        return std::unique_ptr<GeometryFacade>(new GeometryFacade(geometry));
+    else
+        return std::unique_ptr<GeometryFacade>(nullptr);
     //return std::make_unique<GeometryFacade>(geometry); // make_unique has no access to private constructor
 }
 
 std::unique_ptr<const GeometryFacade> GeometryFacade::getFacade(const Part::Geometry * geometry)
 {
-    return std::unique_ptr<const GeometryFacade>(new GeometryFacade(geometry));
+    if(geometry != nullptr)
+        return std::unique_ptr<const GeometryFacade>(new GeometryFacade(geometry));
+     else
+        return std::unique_ptr<const GeometryFacade>(nullptr);
     //return std::make_unique<const GeometryFacade>(geometry); // make_unique has no access to private constructor
 }
 

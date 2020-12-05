@@ -54,14 +54,18 @@ ExternalGeometryFacade::ExternalGeometryFacade(const Part::Geometry * geometry)
 
 std::unique_ptr<ExternalGeometryFacade> ExternalGeometryFacade::getFacade(Part::Geometry * geometry)
 {
-    return std::unique_ptr<ExternalGeometryFacade>(new ExternalGeometryFacade(geometry));
-    //return std::make_unique<ExternalGeometryFacade>(geometry); // make_unique has no access to private constructor
+     if(geometry != nullptr)
+        return std::unique_ptr<ExternalGeometryFacade>(new ExternalGeometryFacade(geometry));
+     else
+        return std::unique_ptr<ExternalGeometryFacade>(nullptr);
 }
 
 std::unique_ptr<const ExternalGeometryFacade> ExternalGeometryFacade::getFacade(const Part::Geometry * geometry)
 {
-    return std::unique_ptr<const ExternalGeometryFacade>(new ExternalGeometryFacade(geometry));
-    //return std::make_unique<const ExternalGeometryFacade>(geometry); // make_unique has no access to private constructor
+     if(geometry != nullptr)
+        return std::unique_ptr<const ExternalGeometryFacade>(new ExternalGeometryFacade(geometry));
+     else
+        return std::unique_ptr<const ExternalGeometryFacade>(nullptr);
 }
 
 void ExternalGeometryFacade::setGeometry(Part::Geometry *geometry)
