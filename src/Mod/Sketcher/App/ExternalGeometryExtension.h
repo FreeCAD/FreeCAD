@@ -87,6 +87,8 @@ public:
     virtual const std::string& getRef() const override {return Ref;}
     virtual void setRef(const std::string & ref) override {Ref = ref;}
 
+    static bool getFlagsFromName(std::string str, ExternalGeometryExtension::Flag &flag);
+
 private:
     ExternalGeometryExtension(const ExternalGeometryExtension&) = default;
 
