@@ -114,6 +114,15 @@ void SketchGeometryExtensionPy::setInternalType(Py::String arg)
     throw Py::ValueError("Argument is not a valid internal geometry type.");
 }
 
+Py::Boolean SketchGeometryExtensionPy::getBlocked(void) const
+{
+    return Py::Boolean(getSketchGeometryExtensionPtr()->testGeometryMode(GeometryMode::Blocked));
+}
+
+void SketchGeometryExtensionPy::setBlocked(Py::Boolean arg)
+{
+    getSketchGeometryExtensionPtr()->setGeometryMode(GeometryMode::Blocked, arg);
+}
 
 PyObject *SketchGeometryExtensionPy::getCustomAttributes(const char* /*attr*/) const
 {
