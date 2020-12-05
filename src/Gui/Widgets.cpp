@@ -596,6 +596,7 @@ struct ColorButtonP
     bool drawFrame;
     bool modal;
     bool dirty;
+    bool allowAlpha;
 
     ColorButtonP()
         : cd(0)
@@ -604,6 +605,7 @@ struct ColorButtonP
         , drawFrame(true)
         , modal(true)
         , dirty(true)
+        , allowAlpha(false)
     {
     }
 };
@@ -659,6 +661,16 @@ void ColorButton::setAllowChangeColor(bool ok)
 bool ColorButton::allowChangeColor() const
 {
     return d->allowChange;
+}
+
+void ColorButton::setAllowChangeAlpha(bool ok)
+{
+    d->allowAlpha = ok;
+}
+
+bool ColorButton::allowChangeAlpha() const
+{
+    return d->allowAlpha;
 }
 
 void ColorButton::setDrawFrame(bool ok)
@@ -767,6 +779,8 @@ void ColorButton::onChooseColor()
 #if QT_VERSION >= 0x050000
         cd.setOptions(QColorDialog::DontUseNativeDialog);
 #endif
+        if (d->allowAlpha)
+            cd.setOption(QColorDialog::ShowAlphaChannel);
 
         if (d->autoChange) {
             connect(&cd, SIGNAL(currentColorChanged(const QColor &)),
@@ -794,6 +808,8 @@ void ColorButton::onChooseColor()
 #if QT_VERSION >= 0x050000
             d->cd->setOptions(QColorDialog::DontUseNativeDialog);
 #endif
+            if (d->allowAlpha)
+                d->cd->setOption(QColorDialog::ShowAlphaChannel);
             d->cd->setAttribute(Qt::WA_DeleteOnClose);
             connect(d->cd, SIGNAL(rejected()),
                     this, SLOT(onRejected()));

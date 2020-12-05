@@ -453,8 +453,10 @@ void PrefColorButton::restorePreferences()
   int r = (icol >> 24)&0xff;
   int g = (icol >> 16)&0xff;
   int b = (icol >>  8)&0xff;
-
-  setColor(QColor(r,g,b));
+  int a = (icol      )&0xff;
+  if (!this->allowChangeAlpha())
+      a = 0xff;
+  setColor(QColor(r,g,b,a));
 }
 
 void PrefColorButton::savePreferences()
@@ -467,7 +469,7 @@ void PrefColorButton::savePreferences()
 
   QColor col = color();
   // (r,g,b,a) with a = 255 (opaque)
-  unsigned int icol = (col.red() << 24) | (col.green() << 16) | (col.blue() << 8) | 255;
+  unsigned int icol = (col.red() << 24) | (col.green() << 16) | (col.blue() << 8) | col.alpha();
   unsigned long lcol = static_cast<unsigned long>(icol);
   getWindowParameter()->SetUnsigned( entryName(), lcol );
 }

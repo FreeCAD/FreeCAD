@@ -206,6 +206,7 @@ class GuiExport ColorButton : public QPushButton
     Q_PROPERTY( QColor color READ color WRITE setColor )
     Q_PROPERTY( bool allowChangeColor READ allowChangeColor WRITE setAllowChangeColor )
     Q_PROPERTY( bool drawFrame READ drawFrame WRITE setDrawFrame )
+    Q_PROPERTY( bool allowChangeAlpha READ allowChangeAlpha WRITE setAllowChangeAlpha )
 
 public:
     ColorButton(QWidget* parent = 0);
@@ -225,6 +226,9 @@ public:
 
     void setAutoChangeColor(bool);
     bool autoChangeColor() const;
+
+    void setAllowChangeAlpha(bool);
+    bool allowChangeAlpha() const;
 
 public Q_SLOTS:
     void onChooseColor();
