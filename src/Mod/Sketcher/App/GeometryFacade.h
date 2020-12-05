@@ -222,10 +222,16 @@ class SketcherExport GeometryTypedFacade : public GeometryFacade
 
 public: // Factory methods
     static std::unique_ptr<GeometryTypedFacade<GeometryT>> getTypedFacade(GeometryT * geometry) {
-        return std::unique_ptr<GeometryTypedFacade<GeometryT>>(new GeometryTypedFacade(geometry));
+        if(geometry != nullptr)
+            return std::unique_ptr<GeometryTypedFacade<GeometryT>>(new GeometryTypedFacade(geometry));
+        else
+            return std::unique_ptr<GeometryTypedFacade<GeometryT>>(nullptr);
     }
     static std::unique_ptr<const GeometryTypedFacade<GeometryT>> getTypedFacade(const GeometryT * geometry) {
-        return std::unique_ptr<const GeometryTypedFacade<GeometryT>>(new GeometryTypedFacade(geometry));
+        if(geometry != nullptr)
+            return std::unique_ptr<const GeometryTypedFacade<GeometryT>>(new GeometryTypedFacade(geometry));
+        else
+            return std::unique_ptr<const GeometryTypedFacade<GeometryT>>(nullptr);
     }
 
     template < typename... Args >
