@@ -392,19 +392,22 @@ def reverseEdge(e):
     return newedge
 
 
-def getToolControllers(obj):
+def getToolControllers(obj, proxy=None):
     '''returns all the tool controllers'''
+    if proxy is None:
+        proxy = obj.Proxy
     try:
         job = findParentJob(obj)
     except Exception:  # pylint: disable=broad-except
         job = None
 
+    print("op={} ({})".format(obj.Label, type(obj)))
     if job:
-        return job.ToolController
+        return [c for c in job.ToolController if proxy.isToolSupported(obj, c.Tool)]
     return []
 
 
-def findToolController(obj, name=None):
+def findToolController(obj, proxy, name=None):
     '''returns a tool controller with a given name.
     If no name is specified, returns the first controller.
     if no controller is found, returns None'''
@@ -416,7 +419,7 @@ def findToolController(obj, name=None):
     if c is not None:
         return c
 
-    controllers = getToolControllers(obj)
+    controllers = getToolControllers(obj, proxy)
 
     if len(controllers) == 0:
         return None

@@ -99,6 +99,7 @@ class PathWorkbench (Workbench):
         extracmdlist = []
         # modcmdmore = ["Path_Hop",]
         # remotecmdlist = ["Path_Remote"]
+        specialcmdlist = []
 
 
         if PathPreferences.toolsReallyUseLegacyTools():
@@ -118,6 +119,7 @@ class PathWorkbench (Workbench):
             projcmdlist.append("Path_Sanity")
             prepcmdlist.append("Path_Shape")
             extracmdlist.extend(["Path_Area", "Path_Area_Workplane"])
+            specialcmdlist.append('Path_Thread_Milling')
 
             try:
                 import ocl  # pylint: disable=unused-variable
@@ -145,6 +147,9 @@ class PathWorkbench (Workbench):
             "Path", "Supplemental Commands")], prepcmdlist)
         self.appendMenu([QtCore.QT_TRANSLATE_NOOP("Path", "&Path"), QtCore.QT_TRANSLATE_NOOP(
             "Path", "Path Modification")], modcmdlist)
+        if specialcmdlist:
+            self.appendMenu([QtCore.QT_TRANSLATE_NOOP("Path", "&Path"), QtCore.QT_TRANSLATE_NOOP(
+            "Path", "Specialty Operations")], specialcmdlist)
         if extracmdlist:
             self.appendMenu([QtCore.QT_TRANSLATE_NOOP("Path", "&Path")], extracmdlist)
 
