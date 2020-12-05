@@ -31,5 +31,13 @@
         </Documentation>
         <Parameter Name="InternalType" Type="String"/>
     </Attribute>
+    <Attribute Name="Blocked" ReadOnly="false">
+        <Documentation>
+            <UserDocu>
+                Sets/returns whether the geometry is blocked or not.
+            </UserDocu>
+        </Documentation>
+        <Parameter Name="Blocked" Type="Boolean"/>
+    </Attribute>
   </PythonExport>
 </GenerateModel>
