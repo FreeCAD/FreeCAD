@@ -53,6 +53,7 @@ public:
 protected: 
     virtual void updateAddSubShapeIndicator();
     void setPreviewDisplayMode(bool);
+    void checkAddSubColor();
     
 protected:
     std::unique_ptr<PartGui::ViewProviderPart> pAddSubView;

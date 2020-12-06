@@ -90,11 +90,9 @@ void ViewProviderAddSub::attach(App::DocumentObject* obj) {
     pAddSubView->setStatus(Gui::SecondaryView,true);
 
     pAddSubView->attach(obj);
-
+    onChanged(&AddSubColor);
     pAddSubView->setDefaultMode(0);
     pAddSubView->show();
-
-    onChanged(&AddSubColor);
 
     previewGroup->addChild(pAddSubView->getRoot());
     addDisplayMaskMode(previewGroup, "Shape preview");
@@ -113,37 +111,42 @@ void ViewProviderAddSub::updateAddSubShapeIndicator()
 
 void ViewProviderAddSub::onChanged(const App::Property *p)
 {
-    auto feat = Base::freecad_dynamic_cast<PartDesign::FeatureAddSub>(getObject());
-    if (p == & AddSubColor) {
-        App::Color color((uint32_t)PartGui::PartParams::PreviewAddColor());
-        float t = 1.0f - color.a;
-        if (AddSubColor.getValue().getPackedValue()) {
-            color = AddSubColor.getValue();
-            t = 1.0 - color.a;
-            if (t < 0.1)
-                t = 0.7;
-            if (t > 0.9)
-                t = 0.7;
-        } else {
-            if (feat) {
-                if (feat->isDerivedFrom(PartDesign::DressUp::getClassTypeId())) {
-                    color = App::Color((uint32_t)PartGui::PartParams::PreviewDressColor());
-                } else if (feat->getAddSubType() == PartDesign::FeatureAddSub::Additive)
-                    color = App::Color((uint32_t)PartGui::PartParams::PreviewAddColor());
-                else
-                    color = App::Color((uint32_t)PartGui::PartParams::PreviewSubColor());
-                t = 1.0f - color.a;
-            }
-        }
-        auto material = pAddSubView->ShapeMaterial.getValue();
-        material.diffuseColor = color;
-        material.transparency = t;
-        pAddSubView->ShapeMaterial.setValue(material);
-        pAddSubView->LineMaterial.setValue(material);
-        material.transparency = 1.0f;
-        pAddSubView->PointMaterial.setValue(material);
-    }
+    if (p == & AddSubColor)
+        checkAddSubColor();
     ViewProvider::onChanged(p);
+}
+
+void ViewProviderAddSub::checkAddSubColor()
+{
+    auto feat = Base::freecad_dynamic_cast<PartDesign::FeatureAddSub>(getObject());
+    if (!feat)
+        return;
+    App::Color color((uint32_t)PartGui::PartParams::PreviewAddColor());
+    float t = 1.0f - color.a;
+    if (AddSubColor.getValue().getPackedValue()) {
+        color = AddSubColor.getValue();
+        t = 1.0 - color.a;
+        if (t < 0.1)
+            t = 0.7;
+        if (t > 0.9)
+            t = 0.7;
+    } else {
+        if (feat) {
+            if (feat->isDerivedFrom(PartDesign::DressUp::getClassTypeId())) {
+                color = App::Color((uint32_t)PartGui::PartParams::PreviewDressColor());
+            } else if (feat->getAddSubType() == PartDesign::FeatureAddSub::Additive)
+                color = App::Color((uint32_t)PartGui::PartParams::PreviewAddColor());
+            else
+                color = App::Color((uint32_t)PartGui::PartParams::PreviewSubColor());
+            t = 1.0f - color.a;
+        }
+    }
+    pAddSubView->LineColor.setValue(color);
+    auto material = pAddSubView->PointMaterial.getValue();
+    material.transparency = 1.0f;
+    pAddSubView->PointMaterial.setValue(material);
+    pAddSubView->Transparency.setValue(t*100);
+    pAddSubView->ShapeColor.setValue(color);
 }
 
 void ViewProviderAddSub::updateData(const App::Property* p) {
@@ -183,6 +186,8 @@ void ViewProviderAddSub::setPreviewDisplayMode(bool onoff) {
         fcSwitch = static_cast<Gui::SoFCSwitch*>(pcModeSwitch);
 
     if (onoff) {
+        checkAddSubColor();
+
         auto feat = Base::freecad_dynamic_cast<PartDesign::FeatureAddSub>(getObject());
         if (feat && feat->BaseFeature.getValue()) {
             auto base = feat->BaseFeature.getValue();
