@@ -132,6 +132,12 @@ void GeometryFacade::setConstruction(Part::Geometry * geometry, bool constructio
     return gf->setConstruction(construction);
 }
 
+bool GeometryFacade::isInternalType(Part::Geometry * geometry, InternalType::InternalType type)
+{
+    auto gf = GeometryFacade::getFacade(geometry);
+    return gf->getInternalType() == type;
+}
+
 PyObject * GeometryFacade::getPyObject(void)
 {
     return new GeometryFacadePy(new GeometryFacade(this->Geo));
