@@ -511,6 +511,8 @@ private:
     bool internaltransaction;
 
     bool managedoperation; // indicates whether changes to properties are the deed of SketchObject or not (for input validation)
+
+    bool deletinginternalgeometry; // sets a lock to deletinginternalgeometryoperation so that no individual triggers are perform on each element.
 };
 
 typedef App::FeaturePythonT<SketchObject> SketchObjectPython;
