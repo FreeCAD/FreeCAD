@@ -152,6 +152,16 @@
         <file>Param_UInt.svg</file>
         <file>PolygonPick.svg</file>
         <file>Python.svg</file>
+        <file>Std_CloseActiveWindow.svg</file>
+        <file>Std_CloseAllWindows.svg</file>
+        <file>Std_Export.svg</file>
+        <file>Std_Import.svg</file>
+        <file>Std_MergeProjects.svg</file>
+        <file>Std_PrintPdf.svg</file>
+        <file>Std_RecentFiles.svg</file>
+        <file>Std_Revert.svg</file>
+        <file>Std_SaveAll.svg</file>
+        <file>Std_SaveCopy.svg</file>
         <file>Std_Tool1.svg</file>
         <file>Std_Tool2.svg</file>
         <file>Std_Tool3.svg</file>
