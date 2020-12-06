@@ -707,10 +707,10 @@ Py::String GeometrySurfacePy::getContinuity(void) const
 
 PyObject* GeometrySurfacePy::toBSpline(PyObject * args)
 {
-    double tol3d;
-    char *ucont, *vcont;
-    int maxDegU,maxDegV,maxSegm,prec=0;
-    if (!PyArg_ParseTuple(args, "dssiii|i",&tol3d,&ucont,&vcont,
+    double tol3d=Precision::Confusion();
+    char *ucont="G2", *vcont="G2";
+    int maxDegU=25,maxDegV=25,maxSegm=1e5,prec=0;
+    if (!PyArg_ParseTuple(args, "|dssiiii",&tol3d,&ucont,&vcont,
                                            &maxDegU,&maxDegV,&maxSegm,&prec))
         return 0;
 
