@@ -3559,7 +3559,7 @@ public:
         addCommand(new StdTreeSyncView());
         addCommand(new StdTreeSyncSelection());
         addCommand(new StdTreeSyncPlacement());
-        addCommand(Application::Instance->commandManager().getCommandByName("Std_TreePreSelection"));
+        addCommand("Std_TreePreSelection");
         addCommand(new StdTreeRecordSelection());
 
         addCommand();
@@ -3758,7 +3758,7 @@ public:
         addCommand(new StdCmdEditingAutoTransparent());
         addCommand(new StdCmdSelectionFaceWire());
         addCommand(new StdCmdPreselEdgeOnly());
-        addCommand(Application::Instance->commandManager().getCommandByName("Std_TreePreSelection"));
+        addCommand("Std_TreePreSelection");
         addCommand(new StdCmdSelHierarchyAscend());
         addCommand();
         addCommand(new StdCmdMapChildrenPlacement());

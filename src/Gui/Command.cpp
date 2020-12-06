@@ -1897,7 +1897,7 @@ void CommandManager::addCommand(Command* pCom)
     ++_revision;
     auto &cmd = _sCommands[pCom->getName()];
     if (cmd) {
-        if(!FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+        if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
             FC_ERR("duplicate command " << pCom->getName());
         return;
     }
