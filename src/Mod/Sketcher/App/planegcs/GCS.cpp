@@ -1427,7 +1427,7 @@ void System::initSolution(Algorithm alg)
 
         for (std::vector<Constraint *>::const_iterator constr=clistR.begin();
             constr != clistR.end(); ++constr) {
-            if ((*constr)->getTag() >= 0 && (*constr)->getTypeId() == Equal) {
+            if (((*constr)->getTag() >= 0 || (*constr)->getTag() == GCS::MainSubsystemTemporaryConstraint) && (*constr)->getTypeId() == Equal) {
                 MAP_pD_I::const_iterator it1,it2;
                 it1 = pIndex.find((*constr)->params()[0]);
                 it2 = pIndex.find((*constr)->params()[1]);
@@ -1473,7 +1473,7 @@ void System::initSolution(Algorithm alg)
         std::vector<Constraint *> clist0, clist1;
         for (std::vector<Constraint *>::const_iterator constr=clists[cid].begin();
              constr != clists[cid].end(); ++constr) {
-            if ((*constr)->getTag() >= 0)
+            if ((*constr)->getTag() >= 0 || (*constr)->getTag() == GCS::MainSubsystemTemporaryConstraint)
                 clist0.push_back(*constr);
             else // move or distance from reference constraints
                 clist1.push_back(*constr);
