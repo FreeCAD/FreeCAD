@@ -114,6 +114,7 @@ public: // Utility methods
     static void copyId(const Part::Geometry * src, Part::Geometry * dst);
     static bool getConstruction(const Part::Geometry * geometry);
     static void setConstruction(Part::Geometry * geometry, bool construction);
+    static bool isInternalType(const Part::Geometry * geometry, InternalType::InternalType type);
 
 public:
     void setGeometry(Part::Geometry *geometry);
