@@ -254,7 +254,9 @@ TopoShape ProfileBased::getVerifiedFace(bool silent) const {
         }
 
         if(count>1) {
-            if(AllowMultiFace.getValue() || allowMultiSolid())
+            if(AllowMultiFace.getValue()
+                    || allowMultiSolid()
+                    || obj->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
                 return shape;
             FC_WARN("Found more than one face from profile");
         }
