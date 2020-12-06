@@ -471,6 +471,8 @@ private:
 
     void calculateDependentParametersElements(void);
 
+    void clearTemporaryConstraints(void);
+
     /// checks if the index bounds and converts negative indices to positive
     int checkGeoId(int geoId) const;
     GCS::Curve* getGCSCurveByGeoId(int geoId);
