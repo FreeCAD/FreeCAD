@@ -146,6 +146,7 @@ SketchObject::SketchObject()
 
     internaltransaction=false;
     managedoperation=false;
+    deletinginternalgeometry=false;
 }
 
 SketchObject::~SketchObject()
@@ -955,6 +956,11 @@ int SketchObject::delGeometry(int GeoId, bool deleteinternalgeo)
              geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId())) {
 
             this->deleteUnusedInternalGeometry(GeoId, true);
+
+            Geometry.touch();
+
+            if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
+                solve();
             return 0;
         }
     }
@@ -997,10 +1003,12 @@ int SketchObject::delGeometry(int GeoId, bool deleteinternalgeo)
         this->Constraints.setValues(std::move(newConstraints));
     }
     // Update geometry indices and rebuild vertexindex now via onChanged, so that ViewProvider::UpdateData is triggered.
-    Geometry.touch();
+    if(!deletinginternalgeometry) {
+        Geometry.touch();
 
-    if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
-        solve();
+        if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
+            solve();
+    }
 
     return 0;
 }
@@ -4971,6 +4979,8 @@ int SketchObject::exposeInternalGeometry(int GeoId)
 
 int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
 {
+   Base::StateLocker lock(deletinginternalgeometry, true);
+
    if (GeoId < 0 || GeoId > getHighestCurveIndex())
         return -1;
 
@@ -5225,10 +5235,8 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
                         }
 
                     }
-                    // ignore weight constraints
-                    else if (((*itc)->Type!=Sketcher::Weight) && ( (*itc)->Second == (*it) || (*itc)->First == (*it) || (*itc)->Third == (*it)) ) {
-                        (*ita)++;
-                    }
+                    // We do not ignore weight constraints as we did with radius constraints, because the radius magnitude no longer makes sense
+                    // without the B-Spline.
                 }
 
                 if ( (*ita) < 2 ) { // IA
