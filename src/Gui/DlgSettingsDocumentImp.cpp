@@ -95,6 +95,7 @@ void DlgSettingsDocumentImp::saveSettings()
     ui->prefRecovery->onSave();
     ui->prefAutoSaveEnabled->onSave();
     ui->prefAutoSaveTimeout->onSave();
+    ui->prefNoNativeDialog->onSave();
 
     DocumentParams::set_CanAbortRecompute(ui->prefCanAbortRecompute->isChecked());
     DocumentParams::set_WarnRecomputeOnRestore(ui->prefRecomputeOnRestore->isChecked());
@@ -131,6 +132,7 @@ void DlgSettingsDocumentImp::loadSettings()
     ui->prefRecovery->onRestore();
     ui->prefAutoSaveEnabled->onRestore();
     ui->prefAutoSaveTimeout->onRestore();
+    ui->prefNoNativeDialog->onRestore();
 
     ui->prefCanAbortRecompute->setChecked(DocumentParams::CanAbortRecompute());
     ui->prefRecomputeOnRestore->setChecked(DocumentParams::WarnRecomputeOnRestore());
