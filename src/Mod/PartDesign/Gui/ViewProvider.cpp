@@ -472,9 +472,16 @@ void ViewProvider::setTipIcon(bool onoff)
 
 QPixmap ViewProvider::getTagIcon() const
 {
-    unsigned long color = IconColor.getValue().getPackedValue();
-    if (!color)
+    auto feat = Base::freecad_dynamic_cast<PartDesign::Feature>(getObject());
+    if (!feat)
         return QPixmap();
+
+    unsigned long color = IconColor.getValue().getPackedValue();
+    if (!color && !isSetTipIcon && !feat->_Siblings.getSize())
+        return QPixmap();
+
+    if (!color)
+        color = 0xffffffff;
 
     if(pxTipIcon.isNull()) {
         std::map<unsigned long, unsigned long> colormap;
@@ -484,8 +491,7 @@ QPixmap ViewProvider::getTagIcon() const
         pxTipIcon = Gui::BitmapFactory().pixmapFromSvg("PartDesign_Overlay.svg",
                                                         QSizeF(64,64),
                                                         colormap);
-        auto feat = Base::freecad_dynamic_cast<PartDesign::Feature>(getObject());
-        if (feat && feat->_Siblings.getSize()) {
+        if (feat->_Siblings.getSize()) {
             QPixmap px(64, 64);
             QPainter pt;
             px.fill(Qt::transparent);
