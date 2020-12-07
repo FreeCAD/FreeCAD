@@ -162,6 +162,43 @@ void StdCmdOpen::activated(int iMsg)
 }
 
 //===========================================================================
+// Std_OpenDirectory
+//===========================================================================
+
+DEF_STD_CMD(StdCmdOpenDirectory)
+
+StdCmdOpenDirectory::StdCmdOpenDirectory()
+  : Command("Std_OpenDirectory")
+{
+    // setting the
+    sGroup        = QT_TR_NOOP("File");
+    sMenuText     = QT_TR_NOOP("Open &Directory...");
+    sToolTipText  = QT_TR_NOOP("Open a document saved as uncompressed directory");
+    sWhatsThis    = "Std_OpenDirectory";
+    sStatusTip    = sToolTipText;
+    eType         = NoTransaction;
+}
+
+void StdCmdOpenDirectory::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    QString formatList;
+    QString selectedFilter;
+    QStringList fileList = FileDialog::getOpenFileNames(getMainWindow(),
+                                                        QObject::tr("Open document directory"),
+                                                        QString(),
+                                                        QString(),
+                                                        &selectedFilter,
+                                                        QFileDialog::ShowDirsOnly,
+                                                        QFileDialog::Directory);
+
+    for (auto & file : fileList)
+        getGuiApplication()->open(file.toUtf8(), "");
+}
+
+
+//===========================================================================
 // Std_Import
 //===========================================================================
 
@@ -513,6 +550,67 @@ bool StdCmdSaveAs::isActive(void)
     return getGuiApplication()->sendHasMsgToActiveView("SaveAs");
 }
 
+//===========================================================================
+// Std_SaveAsDirectory
+//===========================================================================
+DEF_STD_CMD_A(StdCmdSaveAsDirectory)
+
+StdCmdSaveAsDirectory::StdCmdSaveAsDirectory()
+  :Command("Std_SaveAsDirectory")
+{
+  sGroup        = QT_TR_NOOP("File");
+  sMenuText     = QT_TR_NOOP("Save as &Directory...");
+  sToolTipText  = QT_TR_NOOP("Save the active document in a direcotry without compression");
+  sWhatsThis    = "Std_SaveAsDirectory";
+  sStatusTip    = sToolTipText;
+  eType         = 0;
+}
+
+void StdCmdSaveAsDirectory::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    auto gdoc = getActiveGuiDocument();
+    if (!gdoc)
+        return;
+
+    getMainWindow()->showMessage(QObject::tr("Save document as directory..."));
+
+    QString exe = qApp->applicationName();
+    QString fn = FileDialog::getSaveFileName(getMainWindow(),
+                                             QObject::tr("Save %1 Document").arg(exe), 
+                                             QString::fromUtf8(gdoc->getDocument()->FileName.getValue()), 
+                                             QString(),
+                                             nullptr,
+                                             QFileDialog::ShowDirsOnly,
+                                             QFileDialog::Directory);
+    if (!fn.isEmpty()) {
+        QFileInfo fi;
+        fi.setFile(fn);
+
+        const char * DocName = App::GetApplication().getDocumentName(getDocument());
+
+        // save as new file name
+        try {
+            Gui::WaitCursor wc;
+            std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(fn.toUtf8());
+            escapedstr = Base::Tools::escapeEncodeFilename(escapedstr);
+            Command::doCommand(Command::Doc,"App.getDocument(\"%s\").saveAs(u\"%s\")"
+                                           , DocName, escapedstr.c_str());
+            gdoc->setModified(false);
+            getMainWindow()->appendRecentFile(fi.filePath());
+        }
+        catch (const Base::Exception& e) {
+            QMessageBox::critical(getMainWindow(), QObject::tr("Saving document failed"),
+                QString::fromLatin1(e.what()));
+        }
+    }
+}
+
+bool StdCmdSaveAsDirectory::isActive(void)
+{
+    return getActiveGuiDocument() != nullptr;
+}
 //===========================================================================
 // Std_SaveCopy
 //===========================================================================
@@ -1581,6 +1679,7 @@ void CreateDocCommands(void)
 
     rcCmdMgr.addCommand(new StdCmdNew());
     rcCmdMgr.addCommand(new StdCmdOpen());
+    rcCmdMgr.addCommand(new StdCmdOpenDirectory());
     rcCmdMgr.addCommand(new StdCmdImport());
     rcCmdMgr.addCommand(new StdCmdExport());
     rcCmdMgr.addCommand(new StdCmdMergeProjects());
@@ -1588,6 +1687,7 @@ void CreateDocCommands(void)
 
     rcCmdMgr.addCommand(new StdCmdSave());
     rcCmdMgr.addCommand(new StdCmdSaveAs());
+    rcCmdMgr.addCommand(new StdCmdSaveAsDirectory());
     rcCmdMgr.addCommand(new StdCmdSaveCopy());
     rcCmdMgr.addCommand(new StdCmdSaveAll());
     rcCmdMgr.addCommand(new StdCmdRevert());

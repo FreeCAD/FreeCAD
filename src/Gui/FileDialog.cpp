@@ -207,7 +207,7 @@ void FileDialog::accept()
  * This is a convenience static function that will return a file name selected by the user. The file does not have to exist.
  */
 QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, const QString & dir, 
-                                     QString filter, QString * selectedFilter, Options options)
+                                     QString filter, QString * selectedFilter, Options options, FileMode fileMode)
 {
 #if QT_VERSION < 0x040800 && defined(FC_OS_MACOSX)
     options |= QFileDialog::DontUseNativeDialog;
@@ -278,7 +278,7 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
         dlg.setWindowTitle(windowTitle);
         dlg.setSidebarUrls(urls);
         dlg.setIconProvider(new FileIconProvider());
-        dlg.setFileMode(QFileDialog::AnyFile);
+        dlg.setFileMode(fileMode);
         dlg.setAcceptMode(QFileDialog::AcceptSave);
         dlg.setDirectory(dirName);
         dlg.setOptions(options);
@@ -333,7 +333,7 @@ QString FileDialog::getExistingDirectory( QWidget * parent, const QString & capt
  * If the user pressed Cancel, it returns a null string.
  */
 QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, const QString & dir, 
-                                    QString filter, QString * selectedFilter, Options options)
+                                    QString filter, QString * selectedFilter, Options options, FileMode fileMode)
 {
     checkFilter(filter);
 
@@ -378,7 +378,7 @@ QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, c
         dlg.setWindowTitle(windowTitle);
         dlg.setSidebarUrls(urls);
         dlg.setIconProvider(new FileIconProvider());
-        dlg.setFileMode(QFileDialog::ExistingFile);
+        dlg.setFileMode(fileMode);
         dlg.setAcceptMode(QFileDialog::AcceptOpen);
         dlg.setDirectory(dirName);
         dlg.setOptions(options);
@@ -411,7 +411,7 @@ QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, c
  * This is a convenience static function that will return one or more existing files selected by the user.
  */
 QStringList FileDialog::getOpenFileNames (QWidget * parent, const QString & caption, const QString & dir,
-                                          QString filter, QString * selectedFilter, Options options)
+                                          QString filter, QString * selectedFilter, Options options, FileMode fileMode)
 {
     checkFilter(filter);
 
@@ -456,7 +456,7 @@ QStringList FileDialog::getOpenFileNames (QWidget * parent, const QString & capt
         dlg.setWindowTitle(windowTitle);
         dlg.setSidebarUrls(urls);
         dlg.setIconProvider(new FileIconProvider());
-        dlg.setFileMode(QFileDialog::ExistingFiles);
+        dlg.setFileMode(fileMode);
         dlg.setAcceptMode(QFileDialog::AcceptOpen);
         dlg.setDirectory(dirName);
         dlg.setOptions(options);

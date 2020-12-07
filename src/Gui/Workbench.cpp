@@ -586,8 +586,8 @@ MenuItem* StdWorkbench::setupMenuBar() const
     // File
     MenuItem* file = new MenuItem( menuBar );
     file->setCommand("&File");
-    *file << "Std_New" << "Std_Open" << "Separator" << "Std_CloseActiveWindow"
-          << "Std_CloseAllWindows" << "Separator" << "Std_Save" << "Std_SaveAs"
+    *file << "Std_New" << "Std_Open" << "Std_OpenDirectory" << "Separator" << "Std_CloseActiveWindow"
+          << "Std_CloseAllWindows" << "Separator" << "Std_Save" << "Std_SaveAs" << "Std_SaveAsDirectory"
           << "Std_SaveCopy" << "Std_SaveAll" << "Std_Revert" << "Separator" << "Std_Import" 
           << "Std_Export" << "Std_MergeProjects" << "Std_ProjectInfo" 
           << "Separator" << "Std_Print" << "Std_PrintPreview" << "Std_PrintPdf"
