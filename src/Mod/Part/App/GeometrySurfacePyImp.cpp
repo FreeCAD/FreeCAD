@@ -44,6 +44,7 @@
 # include <ShapeAnalysis_Surface.hxx>
 # include <GeomAPI_IntSS.hxx>
 # include <GeomLib_IsPlanarSurface.hxx>
+# include <Geom_BSplineSurface.hxx>
 #endif
 
 #include <Base/GeometryPyCXX.h>
@@ -709,8 +710,8 @@ PyObject* GeometrySurfacePy::toBSpline(PyObject * args)
 {
     double tol3d=Precision::Confusion();
     char *ucont="C1", *vcont="C1";
-    // 25 = Geom_BSplineSurface.MaxDegree()
-    int maxDegU=25, maxDegV=25;
+    int maxDegU=Geom_BSplineSurface::MaxDegree();
+    int maxDegV=Geom_BSplineSurface::MaxDegree();
     int maxSegm=1000, prec=0;
     if (!PyArg_ParseTuple(args, "|dssiiii",&tol3d,&ucont,&vcont,
                                            &maxDegU,&maxDegV,&maxSegm,&prec))
