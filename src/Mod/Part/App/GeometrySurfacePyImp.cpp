@@ -708,8 +708,10 @@ Py::String GeometrySurfacePy::getContinuity(void) const
 PyObject* GeometrySurfacePy::toBSpline(PyObject * args)
 {
     double tol3d=Precision::Confusion();
-    char *ucont="G2", *vcont="G2";
-    int maxDegU=25,maxDegV=25,maxSegm=1e5,prec=0;
+    char *ucont="C1", *vcont="C1";
+    // 25 = Geom_BSplineSurface.MaxDegree()
+    int maxDegU=25, maxDegV=25;
+    int maxSegm=1000, prec=0;
     if (!PyArg_ParseTuple(args, "|dssiiii",&tol3d,&ucont,&vcont,
                                            &maxDegU,&maxDegV,&maxSegm,&prec))
         return 0;
