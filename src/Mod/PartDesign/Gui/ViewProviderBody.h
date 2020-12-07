@@ -88,6 +88,8 @@ public:
      */
     SbBox3f getBoundBox ();
 
+    /** Return false to force drop only operation for a given object*/
+    virtual bool canDragAndDropObject(App::DocumentObject*) const;
     /** Check whether the object can be removed from the view provider by drag and drop */
     virtual bool canDragObject(App::DocumentObject*) const override;
     /** Check whether the object can be dropped to the view provider by drag and drop */

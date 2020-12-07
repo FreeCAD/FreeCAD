@@ -151,9 +151,6 @@ App::DocumentObject* Body::getPrevSolidFeature(App::DocumentObject *start)
             return objs[index];
     }
 
-    if(BaseFeature.getValue() && BaseFeature.getValue()!=start)
-        return BaseFeature.getValue();
-    
     return nullptr;
 }
 

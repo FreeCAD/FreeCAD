@@ -648,11 +648,19 @@ std::vector< std::string > ViewProviderBody::getDisplayModes(void) const {
 
 bool ViewProviderBody::canDropObject(App::DocumentObject* obj) const
 {
+    PartDesign::Body* body = Base::freecad_dynamic_cast<PartDesign::Body>(getObject());
+    if (!body)
+        return false;
+
+    if (!body->getPrevSolidFeature()
+            && !body->BaseFeature.getValue()
+            && obj->isDerivedFrom(Part::Feature::getClassTypeId()))
+        return true;
+
     if (obj->isDerivedFrom(PartDesign::AuxGroup::getClassTypeId())
                 || !PartDesign::Body::isAllowed(obj))
         return false;
 
-    PartDesign::Body* body = Base::freecad_dynamic_cast<PartDesign::Body>(getObject());
     if (!body || PartDesign::Body::findBodyOf(obj) == body)
         return false;
 
@@ -664,6 +672,17 @@ bool ViewProviderBody::canDropObject(App::DocumentObject* obj) const
     // if (partOfBaseFeature != 0 && partOfBaseFeature != actPart)
     //     return false;
 
+    return true;
+}
+
+bool ViewProviderBody::canDragAndDropObject(App::DocumentObject * obj) const
+{
+    PartDesign::Body* body = Base::freecad_dynamic_cast<PartDesign::Body>(getObject());
+    if (body && !body->getPrevSolidFeature()
+             && !body->BaseFeature.getValue()
+             && obj->isDerivedFrom(Part::Feature::getClassTypeId())
+             && !obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+        return false;
     return true;
 }
 
@@ -688,6 +707,9 @@ std::string ViewProviderBody::dropObjectEx(App::DocumentObject *obj,
     PartDesign::Body* body = Base::freecad_dynamic_cast<PartDesign::Body>(getObject());
     if (!body)
         FC_THROWM(Base::RuntimeError, "No body");
+
+    if (!owner)
+        owner = obj;
 
     auto type = obj->getTypeId();
     if (type.isDerivedFrom(Part::Datum::getClassTypeId())   ||
@@ -724,6 +746,14 @@ std::string ViewProviderBody::dropObjectEx(App::DocumentObject *obj,
         obj = binder;
     }
     else if (!body->getPrevSolidFeature() && !body->BaseFeature.getValue()) {
+        if (owner == obj) {
+            body->BaseFeature.setValue(obj);
+            auto tip = body->Tip.getValue();
+            if (tip)
+                return std::string(tip->getNameInDocument()) + ".";
+            return std::string();
+        }
+
         auto binder = static_cast<PartDesign::SubShapeBinder*>(
                 body->getDocument()->addObject("PartDesign::SubShapeBinder",
                                                 "BaseFeature"));
