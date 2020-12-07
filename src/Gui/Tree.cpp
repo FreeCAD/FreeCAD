@@ -2316,7 +2316,7 @@ void TreeWidget::_dragMoveEvent(QDragMoveEvent *event, bool *replace)
             else
                 event->setDropAction(Qt::MoveAction);
             auto da = event->dropAction();
-            bool dropOnly = da==Qt::CopyAction || da==Qt::MoveAction;
+            bool dropOnly = da==Qt::CopyAction || da==Qt::LinkAction;
 
             if (da!=Qt::LinkAction && !vp->canDropObjects()) {
                 if(!(event->possibleActions() & Qt::LinkAction) || items.size()!=1) {
@@ -2338,19 +2338,12 @@ void TreeWidget::_dragMoveEvent(QDragMoveEvent *event, bool *replace)
                 auto obj = item->object()->getObject();
 
                 if(!dropOnly && !vp->canDragAndDropObject(obj)) {
-                    // check if items can be dragged
-                    auto parentItem = item->getParentItem();
-                    if(parentItem 
-                            && (!parentItem->object()->canDragObjects() 
-                                || !parentItem->object()->canDragObject(item->object()->getObject())))
-                    {
-                        if(!(event->possibleActions() & Qt::CopyAction)) {
-                            TREE_TRACE("Cannot drag object");
-                            event->ignore();
-                            return;
-                        }
-                        event->setDropAction(Qt::CopyAction);
+                    if(!(event->possibleActions() & Qt::CopyAction)) {
+                        TREE_TRACE("Cannot drag object");
+                        event->ignore();
+                        return;
                     }
+                    event->setDropAction(Qt::CopyAction);
                 }
 
                 std::ostringstream str;
