@@ -309,6 +309,7 @@ SubObjectT::SubObjectT(const std::vector<App::DocumentObject*> &objs, const char
     }
     if (s)
         ss << s;
+    subname = ss.str();
 }
 
 SubObjectT::SubObjectT(std::vector<App::DocumentObject*>::const_iterator begin,
@@ -328,6 +329,7 @@ SubObjectT::SubObjectT(std::vector<App::DocumentObject*>::const_iterator begin,
     }
     if (s)
         ss << s;
+    subname = ss.str();
 }
 
 bool SubObjectT::operator<(const SubObjectT &other) const {
