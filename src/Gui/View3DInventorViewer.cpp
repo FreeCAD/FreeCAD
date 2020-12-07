@@ -4260,6 +4260,11 @@ void View3DInventorViewer::viewSelection(bool extend)
     if(!guiDocument)
         return;
 
+    // Disable extended view selection if there is an editing view provider, so
+    // that we don't mess up the current editing view.
+    if (extend && editViewProvider)
+        return;
+
     SoCamera* cam = this->getSoRenderManager()->getCamera();
     if(!cam)
         return;
