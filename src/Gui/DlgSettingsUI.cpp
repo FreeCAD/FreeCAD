@@ -61,6 +61,7 @@ public:
 #define FC_OVERLAY_PARAMS \
     FC_UI_CHECKBOX(DockOverlayHideTabBar,"Hide tab bar") \
     FC_UI_CHECKBOX(DockOverlayHideScrollBar,"Hide scroll bar") \
+    FC_UI_CHECKBOX(DockOverlayHideHeaderView,"Hide tree view header") \
     FC_UI_CHECKBOX(DockOverlayAutoView, "Auto hide in non 3D view") \
     FC_UI_CHECKBOX(DockOverlayMouseThrough, "Enable ALT + Mouse pass through") \
     FC_UI_CHECKBOX(DockOverlayAutoMouseThrough, "Auto mouse pass through") \
@@ -139,7 +140,7 @@ DlgSettingsUI::DlgSettingsUI(QWidget* parent)
 #define FC_UI_PARAM(_name, _label, _type, _getter, _setter) do {\
         ui->_name = new _type(parent);\
         ui->label##_name = new QLabel(parent);\
-        ui->label##_name->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred);\
+        ui->label##_name->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding);\
         layout->addWidget(ui->label##_name, row, 0);\
         layout->addWidget(ui->_name, row, 1);\
         ++row;\

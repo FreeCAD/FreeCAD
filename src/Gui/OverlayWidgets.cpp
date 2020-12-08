@@ -1210,9 +1210,8 @@ void OverlayTabWidget::_setOverlayMode(QWidget *widget, int enable)
         auto parent = widget->parentWidget();
         if (parent) {
             parent = parent->parentWidget();
-            if (qobject_cast<TreeWidget*>(parent)
-                    || qobject_cast<PropertyEditor::PropertyEditor*>(parent))
-            {
+            auto treeView = qobject_cast<TreeWidget*>(parent);
+            if (treeView || qobject_cast<PropertyEditor::PropertyEditor*>(parent)) {
                 auto scrollArea = static_cast<QAbstractScrollArea*>(parent);
                 if (scrollArea->verticalScrollBar() == widget) {
                     if (!ViewParams::getDockOverlayHideScrollBar() || enable==0)
@@ -1221,6 +1220,21 @@ void OverlayTabWidget::_setOverlayMode(QWidget *widget, int enable)
                         static QString _style = QLatin1String("*{width:0}");
                         widget->setStyleSheet(_style);
                     }
+                }
+            }
+
+            if (treeView) {
+                auto header = treeView->header();
+                if (!ViewParams::getDockOverlayHideHeaderView() || enable==0)
+                    header->setStyleSheet(QString());
+                else {
+                    static QString _style = QLatin1String(
+                            "QHeaderView:section {"
+                              "height: 0px;"
+                              "background-color: transparent;"
+                              "padding: 0px;"
+                              "border: transparent;}");
+                    header->setStyleSheet(_style);
                 }
             }
         }

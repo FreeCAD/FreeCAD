@@ -145,13 +145,6 @@ Gui--PropertyEditor--PropertyEditor {
   qproperty-itemBackground: rgba(0, 0, 0, 0.01);
 }
 
-Gui--TreeWidget QHeaderView:section {
-  height: 0px;
-  background-color: transparent;
-  padding: 0px;
-  border: transparent;
-}
-
 Gui--CallTipsList::item {
   background-color: rgba(200, 200, 200, 200);
 }
