@@ -1416,7 +1416,7 @@ QVariant Cell::getEditData(bool silent) const {
 
             Base::PyGILStateLocker lock;
             try {
-                Py::Object obj = listExpr->getItems()[2]->getPyValue();
+                Py::Object obj = listExpr->getItems()[1]->getPyValue();
                 if(!isPyMapping(obj))
                     return map;
 
@@ -1424,28 +1424,36 @@ QVariant Cell::getEditData(bool silent) const {
                     PyObject *item = PyMapping_GetItemString(obj.ptr(), const_cast<char*>(key));
                     if(!item) {
                         PyErr_Clear();
-                        return;
+                        return false;
                     }
                     Py::Object pyItem = Py::asObject(item);
-                    if(PyFloat_Check(item))
+                    if(PyFloat_Check(item)) {
                         map[QString::fromLatin1(key)] = PyFloat_AsDouble(item);
+                        return true;
+                    }
+                    return false;
                 };
                 auto getStringKey = [&map,&obj](const char *key) {
                     PyObject *item = PyMapping_GetItemString(obj.ptr(), const_cast<char*>(key));
                     if(!item) {
                         PyErr_Clear();
-                        return;
+                        return false;
                     }
                     Py::Object pyItem = Py::asObject(item);
                     PropertyString tmp;
                     tmp.setPyObject(item);
                     map[QString::fromLatin1(key)] = QString::fromUtf8(tmp.getValue());
+                    return true;
                 };
                 getDoubleKey("step");
                 getDoubleKey("max");
                 getDoubleKey("min");
-                getStringKey("unit");
-                getDoubleKey("scale");
+                if (getStringKey("unit")) {
+                    QString text = map[QString::fromLatin1("unit")].toString();
+                    auto e = App::Expression::parseUnit(owner->sheet(), text.toUtf8().constData());
+                    UnitExpression *expr = static_cast<UnitExpression*>(e.get());
+                    map[QString::fromLatin1("scale")] = expr->getScaler();
+                }
                 return map;
             } catch (Py::Exception &) {
                 Base::PyException e;

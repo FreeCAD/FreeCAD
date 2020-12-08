@@ -145,7 +145,7 @@ public:
                             "arguments (spreadsheet, cell_address, current_value, old_value). It will be\n"\
                             "invoked after the user makes a new selection in the ComboBox.") \
     \
-    SHEET_CELL_MODE(Label,  "Edit the cell using a plain text box.This edit mode is used to hide expression\n"\
+    SHEET_CELL_MODE(Label,  "Edit the cell using a plain text box. This edit mode is used to hide expression\n"\
                             "details in the cell. The cell is expected to contain a list. And only the first\n"\
                             "item will be shown, and the rest of items hidden\n\n"\
                             "It can also be used to edit string property from other object using the double\n"\
@@ -154,12 +154,12 @@ public:
     SHEET_CELL_MODE(Quantity, "Edit the cell using a unit aware SpinBox. This mode expects the cell\n"\
                               "to contain either a simple number, a 'quantity' (i.e. number with unit)\n"\
                               "or a list(quantity, dict). The dict contains optional keys ('step','max',\n"\
-                              "'min','unit','scale'). All keys are expects to have 'double' type of value,\n"\
-                              "excepts 'unit' which must be a string.\n\n"\
+                              "'min','unit'). All keys are expects to have 'double' type of value, except\n"\
+                              "'unit' which must be a string.\n\n"\
                               "If no 'unit' setting is found, the 'display unit' setting of the current cell\n"\
                               "will be used") \
     \
-    SHEET_CELL_MODE(CheckBox, "Edit the cell using a CheckBox. The cell is expects to contain a any value\n"\
+    SHEET_CELL_MODE(CheckBox, "Edit the cell using a CheckBox. The cell is expected to contain any value\n"\
                               "that can be converted to boolean. If you want a check box with a title, use\n"\
                               "a list(boolean, title).") \
 
