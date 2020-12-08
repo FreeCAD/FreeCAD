@@ -404,7 +404,10 @@ class AttributePrototype(PathSetupSheetOpPrototype.OpPrototype):
         self.addProperty('App::PropertyBool', 'SpindlePower',
                 PropertyGroupAttribute, translate('PathToolBit',
                 'Whether Spindle Power should be allowed'))
-
+        self.addProperty('App::PropertyEnumeration', 'Camotics',
+                PropertyGroupAttribute, translate('PathToolBit',
+                'Camotics tool map'))
+        self.Camotics = ['Cylindrical', 'Conical', 'Ballnose', 'Spheroid', 'Snubnose']
 
 class ToolBitFactory(object):
 

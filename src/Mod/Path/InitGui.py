@@ -78,6 +78,8 @@ class PathWorkbench (Workbench):
         from PathScripts import PathToolBitLibraryCmd
 
         import PathCommands
+        import subprocess
+
         PathGuiInit.Startup()
 
         # build commands list
@@ -97,8 +99,6 @@ class PathWorkbench (Workbench):
                           "Path_DressupLeadInOut", "Path_DressupRampEntry",
                           "Path_DressupTag", "Path_DressupZCorrect"]
         extracmdlist = []
-        # modcmdmore = ["Path_Hop",]
-        # remotecmdlist = ["Path_Remote"]
         specialcmdlist = []
 
 
@@ -120,6 +120,12 @@ class PathWorkbench (Workbench):
             prepcmdlist.append("Path_Shape")
             extracmdlist.extend(["Path_Area", "Path_Area_Workplane"])
             specialcmdlist.append('Path_Thread_Milling')
+
+            try:
+                subprocess.call(['camsim', '-v'])
+                toolcmdlist.append("Path_Camotics")
+            except FileNotFoundError:
+                pass
 
             try:
                 import ocl  # pylint: disable=unused-variable

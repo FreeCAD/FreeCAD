@@ -25,11 +25,19 @@ import PathScripts
 import PathScripts.PathLog as PathLog
 import traceback
 
+import json
+import tempfile
+import os
+import Mesh
+import string
+import random
+
 from PathScripts.PathUtils import loopdetect
 from PathScripts.PathUtils import horizontalEdgeLoop
 from PathScripts.PathUtils import horizontalFaceLoop
 from PathScripts.PathUtils import addToJob
 from PathScripts.PathUtils import findParentJob
+from PathScripts.PathPost  import CommandPathPost
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -42,6 +50,127 @@ else:
 __title__ = "FreeCAD Path Commands"
 __author__ = "sliptonic"
 __url__ = "https://www.freecadweb.org"
+
+class _CommandCamoticsSimulate:
+
+    def __init__(self):
+        self.obj = None
+        self.sub = []
+        self.active = False
+
+        self.tooltemplate = {
+            "units": "metric",
+            "shape": "cylindrical",
+            "length": 10,
+            "diameter": 3.125,
+            "description": ""
+        }
+
+        self.workpiecetemplate = {
+            "automatic": "false",
+            "margin": 0,
+            "bounds": {
+                "min": [0, 0, 0],
+                "max": [0, 0, 0]}
+        }
+
+        self.camoticstemplate = {
+            "units": "metric",
+            "resolution-mode": "medium",
+            "resolution": 1,
+            "tools": {},
+            "workpiece": {},
+            "files": []
+        }
+
+    def GetResources(self):
+        return {'Pixmap': 'Path_Camotics',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Camotics", "Camotics"),
+                'Accel': "P, C",
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PatCamoticsop", "Simulate using Camotics"),
+                'CmdType': "ForEdit"}
+
+    def IsActive(self):
+        if bool(FreeCADGui.Selection.getSelection()) is False:
+            return False
+        try:
+            job = FreeCADGui.Selection.getSelectionEx()[0].Object
+            return isinstance(job.Proxy, PathScripts.PathJob.ObjectJob)
+        except:
+            return False
+
+    def Activated(self):
+        pp = CommandPathPost()
+        job = FreeCADGui.Selection.getSelectionEx()[0].Object
+
+        with tempfile.TemporaryDirectory() as td:
+            postlist = pp.getPostObjects(job)
+
+            if hasattr(job, "SplitOutput"):
+                split = job.SplitOutput
+            else:
+                split = False
+
+            fnames = []
+            if split:
+                for i, slist in enumerate(postlist):
+                    filename = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(6))
+                    fnames.append(pp.exportObjectsWith(slist, job, "{}{}{}-{}{}".format(td,os.sep, filename)))
+            else:
+                finalpostlist = [item for slist in postlist for item in slist]
+                filename = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(6))
+                fnames.append(pp.exportObjectsWith(finalpostlist, job, "{}{}{}".format(td,os.sep,filename)))
+
+            data = self.buildproject(job, fnames)
+            f_name = os.path.join(td, 'project.camotics')
+            meshname = os.path.join(td, 'output.stl')
+
+            with open(f_name, 'w') as fh:
+                fh.write(data)
+                fh.close()
+                os.system('camsim {} {}'.format(f_name, meshname))
+
+                Mesh.insert(meshname, FreeCAD.ActiveDocument.Name)
+                import time
+                time.sleep(60)
+
+    def buildproject(self, job, files=[]):
+
+        unitstring = "imperial" if FreeCAD.Units.getSchema() in [2,3,5,7] else "metric"
+
+        templ = self.camoticstemplate
+
+        templ["units"] = unitstring
+        templ["resolution-mode"] = "medium"
+        templ["resolution"] = 1
+
+        toollist = {}
+        for t in job.ToolController:
+            ttemplate = self.tooltemplate
+            ttemplate["units"] = unitstring
+            if hasattr(t.Tool, 'Camotics'):
+                ttemplate["shape"] =  t.Tool.Camotics
+            else:
+                ttemplate["shape"] =  "cylindrical"
+            ttemplate["length"] = t.Tool.Length.Value
+            ttemplate["diameter"] = t.Tool.Diameter.Value
+            ttemplate["description"] = t.Label
+            toollist[t.ToolNumber] = ttemplate
+
+        templ['tools'] = toollist
+
+        bb = job.Stock.Shape.BoundBox
+        workpiecetmpl = self.workpiecetemplate
+        workpiecetmpl['bounds']['min'] = [bb.XMin, bb.YMin, bb.ZMin]
+        workpiecetmpl['bounds']['max'] = [bb.XMax, bb.YMax, bb.ZMax]
+        templ['workpiece'] = workpiecetmpl
+
+        templ['files'] = files
+
+        return json.dumps(templ, indent=2)
+
+if FreeCAD.GuiUp:
+    FreeCADGui.addCommand('Path_Camotics', _CommandCamoticsSimulate())
 
 
 class _CommandSelectLoop:

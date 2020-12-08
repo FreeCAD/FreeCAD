@@ -48,6 +48,7 @@ def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
+
 class _TempObject:
     # pylint: disable=no-init
     Path = None
@@ -163,6 +164,10 @@ class CommandPathPost:
             else:
                 filename = None
 
+        # Set the flag on the job to indicate the Path is now fresh
+        if hasattr(job, 'PathChanged'):
+            job.PathChanged = False
+
         return filename
 
     def resolvePostProcessor(self, job):
@@ -190,77 +195,7 @@ class CommandPathPost:
 
         return False
 
-    def exportObjectsWith(self, objs, job, needFilename=True):
-        PathLog.track()
-        # check if the user has a project and has set the default post and
-        # output filename
-        postArgs = PathPreferences.defaultPostProcessorArgs()
-        if hasattr(job, "PostProcessorArgs") and job.PostProcessorArgs:
-            postArgs = job.PostProcessorArgs
-        elif hasattr(job, "PostProcessor") and job.PostProcessor:
-            postArgs = ''
-
-        postname = self.resolvePostProcessor(job)
-        filename = '-'
-        if postname and needFilename:
-            filename = self.resolveFileName(job)
-
-        if postname and filename:
-            print("post: %s(%s, %s)" % (postname, filename, postArgs))
-            processor = PostProcessor.load(postname)
-            gcode = processor.export(objs, filename, postArgs)
-            return (False, gcode, filename)
-        else:
-            return (True, '', filename)
-
-    def Activated(self):
-        PathLog.track()
-        FreeCAD.ActiveDocument.openTransaction(
-            translate("Path_Post", "Post Process the Selected path(s)"))
-        FreeCADGui.addModule("PathScripts.PathPost")
-
-        # Attempt to figure out what the user wants to post-process
-        # If a job is selected, post that.
-        # If there's only one job in a document, post it.
-        # If a user has selected a subobject of a job, post the job.
-        # If multiple jobs and can't guess, ask them.
-
-        selected = FreeCADGui.Selection.getSelectionEx()
-        if len(selected) > 1:
-            FreeCAD.Console.PrintError("Please select a single job or other path object\n")
-            return
-        elif len(selected) == 1:
-            sel = selected[0].Object
-            if sel.Name[:3] == "Job":
-                job = sel
-            elif hasattr(sel, "Path"):
-                try:
-                    job = PathUtils.findParentJob(sel)
-                except Exception: # pylint: disable=broad-except
-                    job = None
-            else:
-                job = None
-        if job is None:
-            targetlist = []
-            for o in FreeCAD.ActiveDocument.Objects:
-                if hasattr(o, "Proxy"):
-                    if isinstance(o.Proxy, PathJob.ObjectJob):
-                        targetlist.append(o.Label)
-            PathLog.debug("Possible post objects: {}".format(targetlist))
-            if len(targetlist) > 1:
-                form = FreeCADGui.PySideUic.loadUi(":/panels/DlgJobChooser.ui")
-                form.cboProject.addItems(targetlist)
-                r = form.exec_()
-                if r is False:
-                    return
-                else:
-                    jobname = form.cboProject.currentText()
-            else:
-                jobname = targetlist[0]
-            job = FreeCAD.ActiveDocument.getObject(jobname)
-
-        PathLog.debug("about to postprocess job: {}".format(job.Name))
-
+    def getPostObjects(self, job):
         # Build up an ordered list of operations and tool changes.
         # Then post-the ordered list
         if hasattr(job, "Fixtures"):
@@ -272,11 +207,6 @@ class CommandPathPost:
             orderby = job.OrderOutputBy
         else:
             orderby = "Operation"
-
-        if hasattr(job, "SplitOutput"):
-            split = job.SplitOutput
-        else:
-            split = False
 
         postlist = []
 
@@ -386,25 +316,99 @@ class CommandPathPost:
                         sublist.append(obj)
                     postlist.append(sublist)
 
-        fail = True
-        rc = '' # pylint: disable=unused-variable
+        return postlist
+
+    def exportObjectsWith(self, objs, job, filename):
+        PathLog.track()
+        # check if the user has a project and has set the default post and
+        # output filename
+        postArgs = PathPreferences.defaultPostProcessorArgs()
+        if hasattr(job, "PostProcessorArgs") and job.PostProcessorArgs:
+            postArgs = job.PostProcessorArgs
+        elif hasattr(job, "PostProcessor") and job.PostProcessor:
+            postArgs = ''
+
+        postname = self.resolvePostProcessor(job)
+
+        PathLog.info("post: %s(%s, %s)" % (postname, filename, postArgs))
+        processor = PostProcessor.load(postname)
+        gcode = processor.export(objs, filename, postArgs)
+        return filename
+
+    def Activated(self):
+        PathLog.track()
+        FreeCAD.ActiveDocument.openTransaction(
+            translate("Path_Post", "Post Process the Selected path(s)"))
+        FreeCADGui.addModule("PathScripts.PathPost")
+
+        # Attempt to figure out what the user wants to post-process
+        # If a job is selected, post that.
+        # If there's only one job in a document, post it.
+        # If a user has selected a subobject of a job, post the job.
+        # If multiple jobs and can't guess, ask them.
+
+        selected = FreeCADGui.Selection.getSelectionEx()
+        if len(selected) > 1:
+            FreeCAD.Console.PrintError("Please select a single job or other path object\n")
+            return
+        elif len(selected) == 1:
+            sel = selected[0].Object
+            if sel.Name[:3] == "Job":
+                job = sel
+            elif hasattr(sel, "Path"):
+                try:
+                    job = PathUtils.findParentJob(sel)
+                except Exception: # pylint: disable=broad-except
+                    job = None
+            else:
+                job = None
+        if job is None:
+            targetlist = []
+            for o in FreeCAD.ActiveDocument.Objects:
+                if hasattr(o, "Proxy"):
+                    if isinstance(o.Proxy, PathJob.ObjectJob):
+                        targetlist.append(o.Label)
+            PathLog.debug("Possible post objects: {}".format(targetlist))
+            if len(targetlist) > 1:
+                form = FreeCADGui.PySideUic.loadUi(":/panels/DlgJobChooser.ui")
+                form.cboProject.addItems(targetlist)
+                r = form.exec_()
+                if r is False:
+                    return
+                else:
+                    jobname = form.cboProject.currentText()
+            else:
+                jobname = targetlist[0]
+            job = FreeCAD.ActiveDocument.getObject(jobname)
+
+        PathLog.debug("about to postprocess job: {}".format(job.Name))
+
+
+        if hasattr(job, "SplitOutput"):
+            split = job.SplitOutput
+        else:
+            split = False
+
+        postlist = self.getPostObjects(job)
+        filename = self.resolveFileName(job)
+
+        fnames = []
         if split:
-            for slist in postlist:
-                (fail, rc, filename) = self.exportObjectsWith(slist, job)
+            f = os.path.splitext(filename)
+            for i, slist in enumerate(postlist):
+                fnames.append(self.exportObjectsWith(slist, job, "{}-{}{}".format(f[0], str(i), f[1])))
         else:
             finalpostlist = [item for slist in postlist for item in slist]
-            (fail, rc, filename) = self.exportObjectsWith(finalpostlist, job)
+            fnames.append(self.exportObjectsWith(finalpostlist, job, filename))
 
         self.subpart = 1
 
-        if fail:
-            FreeCAD.ActiveDocument.abortTransaction()
-        else:
-            if hasattr(job, "LastPostProcessDate"):
-                job.LastPostProcessDate = str(datetime.now())
-            if hasattr(job, "LastPostProcessOutput"):
-                job.LastPostProcessOutput = filename
-            FreeCAD.ActiveDocument.commitTransaction()
+        if hasattr(job, "LastPostProcessDate"):
+            job.LastPostProcessDate = str(datetime.now())
+        if hasattr(job, "LastPostProcessOutput"):
+            job.LastPostProcessOutput = fnames
+            PathLog.track(fnames)
+        FreeCAD.ActiveDocument.commitTransaction()
 
         FreeCAD.ActiveDocument.recompute()
 

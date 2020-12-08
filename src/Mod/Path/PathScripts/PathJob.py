@@ -111,8 +111,10 @@ class ObjectJob:
         obj.addProperty("App::PropertyString", "PostProcessorArgs", "Output", QtCore.QT_TRANSLATE_NOOP("PathJob", "Arguments for the Post Processor (specific to the script)"))
         obj.addProperty("App::PropertyString", "LastPostProcessDate", "Output", QtCore.QT_TRANSLATE_NOOP("PathJob", "Last Time the Job was post-processed"))
         obj.setEditorMode('LastPostProcessDate', 2)  # Hide
-        obj.addProperty("App::PropertyString", "LastPostProcessOutput", "Output", QtCore.QT_TRANSLATE_NOOP("PathJob", "Last Time the Job was post-processed"))
+        obj.addProperty("App::PropertyStringList", "LastPostProcessOutput", "Output", QtCore.QT_TRANSLATE_NOOP("PathJob", "Last Time the Job was post-processed"))
         obj.setEditorMode('LastPostProcessOutput', 2)  # Hide
+        obj.addProperty("App::PropertyBool", "PathChanged", "Output", QtCore.QT_TRANSLATE_NOOP("PathJob", "Indicates if the gcode is stale"))
+        obj.setEditorMode('PathChanged', 2)  # Hide
 
         obj.addProperty("App::PropertyString", "Description", "Path", QtCore.QT_TRANSLATE_NOOP("PathJob", "An optional description for this job"))
         obj.addProperty("App::PropertyString", "CycleTime", "Path", QtCore.QT_TRANSLATE_NOOP("PathOp", "Job Cycle Time Estimation"))
@@ -155,6 +157,8 @@ class ObjectJob:
 
         self.tooltip = None
         self.tooltipArgs = None
+
+        obj.PathChanged = False
 
         obj.Proxy = self
 
@@ -385,6 +389,8 @@ class ObjectJob:
         if hasattr(obj, 'Operations'):
             obj.Path = obj.Operations.Path
             self.getCycleTime()
+            if hasattr(obj, 'PathChanged'):
+                obj.PathChanged = True
 
     def getCycleTime(self):
         seconds = 0
