@@ -7546,7 +7546,7 @@ void SketchObject::migrateSketch(void)
 
                 if(ext->testMigrationType(Part::GeometryMigrationExtension::Construction))
                 {
-                    GeometryFacade::setConstruction(g, ext->Construction);
+                    GeometryFacade::setConstruction(g, ext->getConstruction());
                 }
 
                 g->deleteExtension(Part::GeometryMigrationExtension::getClassTypeId());
