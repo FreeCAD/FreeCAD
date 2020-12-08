@@ -64,7 +64,7 @@ public:
     virtual PyObject *getPyObject(void) override;
 
 
-    virtual bool getConstruction() const {return Construction;}
+    virtual bool getConstruction() const {return ConstructionState;}
     virtual void setConstruction(bool construction) {ConstructionState = construction;}
 
     virtual bool testMigrationType(int flag) const { return GeometryMigrationFlags.test((size_t)(flag)); };
