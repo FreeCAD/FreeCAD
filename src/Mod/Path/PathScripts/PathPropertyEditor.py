@@ -35,13 +35,9 @@ __doc__ = "Task panel editor for Properties"
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
-LOGLEVEL = False
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+#PathLog.trackModule(PathLog.thisModule())
 
-if LOGLEVEL:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 class _PropertyEditor(object):
     '''Base class of all property editors - just outlines the TableView delegate interface.'''
