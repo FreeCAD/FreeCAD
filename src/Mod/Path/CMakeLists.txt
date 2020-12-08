@@ -96,6 +96,10 @@ SET(PathScripts_SRCS
     PathScripts/PathProfileFaces.py
     PathScripts/PathProfileFacesGui.py
     PathScripts/PathProfileGui.py
+    PathScripts/PathProperty.py
+    PathScripts/PathPropertyContainer.py
+    PathScripts/PathPropertyContainerGui.py
+    PathScripts/PathPropertyEditor.py
     PathScripts/PathSanity.py
     PathScripts/PathSelection.py
     PathScripts/PathSetupSheet.py

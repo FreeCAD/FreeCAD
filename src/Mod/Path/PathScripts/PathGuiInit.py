@@ -66,6 +66,7 @@ def Startup():
         # from PathScripts import PathProfileEdgesGui
         # from PathScripts import PathProfileFacesGui
         from PathScripts import PathProfileGui
+        from PathScripts import PathPropertyContainerGui
         from PathScripts import PathSanity
         from PathScripts import PathSetupSheetGui
         from PathScripts import PathSimpleCopy
