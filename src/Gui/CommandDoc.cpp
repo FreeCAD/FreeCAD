@@ -1307,7 +1307,7 @@ StdCmdRefresh::StdCmdRefresh()
     // undoing the last transaction the manual recompute will clear the redo stack.
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/Document");
-    bool create = hGrp->GetBool("TransactionOnRecompute", true);
+    bool create = hGrp->GetBool("TransactionOnRecompute", false);
     if (!create)
         eType = eType | NoTransaction;
 }
