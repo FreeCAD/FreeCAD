@@ -318,6 +318,10 @@ PyObject* ExternalGeometryFacadePy::getExtensionOfType(PyObject *args)
                 PyErr_SetString(Part::PartExceptionOCCError, "Geometry extension does not exist anymore.");
                 return 0;
             }
+            catch(Base::NotImplementedError) {
+                PyErr_SetString(Part::PartExceptionOCCError, "Geometry extension does not implement a Python counterpart.");
+                return 0;
+            }
         }
         else
         {
@@ -351,6 +355,10 @@ PyObject* ExternalGeometryFacadePy::getExtensionOfName(PyObject *args)
         }
         catch(const std::bad_weak_ptr&) {
             PyErr_SetString(Part::PartExceptionOCCError, "Geometry extension does not exist anymore.");
+            return 0;
+        }
+        catch(Base::NotImplementedError) {
+            PyErr_SetString(Part::PartExceptionOCCError, "Geometry extension does not implement a Python counterpart.");
             return 0;
         }
 
@@ -465,7 +473,7 @@ PyObject* ExternalGeometryFacadePy::getExtensions(PyObject *args)
     try {
         const std::vector<std::weak_ptr<const Part::GeometryExtension>> ext = this->getExternalGeometryFacadePtr()->getExtensions();
 
-        PyObject* list = PyList_New(ext.size());
+        PyObject* list = PyList_New(0);
 
         for (std::size_t i=0; i<ext.size(); ++i) {
 
@@ -473,10 +481,16 @@ PyObject* ExternalGeometryFacadePy::getExtensions(PyObject *args)
 
             if(p) {
                 // we create a python copy and add it to the list
-                Py::Tuple tuple;
-                PyObject* cpy = static_cast<Part::GeometryExtensionPy *>(std::const_pointer_cast<Part::GeometryExtension>(p)->getPyObject())->copy(tuple.ptr());
+                try {
+                    Py::Tuple tuple;
+                    PyObject* cpy = static_cast<Part::GeometryExtensionPy *>(std::const_pointer_cast<Part::GeometryExtension>(p)->getPyObject())->copy(tuple.ptr());
 
-                PyList_SetItem( list, i, cpy);
+                    PyList_Append( list, cpy);
+                    Py_DECREF(cpy);
+                }
+                catch(Base::NotImplementedError) {
+                    // silently ignoring extensions not having a Python object
+                }
             }
         }
 
