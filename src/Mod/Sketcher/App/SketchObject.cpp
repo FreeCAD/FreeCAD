@@ -7470,18 +7470,7 @@ void SketchObject::onUndoRedoFinished()
 void SketchObject::onDocumentRestored()
 {
     try {
-        migrateSketch();
-
-        validateExternalLinks();
-        rebuildExternalGeometry();
-        Constraints.acceptGeometry(getCompleteGeometry());
-        // this may happen when saving a sketch directly in edit mode
-        // but never performed a recompute before
-        if (Shape.getValue().IsNull() && hasConflicts() == 0) {
-            if (this->solve(true) == 0)
-                Shape.setValue(solvedSketch.toShape());
-        }
-
+        restoreFinished();
         Part::Part2DObject::onDocumentRestored();
     }
     catch (...) {
