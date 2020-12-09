@@ -102,15 +102,29 @@ void PropertyGeometryList::setValues(const std::vector<Geometry*>& lValue)
     setValues(std::move(copy));
 }
 
-void PropertyGeometryList::setValues(const std::vector<Geometry*>&& rValue)
+void PropertyGeometryList::setValues(std::vector<Geometry*> &&lValue)
 {
     aboutToSetValue();
-    std::vector<Geometry*> oldVals(_lValueList);
-    _lValueList = std::move(rValue);
+    std::set<Geometry*> valueSet(_lValueList.begin(),_lValueList.end());
+    for(auto v : lValue)
+        valueSet.erase(v);
+    _lValueList = std::move(lValue);
+    for(auto v : valueSet)
+        delete v;
+    hasSetValue();
+}
 
-    for(auto &ov : oldVals)
-        delete ov;
-
+void PropertyGeometryList::set1Value(int idx, std::unique_ptr<Geometry> &&lValue)
+{
+    if(idx>=(int)_lValueList.size())
+        throw Base::IndexError("Index out of bound");
+    aboutToSetValue();
+    if(idx < 0) 
+        _lValueList.push_back(lValue.release());
+    else {
+        delete _lValueList[idx];
+        _lValueList[idx] = lValue.release();
+    }
     hasSetValue();
 }
 
