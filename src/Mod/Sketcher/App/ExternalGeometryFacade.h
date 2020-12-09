@@ -41,6 +41,10 @@ class ExternalGeometryFacadePy;
 //
 // Exactly the same considerations as for GeometryFacade apply (see documentation of GeometryFacade).
 //
+// It was not made publicly deriving from GeometryFacade because it is not possible to differentiate functions by return type, which is the
+// case of getFacade() returning a unique_ptr to GeometryFacade in GeometryFacade, and one to ExternalGeometryFacade. I have not managed to
+// find a good solution to this problem, thus the code duplication.
+//
 // Summary Remarks:
 // It is intended to have a separate type (not being a Geometry type).
 // it is intended to have the relevant interface in full for the sketcher extension only
