@@ -26,7 +26,7 @@ from draftutils.translate import translate
 
 
 WindowPresets =  ["Fixed", "Open 1-pane", "Open 2-pane", "Sash 2-pane",
-                  "Sliding 2-pane", "Simple door", "Glass door", "Sliding 4-pane", "Awming"]
+                  "Sliding 2-pane", "Simple door", "Glass door", "Sliding 4-pane", "Awning"]
 
 def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None):
 
@@ -436,7 +436,7 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             wp.extend(["RightMostFrame","Frame","Wire8,Wire9",fw,str(o2)+"+V"])
             wp.extend(["RightMostGlass","Glass panel","Wire9",str(w2/gla),str(o2+w2/2)+"+V"])
 
-        elif windowtype == "Awming":
+        elif windowtype == "Awning":
 
             wp = outerFrame(s,width,height,h1,w1,o1)
             simpleFrame(s,width,height,h1,h2,tol)
