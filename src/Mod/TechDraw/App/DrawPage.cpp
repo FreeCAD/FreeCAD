@@ -372,6 +372,15 @@ void DrawPage::updateAllViews()
             line->recomputeFeature();
         }
     }
+
+    //fourth, try to execute all spreadsheets.
+    for (it = featViews.begin(); it != featViews.end(); ++it) {
+        TechDraw::DrawViewSpreadsheet *sheet = dynamic_cast<TechDraw::DrawViewSpreadsheet *>(*it);
+        if (sheet != nullptr) {
+            sheet->recomputeFeature();
+        }
+    }
+
 }
 
 std::vector<App::DocumentObject*> DrawPage::getAllViews(void) 

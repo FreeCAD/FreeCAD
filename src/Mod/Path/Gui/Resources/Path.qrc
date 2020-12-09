@@ -60,6 +60,7 @@
         <file>icons/Path_Speed.svg</file>
         <file>icons/Path_Stock.svg</file>
         <file>icons/Path_Stop.svg</file>
+        <file>icons/Path_ThreadMilling.svg</file>
         <file>icons/Path_ToolBit.svg</file>
         <file>icons/Path_ToolChange.svg</file>
         <file>icons/Path_ToolController.svg</file>
@@ -114,6 +115,7 @@
         <file>panels/PageOpProfileFullEdit.ui</file>
         <file>panels/PageOpSlotEdit.ui</file>
         <file>panels/PageOpSurfaceEdit.ui</file>
+        <file>panels/PageOpThreadMillingEdit.ui</file>
         <file>panels/PageOpWaterlineEdit.ui</file>
         <file>panels/PageOpVcarveEdit.ui</file>
         <file>panels/PathEdit.ui</file>

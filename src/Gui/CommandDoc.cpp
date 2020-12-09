@@ -179,7 +179,7 @@ StdCmdImport::StdCmdImport()
     sToolTipText  = QT_TR_NOOP("Import a file in the active document");
     sWhatsThis    = "Std_Import";
     sStatusTip    = QT_TR_NOOP("Import a file in the active document");
-    //sPixmap       = "Open";
+    sPixmap       = "Std_Import";
     sAccel        = "Ctrl+I";
 }
 
@@ -267,6 +267,7 @@ StdCmdExport::StdCmdExport()
     sStatusTip    = QT_TR_NOOP("Export an object in the active document");
     //sPixmap       = "Open";
     sAccel        = "Ctrl+E";
+    sPixmap       = "Std_Export";
     eType         = 0;
 }
 
@@ -331,6 +332,7 @@ StdCmdMergeProjects::StdCmdMergeProjects()
     sToolTipText  = QT_TR_NOOP("Merge project");
     sWhatsThis    = "Std_MergeProjects";
     sStatusTip    = QT_TR_NOOP("Merge project");
+    sPixmap       = "Std_MergeProjects";
 }
 
 void StdCmdMergeProjects::activated(int iMsg)
@@ -528,7 +530,7 @@ StdCmdSaveCopy::StdCmdSaveCopy()
   sToolTipText  = QT_TR_NOOP("Save a copy of the active document under a new file name");
   sWhatsThis    = "Std_SaveCopy";
   sStatusTip    = QT_TR_NOOP("Save a copy of the active document under a new file name");
-  //sPixmap       = "document-save-as";
+  sPixmap       = "Std_SaveCopy";
 }
 
 void StdCmdSaveCopy::activated(int iMsg)
@@ -561,6 +563,7 @@ StdCmdSaveAll::StdCmdSaveAll()
   sToolTipText  = QT_TR_NOOP("Save all opened document");
   sWhatsThis    = "Std_SaveAll";
   sStatusTip    = QT_TR_NOOP("Save all opened document");
+  sPixmap       = "Std_SaveAll";
 }
 
 void StdCmdSaveAll::activated(int iMsg)
@@ -588,7 +591,7 @@ StdCmdRevert::StdCmdRevert()
     sToolTipText  = QT_TR_NOOP("Reverts to the saved version of this file");
     sWhatsThis    = "Std_Revert";
     sStatusTip    = QT_TR_NOOP("Reverts to the saved version of this file");
-  //sPixmap       = "document-revert";
+    sPixmap       = "Std_Revert";
     eType         = NoTransaction;
 }
 
@@ -749,6 +752,7 @@ StdCmdPrintPdf::StdCmdPrintPdf()
     sToolTipText  = QT_TR_NOOP("Export the document as PDF");
     sWhatsThis    = "Std_PrintPdf";
     sStatusTip    = QT_TR_NOOP("Export the document as PDF");
+    sPixmap       = "Std_PrintPdf";
     eType         = 0;
 }
 
@@ -1303,7 +1307,7 @@ StdCmdRefresh::StdCmdRefresh()
     // undoing the last transaction the manual recompute will clear the redo stack.
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/Document");
-    bool create = hGrp->GetBool("TransactionOnRecompute", true);
+    bool create = hGrp->GetBool("TransactionOnRecompute", false);
     if (!create)
         eType = eType | NoTransaction;
 }

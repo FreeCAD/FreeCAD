@@ -383,7 +383,7 @@ class TaskPanelPage(object):
         combo.blockSignals(False)
 
         if obj.ToolController is None:
-            obj.ToolController = PathUtils.findToolController(obj)
+            obj.ToolController = PathUtils.findToolController(obj, obj.Proxy)
         if obj.ToolController is not None:
             self.selectInComboBox(obj.ToolController.Label, combo)
 
@@ -391,7 +391,7 @@ class TaskPanelPage(object):
         '''updateToolController(obj, combo) ...
         helper function to update obj's ToolController property if a different
         one has been selected in the combo box.'''
-        tc = PathUtils.findToolController(obj, combo.currentText())
+        tc = PathUtils.findToolController(obj, obj.Proxy, combo.currentText())
         if obj.ToolController != tc:
             obj.ToolController = tc
 
