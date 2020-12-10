@@ -49,6 +49,7 @@ public:
     virtual void hide(void);
     bool isPreviewMode() const;
     virtual void finishRestoring();
+    virtual void beforeDelete();
     
 protected: 
     virtual void updateAddSubShapeIndicator();

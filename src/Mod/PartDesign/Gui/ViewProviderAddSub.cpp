@@ -63,7 +63,7 @@ ViewProviderAddSub::ViewProviderAddSub()
 {
     ADD_PROPERTY(AddSubColor,((long)0));
 
-    previewGroup = new SoSeparator();
+    previewGroup = new SoAnnotation();
     previewGroup->ref();
 }
 
@@ -88,6 +88,8 @@ void ViewProviderAddSub::attach(App::DocumentObject* obj) {
     pAddSubView->Lighting.setValue(1);
     pAddSubView->enableFullSelectionHighlight(false, false, false);
     pAddSubView->setStatus(Gui::SecondaryView,true);
+    if (pAddSubView->LineWidth.getValue() < 2.0f)
+        pAddSubView->LineWidth.setValue(2.0f);
 
     pAddSubView->attach(obj);
     onChanged(&AddSubColor);
@@ -145,8 +147,8 @@ void ViewProviderAddSub::checkAddSubColor()
     auto material = pAddSubView->PointMaterial.getValue();
     material.transparency = 1.0f;
     pAddSubView->PointMaterial.setValue(material);
-    pAddSubView->Transparency.setValue(t*100);
     pAddSubView->ShapeColor.setValue(color);
+    pAddSubView->Transparency.setValue(t*100);
 }
 
 void ViewProviderAddSub::updateData(const App::Property* p) {
@@ -192,7 +194,6 @@ void ViewProviderAddSub::setPreviewDisplayMode(bool onoff) {
         if (feat && feat->BaseFeature.getValue()) {
             auto base = feat->BaseFeature.getValue();
             baseFeature = App::DocumentObjectT(base);
-            base->Visibility.setValue(true);
 
             // If there is a base feature, we shall inject the preview group
             // into the base feature view provider using SoFCSwitch::tailChild
@@ -202,6 +203,7 @@ void ViewProviderAddSub::setPreviewDisplayMode(bool onoff) {
             if (baseVp && baseVp->getModeSwitch()
                        && baseVp->getModeSwitch()->isOfType(Gui::SoFCSwitch::getClassTypeId()))
             {
+                baseVp->show();
                 auto baseSwitch = static_cast<Gui::SoFCSwitch*>(baseVp->getModeSwitch());
                 baseSwitch->addChild(previewGroup);
                 baseTail = baseSwitch->tailChild.getValue();
@@ -213,21 +215,21 @@ void ViewProviderAddSub::setPreviewDisplayMode(bool onoff) {
             // and switch to preview display mode below.
             makeTemporaryVisible(true);
         }
-    } else if (!onoff) {
+    } else {
         auto base = baseFeature.getObject();
         baseFeature = App::DocumentObjectT();
         if (base) {
-            base->Visibility.setValue(false);
-
             auto baseVp = Gui::Application::Instance->getViewProvider(base);
             if (baseVp && baseVp->getModeSwitch()
                        && baseVp->getModeSwitch()->isOfType(Gui::SoFCSwitch::getClassTypeId()))
             {
+                baseVp->hide();
                 auto baseSwitch = static_cast<Gui::SoFCSwitch*>(baseVp->getModeSwitch());
                 int idx = baseSwitch->findChild(previewGroup);
                 if (idx >= 0)
                     baseSwitch->removeChild(idx);
                 baseSwitch->tailChild = baseTail;
+                return;
             }
         }
     }
@@ -250,6 +252,12 @@ void ViewProviderAddSub::setPreviewDisplayMode(bool onoff) {
             fcSwitch->allowNamedOverride = true;
         }
     }
+}
+
+void ViewProviderAddSub::beforeDelete()
+{
+    setPreviewDisplayMode(false);
+    ViewProvider::beforeDelete();
 }
 
 void ViewProviderAddSub::hide(void)
