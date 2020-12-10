@@ -26,8 +26,10 @@
 #ifndef _PreComp_
 #endif
 
+#include "PartParams.h"
 #include "DlgSettingsObjectColor.h"
 #include "ui_DlgSettingsObjectColor.h"
+#include <App/Material.h>
 #include <Gui/PrefWidgets.h>
 
 using namespace PartGui;
@@ -47,6 +49,20 @@ DlgSettingsObjectColor::DlgSettingsObjectColor(QWidget* parent)
     ui->DressUpColor->setAllowChangeAlpha(true);
     ui->AdditiveColor->setAllowChangeAlpha(true);
     ui->SubtractiveColor->setAllowChangeAlpha(true);
+
+    App::Color c;
+    QColor qc;
+    c.setPackedValue(PartParams::PreviewAddColor());
+    qc.setRgbF(c.r, c.g, c.b, c.a);
+    ui->AdditiveColor->setColor(qc);
+
+    c.setPackedValue(PartParams::PreviewSubColor());
+    qc.setRgbF(c.r, c.g, c.b, c.a);
+    ui->SubtractiveColor->setColor(qc);
+
+    c.setPackedValue(PartParams::PreviewDressColor());
+    qc.setRgbF(c.r, c.g, c.b, c.a);
+    ui->DressUpColor->setColor(qc);
 }
 
 /** 

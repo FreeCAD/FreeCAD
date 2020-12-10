@@ -375,13 +375,6 @@ will be used or black.</string>
         <property name="toolTip">
          <string>The default color for new shapes</string>
         </property>
-        <property name="color" stdset="0">
-         <color alpha="90">
-          <red>85</red>
-          <green>255</green>
-          <blue>255</blue>
-         </color>
-        </property>
         <property name="prefEntry" stdset="0">
          <cstring>PreviewAddColor</cstring>
         </property>
@@ -394,13 +387,6 @@ will be used or black.</string>
        <widget class="Gui::PrefColorButton" name="SubtractiveColor">
         <property name="toolTip">
          <string>The default color for new shapes</string>
-        </property>
-        <property name="color" stdset="0">
-         <color alpha="90">
-          <red>255</red>
-          <green>0</green>
-          <blue>0</blue>
-         </color>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>PreviewSubColor</cstring>
@@ -440,13 +426,6 @@ will be used or black.</string>
        <widget class="Gui::PrefColorButton" name="DressUpColor">
         <property name="toolTip">
          <string>The default color for new shapes</string>
-        </property>
-        <property name="color" stdset="0">
-         <color alpha="90">
-          <red>255</red>
-          <green>0</green>
-          <blue>255</blue>
-         </color>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>PreviewDressColor</cstring>
