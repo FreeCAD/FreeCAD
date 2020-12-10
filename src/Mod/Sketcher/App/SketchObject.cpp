@@ -1779,8 +1779,9 @@ int SketchObject::transferConstraints(int fromGeoId, PointPos fromPosId, int toG
             // However, other angle constraints are problematic because they are created on segments, but internally
             // operate on vertices, PosId=start
             // Such constraint may not be successfully transferred on deletion of the segments.
-            if(vals[i]->Type == Sketcher::Angle)
+            else if(vals[i]->Type == Sketcher::Angle) {
                 continue;
+            }
 
             Constraint* constPtr = constNew.release();
             newVals[i] = constPtr;
@@ -1798,6 +1799,9 @@ int SketchObject::transferConstraints(int fromGeoId, PointPos fromPosId, int toG
             // an end to end point tangency, the user expects it to be substituted by a coincidence constraint.
             if(vals[i]->Type == Sketcher::Tangent || vals[i]->Type == Sketcher::Perpendicular) {
                 constNew->Type = Sketcher::Coincident;
+            }
+            else if(vals[i]->Type == Sketcher::Angle) {
+                continue;
             }
 
             Constraint* constPtr = constNew.release();
