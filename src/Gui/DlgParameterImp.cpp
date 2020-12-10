@@ -554,7 +554,7 @@ void ParameterGroup::onCreateSubgroup()
 {
     bool ok;
     QString name = QInputDialog::getText(this, QObject::tr("New sub-group"), QObject::tr("Enter the name:"),
-                                         QLineEdit::Normal, QString(), &ok );
+                                         QLineEdit::Normal, QString(), &ok, Qt::MSWindowsFixedSizeDialogHint);
 
     if (ok && Gui::validateInput(this, name))
     {
@@ -782,7 +782,7 @@ void ParameterValue::onCreateTextItem()
 {
     bool ok;
     QString name = QInputDialog::getText(this, QObject::tr("New text item"), QObject::tr("Enter the name:"),
-                                         QLineEdit::Normal, QString(), &ok);
+                                         QLineEdit::Normal, QString(), &ok, Qt::MSWindowsFixedSizeDialogHint);
 
     if (!ok || !Gui::validateInput(this, name))
         return;
@@ -798,7 +798,7 @@ void ParameterValue::onCreateTextItem()
     }
 
     QString val = QInputDialog::getText(this, QObject::tr("New text item"), QObject::tr("Enter your text:"),
-                                        QLineEdit::Normal, QString(), &ok);
+                                        QLineEdit::Normal, QString(), &ok, Qt::MSWindowsFixedSizeDialogHint);
     if ( ok && !val.isEmpty() )
     {
         ParameterValueItem *pcItem;
@@ -811,7 +811,7 @@ void ParameterValue::onCreateIntItem()
 {
     bool ok;
     QString name = QInputDialog::getText(this, QObject::tr("New integer item"), QObject::tr("Enter the name:"),
-                                         QLineEdit::Normal, QString(), &ok);
+                                         QLineEdit::Normal, QString(), &ok, Qt::MSWindowsFixedSizeDialogHint);
 
     if (!ok || !Gui::validateInput(this, name))
         return;
@@ -827,7 +827,7 @@ void ParameterValue::onCreateIntItem()
     }
 
     int val = QInputDialog::getInt(this, QObject::tr("New integer item"), QObject::tr("Enter your number:"),
-                                   0, -2147483647, 2147483647, 1, &ok);
+                                   0, -2147483647, 2147483647, 1, &ok, Qt::MSWindowsFixedSizeDialogHint);
 
     if ( ok )
     {
@@ -841,7 +841,7 @@ void ParameterValue::onCreateUIntItem()
 {
     bool ok;
     QString name = QInputDialog::getText(this, QObject::tr("New unsigned item"), QObject::tr("Enter the name:"),
-                                         QLineEdit::Normal, QString(), &ok);
+                                         QLineEdit::Normal, QString(), &ok, Qt::MSWindowsFixedSizeDialogHint);
 
     if (!ok || !Gui::validateInput(this, name))
         return;
@@ -877,7 +877,7 @@ void ParameterValue::onCreateFloatItem()
 {
     bool ok;
     QString name = QInputDialog::getText(this, QObject::tr("New float item"), QObject::tr("Enter the name:"),
-                                         QLineEdit::Normal, QString(), &ok);
+                                         QLineEdit::Normal, QString(), &ok, Qt::MSWindowsFixedSizeDialogHint);
 
     if (!ok || !Gui::validateInput(this, name))
         return;
@@ -893,7 +893,7 @@ void ParameterValue::onCreateFloatItem()
     }
 
     double val = QInputDialog::getDouble(this, QObject::tr("New float item"), QObject::tr("Enter your number:"),
-                                         0, -2147483647, 2147483647, 12, &ok);
+                                         0, -2147483647, 2147483647, 12, &ok, Qt::MSWindowsFixedSizeDialogHint);
     if ( ok )
     {
         ParameterValueItem *pcItem;
@@ -906,7 +906,7 @@ void ParameterValue::onCreateBoolItem()
 {
     bool ok;
     QString name = QInputDialog::getText(this, QObject::tr("New Boolean item"), QObject::tr("Enter the name:"),
-                                         QLineEdit::Normal, QString(), &ok);
+                                         QLineEdit::Normal, QString(), &ok, Qt::MSWindowsFixedSizeDialogHint);
 
     if (!ok || !Gui::validateInput(this, name))
         return;
@@ -924,7 +924,7 @@ void ParameterValue::onCreateBoolItem()
     QStringList list; list << QString::fromLatin1("true")
                            << QString::fromLatin1("false");
     QString val = QInputDialog::getItem (this, QObject::tr("New boolean item"), QObject::tr("Choose an item:"),
-                                         list, 0, false, &ok);
+                                         list, 0, false, &ok, Qt::MSWindowsFixedSizeDialogHint);
     if ( ok )
     {
         ParameterValueItem *pcItem;
@@ -1065,7 +1065,7 @@ void ParameterText::changeValue()
 {
     bool ok;
     QString txt = QInputDialog::getText(treeWidget(), QObject::tr("Change value"), QObject::tr("Enter your text:"),
-                                        QLineEdit::Normal, text(2), &ok);
+                                        QLineEdit::Normal, text(2), &ok, Qt::MSWindowsFixedSizeDialogHint);
     if ( ok )
     {
         setText( 2, txt );
@@ -1109,7 +1109,7 @@ void ParameterInt::changeValue()
 {
     bool ok;
     int num = QInputDialog::getInt(treeWidget(), QObject::tr("Change value"), QObject::tr("Enter your number:"),
-                                   text(2).toInt(), -2147483647, 2147483647, 1, &ok);
+                                   text(2).toInt(), -2147483647, 2147483647, 1, &ok, Qt::MSWindowsFixedSizeDialogHint);
     if ( ok )
     {
         setText(2, QString::fromLatin1("%1").arg(num));
@@ -1206,7 +1206,7 @@ void ParameterFloat::changeValue()
 {
     bool ok;
     double num = QInputDialog::getDouble(treeWidget(), QObject::tr("Change value"), QObject::tr("Enter your number:"),
-                                         text(2).toDouble(), -2147483647, 2147483647, 12, &ok);
+                                         text(2).toDouble(), -2147483647, 2147483647, 12, &ok, Qt::MSWindowsFixedSizeDialogHint);
     if ( ok )
     {
         setText(2, QString::fromLatin1("%1").arg(num));
@@ -1254,7 +1254,7 @@ void ParameterBool::changeValue()
     int pos = (text(2) == list[0] ? 0 : 1);
 
     QString txt = QInputDialog::getItem (treeWidget(), QObject::tr("Change value"), QObject::tr("Choose an item:"),
-                                         list, pos, false, &ok);
+                                         list, pos, false, &ok, Qt::MSWindowsFixedSizeDialogHint);
     if ( ok )
     {
         setText( 2, txt );

@@ -648,6 +648,7 @@ int MainWindow::confirmSave(const char *docName, QWidget *parent, bool addCheckb
     }
 
     int res = 0;
+    box.adjustSize(); // Silence warnings from Qt on Windows
     switch (box.exec())
     {
     case QMessageBox::Save:

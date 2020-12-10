@@ -355,7 +355,8 @@ void MRichTextEdit::textLink(bool checked) {
         QString newUrl = QInputDialog::getText(this, tr("Create a link"),
                                         tr("Link URL:"), QLineEdit::Normal,
                                         url,
-                                        &ok);
+                                        &ok,
+                                        Qt::MSWindowsFixedSizeDialogHint);
         if (ok) {
             fmt.setAnchor(true);
             fmt.setAnchorHref(newUrl);

@@ -573,7 +573,7 @@ void CmdMeshFromGeometry::activated(int)
 {
     bool ok;
     double tol = QInputDialog::getDouble(Gui::getMainWindow(), QObject::tr("Meshing Tolerance"),
-        QObject::tr("Enter tolerance for meshing geometry:"), 0.1, 0.01,10.0,2,&ok);
+        QObject::tr("Enter tolerance for meshing geometry:"), 0.1, 0.01, 10.0, 2, &ok, Qt::MSWindowsFixedSizeDialogHint);
     if (!ok)
         return;
 
@@ -1645,7 +1645,7 @@ void CmdMeshFillupHoles::activated(int)
     std::vector<App::DocumentObject*> meshes = getSelection().getObjectsOfType(Mesh::Feature::getClassTypeId());
     bool ok;
     int FillupHolesOfLength = QInputDialog::getInt(Gui::getMainWindow(), QObject::tr("Fill holes"),
-                                QObject::tr("Fill holes with maximum number of edges:"), 3, 3, 10000, 1, &ok);
+                                QObject::tr("Fill holes with maximum number of edges:"), 3, 3, 10000, 1, &ok, Qt::MSWindowsFixedSizeDialogHint);
     if (!ok) return;
     openCommand(QT_TRANSLATE_NOOP("Command", "Fill up holes"));
     for (std::vector<App::DocumentObject*>::const_iterator it = meshes.begin(); it != meshes.end(); ++it) {
@@ -1889,7 +1889,7 @@ void CmdMeshScale::activated(int)
 
     bool ok;
     double factor = QInputDialog::getDouble(Gui::getMainWindow(), QObject::tr("Scaling"),
-        QObject::tr("Enter scaling factor:"), 1, 0, DBL_MAX, 5, &ok);
+        QObject::tr("Enter scaling factor:"), 1, 0, DBL_MAX, 5, &ok, Qt::MSWindowsFixedSizeDialogHint);
     if (!ok || factor == 0)
         return;
 
