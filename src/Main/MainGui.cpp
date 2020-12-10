@@ -38,6 +38,7 @@
 #include <map>
 #include <vector>
 #include <algorithm>
+#include <stdexcept>
 
 #include <cstdio>
 #include <QApplication>
@@ -307,6 +308,10 @@ int main( int argc, char ** argv )
     }
     catch (const Base::Exception& e) {
         e.ReportException();
+        exit(1);
+    }
+    catch (const std::exception& e) {
+        Base::Console().Error("Application unexpectedly terminated: %s\n", e.what());
         exit(1);
     }
     catch (...) {

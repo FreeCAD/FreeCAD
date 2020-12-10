@@ -774,6 +774,7 @@ void ColorButton::onChooseColor()
         }
 
         cd.setCurrentColor(currentColor);
+        cd.adjustSize();
         if (cd.exec() == QDialog::Accepted) {
             QColor c = cd.selectedColor();
             if (c.isValid()) {
