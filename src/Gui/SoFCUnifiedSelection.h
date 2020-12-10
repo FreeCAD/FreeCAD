@@ -300,8 +300,10 @@ class GuiExport SoFCSwitch : public SoSwitch {
 public:
     /// Stores the child index used in switching override mode
     SoSFInt32 defaultChild;
-    /// Stores the child index that will be traversed as long as the whichChild is not -1
+    /// Stores the child index that will be traversed last as long as the whichChild is not -1
     SoSFInt32 tailChild;
+    /// Stores the child index that will be traversed first as long as the whichChild is not -1
+    SoSFInt32 headChild;
     /// If greater than zero, then any children change will trigger parent notify
     SoSFInt32 childNotify;
 
@@ -355,6 +357,7 @@ public:
     static bool testTraverseState(TraverseStateFlag flag);
 
 private:
+    void traverseHead(SoAction *action, int idx);
     void traverseTail(SoAction *action, int idx);
     void traverseChild(SoAction *action, int idx);
 };

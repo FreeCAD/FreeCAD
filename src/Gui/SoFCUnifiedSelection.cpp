@@ -1476,6 +1476,7 @@ SoFCSwitch::SoFCSwitch()
     SO_NODE_CONSTRUCTOR(SoFCSwitch);
     SO_NODE_ADD_FIELD(defaultChild,  (0));
     SO_NODE_ADD_FIELD(tailChild,  (-1));
+    SO_NODE_ADD_FIELD(headChild,  (-1));
     SO_NODE_ADD_FIELD(childNotify, (0));
     SO_NODE_ADD_FIELD(overrideSwitch,(OverrideNone));
     SO_NODE_ADD_FIELD(childNames,(""));
@@ -1574,12 +1575,14 @@ void SoFCSwitch::doAction(SoAction *action) {
         {
             for(int i=0, c=std::min(childNames.getNum(),this->getNumChildren()); i<c; ++i) {
                 if(childNames[i] == name) {
+                    traverseHead(action, i);
                     traverseChild(action, i);
                     traverseTail(action, i);
                     return;
                 }
             }
         }
+        traverseHead(action, whichChild.getValue());
         inherited::doAction(action);
         traverseTail(action, whichChild.getValue());
         return;
@@ -1626,6 +1629,7 @@ void SoFCSwitch::doAction(SoAction *action) {
     }
 
     if(idx!=SO_SWITCH_ALL && (idx<0 || idx>=this->getNumChildren())) {
+        traverseHead(action,whichChild.getValue());
         inherited::doAction(action);
         traverseTail(action,whichChild.getValue());
         return;
@@ -1677,6 +1681,7 @@ void SoFCSwitch::doAction(SoAction *action) {
             }
         }
     } else {
+        traverseHead(action,idx);
         this->children->traverse(action, idx);
         traverseTail(action,idx);
     }
@@ -1718,6 +1723,15 @@ void SoFCSwitch::traverseTail(SoAction *action, int idx)
         return;
 
     traverseChild(action, tail);
+}
+
+void SoFCSwitch::traverseHead(SoAction *action, int idx)
+{
+    int head = headChild.getValue();
+    if(idx<0 || head<0 || idx==head || head>=getNumChildren())
+        return;
+
+    traverseChild(action, head);
 }
 
 void SoFCSwitch::traverseChild(SoAction *action, int idx)
