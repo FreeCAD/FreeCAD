@@ -965,7 +965,7 @@ bool Document::undo(int id)
             if(it == mUndoMap.end())
                 return false;
             if(it->second != d->activeUndoTransaction) {
-                TransactionGuard guard(true);
+                TransactionGuard guard(TransactionGuard::Undo);
                 while(mUndoTransactions.size() && mUndoTransactions.back()!=it->second)
                     undo(0);
             }
@@ -976,7 +976,7 @@ bool Document::undo(int id)
         if (mUndoTransactions.empty())
             return false;
 
-        TransactionGuard guard(true);
+        TransactionGuard guard(TransactionGuard::Undo);
 
         // redo
         d->activeUndoTransaction = new Transaction(mUndoTransactions.back()->getID());
@@ -1008,7 +1008,7 @@ bool Document::redo(int id)
             if(it == mRedoMap.end())
                 return false;
             {
-                TransactionGuard guard(false);
+                TransactionGuard guard(TransactionGuard::Redo);
                 while(mRedoTransactions.size() && mRedoTransactions.back()!=it->second)
                     redo(0);
             }
@@ -1019,7 +1019,7 @@ bool Document::redo(int id)
 
         assert(mRedoTransactions.size()!=0);
 
-        TransactionGuard guard(false);
+        TransactionGuard guard(TransactionGuard::Redo);
 
         // undo
         d->activeUndoTransaction = new Transaction(mRedoTransactions.back()->getID());
@@ -1290,6 +1290,7 @@ void Document::_abortTransaction()
         }
         Base::FlagToggler<bool> flag(d->rollback);
         Application::TransactionSignaller signaller(true,true);
+        TransactionGuard guard(TransactionGuard::Abort);
 
         // applying the so far made changes
         d->activeUndoTransaction->apply(*this,false);
@@ -4559,7 +4560,8 @@ void Document::_removeObject(DocumentObject* pcObject)
     // for a rollback delete the object
     if (d->rollback) {
         pcObject->setStatus(ObjectStatus::Destroy, true);
-        delete pcObject;
+        if (!TransactionGuard::addPendingRemove(pcObject))
+            delete pcObject;
     }
 }
 

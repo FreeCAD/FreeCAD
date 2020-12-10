@@ -176,10 +176,11 @@ static bool _FlushingProps;
 // the same object is not kept, but there is some ordering of changes between
 // different objects
 static std::unordered_map<Property*, int> _PendingProps;
+static std::vector<TransactionalObject *> _PendingRemove;
 static int _PendingPropIndex;
 
-TransactionGuard::TransactionGuard(bool undo)
-    :undo(undo)
+TransactionGuard::TransactionGuard(TransactionType type)
+    :transactionType(type)
 {
     if(_FlushingProps) {
         FC_ERR("Recursive transaction");
@@ -217,25 +218,17 @@ TransactionGuard::~TransactionGuard()
     }
 
     std::string errMsg;
+
     for(auto &v : props) {
         auto prop = v.first;
         // double check if the property exists, because it may be removed
         // while we are looping.
         if(_PendingProps.count(prop)) {
-            try {
-                FC_LOG("transaction touch " << prop->getFullName());
-                prop->touch();
-                errMsg.clear();
-            }catch(Base::Exception &e) {
-                e.ReportException();
-                errMsg = e.what();
-            }catch(std::exception &e) {
-                errMsg = e.what();
-            }catch(...) {
-                errMsg = "Unknown exception";
-            }
+            FC_LOG("transaction touch " << prop->getFullName());
+            exceptionSafeCall(errMsg, [](Property *prop){prop->touch();}, prop);
             if(errMsg.size()) {
-                FC_ERR("Exception on finishing transaction " << errMsg);
+                FC_ERR("Exception on finishing transaction "
+                        << prop->getFullName() << ": " << errMsg);
                 errMsg.clear();
             }
         }
@@ -246,19 +239,11 @@ TransactionGuard::~TransactionGuard()
     for (auto doc : docs) {
         for(auto obj : doc->getObjects()) {
             if(obj->testStatus(ObjectStatus::PendingTransactionUpdate)) {
-                try {
-                    obj->onUndoRedoFinished();
-                    errMsg.clear();
-                }catch(Base::Exception &e) {
-                    e.ReportException();
-                    errMsg = e.what();
-                }catch(std::exception &e) {
-                    errMsg = e.what();
-                }catch(...) {
-                    errMsg = "Unknown exception";
-                }
+                exceptionSafeCall(errMsg,
+                        [](DocumentObject *obj){obj->onUndoRedoFinished();}, obj);
                 if(errMsg.size()) {
-                    FC_ERR("Exception on finishing transaction " << errMsg);
+                    FC_ERR("Exception on finishing transaction "
+                            << obj->getFullName() << ": " << errMsg);
                     errMsg.clear();
                 }
                 obj->setStatus(ObjectStatus::PendingTransactionUpdate,false);
@@ -266,17 +251,52 @@ TransactionGuard::~TransactionGuard()
         }
     }
 
-    if(undo) {
-        for (auto doc : docs)
-            doc->signalUndo(*doc);
-        GetApplication().signalUndo();
-    } else {
-        for (auto doc : docs)
-            doc->signalRedo(*doc);
-        GetApplication().signalRedo();
+    for (auto obj : _PendingRemove)
+        delete obj;
+    _PendingRemove.clear();
+
+    switch (transactionType) {
+    case Undo:
+        for (auto doc : docs) {
+            exceptionSafeCall(errMsg, doc->signalUndo, *doc);
+            if (errMsg.size()) {
+                FC_ERR("Exception on signal undo " << doc->getName() << ": " << errMsg);
+                errMsg.clear();
+            }
+        }
+        exceptionSafeCall(errMsg, GetApplication().signalUndo);
+        if (errMsg.size()) {
+            FC_ERR("Exception on signal undo: " << errMsg);
+            errMsg.clear();
+        }
+        break;
+    case Redo:
+        for (auto doc : docs) {
+            exceptionSafeCall(errMsg, doc->signalRedo, *doc);
+            if (errMsg.size()) {
+                FC_ERR("Exception on signal redo " << doc->getName() << ": " << errMsg);
+                errMsg.clear();
+            }
+        }
+        exceptionSafeCall(errMsg, GetApplication().signalRedo);
+        if (errMsg.size()) {
+            FC_ERR("Exception on signal redo: " << errMsg);
+            errMsg.clear();
+        }
+        break;
+    default:
+        break;
     }
 }
 
+bool TransactionGuard::addPendingRemove(TransactionalObject *obj)
+{
+    if(!_TransactionActive)
+        return false;
+    obj->detachFromDocument();
+    _PendingRemove.push_back(obj);
+    return true;
+}
 
 bool Transaction::isApplying(Property *prop)
 {

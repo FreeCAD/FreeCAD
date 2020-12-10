@@ -204,11 +204,32 @@ private:
     void* operator new(size_t size);
 
 public:
-    TransactionGuard(bool undo);
+    enum TransactionType {
+        Redo,
+        Undo,
+        Abort,
+    };
+    TransactionGuard(TransactionType type);
     ~TransactionGuard();
 
+    static bool addPendingRemove(TransactionalObject *);
+
+    template<class FunctionT, class... Args>
+    void exceptionSafeCall(std::string &errMsg, FunctionT &&f, Args&&... args) const {
+        try {
+            f(std::forward<Args>(args)...);
+        }catch(Base::Exception &e) {
+            e.ReportException();
+            errMsg = e.what();
+        }catch(std::exception &e) {
+            errMsg = e.what();
+        }catch(...) {
+            errMsg = "Unknown exception";
+        }
+    }
+
 private:
-    bool undo;
+    TransactionType transactionType;
 };
 
 } //namespace App

@@ -933,7 +933,7 @@ void Document::slotTransactionRemove(const App::DocumentObject& obj, App::Transa
         // can be safely deleted
         if (transaction)
             transaction->addObjectNew(viewProvider);
-        else
+        else if (!App::TransactionGuard::addPendingRemove(viewProvider))
             delete viewProvider;
     }
 }
@@ -2474,7 +2474,7 @@ void Document::undo(int iSteps)
     Gui::Selection().clearCompleteSelection();
 
     {
-        App::TransactionGuard guard(true);
+        App::TransactionGuard guard(App::TransactionGuard::Undo);
 
         if(!checkTransactionID(true,iSteps))
             return;
@@ -2493,7 +2493,7 @@ void Document::redo(int iSteps)
     Gui::Selection().clearCompleteSelection();
 
     {
-        App::TransactionGuard guard(false);
+        App::TransactionGuard guard(App::TransactionGuard::Redo);
 
         if(!checkTransactionID(false,iSteps))
             return;

@@ -176,13 +176,19 @@ void Application::closeActiveTransaction(bool abort, int id) {
     _activeTransactionID = 0;
 
     TransactionSignaller signaller(abort,false);
-    for(auto &v : DocMap) {
-        if(v.second->getTransactionID(true) != id)
-            continue;
-        if(abort)
+    if (abort) {
+        TransactionGuard guard(TransactionGuard::Abort);
+        for(auto &v : DocMap) {
+            if(v.second->getTransactionID(true) != id)
+                continue;
             v.second->_abortTransaction();
-        else
+        }
+    } else {
+        for(auto &v : DocMap) {
+            if(v.second->getTransactionID(true) != id)
+                continue;
             v.second->_commitTransaction();
+        }
     }
 }
 

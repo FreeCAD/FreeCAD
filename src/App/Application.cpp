@@ -1042,12 +1042,20 @@ Application::TransactionSignaller::TransactionSignaller(bool abort, bool signal)
 Application::TransactionSignaller::~TransactionSignaller() {
     if(--_TransSignalCount == 0 && _TransSignalled) {
         _TransSignalled = false;
+        std::string errMsg;
         try {
             GetApplication().signalCloseTransaction(abort);
+        }catch(Base::Exception &e) {
+            e.ReportException();
+            errMsg = e.what();
+        }catch(std::exception &e) {
+            errMsg = e.what();
+        }catch(...) {
+            errMsg = "Unknown exception";
         }
-        catch (const boost::exception&) {
-            // reported by code analyzers
-            Base::Console().Warning("~TransactionSignaller: Unexpected boost exception\n");
+        if(errMsg.size()) {
+            FC_WARN("Exception on signal close transaction " << errMsg);
+            errMsg.clear();
         }
     }
 }
