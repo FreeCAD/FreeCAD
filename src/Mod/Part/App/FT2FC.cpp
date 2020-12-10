@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 wandererfan <wandererfan (at) gmail.com>           *
+ *   Copyright (c) 2013 WandererFan <wandererfan (at) gmail.com>           *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -333,7 +333,7 @@ PyObject* getGlyphContours(FT_Face FTFont, UNICHAR currchar, double PenPos, doub
    }
 
 //a ttf outer contour is clockwise with material on the right.
-//an occ outer contour has material on the left, so it must be reversed? 
+//an occ outer contour has material on the left, so it must be reversed?
 
 
    FT_Orientation ftOrient = FT_Outline_Get_Orientation(&FTFont->glyph->outline);
@@ -341,7 +341,7 @@ PyObject* getGlyphContours(FT_Face FTFont, UNICHAR currchar, double PenPos, doub
    if (ftOrient == FT_ORIENTATION_TRUETYPE) {
         isTTF = true;
    }
-   
+
    PyObject* ret = PyList_New(0);
 
    gp_Vec pointer = gp_Vec(PenPos * Scale + charNum*tracking,0.0,0.0);
@@ -352,9 +352,9 @@ PyObject* getGlyphContours(FT_Face FTFont, UNICHAR currchar, double PenPos, doub
    bool bCopy = true;                                                           // no effect?
 
 
-   int wCount = 0; 
+   int wCount = 0;
    for(std::vector<TopoDS_Wire>::iterator iWire=ctx.Wires.begin();iWire != ctx.Wires.end(); ++iWire, wCount++) {
-       if ((ctx.wDir[wCount] == CLOCKWISE) && isTTF) {         //ttf outer wire. fill inside / right 
+       if ((ctx.wDir[wCount] == CLOCKWISE) && isTTF) {         //ttf outer wire. fill inside / right
            (*iWire).Orientation(TopAbs_REVERSED);
        } else if ((ctx.wDir[wCount] == CLOCKWISE) && !isTTF) { //ps inner wire. fill outside / right
            (*iWire).Orientation(TopAbs_REVERSED);
