@@ -200,7 +200,7 @@ void CmdPointsConvert::activated(int iMsg)
 
     bool ok;
     double tol = QInputDialog::getDouble(Gui::getMainWindow(), QObject::tr("Distance"),
-        QObject::tr("Enter maximum distance:"), 0.1, 0.05, 10.0, 2, &ok);
+        QObject::tr("Enter maximum distance:"), 0.1, 0.05, 10.0, 2, &ok, Qt::MSWindowsFixedSizeDialogHint);
     if (!ok)
         return;
 
