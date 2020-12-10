@@ -79,6 +79,7 @@ class SoFCUnifiedSelection;
 class SoFCSelectionRoot;
 class SoFCSwitch;
 class SoFCPathAnnotation;
+class SoFCDisplayMode;
 class SoSelectionElementAction;
 class SoHighlightElementAction;
 class SoFCPathAnnotation;
@@ -434,6 +435,8 @@ public:
 
     void toggleShadowLightManip(int toggle = -1);
 
+    void setTransparencyOnTop(float t);
+
     struct Private;
     friend struct Private;
 
@@ -506,7 +509,7 @@ private:
     SoFCSelectionRoot * pcGroupOnTopPreSel;
     SoPath            * pcGroupOnTopPath;
     SoPath            * pCurrentHighlightPath;
-    SoMaterial        * pcGroupOnTopMaterial;
+    SoFCDisplayMode   * pcGroupOnTopDispMode;
 
     struct OnTopInfo {
         SoFCPathAnnotation *node;

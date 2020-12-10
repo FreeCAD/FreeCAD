@@ -30,6 +30,7 @@
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFName.h>
+#include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoMFName.h>
 #include <Inventor/fields/SoSFString.h>
 #include <Inventor/nodes/SoLightModel.h>
@@ -273,11 +274,22 @@ public:
     static void set(SoState * const state, SoNode * const node,
             const SbName &mode, SbBool hiddenLine);
 
+    static void setColors(SoState * const state, SoNode * const node,
+            const SbColor *faceColor, const SbColor *lineColor, float transp);
+
     static const SbName &get(SoState * const state);
     static SbBool showHiddenLines(SoState * const state);
     static const SbColor *getFaceColor(SoState * const state);
     static const SbColor *getLineColor(SoState * const state);
     static float getTransparency(SoState * const state);
+
+    static SoFCDisplayModeElement * getInstance(SoState *state);
+
+    const SbName &get() const;
+    SbBool showHiddenLines() const;
+    const SbColor *getFaceColor() const;
+    const SbColor *getLineColor() const;
+    float getTransparency() const;
 
     virtual SbBool matches(const SoElement * element) const;
     virtual SoElement *copyMatchInfo(void) const;
@@ -290,6 +302,29 @@ protected:
     SbColor faceColor;
     SbColor lineColor;
     float transp;
+};
+
+class GuiExport SoFCDisplayMode: public SoNode {
+    typedef SoNode inherited;
+
+    SO_NODE_HEADER(SoFCDisplayMode);
+
+public:
+    static void initClass(void);
+protected:
+    virtual ~SoFCDisplayMode();
+
+public:
+    SoSFName displayMode;
+    SoSFBool showHiddenLines;
+    SoSFColor faceColor;
+    SoSFColor lineColor;
+    SoSFFloat transparency;
+
+    SoFCDisplayMode();
+    virtual void doAction(SoAction * action);
+    virtual void GLRender(SoGLRenderAction * action);
+    virtual void callback(SoCallbackAction * action);
 };
 
 /// Switch node that support global visibility override

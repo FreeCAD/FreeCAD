@@ -892,17 +892,18 @@ int SoBrepFaceSet::overrideMaterialBinding(
 
     auto state = action->getState();
 
-    float defaultTrans = Gui::ViewParams::getSelectionTransparency();
+    overrideTransparency = 0.0f;
 
     unsigned int shapestyleflags = SoShapeStyleElement::get(state)->getFlags();
 
     int pushed = 0;
-    if(Gui::SoFCDisplayModeElement::showHiddenLines(state)) {
+    auto dispModeElement = Gui::SoFCDisplayModeElement::getInstance(state);
+    if (dispModeElement->getTransparency() != 0.0 || dispModeElement->getFaceColor()) {
         state->push();
 
-        defaultTrans = hiddenLineTransparency = Gui::SoFCDisplayModeElement::getTransparency(state);
-        pushed = defaultTrans==0.0 ? -1 : 1;
-        const SbColor *color = Gui::SoFCDisplayModeElement::getFaceColor(state);
+        overrideTransparency = dispModeElement->getTransparency();
+        pushed = overrideTransparency==0.0 ? -1 : 1;
+        const SbColor *color = dispModeElement->getFaceColor();
 
         // Here the "Hidden Lines" mode wants to override transparency and
         // color. SoLazyElement checks for the overriding node's ID to set the
@@ -914,13 +915,15 @@ int SoBrepFaceSet::overrideMaterialBinding(
         // use the trace the color change as well.
         auto oldId = this->uniqueId;
         if(color)
-            this->uniqueId = std::hash<uint32_t>()(color->getPackedValue(defaultTrans));
+            this->uniqueId = std::hash<uint32_t>()(color->getPackedValue(overrideTransparency));
         else
-            this->uniqueId = std::hash<float>()(defaultTrans);
+            this->uniqueId = std::hash<float>()(overrideTransparency);
 
-        SoLazyElement::setTransparency(state,this,1,&hiddenLineTransparency,&packer);
-        SoOverrideElement::setTransparencyOverride(state, this, true);
-        SoTextureEnabledElement::set(state,this,false);
+        if (dispModeElement->showHiddenLines()) {
+            SoLazyElement::setTransparency(state,this,1,&overrideTransparency,&packer);
+            SoOverrideElement::setTransparencyOverride(state, this, true);
+            SoTextureEnabledElement::set(state,this,false);
+        }
 
         if(color) {
             hiddenLineColor = *color;
@@ -940,7 +943,7 @@ int SoBrepFaceSet::overrideMaterialBinding(
 
     } else if(!selected && !ctx && !ctx2) {
         if(shapestyleflags & SoShapeStyleElement::TRANSP_TEXTURE)
-            defaultTrans = 0.01;
+            overrideTransparency = 0.01;
         else if(!(shapestyleflags & SoShapeStyleElement::TRANSP_MATERIAL))
             return 0;
     }
@@ -957,14 +960,24 @@ int SoBrepFaceSet::overrideMaterialBinding(
     int trans_size = element->getNumTransparencies();
     if(!trans || !trans_size)
         return pushed;
-    float trans0=0.0;
+    float trans0 = 0.0;
     bool hasTransparency = false;
     for(int i=0;i<trans_size;++i) {
         if(trans[i]!=0.0) {
             hasTransparency = true;
-            trans0 = trans[i]<defaultTrans?defaultTrans:trans[i];
+            trans0 = trans[i]<overrideTransparency?overrideTransparency:trans[i];
             break;
         }
+    }
+    if (overrideTransparency != 0.0 && !hasTransparency) {
+        if (!pushed) {
+            pushed = 1;
+            state->push();
+        }
+        hasTransparency = true;
+        trans0 = overrideTransparency;
+        SoLazyElement::setTransparency(state,this,1,&overrideTransparency,&packer);
+        SoOverrideElement::setTransparencyOverride(state, this, true);
     }
 
     if (trans0 == 0.0 && (shapestyleflags & SoShapeStyleElement::TRANSP_TEXTURE)) {
@@ -1000,8 +1013,8 @@ int SoBrepFaceSet::overrideMaterialBinding(
 
         if(selected && Gui::Selection().needPickedList()) {
             hasTransparency = true;
-            if(trans0 < defaultTrans) 
-                trans0 = defaultTrans;
+            if(trans0 < overrideTransparency) 
+                trans0 = overrideTransparency;
             trans_size = 1;
             if(ctx2)
                 ctx2->trans0 = trans0;

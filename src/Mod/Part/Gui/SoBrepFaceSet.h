@@ -175,7 +175,7 @@ private:
     std::vector<uint32_t> packedColors;
     uint32_t packedColor;
 
-    float hiddenLineTransparency;
+    float overrideTransparency;
     SbColor hiddenLineColor;
     SoColorPacker packer;
 

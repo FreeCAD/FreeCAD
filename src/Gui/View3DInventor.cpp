@@ -448,6 +448,9 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
                    ->setTransparentDelayedObjectRenderType(SoGLRenderAction::NONSOLID_SEPARATE_BACKFACE_PASS);
         }
     }
+    else if (strcmp(Reason, "TransparencyOnTop") == 0) {
+        _viewer->setTransparencyOnTop(ViewParams::getTransparencyOnTop());
+    }
     else {
         unsigned long col1 = rGrp.GetUnsigned("BackgroundColor",3940932863UL);
         unsigned long col2 = rGrp.GetUnsigned("BackgroundColor2",859006463UL); // default color (dark blue)

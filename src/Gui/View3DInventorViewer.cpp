@@ -647,12 +647,12 @@ void View3DInventorViewer::init()
     pcGroupOnTop->addChild(pickStyle);
 
     coin_setenv("COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE", "1", TRUE);
-    pcGroupOnTopMaterial = new SoMaterial;
-    pcGroupOnTopMaterial->ref();
-    pcGroupOnTopMaterial->transparency = ViewParams::getTransparencyOnTop();
-    pcGroupOnTopMaterial->diffuseColor.setIgnored(true);
-    pcGroupOnTopMaterial->setOverride(true);
-    pcGroupOnTop->addChild(pcGroupOnTopMaterial);
+    pcGroupOnTopDispMode = new SoFCDisplayMode;
+    pcGroupOnTopDispMode->ref();
+    pcGroupOnTopDispMode->transparency = ViewParams::getTransparencyOnTop();
+    pcGroupOnTopDispMode->faceColor.setIgnored(true);
+    pcGroupOnTopDispMode->lineColor.setIgnored(true);
+    pcGroupOnTop->addChild(pcGroupOnTopDispMode);
 
     pcGroupOnTopSel = new SoFCSelectionRoot;
     pcGroupOnTopSel->selectionStyle = SoFCSelectionRoot::PassThrough;
@@ -846,7 +846,7 @@ View3DInventorViewer::~View3DInventorViewer()
     this->pcGroupOnTopSwitch->unref();
     this->pcGroupOnTopPreSel->unref();
     this->pcGroupOnTopSel->unref();
-    this->pcGroupOnTopMaterial->unref();
+    this->pcGroupOnTopDispMode->unref();
 
     delete selAction;
     selAction = 0;
@@ -5357,6 +5357,11 @@ View3DInventorViewer::getPickedList(const std::vector<SbVec2f> &pts,
     }
 
     return res;
+}
+
+void View3DInventorViewer::setTransparencyOnTop(float t)
+{
+    pcGroupOnTopDispMode->transparency = t;
 }
 
 #include "moc_View3DInventorViewer.cpp"
