@@ -963,10 +963,11 @@ int SoBrepFaceSet::overrideMaterialBinding(
     float trans0 = 0.0;
     bool hasTransparency = false;
     for(int i=0;i<trans_size;++i) {
-        if(trans[i]!=0.0) {
+        if(trans[i]!=0.0f) {
             hasTransparency = true;
             trans0 = trans[i]<overrideTransparency?overrideTransparency:trans[i];
-            break;
+            if (trans0 != 1.0f)
+                break;
         }
     }
     if (overrideTransparency != 0.0 && !hasTransparency) {
