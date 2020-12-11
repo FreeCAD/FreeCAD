@@ -230,8 +230,12 @@ void SoBrepEdgeSet::glRender(SoGLRenderAction *action, bool inpath)
         state->push();
         if(pass==0) {
             int pattern = Gui::ViewParams::getSelectionLinePattern();
-            if(pattern)
+            if(pattern) {
                 SoLinePatternElement::set(state, pattern);
+                if (Gui::ViewParams::getSelectionLinePatternScale() > 1)
+                    glLineStipple((GLint) (Gui::ViewParams::getSelectionLinePatternScale()),
+                                (GLushort) (pattern & 0xffff));
+            }
             width = Gui::ViewParams::getSelectionHiddenLineWidth();
             if(width>0.0 && SoLineWidthElement::get(state) < width)
                 SoLineWidthElement::set(state,width);
@@ -452,8 +456,12 @@ void SoBrepEdgeSet::_renderSelection(SoGLRenderAction *action,
         }
         color = _color.getPackedValue(0.0);
         Gui::SoFCSelectionRoot::setupSelectionLineRendering(state,this,&color);
-        if(pattern)
+        if(pattern) {
             SoLinePatternElement::set(state, this, pattern);
+            if (Gui::ViewParams::getSelectionLinePatternScale() > 1)
+                glLineStipple((GLint) (Gui::ViewParams::getSelectionLinePatternScale()),
+                              (GLushort) (pattern & 0xffff));
+        }
     }
 
     const SoCoordinateElement * coords;

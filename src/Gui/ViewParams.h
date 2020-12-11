@@ -95,6 +95,7 @@ public:
        QT_TRANSLATE_NOOP("ViewParams","Muplication factor to increase the width the selected line."))\
     FC_VIEW_PARAM(PickRadius,double,Float,5.0, "") \
     FC_VIEW_PARAM(SelectionLinePattern,int,Int,0, "") \
+    FC_VIEW_PARAM(SelectionLinePatternScale,int,Int,1, "") \
     FC_VIEW_PARAM(SelectionHiddenLineWidth,double,Float,1.0, \
        QT_TRANSLATE_NOOP("ViewParams","Width of the hidden line."))\
     FC_VIEW_PARAM(SelectionBBoxLineWidth,double,Float,3.0, "") \
