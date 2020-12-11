@@ -256,12 +256,14 @@ class TaskPanel(object):
             grpe = dialog.propertyGroup()
             info = dialog.propertyInfo()
             self.obj.Proxy.addCustomProperty(typ, name, grpe, info)
+            index = 0
             for i in range(self.model.rowCount()):
+                index = i
                 if self.model.item(i, self.ColumnName).data(QtCore.Qt.EditRole) > dialog.propertyName():
-                    self.model.insertRows(i, 1)
-                    self._setupProperty(i, name)
-                    self.form.table.selectionModel().setCurrentIndex(self.model.index(i, 0), QtCore.QItemSelectionModel.Rows)
                     break
+            self.model.insertRows(index, 1)
+            self._setupProperty(index, name)
+            self.form.table.selectionModel().setCurrentIndex(self.model.index(index, 0), QtCore.QItemSelectionModel.Rows)
             #self.model.blockSignals(False)
 
     def propertyRemove(self):
@@ -288,3 +290,23 @@ def Create(name = 'PropertyContainer'):
 
 PathIconViewProvider.RegisterViewProvider('PropertyContainer', ViewProvider)
 
+class PropertyContainerCreateCommand(object):
+    '''Command to create a property container object'''
+
+    def __init__(self):
+        pass
+
+    def GetResources(self):
+        return {'MenuText': translate('PathPropertyContainer', 'Property Container'),
+                'ToolTip': translate('PathPropertyContainer', 'Creates an object which can be used to store reference properties.')}
+
+    def IsActive(self):
+        return not FreeCAD.ActiveDocument is None
+
+    def Activated(self):
+        Create()
+
+if FreeCAD.GuiUp:
+    FreeCADGui.addCommand('Path_PropertyContainer', PropertyContainerCreateCommand())
+
+FreeCAD.Console.PrintLog("Loading PathPropertyContainerGui ... done\n")
