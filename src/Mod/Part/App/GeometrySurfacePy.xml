@@ -172,7 +172,7 @@ Checks if the surface is planar within a certain tolerance.
 of the nearest orthogonal projection of the point.</UserDocu>
 			</Documentation>
 		</Methode>
-        <Methode Name="toBSpline" Const="true">
+        <Methode Name="toBSpline" Const="true" Keyword="true">
 			<Documentation>
 				<UserDocu>
 					Returns a B-Spline representation of this surface. 

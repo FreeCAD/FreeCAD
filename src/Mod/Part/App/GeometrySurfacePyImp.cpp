@@ -706,20 +706,25 @@ Py::String GeometrySurfacePy::getContinuity(void) const
     return Py::String(str);
 }
 
-PyObject* GeometrySurfacePy::toBSpline(PyObject * args)
+PyObject* GeometrySurfacePy::toBSpline(PyObject * args, PyObject * kwds)
 {
     double tol3d=Precision::Confusion();
     char *ucont="C1", *vcont="C1";
     int maxDegU=Geom_BSplineSurface::MaxDegree();
     int maxDegV=Geom_BSplineSurface::MaxDegree();
     int maxSegm=1000, prec=0;
-    if (!PyArg_ParseTuple(args, "|dssiiii",&tol3d,&ucont,&vcont,
-                                           &maxDegU,&maxDegV,&maxSegm,&prec))
-        return 0;
 
-    std::string uc = ucont;
+    static char *kwlist[] = {"Tol3d", "UContinuity", "VContinuity", "MaxDegreeU", "MaxDegreeV", "MaxSegments", "PrecisCode", nullptr};
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|dssiiii", kwlist,
+                                     &tol3d, &ucont, &vcont,
+                                     &maxDegU, &maxDegV, &maxSegm, &prec))
+        return nullptr;
+
     GeomAbs_Shape absU, absV;
-    if (uc == "C0")
+    std::string uc = ucont;
+    if (maxDegU <= 1)
+        absU = GeomAbs_C0;
+    else if (uc == "C0")
         absU = GeomAbs_C0;
     else if (uc == "C1")
         absU = GeomAbs_C1;
@@ -735,7 +740,9 @@ PyObject* GeometrySurfacePy::toBSpline(PyObject * args)
         absU = GeomAbs_G2;
 
     std::string vc = vcont;
-    if (vc == "C0")
+    if (maxDegV <= 1)
+        absV = GeomAbs_C0;
+    else if (vc == "C0")
         absV = GeomAbs_C0;
     else if (vc == "C1")
         absV = GeomAbs_C1;
