@@ -254,7 +254,7 @@ FreeCADGui_embedToWindow(PyObject * /*self*/, PyObject *args)
     return Py_None;
 }
 
-struct PyMethodDef FreeCADGui_methods[] = { 
+struct PyMethodDef FreeCADGui_methods[] = {
     {"showMainWindow",FreeCADGui_showMainWindow,METH_VARARGS,
      "showMainWindow() -- Show the main window\n"
      "If no main window does exist one gets created"},
