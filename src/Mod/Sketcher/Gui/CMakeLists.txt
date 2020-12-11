@@ -140,6 +140,8 @@ SET(SketcherGui_SRCS
     TaskDlgEditSketch.h
     ViewProviderPython.cpp
     ViewProviderPython.h
+    ViewProviderSketchGeometryExtension.h
+    ViewProviderSketchGeometryExtension.cpp
 )
 
 if(FREECAD_USE_PCH)

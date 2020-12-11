@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2020 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,47 +20,44 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifndef SKETCHER_VIEWPROVIDERSKETCHGEOMETRYEXTENSION_H
+#define SKETCHER_VIEWPROVIDERSKETCHGEOMETRYEXTENSION_H
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+#include <Mod/Part/App/Geometry.h>
 
-#include "Geometry.h"
+namespace SketcherGui {
 
-#include "FeatureGeometrySet.h"
-
-
-using namespace Part;
-
-
-PROPERTY_SOURCE(Part::FeatureGeometrySet, Part::Feature)
-
-
-FeatureGeometrySet::FeatureGeometrySet()
+class SketcherGuiExport ViewProviderSketchGeometryExtension : public Part::GeometryExtension
 {
-    ADD_PROPERTY(GeometrySet,(0));
-}
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+public:
+
+    ViewProviderSketchGeometryExtension();
+    virtual ~ViewProviderSketchGeometryExtension() override = default;
+
+    virtual std::unique_ptr<Part::GeometryExtension> copy(void) const override;
+
+    virtual PyObject *getPyObject(void) override;
+
+    // Data Members
+
+    // Representation factor
+    // Provides a mechanism to store a factor associated with the representation of a geometry
+    // This is only useful when a geometry must be scaled only for representation, while keeping its value
+    // Applicability: General abstract concepts embodied in a geometry, in practice B-Spline poles.
+    // Why not in SketchGeometryExtension? Because it is merely representation related. It has no place in
+    // a console application.
+    virtual double getRepresentationFactor() const {return RepresentationFactor;}
+    virtual void setRepresentationFactor(double representationFactor) {RepresentationFactor = representationFactor;}
+
+private:
+    ViewProviderSketchGeometryExtension(const ViewProviderSketchGeometryExtension&) = default;
+
+private:
+    double RepresentationFactor;
+};
+
+} //namespace SketcherGui
 
 
-App::DocumentObjectExecReturn *FeatureGeometrySet::execute(void)
-{
-    TopoShape result;
-
-    const std::vector<Geometry*> &Geoms = GeometrySet.getValues();
-
-    bool first = true;
-    for(std::vector<Geometry*>::const_iterator it=Geoms.begin();it!=Geoms.end();++it){
-        TopoDS_Shape sh = (*it)->toShape();
-        if (first) {
-            first = false;
-            result.setShape(sh);
-        }
-        else {
-            result.setShape(result.fuse(sh));
-        }
-    }
-    
-    Shape.setValue(result);
-
-    return App::DocumentObject::StdReturn;
-}
+#endif // SKETCHER_VIEWPROVIDERSKETCHGEOMETRYEXTENSION_H

@@ -32,16 +32,11 @@
 
 namespace Part {
 
-class PartExport GeometryExtension: public Base::Persistence
+class PartExport GeometryExtension: public Base::BaseClass
 {
     TYPESYSTEM_HEADER();
 public:
     virtual ~GeometryExtension() = default;
-
-    // Persistence implementer ---------------------
-    virtual unsigned int getMemSize(void) const = 0;
-    virtual void Save(Base::Writer &/*writer*/) const = 0;
-    virtual void Restore(Base::XMLReader &/*reader*/) = 0;
 
     virtual std::unique_ptr<GeometryExtension> copy(void) const = 0;
 
@@ -55,10 +50,24 @@ protected:
     GeometryExtension(const GeometryExtension &obj) = default;
     GeometryExtension& operator= (const GeometryExtension &obj) = default;
 
-    void restoreNameAttribute(Base::XMLReader &/*reader*/);
-
 private:
     std::string name;
+};
+
+
+
+class PartExport GeometryPersistenceExtension : public Part::GeometryExtension
+{
+    TYPESYSTEM_HEADER();
+public:
+    virtual ~GeometryPersistenceExtension() = default;
+
+    // Own Persistence implementer - Not Base::Persistence - managed by Part::Geometry
+    virtual void Save(Base::Writer &/*writer*/) const = 0;
+    virtual void Restore(Base::XMLReader &/*reader*/) = 0;
+
+protected:
+    void restoreNameAttribute(Base::XMLReader &/*reader*/);
 };
 
 }

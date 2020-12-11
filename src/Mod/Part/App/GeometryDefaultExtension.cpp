@@ -46,12 +46,6 @@ GeometryDefaultExtension<T>::GeometryDefaultExtension(const T& val, std::string 
 
 // Persistence implementer
 template <typename T>
-unsigned int GeometryDefaultExtension<T>::getMemSize (void) const
-{
-    return 1;
-}
-
-template <typename T>
 void GeometryDefaultExtension<T>::Save(Base::Writer &writer) const
 {
 
@@ -114,7 +108,7 @@ namespace Part {
 //typedef Part::GeometryStringExtension<std::string> GeometryStringExtension;
 
 // ---------- GeometryIntExtension ----------
-TYPESYSTEM_SOURCE_TEMPLATE_T(Part::GeometryIntExtension,Part::GeometryExtension)
+TYPESYSTEM_SOURCE_TEMPLATE_T(Part::GeometryIntExtension,Part::GeometryPersistenceExtension)
 
 template <>
 PyObject * GeometryDefaultExtension<long>::getPyObject(void)
@@ -131,7 +125,7 @@ void GeometryDefaultExtension<long>::Restore(Base::XMLReader &reader)
 }
 
 // ---------- GeometryStringExtension ----------
-TYPESYSTEM_SOURCE_TEMPLATE_T(Part::GeometryStringExtension,Part::GeometryExtension)
+TYPESYSTEM_SOURCE_TEMPLATE_T(Part::GeometryStringExtension,Part::GeometryPersistenceExtension)
 
 template <>
 PyObject * GeometryDefaultExtension<std::string>::getPyObject(void)
@@ -140,7 +134,7 @@ PyObject * GeometryDefaultExtension<std::string>::getPyObject(void)
 }
 
 // ---------- GeometryBoolExtension ----------
-TYPESYSTEM_SOURCE_TEMPLATE_T(Part::GeometryBoolExtension,Part::GeometryExtension)
+TYPESYSTEM_SOURCE_TEMPLATE_T(Part::GeometryBoolExtension,Part::GeometryPersistenceExtension)
 
 template <>
 PyObject * GeometryDefaultExtension<bool>::getPyObject(void)
@@ -157,7 +151,7 @@ void GeometryDefaultExtension<bool>::Restore(Base::XMLReader &reader)
 }
 
 // ---------- GeometryDoubleExtension ----------
-TYPESYSTEM_SOURCE_TEMPLATE_T(Part::GeometryDoubleExtension,Part::GeometryExtension)
+TYPESYSTEM_SOURCE_TEMPLATE_T(Part::GeometryDoubleExtension,Part::GeometryPersistenceExtension)
 
 template <>
 PyObject * GeometryDefaultExtension<double>::getPyObject(void)

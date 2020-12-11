@@ -31,13 +31,15 @@
 
 using namespace Part;
 
-TYPESYSTEM_SOURCE_ABSTRACT(Part::GeometryExtension,Base::Persistence)
+TYPESYSTEM_SOURCE_ABSTRACT(Part::GeometryExtension,Base::BaseClass)
 
 GeometryExtension::GeometryExtension()
 {
 }
 
-void GeometryExtension::restoreNameAttribute(Base::XMLReader &reader)
+TYPESYSTEM_SOURCE_ABSTRACT(Part::GeometryPersistenceExtension,Part::GeometryExtension)
+
+void GeometryPersistenceExtension::restoreNameAttribute(Base::XMLReader &reader)
 {
     if(reader.hasAttribute("name")) {
         std::string name = reader.getAttribute("name");

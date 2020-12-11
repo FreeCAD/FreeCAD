@@ -34,6 +34,8 @@
 
 #include <Mod/Sketcher/App/SketchAnalysis.h>
 
+#include "GeometryFacade.h"
+
 #include "Analyse.h"
 
 #include "Sketch.h"
@@ -146,6 +148,9 @@ public:
      *  id<=-3 for user defined projected external geometries,
      */
     const Part::Geometry* getGeometry(int GeoId) const;
+
+    std::unique_ptr<const GeometryFacade> getGeometryFacade(int GeoId) const;
+
     /// returns a list of all internal geometries
     const std::vector<Part::Geometry *> &getInternalGeometry(void) const { return Geometry.getValues(); }
     /// returns a list of projected external geometries
@@ -450,6 +455,9 @@ protected:
 
     virtual void onUndoRedoFinished() override;
 
+    // migration functions
+    void migrateSketch(void);
+
 private:
     /// Flag to allow external geometry from other bodies than the one this sketch belongs to
     bool allowOtherBody;
@@ -483,11 +491,28 @@ private:
 
     bool AutoLockTangencyAndPerpty(Constraint* cstr, bool bForce = false, bool bLock = true);
 
+    // Geometry Extensions is used to store on geometry a state that is enforced by pre-existing constraints
+    // Like Block constraint and InternalAlignment constraint. This enables (more) convenient handling in ViewProviderSketch
+    // and solver.
+    //
+    // These functions are responsible for updating the Geometry State, currently Geometry Mode (Blocked) and
+    // Geometry InternalType (BSplineKnot, BSplinePole).
+    //
+    // The data life model for handling this state is as follows:
+    // 1. Upon restore, any migration is handled to set the status for legacy files (backwards compatibility)
+    // 2. Functionality adding constraints (of the relevant type) calls addGeometryState to set the status
+    // 3. Functionality removing constraints (of the relevant type) calls removeGeometryState to remove the status
+    // 4. Save mechanism will ensure persistance.
+    void addGeometryState(const Constraint* cstr) const;
+    void removeGeometryState(const Constraint* cstr) const;
+
     SketchAnalysis * analyser;
 
     bool internaltransaction;
 
     bool managedoperation; // indicates whether changes to properties are the deed of SketchObject or not (for input validation)
+
+    bool deletinginternalgeometry; // sets a lock to deletinginternalgeometryoperation so that no individual triggers are perform on each element.
 };
 
 typedef App::FeaturePythonT<SketchObject> SketchObjectPython;

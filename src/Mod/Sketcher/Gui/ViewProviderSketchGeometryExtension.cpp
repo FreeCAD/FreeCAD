@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2019 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,47 +20,41 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
-#include "Geometry.h"
+#include <Base/Writer.h>
+#include <Base/Reader.h>
+#include <Base/Exception.h>
 
-#include "FeatureGeometrySet.h"
+#include "ViewProviderSketchGeometryExtension.h"
+
+using namespace SketcherGui;
+
+//---------- Geometry Extension
+TYPESYSTEM_SOURCE(SketcherGui::ViewProviderSketchGeometryExtension,Part::GeometryExtension)
 
 
-using namespace Part;
-
-
-PROPERTY_SOURCE(Part::FeatureGeometrySet, Part::Feature)
-
-
-FeatureGeometrySet::FeatureGeometrySet()
+ViewProviderSketchGeometryExtension::ViewProviderSketchGeometryExtension():RepresentationFactor(1.0)
 {
-    ADD_PROPERTY(GeometrySet,(0));
+
 }
 
-
-App::DocumentObjectExecReturn *FeatureGeometrySet::execute(void)
+std::unique_ptr<Part::GeometryExtension> ViewProviderSketchGeometryExtension::copy(void) const
 {
-    TopoShape result;
+    auto cpy = std::make_unique<ViewProviderSketchGeometryExtension>();
 
-    const std::vector<Geometry*> &Geoms = GeometrySet.getValues();
+    cpy->RepresentationFactor = this->RepresentationFactor;
 
-    bool first = true;
-    for(std::vector<Geometry*>::const_iterator it=Geoms.begin();it!=Geoms.end();++it){
-        TopoDS_Shape sh = (*it)->toShape();
-        if (first) {
-            first = false;
-            result.setShape(sh);
-        }
-        else {
-            result.setShape(result.fuse(sh));
-        }
-    }
-    
-    Shape.setValue(result);
+    cpy->setName(this->getName()); // Base Class
 
-    return App::DocumentObject::StdReturn;
+#if defined (__GNUC__) && (__GNUC__ <=4)
+    return std::move(cpy);
+#else
+    return cpy;
+#endif
+}
+
+PyObject * ViewProviderSketchGeometryExtension::getPyObject(void)
+{
+    THROWM(Base::NotImplementedError, "ViewProviderSketchGeometryExtension does not have a Python counterpart");
 }
