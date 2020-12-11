@@ -377,11 +377,22 @@ void ViewProviderDocumentObject::update(const App::Property* prop)
     if(prop == &getObject()->Visibility) {
         if(!isRestoring() && Visibility.getValue()!=getObject()->Visibility.getValue())
             Visibility.setValue(!Visibility.getValue());
-    } else {
+    } else if (isUpdatesEnabled()) {
         // Disable object visibility syncing
         Base::ObjectStatusLocker<App::Property::Status,App::Property>
             guard(App::Property::User1, &Visibility);
-        ViewProvider::update(prop);
+
+        bool vis = ViewProvider::isShow();
+        bool visValue = Visibility.getValue();
+        if (vis)
+            ViewProvider::hide();
+
+        updateData(prop);
+
+        // Some view provider may switch on even if Visibility is false. Make
+        // sure to restore visibility in this case.
+        if (vis && (Visibility.getValue() || visValue==Visibility.getValue()))
+            ViewProvider::show();
 
         if(!getObject()->getDocument()->testStatus(App::Document::Restoring)
                 && !getObject()->testStatus(App::PendingRecompute))
