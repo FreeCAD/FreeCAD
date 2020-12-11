@@ -102,17 +102,34 @@ TopoShape Feature::getSolid(const TopoShape& shape)
 
 void Feature::onChanged(const App::Property *prop)
 {
-    if (prop == &NewSolid) {
-        if (!NewSolid.getValue() && !BaseFeature.getValue()) {
-            auto body = getFeatureBody();
-            if (body) {
-                auto prev = body->getPrevSolidFeature(this);
-                if (prev)
-                    BaseFeature.setValue(prev);
+    if (!this->isRestoring() 
+            && this->getDocument()
+            && !this->getDocument()->isPerformingTransaction()) {
+        if (prop == &NewSolid) {
+            if (!NewSolid.getValue() && !BaseFeature.getValue()) {
+                auto body = getFeatureBody();
+                if (body) {
+                    auto prev = body->getPrevSolidFeature(this);
+                    if (prev)
+                        BaseFeature.setValue(prev);
+                }
+            }
+            else if(NewSolid.getValue() && BaseFeature.getValue())
+                BaseFeature.setValue(nullptr);
+        }
+        else if (prop == &Visibility || prop == &BaseFeature) {
+            if (Visibility.getValue()) {
+                auto body = Body::findBodyOf(this);
+                if (body) {
+                    auto siblings = body->getSiblings(this);
+                    for (auto feat : siblings) {
+                        if (feat != this && feat->Visibility.getValue())
+                            feat->Visibility.setValue(false);
+                    }
+                    body->signalSiblingVisibilityChanged(siblings);
+                }
             }
         }
-        else if(NewSolid.getValue() && BaseFeature.getValue())
-            BaseFeature.setValue(nullptr);
     }
     Part::Feature::onChanged(prop);
 }

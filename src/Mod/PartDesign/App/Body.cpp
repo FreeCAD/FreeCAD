@@ -287,47 +287,6 @@ std::vector<App::DocumentObject*> Body::addObject(App::DocumentObject *feature)
     return {feature};
 }
 
-void Body::checkChild(const App::Property &prop)
-{
-    auto feature = Base::freecad_dynamic_cast<PartDesign::Feature>(prop.getContainer());
-    if (!feature || !feature->Visibility.getValue() || !isSolidFeature(feature))
-        return;
-    for (auto obj : getSiblings(feature)) {
-        if (obj != feature && obj->Visibility.getValue() && isSolidFeature(obj))
-            obj->Visibility.setValue(false);
-    }
-}
-
-void Body::checkChildren()
-{
-    ++childrenFlag;
-    for (auto obj : Group.getValue()) {
-        auto feature = Base::freecad_dynamic_cast<PartDesign::Feature>(obj);
-        if (!feature)
-            continue;
-
-        auto &info = this->childrenConns[feature];
-        info.flag = childrenFlag;
-
-        if (info.visibilityConn.connected())
-            continue;
-
-        info.visibilityConn = feature->Visibility.signalChanged.connect(
-                boost::bind(&Body::checkChild, this, bp::_1));
-        info.baseFeatureConn = feature->BaseFeature.signalChanged.connect(
-                boost::bind(&Body::checkChild, this, bp::_1));
-
-        checkChild(feature->Visibility);
-    }
-
-    for (auto it=childrenConns.begin(); it!=childrenConns.end();) {
-        if (it->second.flag != childrenFlag)
-            it = childrenConns.erase(it);
-        else
-            ++it;
-    }
-}
-
 std::vector< App::DocumentObject* > Body::addObjects(std::vector< App::DocumentObject* > objs) {
     
     for(auto obj : objs)
@@ -623,12 +582,6 @@ void Body::onChanged (const App::Property* prop) {
         }
     }
 
-    if (!this->isRestoring())  {
-        // Call checkChildren() even if we are performing undo/redo
-        if (prop == &Group)
-            checkChildren();
-    }
-
     Part::BodyBase::onChanged(prop);
 }
 
@@ -715,20 +668,12 @@ App::DocumentObject *Body::getSubObject(const char *subname,
 
 void Body::onDocumentRestored()
 {
-    ++childrenFlag;
     for(auto obj : Group.getValues()) {
         auto feature = Base::freecad_dynamic_cast<PartDesign::Feature>(obj);
         if (!feature)
             continue;
 
         feature->_Body.setValue(this);
-
-        auto &info = this->childrenConns[feature];
-        info.visibilityConn = feature->Visibility.signalChanged.connect(
-                boost::bind(&Body::checkChild, this, bp::_1));
-        info.baseFeatureConn = feature->BaseFeature.signalChanged.connect(
-                boost::bind(&Body::checkChild, this, bp::_1));
-        info.flag = childrenFlag;
     }
     _GroupTouched.setStatus(App::Property::Output,true);
     DocumentObject::onDocumentRestored();

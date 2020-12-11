@@ -54,6 +54,9 @@ public:
 
     Body();
 
+    boost::signals2::signal<void (const std::deque<App::DocumentObject*>&)>
+        signalSiblingVisibilityChanged;
+
     /** @name methods override feature */
     //@{
     /// recalculate the feature
@@ -202,19 +205,8 @@ protected:
 
     virtual void onDocumentRestored() override;
 
-    void checkChildren();
-    void checkChild(const App::Property &);
-
 private:
     bool showTip = false;
-
-    struct ChildInfo {
-        boost::signals2::scoped_connection visibilityConn;
-        boost::signals2::scoped_connection baseFeatureConn;
-        int flag;
-    };
-    std::unordered_map<App::DocumentObject *, ChildInfo> childrenConns;
-    int childrenFlag = 0;
 };
 
 } //namespace PartDesign
