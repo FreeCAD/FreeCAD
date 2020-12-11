@@ -1267,7 +1267,14 @@ bool Document::saveAs(void)
             Command::doCommand(Command::Doc,"App.getDocument(\"%s\").saveAs(u\"%s\")"
                                            , DocName, escapedstr.c_str());
             setModified(false);
-            getMainWindow()->appendRecentFile(fi.filePath());
+
+            // Some (Linux) system file dialog do not append default extension
+            // name.  which will cause an invalid recent file entry. Use the
+            // 'FileName' property instead.
+            //
+            // getMainWindow()->appendRecentFile(fi.filePath());
+            getMainWindow()->appendRecentFile(QString::fromUtf8(
+                        getDocument()->FileName.getValue()));
         }
         catch (const Base::Exception& e) {
             QMessageBox::critical(getMainWindow(), QObject::tr("Saving document failed"),
