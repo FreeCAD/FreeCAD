@@ -139,15 +139,24 @@ class Delegate(QtGui.QStyledItemDelegate):
 
 class PropertyCreate(object):
 
-    def __init__(self, obj, parent=None):
+    def __init__(self, obj, grp, typ, another):
         self.obj = obj
         self.form = FreeCADGui.PySideUic.loadUi(":panels/PropertyCreate.ui")
 
-        for group in sorted(obj.CustomPropertyGroups):
-            self.form.propertyGroup.addItem(group)
-        for typ in sorted(SupportedPropertyType):
-            self.form.propertyType.addItem(typ)
-        self.form.propertyType.setCurrentText('String')
+        for g in sorted(obj.CustomPropertyGroups):
+            self.form.propertyGroup.addItem(g)
+        if grp:
+            self.form.propertyGroup.setCurrentText(grp)
+
+        for t in sorted(SupportedPropertyType):
+            self.form.propertyType.addItem(t)
+            if SupportedPropertyType[t] == typ:
+                typ = t
+        if typ:
+            self.form.propertyType.setCurrentText(typ)
+        else:
+            self.form.propertyType.setCurrentText('String')
+        self.form.createAnother.setChecked(another)
 
         self.form.propertyGroup.currentTextChanged.connect(self.updateUI)
         self.form.propertyGroup.currentIndexChanged.connect(self.updateUI)
@@ -163,15 +172,20 @@ class PropertyCreate(object):
             ok.setEnabled(False)
 
     def propertyName(self):
-        return self.form.propertyName.text()
+        return self.form.propertyName.text().strip()
     def propertyGroup(self):
-        return self.form.propertyGroup.currentText()
+        return self.form.propertyGroup.currentText().strip()
     def propertyType(self):
-        return SupportedPropertyType[self.form.propertyType.currentText()]
+        return SupportedPropertyType[self.form.propertyType.currentText()].strip()
     def propertyInfo(self):
-        return self.form.propertyInfo.toPlainText()
+        return self.form.propertyInfo.toPlainText().strip()
+    def createAnother(self):
+        return self.form.createAnother.isChecked()
 
     def exec_(self):
+        self.form.propertyName.setText('')
+        self.form.propertyInfo.setText('')
+        #self.form.propertyName.setFocus()
         return self.form.exec_()
 
 class TaskPanel(object):
@@ -247,24 +261,33 @@ class TaskPanel(object):
 
     def propertyAdd(self):
         PathLog.track()
-        dialog = PropertyCreate(self.obj)
-        if dialog.exec_():
-            # if we block signals the view doesn't get updated, surprise, surprise
-            #self.model.blockSignals(True)
-            name = dialog.propertyName()
-            typ  = dialog.propertyType()
-            grpe = dialog.propertyGroup()
-            info = dialog.propertyInfo()
-            self.obj.Proxy.addCustomProperty(typ, name, grpe, info)
-            index = 0
-            for i in range(self.model.rowCount()):
-                index = i
-                if self.model.item(i, self.ColumnName).data(QtCore.Qt.EditRole) > dialog.propertyName():
-                    break
-            self.model.insertRows(index, 1)
-            self._setupProperty(index, name)
-            self.form.table.selectionModel().setCurrentIndex(self.model.index(index, 0), QtCore.QItemSelectionModel.Rows)
-            #self.model.blockSignals(False)
+        more = False
+        grp = None
+        typ = None
+        while True:
+            dialog = PropertyCreate(self.obj, grp, typ, more)
+            if dialog.exec_():
+                # if we block signals the view doesn't get updated, surprise, surprise
+                #self.model.blockSignals(True)
+                name = dialog.propertyName()
+                typ  = dialog.propertyType()
+                grp  = dialog.propertyGroup()
+                info = dialog.propertyInfo()
+                self.obj.Proxy.addCustomProperty(typ, name, grp, info)
+                index = 0
+                for i in range(self.model.rowCount()):
+                    index = i
+                    if self.model.item(i, self.ColumnName).data(QtCore.Qt.EditRole) > dialog.propertyName():
+                        break
+                self.model.insertRows(index, 1)
+                self._setupProperty(index, name)
+                self.form.table.selectionModel().setCurrentIndex(self.model.index(index, 0), QtCore.QItemSelectionModel.Rows)
+                #self.model.blockSignals(False)
+                more = dialog.createAnother()
+            else:
+                more = False
+            if not more:
+                break
 
     def propertyRemove(self):
         PathLog.track()
