@@ -1005,13 +1005,13 @@ class ObjectSlot(PathOp.ObjectOp):
             self.dYdX2 = dYdX2
 
         # Parallel check for twin face, and face-edge cases
-        if dYdX1 and dYdX2:
-            if not self._isParallel(dYdX1, dYdX2):
-                PathLog.debug('dYdX1, dYdX2: {}, {}'.format(dYdX1, dYdX2))
-                msg = translate('PathSlot',
-                    'Selected geometry not parallel.')
-                FreeCAD.Console.PrintError(msg + '\n')
-                return False
+        #if dYdX1 and dYdX2:
+        #    if not self._isParallel(dYdX1, dYdX2):
+        #        PathLog.debug('dYdX1, dYdX2: {}, {}'.format(dYdX1, dYdX2))
+        #        msg = translate('PathSlot',
+        #            'Selected geometry not parallel.')
+        #        FreeCAD.Console.PrintError(msg + '\n')
+        #        return False
 
         if p2:
             return (p1, p2)
