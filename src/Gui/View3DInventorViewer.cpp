@@ -682,17 +682,8 @@ void View3DInventorViewer::init()
     assert(path && path->getLength()>1);
     auto sceneNode = path->getNodeFromTail(1);
     assert(sceneNode->isOfType(SoGroup::getClassTypeId()));
-    int rootIndex = path->getIndexFromTail(0);
-    static_cast<SoGroup*>(sceneNode)->insertChild(pcGroupOnTop,rootIndex);
 
     pCurrentHighlightPath = nullptr;
-
-    pcGroupOnTopPath = path->copy();
-    pcGroupOnTopPath->ref();
-    pcGroupOnTopPath->truncate(path->getLength()-1);
-    pcGroupOnTopPath->append(pcGroupOnTop);
-    pcGroupOnTopPath->append(pcGroupOnTopSwitch);
-    pcGroupOnTopPath->append(pcGroupOnTopSel);
 
     pcClipPlane = 0;
 
@@ -706,6 +697,15 @@ void View3DInventorViewer::init()
     pcEditingRoot->addChild(pcEditingTransform);
     // pcViewProviderRoot->addChild(pcEditingRoot);
     static_cast<SoGroup*>(sceneNode)->addChild(pcEditingRoot);
+
+    static_cast<SoGroup*>(sceneNode)->addChild(pcGroupOnTop);
+
+    pcGroupOnTopPath = path->copy();
+    pcGroupOnTopPath->ref();
+    pcGroupOnTopPath->truncate(path->getLength()-1);
+    pcGroupOnTopPath->append(pcGroupOnTop);
+    pcGroupOnTopPath->append(pcGroupOnTopSwitch);
+    pcGroupOnTopPath->append(pcGroupOnTopSel);
 
     pcRootMaterial = new SoMaterial;
     pcRootMaterial->ref();
@@ -2499,8 +2499,8 @@ void View3DInventorViewer::savePicture(int w, int h, int s, const QColor& bg, QI
     SoCallback* gl = new SoCallback;
     gl->setCallback(setGLWidgetCB, this->getGLWidget());
     root->addChild(gl);
-    root->addChild(pcGroupOnTopSwitch);
     root->addChild(pcViewProviderRoot);
+    root->addChild(pcGroupOnTopSwitch);
 
 #if !defined(HAVE_QT5_OPENGL)
     if (useBackground)
