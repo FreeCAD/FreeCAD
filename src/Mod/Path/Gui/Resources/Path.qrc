@@ -122,6 +122,7 @@
         <file>panels/PathEdit.ui</file>
         <file>panels/PointEdit.ui</file>
         <file>panels/PropertyContainer.ui</file>
+        <file>panels/PropertyCreate.ui</file>
         <file>panels/SetupGlobal.ui</file>
         <file>panels/SetupOp.ui</file>
         <file>panels/ToolBitEditor.ui</file>

@@ -43,8 +43,20 @@ PathLog.trackModule(PathLog.thisModule())
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
+SupportedPropertyType = {
+        'Angle'         : 'App::PropertyAngle',
+        'Bool'          : 'App::PropertyBool',
+        'Distance'      : 'App::PropertyDistance',
+        # 'Enumeration'   : 'App::PropertyEnumeration',
+        'File'          : 'App::PropertyFile',
+        'Float'         : 'App::PropertyFloat',
+        'Integer'       : 'App::PropertyInteger',
+        'Length'        : 'App::PropertyLength',
+        'Percent'       : 'App::PropertyPercent',
+        'String'        : 'App::PropertyString',
+        }
 
-class ViewProvider:
+class ViewProvider(object):
     '''ViewProvider for a PropertyContainer.
     It's sole job is to provide an icon and invoke the TaskPanel on edit.'''
 
@@ -125,7 +137,44 @@ class Delegate(QtGui.QStyledItemDelegate):
         # pylint: disable=unused-argument
         widget.setGeometry(option.rect)
 
-class TaskPanel:
+class PropertyCreate(object):
+
+    def __init__(self, obj, parent=None):
+        self.obj = obj
+        self.form = FreeCADGui.PySideUic.loadUi(":panels/PropertyCreate.ui")
+
+        for group in sorted(obj.CustomPropertyGroups):
+            self.form.propertyGroup.addItem(group)
+        for typ in sorted(SupportedPropertyType):
+            self.form.propertyType.addItem(typ)
+        self.form.propertyType.setCurrentText('String')
+
+        self.form.propertyGroup.currentTextChanged.connect(self.updateUI)
+        self.form.propertyGroup.currentIndexChanged.connect(self.updateUI)
+        self.form.propertyName.textChanged.connect(self.updateUI)
+
+        self.updateUI()
+
+    def updateUI(self):
+        ok = self.form.buttonBox.button(QtGui.QDialogButtonBox.Ok)
+        if self.form.propertyName.text() and self.form.propertyGroup.currentText():
+            ok.setEnabled(True)
+        else:
+            ok.setEnabled(False)
+
+    def propertyName(self):
+        return self.form.propertyName.text()
+    def propertyGroup(self):
+        return self.form.propertyGroup.currentText()
+    def propertyType(self):
+        return SupportedPropertyType[self.form.propertyType.currentText()]
+    def propertyInfo(self):
+        return self.form.propertyInfo.toPlainText()
+
+    def exec_(self):
+        return self.form.exec_()
+
+class TaskPanel(object):
     ColumnName = 0
     ColumnVal  = 1
     ColumnDesc = 2
@@ -151,6 +200,19 @@ class TaskPanel:
             obj  = topLeft.data(Delegate.RoleObject)
             prop = topLeft.data(Delegate.RoleProperty)
 
+
+    def _setupProperty(self, i, name):
+        info  = self.obj.getDocumentationOfProperty(name)
+        value = self.obj.getPropertyByName(name)
+
+        self.model.setData(self.model.index(i, self.ColumnName), name,        QtCore.Qt.EditRole)
+        self.model.setData(self.model.index(i, self.ColumnVal),  self.obj,    Delegate.RoleObject)
+        self.model.setData(self.model.index(i, self.ColumnVal),  name,        Delegate.RoleProperty)
+        self.model.setData(self.model.index(i, self.ColumnVal),  str(value),  QtCore.Qt.DisplayRole)
+        self.model.setData(self.model.index(i, self.ColumnDesc), info,        QtCore.Qt.EditRole)
+
+        self.model.item(i, self.ColumnName).setEditable(False)
+
     def setupUi(self):
         PathLog.track()
 
@@ -159,15 +221,7 @@ class TaskPanel:
         self.model.setHorizontalHeaderLabels(['Property', 'Value', 'Description'])
 
         for i,name in enumerate(self.props):
-            info  = self.obj.getDocumentationOfProperty(name)
-            value = self.obj.getPropertyByName(name)
-            self.model.setData(self.model.index(i, self.ColumnName), name,        QtCore.Qt.EditRole)
-            self.model.setData(self.model.index(i, self.ColumnVal),  self.obj,    Delegate.RoleObject)
-            self.model.setData(self.model.index(i, self.ColumnVal),  name,        Delegate.RoleProperty)
-            self.model.setData(self.model.index(i, self.ColumnVal),  str(value),  QtCore.Qt.DisplayRole)
-            self.model.setData(self.model.index(i, self.ColumnDesc), info,        QtCore.Qt.EditRole)
-
-            self.model.item(i, self.ColumnName).setEditable(False)
+            self._setupProperty(i, name)
 
         self.form.table.setModel(self.model)
         self.form.table.setItemDelegateForColumn(self.ColumnVal, self.delegate)
@@ -212,6 +266,21 @@ class TaskPanel:
 
     def propertyAdd(self):
         PathLog.track()
+        dialog = PropertyCreate(self.obj)
+        if dialog.exec_():
+            #self.model.blockSignals(True)
+            name = dialog.propertyName()
+            typ  = dialog.propertyType()
+            grpe = dialog.propertyGroup()
+            info = dialog.propertyInfo()
+            self.obj.Proxy.addCustomProperty(typ, name, grpe, info)
+            for i in range(self.model.rowCount()):
+                if self.model.item(i, self.ColumnName).data(QtCore.Qt.EditRole) > dialog.propertyName():
+                    self.model.insertRows(i, 1)
+                    self._setupProperty(i, name)
+                    self.form.table.selectionModel().setCurrentIndex(self.model.index(i, 0), QtCore.QItemSelectionModel.Rows)
+                    break
+            #self.model.blockSignals(False)
 
     def propertyRemove(self):
         PathLog.track()
@@ -219,9 +288,12 @@ class TaskPanel:
         for index in self.form.table.selectionModel().selectedIndexes():
             if not index.row() in rows:
                 rows.append(index.row())
+
+        self.model.blockSignals(True)
         for row in reversed(sorted(rows)):
             self.obj.removeProperty(self.model.item(row).data(QtCore.Qt.EditRole))
             self.model.removeRow(row)
+        self.model.blockSignals(False)
 
 
 def Create(name = 'PropertyContainer'):
