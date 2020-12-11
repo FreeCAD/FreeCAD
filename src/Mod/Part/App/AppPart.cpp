@@ -1,11 +1,23 @@
 /***************************************************************************
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU Library General Public License as       *
- *   published by the Free Software Foundation; either version 2 of the    *
- *   License, or (at your option) any later version.                       *
- *   for detail see the LICENCE text file.                                 *
- *   Jürgen Riegel 2002                                                    *
+ *   This file is part of the FreeCAD CAx development system.              *
+ *                                                                         *
+ *   This library is free software; you can redistribute it and/or         *
+ *   modify it under the terms of the GNU Library General Public           *
+ *   License as published by the Free Software Foundation; either          *
+ *   version 2 of the License, or (at your option) any later version.      *
+ *                                                                         *
+ *   This library  is distributed in the hope that it will be useful,      *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU Library General Public License for more details.                  *
+ *                                                                         *
+ *   You should have received a copy of the GNU Library General Public     *
+ *   License along with this library; see the file COPYING.LIB. If not,    *
+ *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
+ *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
 
@@ -61,6 +73,7 @@
 #include "Geometry.h"
 #include "GeometryExtension.h"
 #include "GeometryDefaultExtension.h"
+#include "GeometryMigrationExtension.h"
 #include "Geometry2d.h"
 #include "Mod/Part/App/GeometryIntExtensionPy.h"
 #include "Mod/Part/App/GeometryStringExtensionPy.h"
@@ -392,45 +405,47 @@ PyMOD_INIT_FUNC(Part)
     Part::Reverse               ::init();
 
     // Geometry types
-    Part::GeometryExtension       ::init();
-    Part::GeometryIntExtension    ::init();
-    Part::GeometryStringExtension ::init();
-    Part::GeometryBoolExtension   ::init();
-    Part::GeometryDoubleExtension ::init();
-    Part::Geometry                ::init();
-    Part::GeomPoint               ::init();
-    Part::GeomCurve               ::init();
-    Part::GeomBoundedCurve        ::init();
-    Part::GeomBezierCurve         ::init();
-    Part::GeomBSplineCurve        ::init();
-    Part::GeomConic               ::init();
-    Part::GeomTrimmedCurve        ::init();
-    Part::GeomArcOfConic          ::init();
-    Part::GeomCircle              ::init();
-    Part::GeomArcOfCircle         ::init();
-    Part::GeomArcOfEllipse        ::init();
-    Part::GeomArcOfParabola       ::init();
-    Part::GeomArcOfHyperbola      ::init();
-    Part::GeomEllipse             ::init();
-    Part::GeomHyperbola           ::init();
-    Part::GeomParabola            ::init();
-    Part::GeomLine                ::init();
-    Part::GeomLineSegment         ::init();
-    Part::GeomOffsetCurve         ::init();
-    Part::GeomSurface             ::init();
-    Part::GeomBezierSurface       ::init();
-    Part::GeomBSplineSurface      ::init();
-    Part::GeomCylinder            ::init();
-    Part::GeomCone                ::init();
-    Part::GeomSphere              ::init();
-    Part::GeomToroid              ::init();
-    Part::GeomPlane               ::init();
-    Part::GeomOffsetSurface       ::init();
-    Part::GeomPlateSurface        ::init();
-    Part::GeomTrimmedSurface      ::init();
-    Part::GeomSurfaceOfRevolution ::init();
-    Part::GeomSurfaceOfExtrusion  ::init();
-    Part::Datum                   ::init();
+    Part::GeometryExtension       	::init();
+    Part::GeometryPersistenceExtension	::init();
+    Part::GeometryIntExtension    	::init();
+    Part::GeometryStringExtension 	::init();
+    Part::GeometryBoolExtension   	::init();
+    Part::GeometryDoubleExtension 	::init();
+    Part::GeometryMigrationExtension	::init();
+    Part::Geometry                	::init();
+    Part::GeomPoint               	::init();
+    Part::GeomCurve               	::init();
+    Part::GeomBoundedCurve        	::init();
+    Part::GeomBezierCurve         	::init();
+    Part::GeomBSplineCurve        	::init();
+    Part::GeomConic               	::init();
+    Part::GeomTrimmedCurve        	::init();
+    Part::GeomArcOfConic          	::init();
+    Part::GeomCircle              	::init();
+    Part::GeomArcOfCircle         	::init();
+    Part::GeomArcOfEllipse        	::init();
+    Part::GeomArcOfParabola       	::init();
+    Part::GeomArcOfHyperbola      	::init();
+    Part::GeomEllipse             	::init();
+    Part::GeomHyperbola           	::init();
+    Part::GeomParabola            	::init();
+    Part::GeomLine                	::init();
+    Part::GeomLineSegment         	::init();
+    Part::GeomOffsetCurve         	::init();
+    Part::GeomSurface             	::init();
+    Part::GeomBezierSurface       	::init();
+    Part::GeomBSplineSurface      	::init();
+    Part::GeomCylinder            	::init();
+    Part::GeomCone                	::init();
+    Part::GeomSphere              	::init();
+    Part::GeomToroid              	::init();
+    Part::GeomPlane               	::init();
+    Part::GeomOffsetSurface       	::init();
+    Part::GeomPlateSurface        	::init();
+    Part::GeomTrimmedSurface      	::init();
+    Part::GeomSurfaceOfRevolution 	::init();
+    Part::GeomSurfaceOfExtrusion  	::init();
+    Part::Datum                   	::init();
 
     // Geometry2d types
     Part::Geometry2d              ::init();

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2020 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,47 +20,40 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
-#include "Geometry.h"
+#include "GeometryMigrationExtension.h"
 
-#include "FeatureGeometrySet.h"
-
+#include <Base/Exception.h>
 
 using namespace Part;
 
 
-PROPERTY_SOURCE(Part::FeatureGeometrySet, Part::Feature)
+//---------- Geometry Extension
+TYPESYSTEM_SOURCE(Part::GeometryMigrationExtension,Part::GeometryExtension)
 
-
-FeatureGeometrySet::FeatureGeometrySet()
+GeometryMigrationExtension::GeometryMigrationExtension():ConstructionState(false)
 {
-    ADD_PROPERTY(GeometrySet,(0));
+
 }
 
-
-App::DocumentObjectExecReturn *FeatureGeometrySet::execute(void)
+std::unique_ptr<Part::GeometryExtension> GeometryMigrationExtension::copy(void) const
 {
-    TopoShape result;
+    auto cpy = std::make_unique<GeometryMigrationExtension>();
 
-    const std::vector<Geometry*> &Geoms = GeometrySet.getValues();
+    cpy->ConstructionState = this->ConstructionState;
+    cpy->GeometryMigrationFlags  = this->GeometryMigrationFlags;
 
-    bool first = true;
-    for(std::vector<Geometry*>::const_iterator it=Geoms.begin();it!=Geoms.end();++it){
-        TopoDS_Shape sh = (*it)->toShape();
-        if (first) {
-            first = false;
-            result.setShape(sh);
-        }
-        else {
-            result.setShape(result.fuse(sh));
-        }
-    }
-    
-    Shape.setValue(result);
+    cpy->setName(this->getName()); // Base Class
 
-    return App::DocumentObject::StdReturn;
+#if defined (__GNUC__) && (__GNUC__ <=4)
+    return std::move(cpy);
+#else
+    return cpy;
+#endif
+}
+
+PyObject * GeometryMigrationExtension::getPyObject(void)
+{
+    THROWM(Base::NotImplementedError, "GeometryMigrationExtension does not have a Python counterpart");
 }

@@ -4134,33 +4134,12 @@ public:
                 //Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Pole circle"));
 
                 //Add pole
-                double guess = (EditCurve[1]-EditCurve[0]).Length()/6;
-
-                auto normalize = [](double guess) {
-                    double units=1.0;
-
-                    while (guess >= 10.0) {
-                        guess /= 10.0;
-                        units*=10.0;
-                    }
-
-                    while (guess < 1.0) {
-                        guess *= 10.0;
-                        units/=10.0;
-                    }
-
-                    return round(guess)*units;
-
-                };
-
-                guess = normalize(guess);
-
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),10),True)",
                                       EditCurve[EditCurve.size()-1].x,EditCurve[EditCurve.size()-1].y);
 
                 if(EditCurve.size() == 2) {
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
-                                          FirstPoleGeoId, guess );
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Weight',%d,%f)) ",
+                                          FirstPoleGeoId, 1.0 ); // First pole defaults to 1.0 weight
                 }
 
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Equal',%d,%d)) ",
@@ -5133,7 +5112,7 @@ public:
                 if (GeoIdList.size() == 2 && GeoIdList[0] >= 0  && GeoIdList[1] >= 0) {
                     const Part::Geometry *geom1 = sketchgui->getSketchObject()->getGeometry(GeoIdList[0]);
                     const Part::Geometry *geom2 = sketchgui->getSketchObject()->getGeometry(GeoIdList[1]);
-                    construction=geom1->getConstruction() && geom2->getConstruction();
+                    construction=Sketcher::GeometryFacade::getConstruction(geom1) && Sketcher::GeometryFacade::getConstruction(geom2);
                     if (geom1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
                         geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                         const Part::GeomLineSegment *lineSeg1 = static_cast<const Part::GeomLineSegment *>(geom1);
@@ -5216,7 +5195,7 @@ public:
                         if (radius < 0)
                             return false;
 
-                        construction=lineSeg1->getConstruction() && lineSeg2->getConstruction();
+                        construction=Sketcher::GeometryFacade::getConstruction(lineSeg1) && Sketcher::GeometryFacade::getConstruction(lineSeg2);
                     }
                     else { // other supported curves
                         const Part::Geometry *geo1 = static_cast<const Part::Geometry *>
@@ -5224,7 +5203,7 @@ public:
                         const Part::Geometry *geo2 = static_cast<const Part::Geometry *>
                                                                 (sketchgui->getSketchObject()->getGeometry(secondCurve));
 
-                        construction=geo1->getConstruction() && geo2->getConstruction();
+                        construction=Sketcher::GeometryFacade::getConstruction(geo1) && Sketcher::GeometryFacade::getConstruction(geo2);
                     }
 
 

@@ -69,6 +69,19 @@ namespace GCS
         IterationLevel = 2
     };
 
+    // Magic numbers for Constraint tags
+    // - Positive Tags identify a higher level constraint form which the solver constraint originates
+    // - Negative Tags represent temporary constraints, used for example in moving operations, these
+    // have a different handling in component splitting, see GCS::initSolution. Lifetime is defined by
+    // the container object via GCS::clearByTag.
+    //      -   -1 is typically used as tag for these temporary constraints, its parameters are enforced with
+    //          a lower priority than the main system (real sketcher constraints). It gives a nice effect when
+    //          dragging the edge of an unconstrained circle, that the center won't move if the edge can be dragged,
+    //          and only when/if the edge cannot be dragged, e.g. radius constraint, the center is moved).
+    enum SpecialTag {
+        DefaultTemporaryConstraint = -1
+    };
+
     class System
     {
     // This is the main class. It holds all constraints and information

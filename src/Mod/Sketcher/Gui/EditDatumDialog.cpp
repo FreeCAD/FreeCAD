@@ -38,6 +38,7 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Mod/Sketcher/App/SketchObject.h>
+#include <Mod/Sketcher/App/GeometryFacade.h>
 
 #include "ViewProviderSketch.h"
 #include "ui_InsertDatum.h"
@@ -81,13 +82,14 @@ void EditDatumDialog::exec(bool atCursor)
             return;
         }
 
+        Base::Quantity init_val;
+
         QDialog dlg(Gui::getMainWindow());
         if (ui_ins_datum == nullptr) {
             ui_ins_datum.reset(new Ui_InsertDatum);
             ui_ins_datum->setupUi(&dlg);
         }
         double datum = Constr->getValue();
-        Base::Quantity init_val;
 
         if (Constr->Type == Sketcher::Angle) {
             datum = Base::toDegrees<double>(datum);
@@ -107,6 +109,11 @@ void EditDatumDialog::exec(bool atCursor)
             init_val.setUnit(Base::Unit::Length);
             ui_ins_datum->label->setText(tr("Diameter:"));
             ui_ins_datum->labelEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/SketcherLength"));
+        }
+        else if (Constr->Type == Sketcher::Weight) {
+            dlg.setWindowTitle(tr("Insert weight"));
+            ui_ins_datum->label->setText(tr("Weight:"));
+            ui_ins_datum->labelEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/SketcherWeight"));
         }
         else if (Constr->Type == Sketcher::SnellsLaw) {
             dlg.setWindowTitle(tr("Refractive index ratio", "Constraint_SnellsLaw"));
@@ -155,7 +162,10 @@ void EditDatumDialog::exec(bool atCursor)
 void EditDatumDialog::accepted()
 {
     Base::Quantity newQuant = ui_ins_datum->labelEdit->value();
-    if (newQuant.isQuantity() || (Constr->Type == Sketcher::SnellsLaw && newQuant.isDimensionless())) {
+    if( newQuant.isQuantity() ||
+        (Constr->Type == Sketcher::SnellsLaw && newQuant.isDimensionless()) ||
+        (Constr->Type == Sketcher::Weight && newQuant.isDimensionless())) {
+
         // save the value for the history
         ui_ins_datum->labelEdit->pushToHistory();
 

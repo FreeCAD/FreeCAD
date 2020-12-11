@@ -53,12 +53,12 @@ class Shaft:
     wstrings = (("",  "",  "",  "",  ""), 
                         ("Translation [y]",  "x",  "mm",  "w_y",  "mm"), 
                         ("Translation [z]",  "x",  "mm",  "w_z",  "mm"))
-    sigmaNstrings =  (("Normal stress [x]",  "x", "mm", "\sigma_x",  u"N/mm²"), 
-                        ("Shear stress [y]",  "x",  "mm",  "\sigma_y",  u"N/mm²"), 
-                        ("Shear stress [z]",  "x",  "mm",  "\sigma_z",  u"N/mm²"))
-    sigmaBstrings = (("Torque stress [x]",  "x", "mm", "\tau_t",  u"N/mm²"), 
-                        ("Bending stress [z]",  "x",  "mm",  "\sigma_{b,z}",  u"N/mm²"), 
-                        ("Bending stress [y]",  "x",  "mm",  "\sigma_{b,y}",  u"N/mm²"))
+    sigmaNstrings =  (("Normal stress [x]",  "x", "mm", "\\sigma_x",  u"N/mm²"),
+                        ("Shear stress [y]",  "x",  "mm",  "\\sigma_y",  u"N/mm²"),
+                        ("Shear stress [z]",  "x",  "mm",  "\\sigma_z",  u"N/mm²"))
+    sigmaBstrings = (("Torque stress [x]",  "x", "mm", "\\tau_t",  u"N/mm²"),
+                        ("Bending stress [z]",  "x",  "mm",  "\\sigma_{b,z}",  u"N/mm²"),
+                        ("Bending stress [y]",  "x",  "mm",  "\\sigma_{b,y}",  u"N/mm²"))
 
     def __init__(self, parent):
         self.parent = parent
