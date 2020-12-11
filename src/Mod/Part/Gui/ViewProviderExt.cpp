@@ -1370,7 +1370,7 @@ App::Color ViewProviderPartExt::getElementColor(App::Color color,
                     color = prop->getValues()[0];
                     color.a = trans;
                 }
-                if(idx.second<=prop->getSize()) 
+                else if(idx.second<=prop->getSize()) 
                     return prop->getValues()[idx.second-1];
             }else{
                 // This means the element is generated from a different type of source element,
@@ -1381,7 +1381,7 @@ App::Color ViewProviderPartExt::getElementColor(App::Color color,
                         color = prop->getValues()[0];
                         color.a = trans;
                     }
-                    if(aidx<=prop->getSize())
+                    else if(aidx<=prop->getSize())
                         return prop->getValues()[aidx-1];
                 }
             }
