@@ -35,6 +35,7 @@
 #include "TaskPrimitiveParameters.h"
 #include "ui_TaskPrimitiveParameters.h"
 #include "ViewProviderDatumCS.h"
+#include "Utils.h"
 
 #include <App/Origin.h>
 #include <Base/Console.h>
@@ -62,6 +63,7 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
 
     this->groupLayout()->addWidget(proxy);
     this->addNewSolidCheckBox(proxy);
+    PartDesignGui::addTaskCheckBox(proxy);
 
     refresh();
 

@@ -23,25 +23,26 @@
 #ifndef PARTGUI_ViewProviderWrap_H
 #define PARTGUI_ViewProviderWrap_H
 
-#include "ViewProvider.h"
+#include "ViewProviderAddSub.h"
+
+namespace Gui {
+class SoFCDisplayMode;
+}
 
 namespace PartDesignGui {
 
-class PartDesignGuiExport ViewProviderWrap : public ViewProvider
+class PartDesignGuiExport ViewProviderWrap : public ViewProviderAddSub
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderWrap);
-    typedef PartDesignGui::ViewProvider inherited;
+    typedef PartDesignGui::ViewProviderAddSub inherited;
 
 public:
-    App::PropertyEnumeration Display;
-
     /// constructor
     ViewProviderWrap();
     /// destructor
     virtual ~ViewProviderWrap();
     virtual QIcon getIcon() const override;
     virtual void updateData(const App::Property*) override;
-    virtual void attach(App::DocumentObject*) override;
     virtual void onChanged(const App::Property* prop) override;
     virtual std::vector<App::DocumentObject*> claimChildren(void) const override;
     virtual std::vector<App::DocumentObject*> claimChildren3D(void) const override;
@@ -49,10 +50,17 @@ public:
     virtual Gui::ViewProvider * startEditing(int ModNum) override;
     virtual bool doubleClicked() override;
     virtual void setupContextMenu(QMenu*, QObject*, const char*) override;
+    virtual bool getDetailPath(const char *subname,
+            SoFullPath *pPath, bool append, SoDetail *&det) const override;
 
 protected:
     Gui::ViewProviderDocumentObject * getWrappedView() const;
+    virtual void updateAddSubShapeIndicator() override;
+    virtual PartGui::ViewProviderPart * getAddSubView() override;
+    virtual void setAddSubColor(const App::Color &color, float t) override;
+
 private:
+    Gui::CoinPtr<Gui::SoFCDisplayMode> dispModeOverride;
     Gui::CoinPtr<SoGroup> pcGroupChildren;
 };
 

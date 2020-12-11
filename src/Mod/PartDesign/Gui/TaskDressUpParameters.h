@@ -55,8 +55,6 @@ public:
     std::vector<std::string> getReferences(void) const;
     Part::Feature *getBase(void) const;
 
-    void hideObject();
-    void showObject();
     void setupTransaction();
 
     void setup(QLabel *msg, QListWidget *widget, QPushButton *btnAdd, bool touched=false);

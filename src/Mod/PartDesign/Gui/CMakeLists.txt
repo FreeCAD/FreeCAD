@@ -57,6 +57,7 @@ set(PartDesignGui_MOC_HDRS
     TaskPipeParameters.h
     TaskLoftParameters.h
     TaskWrapParameters.h
+    Utils.h
 )
 fc_wrap_cpp(PartDesignGui_MOC_SRCS ${PartDesignGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${PartDesignGui_MOC_SRCS})

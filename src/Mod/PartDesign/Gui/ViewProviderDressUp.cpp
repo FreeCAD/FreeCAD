@@ -149,7 +149,7 @@ void ViewProviderDressUp::updateAddSubShapeIndicator()
         pcDressUp->getGeneratedIndices(faces,edges,vertices);
         if (faces.empty()) {
             pcDressUp->DressUpShape.setValue(TopoDS_Shape());
-            pAddSubView->updateVisual();
+            getAddSubView()->updateVisual();
             return;
         }
 
@@ -161,13 +161,13 @@ void ViewProviderDressUp::updateAddSubShapeIndicator()
         for (int idx : faces)
             builder.Add(comp, shape.getSubShape(TopAbs_FACE, idx+1));
         pcDressUp->DressUpShape.setValue(comp);
-        pAddSubView->updateVisual();
+        getAddSubView()->updateVisual();
     }
 }
 
 void ViewProviderDressUp::attach(App::DocumentObject* obj) {
     ViewProviderAddSub::attach(obj);
-    pAddSubView->setShapePropertyName("DressUpShape");
+    getAddSubView()->setShapePropertyName("DressUpShape");
 }
 
 void ViewProviderDressUp::updateData(const App::Property* p) {

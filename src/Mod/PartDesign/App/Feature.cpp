@@ -105,18 +105,8 @@ void Feature::onChanged(const App::Property *prop)
     if (!this->isRestoring() 
             && this->getDocument()
             && !this->getDocument()->isPerformingTransaction()) {
-        if (prop == &NewSolid) {
-            if (!NewSolid.getValue() && !BaseFeature.getValue()) {
-                auto body = getFeatureBody();
-                if (body) {
-                    auto prev = body->getPrevSolidFeature(this);
-                    if (prev)
-                        BaseFeature.setValue(prev);
-                }
-            }
-            else if(NewSolid.getValue() && BaseFeature.getValue())
-                BaseFeature.setValue(nullptr);
-        }
+        if (prop == &NewSolid) 
+            onNewSolidChanged();
         else if (prop == &Visibility || prop == &BaseFeature) {
             if (Visibility.getValue()) {
                 auto body = Body::findBodyOf(this);
@@ -132,6 +122,20 @@ void Feature::onChanged(const App::Property *prop)
         }
     }
     Part::Feature::onChanged(prop);
+}
+
+void Feature::onNewSolidChanged()
+{
+    if (!NewSolid.getValue() && !BaseFeature.getValue()) {
+        auto body = getFeatureBody();
+        if (body) {
+            auto prev = body->getPrevSolidFeature(this);
+            if (prev)
+                BaseFeature.setValue(prev);
+        }
+    }
+    else if(NewSolid.getValue() && BaseFeature.getValue())
+        BaseFeature.setValue(nullptr);
 }
 
 const gp_Pnt Feature::getPointFromFace(const TopoDS_Face& f)

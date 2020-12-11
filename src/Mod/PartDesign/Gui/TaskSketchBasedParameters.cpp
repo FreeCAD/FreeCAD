@@ -81,6 +81,7 @@ void TaskSketchBasedParameters::initUI(QWidget *widget) {
         return;
 
     addNewSolidCheckBox(widget);
+    PartDesignGui::addTaskCheckBox(widget);
 
     PartDesign::ProfileBased* pcSketchBased = static_cast<PartDesign::ProfileBased*>(vp->getObject());
 

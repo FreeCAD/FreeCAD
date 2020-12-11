@@ -64,17 +64,22 @@ ViewProviderAddSub::ViewProviderAddSub()
     ADD_PROPERTY(AddSubColor,((long)0));
 
     previewGroup = new SoAnnotation();
-    previewGroup->ref();
 }
 
 ViewProviderAddSub::~ViewProviderAddSub()
 {
-    previewGroup->unref();
 }
 
 void ViewProviderAddSub::attach(App::DocumentObject* obj) {
 
     ViewProvider::attach(obj);
+    addDisplayMaskMode(previewGroup, "Shape preview");
+}
+
+PartGui::ViewProviderPart * ViewProviderAddSub::getAddSubView()
+{
+    if (pAddSubView)
+        return pAddSubView.get();
 
     pAddSubView.reset(new PartGui::ViewProviderPart);
     pAddSubView->setShapePropertyName("AddSubShape");
@@ -91,13 +96,12 @@ void ViewProviderAddSub::attach(App::DocumentObject* obj) {
     if (pAddSubView->LineWidth.getValue() < 2.0f)
         pAddSubView->LineWidth.setValue(2.0f);
 
-    pAddSubView->attach(obj);
+    pAddSubView->attach(getObject());
     onChanged(&AddSubColor);
     pAddSubView->setDefaultMode(0);
     pAddSubView->show();
-
     previewGroup->addChild(pAddSubView->getRoot());
-    addDisplayMaskMode(previewGroup, "Shape preview");
+    return pAddSubView.get();
 }
 
 void ViewProviderAddSub::finishRestoring()
@@ -108,7 +112,9 @@ void ViewProviderAddSub::finishRestoring()
 
 void ViewProviderAddSub::updateAddSubShapeIndicator()
 {
-    pAddSubView->updateVisual();
+    auto view = getAddSubView();
+    if (view)
+        view->updateVisual();
 }
 
 void ViewProviderAddSub::onChanged(const App::Property *p)
@@ -143,12 +149,20 @@ void ViewProviderAddSub::checkAddSubColor()
             t = 1.0f - color.a;
         }
     }
-    pAddSubView->LineColor.setValue(color);
-    auto material = pAddSubView->PointMaterial.getValue();
+    setAddSubColor(color, t);
+}
+
+void ViewProviderAddSub::setAddSubColor(const App::Color & color, float t)
+{
+    auto view = getAddSubView();
+    if (!view)
+        return;
+    view->LineColor.setValue(color);
+    auto material = view->PointMaterial.getValue();
     material.transparency = 1.0f;
-    pAddSubView->PointMaterial.setValue(material);
-    pAddSubView->ShapeColor.setValue(color);
-    pAddSubView->Transparency.setValue(t*100);
+    view->PointMaterial.setValue(material);
+    view->ShapeColor.setValue(color);
+    view->Transparency.setValue(t*100);
 }
 
 void ViewProviderAddSub::updateData(const App::Property* p) {
@@ -157,16 +171,18 @@ void ViewProviderAddSub::updateData(const App::Property* p) {
         if (p == &feat->AddSubShape)
             updateAddSubShapeIndicator();
         else if (p == &feat->BaseFeature) {
-            auto base = baseFeature.getObject();
-            if (base) {
-                baseFeature = App::DocumentObjectT();
-                base->Visibility.setValue(false);
-            }
-            if (isPreviewMode())  {
-                base = feat->BaseFeature.getValue();
-                baseFeature = base;
-                if (base)
-                    base->Visibility.setValue(true);
+            if (!feat->BaseFeature.getValue()) {
+                auto base = baseFeature.getObject();
+                if (base) {
+                    setPreviewDisplayMode(false);
+                    baseFeature = App::DocumentObjectT();
+                    base->Visibility.setValue(false);
+                    setPreviewDisplayMode(true);
+                    getObject()->Visibility.setValue(true);
+                }
+            } else if (isPreviewMode())  {
+                setPreviewDisplayMode(false);
+                setPreviewDisplayMode(true);
             }
         }
     }
@@ -203,17 +219,13 @@ void ViewProviderAddSub::setPreviewDisplayMode(bool onoff) {
             if (baseVp && baseVp->getModeSwitch()
                        && baseVp->getModeSwitch()->isOfType(Gui::SoFCSwitch::getClassTypeId()))
             {
-                baseVp->show();
+                base->Visibility.setValue(true);
                 auto baseSwitch = static_cast<Gui::SoFCSwitch*>(baseVp->getModeSwitch());
                 baseSwitch->addChild(previewGroup);
                 baseTail = baseSwitch->tailChild.getValue();
                 baseSwitch->tailChild = baseSwitch->getNumChildren()-1;
                 return;
             }
-
-            // If there is no base feature, we'll make us temporarily visible,
-            // and switch to preview display mode below.
-            makeTemporaryVisible(true);
         }
     } else {
         auto base = baseFeature.getObject();
@@ -223,7 +235,7 @@ void ViewProviderAddSub::setPreviewDisplayMode(bool onoff) {
             if (baseVp && baseVp->getModeSwitch()
                        && baseVp->getModeSwitch()->isOfType(Gui::SoFCSwitch::getClassTypeId()))
             {
-                baseVp->hide();
+                base->Visibility.setValue(false);
                 auto baseSwitch = static_cast<Gui::SoFCSwitch*>(baseVp->getModeSwitch());
                 int idx = baseSwitch->findChild(previewGroup);
                 if (idx >= 0)
@@ -245,8 +257,6 @@ void ViewProviderAddSub::setPreviewDisplayMode(bool onoff) {
             fcSwitch->defaultChild = pcModeSwitch->whichChild.getValue();
     } else if (!onoff && isPreviewMode()) {
         setDisplayMaskMode(displayMode.c_str());
-        if (!Visibility.getValue())
-            Gui::ViewProvider::hide();
         if (fcSwitch) {
             fcSwitch->defaultChild.setValue(defaultChild);
             fcSwitch->allowNamedOverride = true;
@@ -260,25 +270,11 @@ void ViewProviderAddSub::beforeDelete()
     ViewProvider::beforeDelete();
 }
 
-void ViewProviderAddSub::hide(void)
-{
-    ViewProvider::hide();
-    if(isPreviewMode())
-        makeTemporaryVisible(true);
-}
-
 bool ViewProviderAddSub::setEdit(int ModNum)
 {
-    if (ViewProvider::setEdit(ModNum)) {
-        if (ModNum == ViewProvider::Default)
-            setPreviewDisplayMode(true);
-        return true;
-    }
-    return false;
+    return ViewProvider::setEdit(ModNum);
 }
 
 void ViewProviderAddSub::unsetEdit(int ModNum) {
-    if (ModNum == ViewProvider::Default)
-        setPreviewDisplayMode(false);
     ViewProvider::unsetEdit(ModNum);
 }

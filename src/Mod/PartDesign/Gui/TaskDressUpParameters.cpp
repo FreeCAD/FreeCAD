@@ -35,6 +35,7 @@
 
 #include <boost/algorithm/string/predicate.hpp>
 #include "TaskDressUpParameters.h"
+#include "Utils.h"
 #include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
@@ -131,6 +132,8 @@ void TaskDressUpParameters::setup(QLabel *label, QListWidget *widget, QPushButto
     auto* pcDressUp = static_cast<PartDesign::DressUp*>(DressUpView->getObject());
     if(!pcDressUp || !pcDressUp->Base.getValue())
         return;
+
+    PartDesignGui::addTaskCheckBox(proxy);
 
     // Remember the initial transaction ID
     App::GetApplication().getActiveTransaction(&transactionID);

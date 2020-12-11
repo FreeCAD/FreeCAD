@@ -72,9 +72,11 @@ public:
     FC_PART_PARAM(MapPointColor, bool, Bool, false) \
     FC_PART_PARAM(MapTransparency, bool, Bool, false) \
     FC_PART_PARAM(AutoGridScale, bool, Bool, false) \
-    FC_PART_PARAM(PreviewAddColor,unsigned long,Unsigned,0x64ffff3c) \
-    FC_PART_PARAM(PreviewSubColor,unsigned long,Unsigned,0xff64643c) \
-    FC_PART_PARAM(PreviewDressColor,unsigned long,Unsigned,0xff64ff3c) \
+    FC_PART_PARAM(PreviewAddColor,unsigned long,Unsigned,0x64ffff30) \
+    FC_PART_PARAM(PreviewSubColor,unsigned long,Unsigned,0xff646430) \
+    FC_PART_PARAM(PreviewDressColor,unsigned long,Unsigned,0xff64ff30) \
+    FC_PART_PARAM(PreviewOnEdit,bool,Bool,true) \
+    FC_PART_PARAM(EditOnTop,bool,Bool,false) \
 
 #undef FC_PART_PARAM
 #define FC_PART_PARAM(_name,_ctype,_type,_def) \

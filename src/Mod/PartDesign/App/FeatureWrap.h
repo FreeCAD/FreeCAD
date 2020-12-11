@@ -50,6 +50,12 @@ public:
 
     bool isSolidFeature() const;
     void setWrappedLinkScope();
+
+    virtual App::DocumentObject *getSubObject(const char *subname, 
+        PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const override;
+
+protected:
+    virtual void onNewSolidChanged() override;
 };
 
 typedef App::FeaturePythonT<FeatureWrap> FeatureWrapPython;

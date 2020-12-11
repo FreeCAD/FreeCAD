@@ -33,6 +33,7 @@
 
 #include "ui_TaskWrapParameters.h"
 #include "TaskWrapParameters.h"
+#include "Utils.h"
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -65,6 +66,8 @@ void TaskWrapParameters::setupUI()
     ui->setupUi(proxy);
 
     this->addNewSolidCheckBox(proxy);
+    PartDesignGui::addTaskCheckBox(proxy);
+
     this->groupLayout()->addWidget(proxy);
 
     connect(ui->comboBoxType, SIGNAL(currentIndexChanged(int)),

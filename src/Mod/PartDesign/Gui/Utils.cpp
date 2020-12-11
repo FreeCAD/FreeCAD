@@ -50,6 +50,7 @@
 #include <Mod/Sketcher/App/SketchObject.h>
 
 #include <Mod/Part/App/PartParams.h>
+#include <Mod/Part/Gui/PartParams.h>
 #include <Mod/PartDesign/App/Feature.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeaturePrimitive.h>
@@ -684,55 +685,85 @@ public:
 
         Gui::ViewProviderDocumentObject *parentVp = nullptr;
         std::string subname;
-        doc->getInEdit(&parentVp, &subname);
+        int mode = 0;
+        doc->getInEdit(&parentVp, &subname, &mode);
+        if (mode != Gui::ViewProvider::Default)
+            return;
 
-        if (parentVp) {
-            App::SubObjectT sobjT(parentVp->getObject(), subname.c_str());
-            auto objs = sobjT.getSubObjectList();
-            for (auto it=objs.begin(); it!=objs.end(); ++it) {
-                auto linked = (*it)->getLinkedObject(true);
-                if (linked->isDerivedFrom(PartDesign::Body::getClassTypeId())) {
-                    editBodyT = App::SubObjectT(objs.begin(), it+1);
-                    break;
-                }
-            }
-        }
+        App::DocumentObject *parent = parentVp ? parentVp->getObject() : nullptr;
 
         for(auto obj : vp.getObject()->getInList()) {
             if (obj->isDerivedFrom(PartDesign::FeatureWrap::getClassTypeId())) {
                 auto wrap = static_cast<PartDesign::FeatureWrap*>(obj);
-                App::DocumentObject *parent = nullptr;
-                if (parentVp)
-                    parent = parentVp->getObject();
-                else if (activeBody && activeBody == PartDesign::Body::findBodyOf(wrap)) {
+                if (wrap->WrapFeature.getValue() != vp.getObject())
+                    return;
+                if (parent) {
+                    App::SubObjectT objT(parent, subname.c_str());
+                    auto objs = objT.getSubObjectList();
+                    auto it = objs.begin();
+                    for (; it!=objs.end(); ++it) {
+                        auto linked = (*it)->getLinkedObject(true);
+                        if (linked->isDerivedFrom(PartDesign::Body::getClassTypeId()))
+                            break;
+                    }
+                    if (it != objs.end()) {
+                        subname = App::SubObjectT(objs.begin(), it+1).getSubName()
+                            + wrap->getNameInDocument() + ".";
+                    } else
+                        parent = nullptr;
+                }
+                if (!parent && activeBody && activeBody == PartDesign::Body::findBodyOf(wrap)) {
                     parent = activeBodyT.getObject();
                     subname = activeBodyT.getSubName() + wrap->getNameInDocument() + ".";
-                } else
-                    return;
-                editObjT = App::SubObjectT(parent, subname.c_str());
-                if (editObjT.getSubObject() == wrap) {
-                    editObjT.setSubName(editObjT.getSubName()
-                            + vp.getObject()->getNameInDocument() + ".");
                 }
                 break;
             }
         }
-        editView = view;
-        if (editBodyT.getObject()) {
-            view->getViewer()->checkGroupOnTop(
-                    Gui::SelectionChanges(
-                        Gui::SelectionChanges::AddSelection,
-                        editBodyT.getDocumentName().c_str(),
-                        editBodyT.getObjectName().c_str(),
-                        editBodyT.getSubName().c_str()), true);
+
+        if (!parent)
+            return;
+
+        App::SubObjectT sobjT(parent, subname.c_str());
+        auto objs = sobjT.getSubObjectList();
+        for (auto it=objs.begin(); it!=objs.end(); ++it) {
+            auto linked = (*it)->getLinkedObject(true);
+            if (linked->isDerivedFrom(PartDesign::Body::getClassTypeId())) {
+                connVisibilityChanged = 
+                    static_cast<PartDesign::Body*>(linked)->signalSiblingVisibilityChanged.connect(
+                        boost::bind(&Monitor::slotVisibilityChanged, this, bp::_1));
+                editBodyT = App::SubObjectT(objs.begin(), it+1);
+                auto editObj = sobjT.getSubObject();
+                editObjT = editObj;
+                editView = view;
+                editDoc = editBodyT.getDocument();
+                if (hasEditCheckBox) {
+                    if (PartGui::PartParams::PreviewOnEdit()) {
+                        auto vp = Base::freecad_dynamic_cast<ViewProviderAddSub>(
+                                Gui::Application::Instance->getViewProvider(editObj));
+                        if (vp)
+                            vp->setPreviewDisplayMode(true);
+                    } else if (editObj)
+                        editObj->Visibility.setValue(true);
+                    if (PartGui::PartParams::EditOnTop())
+                        showEditOnTop(true);
+                }
+                break;
+            }
         }
-        if (editObjT.getObject()) {
-            view->getViewer()->checkGroupOnTop(
-                    Gui::SelectionChanges(
-                        Gui::SelectionChanges::AddSelection,
-                        editObjT.getDocumentName().c_str(),
-                        editObjT.getObjectName().c_str(),
-                        editObjT.getSubName().c_str()), true);
+    }
+
+    void slotVisibilityChanged(const std::deque<App::DocumentObject*> &siblings)
+    {
+        if (!PartGui::PartParams::EditOnTop())
+            return;
+        auto feat = editObjT.getObject();
+        if (!feat)
+            return;
+        for (auto obj : siblings) {
+            if (obj == feat) {
+                showEditOnTop(true, siblings);
+                break;
+            }
         }
     }
 
@@ -763,8 +794,62 @@ public:
         }
     }
 
+    void showEditOnTop(bool enable, const std::deque<App::DocumentObject *> &siblings = {})
+    {
+        bool viewFound = false;
+        auto doc = Gui::Application::Instance->getDocument(editDoc.getDocument());
+        if (doc && editView) {
+            for (auto view : doc->getViews()) {
+                if (view == editView) {
+                    viewFound = true;
+                    break;
+                }
+            }
+        }
+        if (!viewFound)
+            return;
+
+        App::SubObjectT objT;
+        if (enable) {
+            auto body = Base::freecad_dynamic_cast<PartDesign::Body>(editBodyT.getSubObject());
+            if (body) {
+                for (auto feat : siblings.size() ? siblings : body->getSiblings(editObjT.getObject())) {
+                    if (feat->Visibility.getValue()) {
+                        std::string subname;
+                        subname = editBodyT.getSubName() + feat->getNameInDocument() + ".";
+                        objT = App::SubObjectT(editBodyT.getObject(), subname.c_str());
+                    }
+                }
+            }
+        }
+        if (objT == editOnTopT)
+            return;
+
+        if (editOnTopT.getObjectName().size()) {
+            editView->getViewer()->checkGroupOnTop(
+                    Gui::SelectionChanges(
+                        Gui::SelectionChanges::RmvSelection,
+                        editOnTopT.getDocumentName().c_str(),
+                        editOnTopT.getObjectName().c_str(),
+                        editOnTopT.getSubName().c_str()), true);
+        }
+        editView->getViewer()->checkGroupOnTop(
+                Gui::SelectionChanges(
+                    Gui::SelectionChanges::AddSelection,
+                    objT.getDocumentName().c_str(),
+                    objT.getObjectName().c_str(),
+                    objT.getSubName().c_str()), true);
+        editOnTopT = objT;
+    }
+
     void resetEdit()
     {
+        connVisibilityChanged.disconnect();
+        auto vp = Base::freecad_dynamic_cast<ViewProviderAddSub>(
+                Gui::Application::Instance->getViewProvider(editObjT.getObject()));
+        if (vp)
+            vp->setPreviewDisplayMode(false);
+
         for (auto & objs : visibleFeatures) {
             for (auto & objT : objs) {
                 auto obj = objT.getObject();
@@ -775,28 +860,11 @@ public:
             }
         }
         visibleFeatures.clear();
-
-        resetEdit(editObjT);
-        resetEdit(editBodyT);
+        showEditOnTop(false);
+        editOnTopT = App::SubObjectT();
+        editBodyT = App::SubObjectT();
         editView = nullptr;
-    }
-
-    void resetEdit(App::SubObjectT &objT)
-    {
-        auto doc = Gui::Application::Instance->getDocument(objT.getDocument());
-        if (doc) {
-            doc->foreachView<Gui::View3DInventor>(
-                [this, &objT](Gui::View3DInventor *view) {
-                    if (view == editView)
-                        view->getViewer()->checkGroupOnTop(
-                                Gui::SelectionChanges(
-                                    Gui::SelectionChanges::RmvSelection,
-                                    objT.getDocumentName().c_str(),
-                                    objT.getObjectName().c_str(),
-                                    objT.getSubName().c_str()), true);
-                });
-        }
-        objT = App::SubObjectT();
+        hasEditCheckBox = false;
     }
 
     void slotChangedObject(const App::DocumentObject &object, const App::Property &prop)
@@ -940,13 +1008,19 @@ public:
     boost::signals2::scoped_connection connChangedObject;
     boost::signals2::scoped_connection connDeletedObject;
     boost::signals2::scoped_connection connDeleteDocument;
+    boost::signals2::scoped_connection connVisibilityChanged;
     PartDesign::Body *activeBody = nullptr;
     App::SubObjectT activeBodyT;
-    App::SubObjectT editObjT;
+    App::DocumentObjectT editObjT;
     App::SubObjectT editBodyT;
+    App::DocumentT editDoc;
+    App::SubObjectT editOnTopT;
     
     Gui::View3DInventor *editView = nullptr;
     QPointer<QWidget> taskWidget;
+
+    MonitorProxy proxy;
+    bool hasEditCheckBox = false;
 
     std::vector<std::vector<App::DocumentObjectT> > visibleFeatures;
 };
@@ -964,4 +1038,65 @@ void beforeEdit(App::DocumentObject *obj)
     _MonitorInstance->beforeEdit(obj);
 }
 
+void MonitorProxy::addCheckBox(QWidget * widget, int index)
+{
+    QBoxLayout * layout = qobject_cast<QBoxLayout*>(widget->layout());
+    if (!layout) {
+        FC_WARN("unknonw widget layout");
+        return;
+    }
+
+    QHBoxLayout * hlayout = new QHBoxLayout;
+    auto checkbox = new QCheckBox(widget);
+    checkbox->setText(tr("Show preview"));
+    checkbox->setToolTip(tr("Show base feature with preview shape"));
+    checkbox->setChecked(PartGui::PartParams::PreviewOnEdit());
+    connect(checkbox, SIGNAL(toggled(bool)), this, SLOT(onPreview(bool)));
+    hlayout->addWidget(checkbox);
+
+    checkbox = new QCheckBox(widget);
+    checkbox->setText(tr("Show on top"));
+    checkbox->setToolTip(tr("Show the editing feature always on top"));
+    checkbox->setChecked(PartGui::PartParams::EditOnTop());
+    connect(checkbox, SIGNAL(toggled(bool)), this, SLOT(onShowOnTop(bool)));
+    hlayout->addWidget(checkbox);
+
+    layout->insertLayout(index, hlayout);
+}
+
+void MonitorProxy::onPreview(bool checked)
+{
+    PartGui::PartParams::set_PreviewOnEdit(checked);
+    if (!_MonitorInstance)
+        return;
+
+    auto vp = Base::freecad_dynamic_cast<ViewProviderAddSub>(
+            Gui::Application::Instance->getViewProvider(
+                _MonitorInstance->editObjT.getObject()));
+
+    if (vp) {
+        vp->setPreviewDisplayMode(checked);
+        if (!checked)
+            vp->show();
+    }
+}
+
+void MonitorProxy::onShowOnTop(bool checked)
+{
+    PartGui::PartParams::set_EditOnTop(checked);
+    if (!_MonitorInstance)
+        return;
+
+    _MonitorInstance->showEditOnTop(checked);
+}
+
+void addTaskCheckBox(QWidget * widget, int index)
+{
+    initMonitor();
+    _MonitorInstance->hasEditCheckBox = true;
+    _MonitorInstance->proxy.addCheckBox(widget, index);
+}
+
 } /* PartDesignGui */
+
+#include "moc_Utils.cpp"

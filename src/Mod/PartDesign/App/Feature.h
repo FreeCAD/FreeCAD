@@ -99,6 +99,8 @@ protected:
 
     virtual App::DocumentObjectExecReturn *recompute(void);
 
+    virtual void onNewSolidChanged();
+
     /**
      * Get a solid of the given shape. If no solid is found an exception is raised.
      */

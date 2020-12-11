@@ -25,14 +25,19 @@
 # include <Standard_Failure.hxx>
 #endif
 
+#include <boost/range.hpp>
+#include <boost/algorithm/string/predicate.hpp>
 
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 #include <App/Application.h>
 #include <App/FeaturePythonPyImp.h>
 #include <App/Document.h>
+#include "Body.h"
 #include "FeatureWrap.h"
 #include "FeaturePy.h"
+
+typedef boost::iterator_range<const char*> CharRange;
 
 FC_LOG_LEVEL_INIT("PartDesign", true, true);
 
@@ -74,20 +79,49 @@ void FeatureWrap::setWrappedLinkScope()
     }
 }
 
+void FeatureWrap::onNewSolidChanged()
+{
+    auto body = Body::findBodyOf(this);
+    if (!body)
+        return;
+
+    if (Type.getValue() == 2) {
+        this->addSubType = Additive;
+        BaseFeature.setValue(nullptr);
+    } else {
+        this->addSubType = Type.getValue() == 1 ? Subtractive : Additive;
+        if (!NewSolid.getValue()) {
+            BaseFeature.setValue(nullptr);
+        } else {
+            auto base = body->getPrevSolidFeature(this);
+            BaseFeature.setValue(base);
+        }
+    }
+
+    if (body->Tip.getValue() == this) {
+        if (!isSolidFeature()) {
+            auto feat = body->getPrevSolidFeature(this);
+            if (!feat)
+                feat = body->getNextSolidFeature(this);
+            if (feat)
+                body->setTip(feat);
+        }
+    } else if (!body->getNextSolidFeature(this))
+        body->setTip(this);
+}
+
 void FeatureWrap::onChanged(const App::Property * prop)
 {
-    if (prop == &Type) {
-        switch(Type.getValue()) {
-        case 1 :
-            this->addSubType = Subtractive;
-            break;
-        default:
-            this->addSubType = Additive;
+    if (!this->isRestoring() 
+            && this->getDocument()
+            && !this->getDocument()->isPerformingTransaction()) {
+        if (prop == &Type) {
+            onNewSolidChanged();
+        } else if (prop == &Frozen || prop == &WrapFeature) {
+            if (prop == &WrapFeature)
+                setWrappedLinkScope();
+            AddSubShape.setStatus(App::Property::Transient, WrapFeature.getValue() && !Frozen.getValue());
         }
-    } else if (prop == &Frozen || prop == &WrapFeature) {
-        if (!getDocument()->testStatus(App::Document::Restoring) && prop == &WrapFeature)
-            setWrappedLinkScope();
-        AddSubShape.setStatus(App::Property::Transient, WrapFeature.getValue() && !Frozen.getValue());
     }
 
     FeatureAddSub::onChanged(prop);
@@ -113,8 +147,6 @@ App::DocumentObjectExecReturn * FeatureWrap::execute(void)
         if (Type.getValue() == 3) {
             Type.setValue((long)2);
             NewSolid.setValue(!getSolid(shape).isNull());
-            if (!NewSolid.getValue())
-                BaseFeature.setValue(nullptr);
         }
 
         TopoShape base;
@@ -228,6 +260,33 @@ bool FeatureWrap::isSolidFeature() const
 {
     return NewSolid.getValue() || (BaseFeature.getValue() && Type.getValue() <= 1);
 }
+
+App::DocumentObject *FeatureWrap::getSubObject(const char *subname, 
+        PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const
+{
+    auto wrapped = WrapFeature.getValue();
+    if (wrapped && subname
+                && subname != Data::ComplexGeoData::findElementName(subname)) {
+        const char * dot = strchr(subname,'.');
+        if (dot && boost::equals(CharRange(subname, dot), wrapped->getNameInDocument())) {
+            Base::Matrix4D _mat;
+            if (!transform) {
+                // If no transform is request, we must counter the
+                // placement of this feature, because
+                // PartDesign::Feature is not suppose to transform its
+                // children
+                _mat = Placement.getValue().inverse().toMatrix();
+                if (pmat)
+                    *pmat *= _mat; 
+                else
+                    pmat = &_mat;
+            }
+            return wrapped->getSubObject(dot+1, pyObj, pmat, true, depth+1);
+        }
+    }
+    return PartDesign::Feature::getSubObject(subname, pyObj, pmat, transform, depth);
+}
+
 
 namespace App {
 /// @cond DOXERR

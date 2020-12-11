@@ -46,25 +46,27 @@ public:
     virtual void onChanged(const App::Property *p);
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
-    virtual void hide(void);
     bool isPreviewMode() const;
     virtual void finishRestoring();
     virtual void beforeDelete();
     
-protected: 
-    virtual void updateAddSubShapeIndicator();
     void setPreviewDisplayMode(bool);
+
+protected: 
     void checkAddSubColor();
+    virtual void setAddSubColor(const App::Color &color, float t);
+    virtual void updateAddSubShapeIndicator();
+    virtual PartGui::ViewProviderPart * getAddSubView();
     
 protected:
-    std::unique_ptr<PartGui::ViewProviderPart> pAddSubView;
+    Gui::CoinPtr<SoSeparator>   previewGroup;
 
 private:
     int                         defaultChild;
     std::string                 displayMode;
     App::DocumentObjectT        baseFeature;
     int                         baseTail;
-    SoSeparator                 *previewGroup;
+    std::unique_ptr<PartGui::ViewProviderPart> pAddSubView;
 };
 
 } // namespace PartDesignGui

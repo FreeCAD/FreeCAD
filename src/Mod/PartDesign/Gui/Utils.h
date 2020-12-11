@@ -95,6 +95,20 @@ PartDesign::Body *queryCommandOverride();
 
 void initMonitor();
 
+class MonitorProxy: public QObject
+{
+    Q_OBJECT
+
+public:
+    void addCheckBox(QWidget * parent, int index = 0);
+    
+protected Q_SLOTS:
+    void onPreview(bool);
+    void onShowOnTop(bool);
+};
+
+void addTaskCheckBox(QWidget * widget, int index = 0);
+
 } /* PartDesignGui */
 
 #endif /* end of include guard: UTILS_H_CS5LK2ZQ */
