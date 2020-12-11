@@ -986,6 +986,10 @@ int SoBrepFaceSet::overrideMaterialBinding(
         trans0 = 0.01;
     }
 
+    float selectionTransparency = Gui::ViewParams::getSelectionTransparency();
+    if (selectionTransparency > trans0)
+        selectionTransparency = trans0;
+
     // Override material binding to PER_PART_INDEXED so that we can reuse coin
     // rendering for both selection, preselection and partial rendering. The
     // main purpose is such that selection and preselection can have correct
@@ -1031,9 +1035,9 @@ int SoBrepFaceSet::overrideMaterialBinding(
                     && highlightIndices.getNum()
                     && this->highlightColor.getValue().getPackedValue(1.0f))
             {
-                highlightColor = this->highlightColor.getValue().getPackedValue(trans0);
+                highlightColor = this->highlightColor.getValue().getPackedValue(selectionTransparency);
             } else
-                highlightColor = ctx->highlightColor.getPackedValue(trans0);
+                highlightColor = ctx->highlightColor.getPackedValue(selectionTransparency);
 
             if(ctx->hasSelectionColor()) {
                 if(ctx->isSelectAll()
@@ -1041,9 +1045,9 @@ int SoBrepFaceSet::overrideMaterialBinding(
                         && highlightIndices.getNum()
                         && this->highlightColor.getValue().getPackedValue(1.0f))
                 {
-                    selectionColor = this->highlightColor.getValue().getPackedValue(trans0);
+                    selectionColor = this->highlightColor.getValue().getPackedValue(selectionTransparency);
                 } else {
-                    selectionColor = ctx->selectionColor.getPackedValue(trans0);
+                    selectionColor = ctx->selectionColor.getPackedValue(selectionTransparency);
                 }
             }
         }
