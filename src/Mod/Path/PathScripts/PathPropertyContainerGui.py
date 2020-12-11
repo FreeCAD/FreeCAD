@@ -36,8 +36,8 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "Task panel editor for a PropertyContainer"
 
-PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-PathLog.trackModule(PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+#PathLog.trackModule(PathLog.thisModule())
 
 # Qt translation handling
 def translate(context, text, disambig=None):
@@ -190,12 +190,6 @@ class TaskPanel(object):
         FreeCAD.ActiveDocument.openTransaction(translate("PathPropertyContainer", "Edit PropertyContainer"))
 
     def updateData(self, topLeft, bottomRight):
-        # pylint: disable=unused-argument
-        #if 0 == topLeft.column():
-        #    isset = self.model.item(topLeft.row(), 0).checkState() == QtCore.Qt.Checked
-        #    self.model.item(topLeft.row(), 1).setEnabled(isset)
-        #    self.model.item(topLeft.row(), 2).setEnabled(isset)
-        print("index = ({}, {}) - ({}, {})".format(topLeft.row(), topLeft.column(), bottomRight.row(), bottomRight.column()))
         if topLeft.column() == self.ColumnDesc:
             obj  = topLeft.data(Delegate.RoleObject)
             prop = topLeft.data(Delegate.RoleProperty)
@@ -234,19 +228,6 @@ class TaskPanel(object):
         self.propertySelected([])
 
     def accept(self):
-        #propertiesCreatedRemoved = False
-        #for i,name in enumerate(self.props):
-        #    prop = self.prototype.getProperty(name)
-        #    propName = self.propertyName(name)
-        #    enabled = self.model.item(i, 0).checkState() == QtCore.Qt.Checked
-        #    if enabled and not prop.getValue() is None:
-        #        if prop.setupProperty(self.obj, propName, self.propertyGroup(), prop.getValue()):
-        #            propertiesCreatedRemoved = True
-        #    else:
-        #        if hasattr(self.obj, propName):
-        #            self.obj.removeProperty(propName)
-        #            propertiesCreatedRemoved = True
-
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Control.closeDialog()
@@ -268,6 +249,7 @@ class TaskPanel(object):
         PathLog.track()
         dialog = PropertyCreate(self.obj)
         if dialog.exec_():
+            # if we block signals the view doesn't get updated, surprise, surprise
             #self.model.blockSignals(True)
             name = dialog.propertyName()
             typ  = dialog.propertyType()
@@ -284,16 +266,17 @@ class TaskPanel(object):
 
     def propertyRemove(self):
         PathLog.track()
+        # first find all rows which need to be removed
         rows = []
         for index in self.form.table.selectionModel().selectedIndexes():
             if not index.row() in rows:
                 rows.append(index.row())
 
-        self.model.blockSignals(True)
+        # then remove them in reverse order so the indexes of the remaining rows
+        # to delete are still valid
         for row in reversed(sorted(rows)):
             self.obj.removeProperty(self.model.item(row).data(QtCore.Qt.EditRole))
             self.model.removeRow(row)
-        self.model.blockSignals(False)
 
 
 def Create(name = 'PropertyContainer'):
