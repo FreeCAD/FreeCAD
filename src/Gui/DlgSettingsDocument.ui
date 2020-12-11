@@ -503,9 +503,11 @@ automatically run a file recovery when it is started.</string>
       <item row="9" column="0">
        <widget class="Gui::PrefCheckBox" name="prefNoNativeDialog">
         <property name="toolTip">
-         <string>Do not use native system's open and save dialog, instead, use Qt file dialog. Note that, only Qt file dialog allows you to open or save project file as uncompressed directory.
+         <string>Do not use native system's open and save dialog, instead, use Qt file dialog.
+Note that, only Qt file dialog allows you to open or save project file as uncompressed directory.
 
-You can hold on SHIFT key while open or save your project to temporarily activate the oppsite setting here.</string>
+You can hold on SHIFT key while open or save your project to temporarily
+activate the oppsite setting here.</string>
         </property>
         <property name="text">
          <string>Do not use native file dialog for opening and saving</string>

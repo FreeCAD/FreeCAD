@@ -29,6 +29,7 @@
 #include "ui_DlgSettingsDocument.h"
 #include "PrefWidgets.h"
 #include "AutoSaver.h"
+#include "FileDialog.h"
 #include <App/DocumentParams.h>
 
 using namespace App;
@@ -58,6 +59,8 @@ DlgSettingsDocumentImp::DlgSettingsDocumentImp( QWidget* parent )
     ui->prefCompression->setMinimum(Z_NO_COMPRESSION);
     ui->prefCompression->setMaximum(Z_BEST_COMPRESSION);
     connect( ui->prefLicenseType, SIGNAL(currentIndexChanged(int)), this, SLOT(onLicenseTypeChanged(int)) );
+
+    ui->prefNoNativeDialog->setChecked(FileDialog::dontUseNativeDialog(false));
 }
 
 /** 

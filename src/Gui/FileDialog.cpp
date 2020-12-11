@@ -51,8 +51,7 @@
 
 using namespace Gui;
 
-namespace {
-bool dontUseNativeDialog()
+bool FileDialog::dontUseNativeDialog(bool checkModifier)
 {
 // Use Qt file dialog in order to support of save into directory without
 // compression.
@@ -67,10 +66,9 @@ bool dontUseNativeDialog()
           GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Dialog");
     notNativeDialog = group->GetBool("DontUseNativeDialog", notNativeDialog);
 
-    if (QApplication::queryKeyboardModifiers() == Qt::ShiftModifier)
+    if (checkModifier && QApplication::queryKeyboardModifiers() == Qt::ShiftModifier)
         return !notNativeDialog;
     return notNativeDialog;
-}
 }
 
 // Special treatment of a file named 'Document.xml'. Auto convert it to the
@@ -832,7 +830,7 @@ void FileChooser::chooseFile()
     }
 
     QFileDialog::Options dlgOpt;
-    if (dontUseNativeDialog()) {
+    if (FileDialog::dontUseNativeDialog()) {
         dlgOpt = QFileDialog::DontUseNativeDialog;
     }
 

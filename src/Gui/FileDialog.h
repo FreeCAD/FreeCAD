@@ -67,6 +67,8 @@ public:
     static QString restoreLocation();
     static void saveLocation(const QString&);
 
+    static bool dontUseNativeDialog(bool checkModifier=true);
+
     FileDialog(QWidget * parent = 0);
     ~FileDialog();
 
