@@ -102,19 +102,19 @@ jobs:
           - CMAKE_ARGS="-DCMAKE_CXX_COMPILER=/usr/bin/c++ -DCMAKE_C_COMPILER=/usr/bin/cc"
           - CACHE_NAME=JOB3
 
-      - os: osx
-        osx_image: xcode11.6
-        language: cpp
-        cache: 
-         - ccache: true
-         - directories:
-            - $HOME/.ccache
-            - $HOME/Library/Caches/Homebrew
-            - /usr/local/Homebrew
-        env:
-          - CMAKE_OPTS="-DBUILD_QT5=ON -DBUILD_ENABLE_CXX_STD='C++17' -DUSE_PYTHON3=1 -DCMAKE_CXX_FLAGS='-Wno-deprecated-declarations' -DBUILD_FEM_NETGEN=1 -DBUILD_FEM=1 -DBUILD_TECHDRAW=0 -DCMAKE_PREFIX_PATH='/usr/local/opt/qt/lib/cmake;/usr/local/opt/nglib/Contents/Resources' -DBUILD_FEM_NETGEN:BOOL=ON -DFREECAD_USE_EXTERNAL_KDL=ON -DCMAKE_BUILD_TYPE=Release"
-          - PATH=/usr/local/bin:$PATH
-          - CACHE_NAME=OSX1
+#      - os: osx
+#        osx_image: xcode11.6
+#        language: cpp
+#        cache: 
+#         - ccache: true
+#         - directories:
+#            - $HOME/.ccache
+#            - $HOME/Library/Caches/Homebrew
+#            - /usr/local/Homebrew
+#        env:
+#          - CMAKE_OPTS="-DBUILD_QT5=ON -DBUILD_ENABLE_CXX_STD='C++17' -DUSE_PYTHON3=1 -DCMAKE_CXX_FLAGS='-Wno-deprecated-declarations' -DBUILD_FEM_NETGEN=1 -DBUILD_FEM=1 -DBUILD_TECHDRAW=0 -DCMAKE_PREFIX_PATH='/usr/local/opt/qt/lib/cmake;/usr/local/opt/nglib/Contents/Resources' -DBUILD_FEM_NETGEN:BOOL=ON -DFREECAD_USE_EXTERNAL_KDL=ON -DCMAKE_BUILD_TYPE=Release"
+#          - PATH=/usr/local/bin:$PATH
+#          - CACHE_NAME=OSX1
 
       - os: windows
         language: cpp
@@ -219,57 +219,57 @@ before_install:
        export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/netgen/:$LD_LIRBARY_PATH
        ;;
 
-   "osx")
-       xcodebuild -version -sdk
-       brew --config
-       brew install ccache
-       brew install coreutils
-       brew update >/dev/null
-       brew --config
-       brew update
-       brew upgrade
-       brew install python@3.9
-       brew unlink python@3.8
-       brew link --overwrite --force python@3.9
-       rm /usr/local/bin/python
-       ln -s /usr/local/bin/python3 /usr/local/bin/python
-       pip3 install six
-       pip3 install pyyaml
-       pip3 install ply
-       export PATH=/usr/local/bin:$PATH
-       brew reinstall vtk@8.2
-       brew link --force vtk@8.2
-       which python
-       python --version
-       brew install boost
-       brew install boost-python3
-       brew tap FreeCAD/freecad
-       brew install freecad/freecad/coin 
-       brew install freecad/freecad/nglib
-       brew install freecad/freecad/med-file
-       brew install freecad/freecad/opencamlib
-       brew install freecad/freecad/shiboken2
-       brew install freecad/freecad/pyside2
-       brew install freecad/freecad/pyside2-tools
-       brew install freecad/freecad/pivy
-       brew install freecad/freecad/matplotlib
-
-       ##Install the 3DConnexion frameworks
-       if [ ! -d /Library/Frameworks/3DconnexionClient.framework ]; then
-        curl -o /tmp/3dFW.dmg -L 'https://download.3dconnexion.com/drivers/mac/10-6-6_360DF97D-ED08-4ccf-A55E-0BF905E58476/3DxWareMac_v10-6-6_r3234.dmg'
-        hdiutil attach -readonly /tmp/3dFW.dmg
-        sudo installer -package /Volumes/3Dconnexion\ Software/Install\ 3Dconnexion\ software.pkg -target /
-        diskutil eject /Volumes/3Dconnexion\ Software
-       fi
-       export CMAKE_OPTS="${CMAKE_OPTS} -DFREECAD_CREATE_MAC_APP=OFF"
-       export INSTALLED_APP_PATH="/usr/local/MacOS/FreeCAD"
-
-       export CMAKE_ARGS="${CMAKE_OPTS} -DFREECAD_USE_EXTERNAL_KDL=ON"
-       brew link --overwrite matplotlib
-       if [ -f "/usr/local/Cellar/opencascade/7.4.0_1/include/opencascade/Standard_Macro.hxx" ]; then
-          sed '1,$s/\[\[nodiscard\]\]//' /usr/local/Cellar/opencascade/7.4.0_1/include/opencascade/Standard_Macro.hxx > /tmp/Standard_Macro.hxx && cp /tmp/Standard_Macro.hxx /usr/local/Cellar/opencascade/7.4.0_1/include/opencascade/Standard_Macro.hxx ;
-       fi
-       ;;
+#   "osx")
+#       xcodebuild -version -sdk
+#       brew --config
+#       brew install ccache
+#       brew install coreutils
+#       brew update >/dev/null
+#       brew --config
+#       brew update
+#       brew upgrade
+#       brew install python@3.9
+#       brew unlink python@3.8
+#       brew link --overwrite --force python@3.9
+#       rm /usr/local/bin/python
+#       ln -s /usr/local/bin/python3 /usr/local/bin/python
+#       pip3 install six
+#       pip3 install pyyaml
+#       pip3 install ply
+#       export PATH=/usr/local/bin:$PATH
+#       brew reinstall vtk@8.2
+#       brew link --force vtk@8.2
+#       which python
+#       python --version
+#       brew install boost
+#       brew install boost-python3
+#       brew tap FreeCAD/freecad
+#       brew install freecad/freecad/coin 
+#       brew install freecad/freecad/nglib
+#       brew install freecad/freecad/med-file
+#       brew install freecad/freecad/opencamlib
+#       brew install freecad/freecad/shiboken2
+#       brew install freecad/freecad/pyside2
+#       brew install freecad/freecad/pyside2-tools
+#       brew install freecad/freecad/pivy
+#       brew install freecad/freecad/matplotlib
+#
+#       ##Install the 3DConnexion frameworks
+#       if [ ! -d /Library/Frameworks/3DconnexionClient.framework ]; then
+#        curl -o /tmp/3dFW.dmg -L 'https://download.3dconnexion.com/drivers/mac/10-6-6_360DF97D-ED08-4ccf-A55E-0BF905E58476/3DxWareMac_v10-6-6_r3234.dmg'
+#        hdiutil attach -readonly /tmp/3dFW.dmg
+#        sudo installer -package /Volumes/3Dconnexion\ Software/Install\ 3Dconnexion\ software.pkg -target /
+#        diskutil eject /Volumes/3Dconnexion\ Software
+#       fi
+#       export CMAKE_OPTS="${CMAKE_OPTS} -DFREECAD_CREATE_MAC_APP=OFF"
+#       export INSTALLED_APP_PATH="/usr/local/MacOS/FreeCAD"
+#
+#       export CMAKE_ARGS="${CMAKE_OPTS} -DFREECAD_USE_EXTERNAL_KDL=ON"
+#       brew link --overwrite matplotlib
+#       if [ -f "/usr/local/Cellar/opencascade/7.4.0_1/include/opencascade/Standard_Macro.hxx" ]; then
+#          sed '1,$s/\[\[nodiscard\]\]//' /usr/local/Cellar/opencascade/7.4.0_1/include/opencascade/Standard_Macro.hxx > /tmp/Standard_Macro.hxx && cp /tmp/Standard_Macro.hxx /usr/local/Cellar/opencascade/7.4.0_1/include/opencascade/Standard_Macro.hxx ;
+#       fi
+#       ;;
 
    "windows")
        #choco install -y python
