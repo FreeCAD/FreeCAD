@@ -305,9 +305,7 @@ PyObject* ExternalGeometryFacadePy::getExtensionOfType(PyObject *args)
                 std::shared_ptr<const Part::GeometryExtension> ext(this->getExternalGeometryFacadePtr()->getExtension(type));
 
                 // we create a copy and transfer this copy's memory management responsibility to Python
-                Py::Tuple tuple;
-                PyObject* cpy = static_cast<Part::GeometryExtensionPy *>(std::const_pointer_cast<Part::GeometryExtension>(ext)->getPyObject())->copy(tuple.ptr());
-
+                PyObject* cpy = ext->copyPyObject();
                 return cpy;
             }
             catch(const Base::ValueError& e) {
@@ -344,9 +342,7 @@ PyObject* ExternalGeometryFacadePy::getExtensionOfName(PyObject *args)
             std::shared_ptr<const Part::GeometryExtension> ext(this->getExternalGeometryFacadePtr()->getExtension(std::string(o)));
 
             // we create a copy and transfer this copy's memory management responsibility to Python
-            Py::Tuple tuple;
-            PyObject* cpy = static_cast<Part::GeometryExtensionPy *>(std::const_pointer_cast<Part::GeometryExtension>(ext)->getPyObject())->copy(tuple.ptr());
-
+            PyObject* cpy = ext->copyPyObject();
             return cpy;
         }
         catch(const Base::ValueError& e) {
@@ -482,9 +478,7 @@ PyObject* ExternalGeometryFacadePy::getExtensions(PyObject *args)
             if(p) {
                 // we create a python copy and add it to the list
                 try {
-                    Py::Tuple tuple;
-                    PyObject* cpy = static_cast<Part::GeometryExtensionPy *>(std::const_pointer_cast<Part::GeometryExtension>(p)->getPyObject())->copy(tuple.ptr());
-
+                    PyObject* cpy = p->copyPyObject();
                     PyList_Append( list, cpy);
                     Py_DECREF(cpy);
                 }
@@ -523,7 +517,8 @@ Py::String ExternalGeometryFacadePy::getTag(void) const
 Py::Object ExternalGeometryFacadePy::getGeometry(void) const
 {
     // We return a clone
-    return Py::Object(getExternalGeometryFacadePtr()->getGeometry()->clone()->getPyObject(),true);
+    std::unique_ptr<Part::Geometry> geo(getExternalGeometryFacadePtr()->getGeometry()->clone());
+    return Py::Object(geo->getPyObject(), true);
 }
 
 void  ExternalGeometryFacadePy::setGeometry(Py::Object arg)

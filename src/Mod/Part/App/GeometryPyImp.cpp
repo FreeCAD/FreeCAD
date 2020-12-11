@@ -248,9 +248,7 @@ PyObject* GeometryPy::getExtensionOfType(PyObject *args)
                 std::shared_ptr<const GeometryExtension> ext(this->getGeometryPtr()->getExtension(type));
 
                 // we create a copy and transfer this copy's memory management responsibility to Python
-                Py::Tuple tuple;
-                PyObject* cpy = static_cast<GeometryExtensionPy *>(std::const_pointer_cast<GeometryExtension>(ext)->getPyObject())->copy(tuple.ptr());
-
+                PyObject* cpy = ext->copyPyObject();
                 return cpy;
             }
             catch(const Base::ValueError& e) {
@@ -287,9 +285,7 @@ PyObject* GeometryPy::getExtensionOfName(PyObject *args)
             std::shared_ptr<const GeometryExtension> ext(this->getGeometryPtr()->getExtension(std::string(o)));
 
             // we create a copy and transfer this copy's memory management responsibility to Python
-            Py::Tuple tuple;
-            PyObject* cpy = static_cast<GeometryExtensionPy *>(std::const_pointer_cast<GeometryExtension>(ext)->getPyObject())->copy(tuple.ptr());
-
+            PyObject* cpy = ext->copyPyObject();
             return cpy;
         }
         catch(const Base::ValueError& e) {
@@ -427,9 +423,7 @@ PyObject* GeometryPy::getExtensions(PyObject *args)
                 // we create a python copy and add it to the list
 
                 try {
-                    Py::Tuple tuple;
-                    PyObject* cpy = static_cast<GeometryExtensionPy *>(p->getPyObject())->copy(tuple.ptr());
-
+                    PyObject* cpy = p->copyPyObject();
                     PyList_Append( list, cpy);
                     Py_DECREF(cpy);
                 }
