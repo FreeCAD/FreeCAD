@@ -436,7 +436,7 @@ QIcon *PythonWrapper::toQIcon(PyObject *pyobj)
 {
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
     PyTypeObject * type = getPyTypeObjectForTypeName<QIcon>();
-    if(type) {
+    if(type && PyObject_TypeCheck(pyobj, type)) {
         if (Shiboken::Object::checkType(pyobj)) {
             SbkObject* sbkobject = reinterpret_cast<SbkObject *>(pyobj);
             void* cppobject = Shiboken::Object::cppPointer(sbkobject, type);
@@ -453,7 +453,7 @@ QPixmap *PythonWrapper::toQPixmap(PyObject *pyobj)
 {
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
     PyTypeObject * type = getPyTypeObjectForTypeName<QPixmap>();
-    if(type) {
+    if(type && PyObject_TypeCheck(pyobj, type)) {
         if (Shiboken::Object::checkType(pyobj)) {
             SbkObject* sbkobject = reinterpret_cast<SbkObject *>(pyobj);
             void* cppobject = Shiboken::Object::cppPointer(sbkobject, type);
