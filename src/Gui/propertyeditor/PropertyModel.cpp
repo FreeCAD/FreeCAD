@@ -436,7 +436,7 @@ void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
     }
 }
 
-void PropertyModel::updateProperty(const App::Property& prop)
+void PropertyModel::updateProperty(const App::Property& prop, bool committing)
 {
     auto it = itemMap.find(const_cast<App::Property*>(&prop));
     if (it == itemMap.end() || !it->second || !it->second->parent())
@@ -445,6 +445,8 @@ void PropertyModel::updateProperty(const App::Property& prop)
     int column = 1;
     PropertyItem *item = it->second;
     item->updateData();
+    if (committing)
+        return;
     QModelIndex parent = this->index(item->parent()->row(), 0, QModelIndex());
     item->assignProperty(&prop);
     QModelIndex data = this->index(item->row(), column, parent);

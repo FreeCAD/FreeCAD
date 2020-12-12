@@ -287,9 +287,13 @@ void PropertyView::slotRemoveDynamicProperty(const App::Property& prop)
 void PropertyView::slotChangePropertyEditor(const App::Document &, const App::Property& prop)
 {
     App::PropertyContainer* parent = prop.getContainer();
-    if (propertyEditorData->propOwners.count(parent)
-            || propertyEditorView->propOwners.count(parent))
+    if (propertyEditorData->propOwners.count(parent)) {
+        propertyEditorData->updateProperty(prop);
         timer->start(ViewParams::instance()->getPropertyViewTimer());
+    } else if(propertyEditorView->propOwners.count(parent)) {
+        propertyEditorView->updateProperty(prop);
+        timer->start(ViewParams::instance()->getPropertyViewTimer());
+    }
 }
 
 void PropertyView::slotDeleteDocument(const Gui::Document &doc) {

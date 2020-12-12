@@ -61,7 +61,7 @@ public:
 
     bool removeRows(int row, int count, const QModelIndex & parent = QModelIndex());
 
-    void updateProperty(const App::Property&);
+    void updateProperty(const App::Property&, bool committing);
     void appendProperty(const App::Property&);
     void removeProperty(const App::Property&);
 

@@ -541,8 +541,7 @@ void PropertyEditor::buildUp(PropertyModel::PropertyList &&props, bool _checkDoc
 void PropertyEditor::updateProperty(const App::Property& prop)
 {
     // forward this to the model if the property is changed from outside
-    if (!committing)
-        propertyModel->updateProperty(prop);
+    propertyModel->updateProperty(prop, committing);
 }
 
 void PropertyEditor::setEditorMode(const QModelIndex & parent, int start, int end)
