@@ -1401,10 +1401,28 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d &toPo
                 Base::Vector3d tmpDir =  Base::Vector3d(toPos.x, toPos.y, 0) - p1;
                 double angle = atan2(tmpDir.y, tmpDir.x);
 
-                if(Constr->Type == Sketcher::Diameter)
-                    p1 = center - radius * Base::Vector3d(cos(angle),sin(angle),0.);
+                Base::Vector3d dir = radius * Base::Vector3d(cos(angle),sin(angle),0.);
 
-                p2 = center + radius * Base::Vector3d(cos(angle),sin(angle),0.);
+                if(Constr->Type == Sketcher::Diameter)
+                    p1 = center - dir;
+
+                if(Constr->Type == Sketcher::Weight) {
+
+                    double scalefactor = 1.0;
+
+                    if(circle->hasExtension(SketcherGui::ViewProviderSketchGeometryExtension::getClassTypeId()))
+                    {
+                        auto vpext = std::static_pointer_cast<const SketcherGui::ViewProviderSketchGeometryExtension>(
+                                        circle->getExtension(SketcherGui::ViewProviderSketchGeometryExtension::getClassTypeId()).lock());
+
+                        scalefactor = vpext->getRepresentationFactor();
+                    }
+
+                    p2 = center + dir * scalefactor;
+
+                }
+                else
+                    p2 = center + dir;
             }
             else
                 return;
