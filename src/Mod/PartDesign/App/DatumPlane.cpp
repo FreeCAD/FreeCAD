@@ -52,6 +52,8 @@ Plane::Plane()
     ResizeMode.setEnums(ResizeModeEnums);
     ADD_PROPERTY_TYPE(Length,(20), "Size", App::Prop_Output, "Length of the plane");
     ADD_PROPERTY_TYPE(Width,(20), "Size", App::Prop_Output, "Width of the plane");
+    ADD_PROPERTY_TYPE(MinimumLength,(10), "Size", App::Prop_Output, "Minimum length of the plane when auto sizing");
+    ADD_PROPERTY_TYPE(MinimumWidth,(10), "Size", App::Prop_Output, "Minimum width of the plane when auto sizing");
 
     Length.setReadOnly(true);
     Width.setReadOnly(true);

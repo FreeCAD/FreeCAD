@@ -42,6 +42,7 @@ public:
 
     App::PropertyEnumeration ResizeMode;
     App::PropertyLength Length;
+    App::PropertyLength MinimumLength;
     virtual void onChanged(const App::Property *prop);
     
     const char* getViewProviderName(void) const {

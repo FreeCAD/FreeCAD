@@ -121,21 +121,25 @@ void ViewProviderDatumPlane::setExtents (Base::BoundBox3d bbox) {
     bbox.Add ( Base::Vector3d (0, 0, 0) );
 
     double length = bbox.LengthX();
-    if (length < Precision::Confusion()) {
-        length = pcDatum->Length.getValue();
-        bbox.MaxX += length/2.0; 
-        bbox.MinX -= length/2.0; 
-    } else if (length != pcDatum->Length.getValue()) {
+    if (length < pcDatum->MinimumLength.getValue()) {
+        length = pcDatum->MinimumLength.getValue();
+        double center = (bbox.MaxX - bbox.MinX) / 2.0 + bbox.MinX;
+        bbox.MaxX = center + length/2.0; 
+        bbox.MinX = center - length/2.0; 
+    }
+    if (length != pcDatum->Length.getValue()) {
         Base::ObjectStatusLocker<App::Property::Status, App::Property> guard(App::Property::User3, &pcDatum->Length);
         pcDatum->Length.setValue(length);
     }
 
     double width = bbox.LengthY();
-    if (width < Precision::Confusion()) {
-        width = pcDatum->Width.getValue();
-        bbox.MaxY += width/2.0; 
-        bbox.MinY -= width/2.0; 
-    } else if (width != pcDatum->Width.getValue()) {
+    if (width < pcDatum->MinimumWidth.getValue()) {
+        width = pcDatum->MinimumWidth.getValue();
+        double center = (bbox.MaxY - bbox.MinY) / 2.0 + bbox.MinY;
+        bbox.MaxY = center + width/2.0; 
+        bbox.MinY = center - width/2.0; 
+    }
+    if (width != pcDatum->Width.getValue()) {
         Base::ObjectStatusLocker<App::Property::Status, App::Property> guard(App::Property::User3, &pcDatum->Width);
         pcDatum->Width.setValue(width);
     }

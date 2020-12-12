@@ -109,11 +109,13 @@ void ViewProviderDatumLine::setExtents (Base::BoundBox3d bbox) {
     bbox.Add ( Base::Vector3d (0, 0, 0) );
 
     double length = bbox.LengthZ();
-    if (length < Precision::Confusion()) {
-        length = pcDatum->Length.getValue();
-        bbox.MaxZ += length/2.0;
-        bbox.MinZ -= length/2.0;
-    } else if (length != pcDatum->Length.getValue()) {
+    if (length < pcDatum->MinimumLength.getValue()) {
+        length = pcDatum->MinimumLength.getValue();
+        double center = (bbox.MaxZ - bbox.MinZ) / 2.0 + bbox.MinZ;
+        bbox.MaxZ = center + length/2.0; 
+        bbox.MinZ = center - length/2.0; 
+    }
+    if (length != pcDatum->Length.getValue()) {
         Base::ObjectStatusLocker<App::Property::Status, App::Property> guard(App::Property::User3, &pcDatum->Length);
         pcDatum->Length.setValue(length);
     }

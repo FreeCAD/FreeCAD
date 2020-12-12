@@ -81,9 +81,6 @@ using namespace PartDesignGui;
 
 PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesignGui::ViewProviderDatum,Gui::ViewProviderGeometryObject)
 
-// static data
-const double ViewProviderDatum::defaultSize = Gui::ViewProviderOrigin::defaultSize ();
-
 ViewProviderDatum::ViewProviderDatum()
 {
     PartGui::ViewProviderAttachExtension::initExtension(this);
@@ -358,13 +355,8 @@ SbBox3f ViewProviderDatum::getRelevantBoundBox (
 
     // Adds the bbox of given feature to the output
     for (auto obj :objs) {
-        if(!obj || !obj->getNameInDocument() ||
-                App::GroupExtension::getGroupOfObject(obj))
-        {
-            // assuming if the object has a group, the group itself will be in
-            // objs, and it shall take care of the bounding box
+        if(!obj || !obj->getNameInDocument())
             continue;
-        }
 
         ViewProvider *vp = Gui::Application::Instance->getViewProvider(obj);
         if (!vp) { continue; }
@@ -385,8 +377,12 @@ SbBox3f ViewProviderDatum::getRelevantBoundBox (
 }
 
 SbBox3f ViewProviderDatum::defaultBoundBox () {
-    return SbBox3f ( -defaultSize, -defaultSize, -defaultSize,
-            defaultSize, defaultSize, defaultSize );
+    float s = defaultSize();
+    return SbBox3f (-s, -s, -s, s, s, s);
+}
+
+double ViewProviderDatum::defaultSize() {
+    return Gui::ViewProviderOrigin::defaultSize();
 }
 
 bool ViewProviderDatum::isPickable() {

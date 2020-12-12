@@ -52,6 +52,7 @@ Line::Line()
     ADD_PROPERTY_TYPE(ResizeMode,(static_cast<long>(0)), "Size", App::Prop_Output, "Automatic or manual resizing");
     ResizeMode.setEnums(ResizeModeEnums);
     ADD_PROPERTY_TYPE(Length,(20), "Size", App::Prop_Output, "Length of the line");
+    ADD_PROPERTY_TYPE(MinimumLength,(10), "Size", App::Prop_Output, "Minimum length of the line when auto sizing");
     Length.setReadOnly(true);
 
     this->setAttacher(new AttachEngineLine);

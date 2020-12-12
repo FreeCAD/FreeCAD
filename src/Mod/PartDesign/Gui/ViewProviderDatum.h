@@ -89,7 +89,7 @@ public:
             const std::vector <App::DocumentObject *> &objs);
 
     /// Default size used to produce the default bbox
-    static const double defaultSize;
+    static double defaultSize();
 
     // Returned default bounding box if relevant is can't be used for some reason
     static SbBox3f defaultBoundBox ();
