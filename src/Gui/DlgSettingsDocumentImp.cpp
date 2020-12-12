@@ -102,6 +102,8 @@ void DlgSettingsDocumentImp::saveSettings()
 
     DocumentParams::set_CanAbortRecompute(ui->prefCanAbortRecompute->isChecked());
     DocumentParams::set_WarnRecomputeOnRestore(ui->prefRecomputeOnRestore->isChecked());
+    DocumentParams::set_ThumbnailNoBackground(ui->prefThumbnailNoBackground->isChecked());
+    DocumentParams::set_ThumbnailSampleSize(ui->prefThumbnailSampleSize->value());
 
     int timeout = ui->prefAutoSaveTimeout->value();
     if (!ui->prefAutoSaveEnabled->isChecked())
@@ -139,6 +141,8 @@ void DlgSettingsDocumentImp::loadSettings()
 
     ui->prefCanAbortRecompute->setChecked(DocumentParams::CanAbortRecompute());
     ui->prefRecomputeOnRestore->setChecked(DocumentParams::WarnRecomputeOnRestore());
+    ui->prefThumbnailNoBackground->setChecked(DocumentParams::ThumbnailNoBackground());
+    ui->prefThumbnailSampleSize->setValue(DocumentParams::ThumbnailSampleSize());
 }
 
 /**

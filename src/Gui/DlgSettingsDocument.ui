@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>610</width>
-    <height>859</height>
+    <height>918</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -204,7 +204,7 @@ This feature may slightly increase recomputation time.</string>
         </property>
        </widget>
       </item>
-      <item row="8" column="0">
+      <item row="13" column="0">
        <layout class="QHBoxLayout">
         <property name="spacing">
          <number>6</number>
@@ -286,7 +286,7 @@ get date suffix according to the specified format</string>
         </property>
        </widget>
       </item>
-      <item row="7" column="0">
+      <item row="12" column="0">
        <layout class="QHBoxLayout">
         <property name="spacing">
          <number>6</number>
@@ -500,7 +500,7 @@ automatically run a file recovery when it is started.</string>
         </item>
        </layout>
       </item>
-      <item row="9" column="0">
+      <item row="14" column="0">
        <widget class="Gui::PrefCheckBox" name="prefNoNativeDialog">
         <property name="toolTip">
          <string>Do not use native system's open and save dialog, instead, use Qt file dialog.
@@ -519,6 +519,27 @@ activate the oppsite setting here.</string>
          <string>Dialog</string>
         </property>
        </widget>
+      </item>
+      <item row="7" column="0">
+       <widget class="QCheckBox" name="prefThumbnailNoBackground">
+        <property name="text">
+         <string>Do not save background in thumbnail</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLabel" name="label_7">
+          <property name="text">
+           <string>Thumnail antialiasing sample size</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="prefThumbnailSampleSize"/>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>

@@ -39,6 +39,7 @@
 #include <Base/Writer.h>
 #include <Base/Reader.h>
 #include <App/Application.h>
+#include <App/DocumentParams.h>
 
 using namespace Gui;
 
@@ -92,8 +93,11 @@ void Thumbnail::SaveDocFile (Base::Writer &writer) const
             return;
         }
 
-        QColor invalid;
-        this->viewer->imageFromFramebuffer(this->size, this->size, 0, invalid, img);
+        QColor bgcolor;
+        if (App::DocumentParams::ThumbnailNoBackground())
+            bgcolor = QColor(0,0,0,0);
+        this->viewer->imageFromFramebuffer(this->size, this->size, 
+                App::DocumentParams::ThumbnailSampleSize(), bgcolor, img);
     }
 
     QPixmap px = Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str());
