@@ -2963,19 +2963,18 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
         pstart = *_pstart;
     bool use_bound = !has_start || _pstart==NULL;
 
-    if(use_bound || sort_mode == SortMode2D5 || sort_mode == SortModeGreedy) {
-        //Second stage, group shape by its plane, and find overall boundary
+    //Second stage, group shape by its plane, and find overall boundary
 
-        if(arcPlaneFound || use_bound) {
-            for(auto &info : shape_list) {
-                if(arcPlaneFound) {
-                    info.myShape.Move(trsf);
-                    if(info.myPlanar) info.myPln.Transform(trsf);
-                }
-                if(use_bound)
-                    BRepBndLib::Add(info.myShape, bounds, Standard_False);
-            }
+    for(auto &info : shape_list) {
+        if(arcPlaneFound) {
+            info.myShape.Move(trsf);
+            if(info.myPlanar) info.myPln.Transform(trsf);
         }
+
+        BRepBndLib::Add(info.myShape, bounds, Standard_False);
+    }
+
+    if(use_bound || sort_mode == SortMode2D5 || sort_mode == SortModeGreedy) {
 
         for(auto itNext=shape_list.begin(),it=itNext;it!=shape_list.end();it=itNext) {
             ++itNext;
@@ -3005,15 +3004,35 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
 
     //FC_DURATION_DECL_INIT(td);
 
+    bounds.SetGap(0.0);
+    Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
+    bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
+    AREA_TRACE("bound (" << xMin<<", "<<xMax<<"), ("<<
+            yMin<<", "<<yMax<<"), ("<<zMin<<", "<<zMax<<')');
+
     if(use_bound) {
-        bounds.SetGap(0.0);
-        Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
-        bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
-        AREA_TRACE("bound (" << xMin<<", "<<xMax<<"), ("<<
-                yMin<<", "<<yMax<<"), ("<<zMin<<", "<<zMax<<')');
         pstart.SetCoord(xMax,yMax,zMax);
         if(_pstart) *_pstart = pstart;
+    }else{
+        switch(retract_axis) {
+        case RetractAxisX:
+            if (pstart.X()<xMax){
+                pstart.SetX(xMax);
+            }
+            break;
+        case RetractAxisY:
+            if (pstart.Y()<yMax){
+                pstart.SetY(yMax);
+            }
+            break;
+        default:
+            if (pstart.Z()<zMax){
+                pstart.SetZ(zMax);
+            }
+        }
+        if(_pstart) *_pstart = pstart;
     }
+
 
     gp_Pln pln;
     double hint = 0.0;
