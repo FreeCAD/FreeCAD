@@ -327,7 +327,19 @@ class PropertyContainerCreateCommand(object):
         return not FreeCAD.ActiveDocument is None
 
     def Activated(self):
-        Create()
+        sel = FreeCADGui.Selection.getSelectionEx()
+        obj = Create()
+        body = None
+        if sel:
+            if 'PartDesign::Body' == sel[0].Object.TypeId:
+                body = sel[0].Object
+            elif hasattr(sel[0].Object, 'getParentGeoFeatureGroup'):
+                body = sel[0].Object.getParentGeoFeatureGroup()
+        if body:
+            obj.Label = 'Attributes'
+            group = body.Group
+            group.append(obj)
+            body.Group = group
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Path_PropertyContainer', PropertyContainerCreateCommand())
