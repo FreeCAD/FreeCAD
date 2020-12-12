@@ -784,8 +784,14 @@ void OverlayTabWidget::saveTabs()
     hGrp->SetASCII("Widgets", os.str().c_str());
 
     os.str("");
-    for(int size : splitter->sizes())
-        os << size << ",";
+    bool first = true;
+    for(int size : splitter->sizes()) {
+        if (first)
+            first = false;
+        else
+            os << ",";
+        os << size;
+    }
     hGrp->SetASCII("Sizes", os.str().c_str());
 }
 
@@ -3094,14 +3100,27 @@ public:
                 auto sizes = tabWidget->getSplitter()->sizes();
                 if(index >= sizes.size() || sizes[index]==0) {
                     if (checked > 0) {
-                        int total = 0;
-                        for (int & size : sizes) {
-                            if (size) {
-                                total += size;
-                                size /= 2;
+                        bool restored = false;
+                        if (checked > 1 && tabWidget->hGrp) {
+                            QList<int> savedSizes;
+                            std::string s = tabWidget->hGrp->GetASCII("AutoSizes","");
+                            for(auto &size : QString::fromLatin1(s.c_str()).split(QLatin1Char(',')))
+                                savedSizes.append(size.toInt());
+                            if (savedSizes.size() == sizes.size() && savedSizes[index] > 0) {
+                                sizes = savedSizes;
+                                restored = true;
                             }
                         }
-                        sizes[index] = total/2;
+                        if (!restored) {
+                            int total = 0;
+                            for (int & size : sizes) {
+                                if (size) {
+                                    total += size;
+                                    size /= 2;
+                                }
+                            }
+                            sizes[index] = total/2;
+                        }
                         tabWidget->splitter->setSizes(sizes);
                         tabWidget->saveTabs();
                     }
@@ -3117,6 +3136,19 @@ public:
                             }
                         }
                         if (expand) {
+                            if (tabWidget->hGrp) {
+                                std::ostringstream os;
+                                bool first = true;
+                                for(int size : sizes) {
+                                    if (first)
+                                        first = false;
+                                    else
+                                        os << ",";
+                                    os << size;
+                                }
+                                tabWidget->hGrp->SetASCII("AutoSizes", os.str().c_str());
+                            }
+                            
                             int expansion = sizes[index];
                             int step = expansion / expand;
                             for (int i=0; i<sizes.size(); ++i) {
@@ -3701,7 +3733,7 @@ void OverlayManager::onTaskViewUpdate()
                 || it->second->tabWidget->count() < 2
                 || it->second->tabWidget->getAutoMode() != OverlayTabWidget::TaskShow)
             return;
-        d->onToggleDockWidget(dock, taskview->isEmpty() ? -1 : 1);
+        d->onToggleDockWidget(dock, taskview->isEmpty() ? -2 : 2);
     }
 #endif
 }
