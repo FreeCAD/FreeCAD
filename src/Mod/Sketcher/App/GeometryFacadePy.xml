@@ -51,7 +51,7 @@
     </Attribute>
     <Attribute Name="Construction" ReadOnly="false">
       <Documentation>
-        <UserDocu>Sets/retuns this geometry as a construction one, which will not be part of a later built shape.</UserDocu>
+        <UserDocu>Sets/returns this geometry as a construction one, which will not be part of a later built shape.</UserDocu>
       </Documentation>
       <Parameter Name="Construction" Type="Boolean"/>
     </Attribute>

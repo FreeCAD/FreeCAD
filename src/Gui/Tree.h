@@ -403,7 +403,7 @@ public:
     // check if a new item is required at root
     bool requiredAtRoot(bool excludeSelf=true) const;
 
-    // return the owner, and full quanlified subname
+    // return the owner, and full qualified subname
     App::DocumentObject *getFullSubName(std::ostringstream &str,
             DocumentObjectItem *parent = 0) const;
 
