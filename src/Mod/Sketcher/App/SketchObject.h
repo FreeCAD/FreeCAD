@@ -502,7 +502,7 @@ private:
     // 1. Upon restore, any migration is handled to set the status for legacy files (backwards compatibility)
     // 2. Functionality adding constraints (of the relevant type) calls addGeometryState to set the status
     // 3. Functionality removing constraints (of the relevant type) calls removeGeometryState to remove the status
-    // 4. Save mechanism will ensure persistance.
+    // 4. Save mechanism will ensure persistence.
     void addGeometryState(const Constraint* cstr) const;
     void removeGeometryState(const Constraint* cstr) const;
 
