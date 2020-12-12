@@ -26,11 +26,11 @@
 #ifndef _PreComp_
 #endif
 
-#include "PartParams.h"
 #include "DlgSettingsObjectColor.h"
 #include "ui_DlgSettingsObjectColor.h"
 #include <App/Material.h>
 #include <Gui/PrefWidgets.h>
+#include "PartParams.h"
 
 using namespace PartGui;
 
