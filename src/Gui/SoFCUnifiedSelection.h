@@ -193,7 +193,7 @@ struct GuiExport FCDepthFunc {
      */
     FCDepthFunc(int32_t f);
 
-    /** Constructure that does nothing
+    /** Constructor that does nothing
      *
      * This allows you to delay depth function setting by calling set()
      */

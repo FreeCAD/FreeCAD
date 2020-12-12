@@ -47,7 +47,7 @@ public:
         ReadWrite = 0x03,
     };
 
-    /// Constrction
+    /// Construction
     FileInfo (const char* _FileName="", bool autoDelete=false);
     FileInfo (const std::string &_FileName, bool autoDelete=false);
     /// Destruction

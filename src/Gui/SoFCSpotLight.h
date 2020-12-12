@@ -93,7 +93,7 @@ private:
 };
 
 
-/** Provides a spot light dragger that auto scales acoording to the current viewport */
+/** Provides a spot light dragger that auto scales according to the current viewport */
 class GuiExport SoFCSpotLightDragger : public SoSpotLightDragger {
   typedef SoSpotLightDragger inherited;
 

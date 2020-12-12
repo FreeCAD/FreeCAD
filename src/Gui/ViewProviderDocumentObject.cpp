@@ -962,7 +962,7 @@ bool ViewProviderDocumentObject::isShowable(bool refresh) {
     Base::StateLocker locker(_Busy);
     bool showable = true;
     for(auto parent : parentSet) {  
-        // Calling getViewProvider() also servers as a safty measure, to make
+        // Calling getViewProvider() also servers as a safety measure, to make
         // sure the object exists.
         auto parentVp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
                                     Application::Instance->getViewProvider(parent));

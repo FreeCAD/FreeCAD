@@ -3181,7 +3181,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
 
         // The forward pass. For any elements that are not named, try construct its
         // name from the lower elements
-        bool hasUnamed = false;
+        bool hasUnnamed = false;
         for(size_t ifo=1;ifo<infos.size();++ifo) {
             auto &info = *infos[ifo];
             auto &prev = *infos[ifo-1];
@@ -3231,7 +3231,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                     }
                 }
                 if(names.empty()) {
-                    hasUnamed = true;
+                    hasUnnamed = true;
                     continue;
                 }
                 auto it = names.begin();
@@ -3262,7 +3262,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                 setElementName(element.c_str(),newName.c_str(),ss.str().c_str(),&sids);
             }
         }
-        if(!hasUnamed || delayed || newNames.empty())
+        if(!hasUnnamed || delayed || newNames.empty())
             break;
         delayed = true;
     }

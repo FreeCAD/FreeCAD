@@ -185,14 +185,14 @@ public:
      *  @param filename: file name to save into
      *  @param base64: whether to decode data with base64 before saving
      *
-     *  This function assums you are in the middle of an element, or else
+     *  This function assumes you are in the middle of an element, or else
      *  exception will be thrown.
      */
     void readCharacters(const char *filename, bool base64);
     /** Read element character content as text string
      *
-     *  Thie function reads the entire character content of the current element
-     *  and return it as a string. This function assums you are in the middle
+     *  This function reads the entire character content of the current element
+     *  and return it as a string. This function assumes you are in the middle
      *  of an element, or else exception will be thrown.
      *
      *  For more memory efficient reading of large amount of characters,
@@ -210,7 +210,7 @@ public:
     std::istream &beginCharStream(bool base64);
     /// Manually end the current character stream
     void endCharStream();
-    /// Obtain the current charater stream
+    /// Obtain the current character stream
     std::istream &charStream();
     //@}
 

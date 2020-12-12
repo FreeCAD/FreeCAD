@@ -91,7 +91,7 @@ private:
 };
 
 
-/** Provides a directional light dragger that auto scales acoording to the current viewport */
+/** Provides a directional light dragger that auto scales according to the current viewport */
 class GuiExport SoFCDirectionalLightDragger : public SoDirectionalLightDragger {
   typedef SoDirectionalLightDragger inherited;
 

@@ -4100,7 +4100,7 @@ void TreeWidget::populateSelUpMenu(QMenu *menu, const App::SubObjectT *pObjT)
     if (!tree)
         return;
 
-    // Static variable that remembers the last hierarhcy
+    // Static variable that remembers the last hierarchy
     static std::vector<std::string> lastItemNames;
 
     QList<QTreeWidgetItem*> items;
@@ -4124,7 +4124,7 @@ void TreeWidget::populateSelUpMenu(QMenu *menu, const App::SubObjectT *pObjT)
         if (widget)
             widget = widget->parentWidget();
         auto viewer = qobject_cast<View3DInventorViewer*>(widget);
-        // First try to find the time cooresponding to the object under the mouse
+        // First try to find the time corresponding to the object under the mouse
         // cursor in 3D view
         if (viewer) {
             auto selList = viewer->getPickedList(true);
@@ -4149,7 +4149,7 @@ void TreeWidget::populateSelUpMenu(QMenu *menu, const App::SubObjectT *pObjT)
         if (sels.size() > 0)
             currentItem = sels.front();
         else if (lastItemNames.size()) {
-            // If no selection, then use the last hierarhcy
+            // If no selection, then use the last hierarchy
             docItem = tree->getDocumentItem(
                     Application::Instance->getDocument(lastItemNames.back().c_str()));
             if (docItem) {
@@ -4208,8 +4208,8 @@ void TreeWidget::populateSelUpMenu(QMenu *menu, const App::SubObjectT *pObjT)
     if (lastItemNames.size() <= itemNames.size())
         lastItemNames = std::move(itemNames);
     else {
-        // Check if the current hierarhcy is a sub-path of the last
-        // hierarhcy. If so, populate the tail path.
+        // Check if the current hierarchy is a sub-path of the last
+        // hierarchy. If so, populate the tail path.
         std::size_t i=0;
         for (auto rit=lastItemNames.rbegin(), rit2=itemNames.rbegin();
                 rit2!=itemNames.rend(); ++rit2, ++rit)

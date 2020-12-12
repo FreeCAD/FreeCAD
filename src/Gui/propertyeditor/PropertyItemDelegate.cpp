@@ -80,7 +80,7 @@ void PropertyItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         option.font.setBold(true);
 
         // Since the group item now parents all the property items and can be
-        // collpased, it makes sense to have some selection visual clue for it.
+        // collapsed, it makes sense to have some selection visual clue for it.
         //
         // option.state &= ~QStyle::State_Selected;
     }
