@@ -1399,9 +1399,8 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d &toPo
                 p1 = center;
 
                 Base::Vector3d tmpDir =  Base::Vector3d(toPos.x, toPos.y, 0) - p1;
-                double angle = atan2(tmpDir.y, tmpDir.x);
 
-                Base::Vector3d dir = radius * Base::Vector3d(cos(angle),sin(angle),0.);
+                Base::Vector3d dir = radius * tmpDir.Normalize();
 
                 if(Constr->Type == Sketcher::Diameter)
                     p1 = center - dir;
