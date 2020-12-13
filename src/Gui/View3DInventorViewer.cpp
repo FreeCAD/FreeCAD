@@ -647,6 +647,14 @@ void View3DInventorViewer::init()
     pcGroupOnTop->addChild(pickStyle);
 
     coin_setenv("COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE", "1", TRUE);
+
+    auto pcGroupOnTopMaterial = new SoMaterial;
+    pcGroupOnTopMaterial->ref();
+    pcGroupOnTopMaterial->transparency = ViewParams::getTransparencyOnTop();
+    pcGroupOnTopMaterial->diffuseColor.setIgnored(true);
+    pcGroupOnTopMaterial->setOverride(true);
+    pcGroupOnTop->addChild(pcGroupOnTopMaterial);
+
     pcGroupOnTopDispMode = new SoFCDisplayMode;
     pcGroupOnTopDispMode->ref();
     pcGroupOnTopDispMode->transparency = ViewParams::getTransparencyOnTop();

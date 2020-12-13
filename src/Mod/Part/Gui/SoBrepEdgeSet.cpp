@@ -279,7 +279,13 @@ void SoBrepEdgeSet::glRender(SoGLRenderAction *action, bool inpath)
             uint32_t color;
             SoColorPacker packer;
             float trans = 0.0;
-            if(!Gui::SoFCDisplayModeElement::showHiddenLines(state)) {
+
+            // SoFCDisplayModeElement::getTransparency() specifices face only
+            // transparency. When there is a face only transparency, we'll make
+            // edge/point rendering to be opque. Maybe we'll add support for
+            // edge/point transparency in SoFCDisplayModeElement later.
+
+            if(Gui::SoFCDisplayModeElement::getTransparency(state) == 0.0f) {
                 // Work around Coin bug of losing per line/point color when
                 // rendering with transparency type SORTED_OBJECT_SORTED_TRIANGLE_BLEND
                 SoShapeStyleElement::setTransparencyType(state,SoGLRenderAction::SORTED_OBJECT_BLEND);
