@@ -591,7 +591,7 @@ PartDesign::Body *queryCommandOverride()
                                 "PartDesign feature.\n\nDo you want to override this command with "
                                 "an equivalent PartDesign command?"));
     else
-        box.setText(QObject::tr("You are invoking a non-PartDesign command while having an active"
+        box.setText(QObject::tr("You are invoking a non-PartDesign command while having an active "
                                 "PartDesign body.\n\nDo you want to override this command with an "
                                 "equivalent PartDesign command?"));
     box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
@@ -746,6 +746,23 @@ public:
                         editObj->Visibility.setValue(true);
                     if (PartGui::PartParams::EditOnTop())
                         showEditOnTop(true);
+                    else {
+                        App::DocumentObject *parent = *objs.begin();
+                        bool hidden = !parent->Visibility.getValue();
+                        if (!hidden) {
+                            for (auto it2 = objs.begin(); it2 != it+1; ++ it2) {
+                                auto obj = *it2;
+                                int vis = parent->isElementVisible(obj->getNameInDocument());
+                                if (vis == 0 || (vis<0 && !obj->Visibility.getValue())) {
+                                    hidden = true;
+                                    break;
+                                }
+                                parent = obj;
+                            }
+                        }
+                        if (hidden)
+                            showEditOnTop(true);
+                    }
                 }
                 break;
             }
@@ -811,7 +828,9 @@ public:
 
         App::SubObjectT objT;
         if (enable) {
-            auto body = Base::freecad_dynamic_cast<PartDesign::Body>(editBodyT.getSubObject());
+            auto obj = editBodyT.getSubObject();
+            auto body = Base::freecad_dynamic_cast<PartDesign::Body>(
+                    obj ? obj->getLinkedObject(true) : nullptr);
             if (body) {
                 for (auto feat : siblings.size() ? siblings : body->getSiblings(editObjT.getObject())) {
                     if (feat->Visibility.getValue()) {
