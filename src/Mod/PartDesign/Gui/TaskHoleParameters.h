@@ -76,6 +76,7 @@ public:
     Base::Quantity getDepth() const;
     long   getDrillPoint() const;
     Base::Quantity getDrillPointAngle() const;
+    bool   getDrillForDepth() const;
     bool   getTapered() const;
     Base::Quantity getTaperedAngle() const;
 
@@ -100,6 +101,7 @@ private Q_SLOTS:
     void depthValueChanged(double value);
     void drillPointChanged();
     void drillPointAngledValueChanged(double value);
+    void drillForDepthChanged();
     void taperedChanged();
     void reversedChanged();
     void taperedAngleChanged(double value);   

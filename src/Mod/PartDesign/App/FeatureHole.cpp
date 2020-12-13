@@ -591,6 +591,8 @@ Hole::Hole()
     DrillPoint.setEnums(DrillPointEnums);
 
     ADD_PROPERTY_TYPE(DrillPointAngle, (118.0), "Hole", App::Prop_None, "Drill point angle");
+    ADD_PROPERTY_TYPE(DrillForDepth, ((long)0), "Hole", App::Prop_None,
+        "The size of the drill point will be taken into\n account for the depth of blind holes");
 
     ADD_PROPERTY_TYPE(Tapered, (false),"Hole",  App::Prop_None, "Tapered");
 
@@ -1043,19 +1045,19 @@ void Hole::onChanged(const App::Property *prop)
     }
     else if (prop == &DepthType) {
         Depth.setReadOnly((std::string(DepthType.getValueAsString()) != "Dimension"));
+        DrillForDepth.setReadOnly((std::string(DepthType.getValueAsString()) != "Dimension"));
     }
     ProfileBased::onChanged(prop);
 }
 
 /**
-  * Compute 2D intersection between the lines (pa1, pa2) and (pb1, pb2).
+  * Computes 2D intersection between the lines (pa1, pa2) and (pb1, pb2).
   * The lines are assumed to be crossing, and it is an error
   * to specify parallel lines.
+  * Only the x and y coordinates of the points are used to compute the 2D intersection.
   *
-  * Only the x and y coordinates are used to compute the 2D intersection.
-  *
+  * The result are the x and y coordinate of the intersection point.
   */
-
 static void computeIntersection(gp_Pnt pa1, gp_Pnt pa2, gp_Pnt pb1, gp_Pnt pb2, double & x, double & y)
 {
     double vx1 = pa1.X() - pa2.X();
@@ -1200,7 +1202,7 @@ App::DocumentObjectExecReturn *Hole::execute(void)
         base.Move(invObjLoc);
 
         if (profileshape.IsNull())
-            return new App::DocumentObjectExecReturn("Pocket: Creating a face from sketch failed");
+            return new App::DocumentObjectExecReturn("Hole error: Creating a face from sketch failed");
         profileshape.Move(invObjLoc);
 
         /* Build the prototype hole */
@@ -1238,10 +1240,10 @@ App::DocumentObjectExecReturn *Hole::execute(void)
             length = 1e4;
         }
         else
-            return new App::DocumentObjectExecReturn("Hole: Unsupported length specification.");
+            return new App::DocumentObjectExecReturn("Hole error: Unsupported length specification");
 
-        if (length <= 0)
-            return new App::DocumentObjectExecReturn("Hole: Invalid hole depth");
+        if (length <= 0.0)
+            return new App::DocumentObjectExecReturn("Hole error: Invalid hole depth");
 
         BRepBuilderAPI_MakeWire mkWire;
         const std::string holeCutType = HoleCutType.getValueAsString();
@@ -1253,26 +1255,27 @@ App::DocumentObjectExecReturn *Hole::execute(void)
               holeCutType == "Cheesehead (deprecated)" ||
               holeCutType == "Cap screw (deprecated)" ||
               isDynamicCounterbore(threadType, holeCutType));
-        double hasTaperedAngle = Tapered.getValue() ? Base::toRadians( TaperedAngle.getValue() ) : Base::toRadians(90.0);
-        double radiusBottom = Diameter.getValue() / 2.0 - length * 1.0 / tan( hasTaperedAngle );
+        double TaperedAngleVal = Tapered.getValue() ? Base::toRadians( TaperedAngle.getValue() ) : Base::toRadians(90.0);
+        double radiusBottom = Diameter.getValue() / 2.0 - length / tan(TaperedAngleVal);
         double radius = Diameter.getValue() / 2.0;
         double holeCutRadius = HoleCutDiameter.getValue() / 2.0;
         gp_Pnt firstPoint(0, 0, 0);
         gp_Pnt lastPoint(0, 0, 0);
-        double length1 = 0;
+        double lengthCounter = 0.0;
+        double xPosCounter = 0.0;
+        double zPosCounter = 0.0;
 
-        if ( hasTaperedAngle <= 0 || hasTaperedAngle > Base::toRadians( 180.0 ) )
-            return new App::DocumentObjectExecReturn("Hole: Invalid taper angle.");
+        if (TaperedAngleVal <= 0.0 || TaperedAngleVal > Base::toRadians( 180.0 ) )
+            return new App::DocumentObjectExecReturn("Hole error: Invalid taper angle");
 
         if ( isCountersink ) {
-            double x, z;
             double countersinkAngle = Base::toRadians( HoleCutCountersinkAngle.getValue() / 2.0 );
 
             if ( countersinkAngle <= 0 || countersinkAngle > Base::toRadians( 180.0 ) )
-                return new App::DocumentObjectExecReturn("Hole: Invalid countersink angle.");
+                return new App::DocumentObjectExecReturn("Hole error: Invalid countersink angle");
 
             if (holeCutRadius < radius)
-                return new App::DocumentObjectExecReturn("Hole: Hole cut diameter too small.");
+                return new App::DocumentObjectExecReturn("Hole error: Hole cut diameter too small");
 
             // Top point
             gp_Pnt newPoint = toPnt(holeCutRadius * xDir);
@@ -1282,28 +1285,27 @@ App::DocumentObjectExecReturn *Hole::execute(void)
             computeIntersection(gp_Pnt( holeCutRadius, 0, 0 ),
                                 gp_Pnt( holeCutRadius - sin( countersinkAngle ), -cos( countersinkAngle ), 0 ),
                                 gp_Pnt( radius, 0, 0 ),
-                                gp_Pnt( radiusBottom, -length, 0), x, z );
-            if (-length > z)
-                return new App::DocumentObjectExecReturn("Hole: Invalid countersink.");
+                                gp_Pnt( radiusBottom, -length, 0), xPosCounter, zPosCounter);
+            if (-length > zPosCounter)
+                return new App::DocumentObjectExecReturn("Hole error: Invalid countersink");
 
-            length1 = z;
+            lengthCounter = zPosCounter;
 
-            newPoint = toPnt(x * xDir + z * zDir);
+            newPoint = toPnt(xPosCounter * xDir + zPosCounter * zDir);
             mkWire.Add( BRepBuilderAPI_MakeEdge( lastPoint, newPoint ) );
             lastPoint = newPoint;
         }
         else if ( isCounterbore ) {
             double holeCutDepth = HoleCutDepth.getValue();
-            double x, z;
 
-            if (holeCutDepth <= 0)
-                return new App::DocumentObjectExecReturn("Hole: Hole cut depth must be greater than zero.");
+            if (holeCutDepth <= 0.0)
+                return new App::DocumentObjectExecReturn("Hole error: Hole cut depth must be greater than zero");
 
             if (holeCutDepth > length)
-                return new App::DocumentObjectExecReturn("Hole: Hole cut depth must be less than hole depth.");
+                return new App::DocumentObjectExecReturn("Hole error: Hole cut depth must be less than hole depth");
 
             if (holeCutRadius < radius)
-                return new App::DocumentObjectExecReturn("Hole: Hole cut diameter too small.");
+                return new App::DocumentObjectExecReturn("Hole error: Hole cut diameter too small");
 
             // Top point
             gp_Pnt newPoint = toPnt(holeCutRadius * xDir);
@@ -1311,7 +1313,7 @@ App::DocumentObjectExecReturn *Hole::execute(void)
             lastPoint = newPoint;
 
             // Bottom of counterbore
-            newPoint = toPnt(holeCutRadius * xDir -holeCutDepth * zDir);
+            newPoint = toPnt(holeCutRadius * xDir - holeCutDepth * zDir);
             mkWire.Add(BRepBuilderAPI_MakeEdge(lastPoint, newPoint));
             lastPoint = newPoint;
 
@@ -1319,10 +1321,10 @@ App::DocumentObjectExecReturn *Hole::execute(void)
             computeIntersection(gp_Pnt( 0, -holeCutDepth, 0 ),
                                 gp_Pnt( holeCutRadius, -holeCutDepth, 0 ),
                                 gp_Pnt( radius, 0, 0 ),
-                                gp_Pnt( radiusBottom, length, 0 ), x, z );
+                                gp_Pnt( radiusBottom, length, 0 ), xPosCounter, zPosCounter);
 
-            length1 = z;
-            newPoint = toPnt(x * xDir + z * zDir);
+            lengthCounter = zPosCounter;
+            newPoint = toPnt(xPosCounter * xDir + zPosCounter * zDir);
             mkWire.Add(BRepBuilderAPI_MakeEdge(lastPoint, newPoint));
             lastPoint = newPoint;
         }
@@ -1330,10 +1332,12 @@ App::DocumentObjectExecReturn *Hole::execute(void)
             gp_Pnt newPoint = toPnt(radius * xDir);
             mkWire.Add(BRepBuilderAPI_MakeEdge(lastPoint, newPoint));
             lastPoint = newPoint;
-            length1 = 0;
+            lengthCounter = 0.0;
         }
 
         std::string drillPoint = DrillPoint.getValueAsString();
+        double xPosDrill = 0.0;
+        double zPosDrill = 0.0;
         if (drillPoint == "Flat") {
             gp_Pnt newPoint = toPnt(radiusBottom * xDir + -length * zDir);
             mkWire.Add(BRepBuilderAPI_MakeEdge(lastPoint, newPoint));
@@ -1345,30 +1349,47 @@ App::DocumentObjectExecReturn *Hole::execute(void)
         }
         else if (drillPoint == "Angled") {
             double drillPointAngle = Base::toRadians( ( 180.0 - DrillPointAngle.getValue() ) / 2.0 );
-            double x, z;
             gp_Pnt newPoint;
+            bool isDrillForDepth = DrillForDepth.getValue();
 
-            if ( drillPointAngle <= 0 || drillPointAngle > Base::toRadians( 180.0 ) )
-                return new App::DocumentObjectExecReturn("Hole: Invalid drill point angle.");
+            // the angle is in any case > 0 and < 90 but nevertheless this safeguard:
+            if ( drillPointAngle <= 0.0 || drillPointAngle >= Base::toRadians( 180.0 ) )
+                return new App::DocumentObjectExecReturn("Hole error: Invalid drill point angle");
 
-            computeIntersection(gp_Pnt( 0, -length, 0 ),
-                                gp_Pnt( cos( drillPointAngle ), -length + sin( drillPointAngle ), 0),
-                                gp_Pnt(radius, 0, 0),
-                                gp_Pnt(radiusBottom, -length, 0), x, z);
+            // if option to take drill point size into account
+            // the next wire point is the intersection of the drill edge and the hole edge
+            if (isDrillForDepth) {
+                computeIntersection(gp_Pnt(0, -length, 0),
+                    gp_Pnt(radius, radius * tan(drillPointAngle) - length, 0),
+                    gp_Pnt(radius, 0, 0),
+                    gp_Pnt(radiusBottom, -length, 0), xPosDrill, zPosDrill);
+                if (zPosDrill > 0 || zPosDrill >= lengthCounter)
+                    return new App::DocumentObjectExecReturn("Hole error: Invalid drill point");
 
-            if (z > 0 || z >= length1)
-                return new App::DocumentObjectExecReturn("Hole: Invalid drill point.");
+                newPoint = toPnt(xPosDrill * xDir + zPosDrill * zDir);
+                mkWire.Add(BRepBuilderAPI_MakeEdge(lastPoint, newPoint));
+                lastPoint = newPoint;
 
-            newPoint = toPnt(x * xDir + z * zDir);
-            mkWire.Add(BRepBuilderAPI_MakeEdge(lastPoint, newPoint));
-            lastPoint = newPoint;
+                newPoint = toPnt(-length * zDir);
+                mkWire.Add(BRepBuilderAPI_MakeEdge(lastPoint, newPoint));
+                lastPoint = newPoint;
+            }
+            else {
+                xPosDrill = radiusBottom;
+                zPosDrill = -length;
 
-            newPoint = toPnt(-length * zDir);
-            mkWire.Add(BRepBuilderAPI_MakeEdge(lastPoint, newPoint));
-            lastPoint = newPoint;
+                newPoint = toPnt(xPosDrill * xDir + zPosDrill * zDir);
+                mkWire.Add(BRepBuilderAPI_MakeEdge(lastPoint, newPoint));
+                lastPoint = newPoint;
+
+                // the end point is the size of the drill tip
+                newPoint = toPnt((-length - radius * tan(drillPointAngle)) * zDir);
+                mkWire.Add(BRepBuilderAPI_MakeEdge(lastPoint, newPoint));
+                lastPoint = newPoint;
+            }
         }
-        mkWire.Add( BRepBuilderAPI_MakeEdge(lastPoint, firstPoint) );
 
+        mkWire.Add( BRepBuilderAPI_MakeEdge(lastPoint, firstPoint) );
 
         TopoDS_Wire wire = mkWire.Wire();
 
@@ -1382,10 +1403,10 @@ App::DocumentObjectExecReturn *Hole::execute(void)
             protoHole = RevolMaker.Shape();
 
             if (protoHole.IsNull())
-                return new App::DocumentObjectExecReturn("Hole: Resulting shape is empty");
+                return new App::DocumentObjectExecReturn("Hole error: Resulting shape is empty");
         }
         else
-            return new App::DocumentObjectExecReturn("Hole: Could not revolve sketch!");
+            return new App::DocumentObjectExecReturn("Hole error: Could not revolve sketch");
 
 #if 0
         // Make thread
