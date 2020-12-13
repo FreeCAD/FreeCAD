@@ -4193,6 +4193,21 @@ void System::identifyDependentGeometryParametersInTransposedJacobianDenseQRDecom
 
 }
 
+void System::eliminateNonZerosOverPivotInUpperTriangularMatrix( Eigen::MatrixXd &R, int rank)
+{
+    for (int i=1; i < rank; i++) {
+        // eliminate non zeros above pivot
+        assert(R(i,i) != 0);
+        for (int row=0; row < i; row++) {
+            if (R(row,i) != 0) {
+                double coef=R(row,i)/R(i,i);
+                R.block(row,i+1,1,R.cols()-i-1) -= coef * R.block(i,i+1,1,R.cols()-i-1);
+                R(row,i) = 0;
+            }
+        }
+    }
+}
+
 template <typename T>
 void System::identifyConflictingRedundantConstraints(   Algorithm alg,
                                                         const T & qrJT,
@@ -4204,17 +4219,7 @@ void System::identifyConflictingRedundantConstraints(   Algorithm alg,
                                                         int &nonredundantconstrNum
                                                     )
 {
-    for (int i=1; i < rank; i++) {
-        // eliminate non zeros above pivot
-        assert(R(i,i) != 0);
-        for (int row=0; row < i; row++) {
-            if (R(row,i) != 0) {
-                double coef=R(row,i)/R(i,i);
-                R.block(row,i+1,1,constrNum-i-1) -= coef * R.block(i,i+1,1,constrNum-i-1);
-                R(row,i) = 0;
-            }
-        }
-    }
+    eliminateNonZerosOverPivotInUpperTriangularMatrix(R, rank);
 
     std::vector< std::vector<Constraint *> > conflictGroups(constrNum-rank);
     for (int j=rank; j < constrNum; j++) {
