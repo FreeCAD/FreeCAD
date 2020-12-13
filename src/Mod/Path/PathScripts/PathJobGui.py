@@ -519,6 +519,7 @@ class StockCreateCylinderEdit(StockEdit):
 class StockFromExistingEdit(StockEdit):
     Index = 3
     StockType = PathStock.StockType.Unknown
+    StockLabelPrefix = 'Stock'
 
     def editorFrame(self):
         return self.form.stockFromExisting
@@ -527,7 +528,7 @@ class StockFromExistingEdit(StockEdit):
         stock = self.form.stockExisting.itemData(self.form.stockExisting.currentIndex())
         if not (hasattr(obj.Stock, 'Objects') and len(obj.Stock.Objects) == 1 and obj.Stock.Objects[0] == stock):
             if stock:
-                stock = PathJob.createResourceClone(obj, stock, 'Stock', 'Stock')
+                stock = PathJob.createResourceClone(obj, stock, self.StockLabelPrefix , 'Stock')
                 stock.ViewObject.Visibility = True
                 PathStock.SetupStockObject(stock, PathStock.StockType.Unknown)
                 stock.Proxy.execute(stock)
@@ -553,7 +554,9 @@ class StockFromExistingEdit(StockEdit):
         index = -1
         for i, solid in enumerate(self.candidates(obj)):
             self.form.stockExisting.addItem(solid.Label, solid)
-            if solid.Label == stockName:
+            label="%s-%s" % (self.StockLabelPrefix,solid.Label)
+
+            if label == stockName:
                 index = i
         self.form.stockExisting.setCurrentIndex(index if index != -1 else 0)
 
