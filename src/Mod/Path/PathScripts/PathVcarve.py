@@ -157,6 +157,45 @@ def _sortVoronoiWires(wires, start=FreeCAD.Vector(0, 0, 0)):
 
     return result
 
+class _Geometry(object):
+    '''POD class so the limits only have to be calculated once.'''
+
+    def __init__(self, zStart, zStop, zScale):
+        self.start = zStart
+        self.stop  = zStop
+        self.scale = zScale
+
+    @classmethod
+    def FromTool(cls, tool, zStart, zFinal):
+        rMax = float(tool.Diameter) / 2.0
+        rMin = float(tool.TipDiameter) / 2.0
+        toolangle = math.tan(math.radians(tool.CuttingEdgeAngle.Value / 2.0))
+        zScale = 1.0 / toolangle
+        zStop  = zStart - rMax * zScale
+        zOff   = rMin * zScale
+
+        return _Geometry(zStart + zOff, max(zStop + zOff, zFinal), zScale)
+
+    @classmethod
+    def FromObj(cls, obj, model):
+        zStart = model.Shape.BoundBox.ZMax
+        finalDepth = obj.FinalDepth.Value
+
+        return cls.FromTool(obj.ToolController.Tool, zStart, finalDepth)
+
+def _calculate_depth(MIC, geom):
+    # given a maximum inscribed circle (MIC) and tool angle,
+    # return depth of cut relative to zStart.
+    depth = geom.start - round(MIC / geom.scale, 4)
+    PathLog.debug('zStart value: {} depth: {}'.format(geom.start, depth))
+
+    return max(depth, geom.stop)
+
+def _getPartEdge(edge, depths):
+    dist = edge.getDistances()
+    zBegin = _calculate_depth(dist[0], depths)
+    zEnd   = _calculate_depth(dist[1], depths)
+    return edge.toShape(zBegin, zEnd)
 
 class ObjectVcarve(PathEngraveBase.ObjectOp):
     '''Proxy class for Vcarve operation.'''
@@ -197,42 +236,10 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         # upgrade ...
         self.setupAdditionalProperties(obj)
 
-    def _calculate_depth(self, MIC, zStart, zStop, zScale, finaldepth):
-        # given a maximum inscribed circle (MIC) and tool angle,
-        # return depth of cut relative to zStart.
-        depth = zStart - round(MIC / zScale, 4)
-        PathLog.debug('zStart value: {} depth: {}'.format(zStart, depth))
-
-        # Never go below the operation final depth.
-        zStop = zStop if zStop > finaldepth else finaldepth
-
-        return depth if depth > zStop else zStop
-
-    def _getPartEdge(self, edge, zStart, zStop, zScale, finaldepth):
-        dist = edge.getDistances()
-        return edge.toShape(self._calculate_depth(dist[0],
-                                                  zStart,
-                                                  zStop,
-                                                  zScale,
-                                                  finaldepth),
-                            self._calculate_depth(dist[1],
-                                                  zStart,
-                                                  zStop,
-                                                  zScale,
-                                                  finaldepth))
-
-    def _getPartEdges(self, obj, vWire):
-        # pre-calculate the depth limits - pre-mature optimisation ;)
-        r = float(obj.ToolController.Tool.Diameter) / 2
-        toolangle = obj.ToolController.Tool.CuttingEdgeAngle
-        zStart = self.model[0].Shape.BoundBox.ZMin
-        zStop  = zStart - r / math.tan(math.radians(toolangle/2))
-        zScale = 1.0 / math.tan(math.radians(toolangle / 2))
-        finaldepth = obj.FinalDepth.Value
-
+    def _getPartEdges(self, obj, vWire, geom):
         edges = []
         for e in vWire:
-            edges.append(self._getPartEdge(e, zStart, zStop, zScale, finaldepth))
+            edges.append(_getPartEdge(e, geom))
         return edges
 
     def buildPathMedial(self, obj, Faces):
@@ -290,10 +297,12 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         if _sorting == 'global':
             voronoiWires = _sortVoronoiWires(voronoiWires)
 
+        geom = _Geometry.FromObj(obj, self.model[0])
+
         pathlist = []
         pathlist.append(Path.Command("(starting)"))
         for w in voronoiWires:
-            pWire = self._getPartEdges(obj, w)
+            pWire = self._getPartEdges(obj, w, geom)
             if pWire:
                 wires.append(pWire)
                 pathlist.extend(cutWire(pWire))
@@ -355,6 +364,9 @@ operation will produce no output.'))
             else:
                 obj.OpFinalDepth = -0.1
 
+    def isToolSupported(self, obj, tool):
+        '''isToolSupported(obj, tool) ... returns True if v-carve op can work with tool.'''
+        return hasattr(tool, 'Diameter') and hasattr(tool, 'CuttingEdgeAngle') and hasattr(tool, 'TipDiameter')
 
 def SetupProperties():
     return ["Discretize"]
