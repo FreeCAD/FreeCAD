@@ -133,11 +133,11 @@ namespace GCS
 
         void makeReducedJacobian(Eigen::MatrixXd &J, std::map<int,int> &jacobianconstraintmap, GCS::VEC_pD &pdiagnoselist, std::map< int , int> &tagmultiplicity);
 
-        void makeDenseQRDecomposition(  Eigen::MatrixXd &J, std::map<int,int> &jacobianconstraintmap,
+        void makeDenseQRDecomposition(  const Eigen::MatrixXd &J, std::map<int,int> &jacobianconstraintmap,
                                         Eigen::FullPivHouseholderQR<Eigen::MatrixXd>& qrJT,
                                         int &paramsNum, int &constrNum, int &rank, Eigen::MatrixXd &R);
 
-        void makeSparseQRDecomposition( Eigen::MatrixXd &J, std::map<int,int> &jacobianconstraintmap,
+        void makeSparseQRDecomposition( const Eigen::MatrixXd &J, std::map<int,int> &jacobianconstraintmap,
                                         Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> > &SqrJT,
                                         int &paramsNum, int &constrNum, int &rank, Eigen::MatrixXd &R);
 
@@ -149,6 +149,18 @@ namespace GCS
                                         const GCS::VEC_pD &pdiagnoselist,
                                         int paramsNum, int rank
         );
+
+        template <typename T>
+        void identifyConflictingRedundantConstraints(   Algorithm alg,
+                                                        const T & qrJT,
+                                                        const std::map<int,int> &jacobianconstraintmap,
+                                                        const std::map< int , int> &tagmultiplicity,
+                                                        GCS::VEC_pD &pdiagnoselist,
+                                                        Eigen::MatrixXd &R,
+                                                        int constrNum, int rank,
+                                                        int &nonredundantconstrNum
+        );
+
 
         #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
         void extractSubsystem(SubSystem *subsys, bool isRedundantsolving);
