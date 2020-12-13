@@ -706,7 +706,7 @@ void CmdMeshVertexCurvatureInfo::activated(int)
         viewer->setEditing(true);
         viewer->setRedirectToSceneGraph(true);
         viewer->setSelectionEnabled(false);
-        viewer->setEditingCursor(QCursor(Gui::BitmapFactory().pixmapFromSvg("mesh_pipette",QSize(32,32)),4,29));
+        viewer->setEditingCursor(QCursor(Gui::BitmapFactory().pixmapFromSvg("Mesh_Pipette",QSize(32,32)),4,29));
         viewer->addEventCallback(SoEvent::getClassTypeId(),
             MeshGui::ViewProviderMeshCurvature::curvatureInfoCallback);
      }
@@ -896,7 +896,7 @@ CmdMeshPolyCut::CmdMeshPolyCut()
     sToolTipText  = QT_TR_NOOP("Cuts a mesh with a picked polygon");
     sWhatsThis    = "Mesh_PolyCut";
     sStatusTip    = QT_TR_NOOP("Cuts a mesh with a picked polygon");
-    sPixmap       = "mesh_cut";
+    sPixmap       = "Mesh_Cut";
 }
 
 void CmdMeshPolyCut::activated(int)
@@ -1199,7 +1199,7 @@ CmdMeshEvaluateFacet::CmdMeshEvaluateFacet()
     sToolTipText  = QT_TR_NOOP("Information about face");
     sWhatsThis    = "Mesh_EvaluateFacet";
     sStatusTip    = QT_TR_NOOP("Information about face");
-    sPixmap       = "mesh_pipette";
+    sPixmap       = "Mesh_Pipette";
 }
 
 void CmdMeshEvaluateFacet::activated(int)
@@ -1209,7 +1209,7 @@ void CmdMeshEvaluateFacet::activated(int)
     if (view) {
         Gui::View3DInventorViewer* viewer = view->getViewer();
         viewer->setEditing(true);
-        viewer->setEditingCursor(QCursor(Gui::BitmapFactory().pixmapFromSvg("mesh_pipette",QSize(32,32)),4,29));
+        viewer->setEditingCursor(QCursor(Gui::BitmapFactory().pixmapFromSvg("Mesh_Pipette",QSize(32,32)),4,29));
         viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), MeshGui::ViewProviderMeshFaceSet::faceInfoCallback);
      }
 }
@@ -1675,7 +1675,7 @@ CmdMeshFillInteractiveHole::CmdMeshFillInteractiveHole()
     sToolTipText  = QT_TR_NOOP("Close holes interactively");
     sWhatsThis    = "Mesh_FillInteractiveHole";
     sStatusTip    = QT_TR_NOOP("Close holes interactively");
-    sPixmap       = "mesh_boundary";
+    sPixmap       = "Mesh_Boundary";
 }
 
 void CmdMeshFillInteractiveHole::activated(int)

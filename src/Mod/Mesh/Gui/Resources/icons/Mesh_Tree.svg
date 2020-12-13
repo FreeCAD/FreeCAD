@@ -15,11 +15,11 @@
    id="svg3052"
    sodipodi:version="0.32"
    inkscape:version="0.48.5 r10040"
-   sodipodi:docname="Tree_Mesh.svg"
+   sodipodi:docname="Mesh_Tree.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.1">
   <title
-     id="title3725">Tree_Mesh</title>
+     id="title3725">Mesh_Tree</title>
   <defs
      id="defs3054">
     <inkscape:perspective
@@ -103,7 +103,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title>Tree_Mesh</dc:title>
+        <dc:title>Mesh_Tree</dc:title>
         <dc:contributor>
           <cc:Agent>
             <dc:title>[agryson] Alexander Gryson</dc:title>
@@ -127,7 +127,7 @@
             <dc:title>FreeCAD</dc:title>
           </cc:Agent>
         </dc:publisher>
-        <dc:identifier>FreeCAD/src/Mod/Mesh/Gui/Resources/icons/Tree_Mesh.svg</dc:identifier>
+        <dc:identifier>FreeCAD/src/Mod/Mesh/Gui/Resources/icons/Mesh._Tree.svg</dc:identifier>
         <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:subject>
           <rdf:Bag>
