@@ -802,8 +802,11 @@ def placementFromDXFOCS(ent):
     draftWPlane = FreeCAD.DraftWorkingPlane
     draftWPlane.alignToPointAndAxis(Vector(0.0, 0.0, 0.0),
                                     vec(ent.extrusion), 0.0)
-    
-    # Riferimenti dell'algoritmo dell'asse arbitrario
+    # Object Coordinate Systems (OCS)
+    # http://docs.autodesk.com/ACD/2011/ENU/filesDXF/WS1a9193826455f5ff18cb41610ec0a2e719-7941.htm
+    # Arbitrary Axis Algorithm
+    # http://docs.autodesk.com/ACD/2011/ENU/filesDXF/WS1a9193826455f5ff18cb41610ec0a2e719-793d.htm#WSc30cd3d5faa8f6d81cb25f1ffb755717d-7ff5
+    # Riferimenti dell'algoritmo dell'asse arbitrario in italiano 
     # http://docs.autodesk.com/ACD/2011/ITA/filesDXF/WS1a9193826455f5ff18cb41610ec0a2e719-7941.htm
     # http://docs.autodesk.com/ACD/2011/ITA/filesDXF/WS1a9193826455f5ff18cb41610ec0a2e719-793d.htm#WSc30cd3d5faa8f6d81cb25f1ffb755717d-7ff5
     if (draftWPlane.axis == FreeCAD.Vector(1.0, 0.0, 0.0)):
