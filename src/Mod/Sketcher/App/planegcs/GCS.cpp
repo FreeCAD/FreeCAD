@@ -3915,14 +3915,15 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
 #endif
 
     Eigen::MatrixXd R;
-    int paramsNum = 0;
-    int constrNum = 0;
-    int rank = 0;
+    int rank = 0; // rank is not cheap to retrieve from qrJT in DenseQR
 
     Eigen::FullPivHouseholderQR<Eigen::MatrixXd> qrJT;
 
     if(qrAlgorithm==EigenDenseQR){
-        makeDenseQRDecomposition( J, jacobianconstraintmap, qrJT, paramsNum, constrNum, rank, R);
+        makeDenseQRDecomposition( J, jacobianconstraintmap, qrJT, rank, R);
+
+        int paramsNum = qrJT.rows();
+        int constrNum = qrJT.cols();
 
         if (J.rows() > 0) {
             identifyDependentGeometryParametersInTransposedJacobianDenseQRDecomposition(
@@ -3951,7 +3952,10 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
         }
     }
     else if(qrAlgorithm==EigenSparseQR){
-        makeSparseQRDecomposition( J, jacobianconstraintmap, SqrJT, paramsNum, constrNum, rank, R);
+        makeSparseQRDecomposition( J, jacobianconstraintmap, SqrJT, rank, R);
+
+        int paramsNum = SqrJT.rows();
+        int constrNum = SqrJT.cols();
 
         if (J.rows() > 0) {
             // Detecting conflicting or redundant constraints
@@ -3983,7 +3987,7 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
 
 void System::makeDenseQRDecomposition(  const Eigen::MatrixXd &J, std::map<int,int> &jacobianconstraintmap,
                                         Eigen::FullPivHouseholderQR<Eigen::MatrixXd>& qrJT,
-                                        int &paramsNum, int &constrNum, int &rank, Eigen::MatrixXd & R)
+                                        int &rank, Eigen::MatrixXd & R)
 {
 
 #ifdef _GCS_DEBUG
@@ -3994,6 +3998,9 @@ void System::makeDenseQRDecomposition(  const Eigen::MatrixXd &J, std::map<int,i
     Eigen::MatrixXd Q; // Obtaining the Q matrix with Sparse QR is buggy, see comments below
     Eigen::MatrixXd R2; // Intended for a trapezoidal matrix, where R is the top triangular matrix of the R2 trapezoidal matrix
 #endif
+
+    int paramsNum = 0;
+    int constrNum = 0;
 
     if (J.rows() > 0) {
         qrJT.compute(J.topRows(jacobianconstraintmap.size()).transpose());
@@ -4034,7 +4041,7 @@ void System::makeDenseQRDecomposition(  const Eigen::MatrixXd &J, std::map<int,i
 
 void System::makeSparseQRDecomposition( const Eigen::MatrixXd &J, std::map<int,int> &jacobianconstraintmap,
                                         Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> > &SqrJT,
-                                        int &paramsNum, int &constrNum, int &rank, Eigen::MatrixXd & R)
+                                        int &rank, Eigen::MatrixXd & R)
 {
 #ifdef EIGEN_SPARSEQR_COMPATIBLE
     Eigen::SparseMatrix<double> SJ;
@@ -4054,6 +4061,9 @@ void System::makeSparseQRDecomposition( const Eigen::MatrixXd &J, std::map<int,i
     Eigen::MatrixXd Q; // Obtaining the Q matrix with Sparse QR is buggy, see comments below
     Eigen::MatrixXd R2; // Intended for a trapezoidal matrix, where R is the top triangular matrix of the R2 trapezoidal matrix
 #endif
+
+    int paramsNum = 0;
+    int constrNum = 0;
 
 #ifdef EIGEN_SPARSEQR_COMPATIBLE
     if (SJ.rows() > 0) {

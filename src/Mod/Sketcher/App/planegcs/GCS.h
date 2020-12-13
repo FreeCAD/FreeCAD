@@ -135,11 +135,11 @@ namespace GCS
 
         void makeDenseQRDecomposition(  const Eigen::MatrixXd &J, std::map<int,int> &jacobianconstraintmap,
                                         Eigen::FullPivHouseholderQR<Eigen::MatrixXd>& qrJT,
-                                        int &paramsNum, int &constrNum, int &rank, Eigen::MatrixXd &R);
+                                        int &rank, Eigen::MatrixXd &R);
 
         void makeSparseQRDecomposition( const Eigen::MatrixXd &J, std::map<int,int> &jacobianconstraintmap,
                                         Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> > &SqrJT,
-                                        int &paramsNum, int &constrNum, int &rank, Eigen::MatrixXd &R);
+                                        int &rank, Eigen::MatrixXd &R);
 
         // This function name is long for a reason:
         // - Only for DenseQR
