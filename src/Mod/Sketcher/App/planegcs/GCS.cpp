@@ -3923,121 +3923,21 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
 
     if(qrAlgorithm==EigenDenseQR){
         makeDenseQRDecomposition( J, jacobianconstraintmap, qrJT, paramsNum, constrNum, rank, R);
+
+        if (J.rows() > 0) {
+            identifyDependentGeometryParametersInTransposedJacobianDenseQRDecomposition(
+                                                        qrJT,
+                                                        pdiagnoselist,
+                                                        paramsNum, rank);
+        }
     }
     else if(qrAlgorithm==EigenSparseQR){
         makeSparseQRDecomposition( J, jacobianconstraintmap, SqrJT, paramsNum, constrNum, rank, R);
     }
 
+
+
     if (J.rows() > 0) {
-
-        // DETECTING CONSTRAINT SOLVER PARAMETERS
-        //
-        // NOTE: This is only true for dense QR with full pivoting, because solve parameters get reordered.
-        // I am unable to adapt it to Sparse QR. (abdullah). See:
-        //
-        // https://stackoverflow.com/questions/49009771/getting-rows-transpositions-with-sparse-qr
-        // https://forum.kde.org/viewtopic.php?f=74&t=151239
-        //
-        // R (original version, not R here which is trimmed to not have empty rows)
-        // has paramsNum rows, the first "rank" rows correspond to parameters that are constraint
-
-        // Calculate the Permutation matrix from the Transposition matrix
-        Eigen::PermutationMatrix<Eigen::Dynamic, Eigen::Dynamic> rowPermutations;
-
-        rowPermutations.setIdentity(paramsNum);
-
-        if(qrAlgorithm==EigenDenseQR){ // P.J.P' = Q.R see https://eigen.tuxfamily.org/dox/classEigen_1_1FullPivHouseholderQR.html
-            const MatrixIndexType rowTranspositions = qrJT.rowsTranspositions();
-
-            for(int k = 0; k < rank; ++k)
-                rowPermutations.applyTranspositionOnTheRight(k, rowTranspositions.coeff(k));
-        }
-#ifdef EIGEN_SPARSEQR_COMPATIBLE
-        else if(qrAlgorithm==EigenSparseQR){
-            // J.P = Q.R, see https://eigen.tuxfamily.org/dox/classEigen_1_1SparseQR.html
-            // There is no rowsTransposition in this QR decomposition.
-            // TODO: This detection method won't work for SparseQR
-        }
-
-#endif
-
-#ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
-        std::stringstream stream;
-#endif
-
-// params (in the order of J) shown as independent from QR
-        std::set<int> indepParamCols;
-        std::set<int> depParamCols;
-
-        for (int j=0; j < rank; j++) {
-
-             int origRow = rowPermutations.indices()[j];
-
-             indepParamCols.insert(origRow);
-
-             // NOTE: Q*R = transpose(J), so the row of R corresponds to the col of J (the rows of transpose(J)).
-             // The cols of J are the parameters, the rows are the constraints.
-#ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
-             stream << "R row " << j << " = J col " << origRow << std::endl;
-#endif
-        }
-
-#ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
-        std::string tmp = stream.str();
-
-        SolverReportingManager::Manager().LogString(tmp);
-#endif
-
-        // If not independent, must be dependent
-        for(int j=0; j < paramsNum; j++) {
-            auto result = indepParamCols.find(j);
-            if(result == indepParamCols.end()) {
-                depParamCols.insert(j);
-            }
-        }
-
-        // Last (NumParams-rank) rows of Q construct the dependent part of J
-        // in conjunction with the R matrix
-        // Last (NumParams-rank) cols of Q never contribute as R is zero after the rank
-        /*std::set<int> associatedParamCols;
-        for(int i = rank; i < paramsNum; i++) {
-            for(int j = 0; j < rank; j++) {
-                if(fabs(Q(i,j))>1e-10) {
-                    for(int k = j; k < constrNum; k++) {
-                        if(fabs(R(j,k))>1e-10) {
-                            associatedParamCols.insert(k);
-                        }
-                    }
-                }
-            }
-        }
-
-        for( auto param : associatedParamCols) {
-            auto pos = indepParamCols.find(rowPermutations.indices()[param]);
-
-            if(pos!=indepParamCols.end()) {
-                indepParamCols.erase(pos);
-            }
-        }*/
-#ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
-        stream.flush();
-
-        stream << "Indep params: [";
-        for(auto indep :indepParamCols)
-            stream << indep;
-        stream << "]" << std::endl;
-
-        stream << "Dep params: [";
-        for(auto dep :depParamCols)
-            stream << dep;
-        stream << "]" << std::endl;
-
-        tmp = stream.str();
-        SolverReportingManager::Manager().LogString(tmp);
-#endif
-        for( auto param : depParamCols) {
-            pdependentparameters.push_back(pdiagnoselist[param]);
-        }
 
         // Detecting conflicting or redundant constraints
         if (constrNum > rank) { // conflicting or redundant constraints
@@ -4364,6 +4264,94 @@ void System::makeSparseQRDecomposition( Eigen::MatrixXd &J, std::map<int,int> &j
 #endif
     }
 }
+
+void System::identifyDependentGeometryParametersInTransposedJacobianDenseQRDecomposition(
+                        const Eigen::FullPivHouseholderQR<Eigen::MatrixXd>& qrJT,
+                        const GCS::VEC_pD &pdiagnoselist,
+                        int paramsNum, int rank)
+{
+    // DETECTING CONSTRAINT SOLVER PARAMETERS
+    //
+    // NOTE: This is only true for dense QR with full pivoting, because solve parameters get reordered.
+    // I am unable to adapt it to Sparse QR. (abdullah). See:
+    //
+    // https://stackoverflow.com/questions/49009771/getting-rows-transpositions-with-sparse-qr
+    // https://forum.kde.org/viewtopic.php?f=74&t=151239
+    //
+    // R (original version, not R here which is trimmed to not have empty rows)
+    // has paramsNum rows, the first "rank" rows correspond to parameters that are constraint
+
+    // Calculate the Permutation matrix from the Transposition matrix
+    Eigen::PermutationMatrix<Eigen::Dynamic, Eigen::Dynamic> rowPermutations;
+
+    rowPermutations.setIdentity(paramsNum);
+
+    // P.J.P' = Q.R see https://eigen.tuxfamily.org/dox/classEigen_1_1FullPivHouseholderQR.html
+    const MatrixIndexType rowTranspositions = qrJT.rowsTranspositions();
+
+    for(int k = 0; k < rank; ++k)
+        rowPermutations.applyTranspositionOnTheRight(k, rowTranspositions.coeff(k));
+
+#ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+    std::stringstream stream;
+#endif
+
+    // params (in the order of J) shown as independent from QR
+    std::set<int> indepParamCols;
+    std::set<int> depParamCols;
+
+    for (int j=0; j < rank; j++) {
+
+            int origRow = rowPermutations.indices()[j];
+
+            indepParamCols.insert(origRow);
+
+            // NOTE: Q*R = transpose(J), so the row of R corresponds to the col of J (the rows of transpose(J)).
+            // The cols of J are the parameters, the rows are the constraints.
+#ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+            stream << "R row " << j << " = J col " << origRow << std::endl;
+#endif
+    }
+
+#ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+    std::string tmp = stream.str();
+
+    SolverReportingManager::Manager().LogString(tmp);
+#endif
+
+    // If not independent, must be dependent
+    for(int j=0; j < paramsNum; j++) {
+        auto result = indepParamCols.find(j);
+        if(result == indepParamCols.end()) {
+            depParamCols.insert(j);
+        }
+    }
+
+#ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+    stream.flush();
+
+    stream << "Indep params: [";
+    for(auto indep :indepParamCols)
+        stream << indep;
+    stream << "]" << std::endl;
+
+    stream << "Dep params: [";
+    for(auto dep :depParamCols)
+        stream << dep;
+    stream << "]" << std::endl;
+
+    tmp = stream.str();
+    SolverReportingManager::Manager().LogString(tmp);
+#endif
+
+
+    for( auto param : depParamCols) {
+        pdependentparameters.push_back(pdiagnoselist[param]);
+    }
+
+}
+
+
 
 void System::clearSubSystems()
 {
