@@ -3951,6 +3951,7 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
             return dofs;
         }
     }
+#ifdef EIGEN_SPARSEQR_COMPATIBLE
     else if(qrAlgorithm==EigenSparseQR){
         makeSparseQRDecomposition( J, jacobianconstraintmap, SqrJT, rank, R);
 
@@ -3978,7 +3979,7 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
             return dofs;
         }
     }
-
+#endif
 
     hasDiagnosis = true;
     dofs = pdiagnoselist.size();
