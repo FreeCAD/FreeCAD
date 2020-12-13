@@ -253,6 +253,8 @@ class ToolControllerEditor(object):
         self.form.vertFeed.editingFinished.connect(self.refresh)
         self.form.horizRapid.editingFinished.connect(self.refresh)
         self.form.vertRapid.editingFinished.connect(self.refresh)
+        self.form.spindleSpeed.editingFinished.connect(self.refresh)
+        self.form.spindleDirection.currentIndexChanged.connect(self.refresh)
 
 
 class TaskPanel:
