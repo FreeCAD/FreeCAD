@@ -141,6 +141,15 @@ namespace GCS
                                         Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> > &SqrJT,
                                         int &paramsNum, int &constrNum, int &rank, Eigen::MatrixXd &R);
 
+        // This function name is long for a reason:
+        // - Only for DenseQR
+        // - Only for Transposed Jacobian QR decomposition
+        void identifyDependentGeometryParametersInTransposedJacobianDenseQRDecomposition(
+                                        const Eigen::FullPivHouseholderQR<Eigen::MatrixXd>& qrJT,
+                                        const GCS::VEC_pD &pdiagnoselist,
+                                        int paramsNum, int rank
+        );
+
         #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
         void extractSubsystem(SubSystem *subsys, bool isRedundantsolving);
         #endif
