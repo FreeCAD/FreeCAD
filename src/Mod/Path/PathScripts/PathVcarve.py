@@ -260,14 +260,12 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             path.append(Path.Command("G0 Z{}".format(obj.SafeHeight.Value)))
             e = edges[0]
             p = e.valueAt(e.FirstParameter)
-            path.append(Path.Command("G0 X{} Y{} Z{}".format(p.x, p.y,
-                obj.SafeHeight.Value)))
-            c = Path.Command("G1 X{} Y{} Z{} F{}".format(p.x, p.y, p.z,
-                obj.ToolController.HorizFeed.Value))
-            path.append(c)
+            path.append(Path.Command("G0 X{} Y{} Z{}".format(p.x, p.y, obj.SafeHeight.Value)))
+            hSpeed = obj.ToolController.HorizFeed.Value
+            vSpeed = obj.ToolController.VertFeed.Value
+            path.append(Path.Command("G1 X{} Y{} Z{} F{}".format(p.x, p.y, p.z, vSpeed)))
             for e in edges:
-                path.extend(PathGeom.cmdsForEdge(e,
-                    hSpeed=obj.ToolController.HorizFeed.Value))
+                path.extend(PathGeom.cmdsForEdge(e, hSpeed=hSpeed, vSpeed=vSpeed))
 
             return path
 
