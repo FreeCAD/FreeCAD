@@ -116,14 +116,14 @@ void PropertyFemMesh::setPyObject(PyObject *value)
 App::Property *PropertyFemMesh::Copy(void) const
 {
     PropertyFemMesh *prop = new PropertyFemMesh();
-    prop->_FemMesh = this->_FemMesh;
+    *prop->_FemMesh = *this->_FemMesh;
     return prop;
 }
 
 void PropertyFemMesh::Paste(const App::Property &from)
 {
     aboutToSetValue();
-    _FemMesh = dynamic_cast<const PropertyFemMesh&>(from)._FemMesh;
+    *_FemMesh = *dynamic_cast<const PropertyFemMesh&>(from)._FemMesh;
     hasSetValue();
 }
 
