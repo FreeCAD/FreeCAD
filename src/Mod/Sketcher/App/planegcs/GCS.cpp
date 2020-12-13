@@ -3929,217 +3929,59 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
                                                         qrJT,
                                                         pdiagnoselist,
                                                         paramsNum, rank);
+
+            // Detecting conflicting or redundant constraints
+            if (constrNum > rank) { // conflicting or redundant constraints
+
+                int nonredundantconstrNum;
+
+                identifyConflictingRedundantConstraints(alg, qrJT, jacobianconstraintmap, tagmultiplicity, pdiagnoselist,
+                                                        R, constrNum, rank, nonredundantconstrNum);
+
+                if (paramsNum == rank && nonredundantconstrNum > rank) { // over-constrained
+                    hasDiagnosis = true;
+                    dofs = paramsNum - nonredundantconstrNum;
+                    return dofs;
+                }
+            }
+
+            hasDiagnosis = true;
+            dofs = paramsNum - rank;
+            return dofs;
         }
     }
     else if(qrAlgorithm==EigenSparseQR){
         makeSparseQRDecomposition( J, jacobianconstraintmap, SqrJT, paramsNum, constrNum, rank, R);
-    }
 
+        if (J.rows() > 0) {
+            // Detecting conflicting or redundant constraints
+            if (constrNum > rank) { // conflicting or redundant constraints
 
+                int nonredundantconstrNum;
 
-    if (J.rows() > 0) {
+                identifyConflictingRedundantConstraints(alg, SqrJT, jacobianconstraintmap, tagmultiplicity, pdiagnoselist,
+                                                        R, constrNum, rank, nonredundantconstrNum);
 
-        // Detecting conflicting or redundant constraints
-        if (constrNum > rank) { // conflicting or redundant constraints
-            for (int i=1; i < rank; i++) {
-                // eliminate non zeros above pivot
-                assert(R(i,i) != 0);
-                for (int row=0; row < i; row++) {
-                    if (R(row,i) != 0) {
-                        double coef=R(row,i)/R(i,i);
-                        R.block(row,i+1,1,constrNum-i-1) -= coef * R.block(i,i+1,1,constrNum-i-1);
-                        R(row,i) = 0;
-                    }
-                }
-            }
-            std::vector< std::vector<Constraint *> > conflictGroups(constrNum-rank);
-            for (int j=rank; j < constrNum; j++) {
-                for (int row=0; row < rank; row++) {
-                    if (fabs(R(row,j)) > 1e-10) {
-                        int origCol = 0;
-
-                        if(qrAlgorithm==EigenDenseQR)
-                            origCol=qrJT.colsPermutation().indices()[row];
-#ifdef EIGEN_SPARSEQR_COMPATIBLE
-                        else if(qrAlgorithm==EigenSparseQR)
-                            origCol=SqrJT.colsPermutation().indices()[row];
-#endif
-                        //conflictGroups[j-rank].push_back(clist[origCol]);
-                        conflictGroups[j-rank].push_back(clist[jacobianconstraintmap.at(origCol)]);
-                    }
-                }
-                int origCol = 0;
-
-                if(qrAlgorithm==EigenDenseQR)
-                    origCol=qrJT.colsPermutation().indices()[j];
-
-#ifdef EIGEN_SPARSEQR_COMPATIBLE
-                else if(qrAlgorithm==EigenSparseQR)
-                    origCol=SqrJT.colsPermutation().indices()[j];
-#endif
-                //conflictGroups[j-rank].push_back(clist[origCol]);
-                conflictGroups[j-rank].push_back(clist[jacobianconstraintmap.at(origCol)]);
-            }
-
-            // Augment the information regarding the group of constraints that are conflicting or redundant.
-            if(debugMode==IterationLevel) {
-                SolverReportingManager::Manager().LogGroupOfConstraints("Analysing groups of constraints of special interest", conflictGroups);
-            }
-
-            // try to remove the conflicting constraints and solve the
-            // system in order to check if the removed constraints were
-            // just redundant but not really conflicting
-            std::set<Constraint *> skipped;
-            SET_I satisfiedGroups;
-            while (1) {
-                std::map< Constraint *, SET_I > conflictingMap;
-                for (std::size_t i=0; i < conflictGroups.size(); i++) {
-                    if (satisfiedGroups.count(i) == 0) {
-                        for (std::size_t j=0; j < conflictGroups[i].size(); j++) {
-                            Constraint *constr = conflictGroups[i][j];
-                            if (constr->getTag() != 0) // exclude constraints tagged with zero
-                                conflictingMap[constr].insert(i);
-                        }
-                    }
-                }
-                if (conflictingMap.empty())
-                    break;
-
-                int maxPopularity = 0;
-                Constraint *mostPopular = NULL;
-                for (std::map< Constraint *, SET_I >::const_iterator it=conflictingMap.begin();
-                     it != conflictingMap.end(); ++it) {
-                    if (static_cast<int>(it->second.size()) > maxPopularity ||
-                        (static_cast<int>(it->second.size()) == maxPopularity && mostPopular &&
-                        tagmultiplicity.at(it->first->getTag()) < tagmultiplicity.at(mostPopular->getTag())) ||
-
-                        (static_cast<int>(it->second.size()) == maxPopularity && mostPopular &&
-                        tagmultiplicity.at(it->first->getTag()) == tagmultiplicity.at(mostPopular->getTag()) &&
-                         it->first->getTag() > mostPopular->getTag())
-
-                    ) {
-                        mostPopular = it->first;
-                        maxPopularity = it->second.size();
-                    }
-                }
-                if (maxPopularity > 0) {
-                    skipped.insert(mostPopular);
-                    for (SET_I::const_iterator it=conflictingMap[mostPopular].begin();
-                         it != conflictingMap[mostPopular].end(); ++it)
-                        satisfiedGroups.insert(*it);
+                if (paramsNum == rank && nonredundantconstrNum > rank) { // over-constrained
+                    hasDiagnosis = true;
+                    dofs = paramsNum - nonredundantconstrNum;
+                    return dofs;
                 }
             }
 
-            std::vector<Constraint *> clistTmp;
-            clistTmp.reserve(clist.size());
-            for (std::vector<Constraint *>::iterator constr=clist.begin();
-                constr != clist.end(); ++constr) {
-                if ((*constr)->isDriving() && skipped.count(*constr) == 0)
-                    clistTmp.push_back(*constr);
-            }
-
-            SubSystem *subSysTmp = new SubSystem(clistTmp, pdiagnoselist);
-            int res = solve(subSysTmp,true,alg,true);
-
-            if(debugMode==Minimal || debugMode==IterationLevel) {
-                std::string solvername;
-                switch (alg) {
-                    case 0:
-                        solvername = "BFGS";
-                        break;
-                    case 1: // solving with the LevenbergMarquardt solver
-                        solvername = "LevenbergMarquardt";
-                        break;
-                    case 2: // solving with the BFGS solver
-                        solvername = "DogLeg";
-                        break;
-                }
-
-                Base::Console().Log("Sketcher::RedundantSolving-%s-\n",solvername.c_str());
-            }
-
-            if (res == Success) {
-                subSysTmp->applySolution();
-                for (std::set<Constraint *>::const_iterator constr=skipped.begin();
-                     constr != skipped.end(); ++constr) {
-                    double err = (*constr)->error();
-                    if (err * err < convergenceRedundant)
-                        redundant.insert(*constr);
-                }
-                resetToReference();
-
-                if(debugMode==Minimal || debugMode==IterationLevel) {
-                    Base::Console().Log("Sketcher Redundant solving: %d redundants\n",redundant.size());
-                }
-
-                std::vector< std::vector<Constraint *> > conflictGroupsOrig=conflictGroups;
-                conflictGroups.clear();
-                for (int i=conflictGroupsOrig.size()-1; i >= 0; i--) {
-                    bool isRedundant = false;
-                    for (std::size_t j=0; j < conflictGroupsOrig[i].size(); j++) {
-                        if (redundant.count(conflictGroupsOrig[i][j]) > 0) {
-                            isRedundant = true;
-
-                            if(debugMode==IterationLevel) {
-                                Base::Console().Log("(Partially) Redundant, Group %d, index %d, Tag: %d\n", i,j, (conflictGroupsOrig[i][j])->getTag());
-                            }
-
-                            break;
-                        }
-                    }
-                    if (!isRedundant)
-                        conflictGroups.push_back(conflictGroupsOrig[i]);
-                    else
-                        constrNum--;
-                }
-            }
-            delete subSysTmp;
-
-            // simplified output of conflicting tags
-            SET_I conflictingTagsSet;
-            for (std::size_t i=0; i < conflictGroups.size(); i++) {
-                for (std::size_t j=0; j < conflictGroups[i].size(); j++) {
-                    conflictingTagsSet.insert(conflictGroups[i][j]->getTag());
-                }
-            }
-            conflictingTagsSet.erase(0); // exclude constraints tagged with zero
-            conflictingTags.resize(conflictingTagsSet.size());
-            std::copy(conflictingTagsSet.begin(), conflictingTagsSet.end(),
-                      conflictingTags.begin());
-
-            // output of redundant tags
-            SET_I redundantTagsSet;
-            for (std::set<Constraint *>::iterator constr=redundant.begin();
-                 constr != redundant.end(); ++constr)
-                redundantTagsSet.insert((*constr)->getTag());
-            // remove tags represented at least in one non-redundant constraint
-            for (std::vector<Constraint *>::iterator constr=clist.begin();
-                constr != clist.end(); ++constr) {
-                if (redundant.count(*constr) == 0)
-                    redundantTagsSet.erase((*constr)->getTag());
-            }
-            redundantTags.resize(redundantTagsSet.size());
-            std::copy(redundantTagsSet.begin(), redundantTagsSet.end(),
-                      redundantTags.begin());
-
-            if (paramsNum == rank && constrNum > rank) { // over-constrained
-                hasDiagnosis = true;
-                dofs = paramsNum - constrNum;
-                return dofs;
-            }
+            hasDiagnosis = true;
+            dofs = paramsNum - rank;
+            return dofs;
         }
-
-        hasDiagnosis = true;
-        dofs = paramsNum - rank;
-        return dofs;
     }
+
 
     hasDiagnosis = true;
     dofs = pdiagnoselist.size();
     return dofs;
 }
 
-void System::makeDenseQRDecomposition(  Eigen::MatrixXd &J, std::map<int,int> &jacobianconstraintmap,
+void System::makeDenseQRDecomposition(  const Eigen::MatrixXd &J, std::map<int,int> &jacobianconstraintmap,
                                         Eigen::FullPivHouseholderQR<Eigen::MatrixXd>& qrJT,
                                         int &paramsNum, int &constrNum, int &rank, Eigen::MatrixXd & R)
 {
@@ -4190,7 +4032,7 @@ void System::makeDenseQRDecomposition(  Eigen::MatrixXd &J, std::map<int,int> &j
 #endif
 }
 
-void System::makeSparseQRDecomposition( Eigen::MatrixXd &J, std::map<int,int> &jacobianconstraintmap,
+void System::makeSparseQRDecomposition( const Eigen::MatrixXd &J, std::map<int,int> &jacobianconstraintmap,
                                         Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> > &SqrJT,
                                         int &paramsNum, int &constrNum, int &rank, Eigen::MatrixXd & R)
 {
@@ -4351,6 +4193,186 @@ void System::identifyDependentGeometryParametersInTransposedJacobianDenseQRDecom
 
 }
 
+template <typename T>
+void System::identifyConflictingRedundantConstraints(   Algorithm alg,
+                                                        const T & qrJT,
+                                                        const std::map<int,int> &jacobianconstraintmap,
+                                                        const std::map< int , int> &tagmultiplicity,
+                                                        GCS::VEC_pD &pdiagnoselist,
+                                                        Eigen::MatrixXd &R,
+                                                        int constrNum, int rank,
+                                                        int &nonredundantconstrNum
+                                                    )
+{
+    for (int i=1; i < rank; i++) {
+        // eliminate non zeros above pivot
+        assert(R(i,i) != 0);
+        for (int row=0; row < i; row++) {
+            if (R(row,i) != 0) {
+                double coef=R(row,i)/R(i,i);
+                R.block(row,i+1,1,constrNum-i-1) -= coef * R.block(i,i+1,1,constrNum-i-1);
+                R(row,i) = 0;
+            }
+        }
+    }
+
+    std::vector< std::vector<Constraint *> > conflictGroups(constrNum-rank);
+    for (int j=rank; j < constrNum; j++) {
+        for (int row=0; row < rank; row++) {
+            if (fabs(R(row,j)) > 1e-10) {
+                int origCol = qrJT.colsPermutation().indices()[row];
+
+                conflictGroups[j-rank].push_back(clist[jacobianconstraintmap.at(origCol)]);
+            }
+        }
+        int origCol = qrJT.colsPermutation().indices()[j];
+
+        conflictGroups[j-rank].push_back(clist[jacobianconstraintmap.at(origCol)]);
+    }
+
+    // Augment the information regarding the group of constraints that are conflicting or redundant.
+    if(debugMode==IterationLevel) {
+        SolverReportingManager::Manager().LogGroupOfConstraints("Analysing groups of constraints of special interest", conflictGroups);
+    }
+
+    // try to remove the conflicting constraints and solve the
+    // system in order to check if the removed constraints were
+    // just redundant but not really conflicting
+    std::set<Constraint *> skipped;
+    SET_I satisfiedGroups;
+    while (1) {
+        std::map< Constraint *, SET_I > conflictingMap;
+        for (std::size_t i=0; i < conflictGroups.size(); i++) {
+            if (satisfiedGroups.count(i) == 0) {
+                for (std::size_t j=0; j < conflictGroups[i].size(); j++) {
+                    Constraint *constr = conflictGroups[i][j];
+                    if (constr->getTag() != 0) // exclude constraints tagged with zero
+                        conflictingMap[constr].insert(i);
+                }
+            }
+        }
+        if (conflictingMap.empty())
+            break;
+
+        int maxPopularity = 0;
+        Constraint *mostPopular = NULL;
+        for (std::map< Constraint *, SET_I >::const_iterator it=conflictingMap.begin();
+                it != conflictingMap.end(); ++it) {
+            if (static_cast<int>(it->second.size()) > maxPopularity ||
+                (static_cast<int>(it->second.size()) == maxPopularity && mostPopular &&
+                tagmultiplicity.at(it->first->getTag()) < tagmultiplicity.at(mostPopular->getTag())) ||
+
+                (static_cast<int>(it->second.size()) == maxPopularity && mostPopular &&
+                tagmultiplicity.at(it->first->getTag()) == tagmultiplicity.at(mostPopular->getTag()) &&
+                    it->first->getTag() > mostPopular->getTag())
+
+            ) {
+                mostPopular = it->first;
+                maxPopularity = it->second.size();
+            }
+        }
+        if (maxPopularity > 0) {
+            skipped.insert(mostPopular);
+            for (SET_I::const_iterator it=conflictingMap[mostPopular].begin();
+                    it != conflictingMap[mostPopular].end(); ++it)
+                satisfiedGroups.insert(*it);
+        }
+    }
+
+    std::vector<Constraint *> clistTmp;
+    clistTmp.reserve(clist.size());
+    for (std::vector<Constraint *>::iterator constr=clist.begin();
+        constr != clist.end(); ++constr) {
+        if ((*constr)->isDriving() && skipped.count(*constr) == 0)
+            clistTmp.push_back(*constr);
+    }
+
+    SubSystem *subSysTmp = new SubSystem(clistTmp, pdiagnoselist);
+    int res = solve(subSysTmp,true,alg,true);
+
+    if(debugMode==Minimal || debugMode==IterationLevel) {
+        std::string solvername;
+        switch (alg) {
+            case 0:
+                solvername = "BFGS";
+                break;
+            case 1: // solving with the LevenbergMarquardt solver
+                solvername = "LevenbergMarquardt";
+                break;
+            case 2: // solving with the BFGS solver
+                solvername = "DogLeg";
+                break;
+        }
+
+        Base::Console().Log("Sketcher::RedundantSolving-%s-\n",solvername.c_str());
+    }
+
+    if (res == Success) {
+        subSysTmp->applySolution();
+        for (std::set<Constraint *>::const_iterator constr=skipped.begin();
+                constr != skipped.end(); ++constr) {
+            double err = (*constr)->error();
+            if (err * err < convergenceRedundant)
+                redundant.insert(*constr);
+        }
+        resetToReference();
+
+        if(debugMode==Minimal || debugMode==IterationLevel) {
+            Base::Console().Log("Sketcher Redundant solving: %d redundants\n",redundant.size());
+        }
+
+        std::vector< std::vector<Constraint *> > conflictGroupsOrig=conflictGroups;
+        conflictGroups.clear();
+        for (int i=conflictGroupsOrig.size()-1; i >= 0; i--) {
+            bool isRedundant = false;
+            for (std::size_t j=0; j < conflictGroupsOrig[i].size(); j++) {
+                if (redundant.count(conflictGroupsOrig[i][j]) > 0) {
+                    isRedundant = true;
+
+                    if(debugMode==IterationLevel) {
+                        Base::Console().Log("(Partially) Redundant, Group %d, index %d, Tag: %d\n", i,j, (conflictGroupsOrig[i][j])->getTag());
+                    }
+
+                    break;
+                }
+            }
+            if (!isRedundant)
+                conflictGroups.push_back(conflictGroupsOrig[i]);
+            else
+                constrNum--;
+        }
+    }
+    delete subSysTmp;
+
+    // simplified output of conflicting tags
+    SET_I conflictingTagsSet;
+    for (std::size_t i=0; i < conflictGroups.size(); i++) {
+        for (std::size_t j=0; j < conflictGroups[i].size(); j++) {
+            conflictingTagsSet.insert(conflictGroups[i][j]->getTag());
+        }
+    }
+    conflictingTagsSet.erase(0); // exclude constraints tagged with zero
+    conflictingTags.resize(conflictingTagsSet.size());
+    std::copy(conflictingTagsSet.begin(), conflictingTagsSet.end(),
+                conflictingTags.begin());
+
+    // output of redundant tags
+    SET_I redundantTagsSet;
+    for (std::set<Constraint *>::iterator constr=redundant.begin();
+            constr != redundant.end(); ++constr)
+        redundantTagsSet.insert((*constr)->getTag());
+    // remove tags represented at least in one non-redundant constraint
+    for (std::vector<Constraint *>::iterator constr=clist.begin();
+        constr != clist.end(); ++constr) {
+        if (redundant.count(*constr) == 0)
+            redundantTagsSet.erase((*constr)->getTag());
+    }
+    redundantTags.resize(redundantTagsSet.size());
+    std::copy(redundantTagsSet.begin(), redundantTagsSet.end(),
+                redundantTags.begin());
+
+    nonredundantconstrNum = constrNum;
+}
 
 
 void System::clearSubSystems()
