@@ -403,7 +403,7 @@ void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> converted)
         throw Base::RuntimeError("TaskLeaderLine - new markup object not found");
     }
     FCMD_OBJ_CMD(m_basePage,"addView(" << Gui::Command::getObjectCmd(obj) << ")");
-    FCMD_OBJ_CMD(obj,"LeaderParent = " << Gui::Command::getObjectCmd(m_basePage));
+    FCMD_OBJ_CMD(obj,"LeaderParent = " << Gui::Command::getObjectCmd(m_baseFeat));
 
     if (obj->isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())) {
         m_lineFeat = static_cast<TechDraw::DrawLeaderLine*>(obj);
