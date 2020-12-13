@@ -503,7 +503,7 @@ void ViewProviderMesh::updateData(const App::Property* prop)
 QIcon ViewProviderMesh::getIcon() const
 {
 #if 1
-    static QIcon icon = Gui::BitmapFactory().pixmap("Tree_Mesh");
+    static QIcon icon = Gui::BitmapFactory().pixmap("Mesh_Tree");
     return icon;
 #else
     static const char * const Mesh_Feature_xpm[] = {
