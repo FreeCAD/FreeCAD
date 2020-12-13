@@ -225,13 +225,13 @@ class ToolController:
                 obj.addProperty("App::PropertyLink", "Tool", "Base", QtCore.QT_TRANSLATE_NOOP("PathToolController", "The tool used by this controller"))
 
 
-def Create(name='Default Tool', tool=None, toolNumber=1, assignViewProvider=True):
+def Create(name='TC: Default Tool', tool=None, toolNumber=1, assignViewProvider=True):
     legacyTool = PathPreferences.toolsReallyUseLegacyTools() if tool is None else isinstance(tool, Path.Tool)
 
     PathLog.track(tool, toolNumber, legacyTool)
 
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    obj.Label = "TC: {}".format(name)
+    obj.Label = name
     obj.Proxy = ToolController(obj, legacyTool)
 
     if FreeCAD.GuiUp and assignViewProvider:
