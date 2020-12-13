@@ -161,6 +161,7 @@ namespace GCS
                                                         int &nonredundantconstrNum
         );
 
+        void eliminateNonZerosOverPivotInUpperTriangularMatrix(Eigen::MatrixXd &R, int rank);
 
         #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
         void extractSubsystem(SubSystem *subsys, bool isRedundantsolving);
