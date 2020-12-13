@@ -899,10 +899,8 @@ int SoBrepFaceSet::overrideMaterialBinding(
     int pushed = 0;
     auto dispModeElement = Gui::SoFCDisplayModeElement::getInstance(state);
     if (dispModeElement->getTransparency() != 0.0 || dispModeElement->getFaceColor()) {
-        state->push();
 
         overrideTransparency = dispModeElement->getTransparency();
-        pushed = overrideTransparency==0.0 ? -1 : 1;
         const SbColor *color = dispModeElement->getFaceColor();
 
         // Here the "Hidden Lines" mode wants to override transparency and
@@ -920,12 +918,20 @@ int SoBrepFaceSet::overrideMaterialBinding(
             this->uniqueId = std::hash<float>()(overrideTransparency);
 
         if (dispModeElement->showHiddenLines()) {
+            if (!pushed) {
+                pushed = overrideTransparency==0.0 ? -1 : 1;
+                state->push();
+            }
             SoLazyElement::setTransparency(state,this,1,&overrideTransparency,&packer);
             SoOverrideElement::setTransparencyOverride(state, this, true);
             SoTextureEnabledElement::set(state,this,false);
         }
 
         if(color) {
+            if (!pushed) {
+                pushed = overrideTransparency==0.0 ? -1 : 1;
+                state->push();
+            }
             hiddenLineColor = *color;
             SoLazyElement::setDiffuse(state, this, 1, &hiddenLineColor, &packer);
             SoMaterialBindingElement::set(state,SoMaterialBindingElement::OVERALL);
@@ -1116,7 +1122,7 @@ int SoBrepFaceSet::overrideMaterialBinding(
                     int idx = v.first;
                     if(idx>=0 && idx<partIndex.getNum()) {
                         if(!ctx2->applyColor(idx,packedColors,hasTransparency)) {
-                            auto t = idx<trans_size?trans[idx]:trans0;
+                            auto t = std::max(idx<trans_size?trans[idx]:trans0, overrideTransparency);
                             packedColors.push_back(diffuse[idx].getPackedValue(t));
                         }
                         matIndex[idx] = packedColors.size()-1;
@@ -1140,7 +1146,7 @@ int SoBrepFaceSet::overrideMaterialBinding(
             assert(diffuse_size >= partIndex.getNum());
             packedColors.reserve(diffuse_size+3);
             for(int i=0;i<partIndex.getNum();++i) {
-                auto t = i<trans_size?trans[i]:trans0;
+                auto t = std::max(i<trans_size?trans[i]:trans0, overrideTransparency);
                 matIndex.push_back(i);
                 if(!ctx2 || !ctx2->applyColor(i,packedColors,hasTransparency))
                     packedColors.push_back(diffuse[i].getPackedValue(t));
