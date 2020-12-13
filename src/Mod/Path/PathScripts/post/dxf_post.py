@@ -22,15 +22,12 @@
 # ***************************************************************************/
 from __future__ import print_function
 import FreeCAD
-# from FreeCAD import Units
 import datetime
-# import PathScripts
-# import PathScripts.PostUtils as PostUtils
 import PathScripts.PathGeom as PathGeom
 import Part
-# import Draft
 import importDXF
 import Path
+import PathScripts.PathLog as PathLog
 
 TOOLTIP = '''
 This is a postprocessor file for the Path workbench. It is used to
@@ -53,6 +50,10 @@ now = datetime.datetime.now()
 
 # # These globals set common customization preferences
 OUTPUT_HEADER = True
+
+
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+# PathLog.trackModule(PathLog.thisModule())
 
 
 # to distinguish python built-in open function from the one declared below
@@ -99,6 +100,7 @@ def parse(pathobj):
     # Gotta start somewhere.  Assume 0,0,0
     curPoint = FreeCAD.Vector(0, 0, 0)
     for c in pathobj.Path.Commands:
+        PathLog.debug('{} -> {}'.format(curPoint, c))
         if 'Z' in c.Parameters:
             newparams = c.Parameters
             newparams.pop('Z', None)
@@ -109,27 +111,30 @@ def parse(pathobj):
 
         # ignore gcode that isn't moving
         if flatcommand.Name not in feedcommands + rapidcommands:
-                continue
+            PathLog.debug('non move')
+            continue
 
         # ignore pure vertical feed and rapid
-        if (flatcommand.Parameters.get('X', curPoint.x) == curPoint.x and
-                flatcommand.Parameters.get('Y ', curPoint.y) == curPoint.y):
-                continue
+        if (flatcommand.Parameters.get('X', curPoint.x) == curPoint.x
+                and flatcommand.Parameters.get('Y', curPoint.y) == curPoint.y):
+            PathLog.debug('vertical')
+            continue
 
         # feeding move.  Build an edge
         if flatcommand.Name in feedcommands:
-                edges.append(PathGeom.edgeForCmd(flatcommand, curPoint))
+            edges.append(PathGeom.edgeForCmd(flatcommand, curPoint))
+            PathLog.debug('feeding move')
 
         # update the curpoint
         curPoint.x = flatcommand.Parameters['X']
         curPoint.y = flatcommand.Parameters['Y']
 
     if len(edges) > 0:
-            candidates = Part.sortEdges(edges)
-            for c in candidates:
-                obj = FreeCAD.ActiveDocument.addObject("Part::Feature", "Wire")
-                obj.Shape = Part.Wire(c)
-                objlist.append(obj)
+        candidates = Part.sortEdges(edges)
+        for c in candidates:
+            obj = FreeCAD.ActiveDocument.addObject("Part::Feature", "Wire")
+            obj.Shape = Part.Wire(c)
+            objlist.append(obj)
 
     return objlist
 
