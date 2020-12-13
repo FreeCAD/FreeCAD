@@ -25,12 +25,12 @@
 #pragma warning(disable : 4996)
 #endif
 
-//#define _GCS_DEBUG
-//#define _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
-//#define _DEBUG_TO_FILE // Many matrices surpass the report view string size.
-#undef _GCS_DEBUG
-#undef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
-#undef _DEBUG_TO_FILE
+#define _GCS_DEBUG
+#define _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+#define _DEBUG_TO_FILE // Many matrices surpass the report view string size.
+//#undef _GCS_DEBUG
+//#undef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+//#undef _DEBUG_TO_FILE
 
 // This has to be included BEFORE any EIGEN include
 // This format is Sage compatible, so you can just copy/paste the matrix into Sage
@@ -3879,6 +3879,36 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
 
 
     makeReducedJacobian(J, jacobianconstraintmap, pdiagnoselist, tagmultiplicity);
+
+    // There is a legacy decision to use QR decomposition. I (abdullah) do not know all the
+    // consideration taken in that decisions. I see that:
+    // - QR decomposition is able to provide information about the rank and redundant/conflicting constraints
+    // - The QR decomposition of J and the QR decomposition of the transpose of J are unrelated (for reasons see below):
+         https://mathoverflow.net/questions/338729/translate-between-qr-decomposition-of-a-and-a-transpose
+    // - QR is cheaper than a SVD decomposition
+    // - QR is more expensive than a rank revealing LU factorization
+    // - QR is less stable than SVD with respect to rank
+    // - It is unclear whether it is possible to obtain information about redundancy with SVD and LU
+
+    // Given this legacy decision, the following is observed:
+    // - A = QR decomposition can be used for the diagonise of dependency of the "columns" of A. the
+    // reason is that matrix R is upper triangular with columns of A showing the dependencies.
+    // - The same does not apply to the "rows".
+    // - For this reason, to enable a full diagnose of constraints, a QR decomposition must be done on
+    // the transpose of the Jacobian matrix (J), this is JT.
+
+    // Eigen capabilities:
+    // - If Eigen full pivoting QR decomposition is used, it is possible to track the rows of JT during
+    //   the decomposition. This can be leveraged to identify a set of independent rows of JT (geometry)
+    //   that form a rank N basis. However, because the R matrix is of the JT decomposition and not the J
+    //   decomposition, it is not possible to reduce the system to identify exactly which rows are dependent.
+    // - The effect is that it provides a set of parameters of geometry that are not constraint, but it does not
+    //   identify ALL geometries that are not fixed.
+    // - If SpareQR is used, then it is not possible to track the rows of JT during decomposition. I do not know
+    //   if it is still possible to obtain geometry information at all from SparseQR. After several years these
+    //   questions remain open:
+    //      https://stackoverflow.com/questions/49009771/getting-rows-transpositions-with-sparse-qr
+    //      https://forum.kde.org/viewtopic.php?f=74&t=151239
 
     // QR decomposition method selection: SparseQR vs DenseQR
 
