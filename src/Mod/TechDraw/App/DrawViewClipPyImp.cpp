@@ -93,27 +93,20 @@ PyObject* DrawViewClipPy::removeView(PyObject* args)
 PyObject* DrawViewClipPy::getChildViewNames(PyObject* args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return 0;
+        return nullptr;
 
     DrawViewClip* clip = getDrawViewClipPtr();
     std::vector<std::string> strings = clip->getChildViewNames();
     int stringSize = strings.size();
 
-    PyObject* result = PyList_New(stringSize);
+    Py::List result(stringSize);
 
     std::vector<std::string>::iterator it = strings.begin();
     for( ; it != strings.end(); it++) {
-#if PY_MAJOR_VERSION < 3
-        PyObject* pString = PyString_FromString(it->c_str());           //TODO: unicode & py3
-#else
-        PyObject* pString = PyUnicode_FromString(it->c_str());
-#endif
-        //int rc =
-        static_cast<void> (PyList_Append(result, pString));
+        result.append(Py::String(*it));
     }
 
-//    PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return result;
+    return Py::new_reference_to(result);
 }
 
 PyObject *DrawViewClipPy::getCustomAttributes(const char* ) const
