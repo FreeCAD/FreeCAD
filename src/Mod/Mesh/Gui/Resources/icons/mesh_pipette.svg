@@ -15,12 +15,12 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.5 r10040"
-   sodipodi:docname="mesh_pipette.svg"
+   sodipodi:docname="Mesh_Pipette.svg"
    inkscape:export-filename="/home/user/Downloads/cad/mystuff/icons/main_icons/pipette_32px.png"
    inkscape:export-xdpi="45"
    inkscape:export-ydpi="45">
   <title
-     id="title3733">mesh_pipette</title>
+     id="title3733">Mesh_Pipette</title>
   <defs
      id="defs4">
     <linearGradient
@@ -158,7 +158,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title>mesh_pipette</dc:title>
+        <dc:title>Mesh_Pipette</dc:title>
         <cc:license
            rdf:resource="https://www.gnu.org/copyleft/lesser.html" />
         <dc:rights>
@@ -171,7 +171,7 @@
             <dc:title>FreeCAD</dc:title>
           </cc:Agent>
         </dc:publisher>
-        <dc:identifier>FreeCAD/src/Mod/Mesh/Gui/Resources/icons/mesh_pipette.svg</dc:identifier>
+        <dc:identifier>FreeCAD/src/Mod/Mesh/Gui/Resources/icons/Mesh_Pipette.svg</dc:identifier>
         <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:subject>
           <rdf:Bag>
