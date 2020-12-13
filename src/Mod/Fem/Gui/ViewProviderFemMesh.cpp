@@ -61,6 +61,7 @@
 #include "ViewProviderFemMesh.h"
 #include "ViewProviderFemMeshPy.h"
 
+#include <Gui/SoFCUnifiedSelection.h>
 #include <Mod/Fem/App/FemMeshObject.h>
 #include <Mod/Fem/App/FemMesh.h>
 #include <App/Document.h>
@@ -69,7 +70,6 @@
 #include <Base/Console.h>
 #include <Base/TimeInfo.h>
 #include <Base/BoundBox.h>
-
 
 
 using namespace FemGui;
@@ -340,6 +340,11 @@ void ViewProviderFemMesh::attach(App::DocumentObject *pcObj)
     pcWireNodeRoot->addChild(pcPointsRoot);
     pcWireNodeRoot->addChild(pcWireRoot);
     addDisplayMaskMode(pcWireNodeRoot, Private::dm_wire_node);
+
+    if (pcModeSwitch->isOfType(Gui::SoFCSwitch::getClassTypeId())) {
+        static_cast<Gui::SoFCSwitch*>(pcModeSwitch)->defaultChild = 
+            pcModeSwitch->findChild(pcFlatWireRoot);
+    }
 }
 
 void ViewProviderFemMesh::setDisplayMode(const char* ModeName)
