@@ -139,7 +139,7 @@ namespace GCS
 
         void makeSparseQRDecomposition( const Eigen::MatrixXd &J, std::map<int,int> &jacobianconstraintmap,
                                         Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> > &SqrJT,
-                                        int &rank, Eigen::MatrixXd &R);
+                                        int &rank, Eigen::MatrixXd &R, bool transposeJ = true);
 
         // This function name is long for a reason:
         // - Only for DenseQR
