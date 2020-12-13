@@ -4042,35 +4042,40 @@ void System::makeDenseQRDecomposition(  const Eigen::MatrixXd &J, std::map<int,i
 
 void System::makeSparseQRDecomposition( const Eigen::MatrixXd &J, std::map<int,int> &jacobianconstraintmap,
                                         Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> > &SqrJT,
-                                        int &rank, Eigen::MatrixXd & R)
+                                        int &rank, Eigen::MatrixXd & R, bool transposeJ)
 {
 #ifdef EIGEN_SPARSEQR_COMPATIBLE
-    Eigen::SparseMatrix<double> SJ;
+   Eigen::SparseMatrix<double> SJ;
 
     // this creation is not optimized (done using triplets)
     // however the time this takes is negligible compared to the
     // time the QR decomposition itself takes
     SJ = J.sparseView();
     SJ.makeCompressed();
-#endif
 
-#ifdef _GCS_DEBUG
+    #ifdef _GCS_DEBUG
     SolverReportingManager::Manager().LogMatrix("J",J);
-#endif
+    #endif
 
-#ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+    #ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
     Eigen::MatrixXd Q; // Obtaining the Q matrix with Sparse QR is buggy, see comments below
     Eigen::MatrixXd R2; // Intended for a trapezoidal matrix, where R is the top triangular matrix of the R2 trapezoidal matrix
-#endif
+    #endif
 
-    int paramsNum = 0;
-    int constrNum = 0;
+    // For a transposed J SJG rows are paramsNum and cols are constrNum
+    // For a non-transposed J SJG rows are constrNum and cols are paramsNum
+    int rowsNum = 0;
+    int colsNum = 0;
 
-#ifdef EIGEN_SPARSEQR_COMPATIBLE
     if (SJ.rows() > 0) {
-        auto SJT = SJ.topRows(jacobianconstraintmap.size()).transpose();
-        if (SJT.rows() > 0 && SJT.cols() > 0) {
-            SqrJT.compute(SJT);
+        Eigen::SparseMatrix<double> SJG;
+        if(transposeJ)
+            SJG = SJ.topRows(jacobianconstraintmap.size()).transpose();
+        else
+            SJG = SJ.topRows(jacobianconstraintmap.size());
+
+        if (SJG.rows() > 0 && SJG.cols() > 0) {
+            SqrJT.compute(SJG);
             // Do not ask for Q Matrix!!
             // At Eigen 3.2 still has a bug that this only works for square matrices
             // if enabled it will crash
@@ -4079,15 +4084,15 @@ void System::makeSparseQRDecomposition( const Eigen::MatrixXd &J, std::map<int,i
             //Q = QS;
             #endif
 
-            paramsNum = SqrJT.rows();
-            constrNum = SqrJT.cols();
+            rowsNum = SqrJT.rows();
+            colsNum = SqrJT.cols();
             SqrJT.setPivotThreshold(qrpivotThreshold);
             rank = SqrJT.rank();
 
-            if (constrNum >= paramsNum)
+            if (colsNum >= rowsNum)
                 R = SqrJT.matrixR().triangularView<Eigen::Upper>();
             else
-                R = SqrJT.matrixR().topRows(constrNum)
+                R = SqrJT.matrixR().topRows(colsNum)
                 .triangularView<Eigen::Upper>();
 
             #ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
@@ -4095,27 +4100,28 @@ void System::makeSparseQRDecomposition( const Eigen::MatrixXd &J, std::map<int,i
             #endif
         }
         else {
-            paramsNum = SJT.rows();
-            constrNum = SJT.cols();
+            rowsNum = SJG.rows();
+            colsNum = SJG.cols();
         }
     }
-#endif
 
-    if(debugMode==IterationLevel) {
-        SolverReportingManager::Manager().LogQRSystemInformation(*this, paramsNum, constrNum, rank);
+    if(transposeJ && debugMode==IterationLevel) {
+        SolverReportingManager::Manager().LogQRSystemInformation(*this, rowsNum, colsNum, rank);
     }
 
+   #ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
     if (J.rows() > 0) {
-#ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
-    SolverReportingManager::Manager().LogMatrix("R", R);
 
-    SolverReportingManager::Manager().LogMatrix("R2", R2);
+        SolverReportingManager::Manager().LogMatrix("R", R);
 
-#ifdef SPARSE_Q_MATRIX
-    SolverReportingManager::Manager().LogMatrix("Q", Q);
-#endif
-#endif
+        SolverReportingManager::Manager().LogMatrix("R2", R2);
+
+        #ifdef SPARSE_Q_MATRIX
+        SolverReportingManager::Manager().LogMatrix("Q", Q);
+        #endif
     }
+    #endif //_GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+#endif // EIGEN_SPARSEQR_COMPATIBLE
 }
 
 void System::identifyDependentGeometryParametersInTransposedJacobianDenseQRDecomposition(
