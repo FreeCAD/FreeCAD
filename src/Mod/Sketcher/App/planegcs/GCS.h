@@ -27,6 +27,17 @@
 #include <boost/concept_check.hpp>
 #include <boost/graph/graph_concepts.hpp>
 
+#include <Eigen/QR>
+
+#define EIGEN_VERSION (EIGEN_WORLD_VERSION * 10000 \
++ EIGEN_MAJOR_VERSION * 100 \
++ EIGEN_MINOR_VERSION)
+
+#if EIGEN_VERSION >= 30202
+    #define EIGEN_SPARSEQR_COMPATIBLE
+    #include <Eigen/Sparse>
+#endif
+
 namespace GCS
 {
     ///////////////////////////////////////
@@ -121,6 +132,14 @@ namespace GCS
         int solve_DL(SubSystem *subsys, bool isRedundantsolving=false);
 
         void makeReducedJacobian(Eigen::MatrixXd &J, std::map<int,int> &jacobianconstraintmap, GCS::VEC_pD &pdiagnoselist, std::map< int , int> &tagmultiplicity);
+
+        void makeDenseQRDecomposition(  Eigen::MatrixXd &J, std::map<int,int> &jacobianconstraintmap,
+                                        Eigen::FullPivHouseholderQR<Eigen::MatrixXd>& qrJT,
+                                        int &paramsNum, int &constrNum, int &rank, Eigen::MatrixXd &R);
+
+        void makeSparseQRDecomposition( Eigen::MatrixXd &J, std::map<int,int> &jacobianconstraintmap,
+                                        Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> > &SqrJT,
+                                        int &paramsNum, int &constrNum, int &rank, Eigen::MatrixXd &R);
 
         #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
         void extractSubsystem(SubSystem *subsys, bool isRedundantsolving);
