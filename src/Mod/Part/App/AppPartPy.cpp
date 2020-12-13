@@ -793,21 +793,20 @@ private:
     Py::Object getFacets(const Py::Tuple& args)
     {
         PyObject *shape;
-        PyObject *list = PyList_New(0);
+        Py::List list;
         if (!PyArg_ParseTuple(args.ptr(), "O", &shape)) 
             throw Py::Exception();
         auto theShape = static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
-        for(TopExp_Explorer ex(theShape, TopAbs_FACE); ex.More(); ex.Next())
-        {
+        for (TopExp_Explorer ex(theShape, TopAbs_FACE); ex.More(); ex.Next()) {
             TopoDS_Face currentFace = TopoDS::Face(ex.Current());
             TopLoc_Location loc;
             Handle(Poly_Triangulation) facets = BRep_Tool::Triangulation(currentFace, loc);
             const TopAbs_Orientation anOrientation = currentFace.Orientation();
             bool flip = (anOrientation == TopAbs_REVERSED);
-            if(!facets.IsNull()){
+            if (!facets.IsNull()) {
                 const TColgp_Array1OfPnt& nodes = facets->Nodes();
                 const Poly_Array1OfTriangle& triangles = facets->Triangles();
-                for(int i = 1; i <= triangles.Length(); i++){
+                for (int i = 1; i <= triangles.Length(); i++) {
                     Standard_Integer n1,n2,n3;
                     triangles(i).Get(n1, n2, n3);
                     gp_Pnt p1 = nodes(n1);
@@ -821,19 +820,17 @@ private:
                         PyObject *t1 = PyTuple_Pack(3, PyFloat_FromDouble(p1.X()), PyFloat_FromDouble(p1.Y()), PyFloat_FromDouble(p1.Z()));
                         PyObject *t2 = PyTuple_Pack(3, PyFloat_FromDouble(p2.X()), PyFloat_FromDouble(p2.Y()), PyFloat_FromDouble(p2.Z()));
                         PyObject *t3 = PyTuple_Pack(3, PyFloat_FromDouble(p3.X()), PyFloat_FromDouble(p3.Y()), PyFloat_FromDouble(p3.Z()));
-                        PyObject *points;
-                        if(flip)
-                        {
-                            points = PyTuple_Pack(3, t2, t1, t3);
-                        } else {
-                            points = PyTuple_Pack(3, t1, t2, t3);
+                        if (flip) {
+                            list.append(Py::asObject(PyTuple_Pack(3, t2, t1, t3)));
                         }
-                        PyList_Append(list, points);
+                        else {
+                            list.append(Py::asObject(PyTuple_Pack(3, t1, t2, t3)));
+                        }
                     }
                 }
             }
-        }     
-        return Py::asObject(list);
+        }
+        return list;
     }
     Py::Object makeCompound(const Py::Tuple& args)
     {

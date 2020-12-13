@@ -447,7 +447,7 @@ PyObject* GeometryFacadePy::getExtensions(PyObject *args)
     try {
         const std::vector<std::weak_ptr<const Part::GeometryExtension>> ext = this->getGeometryFacadePtr()->getExtensions();
 
-        PyObject* list = PyList_New(0);
+        Py::List list;
 
         for (std::size_t i=0; i<ext.size(); ++i) {
 
@@ -456,9 +456,7 @@ PyObject* GeometryFacadePy::getExtensions(PyObject *args)
             if(p) {
                 // we create a python copy and add it to the list
                 try {
-                    PyObject* cpy = p->copyPyObject();
-                    PyList_Append( list, cpy);
-                    Py_DECREF(cpy);
+                    list.append(Py::asObject(p->copyPyObject()));
                 }
                 catch(Base::NotImplementedError) {
                     // silently ignoring extensions not having a Python object
@@ -466,7 +464,7 @@ PyObject* GeometryFacadePy::getExtensions(PyObject *args)
             }
         }
 
-        return list;
+        return Py::new_reference_to(list);
     }
     catch(const Base::ValueError& e) {
         PyErr_SetString(Part::PartExceptionOCCError, e.what());
