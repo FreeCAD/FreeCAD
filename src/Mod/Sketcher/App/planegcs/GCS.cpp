@@ -3905,21 +3905,18 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
 
     // QR decomposition method selection: SparseQR vs DenseQR
 
-#ifdef EIGEN_SPARSEQR_COMPATIBLE
-    Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> > SqrJT;
-#else
+#ifndef EIGEN_SPARSEQR_COMPATIBLE
     if(qrAlgorithm==EigenSparseQR){
         Base::Console().Warning("SparseQR not supported by you current version of Eigen. It requires Eigen 3.2.2 or higher. Falling back to Dense QR\n");
         qrAlgorithm=EigenDenseQR;
     }
 #endif
 
-    Eigen::MatrixXd R;
-    int rank = 0; // rank is not cheap to retrieve from qrJT in DenseQR
-
-    Eigen::FullPivHouseholderQR<Eigen::MatrixXd> qrJT;
-
     if(qrAlgorithm==EigenDenseQR){
+        int rank = 0; // rank is not cheap to retrieve from qrJT in DenseQR
+        Eigen::MatrixXd R;
+        Eigen::FullPivHouseholderQR<Eigen::MatrixXd> qrJT;
+
         makeDenseQRDecomposition( J, jacobianconstraintmap, qrJT, rank, R);
 
         int paramsNum = qrJT.rows();
@@ -3953,6 +3950,11 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
     }
 #ifdef EIGEN_SPARSEQR_COMPATIBLE
     else if(qrAlgorithm==EigenSparseQR){
+        int rank = 0;
+        Eigen::MatrixXd R;
+        Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> > SqrJT;
+
+
         makeSparseQRDecomposition( J, jacobianconstraintmap, SqrJT, rank, R);
 
         int paramsNum = SqrJT.rows();
