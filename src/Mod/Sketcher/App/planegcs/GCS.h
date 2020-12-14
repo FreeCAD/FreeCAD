@@ -136,7 +136,7 @@ namespace GCS
         void makeDenseQRDecomposition(  const Eigen::MatrixXd &J,
                                         const std::map<int,int> &jacobianconstraintmap,
                                         Eigen::FullPivHouseholderQR<Eigen::MatrixXd>& qrJT,
-                                        int &rank, Eigen::MatrixXd &R);
+                                        int &rank, Eigen::MatrixXd &R, bool transposeJ = true, bool silent = false);
 
         void makeSparseQRDecomposition( const Eigen::MatrixXd &J,
                                         const std::map<int,int> &jacobianconstraintmap,
@@ -169,6 +169,18 @@ namespace GCS
                                                   const std::map<int,int> &jacobianconstraintmap,
                                                   const GCS::VEC_pD &pdiagnoselist,
                                                   bool silent=true);
+
+        void identifyDependentParametersDenseQR(  const Eigen::MatrixXd &J,
+                                                  const std::map<int,int> &jacobianconstraintmap,
+                                                  const GCS::VEC_pD &pdiagnoselist,
+                                                  bool silent=true);
+
+        template <typename T>
+        void identifyDependentParameters(   T & qrJ,
+                                            Eigen::MatrixXd &Rparams,
+                                            int rank,
+                                            const GCS::VEC_pD &pdiagnoselist,
+                                            bool silent=true);
 
         #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
         void extractSubsystem(SubSystem *subsys, bool isRedundantsolving);
