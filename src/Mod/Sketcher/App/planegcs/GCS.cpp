@@ -53,6 +53,7 @@
 #include <algorithm>
 #include <cfloat>
 #include <limits>
+#include <future>
 
 #include "GCS.h"
 #include "qp_eq.h"
@@ -3964,20 +3965,23 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
     #ifdef PROFILE_DIAGNOSE
         Base::TimeInfo SparseQR_start_time;
     #endif
-        int rank = 0;
-        Eigen::MatrixXd R;
-        Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> > SqrJT;
-
-
-        makeSparseQRDecomposition( J, jacobianconstraintmap, SqrJT, rank, R);
-
-        int paramsNum = SqrJT.rows();
-        int constrNum = SqrJT.cols();
-
         if (J.rows() > 0) {
+            int rank = 0;
+            Eigen::MatrixXd R;
+            Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> > SqrJT;
+            // Here we enforce calculating the two QR decompositions in parallel
+            // Care to wait() for the future before any prospective detection of conflicting/redundant, because the redundant solve
+            // modifies pdiagnoselist and it would not be thread-safe
+            //
+            // identifyDependentParametersSparseQR(J, jacobianconstraintmap, pdiagnoselist, true)
+            auto fut = std::async(std::launch::async,&System::identifyDependentParametersSparseQR,this,J,jacobianconstraintmap, pdiagnoselist, true);
 
-            // Get dependent parameters
-            identifyDependentParametersSparseQR(J, jacobianconstraintmap, pdiagnoselist, true);
+            makeSparseQRDecomposition( J, jacobianconstraintmap, SqrJT, rank, R);
+
+            int paramsNum = SqrJT.rows();
+            int constrNum = SqrJT.cols();
+
+            fut.wait(); // wait for the execution of identifyDependentParametersSparseQR to finish
 
             dofs = paramsNum - rank; // unless overconstraint, which will be overridden below
 
