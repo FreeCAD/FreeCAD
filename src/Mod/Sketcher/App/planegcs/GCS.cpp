@@ -3873,6 +3873,10 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
 
     makeReducedJacobian(J, jacobianconstraintmap, pdiagnoselist, tagmultiplicity);
 
+    // this function will exit with a diagnosis and, unless overriden by functions below, with full DoFs
+    hasDiagnosis = true;
+    dofs = pdiagnoselist.size();
+
     // There is a legacy decision to use QR decomposition. I (abdullah) do not know all the
     // consideration taken in that decisions. I see that:
     // - QR decomposition is able to provide information about the rank and redundant/conflicting constraints
@@ -3928,6 +3932,8 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
                                                         pdiagnoselist,
                                                         paramsNum, rank);
 
+            dofs = paramsNum - rank; // unless overconstraint, which will be overridden below
+
             // Detecting conflicting or redundant constraints
             if (constrNum > rank) { // conflicting or redundant constraints
 
@@ -3936,20 +3942,15 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
                 identifyConflictingRedundantConstraints(alg, qrJT, jacobianconstraintmap, tagmultiplicity, pdiagnoselist,
                                                         R, constrNum, rank, nonredundantconstrNum);
 
-                if (paramsNum == rank && nonredundantconstrNum > rank) { // over-constrained
-                    hasDiagnosis = true;
+                if (paramsNum == rank && nonredundantconstrNum > rank) // over-constrained
                     dofs = paramsNum - nonredundantconstrNum;
-                    return dofs;
-                }
             }
-
-            hasDiagnosis = true;
-            dofs = paramsNum - rank;
-            return dofs;
         }
     }
+
 #ifdef EIGEN_SPARSEQR_COMPATIBLE
     else if(qrAlgorithm==EigenSparseQR){
+
         int rank = 0;
         Eigen::MatrixXd R;
         Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> > SqrJT;
@@ -3965,6 +3966,8 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
             // Get dependent parameters
             identifyDependentParametersSparseQR(J, jacobianconstraintmap, pdiagnoselist, true);
 
+            dofs = paramsNum - rank; // unless overconstraint, which will be overridden below
+
             // Detecting conflicting or redundant constraints
             if (constrNum > rank) { // conflicting or redundant constraints
 
@@ -3973,22 +3976,13 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
                 identifyConflictingRedundantConstraints(alg, SqrJT, jacobianconstraintmap, tagmultiplicity, pdiagnoselist,
                                                         R, constrNum, rank, nonredundantconstrNum);
 
-                if (paramsNum == rank && nonredundantconstrNum > rank) { // over-constrained
-                    hasDiagnosis = true;
+                if (paramsNum == rank && nonredundantconstrNum > rank) // over-constrained
                     dofs = paramsNum - nonredundantconstrNum;
-                    return dofs;
-                }
             }
-
-            hasDiagnosis = true;
-            dofs = paramsNum - rank;
-            return dofs;
         }
     }
 #endif
 
-    hasDiagnosis = true;
-    dofs = pdiagnoselist.size();
     return dofs;
 }
 
