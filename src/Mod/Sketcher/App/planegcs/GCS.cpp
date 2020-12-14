@@ -3959,6 +3959,43 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
         int constrNum = SqrJT.cols();
 
         if (J.rows() > 0) {
+
+            // Get dependent parameters
+            {
+                Eigen::MatrixXd Rparams;
+                Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> > SqrJ;
+
+                int nontransprank; // will be the same as for the transpose, but better use a different name
+
+                makeSparseQRDecomposition( J, jacobianconstraintmap, SqrJ, nontransprank, Rparams, false); // do not transpose allow to diagnose parameters
+
+                //int constrNum = SqrJ.rows(); // this is the other way around than for the transposed J
+                //int paramsNum = SqrJ.cols();
+
+                eliminateNonZerosOverPivotInUpperTriangularMatrix(Rparams, rank);
+
+#ifdef _GCS_DEBUG
+                SolverReportingManager::Manager().LogMatrix("Rparams", Rparams);
+#endif
+                //std::vector< std::vector<double *> > dependencyGroups(SqrJ.cols()-rank);
+                for (int j=nontransprank; j < SqrJ.cols(); j++) {
+                    for (int row=0; row < rank; row++) {
+                        if (fabs(Rparams(row,j)) > 1e-10) {
+                            int origCol = SqrJ.colsPermutation().indices()[row];
+
+                            //dependencyGroups[j-rank].push_back(pdiagnoselist[origCol]);
+                            pdependentparameters.push_back(pdiagnoselist[origCol]);
+                        }
+                    }
+                    int origCol = SqrJ.colsPermutation().indices()[j];
+
+                    //dependencyGroups[j-rank].push_back(pdiagnoselist[origCol]);
+                    pdependentparameters.push_back(pdiagnoselist[origCol]);
+                }
+
+            }
+
+
             // Detecting conflicting or redundant constraints
             if (constrNum > rank) { // conflicting or redundant constraints
 
