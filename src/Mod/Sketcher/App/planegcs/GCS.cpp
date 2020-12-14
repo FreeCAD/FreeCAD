@@ -3961,40 +3961,7 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
         if (J.rows() > 0) {
 
             // Get dependent parameters
-            {
-                Eigen::MatrixXd Rparams;
-                Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> > SqrJ;
-
-                int nontransprank; // will be the same as for the transpose, but better use a different name
-
-                makeSparseQRDecomposition( J, jacobianconstraintmap, SqrJ, nontransprank, Rparams, false); // do not transpose allow to diagnose parameters
-
-                //int constrNum = SqrJ.rows(); // this is the other way around than for the transposed J
-                //int paramsNum = SqrJ.cols();
-
-                eliminateNonZerosOverPivotInUpperTriangularMatrix(Rparams, rank);
-
-#ifdef _GCS_DEBUG
-                SolverReportingManager::Manager().LogMatrix("Rparams", Rparams);
-#endif
-                //std::vector< std::vector<double *> > dependencyGroups(SqrJ.cols()-rank);
-                for (int j=nontransprank; j < SqrJ.cols(); j++) {
-                    for (int row=0; row < rank; row++) {
-                        if (fabs(Rparams(row,j)) > 1e-10) {
-                            int origCol = SqrJ.colsPermutation().indices()[row];
-
-                            //dependencyGroups[j-rank].push_back(pdiagnoselist[origCol]);
-                            pdependentparameters.push_back(pdiagnoselist[origCol]);
-                        }
-                    }
-                    int origCol = SqrJ.colsPermutation().indices()[j];
-
-                    //dependencyGroups[j-rank].push_back(pdiagnoselist[origCol]);
-                    pdependentparameters.push_back(pdiagnoselist[origCol]);
-                }
-
-            }
-
+            identifyDependentParametersSparseQR(J, jacobianconstraintmap, pdiagnoselist, true);
 
             // Detecting conflicting or redundant constraints
             if (constrNum > rank) { // conflicting or redundant constraints
@@ -4023,7 +3990,8 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
     return dofs;
 }
 
-void System::makeDenseQRDecomposition(  const Eigen::MatrixXd &J, std::map<int,int> &jacobianconstraintmap,
+void System::makeDenseQRDecomposition(  const Eigen::MatrixXd &J,
+                                        const std::map<int,int> &jacobianconstraintmap,
                                         Eigen::FullPivHouseholderQR<Eigen::MatrixXd>& qrJT,
                                         int &rank, Eigen::MatrixXd & R)
 {
@@ -4077,9 +4045,10 @@ void System::makeDenseQRDecomposition(  const Eigen::MatrixXd &J, std::map<int,i
 #endif
 }
 
-void System::makeSparseQRDecomposition( const Eigen::MatrixXd &J, std::map<int,int> &jacobianconstraintmap,
+void System::makeSparseQRDecomposition( const Eigen::MatrixXd &J,
+                                        const std::map<int,int> &jacobianconstraintmap,
                                         Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> > &SqrJT,
-                                        int &rank, Eigen::MatrixXd & R, bool transposeJ)
+                                        int &rank, Eigen::MatrixXd & R, bool transposeJ, bool silent)
 {
 #ifdef EIGEN_SPARSEQR_COMPATIBLE
    Eigen::SparseMatrix<double> SJ;
@@ -4091,7 +4060,8 @@ void System::makeSparseQRDecomposition( const Eigen::MatrixXd &J, std::map<int,i
     SJ.makeCompressed();
 
     #ifdef _GCS_DEBUG
-    SolverReportingManager::Manager().LogMatrix("J",J);
+    if(!silent)
+        SolverReportingManager::Manager().LogMatrix("J",J);
     #endif
 
     #ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
@@ -4142,12 +4112,11 @@ void System::makeSparseQRDecomposition( const Eigen::MatrixXd &J, std::map<int,i
         }
     }
 
-    if(transposeJ && debugMode==IterationLevel) {
+    if(debugMode==IterationLevel && !silent)
         SolverReportingManager::Manager().LogQRSystemInformation(*this, rowsNum, colsNum, rank);
-    }
 
    #ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
-    if (J.rows() > 0) {
+    if (J.rows() > 0 && !silent) {
 
         SolverReportingManager::Manager().LogMatrix("R", R);
 
@@ -4160,6 +4129,45 @@ void System::makeSparseQRDecomposition( const Eigen::MatrixXd &J, std::map<int,i
     #endif //_GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
 #endif // EIGEN_SPARSEQR_COMPATIBLE
 }
+
+void System::identifyDependentParametersSparseQR( const Eigen::MatrixXd &J,
+                                                  const std::map<int,int> &jacobianconstraintmap,
+                                                  const GCS::VEC_pD &pdiagnoselist,
+                                                  bool silent)
+{
+    Eigen::MatrixXd Rparams;
+    Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> > SqrJ;
+
+    int nontransprank;
+
+    makeSparseQRDecomposition( J, jacobianconstraintmap, SqrJ, nontransprank, Rparams, false, true); // do not transpose allow to diagnose parameters
+
+    //int constrNum = SqrJ.rows(); // this is the other way around than for the transposed J
+    //int paramsNum = SqrJ.cols();
+
+    eliminateNonZerosOverPivotInUpperTriangularMatrix(Rparams, nontransprank);
+
+#ifdef _GCS_DEBUG
+    if(!silent)
+        SolverReportingManager::Manager().LogMatrix("Rparams", Rparams);
+#endif
+    //std::vector< std::vector<double *> > dependencyGroups(SqrJ.cols()-rank);
+    for (int j=nontransprank; j < SqrJ.cols(); j++) {
+        for (int row=0; row < nontransprank; row++) {
+            if (fabs(Rparams(row,j)) > 1e-10) {
+                int origCol = SqrJ.colsPermutation().indices()[row];
+
+                //dependencyGroups[j-rank].push_back(pdiagnoselist[origCol]);
+                pdependentparameters.push_back(pdiagnoselist[origCol]);
+            }
+        }
+        int origCol = SqrJ.colsPermutation().indices()[j];
+
+        //dependencyGroups[j-rank].push_back(pdiagnoselist[origCol]);
+        pdependentparameters.push_back(pdiagnoselist[origCol]);
+    }
+}
+
 
 void System::identifyDependentGeometryParametersInTransposedJacobianDenseQRDecomposition(
                         const Eigen::FullPivHouseholderQR<Eigen::MatrixXd>& qrJT,
