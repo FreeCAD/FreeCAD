@@ -276,7 +276,7 @@ public:
     virtual bool canDragAndDropObject(App::DocumentObject*) const;
     /** Add an object to the view provider by drag and drop */
     virtual void dropObject(App::DocumentObject*);
-    /** Query object dropping with full quanlified name
+    /** Query object dropping with full qualified name
      *
      * Tree view now calls this function instead of canDropObject(), and may
      * query for objects from other document. The default implementation
@@ -304,7 +304,7 @@ public:
     /// return a subname referencing the sub-object holding the dropped objects
     virtual std::string getDropPrefix() const { return std::string(); }
 
-    /** Add an object with full quanlified name to the view provider by drag and drop
+    /** Add an object with full qualified name to the view provider by drag and drop
      *
      * @param obj: the object being dropped
      *

@@ -729,7 +729,7 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
     QString text = QInputDialog::getItem(Gui::getMainWindow(),
         qApp->translate("PartDesign_MoveFeature", "Select body"),
         qApp->translate("PartDesign_MoveFeature", "Select a body from the list"),
-        items, 0, false, &ok);
+        items, 0, false, &ok, Qt::MSWindowsFixedSizeDialogHint);
     if (!ok) return;
     int index = items.indexOf(text);
     if (index < 0) return;
@@ -879,7 +879,7 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
     QString text = QInputDialog::getItem(Gui::getMainWindow(),
         qApp->translate("PartDesign_MoveFeatureInTree", "Select feature"),
         qApp->translate("PartDesign_MoveFeatureInTree", "Select a feature from the list"),
-        items, 0, false, &ok);
+        items, 0, false, &ok, Qt::MSWindowsFixedSizeDialogHint);
     if (!ok) return;
     int index = items.indexOf(text);
     // first object is the beginning of the body

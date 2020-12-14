@@ -28,6 +28,7 @@
 #include <Base/Tools.h>
 
 #include "GeometryExtension.h"
+#include "GeometryExtensionPy.h"
 
 using namespace Part;
 
@@ -35,6 +36,13 @@ TYPESYSTEM_SOURCE_ABSTRACT(Part::GeometryExtension,Base::BaseClass)
 
 GeometryExtension::GeometryExtension()
 {
+}
+
+PyObject* GeometryExtension::copyPyObject() const
+{
+    Py::Tuple tuple;
+    Py::Object obj = Py::asObject(const_cast<GeometryExtension*>(this)->getPyObject());
+    return static_cast<GeometryExtensionPy *>(obj.ptr())->copy(tuple.ptr());
 }
 
 TYPESYSTEM_SOURCE_ABSTRACT(Part::GeometryPersistenceExtension,Part::GeometryExtension)

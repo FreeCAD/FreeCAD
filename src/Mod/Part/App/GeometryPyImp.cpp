@@ -248,9 +248,7 @@ PyObject* GeometryPy::getExtensionOfType(PyObject *args)
                 std::shared_ptr<const GeometryExtension> ext(this->getGeometryPtr()->getExtension(type));
 
                 // we create a copy and transfer this copy's memory management responsibility to Python
-                Py::Tuple tuple;
-                PyObject* cpy = static_cast<GeometryExtensionPy *>(std::const_pointer_cast<GeometryExtension>(ext)->getPyObject())->copy(tuple.ptr());
-
+                PyObject* cpy = ext->copyPyObject();
                 return cpy;
             }
             catch(const Base::ValueError& e) {
@@ -287,9 +285,7 @@ PyObject* GeometryPy::getExtensionOfName(PyObject *args)
             std::shared_ptr<const GeometryExtension> ext(this->getGeometryPtr()->getExtension(std::string(o)));
 
             // we create a copy and transfer this copy's memory management responsibility to Python
-            Py::Tuple tuple;
-            PyObject* cpy = static_cast<GeometryExtensionPy *>(std::const_pointer_cast<GeometryExtension>(ext)->getPyObject())->copy(tuple.ptr());
-
+            PyObject* cpy = ext->copyPyObject();
             return cpy;
         }
         catch(const Base::ValueError& e) {
@@ -416,7 +412,7 @@ PyObject* GeometryPy::getExtensions(PyObject *args)
     try {
         const std::vector<std::weak_ptr<const GeometryExtension>> ext = this->getGeometryPtr()->getExtensions();
 
-        PyObject* list = PyList_New(0);
+        Py::List list;
 
         for (std::size_t i=0; i<ext.size(); ++i) {
 
@@ -427,11 +423,7 @@ PyObject* GeometryPy::getExtensions(PyObject *args)
                 // we create a python copy and add it to the list
 
                 try {
-                    Py::Tuple tuple;
-                    PyObject* cpy = static_cast<GeometryExtensionPy *>(p->getPyObject())->copy(tuple.ptr());
-
-                    PyList_Append( list, cpy);
-                    Py_DECREF(cpy);
+                    list.append(Py::asObject(p->copyPyObject()));
                 }
                 catch(Base::NotImplementedError) {
                     // silently ignoring extensions not having a Python object
@@ -439,7 +431,7 @@ PyObject* GeometryPy::getExtensions(PyObject *args)
             }
         }
 
-        return list;
+        return Py::new_reference_to(list);
     }
     catch(const Base::ValueError& e) {
         PyErr_SetString(PartExceptionOCCError, e.what());

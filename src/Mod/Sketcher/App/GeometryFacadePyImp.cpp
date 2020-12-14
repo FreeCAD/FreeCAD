@@ -284,9 +284,7 @@ PyObject* GeometryFacadePy::getExtensionOfType(PyObject *args)
                 std::shared_ptr<const Part::GeometryExtension> ext(this->getGeometryFacadePtr()->getExtension(type));
 
                 // we create a copy and transfer this copy's memory management responsibility to Python
-                Py::Tuple tuple;
-                PyObject* cpy = static_cast<Part::GeometryExtensionPy *>(std::const_pointer_cast<Part::GeometryExtension>(ext)->getPyObject())->copy(tuple.ptr());
-
+                PyObject* cpy = ext->copyPyObject();
                 return cpy;
             }
             catch(const Base::ValueError& e) {
@@ -323,9 +321,7 @@ PyObject* GeometryFacadePy::getExtensionOfName(PyObject *args)
             std::shared_ptr<const Part::GeometryExtension> ext(this->getGeometryFacadePtr()->getExtension(std::string(o)));
 
             // we create a copy and transfer this copy's memory management responsibility to Python
-            Py::Tuple tuple;
-            PyObject* cpy = static_cast<Part::GeometryExtensionPy *>(std::const_pointer_cast<Part::GeometryExtension>(ext)->getPyObject())->copy(tuple.ptr());
-
+            PyObject* cpy = ext->copyPyObject();
             return cpy;
         }
         catch(const Base::ValueError& e) {
@@ -451,7 +447,7 @@ PyObject* GeometryFacadePy::getExtensions(PyObject *args)
     try {
         const std::vector<std::weak_ptr<const Part::GeometryExtension>> ext = this->getGeometryFacadePtr()->getExtensions();
 
-        PyObject* list = PyList_New(0);
+        Py::List list;
 
         for (std::size_t i=0; i<ext.size(); ++i) {
 
@@ -459,13 +455,8 @@ PyObject* GeometryFacadePy::getExtensions(PyObject *args)
 
             if(p) {
                 // we create a python copy and add it to the list
-                Py::Tuple tuple;
-
                 try {
-                    PyObject* cpy = static_cast<Part::GeometryExtensionPy *>(std::const_pointer_cast<Part::GeometryExtension>(p)->getPyObject())->copy(tuple.ptr());
-
-                    PyList_Append( list, cpy);
-                    Py_DECREF(cpy);
+                    list.append(Py::asObject(p->copyPyObject()));
                 }
                 catch(Base::NotImplementedError) {
                     // silently ignoring extensions not having a Python object
@@ -473,7 +464,7 @@ PyObject* GeometryFacadePy::getExtensions(PyObject *args)
             }
         }
 
-        return list;
+        return Py::new_reference_to(list);
     }
     catch(const Base::ValueError& e) {
         PyErr_SetString(Part::PartExceptionOCCError, e.what());
@@ -501,7 +492,8 @@ Py::String GeometryFacadePy::getTag(void) const
 Py::Object GeometryFacadePy::getGeometry(void) const
 {
     // We return a clone
-    return Py::Object(getGeometryFacadePtr()->getGeometry()->clone()->getPyObject(),true);
+    std::unique_ptr<Part::Geometry> geo(getGeometryFacadePtr()->getGeometry()->clone());
+    return Py::Object(geo->getPyObject(), true);
 }
 
 void  GeometryFacadePy::setGeometry(Py::Object arg)

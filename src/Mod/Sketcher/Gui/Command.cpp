@@ -179,7 +179,7 @@ void CmdSketcherNewSketch::activated(int iMsg)
             QString text = QInputDialog::getItem(Gui::getMainWindow(),
                 qApp->translate("Sketcher_NewSketch", "Sketch attachment"),
                 qApp->translate("Sketcher_NewSketch", "Select the method to attach this sketch to selected object"),
-                items, iSugg, false, &ok);
+                items, iSugg, false, &ok, Qt::MSWindowsFixedSizeDialogHint);
             if (!ok) return;
             int index = items.indexOf(text);
             if (index == 0){
@@ -541,7 +541,7 @@ void CmdSketcherMapSketch::activated(int iMsg)
         QString text = QInputDialog::getItem(Gui::getMainWindow(),
             qApp->translate("Sketcher_MapSketch", "Select sketch"),
             qApp->translate("Sketcher_MapSketch", "Select a sketch from the list"),
-            items, 0, false, &ok);
+            items, 0, false, &ok, Qt::MSWindowsFixedSizeDialogHint);
         if (!ok)
             return;
         int index = items.indexOf(text);
@@ -620,7 +620,8 @@ void CmdSketcherMapSketch::activated(int iMsg)
                                      items,
                                      bCurIncompatible ? iSugg : iCurr,
                                      false,
-                                     &ok);
+                                     &ok, 
+                                     Qt::MSWindowsFixedSizeDialogHint);
         // * collect dialog result
         if (!ok)
             return;

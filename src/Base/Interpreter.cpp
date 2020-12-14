@@ -544,15 +544,8 @@ void InterpreterSingleton::addType(PyTypeObject* Type,PyObject* Module, const ch
 void InterpreterSingleton::addPythonPath(const char* Path)
 {
     PyGILStateLocker locker;
-    PyObject *list = PySys_GetObject("path");
-#if PY_MAJOR_VERSION >= 3
-    PyObject *path = PyUnicode_FromString(Path);
-#else
-    PyObject *path = PyString_FromString(Path);
-#endif
-    PyList_Append(list, path);
-    Py_DECREF(path);
-    PySys_SetObject("path", list);
+    Py::List list(PySys_GetObject("path"));
+    list.append(Py::String(Path));
 }
 
 const char* InterpreterSingleton::init(int argc,char *argv[])

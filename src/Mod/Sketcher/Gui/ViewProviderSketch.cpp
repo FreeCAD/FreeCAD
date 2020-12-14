@@ -1399,12 +1399,29 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d &toPo
                 p1 = center;
 
                 Base::Vector3d tmpDir =  Base::Vector3d(toPos.x, toPos.y, 0) - p1;
-                double angle = atan2(tmpDir.y, tmpDir.x);
+
+                Base::Vector3d dir = radius * tmpDir.Normalize();
 
                 if(Constr->Type == Sketcher::Diameter)
-                    p1 = center - radius * Base::Vector3d(cos(angle),sin(angle),0.);
+                    p1 = center - dir;
 
-                p2 = center + radius * Base::Vector3d(cos(angle),sin(angle),0.);
+                if(Constr->Type == Sketcher::Weight) {
+
+                    double scalefactor = 1.0;
+
+                    if(circle->hasExtension(SketcherGui::ViewProviderSketchGeometryExtension::getClassTypeId()))
+                    {
+                        auto vpext = std::static_pointer_cast<const SketcherGui::ViewProviderSketchGeometryExtension>(
+                                        circle->getExtension(SketcherGui::ViewProviderSketchGeometryExtension::getClassTypeId()).lock());
+
+                        scalefactor = vpext->getRepresentationFactor();
+                    }
+
+                    p2 = center + dir * scalefactor;
+
+                }
+                else
+                    p2 = center + dir;
             }
             else
                 return;
@@ -6084,9 +6101,14 @@ bool ViewProviderSketch::setEdit(int ModNum)
             getSketchObject()->validateExternalLinks();
     }
 
+    // First drawing with non-temporal geometry, then updating solver information
+    // This ensures that any ViewProvider geometry extension is set before the geometry
+    // is loaded into the solver, which ensures that any prospective draw using temporal
+    // geometry (draw with first parameter true) has the right ViewProvider geometry extensions
+    // set - This fixes Weight constraint dragging on a just opened sketch.
+    draw(false,true);
     getSketchObject()->solve(false);
     UpdateSolverInformation();
-    draw(false,true);
 
     connectUndoDocument = getDocument()
         ->signalUndoDocument.connect(boost::bind(&ViewProviderSketch::slotUndoDocument, this, bp::_1));

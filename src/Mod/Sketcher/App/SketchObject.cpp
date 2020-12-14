@@ -7509,7 +7509,7 @@ void SketchObject::migrateSketch(void)
 
             addGeometryState(c);
 
-            // Convert B-Spline controlpoints radius/diameter constraints to Weight cosntraints
+            // Convert B-Spline controlpoints radius/diameter constraints to Weight constraints
             if(c->Type == InternalAlignment && c->AlignmentType == BSplineControlPoint) {
                 int circlegeoid = c->First;
                 int bsplinegeoid = c->Second;
