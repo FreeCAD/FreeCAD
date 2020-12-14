@@ -1,6 +1,23 @@
-# (c) 2016 Werner Mayer
-# (c) 2016 Eivind Kvedalen
-# LGPL
+#***************************************************************************
+#*   Copyright (c) 2016 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+#*   Copyright (c) 2016 Eivind Kvedalen <eivind@kvedalen.name>             *
+#*                                                                         *
+#*   This program is free software; you can redistribute it and/or modify  *
+#*   it under the terms of the GNU General Public License (GPL)            *
+#*   as published by the Free Software Foundation; either version 2 of     *
+#*   the License, or (at your option) any later version.                   *
+#*   for detail see the LICENCE text file.                                 *
+#*                                                                         *
+#*   FreeCAD is distributed in the hope that it will be useful,            *
+#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+#*   GNU Library General Public License for more details.                  *
+#*                                                                         *
+#*   You should have received a copy of the GNU Library General Public     *
+#*   License along with FreeCAD; if not, write to the Free Software        *
+#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+#*   USA                                                                   *
+#***************************************************************************/
 
 import os
 import sys
@@ -350,7 +367,7 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertTrue(sheet.C27.startswith(u'ERR: Units must be equal'))
         self.assertMostlyEqual(sheet.D27, Units.Quantity("3 mm"))
         FreeCAD.closeDocument(doc.Name)
-        
+
     def testRelationalOperators(self):
         """ Test relational operators """
         sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
@@ -650,7 +667,7 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertEqual(sheet.A16, 1)
         self.assertEqual(sheet.A17, 0.5)
         self.assertEqual(sheet.A18, 0.5)
-        
+
     def testRemoveRows(self):
         """ Removing rows -- check renaming of internal cells """
         sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
@@ -768,7 +785,7 @@ class SpreadsheetCases(unittest.TestCase):
         """ Object name is equal to property name (bug #2389) """
         if not FreeCAD.GuiUp:
             return
-        
+
         import FreeCADGui
         o = self.doc.addObject("Part::FeaturePython","Placement")
         FreeCADGui.Selection.addSelection(o)
@@ -783,7 +800,7 @@ class SpreadsheetCases(unittest.TestCase):
         self.doc.recompute()
         sketch=self.doc.addObject('Sketcher::SketchObject','Sketch')
         sketch.addGeometry(Part.LineSegment(v(0,0,0),v(10,10,0)),False)
-        sketch.addConstraint(Sketcher.Constraint('Distance',0,65.285388)) 
+        sketch.addConstraint(Sketcher.Constraint('Distance',0,65.285388))
         sketch.setExpression('Constraints[0]', 'InvoluteGear.NumberOfTeeth')
         self.doc.recompute()
         self.assertIn('Up-to-date',sketch.State)
@@ -798,7 +815,7 @@ class SpreadsheetCases(unittest.TestCase):
         self.doc.recompute()
 
         index=sketch.addGeometry(Part.LineSegment(v(0,0,0),v(10,10,0)),False)
-        sketch.addConstraint(Sketcher.Constraint('Distance',index,14.0)) 
+        sketch.addConstraint(Sketcher.Constraint('Distance',index,14.0))
         self.doc.recompute()
         sketch.setExpression('Constraints[0]', u'<<Spreadsheet>>.Length')
         self.doc.recompute()
@@ -838,7 +855,7 @@ class SpreadsheetCases(unittest.TestCase):
 
     def testMatrix(self):
         ''' Test Matrix/Vector/Placement/Rotation operations'''
-        
+
         def plm_equal(plm1, plm2):
             from math import sqrt
             qpair = zip(plm1.Rotation.Q, plm2.Rotation.Q)

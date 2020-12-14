@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 #***************************************************************************
 #*   Copyright (c) 2016 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
@@ -42,9 +41,9 @@ else:
 #  This module provides tools to build Pipe and Pipe connector objects.
 #  Pipes are tubular objects extruded along a base line.
 
-__title__ = "Arch Pipe tools"
+__title__  = "Arch Pipe tools"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 
 def makePipe(baseobj=None,diameter=0,length=0,placement=None,name="Pipe"):
@@ -248,7 +247,7 @@ class _ArchPipe(ArchComponent.Component):
         import Draft
         if Draft.getType(obj.Base) == "BezCurve":
             v1 = obj.Base.Placement.multVec(obj.Base.Points[1])-w.Vertexes[0].Point
-        else: 
+        else:
             v1 = w.Vertexes[1].Point-w.Vertexes[0].Point
         v2 = DraftGeomUtils.getNormal(p)
         rot = FreeCAD.Rotation(v2,v1)

@@ -258,6 +258,7 @@ bool TextDocumentEditorView::canClose()
             discardBtn->setShortcut(QKeySequence::mnemonic(text));
         }
 
+        box.adjustSize();
         switch (box.exec())
         {
         case QMessageBox::Save:

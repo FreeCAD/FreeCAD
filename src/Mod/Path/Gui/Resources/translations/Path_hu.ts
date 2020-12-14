@@ -89,6 +89,11 @@
       <translation>Hagyja figyelmen kívül azokat a területeket, amelyek a megadott mélység alatt haladnak.</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="128"/>
+      <source>Planar: Flat, 3D surface scan.  Rotational: 4th-axis rotational scan.</source>
+      <translation>Síkbeli: Lapos, 3D felület letapogatás.  Forgatás: 4-tengelyes forgató letapogatás.</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathSurface.py" line="142"/>
       <source>Depth used to identify waste areas to ignore.</source>
       <translation>Hulladékterületek figyelmen kívül hagyáshoz használt mélység.</translation>
@@ -97,11 +102,6 @@
       <location filename="../../../PathScripts/PathSurface.py" line="143"/>
       <source>Cut through waste to depth at model edge, releasing the model.</source>
       <translation>Átvág a hulladékon a mélységgel a modell élénél, a modell kiadásához.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="128"/>
-      <source>Planar: Flat, 3D surface scan.  Rotational: 4th-axis rotational scan.</source>
-      <translation>Síkbeli: Lapos, 3D felület letapogatás.  Forgatás: 4-tengelyes forgató letapogatás.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="129"/>
@@ -242,11 +242,6 @@
       <location filename="PathCopy.py" line="45"/>
       <source>The path to be copied</source>
       <translation>A másolni kívánt szerszámpálya útvonal</translation>
-    </message>
-    <message>
-      <location filename="PathProfileEdges.py" line="56"/>
-      <source>The base geometry of this toolpath</source>
-      <translation>Ennek a szerszámmozgásnak az alapgeometriája</translation>
     </message>
     <message>
       <location filename="PathProfileEdges.py" line="70"/>
@@ -424,14 +419,14 @@
       <translation>Szabályozza, hogyan húzza vissza az eszközt Alapértelmezett=G98</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDrilling.py" line="72"/>
-      <source>The height where feed starts and height during retract tool when path is finished</source>
-      <translation>Megközelítési pont, R pont</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathDrilling.py" line="73"/>
       <source>Controls how tool retracts Default=G99</source>
       <translation type="unfinished">Controls how tool retracts Default=G99</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDrilling.py" line="72"/>
+      <source>The height where feed starts and height during retract tool when path is finished</source>
+      <translation>Megközelítési pont, R pont</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDrilling.py" line="75"/>
@@ -589,6 +584,11 @@
       <translation>Extra eltolása a művelethez. Iránya a függ a művelettől.</translation>
     </message>
     <message>
+      <location filename="PathPocket.py" line="55"/>
+      <source>The library to use to generate the path</source>
+      <translation>Az elérési út létrehozásához használt könyvtár</translation>
+    </message>
+    <message>
       <location filename="PathPocket.py" line="78"/>
       <source>Start pocketing at center or boundary</source>
       <translation>Zseb létrehozása a határvonal közepénél</translation>
@@ -679,9 +679,9 @@
       <translation>Állítsa igazra, ha sugár vágó kompenzációt alkalmaz</translation>
     </message>
     <message>
-      <location filename="PathPocket.py" line="55"/>
-      <source>The library to use to generate the path</source>
-      <translation>Az elérési út létrehozásához használt könyvtár</translation>
+      <location filename="PathProfileEdges.py" line="56"/>
+      <source>The base geometry of this toolpath</source>
+      <translation>Ennek a szerszámmozgásnak az alapgeometriája</translation>
     </message>
     <message>
       <location filename="PathToolController.py" line="47"/>
@@ -940,14 +940,14 @@
       <translation type="unfinished">Invalid Cutting Edge Angle %.2f, must be &gt;0° and &lt;=180°</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtils.py" line="808"/>
-      <source>Invalid Cutting Edge Angle %.2f, must be &gt;0Â° and &lt;=180Â°</source>
-      <translation>Érvénytelen forgácsoló él szög %.2f, &gt;0Â° és &lt;=180Â° közt kell lennie</translation>
-    </message>
-    <message>
       <location filename="PathUtils.py" line="767"/>
       <source>Cutting Edge Angle (%.2f) results in negative tool tip length</source>
       <translation>Forgácsoló él szög (%.2f) eredménye negatív szerszám csúcs hossz</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathUtils.py" line="808"/>
+      <source>Invalid Cutting Edge Angle %.2f, must be &gt;0Â° and &lt;=180Â°</source>
+      <translation>Érvénytelen forgácsoló él szög %.2f, &gt;0Â° és &lt;=180Â° közt kell lennie</translation>
     </message>
     <message>
       <location filename="PathOp.py" line="232"/>
@@ -1443,6 +1443,16 @@
   <context>
     <name>PathFace</name>
     <message>
+      <location filename="PathMillFace.py" line="350"/>
+      <source>Face</source>
+      <translation>Felület</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathMillFaceGui.py" line="44"/>
+      <source>Create a Facing Operation from a model or face</source>
+      <translation type="unfinished">Create a Facing Operation from a model or face</translation>
+    </message>
+    <message>
       <location filename="PathMillFace.py" line="171"/>
       <source>Generating toolpath with libarea offsets.
 </source>
@@ -1453,16 +1463,6 @@
       <location filename="PathMillFace.py" line="305"/>
       <source>Pick Start Point</source>
       <translation>Válasszon indulási pontot</translation>
-    </message>
-    <message>
-      <location filename="PathMillFace.py" line="350"/>
-      <source>Face</source>
-      <translation>Felület</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathMillFaceGui.py" line="44"/>
-      <source>Create a Facing Operation from a model or face</source>
-      <translation type="unfinished">Create a Facing Operation from a model or face</translation>
     </message>
   </context>
   <context>
@@ -1539,6 +1539,11 @@
       <translation>Körkivágás iránya, óramutató járásával megegyező irányban (CW), vagy az óramutató járásával ellentétes irányban (CCW)</translation>
     </message>
     <message>
+      <location filename="PathHelix.py" line="52"/>
+      <source>The direction of the circular cuts, clockwise (CW), or counter clockwise (CCW)</source>
+      <translation>Körkivágás iránya, óramutató járásával megegyező irányban (CW), vagy az óramutató járásával ellentétes irányban (CCW)</translation>
+    </message>
+    <message>
       <location filename="PathHelix.py" line="55"/>
       <source>Start cutting from the inside or outside</source>
       <translation>Kivágás kezdése belülről vagy kívülről</translation>
@@ -1552,11 +1557,6 @@
       <location filename="../../../PathScripts/PathHelix.py" line="76"/>
       <source>Starting Radius</source>
       <translation type="unfinished">Starting Radius</translation>
-    </message>
-    <message>
-      <location filename="PathHelix.py" line="52"/>
-      <source>The direction of the circular cuts, clockwise (CW), or counter clockwise (CCW)</source>
-      <translation>Körkivágás iránya, óramutató járásával megegyező irányban (CW), vagy az óramutató járásával ellentétes irányban (CCW)</translation>
     </message>
   </context>
   <context>
@@ -1996,11 +1996,6 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
   <context>
     <name>PathProfile</name>
     <message>
-      <location filename="../../../PathScripts/PathProfileFacesGui.py" line="45"/>
-      <source>Profile based on face or faces</source>
-      <translation>Felületen vagy felületeken alapuló profil</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathProfileFacesGui.py" line="46"/>
       <source>Profile</source>
       <translation>Profil</translation>
@@ -2009,6 +2004,11 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <location filename="../../../PathScripts/PathProfileFacesGui.py" line="46"/>
       <source>Profile entire model, selected face(s) or selected edge(s)</source>
       <translation type="unfinished">Profile entire model, selected face(s) or selected edge(s)</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFacesGui.py" line="45"/>
+      <source>Profile based on face or faces</source>
+      <translation>Felületen vagy felületeken alapuló profil</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathProfile.py" line="90"/>
@@ -3118,16 +3118,6 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
   <context>
     <name>Path_Dressup</name>
     <message>
-      <location filename="PathDressup.py" line="98"/>
-      <source>Dress-up</source>
-      <translation>Megváltoztatás</translation>
-    </message>
-    <message>
-      <location filename="PathDressup.py" line="100"/>
-      <source>Creates a Path Dess-up object from a selected path</source>
-      <translation>Szerszámpálya módosító objektumot hoz létre a kiválasztott útvonalból</translation>
-    </message>
-    <message>
       <location filename="PathDressup.py" line="110"/>
       <source>Please select one path object
 </source>
@@ -3145,6 +3135,16 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <location filename="../../../PathScripts/PathDressupZCorrect.py" line="325"/>
       <source>Please select a Path object</source>
       <translation>Kérem válasszon egy pályaútvonal objektumot</translation>
+    </message>
+    <message>
+      <location filename="PathDressup.py" line="98"/>
+      <source>Dress-up</source>
+      <translation>Megváltoztatás</translation>
+    </message>
+    <message>
+      <location filename="PathDressup.py" line="100"/>
+      <source>Creates a Path Dess-up object from a selected path</source>
+      <translation>Szerszámpálya módosító objektumot hoz létre a kiválasztott útvonalból</translation>
     </message>
   </context>
   <context>
@@ -4045,6 +4045,13 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
   <context>
     <name>Path_SimpleCopy</name>
     <message>
+      <location filename="PathSimpleCopy.py" line="59"/>
+      <source>Please select exactly one path object
+</source>
+      <translation>Kérem, pontosan egy szerszámpálya útvonalat jelöljön ki
+</translation>
+    </message>
+    <message>
       <location filename="PathSimpleCopy.py" line="62"/>
       <source>Simple Copy</source>
       <translation>Egyszerű másolás</translation>
@@ -4058,13 +4065,6 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <location filename="../../../PathScripts/PathSimpleCopy.py" line="61"/>
       <source>Please select exactly one path object</source>
       <translation>Kérem, pontosan egy szerszámpálya objektumot jelöljön ki</translation>
-    </message>
-    <message>
-      <location filename="PathSimpleCopy.py" line="59"/>
-      <source>Please select exactly one path object
-</source>
-      <translation>Kérem, pontosan egy szerszámpálya útvonalat jelöljön ki
-</translation>
     </message>
   </context>
   <context>
@@ -4096,6 +4096,11 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
   <context>
     <name>Path_ToolController</name>
     <message>
+      <location filename="PathToolController.py" line="132"/>
+      <source>Tool Number to Load</source>
+      <translation>Betöltendő szerszám száma</translation>
+    </message>
+    <message>
       <location filename="PathToolController.py" line="156"/>
       <source>Add Tool Controller to the Job</source>
       <translation>Eszköz vezérlő hozzáadása a munkához</translation>
@@ -4104,11 +4109,6 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <location filename="../../../PathScripts/PathToolControllerGui.py" line="123"/>
       <source>Add Tool Controller</source>
       <translation>Eszköz vezérlő hozzáadása</translation>
-    </message>
-    <message>
-      <location filename="PathToolController.py" line="132"/>
-      <source>Tool Number to Load</source>
-      <translation>Betöltendő szerszám száma</translation>
     </message>
   </context>
   <context>
@@ -4194,9 +4194,44 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <translation type="unfinished">Save toolbit library</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="147"/>
+      <source>Tooltable JSON (*.json)</source>
+      <translation>Szerszámlista JSON (*.json)</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="149"/>
+      <source>HeeksCAD tooltable (*.tooltable)</source>
+      <translation>HeeksCAD szerszámlista (*.tooltable)</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="150"/>
+      <source>LinuxCNC tooltable (*.tbl)</source>
+      <translation>LinuxCNC szerszámlista (*.tbl)</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathToolLibraryManager.py" line="512"/>
       <source>Open tooltable</source>
       <translation>Szerszámlista megnyitása</translation>
+    </message>
+    <message>
+      <location filename="TooltableEditor.py" line="610"/>
+      <source>Save tooltable</source>
+      <translation>Szerszámlista mentése</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="385"/>
+      <source>Add New Tool Table</source>
+      <translation type="unfinished">Add New Tool Table</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="387"/>
+      <source>Delete Selected Tool Table</source>
+      <translation type="unfinished">Delete Selected Tool Table</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="389"/>
+      <source>Rename Selected Tool Table</source>
+      <translation type="unfinished">Rename Selected Tool Table</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="388"/>
@@ -4410,11 +4445,6 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     </message>
     <message>
       <location filename="TooltableEditor.py" line="610"/>
-      <source>Save tooltable</source>
-      <translation>Szerszámlista mentése</translation>
-    </message>
-    <message>
-      <location filename="TooltableEditor.py" line="610"/>
       <source>Tooltable XML (*.xml)</source>
       <translation>Szerszámlista XML (*.xml)</translation>
     </message>
@@ -4427,36 +4457,6 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <location filename="TooltableEditor.py" line="653"/>
       <source>Object doesn't have a tooltable property</source>
       <translation>Objektum nem rendelkezik szerszámlista tulajdonsággal</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="385"/>
-      <source>Add New Tool Table</source>
-      <translation type="unfinished">Add New Tool Table</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="387"/>
-      <source>Delete Selected Tool Table</source>
-      <translation type="unfinished">Delete Selected Tool Table</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="389"/>
-      <source>Rename Selected Tool Table</source>
-      <translation type="unfinished">Rename Selected Tool Table</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="147"/>
-      <source>Tooltable JSON (*.json)</source>
-      <translation>Szerszámlista JSON (*.json)</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="149"/>
-      <source>HeeksCAD tooltable (*.tooltable)</source>
-      <translation>HeeksCAD szerszámlista (*.tooltable)</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="150"/>
-      <source>LinuxCNC tooltable (*.tbl)</source>
-      <translation>LinuxCNC szerszámlista (*.tbl)</translation>
     </message>
     <message>
       <location filename="PathToolLibraryManager.py" line="514"/>

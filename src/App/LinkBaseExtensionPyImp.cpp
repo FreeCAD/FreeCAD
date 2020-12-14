@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (c) 2017 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
+ *   Copyright (c) 2017 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -43,8 +43,8 @@ std::string LinkBaseExtensionPy::representation(void) const
 typedef std::map<std::string, std::pair<int,Property*> > PropTmpMap;
 typedef std::map<std::string, Property*> PropMap;
 
-static bool getProperty(PropTmpMap &props, const LinkBaseExtension::PropInfoMap &infoMap, 
-        const PropMap &propMap, PyObject *key, PyObject *value) 
+static bool getProperty(PropTmpMap &props, const LinkBaseExtension::PropInfoMap &infoMap,
+        const PropMap &propMap, PyObject *key, PyObject *value)
 {
     std::ostringstream str;
 
@@ -69,7 +69,7 @@ static bool getProperty(PropTmpMap &props, const LinkBaseExtension::PropInfoMap 
     }
 
     const char *valStr = 0;
-    if(key == value) 
+    if(key == value)
         valStr = keyStr;
     else if (value!=Py_None) {
 #if PY_MAJOR_VERSION < 3
@@ -86,7 +86,7 @@ static bool getProperty(PropTmpMap &props, const LinkBaseExtension::PropInfoMap 
         valStr = PyUnicode_AsUTF8(value);
 #endif
     }
-        
+
     App::Property *prop = 0;
     auto &info = it->second;
     if(valStr) {
@@ -98,8 +98,8 @@ static bool getProperty(PropTmpMap &props, const LinkBaseExtension::PropInfoMap 
         }
         prop = pIt->second;
         if(!prop->isDerivedFrom(info.type)) {
-            str << "expect property '" << keyStr << "(" << valStr 
-                << ") to be derived from '" << info.type.getName() 
+            str << "expect property '" << keyStr << "(" << valStr
+                << ") to be derived from '" << info.type.getName()
                 << "', instead of '" << prop->getTypeId().getName() << "'";
             PyErr_SetString(PyExc_TypeError, str.str().c_str());
         }
@@ -132,7 +132,7 @@ PyObject* LinkBaseExtensionPy::configLinkProperty(PyObject *args, PyObject *keyw
                 return 0;
         }
     }
-    for(auto &v : props) 
+    for(auto &v : props)
         ext->setProperty(v.second.first,v.second.second);
     Py_Return;
 }
@@ -182,7 +182,7 @@ PyObject* LinkBaseExtensionPy::getLinkPropertyInfo(PyObject *args)
         Py::Tuple ret(infos.size());
         int i=0;
         for(const auto &info : infos) {
-            ret.setItem(i++,Py::TupleN(Py::String(info.name), 
+            ret.setItem(i++,Py::TupleN(Py::String(info.name),
                     Py::String(info.type.getName()),Py::String(info.doc)));
         }
         return Py::new_reference_to(ret);
@@ -258,7 +258,7 @@ PyObject* LinkBaseExtensionPy::setLink(PyObject *_args)
         }else if(PySequence_Check(pcObj)) {
             ext->setLink(-1,0);
             Py::Sequence seq(pcObj);
-            for(size_t i=0;i<seq.size();++i) 
+            for(Py_ssize_t i=0;i<seq.size();++i)
                 parseLink(ext,i,seq[i].ptr());
         }else
             parseLink(ext,-1,_args);

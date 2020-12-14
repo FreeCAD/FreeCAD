@@ -62,8 +62,10 @@ bool isSketcherAcceleratorActive(Gui::Document *doc, bool actsOnSelection)
     if (doc) {
         // checks if a Sketch Viewprovider is in Edit and is in no special mode
         if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
-            if (static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())
-                ->getSketchMode() == ViewProviderSketch::STATUS_NONE) {
+            auto mode = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())
+                ->getSketchMode();
+            if (mode == ViewProviderSketch::STATUS_NONE ||
+                mode == ViewProviderSketch::STATUS_SKETCH_UseHandler) {
                 if (!actsOnSelection)
                     return true;
                 else if (Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) > 0)
@@ -108,6 +110,11 @@ CmdSketcherCloseShape::CmdSketcherCloseShape()
 void CmdSketcherCloseShape::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+
+    // Cancel any in-progress operation
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    SketcherGui::ReleaseHandler(doc);
+
     // get the selection
     std::vector<Gui::SelectionObject> selection;
     selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
@@ -133,7 +140,7 @@ void CmdSketcherCloseShape::activated(int iMsg)
     int GeoIdLast = -1;
 
     // undo command open
-    openCommand("Add coincident constraint");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Add coincident constraint"));
     // go through the selected subelements
     for (size_t i=0; i < (SubNames.size() - 1); i++) {
         // only handle edges
@@ -213,6 +220,11 @@ CmdSketcherConnect::CmdSketcherConnect()
 void CmdSketcherConnect::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+
+    // Cancel any in-progress operation
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    SketcherGui::ReleaseHandler(doc);
+
     // get the selection
     std::vector<Gui::SelectionObject> selection;
     selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
@@ -234,7 +246,7 @@ void CmdSketcherConnect::activated(int iMsg)
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     // undo command open
-    openCommand("Add coincident constraint");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Add coincident constraint"));
 
     // go through the selected subelements
     for (unsigned int i=0; i<(SubNames.size()-1); i++ ) {
@@ -293,9 +305,14 @@ CmdSketcherSelectConstraints::CmdSketcherSelectConstraints()
 void CmdSketcherSelectConstraints::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+
     // get the selection
     std::vector<Gui::SelectionObject> selection;
     selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+
+    // Cancel any in-progress operation
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    SketcherGui::ReleaseHandler(doc);
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
@@ -361,6 +378,7 @@ void CmdSketcherSelectOrigin::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     Gui::Document * doc= getActiveGuiDocument();
+    ReleaseHandler(doc);
     SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
     Sketcher::SketchObject* Obj= vp->getSketchObject();
 //    ViewProviderSketch * vp = static_cast<ViewProviderSketch *>(Gui::Application::Instance->getViewProvider(docobj));
@@ -404,6 +422,7 @@ void CmdSketcherSelectVerticalAxis::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     Gui::Document * doc= getActiveGuiDocument();
+    ReleaseHandler(doc);
     SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
     Sketcher::SketchObject* Obj= vp->getSketchObject();
 
@@ -445,6 +464,7 @@ void CmdSketcherSelectHorizontalAxis::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     Gui::Document * doc= getActiveGuiDocument();
+    ReleaseHandler(doc);
     SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
     Sketcher::SketchObject* Obj= vp->getSketchObject();
 
@@ -485,6 +505,7 @@ void CmdSketcherSelectRedundantConstraints::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     Gui::Document * doc= getActiveGuiDocument();
+    ReleaseHandler(doc);
     SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
     Sketcher::SketchObject* Obj= vp->getSketchObject();
 
@@ -536,6 +557,7 @@ void CmdSketcherSelectConflictingConstraints::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     Gui::Document * doc= getActiveGuiDocument();
+    ReleaseHandler(doc);
     SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
     Sketcher::SketchObject* Obj= vp->getSketchObject();
     std::string doc_name = Obj->getDocument()->getName();
@@ -587,6 +609,7 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
     Q_UNUSED(iMsg);
     std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
     Gui::Document * doc= getActiveGuiDocument();
+    ReleaseHandler(doc);
     SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
     Sketcher::SketchObject* Obj= vp->getSketchObject();
 
@@ -706,6 +729,7 @@ void CmdSketcherSelectElementsWithDoFs::activated(int iMsg)
     Q_UNUSED(iMsg);
     getSelection().clearSelection();
     Gui::Document * doc= getActiveGuiDocument();
+    ReleaseHandler(doc);
     SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
     Sketcher::SketchObject* Obj= vp->getSketchObject();
 
@@ -804,6 +828,11 @@ CmdSketcherRestoreInternalAlignmentGeometry::CmdSketcherRestoreInternalAlignment
 void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+
+    // Cancel any in-progress operation
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    SketcherGui::ReleaseHandler(doc);
+
     // get the selection
     std::vector<Gui::SelectionObject> selection;
     selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
@@ -844,7 +873,7 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
                 int currentgeoid = Obj->getHighestCurveIndex();
 
                 try {
-                    Gui::Command::openCommand("Exposing Internal Geometry");
+                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Exposing Internal Geometry"));
                     Gui::cmdAppObjectArgs(Obj, "exposeInternalGeometry(%d)", GeoId);
 
                     int aftergeoid = Obj->getHighestCurveIndex();
@@ -893,6 +922,11 @@ CmdSketcherSymmetry::CmdSketcherSymmetry()
 void CmdSketcherSymmetry::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+
+    // Cancel any in-progress operation
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    SketcherGui::ReleaseHandler(doc);
+
     // get the selection
     std::vector<Gui::SelectionObject> selection;
     selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
@@ -1049,7 +1083,7 @@ void CmdSketcherSymmetry::activated(int iMsg)
     geoIdList.insert(0, 1, '[');
     geoIdList.append(1, ']');
 
-    Gui::Command::openCommand("Create symmetric geometry");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create symmetric geometry"));
 
     try{
         Gui::cmdAppObjectArgs(Obj,
@@ -1191,7 +1225,7 @@ public:
             resetPositionText();
 
             int currentgeoid = static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->getHighestCurveIndex();
-            Gui::Command::openCommand("Copy/clone/move geometry");
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Copy/clone/move geometry"));
 
             try{
                 if (Op != SketcherCopy::Move) {
@@ -1715,7 +1749,7 @@ public:
             unsetCursor();
             resetPositionText();
 
-            Gui::Command::openCommand("Create copy of geometry");
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create copy of geometry"));
 
             try {
                 Gui::cmdAppObjectArgs(sketchgui->getObject(),
@@ -1930,11 +1964,12 @@ void CmdSketcherDeleteAllGeometry::activated(int iMsg)
     if (ret == QMessageBox::Yes) {
         getSelection().clearSelection();
         Gui::Document * doc= getActiveGuiDocument();
+        ReleaseHandler(doc);
         SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
         Sketcher::SketchObject* Obj= vp->getSketchObject();
 
         try {
-            Gui::Command::openCommand("Delete all geometry");
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Delete all geometry"));
             Gui::cmdAppObjectArgs(Obj, "deleteAllGeometry()");
             Gui::Command::commitCommand();
         }
@@ -1989,11 +2024,12 @@ void CmdSketcherDeleteAllConstraints::activated(int iMsg)
     if (ret == QMessageBox::Yes) {
         getSelection().clearSelection();
         Gui::Document * doc= getActiveGuiDocument();
+        ReleaseHandler(doc);
         SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
         Sketcher::SketchObject* Obj= vp->getSketchObject();
 
         try {
-            Gui::Command::openCommand("Delete All Constraints");
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Delete All Constraints"));
             Gui::cmdAppObjectArgs(Obj, "deleteAllConstraints()");
             Gui::Command::commitCommand();
         }

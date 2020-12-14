@@ -35,8 +35,8 @@
       <location filename="../../Command.cpp" line="314"/>
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a 'mesh' object.</source>
-      <translation type="unfinished">Creates an approximated curve on top of a mesh.
-This command only works with a 'mesh' object.</translation>
+      <translation>Ustvari približno krivuljo po vrhu ploskovja.
+Ta ukaz deluje le s "ploskovji".</translation>
     </message>
   </context>
   <context>
@@ -207,9 +207,9 @@ This command only works with a 'mesh' object.</translation>
       <source>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
 
 This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</source>
-      <translation type="unfinished">Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
+      <translation>Pritisnite "Začni" in nato izberite točke na ploskovju; ko je izbranih dovolj točk, kliknite z desno miškino tipko in izberite "Ustvari". Ponavljajte ta postopek, da ustvarite več zlepkov. Za dokončanje dejanja zaprite ta opravilni pult.
 
-This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</translation>
+Ta ukaz deluje le na "ploskovjih" in ne na pravilnih ploskvah ali površjih. Če želite pretvoriti predmet v ploskovje, uporabi orodja delovnega okolja Ploskovje.</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
@@ -219,7 +219,7 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="44"/>
       <source>Snap tolerance to vertices</source>
-      <translation type="unfinished">Snap tolerance to vertices</translation>
+      <translation>Dopustno odstopanje pri pripenjanju na oglišča</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="51"/>

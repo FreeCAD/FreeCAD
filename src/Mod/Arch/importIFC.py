@@ -49,9 +49,9 @@ from draftutils.messages import _msg, _err
 if FreeCAD.GuiUp:
     import FreeCADGui as Gui
 
-__title__ = "FreeCAD IFC importer - Enhanced ifcopenshell-only version"
+__title__  = "FreeCAD IFC importer - Enhanced IfcOpenShell-only version"
 __author__ = ("Yorik van Havre", "Jonathan Wiedemann", "Bernd Hahnebach")
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 DEBUG = False  # Set to True to see debug messages. Otherwise, totally silent
 ZOOMOUT = True  # Set to False to not zoom extents after import

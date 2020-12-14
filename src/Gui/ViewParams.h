@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (c) 2018 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
+ *   Copyright (c) 2018 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -28,7 +28,7 @@
 
 namespace Gui {
 
-/** Convenient class to obtain view provider related parameters 
+/** Convenient class to obtain view provider related parameters
  *
  * The parameters are under group "User parameter:BaseApp/Preferences/View"
  */

@@ -1078,7 +1078,7 @@ class CommandDressupDogbone:
     # pylint: disable=no-init
 
     def GetResources(self):
-        return {'Pixmap': 'Path-Dressup',
+        return {'Pixmap': 'Path_Dressup',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_DressupDogbone", "Dogbone Dress-up"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_DressupDogbone", "Creates a Dogbone Dress-up object from a selected path")}
 

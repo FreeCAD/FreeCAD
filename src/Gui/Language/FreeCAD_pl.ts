@@ -2313,7 +2313,7 @@ z konsoli Python do panelu Widoku Raportu</translation>
     </message>
     <message>
       <source>Discard changes</source>
-      <translation>Porzuć zmiany</translation>
+      <translation>Odrzuć zmiany</translation>
     </message>
     <message>
       <source>Abort program</source>
@@ -2549,9 +2549,8 @@ opening or creation</source>
       <source>Area for picking elements in 3D view.
 Larger value eases to pick things, but can make small features impossible to select.
                </source>
-      <translation type="unfinished">Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.
-               </translation>
+      <translation>Obszar do wskazania/wyboru elementów w widoku 3D.
+Większa wartość ułatwia wybieranie, ale może uniemożliwić wybór małych obiektów.               </translation>
     </message>
   </context>
   <context>
@@ -2724,7 +2723,7 @@ Larger value eases to pick things, but can make small features impossible to sel
     </message>
     <message>
       <source>Discard saved transaction after saving document</source>
-      <translation>Odrzucić zapisane transakcji po zapisaniu dokumentu</translation>
+      <translation>Odrzuć zapisaną transakcję po zapisaniu dokumentu</translation>
     </message>
     <message>
       <source>Save thumbnail into project file when saving document</source>
@@ -5235,7 +5234,7 @@ How do you want to proceed?</source>
     <name>Gui::PropertyEditor::PropertyModel</name>
     <message>
       <source>Property</source>
-      <translation>Właściwości</translation>
+      <translation>Własność</translation>
     </message>
     <message>
       <source>Value</source>
@@ -5530,7 +5529,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Recompute after commit</source>
-      <translation type="unfinished">Recompute after commit</translation>
+      <translation>Przelicz po zatwierdzeniu</translation>
     </message>
     <message>
       <source>Remove</source>
@@ -5621,7 +5620,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>The text of the underlying object has changed. Discard changes and reload the text from the object?</source>
-      <translation>Tekst obiektu został zmieniony. Porzucić zmiany i wczytać tekst z obiektu?</translation>
+      <translation>Tekst podstawowego obiektu uległ zmianie. Odrzucić zmiany i przeładować tekst z obiektu?</translation>
     </message>
     <message>
       <source>Yes, reload.</source>
@@ -6619,7 +6618,7 @@ Please check the Report View for more details.</translation>
     </message>
     <message>
       <source>Unlink failed</source>
-      <translation type="unfinished">Unlink failed</translation>
+      <translation>Nie udało się usunąć powiązania</translation>
     </message>
     <message>
       <source>Replace link failed</source>
@@ -6701,7 +6700,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Drag &amp; drop failed</source>
-      <translation type="unfinished">Drag &amp; drop failed</translation>
+      <translation>Przeciągnięcie i upuszczenie nie powiodło się</translation>
     </message>
     <message>
       <source>Override colors...</source>
@@ -7563,7 +7562,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Unlink</source>
-      <translation type="unfinished">Unlink</translation>
+      <translation>Usuń powiązanie</translation>
     </message>
     <message>
       <source>Strip on level of link</source>
@@ -8100,7 +8099,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>&amp;Back</source>
-      <translation type="unfinished">&amp;Back</translation>
+      <translation>&amp;Cofnij</translation>
     </message>
     <message>
       <source>Go back to previous selection</source>
@@ -8254,7 +8253,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Add text document to active document</source>
-      <translation type="unfinished">Add text document to active document</translation>
+      <translation>Dodaj dokument tekstowy do aktywnego dokumentu</translation>
     </message>
   </context>
   <context>
@@ -8291,7 +8290,7 @@ Dokument: </translation>
     <name>StdCmdToggleBreakpoint</name>
     <message>
       <source>Macro</source>
-      <translation>Makro</translation>
+      <translation>Makropolecenia</translation>
     </message>
     <message>
       <source>Toggle breakpoint</source>
@@ -8302,7 +8301,7 @@ Dokument: </translation>
     <name>StdCmdToggleClipPlane</name>
     <message>
       <source>Standard-View</source>
-      <translation>Normalny widok</translation>
+      <translation>Widok standardowy</translation>
     </message>
     <message>
       <source>Clipping plane</source>
@@ -8317,7 +8316,7 @@ Dokument: </translation>
     <name>StdCmdToggleNavigation</name>
     <message>
       <source>Standard-View</source>
-      <translation>Normalny widok</translation>
+      <translation>Widok standardowy</translation>
     </message>
     <message>
       <source>Toggle navigation/Edit mode</source>
@@ -8332,7 +8331,7 @@ Dokument: </translation>
     <name>StdCmdToggleObjects</name>
     <message>
       <source>Standard-View</source>
-      <translation>Normalny widok</translation>
+      <translation>Widok standardowy</translation>
     </message>
     <message>
       <source>Toggle all objects</source>
@@ -8347,7 +8346,7 @@ Dokument: </translation>
     <name>StdCmdToggleSelectability</name>
     <message>
       <source>Standard-View</source>
-      <translation>Normalny widok</translation>
+      <translation>Widok standardowy</translation>
     </message>
     <message>
       <source>Toggle selectability</source>
@@ -8362,7 +8361,7 @@ Dokument: </translation>
     <name>StdCmdToggleVisibility</name>
     <message>
       <source>Standard-View</source>
-      <translation>Normalny widok</translation>
+      <translation>Widok standardowy</translation>
     </message>
     <message>
       <source>Toggle visibility</source>
@@ -8456,11 +8455,11 @@ Dokument: </translation>
     </message>
     <message>
       <source>Select all instances</source>
-      <translation type="unfinished">Select all instances</translation>
+      <translation>Wybierz wszystkie wystąpienia</translation>
     </message>
     <message>
       <source>Select all instances of the current selected object</source>
-      <translation type="unfinished">Select all instances of the current selected object</translation>
+      <translation>Wybierz wszystkie wystąpienia w aktualnie wybranym obiekcie</translation>
     </message>
   </context>
   <context>
@@ -9381,7 +9380,7 @@ Czy nadal chcesz kontynuować?</translation>
     <name>Std_Revert</name>
     <message>
       <source>This will discard all the changes since last file save.</source>
-      <translation>To spowoduje odrzucenie wszelkich zmian od czasu ostatniego zachowania pliku.</translation>
+      <translation>Spowoduje to odrzucenie wszystkich zmian od ostatniego zapisu pliku.</translation>
     </message>
     <message>
       <source>Revert document</source>

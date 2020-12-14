@@ -52,7 +52,7 @@ if open.__module__ in ['__builtin__','io']: pythonopen = open
 #  \ingroup ARCH
 #  \brief FreeCAD WebGL Exporter
 #
-#  This module provides tools to export HTML files containing the 
+#  This module provides tools to export HTML files containing the
 #  exported objects in WebGL format and a simple three.js-based viewer.
 
 disableCompression = False # Compress object data before sending to JS

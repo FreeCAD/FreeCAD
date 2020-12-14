@@ -1,5 +1,8 @@
 /** \defgroup WEB Web
  *  \ingroup CWORKBENCHES 
  *  \brief The webkit-based web browser of FreeCAD
+
+See \ref src/Mod/Draft/draft.dox as an example of how to populate this page
+
  */
 

@@ -11,297 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>ToolBit Library</string>
+   <string>Library Manager</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="0">
-    <widget class="QWidget" name="toolTableGroup" native="true">
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <item>
-         <widget class="QWidget" name="verticalWidget" native="true">
-          <property name="maximumSize">
-           <size>
-            <width>226</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout">
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_5">
-             <property name="bottomMargin">
-              <number>0</number>
-             </property>
-             <item>
-              <widget class="QLabel" name="ToolTable">
-               <property name="text">
-                <string>Tool Libraries</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="ButtonRenameToolTable">
-               <property name="maximumSize">
-                <size>
-                 <width>32</width>
-                 <height>32</height>
-                </size>
-               </property>
-               <property name="toolTip">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rename Tool Table&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset resource="../../../../../Gui/Icons/resource.qrc">
-                 <normaloff>:/icons/edit-edit.svg</normaloff>:/icons/edit-edit.svg</iconset>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="ButtonAddToolTable">
-               <property name="maximumSize">
-                <size>
-                 <width>32</width>
-                 <height>32</height>
-                </size>
-               </property>
-               <property name="toolTip">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add New Tool Table&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset resource="../../../../../Gui/Icons/resource.qrc">
-                 <normaloff>:/icons/list-add.svg</normaloff>:/icons/list-add.svg</iconset>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="ButtonRemoveToolTable">
-               <property name="maximumSize">
-                <size>
-                 <width>32</width>
-                 <height>32</height>
-                </size>
-               </property>
-               <property name="toolTip">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove Tool Table from Disc&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset resource="../../../../../Gui/Icons/resource.qrc">
-                 <normaloff>:/icons/list-remove.svg</normaloff>:/icons/list-remove.svg</iconset>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <widget class="QListWidget" name="TableList">
-             <property name="frameShape">
-              <enum>QFrame::Box</enum>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item>
-         <layout class="QVBoxLayout" name="verticalLayout_2">
-          <property name="leftMargin">
-           <number>0</number>
-          </property>
-          <property name="bottomMargin">
-           <number>0</number>
-          </property>
-          <item>
-           <widget class="QTableView" name="toolTable">
-            <property name="acceptDrops">
-             <bool>true</bool>
-            </property>
-            <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Table of Tool Bits of the library.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-            <property name="frameShape">
-             <enum>QFrame::Box</enum>
-            </property>
-            <property name="frameShadow">
-             <enum>QFrame::Sunken</enum>
-            </property>
-            <property name="lineWidth">
-             <number>1</number>
-            </property>
-            <property name="midLineWidth">
-             <number>0</number>
-            </property>
-            <property name="dragEnabled">
-             <bool>true</bool>
-            </property>
-            <property name="dragDropMode">
-             <enum>QAbstractItemView::InternalMove</enum>
-            </property>
-            <property name="defaultDropAction">
-             <enum>Qt::MoveAction</enum>
-            </property>
-            <property name="selectionBehavior">
-             <enum>QAbstractItemView::SelectRows</enum>
-            </property>
-            <property name="sortingEnabled">
-             <bool>true</bool>
-            </property>
-            <attribute name="verticalHeaderVisible">
-             <bool>false</bool>
-            </attribute>
-           </widget>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_3">
-            <item>
-             <widget class="QPushButton" name="addToolController">
-              <property name="text">
-               <string>Add Tool Controller(s) to Job</string>
-              </property>
-              <property name="icon">
-               <iconset resource="../../../../../Gui/Icons/resource.qrc">
-                <normaloff>:/icons/edit_OK.svg</normaloff>:/icons/edit_OK.svg</iconset>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer_3">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeType">
-               <enum>QSizePolicy::Fixed</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>140</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
-             <widget class="QPushButton" name="libraryCancel">
-              <property name="toolTip">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Close the Tool Bit Library Editor&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-              </property>
-              <property name="text">
-               <string>Cancel</string>
-              </property>
-              <property name="icon">
-               <iconset resource="../../../../../Gui/Icons/resource.qrc">
-                <normaloff>:/icons/button_invalid.svg</normaloff>:/icons/button_invalid.svg</iconset>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="librarySave">
-              <property name="toolTip">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save the current Library&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-              </property>
-              <property name="text">
-               <string>Save Table</string>
-              </property>
-              <property name="icon">
-               <iconset resource="../../../../../Gui/Icons/resource.qrc">
-                <normaloff>:/icons/document-save.svg</normaloff>:/icons/document-save.svg</iconset>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="librarySaveAs">
-              <property name="toolTip">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save the library to a new file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-              </property>
-              <property name="text">
-               <string>Save Table As...</string>
-              </property>
-              <property name="icon">
-               <iconset resource="../../../../../Gui/Icons/resource.qrc">
-                <normaloff>:/icons/document-save-as.svg</normaloff>:/icons/document-save-as.svg</iconset>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="0" column="0" colspan="2">
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QLineEdit" name="lineLibPath">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>420</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="libraryOpen">
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the folder with the tool libraries to load.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset resource="../../../../../Gui/Icons/resource.qrc">
-         <normaloff>:/icons/document-open.svg</normaloff>:/icons/document-open.svg</iconset>
-       </property>
-      </widget>
-     </item>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_5">
      <item>
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
@@ -316,21 +30,44 @@
       </spacer>
      </item>
      <item>
+      <widget class="QPushButton" name="toolCreate">
+       <property name="text">
+        <string>Create Toolbit</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../Path.qrc">
+         <normaloff>:/icons/Path_ToolBit.svg</normaloff>:/icons/Path_ToolBit.svg</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="toolAdd">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16777215</height>
+        </size>
+       </property>
        <property name="toolTip">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add existing Tool Bit to this library.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
-        <string>Add Toolbit</string>
+        <string>Add Existing</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../../../Gui/Icons/resource.qrc">
-         <normaloff>:/icons/list-add.svg</normaloff>:/icons/list-add.svg</iconset>
+        <iconset resource="../Path.qrc">
+         <normaloff>:/icons/Path_ToolDuplicate.svg</normaloff>:/icons/Path_ToolDuplicate.svg</iconset>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="toolDelete">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16777215</height>
+        </size>
+       </property>
        <property name="toolTip">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Delete selected Tool Bit(s) from the library.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
@@ -343,17 +80,194 @@
        </property>
       </widget>
      </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QWidget" name="toolTableGroup" native="true">
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QPushButton" name="libraryOpen">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a working path for the tool library editor.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="../../../../../Gui/Icons/resource.qrc">
+            <normaloff>:/icons/document-open.svg</normaloff>:/icons/document-open.svg</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="addToolTable">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add New Tool Table&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="../../../../../Gui/Icons/resource.qrc">
+            <normaloff>:/icons/document-new.svg</normaloff>:/icons/document-new.svg</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="libraryExport">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save the selected library with a new name or export to another format&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="../../../../../Gui/Icons/resource.qrc">
+            <normaloff>:/icons/document-save.svg</normaloff>:/icons/document-save.svg</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QTreeView" name="TableList">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Box</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTableView" name="toolTable">
+        <property name="acceptDrops">
+         <bool>true</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Table of Tool Bits of the library.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Box</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Sunken</enum>
+        </property>
+        <property name="lineWidth">
+         <number>1</number>
+        </property>
+        <property name="midLineWidth">
+         <number>0</number>
+        </property>
+        <property name="dragEnabled">
+         <bool>false</bool>
+        </property>
+        <property name="dragDropOverwriteMode">
+         <bool>false</bool>
+        </property>
+        <property name="dragDropMode">
+         <enum>QAbstractItemView::DragOnly</enum>
+        </property>
+        <property name="defaultDropAction">
+         <enum>Qt::IgnoreAction</enum>
+        </property>
+        <property name="selectionMode">
+         <enum>QAbstractItemView::SingleSelection</enum>
+        </property>
+        <property name="selectionBehavior">
+         <enum>QAbstractItemView::SelectRows</enum>
+        </property>
+        <property name="sortingEnabled">
+         <bool>true</bool>
+        </property>
+        <attribute name="verticalHeaderVisible">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="verticalHeaderStretchLastSection">
+         <bool>true</bool>
+        </attribute>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_8">
      <item>
-      <widget class="QPushButton" name="toolEnumerate">
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Preferred</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>65555555</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="librarySave">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16777215</height>
+        </size>
+       </property>
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Assign numbers to each Tool Bit according to its current position in the library. The first Tool Bit is assigned the ID 1.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save the current Library&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
-        <string>Enumerate</string>
+        <string>Close</string>
        </property>
        <property name="icon">
         <iconset resource="../../../../../Gui/Icons/resource.qrc">
-         <normaloff>:/icons/button_sort.svg</normaloff>:/icons/button_sort.svg</iconset>
+         <normaloff>:/icons/edit_OK.svg</normaloff>:/icons/edit_OK.svg</iconset>
        </property>
       </widget>
      </item>
@@ -363,6 +277,7 @@
  </widget>
  <resources>
   <include location="../../../../../Gui/Icons/resource.qrc"/>
+  <include location="../Path.qrc"/>
  </resources>
  <connections/>
 </ui>

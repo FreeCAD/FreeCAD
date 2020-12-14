@@ -1,5 +1,4 @@
 # -*- coding: utf8 -*-
-
 #***************************************************************************
 #*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
@@ -35,13 +34,13 @@ else:
         return txt
     # \endcond
 
-__title__="FreeCAD Arch Commands"
+__title__  = "FreeCAD Arch Commands"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## @package ArchCommands
 #  \ingroup ARCH
-#  \brief Utility functions for theArch Workbench
+#  \brief Utility functions for the Arch Workbench
 #
 #  This module provides general functions used by Arch tools
 #  and utility commands
@@ -64,7 +63,7 @@ def string_replace(text, pattern, replacement):
     if sys.version_info.major < 3:
         text = text.encode("utf8")
     return text.replace(pattern, replacement)
-    
+
 
 def getStringList(objects):
     '''getStringList(objects): returns a string defining a list
@@ -1201,10 +1200,10 @@ def cleanArchSplitter(objects=None):
 
 
 def rebuildArchShape(objects=None):
-    """rebuildArchShape([objects]): takes the faces from the base shape of the given (or selected 
+    """rebuildArchShape([objects]): takes the faces from the base shape of the given (or selected
     if objects is None) Arch objects, and tries to rebuild a valid solid from them."""
-    import FreeCAD,FreeCADGui,Part
-    if not objects:
+    import FreeCAD,Part
+    if not objects and FreeCAD.GuiUp:
         objects = FreeCADGui.Selection.getSelection()
     if not isinstance(objects,list):
         objects = [objects]

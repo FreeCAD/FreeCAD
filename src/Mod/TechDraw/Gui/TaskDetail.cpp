@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2020 Wandererfan <wandererfan@gmail.com                 *
+ *   Copyright (c) 2020 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -192,7 +192,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
     m_baseFeat = dynamic_cast<TechDraw::DrawViewPart*>(baseObj);
     if (m_baseFeat != nullptr) {
         m_baseName = m_baseFeat->getNameInDocument();
-    } else { 
+    } else {
         Base::Console().Error("TaskDetail - no BaseView.  Can not proceed.\n");
         return;
     }
@@ -286,8 +286,8 @@ void TaskDetail::setUiFromFeat()
     Base::Vector3d anchor;
 
     TechDraw::DrawViewDetail* detailFeat = getDetailFeat();
-    QString detailDisplay = QString::fromUtf8(detailFeat->getNameInDocument()) + 
-                            QString::fromUtf8(" / ") + 
+    QString detailDisplay = QString::fromUtf8(detailFeat->getNameInDocument()) +
+                            QString::fromUtf8(" / ") +
                             QString::fromUtf8(detailFeat->Label.getValue());
     ui->leDetailView->setText(detailDisplay);
     anchor = detailFeat->AnchorPoint.getValue();
@@ -419,7 +419,7 @@ void TaskDetail::editByHighlight()
 }
 
 //dragEnd is in scene coords.
-void TaskDetail::onHighlightMoved(QPointF dragEnd) 
+void TaskDetail::onHighlightMoved(QPointF dragEnd)
 {
 //    Base::Console().Message("TD::onHighlightMoved(%s) - highlight: %X\n",
 //                            DrawUtil::formatVector(dragEnd).c_str(), m_ghost);
@@ -470,7 +470,7 @@ void TaskDetail::enableTaskButtons(bool b)
 void TaskDetail::createDetail()
 {
 //    Base::Console().Message("TD::createDetail()\n");
-    Gui::Command::openCommand("Create Detail View");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Detail View"));
 
     m_detailName = m_doc->getUniqueObjectName("Detail");
 
@@ -507,7 +507,7 @@ void TaskDetail::updateDetail()
 {
 //    Base::Console().Message("TD::updateDetail()\n");
     try {
-        Gui::Command::openCommand("Update Detail");
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update Detail"));
         double x = ui->qsbX->rawValue();
         double y = ui->qsbY->rawValue();
         Base::Vector3d temp(x, y, 0.0);
@@ -551,7 +551,7 @@ QPointF TaskDetail::getAnchorScene()
         basePos = Base::Vector3d (x, -y, 0.0);
         scale = dvp->getScale();
     } else {                       //part of projection group
-        
+
         DrawProjGroup* dpg = dpgi->getPGroup();
         if (dpg == nullptr) {
             Base::Console().Message("TD::getAnchorScene - projection group is confused\n");
@@ -568,7 +568,7 @@ QPointF TaskDetail::getAnchorScene()
 
     Base::Vector3d xyScene = Rez::guiX(basePos);
     Base::Vector3d anchorOffsetScene = Rez::guiX(anchorPos) * scale;
-    Base::Vector3d netPos = xyScene + anchorOffsetScene; 
+    Base::Vector3d netPos = xyScene + anchorOffsetScene;
     QPointF qAnchor(netPos.x, netPos.y);
     return qAnchor;
 }

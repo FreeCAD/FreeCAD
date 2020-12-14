@@ -723,7 +723,7 @@
       <location filename="../../CommandDecorate.cpp" line="447"/>
       <location filename="../../CommandDecorate.cpp" line="448"/>
       <source>Turn View Frames On/Off</source>
-      <translation type="unfinished">Turn View Frames On/Off</translation>
+      <translation>Włącz/Wyłącz wyświetlanie ramek</translation>
     </message>
   </context>
   <context>
@@ -1330,7 +1330,7 @@
       <location filename="../../CommandCreateDims.cpp" line="1162"/>
       <location filename="../../CommandCreateDims.cpp" line="1249"/>
       <source>Close active task dialog and try again.</source>
-      <translation type="unfinished">Close active task dialog and try again.</translation>
+      <translation>Zamknij okno aktywnego zadania i spróbuj ponownie.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1188"/>
@@ -1594,7 +1594,7 @@
     <message>
       <location filename="../../ViewProviderPage.cpp" line="251"/>
       <source>Toggle KeepUpdated</source>
-      <translation>Włącz KeepUpdated</translation>
+      <translation>Włącz/Wyłącz automatyczną aktualizacje</translation>
     </message>
     <message>
       <location filename="../../TemplateTextField.cpp" line="46"/>
@@ -3216,12 +3216,12 @@ Each unit is approx. 0.1 mm wide</translation>
     <message>
       <location filename="../../MDIViewPage.cpp" line="133"/>
       <source>Toggle &amp;Keep Updated</source>
-      <translation>Włącz/wyłącz &amp;automatyczną aktualizacje</translation>
+      <translation>Włącz/Wyłącz &amp;automatyczną aktualizację</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="136"/>
       <source>Toggle &amp;Frames</source>
-      <translation>Włącz/wyłącz &amp;Ramki</translation>
+      <translation>Włącz/Wyłącz &amp;Ramki</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="142"/>
@@ -4169,7 +4169,7 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="34"/>
       <source>Projection</source>
-      <translation>Rzut</translation>
+      <translation>Rzutowanie</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="41"/>

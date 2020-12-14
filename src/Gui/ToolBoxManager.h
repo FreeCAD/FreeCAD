@@ -29,14 +29,14 @@ namespace Gui {
 class ToolBarItem;
 
 
-namespace DockWnd 
+namespace DockWnd
 { class ToolBox;}
 
 /**
  * The ToolBoxManager class is responsible for the creation of command bars and appending them
  * to the toolbox window.
  * @see ToolBarManager
- * @see MenuManager 
+ * @see MenuManager
  * @author Werner Mayer
  */
 class GuiExport ToolBoxManager
@@ -62,4 +62,4 @@ private:
 } // namespace Gui
 
 
-#endif // GUI_TOOLBOXMANAGER_H 
+#endif // GUI_TOOLBOXMANAGER_H

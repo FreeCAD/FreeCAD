@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2019 Wandererfan <wandererfan@gmail.com                 *
+ *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -132,7 +132,7 @@ TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawWeldSymbol* weld) :
         Base::Console().Error("TaskWeldingSymbol - bad parameters.  Can not proceed.\n");
         return;
     }
-    
+
     App::DocumentObject* obj = m_weldFeat->Leader.getValue();
     if ( (obj != nullptr) &&
          (obj->isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())) )  {
@@ -429,7 +429,7 @@ void TaskWeldingSymbol::onDirectorySelected(const QString& newDir)
 void TaskWeldingSymbol::onSymbolSelected(QString symbolPath,
                                          QString source)
 {
-//    Base::Console().Message("TWS::onSymbolSelected(%s) - source: %s\n", 
+//    Base::Console().Message("TWS::onSymbolSelected(%s) - source: %s\n",
 //                            qPrintable(symbolPath), qPrintable(source));
     QIcon targetIcon(symbolPath);
     QSize iconSize(32,32);
@@ -483,12 +483,12 @@ void TaskWeldingSymbol::getTileFeats(void)
     std::vector<TechDraw::DrawTileWeld*> tiles = m_weldFeat->getTiles();
     m_arrowFeat = nullptr;
     m_otherFeat = nullptr;
-    
+
     if (!tiles.empty()) {
         TechDraw::DrawTileWeld* tempTile = tiles.at(0);
         if (tempTile->TileRow.getValue() == 0) {
             m_arrowFeat = tempTile;
-        } else { 
+        } else {
             m_otherFeat = tempTile;
         }
     }
@@ -496,7 +496,7 @@ void TaskWeldingSymbol::getTileFeats(void)
         TechDraw::DrawTileWeld* tempTile = tiles.at(1);
         if (tempTile->TileRow.getValue() == 0) {
             m_arrowFeat = tempTile;
-        } else { 
+        } else {
             m_otherFeat = tempTile;
         }
     }
@@ -506,7 +506,7 @@ void TaskWeldingSymbol::getTileFeats(void)
 TechDraw::DrawWeldSymbol* TaskWeldingSymbol::createWeldingSymbol(void)
 {
 //    Base::Console().Message("TWS::createWeldingSymbol()\n");
-    
+
     std::string symbolName = m_leadFeat->getDocument()->getUniqueObjectName("WeldSymbol");
     std::string symbolType = "TechDraw::DrawWeldSymbol";
 
@@ -650,7 +650,7 @@ bool TaskWeldingSymbol::accept()
 {
 //    Base::Console().Message("TWS::accept()\n");
     if (m_createMode) {
-        Gui::Command::openCommand("Create WeldSymbol");
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create WeldSymbol"));
         m_weldFeat = createWeldingSymbol();
         updateTiles();
         Gui::Command::updateActive();
@@ -658,7 +658,7 @@ bool TaskWeldingSymbol::accept()
         m_weldFeat->recomputeFeature();
     //    m_weldFeat->requestPaint();    //not a dv!
     } else {
-        Gui::Command::openCommand("Edit WeldSymbol");
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit WeldSymbol"));
         try {
             updateWeldingSymbol();
             updateTiles();
@@ -680,7 +680,7 @@ bool TaskWeldingSymbol::accept()
 bool TaskWeldingSymbol::reject()
 {
 //    Base::Console().Message("TWS::reject()\n");
-      //nothing to remove. 
+      //nothing to remove.
 
     Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().recompute()");
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");

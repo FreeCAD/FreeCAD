@@ -107,12 +107,16 @@ QGIDatumLabel::QGIDatumLabel()
     setFiltersChildEvents(true);
 
     m_dimText = new QGCustomText();
+    m_dimText->setTightBounding(true);
     m_dimText->setParentItem(this);
     m_tolTextOver = new QGCustomText();
+    m_tolTextOver->setTightBounding(true);
     m_tolTextOver->setParentItem(this);
     m_tolTextUnder = new QGCustomText();
+    m_tolTextUnder->setTightBounding(true);
     m_tolTextUnder->setParentItem(this);
     m_unitText = new QGCustomText();
+    m_unitText->setTightBounding(true);
     m_unitText->setParentItem(this);
 
     m_ctrl = false;
@@ -253,7 +257,8 @@ void QGIDatumLabel::setPosFromCenter(const double &xCenter, const double &yCente
     QRectF unitBox = m_unitText->boundingRect();
     double unitWidth = unitBox.width();
     double unitRight = right + unitWidth;
-    m_unitText->setPos(right,top);
+    // Set the m_unitText font *baseline* at same height as the m_dimText font baseline
+    m_unitText->setPos(right, 0.0);
 
     //set tolerance position
     QRectF overBox = m_tolTextOver->boundingRect();
@@ -266,9 +271,11 @@ void QGIDatumLabel::setPosFromCenter(const double &xCenter, const double &yCente
     }
     double tolRight = unitRight + width;
 
-    m_tolTextOver->justifyRightAt(tolRight, middle, false);
-    m_tolTextUnder->justifyRightAt(tolRight, middle + underBox.height(), false);
-
+    // Adjust for difference in tight and original bounding box sizes, note the y-coord down system
+    QPointF tol_adj = m_tolTextOver->tightBoundingAdjust();
+    m_tolTextOver->justifyRightAt(tolRight + tol_adj.x(), middle - tol_adj.y(), false);
+    tol_adj = m_tolTextUnder->tightBoundingAdjust();
+    m_tolTextUnder->justifyRightAt(tolRight + tol_adj.x(), middle + overBox.height() - tol_adj.y(), false);
 }
 
 void QGIDatumLabel::setLabelCenter()
@@ -322,46 +329,30 @@ void QGIDatumLabel::setTolString()
     m_tolTextOver->show();
     m_tolTextUnder->show();
 
-    double overTol = dim->OverTolerance.getValue();
-    double underTol = dim->UnderTolerance.getValue();
-
-    int precision = getPrecision();
-    QString qsPrecision = QString::number(precision);
-    QString qsFormatOver = QString::fromUtf8("%+.") +            //show sign
-                           qsPrecision +
-                           QString::fromUtf8("g");               //trim trailing zeroes
-    if (DrawUtil::fpCompare(overTol, 0.0, pow(10.0, -precision))) {
-        qsFormatOver = QString::fromUtf8("%.") +            //no sign
-                           qsPrecision +
-                           QString::fromUtf8("g");
-    }
-    
-    QString qsFormatUnder = QString::fromUtf8("%+.") +            //show sign
-                              qsPrecision +
-                              QString::fromUtf8("g");               //trim trailing zeroes
-    if (DrawUtil::fpCompare(underTol, 0.0, pow(10.0, -precision))) {
-        qsFormatUnder = QString::fromUtf8("%.") +            //no sign
-                           qsPrecision +
-                           QString::fromUtf8("g");               //trim trailing zeroes
-    }
     QString tolSuffix;
     if ((dim->Type.isValue("Angle")) || (dim->Type.isValue("Angle3Pt"))) {
-        tolSuffix = QString::fromUtf8(dim->getFormatedValue(2).c_str()); //just the unit
+        tolSuffix = QString::fromUtf8(dim->getFormattedDimensionValue(2).c_str()); //just the unit
     }
 
-    QString overFormat;
-    QString underFormat;
-    #if QT_VERSION >= 0x050000
-        overFormat = QString::asprintf(qsFormatOver.toStdString().c_str(), overTol);
-        underFormat = QString::asprintf(qsFormatUnder.toStdString().c_str(), underTol);
-    #else
-        QString qs2;
-        overFormat = qs2.sprintf(qsFormatOver.toStdString().c_str(), overTol);
-        underFormat = qs2.sprintf(qsFormatUnder.toStdString().c_str(), underTol);
-    #endif
+    std::pair<std::string, std::string> labelTexts, unitTexts;
 
-    m_tolTextOver->setPlainText(overFormat + tolSuffix);
-    m_tolTextUnder->setPlainText(underFormat + tolSuffix);
+    if (dim->ArbitraryTolerances.getValue()) {
+        labelTexts = dim->getFormattedToleranceValues(1); //just the number pref/spec/suf
+        unitTexts.first = "";
+        unitTexts.second = "";
+    } else {
+        if (dim->isMultiValueSchema()) {
+            labelTexts = dim->getFormattedToleranceValues(0); //don't format multis
+            unitTexts.first = "";
+            unitTexts.second = "";
+        } else {
+            labelTexts = dim->getFormattedToleranceValues(1); //just the number pref/spec/suf
+            unitTexts  = dim->getFormattedToleranceValues(2); //just the unit
+        }
+    }
+
+    m_tolTextUnder->setPlainText(QString::fromUtf8(labelTexts.first.c_str()) + QString::fromUtf8(unitTexts.first.c_str()));
+    m_tolTextOver->setPlainText(QString::fromUtf8(labelTexts.second.c_str()) + QString::fromUtf8(unitTexts.second.c_str()));
 
     return;
 } 
@@ -620,18 +611,18 @@ void QGIViewDimension::updateDim()
         return;
     }
  
-//    QString labelText = QString::fromUtf8(dim->getFormatedValue().c_str());
+//    QString labelText = QString::fromUtf8(dim->getFormattedDimensionValue().c_str());
     //want this split into value and unit
     QString labelText;
     QString unitText;
     if (dim->Arbitrary.getValue()) {
-        labelText = QString::fromUtf8(dim->getFormatedValue(1).c_str()); //just the number pref/spec/suf
+        labelText = QString::fromUtf8(dim->getFormattedDimensionValue(1).c_str()); //just the number pref/spec/suf
     } else {
         if (dim->isMultiValueSchema()) {
-            labelText = QString::fromUtf8(dim->getFormatedValue(0).c_str()); //don't format multis
+            labelText = QString::fromUtf8(dim->getFormattedDimensionValue(0).c_str()); //don't format multis
         } else {
-            labelText = QString::fromUtf8(dim->getFormatedValue(1).c_str()); //just the number pref/spec/suf
-            unitText  = QString::fromUtf8(dim->getFormatedValue(2).c_str()); //just the unit
+            labelText = QString::fromUtf8(dim->getFormattedDimensionValue(1).c_str()); //just the number pref/spec/suf
+            unitText  = QString::fromUtf8(dim->getFormattedDimensionValue(2).c_str()); //just the unit
         }
     }
     QFont font = datumLabel->getFont();
@@ -665,7 +656,7 @@ void QGIViewDimension::datumLabelDragFinished()
 
     double x = Rez::appX(datumLabel->X()),
            y = Rez::appX(datumLabel->Y());
-    Gui::Command::openCommand("Drag Dimension");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Drag Dimension"));
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.X = %f", dim->getNameInDocument(), x);
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Y = %f", dim->getNameInDocument(), -y);
     Gui::Command::commitCommand();

@@ -21,9 +21,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM element rotation 1D ViewProvider for the document object"
+__title__  = "FreeCAD FEM element rotation 1D ViewProvider for the document object"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## @package view_element_rotation1D
 #  \ingroup FEM
@@ -38,7 +38,6 @@ class VPElementRotation1D(view_base_femconstraint.VPBaseFemConstraint):
     A View Provider for the ElementRotation1D object
     """
 
-    pass
     """
     # do not activate the task panel, since rotation with reference shapes is not yet supported
     def setEdit(self, vobj, mode=0):

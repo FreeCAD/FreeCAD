@@ -59,7 +59,7 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
     // Connect signal(s)
     connect(ui->expression, SIGNAL(textChanged(QString)), this, SLOT(textChanged(QString)));
     connect(ui->discardBtn, SIGNAL(clicked()), this, SLOT(setDiscarded()));
-    
+
     if (expression) {
         ui->expression->setText(Base::Tools::fromStdString(expression->toString()));
     }
@@ -130,7 +130,7 @@ void DlgExpressionInput::textChanged(const QString &text)
             ui->expression->setMinimumWidth(minimumWidth);
         else
             ui->expression->setMinimumWidth(width);
-        
+
         if(this->width() < ui->expression->minimumWidth())
             setMinimumWidth(ui->expression->minimumWidth());
 

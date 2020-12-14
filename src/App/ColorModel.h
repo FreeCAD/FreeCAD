@@ -197,7 +197,7 @@ public:
   ColorField (void);
   ColorField (const ColorField &rclCF);
   ColorField (const ColorModel &rclModel, float fMin, float fMax, unsigned short usCt);
-  virtual ~ColorField ();    
+  virtual ~ColorField ();
 
   ColorField& operator = (const ColorField &rclCF);
 
@@ -212,7 +212,7 @@ public:
   void setDirect (unsigned short usInd, Color clCol) { _aclField[usInd] = clCol; }
   float getMinValue (void) const { return _fMin; }
   float getMaxValue (void) const { return _fMax; }
-  
+
   Color getColor (unsigned short usIndex) const { return _aclField[usIndex]; }
   inline Color  getColor (float fVal) const;
   inline unsigned short getColorIndex (float fVal) const;
@@ -281,7 +281,7 @@ public:
 
   ColorGradient& operator = (const ColorGradient &rclCR);
 
-  void set (float fMin, float fMax, unsigned short usCt, TStyle tS, bool bOG); 
+  void set (float fMin, float fMax, unsigned short usCt, TStyle tS, bool bOG);
   void setRange (float fMin, float fMax) { set(fMin, fMax, _usCtColors, _tStyle, _bOutsideGrayed); }
   void getRange (float &rfMin, float &rfMax) const { rfMin = _fMin; rfMax = _fMax; }
   unsigned short getCountColors (void) const { return _usCtColors; }
@@ -305,9 +305,9 @@ protected:
   TColorModel    _tColorModel;
   TStyle         _tStyle;
   float          _fMin, _fMax;
-  unsigned short        _usCtColors; 
+  unsigned short        _usCtColors;
   bool           _bOutsideGrayed;
-  ColorModel       _clTotal, _clTop, _clBottom; 
+  ColorModel       _clTotal, _clTop, _clBottom;
 
   void  rebuild (void);
   void  setColorModel (void);
@@ -330,7 +330,7 @@ public:
   bool addMax (const std::string &rclName);
   bool remove (unsigned long ulPos);
   void removeFirst (void);
-  void removeLast (void);    
+  void removeLast (void);
 
   Color getColor (unsigned long ulPos) const;
   uint32_t  getPackedColor (unsigned long ulPos) const;
@@ -426,10 +426,10 @@ inline Color ColorGradient::getColor (float fVal) const
         else
           return _clColFld2.getColor(fVal);
       }
-      else 
+      else
         return _clColFld1.getColor(fVal);
     }
-    
+
     default:
     case FLOW:
     {
@@ -451,10 +451,10 @@ inline unsigned short ColorGradient::getColorIndex (float fVal) const
         else
           return (unsigned short)(_clColFld1.getCountColors() + _clColFld2.getColorIndex(fVal));
       }
-      else 
+      else
         return _clColFld1.getColorIndex(fVal);
     }
-    
+
     default:
     case FLOW:
     {
@@ -464,7 +464,7 @@ inline unsigned short ColorGradient::getColorIndex (float fVal) const
 }
 
 inline const ColorModel& ColorGradient::getColorModel (void) const
-{ 
+{
   if ( _tStyle == ZERO_BASED )
   {
     if ( _fMax <= 0.0f )
@@ -482,4 +482,4 @@ inline const ColorModel& ColorGradient::getColorModel (void) const
 
 } // namespace App
 
-#endif // APP_COLORMODEL_H 
+#endif // APP_COLORMODEL_H

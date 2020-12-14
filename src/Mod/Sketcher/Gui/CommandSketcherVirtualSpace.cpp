@@ -152,7 +152,7 @@ void CmdSketcherSwitchVirtualSpace::activated(int iMsg)
         Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
 
         // undo command open
-        openCommand("Toggle constraints to the other virtual space");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Toggle constraints to the other virtual space"));
 
         int successful = SubNames.size();
         // go through the selected subelements
@@ -160,7 +160,7 @@ void CmdSketcherSwitchVirtualSpace::activated(int iMsg)
             // only handle constraints
             if (it->size() > 10 && it->substr(0,10) == "Constraint") {
                 int ConstrId = Sketcher::PropertyConstraintList::getIndexFromConstraintName(*it);
-                Gui::Command::openCommand("Update constraint's virtual space");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update constraint's virtual space"));
                 try {
                     Gui::cmdAppObjectArgs(Obj, "toggleVirtualSpace(%d)", ConstrId);
                 }

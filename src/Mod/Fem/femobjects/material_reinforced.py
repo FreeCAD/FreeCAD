@@ -21,9 +21,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM reinforced material"
+__title__  = "FreeCAD FEM reinforced material"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## @package material_reinforced
 #  \ingroup FEM

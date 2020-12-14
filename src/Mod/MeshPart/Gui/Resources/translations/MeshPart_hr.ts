@@ -35,8 +35,8 @@
       <location filename="../../Command.cpp" line="314"/>
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a 'mesh' object.</source>
-      <translation type="unfinished">Creates an approximated curve on top of a mesh.
-This command only works with a 'mesh' object.</translation>
+      <translation>Stvara približnu krivulju na vrhu mreže.
+Ova naredba radi samo s 'mrežnim' objektom.</translation>
     </message>
   </context>
   <context>
@@ -207,9 +207,9 @@ This command only works with a 'mesh' object.</translation>
       <source>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
 
 This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</source>
-      <translation type="unfinished">Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
+      <translation>Pritisnite "Start", a zatim odaberite točke na mreži; kada se postavi dovoljno točaka, kliknite desnu tipku miša i odaberite 'Stvori'. Ponovite ovaj postupak da biste stvorili više zavoja. Zatvorite ovu ploču zadataka da biste dovršili operaciju.
 
-This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</translation>
+Ova naredba radi samo s  'mreža', objektom a ne s uobičajenim licem ili površinom. Za pretvaranje objekta u mrežu koristite alate radne površine Mreža</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
@@ -219,7 +219,7 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="44"/>
       <source>Snap tolerance to vertices</source>
-      <translation type="unfinished">Snap tolerance to vertices</translation>
+      <translation>Tolerancija kod privuci na vrhove</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="51"/>

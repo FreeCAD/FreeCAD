@@ -23,9 +23,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM _element fluid 1D document object"
+__title__  = "FreeCAD FEM _element fluid 1D document object"
 __author__ = "Ofentse Kgoa"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## @package element_fluid1D
 #  \ingroup FEM

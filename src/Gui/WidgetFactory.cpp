@@ -449,6 +449,44 @@ QIcon *PythonWrapper::toQIcon(PyObject *pyobj)
     return 0;
 }
 
+Py::Object PythonWrapper::fromQObject(QObject* object, const char* className)
+{
+#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+    // Access shiboken/PySide via C++
+    //
+    PyTypeObject * type = getPyTypeObjectForTypeName<QObject>();
+    if (type) {
+        SbkObjectType* sbk_type = reinterpret_cast<SbkObjectType*>(type);
+        std::string typeName;
+        if (className)
+            typeName = className;
+        else
+            typeName = object->metaObject()->className();
+        PyObject* pyobj = Shiboken::Object::newObject(sbk_type, object, false, false, typeName.c_str());
+        return Py::asObject(pyobj);
+    }
+    throw Py::RuntimeError("Failed to wrap object");
+
+#elif QT_VERSION >= 0x050000
+    // Access shiboken2/PySide2 via Python
+    //
+    return qt_wrapInstance<QObject*>(object, className, "shiboken2", "PySide2.QtCore", "wrapInstance");
+#else
+    // Access shiboken/PySide via Python
+    //
+    return qt_wrapInstance<QObject*>(object, className, "shiboken", "PySide.QtCore", "wrapInstance");
+#endif
+
+#if 0 // Unwrapping using sip/PyQt
+    Q_UNUSED(className);
+#if QT_VERSION >= 0x050000
+    return qt_wrapInstance<QObject*>(object, "QObject", "sip", "PyQt5.QtCore", "wrapinstance");
+#else
+    return qt_wrapInstance<QObject*>(object, "QObject", "sip", "PyQt4.Qt", "wrapinstance");
+#endif
+#endif
+}
+
 Py::Object PythonWrapper::fromQWidget(QWidget* widget, const char* className)
 {
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
@@ -644,7 +682,7 @@ void WidgetFactoryInst::destruct ()
 
 /**
  * Creates a widget with the name \a sName which is a child of \a parent.
- * To create an instance of this widget once it must has been registered. 
+ * To create an instance of this widget once it must has been registered.
  * If there is no appropriate widget registered 0 is returned.
  */
 QWidget* WidgetFactoryInst::createWidget (const char* sName, QWidget* parent) const
@@ -686,7 +724,7 @@ QWidget* WidgetFactoryInst::createWidget (const char* sName, QWidget* parent) co
 
 /**
  * Creates a widget with the name \a sName which is a child of \a parent.
- * To create an instance of this widget once it must has been registered. 
+ * To create an instance of this widget once it must has been registered.
  * If there is no appropriate widget registered 0 is returned.
  */
 Gui::Dialog::PreferencePage* WidgetFactoryInst::createPreferencePage (const char* sName, QWidget* parent) const
@@ -724,9 +762,9 @@ Gui::Dialog::PreferencePage* WidgetFactoryInst::createPreferencePage (const char
 }
 
 /**
- * Creates a preference widget with the name \a sName and the preference name \a sPref 
+ * Creates a preference widget with the name \a sName and the preference name \a sPref
  * which is a child of \a parent.
- * To create an instance of this widget once it must has been registered. 
+ * To create an instance of this widget once it must has been registered.
  * If there is no appropriate widget registered 0 is returned.
  * After creation of this widget its recent preferences are restored automatically.
  */
@@ -1396,7 +1434,7 @@ void PyResource::load(const char* name)
 /**
  * Makes a connection between the sender widget \a sender and its signal \a signal
  * of the created resource and Python callback function \a cb.
- * If the sender widget does not exist or no resource has been loaded this method returns false, 
+ * If the sender widget does not exist or no resource has been loaded this method returns false,
  * otherwise it returns true.
  */
 bool PyResource::connect(const char* sender, const char* signal, PyObject* cb)

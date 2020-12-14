@@ -802,9 +802,9 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
     return res;
 }
 
-Document* Application::openDocumentPrivate(const char * FileName, 
+Document* Application::openDocumentPrivate(const char * FileName,
         const char *propFileName, const char *label,
-        bool isMainDoc, bool createView, 
+        bool isMainDoc, bool createView,
         const std::set<std::string> &objNames)
 {
     FileInfo File(FileName);
@@ -831,12 +831,12 @@ Document* Application::openDocumentPrivate(const char * FileName,
             }
             continue;
         }
-        if(it->second->testStatus(App::Document::PartialDoc) 
+        if(it->second->testStatus(App::Document::PartialDoc)
                 || it->second->testStatus(App::Document::PartialRestore)) {
             // Here means a document is already partially loaded, but the document
-            // is requested again, either partial or not. We must check if the 
+            // is requested again, either partial or not. We must check if the
             // document contains the required object
-            
+
             if(isMainDoc) {
                 // Main document must be open fully, so close and reopen
                 closeDocument(it->first.c_str());
@@ -1039,7 +1039,7 @@ std::string Application::getHelpDir()
 int Application::checkLinkDepth(int depth, bool no_throw) {
     if(_objCount<0) {
         _objCount = 0;
-        for(auto &v : DocMap) 
+        for(auto &v : DocMap)
             _objCount += v.second->countObjects();
     }
     if(depth > _objCount+2) {
@@ -1704,7 +1704,7 @@ void Application::init(int argc, char ** argv)
         std::signal(SIGSEGV,segmentation_fault_handler);
         std::signal(SIGABRT,segmentation_fault_handler);
         std::set_terminate(unhandled_exception_handler);
-        std::set_unexpected(unexpection_error_handler);
+           ::set_unexpected(unexpection_error_handler);
 #elif defined(FC_OS_LINUX)
         std::signal(SIGSEGV,segmentation_fault_handler);
 #endif
@@ -2127,7 +2127,7 @@ void Application::initApplication(void)
     catch (const Base::Exception& e) {
         e.ReportException();
     }
-    
+
     // seed randomizer
     srand(time(0));
 }

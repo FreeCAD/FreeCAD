@@ -65,7 +65,7 @@ private:
  * The ToolBarManager class is responsible for the creation of toolbars and appending them
  * to the main window.
  * @see ToolBoxManager
- * @see MenuManager 
+ * @see MenuManager
  * @author Werner Mayer
  */
 class GuiExport ToolBarManager
@@ -97,4 +97,4 @@ private:
 } // namespace Gui
 
 
-#endif // GUI_TOOLBARMANAGER_H 
+#endif // GUI_TOOLBARMANAGER_H

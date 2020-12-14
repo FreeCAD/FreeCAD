@@ -21,9 +21,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD Python Mesh reader and writer"
+__title__  = "FreeCAD Python Mesh reader and writer"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## @package importPyMesh
 #  \ingroup FEM

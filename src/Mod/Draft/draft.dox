@@ -1,6 +1,6 @@
 /** \defgroup DRAFT Draft
-\ingroup PYTHONWORKBENCHES
-\brief Basic 2D drawing tools and other generic tools
+ *  \ingroup PYTHONWORKBENCHES
+ *  \brief Basic 2D drawing tools and other generic tools
 
 The Draft workbench provides many tools for building geometrical
 objects in a two-dimensional space, normally supported by a working plane

@@ -39,9 +39,9 @@
 # include <Inventor/nodes/SoSwitch.h>
 # include <Inventor/nodes/SoDirectionalLight.h>
 # include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/sensors/SoNodeSensor.h> 
+# include <Inventor/sensors/SoNodeSensor.h>
 # include <Inventor/SoPickedPoint.h>
-# include <Inventor/actions/SoRayPickAction.h> 
+# include <Inventor/actions/SoRayPickAction.h>
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
@@ -107,6 +107,7 @@ void ViewProviderDragger::setupContextMenu(QMenu* menu, QObject* receiver, const
 {
     QAction* act = menu->addAction(QObject::tr("Transform"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Transform));
+    ViewProviderDocumentObject::setupContextMenu(menu, receiver, member);
 }
 
 ViewProvider *ViewProviderDragger::startEditing(int mode) {
@@ -125,7 +126,7 @@ bool ViewProviderDragger::checkLink() {
     ViewProviderDocumentObject *vpParent = 0;
     std::string subname;
     auto doc = Application::Instance->editDocument();
-    if(!doc) 
+    if(!doc)
         return false;
     doc->getInEdit(&vpParent,&subname);
     if(!vpParent)
@@ -157,29 +158,29 @@ bool ViewProviderDragger::setEdit(int ModNum)
     SoTransform *tempTransform = new SoTransform();
     tempTransform->ref();
     updateTransform(placement, tempTransform);
-    
+
     assert(!csysDragger);
     csysDragger = new SoFCCSysDragger();
     csysDragger->draggerSize.setValue(0.05f);
     csysDragger->translation.setValue(tempTransform->translation.getValue());
     csysDragger->rotation.setValue(tempTransform->rotation.getValue());
-    
+
     tempTransform->unref();
-    
+
     pcTransform->translation.connectFrom(&csysDragger->translation);
     pcTransform->rotation.connectFrom(&csysDragger->rotation);
-    
+
     csysDragger->addStartCallback(dragStartCallback, this);
     csysDragger->addFinishCallback(dragFinishCallback, this);
-    
+
     // dragger node is added to viewer's editing root in setEditViewer
     // pcRoot->insertChild(csysDragger, 0);
     csysDragger->ref();
-    
+
     TaskCSysDragger *task = new TaskCSysDragger(this, csysDragger);
     Gui::Control().showDialog(task);
   }
-  
+
   return true;
 }
 
@@ -191,7 +192,7 @@ void ViewProviderDragger::unsetEdit(int ModNum)
   {
     pcTransform->translation.disconnect(&csysDragger->translation);
     pcTransform->rotation.disconnect(&csysDragger->rotation);
-    
+
     // dragger node is added to viewer's editing root in setEditViewer
     // pcRoot->removeChild(csysDragger); //should delete csysDragger
     csysDragger->unref();
@@ -238,17 +239,17 @@ void ViewProviderDragger::unsetEditViewer(Gui::View3DInventorViewer* viewer)
 void ViewProviderDragger::dragStartCallback(void *, SoDragger *)
 {
     // This is called when a manipulator is about to manipulating
-    Gui::Application::Instance->activeDocument()->openCommand("Transform");
+    Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Transform"));
 }
 
 void ViewProviderDragger::dragFinishCallback(void *data, SoDragger *d)
 {
     // This is called when a manipulator has done manipulating
-    
+
     ViewProviderDragger* sudoThis = reinterpret_cast<ViewProviderDragger *>(data);
     SoFCCSysDragger *dragger = static_cast<SoFCCSysDragger *>(d);
     updatePlacementFromDragger(sudoThis, dragger);
-    
+
     Gui::Application::Instance->activeDocument()->commitCommand();
 }
 
@@ -262,7 +263,7 @@ void ViewProviderDragger::updatePlacementFromDragger(ViewProviderDragger* sudoTh
   double pMatrix[16];
   originalPlacement.toMatrix().getMatrix(pMatrix);
   Base::Placement freshPlacement = originalPlacement;
-  
+
   //local cache for brevity.
   double translationIncrement = draggerIn->translationIncrement.getValue();
   double rotationIncrement = draggerIn->rotationIncrement.getValue();
@@ -272,7 +273,7 @@ void ViewProviderDragger::updatePlacementFromDragger(ViewProviderDragger* sudoTh
   int rCountX = draggerIn->rotationIncrementCountX.getValue();
   int rCountY = draggerIn->rotationIncrementCountY.getValue();
   int rCountZ = draggerIn->rotationIncrementCountZ.getValue();
-  
+
   //just as a little sanity check make sure only 1 field has changed.
   int numberOfFieldChanged = 0;
   if (tCountX) numberOfFieldChanged++;
@@ -284,12 +285,12 @@ void ViewProviderDragger::updatePlacementFromDragger(ViewProviderDragger* sudoTh
   if (numberOfFieldChanged == 0)
     return;
   assert(numberOfFieldChanged == 1);
-  
+
   //helper lamdas.
   auto getVectorX = [&pMatrix]() {return Base::Vector3d(pMatrix[0], pMatrix[4], pMatrix[8]);};
   auto getVectorY = [&pMatrix]() {return Base::Vector3d(pMatrix[1], pMatrix[5], pMatrix[9]);};
   auto getVectorZ = [&pMatrix]() {return Base::Vector3d(pMatrix[2], pMatrix[6], pMatrix[10]);};
-  
+
   if (tCountX)
   {
     Base::Vector3d movementVector(getVectorX());
@@ -332,7 +333,7 @@ void ViewProviderDragger::updatePlacementFromDragger(ViewProviderDragger* sudoTh
     freshPlacement.setRotation(rotation * freshPlacement.getRotation());
     geoFeature->Placement.setValue(freshPlacement);
   }
-  
+
   draggerIn->clearIncrementCounts();
 }
 

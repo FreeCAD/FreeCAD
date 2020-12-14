@@ -26,7 +26,7 @@
 \ingroup APP
 \brief The Base class of the FreeCAD Document
 
-This is (besides the App::Application class) the most important class in FreeCAD.
+This (besides the App::Application class) is the most important class in FreeCAD.
 It contains all the data of the opened, saved, or newly created FreeCAD Document.
 The App::Document manages the Undo and Redo mechanism and the linking of documents.
 
@@ -189,7 +189,7 @@ struct DocumentP
     std::map<DocumentObject*,Vertex> VertexObjectList;
     std::map<Vertex,DocumentObject*> vertexMap;
 #endif //USE_OLD_DAG
-    std::multimap<const App::DocumentObject*, 
+    std::multimap<const App::DocumentObject*,
         std::unique_ptr<App::DocumentObjectExecReturn> > _RecomputeLog;
 
     DocumentP() {
@@ -199,7 +199,7 @@ struct DocumentP
         // Set some random offset to reduce likelihood of ID collision when
         // copying shape from other document. It is probably better to randomize
         // on each object ID.
-        lastObjectId = _RDIST(_RGEN); 
+        lastObjectId = _RDIST(_RGEN);
         activeObject = 0;
         activeUndoTransaction = 0;
         iTransactionMode = 0;
@@ -1047,7 +1047,7 @@ bool Document::redo(int id)
 
 void Document::addOrRemovePropertyOfObject(TransactionalObject* obj, Property *prop, bool add)
 {
-    if (!prop || !obj || !obj->isAttachedToDocument()) 
+    if (!prop || !obj || !obj->isAttachedToDocument())
         return;
     if(d->iUndoMode && !isPerformingTransaction() && !d->activeUndoTransaction) {
         if(!testStatus(Restoring) || testStatus(Importing)) {
@@ -1128,9 +1128,9 @@ int Document::_openTransaction(const char* name, int id)
 
         auto &app = GetApplication();
         auto activeDoc = app.getActiveDocument();
-        if(activeDoc && 
-           activeDoc!=this && 
-           !activeDoc->hasPendingTransaction()) 
+        if(activeDoc &&
+           activeDoc!=this &&
+           !activeDoc->hasPendingTransaction())
         {
             std::string aname("-> ");
             aname += d->activeUndoTransaction->Name;
@@ -1165,11 +1165,11 @@ void Document::_checkTransaction(DocumentObject* pcDelObj, const Property *What,
                     if(What && What->testStatus(Property::NoModify))
                         ignore = true;
                     if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-                        if(What) 
-                            FC_LOG((ignore?"ignore":"auto") << " transaction (" 
-                                    << line << ") '" << What->getFullName()); 
+                        if(What)
+                            FC_LOG((ignore?"ignore":"auto") << " transaction ("
+                                    << line << ") '" << What->getFullName());
                         else
-                            FC_LOG((ignore?"ignore":"auto") <<" transaction (" 
+                            FC_LOG((ignore?"ignore":"auto") <<" transaction ("
                                     << line << ") '" << name << "' in " << getName());
                     }
                     if(!ignore)
@@ -1254,7 +1254,7 @@ void Document::abortTransaction() {
             FC_WARN("Cannot abort transaction while transacting");
         return;
     }
-    if (d->activeUndoTransaction) 
+    if (d->activeUndoTransaction)
         GetApplication().closeActiveTransaction(true,d->activeUndoTransaction->getID());
 }
 
@@ -1620,7 +1620,7 @@ Document::Document(const char *name)
 
     ADD_PROPERTY_TYPE(License,(license.c_str()),0,Prop_None,"License string of the Item");
     ADD_PROPERTY_TYPE(LicenseURL,(licenseUrl.c_str()),0,Prop_None,"URL to the license text/contract");
-    ADD_PROPERTY_TYPE(ShowHidden,(false), 0,PropertyType(Prop_None), 
+    ADD_PROPERTY_TYPE(ShowHidden,(false), 0,PropertyType(Prop_None),
                         "Whether to show hidden object items in the tree view");
 
     // this creates and sets 'TransientDir' in onChanged()
@@ -1883,7 +1883,7 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
         for(auto o : obj) {
             const auto &outList = o->getOutList(DocumentObject::OutListNoHidden
                                                 | DocumentObject::OutListNoXLinked);
-            writer.Stream() << writer.ind() 
+            writer.Stream() << writer.ind()
                 << "<" FC_ELEMENT_OBJECT_DEPS " " FC_ATTR_DEP_OBJ_NAME "=\""
                 << o->getNameInDocument() << "\" " FC_ATTR_DEP_COUNT "=\"" << outList.size();
             if(outList.empty()) {
@@ -1923,7 +1923,7 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
         if ((*it)->testStatus(ObjectStatus::Error)) {
             writer.Stream() << "Invalid=\"1\" ";
             auto desc = getErrorDescription(*it);
-            if(desc) 
+            if(desc)
                 writer.Stream() << "Error=\"" << Property::encodeAttribute(desc) << "\" ";
         }
         writer.Stream() << "/>" << endl;
@@ -1956,9 +1956,9 @@ struct DepInfo {
     int canLoadPartial = 0;
 };
 
-static void _loadDeps(const std::string &name, 
-        std::unordered_map<std::string,bool> &objs, 
-        const std::unordered_map<std::string,DepInfo> &deps) 
+static void _loadDeps(const std::string &name,
+        std::unordered_map<std::string,bool> &objs,
+        const std::unordered_map<std::string,DepInfo> &deps)
 {
     auto it = deps.find(name);
     if(it == deps.end()) {
@@ -2098,7 +2098,7 @@ Document::readObjects(Base::XMLReader& reader)
                 }
                 if (reader.hasAttribute("Invalid")) {
                     obj->setStatus(ObjectStatus::Error, reader.getAttributeAsInteger("Invalid") != 0);
-                    if(obj->isError() && reader.hasAttribute("Error")) 
+                    if(obj->isError() && reader.hasAttribute("Error"))
                         d->addRecomputeLog(reader.getAttribute("Error"),obj);
                 }
             }
@@ -2777,7 +2777,7 @@ void Document::afterRestore(bool checkPartial) {
     setStatus(Document::Restoring, false);
 }
 
-bool Document::afterRestore(const std::vector<DocumentObject *> &objArray, bool checkPartial) 
+bool Document::afterRestore(const std::vector<DocumentObject *> &objArray, bool checkPartial)
 {
     checkPartial = checkPartial && testStatus(Document::PartialDoc);
     if(checkPartial && d->touchedObjs.size())
@@ -2797,7 +2797,7 @@ bool Document::afterRestore(const std::vector<DocumentObject *> &objArray, bool 
             try {
                 prop->afterRestore();
             } catch (const Base::Exception& e) {
-                FC_ERR("Failed to restore " << obj->getFullName() 
+                FC_ERR("Failed to restore " << obj->getFullName()
                         << '.' << prop->getName() << ": " << e.what());
             }
         }
@@ -2864,7 +2864,7 @@ bool Document::afterRestore(const std::vector<DocumentObject *> &objArray, bool 
         if(checkPartial && d->touchedObjs.size()) {
             // partial document touched, signal full reload
             return false;
-        } else if(!d->touchedObjs.count(obj)) 
+        } else if(!d->touchedObjs.count(obj))
             obj->purgeTouched();
 
         signalFinishRestoreObject(*obj);
@@ -2955,9 +2955,9 @@ int Document::countObjects(void) const
    return static_cast<int>(d->objectArray.size());
 }
 
-void Document::getLinksTo(std::set<DocumentObject*> &links, 
+void Document::getLinksTo(std::set<DocumentObject*> &links,
         const DocumentObject *obj, int options, int maxCount,
-        const std::vector<DocumentObject*> &objs) const 
+        const std::vector<DocumentObject*> &objs) const
 {
     std::map<const App::DocumentObject*, std::vector<App::DocumentObject*> > linkMap;
 
@@ -2968,7 +2968,7 @@ void Document::getLinksTo(std::set<DocumentObject*> &links,
             linked = o->getLinkedObject(false);
         else {
             auto ext = o->getExtensionByType<LinkBaseExtension>(true);
-            if(ext) 
+            if(ext)
                 linked = ext->getTrueLinkedObject(false,0,0,true);
             else
                 linked = o->getLinkedObject(false);
@@ -3052,8 +3052,8 @@ std::vector<App::DocumentObject*> Document::getInList(const DocumentObject* me) 
 // external object.
 //
 static void _buildDependencyList(const std::vector<App::DocumentObject*> &objectArray,
-        int options, std::vector<App::DocumentObject*> *depObjs, 
-        DependencyList *depList, std::map<DocumentObject*,Vertex> *objectMap, 
+        int options, std::vector<App::DocumentObject*> *depObjs,
+        DependencyList *depList, std::map<DocumentObject*,Vertex> *objectMap,
         bool *touchCheck = 0)
 {
     std::map<DocumentObject*, std::vector<DocumentObject*> > outLists;
@@ -3132,7 +3132,7 @@ std::vector<App::DocumentObject*> Document::getDependencyList(
             std::map<int,std::vector<Vertex> > components;
             boost::strong_components(depList,boost::make_iterator_property_map(
                         c.begin(),boost::get(boost::vertex_index,depList),c[0]));
-            for(size_t i=0;i<c.size();++i) 
+            for(size_t i=0;i<c.size();++i)
                 components[c[i]].push_back(i);
 
             FC_ERR("Dependency cycles: ");
@@ -3184,7 +3184,7 @@ std::vector<App::Document*> Document::getDependentDocuments(bool sort) {
 }
 
 std::vector<App::Document*> Document::getDependentDocuments(
-        std::vector<App::Document*> pending, bool sort) 
+        std::vector<App::Document*> pending, bool sort)
 {
     DependencyList depList;
     std::map<Document*,Vertex> docMap;
@@ -3409,7 +3409,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
 
 #else //ifdef USE_OLD_DAG
 
-int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool force, bool *hasError, int options) 
+int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool force, bool *hasError, int options)
 {
     if (d->undoing || d->rollback) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
@@ -3419,7 +3419,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
 
     int objectCount = 0;
     if (testStatus(Document::PartialDoc)) {
-        if(mustExecute()) 
+        if(mustExecute())
             FC_WARN("Please reload partial document '" << Label.getValue() << "' for recomputation.");
         return 0;
     }
@@ -3445,7 +3445,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
 
 #if 0
     //////////////////////////////////////////////////////////////////////////
-    // FIXME Comment by Realthunder: 
+    // FIXME Comment by Realthunder:
     // the topologicalSrot() below cannot handle partial recompute, haven't got
     // time to figure out the code yet, simply use back boost::topological_sort
     // for now, that is, rely on getDependencyList() to do the sorting. The
@@ -3515,12 +3515,12 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
                         inObjIt->enforceRecompute();
                 }
             }
-            // check if all objects are recomputed but still thouched 
+            // check if all objects are recomputed but still thouched
             for (size_t i=0;i<topoSortedObjects.size();++i) {
                 auto obj = topoSortedObjects[i];
                 obj->setStatus(ObjectStatus::Recompute2,false);
                 if(!filter.count(obj) && obj->isTouched()) {
-                    if(passes>0) 
+                    if(passes>0)
                         FC_ERR(obj->getFullName() << " still touched after recompute");
                     else{
                         FC_LOG(obj->getFullName() << " still touched after recompute");
@@ -3808,7 +3808,7 @@ bool Document::recomputeFeature(DocumentObject* Feat, bool recursive)
         return false;
 }
 
-DocumentObject * Document::addObject(const char* sType, const char* pObjectName, 
+DocumentObject * Document::addObject(const char* sType, const char* pObjectName,
                                      bool isNew, const char* viewType, bool isPartial)
 {
     Base::BaseClass* base = static_cast<Base::BaseClass*>(Base::Type::createInstanceByName(sType,true));
@@ -4331,7 +4331,7 @@ std::vector<DocumentObject*> Document::copyObject(
     return result;
 }
 
-std::vector<App::DocumentObject*> 
+std::vector<App::DocumentObject*>
 Document::importLinks(const std::vector<App::DocumentObject*> &objArray)
 {
     std::set<App::DocumentObject*> links;
@@ -4395,7 +4395,7 @@ Document::importLinks(const std::vector<App::DocumentObject*> &objArray)
     // properties, e.g. a link sub referring to some sub object of an xlink, If
     // that sub object is imported with a different name, and xlink is changed
     // before this link sub, it will break.
-    for(auto &v : propMap) 
+    for(auto &v : propMap)
         v.first->Paste(*v.second);
 
     return objs;
@@ -4422,13 +4422,13 @@ DocumentObject* Document::moveObject(DocumentObject* obj, bool recursive)
     }
 
     std::vector<App::DocumentObject*> deps;
-    if(recursive) 
+    if(recursive)
         deps = getDependencyList({obj},DepNoXLinked|DepSort);
     else
         deps.push_back(obj);
 
     auto objs = copyObject(deps,false);
-    if(objs.empty()) 
+    if(objs.empty())
         return 0;
     // Some object may delete its children if deleted, so we collect the IDs
     // or all depending objects for safety reason.

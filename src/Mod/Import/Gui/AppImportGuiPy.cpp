@@ -69,6 +69,11 @@
 # include <TopoDS_Iterator.hxx>
 # include <APIHeaderSection_MakeHeader.hxx>
 # include <OSD_Exception.hxx>
+# include <TColStd_IndexedDataMapOfStringString.hxx>
+#if OCC_VERSION_HEX >= 0x070500
+# include <RWGltf_CafWriter.hxx>
+# include <Message_ProgressRange.hxx>
+#endif
 #if OCC_VERSION_HEX >= 0x060500
 # include <TDataXtd_Shape.hxx>
 # else
@@ -657,7 +662,8 @@ private:
                 Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
                     .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part")->GetGroup("STEP");
 
-                makeHeader.SetName(new TCollection_HAsciiString((Standard_CString)Utf8Name.c_str()));
+                // https://forum.freecadweb.org/viewtopic.php?f=8&t=52967
+                //makeHeader.SetName(new TCollection_HAsciiString((Standard_CString)Utf8Name.c_str()));
                 makeHeader.SetAuthorValue (1, new TCollection_HAsciiString(hGrp->GetASCII("Author", "Author").c_str()));
                 makeHeader.SetOrganizationValue (1, new TCollection_HAsciiString(hGrp->GetASCII("Company").c_str()));
                 makeHeader.SetOriginatingSystem(new TCollection_HAsciiString(App::GetApplication().getExecutableName()));
@@ -682,6 +688,22 @@ private:
                     PyErr_Format(PyExc_IOError, "Cannot open file '%s'", Utf8Name.c_str());
                     throw Py::Exception();
                 }
+            }
+            else if (file.hasExtension("glb") || file.hasExtension("gltf")) {
+#if OCC_VERSION_HEX >= 0x070500
+                TColStd_IndexedDataMapOfStringString aMetadata;
+                RWGltf_CafWriter aWriter (name8bit.c_str(), file.hasExtension("glb"));
+                aWriter.SetTransformationFormat (RWGltf_WriterTrsfFormat_Compact);
+                //aWriter.ChangeCoordinateSystemConverter().SetInputLengthUnit (0.001);
+                aWriter.ChangeCoordinateSystemConverter().SetInputCoordinateSystem (RWMesh_CoordinateSystem_Zup);
+                Standard_Boolean ret = aWriter.Perform (hDoc, aMetadata, Message_ProgressRange());
+                if (!ret) {
+                    PyErr_Format(PyExc_IOError, "Cannot save to file '%s'", Utf8Name.c_str());
+                    throw Py::Exception();
+                }
+#else
+                throw Py::RuntimeError("gITF support requires OCCT 7.5.0 or later");
+#endif
             }
 
             hApp->Close(hDoc);

@@ -32,11 +32,11 @@ namespace StartGui {
     class DlgStartPreferencesImp : public Gui::Dialog::PreferencePage
     {
         Q_OBJECT
-    
+
     public:
         DlgStartPreferencesImp( QWidget* parent = 0 );
         ~DlgStartPreferencesImp();
-    
+
     protected:
         void saveSettings();
         void loadSettings();

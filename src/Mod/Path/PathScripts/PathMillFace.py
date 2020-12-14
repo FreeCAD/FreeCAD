@@ -106,6 +106,7 @@ class ObjectFace(PathPocketBase.ObjectPocket):
 
         if obj.Base:
             PathLog.debug("obj.Base: {}".format(obj.Base))
+            self.removalshapes = []
             faces = []
             holes = []
             holeEnvs = []
@@ -203,9 +204,11 @@ class ObjectFace(PathPocketBase.ObjectPocket):
                                                 plane=planeshape)
             ofstShape.translate(FreeCAD.Vector(0.0, 0.0, psZMin - ofstShape.BoundBox.ZMin))
 
-            custDepthparams = self._customDepthParams(obj, obj.StartDepth.Value + 0.1, obj.FinalDepth.Value - 0.1)  # only an envelope
+            # Calculate custom depth params for removal shape envelope, with start and final depth buffers
+            custDepthparams = self._customDepthParams(obj, obj.StartDepth.Value + 0.2, obj.FinalDepth.Value - 0.1)  # only an envelope
             ofstShapeEnv = PathUtils.getEnvelope(partshape=ofstShape, depthparams=custDepthparams)
             env = ofstShapeEnv.cut(baseShape)
+            env.translate(FreeCAD.Vector(0.0, 0.0, -0.000001))  # lower removal shape into buffer zone
 
         if holeShape:
             PathLog.debug("Processing holes and face ...")
@@ -215,7 +218,11 @@ class ObjectFace(PathPocketBase.ObjectPocket):
         else:
             PathLog.debug("Processing solid face ...")
             tup = env, False, 'pathMillFace', 0.0, 'X', obj.StartDepth.Value, obj.FinalDepth.Value
-        return [tup]
+
+        self.removalshapes.append(tup)
+        obj.removalshape = self.removalshapes[0][0]  # save removal shape
+
+        return self.removalshapes
 
     def areaOpSetDefaultValues(self, obj, job):
         '''areaOpSetDefaultValues(obj, job) ... initialize mill facing properties'''
@@ -232,7 +239,7 @@ class ObjectFace(PathPocketBase.ObjectPocket):
             # If the operation has a geometry identified the Finaldepth
             # is the top of the boundbox which includes all features.
             if len(obj.Base) >= 1:
-                shapes = list()
+                shapes = []
                 for base, subs in obj.Base:
                     for s in subs:
                         shapes.append(getattr(base.Shape, s))

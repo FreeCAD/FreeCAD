@@ -45,7 +45,7 @@ const unsigned int GUIConsole::s_nMaxLines = 1000;
 unsigned int       GUIConsole::s_nRefCount = 0;
 
 /** Constructor
- *  Open a Top level Window and redirect the 
+ *  Open a Top level Window and redirect the
  *  stdin, stdout and stderr stream to it.
  *  Not needed in Linux!
  */
@@ -76,7 +76,7 @@ GUIConsole::GUIConsole (void)
 }
 
 /** Destructor
- *  Close the window and redirect the streams back 
+ *  Close the window and redirect the streams back
  */
 GUIConsole::~GUIConsole (void)
 {

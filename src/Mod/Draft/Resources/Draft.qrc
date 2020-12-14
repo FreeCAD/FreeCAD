@@ -181,5 +181,6 @@
         <file>ui/TaskSelectPlane.ui</file>
         <file>ui/TaskShapeString.ui</file>
         <file>ui/dialog_AnnotationStyleEditor.ui</file>
+        <file>ui/TaskPanel_SetStyle.ui</file>
     </qresource>
 </RCC> 

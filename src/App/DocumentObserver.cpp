@@ -249,7 +249,7 @@ const std::string &DocumentObjectT::getPropertyName() const {
 std::string DocumentObjectT::getPropertyPython() const
 {
     std::stringstream str;
-    str << "FreeCAD.getDocument('" << document 
+    str << "FreeCAD.getDocument('" << document
         << "').getObject('" << object
         << "')";
     if(property.size())
@@ -364,7 +364,7 @@ std::string SubObjectT::getOldElementName(int *index) const {
     if(!obj)
         return std::string();
     GeoFeature::resolveElement(obj,subname.c_str(),element);
-    if(!index) 
+    if(!index)
         return std::move(element.second);
     std::size_t pos = element.second.find_first_of("0123456789");
     if(pos == std::string::npos)

@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2011 Joe Dowsett <j-dowsett[at]users.sourceforge.net>   *
- *   Copyright (c) 2014  Luke Parry <l.parry@warwick.ac.uk>                *
+ *   Copyright (c) 2014 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -143,7 +143,7 @@ public:
 
     const ViewProviderProjGroup * getViewProvider() const { return viewProvider; }
     TechDraw::DrawProjGroup * getMultiView() const { return multiView; }
-    
+
     virtual QDialogButtonBox::StandardButtons getStandardButtons() const
     { return QDialogButtonBox::Ok | QDialogButtonBox::Apply | QDialogButtonBox::Cancel; }
     virtual void modifyStandardButtons(QDialogButtonBox* box);

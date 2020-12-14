@@ -2545,8 +2545,8 @@ opening or creation</source>
       <source>Area for picking elements in 3D view.
 Larger value eases to pick things, but can make small features impossible to select.
                </source>
-      <translation type="unfinished">Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.
+      <translation>Zone de sélection des éléments dans la vue 3D.
+Une valeur plus grande facilite la sélection, mais peut rendre les petites fonctions difficiles, voire impossible à sélectionner.
                </translation>
     </message>
   </context>

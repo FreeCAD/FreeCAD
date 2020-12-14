@@ -247,6 +247,9 @@ public:
     TopoDS_Shape revolve(const gp_Ax1&, double d, Standard_Boolean isSolid=Standard_False) const;
     TopoDS_Shape makeSweep(const TopoDS_Shape& profile, double, int) const;
     TopoDS_Shape makeTube(double radius, double tol, int cont, int maxdeg, int maxsegm) const;
+    TopoDS_Shape makeTorus(Standard_Real radius1, Standard_Real radius2,
+        Standard_Real angle1, Standard_Real angle2, Standard_Real angle3,
+        Standard_Boolean isSolid=Standard_True) const;
     TopoDS_Shape makeHelix(Standard_Real pitch, Standard_Real height,
         Standard_Real radius, Standard_Real angle=0,
         Standard_Boolean left=Standard_False, Standard_Boolean style=Standard_False) const;

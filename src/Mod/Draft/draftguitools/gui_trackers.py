@@ -60,8 +60,8 @@ class Tracker:
         global Part, DraftGeomUtils
         import Part, DraftGeomUtils
         self.ontop = ontop
-        color = coin.SoBaseColor()
-        color.rgb = scolor or FreeCADGui.draftToolBar.getDefaultColor("ui")
+        self.color = coin.SoBaseColor()
+        self.color.rgb = scolor or FreeCADGui.draftToolBar.getDefaultColor("line")
         drawstyle = coin.SoDrawStyle()
         if swidth:
             drawstyle.lineWidth = swidth
@@ -70,7 +70,7 @@ class Tracker:
             drawstyle.lineWeight = 3
             drawstyle.linePattern = 0x0f0f  # 0xaa
         node = coin.SoSeparator()
-        for c in [drawstyle, color] + children:
+        for c in [drawstyle, self.color] + children:
             node.addChild(c)
         self.switch = coin.SoSwitch()  # this is the on/off switch
         if name:
@@ -959,18 +959,31 @@ class gridTracker(Tracker):
     """A grid tracker."""
 
     def __init__(self):
-        GRID_TRANSPARENCY = 0
+
+        gtrans = Draft.getParam("gridTransparency",0)
         col = self.getGridColor()
+        if Draft.getParam("coloredGridAxes",True):
+            red = ((1.0+col[0])/2,0.0,0.0)
+            green = (0.0,(1.0+col[1])/2,0.0)
+            blue = (0.0,0.0,(1.0+col[2])/2)
+        else:
+            red = col
+            green = col
+            blue = col
         pick = coin.SoPickStyle()
         pick.style.setValue(coin.SoPickStyle.UNPICKABLE)
         self.trans = coin.SoTransform()
         self.trans.translation.setValue([0, 0, 0])
+
+        # small squares
         mat1 = coin.SoMaterial()
-        mat1.transparency.setValue(0.7*(1-GRID_TRANSPARENCY))
+        mat1.transparency.setValue(0.7*(1-gtrans))
         mat1.diffuseColor.setValue(col)
         self.font = coin.SoFont()
         self.coords1 = coin.SoCoordinate3()
-        self.lines1 = coin.SoLineSet()
+        self.lines1 = coin.SoLineSet() # small squares
+
+        # texts
         texts = coin.SoSeparator()
         t1 = coin.SoSeparator()
         self.textpos1 = coin.SoTransform()
@@ -988,16 +1001,25 @@ class gridTracker(Tracker):
         texts.addChild(self.font)
         texts.addChild(t1)
         texts.addChild(t2)
+
+        # big squares
         mat2 = coin.SoMaterial()
-        mat2.transparency.setValue(0.3*(1-GRID_TRANSPARENCY))
+        mat2.transparency.setValue(0.3*(1-gtrans))
         mat2.diffuseColor.setValue(col)
         self.coords2 = coin.SoCoordinate3()
-        self.lines2 = coin.SoLineSet()
+        self.lines2 = coin.SoLineSet() # big squares
+
+        # axes
         mat3 = coin.SoMaterial()
-        mat3.transparency.setValue(GRID_TRANSPARENCY)
-        mat3.diffuseColor.setValue(col)
+        mat3.transparency.setValue(gtrans)
+        mat3.diffuseColor.setValues([col,red,green,blue])
         self.coords3 = coin.SoCoordinate3()
-        self.lines3 = coin.SoLineSet()
+        self.lines3 = coin.SoIndexedLineSet() # axes
+        self.lines3.coordIndex.setValues(0,5,[0,1,-1,2,3])
+        self.lines3.materialIndex.setValues(0,2,[0,0])
+        mbind3 = coin.SoMaterialBinding()
+        mbind3.value = coin.SoMaterialBinding.PER_PART_INDEXED
+
         self.pts = []
         s = coin.SoSeparator()
         s.addChild(pick)
@@ -1008,6 +1030,7 @@ class gridTracker(Tracker):
         s.addChild(mat2)
         s.addChild(self.coords2)
         s.addChild(self.lines2)
+        s.addChild(mbind3)
         s.addChild(mat3)
         s.addChild(self.coords3)
         s.addChild(self.lines3)
@@ -1055,17 +1078,17 @@ class gridTracker(Tracker):
         if pts != self.pts:
             idx = []
             midx = []
-            aidx = []
+            #aidx = []
             cidx = []
             for p in range(0, len(pts), 2):
                 idx.append(2)
             for mp in range(0, len(mpts), 2):
                 midx.append(2)
-            for ap in range(0, len(apts), 2):
-                aidx.append(2)
+            #for ap in range(0, len(apts), 2):
+            #    aidx.append(2)
             for cp in range(0, len(cpts),2):
                 cidx.append(2)
-            
+
             if Draft.getParam("gridBorder", True):
                 # extra border
                 border = (numlines//2 + self.mainlines/2) * self.space
@@ -1096,17 +1119,37 @@ class gridTracker(Tracker):
             else:
                 self.text1.string = " "
                 self.text2.string = " "
-            
+
             self.lines1.numVertices.deleteValues(0)
             self.lines2.numVertices.deleteValues(0)
-            self.lines3.numVertices.deleteValues(0)
+            #self.lines3.numVertices.deleteValues(0)
             self.coords1.point.setValues(pts)
             self.lines1.numVertices.setValues(idx)
             self.coords2.point.setValues(mpts)
             self.lines2.numVertices.setValues(midx)
             self.coords3.point.setValues(apts)
-            self.lines3.numVertices.setValues(aidx)
+            #self.lines3.numVertices.setValues(aidx)
             self.pts = pts
+            self.setAxesColor()
+
+    def setAxesColor(self):
+        """set axes color"""
+        cols = [0,0]
+        if Draft.getParam("coloredGridAxes",True) and hasattr(FreeCAD,"DraftWorkingPlane"):
+            wp = FreeCAD.DraftWorkingPlane
+            if round(wp.u.getAngle(FreeCAD.Vector(1,0,0)),2) in (0,3.14):
+                cols[0] = 1
+            elif round(wp.u.getAngle(FreeCAD.Vector(0,1,0)),2) in (0,3.14):
+                cols[0] = 2
+            elif round(wp.u.getAngle(FreeCAD.Vector(0,0,1)),2) in (0,3.14):
+                cols[0] = 3
+            if round(wp.v.getAngle(FreeCAD.Vector(1,0,0)),2) in (0,3.14):
+                cols[1] = 1
+            elif round(wp.v.getAngle(FreeCAD.Vector(0,1,0)),2) in (0,3.14):
+                cols[1] = 2
+            elif round(wp.v.getAngle(FreeCAD.Vector(0,0,1)),2) in (0,3.14):
+                cols[1] = 3
+        self.lines3.materialIndex.setValues(0,2,cols)
 
     def setSize(self, size):
         """Set size of the lines and update."""
@@ -1137,6 +1180,7 @@ class gridTracker(Tracker):
         P = FreeCAD.DraftWorkingPlane.position
         self.trans.rotation.setValue([Q[0], Q[1], Q[2], Q[3]])
         self.trans.translation.setValue([P.x, P.y, P.z])
+        self.setAxesColor()
         self.on()
 
     def getClosestNode(self, point):
@@ -1264,10 +1308,9 @@ class radiusTracker(Tracker):
 class archDimTracker(Tracker):
     """A wrapper around a Sketcher dim."""
 
-    def __init__(self,
-                 p1=FreeCAD.Vector(0, 0, 0),
-                 p2=FreeCAD.Vector(1, 0, 0), mode=1):
+    def __init__(self, p1=FreeCAD.Vector(0, 0, 0), p2=FreeCAD.Vector(1, 0, 0), mode=1):
         import SketcherGui
+        self.transform = coin.SoMatrixTransform()
         self.dimnode = coin.SoType.fromName("SoDatumLabel").createInstance()
         p1node = coin.SbVec3f([p1.x, p1.y, p1.z])
         p2node = coin.SbVec3f([p2.x, p2.y, p2.z])
@@ -1275,24 +1318,52 @@ class archDimTracker(Tracker):
         self.dimnode.lineWidth = 1
         color = FreeCADGui.draftToolBar.getDefaultColor("snap")
         self.dimnode.textColor.setValue(coin.SbVec3f(color))
-        self.setString()
+        self.dimnode.size = 11
+        self.size_pixel = self.dimnode.size.getValue()*96/72
+        self.offset = 0.5
+        self.mode = mode
+        self.matrix = self.transform.matrix
+        self.norm = self.dimnode.norm
+        self.param1 = self.dimnode.param1
+        self.param2 = self.dimnode.param2
+        self.pnts = self.dimnode.pnts
+        self.string = self.dimnode.string
+        self.view = Draft.get3DView()
+        self.camera = self.view.getCameraNode()
+        self.plane = FreeCAD.DraftWorkingPlane
         self.setMode(mode)
-        Tracker.__init__(self, children=[self.dimnode], name="archDimTracker")
+        self.setString()
+        Tracker.__init__(self, children=[self.transform, self.dimnode], name="archDimTracker")
 
     def setString(self, text=None):
         """Set the dim string to the given value or auto value."""
-        self.dimnode.param1.setValue(.5)
-        p1 = Vector(self.dimnode.pnts.getValues()[0].getValue())
-        p2 = Vector(self.dimnode.pnts.getValues()[-1].getValue())
-        m = self.dimnode.datumtype.getValue()
-        if m == 2:
-            self.Distance = (DraftVecUtils.project(p2.sub(p1), Vector(1, 0, 0))).Length
-        elif m == 3:
-            self.Distance = (DraftVecUtils.project(p2.sub(p1), Vector(0, 1, 0))).Length
+        p1 = Vector(self.pnts.getValues()[0].getValue())
+        p2 = Vector(self.pnts.getValues()[-1].getValue())
+        self.norm.setValue(self.plane.getNormal())
+        # set the offset sign to prevent the dim line from intersecting the curve near the cursor
+        sign_dx = math.copysign(1, (p2.sub(p1)).x)
+        sign_dy = math.copysign(1, (p2.sub(p1)).y)
+        sign = sign_dx*sign_dy
+        if self.mode == 2:
+            self.Distance = abs((p2.sub(p1)).x)
+            self.param1.setValue(sign*self.offset)
+        elif self.mode == 3:
+            self.Distance = abs((p2.sub(p1)).y)
+            self.param1.setValue(-1*sign*self.offset)
         else:
             self.Distance = (p2.sub(p1)).Length
+
         text = FreeCAD.Units.Quantity(self.Distance, FreeCAD.Units.Length).UserString
-        self.dimnode.string.setValue(text.encode('utf8'))
+        self.matrix.setValue(*self.plane.getPlacement().Matrix.transposed().A)
+        self.string.setValue(text.encode('utf8'))
+        # change the text position to external depending on the distance and scale values
+        volume = self.camera.getViewVolume()
+        scale = self.view.getSize()[1]/volume.getHeight()
+        if scale*self.Distance > self.size_pixel*len(text):
+            self.param2.setValue(0)
+        else:
+            self.param2.setValue(1/2*self.Distance + 3/5*self.size_pixel*len(text)/scale)
+
 
     def setMode(self, mode=1):
         """Set the mode.
@@ -1307,17 +1378,23 @@ class archDimTracker(Tracker):
     def p1(self, point=None):
         """Set or get the first point of the dim."""
         if point:
-            self.dimnode.pnts.set1Value(0, point.x, point.y, point.z)
+            p1_proj = self.plane.projectPoint(point)
+            p1_proj_u = (p1_proj - self.plane.position).dot(self.plane.u.normalize())
+            p1_proj_v = (p1_proj - self.plane.position).dot(self.plane.v.normalize())
+            self.pnts.set1Value(0, p1_proj_u, p1_proj_v, 0)
             self.setString()
         else:
-            return Vector(self.dimnode.pnts.getValues()[0].getValue())
+            return Vector(self.pnts.getValues()[0].getValue())
 
     def p2(self, point=None):
         """Set or get the second point of the dim."""
         if point:
-            self.dimnode.pnts.set1Value(1, point.x, point.y, point.z)
+            p2_proj = self.plane.projectPoint(point)
+            p2_proj_u = (p2_proj - self.plane.position).dot(self.plane.u.normalize())
+            p2_proj_v = (p2_proj - self.plane.position).dot(self.plane.v.normalize())
+            self.pnts.set1Value(1, p2_proj_u, p2_proj_v, 0)
             self.setString()
         else:
-            return Vector(self.dimnode.pnts.getValues()[-1].getValue())
+            return Vector(self.pnts.getValues()[-1].getValue())
 
 ## @}

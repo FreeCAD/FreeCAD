@@ -324,7 +324,7 @@ class ObjectOp(object):
             if 1 < len(job.Operations.Group):
                 obj.ToolController = PathUtil.toolControllerForOp(job.Operations.Group[-2])
             else:
-                obj.ToolController = PathUtils.findToolController(obj)
+                obj.ToolController = PathUtils.findToolController(obj, self)
             if not obj.ToolController:
                 return None
             obj.OpToolDiameter = obj.ToolController.Tool.Diameter
@@ -585,3 +585,11 @@ class ObjectOp(object):
                 obj.Base = baselist
             else:
                 PathLog.notice((translate("Path", "Base object %s.%s rejected by operation") + "\n") % (base.Label, sub))
+
+    def isToolSupported(self, obj, tool):
+        '''toolSupported(obj, tool) ... Returns true if the op supports the given tool.
+        This function can safely be overwritten by subclasses.'''
+
+        return True
+
+

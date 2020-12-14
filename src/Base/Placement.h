@@ -89,6 +89,6 @@ protected:
 } // namespace Base
 
 
-#endif // BASE_PLACEMENT_H 
+#endif // BASE_PLACEMENT_H
 
 

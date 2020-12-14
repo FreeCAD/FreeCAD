@@ -86,7 +86,7 @@
 #include "WorkbenchManager.h"
 #include "Workbench.h"
 
-#include "Window.h" 
+#include "Window.h"
 #include "View.h"
 #include "Macro.h"
 #include "ProgressBar.h"
@@ -140,8 +140,8 @@ MainWindow* MainWindow::instance = 0L;
 namespace Gui {
 
 /**
- * The CustomMessageEvent class is used to send messages as events in the methods  
- * Error(), Warning() and Message() of the StatusBarObserver class to the main window 
+ * The CustomMessageEvent class is used to send messages as events in the methods
+ * Error(), Warning() and Message() of the StatusBarObserver class to the main window
  * to display them on the status bar instead of printing them directly to the status bar.
  *
  * This makes the usage of StatusBarObserver thread-safe.
@@ -288,7 +288,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     d->whatsthis = false;
     d->assistant = new Assistant();
 
-    // global access 
+    // global access
     instance = this;
 
     // support for grouped dragging of dockwidgets
@@ -629,7 +629,7 @@ int MainWindow::confirmSave(const char *docName, QWidget *parent, bool addCheckb
             GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General");
         checkBox.setChecked(hGrp->GetBool("ConfirmAll",false));
         checkBox.blockSignals(true);
-        box.addButton(&checkBox, QMessageBox::ResetRole); 
+        box.addButton(&checkBox, QMessageBox::ResetRole);
     }
 
     // add shortcuts
@@ -648,6 +648,7 @@ int MainWindow::confirmSave(const char *docName, QWidget *parent, bool addCheckb
     }
 
     int res = 0;
+    box.adjustSize(); // Silence warnings from Qt on Windows
     switch (box.exec())
     {
     case QMessageBox::Save:
@@ -678,7 +679,7 @@ bool MainWindow::closeAllDocuments (bool close)
             continue;
         if(!gdoc->canClose(false))
             return false;
-        if(!gdoc->isModified() 
+        if(!gdoc->isModified()
                 || doc->testStatus(App::Document::PartialDoc)
                 || doc->testStatus(App::Document::TempDoc))
             continue;
@@ -829,8 +830,8 @@ bool MainWindow::eventFilter(QObject* o, QEvent* e)
 {
     if (o != this) {
         if (e->type() == QEvent::WindowStateChange) {
-            // notify all mdi views when the active view receives a show normal, show minimized 
-            // or show maximized event 
+            // notify all mdi views when the active view receives a show normal, show minimized
+            // or show maximized event
             MDIView * view = qobject_cast<MDIView*>(o);
             if (view) { // emit this signal
                 Qt::WindowStates oldstate = static_cast<QWindowStateChangeEvent*>(e)->oldState();
@@ -993,7 +994,7 @@ void MainWindow::removeWindow(Gui::MDIView* view, bool close)
         // d->mdiArea->removeSubWindow(parent);
     }
 
-    if(close) 
+    if(close)
         parent->deleteLater();
     updateActions();
 }
@@ -1052,7 +1053,7 @@ void MainWindow::onWindowActivated(QMdiSubWindow* w)
             w->setProperty("ownWB", QString::fromStdString(WorkbenchManager::instance()->active()->name()));
         }
     }
-    
+
     // Even if windowActivated() signal is emitted mdi doesn't need to be a top-level window.
     // This happens e.g. if two windows are top-level and one of them gets docked again.
     // QWorkspace emits the signal then even though the other window is in front.
@@ -1063,7 +1064,7 @@ void MainWindow::onWindowActivated(QMdiSubWindow* w)
     // at least under Linux. It seems to be a problem with the window manager.
     // Under Windows it seems to work though it's not really sure that it works reliably.
     // Result: So, we accept the first problem to be sure to avoid the second one.
-    if ( !view /*|| !mdi->isActiveWindow()*/ ) 
+    if ( !view /*|| !mdi->isActiveWindow()*/ )
         return; // either no MDIView or no valid object or no top-level window
 
     // set active the appropriate window (it needs not to be part of mdiIds, e.g. directly after creation)
@@ -1483,7 +1484,7 @@ void MainWindow::startSplasher(void)
 {
     // startup splasher
     // when running in verbose mode no splasher
-    if (!(App::Application::Config()["Verbose"] == "Strict") && 
+    if (!(App::Application::Config()["Verbose"] == "Strict") &&
          (App::Application::Config()["RunMode"] == "Gui")) {
         ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().
             GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General");
@@ -1724,7 +1725,7 @@ bool MainWindow::canInsertFromMimeData (const QMimeData * source) const
 {
     if (!source)
         return false;
-    return source->hasUrls() || 
+    return source->hasUrls() ||
         source->hasFormat(_MimeDocObj) || source->hasFormat(_MimeDocObjX) ||
         source->hasFormat(_MimeDocObjFile) || source->hasFormat(_MimeDocObjXFile);
 }
@@ -1881,7 +1882,7 @@ void MainWindow::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         d->sizeLabel->setText(tr("Dimension"));
-    
+
         CommandManager& rclMan = Application::Instance->commandManager();
         std::vector<Command*> cmd = rclMan.getAllCommands();
         for (std::vector<Command*>::iterator it = cmd.begin(); it != cmd.end(); ++it)
@@ -1941,7 +1942,7 @@ void MainWindow::showMessage(const QString& message, int timeout) {
 void MainWindow::showStatus(int type, const QString& message)
 {
     if(QApplication::instance()->thread() != QThread::currentThread()) {
-        QApplication::postEvent(this, 
+        QApplication::postEvent(this,
                 new CustomMessageEvent(type,message));
         return;
     }

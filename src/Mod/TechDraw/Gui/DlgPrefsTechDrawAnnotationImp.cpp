@@ -34,6 +34,7 @@
 #include "PreferencesGui.h"
 #include "DlgPrefsTechDrawAnnotationImp.h"
 #include "ui_DlgPrefsTechDrawAnnotation.h"
+#include <Mod/TechDraw/App/LineGroup.h>
 
 
 using namespace TechDrawGui;
@@ -47,6 +48,10 @@ DlgPrefsTechDrawAnnotationImp::DlgPrefsTechDrawAnnotationImp( QWidget* parent )
     ui->setupUi(this);
     ui->pdsbBalloonKink->setUnit(Base::Unit::Length);
     ui->pdsbBalloonKink->setMinimum(0);
+    
+    // connect the LineGroup the update the tooltip if index changed
+    connect(ui->pcbLineGroup, SIGNAL(currentIndexChanged(int)),
+        this, SLOT(onLineGroupChanged(int)));
 }
 
 DlgPrefsTechDrawAnnotationImp::~DlgPrefsTechDrawAnnotationImp()
@@ -61,7 +66,7 @@ void DlgPrefsTechDrawAnnotationImp::saveSettings()
     ui->cbPyramidOrtho->onSave();
     ui->cbSectionLineStd->onSave();
     ui->cbShowCenterMarks->onSave();
-    ui->leLineGroup->onSave();
+    ui->pcbLineGroup->onSave();
     ui->pcbBalloonArrow->onSave();
     ui->pcbBalloonShape->onSave();
     ui->pcbCenterStyle->onSave();
@@ -79,13 +84,27 @@ void DlgPrefsTechDrawAnnotationImp::loadSettings()
     //QAbstractSpinBox
     double kinkDefault = 5.0;
     ui->pdsbBalloonKink->setValue(kinkDefault);
-
+    // re-read the available LineGroup files
+    ui->pcbLineGroup->clear();
+    std::string lgFileName = Preferences::lineGroupFile();
+    std::string lgRecord = LineGroup::getGroupNamesFromFile(lgFileName);
+    // split collected groups
+    std::stringstream ss(lgRecord);
+    std::vector<std::string> lgNames;
+    while (std::getline(ss, lgRecord, ',')) {
+        lgNames.push_back(lgRecord);
+    }
+    // fill the combobox with the found names
+    for (auto it = lgNames.begin(); it < lgNames.end(); ++it) {
+        ui->pcbLineGroup->addItem(tr((*it).c_str()));
+    }
+ 
     ui->cbAutoHoriz->onRestore();
     ui->cbPrintCenterMarks->onRestore();
     ui->cbPyramidOrtho->onRestore();
     ui->cbSectionLineStd->onRestore();
     ui->cbShowCenterMarks->onRestore();
-    ui->leLineGroup->onRestore();
+    ui->pcbLineGroup->onRestore();
     ui->pcbBalloonArrow->onRestore();
     ui->pcbBalloonShape->onRestore();
     ui->pcbCenterStyle->onRestore();
@@ -117,6 +136,31 @@ void DlgPrefsTechDrawAnnotationImp::changeEvent(QEvent *e)
 int DlgPrefsTechDrawAnnotationImp::prefBalloonArrow(void) const
 {
     return Preferences::balloonArrow();
+}
+
+/**
+ * Updates the tooltip of the LineGroup combobox
+ */
+void DlgPrefsTechDrawAnnotationImp::onLineGroupChanged(int index)
+{
+    if (index == -1) { // there is no valid index yet
+        ui->pcbLineGroup->setToolTip(QString::fromStdString("Please select a Line Group"));
+        return;
+    }
+    // get the definition the the selected LineGroup (includes the name)
+    std::string lgRecord = LineGroup::getRecordFromFile(Preferences::lineGroupFile(), index);
+    std::stringstream ss(lgRecord);
+    std::vector<std::string> lgNames;
+    while (std::getline(ss, lgRecord, ',')) {
+        lgNames.push_back(lgRecord);
+    }
+    // format the tooltip
+    std::stringstream TooltipText;
+    TooltipText << lgNames.at(0).substr(1) << " defines these line widths:\n"
+        << "thin: " << lgNames.at(1) << "\n"
+        << "graphic: " << lgNames.at(2) << "\n"
+        << "thick: " << lgNames.at(3);
+    ui->pcbLineGroup->setToolTip(QString::fromStdString(TooltipText.str()));
 }
 
 #include <Mod/TechDraw/Gui/moc_DlgPrefsTechDrawAnnotationImp.cpp>

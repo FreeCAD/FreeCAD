@@ -204,12 +204,12 @@
       <translation>Направление выдавливания объекта (оставить (0,0,0) для автоматического определения)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1242"/>
+      <location filename="../../ArchSectionPlane.py" line="1257"/>
       <source>The linked object</source>
       <translation>Связанный объект</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1252"/>
+      <location filename="../../ArchSectionPlane.py" line="1267"/>
       <source>The line width of the rendered objects</source>
       <translation>Толщина линии отрисованных объектов</translation>
     </message>
@@ -594,27 +594,27 @@
       <translation>Показать сечение в трёхмерном виде</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1244"/>
+      <location filename="../../ArchSectionPlane.py" line="1259"/>
       <source>The rendering mode to use</source>
       <translation>Используемый режим визуализации</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1248"/>
+      <location filename="../../ArchSectionPlane.py" line="1263"/>
       <source>If cut geometry is shown or not</source>
       <translation>Показывать ли сечение геометрии или нет</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1250"/>
+      <location filename="../../ArchSectionPlane.py" line="1265"/>
       <source>If cut geometry is filled or not</source>
       <translation>Делать ли заливку обрезанной геометрии или нет</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1255"/>
+      <location filename="../../ArchSectionPlane.py" line="1270"/>
       <source>The size of the texts inside this object</source>
       <translation>Размер текста внутри объекта</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1258"/>
+      <location filename="../../ArchSectionPlane.py" line="1273"/>
       <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
       <translation>Если флажок установлен, исходные объекты отображаются независимо от видимости в 3D-модели</translation>
     </message>
@@ -1039,12 +1039,12 @@
       <translation>Список толщин слоя</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1260"/>
+      <location filename="../../ArchSectionPlane.py" line="1275"/>
       <source>The line color of the projected objects</source>
       <translation>Цвет линии проецируемых объектов</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1262"/>
+      <location filename="../../ArchSectionPlane.py" line="1277"/>
       <source>The color of the cut faces (if turned on)</source>
       <translation>Цвет сечения граней (если включен)</translation>
     </message>
@@ -3212,37 +3212,37 @@ Floor creation aborted.</source>
       <translation>Создать внешнюю ссылку</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1479"/>
+      <location filename="../../ArchSectionPlane.py" line="1494"/>
       <source>Section plane settings</source>
       <translation>Настройки плоскости сечения</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1484"/>
+      <location filename="../../ArchSectionPlane.py" line="1499"/>
       <source>Objects seen by this section plane:</source>
       <translation>Объекты, видимые плоскостью сечения:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1485"/>
+      <location filename="../../ArchSectionPlane.py" line="1500"/>
       <source>Section plane placement:</source>
       <translation>Размещение плоскости сечения:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1486"/>
+      <location filename="../../ArchSectionPlane.py" line="1501"/>
       <source>Rotate X</source>
       <translation>Повернуть по X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1488"/>
+      <location filename="../../ArchSectionPlane.py" line="1503"/>
       <source>Rotate Y</source>
       <translation>Повернуть по Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1490"/>
+      <location filename="../../ArchSectionPlane.py" line="1505"/>
       <source>Rotate Z</source>
       <translation>Повернуть по Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1492"/>
+      <location filename="../../ArchSectionPlane.py" line="1507"/>
       <source>Resize</source>
       <translation>Изменить размер</translation>
     </message>
@@ -3399,42 +3399,42 @@ You can change that in the preferences.</source>
 Вы можете изменить это в настройках.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1481"/>
+      <location filename="../../ArchSectionPlane.py" line="1496"/>
       <source>Remove highlighted objects from the list above</source>
       <translation>Удалите выделенные объекты из списка выше</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1482"/>
+      <location filename="../../ArchSectionPlane.py" line="1497"/>
       <source>Add selected</source>
       <translation>Добавить выбранное</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1483"/>
+      <location filename="../../ArchSectionPlane.py" line="1498"/>
       <source>Add selected object(s) to the scope of this section plane</source>
       <translation>Добавить выбранный объект(ы) в область этой плоскости сечения</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1487"/>
+      <location filename="../../ArchSectionPlane.py" line="1502"/>
       <source>Rotates the plane along the X axis</source>
       <translation>Поворачивает плоскость вдоль оси X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1489"/>
+      <location filename="../../ArchSectionPlane.py" line="1504"/>
       <source>Rotates the plane along the Y axis</source>
       <translation>Поворачивает плоскость вдоль оси Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1491"/>
+      <location filename="../../ArchSectionPlane.py" line="1506"/>
       <source>Rotates the plane along the Z axis</source>
       <translation>Поворачивает плоскость вдоль оси Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1493"/>
+      <location filename="../../ArchSectionPlane.py" line="1508"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation>Изменяет плоскость по размеру объектов в списке</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1495"/>
+      <location filename="../../ArchSectionPlane.py" line="1510"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation>Центровать плоскость по объектам в списке</translation>
     </message>

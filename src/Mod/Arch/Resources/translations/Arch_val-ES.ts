@@ -204,12 +204,12 @@
       <translation>La direcció d'extrusió normal d'aquest objecte (mantín (0,0,0) per a automàtica)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1242"/>
+      <location filename="../../ArchSectionPlane.py" line="1257"/>
       <source>The linked object</source>
       <translation>L'objecte enllaçat</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1252"/>
+      <location filename="../../ArchSectionPlane.py" line="1267"/>
       <source>The line width of the rendered objects</source>
       <translation>L'amplària de la línia dels objectes renderitzats</translation>
     </message>
@@ -594,27 +594,27 @@
       <translation>Mostra el tall en la vista 3D</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1244"/>
+      <location filename="../../ArchSectionPlane.py" line="1259"/>
       <source>The rendering mode to use</source>
       <translation>El mode de renderització que s'ha d'utilitzar</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1248"/>
+      <location filename="../../ArchSectionPlane.py" line="1263"/>
       <source>If cut geometry is shown or not</source>
       <translation>Si es mostra o no la geometria de tall</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1250"/>
+      <location filename="../../ArchSectionPlane.py" line="1265"/>
       <source>If cut geometry is filled or not</source>
       <translation>Si s'ompli o no la geometria de tall</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1255"/>
+      <location filename="../../ArchSectionPlane.py" line="1270"/>
       <source>The size of the texts inside this object</source>
       <translation>La mida dels textos dins d'aquest objecte</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1258"/>
+      <location filename="../../ArchSectionPlane.py" line="1273"/>
       <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
       <translation>Si està marcada, els objectes d'origen es mostren independentment que siguen visibles en el model 3D</translation>
     </message>
@@ -1039,12 +1039,12 @@
       <translation>La llista dels gruixos de capa</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1260"/>
+      <location filename="../../ArchSectionPlane.py" line="1275"/>
       <source>The line color of the projected objects</source>
       <translation>El color de la línia dels objectes projectats</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1262"/>
+      <location filename="../../ArchSectionPlane.py" line="1277"/>
       <source>The color of the cut faces (if turned on)</source>
       <translation>El color de les cares retallades (si està activat)</translation>
     </message>
@@ -3204,37 +3204,37 @@ Floor creation aborted.</source>
       <translation>Crea una referència externa</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1479"/>
+      <location filename="../../ArchSectionPlane.py" line="1494"/>
       <source>Section plane settings</source>
       <translation>Configuració del pla de secció</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1484"/>
+      <location filename="../../ArchSectionPlane.py" line="1499"/>
       <source>Objects seen by this section plane:</source>
       <translation>Objectes vistos en aquest pla de secció:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1485"/>
+      <location filename="../../ArchSectionPlane.py" line="1500"/>
       <source>Section plane placement:</source>
       <translation>Posicionament del pla de secció:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1486"/>
+      <location filename="../../ArchSectionPlane.py" line="1501"/>
       <source>Rotate X</source>
       <translation>Gira X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1488"/>
+      <location filename="../../ArchSectionPlane.py" line="1503"/>
       <source>Rotate Y</source>
       <translation>Gira Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1490"/>
+      <location filename="../../ArchSectionPlane.py" line="1505"/>
       <source>Rotate Z</source>
       <translation>Gira Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1492"/>
+      <location filename="../../ArchSectionPlane.py" line="1507"/>
       <source>Resize</source>
       <translation>Canvia la mida</translation>
     </message>
@@ -3385,42 +3385,42 @@ You can change that in the preferences.</source>
       <translation>Podeu col·locar qualsevol cosa en un objecte Construcció excepte els objectes Lloc i Construcció ja que els objectes Construcció no els accepta. Els objectes Lloc i Construcció s'eliminaran de la selecció. Podeu canviar açò en les preferències.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1481"/>
+      <location filename="../../ArchSectionPlane.py" line="1496"/>
       <source>Remove highlighted objects from the list above</source>
       <translation>Elimina els objectes ressaltats de la llista anterior</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1482"/>
+      <location filename="../../ArchSectionPlane.py" line="1497"/>
       <source>Add selected</source>
       <translation>Afig el seleccionat</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1483"/>
+      <location filename="../../ArchSectionPlane.py" line="1498"/>
       <source>Add selected object(s) to the scope of this section plane</source>
       <translation>Afig l'objecte o els objectes seleccionats a l'àmbit d'aquest pla de secció</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1487"/>
+      <location filename="../../ArchSectionPlane.py" line="1502"/>
       <source>Rotates the plane along the X axis</source>
       <translation>Gira el pla al llarg de l'eix X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1489"/>
+      <location filename="../../ArchSectionPlane.py" line="1504"/>
       <source>Rotates the plane along the Y axis</source>
       <translation>Gira el pla al llarg de l'eix Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1491"/>
+      <location filename="../../ArchSectionPlane.py" line="1506"/>
       <source>Rotates the plane along the Z axis</source>
       <translation>Gira el pla al llarg de l'eix Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1493"/>
+      <location filename="../../ArchSectionPlane.py" line="1508"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation>Canvia la mida del pla per a ajustar els objectes en la llista anterior</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1495"/>
+      <location filename="../../ArchSectionPlane.py" line="1510"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation>Centra el pla sobre els objectes de la llista anterior</translation>
     </message>

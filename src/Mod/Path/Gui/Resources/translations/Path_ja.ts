@@ -89,6 +89,11 @@
       <translation>指定された深さより下のエリアを無視。</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="128"/>
+      <source>Planar: Flat, 3D surface scan.  Rotational: 4th-axis rotational scan.</source>
+      <translation>平面的な平面、3Dサーフェスの走査。回転: 第４軸で回転走査</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathSurface.py" line="142"/>
       <source>Depth used to identify waste areas to ignore.</source>
       <translation>無視される不要エリアを特定するための深さ</translation>
@@ -97,11 +102,6 @@
       <location filename="../../../PathScripts/PathSurface.py" line="143"/>
       <source>Cut through waste to depth at model edge, releasing the model.</source>
       <translation>モデル端で最低部まで不要部を切り抜き、モデルを解放</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="128"/>
-      <source>Planar: Flat, 3D surface scan.  Rotational: 4th-axis rotational scan.</source>
-      <translation>平面的な平面、3Dサーフェスの走査。回転: 第４軸で回転走査</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="129"/>
@@ -242,11 +242,6 @@
       <location filename="PathCopy.py" line="45"/>
       <source>The path to be copied</source>
       <translation>コピーするパス</translation>
-    </message>
-    <message>
-      <location filename="PathProfileEdges.py" line="56"/>
-      <source>The base geometry of this toolpath</source>
-      <translation>このツールパスのベースジオメトリー</translation>
     </message>
     <message>
       <location filename="PathProfileEdges.py" line="70"/>
@@ -424,14 +419,14 @@
       <translation>ツールを後退(後サイクルの送り復帰) させる制御コード。 デフォルト=G98</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDrilling.py" line="72"/>
-      <source>The height where feed starts and height during retract tool when path is finished</source>
-      <translation>フィード開始位置の高さとパス終了時のツール後退中の高さ</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathDrilling.py" line="73"/>
       <source>Controls how tool retracts Default=G99</source>
       <translation>ツールがリトラクトする方法を制御します。 デフォルト=G99</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDrilling.py" line="72"/>
+      <source>The height where feed starts and height during retract tool when path is finished</source>
+      <translation>フィード開始位置の高さとパス終了時のツール後退中の高さ</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDrilling.py" line="75"/>
@@ -589,6 +584,11 @@
       <translation>工程に適用する追加オフセット。方向は工程に依存して変わります。</translation>
     </message>
     <message>
+      <location filename="PathPocket.py" line="55"/>
+      <source>The library to use to generate the path</source>
+      <translation>パスの生成に使用するライブラリ</translation>
+    </message>
+    <message>
       <location filename="PathPocket.py" line="78"/>
       <source>Start pocketing at center or boundary</source>
       <translation>中心または境界へのポケット作成を開始</translation>
@@ -679,9 +679,9 @@
       <translation>工具径補正を使用する場合は True</translation>
     </message>
     <message>
-      <location filename="PathPocket.py" line="55"/>
-      <source>The library to use to generate the path</source>
-      <translation>パスの生成に使用するライブラリ</translation>
+      <location filename="PathProfileEdges.py" line="56"/>
+      <source>The base geometry of this toolpath</source>
+      <translation>このツールパスのベースジオメトリー</translation>
     </message>
     <message>
       <location filename="PathToolController.py" line="47"/>
@@ -940,14 +940,14 @@
       <translation type="unfinished">Invalid Cutting Edge Angle %.2f, must be &gt;0° and &lt;=180°</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtils.py" line="808"/>
-      <source>Invalid Cutting Edge Angle %.2f, must be &gt;0Â° and &lt;=180Â°</source>
-      <translation>%.2f は、無効な切削角度です。 0°より大きく、かつ180°以下でなければいけません。</translation>
-    </message>
-    <message>
       <location filename="PathUtils.py" line="767"/>
       <source>Cutting Edge Angle (%.2f) results in negative tool tip length</source>
       <translation>切れ刃角 (%.2f) は、負の歯先距離をもたらします</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathUtils.py" line="808"/>
+      <source>Invalid Cutting Edge Angle %.2f, must be &gt;0Â° and &lt;=180Â°</source>
+      <translation>%.2f は、無効な切削角度です。 0°より大きく、かつ180°以下でなければいけません。</translation>
     </message>
     <message>
       <location filename="PathOp.py" line="232"/>
@@ -1443,6 +1443,16 @@
   <context>
     <name>PathFace</name>
     <message>
+      <location filename="PathMillFace.py" line="350"/>
+      <source>Face</source>
+      <translation>面</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathMillFaceGui.py" line="44"/>
+      <source>Create a Facing Operation from a model or face</source>
+      <translation type="unfinished">Create a Facing Operation from a model or face</translation>
+    </message>
+    <message>
       <location filename="PathMillFace.py" line="171"/>
       <source>Generating toolpath with libarea offsets.
 </source>
@@ -1453,16 +1463,6 @@
       <location filename="PathMillFace.py" line="305"/>
       <source>Pick Start Point</source>
       <translation>開始点を選択</translation>
-    </message>
-    <message>
-      <location filename="PathMillFace.py" line="350"/>
-      <source>Face</source>
-      <translation>面</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathMillFaceGui.py" line="44"/>
-      <source>Create a Facing Operation from a model or face</source>
-      <translation type="unfinished">Create a Facing Operation from a model or face</translation>
     </message>
   </context>
   <context>
@@ -1539,6 +1539,11 @@
       <translation>円形切削の方向、時計方向(CW)、又は、反時計方向(CCW)</translation>
     </message>
     <message>
+      <location filename="PathHelix.py" line="52"/>
+      <source>The direction of the circular cuts, clockwise (CW), or counter clockwise (CCW)</source>
+      <translation>円形切削の方向。時計回り(CW)または反時計回り(CCW)。</translation>
+    </message>
+    <message>
       <location filename="PathHelix.py" line="55"/>
       <source>Start cutting from the inside or outside</source>
       <translation>内側または外側から切削を開始</translation>
@@ -1552,11 +1557,6 @@
       <location filename="../../../PathScripts/PathHelix.py" line="76"/>
       <source>Starting Radius</source>
       <translation type="unfinished">Starting Radius</translation>
-    </message>
-    <message>
-      <location filename="PathHelix.py" line="52"/>
-      <source>The direction of the circular cuts, clockwise (CW), or counter clockwise (CCW)</source>
-      <translation>円形切削の方向。時計回り(CW)または反時計回り(CCW)。</translation>
     </message>
   </context>
   <context>
@@ -1996,11 +1996,6 @@ FinalDepthを手動で設定する必要がある場合は別の操作を選択�
   <context>
     <name>PathProfile</name>
     <message>
-      <location filename="../../../PathScripts/PathProfileFacesGui.py" line="45"/>
-      <source>Profile based on face or faces</source>
-      <translation>面に基づくプロファイル</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathProfileFacesGui.py" line="46"/>
       <source>Profile</source>
       <translation>プロファイル</translation>
@@ -2009,6 +2004,11 @@ FinalDepthを手動で設定する必要がある場合は別の操作を選択�
       <location filename="../../../PathScripts/PathProfileFacesGui.py" line="46"/>
       <source>Profile entire model, selected face(s) or selected edge(s)</source>
       <translation type="unfinished">Profile entire model, selected face(s) or selected edge(s)</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFacesGui.py" line="45"/>
+      <source>Profile based on face or faces</source>
+      <translation>面に基づくプロファイル</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathProfile.py" line="90"/>
@@ -3118,16 +3118,6 @@ FinalDepthを手動で設定する必要がある場合は別の操作を選択�
   <context>
     <name>Path_Dressup</name>
     <message>
-      <location filename="PathDressup.py" line="98"/>
-      <source>Dress-up</source>
-      <translation>ドレスアップ</translation>
-    </message>
-    <message>
-      <location filename="PathDressup.py" line="100"/>
-      <source>Creates a Path Dess-up object from a selected path</source>
-      <translation>選択したパスからパス・ドレスアップ・オブジェクトを作成</translation>
-    </message>
-    <message>
       <location filename="PathDressup.py" line="110"/>
       <source>Please select one path object
 </source>
@@ -3145,6 +3135,16 @@ FinalDepthを手動で設定する必要がある場合は別の操作を選択�
       <location filename="../../../PathScripts/PathDressupZCorrect.py" line="325"/>
       <source>Please select a Path object</source>
       <translation>パスオブジェクトを選択して下さい</translation>
+    </message>
+    <message>
+      <location filename="PathDressup.py" line="98"/>
+      <source>Dress-up</source>
+      <translation>ドレスアップ</translation>
+    </message>
+    <message>
+      <location filename="PathDressup.py" line="100"/>
+      <source>Creates a Path Dess-up object from a selected path</source>
+      <translation>選択したパスからパス・ドレスアップ・オブジェクトを作成</translation>
     </message>
   </context>
   <context>
@@ -4045,6 +4045,13 @@ FinalDepthを手動で設定する必要がある場合は別の操作を選択�
   <context>
     <name>Path_SimpleCopy</name>
     <message>
+      <location filename="PathSimpleCopy.py" line="59"/>
+      <source>Please select exactly one path object
+</source>
+      <translation>パス・オブジェクトをひとつだけ選択してください。
+</translation>
+    </message>
+    <message>
       <location filename="PathSimpleCopy.py" line="62"/>
       <source>Simple Copy</source>
       <translation>単純コピー</translation>
@@ -4058,13 +4065,6 @@ FinalDepthを手動で設定する必要がある場合は別の操作を選択�
       <location filename="../../../PathScripts/PathSimpleCopy.py" line="61"/>
       <source>Please select exactly one path object</source>
       <translation>パス・オブジェクトをひとつだけ選択してください。</translation>
-    </message>
-    <message>
-      <location filename="PathSimpleCopy.py" line="59"/>
-      <source>Please select exactly one path object
-</source>
-      <translation>パス・オブジェクトをひとつだけ選択してください。
-</translation>
     </message>
   </context>
   <context>
@@ -4096,6 +4096,11 @@ FinalDepthを手動で設定する必要がある場合は別の操作を選択�
   <context>
     <name>Path_ToolController</name>
     <message>
+      <location filename="PathToolController.py" line="132"/>
+      <source>Tool Number to Load</source>
+      <translation>読み込む工具番号</translation>
+    </message>
+    <message>
       <location filename="PathToolController.py" line="156"/>
       <source>Add Tool Controller to the Job</source>
       <translation>ジョブにツールコントローラーを追加</translation>
@@ -4104,11 +4109,6 @@ FinalDepthを手動で設定する必要がある場合は別の操作を選択�
       <location filename="../../../PathScripts/PathToolControllerGui.py" line="123"/>
       <source>Add Tool Controller</source>
       <translation>ツールコントローラーを追加</translation>
-    </message>
-    <message>
-      <location filename="PathToolController.py" line="132"/>
-      <source>Tool Number to Load</source>
-      <translation>読み込む工具番号</translation>
     </message>
   </context>
   <context>
@@ -4194,9 +4194,44 @@ FinalDepthを手動で設定する必要がある場合は別の操作を選択�
       <translation>ツールビットのライブラリを保存</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="147"/>
+      <source>Tooltable JSON (*.json)</source>
+      <translation>ツールテーブル JSON (*.json)</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="149"/>
+      <source>HeeksCAD tooltable (*.tooltable)</source>
+      <translation>HeeksCADツールテーブル (*.tooltable)</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="150"/>
+      <source>LinuxCNC tooltable (*.tbl)</source>
+      <translation>LinuxCNCツールテーブル (*.tbl)</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathToolLibraryManager.py" line="512"/>
       <source>Open tooltable</source>
       <translation>ツールテーブルを開く</translation>
+    </message>
+    <message>
+      <location filename="TooltableEditor.py" line="610"/>
+      <source>Save tooltable</source>
+      <translation>ツールテーブルを保存</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="385"/>
+      <source>Add New Tool Table</source>
+      <translation>新しいツールテーブルを追加</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="387"/>
+      <source>Delete Selected Tool Table</source>
+      <translation>選択したツールテーブルを削除</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="389"/>
+      <source>Rename Selected Tool Table</source>
+      <translation>選択したツールテーブルの名前を変更</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="388"/>
@@ -4410,11 +4445,6 @@ FinalDepthを手動で設定する必要がある場合は別の操作を選択�
     </message>
     <message>
       <location filename="TooltableEditor.py" line="610"/>
-      <source>Save tooltable</source>
-      <translation>ツールテーブルを保存</translation>
-    </message>
-    <message>
-      <location filename="TooltableEditor.py" line="610"/>
       <source>Tooltable XML (*.xml)</source>
       <translation>ツールテーブルXML (*.xml)</translation>
     </message>
@@ -4427,36 +4457,6 @@ FinalDepthを手動で設定する必要がある場合は別の操作を選択�
       <location filename="TooltableEditor.py" line="653"/>
       <source>Object doesn't have a tooltable property</source>
       <translation>オブジェクトがツールテーブルプロパティを持っていません。</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="385"/>
-      <source>Add New Tool Table</source>
-      <translation>新しいツールテーブルを追加</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="387"/>
-      <source>Delete Selected Tool Table</source>
-      <translation>選択したツールテーブルを削除</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="389"/>
-      <source>Rename Selected Tool Table</source>
-      <translation>選択したツールテーブルの名前を変更</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="147"/>
-      <source>Tooltable JSON (*.json)</source>
-      <translation>ツールテーブル JSON (*.json)</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="149"/>
-      <source>HeeksCAD tooltable (*.tooltable)</source>
-      <translation>HeeksCADツールテーブル (*.tooltable)</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="150"/>
-      <source>LinuxCNC tooltable (*.tbl)</source>
-      <translation>LinuxCNCツールテーブル (*.tbl)</translation>
     </message>
     <message>
       <location filename="PathToolLibraryManager.py" line="514"/>

@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (c) 2019 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
+ *   Copyright (c) 2019 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -45,7 +45,7 @@ public:
 
     /// Get origin point size
     float getPointSize() const { return pointSize; }
-    
+
     /// Set the axis line length
     void setAxisLength(float size);
 
@@ -71,7 +71,7 @@ public:
      *                XZ: XY plane, YZ: YZ plane
      *
      * There are default labels for all components. You can also use
-     * this function to choose which components are hidden, by not 
+     * this function to choose which components are hidden, by not
      * include the key in the input labels.
      */
     void setLabels(const std::map<std::string,std::string> &labels);

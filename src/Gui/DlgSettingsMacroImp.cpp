@@ -33,8 +33,8 @@ using namespace Gui::Dialog;
 /* TRANSLATOR Gui::Dialog::DlgSettingsMacroImp */
 
 /**
- *  Constructs a DlgSettingsMacroImp which is a child of 'parent', with the 
- *  name 'name' and widget flags set to 'f' 
+ *  Constructs a DlgSettingsMacroImp which is a child of 'parent', with the
+ *  name 'name' and widget flags set to 'f'
  */
 DlgSettingsMacroImp::DlgSettingsMacroImp( QWidget* parent )
   : PreferencePage( parent )
@@ -52,7 +52,7 @@ DlgSettingsMacroImp::DlgSettingsMacroImp( QWidget* parent )
     }
 }
 
-/** 
+/**
  *  Destroys the object and frees any allocated resources
  */
 DlgSettingsMacroImp::~DlgSettingsMacroImp()

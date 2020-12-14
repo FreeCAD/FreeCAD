@@ -22,9 +22,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM base python object"
+__title__  = "FreeCAD FEM base python object"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## @package base_fempythonobject
 #  \ingroup FEM

@@ -147,7 +147,7 @@ void DlgCustomizeSpNavSettings::initialize()
 
 void DlgCustomizeSpNavSettings::on_ButtonDefaultSpNavMotions_clicked()
 {
-    spaceballMotionGroup()->Clear(); 
+    spaceballMotionGroup()->Clear();
     initialize();
 }
 
@@ -197,7 +197,7 @@ void DlgCustomizeSpNavSettings::on_SliderGlobal_sliderReleased()
 }
 
 void DlgCustomizeSpNavSettings::on_CBEnablePanLR_clicked()
-{    
+{
     spaceballMotionGroup()->SetBool("PanLREnable", ui->CBEnablePanLR->isChecked());
 
     ui->CBReversePanLR->setEnabled(ui->CBEnablePanLR->isChecked());
@@ -233,7 +233,7 @@ void DlgCustomizeSpNavSettings::on_SliderPanUD_sliderReleased()
 }
 
 void DlgCustomizeSpNavSettings::on_CBEnableZoom_clicked()
-{    
+{
     spaceballMotionGroup()->SetBool("ZoomEnable", ui->CBEnableZoom->isChecked());
 
     ui->CBReverseZoom ->setEnabled(ui->CBEnableZoom->isChecked());
@@ -263,12 +263,12 @@ void DlgCustomizeSpNavSettings::on_CBReverseTilt_clicked()
     spaceballMotionGroup()->SetBool("TiltReverse", ui->CBReverseTilt->isChecked());
 }
 
-void DlgCustomizeSpNavSettings::on_SliderTilt_sliderReleased() 
+void DlgCustomizeSpNavSettings::on_SliderTilt_sliderReleased()
 {
     spaceballMotionGroup()->SetInt("TiltSensitivity", ui->SliderTilt->value());
 }
 
-void DlgCustomizeSpNavSettings::on_CBEnableRoll_clicked()  
+void DlgCustomizeSpNavSettings::on_CBEnableRoll_clicked()
 {
     spaceballMotionGroup()->SetBool("RollEnable", ui->CBEnableRoll->isChecked());
 
@@ -307,19 +307,19 @@ void DlgCustomizeSpNavSettings::on_SliderSpin_sliderReleased()
 void DlgCustomizeSpNavSettings::onAddMacroAction(const QByteArray &macroName)
 {
     //don't need to do anything here.
-    Q_UNUSED(macroName); 
+    Q_UNUSED(macroName);
 }
 
 void DlgCustomizeSpNavSettings::onRemoveMacroAction(const QByteArray &macroName)
 {
     //don't need to do anything here.
-    Q_UNUSED(macroName); 
+    Q_UNUSED(macroName);
 }
 
 void DlgCustomizeSpNavSettings::onModifyMacroAction(const QByteArray &macroName)
 {
     //don't need to do anything here.
-    Q_UNUSED(macroName); 
+    Q_UNUSED(macroName);
 }
 
 #include "moc_DlgCustomizeSpNavSettings.cpp"

@@ -38,7 +38,7 @@ typedef std::unique_ptr<UnitsSchema> UnitsSchemaPtr;
 /**
  * The UnitsApi
  */
-class BaseExport UnitsApi 
+class BaseExport UnitsApi
 {
 
 public:
@@ -50,7 +50,7 @@ public:
     /** set Schema
      * set the UnitsSchema of the Application
      * this a represented by a class of type UnitSchema which
-     * defines a set of standard units for that schema and rules 
+     * defines a set of standard units for that schema and rules
      * for representative strings.
      */
     static void setSchema(UnitSystem s);
@@ -73,7 +73,7 @@ public:
 
     // set the number of decimals
     static void setDecimals(int);
-    // fet the number of decimals
+    // get the number of decimals
     static int getDecimals();
     /// set the application defaults
     //static void setDefaults(void);

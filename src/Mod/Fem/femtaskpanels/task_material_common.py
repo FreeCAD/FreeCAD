@@ -22,9 +22,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM material task panel for the document object"
+__title__  = "FreeCAD FEM material task panel for the document object"
 __author__ = "Juergen Riegel, Bernd Hahnebach, Qingfeng Xia"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## @package task_material_common
 #  \ingroup FEM

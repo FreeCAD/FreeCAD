@@ -81,8 +81,8 @@ public:
 
     static void scrollItemToTop();
     void selectAllInstances(const ViewProviderDocumentObject &vpd);
-    void selectLinkedObject(App::DocumentObject *linked); 
-    void selectAllLinks(App::DocumentObject *obj); 
+    void selectLinkedObject(App::DocumentObject *linked);
+    void selectAllLinks(App::DocumentObject *obj);
     void expandSelectedItems(TreeItemMode mode);
 
     bool eventFilter(QObject *, QEvent *ev) override;
@@ -202,7 +202,7 @@ private:
     void changeEvent(QEvent *e) override;
     void setupText();
 
-    void updateChildren(App::DocumentObject *obj, 
+    void updateChildren(App::DocumentObject *obj,
             const std::set<DocumentObjectDataPtr> &data, bool output, bool force);
 
 private:
@@ -329,13 +329,13 @@ protected:
 
     bool updateObject(const Gui::ViewProviderDocumentObject&, const App::Property &prop);
 
-    bool createNewItem(const Gui::ViewProviderDocumentObject&, 
-                    QTreeWidgetItem *parent=0, int index=-1, 
+    bool createNewItem(const Gui::ViewProviderDocumentObject&,
+                    QTreeWidgetItem *parent=0, int index=-1,
                     DocumentObjectDataPtr ptrs = DocumentObjectDataPtr());
 
     int findRootIndex(App::DocumentObject *childObj);
 
-    DocumentObjectItem *findItemByObject(bool sync, 
+    DocumentObjectItem *findItemByObject(bool sync,
             App::DocumentObject *obj, const char *subname, bool select=false);
 
     DocumentObjectItem *findItem(bool sync, DocumentObjectItem *item, const char *subname, bool select=true);
@@ -402,8 +402,8 @@ public:
 
     // check if a new item is required at root
     bool requiredAtRoot(bool excludeSelf=true) const;
-    
-    // return the owner, and full quanlified subname
+
+    // return the owner, and full qualified subname
     App::DocumentObject *getFullSubName(std::ostringstream &str,
             DocumentObjectItem *parent = 0) const;
 
@@ -411,7 +411,7 @@ public:
     // 'cousin'.
     App::DocumentObject *getRelativeParent(
             std::ostringstream &str,
-            DocumentObjectItem *cousin, 
+            DocumentObjectItem *cousin,
             App::DocumentObject **topParent=0,
             std::string *topSubname=0) const;
 
@@ -491,7 +491,7 @@ class TreeWidgetEditDelegate: public QStyledItemDelegate {
     Q_OBJECT
 public:
     TreeWidgetEditDelegate(QObject* parent=0);
-    virtual QWidget* createEditor(QWidget *parent, 
+    virtual QWidget* createEditor(QWidget *parent,
             const QStyleOptionViewItem &, const QModelIndex &index) const;
 };
 

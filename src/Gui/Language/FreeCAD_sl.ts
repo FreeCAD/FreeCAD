@@ -2550,8 +2550,8 @@ privzeto prikazan</translation>
       <source>Area for picking elements in 3D view.
 Larger value eases to pick things, but can make small features impossible to select.
                </source>
-      <translation type="unfinished">Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.
+      <translation>Površina pri izbiranju v trirazsežnem pogledu.
+Pri večjih vrednostih je izbiranje lažje, vendar pa je lahko zaradi tega izbiranje drobnih reči nemogoče.
                </translation>
     </message>
   </context>
@@ -7583,7 +7583,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Strip on level of link</source>
-      <translation type="unfinished">Strip on level of link</translation>
+      <translation>Odreži na raven povezave</translation>
     </message>
   </context>
   <context>

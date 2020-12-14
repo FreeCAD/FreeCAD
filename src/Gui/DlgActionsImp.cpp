@@ -97,7 +97,7 @@ DlgCustomActionsImp::~DlgCustomActionsImp()
 {
 }
 
-/** 
+/**
  * Displays this page. If no macros were found a message box
  * appears.
  */
@@ -125,18 +125,18 @@ bool DlgCustomActionsImp::event(QEvent* e)
             int index = topLevel->metaObject()->indexOfSignal( QMetaObject::normalizedSignature("addMacroAction(const QByteArray&)") );
             if ( index >= 0 ) {
                 if ( e->type() == QEvent::ParentChange ) {
-                    connect(this, SIGNAL(addMacroAction( const QByteArray& )), 
+                    connect(this, SIGNAL(addMacroAction( const QByteArray& )),
                             topLevel, SIGNAL(addMacroAction( const QByteArray& )));
-                    connect(this, SIGNAL(removeMacroAction( const QByteArray& )), 
+                    connect(this, SIGNAL(removeMacroAction( const QByteArray& )),
                             topLevel, SIGNAL(removeMacroAction( const QByteArray& )));
-                    connect(this, SIGNAL(modifyMacroAction( const QByteArray& )), 
+                    connect(this, SIGNAL(modifyMacroAction( const QByteArray& )),
                             topLevel, SIGNAL(modifyMacroAction( const QByteArray& )));
                 } else {
-                    disconnect(this, SIGNAL(addMacroAction( const QByteArray& )), 
+                    disconnect(this, SIGNAL(addMacroAction( const QByteArray& )),
                                topLevel, SIGNAL(addMacroAction( const QByteArray& )));
-                    disconnect(this, SIGNAL(removeMacroAction( const QByteArray& )), 
+                    disconnect(this, SIGNAL(removeMacroAction( const QByteArray& )),
                                topLevel, SIGNAL(removeMacroAction( const QByteArray& )));
-                    disconnect(this, SIGNAL(modifyMacroAction( const QByteArray& )), 
+                    disconnect(this, SIGNAL(modifyMacroAction( const QByteArray& )),
                                topLevel, SIGNAL(modifyMacroAction( const QByteArray& )));
                 }
             }
@@ -179,7 +179,7 @@ void DlgCustomActionsImp::showActions()
 
 void DlgCustomActionsImp::on_actionListWidget_itemActivated(QTreeWidgetItem *item)
 {
-    if (!item) 
+    if (!item)
         return; // no valid item
 
     // search for the command in the manager and if necessary in the temporary created ones
@@ -205,7 +205,7 @@ void DlgCustomActionsImp::on_actionListWidget_itemActivated(QTreeWidgetItem *ite
 
         if (!bFound)
         {
-            QMessageBox::critical(this, tr("Macro not found"), 
+            QMessageBox::critical(this, tr("Macro not found"),
                     tr("Sorry, couldn't find macro file '%1'.").arg(scriptName));
         }
 
@@ -263,10 +263,10 @@ void DlgCustomActionsImp::on_buttonAddAction_clicked()
     if (!ui->actionWhatsThis->text().isEmpty())
         macro->setWhatsThis(ui->actionWhatsThis->text().toUtf8());
     ui->actionWhatsThis->clear();
-  
+
     if (!ui->actionMacros-> currentText().isEmpty())
         macro->setScriptName(ui->actionMacros->currentText().toUtf8());
-  
+
     if (!ui->actionMenu->text().isEmpty())
         macro->setMenuText(ui->actionMenu->text().toUtf8());
     ui->actionMenu->clear();
@@ -320,10 +320,10 @@ void DlgCustomActionsImp::on_buttonReplaceAction_clicked()
     if (!ui->actionWhatsThis->text().isEmpty())
         macro->setWhatsThis(ui->actionWhatsThis->text().toUtf8());
     ui->actionWhatsThis->clear();
-  
+
     if (!ui->actionMacros-> currentText().isEmpty())
         macro->setScriptName(ui->actionMacros->currentText().toUtf8());
-  
+
     if (!ui->actionMenu->text().isEmpty())
         macro->setMenuText(ui->actionMenu->text().toUtf8());
     ui->actionMenu->clear();
@@ -385,7 +385,7 @@ void DlgCustomActionsImp::on_buttonRemoveAction_clicked()
 {
     // remove item from list view
     QTreeWidgetItem* item = ui->actionListWidget->currentItem();
-    if (!item) 
+    if (!item)
         return;
     int current = ui->actionListWidget->indexOfTopLevelItem(item);
     ui->actionListWidget->takeTopLevelItem(current);
@@ -687,4 +687,4 @@ QStringList IconFolders::getPaths() const
     return paths;
 }
 
-#include "moc_DlgActionsImp.cpp" 
+#include "moc_DlgActionsImp.cpp"

@@ -270,7 +270,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="342"/>
       <source>Appears to be an issue connecting to the Wiki, therefore cannot retrieve Wiki macro list at this time</source>
-      <translation type="unfinished">Appears to be an issue connecting to the Wiki, therefore cannot retrieve Wiki macro list at this time</translation>
+      <translation>Čini se da je problem povezivanje s Wiki-om, stoga trenutačno ne može dohvatiti popis makronaredbi Wiki</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="433"/>
@@ -280,7 +280,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="435"/>
       <source>Python Markdown library is missing.</source>
-      <translation type="unfinished">Python Markdown library is missing.</translation>
+      <translation>Nedostaje Python Markdown biblioteka.</translation>
     </message>
   </context>
   <context>

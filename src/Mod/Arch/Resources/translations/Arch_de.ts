@@ -204,12 +204,12 @@
       <translation>Die normalisierte Extrusionsrichtung dieses Objekts (behalte (0,0,0) für automatische Normale)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1242"/>
+      <location filename="../../ArchSectionPlane.py" line="1257"/>
       <source>The linked object</source>
       <translation>Das verknüpfte Objekt</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1252"/>
+      <location filename="../../ArchSectionPlane.py" line="1267"/>
       <source>The line width of the rendered objects</source>
       <translation>Die Linienbreite der gerenderten Objekte</translation>
     </message>
@@ -594,27 +594,27 @@
       <translation>Zeigen Sie den Schnitt in der 3D-Ansicht</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1244"/>
+      <location filename="../../ArchSectionPlane.py" line="1259"/>
       <source>The rendering mode to use</source>
       <translation>Der zu verwendende Rendering-Modus</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1248"/>
+      <location filename="../../ArchSectionPlane.py" line="1263"/>
       <source>If cut geometry is shown or not</source>
       <translation>Ob die Schnittgeometrie angezeigt wird oder nicht</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1250"/>
+      <location filename="../../ArchSectionPlane.py" line="1265"/>
       <source>If cut geometry is filled or not</source>
       <translation>Ob die schnitt Geometrie gefüllt ist oder nicht</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1255"/>
+      <location filename="../../ArchSectionPlane.py" line="1270"/>
       <source>The size of the texts inside this object</source>
       <translation>Die Textgröße in diesem Objekt</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1258"/>
+      <location filename="../../ArchSectionPlane.py" line="1273"/>
       <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
       <translation>Wenn aktiviert, werden Quellobjekte angezeigt, unabhängig davon, ob sie im 3D-Modell sichtbar sind</translation>
     </message>
@@ -1039,12 +1039,12 @@
       <translation>Die Liste der Schichtdicken</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1260"/>
+      <location filename="../../ArchSectionPlane.py" line="1275"/>
       <source>The line color of the projected objects</source>
       <translation>Linienfarbe projizierter Objekte</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1262"/>
+      <location filename="../../ArchSectionPlane.py" line="1277"/>
       <source>The color of the cut faces (if turned on)</source>
       <translation>Die Farbe der Schnittflächen (sofern aktiviert)</translation>
     </message>
@@ -3205,37 +3205,37 @@ Floor creation aborted.</source>
       <translation>Externe Referenz erstellen</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1479"/>
+      <location filename="../../ArchSectionPlane.py" line="1494"/>
       <source>Section plane settings</source>
       <translation>Einstellungen Schnittebene</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1484"/>
+      <location filename="../../ArchSectionPlane.py" line="1499"/>
       <source>Objects seen by this section plane:</source>
       <translation>Objekte, die von dieser Schnittebene gesehen werden:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1485"/>
+      <location filename="../../ArchSectionPlane.py" line="1500"/>
       <source>Section plane placement:</source>
       <translation>Platzierung der Schnittebene:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1486"/>
+      <location filename="../../ArchSectionPlane.py" line="1501"/>
       <source>Rotate X</source>
       <translation>Drehen X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1488"/>
+      <location filename="../../ArchSectionPlane.py" line="1503"/>
       <source>Rotate Y</source>
       <translation>Drehen Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1490"/>
+      <location filename="../../ArchSectionPlane.py" line="1505"/>
       <source>Rotate Z</source>
       <translation>Drehen Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1492"/>
+      <location filename="../../ArchSectionPlane.py" line="1507"/>
       <source>Resize</source>
       <translation>Größe ändern</translation>
     </message>
@@ -3390,42 +3390,42 @@ Grundstücks- und Gebäudeobjekte werden aus der Auswahl entfernt.
 Sie können das in den Einstellungen ändern.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1481"/>
+      <location filename="../../ArchSectionPlane.py" line="1496"/>
       <source>Remove highlighted objects from the list above</source>
       <translation>Markierte Objekte aus der oben genannten Liste entfernen</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1482"/>
+      <location filename="../../ArchSectionPlane.py" line="1497"/>
       <source>Add selected</source>
       <translation>Auswahl hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1483"/>
+      <location filename="../../ArchSectionPlane.py" line="1498"/>
       <source>Add selected object(s) to the scope of this section plane</source>
       <translation>Ausgewählte Objekte in den Bereich dieser Schnittebene hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1487"/>
+      <location filename="../../ArchSectionPlane.py" line="1502"/>
       <source>Rotates the plane along the X axis</source>
       <translation>Rotiert die Ebene entlang X-Achse</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1489"/>
+      <location filename="../../ArchSectionPlane.py" line="1504"/>
       <source>Rotates the plane along the Y axis</source>
       <translation>Rotiert die Ebene entlang Y-Achse</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1491"/>
+      <location filename="../../ArchSectionPlane.py" line="1506"/>
       <source>Rotates the plane along the Z axis</source>
       <translation>Rotiert die Ebene entlang Z-Achse</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1493"/>
+      <location filename="../../ArchSectionPlane.py" line="1508"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation>Ändert die Ausdehnung der Ebene, um sie den Objekten in der oben genannten Liste anzupassen</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1495"/>
+      <location filename="../../ArchSectionPlane.py" line="1510"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation>Verschiebt die Ebene, in die Mitte der in der oben genannten Liste befindlichen Objekte</translation>
     </message>

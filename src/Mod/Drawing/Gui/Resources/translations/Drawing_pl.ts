@@ -530,7 +530,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="756"/>
       <source>Projection</source>
-      <translation>Rzut</translation>
+      <translation>Rzutowanie</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="767"/>

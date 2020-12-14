@@ -37,8 +37,8 @@ using namespace Gui::Dialog;
 /* TRANSLATOR Gui::Dialog::DlgEditFileIncludePropertyExternal */
 
 /**
- *  Constructs a DlgEditFileIncludePropertyExternal which is a child of 'parent', with the 
- *  name 'name' and widget flags set to 'f' 
+ *  Constructs a DlgEditFileIncludePropertyExternal which is a child of 'parent', with the
+ *  name 'name' and widget flags set to 'f'
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
  *  true to construct a modal dialog.
@@ -51,7 +51,7 @@ DlgEditFileIncludePropertyExternal(App::PropertyFileIncluded& Prop,
 
 }
 
-/** 
+/**
  *  Destroys the object and frees any allocated resources
  */
 DlgEditFileIncludePropertyExternal::~DlgEditFileIncludePropertyExternal()

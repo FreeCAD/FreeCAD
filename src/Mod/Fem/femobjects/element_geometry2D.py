@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM element geometry 2D document object"
+__title__  = "FreeCAD FEM element geometry 2D document object"
 __author__ = "Bernd Hahnebach"
 __url__ = "https://www.freecadweb.org"
 

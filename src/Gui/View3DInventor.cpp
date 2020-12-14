@@ -200,7 +200,7 @@ View3DInventor::~View3DInventor()
 {
     if(_pcDocument) {
         SoCamera * Cam = _viewer->getSoRenderManager()->getCamera();
-        if (Cam) 
+        if (Cam)
             _pcDocument->saveCameraSettings(SoFCDB::writeNodesToString(Cam).c_str());
     }
     hGrp->Detach(this);
@@ -357,9 +357,19 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         float val = rGrp.GetFloat("ZoomStep", 0.0f);
         _viewer->navigationStyle()->setZoomStep(val);
     }
-    else if (strcmp(Reason,"DragAtCursor") == 0) {
-        bool on = rGrp.GetBool("DragAtCursor", false);
-        _viewer->navigationStyle()->setDragAtCursor(on);
+    else if (strcmp(Reason,"RotationMode") == 0) {
+        long mode = rGrp.GetInt("RotationMode", 1);
+        if (mode == 0) {
+            _viewer->navigationStyle()->setRotationCenterMode(NavigationStyle::RotationCenterMode::WindowCenter);
+        }
+        else if (mode == 1) {
+            _viewer->navigationStyle()->setRotationCenterMode(NavigationStyle::RotationCenterMode::ScenePointAtCursor |
+                                                              NavigationStyle::RotationCenterMode::FocalPointAtCursor);
+        }
+        else if (mode == 2) {
+            _viewer->navigationStyle()->setRotationCenterMode(NavigationStyle::RotationCenterMode::ScenePointAtCursor |
+                                                              NavigationStyle::RotationCenterMode::BoundingBoxCenter);
+        }
     }
     else if (strcmp(Reason,"EyeDistance") == 0) {
         _viewer->getSoRenderManager()->setStereoOffset(rGrp.GetFloat("EyeDistance",5.0));

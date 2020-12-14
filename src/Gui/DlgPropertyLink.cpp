@@ -122,14 +122,14 @@ QList<App::SubObjectT> DlgPropertyLink::getLinksFromProperty(const App::Property
     std::vector<std::string> subs;
     prop->getLinks(objs,true,&subs,false);
     if(subs.empty()) {
-        for(auto obj : objs) 
+        for(auto obj : objs)
             res.push_back(App::SubObjectT(obj,0));
     } else if (objs.size()==1) {
-        for(auto &sub : subs) 
+        for(auto &sub : subs)
             res.push_back(App::SubObjectT(objs.front(),sub.c_str()));
     } else {
         int i=0;
-        for(auto obj : objs) 
+        for(auto obj : objs)
             res.push_back(App::SubObjectT(obj,subs[i++].c_str()));
     }
     return res;
@@ -279,10 +279,10 @@ void DlgPropertyLink::init(const App::DocumentObjectT &prop, bool tryFilter) {
     {
         isLinkList = true;
         allowSubObject = false;
-    } 
+    }
 
     if(singleSelect) {
-        singleParent = true; 
+        singleParent = true;
         ui->treeWidget->setSelectionMode(QAbstractItemView::SingleSelection);
     } else {
         ui->treeWidget->setSelectionMode(QAbstractItemView::MultiSelection);
@@ -302,7 +302,7 @@ void DlgPropertyLink::init(const App::DocumentObjectT &prop, bool tryFilter) {
         ui->treeWidget->header()->setResizeMode(0, QHeaderView::ResizeToContents);
 #endif
     }
-        
+
     std::set<App::Document*> expandDocs;
 
     if(oldLinks.empty()) {
@@ -529,7 +529,7 @@ void DlgPropertyLink::onItemSelectionChanged()
                                       sobj.getSubName().c_str());
     blockConnection(blocked);
 
-    // Enforce single parent 
+    // Enforce single parent
     if(singleParent && currentObj && currentObj!=obj) {
         ui->treeWidget->blockSignals(true);
         for(auto item : ui->treeWidget->selectedItems()) {
@@ -717,7 +717,7 @@ DlgPropertyLink::getLinkFromItem(QTreeWidgetItem *item, bool needSubName) const
 void DlgPropertyLink::onTimer() {
     auto item = ui->treeWidget->itemAt(
             ui->treeWidget->viewport()->mapFromGlobal(QCursor::pos()));
-    if(!item) 
+    if(!item)
         return;
     auto sobjs = getLinkFromItem(item);
     if(sobjs.isEmpty())
@@ -733,7 +733,7 @@ QList<App::SubObjectT> DlgPropertyLink::currentLinks() const
 {
     auto items = ui->treeWidget->selectedItems();
     QList<App::SubObjectT> res;
-    for(auto item : items) 
+    for(auto item : items)
         res.append(getLinkFromItem(item));
     return res;
 }
@@ -790,7 +790,7 @@ void DlgPropertyLink::filterItem(QTreeWidgetItem *item) {
 }
 
 bool DlgPropertyLink::eventFilter(QObject *obj, QEvent *e) {
-    if(obj == ui->searchBox 
+    if(obj == ui->searchBox
             && e->type() == QEvent::KeyPress
             && static_cast<QKeyEvent*>(e)->key() == Qt::Key_Escape)
     {
@@ -843,7 +843,7 @@ void DlgPropertyLink::itemSearch(const QString &text, bool select) {
             return;
 
         App::DocumentObject *obj = path.getDocumentObject();
-        if(!obj) 
+        if(!obj)
             return;
 
         bool found;
@@ -881,7 +881,7 @@ QTreeWidgetItem *DlgPropertyLink::createItem(
 
     auto vp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
             Application::Instance->getViewProvider(obj));
-    if(!vp) 
+    if(!vp)
         return 0;
 
     QTreeWidgetItem* item;
@@ -912,7 +912,7 @@ QTreeWidgetItem *DlgPropertyLink::createItem(
         Py::Object proxy = prop->getValue();
         if(!proxy.isNone() && !proxy.isString()) {
             const char *name = 0;
-            if (proxy.hasAttr("__class__")) 
+            if (proxy.hasAttr("__class__"))
                 proxyType = QByteArray(proxy.getAttr("__class__").as_string().c_str());
             else {
                 name = proxy.ptr()->ob_type->tp_name;
@@ -1008,7 +1008,7 @@ bool DlgPropertyLink::filterType(QTreeWidgetItem *item) {
 }
 
 void DlgPropertyLink::onItemExpanded(QTreeWidgetItem * item) {
-    if(item->childCount()) 
+    if(item->childCount())
         return;
 
     const char *docName = item->data(0, Qt::UserRole+1).toByteArray().constData();

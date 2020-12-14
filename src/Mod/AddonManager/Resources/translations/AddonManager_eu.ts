@@ -244,12 +244,12 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="561"/>
       <source>This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.</source>
-      <translation type="unfinished">This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.</translation>
+      <translation>Lan-mahai honek beharbada ez du jadanik mantenimendurik eta Python 3 duen sistema batean instalatzen bada erroreak sortu ditzake bai abioan bai erabiltzen ari denean.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="721"/>
       <source>User requested updating a Python 2 workbench on a system running Python 3 - </source>
-      <translation type="unfinished">User requested updating a Python 2 workbench on a system running Python 3 - </translation>
+      <translation>Erabiltzaileak Python 2 lan-mahai bat eguneratzea eskatu du Python 3 duen sistema batean - </translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="757"/>
@@ -259,17 +259,17 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="765"/>
       <source>User requested installing a Python 2 workbench on a system running Python 3 - </source>
-      <translation type="unfinished">User requested installing a Python 2 workbench on a system running Python 3 - </translation>
+      <translation>Erabiltzaileak Python 2 lan-mahai bat instalatzea eskatu du Python 3 duen sistema batean - </translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="342"/>
       <source>Appears to be an issue connecting to the Wiki, therefore cannot retrieve Wiki macro list at this time</source>
-      <translation type="unfinished">Appears to be an issue connecting to the Wiki, therefore cannot retrieve Wiki macro list at this time</translation>
+      <translation>Badirudi arazo bat dagoela wikiarekin konektatzean, ezin da atzitu wikiko makroen zerrenda momentu honetan</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="433"/>
       <source>Raw markdown displayed</source>
-      <translation type="unfinished">Raw markdown displayed</translation>
+      <translation>Markdown gordina bistaratzen ari da.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="435"/>

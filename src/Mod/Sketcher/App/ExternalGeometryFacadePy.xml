@@ -15,31 +15,53 @@
       <Author Licence="LGPL" Name="Abdullah Tahiri" EMail="abdullah.tahiri.yo@gmail.com" />
       <UserDocu>Describes a GeometryFacade</UserDocu>
     </Documentation>
-   <Attribute Name="Id" ReadOnly="false">
-        <Documentation>
-            <UserDocu>
-                returns the Id of the SketchGeometryExtension.
-            </UserDocu>
-        </Documentation>
-        <Parameter Name="Id" Type="Long"/>
-    </Attribute>
     <Methode Name="testFlag" Const="true">
         <Documentation>
-            <UserDocu>returns a boolean indicating whether the given bit is set.</UserDocu>
+            <UserDocu>Returns a boolean indicating whether the given bit is set.</UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="setFlag" Const="false">
         <Documentation>
-            <UserDocu>sets the given bit to true/false.</UserDocu>
+            <UserDocu>Sets the given bit to true/false.</UserDocu>
         </Documentation>
     </Methode>
     <Attribute Name="Ref" ReadOnly="false">
         <Documentation>
             <UserDocu>
-                returns the reference string of this external geometry.
+                Returns the reference string of this external geometry.
             </UserDocu>
         </Documentation>
         <Parameter Name="Ref" Type="String"/>
+    </Attribute>
+   <Attribute Name="Id" ReadOnly="false">
+        <Documentation>
+            <UserDocu>
+                Sets/returns the Internal Alignment Type of the Geometry.
+            </UserDocu>
+        </Documentation>
+        <Parameter Name="Id" Type="Long"/>
+    </Attribute>
+    <Attribute Name="Construction" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Sets/returns this geometry as a construction one, which will not be part of a later built shape.</UserDocu>
+      </Documentation>
+      <Parameter Name="Construction" Type="Boolean"/>
+      </Attribute>
+    <Attribute Name="InternalType" ReadOnly="false">
+        <Documentation>
+            <UserDocu>
+                Sets/returns the Internal Alignment Type of the Geometry.
+            </UserDocu>
+        </Documentation>
+        <Parameter Name="InternalType" Type="String"/>
+    </Attribute>
+    <Attribute Name="Blocked" ReadOnly="false">
+        <Documentation>
+            <UserDocu>
+                Sets/returns whether the geometry is blocked or not.
+            </UserDocu>
+        </Documentation>
+        <Parameter Name="Blocked" Type="Boolean"/>
     </Attribute>
     <Methode Name="mirror">
       <Documentation>
@@ -106,13 +128,6 @@
             <UserDocu>Returns a list with information about the geometry extensions.</UserDocu>
         </Documentation>
     </Methode>
-    <Attribute Name="Construction" ReadOnly="false">
-      <Documentation>
-        <UserDocu>Defines this geometry as a construction one which
-means that it is not part of a later built shape.</UserDocu>
-      </Documentation>
-      <Parameter Name="Construction" Type="Boolean"/>
-    </Attribute>
     <Attribute Name="Tag" ReadOnly="true">
       <Documentation>
         <UserDocu>Gives the tag of the geometry as string.</UserDocu>
@@ -121,7 +136,7 @@ means that it is not part of a later built shape.</UserDocu>
     </Attribute>
     <Attribute Name="Geometry" ReadOnly="false">
       <Documentation>
-        <UserDocu>Gives the tag of the geometry as string.</UserDocu>
+        <UserDocu>Returns the underlying geometry object.</UserDocu>
       </Documentation>
       <Parameter Name="Geometry" Type="Object"/>
     </Attribute>

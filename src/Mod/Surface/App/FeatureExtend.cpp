@@ -58,7 +58,7 @@ Extend::Extend() : lockOnChangeMutex(false)
     ADD_PROPERTY(ExtendUPos, (0.05));
     ExtendUPos.setConstraints(&ExtendRange);
     ADD_PROPERTY(ExtendUSymetric, (true));
-    
+
     ADD_PROPERTY(ExtendVNeg, (0.05));
     ExtendVNeg.setConstraints(&ExtendRange);
     ADD_PROPERTY(ExtendVPos, (0.05));

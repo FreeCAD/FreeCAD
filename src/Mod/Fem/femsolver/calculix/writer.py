@@ -22,9 +22,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM solver CalculiX writer"
+__title__  = "FreeCAD FEM solver CalculiX writer"
 __author__ = "Przemo Firszt, Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## \addtogroup FEM
 #  @{

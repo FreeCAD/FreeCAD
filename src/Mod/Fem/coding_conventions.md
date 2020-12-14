@@ -37,7 +37,7 @@ These coding rules apply to FEM module code only. Other modules or the base syst
 ### Exceptione
 - Do not use bare 'except'.
 - Be more specific. If not possible use:
-- Either use 'except Exception' or if really everything should be catched 'except BaseException'
+- Either use 'except Exception' or if really everything should be caught 'except BaseException'
 - https://stackoverflow.com/a/18982772
 - https://github.com/PyCQA/pycodestyle/issues/703
 

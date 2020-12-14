@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *   
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -10,12 +10,12 @@
  *   for detail see the LICENCE text file.                                 *
  *                                                                         *
  *   FreeCAD is distributed in the hope that it will be useful,            *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        * 
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
  *   GNU Library General Public License for more details.                  *
  *                                                                         *
  *   You should have received a copy of the GNU Library General Public     *
- *   License along with FreeCAD; if not, write to the Free Software        * 
+ *   License along with FreeCAD; if not, write to the Free Software        *
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
  *   USA                                                                   *
  *                                                                         *
@@ -46,9 +46,9 @@ public:
 };
 
 
- 
+
 /** Base class of all factories
-  * This class has the purpose to produce at runtime instances 
+  * This class has the purpose to produce at runtime instances
   * of classes not known at compile time. It holds a map of so called
   * producers which are able to produce an instance of a special class.
   * Producer can be registered at runtime through e.g. application modules
@@ -69,7 +69,7 @@ protected:
     std::map<const std::string, AbstractProducer*> _mpcProducers;
     /// construction
     Factory (void){}
-    /// destruction 
+    /// destruction
     virtual ~Factory ();
 };
 
@@ -100,7 +100,7 @@ inline ScriptFactorySingleton& ScriptFactory(void)
 // --------------------------------------------------------------------
 
 /** Script Factory
-  * This class produce Scripts. 
+  * This class produce Scripts.
   * @see Factory
   */
 class BaseExport ScriptProducer: public AbstractProducer
@@ -116,7 +116,7 @@ public:
 
     /// Produce an instance
     virtual void* Produce (void) const
-    { 
+    {
         return (void*)mScript;
     }
 

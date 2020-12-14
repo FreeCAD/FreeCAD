@@ -110,6 +110,7 @@
 #include <Mod/Part/App/BodyBase.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Sketcher/App/Sketch.h>
+#include <Mod/Sketcher/App/GeometryFacade.h>
 
 #include "SoZoomTranslation.h"
 #include "SoDatumLabel.h"
@@ -119,6 +120,7 @@
 #include "TaskDlgEditSketch.h"
 #include "TaskSketcherValidation.h"
 #include "CommandConstraints.h"
+#include "ViewProviderSketchGeometryExtension.h"
 
 FC_LOG_LEVEL_INIT("Sketch",true,true)
 
@@ -158,6 +160,7 @@ SbColor ViewProviderSketch::SelectColor                 (0.11f,0.68f,0.11f);  //
 SbColor ViewProviderSketch::PreselectSelectedColor      (0.36f,0.48f,0.11f);  // #5D7B1C -> ( 93,123, 28)
 SbColor ViewProviderSketch::CreateCurveColor            (0.8f,0.8f,0.8f);     // #CCCCCC -> (204,204,204)
 SbColor ViewProviderSketch::DeactivatedConstrDimColor   (0.8f,0.8f,0.8f);     // #CCCCCC -> (204,204,204)
+SbColor ViewProviderSketch::InternalAlignedGeoColor     (0.7f,0.7f,0.5f);      // #B2B27F -> (178,178,127)
 // Variables for holding previous click
 SbTime  ViewProviderSketch::prvClickTime;
 SbVec2s ViewProviderSketch::prvClickPos;
@@ -808,7 +811,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         Sketcher::PointPos PosId;
                         getSketchObject()->getGeoVertexIndex(edit->DragPoint, GeoId, PosId);
                         if (GeoId != Sketcher::Constraint::GeoUndef && PosId != Sketcher::none) {
-                            getDocument()->openCommand("Drag Point");
+                            getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Drag Point"));
                             try {
                                 Gui::cmdAppObjectArgs(getObject(), "movePoint(%i,%i,App.Vector(%f,%f,0),%i)"
                                         ,GeoId, PosId, x-xInit, y-yInit, 0);
@@ -839,10 +842,39 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                             geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()||
                             geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()||
                             geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
-                            getDocument()->openCommand("Drag Curve");
+                            getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Drag Curve"));
+
+                            auto geo = getSketchObject()->getGeometry(edit->DragCurve);
+                            auto gf = GeometryFacade::getFacade(geo);
+
+                            Base::Vector3d vec(x-xInit,y-yInit,0);
+
+                            // BSpline weights have a radius corresponding to the weight value
+                            // However, in order for them proportional to the B-Spline size,
+                            // the scenograph has a size scalefactor times the weight
+                            // This code normalizes the information sent to the solver.
+                            if(gf->getInternalType() == InternalType::BSplineControlPoint) {
+                                auto circle = static_cast<const Part::GeomCircle *>(geo);
+                                Base::Vector3d center = circle->getCenter();
+
+                                Base::Vector3d dir = vec - center;
+
+                                double scalefactor = 1.0;
+
+                                if(circle->hasExtension(SketcherGui::ViewProviderSketchGeometryExtension::getClassTypeId()))
+                                {
+                                    auto vpext = std::static_pointer_cast<const SketcherGui::ViewProviderSketchGeometryExtension>(
+                                                    circle->getExtension(SketcherGui::ViewProviderSketchGeometryExtension::getClassTypeId()).lock());
+
+                                    scalefactor = vpext->getRepresentationFactor();
+                                }
+
+                                vec = center + dir / scalefactor;
+                            }
+
                             try {
                                 Gui::cmdAppObjectArgs(getObject(), "movePoint(%i,%i,App.Vector(%f,%f,0),%i)"
-                                        ,edit->DragCurve, Sketcher::none, x-xInit, y-yInit, relative ? 1 : 0);
+                                        ,edit->DragCurve, Sketcher::none, vec.x, vec.y, relative ? 1 : 0);
                                 getDocument()->commitCommand();
 
                                 tryAutoRecomputeIfNotSolve(getSketchObject());
@@ -861,7 +893,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     return true;
                 case STATUS_SKETCH_DragConstraint:
                     if (edit->DragConstraintSet.empty() == false) {
-                        getDocument()->openCommand("Drag Constraint");
+                        getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Drag Constraint"));
                         auto idset = edit->DragConstraintSet;
                         for(int id : idset) {
                             moveConstraint(id, Base::Vector2d(x, y));
@@ -1037,7 +1069,7 @@ void ViewProviderSketch::editDoubleClicked(void)
 
             // if its the right constraint
             if (Constr->isDimensional()) {
-                Gui::Command::openCommand("Modify sketch constraints");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Modify sketch constraints"));
                 EditDatumDialog editDatumDialog(this, id);
                 editDatumDialog.exec();
             }
@@ -1128,10 +1160,36 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
                 edit->PreselectCurve != -1 && edit->DragCurve != edit->PreselectCurve) {
                 Mode = STATUS_SKETCH_DragCurve;
                 edit->DragCurve = edit->PreselectCurve;
-                getSketchObject()->getSolvedSketch().initMove(edit->DragCurve, Sketcher::none, false);
                 const Part::Geometry *geo = getSketchObject()->getGeometry(edit->DragCurve);
+
+                // BSpline Control points are edge draggable only if their radius is movable
+                // This is because dragging gives unwanted cosmetic results due to the scale ratio.
+                // This is an heuristic as it does not check all indirect routes.
+                if(GeometryFacade::isInternalType(geo, InternalType::BSplineControlPoint)) {
+                    bool weight = false;
+                    bool weight_driven = false;
+                    bool equal = false;
+                    bool block = false;
+
+                    for(auto c : getSketchObject()->Constraints.getValues()) {
+                        weight = weight || (c->Type == Sketcher::Weight && c->First == edit->DragCurve);
+                        weight_driven = weight_driven || (c->Type == Sketcher::Weight && !c->isDriving && c->First == edit->DragCurve);
+                        equal = equal || (c->Type == Sketcher::Equal && (c->First == edit->DragCurve || c->Second == edit->DragCurve));
+                        block = block || (c->Type == Sketcher::Block && c->First == edit->DragCurve);
+                    }
+
+                    if( (weight && !weight_driven)  ||
+                        (equal && !weight_driven)   ||
+                        block) {
+                        Mode = STATUS_NONE;
+                        return false;
+                    }
+                }
+
+                getSketchObject()->getSolvedSketch().initMove(edit->DragCurve, Sketcher::none, false);
+
                 if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId() ||
-                    geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ) {
+                    geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
                     relative = true;
                     //xInit = x;
                     //yInit = y;
@@ -1183,7 +1241,34 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
             return true;
         case STATUS_SKETCH_DragCurve:
             if (edit->DragCurve != -1) {
+                auto geo = getSketchObject()->getGeometry(edit->DragCurve);
+                auto gf = GeometryFacade::getFacade(geo);
+
                 Base::Vector3d vec(x-xInit,y-yInit,0);
+
+                // BSpline weights have a radius corresponding to the weight value
+                // However, in order for them proportional to the B-Spline size,
+                // the scenograph has a size scalefactor times the weight
+                // This code normalizes the information sent to the solver.
+                if(gf->getInternalType() == InternalType::BSplineControlPoint) {
+                    auto circle = static_cast<const Part::GeomCircle *>(geo);
+                    Base::Vector3d center = circle->getCenter();
+
+                    Base::Vector3d dir = vec - center;
+
+                    double scalefactor = 1.0;
+
+                    if(circle->hasExtension(SketcherGui::ViewProviderSketchGeometryExtension::getClassTypeId()))
+                    {
+                        auto vpext = std::static_pointer_cast<const SketcherGui::ViewProviderSketchGeometryExtension>(
+                                        circle->getExtension(SketcherGui::ViewProviderSketchGeometryExtension::getClassTypeId()).lock());
+
+                        scalefactor = vpext->getRepresentationFactor();
+                    }
+
+                    vec = center + dir / scalefactor;
+                }
+
                 if (getSketchObject()->getSolvedSketch().movePoint(edit->DragCurve, Sketcher::none, vec, relative) == 0) {
                     setPositionText(Base::Vector2d(x,y));
                     draw(true,false);
@@ -1259,7 +1344,7 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d &toPo
 #endif
 
     if (Constr->Type == Distance || Constr->Type == DistanceX || Constr->Type == DistanceY ||
-        Constr->Type == Radius || Constr->Type == Diameter) {
+        Constr->Type == Radius || Constr->Type == Diameter || Constr-> Type == Weight) {
 
         Base::Vector3d p1(0.,0.,0.), p2(0.,0.,0.);
         if (Constr->SecondPos != Sketcher::none) { // point to point distance
@@ -1314,12 +1399,29 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d &toPo
                 p1 = center;
 
                 Base::Vector3d tmpDir =  Base::Vector3d(toPos.x, toPos.y, 0) - p1;
-                double angle = atan2(tmpDir.y, tmpDir.x);
+
+                Base::Vector3d dir = radius * tmpDir.Normalize();
 
                 if(Constr->Type == Sketcher::Diameter)
-                    p1 = center - radius * Base::Vector3d(cos(angle),sin(angle),0.);
+                    p1 = center - dir;
 
-                p2 = center + radius * Base::Vector3d(cos(angle),sin(angle),0.);
+                if(Constr->Type == Sketcher::Weight) {
+
+                    double scalefactor = 1.0;
+
+                    if(circle->hasExtension(SketcherGui::ViewProviderSketchGeometryExtension::getClassTypeId()))
+                    {
+                        auto vpext = std::static_pointer_cast<const SketcherGui::ViewProviderSketchGeometryExtension>(
+                                        circle->getExtension(SketcherGui::ViewProviderSketchGeometryExtension::getClassTypeId()).lock());
+
+                        scalefactor = vpext->getRepresentationFactor();
+                    }
+
+                    p2 = center + dir * scalefactor;
+
+                }
+                else
+                    p2 = center + dir;
             }
             else
                 return;
@@ -1329,14 +1431,14 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d &toPo
         Base::Vector3d vec = Base::Vector3d(toPos.x, toPos.y, 0) - p2;
 
         Base::Vector3d dir;
-        if (Constr->Type == Distance || Constr->Type == Radius || Constr->Type == Diameter)
+        if (Constr->Type == Distance || Constr->Type == Radius || Constr->Type == Diameter || Constr->Type == Weight)
             dir = (p2-p1).Normalize();
         else if (Constr->Type == DistanceX)
             dir = Base::Vector3d( (p2.x - p1.x >= FLT_EPSILON) ? 1 : -1, 0, 0);
         else if (Constr->Type == DistanceY)
             dir = Base::Vector3d(0, (p2.y - p1.y >= FLT_EPSILON) ? 1 : -1, 0);
 
-        if (Constr->Type == Radius || Constr->Type == Diameter) {
+        if (Constr->Type == Radius || Constr->Type == Diameter || Constr->Type == Weight) {
             Constr->LabelDistance = vec.x * dir.x + vec.y * dir.y;
             Constr->LabelPosition = atan2(dir.y, dir.x);
         } else {
@@ -2636,21 +2738,45 @@ void ViewProviderSketch::updateColor(void)
 
     float x,y,z;
 
+    // use a lambda function to only access the geometry when needed
+    // and properly handle the case where it's null
+    auto isConstructionGeom = [](Sketcher::SketchObject* obj, int GeoId) -> bool {
+        const Part::Geometry* geom = obj->getGeometry(GeoId);
+        if (geom)
+            return Sketcher::GeometryFacade::getConstruction(geom);
+        return false;
+    };
+
+    auto isInternalAlignedGeom = [](Sketcher::SketchObject* obj, int GeoId) -> bool {
+        const Part::Geometry* geom = obj->getGeometry(GeoId);
+        if (geom) {
+            auto gf = Sketcher::GeometryFacade::getFacade(geom);
+            return gf->isInternalAligned();
+        }
+        return false;
+    };
+
     // colors of the point set
     if (edit->FullyConstrained) {
         for (int  i=0; i < PtNum; i++)
             pcolor[i] = FullyConstrainedColor;
     }
     else {
-        for (int  i=0; i < PtNum; i++)
-            pcolor[i] = VertexColor;
+        for (int  i=0; i < PtNum; i++) {
+            int GeoId = edit->PointIdToGeoId[i];
+
+            if(isInternalAlignedGeom(getSketchObject(), GeoId))
+                pcolor[i] = InternalAlignedGeoColor;
+            else
+                pcolor[i] = VertexColor;
+        }
     }
 
     for (int  i=0; i < PtNum; i++) { // 0 is the origin
         pverts[i].getValue(x,y,z);
         const Part::Geometry * tmp = getSketchObject()->getGeometry(edit->PointIdToGeoId[i]);
         if(tmp && z < zHighlight) {
-            if(tmp->getConstruction())
+            if(Sketcher::GeometryFacade::getConstruction(tmp))
                 pverts[i].setValue(x,y,zConstrPoint);
             else
                 pverts[i].setValue(x,y,zNormPoint);
@@ -2682,16 +2808,6 @@ void ViewProviderSketch::updateColor(void)
     float zNormLine = (topid==1?zHighLines:midid==1?zMidLines:zLowLines);
     float zConstrLine = (topid==2?zHighLines:midid==2?zMidLines:zLowLines);
     float zExtLine = (topid==3?zHighLines:midid==3?zMidLines:zLowLines);
-
-    // use a lambda function to only access the geometry when needed
-    // and properly handle the case where it's null
-    auto isConstructionGeom = [](Sketcher::SketchObject* obj, int GeoId) -> bool {
-        const Part::Geometry* geom = obj->getGeometry(GeoId);
-        if (geom)
-            return geom->getConstruction();
-        return false;
-    };
-
 
     int j=0; // vertexindex
 
@@ -2733,7 +2849,11 @@ void ViewProviderSketch::updateColor(void)
             }
         }
         else if (isConstructionGeom(getSketchObject(), GeoId)) {
-            color[i] = CurveDraftColor;
+            if(isInternalAlignedGeom(getSketchObject(), GeoId))
+                color[i] = InternalAlignedGeoColor;
+            else
+                color[i] = CurveDraftColor;
+
             for (int k=j; j<k+indexes; j++) {
                 verts[j].getValue(x,y,z);
                 verts[j] = SbVec3f(x,y,zConstrLine);
@@ -2784,6 +2904,7 @@ void ViewProviderSketch::updateColor(void)
         bool hasDatumLabel  = (type == Sketcher::Angle ||
                                type == Sketcher::Radius ||
                                type == Sketcher::Diameter ||
+                               type == Sketcher::Weight ||
                                type == Sketcher::Symmetric ||
                                type == Sketcher::Distance ||
                                type == Sketcher::DistanceX ||
@@ -3601,17 +3722,83 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
         else if ((*it)->getTypeId() == Part::GeomCircle::getClassTypeId()) { // add a circle
             const Part::GeomCircle *circle = static_cast<const Part::GeomCircle *>(*it);
             Handle(Geom_Circle) curve = Handle(Geom_Circle)::DownCast(circle->handle());
+            auto gf = GeometryFacade::getFacade(circle);
 
             int countSegments = stdcountsegments;
             Base::Vector3d center = circle->getCenter();
-            double segment = (2 * M_PI) / countSegments;
-            for (int i=0; i < countSegments; i++) {
-                gp_Pnt pnt = curve->Value(i*segment);
+
+            // BSpline weights have a radius corresponding to the weight value
+            // However, in order for them proportional to the B-Spline size,
+            // the scenograph has a size scalefactor times the weight
+            //
+            // This code produces the scaled up version of the geometry for the scenograph
+            if(gf->getInternalType() == InternalType::BSplineControlPoint) {
+                for( auto c : getSketchObject()->Constraints.getValues()) {
+                    if( c->Type == InternalAlignment && c->AlignmentType == BSplineControlPoint && c->First == GeoId) {
+                        auto bspline = dynamic_cast<const Part::GeomBSplineCurve *>((*geomlist)[c->Second]);
+
+                        if(bspline){
+                            auto weights = bspline->getWeights();
+
+                            double weight = 1.0;
+                            if(c->InternalAlignmentIndex < int(weights.size()))
+                                weight =  weights[c->InternalAlignmentIndex];
+
+                            // tentative scaling factor:
+                            // proportional to the length of the bspline
+                            // inversely proportional to the number of poles
+                            double scalefactor = bspline->length(bspline->getFirstParameter(), bspline->getLastParameter())/10.0/weights.size();
+                            //double scalefactor = getScaleFactor();
+                            double vradius = weight*scalefactor;
+
+                            // virtual circle or radius vradius
+                            auto mcurve = [&center, vradius](double param, double &x, double &y) {
+                                x = center.x + vradius*cos(param);
+                                y = center.y + vradius*sin(param);
+                            };
+
+                            double x;
+                            double y;
+                            for (int i=0; i < countSegments; i++) {
+                                double param = 2*M_PI*i/countSegments;
+                                mcurve(param,x,y);
+                                Coords.emplace_back(x, y, 0);
+                            }
+
+                            mcurve(0,x,y);
+                            Coords.emplace_back(x, y, 0);
+
+                            // save scale factor for any prospective dragging operation
+                            if(!circle->hasExtension(SketcherGui::ViewProviderSketchGeometryExtension::getClassTypeId()))
+                            {
+                                // It is ok to add this kind of extension to a const geometry because:
+                                // 1. It does not modify the object in a way that affects property state, just ViewProvider representation
+                                // 2. If it is lost (for example upon undo), redrawing will reinstate it with the correct value
+                                const_cast<Part::GeomCircle *>(circle)->setExtension(std::make_unique<SketcherGui::ViewProviderSketchGeometryExtension>());
+                            }
+
+                            auto vpext = std::const_pointer_cast<SketcherGui::ViewProviderSketchGeometryExtension>(
+                                            std::static_pointer_cast<const SketcherGui::ViewProviderSketchGeometryExtension>(
+                                                circle->getExtension(SketcherGui::ViewProviderSketchGeometryExtension::getClassTypeId()).lock()));
+
+                            vpext->setRepresentationFactor(scalefactor);
+                        }
+                        break;
+                    }
+                }
+            }
+            else {
+
+                double segment = (2 * M_PI) / countSegments;
+
+                for (int i=0; i < countSegments; i++) {
+                    gp_Pnt pnt = curve->Value(i*segment);
+                    Coords.emplace_back(pnt.X(), pnt.Y(), pnt.Z());
+                }
+
+                gp_Pnt pnt = curve->Value(0);
                 Coords.emplace_back(pnt.X(), pnt.Y(), pnt.Z());
             }
-
-            gp_Pnt pnt = curve->Value(0);
-            Coords.emplace_back(pnt.X(), pnt.Y(), pnt.Z());
 
             Index.push_back(countSegments+1);
             edit->CurvIdToGeoId.push_back(GeoId);
@@ -3843,7 +4030,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             double maxcurv = 0;
             double maxdisttocenterofmass = 0;
 
-            for(int i = 0; i < ndiv; i++) {
+            for (int i = 0; i < ndiv; i++) {
                 paramlist[i] = firstparam + i * step;
                 pointatcurvelist[i] = spline->pointAtParameter(paramlist[i]);
 
@@ -3859,12 +4046,12 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
                     curvaturelist[i] = 0;
                 }
 
-                if(curvaturelist[i] > maxcurv)
+                if (curvaturelist[i] > maxcurv)
                     maxcurv = curvaturelist[i];
 
                 double tempf = ( pointatcurvelist[i] - midp ).Length();
 
-                if( tempf > maxdisttocenterofmass )
+                if (tempf > maxdisttocenterofmass)
                     maxdisttocenterofmass = tempf;
 
             }
@@ -3903,7 +4090,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
         midp /= poles.size();
 
-        if(rebuildinformationlayer) {
+        if (rebuildinformationlayer) {
             SoSwitch *sw = new SoSwitch();
 
             sw->whichChild = hGrpsk->GetBool("BSplineDegreeVisible", true)?SO_SWITCH_ALL:SO_SWITCH_NONE;
@@ -3943,7 +4130,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
         else {
             SoSwitch *sw = static_cast<SoSwitch *>(edit->infoGroup->getChild(currentInfoNode));
 
-            if(visibleInformationChanged)
+            if (visibleInformationChanged)
                 sw->whichChild = hGrpsk->GetBool("BSplineDegreeVisible", true)?SO_SWITCH_ALL:SO_SWITCH_NONE;
 
             SoSeparator *sep = static_cast<SoSeparator *>(sw->getChild(0));
@@ -3956,7 +4143,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
         currentInfoNode++; // switch to next node
 
         // control polygon --------------------------------------------------------
-        if(rebuildinformationlayer) {
+        if (rebuildinformationlayer) {
             SoSwitch *sw = new SoSwitch();
 
             sw->whichChild = hGrpsk->GetBool("BSplineControlPolygonVisible", true)?SO_SWITCH_ALL:SO_SWITCH_NONE;
@@ -3975,7 +4162,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
             SoCoordinate3 *polygoncoords = new SoCoordinate3;
 
-            if(spline->isPeriodic()) {
+            if (spline->isPeriodic()) {
                 polygoncoords->point.setNum(poles.size()+1);
             }
             else {
@@ -3989,7 +4176,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
                 vts[i].setValue((*it).x,(*it).y,zInfo);
             }
 
-            if(spline->isPeriodic()) {
+            if (spline->isPeriodic()) {
                 vts[poles.size()].setValue(poles[0].x,poles[0].y,zInfo);
             }
 
@@ -4086,7 +4273,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             pointatcomblist[i] = pointatcurvelist[i] - combrepscalehyst * curvaturelist[i] * normallist[i];
         }
 
-        if(rebuildinformationlayer) {
+        if (rebuildinformationlayer) {
             SoSwitch *sw = new SoSwitch();
 
             sw->whichChild = hGrpsk->GetBool("BSplineCombVisible", true)?SO_SWITCH_ALL:SO_SWITCH_NONE;
@@ -4177,7 +4364,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
         std::vector<int>::const_iterator itm;
 
 
-        if(rebuildinformationlayer) {
+        if (rebuildinformationlayer) {
 
             for( itk = knots.begin(), itm = mult.begin(); itk != knots.end() && itm != mult.end(); ++itk, ++itm) {
 
@@ -4199,14 +4386,14 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
                 Base::Vector3d knotposition = spline->pointAtParameter(*itk);
 
-                translate->translation.setValue(knotposition.x,knotposition.y,zInfo);
+                translate->translation.setValue(knotposition.x, knotposition.y, zInfo);
 
                 SoFont *font = new SoFont;
                 font->name.setValue("Helvetica");
                 font->size.setValue(fontSize);
 
                 SoText2 *degreetext = new SoText2;
-                degreetext->string = SbString("(")+SbString(*itm)+SbString(")");
+                degreetext->string = SbString("(") + SbString(*itm) + SbString(")");
 
                 sep->addChild(translate);
                 sep->addChild(mat);
@@ -4235,13 +4422,103 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
                 static_cast<SoTranslation *>(sep->getChild(GEOINFO_BSPLINE_DEGREE_POS))->translation.setValue(knotposition.x,knotposition.y,zInfo);
 
-                static_cast<SoText2 *>(sep->getChild(GEOINFO_BSPLINE_DEGREE_TEXT))->string = SbString("(")+SbString(*itm)+SbString(")");
+                static_cast<SoText2 *>(sep->getChild(GEOINFO_BSPLINE_DEGREE_TEXT))->string = SbString("(") + SbString(*itm) + SbString(")");
 
                 currentInfoNode++; // switch to next node
             }
         }
 
         // End of knot multiplicity
+
+        // pole weights --------------------------------------------------------
+        std::vector<double> weights = spline->getWeights();
+
+        if (rebuildinformationlayer) {
+
+            for (size_t index = 0; index < weights.size(); ++index) {
+
+                SoSwitch* sw = new SoSwitch();
+
+                sw->whichChild = hGrpsk->GetBool("BSplinePoleWeightVisible", true) ? SO_SWITCH_ALL : SO_SWITCH_NONE;
+
+                SoSeparator* sep = new SoSeparator();
+                sep->ref();
+                // no caching for fluctuand data structures
+                sep->renderCaching = SoSeparator::OFF;
+
+                // every information visual node gets its own material for to-be-implemented preselection and selection
+                SoMaterial* mat = new SoMaterial;
+                mat->ref();
+                mat->diffuseColor = InformationColor;
+
+                SoTranslation* translate = new SoTranslation;
+
+                Base::Vector3d poleposition = poles[index];
+
+                SoFont* font = new SoFont;
+                font->name.setValue("Helvetica");
+                font->size.setValue(fontSize);
+
+                translate->translation.setValue(poleposition.x, poleposition.y, zInfo);
+
+                // set up string with weight value and the user-defined number of decimals
+                QString WeightString  = QString::fromLatin1("%1").arg(weights[index], 0, 'f', Base::UnitsApi::getDecimals());
+
+                SoText2* WeightText = new SoText2;
+                // since the first and last control point of a spline is also treated as knot and thus
+                // can also have a displayed multiplicity, we must assure the multiplicity is not visibly overwritten
+                // therefore be output the weight in a second line
+                SoMFString label;
+                label.set1Value(0, SbString(""));
+                label.set1Value(1, SbString("[") + SbString(WeightString.toStdString().c_str()) + SbString("]"));
+                WeightText->string = label;
+
+                sep->addChild(translate);
+                sep->addChild(mat);
+                sep->addChild(font);
+                sep->addChild(WeightText);
+
+                sw->addChild(sep);
+
+                edit->infoGroup->addChild(sw);
+                sep->unref();
+                mat->unref();
+
+                currentInfoNode++; // switch to next node
+            }
+        }
+        else {
+            for (size_t index = 0; index < weights.size(); ++index) {
+                SoSwitch* sw = static_cast<SoSwitch*>(edit->infoGroup->getChild(currentInfoNode));
+
+                if (visibleInformationChanged)
+                    sw->whichChild = hGrpsk->GetBool("BSplinePoleWeightVisible", true) ? SO_SWITCH_ALL : SO_SWITCH_NONE;
+
+                SoSeparator* sep = static_cast<SoSeparator*>(sw->getChild(0));
+
+                Base::Vector3d poleposition = poles[index];
+
+                static_cast<SoTranslation*>(sep->getChild(GEOINFO_BSPLINE_DEGREE_POS))
+                    ->translation.setValue(poleposition.x, poleposition.y, zInfo);
+
+                // set up string with weight value and the user-defined number of decimals
+                QString WeightString = QString::fromLatin1("%1").arg(weights[index], 0, 'f', Base::UnitsApi::getDecimals());
+
+                // since the first and last control point of a spline is also treated as knot and thus
+                // can also have a displayed multiplicity, we must assure the multiplicity is not visibly overwritten
+                // therefore be output the weight in a second line
+                SoMFString label;
+                label.set1Value(0, SbString(""));
+                label.set1Value(1, SbString("[") + SbString(WeightString.toStdString().c_str()) + SbString("]"));
+
+                static_cast<SoText2*>(sep->getChild(GEOINFO_BSPLINE_DEGREE_TEXT))
+                                        ->string = label;
+
+                currentInfoNode++; // switch to next node
+            }
+        }
+
+        // End of pole weights
     }
 
 
@@ -5234,11 +5511,13 @@ Restart:
                         asciiText->pnts.finishEditing();
                     }
                     break;
+                    case Weight:
                     case Radius:
                     {
                         assert(Constr->First >= -extGeoCount && Constr->First < intGeoCount);
 
                         Base::Vector3d pnt1(0.,0.,0.), pnt2(0.,0.,0.);
+
                         if (Constr->First != Constraint::GeoUndef) {
                             const Part::Geometry *geo = GeoById(*geomlist, Constr->First);
 
@@ -5256,7 +5535,27 @@ Restart:
                             }
                             else if (geo->getTypeId() == Part::GeomCircle::getClassTypeId()) {
                                 const Part::GeomCircle *circle = static_cast<const Part::GeomCircle *>(geo);
-                                double radius = circle->getRadius();
+                                auto gf = GeometryFacade::getFacade(geo);
+
+                                double radius;
+
+                                if(Constr->Type == Weight) {
+                                    double scalefactor = 1.0;
+
+                                    if(circle->hasExtension(SketcherGui::ViewProviderSketchGeometryExtension::getClassTypeId()))
+                                    {
+                                        auto vpext = std::static_pointer_cast<const SketcherGui::ViewProviderSketchGeometryExtension>(
+                                                        circle->getExtension(SketcherGui::ViewProviderSketchGeometryExtension::getClassTypeId()).lock());
+
+                                        scalefactor = vpext->getRepresentationFactor();
+                                    }
+
+                                    radius = circle->getRadius()*scalefactor;
+                                }
+                                else {
+                                    radius = circle->getRadius();
+                                }
+
                                 double angle = (double) Constr->LabelPosition;
                                 if (angle == 10) {
                                     angle = 0;
@@ -5275,7 +5574,10 @@ Restart:
                         SoDatumLabel *asciiText = static_cast<SoDatumLabel *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
 
                         // Get display string with units hidden if so requested
-                        asciiText->string = SbString( getPresentationString(Constr).toUtf8().constData() );
+                        if(Constr->Type == Weight)
+                            asciiText->string = SbString( QString::number(Constr->getValue()).toStdString().c_str());
+                        else
+                            asciiText->string = SbString( getPresentationString(Constr).toUtf8().constData() );
 
                         asciiText->datumtype    = SoDatumLabel::RADIUS;
                         asciiText->param1       = Constr->LabelDistance;
@@ -5365,6 +5667,7 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
             case DistanceY:
             case Radius:
             case Diameter:
+            case Weight:
             case Angle:
             {
                 SoDatumLabel *text = new SoDatumLabel();
@@ -5737,6 +6040,10 @@ bool ViewProviderSketch::setEdit(int ModNum)
     color = (unsigned long)(CurveDraftColor.getPackedValue());
     color = hGrp->GetUnsigned("ConstructionColor", color);
     CurveDraftColor.setPackedValue((uint32_t)color, transparency);
+    // set the construction curve color
+    color = (unsigned long)(InternalAlignedGeoColor.getPackedValue());
+    color = hGrp->GetUnsigned("InternalAlignedGeoColor", color);
+    InternalAlignedGeoColor.setPackedValue((uint32_t)color, transparency);
     // set the cross lines color
     //CrossColorV.setPackedValue((uint32_t)color, transparency);
     //CrossColorH.setPackedValue((uint32_t)color, transparency);
@@ -5794,9 +6101,14 @@ bool ViewProviderSketch::setEdit(int ModNum)
             getSketchObject()->validateExternalLinks();
     }
 
+    // First drawing with non-temporal geometry, then updating solver information
+    // This ensures that any ViewProvider geometry extension is set before the geometry
+    // is loaded into the solver, which ensures that any prospective draw using temporal
+    // geometry (draw with first parameter true) has the right ViewProvider geometry extensions
+    // set - This fixes Weight constraint dragging on a just opened sketch.
+    draw(false,true);
     getSketchObject()->solve(false);
     UpdateSolverInformation();
-    draw(false,true);
 
     connectUndoDocument = getDocument()
         ->signalUndoDocument.connect(boost::bind(&ViewProviderSketch::slotUndoDocument, this, bp::_1));

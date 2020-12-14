@@ -66,7 +66,7 @@ using namespace Base;
 CommandIconView::CommandIconView ( QWidget * parent )
   : QListWidget(parent)
 {
-    connect(this, SIGNAL (currentItemChanged(QListWidgetItem *, QListWidgetItem *)), 
+    connect(this, SIGNAL (currentItemChanged(QListWidgetItem *, QListWidgetItem *)),
             this, SLOT (onSelectionChanged(QListWidgetItem *, QListWidgetItem *)) );
 }
 
@@ -78,7 +78,7 @@ CommandIconView::~CommandIconView ()
 }
 
 /**
- * Stores the name of the selected commands for drag and drop. 
+ * Stores the name of the selected commands for drag and drop.
  */
 void CommandIconView::startDrag (Qt::DropActions supportedActions)
 {
@@ -106,7 +106,7 @@ void CommandIconView::startDrag (Qt::DropActions supportedActions)
 }
 
 /**
- * This slot is called when a new item becomes current. \a item is the new current item 
+ * This slot is called when a new item becomes current. \a item is the new current item
  * (or 0 if no item is now current). This slot emits the emitSelectionChanged()
  * signal for its part.
  */
@@ -633,8 +633,8 @@ ColorButton::~ColorButton()
     delete d;
 }
 
-/** 
- * Sets the color \a c to the button. 
+/**
+ * Sets the color \a c to the button.
  */
 void ColorButton::setColor(const QColor& c)
 {
@@ -643,7 +643,7 @@ void ColorButton::setColor(const QColor& c)
     update();
 }
 
-/** 
+/**
  * Returns the current color of the button.
  */
 QColor ColorButton::color() const
@@ -716,7 +716,7 @@ void ColorButton::paintEvent (QPaintEvent * e)
         }
     }
 
-    // overpaint the rectangle to paint icon and text 
+    // overpaint the rectangle to paint icon and text
     QStyleOptionButton opt;
     opt.init(this);
     opt.text = text();
@@ -774,6 +774,7 @@ void ColorButton::onChooseColor()
         }
 
         cd.setCurrentColor(currentColor);
+        cd.adjustSize();
         if (cd.exec() == QDialog::Accepted) {
             QColor c = cd.selectedColor();
             if (c.isValid()) {
@@ -1023,7 +1024,7 @@ bool ToolTip::eventFilter(QObject* o, QEvent*e)
                 removeEventFilter();
                 this->hidden = true;
             }
-            else if (e->type() == QEvent::Timer && 
+            else if (e->type() == QEvent::Timer &&
                 !this->hidden && displayTime.elapsed() < 5000) {
                 return true;
             }
@@ -1354,8 +1355,8 @@ void LabelEditor::setInputType(InputType t)
 
 // --------------------------------------------------------------------
 
-ExpLineEdit::ExpLineEdit(QWidget* parent, bool expressionOnly) 
-    : QLineEdit(parent), autoClose(expressionOnly) 
+ExpLineEdit::ExpLineEdit(QWidget* parent, bool expressionOnly)
+    : QLineEdit(parent), autoClose(expressionOnly)
 {
     defaultPalette = palette();
 
@@ -1372,12 +1373,12 @@ ExpLineEdit::ExpLineEdit(QWidget* parent, bool expressionOnly)
     setStyleSheet(QString::fromLatin1("QLineEdit { padding-right: %1px } ").arg(iconHeight+frameWidth));
 
     QObject::connect(iconLabel, SIGNAL(clicked()), this, SLOT(openFormulaDialog()));
-    if(expressionOnly) 
+    if(expressionOnly)
         QMetaObject::invokeMethod(this, "openFormulaDialog", Qt::QueuedConnection, QGenericReturnArgument());
 }
 
 bool ExpLineEdit::apply(const std::string& propName) {
-    
+
     if (!ExpressionBinding::apply(propName)) {
         if(!autoClose) {
             QString val = QString::fromUtf8(Base::Interpreter().strToPython(text().toUtf8()).c_str());
@@ -1390,7 +1391,7 @@ bool ExpLineEdit::apply(const std::string& propName) {
 }
 
 void ExpLineEdit::bind(const ObjectIdentifier& _path) {
-    
+
     ExpressionBinding::bind(_path);
 
     int frameWidth = style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
@@ -1416,7 +1417,7 @@ void ExpLineEdit::setExpression(boost::shared_ptr<Expression> expr)
 }
 
 void ExpLineEdit::onChange() {
-    
+
     if (getExpression()) {
         std::unique_ptr<Expression> result(getExpression()->eval());
         if(result->isDerivedFrom(App::StringExpression::getClassTypeId()))
@@ -1511,7 +1512,7 @@ void ExpLineEdit::finishFormulaDialog()
 
     box->deleteLater();
 
-    if(autoClose) 
+    if(autoClose)
         this->deleteLater();
 }
 

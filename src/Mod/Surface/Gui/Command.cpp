@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2014-2015 Nathan Miller    <Nathan.A.Mill[at]gmail.com> *
- *                           Balázs Bámer                                  *
+ *   Copyright (c) 2014-2015 Nathan Miller <Nathan.A.Mill[at]gmail.com>    *
+ *   Copyright (c) 2014-2015 Balázs Bámer                                  *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -113,7 +113,7 @@ void CmdSurfaceCut::activated(int iMsg)
     std::string BaseName  = Sel[0].getFeatName();
     std::string ToolName  = Sel[1].getFeatName();
 
-    openCommand("Part Cut");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Part Cut"));
     doCommand(Doc,"App.activeDocument().addObject(\"Part::Cut\",\"%s\")",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Base = App.activeDocument().%s",FeatName.c_str(),BaseName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Tool = App.activeDocument().%s",FeatName.c_str(),ToolName.c_str());
@@ -147,7 +147,7 @@ void CmdSurfaceFilling::activated(int iMsg)
     Q_UNUSED(iMsg);
     std::string FeatName = getUniqueObjectName("Surface");
 
-    openCommand("Create surface");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create surface"));
     doCommand(Doc, "App.ActiveDocument.addObject(\"Surface::Filling\",\"%s\")", FeatName.c_str());
     doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", FeatName.c_str());
 }
@@ -184,7 +184,7 @@ void CmdSurfaceGeomFillSurface::activated(int iMsg)
     Q_UNUSED(iMsg);
     std::string FeatName = getUniqueObjectName("Surface");
 
-    openCommand("Create surface");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create surface"));
     doCommand(Doc, "App.ActiveDocument.addObject(\"Surface::GeomFillSurface\",\"%s\")", FeatName.c_str());
     doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", FeatName.c_str());
 }
@@ -246,7 +246,7 @@ void CmdSurfaceExtendFace::activated(int)
     if (faceFilter.match()) {
         const std::vector<std::string> &sub = faceFilter.Result[0][0].getSubNames();
         if (sub.size() == 1) {
-            openCommand("Extend surface");
+            openCommand(QT_TRANSLATE_NOOP("Command", "Extend surface"));
             std::string FeatName = getUniqueObjectName("Surface");
             std::string supportString = faceFilter.Result[0][0].getAsPropertyLinkSubString();
             doCommand(Doc, "App.ActiveDocument.addObject(\"Surface::Extend\",\"%s\")", FeatName.c_str());
@@ -286,7 +286,7 @@ void CmdSurfaceSections::activated(int iMsg)
     Q_UNUSED(iMsg);
     std::string FeatName = getUniqueObjectName("Surface");
 
-    openCommand("Create surface");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create surface"));
     doCommand(Doc, "App.ActiveDocument.addObject(\"Surface::Sections\",\"%s\")", FeatName.c_str());
     doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", FeatName.c_str());
 }

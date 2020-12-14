@@ -717,7 +717,7 @@ void ViewProviderPath::recomputeBoundingBox()
 
 QIcon ViewProviderPath::getIcon() const
 {
-    return Gui::BitmapFactory().pixmap("Path-Toolpath");
+    return Gui::BitmapFactory().pixmap("Path_Toolpath");
 }
 
 // Python object -----------------------------------------------------------------------

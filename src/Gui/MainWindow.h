@@ -67,7 +67,7 @@ public:
     }
 };
 
-/** 
+/**
  * The MainWindow class provides a main window with menu bar, toolbars, dockable windows,
  * a status bar and mainly a workspace for the MDI windows.
  * @author Werner Mayer
@@ -75,7 +75,7 @@ public:
 class GuiExport MainWindow : public QMainWindow
 {
     Q_OBJECT
- 
+
 public:
     /**
      * Constructs an empty main window. For default \a parent is 0, as there usually is
@@ -141,7 +141,7 @@ public:
     void showDocumentation(const QString& help);
     //@}
 
-    /** @name Layout Methods 
+    /** @name Layout Methods
      */
     //@{
     /// Loads the main window settings.
@@ -214,7 +214,7 @@ public Q_SLOTS:
      */
     void closeActiveWindow ();
     /**
-     * Closes all document window. 
+     * Closes all document window.
      */
     bool closeAllDocuments (bool close=true);
     /** Pop up a message box asking for saving document
@@ -293,7 +293,7 @@ private Q_SLOTS:
      * Fills up the menu with the current dock windows.
      */
     void onDockWindowMenuAboutToShow();
-    /** 
+    /**
      * This method gets frequently activated and test the commands if they are still active.
      */
     void _updateActions();

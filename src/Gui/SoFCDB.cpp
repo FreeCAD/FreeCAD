@@ -204,7 +204,7 @@ void Gui::SoFCDB::init()
 void Gui::SoFCDB::finish()
 {
     // Coin doesn't provide a mechanism to free static members of own data types.
-    // Hence, we need to define a static method e.g. 'finish()' for all new types 
+    // Hence, we need to define a static method e.g. 'finish()' for all new types
     // to invoke the private member function 'atexit_cleanup()'.
     SoFCColorBarBase                ::finish();
     SoFCColorBar                    ::finish();
@@ -225,7 +225,7 @@ void Gui::SoFCDB::finish()
     SoFCSeparator                   ::finish();
     SoFCSelectionRoot               ::finish();
     SoFCPathAnnotation              ::finish();
-    
+
     storage->unref();
     storage = nullptr;
 }

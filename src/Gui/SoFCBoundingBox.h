@@ -43,7 +43,7 @@ namespace Gui {
  * A subclass of SoShape used to create an axis aligned wire frame box based
  * on the minBounds and maxBounds fields.  The class also has a field which
  * can be toggled on or off for displaying text coordinate labels at the
- * vertices of the box. 
+ * vertices of the box.
  * @note Original source are taken from http://www.wheatchex.com/projects/openinventor/bbox/BoundingBox.h and
  * http://www.wheatchex.com/projects/openinventor/bbox/BoundingBox.cpp
  * @date November 12th, 2001
@@ -95,7 +95,7 @@ public:
     enum Modes {
         INCLUDE_BBOX, EXCLUDE_BBOX
     };
-    
+
     SoSFEnum mode;
 
     virtual void getBoundingBox(SoGetBoundingBoxAction *action);

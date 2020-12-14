@@ -82,7 +82,7 @@ unsigned char * generateTexture(int w, int h, int d)
     }
   }
 
-  
+
   return bitmap;
 }
 
@@ -117,11 +117,11 @@ void doClipping(SbVec3f trans, SbRotation rot)
   // Clip box against plane
 
   SbClip clip;
-  SoMFVec3f * globalVerts = 
+  SoMFVec3f * globalVerts =
     (SoMFVec3f *)SoDB::getGlobalField(SbName("globalVerts"));
-  SoMFVec3f * globalTVerts = 
+  SoMFVec3f * globalTVerts =
     (SoMFVec3f *)SoDB::getGlobalField(SbName("globalTVerts"));
-  SoMFInt32 * globalnv = 
+  SoMFInt32 * globalnv =
     (SoMFInt32 *)SoDB::getGlobalField(SbName("globalnv"));
   globalVerts->startEditing();
   globalVerts->setNum(0);
@@ -154,7 +154,7 @@ void doClipping(SbVec3f trans, SbRotation rot)
   globalnv->finishEditing();
 
   // Close hole in clipped box by clipping against all 6 planes
-  
+
   const SbVec3f planecoords[] = {
     SbVec3f(-10,0,-10),
     SbVec3f(10,0,-10),
@@ -162,7 +162,7 @@ void doClipping(SbVec3f trans, SbRotation rot)
     SbVec3f(-10,0,10)
   };
 
-  
+
   clip.reset();
   for (i = 0;i<4;i++) {
     SbVec3f v;
@@ -176,9 +176,9 @@ void doClipping(SbVec3f trans, SbRotation rot)
     clip.clip(p);
   }
   int numVerts = clip.getNumVertices();
-  SoMFVec3f * planeVerts = 
+  SoMFVec3f * planeVerts =
     (SoMFVec3f *)SoDB::getGlobalField(SbName("planeVerts"));
-  SoMFVec3f * planeTVerts = 
+  SoMFVec3f * planeTVerts =
     (SoMFVec3f *)SoDB::getGlobalField(SbName("planeTVerts"));
   planeVerts->startEditing();
   planeVerts->setNum(0);
@@ -235,7 +235,7 @@ void Texture3D(SoSeparator * root)
   SoMaterial * mat = new SoMaterial;
   mat->emissiveColor.setValue(1,1,1);
   root->addChild(mat);
-    
+
   SoTransformerDragger * dragger = new SoTransformerDragger;
   dragger->scaleFactor.setValue(5,5,5);
   dragger->addValueChangedCallback(draggerCB, NULL);
@@ -310,7 +310,7 @@ void LightManip(SoSeparator * root)
   }
 
 
-} 
+}
 
 
 
@@ -339,9 +339,9 @@ unsigned char bitmap[texturewidth*textureheight];
 //  int height  - height of the bitmap
 //  int mult    - number to multiply each color by.
 //  unsigned char * bmp - pointer to the bitmap
-//  int n       - number of iterations 
+//  int n       - number of iterations
 void
-julia(double crr, double cii, float zoom, int width, int height, int mult, 
+julia(double crr, double cii, float zoom, int width, int height, int mult,
       unsigned char * bmp, int n)
 {
   double zr, zr_old, zi;
@@ -375,7 +375,7 @@ texture()
   return texture;
 }
 
-// This function is called 20 times each second. 
+// This function is called 20 times each second.
 static void
 timersensorcallback(void * data, SoSensor *)
 {
@@ -413,7 +413,7 @@ void AnimationTexture(SoSeparator * root)
   // Generate a julia set to use as a texturemap
   julia(global_cr, global_ci, 2.5, texturewidth, textureheight, 4, bitmap, 64);
 
- 
+
   SoTexture2 * texnode = texture();
 
   // Enable backface culling

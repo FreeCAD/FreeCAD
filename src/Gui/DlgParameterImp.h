@@ -42,7 +42,7 @@ class DlgParameterFind;
  * \author Jürgen Riegel
  */
 class GuiExport DlgParameterImp : public QDialog
-{ 
+{
     Q_OBJECT
 
 public:
@@ -181,7 +181,7 @@ protected Q_SLOTS:
     void onCreateFloatItem();
     /** Creates and appends a new "boolean" leaf. */
     void onCreateBoolItem();
-    /** Defines that the first column is editable. 
+    /** Defines that the first column is editable.
      * @note We need to reimplement this method as QTreeWidgetItem::flags()
      * doesn't have an int parameter.
      */
@@ -202,8 +202,8 @@ private:
 };
 
 /** The link between the Tree and the shown Label.
- * Every (shown) Label in the FCDocument class get it 
- * associated FCTreeLabel which controls the visibility 
+ * Every (shown) Label in the FCDocument class get it
+ * associated FCTreeLabel which controls the visibility
  * and the functions of the Label.
  *
  * \author Jürgen Riegel
@@ -228,7 +228,7 @@ public:
 /**
  * The ParameterValueItem class represents items that are added to the ParameterValue
  * listview. Each item represents a leaf in a parameter group and allows interaction
- * with this leaf, such as modifying its name, its value or even remove it from the 
+ * with this leaf, such as modifying its name, its value or even remove it from the
  * parameter group.
  * @author Werner Mayer
  */

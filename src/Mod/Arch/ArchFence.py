@@ -1,3 +1,26 @@
+#*****************************************************************************
+#*   Copyright (c) 2019 furti <daniel.furtlehner@gmx.net>                    *
+#*                                                                           *
+#*   This program is free software; you can redistribute it and/or modify    *
+#*   it under the terms of the GNU Lesser General Public License (LGPL)      *
+#*   as published by the Free Software Foundation; either version 2 of       *
+#*   the License, or (at your option) any later version.                     *
+#*   for detail see the LICENCE text file.                                   *
+#*                                                                           *
+#*   This program is distributed in the hope that it will be useful,         *
+#*   but WITHOUT ANY WARRANTY; without even the implied warranty of          *
+#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *
+#*   GNU Library General Public License for more details.                    *
+#*                                                                           *
+#*   You should have received a copy of the GNU Library General Public       *
+#*   License along with this program; if not, write to the Free Software     *
+#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307    *
+#*   USA                                                                     *
+#*                                                                           *
+#*****************************************************************************
+
+# Fence functionality for the Arch Workbench
+
 import math
 
 import FreeCAD
@@ -62,7 +85,7 @@ class _Fence(ArchComponent.Component):
     def __getstate__(self):
         if hasattr(self, 'sectionFaceNumbers'):
             return (self.sectionFaceNumbers)
-        
+
         return None
 
     def __setstate__(self, state):
@@ -102,8 +125,9 @@ class _Fence(ArchComponent.Component):
             pathLength, sectionLength, postLength)
         obj.NumberOfPosts = obj.NumberOfSections + 1
 
-        # We assume that the section was drawn in front view
-        # We have to rotate the shape down so that it is aligned correctly by the algorithm later on
+        # We assume that the section was drawn in front view.
+        # We have to rotate the shape down so that it is aligned
+        # correctly by the algorithm later on
         downRotation = FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), -90)
 
         postPlacements = self.calculatePostPlacements(
@@ -162,7 +186,7 @@ class _Fence(ArchComponent.Component):
         shapes = []
 
         # For the colorization algorithm we have to store the number of faces for each section
-        # It is possible that a section is clipped. Then the number of faces is not equals to the
+        # It is possible that a section is clipped. Then the number of faces is not equal to the
         # number of faces in the original section
         faceNumbers = []
 

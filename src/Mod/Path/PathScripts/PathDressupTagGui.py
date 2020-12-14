@@ -535,7 +535,7 @@ class CommandPathDressupTag:
     # pylint: disable=no-init
 
     def GetResources(self):
-        return {'Pixmap': 'Path-Dressup',
+        return {'Pixmap': 'Path_Dressup',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('Path_DressupTag', 'Tag Dress-up'),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP('Path_DressupTag', 'Creates a Tag Dress-up object from a selected path')}
 

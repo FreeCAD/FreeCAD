@@ -200,6 +200,64 @@ Action * StdPerspectiveCamera::createAction(void)
 }
 
 //===========================================================================
+
+// The two commands below are provided for convenience so that they can be bound
+// to a button of a space mouse
+
+//===========================================================================
+// Std_ViewSaveCamera
+//===========================================================================
+
+DEF_3DV_CMD(StdCmdViewSaveCamera)
+
+StdCmdViewSaveCamera::StdCmdViewSaveCamera()
+  : Command("Std_ViewSaveCamera")
+{
+    sGroup        = QT_TR_NOOP("Standard-View");
+    sMenuText     = QT_TR_NOOP("Save current camera");
+    sToolTipText  = QT_TR_NOOP("Save current camera settings");
+    sStatusTip    = QT_TR_NOOP("Save current camera settings");
+    sWhatsThis    = "Std_ViewSaveCamera";
+    eType         = Alter3DView;
+}
+
+void StdCmdViewSaveCamera::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow());
+    if (view) {
+        view->getViewer()->saveHomePosition();
+    }
+}
+
+//===========================================================================
+// Std_ViewRestoreCamera
+//===========================================================================
+DEF_3DV_CMD(StdCmdViewRestoreCamera)
+
+StdCmdViewRestoreCamera::StdCmdViewRestoreCamera()
+  : Command("Std_ViewRestoreCamera")
+{
+    sGroup        = QT_TR_NOOP("Standard-View");
+    sMenuText     = QT_TR_NOOP("Restore saved camera");
+    sToolTipText  = QT_TR_NOOP("Restore saved camera settings");
+    sStatusTip    = QT_TR_NOOP("Restore saved camera settings");
+    sWhatsThis    = "Std_ViewRestoreCamera";
+    eType         = Alter3DView;
+}
+
+void StdCmdViewRestoreCamera::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow());
+    if (view) {
+        view->getViewer()->resetToHomePosition();
+    }
+}
+
+//===========================================================================
 // Std_FreezeViews
 //===========================================================================
 class StdCmdFreezeViews : public Gui::Command
@@ -609,7 +667,7 @@ Gui::Action * StdCmdDrawStyle::createAction(void)
     a1->setCheckable(true);
     a1->setIcon(BitmapFactory().iconFromTheme("DrawStylePoints"));
     a1->setObjectName(QString::fromLatin1("Std_DrawStylePoints"));
-    a1->setShortcut(QKeySequence(QString::fromUtf8("V,2")));    
+    a1->setShortcut(QKeySequence(QString::fromUtf8("V,2")));
     a1->setWhatsThis(QString::fromLatin1(sWhatsThis));
     QAction* a2 = pcAction->addAction(QString());
     a2->setCheckable(true);
@@ -732,7 +790,7 @@ void StdCmdDrawStyle::updateIcon(const MDIView *view)
     {
         actionGroup->setCheckedAction(5);
         return;
-    }    
+    }
     if (mode == "Flat Lines")
     {
         actionGroup->setCheckedAction(6);
@@ -811,7 +869,7 @@ StdCmdToggleVisibility::StdCmdToggleVisibility()
 
 void StdCmdToggleVisibility::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     Selection().setVisible(SelectionSingleton::VisToggle);
 }
 
@@ -885,7 +943,7 @@ StdCmdShowSelection::StdCmdShowSelection()
 
 void StdCmdShowSelection::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     Selection().setVisible(SelectionSingleton::VisShow);
 }
 
@@ -912,7 +970,7 @@ StdCmdHideSelection::StdCmdHideSelection()
 
 void StdCmdHideSelection::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     Selection().setVisible(SelectionSingleton::VisHide);
 }
 
@@ -2554,14 +2612,14 @@ static std::vector<std::string> getBoxSelection(
 
     // check if both two boundary points are inside polygon, only
     // valid since we know the given polygon is a box.
-    if(polygon.Contains(Base::Vector2d(bbox.MinX,bbox.MinY)) && 
-       polygon.Contains(Base::Vector2d(bbox.MaxX,bbox.MaxY))) 
+    if(polygon.Contains(Base::Vector2d(bbox.MinX,bbox.MinY)) &&
+       polygon.Contains(Base::Vector2d(bbox.MaxX,bbox.MaxY)))
     {
         ret.emplace_back("");
         return ret;
     }
 
-    if(!bbox.Intersect(polygon)) 
+    if(!bbox.Intersect(polygon))
         return ret;
 
     const auto &subs = obj->getSubObjects(App::DocumentObject::GS_SELECT);
@@ -2630,7 +2688,7 @@ static std::vector<std::string> getBoxSelection(
         std::string childName;
         Base::Matrix4D smat(mat);
         auto sobj = obj->resolve(sub.c_str(),&parent,&childName,0,0,&smat,transform,depth+1);
-        if(!sobj) 
+        if(!sobj)
             continue;
         int vis;
         if(!parent || (vis=parent->isElementVisible(childName.c_str()))<0)
@@ -2707,7 +2765,7 @@ static void selectionCallback(void * ud, SoEventCallback * cb)
                 continue;
 
             Base::Matrix4D mat;
-            for(auto &sub : getBoxSelection(vp,selectionMode,selectElement,proj,polygon,mat)) 
+            for(auto &sub : getBoxSelection(vp,selectionMode,selectElement,proj,polygon,mat))
                 Gui::Selection().addSelection(doc->getName(), obj->getNameInDocument(), sub.c_str());
         }
     }
@@ -2757,7 +2815,7 @@ StdBoxElementSelection::StdBoxElementSelection()
 
 void StdBoxElementSelection::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
     if (view) {
         View3DInventorViewer* viewer = view->getViewer();
@@ -2822,7 +2880,7 @@ StdCmdTreeCollapse::StdCmdTreeCollapse()
 
 void StdCmdTreeCollapse::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     QList<TreeWidget*> tree = Gui::getMainWindow()->findChildren<TreeWidget*>();
     for (QList<TreeWidget*>::iterator it = tree.begin(); it != tree.end(); ++it)
         (*it)->expandSelectedItems(TreeItemMode::CollapseItem);
@@ -2847,7 +2905,7 @@ StdCmdTreeExpand::StdCmdTreeExpand()
 
 void StdCmdTreeExpand::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     QList<TreeWidget*> tree = Gui::getMainWindow()->findChildren<TreeWidget*>();
     for (QList<TreeWidget*>::iterator it = tree.begin(); it != tree.end(); ++it)
         (*it)->expandSelectedItems(TreeItemMode::ExpandItem);
@@ -2885,7 +2943,7 @@ bool StdCmdTreeSelectAllInstances::isActive(void)
 
 void StdCmdTreeSelectAllInstances::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     const auto &sels = Selection().getSelectionEx("*",App::DocumentObject::getClassTypeId(),true,true);
     if(sels.empty())
         return;
@@ -2894,7 +2952,7 @@ void StdCmdTreeSelectAllInstances::activated(int iMsg)
         return;
     auto vpd = dynamic_cast<ViewProviderDocumentObject*>(
             Application::Instance->getViewProvider(obj));
-    if(!vpd) 
+    if(!vpd)
         return;
     Selection().selStackPush();
     Selection().clearCompleteSelection();
@@ -3009,6 +3067,7 @@ StdCmdSceneInspector::StdCmdSceneInspector()
     sWhatsThis    = "Std_SceneInspector";
     sStatusTip    = QT_TR_NOOP("Scene inspector");
     eType         = Alter3DView;
+    sPixmap       = "Std_SceneInspector";
 }
 
 void StdCmdSceneInspector::activated(int iMsg)
@@ -3067,6 +3126,7 @@ StdCmdDemoMode::StdCmdDemoMode()
     sWhatsThis    = "Std_DemoMode";
     sStatusTip    = QT_TR_NOOP("View turntable");
     eType         = Alter3DView;
+    sPixmap       = "Std_DemoMode";
 }
 
 void StdCmdDemoMode::activated(int iMsg)
@@ -3159,7 +3219,7 @@ StdCmdSelBack::StdCmdSelBack()
 
 void StdCmdSelBack::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     Selection().selStackGoBack();
 }
 
@@ -3189,7 +3249,7 @@ StdCmdSelForward::StdCmdSelForward()
 
 void StdCmdSelForward::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     Selection().selStackGoForward();
 }
 
@@ -3221,7 +3281,7 @@ bool StdTree##_name::isActive() {\
         _pcAction->setChecked(checked,true);\
     return true;\
 }
-        
+
 TREEVIEW_DOC_CMD_DEF(SingleDocument,0)
 
 StdTreeSingleDocument::StdTreeSingleDocument()
@@ -3294,7 +3354,7 @@ bool StdTree##_name::isActive() {\
         _pcAction->setChecked(checked,true);\
     return true;\
 }
-        
+
 TREEVIEW_CMD_DEF(SyncView)
 
 StdTreeSyncView::StdTreeSyncView()
@@ -3552,6 +3612,8 @@ void CreateViewStdCommands(void)
     rcCmdMgr.addCommand(new StdPerspectiveCamera());
     rcCmdMgr.addCommand(new StdCmdToggleClipPlane());
     rcCmdMgr.addCommand(new StdCmdDrawStyle());
+    rcCmdMgr.addCommand(new StdCmdViewSaveCamera());
+    rcCmdMgr.addCommand(new StdCmdViewRestoreCamera());
     rcCmdMgr.addCommand(new StdCmdFreezeViews());
     rcCmdMgr.addCommand(new StdViewZoomIn());
     rcCmdMgr.addCommand(new StdViewZoomOut());

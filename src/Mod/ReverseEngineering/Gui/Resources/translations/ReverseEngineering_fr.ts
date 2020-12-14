@@ -508,7 +508,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="316"/>
       <source>Cut segment from mesh</source>
-      <translation type="unfinished">Cut segment from mesh</translation>
+      <translation>Couper le segment du maillage</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="326"/>

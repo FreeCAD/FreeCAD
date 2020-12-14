@@ -45,6 +45,7 @@
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Sketcher/App/Sketch.h>
+#include <Mod/Sketcher/App/GeometryFacade.h>
 
 #include "ViewProviderSketch.h"
 #include "DrawSketchHandler.h"
@@ -237,7 +238,7 @@ bool SketcherGui::isSimpleVertex(const Sketcher::SketchObject* Obj, int GeoId, P
 bool SketcherGui::isConstructionPoint(const Sketcher::SketchObject* Obj, int GeoId)
 {
     const Part::Geometry * geo = Obj->getGeometry(GeoId);
-    return (geo && geo->getTypeId() == Part::GeomPoint::getClassTypeId() && geo->getConstruction() == true);
+    return (geo && geo->getTypeId() == Part::GeomPoint::getClassTypeId() && GeometryFacade::getConstruction(geo));
 }
 
 bool SketcherGui::IsPointAlreadyOnCurve(int GeoIdCurve, int GeoIdPoint, Sketcher::PointPos PosIdPoint, Sketcher::SketchObject* Obj)
@@ -253,6 +254,36 @@ bool SketcherGui::IsPointAlreadyOnCurve(int GeoIdCurve, int GeoIdPoint, Sketcher
     // too much trouble, IMO(DeepSOIC).
     Base::Vector3d p = Obj->getPoint(GeoIdPoint, PosIdPoint);
     return Obj->isPointOnCurve(GeoIdCurve, p.x, p.y);
+}
+
+bool SketcherGui::isBsplinePole(const Part::Geometry * geo)
+{
+    auto gf = GeometryFacade::getFacade(geo);
+
+    return gf->getInternalType() == InternalType::BSplineControlPoint;
+}
+
+bool SketcherGui::isBsplinePole(const Sketcher::SketchObject* Obj, int GeoId)
+{
+    auto geom = Obj->getGeometry(GeoId);
+
+    return isBsplinePole(geom);
+}
+
+bool SketcherGui::ReleaseHandler(Gui::Document* doc) {
+    if (doc) {
+        if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
+            SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*> (doc->getInEdit());
+
+            if (static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())
+                ->getSketchMode() == ViewProviderSketch::STATUS_SKETCH_UseHandler) {
+
+                vp->purgeHandler();
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 /// Makes a simple tangency constraint using extra point + tangent via point
@@ -2639,6 +2670,14 @@ void CmdSketcherConstrainPointOnObject::activated(int iMsg)
                     continue;
                 }
 
+                if( geom && isBsplinePole(geom)) {
+                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                        QObject::tr("Select an edge that is not a B-spline weight"));
+                    abortCommand();
+
+                    continue;
+                }
+
                 cnt++;
                 Gui::cmdAppObjectArgs(selection[0].getObject(),"addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
                     points[iPnt].GeoId, points[iPnt].PosId, curves[iCrv].GeoId);
@@ -2652,9 +2691,10 @@ void CmdSketcherConstrainPointOnObject::activated(int iMsg)
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                 QObject::tr("None of the selected points were constrained "
                             "onto the respective curves, "
-                            "either because they are parts "
+                            "because they are parts "
                             "of the same element, "
-                            "or because they are both external geometry."));
+                            "because they are both external geometry, "
+                            "or because the edge is not eligible."));
         }
         return;
     }
@@ -2709,6 +2749,14 @@ void CmdSketcherConstrainPointOnObject::applyConstraint(std::vector<SelIdPair> &
         // unsupported until normal to B-spline at any point implemented.
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                              QObject::tr("Point on B-spline edge currently unsupported."));
+        abortCommand();
+
+        return;
+    }
+
+    if( geom && isBsplinePole(geom)) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                             QObject::tr("Select an edge that is not a B-spline weight"));
         abortCommand();
 
         return;
@@ -3492,6 +3540,12 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
 
         if (isEdge(GeoId1, PosId1) && isEdge(GeoId2, PosId2) && isVertex(GeoId3, PosId3)) {
 
+            if(isBsplinePole(Obj, GeoId1) || isBsplinePole(Obj, GeoId2)) {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                             QObject::tr("Select an edge that is not a B-spline weight"));
+                return;
+            }
+
             openCommand(QT_TRANSLATE_NOOP("Command", "Add perpendicular constraint"));
 
             try{
@@ -3591,6 +3645,12 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                 return;
             }
 
+            if(isBsplinePole(geom2)) {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                             QObject::tr("Select an edge that is not a B-spline weight"));
+                return;
+            }
+
             openCommand(QT_TRANSLATE_NOOP("Command", "Add perpendicularity constraint"));
             Gui::cmdAppObjectArgs(selection[0].getObject(), "addConstraint(Sketcher.Constraint('Perpendicular',%d,%d,%d)) ",
                 GeoId1,PosId1,GeoId2);
@@ -3626,6 +3686,12 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
 
             if (geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId())
                 std::swap(GeoId1,GeoId2);
+
+            if(isBsplinePole(Obj, GeoId1)) {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                             QObject::tr("Select an edge that is not a B-spline weight"));
+                return;
+            }
 
             // GeoId2 is the line
             geo1 = Obj->getGeometry(GeoId1);
@@ -3802,6 +3868,12 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &
         if (geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId())
             std::swap(GeoId1,GeoId2);
 
+        if(isBsplinePole(Obj, GeoId1)) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                            QObject::tr("Select an edge that is not a B-spline weight"));
+            return;
+        }
+
         // GeoId2 is the line
         geo1 = Obj->getGeometry(GeoId1);
         geo2 = Obj->getGeometry(GeoId2);
@@ -3946,6 +4018,12 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &
     }
 
     if (isEdge(GeoId1, PosId1) && isEdge(GeoId2, PosId2) && isVertex(GeoId3, PosId3)) {
+
+        if(isBsplinePole(Obj, GeoId1) || isBsplinePole(Obj, GeoId2)) {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                             QObject::tr("Select an edge that is not a B-spline weight"));
+                return;
+        }
 
         openCommand(QT_TRANSLATE_NOOP("Command", "Add perpendicular constraint"));
 
@@ -4096,6 +4174,12 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
 
         if (isEdge(GeoId1, PosId1) && isEdge(GeoId2, PosId2) && isVertex(GeoId3, PosId3)) {
 
+            if(isBsplinePole(Obj, GeoId1) || isBsplinePole(Obj, GeoId2)) {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                             QObject::tr("Select an edge that is not a B-spline weight"));
+                return;
+            }
+
             openCommand(QT_TRANSLATE_NOOP("Command", "Add tangent constraint"));
 
             try{
@@ -4178,6 +4262,12 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                 return;
             }
 
+            if(isBsplinePole(geom2)) {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                             QObject::tr("Select an edge that is not a B-spline weight"));
+                return;
+            }
+
             openCommand(QT_TRANSLATE_NOOP("Command", "Add tangent constraint"));
             Gui::cmdAppObjectArgs(selection[0].getObject(), "addConstraint(Sketcher.Constraint('Tangent',%d,%d,%d)) ",
                 GeoId1,PosId1,GeoId2);
@@ -4202,6 +4292,11 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                 return;
             }
 
+            if(isBsplinePole(geom1) || isBsplinePole(geom2)) {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                             QObject::tr("Select an edge that is not a B-spline weight"));
+                return;
+            }
             // check if there is a coincidence constraint on GeoId1, GeoId2
             const std::vector< Constraint * > &cvals = Obj->Constraints.getValues();
 
@@ -4421,6 +4516,12 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair> &selSeq
             return;
         }
 
+        if(isBsplinePole(geom1) || isBsplinePole(geom2)) {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                             QObject::tr("Select an edge that is not a B-spline weight"));
+                return;
+        }
+
 
         if( geom1 && geom2 &&
             ( geom1->getTypeId() == Part::GeomEllipse::getClassTypeId() ||
@@ -4590,6 +4691,12 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair> &selSeq
 
     if (isEdge(GeoId1, PosId1) && isEdge(GeoId2, PosId2) && isVertex(GeoId3, PosId3)) {
 
+        if(isBsplinePole(Obj, GeoId1) || isBsplinePole(Obj, GeoId2)) {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                             QObject::tr("Select an edge that is not a B-spline weight"));
+                return;
+        }
+
         openCommand(QT_TRANSLATE_NOOP("Command", "Add tangent constraint"));
 
         try{
@@ -4651,8 +4758,8 @@ CmdSketcherConstrainRadius::CmdSketcherConstrainRadius()
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
-    sMenuText       = QT_TR_NOOP("Constrain radius");
-    sToolTipText    = QT_TR_NOOP("Fix the radius of a circle or an arc");
+    sMenuText       = QT_TR_NOOP("Constrain radius or weight");
+    sToolTipText    = QT_TR_NOOP("Fix the radius of a circle or an arc or fix the weight of a pole of a B-Spline");
     sWhatsThis      = "Sketcher_ConstrainRadius";
     sStatusTip      = sToolTipText;
     sPixmap         = "Constraint_Radius";
@@ -4699,6 +4806,9 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
     std::vector< std::pair<int, double> > geoIdRadiusMap;
     std::vector< std::pair<int, double> > externalGeoIdRadiusMap;
 
+    bool poles = false;
+    bool nonpoles = false;
+
     for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end(); ++it) {
         bool issegmentfixed = false;
         int GeoId;
@@ -4726,6 +4836,8 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
             else {
                 geoIdRadiusMap.push_back(std::make_pair(GeoId, radius));
             }
+
+            nonpoles = true;
         }
         else if (geom && geom->getTypeId() == Part::GeomCircle::getClassTypeId()) {
             const Part::GeomCircle *circle = static_cast<const Part::GeomCircle *>(geom);
@@ -4737,12 +4849,23 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
             else {
                 geoIdRadiusMap.push_back(std::make_pair(GeoId, radius));
             }
+
+            if(isBsplinePole(geom))
+                poles = true;
+            else
+                nonpoles = true;
         }
     }
 
     if (geoIdRadiusMap.empty() && externalGeoIdRadiusMap.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select one or more arcs or circles from the sketch."));
+    }
+
+    if(poles && nonpoles) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Select either only one or more B-Spline poles or only one or more arcs or circles from the sketch, but not mixed."));
+        return;
     }
 
     bool commitNeeded=false;
@@ -4756,8 +4879,13 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
         unsigned int constrSize = 0;
 
         for (std::vector< std::pair<int, double> >::iterator it = externalGeoIdRadiusMap.begin(); it != externalGeoIdRadiusMap.end(); ++it) {
-            Gui::cmdAppObjectArgs(selection[0].getObject(),"addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
-                it->first,it->second);
+
+            if(nonpoles)
+                Gui::cmdAppObjectArgs(selection[0].getObject(),"addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
+                    it->first,it->second);
+            else
+                Gui::cmdAppObjectArgs(selection[0].getObject(),"addConstraint(Sketcher.Constraint('Weight',%d,%f)) ",
+                    it->first,it->second);
 
             const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
@@ -4813,8 +4941,12 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
             if(!commandopened)
                 openCommand(QT_TRANSLATE_NOOP("Command", "Add radius constraint"));
 
-            Gui::cmdAppObjectArgs(selection[0].getObject(), "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
-                refGeoId,radius);
+            if(nonpoles)
+                Gui::cmdAppObjectArgs(selection[0].getObject(), "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
+                    refGeoId,radius);
+            else
+                Gui::cmdAppObjectArgs(selection[0].getObject(), "addConstraint(Sketcher.Constraint('Weight',%d,%f)) ",
+                    refGeoId,radius);
 
             // Add the equality constraints
             for (std::vector< std::pair<int, double> >::iterator it = geoIdRadiusMap.begin()+1; it != geoIdRadiusMap.end(); ++it) {
@@ -4828,8 +4960,12 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
             if(!commandopened)
                 openCommand(QT_TRANSLATE_NOOP("Command", "Add radius constraint"));
             for (std::vector< std::pair<int, double> >::iterator it = geoIdRadiusMap.begin(); it != geoIdRadiusMap.end(); ++it) {
-                Gui::cmdAppObjectArgs(selection[0].getObject(), "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
-                    it->first,it->second);
+                if(nonpoles)
+                    Gui::cmdAppObjectArgs(selection[0].getObject(), "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
+                        it->first,it->second);
+                else
+                    Gui::cmdAppObjectArgs(selection[0].getObject(), "addConstraint(Sketcher.Constraint('Weight',%d,%f)) ",
+                        it->first,it->second);
 
                 if (constraintCreationMode==Reference) {
                     const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
@@ -4862,11 +4998,19 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
             QDialog dlg(Gui::getMainWindow());
             Ui::InsertDatum ui_Datum;
             ui_Datum.setupUi(&dlg);
-            dlg.setWindowTitle(EditDatumDialog::tr("Change radius"));
-            ui_Datum.label->setText(EditDatumDialog::tr("Radius:"));
             Base::Quantity init_val;
-            init_val.setUnit(Base::Unit::Length);
             init_val.setValue(geoIdRadiusMap.front().second);
+
+            if(poles) {
+                dlg.setWindowTitle(EditDatumDialog::tr("Change weight"));
+                ui_Datum.label->setText(EditDatumDialog::tr("Weight:"));
+
+            }
+            else{
+                dlg.setWindowTitle(EditDatumDialog::tr("Change radius"));
+                ui_Datum.label->setText(EditDatumDialog::tr("Radius:"));
+                init_val.setUnit(Base::Unit::Length);
+            }
 
             ui_Datum.labelEdit->setValue(init_val);
             ui_Datum.labelEdit->selectNumber();
@@ -4973,7 +5117,14 @@ void CmdSketcherConstrainRadius::applyConstraint(std::vector<SelIdPair> &selSeq,
 
         // Create the radius constraint now
         openCommand(QT_TRANSLATE_NOOP("Command", "Add radius constraint"));
-        Gui::cmdAppObjectArgs(Obj,  "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
+
+        bool ispole = isBsplinePole(geom);
+
+        if(ispole)
+            Gui::cmdAppObjectArgs(Obj,  "addConstraint(Sketcher.Constraint('Weight',%d,%f)) ",
+                              GeoId, radius);
+        else
+            Gui::cmdAppObjectArgs(Obj,  "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
                               GeoId, radius);
 
         const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
@@ -5006,10 +5157,19 @@ void CmdSketcherConstrainRadius::applyConstraint(std::vector<SelIdPair> &selSeq,
             QDialog dlg(Gui::getMainWindow());
             Ui::InsertDatum ui_Datum;
             ui_Datum.setupUi(&dlg);
-            dlg.setWindowTitle(EditDatumDialog::tr("Change radius"));
-            ui_Datum.label->setText(EditDatumDialog::tr("Radius:"));
             Base::Quantity init_val;
-            init_val.setUnit(Base::Unit::Length);
+
+            if(ispole) {
+                dlg.setWindowTitle(EditDatumDialog::tr("Change weight"));
+                ui_Datum.label->setText(EditDatumDialog::tr("Weight:"));
+
+            }
+            else{
+                dlg.setWindowTitle(EditDatumDialog::tr("Change radius"));
+                ui_Datum.label->setText(EditDatumDialog::tr("Radius:"));
+                init_val.setUnit(Base::Unit::Length);
+            }
+
             init_val.setValue(radius);
 
             ui_Datum.labelEdit->setValue(init_val);
@@ -5188,6 +5348,12 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
         else if (geom && geom->getTypeId() == Part::GeomCircle::getClassTypeId()) {
             const Part::GeomCircle *circle = static_cast<const Part::GeomCircle *>(geom);
             double radius = circle->getRadius();
+
+            if(isBsplinePole(geom)) {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                             QObject::tr("Select an edge that is not a B-spline weight"));
+                continue;
+            }
 
             if(issegmentfixed) {
                 externalGeoIdDiameterMap.push_back(std::make_pair(GeoId, 2*radius));
@@ -5425,6 +5591,12 @@ void CmdSketcherConstrainDiameter::applyConstraint(std::vector<SelIdPair> &selSe
             else {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                                      QObject::tr("Constraint only applies to arcs or circles."));
+                return;
+            }
+
+            if(isBsplinePole(geom)) {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                             QObject::tr("Select an edge that is not a B-spline weight"));
                 return;
             }
 
@@ -5752,6 +5924,13 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
         bool bothexternal=areBothPointsOrSegmentsFixed(Obj, GeoId1, GeoId2);
 
         if (isEdge(GeoId1, PosId1) && isEdge(GeoId2, PosId2) && isVertex(GeoId3, PosId3)) {
+
+            if(isBsplinePole(Obj, GeoId1) || isBsplinePole(Obj, GeoId2)) {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                             QObject::tr("Select an edge that is not a B-spline weight"));
+                return;
+            }
+
             double ActAngle = 0.0;
 
             openCommand(QT_TRANSLATE_NOOP("Command", "Add angle constraint"));
@@ -5806,6 +5985,12 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
         if (isVertex(GeoId1,PosId1) && isEdge(GeoId2,PosId2)) {
             std::swap(GeoId1,GeoId2);
             std::swap(PosId1,PosId2);
+        }
+
+        if(isBsplinePole(Obj, GeoId1) || isBsplinePole(Obj, GeoId2)) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                            QObject::tr("Select an edge that is not a B-spline weight"));
+            return;
         }
 
         if (isEdge(GeoId2,PosId2)) { // line to line angle
@@ -6093,6 +6278,13 @@ void CmdSketcherConstrainAngle::applyConstraint(std::vector<SelIdPair> &selSeq, 
     bool bothexternal=areBothPointsOrSegmentsFixed(Obj,GeoId1, GeoId2);
 
     if (isEdge(GeoId1, PosId1) && isEdge(GeoId2, PosId2) && isVertex(GeoId3, PosId3)) {
+
+        if(isBsplinePole(Obj, GeoId1) || isBsplinePole(Obj, GeoId2)) {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                             QObject::tr("Select an edge that is not a B-spline weight"));
+                return;
+        }
+
         double ActAngle = 0.0;
 
         openCommand(QT_TRANSLATE_NOOP("Command", "Add angle constraint"));
@@ -6225,7 +6417,7 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
 
     std::vector<int> ids;
     bool lineSel = false, arcSel = false, circSel = false, ellipsSel = false, arcEllipsSel=false, hasAlreadyExternal = false;
-    bool hyperbSel = false, parabSel=false;
+    bool hyperbSel = false, parabSel=false, weightSel=false;
 
     for (std::vector<std::string>::const_iterator it=SubNames.begin(); it != SubNames.end(); ++it) {
 
@@ -6263,20 +6455,30 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
             return;
         }
 
-        if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId())
+        if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
             lineSel = true;
-        else if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId())
+        }
+        else if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
             arcSel = true;
-        else if (geo->getTypeId() == Part::GeomCircle::getClassTypeId())
-            circSel = true;
-        else if (geo->getTypeId() == Part::GeomEllipse::getClassTypeId())
+        }
+        else if (geo->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+            if(isBsplinePole(geo))
+                weightSel = true;
+            else
+                circSel = true;
+        }
+        else if (geo->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
             ellipsSel = true;
-        else if (geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId())
+        }
+        else if (geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
             arcEllipsSel = true;
-        else if (geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId())
+        }
+        else if (geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
             hyperbSel = true;
-        else if (geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId())
+        }
+        else if (geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
             parabSel = true;
+        }
         else {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                 QObject::tr("Select two or more edges of similar type"));
@@ -6287,10 +6489,11 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
     }
 
     // Check for heterogeneous groups in selection
-    if ( (lineSel && ((arcSel || circSel) || (ellipsSel || arcEllipsSel) || hyperbSel || parabSel) ) ||
-         ((arcSel || circSel) && ((ellipsSel || arcEllipsSel) || hyperbSel || parabSel)) ||
-         ((ellipsSel || arcEllipsSel) && (hyperbSel || parabSel)) ||
-         (hyperbSel && parabSel) ) {
+    if ( (lineSel && ((arcSel || circSel) || (ellipsSel || arcEllipsSel) || hyperbSel || parabSel || weightSel) ) ||
+         ((arcSel || circSel) && ((ellipsSel || arcEllipsSel) || hyperbSel || parabSel || weightSel)) ||
+         ((ellipsSel || arcEllipsSel) && (hyperbSel || parabSel || weightSel)) ||
+         ( hyperbSel && (parabSel || weightSel)) ||
+         ( parabSel && weightSel)) {
 
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select two or more edges of similar type"));
@@ -6329,6 +6532,23 @@ void CmdSketcherConstrainEqual::applyConstraint(std::vector<SelIdPair> &selSeq, 
         // check if the edge already has a Block constraint
         if ( areBothPointsOrSegmentsFixed(Obj, GeoId1, GeoId2) ) {
             showNoConstraintBetweenFixedGeometry();
+            return;
+        }
+
+        const Part::Geometry *geo1 = Obj->getGeometry(GeoId1);
+        const Part::Geometry *geo2 = Obj->getGeometry(GeoId2);
+
+        if ( (geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId() && geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId())     ||
+             (geo1->getTypeId() == Part::GeomHyperbola::getClassTypeId() && geo2->getTypeId() != Part::GeomHyperbola::getClassTypeId())         ||
+             (geo1->getTypeId() == Part::GeomParabola::getClassTypeId() && geo2->getTypeId() != Part::GeomParabola::getClassTypeId())           ||
+             (isBsplinePole(geo1) && !isBsplinePole(geo1))                                                                                      ||
+             ( (geo1->getTypeId() == Part::GeomCircle::getClassTypeId() || geo1->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) &&
+               (geo2->getTypeId() != Part::GeomCircle::getClassTypeId() || geo2->getTypeId() != Part::GeomArcOfCircle::getClassTypeId()))       ||
+             ( (geo1->getTypeId() == Part::GeomEllipse::getClassTypeId() || geo1->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) &&
+               (geo2->getTypeId() != Part::GeomEllipse::getClassTypeId() || geo2->getTypeId() != Part::GeomArcOfEllipse::getClassTypeId())) ){
+
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                QObject::tr("Select two or more edges of similar type"));
             return;
         }
 
@@ -6729,6 +6949,12 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
             return;
         }
 
+        if(isBsplinePole(geo)) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                            QObject::tr("Select an edge that is not a B-spline weight"));
+            return;
+        }
+
         double n2divn1=0;
 
         //the essence.
@@ -7003,7 +7229,7 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
 
                     const Part::GeomLineSegment *geo = static_cast<const Part::GeomLineSegment *>(Obj->getGeometry(lineids[0]));
 
-                    if(!geo->getConstruction())
+                    if(!Sketcher::GeometryFacade::getConstruction(geo))
                         Gui::cmdAppObjectArgs(selection[0].getObject(),"toggleConstruction(%d) ",lineids[0]);
 
                 }
@@ -7014,7 +7240,7 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
 
                     const Part::GeomLineSegment *geo = static_cast<const Part::GeomLineSegment *>(Obj->getGeometry(lineids[0]));
 
-                    if(!geo->getConstruction())
+                    if(!Sketcher::GeometryFacade::getConstruction(geo))
                         Gui::cmdAppObjectArgs(selection[0].getObject(),"toggleConstruction(%d) ",lineids[0]);
 
                     minor=true;
@@ -7031,7 +7257,7 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
 
                     const Part::GeomLineSegment *geo = static_cast<const Part::GeomLineSegment *>(Obj->getGeometry(lineids[1]));
 
-                    if(!geo->getConstruction())
+                    if(!Sketcher::GeometryFacade::getConstruction(geo))
                         Gui::cmdAppObjectArgs(selection[0].getObject(),"toggleConstruction(%d) ",lineids[1]);
                 }
                 else
@@ -7181,7 +7407,7 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
 
                     const Part::GeomLineSegment *geo = static_cast<const Part::GeomLineSegment *>(Obj->getGeometry(lineids[0]));
 
-                    if(!geo->getConstruction())
+                    if(!Sketcher::GeometryFacade::getConstruction(geo))
                         Gui::cmdAppObjectArgs(selection[0].getObject(),"toggleConstruction(%d) ",lineids[0]);
 
                 }
@@ -7192,7 +7418,7 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
 
                     const Part::GeomLineSegment *geo = static_cast<const Part::GeomLineSegment *>(Obj->getGeometry(lineids[0]));
 
-                    if(!geo->getConstruction())
+                    if(!Sketcher::GeometryFacade::getConstruction(geo))
                         Gui::cmdAppObjectArgs(selection[0].getObject(),"toggleConstruction(%d) ",lineids[0]);
 
                     minor=true;
@@ -7209,7 +7435,7 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
 
                     const Part::GeomLineSegment *geo = static_cast<const Part::GeomLineSegment *>(Obj->getGeometry(lineids[1]));
 
-                    if (!geo->getConstruction())
+                    if (!Sketcher::GeometryFacade::getConstruction(geo))
                         Gui::cmdAppObjectArgs(selection[0].getObject(),"toggleConstruction(%d) ",lineids[1]);
                 }
                 else

@@ -430,7 +430,7 @@
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="198"/>
       <source>Line width</source>
-      <translation type="unfinished">Line width</translation>
+      <translation>Szerokość linii</translation>
     </message>
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="203"/>

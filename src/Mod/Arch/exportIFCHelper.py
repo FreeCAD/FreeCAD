@@ -38,10 +38,10 @@ def getObjectsOfIfcType(objects, ifcType):
 
 
 def writeUnits(ifcfile,unit="metre"):
-    
+
     """adds additional units settings to the given ifc file if needed"""
     # so far, only metre or foot possible (which is all revit knows anyway)
-    
+
     if unit == "foot":
         d1 = ifcfile.createIfcDimensionalExponents(1,0,0,0,0,0,0);
         d2 = ifcfile.createIfcMeasureWithUnit(ifcfile.createIfcRatioMeasure(0.3048),ifcfile[13])
@@ -395,7 +395,7 @@ class recycler:
             if self.compress:
                 self.psas[key] = c
             return c
-    
+
     def createIfcRectangleProfileDef(self,name,mode,pt,b,h):
         key = "RECT"+str(name)+str(mode)+str(pt)+str(b)+str(h)
         if self.compress and self.mergeProfiles and key in self.profiledefs:

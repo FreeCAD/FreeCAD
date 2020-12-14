@@ -80,7 +80,7 @@ class _ViewProviderFixture:
         return None
 
     def getIcon(self):  # optional
-        return ":/icons/Path-Datums.svg"
+        return ":/icons/Path_Datums.svg"
 
     def onChanged(self, vobj, prop):  # optional
         # pylint: disable=unused-argument
@@ -111,7 +111,7 @@ class _ViewProviderFixture:
 class CommandPathFixture:
 
     def GetResources(self):
-        return {'Pixmap': 'Path-Datums',
+        return {'Pixmap': 'Path_Datums',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Fixture", "Fixture"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Fixture", "Creates a Fixture Offset object")}
 

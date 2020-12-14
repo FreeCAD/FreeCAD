@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2019 Wandererfan <wandererfan@gmail.com                 *
+ *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com                 *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -242,7 +242,7 @@ void TaskCenterLine::setUiEdit()
         ui->rbAligned->setEnabled(false);
     else
         ui->rbAligned->setEnabled(true);
-    
+
     Base::Quantity qVal;
     qVal.setUnit(Base::Unit::Length);
     qVal.setValue(m_cl->m_vShift);
@@ -344,7 +344,7 @@ void TaskCenterLine::onFlipChanged()
 void TaskCenterLine::createCenterLine(void)
 {
 //    Base::Console().Message("TCL::createCenterLine() - m_type: %d\n", m_type);
-    Gui::Command::openCommand("Create CenterLine");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create CenterLine"));
 //    bool vertical = false;
     double hShift = ui->qsbHorizShift->rawValue();
     double vShift = ui->qsbVertShift->rawValue();
@@ -389,7 +389,7 @@ void TaskCenterLine::createCenterLine(void)
 void TaskCenterLine::updateCenterLine(void)
 {
 //    Base::Console().Message("TCL::updateCenterLine()\n");
-    Gui::Command::openCommand("Edit CenterLine");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit CenterLine"));
     m_cl->m_format.m_color.setValue<QColor>(ui->cpLineColor->color() );
     m_cl->m_format.m_weight = ui->dsbWeight->value().getValue();
     m_cl->m_format.m_style = ui->cboxStyle->currentIndex() + 1;
@@ -431,11 +431,11 @@ void TaskCenterLine::enableTaskButtons(bool b)
 
 double TaskCenterLine::getCenterWidth()
 {
-    std::string lgName = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
+    int lgNumber = Preferences::lineGroup();
+    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
 
     double width = lg->getWeight("Graphic");
-    delete lg; 
+    delete lg;
     Gui::ViewProvider* vp = QGIView::getViewProvider(m_partFeat);
     auto partVP = dynamic_cast<ViewProviderViewPart*>(vp);
     if ( partVP != nullptr ) {
@@ -491,7 +491,7 @@ bool TaskCenterLine::reject()
     if (getCreateMode() &&
         (m_partFeat != nullptr) )  {
 //        Base::Console().Message("TCL::reject - create Mode!!\n");
-        //nothing to remove. 
+        //nothing to remove.
     }
 
     if (!getCreateMode() &&
@@ -500,7 +500,7 @@ bool TaskCenterLine::reject()
           //nothing to un-update
     }
 
-    //make sure any dangling objects are cleaned up 
+    //make sure any dangling objects are cleaned up
     Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().recompute()");
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
 

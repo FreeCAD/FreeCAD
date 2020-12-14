@@ -121,7 +121,7 @@ void PyException::raiseException() {
 
         std::string exceptionname;
         if (_exceptionType == Base::BaseExceptionFreeCADAbort)
-            edict.setItem("sclassname", 
+            edict.setItem("sclassname",
                     Py::String(typeid(Base::AbortException).name()));
         if (_isReported)
             edict.setItem("breported", Py::True());
@@ -159,7 +159,7 @@ void PyException::setPyException() const
 
 SystemExitException::SystemExitException()
 {
-    // Set exception message and code based upon the pthon sys.exit() code and/or message 
+    // Set exception message and code based upon the python sys.exit() code and/or message
     // based upon the following sys.exit() call semantics.
     //
     // Invocation       |  _exitCode  |  _sErrMsg
@@ -544,15 +544,8 @@ void InterpreterSingleton::addType(PyTypeObject* Type,PyObject* Module, const ch
 void InterpreterSingleton::addPythonPath(const char* Path)
 {
     PyGILStateLocker locker;
-    PyObject *list = PySys_GetObject("path");
-#if PY_MAJOR_VERSION >= 3
-    PyObject *path = PyUnicode_FromString(Path);
-#else
-    PyObject *path = PyString_FromString(Path);
-#endif
-    PyList_Append(list, path);
-    Py_DECREF(path);
-    PySys_SetObject("path", list);
+    Py::List list(PySys_GetObject("path"));
+    list.append(Py::String(Path));
 }
 
 const char* InterpreterSingleton::init(int argc,char *argv[])

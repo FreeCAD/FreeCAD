@@ -1485,12 +1485,12 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="240"/>
       <source>Replace Hatch?</source>
-      <translation>Straffozást cserélni?</translation>
+      <translation>Kitöltés lecserélése?</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="241"/>
       <source>Some Faces in selection are already hatched.  Replace?</source>
-      <translation type="unfinished">Some Faces in selection are already hatched.  Replace?</translation>
+      <translation>Néhány felület a kijelölésben már ki van töltve. Lecseréli?</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="470"/>
@@ -1666,7 +1666,7 @@
     <message>
       <location filename="../../TaskSectionView.cpp" line="479"/>
       <source>Operation Failed</source>
-      <translation type="unfinished">Operation Failed</translation>
+      <translation>Sikertelen művelet</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.cpp" line="207"/>
@@ -1691,12 +1691,12 @@
     <message>
       <location filename="../../TaskDetail.cpp" line="125"/>
       <source>New Detail View</source>
-      <translation type="unfinished">New Detail View</translation>
+      <translation>Új részletnézet</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.cpp" line="211"/>
       <source>Edit Detail View</source>
-      <translation type="unfinished">Edit Detail View</translation>
+      <translation>Részletnézet szerkesztése</translation>
     </message>
   </context>
   <context>
@@ -1740,7 +1740,7 @@ it has a weld symbol that would become broken.</translation>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="193"/>
       <location filename="../../ViewProviderViewPart.cpp" line="360"/>
       <source>You cannot delete this view because it has a detail view that would become broken.</source>
-      <translation type="unfinished">You cannot delete this view because it has a detail view that would become broken.</translation>
+      <translation>Ez a nézet nem törölhető, mert rajta egy részletnézet kapcsolata megszakadna.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="201"/>
@@ -1812,7 +1812,7 @@ it has a tile weld that would become broken.</translation>
     <message>
       <location filename="../../TaskActiveView.ui" line="102"/>
       <source>Border</source>
-      <translation type="unfinished">Border</translation>
+      <translation>Keret</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="115"/>
@@ -1913,7 +1913,7 @@ the top and left view border</translation>
       <location filename="../../TaskWeldingSymbol.ui" line="80"/>
       <location filename="../../TaskWeldingSymbol.ui" line="121"/>
       <source>Symbol</source>
-      <translation type="unfinished">Symbol</translation>
+      <translation>Szimbólum</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="90"/>
@@ -1938,12 +1938,12 @@ the top and left view border</translation>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="166"/>
       <source>Flips the sides</source>
-      <translation type="unfinished">Flips the sides</translation>
+      <translation>Megfordítja az oldalakat</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="169"/>
       <source>Flip Sides</source>
-      <translation type="unfinished">Flip Sides</translation>
+      <translation>Oldalak Megfordítása</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="176"/>
@@ -2152,12 +2152,12 @@ can be a performance penalty in complex models.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="377"/>
       <source>Max SVG Hatch Tiles</source>
-      <translation type="unfinished">Max SVG Hatch Tiles</translation>
+      <translation>Max SVG kitöltés csempék</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="384"/>
       <source>Max PAT Hatch Segments</source>
-      <translation type="unfinished">Max PAT Hatch Segments</translation>
+      <translation>Max PAT kitöltés elemek</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="396"/>
@@ -2263,12 +2263,12 @@ can be a performance penalty in complex models.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="187"/>
       <source>SVG Hatch</source>
-      <translation type="unfinished">SVG Hatch</translation>
+      <translation>SVG kitöltés</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="192"/>
       <source>PAT Hatch</source>
-      <translation type="unfinished">PAT Hatch</translation>
+      <translation>PAT kitöltés</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="212"/>
@@ -2528,12 +2528,12 @@ can be a performance penalty in complex models.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="292"/>
       <source>Hatch</source>
-      <translation type="unfinished">Hatch</translation>
+      <translation>Kitöltés</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="299"/>
       <source>Hatch image color</source>
-      <translation type="unfinished">Hatch image color</translation>
+      <translation>Kitöltés színe</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="319"/>
@@ -2548,12 +2548,12 @@ can be a performance penalty in complex models.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="351"/>
       <source>Geometric Hatch</source>
-      <translation type="unfinished">Geometric Hatch</translation>
+      <translation>Geometriai Kitöltés</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="358"/>
       <source>Geometric hatch pattern color</source>
-      <translation type="unfinished">Geometric hatch pattern color</translation>
+      <translation>Geometriai kitöltés színe</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="378"/>
@@ -2891,12 +2891,12 @@ for ProjectionGroups</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="449"/>
       <source>Hatch Pattern File</source>
-      <translation type="unfinished">Hatch Pattern File</translation>
+      <translation>Kitöltési Minta Fájl</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="462"/>
       <source>Default SVG or bitmap file for hatching</source>
-      <translation type="unfinished">Default SVG or bitmap file for hatching</translation>
+      <translation>Alapértelmezett SVG vagy képfájl kitöltésekhez</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="486"/>
@@ -2926,7 +2926,7 @@ for ProjectionGroups</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="576"/>
       <source>Default PAT pattern definition file for geometric hatching</source>
-      <translation type="unfinished">Default PAT pattern definition file for geometric hatching</translation>
+      <translation>Alapértelmezett PAT fájl geometriai kitöltésekhez</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="600"/>
@@ -3074,7 +3074,7 @@ Fast, but result is a collection of short straight lines.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="60"/>
       <source>Page Scale</source>
-      <translation type="unfinished">Page Scale</translation>
+      <translation>Oldal lépték</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="79"/>
@@ -3084,12 +3084,12 @@ Fast, but result is a collection of short straight lines.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="106"/>
       <source>View Scale Type</source>
-      <translation type="unfinished">View Scale Type</translation>
+      <translation>Nézet lépték típusa</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="128"/>
       <source>Default scale for new views</source>
-      <translation type="unfinished">Default scale for new views</translation>
+      <translation>Alapértelmezett lépték új nézetekhez</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="138"/>
@@ -3109,12 +3109,12 @@ Fast, but result is a collection of short straight lines.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="161"/>
       <source>View Custom Scale</source>
-      <translation type="unfinished">View Custom Scale</translation>
+      <translation>Egyedi lépték</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="196"/>
       <source>Default scale for views if &apos;View Scale Type&apos; is &apos;Custom&apos;</source>
-      <translation type="unfinished">Default scale for views if &apos;View Scale Type&apos; is &apos;Custom&apos;</translation>
+      <translation>Alapértelmezett lépték, ha &apos;Nézet lépték típusa&apos; &apos;Egyedi&apos;-re van állítva</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="244"/>
@@ -3412,7 +3412,7 @@ Szeretné folytatni?</translation>
     <message>
       <location filename="../../TaskBalloon.ui" line="218"/>
       <source>Line Width:</source>
-      <translation type="unfinished">Line Width:</translation>
+      <translation>Vonalvastagság:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="237"/>
@@ -3697,7 +3697,7 @@ see the FreeCAD Wiki &apos;2LineCenterLine&apos; for a description</translation>
     <message>
       <location filename="../../TaskDetail.ui" line="61"/>
       <source>Detail View</source>
-      <translation type="unfinished">Detail View</translation>
+      <translation>Részletnézet</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="92"/>
@@ -3712,12 +3712,12 @@ see the FreeCAD Wiki &apos;2LineCenterLine&apos; for a description</translation>
     <message>
       <location filename="../../TaskDetail.ui" line="168"/>
       <source>scale factor for detail view</source>
-      <translation type="unfinished">scale factor for detail view</translation>
+      <translation>részletnézet léptéke</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="197"/>
       <source>size of detail view</source>
-      <translation type="unfinished">size of detail view</translation>
+      <translation>részletnézet mérete</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="263"/>
@@ -3725,10 +3725,10 @@ see the FreeCAD Wiki &apos;2LineCenterLine&apos; for a description</translation>
 Automatic: if the detail view is larger than the page,
                    it will be scaled down to fit into the page
 Custom: custom scale factor is used</source>
-      <translation type="unfinished">Page: scale factor of page is used
-Automatic: if the detail view is larger than the page,
-                   it will be scaled down to fit into the page
-Custom: custom scale factor is used</translation>
+      <translation>Oldal: az oldal léptékének a használata
+Automatikus: ha az részletnézet nagyobb, mint az oldal,
+                   akkor a részlet léptéke le lesz csökkentve, hogy elférjen az oldalon
+Egyedi: egyedi lépték használata</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="270"/>
@@ -3748,7 +3748,7 @@ Custom: custom scale factor is used</translation>
     <message>
       <location filename="../../TaskDetail.ui" line="288"/>
       <source>Scale Type</source>
-      <translation type="unfinished">Scale Type</translation>
+      <translation>Lépték típusa</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="190"/>
@@ -3758,7 +3758,7 @@ Custom: custom scale factor is used</translation>
     <message>
       <location filename="../../TaskDetail.ui" line="216"/>
       <source>Scale Factor</source>
-      <translation type="unfinished">Scale Factor</translation>
+      <translation>Lépték</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="223"/>
@@ -3867,7 +3867,7 @@ Custom: custom scale factor is used</translation>
     <message>
       <location filename="../../TaskHatch.ui" line="26"/>
       <source>Apply Hatch to Face</source>
-      <translation type="unfinished">Apply Hatch to Face</translation>
+      <translation>Kitöltés alkalmazása a felületre</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="38"/>
@@ -4539,7 +4539,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskSectionView.ui" line="106"/>
       <source>Scale factor for the section view</source>
-      <translation type="unfinished">Scale factor for the section view</translation>
+      <translation>Metszet léptéke</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="137"/>
@@ -4601,7 +4601,7 @@ using the given X/Y Spacing</translation>
       <location filename="../../TaskWeldingSymbol.cpp" line="335"/>
       <location filename="../../TaskWeldingSymbol.cpp" line="347"/>
       <source>Symbol</source>
-      <translation type="unfinished">Symbol</translation>
+      <translation>Szimbólum</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.cpp" line="286"/>

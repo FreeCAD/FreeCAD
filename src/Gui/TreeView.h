@@ -37,7 +37,7 @@ namespace Gui {
 class GuiExport TreeView : public QTreeView
 {
     Q_OBJECT
-    
+
 public:
     TreeView(QWidget* parent=0);
     virtual ~TreeView();

@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (c) 2018 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
+ *   Copyright (c) 2018 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -77,7 +77,7 @@ public:
     std::string editSub;
     std::string editElement;
 
-    Private(ViewProviderDocumentObject* vp, const char *element="") 
+    Private(ViewProviderDocumentObject* vp, const char *element="")
         : ui(new Ui_TaskElementColors()), vp(vp),editElement(element)
     {
         vpDoc = vp->getDocument();
@@ -167,7 +167,7 @@ public:
             c.setRgbF(color.r,color.g,color.b,1.0-color.a);
             px.fill(c);
             QListWidgetItem* item = new QListWidgetItem(QIcon(px),
-                    QString::fromLatin1(Data::ComplexGeoData::oldElementName(v.first.c_str()).c_str()), 
+                    QString::fromLatin1(Data::ComplexGeoData::oldElementName(v.first.c_str()).c_str()),
                     ui->elementList);
             item->setData(Qt::UserRole,c);
             item->setData(Qt::UserRole+1,QString::fromLatin1(v.first.c_str()));
@@ -245,7 +245,7 @@ public:
         item->setIcon(QIcon(px));
         apply();
     }
-        
+
     void onSelectionChanged(const SelectionChanges &msg) {
         // no object selected in the combobox or no sub-element was selected
         if (busy)
@@ -278,7 +278,7 @@ public:
         busy = true;
         std::map<std::string,int> sels;
         for(auto &sel : Selection().getSelectionEx(
-                    editDoc.c_str(),App::DocumentObject::getClassTypeId(),0)) 
+                    editDoc.c_str(),App::DocumentObject::getClassTypeId(),0))
         {
             if(sel.getFeatName()!=editObj) continue;
             for(auto &sub : sel.getSubNames()) {
@@ -323,7 +323,7 @@ ElementColors::ElementColors(ViewProviderDocumentObject* vp, bool noHide)
         ("User parameter:BaseApp/Preferences/View");
     d->ui->recompute->setChecked(hPart->GetBool("ColorRecompute",true));
     d->ui->onTop->setChecked(hPart->GetBool("ColorOnTop",true));
-    if(d->ui->onTop->isChecked()) 
+    if(d->ui->onTop->isChecked())
         d->vpParent->OnTopWhenSelected.setValue(3);
 
     Selection().addSelectionGate(d,0);

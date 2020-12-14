@@ -31,7 +31,7 @@ import re
 
 from PySide import QtCore, QtGui
 
-# PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 # PathLog.trackModule(PathLog.thisModule())
 
 
@@ -42,10 +42,12 @@ def translate(context, text, disambig=None):
 
 class ToolBitEditor(object):
     '''UI and controller for editing a ToolBit.
-    The controller embeds the UI to the parentWidget which has to have a layout attached to it.
+    The controller embeds the UI to the parentWidget which has to have a
+    layout attached to it.
     '''
 
-    def __init__(self, tool, parentWidget=None):
+    def __init__(self, tool, parentWidget=None, loadBitBody=True):
+        PathLog.track()
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/ToolBitEditor.ui")
 
         if parentWidget:
@@ -53,13 +55,18 @@ class ToolBitEditor(object):
             parentWidget.layout().addWidget(self.form)
 
         self.tool = tool
+        self.loadbitbody = loadBitBody
         if not tool.BitShape:
             self.tool.BitShape = 'endmill.fcstd'
-        self.tool.Proxy.loadBitBody(self.tool)
+
+        if self.loadbitbody:
+            self.tool.Proxy.loadBitBody(self.tool)
+
         self.setupTool(self.tool)
         self.setupAttributes(self.tool)
 
     def setupTool(self, tool):
+        PathLog.track()
         layout = self.form.bitParams.layout()
         for i in range(layout.rowCount() - 1, -1, -1):
             layout.removeRow(i)
@@ -69,7 +76,8 @@ class ToolBitEditor(object):
             if tool.getGroupOfProperty(name) == PathToolBit.PropertyGroupBit:
                 qsb = ui.createWidget('Gui::QuantitySpinBox')
                 editor[name] = PathGui.QuantitySpinBox(qsb, tool, name)
-                label = QtGui.QLabel(re.sub('([A-Z][a-z]+)', r' \1', re.sub('([A-Z]+)', r' \1', name)))
+                label = QtGui.QLabel(re.sub('([A-Z][a-z]+)', r' \1',
+                                     re.sub('([A-Z]+)', r' \1', name)))
                 layout.addRow(label, qsb)
         self.bitEditor = editor
         img = tool.Proxy.getBitThumbnail(tool)
@@ -79,6 +87,7 @@ class ToolBitEditor(object):
             self.form.image.setPixmap(QtGui.QPixmap())
 
     def setupAttributes(self, tool):
+        PathLog.track()
         self.proto = PathToolBit.AttributePrototype()
         self.props = sorted(self.proto.properties)
         self.delegate = PathSetupSheetGui.Delegate(self.form)
@@ -86,7 +95,7 @@ class ToolBitEditor(object):
         self.model.setHorizontalHeaderLabels(['Set', 'Property', 'Value'])
 
         for i, name in enumerate(self.props):
-            print("propname: %s " % name)
+            PathLog.debug("propname: %s " % name)
 
             prop = self.proto.getProperty(name)
             isset = hasattr(tool, name)
@@ -99,10 +108,15 @@ class ToolBitEditor(object):
 
             else:
 
-                self.model.setData(self.model.index(i, 0), isset, QtCore.Qt.EditRole)
-                self.model.setData(self.model.index(i, 1), name,  QtCore.Qt.EditRole)
-                self.model.setData(self.model.index(i, 2), prop,  PathSetupSheetGui.Delegate.PropertyRole)
-                self.model.setData(self.model.index(i, 2), prop.displayString(),  QtCore.Qt.DisplayRole)
+                self.model.setData(self.model.index(i, 0), isset,
+                                   QtCore.Qt.EditRole)
+                self.model.setData(self.model.index(i, 1), name,
+                                   QtCore.Qt.EditRole)
+                self.model.setData(self.model.index(i, 2), prop,
+                                   PathSetupSheetGui.Delegate.PropertyRole)
+                self.model.setData(self.model.index(i, 2),
+                                   prop.displayString(),
+                                   QtCore.Qt.DisplayRole)
 
                 self.model.item(i, 0).setCheckable(True)
                 self.model.item(i, 0).setText('')
@@ -119,7 +133,7 @@ class ToolBitEditor(object):
 
         if hasattr(tool, "UserAttributes"):
             for key, value in tool.UserAttributes.items():
-                print(key, value)
+                PathLog.debug(key, value)
                 c1 = QtGui.QStandardItem()
                 c1.setCheckable(False)
                 c1.setEditable(False)
@@ -141,26 +155,33 @@ class ToolBitEditor(object):
         self.model.dataChanged.connect(self.updateData)
 
     def updateData(self, topLeft, bottomRight):
-        # pylint: disable=unused-argument
+        PathLog.track()
         if 0 == topLeft.column():
-            isset = self.model.item(topLeft.row(), 0).checkState() == QtCore.Qt.Checked
+            isset = self.model.item(topLeft.row(),
+                                    0).checkState() == QtCore.Qt.Checked
             self.model.item(topLeft.row(), 1).setEnabled(isset)
             self.model.item(topLeft.row(), 2).setEnabled(isset)
 
     def accept(self):
+        PathLog.track()
         self.refresh()
         self.tool.Proxy.unloadBitBody(self.tool)
 
         # get the attributes
         for i, name in enumerate(self.props):
+            PathLog.debug('in accept: {}'.format(name))
             prop = self.proto.getProperty(name)
-            enabled = self.model.item(i, 0).checkState() == QtCore.Qt.Checked
-            if enabled and not prop.getValue() is None:
-                prop.setupProperty(self.tool, name, PathToolBit.PropertyGroupAttribute, prop.getValue())
-            elif hasattr(self.tool, name):
-                self.tool.removeProperty(name)
+            if self.model.item(i, 0) is not None:
+                enabled = self.model.item(i, 0).checkState() == QtCore.Qt.Checked
+                if enabled and not prop.getValue() is None:
+                    prop.setupProperty(self.tool, name,
+                                    PathToolBit.PropertyGroupAttribute,
+                                    prop.getValue())
+                elif hasattr(self.tool, name):
+                    self.tool.removeProperty(name)
 
     def reject(self):
+        PathLog.track()
         self.tool.Proxy.unloadBitBody(self.tool)
 
     def updateUI(self):
@@ -172,6 +193,7 @@ class ToolBitEditor(object):
             self.bitEditor[editor].updateSpinBox()
 
     def updateShape(self):
+        PathLog.track()
         self.tool.BitShape = str(self.form.shapePath.text())
         self.setupTool(self.tool)
         self.form.toolName.setText(self.tool.Label)
@@ -180,7 +202,6 @@ class ToolBitEditor(object):
             self.bitEditor[editor].updateSpinBox()
 
     def updateTool(self):
-        # pylint: disable=protected-access
         PathLog.track()
         self.tool.Label = str(self.form.toolName.text())
         self.tool.BitShape = str(self.form.shapePath.text())
@@ -188,7 +209,7 @@ class ToolBitEditor(object):
         for editor in self.bitEditor:
             self.bitEditor[editor].updateProperty()
 
-        self.tool.Proxy._updateBitShape(self.tool)
+        # self.tool.Proxy._updateBitShape(self.tool)
 
     def refresh(self):
         PathLog.track()
@@ -198,13 +219,14 @@ class ToolBitEditor(object):
         self.form.blockSignals(False)
 
     def selectShape(self):
+        PathLog.track()
         path = self.tool.BitShape
         if not path:
             path = PathPreferences.lastPathToolShape()
         foo = QtGui.QFileDialog.getOpenFileName(self.form,
-                "Path - Tool Shape",
-                path,
-                "*.fcstd")
+                                                "Path - Tool Shape",
+                                                path,
+                                                "*.fcstd")
         if foo and foo[0]:
             PathPreferences.setLastPathToolShape(os.path.dirname(foo[0]))
             self.form.shapePath.setText(foo[0])

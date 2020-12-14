@@ -337,7 +337,7 @@ bool TaskDlgFemConstraintBearing::accept()
     const TaskFemConstraintBearing* parameterBearing = static_cast<const TaskFemConstraintBearing*>(parameter);
 
     try {
-        //Gui::Command::openCommand("FEM force constraint changed");
+        //Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "FEM force constraint changed"));
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Dist = %f",name.c_str(), parameterBearing->getDistance());
 
         std::string locname = parameterBearing->getLocationName().data();

@@ -24,7 +24,7 @@
 #ifndef PARTGUI_VIEWPROVIDERPRISM_H
 #define PARTGUI_VIEWPROVIDERPRISM_H
 
-#include "ViewProvider.h"
+#include "ViewProviderPrimitive.h"
 
 
 namespace PartGui {

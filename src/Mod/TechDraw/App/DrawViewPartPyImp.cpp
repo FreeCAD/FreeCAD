@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2019 WandererFan (wandererfan@gmail.com)                *
+ *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -77,32 +77,32 @@ PyObject* DrawViewPartPy::getVisibleEdges(PyObject *args)
 {
     (void) args;
     DrawViewPart* dvp = getDrawViewPartPtr();
-    PyObject* pEdgeList = PyList_New(0);
+    Py::List pEdgeList;
     std::vector<TechDraw::BaseGeom*> geoms = dvp->getEdgeGeometry();
     for (auto& g: geoms) {
         if (g->hlrVisible) {
             PyObject* pEdge = new Part::TopoShapeEdgePy(new Part::TopoShape(g->occEdge));
-            PyList_Append(pEdgeList, pEdge);
+            pEdgeList.append(Py::asObject(pEdge));
         }
     }
 
-    return pEdgeList;
+    return Py::new_reference_to(pEdgeList);
 }
 
 PyObject* DrawViewPartPy::getHiddenEdges(PyObject *args)
 {
     (void) args;
     DrawViewPart* dvp = getDrawViewPartPtr();
-    PyObject* pEdgeList = PyList_New(0);
+    Py::List pEdgeList;
     std::vector<TechDraw::BaseGeom*> geoms = dvp->getEdgeGeometry();
     for (auto& g: geoms) {
         if (!g->hlrVisible) {
             PyObject* pEdge = new Part::TopoShapeEdgePy(new Part::TopoShape(g->occEdge));
-            PyList_Append(pEdgeList, pEdge);
+            pEdgeList.append(Py::asObject(pEdge));
         }
     }
 
-    return pEdgeList;
+    return Py::new_reference_to(pEdgeList);
 }
 
 PyObject* DrawViewPartPy::requestPaint(PyObject *args)
@@ -163,7 +163,7 @@ PyObject* DrawViewPartPy::makeCosmeticVertex(PyObject *args)
     std::string dvpName = dvp->getNameInDocument();
     Base::Vector3d pnt1 = static_cast<Base::VectorPy*>(pPnt1)->value();
     std::string id = dvp->addCosmeticVertex(pnt1);
-    //int link = 
+    //int link =
     dvp->add1CVToGV(id);
     dvp->requestPaint();
     return PyUnicode_FromString(id.c_str());   //return tag for new CV
@@ -181,9 +181,9 @@ PyObject* DrawViewPartPy::makeCosmeticVertex3d(PyObject *args)
     Base::Vector3d centroid = dvp->getOriginalCentroid();
     pnt1 = pnt1 - centroid;
     Base::Vector3d projected = DrawUtil::invertY(dvp->projectPoint(pnt1));
-    
+
     std::string id = dvp->addCosmeticVertex(projected);
-    //int link = 
+    //int link =
     dvp->add1CVToGV(id);
     dvp->refreshCVGeoms();
     dvp->requestPaint();
@@ -208,7 +208,7 @@ PyObject* DrawViewPartPy::getCosmeticVertex(PyObject *args)
     return result;
 }
 
-//get by selection name 
+//get by selection name
 PyObject* DrawViewPartPy::getCosmeticVertexBySelection(PyObject *args)
 {
     PyObject* result = nullptr;
@@ -217,7 +217,7 @@ PyObject* DrawViewPartPy::getCosmeticVertexBySelection(PyObject *args)
         throw Py::TypeError("expected (string)");
     }
     DrawViewPart* dvp = getDrawViewPartPtr();
-    
+
     TechDraw::CosmeticVertex* cv = dvp->getCosmeticVertexBySelection(selName);
     if (cv != nullptr) {
         result = cv->getPyObject();
@@ -272,7 +272,7 @@ PyObject* DrawViewPartPy::removeCosmeticVertex(PyObject *args)
         }
     } else {
         throw Py::TypeError("expected (CosmeticVertex or [CosmeticVertex])");
-    } 
+    }
     return Py_None;
 }
 
@@ -281,7 +281,7 @@ PyObject* DrawViewPartPy::replaceCosmeticVertex(PyObject *args)
     (void) args;
     Base::Console().Message("DVPP::replaceCosmeticVertex() - deprecated. do not use.\n");
     return PyBool_FromLong(0l);
-    
+
 }
 
 
@@ -321,7 +321,7 @@ PyObject* DrawViewPartPy::makeCosmeticLine(PyObject *args)
         Base::Console().Message("%s\n",msg.c_str());
         throw Py::RuntimeError(msg);
     }
-    //int link = 
+    //int link =
     dvp->add1CEToGE(newTag);
     dvp->requestPaint();
     return PyUnicode_FromString(newTag.c_str());   //return tag for new CE
@@ -369,7 +369,7 @@ PyObject* DrawViewPartPy::makeCosmeticLine3D(PyObject *args)
         Base::Console().Message("%s\n",msg.c_str());
         throw Py::RuntimeError(msg);
     }
-    //int link = 
+    //int link =
     dvp->add1CEToGE(newTag);
     dvp->requestPaint();
     return PyUnicode_FromString(newTag.c_str());   //return tag for new CE
@@ -409,7 +409,7 @@ PyObject* DrawViewPartPy::makeCosmeticCircle(PyObject *args)
         Base::Console().Message("%s\n",msg.c_str());
         throw Py::RuntimeError(msg);
     }
-    //int link = 
+    //int link =
     dvp->add1CEToGE(newTag);
     dvp->requestPaint();
     return PyUnicode_FromString(newTag.c_str());   //return tag for new CE
@@ -453,7 +453,7 @@ PyObject* DrawViewPartPy::makeCosmeticCircleArc(PyObject *args)
         throw Py::RuntimeError(msg);
     }
 
-    //int link = 
+    //int link =
     dvp->add1CEToGE(newTag);
     dvp->requestPaint();
     return PyUnicode_FromString(newTag.c_str());   //return tag for new CE
@@ -530,7 +530,7 @@ PyObject* DrawViewPartPy::removeCosmeticEdge(PyObject *args)
     }
     DrawViewPart* dvp = getDrawViewPartPtr();
     dvp->removeCosmeticEdge(tag);
-    Py_INCREF(Py_None); 
+    Py_INCREF(Py_None);
     return Py_None;
 }
 
@@ -580,7 +580,7 @@ PyObject* DrawViewPartPy::makeCenterLine(PyObject *args)
             throw Py::RuntimeError(msg);
         }
     }
-    //int link = 
+    //int link =
     dvp->add1CLToGE(tag);
     dvp->requestPaint();
 
@@ -653,7 +653,7 @@ PyObject* DrawViewPartPy::removeCenterLine(PyObject *args)
     }
     DrawViewPart* dvp = getDrawViewPartPtr();
     dvp->removeCenterLine(tag);
-    Py_INCREF(Py_None); 
+    Py_INCREF(Py_None);
     return Py_None;
 }
 

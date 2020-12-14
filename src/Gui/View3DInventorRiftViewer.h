@@ -49,7 +49,7 @@ protected:
 };
 
 
-} //namespace Gui 
+} //namespace Gui
 
 #endif //BUILD_VR
 

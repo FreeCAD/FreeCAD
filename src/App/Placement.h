@@ -21,8 +21,6 @@
  ***************************************************************************/
 
 
-
-
 #ifndef _AppPlacement_h_
 #define _AppPlacement_h_
 
@@ -59,7 +57,7 @@ public:
   /// Constructor
   Placement(void);
   virtual ~Placement();
-  
+
   /// returns the type name of the ViewProvider
   virtual const char* getViewProviderName(void) const {
       return "Gui::ViewProviderPlacement";

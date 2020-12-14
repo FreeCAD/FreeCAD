@@ -312,7 +312,8 @@ QIcon ViewProvider::mergeOverlayIcons (const QIcon & orig) const
     QIcon overlayedIcon = orig;
 
     for (Gui::ViewProviderExtension* ext : vector) {
-        overlayedIcon = ext->extensionMergeOverlayIcons(overlayedIcon);
+        if (!ext->ignoreOverlayIcon())
+            overlayedIcon = ext->extensionMergeOverlayIcons(overlayedIcon);
     }
 
     return overlayedIcon;
@@ -649,6 +650,13 @@ bool ViewProvider::mouseButtonPressed(int button, bool pressed,
     return false;
 }
 
+void ViewProvider::setupContextMenu(QMenu* menu, QObject* receiver, const char* method)
+{
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for (Gui::ViewProviderExtension* ext : vector)
+        ext->extensionSetupContextMenu(menu, receiver, method);
+}
+
 bool ViewProvider::onDelete(const vector< string >& subNames)
 {
     bool del = true;
@@ -749,7 +757,7 @@ void ViewProvider::dropObject(App::DocumentObject* obj) {
     throw Base::RuntimeError("ViewProvider::dropObject: no extension for dropping given object available.");
 }
 
-bool ViewProvider::canDropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner, 
+bool ViewProvider::canDropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner,
         const char *subname, const std::vector<std::string> &elements) const
 {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
@@ -760,8 +768,8 @@ bool ViewProvider::canDropObjectEx(App::DocumentObject* obj, App::DocumentObject
     return canDropObject(obj);
 }
 
-std::string ViewProvider::dropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner, 
-        const char *subname, const std::vector<std::string> &elements) 
+std::string ViewProvider::dropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner,
+        const char *subname, const std::vector<std::string> &elements)
 {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for(Gui::ViewProviderExtension* ext : vector) {
@@ -916,7 +924,7 @@ int ViewProvider::partialRender(const std::vector<std::string> &elements, bool c
     action.setSecondary(true);
     for(auto element : elements) {
         bool hidden = hasHiddenMarker(element.c_str());
-        if(hidden) 
+        if(hidden)
             element.resize(element.size()-hiddenMarker().size());
         path->truncate(0);
         SoDetail *det = 0;
@@ -926,7 +934,7 @@ int ViewProvider::partialRender(const std::vector<std::string> &elements, bool c
                 continue;
             }
             FC_LOG("partial render (" << path->getLength() << "): " << element);
-            if(!hidden) 
+            if(!hidden)
                 action.setType(clear?SoSelectionElementAction::Remove:SoSelectionElementAction::Append);
             else
                 action.setType(clear?SoSelectionElementAction::Show:SoSelectionElementAction::Hide);

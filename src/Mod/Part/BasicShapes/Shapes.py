@@ -26,11 +26,7 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Basic shapes"
 
 
-import FreeCAD
-from FreeCAD import Qt
 import Part
-import math
-import sys
 
 def makeTube(outerRadius, innerRadius, height):
     outer_cylinder = Part.makeCylinder(outerRadius, height)
@@ -53,52 +49,3 @@ class TubeFeature:
         if fp.InnerRadius >= fp.OuterRadius:
             raise ValueError("Inner radius must be smaller than outer radius")
         fp.Shape = makeTube(fp.OuterRadius, fp.InnerRadius, fp.Height)
-
-
-# Only if GUI is running
-if FreeCAD.GuiUp:
-    import FreeCADGui
-
-
-    class ViewProviderTube:
-        def __init__(self, obj):
-            ''' Set this object to the proxy object of the actual view provider '''
-            obj.Proxy = self
-
-        def attach(self, obj):
-            ''' Setup the scene sub-graph of the view provider, this method is mandatory '''
-            return
-
-        def getIcon(self):
-            return ":/icons/parametric/Part_Tube_Parametric.svg"
-
-        def __getstate__(self):
-            return None
-
-        def __setstate__(self,state):
-            return None
-
-
-    class CommandTube:
-        """Command for creating Tube."""
-        def GetResources(self):
-            return {'MenuText': Qt.QT_TRANSLATE_NOOP("Part_Tube","Create tube"),
-                    'Accel': "",
-                    'CmdType': "AlterDoc:Alter3DView:AlterSelection",
-                    'Pixmap': "Part_Tube",
-                    'ToolTip': Qt.QT_TRANSLATE_NOOP("Part_Tube","Creates a tube")}
-        
-        def Activated(self):
-            FreeCAD.ActiveDocument.openTransaction("Create tube")
-            tube = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Tube")
-            TubeFeature(tube)
-            ViewProviderTube(tube.ViewObject)
-            FreeCAD.ActiveDocument.commitTransaction()
-            FreeCAD.ActiveDocument.recompute()
-
-        def IsActive(self):
-            return not FreeCAD.ActiveDocument is None
-
-
-    FreeCADGui.addCommand('Part_Tube', CommandTube())
-

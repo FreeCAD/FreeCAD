@@ -1,0 +1,4 @@
+[Thumbnailer Entry]
+TryExec=freecad-thumbnailer
+Exec=freecad-thumbnailer -s %s %i %o
+MimeType=application/x-extension-fcstd;

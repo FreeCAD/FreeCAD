@@ -79,7 +79,7 @@ void Thumbnail::Save (Base::Writer &writer) const
 
 void Thumbnail::Restore(Base::XMLReader &reader)
 {
-    Q_UNUSED(reader); 
+    Q_UNUSED(reader);
     //reader.addFile("Thumbnail.png",this);
 }
 
@@ -98,13 +98,19 @@ void Thumbnail::SaveDocFile (Base::Writer &writer) const
         this->viewer->imageFromFramebuffer(this->size, this->size, 0, invalid, img);
     }
 
-    QPixmap px = Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str());
+    // Get app icon and resize to half size to insert in topbottom position over the current view snapshot
+    QPixmap appIcon = Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str());
+    QPixmap px =  appIcon;
     if (!img.isNull()) {
         if (App::GetApplication().GetParameterGroupByPath
-            ("User parameter:BaseApp/Preferences/Document")->GetBool("AddThumbnailLogo",true))
-            px = BitmapFactory().merge(QPixmap::fromImage(img),px,BitmapFactoryInst::BottomRight);
-        else
+            ("User parameter:BaseApp/Preferences/Document")->GetBool("AddThumbnailLogo",true)) {
+            // only scale app icon if an offscreen image could be created
+            appIcon =  appIcon.scaled(this->size / 4, this->size /4);
+            px = BitmapFactory().merge(QPixmap::fromImage(img), appIcon, BitmapFactoryInst::BottomRight);
+        }
+        else {
             px = QPixmap::fromImage(img);
+        }
     }
 
     if (!px.isNull()) {
@@ -126,5 +132,5 @@ void Thumbnail::SaveDocFile (Base::Writer &writer) const
 
 void Thumbnail::RestoreDocFile(Base::Reader &reader)
 {
-    Q_UNUSED(reader); 
+    Q_UNUSED(reader);
 }

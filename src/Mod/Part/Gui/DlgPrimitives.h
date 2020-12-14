@@ -23,16 +23,16 @@
 #ifndef PARTGUI_DLGPRIMITIVES_H
 #define PARTGUI_DLGPRIMITIVES_H
 
+#include <memory>
 #include <QEventLoop>
 #include <QPointer>
 #include <App/DocumentObserver.h>
 #include <Gui/TaskView/TaskDialog.h>
-#include <Mod/Part/Gui/ui_DlgPrimitives.h>
-#include <Mod/Part/Gui/ui_Location.h>
 
 class gp_Ax2;
 class SoPickedPoint;
 class SoEventCallback;
+class QSignalMapper;
 
 namespace App { class Document; }
 namespace Gui { class Document; }
@@ -61,6 +61,7 @@ public:
     QEventLoop loop;
 };
 
+class Ui_DlgPrimitives;
 class DlgPrimitives : public QWidget
 {
     Q_OBJECT
@@ -70,19 +71,38 @@ public:
     ~DlgPrimitives();
     void createPrimitive(const QString&);
     void accept(const QString&);
+    void reject();
 
 private Q_SLOTS:
     void on_buttonCircleFromThreePoints_clicked();
+    void onChangePlane(QWidget*);
+    void onChangeBox(QWidget*);
+    void onChangeCylinder(QWidget*);
+    void onChangeCone(QWidget*);
+    void onChangeSphere(QWidget*);
+    void onChangeEllipsoid(QWidget*);
+    void onChangeTorus(QWidget*);
+    void onChangePrism(QWidget*);
+    void onChangeWedge(QWidget*);
+    void onChangeHelix(QWidget*);
+    void onChangeSpiral(QWidget*);
+    void onChangeCircle(QWidget*);
+    void onChangeEllipse(QWidget*);
+    void onChangeVertex(QWidget*);
+    void onChangeLine(QWidget*);
+    void onChangeRegularPolygon(QWidget*);
 
 private:
     static void pickCallback(void * ud, SoEventCallback * n);
     void executeCallback(Picker*);
+    void connectSignalMapper(QWidget *sender, const char *signal, QSignalMapper* mapper);
 
 private:
-    Ui_DlgPrimitives ui;
+    std::unique_ptr<Ui_DlgPrimitives> ui;
     App::DocumentObjectWeakPtrT featurePtr;
 };
 
+class Ui_Location;
 class Location : public QWidget
 {
     Q_OBJECT
@@ -93,13 +113,15 @@ public:
     QString toPlacement() const;
 
 private Q_SLOTS:
+    void onChangePosRot();
     void on_viewPositionButton_clicked();
 
 private:
     static void pickCallback(void * ud, SoEventCallback * n);
     int mode;
     QPointer<QWidget> activeView;
-    Ui_Location ui;
+    std::unique_ptr<Ui_Location> ui;
+    App::DocumentObjectWeakPtrT featurePtr;
 };
 
 class TaskPrimitives : public Gui::TaskView::TaskDialog
@@ -133,7 +155,6 @@ public:
     bool accept();
     bool reject();
     QDialogButtonBox::StandardButtons getStandardButtons() const;
-    void modifyStandardButtons(QDialogButtonBox*);
 
 private:
     DlgPrimitives* widget;

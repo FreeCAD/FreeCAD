@@ -355,7 +355,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="188"/>
       <source>Boolean fragments</source>
-      <translation type="unfinished">Boolean fragments</translation>
+      <translation>Booleska fragment</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="190"/>

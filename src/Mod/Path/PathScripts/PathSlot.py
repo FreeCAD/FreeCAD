@@ -40,21 +40,19 @@ import math
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
 Part = LazyLoader('Part', globals(), 'Part')
+Arcs = LazyLoader('draftgeoutils.arcs', globals(), 'draftgeoutils.arcs')
 
 if FreeCAD.GuiUp:
     import FreeCADGui
-
-DEBUG = False
-if DEBUG:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 # Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
+
+
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+# PathLog.trackModule(PathLog.thisModule())
 
 
 class ObjectSlot(PathOp.ObjectOp):
@@ -184,7 +182,8 @@ class ObjectSlot(PathOp.ObjectOp):
         ENUMS = self.opPropertyEnumerations()
         if hasattr(obj, 'Base'):
             if obj.Base:
-                (base, subsList) = obj.Base[0]
+                # (base, subsList) = obj.Base[0]
+                subsList = obj.Base[0][1]
                 subCnt = len(subsList)
                 if subCnt == 1:
                     # Adjust available enumerations
@@ -230,7 +229,8 @@ class ObjectSlot(PathOp.ObjectOp):
         C = 0
         if hasattr(obj, 'Base'):
             if obj.Base:
-                (base, subsList) = obj.Base[0]
+                # (base, subsList) = obj.Base[0]
+                subsList = obj.Base[0][1]
                 subCnt = len(subsList)
                 if subCnt == 1:
                     A = 0
@@ -284,7 +284,7 @@ class ObjectSlot(PathOp.ObjectOp):
                     if isinstance(val, int) or isinstance(val, float):
                         setVal = True
                 if setVal:
-                    propVal = getattr(prop, 'Value')
+                    # propVal = getattr(prop, 'Value')
                     setattr(prop, 'Value', val)
                 else:
                     setattr(obj, n, val)
@@ -355,10 +355,9 @@ class ObjectSlot(PathOp.ObjectOp):
         self.arcRadius = 0.0
         self.newRadius = 0.0
         self.isDebug = False if PathLog.getLevel(PathLog.thisModule()) != 4 else True
-        self.showDebugObjects = obj.ShowTempObjects
+        self.showDebugObjects = False
         self.stockZMin = self.job.Stock.Shape.BoundBox.ZMin
         CMDS = list()
-        FCAD = FreeCAD.ActiveDocument
 
         try:
             dotIdx = __name__.index('.') + 1
@@ -366,18 +365,17 @@ class ObjectSlot(PathOp.ObjectOp):
             dotIdx = 0
         self.module = __name__[dotIdx:]
 
-        if not self.isDebug:
-            self.showDebugObjects = False
+        # Setup debugging group for temp objects, when in DEBUG mode
+        if self.isDebug:
+            self.showDebugObjects = obj.ShowTempObjects
         if self.showDebugObjects:
+            FCAD = FreeCAD.ActiveDocument
             for grpNm in ['tmpDebugGrp', 'tmpDebugGrp001']:
-                if hasattr(FreeCAD.ActiveDocument, grpNm):
-                    for go in FreeCAD.ActiveDocument.getObject(grpNm).Group:
-                        FreeCAD.ActiveDocument.removeObject(go.Name)
-                    FreeCAD.ActiveDocument.removeObject(grpNm)
-            self.tmpGrp = FreeCAD.ActiveDocument.addObject('App::DocumentObjectGroup', 'tmpDebugGrp')
-            tmpGrpNm = self.tmpGrp.Name
-
-        # self.updateEnumerations(obj)
+                if hasattr(FCAD, grpNm):
+                    for go in FCAD.getObject(grpNm).Group:
+                        FCAD.removeObject(go.Name)
+                    FCAD.removeObject(grpNm)
+            self.tmpGrp = FCAD.addObject('App::DocumentObjectGroup', 'tmpDebugGrp')
 
         # Begin GCode for operation with basic information
         # ... and move cutter to clearance height and startpoint
@@ -415,8 +413,7 @@ class ObjectSlot(PathOp.ObjectOp):
         # Hide the temporary objects
         if self.showDebugObjects:
             if FreeCAD.GuiUp:
-                import FreeCADGui
-                FreeCADGui.ActiveDocument.getObject(tmpGrpNm).Visibility = False
+                FreeCADGui.ActiveDocument.getObject(self.tmpGrp.Name).Visibility = False
             self.tmpGrp.purgeTouched()
 
         return True
@@ -426,9 +423,6 @@ class ObjectSlot(PathOp.ObjectOp):
         """This method controls the overall slot creation process."""
         pnts = False
         featureCnt = 0
-
-        def eLen(E):
-            return E.Length
 
         if not hasattr(obj, 'Base'):
             msg = translate('PathSlot',
@@ -448,30 +442,27 @@ class ObjectSlot(PathOp.ObjectOp):
                 FreeCAD.Console.PrintError(msg + '\n')
                 return False
 
-        if pnts:
-            (p1, p2) = pnts
+        baseGeom = obj.Base[0]
+        base, subsList = baseGeom
+        self.base = base
+        lenSL = len(subsList)
+        featureCnt = lenSL
+        if lenSL == 1:
+            PathLog.debug('Reference 1: {}'.format(obj.Reference1))
+            sub1 = subsList[0]
+            shape_1 = getattr(base.Shape, sub1)
+            self.shape1 = shape_1
+            pnts = self._processSingle(obj, shape_1, sub1)
         else:
-            baseGeom = obj.Base[0]
-            base, subsList = baseGeom
-            self.base = base
-            lenSL = len(subsList)
-            featureCnt = lenSL
-            if lenSL == 1:
-                PathLog.debug('Reference 1: {}'.format(obj.Reference1))
-                sub1 = subsList[0]
-                shape_1 = getattr(base.Shape, sub1)
-                self.shape1 = shape_1
-                pnts = self._processSingle(obj, shape_1, sub1)
-            else:
-                PathLog.debug('Reference 1: {}'.format(obj.Reference1))
-                PathLog.debug('Reference 2: {}'.format(obj.Reference2))
-                sub1 = subsList[0]
-                sub2 = subsList[1]
-                shape_1 = getattr(base.Shape, sub1)
-                shape_2 = getattr(base.Shape, sub2)
-                self.shape1 = shape_1
-                self.shape2 = shape_2
-                pnts = self._processDouble(obj, shape_1, sub1, shape_2, sub2)
+            PathLog.debug('Reference 1: {}'.format(obj.Reference1))
+            PathLog.debug('Reference 2: {}'.format(obj.Reference2))
+            sub1 = subsList[0]
+            sub2 = subsList[1]
+            shape_1 = getattr(base.Shape, sub1)
+            shape_2 = getattr(base.Shape, sub2)
+            self.shape1 = shape_1
+            self.shape2 = shape_2
+            pnts = self._processDouble(obj, shape_1, sub1, shape_2, sub2)
 
         if not pnts:
             return False
@@ -555,7 +546,8 @@ class ObjectSlot(PathOp.ObjectOp):
         It accepts the operation object and two end points for the path.
         It returns the slot gcode for the operation."""
         CMDS = list()
-        PATHS = [(p1, p2, 'G2'), (p2, p1, 'G3')]
+        PATHS = [(p2, p1, 'G2'), (p1, p2, 'G3')]
+        path_index = 0
 
         def arcPass(PNTS, depth):
             cmds = list()
@@ -572,28 +564,35 @@ class ObjectSlot(PathOp.ObjectOp):
             return cmds
 
         if obj.LayerMode == 'Single-pass':
-            PNTS = PATHS[0]
             if obj.ReverseDirection:
-                PNTS = PATHS[1]
-            CMDS.extend(arcPass(PNTS, obj.FinalDepth.Value))
+                path_index = 1
+            CMDS.extend(arcPass(PATHS[path_index], obj.FinalDepth.Value))
         else:
             if obj.CutPattern == 'Line':
-                PNTS = PATHS[0]
                 if obj.ReverseDirection:
-                    PNTS = PATHS[1]
+                    path_index = 1
                 for dep in self.depthParams:
-                    CMDS.extend(arcPass(PNTS, dep))
+                    CMDS.extend(arcPass(PATHS[path_index], dep))
                     CMDS.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
             elif obj.CutPattern == 'ZigZag':
                 i = 0
                 for dep in self.depthParams:
-                    if i % 2.0 == 0:  # even
-                        CMDS.extend(arcPass(PATHS[0], dep))
-                    else:  # odd
-                        CMDS.extend(arcPass(PATHS[1], dep))
+                    if obj.ReverseDirection:
+                        if i % 2.0 == 0:  # even
+                            CMDS.extend(arcPass(PATHS[0], dep))
+                        else:  # odd
+                            CMDS.extend(arcPass(PATHS[1], dep))
+                    else:
+                        if i % 2.0 == 0:  # even
+                            CMDS.extend(arcPass(PATHS[1], dep))
+                        else:  # odd
+                            CMDS.extend(arcPass(PATHS[0], dep))
                     i += 1
         # Raise to SafeHeight when finished
         CMDS.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
+
+        if self.isDebug:
+            PathLog.debug('G-code arc command is: {}'.format(PATHS[path_index][2]))
 
         return CMDS
 
@@ -694,7 +693,6 @@ class ObjectSlot(PathOp.ObjectOp):
     def _processSingle(self, obj, shape_1, sub1):
         """This is the control method for slots based on a
         single Base Geometry feature."""
-        cmds = False
         make = False
         cat1 = sub1[:4]
 
@@ -892,7 +890,7 @@ class ObjectSlot(PathOp.ObjectOp):
             return True
 
         def circleCentFrom3Points(P1, P2, P3):
-            # Source code for this function copied from:
+            # Source code for this function copied from (with modifications):
             # https://wiki.freecadweb.org/Macro_Draft_Circle_3_Points_3D
             P1P2 = (P2 - P1).Length
             P2P3 = (P3 - P2).Length
@@ -900,21 +898,20 @@ class ObjectSlot(PathOp.ObjectOp):
 
             # Circle radius.
             l = ((P1 - P2).cross(P2 - P3)).Length
-            try:
-                r = P1P2 * P2P3 * P3P1 / 2 / l
-            except:
+            # r = P1P2 * P2P3 * P3P1 / 2 / l
+            if round(l, 8) == 0.0:
                 PathLog.error("The three points are aligned.")
                 return False
-            else:
-                # Sphere center.
-                a = P2P3**2 * (P1 - P2).dot(P1 - P3) / 2 / l**2
-                b = P3P1**2 * (P2 - P1).dot(P2 - P3) / 2 / l**2
-                c = P1P2**2 * (P3 - P1).dot(P3 - P2) / 2 / l**2
-                P1.multiply(a)
-                P2.multiply(b)
-                P3.multiply(c)
-                PC = P1 + P2 + P3
-                return PC
+
+            # Sphere center.
+            a = P2P3**2 * (P1 - P2).dot(P1 - P3) / 2 / l**2
+            b = P3P1**2 * (P2 - P1).dot(P2 - P3) / 2 / l**2
+            c = P1P2**2 * (P3 - P1).dot(P3 - P2) / 2 / l**2
+            P1.multiply(a)
+            P2.multiply(b)
+            P3.multiply(c)
+            PC = P1 + P2 + P3
+            return PC
 
         # Process edge based on curve type
         if edge.Curve.TypeId in lineTypes:
@@ -978,9 +975,7 @@ class ObjectSlot(PathOp.ObjectOp):
         PathLog.debug('_processDouble()')
         """This is the control method for slots based on a
         two Base Geometry features."""
-        cmds = False
-        make = False
-        cat2 = sub2[:4]
+
         p1 = None
         p2 = None
         dYdX1 = None
@@ -1072,7 +1067,7 @@ class ObjectSlot(PathOp.ObjectOp):
         for V in shape_1.Vertexes:
             if V.Z < zmin:
                 zmin = V.Z
-                vMin = V
+                # vMin = V
             elif V.Z == zmin:
                 same.append(V)
         if len(same) > 1:
@@ -1092,7 +1087,7 @@ class ObjectSlot(PathOp.ObjectOp):
         for V in shape_1.Vertexes:
             if V.Z > zmax:
                 zmax = V.Z
-                vMax = V
+                # vMax = V
             elif V.Z == zmax:
                 same.append(V)
         if len(same) > 1:
@@ -1177,7 +1172,6 @@ class ObjectSlot(PathOp.ObjectOp):
             y = self.newRadius * math.sin(rads)
             a = FreeCAD.Vector(self.newRadius, 0.0, 0.0)
             b = FreeCAD.Vector(x, y, 0.0)
-            c = FreeCAD.Vector(0.0, 0.0, 0.0)
             return Part.makeLine(a, b)
 
         if begExt or endExt:
@@ -1286,7 +1280,6 @@ class ObjectSlot(PathOp.ObjectOp):
             return (n1, n2)
         else:
             toEnd = p2.sub(p1)
-            factor = halfDist / toEnd.Length
             perp = FreeCAD.Vector(-1 * toEnd.y, toEnd.x, 0.0)
             perp.normalize()
             perp.multiply(halfDist)
@@ -1462,8 +1455,6 @@ class ObjectSlot(PathOp.ObjectOp):
         for i in slcs:
             wires.append(i)
         if len(wires) > 0:
-            isFace = False
-            csWire = wires[0]
             if wires[0].isClosed():
                 face = Part.Face(wires[0])
                 if face.Area > 0:
@@ -1571,7 +1562,10 @@ class ObjectSlot(PathOp.ObjectOp):
         Make arch face between circles. Fuse and extrude it vertically.
         Check for collision with model."""
         # Make path travel of tool as 3D solid.
-        rad = self.tool.Diameter / 2.0
+        if hasattr(self.tool.Diameter, 'Value'):
+            rad = self.tool.Diameter.Value / 2.0
+        else:
+            rad = self.tool.Diameter / 2.0
         extFwd = obj.StartDepth.Value - obj.FinalDepth.Value
         extVect = FreeCAD.Vector(0.0, 0.0, extFwd)
 
@@ -1614,8 +1608,7 @@ class ObjectSlot(PathOp.ObjectOp):
 
             # Make wire with inside and outside arcs, and lines on ends.
             # Convert wire to face, then extrude
-            import draftgeoutils.arcs as Arcs
-            # Arc 1 - inside
+
             # verify offset does not force radius < 0
             newRadius = arcRadius - rad
             # PathLog.debug('arcRadius, newRadius: {}, {}'.format(arcRadius, newRadius))
@@ -1682,7 +1675,7 @@ class ObjectSlot(PathOp.ObjectOp):
             do = FreeCAD.ActiveDocument.addObject('Part::Feature', 'tmp_' + objName)
             do.Shape = objShape
             do.purgeTouched()
-            self.tempGroup.addObject(do)
+            self.tmpGrp.addObject(do)
 # Eclass
 
 

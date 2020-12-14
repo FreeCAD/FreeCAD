@@ -22,9 +22,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM solver Elmer writer"
+__title__  = "FreeCAD FEM solver Elmer writer"
 __author__ = "Markus Hovorka"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## \addtogroup FEM
 #  @{
@@ -68,7 +68,7 @@ class Writer(object):
         self.analysis = solver.getParentGroup()
         self.solver = solver
         self.directory = directory
-        Console.PrintMessage("Write elmer input files to: {}".format(self.directory))
+        Console.PrintMessage("Write elmer input files to: {}\n".format(self.directory))
         self.testmode = testmode
         self._usedVarNames = set()
         self._builder = sifio.Builder()

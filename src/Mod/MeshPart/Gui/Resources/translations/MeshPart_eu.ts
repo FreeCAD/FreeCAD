@@ -35,8 +35,8 @@
       <location filename="../../Command.cpp" line="314"/>
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a 'mesh' object.</source>
-      <translation type="unfinished">Creates an approximated curve on top of a mesh.
-This command only works with a 'mesh' object.</translation>
+      <translation>Amaraun baten gainean hari egokitzen zaion gutxi gora beherako kurba bat sortzen du.
+Komando honek 'amarauna' objektuetan soilik funtzionatzen du.</translation>
     </message>
   </context>
   <context>
@@ -207,9 +207,9 @@ This command only works with a 'mesh' object.</translation>
       <source>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
 
 This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</source>
-      <translation type="unfinished">Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
+      <translation>Sakatu 'Hasi', ondoren aukeratu amarauneko puntuak; nahiko puntu ezarri direnean, egin eskuineko klik eta aukeratu 'Sortu'. Errepikatu prozesu hori spline gehiago sortzeko. Itxi atazen panel hau eragiketa osatzeko.
 
-This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</translation>
+Komando honek 'amarauna' objektuetan soilik funtzionatzen du, ez aurpegi edo gainazal erregularretan. Objektu bat amaraun bihurtzeko, erabili amaraunen lan-mahaiko tresnak.</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
@@ -219,7 +219,7 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="44"/>
       <source>Snap tolerance to vertices</source>
-      <translation type="unfinished">Snap tolerance to vertices</translation>
+      <translation>Erpinen atxikitze-tolerantzia</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="51"/>
@@ -297,7 +297,7 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
     <message>
       <location filename="../../Tessellation.ui" line="48"/>
       <source>Maximal linear deflection of a mesh section from the surface of the object</source>
-      <translation>Amaraun-sekzio baten makurdura lineal maimoa objektuaren gainazaletik</translation>
+      <translation>Amaraun-sekzio baten makurdura lineal maximoa objektuaren gainazaletik</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="67"/>

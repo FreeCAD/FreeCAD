@@ -22,9 +22,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD result mechanical task panel"
+__title__  = "FreeCAD result mechanical task panel"
 __author__ = "Qingfeng Xia, Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## @package view_result_mechanical
 #  \ingroup FEM
@@ -468,13 +468,6 @@ class _TaskPanel:
             minm = min(UserDefinedFormula)
             maxm = max(UserDefinedFormula)
             self.update_colors_stats(UserDefinedFormula, "", minm, maxm)
-
-        # Dummy use of the variables to get around flake8 error
-        del x, y, z, T, vM, Peeq, P1, P2, P3
-        del sxx, syy, szz, sxy, sxz, syz
-        del exx, eyy, ezz, exy, exz, eyz
-        del MF, NP, rx, ry, rz, mc
-        del s1x, s1y, s1z, s2x, s2y, s2z, s3x, s3y, s3z
 
     def get_scalar_disp_list(self, vector_list, axis):
         # list is needed, as zib-object is not subscriptable in py3

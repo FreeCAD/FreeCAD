@@ -58,7 +58,7 @@ StdCmdFeatRecompute::StdCmdFeatRecompute()
 
 void StdCmdFeatRecompute::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
 }
 
 //===========================================================================

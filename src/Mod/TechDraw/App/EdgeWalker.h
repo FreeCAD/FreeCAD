@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2016 Wandererfan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -54,7 +54,7 @@ typedef
           boost::property<boost::edge_index_t, int>
         >
         graph;
-        
+
 typedef
     boost::graph_traits < graph >::vertex_descriptor
         vertex_t;

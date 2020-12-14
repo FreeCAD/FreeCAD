@@ -108,7 +108,7 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
+        <y>-290</y>
         <width>420</width>
         <height>589</height>
        </rect>
@@ -410,12 +410,22 @@
             </item>
             <item>
              <property name="text">
+              <string>Circle</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
               <string>Arrow</string>
              </property>
             </item>
             <item>
              <property name="text">
               <string>Tick</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Tick-2</string>
              </property>
             </item>
            </widget>

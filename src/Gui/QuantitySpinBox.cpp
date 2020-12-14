@@ -309,7 +309,12 @@ QuantitySpinBox::QuantitySpinBox(QWidget *parent)
     iconLabel->hide();
     lineEdit()->setStyleSheet(QString::fromLatin1("QLineEdit { padding-right: %1px } ").arg(iconHeight+frameWidth));
     // When a style sheet is set the text margins for top/bottom must be set to avoid to squash the widget
+#ifndef Q_OS_MAC
     lineEdit()->setTextMargins(0, 2, 0, 2);
+#else
+    // https://forum.freecadweb.org/viewtopic.php?f=8&t=50615
+    lineEdit()->setTextMargins(0, 2, 0, 0);
+#endif
 
     QObject::connect(iconLabel, SIGNAL(clicked()), this, SLOT(openFormulaDialog()));
 }
@@ -417,7 +422,7 @@ QString Gui::QuantitySpinBox::expressionText() const
 void Gui::QuantitySpinBox::onChange()
 {
     Q_ASSERT(isBound());
-    
+
     if (getExpression()) {
         std::unique_ptr<Expression> result(getExpression()->eval());
         NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
@@ -458,7 +463,7 @@ bool QuantitySpinBox::apply(const std::string & propName)
         if (isBound()) {
             const App::ObjectIdentifier & path = getPath();
             const Property * prop = path.getProperty();
-            
+
             /* Skip update if property is bound and we know it is read-only */
             if (prop && prop->isReadOnly())
                 return true;

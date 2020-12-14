@@ -25,6 +25,7 @@ import FreeCADGui
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathGetPoint as PathGetPoint
 import PathScripts.PathGui as PathGui
+import PathScripts.PathJob as PathJob
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathPreferences as PathPreferences
@@ -158,7 +159,7 @@ class ViewProvider(object):
         if self.Object.Active:
             return self.OpIcon
         else:
-            return ":/icons/Path-OpActive.svg"
+            return ":/icons/Path_OpActive.svg"
 
     def getTaskPanelOpPage(self, obj):
         '''getTaskPanelOpPage(obj) ... use the stored information to instantiate the receiver op's page controller.'''
@@ -210,6 +211,9 @@ class TaskPanelPage(object):
         self.isdirty = False
         self.parent = None
         self.panelTitle = 'Operation'
+
+        if hasattr(self.form, 'toolController'):
+            PathJob.Notification.updateTC.connect(self.resetToolController)
 
     def setParent(self, parent):
         '''setParent() ... used to transfer parent object link to child class.
@@ -361,6 +365,12 @@ class TaskPanelPage(object):
             combo.setCurrentIndex(index)
             combo.blockSignals(False)
 
+    def resetToolController(self, job, tc):
+        if self.obj is not None:
+            self.obj.ToolController = tc
+            combo = self.form.toolController
+            self.setupToolController(self.obj, combo)
+
     def setupToolController(self, obj, combo):
         '''setupToolController(obj, combo) ...
         helper function to setup obj's ToolController
@@ -373,7 +383,7 @@ class TaskPanelPage(object):
         combo.blockSignals(False)
 
         if obj.ToolController is None:
-            obj.ToolController = PathUtils.findToolController(obj)
+            obj.ToolController = PathUtils.findToolController(obj, obj.Proxy)
         if obj.ToolController is not None:
             self.selectInComboBox(obj.ToolController.Label, combo)
 
@@ -381,7 +391,7 @@ class TaskPanelPage(object):
         '''updateToolController(obj, combo) ...
         helper function to update obj's ToolController property if a different
         one has been selected in the combo box.'''
-        tc = PathUtils.findToolController(obj, combo.currentText())
+        tc = PathUtils.findToolController(obj, obj.Proxy, combo.currentText())
         if obj.ToolController != tc:
             obj.ToolController = tc
 
@@ -430,7 +440,7 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         super(TaskPanelBaseGeometryPage, self).__init__(obj, features)
 
         self.panelTitle = 'Base Geometry'
-        self.OpIcon = ":/icons/Path-BaseGeometry.svg"
+        self.OpIcon = ":/icons/Path_BaseGeometry.svg"
         self.setIcon(self.OpIcon)
 
     def getForm(self):
@@ -535,7 +545,7 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
                     PathLog.error(translate("PathProject", "Faces are not supported"))
                 return False
         else:
-            if not self.supportsPanels() or not 'Panel' in sel.Object.Name:
+            if not self.supportsPanels() or 'Panel' not in sel.Object.Name:
                 if not ignoreErrors:
                     PathLog.error(translate("PathProject", "Please select %s of a solid" % self.featureName()))
                 return False
@@ -625,6 +635,7 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         col = qList.width()  # 300
         row = (qList.count() + qList.frameWidth()) * 15
         qList.setFixedSize(col, row)
+
 
 class TaskPanelBaseLocationPage(TaskPanelPage):
     '''Page controller for base locations. Uses PathGetPoint.'''
@@ -753,7 +764,7 @@ class TaskPanelHeightsPage(TaskPanelPage):
         self.clearanceHeight = None
         self.safeHeight = None
         self.panelTitle = 'Heights'
-        self.OpIcon = ":/icons/Path-Heights.svg"
+        self.OpIcon = ":/icons/Path_Heights.svg"
         self.setIcon(self.OpIcon)
 
     def getForm(self):
@@ -797,7 +808,7 @@ class TaskPanelDepthsPage(TaskPanelPage):
         self.finishDepth = None
         self.stepDown = None
         self.panelTitle = 'Depths'
-        self.OpIcon = ":/icons/Path-Depths.svg"
+        self.OpIcon = ":/icons/Path_Depths.svg"
         self.setIcon(self.OpIcon)
 
     def getForm(self):
@@ -926,6 +937,7 @@ class TaskPanelDepthsPage(TaskPanelPage):
             self.form.startDepthSet.setEnabled(False)
             self.form.finalDepthSet.setEnabled(False)
 
+
 class TaskPanelDiametersPage(TaskPanelPage):
     '''Page controller for diameters.'''
 
@@ -950,7 +962,7 @@ class TaskPanelDiametersPage(TaskPanelPage):
         self.minDiameter.updateProperty()
         self.maxDiameter.updateProperty()
 
-    def setFields(self,  obj):
+    def setFields(self, obj):
         self.minDiameter.updateSpinBox()
         self.maxDiameter.updateSpinBox()
 
@@ -963,6 +975,7 @@ class TaskPanelDiametersPage(TaskPanelPage):
     def pageUpdateData(self, obj, prop):
         if prop in ['MinDiameter', 'MaxDiameter']:
             self.setFields(obj)
+
 
 class TaskPanel(object):
     '''
@@ -1221,7 +1234,7 @@ class CommandSetStartPoint:
     # pylint: disable=no-init
 
     def GetResources(self):
-        return {'Pixmap': 'Path-StartPoint',
+        return {'Pixmap': 'Path_StartPoint',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path", "Pick Start Point"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path", "Pick Start Point")}
 

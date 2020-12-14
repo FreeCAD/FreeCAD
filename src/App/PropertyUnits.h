@@ -45,7 +45,7 @@ namespace App
 {
 
 /** Float with Unit property
- * This is a property for float with a predefined Unit associated .
+ * This is a property for float with a predefined Unit associated.
  */
 class AppExport PropertyQuantity : public PropertyFloat
 {
@@ -77,7 +77,7 @@ protected:
 };
 
 /** Float with Unit property
- * This is a property for float with a predefined Unit associated .
+ * This is a property for float with a predefined Unit associated.
  */
 class AppExport PropertyQuantityConstraint : public PropertyQuantity
 {
@@ -87,16 +87,16 @@ public:
     PropertyQuantityConstraint(void):_ConstStruct(0){}
     virtual ~PropertyQuantityConstraint(){}
 
-    /// Constraint methods 
+    /// Constraint methods
     //@{
     /// the boundary struct
     struct Constraints {
         double LowerBound, UpperBound, StepSize;
     };
     /** setting the boundaries
-     * This sets the constraint struct. It can be dynamically 
+     * This sets the constraint struct. It can be dynamically
      * allocated or set as an static in the class the property
-     * blongs to:
+     * belongs to:
      * \code
      * const Constraints percent = {0.0,100.0,1.0}
      * \endcode
@@ -167,7 +167,7 @@ public:
  * property. On the Gui it has a quantity like RAD.
  */
 class AppExport PropertyAngle: public PropertyQuantityConstraint
-{ 
+{
     TYPESYSTEM_HEADER();
 public:
     PropertyAngle(void);

@@ -22,9 +22,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FEM Errors"
+__title__  = "FEM Errors"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 
 class MustSaveError(Exception):

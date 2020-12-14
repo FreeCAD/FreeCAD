@@ -95,17 +95,17 @@
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Threshold</string>
+         <string>Filter Colinear lines</string>
         </property>
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QSpinBox" name="threshold">
+       <widget class="QSpinBox" name="colinearFilter">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Threshold is used by the medial axis filter to remove unwanted segments. If the resulting path contains unwanted segments, decrease this value. &lt;/p&gt;&lt;p&gt;Valid values are 0.0 - 1.0&lt;/p&gt;&lt;p&gt;Default = 0.8&lt;/p&gt;&lt;p&gt;1.0 will remove nothing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets how aggressively colinear segments are filtered from the voronoi diagram&lt;/p&gt;&lt;p&gt;Valid values are 0 - 90 degrees (larger numbers filter more)&lt;/p&gt;&lt;p&gt;Default = 10&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="maximum">
-         <number>180</number>
+         <number>90</number>
         </property>
         <property name="value">
          <number>10</number>

@@ -396,7 +396,7 @@ void TaskRevolutionParameters::changeEvent(QEvent *e)
 
 void TaskRevolutionParameters::apply()
 {
-    //Gui::Command::openCommand("Revolution changed");
+    //Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Revolution changed"));
     ui->revolveAngle->apply();
     std::vector<std::string> sub;
     App::DocumentObject* obj;

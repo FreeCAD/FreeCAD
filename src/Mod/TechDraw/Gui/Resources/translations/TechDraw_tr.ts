@@ -1058,7 +1058,7 @@
       <location filename="../../Command.cpp" line="339"/>
       <location filename="../../Command.cpp" line="592"/>
       <source>No Shapes, Groups or Links in this selection</source>
-      <translation>Seçim içinde şekil(ler) ya da Bağlantılar(lar) yok</translation>
+      <translation>Bu seçimde Şekil, Grup veya Bağlantı Yok</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="453"/>
@@ -1281,7 +1281,7 @@
       <location filename="../../Command.cpp" line="742"/>
       <location filename="../../CommandCreateDims.cpp" line="1460"/>
       <source>No View of a Part in selection.</source>
-      <translation>Seçimdeki Parçanın Görünümü Yok.</translation>
+      <translation>Seçimde Parça Görünümü Yok.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1477"/>
@@ -1459,7 +1459,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1363"/>
       <source>No Part Views in this selection</source>
-      <translation>Bu seçimde Bölüm görünümü yok</translation>
+      <translation>Bu seçimde Parça Görünümü yok</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1432"/>
@@ -1475,7 +1475,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1169"/>
       <source>At least 1 object in selection is not a part view</source>
-      <translation>Seçimdeki en az bir nesne bölüm görünümü değil</translation>
+      <translation>Seçimdeki en az 1 nesne bir parça görünümü değil</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1219"/>
@@ -1681,7 +1681,7 @@
     <message>
       <location filename="../../TaskCosmeticLine.cpp" line="151"/>
       <source>Create Cosmetic Line</source>
-      <translation>Yardımcı doğru oluştur</translation>
+      <translation>Yardımcı çizgi oluştur</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.cpp" line="186"/>
@@ -1884,7 +1884,7 @@ the top and left view border</translation>
     <message>
       <location filename="../../TaskActiveView.ui" line="242"/>
       <source>Bounding box</source>
-      <translation type="unfinished">Bounding box</translation>
+      <translation>Sınır kutusu</translation>
     </message>
   </context>
   <context>
@@ -2975,7 +2975,7 @@ for ProjectionGroups</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="96"/>
       <source>Show smooth lines</source>
-      <translation>Düzgünleştirilmiş çizgileri göster</translation>
+      <translation>Düzgün çizgileri göster</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="99"/>

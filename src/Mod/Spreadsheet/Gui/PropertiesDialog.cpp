@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Eivind Kvedalen (eivind@kvedalen.name) 2015             *
+ *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -225,7 +225,7 @@ PropertiesDialog::~PropertiesDialog()
 void PropertiesDialog::apply()
 {
     if (ranges.size() > 0) {
-        Gui::Command::openCommand("Set cell properties");
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Set cell properties"));
         std::vector<Range>::const_iterator i = ranges.begin();
         bool changes = false;
 
@@ -262,7 +262,7 @@ void PropertiesDialog::apply()
                 std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(displayUnit.stringRep.c_str());
                 Gui::cmdAppObjectArgs(sheet, "setDisplayUnit('%s', '%s')",
                                         i->rangeString().c_str(), escapedstr.c_str());
-                changes = true;               
+                changes = true;
             }
             if (ranges.size() == 1 && ranges[0].size() == 1 && orgAlias != alias) {
                 Gui::cmdAppObjectArgs(sheet, "setAlias('%s', '%s')",

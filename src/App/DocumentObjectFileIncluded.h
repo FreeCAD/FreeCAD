@@ -41,12 +41,12 @@ public:
     DocumentObjectFileIncluded(void);
     virtual ~DocumentObjectFileIncluded();
 
- 
+
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {
         return "Gui::ViewProviderDocumentObject";
     }
- 
+
     /// Properties
     PropertyFileIncluded File;
 

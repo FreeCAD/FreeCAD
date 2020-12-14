@@ -35,7 +35,7 @@ class QSvgRenderer;
 class QGraphicsSvgItem;
 class GraphicsViewZoom;
 
-namespace Gui 
+namespace Gui
 {
 
 class GraphvizWorker;

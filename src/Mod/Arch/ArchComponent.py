@@ -27,9 +27,9 @@ Examples
 TODO put examples here.
 """
 
-__title__="FreeCAD Arch Component"
+__title__  = "FreeCAD Arch Component"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 import FreeCAD,Draft,ArchCommands,math,sys,json,os,ArchIFC,ArchIFCSchema
 from FreeCAD import Vector
@@ -615,6 +615,8 @@ class Component(ArchIFC.IfcProduct):
 
         # Get the object's normal.
         n = DraftGeomUtils.getNormal(shape[0])
+        if (not n) or (not n.Length):
+            n = FreeCAD.Vector(0, 0, 1)
 
         # Reverse the normal if the hint vector and the normal vector have more
         # than a 90 degree angle between them.
@@ -779,7 +781,7 @@ class Component(ArchIFC.IfcProduct):
                     subvolume = o.Subvolume.Shape.copy()
                     if hasattr(o,"Placement"):
                         subvolume.Placement = subvolume.Placement.multiply(o.Placement)
-                    
+
                 if subvolume:
                     if base.Solids and subvolume.Solids:
                         if placement:

@@ -340,7 +340,7 @@ public:
     Spiral();
 
     App::PropertyLength Growth;
-    App::PropertyLength Rotations;
+    App::PropertyQuantityConstraint Rotations;
     App::PropertyLength Radius;
 
     /** @name methods override feature */

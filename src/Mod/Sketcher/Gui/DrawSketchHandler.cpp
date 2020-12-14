@@ -589,7 +589,7 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint> 
 
         if(createowncommand) {
             // Open the Command
-            Gui::Command::openCommand("Add auto constraints");
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add auto constraints"));
         }
 
         // Iterate through constraints

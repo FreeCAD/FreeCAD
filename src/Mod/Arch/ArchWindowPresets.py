@@ -26,7 +26,7 @@ from draftutils.translate import translate
 
 
 WindowPresets =  ["Fixed", "Open 1-pane", "Open 2-pane", "Sash 2-pane",
-                  "Sliding 2-pane", "Simple door", "Glass door", "Sliding 4-pane"]
+                  "Sliding 2-pane", "Simple door", "Glass door", "Sliding 4-pane", "Awning"]
 
 def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None):
 
@@ -85,6 +85,33 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             s.addConstraint(Sketcher.Constraint('Horizontal',idx+6))
             s.addConstraint(Sketcher.Constraint('Vertical',idx+5))
             s.addConstraint(Sketcher.Constraint('Vertical',idx+7))
+
+        def simpleFrame(s,width,height,h1,h2,tol):
+            
+            "creates a simple frame with constraints"
+
+            p1 = Vector(h1+tol,h1+tol,0)
+            p2 = Vector(width-(h1+tol),h1+tol,0)
+            p3 = Vector(width-(h1+tol),height-(h1+tol),0)
+            p4 = Vector(h1+tol,height-(h1+tol),0)
+            p5 = Vector(h1+h2,h1+h2,0)
+            p6 = Vector(width-(h1+h2),h1+h2,0)
+            p7 = Vector(width-(h1+h2),height-(h1+h2),0)
+            p8 = Vector(h1+h2,height-(h1+h2),0)
+            addFrame(s,p1,p2,p3,p4,p5,p6,p7,p8)
+            s.addConstraint(Sketcher.Constraint('DistanceX',8,1,12,1,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceY',8,1,12,1,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceX',14,1,10,1,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceY',14,1,10,1,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceX',4,1,8,1,tol))
+            s.addConstraint(Sketcher.Constraint('DistanceY',4,1,8,1,tol))
+            s.addConstraint(Sketcher.Constraint('DistanceX',10,1,6,1,tol))
+            s.addConstraint(Sketcher.Constraint('DistanceY',10,1,6,1,tol))
+            if h2 == h1:
+                s.renameConstraint(39,'Frame5')
+                s.renameConstraint(40,'Frame6')
+                s.renameConstraint(42,'Frame7')
+                s.renameConstraint(41,'Frame8')
 
         def outerFrame(s,width,height,h1,w1,o1):
 
@@ -145,28 +172,7 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
         elif windowtype == "Open 1-pane":
 
             wp = outerFrame(s,width,height,h1,w1,o1)
-            p1 = Vector(h1+tol,h1+tol,0)
-            p2 = Vector(width-(h1+tol),h1+tol,0)
-            p3 = Vector(width-(h1+tol),height-(h1+tol),0)
-            p4 = Vector(h1+tol,height-(h1+tol),0)
-            p5 = Vector(h1+h2,h1+h2,0)
-            p6 = Vector(width-(h1+h2),h1+h2,0)
-            p7 = Vector(width-(h1+h2),height-(h1+h2),0)
-            p8 = Vector(h1+h2,height-(h1+h2),0)
-            addFrame(s,p1,p2,p3,p4,p5,p6,p7,p8)
-            s.addConstraint(Sketcher.Constraint('DistanceX',8,1,12,1,h2))
-            s.addConstraint(Sketcher.Constraint('DistanceY',8,1,12,1,h2))
-            s.addConstraint(Sketcher.Constraint('DistanceX',14,1,10,1,h2))
-            s.addConstraint(Sketcher.Constraint('DistanceY',14,1,10,1,h2))
-            s.addConstraint(Sketcher.Constraint('DistanceX',4,1,8,1,tol))
-            s.addConstraint(Sketcher.Constraint('DistanceY',4,1,8,1,tol))
-            s.addConstraint(Sketcher.Constraint('DistanceX',10,1,6,1,tol))
-            s.addConstraint(Sketcher.Constraint('DistanceY',10,1,6,1,tol))
-            if h2 == h1:
-                s.renameConstraint(39,'Frame5')
-                s.renameConstraint(40,'Frame6')
-                s.renameConstraint(42,'Frame7')
-                s.renameConstraint(41,'Frame8')
+            simpleFrame(s,width,height,h1,h2,tol)
             fw = str(w2)
             if w2 == w1:
                 fw = "0.00+V"
@@ -429,6 +435,17 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             wp.extend(["RightGlass","Glass panel","Wire7",str(w2/gla),str(o2+w2+w2/2)+"+V"])
             wp.extend(["RightMostFrame","Frame","Wire8,Wire9",fw,str(o2)+"+V"])
             wp.extend(["RightMostGlass","Glass panel","Wire9",str(w2/gla),str(o2+w2/2)+"+V"])
+
+        elif windowtype == "Awning":
+
+            wp = outerFrame(s,width,height,h1,w1,o1)
+            simpleFrame(s,width,height,h1,h2,tol)
+            fw = str(w2)
+            if w2 == w1:
+                fw = "0.00+V"
+            wp.extend(["InnerFrame","Frame","Wire2,Wire3,Edge7,Mode1",fw,str(o2)+"+V"])
+            wp.extend(["InnerGlass","Glass panel","Wire3",str(w2/gla),str(o2+w2/2)+"+V"])
+
 
         elif windowtype == "Simple door":
 

@@ -204,12 +204,12 @@
       <translation>La direzione di estrusione normale di questo oggetto (lasciare (0, 0,0) per normale in automatico)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1242"/>
+      <location filename="../../ArchSectionPlane.py" line="1257"/>
       <source>The linked object</source>
       <translation>L'oggetto collegato</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1252"/>
+      <location filename="../../ArchSectionPlane.py" line="1267"/>
       <source>The line width of the rendered objects</source>
       <translation>La larghezza della linea degli oggetti resi</translation>
     </message>
@@ -594,27 +594,27 @@
       <translation>Visualizza la sezione nella vista 3D</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1244"/>
+      <location filename="../../ArchSectionPlane.py" line="1259"/>
       <source>The rendering mode to use</source>
       <translation>La modalità di rendering da utilizzare</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1248"/>
+      <location filename="../../ArchSectionPlane.py" line="1263"/>
       <source>If cut geometry is shown or not</source>
       <translation>Se la geometria di taglio è visualizzata o meno</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1250"/>
+      <location filename="../../ArchSectionPlane.py" line="1265"/>
       <source>If cut geometry is filled or not</source>
       <translation>Se la geometria deve essere riempita o non</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1255"/>
+      <location filename="../../ArchSectionPlane.py" line="1270"/>
       <source>The size of the texts inside this object</source>
       <translation>La dimensione dei testi all'interno di questo oggetto</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1258"/>
+      <location filename="../../ArchSectionPlane.py" line="1273"/>
       <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
       <translation>Se selezionata, gli oggetti di origine vengono visualizzati indipendentemente dall'essere visibili nel modello 3D</translation>
     </message>
@@ -1039,12 +1039,12 @@
       <translation>L'elenco degli spessori degli strati</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1260"/>
+      <location filename="../../ArchSectionPlane.py" line="1275"/>
       <source>The line color of the projected objects</source>
       <translation>Il colore della linea degli oggetti proiettati</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1262"/>
+      <location filename="../../ArchSectionPlane.py" line="1277"/>
       <source>The color of the cut faces (if turned on)</source>
       <translation>Il colore delle facce tagliate (se attivato)</translation>
     </message>
@@ -3208,37 +3208,37 @@ Floor creation aborted.</source>
       <translation>Crea riferimenti esterni</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1479"/>
+      <location filename="../../ArchSectionPlane.py" line="1494"/>
       <source>Section plane settings</source>
       <translation>Impostazioni del piano di sezione</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1484"/>
+      <location filename="../../ArchSectionPlane.py" line="1499"/>
       <source>Objects seen by this section plane:</source>
       <translation>Oggetti visti in questo piano di sezione:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1485"/>
+      <location filename="../../ArchSectionPlane.py" line="1500"/>
       <source>Section plane placement:</source>
       <translation>Posizione del piano di sezione:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1486"/>
+      <location filename="../../ArchSectionPlane.py" line="1501"/>
       <source>Rotate X</source>
       <translation>Rotazione X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1488"/>
+      <location filename="../../ArchSectionPlane.py" line="1503"/>
       <source>Rotate Y</source>
       <translation>Rotazione Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1490"/>
+      <location filename="../../ArchSectionPlane.py" line="1505"/>
       <source>Rotate Z</source>
       <translation>Rotazione Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1492"/>
+      <location filename="../../ArchSectionPlane.py" line="1507"/>
       <source>Resize</source>
       <translation>Ridimensiona</translation>
     </message>
@@ -3392,42 +3392,42 @@ Gli oggetti Sito e Edificio saranno rimossi dalla selezione.
 È possibile modificare questa impostazione nelle preferenze.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1481"/>
+      <location filename="../../ArchSectionPlane.py" line="1496"/>
       <source>Remove highlighted objects from the list above</source>
       <translation>Rimuovi gli oggetti evidenziati dalla lista precedente</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1482"/>
+      <location filename="../../ArchSectionPlane.py" line="1497"/>
       <source>Add selected</source>
       <translation>Aggiungi la selezione</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1483"/>
+      <location filename="../../ArchSectionPlane.py" line="1498"/>
       <source>Add selected object(s) to the scope of this section plane</source>
       <translation>Aggiungi oggetto(i) selezionato(i) allo spazio di questo piano sezione</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1487"/>
+      <location filename="../../ArchSectionPlane.py" line="1502"/>
       <source>Rotates the plane along the X axis</source>
       <translation>Ruota il piano lungo l'asse X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1489"/>
+      <location filename="../../ArchSectionPlane.py" line="1504"/>
       <source>Rotates the plane along the Y axis</source>
       <translation>Ruota il piano lungo l'asse Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1491"/>
+      <location filename="../../ArchSectionPlane.py" line="1506"/>
       <source>Rotates the plane along the Z axis</source>
       <translation>Ruota il piano lungo l'asse Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1493"/>
+      <location filename="../../ArchSectionPlane.py" line="1508"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation>Ridimensiona il piano per adattare gli oggetti nella lista precedente</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1495"/>
+      <location filename="../../ArchSectionPlane.py" line="1510"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation>Centra il piano sugli oggetti nella lista precedente</translation>
     </message>

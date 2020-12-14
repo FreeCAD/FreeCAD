@@ -47,10 +47,10 @@ class Document;
 class ViewProviderDocumentObject;
 
 /**  Unified Selection node
- *  This is the new selection node for the 3D Viewer which will 
+ *  This is the new selection node for the 3D Viewer which will
  *  gradually remove all the low level selection nodes in the view
  *  provider. The handling of the highlighting and the selection will
- *  be unified here. 
+ *  be unified here.
  *  \author Jürgen Riegel
  */
 class GuiExport SoFCUnifiedSelection : public SoSeparator {
@@ -93,7 +93,7 @@ public:
 protected:
     virtual ~SoFCUnifiedSelection();
     //virtual void redrawHighlighted(SoAction * act, SbBool flag);
-    //virtual SbBool readInstance(SoInput *  in, unsigned short  flags); 
+    //virtual SbBool readInstance(SoInput *  in, unsigned short  flags);
 
 private:
     //static void turnoffcurrent(SoAction * action);
@@ -111,7 +111,7 @@ private:
     };
 
     bool setHighlight(const PickedInfo &);
-    bool setHighlight(SoFullPath *path, const SoDetail *det, 
+    bool setHighlight(SoFullPath *path, const SoDetail *det,
             ViewProviderDocumentObject *vpd, const char *element, float x, float y, float z);
     bool setSelection(const std::vector<PickedInfo> &, bool ctrlDown=false);
 
@@ -186,7 +186,7 @@ class GuiExport SoFCSelectionRoot : public SoFCSeparator {
     typedef SoFCSeparator inherited;
 
     SO_NODE_HEADER(Gui::SoFCSelectionRoot);
-  
+
 public:
     static void initClass(void);
     static void finish(void);
@@ -210,7 +210,7 @@ public:
         return std::dynamic_pointer_cast<T>(getNodeContext(SelStack,node,def));
     }
 
-    /** Returns selection context for rendering. 
+    /** Returns selection context for rendering.
      *
      * @param node: the querying node
      * @param def: default context if none is found
@@ -219,12 +219,12 @@ public:
      * @return Returned the primary context for selection, and the context is
      * always stored in the first encountered SoFCSelectionRoot in the path. It
      * is keyed using the entire sequence of SoFCSelectionRoot along the path
-     * to \c node, replacing the first SoFCSelectionRoot with the given node. 
+     * to \c node, replacing the first SoFCSelectionRoot with the given node.
      *
      * @return Secondary context returned in \c ctx2 is for customized
      * highlighting, and is not affected by mouse event. The highlight is
      * applied manually using SoSelectionElementAction. It is stored in the
-     * last encountered SoFCSelectionRoot, and is keyed using the querying 
+     * last encountered SoFCSelectionRoot, and is keyed using the querying
      * \c node and (if there are more than one SoFCSelectionRoot along the
      * path) the first SoFCSelectionRoot. The reason is so that any link to a
      * node (new links means additional SoFCSelectionRoot added in front) with
@@ -238,13 +238,13 @@ public:
      * when the storage SoFCSSelectionRoot node is freed.
      */
     template<class T>
-    static std::shared_ptr<T> getRenderContext(SoNode *node, std::shared_ptr<T> def, std::shared_ptr<T> &ctx2) 
+    static std::shared_ptr<T> getRenderContext(SoNode *node, std::shared_ptr<T> def, std::shared_ptr<T> &ctx2)
     {
         ctx2 = std::dynamic_pointer_cast<T>(getNodeContext2(SelStack,node,T::merge));
         return std::dynamic_pointer_cast<T>(getNodeContext(SelStack,node,def));
     }
 
-    /** Get the selection context for an action. 
+    /** Get the selection context for an action.
      *
      * @param action: the action. SoSelectionElementAction has any option to
      * query for secondary context. \sa getRenderContext for detail about
@@ -260,7 +260,7 @@ public:
      */
     template<class T>
     static std::shared_ptr<T> getActionContext(
-            SoAction *action, SoNode *node, std::shared_ptr<T> def=std::shared_ptr<T>(), bool create=true) 
+            SoAction *action, SoNode *node, std::shared_ptr<T> def=std::shared_ptr<T>(), bool create=true)
     {
         auto res = findActionContext(action,node,create,false);
         if(!res.second) {
@@ -276,7 +276,7 @@ public:
             if(!ret)
                 ctx.reset();
         }
-        if(!ctx && create) 
+        if(!ctx && create)
             ctx = std::make_shared<T>();
         return std::static_pointer_cast<T>(ctx);
     }

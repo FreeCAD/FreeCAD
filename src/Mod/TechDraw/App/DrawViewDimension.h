@@ -27,6 +27,7 @@
 # include <App/DocumentObject.h>
 # include <App/FeaturePython.h>
 # include <App/PropertyLinks.h>
+# include <Base/UnitsApi.h>
 
 #include "DrawView.h"
 
@@ -101,9 +102,12 @@ public:
     App::PropertyBool              TheoreticalExact;
     App::PropertyBool              Inverted;
     App::PropertyString            FormatSpec;
+    App::PropertyString            FormatSpecUnderTolerance;
+    App::PropertyString            FormatSpecOverTolerance;
     App::PropertyBool              Arbitrary;
-    App::PropertyFloat             OverTolerance;
-    App::PropertyFloat             UnderTolerance;
+    App::PropertyBool              ArbitraryTolerances;
+    App::PropertyQuantity          OverTolerance;
+    App::PropertyQuantity          UnderTolerance;
 
     enum RefType{
             invalidRef,
@@ -133,18 +137,17 @@ public:
     //return PyObject as DrawViewDimensionPy
     virtual PyObject *getPyObject(void) override;
 
-    virtual std::string getFormatedValue(int partial = 0);
+    virtual std::pair<std::string, std::string> getFormattedToleranceValues(int partial = 0);
+    virtual std::string getFormattedDimensionValue(int partial = 0);
+    virtual std::string formatValue(qreal value, QString qFormatSpec, int partial = 0);
+
     virtual double getDimValue();
     QStringList getPrefixSuffixSpec(QString fSpec);
 
     virtual DrawViewPart* getViewPart() const;
     virtual QRectF getRect() const override { return QRectF(0,0,1,1);}          //pretend dimensions always fit!
-    static int getRefType1(const std::string s);
-    static int getRefType2(const std::string s1, const std::string s2);
-    static int getRefType3(const std::string g1,
-                           const std::string g2,
-                           const std::string g3);
-    virtual int getRefType() const;                                   //Vertex-Vertex, Edge, Edge-Edge
+    virtual int getRefType() const;             //Vertex-Vertex, Edge, Edge-Edge
+    static int getRefTypeSubElements(const std::vector<std::string> &);             //Vertex-Vertex, Edge, Edge-Edge
     void setAll3DMeasurement();
     void clear3DMeasurements(void);
     virtual bool checkReferences2D(void) const;
@@ -155,6 +158,8 @@ public:
 
     bool isMultiValueSchema(void) const;
 
+    std::string getBaseLengthUnit(Base::UnitSystem system);
+
     pointPair getArrowPositions(void);
     void saveArrowPositions(const Base::Vector2d positions[]);
 
@@ -162,6 +167,7 @@ public:
     bool useDecimals() const;
 
 protected:
+    virtual void handleChangedPropertyType(Base::XMLReader &, const char * , App::Property * ) override;
     virtual void onChanged(const App::Property* prop) override;
     virtual void onDocumentRestored() override;
     std::string getPrefix() const;

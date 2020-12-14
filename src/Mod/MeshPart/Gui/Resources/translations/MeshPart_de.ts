@@ -35,8 +35,8 @@
       <location filename="../../Command.cpp" line="314"/>
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a 'mesh' object.</source>
-      <translation type="unfinished">Creates an approximated curve on top of a mesh.
-This command only works with a 'mesh' object.</translation>
+      <translation>Erstellt eine ungefähre Kurve über einem Netz.
+Dieser Befehl funktioniert nur mit einem 'mesh'-Objekt.</translation>
     </message>
   </context>
   <context>
@@ -207,9 +207,9 @@ This command only works with a 'mesh' object.</translation>
       <source>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
 
 This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</source>
-      <translation type="unfinished">Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
+      <translation>Drücke 'Start' und wähle dann Punkte im Netz; wenn genug Punkte gesetzt wurden, klicke mit der rechten Maustaste und wähle 'Erstellen'. Wiederholen Sie diesen Prozess, um weitere Splines zu erstellen. Schließen Sie diese Taskleiste, um den Vorgang abzuschließen.
 
-This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</translation>
+Dieser Befehl funktioniert nur mit einem 'mesh' Objekt, nicht mit einer normalen Fläche oder Oberfläche. Um ein Objekt in ein Netz zu konvertieren, verwenden Sie die Werkzeuge der Mesh Workbench.</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
@@ -219,7 +219,7 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="44"/>
       <source>Snap tolerance to vertices</source>
-      <translation type="unfinished">Snap tolerance to vertices</translation>
+      <translation>Einrast-Toleranz zu Netzpunkten</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="51"/>

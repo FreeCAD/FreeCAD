@@ -24,7 +24,7 @@
 #ifndef PARTGUI_VIEWPROVIDERTORUSPARAMETRIC_H
 #define PARTGUI_VIEWPROVIDERTORUSPARAMETRIC_H
 
-#include "ViewProvider.h"
+#include "ViewProviderPrimitive.h"
 
 
 class TopoDS_Shape;

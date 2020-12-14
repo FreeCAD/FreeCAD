@@ -38,8 +38,8 @@ using namespace Gui::Dialog;
 /* TRANSLATOR Gui::Dialog::UndoRedoDialog */
 
 /**
- *  Constructs a UndoRedoDialog which is a child of 'parent', with the 
- *  name 'name'.' 
+ *  Constructs a UndoRedoDialog which is a child of 'parent', with the
+ *  name 'name'.'
  */
 UndoDialog::UndoDialog( QWidget* parent )
   : QMenu( parent )
@@ -47,7 +47,7 @@ UndoDialog::UndoDialog( QWidget* parent )
     connect(this, SIGNAL(aboutToShow()), this, SLOT(onFetchInfo()));
 }
 
-/** 
+/**
  *  Destroys the object and frees any allocated resources.
  */
 UndoDialog::~UndoDialog()
@@ -55,11 +55,11 @@ UndoDialog::~UndoDialog()
     // no need to delete child widgets, Qt does it all for us
 }
 
-/** 
- *  This method fetches the undo / redo information from the 
+/**
+ *  This method fetches the undo / redo information from the
  *  active document and shows it in the undo / redo dialog.
  */
-void UndoDialog::onFetchInfo() 
+void UndoDialog::onFetchInfo()
 {
     clear(); // Remove first all items
 
@@ -103,8 +103,8 @@ void UndoDialog::onSelected()
 /* TRANSLATOR Gui::Dialog::RedoDialog */
 
 /**
- *  Constructs a UndoRedoDialog which is a child of 'parent', with the 
- *  name 'name'.' 
+ *  Constructs a UndoRedoDialog which is a child of 'parent', with the
+ *  name 'name'.'
  */
 RedoDialog::RedoDialog( QWidget* parent )
   : QMenu( parent )
@@ -112,7 +112,7 @@ RedoDialog::RedoDialog( QWidget* parent )
     connect(this, SIGNAL(aboutToShow()), this, SLOT(onFetchInfo()));
 }
 
-/** 
+/**
  *  Destroys the object and frees any allocated resources.
  */
 RedoDialog::~RedoDialog()
@@ -120,11 +120,11 @@ RedoDialog::~RedoDialog()
     // no need to delete child widgets, Qt does it all for us
 }
 
-/** 
- *  This method fetches the undo / redo information from the 
+/**
+ *  This method fetches the undo / redo information from the
  *  active document and shows it in the undo / redo dialog.
  */
-void RedoDialog::onFetchInfo() 
+void RedoDialog::onFetchInfo()
 {
     clear(); // Remove first all items
 
