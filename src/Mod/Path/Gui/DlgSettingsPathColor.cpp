@@ -68,6 +68,7 @@ void DlgSettingsPathColor::saveSettings()
     ui->DefaultSelectionStyle->onSave();
     ui->DefaultTaskPanelLayout->onSave();
     ui->WarningSuppressRapidSpeeds->onSave();
+    ui->WarningSuppressSelectionMode->onSave();
 }
 
 void DlgSettingsPathColor::loadSettings()
@@ -85,6 +86,7 @@ void DlgSettingsPathColor::loadSettings()
     ui->DefaultSelectionStyle->onRestore();
     ui->DefaultTaskPanelLayout->onRestore();
     ui->WarningSuppressRapidSpeeds->onRestore();
+    ui->WarningSuppressSelectionMode->onRestore();
 }
 
 /**

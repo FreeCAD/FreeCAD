@@ -58,6 +58,7 @@ GeometryTolerance           = "GeometryTolerance"
 LibAreaCurveAccuracy        = "LibAreaCurveAccuarcy"
 
 WarningSuppressRapidSpeeds  = "WarningSuppressRapidSpeeds"
+WarningSuppressSelectionMode  = "WarningSuppressSelectionMode"
 EnableExperimentalFeatures  = "EnableExperimentalFeatures"
 
 
@@ -262,6 +263,9 @@ def experimentalFeaturesEnabled():
 
 def suppressRapidSpeedsWarning():
     return preferences().GetBool(WarningSuppressRapidSpeeds, False)
+
+def suppressSelectionModeWarning():
+    return preferences().GetBool(WarningSuppressSelectionMode, False)
 
 
 def lastFileToolLibrary():

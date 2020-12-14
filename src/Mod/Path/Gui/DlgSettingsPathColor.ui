@@ -471,6 +471,22 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="WarningSuppressSelectionMode">
+        <property name="toolTip">
+         <string>Suppress warning whenever a Path selection mode is activated</string>
+        </property>
+        <property name="text">
+         <string>Suppress selection mode warning</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>WarningSuppressSelectionMode</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Path</cstring>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
