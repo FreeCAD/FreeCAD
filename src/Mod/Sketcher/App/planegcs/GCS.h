@@ -133,13 +133,15 @@ namespace GCS
 
         void makeReducedJacobian(Eigen::MatrixXd &J, std::map<int,int> &jacobianconstraintmap, GCS::VEC_pD &pdiagnoselist, std::map< int , int> &tagmultiplicity);
 
-        void makeDenseQRDecomposition(  const Eigen::MatrixXd &J, std::map<int,int> &jacobianconstraintmap,
+        void makeDenseQRDecomposition(  const Eigen::MatrixXd &J,
+                                        const std::map<int,int> &jacobianconstraintmap,
                                         Eigen::FullPivHouseholderQR<Eigen::MatrixXd>& qrJT,
                                         int &rank, Eigen::MatrixXd &R);
 
-        void makeSparseQRDecomposition( const Eigen::MatrixXd &J, std::map<int,int> &jacobianconstraintmap,
+        void makeSparseQRDecomposition( const Eigen::MatrixXd &J,
+                                        const std::map<int,int> &jacobianconstraintmap,
                                         Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> > &SqrJT,
-                                        int &rank, Eigen::MatrixXd &R, bool transposeJ = true);
+                                        int &rank, Eigen::MatrixXd &R, bool transposeJ = true, bool silent = false);
 
         // This function name is long for a reason:
         // - Only for DenseQR
@@ -162,6 +164,11 @@ namespace GCS
         );
 
         void eliminateNonZerosOverPivotInUpperTriangularMatrix(Eigen::MatrixXd &R, int rank);
+
+        void identifyDependentParametersSparseQR( const Eigen::MatrixXd &J,
+                                                  const std::map<int,int> &jacobianconstraintmap,
+                                                  const GCS::VEC_pD &pdiagnoselist,
+                                                  bool silent=true);
 
         #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
         void extractSubsystem(SubSystem *subsys, bool isRedundantsolving);
