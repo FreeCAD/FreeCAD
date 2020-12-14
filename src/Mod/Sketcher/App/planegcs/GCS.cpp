@@ -28,6 +28,7 @@
 //#define _GCS_DEBUG
 //#define _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
 //#define _DEBUG_TO_FILE // Many matrices surpass the report view string size.
+#define PROFILE_DIAGNOSE
 #undef _GCS_DEBUG
 #undef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
 #undef _DEBUG_TO_FILE
@@ -3917,6 +3918,9 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
 #endif
 
     if(qrAlgorithm==EigenDenseQR){
+    #ifdef PROFILE_DIAGNOSE
+        Base::TimeInfo DenseQR_start_time;
+    #endif
         int rank = 0; // rank is not cheap to retrieve from qrJT in DenseQR
         Eigen::MatrixXd R;
         Eigen::FullPivHouseholderQR<Eigen::MatrixXd> qrJT;
@@ -3946,11 +3950,20 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
                     dofs = paramsNum - nonredundantconstrNum;
             }
         }
+    #ifdef PROFILE_DIAGNOSE
+        Base::TimeInfo DenseQR_end_time;
+
+        auto SolveTime = Base::TimeInfo::diffTimeF(DenseQR_start_time,DenseQR_end_time);
+
+        Base::Console().Log("\nDenseQR - Lapsed Time: %f seconds\n", SolveTime);
+    #endif
     }
 
 #ifdef EIGEN_SPARSEQR_COMPATIBLE
     else if(qrAlgorithm==EigenSparseQR){
-
+    #ifdef PROFILE_DIAGNOSE
+        Base::TimeInfo SparseQR_start_time;
+    #endif
         int rank = 0;
         Eigen::MatrixXd R;
         Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> > SqrJT;
@@ -3980,6 +3993,14 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
                     dofs = paramsNum - nonredundantconstrNum;
             }
         }
+
+        #ifdef PROFILE_DIAGNOSE
+        Base::TimeInfo SparseQR_end_time;
+
+        auto SolveTime = Base::TimeInfo::diffTimeF(SparseQR_start_time,SparseQR_end_time);
+
+        Base::Console().Log("\nSparseQR - Lapsed Time: %f seconds\n", SolveTime);
+        #endif
     }
 #endif
 
