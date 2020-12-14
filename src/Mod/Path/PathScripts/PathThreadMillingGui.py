@@ -203,7 +203,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 Command = PathOpGui.SetupOperation('Thread Milling',
         PathThreadMilling.Create,
         TaskPanelOpPage,
-        'Path-ThreadMilling',
+        'Path_ThreadMilling',
         QtCore.QT_TRANSLATE_NOOP("PathThreadMilling", "Thread Milling"),
         QtCore.QT_TRANSLATE_NOOP("PathThreadMilling", "Creates a Path Thread Milling operation from features of a base object"),
         PathThreadMilling.SetupProperties)
