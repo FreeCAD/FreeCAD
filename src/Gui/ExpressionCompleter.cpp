@@ -55,6 +55,9 @@ FC_LOG_LEVEL_INIT("Completer",true,true,true)
 using namespace App;
 using namespace Gui;
 
+static const int ExpressionRole = Qt::UserRole;
+static const int ShapeRole = Qt::UserRole + 1;
+
 class ExpressionCompleterModel: public QAbstractItemModel {
 public:
     // This ExpressionCompleter model uses QModelIndex to index a tree node.
@@ -448,7 +451,7 @@ public:
         static QVariant docData(App::Document *doc, int row, int role) {
             static QIcon icon(Gui::BitmapFactory().pixmap("Document"));
             switch(role) {
-            case Qt::UserRole:
+            case ExpressionRole:
             case Qt::EditRole:
                 return docName(doc, row, true);
             case Qt::DisplayRole:
@@ -464,7 +467,7 @@ public:
                 int row, int role, bool local=false, bool sep=true) const
         {
             switch(role) {
-            case Qt::UserRole:
+            case ExpressionRole:
             case Qt::EditRole:
                 return objName(obj, row, sep);
             case Qt::DisplayRole: {
@@ -499,7 +502,7 @@ public:
                 if(role == Qt::EditRole)
                     return QString::fromLatin1(".%1.").arg(
                         QString::fromLatin1(sobj->getNameInDocument()));
-                else if(role == Qt::UserRole && obj->getPropertyByName(sobj->getNameInDocument())) {
+                else if(role == ExpressionRole && obj->getPropertyByName(sobj->getNameInDocument())) {
                     // sub object name clash with property, use special syntax for disambiguation
                     return QString::fromLatin1(".<<%1.>>").arg(
                             QString::fromLatin1(sobj->getNameInDocument()));
@@ -515,7 +518,7 @@ public:
             if(!prop)
                 return QVariant();
             switch(role) {
-            case Qt::UserRole:
+            case ExpressionRole:
                 if(local && !propName.startsWith(QLatin1Char('.'))) {
                     auto obj = getModel()->currentObj.getObject();
                     if(obj && obj->getDocument()
@@ -553,7 +556,7 @@ public:
 
         QVariant elementData(int role, const char *element, int eindex) const {
             switch(role) {
-            case Qt::UserRole+1: {
+            case ShapeRole: {
                 auto completer = qobject_cast<ExpressionCompleter*>(
                         static_cast<const QObject*>(getModel())->parent());
                 if(completer && !completer->isInsideString() && getModel()->currentPath.size()) {
@@ -570,7 +573,7 @@ public:
                 }
                 return QVariant();
             }
-            case Qt::UserRole:
+            case ExpressionRole:
                 return QString::fromLatin1(".<<.%1%2>>").arg(QLatin1String(element)).arg(eindex+1);
             case Qt::EditRole:
                 return QString::fromLatin1(".%1%2").arg(QLatin1String(element)).arg(eindex+1);
@@ -645,7 +648,7 @@ public:
             switch(role) {
             case Qt::EditRole:
                 return QString::fromUtf8(unit.alias?unit.alias:unit.display);
-            case Qt::UserRole:
+            case ExpressionRole:
             case Qt::DisplayRole:
                 return QString::fromUtf8(unit.display);
             case Qt::ToolTipRole:
@@ -667,7 +670,7 @@ public:
             auto &info = functions[row];
             switch(role) {
             case Qt::EditRole:
-            case Qt::UserRole:
+            case ExpressionRole:
                 return QString::fromLatin1("%1(").arg(QLatin1String(info.name));
             case Qt::DisplayRole:
                 return QString::fromLatin1("%1()").arg(QLatin1String(info.name));
@@ -689,7 +692,7 @@ public:
             auto pdata = getModel()->getPathData();
             if(pdata) {
                 switch(role) {
-                case Qt::UserRole:
+                case ExpressionRole:
                 case Qt::EditRole:
                 case Qt::DisplayRole:
                     return pdata->name;
@@ -1309,7 +1312,7 @@ public:
 
             QString res;
             switch(role) {
-            case Qt::UserRole:
+            case ExpressionRole:
             case Qt::EditRole:
                 return QLatin1String(".") + tipArray[row].name;
             case Qt::DisplayRole:
@@ -1499,7 +1502,7 @@ public:
 
             const auto &pathInfo = paths[row];
             switch(role) {
-            case Qt::UserRole:
+            case ExpressionRole:
                 if(pathInfo.pathName.startsWith(QLatin1Char('[')))
                     return pathInfo.pathName;
                 return QLatin1String(".") + pathInfo.pathName;
@@ -1844,16 +1847,16 @@ public:
             if(mdata->mindex == pathIndex)
                 os << "Path";
             os << mdata->typeName();
-            name = mdata->childData(row, Qt::UserRole).toString();
+            name = mdata->childData(row, ExpressionRole).toString();
         } else if(info.d.idx1 < 0) {
             os << "RootData";
-            name = RootData(this).childData(row, Qt::UserRole).toString();
+            name = RootData(this).childData(row, ExpressionRole).toString();
         } else if(info.d.idx2 < 0) {
             os << "Level1Data";
-            name = Level1Data(parent(index)).childData(row, Qt::UserRole).toString();
+            name = Level1Data(parent(index)).childData(row, ExpressionRole).toString();
         } else {
             os << "Level2Data";
-            name = Level2Data(parent(index)).childData(row, Qt::UserRole).toString();
+            name = Level2Data(parent(index)).childData(row, ExpressionRole).toString();
         }
         os << ',' << row << ", " << name.toUtf8().constData() << ')';
         return os.str();
@@ -1864,8 +1867,8 @@ public:
             return QVariant();
 
         switch(role) {
-        case Qt::UserRole+1:
-        case Qt::UserRole:
+        case ShapeRole:
+        case ExpressionRole:
         case Qt::EditRole:
         case Qt::DisplayRole:
         case Qt::ToolTipRole:
@@ -2040,13 +2043,13 @@ QString ExpressionCompleter::pathFromIndex ( const QModelIndex & index ) const
     if(!m || !index.isValid())
         return QString();
 
-    QString res = m->data(index, Qt::UserRole+1).toString();
+    QString res = m->data(index, ShapeRole).toString();
     if(res.size())
         return res;
 
     auto parent = index;
     do {
-        res = m->data(parent, Qt::UserRole).toString() + res;
+        res = m->data(parent, ExpressionRole).toString() + res;
         parent = parent.parent();
     }while(parent.isValid());
 
