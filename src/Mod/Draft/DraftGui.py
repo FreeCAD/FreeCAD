@@ -1107,6 +1107,7 @@ class DraftToolBar:
         self.continueCmd.show()
 
     def modUi(self):
+        self.undoButton.hide()
         self.isCopy.show()
         self.isSubelementMode.show()
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
