@@ -183,18 +183,9 @@ void StdCmdOpenDirectory::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    QString formatList;
-    QString selectedFilter;
-    QStringList fileList = FileDialog::getOpenFileNames(getMainWindow(),
-                                                        QObject::tr("Open document directory"),
-                                                        QString(),
-                                                        QString(),
-                                                        &selectedFilter,
-                                                        QFileDialog::ShowDirsOnly,
-                                                        QFileDialog::Directory);
-
-    for (auto & file : fileList)
-        getGuiApplication()->open(file.toUtf8(), "");
+    QString dir = FileDialog::getExistingDirectory(getMainWindow(), QObject::tr("Open document directory"));
+    if (!dir.isEmpty())
+        getGuiApplication()->open(dir.toUtf8().constData(), "");
 }
 
 
@@ -576,17 +567,26 @@ void StdCmdSaveAsDirectory::activated(int iMsg)
 
     getMainWindow()->showMessage(QObject::tr("Save document as directory..."));
 
-    QString exe = qApp->applicationName();
-    QString fn = FileDialog::getSaveFileName(getMainWindow(),
-                                             QObject::tr("Save %1 Document").arg(exe), 
-                                             QString::fromUtf8(gdoc->getDocument()->FileName.getValue()), 
-                                             QString(),
-                                             nullptr,
-                                             QFileDialog::ShowDirsOnly,
-                                             QFileDialog::Directory);
+    QString dir;
+    QFileInfo fi(QString::fromUtf8(gdoc->getDocument()->FileName.getValue()));
+    if (fi.exists() && fi.isDir())
+        dir = fi.absolutePath();
+
+    QString fn = FileDialog::getExistingDirectory(getMainWindow(), QObject::tr("Save as a directory"), dir);
     if (!fn.isEmpty()) {
         QFileInfo fi;
         fi.setFile(fn);
+
+        QFileInfo docFile(QDir(fn),QLatin1String("Document.xml"));
+        if(docFile.exists()) {
+            int res = QMessageBox::warning(getMainWindow(), QObject::tr("Save as a directory"),
+                    QObject::tr("There is a FreeCAD document inside directory \"%1\".\n\n"
+                                "Do you want to replace it?")
+                        .arg(fi.fileName()),
+                    QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
+            if(res == QMessageBox::No)
+                return;
+        }
 
         const char * DocName = App::GetApplication().getDocumentName(getDocument());
 

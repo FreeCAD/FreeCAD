@@ -177,8 +177,9 @@ void FileDialog::accept()
             if (acceptMode() == QFileDialog::AcceptSave) {
                 if(docFile.exists()) {
                     int res = QMessageBox::warning(this, windowTitle(),
-                                    QObject::tr("There is a FreeCAD document inside %1.\nDo you want to replace it?")
-                                    .arg(fi.fileName()),
+                                    QObject::tr("There is a FreeCAD document inside directory \"%1\".\n\n"
+                                                "Do you want to replace it?")
+                                        .arg(fi.fileName()),
                                     QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
                     if(res == QMessageBox::No)
                         return;
@@ -293,6 +294,12 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
             file = dlg.selectedFiles().front();
         }
     }
+    else if (fileMode & QFileDialog::Directory) {
+        return getExistingDirectory(parent, windowTitle, dirName, options | QFileDialog::ShowDirsOnly);
+#if QT_VERSION >= 0x040600
+        file = QDir::fromNativeSeparators(file);
+#endif
+    }
     else {
         file = QFileDialog::getSaveFileName(parent, windowTitle, dirName, filter, selectedFilter, options);
 #if QT_VERSION >= 0x040600
@@ -389,6 +396,9 @@ QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, c
                 *selectedFilter = dlg.selectedNameFilter();
             file = dlg.selectedFiles().front();
         }
+    }
+    else if (fileMode & QFileDialog::Directory) {
+        file = getExistingDirectory(parent, windowTitle, dirName, options | QFileDialog::ShowDirsOnly);
     }
     else {
         file = QFileDialog::getOpenFileName(parent, windowTitle, dirName, filter, selectedFilter, options);
