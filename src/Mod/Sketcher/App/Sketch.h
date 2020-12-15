@@ -88,6 +88,8 @@ public:
     /// returns the actual geometry
     std::vector<Part::Geometry *> extractGeometry(bool withConstructionElements=true,
                                                   bool withExternalElements=false) const;
+
+    void updateExtension(int geoId, std::unique_ptr<Part::GeometryExtension> && ext);
     /// get the geometry as python objects
     Py::Tuple getPyGeometry(void) const;
 
