@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>512</width>
-    <height>633</height>
+    <height>691</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -456,12 +456,34 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
+       <widget class="Gui::PrefCheckBox" name="WarningSuppressAllSpeeds">
+        <property name="toolTip">
+         <string>Suppress all warnings about setting speed rates for accurate cycle time calculation</string>
+        </property>
+        <property name="text">
+         <string>Suppress all missing speeds warning</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>WarningSuppressAllSpeeds</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Path</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="Gui::PrefCheckBox" name="WarningSuppressRapidSpeeds">
         <property name="toolTip">
-         <string>Suppress warning about setting the rapid speed rates for accurate cycle time calculation</string>
+         <string>Suppress warning about setting the rapid speed rates for accurate cycle time calculation. Ignored if all speed warnings are already suppressed.</string>
         </property>
         <property name="text">
          <string>Suppress missing rapid speeds warning</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>WarningSuppressRapidSpeeds</cstring>
@@ -478,6 +500,9 @@
         </property>
         <property name="text">
          <string>Suppress selection mode warning</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>WarningSuppressSelectionMode</cstring>

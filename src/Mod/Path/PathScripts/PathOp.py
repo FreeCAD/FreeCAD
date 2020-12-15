@@ -548,7 +548,7 @@ class ObjectOp(object):
         hRapidrate = tc.HorizRapid.Value
         vRapidrate = tc.VertRapid.Value
 
-        if hFeedrate == 0 or vFeedrate == 0:
+        if (hFeedrate == 0 or vFeedrate == 0) and not PathPreferences.suppressAllSpeedsWarning():
             PathLog.warning(translate("Path", "Tool Controller feedrates required to calculate the cycle time."))
             return translate('Path', 'Feedrate Error')
 
