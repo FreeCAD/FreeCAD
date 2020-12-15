@@ -280,7 +280,7 @@ public:
             for (const MappedNameRef & ref : v.second.names) {
                 for (const MappedNameRef *r=&ref; r; r=r->next.get()) {
                     for (const App::StringIDRef & sid : r->sids) {
-                        if (sid.isSameHasher(hasher))
+                        if (sid.isFromSameHasher(hasher))
                             sid.mark();
                     }
                 }
@@ -289,7 +289,7 @@ public:
                 if (vv.second.elementMap)
                     vv.second.elementMap->beforeSave(hasher);
                 for (auto & sid : vv.second.sids) {
-                    if (sid.isSameHasher(hasher))
+                    if (sid.isFromSameHasher(hasher))
                         sid.mark();
                 }
             }
@@ -376,8 +376,6 @@ public:
             s << '\n' << v.first << '\n';
 
             s << "\nChildCount " << v.second.children.size() << '\n';
-            boost::io::ios_flags_saver ifs(s);
-            s << std::hex;
             for (auto & vv : v.second.children) {
                 auto & child = vv.second;
                 int mapIndex = 0;
@@ -402,9 +400,12 @@ public:
                 s << '\n';
             }
 
-            s << "\nNameCount " << std::dec << v.second.names.size() << std::hex << '\n';
+            s << "\nNameCount " << v.second.names.size() << '\n';
             if (v.second.names.empty())
                 continue;
+
+            boost::io::ios_flags_saver ifs(s);
+            s << std::hex;
 
             for (auto & ref : v.second.names) {
                 for (auto r = &ref; r; r=r->next.get()) {
@@ -549,9 +550,6 @@ public:
             if (! (s >> tmp >> count) || tmp != "ChildCount")
                 FC_THROWM(Base::RuntimeError, "missing element child count");
 
-            boost::io::ios_flags_saver ifs(s);
-            s >> std::hex;
-
             auto & indices = this->indexedNames[idx.getType()];
             for (int j=0; j<count; ++j) {
                 int cindex;
@@ -598,8 +596,11 @@ public:
                 }
             }
 
-            if (! (s >> tmp >> std::dec >> count >> std::hex) || tmp != "NameCount")
+            if (! (s >> tmp >> count) || tmp != "NameCount")
                 FC_THROWM(Base::RuntimeError, "missing element name count");
+
+            boost::io::ios_flags_saver ifs(s);
+            s >> std::hex;
 
             indices.names.resize(count);
             for (int j=0; j<count; ++j) {
