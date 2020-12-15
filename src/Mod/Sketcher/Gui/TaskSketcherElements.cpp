@@ -246,7 +246,7 @@ public:
         std::string tmp;
         setText(ColName, QString::fromLatin1(name.toString(tmp)));
         std::string mapped = sketch->convertSubName(name,false);
-        setText(ColMapped, QString::fromLatin1(Data::ComplexGeoData::isMappedElement(mapped.c_str())));
+        setText(ColMapped, QString::fromLatin1(mapped.c_str()));
     }
 
     int ElementNbr;
