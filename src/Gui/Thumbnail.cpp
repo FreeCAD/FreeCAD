@@ -87,18 +87,16 @@ void Thumbnail::SaveDocFile (Base::Writer &writer) const
     if (!this->viewer)
         return;
     QImage img;
-    if (this->viewer->isActiveWindow()) {
-        if (this->viewer->thread() != QThread::currentThread()) {
-            qWarning("Cannot create a thumbnail from non-GUI thread");
-            return;
-        }
-
-        QColor bgcolor;
-        if (App::DocumentParams::ThumbnailNoBackground())
-            bgcolor = QColor(0,0,0,0);
-        this->viewer->imageFromFramebuffer(this->size, this->size, 
-                App::DocumentParams::ThumbnailSampleSize(), bgcolor, img);
+    if (this->viewer->thread() != QThread::currentThread()) {
+        qWarning("Cannot create a thumbnail from non-GUI thread");
+        return;
     }
+
+    QColor bgcolor;
+    if (App::DocumentParams::ThumbnailNoBackground())
+        bgcolor = QColor(0,0,0,0);
+    this->viewer->imageFromFramebuffer(this->size, this->size, 
+            App::DocumentParams::ThumbnailSampleSize(), bgcolor, img);
 
     QPixmap px = Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str());
     if (!img.isNull()) {
