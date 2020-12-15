@@ -1329,6 +1329,11 @@ bool GeomBSplineCurve::isPeriodic() const
     return myCurve->IsPeriodic()==Standard_True;
 }
 
+bool GeomBSplineCurve::isRational() const
+{
+    return myCurve->IsRational()==Standard_True;
+}
+
 bool GeomBSplineCurve::join(const Handle(Geom_BSplineCurve)& spline)
 {
     GeomConvert_CompCurveToBSplineCurve ccbc(this->myCurve);
