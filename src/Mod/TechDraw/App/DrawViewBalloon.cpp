@@ -129,7 +129,8 @@ void DrawViewBalloon::onChanged(const App::Property* prop)
         if ( (prop == &EndType) ||
              (prop == &BubbleShape)  ||
              (prop == &Text)    ||
-             (prop == &KinkLength) ) {
+             (prop == &KinkLength)   ||
+             (prop == &EndTypeScale) ) {
             requestPaint();
         }
     }
