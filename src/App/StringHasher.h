@@ -87,9 +87,14 @@ public:
     bool isMarked() const {return _flags.test(Marked);}
     bool isPersistent() const {return _flags.test(Persistent);}
 
-    bool isSameHasher(const StringHasherRef & hasher) const
+    bool isFromSameHasher(const StringHasherRef & hasher) const
     {
         return this->_hasher == hasher;
+    }
+
+    StringHasherRef getHasher() const
+    {
+        return StringHasherRef(_hasher);
     }
 
     const QByteArray data() const {return _data;}
@@ -334,9 +339,16 @@ public:
         return _sid && _sid->isMarked();
     }
 
-    bool isSameHasher(const StringHasherRef & hasher) const
+    bool isFromSameHasher(const StringHasherRef & hasher) const
     {
-        return _sid && _sid->isSameHasher(hasher);
+        return _sid && _sid->isFromSameHasher(hasher);
+    }
+
+    StringHasherRef getHasher() const
+    {
+        if (_sid)
+            return _sid->getHasher();
+        return StringHasherRef();
     }
 
     void setPersistent(bool enable)

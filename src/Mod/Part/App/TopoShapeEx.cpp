@@ -552,7 +552,7 @@ void TopoShape::flushElementMap() const
             self._Cache = _Cache;
             self.mapSubElement(parent);
             const_cast<TopoShape*>(this)->resetElementMap(self.elementMap());
-        }
+    }
     }
 }
 
@@ -1055,12 +1055,15 @@ void TopoShape::mapSubElement(const TopoShape &other, const char *op, bool force
                 auto &name = v.first;
                 auto &sids = v.second;
                 if(sids.size()) {
-                    if(!warned && !other.Hasher) {
-                        warned = true;
-                        FC_WARN("missing hasher");
-                    }
-                    if(Hasher != other.Hasher)
+                    if (!Hasher)
+                        Hasher = sids[0].getHasher();
+                    else if (!sids[0].isFromSameHasher(Hasher)) {
+                        if (!warned) {
+                            warned = true;
+                            FC_WARN("hasher mismatch");
+                        }
                         sids.clear();
+                    }
                 }
                 ss.str("");
                 encodeElementName(shapetype[0],name,ss,&sids,op,other.Tag);
