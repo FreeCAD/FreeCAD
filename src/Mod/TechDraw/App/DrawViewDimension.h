@@ -171,7 +171,7 @@ protected:
     virtual void onChanged(const App::Property* prop) override;
     virtual void onDocumentRestored() override;
     std::string getPrefix() const;
-    std::string getDefaultFormatSpec() const;
+    std::string getDefaultFormatSpec(bool isToleranceFormat = false) const;
     virtual pointPair getPointsOneEdge();
     virtual pointPair getPointsTwoEdges();
     virtual pointPair getPointsTwoVerts();

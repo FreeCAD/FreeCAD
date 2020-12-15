@@ -106,8 +106,8 @@ DrawViewDimension::DrawViewDimension(void)
     References3D.setScope(App::LinkScope::Global);
 
     ADD_PROPERTY_TYPE(FormatSpec,(getDefaultFormatSpec()) , "Format", App::Prop_Output,"Dimension Format");
-    ADD_PROPERTY_TYPE(FormatSpecOverTolerance,("%+g") , "Format", App::Prop_Output,"Dimension Overtolerance Format");
-    ADD_PROPERTY_TYPE(FormatSpecUnderTolerance,("%+g") , "Format", App::Prop_Output,"Dimension Undertolerance Format");
+    ADD_PROPERTY_TYPE(FormatSpecOverTolerance,(getDefaultFormatSpec(true)) , "Format", App::Prop_Output,"Dimension Overtolerance Format");
+    ADD_PROPERTY_TYPE(FormatSpecUnderTolerance,(getDefaultFormatSpec(true)) , "Format", App::Prop_Output,"Dimension Undertolerance Format");
     ADD_PROPERTY_TYPE(Arbitrary,(false) ,"Format", App::Prop_Output,"Value overridden by user");
     ADD_PROPERTY_TYPE(ArbitraryTolerances,(false) ,"Format", App::Prop_Output,"Tolerance values overridden by user");
 
@@ -1300,7 +1300,7 @@ std::string DrawViewDimension::getPrefix() const
     return result;
 }
 
-std::string DrawViewDimension::getDefaultFormatSpec() const
+std::string DrawViewDimension::getDefaultFormatSpec(bool isToleranceFormat) const
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
                                          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
@@ -1331,6 +1331,10 @@ std::string DrawViewDimension::getDefaultFormatSpec() const
         qPrefix = QString::fromUtf8(prefix.data(),prefix.size());
         formatSpec = qPrefix + QString::fromStdString(prefFormat);
 
+    }
+
+    if (isToleranceFormat) {
+        formatSpec.replace(QString::fromUtf8("%"), QString::fromUtf8("%+"));
     }
 
     return Base::Tools::toStdString(formatSpec);
