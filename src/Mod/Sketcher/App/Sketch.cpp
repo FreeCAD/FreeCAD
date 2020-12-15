@@ -1063,6 +1063,14 @@ std::vector<Part::Geometry *> Sketch::extractGeometry(bool withConstructionEleme
     return temp;
 }
 
+void Sketch::updateExtension(int geoId, std::unique_ptr<Part::GeometryExtension> && ext)
+{
+    geoId = checkGeoId(geoId);
+
+    Geoms[geoId].geo->setExtension(std::move(ext));
+
+}
+
 Py::Tuple Sketch::getPyGeometry(void) const
 {
     Py::Tuple tuple(Geoms.size());
