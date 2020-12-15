@@ -108,6 +108,11 @@ public:
     inline const std::vector<int> &getRedundant(void) const { return Redundant; }
 
     inline bool hasMalformedConstraints(void) const { return malformedConstraints; }
+public:
+    std::set < std::pair< int, Sketcher::PointPos>> getDependencyGroup(int geoId, PointPos pos) const;
+
+
+public:
 
     /** set the datum of a distance or angle constraint to a certain value and solve
       * This can cause the solving to fail!
@@ -411,7 +416,12 @@ protected:
     std::vector<int> Conflicting;
     std::vector<int> Redundant;
 
-    std::vector<double *> pconstraintplistOut;
+    std::vector<double *> pDependentParametersList;
+
+    std::vector < std::set < std::pair< int, Sketcher::PointPos>>> pDependencyGroups;
+
+    // this map is intended to convert a parameter (double *) into a GeoId/PointPos pair
+    std::map<double *, std::pair<int,Sketcher::PointPos>> param2geoelement;
 
     // solving parameters
     std::vector<double*> Parameters;    // with memory allocation
