@@ -101,15 +101,14 @@ void PropertyPartShape::setValue(const TopoShape& sh)
     auto obj = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
     if(obj) {
         auto tag = obj->getID();
-        auto hasher = _Shape.Hasher?_Shape.Hasher:obj->getDocument()->getStringHasher();
-        if(_Shape.Tag && tag!=_Shape.Tag)
+        if(_Shape.Tag && tag!=_Shape.Tag) {
+            auto hasher = _Shape.Hasher?_Shape.Hasher:obj->getDocument()->getStringHasher();
             _Shape.reTagElementMap(tag,hasher);
-        else
+        } else
             _Shape.Tag = obj->getID();
-        if (!_Shape.Hasher) {
-            _Shape.Hasher = hasher;
-            if (_Shape.getElementMapSize())
-                _Shape.hashChildMaps();
+        if (!_Shape.Hasher && _Shape.hasChildElementMap()) {
+            _Shape.Hasher = obj->getDocument()->getStringHasher();
+            _Shape.hashChildMaps();
         }
     }
     hasSetValue();

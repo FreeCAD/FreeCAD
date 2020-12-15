@@ -925,6 +925,11 @@ public:
         return mappedNames.empty() && childElementSize == 0;
     }
 
+    bool hasChildElementMap() const
+    {
+        return !childElements.empty();
+    }
+
     void hashChildMaps(ComplexGeoData & master)
     {
         if (childElements.empty() || !master.Hasher)
@@ -2159,4 +2164,10 @@ void ComplexGeoData::hashChildMaps()
     flushElementMap();
     if (_ElementMap)
         _ElementMap->hashChildMaps(*this);
+}
+
+bool ComplexGeoData::hasChildElementMap() const
+{
+    flushElementMap();
+    return _ElementMap && _ElementMap->hasChildElementMap();
 }

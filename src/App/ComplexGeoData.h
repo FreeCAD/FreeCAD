@@ -307,7 +307,11 @@ public:
      */
     MappedName hashElementName(const MappedName & name, ElementIDRefs &sid) const;
 
+    /// Hash the child element map postfixes to shorten element name from hierarchical maps
     void hashChildMaps();
+
+    /// Check if there is child element map
+    bool hasChildElementMap() const;
 
     /// Reverse hashElementName()
     MappedName dehashElementName(const MappedName & name) const;
