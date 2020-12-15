@@ -28,7 +28,7 @@
 //#define _GCS_DEBUG
 //#define _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
 //#define _DEBUG_TO_FILE // Many matrices surpass the report view string size.
-#define PROFILE_DIAGNOSE
+//#define PROFILE_DIAGNOSE
 #undef _GCS_DEBUG
 #undef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
 #undef _DEBUG_TO_FILE
@@ -4210,7 +4210,7 @@ void System::identifyDependentParameters(   T & qrJ,
                                             const GCS::VEC_pD &pdiagnoselist,
                                             bool silent)
 {
-
+    (void) silent; // silent is only used in debug code, but it is important as Base::Console is not thread-safe. Removes warning in non Debug mode.
 
     //int constrNum = SqrJ.rows(); // this is the other way around than for the transposed J
     //int paramsNum = SqrJ.cols();
