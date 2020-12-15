@@ -2287,6 +2287,27 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
         return false;
 
     };
+    
+    // this is a helper function to remove Equal constraints from Line segments. 
+    auto delEqualConstraintsOnGeoId = [this] (int GeoId) {
+            
+        std::vector<int> delete_list;
+        int index = 0;
+        const std::vector<Constraint *> &constraints = this->Constraints.getValues();
+        for (std::vector<Constraint *>::const_iterator it=constraints.begin();
+                it != constraints.end(); ++it) {
+            Constraint *constr = *(it);
+            if (constr->First == GeoId && constr->Type == Sketcher::Equal) {
+                delete_list.push_back(index);
+            }
+            if (constr->Second == GeoId && constr->Type == Sketcher::Equal) {
+                delete_list.push_back(index);
+            }
+            index++;
+        }
+        delConstraints(delete_list);
+        return index-1;
+    };
 
     auto creategeometryundopoint = [this, geomlist]() {
         Geometry.setValues(geomlist);
@@ -2309,14 +2330,16 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                 std::swap(x1,x2);
             }
             if (x1 >= 0.001*length && x2 <= 0.999*length) {
-                if (x1 < x0 && x2 > x0) {
+                if (x1 < x0 && x2 > x0) {  // trim a way a sement in the middle
                     int newGeoId = addGeometry(geo);
                     // go through all constraints and replace the point (GeoId,end) with (newGeoId,end)
                     transferConstraints(GeoId, end, newGeoId, end);
-
+                    delEqualConstraintsOnGeoId(GeoId);
+                    delEqualConstraintsOnGeoId(newGeoId);
                     movePoint(GeoId, end, point1,false,true);
                     movePoint(newGeoId, start, point2,false,true);
 
+                    
                     PointPos secondPos1 = Sketcher::none, secondPos2 = Sketcher::none;
                     ConstraintType constrType1 = Sketcher::PointOnObject, constrType2 = Sketcher::PointOnObject;
                     for (std::vector<Constraint *>::const_iterator it=constraints.begin();
@@ -2344,7 +2367,6 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                     }
 
                     addConstraint(newConstr);
-
                     // Reset the second pos
                     newConstr->SecondPos = Sketcher::none;
 
@@ -2384,13 +2406,13 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
             else
               return -1;
         }
-
         if (GeoId1 >= 0) {
             double x1 = (point1 - startPnt)*dir;
             if (x1 >= 0.001*length && x1 <= 0.999*length) {
                 creategeometryundopoint(); // for when geometry will change, but no new geometry will be committed.
                 ConstraintType constrType = Sketcher::PointOnObject;
                 PointPos secondPos = Sketcher::none;
+
                 for (std::vector<Constraint *>::const_iterator it=constraints.begin();
                      it != constraints.end(); ++it) {
                     Constraint *constr = *(it);
@@ -2404,8 +2426,9 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 
                 if (x1 > x0) { // trim line start
                     delConstraintOnPoint(GeoId, start, false);
+                    delEqualConstraintsOnGeoId(GeoId);
                     movePoint(GeoId, start, point1,false,true);
-
+                    
                     // constrain the trimming point on the corresponding geometry
                     Sketcher::Constraint *newConstr = new Sketcher::Constraint();
                     newConstr->Type = constrType;
@@ -2426,6 +2449,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                 }
                 else if (x1 < x0) { // trim line end
                     delConstraintOnPoint(GeoId, end, false);
+                    delEqualConstraintsOnGeoId(GeoId);
                     movePoint(GeoId, end, point1,false,true);
                     Sketcher::Constraint *newConstr = new Sketcher::Constraint();
                     newConstr->Type = constrType;
@@ -2438,7 +2462,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 
                     addConstraint(newConstr);
                     delete newConstr;
-
+                    
                     if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
                         solve();
 
@@ -2785,7 +2809,6 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                 return -1;
             }
         }
-
         if (GeoId1 >= 0) {
             creategeometryundopoint(); // for when geometry will change, but no new geometry will be committed.
             ConstraintType constrType = Sketcher::PointOnObject;
