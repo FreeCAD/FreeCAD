@@ -197,33 +197,6 @@
         <file>icons/pointers/Sketcher_Pointer_Trimming.svg</file>
     </qresource>
     <qresource>
-        <file>icons/small/Constraint_Block_sm.xpm</file>
-        <file>icons/small/Constraint_Concentric_sm.xpm</file>
-        <file>icons/small/Constraint_EqualLength_sm.xpm</file>
-        <file>icons/small/Constraint_ExternalAngle_sm.xpm</file>
-        <file>icons/small/Constraint_HorizontalDistance_sm.xpm</file>
-        <file>icons/small/Constraint_Horizontal_sm.xpm</file>
-        <file>icons/small/Constraint_InternalAngle_sm.xpm</file>
-        <file>icons/small/Constraint_Length_sm.xpm</file>
-        <file>icons/small/Constraint_Lock_sm.xpm</file>
-        <file>icons/small/Constraint_Parallel_sm.xpm</file>
-        <file>icons/small/Constraint_Perpendicular_sm.xpm</file>
-        <file>icons/small/Constraint_PointOnEnd_sm.xpm</file>
-        <file>icons/small/Constraint_PointOnMidPoint_sm.xpm</file>
-        <file>icons/small/Constraint_PointOnObject_sm.xpm</file>
-        <file>icons/small/Constraint_PointOnPoint_sm.xpm</file>
-        <file>icons/small/Constraint_PointOnStart_sm.xpm</file>
-        <file>icons/small/Constraint_PointToObject_sm.xpm</file>
-        <file>icons/small/Constraint_Radius_sm.xpm</file>
-        <file>icons/small/Constraint_SnellsLaw_sm.xpm</file>
-        <file>icons/small/Constraint_Symmetric_sm.xpm</file>
-        <file>icons/small/Constraint_TangentToEnd_sm.xpm</file>
-        <file>icons/small/Constraint_TangentToStart_sm.xpm</file>
-        <file>icons/small/Constraint_Tangent_sm.xpm</file>
-        <file>icons/small/Constraint_VerticalDistance_sm.xpm</file>
-        <file>icons/small/Constraint_Vertical_sm.xpm</file>
-    </qresource>
-    <qresource>
         <file>icons/splines/Sketcher_BSplineApproximate.svg</file>
         <file>icons/splines/Sketcher_BSplineComb.svg</file>
         <file>icons/splines/Sketcher_BSplineDecreaseDegree.svg</file>

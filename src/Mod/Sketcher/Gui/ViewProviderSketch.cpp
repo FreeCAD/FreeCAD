@@ -70,6 +70,7 @@
 # include <QPainter>
 # include <QTextStream>
 # include <QKeyEvent>
+# include <QDesktopWidget>
 
 # include <boost_bind_bind.hpp>
 # include <boost/scoped_ptr.hpp>
@@ -372,6 +373,7 @@ ViewProviderSketch::ViewProviderSketch()
 
     //rubberband selection
     rubberband = new Gui::Rubberband();
+    InitItemsSizes();
 }
 
 ViewProviderSketch::~ViewProviderSketch()
@@ -3189,7 +3191,11 @@ QString ViewProviderSketch::getPresentationString(const Constraint *constraint)
             }
         }
     }
-
+    if (constraint->Type == Sketcher::Diameter){
+        userStr.insert(0, QChar(8960)); // Diameter sign
+    }else if (constraint->Type == Sketcher::Radius){
+        userStr.insert(0, QChar(82)); // Capital letter R
+    }
     return userStr;
 }
 
@@ -3198,25 +3204,25 @@ QString ViewProviderSketch::iconTypeFromConstraint(Constraint *constraint)
     /*! TODO: Consider pushing this functionality up into Constraint */
     switch(constraint->Type) {
     case Horizontal:
-        return QString::fromLatin1("small/Constraint_Horizontal_sm");
+        return QString::fromLatin1("Constraint_Horizontal");
     case Vertical:
-        return QString::fromLatin1("small/Constraint_Vertical_sm");
+        return QString::fromLatin1("Constraint_Vertical");
     case PointOnObject:
-        return QString::fromLatin1("small/Constraint_PointOnObject_sm");
+        return QString::fromLatin1("Constraint_PointOnObject");
     case Tangent:
-        return QString::fromLatin1("small/Constraint_Tangent_sm");
+        return QString::fromLatin1("Constraint_Tangent");
     case Parallel:
-        return QString::fromLatin1("small/Constraint_Parallel_sm");
+        return QString::fromLatin1("Constraint_Parallel");
     case Perpendicular:
-        return QString::fromLatin1("small/Constraint_Perpendicular_sm");
+        return QString::fromLatin1("Constraint_Perpendicular");
     case Equal:
-        return QString::fromLatin1("small/Constraint_EqualLength_sm");
+        return QString::fromLatin1("Constraint_EqualLength");
     case Symmetric:
-        return QString::fromLatin1("small/Constraint_Symmetric_sm");
+        return QString::fromLatin1("Constraint_Symmetric");
     case SnellsLaw:
-        return QString::fromLatin1("small/Constraint_SnellsLaw_sm");
+        return QString::fromLatin1("Constraint_SnellsLaw");
     case Block:
-        return QString::fromLatin1("small/Constraint_Block_sm");
+        return QString::fromLatin1("Constraint_Block");
     default:
         return QString();
     }
@@ -3451,7 +3457,7 @@ void ViewProviderSketch::combineConstraintIcons(IconQueue iconQueue)
         iconQueue.pop_back();
 
         // we group only icons not being Symmetry icons, because we want those on the line
-        if(init.type != QString::fromLatin1("small/Constraint_Symmetric_sm")){
+        if(init.type != QString::fromLatin1("Constraint_Symmetric")){
 
             IconQueue::iterator i = iconQueue.begin();
             while(i != iconQueue.end()) {
@@ -3460,7 +3466,7 @@ void ViewProviderSketch::combineConstraintIcons(IconQueue iconQueue)
                 for(IconQueue::iterator j = thisGroup.begin();
                     j != thisGroup.end(); ++j) {
                     float distSquared = pow(i->position[0]-j->position[0],2) + pow(i->position[1]-j->position[1],2);
-                    if(distSquared <= maxDistSquared && (*i).type != QString::fromLatin1("small/Constraint_Symmetric_sm")) {
+                    if(distSquared <= maxDistSquared && (*i).type != QString::fromLatin1("Constraint_Symmetric")) {
                         // Found an icon in iconQueue that's close enough to
                         // a member of thisGroup, so move it into thisGroup
                         thisGroup.push_back(*i);
@@ -3646,10 +3652,10 @@ QImage ViewProviderSketch::renderConstrIcon(const QString &type,
     // Constants to help create constraint icons
     QString joinStr = QString::fromLatin1(", ");
 
-    QImage icon = Gui::BitmapFactory().pixmap(type.toLatin1()).toImage();
+    QImage icon = Gui::BitmapFactory().pixmapFromSvg(type.toLatin1().data(),QSizeF(constraintIconSize,constraintIconSize)).toImage();
 
     QFont font = QApplication::font();
-    font.setPixelSize(11);
+    font.setPixelSize(constraintIconSize * 0.8);
     font.setBold(true);
     QFontMetrics qfm = QFontMetrics(font);
 
@@ -3748,6 +3754,20 @@ float ViewProviderSketch::getScaleFactor()
     }
 }
 
+void ViewProviderSketch::InitItemsSizes()
+{
+    int defaultFontSize = QApplication::fontMetrics().height();
+    int ldpi = QApplication::desktop()->logicalDpiX();
+    float virtualdpi = 96.;
+    float QtPixelRatio = virtualdpi/ldpi;
+    float coinFontPixelRatio = QtPixelRatio; // this is not absolute exactly, but the ratio is correct
+    float view3D_factor = 1.25; // View3D area has worse readability, so let's increase a little
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    coinFontSize = hGrp->GetInt("EditSketcherFontSize", defaultFontSize * QtPixelRatio * coinFontPixelRatio *view3D_factor );
+    constraintIconSize = coinFontSize / coinFontPixelRatio;
+    return;
+}
+
 void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer /*=true*/)
 {
     assert(edit);
@@ -3783,9 +3803,6 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
         Gui::coinRemoveAllChildren(edit->infoGroup);
     }
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    int fontSize = hGrp->GetInt("EditSketcherFontSize", 17);
-
     int currentInfoNode = 0;
 
     ParameterGrp::handle hGrpsk = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
@@ -3798,6 +3815,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
     int GeoId = 0;
 
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     int stdcountsegments = hGrp->GetInt("SegmentsPerGeometry", 50);
     // value cannot be smaller than 3
     if (stdcountsegments < 3)
@@ -4228,7 +4246,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
             SoFont *font = new SoFont;
             font->name.setValue("Helvetica");
-            font->size.setValue(fontSize);
+            font->size.setValue(coinFontSize);
 
             SoText2 *degreetext = new SoText2;
             degreetext->string = SbString(spline->getDegree());
@@ -4507,7 +4525,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
                 SoFont *font = new SoFont;
                 font->name.setValue("Helvetica");
-                font->size.setValue(fontSize);
+                font->size.setValue(coinFontSize);
 
                 SoText2 *degreetext = new SoText2;
                 degreetext->string = SbString("(") + SbString(*itm) + SbString(")");
@@ -4574,7 +4592,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
                 SoFont* font = new SoFont;
                 font->name.setValue("Helvetica");
-                font->size.setValue(fontSize);
+                font->size.setValue(coinFontSize);
 
                 translate->translation.setValue(poleposition.x, poleposition.y, zInfo);
 
@@ -5748,9 +5766,6 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
     Gui::coinRemoveAllChildren(edit->constrGroup);
     edit->vConstrType.clear();
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    int fontSize = hGrp->GetInt("EditSketcherFontSize", 17);
-
     for (std::vector<Sketcher::Constraint *>::const_iterator it=constrlist.begin(); it != constrlist.end(); ++it) {
         // root separator for one constraint
         SoSeparator *sep = new SoSeparator();
@@ -5795,7 +5810,7 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
                                             ConstrDimColor
                                             :NonDrivingConstrDimColor)
                                         :DeactivatedConstrDimColor;
-                text->size.setValue(fontSize);
+                text->size.setValue(coinFontSize);
                 text->useAntialiasing = false;
                 SoAnnotation *anno = new SoAnnotation();
                 anno->renderCaching = SoSeparator::OFF;
@@ -6508,10 +6523,9 @@ void ViewProviderSketch::createEditInventorNodes(void)
     CoordTextMaterials->diffuseColor = cursorTextColor;
     Coordsep->addChild(CoordTextMaterials);
 
-    int fontSize = hGrp->GetInt("EditSketcherFontSize", 17);
-
     SoFont *font = new SoFont();
-    font->size.setValue(fontSize);
+    font->size.setValue(coinFontSize);
+
     Coordsep->addChild(font);
 
     edit->textPos = new SoTranslation();
