@@ -127,6 +127,8 @@ namespace GCS
         bool hasDiagnosis; // if dofs, conflictingTags, redundantTags are up to date
         bool isInit;       // if plists, clists, reductionmaps are up to date
 
+        bool emptyDiagnoseMatrix; // false only if there is at least one driving constraint.
+
         int solve_BFGS(SubSystem *subsys, bool isFine=true, bool isRedundantsolving=false);
         int solve_LM(SubSystem *subsys, bool isRedundantsolving=false);
         int solve_DL(SubSystem *subsys, bool isRedundantsolving=false);
@@ -354,6 +356,7 @@ namespace GCS
           { redundantOut = hasDiagnosis ? redundantTags : VEC_I(0); }
         void getDependentParams(VEC_pD &pconstraintplistOut) const
           { pconstraintplistOut = pdependentparameters;}
+        bool isEmptyDiagnoseMatrix() const {return emptyDiagnoseMatrix;}
     };
 
 
