@@ -99,13 +99,13 @@ DrawViewBalloon::DrawViewBalloon(void)
     EndType.setEnums(ArrowPropEnum::ArrowTypeEnums);
     ADD_PROPERTY(EndType,(prefEnd()));
 
+    ADD_PROPERTY_TYPE(EndTypeScale,(1.0),"",(App::PropertyType)(App::Prop_None),"EndType shape scale");
+    ShapeScale.setConstraints(&SymbolScaleRange);
+
     BubbleShape.setEnums(balloonTypeEnums);
     ADD_PROPERTY(BubbleShape,(prefShape()));
 
     ADD_PROPERTY_TYPE(ShapeScale,(1.0),"",(App::PropertyType)(App::Prop_None),"Balloon shape scale");
-    ShapeScale.setConstraints(&SymbolScaleRange);
-
-    ADD_PROPERTY_TYPE(EndTypeScale,(1.0),"",(App::PropertyType)(App::Prop_None),"EndType shape scale");
     ShapeScale.setConstraints(&SymbolScaleRange);
 
     ADD_PROPERTY_TYPE(TextWrapLen,(-1),"",(App::PropertyType)(App::Prop_None),"Text wrap length; -1 means no wrap");
