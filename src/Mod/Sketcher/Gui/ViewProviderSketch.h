@@ -109,6 +109,9 @@ public:
     App::PropertyBool RestoreCamera;
     App::PropertyString EditingWorkbench;
 
+    /// set icon & font sizes
+    void InitItemsSizes();
+
     /// Draw all constraint icons
     /*! Except maybe the radius and lock ones? */
     void drawConstraintIcons();
@@ -285,7 +288,6 @@ protected:
     boost::signals2::connection connectRedoDocument;
 
     void forceUpdateData();
-
     /// Return display string for constraint including hiding units if
     //requested.
     QString getPresentationString(const Sketcher::Constraint *constraint);
@@ -440,6 +442,9 @@ protected:
     bool isShownVirtualSpace; // indicates whether the present virtual space view is the Real Space or the Virtual Space (virtual space 1 or 2)
 
     ShortcutListener* listener;
+
+    int coinFontSize;
+    int constraintIconSize;
 };
 
 } // namespace PartGui
