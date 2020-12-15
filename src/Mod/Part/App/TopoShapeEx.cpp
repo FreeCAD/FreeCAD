@@ -2404,15 +2404,15 @@ TopoShape &TopoShape::makEThickSolid(const TopoShape &shape,
     return makEShape(mkThick,shape,op);
 }
 
-TopoShape &TopoShape::makEWires(const std::vector<TopoShape> &shapes, const char *op, bool fix, double tol) {
-    if(shapes.empty())
-        HANDLE_NULL_SHAPE;
-    if(shapes.size() == 1)
-        return makEWires(shapes[0],op);
-    return makEWires(TopoShape(Tag).makECompound(shapes),op,fix,tol);
+TopoShape &TopoShape::makEWires(const TopoShape &shape, const char *op, bool fix, double tol) 
+{
+    return makEWires({shape}, op, fix, tol);
 }
 
-TopoShape &TopoShape::makEWires(const TopoShape &shape, const char *op, bool fix, double tol)
+TopoShape &TopoShape::makEWires(const std::vector<TopoShape> &shapes,
+                                const char *op,
+                                bool fix,
+                                double tol)
 {
     _Shape.Nullify();
 
@@ -2456,8 +2456,12 @@ TopoShape &TopoShape::makEWires(const TopoShape &shape, const char *op, bool fix
     std::list<TopoShape> edge_list;
     std::vector<TopoShape> wires;
 
-    for(auto &e : shape.getSubTopoShapes(TopAbs_EDGE))
-        edge_list.push_back(e);
+    for (auto & shape : shapes) {
+        if(shapes.empty())
+            HANDLE_NULL_SHAPE;
+        for(auto &e : shape.getSubTopoShapes(TopAbs_EDGE))
+            edge_list.push_back(e);
+    }
 
     edges.reserve(edge_list.size());
     wires.reserve(edge_list.size());
