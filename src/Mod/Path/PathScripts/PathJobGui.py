@@ -554,7 +554,7 @@ class StockFromExistingEdit(StockEdit):
         index = -1
         for i, solid in enumerate(self.candidates(obj)):
             self.form.stockExisting.addItem(solid.Label, solid)
-            label="%s-%s" % (self.StockLabelPrefix,solid.Label)
+            label="{}-{}".format(self.StockLabelPrefix, solid.Label)
 
             if label == stockName:
                 index = i
