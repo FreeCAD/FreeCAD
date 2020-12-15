@@ -417,6 +417,7 @@ System::System()
   , hasUnknowns(false)
   , hasDiagnosis(false)
   , isInit(false)
+  , emptyDiagnoseMatrix(true)
   , maxIter(100)
   , maxIterRedundant(100)
   , sketchSizeMultiplier(false)
@@ -532,6 +533,8 @@ void System::clear()
     pdependentparameters.clear();
     hasUnknowns = false;
     hasDiagnosis = false;
+
+    emptyDiagnoseMatrix = true;
 
     redundant.clear();
     conflictingTags.clear();
@@ -3844,6 +3847,7 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
     // eventually crash. This fixes issues #0002372/#0002373.
     if (plist.empty() || (plist.size() - pdrivenlist.size()) == 0) {
         hasDiagnosis = true;
+        emptyDiagnoseMatrix = true;
         dofs = 0;
         return dofs;
     }
@@ -3878,6 +3882,9 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
     // this function will exit with a diagnosis and, unless overriden by functions below, with full DoFs
     hasDiagnosis = true;
     dofs = pdiagnoselist.size();
+
+    if(J.rows() > 0)
+        emptyDiagnoseMatrix = false;
 
     // There is a legacy decision to use QR decomposition. I (abdullah) do not know all the
     // consideration taken in that decisions. I see that:
