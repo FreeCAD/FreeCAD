@@ -264,18 +264,85 @@ public:
     }
 
     void removeAll() {
-        if(elements.size()) {
-            ui->elementList->clear();
-            elements.clear();
-            apply();
+        if(elements.empty())
+            return;
+
+        auto itFace = elements.find("Face");
+        auto itEdge = elements.find("Edge");
+        auto itVertex = elements.find("Vertex");
+        bool revert = false;
+        for (auto & v : elements) {
+            if (itFace != elements.end() && v.first != "Face" && boost::starts_with(v.first, "Face")) {
+                revert = true;
+                v.second->setData(Qt::UserRole, itFace->second->data(Qt::UserRole));
+            }
+            if (itEdge != elements.end() && v.first != "Edge" && boost::starts_with(v.first, "Edge")) {
+                revert = true;
+                v.second->setData(Qt::UserRole, itEdge->second->data(Qt::UserRole));
+            }
+            if (itVertex != elements.end() && v.first != "Vertex" && boost::starts_with(v.first, "Vertex")) {
+                revert = true;
+                v.second->setData(Qt::UserRole, itVertex->second->data(Qt::UserRole));
+            }
         }
+        if (revert)
+            apply();
+        ui->elementList->clear();
+        elements.clear();
+        apply();
     }
 
     void removeItems() {
+        std::vector<QListWidgetItem*> faces;
+        std::vector<QListWidgetItem*> edges;
+        std::vector<QListWidgetItem*> vertexes;
+        std::vector<std::string> subs;
         for(auto item : ui->elementList->selectedItems()) {
-            std::string sub = qPrintable(item->data(Qt::UserRole+1).value<QString>());
-            elements.erase(sub);
-            delete item;
+            subs.push_back(qPrintable(item->data(Qt::UserRole+1).value<QString>()));
+            if (subs.back() != "Face" && boost::starts_with(subs.back(), "Face"))
+                faces.push_back(item);
+            else if (subs.back() != "Edge" && boost::starts_with(subs.back(), "Edge"))
+                edges.push_back(item);
+            else if (subs.back() != "Vertex" && boost::starts_with(subs.back(), "Vertex"))
+                vertexes.push_back(item);
+        }
+
+        // In order to better support backward compatibility, Part view provider
+        // still allow user to set color through DiffuseColor. So when doing
+        // color mapping, it will not touch any element color that are not
+        // explicitly set through ColoredElements property. Therefore, when the
+        // user removes colored elements here, we must explicitly revert only
+        // those element too. Same for the removeAll() above.
+        if (faces.size()) {
+            auto it = elements.find("Face");
+            if (it != elements.end()) {
+                for (auto item : faces)
+                    item->setData(Qt::UserRole, it->second->data(Qt::UserRole));
+            }
+        }
+        if (edges.size()) {
+            auto it = elements.find("Edge");
+            if (it != elements.end()) {
+                for (auto item : edges)
+                    item->setData(Qt::UserRole, it->second->data(Qt::UserRole));
+            }
+        }
+        if (vertexes.size()) {
+            auto it = elements.find("Vertex");
+            if (it != elements.end()) {
+                for (auto item : vertexes)
+                    item->setData(Qt::UserRole, it->second->data(Qt::UserRole));
+            }
+        }
+        apply();
+
+        // now remove the items
+        for (auto & sub : subs) {
+            auto it = elements.find(sub);
+            if (it != elements.end()) {
+                delete it->second;
+                elements.erase(it);
+            }
         }
         apply();
     }
