@@ -3655,7 +3655,7 @@ QImage ViewProviderSketch::renderConstrIcon(const QString &type,
     QImage icon = Gui::BitmapFactory().pixmapFromSvg(type.toLatin1().data(),QSizeF(constraintIconSize,constraintIconSize)).toImage();
 
     QFont font = QApplication::font();
-    font.setPixelSize(constraintIconSize * 0.8);
+    font.setPixelSize(static_cast<int>(0.8 * constraintIconSize));
     font.setBold(true);
     QFontMetrics qfm = QFontMetrics(font);
 
@@ -3756,14 +3756,19 @@ float ViewProviderSketch::getScaleFactor()
 
 void ViewProviderSketch::InitItemsSizes()
 {
+    //Add scaling to Constraint icons
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    double viewScalingFactor = hGrp->GetFloat("ViewScalingFactor", 1.25);
+    viewScalingFactor = Base::clamp<double>(viewScalingFactor, 0.5, 5.0);
+
     int defaultFontSize = QApplication::fontMetrics().height();
     int ldpi = QApplication::desktop()->logicalDpiX();
     float virtualdpi = 96.;
     float QtPixelRatio = virtualdpi/ldpi;
     float coinFontPixelRatio = QtPixelRatio; // this is not absolute exactly, but the ratio is correct
-    float view3D_factor = 1.25; // View3D area has worse readability, so let's increase a little
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    coinFontSize = hGrp->GetInt("EditSketcherFontSize", defaultFontSize * QtPixelRatio * coinFontPixelRatio *view3D_factor );
+
+    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    coinFontSize = hGrp->GetInt("EditSketcherFontSize", defaultFontSize * QtPixelRatio * coinFontPixelRatio * viewScalingFactor);
     constraintIconSize = coinFontSize / coinFontPixelRatio;
     return;
 }
