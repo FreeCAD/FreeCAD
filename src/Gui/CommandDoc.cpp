@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <QApplication>
 # include <QClipboard>
+# include <QDateTime>
 # include <QEventLoop>
 # include <QFileDialog>
 # include <QLabel>
@@ -271,37 +272,200 @@ StdCmdExport::StdCmdExport()
     eType         = 0;
 }
 
+/**
+Create a default filename from a user-specified format string
+ 
+Format options are:
+%F - the basename of the .FCStd file (or the label, if it is not saved yet)
+%Lx - the label of the selected object(s), separated by character 'x'
+%Px - the label of the selected object(s) and their first parent, separated by character 'x'
+%U - the date and time, in UTC, ISO 8601
+%D - the date and time, in local timezone, ISO 8601
+Any other characters are treated literally, though if the filename is illegal
+it will be changed on saving.
+*/
+QString createDefaultExportBasename()
+{
+    QString defaultFilename;
+
+    auto selection = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId());
+    QString exportFormatString;
+    if (selection.size() == 1) {
+        exportFormatString = QString::fromStdString (App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
+            GetASCII("ExportDefaultFilenameSingle", "%F-%P-"));
+    } 
+    else {
+        exportFormatString = QString::fromStdString (App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
+            GetASCII("ExportDefaultFilenameMultiple", "%F"));
+    }
+
+    // For code simplicity, pull all values we might need
+
+    // %F - the basename of the.FCStd file(or the label, if it is not saved yet)
+    QString docFilename = QString::fromUtf8(App::GetApplication().getActiveDocument()->getFileName());
+    QFileInfo fi(docFilename);
+    QString fcstdBasename = fi.completeBaseName();
+    if (fcstdBasename.isEmpty()) {
+        fcstdBasename = QString::fromStdString(App::GetApplication().getActiveDocument()->Label.getStrValue());
+    }
+
+    // %L - the label of the selected object(s)
+    QStringList objectLabels;
+    for (const auto& object : selection) {
+        objectLabels.push_back(QString::fromStdString(object->Label.getStrValue()));
+    }
+
+    // %P - the label of the selected objects and their first parent
+    QStringList parentLabels;
+    for (const auto& object : selection) {
+        auto parents = object->getParents();
+        QString firstParent;
+        if (!parents.empty())
+            firstParent = QString::fromStdString(parents.front().first->Label.getStrValue());
+        parentLabels.append(firstParent + QString::fromStdString(object->Label.getStrValue()));
+    }
+
+    // %U - the date and time, in UTC, ISO 8601
+    QDateTime utc = QDateTime(QDateTime::currentDateTimeUtc());
+    QString utcISO8601 = utc.toString(Qt::ISODate);
+
+    // %D - the date and time, in local timezone, ISO 8601
+    QDateTime local = utc.toLocalTime();
+    QString localISO8601 = local.toString(Qt::ISODate);
+
+    for (int i = 0; i < exportFormatString.size(); ++i) {
+        auto c = exportFormatString.at(i);
+        if (c != QLatin1Char('%')) {
+            defaultFilename.append(c);
+        }
+        else {
+            if (i < exportFormatString.size() - 1) {
+                ++i;
+                auto formatChar = exportFormatString.at(i);
+                QChar separatorChar = QLatin1Char('-');
+                if (formatChar == QLatin1Char('L') ||
+                    formatChar == QLatin1Char('P')) {
+                    if (i < exportFormatString.size() - 1) {
+                        ++i;
+                        separatorChar = exportFormatString.at(i);
+                    }
+                }
+
+                // Handle our format characters:
+                if (formatChar == QLatin1Char('F')) {
+                    defaultFilename.append(fcstdBasename);
+                }
+                else if (formatChar == QLatin1Char('L')) {
+                    defaultFilename.append(objectLabels.join(separatorChar));
+                }
+                else if (formatChar == QLatin1Char('P')) {
+                    defaultFilename.append(parentLabels.join(separatorChar));
+                }
+                else if (formatChar == QLatin1Char('U')) {
+                    defaultFilename.append(utcISO8601);
+                }
+                else if (formatChar == QLatin1Char('D')) {
+                    defaultFilename.append(localISO8601);
+                }
+                else {
+                    FC_WARN("When parsing default export filename format string, %" 
+                        << QString(formatChar).toStdString() 
+                        << " is not a known format string.");
+                }
+            }
+        }
+    }
+
+    // Finally, clean the string:
+    QString invalidCharacters = QLatin1String("/\\?%*:|\"<>");
+    for (const auto &c : invalidCharacters)
+        defaultFilename.replace(c,QLatin1String("_"));
+
+    return defaultFilename;
+}
+
 void StdCmdExport::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    if (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) == 0) {
+    static QString lastExportFullPath = QString();
+    static bool lastExportUsedGeneratedFilename = true;
+    static QString lastExportFilterUsed = QString();
+
+    auto selection = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId());
+    if (selection.size() == 0) {
         QMessageBox::warning(Gui::getMainWindow(),
             QString::fromUtf8(QT_TR_NOOP("No selection")),
-            QString::fromUtf8(QT_TR_NOOP("Please select first the objects you want to export.")));
+            QString::fromUtf8(QT_TR_NOOP("Select the objects to export before choosing Export.")));
         return;
     }
 
-    // fill the list of registered endings
+    // fill the list of registered suffixes
     QStringList filterList;
-    std::map<std::string, std::string> FilterList = App::GetApplication().getExportFilters();
-    std::map<std::string, std::string>::const_iterator jt;
-    for (jt=FilterList.begin();jt != FilterList.end();++jt) {
+    std::map<std::string, std::string> filterMap = App::GetApplication().getExportFilters();
+    for (const auto &filter : filterMap) {
         // ignore the project file format
-        if (jt->first.find("(*.FCStd)") == std::string::npos) {
-            filterList << QString::fromLatin1(jt->first.c_str());
+        if (filter.first.find("(*.FCStd)") == std::string::npos) {
+            filterList << QString::fromStdString(filter.first);
+        }
+    }
+    QString formatList = filterList.join(QLatin1String(";;"));
+    Base::Reference<ParameterGrp> hPath = 
+        App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General");
+    QString selectedFilter = QString::fromStdString(hPath->GetASCII("FileExportFilter"));
+    if (!lastExportFilterUsed.isEmpty()) {
+        selectedFilter = lastExportFilterUsed;
+    }
+
+    // Create a default filename for the export
+    // * If this is the first export this session default, generate a new default.
+    // * If this is a repeated export during the same session:
+    //     * If the user accepted the default filename last time, regenerate a new
+    //       default, potentially updating the object label.
+    //     * If not, default to their previously-set export filename.
+    QString defaultFilename = lastExportFullPath;
+
+    bool filenameWasGenerated = false;
+    // We want to generate a new default name in two cases:
+    if (defaultFilename.isEmpty() || lastExportUsedGeneratedFilename) {
+        // First, get the name and path of the current .FCStd file, if there is one:
+        QString docFilename = QString::fromUtf8(
+            App::GetApplication().getActiveDocument()->getFileName());
+
+        // Find the default location for our exported file. Three possibilities:
+        QString defaultExportPath;
+        if (!lastExportFullPath.isEmpty()) {
+            QFileInfo fi(lastExportFullPath);
+            defaultExportPath = fi.path();
+        }
+        else if (!docFilename.isEmpty()) {
+            QFileInfo fi(docFilename);
+            defaultExportPath = fi.path();
+        }
+        else {
+            defaultExportPath = Gui::FileDialog::getWorkingDirectory();
+        }
+
+        if (lastExportUsedGeneratedFilename /*<- static, true on first call*/ ) {
+            defaultFilename = defaultExportPath + QLatin1Char('/') + createDefaultExportBasename();
+
+            // Append the last extension used, if there is one.
+            if (!lastExportFullPath.isEmpty()) {
+                QFileInfo lastExportFile(lastExportFullPath);
+                if (!lastExportFile.suffix().isEmpty()) {
+                    defaultFilename += QLatin1String(".") + lastExportFile.suffix();
+                }
+            }
+            filenameWasGenerated = true;
         }
     }
 
-    QString formatList = filterList.join(QLatin1String(";;"));
-    Base::Reference<ParameterGrp> hPath = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
-                               ->GetGroup("Preferences")->GetGroup("General");
-    QString selectedFilter = QString::fromStdString(hPath->GetASCII("FileExportFilter"));
-
+    // Launch the file selection modal dialog
     QString fileName = FileDialog::getSaveFileName(getMainWindow(),
-        QObject::tr("Export file"), QString(), formatList, &selectedFilter);
+        QObject::tr("Export file"), defaultFilename, formatList, &selectedFilter);
     if (!fileName.isEmpty()) {
         hPath->SetASCII("FileExportFilter", selectedFilter.toLatin1().constData());
+        lastExportFilterUsed = selectedFilter; // So we can select the same one next time
         SelectModule::Dict dict = SelectModule::exportHandler(fileName, selectedFilter);
         // export the files with the associated modules
         for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
@@ -309,6 +473,20 @@ void StdCmdExport::activated(int iMsg)
                 getActiveGuiDocument()->getDocument()->getName(),
                 it.value().toLatin1());
         }
+
+        // Keep a record of if the user used our suggested generated filename. If they
+        // did, next time we can recreate it, which will update the object label if
+        // there is one.
+        QFileInfo defaultExportFI(defaultFilename);
+        QFileInfo thisExportFI(fileName);
+        if (filenameWasGenerated && 
+            thisExportFI.completeBaseName() == defaultExportFI.completeBaseName()) {
+            lastExportUsedGeneratedFilename = true;
+        }
+        else {
+            lastExportUsedGeneratedFilename = false;
+        }
+        lastExportFullPath = fileName;
     }
 }
 
