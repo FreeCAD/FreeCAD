@@ -2288,7 +2288,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 
     };
     
-    // this is a helper function to remove Equal constraints from Line segments. 
+    // Helper function to remove Equal constraints from a chosen edge (e.g Line segment). 
     auto delEqualConstraintsOnGeoId = [this] (int GeoId) {
             
         std::vector<int> delete_list;
@@ -2306,7 +2306,6 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
             index++;
         }
         delConstraints(delete_list);
-        return index-1;
     };
 
     auto creategeometryundopoint = [this, geomlist]() {
