@@ -168,10 +168,11 @@ class PathWorkbench (Workbench):
     def Activated(self):
         # update the translation engine
         FreeCADGui.updateLocale()
-        Msg("Path workbench activated\n")
+        # Msg("Path workbench activated\n")
 
     def Deactivated(self):
-        Msg("Path workbench deactivated\n")
+        # Msg("Path workbench deactivated\n")
+        pass
 
     def ContextMenu(self, recipient):
         import PathScripts
