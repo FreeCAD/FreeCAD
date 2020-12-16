@@ -1361,7 +1361,7 @@ App::Color ViewProviderPartExt::getElementColor(App::Color color,
         // or may not contain a valid element name for the previous step. We can
         // only decide after another loop hits here.
         tag = shape.getElementHistory(mapped.c_str(),&original,&history);
-        auto element = shape.getElementName(history.empty()?mapped.c_str():history.back().c_str(),
+        auto element = shape.getElementName(history.empty()?original.c_str():history.back().c_str(),
                                             Data::ComplexGeoData::MapToIndexedForced);
         auto idx = Part::TopoShape::shapeTypeAndIndex(element);
         if(idx.second>0 && idx.second<=(int)shape.countSubShapes(idx.first)) {
