@@ -316,11 +316,17 @@ def _export(exportSet, filename, colors):
 
                 if FreeCAD.GuiUp:
                     vobj = sobj.ViewObject
-                    if not hasattr(vobj, 'DiffuseColor'):
-                        # Recursive mapping of color from group is very complex. We
-                        # simply copy the shape to a temporary Part::Feature, and
-                        # let its view provider to do the color mapping, which is
-                        # roughly equivalent of invoking Part_SimpleCopy command
+                    try:
+                        # This is to make vobj actually owns a property called
+                        # 'DiffuseColor'
+                        facecolors = vobj.getPropertyByName('DiffuseColor',1)
+                    except Exception:
+                        # If not, then the view object is probably a link or a
+                        # group. Recursive mapping of color from group is very
+                        # complex. We simply copy the shape to a temporary
+                        # Part::Feature, and let its view provider to do the
+                        # color mapping, which is roughly equivalent of invoking
+                        # Part_SimpleCopy command
                         if not tmpobj:
                             tmpDoc = FreeCAD.newDocument('_ArchTmp', hidden=True, temp=True)
                             try:
@@ -331,8 +337,7 @@ def _export(exportSet, filename, colors):
                         tmpobj.Shape = shape
                         vobj = tmpobj.ViewObject
                         vobj.mapShapeColors(sobj.Document)
-
-                    facecolors = vobj.DiffuseColor
+                        facecolors = vobj.DiffuseColor
 
                 if len(facecolors) <= 1 or len(facecolors) != shape.countElement('Face'):
                     shapelist.append((sobj.Label, shape, colors.get(sobj.FullName, None)))
@@ -389,6 +394,7 @@ def _export(exportSet, filename, colors):
                 if m:
                     outfile.write("usemtl " + obj.Material.Name + "\n")
                 else:
+                    mn = Draft.getrgb(shapecolor,testbw=False)[1:]
                     outfile.write("usemtl color_" + mn + "\n")
                     materials.append(("color_" + mn,shapecolor,transp))
                 for f in flist:
@@ -526,6 +532,7 @@ def makeMesh(doc,activeobject,verts,facets,material,colortable):
         mobj = doc.addObject("Mesh::Feature",'Mesh')
         mobj.Label = activeobject
         mesh = Mesh.Mesh(mfacets)
+        segements = False
         if len(material) > 1:
             err = None
             for name, begin, end in material:
@@ -533,17 +540,20 @@ def makeMesh(doc,activeobject,verts,facets,material,colortable):
                     continue
                 try:
                     mesh.addSegment(range(begin, end), colortable[name][0])
+                    segments = True
                 except Exception as e:
                     err = str(e)
             if err:
                 FreeCAD.Console.PrintError("Failed to set material: %s\n" % err)
 
         elif material and FreeCAD.GuiUp:
-            if material in colortable:
-                mobj.ViewObject.ShapeColor = colortable[material][0]
-                if colortable[material][1] != None:
-                    mobj.ViewObject.Transparency = colortable[material][1]
+            mname = material[0][0]
+            if mname in colortable:
+                mobj.ViewObject.ShapeColor = colortable[mname][0]
+                if colortable[mname][1] != None:
+                    mobj.ViewObject.Transparency = colortable[mname][1]
 
         mobj.Mesh = mesh
-        if FreeCAD.GuiUp:
+        if segments and FreeCAD.GuiUp:
             mobj.ViewObject.highlightSegments()
+
