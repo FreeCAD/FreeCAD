@@ -70,7 +70,7 @@
 # include <QPainter>
 # include <QTextStream>
 # include <QKeyEvent>
-#include <QDesktopWidget>
+# include <QDesktopWidget>
 
 # include <boost_bind_bind.hpp>
 # include <boost/scoped_ptr.hpp>
@@ -3084,10 +3084,10 @@ QString ViewProviderSketch::getPresentationString(const Constraint *constraint)
             }
         }
     }
-    if(constraint->Type == Sketcher::Diameter){
-        userStr.insert(0,QChar(8960));
-    }else if(constraint->Type == Sketcher::Radius){
-        userStr.insert(0,QChar(82));
+    if (constraint->Type == Sketcher::Diameter){
+        userStr.insert(0, QChar(8960)); // Diameter sign
+    }else if (constraint->Type == Sketcher::Radius){
+        userStr.insert(0, QChar(82)); // Capital letter R
     }
     return userStr;
 }
@@ -3651,8 +3651,9 @@ void ViewProviderSketch::InitItemsSizes()
 {
     int defaultFontSize = QApplication::fontMetrics().height();
     int ldpi = QApplication::desktop()->logicalDpiX();
-    float k = 96./ldpi;
-    float view3D_factor = 1.25;
+    float virtualdpi = 96.;
+    float k = virtualdpi/ldpi;
+    float view3D_factor = 1.25; // View3D area has worse readability, so let's increase a little
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     coinFontSize = hGrp->GetInt("EditSketcherFontSize", defaultFontSize * k * k *view3D_factor );
     constraintIconSize = coinFontSize / k;
