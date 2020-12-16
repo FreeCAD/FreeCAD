@@ -6538,14 +6538,14 @@ void CmdSketcherConstrainEqual::applyConstraint(std::vector<SelIdPair> &selSeq, 
         const Part::Geometry *geo1 = Obj->getGeometry(GeoId1);
         const Part::Geometry *geo2 = Obj->getGeometry(GeoId2);
 
-        if ( (geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId() && geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId())     ||
-             (geo1->getTypeId() == Part::GeomHyperbola::getClassTypeId() && geo2->getTypeId() != Part::GeomHyperbola::getClassTypeId())         ||
-             (geo1->getTypeId() == Part::GeomParabola::getClassTypeId() && geo2->getTypeId() != Part::GeomParabola::getClassTypeId())           ||
-             (isBsplinePole(geo1) && !isBsplinePole(geo1))                                                                                      ||
+        if ( (geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId() && geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId())         ||
+             (geo1->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() && geo2->getTypeId() != Part::GeomArcOfHyperbola::getClassTypeId())   ||
+             (geo1->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() && geo2->getTypeId() != Part::GeomArcOfParabola::getClassTypeId())     ||
+             (isBsplinePole(geo1) && !isBsplinePole(geo2))                                                                                          ||
              ( (geo1->getTypeId() == Part::GeomCircle::getClassTypeId() || geo1->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) &&
-               (geo2->getTypeId() != Part::GeomCircle::getClassTypeId() || geo2->getTypeId() != Part::GeomArcOfCircle::getClassTypeId()))       ||
+               !(geo2->getTypeId() == Part::GeomCircle::getClassTypeId() || geo2->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()))          ||
              ( (geo1->getTypeId() == Part::GeomEllipse::getClassTypeId() || geo1->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) &&
-               (geo2->getTypeId() != Part::GeomEllipse::getClassTypeId() || geo2->getTypeId() != Part::GeomArcOfEllipse::getClassTypeId())) ){
+               !(geo2->getTypeId() == Part::GeomEllipse::getClassTypeId() || geo2->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId())) ){
 
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                 QObject::tr("Select two or more edges of similar type"));
