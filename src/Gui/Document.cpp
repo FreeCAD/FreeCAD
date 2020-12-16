@@ -1540,6 +1540,8 @@ void Document::slotFinishRestoreObject(const App::DocumentObject &obj) {
         vpd->finishRestoring();
         if(!vpd->canAddToSceneGraph())
             toggleInSceneGraph(vpd);
+        else if (vpd->Visibility.getValue())
+            vpd->setModeSwitch();
     }
 }
 

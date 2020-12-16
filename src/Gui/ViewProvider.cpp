@@ -455,6 +455,9 @@ void ViewProvider::hide(void)
 
 void ViewProvider::show(void)
 {
+    if (isRestoring())
+        return;
+
     setModeSwitch();
 
     //tell extensions that we show
@@ -502,6 +505,9 @@ const string ViewProvider::getOverrideMode() {
 
 void ViewProvider::setModeSwitch()
 {
+    if (isRestoring())
+        return;
+
     int mode;
     if (viewOverrideMode == -1)
         mode = _iActualMode;
