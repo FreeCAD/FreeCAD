@@ -5987,7 +5987,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
             std::swap(PosId1,PosId2);
         }
 
-        if(isBsplinePole(Obj, GeoId1) || isBsplinePole(Obj, GeoId2)) {
+        if(isBsplinePole(Obj, GeoId1) || (GeoId2 != Constraint::GeoUndef && isBsplinePole(Obj, GeoId2))) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                             QObject::tr("Select an edge that is not a B-spline weight"));
             return;
