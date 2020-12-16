@@ -65,7 +65,7 @@ using namespace TechDraw;
 
 App::PropertyFloatConstraint::Constraints DrawViewBalloon::SymbolScaleRange = { Precision::Confusion(),
                                                                   std::numeric_limits<double>::max(),
-                                                                  (1.0) };
+                                                                  (0.1) };
 
 //===========================================================================
 // DrawViewBalloon
@@ -100,7 +100,7 @@ DrawViewBalloon::DrawViewBalloon(void)
     ADD_PROPERTY(EndType,(prefEnd()));
 
     ADD_PROPERTY_TYPE(EndTypeScale,(1.0),"",(App::PropertyType)(App::Prop_None),"EndType shape scale");
-    ShapeScale.setConstraints(&SymbolScaleRange);
+    EndTypeScale.setConstraints(&SymbolScaleRange);
 
     BubbleShape.setEnums(balloonTypeEnums);
     ADD_PROPERTY(BubbleShape,(prefShape()));
@@ -128,9 +128,12 @@ void DrawViewBalloon::onChanged(const App::Property* prop)
     if (!isRestoring()) {
         if ( (prop == &EndType) ||
              (prop == &BubbleShape)  ||
+             (prop == &ShapeScale)   ||
              (prop == &Text)    ||
              (prop == &KinkLength)   ||
-             (prop == &EndTypeScale) ) {
+             (prop == &EndTypeScale) ||
+             (prop == &OriginX) ||
+             (prop == &OriginY) ) {
             requestPaint();
         }
     }
