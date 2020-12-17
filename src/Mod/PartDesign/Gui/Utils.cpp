@@ -173,17 +173,21 @@ void needActiveBodyError(void)
 PartDesign::Body * makeBody(App::Document *doc)
 {
     // This is intended as a convenience when starting a new document.
-    auto bodyName( doc->getUniqueObjectName("Body") );
-    Gui::Command::doCommand( Gui::Command::Doc,
-                             "App.getDocument('%s').addObject('PartDesign::Body','%s')",
-                             doc->getName(), bodyName.c_str() );
-    auto body = dynamic_cast<PartDesign::Body*>(doc->getObject(bodyName.c_str()));
+    auto body = static_cast<PartDesign::Body*>(
+            doc->addObject("PartDesign::Body", "Body"));
     if(body) {
-        auto vp = Gui::Application::Instance->getViewProvider(body);
-        if(vp) {
-            // make the new body active
-            vp->doubleClicked();
-        }
+        App::DocumentObject *topParent = nullptr;
+        std::string topSubName;
+        App::Part *actPart = PartDesignGui::getActivePart (&topParent, &topSubName);
+        if (actPart) {
+            actPart->addObject(body);
+            topSubName += body->getNameInDocument();
+            topSubName += ".";
+        } else
+            topParent = body;
+        auto gdoc = Gui::Application::Instance->getDocument(doc);
+        if (gdoc && gdoc->getActiveView())
+            gdoc->getActiveView()->setActiveObject(topParent, PDBODYKEY, topSubName.c_str());
     }
     return body;
 }
