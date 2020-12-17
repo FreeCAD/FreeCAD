@@ -85,8 +85,11 @@ void ViewProviderAddSub::attach(App::DocumentObject* obj) {
 
 PartGui::ViewProviderPart * ViewProviderAddSub::getAddSubView()
 {
-    if (pAddSubView)
+    if (pAddSubView) {
+        if (pAddSubView->testStatus(Gui::Detach))
+            pAddSubView->reattach(getObject());
         return pAddSubView.get();
+    }
 
     pAddSubView.reset(new PartGui::ViewProviderPart);
     pAddSubView->setShapePropertyName("AddSubShape");
@@ -284,6 +287,8 @@ void ViewProviderAddSub::setPreviewDisplayMode(bool onoff) {
 void ViewProviderAddSub::beforeDelete()
 {
     setPreviewDisplayMode(false);
+    if (pAddSubView)
+        pAddSubView->beforeDelete();
     ViewProvider::beforeDelete();
 }
 
@@ -294,6 +299,8 @@ bool ViewProviderAddSub::setEdit(int ModNum)
 
 void ViewProviderAddSub::unsetEdit(int ModNum) {
     ViewProvider::unsetEdit(ModNum);
+    if (pAddSubView)
+        pAddSubView->beforeDelete();
 }
 
 bool ViewProviderAddSub::getDetailPath(const char *subname,
@@ -315,4 +322,11 @@ bool ViewProviderAddSub::getDetailPath(const char *subname,
         return view->getDetailPath(subname, pPath, true, det);
     }
     return ViewProvider::getDetailPath(subname, pPath, append, det);
+}
+
+void ViewProviderAddSub::reattach(App::DocumentObject *obj)
+{
+    ViewProvider::reattach(obj);
+    if (pAddSubView)
+        pAddSubView->reattach(obj);
 }

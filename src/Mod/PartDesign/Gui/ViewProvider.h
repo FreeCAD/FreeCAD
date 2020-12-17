@@ -90,6 +90,9 @@ public:
 
     virtual std::vector<App::DocumentObject*> claimChildren(void) const override;
 
+    virtual void reattach(App::DocumentObject *) override;
+    virtual void beforeDelete() override;
+
 protected:
 
     virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;

@@ -1911,9 +1911,9 @@ void ViewProviderLink::attach(App::DocumentObject *pcObj) {
 
 void ViewProviderLink::reattach(App::DocumentObject *obj) {
     linkView->setOwner(this);
-    if(childVp)
+    inherited::reattach(obj);
+    if(childVp) 
         childVp->reattach(obj);
-    ViewProviderDocumentObject::reattach(obj);
 }
 
 std::vector<std::string> ViewProviderLink::getDisplayModes(void) const
@@ -3480,6 +3480,13 @@ void ViewProviderLink::onBeforeChange(const App::Property *prop) {
         }
     }
     inherited::onBeforeChange(prop);
+}
+
+void ViewProviderLink::beforeDelete()
+{
+    if (childVp)
+        childVp->beforeDelete();
+    inherited::beforeDelete();
 }
 
 static bool isExcludedProperties(const char *name) {

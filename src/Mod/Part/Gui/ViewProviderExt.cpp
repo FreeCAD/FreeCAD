@@ -682,7 +682,7 @@ std::vector<std::string> ViewProviderPartExt::getDisplayModes(void) const
 Part::TopoShape ViewProviderPartExt::getShape() const
 {
     Part::TopoShape shape;
-    if (!getObject())
+    if (!isAttachedToDocument() || !getObject())
         return shape;
 
     auto prop = Base::freecad_dynamic_cast<Part::PropertyPartShape>(
@@ -2116,4 +2116,19 @@ void ViewProviderPartExt::enableFullSelectionHighlight(bool face, bool line, boo
         nodeset->highlightIndices.setValue(-1);
     else if (nodeset->highlightIndices.getNum()==1 && nodeset->highlightIndices[0]==-1)
         nodeset->highlightIndices.setNum(0);
+}
+
+void ViewProviderPartExt::beforeDelete()
+{
+    setStatus(Gui::Detach, true);
+    inherited::beforeDelete();
+    // clear coin nodes to free up some memory
+    updateVisual();
+}
+
+void ViewProviderPartExt::reattach(App::DocumentObject *obj)
+{
+    inherited::reattach(obj);
+    if(isUpdateForced() || Visibility.getValue()) 
+        updateVisual();
 }

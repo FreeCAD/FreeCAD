@@ -843,6 +843,20 @@ std::vector<App::DocumentObject*> ViewProvider::claimChildren(void) const
     return res;
 }
 
+void ViewProvider::beforeDelete()
+{
+    if (pSuppressedView)
+        pSuppressedView->beforeDelete();
+    inherited::beforeDelete();
+}
+
+void ViewProvider::reattach(App::DocumentObject *obj)
+{
+    inherited::reattach(obj);
+    if (pSuppressedView)
+        pSuppressedView->reattach(obj);
+}
+
 namespace Gui {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(PartDesignGui::ViewProviderPython, PartDesignGui::ViewProvider)
