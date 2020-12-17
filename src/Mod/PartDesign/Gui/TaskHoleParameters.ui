@@ -509,7 +509,7 @@ Only available for holes without thread</string>
      </property>
     </widget>
    </item>
-   <item row="13" column="1">
+   <item row="13" column="1" colspan="5">
     <widget class="QComboBox" name="HoleCutType">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
@@ -519,7 +519,7 @@ Only available for holes without thread</string>
      </property>
      <property name="maximumSize">
       <size>
-       <width>140</width>
+       <width>16777215</width>
        <height>16777215</height>
       </size>
      </property>
