@@ -3350,7 +3350,7 @@ void ViewProviderSketch::combineConstraintIcons(IconQueue iconQueue)
         iconQueue.pop_back();
 
         // we group only icons not being Symmetry icons, because we want those on the line
-        if(init.type != QString::fromLatin1("small/Constraint_Symmetric_sm")){
+        if(init.type != QString::fromLatin1("Constraint_Symmetric")){
 
             IconQueue::iterator i = iconQueue.begin();
             while(i != iconQueue.end()) {
@@ -3359,7 +3359,7 @@ void ViewProviderSketch::combineConstraintIcons(IconQueue iconQueue)
                 for(IconQueue::iterator j = thisGroup.begin();
                     j != thisGroup.end(); ++j) {
                     float distSquared = pow(i->position[0]-j->position[0],2) + pow(i->position[1]-j->position[1],2);
-                    if(distSquared <= maxDistSquared && (*i).type != QString::fromLatin1("small/Constraint_Symmetric_sm")) {
+                    if(distSquared <= maxDistSquared && (*i).type != QString::fromLatin1("Constraint_Symmetric")) {
                         // Found an icon in iconQueue that's close enough to
                         // a member of thisGroup, so move it into thisGroup
                         thisGroup.push_back(*i);
@@ -3652,11 +3652,12 @@ void ViewProviderSketch::InitItemsSizes()
     int defaultFontSize = QApplication::fontMetrics().height();
     int ldpi = QApplication::desktop()->logicalDpiX();
     float virtualdpi = 96.;
-    float k = virtualdpi/ldpi;
+    float QtPixelRatio = virtualdpi/ldpi;
+    float coinFontPixelRatio = QtPixelRatio; // this is not absolute exactly, but the ratio is correct
     float view3D_factor = 1.25; // View3D area has worse readability, so let's increase a little
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    coinFontSize = hGrp->GetInt("EditSketcherFontSize", defaultFontSize * k * k *view3D_factor );
-    constraintIconSize = coinFontSize / k;
+    coinFontSize = hGrp->GetInt("EditSketcherFontSize", defaultFontSize * QtPixelRatio * coinFontPixelRatio *view3D_factor );
+    constraintIconSize = coinFontSize / coinFontPixelRatio;
     return;
 }
 
