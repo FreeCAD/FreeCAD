@@ -1923,6 +1923,15 @@ void Application::runApplication(void)
     QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 #endif
 
+    // Use software rendering for OpenGL
+#if QT_VERSION >= 0x050400
+    ParameterGrp::handle hOpenGL = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/OpenGL");
+    bool useSoftwareOpenGL = hOpenGL->GetBool("UseSoftwareOpenGL", false);
+    if (useSoftwareOpenGL) {
+        QApplication::setAttribute(Qt::AA_UseSoftwareOpenGL);
+    }
+#endif // QT_VERSION >= 0x050400
+
     // A new QApplication
     Base::Console().Log("Init: Creating Gui::Application and QApplication\n");
 

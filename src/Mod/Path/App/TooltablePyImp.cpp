@@ -105,7 +105,7 @@ Py::Dict TooltablePy::getTools(void) const
 {
     Py::Dict dict;
     for(std::map<int,Path::Tool*>::iterator i = getTooltablePtr()->Tools.begin(); i != getTooltablePtr()->Tools.end(); ++i) {
-        PyObject *tool = new Path::ToolPy(i->second);
+        PyObject *tool = new Path::ToolPy(new Tool(*i->second));
         dict.setItem(Py::Long(i->first), Py::asObject(tool));
     }
     return dict;
