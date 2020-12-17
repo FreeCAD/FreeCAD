@@ -238,7 +238,7 @@ public:
         else {
             unsigned u;
             _in >> u;
-            uch = (uint8_t)uch;
+            uch = (uint8_t)u;
         }
         return *this;
     }
