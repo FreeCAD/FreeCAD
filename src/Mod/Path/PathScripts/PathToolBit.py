@@ -200,7 +200,9 @@ class ToolBit(object):
         return [prop for prop in obj.PropertiesList if obj.getGroupOfProperty(prop) == PropertyGroupAttribute]
 
     def onDocumentRestored(self, obj):
-        obj.setEditorMode('BitShape', 1)
+        # when files are shared it is essential to be able to change/set the shape file,
+        # otherwise the file is hard to use
+        # obj.setEditorMode('BitShape', 1)
         obj.setEditorMode('BitBody', 2)
         obj.setEditorMode('File', 1)
         obj.setEditorMode('Shape', 2)
