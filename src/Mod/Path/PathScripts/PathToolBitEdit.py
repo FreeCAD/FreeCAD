@@ -62,24 +62,60 @@ class ToolBitEditor(object):
         if self.loadbitbody:
             self.tool.Proxy.loadBitBody(self.tool)
 
+        # remove example widgets
+        layout = self.form.bitParams.layout()
+        for i in range(layout.rowCount() - 1, -1, -1):
+            layout.removeRow(i)
+        # used to track property widgets and editors
+        self.widgets = []
+
         self.setupTool(self.tool)
         self.setupAttributes(self.tool)
 
     def setupTool(self, tool):
         PathLog.track()
+        # Can't delete and add fields to the form because of dangling references in case of
+        # a focus change. see https://forum.freecadweb.org/viewtopic.php?f=10&t=52246#p458583
+        # Instead we keep widgets once created and use them for new properties, and hide all
+        # which aren't being needed anymore.
+
+        def labelText(name):
+            return re.sub('([A-Z][a-z]+)', r' \1', re.sub('([A-Z]+)', r' \1', name))
+
         layout = self.form.bitParams.layout()
-        for i in range(layout.rowCount() - 1, -1, -1):
-            layout.removeRow(i)
-        editor = {}
         ui = FreeCADGui.UiLoader()
+        nr = 0
+
+        # for all properties either assign them to existing labels and editors
+        # or create additional ones for them if not enough have already been
+        # created.
         for name in tool.PropertiesList:
             if tool.getGroupOfProperty(name) == PathToolBit.PropertyGroupBit:
-                qsb = ui.createWidget('Gui::QuantitySpinBox')
-                editor[name] = PathGui.QuantitySpinBox(qsb, tool, name)
-                label = QtGui.QLabel(re.sub('([A-Z][a-z]+)', r' \1',
-                                     re.sub('([A-Z]+)', r' \1', name)))
-                layout.addRow(label, qsb)
-        self.bitEditor = editor
+                if nr < len(self.widgets):
+                    PathLog.debug("re-use row: {} [{}]".format(nr, name))
+                    label, qsb, editor = self.widgets[nr]
+                    label.setText(labelText(name))
+                    editor.attachTo(tool, name)
+                    label.show()
+                    qsb.show()
+                else:
+                    qsb    = ui.createWidget('Gui::QuantitySpinBox')
+                    editor = PathGui.QuantitySpinBox(qsb, tool, name)
+                    label  = QtGui.QLabel(labelText(name))
+                    self.widgets.append((label, qsb, editor))
+                    PathLog.debug("create row: {} [{}]".format(nr, name))
+                if nr >= layout.rowCount():
+                    layout.addRow(label, qsb)
+                nr = nr + 1
+
+        # hide all rows which aren't being used
+        for i in range(nr, len(self.widgets)):
+            label, qsb, editor = self.widgets[i]
+            label.hide()
+            qsb.hide()
+            editor.attachTo(None)
+            PathLog.debug("  hide row: {}".format(i))
+
         img = tool.Proxy.getBitThumbnail(tool)
         if img:
             self.form.image.setPixmap(QtGui.QPixmap(QtGui.QImage.fromData(img)))
@@ -189,27 +225,28 @@ class ToolBitEditor(object):
         self.form.toolName.setText(self.tool.Label)
         self.form.shapePath.setText(self.tool.BitShape)
 
-        for editor in self.bitEditor:
-            self.bitEditor[editor].updateSpinBox()
+        for lbl, qsb, editor in self.widgets:
+            editor.updateSpinBox()
 
     def updateShape(self):
         PathLog.track()
         shapePath = str(self.form.shapePath.text())
+        # Only need to go through this exercise if the shape actually changed.
         if self.tool.BitShape != shapePath:
             self.tool.BitShape = shapePath
             self.setupTool(self.tool)
             self.form.toolName.setText(self.tool.Label)
 
-            for editor in self.bitEditor:
-                self.bitEditor[editor].updateSpinBox()
+            for lbl, qsb, editor in self.widgets:
+                editor.updateSpinBox()
 
     def updateTool(self):
         PathLog.track()
         self.tool.Label = str(self.form.toolName.text())
         self.tool.BitShape = str(self.form.shapePath.text())
 
-        for editor in self.bitEditor:
-            self.bitEditor[editor].updateProperty()
+        for lbl, qsb, editor in self.widgets:
+            editor.updateProperty()
 
         # self.tool.Proxy._updateBitShape(self.tool)
 
