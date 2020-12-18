@@ -547,32 +547,33 @@ Hole::Hole()
 
     readCutDefinitions();
 
-    ADD_PROPERTY_TYPE(Threaded, ((long)0), "Hole", App::Prop_None, "Threaded");
+    ADD_PROPERTY_TYPE(Threaded, (false), "Hole", App::Prop_None, "Threaded");
 
-    ADD_PROPERTY_TYPE(ModelActualThread, ((long)0), "Hole", App::Prop_None, "Model actual thread");
-    ADD_PROPERTY_TYPE(ThreadPitch, ((long)0), "Hole", App::Prop_None, "Thread pitch");
-    ADD_PROPERTY_TYPE(ThreadAngle, ((long)0), "Hole", App::Prop_None, "Thread angle");
-    ADD_PROPERTY_TYPE(ThreadCutOffInner, ((long)0), "Hole", App::Prop_None, "Thread CutOff Inner");
-    ADD_PROPERTY_TYPE(ThreadCutOffOuter, ((long)0), "Hole", App::Prop_None, "Thread CutOff Outer");
+    ADD_PROPERTY_TYPE(ModelActualThread, (false), "Hole", App::Prop_None, "Model actual thread");
+    ADD_PROPERTY_TYPE(ThreadPitch, (0.0), "Hole", App::Prop_None, "Thread pitch");
+    ADD_PROPERTY_TYPE(ThreadAngle, (0.0), "Hole", App::Prop_None, "Thread angle");
+    ADD_PROPERTY_TYPE(ThreadCutOffInner, (0.0), "Hole", App::Prop_None, "Thread CutOff Inner");
+    ADD_PROPERTY_TYPE(ThreadCutOffOuter, (0.0), "Hole", App::Prop_None, "Thread CutOff Outer");
 
-    ADD_PROPERTY_TYPE(ThreadType, ((long)0), "Hole", App::Prop_None, "Thread type");
+    ADD_PROPERTY_TYPE(ThreadType, (0L), "Hole", App::Prop_None, "Thread type");
     ThreadType.setEnums(ThreadTypeEnums);
 
-    ADD_PROPERTY_TYPE(ThreadSize, ((long)0), "Hole", App::Prop_None, "Thread size");
+    ADD_PROPERTY_TYPE(ThreadSize, (0L), "Hole", App::Prop_None, "Thread size");
     ThreadSize.setEnums(ThreadSize_None_Enums);
 
-    ADD_PROPERTY_TYPE(ThreadClass, ((long)0), "Hole", App::Prop_None, "Thread class");
+    ADD_PROPERTY_TYPE(ThreadClass, (0L), "Hole", App::Prop_None, "Thread class");
     ThreadClass.setEnums(ThreadClass_None_Enums);
 
-    ADD_PROPERTY_TYPE(ThreadFit, ((long)0), "Hole", App::Prop_None, "Thread fit");
+    ADD_PROPERTY_TYPE(ThreadFit, (0L), "Hole", App::Prop_None, "Thread fit");
     ThreadFit.setEnums(ThreadFitEnums);
 
     ADD_PROPERTY_TYPE(Diameter, (6.0), "Hole", App::Prop_None, "Diameter");
 
-    ADD_PROPERTY_TYPE(ThreadDirection, ((long)0), "Hole", App::Prop_None, "Thread direction");
+    ADD_PROPERTY_TYPE(ThreadDirection, (0L), "Hole", App::Prop_None, "Thread direction");
     ThreadDirection.setEnums(ThreadDirectionEnums);
+    ThreadDirection.setReadOnly(true);
 
-    ADD_PROPERTY_TYPE(HoleCutType, ((long)0), "Hole", App::Prop_None, "Head cut type");
+    ADD_PROPERTY_TYPE(HoleCutType, (0L), "Hole", App::Prop_None, "Head cut type");
     HoleCutType.setEnums(HoleCutType_None_Enums);
 
     ADD_PROPERTY_TYPE(HoleCutDiameter, (0.0), "Hole", App::Prop_None, "Head cut diameter");
@@ -581,17 +582,17 @@ Hole::Hole()
 
     ADD_PROPERTY_TYPE(HoleCutCountersinkAngle, (90.0), "Hole", App::Prop_None, "Head cut countersink angle");
 
-    ADD_PROPERTY_TYPE(DepthType, ((long)0), "Hole", App::Prop_None, "Type");
+    ADD_PROPERTY_TYPE(DepthType, (0L), "Hole", App::Prop_None, "Type");
     DepthType.setEnums(DepthTypeEnums);
 
     ADD_PROPERTY_TYPE(Depth, (25.0), "Hole", App::Prop_None, "Length");
 
-    ADD_PROPERTY_TYPE(DrillPoint, ((long)1), "Hole", App::Prop_None, "Drill point type");
+    ADD_PROPERTY_TYPE(DrillPoint, (1L), "Hole", App::Prop_None, "Drill point type");
     DrillPoint.setEnums(DrillPointEnums);
 
     ADD_PROPERTY_TYPE(DrillPointAngle, (118.0), "Hole", App::Prop_None, "Drill point angle");
 
-    ADD_PROPERTY_TYPE(Tapered, ((bool)false),"Hole",  App::Prop_None, "Tapered");
+    ADD_PROPERTY_TYPE(Tapered, (false),"Hole",  App::Prop_None, "Tapered");
 
     ADD_PROPERTY_TYPE(TaperedAngle, (90.0), "Hole", App::Prop_None, "Tapered angle");
 }
