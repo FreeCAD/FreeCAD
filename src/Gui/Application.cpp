@@ -716,8 +716,12 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
             }
 
             // the original file name is required
-            QString filename = QString::fromUtf8(File.filePath().c_str());
-            getMainWindow()->appendRecentFile(filename);
+            QString filename = QString::fromUtf8(File.filePath().c_str()); 
+            bool addToRecent = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
+                GetBool("RecentIncludesImported", true);
+            if (addToRecent) {
+                getMainWindow()->appendRecentFile(filename);
+            }
             FileDialog::setWorkingDirectory(filename);
         }
         catch (const Base::PyException& e){
@@ -771,9 +775,15 @@ void Application::exportTo(const char* FileName, const char* DocName, const char
             // search for a module that is able to open the exported file because otherwise
             // it doesn't need to be added to the recent files list (#0002047)
             std::map<std::string, std::string> importMap = App::GetApplication().getImportFilters(te.c_str());
-            if (!importMap.empty())
-                getMainWindow()->appendRecentFile(QString::fromUtf8(File.filePath().c_str()));
-
+            bool addToRecent = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
+                GetBool("RecentIncludesExported", false);
+            if (addToRecent) {
+                // search for a module that is able to open the exported file because otherwise
+                // it doesn't need to be added to the recent files list (#0002047)
+                std::map<std::string, std::string> importMap = App::GetApplication().getImportFilters(te.c_str());
+                if (!importMap.empty())
+                    getMainWindow()->appendRecentFile(QString::fromUtf8(File.filePath().c_str()));
+            }
             // allow exporters to pass _objs__ to submodules before deleting it
             Gui::Command::runCommand(Gui::Command::App, "del __objs__");
         }
