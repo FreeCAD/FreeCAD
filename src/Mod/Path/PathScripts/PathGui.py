@@ -35,13 +35,8 @@ __doc__ = "A collection of helper and utility functions for the Path GUI."
 def translate(context, text, disambig=None):
     return PySide.QtCore.QCoreApplication.translate(context, text, disambig)
 
-LOGLEVEL = False
-
-if LOGLEVEL:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+# PathLog.trackModule(PathLog.thisModule())
 
 
 def updateInputField(obj, prop, widget, onBeforeChange=None):
@@ -53,7 +48,7 @@ def updateInputField(obj, prop, widget, onBeforeChange=None):
     If onBeforeChange is specified it is called before a new value is assigned to the property.
     Returns True if a new value was assigned, False otherwise (new value is the same as the current).
     '''
-    value = FreeCAD.Units.Quantity(widget.text()).Value
+    value = widget.property('rawValue')
     attr = PathUtil.getProperty(obj, prop)
     attrValue = attr.Value if hasattr(attr, 'Value') else attr
 
@@ -72,10 +67,10 @@ def updateInputField(obj, prop, widget, onBeforeChange=None):
                         isDiff = True
                     break
             if noExpr:
-                widget.setReadOnly(False)
+                widget.setProperty('readonly', False)
                 widget.setStyleSheet("color: black")
             else:
-                widget.setReadOnly(True)
+                widget.setProperty('readonly', True)
                 widget.setStyleSheet("color: gray")
             widget.update()
 
@@ -100,19 +95,26 @@ class QuantitySpinBox:
     '''
 
     def __init__(self, widget, obj, prop, onBeforeChange=None):
-        self.obj = obj
+        PathLog.track(widget)
         self.widget = widget
-        self.prop = prop
         self.onBeforeChange = onBeforeChange
+        self.attachTo(obj, prop)
 
-        attr = PathUtil.getProperty(self.obj, self.prop)
-        if attr is not None:
-            if hasattr(attr, 'Value'):
-                widget.setProperty('unit', attr.getUserPreferred()[2])
-            widget.setProperty('binding', "%s.%s" % (obj.Name, prop))
-            self.valid = True
+    def attachTo(self, obj, prop = None):
+        '''attachTo(obj, prop=None) ... use an existing editor for the given object and property'''
+        self.obj = obj
+        self.prop = prop
+        if obj and prop:
+            attr = PathUtil.getProperty(obj, prop)
+            if attr is not None:
+                if hasattr(attr, 'Value'):
+                    self.widget.setProperty('unit', attr.getUserPreferred()[2])
+                self.widget.setProperty('binding', "%s.%s" % (obj.Name, prop))
+                self.valid = True
+            else:
+                PathLog.warning(translate('PathGui', "Cannot find property %s of %s") % (prop, obj.Label))
+                self.valid = False
         else:
-            PathLog.warning(translate('PathGui', "Cannot find property %s of %s") % (prop, obj.Label))
             self.valid = False
 
     def expression(self):
@@ -122,6 +124,7 @@ class QuantitySpinBox:
         return ''
 
     def setMinimum(self, quantity):
+        '''setMinimum(quantity) ... set the minimum'''
         if self.valid:
             value = quantity.Value if hasattr(quantity, 'Value') else quantity
             self.widget.setProperty('setMinimum', value)
