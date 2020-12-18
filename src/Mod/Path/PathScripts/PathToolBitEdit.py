@@ -194,12 +194,14 @@ class ToolBitEditor(object):
 
     def updateShape(self):
         PathLog.track()
-        self.tool.BitShape = str(self.form.shapePath.text())
-        self.setupTool(self.tool)
-        self.form.toolName.setText(self.tool.Label)
+        shapePath = str(self.form.shapePath.text())
+        if self.tool.BitShape != shapePath:
+            self.tool.BitShape = shapePath
+            self.setupTool(self.tool)
+            self.form.toolName.setText(self.tool.Label)
 
-        for editor in self.bitEditor:
-            self.bitEditor[editor].updateSpinBox()
+            for editor in self.bitEditor:
+                self.bitEditor[editor].updateSpinBox()
 
     def updateTool(self):
         PathLog.track()
