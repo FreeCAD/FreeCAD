@@ -1166,24 +1166,64 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
                 // This is because dragging gives unwanted cosmetic results due to the scale ratio.
                 // This is an heuristic as it does not check all indirect routes.
                 if(GeometryFacade::isInternalType(geo, InternalType::BSplineControlPoint)) {
-                    bool weight = false;
-                    bool weight_driven = false;
-                    bool equal = false;
-                    bool block = false;
+                    if(geo->hasExtension(Sketcher::SolverGeometryExtension::getClassTypeId())) {
+                        auto solvext = std::static_pointer_cast<const Sketcher::SolverGeometryExtension>(
+                                        geo->getExtension(Sketcher::SolverGeometryExtension::getClassTypeId()).lock());
 
-                    for(auto c : getSketchObject()->Constraints.getValues()) {
-                        weight = weight || (c->Type == Sketcher::Weight && c->First == edit->DragCurve);
-                        weight_driven = weight_driven || (c->Type == Sketcher::Weight && !c->isDriving && c->First == edit->DragCurve);
-                        equal = equal || (c->Type == Sketcher::Equal && (c->First == edit->DragCurve || c->Second == edit->DragCurve));
-                        block = block || (c->Type == Sketcher::Block && c->First == edit->DragCurve);
+                        // Edge parameters are Independent, so weight won't move
+                        if(solvext->getEdge()==Sketcher::SolverGeometryExtension::Independent) {
+                            Mode = STATUS_NONE;
+                            return false;
+                        }
+
+                        // The B-Spline is constrained to be non-rational (equal weights), moving produces a bad effect
+                        // because OCCT will normalize the values of the weights.
+                        auto grp = getSketchObject()->getSolvedSketch().getDependencyGroup(edit->DragCurve, Sketcher::none);
+
+                        int bsplinegeoid = -1;
+
+                        std::vector<int> polegeoids;
+
+                        for( auto c : getSketchObject()->Constraints.getValues()) {
+                            if( c->Type == Sketcher::InternalAlignment &&
+                                c->AlignmentType == BSplineControlPoint &&
+                                c->First == edit->DragCurve ) {
+
+                                bsplinegeoid = c->Second;
+                                break;
+                            }
+                        }
+
+                        if(bsplinegeoid == -1) {
+                            Mode = STATUS_NONE;
+                            return false;
+                        }
+
+                        for( auto c : getSketchObject()->Constraints.getValues()) {
+                            if( c->Type == Sketcher::InternalAlignment &&
+                                c->AlignmentType == BSplineControlPoint &&
+                                c->Second == bsplinegeoid ) {
+
+                                polegeoids.push_back(c->First);
+                            }
+                        }
+
+                        bool allingroup = true;
+
+                        for( auto polegeoid : polegeoids ) {
+                            std::pair< int, Sketcher::PointPos > thispole = std::make_pair(polegeoid,Sketcher::none);
+
+                            if(grp.find(thispole) == grp.end()) // not found
+                                allingroup  = false;
+                        }
+
+                        if(allingroup) { // it is constrained to be non-rational
+                            Mode = STATUS_NONE;
+                            return false;
+                        }
+
                     }
 
-                    if( (weight && !weight_driven)  ||
-                        (equal && !weight_driven)   ||
-                        block) {
-                        Mode = STATUS_NONE;
-                        return false;
-                    }
                 }
 
                 getSketchObject()->getSolvedSketch().initMove(edit->DragCurve, Sketcher::none, false);
