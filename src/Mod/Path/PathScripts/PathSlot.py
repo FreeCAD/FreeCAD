@@ -41,9 +41,8 @@ import math
 from lazy_loader.lazy_loader import LazyLoader
 Part = LazyLoader('Part', globals(), 'Part')
 Arcs = LazyLoader('draftgeoutils.arcs', globals(), 'draftgeoutils.arcs')
-
 if FreeCAD.GuiUp:
-    import FreeCADGui
+    FreeCADGui = LazyLoader('FreeCADGui', globals(), 'FreeCADGui')
 
 
 # Qt translation handling
@@ -597,7 +596,7 @@ class ObjectSlot(PathOp.ObjectOp):
         return CMDS
 
     def _finishLine(self, obj, pnts, featureCnt):
-        """This method finishes an Line Slot operation."""
+        """This method finishes a Line Slot operation."""
         # Apply perpendicular rotation if requested
         perpZero = True
         if obj.PathOrientation == 'Perpendicular':
