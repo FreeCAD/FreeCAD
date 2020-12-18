@@ -406,7 +406,7 @@ typedef boost::adjacency_list <boost::vecS, boost::vecS, boost::undirectedS> Gra
 System::System()
   : plist(0)
   , pdrivenlist(0)
-  , pdependentparameters(0)
+  , pDependentParameters(0)
   , clist(0)
   , c2p()
   , p2c()
@@ -530,8 +530,8 @@ void System::clear()
     plist.clear();
     pdrivenlist.clear();
     pIndex.clear();
-    pdependentparameters.clear();
-    pdependentelementgroups.clear();
+    pDependentParameters.clear();
+    pDependentParametersGroups.clear();
     hasUnknowns = false;
     hasDiagnosis = false;
 
@@ -4229,20 +4229,20 @@ void System::identifyDependentParameters(   T & qrJ,
     if(!silent)
         SolverReportingManager::Manager().LogMatrix("Rparams", Rparams);
 #endif
-    pdependentelementgroups.resize(qrJ.cols()-rank);
+    pDependentParametersGroups.resize(qrJ.cols()-rank);
     for (int j=rank; j < qrJ.cols(); j++) {
         for (int row=0; row < rank; row++) {
             if (fabs(Rparams(row,j)) > 1e-10) {
                 int origCol = qrJ.colsPermutation().indices()[row];
 
-                pdependentelementgroups[j-rank].push_back(pdiagnoselist[origCol]);
-                pdependentparameters.push_back(pdiagnoselist[origCol]);
+                pDependentParametersGroups[j-rank].insert(pdiagnoselist[origCol]);
+                pDependentParameters.push_back(pdiagnoselist[origCol]);
             }
         }
         int origCol = qrJ.colsPermutation().indices()[j];
 
-        pdependentelementgroups[j-rank].push_back(pdiagnoselist[origCol]);
-        pdependentparameters.push_back(pdiagnoselist[origCol]);
+        pDependentParametersGroups[j-rank].insert(pdiagnoselist[origCol]);
+        pDependentParameters.push_back(pdiagnoselist[origCol]);
     }
 }
 
@@ -4327,7 +4327,7 @@ void System::identifyDependentGeometryParametersInTransposedJacobianDenseQRDecom
 
 
     for( auto param : depParamCols) {
-        pdependentparameters.push_back(pdiagnoselist[param]);
+        pDependentParameters.push_back(pdiagnoselist[param]);
     }
 
 }
