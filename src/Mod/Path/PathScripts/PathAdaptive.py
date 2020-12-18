@@ -395,6 +395,7 @@ def Execute(op,obj):
             "operationType": obj.OperationType,
             "side": obj.Side,
             "forceInsideOut" : obj.ForceInsideOut,
+            "finishingProfile" : obj.FinishingProfile,
             "keepToolDownRatio": keepToolDownRatio,
             "stockToLeave": float(obj.StockToLeave)
         }
@@ -433,6 +434,7 @@ def Execute(op,obj):
             a2d.stockToLeave =float(obj.StockToLeave)
             a2d.tolerance = float(obj.Tolerance)
             a2d.forceInsideOut = obj.ForceInsideOut
+            a2d.finishingProfile = obj.FinishingProfile
             a2d.opType = opType
 
             # EXECUTE
@@ -489,6 +491,7 @@ class PathAdaptive(PathOp.ObjectOp):
         # obj.addProperty("App::PropertyBool", "ProcessHoles", "Adaptive","Process holes as well as the face outline")
 
         obj.addProperty("App::PropertyBool", "ForceInsideOut", "Adaptive","Force plunging into material inside and clearing towards the edges")
+        obj.addProperty("App::PropertyBool", "FinishingProfile", "Adaptive","To take a finishing profile path at the end")
         obj.addProperty("App::PropertyBool", "Stopped",
                         "Adaptive", "Stop processing")
         obj.setEditorMode('Stopped', 2) #hide this property
@@ -517,6 +520,7 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.LiftDistance=0
         # obj.ProcessHoles = True
         obj.ForceInsideOut = False
+        obj.FinishingProfile = True
         obj.Stopped = False
         obj.StopProcessing = False
         obj.HelixAngle = 5
