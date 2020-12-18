@@ -252,7 +252,7 @@ class ToolBit(object):
             p = findShape(p)
             if not path and p != obj.BitShape:
                 obj.BitShape = p
-            doc = FreeCAD.open(p)
+            doc = FreeCAD.openDocument(p, True)
             obj.ShapeName = doc.Name
             docOpened = True
         return (doc, docOpened)
