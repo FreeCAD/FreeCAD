@@ -971,9 +971,9 @@ class ObjectSlot(PathOp.ObjectOp):
 
     # Methods for processing double geometry
     def _processDouble(self, obj, shape_1, sub1, shape_2, sub2):
-        PathLog.debug('_processDouble()')
         """This is the control method for slots based on a
         two Base Geometry features."""
+        PathLog.debug('_processDouble()')
 
         p1 = None
         p2 = None
@@ -1019,6 +1019,8 @@ class ObjectSlot(PathOp.ObjectOp):
 
     # Support methods
     def _dXdYdZ(self, E):
+        """_dXdYdZ(E) Calculates delta-X, delta-Y, and delta-Z between two vertexes
+        of edge passed in.  Returns these three values as vector."""
         v1 = E.Vertexes[0]
         v2 = E.Vertexes[1]
         dX = v2.X - v1.X
@@ -1027,6 +1029,8 @@ class ObjectSlot(PathOp.ObjectOp):
         return FreeCAD.Vector(dX, dY, dZ)
 
     def _normalizeVector(self, v):
+        """_normalizeVector(v)...
+        Returns a copy of the vector recieved with values rounded to 10 decimal places."""
         posTol = 0.0000000001
         negTol = -1 * posTol
         V = FreeCAD.Vector(v.x, v.y, v.z)
@@ -1059,6 +1063,7 @@ class ObjectSlot(PathOp.ObjectOp):
         return FreeCAD.Vector(x, y, z)
 
     def _getLowestPoint(self, shape_1):
+        """_getLowestPoint(shape)... Returns lowest vertex of shape as vector."""
         # find lowest vertex
         vMin = shape_1.Vertexes[0]
         zmin = vMin.Z
@@ -1079,6 +1084,7 @@ class ObjectSlot(PathOp.ObjectOp):
             return FreeCAD.Vector(V.X, V.Y, V.Z)
 
     def _getHighestPoint(self, shape_1):
+        """_getHighestPoint(shape)... Returns highest vertex of shape as vector."""
         # find highest vertex
         vMax = shape_1.Vertexes[0]
         zmax = vMax.Z
@@ -1099,9 +1105,15 @@ class ObjectSlot(PathOp.ObjectOp):
             return FreeCAD.Vector(V.X, V.Y, V.Z)
 
     def _processFeature(self, obj, shape, sub, pNum):
+        """_processFeature(obj, shape, sub, pNum)...
+        This function analyzes a shape and returns a three item tuple containing:
+            working point,
+            shape orientation/slope,
+            shape category as face, edge, or vert."""
         p = None
         dYdX = None
         cat = sub[:4]
+        PathLog.debug('sub-feature is {}'.format(cat))
         Ref = getattr(obj, 'Reference' + str(pNum))
         if cat == 'Face':
             BE = self._getBottomEdge(shape)
@@ -1161,6 +1173,10 @@ class ObjectSlot(PathOp.ObjectOp):
         return False
 
     def _extendArcSlot(self, p1, p2, cent, begExt, endExt):
+        """_extendArcSlot(p1, p2, cent, begExt, endExt)...
+        This function extends an arc defined by two end points, p1 and p2, and the center.
+        The arc is extended along the circumferance with begExt and endExt values.
+        The function returns the new end points as tuple (n1, n2) to replace p1 and p2."""
         cancel = True
         n1 = p1
         n2 = p2
@@ -1221,6 +1237,10 @@ class ObjectSlot(PathOp.ObjectOp):
         return (n1, n2)
 
     def _makeOffsetArc(self, p1, p2, center, newRadius):
+        """_makeOffsetArc(p1, p2, center, newRadius)...
+        This function offsets an arc defined by endpoints, p1 and p2, and the center.
+        New end points are returned at the radius passed by newRadius.
+        The angle of the original arc is maintained."""
         n1 = p1.sub(center).normalize()
         n2 = p2.sub(center).normalize()
         n1.multiply(newRadius)
@@ -1230,6 +1250,9 @@ class ObjectSlot(PathOp.ObjectOp):
         return (p1, p2)
 
     def _extendLineSlot(self, p1, p2, begExt, endExt):
+        """_extendLineSlot(p1, p2, begExt, endExt)...
+        This function extends a line defined by endpoints, p1 and p2.
+        The beginning is extended by begExt value and the end by endExt value."""
         if begExt:
             beg = p1.sub(p2)
             beg.normalize()
@@ -1247,7 +1270,8 @@ class ObjectSlot(PathOp.ObjectOp):
         return (n1, n2)
 
     def _getOppMidPoints(self, same):
-        # Find mid-points between ends of equal, oppossing edges
+        """_getOppMidPoints(same)...
+        Find mid-points between ends of equal, oppossing edges passed in tuple (edge1, edge2)."""
         com1 = same[0].CenterOfMass
         com2 = same[1].CenterOfMass
         p1 = FreeCAD.Vector(com1.x, com1.y, 0.0)
@@ -1255,6 +1279,7 @@ class ObjectSlot(PathOp.ObjectOp):
         return (p1, p2)
 
     def _isParallel(self, dYdX1, dYdX2):
+        """Determine if two orientation vectors are parallel."""
         if dYdX1.add(dYdX2).Length == 0:
             return True
         if ((dYdX1.x + dYdX2.x) / 2.0 == dYdX1.x and
@@ -1263,6 +1288,9 @@ class ObjectSlot(PathOp.ObjectOp):
         return False
 
     def _makePerpendicular(self, p1, p2, length):
+        """_makePerpendicular(p1, p2, length)...
+        Using a line defined by p1 and p2, returns a perpendicular vector centered
+        at the midpoint of the line, with length value."""
         line = Part.makeLine(p1, p2)
         midPnt = line.CenterOfMass
 
