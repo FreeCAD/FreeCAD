@@ -260,11 +260,15 @@ bool SketcherGui::isBsplinePole(const Part::Geometry * geo)
 {
     auto gf = GeometryFacade::getFacade(geo);
 
-    return gf->getInternalType() == InternalType::BSplineControlPoint;
+    if(gf)
+        return gf->getInternalType() == InternalType::BSplineControlPoint;
+
+    THROWM(Base::ValueError, "Null geometry in isBsplinePole - please report")
 }
 
 bool SketcherGui::isBsplinePole(const Sketcher::SketchObject* Obj, int GeoId)
 {
+
     auto geom = Obj->getGeometry(GeoId);
 
     return isBsplinePole(geom);
