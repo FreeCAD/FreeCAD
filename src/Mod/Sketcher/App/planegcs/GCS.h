@@ -102,11 +102,11 @@ namespace GCS
         VEC_pD pdrivenlist; // list of parameters of driven constraints
         MAP_pD_I pIndex;
 
-        VEC_pD pdependentparameters; // list of dependent parameters by the system
+        VEC_pD pDependentParameters; // list of dependent parameters by the system
 
         // This is a map of primary and secondary identifiers that are found dependent by the solver
         // GCS ignores from a type point
-        std::vector< std::vector<double *> > pdependentelementgroups;
+        std::vector< std::set<double *> > pDependentParametersGroups;
 
         std::vector<Constraint *> clist;
         std::map<Constraint *,VEC_pD > c2p; // constraint to parameter adjacency list
@@ -358,8 +358,10 @@ namespace GCS
           { conflictingOut = hasDiagnosis ? conflictingTags : VEC_I(0); }
         void getRedundant(VEC_I &redundantOut) const
           { redundantOut = hasDiagnosis ? redundantTags : VEC_I(0); }
-        void getDependentParams(VEC_pD &pconstraintplistOut) const
-          { pconstraintplistOut = pdependentparameters;}
+        void getDependentParams(VEC_pD &pdependentparameterlist) const
+          { pdependentparameterlist = pDependentParameters;}
+        void getDependentParamsGroups(std::vector<std::set<double *>> &pdependentparametergroups) const
+          { pdependentparametergroups = pDependentParametersGroups;}
         bool isEmptyDiagnoseMatrix() const {return emptyDiagnoseMatrix;}
     };
 
