@@ -146,7 +146,6 @@ SketchObject::SketchObject()
 
     internaltransaction=false;
     managedoperation=false;
-    deletinginternalgeometry=false;
 }
 
 SketchObject::~SketchObject()
@@ -957,10 +956,6 @@ int SketchObject::delGeometry(int GeoId, bool deleteinternalgeo)
 
             this->deleteUnusedInternalGeometry(GeoId, true);
 
-            Geometry.touch();
-
-            if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
-                solve();
             return 0;
         }
     }
@@ -1002,13 +997,12 @@ int SketchObject::delGeometry(int GeoId, bool deleteinternalgeo)
         this->Geometry.setValues(newVals);
         this->Constraints.setValues(std::move(newConstraints));
     }
-    // Update geometry indices and rebuild vertexindex now via onChanged, so that ViewProvider::UpdateData is triggered.
-    if(!deletinginternalgeometry) {
-        Geometry.touch();
 
-        if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
-            solve();
-    }
+    // Update geometry indices and rebuild vertexindex now via onChanged, so that ViewProvider::UpdateData is triggered.
+    Geometry.touch();
+
+    if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
+        solve();
 
     return 0;
 }
@@ -4979,8 +4973,6 @@ int SketchObject::exposeInternalGeometry(int GeoId)
 
 int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
 {
-   Base::StateLocker lock(deletinginternalgeometry, true);
-
    if (GeoId < 0 || GeoId > getHighestCurveIndex())
         return -1;
 
@@ -5264,16 +5256,7 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
         if(delgeoid)
             delgeometries.push_back(GeoId);
 
-        std::sort(delgeometries.begin(), delgeometries.end()); // indices over an erased element get automatically updated!!
-
-        if (delgeometries.size()>0) {
-            for (std::vector<int>::reverse_iterator it=delgeometries.rbegin(); it!=delgeometries.rend(); ++it) {
-                delGeometry(*it,false);
-            }
-        }
-
-        int ndeleted =  delgeometries.size();
-        delgeometries.clear();
+        int ndeleted = delGeometries(delgeometries);
 
         return ndeleted; //number of deleted elements
     }
