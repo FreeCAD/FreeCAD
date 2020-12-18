@@ -59,7 +59,6 @@ public:
     App::PropertyDistance        OriginY;
     App::PropertyFloat           TextWrapLen;
     App::PropertyDistance        KinkLength;
-    App::PropertyBool            LineVisible;
 
     short mustExecute() const override;
 

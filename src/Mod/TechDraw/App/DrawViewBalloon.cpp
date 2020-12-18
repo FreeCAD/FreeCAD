@@ -65,7 +65,7 @@ using namespace TechDraw;
 
 App::PropertyFloatConstraint::Constraints DrawViewBalloon::SymbolScaleRange = { Precision::Confusion(),
                                                                   std::numeric_limits<double>::max(),
-                                                                  (1.0) };
+                                                                  (0.1) };
 
 //===========================================================================
 // DrawViewBalloon
@@ -99,21 +99,19 @@ DrawViewBalloon::DrawViewBalloon(void)
     EndType.setEnums(ArrowPropEnum::ArrowTypeEnums);
     ADD_PROPERTY(EndType,(prefEnd()));
 
+    ADD_PROPERTY_TYPE(EndTypeScale,(1.0),"",(App::PropertyType)(App::Prop_None),"EndType shape scale");
+    EndTypeScale.setConstraints(&SymbolScaleRange);
+
     BubbleShape.setEnums(balloonTypeEnums);
     ADD_PROPERTY(BubbleShape,(prefShape()));
 
     ADD_PROPERTY_TYPE(ShapeScale,(1.0),"",(App::PropertyType)(App::Prop_None),"Balloon shape scale");
     ShapeScale.setConstraints(&SymbolScaleRange);
 
-    ADD_PROPERTY_TYPE(EndTypeScale,(1.0),"",(App::PropertyType)(App::Prop_None),"EndType shape scale");
-    ShapeScale.setConstraints(&SymbolScaleRange);
-
     ADD_PROPERTY_TYPE(TextWrapLen,(-1),"",(App::PropertyType)(App::Prop_None),"Text wrap length; -1 means no wrap");
 
     ADD_PROPERTY_TYPE(KinkLength,(prefKinkLength()),"",(App::PropertyType)(App::Prop_None),
                                   "Distance from symbol to leader kink");
-
-    ADD_PROPERTY_TYPE(LineVisible,(true),"",(App::PropertyType)(App::Prop_None),"Balloon line visible or hidden");
 
     SourceView.setScope(App::LinkScope::Global);
     Rotation.setStatus(App::Property::Hidden,true);
@@ -130,8 +128,12 @@ void DrawViewBalloon::onChanged(const App::Property* prop)
     if (!isRestoring()) {
         if ( (prop == &EndType) ||
              (prop == &BubbleShape)  ||
+             (prop == &ShapeScale)   ||
              (prop == &Text)    ||
-             (prop == &KinkLength) ) {
+             (prop == &KinkLength)   ||
+             (prop == &EndTypeScale) ||
+             (prop == &OriginX) ||
+             (prop == &OriginY) ) {
             requestPaint();
         }
     }

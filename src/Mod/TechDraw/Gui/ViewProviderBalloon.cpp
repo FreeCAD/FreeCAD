@@ -75,6 +75,7 @@ ViewProviderBalloon::ViewProviderBalloon()
     double weight = lg->getWeight("Thin");
     delete lg;                                   //Coverity CID 174670
     ADD_PROPERTY_TYPE(LineWidth,(weight),group,(App::PropertyType)(App::Prop_None),"Leader line width");
+    ADD_PROPERTY_TYPE(LineVisible,(true),group,(App::PropertyType)(App::Prop_None),"Balloon line visible or hidden");
 
     ADD_PROPERTY_TYPE(Color,(PreferencesGui::dimColor()),
                                               group,App::Prop_None,"Color of the balloon");
@@ -148,7 +149,8 @@ void ViewProviderBalloon::onChanged(const App::Property* p)
     if ((p == &Font)  ||
         (p == &Fontsize) ||
         (p == &Color) ||
-        (p == &LineWidth)) {
+        (p == &LineWidth) ||
+        (p == &LineVisible)) {
         QGIView* qgiv = getQView();
         if (qgiv) {
             qgiv->updateView(true);
