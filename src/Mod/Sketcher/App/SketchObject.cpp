@@ -79,10 +79,12 @@
 #include <Mod/Part/App/BodyBase.h>
 #include <Mod/Part/App/GeometryMigrationExtension.h>
 
-#include "SketchObject.h"
-#include "Sketch.h"
+#include <Mod/Sketcher/App/Sketch.h>
 #include <Mod/Sketcher/App/SketchObjectPy.h>
 #include <Mod/Sketcher/App/SketchGeometryExtensionPy.h>
+#include <Mod/Sketcher/App/SolverGeometryExtension.h>
+
+#include "SketchObject.h"
 
 
 #undef DEBUG
@@ -7008,54 +7010,46 @@ void SketchObject::getGeometryWithDependentParameters(std::vector<std::pair<int,
 {
     auto geos = getInternalGeometry();
 
-    GCS::QRAlgorithm curQRAlg = getSolvedSketch().getQRAlgorithm();
-
-    if(curQRAlg == GCS::EigenSparseQR) {
-        getSolvedSketch().setQRAlgorithm(GCS::EigenDenseQR);
-        solve(false);
-    }
-
-    auto addelement = [this,&geometrymap](int geoId, PointPos pos){
-        if(getSolvedSketch().hasDependentParameters(geoId, pos))
-            geometrymap.emplace_back(geoId,pos);
-    };
-
-
     int geoid = 0;
 
     for(auto geo : geos) {
-        if(geo->getTypeId() == Part::GeomPoint::getClassTypeId()) {
-            addelement(geoid, Sketcher::start);
-        }
-        else if(geo->getTypeId() == Part::GeomLineSegment::getClassTypeId() ||
-            geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+        if(geo) {
+            if(geo->hasExtension(Sketcher::SolverGeometryExtension::getClassTypeId())) {
 
-            addelement(geoid, Sketcher::start);
-            addelement(geoid, Sketcher::end);
-            addelement(geoid, Sketcher::none);
-        }
-        else if(geo->getTypeId() == Part::GeomCircle::getClassTypeId() ||
-                geo->getTypeId() == Part::GeomEllipse::getClassTypeId() ) {
+                auto solvext = std::static_pointer_cast<const Sketcher::SolverGeometryExtension>(
+                                    geo->getExtension(Sketcher::SolverGeometryExtension::getClassTypeId()).lock());
 
-            addelement(geoid, Sketcher::mid);
-            addelement(geoid, Sketcher::none);
-        }
-        else if(geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() ||
-            geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
-            geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ||
-            geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ) {
-
-            addelement(geoid, Sketcher::start);
-            addelement(geoid, Sketcher::end);
-            addelement(geoid, Sketcher::mid);
-            addelement(geoid, Sketcher::none);
+                if (solvext->getGeometry() == Sketcher::SolverGeometryExtension::NotFullyConstraint) {
+                    // The solver differentiates whether the parameters that are dependent are not those
+                    // of start, end, mid, and assigns them to the edge (edge params = curve params - parms of start, end, mid).
+                    // The user looking at the UI expects that the edge of a NotFullyConstraint geometry
+                    // will always move, even if the edge parameters are independent, for example if mid is
+                    // the only dependent parameter. In other words, the user could reasonably restrict the edge
+                    // to reach a fully constrained element. Under this understanding, the edge parameter would
+                    // always be dependent, unless the element is fully constrained.
+                    //
+                    // While this is ok from a user visual expectation point of view, it leads to a loss of information
+                    // of whether restricting the point start, end, mid that is dependent may suffice, or even if such
+                    // points are restricted, the edge would still need to be restricted.
+                    //
+                    // Because Python gets the information in this function, it would lead to Python users having access
+                    // to a lower amount of detail.
+                    //
+                    // For this reason, this function returns edge as dependent parameter if and only if constraining the
+                    // parameters of the points would not suffice to constraint the element.
+                    if (solvext->getEdge() == SolverGeometryExtension::Dependent)
+                        geometrymap.emplace_back(geoid,Sketcher::none);
+                    if (solvext->getStart() == SolverGeometryExtension::Dependent)
+                        geometrymap.emplace_back(geoid,Sketcher::start);
+                    if (solvext->getEnd() == SolverGeometryExtension::Dependent)
+                        geometrymap.emplace_back(geoid,Sketcher::start);
+                    if (solvext->getMid() == SolverGeometryExtension::Dependent)
+                        geometrymap.emplace_back(geoid,Sketcher::start);
+                }
+            }
         }
 
         geoid++;
-    }
-
-    if(curQRAlg == GCS::EigenSparseQR) {
-        getSolvedSketch().setQRAlgorithm(GCS::EigenSparseQR);
     }
 }
 
