@@ -104,6 +104,10 @@ namespace GCS
 
         VEC_pD pdependentparameters; // list of dependent parameters by the system
 
+        // This is a map of primary and secondary identifiers that are found dependent by the solver
+        // GCS ignores from a type point
+        std::vector< std::vector<double *> > pdependentelementgroups;
+
         std::vector<Constraint *> clist;
         std::map<Constraint *,VEC_pD > c2p; // constraint to parameter adjacency list
         std::map<double *,std::vector<Constraint *> > p2c; // parameter to constraint adjacency list
