@@ -144,11 +144,12 @@ namespace GCS
                                         Eigen::FullPivHouseholderQR<Eigen::MatrixXd>& qrJT,
                                         int &rank, Eigen::MatrixXd &R, bool transposeJ = true, bool silent = false);
 
+#ifdef EIGEN_SPARSEQR_COMPATIBLE
         void makeSparseQRDecomposition( const Eigen::MatrixXd &J,
                                         const std::map<int,int> &jacobianconstraintmap,
                                         Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> > &SqrJT,
                                         int &rank, Eigen::MatrixXd &R, bool transposeJ = true, bool silent = false);
-
+#endif
         // This function name is long for a reason:
         // - Only for DenseQR
         // - Only for Transposed Jacobian QR decomposition
@@ -171,10 +172,12 @@ namespace GCS
 
         void eliminateNonZerosOverPivotInUpperTriangularMatrix(Eigen::MatrixXd &R, int rank);
 
+#ifdef EIGEN_SPARSEQR_COMPATIBLE
         void identifyDependentParametersSparseQR( const Eigen::MatrixXd &J,
                                                   const std::map<int,int> &jacobianconstraintmap,
                                                   const GCS::VEC_pD &pdiagnoselist,
                                                   bool silent=true);
+#endif
 
         void identifyDependentParametersDenseQR(  const Eigen::MatrixXd &J,
                                                   const std::map<int,int> &jacobianconstraintmap,
