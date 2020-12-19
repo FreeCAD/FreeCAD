@@ -1031,7 +1031,9 @@ SoFCRenderer::render(SoGLRenderAction * action)
                                     false);
 
   int linepattern = ViewParams::getSelectionLinePattern();
-  bool haslinepattern = linepattern && linepattern != 0xffff;
+  if (linepattern && Gui::ViewParams::getSelectionLinePatternScale() > 1)
+    linepattern |= Gui::ViewParams::getSelectionLinePatternScale() << 16;
+  bool haslinepattern = linepattern && (linepattern & 0xffff) != 0xffff;
 
   if (haslinepattern && PRIVATE(this)->selectiontrianglesontop.size()) {
     PRIVATE(this)->recheckmaterial = true;

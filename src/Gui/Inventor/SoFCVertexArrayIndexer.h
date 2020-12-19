@@ -111,9 +111,12 @@ private:
   std::vector<int> partialindices;
   std::vector<intptr_t> partialoffsets;
   std::vector<int32_t> partialcounts;
+  std::vector<intptr_t> linestripoffsets;
+  std::vector<int32_t> linestripcounts;
 
   Gui::CoinPtr<IndexArray> indexarray;
   Gui::CoinPtr<IndexArray> previndexarray;
+  int indexarraylength;
   int lastlineindex;
   SbBool use_shorts;
 };
