@@ -98,9 +98,6 @@ public:
     /// retrieves a point
     Base::Vector3d getPoint(int geoId, PointPos pos) const;
 
-    /// retrieves whether a geometry has dependent parameters or not
-    bool hasDependentParameters(int geoId, PointPos pos) const;
-
     // Inline methods
     inline bool hasConflicts(void) const { return !Conflicting.empty(); }
     inline const std::vector<int> &getConflicting(void) const { return Conflicting; }
