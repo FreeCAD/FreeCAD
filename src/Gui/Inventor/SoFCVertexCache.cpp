@@ -486,8 +486,15 @@ SoFCVertexCache::close(SoState * state)
   PRIVATE(this)->vhash.clear();
   if (PRIVATE(this)->vertexarray)
     PRIVATE(this)->vertexarray = PRIVATE(this)->vertexarray->attach();
-  if (PRIVATE(this)->normalarray)
-    PRIVATE(this)->normalarray = PRIVATE(this)->normalarray->attach();
+  if (PRIVATE(this)->normalarray) {
+    if (!PRIVATE(this)->triangleindexer) {
+      const SoNormalElement *nelem = SoNormalElement::getInstance(state);
+      if (nelem->getNum() == 0)
+        PRIVATE(this)->normalarray.reset();
+    }
+    if (PRIVATE(this)->normalarray)
+      PRIVATE(this)->normalarray = PRIVATE(this)->normalarray->attach();
+  }
   if (PRIVATE(this)->texcoord0array)
     PRIVATE(this)->texcoord0array = PRIVATE(this)->texcoord0array->attach();
   if (PRIVATE(this)->bumpcoordarray)

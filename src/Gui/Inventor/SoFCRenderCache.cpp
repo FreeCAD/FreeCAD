@@ -247,10 +247,10 @@ SoFCRenderCache::Material::init(SoState * state)
   this->order = 0;
   this->overrideflags = 0;
   this->maskflags = 0;
-  this->diffuse = 0;
-  this->ambient = 0;
-  this->emissive = 0;
-  this->specular = 0;
+  this->diffuse = 0xff;
+  this->ambient = 0xff;
+  this->emissive = 0xff;
+  this->specular = 0xff;
   this->linewidth = 1;
   this->pointsize = 1;
   this->shininess = 0.f;
@@ -260,12 +260,12 @@ SoFCRenderCache::Material::init(SoState * state)
   this->linepattern = 0xffff;
   this->type = 0;
   this->materialbinding = 0;
-  this->pervertexcolor = false;
-  this->transptexture = false;
+  this->pervertexcolor = 0;
+  this->transptexture = 0;
   this->lightmodel = SoLazyElement::PHONG;
   this->vertexordering = SoLazyElement::CW;
-  this->culling = false;
-  this->twoside = false;
+  this->culling = 0;
+  this->twoside = 0;
   this->drawstyle = 0;
   this->shadowstyle = SoShadowStyleElement::CASTS_SHADOW_AND_SHADOWED; 
   this->texturematrices.clear();
@@ -278,57 +278,43 @@ SoFCRenderCache::Material::init(SoState * state)
   this->overrideflags = getOverrideFlags(state);
 
   float t;
-  if (this->overrideflags & (Material::FLAG_DIFFUSE | Material::FLAG_EMISSIVE)) {
-    t = SoLazyElement::getTransparency(state, 0);
-    this->diffuse = SoLazyElement::getDiffuse(state, 0).getPackedValue(t);
-  }
+  t = SoLazyElement::getTransparency(state, 0);
+  this->diffuse = SoLazyElement::getDiffuse(state, 0).getPackedValue(t);
 
   t = 0.0f;
-  if (this->overrideflags & Material::FLAG_EMISSIVE)
-    this->emissive = SoLazyElement::getEmissive(state).getPackedValue(t);
+  this->emissive = SoLazyElement::getEmissive(state).getPackedValue(t);
 
-  if (this->overrideflags & Material::FLAG_AMBIENT)
-    this->ambient = SoLazyElement::getAmbient(state).getPackedValue(t);
+  this->ambient = SoLazyElement::getAmbient(state).getPackedValue(t);
 
-  if (this->overrideflags & Material::FLAG_SPECULAR)
-    this->specular = SoLazyElement::getSpecular(state).getPackedValue(t);
+  this->specular = SoLazyElement::getSpecular(state).getPackedValue(t);
 
-  if (this->overrideflags & Material::FLAG_SHININESS)
-    this->shininess = SoLazyElement::getShininess(state);
+  this->shininess = SoLazyElement::getShininess(state);
 
-  if (this->overrideflags & Material::FLAG_LIGHT_MODEL)
-    this->lightmodel = SoLazyElement::getLightModel(state);
+  this->lightmodel = SoLazyElement::getLightModel(state);
 
-  if (this->overrideflags & Material::FLAG_SHAPE_HINTS) {
-    SoShapeHintsElement::VertexOrdering ordering;
-    SoShapeHintsElement::ShapeType shapetype;
-    SoShapeHintsElement::FaceType facetype;
-    SoShapeHintsElement::get(state, ordering, shapetype, facetype);
-    this->vertexordering = ordering == SoShapeHintsElement::CLOCKWISE ?
-                                            SoLazyElement::CW : SoLazyElement::CCW;
-    this->twoside = ordering != SoShapeHintsElement::UNKNOWN_ORDERING
-                       && shapetype == SoShapeHintsElement::UNKNOWN_SHAPE_TYPE;
-    this->culling = ordering != SoShapeHintsElement::UNKNOWN_ORDERING
-                       && shapetype == SoShapeHintsElement::SOLID;
-    this->twoside = SoLazyElement::getTwoSidedLighting(state);
-  }
+  SoShapeHintsElement::VertexOrdering ordering;
+  SoShapeHintsElement::ShapeType shapetype;
+  SoShapeHintsElement::FaceType facetype;
+  SoShapeHintsElement::get(state, ordering, shapetype, facetype);
+  this->vertexordering = ordering == SoShapeHintsElement::CLOCKWISE ?
+                                          SoLazyElement::CW : SoLazyElement::CCW;
+  // this->twoside = ordering != SoShapeHintsElement::UNKNOWN_ORDERING
+  //                     && shapetype == SoShapeHintsElement::UNKNOWN_SHAPE_TYPE;
+  this->culling = ordering != SoShapeHintsElement::UNKNOWN_ORDERING
+                      && shapetype == SoShapeHintsElement::SOLID;
+  this->twoside = SoLazyElement::getTwoSidedLighting(state);
 
-  if (this->overrideflags & Material::FLAG_MATERIAL_BINDING)
-    this->materialbinding = SoMaterialBindingElement::get(state);
+  this->materialbinding = SoMaterialBindingElement::get(state);
 
-  if (this->overrideflags & Material::FLAG_LINE_PATTERN)
-    this->linepattern = SoLinePatternElement::get(state);
+  this->linepattern = SoLinePatternElement::get(state);
 
-  if (this->overrideflags & Material::FLAG_LINE_WIDTH)
-    this->linewidth = SoLineWidthElement::get(state);
+  this->linewidth = SoLineWidthElement::get(state);
 
-  if (this->overrideflags & Material::FLAG_POINT_SIZE)
-    this->pointsize = SoPointSizeElement::get(state);
+  this->pointsize = SoPointSizeElement::get(state);
 
-  if (this->overrideflags & Material::FLAG_POLYGON_OFFSET) {
-    SbBool on;
-    SoPolygonOffsetElement::Style style;
-    SoPolygonOffsetElement::get(state,
+  SbBool on;
+  SoPolygonOffsetElement::Style style;
+  SoPolygonOffsetElement::get(state,
                                 this->polygonoffsetfactor,
                                 this->polygonoffsetunits,
                                 style,
@@ -337,23 +323,8 @@ SoFCRenderCache::Material::init(SoState * state)
       this->polygonoffsetstyle = 0;
     else
       this->polygonoffsetstyle = style;
-  }
 
-  if (this->overrideflags & Material::FLAG_DRAW_STYLE)
-    this->drawstyle = SoDrawStyleElement::get(state);
-
-  if (this->overrideflags & Material::FLAG_SHAPE_HINTS) {
-    SoShapeHintsElement::VertexOrdering ordering;
-    SoShapeHintsElement::ShapeType shapetype;
-    SoShapeHintsElement::FaceType facetype;
-    SoShapeHintsElement::get(state, ordering, shapetype, facetype);
-    this->vertexordering = ordering == SoShapeHintsElement::CLOCKWISE ?
-                                            SoLazyElement::CW : SoLazyElement::CCW;
-    this->twoside = ordering != SoShapeHintsElement::UNKNOWN_ORDERING
-                       && shapetype == SoShapeHintsElement::UNKNOWN_SHAPE_TYPE;
-    this->culling = ordering != SoShapeHintsElement::UNKNOWN_ORDERING
-                       && shapetype == SoShapeHintsElement::SOLID;
-  }
+  this->drawstyle = SoDrawStyleElement::get(state);
 }
 
 void

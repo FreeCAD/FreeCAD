@@ -865,6 +865,14 @@ SoFCRendererP::renderOpaque(SoGLRenderAction * action,
     if (this->notexture)
       array ^= SoFCVertexCache::TEXCOORD;
 
+    bool overridelightmodel = false;
+    if (this->material.lightmodel == SoLazyElement::BASE_COLOR)
+      array ^= SoFCVertexCache::NORMAL;
+    else if (!draw_entry.ventry->cache->getNormalArray()) {
+      overridelightmodel = true;
+      glDisable(GL_LIGHTING);
+    }
+
     switch (draw_entry.material->type) {
     case Material::Triangle:
       if (!draw_entry.ventry->cache->hasTransparency())
@@ -886,6 +894,8 @@ SoFCRendererP::renderOpaque(SoGLRenderAction * action,
       draw_entry.ventry->cache->renderPoints(state, array, draw_entry.ventry->partidx);
       break;
     }
+    if (overridelightmodel)
+      glEnable(GL_LIGHTING);
   }
 }
 
@@ -937,6 +947,14 @@ SoFCRendererP::renderTransparency(SoGLRenderAction * action,
     if (this->notexture)
       array ^= SoFCVertexCache::TEXCOORD;
 
+    bool overridelightmodel = false;
+    if (this->material.lightmodel == SoLazyElement::BASE_COLOR)
+      array ^= SoFCVertexCache::NORMAL;
+    else if (!draw_entry.ventry->cache->getNormalArray()) {
+      overridelightmodel = true;
+      glDisable(GL_LIGHTING);
+    }
+
     switch (draw_entry.material->type) {
     case Material::Line:
       draw_entry.ventry->cache->renderLines(state, array, draw_entry.ventry->partidx);
@@ -954,6 +972,9 @@ SoFCRendererP::renderTransparency(SoGLRenderAction * action,
       }
       break;
     }
+
+    if (overridelightmodel)
+      glEnable(GL_LIGHTING);
   }
 
   glDisable(GL_BLEND);
