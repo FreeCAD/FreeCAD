@@ -48,6 +48,7 @@
 
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/App/SketchObject.h>
+#include <Mod/Sketcher/App/SolverGeometryExtension.h>
 
 #include "ViewProviderSketch.h"
 #include "SketchRectangularArrayDialog.h"
@@ -739,69 +740,51 @@ void CmdSketcherSelectElementsWithDoFs::activated(int iMsg)
 
     auto geos = Obj->getInternalGeometry();
 
-    // Solver parameter detection algorithm only works for Dense QR with full pivoting. If we are using Sparse QR, we
-    // have to re-solve using Dense QR.
-    GCS::QRAlgorithm curQRAlg = Obj->getSolvedSketch().getQRAlgorithm();
-
-    if (curQRAlg == GCS::EigenSparseQR) {
-        Obj->getSolvedSketch().setQRAlgorithm(GCS::EigenDenseQR);
-        Obj->solve(false);
-    }
-
     auto testselectvertex = [&Obj, &ss, &doc_name, &obj_name](int geoId, PointPos pos) {
         ss.str(std::string());
 
-        if (Obj->getSolvedSketch().hasDependentParameters(geoId, pos)) {
-            int vertex = Obj->getVertexIndexGeoPos(geoId, pos);
-            if (vertex > -1) {
-                ss << "Vertex" <<  vertex + 1;
+        int vertex = Obj->getVertexIndexGeoPos(geoId, pos);
+        if (vertex > -1) {
+            ss << "Vertex" <<  vertex + 1;
 
-                Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
-            }
+            Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
         }
     };
 
-    auto testselectedge = [&Obj, &ss, &doc_name, &obj_name](int geoId) {
+    auto testselectedge = [&ss, &doc_name, &obj_name](int geoId) {
         ss.str(std::string());
 
-        if(Obj->getSolvedSketch().hasDependentParameters(geoId, Sketcher::none)) {
-            ss << "Edge" <<  geoId + 1;
-            Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
-        }
+        ss << "Edge" <<  geoId + 1;
+        Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
     };
 
     int geoid = 0;
 
     for (auto geo : geos) {
-        if (geo->getTypeId() == Part::GeomPoint::getClassTypeId()) {
-            testselectvertex(geoid, Sketcher::start);
+        if(geo) {
+            if(geo->hasExtension(Sketcher::SolverGeometryExtension::getClassTypeId())) {
+
+                auto solvext = std::static_pointer_cast<const Sketcher::SolverGeometryExtension>(
+                                    geo->getExtension(Sketcher::SolverGeometryExtension::getClassTypeId()).lock());
+
+                if (solvext->getGeometry() == Sketcher::SolverGeometryExtension::NotFullyConstraint) {
+                    // Coded for consistency with getGeometryWithDependentParameters, read the comments
+                    // on that function
+                    if (solvext->getEdge() == SolverGeometryExtension::Dependent)
+                        testselectedge(geoid);
+                    if (solvext->getStart() == SolverGeometryExtension::Dependent)
+                        testselectvertex(geoid, Sketcher::start);
+                    if (solvext->getEnd() == SolverGeometryExtension::Dependent)
+                        testselectvertex(geoid, Sketcher::end);
+                    if (solvext->getMid() == SolverGeometryExtension::Dependent)
+                        testselectvertex(geoid, Sketcher::mid);
+                }
+            }
         }
-        else if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId() ||
-                 geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
-            testselectvertex(geoid, Sketcher::start);
-            testselectvertex(geoid, Sketcher::end);
-            testselectedge(geoid);
-        }
-        else if (geo->getTypeId() == Part::GeomCircle::getClassTypeId() ||
-                 geo->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
-            testselectvertex(geoid, Sketcher::mid);
-            testselectedge(geoid);
-        }
-        else if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() ||
-                 geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
-                 geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ||
-                 geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
-            testselectvertex(geoid, Sketcher::start);
-            testselectvertex(geoid, Sketcher::end);
-            testselectvertex(geoid, Sketcher::mid);
-            testselectedge(geoid);
-        }
+
         geoid++;
     }
 
-    if (curQRAlg == GCS::EigenSparseQR) {
-        Obj->getSolvedSketch().setQRAlgorithm(GCS::EigenSparseQR);
-    }
 }
 
 bool CmdSketcherSelectElementsWithDoFs::isActive(void)

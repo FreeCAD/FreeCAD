@@ -256,5 +256,5 @@ def parse(inputstring):
 
     return '\n'.join(output)
 
-print (__name__ + " gcode postprocessor loaded.")
+# print (__name__ + " gcode postprocessor loaded.")
 
