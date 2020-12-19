@@ -531,6 +531,7 @@ void System::clear()
     pdrivenlist.clear();
     pIndex.clear();
     pdependentparameters.clear();
+    pdependentelementgroups.clear();
     hasUnknowns = false;
     hasDiagnosis = false;
 
@@ -4228,19 +4229,19 @@ void System::identifyDependentParameters(   T & qrJ,
     if(!silent)
         SolverReportingManager::Manager().LogMatrix("Rparams", Rparams);
 #endif
-    //std::vector< std::vector<double *> > dependencyGroups(SqrJ.cols()-rank);
+    pdependentelementgroups.resize(qrJ.cols()-rank);
     for (int j=rank; j < qrJ.cols(); j++) {
         for (int row=0; row < rank; row++) {
             if (fabs(Rparams(row,j)) > 1e-10) {
                 int origCol = qrJ.colsPermutation().indices()[row];
 
-                //dependencyGroups[j-rank].push_back(pdiagnoselist[origCol]);
+                pdependentelementgroups[j-rank].push_back(pdiagnoselist[origCol]);
                 pdependentparameters.push_back(pdiagnoselist[origCol]);
             }
         }
         int origCol = qrJ.colsPermutation().indices()[j];
 
-        //dependencyGroups[j-rank].push_back(pdiagnoselist[origCol]);
+        pdependentelementgroups[j-rank].push_back(pdiagnoselist[origCol]);
         pdependentparameters.push_back(pdiagnoselist[origCol]);
     }
 }
