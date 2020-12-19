@@ -83,7 +83,7 @@ class GeometryFacadePy;
 //  }
 //
 //
-// Note: The standard GeometryFacade stores Part::Geometry derived clases as a Part::Geometry *, while
+// Note: The standard GeometryFacade stores Part::Geometry derived classes as a Part::Geometry *, while
 // it has the ability to return a dynamic_cast-ed version to a provided type as follows:
 //
 // HLine->getGeometry<Part::GeomLineSegment>();
