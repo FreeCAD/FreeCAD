@@ -25,8 +25,6 @@
 
 #include <Mod/Part/App/GeometryExtension.h>
 
-#include <Mod/Sketcher/App/Constraint.h>
-
 namespace Sketcher
 {
 
