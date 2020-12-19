@@ -121,6 +121,7 @@
 #include "TaskSketcherValidation.h"
 #include "CommandConstraints.h"
 #include "ViewProviderSketchGeometryExtension.h"
+#include <Mod/Sketcher/App/SolverGeometryExtension.h>
 
 FC_LOG_LEVEL_INIT("Sketch",true,true)
 
@@ -143,24 +144,28 @@ using namespace SketcherGui;
 using namespace Sketcher;
 namespace bp = boost::placeholders;
 
-SbColor ViewProviderSketch::VertexColor                 (1.0f,0.149f,0.0f);   // #FF2600 -> (255, 38,  0)
-SbColor ViewProviderSketch::CurveColor                  (1.0f,1.0f,1.0f);     // #FFFFFF -> (255,255,255)
-SbColor ViewProviderSketch::CurveDraftColor             (0.0f,0.0f,0.86f);    // #0000DC -> (  0,  0,220)
-SbColor ViewProviderSketch::CurveExternalColor          (0.8f,0.2f,0.6f);     // #CC3399 -> (204, 51,153)
-SbColor ViewProviderSketch::CrossColorH                 (0.8f,0.4f,0.4f);     // #CC6666 -> (204,102,102)
-SbColor ViewProviderSketch::CrossColorV                 (0.4f,0.8f,0.4f);     // #66CC66 -> (102,204,102)
-SbColor ViewProviderSketch::FullyConstrainedColor       (0.0f,1.0f,0.0f);     // #00FF00 -> (  0,255,  0)
-SbColor ViewProviderSketch::ConstrDimColor              (1.0f,0.149f,0.0f);   // #FF2600 -> (255, 38,  0)
-SbColor ViewProviderSketch::ConstrIcoColor              (1.0f,0.149f,0.0f);   // #FF2600 -> (255, 38,  0)
-SbColor ViewProviderSketch::NonDrivingConstrDimColor    (0.0f,0.149f,1.0f);   // #0026FF -> (  0, 38,255)
-SbColor ViewProviderSketch::ExprBasedConstrDimColor     (1.0f,0.5f,0.149f);   // #FF7F26 -> (255, 127,  38)
-SbColor ViewProviderSketch::InformationColor            (0.0f,1.0f,0.0f);     // #00FF00 -> (  0,255,  0)
-SbColor ViewProviderSketch::PreselectColor              (0.88f,0.88f,0.0f);   // #E1E100 -> (225,225,  0)
-SbColor ViewProviderSketch::SelectColor                 (0.11f,0.68f,0.11f);  // #1CAD1C -> ( 28,173, 28)
-SbColor ViewProviderSketch::PreselectSelectedColor      (0.36f,0.48f,0.11f);  // #5D7B1C -> ( 93,123, 28)
-SbColor ViewProviderSketch::CreateCurveColor            (0.8f,0.8f,0.8f);     // #CCCCCC -> (204,204,204)
-SbColor ViewProviderSketch::DeactivatedConstrDimColor   (0.8f,0.8f,0.8f);     // #CCCCCC -> (204,204,204)
-SbColor ViewProviderSketch::InternalAlignedGeoColor     (0.7f,0.7f,0.5f);      // #B2B27F -> (178,178,127)
+SbColor ViewProviderSketch::VertexColor                             (1.0f,0.149f,0.0f);   // #FF2600 -> (255, 38,  0)
+SbColor ViewProviderSketch::CurveColor                              (1.0f,1.0f,1.0f);     // #FFFFFF -> (255,255,255)
+SbColor ViewProviderSketch::CurveDraftColor                         (0.0f,0.0f,0.86f);    // #0000DC -> (  0,  0,220)
+SbColor ViewProviderSketch::CurveExternalColor                      (0.8f,0.2f,0.6f);     // #CC3399 -> (204, 51,153)
+SbColor ViewProviderSketch::CrossColorH                             (0.8f,0.4f,0.4f);     // #CC6666 -> (204,102,102)
+SbColor ViewProviderSketch::CrossColorV                             (0.4f,0.8f,0.4f);     // #66CC66 -> (102,204,102)
+SbColor ViewProviderSketch::FullyConstrainedColor                   (0.0f,1.0f,0.0f);     // #00FF00 -> (  0,255,  0)
+SbColor ViewProviderSketch::ConstrDimColor                          (1.0f,0.149f,0.0f);   // #FF2600 -> (255, 38,  0)
+SbColor ViewProviderSketch::ConstrIcoColor                          (1.0f,0.149f,0.0f);   // #FF2600 -> (255, 38,  0)
+SbColor ViewProviderSketch::NonDrivingConstrDimColor                (0.0f,0.149f,1.0f);   // #0026FF -> (  0, 38,255)
+SbColor ViewProviderSketch::ExprBasedConstrDimColor                 (1.0f,0.5f,0.149f);   // #FF7F26 -> (255, 127,  38)
+SbColor ViewProviderSketch::InformationColor                        (0.0f,1.0f,0.0f);     // #00FF00 -> (  0,255,  0)
+SbColor ViewProviderSketch::PreselectColor                          (0.88f,0.88f,0.0f);   // #E1E100 -> (225,225,  0)
+SbColor ViewProviderSketch::SelectColor                             (0.11f,0.68f,0.11f);  // #1CAD1C -> ( 28,173, 28)
+SbColor ViewProviderSketch::PreselectSelectedColor                  (0.36f,0.48f,0.11f);  // #5D7B1C -> ( 93,123, 28)
+SbColor ViewProviderSketch::CreateCurveColor                        (0.8f,0.8f,0.8f);     // #CCCCCC -> (204,204,204)
+SbColor ViewProviderSketch::DeactivatedConstrDimColor               (0.8f,0.8f,0.8f);     // #CCCCCC -> (204,204,204)
+SbColor ViewProviderSketch::InternalAlignedGeoColor                 (0.7f,0.7f,0.5f);     // #B2B27F -> (178,178,127)
+SbColor ViewProviderSketch::FullyConstraintElementColor             (0.50f,0.81f,0.62f);  // #80D0A0 -> (128,208,160)
+SbColor ViewProviderSketch::FullyConstraintConstructionElementColor (0.56f,0.66f,0.99f);  // #80D0A0 -> (128,208,160)
+SbColor ViewProviderSketch::FullyConstraintInternalAlignmentColor   (0.87f,0.87f,0.78f);  // #80D0A0 -> (128,208,160)
+SbColor ViewProviderSketch::FullyConstraintConstructionPointColor   (1.0f,0.58f,0.50f);   // #80D0A0 -> (128,208,160)
 // Variables for holding previous click
 SbTime  ViewProviderSketch::prvClickTime;
 SbVec2s ViewProviderSketch::prvClickPos;
@@ -2796,6 +2801,22 @@ void ViewProviderSketch::updateColor(void)
         return false;
     };
 
+    auto isFullyConstraintElement = [](Sketcher::SketchObject* obj, int GeoId) -> bool {
+
+        const Part::Geometry* geom = obj->getGeometry(GeoId);
+
+        if(geom) {
+            if(geom->hasExtension(Sketcher::SolverGeometryExtension::getClassTypeId())) {
+
+                auto solvext = std::static_pointer_cast<const Sketcher::SolverGeometryExtension>(
+                                    geom->getExtension(Sketcher::SolverGeometryExtension::getClassTypeId()).lock());
+
+                return (solvext->getGeometry() == Sketcher::SolverGeometryExtension::FullyConstraint);
+            }
+        }
+        return false;
+    };
+
     // colors of the point set
     if (edit->FullyConstrained) {
         for (int  i=0; i < PtNum; i++)
@@ -2805,10 +2826,20 @@ void ViewProviderSketch::updateColor(void)
         for (int  i=0; i < PtNum; i++) {
             int GeoId = edit->PointIdToGeoId[i];
 
-            if(isInternalAlignedGeom(getSketchObject(), GeoId))
-                pcolor[i] = InternalAlignedGeoColor;
-            else
-                pcolor[i] = VertexColor;
+            bool constrainedElement = isFullyConstraintElement(getSketchObject(), GeoId);
+
+            if(isInternalAlignedGeom(getSketchObject(), GeoId)) {
+                if(constrainedElement)
+                    pcolor[i] = FullyConstraintInternalAlignmentColor;
+                else
+                    pcolor[i] = InternalAlignedGeoColor;
+            }
+            else {
+                if(constrainedElement)
+                    pcolor[i] = FullyConstraintConstructionPointColor;
+                else
+                    pcolor[i] = VertexColor;
+            }
         }
     }
 
@@ -2860,6 +2891,8 @@ void ViewProviderSketch::updateColor(void)
         bool selected = (edit->SelCurvSet.find(GeoId) != edit->SelCurvSet.end());
         bool preselected = (edit->PreselectCurve == GeoId);
 
+        bool constrainedElement = isFullyConstraintElement(getSketchObject(), GeoId);
+
         if (selected && preselected) {
             color[i] = PreselectSelectedColor;
             for (int k=j; j<k+indexes; j++) {
@@ -2889,10 +2922,18 @@ void ViewProviderSketch::updateColor(void)
             }
         }
         else if (isConstructionGeom(getSketchObject(), GeoId)) {
-            if(isInternalAlignedGeom(getSketchObject(), GeoId))
-                color[i] = InternalAlignedGeoColor;
-            else
-                color[i] = CurveDraftColor;
+            if(isInternalAlignedGeom(getSketchObject(), GeoId)) {
+                if(constrainedElement)
+                    color[i] = FullyConstraintInternalAlignmentColor;
+                else
+                    color[i] = InternalAlignedGeoColor;
+            }
+            else {
+                if(constrainedElement)
+                    color[i] = FullyConstraintConstructionElementColor;
+                else
+                    color[i] = CurveDraftColor;
+            }
 
             for (int k=j; j<k+indexes; j++) {
                 verts[j].getValue(x,y,z);
@@ -2901,6 +2942,13 @@ void ViewProviderSketch::updateColor(void)
         }
         else if (edit->FullyConstrained) {
             color[i] = FullyConstrainedColor;
+            for (int k=j; j<k+indexes; j++) {
+                verts[j].getValue(x,y,z);
+                verts[j] = SbVec3f(x,y,zNormLine);
+            }
+        }
+        else if (isFullyConstraintElement(getSketchObject(), GeoId)) {
+            color[i] = FullyConstraintElementColor;
             for (int k=j; j<k+indexes; j++) {
                 verts[j].getValue(x,y,z);
                 verts[j] = SbVec3f(x,y,zNormLine);
@@ -6094,6 +6142,10 @@ bool ViewProviderSketch::setEdit(int ModNum)
     color = (unsigned long)(InternalAlignedGeoColor.getPackedValue());
     color = hGrp->GetUnsigned("InternalAlignedGeoColor", color);
     InternalAlignedGeoColor.setPackedValue((uint32_t)color, transparency);
+    // set fullyconstraint element color
+    color = (unsigned long)(FullyConstraintElementColor.getPackedValue());
+    color = hGrp->GetUnsigned("FullyConstraintElementColor", color);
+    FullyConstraintElementColor.setPackedValue((uint32_t)color, transparency);
     // set the cross lines color
     //CrossColorV.setPackedValue((uint32_t)color, transparency);
     //CrossColorH.setPackedValue((uint32_t)color, transparency);
