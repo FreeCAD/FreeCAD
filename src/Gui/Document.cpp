@@ -1189,6 +1189,8 @@ bool Document::saveAs(void)
             escapedstr = Base::Tools::escapeEncodeFilename(escapedstr);
             Command::doCommand(Command::Doc,"App.getDocument(\"%s\").saveAs(u\"%s\")"
                                            , DocName, escapedstr.c_str());
+            // App::Document::saveAs() may modify the passed file name
+            fi.setFile(QString::fromUtf8(d->_pcDocument->FileName.getValue()));
             setModified(false);
             getMainWindow()->appendRecentFile(fi.filePath());
         }
