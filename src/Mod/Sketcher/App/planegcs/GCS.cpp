@@ -3934,12 +3934,15 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
             int rank = 0; // rank is not cheap to retrieve from qrJT in DenseQR
             Eigen::MatrixXd R;
             Eigen::FullPivHouseholderQR<Eigen::MatrixXd> qrJT;
-            // Here we enforce calculating the two QR decompositions in parallel
+            // Here we give the system the possibility to run the two QR decompositions in parallel, depending on the load of the system
+            // so we are using the default std::launch::async | std::launch::deferred policy, as nobody better than the system
+            // nows if it can run the task in parallel or is oversubscribed and should deferred it.
             // Care to wait() for the future before any prospective detection of conflicting/redundant, because the redundant solve
-            // modifies pdiagnoselist and it would not be thread-safe
+            // modifies pdiagnoselist and it would NOT be thread-safe. Care to call the thread with silent=true, unless the present thread
+            // does not use Base::Console, as it is not thread-safe to use them in both at the same time.
             //
-            // identifyDependentParametersSparseQR(J, jacobianconstraintmap, pdiagnoselist, true)
-            auto fut = std::async(std::launch::async,&System::identifyDependentParametersDenseQR,this,J,jacobianconstraintmap, pdiagnoselist, true);
+            // identifyDependentParametersDenseQR(J, jacobianconstraintmap, pdiagnoselist, true)
+            auto fut = std::async(&System::identifyDependentParametersDenseQR,this,J,jacobianconstraintmap, pdiagnoselist, true);
 
             makeDenseQRDecomposition( J, jacobianconstraintmap, qrJT, rank, R);
 
@@ -3984,12 +3987,15 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
             int rank = 0;
             Eigen::MatrixXd R;
             Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> > SqrJT;
-            // Here we enforce calculating the two QR decompositions in parallel
+            // Here we give the system the possibility to run the two QR decompositions in parallel, depending on the load of the system
+            // so we are using the default std::launch::async | std::launch::deferred policy, as nobody better than the system
+            // nows if it can run the task in parallel or is oversubscribed and should deferred it.
             // Care to wait() for the future before any prospective detection of conflicting/redundant, because the redundant solve
-            // modifies pdiagnoselist and it would not be thread-safe
+            // modifies pdiagnoselist and it would NOT be thread-safe. Care to call the thread with silent=true, unless the present thread
+            // does not use Base::Console, as it is not thread-safe to use them in both at the same time.
             //
             // identifyDependentParametersSparseQR(J, jacobianconstraintmap, pdiagnoselist, true)
-            auto fut = std::async(std::launch::async,&System::identifyDependentParametersSparseQR,this,J,jacobianconstraintmap, pdiagnoselist, true);
+            auto fut = std::async(&System::identifyDependentParametersSparseQR,this,J,jacobianconstraintmap, pdiagnoselist, true);
 
             makeSparseQRDecomposition( J, jacobianconstraintmap, SqrJT, rank, R);
 
