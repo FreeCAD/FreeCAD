@@ -111,10 +111,24 @@ class CommandPathSanity:
 
     def Activated(self):
         # if everything is ok, execute
-        self.squawkData = {"items": []}
 
         obj = FreeCADGui.Selection.getSelectionEx()[0].Object
-        self.outputpath = self.resolveOutputPath(obj)
+        self.GenerateReport(obj, self.resolveOutputPath(obj))
+
+    def GenerateReport(self, obj, location, gcodeFiles=None):
+        ''' This method can be called by PathPost if the user wants a setup report
+        generated at the time of postprocessing'''
+
+        self.squawkData = {"items": []}
+        self.outputpath = location
+
+        if gcodeFiles is None:
+            self.gcodeFiles = []
+            self.posttime = ''
+        else:
+            self.gcodeFiles = gcodeFiles
+            self.posttime = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+
         data = self.__summarize(obj)
         html = self.__report(data)
         if html is not None:
@@ -200,9 +214,7 @@ class CommandPathSanity:
 
 == Output (Gcode)
 
-|===
 {outTable}
-|===
 
 == Fixtures and Workholding
 
@@ -300,7 +312,6 @@ class CommandPathSanity:
             toolTables += "=== {}: T{}\n".format(toolLabel, key)
 
             toolTables += "|===\n"
-
             toolTables += "|*{}*| {} a| image::{}[{}]\n".format(descriptionLabel, value['description'], value['imagepath'], key)
             toolTables += "|*{}* 2+| {}\n".format(manufLabel, value['manufacturer'])
             toolTables += "|*{}* 2+| {}\n".format(partNumberLabel, value['partNumber'])
@@ -351,27 +362,33 @@ class CommandPathSanity:
         # Generate the markup for the Output Section
 
         outTable = ""
-        d = data['outputData']
 
-        gcodeFileLabel = translate("Path_Sanity", "Gcode File")
         lastpostLabel = translate("Path_Sanity", "Last Post Process Date")
         stopsLabel = translate("Path_Sanity", "Stops")
         programmerLabel = translate("Path_Sanity", "Programmer")
         machineLabel = translate("Path_Sanity", "Machine")
         postLabel = translate("Path_Sanity", "Postprocessor")
         flagsLabel = translate("Path_Sanity", "Post Processor Flags")
+        gcodeFileLabel = translate("Path_Sanity", "Gcode File")
         fileSizeLabel = translate("Path_Sanity", "File Size (kbs)")
         lineCountLabel = translate("Path_Sanity", "Line Count")
 
-        outTable += "|*{}*|{}\n".format(gcodeFileLabel, d['lastgcodefile'])
+        d = data['outputData']
+
+        outTable += "|===\n"
         outTable += "|*{}*|{}\n".format(lastpostLabel, d['lastpostprocess'])
         outTable += "|*{}*|{}\n".format(stopsLabel, d['optionalstops'])
         outTable += "|*{}*|{}\n".format(programmerLabel, d['programmer'])
         outTable += "|*{}*|{}\n".format(machineLabel, d['machine'])
         outTable += "|*{}*|{}\n".format(postLabel, d['postprocessor'])
         outTable += "|*{}*|{}\n".format(flagsLabel, d['postprocessorFlags'])
-        outTable += "|*{}*|{}\n".format(fileSizeLabel, d['filesize'])
-        outTable += "|*{}*|{}\n".format(lineCountLabel, d['linecount'])
+        outTable += "|===\n"
+
+        outTable += "|===\n"
+        outTable += "|*" + gcodeFileLabel + "*|*" + fileSizeLabel + "*|*" + lineCountLabel + "*" + "\n"
+        for i in d['files']:
+            outTable += "|*{}*|{}|{}\n".format(i['filename'], i['filesize'], i['linecount'])
+        outTable += "|===\n"
 
         # Generate the markup for the Squawk Section
 
@@ -397,8 +414,7 @@ class CommandPathSanity:
             infoTable=infoTable,
             runTable=runTable,
             toolTables=toolTables,
-            stockTable=stockTable,
-            fixtureTable=fixtureTable,
+            stockTable=stockTable, fixtureTable=fixtureTable,
             outTable=outTable,
             squawkTable=squawkTable)
 
@@ -528,7 +544,7 @@ class CommandPathSanity:
                 bitshape = tooldata.setdefault('BitShape', "")
                 if bitshape not in ["", TC.Tool.BitShape]:
                     self.squawk("PathSanity",
-                    "Tool number {} used by multiple tools".format(TC.ToolNumber),
+                    "Tool number {} used by mustr(sum(1 for line in open(obj.LastPostProcessOutput)))ltiple tools".format(TC.ToolNumber),
                     squawkType="CAUTION")
                 tooldata['bitShape'] = TC.Tool.BitShape
                 tooldata['description'] = TC.Tool.Label
@@ -719,8 +735,8 @@ class CommandPathSanity:
                 'filesize': '',
                 'linecount': ''}
         try:
-            data['lastpostprocess'] = str(obj.LastPostProcessDate)
-            data['lastgcodefile'] = str(obj.LastPostProcessOutput)
+            data['lastpostprocess'] = str(self.posttime)
+            data['lastgcodefile'] = str(self.gcodeFiles)
             data['optionalstops'] = "False"
             data['programmer'] = ""
             data['machine'] = ""
@@ -731,13 +747,16 @@ class CommandPathSanity:
                 if isinstance(op.Proxy, PathScripts.PathStop.Stop) and op.Stop is True:
                     data['optionalstops'] = "True"
 
-            if obj.LastPostProcessOutput == "":
-                data['filesize'] = str(0.0)
-                data['linecount'] = str(0)
-                self.squawk("PathSanity", "The Job has not been post-processed")
-            else:
-                data['filesize'] = str(os.path.getsize(obj.LastPostProcessOutput))
-                data['linecount'] = str(sum(1 for line in open(obj.LastPostProcessOutput)))
+            data['files'] = []
+
+            for f in self.gcodeFiles:
+                fsize = str(os.path.getsize(f))
+                flinecount = str(sum(1 for line in open(f)))
+
+                gcodefiledata = {"filename": f,
+                                 "filesize": fsize,
+                                 "linecount": flinecount}
+                data['files'].append(gcodefiledata)
 
         except Exception as e:
             data['errors'] = e

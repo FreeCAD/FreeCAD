@@ -32,6 +32,7 @@ import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
+import PathScripts.PathSanity as PathSanity
 import os
 
 from PathScripts.PathPostProcessor import PostProcessor
@@ -403,14 +404,13 @@ class CommandPathPost:
 
         self.subpart = 1
 
-        if hasattr(job, "LastPostProcessDate"):
-            job.LastPostProcessDate = str(datetime.now())
-        if hasattr(job, "LastPostProcessOutput"):
-            job.LastPostProcessOutput = fnames
-            PathLog.track(fnames)
         FreeCAD.ActiveDocument.commitTransaction()
 
         FreeCAD.ActiveDocument.recompute()
+
+        if hasattr(job, "GenerateSetupReport") and job.GenerateSetupReport:
+            sanity = PathSanity.CommandPathSanity()
+            sanity.GenerateReport(job, location=os.path.splitext(filename)[0], gcodeFiles=fnames)
 
 
 if FreeCAD.GuiUp:

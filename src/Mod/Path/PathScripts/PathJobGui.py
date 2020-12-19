@@ -667,6 +667,9 @@ class TaskPanel:
             self.obj.Label = str(self.form.jobLabel.text())
             self.obj.Description = str(self.form.jobDescription.toPlainText())
             self.obj.Operations.Group = [self.form.operationsList.item(i).data(self.DataObject) for i in range(self.form.operationsList.count())]
+
+            self.obj.GenerateSetupReport = self.form.chkSetupReport.isChecked()
+
             try:
                 self.obj.SplitOutput = self.form.splitOutput.isChecked()
                 self.obj.OrderOutputBy = str(self.form.orderBy.currentText())
@@ -768,6 +771,9 @@ class TaskPanel:
             for f in self.obj.Fixtures:
                 item = self.form.wcslist.findItems(f, QtCore.Qt.MatchExactly)[0]
                 item.setCheckState(QtCore.Qt.Checked)
+
+        if hasattr(self.obj, "GenerateSetupReport"):
+            self.form.chkSetupReport.setChecked(self.obj.GenerateSetupReport)
 
         self.form.postProcessorOutputFile.setText(self.obj.PostProcessorOutputFile)
         self.selectComboBoxText(self.form.postProcessor, self.obj.PostProcessor)
