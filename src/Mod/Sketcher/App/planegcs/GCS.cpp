@@ -3880,7 +3880,7 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
 
     makeReducedJacobian(J, jacobianconstraintmap, pdiagnoselist, tagmultiplicity);
 
-    // this function will exit with a diagnosis and, unless overriden by functions below, with full DoFs
+    // this function will exit with a diagnosis and, unless overridden by functions below, with full DoFs
     hasDiagnosis = true;
     dofs = pdiagnoselist.size();
 
