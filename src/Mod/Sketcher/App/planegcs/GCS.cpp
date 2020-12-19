@@ -4102,12 +4102,13 @@ void System::makeDenseQRDecomposition(  const Eigen::MatrixXd &J,
 #endif
 }
 
+#ifdef EIGEN_SPARSEQR_COMPATIBLE
 void System::makeSparseQRDecomposition( const Eigen::MatrixXd &J,
                                         const std::map<int,int> &jacobianconstraintmap,
                                         Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> > &SqrJT,
                                         int &rank, Eigen::MatrixXd & R, bool transposeJ, bool silent)
 {
-#ifdef EIGEN_SPARSEQR_COMPATIBLE
+
    Eigen::SparseMatrix<double> SJ;
 
     // this creation is not optimized (done using triplets)
@@ -4184,8 +4185,8 @@ void System::makeSparseQRDecomposition( const Eigen::MatrixXd &J,
         #endif
     }
     #endif //_GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
-#endif // EIGEN_SPARSEQR_COMPATIBLE
 }
+#endif // EIGEN_SPARSEQR_COMPATIBLE
 
 void System::identifyDependentParametersDenseQR( const Eigen::MatrixXd &J,
                                                   const std::map<int,int> &jacobianconstraintmap,
@@ -4202,6 +4203,7 @@ void System::identifyDependentParametersDenseQR( const Eigen::MatrixXd &J,
     identifyDependentParameters(qrJ, Rparams, rank, pdiagnoselist, silent);
 }
 
+#ifdef EIGEN_SPARSEQR_COMPATIBLE
 void System::identifyDependentParametersSparseQR( const Eigen::MatrixXd &J,
                                                   const std::map<int,int> &jacobianconstraintmap,
                                                   const GCS::VEC_pD &pdiagnoselist,
@@ -4216,6 +4218,7 @@ void System::identifyDependentParametersSparseQR( const Eigen::MatrixXd &J,
 
     identifyDependentParameters(SqrJ, Rparams, nontransprank, pdiagnoselist, silent);
 }
+#endif
 
 template <typename T>
 void System::identifyDependentParameters(   T & qrJ,
