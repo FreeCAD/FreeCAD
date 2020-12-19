@@ -3769,6 +3769,16 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
                             Coords.emplace_back(x, y, 0);
 
                             // save scale factor for any prospective dragging operation
+                            // 1. Solver must be updated, in case a dragging operation starts
+                            // 2. if temp geometry is being used (with memory allocation), then the copy we have here must be updated. If
+                            //    no temp geometry is being used, then the normal geometry must be updated.
+                            {// make solver be ready for a dragging operation
+                                auto vpext = std::make_unique<SketcherGui::ViewProviderSketchGeometryExtension>();
+                                vpext->setRepresentationFactor(scalefactor);
+
+                                getSketchObject()->getSolvedSketch().updateExtension(GeoId, std::move(vpext));
+                            }
+
                             if(!circle->hasExtension(SketcherGui::ViewProviderSketchGeometryExtension::getClassTypeId()))
                             {
                                 // It is ok to add this kind of extension to a const geometry because:
@@ -6101,14 +6111,17 @@ bool ViewProviderSketch::setEdit(int ModNum)
             getSketchObject()->validateExternalLinks();
     }
 
-    // First drawing with non-temporal geometry, then updating solver information
-    // This ensures that any ViewProvider geometry extension is set before the geometry
-    // is loaded into the solver, which ensures that any prospective draw using temporal
-    // geometry (draw with first parameter true) has the right ViewProvider geometry extensions
-    // set - This fixes Weight constraint dragging on a just opened sketch.
-    getSketchObject()->solve(false);
-    UpdateSolverInformation();
-    draw(false,true);
+    // There are geometry extensions introduced by the solver and geometry extensions introduced by the viewprovider.
+    // 1. It is important that the solver has geometry with updated extensions.
+    // 2. It is important that the viewprovider has up-to-date solver information
+    //
+    // The decision is to maintain the "first solve then draw" order, which is consistent with the rest of the Sketcher
+    // for example in geometry creation. Then, the ViewProvider is responsible for updating the solver geometry when
+    // appropriate, as it is the ViewProvider that is introducing its geometry extensions.
+    //
+    // In order to have updated solver information, solve must take "true", this cause the Geometry property to be updated
+    // with the solver information, including solver extensions, and triggers a draw(true) via ViewProvider::UpdateData.
+    getSketchObject()->solve(true);
 
     connectUndoDocument = getDocument()
         ->signalUndoDocument.connect(boost::bind(&ViewProviderSketch::slotUndoDocument, this, bp::_1));
