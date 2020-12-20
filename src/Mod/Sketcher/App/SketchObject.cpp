@@ -4973,7 +4973,7 @@ int SketchObject::exposeInternalGeometry(int GeoId)
                 newConstr->Type = Sketcher::InternalAlignment;
                 newConstr->AlignmentType = Sketcher::BSplineKnotPoint;
                 newConstr->First = currentgeoid+incrgeo+1;
-                newConstr->FirstPos = Sketcher::mid;
+                newConstr->FirstPos = Sketcher::start;
                 newConstr->Second = GeoId;
                 newConstr->InternalAlignmentIndex = index;
 
