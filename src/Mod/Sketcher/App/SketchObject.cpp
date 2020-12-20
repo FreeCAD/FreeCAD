@@ -3416,7 +3416,30 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
 
         for (std::vector<int>::const_iterator it = geoIdList.begin(); it != geoIdList.end(); ++it) {
             const Part::Geometry *geo = getGeometry(*it);
-            Part::Geometry *geosym = geo->copy();
+            Part::Geometry *geosym;
+
+            auto gf = GeometryFacade::getFacade(geo);
+
+            if(gf->isInternalAligned()) {
+                // only add this geometry if the corresponding geometry it defines is also in the list.
+                int definedGeo = Constraint::GeoUndef;
+
+                for( auto c : Constraints.getValues()) {
+                    if(c->Type == Sketcher::InternalAlignment && c->First == *it) {
+                        definedGeo = c->Second;
+                        break;
+                    }
+                }
+
+                if(std::find(geoIdList.begin(), geoIdList.end(), definedGeo) != geoIdList.end() )
+                    geosym = geo->copy();
+                else
+                    continue; // we should not mirror internal alignment geometry, unless the element they define is also mirrored
+
+            }
+            else {
+                geosym = geo->copy();
+            }
 
             // Handle Geometry
             if(geosym->getTypeId() == Part::GeomLineSegment::getClassTypeId()){
@@ -3676,7 +3699,31 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
 
         for (std::vector<int>::const_iterator it = geoIdList.begin(); it != geoIdList.end(); ++it) {
             const Part::Geometry *geo = getGeometry(*it);
-            Part::Geometry *geosym = geo->copy();
+
+            Part::Geometry *geosym;
+
+            auto gf = GeometryFacade::getFacade(geo);
+
+            if(gf->isInternalAligned()) {
+                // only add this geometry if the corresponding geometry it defines is also in the list.
+                int definedGeo = Constraint::GeoUndef;
+
+                for( auto c : Constraints.getValues()) {
+                    if(c->Type == Sketcher::InternalAlignment && c->First == *it) {
+                        definedGeo = c->Second;
+                        break;
+                    }
+                }
+
+                if(std::find(geoIdList.begin(), geoIdList.end(), definedGeo) != geoIdList.end() )
+                    geosym = geo->copy();
+                else
+                    continue; // we should not mirror internal alignment geometry, unless the element they define is also mirrored
+
+            }
+            else {
+                geosym = geo->copy();
+            }
 
             // Handle Geometry
             if(geosym->getTypeId() == Part::GeomLineSegment::getClassTypeId()){
@@ -3822,42 +3869,40 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
 
         for (std::vector<Constraint *>::const_iterator it = constrvals.begin(); it != constrvals.end(); ++it) {
 
-            std::vector<int>::const_iterator fit=std::find(geoIdList.begin(), geoIdList.end(), (*it)->First);
+            auto fit = geoIdMap.find((*it)->First); // we look in the map, because we might have skipped internal alignment geometry
 
-            if(fit != geoIdList.end()) { // if First of constraint is in geoIdList
+            if(fit != geoIdMap.end()) { // if First of constraint is in geoIdList
 
                 if( (*it)->Second == Constraint::GeoUndef /*&& (*it)->Third == Constraint::GeoUndef*/) {
                     if( (*it)->Type != Sketcher::DistanceX &&
-                        (*it)->Type != Sketcher::DistanceY) {
+                        (*it)->Type != Sketcher::DistanceY) { // this includes all non-directional single GeoId constraints, as radius, diameter, weight,...
 
                         Constraint *constNew = (*it)->copy();
 
-                        constNew->First = geoIdMap[(*it)->First];
+                        constNew->First = fit->second;
                         newconstrVals.push_back(constNew);
                     }
                 }
                 else { // other geoids intervene in this constraint
 
-                    std::vector<int>::const_iterator sit=std::find(geoIdList.begin(), geoIdList.end(), (*it)->Second);
+                    auto sit = geoIdMap.find((*it)->Second);
 
-                    if(sit != geoIdList.end()) { // Second is also in the list
+                    if(sit != geoIdMap.end()) { // Second is also in the list
 
                         if( (*it)->Third == Constraint::GeoUndef ) {
-                            if((*it)->Type ==  Sketcher::Coincident ||
-                            (*it)->Type ==  Sketcher::Perpendicular ||
-                            (*it)->Type ==  Sketcher::Parallel ||
-                            (*it)->Type ==  Sketcher::Tangent ||
-                            (*it)->Type ==  Sketcher::Distance ||
-                            (*it)->Type ==  Sketcher::Equal ||
-                            (*it)->Type ==  Sketcher::Radius ||
-                            (*it)->Type ==  Sketcher::Diameter ||
-                            (*it)->Type ==  Sketcher::Weight ||
-                            (*it)->Type ==  Sketcher::Angle ||
-                            (*it)->Type ==  Sketcher::PointOnObject ){
+                            if((*it)->Type ==  Sketcher::Coincident     ||
+                            (*it)->Type ==  Sketcher::Perpendicular     ||
+                            (*it)->Type ==  Sketcher::Parallel          ||
+                            (*it)->Type ==  Sketcher::Tangent           ||
+                            (*it)->Type ==  Sketcher::Distance          ||
+                            (*it)->Type ==  Sketcher::Equal             ||
+                            (*it)->Type ==  Sketcher::Angle             ||
+                            (*it)->Type ==  Sketcher::PointOnObject     ||
+                            (*it)->Type ==  Sketcher::InternalAlignment ){
                                 Constraint *constNew = (*it)->copy();
 
-                                constNew->First = geoIdMap[(*it)->First];
-                                constNew->Second = geoIdMap[(*it)->Second];
+                                constNew->First = fit->second;
+                                constNew->Second = sit->second;
                                 if(isStartEndInverted[(*it)->First]){
                                     if((*it)->FirstPos == Sketcher::start)
                                         constNew->FirstPos = Sketcher::end;
@@ -3881,14 +3926,14 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
                                 newconstrVals.push_back(constNew);
                             }
                         }
-                        else {
-                            std::vector<int>::const_iterator tit=std::find(geoIdList.begin(), geoIdList.end(), (*it)->Third);
+                        else { // three GeoIds intervene in constraint
+                            auto tit = geoIdMap.find((*it)->Third);
 
-                            if(tit != geoIdList.end()) { // Third is also in the list
+                            if(tit != geoIdMap.end()) { // Third is also in the list
                                 Constraint *constNew = (*it)->copy();
-                                constNew->First = geoIdMap[(*it)->First];
-                                constNew->Second = geoIdMap[(*it)->Second];
-                                constNew->Third = geoIdMap[(*it)->Third];
+                                constNew->First = fit->second;
+                                constNew->Second = sit->second;
+                                constNew->Third = tit->second;
                                 if(isStartEndInverted[(*it)->First]){
                                     if((*it)->FirstPos == Sketcher::start)
                                         constNew->FirstPos = Sketcher::end;
