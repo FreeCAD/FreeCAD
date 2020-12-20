@@ -145,8 +145,8 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
     std::vector<bool> blockedGeometry(intGeoList.size(),false); // these geometries are blocked, frozen and sent as fixed parameters to the solver
     std::vector<bool> unenforceableConstraints(ConstraintList.size(),false); // these constraints are unenforceable due to a Blocked constraint
 
-    if(!intGeoList.empty())
-        getBlockedGeometry(blockedGeometry, unenforceableConstraints, ConstraintList);
+    /*if(!intGeoList.empty())
+        getBlockedGeometry(blockedGeometry, unenforceableConstraints, ConstraintList);*/
 
     addGeometry(intGeoList,blockedGeometry);
     int extStart=Geoms.size();
@@ -168,6 +168,87 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
     GCSsys.getDependentParams(pDependentParametersList);
 
     calculateDependentParametersElements();
+
+    // Now that we have all the parameters information, we deal properly with the block constraint
+
+    bool isSomethingBlocked = false;
+    std::vector<int> blockedGeoIds;
+
+    int geoindex = 0;
+    for(auto & g : Geoms) {
+        if(!g.external && GeometryFacade::getBlocked(g.geo)) {
+            isSomethingBlocked = true;
+            blockedGeoIds.push_back(geoindex);
+        }
+        geoindex++;
+    }
+
+    for(auto c : ConstraintList) {
+        if(c->Type == InternalAlignment) {
+
+            auto geoit = std::find(blockedGeoIds.begin(),blockedGeoIds.end(),c->Second);
+
+            if(geoit != blockedGeoIds.end()) { // internal alignment geometry found, add to list
+                blockedGeoIds.push_back(*geoit);
+            }
+        }
+    }
+
+    if(isSomethingBlocked) {
+
+        // 1. Look what needs blocking
+        std::vector<double *> params_to_block;
+        std::vector < std::set < double*>> groups;
+        GCSsys.getDependentParamsGroups(groups);
+
+        for(size_t i = 0; i < groups.size(); i++) {
+            for(size_t j = 0; j < groups[i].size(); j++) {
+
+                double * thisparam = *std::next(groups[i].begin(), j);
+
+                auto element = param2geoelement.find(thisparam);
+
+                if (element != param2geoelement.end()) {
+
+                    auto blocked = std::find(blockedGeoIds.begin(),blockedGeoIds.end(),element->second.first);
+
+                    if( blocked != blockedGeoIds.end()) { // this dependent parameter group contains a parameter that should be blocked
+                        params_to_block.push_back(thisparam);
+                        break; // one parameter per group is enough to fix the group
+                    }
+                }
+            }
+        }
+
+        // 2. If something needs blocking, block-it
+        if(params_to_block.size() > 0) {
+
+            for( auto p : params_to_block ) {
+                auto findparam = std::find(Parameters.begin(),Parameters.end(), p);
+
+                if(findparam != Parameters.end()) {
+                    FixParameters.push_back(*findparam);
+                    Parameters.erase(findparam);
+                }
+
+            }
+
+            pDependencyGroups.clear();
+            clearTemporaryConstraints();
+            GCSsys.invalidatedDiagnosis();
+            GCSsys.declareUnknowns(Parameters);
+            GCSsys.declareDrivenParams(DrivenParameters);
+            GCSsys.initSolution(defaultSolverRedundant);
+            GCSsys.getConflicting(Conflicting);
+            GCSsys.getRedundant(Redundant);
+            GCSsys.getDependentParams(pDependentParametersList);
+
+            calculateDependentParametersElements();
+
+        }
+
+
+    }
 
     if (debugMode==GCS::Minimal || debugMode==GCS::IterationLevel) {
         Base::TimeInfo end_time;
