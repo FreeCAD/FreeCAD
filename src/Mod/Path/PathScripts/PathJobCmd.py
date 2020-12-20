@@ -33,12 +33,15 @@ import os
 
 from PySide import QtCore, QtGui
 
+
 # Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
+
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#PathLog.trackModule(PathLog.thisModule())
+# PathLog.trackModule(PathLog.thisModule())
+
 
 class CommandJobCreate:
     '''
@@ -87,7 +90,6 @@ class CommandJobTemplateExport:
     on Job creation and be available for selection.
     '''
 
-
     def __init__(self):
         pass
 
@@ -110,7 +112,6 @@ class CommandJobTemplateExport:
             if hasattr(job, 'Proxy') and isinstance(job.Proxy, PathJob.ObjectJob):
                 return job
         return None
-
 
     def IsActive(self):
         return self.GetJob() is not None
@@ -163,7 +164,12 @@ class CommandJobTemplateExport:
         # setup sheet
         setupSheetAttrs = None
         if dialog:
-            setupSheetAttrs = job.Proxy.setupSheet.templateAttributes(dialog.includeSettingToolRapid(), dialog.includeSettingOperationHeights(), dialog.includeSettingOperationDepths(), dialog.includeSettingOpsSettings())
+            setupSheetAttrs = job.Proxy.setupSheet.templateAttributes(
+                dialog.includeSettingToolRapid(),
+                dialog.includeSettingCoolant(),
+                dialog.includeSettingOperationHeights(),
+                dialog.includeSettingOperationDepths(),
+                dialog.includeSettingOpsSettings())
         else:
             setupSheetAttrs = job.Proxy.setupSheet.templateAttributes(True, True, True)
         if setupSheetAttrs:
@@ -174,10 +180,10 @@ class CommandJobTemplateExport:
         with open(PathUtil.toUnicode(path), 'w') as fp:
             json.dump(encoded, fp, sort_keys=True, indent=2)
 
+
 if FreeCAD.GuiUp:
     # register the FreeCAD command
     FreeCADGui.addCommand('Path_Job', CommandJobCreate())
     FreeCADGui.addCommand('Path_ExportTemplate', CommandJobTemplateExport())
 
 FreeCAD.Console.PrintLog("Loading PathJobCmd... done\n")
-

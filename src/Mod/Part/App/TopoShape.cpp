@@ -4206,6 +4206,33 @@ bool TopoShape::findPlane(gp_Pln &pln, double tol) const {
     }
 }
 
+bool TopoShape::isInfinite() const
+{
+    if (_Shape.IsNull())
+        return false;
+
+    try {
+        // If the shape is empty an exception may be thrown
+        Bnd_Box bounds;
+        BRepBndLib::Add(_Shape, bounds);
+        bounds.SetGap(0.0);
+        Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
+        bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
+
+        if (Precision::IsInfinite(xMax - xMin))
+            return true;
+        if (Precision::IsInfinite(yMax - yMin))
+            return true;
+        if (Precision::IsInfinite(zMax - zMin))
+            return true;
+
+        return false;
+    }
+    catch (Standard_Failure&) {
+        return false;
+    }
+}
+
 bool TopoShape::isCoplanar(const TopoShape &other, double tol) const {
     if(isNull() || other.isNull())
         return false;

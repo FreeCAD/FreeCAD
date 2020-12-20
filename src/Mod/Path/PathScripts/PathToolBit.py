@@ -200,7 +200,9 @@ class ToolBit(object):
         return [prop for prop in obj.PropertiesList if obj.getGroupOfProperty(prop) == PropertyGroupAttribute]
 
     def onDocumentRestored(self, obj):
-        obj.setEditorMode('BitShape', 1)
+        # when files are shared it is essential to be able to change/set the shape file,
+        # otherwise the file is hard to use
+        # obj.setEditorMode('BitShape', 1)
         obj.setEditorMode('BitBody', 2)
         obj.setEditorMode('File', 1)
         obj.setEditorMode('Shape', 2)
@@ -252,7 +254,7 @@ class ToolBit(object):
             p = findShape(p)
             if not path and p != obj.BitShape:
                 obj.BitShape = p
-            doc = FreeCAD.open(p)
+            doc = FreeCAD.openDocument(p, True)
             obj.ShapeName = doc.Name
             docOpened = True
         return (doc, docOpened)
@@ -286,21 +288,22 @@ class ToolBit(object):
         self._removeBitBody(obj)
 
     def _setupBitShape(self, obj, path=None):
+        PathLog.track(obj.Label)
+
         activeDoc = FreeCAD.ActiveDocument
         (doc, docOpened) = self._loadBitBody(obj, path)
 
         obj.Label = doc.RootObjects[0].Label
         self._deleteBitSetup(obj)
-        obj.BitBody = obj.Document.copyObject(doc.RootObjects[0], True)
+        bitBody = obj.Document.copyObject(doc.RootObjects[0], True)
         if docOpened:
             FreeCAD.setActiveDocument(activeDoc.Name)
             FreeCAD.closeDocument(doc.Name)
 
-        if obj.BitBody.ViewObject:
-            obj.BitBody.ViewObject.Visibility = False
-        self._copyBitShape(obj)
+        if bitBody.ViewObject:
+            bitBody.ViewObject.Visibility = False
 
-        for sketch in [o for o in obj.BitBody.Group if o.TypeId == 'Sketcher::SketchObject']:
+        for sketch in [o for o in bitBody.Group if o.TypeId == 'Sketcher::SketchObject']:
             for constraint in [c for c in sketch.Constraints if c.Name != '']:
                 typ = ParameterTypeConstraint.get(constraint.Type)
                 PathLog.track(constraint, typ)
@@ -316,6 +319,9 @@ class ToolBit(object):
                     if constraint.Type == 'Angle':
                         value = value * 180 / math.pi
                     PathUtil.setProperty(obj, prop, value)
+        # has to happen last because it could trigger op.execute evaluations
+        obj.BitBody = bitBody
+        self._copyBitShape(obj)
 
     def getBitThumbnail(self, obj):
         if obj.BitShape:
