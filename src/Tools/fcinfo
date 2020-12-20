@@ -213,7 +213,7 @@ if __name__ == '__main__':
         print(__doc__)
         sys.exit()
 
-    if not sys.argv[-1].lower().endswith(".fcstd"):
+    if not sys.argv[-1].rsplit(".")[-1].lower().startswith("fcstd"):
         print(__doc__)
         sys.exit()
 
