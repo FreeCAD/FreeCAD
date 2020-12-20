@@ -193,7 +193,11 @@ private:
                        } else {
                            vpp->showMDIViewPage();
                            mdi = vpp->getMDIViewPage();
-                           mdi->printPdf(filePath);
+                           if (mdi) {
+                               mdi->printPdf(filePath);
+                           } else {
+                               throw Py::TypeError("Page not available! Is it Hidden?");
+                           }
                        }
                    }
                }
@@ -234,7 +238,11 @@ private:
                        } else {
                            vpp->showMDIViewPage();
                            mdi = vpp->getMDIViewPage();
-                           mdi->saveSVG(filePath);
+                           if (mdi) {
+                               mdi->saveSVG(filePath);
+                           } else {
+                               throw Py::TypeError("Page not available! Is it Hidden?");
+                           }
                        }
                    }
                }

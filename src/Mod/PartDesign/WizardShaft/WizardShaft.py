@@ -22,6 +22,7 @@
 # ******************************************************************************/
 
 import FreeCAD, FreeCADGui
+import traceback
 from PySide import QtCore, QtGui
 from .WizardShaftTable import WizardShaftTable
 from .Shaft import Shaft
@@ -75,7 +76,7 @@ class TaskWizardShaft:
         self.shaft = Shaft(self)
         # Create table widget
         self.form = QtGui.QWidget()
-        self.table = WizardShaftTable(self, self.shaft)        
+        self.table = WizardShaftTable(self, self.shaft)
         
         # The top layout will contain the Shaft Wizard layout plus the elements of the FEM constraints dialog
         layout = QtGui.QVBoxLayout()
@@ -90,48 +91,58 @@ class TaskWizardShaft:
         # Switch to feature window
         mdi=FreeCADGui.getMainWindow().findChild(QtGui.QMdiArea)
         cw.setActiveSubWindow(featureWindow)
-        
+
+    def showDiagram(self, diagram):
+        try:
+            self.shaft.showDiagram(diagram)
+        except ImportError as e:
+            msgBox = QtGui.QMessageBox()
+            msgBox.setIcon(msgBox.Information)
+            msgBox.setWindowTitle("Missing module")
+            msgBox.setText("You may have to install the Plot add-on")
+            msgBox.setDetailedText(traceback.format_exc())
+            msgBox.exec_()
     def slotAllx(self):
-        self.shaft.showDiagram("Allx")
+        self.showDiagram("Allx")
     def slotAlly(self):
-        self.shaft.showDiagram("Ally")
+        self.showDiagram("Ally")
     def slotAllz(self):
-        self.shaft.showDiagram("Allz")
+        self.showDiagram("Allz")
         
     def slotFx(self):
-        self.shaft.showDiagram("Nx")        
+        self.showDiagram("Nx")
     def slotQy(self):
-        self.shaft.showDiagram("Qy")        
+        self.showDiagram("Qy")
     def slotQz(self):
-        self.shaft.showDiagram("Qz")
+        self.showDiagram("Qz")
     
     def slotMx(self):
-        self.shaft.showDiagram("Mx")
+        self.showDiagram("Mx")
     def slotMz(self):
-        self.shaft.showDiagram("Mz")        
+        self.showDiagram("Mz")
     def slotMy(self):
-        self.shaft.showDiagram("My")
+        self.showDiagram("My")
         
     def slotNone(self):
         pass
     def slotWy(self):
-        self.shaft.showDiagram("wy")
+        self.showDiagram("wy")
     def slotWz(self):
-        self.shaft.showDiagram("wz")
+        self.showDiagram("wz")
         
     def slotSigmax(self):
-        self.shaft.showDiagram("sigmax")
+        self.showDiagram("sigmax")
     def slotSigmay(self):
-        self.shaft.showDiagram("sigmay")        
+        self.showDiagram("sigmay")
     def slotSigmaz(self):
-        self.shaft.showDiagram("sigmaz")
+        self.showDiagram("sigmaz")
         
     def slotTaut(self):
-        self.shaft.showDiagram("taut")
+        self.showDiagram("taut")
     def slotSigmabz(self):
-        self.shaft.showDiagram("sigmabz")        
+        self.showDiagram("sigmabz")
     def slotSigmaby(self):
-        self.shaft.showDiagram("sigmaby")
+        self.showDiagram("sigmaby")
         
     def updateButton(self,  row,  col,  flag):
         self.buttons[row][col].setEnabled(flag)

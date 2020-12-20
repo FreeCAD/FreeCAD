@@ -82,23 +82,23 @@ PyObject* DrawPagePy::getAllViews(PyObject* args)
     DrawPage* page = getDrawPagePtr();
     std::vector<App::DocumentObject*> allViews = page->getAllViews();
 
-    PyObject* ret = PyList_New(0);
+    Py::List ret;
     for (auto&v: allViews) {
         if (v->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
             TechDraw::DrawProjGroupItem* dpgi = static_cast<TechDraw::DrawProjGroupItem*>(v);
-            PyList_Append(ret,new TechDraw::DrawProjGroupItemPy(dpgi));   //is this legit? or need to make new copy of dv?
+            ret.append(Py::asObject(new TechDraw::DrawProjGroupItemPy(dpgi)));   //is this legit? or need to make new copy of dv?
         } else if (v->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
             TechDraw::DrawViewPart* dvp = static_cast<TechDraw::DrawViewPart*>(v);
-            PyList_Append(ret,new TechDraw::DrawViewPartPy(dvp));
+            ret.append(Py::asObject(new TechDraw::DrawViewPartPy(dvp)));
         } else if (v->isDerivedFrom(TechDraw::DrawViewAnnotation::getClassTypeId())) {
             TechDraw::DrawViewAnnotation* dva = static_cast<TechDraw::DrawViewAnnotation*>(v);
-            PyList_Append(ret,new TechDraw::DrawViewAnnotationPy(dva));
+            ret.append(Py::asObject(new TechDraw::DrawViewAnnotationPy(dva)));
         } else {
             TechDraw::DrawView* dv = static_cast<TechDraw::DrawView*>(v);
-            PyList_Append(ret,new TechDraw::DrawViewPy(dv));
+            ret.append(Py::asObject(new TechDraw::DrawViewPy(dv)));
         }
     }
-    return ret;
+    return Py::new_reference_to(ret);
 }
 
 //    double getPageWidth() const;

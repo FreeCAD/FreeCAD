@@ -1074,7 +1074,7 @@ void NavigationStyle::saveCursorPosition(const SoEvent * const ev)
         setRotationCenter(boundingBoxCenter);
 
         // To drag around the center point of the bbox we have to determine
-        // its projection on the screen becaue this information is used in
+        // its projection on the screen because this information is used in
         // NavigationStyle::spin() for the panning
         SbViewVolume vv = cam->getViewVolume(ratio);
         vv.projectToScreen(boundingBoxCenter, boundingBoxCenter);

@@ -1896,6 +1896,17 @@ PyObject*  TopoShapePy::isCoplanar(PyObject *args)
     }PY_CATCH_OCC
 }
 
+PyObject*  TopoShapePy::isInfinite(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    PY_TRY {
+        return Py::new_reference_to(Py::Boolean(getTopoShapePtr()->isInfinite()));
+    }
+    PY_CATCH_OCC
+}
+
 PyObject*  TopoShapePy::findPlane(PyObject *args)
 {
     double tol = -1;
@@ -2524,16 +2535,16 @@ PyObject* TopoShapePy::proximity(PyObject *args)
     PyObject* ps2;
     Standard_Real tol = Precision::Confusion();
     if (!PyArg_ParseTuple(args, "O!|d",&(TopoShapePy::Type), &ps2, &tol))
-        return 0;
+        return nullptr;
     const TopoDS_Shape& s1 = getTopoShapePtr()->getShape();
     const TopoDS_Shape& s2 = static_cast<Part::TopoShapePy*>(ps2)->getTopoShapePtr()->getShape();
     if (s1.IsNull()) {
         PyErr_SetString(PyExc_ValueError, "proximity: Shape object is invalid");
-        return 0;
+        return nullptr;
     }
     if (s2.IsNull()) {
         PyErr_SetString(PyExc_ValueError, "proximity: Shape parameter is invalid");
-        return 0;
+        return nullptr;
     }
 
     BRepExtrema_ShapeProximity proximity;
@@ -2551,7 +2562,7 @@ PyObject* TopoShapePy::proximity(PyObject *args)
               BRep_Tool::Triangulation(TopoDS::Face(xp.Current()), aLoc);
             if (aTriangulation.IsNull()) {
                 PyErr_SetString(PartExceptionOCCError, "BRepExtrema_ShapeProximity not done, call 'tessellate' beforehand");
-                return 0;
+                return nullptr;
             }
         }
 
@@ -2561,7 +2572,7 @@ PyObject* TopoShapePy::proximity(PyObject *args)
               BRep_Tool::Triangulation(TopoDS::Face(xp.Current()), aLoc);
             if (aTriangulation.IsNull()) {
                 PyErr_SetString(PartExceptionOCCError, "BRepExtrema_ShapeProximity not done, call 'tessellate' beforehand");
-                return 0;
+                return nullptr;
             }
         }
 
@@ -2572,7 +2583,7 @@ PyObject* TopoShapePy::proximity(PyObject *args)
               BRep_Tool::Polygon3D(TopoDS::Edge(xp.Current()), aLoc);
             if (aPoly3D.IsNull()) {
                 PyErr_SetString(PartExceptionOCCError, "BRepExtrema_ShapeProximity not done, call 'tessellate' beforehand");
-                return 0;
+                return nullptr;
             }
         }
 
@@ -2582,37 +2593,29 @@ PyObject* TopoShapePy::proximity(PyObject *args)
               BRep_Tool::Polygon3D(TopoDS::Edge(xp.Current()), aLoc);
             if (aPoly3D.IsNull()) {
                 PyErr_SetString(PartExceptionOCCError, "BRepExtrema_ShapeProximity not done, call 'tessellate' beforehand");
-                return 0;
+                return nullptr;
             }
         }
 
         // another problem must have occurred
         PyErr_SetString(PartExceptionOCCError, "BRepExtrema_ShapeProximity not done");
-        return 0;
+        return nullptr;
     }
-    //PyObject* overlappss1 = PyList_New(0);
-    //PyObject* overlappss2 = PyList_New(0);
-    PyObject* overlappssindex1 = PyList_New(0);
-    PyObject* overlappssindex2 = PyList_New(0);
+
+    Py::List overlappssindex1;
+    Py::List overlappssindex2;
 
     for (BRepExtrema_OverlappedSubShapes::Iterator anIt1 (proximity.OverlapSubShapes1()); anIt1.More(); anIt1.Next()) {
-        //PyList_Append(overlappss1, new TopoShapeFacePy(new TopoShape(proximity.GetSubShape1 (anIt1.Key()))));
-#if PY_MAJOR_VERSION >= 3
-        PyList_Append(overlappssindex1,PyLong_FromLong(anIt1.Key()+1));
-#else
-        PyList_Append(overlappssindex1,PyInt_FromLong(anIt1.Key()+1));
-#endif
+        overlappssindex1.append(Py::Long(anIt1.Key() + 1));
     }
     for (BRepExtrema_OverlappedSubShapes::Iterator anIt2 (proximity.OverlapSubShapes2()); anIt2.More(); anIt2.Next()) {
-        //PyList_Append(overlappss2, new TopoShapeFacePy(new TopoShape(proximity.GetSubShape2 (anIt2.Key()))));
-#if PY_MAJOR_VERSION >= 3
-        PyList_Append(overlappssindex2,PyLong_FromLong(anIt2.Key()+1));
-#else
-        PyList_Append(overlappssindex2,PyInt_FromLong(anIt2.Key()+1));
-#endif
+        overlappssindex2.append(Py::Long(anIt2.Key() + 1));
     }
-    //return Py_BuildValue("OO", overlappss1, overlappss2); //subshapes
-    return Py_BuildValue("OO", overlappssindex1, overlappssindex2); //face indexes
+
+    Py::Tuple tuple(2);
+    tuple.setItem(0, overlappssindex1);
+    tuple.setItem(1, overlappssindex2);
+    return Py::new_reference_to(tuple); //face indexes
 #else
     (void)args;
     PyErr_SetString(PyExc_NotImplementedError, "proximity requires OCCT >= 6.8.1");

@@ -307,7 +307,7 @@ void CoinRiftWidget::initializeGL()
     glDisable(GL_TEXTURE_2D);
 
 #ifdef USE_FRAMEBUFFER
-    // Continue rendering to the orgiginal frame buffer (likely 0, the onscreen buffer).
+    // Continue rendering to the original frame buffer (likely 0, the onscreen buffer).
     OVR::CAPI::GL::glBindFramebuffer(GL_FRAMEBUFFER_EXT, oldfb);
 #endif
     doneCurrent();
@@ -319,7 +319,7 @@ void CoinRiftWidget::paintGL()
     const int ms(1000 / 75 /*fps*/);
     QTimer::singleShot(ms, this, SLOT(updateGL()));
 
-    // handling the sfety warning
+    // handling the safety warning
     handlingSafetyWarning();
 
     makeCurrent();
@@ -388,7 +388,7 @@ void CoinRiftWidget::paintGL()
 // m_sceneManager->setCamera(camera[eye]); // SoSceneManager does this implicitly.
         m_sceneManager->render();
 
-        // Continue rendering to the orgiginal frame buffer (likely 0, the onscreen buffer).
+        // Continue rendering to the original frame buffer (likely 0, the onscreen buffer).
         OVR::CAPI::GL::glBindFramebuffer(GL_FRAMEBUFFER_EXT, oldfb);
         Q_ASSERT(!glGetError());
 #endif

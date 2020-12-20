@@ -171,6 +171,8 @@
 # include <APIHeaderSection_MakeHeader.hxx>
 # include <ShapeAnalysis_FreeBoundsProperties.hxx>
 # include <ShapeAnalysis_FreeBoundData.hxx>
+# include <BRepLProp_SLProps.hxx>
+# include <BRepGProp_Face.hxx>
 
 #if OCC_VERSION_HEX < 0x070300
 # include <BRepAlgo_Fuse.hxx>
@@ -4161,26 +4163,13 @@ bool TopoShape::findPlane(gp_Pln &pln, double tol) const {
     if(_Shape.IsNull())
         return false;
     TopoDS_Shape shape = _Shape;
-    TopExp_Explorer exp(_Shape,TopAbs_FACE);
+    TopExp_Explorer exp(_Shape,TopAbs_EDGE);
     if(exp.More()) {
-        auto face = exp.Current();
+        TopoDS_Shape edge = exp.Current();
         exp.Next();
-        if(!exp.More()) {
-            BRepAdaptor_Surface adapt(TopoDS::Face(face));
-            if(adapt.GetType() != GeomAbs_Plane)
-                return false;
-            pln = adapt.Plane();
-            return true;
-        }
-    }else{
-        TopExp_Explorer exp(_Shape,TopAbs_EDGE);
-        if(exp.More()) {
-            TopoDS_Shape edge = exp.Current();
-            exp.Next();
-            if(!exp.More()) {
-                // To deal with OCCT bug of wrong edge transformation
-                shape = BRepBuilderAPI_Copy(edge).Shape();
-            }
+        if (!exp.More()) {
+            // To deal with OCCT bug of wrong edge transformation
+            shape = BRepBuilderAPI_Copy(_Shape).Shape();
         }
     }
     try {
@@ -4188,6 +4177,24 @@ bool TopoShape::findPlane(gp_Pln &pln, double tol) const {
         if (!finder.Found())
             return false;
         pln = GeomAdaptor_Surface(finder.Surface()).Plane();
+
+        // To make the returned plane normal more stable, if the shape has any
+        // face, use the normal of the first face.
+        TopExp_Explorer exp(shape, TopAbs_FACE);
+        if(exp.More()) {
+            BRepAdaptor_Surface adapt(TopoDS::Face(exp.Current()));
+            double u = adapt.FirstUParameter()
+                + (adapt.LastUParameter() - adapt.FirstUParameter())/2.;
+            double v = adapt.FirstVParameter()
+                + (adapt.LastVParameter() - adapt.FirstVParameter())/2.;
+            BRepLProp_SLProps prop(adapt,u,v,2,Precision::Confusion());
+            if(prop.IsNormalDefined()) {
+                gp_Pnt pnt; gp_Vec vec;
+                // handles the orientation state of the shape
+                BRepGProp_Face(TopoDS::Face(exp.Current())).Normal(u,v,pnt,vec);
+                pln = gp_Pln(pnt, gp_Dir(vec));
+            }
+        }
         return true;
     }catch (Standard_Failure &e) {
         // For some reason the above BRepBuilderAPI_Copy failed to copy
@@ -4195,6 +4202,33 @@ bool TopoShape::findPlane(gp_Pln &pln, double tol) const {
         // BRepAdaptor_Curve::No geometry. However, without the above
         // copy, circular edges often have the wrong transformation!
         FC_LOG("failed to find surface: " << e.GetMessageString());
+        return false;
+    }
+}
+
+bool TopoShape::isInfinite() const
+{
+    if (_Shape.IsNull())
+        return false;
+
+    try {
+        // If the shape is empty an exception may be thrown
+        Bnd_Box bounds;
+        BRepBndLib::Add(_Shape, bounds);
+        bounds.SetGap(0.0);
+        Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
+        bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
+
+        if (Precision::IsInfinite(xMax - xMin))
+            return true;
+        if (Precision::IsInfinite(yMax - yMin))
+            return true;
+        if (Precision::IsInfinite(zMax - zMin))
+            return true;
+
+        return false;
+    }
+    catch (Standard_Failure&) {
         return false;
     }
 }

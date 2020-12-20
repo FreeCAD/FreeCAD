@@ -88,6 +88,8 @@ public:
     /// returns the actual geometry
     std::vector<Part::Geometry *> extractGeometry(bool withConstructionElements=true,
                                                   bool withExternalElements=false) const;
+
+    void updateExtension(int geoId, std::unique_ptr<Part::GeometryExtension> && ext);
     /// get the geometry as python objects
     Py::Tuple getPyGeometry(void) const;
 
@@ -96,9 +98,6 @@ public:
     /// retrieves a point
     Base::Vector3d getPoint(int geoId, PointPos pos) const;
 
-    /// retrieves whether a geometry has dependent parameters or not
-    bool hasDependentParameters(int geoId, PointPos pos) const;
-
     // Inline methods
     inline bool hasConflicts(void) const { return !Conflicting.empty(); }
     inline const std::vector<int> &getConflicting(void) const { return Conflicting; }
@@ -106,6 +105,11 @@ public:
     inline const std::vector<int> &getRedundant(void) const { return Redundant; }
 
     inline bool hasMalformedConstraints(void) const { return malformedConstraints; }
+public:
+    std::set < std::pair< int, Sketcher::PointPos>> getDependencyGroup(int geoId, PointPos pos) const;
+
+
+public:
 
     /** set the datum of a distance or angle constraint to a certain value and solve
       * This can cause the solving to fail!
@@ -409,7 +413,12 @@ protected:
     std::vector<int> Conflicting;
     std::vector<int> Redundant;
 
-    std::vector<double *> pconstraintplistOut;
+    std::vector<double *> pDependentParametersList;
+
+    std::vector < std::set < std::pair< int, Sketcher::PointPos>>> pDependencyGroups;
+
+    // this map is intended to convert a parameter (double *) into a GeoId/PointPos pair
+    std::map<double *, std::pair<int,Sketcher::PointPos>> param2geoelement;
 
     // solving parameters
     std::vector<double*> Parameters;    // with memory allocation
@@ -470,6 +479,8 @@ private:
     bool updateNonDrivingConstraints(void);
 
     void calculateDependentParametersElements(void);
+
+    void clearTemporaryConstraints(void);
 
     /// checks if the index bounds and converts negative indices to positive
     int checkGeoId(int geoId) const;

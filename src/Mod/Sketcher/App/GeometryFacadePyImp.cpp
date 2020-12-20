@@ -92,6 +92,81 @@ void GeometryFacadePy::setId(Py::Long Id)
     this->getGeometryFacadePtr()->setId(long(Id));
 }
 
+Py::String GeometryFacadePy::getInternalType(void) const
+{
+    int internaltypeindex = (int)this->getGeometryFacadePtr()->getInternalType();
+
+    if(internaltypeindex >= InternalType::NumInternalGeometryType)
+        throw Py::NotImplementedError("String name of enum not implemented");
+
+    std::string typestr = SketchGeometryExtension::internaltype2str[internaltypeindex];
+
+     return Py::String(typestr);
+}
+
+void GeometryFacadePy::setInternalType(Py::String arg)
+{
+    std::string argstr = arg;
+    InternalType::InternalType type;
+
+    if(SketchGeometryExtension::getInternalTypeFromName(argstr, type)) {
+        this->getGeometryFacadePtr()->setInternalType(type);
+        return;
+    }
+
+    throw Py::ValueError("Argument is not a valid internal geometry type.");
+}
+
+Py::Boolean GeometryFacadePy::getBlocked(void) const
+{
+    return Py::Boolean(getGeometryFacadePtr()->getBlocked());
+}
+
+void GeometryFacadePy::setBlocked(Py::Boolean arg)
+{
+    getGeometryFacadePtr()->setBlocked(arg);
+}
+
+PyObject* GeometryFacadePy::testGeometryMode(PyObject *args)
+{
+    char* flag;
+    if (PyArg_ParseTuple(args, "s",&flag)) {
+
+        GeometryMode::GeometryMode mode;
+
+        if(SketchGeometryExtension::getGeometryModeFromName(flag, mode))
+            return new_reference_to(Py::Boolean(getGeometryFacadePtr()->testGeometryMode(mode)));
+
+        PyErr_SetString(PyExc_TypeError, "Flag string does not exist.");
+        return NULL;
+    }
+
+    PyErr_SetString(PyExc_TypeError, "No flag string provided.");
+    return NULL;
+}
+
+PyObject* GeometryFacadePy::setGeometryMode(PyObject *args)
+{
+    char * flag;
+    PyObject * bflag = Py_True;
+    if (PyArg_ParseTuple(args, "s|O!", &flag, &PyBool_Type, &bflag)) {
+
+        GeometryMode::GeometryMode mode;
+
+        if(SketchGeometryExtension::getGeometryModeFromName(flag, mode)) {
+            getGeometryFacadePtr()->setGeometryMode(mode, PyObject_IsTrue(bflag) ? true : false);
+            Py_Return;
+        }
+
+        PyErr_SetString(PyExc_TypeError, "Flag string does not exist.");
+        return NULL;
+    }
+
+    PyErr_SetString(PyExc_TypeError, "No flag string provided.");
+    Py_Return;
+}
+
+
 PyObject* GeometryFacadePy::mirror(PyObject *args)
 {
     PyObject* o;
@@ -209,9 +284,7 @@ PyObject* GeometryFacadePy::getExtensionOfType(PyObject *args)
                 std::shared_ptr<const Part::GeometryExtension> ext(this->getGeometryFacadePtr()->getExtension(type));
 
                 // we create a copy and transfer this copy's memory management responsibility to Python
-                Py::Tuple tuple;
-                PyObject* cpy = static_cast<Part::GeometryExtensionPy *>(std::const_pointer_cast<Part::GeometryExtension>(ext)->getPyObject())->copy(tuple.ptr());
-
+                PyObject* cpy = ext->copyPyObject();
                 return cpy;
             }
             catch(const Base::ValueError& e) {
@@ -220,6 +293,10 @@ PyObject* GeometryFacadePy::getExtensionOfType(PyObject *args)
             }
             catch(const std::bad_weak_ptr&) {
                 PyErr_SetString(Part::PartExceptionOCCError, "Geometry extension does not exist anymore.");
+                return 0;
+            }
+            catch(Base::NotImplementedError) {
+                PyErr_SetString(Part::PartExceptionOCCError, "Geometry extension does not implement a Python counterpart.");
                 return 0;
             }
         }
@@ -244,9 +321,7 @@ PyObject* GeometryFacadePy::getExtensionOfName(PyObject *args)
             std::shared_ptr<const Part::GeometryExtension> ext(this->getGeometryFacadePtr()->getExtension(std::string(o)));
 
             // we create a copy and transfer this copy's memory management responsibility to Python
-            Py::Tuple tuple;
-            PyObject* cpy = static_cast<Part::GeometryExtensionPy *>(std::const_pointer_cast<Part::GeometryExtension>(ext)->getPyObject())->copy(tuple.ptr());
-
+            PyObject* cpy = ext->copyPyObject();
             return cpy;
         }
         catch(const Base::ValueError& e) {
@@ -257,7 +332,10 @@ PyObject* GeometryFacadePy::getExtensionOfName(PyObject *args)
             PyErr_SetString(Part::PartExceptionOCCError, "Geometry extension does not exist anymore.");
             return 0;
         }
-
+        catch(Base::NotImplementedError) {
+            PyErr_SetString(Part::PartExceptionOCCError, "Geometry extension does not implement a Python counterpart.");
+            return 0;
+        }
     }
 
     PyErr_SetString(Part::PartExceptionOCCError, "A string with the name of the geometry extension was expected");
@@ -369,7 +447,7 @@ PyObject* GeometryFacadePy::getExtensions(PyObject *args)
     try {
         const std::vector<std::weak_ptr<const Part::GeometryExtension>> ext = this->getGeometryFacadePtr()->getExtensions();
 
-        PyObject* list = PyList_New(ext.size());
+        Py::List list;
 
         for (std::size_t i=0; i<ext.size(); ++i) {
 
@@ -377,14 +455,16 @@ PyObject* GeometryFacadePy::getExtensions(PyObject *args)
 
             if(p) {
                 // we create a python copy and add it to the list
-                Py::Tuple tuple;
-                PyObject* cpy = static_cast<Part::GeometryExtensionPy *>(std::const_pointer_cast<Part::GeometryExtension>(p)->getPyObject())->copy(tuple.ptr());
-
-                PyList_SetItem( list, i, cpy);
+                try {
+                    list.append(Py::asObject(p->copyPyObject()));
+                }
+                catch(Base::NotImplementedError) {
+                    // silently ignoring extensions not having a Python object
+                }
             }
         }
 
-        return list;
+        return Py::new_reference_to(list);
     }
     catch(const Base::ValueError& e) {
         PyErr_SetString(Part::PartExceptionOCCError, e.what());
@@ -400,8 +480,7 @@ Py::Boolean GeometryFacadePy::getConstruction(void) const
 
 void  GeometryFacadePy::setConstruction(Py::Boolean arg)
 {
-    if (getGeometryFacadePtr()->getTypeId() != Part::GeomPoint::getClassTypeId())
-        getGeometryFacadePtr()->setConstruction(arg);
+    getGeometryFacadePtr()->setConstruction(arg);
 }
 
 Py::String GeometryFacadePy::getTag(void) const
@@ -413,7 +492,8 @@ Py::String GeometryFacadePy::getTag(void) const
 Py::Object GeometryFacadePy::getGeometry(void) const
 {
     // We return a clone
-    return Py::Object(getGeometryFacadePtr()->getGeometry()->clone()->getPyObject(),true);
+    std::unique_ptr<Part::Geometry> geo(getGeometryFacadePtr()->getGeometry()->clone());
+    return Py::Object(geo->getPyObject(), true);
 }
 
 void  GeometryFacadePy::setGeometry(Py::Object arg)

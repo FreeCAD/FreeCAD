@@ -33,6 +33,7 @@
 #include "SketchObject.h"
 #include "SketchGeometryExtension.h"
 #include "ExternalGeometryExtension.h"
+#include "SolverGeometryExtension.h"
 #include "GeometryFacade.h"
 #include "ExternalGeometryFacade.h"
 #include "Constraint.h"
@@ -80,6 +81,7 @@ PyMOD_INIT_FUNC(Sketcher)
 
     Sketcher::SketchGeometryExtension	::init();
     Sketcher::ExternalGeometryExtension	::init();
+    Sketcher::SolverGeometryExtension	::init();
     Sketcher::GeometryFacade	        ::init();
     Sketcher::ExternalGeometryFacade	::init();
     Sketcher::SketchObjectSF        	::init();

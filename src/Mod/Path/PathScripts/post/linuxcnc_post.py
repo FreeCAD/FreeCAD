@@ -398,4 +398,4 @@ def parse(pathobj):
 
         return out
 
-print(__name__ + " gcode postprocessor loaded.")
+# print(__name__ + " gcode postprocessor loaded.")

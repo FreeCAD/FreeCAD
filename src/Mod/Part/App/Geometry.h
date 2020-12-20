@@ -93,11 +93,6 @@ public:
     /// If you do not desire to have the same tag, then a copy can be performed by using a constructor (which will generate another tag)
     /// and then, if necessary (e.g. if the constructor did not take a handle as a parameter), set a new handle.
     Geometry *clone(void) const;
-    /// construction geometry (means no impact on a later built topo)
-    /// Note: In the Sketcher and only for the specific case of a point, it has a special meaning:
-    /// a construction point has fixed coordinates for the solver (it has fixed parameters)
-    inline bool getConstruction(void) const {return Construction;};
-    inline void setConstruction(bool construction) {Construction = construction;};
     /// returns the tag of the geometry object
     boost::uuids::uuid getTag() const;
 
@@ -107,6 +102,8 @@ public:
     bool hasExtension(std::string name) const;
     std::weak_ptr<const GeometryExtension> getExtension(Base::Type type) const;
     std::weak_ptr<const GeometryExtension> getExtension(std::string name) const;
+    std::weak_ptr<GeometryExtension> getExtension(Base::Type type);
+    std::weak_ptr<GeometryExtension> getExtension(std::string name);
     void setExtension(std::unique_ptr<GeometryExtension> &&geo);
     void deleteExtension(Base::Type type);
     void deleteExtension(std::string name);
@@ -124,6 +121,8 @@ protected:
     /// copies the tag from the geometry passed as a parameter to this object
     void assignTag(const Part::Geometry *);
 
+    void copyNonTag(const Part::Geometry *);
+
 protected:
     Geometry();
 
@@ -134,9 +133,6 @@ protected:
 private:
     Geometry(const Geometry&);
     Geometry& operator = (const Geometry&);
-
-protected:
-    bool Construction;
 };
 
 class PartExport GeomPoint : public Geometry
@@ -300,6 +296,7 @@ public:
     int getMultiplicity(int index) const;
     int getDegree() const;
     bool isPeriodic() const;
+    bool isRational() const;
     bool join(const Handle(Geom_BSplineCurve)&);
     void makeC1Continuous(double, double);
     std::list<Geometry*> toBiArcs(double tolerance) const;
