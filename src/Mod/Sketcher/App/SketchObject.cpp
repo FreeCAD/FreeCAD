@@ -4033,6 +4033,27 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
 
             if(x == 0 && y == 0) { // the reference for constraining array elements is the first valid point of the first element
                 const Part::Geometry *geo = getGeometry(*(newgeoIdList.begin()));
+
+                auto gf = GeometryFacade::getFacade(geo);
+
+                if(gf->isInternalAligned() && !moveonly) {
+                    // only add this geometry if the corresponding geometry it defines is also in the list.
+                    int definedGeo = Constraint::GeoUndef;
+
+                    for( auto c : Constraints.getValues()) {
+                        if(c->Type == Sketcher::InternalAlignment && c->First == *(newgeoIdList.begin())) {
+                            definedGeo = c->Second;
+                            break;
+                        }
+                    }
+
+                    if(std::find(newgeoIdList.begin(), newgeoIdList.end(), definedGeo) == newgeoIdList.end() ) {
+                        // the first element setting the reference is an internal alignment geometry, wherein the geometry
+                        // it defines is not part of the copy operation.
+                        THROWM(Base::ValueError,"A move/copy/array operation on an internal alignment geometry is only possible together with the geometry it defines.")
+                    }
+                }
+
                 refgeoid=*(newgeoIdList.begin());
                 currentrowfirstgeoid = refgeoid;
                 iterfirstgeoid = refgeoid;
@@ -4062,9 +4083,27 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
 
                 Part::Geometry *geocopy;
 
+                auto gf = GeometryFacade::getFacade(geo);
+
+                if(gf->isInternalAligned() && !moveonly) {
+                    // only add this geometry if the corresponding geometry it defines is also in the list.
+                    int definedGeo = Constraint::GeoUndef;
+
+                    for( auto c : Constraints.getValues()) {
+                        if(c->Type == Sketcher::InternalAlignment && c->First == *it) {
+                            definedGeo = c->Second;
+                            break;
+                        }
+                    }
+
+                    if(std::find(newgeoIdList.begin(), newgeoIdList.end(), definedGeo) == newgeoIdList.end() )
+                        continue; // we should not copy internal alignment geometry, unless the element they define is also mirrored
+
+                }
+
                 // We have already cloned all geometry and constraints, we only need a copy if not moving
                 if(!moveonly)
-                    geocopy = geo->copy(); // make a copy of the pointer for undo even if moving
+                    geocopy = geo->copy();
                 else
                     geocopy = newgeoVals[*it];
 
@@ -4183,9 +4222,9 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
                 // handle geometry constraints
                 for (std::vector<Constraint *>::const_iterator it = constrvals.begin(); it != constrvals.end(); ++it) {
 
-                    std::vector<int>::const_iterator fit=std::find(newgeoIdList.begin(), newgeoIdList.end(), (*it)->First);
+                    auto fit = geoIdMap.find((*it)->First);
 
-                    if(fit != newgeoIdList.end()) { // if First of constraint is in geoIdList
+                    if(fit != geoIdMap.end()) { // if First of constraint is in geoIdList
 
                         if( (*it)->Second == Constraint::GeoUndef /*&& (*it)->Third == Constraint::GeoUndef*/) {
                             if( ((*it)->Type != Sketcher::DistanceX && (*it)->Type != Sketcher::DistanceY ) ||
@@ -4200,7 +4239,7 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
                                         Constraint *constNew = (*it)->copy();
                                         constNew->Type = Sketcher::Equal;
                                         constNew->isDriving = true;
-                                        constNew->Second = geoIdMap[(*it)->First]; // first is already (*it->First)
+                                        constNew->Second = fit->second; // first is already (*it->First)
                                         newconstrVals.push_back(constNew);
                                     }
                                     else if ((*it)->Type == Sketcher::Angle && clone){
@@ -4208,21 +4247,21 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
                                         Constraint *constNew = (*it)->copy();
                                         constNew->Type = Sketcher::Parallel;
                                         constNew->isDriving = true;
-                                        constNew->Second = geoIdMap[(*it)->First]; // first is already (*it->First)
+                                        constNew->Second = fit->second; // first is already (*it->First)
                                         newconstrVals.push_back(constNew);
                                     }
                                     else {
                                         Constraint *constNew = (*it)->copy();
-                                        constNew->First = geoIdMap[(*it)->First];
+                                        constNew->First = fit->second;
                                         newconstrVals.push_back(constNew);
                                     }
                             }
                         }
                         else { // other geoids intervene in this constraint
 
-                            std::vector<int>::const_iterator sit=std::find(newgeoIdList.begin(), newgeoIdList.end(), (*it)->Second);
+                            auto sit = geoIdMap.find((*it)->Second);
 
-                            if(sit != newgeoIdList.end()) { // Second is also in the list
+                            if(sit != geoIdMap.end()) { // Second is also in the list
                                 if( (*it)->Third == Constraint::GeoUndef ) {
                                     if (((*it)->Type == Sketcher::DistanceX ||
                                         (*it)->Type == Sketcher::DistanceY ||
@@ -4232,25 +4271,25 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
                                         constNew->Type = Sketcher::Equal;
                                         constNew->isDriving = true;
                                         constNew->FirstPos = Sketcher::none;
-                                        constNew->Second = geoIdMap[(*it)->First]; // first is already (*it->First)
+                                        constNew->Second = fit->second; // first is already (*it->First)
                                         constNew->SecondPos = Sketcher::none;
                                         newconstrVals.push_back(constNew);
                                     }
-                                    else {
+                                    else { // this includes InternalAlignment constraints
                                         Constraint *constNew = (*it)->copy();
-                                        constNew->First = geoIdMap[(*it)->First];
-                                        constNew->Second = geoIdMap[(*it)->Second];
+                                        constNew->First = fit->second;
+                                        constNew->Second = sit->second;
                                         newconstrVals.push_back(constNew);
                                     }
                                 }
                                 else {
-                                    std::vector<int>::const_iterator tit=std::find(newgeoIdList.begin(), newgeoIdList.end(), (*it)->Third);
+                                    auto tit = geoIdMap.find((*it)->Third);
 
-                                    if(tit != newgeoIdList.end()) { // Third is also in the list
+                                    if(tit != geoIdMap.end()) { // Third is also in the list
                                         Constraint *constNew = (*it)->copy();
-                                        constNew->First = geoIdMap[(*it)->First];
-                                        constNew->Second = geoIdMap[(*it)->Second];
-                                        constNew->Third = geoIdMap[(*it)->Third];
+                                        constNew->First = fit->second;
+                                        constNew->Second = sit->second;
+                                        constNew->Third = tit->second;
 
                                         newconstrVals.push_back(constNew);
                                     }

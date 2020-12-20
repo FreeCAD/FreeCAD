@@ -1138,19 +1138,25 @@ PyObject* SketchObjectPy::addCopy(PyObject *args)
 #endif
         }
 
-        int ret = this->getSketchObjectPtr()->addCopy(geoIdList, vect, false, PyObject_IsTrue(clone) ? true : false) + 1;
+        try {
+            int ret = this->getSketchObjectPtr()->addCopy(geoIdList, vect, false, PyObject_IsTrue(clone) ? true : false) + 1;
 
-        if(ret == -1)
-            throw Py::TypeError("Copy operation unsuccessful!");
+            if(ret == -1)
+                throw Py::TypeError("Copy operation unsuccessful!");
 
-        std::size_t numGeo = geoIdList.size();
-        Py::Tuple tuple(numGeo);
-        for (std::size_t i=0; i<numGeo; ++i) {
-            int geoId = ret - int(numGeo - i);
-            tuple.setItem(i, Py::Long(geoId));
+            std::size_t numGeo = geoIdList.size();
+            Py::Tuple tuple(numGeo);
+            for (std::size_t i=0; i<numGeo; ++i) {
+                int geoId = ret - int(numGeo - i);
+                tuple.setItem(i, Py::Long(geoId));
+            }
+
+            return Py::new_reference_to(tuple);
+        }
+        catch(const Base::ValueError & e) {
+            throw Py::ValueError(e.getMessage());
         }
 
-        return Py::new_reference_to(tuple);
     }
 
     std::string error = std::string("type must be list of GeoIds, not ");
@@ -1219,11 +1225,18 @@ PyObject* SketchObjectPy::addRectangularArray(PyObject *args)
 #endif
         }
 
-        int ret = this->getSketchObjectPtr()->addCopy(geoIdList,vect, false, PyObject_IsTrue(clone) ? true : false,
-                                                      rows, cols, PyObject_IsTrue(constraindisplacement) ? true : false, perpscale) + 1;
+        try {
+            int ret = this->getSketchObjectPtr()->addCopy(geoIdList,vect, false, PyObject_IsTrue(clone) ? true : false,
+                                                        rows, cols, PyObject_IsTrue(constraindisplacement) ? true : false, perpscale) + 1;
 
-        if(ret == -1)
-            throw Py::TypeError("Copy operation unsuccessful!");
+            if(ret == -1)
+                throw Py::TypeError("Copy operation unsuccessful!");
+
+        }
+        catch(const Base::ValueError & e) {
+            throw Py::ValueError(e.getMessage());
+        }
+
         Py_Return;
     }
 
