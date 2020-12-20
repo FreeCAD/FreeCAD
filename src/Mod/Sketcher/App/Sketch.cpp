@@ -941,8 +941,8 @@ int Sketch::addBSpline(const Part::GeomBSplineCurve &bspline, bool fixed)
         spoles.push_back(p);
 
         if(!fixed) {
-            param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(p.x), std::forward_as_tuple(Geoms.size()-1, Sketcher::none));
-            param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(p.y), std::forward_as_tuple(Geoms.size()-1, Sketcher::none));
+            param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(p.x), std::forward_as_tuple(Geoms.size(), Sketcher::none));
+            param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(p.y), std::forward_as_tuple(Geoms.size(), Sketcher::none));
         }
     }
 
@@ -954,7 +954,7 @@ int Sketch::addBSpline(const Part::GeomBSplineCurve &bspline, bool fixed)
         sweights.push_back(params[params.size()-1]);
 
         if(!fixed) {
-            param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(r), std::forward_as_tuple(Geoms.size()-1, Sketcher::none));
+            param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(r), std::forward_as_tuple(Geoms.size(), Sketcher::none));
         }
     }
 
