@@ -548,6 +548,13 @@ void System::clear()
     p2c.clear();
 }
 
+void System::invalidatedDiagnosis()
+{
+    hasDiagnosis=false;
+    pDependentParameters.clear();
+    pDependentParametersGroups.clear();
+}
+
 void System::clearByTag(int tagId)
 {
     std::vector<Constraint *> constrvec;
