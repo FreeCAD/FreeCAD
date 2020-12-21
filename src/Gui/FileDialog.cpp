@@ -135,6 +135,7 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
                                      const QString & filter, QString * selectedFilter, Options options)
 {
     QString dirName = dir;
+    bool hasFilename = false;
     if (dirName.isEmpty()) {
         dirName = getWorkingDirectory();
     } else {
@@ -143,6 +144,9 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
             dirName = getWorkingDirectory();
             dirName += QLatin1String("/");
             dirName += fi.fileName();
+        }
+        if (!fi.fileName().isEmpty()) {
+            hasFilename = true;
         }
 
         // get the suffix for the filter: use the selected filter if there is one,
@@ -207,7 +211,8 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
         dlg.setFileMode(QFileDialog::AnyFile);
         dlg.setAcceptMode(QFileDialog::AcceptSave);
         dlg.setDirectory(dirName);
-        dlg.selectFile(dirName);
+        if (hasFilename)
+            dlg.selectFile(dirName);
         dlg.setOptions(options);
         dlg.setNameFilters(filter.split(QLatin1String(";;")));
         if (selectedFilter && !selectedFilter->isEmpty())
