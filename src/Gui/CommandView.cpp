@@ -2541,12 +2541,12 @@ bool StdViewZoomOut::isActive(void)
 class SelectionCallbackHandler {    
 
 private:
-    static std::unique_ptr<SelectionCallbackHandler> _currentSelectionHandler;
-    QCursor* _beforeSelectionCursor;
+    static std::unique_ptr<SelectionCallbackHandler> currentSelectionHandler;
+    QCursor* prevSelectionCursor;
     typedef void (*FnCb)(void * userdata, SoEventCallback * node);
     FnCb fnCb;
-    void* _userData;
-    bool _prevSelectionEn;
+    void* userData;
+    bool prevSelectionEn;
 
 public:
     // Creates a selection handler used to implement the common behaviour of BoxZoom, BoxSelection and BoxElementSelection. 
@@ -2555,28 +2555,28 @@ public:
     // If there is still a selection handler active, this call will generate a message and returns.
     static void Create(View3DInventorViewer* viewer, View3DInventorViewer::SelectionMode selectionMode, const QCursor& cursor, FnCb doFunction= NULL, void* ud=NULL)
     {
-        if (_currentSelectionHandler)
+        if (currentSelectionHandler)
         {
             Base::Console().Message("SelectionCallbackHandler: A selection handler already active.");
             return;
         }
 
-        _currentSelectionHandler = std::unique_ptr<SelectionCallbackHandler>(new SelectionCallbackHandler());
+        currentSelectionHandler = std::unique_ptr<SelectionCallbackHandler>(new SelectionCallbackHandler());
         if (viewer)
         {
-            _currentSelectionHandler->_userData = ud;
-            _currentSelectionHandler->fnCb = doFunction;
-            _currentSelectionHandler->_beforeSelectionCursor = new QCursor(viewer->cursor());
+            currentSelectionHandler->userData = ud;
+            currentSelectionHandler->fnCb = doFunction;
+            currentSelectionHandler->prevSelectionCursor = new QCursor(viewer->cursor());
             viewer->setEditingCursor(cursor);
             viewer->addEventCallback(SoEvent::getClassTypeId(),
-                SelectionCallbackHandler::selectionCallback, _currentSelectionHandler.get());
-            _currentSelectionHandler->_prevSelectionEn = viewer->isSelectionEnabled();
+                SelectionCallbackHandler::selectionCallback, currentSelectionHandler.get());
+            currentSelectionHandler->prevSelectionEn = viewer->isSelectionEnabled();
             viewer->setSelectionEnabled(false);
             viewer->startSelection(selectionMode);
         }
     };
 
-    void* getUserData() { return _userData; };
+    void* getUserData() { return userData; };
 
     // Implements the event handler. In the normal case the provided function is called. 
     // Also supports aborting the selection mode by pressing (releasing) the Escape key. 
@@ -2618,15 +2618,15 @@ public:
     static void restoreState(SelectionCallbackHandler * selectionHandler, View3DInventorViewer* view)
     {
         if(selectionHandler) selectionHandler->fnCb = NULL;
-        view->setEditingCursor(*selectionHandler->_beforeSelectionCursor);
+        view->setEditingCursor(*selectionHandler->prevSelectionCursor);
         view->removeEventCallback(SoEvent::getClassTypeId(), SelectionCallbackHandler::selectionCallback, selectionHandler);
-        view->setSelectionEnabled(selectionHandler->_prevSelectionEn);
+        view->setSelectionEnabled(selectionHandler->prevSelectionEn);
         Application::Instance->commandManager().testActive();
-        _currentSelectionHandler = NULL;
+        currentSelectionHandler = NULL;
     }
 };
 
-std::unique_ptr<SelectionCallbackHandler> SelectionCallbackHandler::_currentSelectionHandler = std::unique_ptr<SelectionCallbackHandler>();
+std::unique_ptr<SelectionCallbackHandler> SelectionCallbackHandler::currentSelectionHandler = std::unique_ptr<SelectionCallbackHandler>();
 //===========================================================================
 // Std_ViewBoxZoom
 //===========================================================================

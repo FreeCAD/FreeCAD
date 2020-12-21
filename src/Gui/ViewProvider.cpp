@@ -225,7 +225,7 @@ void ViewProvider::eventCallback(void * ud, SoEventCallback * node)
                     // Therefore, we shall ignore ESC while any mouse button is
                     // pressed, until this Coin bug is fixed.
                     if (!press) {
-						// react only on key release 
+                        // react only on key release 
                         // Let first selection mode terminate
                         Gui::Document* doc = Gui::Application::Instance->activeDocument();
                         Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
