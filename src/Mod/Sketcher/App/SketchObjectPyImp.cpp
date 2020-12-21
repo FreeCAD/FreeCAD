@@ -280,6 +280,24 @@ PyObject* SketchObjectPy::setConstruction(PyObject *args)
     Py_Return;
 }
 
+PyObject* SketchObjectPy::getConstruction(PyObject *args)
+{
+    int Index;
+    if (!PyArg_ParseTuple(args, "i", &Index))
+        return 0;
+
+    auto gf = this->getSketchObjectPtr()->getGeometryFacade(Index);
+
+    if(gf)
+        return Py::new_reference_to(Py::Boolean(gf->getConstruction()));
+
+    std::stringstream str;
+    str << "Not able to retrieve construction mode of a geometry with the given index: " << Index;
+    PyErr_SetString(PyExc_ValueError, str.str().c_str());
+    return 0;
+
+}
+
 PyObject* SketchObjectPy::addConstraint(PyObject *args)
 {
     PyObject *pcObj;
