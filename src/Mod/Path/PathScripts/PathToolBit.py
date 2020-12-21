@@ -24,6 +24,7 @@ import FreeCAD
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
+import PathScripts.PathPropertyContainer as PathPropertyContainer
 import PathScripts.PathSetupSheetOpPrototype as PathSetupSheetOpPrototype
 import PathScripts.PathUtil as PathUtil
 import PySide
@@ -42,8 +43,10 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "Class to deal with and represent a tool bit."
 
-# PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-# PathLog.trackModule()
+_DebugFindTool = True
+
+PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+PathLog.trackModule()
 
 
 def translate(context, text, disambig=None):
@@ -58,7 +61,8 @@ ParameterTypeConstraint = {
         'Radius':       'App::PropertyLength'}
 
 
-def _findTool(path, typ, dbg=False):
+def _findTool(path, typ, dbg=_DebugFindTool):
+    PathLog.track(path)
     if os.path.exists(path):  # absolute reference
         if dbg:
             PathLog.debug("Found {} at {}".format(typ, path))
@@ -67,7 +71,7 @@ def _findTool(path, typ, dbg=False):
     def searchFor(pname, fname):
         # PathLog.debug("pname: {} fname: {}".format(pname, fname))
         if dbg:
-            PathLog.debug("Looking for {}".format(pname))
+            PathLog.debug("Looking for {} in {}".format(pname, fname))
         if fname:
             for p in PathPreferences.searchPathsTool(typ):
                 PathLog.track(p)
@@ -174,6 +178,9 @@ class ToolBit(object):
                         translate('PathToolBit', 'The file of the tool'))
         obj.addProperty('App::PropertyString', 'ShapeName', 'Base',
                         translate('PathToolBit', 'The name of the shape file'))
+        obj.addProperty('App::PropertyStringList', 'BitPropertyNames', 'Base',
+                        translate('PathToolBit', 'List of all properties inherited from the bit'))
+
         if shapeFile is None:
             obj.BitShape = 'endmill.fcstd'
             self._setupBitShape(obj)
@@ -193,9 +200,6 @@ class ToolBit(object):
                 break
         return None
 
-    def propertyNamesBit(self, obj):
-        return [prop for prop in obj.PropertiesList if obj.getGroupOfProperty(prop) == PropertyGroupBit]
-
     def propertyNamesAttribute(self, obj):
         return [prop for prop in obj.PropertiesList if obj.getGroupOfProperty(prop) == PropertyGroupAttribute]
 
@@ -206,8 +210,9 @@ class ToolBit(object):
         obj.setEditorMode('BitBody', 2)
         obj.setEditorMode('File', 1)
         obj.setEditorMode('Shape', 2)
+        obj.setEditorMode('BitPropertyNames', 2)
 
-        for prop in self.propertyNamesBit(obj):
+        for prop in obj.BitPropertyNames:
             obj.setEditorMode(prop, 1)
         # I currently don't see why these need to be read-only
         # for prop in self.propertyNamesAttribute(obj):
@@ -227,12 +232,9 @@ class ToolBit(object):
 
     def _updateBitShape(self, obj, properties=None):
         if obj.BitBody is not None:
-            if not properties:
-                properties = self.propertyNamesBit(obj)
-            for prop in properties:
-                for sketch in [o for o in obj.BitBody.Group if o.TypeId == 'Sketcher::SketchObject']:
-                    PathLog.track(obj.Label, sketch.Label, prop)
-                    updateConstraint(sketch, prop, obj.getPropertyByName(prop))
+            for attributes in [o for o in obj.BitBody.Group if hasattr(o, 'Proxy') and hasattr(o.Proxy, 'getCustomProperties')]:
+                for prop in attributes.Proxy.getCustomProperties():
+                    setattr(attributes, prop, obj.getPropertyByName(prop))
             self._copyBitShape(obj)
 
     def _copyBitShape(self, obj):
@@ -243,6 +245,7 @@ class ToolBit(object):
             obj.Shape = Part.Shape()
 
     def _loadBitBody(self, obj, path=None):
+        PathLog.track(obj.Label, path)
         p = path if path else obj.BitShape
         docOpened = False
         doc = None
@@ -254,9 +257,12 @@ class ToolBit(object):
             p = findShape(p)
             if not path and p != obj.BitShape:
                 obj.BitShape = p
+            PathLog.debug("ToolBit {} using shape file: {}".format(obj.Label, p))
             doc = FreeCAD.openDocument(p, True)
             obj.ShapeName = doc.Name
             docOpened = True
+        else:
+            PathLog.debug("ToolBit {} already open: {}".format(obj.Label, doc))
         return (doc, docOpened)
 
     def _removeBitBody(self, obj):
@@ -269,7 +275,7 @@ class ToolBit(object):
         PathLog.track(obj.Label)
         self._removeBitBody(obj)
         self._copyBitShape(obj)
-        for prop in self.propertyNamesBit(obj):
+        for prop in obj.BitPropertyNames:
             obj.removeProperty(prop)
 
     def loadBitBody(self, obj, force=False):
@@ -296,6 +302,10 @@ class ToolBit(object):
         obj.Label = doc.RootObjects[0].Label
         self._deleteBitSetup(obj)
         bitBody = obj.Document.copyObject(doc.RootObjects[0], True)
+
+        for o in doc.RootObjects[0].Group:
+            PathLog.debug("..... {}: {}".format(o.Label, o.Name))
+
         if docOpened:
             FreeCAD.setActiveDocument(activeDoc.Name)
             FreeCAD.closeDocument(doc.Name)
@@ -303,23 +313,35 @@ class ToolBit(object):
         if bitBody.ViewObject:
             bitBody.ViewObject.Visibility = False
 
-        for sketch in [o for o in bitBody.Group if o.TypeId == 'Sketcher::SketchObject']:
-            for constraint in [c for c in sketch.Constraints if c.Name != '']:
-                typ = ParameterTypeConstraint.get(constraint.Type)
-                PathLog.track(constraint, typ)
-                if typ is not None:
-                    parts = [p.strip() for p in constraint.Name.split(';')]
-                    prop = parts[0]
-                    desc = ''
-                    if len(parts) > 1:
-                        desc = parts[1]
-                    obj.addProperty(typ, prop, PropertyGroupBit, desc)
-                    obj.setEditorMode(prop, 1)
-                    value = constraint.Value
-                    if constraint.Type == 'Angle':
-                        value = value * 180 / math.pi
-                    PathUtil.setProperty(obj, prop, value)
+        PathLog.debug("bitBody.{} ({}): {}".format(bitBody.Label, bitBody.Name, type(bitBody)))
+
+        def isAttributes(o):
+            if not hasattr(o, 'Proxy'):
+                PathLog.debug("    {} has not Proxy ({})".format(o.Label, type(o)))
+                return False
+            if not hasattr(o.Proxy, 'getCustomProperties'):
+                PathLog.debug("    {}.Proxy has no getCustomProperties ({})".format(o.Label, type(o.Proxy)))
+                return False
+            PathLog.debug("    {} <-".format(o.Label))
+            return True
+
+        propNames = []
+        for attributes in [o for o in bitBody.Group if isAttributes(o)]:
+            PathLog.debug("Process properties from {}".format(attributes.Label))
+            for prop in attributes.Proxy.getCustomProperties():
+                # extract property parameters and values so it can be copied
+                src = attributes.getPropertyByName(prop)
+                typ = PathPropertyContainer.getPropertyType(src)
+                grp = attributes.getGroupOfProperty(prop)
+                dsc = attributes.getDocumentationOfProperty(prop)
+
+                obj.addProperty(typ, prop, grp, dsc)
+                obj.setEditorMode(prop, 1)
+                PathUtil.setProperty(obj, prop, src)
+                propNames.append(prop)
+
         # has to happen last because it could trigger op.execute evaluations
+        obj.BitPropertyNames = propNames
         obj.BitBody = bitBody
         self._copyBitShape(obj)
 
@@ -360,7 +382,7 @@ class ToolBit(object):
         else:
             attrs['shape'] = findRelativePathShape(obj.BitShape)
         params = {}
-        for name in self.propertyNamesBit(obj):
+        for name in obj.BitPropertyNames:
             params[name] = PathUtil.getPropertyValueString(obj, name)
         attrs['parameter'] = params
         params = {}
@@ -435,6 +457,7 @@ class ToolBitFactory(object):
         return obj
 
     def CreateFrom(self, path, name='ToolBit'):
+        PathLog.track(name, path)
         try:
             data = Declaration(path)
             bit = Factory.CreateFromAttrs(data, name)
@@ -445,6 +468,7 @@ class ToolBitFactory(object):
             raise
 
     def Create(self, name='ToolBit', shapeFile=None):
+        PathLog.track(name, shapeFile)
         obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', name)
         obj.Proxy = ToolBit(obj, shapeFile)
         return obj

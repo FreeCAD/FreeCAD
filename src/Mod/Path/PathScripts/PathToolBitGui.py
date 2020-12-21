@@ -174,8 +174,8 @@ class ToolBitGuiFactory(PathToolBit.ToolBitFactory):
         '''Create(name = 'ToolBit') ... creates a new tool bit.
         It is assumed the tool will be edited immediately so the internal bit body is still attached.'''
 
-        FreeCAD.ActiveDocument.openTransaction(translate('PathToolBit',
-                                                         'Create ToolBit'))
+        PathLog.track(name, shapeFile)
+        FreeCAD.ActiveDocument.openTransaction(translate('PathToolBit', 'Create ToolBit'))
         tool = PathToolBit.ToolBitFactory.Create(self, name, shapeFile)
         PathIconViewProvider.Attach(tool.ViewObject, name)
         FreeCAD.ActiveDocument.commitTransaction()

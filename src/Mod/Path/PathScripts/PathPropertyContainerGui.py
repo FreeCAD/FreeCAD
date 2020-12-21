@@ -43,19 +43,6 @@ PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
-SupportedPropertyType = {
-        'Angle'         : 'App::PropertyAngle',
-        'Bool'          : 'App::PropertyBool',
-        'Distance'      : 'App::PropertyDistance',
-        # 'Enumeration'   : 'App::PropertyEnumeration',
-        'File'          : 'App::PropertyFile',
-        'Float'         : 'App::PropertyFloat',
-        'Integer'       : 'App::PropertyInteger',
-        'Length'        : 'App::PropertyLength',
-        'Percent'       : 'App::PropertyPercent',
-        'String'        : 'App::PropertyString',
-        }
-
 class ViewProvider(object):
     '''ViewProvider for a PropertyContainer.
     It's sole job is to provide an icon and invoke the TaskPanel on edit.'''
@@ -148,9 +135,9 @@ class PropertyCreate(object):
         if grp:
             self.form.propertyGroup.setCurrentText(grp)
 
-        for t in sorted(SupportedPropertyType):
+        for t in sorted(PathPropertyContainer.SupportedPropertyType):
             self.form.propertyType.addItem(t)
-            if SupportedPropertyType[t] == typ:
+            if PathPropertyContainer.SupportedPropertyType[t] == typ:
                 typ = t
         if typ:
             self.form.propertyType.setCurrentText(typ)
@@ -176,7 +163,7 @@ class PropertyCreate(object):
     def propertyGroup(self):
         return self.form.propertyGroup.currentText().strip()
     def propertyType(self):
-        return SupportedPropertyType[self.form.propertyType.currentText()].strip()
+        return PathPropertyContainer.SupportedPropertyType[self.form.propertyType.currentText()].strip()
     def propertyInfo(self):
         return self.form.propertyInfo.toPlainText().strip()
     def createAnother(self):

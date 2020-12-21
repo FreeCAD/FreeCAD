@@ -84,32 +84,32 @@ class ToolBitEditor(object):
 
         layout = self.form.bitParams.layout()
         ui = FreeCADGui.UiLoader()
-        nr = 0
 
         # for all properties either assign them to existing labels and editors
         # or create additional ones for them if not enough have already been
         # created.
-        for name in tool.PropertiesList:
-            if tool.getGroupOfProperty(name) == PathToolBit.PropertyGroupBit:
-                if nr < len(self.widgets):
-                    PathLog.debug("re-use row: {} [{}]".format(nr, name))
-                    label, qsb, editor = self.widgets[nr]
-                    label.setText(labelText(name))
-                    editor.attachTo(tool, name)
-                    label.show()
-                    qsb.show()
-                else:
-                    qsb    = ui.createWidget('Gui::QuantitySpinBox')
-                    editor = PathGui.QuantitySpinBox(qsb, tool, name)
-                    label  = QtGui.QLabel(labelText(name))
-                    self.widgets.append((label, qsb, editor))
-                    PathLog.debug("create row: {} [{}]".format(nr, name))
-                if nr >= layout.rowCount():
-                    layout.addRow(label, qsb)
-                nr = nr + 1
+        for nr, name in enumerate(tool.BitPropertyNames):
+            if nr < len(self.widgets):
+                PathLog.debug("re-use row: {} [{}]".format(nr, name))
+                label, qsb, editor = self.widgets[nr]
+                label.setText(labelText(name))
+                editor.attachTo(tool, name)
+                label.show()
+                qsb.show()
+            else:
+                qsb    = ui.createWidget('Gui::QuantitySpinBox')
+                editor = PathGui.QuantitySpinBox(qsb, tool, name)
+                label  = QtGui.QLabel(labelText(name))
+                self.widgets.append((label, qsb, editor))
+                PathLog.debug("create row: {} [{}]  {}".format(nr, name, type(qsb)))
+                if hasattr(qsb, 'editingFinished'):
+                    qsb.editingFinished.connect(self.updateTool)
+
+            if nr >= layout.rowCount():
+                layout.addRow(label, qsb)
 
         # hide all rows which aren't being used
-        for i in range(nr, len(self.widgets)):
+        for i in range(len(tool.BitPropertyNames), len(self.widgets)):
             label, qsb, editor = self.widgets[i]
             label.hide()
             qsb.hide()
@@ -242,13 +242,18 @@ class ToolBitEditor(object):
 
     def updateTool(self):
         PathLog.track()
-        self.tool.Label = str(self.form.toolName.text())
-        self.tool.BitShape = str(self.form.shapePath.text())
+
+        label = str(self.form.toolName.text())
+        shape = str(self.form.shapePath.text())
+        if self.tool.Label != label:
+            self.tool.Label = label
+        if self.tool.BitShape != shape:
+            self.tool.BitShape = shape
 
         for lbl, qsb, editor in self.widgets:
             editor.updateProperty()
 
-        # self.tool.Proxy._updateBitShape(self.tool)
+        self.tool.Proxy._updateBitShape(self.tool)
 
     def refresh(self):
         PathLog.track()

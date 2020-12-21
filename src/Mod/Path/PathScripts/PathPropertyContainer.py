@@ -32,6 +32,31 @@ def translate(context, text, disambig=None):
     return PySide.QtCore.QCoreApplication.translate(context, text, disambig)
 
 
+SupportedPropertyType = {
+        'Angle'         : 'App::PropertyAngle',
+        'Bool'          : 'App::PropertyBool',
+        'Distance'      : 'App::PropertyDistance',
+        # 'Enumeration'   : 'App::PropertyEnumeration',
+        'File'          : 'App::PropertyFile',
+        'Float'         : 'App::PropertyFloat',
+        'Integer'       : 'App::PropertyInteger',
+        'Length'        : 'App::PropertyLength',
+        'Percent'       : 'App::PropertyPercent',
+        'String'        : 'App::PropertyString',
+        }
+
+def getPropertyType(o):
+    if type(o) == str:
+        return SupportedPropertyType['String']
+    if type(o) == bool:
+        return SupportedPropertyType['Bool']
+    if type(o) == int:
+        return SupportedPropertyType['Integer']
+    if type(o) == float:
+        return SupportedPropertyType['Float']
+    if type(o) == FreeCAD.Units.Quantity:
+        return SupportedPropertyType[o.Unit.Type]
+
 class PropertyContainer(object):
     '''Property container object.'''
 
@@ -39,22 +64,17 @@ class PropertyContainer(object):
     CustomPropertyGroupDefault = 'User'
 
     def __init__(self, obj):
-        self.obj = obj
         obj.addProperty('App::PropertyStringList', self.CustomPropertyGroups, 'Base', PySide.QtCore.QT_TRANSLATE_NOOP('PathPropertyContainer', 'List of custom property groups'))
-        obj.setEditorMode(self.CustomPropertyGroups, 2)  # hide
+        self.onDocumentRestored(obj)
 
     def __getstate__(self):
         return None
 
     def __setstate__(self, state):
-        for obj in FreeCAD.ActiveDocument.Objects:
-            if hasattr(obj, 'Proxy') and obj.Proxy == self:
-                self.obj = obj
-                obj.setEditorMode(self.CustomPropertyGroups, 2)  # hide
-                break
         return None
 
     def onDocumentRestored(self, obj):
+        self.obj = obj
         obj.setEditorMode(self.CustomPropertyGroups, 2)  # hide
 
     def getCustomProperties(self):
