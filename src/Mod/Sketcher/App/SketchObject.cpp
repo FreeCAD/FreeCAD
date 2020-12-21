@@ -900,7 +900,12 @@ int SketchObject::addGeometry(const std::vector<Part::Geometry *> &geoList, bool
     for( auto & v : geoList) {
         Part::Geometry* copy = v->copy();
 
-        if(construction && copy->getTypeId() != Part::GeomPoint::getClassTypeId()) {
+        if( copy->getTypeId() == Part::GeomPoint::getClassTypeId()) {
+            // creation mode for points is always construction not to
+            // break legacy code
+            GeometryFacade::setConstruction(copy, true);
+        }
+        else if(construction) {
             GeometryFacade::setConstruction(copy, construction);
         }
 
@@ -928,8 +933,14 @@ int SketchObject::addGeometry(const Part::Geometry *geo, bool construction/*=fal
 
     Part::Geometry *geoNew = geo->copy();
 
-    if(geoNew->getTypeId() != Part::GeomPoint::getClassTypeId())
+    if( geoNew->getTypeId() == Part::GeomPoint::getClassTypeId()) {
+        // creation mode for points is always construction not to
+        // break legacy code
+        GeometryFacade::setConstruction(geoNew, true);
+    }
+    else if(construction) {
         GeometryFacade::setConstruction(geoNew, construction);
+    }
 
     newVals.push_back(geoNew);
 
@@ -1129,7 +1140,7 @@ int SketchObject::toggleConstruction(int GeoId)
     if (GeoId < 0 || GeoId >= int(vals.size()))
         return -1;
 
-    if(vals[GeoId]->getTypeId() == Part::GeomPoint::getClassTypeId())
+    if(getGeometryFacade(GeoId)->isInternalAligned())
         return -1;
 
     std::vector< Part::Geometry * > newVals(vals);
@@ -1139,7 +1150,8 @@ int SketchObject::toggleConstruction(int GeoId)
         newVals[i] = newVals[i]->clone();
 
         if((int)i == GeoId) {
-            GeometryFacade::setConstruction(newVals[i], !GeometryFacade::getConstruction(newVals[i]));
+            auto gft = GeometryFacade::getFacade(newVals[i]);
+            gft->setConstruction(!gft->getConstruction());
         }
     }
 
@@ -1162,7 +1174,7 @@ int SketchObject::setConstruction(int GeoId, bool on)
     if (GeoId < 0 || GeoId >= int(vals.size()))
         return -1;
 
-    if(vals[GeoId]->getTypeId() == Part::GeomPoint::getClassTypeId())
+    if(getGeometryFacade(GeoId)->isInternalAligned())
         return -1;
 
     std::vector< Part::Geometry * > newVals(vals);
@@ -2287,10 +2299,10 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
         return false;
 
     };
-    
-    // Helper function to remove Equal constraints from a chosen edge (e.g Line segment). 
+
+    // Helper function to remove Equal constraints from a chosen edge (e.g Line segment).
     auto delEqualConstraintsOnGeoId = [this] (int GeoId) {
-            
+
         std::vector<int> delete_list;
         int index = 0;
         const std::vector<Constraint *> &constraints = this->Constraints.getValues();
@@ -2338,7 +2350,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                     movePoint(GeoId, end, point1,false,true);
                     movePoint(newGeoId, start, point2,false,true);
 
-                    
+
                     PointPos secondPos1 = Sketcher::none, secondPos2 = Sketcher::none;
                     ConstraintType constrType1 = Sketcher::PointOnObject, constrType2 = Sketcher::PointOnObject;
                     for (std::vector<Constraint *>::const_iterator it=constraints.begin();
@@ -2427,7 +2439,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                     delConstraintOnPoint(GeoId, start, false);
                     delEqualConstraintsOnGeoId(GeoId);
                     movePoint(GeoId, start, point1,false,true);
-                    
+
                     // constrain the trimming point on the corresponding geometry
                     Sketcher::Constraint *newConstr = new Sketcher::Constraint();
                     newConstr->Type = constrType;
@@ -2461,7 +2473,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 
                     addConstraint(newConstr);
                     delete newConstr;
-                    
+
                     if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
                         solve();
 
