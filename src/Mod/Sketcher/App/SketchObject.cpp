@@ -900,7 +900,12 @@ int SketchObject::addGeometry(const std::vector<Part::Geometry *> &geoList, bool
     for( auto & v : geoList) {
         Part::Geometry* copy = v->copy();
 
-        if(construction && copy->getTypeId() != Part::GeomPoint::getClassTypeId()) {
+        if( copy->getTypeId() == Part::GeomPoint::getClassTypeId()) {
+            // creation mode for points is always construction not to
+            // break legacy code
+            GeometryFacade::setConstruction(copy, true);
+        }
+        else if(construction) {
             GeometryFacade::setConstruction(copy, construction);
         }
 
@@ -928,8 +933,14 @@ int SketchObject::addGeometry(const Part::Geometry *geo, bool construction/*=fal
 
     Part::Geometry *geoNew = geo->copy();
 
-    if(geoNew->getTypeId() != Part::GeomPoint::getClassTypeId())
+    if( geoNew->getTypeId() == Part::GeomPoint::getClassTypeId()) {
+        // creation mode for points is always construction not to
+        // break legacy code
+        GeometryFacade::setConstruction(geoNew, true);
+    }
+    else if(construction) {
         GeometryFacade::setConstruction(geoNew, construction);
+    }
 
     newVals.push_back(geoNew);
 
@@ -1129,7 +1140,7 @@ int SketchObject::toggleConstruction(int GeoId)
     if (GeoId < 0 || GeoId >= int(vals.size()))
         return -1;
 
-    if(vals[GeoId]->getTypeId() == Part::GeomPoint::getClassTypeId())
+    if(getGeometryFacade(GeoId)->isInternalAligned())
         return -1;
 
     std::vector< Part::Geometry * > newVals(vals);
@@ -1139,7 +1150,8 @@ int SketchObject::toggleConstruction(int GeoId)
         newVals[i] = newVals[i]->clone();
 
         if((int)i == GeoId) {
-            GeometryFacade::setConstruction(newVals[i], !GeometryFacade::getConstruction(newVals[i]));
+            auto gft = GeometryFacade::getFacade(newVals[i]);
+            gft->setConstruction(!gft->getConstruction());
         }
     }
 
@@ -1162,7 +1174,7 @@ int SketchObject::setConstruction(int GeoId, bool on)
     if (GeoId < 0 || GeoId >= int(vals.size()))
         return -1;
 
-    if(vals[GeoId]->getTypeId() == Part::GeomPoint::getClassTypeId())
+    if(getGeometryFacade(GeoId)->isInternalAligned())
         return -1;
 
     std::vector< Part::Geometry * > newVals(vals);
