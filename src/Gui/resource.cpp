@@ -27,7 +27,7 @@
 #include "WidgetFactory.h"
 #include "Workbench.h"
 
-// INCLUDE YOUR PREFERENCFE PAGES HERE
+// INCLUDE YOUR PREFERENCE PAGES HERE
 //
 #include "DlgPreferencesImp.h"
 #include "DlgSettings3DViewImp.h"
@@ -40,6 +40,7 @@
 #include "DlgSettingsDocumentImp.h"
 //#include "DlgOnlineHelpImp.h"
 #include "DlgReportViewImp.h"
+#include "DlgSettingsLazyLoadedImp.h"
 
 #include "DlgToolbarsImp.h"
 #include "DlgWorkbenchesImp.h"
@@ -63,16 +64,17 @@ WidgetFactorySupplier::WidgetFactorySupplier()
     // ADD YOUR PREFERENCE PAGES HERE
     //
     //
-    new PrefPageProducer<DlgGeneralImp>         ( QT_TRANSLATE_NOOP("QObject","General") );
-  //new PrefPageProducer<DlgOnlineHelpImp>      ( QT_TRANSLATE_NOOP("QObject","General") );
-    new PrefPageProducer<DlgSettingsDocumentImp>( QT_TRANSLATE_NOOP("QObject","General") );
-    new PrefPageProducer<DlgSettingsEditorImp>  ( QT_TRANSLATE_NOOP("QObject","General") );
-    new PrefPageProducer<DlgReportViewImp>      ( QT_TRANSLATE_NOOP("QObject","General") );
-    new PrefPageProducer<DlgSettingsMacroImp>   ( QT_TRANSLATE_NOOP("QObject","General") );
-    new PrefPageProducer<DlgSettingsUnitsImp>   ( QT_TRANSLATE_NOOP("QObject","General") );
-    new PrefPageProducer<DlgSettings3DViewImp>  ( QT_TRANSLATE_NOOP("QObject","Display") );
-    new PrefPageProducer<DlgSettingsNavigation> ( QT_TRANSLATE_NOOP("QObject","Display") );
-    new PrefPageProducer<DlgSettingsViewColor>  ( QT_TRANSLATE_NOOP("QObject","Display") );
+    new PrefPageProducer<DlgGeneralImp>            ( QT_TRANSLATE_NOOP("QObject","General") );
+  //new PrefPageProducer<DlgOnlineHelpImp>         ( QT_TRANSLATE_NOOP("QObject","General") );
+    new PrefPageProducer<DlgSettingsDocumentImp>   ( QT_TRANSLATE_NOOP("QObject","General") );
+    new PrefPageProducer<DlgSettingsEditorImp>     ( QT_TRANSLATE_NOOP("QObject","General") );
+    new PrefPageProducer<DlgReportViewImp>         ( QT_TRANSLATE_NOOP("QObject","General") );
+    new PrefPageProducer<DlgSettingsMacroImp>      ( QT_TRANSLATE_NOOP("QObject","General") );
+    new PrefPageProducer<DlgSettingsUnitsImp>      ( QT_TRANSLATE_NOOP("QObject","General") );
+    new PrefPageProducer<DlgSettings3DViewImp>     ( QT_TRANSLATE_NOOP("QObject","Display") );
+    new PrefPageProducer<DlgSettingsNavigation>    ( QT_TRANSLATE_NOOP("QObject","Display") );
+    new PrefPageProducer<DlgSettingsViewColor>     ( QT_TRANSLATE_NOOP("QObject","Display") );
+    new PrefPageProducer<DlgSettingsLazyLoadedImp> ( QT_TRANSLATE_NOOP("QObject","Workbenches") );
 
     // ADD YOUR CUSTOMIZE PAGES HERE
     //

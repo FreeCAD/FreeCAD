@@ -28,6 +28,7 @@
 
 class QAbstractButton;
 class QListWidgetItem;
+class QTabWidget;
 
 namespace Gui {
 namespace Dialog {
@@ -123,6 +124,7 @@ protected:
     void showEvent(QShowEvent*);
     void resizeEvent(QResizeEvent*);
 
+
 protected Q_SLOTS:
     void changeGroup(QListWidgetItem *current, QListWidgetItem *previous);
     void on_buttonBox_clicked(QAbstractButton*);
@@ -132,16 +134,23 @@ private:
     /** @name for internal use only */
     //@{
     void setupPages();
+    QTabWidget* createTabForGroup(const std::string& groupName);
+    void createPageInGroup(QTabWidget* tabWidget, const std::string& pageName);
     void applyChanges();
     void restoreDefaults();
+    void reloadPages();
     //@}
 
 private:
-    typedef std::pair<std::string, std::list<std::string> > TGroupPages;
+    typedef std::pair<std::string, std::list<std::string>> TGroupPages;
     static std::list<TGroupPages> _pages; /**< Name of all registered preference pages */
-    Ui_DlgPreferences* ui;
+    std::unique_ptr<Ui_DlgPreferences> ui;
     bool invalidParameter;
     bool canEmbedScrollArea;
+
+    static const int GroupNameRole; /**< A name for our Qt::UserRole, used when storing user data in a list item */
+
+    static DlgPreferencesImp* _activeDialog; /**< Defaults to the nullptr, points to the current instance if there is one */
 };
 
 } // namespace Dialog

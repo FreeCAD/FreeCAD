@@ -48,16 +48,18 @@
 #include "BitmapFactory.h"
 #include "MainWindow.h"
 
-
 using namespace Gui::Dialog;
+
+const int DlgPreferencesImp::GroupNameRole = Qt::UserRole;
 
 /* TRANSLATOR Gui::Dialog::DlgPreferencesImp */
 
 std::list<DlgPreferencesImp::TGroupPages> DlgPreferencesImp::_pages;
+DlgPreferencesImp* DlgPreferencesImp::_activeDialog = nullptr;
 
 /**
- *  Constructs a DlgPreferencesImp which is a child of 'parent', with the
- *  name 'name' and widget flags set to 'f'
+ *  Constructs a DlgPreferencesImp which is a child of 'parent', with
+ *  widget flags set to 'fl'
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
  *  true to construct a modal dialog.
@@ -67,8 +69,8 @@ DlgPreferencesImp::DlgPreferencesImp(QWidget* parent, Qt::WindowFlags fl)
       invalidParameter(false), canEmbedScrollArea(true)
 {
     ui->setupUi(this);
-    ui->listBox->setFixedWidth(130);
-    ui->listBox->setGridSize(QSize(108, 120));
+    ui->listBox->setFixedWidth(108);
+    ui->listBox->setGridSize(QSize(90, 75));
 
     connect(ui->buttonBox,  SIGNAL (helpRequested()),
             getMainWindow(), SLOT (whatsThis()));
@@ -76,6 +78,11 @@ DlgPreferencesImp::DlgPreferencesImp(QWidget* parent, Qt::WindowFlags fl)
             this, SLOT(changeGroup(QListWidgetItem *, QListWidgetItem*)));
 
     setupPages();
+
+    // Maintain a static pointer to the current active dialog (if there is one) so that
+    // if the static page manipulation functions are called while the dialog is showing
+    // it can update its content.
+    DlgPreferencesImp::_activeDialog = this;
 }
 
 /**
@@ -83,55 +90,81 @@ DlgPreferencesImp::DlgPreferencesImp(QWidget* parent, Qt::WindowFlags fl)
  */
 DlgPreferencesImp::~DlgPreferencesImp()
 {
-    // no need to delete child widgets, Qt does it all for us
-    delete ui;
+    if (DlgPreferencesImp::_activeDialog == this) {
+        DlgPreferencesImp::_activeDialog = nullptr;
+    }
 }
 
 void DlgPreferencesImp::setupPages()
 {
     // make sure that pages are ready to create
     GetWidgetFactorySupplier();
-    for (std::list<TGroupPages>::iterator it = _pages.begin(); it != _pages.end(); ++it) {
-        QTabWidget* tabWidget = new QTabWidget;
-        ui->tabWidgetStack->addWidget(tabWidget);
-
-        QByteArray group = it->first.c_str();
-        QListWidgetItem *item = new QListWidgetItem(ui->listBox);
-        item->setData(Qt::UserRole, QVariant(group));
-        item->setText(QObject::tr(group.constData()));
-        std::string fileName = it->first;
-        for (std::string::iterator ch = fileName.begin(); ch != fileName.end(); ++ch) {
-            if (*ch == ' ') *ch = '_';
-            else *ch = tolower(*ch);
-        }
-        fileName = std::string("preferences-") + fileName;
-        QPixmap icon = Gui::BitmapFactory().pixmapFromSvg(fileName.c_str(), QSize(96,96));
-        if (icon.isNull()) {
-            icon = Gui::BitmapFactory().pixmap(fileName.c_str());
-            if (icon.isNull()) {
-                qWarning() << "No group icon found for " << fileName.c_str();
-            }
-            else if (icon.size() != QSize(96,96)) {
-                qWarning() << "Group icon for " << fileName.c_str() << " is not of size 96x96";
-            }
-        }
-        item->setIcon(icon);
-        item->setTextAlignment(Qt::AlignHCenter);
-        item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
-        for (std::list<std::string>::iterator jt = it->second.begin(); jt != it->second.end(); ++jt) {
-            PreferencePage* page = WidgetFactory().createPreferencePage(jt->c_str());
-            if (page) {
-                tabWidget->addTab(page, page->windowTitle());
-                page->loadSettings();
-            }
-            else {
-                Base::Console().Warning("%s is not a preference page\n", jt->c_str());
-            }
+    for (const auto &group : _pages) {
+        QTabWidget* groupTab = createTabForGroup(group.first);
+        for (const auto &page : group.second) {
+            createPageInGroup(groupTab, page);
         }
     }
 
     // show the first group
     ui->listBox->setCurrentRow(0);
+}
+
+/**
+ * Create the necessary widgets for a new group named \a groupName. Returns a 
+ * pointer to the group's QTabWidget: that widget's lifetime is managed by the 
+ * tabWidgetStack, do not manually deallocate.
+ */
+QTabWidget* DlgPreferencesImp::createTabForGroup(const std::string &groupName)
+{
+    QString groupNameQString = QString::fromStdString(groupName);
+
+    QTabWidget* tabWidget = new QTabWidget;
+    ui->tabWidgetStack->addWidget(tabWidget);
+    tabWidget->setProperty("GroupName", QVariant(groupNameQString));
+
+    QListWidgetItem* item = new QListWidgetItem(ui->listBox);
+    item->setData(GroupNameRole, QVariant(groupNameQString));
+    item->setText(QObject::tr(groupNameQString.toLatin1()));
+    std::string fileName = groupName;
+    for (auto & ch : fileName) {
+        if (ch == ' ') ch = '_';
+        else ch = tolower(ch);
+    }
+    fileName = std::string("preferences-") + fileName;
+    QPixmap icon = Gui::BitmapFactory().pixmapFromSvg(fileName.c_str(), QSize(48, 48));
+    if (icon.isNull()) {
+        icon = Gui::BitmapFactory().pixmap(fileName.c_str());
+        if (icon.isNull()) {
+            qWarning() << "No group icon found for " << fileName.c_str();
+        }
+        else if (icon.size() != QSize(48, 48)) {
+            icon = Gui::BitmapFactory().resize(48, 48, icon, Qt::TransparentMode);
+            qWarning() << "Group icon for " << fileName.c_str() << " is not of size 48x48, so it was scaled";
+        }
+    }
+    item->setIcon(icon);
+    item->setTextAlignment(Qt::AlignHCenter);
+    item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+
+    return tabWidget;
+}
+
+/**
+ * Create a new preference page called \a pageName on the group tab \a tabWidget.
+ */
+void DlgPreferencesImp::createPageInGroup(QTabWidget *tabWidget, const std::string &pageName)
+{
+    PreferencePage* page = WidgetFactory().createPreferencePage(pageName.c_str());
+    if (page) {
+        tabWidget->addTab(page, page->windowTitle());
+        page->loadSettings();
+        page->setProperty("GroupName", tabWidget->property("GroupName"));
+        page->setProperty("PageName", QVariant(QString::fromStdString(pageName)));
+    }
+    else {
+        Base::Console().Warning("%s is not a preference page\n", pageName);
+    }
 }
 
 void DlgPreferencesImp::changeGroup(QListWidgetItem *current, QListWidgetItem *previous)
@@ -160,6 +193,10 @@ void DlgPreferencesImp::addPage(const std::string& className, const std::string&
     std::list<std::string> pages;
     pages.push_back(className);
     _pages.push_back(std::make_pair(group, pages));
+
+    if (DlgPreferencesImp::_activeDialog != nullptr) {
+        _activeDialog->reloadPages();
+    }
 }
 
 void DlgPreferencesImp::removePage(const std::string& className, const std::string& group)
@@ -193,7 +230,7 @@ void DlgPreferencesImp::activateGroupPage(const QString& group, int index)
     int ct = ui->listBox->count();
     for (int i=0; i<ct; i++) {
         QListWidgetItem* item = ui->listBox->item(i);
-        if (item->data(Qt::UserRole).toString() == group) {
+        if (item->data(GroupNameRole).toString() == group) {
             ui->listBox->setCurrentItem(item);
             QTabWidget* tabWidget = (QTabWidget*)ui->tabWidgetStack->widget(i);
             tabWidget->setCurrentIndex(index);
@@ -247,6 +284,57 @@ void DlgPreferencesImp::restoreDefaults()
 #else
         reject();
 #endif
+    }
+}
+
+/**
+ * If the dialog is currently showing and the static variable _pages changed, this function 
+ * will rescan that list of pages and add any that are new to the current dialog. It will not
+ * remove any pages that are no longer in the list, and will not change the user's current
+ * active page.
+ */
+void DlgPreferencesImp::reloadPages()
+{
+    // Make sure that pages are ready to create
+    GetWidgetFactorySupplier();
+
+    for (const auto &group : _pages) {
+        QString groupName = QString::fromStdString(group.first);
+
+        // First, does this group already exist?
+        QTabWidget* tabWidget = nullptr;
+        for (int tabNumber = 0; tabNumber < ui->tabWidgetStack->count(); ++tabNumber) {
+            auto thisTabWidget = qobject_cast<QTabWidget*>(ui->tabWidgetStack->widget(tabNumber));
+            if (thisTabWidget->property("GroupName").toString() == groupName) {
+                tabWidget = thisTabWidget;
+                break;
+            }
+        }
+
+        // This is a new tab that wasn't there when we started this instance of the dialog: 
+        if (!tabWidget) {
+            tabWidget = createTabForGroup(group.first);
+        }
+
+        // Move on to the pages in the group to see if we need to add any
+        for (const auto& page : group.second) {
+
+            // Does this page already exist?
+            QString pageName = QString::fromStdString(page);
+            bool pageExists = false;
+            for (int pageNumber = 0; pageNumber < tabWidget->count(); ++pageNumber) {
+                PreferencePage* prefPage = qobject_cast<PreferencePage*>(tabWidget->widget(pageNumber));
+                if (prefPage && prefPage->property("PageName").toString() == pageName) {
+                    pageExists = true;
+                    break;
+                }
+            }
+
+            // This is a new page that wasn't there when we started this instance of the dialog:
+            if (!pageExists) {
+                createPageInGroup(tabWidget, page);
+            }
+        }
     }
 }
 
@@ -366,7 +454,7 @@ void DlgPreferencesImp::changeEvent(QEvent *e)
         // update the items' text
         for (int i=0; i<ui->listBox->count(); i++) {
             QListWidgetItem *item = ui->listBox->item(i);
-            QByteArray group = item->data(Qt::UserRole).toByteArray();
+            QByteArray group = item->data(GroupNameRole).toByteArray();
             item->setText(QObject::tr(group.constData()));
         }
     } else {
