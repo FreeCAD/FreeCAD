@@ -3646,17 +3646,16 @@ QImage ViewProviderSketch::renderConstrIcon(const QString &type,
 
     //Add scaling to Constraint icons
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    double ConstraintIconScale = hGrp->GetFloat("ConstraintIconScale", 1.0);
+    double constraintIconScale = hGrp->GetFloat("ConstraintIconScale", 1.0);
     int pixmap_width = Gui::BitmapFactory().pixmap(type.toLatin1()).width();
 
     // force scaling factor between 0.5 and 5.0
-    ConstraintIconScale = ConstraintIconScale > 0.5 ? ConstraintIconScale : 0.5;
-    ConstraintIconScale = ConstraintIconScale < 5 ? ConstraintIconScale : 5;
+    constraintIconScale = Base::clamp<double>(constraintIconScale, 0.5, 5.0);
 
-    QImage icon = Gui::BitmapFactory().pixmap(type.toLatin1()).scaledToWidth((int)(pixmap_width * ConstraintIconScale)).toImage();
+    QImage icon = Gui::BitmapFactory().pixmap(type.toLatin1()).scaledToWidth(static_cast<int>(pixmap_width * constraintIconScale)).toImage();
     
     QFont font = QApplication::font();
-    font.setPixelSize((int)(11.0 * ConstraintIconScale));
+    font.setPixelSize(static_cast<int>(11.0 * constraintIconScale));
     font.setBold(true);
     QFontMetrics qfm = QFontMetrics(font);
 
