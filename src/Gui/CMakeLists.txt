@@ -322,6 +322,7 @@ set(Gui_MOC_HDRS
     DlgSettingsColorGradientImp.h
     DlgSettingsDocumentImp.h
     DlgSettingsImageImp.h
+    DlgSettingsLazyLoadedImp.h
     DlgSettingsMacroImp.h
     DlgSettingsUnitsImp.h
     DlgCheckableMessageBox.h
@@ -450,6 +451,7 @@ SET(Gui_UIC_SRCS
     DlgSettingsColorGradient.ui
     DlgSettingsDocument.ui
     DlgSettingsImage.ui
+    DlgSettingsLazyLoaded.ui
     DlgSettingsMacro.ui
     DlgCheckableMessageBox.ui
     DlgToolbars.ui
@@ -681,6 +683,7 @@ SET(Dialog_Settings_CPP_SRCS
     DlgSettingsColorGradientImp.cpp
     DlgSettingsDocumentImp.cpp
     DlgSettingsImageImp.cpp
+    DlgSettingsLazyLoadedImp.cpp
     DlgSettingsMacroImp.cpp
 )
 SET(Dialog_Settings_HPP_SRCS
@@ -697,6 +700,7 @@ SET(Dialog_Settings_HPP_SRCS
     DlgSettingsColorGradientImp.h
     DlgSettingsDocumentImp.h
     DlgSettingsImageImp.h
+    DlgSettingsLazyLoadedImp.h
     DlgSettingsMacroImp.h
 )
 SET(Dialog_Settings_SRCS
@@ -715,6 +719,7 @@ SET(Dialog_Settings_SRCS
     DlgSettingsColorGradient.ui
     DlgSettingsDocument.ui
     DlgSettingsImage.ui
+    DlgSettingsLazyLoaded.ui
     DlgSettingsMacro.ui
 )
 SOURCE_GROUP("Dialog\\Settings" FILES ${Dialog_Settings_SRCS})
