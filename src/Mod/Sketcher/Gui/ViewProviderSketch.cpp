@@ -2792,6 +2792,13 @@ void ViewProviderSketch::updateColor(void)
         return false;
     };
 
+    auto isDefinedGeomPoint = [](Sketcher::SketchObject* obj, int GeoId) -> bool {
+        const Part::Geometry* geom = obj->getGeometry(GeoId);
+        if (geom)
+            return geom->getTypeId() == Part::GeomPoint::getClassTypeId() && !Sketcher::GeometryFacade::getConstruction(geom);
+        return false;
+    };
+
     auto isInternalAlignedGeom = [](Sketcher::SketchObject* obj, int GeoId) -> bool {
         const Part::Geometry* geom = obj->getGeometry(GeoId);
         if (geom) {
@@ -2835,10 +2842,19 @@ void ViewProviderSketch::updateColor(void)
                     pcolor[i] = InternalAlignedGeoColor;
             }
             else {
-                if(constrainedElement)
-                    pcolor[i] = FullyConstraintConstructionPointColor;
-                else
-                    pcolor[i] = VertexColor;
+                if(!isDefinedGeomPoint(getSketchObject(), GeoId)) {
+
+                    if(constrainedElement)
+                        pcolor[i] = FullyConstraintConstructionPointColor;
+                    else
+                        pcolor[i] = VertexColor;
+                }
+                else { // this is a defined GeomPoint
+                    if(constrainedElement)
+                        pcolor[i] = FullyConstraintElementColor;
+                    else
+                        pcolor[i] = CurveColor;
+                }
             }
         }
     }
