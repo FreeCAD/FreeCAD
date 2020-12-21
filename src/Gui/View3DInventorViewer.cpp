@@ -1759,8 +1759,15 @@ void View3DInventorViewer::startSelection(View3DInventorViewer::SelectionMode mo
     navigation->startSelection(NavigationStyle::SelectionMode(mode));
 }
 
+void View3DInventorViewer::abortSelection()
+{
+    setCursorEnabled(true);
+    navigation->abortSelection();
+}
+
 void View3DInventorViewer::stopSelection()
 {
+    setCursorEnabled(true);
     navigation->stopSelection();
 }
 

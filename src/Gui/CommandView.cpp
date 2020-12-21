@@ -61,6 +61,7 @@
 #include "SoFCBoundingBox.h"
 #include "SoFCUnifiedSelection.h"
 #include "SoAxisCrossKit.h"
+#include "SoQTQuarterAdaptor.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 #include "ViewParams.h"
@@ -2537,10 +2538,137 @@ bool StdViewZoomOut::isActive(void)
 {
     return (qobject_cast<View3DInventor*>(getMainWindow()->activeWindow()));
 }
+class SelectionCallbackHandler {    
 
+private:
+    static std::unique_ptr<SelectionCallbackHandler> _currentSelectionHandler;
+    QCursor* _beforeSelectionCursor;
+    typedef void (*FnCb)(void * userdata, SoEventCallback * node);
+    FnCb fnCb;
+    void* _userData;
+    bool _prevSelectionEn;
+
+public:
+    // Creates a selection handler used to implement the common behaviour of BoxZoom, BoxSelection and BoxElementSelection. 
+    // Takes the viewer, a selection mode, a cursor, a function pointer to be called on success and a void pointer for user data to be passed to the given function.
+    // The selection handler class stores all necessary previous states, registers a event callback and starts the selection in the given mode.    
+    // If there is still a selection handler active, this call will generate a message and returns.
+    static void Create(View3DInventorViewer* viewer, View3DInventorViewer::SelectionMode selectionMode, const QCursor& cursor, FnCb doFunction= NULL, void* ud=NULL)
+    {
+        if (_currentSelectionHandler)
+        {
+            Base::Console().Message("SelectionCallbackHandler: A selection handler already active.");
+            return;
+        }
+
+        _currentSelectionHandler = std::unique_ptr<SelectionCallbackHandler>(new SelectionCallbackHandler());
+        if (viewer)
+        {
+            _currentSelectionHandler->_userData = ud;
+            _currentSelectionHandler->fnCb = doFunction;
+            _currentSelectionHandler->_beforeSelectionCursor = new QCursor(viewer->cursor());
+            viewer->setEditingCursor(cursor);
+            viewer->addEventCallback(SoEvent::getClassTypeId(),
+                SelectionCallbackHandler::selectionCallback, _currentSelectionHandler.get());
+            _currentSelectionHandler->_prevSelectionEn = viewer->isSelectionEnabled();
+            viewer->setSelectionEnabled(false);
+            viewer->startSelection(selectionMode);
+        }
+    };
+
+    void* getUserData() { return _userData; };
+
+    // Implements the event handler. In the normal case the provided function is called. 
+    // Also supports aborting the selection mode by pressing (releasing) the Escape key. 
+    static void selectionCallback(void * ud, SoEventCallback * n)
+    {
+        SelectionCallbackHandler* selectionHandler = reinterpret_cast<SelectionCallbackHandler*>(ud);
+        Gui::View3DInventorViewer* view = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
+        const SoEvent* ev = n->getEvent();
+        if (ev->isOfType(SoKeyboardEvent::getClassTypeId())) {
+
+            n->setHandled();
+            n->getAction()->setHandled();
+
+            const SoKeyboardEvent * ke = static_cast<const SoKeyboardEvent*>(ev);
+            const SbBool press = ke->getState() == SoButtonEvent::DOWN ? true : false;
+            if (ke->getKey() == SoKeyboardEvent::ESCAPE) {
+                              
+                if (!press) {                    
+                    view->abortSelection();
+                    restoreState(selectionHandler, view);
+                }                
+            }
+        }
+        else if (ev->isOfType(SoMouseButtonEvent::getClassTypeId())) {
+            const SoMouseButtonEvent * mbe = static_cast<const SoMouseButtonEvent*>(ev);
+
+            // Mark all incoming mouse button events as handled, especially, to deactivate the selection node
+            n->getAction()->setHandled();
+
+            if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::UP)
+            {
+                if (selectionHandler && selectionHandler->fnCb) selectionHandler->fnCb(selectionHandler->getUserData(), n);
+                restoreState(selectionHandler, view);
+            }
+            // No other mouse events available from Coin3D to implement right mouse up abort
+        }
+    }
+
+    static void restoreState(SelectionCallbackHandler * selectionHandler, View3DInventorViewer* view)
+    {
+        if(selectionHandler) selectionHandler->fnCb = NULL;
+        view->setEditingCursor(*selectionHandler->_beforeSelectionCursor);
+        view->removeEventCallback(SoEvent::getClassTypeId(), SelectionCallbackHandler::selectionCallback, selectionHandler);
+        view->setSelectionEnabled(selectionHandler->_prevSelectionEn);
+        Application::Instance->commandManager().testActive();
+        _currentSelectionHandler = NULL;
+    }
+};
+
+std::unique_ptr<SelectionCallbackHandler> SelectionCallbackHandler::_currentSelectionHandler = std::unique_ptr<SelectionCallbackHandler>();
 //===========================================================================
 // Std_ViewBoxZoom
 //===========================================================================
+/* XPM */
+static const char * cursor_box_zoom[] = {
+"32 32 3 1",
+" 	c None",
+".	c #FFFFFF",
+"@	c #FF0000",
+"      .                         ",
+"      .                         ",
+"      .                         ",
+"      .                         ",
+"      .                         ",
+"                                ",
+".....   .....                   ",
+"                                ",
+"      .      @@@@@@@            ",
+"      .    @@@@@@@@@@@          ",
+"      .   @@         @@         ",
+"      .  @@. . . . . .@@        ",
+"      .  @             @        ",
+"        @@ .         . @@       ",
+"        @@             @@       ",
+"        @@ .         . @@       ",
+"        @@             @@       ",
+"        @@ .         . @@       ",
+"        @@             @@       ",
+"        @@ .         . @@       ",
+"         @             @        ",
+"         @@. . . . . .@@@       ",
+"          @@          @@@@      ",
+"           @@@@@@@@@@@@  @@     ",
+"             @@@@@@@ @@   @@    ",
+"                      @@   @@   ",
+"                       @@   @@  ",
+"                        @@   @@ ",
+"                         @@  @@ ",
+"                          @@@@  ",
+"                           @@   ",
+"                                " };
+
 DEF_3DV_CMD(StdViewBoxZoom)
 
 StdViewBoxZoom::StdViewBoxZoom()
@@ -2564,8 +2692,9 @@ void StdViewBoxZoom::activated(int iMsg)
     View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
     if ( view ) {
         View3DInventorViewer* viewer = view->getViewer();
-        if (!viewer->isSelecting())
-            viewer->startSelection(View3DInventorViewer::BoxZoom);
+        if (!viewer->isSelecting()) {
+            SelectionCallbackHandler::Create(viewer, View3DInventorViewer::BoxZoom, QCursor(QPixmap(cursor_box_zoom), 7, 7));
+		}
     }
 }
 
@@ -2573,6 +2702,46 @@ void StdViewBoxZoom::activated(int iMsg)
 // Std_BoxSelection
 //===========================================================================
 DEF_3DV_CMD(StdBoxSelection)
+
+/* XPM */
+static const char * cursor_box_select[] = {
+"32 32 4 1",
+" 	c None",
+".	c #FFFFFF",
+"+	c #FF0000",
+"@	c #000000",
+"      .                         ",
+"      .                         ",
+"      .                         ",
+"      .                         ",
+"      .                         ",
+"                                ",
+".....   .....                   ",
+"                                ",
+"      .                         ",
+"      .                         ",
+"      .   +    +++   +++    +++ ",
+"      .   +@@                   ",
+"      .   +@.@@@                ",
+"            @...@@@             ",
+"            @......@@           ",
+"            @........@@@      + ",
+"             @..........@@    + ",
+"          +  @............@   + ",
+"          +   @........@@@      ",
+"          +   @.......@         ",
+"              @........@        ",
+"               @........@     + ",
+"               @...@.....@    + ",
+"          +    @..@ @.....@   + ",
+"          +     @.@  @.....@    ",
+"          +     @.@   @.....@   ",
+"                 @     @.....@  ",
+"                        @...@   ",
+"                         @.@  + ",
+"                          @   + ",
+"          +++    +++   +++    + ",
+"                                " };
 
 StdBoxSelection::StdBoxSelection()
   : Command("Std_BoxSelection")
@@ -2714,18 +2883,18 @@ static std::vector<std::string> getBoxSelection(
     return ret;
 }
 
-static void selectionCallback(void * ud, SoEventCallback * cb)
+static void doSelect(void* ud, SoEventCallback * cb)
 {
-    bool selectElement = ud?true:false;
-    Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(cb->getUserData());
-    view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), selectionCallback, ud);
-    SoNode* root = view->getSceneGraph();
+    bool selectElement = ud ? true : false;
+    Gui::View3DInventorViewer* viewer = reinterpret_cast<Gui::View3DInventorViewer*>(cb->getUserData());
+
+    SoNode* root = viewer->getSceneGraph();
     static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);
 
     SelectionMode selectionMode = CENTER;
 
-    std::vector<SbVec2f> picked = view->getGLPolygon();
-    SoCamera* cam = view->getSoRenderManager()->getCamera();
+    std::vector<SbVec2f> picked = viewer->getGLPolygon();
+    SoCamera* cam = viewer->getSoRenderManager()->getCamera();
     SbViewVolume vv = cam->getViewVolume();
     Gui::ViewVolumeProjection proj(vv);
     Base::Polygon2d polygon;
@@ -2785,8 +2954,7 @@ void StdBoxSelection::activated(int iMsg)
                 SoKeyboardEvent ev;
                 viewer->navigationStyle()->processEvent(&ev);
             }
-            viewer->startSelection(View3DInventorViewer::Rubberband);
-            viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), selectionCallback);
+            SelectionCallbackHandler::Create(viewer, View3DInventorViewer::Rubberband, QCursor(QPixmap(cursor_box_select), 7, 7), doSelect, NULL);
             SoNode* root = viewer->getSceneGraph();
             static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(false);
         }
@@ -2796,6 +2964,48 @@ void StdBoxSelection::activated(int iMsg)
 //===========================================================================
 // Std_BoxElementSelection
 //===========================================================================
+/* XPM */
+static char * cursor_box_element_select[] = {
+"32 32 6 1",
+" 	c None",
+".	c #FFFFFF",
+"+	c #00FF1B",
+"@	c #19A428",
+"#	c #FF0000",
+"$	c #000000",
+"      .                         ",
+"      .                         ",
+"      .                         ",
+"      .                         ",
+"      .                         ",
+"                                ",
+".....   .....                   ",
+"       ++++++++++++             ",
+"      .+@@@@@@@@@@+             ",
+"      .+@@@@@@@@@@+             ",
+"      .+@@#@@@@###+  ###    ### ",
+"      .+@@#$$@@@@@+             ",
+"      .+@@#$.$$$@@+             ",
+"       +@@@@$...$$$             ",
+"       +@@@@$......$$           ",
+"       +@@@@$........$$$      # ",
+"       +@@@@@$..........$$    # ",
+"       +@@#@@$............$   # ",
+"       +++#+++$........$$$      ",
+"          #   $.......$         ",
+"              $........$        ",
+"               $........$     # ",
+"               $...$.....$    # ",
+"          #    $..$ $.....$   # ",
+"          #     $.$  $.....$    ",
+"          #     $.$   $.....$   ",
+"                 $     $.....$  ",
+"                        $...$   ",
+"                         $.$  # ",
+"                          $   # ",
+"          ###    ###   ###    # ",
+"                                " };
+
 DEF_3DV_CMD(StdBoxElementSelection)
 
 StdBoxElementSelection::StdBoxElementSelection()
@@ -2827,8 +3037,7 @@ void StdBoxElementSelection::activated(int iMsg)
                 SoKeyboardEvent ev;
                 viewer->navigationStyle()->processEvent(&ev);
             }
-            viewer->startSelection(View3DInventorViewer::Rubberband);
-            viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), selectionCallback, this);
+            SelectionCallbackHandler::Create(viewer, View3DInventorViewer::Rubberband, QCursor(QPixmap(cursor_box_element_select), 7, 7), doSelect, this);
             SoNode* root = viewer->getSceneGraph();
             static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(false);
         }
