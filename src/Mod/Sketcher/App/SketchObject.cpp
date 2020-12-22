@@ -3418,14 +3418,14 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
     // Find out if reference is aligned with V or H axis,
     // if so we can keep Vertical and Horizontal constrants in the mirrored geometry.
     bool refIsAxisAligned = false;
-    if (refGeoId == Sketcher::GeoEnum::VAxis || refGeoId == Sketcher::GeoEnum::HAxis)
+    if (refGeoId == Sketcher::GeoEnum::VAxis || refGeoId == Sketcher::GeoEnum::HAxis) {
         refIsAxisAligned = true;
-    for (std::vector<Constraint *>::const_iterator it = constrvals.begin(); it != constrvals.end(); ++it) {
-        Constraint *constr = *(it);
-        if (constr->First != refGeoId)
-            continue;
-        if (constr->Type == Sketcher::Vertical || constr->Type == Sketcher::Horizontal)
-            refIsAxisAligned = true;
+    } else {
+        for (std::vector<Constraint *>::const_iterator it = constrvals.begin(); it != constrvals.end(); ++it) {
+            Constraint *constr = *(it);
+            if (constr->First == refGeoId && (constr->Type == Sketcher::Vertical || constr->Type == Sketcher::Horizontal))
+                refIsAxisAligned = true;
+        }
     }
 
     // reference is a line
