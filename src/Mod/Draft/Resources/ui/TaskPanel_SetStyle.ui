@@ -255,7 +255,7 @@
       <item row="5" column="1">
        <widget class="QCheckBox" name="ShowUnit">
         <property name="toolTip">
-         <string>If the unit siffix is shown on dimension texts or not</string>
+         <string>If the unit suffix is shown on dimension texts or not</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>

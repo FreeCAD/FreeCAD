@@ -262,7 +262,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         return params
 
     def areaOpAreaParamsExpandProfile(self, obj, isHole):
-        '''areaOpPathParamsExpandProfile(obj, isHole) ... return dictionary with area parameters for expaned profile'''
+        '''areaOpPathParamsExpandProfile(obj, isHole) ... return dictionary with area parameters for expanded profile'''
         params = {}
 
         params['Fill'] = 1

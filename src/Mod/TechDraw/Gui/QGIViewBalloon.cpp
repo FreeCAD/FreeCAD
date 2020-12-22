@@ -766,7 +766,7 @@ void QGIViewBalloon::draw()
     balloonLines->setPath(dLinePath);
 
     // This overwrites the previously created QPainterPath with empty one, in case it should be hidden.  Should be refactored.
-    if (!balloon->LineVisible.getValue()) {
+    if (!vp->LineVisible.getValue()) {
         arrow->hide();
         balloonLines->setPath(QPainterPath());
     }

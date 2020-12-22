@@ -403,6 +403,10 @@ protected:
     static SbColor InformationColor;
     static SbColor DeactivatedConstrDimColor;
     static SbColor InternalAlignedGeoColor;
+    static SbColor FullyConstraintElementColor;
+    static SbColor FullyConstraintConstructionElementColor;
+    static SbColor FullyConstraintInternalAlignmentColor;
+    static SbColor FullyConstraintConstructionPointColor;
 
     static SbTime prvClickTime;
     static SbVec2s prvClickPos; //used by double-click-detector

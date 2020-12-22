@@ -4132,7 +4132,7 @@ TopoShape &TopoShape::makEFace(const std::vector<TopoShape> &shapes, const char 
     for(auto &s : shapes) {
         if (s.getShape().ShapeType() == TopAbs_COMPOUND)
             mkFace->useCompound(TopoDS::Compound(s.getShape()));
-        else
+        else if (s.getShape().ShapeType() != TopAbs_VERTEX)
             mkFace->addShape(s.getShape());
     }
     mkFace->Build();
@@ -4202,6 +4202,33 @@ bool TopoShape::findPlane(gp_Pln &pln, double tol) const {
         // BRepAdaptor_Curve::No geometry. However, without the above
         // copy, circular edges often have the wrong transformation!
         FC_LOG("failed to find surface: " << e.GetMessageString());
+        return false;
+    }
+}
+
+bool TopoShape::isInfinite() const
+{
+    if (_Shape.IsNull())
+        return false;
+
+    try {
+        // If the shape is empty an exception may be thrown
+        Bnd_Box bounds;
+        BRepBndLib::Add(_Shape, bounds);
+        bounds.SetGap(0.0);
+        Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
+        bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
+
+        if (Precision::IsInfinite(xMax - xMin))
+            return true;
+        if (Precision::IsInfinite(yMax - yMin))
+            return true;
+        if (Precision::IsInfinite(zMax - zMin))
+            return true;
+
+        return false;
+    }
+    catch (Standard_Failure&) {
         return false;
     }
 }

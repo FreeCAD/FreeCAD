@@ -1896,6 +1896,17 @@ PyObject*  TopoShapePy::isCoplanar(PyObject *args)
     }PY_CATCH_OCC
 }
 
+PyObject*  TopoShapePy::isInfinite(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    PY_TRY {
+        return Py::new_reference_to(Py::Boolean(getTopoShapePtr()->isInfinite()));
+    }
+    PY_CATCH_OCC
+}
+
 PyObject*  TopoShapePy::findPlane(PyObject *args)
 {
     double tol = -1;
