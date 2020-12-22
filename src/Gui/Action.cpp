@@ -273,8 +273,9 @@ void ActionGroup::addTo(QWidget *w)
     // and adding this action to the widget doesn't work.
     if (_dropDown) {
         if (w->inherits("QMenu")) {
-            QMenu* menu = qobject_cast<QMenu*>(w);
-            menu = menu->addMenu(_action->text());
+            QMenu *menu = new QMenu(w);
+            QAction* action = qobject_cast<QMenu*>(w)->addMenu(menu);
+            action->setMenuRole(_action->menuRole());
             menu->addActions(_group->actions());
         }
         else if (w->inherits("QToolBar")) {
