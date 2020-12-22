@@ -158,6 +158,7 @@
 #include <Quarter/devices/InputDevice.h>
 #include "View3DViewerPy.h"
 #include <Gui/NaviCube.h>
+#include "Inventor/SoFCRenderCacheManager.h"
 
 #include <Inventor/draggers/SoCenterballDragger.h>
 #include <Inventor/annex/Profiler/SoProfiler.h>
@@ -441,7 +442,10 @@ struct View3DInventorViewer::Private
 
     QTimer                            timer;
 
-    CoinPtr<SoPath>         pickPath;
+    CoinPtr<SoTempPath>     tmpPath;
+    CoinPtr<SoTempPath>     tmpPath2;
+    CoinPtr<SoTempPath>     tmpPath3;
+
     CoinPtr<SoTransform>    pickTransform;
     CoinPtr<SoSeparator>    pickRoot;
     CoinPtr<SoNode>         pickDummy;
@@ -451,6 +455,9 @@ struct View3DInventorViewer::Private
 
     Private(View3DInventorViewer *owner)
         :owner(owner)
+        ,tmpPath(new SoTempPath(10))
+        ,tmpPath2(new SoTempPath(10))
+        ,tmpPath3(new SoTempPath(10))
         ,pickAction(SbViewportRegion())
         ,pickMatrixAction(SbViewportRegion())
     {}
@@ -1027,8 +1034,8 @@ void View3DInventorViewer::clearGroupOnTop(bool alt) {
     if(objectsOnTopSel.empty() && objectsOnTopPreSel.empty())
         return;
 
-    SoTempPath tmpPath(10);
-    tmpPath.ref();
+    SoPath & tmpPath = *_pimpl->tmpPath;
+    tmpPath.truncate(0);
 
     if(!alt) {
         if(objectsOnTopPreSel.size()) {
@@ -1073,7 +1080,7 @@ void View3DInventorViewer::clearGroupOnTop(bool alt) {
                 }
                 it = objectsOnTopSel.erase(it);
             }
-            tmpPath.unrefNoDelete();
+            tmpPath.truncate(0);
             return;
         }
 
@@ -1099,7 +1106,7 @@ void View3DInventorViewer::clearGroupOnTop(bool alt) {
         }
     }
 
-    tmpPath.unrefNoDelete();
+    tmpPath.truncate(0);
 }
 
 bool View3DInventorViewer::isInGroupOnTop(const char *objname,
@@ -1122,8 +1129,43 @@ bool View3DInventorViewer::isInGroupOnTop(const std::string &key, bool altOnly) 
 }
 
 void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason, bool alt) {
-    if (ViewParams::getRenderCache() == 3) {
+    auto manager = selectionRoot->getRenderManager();
+    if (manager) {
         clearGroupOnTop();
+        if (!alt)
+            return;
+        switch(Reason.Type) {
+        case SelectionChanges::AddSelection: {
+            ViewProvider *vp = Application::Instance->getViewProvider(Reason.Object.getObject());
+            if (vp) {
+                SoDetail *detail = nullptr;
+                SoFullPath * detailPath = _pimpl->tmpPath.get();
+                detailPath->truncate(0);
+                vp->getDetailPath(Reason.pSubName, detailPath, true, detail);
+                manager->addSelection(Reason.Object.getSubNameNoElement(true),
+                                      Reason.Object.getOldElementName(),
+                                      detailPath,
+                                      detail,
+                                      (uint32_t)(ViewParams::getTransparencyOnTop() * 255),
+                                      true,
+                                      true);
+                detailPath->truncate(0);
+                delete detail;
+            }
+            break;
+        }
+        case SelectionChanges::RmvSelection:
+            manager->removeSelection(Reason.Object.getSubNameNoElement(true),
+                                     Reason.Object.getOldElementName(),
+                                     true);
+            break;
+        case SelectionChanges::ClrSelection:
+            manager->clearSelection(true);
+            break;
+        default:
+            return;
+        }
+        this->getSoRenderManager()->scheduleRedraw();
         return;
     }
 
@@ -1242,9 +1284,9 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason, bool 
             return;
         }
 
-        auto path = info.node->getPath();
-        SoTempPath tmpPath(3 + (path ? path->getLength() : 0));
-        tmpPath.ref();
+        SoPath * path = info.node->getPath();
+        SoPath & tmpPath = *_pimpl->tmpPath;
+        tmpPath.truncate(0);
         tmpPath.append(pcGroupOnTopSwitch);
         tmpPath.append(pcGroup);
         tmpPath.append(info.node);
@@ -1271,7 +1313,7 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason, bool 
             selAction->setElement(0);
         }
 
-        tmpPath.unrefNoDelete();
+        tmpPath.truncate(0);
 
         if(eit != info.elements.end()) {
             delete eit->second;
@@ -1351,53 +1393,53 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason, bool 
             return;
     }
 
-    SoTempPath path(10);
-    path.ref();
+    SoFullPath & detailPath = *_pimpl->tmpPath;
+    detailPath.truncate(0);
 
     SoDetail *det = 0;
-    if(vp->getDetailPath(subname, &path,true,det) && path.getLength()) {
+    if(vp->getDetailPath(subname, &detailPath, true, det) && detailPath.getLength()) {
         auto &info = objs[key];
         if(!info.node) {
             info.node = new SoFCPathAnnotation(vp,subname,this);
             info.node->priority.setValue(preselect?1:0);
             info.node->ref();
-            info.node->setPath(&path);
+            info.node->setPath(&detailPath);
             pcGroup->addChild(info.node);
         }
         if(alt && Reason.Type == SelectionChanges::AddSelection) {
             if(!info.alt) {
                 info.alt = true;
                 if(info.elements.empty()) {
-                    SoTempPath tmpPath(path.getLength()+3);
-                    tmpPath.ref();
-                    tmpPath.append(pcGroupOnTopSwitch);
-                    tmpPath.append(pcGroup);
-                    tmpPath.append(info.node);
-                    tmpPath.append(&path);
+                    SoPath & altPath = *_pimpl->tmpPath2;
+                    altPath.truncate(0);
+                    altPath.append(pcGroupOnTopSwitch);
+                    altPath.append(pcGroup);
+                    altPath.append(info.node);
+                    altPath.append(&detailPath);
                     selAction->setColor(SbColor(0,0,0));
                     selAction->setSecondary(false);
                     selAction->setType(SoSelectionElementAction::All);
-                    selAction->apply(&tmpPath);
-                    tmpPath.unrefNoDelete();
+                    selAction->apply(&altPath);
+                    altPath.truncate(0);
                 }
             }
         } else if(info.elements.emplace(element,det).second) {
-            SoTempPath tmpPath(path.getLength()+3);
-            tmpPath.ref();
-            tmpPath.append(pcGroupOnTopSwitch);
-            tmpPath.append(pcGroup);
-            tmpPath.append(info.node);
-            tmpPath.append(&path);
+            SoPath & altPath = *_pimpl->tmpPath2;
+            altPath.truncate(0);
+            altPath.append(pcGroupOnTopSwitch);
+            altPath.append(pcGroup);
+            altPath.append(info.node);
+            altPath.append(&detailPath);
             if(pcGroup == pcGroupOnTopSel) {
                 selAction->setSecondary(false);
                 if(info.elements.size()==1 && info.alt) {
                     selAction->setType(SoSelectionElementAction::None);
-                    selAction->apply(&tmpPath);
+                    selAction->apply(&altPath);
                 }
                 info.node->setDetail(!!det);
                 selAction->setElement(det);
                 selAction->setType(det?SoSelectionElementAction::Append:SoSelectionElementAction::All);
-                selAction->apply(&tmpPath);
+                selAction->apply(&altPath);
                 selAction->setElement(0);
             } else if (det) {
                 // We are preselecting some element. In this case, we do not
@@ -1412,7 +1454,7 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason, bool 
                 if(!selInfo.node) {
                     selInfo.node = new SoFCPathAnnotation(vp,subname,this);
                     selInfo.node->ref();
-                    selInfo.node->setPath(&path);
+                    selInfo.node->setPath(&detailPath);
                     selInfo.node->setDetail(true);
                     pcGroupOnTopSel->addChild(selInfo.node);
                 }
@@ -1424,20 +1466,20 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason, bool 
                     pCurrentHighlightPath = nullptr;
                 }
 
-                SoTempPath tmpPath2(path.getLength()+3);
-                tmpPath2.ref();
-                tmpPath2.append(pcGroupOnTopSwitch);
-                tmpPath2.append(pcGroupOnTopSel);
-                tmpPath2.append(selInfo.node);
-                tmpPath2.append(&path);
+                SoPath & tmpPath = *_pimpl->tmpPath3;
+                tmpPath.truncate(0);
+                tmpPath.append(pcGroupOnTopSwitch);
+                tmpPath.append(pcGroupOnTopSel);
+                tmpPath.append(selInfo.node);
+                tmpPath.append(&detailPath);
                 preselAction->setHighlighted(true);
                 preselAction->setElement(det);
-                preselAction->apply(&tmpPath2);
+                preselAction->apply(&tmpPath);
                 preselAction->setElement(0);
 
-                pCurrentHighlightPath = tmpPath2.copy();
+                pCurrentHighlightPath = tmpPath.copy();
                 pCurrentHighlightPath->ref();
-                tmpPath2.unrefNoDelete();
+                tmpPath.truncate(0);
             } else {
                 // NOTE: assuming preselect is only applicable to one single
                 // object(or sub-element) at a time. If in the future we shall
@@ -1447,15 +1489,15 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason, bool 
                 selAction->setSecondary(true);
                 selAction->setElement(0);
                 selAction->setType(SoSelectionElementAction::None);
-                selAction->apply(&tmpPath);
+                selAction->apply(&altPath);
             }
             det = 0;
-            tmpPath.unrefNoDelete();
+            altPath.truncate(0);
         }
     }
 
     delete det;
-    path.unrefNoDelete();
+    detailPath.truncate(0);
 }
 
 /// @cond DOXERR
@@ -1703,8 +1745,7 @@ SoPickedPoint* View3DInventorViewer::getPointOnRay(const SbVec2s& pos, ViewProvi
 
 SoPickedPoint* View3DInventorViewer::Private::getPointOnRay(const SbVec2s& pos, ViewProvider* vp)
 {
-    if (!pickPath) {
-        pickPath = new SoPath(10);
+    if (!pickRoot) {
         pickRoot = new SoSeparator;
         pickTransform = new SoTransform;
         pickDummy = new SoGroup;
@@ -1716,8 +1757,9 @@ SoPickedPoint* View3DInventorViewer::Private::getPointOnRay(const SbVec2s& pos, 
         pickRoot->replaceChild(0, owner->getSoRenderManager()->getCamera());
     CoinPtr<SoPath> path;
     if(vp == owner->editViewProvider && owner->pcEditingRoot->getNumChildren()>1) {
-        path = pickPath;
-        pickPath->append(owner->pcEditingRoot);
+        path = tmpPath;
+        path->truncate(0);
+        path->append(owner->pcEditingRoot);
     }else{
         SoSearchAction &sa = pickSearch;
         //first get the path to this node and calculate the current transformation
@@ -1737,7 +1779,7 @@ SoPickedPoint* View3DInventorViewer::Private::getPointOnRay(const SbVec2s& pos, 
     // build a temporary scenegraph only keeping this viewproviders nodes and the accumulated
     // transformation
     pickRoot->replaceChild(2, path->getTail());
-    pickPath->truncate(0);
+    tmpPath->truncate(0);
 
     //get the picked point
     SoRayPickAction &rp = pickAction;
@@ -1756,11 +1798,11 @@ SoPickedPoint* View3DInventorViewer::getPointOnRay(const SbVec3f& pos,const SbVe
 {
     // Note: There seems to be a  bug with setRay() which causes SoRayPickAction
     // to fail to get intersections between the ray and a line
-
-    SoPath *path;
+    
+    CoinPtr<SoPath> path;
     if(vp == editViewProvider && pcEditingRoot->getNumChildren()>1) {
-        path = new SoPath(1);
-        path->ref();
+        path = _pimpl->tmpPath;
+        path->truncate(0);
         path->append(pcEditingRoot);
     }else{
         //first get the path to this node and calculate the current setTransformation
@@ -1771,7 +1813,6 @@ SoPickedPoint* View3DInventorViewer::getPointOnRay(const SbVec3f& pos,const SbVe
         path = sa.getPath();
         if (!path)
             return nullptr;
-        path->ref();
     }
     SoGetMatrixAction gm(getSoRenderManager()->getViewportRegion());
     gm.apply(path);
@@ -1795,7 +1836,8 @@ SoPickedPoint* View3DInventorViewer::getPointOnRay(const SbVec3f& pos,const SbVe
     rp.apply(root);
     root->unref();
     trans->unref();
-    path->unref();
+
+    _pimpl->tmpPath->truncate(0);
 
     // returns a copy of the point
     SoPickedPoint* pick = rp.getPickedPoint();
@@ -4506,8 +4548,8 @@ void View3DInventorViewer::viewBoundBox(const SbBox3f &box) {
     }
     cam->viewBoundingBox(box,aspectratio,1.0);
 #else
-    SoTempPath path(2);
-    path.ref();
+    SoPath & path = _pimpl->tmpPath;
+    path.truncate(0);
     auto pcGroup = new SoGroup;
     pcGroup->ref();
     auto pcTransform = new SoTransform;
@@ -4523,7 +4565,7 @@ void View3DInventorViewer::viewBoundBox(const SbBox3f &box) {
     path.append(pcGroup);
     path.append(pcCube);
     cam->viewAll(&path,getSoRenderManager()->getViewportRegion());
-    path.unrefNoDelete();
+    path.truncate(0);
     pcGroup->unref();
 #endif
 }

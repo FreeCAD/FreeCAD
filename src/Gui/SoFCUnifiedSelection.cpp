@@ -342,6 +342,13 @@ void SoFCUnifiedSelection::finish()
     atexit_cleanup();
 }
 
+SoFCRenderCacheManager *SoFCUnifiedSelection::getRenderManager()
+{
+    if (pimpl->useRenderer())
+        return & pimpl->manager;
+    return nullptr;
+}
+
 void SoFCUnifiedSelection::getBoundingBox(SoGetBoundingBoxAction * action)
 {
     if (pimpl->useRenderer() && pimpl->manager.getSceneNodeId() == getNodeId()) {

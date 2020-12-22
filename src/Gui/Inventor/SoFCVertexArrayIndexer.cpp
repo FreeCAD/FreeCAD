@@ -59,26 +59,47 @@ SoFCVertexArrayIndexer::SoFCVertexArrayIndexer(SbFCUniqueId _dataid,
     this->previndexarray = prev;
 }
 
-SoFCVertexArrayIndexer::SoFCVertexArrayIndexer(const SoFCVertexArrayIndexer & other,
-                                               const std::set<int> & partindices,
-                                               int maxindex)
-  : dataid(other.dataid)
-  , target(other.target)
-  , use_shorts(other.use_shorts)
+template<class IndicesT> inline void
+SoFCVertexArrayIndexer::init(const SoFCVertexArrayIndexer & other,
+                             const IndicesT & partindices,
+                             int maxindex)
 {
-  assert(other.indexarray && other.indexarray->isAttached());
-  this->indexarray = other.indexarray;
-  this->indexarraylength = other.indexarraylength;
+  assert(other.indexarray);
+  this->dataid = other.dataid;
+  this->target = other.target;
   this->partarray = other.partarray;
   this->linestripoffsets = other.linestripoffsets;
   this->linestripcounts = other.linestripcounts;
-  this->partialindices.reserve(partindices.size());
-  if (this->partarray.size())
+  if (this->partarray.size()) {
+    this->use_shorts = other.use_shorts;
+    this->indexarray = other.indexarray;
+    this->indexarraylength = other.indexarraylength;
+    this->partialindices.reserve(partindices.size());
     maxindex = static_cast<int>(this->partarray.size());
-  for (int i : partindices) {
-    if (i >=0 && i < maxindex)
-      this->partialindices.push_back(i);
+    for (int i : partindices) {
+      if (i >=0 && i < maxindex)
+        this->partialindices.push_back(i);
+    }
+  } else {
+    this->use_shorts = FALSE;
+    this->indexarraylength = 0;
+    for (int i : partindices)
+      addIndex(i);
   }
+}
+
+SoFCVertexArrayIndexer::SoFCVertexArrayIndexer(const SoFCVertexArrayIndexer & other,
+                                               const std::set<int> & partindices,
+                                               int maxindex)
+{
+  init(other, partindices, maxindex);
+}
+
+SoFCVertexArrayIndexer::SoFCVertexArrayIndexer(const SoFCVertexArrayIndexer & other,
+                                               const std::vector<int> & partindices,
+                                               int maxindex)
+{
+  init(other, partindices, maxindex);
 }
 
 SoFCVertexArrayIndexer::~SoFCVertexArrayIndexer()
@@ -107,6 +128,8 @@ SoFCVertexArrayIndexer::addIndex(int32_t i)
     this->previndexarray.reset();
   }
   this->indexarray->append(static_cast<GLint> (i));
+  // We might append more indices for GL_LINE_STRIP (see sort_lines()).
+  // 'indexarraylength' here is used to remember the index count for GL_LINES.
   ++this->indexarraylength;
 }
 
@@ -224,16 +247,7 @@ SoFCVertexArrayIndexer::render(SoState * state,
 
   if (!drawcount && !this->linestripoffsets.empty() && glIsEnabled(GL_LINE_STIPPLE)) {
     drawtarget = GL_LINE_STRIP;
-    if (!this->partialindices.empty()) {
-      if (this->partialoffsets.empty()) {
-        this->partialoffsets.reserve(this->partialindices.size());
-        this->partialcounts.reserve(this->partialindices.size());
-        for (int i : this->partialindices) {
-          this->partialoffsets.push_back(this->linestripoffsets[i]);
-          this->partialcounts.push_back(this->linestripcounts[i]);
-        }
-      }
-    } else {
+    if (this->partialindices.empty()) {
       drawcount = static_cast<int>(this->linestripoffsets.size());
       offsets = &this->linestripoffsets[0];
       counts = &this->linestripcounts[0];
@@ -244,13 +258,24 @@ SoFCVertexArrayIndexer::render(SoState * state,
     if (this->partialoffsets.empty()) {
       this->partialoffsets.reserve(this->partialindices.size());
       this->partialcounts.reserve(this->partialindices.size());
-      int typesize = this->use_shorts ? 2 : 4;
-      for (int i : this->partialindices) {
-        int prev = i ? this->partarray[i-1] : 0;
-        this->partialoffsets.push_back(prev * typesize);
-        this->partialcounts.push_back(this->partarray[i] - prev);
+      if (!this->linestripoffsets.empty()) {
+        for (int i : this->partialindices) {
+          this->partialoffsets.push_back(this->linestripoffsets[i]);
+          this->partialcounts.push_back(this->linestripcounts[i]);
+        }
+      }
+      else {
+        int typesize = this->use_shorts ? 2 : 4;
+        for (int i : this->partialindices) {
+          int prev = i ? this->partarray[i-1] : 0;
+          this->partialoffsets.push_back(prev * typesize);
+          this->partialcounts.push_back(this->partarray[i] - prev);
+        }
       }
     }
+    if (!this->linestripoffsets.empty())
+      drawtarget = GL_LINE_STRIP;
+
     drawcount = static_cast<int>(this->partialindices.size());
     offsets = &this->partialoffsets[0];
     counts = &this->partialcounts[0];
@@ -428,10 +453,16 @@ SoFCVertexArrayIndexer::sort_lines(void)
     return;
   }
 
+  // If partarray is not empty, we'll append more index for rendering as
+  // GL_LINE_STRIP for each part, which is necessary for GL_LINE_STIPPLE (line
+  // pattern) to work on poly lines (because OpenGL line stipple restarts on
+  // each line segment).
+
   bool haslinestrip = false;
   int prev = 0;
   for (int idx : this->partarray) {
     if (idx - prev > 2) {
+      // Make sure we have at least one line part with more than two segments
       haslinestrip = true;
       break;
     }

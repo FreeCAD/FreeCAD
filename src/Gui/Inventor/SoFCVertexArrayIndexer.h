@@ -56,6 +56,10 @@ public:
                          const std::set<int> & partindices,
                          int maxindex);
 
+  SoFCVertexArrayIndexer(const SoFCVertexArrayIndexer & other,
+                         const std::vector<int> & partindices,
+                         int maxindex);
+
   ~SoFCVertexArrayIndexer();
 
   static void initClass();
@@ -98,6 +102,10 @@ public:
   SbBool useShorts() const {return this->use_shorts;}
 
   void getBoundingBox(const SbMatrix * matrix, SbBox3f &bbox, const SbVec3f * vertices);
+
+private:
+  template<class IndicesT>
+  void init(const SoFCVertexArrayIndexer & other, const IndicesT & partindices, int maxindex);
 
 private:
   void addIndex(int32_t i);

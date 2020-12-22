@@ -90,6 +90,9 @@ typedef SoFCVertexAttribute<uint8_t> ByteArray;
 #define PUBLIC(obj) ((obj)->master)
 
 static SbName * PartIndexField;
+static SbName * HighlightIndicesField;
+static SbName * ElementSelectableField;
+static SbName * OnTopPatternField;
 
 class SoFCVertexCacheP {
 public:
@@ -106,12 +109,21 @@ public:
   static void initClass()
   {
     PartIndexField = new SbName("partIndex");
+    HighlightIndicesField = new SbName("highlightIndices");
+    ElementSelectableField = new SbName("elementSelectable");
+    OnTopPatternField = new SbName("onTopPattern");
   }
 
   static void cleanup()
   {
     delete PartIndexField;
-    PartIndexField = NULL;
+    PartIndexField = nullptr;
+    delete HighlightIndicesField;
+    HighlightIndicesField = nullptr;
+    delete ElementSelectableField;
+    ElementSelectableField = nullptr;
+    delete OnTopPatternField;
+    OnTopPatternField = nullptr;
   }
 
   SoFCVertexCacheP(SoFCVertexCache * m,
@@ -197,6 +209,85 @@ public:
     }
   };
 
+  template<class FacesT, class FindT> void
+  addTriangles(const FacesT & faces, FindT && find)
+  {
+    assert(!this->triangleindexer && this->prevcache);
+
+    this->prevattached = true;
+
+    auto prevcache = this->prevcache;
+    assert(PRIVATE(prevcache)->triangleindexer);
+
+    auto indexer = PRIVATE(prevcache)->triangleindexer;
+    this->triangleindexer = new SoFCVertexArrayIndexer(*indexer, faces, master->getNumVertices());
+    this->prevtriangleindices.reset();
+
+    if (!indexer->getNumParts() || !this->numtranspparts)
+      return;
+
+    if (this->numtranspparts == indexer->getNumParts()) {
+      this->numtranspparts = static_cast<int>(faces.size());
+      return;
+    }
+
+    std::vector<int> transppartindices;
+    transppartindices.reserve(
+        std::max(this->numtranspparts, static_cast<int>(faces.size())));
+    for (int i : PRIVATE(prevcache)->transppartindices) {
+      if (find(faces, i))
+        transppartindices.push_back(i);
+    }
+    this->numtranspparts = static_cast<int>(transppartindices.size());
+    if (transppartindices.size() && faces.size() > transppartindices.size()) {
+
+      this->transppartindices = std::move(transppartindices);
+
+      int typesize = this->triangleindexer->useShorts() ? 2 : 4;
+      const int * parts = this->triangleindexer->getPartOffsets();
+      int j = 0;
+      for (int i : PRIVATE(prevcache)->transppartindices) {
+        for (;j<i; ++j) {
+          if (!find(faces, j))
+            continue;
+          int prev = j == 0 ? 0 : parts[j-1];
+          this->opaquepartarray.push_back(prev * typesize);
+          this->opaquepartcounts.push_back(parts[j] - prev);
+        }
+      }
+    }
+  }
+
+  template<class IndicesT> void
+  addLines(const IndicesT & lineindices)
+  {
+    assert(!this->lineindexer && this->prevcache);
+
+    this->prevattached = true;
+
+    auto prevcache = this->prevcache;
+    assert(PRIVATE(prevcache)->lineindexer);
+
+    auto indexer = PRIVATE(prevcache)->lineindexer;
+    this->lineindexer = new SoFCVertexArrayIndexer(* indexer, lineindices, master->getNumVertices());
+    this->prevlineindices.reset();
+  }
+
+  template<class IndicesT> void
+  addPoints(const IndicesT & pointindices)
+  {
+    assert(!this->pointindexer && this->prevcache);
+
+    this->prevattached = true;
+
+    auto prevcache = this->prevcache;
+    assert(PRIVATE(prevcache)->pointindexer);
+
+    auto indexer = PRIVATE(prevcache)->pointindexer;
+    this->pointindexer = new SoFCVertexArrayIndexer(*indexer, pointindices, master->getNumVertices());
+    this->prevpointindices.reset();
+  }
+
   SbBool depthSortTriangles(SoState * state, bool fullsort);
 
   SoFCVertexCache *master;
@@ -273,6 +364,11 @@ public:
   const int32_t *partindices;
   int partcount;
 
+  bool elementselectable;
+  bool ontoppattern;
+
+  std::vector<int> highlightindices;
+
   SbBox3f boundbox;
 
   void addVertex(const Vertex & v);
@@ -339,13 +435,32 @@ SoFCVertexCache::SoFCVertexCache(SoState * state, const SoNode * node, SoFCVerte
   PRIVATE(this)->state = state;
   PRIVATE(this)->diffuseid = 0;
   PRIVATE(this)->transpid = 0;
+  PRIVATE(this)->elementselectable = false;
+  PRIVATE(this)->ontoppattern = false;
 
   const SoField * field = node->getField(*PartIndexField);
   if (field && field->isOfType(SoMFInt32::getClassTypeId())) {
-    const SoMFInt32 * partindices = static_cast<const SoMFInt32*>(field);
-    PRIVATE(this)->partindices = partindices->getValues(0);
-    PRIVATE(this)->partcount = partindices->getNum();
+    const SoMFInt32 * indices = static_cast<const SoMFInt32*>(field);
+    PRIVATE(this)->partindices = indices->getValues(0);
+    PRIVATE(this)->partcount = indices->getNum();
   }
+
+  field = node->getField(*HighlightIndicesField);
+  if (field && field->isOfType(SoMFInt32::getClassTypeId())) {
+    const SoMFInt32 * indices = static_cast<const SoMFInt32*>(field);
+    const int32_t * values = indices->getValues(0);
+    PRIVATE(this)->highlightindices.reserve(indices->getNum());
+    for (int i = 0, c = indices->getNum(); i < c; ++i)
+      PRIVATE(this)->highlightindices.push_back(values[i]);
+  }
+
+  field = node->getField(*ElementSelectableField);
+  if (field && field->isOfType(SoSFBool::getClassTypeId()))
+    PRIVATE(this)->elementselectable = static_cast<const SoSFBool*>(field)->getValue();
+
+  field = node->getField(*OnTopPatternField);
+  if (field && field->isOfType(SoSFBool::getClassTypeId()))
+    PRIVATE(this)->ontoppattern = static_cast<const SoSFBool*>(field)->getValue();
 }
 
 SoFCVertexCache::SoFCVertexCache(SoFCVertexCache & prev)
@@ -373,11 +488,26 @@ SoFCVertexCache::SoFCVertexCache(SoFCVertexCache & prev)
 
   PRIVATE(this)->transppartindices = PRIVATE(pprev)->transppartindices;
   PRIVATE(this)->partcenters = PRIVATE(pprev)->partcenters;
+
+  PRIVATE(this)->elementselectable = PRIVATE(pprev)->elementselectable;
+  PRIVATE(this)->ontoppattern = PRIVATE(pprev)->ontoppattern;
 }
 
 SoFCVertexCache::~SoFCVertexCache()
 {
   delete pimpl;
+}
+
+bool
+SoFCVertexCache::isElementSelectable() const
+{
+  return PRIVATE(this)->elementselectable;
+}
+
+bool
+SoFCVertexCache::allowOnTopPattern() const
+{
+  return PRIVATE(this)->ontoppattern;
 }
 
 void
@@ -781,49 +911,19 @@ SoFCVertexCacheP::prepare()
 void
 SoFCVertexCache::addTriangles(const std::set<int> & faces)
 {
-  assert(PRIVATE(this)->prevattached);
-  assert(!PRIVATE(this)->triangleindexer && PRIVATE(this)->prevcache);
+  PRIVATE(this)->addTriangles(faces,
+    [](const std::set<int> & faces, int idx) {
+      return faces.count(idx)!=0;
+    });
+}
 
-  auto prevcache = PRIVATE(this)->prevcache;
-  assert(PRIVATE(prevcache)->triangleindexer);
-
-  auto indexer = PRIVATE(prevcache)->triangleindexer;
-  PRIVATE(this)->triangleindexer = new SoFCVertexArrayIndexer(*indexer, faces, getNumVertices());
-  PRIVATE(this)->prevtriangleindices.reset();
-
-  if (!indexer->getNumParts() || !PRIVATE(this)->numtranspparts)
-    return;
-
-  if (PRIVATE(this)->numtranspparts == indexer->getNumParts()) {
-    PRIVATE(this)->numtranspparts = static_cast<int>(faces.size());
-    return;
-  }
-
-  std::vector<int> transppartindices;
-  transppartindices.reserve(
-      std::max(PRIVATE(this)->numtranspparts, static_cast<int>(faces.size())));
-  for (int i : PRIVATE(prevcache)->transppartindices) {
-    if (faces.count(i))
-      transppartindices.push_back(i);
-  }
-  PRIVATE(this)->numtranspparts = static_cast<int>(transppartindices.size());
-  if (transppartindices.size() && faces.size() > transppartindices.size()) {
-
-    PRIVATE(this)->transppartindices = std::move(transppartindices);
-
-    int typesize = PRIVATE(this)->triangleindexer->useShorts() ? 2 : 4;
-    const int * parts = PRIVATE(this)->triangleindexer->getPartOffsets();
-    int j = 0;
-    for (int i : PRIVATE(prevcache)->transppartindices) {
-      for (;j<i; ++j) {
-        if (!faces.count(j))
-          continue;
-        int prev = j == 0 ? 0 : parts[j-1];
-        PRIVATE(this)->opaquepartarray.push_back(prev * typesize);
-        PRIVATE(this)->opaquepartcounts.push_back(parts[j] - prev);
-      }
-    }
-  }
+void
+SoFCVertexCache::addTriangles(const std::vector<int> & faces)
+{
+  PRIVATE(this)->addTriangles(faces,
+    [](const std::vector<int> & faces, int idx) {
+      return std::find(faces.begin(), faces.end(), idx) != faces.end();
+    });
 }
 
 void
@@ -915,15 +1015,13 @@ SoFCVertexCache::addTriangle(const SoPrimitiveVertex * v0,
 void
 SoFCVertexCache::addLines(const std::set<int> & lineindices)
 {
-  assert(PRIVATE(this)->prevattached);
-  assert(!PRIVATE(this)->lineindexer && PRIVATE(this)->prevcache);
+  PRIVATE(this)->addLines(lineindices);
+}
 
-  auto prevcache = PRIVATE(this)->prevcache;
-  assert(PRIVATE(prevcache)->lineindexer);
-
-  auto indexer = PRIVATE(prevcache)->lineindexer;
-  PRIVATE(this)->lineindexer = new SoFCVertexArrayIndexer(* indexer, lineindices, getNumVertices());
-  PRIVATE(this)->prevlineindices.reset();
+void
+SoFCVertexCache::addLines(const std::vector<int> & lineindices)
+{
+  PRIVATE(this)->addLines(lineindices);
 }
 
 void
@@ -1010,15 +1108,13 @@ SoFCVertexCache::addLine(const SoPrimitiveVertex * v0,
 void
 SoFCVertexCache::addPoints(const std::set<int> & pointindices)
 {
-  assert(PRIVATE(this)->prevattached);
-  assert(!PRIVATE(this)->pointindexer && PRIVATE(this)->prevcache);
+  PRIVATE(this)->addPoints(pointindices);
+}
 
-  auto prevcache = PRIVATE(this)->prevcache;
-  assert(PRIVATE(prevcache)->pointindexer);
-
-  auto indexer = PRIVATE(prevcache)->pointindexer;
-  PRIVATE(this)->pointindexer = new SoFCVertexArrayIndexer(*indexer, pointindices, getNumVertices());
-  PRIVATE(this)->prevpointindices.reset();
+void
+SoFCVertexCache::addPoints(const std::vector<int> & pointindices)
+{
+  PRIVATE(this)->addPoints(pointindices);
 }
 
 void
@@ -1086,6 +1182,28 @@ SoFCVertexCache::addPoint(const SoPrimitiveVertex * v0)
     }
   }
   PRIVATE(this)->pointindexer->addPoint(res.first->second);
+}
+
+SoFCVertexCache *
+SoFCVertexCache::highlightIndices(int * pindex)
+{
+  switch(PRIVATE(this)->highlightindices.size()) {
+  case 0:
+    return this;
+  case 1:
+    if (pindex)
+      *pindex = PRIVATE(this)->highlightindices[0];
+    return this;
+  }
+
+  auto cache = new SoFCVertexCache(*this);
+  if (PRIVATE(this)->triangleindexer)
+    cache->addTriangles(PRIVATE(this)->highlightindices);
+  else if (PRIVATE(this)->lineindexer)
+    cache->addLines(PRIVATE(this)->highlightindices);
+  else if (PRIVATE(this)->pointindexer)
+    cache->addPoints(PRIVATE(this)->highlightindices);
+  return cache;
 }
 
 int

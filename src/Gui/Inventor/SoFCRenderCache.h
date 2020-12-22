@@ -26,6 +26,7 @@
 #include <vector>
 #include <map>
 #include <memory>
+#include <bitset>
 
 #include <Inventor/SbMatrix.h>
 #include <Inventor/caches/SoCache.h>
@@ -192,39 +193,122 @@ public:
       FLAG_POLYGON_OFFSET,
     };
 
-    int order;
-    uint32_t overrideflags;
-    uint32_t maskflags;
+    int32_t order;
+    std::bitset<32> overrideflags;
+    std::bitset<32> maskflags;
     uint32_t diffuse;
     uint32_t ambient;
     uint32_t emissive;
     uint32_t specular;
+    uint32_t linepattern;
     float linewidth;
     float pointsize;
     float shininess;
     float polygonoffsetunits;
     float polygonoffsetfactor;
-    int32_t linepattern;
+    int16_t annotation;
     int8_t type;
-    int8_t transptexture;
     int8_t lightmodel;
     int8_t materialbinding;
-    int8_t pervertexcolor;
-    int8_t culling;
-    int8_t twoside;
     int8_t vertexordering;
     int8_t drawstyle;
     int8_t polygonoffsetstyle;
     int8_t shadowstyle;
     int8_t depthfunc;
-    int8_t depthtest;
-    int8_t depthwrite;
+    int8_t partialhighlight;
+    bool depthtest;
+    bool depthwrite;
+    bool transptexture;
+    bool pervertexcolor;
+    bool culling;
+    bool twoside;
+    bool selectable;
+
     TextureMatrixMap texturematrices;
     TextureMap textures;
     LightArray lights;
 
-    bool operator < (const Material &other) const;
     void init(SoState * state = nullptr);
+
+    bool isOnTop() const {
+      return order > 0 || annotation > 0;
+    }
+
+    bool hasLinePattern() const {
+      return (linepattern & 0xffff) != 0xffff;
+    }
+
+    inline bool operator<(const Material &other) const {
+      if (order < other.order) return true;
+      if (order > other.order) return false;
+      if (annotation < other.annotation) return true;
+      if (annotation > other.annotation) return false;
+      if (type < other.type) return true;
+      if (type > other.type) return false;
+      if (depthtest < other.depthtest) return true;
+      if (depthtest > other.depthtest) return false;
+      if (depthfunc < other.depthfunc) return true;
+      if (depthfunc > other.depthfunc) return false;
+      if (depthwrite < other.depthwrite) return true;
+      if (depthwrite > other.depthwrite) return false;
+      if (selectable < other.selectable) return true;
+      if (selectable > other.selectable) return false;
+      if (this->type == Triangle) {
+        if (lights < other.lights) return true;
+        if (lights > other.lights) return false;
+        if (textures < other.textures) return true;
+        if (textures > other.textures) return false;
+        if (shadowstyle < other.shadowstyle) return true;
+        if (shadowstyle > other.shadowstyle) return false;
+        if (diffuse < other.diffuse) return true;
+        if (diffuse > other.diffuse) return false;
+        if (pervertexcolor < other.pervertexcolor) return true;
+        if (pervertexcolor > other.pervertexcolor) return false;
+        if (ambient < other.ambient) return true;
+        if (ambient > other.ambient) return false;
+        if (emissive < other.emissive) return true;
+        if (emissive > other.emissive) return false;
+        if (specular < other.specular) return true;
+        if (specular > other.specular) return false;
+        if (shininess < other.shininess) return true;
+        if (shininess > other.shininess) return false;
+        if (lightmodel < other.lightmodel) return true;
+        if (lightmodel > other.lightmodel) return false;
+        if (vertexordering < other.vertexordering) return true;
+        if (vertexordering > other.vertexordering) return false;
+        if (culling < other.culling) return true;
+        if (culling > other.culling) return false;
+        if (twoside < other.twoside) return true;
+        if (twoside > other.twoside) return false;
+        if (drawstyle < other.drawstyle) return true;
+        if (drawstyle > other.drawstyle) return false;
+        if (polygonoffsetstyle < other.polygonoffsetstyle) return true;
+        if (polygonoffsetstyle > other.polygonoffsetstyle) return false;
+        if (polygonoffsetfactor < other.polygonoffsetfactor) return true;
+        if (polygonoffsetfactor > other.polygonoffsetfactor) return false;
+        if (polygonoffsetunits < other.polygonoffsetunits) return true;
+        if (polygonoffsetunits > other.polygonoffsetunits) return false;
+
+        // no need to differentiate texture matrices. Its only used for merging to
+        // upper hierarchy
+        // if (texturematrices < other.texturematrices) return true;
+        // if (texturematrices > other.texturematrices) return false;
+      } else {
+        if (diffuse < other.diffuse) return true;
+        if (diffuse > other.diffuse) return false;
+        if (pervertexcolor < other.pervertexcolor) return true;
+        if (pervertexcolor > other.pervertexcolor) return false;
+        if (this->type == Line) {
+          if (linewidth < other.linewidth) return true;
+          if (linewidth > other.linewidth) return false;
+        } else {
+          if (pointsize < other.pointsize) return true;
+          if (pointsize > other.pointsize) return false;
+        }
+      }
+      return false;
+    }
+
   };
 
   typedef std::vector<intptr_t> CacheKey;
@@ -255,7 +339,7 @@ public:
 
   typedef std::map<Material, std::vector<VertexCacheEntry> > VertexCacheMap;
 
-  SoFCRenderCache(SoState * state, const SoNode * node);
+  SoFCRenderCache(SoState * state, intptr_t nodeptr, SbFCUniqueId nodeid);
   virtual ~SoFCRenderCache();
 
   static void initClass();
@@ -278,9 +362,13 @@ public:
 
   const VertexCacheMap & getVertexCaches(bool finalize=false);
 
-  VertexCacheMap buildHighlightCache(int order, const SoDetail * detail, uint32_t color);
+  VertexCacheMap buildHighlightCache(int order,
+                                     const SoDetail * detail,
+                                     uint32_t color,
+                                     bool checkindices,
+                                     bool wholeontop = true);
 
-  void open(SoState * state, bool initmaterial = false);
+  void open(SoState * state, bool selectable, bool initmaterial = false);
   void close(SoState * state);
 
   void beginChildCaching(SoState * state, SoFCRenderCache * cache);

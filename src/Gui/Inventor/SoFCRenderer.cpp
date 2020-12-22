@@ -106,12 +106,19 @@ struct DrawEntryIndex {
   {}
 };
 
+enum RenderPass {
+  RenderPassNormal            = 0,
+  RenderPassLineSolid         = 1,
+  RenderPassLinePattern       = 2,
+  RenderPassLineMask          = 3,
+  RenderPassHighlight         = 4,
+};
+
 class SoFCRendererP {
 public:
   SoFCRendererP()
   {
     this->updateselection = false;
-    this->linepattern = 0;
   }
 
   ~SoFCRendererP()
@@ -121,7 +128,7 @@ public:
   bool applyMaterial(SoGLRenderAction * action,
                      const Material & next,
                      bool transp,
-                     int pass = 0);
+                     int pass = RenderPassNormal);
 
   void setupMatrix(SoState * state, const VertexCacheEntry * ventry);
 
@@ -134,7 +141,7 @@ public:
   void renderOpaque(SoGLRenderAction * action,
                     std::vector<DrawEntry> & draw_entries,
                     std::vector<std::size_t> & indices,
-                    int pass = 0);
+                    int pass = RenderPassNormal);
 
   void renderTransparency(SoGLRenderAction * action,
                           std::vector<DrawEntry> & draw_entries,
@@ -152,6 +159,8 @@ public:
   std::vector<std::size_t> opaqueontop;
   std::vector<std::size_t> opaqueselections;
   std::vector<std::size_t> opaquehighlight;
+  std::vector<std::size_t> linesontop; // has both lines and points
+  std::vector<std::size_t> trianglesontop;
 
   SbPlane prevplane;
   std::vector<DrawEntryIndex> transpvcache;
@@ -162,9 +171,10 @@ public:
   std::map<int, const VertexCacheMap *> selections;
   std::map<int, const VertexCacheMap *> selectionsontop;
   std::vector<DrawEntryIndex> transpselectionsontop;
-  std::vector<std::size_t> selectiontrianglesontop;
-  std::vector<std::size_t> selectionlinesontop;
-  std::vector<std::size_t> selectionpointsontop;
+  std::vector<std::size_t> selstriangleontop;
+  std::vector<std::size_t> selsontop; // include only non-explicitly selected lines and points
+  std::vector<std::size_t> selslineontop; // include only explicitly selected lines
+  std::vector<std::size_t> selspointontop; // include only explictly selected points
   bool updateselection;
 
   std::map<CacheKeyPtr, std::vector<std::size_t>, CacheKeyCompare> cachetable;
@@ -184,6 +194,7 @@ public:
   Material material;
   const Material * prevmaterial;
   bool recheckmaterial;
+  int prevpass;
 
   SbMatrix matrix;
   bool identity;
@@ -191,8 +202,6 @@ public:
   uint32_t highlightcolor;
   bool notexture;
   bool depthwriteonly;
-
-  int linepattern;
 };
 
 SoFCRenderer::SoFCRenderer()
@@ -250,10 +259,10 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
       glDisable(GL_LIGHTING);
     }
     // disable per vertex color
-    this->material.pervertexcolor = 0;
+    this->material.pervertexcolor = false;
     // enable depth write
     if (!this->material.depthwrite) {
-      this->material.depthwrite = 1;
+      this->material.depthwrite = true;
       glDepthMask(GL_TRUE);
     }
     // force GL_LESS depth function
@@ -263,7 +272,7 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
     }
     // enable depth test
     if (!this->material.depthtest) {
-      this->material.depthtest = 1;
+      this->material.depthtest = true;
       glEnable(GL_DEPTH_TEST);
     }
     return true;
@@ -309,25 +318,45 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
     }
   }
 
-  int8_t depthtest = next.order > 0 ? 0 : next.depthtest;
-  int8_t depthwrite = transp ? 0 : next.depthwrite;
+  bool depthtest = next.isOnTop() ? false : next.depthtest;
+  bool depthwrite = transp ? false : next.depthwrite;
   int8_t depthfunc = next.depthfunc;
-  int linepattern = next.linepattern;
+  uint32_t linepattern = next.linepattern;
+  uint32_t col = next.diffuse;
+  auto overrideflags = next.overrideflags;
+  float linewidth = next.linewidth;
+  float pointsize = next.pointsize;
 
-  if (this->linepattern) {
-    if (pass == 0) {
-      if (linepattern == 0xffff) {
-        depthtest = 0;
-        linepattern  = this->linepattern;
-      }
+  if ((pass & RenderPassLineMask) == RenderPassLinePattern) {
+    if (pass == RenderPassLinePattern) {
+      transp = true;
+      uint32_t alpha = (uint32_t)(ViewParams::getTransparencyOnTop() * 255);
+      if (alpha < (col & 0xff))
+        col = (col & 0xffffff00) | alpha;
+      overrideflags.set(Material::FLAG_TRANSPARENCY);
     }
-    else if (linepattern != 0xffff)
-      return false;
-    else {
-      depthtest = 1;
-      depthfunc = SoDepthBuffer::LEQUAL;
-      depthwrite = 1;
-    }
+    depthtest = false;
+    uint32_t sellinepattern = ViewParams::getSelectionLinePattern();
+    if (sellinepattern && ViewParams::getSelectionLinePatternScale() > 1)
+      sellinepattern |= ViewParams::getSelectionLinePatternScale() << 16;
+
+    if (sellinepattern && !next.hasLinePattern())
+      linepattern  = sellinepattern;
+  }
+  else if ((pass & RenderPassLineMask) == RenderPassLineSolid) {
+    depthtest = true;
+    depthfunc = SoDepthBuffer::LEQUAL;
+    depthwrite = false;
+
+    float scale = ViewParams::getSelectionLineThicken();
+    pointsize = std::max(pointsize, pointsize * scale);
+    linewidth = std::max(linewidth, linewidth * scale);
+  }
+
+  if (pass & RenderPassHighlight) {
+    float scale = ViewParams::getSelectionLineThicken();
+    pointsize = std::max(std::max(pointsize, pointsize * scale), 3.0f);
+    linewidth = std::max(std::max(linewidth, linewidth * scale), 2.0f);
   }
 
   if (first || this->material.depthtest != depthtest) {
@@ -366,31 +395,30 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
   }
 
   // Always set color because the current color may be changed by opengl draw call
-  uint32_t col = next.diffuse;
   glColor4ub((unsigned char)((col>>24)&0xff),
               (unsigned char)((col>>16)&0xff),
               (unsigned char)((col>>8)&0xff),
               (unsigned char)(col&0xff));
 
-  if (transp) {
-    if (next.overrideflags != this->material.overrideflags
-       || next.diffuse != this->material.diffuse)
-    {
-      if (next.overrideflags & Material::FLAG_TRANSPARENCY) {
-        glBlendFunc(GL_CONSTANT_ALPHA, GL_ONE_MINUS_CONSTANT_ALPHA);
-        glBlendColor(0.f, 0.f, 0.f,  (col & 0xff)/255.f);
-      }
-      else 
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  if (overrideflags != this->material.overrideflags
+      || (overrideflags.test(Material::FLAG_TRANSPARENCY)
+          && (col&0xff) != (this->material.diffuse&0xff)))
+  {
+    if (overrideflags.test(Material::FLAG_TRANSPARENCY)) {
+      glBlendFunc(GL_CONSTANT_ALPHA, GL_ONE_MINUS_CONSTANT_ALPHA);
+      glBlendColor(0.f, 0.f, 0.f,  (col & 0xff)/255.f);
     }
-    this->material.overrideflags = next.overrideflags;
+    else 
+      glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   }
-  this->material.diffuse = next.diffuse;
+
+  this->material.overrideflags = overrideflags;
+  this->material.diffuse = col;
 
   if (next.type == Material::Line) {
-    if (first || this->material.linewidth != next.linewidth) {
-      glLineWidth(next.linewidth);
-      this->material.linewidth = next.linewidth;
+    if (first || this->material.linewidth != linewidth) {
+      glLineWidth(linewidth);
+      this->material.linewidth = linewidth;
     }
 
     if (first || this->material.linepattern != linepattern) {
@@ -407,9 +435,9 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
   }
 
   if (next.type == Material::Point) {
-    if (first || this->material.pointsize != next.pointsize) {
-      glPointSize(next.pointsize);
-      this->material.pointsize = next.pointsize;
+    if (first || this->material.pointsize != pointsize) {
+      glPointSize(pointsize);
+      this->material.pointsize = pointsize;
     }
     if (!first)
       return true;
@@ -505,14 +533,18 @@ SoFCRenderer::clear()
   PRIVATE(this)->opaqueontop.clear();
   PRIVATE(this)->transpontop.clear();
 
+  PRIVATE(this)->linesontop.clear();
+  PRIVATE(this)->trianglesontop.clear();
+
   PRIVATE(this)->opaqueselections.clear();
   PRIVATE(this)->transpselections.clear();
   PRIVATE(this)->selections.clear();
   PRIVATE(this)->selectionsontop.clear();
   PRIVATE(this)->transpselectionsontop.clear();
-  PRIVATE(this)->selectiontrianglesontop.clear();
-  PRIVATE(this)->selectionlinesontop.clear();
-  PRIVATE(this)->selectionpointsontop.clear();
+  PRIVATE(this)->selstriangleontop.clear();
+  PRIVATE(this)->selslineontop.clear();
+  PRIVATE(this)->selspointontop.clear();
+  PRIVATE(this)->selsontop.clear();
   PRIVATE(this)->selectionkeys.clear();
 
   PRIVATE(this)->highlightcaches.clear();
@@ -579,6 +611,8 @@ SoFCRenderer::setScene(const std::vector<RenderCachePtr> & caches)
   PRIVATE(this)->transpontop.clear();
   PRIVATE(this)->cachetable.clear();
   PRIVATE(this)->drawentries.clear();
+  PRIVATE(this)->linesontop.clear();
+  PRIVATE(this)->trianglesontop.clear();
 
   PRIVATE(this)->scene = caches;
   PRIVATE(this)->scenebbox = SbBox3f();
@@ -603,17 +637,23 @@ SoFCRenderer::setScene(const std::vector<RenderCachePtr> & caches)
         PRIVATE(this)->scenebbox.extendBy(PRIVATE(this)->drawentries.back().bbox);
         PRIVATE(this)->cachetable[ventry.key].push_back(idx);
 
+        if (material.isOnTop() && material.type == Material::Triangle)
+          PRIVATE(this)->trianglesontop.emplace_back(idx);
+
         if (!fulltransp && (!material.pervertexcolor
                             || ventry.cache->hasOpaqueParts())) {
-          if (material.order > 0)
-            PRIVATE(this)->opaqueontop.emplace_back(idx);
-          else
+          if (material.isOnTop()) {
+            if (material.type != Material::Triangle)
+              PRIVATE(this)->linesontop.emplace_back(idx);
+            else 
+              PRIVATE(this)->opaqueontop.emplace_back(idx);
+          } else
             PRIVATE(this)->opaquevcache.emplace_back(idx);
         }
 
         if (fulltransp || (material.pervertexcolor
                             && ventry.cache->hasTransparency())) {
-          if (material.order > 0)
+          if (material.isOnTop())
             PRIVATE(this)->transpontop.emplace_back(idx);
           else
             PRIVATE(this)->transpvcache.emplace_back(idx);
@@ -648,9 +688,10 @@ SoFCRenderer::setHighlight(VertexCacheMap && caches)
         continue;
       --idx;
 
-      if (material.order > 0
-          && ventry.partidx < 0
-          && ventry.cache == ventry.cache->getWholeCache())
+      if (material.isOnTop()
+          && (material.partialhighlight 
+              || (ventry.partidx < 0
+                  && ventry.cache == ventry.cache->getWholeCache())))
       {
         // hide original object because we are doing full object highlight on top
         PRIVATE(this)->highlightkeys.insert(ventry.key);
@@ -700,9 +741,10 @@ SoFCRendererP::updateSelection()
   this->opaqueselections.clear();
   this->transpselections.clear();
   this->transpselectionsontop.clear();
-  this->selectiontrianglesontop.clear();
-  this->selectionlinesontop.clear();
-  this->selectionpointsontop.clear();
+  this->selstriangleontop.clear();
+  this->selslineontop.clear();
+  this->selspointontop.clear();
+  this->selsontop.clear();
   this->slentries.clear();
   this->selectionbbox = SbBox3f();
  
@@ -764,20 +806,24 @@ SoFCRendererP::updateSelection()
         switch (material.type) {
           case Material::Triangle:
             this->transpselectionsontop.emplace_back(idx);
-            if (!(sel.first & SoFCRenderer::SelIdSelected))
-              this->selectiontrianglesontop.emplace_back(idx);
+            if (!(sel.first & SoFCRenderer::SelIdSelected) || material.partialhighlight)
+              this->selstriangleontop.emplace_back(idx);
             break;
           case Material::Line:
-            if (sel.first & SoFCRenderer::SelIdFull)
-              this->transpselectionsontop.emplace_back(idx);
+            if (sel.first & SoFCRenderer::SelIdPartial)
+              this->selslineontop.emplace_back(idx);
+            else if (!(sel.first & SoFCRenderer::SelIdFull) || material.partialhighlight)
+              this->selsontop.emplace_back(idx);
             else
-              this->selectionlinesontop.emplace_back(idx);
+              this->transpselectionsontop.emplace_back(idx);
             break;
           case Material::Point:
-            if (sel.first & SoFCRenderer::SelIdFull)
-              this->transpselectionsontop.emplace_back(idx);
+            if (sel.first & SoFCRenderer::SelIdPartial)
+              this->selspointontop.emplace_back(idx);
+            else if (!(sel.first & SoFCRenderer::SelIdFull) || material.partialhighlight)
+              this->selsontop.emplace_back(idx);
             else
-              this->selectionpointsontop.emplace_back(idx);
+              this->transpselectionsontop.emplace_back(idx);
             break;
         }
       }
@@ -851,9 +897,12 @@ SoFCRendererP::renderOpaque(SoGLRenderAction * action,
     auto & draw_entry = draw_entries[idx];
     if (draw_entry.skip)
       continue;
-    if (this->recheckmaterial || this->prevmaterial != draw_entry.material) {
+    if (this->recheckmaterial 
+        || this->prevpass != pass
+        || this->prevmaterial != draw_entry.material) {
       if (!applyMaterial(action, *draw_entry.material, false, pass))
         continue;
+      this->prevpass = pass;
       this->recheckmaterial = false;
       this->prevmaterial = draw_entry.material;
     }
@@ -869,6 +918,7 @@ SoFCRendererP::renderOpaque(SoGLRenderAction * action,
     if (this->material.lightmodel == SoLazyElement::BASE_COLOR)
       array ^= SoFCVertexCache::NORMAL;
     else if (!draw_entry.ventry->cache->getNormalArray()) {
+      array ^= SoFCVertexCache::NORMAL;
       overridelightmodel = true;
       glDisable(GL_LIGHTING);
     }
@@ -951,6 +1001,7 @@ SoFCRendererP::renderTransparency(SoGLRenderAction * action,
     if (this->material.lightmodel == SoLazyElement::BASE_COLOR)
       array ^= SoFCVertexCache::NORMAL;
     else if (!draw_entry.ventry->cache->getNormalArray()) {
+      array ^= SoFCVertexCache::NORMAL;
       overridelightmodel = true;
       glDisable(GL_LIGHTING);
     }
@@ -1051,49 +1102,91 @@ SoFCRenderer::render(SoGLRenderAction * action)
                                     PRIVATE(this)->transpselectionsontop,
                                     false);
 
-  int linepattern = ViewParams::getSelectionLinePattern();
-  if (linepattern && Gui::ViewParams::getSelectionLinePatternScale() > 1)
-    linepattern |= Gui::ViewParams::getSelectionLinePatternScale() << 16;
-  bool haslinepattern = linepattern && (linepattern & 0xffff) != 0xffff;
+  bool hassel = PRIVATE(this)->selstriangleontop.size()
+                    && (PRIVATE(this)->selsontop.size()
+                        || PRIVATE(this)->selslineontop.size());
+  bool hasontop = PRIVATE(this)->trianglesontop.size()
+                      && PRIVATE(this)->linesontop.size();
+  int pass = RenderPassNormal;
 
-  if (haslinepattern && PRIVATE(this)->selectiontrianglesontop.size()) {
+  if (hassel || hasontop) {
+    // If there is lines/points on top perform a depth write only rendering
+    // pass for all the triangles on top, so that we can distinguish line style
+    // for hidden (by depth test) and non-hidden lines/points.
+
     PRIVATE(this)->recheckmaterial = true;
     PRIVATE(this)->depthwriteonly = true;
     glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
-    PRIVATE(this)->renderOpaque(action,
-                                PRIVATE(this)->slentries,
-                                PRIVATE(this)->selectiontrianglesontop);
-    PRIVATE(this)->recheckmaterial = true;
+    if (hasontop)
+      PRIVATE(this)->renderOpaque(action,
+                                  PRIVATE(this)->drawentries,
+                                  PRIVATE(this)->trianglesontop);
+    if (hassel)
+      PRIVATE(this)->renderOpaque(action,
+                                  PRIVATE(this)->slentries,
+                                  PRIVATE(this)->selstriangleontop);
     PRIVATE(this)->depthwriteonly = false;
     glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+
+    pass = RenderPassLinePattern;
   }
 
-  if (haslinepattern) {
-    PRIVATE(this)->recheckmaterial = true;
-    PRIVATE(this)->linepattern = linepattern;
-  }
+  // Even if we are calling renderOpaque() below (because of lines and points
+  // render), we shall still respect the transparency setting, e.g. we'll use
+  // transparency to dim the hidden lines. So we enable blending here.
+  glEnable(GL_BLEND);
+
+  // Rendering lines/points on top (i.e. without depth test), with user
+  // configurable line pattern.
+  PRIVATE(this)->renderOpaque(action,
+                              PRIVATE(this)->drawentries,
+                              PRIVATE(this)->linesontop,
+                              pass);
 
   PRIVATE(this)->renderOpaque(action,
                               PRIVATE(this)->slentries,
-                              PRIVATE(this)->selectionlinesontop);
-  if (haslinepattern) {
-    PRIVATE(this)->recheckmaterial = true;
-    PRIVATE(this)->renderOpaque(action,
-                                PRIVATE(this)->slentries,
-                                PRIVATE(this)->selectionlinesontop,
-                                1);
-
-    PRIVATE(this)->recheckmaterial = true;
-    PRIVATE(this)->linepattern = 0;
-  }
+                              PRIVATE(this)->selsontop,
+                              pass);
 
   PRIVATE(this)->renderOpaque(action,
                               PRIVATE(this)->slentries,
-                              PRIVATE(this)->selectionpointsontop);
+                              PRIVATE(this)->selslineontop,
+                              pass | RenderPassHighlight);
+
+  if (hassel || hasontop) {
+    // Second pass for rendering non-hidden lines/points. The depth test will
+    // be enabled by applyMaterial() up on seeing this RenderPassLineSolid
+    pass = RenderPassLineSolid;
+
+    if (hasontop)
+      PRIVATE(this)->renderOpaque(action,
+                                  PRIVATE(this)->drawentries,
+                                  PRIVATE(this)->linesontop,
+                                  pass);
+    if (hassel) {
+      PRIVATE(this)->renderOpaque(action,
+                                  PRIVATE(this)->slentries,
+                                  PRIVATE(this)->selsontop,
+                                  pass);
+
+      PRIVATE(this)->renderOpaque(action,
+                                  PRIVATE(this)->slentries,
+                                  PRIVATE(this)->selslineontop,
+                                  pass | RenderPassHighlight);
+    }
+  }
+
+  glDisable(GL_BLEND);
+
+  PRIVATE(this)->renderOpaque(action,
+                              PRIVATE(this)->slentries,
+                              PRIVATE(this)->selspointontop,
+                              RenderPassHighlight);
 
   PRIVATE(this)->renderOpaque(action,
                               PRIVATE(this)->hlentries,
-                              PRIVATE(this)->opaquehighlight);
+                              PRIVATE(this)->opaquehighlight,
+                              RenderPassHighlight);
 
   PRIVATE(this)->renderTransparency(action,
                                     PRIVATE(this)->hlentries,

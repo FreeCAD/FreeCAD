@@ -72,8 +72,13 @@ public:
   void renderPoints(SoState * state, const int array = ALL, int part = -1);
 
   void addTriangles(const std::set<int> & faces);
+  void addTriangles(const std::vector<int> & faces);
   void addLines(const std::set<int> & lines);
+  void addLines(const std::vector<int> & lines);
   void addPoints(const std::set<int> & points);
+  void addPoints(const std::vector<int> & points);
+
+  SoFCVertexCache * highlightIndices(int * indices = nullptr);
 
   void addTriangle(const SoPrimitiveVertex * v0,
                    const SoPrimitiveVertex * v1,
@@ -119,6 +124,9 @@ public:
   void getBoundingBox(const SbMatrix * matrix, SbBox3f & bbox) const;
 
   SoFCVertexCache * getWholeCache() const;
+
+  bool isElementSelectable() const;
+  bool allowOnTopPattern() const;
 
 private:
   friend class SoFCVertexCacheP;

@@ -103,11 +103,6 @@ public:
 
   void finalizeMaterial(Material & material);
 
-  void applyMaterial(SoGLRenderAction * action,
-                     Material & material,
-                     const Material & next,
-                     bool first, bool transp=false);
-
   void addChildCache(SoState *state,
                      SoFCRenderCache * cache,
                      SoFCVertexCache *vcache,
@@ -144,12 +139,11 @@ static inline const T * constElement(SoState * state)
 
 #define PRIVATE(obj) ((obj)->pimpl)
 
-SoFCRenderCache::SoFCRenderCache(SoState *state, const SoNode * node)
+SoFCRenderCache::SoFCRenderCache(SoState *state, intptr_t nodeptr, SbFCUniqueId nodeid)
   : SoCache(state), pimpl(new SoFCRenderCacheP)
 {
-  // Do not try to access node through nodeptr, it is not ref'd
-  PRIVATE(this)->nodeptr = reinterpret_cast<intptr_t>(node);
-  PRIVATE(this)->nodeid = node->getNodeId();
+  PRIVATE(this)->nodeptr = nodeptr;
+  PRIVATE(this)->nodeid = nodeid;
 }
 
 SoFCRenderCache::~SoFCRenderCache()
@@ -170,83 +164,36 @@ void SoFCRenderCache::cleanup()
   SoFCDiffuseElement::cleanup();
 }
 
-bool
-SoFCRenderCache::Material::operator<(const Material &other) const
-{
-#define MAT_COMPARE(_v) do {\
-    if (this->_v < other._v) return true;\
-    if (this->_v > other._v) return false;\
-  }while(0)
-
-  MAT_COMPARE(order);
-  MAT_COMPARE(type);
-  MAT_COMPARE(depthtest);
-  MAT_COMPARE(depthfunc);
-  MAT_COMPARE(depthwrite);
-  if (this->type == Triangle) {
-    MAT_COMPARE(lights);
-    MAT_COMPARE(textures);
-    MAT_COMPARE(shadowstyle);
-    MAT_COMPARE(diffuse);
-    MAT_COMPARE(pervertexcolor);
-    MAT_COMPARE(ambient);
-    MAT_COMPARE(emissive);
-    MAT_COMPARE(specular);
-    MAT_COMPARE(shininess);
-    MAT_COMPARE(lightmodel);
-    MAT_COMPARE(vertexordering);
-    MAT_COMPARE(culling);
-    MAT_COMPARE(twoside);
-    MAT_COMPARE(drawstyle);
-    MAT_COMPARE(polygonoffsetstyle);
-    MAT_COMPARE(polygonoffsetfactor);
-    MAT_COMPARE(polygonoffsetunits);
-
-    // no need to differentiate texture matrices. Its only used for merging to
-    // upper hierarchy
-    // MAT_COMPARE(texturematrices);
-  } else {
-    MAT_COMPARE(diffuse);
-    MAT_COMPARE(pervertexcolor);
-    if (this->type == Line)
-      MAT_COMPARE(linewidth);
-    else
-      MAT_COMPARE(pointsize);
-  }
-  return false;
-}
-
-static inline uint32_t
+static inline std::bitset<32>
 getOverrideFlags(SoState * state)
 {
-  uint32_t res = 0;
+  std::bitset<32> res;
   uint32_t flags = SoOverrideElement::getFlags(state);
-  if (flags & SoOverrideElement::AMBIENT_COLOR) res |= Material::FLAG_AMBIENT;
-  if (flags & SoOverrideElement::DIFFUSE_COLOR) res |= Material::FLAG_DIFFUSE;
-  if (flags & SoOverrideElement::DRAW_STYLE) res |= Material::FLAG_DRAW_STYLE;
-  if (flags & SoOverrideElement::EMISSIVE_COLOR) res |= Material::FLAG_EMISSIVE;
-  if (flags & SoOverrideElement::LIGHT_MODEL) res |= Material::FLAG_LIGHT_MODEL;
-  if (flags & SoOverrideElement::LINE_PATTERN) res |= Material::FLAG_LINE_PATTERN;
-  if (flags & SoOverrideElement::LINE_WIDTH) res |= Material::FLAG_LINE_WIDTH;
-  if (flags & SoOverrideElement::MATERIAL_BINDING) res |= Material::FLAG_MATERIAL_BINDING;
-  if (flags & SoOverrideElement::POINT_SIZE) res |= Material::FLAG_POINT_SIZE;
-  if (flags & SoOverrideElement::SHAPE_HINTS) res |= Material::FLAG_SHAPE_HINTS;
-  if (flags & SoOverrideElement::SHININESS) res |= Material::FLAG_SHININESS;
-  if (flags & SoOverrideElement::SPECULAR_COLOR) res |= Material::FLAG_SPECULAR;
-  if (flags & SoOverrideElement::POLYGON_OFFSET) res |= Material::FLAG_POLYGON_OFFSET;
-  if (flags & SoOverrideElement::TRANSPARENCY) res |= Material::FLAG_TRANSPARENCY;
+  if (flags & SoOverrideElement::AMBIENT_COLOR) res.set(Material::FLAG_AMBIENT);
+  if (flags & SoOverrideElement::DIFFUSE_COLOR) res.set(Material::FLAG_DIFFUSE);
+  if (flags & SoOverrideElement::DRAW_STYLE) res.set(Material::FLAG_DRAW_STYLE);
+  if (flags & SoOverrideElement::EMISSIVE_COLOR) res.set(Material::FLAG_EMISSIVE);
+  if (flags & SoOverrideElement::LIGHT_MODEL) res.set(Material::FLAG_LIGHT_MODEL);
+  if (flags & SoOverrideElement::LINE_PATTERN) res.set(Material::FLAG_LINE_PATTERN);
+  if (flags & SoOverrideElement::LINE_WIDTH) res.set(Material::FLAG_LINE_WIDTH);
+  if (flags & SoOverrideElement::MATERIAL_BINDING) res.set(Material::FLAG_MATERIAL_BINDING);
+  if (flags & SoOverrideElement::POINT_SIZE) res.set(Material::FLAG_POINT_SIZE);
+  if (flags & SoOverrideElement::SHAPE_HINTS) res.set(Material::FLAG_SHAPE_HINTS);
+  if (flags & SoOverrideElement::SHININESS) res.set(Material::FLAG_SHININESS);
+  if (flags & SoOverrideElement::SPECULAR_COLOR) res.set(Material::FLAG_SPECULAR);
+  if (flags & SoOverrideElement::POLYGON_OFFSET) res.set(Material::FLAG_POLYGON_OFFSET);
+  if (flags & SoOverrideElement::TRANSPARENCY) res.set(Material::FLAG_TRANSPARENCY);
   return res;
 }
 
 void
 SoFCRenderCache::Material::init(SoState * state)
 {
-  this->depthtest = 1;
+  this->depthtest = true;
   this->depthfunc = SoDepthBuffer::LEQUAL;
-  this->depthwrite = 1;
+  this->depthwrite = true;
   this->order = 0;
-  this->overrideflags = 0;
-  this->maskflags = 0;
+  this->annotation = 0;
   this->diffuse = 0xff;
   this->ambient = 0xff;
   this->emissive = 0xff;
@@ -260,17 +207,19 @@ SoFCRenderCache::Material::init(SoState * state)
   this->linepattern = 0xffff;
   this->type = 0;
   this->materialbinding = 0;
-  this->pervertexcolor = 0;
-  this->transptexture = 0;
+  this->pervertexcolor = false;
+  this->transptexture = false;
   this->lightmodel = SoLazyElement::PHONG;
   this->vertexordering = SoLazyElement::CW;
-  this->culling = 0;
-  this->twoside = 0;
+  this->culling = false;
+  this->twoside = false;
   this->drawstyle = 0;
   this->shadowstyle = SoShadowStyleElement::CASTS_SHADOW_AND_SHADOWED; 
   this->texturematrices.clear();
   this->textures.clear();
   this->lights.clear();
+  this->partialhighlight = 0;
+  this->selectable = true;
 
   if (!state)
     return;
@@ -334,24 +283,24 @@ SoFCRenderCacheP::captureMaterial(SoState * state)
   m.overrideflags = getOverrideFlags(state);
 
   if (this->materialbindingelement != constElement<SoMaterialBindingElement>(state)) {
-    m.maskflags |= Material::FLAG_MATERIAL_BINDING;
+    m.maskflags.set(Material::FLAG_MATERIAL_BINDING);
     m.materialbinding = SoMaterialBindingElement::get(state);
   }
 
   if (this->linepatternelement != constElement<SoLinePatternElement>(state)) {
-    m.maskflags |= Material::FLAG_LINE_PATTERN;
+    m.maskflags.set(Material::FLAG_LINE_PATTERN);
     m.linepattern = SoLinePatternElement::get(state);
   }
   if (this->linewidthelement != constElement<SoLineWidthElement>(state)) {
-    m.maskflags |= Material::FLAG_LINE_WIDTH;
+    m.maskflags.set(Material::FLAG_LINE_WIDTH);
     m.linewidth = SoLineWidthElement::get(state);
   }
   if (this->pointsizeelement != constElement<SoPointSizeElement>(state)) {
-    m.maskflags |= Material::FLAG_POINT_SIZE;
+    m.maskflags.set(Material::FLAG_POINT_SIZE);
     m.pointsize = SoPointSizeElement::get(state);
   }
   if (this->polygonoffsetelement != constElement<SoPolygonOffsetElement>(state)) {
-    m.maskflags |= Material::FLAG_POLYGON_OFFSET;
+    m.maskflags.set(Material::FLAG_POLYGON_OFFSET);
     SbBool on;
     SoPolygonOffsetElement::Style style;
     SoPolygonOffsetElement::get(state,
@@ -365,18 +314,18 @@ SoFCRenderCacheP::captureMaterial(SoState * state)
       m.polygonoffsetstyle = style;
   }
   if (this->drawstyleelement != constElement<SoDrawStyleElement>(state)) {
-    m.maskflags |= Material::FLAG_DRAW_STYLE;
+    m.maskflags.set(Material::FLAG_DRAW_STYLE);
     m.drawstyle = SoDrawStyleElement::get(state);
   }
   if (this->shadowstyleelement != constElement<SoShadowStyleElement>(state)) {
-    m.maskflags |= Material::FLAG_SHADOW_STYLE;
+    m.maskflags.set(Material::FLAG_SHADOW_STYLE);
     m.shadowstyle = SoShadowStyleElement::get(state);
   }
   if (this->shapehintselement != constElement<SoShapeHintsElement>(state)) {
-    m.maskflags |= Material::FLAG_SHAPE_HINTS
-                    | Material::FLAG_CULLING
-                    | Material::FLAG_VERTEXORDERING
-                    | Material::FLAG_TWOSIDE;
+    m.maskflags.set(Material::FLAG_SHAPE_HINTS);
+    m.maskflags.set(Material::FLAG_CULLING);
+    m.maskflags.set(Material::FLAG_VERTEXORDERING);
+    m.maskflags.set(Material::FLAG_TWOSIDE);
     SoShapeHintsElement::VertexOrdering ordering;
     SoShapeHintsElement::ShapeType shapetype;
     SoShapeHintsElement::FaceType facetype;
@@ -393,12 +342,12 @@ SoFCRenderCacheP::captureMaterial(SoState * state)
 void
 SoFCRenderCache::setLightModel(SoState * state, const SoLightModel * lightmode)
 {
-  if (PRIVATE(this)->material.overrideflags & Material::FLAG_LIGHT_MODEL)
+  if (PRIVATE(this)->material.overrideflags.test(Material::FLAG_LIGHT_MODEL))
     return;
 
   if (lightmode->isOverride())
-    PRIVATE(this)->material.overrideflags |= Material::FLAG_LIGHT_MODEL;
-  PRIVATE(this)->material.maskflags |= Material::FLAG_LIGHT_MODEL;
+    PRIVATE(this)->material.overrideflags.test(Material::FLAG_LIGHT_MODEL);
+  PRIVATE(this)->material.maskflags.set(Material::FLAG_LIGHT_MODEL);
   PRIVATE(this)->material.lightmodel = SoLightModelElement::get(state);
 }
 
@@ -406,10 +355,10 @@ template<class N, class T>
 static inline bool
 testMaterial(SoFCRenderCache::Material &m, N node, T field, int flag, int mask)
 {
-  if (!(node->*field).isIgnored() && (node->*field).getNum() && !(m.overrideflags & flag)) {
+  if (!(node->*field).isIgnored() && (node->*field).getNum() && !m.overrideflags.test(flag)) {
     if (node->isOverride())
-      m.overrideflags |= flag;
-    m.maskflags |= mask;
+      m.overrideflags.set(flag);
+    m.maskflags.set(mask);
     return true;
   }
   return false;
@@ -450,16 +399,16 @@ SoFCRenderCache::setDepthBuffer(SoState * state, const SoDepthBuffer * node)
   (void)state;
   Material & m = PRIVATE(this)->material;
   if (!node->test.isIgnored()) {
-    m.maskflags |= Material::FLAG_DEPTH_TEST;
-    m.depthtest = node->test.getValue() ? 1 : 0;
+    m.maskflags.set(Material::FLAG_DEPTH_TEST);
+    m.depthtest = node->test.getValue();
   }
   if (!node->write.isIgnored()) {
-    m.maskflags |= Material::FLAG_DEPTH_WRITE;
-    m.depthwrite = node->write.getValue() ? 1 : 0;
+    m.maskflags.set(Material::FLAG_DEPTH_WRITE);
+    m.depthwrite = node->write.getValue();
   }
   if (!node->function.isIgnored()) {
-    m.maskflags |= Material::FLAG_DEPTH_FUNC;
-    m.depthfunc = node->function.getValue() ? 1 : 0;
+    m.maskflags.test(Material::FLAG_DEPTH_FUNC);
+    m.depthfunc = node->function.getValue();
   }
 }
 
@@ -468,8 +417,8 @@ canSetMaterial(SoFCRenderCache::Material & res,
                const SoFCRenderCache::Material & parent,
                uint32_t flag, uint32_t mask)
 {
-  return ((parent.overrideflags & flag)
-      || (!(res.maskflags & mask) && (parent.maskflags & mask)));
+  return (parent.overrideflags.test(flag)
+      || (!res.maskflags.test(mask) && parent.maskflags.test(mask)));
 }
 
 template<class T>
@@ -481,20 +430,20 @@ copyMaterial(SoFCRenderCache::Material &res,
 {
   if (canSetMaterial(res, parent, flag, mask)) {
     res.*member = parent.*member;
-    res.maskflags |= mask;
+    res.maskflags.set(mask);
   }
 }
 
 void
 SoFCRenderCache::increaseRenderingOrder()
 {
-  ++PRIVATE(this)->material.order;
+  ++PRIVATE(this)->material.annotation;
 }
 
 void
 SoFCRenderCache::decreaseRenderingOrder()
 {
-  --PRIVATE(this)->material.order;
+  --PRIVATE(this)->material.annotation;
 }
 
 SoFCRenderCache::Material
@@ -509,6 +458,12 @@ SoFCRenderCacheP::mergeMaterial(const SbMatrix &matrix,
 
   if (parent.order > child.order)
     res.order = parent.order;
+
+  if (parent.annotation > child.annotation)
+    res.annotation = parent.annotation;
+
+  if (!parent.selectable)
+    res.selectable = false;
   
   copyMaterial(res, parent, &Material::depthtest, 0, Material::FLAG_DEPTH_TEST);
   copyMaterial(res, parent, &Material::depthfunc, 0, Material::FLAG_DEPTH_FUNC);
@@ -517,13 +472,13 @@ SoFCRenderCacheP::mergeMaterial(const SbMatrix &matrix,
   if (canSetMaterial(res, parent, Material::FLAG_DIFFUSE, Material::FLAG_DIFFUSE)) {
     res.diffuse &= 0xff;
     res.diffuse |= parent.diffuse & 0xffffff00;
-    res.maskflags |= Material::FLAG_DIFFUSE;
+    res.maskflags.set(Material::FLAG_DIFFUSE);
   }
 
   if (canSetMaterial(res, parent, Material::FLAG_TRANSPARENCY, Material::FLAG_TRANSPARENCY)) {
     res.diffuse &= 0xffffff00;
     res.diffuse |= parent.diffuse & 0xff;
-    res.maskflags |= Material::FLAG_TRANSPARENCY;
+    res.maskflags.set(Material::FLAG_TRANSPARENCY);
   }
 
   if (res.type == Material::Line) {
@@ -551,17 +506,17 @@ SoFCRenderCacheP::mergeMaterial(const SbMatrix &matrix,
     res.polygonoffsetstyle = parent.polygonoffsetstyle;
     res.polygonoffsetfactor = parent.polygonoffsetfactor;
     res.polygonoffsetunits = parent.polygonoffsetunits;
-    res.maskflags |= Material::FLAG_POLYGON_OFFSET;
+    res.maskflags.set(Material::FLAG_POLYGON_OFFSET);
   }
 
   if (canSetMaterial(res, parent, Material::FLAG_SHAPE_HINTS, Material::FLAG_SHAPE_HINTS)) {
     res.culling = parent.culling;
     res.vertexordering = parent.vertexordering;
     res.twoside = parent.twoside;
-    res.maskflags |= Material::FLAG_SHAPE_HINTS
-                    | Material::FLAG_CULLING
-                    | Material::FLAG_VERTEXORDERING
-                    | Material::FLAG_TWOSIDE;
+    res.maskflags.set(Material::FLAG_SHAPE_HINTS);
+    res.maskflags.set(Material::FLAG_CULLING);
+    res.maskflags.set(Material::FLAG_VERTEXORDERING);
+    res.maskflags.set(Material::FLAG_TWOSIDE);
   }
   else {
     copyMaterial(res, parent, &Material::culling, 0, Material::FLAG_CULLING);
@@ -630,19 +585,20 @@ SoFCRenderCache::isValid(const SoState * state) const
 }
 
 void
-SoFCRenderCache::open(SoState *state, bool initmaterial)
+SoFCRenderCache::open(SoState *state, bool selectable, bool initmaterial)
 {
   SoCacheElement::set(state, this);
 
   PRIVATE(this)->facecolor = 0;
   PRIVATE(this)->nonfacecolor = 0;
   PRIVATE(this)->material.init(initmaterial ? state : nullptr);
+  PRIVATE(this)->material.selectable = selectable;
 
   if (initmaterial && SoFCDisplayModeElement::showHiddenLines(state)) {
     float t = SoFCDisplayModeElement::getTransparency(state);
     uint8_t alpha = static_cast<uint8_t>(std::min(std::max(1.f-t, 1.f), 0.f) * 255.f);
     PRIVATE(this)->material.diffuse = (PRIVATE(this)->material.diffuse & 0xffffff00) | alpha;
-    PRIVATE(this)->material.overrideflags |= Material::FLAG_TRANSPARENCY;
+    PRIVATE(this)->material.overrideflags.set(Material::FLAG_TRANSPARENCY);
 
     const SbColor * color = SoFCDisplayModeElement::getFaceColor(state);
     if (color)
@@ -660,37 +616,37 @@ SoFCRenderCache::open(SoState *state, bool initmaterial)
   state->getElement(SoOverrideElement::getClassStackIndex());
   // Remember the current override flags. If it weren't for the above call to
   // getElement(), this element will be added to our cache dependency.
-  uint32_t flags = SoOverrideElement::getFlags(state);
+  auto flags = getOverrideFlags(state);
   PRIVATE(this)->material.overrideflags = flags;
 
   // convert override flags to our own mask, and then reset the flags
-  if (flags & Material::FLAG_AMBIENT)
+  if (flags.test(Material::FLAG_AMBIENT))
     SoOverrideElement::setAmbientColorOverride(state, NULL, FALSE);
-  if (flags & Material::FLAG_DIFFUSE)
+  if (flags.test(Material::FLAG_DIFFUSE))
     SoOverrideElement::setDiffuseColorOverride(state, NULL, FALSE);
-  if (flags & Material::FLAG_SPECULAR)
+  if (flags.test(Material::FLAG_SPECULAR))
     SoOverrideElement::setSpecularColorOverride(state, NULL, FALSE);
-  if (flags & Material::FLAG_EMISSIVE)
+  if (flags.test(Material::FLAG_EMISSIVE))
     SoOverrideElement::setEmissiveColorOverride(state, NULL, FALSE);
-  if (flags & Material::FLAG_SHININESS)
+  if (flags.test(Material::FLAG_SHININESS))
     SoOverrideElement::setShininessOverride(state, NULL, FALSE);
-  if (flags & Material::FLAG_TRANSPARENCY)
+  if (flags.test(Material::FLAG_TRANSPARENCY))
     SoOverrideElement::setTransparencyOverride(state, NULL, FALSE);
-  if (flags & Material::FLAG_DRAW_STYLE)
+  if (flags.test(Material::FLAG_DRAW_STYLE))
     SoOverrideElement::setDrawStyleOverride(state, NULL, FALSE);
-  if (flags & Material::FLAG_LINE_PATTERN)
+  if (flags.test(Material::FLAG_LINE_PATTERN))
     SoOverrideElement::setLinePatternOverride(state, NULL, FALSE);
-  if (flags & Material::FLAG_LINE_WIDTH)
+  if (flags.test(Material::FLAG_LINE_WIDTH))
     SoOverrideElement::setLineWidthOverride(state, NULL, FALSE);
-  if (flags & Material::FLAG_POINT_SIZE)
+  if (flags.test(Material::FLAG_POINT_SIZE))
     SoOverrideElement::setPointSizeOverride(state, NULL, FALSE);
-  if (flags & Material::FLAG_MATERIAL_BINDING)
+  if (flags.test(Material::FLAG_MATERIAL_BINDING))
     SoOverrideElement::setMaterialBindingOverride(state, NULL, FALSE);
-  if (flags & Material::FLAG_POLYGON_OFFSET)
+  if (flags.test(Material::FLAG_POLYGON_OFFSET))
     SoOverrideElement::setPolygonOffsetOverride(state, NULL, FALSE);
-  if (flags & Material::FLAG_SHAPE_HINTS)
+  if (flags.test(Material::FLAG_SHAPE_HINTS))
     SoOverrideElement::setShapeHintsOverride(state, NULL, FALSE);
-  if (flags & Material::FLAG_LIGHT_MODEL)
+  if (flags.test(Material::FLAG_LIGHT_MODEL))
     SoOverrideElement::setLightModelOverride(state, NULL, FALSE);
 
   // Capture current relavant elements to detect change happen inside the
@@ -759,7 +715,8 @@ SoFCRenderCacheP::addChildCache(SoState * state,
                             cache,
                             vcache);
   captureMaterial(state);
-  this->caches.back().material = this->material;
+  Material & m = this->caches.back().material;
+  m = this->material;
 }
 
 void
@@ -892,8 +849,8 @@ SoFCRenderCacheP::finalizeMaterial(Material & material)
     material.diffuse = this->nonfacecolor;
   }
 
-  if (material.pervertexcolor && (material.maskflags & Material::FLAG_TRANSPARENCY))
-    material.overrideflags |= Material::FLAG_TRANSPARENCY;
+  if (material.pervertexcolor && material.maskflags.test(Material::FLAG_TRANSPARENCY))
+    material.overrideflags.set(Material::FLAG_TRANSPARENCY);
 }
 
 const SoFCRenderCache::VertexCacheMap &
@@ -908,16 +865,23 @@ SoFCRenderCache::getVertexCaches(bool finalize)
 
   for (auto & entry : PRIVATE(this)->caches) {
     if (entry.vcache) {
-      if (!selfkey)
-        selfkey.reset(new CacheKey(1, PRIVATE(this)->nodeptr));
+      if (!selfkey) {
+        if (PRIVATE(this)->nodeptr)
+          selfkey.reset(new CacheKey(1, PRIVATE(this)->nodeptr));
+        else
+          selfkey.reset(new CacheKey);
+      }
 
       entry.material.pervertexcolor = entry.vcache->colorPerVertex();
 
       if (entry.vcache->getNumTriangleIndices()) {
         Material material = entry.material;
         material.type = Material::Triangle;
-        if (finalize)
+        if (finalize) {
           PRIVATE(this)->finalizeMaterial(material);
+          if (!entry.vcache->getNormalArray())
+            material.lightmodel = SoLazyElement::BASE_COLOR;
+        }
         vcachemap[material].emplace_back(entry.vcache,
                                          entry.matrix,
                                          entry.identity,
@@ -927,8 +891,11 @@ SoFCRenderCache::getVertexCaches(bool finalize)
       if (entry.vcache->getNumLineIndices()) {
         Material material = entry.material;
         material.type = Material::Line;
-        if (finalize)
+        if (finalize) {
           PRIVATE(this)->finalizeMaterial(material);
+          if (!entry.vcache->getNormalArray())
+            material.lightmodel = SoLazyElement::BASE_COLOR;
+        }
         vcachemap[material].emplace_back(entry.vcache,
                                          entry.matrix,
                                          entry.identity,
@@ -938,8 +905,11 @@ SoFCRenderCache::getVertexCaches(bool finalize)
       if (entry.vcache->getNumPointIndices()) {
         Material material = entry.material;
         material.type = Material::Point;
-        if (finalize)
+        if (finalize) {
           PRIVATE(this)->finalizeMaterial(material);
+          if (!entry.vcache->getNormalArray())
+            material.lightmodel = SoLazyElement::BASE_COLOR;
+        }
         vcachemap[material].emplace_back(entry.vcache,
                                          entry.matrix,
                                          entry.identity,
@@ -963,8 +933,10 @@ SoFCRenderCache::getVertexCaches(bool finalize)
         CacheKeyPtr & key = keymap[childentry.key.get()];
         if (!key) {
           key.reset(new CacheKey);
-          key->reserve(childentry.key->size()+1);
-          key->push_back(PRIVATE(this)->nodeptr);
+          if (PRIVATE(this)->nodeptr) {
+            key->reserve(childentry.key->size()+1);
+            key->push_back(PRIVATE(this)->nodeptr);
+          }
           key->insert(key->end(), childentry.key->begin(), childentry.key->end());
         }
         if (entry.identity || childentry.resetmatrix)
@@ -996,10 +968,15 @@ SoFCRenderCache::getVertexCaches(bool finalize)
 }
 
 SoFCRenderCache::VertexCacheMap
-SoFCRenderCache::buildHighlightCache(int order, const SoDetail * detail, uint32_t color)
+SoFCRenderCache::buildHighlightCache(int order,
+                                     const SoDetail * detail,
+                                     uint32_t color,
+                                     bool checkindices,
+                                     bool wholeontop)
 {
   VertexCacheMap res;
   uint32_t alpha = color & 0xff;
+  color &= 0xffffff00;
 
   const SoPointDetail * pd = nullptr;
   const SoLineDetail * ld = nullptr;
@@ -1014,48 +991,62 @@ SoFCRenderCache::buildHighlightCache(int order, const SoDetail * detail, uint32_
       fd = static_cast<const SoFaceDetail*>(detail);
     else if (detail->isOfType(SoFCDetail::getClassTypeId()))
       d = static_cast<const SoFCDetail*>(detail);
+
+    // Some shape nodes (e.g. SoBrepFaceSet), support partial highlight on
+    // whole object selection. 'checkindices' is used to indicate if we shall
+    // check the internal highlight indices of those shapes that support it.
+    // However, if we are not doing whole object selection (i.e. detail is not
+    // null here), we should not check the indices.
+    checkindices = false;
   }
 
   for (auto & child : getVertexCaches(true)) {
-    Material material = child.first;
-    if (color)
-      material.pervertexcolor = false;
+    if (!wholeontop && detail) {
+      // We are doing partial highlight, 'wholeontop' indicates that we shall
+      // bring the whole object to top with the original color. So if not
+      // 'wholeontop' and there is some highlight detail, it means we are
+      // highlight some sub-element of a shape node.
 
-    for (auto & ventry : child.second) {
-      material.order = order;
-      material.depthfunc = SoDepthBuffer::LEQUAL;
-      if (detail) {
-        switch(material.type) {
-        case Material::Point:
-          if (!pd && (!d || d->getIndices(SoFCDetail::Vertex).empty()))
-            continue;
-          break;
-        case Material::Line:
-          if (!ld && (!d || d->getIndices(SoFCDetail::Edge).empty()))
-            continue;
-          break;
-        default:
-          if (!fd && (!d || d->getIndices(SoFCDetail::Face).empty()))
-            continue;
-        }
+      if (!child.first.selectable) {
+        // Either the parent is not selectable, or the shape is not
+        // sub-element selectable (checked in the loop below).
+        continue;
       }
 
+      switch(child.first.type) {
+      case Material::Point:
+        if (!pd && (!d || d->getIndices(SoFCDetail::Vertex).empty()))
+          continue;
+        break;
+      case Material::Line:
+        if (!ld && (!d || d->getIndices(SoFCDetail::Edge).empty()))
+          continue;
+        break;
+      default:
+        if (!fd && (!d || d->getIndices(SoFCDetail::Face).empty()))
+          continue;
+      }
+    }
+
+    for (auto & ventry : child.second) {
+      bool elementselectable =
+        ventry.cache->isElementSelectable() && child.first.selectable;
+
+      if (!wholeontop && detail && !elementselectable)
+          continue;
+
+      Material material = child.first;
+      material.order = order;
+      material.depthfunc = SoDepthBuffer::LEQUAL;
+
       if (color) {
-        if (material.type != Material::Triangle) {
+        if (material.type != Material::Triangle)
           material.lightmodel = SoLazyElement::BASE_COLOR;
-          material.diffuse = color | 0xff;
-        } else { 
-          uint32_t a = (child.first.diffuse & 0xff);
-          if (child.first.pervertexcolor && ventry.cache->hasTransparency()) {
-            if (a == 0xff)
-              a = 0x80;
-          }
-          if (a > alpha)
-            a = alpha;
-          if (alpha != 0xff)
-            material.overrideflags |= Material::FLAG_TRANSPARENCY;
-          material.diffuse = (material.diffuse & 0xffffff00) | a;
+        if (material.lightmodel != SoLazyElement::BASE_COLOR)
           material.emissive = color | 0xff;
+        else {
+          material.pervertexcolor = false;
+          material.diffuse = color | (material.diffuse & 0xff);
         }
       }
 
@@ -1065,41 +1056,117 @@ SoFCRenderCache::buildHighlightCache(int order, const SoDetail * detail, uint32_
       case Material::Point:
         if (!material.order)
           material.order = 1;
-        if (material.pointsize < 4.0f)
-          material.pointsize = 4.0f;
-        if (pd) {
+        if (!elementselectable) {
+          if (!detail)
+            res[material].push_back(ventry);
+          else {
+            Material m = child.first;
+            m.order = material.order;
+            m.depthfunc = material.depthfunc;
+            m.partialhighlight = 1;
+            res[m].push_back(ventry);
+          }
+        }
+        else if (pd) {
           if (pd->getCoordinateIndex() >= 0)
             newentry.partidx = pd->getCoordinateIndex();
         }
         else if (d) {
           const auto & indices = d->getIndices(SoFCDetail::Vertex);
-          if (indices.size() == 1 && *indices.begin() >= 0)
+          if (indices.size() == 1 && *indices.begin() >= 0) {
             newentry.partidx = *indices.begin();
-          else if (indices.size() > 1) {
+          } else if (indices.size() > 1) {
             newentry.cache = new SoFCVertexCache(*newentry.cache);
             newentry.cache->addPoints(indices);
           }
         }
+        else if (checkindices) {
+          auto cache = newentry.cache->highlightIndices(&newentry.partidx);
+          if (newentry.partidx >= 0 || cache != newentry.cache) {
+            newentry.cache = cache;
+            if (wholeontop) {
+              Material m = child.first;
+              m.order = material.order;
+              m.depthfunc = material.depthfunc;
+              m.partialhighlight = 1;
+              material.partialhighlight = -1;
+              ++material.order;
+              res[m].push_back(ventry);
+            }
+          }
+        }
         break;
+
       case Material::Line:
-        if (material.linewidth < 2.0f)
-          material.linewidth = 2.0f;
-        if (ld) {
-          if (ld->getLineIndex() >= 0)
-            newentry.partidx = ld->getLineIndex();
+        if (!elementselectable) {
+          if (!detail)
+            res[material].push_back(ventry);
+          else {
+            Material m = child.first;
+            m.order = material.order;
+            m.depthfunc = material.depthfunc;
+            m.partialhighlight = 1;
+            res[m].push_back(ventry);
+          }
+        }
+        else if (ld) {
+          if (ld->getLineIndex() >= 0) {
+            // Because of possible line strip, we do not use partidx for
+            // partial rendering
+            //
+            // newentry.partidx = ld->getLineIndex();
+            newentry.cache = new SoFCVertexCache(*newentry.cache);
+            newentry.cache->addLines(std::vector<int>(1, ld->getLineIndex()));
+          }
         }
         else if (d) {
           const auto & indices = d->getIndices(SoFCDetail::Edge);
-          if (indices.size() == 1 && *indices.begin() >= 0)
-            newentry.partidx = *indices.begin();
-          else if (indices.size() > 1) {
+          if (indices.size() && *indices.begin()>=0) {
             newentry.cache = new SoFCVertexCache(*newentry.cache);
             newentry.cache->addLines(indices);
           }
         }
+        else if (checkindices) {
+          auto cache = newentry.cache->highlightIndices(&newentry.partidx);
+          if (newentry.partidx >= 0 || cache != newentry.cache) {
+            newentry.cache = cache;
+            if (wholeontop) {
+              Material m = child.first;
+              m.order = material.order;
+              m.depthfunc = material.depthfunc;
+              m.partialhighlight = 1;
+              material.partialhighlight = -1;
+              ++material.order;
+              res[m].push_back(ventry);
+            }
+          }
+        }
         break;
-      default:
-        if (fd) {
+
+      case Material::Triangle:
+        if (alpha) {
+          uint32_t a = (child.first.diffuse & 0xff);
+          if (child.first.pervertexcolor && ventry.cache->hasTransparency()) {
+            if (a == 0xff)
+              a = alpha;
+          }
+          if (a > alpha)
+            a = alpha;
+          material.overrideflags.set(Material::FLAG_TRANSPARENCY);
+          material.diffuse = (material.diffuse & 0xffffff00) | a;
+        }
+        if (!elementselectable) {
+          if (!detail)
+            res[material].push_back(ventry);
+          else {
+            Material m = child.first;
+            m.order = material.order;
+            m.depthfunc = material.depthfunc;
+            m.partialhighlight = 1;
+            res[m].push_back(ventry);
+          }
+        }
+        else if (fd) {
           if (fd->getPartIndex() >= 0)
             newentry.partidx = fd->getPartIndex();
         }
@@ -1110,6 +1177,25 @@ SoFCRenderCache::buildHighlightCache(int order, const SoDetail * detail, uint32_
           else if (indices.size() > 1) {
             newentry.cache = new SoFCVertexCache(*newentry.cache);
             newentry.cache->addTriangles(indices);
+          }
+        }
+        else if (checkindices) {
+          auto cache = newentry.cache->highlightIndices(&newentry.partidx);
+          if (newentry.partidx >= 0 || cache != newentry.cache) {
+            newentry.cache = cache;
+            if (wholeontop) {
+              Material m = child.first;
+              m.order = material.order;
+              m.depthfunc = material.depthfunc;
+              m.partialhighlight = 1;
+              material.partialhighlight = -1;
+              ++material.order;
+              if (alpha != 0xff) {
+                m.overrideflags.set(Material::FLAG_TRANSPARENCY);
+                m.diffuse = (m.diffuse & 0xffffff00) | (material.diffuse & 0xff);
+              }
+              res[m].push_back(ventry);
+            }
           }
         }
         if (color && newentry.partidx >= 0) {

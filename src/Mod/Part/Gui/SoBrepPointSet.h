@@ -51,6 +51,7 @@ class PartGuiExport SoBrepPointSet : public SoPointSet {
 public:
     SoMFInt32 highlightIndices;
     SoSFColor highlightColor;
+    SoSFBool  elementSelectable;
 
     static void initClass();
     SoBrepPointSet();

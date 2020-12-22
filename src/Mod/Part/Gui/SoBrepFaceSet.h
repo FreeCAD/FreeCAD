@@ -28,6 +28,7 @@
 #include <Inventor/fields/SoSFNode.h>
 #include <Inventor/fields/SoSubField.h>
 #include <Inventor/fields/SoSFColor.h>
+#include <Inventor/fields/SoSFBool.h>
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoIndexedFaceSet.h>
 #include <Inventor/elements/SoLazyElement.h>
@@ -89,6 +90,7 @@ public:
     SoMFInt32 partIndex;
     SoMFInt32 highlightIndices;
     SoSFColor highlightColor;
+    SoSFBool  elementSelectable;
 
     static bool makeDistinctColor(SbColor &res, const SbColor &color, const SbColor &other);
     static bool makeDistinctColor(uint32_t &res, uint32_t color, uint32_t other);

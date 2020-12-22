@@ -58,6 +58,7 @@ class SbViewportRegion;
 class SbVec2s;
 class SbBox3f;
 class SbMatrix;
+class SoFCRenderCacheManager;
 
 namespace Gui {
 
@@ -133,6 +134,9 @@ public:
     std::vector<App::SubObjectT> getPickedSelections(const SbVec2s &pos,
                                                      const SbViewportRegion &viewport,
                                                      bool singlePick) const;
+
+    SoFCRenderCacheManager * getRenderManager();
+
 protected:
     virtual ~SoFCUnifiedSelection();
     //virtual void redrawHighlighted(SoAction * act, SbBool flag);
