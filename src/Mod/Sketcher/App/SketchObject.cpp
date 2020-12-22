@@ -3415,6 +3415,19 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
     std::map<int, int> geoIdMap;
     std::map<int, bool> isStartEndInverted;
 
+    // Find out if reference is aligned with V or H axis,
+    // if so we can keep Vertical and Horizontal constrants in the mirrored geometry.
+    bool refIsAxisAligned = false;
+    if (refGeoId == Sketcher::GeoEnum::VAxis || refGeoId == Sketcher::GeoEnum::HAxis)
+        refIsAxisAligned = true;
+    for (std::vector<Constraint *>::const_iterator it = constrvals.begin(); it != constrvals.end(); ++it) {
+        Constraint *constr = *(it);
+        if (constr->First != refGeoId)
+            continue;
+        if (constr->Type == Sketcher::Vertical || constr->Type == Sketcher::Horizontal)
+            refIsAxisAligned = true;
+    }
+
     // reference is a line
     if(refPosId == Sketcher::none) {
         const Part::Geometry *georef = getGeometry(refGeoId);
@@ -3617,6 +3630,7 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
         }
     }
     else { //reference is a point
+        refIsAxisAligned = true;
         Vector3d refpoint;
         const Part::Geometry *georef = getGeometry(refGeoId);
 
@@ -3888,14 +3902,27 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
             if(fit != geoIdMap.end()) { // if First of constraint is in geoIdList
 
                 if( (*it)->Second == Constraint::GeoUndef /*&& (*it)->Third == Constraint::GeoUndef*/) {
-                    if( (*it)->Type != Sketcher::DistanceX &&
-                        (*it)->Type != Sketcher::DistanceY) { // this includes all non-directional single GeoId constraints, as radius, diameter, weight,...
+                    if (refIsAxisAligned) {
+                        // in this case we want to keep the Vertical, Horizontal constraints
+                        // DistanceX ,and DistanceY constraints should also be possible to keep in this case,
+                        // but keeping them causes segfault, not sure why.
 
-                        Constraint *constNew = (*it)->copy();
+                        if( (*it)->Type != Sketcher::DistanceX && (*it)->Type != Sketcher::DistanceY ) {
+                            Constraint *constNew = (*it)->copy();
+                            constNew->First = fit->second;
+                            newconstrVals.push_back(constNew);
+                        }
 
-                        constNew->First = fit->second;
-                        newconstrVals.push_back(constNew);
+                    } else if( (*it)->Type != Sketcher::DistanceX &&
+                               (*it)->Type != Sketcher::DistanceY &&
+                               (*it)->Type != Sketcher::Vertical &&
+                               (*it)->Type != Sketcher::Horizontal ) { // this includes all non-directional single GeoId constraints, as radius, diameter, weight,...
+
+                            Constraint *constNew = (*it)->copy();
+                            constNew->First = fit->second;
+                            newconstrVals.push_back(constNew);
                     }
+
                 }
                 else { // other geoids intervene in this constraint
 
