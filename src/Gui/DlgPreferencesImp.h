@@ -25,6 +25,7 @@
 #define GUI_DIALOG_DLGPREFERENCESIMP_H
 
 #include <QDialog>
+#include <memory>
 
 class QAbstractButton;
 class QListWidgetItem;
