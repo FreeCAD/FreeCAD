@@ -331,6 +331,8 @@ public:
                           std::map<QByteArray, int> &postfixMap,
                           std::vector<QByteArray> &postfixes)
     {
+        if (postfix.isEmpty())
+            return;
         auto res = postfixMap.insert(std::make_pair(postfix, 0));
         if (res.second) {
             postfixes.push_back(postfix);
