@@ -25,16 +25,16 @@ import FreeCADGui
 import PathScripts.PathGui as PathGui
 import PathScripts.PathIconViewProvider as PathIconViewProvider
 import PathScripts.PathLog as PathLog
-import PathScripts.PathPropertyContainer as PathPropertyContainer
+import PathScripts.PathPropertyBag as PathPropertyBag
 import PathScripts.PathPropertyEditor as PathPropertyEditor
 import PathScripts.PathUtil as PathUtil
 
 from PySide import QtCore, QtGui
 
-__title__ = "Property Container Editor"
+__title__ = "Property Bag Editor"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
-__doc__ = "Task panel editor for a PropertyContainer"
+__doc__ = "Task panel editor for a PropertyBag"
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 #PathLog.trackModule(PathLog.thisModule())
@@ -44,7 +44,7 @@ def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 class ViewProvider(object):
-    '''ViewProvider for a PropertyContainer.
+    '''ViewProvider for a PropertyBag.
     It's sole job is to provide an icon and invoke the TaskPanel on edit.'''
 
     def __init__(self, vobj, name):
@@ -135,9 +135,9 @@ class PropertyCreate(object):
         if grp:
             self.form.propertyGroup.setCurrentText(grp)
 
-        for t in sorted(PathPropertyContainer.SupportedPropertyType):
+        for t in sorted(PathPropertyBag.SupportedPropertyType):
             self.form.propertyType.addItem(t)
-            if PathPropertyContainer.SupportedPropertyType[t] == typ:
+            if PathPropertyBag.SupportedPropertyType[t] == typ:
                 typ = t
         if typ:
             self.form.propertyType.setCurrentText(typ)
@@ -163,7 +163,7 @@ class PropertyCreate(object):
     def propertyGroup(self):
         return self.form.propertyGroup.currentText().strip()
     def propertyType(self):
-        return PathPropertyContainer.SupportedPropertyType[self.form.propertyType.currentText()].strip()
+        return PathPropertyBag.SupportedPropertyType[self.form.propertyType.currentText()].strip()
     def propertyInfo(self):
         return self.form.propertyInfo.toPlainText().strip()
     def createAnother(self):
@@ -183,12 +183,12 @@ class TaskPanel(object):
     def __init__(self, vobj):
         self.obj = vobj.Object
         self.props = sorted(self.obj.Proxy.getCustomProperties())
-        self.form = FreeCADGui.PySideUic.loadUi(":panels/PropertyContainer.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(":panels/PropertyBag.ui")
 
         # initialized later
         self.delegate = None
         self.model = None
-        FreeCAD.ActiveDocument.openTransaction(translate("PathPropertyContainer", "Edit PropertyContainer"))
+        FreeCAD.ActiveDocument.openTransaction(translate("PathPropertyBag", "Edit PropertyBag"))
 
     def updateData(self, topLeft, bottomRight):
         if topLeft.column() == self.ColumnDesc:
@@ -291,24 +291,24 @@ class TaskPanel(object):
             self.model.removeRow(row)
 
 
-def Create(name = 'PropertyContainer'):
-    '''Create(name = 'PropertyContainer') ... creates a new setup sheet'''
-    FreeCAD.ActiveDocument.openTransaction(translate("PathPropertyContainer", "Create PropertyContainer"))
-    pcont = PathPropertyContainer.Create(name)
+def Create(name = 'PropertyBag'):
+    '''Create(name = 'PropertyBag') ... creates a new setup sheet'''
+    FreeCAD.ActiveDocument.openTransaction(translate("PathPropertyBag", "Create PropertyBag"))
+    pcont = PathPropertyBag.Create(name)
     PathIconViewProvider.Attach(pcont.ViewObject, name)
     return pcont
 
-PathIconViewProvider.RegisterViewProvider('PropertyContainer', ViewProvider)
+PathIconViewProvider.RegisterViewProvider('PropertyBag', ViewProvider)
 
-class PropertyContainerCreateCommand(object):
+class PropertyBagCreateCommand(object):
     '''Command to create a property container object'''
 
     def __init__(self):
         pass
 
     def GetResources(self):
-        return {'MenuText': translate('PathPropertyContainer', 'Property Container'),
-                'ToolTip': translate('PathPropertyContainer', 'Creates an object which can be used to store reference properties.')}
+        return {'MenuText': translate('PathPropertyBag', 'Property Bag'),
+                'ToolTip': translate('PathPropertyBag', 'Creates an object which can be used to store reference properties.')}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
@@ -329,6 +329,6 @@ class PropertyContainerCreateCommand(object):
             body.Group = group
 
 if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Path_PropertyContainer', PropertyContainerCreateCommand())
+    FreeCADGui.addCommand('Path_PropertyBag', PropertyBagCreateCommand())
 
-FreeCAD.Console.PrintLog("Loading PathPropertyContainerGui ... done\n")
+FreeCAD.Console.PrintLog("Loading PathPropertyBagGui ... done\n")

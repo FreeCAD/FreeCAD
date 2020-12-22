@@ -24,7 +24,7 @@ import FreeCAD
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
-import PathScripts.PathPropertyContainer as PathPropertyContainer
+import PathScripts.PathPropertyBag as PathPropertyBag
 import PathScripts.PathSetupSheetOpPrototype as PathSetupSheetOpPrototype
 import PathScripts.PathUtil as PathUtil
 import PySide
@@ -303,9 +303,6 @@ class ToolBit(object):
         self._deleteBitSetup(obj)
         bitBody = obj.Document.copyObject(doc.RootObjects[0], True)
 
-        for o in doc.RootObjects[0].Group:
-            PathLog.debug("..... {}: {}".format(o.Label, o.Name))
-
         if docOpened:
             FreeCAD.setActiveDocument(activeDoc.Name)
             FreeCAD.closeDocument(doc.Name)
@@ -315,23 +312,13 @@ class ToolBit(object):
 
         PathLog.debug("bitBody.{} ({}): {}".format(bitBody.Label, bitBody.Name, type(bitBody)))
 
-        def isAttributes(o):
-            if not hasattr(o, 'Proxy'):
-                PathLog.debug("    {} has not Proxy ({})".format(o.Label, type(o)))
-                return False
-            if not hasattr(o.Proxy, 'getCustomProperties'):
-                PathLog.debug("    {}.Proxy has no getCustomProperties ({})".format(o.Label, type(o.Proxy)))
-                return False
-            PathLog.debug("    {} <-".format(o.Label))
-            return True
-
         propNames = []
-        for attributes in [o for o in bitBody.Group if isAttributes(o)]:
+        for attributes in [o for o in bitBody.Group if PathPropertyBag.IsPropertyBag(o)]:
             PathLog.debug("Process properties from {}".format(attributes.Label))
             for prop in attributes.Proxy.getCustomProperties():
                 # extract property parameters and values so it can be copied
                 src = attributes.getPropertyByName(prop)
-                typ = PathPropertyContainer.getPropertyType(src)
+                typ = PathPropertyBag.getPropertyType(src)
                 grp = attributes.getGroupOfProperty(prop)
                 dsc = attributes.getDocumentationOfProperty(prop)
 

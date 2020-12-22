@@ -57,14 +57,14 @@ def getPropertyType(o):
     if type(o) == FreeCAD.Units.Quantity:
         return SupportedPropertyType[o.Unit.Type]
 
-class PropertyContainer(object):
+class PropertyBag(object):
     '''Property container object.'''
 
     CustomPropertyGroups       = 'CustomPropertyGroups'
     CustomPropertyGroupDefault = 'User'
 
     def __init__(self, obj):
-        obj.addProperty('App::PropertyStringList', self.CustomPropertyGroups, 'Base', PySide.QtCore.QT_TRANSLATE_NOOP('PathPropertyContainer', 'List of custom property groups'))
+        obj.addProperty('App::PropertyStringList', self.CustomPropertyGroups, 'Base', PySide.QtCore.QT_TRANSLATE_NOOP('PathPropertyBag', 'List of custom property groups'))
         self.onDocumentRestored(obj)
 
     def __getstate__(self):
@@ -93,17 +93,17 @@ class PropertyContainer(object):
             self.obj.CustomPropertyGroups = groups
         self.obj.addProperty(propertyType, name, group, desc)
 
-def Create(name = 'PropertyContainer'):
+def Create(name = 'PropertyBag'):
     obj = FreeCAD.ActiveDocument.addObject('App::FeaturePython', name)
-    obj.Proxy = PropertyContainer(obj)
+    obj.Proxy = PropertyBag(obj)
     return obj
 
-def IsPropertyContainer(obj):
+def IsPropertyBag(obj):
     '''Returns True if the supplied object is a property container (or its Proxy).'''
 
-    if type(obj) == PropertyContainer:
+    if type(obj) == PropertyBag:
         return True
     if hasattr(obj, 'Proxy'):
-        return IsPropertyContainer(obj.Proxy)
+        return IsPropertyBag(obj.Proxy)
     return False
 
