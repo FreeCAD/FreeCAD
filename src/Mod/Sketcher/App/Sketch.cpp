@@ -201,6 +201,16 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
         std::vector < std::set < double*>> groups;
         GCSsys.getDependentParamsGroups(groups);
 
+        // Debug code block
+        for(size_t i = 0; i < groups.size(); i++) {
+            Base::Console().Log("\nDepParams: Group %d:",i);
+            for(size_t j = 0; j < groups[i].size(); j++)
+                Base::Console().Log("\n  Param=%x ,GeoId=%d, GeoPos=%d",
+                                  param2geoelement.find(*std::next(groups[i].begin(), j))->first,
+                                  param2geoelement.find(*std::next(groups[i].begin(), j))->second.first,
+                                  param2geoelement.find(*std::next(groups[i].begin(), j))->second.second);
+        }
+
         for(size_t i = 0; i < groups.size(); i++) {
             for(size_t j = 0; j < groups[i].size(); j++) {
 
@@ -214,6 +224,14 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
 
                     if( blocked != blockedGeoIds.end()) { // this dependent parameter group contains a parameter that should be blocked
                         params_to_block.push_back(thisparam);
+
+                        // Debug block
+                        Base::Console().Log("\nBlocking:  Param=%x ,GeoId=%d, GeoPos=%d",
+                        element->first,
+                        element->second.first,
+                        element->second.second);
+
+
                         break; // one parameter per group is enough to fix the group
                     }
                 }
@@ -244,6 +262,20 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
             GCSsys.getDependentParams(pDependentParametersList);
 
             calculateDependentParametersElements();
+
+            // Debug code block
+            std::vector < std::set < double*>> groups;
+            GCSsys.getDependentParamsGroups(groups);
+
+            // Debug code block
+            for(size_t i = 0; i < groups.size(); i++) {
+                Base::Console().Log("\nDepParams: Group %d:",i);
+                for(size_t j = 0; j < groups[i].size(); j++)
+                    Base::Console().Log("\n  Param=%x ,GeoId=%d, GeoPos=%d",
+                                    param2geoelement.find(*std::next(groups[i].begin(), j))->first,
+                                    param2geoelement.find(*std::next(groups[i].begin(), j))->second.first,
+                                    param2geoelement.find(*std::next(groups[i].begin(), j))->second.second);
+            }
 
         }
 
