@@ -13,44 +13,19 @@
       <Author Licence="LGPL" Name="WandererFan" EMail="wandererfan@gmail.com" />
       <UserDocu>Feature for creating and manipulating Technical Drawing Part Views</UserDocu>
     </Documentation>
-    <Methode Name="getVisibleEdges">
-      <Documentation>
-        <UserDocu>getVisibleEdges() - get the visible edges in the View as Part::TopoShapeEdges</UserDocu>
-      </Documentation>
-    </Methode>
-   <Methode Name="getHiddenEdges">
-      <Documentation>
-        <UserDocu>getHiddenEdges() - get the hidden edges in the View as Part::TopoShapeEdges</UserDocu>
-      </Documentation>
-    </Methode>
     <Methode Name="makeCosmeticVertex">
       <Documentation>
-        <UserDocu>id = makeCosmeticVertex(p1) - add a CosmeticVertex at p1 (View coordinates). Returns unique id vertex.</UserDocu>
+        <UserDocu>makeCosmeticVertex(p1) - add a CosmeticVertex at p1 (View coordinates). Returns index of created vertex.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="makeCosmeticVertex3d">
+    <Methode Name="getCosmeticVertexByIndex">
       <Documentation>
-        <UserDocu>id = makeCosmeticVertex3d(p1) - add a CosmeticVertex at p1 (3d model coordinates). Returns unique id vertex.</UserDocu>
-      </Documentation>
-    </Methode>
-    <Methode Name="getCosmeticVertex">
-      <Documentation>
-        <UserDocu>cv = getCosmeticVertex(id) - returns CosmeticVertex with unique id.</UserDocu>
-      </Documentation>
-    </Methode>
-    <Methode Name="getCosmeticVertexBySelection">
-      <Documentation>
-        <UserDocu>cv = getCosmeticVertexBySelection(name) - returns CosmeticVertex with name (Vertex6).  Used in selections.</UserDocu>
-      </Documentation>
-    </Methode>
-    <Methode Name="replaceCosmeticVertex">
-      <Documentation>
-        <UserDocu>rc = replaceCosmeticVertex(cv) - replaces CosmeticVertex in View. Returns True/False.</UserDocu>
+        <UserDocu>getCosmeticVertexByIndex(idx) - returns CosmeticVertx[idx].</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="removeCosmeticVertex">
       <Documentation>
-        <UserDocu>removeCosmeticVertex(cv) - remove CosmeticVertex from View. Returns None.</UserDocu>
+        <UserDocu>removeCosmeticVertex(idx) - remove CosmeticVertex[idx] from View. Returns None.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="clearCosmeticVertices">
@@ -60,67 +35,42 @@
     </Methode>
     <Methode Name="makeCosmeticLine">
       <Documentation>
-        <UserDocu>tag = makeCosmeticLine(p1, p2) - add a CosmeticEdge from p1 to p2(View coordinates). Returns tag of new CosmeticEdge.</UserDocu>
-      </Documentation>
-    </Methode>
-    <Methode Name="makeCosmeticLine3D">
-      <Documentation>
-        <UserDocu>tag = makeCosmeticLine3D(p1, p2) - add a CosmeticEdge from p1 to p2(3D coordinates). Returns tag of new CosmeticEdge.</UserDocu>
+        <UserDocu>makeCosmeticLine(p1, p2) - add a CosmeticEdge from p1 to p2(View coordinates). Returns index of created edge.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="makeCosmeticCircle">
       <Documentation>
-        <UserDocu>tag = makeCosmeticCircle(center, radius) - add a CosmeticEdge at center with radius radius(View coordinates). Returns tag of new CosmeticEdge.</UserDocu>
+        <UserDocu>makeCosmeticCircle(center, radius) - add a CosmeticEdge at center with radius radius(View coordinates). Returns index of created edge.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="makeCosmeticCircleArc">
       <Documentation>
-        <UserDocu>tag = makeCosmeticCircleArc(center, radius, start, end) - add a CosmeticEdge at center with radius radius(View coordinates) from start angle to end angle. Returns tag of new CosmeticEdge.</UserDocu>
+        <UserDocu>makeCosmeticCircleArc(center, radius, start, end) - add a CosmeticEdge at center with radius radius(View coordinates) from start angle to end angle. Returns index of created edge.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="getCosmeticEdge">
+    <Methode Name="getCosmeticEdgeByIndex">
       <Documentation>
-        <UserDocu>ce = getCosmeticEdge(id) - returns CosmeticEdge with unique id.</UserDocu>
+        <UserDocu>getCosmeticEdgeByIndex(idx) - returns CosmeticEdge[idx].</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="getCosmeticEdgeBySelection">
+    <Methode Name="getCosmeticEdgeByGeom">
       <Documentation>
-        <UserDocu>ce = getCosmeticEdgeBySelection(name) - returns CosmeticEdge by name (Edge25).  Used in selections</UserDocu>
+        <UserDocu>getCosmeticEdgeByGeom(idx) - returns CosmeticEdge using geometry index.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="replaceCosmeticEdge">
       <Documentation>
-        <UserDocu>replaceCosmeticEdge(ce) - replaces CosmeticEdge ce in View. Returns True/False.</UserDocu>
+        <UserDocu>replaceCosmeticEdge(idx, ce) - replaces CosmeticEdge[idx] with ce.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="removeCosmeticEdge">
       <Documentation>
-        <UserDocu>removeCosmeticEdge(ce) - remove CosmeticEdge ce from View. Returns None.</UserDocu>
+        <UserDocu>removeCosmeticEdge(idx) - remove CosmeticEdge[idx] from View. Returns None.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="makeCenterLine">
       <Documentation>
-        <UserDocu>makeCenterLine(subNames, mode) - draw a center line on this viewPart. SubNames is a list of n Faces, 2 Edges or 2 Vertices (ex [Face1,Face2,Face3]. Returns unique tag of added CenterLine.</UserDocu>
-      </Documentation>
-    </Methode>
-    <Methode Name="getCenterLine">
-      <Documentation>
-        <UserDocu>cl = getCenterLine(id) - returns CenterLine with unique id.</UserDocu>
-      </Documentation>
-    </Methode>
-    <Methode Name="getCenterLineBySelection">
-      <Documentation>
-        <UserDocu>cl = getCenterLineBySelection(name) - returns CenterLine by name (Edge25).  Used in selections</UserDocu>
-      </Documentation>
-    </Methode>
-    <Methode Name="replaceCenterLine">
-      <Documentation>
-        <UserDocu>replaceCenterLine(cl) - replacls CenterLine cl in View. Returns True/False.</UserDocu>
-      </Documentation>
-    </Methode>
-    <Methode Name="removeCenterLine">
-      <Documentation>
-        <UserDocu>removeCenterLine(cl) - remove CenterLine cl from View. Returns None.</UserDocu>
+        <UserDocu>makeCenterLine(subNames, mode) - draw a center line on this viewPart. SubNames is a list of n Faces, 2 Edges or 2 Vertices (ex [Face1,Face2,Face3]. Returns index of added CenterLine.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="clearCosmeticEdges">
@@ -138,34 +88,29 @@
         <UserDocu>clearGeomFormats() - remove all GeomFormats from the View. Returns None.</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="adjustCenterLine">
+      <Documentation>
+        <UserDocu>adjustCenterLine(index, hShift, vShift, rotate, extend [,flip]). Returns None.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="formatCenterLine">
+      <Documentation>
+        <UserDocu>formatCenterLine(index, style, weight, color, visible). Returns None.</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="formatGeometricEdge">
       <Documentation>
         <UserDocu>formatGeometricEdge(index, style, weight, color, visible). Returns None.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="getEdgeByIndex">
+        <Methode Name="getEdgeByIndex">
       <Documentation>
         <UserDocu>getEdgeByIndex(edgeIndex). Returns Part.TopoShape.</UserDocu>
-      </Documentation>
-    </Methode>
-    <Methode Name="getEdgeBySelection">
-      <Documentation>
-        <UserDocu>getEdgeBySelection(edgeName). Returns Part.TopoShape.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getVertexByIndex">
       <Documentation>
         <UserDocu>getVertexByIndex(vertexIndex). Returns Part.TopoShape.</UserDocu>
-      </Documentation>
-    </Methode>
-    <Methode Name="getVertexBySelection">
-      <Documentation>
-        <UserDocu>getVertexBySelection(vertexName). Returns Part.TopoShape.</UserDocu>
-      </Documentation>
-    </Methode>
-    <Methode Name="requestPaint">
-      <Documentation>
-        <UserDocu>requestPaint(). Redraw the graphic for this View.</UserDocu>
       </Documentation>
     </Methode>
     <CustomAttributes />

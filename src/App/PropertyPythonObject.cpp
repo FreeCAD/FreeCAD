@@ -109,8 +109,6 @@ std::string PropertyPythonObject::toString() const
         repr = str.as_std_string("ascii");
     }
     catch (Py::Exception&) {
-        Py::String typestr(this->object.type().str());
-        Base::Console().Error("PropertyPythonObject::toString(): failed for %s\n", typestr.as_string().c_str());
         Base::PyException e; // extract the Python error text
         e.ReportException();
     }

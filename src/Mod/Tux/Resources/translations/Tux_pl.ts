@@ -11,7 +11,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="63"/>
       <source>Zoom</source>
-      <translation>Powiększ</translation>
+      <translation>Powiększenie</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="64"/>
@@ -36,7 +36,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="68"/>
       <source>Page Up or Page Down key.</source>
-      <translation>Klawisz strona w górę lub strona w dół.</translation>
+      <translation>Klawisz Page Up lub Page Down.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="69"/>
@@ -46,7 +46,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="71"/>
       <source>Middle mouse button.</source>
-      <translation>Środkowy przycisk myszki.</translation>
+      <translation>Środkowy przycisk myszy.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="74"/>
@@ -61,7 +61,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="292"/>
       <source>Orbit style</source>
-      <translation>Technika orbitalna</translation>
+      <translation>Styl orbity</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="293"/>
@@ -76,12 +76,12 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="295"/>
       <source>Turntable</source>
-      <translation>Turntable</translation>
+      <translation>Obrotnica</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="296"/>
       <source>Trackball</source>
-      <translation>Trackball</translation>
+      <translation>Manipulator kulkowy</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="297"/>
@@ -91,7 +91,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="70"/>
       <source>Middle mouse button or H key.</source>
-      <translation>Środkowy przycisk myszki lub klawisz H.</translation>
+      <translation>Środkowy przycisk myszy lub klawisz H.</translation>
     </message>
   </context>
 </TS>

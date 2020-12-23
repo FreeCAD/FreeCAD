@@ -1,122 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="sv-SE" sourcelanguage="en">
+<TS version="2.0" language="sv-SE" sourcelanguage="en">
   <context>
     <name>AttachmentEditor</name>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="94"/>
       <source>No object named {name}</source>
-      <translation>Inget namn på objekt {name}</translation>
+      <translation type="unfinished">No object named {name}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="98"/>
       <source>Failed to parse link (more than one colon encountered)</source>
-      <translation>Misslyckades att tolka länk (mer än ett kolon påträffades)</translation>
+      <translation type="unfinished">Failed to parse link (more than one colon encountered)</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="204"/>
       <source>Object {name} is neither movable nor attachable, can't edit attachment</source>
-      <translation>Objekt {name} är varken flyttbart eller kopplingsbart, kan inte redigera koppling</translation>
+      <translation type="unfinished">Object {name} is neither movable nor attachable, can't edit attachment</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="212"/>
       <source>{obj} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric.</source>
-      <translation>{obj} är inte kopplingsbar. Du kan fortfarande använda kopplingsredigeringsdialogen för att justera objektet, men kopplingen kommer inte vara parametrisk.</translation>
+      <translation type="unfinished">{obj} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="229"/>
       <source>Attachment</source>
-      <translation>Koppling</translation>
+      <translation type="unfinished">Attachment</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="218"/>
       <source>Continue</source>
-      <translation>Fortsätt</translation>
+      <translation type="unfinished">Continue</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="262"/>
       <source>Edit attachment of {feat}</source>
-      <translation>Redigera koppling för {feat}</translation>
+      <translation type="unfinished">Edit attachment of {feat}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="349"/>
       <source>Ignored. Can't attach object to itself!</source>
-      <translation>Ignorerat. Kan inte koppla objekt till sig självt!</translation>
+      <translation type="unfinished">Ignored. Can't attach object to itself!</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="352"/>
       <source>{obj1} depends on object being attached, can't use it for attachment</source>
-      <translation>{obj1} har ett beroende till objektet som kopplas, kan inte använda det till koppling</translation>
+      <translation type="unfinished">{obj1} depends on object being attached, can't use it for attachment</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="497"/>
       <source>{mode} (add {morerefs})</source>
-      <translation>{mode} (lägg till {morerefs})</translation>
+      <translation type="unfinished">{mode} (add {morerefs})</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="500"/>
       <source>{mode} (add more references)</source>
-      <translation>{mode} (lägg till fler referenser)</translation>
+      <translation type="unfinished">{mode} (add more references)</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="530"/>
       <source>Reference combinations:</source>
-      <translation>Referenskombinationer:</translation>
+      <translation type="unfinished">Reference combinations:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="546"/>
       <source>Reference{i}</source>
-      <translation>Referens{i}</translation>
+      <translation type="unfinished">Reference{i}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="551"/>
       <source>Selecting...</source>
-      <translation>Markerar...</translation>
+      <translation>Väljer...</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="575"/>
       <source>Failed to resolve links. {err}</source>
-      <translation>Misslyckades att följa länkar. {err}</translation>
+      <translation type="unfinished">Failed to resolve links. {err}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="583"/>
       <source>Not attached</source>
-      <translation>Inte kopplad</translation>
+      <translation>Inte ansluten</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="585"/>
       <source>Attached with mode {mode}</source>
-      <translation>Kopplad i läge {mode}</translation>
+      <translation type="unfinished">Attached with mode {mode}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="592"/>
       <source>Error: {err}</source>
-      <translation>Fel: {err}</translation>
+      <translation type="unfinished">Error: {err}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="595"/>
       <source>Attachment Offset:</source>
-      <translation>Kopplingsförskjutning:</translation>
-    </message>
-    <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="608"/>
-      <source>Attachment Offset (in local coordinates):</source>
-      <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
+      <translation type="unfinished">Attachment Offset:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="598"/>
       <source>Attachment Offset (inactive - not attached):</source>
-      <translation>Kopplingsförskjutning (inaktiv - inte kopplad):</translation>
+      <translation type="unfinished">Attachment Offset (inactive - not attached):</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="80"/>
       <source>Attachment...</source>
-      <translation>Koppling...</translation>
+      <translation type="unfinished">Attachment...</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="82"/>
       <source>Edit attachment of selected object.</source>
-      <translation>Redigera koppling(ar) för markerat objekt.</translation>
+      <translation type="unfinished">Edit attachment of selected object.</translation>
     </message>
   </context>
   <context>
@@ -124,33 +119,22 @@
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="58"/>
       <source>Compound Filter</source>
-      <translation>Kompositionsfilter</translation>
-    </message>
-    <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="59"/>
-      <source>Filter out objects from a selected compound by characteristics like volume,
-area, or length, or by choosing specific items.
-If a second object is selected, it will be used as reference, for example,
-for collision or distance filtering.</source>
-      <translation type="unfinished">Filter out objects from a selected compound by characteristics like volume,
-area, or length, or by choosing specific items.
-If a second object is selected, it will be used as reference, for example,
-for collision or distance filtering.</translation>
+      <translation type="unfinished">Compound Filter</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="60"/>
       <source>Compound Filter: remove some childs from a compound</source>
-      <translation>Kompositionsfilter: ta bort några underformer från en komposition</translation>
+      <translation type="unfinished">Compound Filter: remove some childs from a compound</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="68"/>
       <source>Select a shape that is a compound, first! Second selected item (optional) will be treated as a stencil.</source>
-      <translation>Markera en form som är komposition, först! Det andra markerade föremålet (valbart) kommer behandlas som en stencil.</translation>
+      <translation type="unfinished">Select a shape that is a compound, first! Second selected item (optional) will be treated as a stencil.</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="73"/>
-      <source>First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</source>
-      <translation type="unfinished">First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</translation>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
+      <source>Bad selection</source>
+      <translation type="unfinished">Bad selection</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
@@ -159,27 +143,9 @@ for collision or distance filtering.</translation>
 {err}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Beräkning av resultatet misslyckades med ett fel:
-
-{err}
-
-Klicka på 'Fortsätt' för att skapa funktionen ändå, eller 'Avbryt' för att avbryta.</translation>
-    </message>
-    <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
-      <source>Bad selection</source>
-      <translation>Felaktig markering</translation>
-    </message>
-    <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="106"/>
-      <source>Computing the result failed with an error: 
-
-{errstr}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
       <translation type="unfinished">Computing the result failed with an error: 
 
-{errstr}
+{err}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
     </message>
@@ -189,34 +155,22 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="57"/>
       <source>Explode compound</source>
-      <translation>Dela upp komposition</translation>
-    </message>
-    <message>
-      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="58"/>
-      <source>Split up a compound of shapes into separate objects.
-It will create a 'Compound Filter' for each shape.</source>
-      <translation type="unfinished">Split up a compound of shapes into separate objects.
-It will create a 'Compound Filter' for each shape.</translation>
+      <translation type="unfinished">Explode compound</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="59"/>
       <source>Explode compound: split up a list of shapes into separate objects</source>
-      <translation>Dela upp komposition: dela upp en lista med former till separata objekt</translation>
+      <translation type="unfinished">Explode compound: split up a list of shapes into separate objects</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="67"/>
       <source>Select a shape that is a compound, first!</source>
-      <translation>Markera en form som är en komposition, först!</translation>
-    </message>
-    <message>
-      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="68"/>
-      <source>First select a shape that is a compound.</source>
-      <translation type="unfinished">First select a shape that is a compound.</translation>
+      <translation type="unfinished">Select a shape that is a compound, first!</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="68"/>
       <source>Bad selection</source>
-      <translation>Felaktig markering</translation>
+      <translation type="unfinished">Bad selection</translation>
     </message>
   </context>
   <context>
@@ -224,12 +178,12 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="186"/>
       <source>Connect objects</source>
-      <translation>Anslut objekt</translation>
+      <translation type="unfinished">Connect objects</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="188"/>
       <source>Fuses objects, taking care to preserve voids.</source>
-      <translation>Förenar objekt, och bevarar tomrum.</translation>
+      <translation type="unfinished">Fuses objects, taking care to preserve voids.</translation>
     </message>
   </context>
   <context>
@@ -237,12 +191,12 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="362"/>
       <source>Cutout for object</source>
-      <translation>Utklipp för objekt</translation>
+      <translation type="unfinished">Cutout for object</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="364"/>
       <source>Makes a cutout in one object to fit another object.</source>
-      <translation>Skapar ett utklipp i ett objekt passande ett annat objekt.</translation>
+      <translation type="unfinished">Makes a cutout in one object to fit another object.</translation>
     </message>
   </context>
   <context>
@@ -250,39 +204,16 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="273"/>
       <source>Embed object</source>
-      <translation>Omge objekt</translation>
+      <translation type="unfinished">Embed object</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="275"/>
       <source>Fuses one object into another, taking care to preserve voids.</source>
-      <translation>Förenar ett objekt med ett annat, och bevarar tomrum.</translation>
+      <translation type="unfinished">Fuses one object into another, taking care to preserve voids.</translation>
     </message>
   </context>
   <context>
     <name>Part_JoinFeatures</name>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="86"/>
-      <source>Computing the result failed with an error:
-
-{err}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error:
-
-{err}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="373"/>
-      <source>Bad selection</source>
-      <translation>Felaktig markering</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="89"/>
-      <source>Continue</source>
-      <translation>Fortsätt</translation>
-    </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="85"/>
       <source>Computing the result failed with an error: 
@@ -290,53 +221,61 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
 {err}
 
  Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Beräkning av resultatet misslyckades med ett fel:
+      <translation type="unfinished">Computing the result failed with an error: 
 
 {err}
 
-Klicka på 'Fortsätt' för att skapa funktionen ändå, eller 'Avbryt' för att avbryta.</translation>
+ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="373"/>
+      <source>Bad selection</source>
+      <translation type="unfinished">Bad selection</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="89"/>
+      <source>Continue</source>
+      <translation type="unfinished">Continue</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
       <source>Select at least two objects, or one or more compounds, first!</source>
-      <translation>Markera minst två objekt eller en eller flera kompositioner, först!</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="208"/>
-      <source>Select at least two objects, or one or more compounds</source>
-      <translation type="unfinished">Select at least two objects, or one or more compounds</translation>
+      <translation type="unfinished">Select at least two objects, or one or more compounds, first!</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="283"/>
       <source>Select base object, then the object to embed, and invoke this tool.</source>
-      <translation>Välj grundobjekt, sen objektet som ska omges, och använd sedan detta verktyg.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="304"/>
-      <source>Select base object, then the object to embed, and then invoke this tool.</source>
-      <translation type="unfinished">Select base object, then the object to embed, and then invoke this tool.</translation>
+      <translation type="unfinished">Select base object, then the object to embed, and invoke this tool.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
       <source>Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</source>
-      <translation>Välj objektet att göra ett utklipp i, sedan objektet som ska passa i utklippet, och använd sedan detta verktyg.</translation>
+      <translation type="unfinished">Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_MakeTube</name>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="59"/>
+      <source>Create tube</source>
+      <translation type="unfinished">Create tube</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="399"/>
-      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</source>
-      <translation type="unfinished">Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</translation>
+      <location filename="../../../BasicShapes/Shapes.py" line="62"/>
+      <source>Creates a tube</source>
+      <translation type="unfinished">Creates a tube</translation>
     </message>
   </context>
   <context>
     <name>Part_SplitFeatures</name>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
-      <source>Computing the result failed with an error:
+      <location filename="../../../BOPTools/SplitFeatures.py" line="446"/>
+      <source>Computing the result failed with an error: 
 
 {err}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error:
+      <translation type="unfinished">Computing the result failed with an error: 
 
 {err}
 
@@ -345,156 +284,62 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
       <source>Bad selection</source>
-      <translation>Felaktig markering</translation>
+      <translation type="unfinished">Bad selection</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
       <source>Continue</source>
-      <translation>Fortsätt</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="188"/>
-      <source>Boolean fragments</source>
-      <translation>Booleska fragment</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="190"/>
-      <source>Create a 'Boolean Fragments' object from two or more selected objects,
-or from the shapes inside a compound.
-This is a boolean union which is then sliced at the intersections
-of the original shapes.
-A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation type="unfinished">Create a 'Boolean Fragments' object from two or more selected objects,
-or from the shapes inside a compound.
-This is a boolean union which is then sliced at the intersections
-of the original shapes.
-A 'Compound Filter' can be used to extract the individual slices.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="543"/>
-      <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
-      <translation type="unfinished">Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
-      <source>Slice to compound</source>
-      <translation>Delning till komposition</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
-      <source>Slice a selected object by using other objects as cutting tools.
-The resulting pieces will be stored in a compound.
-A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation type="unfinished">Slice a selected object by using other objects as cutting tools.
-The resulting pieces will be stored in a compound.
-A 'Compound Filter' can be used to extract the individual slices.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="391"/>
-      <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
-      <translation type="unfinished">Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
-      <source>Slice apart</source>
-      <translation>Dela isär</translation>
+      <translation type="unfinished">Continue</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
       <source>Boolean Fragments</source>
-      <translation>Booleska fragment</translation>
+      <translation type="unfinished">Boolean Fragments</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
       <source>Split objects where they intersect</source>
-      <translation>Dela objekt där de skär varandra</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="312"/>
-      <source>Split object by intersections with other objects, and pack the pieces into a compound.</source>
-      <translation>Dela ett objekt där det skär andra objekt, och gör bitarna till en komposition.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="336"/>
-      <source>Split object by intersections with other objects.</source>
-      <translation>Dela ett objekt där det skär andra objekt.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
-      <source>Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</source>
-      <translation>Välj minst två objekt, först! Det första är objektet som ska delas; resten är objekt som det ska skäras mot.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
-      <source>Slice a selected object by other objects, and split it apart.
-It will create a 'Compound Filter' for each slice.</source>
-      <translation type="unfinished">Slice a selected object by other objects, and split it apart.
-It will create a 'Compound Filter' for each slice.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="446"/>
-      <source>Computing the result failed with an error: 
-
-{err}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Beräkning av resultatet misslyckades med ett fel:
-
-{err}
-
-Klicka på 'Fortsätt' för att skapa funktionen ändå, eller 'Avbryt' för att avbryta.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
-      <source>Remove intersection fragments</source>
-      <translation>Ta bort skärningsfragment</translation>
+      <translation type="unfinished">Split objects where they intersect</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="478"/>
       <source>Select at least two objects, or one or more compounds, first! If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
-      <translation>Välj minst två objekt eller en eller fler kompositioner, först! Om enbart en komposition är vald kommer underformerna att delas där dom skär varandra (annars är kompositioner där underformer skär varandra ogiltiga).</translation>
+      <translation type="unfinished">Select at least two objects, or one or more compounds, first! If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
+      <source>Slice to compound</source>
+      <translation type="unfinished">Slice to compound</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="312"/>
+      <source>Split object by intersections with other objects, and pack the pieces into a compound.</source>
+      <translation type="unfinished">Split object by intersections with other objects, and pack the pieces into a compound.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
+      <source>Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</source>
+      <translation type="unfinished">Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
+      <source>Slice apart</source>
+      <translation type="unfinished">Slice apart</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="336"/>
+      <source>Split object by intersections with other objects.</source>
+      <translation type="unfinished">Split object by intersections with other objects.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="468"/>
       <source>Boolean XOR</source>
-      <translation>Boolesk XOR</translation>
+      <translation type="unfinished">Boolean XOR</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="531"/>
-      <source>Perform an 'exclusive OR' boolean operation with two or more selected objects,
-or with the shapes inside a compound.
-This means the overlapping volumes of the shapes will be removed.
-A 'Compound Filter' can be used to extract the remaining pieces.</source>
-      <translation type="unfinished">Perform an 'exclusive OR' boolean operation with two or more selected objects,
-or with the shapes inside a compound.
-This means the overlapping volumes of the shapes will be removed.
-A 'Compound Filter' can be used to extract the remaining pieces.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Part_Tube</name>
-    <message>
-      <location filename="../../../BasicShapes/Shapes.py" line="85"/>
-      <source>Create tube</source>
-      <translation>Skapa tub</translation>
-    </message>
-    <message>
-      <location filename="../../../BasicShapes/Shapes.py" line="89"/>
-      <source>Creates a tube</source>
-      <translation>Skapar en tub</translation>
-    </message>
-  </context>
-  <context>
-    <name>Part_MakeTube</name>
-    <message>
-      <location filename="../../../BasicShapes/Shapes.py" line="59"/>
-      <source>Create tube</source>
-      <translation>Skapa tub</translation>
-    </message>
-    <message>
-      <location filename="../../../BasicShapes/Shapes.py" line="62"/>
-      <source>Creates a tube</source>
-      <translation>Skapar en tub</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
+      <source>Remove intersection fragments</source>
+      <translation type="unfinished">Remove intersection fragments</translation>
     </message>
   </context>
   <context>
@@ -503,7 +348,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="312"/>
       <source>Any</source>
       <comment>Attacher reference type</comment>
-      <translation>Vilken som</translation>
+      <translation>Någon</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="313"/>
@@ -545,7 +390,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="320"/>
       <source>Conic</source>
       <comment>Attacher reference type</comment>
-      <translation>Konisk</translation>
+      <translation>Koniska</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="321"/>
@@ -626,43 +471,43 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="269"/>
       <source>Deactivated</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>Deaktiverad</translation>
+      <translation>Avaktiverad</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="270"/>
       <source>Attachment is disabled. Point can be moved by editing Placement property.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Koppling är inaktiverad. Punkt kan flyttas genom att redigera placeringsegenskaper.</translation>
+      <translation>Fastsättning är inaktiverad. Punkt kan flyttas genom att redigera placeringsegenskaper.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="272"/>
       <source>Object's origin</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>Objekts origo</translation>
+      <translation>Objektets ursprung</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="273"/>
       <source>Point is put at object's Placement.Position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Punkt placeras på objekts placeringsposition. Fungerar för objekt med placeringar och ellips-/parabel-/hyperbelkanter.</translation>
+      <translation>Punkten placeras på objektets Placement.Position. Fungerar för objekt med placeringar och ellips/parabel/hyperbel-kanter.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="275"/>
       <source>Focus1</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>Fokus 1</translation>
+      <translation>Fokus1</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="276"/>
       <source>Focus of ellipse, parabola, hyperbola.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Fokus för ellips, parabel och hyperbel.</translation>
+      <translation>Fokus för ellips, parabel, hyperbel.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="278"/>
       <source>Focus2</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>Fokus 2</translation>
+      <translation>Fokus2</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="279"/>
@@ -674,25 +519,25 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="281"/>
       <source>On edge</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>På kant</translation>
+      <translation>På kanten</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="282"/>
       <source>Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Punkt placeras på kant, parametern MapPathParameter anger vart. Dessutom, hörnpunkt kan länkas in för att skapa en projicering.</translation>
+      <translation type="unfinished">Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="284"/>
       <source>Center of curvature</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>Centrum för böjning</translation>
+      <translation>Centrum för krökning</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="285"/>
       <source>Center of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Centrum för en kants oskulerande cirkel. Valbar hörnpunktslänk definierar var.</translation>
+      <translation type="unfinished">Center of osculating circle of an edge. Optional vertex link defines where.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="287"/>
@@ -704,7 +549,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="288"/>
       <source>Center of mass of all references (equal densities are assumed).</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Masscentrum för alla referenser (lika densiteter antas).</translation>
+      <translation type="unfinished">Center of mass of all references (equal densities are assumed).</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="290"/>
@@ -728,31 +573,31 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="294"/>
       <source>Put Datum point coincident with another vertex.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Sätt datumpunkt sammanfallande med en annan hörnpunkt.</translation>
+      <translation type="unfinished">Put Datum point coincident with another vertex.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="296"/>
       <source>Proximity point 1</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>Närhetspunkt 1</translation>
+      <translation type="unfinished">Proximity point 1</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="297"/>
       <source>Point on first reference that is closest to second reference.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Punkt på första referens som är närmast andra referens.</translation>
+      <translation type="unfinished">Point on first reference that is closest to second reference.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="299"/>
       <source>Proximity point 2</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>Närhetspunkt 2</translation>
+      <translation type="unfinished">Proximity point 2</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="300"/>
       <source>Point on second reference that is closest to first reference.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Punkt på andra referens som är närmast första referens.</translation>
+      <translation type="unfinished">Point on second reference that is closest to first reference.</translation>
     </message>
   </context>
   <context>
@@ -761,86 +606,86 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="200"/>
       <source>Deactivated</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Deaktiverad</translation>
+      <translation>Avaktiverad</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="201"/>
       <source>Attachment is disabled. Line can be moved by editing Placement property.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Koppling är deaktiverad. Linje kan flyttas genom att redigera placeringsegenskap.</translation>
+      <translation type="unfinished">Attachment is disabled. Line can be moved by editing Placement property.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="203"/>
       <source>Object's X</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Objekts X</translation>
+      <translation>Objektets X</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="204"/>
       <location filename="../../AttacherTexts.cpp" line="210"/>
       <source>Line is aligned along local X axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Linjen justeras längs objektets lokala X-axel. Fungerar på objekt med placering och ellips-/parabel-/hyperbelkanter.</translation>
+      <translation type="unfinished">Line is aligned along local X axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="206"/>
       <source>Object's Y</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Objekts Y</translation>
+      <translation>Objektets Y</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="207"/>
       <source>Line is aligned along local Y axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Linjen justeras längs objektets lokala Y-axel. Fungerar på objekt med placering och ellips-/parabel-/hyperbelkanter.</translation>
+      <translation type="unfinished">Line is aligned along local Y axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="209"/>
       <source>Object's Z</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Objekts Z</translation>
+      <translation>Objektets Z</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="212"/>
       <source>Axis of curvature</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Böjningsaxel</translation>
+      <translation>Krökningsaxel</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="213"/>
       <source>Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Linje som är en axel till böjd kants oskulerande cirkel. Valbar hörnpunkt definierar var.</translation>
+      <translation type="unfinished">Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="215"/>
       <source>Directrix1</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Ledlinje 1</translation>
+      <translation type="unfinished">Directrix1</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="216"/>
       <source>Directrix line for ellipse, parabola, hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Ledlinje för ellips/parabel/hyperbel.</translation>
+      <translation type="unfinished">Directrix line for ellipse, parabola, hyperbola.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="218"/>
       <source>Directrix2</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Ledlinje 2</translation>
+      <translation type="unfinished">Directrix2</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="219"/>
       <source>Second directrix line for ellipse and hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Andra ledlinje för ellips/hyperbel.</translation>
+      <translation type="unfinished">Second directrix line for ellipse and hyperbola.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="221"/>
       <source>Asymptote1</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Asymptot 1</translation>
+      <translation>Asymptot1</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="222"/>
@@ -852,13 +697,13 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="224"/>
       <source>Asymptote2</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Asymptot 2</translation>
+      <translation>Asymptot2</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="225"/>
       <source>Second asymptote of hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Andra asymptot för hyperbel.</translation>
+      <translation>Andra asymptoten för hyperbel.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="227"/>
@@ -870,19 +715,19 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="228"/>
       <source>Line tangent to an edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Linjetangent till en kant. Valbar hörnpunktslänk definierar var.</translation>
+      <translation type="unfinished">Line tangent to an edge. Optional vertex link defines where.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="230"/>
       <source>Normal to edge</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Normal till kant</translation>
+      <translation>Normal till kanten</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="231"/>
       <source>Align to N vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Justera till N-vektor i Frenet-Serret-koordinatsystem för böjd kurva. Valbar hörnpunktslänk definierar var.</translation>
+      <translation type="unfinished">Align to N vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="233"/>
@@ -894,26 +739,26 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="234"/>
       <source>Align to B vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Justera till B-vektor i Frenet-Serret-koordinatsystem för böjd kurva. Valbar hörnpunktslänk definierar var.</translation>
+      <translation type="unfinished">Align to B vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="236"/>
       <source>Tangent to surface (U)</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Tangent till yta (U)</translation>
+      <translation type="unfinished">Tangent to surface (U)</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="237"/>
       <location filename="../../AttacherTexts.cpp" line="240"/>
       <source>Tangent to surface, along U parameter. Vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Tangent till yta, längs parameter U. Hörnpunkt definierar vart.</translation>
+      <translation type="unfinished">Tangent to surface, along U parameter. Vertex link defines where.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="239"/>
       <source>Tangent to surface (V)</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Tangent till yta (V)</translation>
+      <translation type="unfinished">Tangent to surface (V)</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="242"/>
@@ -925,7 +770,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="243"/>
       <source>Line that passes through two vertices.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Linje som passerar genom två hörnpunkter.</translation>
+      <translation>Linje som passerar genom två punkter.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="245"/>
@@ -937,67 +782,67 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="246"/>
       <source>Not implemented.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Ej implementerat.</translation>
+      <translation type="unfinished">Not implemented.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="248"/>
       <source>Proximity line</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Närhetslinje</translation>
+      <translation type="unfinished">Proximity line</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="249"/>
       <source>Line that spans the shortest distance between shapes.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Linje för det kortaste avståndet mellan former.</translation>
+      <translation type="unfinished">Line that spans the shortest distance between shapes.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="251"/>
       <source>1st principal axis</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Första huvudaxel</translation>
+      <translation>Första huvudaxeln</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="252"/>
       <source>Line follows first principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Linje följer första huvudsakliga tröghetsaxel.</translation>
+      <translation>Linjen följer första tröghetsaxeln.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="254"/>
       <source>2nd principal axis</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Andra huvudaxel</translation>
+      <translation>Andra huvudaxeln</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="255"/>
       <source>Line follows second principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Linje följer andra huvudsakliga tröghetsaxel.</translation>
+      <translation>Linjen följer andra tröghetsaxeln.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="257"/>
       <source>3rd principal axis</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Tredje huvudaxel</translation>
+      <translation>Tredje huvudaxeln</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="258"/>
       <source>Line follows third principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Linje följer tredje huvudsakliga tröghetsaxel.</translation>
+      <translation>Linjen följer tredje tröghetsaxeln.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="260"/>
       <source>Normal to surface</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Normal för yta</translation>
+      <translation type="unfinished">Normal to surface</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="261"/>
       <source>Line perpendicular to surface at point set by vertex.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Linje som är vinkelrät mot yta vid punkt angiven av hörnpunkt.</translation>
+      <translation type="unfinished">Line perpendicular to surface at point set by vertex.</translation>
     </message>
   </context>
   <context>
@@ -1006,25 +851,25 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="125"/>
       <source>Deactivated</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Deaktiverad</translation>
+      <translation>Avaktiverad</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="126"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Koppling är inaktiverad. Objekt kan flyttas genom att redigera placeringsegenskap.</translation>
+      <translation type="unfinished">Attachment is disabled. Object can be moved by editing Placement property.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="128"/>
       <source>Translate origin</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Origo för förflyttning</translation>
+      <translation>Ursprung för förflyttning</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="129"/>
       <source>Origin is aligned to match Vertex. Orientation is controlled by Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Origo är justerad att matcha hörnpunkt. Riktning kontrolleras av placeringsegenskap.</translation>
+      <translation type="unfinished">Origin is aligned to match Vertex. Orientation is controlled by Placement property.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="131"/>
@@ -1036,7 +881,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="132"/>
       <source>Plane is aligned to XY local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Planet är justerat till lokala XY-planet för länkade objekt.</translation>
+      <translation>Planet är anpassad till lokala XY-planet för länkade objekt.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="134"/>
@@ -1048,7 +893,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="135"/>
       <source>Plane is aligned to XZ local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Planet är justerat till lokala XZ-planet för länkade objekt.</translation>
+      <translation>Planet är anpassad till lokala XZ-planet för länkade objekt.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="137"/>
@@ -1060,43 +905,43 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="138"/>
       <source>Plane is aligned to YZ local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Planet är justerat till lokala YZ-planet för länkade objekt.</translation>
+      <translation>Planet är anpassad till lokala YZ-planet för länkade objekt.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="140"/>
       <source>Plane face</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Planyta</translation>
+      <translation>Plan sida</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="141"/>
       <source>Plane is aligned to coincide planar face.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Plan är justerat att sammanfalla med planär yta.</translation>
+      <translation type="unfinished">Plane is aligned to coincide planar face.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="143"/>
       <source>Tangent to surface</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Tangent till yta</translation>
+      <translation>Tangenten till ytan</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="144"/>
       <source>Plane is made tangent to surface at vertex.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Plan görs tangent till yta vid hörnpunkt.</translation>
+      <translation type="unfinished">Plane is made tangent to surface at vertex.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="146"/>
       <source>Normal to edge</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Normal till kant</translation>
+      <translation>Normal till kanten</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="147"/>
       <source>Plane is made tangent to edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Plan görs till tangent till kant. Valbar hörnpunktslänk definierar var.</translation>
+      <translation type="unfinished">Plane is made tangent to edge. Optional vertex link defines where.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="149"/>
@@ -1110,7 +955,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="156"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Justera till Frenet-Serret-koordinatsystem för böjd kurva. Valbar hörnpunktslänk definierar var.</translation>
+      <translation type="unfinished">Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="152"/>
@@ -1128,49 +973,49 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="158"/>
       <source>Concentric</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Koncentrisk</translation>
+      <translation>Koncentriska</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="159"/>
       <source>Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Justera till plan för en kants oskulerande cirkel. Origo justeras till böjningspunkt. Valbar hörnpunktslänk definierar var.</translation>
+      <translation type="unfinished">Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="161"/>
       <source>Revolution Section</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Revolveringssnitt</translation>
+      <translation>Omloppssektion</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="162"/>
       <source>Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Plan görs vinkelrät mot kant, och Y-axel matchas med axel för oskulerande cirkel. Valbar hörnpunktslänk definierar var.</translation>
+      <translation type="unfinished">Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="164"/>
       <source>Plane by 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Plan utifrån tre punkter</translation>
+      <translation>Plan genom 3 punkter</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="165"/>
       <source>Align plane to pass through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Justera plan att skära igenom tre hörnpunkter.</translation>
+      <translation type="unfinished">Align plane to pass through three vertices.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="167"/>
       <source>Normal to 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Normal till tre punkter</translation>
+      <translation>Normal till 3 punkter</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="168"/>
       <source>Plane will pass through first two vertices, and perpendicular to plane that passes through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Planet kommer skära genom de två första hörnpunkterna, och vinkelrätt mot planet som skär genom tre hörnpunkter.</translation>
+      <translation type="unfinished">Plane will pass through first two vertices, and perpendicular to plane that passes through three vertices.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="170"/>
@@ -1188,7 +1033,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="173"/>
       <source>Inertia 2-3</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Tröghet 2-3</translation>
+      <translation type="unfinished">Inertia 2-3</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="174"/>
@@ -1203,61 +1048,61 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="50"/>
       <source>Deactivated</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Deaktiverad</translation>
+      <translation>Avaktiverad</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="51"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Koppling är inaktiverad. Objekt kan flyttas genom att redigera placeringsegenskap.</translation>
+      <translation type="unfinished">Attachment is disabled. Object can be moved by editing Placement property.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="53"/>
       <source>Translate origin</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Origo för förflyttning</translation>
+      <translation>Ursprung för förflyttning</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="54"/>
       <source>Origin is aligned to match Vertex. Orientation is controlled by Placement property.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Origo är justerad att matcha hörnpunkt. Riktning kontrolleras av placeringsegenskap.</translation>
+      <translation type="unfinished">Origin is aligned to match Vertex. Orientation is controlled by Placement property.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="56"/>
       <source>Object's  X Y Z</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Objekts X Y Z</translation>
+      <translation>Objektets X Y Z</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="57"/>
       <source>Placement is made equal to Placement of linked object.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Placering görs lika som placering av länkat objekt.</translation>
+      <translation>Placering görs lika med placeringen av länkade objekt.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="59"/>
       <source>Object's  X Z-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Objekts X Z -Y</translation>
+      <translation>Objektets X Z -Y</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="60"/>
       <source>X', Y', Z' axes are matched with object's local X, Z, -Y, respectively.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>X-, Y- och Z-axlarna matchas med objekts respektive lokala X-, Z- och -Y-axlar.</translation>
+      <translation>X', Y', Z' axlarna matchas med objektets lokala X, Z, -Y axlar.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="62"/>
       <source>Object's  Y Z X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Objekts Y Z X</translation>
+      <translation>Objektets Y Z X</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="63"/>
       <source>X', Y', Z' axes are matched with object's local Y, Z, X, respectively.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>X-, Y- och Z-axlarna matchas med objekts respektive lokala Y-, Z- och X-axlar.</translation>
+      <translation>X', Y', Z' axlarna matchas med objektets lokala Y, Z, X axlar.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="65"/>
@@ -1269,31 +1114,31 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="66"/>
       <source>X' Y' plane is aligned to coincide planar face.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>XY-plan justeras till att sammanfalla med plan yta.</translation>
+      <translation>X' Y' planet är justerad för att sammanfalla med plan sida.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="68"/>
       <source>XY tangent to surface</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>XY-tangent till yta</translation>
+      <translation>XY tangent till ytan</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="69"/>
       <source>X' Y' plane is made tangent to surface at vertex.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>XY-plan justeras till tangens för yta vid hörnpunkt.</translation>
+      <translation type="unfinished">X' Y' plane is made tangent to surface at vertex.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="71"/>
       <source>Z tangent to edge</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Z-tangent till kant</translation>
+      <translation>Z tangent till kant</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="72"/>
       <source>Z' axis is aligned to be tangent to edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Z-axel justeras till att vara tangent till kant. Valbar hörnpunktslänk definierar var.</translation>
+      <translation>Z' axel är anpassad för att vara tangent till kanten. Valfri vertexlänk definierar var.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="74"/>
@@ -1307,7 +1152,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="81"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Justera till Frenet-Serret-koordinatsystem för böjd kurva. Valbar hörnpunktslänk definierar var.</translation>
+      <translation type="unfinished">Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="77"/>
@@ -1325,49 +1170,49 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="83"/>
       <source>Concentric</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Koncentrisk</translation>
+      <translation>Koncentriska</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="84"/>
       <source>Align XY plane to osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Justera XY-plan till en kants oskulerande cirkel. Valbar hörnpunktslänk definierar var.</translation>
+      <translation type="unfinished">Align XY plane to osculating circle of an edge. Optional vertex link defines where.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="86"/>
       <source>Revolution Section</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Revolveringssnitt</translation>
+      <translation>Omloppssektion</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="87"/>
       <source>Align Y' axis to match axis of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Justera Y-axel till att matcha axel för en kants oskulerande cirkel. Valbar hörnpunktslänk definierar var.</translation>
+      <translation type="unfinished">Align Y' axis to match axis of osculating circle of an edge. Optional vertex link defines where.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="89"/>
       <source>XY plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>XY-plan utifrån tre punkter</translation>
+      <translation type="unfinished">XY plane by 3 points</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="90"/>
       <source>Align XY plane to pass through three vertices.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Justera XY-planet till att skära genom tre hörnpunkter.</translation>
+      <translation type="unfinished">Align XY plane to pass through three vertices.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="92"/>
       <source>XZ plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>XZ-plan utifrån tre punkter</translation>
+      <translation type="unfinished">XZ plane by 3 points</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="93"/>
       <source>Align XZ plane to pass through 3 points; X axis will pass through two first points.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Justera XZ-planet till att skära genom tre punkter; X-axeln kommer passera genom de två första punkterna.</translation>
+      <translation type="unfinished">Align XZ plane to pass through 3 points; X axis will pass through two first points.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="95"/>
@@ -1385,147 +1230,147 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="98"/>
       <source>Inertial CS</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Tröghets-KS</translation>
+      <translation type="unfinished">Inertial CS</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="99"/>
       <source>Inertial coordinate system, constructed on principal axes of inertia and center of mass.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Koordinatsystem för tröghet, konstruerad på huvudaxlar för tröghet och masscentrum.</translation>
+      <translation type="unfinished">Inertial coordinate system, constructed on principal axes of inertia and center of mass.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="101"/>
       <source>Align O-Z-X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Justera O-Z-X</translation>
+      <translation type="unfinished">Align O-Z-X</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="102"/>
       <source>Match origin with first Vertex. Align Z' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Matcha origo med första hörnpunkt. Justera Z- och X-axlar mot hörnpunkt/längs linje.</translation>
+      <translation type="unfinished">Match origin with first Vertex. Align Z' and X' axes towards vertex/along line.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="104"/>
       <source>Align O-Z-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Justera O-Z-Y</translation>
+      <translation type="unfinished">Align O-Z-Y</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="105"/>
       <source>Match origin with first Vertex. Align Z' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Matcha origo med första hörnpunkt. Justera Z- och Y-axlar mot hörnpunkt/längs linje.</translation>
+      <translation type="unfinished">Match origin with first Vertex. Align Z' and Y' axes towards vertex/along line.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="107"/>
       <location filename="../../AttacherTexts.cpp" line="182"/>
       <source>Align O-X-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Justera O-X-Y</translation>
+      <translation type="unfinished">Align O-X-Y</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="108"/>
       <source>Match origin with first Vertex. Align X' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Matcha origo med första hörnpunkt. Justera X- och Y-axlar mot hörnpunkt/längs linje.</translation>
+      <translation type="unfinished">Match origin with first Vertex. Align X' and Y' axes towards vertex/along line.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="110"/>
       <source>Align O-X-Z</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Justera O-X-Z</translation>
+      <translation type="unfinished">Align O-X-Z</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="111"/>
       <source>Match origin with first Vertex. Align X' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Matcha origo med första hörnpunkt. Justera X- och Z-axlar mot hörnpunkt/längs linje.</translation>
+      <translation type="unfinished">Match origin with first Vertex. Align X' and Z' axes towards vertex/along line.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="113"/>
       <source>Align O-Y-Z</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Justera O-Y-Z</translation>
+      <translation type="unfinished">Align O-Y-Z</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="114"/>
       <source>Match origin with first Vertex. Align Y' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Matcha origo med första hörnpunkt. Justera Y- och Z-axlar mot hörnpunkt/längs linje.</translation>
+      <translation type="unfinished">Match origin with first Vertex. Align Y' and Z' axes towards vertex/along line.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="116"/>
       <location filename="../../AttacherTexts.cpp" line="191"/>
       <source>Align O-Y-X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Justera O-Y-X</translation>
+      <translation type="unfinished">Align O-Y-X</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="117"/>
       <source>Match origin with first Vertex. Align Y' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Matcha origo med första hörnpunkt. Justera Y- och X-axlar mot hörnpunkt/längs linje.</translation>
+      <translation type="unfinished">Match origin with first Vertex. Align Y' and X' axes towards vertex/along line.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="176"/>
       <source>Align O-N-X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Justera O-N-X</translation>
+      <translation type="unfinished">Align O-N-X</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="177"/>
       <source>Match origin with first Vertex. Align normal and horizontal plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Matcha origo med första hörnpunkt. Justera normal och horisontell planaxel mot hörnpunkt/längs linje.</translation>
+      <translation type="unfinished">Match origin with first Vertex. Align normal and horizontal plane axis towards vertex/along line.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="179"/>
       <source>Align O-N-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Justera O-N-Y</translation>
+      <translation type="unfinished">Align O-N-Y</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="180"/>
       <source>Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Matcha origo med första hörnpunkt. Justera normal och vertikal planaxel mot hörnpunkt/längs linje.</translation>
+      <translation type="unfinished">Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="183"/>
       <source>Match origin with first Vertex. Align horizontal and vertical plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Matcha origo med första hörnpunkt. Justera horisontell och vertikal planaxel mot hörnpunkt/längs linje.</translation>
+      <translation type="unfinished">Match origin with first Vertex. Align horizontal and vertical plane axes towards vertex/along line.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="185"/>
       <source>Align O-X-N</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Justera O-X-N</translation>
+      <translation type="unfinished">Align O-X-N</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="186"/>
       <source>Match origin with first Vertex. Align horizontal plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Matcha origo med första hörnpunkt. Justera horisontell planaxel och normal mot hörnpunkt/längs linje.</translation>
+      <translation type="unfinished">Match origin with first Vertex. Align horizontal plane axis and normal towards vertex/along line.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="188"/>
       <source>Align O-Y-N</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Justera O-Y-N</translation>
+      <translation type="unfinished">Align O-Y-N</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="189"/>
       <source>Match origin with first Vertex. Align vertical plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Matcha origo med första hörnpunkt. Justera vertikal planaxel och normal mot hörnpunkt/längs linje.</translation>
+      <translation type="unfinished">Match origin with first Vertex. Align vertical plane axis and normal towards vertex/along line.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="192"/>
       <source>Match origin with first Vertex. Align vertical and horizontal plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Matcha origo med första hörnpunkt. Justera horisontell och vertikal planaxel mot hörnpunkt/längs linje.</translation>
+      <translation type="unfinished">Match origin with first Vertex. Align vertical and horizontal plane axes towards vertex/along line.</translation>
     </message>
   </context>
   <context>
@@ -1733,7 +1578,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../Command.cpp" line="2176"/>
       <location filename="../../Command.cpp" line="2177"/>
       <source>Measure Linear</source>
-      <translation>Mät linjärt</translation>
+      <translation>Mäta linjärt</translation>
     </message>
   </context>
   <context>
@@ -1747,7 +1592,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../Command.cpp" line="2298"/>
       <location filename="../../Command.cpp" line="2299"/>
       <source>Toggle 3d</source>
-      <translation>Växla 3D</translation>
+      <translation>Växla 3d</translation>
     </message>
   </context>
   <context>
@@ -1775,7 +1620,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../Command.cpp" line="2327"/>
       <location filename="../../Command.cpp" line="2328"/>
       <source>Toggle Delta</source>
-      <translation>Växla delta</translation>
+      <translation>Växla Delta</translation>
     </message>
   </context>
   <context>
@@ -1916,12 +1761,12 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="783"/>
       <source>Counpound tools</source>
-      <translation>Kompositionsverktyg</translation>
+      <translation type="unfinished">Counpound tools</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="784"/>
       <source>Compound tools: working with lists of shapes.</source>
-      <translation>Kompositionsverktyg: arbeta med formlistor.</translation>
+      <translation type="unfinished">Compound tools: working with lists of shapes.</translation>
     </message>
   </context>
   <context>
@@ -1957,7 +1802,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1722"/>
       <source>Tools to offset shapes (construct parallel shapes)</source>
-      <translation>Verktyg för göra förskjutning av former (konstruera parallella former)</translation>
+      <translation type="unfinished">Tools to offset shapes (construct parallel shapes)</translation>
     </message>
   </context>
   <context>
@@ -1975,7 +1820,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="662"/>
       <source>Shape splitting tools. Compsolid creation tools. OCC 6.9.0 or later is required.</source>
-      <translation>Verktyg för att dela former. Verktyg för att skapa kompositionsolider. OCC 6.9.0 eller senare krävs.</translation>
+      <translation type="unfinished">Shape splitting tools. Compsolid creation tools. OCC 6.9.0 or later is required.</translation>
     </message>
   </context>
   <context>
@@ -1988,12 +1833,12 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="890"/>
       <source>Make compound</source>
-      <translation>Skapa komposition</translation>
+      <translation>Förena</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="891"/>
       <source>Make a compound of several shapes</source>
-      <translation>Skapa en komposition av flera former</translation>
+      <translation>Förena flera former</translation>
     </message>
   </context>
   <context>
@@ -2082,12 +1927,12 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="272"/>
       <source>Defeaturing</source>
-      <translation>Avfunktionering</translation>
+      <translation type="unfinished">Defeaturing</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="273"/>
       <source>Remove feature from a shape</source>
-      <translation>Ta bort funktion från en form</translation>
+      <translation type="unfinished">Remove feature from a shape</translation>
     </message>
   </context>
   <context>
@@ -2213,7 +2058,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1566"/>
       <source>Utility to loft</source>
-      <translation>Verktyg för svepning</translation>
+      <translation>Verktyg för loftning</translation>
     </message>
   </context>
   <context>
@@ -2226,12 +2071,12 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1334"/>
       <source>Make face from wires</source>
-      <translation>Skapa yta från trådar</translation>
+      <translation>Gör sida från trådar</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1335"/>
       <source>Make face from set of wires (e.g. from a sketch)</source>
-      <translation>Skapa yta från från en uppsättning trådar (t.ex. från en skiss)</translation>
+      <translation type="unfinished">Make face from set of wires (e.g. from a sketch)</translation>
     </message>
   </context>
   <context>
@@ -2280,12 +2125,12 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1623"/>
       <source>3D Offset...</source>
-      <translation>3D-förskjutning...</translation>
+      <translation>3D Förskjutning...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1624"/>
       <source>Utility to offset in 3D</source>
-      <translation>Verktyg för att göra en förskjutning i 3D</translation>
+      <translation type="unfinished">Utility to offset in 3D</translation>
     </message>
   </context>
   <context>
@@ -2298,12 +2143,12 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1673"/>
       <source>2D Offset...</source>
-      <translation>2D-förskjutning...</translation>
+      <translation>2D Förskjutning...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1674"/>
       <source>Utility to offset planar shapes</source>
-      <translation>Verktyg för att göra en förskjutning av planära former</translation>
+      <translation type="unfinished">Utility to offset planar shapes</translation>
     </message>
   </context>
   <context>
@@ -2411,7 +2256,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1990"/>
       <source>Create a ruled surface from either two Edges or two wires</source>
-      <translation>Skapa en linjebyggd yta från antingen två kanter eller två trådar</translation>
+      <translation type="unfinished">Create a ruled surface from either two Edges or two wires</translation>
     </message>
   </context>
   <context>
@@ -2516,12 +2361,12 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1594"/>
       <source>Sweep...</source>
-      <translation>Svep...</translation>
+      <translation>Svepa...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1595"/>
       <source>Utility to sweep</source>
-      <translation>Verktyg för svepning</translation>
+      <translation>svepverktyg</translation>
     </message>
   </context>
   <context>
@@ -2588,7 +2433,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="20"/>
       <source>Selection accepted</source>
-      <translation>Markering accepterad</translation>
+      <translation>Val accepterat</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="35"/>
@@ -2613,17 +2458,17 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="101"/>
       <source>Attachment mode:</source>
-      <translation>Kopplingsläge:</translation>
+      <translation>Anslutningsläge:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="121"/>
       <source>AttachmentOffset property. The placement is expressed in local space of object being attached.</source>
-      <translation>Kopplingsförskjutningsegenskap. Placeringen uttrycks i lokal rymd för objekt som kopplas.</translation>
+      <translation type="unfinished">AttachmentOffset property. The placement is expressed in local space of object being attached.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="124"/>
       <source>Attachment Offset:</source>
-      <translation>Kopplingsförskjutning:</translation>
+      <translation type="unfinished">Attachment Offset:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="136"/>
@@ -2849,7 +2694,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="32"/>
       <source>If checked, direction of extrusion is reversed.</source>
-      <translation>Om detta är ikryssat vänds riktningen på extruderingen.</translation>
+      <translation>Om markerad, vänds riktningen på extruderingen.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="35"/>
@@ -2859,17 +2704,17 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="42"/>
       <source>Specify direction manually using X,Y,Z values.</source>
-      <translation>Ange riktning manuellt med X-, Y- och Z-värden.</translation>
+      <translation type="unfinished">Specify direction manually using X,Y,Z values.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="45"/>
       <source>Custom direction:</source>
-      <translation>Anpassad riktning:</translation>
+      <translation>Egen vald riktning:</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="52"/>
       <source>Extrude perpendicularly to plane of input shape.</source>
-      <translation>Extrudera vinkelrätt mot formens plan.</translation>
+      <translation type="unfinished">Extrude perpendicularly to plane of input shape.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="55"/>
@@ -2879,7 +2724,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="65"/>
       <source>Click to start selecting an edge in 3d view.</source>
-      <translation>Klicka för att börja markera en kant i 3D-vyn.</translation>
+      <translation type="unfinished">Click to start selecting an edge in 3d view.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="68"/>
@@ -2890,12 +2735,12 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="78"/>
       <source>Set direction to match a direction of straight edge. Hint: to account for length of the edge too, set both lengths to zero.</source>
-      <translation>Ange riktning till att matcha en rak kants riktning. Tips: för att använda kantens längd, ange båda längderna till noll.</translation>
+      <translation type="unfinished">Set direction to match a direction of straight edge. Hint: to account for length of the edge too, set both lengths to zero.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="81"/>
       <source>Along edge:</source>
-      <translation>Längs kant:</translation>
+      <translation>Längs kanten:</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="99"/>
@@ -2925,7 +2770,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="204"/>
       <source>Length to extrude along direction (can be negative). If both lengths are zero, magnitude of direction is used.</source>
-      <translation>Längd att extrudera längs riktning (kan vara negativ). Om båda längderna är noll, används riktningens längd.</translation>
+      <translation type="unfinished">Length to extrude along direction (can be negative). If both lengths are zero, magnitude of direction is used.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="223"/>
@@ -2935,12 +2780,12 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="242"/>
       <source>Length to extrude against direction (can be negative).</source>
-      <translation>Längd att extrudera längs motsatt riktning (kan vara negativ).</translation>
+      <translation type="unfinished">Length to extrude against direction (can be negative).</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="261"/>
       <source>Distribute extrusion length equally to both sides.</source>
-      <translation>Distribuera extruderingslängd jämnt på båda sidor.</translation>
+      <translation type="unfinished">Distribute extrusion length equally to both sides.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="264"/>
@@ -2950,18 +2795,18 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="276"/>
       <source>Taper outward angle</source>
-      <translation>Vinkel på sidoytor</translation>
+      <translation>Släppvinkel</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="289"/>
       <location filename="../../DlgExtrusion.ui" line="314"/>
       <source>Apply slope (draft) to extrusion side faces.</source>
-      <translation>Applicera lutning på extruderingens sidoytor.</translation>
+      <translation type="unfinished">Apply slope (draft) to extrusion side faces.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="335"/>
       <source>If checked, extruding closed wires will give solids, not shells.</source>
-      <translation>Om detta är ikryssat kommer extruderade slutna trådar skapa solider, inte skal.</translation>
+      <translation type="unfinished">If checked, extruding closed wires will give solids, not shells.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="338"/>
@@ -2976,7 +2821,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="181"/>
       <source>Selecting...</source>
-      <translation>Markerar...</translation>
+      <translation>Väljer...</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="422"/>
@@ -2989,52 +2834,50 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <source>Creating Extrusion failed.
 
 %1</source>
-      <translation>Misslyckades med att skapa extrudering.
-
-%1</translation>
+      <translation>Det gick inte att skapa extrudering. %1</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="542"/>
       <source>Object not found: %1</source>
-      <translation>Objekt hittadesinte: %1</translation>
+      <translation>Det gick inte att hitta objektet: %1</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="604"/>
       <source>No shapes selected for extrusion. Select some, first.</source>
-      <translation>Inga former markerade för extrudering. Markera några först.</translation>
+      <translation type="unfinished">No shapes selected for extrusion. Select some, first.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="625"/>
       <source>Extrusion direction link is invalid.
 
 %1</source>
-      <translation>Extruderingsriktningslänk är felaktig.
+      <translation type="unfinished">Extrusion direction link is invalid.
 
 %1</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="627"/>
       <source>Direction mode is to use an edge, but no edge is linked.</source>
-      <translation>Riktningsläge måste ha en kant, men ingen kant är länkad.</translation>
+      <translation type="unfinished">Direction mode is to use an edge, but no edge is linked.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="650"/>
       <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
 
 (%1)</source>
-      <translation>Kan inte bestämma normalvektor för formen som ska extruderas. Vänligen välj annat läge.
+      <translation type="unfinished">Can't determine normal vector of shape to be extruded. Please use other mode. 
 
 (%1)</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="660"/>
       <source>Extrusion direction is zero-length. It must be non-zero.</source>
-      <translation>Extruderingsriktning är nollängd. Den måste vara icke-noll.</translation>
+      <translation type="unfinished">Extrusion direction is zero-length. It must be non-zero.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="671"/>
       <source>Total extrusion length is zero (length1 == -length2). It must be nonzero.</source>
-      <translation>Total extruderingslängd är noll (längd1 == -längd2). Den måste vara icke-noll.</translation>
+      <translation type="unfinished">Total extrusion length is zero (length1 == -length2). It must be nonzero.</translation>
     </message>
   </context>
   <context>
@@ -3072,12 +2915,12 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="63"/>
       <source>Select edges</source>
-      <translation>Markera kanter</translation>
+      <translation>Välj kanter</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="73"/>
       <source>Select faces</source>
-      <translation>Markera ytor</translation>
+      <translation>Välj ytor</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="80"/>
@@ -3133,12 +2976,12 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../DlgFilletEdges.cpp" line="270"/>
       <location filename="../../DlgFilletEdges.cpp" line="835"/>
       <source>Start length</source>
-      <translation>Startlängd</translation>
+      <translation>Starta längd</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="271"/>
       <source>End length</source>
-      <translation>Slutlängd</translation>
+      <translation>Avsluta längd</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="274"/>
@@ -3211,7 +3054,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="26"/>
       <source>Units for export of IGES</source>
-      <translation>Enheter för exportering av IGES</translation>
+      <translation>Enheter för export av IGES</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="47"/>
@@ -3231,12 +3074,12 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="65"/>
       <source>Write solids and shells as</source>
-      <translation>Skriv solider och skal som</translation>
+      <translation>Skriva solider och skal som</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="71"/>
       <source>Groups of Trimmed Surfaces (type 144)</source>
-      <translation>Grupper av trimmade ytor (typ 144)</translation>
+      <translation>Grupper av putsade ytor (typ 144)</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="81"/>
@@ -3251,7 +3094,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="100"/>
       <source>Skip blank entities</source>
-      <translation>Hoppa över tomma entiteter</translation>
+      <translation>Hoppa över tomma enheter</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="110"/>
@@ -3271,7 +3114,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="139"/>
       <source>Author</source>
-      <translation>Upphovsman</translation>
+      <translation>Författare</translation>
     </message>
   </context>
   <context>
@@ -3294,7 +3137,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="36"/>
       <source>Author</source>
-      <translation>Upphovsman</translation>
+      <translation>Författare</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="46"/>
@@ -3324,17 +3167,17 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="97"/>
       <source>Units for export of STEP</source>
-      <translation>Enheter för exportering av STEP</translation>
+      <translation>Enheter för export av STEP</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="104"/>
       <source>Scheme</source>
-      <translation>Schema</translation>
+      <translation type="unfinished">Scheme</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="130"/>
       <source>Write out curves in parametric space of surface</source>
-      <translation>Skriv kurvor i parametrisk rymd från yta</translation>
+      <translation type="unfinished">Write out curves in parametric space of surface</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="153"/>
@@ -3344,12 +3187,12 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="159"/>
       <source>If this is checked, no Compound merge will be done during file reading (slower but higher details).</source>
-      <translation>Om detta är ikryssat kommer inga kompositioner att sammanfogas vid läsning av fil (långsammare men mer detaljerat).</translation>
+      <translation type="unfinished">If this is checked, no Compound merge will be done during file reading (slower but higher details).</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="162"/>
       <source>Enable STEP Compound merge</source>
-      <translation>Aktivera kompositionssammanfogning för STEP</translation>
+      <translation type="unfinished">Enable STEP Compound merge</translation>
     </message>
   </context>
   <context>
@@ -3677,12 +3520,12 @@ Välj en eller fler kanter först.</translation>
       <location filename="../../DlgPrimitives.ui" line="624"/>
       <location filename="../../DlgPrimitives.ui" line="815"/>
       <source>U parameter:</source>
-      <translation>U-parameter:</translation>
+      <translation>U parameter:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="631"/>
       <source>V parameters:</source>
-      <translation>V-parametrar:</translation>
+      <translation>V parametrar:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="768"/>
@@ -3693,12 +3536,12 @@ Välj en eller fler kanter först.</translation>
       <location filename="../../DlgPrimitives.ui" line="838"/>
       <location filename="../../DlgPrimitives.ui" line="928"/>
       <source>V parameter:</source>
-      <translation>V-parameter:</translation>
+      <translation>U parameter:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="905"/>
       <source>U Parameter:</source>
-      <translation>U-parameter:</translation>
+      <translation>U parameter:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1055"/>
@@ -3710,7 +3553,7 @@ Välj en eller fler kanter först.</translation>
       <location filename="../../DlgPrimitives.ui" line="1075"/>
       <location filename="../../DlgPrimitives.ui" line="1957"/>
       <source>Circumradius:</source>
-      <translation>Radie för omskriven cirkel:</translation>
+      <translation type="unfinished">Circumradius:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1126"/>
@@ -3858,7 +3701,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="32"/>
       <source>If checked, revolving wires will produce solids. If not, revolving a wire yields a shell.</source>
-      <translation>Om detta är ikryssat kommer revolverade trådar att skapa solider. Annars kommer de skapa ett skal.</translation>
+      <translation type="unfinished">If checked, revolving wires will produce solids. If not, revolving a wire yields a shell.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="35"/>
@@ -3878,7 +3721,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="111"/>
       <source>Revolution axis</source>
-      <translation>Roteringsaxel</translation>
+      <translation>Rotationsaxel</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="119"/>
@@ -3899,7 +3742,7 @@ Välj en eller fler kanter först.</translation>
       <location filename="../../DlgRevolution.ui" line="201"/>
       <location filename="../../DlgRevolution.ui" line="242"/>
       <source>Click to set this as axis</source>
-      <translation>Klicka för att ange denna som axel</translation>
+      <translation>Klicka för att ställa in denna som axel</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="204"/>
@@ -3920,12 +3763,12 @@ Välj en eller fler kanter först.</translation>
       <location filename="../../DlgRevolution.ui" line="305"/>
       <location filename="../../DlgRevolution.cpp" line="448"/>
       <source>Select reference</source>
-      <translation>Markera referens</translation>
+      <translation>Välj referens</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="325"/>
       <source>If checked, revolution will extend forwards and backwards by half the angle.</source>
-      <translation>Om detta är ikryssat kommer rotering att ske bakåt och framåt med halv vinkeln var.</translation>
+      <translation type="unfinished">If checked, revolution will extend forwards and backwards by half the angle.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="328"/>
@@ -3935,7 +3778,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../DlgRevolution.cpp" line="173"/>
       <source>Object not found: %1</source>
-      <translation>Objekt hittadesinte: %1</translation>
+      <translation>Det gick inte att hitta objektet: %1</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="254"/>
@@ -3949,19 +3792,19 @@ Välj en eller fler kanter först.</translation>
       <source>Revolution axis link is invalid.
 
 %1</source>
-      <translation>Länk för roteringsaxel för felaktig.
+      <translation type="unfinished">Revolution axis link is invalid.
 
 %1</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="289"/>
       <source>Revolution axis direction is zero-length. It must be non-zero.</source>
-      <translation>Riktning för roteringsaxel är nollängd. Den måste vara icke-noll.</translation>
+      <translation type="unfinished">Revolution axis direction is zero-length. It must be non-zero.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="299"/>
       <source>Revolution angle span is zero. It must be non-zero.</source>
-      <translation>Spann för roteringsvinkel är noll. Det måste vara icke-noll.</translation>
+      <translation type="unfinished">Revolution angle span is zero. It must be non-zero.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="428"/>
@@ -3969,14 +3812,12 @@ Välj en eller fler kanter först.</translation>
       <source>Creating Revolve failed.
 
 %1</source>
-      <translation>Misslyckades med att skapa revolvering.
-
-%1</translation>
+      <translation>Skapandet av revolvering misslyckades. %1</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="444"/>
       <source>Selecting... (line or arc)</source>
-      <translation>Markerar... (linje eller båge)</translation>
+      <translation>Väljer... (linje eller båge)</translation>
     </message>
   </context>
   <context>
@@ -4004,7 +3845,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="90"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tesselering&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Anger den maximala avvikelsen för det tesselerade nätet mot ytan. Ju mindre värdet är desto långsammare rendering vilket ger högre detaljering/upplösning.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="93"/>
@@ -4014,9 +3855,9 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="100"/>
       <source>Maximum angular deflection</source>
-      <translation>Maximal vinkelavvikelse</translation>
+      <translation>Största vinkelavvikelse</translation>
     </message>
-    <message>
+    <message utf8="true">
       <location filename="../../DlgSettings3DViewPart.ui" line="107"/>
       <source> °</source>
       <translation> °</translation>
@@ -4057,7 +3898,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="52"/>
       <source>Automatically refine model after sketch-based operation</source>
-      <translation>Förfina automatiskt modell efter skissbaserad operation</translation>
+      <translation>Automatiskt förfina modell efter skissbaserad operation</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="68"/>
@@ -4067,7 +3908,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="74"/>
       <source>Add name of base object</source>
-      <translation>Lägg till namn på basobjekt</translation>
+      <translation>Lägg till namn på basobjektet</translation>
     </message>
   </context>
   <context>
@@ -4075,33 +3916,33 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="14"/>
       <source>Part colors</source>
-      <translation>Komponentfärger</translation>
+      <translation>Färger för detaljer</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="20"/>
       <source>Default Part colors</source>
-      <translation>Standardfärger för komponenter</translation>
+      <translation>Standardfärger för detaljer</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="34"/>
       <source>Default vertex color</source>
-      <translation>Standardfärg för hörnpunkt</translation>
+      <translation>Standard vertexfärg</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="47"/>
       <source>Bounding box color</source>
-      <translation>Färg på beränsningsbox</translation>
+      <translation>Färg på beränsningsboxen</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="60"/>
       <source>Default shape color</source>
-      <translation>Standardfärg för former</translation>
+      <translation>Standard formfärg</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="67"/>
       <location filename="../../DlgSettingsObjectColor.ui" line="210"/>
       <source>The default line color for new shapes</source>
-      <translation>Standardfärgen för nya formers linjer</translation>
+      <translation>Standard linjefärg för nya former</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="87"/>
@@ -4112,7 +3953,7 @@ Välj en eller fler kanter först.</translation>
       <location filename="../../DlgSettingsObjectColor.ui" line="107"/>
       <location filename="../../DlgSettingsObjectColor.ui" line="129"/>
       <source>The default line thickness for new shapes</source>
-      <translation>Standardtjockleken för nya formers linjer</translation>
+      <translation>Standard linjetjocklek för nya former</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="110"/>
@@ -4123,17 +3964,17 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="151"/>
       <source>The color of bounding boxes in the 3D view</source>
-      <translation>Färgen på begränsningsboxar i 3D-vyn</translation>
+      <translation>Färgen på begränsningsboxen i 3D-vyn</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="177"/>
       <source>Default vertex size</source>
-      <translation>Standardstorlek för hörnpunkt</translation>
+      <translation>Standard vertexstorlek</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="190"/>
       <source>Default line width</source>
-      <translation>Standardlinjetjocklek</translation>
+      <translation>Standardlinjebredd</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="203"/>
@@ -4143,17 +3984,17 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="230"/>
       <source>Random shape color</source>
-      <translation>Slumpmässig formfärg</translation>
+      <translation type="unfinished">Random shape color</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="261"/>
       <source>Annotations</source>
-      <translation>Annoteringar</translation>
+      <translation>Noteringar</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="275"/>
       <source>Default text color</source>
-      <translation>Standardfärg för text</translation>
+      <translation>Standardtextfärg</translation>
     </message>
   </context>
   <context>
@@ -4192,12 +4033,12 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="80"/>
       <source>Available profiles</source>
-      <translation>Tillgängliga profiler</translation>
+      <translation type="unfinished">Available profiles</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="81"/>
       <source>Selected profiles</source>
-      <translation>Valda profiler</translation>
+      <translation type="unfinished">Selected profiles</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="180"/>
@@ -4207,7 +4048,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="180"/>
       <source>At least two vertices, edges, wires or faces are required.</source>
-      <translation>Minst två hörnpunkter, kanter, trådar eller ytor krävs.</translation>
+      <translation type="unfinished">At least two vertices, edges, wires or faces are required.</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="214"/>
@@ -4217,7 +4058,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="243"/>
       <source>Vertex/Edge/Wire/Face</source>
-      <translation>Hörnpunkt/kant/tråd/yta</translation>
+      <translation>Vertex/kant/tråd/sida</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="244"/>
@@ -4342,7 +4183,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="296"/>
       <source>Select three or more vertices</source>
-      <translation>Markera tre eller fler hörnpunkter</translation>
+      <translation>Välj tre eller flera hörn</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="400"/>
@@ -4362,12 +4203,12 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="522"/>
       <source>Select adjacent edges</source>
-      <translation>Markera angränsande kanter</translation>
+      <translation type="unfinished">Select adjacent edges</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="529"/>
       <source>Select a list of vertices</source>
-      <translation>Markera en lista av hörnpunkter</translation>
+      <translation>Välj en lista av hörn</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="536"/>
@@ -4390,12 +4231,12 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="136"/>
       <source>Available profiles</source>
-      <translation>Tillgängliga profiler</translation>
+      <translation type="unfinished">Available profiles</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="137"/>
       <source>Selected profiles</source>
-      <translation>Valda profiler</translation>
+      <translation type="unfinished">Selected profiles</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="282"/>
@@ -4407,7 +4248,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="282"/>
       <source>Select one or more connected edges you want to sweep along.</source>
-      <translation>Markera en eller fler anslutna kanter du vill svepa längs.</translation>
+      <translation type="unfinished">Select one or more connected edges you want to sweep along.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="310"/>
@@ -4427,7 +4268,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="317"/>
       <source>'%1' cannot be used as profile and path.</source>
-      <translation>'%1' kan inte användas som profil och bana.</translation>
+      <translation type="unfinished">'%1' cannot be used as profile and path.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="355"/>
@@ -4442,13 +4283,13 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="390"/>
       <source>Select one or more connected edges in the 3d view and press 'Done'</source>
-      <translation>Markera en eller fler anslutna kanter i 3D-vyn och tryck på 'Klar'</translation>
+      <translation type="unfinished">Select one or more connected edges in the 3d view and press 'Done'</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="414"/>
       <location filename="../../TaskSweep.cpp" line="422"/>
       <source>The selected sweep path is invalid.</source>
-      <translation>Den valda svepbanan är felaktig.</translation>
+      <translation type="unfinished">The selected sweep path is invalid.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="434"/>
@@ -4471,7 +4312,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="20"/>
       <source>Selection accepted</source>
-      <translation>Markering accepterad</translation>
+      <translation>Val accepterat</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="35"/>
@@ -4496,18 +4337,18 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="101"/>
       <source>Attachment mode:</source>
-      <translation>Kopplingsläge:</translation>
+      <translation>Anslutningsläge:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="121"/>
       <source>AttachmentOffset property. The placement is expressed in local space of object being attached.</source>
-      <translation>Kopplingsförskjutningsegenskap. Placeringen uttrycks i lokal rymd för objekt som kopplas.</translation>
+      <translation type="unfinished">AttachmentOffset property. The placement is expressed in local space of object being attached.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="124"/>
       <location filename="../../TaskAttacher.cpp" line="319"/>
       <source>Attachment Offset:</source>
-      <translation>Kopplingsförskjutning:</translation>
+      <translation type="unfinished">Attachment Offset:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="136"/>
@@ -4547,7 +4388,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="302"/>
       <source>OCC error: %1</source>
-      <translation>OCC-fel: %1</translation>
+      <translation>OCC fel: %1</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="304"/>
@@ -4557,22 +4398,22 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="307"/>
       <source>Attachment mode failed: %1</source>
-      <translation>Kopplingsläge misslyckades: %1</translation>
+      <translation type="unfinished">Attachment mode failed: %1</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="311"/>
       <source>Not attached</source>
-      <translation>Inte kopplad</translation>
+      <translation>Inte ansluten</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="315"/>
       <source>Attached with mode %1</source>
-      <translation>Kopplad med läge %1</translation>
+      <translation type="unfinished">Attached with mode %1</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="319"/>
       <source>Attachment Offset (inactive - not attached):</source>
-      <translation>Kopplingsförskjutning (inaktiv - inte kopplad):</translation>
+      <translation type="unfinished">Attachment Offset (inactive - not attached):</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="618"/>
@@ -4592,7 +4433,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="690"/>
       <source>Selecting...</source>
-      <translation>Markerar...</translation>
+      <translation>Väljer...</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="694"/>
@@ -4602,12 +4443,12 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="740"/>
       <source>Not editable because rotation part of AttachmentOffset is bound by expressions.</source>
-      <translation>Inte redigerbar för att rotationsdel av kopplingsförskjutning är bunden till uttryck.</translation>
+      <translation type="unfinished">Not editable because rotation part of AttachmentOffset is bound by expressions.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="804"/>
       <source>Reference combinations:</source>
-      <translation>Referenskombinationer:</translation>
+      <translation type="unfinished">Reference combinations:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="821"/>
@@ -4638,7 +4479,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="421"/>
       <source>Check geometry</source>
-      <translation>Kontrollera geometri</translation>
+      <translation type="unfinished">Check geometry</translation>
     </message>
   </context>
   <context>
@@ -4646,7 +4487,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1057"/>
       <source>Datum dialog: Input error</source>
-      <translation>Datumdialog: Inmatningsfel</translation>
+      <translation type="unfinished">Datum dialog: Input error</translation>
     </message>
   </context>
   <context>
@@ -4726,7 +4567,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="52"/>
       <source>RectoVerso</source>
-      <translation>Bakåt-framåt</translation>
+      <translation type="unfinished">RectoVerso</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="60"/>
@@ -4752,7 +4593,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="93"/>
       <source>Self-intersection</source>
-      <translation>Självkorsning</translation>
+      <translation>Självskärning</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="100"/>
@@ -4781,7 +4622,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="26"/>
       <source>Face from vertices</source>
-      <translation>Yta från hörnpunkter</translation>
+      <translation>Sida från hörn</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="33"/>
@@ -4826,7 +4667,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="116"/>
       <source>Wire from edges</source>
-      <translation>Tråd från kanter</translation>
+      <translation type="unfinished">Wire from edges</translation>
     </message>
   </context>
   <context>
@@ -4839,7 +4680,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskSweep.ui" line="23"/>
       <source>Sweep Path</source>
-      <translation>Svepbana</translation>
+      <translation>Sveplinje</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="50"/>
@@ -4893,37 +4734,37 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../App/FaceMaker.cpp" line="177"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
-      <translation>Skapar plana ytor från varje tråd separat. Inget stöd för hål; trådar kan vara i olika plan.</translation>
+      <translation>Skapar plana sidor från varje tråd separat. Inget stöd för hål; trådar kan vara i olika plan.</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="69"/>
       <source>Bull's-eye facemaker</source>
-      <translation>Ytskapare mitt-i-prick</translation>
+      <translation>Bull's-eye sidgörare</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="74"/>
       <source>Supports making planar faces with holes with islands.</source>
-      <translation>Stöder skapande av plana ytor med hål med öar.</translation>
+      <translation>Stödjer skapandet av plana sidor med hål med öar.</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerCheese.cpp" line="248"/>
       <source>Cheese facemaker</source>
-      <translation>Ytskapare schweizerost</translation>
+      <translation>Ost sidgörare</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerCheese.cpp" line="253"/>
       <source>Supports making planar faces with holes, but no islands inside holes.</source>
-      <translation>Stöder plana ytor med hål, men inga öar i hålen.</translation>
+      <translation>Stödjer plana sidor med hål, men inga öar i hålen.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrusion.cpp" line="515"/>
       <source>Part Extrude facemaker</source>
-      <translation>Ytskapare för komponentextrudering</translation>
+      <translation>Delextruderings-sidgörare</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrusion.cpp" line="520"/>
       <source>Supports making faces with holes, does not support nesting.</source>
-      <translation>Stöder skapande av ytor med hål, stöder inte packning.</translation>
+      <translation type="unfinished">Supports making faces with holes, does not support nesting.</translation>
     </message>
   </context>
   <context>
@@ -4966,7 +4807,7 @@ in the 3D view for the sweep path.</source>
       <location filename="../../Command.cpp" line="397"/>
       <location filename="../../Command.cpp" line="499"/>
       <source>Non-solids selected</source>
-      <translation>Icke-solider markerade</translation>
+      <translation>Inga solider valda</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="296"/>
@@ -4974,23 +4815,22 @@ in the 3D view for the sweep path.</source>
       <location filename="../../Command.cpp" line="500"/>
       <source>The use of non-solids for boolean operations may lead to unexpected results.
 Do you want to continue?</source>
-      <translation>Användandet av icke-solider för booleska operationer kan leda till oväntade resultat.
-Vill du fortsätta?</translation>
+      <translation>Användandet av icke-solider för booleanska operationer kan leda till oväntade resultat. Vill du fortsätta?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="382"/>
       <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</source>
-      <translation>Vänligen markera två eller fler former. Eller välj en komposition som innehåller minst två former att beräkna korsning emellan.</translation>
+      <translation type="unfinished">Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="484"/>
       <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</source>
-      <translation>Vänligen markera två eller fler former. Eller välj en komposition som innehåller minst två former att förena.</translation>
+      <translation>Välj två eller fler former. Eller välj en sammansättning som inehåller minst två former.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="903"/>
       <source>Select one shape or more, please.</source>
-      <translation>Vänligen välj en eller fler former.</translation>
+      <translation>Välj en form eller fler.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1107"/>
@@ -5021,7 +4861,7 @@ Vill du fortsätta?</translation>
       <location filename="../../TaskAttacher.cpp" line="71"/>
       <location filename="../../TaskAttacher.cpp" line="104"/>
       <source>No reference selected</source>
-      <translation>Ingen referens markerad</translation>
+      <translation>Ingen referens vald</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="80"/>
@@ -5204,7 +5044,7 @@ Vill du fortsätta?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="127"/>
       <source>Unorientable Shape</source>
-      <translation>Oriktningsbar form</translation>
+      <translation type="unfinished">Unorientable Shape</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="128"/>
@@ -5249,67 +5089,67 @@ Vill du fortsätta?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="148"/>
       <source>Out Of Enum Range: </source>
-      <translation>Utanför enum-intervall: </translation>
+      <translation type="unfinished">Out Of Enum Range: </translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="160"/>
       <source>BOPAlgo CheckUnknown</source>
-      <translation>Boolesk funktionsalgoritm okänd testning</translation>
+      <translation type="unfinished">BOPAlgo CheckUnknown</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="161"/>
       <source>BOPAlgo BadType</source>
-      <translation>Boolesk funktionsalgoritm felaktig typ</translation>
+      <translation type="unfinished">BOPAlgo BadType</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="162"/>
       <source>BOPAlgo SelfIntersect</source>
-      <translation>Boolesk funktionsalgoritm självkorsande</translation>
+      <translation type="unfinished">BOPAlgo SelfIntersect</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="163"/>
       <source>BOPAlgo TooSmallEdge</source>
-      <translation>Boolesk funktionsalgoritm för liten kant</translation>
+      <translation type="unfinished">BOPAlgo TooSmallEdge</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="164"/>
       <source>BOPAlgo NonRecoverableFace</source>
-      <translation>Boolesk funktionsalgoritm ej återhämtningsbar yta</translation>
+      <translation type="unfinished">BOPAlgo NonRecoverableFace</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="165"/>
       <source>BOPAlgo IncompatibilityOfVertex</source>
-      <translation>Boolesk funktionsalgoritm inkompatibilitet för hörnpunkt</translation>
+      <translation type="unfinished">BOPAlgo IncompatibilityOfVertex</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="166"/>
       <source>BOPAlgo IncompatibilityOfEdge</source>
-      <translation>Boolesk funktionsalgoritm inkompatibilitet för kant</translation>
+      <translation type="unfinished">BOPAlgo IncompatibilityOfEdge</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="167"/>
       <source>BOPAlgo IncompatibilityOfFace</source>
-      <translation>Boolesk funktionsalgoritm inkompatibilitet för yta</translation>
+      <translation type="unfinished">BOPAlgo IncompatibilityOfFace</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="168"/>
       <source>BOPAlgo OperationAborted</source>
-      <translation>Boolesk funktionsalgoritm avbruten</translation>
+      <translation type="unfinished">BOPAlgo OperationAborted</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="169"/>
       <source>BOPAlgo GeomAbs_C0</source>
-      <translation>Boolesk funktionsalgoritm "GeomAbs_C0"</translation>
+      <translation type="unfinished">BOPAlgo GeomAbs_C0</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="170"/>
       <source>BOPAlgo_InvalidCurveOnSurface</source>
-      <translation>Boolesk funktionsalgoritm felaktig kurva på yta</translation>
+      <translation type="unfinished">BOPAlgo_InvalidCurveOnSurface</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="171"/>
       <source>BOPAlgo NotValid</source>
-      <translation>Boolesk funktionsalgoritm felaktig</translation>
+      <translation type="unfinished">BOPAlgo NotValid</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="463"/>
@@ -5321,7 +5161,7 @@ Vill du fortsätta?</translation>
       <location filename="../../TaskDimension.cpp" line="556"/>
       <location filename="../../TaskDimension.cpp" line="1602"/>
       <source>Selections</source>
-      <translation>Markeringar</translation>
+      <translation>Val</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="563"/>
@@ -5332,17 +5172,17 @@ Vill du fortsätta?</translation>
     <message>
       <location filename="../../TaskDimension.cpp" line="1340"/>
       <source>Reset Dialog</source>
-      <translation>Dialogruta återställ</translation>
+      <translation>Återställ dialogrutan</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1344"/>
       <source>Toggle 3d</source>
-      <translation>Växla 3D</translation>
+      <translation>Växla 3d</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1349"/>
       <source>Toggle Delta</source>
-      <translation>Växla delta</translation>
+      <translation>Växla Delta</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1354"/>
@@ -5430,7 +5270,7 @@ Vill du fortsätta?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
       <source>Split</source>
-      <translation>Dela</translation>
+      <translation type="unfinished">Split</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>

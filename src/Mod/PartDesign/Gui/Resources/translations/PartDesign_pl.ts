@@ -6,17 +6,17 @@
     <message>
       <location filename="../../Command.cpp" line="1403"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projektowanie Części "Part"</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1404"/>
       <source>Additive loft</source>
-      <translation>Uzupełnianie wyciągnięciem po profilach</translation>
+      <translation>Dodatkowy loft</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1405"/>
       <source>Loft a selected profile through other profile sections</source>
-      <translation>Przeprowadź wybrany profil przez inne sekcje profilu</translation>
+      <translation>Loftuj wybrany profil za pośrednictwem innych sekcji profilu</translation>
     </message>
   </context>
   <context>
@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="1303"/>
       <source>PartDesign</source>
-      <translation>Projekt części</translation>
+      <translation>Projektowanie Części "Part"</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1304"/>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="91"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projektowanie Części "Part"</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="92"/>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../Command.cpp" line="2235"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projektowanie Części "Part"</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2236"/>
@@ -78,17 +78,17 @@
     <message>
       <location filename="../../Command.cpp" line="242"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projektowanie Części "Part"</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="243"/>
       <source>Create a local coordinate system</source>
-      <translation>Utwórz lokalny system współrzędnych</translation>
+      <translation type="unfinished">Create a local coordinate system</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="244"/>
       <source>Create a new local coordinate system</source>
-      <translation>Utwórz nowy system współrzędnych lokalnych</translation>
+      <translation type="unfinished">Create a new local coordinate system</translation>
     </message>
   </context>
   <context>
@@ -96,17 +96,17 @@
     <message>
       <location filename="../../Command.cpp" line="1635"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projektowanie Części "Part"</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1636"/>
       <source>Chamfer</source>
-      <translation>Fazka</translation>
+      <translation>Faza</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1637"/>
       <source>Chamfer the selected edges of a shape</source>
-      <translation>Fazuj wybrane krawędzie obiektu</translation>
+      <translation>Sfazuj wybrane krawędzie obiektu</translation>
     </message>
   </context>
   <context>
@@ -114,7 +114,7 @@
     <message>
       <location filename="../../Command.cpp" line="339"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projektowanie Części "Part"</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="340"/>
@@ -132,7 +132,7 @@
     <message>
       <location filename="../../Command.cpp" line="1664"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projektowanie Części "Part"</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1665"/>
@@ -142,7 +142,7 @@
     <message>
       <location filename="../../Command.cpp" line="1666"/>
       <source>Make a draft on a face</source>
-      <translation>Tworzenie szkicu na ścianie</translation>
+      <translation>Tworzenie szkicu na obszarze</translation>
     </message>
   </context>
   <context>
@@ -150,7 +150,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="632"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projektowanie Części "Part"</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="633"/>
@@ -168,7 +168,7 @@
     <message>
       <location filename="../../Command.cpp" line="1607"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projektowanie Części "Part"</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1608"/>
@@ -186,7 +186,7 @@
     <message>
       <location filename="../../Command.cpp" line="1235"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projektowanie Części "Part"</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1236"/>
@@ -204,12 +204,12 @@
     <message>
       <location filename="../../Command.cpp" line="1129"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projektowanie Części "Part"</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1130"/>
       <source>Hole</source>
-      <translation>Otwór</translation>
+      <translation>Dziura</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1131"/>
@@ -222,7 +222,7 @@
     <message>
       <location filename="../../Command.cpp" line="186"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projektowanie Części "Part"</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="187"/>
@@ -240,7 +240,7 @@
     <message>
       <location filename="../../Command.cpp" line="1941"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projektowanie Części "Part"</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1942"/>
@@ -258,7 +258,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="338"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projektowanie Części "Part"</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="339"/>
@@ -276,12 +276,12 @@
     <message>
       <location filename="../../Command.cpp" line="1877"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projektowanie Części "Part"</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1878"/>
       <source>Mirrored</source>
-      <translation>Odbicie lustrzane</translation>
+      <translation>Dublowane</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1879"/>
@@ -294,7 +294,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="688"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projektowanie Części "Part"</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="689"/>
@@ -312,7 +312,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="851"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projektowanie Części "Part"</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="852"/>
@@ -330,7 +330,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="552"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projektowanie Części "Part"</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="553"/>
@@ -348,7 +348,7 @@
     <message>
       <location filename="../../Command.cpp" line="2114"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projektowanie Części "Part"</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2115"/>
@@ -366,12 +366,12 @@
     <message>
       <location filename="../../Command.cpp" line="400"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projektowanie Części "Part"</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="401"/>
       <source>Create sketch</source>
-      <translation>Utwórz szkic</translation>
+      <translation>Tworzenie szkicu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="402"/>
@@ -384,7 +384,7 @@
     <message>
       <location filename="../../Command.cpp" line="1031"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projektowanie Części "Part"</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1032"/>
@@ -402,7 +402,7 @@
     <message>
       <location filename="../../Command.cpp" line="158"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projektowanie Części "Part"</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="159"/>
@@ -420,7 +420,7 @@
     <message>
       <location filename="../../Command.cpp" line="1082"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projektowanie Części "Part"</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1083"/>
@@ -438,7 +438,7 @@
     <message>
       <location filename="../../Command.cpp" line="214"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projektowanie Części "Part"</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="215"/>
@@ -456,7 +456,7 @@
     <message>
       <location filename="../../Command.cpp" line="2007"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projektowanie Części "Part"</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2008"/>
@@ -474,7 +474,7 @@
     <message>
       <location filename="../../Command.cpp" line="1175"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projektowanie Części "Part"</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1176"/>
@@ -484,7 +484,7 @@
     <message>
       <location filename="../../Command.cpp" line="1177"/>
       <source>Revolve a selected sketch</source>
-      <translation>Wyciągnij zaznaczony szkic przez obrót</translation>
+      <translation>Wyciągnij przez obrót zaznaczony szkic</translation>
     </message>
   </context>
   <context>
@@ -492,7 +492,7 @@
     <message>
       <location filename="../../Command.cpp" line="2074"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projektowanie Części "Part"</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2075"/>
@@ -510,7 +510,7 @@
     <message>
       <location filename="../../Command.cpp" line="274"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projektowanie Części "Part"</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="275"/>
@@ -528,17 +528,17 @@
     <message>
       <location filename="../../Command.cpp" line="1453"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projektowanie Części "Part"</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1454"/>
       <source>Subtractive loft</source>
-      <translation>Odejmowanie wyciągnięciem po profilach</translation>
+      <translation>Subtraktywny loft</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1455"/>
       <source>Loft a selected profile through other profile sections and remove it from the body</source>
-      <translation>Przeprowadź wybrany profil przez inne profile i usuń go z zawartości</translation>
+      <translation>Loftuj wybrany profil poprzez inne sekcje profilu i usuń je z zawartości</translation>
     </message>
   </context>
   <context>
@@ -546,7 +546,7 @@
     <message>
       <location filename="../../Command.cpp" line="1353"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projektowanie Części "Part"</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1354"/>
@@ -564,7 +564,7 @@
     <message>
       <location filename="../../Command.cpp" line="1721"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projektowanie Części "Part"</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1722"/>
@@ -582,7 +582,7 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="68"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projektowanie Części "Part"</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="69"/>
@@ -636,7 +636,7 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="235"/>
       <source>PartDesign</source>
-      <translation>Part Design</translation>
+      <translation>Projektowanie Części "Part"</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="236"/>
@@ -710,12 +710,12 @@
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="49"/>
       <source>Sketch belongs to another Body feature</source>
-      <translation>Szkic należy do innej funkcji zawartości</translation>
+      <translation>Szkicuj należącą do innej zawartości funkcję</translation>
     </message>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="50"/>
       <source>Base plane</source>
-      <translation>Płaszczyzna podstawowa</translation>
+      <translation>Podstawowa płaszczyzna</translation>
     </message>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="51"/>
@@ -795,11 +795,11 @@
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
   â¢ the selected sketch does not belong to the active Body.</source>
-      <translation>Nie można utworzyć żądanej funkcji. Powodem może być:
+      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
 
-  â&lt;unk&gt;  aktywne Bryła nie zawiera podstawowego kształtu, więc nie ma żadnego
-  materiału do usunięcia;
-   â&lt;unk&gt;  wybrany szkic nie należy do aktywnej bryły.</translation>
+  â¢ the active Body does not contain a base shape, so there is no
+  material to be removed;
+  â¢ the selected sketch does not belong to the active Body.</translation>
     </message>
   </context>
   <context>
@@ -811,11 +811,11 @@
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
   â¢ the selected sketch does not belong to the active Body.</source>
-      <translation>Nie można utworzyć żądanej funkcji. Powodem może być:
+      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
 
-  â&lt;unk&gt;  aktywne Bryła nie zawiera podstawowego kształtu, więc nie ma żadnego
-  materiału do usunięcia;
-   â&lt;unk&gt;  wybrany szkic nie należy do aktywnej bryły.</translation>
+  â¢ the active Body does not contain a base shape, so there is no
+  material to be removed;
+  â¢ the selected sketch does not belong to the active Body.</translation>
     </message>
   </context>
   <context>
@@ -827,11 +827,11 @@
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
   â¢ the selected sketch does not belong to the active Body.</source>
-      <translation>Nie można utworzyć żądanej funkcji. Powodem może być:
+      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
 
-  â&lt;unk&gt;  aktywne Bryła nie zawiera podstawowego kształtu, więc nie ma żadnego
-  materiału do usunięcia;
-   â&lt;unk&gt;  wybrany szkic nie należy do aktywnej bryły.</translation>
+  â¢ the active Body does not contain a base shape, so there is no
+  material to be removed;
+  â¢ the selected sketch does not belong to the active Body.</translation>
     </message>
   </context>
   <context>
@@ -1091,12 +1091,12 @@
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="22"/>
       <source>Add body</source>
-      <translation>Dodaj kontener</translation>
+      <translation>Dodaj zawartość</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="32"/>
       <source>Remove body</source>
-      <translation>Usuń kontener</translation>
+      <translation>Usuń zawartość</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="48"/>
@@ -1121,7 +1121,7 @@
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="81"/>
       <source>Remove</source>
-      <translation>Skasuj</translation>
+      <translation>Usuń</translation>
     </message>
   </context>
   <context>
@@ -1162,7 +1162,7 @@
     <message>
       <location filename="../../TaskChamferParameters.cpp" line="87"/>
       <source>Remove</source>
-      <translation>Skasuj</translation>
+      <translation>Usuń</translation>
     </message>
   </context>
   <context>
@@ -1268,7 +1268,7 @@
     <message>
       <location filename="../../TaskDraftParameters.cpp" line="100"/>
       <source>Remove</source>
-      <translation>Skasuj</translation>
+      <translation>Usuń</translation>
     </message>
   </context>
   <context>
@@ -1291,7 +1291,7 @@
     <message>
       <location filename="../../TaskFeaturePick.ui" line="42"/>
       <source>From other bodies of the same part</source>
-      <translation>Z innych części tej samej bryły</translation>
+      <translation type="unfinished">From other bodies of the same part</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="49"/>
@@ -1336,7 +1336,7 @@
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="69"/>
       <source>Belongs to another body</source>
-      <translation>Należy do innego kontenera</translation>
+      <translation>Należy do innej części</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="70"/>
@@ -1351,7 +1351,7 @@
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="72"/>
       <source>Base plane</source>
-      <translation>Płaszczyzna podstawowa</translation>
+      <translation>Podstawowa płaszczyzna</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="73"/>
@@ -1389,7 +1389,7 @@
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="87"/>
       <source>Remove</source>
-      <translation>Skasuj</translation>
+      <translation>Usuń</translation>
     </message>
   </context>
   <context>
@@ -1480,7 +1480,7 @@
     <message>
       <location filename="../../TaskLinearPatternParameters.cpp" line="114"/>
       <source>Remove</source>
-      <translation>Skasuj</translation>
+      <translation>Usuń</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.cpp" line="328"/>
@@ -1518,27 +1518,27 @@
     <message>
       <location filename="../../TaskLoftParameters.ui" line="65"/>
       <source>Add Section</source>
-      <translation>Dodaj sekcję profilu</translation>
+      <translation>Dodaj sekcję</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="78"/>
       <source>Remove Section</source>
-      <translation>Usuń sekcję profilu</translation>
+      <translation>Usuń sekcję</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="113"/>
       <source>Update view</source>
-      <translation>Aktualizuj widok</translation>
+      <translation>Aktualizacja widoku</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="59"/>
       <source>Loft parameters</source>
-      <translation>Parametry wyciągnięcia po profilach</translation>
+      <translation>Parametry szkicu</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="80"/>
       <source>Remove</source>
-      <translation>Skasuj</translation>
+      <translation>Usuń</translation>
     </message>
   </context>
   <context>
@@ -1576,7 +1576,7 @@
     <message>
       <location filename="../../TaskMirroredParameters.cpp" line="111"/>
       <source>Remove</source>
-      <translation>Skasuj</translation>
+      <translation>Usuń</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.cpp" line="245"/>
@@ -1614,7 +1614,7 @@
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="76"/>
       <source>Remove</source>
-      <translation>Skasuj</translation>
+      <translation>Usuń</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="82"/>
@@ -1649,7 +1649,7 @@
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="106"/>
       <source>Move up</source>
-      <translation>Przenieś wyżej</translation>
+      <translation>Przesuń w górę</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="110"/>
@@ -1883,7 +1883,7 @@
     <message>
       <location filename="../../TaskPipeParameters.ui" line="85"/>
       <source>Path to sweep along</source>
-      <translation>Ścieżka do wyciagnięcia</translation>
+      <translation type="unfinished">Path to sweep along</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="119"/>
@@ -1926,12 +1926,12 @@
     <message>
       <location filename="../../TaskPipeScaling.ui" line="64"/>
       <source>Add Section</source>
-      <translation>Dodaj sekcję profilu</translation>
+      <translation>Dodaj sekcję</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="77"/>
       <source>Remove Section</source>
-      <translation>Usuń sekcję profilu</translation>
+      <translation>Usuń sekcję</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="617"/>
@@ -2081,7 +2081,7 @@
     <message>
       <location filename="../../TaskPolarPatternParameters.cpp" line="112"/>
       <source>Remove</source>
-      <translation>Skasuj</translation>
+      <translation>Usuń</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.cpp" line="318"/>
@@ -2201,7 +2201,7 @@
     <message>
       <location filename="../../TaskScaledParameters.cpp" line="98"/>
       <source>Remove</source>
-      <translation>Skasuj</translation>
+      <translation>Usuń</translation>
     </message>
   </context>
   <context>
@@ -2285,7 +2285,7 @@
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="100"/>
       <source>Recto Verso</source>
-      <translation>Obie strony</translation>
+      <translation>Druk obustronny</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="109"/>
@@ -2300,12 +2300,12 @@
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="124"/>
       <source>Make thickness inwards</source>
-      <translation>Stwórz grubość do wewnątrz</translation>
+      <translation>Stwórz gęstość do wewnątrz</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.cpp" line="98"/>
       <source>Remove</source>
-      <translation>Skasuj</translation>
+      <translation>Usuń</translation>
     </message>
   </context>
   <context>
@@ -2381,7 +2381,7 @@
     <message>
       <location filename="../../ViewProviderBody.cpp" line="137"/>
       <source>Toggle active body</source>
-      <translation>Przełącz aktywność zawartości</translation>
+      <translation>Przełącz aktywną zawartość</translation>
     </message>
   </context>
   <context>
@@ -2584,7 +2584,7 @@
       <location filename="../../ViewProviderPrimitive.cpp" line="94"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="93"/>
       <source>Do you want to close this dialog?</source>
-      <translation>Czy chcesz zamknąć to okno?</translation>
+      <translation>Czy chcesz zamknąć to okno dialogowe?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="907"/>
@@ -2607,7 +2607,7 @@
     <message>
       <location filename="../../Command.cpp" line="1514"/>
       <source>Select an edge, face or body.</source>
-      <translation>Wybierz krawędź, ścianę lub kontener.</translation>
+      <translation>Wybierz krawędź, ścianę lub zawartość.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1518"/>
@@ -2702,7 +2702,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="135"/>
       <source>Body can't be based on another body.</source>
-      <translation>Podstawą zawartości nie może być inna zawartość.</translation>
+      <translation>Ciało nie może opierać się na innej zawartości.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="143"/>
@@ -2740,7 +2740,7 @@ Może to prowadzić do nieoczekiwanych rezultatów.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="184"/>
       <source>Base feature</source>
-      <translation>Własność podstawowa</translation>
+      <translation>Podstawowa funkcja</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="192"/>
@@ -2755,7 +2755,7 @@ Może to prowadzić do nieoczekiwanych rezultatów.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="369"/>
       <source>No PartDesign features found that don't belong to a body.Nothing to migrate.</source>
-      <translation>Brak jakichkolwiek elementów PartDesign, które nie należą do bryły. Nie ma nic do migracji.</translation>
+      <translation type="unfinished">No PartDesign features found that don't belong to a body.Nothing to migrate.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="517"/>
@@ -2765,7 +2765,7 @@ Może to prowadzić do nieoczekiwanych rezultatów.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="518"/>
       <source>Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</source>
-      <translation>Proszę edytować %1 i przedefiniuj go, aby używać płaszczyzny bazowej lub odniesienia jako płaszczyzny szkicu.</translation>
+      <translation>Proszę edytować %1 i ponownie go zdefiniuj by używać podstawy lub punktu odniesienia płaszczyzny na płaszczyźnie szkicu.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="580"/>
@@ -2880,14 +2880,14 @@ Może to prowadzić do nieoczekiwanych rezultatów.</translation>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
-      <translation>Aby móc korzystać z PartDesign potrzebujesz aktywnego obiektu Body w dokumencie. Proszę aktywować wybrany obiekt (podwójne kliknięcie) lub utworzyć nowy.
+      <translation type="unfinished">In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
-Jeśli masz starszy dokument z obiektami PartDesign bez obiektu Body, użyj funkcji migracji w programie PartDesign, aby umieścić je w obiekcie Body.</translation>
+If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="104"/>
       <source>Active Body Required</source>
-      <translation>Wymagana jest aktywna zawartość</translation>
+      <translation>Aktywne Body Wymagane</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="105"/>
@@ -2897,7 +2897,7 @@ Jeśli masz starszy dokument z obiektami PartDesign bez obiektu Body, użyj funk
     <message>
       <location filename="../../Utils.cpp" line="142"/>
       <source>Feature is not in a body</source>
-      <translation>Funkcja nie jest w korpusie</translation>
+      <translation>Funkcja nie stanowi body</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="143"/>
@@ -2983,7 +2983,7 @@ Ta funkcja jest wadliwa i nie może być edytowana.</translation>
     <message>
       <location filename="../../ViewProviderLoft.cpp" line="77"/>
       <source>Edit loft</source>
-      <translation>Edytuj wyciągnięcie po profilach</translation>
+      <translation>Edytuj wyciągnięcie</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPad.cpp" line="54"/>
@@ -3055,9 +3055,9 @@ Ta funkcja jest wadliwa i nie może być edytowana.</translation>
       <source>Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</source>
-      <translation>Uwaga: Jeśli zdecydujesz się na aktualizację, nie będziesz mógł edytować pliku w starszej wersji FreeCAD.
-Jeśli zrezygnujesz z przeprowadzenia aktualizacji, nie będziesz mógł korzystać z nowych elementów PartDesign, takich jak Body i Parts. W rezultacie nie będziesz mógł używać swoich części w Środowisku pracy assembly.
-Jednak możliwe będzie przeprowadzenie procesu migracji w każdej chwili za pomocą opcji "Part Design-&gt;Przenieś....".</translation>
+      <translation type="unfinished">Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
+If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
+Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="165"/>

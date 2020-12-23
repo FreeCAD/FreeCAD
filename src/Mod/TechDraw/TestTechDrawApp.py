@@ -1,4 +1,3 @@
-#**************************************************************************
 #   Copyright (c) 2015 WandererFan <wandererfan@gmail.com>                *
 #                                                                         *
 #   This file is part of the FreeCAD CAx development system.              *

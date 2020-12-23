@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2017 Ian Rees <ian.rees@gmail.com>                      *
+ *   Copyright (c) 2017 Ian Rees                  <ian.rees@gmail.com>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *

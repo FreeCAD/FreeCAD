@@ -25,13 +25,11 @@
 #define PART_PROGRESSINDICATOR_H
 
 #include <Message_ProgressIndicator.hxx>
-#include <Standard_Version.hxx>
 #include <Base/Sequencer.h>
 #include <memory>
 
 namespace Part {
 
-#if OCC_VERSION_HEX < 0x070500
 class PartExport ProgressIndicator : public Message_ProgressIndicator
 {
 public:
@@ -44,7 +42,6 @@ public:
 private:
     std::unique_ptr<Base::SequencerLauncher> myProgress;
 };
-#endif
 
 }
 

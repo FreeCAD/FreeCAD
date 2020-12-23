@@ -498,7 +498,7 @@ void MeshAlgorithm::GetFacetBorders (const std::vector<unsigned long> &raulInd,
         // thus doesn't invalidate the iterator itself, only the referenced object
         if ((pEI == aclEdges.end()) || aclEdges.empty() || (ulLast == ulFirst)) {
             // no further edge found or closed polyline, respectively
-            rclBorders.emplace_back(clBorder.begin(), clBorder.end());
+            rclBorders.push_back(std::vector<unsigned long>(clBorder.begin(), clBorder.end()));
             clBorder.clear();
 
             if (aclEdges.size() > 0) {
@@ -893,16 +893,14 @@ void MeshAlgorithm::ResetPointFlag (MeshPoint::TFlagType tF) const
 
 unsigned long MeshAlgorithm::CountFacetFlag (MeshFacet::TFlagType tF) const
 {
-    MeshIsFlag<MeshFacet> flag;
     return std::count_if(_rclMesh._aclFacetArray.begin(), _rclMesh._aclFacetArray.end(),
-                         [flag, tF](const MeshFacet& f) { return flag(f, tF);});
+                    std::bind2nd(MeshIsFlag<MeshFacet>(), tF));
 }
 
 unsigned long MeshAlgorithm::CountPointFlag (MeshPoint::TFlagType tF) const
 {
-    MeshIsFlag<MeshPoint> flag;
     return std::count_if(_rclMesh._aclPointArray.begin(), _rclMesh._aclPointArray.end(),
-                         [flag, tF](const MeshPoint& f) { return flag(f, tF);});
+                    std::bind2nd(MeshIsFlag<MeshPoint>(), tF));
 }
 
 void MeshAlgorithm::GetFacetsFromToolMesh( const MeshKernel& rToolMesh, const Base::Vector3f& rcDir, std::vector<unsigned long> &raclCutted ) const
@@ -1457,7 +1455,7 @@ bool MeshAlgorithm::CutWithPlane (const Base::Vector3f &clBase, const Base::Vect
 
     // Facet schneiden und Schnittstrecke ablegen
     if (clF.IntersectWithPlane(clBase, clNormal, clE1, clE2) == true)
-      clTempPoly.emplace_back(clE1, clE2);
+      clTempPoly.push_back(std::pair<Base::Vector3f, Base::Vector3f>(clE1, clE2));
   }
 
   if(bConnectPolygons)
@@ -1576,7 +1574,7 @@ bool MeshAlgorithm::ConnectLines (std::list<std::pair<Base::Vector3f, Base::Vect
         }
         while (bFoundLine);
 
-        rclPolylines.emplace_back(clPoly.begin(), clPoly.end());
+        rclPolylines.push_back(std::vector<Base::Vector3f>(clPoly.begin(), clPoly.end()));
     }
 
     // remove all polylines with too few length

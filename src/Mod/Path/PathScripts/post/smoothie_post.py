@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
+# *   (c) sliptonic (shopinthewoods@gmail.com) 2017                        *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -19,8 +19,7 @@
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
-# ***************************************************************************
-
+# ***************************************************************************/
 from __future__ import print_function
 
 import argparse
@@ -425,4 +424,4 @@ def parse(pathobj):
         return out
 
 
-# print(__name__ + " gcode postprocessor loaded.")
+print(__name__ + " gcode postprocessor loaded.")

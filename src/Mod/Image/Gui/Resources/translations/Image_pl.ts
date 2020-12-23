@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="pl" sourcelanguage="en">
+<TS version="2.0" language="pl" sourcelanguage="en">
   <context>
     <name>Dialog</name>
     <message>
@@ -11,7 +11,7 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="135"/>
       <source>Distance [mm]</source>
-      <translation>Odległość [mm]</translation>
+      <translation type="unfinished">Distance [mm]</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="136"/>
@@ -49,7 +49,7 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="65"/>
       <source>Scales an image plane by defining a distance between two points</source>
-      <translation>Skaluje płaszczyznę obrazu poprzez określenie odległości między dwoma punktami</translation>
+      <translation>Skaluj płaszczyznę obrazu definiując odległość między dwoma punktami</translation>
     </message>
   </context>
   <context>
@@ -136,7 +136,7 @@
     <message>
       <location filename="../../ImageOrientationDialog.ui" line="26"/>
       <source>XY-Plane</source>
-      <translation>Płaszczyzna XY</translation>
+      <translation>Płaszczyzna X-Y</translation>
     </message>
     <message>
       <location filename="../../ImageOrientationDialog.ui" line="36"/>
@@ -156,7 +156,7 @@
     <message>
       <location filename="../../ImageOrientationDialog.ui" line="81"/>
       <source>Offset:</source>
-      <translation>Przesunięcie:</translation>
+      <translation>Odsunięcie:</translation>
     </message>
   </context>
   <context>
@@ -238,17 +238,17 @@
       <location filename="../../Command.cpp" line="75"/>
       <location filename="../../Command.cpp" line="122"/>
       <source>Choose an image file to open</source>
-      <translation>Wybierz plik obrazu, aby otworzyć</translation>
+      <translation>Wybierz plik obrazu do otwarcia</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="128"/>
       <source>Error opening image</source>
-      <translation>Błąd podczas otwierania pliku obrazu</translation>
+      <translation>Błąd podczas otwierania obrazu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="129"/>
       <source>Could not load the chosen image</source>
-      <translation>Nie można załadować wybranego obrazu</translation>
+      <translation>Nie można wczytać wybranego obrazu</translation>
     </message>
   </context>
   <context>

@@ -70,6 +70,8 @@
 # include <QRegExp>
 #endif
 
+#include <Inventor/sensors/SoTimerSensor.h>
+
 #include <App/Application.h>
 #include <Base/Console.h>
 #include "NavigationStyle.h"
@@ -343,13 +345,13 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                 break;
             case SoKeyboardEvent::PAGE_UP:
                 if(press){
-                    doZoom(viewer->getSoRenderManager()->getCamera(), getDelta(), posn);
+                    doZoom(viewer->getSoRenderManager()->getCamera(), true, posn);
                 }
                 processed = true;
                 break;
             case SoKeyboardEvent::PAGE_DOWN:
                 if(press){
-                    doZoom(viewer->getSoRenderManager()->getCamera(), -getDelta(), posn);
+                    doZoom(viewer->getSoRenderManager()->getCamera(), false, posn);
                 }
                 processed = true;
                 break;
@@ -419,6 +421,14 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                             "No object under cursor! Can't set new center of rotation.\n");
                     }
                 }
+                processed = true;
+                break;
+            case SoMouseButtonEvent::BUTTON4: //(wheel?)
+                doZoom(viewer->getSoRenderManager()->getCamera(), true, posn);
+                processed = true;
+                break;
+            case SoMouseButtonEvent::BUTTON5: //(wheel?)
+                doZoom(viewer->getSoRenderManager()->getCamera(), false, posn);
                 processed = true;
                 break;
             }

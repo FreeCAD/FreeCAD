@@ -24,17 +24,13 @@
 #ifndef TESTGUI_UNITTESTIMP_H
 #define TESTGUI_UNITTESTIMP_H
 
-#include <QDialog>
-#include <memory>
+#include "ui_UnitTest.h"
 
 #include <Base/PyObjectBase.h>
 
-class QTreeWidgetItem;
-
 namespace TestGui {
-class Ui_UnitTest;
 
-class UnitTestDialog : public QDialog
+class UnitTestDialog : public QDialog, public Ui_UnitTest
 {
     Q_OBJECT
 
@@ -45,7 +41,7 @@ public:
     void clearUnitTests();
     QString getUnitTest() const;
     void setStatusText(const QString& text);
-    void setProgressFraction(float fraction, const QString& = QString());
+    void setProgressFraction(float fraction, const QString& = QString::null);
     void clearErrorList();
     void insertError(const QString& failure, const QString& details);
     void setRunCount(int);
@@ -60,7 +56,7 @@ public:
     static bool hasInstance();
 
 protected:
-    UnitTestDialog(QWidget* parent = 0, Qt::WindowFlags f = Qt::WindowFlags());
+    UnitTestDialog(QWidget* parent = 0, Qt::WindowFlags f = 0);
     ~UnitTestDialog();
     void setProgressColor(const QColor& col);
 
@@ -71,7 +67,6 @@ public Q_SLOTS:
     void on_startButton_clicked();
 
 private:
-    std::unique_ptr<Ui_UnitTest> ui;
     static UnitTestDialog* _instance;
 };
 

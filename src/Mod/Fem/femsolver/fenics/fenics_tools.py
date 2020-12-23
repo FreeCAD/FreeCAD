@@ -1,8 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Johannes Hartung <j.hartung@gmx.net>               *
 # *                                                                         *
-# *   This file is part of the FreeCAD CAx development system.              *
-# *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
 # *   as published by the Free Software Foundation; either version 2 of     *
@@ -21,9 +19,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__  = "FreeCAD FEM solver Fenics tools"
+__title__ = "FreeCAD FEM solver Fenics tools"
 __author__ = "Johannes Hartung"
-__url__    = "https://www.freecadweb.org"
+__url__ = "http://www.freecadweb.org"
 
 ## @package Fenics
 #  \ingroup FEM

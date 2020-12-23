@@ -55,7 +55,7 @@ std::string RotationPy::representation(void) const
 
 PyObject *RotationPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of RotationPy and the Twin object
+    // create a new instance of RotationPy and the Twin object 
     return new RotationPy(new Rotation);
 }
 
@@ -373,7 +373,7 @@ Py::Float RotationPy::getAngle(void) const
 void RotationPy::setAngle(Py::Float arg)
 {
     Base::Vector3d axis; double angle;
-    this->getRotationPtr()->getRawValue(axis, angle);
+    this->getRotationPtr()->getValue(axis, angle);
     angle = static_cast<double>(arg);
     this->getRotationPtr()->setValue(axis, angle);
 }
@@ -384,21 +384,6 @@ PyObject *RotationPy::getCustomAttributes(const char* attr) const
         Matrix4D mat;
         this->getRotationPtr()->getValue(mat);
         return new MatrixPy(mat);
-    }
-    else if (strcmp(attr, "Yaw") == 0) {
-        double A,B,C;
-        this->getRotationPtr()->getYawPitchRoll(A,B,C);
-        return PyFloat_FromDouble(A);
-    }
-    else if (strcmp(attr, "Pitch") == 0) {
-        double A,B,C;
-        this->getRotationPtr()->getYawPitchRoll(A,B,C);
-        return PyFloat_FromDouble(B);
-    }
-    else if (strcmp(attr, "Roll") == 0) {
-        double A,B,C;
-        this->getRotationPtr()->getYawPitchRoll(A,B,C);
-        return PyFloat_FromDouble(C);
     }
     return 0;
 }
@@ -424,34 +409,7 @@ int RotationPy::setCustomAttributes(const char* attr, PyObject* obj)
             }
         }
     }
-    else if (strcmp(attr, "Yaw") == 0) {
-        if (PyNumber_Check(obj)) {
-            double V = PyFloat_AsDouble(obj);
-            double A,B,C;
-            this->getRotationPtr()->getYawPitchRoll(A,B,C);
-            this->getRotationPtr()->setYawPitchRoll(V,B,C);
-            return 1;
-        }
-    }
-    else if (strcmp(attr, "Pitch") == 0) {
-        if (PyNumber_Check(obj)) {
-            double V = PyFloat_AsDouble(obj);
-            double A,B,C;
-            this->getRotationPtr()->getYawPitchRoll(A,B,C);
-            this->getRotationPtr()->setYawPitchRoll(A,V,C);
-            return 1;
-        }
-    }
-    else if (strcmp(attr, "Roll") == 0) {
-        if (PyNumber_Check(obj)) {
-            double V = PyFloat_AsDouble(obj);
-            double A,B,C;
-            this->getRotationPtr()->getYawPitchRoll(A,B,C);
-            this->getRotationPtr()->setYawPitchRoll(A,B,V);
-            return 1;
-        }
-    }
-    return 0;
+    return 0; 
 }
 
 PyObject* RotationPy::number_multiply_handler(PyObject *self, PyObject *other)

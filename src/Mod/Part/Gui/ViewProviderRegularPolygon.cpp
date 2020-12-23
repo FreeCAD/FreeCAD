@@ -35,12 +35,12 @@ using namespace std;
 //**************************************************************************
 // Construction/Destruction
 
-PROPERTY_SOURCE(PartGui::ViewProviderRegularPolygon, PartGui::ViewProviderPrimitive)
+PROPERTY_SOURCE(PartGui::ViewProviderRegularPolygon, PartGui::ViewProviderPart)
 
        
 ViewProviderRegularPolygon::ViewProviderRegularPolygon()
 {
-  sPixmap = "Part_Polygon_Parametric";
+  sPixmap = "Part_Polygon_Parametric.svg";
 }
 
 ViewProviderRegularPolygon::~ViewProviderRegularPolygon()

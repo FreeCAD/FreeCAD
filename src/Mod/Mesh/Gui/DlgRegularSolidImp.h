@@ -24,17 +24,15 @@
 #ifndef MESHGUI_DLGREGULARSOLID_IMP_H
 #define MESHGUI_DLGREGULARSOLID_IMP_H
 
-#include <QDialog>
-#include <memory>
+#include "ui_DlgRegularSolid.h"
 
 namespace MeshGui {
-class Ui_DlgRegularSolid;
-class DlgRegularSolidImp : public QDialog
+class DlgRegularSolidImp : public QDialog, public Ui_DlgRegularSolid
 {
     Q_OBJECT
 
 public:
-    DlgRegularSolidImp(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
+    DlgRegularSolidImp(QWidget* parent = 0, Qt::WindowFlags fl = 0);
     ~DlgRegularSolidImp();
 
 public Q_SLOTS:
@@ -42,9 +40,25 @@ public Q_SLOTS:
 
 protected:
     void changeEvent(QEvent *e);
+};
+
+/**
+ * The SingleDlgRegularSolidImp class creates a single instance.
+ * \author Werner Mayer
+ */
+class SingleDlgRegularSolidImp : public DlgRegularSolidImp
+{ 
+protected:
+    SingleDlgRegularSolidImp(QWidget* parent = 0, Qt::WindowFlags fl = 0);
+    ~SingleDlgRegularSolidImp();
+
+public:
+    static SingleDlgRegularSolidImp* instance();
+    static void destruct();
+    static bool hasInstance();
 
 private:
-    std::unique_ptr<Ui_DlgRegularSolid> ui;
+    static SingleDlgRegularSolidImp* _instance;
 };
 
 }

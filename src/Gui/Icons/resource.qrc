@@ -138,12 +138,9 @@
         <file>DrawStylePoints.svg</file>
         <file>DrawStyleShaded.svg</file>
         <file>DrawStyleWireFrame.svg</file>
-        <file>DrawStyleHiddenLine.svg</file>
-        <file>DrawStyleNoShading.svg</file>
         <file>user.svg</file>
+        <file>CoordinateSystem.svg</file>
         <file>Std_CoordinateSystem.svg</file>
-        <file>Std_CoordinateSystem_alt.svg</file>
-        <file>Std_Placement.svg</file>
         <file>MacroEditor.svg</file>
         <file>Param_Bool.svg</file>
         <file>Param_Float.svg</file>
@@ -152,16 +149,6 @@
         <file>Param_UInt.svg</file>
         <file>PolygonPick.svg</file>
         <file>Python.svg</file>
-        <file>Std_CloseActiveWindow.svg</file>
-        <file>Std_CloseAllWindows.svg</file>
-        <file>Std_Export.svg</file>
-        <file>Std_Import.svg</file>
-        <file>Std_MergeProjects.svg</file>
-        <file>Std_PrintPdf.svg</file>
-        <file>Std_RecentFiles.svg</file>
-        <file>Std_Revert.svg</file>
-        <file>Std_SaveAll.svg</file>
-        <file>Std_SaveCopy.svg</file>
         <file>Std_Tool1.svg</file>
         <file>Std_Tool2.svg</file>
         <file>Std_Tool3.svg</file>
@@ -178,11 +165,6 @@
         <file>Std_WindowNext.svg</file>
         <file>Std_WindowPrev.svg</file>
         <file>Std_WindowTileVer.svg</file>
-        <file>Std_DemoMode.svg</file>
-        <file>Std_DependencyGraph.svg</file>
-        <file>Std_DlgParameter.svg</file>
-        <file>Std_ProjectUtil.svg</file>
-        <file>Std_SceneInspector.svg</file>
         <file>WhatsThis.svg</file>
         <file>colors.svg</file>
         <file>px.svg</file>
@@ -211,16 +193,94 @@
         <file>folder.svg</file>
         <file>document-python.svg</file>
         <file>document-package.svg</file>
-        <file>Std_Alignment.svg</file>
-        <file>Std_DuplicateSelection.svg</file>
     </qresource>
-    <!-- Demonstrating support for an embedded icon theme -->
+    <!-- Alternative directory names for icons that should be loaded from a theme -->
     <!-- See also http://permalink.gmane.org/gmane.comp.lib.qt.general/26374 -->
-    <!-- See also https://bugreports.qt.io/browse/QTBUG-75039 -->
     <qresource prefix="/icons/FreeCAD-default">
         <file>index.theme</file>
     </qresource>
     <qresource prefix="/icons/FreeCAD-default/scalable">
+        <file>list-remove.svg</file>
+        <file>list-add.svg</file>
+        <file>media-playback-start.svg</file>
+        <file>media-record.svg</file>
+        <file>media-playback-stop.svg</file>
+        <file>utilities-terminal.svg</file>
         <file>Std_ViewScreenShot.svg</file>
+        <file>breakpoint.svg</file>
+        <file>debug-marker.svg</file>
+        <file>debug-start.svg</file>
+        <file>debug-stop.svg</file>
+        <file>document-new.svg</file>
+        <file>document-open.svg</file>
+        <file>document-save.svg</file>
+        <file>document-save-as.svg</file>
+        <file>document-print.svg</file>
+        <file>document-print-preview.svg</file>
+        <file>document-properties.svg</file>
+        <file>application-exit.svg</file>
+        <file>edit-copy.svg</file>
+        <file>edit-cut.svg</file>
+        <file>edit-delete.svg</file>
+        <file>edit-paste.svg</file>
+        <file>edit-select-all.svg</file>
+        <file>edit-select-box.svg</file>
+        <file>edit-element-select-box.svg</file>
+        <file>edit-redo.svg</file>
+        <file>edit-undo.svg</file>
+        <file>edit-edit.svg</file>
+        <file>tree-item-drag.svg</file>
+        <file>tree-goto-sel.svg</file>
+        <file>tree-rec-sel.svg</file>
+        <file>tree-pre-sel.svg</file>
+        <file>tree-sync-sel.svg</file>
+        <file>tree-sync-view.svg</file>
+        <file>tree-sync-pla.svg</file>
+        <file>tree-doc-single.svg</file>
+        <file>tree-doc-multi.svg</file>
+        <file>tree-doc-collapse.svg</file>
+        <file>sel-back.svg</file>
+        <file>sel-forward.svg</file>
+        <file>sel-instance.svg</file>
+        <file>sel-bbox.svg</file>
+        <file>help-browser.svg</file>
+        <file>preferences-system.svg</file>
+        <file>window-new.svg</file>
+        <file>camera-photo.svg</file>
+        <file>applications-accessories.svg</file>
+        <file>applications-python.svg</file>
+        <file>accessories-text-editor.svg</file>
+        <file>accessories-calculator.svg</file>
+        <file>internet-web-browser.svg</file>
+        <file>view-select.svg</file>
+        <file>view-unselectable.svg</file>
+        <file>view-refresh.svg</file>
+        <file>view-fullscreen.svg</file>
+        <file>view-axonometric.svg</file>
+        <file>view-isometric.svg</file>
+        <file>view-perspective.svg</file>
+        <file>view-bottom.svg</file>
+        <file>view-front.svg</file>
+        <file>view-left.svg</file>
+        <file>view-rear.svg</file>
+        <file>view-right.svg</file>
+        <file>view-top.svg</file>
+        <file>zoom-all.svg</file>
+        <file>zoom-border.svg</file>
+        <file>zoom-fit-best.svg</file>
+        <file>zoom-in.svg</file>
+        <file>zoom-out.svg</file>
+        <file>zoom-selection.svg</file>
+        <file>view-rotate-left.svg</file>
+        <file>view-rotate-right.svg</file>
+        <file>view-measurement.svg</file>
+        <file>Part_Measure_Clear_All.svg</file>
+        <file>Part_Measure_Toggle_All.svg</file>
+        <file>DrawStyleAsIs.svg</file>
+        <file>DrawStyleFlatLines.svg</file>
+        <file>DrawStylePoints.svg</file>
+        <file>DrawStyleShaded.svg</file>
+        <file>DrawStyleWireFrame.svg</file>
+        <file>user.svg</file>
     </qresource>
 </RCC>

@@ -31,7 +31,6 @@
 
 #include "SketcherSettings.h"
 #include "ui_SketcherSettings.h"
-#include "ui_SketcherSettingsDisplay.h"
 #include "ui_SketcherSettingsColors.h"
 #include "TaskSketcherGeneral.h"
 #include <Base/Console.h>
@@ -49,64 +48,13 @@ SketcherSettings::SketcherSettings(QWidget* parent)
     : PreferencePage(parent), ui(new Ui_SketcherSettings)
 {
     ui->setupUi(this);
-    QGridLayout* gridLayout = new QGridLayout(ui->placeholder);
+    QGroupBox* groupBox = new QGroupBox(this);
+    QGridLayout* gridLayout = new QGridLayout(groupBox);
     gridLayout->setSpacing(0);
     gridLayout->setMargin(0);
-    form = new SketcherGeneralWidget(ui->placeholder);
+    form = new SketcherGeneralWidget(groupBox);
     gridLayout->addWidget(form, 0, 0, 1, 1);
-}
-
-/**
- *  Destroys the object and frees any allocated resources
- */
-SketcherSettings::~SketcherSettings()
-{
-    // no need to delete child widgets, Qt does it all for us
-    delete ui;
-}
-
-void SketcherSettings::saveSettings()
-{
-    // Sketch editing
-    ui->checkBoxAdvancedSolverTaskBox->onSave();
-    ui->checkBoxRecalculateInitialSolutionWhileDragging->onSave();
-    ui->checkBoxEnableEscape->onSave();
-    ui->checkBoxNotifyConstraintSubstitutions->onSave();
-    ui->checkBoxAutoRemoveRedundants->onSave();
-    form->saveSettings();
-}
-
-void SketcherSettings::loadSettings()
-{
-    // Sketch editing
-    ui->checkBoxAdvancedSolverTaskBox->onRestore();
-    ui->checkBoxRecalculateInitialSolutionWhileDragging->onRestore();
-    ui->checkBoxEnableEscape->onRestore();
-    ui->checkBoxNotifyConstraintSubstitutions->onRestore();
-    ui->checkBoxAutoRemoveRedundants->onRestore();
-    form->loadSettings();
-}
-
-/**
- * Sets the strings of the subwidgets using the current language.
- */
-void SketcherSettings::changeEvent(QEvent *e)
-{
-    if (e->type() == QEvent::LanguageChange) {
-        ui->retranslateUi(this);
-    }
-    else {
-        QWidget::changeEvent(e);
-    }
-}
-
-
-/* TRANSLATOR SketcherGui::SketcherSettingsDisplay */
-
-SketcherSettingsDisplay::SketcherSettingsDisplay(QWidget* parent)
-    : PreferencePage(parent), ui(new Ui_SketcherSettingsDisplay)
-{
-    ui->setupUi(this);
+    ui->gridLayout_3->addWidget(groupBox, 1, 0, 1, 1);
 
     QList < QPair<Qt::PenStyle, int> > styles;
     styles << qMakePair(Qt::SolidLine, 0xffff)
@@ -138,24 +86,29 @@ SketcherSettingsDisplay::SketcherSettingsDisplay(QWidget* parent)
 /**
  *  Destroys the object and frees any allocated resources
  */
-SketcherSettingsDisplay::~SketcherSettingsDisplay()
+SketcherSettings::~SketcherSettings()
 {
     // no need to delete child widgets, Qt does it all for us
     delete ui;
 }
 
-void SketcherSettingsDisplay::saveSettings()
+void SketcherSettings::saveSettings()
 {
+    // Sketch editing
     ui->EditSketcherFontSize->onSave();
     ui->SegmentsPerGeometry->onSave();
     ui->dialogOnDistanceConstraint->onSave();
     ui->continueMode->onSave();
     ui->constraintMode->onSave();
     ui->checkBoxHideUnits->onSave();
+    ui->checkBoxAdvancedSolverTaskBox->onSave();
+    ui->checkBoxRecalculateInitialSolutionWhileDragging->onSave();
     ui->checkBoxTVHideDependent->onSave();
     ui->checkBoxTVShowLinks->onSave();
     ui->checkBoxTVShowSupport->onSave();
     ui->checkBoxTVRestoreCamera->onSave();
+    ui->checkBoxNotifyConstraintSubstitutions->onSave();
+    form->saveSettings();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part");
     QVariant data = ui->comboBox->itemData(ui->comboBox->currentIndex());
@@ -163,18 +116,23 @@ void SketcherSettingsDisplay::saveSettings()
     hGrp->SetInt("GridLinePattern", pattern);
 }
 
-void SketcherSettingsDisplay::loadSettings()
+void SketcherSettings::loadSettings()
 {
+    // Sketch editing
     ui->EditSketcherFontSize->onRestore();
     ui->SegmentsPerGeometry->onRestore();
     ui->dialogOnDistanceConstraint->onRestore();
     ui->continueMode->onRestore();
     ui->constraintMode->onRestore();
     ui->checkBoxHideUnits->onRestore();
+    ui->checkBoxAdvancedSolverTaskBox->onRestore();
+    ui->checkBoxRecalculateInitialSolutionWhileDragging->onRestore();
     ui->checkBoxTVHideDependent->onRestore();
     ui->checkBoxTVShowLinks->onRestore();
     ui->checkBoxTVShowSupport->onRestore();
     ui->checkBoxTVRestoreCamera->onRestore();
+    ui->checkBoxNotifyConstraintSubstitutions->onRestore();
+    form->loadSettings();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part");
     int pattern = hGrp->GetInt("GridLinePattern", 0x0f0f);
@@ -186,7 +144,7 @@ void SketcherSettingsDisplay::loadSettings()
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void SketcherSettingsDisplay::changeEvent(QEvent *e)
+void SketcherSettings::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -196,7 +154,7 @@ void SketcherSettingsDisplay::changeEvent(QEvent *e)
     }
 }
 
-void SketcherSettingsDisplay::onBtnTVApplyClicked(bool)
+void SketcherSettings::onBtnTVApplyClicked(bool)
 {
     QString errMsg;
     try{
@@ -260,11 +218,6 @@ void SketcherSettingsColors::saveSettings()
     ui->ConstructionColor->onSave();
     ui->ExternalColor->onSave();
     ui->FullyConstrainedColor->onSave();
-    ui->InternalAlignedGeoColor->onSave();
-    ui->FullyConstraintElementColor->onSave();
-    ui->FullyConstraintConstructionElementColor->onSave();
-    ui->FullyConstraintInternalAlignmentColor->onSave();
-    ui->FullyConstraintConstructionPointColor->onSave();
 
     ui->ConstrainedColor->onSave();
     ui->NonDrivingConstraintColor->onSave();
@@ -291,11 +244,6 @@ void SketcherSettingsColors::loadSettings()
     ui->ConstructionColor->onRestore();
     ui->ExternalColor->onRestore();
     ui->FullyConstrainedColor->onRestore();
-    ui->InternalAlignedGeoColor->onRestore();
-    ui->FullyConstraintElementColor->onRestore();
-    ui->FullyConstraintConstructionElementColor->onRestore();
-    ui->FullyConstraintInternalAlignmentColor->onRestore();
-    ui->FullyConstraintConstructionPointColor->onRestore();
 
     ui->ConstrainedColor->onRestore();
     ui->NonDrivingConstraintColor->onRestore();

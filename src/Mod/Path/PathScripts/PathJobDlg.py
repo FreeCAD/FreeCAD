@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+
 # ***************************************************************************
+# *                                                                         *
 # *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -32,15 +34,17 @@ import os
 from PySide import QtCore, QtGui
 from collections import Counter
 
-
 # Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
+LOGLEVEL = False
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
-
+if LOGLEVEL:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 class _ItemDelegate(QtGui.QStyledItemDelegate):
 
@@ -151,6 +155,7 @@ class JobCreate:
         self.model = QtGui.QStandardItemModel(self.dialog)
         self.model.setHorizontalHeaderLabels(['Model', 'Count'])
 
+
         if self.itemsSolid.hasChildren():
             self.model.appendRow(self.itemsSolid)
             if expandSolids or not (expand2Ds or expandJobs):
@@ -246,7 +251,7 @@ class JobCreate:
         models = []
 
         for i in range(self.itemsSolid.rowCount()):
-            for j in range(self.itemsSolid.child(i, 1).data(QtCore.Qt.EditRole)):  # pylint: disable=unused-variable
+            for j in range(self.itemsSolid.child(i, 1).data(QtCore.Qt.EditRole)): # pylint: disable=unused-variable
                 models.append(self.itemsSolid.child(i).data(self.DataObject))
 
         for i in range(self.items2D.rowCount()):
@@ -322,14 +327,12 @@ class JobTemplateExport:
         rapidChanged = not job.SetupSheet.Proxy.hasDefaultToolRapids()
         depthsChanged = not job.SetupSheet.Proxy.hasDefaultOperationDepths()
         heightsChanged = not job.SetupSheet.Proxy.hasDefaultOperationHeights()
-        coolantChanged = not job.SetupSheet.Proxy.hasDefaultCoolantMode()
         opsWithSettings = job.SetupSheet.Proxy.operationsWithSettings()
-        settingsChanged = rapidChanged or depthsChanged or heightsChanged or coolantChanged or 0 != len(opsWithSettings)
+        settingsChanged = rapidChanged or depthsChanged or heightsChanged or 0 != len(opsWithSettings)
         self.dialog.settingsGroup.setChecked(settingsChanged)
         self.dialog.settingToolRapid.setChecked(rapidChanged)
         self.dialog.settingOperationDepths.setChecked(depthsChanged)
         self.dialog.settingOperationHeights.setChecked(heightsChanged)
-        self.dialog.settingCoolant.setChecked(coolantChanged)
 
         self.dialog.settingsOpsList.clear()
         for op in opsWithSettings:
@@ -362,27 +365,19 @@ class JobTemplateExport:
 
     def includeStock(self):
         return self.dialog.stockGroup.isChecked()
-
     def includeStockExtent(self):
         return self.dialog.stockExtent.isChecked()
-
     def includeStockPlacement(self):
         return self.dialog.stockPlacement.isChecked()
 
     def includeSettings(self):
         return self.dialog.settingsGroup.isChecked()
-
     def includeSettingToolRapid(self):
         return self.dialog.settingToolRapid.isChecked()
-
     def includeSettingOperationHeights(self):
         return self.dialog.settingOperationHeights.isChecked()
-
     def includeSettingOperationDepths(self):
         return self.dialog.settingOperationDepths.isChecked()
-
-    def includeSettingCoolant(self):
-        return self.dialog.settingCoolant.isChecked()
 
     def includeSettingOpsSettings(self):
         ops = []
@@ -394,3 +389,4 @@ class JobTemplateExport:
 
     def exec_(self):
         return self.dialog.exec_()
+

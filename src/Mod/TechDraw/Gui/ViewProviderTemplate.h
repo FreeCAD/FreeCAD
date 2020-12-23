@@ -56,11 +56,10 @@ public:
     virtual bool isShow(void) const override;
     QGITemplate* getQTemplate(void);
     TechDraw::DrawTemplate* getTemplate() const;
-    MDIViewPage* getMDIViewPage(void) const;
-    virtual Gui::MDIView *getMDIView() const override;
+    MDIViewPage* getMDIViewPage(void);
+    virtual Gui::MDIView *getMDIView() override;
 
     void setMarkers(bool state);
-    virtual bool onDelete(const std::vector<std::string> &) override;
 };
 
 } // namespace TechDrawGui

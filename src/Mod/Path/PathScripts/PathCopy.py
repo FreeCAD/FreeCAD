@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+
 # ***************************************************************************
+# *                                                                         *
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -63,7 +65,7 @@ class ViewProviderPathCopy:
         return
 
     def getIcon(self):
-        return ":/icons/Path_Copy.svg"
+        return ":/icons/Path-Copy.svg"
 
     def __getstate__(self):
         return None
@@ -75,7 +77,7 @@ class ViewProviderPathCopy:
 class CommandPathCopy:
 
     def GetResources(self):
-        return {'Pixmap': 'Path_Copy',
+        return {'Pixmap': 'Path-Copy',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Copy", "Copy"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Copy", "Creates a linked copy of another path")}
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="vi" sourcelanguage="en">
+<TS version="2.0" language="vi" sourcelanguage="en">
   <context>
     <name>BoundarySelector</name>
     <message>
@@ -11,11 +11,6 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="130"/>
       <source>To add references select them in the 3D view and then click "Add".</source>
-      <translation>Để thêm tham chiếu, hãy chọn chúng trong chế độ xem 3D, sau đó nhấp vào Thêm.</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="133"/>
-      <source>To add references: select them in the 3D view  and click "Add".</source>
       <translation>Để thêm tham chiếu, hãy chọn chúng trong chế độ xem 3D, sau đó nhấp vào Thêm.</translation>
     </message>
   </context>
@@ -68,65 +63,6 @@
     </message>
   </context>
   <context>
-    <name>GeometryElementsSelection</name>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
-      <source>Geometry reference selector for a </source>
-      <translation>Công cụ chọn tham chiếu hình học cho một </translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
-      <source>Add</source>
-      <translation>Thêm mới</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="255"/>
-      <source>Click on "Add" and select geometric elements to add them to the list. If no geometry is added to the list, all remaining ones are used. The following geometry elements are allowed to select: </source>
-      <translation>Nhấp vào "Thêm" và chọn các yếu tố hình học để thêm chúng vào danh sách. Nếu không có hình học nào được thêm vào danh sách, tất cả các hình còn lại sẽ được sử dụng. Các yếu tố hình học sau đây được phép chọn: </translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>
-      <source>Selection mode</source>
-      <translation>Chế độ chọn</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
-      <source>Solid</source>
-      <translation>Chất rắn</translation>
-    </message>
-  </context>
-  <context>
-    <name>SolidSelector</name>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="147"/>
-      <source>Select Solids</source>
-      <translation>Chọn chất rắn</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="148"/>
-      <source>Select elements part of the solid that shall be added to the list. To than add the solid click "Add".</source>
-      <translation>Chọn các phần tử của chất rắn sẽ được thêm vào danh sách. Để thêm chất rắn, nhấp chuột vào "Thêm".</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="152"/>
-      <source>Select elements part of the solid that shall be added to the list. To add the solid click "Add".</source>
-      <translation>Chọn các phần tử của chất rắn sẽ được thêm vào danh sách. Để thêm chất rắn, nhấp chuột vào "Thêm".</translation>
-    </message>
-  </context>
-  <context>
-    <name>_Selector</name>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="49"/>
-      <source>Add</source>
-      <translation>Thêm mới</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
-      <source>Remove</source>
-      <translation>Xóa bỏ</translation>
-    </message>
-  </context>
-  <context>
     <name>FEM_Analysis</name>
     <message>
       <location filename="_CommandFemAnalysis.py" line="41"/>
@@ -157,7 +93,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="96"/>
       <source>Remove all clipping planes</source>
-      <translation>Gỡ bỏ tất cả các mặt phẳng cắt</translation>
+      <translation type="unfinished">Remove all clipping planes</translation>
     </message>
   </context>
   <context>
@@ -178,7 +114,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="136"/>
       <source>Constraint electrostatic potential</source>
-      <translation>Tạo ra và khống chế một điện thế tĩnh điện theo FEM</translation>
+      <translation type="unfinished">Constraint electrostatic potential</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="139"/>
@@ -191,7 +127,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="159"/>
       <source>Constraint flow velocity</source>
-      <translation>Khống chế tốc độ dòng chảy</translation>
+      <translation type="unfinished">Constraint flow velocity</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="162"/>
@@ -204,12 +140,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="182"/>
       <source>Constraint initial flow velocity</source>
-      <translation>Khống chế tốc độ dòng ban đầu</translation>
+      <translation type="unfinished">Constraint initial flow velocity</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="185"/>
       <source>Creates a FEM constraint initial flow velocity</source>
-      <translation>Tạo và khống chế tốc độ dòng chảy theo FEM</translation>
+      <translation type="unfinished">Creates a FEM constraint initial flow velocity</translation>
     </message>
   </context>
   <context>
@@ -334,7 +270,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="365"/>
       <source>Fluxsolver heat</source>
-      <translation>Dòng giải pháp nhiệt</translation>
+      <translation type="unfinished">Fluxsolver heat</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="530"/>
+      <source>Fluxsolver heat</source>
+      <translation type="unfinished">Fluxsolver heat</translation>
     </message>
   </context>
   <context>
@@ -355,7 +296,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="397"/>
       <source>Material for fluid</source>
-      <translation>Vật liệu FEM cho chất lỏng</translation>
+      <translation type="unfinished">Material for fluid</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="582"/>
+      <source>Material for fluid</source>
+      <translation type="unfinished">Material for fluid</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialFluid.py" line="42"/>
@@ -380,6 +326,11 @@
       <source>Creates a nonlinear mechanical material</source>
       <translation>Tạo vật liệu cơ khí phi tuyến</translation>
     </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="618"/>
+      <source>Creates a nonlinear mechanical material</source>
+      <translation>Tạo vật liệu cơ khí phi tuyến</translation>
+    </message>
   </context>
   <context>
     <name>FEM_MaterialReinforced</name>
@@ -393,6 +344,11 @@
     <name>FEM_MaterialSolid</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="452"/>
+      <source>Material for solid</source>
+      <translation type="unfinished">Material for solid</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="705"/>
       <source>Material for solid</source>
       <translation type="unfinished">Material for solid</translation>
     </message>
@@ -476,6 +432,11 @@
     <name>FEM_MeshNetgenFromShape</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="603"/>
+      <source>FEM mesh from shape by Netgen</source>
+      <translation>Lưới theo FEM được tạo ra từ hình dạng bởi Netgen</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="957"/>
       <source>FEM mesh from shape by Netgen</source>
       <translation>Lưới theo FEM được tạo ra từ hình dạng bởi Netgen</translation>
     </message>
@@ -575,6 +536,11 @@
       <source>Solver Elmer</source>
       <translation type="unfinished">Solver Elmer</translation>
     </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="1174"/>
+      <source>Solver Elmer</source>
+      <translation type="unfinished">Solver Elmer</translation>
+    </message>
   </context>
   <context>
     <name>FEM_SolverRun</name>
@@ -616,6 +582,34 @@
     </message>
   </context>
   <context>
+    <name>GeometryElementsSelection</name>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
+      <source>Geometry reference selector for a </source>
+      <translation>Công cụ chọn tham chiếu hình học cho một </translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
+      <source>Add</source>
+      <translation>Thêm mới</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="255"/>
+      <source>Click on "Add" and select geometric elements to add them to the list. If no geometry is added to the list, all remaining ones are used. The following geometry elements are allowed to select: </source>
+      <translation type="unfinished">Click on "Add" and select geometric elements to add them to the list. If no geometry is added to the list, all remaining ones are used. The following geometry elements are allowed to select: </translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>
+      <source>Selection mode</source>
+      <translation>Chế độ chọn</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
+      <source>Solid</source>
+      <translation>Chất rắn</translation>
+    </message>
+  </context>
+  <context>
     <name>Material_Editor</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="382"/>
@@ -626,6 +620,37 @@
       <location filename="../../../femcommands/commands.py" line="384"/>
       <source>Opens the FreeCAD material editor</source>
       <translation type="unfinished">Opens the FreeCAD material editor</translation>
+    </message>
+  </context>
+  <context>
+    <name>SolidSelector</name>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="147"/>
+      <source>Select Solids</source>
+      <translation>Chọn chất rắn</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="148"/>
+      <source>Select elements part of the solid that shall be added to the list. To than add the solid click "Add".</source>
+      <translation>Chọn các phần tử của chất rắn sẽ được thêm vào danh sách. Để thêm chất rắn, nhấp chuột vào "Thêm".</translation>
+    </message>
+  </context>
+  <context>
+    <name>_Selector</name>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="49"/>
+      <source>Add</source>
+      <translation>Thêm mới</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
+      <source>Remove</source>
+      <translation>Xóa bỏ</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
+      <source>Remove</source>
+      <translation>Xóa bỏ</translation>
     </message>
   </context>
   <context>

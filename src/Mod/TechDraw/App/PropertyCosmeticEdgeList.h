@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2010     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -64,8 +64,7 @@ public:
 
     /** Sets the property
      */
-/*    void setValue(const CosmeticEdge*);*/
-    void setValue(CosmeticEdge*);
+    void setValue(const CosmeticEdge*);
     void setValues(const std::vector<CosmeticEdge*>&);
 
     /// index operator

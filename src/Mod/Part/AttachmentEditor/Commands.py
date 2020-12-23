@@ -1,5 +1,6 @@
 # ***************************************************************************
-# *   Copyright (c) 2016 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
+# *   Copyright (c) Victor Titov (DeepSOIC)                                 *
+# *                                           (vv.titov@gmail.com) 2016     *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -103,4 +104,3 @@ if App.GuiUp:
     import FreeCADGui as Gui
     command_instance = CommandEditAttachment()
     Gui.addCommand('Part_EditAttachment', command_instance)
-

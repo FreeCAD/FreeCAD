@@ -7,11 +7,7 @@ if(NOT DEFINED APPDATA_RELEASE_DATE)
             WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
             OUTPUT_STRIP_TRAILING_WHITESPACE)
     else()
-        if(NOT (CMAKE_VERSION VERSION_LESS 3.8.0))
-            string(TIMESTAMP APPDATA_RELEASE_DATE "%Y-%m-%d")
-        else()
-            file(TIMESTAMP "${CMAKE_SOURCE_DIR}/CMakeLists.txt" APPDATA_RELEASE_DATE "%Y-%m-%d")
-        endif()
+        file(TIMESTAMP "${CMAKE_SOURCE_DIR}/CMakeLists.txt" APPDATA_RELEASE_DATE "%Y-%m-%d")
     endif()
 endif()
 
@@ -37,9 +33,4 @@ install(
 install(
     FILES org.freecadweb.FreeCAD.xml
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/mime/packages
-)
-
-install(
-    FILES FreeCAD.thumbnailer
-    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/thumbnailers
 )

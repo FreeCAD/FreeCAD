@@ -37,9 +37,9 @@
 # include <gp_Pln.hxx>
 
 # include <sstream>
-# include <QAction>
+
 # include <QMessageBox>
-# include <QKeyEvent>
+# include <QAction>
 # include <QRegExp>
 # include <QTextStream>
 #endif
@@ -48,11 +48,12 @@
 #include "TaskFemConstraintTemperature.h"
 #include "ui_TaskFemConstraintTemperature.h"
 #include <App/Application.h>
-#include <Base/Tools.h>
 #include <Gui/Command.h>
+
+
+
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
-#include <Mod/Part/App/PartFeature.h>
 
 
 using namespace FemGui;
@@ -61,20 +62,19 @@ using namespace Gui;
 /* TRANSLATOR FemGui::TaskFemConstraintTemperature */
 
 TaskFemConstraintTemperature::TaskFemConstraintTemperature(ViewProviderFemConstraintTemperature *ConstraintView,QWidget *parent)
-  : TaskFemConstraint(ConstraintView, parent, "FEM_ConstraintTemperature")
+  : TaskFemConstraint(ConstraintView, parent, "fem-constraint-temperature")
 {
     proxy = new QWidget(this);
     ui = new Ui_TaskFemConstraintTemperature();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
-    // create a context menu for the listview of the references
-    createDeleteAction(ui->lw_references);
-    deleteAction->connect(deleteAction, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
+    QAction* action = new QAction(tr("Delete"), ui->lw_references);
+    action->connect(action, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
+    ui->lw_references->addAction(action);
+    ui->lw_references->setContextMenuPolicy(Qt::ActionsContextMenu);
 
     connect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
-        this, SLOT(setSelection(QListWidgetItem*)));
-    connect(ui->lw_references, SIGNAL(itemClicked(QListWidgetItem*)),
         this, SLOT(setSelection(QListWidgetItem*)));
     connect(ui->rb_temperature, SIGNAL(clicked(bool)),  this, SLOT(Temp()));
     connect(ui->rb_cflux, SIGNAL(clicked(bool)),  this, SLOT(Flux()));
@@ -179,90 +179,119 @@ void TaskFemConstraintTemperature::Flux()
 void TaskFemConstraintTemperature::addToSelection()
 {
     std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
-    if (selection.size() == 0){
+    if (selection.size()==0){
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
+
     Fem::ConstraintTemperature* pcConstraint = static_cast<Fem::ConstraintTemperature*>(ConstraintView->getObject());
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
-    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end(); ++it){//for every selected object
-        if (!it->isObjectTypeOf(Part::Feature::getClassTypeId())) {
-            QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
+    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin();  it != selection.end(); ++it){//for every selected object
+        if (static_cast<std::string>(it->getTypeName()).substr(0,4).compare(std::string("Part"))!=0){
+            QMessageBox::warning(this, tr("Selection error"),tr("Selected object is not a part!"));
             return;
         }
+
         std::vector<std::string> subNames=it->getSubNames();
         App::DocumentObject* obj = ConstraintView->getObject()->getDocument()->getObject(it->getFeatName());
-        for (size_t subIt = 0; subIt < (subNames.size()); ++subIt){// for every selected sub element
-            bool addMe = true;
-            for (std::vector<std::string>::iterator itr = std::find(SubElements.begin(), SubElements.end(), subNames[subIt]);
-                   itr != SubElements.end();
-                   itr = std::find(++itr,SubElements.end(), subNames[subIt]))
+        for (unsigned int subIt=0;subIt<(subNames.size());++subIt){// for every selected sub element
+            bool addMe=true;
+            for (std::vector<std::string>::iterator itr=std::find(SubElements.begin(),SubElements.end(),subNames[subIt]);
+                   itr!= SubElements.end();
+                   itr =  std::find(++itr,SubElements.end(),subNames[subIt]))
             {// for every sub element in selection that matches one in old list
-                if (obj == Objects[std::distance(SubElements.begin(), itr)]){//if selected sub element's object equals the one in old list then it was added before so don't add
-                    addMe = false;
+                if (obj==Objects[std::distance(SubElements.begin(),itr)]){//if selected sub element's object equals the one in old list then it was added before so don't add
+                    addMe=false;
                 }
             }
             if (addMe){
-                QSignalBlocker block(ui->lw_references);
+                disconnect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
+                    this, SLOT(setSelection(QListWidgetItem*)));
                 Objects.push_back(obj);
                 SubElements.push_back(subNames[subIt]);
                 ui->lw_references->addItem(makeRefText(obj, subNames[subIt]));
+                connect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
+                    this, SLOT(setSelection(QListWidgetItem*)));
             }
         }
     }
     //Update UI
-    pcConstraint->References.setValues(Objects, SubElements);
+    pcConstraint->References.setValues(Objects,SubElements);
     updateUI();
 }
 
 void TaskFemConstraintTemperature::removeFromSelection()
 {
     std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
-    if (selection.size() == 0){
+    if (selection.size()==0){
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
+
     Fem::ConstraintTemperature* pcConstraint = static_cast<Fem::ConstraintTemperature*>(ConstraintView->getObject());
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
-    std::vector<size_t> itemsToDel;
-    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end(); ++it){//for every selected object
-        if (!it->isObjectTypeOf(Part::Feature::getClassTypeId())) {
+    std::vector<int> itemsToDel;
+    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin();  it != selection.end(); ++it){//for every selected object
+        if (static_cast<std::string>(it->getTypeName()).substr(0,4).compare(std::string("Part"))!=0){
             QMessageBox::warning(this, tr("Selection error"),tr("Selected object is not a part!"));
             return;
         }
-        const std::vector<std::string>& subNames=it->getSubNames();
-        App::DocumentObject* obj = it->getObject();
 
-        for (size_t subIt = 0; subIt < (subNames.size()); ++subIt){// for every selected sub element
-            for (std::vector<std::string>::iterator itr = std::find(SubElements.begin(), SubElements.end(), subNames[subIt]);
-                itr != SubElements.end();
-                itr = std::find(++itr, SubElements.end(), subNames[subIt]))
+        std::vector<std::string> subNames=it->getSubNames();
+        App::DocumentObject* obj = ConstraintView->getObject()->getDocument()->getObject(it->getFeatName());
+
+        for (unsigned int subIt=0;subIt<(subNames.size());++subIt){// for every selected sub element
+            for (std::vector<std::string>::iterator itr=std::find(SubElements.begin(),SubElements.end(),subNames[subIt]);
+                itr!= SubElements.end();
+                itr =  std::find(++itr,SubElements.end(),subNames[subIt]))
             {// for every sub element in selection that matches one in old list
-                if (obj == Objects[std::distance(SubElements.begin(), itr)]){//if selected sub element's object equals the one in old list then it was added before so mark for deletion
-                    itemsToDel.push_back(std::distance(SubElements.begin(), itr));
+                if (obj==Objects[std::distance(SubElements.begin(),itr)]){//if selected sub element's object equals the one in old list then it was added before so mark for deletion
+                    itemsToDel.push_back(std::distance(SubElements.begin(),itr));
                 }
             }
         }
     }
-    std::sort(itemsToDel.begin(), itemsToDel.end());
-    while (itemsToDel.size() > 0){
-        Objects.erase(Objects.begin() + itemsToDel.back());
-        SubElements.erase(SubElements.begin() + itemsToDel.back());
+
+    std::sort(itemsToDel.begin(),itemsToDel.end());
+    while (itemsToDel.size()>0){
+        Objects.erase(Objects.begin()+itemsToDel.back());
+        SubElements.erase(SubElements.begin()+itemsToDel.back());
         itemsToDel.pop_back();
     }
     //Update UI
-    {
-        QSignalBlocker block(ui->lw_references);
-        ui->lw_references->clear();
-        for (unsigned int j = 0; j < Objects.size(); j++) {
-            ui->lw_references->addItem(makeRefText(Objects[j], SubElements[j]));
-        }
+    disconnect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
+        this, SLOT(setSelection(QListWidgetItem*)));
+
+    ui->lw_references->clear();
+    for (unsigned int j=0;j<Objects.size();j++){
+        ui->lw_references->addItem(makeRefText(Objects[j], SubElements[j]));
     }
-    pcConstraint->References.setValues(Objects, SubElements);
+    connect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
+        this, SLOT(setSelection(QListWidgetItem*)));
+
+    pcConstraint->References.setValues(Objects,SubElements);
     updateUI();
+}
+
+void TaskFemConstraintTemperature::setSelection(QListWidgetItem* item){
+    std::string docName=ConstraintView->getObject()->getDocument()->getName();
+
+    std::string s = item->text().toStdString();
+    std::string delimiter = ":";
+
+    size_t pos = 0;
+    std::string objName;
+    std::string subName;
+    pos = s.find(delimiter);
+    objName = s.substr(0, pos);
+    s.erase(0, pos + delimiter.length());
+    subName=s;
+
+    Gui::Selection().clearSelection();
+    Gui::Selection().addSelection(docName.c_str(),objName.c_str(),subName.c_str(),0,0,0);
 }
 
 void TaskFemConstraintTemperature::onReferenceDeleted() {
@@ -299,11 +328,6 @@ std::string TaskFemConstraintTemperature::get_constraint_type(void) const {
         type = "\"CFlux\"";
     }
     return type;
-}
-
-bool TaskFemConstraintTemperature::event(QEvent *e)
-{
-    return TaskFemConstraint::KeyEvent(e);
 }
 
 void TaskFemConstraintTemperature::changeEvent(QEvent *)

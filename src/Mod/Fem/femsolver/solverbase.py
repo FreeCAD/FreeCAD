@@ -1,8 +1,5 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
-# *   Copyright (c) 2017 Bernd Hahnebach <bernd@bimstatik.org>              *
-# *                                                                         *
-# *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -22,24 +19,22 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__  = "FreeCAD FEM solver base object"
+__title__ = "FreeCAD FEM solver base object"
 __author__ = "Markus Hovorka"
-__url__    = "https://www.freecadweb.org"
+__url__ = "http://www.freecadweb.org"
 
 ## \addtogroup FEM
 #  @{
 
+from PySide import QtGui
 
 import FreeCAD as App
-
+import femtools.femutils as femutils
 from . import run
-from femtools.errors import MustSaveError
-from femtools.errors import DirectoryDoesNotExistError
 
 if App.GuiUp:
-    from PySide import QtGui
     import FreeCADGui as Gui
-    from . import solver_taskpanel
+    from femguiobjects import _TaskPanelFemSolverControl
 
 
 class Proxy(object):
@@ -83,7 +78,7 @@ class ViewProxy(object):
     def setEdit(self, vobj, mode=0):
         try:
             machine = run.getMachine(vobj.Object)
-        except MustSaveError:
+        except femutils.MustSaveError:
             error_message = (
                 "Please save the file before opening the task panel. "
                 "This must be done because the location of the working "
@@ -96,7 +91,7 @@ class ViewProxy(object):
                 error_message
             )
             return False
-        except DirectoryDoesNotExistError:
+        except femutils.DirectoryDoesNotExistError:
             error_message = "Selected working directory doesn't exist."
             App.Console.PrintError(error_message + "\n")
             QtGui.QMessageBox.critical(
@@ -105,7 +100,7 @@ class ViewProxy(object):
                 error_message
             )
             return False
-        task = solver_taskpanel.ControlTaskPanel(machine)
+        task = _TaskPanelFemSolverControl.ControlTaskPanel(machine)
         Gui.Control.showDialog(task)
         return True
 
@@ -115,7 +110,7 @@ class ViewProxy(object):
     def doubleClicked(self, vobj):
         if Gui.Control.activeDialog():
             Gui.Control.closeDialog()
-        vobj.Document.setEdit(vobj.Object.Name)
+        Gui.ActiveDocument.setEdit(vobj.Object.Name)
         return True
 
     def attach(self, vobj):

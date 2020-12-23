@@ -120,9 +120,9 @@ public:
             numPoints->setText(QString::number(countPoints));
             numFacets->setText(QString::number(countFacets));
             numMin->setText(QString::fromLatin1("X: %1\tY: %2\tZ: %3")
-                .arg(bbox.MinX).arg(bbox.MinY).arg(bbox.MinZ));
+                .arg(bbox.MinX).arg(bbox.MinX).arg(bbox.MinX));
             numMax->setText(QString::fromLatin1("X: %1\tY: %2\tZ: %3")
-                .arg(bbox.MaxX).arg(bbox.MaxY).arg(bbox.MaxZ));
+                .arg(bbox.MaxX).arg(bbox.MaxX).arg(bbox.MaxX));
         }
         else {
             numPoints->setText(QString::fromLatin1(""));
@@ -202,7 +202,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *mesh << "Mesh_Import"
           << "Mesh_Export"
           << "Mesh_FromPartShape"
-          << "Mesh_RemeshGmsh"
           << "Separator"
           << analyze
           << "Mesh_VertexCurvature"
@@ -218,7 +217,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Mesh_SegmentationBestFit"
           << "Separator"
           << "Mesh_Smoothing"
-          << "Mesh_Decimating"
           << "Mesh_Scale"
           << "Separator"
           << "Mesh_BuildRegularSolid"
@@ -226,7 +224,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << cutting
           << "Separator"
           << "Mesh_Merge"
-          << "Mesh_SplitComponents"
           << "Separator";
     Gui::CommandManager& mgr = Gui::Application::Instance->commandManager();
     if (mgr.getCommandByName("MeshPart_CreateFlatMesh"))

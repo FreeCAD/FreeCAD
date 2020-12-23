@@ -55,7 +55,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintPlaneRotation, FemGui::ViewProv
 
 ViewProviderFemConstraintPlaneRotation::ViewProviderFemConstraintPlaneRotation()
 {
-    sPixmap = "FEM_ConstraintPlaneRotation";
+    sPixmap = "fem-constraint-planerotation";
     //Note change "planerotation" in line above to new constraint name, make sure it is the same as in taskFem* cpp file
     ADD_PROPERTY(FaceColor,(0.2f,0.3f,0.2f));
 }

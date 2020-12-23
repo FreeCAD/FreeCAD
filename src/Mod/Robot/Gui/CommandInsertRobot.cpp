@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -73,7 +73,7 @@ void CmdRobotInsertKukaIR500::activated(int)
     doCommand(Doc,"App.activeDocument().%s.Home  = [0.0,-90.0,90.0,0.0,45.0,0.0]",FeatName.c_str());
     updateActive();
     commitCommand();
-
+      
 }
 
 bool CmdRobotInsertKukaIR500::isActive(void)
@@ -114,7 +114,7 @@ void CmdRobotInsertKukaIR16::activated(int)
     doCommand(Doc,"App.activeDocument().%s.Axis5 = 45",FeatName.c_str());
     updateActive();
     commitCommand();
-
+      
 }
 
 bool CmdRobotInsertKukaIR16::isActive(void)
@@ -155,7 +155,7 @@ void CmdRobotInsertKukaIR210::activated(int)
     doCommand(Doc,"App.activeDocument().%s.Axis5 = 45",FeatName.c_str());
     updateActive();
     commitCommand();
-
+      
 }
 
 bool CmdRobotInsertKukaIR210::isActive(void)
@@ -195,7 +195,7 @@ void CmdRobotInsertKukaIR125::activated(int)
     doCommand(Doc,"App.activeDocument().%s.Axis5 = 45",FeatName.c_str());
     updateActive();
     commitCommand();
-
+      
 }
 
 bool CmdRobotInsertKukaIR125::isActive(void)
@@ -229,7 +229,7 @@ void CmdRobotAddToolShape::activated(int)
         .getObjectsOfType(Base::Type::fromName("Part::Feature"));
     std::vector<App::DocumentObject*> VRMLs = getSelection()
         .getObjectsOfType(Base::Type::fromName("App::VRMLObject"));
-
+ 
     if (robots.size() != 1 || (shapes.size() != 1 && VRMLs.size() != 1)) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select one robot and one shape or VRML object."));

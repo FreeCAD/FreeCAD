@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="no" sourcelanguage="en">
+<TS version="2.0" language="no" sourcelanguage="en">
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -103,7 +103,7 @@
     </message>
     <message>
       <source>Vertically center-align contents of selected cells</source>
-      <translation>Senterjuster innholdet i de valgte cellene vertikalt</translation>
+      <translation type="unfinished">Vertically center-align contents of selected cells</translation>
     </message>
   </context>
   <context>
@@ -148,7 +148,7 @@
     </message>
     <message>
       <source>Merge selected cells</source>
-      <translation>Slå sammen valgte celler</translation>
+      <translation type="unfinished">Merge selected cells</translation>
     </message>
   </context>
   <context>
@@ -159,11 +159,11 @@
     </message>
     <message>
       <source>Set alias</source>
-      <translation>Angi alias</translation>
+      <translation type="unfinished">Set alias</translation>
     </message>
     <message>
       <source>Set alias for selected cell</source>
-      <translation>Angi alias for valgte celler</translation>
+      <translation type="unfinished">Set alias for selected cell</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@
     </message>
     <message>
       <source>Split previously merged cells</source>
-      <translation>Del tidligere sammenslåtte celler</translation>
+      <translation type="unfinished">Split previously merged cells</translation>
     </message>
   </context>
   <context>
@@ -193,7 +193,7 @@
     </message>
     <message>
       <source>Set text in selected cells bold</source>
-      <translation>Gjør teksten i valgte celler fet</translation>
+      <translation type="unfinished">Set text in selected cells bold</translation>
     </message>
   </context>
   <context>
@@ -208,7 +208,7 @@
     </message>
     <message>
       <source>Set text in selected cells italic</source>
-      <translation>Gjør teksten i valgte celler kursiv</translation>
+      <translation type="unfinished">Set text in selected cells italic</translation>
     </message>
   </context>
   <context>
@@ -223,14 +223,14 @@
     </message>
     <message>
       <source>Underline text in selected cells</source>
-      <translation>Understrek teksten i valgte celler</translation>
+      <translation type="unfinished">Underline text in selected cells</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
       <source>Custom Color</source>
-      <translation>Egendefinert farge</translation>
+      <translation type="unfinished">Custom Color</translation>
     </message>
   </context>
   <context>
@@ -257,7 +257,7 @@
     </message>
     <message>
       <source>Horizontal</source>
-      <translation>Horisontal</translation>
+      <translation type="unfinished">Horizontal</translation>
     </message>
     <message>
       <source>Left</source>
@@ -265,7 +265,7 @@
     </message>
     <message>
       <source>Center</source>
-      <translation>Midtstill</translation>
+      <translation type="unfinished">Center</translation>
     </message>
     <message>
       <source>Right</source>
@@ -273,7 +273,7 @@
     </message>
     <message>
       <source>Vertical</source>
-      <translation>Vertikal</translation>
+      <translation type="unfinished">Vertical</translation>
     </message>
     <message>
       <source>Top</source>
@@ -331,46 +331,28 @@
       <translation>Eksporter fil</translation>
     </message>
     <message>
+      <source>Cell contents</source>
+      <translation>Celleinnhold</translation>
+    </message>
+    <message>
       <source>Show spreadsheet</source>
       <translation>Vis regneark</translation>
     </message>
     <message>
       <source>Set cell(s) foreground color</source>
-      <translation>Angi forgrunnsfarge for cellen(e)</translation>
+      <translation type="unfinished">Set cell(s) foreground color</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) foreground color</source>
-      <translation>Angi forgrunnsfarge for cellen(e) i regnearket</translation>
+      <translation type="unfinished">Sets the Spreadsheet cell(s) foreground color</translation>
     </message>
     <message>
       <source>Set cell(s) background color</source>
-      <translation>Angi bakgrunnsfarge for cellen(e)</translation>
+      <translation type="unfinished">Set cell(s) background color</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
-      <translation>Angi bakgrunnsfarge for cellen(e) i regnearket</translation>
-    </message>
-    <message>
-      <source>Spreadsheet</source>
-      <translation>Regneark</translation>
-    </message>
-    <message>
-      <source>Spreadsheet does not support range selection when pasting.
-Please select one cell only.</source>
-      <translation>Regnearket støtter ikke valg av område ved innliming. Velg kun en celle.</translation>
-    </message>
-    <message>
-      <source>Copy &amp; Paste failed</source>
-      <translation>Kopier og lim feilet</translation>
-    </message>
-    <message>
-      <source>Alias contains invalid characters!</source>
-      <translation>Aliaset inneholder ugyldige tegn!</translation>
-    </message>
-    <message>
-      <source>Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation>Referer til celler med alias, for eksempel Spreadsheet.mitt_alias i stedet for Spreadsheet.B1</translation>
+      <translation type="unfinished">Sets the Spreadsheet cell(s) background color</translation>
     </message>
   </context>
   <context>
@@ -445,7 +427,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
     </message>
     <message>
       <source>Custom Color</source>
-      <translation>Egendefinert farge</translation>
+      <translation type="unfinished">Custom Color</translation>
     </message>
   </context>
   <context>
@@ -455,17 +437,8 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Skjema</translation>
     </message>
     <message>
-      <source>&amp;Content:</source>
-      <translation>&amp;Innhold:</translation>
-    </message>
-    <message>
-      <source>&amp;Alias:</source>
-      <translation>&amp;Alias:</translation>
-    </message>
-    <message>
-      <source>Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation>Referer til celler med alias, for eksempel Spreadsheet.mitt_alias i stedet for Spreadsheet.B1</translation>
+      <source>&amp;Contents</source>
+      <translation>&amp;Innhold</translation>
     </message>
   </context>
   <context>

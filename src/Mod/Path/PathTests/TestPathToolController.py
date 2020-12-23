@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+
 # ***************************************************************************
+# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -22,8 +24,6 @@
 
 import FreeCAD
 import Path
-import PathScripts.PathPreferences as PathPreferences
-import PathScripts.PathToolBit as PathToolBit
 import PathScripts.PathToolController as PathToolController
 
 from PathTests.PathTestUtils import PathTestBase
@@ -37,10 +37,7 @@ class TestPathToolController(PathTestBase):
         FreeCAD.closeDocument(self.doc.Name)
 
     def createTool(self, name='t1', diameter=1.75):
-        if PathPreferences.toolsReallyUseLegacyTools():
-            return Path.Tool(name=name, diameter=diameter)
-        attrs = {'shape': None, 'name': name, 'parameter': {'Diameter': diameter}, 'attribute': []}
-        return PathToolBit.Factory.CreateFromAttrs(attrs, name)
+        return Path.Tool(name=name, diameter=diameter)
 
     def test00(self):
         '''Verify ToolController templateAttrs'''
@@ -50,7 +47,6 @@ class TestPathToolController(PathTestBase):
         tc.Label = 'ToolController'
         tc.ToolNumber = 7
         tc.VertFeed = '3 in/s'
-        tc.VertFeed = round(tc.VertFeed, 1)
         tc.HorizFeed = '10 mm/s'
         tc.VertRapid = 40
         tc.HorizRapid = 28
@@ -63,15 +59,12 @@ class TestPathToolController(PathTestBase):
         self.assertEqual(attrs['label'], 'ToolController')
         self.assertEqual(attrs['nr'], 7)
         self.assertEqual(attrs['vfeed'], '76.2 mm/s')
-        self.assertEqual(attrs['hfeed'], '10.0 mm/s')
-        self.assertEqual(attrs['vrapid'], '40.0 mm/s')
-        self.assertEqual(attrs['hrapid'], '28.0 mm/s')
+        self.assertEqual(attrs['hfeed'], '10 mm/s')
+        self.assertEqual(attrs['vrapid'], '40 mm/s')
+        self.assertEqual(attrs['hrapid'], '28 mm/s')
         self.assertEqual(attrs['dir'], 'Reverse')
         self.assertEqual(attrs['speed'], 12000)
-        if PathPreferences.toolsReallyUseLegacyTools():
-            self.assertEqual(attrs['tool'], t.templateAttrs())
-        else:
-            self.assertEqual(attrs['tool'], t.Proxy.templateAttrs(t))
+        self.assertEqual(attrs['tool'], t.templateAttrs())
 
         return tc
 
@@ -90,8 +83,5 @@ class TestPathToolController(PathTestBase):
         self.assertRoughly(tc0.HorizRapid, tc1.HorizRapid)
         self.assertEqual(tc0.SpindleDir, tc1.SpindleDir)
         self.assertRoughly(tc0.SpindleSpeed, tc1.SpindleSpeed)
-        # These are not valid because the name & label get adjusted if there
-        # is a conflict. No idea how this could work with the C implementation
-        #self.assertEqual(tc0.Tool.Name, tc1.Tool.Name)
-        #self.assertEqual(tc0.Tool.Label, tc1.Tool.Label)
+        self.assertEqual(tc0.Tool.Name, tc1.Tool.Name)
         self.assertRoughly(tc0.Tool.Diameter, tc1.Tool.Diameter)

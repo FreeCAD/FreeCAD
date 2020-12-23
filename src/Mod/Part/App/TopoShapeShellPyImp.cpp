@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2008     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -77,13 +77,6 @@ PyObject *TopoShapeShellPy::PyMake(struct _typeobject *, PyObject *, PyObject *)
 // constructor method
 int TopoShapeShellPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
-    if (PyArg_ParseTuple(args, "")) {
-        // Undefined Shell
-        getTopoShapePtr()->setShape(TopoDS_Shell());
-        return 0;
-    }
-
-    PyErr_Clear();
     PyObject *obj;
     if (!PyArg_ParseTuple(args, "O", &obj))
         return -1;

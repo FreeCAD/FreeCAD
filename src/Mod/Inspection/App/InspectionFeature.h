@@ -54,7 +54,7 @@ public:
     virtual ~InspectActualGeometry() {}
     /// Number of points to be checked
     virtual unsigned long countPoints() const = 0;
-    virtual Base::Vector3f getPoint(unsigned long) const = 0;
+    virtual Base::Vector3f getPoint(unsigned long) = 0;
 };
 
 class InspectionExport InspectActualMesh : public InspectActualGeometry
@@ -63,12 +63,11 @@ public:
     InspectActualMesh(const Mesh::MeshObject& rMesh);
     ~InspectActualMesh();
     virtual unsigned long countPoints() const;
-    virtual Base::Vector3f getPoint(unsigned long) const;
+    virtual Base::Vector3f getPoint(unsigned long);
 
 private:
-    const MeshCore::MeshKernel& _mesh;
-    bool _bApply;
-    Base::Matrix4D _clTrf;
+    MeshCore::MeshPointIterator _iter;
+    unsigned long _count;
 };
 
 class InspectionExport InspectActualPoints : public InspectActualGeometry
@@ -76,7 +75,7 @@ class InspectionExport InspectActualPoints : public InspectActualGeometry
 public:
     InspectActualPoints(const Points::PointKernel&);
     virtual unsigned long countPoints() const;
-    virtual Base::Vector3f getPoint(unsigned long) const;
+    virtual Base::Vector3f getPoint(unsigned long);
 
 private:
     const Points::PointKernel& _rKernel;
@@ -87,7 +86,7 @@ class InspectionExport InspectActualShape : public InspectActualGeometry
 public:
     InspectActualShape(const Part::TopoShape&);
     virtual unsigned long countPoints() const;
-    virtual Base::Vector3f getPoint(unsigned long) const;
+    virtual Base::Vector3f getPoint(unsigned long);
 
 private:
     const Part::TopoShape& _rShape;
@@ -100,7 +99,7 @@ class InspectionExport InspectNominalGeometry
 public:
     InspectNominalGeometry() {}
     virtual ~InspectNominalGeometry() {}
-    virtual float getDistance(const Base::Vector3f&) const = 0;
+    virtual float getDistance(const Base::Vector3f&) = 0;
 };
 
 class InspectionExport InspectNominalMesh : public InspectNominalGeometry
@@ -108,14 +107,12 @@ class InspectionExport InspectNominalMesh : public InspectNominalGeometry
 public:
     InspectNominalMesh(const Mesh::MeshObject& rMesh, float offset);
     ~InspectNominalMesh();
-    virtual float getDistance(const Base::Vector3f&) const;
+    virtual float getDistance(const Base::Vector3f&);
 
 private:
-    const MeshCore::MeshKernel& _mesh;
+    MeshCore::MeshFacetIterator _iter;
     MeshCore::MeshGrid* _pGrid;
     Base::BoundBox3f _box;
-    bool _bApply;
-    Base::Matrix4D _clTrf;
 };
 
 class InspectionExport InspectNominalFastMesh : public InspectNominalGeometry
@@ -123,15 +120,13 @@ class InspectionExport InspectNominalFastMesh : public InspectNominalGeometry
 public:
     InspectNominalFastMesh(const Mesh::MeshObject& rMesh, float offset);
     ~InspectNominalFastMesh();
-    virtual float getDistance(const Base::Vector3f&) const;
+    virtual float getDistance(const Base::Vector3f&);
 
 protected:
-    const MeshCore::MeshKernel& _mesh;
+    MeshCore::MeshFacetIterator _iter;
     MeshCore::MeshGrid* _pGrid;
     Base::BoundBox3f _box;
     unsigned long max_level;
-    bool _bApply;
-    Base::Matrix4D _clTrf;
 };
 
 class InspectionExport InspectNominalPoints : public InspectNominalGeometry
@@ -139,7 +134,7 @@ class InspectionExport InspectNominalPoints : public InspectNominalGeometry
 public:
     InspectNominalPoints(const Points::PointKernel&, float offset);
     ~InspectNominalPoints();
-    virtual float getDistance(const Base::Vector3f&) const;
+    virtual float getDistance(const Base::Vector3f&);
 
 private:
     const Points::PointKernel& _rKernel;
@@ -151,7 +146,7 @@ class InspectionExport InspectNominalShape : public InspectNominalGeometry
 public:
     InspectNominalShape(const TopoDS_Shape&, float offset);
     ~InspectNominalShape();
-    virtual float getDistance(const Base::Vector3f&) const;
+    virtual float getDistance(const Base::Vector3f&);
 
 private:
     BRepExtrema_DistShapeShape* distss;

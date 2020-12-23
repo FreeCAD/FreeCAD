@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jan Rheinländer                                    *
- *                                   <jrheinlaender@users.sourceforge.net> *
+ *   Copyright (c) 2013 Jan Rheinländer <jrheinlaender[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -26,7 +25,6 @@
 #define PARTDESIGN_DATUMLINE_H
 
 #include <Mod/Part/App/DatumFeature.h>
-#include <App/PropertyUnits.h>
 
 namespace PartDesign
 {
@@ -39,18 +37,11 @@ public:
     Line();
     virtual ~Line();
 
-    App::PropertyEnumeration ResizeMode;
-    App::PropertyLength Length;
-    virtual void onChanged(const App::Property *prop);
-    
     const char* getViewProviderName(void) const {
         return "PartDesignGui::ViewProviderDatumLine";
     }
 
     Base::Vector3d getDirection() const;
-    
-private:
-    static const char* ResizeModeEnums[];
 };
 
 } //namespace PartDesign

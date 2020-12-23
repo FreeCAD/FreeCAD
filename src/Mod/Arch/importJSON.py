@@ -1,5 +1,7 @@
 #***************************************************************************
-#*   Copyright (c) 2017 Joseph Coffland <joseph@cauldrondevelopment.com>   *
+#*                                                                         *
+#*   Copyright (c) 2017                                                    *
+#*   Joseph Coffland <joseph@cauldrondevelopment.com>                      *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -23,7 +25,6 @@
 
 import FreeCAD, Mesh, Draft, Part
 import json
-import six
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -49,10 +50,7 @@ def export(exportList, filename):
         }
 
     # Write file
-    if six.PY2:
-        outfile = pythonopen(filename, "wb")
-    else:
-        outfile = pythonopen(filename, "w")
+    outfile = pythonopen(filename, "wb")
     json.dump(data, outfile, separators = (',', ':'))
     outfile.close()
 

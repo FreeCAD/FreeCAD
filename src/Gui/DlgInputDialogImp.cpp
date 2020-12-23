@@ -27,7 +27,6 @@
 #endif
 
 #include "DlgInputDialogImp.h"
-#include "ui_DlgInputDialog.h"
 #include "SpinBox.h"
 
 
@@ -43,19 +42,18 @@ using namespace Gui::Dialog;
  *  true to construct a modal dialog.
  */
 DlgInputDialogImp::DlgInputDialogImp( const QString& labelTxt, QWidget* parent, bool modal, Type type )
-  : QDialog(parent)
-  , ui(new Ui_DlgInputDialog)
+  : QDialog( parent )
 {
     this->setModal(modal);
-    ui->setupUi(this);
-    ui->label->setText(labelTxt);
+    this->setupUi(this);
+    label->setText(labelTxt);
 
     QSize sh = sizeHint();
     setType(type);
     resize(qMax(sh.width(), 400), 1);
 
-    connect(ui->lineEdit, SIGNAL(returnPressed()), this, SLOT(tryAccept()));
-    connect(ui->lineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(textChanged(const QString&)));
+    connect(lineEdit, SIGNAL(returnPressed()), this, SLOT(tryAccept()));
+    connect(lineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(textChanged(const QString&)));
 }
 
 /**
@@ -70,21 +68,21 @@ void DlgInputDialogImp::textChanged( const QString &s )
 {
     bool on = true;
 
-    if (ui->lineEdit->validator()) {
-        QString str = ui->lineEdit->text();
-        int index = ui->lineEdit->cursorPosition();
-        on = ( ui->lineEdit->validator()->validate(str, index) == QValidator::Acceptable );
+    if (lineEdit->validator()) {
+        QString str = lineEdit->text();
+        int index = lineEdit->cursorPosition();
+        on = ( lineEdit->validator()->validate(str, index) == QValidator::Acceptable );
     }
     else if ( type() != LineEdit ) {
         on = !s.isEmpty();
     }
 
-    ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled( on );
+    buttonBox->button(QDialogButtonBox::Ok)->setEnabled( on );
 }
 
 void DlgInputDialogImp::tryAccept()
 {
-    if (!ui->lineEdit->text().isEmpty())
+    if (!lineEdit->text().isEmpty())
         accept();
 }
 
@@ -96,29 +94,29 @@ void DlgInputDialogImp::setType( DlgInputDialogImp::Type t )
     switch (inputtype)
     {
     case LineEdit:
-        input = ui->lineEdit;
+        input = lineEdit;
         break;
     case SpinBox:
-        input = ui->spinBox;
+        input = spinBox;
         break;
     case UIntBox:
-        input = ui->uIntSpinBox;
+        input = uIntSpinBox;
         break;
     case FloatSpinBox:
-        input = ui->floatSpinBox;
+        input = floatSpinBox;
         break;
     case ComboBox:
-        input = ui->comboBox;
+        input = comboBox;
         break;
     default:
         break;
     }
 
     if (input) {
-        ui->stack->setCurrentWidget(input->parentWidget());
-        ui->stack->setFixedHeight( input->sizeHint().height() );
+        stack->setCurrentWidget(input->parentWidget());
+        stack->setFixedHeight( input->sizeHint().height() );
         input->setFocus();
-        ui->label->setBuddy( input );
+        label->setBuddy( input );
     }
 }
 
@@ -129,27 +127,27 @@ DlgInputDialogImp::Type DlgInputDialogImp::type() const
 
 QSpinBox *DlgInputDialogImp::getSpinBox() const
 {
-    return ui->spinBox;
+    return spinBox;
 }
 
 Gui::UIntSpinBox *DlgInputDialogImp::getUIntBox() const
 {
-    return ui->uIntSpinBox;
+    return uIntSpinBox;
 }
 
 QDoubleSpinBox *DlgInputDialogImp::getFloatSpinBox() const
 {
-    return ui->floatSpinBox;
+    return floatSpinBox;
 }
 
 QLineEdit *DlgInputDialogImp::getLineEdit() const
 {
-    return ui->lineEdit;
+    return lineEdit;
 }
 
 QComboBox *DlgInputDialogImp::getComboBox() const
 {
-    return ui->comboBox;
+    return comboBox;
 }
 
 #include "moc_DlgInputDialogImp.cpp"

@@ -27,9 +27,7 @@
 #include <CXX/Objects.hxx>
 
 #include <boost/signals2.hpp>
-#include <boost/bind/bind.hpp>
-#include <string>
-
+#include <boost/bind.hpp>
 
 namespace App
 {
@@ -107,53 +105,48 @@ private:
     void slotStartSaveDocument(const App::Document&, const std::string&);
     /** Called when an document has been saved*/
     void slotFinishSaveDocument(const App::Document&, const std::string&);
-    /** Called before an object gets a new extension added*/
-    void slotBeforeAddingDynamicExtension(const App::ExtensionContainer&, std::string extension);
-    /** Called when an object gets a dynamic extension added*/
-    void slotAddedDynamicExtension(const App::ExtensionContainer&, std::string extension);
-
 
 private:
     Py::Object inst;
     static std::vector<DocumentObserverPython*> _instances;
 
-    typedef struct PythonObject {
-       boost::signals2::scoped_connection slot;
-       Py::Object py;
-       PyObject* ptr() {
-           return py.ptr();
-       }
-    } Connection;
+    typedef boost::signals2::connection Connection;
+//FIXME: ISO C++11 requires at least one argument for the "..." in a variadic macro
+#define FC_PY_DOC_OBSERVER \
+    FC_PY_ELEMENT(CreatedDocument,_1) \
+    FC_PY_ELEMENT(DeletedDocument,_1) \
+    FC_PY_ELEMENT(RelabelDocument,_1) \
+    FC_PY_ELEMENT(ActivateDocument,_1) \
+    FC_PY_ELEMENT(UndoDocument,_1) \
+    FC_PY_ELEMENT(RedoDocument,_1) \
+    FC_PY_ELEMENT(BeforeChangeDocument,_1,_2) \
+    FC_PY_ELEMENT(ChangedDocument,_1,_2) \
+    FC_PY_ELEMENT(CreatedObject,_1) \
+    FC_PY_ELEMENT(DeletedObject,_1) \
+    FC_PY_ELEMENT(BeforeChangeObject,_1,_2) \
+    FC_PY_ELEMENT(ChangedObject,_1,_2) \
+    FC_PY_ELEMENT(RecomputedObject,_1) \
+    FC_PY_ELEMENT(BeforeRecomputeDocument,_1) \
+    FC_PY_ELEMENT(RecomputedDocument,_1) \
+    FC_PY_ELEMENT(OpenTransaction,_1,_2) \
+    FC_PY_ELEMENT(CommitTransaction,_1) \
+    FC_PY_ELEMENT(AbortTransaction,_1) \
+    FC_PY_ELEMENT(Undo) \
+    FC_PY_ELEMENT(Redo) \
+    FC_PY_ELEMENT(BeforeCloseTransaction,_1) \
+    FC_PY_ELEMENT(CloseTransaction,_1) \
+    FC_PY_ELEMENT(StartSaveDocument,_1,_2) \
+    FC_PY_ELEMENT(FinishSaveDocument,_1,_2) \
+    FC_PY_ELEMENT(AppendDynamicProperty,_1) \
+    FC_PY_ELEMENT(RemoveDynamicProperty,_1) \
+    FC_PY_ELEMENT(ChangePropertyEditor,_1,_2)
 
-    Connection pyCreatedDocument;
-    Connection pyDeletedDocument;
-    Connection pyRelabelDocument;
-    Connection pyActivateDocument;
-    Connection pyUndoDocument;
-    Connection pyRedoDocument;
-    Connection pyBeforeChangeDocument;
-    Connection pyChangedDocument;
-    Connection pyCreatedObject;
-    Connection pyDeletedObject;
-    Connection pyBeforeChangeObject;
-    Connection pyChangedObject;
-    Connection pyRecomputedObject;
-    Connection pyBeforeRecomputeDocument;
-    Connection pyRecomputedDocument;
-    Connection pyOpenTransaction;
-    Connection pyCommitTransaction;
-    Connection pyAbortTransaction;
-    Connection pyUndo;
-    Connection pyRedo;
-    Connection pyBeforeCloseTransaction;
-    Connection pyCloseTransaction;
-    Connection pyStartSaveDocument;
-    Connection pyFinishSaveDocument;
-    Connection pyAppendDynamicProperty;
-    Connection pyRemoveDynamicProperty;
-    Connection pyChangePropertyEditor;
-    Connection pyBeforeAddingDynamicExtension;
-    Connection pyAddedDynamicExtension;
+#undef FC_PY_ELEMENT
+#define FC_PY_ELEMENT(_name,...) \
+    Connection connect##_name;\
+    Py::Object py##_name;
+
+    FC_PY_DOC_OBSERVER
 };
 
 } //namespace App

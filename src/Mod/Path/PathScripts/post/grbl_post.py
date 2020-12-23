@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
-# *   Copyright (c) 2014 sliptonic <shopinthewoods@gmail.com>               *
-# *   Copyright (c) 2018, 2019 Gauthier Briere                              *
-# *   Copyright (c) 2019, 2020 Schildkroet                                  *
+# *                                                                         *
+# *   (c) sliptonic (shopinthewoods@gmail.com) 2014                         *
+# *   (c) Gauthier Briere - 2018, 2019                                      *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -22,7 +22,7 @@
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
-# ***************************************************************************
+# ***************************************************************************/
 
 import FreeCAD
 from FreeCAD import Units
@@ -30,7 +30,6 @@ import PathScripts.PostUtils as PostUtils
 import argparse
 import datetime
 import shlex
-import PathScripts.PathUtil as PathUtil
 
 
 TOOLTIP = '''
@@ -48,7 +47,6 @@ grbl_post.export(object, "/path/to/file.ncc")
 OUTPUT_COMMENTS = True            # default output of comments in output gCode file
 OUTPUT_HEADER = True              # default output header in output gCode file
 OUTPUT_LINE_NUMBERS = False       # default doesn't output line numbers in output gCode file
-OUTPUT_BCNC = False               # default doesn't add bCNC operation block headers in output gCode file
 SHOW_EDITOR = True                # default show the resulting file dialog output in GUI
 PRECISION = 3                     # Default precision for metric (see http://linuxcnc.org/docs/2.7/html/gcode/overview.html#_g_code_best_practices)
 TRANSLATE_DRILL_CYCLES = False    # If true, G81, G82 & G83 are translated in G0/G1 moves
@@ -58,9 +56,6 @@ POSTAMBLE = '''M5
 G17 G90
 M2
 '''                               # default postamble text will appear following the last operation.
-
-SPINDLE_WAIT = 0                  # no waiting after M3 / M4 by default
-RETURN_TO = None                  # no movements after end of program
 
 # Customisation with no command line argument
 MODAL = False                     # if true commands are suppressed if the same as previous line.
@@ -97,10 +92,6 @@ parser.add_argument('--preamble',                                help='set comma
 parser.add_argument('--postamble',                               help='set commands to be issued after the last command, default="M5\nG17 G90\n;M2"')
 parser.add_argument('--inches',             action='store_true', help='Convert output for US imperial mode (G20)')
 parser.add_argument('--tool-change',        action='store_true', help='Insert M6 for all tool changes')
-parser.add_argument('--wait-for-spindle',   type=int, default=0, help='Wait for spindle to reach desired speed after M3 / M4, default=0')
-parser.add_argument('--return-to',          default='',          help='Move to the specified coordinates at the end, e.g. --return-to=0,0')
-parser.add_argument('--bcnc',               action='store_true', help='Add Job operations as bCNC block headers. Consider suppressing existing comments: Add argument --no-comments')
-parser.add_argument('--no-bcnc',            action='store_true', help='suppress bCNC block header output (default)')
 TOOLTIP_ARGS = parser.format_help()
 
 
@@ -109,7 +100,7 @@ TOOLTIP_ARGS = parser.format_help()
 # ***************************************************************************
 MOTION_COMMANDS = ['G0', 'G00', 'G1', 'G01', 'G2', 'G02', 'G3', 'G03']  # Motion gCode commands definition
 RAPID_MOVES = ['G0', 'G00']                                             # Rapid moves gCode commands definition
-SUPPRESS_COMMANDS = []                                      # These commands are ignored by commenting them out
+SUPPRESS_COMMANDS = ['G98', 'G80']                                      # These commands are ignored by commenting them out
 COMMAND_SPACE = " "
 # Global variables storing current position
 CURRENT_X = 0
@@ -137,9 +128,6 @@ def processArguments(argstring):
   global UNIT_FORMAT
   global TRANSLATE_DRILL_CYCLES
   global OUTPUT_TOOL_CHANGE
-  global SPINDLE_WAIT
-  global RETURN_TO
-  global OUTPUT_BCNC
 
   try:
     args = parser.parse_args(shlex.split(argstring))
@@ -175,18 +163,6 @@ def processArguments(argstring):
       PRECISION = 4
     if args.tool_change:
       OUTPUT_TOOL_CHANGE = True
-    if args.wait_for_spindle > 0:
-      SPINDLE_WAIT = args.wait_for_spindle
-    if args.return_to != '':
-      RETURN_TO = [int(v) for v in args.return_to.split(',')]
-      if len(RETURN_TO) != 2:
-        RETURN_TO = None
-        print("--return-to coordinates must be specified as <x>,<y>, ignoring")
-    if args.bcnc:
-      OUTPUT_BCNC = True
-    if args.no_bcnc:
-      OUTPUT_BCNC = False
-
 
   except Exception as e:
     return False
@@ -209,7 +185,6 @@ def export(objectslist, filename, argstring):
   global UNIT_FORMAT
   global UNIT_SPEED_FORMAT
   global MOTION_MODE
-  global SUPPRESS_COMMANDS
 
   print("Post Processor: " + __name__ + " postprocessing...")
   gcode = ""
@@ -219,13 +194,6 @@ def export(objectslist, filename, argstring):
     gcode += linenumber() + "(Exported by FreeCAD)\n"
     gcode += linenumber() + "(Post Processor: " + __name__ + ")\n"
     gcode += linenumber() + "(Output Time:" + str(datetime.datetime.now()) + ")\n"
-
-  # Check canned cycles for drilling
-  if TRANSLATE_DRILL_CYCLES:
-    if len(SUPPRESS_COMMANDS) == 0:
-      SUPPRESS_COMMANDS = ['G98', 'G80']
-    else:
-      SUPPRESS_COMMANDS += ['G98', 'G80']
 
   # Write the preamble
   if OUTPUT_COMMENTS:
@@ -259,36 +227,11 @@ def export(objectslist, filename, argstring):
       print("The object " + obj.Name + " is not a path. Please select only path and Compounds.")
       return
 
-    # Skip inactive operations
-    if PathUtil.opProperty(obj, 'Active') is False:
-        continue
-
     # do the pre_op
-    if OUTPUT_BCNC:
-      gcode += linenumber() + "(Block-name: " + obj.Label + ")\n"
-      gcode += linenumber() + "(Block-expand: 0)\n"
-      gcode += linenumber() + "(Block-enable: 1)\n"
     if OUTPUT_COMMENTS:
       gcode += linenumber() + "(Begin operation: " + obj.Label + ")\n"
     for line in PRE_OPERATION.splitlines(True):
       gcode += linenumber() + line
-
-    # get coolant mode
-    coolantMode = 'None'
-    if hasattr(obj, "CoolantMode") or hasattr(obj, 'Base') and  hasattr(obj.Base, "CoolantMode"):
-        if hasattr(obj, "CoolantMode"):
-            coolantMode = obj.CoolantMode
-        else:
-            coolantMode = obj.Base.CoolantMode
-
-    # turn coolant on if required
-    if OUTPUT_COMMENTS:
-        if not coolantMode == 'None':
-            gcode += linenumber() + '(Coolant On:' + coolantMode + ')\n'
-    if coolantMode == 'Flood':
-        gcode  += linenumber() + 'M8' + '\n'
-    if coolantMode == 'Mist':
-        gcode += linenumber() + 'M7' + '\n'
 
     # Parse the op
     gcode += parse(obj)
@@ -299,24 +242,11 @@ def export(objectslist, filename, argstring):
     for line in POST_OPERATION.splitlines(True):
       gcode += linenumber() + line
 
-    # turn coolant off if required
-    if not coolantMode == 'None':
-        if OUTPUT_COMMENTS:
-            gcode += linenumber() + '(Coolant Off:' + coolantMode + ')\n'
-        gcode += linenumber() +'M9' + '\n'
-
   # do the post_amble
-  if OUTPUT_BCNC:
-    gcode += linenumber() + "(Block-name: post_amble)\n"
-    gcode += linenumber() + "(Block-expand: 0)\n"
-    gcode += linenumber() + "(Block-enable: 1)\n"
   if OUTPUT_COMMENTS:
     gcode += linenumber() + "(Begin postamble)\n"
   for line in POSTAMBLE.splitlines(True):
     gcode += linenumber() + line
-
-  if RETURN_TO:
-    gcode += linenumber() + "G0 X%s Y%s" % tuple(RETURN_TO)
 
   # show the gCode result dialog
   if FreeCAD.GuiUp and SHOW_EDITOR:
@@ -339,20 +269,20 @@ def export(objectslist, filename, argstring):
 
 
 def linenumber():
-  if not OUTPUT_LINE_NUMBERS:
-    return ""
   global LINENR
   global LINEINCR
-  s = "N" + str(LINENR) + " "
-  LINENR += LINEINCR
-  return s
+  if OUTPUT_LINE_NUMBERS:
+    s = "N" + str(LINENR) + " "
+    LINENR += LINEINCR
+    return s
+  return ""
 
 
-def format_outstring(strTable):
+def format_outstring(strTbl):
   global COMMAND_SPACE
   # construct the line for the final output
   s = ""
-  for w in strTable:
+  for w in strTbl:
     s += w + COMMAND_SPACE
   s = s.strip()
   return s
@@ -416,7 +346,7 @@ def parse(pathobj):
       # store the latest command
       lastcommand = command
 
-      # Memorizes the current position for calculating the related movements and the withdrawal plan
+      # Memorise la position courante pour calcul des mouvements relatis et du plan de retrait
       if command in MOTION_COMMANDS:
         if 'X' in c.Parameters:
           CURRENT_X = Units.Quantity(c.Parameters['X'], FreeCAD.Units.Length)
@@ -431,17 +361,11 @@ def parse(pathobj):
       if command in ('G90', 'G91'):
         MOTION_MODE = command
 
-
       if TRANSLATE_DRILL_CYCLES:
         if command in ('G81', 'G82', 'G83'):
           out += drill_translate(outstring, command, c.Parameters)
-          # Erase the line we just translated
-          outstring = []
-
-      if SPINDLE_WAIT > 0:
-        if command in ('M3', 'M03', 'M4', 'M04'):
-          out += linenumber() + format_outstring(outstring) + "\n"
-          out += linenumber() + format_outstring(['G4', 'P%s' % SPINDLE_WAIT]) + "\n"
+          # Efface la ligne que l'on vient de translater
+          del(outstring[:])
           outstring = []
 
       # Check for Tool Change:
@@ -449,8 +373,8 @@ def parse(pathobj):
         if OUTPUT_COMMENTS:
           out += linenumber() + "(Begin toolchange)\n"
         if not OUTPUT_TOOL_CHANGE:
-          outstring.insert(0, "(" )
-          outstring.append( ")" )
+          outstring[0] = "(" + outstring[0]
+          outstring[-1] = outstring[-1] + ")"
         else:
           for line in TOOL_CHANGE.splitlines(True):
             out += linenumber() + line
@@ -462,8 +386,8 @@ def parse(pathobj):
           outstring.pop(0)  # remove the command
 
       if command in SUPPRESS_COMMANDS:
-        outstring.insert(0, "(" )
-        outstring.append( ")" )
+        outstring[0] = "(" + outstring[0]
+        outstring[-1] = outstring[-1] + ")"
 
       # prepend a line number and append a newline
       if len(outstring) >= 1:
@@ -491,83 +415,64 @@ def drill_translate(outstring, cmd, params):
     outstring[-1] = outstring[-1] + ")"
     trBuff += linenumber() + format_outstring(outstring) + "\n"
 
-  # cycle conversion
-  # currently only cycles in XY are provided (G17)
-  # other plains ZX (G18) and  YZ (G19) are not dealt with : Z drilling only.
-  drill_X = Units.Quantity(params['X'], FreeCAD.Units.Length)
-  drill_Y = Units.Quantity(params['Y'], FreeCAD.Units.Length)
-  drill_Z = Units.Quantity(params['Z'], FreeCAD.Units.Length)
-  RETRACT_Z = Units.Quantity(params['R'], FreeCAD.Units.Length)
-  # R less than Z is error
-  if RETRACT_Z < drill_Z :
-    trBuff += linenumber() + "(drill cycle error: R less than Z )\n"
-    return trBuff
-
-  if MOTION_MODE == 'G91':   # G91 relative movements
-    drill_X += CURRENT_X
-    drill_Y += CURRENT_Y
-    drill_Z += CURRENT_Z
-    RETRACT_Z += CURRENT_Z
+  # Conversion du cycle
+  # Pour l'instant, on gere uniquement les cycles dans le plan XY (G17)
+  # les autres plans ZX (G18) et YZ (G19) ne sont pas traites : Calculs sur Z uniquement.
+  if MOTION_MODE == 'G90':  # Deplacements en coordonnees absolues
+    drill_X = Units.Quantity(params['X'], FreeCAD.Units.Length)
+    drill_Y = Units.Quantity(params['Y'], FreeCAD.Units.Length)
+    drill_Z = Units.Quantity(params['Z'], FreeCAD.Units.Length)
+    RETRACT_Z = Units.Quantity(params['R'], FreeCAD.Units.Length)
+  else:  # G91 Deplacements relatifs
+    drill_X = CURRENT_X + Units.Quantity(params['X'], FreeCAD.Units.Length)
+    drill_Y = CURRENT_Y + Units.Quantity(params['Y'], FreeCAD.Units.Length)
+    drill_Z = CURRENT_Z + Units.Quantity(params['Z'], FreeCAD.Units.Length)
+    RETRACT_Z = CURRENT_Z + Units.Quantity(params['R'], FreeCAD.Units.Length)
 
   if DRILL_RETRACT_MODE == 'G98' and CURRENT_Z >= RETRACT_Z:
     RETRACT_Z = CURRENT_Z
 
-  # get the other parameters
-  drill_feedrate = Units.Quantity(params['F'], FreeCAD.Units.Velocity)
+  # Recupere les valeurs des autres parametres
+  drill_Speed = Units.Quantity(params['F'], FreeCAD.Units.Velocity)
   if cmd == 'G83':
     drill_Step = Units.Quantity(params['Q'], FreeCAD.Units.Length)
-    a_bit = drill_Step  * 0.05    # NIST 3.5.16.4 G83 Cycle:  "current hole bottom, backed off a bit."
   elif cmd == 'G82':
     drill_DwellTime = params['P']
 
-  # wrap this block to ensure machine MOTION_MODE is restored in case of error
-  try:
-    if MOTION_MODE == 'G91':
-      trBuff += linenumber() + "G90\n"  # force absolute coordinates during cycles
+  if MOTION_MODE == 'G91':
+    trBuff += linenumber() + "G90" + "\n"  # Force des deplacements en coordonnees absolues pendant les cycles
 
-    strG0_RETRACT_Z = 'G0 Z' + format(float(RETRACT_Z.getValueAs(UNIT_FORMAT)), strFormat) + "\n"
-    strF_Feedrate = ' F' + format(float(drill_feedrate.getValueAs(UNIT_SPEED_FORMAT)), '.2f') + "\n"
-    print (strF_Feedrate)
+  # Mouvement(s) preliminaire(s))
+  if CURRENT_Z < RETRACT_Z:
+    trBuff += linenumber() + 'G0 Z' + format(float(RETRACT_Z.getValueAs(UNIT_FORMAT)), strFormat) + "\n"
+  trBuff += linenumber() + 'G0 X' + format(float(drill_X.getValueAs(UNIT_FORMAT)), strFormat) + ' Y' + format(float(drill_Y.getValueAs(UNIT_FORMAT)), strFormat) + "\n"
+  if CURRENT_Z > RETRACT_Z:
+    trBuff += linenumber() + 'G0 Z' + format(float(CURRENT_Z.getValueAs(UNIT_FORMAT)), strFormat) + "\n"
 
-    # preliminary mouvement(s)
-    if CURRENT_Z < RETRACT_Z:
-      trBuff += linenumber() + strG0_RETRACT_Z
-    trBuff += linenumber() + 'G0 X' + format(float(drill_X.getValueAs(UNIT_FORMAT)), strFormat) + ' Y' + format(float(drill_Y.getValueAs(UNIT_FORMAT)), strFormat) + "\n"
-    if CURRENT_Z > RETRACT_Z:
-      # NIST GCODE 3.5.16.1 Preliminary and In-Between Motion says G0 to RETRACT_Z. Here use G1 since retract height may be below surface !
-      trBuff += linenumber() + 'G1 Z' + format(float(RETRACT_Z.getValueAs(UNIT_FORMAT)), strFormat) + strF_Feedrate
-    last_Stop_Z = RETRACT_Z
-
-    # drill moves
-    if cmd in ('G81', 'G82'):
-      trBuff += linenumber() + 'G1 Z' + format(float(drill_Z.getValueAs(UNIT_FORMAT)), strFormat) + strF_Feedrate
-      # pause where applicable
-      if cmd == 'G82':
-        trBuff += linenumber() + 'G4 P' + str(drill_DwellTime) + "\n"
-      trBuff += linenumber() + strG0_RETRACT_Z
-    else:  # 'G83'
-      if params['Q'] != 0 :
-        while 1:
-          if last_Stop_Z != RETRACT_Z :
-            clearance_depth = last_Stop_Z + a_bit  # rapid move to just short of last drilling depth
-            trBuff += linenumber() + 'G0 Z' + format(float(clearance_depth.getValueAs(UNIT_FORMAT)) , strFormat) + "\n"
-          next_Stop_Z = last_Stop_Z - drill_Step
-          if next_Stop_Z > drill_Z:
-            trBuff += linenumber() + 'G1 Z' + format(float(next_Stop_Z.getValueAs(UNIT_FORMAT)), strFormat) + strF_Feedrate
-            trBuff += linenumber() + strG0_RETRACT_Z
-            last_Stop_Z = next_Stop_Z
-          else:
-            trBuff += linenumber() + 'G1 Z' + format(float(drill_Z.getValueAs(UNIT_FORMAT)), strFormat) + strF_Feedrate
-            trBuff += linenumber() + strG0_RETRACT_Z
-            break
-
-  except Exception as e:
-    pass
+  # Mouvement de percage
+  if cmd in ('G81', 'G82'):
+    trBuff += linenumber() + 'G1 Z' + format(float(drill_Z.getValueAs(UNIT_FORMAT)), strFormat) + ' F' + format(float(drill_Speed.getValueAs(UNIT_SPEED_FORMAT)), '.2f') + "\n"
+    # Temporisation eventuelle
+    if cmd == 'G82':
+      trBuff += linenumber() + 'G4 P' + str(drill_DwellTime) + "\n"
+    # Sortie de percage
+    trBuff += linenumber() + 'G0 Z' + format(float(RETRACT_Z.getValueAs(UNIT_FORMAT)), strFormat) + "\n"
+  else:  # 'G83'
+    next_Stop_Z = RETRACT_Z - drill_Step
+    while 1:
+      if next_Stop_Z > drill_Z:
+        trBuff += linenumber() + 'G1 Z' + format(float(next_Stop_Z.getValueAs(UNIT_FORMAT)), strFormat) + ' F' + format(float(drill_Speed.getValueAs(UNIT_SPEED_FORMAT)), '.2f') + "\n"
+        trBuff += linenumber() + 'G0 Z' + format(float(RETRACT_Z.getValueAs(UNIT_FORMAT)), strFormat) + "\n"
+        next_Stop_Z -= drill_Step
+      else:
+        trBuff += linenumber() + 'G1 Z' + format(float(drill_Z.getValueAs(UNIT_FORMAT)), strFormat) + ' F' + format(float(drill_Speed.getValueAs(UNIT_SPEED_FORMAT)), '.2f') + "\n"
+        trBuff += linenumber() + 'G0 Z' + format(float(RETRACT_Z.getValueAs(UNIT_FORMAT)), strFormat) + "\n"
+        break
 
   if MOTION_MODE == 'G91':
-    trBuff += linenumber() + 'G91'  # Restore if changed
+    trBuff += linenumber() + 'G91'  # Restore le mode de deplacement relatif
 
   return trBuff
 
 
-# print(__name__ + ": GCode postprocessor loaded.")
+print(__name__ + ": GCode postprocessor loaded.")

@@ -51,106 +51,41 @@ std::string WorkbenchPy::representation(void) const
 /** Retrieves the workbench name */
 PyObject*  WorkbenchPy::name(PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, ""))
-        return nullptr;
+    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
+        return NULL;                    // NULL triggers exception
 
     PY_TRY {
-        Py::String name(getWorkbenchPtr()->name());
-        return Py::new_reference_to(name);
+        std::string name = getWorkbenchPtr()->name(); 
+#if PY_MAJOR_VERSION >= 3
+        PyObject* pyName = PyUnicode_FromString(name.c_str());
+#else
+        PyObject* pyName = PyString_FromString(name.c_str());
+#endif
+        return pyName;
     }PY_CATCH;
 }
 
 /** Activates the workbench object */
 PyObject*  WorkbenchPy::activate(PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, ""))
-        return nullptr;
+    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
+        return NULL;                    // NULL triggers exception
 
     PY_TRY {
-        std::string name = getWorkbenchPtr()->name();
+        std::string name = getWorkbenchPtr()->name(); 
         WorkbenchManager::instance()->activate( name, getWorkbenchPtr()->getTypeId().getName() );
-        Py_Return;
+        Py_Return; 
     }PY_CATCH;
 }
 
-/** Shows a list of all menus */
-PyObject* WorkbenchPy::listMenus(PyObject *args)
+PyObject *WorkbenchPy::getCustomAttributes(const char*) const
 {
-    PY_TRY {
-        if (!PyArg_ParseTuple(args, ""))
-            return nullptr;
-
-        std::list<std::string> menus = getWorkbenchPtr()->listMenus();
-
-        Py::List list;
-        for (std::list<std::string>::iterator it = menus.begin(); it != menus.end(); ++it) {
-            list.append(Py::String(*it));
-        }
-        return Py::new_reference_to(list);
-    } PY_CATCH;
-}
-
-/** Shows a list of all toolbars */
-PyObject* WorkbenchPy::listToolbars(PyObject *args)
-{
-    PY_TRY {
-        if (!PyArg_ParseTuple(args, ""))
-            return nullptr;
-
-        std::list<std::string> bars = getWorkbenchPtr()->listToolbars();
-
-        Py::List list;
-        for (std::list<std::string>::iterator it = bars.begin(); it != bars.end(); ++it) {
-            list.append(Py::String(*it));
-        }
-        return Py::new_reference_to(list);
-    } PY_CATCH;
-}
-
-/** Shows a dict of all toolbars and their commands*/
-PyObject* WorkbenchPy::getToolbarItems(PyObject *args)
-{
-    PY_TRY {
-        if (!PyArg_ParseTuple(args, ""))
-            return nullptr;
-
-        std::list<std::pair<std::string, std::list<std::string>>> bars = getWorkbenchPtr()->getToolbarItems();
-
-        Py::Dict dict;
-        for (const auto& it : bars) {
-            Py::List list;
-            for (const auto& jt : it.second) {
-                list.append(Py::String(jt));
-            }
-            dict.setItem(it.first, list);
-        }
-        return Py::new_reference_to(dict);
-    } PY_CATCH;
-}
-
-/** Shows a list of all command bars */
-PyObject* WorkbenchPy::listCommandbars(PyObject *args)
-{
-    PY_TRY {
-        if (!PyArg_ParseTuple(args, ""))
-            return nullptr;
-
-        std::list<std::string> bars = getWorkbenchPtr()->listCommandbars();
-
-        Py::List list;
-        for (std::list<std::string>::iterator it = bars.begin(); it != bars.end(); ++it) {
-            list.append(Py::String(*it));
-        }
-        return Py::new_reference_to(list);
-    } PY_CATCH;
-}
-
-PyObject* WorkbenchPy::getCustomAttributes(const char*) const
-{
-    return nullptr;
+    return 0;
 }
 
 int WorkbenchPy::setCustomAttributes(const char*, PyObject *)
 {
-    return 0;
+    return 0; 
 }
+
+

@@ -23,9 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef FC_OS_WIN32
-# ifndef GL_GLEXT_PROTOTYPES
-# define GL_GLEXT_PROTOTYPES 1
-# endif
+#define GL_GLEXT_PROTOTYPES
 #endif
 
 #ifndef _PreComp_
@@ -136,7 +134,7 @@ public:
                 const int32_t *texindices,
                 const int nbind,
                 const int mbind,
-                SbBool texture);
+                const int texture);
 
     static void context_destruction_cb(uint32_t context, void * userdata)
     {
@@ -177,7 +175,6 @@ SoBrepFaceSet::SoBrepFaceSet()
 
     selContext = std::make_shared<SelContext>();
     selContext2 = std::make_shared<SelContext>();
-    packedColor = 0;
 
     pimpl.reset(new VBO);
 }
@@ -1286,7 +1283,7 @@ void SoBrepFaceSet::renderHighlight(SoGLRenderAction *action, SelContextPtr ctx)
         doTextures = false;
 
         renderShape(action, false, static_cast<const SoGLCoordinateElement*>(coords), &(cindices[start]), length,
-            &(pindices[id]), 1, normals, nindices, &mb, mindices, &tb, tindices, nbind, mbind, doTextures);
+            &(pindices[id]), 1, normals, nindices, &mb, mindices, &tb, tindices, nbind, mbind, doTextures?1:0);
     }
     state->pop();
 
@@ -1385,7 +1382,7 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx,
         renderShape(action, false, static_cast<const SoGLCoordinateElement*>(coords), &(cindices[start]), length,
             &(pindices[id]), numparts, normals_s, nindices_s, &mb, mindices, &tb, tindices, nbind, mbind, doTextures?1:0);
     }
-    if (push) {
+    if(push) {
         state->pop();
         // SoCacheElement::invalidate(state);
     }
@@ -1408,7 +1405,7 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
                                 const int32_t *texindices,
                                 const int nbind,
                                 const int mbind,
-                                SbBool texture)
+                                const int texture)
 {
     (void)texcoords; (void)texindices; (void)texture;
     const SbVec3f * coords3d = NULL;
@@ -1455,7 +1452,7 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
     }
 
     if ((buf.vertex_array_size != (sizeof(float) * num_indices * 10)) ||
-        (buf.index_array_size != (sizeof(GLuint) * num_indices))) {
+        (buf.index_array_size != (sizeof(GLuint) * num_indices * 3))) {
         if ((buf.vertex_array_size != 0 ) && ( buf.index_array_size != 0))
             buf.updateVbo = true;
     }
@@ -1481,9 +1478,9 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
         glDeleteBuffersARB(2, buf.myvbo);
         glGenBuffersARB(2, buf.myvbo);
         vertex_array = ( float * ) malloc ( sizeof(float) * num_indices * 10 );
-        index_array = ( GLuint *) malloc ( sizeof(GLuint) * num_indices );
+        index_array = ( GLuint *) malloc ( sizeof(GLuint) * num_indices * 3 );
         buf.vertex_array_size = sizeof(float) * num_indices * 10;
-        buf.index_array_size = sizeof(GLuint) * num_indices;
+        buf.index_array_size = sizeof(GLuint) * num_indices * 3;
         this->vbomap[contextId] = buf;
         this->indice_array = 0;
 
@@ -1737,7 +1734,7 @@ void SoBrepFaceSet::renderShape(SoGLRenderAction * action,
                                 const int32_t *texindices,
                                 const int nbind,
                                 const int mbind,
-                                SbBool texture)
+                                const int texture)
 {
     // Can we use vertex buffer objects?
     if (hasVBO) {

@@ -1,5 +1,6 @@
 #/***************************************************************************
-# *   Copyright (c) 2016 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
+# *   Copyright (c) Victor Titov (DeepSOIC)                                 *
+# *                                           (vv.titov@gmail.com) 2016     *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *

@@ -1,7 +1,6 @@
 # ***************************************************************************
-# *   Copyright (c) 2019 Johannes Hartung <j.hartung@gmx.net>               *
 # *                                                                         *
-# *   This file is part of the FreeCAD CAx development system.              *
+# *   Copyright (c) 2019 - Johannes Hartung <j.hartung@gmx.net>             *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -21,9 +20,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__  = "FreeCAD YAML and JSON mesh reader and writer"
+__title__ = "FreeCAD YAML and JSON mesh reader and writer"
 __author__ = "Johannes Hartung"
-__url__    = "https://www.freecadweb.org"
+__url__ = "http://www.freecadweb.org"
 
 ## @package importYAMLJSONMesh
 #  \ingroup FEM
@@ -34,7 +33,6 @@ import os
 
 import FreeCAD
 from FreeCAD import Console
-
 from . import importToolsFem
 
 has_yaml = True

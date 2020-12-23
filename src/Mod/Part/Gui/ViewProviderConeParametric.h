@@ -24,7 +24,7 @@
 #ifndef PARTGUI_VIEWPROVIDERCONEPARAMETRIC_H
 #define PARTGUI_VIEWPROVIDERCONEPARAMETRIC_H
 
-#include "ViewProviderPrimitive.h"
+#include "ViewProvider.h"
 
 
 class TopoDS_Shape;
@@ -36,7 +36,7 @@ class SoTransform;
 namespace PartGui {
 
 
-class PartGuiExport ViewProviderConeParametric : public ViewProviderPrimitive
+class PartGuiExport ViewProviderConeParametric:public ViewProviderPart
 {
     PROPERTY_HEADER(PartGui::ViewProviderConeParametric);
 

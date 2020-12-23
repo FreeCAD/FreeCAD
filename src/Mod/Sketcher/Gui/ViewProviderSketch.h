@@ -83,8 +83,7 @@ class DrawSketchHandler;
   * It uses the class DrawSketchHandler to facilitate the creation
   * of new geometry while editing.
   */
-class SketcherGuiExport ViewProviderSketch : public PartGui::ViewProvider2DObjectGrid
-                                           , public Gui::SelectionObserver
+class SketcherGuiExport ViewProviderSketch : public PartGui::ViewProvider2DObject, public Gui::SelectionObserver
 {
     Q_DECLARE_TR_FUNCTIONS(SketcherGui::ViewProviderSketch)
     /// generates a warning message about constraint conflicts and appends it to the given message
@@ -101,7 +100,6 @@ public:
     virtual ~ViewProviderSketch();
 
     App::PropertyBool Autoconstraints;
-    App::PropertyBool AvoidRedundant;
     App::PropertyPythonObject TempoVis;
     App::PropertyBool HideDependent;
     App::PropertyBool ShowLinks;
@@ -219,11 +217,7 @@ public:
     virtual void setupContextMenu(QMenu *menu, QObject *receiver, const char *member);
     /// is called when the Provider is in edit and a deletion request occurs
     virtual bool onDelete(const std::vector<std::string> &);
-    /// Is called by the tree if the user double clicks on the object. It returns the string
-    /// for the transaction that will be shown in the undo/redo dialog.
-    /// If null is returned then no transaction will be opened.
-    virtual const char* getTransactionText() const { return nullptr; }
-    /// is called by the tree if the user double clicks on the object
+    /// is called by the tree if the user double click on the object
     virtual bool doubleClicked(void);
     /// is called when the Provider is in edit and the mouse is moved
     virtual bool mouseMove(const SbVec2s &pos, Gui::View3DInventorViewer *viewer);
@@ -283,8 +277,6 @@ protected:
 protected:
     boost::signals2::connection connectUndoDocument;
     boost::signals2::connection connectRedoDocument;
-
-    void forceUpdateData();
 
     /// Return display string for constraint including hiding units if
     //requested.
@@ -400,11 +392,6 @@ protected:
     static SbColor PreselectSelectedColor;
     static SbColor InformationColor;
     static SbColor DeactivatedConstrDimColor;
-    static SbColor InternalAlignedGeoColor;
-    static SbColor FullyConstraintElementColor;
-    static SbColor FullyConstraintConstructionElementColor;
-    static SbColor FullyConstraintInternalAlignmentColor;
-    static SbColor FullyConstraintConstructionPointColor;
 
     static SbTime prvClickTime;
     static SbVec2s prvClickPos; //used by double-click-detector
@@ -439,7 +426,7 @@ protected:
     std::string editDocName;
     std::string editObjName;
     std::string editSubName;
-
+    
     // Virtual space variables
     bool isShownVirtualSpace; // indicates whether the present virtual space view is the Real Space or the Virtual Space (virtual space 1 or 2)
 

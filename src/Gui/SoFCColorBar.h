@@ -26,7 +26,7 @@
 
 #include <Inventor/SbVec2s.h>
 #include <Inventor/nodes/SoSeparator.h>
-#include <QElapsedTimer>
+#include <QTime>
 #include <Base/Observer.h>
 #include <App/ColorModel.h>
 #include <vector>
@@ -190,7 +190,7 @@ private:
 
 private:
   float _fMaxX, _fMinX, _fMaxY, _fMinY;
-  QElapsedTimer _timer;
+  QTime _timer;
 
   SoSwitch* pColorMode;
   std::vector<SoFCColorBarBase*> _colorBars;

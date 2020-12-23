@@ -119,7 +119,7 @@ public:
 protected:
     virtual void setupTaskDialog(TaskDlgPost* dlg);
     bool setupPipeline();
-    void updateVtk();
+    void update();
 
     SoCoordinate3*              m_coordinates;
     SoIndexedPointSet*          m_markers;

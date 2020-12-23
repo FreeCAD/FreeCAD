@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2012 Jan Rheinländer                                    *
- *                                   <jrheinlaender@users.sourceforge.net> *
+ *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net>        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -55,7 +54,6 @@ private Q_SLOTS:
 
 protected:
     virtual void clearButtons(const selectionModes notThis);
-    bool event(QEvent *e);
     void changeEvent(QEvent *e);
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
 

@@ -30,7 +30,7 @@
 namespace Part {
 
     template <typename T>
-    class PartExport GeometryDefaultExtension: public Part::GeometryPersistenceExtension
+    class PartExport GeometryDefaultExtension: public Part::GeometryExtension
     {
         TYPESYSTEM_HEADER_WITH_OVERRIDE();
     public:
@@ -42,6 +42,7 @@ namespace Part {
         inline const T &getValue() const {return value;};
 
         // Persistence implementer ---------------------
+        virtual unsigned int getMemSize(void) const override;
         virtual void Save(Base::Writer &/*writer*/) const override;
         virtual void Restore(Base::XMLReader &/*reader*/) override;
 
@@ -86,7 +87,7 @@ namespace Part {
     // 6. Register your type and corresponding python type in AppPart.cpp
 
     template <typename T>
-    inline GeometryDefaultExtension<T>::GeometryDefaultExtension():value{}{}
+    inline GeometryDefaultExtension<T>::GeometryDefaultExtension(){ }
 
     // Specialised constructors go here so that specialisation is before the template instantiation
     // Specialised default constructors are inline, because a full specialisation otherwise shall go in the cpp file, but there it would be after the template instantiation.

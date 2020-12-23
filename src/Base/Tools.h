@@ -202,12 +202,12 @@ struct FlagToggler {
     FlagToggler(Flag &_flag, Flag check)
         :flag(_flag),toggled(check==_flag)
     {
-        if (toggled)
+        if(toggled)
             flag = !flag;
     }
 
     ~FlagToggler() {
-        if (toggled)
+        if(toggled)
             flag = !flag;
     }
 };
@@ -248,7 +248,7 @@ template<typename T>
 class BitsetLocker
 {
 public:
-    BitsetLocker(T& flags, std::size_t flag, bool value = true)
+    BitsetLocker(T& flags, std::size_t flag, bool value = true) 
         : flags(flags), flag(flag)
     { oldValue = flags.test(flag); flags.set(flag,value); }
     ~BitsetLocker()

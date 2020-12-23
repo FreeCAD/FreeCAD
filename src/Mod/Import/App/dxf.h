@@ -201,10 +201,10 @@ public:
                    const double height, const int horizJust);
     void writeLinearDim(const double* textMidPoint, const double* lineDefPoint,
                   const double* extLine1, const double* extLine2,
-                  const char* dimText, int type);
+                  const char* dimText);
     void writeLinearDimBlock(const double* textMidPoint, const double* lineDefPoint,
                   const double* extLine1, const double* extLine2,
-                  const char* dimText, int type);
+                  const char* dimText);
     void writeAngularDim(const double* textMidPoint, const double* lineDefPoint,
                   const double* startExt1, const double* endExt1,
                   const double* startExt2, const double* endExt2,
@@ -288,7 +288,7 @@ protected:
 
 public:
     CDxfRead(const char* filepath); // this opens the file
-    virtual ~CDxfRead(); // this closes the file
+    ~CDxfRead(); // this closes the file
 
     bool Failed(){return m_fail;}
     void DoRead(const bool ignore_errors = false); // this reads the file and calls the following functions

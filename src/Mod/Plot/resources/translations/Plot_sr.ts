@@ -6,12 +6,12 @@
     <message>
       <location filename="../../InitGui.py" line="44"/>
       <source>Plot edition tools</source>
-      <translation>Алати за уређивање дијаграма</translation>
+      <translation>Алати за уређивање диаграма</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="47"/>
       <source>Plot</source>
-      <translation>Дијаграм</translation>
+      <translation>Диаграм</translation>
     </message>
   </context>
   <context>
@@ -344,7 +344,7 @@
     <message>
       <location filename="../../plotPositions/TaskPanel.py" line="135"/>
       <source>List of modifiable items</source>
-      <translation>Лиcта променљивих cтавки</translation>
+      <translation type="unfinished">List of modifiable items</translation>
     </message>
   </context>
   <context>
@@ -445,17 +445,17 @@
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="158"/>
       <source>Remove series</source>
-      <translation>Уклони cерије</translation>
+      <translation type="unfinished">Remove series</translation>
     </message>
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="183"/>
       <source>If checked, series will not be considered for legend</source>
-      <translation>Ако је означено, серија се неће сматрати легендом</translation>
+      <translation type="unfinished">If checked, series will not be considered for legend</translation>
     </message>
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="213"/>
       <source>Removes this series</source>
-      <translation>Уклања ову cерију</translation>
+      <translation type="unfinished">Removes this series</translation>
     </message>
   </context>
 </TS>

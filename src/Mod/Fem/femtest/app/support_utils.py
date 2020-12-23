@@ -1,5 +1,6 @@
 # ***************************************************************************
-# *   Copyright (c) 2018 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2018 - FreeCAD Developers                               *
+# *   Author: Bernd Hahnebach <bernd@bimstatik.org>                         *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -9,29 +10,27 @@
 # *   the License, or (at your option) any later version.                   *
 # *   for detail see the LICENCE text file.                                 *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
+# *   FreeCAD is distributed in the hope that it will be useful,            *
 # *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
 # *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
 # *   GNU Library General Public License for more details.                  *
 # *                                                                         *
 # *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
+# *   License along with FreeCAD; if not, write to the Free Software        *
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
-# ***************************************************************************
+# ***************************************************************************/
 
-__title__  = "Tools for FEM unit tests"
+__title__ = "Tools for FEM unit tests"
 __author__ = "Bernd Hahnebach"
-__url__    = "https://www.freecadweb.org"
+__url__ = "http://www.freecadweb.org"
+
 
 import os
-import sys
-import tempfile
 import unittest
-
+import tempfile
 import FreeCAD
-
 from os.path import join
 
 
@@ -41,15 +40,8 @@ def get_fem_test_home_dir(
 
 
 def get_fem_test_tmp_dir(
-    dirname=None
 ):
-    from uuid import uuid4
-    _unique_id = str(uuid4())[-12:]
-    # print(_unique_id)
-    if dirname is None:
-        temp_dir = join(tempfile.gettempdir(), "FEM_unittests", _unique_id)
-    else:
-        temp_dir = join(tempfile.gettempdir(), "FEM_unittests", dirname + "_" + _unique_id)
+    temp_dir = join(tempfile.gettempdir(), "FEM_unittests")
     if not os.path.exists(temp_dir):
         os.makedirs(temp_dir)
     return(temp_dir)
@@ -69,11 +61,6 @@ def fcc_print(
     message
 ):
     FreeCAD.Console.PrintMessage("{} \n".format(message))
-
-
-def get_namefromdef(strdel="", stradd=""):
-    # https://code.activestate.com/recipes/66062-determining-current-function-name/
-    return (sys._getframe(1).f_code.co_name).replace(strdel, stradd)
 
 
 def get_defmake_count(
@@ -101,26 +88,18 @@ def get_defmake_count(
 
 
 def get_fem_test_defs(
+    inout="out"
 ):
-
-    test_path = join(FreeCAD.getHomePath(), "Mod", "Fem", "femtest", "app")
-    print("Modules, classes, methods taken from: {}".format(test_path))
-
-    collected_test_module_paths = []
+    test_path = join(FreeCAD.getHomePath(), "Mod", "Fem", "femtest")
+    collected_test_modules = []
+    collected_test_methods = []
     for tfile in sorted(os.listdir(test_path)):
         if tfile.startswith("test") and tfile.endswith(".py"):
-            collected_test_module_paths.append(join(test_path, tfile))
-
-    collected_test_modules = []
-    collected_test_classes = []
-    collected_test_methods = []
-    for f in collected_test_module_paths:
-        module_name = os.path.splitext(os.path.basename(f))[0]
-        module_path = "femtest.app.{}".format(module_name)
-        if module_path not in collected_test_modules:
-            collected_test_modules.append(module_path)
-        class_name = ""
+            collected_test_modules.append(join(test_path, tfile))
+    for f in collected_test_modules:
         tfile = open(f, "r")
+        module_name = os.path.splitext(os.path.basename(f))[0]
+        class_name = ""
         for ln in tfile:
             ln = ln.lstrip()
             ln = ln.rstrip()
@@ -128,55 +107,25 @@ def get_fem_test_defs(
                 ln = ln.lstrip("class ")
                 ln = ln.split("(")[0]
                 class_name = ln
-                class_path = "femtest.app.{}.{}".format(module_name, class_name)
-                if class_path not in collected_test_classes:
-                    collected_test_classes.append(class_path)
             if ln.startswith("def test"):
                 ln = ln.lstrip("def ")
                 ln = ln.split("(")[0]
-                if ln == "test_00print":
-                    continue
-                method_path = "femtest.app.{}.{}.{}".format(module_name, class_name, ln)
-                collected_test_methods.append(method_path)
+                collected_test_methods.append(
+                    "femtest.{}.{}.{}".format(module_name, class_name, ln)
+                )
         tfile.close()
-
-    # write to file
-    file_path = join(tempfile.gettempdir(), "test_commands.sh")
-    cf = open(file_path, "w")
-    cf.write("# created by Python\n")
-    cf.write("'''\n")
-    cf.write("from femtest.app.support_utils import get_fem_test_defs\n")
-    cf.write("get_fem_test_defs()\n")
-    cf.write("\n")
-    cf.write("\n")
-    cf.write("'''\n")
-    cf.write("\n")
-    cf.write("# modules\n")
-    for m in collected_test_modules:
-        cf.write("make -j 4 && ./bin/FreeCADCmd -t {}\n".format(m))
-    cf.write("\n")
-    cf.write("\n")
-    cf.write("# classes\n")
-    for m in collected_test_classes:
-        cf.write("make -j 4 && ./bin/FreeCADCmd -t {}\n".format(m))
-    cf.write("\n")
-    cf.write("\n")
-    cf.write("# methods\n")
+    print("")
     for m in collected_test_methods:
-        cf.write("make -j 4 && ./bin/FreeCADCmd -t {}\n".format(m))
-    cf.write("\n")
-    cf.write("\n")
-    cf.write("# methods in FreeCAD\n")
-    for m in collected_test_methods:
-        cf.write(
-            "\nimport unittest\n"
-            "unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(\n"
-            "    '{}'\n"
-            "))\n"
+        run_outside_fc = './bin/FreeCADCmd --run-test "{}"'.format(m)
+        run_inside_fc = (
+            "unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName('{}'))"
             .format(m)
         )
-    cf.close()
-    print("The file was saved in:{}".format(file_path))
+        if inout == "in":
+            print("\nimport unittest")
+            print(run_inside_fc)
+        else:
+            print(run_outside_fc)
 
 
 def compare_inp_files(
@@ -273,7 +222,7 @@ def compare_stats(
         loc_stat_types = stat_types
 
     # get stats from result obj which should be compared
-    obj = fea.analysis.Document.getObject(res_obj_name)
+    obj = FreeCAD.ActiveDocument.getObject(res_obj_name)
     # fcc_print(obj)
     if obj:
         # fcc_print(obj.Name)
@@ -281,8 +230,8 @@ def compare_stats(
         for s in loc_stat_types:
             statval = resulttools.get_stats(obj, s)
             stats.append(
-                "{}: ({:.10f}, {:.10f})\n"
-                .format(s, statval[0], statval[1])
+                "{}: ({:.10f}, {:.10f}, {:.10f})\n"
+                .format(s, statval[0], statval[1], statval[2])
             )
     else:
         fcc_print("Result object not found. Name: {}".format(res_obj_name))

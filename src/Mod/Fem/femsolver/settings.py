@@ -2,8 +2,6 @@
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *   Copyright (c) 2019 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
-# *   This file is part of the FreeCAD CAx development system.              *
-# *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
 # *   as published by the Free Software Foundation; either version 2 of     *
@@ -41,9 +39,9 @@ the form written in the list above. To make the solver recognize settings for a
 new solver have a look at :class:`_SolverDlg`.
 """
 
-__title__  = "FreeCAD FEM solver settings"
+__title__ = "FreeCAD FEM solver settings"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
-__url__    = "https://www.freecadweb.org"
+__url__ = "http://www.freecadweb.org"
 
 
 import FreeCAD

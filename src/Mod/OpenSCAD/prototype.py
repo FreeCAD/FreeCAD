@@ -86,7 +86,6 @@ class Node:
         import FreeCAD,Part
         if not doc:
             doc=FreeCAD.newDocument()
-        obj=None
         namel=self.name.lower()
         multifeature={'union':"Part::MultiFuse",'imp_union':"Part::MultiFuse",
                       'intersection':"Part::MultiCommon"}

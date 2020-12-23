@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
 <svg
    xmlns:osb="http://www.openswatchbook.org/uri/2009/osb"
    xmlns:dc="http://purl.org/dc/elements/1.1/"
@@ -7,13 +9,23 @@
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="64px"
    height="64px"
    id="svg2980"
-   version="1.1">
+   sodipodi:version="0.32"
+   inkscape:version="0.48.5 r10040"
+   sodipodi:docname="DraftWorkbench.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   version="1.1"
+   inkscape:export-filename="/home/yorik/Draft_Workbench_Idea16.png"
+   inkscape:export-xdpi="22.5"
+   inkscape:export-ydpi="22.5">
   <defs
      id="defs2982">
     <linearGradient
+       inkscape:collect="always"
        id="linearGradient3890">
       <stop
          style="stop-color:#c4a000;stop-opacity:1"
@@ -25,6 +37,7 @@
          id="stop3894" />
     </linearGradient>
     <linearGradient
+       inkscape:collect="always"
        id="linearGradient3829">
       <stop
          style="stop-color:#8f5902;stop-opacity:1"
@@ -36,6 +49,7 @@
          id="stop3833" />
     </linearGradient>
     <linearGradient
+       inkscape:collect="always"
        id="linearGradient3803">
       <stop
          style="stop-color:#d3d7cf;stop-opacity:1"
@@ -76,6 +90,13 @@
          offset="1"
          style="stop-color:#002795;stop-opacity:1;" />
     </linearGradient>
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 32 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="64 : 32 : 1"
+       inkscape:persp3d-origin="32 : 21.333333 : 1"
+       id="perspective2988" />
     <linearGradient
        id="linearGradient3377">
       <stop
@@ -88,6 +109,7 @@
          id="stop3381" />
     </linearGradient>
     <linearGradient
+       inkscape:collect="always"
        xlink:href="#linearGradient3855"
        id="linearGradient3863"
        x1="5.1754909"
@@ -98,6 +120,7 @@
        gradientTransform="matrix(0.95198975,0,0,0.91651928,0.07298588,1.7291139)" />
     <linearGradient
        gradientTransform="translate(63.406413,58.258077)"
+       inkscape:collect="always"
        xlink:href="#linearGradient3855-2"
        id="linearGradient3861-4"
        x1="3.9825215"
@@ -117,6 +140,7 @@
          id="stop3859-6" />
     </linearGradient>
     <linearGradient
+       inkscape:collect="always"
        xlink:href="#linearGradient3855-2"
        id="linearGradient3863-2"
        x1="3.9825215"
@@ -143,8 +167,10 @@
        x1="3.9825215"
        gradientUnits="userSpaceOnUse"
        id="linearGradient3889"
-       xlink:href="#linearGradient3855-2" />
+       xlink:href="#linearGradient3855-2"
+       inkscape:collect="always" />
     <linearGradient
+       inkscape:collect="always"
        xlink:href="#linearGradient3855-2"
        id="linearGradient3921"
        gradientUnits="userSpaceOnUse"
@@ -154,6 +180,7 @@
        x2="23.852976"
        y2="45.686504" />
     <linearGradient
+       inkscape:collect="always"
        xlink:href="#linearGradient3803"
        id="linearGradient3809"
        x1="40"
@@ -162,6 +189,7 @@
        y2="5"
        gradientUnits="userSpaceOnUse" />
     <linearGradient
+       inkscape:collect="always"
        xlink:href="#linearGradient3829"
        id="linearGradient3835"
        x1="21"
@@ -170,6 +198,7 @@
        y2="41"
        gradientUnits="userSpaceOnUse" />
     <linearGradient
+       inkscape:collect="always"
        xlink:href="#linearGradient3855-5"
        id="linearGradient3863-7"
        x1="5.1754909"
@@ -190,6 +219,7 @@
          id="stop3859-5" />
     </linearGradient>
     <linearGradient
+       inkscape:collect="always"
        xlink:href="#linearGradient3890"
        id="linearGradient3896"
        x1="37"
@@ -198,8 +228,43 @@
        y2="14"
        gradientUnits="userSpaceOnUse" />
   </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="9.4464324"
+     inkscape:cx="0.9940587"
+     inkscape:cy="33.68254"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:document-units="px"
+     inkscape:grid-bbox="true"
+     inkscape:window-width="1600"
+     inkscape:window-height="837"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:snap-nodes="true"
+     inkscape:object-paths="true"
+     inkscape:object-nodes="true">
+    <inkscape:grid
+       type="xygrid"
+       id="grid3013"
+       units="px"
+       empspacing="2"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true"
+       spacingx="1px"
+       spacingy="1px" />
+  </sodipodi:namedview>
   <g
-     id="layer1">
+     id="layer1"
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer">
     <rect
        style="fill:url(#linearGradient3809);fill-opacity:1;stroke:#2e3436;stroke-width:1.99999988000000006;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="rect3783"
@@ -210,7 +275,9 @@
     <path
        style="fill:url(#linearGradient3863);fill-opacity:1;stroke:#271903;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        d="m 7,27 -4,4 0,24 4,4 4,0 0,-32 z"
-       id="path3010" />
+       id="path3010"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccc" />
     <rect
        style="fill:none;stroke:#ffffff;stroke-width:1.99999975999999990;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="rect3783-3"
@@ -221,23 +288,33 @@
     <path
        style="fill:url(#linearGradient3896);fill-opacity:1;stroke:#302b00;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        d="m 27,5 0,32 24,0 z m 6,18 6,8 -6,0 z"
-       id="path3782" />
+       id="path3782"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccccc" />
     <path
        style="fill:none;stroke:#e9b96e;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        d="M 8,29 5,31.85285 5,54.171675 7.8160622,57 9,57 9,29 z"
-       id="path3010-6" />
+       id="path3010-6"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccc" />
     <path
        style="fill:url(#linearGradient3835);fill-opacity:1;stroke:#271903;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        d="M 57,39 55,45 5,50 5,39 z"
-       id="path3012" />
+       id="path3012"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc" />
     <path
        style="fill:none;stroke:#e9b96e;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        d="M 54.220725,41 53.465976,43.178411 6.9877375,47.816062 7,41 z"
-       id="path3012-6" />
+       id="path3012-6"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc" />
     <path
        style="fill:none;stroke:#fce94f;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        d="m 29,11 0,24 18,0 z"
-       id="path3782-2" />
+       id="path3782-2"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc" />
   </g>
   <metadata
      id="metadata6050">
@@ -247,7 +324,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title>DraftWorkbench</dc:title>
         <cc:license
            rdf:resource="" />
         <dc:date>Fri Feb 26 23:17:43 2016 +0100</dc:date>

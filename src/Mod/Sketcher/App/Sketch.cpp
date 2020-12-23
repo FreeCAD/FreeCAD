@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Juergen Riegel         (juergen.riegel@web.de) 2010     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -55,13 +55,8 @@
 #include <Mod/Part/App/LineSegmentPy.h>
 #include <Mod/Part/App/BSplineCurvePy.h>
 
-#include "Constraint.h"
-
-#include "GeometryFacade.h"
-#include "SolverGeometryExtension.h"
-
 #include "Sketch.h"
-
+#include "Constraint.h"
 
 using namespace Sketcher;
 using namespace Base;
@@ -74,7 +69,6 @@ Sketch::Sketch()
   , RecalculateInitialSolutionWhileMovingPoint(false)
   , GCSsys(), ConstraintsCounter(0)
   , isInitMove(false), isFine(true), moveStep(0)
-  , malformedConstraints(false)
   , defaultSolver(GCS::DogLeg)
   , defaultSolverRedundant(GCS::DogLeg)
   , debugMode(GCS::Minimal)
@@ -108,9 +102,6 @@ void Sketch::clear(void)
         if (*it) delete *it;
     FixParameters.clear();
 
-    param2geoelement.clear();
-    pDependencyGroups.clear();
-
     // deleting the geometry copied into this sketch
     for (std::vector<GeoDef>::iterator it = Geoms.begin(); it != Geoms.end(); ++it)
         if (it->geo) delete it->geo;
@@ -125,7 +116,6 @@ void Sketch::clear(void)
     isInitMove = false;
     ConstraintsCounter = 0;
     Conflicting.clear();
-    malformedConstraints = false;
 }
 
 int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
@@ -145,8 +135,8 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
     std::vector<bool> blockedGeometry(intGeoList.size(),false); // these geometries are blocked, frozen and sent as fixed parameters to the solver
     std::vector<bool> unenforceableConstraints(ConstraintList.size(),false); // these constraints are unenforceable due to a Blocked constraint
 
-    /*if(!intGeoList.empty())
-        getBlockedGeometry(blockedGeometry, unenforceableConstraints, ConstraintList);*/
+    if(!intGeoList.empty())
+        getBlockedGeometry(blockedGeometry, unenforceableConstraints, ConstraintList);
 
     addGeometry(intGeoList,blockedGeometry);
     int extStart=Geoms.size();
@@ -159,96 +149,15 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
     if (!Geoms.empty()) {
         addConstraints(ConstraintList,unenforceableConstraints);
     }
-    clearTemporaryConstraints();
+    GCSsys.clearByTag(-1);
     GCSsys.declareUnknowns(Parameters);
     GCSsys.declareDrivenParams(DrivenParameters);
     GCSsys.initSolution(defaultSolverRedundant);
     GCSsys.getConflicting(Conflicting);
     GCSsys.getRedundant(Redundant);
-    GCSsys.getDependentParams(pDependentParametersList);
+    GCSsys.getDependentParams(pconstraintplistOut);
 
     calculateDependentParametersElements();
-
-    // Now that we have all the parameters information, we deal properly with the block constraint
-
-    bool isSomethingBlocked = false;
-    std::vector<int> blockedGeoIds;
-
-    int geoindex = 0;
-    for(auto & g : Geoms) {
-        if(!g.external && GeometryFacade::getBlocked(g.geo)) {
-            isSomethingBlocked = true;
-            blockedGeoIds.push_back(geoindex);
-        }
-        geoindex++;
-    }
-
-    for(auto c : ConstraintList) {
-        if(c->Type == InternalAlignment) {
-
-            auto geoit = std::find(blockedGeoIds.begin(),blockedGeoIds.end(),c->Second);
-
-            if(geoit != blockedGeoIds.end()) { // internal alignment geometry found, add to list
-                blockedGeoIds.push_back(*geoit);
-            }
-        }
-    }
-
-    if(isSomethingBlocked) {
-
-        // 1. Look what needs blocking
-        std::vector<double *> params_to_block;
-        std::vector < std::set < double*>> groups;
-        GCSsys.getDependentParamsGroups(groups);
-
-        for(size_t i = 0; i < groups.size(); i++) {
-            for(size_t j = 0; j < groups[i].size(); j++) {
-
-                double * thisparam = *std::next(groups[i].begin(), j);
-
-                auto element = param2geoelement.find(thisparam);
-
-                if (element != param2geoelement.end()) {
-
-                    auto blocked = std::find(blockedGeoIds.begin(),blockedGeoIds.end(),element->second.first);
-
-                    if( blocked != blockedGeoIds.end()) { // this dependent parameter group contains a parameter that should be blocked
-                        params_to_block.push_back(thisparam);
-                        break; // one parameter per group is enough to fix the group
-                    }
-                }
-            }
-        }
-
-        // 2. If something needs blocking, block-it
-        if(params_to_block.size() > 0) {
-
-            for( auto p : params_to_block ) {
-                auto findparam = std::find(Parameters.begin(),Parameters.end(), p);
-
-                if(findparam != Parameters.end()) {
-                    FixParameters.push_back(*findparam);
-                    Parameters.erase(findparam);
-                }
-
-            }
-
-            pDependencyGroups.clear();
-            clearTemporaryConstraints();
-            GCSsys.invalidatedDiagnosis();
-            GCSsys.declareUnknowns(Parameters);
-            GCSsys.declareDrivenParams(DrivenParameters);
-            GCSsys.initSolution(defaultSolverRedundant);
-            GCSsys.getConflicting(Conflicting);
-            GCSsys.getRedundant(Redundant);
-            GCSsys.getDependentParams(pDependentParametersList);
-
-            calculateDependentParametersElements();
-
-        }
-
-
-    }
 
     if (debugMode==GCS::Minimal || debugMode==GCS::IterationLevel) {
         Base::TimeInfo end_time;
@@ -259,130 +168,117 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
     return GCSsys.dofsNumber();
 }
 
-void Sketch::clearTemporaryConstraints(void)
-{
-    GCSsys.clearByTag(GCS::DefaultTemporaryConstraint);
-}
-
 void Sketch::calculateDependentParametersElements(void)
 {
-    // initialize solve extensions to a know state
     for(auto geo : Geoms) {
+        std::vector<double *> ownparams;
+        GCS::Curve * pCurve = nullptr;
 
-        if(!geo.geo->hasExtension(Sketcher::SolverGeometryExtension::getClassTypeId()))
-            geo.geo->setExtension(std::make_unique<Sketcher::SolverGeometryExtension>());
-
-        auto solvext = std::static_pointer_cast<Sketcher::SolverGeometryExtension>(
-                            geo.geo->getExtension(Sketcher::SolverGeometryExtension::getClassTypeId()).lock());
-
-        if(GCSsys.isEmptyDiagnoseMatrix())
-            solvext->init(SolverGeometryExtension::Dependent);
-        else
-            solvext->init(SolverGeometryExtension::Independent);
-    }
-
-    for(auto param : pDependentParametersList) {
-
-        //auto element = param2geoelement.at(param);
-        auto element = param2geoelement.find(param);
-
-        if (element != param2geoelement.end()) {
-            auto solvext = std::static_pointer_cast<Sketcher::SolverGeometryExtension>(
-                            Geoms[element->second.first].geo->getExtension(Sketcher::SolverGeometryExtension::getClassTypeId()).lock());
-
-            switch(element->second.second) {
-                case none:
-                    solvext->setEdge(SolverGeometryExtension::Dependent);
-                    break;
-                case start:
-                    solvext->setStart(SolverGeometryExtension::Dependent);
-                    break;
-                case end:
-                    solvext->setEnd(SolverGeometryExtension::Dependent);
-                    break;
-                case mid:
-                    solvext->setMid(SolverGeometryExtension::Dependent);
-                    break;
+        switch(geo.type) {
+            case Point:
+            {
+                GCS::Point & point = Points[geo.startPointId];
+                for(auto param : pconstraintplistOut) {
+                    if (param == point.x || param == point.y) {
+                        point.hasDependentParameters = true;
+                        break;
+                    }
+                }
             }
+            break;
+            case Line:
+            {
+                GCS::Line & line = Lines[geo.index];
+                line.PushOwnParams(ownparams);
+                pCurve = &line;
 
-        }
-    }
-
-    std::vector < std::set < double*>> groups;
-    GCSsys.getDependentParamsGroups(groups);
-
-    pDependencyGroups.resize(groups.size());
-
-    // translate parameters into elements (Geoid, PointPos)
-    for(size_t i = 0; i < groups.size(); i++) {
-        for(size_t j = 0; j < groups[i].size(); j++) {
-
-            auto element = param2geoelement.find(*std::next(groups[i].begin(), j));
-
-            if (element != param2geoelement.end()) {
-                pDependencyGroups[i].insert(element->second);
             }
-        }
-    }
-
-    // check if groups have a common element, if yes merge the groups
-    auto havecommonelement = [] (   std::set < std::pair< int, Sketcher::PointPos>>::iterator begin1,
-                                    std::set < std::pair< int, Sketcher::PointPos>>::iterator end1,
-                                    std::set < std::pair< int, Sketcher::PointPos>>::iterator begin2,
-                                    std::set < std::pair< int, Sketcher::PointPos>>::iterator end2) {
-
-        while (begin1 != end1 && begin2 != end2) {
-            if (*begin1 < *begin2)
-                ++begin1;
-            else if (*begin2 < *begin1)
-                ++begin2;
-            else
-                return true;
-        }
-
-        return false;
-    };
-
-    if(pDependencyGroups.size() > 1) { // only if there is more than 1 group
-        size_t endcount = pDependencyGroups.size()-1;
-
-        for(size_t i=0; i < endcount; i++) {
-            if(havecommonelement(pDependencyGroups[i].begin(), pDependencyGroups[i].end(), pDependencyGroups[i+1].begin(), pDependencyGroups[i+1].end())){
-                pDependencyGroups[i].insert(pDependencyGroups[i+1].begin(), pDependencyGroups[i+1].end());
-                pDependencyGroups.erase(pDependencyGroups.begin()+i+1);
-                endcount--;
+            break;
+            case Arc:
+            {
+                GCS::Arc & arc = Arcs[geo.index];
+                arc.PushOwnParams(ownparams);
+                pCurve = &arc;
             }
-        }
-    }
-}
-
-std::set < std::pair< int, Sketcher::PointPos>> Sketch::getDependencyGroup(int geoId, PointPos pos) const
-{
-    geoId = checkGeoId(geoId);
-
-    std::set < std::pair< int, Sketcher::PointPos>> group;
-
-    auto key = std::make_pair(geoId, pos);
-
-    for( auto & set : pDependencyGroups) {
-        if (set.find(key) != set.end()) {
-            group = set;
+            break;
+            case Circle:
+            {
+                GCS::Circle & c = Circles[geo.index];
+                c.PushOwnParams(ownparams);
+                pCurve = &c;
+            }
+            break;
+            case Ellipse:
+            {
+                GCS::Ellipse & e = Ellipses[geo.index];
+                e.PushOwnParams(ownparams);
+                pCurve = &e;
+            }
+            break;
+            case ArcOfEllipse:
+            {
+                GCS::ArcOfEllipse & aoe = ArcsOfEllipse[geo.index];
+                aoe.PushOwnParams(ownparams);
+                pCurve = &aoe;
+            }
+            break;
+            case ArcOfHyperbola:
+            {
+                GCS::ArcOfHyperbola & aoh = ArcsOfHyperbola[geo.index];
+                aoh.PushOwnParams(ownparams);
+                pCurve = &aoh;
+            }
+            break;
+            case ArcOfParabola:
+            {
+                GCS::ArcOfParabola & aop = ArcsOfParabola[geo.index];
+                aop.PushOwnParams(ownparams);
+                pCurve = &aop;
+            }
+            break;
+            case BSpline:
+            {
+                GCS::BSpline & bsp = BSplines[geo.index];
+                bsp.PushOwnParams(ownparams);
+                pCurve = &bsp;
+            }
+            break;
+            case None:
             break;
         }
+        // Points (this is single point elements, not vertices of other elements) are not derived from Curve
+        if(geo.type != Point && geo.type != None) {
+            for(auto param : pconstraintplistOut) {
+                for(auto ownparam : ownparams) {
+                    if (param == ownparam) {
+                        pCurve->hasDependentParameters = true;
+                        break;
+                    }
+                }
+            }
+        }
     }
-
-    return group;
+    // Points are the only element that defines other elements, so these points (as opposed to those points
+    // above which are just GeomPoints), have to be handled separately.
+    for(auto & point : Points) {
+        for(auto param : pconstraintplistOut) {
+            if (param == point.x || param == point.y) {
+                point.hasDependentParameters = true;
+                break;
+            }
+        }
+    }
 }
 
 int Sketch::resetSolver()
 {
-    clearTemporaryConstraints();
+    GCSsys.clearByTag(-1);
     GCSsys.declareUnknowns(Parameters);
     GCSsys.declareDrivenParams(DrivenParameters);
     GCSsys.initSolution(defaultSolverRedundant);
     GCSsys.getConflicting(Conflicting);
     GCSsys.getRedundant(Redundant);
-    GCSsys.getDependentParams(pDependentParametersList);
+    GCSsys.getDependentParams(pconstraintplistOut);
 
     calculateDependentParametersElements();
 
@@ -422,13 +318,12 @@ int Sketch::addGeometry(const Part::Geometry *geo, bool fixed)
 {
     if (geo->getTypeId() == GeomPoint::getClassTypeId()) { // add a point
         const GeomPoint *point = static_cast<const GeomPoint*>(geo);
-        auto pointf = GeometryFacade::getFacade(point);
         // create the definition struct for that geom
-        if( pointf->getInternalType() == InternalType::BSplineKnotPoint ) {
-            return addPoint(*point, true);
+        if( point->Construction == false ) {
+            return addPoint(*point, fixed);
         }
         else {
-            return addPoint(*point, fixed);
+            return addPoint(*point, true);
         }
     } else if (geo->getTypeId() == GeomLineSegment::getClassTypeId()) { // add a line
         const GeomLineSegment *lineSeg = static_cast<const GeomLineSegment*>(geo);
@@ -517,11 +412,6 @@ int Sketch::addPoint(const Part::GeomPoint &point, bool fixed)
     // store complete set
     Geoms.push_back(def);
 
-    if(!fixed) {
-        param2geoelement.emplace( std::piecewise_construct, std::forward_as_tuple(p1.x), std::forward_as_tuple(Geoms.size()-1, Sketcher::start));
-        param2geoelement.emplace( std::piecewise_construct, std::forward_as_tuple(p1.y), std::forward_as_tuple(Geoms.size()-1, Sketcher::start));
-    }
-
     // return the position of the newly added geometry
     return Geoms.size()-1;
 }
@@ -575,13 +465,6 @@ int Sketch::addLineSegment(const Part::GeomLineSegment &lineSegment, bool fixed)
 
     // store complete set
     Geoms.push_back(def);
-
-    if(!fixed) {
-        param2geoelement.emplace( std::piecewise_construct, std::forward_as_tuple(p1.x), std::forward_as_tuple(Geoms.size()-1, Sketcher::start));
-        param2geoelement.emplace( std::piecewise_construct, std::forward_as_tuple(p1.y), std::forward_as_tuple(Geoms.size()-1, Sketcher::start));
-        param2geoelement.emplace( std::piecewise_construct, std::forward_as_tuple(p2.x), std::forward_as_tuple(Geoms.size()-1, Sketcher::end));
-        param2geoelement.emplace( std::piecewise_construct, std::forward_as_tuple(p2.y), std::forward_as_tuple(Geoms.size()-1, Sketcher::end));
-    }
 
     // return the position of the newly added geometry
     return Geoms.size()-1;
@@ -653,18 +536,6 @@ int Sketch::addArc(const Part::GeomArcOfCircle &circleSegment, bool fixed)
     // arcs require an ArcRules constraint for the end points
     if (!fixed)
         GCSsys.addConstraintArcRules(a);
-
-    if(!fixed) {
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(p1.x), std::forward_as_tuple(Geoms.size()-1, Sketcher::start));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(p1.y), std::forward_as_tuple(Geoms.size()-1, Sketcher::start));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(p2.x), std::forward_as_tuple(Geoms.size()-1, Sketcher::end));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(p2.y), std::forward_as_tuple(Geoms.size()-1, Sketcher::end));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(p3.x), std::forward_as_tuple(Geoms.size()-1, Sketcher::mid));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(p3.y), std::forward_as_tuple(Geoms.size()-1, Sketcher::mid));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(r), std::forward_as_tuple(Geoms.size()-1, Sketcher::none));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(a1), std::forward_as_tuple(Geoms.size()-1, Sketcher::none));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(a2), std::forward_as_tuple(Geoms.size()-1, Sketcher::none));
-    }
 
     // return the position of the newly added geometry
     return Geoms.size()-1;
@@ -754,20 +625,6 @@ int Sketch::addArcOfEllipse(const Part::GeomArcOfEllipse &ellipseSegment, bool f
     if (!fixed)
         GCSsys.addConstraintArcOfEllipseRules(a);
 
-    if(!fixed) {
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(p1.x), std::forward_as_tuple(Geoms.size()-1, Sketcher::start));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(p1.y), std::forward_as_tuple(Geoms.size()-1, Sketcher::start));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(p2.x), std::forward_as_tuple(Geoms.size()-1, Sketcher::end));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(p2.y), std::forward_as_tuple(Geoms.size()-1, Sketcher::end));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(p3.x), std::forward_as_tuple(Geoms.size()-1, Sketcher::mid));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(p3.y), std::forward_as_tuple(Geoms.size()-1, Sketcher::mid));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(f1X), std::forward_as_tuple(Geoms.size()-1, Sketcher::none));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(f1Y), std::forward_as_tuple(Geoms.size()-1, Sketcher::none));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(rmin), std::forward_as_tuple(Geoms.size()-1, Sketcher::none));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(a1), std::forward_as_tuple(Geoms.size()-1, Sketcher::none));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(a2), std::forward_as_tuple(Geoms.size()-1, Sketcher::none));
-    }
-
     // return the position of the newly added geometry
     return Geoms.size()-1;
 }
@@ -854,21 +711,6 @@ int Sketch::addArcOfHyperbola(const Part::GeomArcOfHyperbola &hyperbolaSegment, 
     if (!fixed)
         GCSsys.addConstraintArcOfHyperbolaRules(a);
 
-    if(!fixed) {
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(p1.x), std::forward_as_tuple(Geoms.size()-1, Sketcher::start));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(p1.y), std::forward_as_tuple(Geoms.size()-1, Sketcher::start));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(p2.x), std::forward_as_tuple(Geoms.size()-1, Sketcher::end));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(p2.y), std::forward_as_tuple(Geoms.size()-1, Sketcher::end));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(p3.x), std::forward_as_tuple(Geoms.size()-1, Sketcher::mid));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(p3.y), std::forward_as_tuple(Geoms.size()-1, Sketcher::mid));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(f1X), std::forward_as_tuple(Geoms.size()-1, Sketcher::none));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(f1Y), std::forward_as_tuple(Geoms.size()-1, Sketcher::none));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(rmin), std::forward_as_tuple(Geoms.size()-1, Sketcher::none));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(a1), std::forward_as_tuple(Geoms.size()-1, Sketcher::none));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(a2), std::forward_as_tuple(Geoms.size()-1, Sketcher::none));
-    }
-
-
     // return the position of the newly added geometry
     return Geoms.size()-1;
 }
@@ -945,19 +787,6 @@ int Sketch::addArcOfParabola(const Part::GeomArcOfParabola &parabolaSegment, boo
     if (!fixed)
         GCSsys.addConstraintArcOfParabolaRules(a);
 
-    if(!fixed) {
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(p1.x), std::forward_as_tuple(Geoms.size()-1, Sketcher::start));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(p1.y), std::forward_as_tuple(Geoms.size()-1, Sketcher::start));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(p2.x), std::forward_as_tuple(Geoms.size()-1, Sketcher::end));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(p2.y), std::forward_as_tuple(Geoms.size()-1, Sketcher::end));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(p3.x), std::forward_as_tuple(Geoms.size()-1, Sketcher::mid));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(p3.y), std::forward_as_tuple(Geoms.size()-1, Sketcher::mid));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(p4.x), std::forward_as_tuple(Geoms.size()-1, Sketcher::none));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(p4.y), std::forward_as_tuple(Geoms.size()-1, Sketcher::none));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(a1), std::forward_as_tuple(Geoms.size()-1, Sketcher::none));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(a2), std::forward_as_tuple(Geoms.size()-1, Sketcher::none));
-    }
-
     // return the position of the newly added geometry
     return Geoms.size()-1;
 }
@@ -1020,23 +849,13 @@ int Sketch::addBSpline(const Part::GeomBSplineCurve &bspline, bool fixed)
         p.y = params[params.size()-1];
 
         spoles.push_back(p);
-
-        if(!fixed) {
-            param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(p.x), std::forward_as_tuple(Geoms.size(), Sketcher::none));
-            param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(p.y), std::forward_as_tuple(Geoms.size(), Sketcher::none));
-        }
     }
 
     std::vector<double *> sweights;
 
     for(std::vector<double>::const_iterator it = weights.begin(); it != weights.end(); ++it) {
-        auto r = new double( (*it) );
-        params.push_back(r);
+        params.push_back(new double( (*it) ));
         sweights.push_back(params[params.size()-1]);
-
-        if(!fixed) {
-            param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(r), std::forward_as_tuple(Geoms.size(), Sketcher::none));
-        }
     }
 
     std::vector<double *> sknots;
@@ -1115,14 +934,6 @@ int Sketch::addBSpline(const Part::GeomBSplineCurve &bspline, bool fixed)
             GCSsys.addConstraintP2PCoincident(*(bs.poles.end()-1),bs.end);
     }
 
-    if(!fixed) {
-        // Note: Poles and weight parameters are emplaced above
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(p1.x), std::forward_as_tuple(Geoms.size()-1, Sketcher::start));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(p1.y), std::forward_as_tuple(Geoms.size()-1, Sketcher::start));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(p2.x), std::forward_as_tuple(Geoms.size()-1, Sketcher::end));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(p2.y), std::forward_as_tuple(Geoms.size()-1, Sketcher::end));
-    }
-
     // return the position of the newly added geometry
     return Geoms.size()-1;
 }
@@ -1165,12 +976,6 @@ int Sketch::addCircle(const Part::GeomCircle &cir, bool fixed)
 
     // store complete set
     Geoms.push_back(def);
-
-    if(!fixed) {
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(p1.x), std::forward_as_tuple(Geoms.size()-1, Sketcher::mid));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(p1.y), std::forward_as_tuple(Geoms.size()-1, Sketcher::mid));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(r), std::forward_as_tuple(Geoms.size()-1, Sketcher::none));
-    }
 
     // return the position of the newly added geometry
     return Geoms.size()-1;
@@ -1230,14 +1035,6 @@ int Sketch::addEllipse(const Part::GeomEllipse &elip, bool fixed)
     // store complete set
     Geoms.push_back(def);
 
-    if(!fixed) {
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(c.x), std::forward_as_tuple(Geoms.size()-1, Sketcher::mid));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(c.y), std::forward_as_tuple(Geoms.size()-1, Sketcher::mid));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(f1X), std::forward_as_tuple(Geoms.size()-1, Sketcher::none));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(f1Y), std::forward_as_tuple(Geoms.size()-1, Sketcher::none));
-        param2geoelement.emplace(std::piecewise_construct, std::forward_as_tuple(rmin), std::forward_as_tuple(Geoms.size()-1, Sketcher::none));
-    }
-
     // return the position of the newly added geometry
     return Geoms.size()-1;
 }
@@ -1248,20 +1045,11 @@ std::vector<Part::Geometry *> Sketch::extractGeometry(bool withConstructionEleme
     std::vector<Part::Geometry *> temp;
     temp.reserve(Geoms.size());
     for (std::vector<GeoDef>::const_iterator it=Geoms.begin(); it != Geoms.end(); ++it) {
-        auto gf = GeometryFacade::getFacade(it->geo);
-        if ((!it->external || withExternalElements) && (!gf->getConstruction() || withConstructionElements))
+        if ((!it->external || withExternalElements) && (!it->geo->Construction || withConstructionElements))
             temp.push_back(it->geo->clone());
     }
 
     return temp;
-}
-
-void Sketch::updateExtension(int geoId, std::unique_ptr<Part::GeometryExtension> && ext)
-{
-    geoId = checkGeoId(geoId);
-
-    Geoms[geoId].geo->setExtension(std::move(ext));
-
 }
 
 Py::Tuple Sketch::getPyGeometry(void) const
@@ -1613,19 +1401,6 @@ int Sketch::addConstraint(const Constraint *constraint)
         rtn = addDiameterConstraint(constraint->First, c.value,c.driving);
         break;
     }
-    case Weight:
-    {
-        c.value = new double(constraint->getValue());
-        if(c.driving)
-            FixParameters.push_back(c.value);
-        else {
-            Parameters.push_back(c.value);
-            DrivenParameters.push_back(c.value);
-        }
-
-        rtn = addRadiusConstraint(constraint->First, c.value,c.driving);
-        break;
-    }
     case Equal:
         rtn = addEqualConstraint(constraint->First,constraint->Second);
         break;
@@ -1718,7 +1493,6 @@ int Sketch::addConstraints(const std::vector<Constraint *> &ConstraintList)
 
         if(rtn == -1) {
             Base::Console().Error("Sketcher constraint number %d is malformed!\n",cid);
-            malformedConstraints = true;
         }
     }
 
@@ -1737,7 +1511,6 @@ int Sketch::addConstraints(const std::vector<Constraint *> &ConstraintList,
 
             if(rtn == -1) {
                 Base::Console().Error("Sketcher constraint number %d is malformed!\n",cid);
-                malformedConstraints = true;
             }
         }
         else {
@@ -3121,9 +2894,8 @@ bool Sketch::updateGeometry()
         try {
             if (it->type == Point) {
                 GeomPoint *point = static_cast<GeomPoint*>(it->geo);
-                auto pointf = GeometryFacade::getFacade(point);
 
-                if(!(pointf->getInternalType() == InternalType::BSplineKnotPoint)) {
+                if(!point->Construction) {
                     point->setPoint(Vector3d(*Points[it->startPointId].x,
                                          *Points[it->startPointId].y,
                                          0.0)
@@ -3249,7 +3021,7 @@ bool Sketch::updateGeometry()
                 std::vector<double *>::const_iterator it2;
 
                 for( it1 = mybsp.poles.begin(), it2 = mybsp.weights.begin(); it1 != mybsp.poles.end() && it2 != mybsp.weights.end(); ++it1, ++it2) {
-                    poles.emplace_back( *(*it1).x , *(*it1).y , 0.0);
+                    poles.push_back(Vector3d( *(*it1).x , *(*it1).y , 0.0));
                     weights.push_back(*(*it2));
                 }
 
@@ -3275,9 +3047,7 @@ bool Sketch::updateGeometry()
                         if (Geoms[*it5].type == Point) {
                             GeomPoint *point = static_cast<GeomPoint*>(Geoms[*it5].geo);
 
-                            auto pointf = GeometryFacade::getFacade(point);
-
-                            if(pointf->getInternalType() == InternalType::BSplineKnotPoint) {
+                            if(point->Construction) {
                                 point->setPoint(bsp->pointAtParameter(knots[index]));
                             }
                         }
@@ -3327,7 +3097,7 @@ int Sketch::solve(void)
 {
     Base::TimeInfo start_time;
     if (!isInitMove) { // make sure we are in single subsystem mode
-        clearTemporaryConstraints();
+        GCSsys.clearByTag(-1);
         isFine = true;
     }
 
@@ -3407,7 +3177,7 @@ int Sketch::solve(void)
                 int i=0;
                 for (std::vector<double*>::iterator it = Parameters.begin(); it != Parameters.end(); ++it, i++) {
                     InitParameters[i] = **it;
-                    GCSsys.addConstraintEqual(*it, &InitParameters[i], GCS::DefaultTemporaryConstraint);
+                    GCSsys.addConstraintEqual(*it, &InitParameters[i], -1);
                 }
                 GCSsys.initSolution();
                 ret = GCSsys.solve(isFine);
@@ -3436,7 +3206,7 @@ int Sketch::solve(void)
             }
 
             if (soltype == 3) // cleanup temporary constraints of the augmented system
-                clearTemporaryConstraints();
+                GCSsys.clearByTag(-1);
 
             if (valid_solution) {
                 if (soltype == 1)
@@ -3473,7 +3243,7 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
 
     geoId = checkGeoId(geoId);
 
-    clearTemporaryConstraints();
+    GCSsys.clearByTag(-1);
 
     // don't try to move sketches that contain conflicting constraints
     if (hasConflicts()) {
@@ -3490,7 +3260,7 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
             p0.y = &MoveParameters[1];
             *p0.x = *point.x;
             *p0.y = *point.y;
-            GCSsys.addConstraintP2PCoincident(p0,point,GCS::DefaultTemporaryConstraint);
+            GCSsys.addConstraintP2PCoincident(p0,point,-1);
         }
     } else if (Geoms[geoId].type == Line) {
         if (pos == start || pos == end) {
@@ -3502,12 +3272,12 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
                 GCS::Point &p = Points[Geoms[geoId].startPointId];
                 *p0.x = *p.x;
                 *p0.y = *p.y;
-                GCSsys.addConstraintP2PCoincident(p0,p,GCS::DefaultTemporaryConstraint);
+                GCSsys.addConstraintP2PCoincident(p0,p,-1);
             } else if (pos == end) {
                 GCS::Point &p = Points[Geoms[geoId].endPointId];
                 *p0.x = *p.x;
                 *p0.y = *p.y;
-                GCSsys.addConstraintP2PCoincident(p0,p,GCS::DefaultTemporaryConstraint);
+                GCSsys.addConstraintP2PCoincident(p0,p,-1);
             }
         } else if (pos == none || pos == mid) {
             MoveParameters.resize(4); // x1,y1,x2,y2
@@ -3521,8 +3291,8 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
             *p1.y = *l.p1.y;
             *p2.x = *l.p2.x;
             *p2.y = *l.p2.y;
-            GCSsys.addConstraintP2PCoincident(p1,l.p1,GCS::DefaultTemporaryConstraint);
-            GCSsys.addConstraintP2PCoincident(p2,l.p2,GCS::DefaultTemporaryConstraint);
+            GCSsys.addConstraintP2PCoincident(p1,l.p1,-1);
+            GCSsys.addConstraintP2PCoincident(p2,l.p2,-1);
         }
     } else if (Geoms[geoId].type == Circle) {
         GCS::Point &center = Points[Geoms[geoId].midPointId];
@@ -3533,21 +3303,20 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
             p0.y = &MoveParameters[1];
             *p0.x = *center.x;
             *p0.y = *center.y;
-            GCSsys.addConstraintP2PCoincident(p0,center,GCS::DefaultTemporaryConstraint);
+            GCSsys.addConstraintP2PCoincident(p0,center,-1);
         } else if (pos == none) {
-            //bool pole = GeometryFacade::isInternalType(Geoms[geoId].geo, InternalType::BSplineControlPoint);
-            MoveParameters.resize(4); // x,y,cx,cy - For poles blocking the center
+            MoveParameters.resize(4); // x,y,cx,cy
             GCS::Circle &c = Circles[Geoms[geoId].index];
             p0.x = &MoveParameters[0];
             p0.y = &MoveParameters[1];
             *p0.x = *center.x;
             *p0.y = *center.y + *c.rad;
-            GCSsys.addConstraintPointOnCircle(p0,c,GCS::DefaultTemporaryConstraint);
+            GCSsys.addConstraintPointOnCircle(p0,c,-1);
             p1.x = &MoveParameters[2];
             p1.y = &MoveParameters[3];
             *p1.x = *center.x;
             *p1.y = *center.y;
-            int i=GCSsys.addConstraintP2PCoincident(p1,center,GCS::DefaultTemporaryConstraint);
+            int i=GCSsys.addConstraintP2PCoincident(p1,center,-1);
             GCSsys.rescaleConstraint(i-1, 0.01);
             GCSsys.rescaleConstraint(i, 0.01);
         }
@@ -3562,7 +3331,7 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
             *p0.x = *center.x;
             *p0.y = *center.y;
 
-            GCSsys.addConstraintP2PCoincident(p0,center,GCS::DefaultTemporaryConstraint);
+            GCSsys.addConstraintP2PCoincident(p0,center,-1);
         }
     } else if (Geoms[geoId].type == ArcOfEllipse) {
 
@@ -3574,7 +3343,7 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
             p0.y = &MoveParameters[1];
             *p0.x = *center.x;
             *p0.y = *center.y;
-            GCSsys.addConstraintP2PCoincident(p0,center,GCS::DefaultTemporaryConstraint);
+            GCSsys.addConstraintP2PCoincident(p0,center,-1);
 
         } else if (pos == start || pos == end) {
 
@@ -3587,7 +3356,7 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
                 *p0.x = *p.x;
                 *p0.y = *p.y;
 
-                GCSsys.addConstraintP2PCoincident(p0,p,GCS::DefaultTemporaryConstraint);
+                GCSsys.addConstraintP2PCoincident(p0,p,-1);
             }
 
             p1.x = &MoveParameters[2];
@@ -3595,7 +3364,7 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
             *p1.x = *center.x;
             *p1.y = *center.y;
 
-            int i=GCSsys.addConstraintP2PCoincident(p1,center,GCS::DefaultTemporaryConstraint);
+            int i=GCSsys.addConstraintP2PCoincident(p1,center,-1);
             GCSsys.rescaleConstraint(i-1, 0.01);
             GCSsys.rescaleConstraint(i, 0.01);
         }
@@ -3610,7 +3379,7 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
             *p0.x = *center.x;
             *p0.y = *center.y;
 
-            GCSsys.addConstraintP2PCoincident(p0,center,GCS::DefaultTemporaryConstraint);
+            GCSsys.addConstraintP2PCoincident(p0,center,-1);
         } else if (pos == start || pos == end) {
 
             MoveParameters.resize(4); // x,y,cx,cy
@@ -3622,14 +3391,14 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
                 *p0.x = *p.x;
                 *p0.y = *p.y;
 
-                GCSsys.addConstraintP2PCoincident(p0,p,GCS::DefaultTemporaryConstraint);
+                GCSsys.addConstraintP2PCoincident(p0,p,-1);
             }
             p1.x = &MoveParameters[2];
             p1.y = &MoveParameters[3];
             *p1.x = *center.x;
             *p1.y = *center.y;
 
-            int i=GCSsys.addConstraintP2PCoincident(p1,center,GCS::DefaultTemporaryConstraint);
+            int i=GCSsys.addConstraintP2PCoincident(p1,center,-1);
             GCSsys.rescaleConstraint(i-1, 0.01);
             GCSsys.rescaleConstraint(i, 0.01);
 
@@ -3645,7 +3414,7 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
             *p0.x = *center.x;
             *p0.y = *center.y;
 
-            GCSsys.addConstraintP2PCoincident(p0,center,GCS::DefaultTemporaryConstraint);
+            GCSsys.addConstraintP2PCoincident(p0,center,-1);
         } else if (pos == start || pos == end) {
 
             MoveParameters.resize(4); // x,y,cx,cy
@@ -3657,14 +3426,14 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
                 *p0.x = *p.x;
                 *p0.y = *p.y;
 
-                GCSsys.addConstraintP2PCoincident(p0,p,GCS::DefaultTemporaryConstraint);
+                GCSsys.addConstraintP2PCoincident(p0,p,-1);
             }
             p1.x = &MoveParameters[2];
             p1.y = &MoveParameters[3];
             *p1.x = *center.x;
             *p1.y = *center.y;
 
-            int i=GCSsys.addConstraintP2PCoincident(p1,center,GCS::DefaultTemporaryConstraint);
+            int i=GCSsys.addConstraintP2PCoincident(p1,center,-1);
             GCSsys.rescaleConstraint(i-1, 0.01);
             GCSsys.rescaleConstraint(i, 0.01);
 
@@ -3679,12 +3448,12 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
                 GCS::Point &p = Points[Geoms[geoId].startPointId];
                 *p0.x = *p.x;
                 *p0.y = *p.y;
-                GCSsys.addConstraintP2PCoincident(p0,p,GCS::DefaultTemporaryConstraint);
+                GCSsys.addConstraintP2PCoincident(p0,p,-1);
             } else if (pos == end) {
                 GCS::Point &p = Points[Geoms[geoId].endPointId];
                 *p0.x = *p.x;
                 *p0.y = *p.y;
-                GCSsys.addConstraintP2PCoincident(p0,p,GCS::DefaultTemporaryConstraint);
+                GCSsys.addConstraintP2PCoincident(p0,p,-1);
             }
         } else if (pos == none || pos == mid) {
             GCS::BSpline &bsp = BSplines[Geoms[geoId].index];
@@ -3700,7 +3469,7 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
                 *p1.x = *(*it).x;
                 *p1.y = *(*it).y;
 
-                GCSsys.addConstraintP2PCoincident(p1,(*it),GCS::DefaultTemporaryConstraint);
+                GCSsys.addConstraintP2PCoincident(p1,(*it),-1);
             }
 
         }
@@ -3713,7 +3482,7 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
             p0.y = &MoveParameters[1];
             *p0.x = *center.x;
             *p0.y = *center.y;
-            GCSsys.addConstraintP2PCoincident(p0,center,GCS::DefaultTemporaryConstraint);
+            GCSsys.addConstraintP2PCoincident(p0,center,-1);
         } else if (pos == start || pos == end || pos == none) {
             MoveParameters.resize(4); // x,y,cx,cy
             if (pos == start || pos == end) {
@@ -3723,20 +3492,20 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
                 p0.y = &MoveParameters[1];
                 *p0.x = *p.x;
                 *p0.y = *p.y;
-                GCSsys.addConstraintP2PCoincident(p0,p,GCS::DefaultTemporaryConstraint);
+                GCSsys.addConstraintP2PCoincident(p0,p,-1);
             } else if (pos == none) {
                 GCS::Arc &a = Arcs[Geoms[geoId].index];
                 p0.x = &MoveParameters[0];
                 p0.y = &MoveParameters[1];
                 *p0.x = *center.x;
                 *p0.y = *center.y + *a.rad;
-                GCSsys.addConstraintPointOnArc(p0,a,GCS::DefaultTemporaryConstraint);
+                GCSsys.addConstraintPointOnArc(p0,a,-1);
             }
             p1.x = &MoveParameters[2];
             p1.y = &MoveParameters[3];
             *p1.x = *center.x;
             *p1.y = *center.y;
-            int i=GCSsys.addConstraintP2PCoincident(p1,center,GCS::DefaultTemporaryConstraint);
+            int i=GCSsys.addConstraintP2PCoincident(p1,center,-1);
             GCSsys.rescaleConstraint(i-1, 0.01);
             GCSsys.rescaleConstraint(i, 0.01);
         }
@@ -3893,6 +3662,108 @@ Base::Vector3d Sketch::getPoint(int geoId, PointPos pos) const
     return Base::Vector3d();
 }
 
+bool Sketch::hasDependentParameters(int geoId, PointPos pos) const
+{
+    try {
+        geoId = checkGeoId(geoId);
+    }
+    catch (Base::Exception&) {
+        return false;
+    }
+
+    if(Geoms[geoId].external)
+        return true;
+
+    switch(Geoms[geoId].type) {
+        case Point:
+        {
+            switch(pos) { // NOTE: points are added to all the cases, see addition.
+                case none: return Points[Geoms[geoId].index].hasDependentParameters;break;
+                case start: return Points[Geoms[geoId].startPointId].hasDependentParameters;break;
+                case end: return Points[Geoms[geoId].endPointId].hasDependentParameters;break;
+                case mid: return Points[Geoms[geoId].midPointId].hasDependentParameters;break;
+            }
+        }
+        case Line:
+        {
+            switch(pos) {
+                case none: return Lines[Geoms[geoId].index].hasDependentParameters;break;
+                case start: return Points[Geoms[geoId].startPointId].hasDependentParameters;break;
+                case end: return Points[Geoms[geoId].endPointId].hasDependentParameters;break;
+                case mid: return false;break;
+            }
+        }
+        case Arc:
+        {
+            switch(pos) {
+                case none: return Arcs[Geoms[geoId].index].hasDependentParameters;break;
+                case start: return Points[Geoms[geoId].startPointId].hasDependentParameters;break;
+                case end: return Points[Geoms[geoId].endPointId].hasDependentParameters;break;
+                case mid: return Points[Geoms[geoId].midPointId].hasDependentParameters;break;
+            }
+        }
+        case Circle:
+        {
+            switch(pos) { // NOTE: points are added to all the cases, see addition.
+                case none: return Circles[Geoms[geoId].index].hasDependentParameters;break;
+                case start: return false;break;
+                case end: return false;break;
+                case mid: return Points[Geoms[geoId].midPointId].hasDependentParameters;break;
+            }
+        }
+
+        case Ellipse:
+        {
+            switch(pos) { // NOTE: points are added to all the cases, see addition.
+                case none: return Ellipses[Geoms[geoId].index].hasDependentParameters;break;
+                case start: return false;break;
+                case end: return false;break;
+                case mid: return Points[Geoms[geoId].midPointId].hasDependentParameters;break;
+            }
+        }
+        case ArcOfEllipse:
+        {
+            switch(pos) {
+                case none: return ArcsOfEllipse[Geoms[geoId].index].hasDependentParameters;break;
+                case start: return Points[Geoms[geoId].startPointId].hasDependentParameters;break;
+                case end: return Points[Geoms[geoId].endPointId].hasDependentParameters;break;
+                case mid: return Points[Geoms[geoId].midPointId].hasDependentParameters;break;
+            }
+        }
+        case ArcOfHyperbola:
+        {
+            switch(pos) {
+                case none: return ArcsOfHyperbola[Geoms[geoId].index].hasDependentParameters;break;
+                case start: return Points[Geoms[geoId].startPointId].hasDependentParameters;break;
+                case end: return Points[Geoms[geoId].endPointId].hasDependentParameters;break;
+                case mid: return Points[Geoms[geoId].midPointId].hasDependentParameters;break;
+            }
+        }
+        case ArcOfParabola:
+        {
+            switch(pos) {
+                case none: return ArcsOfParabola[Geoms[geoId].index].hasDependentParameters;break;
+                case start: return Points[Geoms[geoId].startPointId].hasDependentParameters;break;
+                case end: return Points[Geoms[geoId].endPointId].hasDependentParameters;break;
+                case mid: return Points[Geoms[geoId].midPointId].hasDependentParameters;break;
+            }
+        }
+        case BSpline:
+        {
+            switch(pos) {
+                case none: return BSplines[Geoms[geoId].index].hasDependentParameters;break;
+                case start: return Points[Geoms[geoId].startPointId].hasDependentParameters;break;
+                case end: return Points[Geoms[geoId].endPointId].hasDependentParameters;break;
+                case mid: return false;break;
+            }
+        }
+        case None:
+            return false; break;
+    }
+
+    return false;
+}
+
 TopoShape Sketch::toShape(void) const
 {
     TopoShape result;
@@ -3919,8 +3790,7 @@ TopoShape Sketch::toShape(void) const
 
     // collecting all (non constructive and non external) edges out of the sketch
     for (;it!=Geoms.end();++it) {
-        auto gf = GeometryFacade::getFacade(it->geo);
-        if (!it->external && !gf->getConstruction() && (it->type != Point)) {
+        if (!it->external && !it->geo->Construction && (it->type != Point)) {
             edge_list.push_back(TopoDS::Edge(it->geo->toShape()));
         }
     }

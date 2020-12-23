@@ -49,15 +49,11 @@ public:
 
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
 
-    void setEnds(Base::Vector3d l1, Base::Vector3d l2);
     void setBounds(double x1,double y1,double x2,double y2);
     void setSymbol(char* sym);
     void setDirection(double xDir,double yDir);
     void setDirection(Base::Vector3d dir);
     void setFont(QFont f, double fsize);
-    void setSectionStyle(int style);
-    void setSectionColor(QColor c);
-
     virtual void draw();
 
 protected:
@@ -71,10 +67,7 @@ protected:
     void makeSymbolsTrad();
     void makeSymbolsISO();
     void setTools();
-    int  getPrefSectionStandard();
-    void extensionEndsISO();
-    void extensionEndsTrad();
-
+    int  getPrefSectionFormat();
 
 private:
     char* m_symbol;
@@ -93,12 +86,6 @@ private:
     //QColor             m_color;
     double             m_extLen;
 //    int                m_sectionFormat;     //0 = ASME, 1 = ISO
-    Base::Vector3d     m_l1;            //end of main section line
-    Base::Vector3d     m_l2;            //end of main section line
-    QPointF            m_beginExt1;     //start of extension line 1
-    QPointF            m_endExt1;       //end of extension line 1
-    QPointF            m_beginExt2;     //start of extension line 2
-    QPointF            m_endExt2;       //end of extension line 1
 };
 
 }

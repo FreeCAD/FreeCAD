@@ -27,17 +27,12 @@
 # include <QRectF>
 #include <App/DocumentObject.h>
 #include <App/PropertyStandard.h>
-#include <App/PropertyLinks.h>
-
 
 #include <Base/BoundBox.h>
 #include <Base/Matrix.h>
 #include <Base/Vector3D.h>
 
 #include "DrawViewCollection.h"
-
-class gp_Dir;
-class gp_Pnt;
 
 namespace TechDraw
 {
@@ -57,23 +52,21 @@ public:
     DrawProjGroup();
     ~DrawProjGroup();
 
-    App::PropertyLinkList   Source;
-    App::PropertyXLinkList  XSource;
-
+    App::PropertyLinkList  Source;
     App::PropertyEnumeration ProjectionType;
 
-    /// Whether projcetion group view are automatically distributed or not
     App::PropertyBool AutoDistribute;
     /// Default horizontal spacing between adjacent views on Drawing, in mm
-    App::PropertyLength spacingX;
+    App::PropertyFloat spacingX;
     /// Default vertical spacing between adjacent views on Drawing, in mm
-    App::PropertyLength spacingY;
+    App::PropertyFloat spacingY;
 
     App::PropertyLink Anchor; /// Anchor Element to align views to
 
     Base::BoundBox3d getBoundingBox() const;
     double calculateAutomaticScale() const;
     virtual QRectF getRect(void) const override;
+    virtual bool checkFit(TechDraw::DrawPage* p) const override;
     /// Check if container has a view of a specific type
     bool hasProjection(const char *viewProjType) const;
 
@@ -131,16 +124,13 @@ public:
     void spinCW(void);
     void spinCCW(void);
     
-    void dumpISO(const char * title);
+    void dumpISO(char * title);
     std::vector<DrawProjGroupItem*> getViewsAsDPGI();
 
     void recomputeChildren(void);
     void updateChildrenScale(void);
     void autoPositionChildren(void);
     void updateChildrenEnforce(void);
-
-    std::vector<App::DocumentObject*> getAllSources(void) const;
-
 
 protected:
     void onChanged(const App::Property* prop) override;
@@ -176,15 +166,9 @@ protected:
 
     void updateChildrenSource(void);
     void updateChildrenLock(void);
-    void updateViews(void);
     int getViewIndex(const char *viewTypeCStr) const;
     int getDefProjConv(void) const;
-    Base::Vector3d dir2vec(gp_Dir d);
-    gp_Dir vec2dir(Base::Vector3d v);
 
-    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;
-    
-    bool m_lockScale;
 };
 
 } //namespace TechDraw

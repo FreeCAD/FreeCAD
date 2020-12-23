@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
+ *   Copyright (c) Yorik van Havre (yorik@uncreated.net) 2014              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -107,7 +107,6 @@
 #include <gp_GTrsf.hxx>
 #include <Standard_Version.hxx>
 #include <GCPnts_QuasiUniformDeflection.hxx>
-#include <GCPnts_UniformDeflection.hxx>
 #include <GCPnts_UniformAbscissa.hxx>
 #include <BRepBndLib.hxx>
 #include <BRepLib_MakeFace.hxx>

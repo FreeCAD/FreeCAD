@@ -99,8 +99,8 @@
                  <string/>
                 </property>
                 <property name="icon">
-                 <iconset theme="edit-edit.svg" resource="../../../../../Gui/Icons/resource.qrc">
-                  <normaloff>:/icons/edit-edit.svg</normaloff>:/icons/edit-edit.svg</iconset>
+                 <iconset resource="../../../../../Gui/Icons/resource.qrc">
+                  <normaloff>:/icons/FreeCAD-default/scalable/edit-edit.svg</normaloff>:/icons/FreeCAD-default/scalable/edit-edit.svg</iconset>
                 </property>
                </widget>
               </item>
@@ -117,7 +117,7 @@
                 </property>
                 <property name="icon">
                  <iconset>
-                  <normalon>:/icons/list-remove.svg</normalon>
+                  <normalon>:/icons/FreeCAD-default/scalable/list-remove.svg</normalon>
                  </iconset>
                 </property>
                </widget>
@@ -135,7 +135,7 @@
                 </property>
                 <property name="icon">
                  <iconset>
-                  <normalon>:/icons/list-add.svg</normalon>
+                  <normalon>:/icons/FreeCAD-default/scalable/list-add.svg</normalon>
                  </iconset>
                 </property>
                </widget>
@@ -235,7 +235,7 @@
          </property>
          <property name="icon">
           <iconset resource="../Path.qrc">
-           <normaloff>:/icons/Path_ToolController.svg</normaloff>:/icons/Path_ToolController.svg</iconset>
+           <normaloff>:/icons/Path-ToolController.svg</normaloff>:/icons/Path-ToolController.svg</iconset>
          </property>
         </widget>
        </item>
@@ -292,7 +292,7 @@
          </property>
          <property name="icon">
           <iconset resource="../Path.qrc">
-           <normaloff>:/icons/Path_ToolDuplicate.svg</normaloff>:/icons/Path_ToolDuplicate.svg</iconset>
+           <normaloff>:/icons/Path-ToolDuplicate.svg</normaloff>:/icons/Path-ToolDuplicate.svg</iconset>
          </property>
         </widget>
        </item>
@@ -372,7 +372,7 @@
      </property>
      <property name="icon">
       <iconset resource="../Path.qrc">
-       <normaloff>:/icons/Path_LengthOffset.svg</normaloff>:/icons/Path_LengthOffset.svg</iconset>
+       <normaloff>:/icons/Path-LengthOffset.svg</normaloff>:/icons/Path-LengthOffset.svg</iconset>
      </property>
     </widget>
    </item>

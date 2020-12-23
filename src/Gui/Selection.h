@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
- *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) Juergen Riegel         <juergen.riegel@web.de>          *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -39,7 +38,7 @@
 #include <Base/Type.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <App/DocumentObserver.h>
+
 #include <Gui/SelectionObject.h>
 
 namespace App
@@ -80,35 +79,39 @@ public:
         MovePreselect, // to signal observer the mouse movement when preselect
     };
 
-    SelectionChanges(MsgType type = ClrSelection,
+    SelectionChanges(MsgType type = ClrSelection, 
             const char *docName=0, const char *objName=0,
             const char *subName=0, const char *typeName=0,
             float x=0, float y=0, float z=0, int subtype=0)
         : Type(type),SubType(subtype)
         , x(x),y(y),z(z)
-        , Object(docName,objName,subName)
     {
-        pDocName = Object.getDocumentName().c_str();
-        pObjectName = Object.getObjectName().c_str();
-        pSubName = Object.getSubName().c_str();
+        if(docName) DocName=docName;
+        pDocName = DocName.c_str();
+        if(objName) ObjName = objName;
+        pObjectName = ObjName.c_str();
+        if(subName) SubName = subName;
+        pSubName = SubName.c_str();
         if(typeName) TypeName = typeName;
         pTypeName = TypeName.c_str();
     }
 
     SelectionChanges(MsgType type,
-                     const std::string &docName,
-                     const std::string &objName,
+                     const std::string &docName, 
+                     const std::string &objName, 
                      const std::string &subName,
                      const std::string &typeName = std::string(),
                      float x=0,float y=0,float z=0, int subtype=0)
         : Type(type), SubType(subtype)
         , x(x),y(y),z(z)
-        , Object(docName.c_str(), objName.c_str(), subName.c_str())
+        , DocName(docName)
+        , ObjName(objName)
+        , SubName(subName)
         , TypeName(typeName)
     {
-        pDocName = Object.getDocumentName().c_str();
-        pObjectName = Object.getObjectName().c_str();
-        pSubName = Object.getSubName().c_str();
+        pDocName = DocName.c_str();
+        pObjectName = ObjName.c_str();
+        pSubName = SubName.c_str();
         pTypeName = TypeName.c_str();
     }
 
@@ -122,13 +125,17 @@ public:
         x = other.x;
         y = other.y;
         z = other.z;
-        Object = other.Object;
+        DocName = other.DocName;
+        ObjName = other.ObjName;
+        SubName = other.SubName;
         TypeName = other.TypeName;
-        pDocName = Object.getDocumentName().c_str();
-        pObjectName = Object.getObjectName().c_str();
-        pSubName = Object.getSubName().c_str();
+        pDocName = DocName.c_str();
+        pObjectName = ObjName.c_str();
+        pSubName = SubName.c_str();
         pTypeName = TypeName.c_str();
         pOriginalMsg = other.pOriginalMsg;
+        pSubObject = other.pSubObject;
+        pParentObject = other.pParentObject;
         return *this;
     }
 
@@ -142,13 +149,17 @@ public:
         x = other.x;
         y = other.y;
         z = other.z;
-        Object = std::move(other.Object);
+        DocName = std::move(other.DocName);
+        ObjName = std::move(other.ObjName);
+        SubName = std::move(other.SubName);
         TypeName = std::move(other.TypeName);
-        pDocName = Object.getDocumentName().c_str();
-        pObjectName = Object.getObjectName().c_str();
-        pSubName = Object.getSubName().c_str();
+        pDocName = DocName.c_str();
+        pObjectName = ObjName.c_str();
+        pSubName = SubName.c_str();
         pTypeName = TypeName.c_str();
         pOriginalMsg = other.pOriginalMsg;
+        pSubObject = other.pSubObject;
+        pParentObject = other.pParentObject;
         return *this;
     }
 
@@ -163,8 +174,18 @@ public:
     float y;
     float z;
 
-    App::SubObjectT Object;
+    // For more robust selection notification (e.g. in case user make selection
+    // change inside selection notification handler), the notification message
+    // shall make a copy of all the strings here.
+    std::string DocName;
+    std::string ObjName;
+    std::string SubName;
     std::string TypeName;
+
+    // Resolved sub object in case resolve!=0, otherwise this is null
+    App::DocumentObject *pSubObject = 0;
+    // Resolved parent object in case resolve!=0, otherwise this is null
+    App::DocumentObject *pParentObject = 0;
 
     // Original selection message in case resolve!=0
     const SelectionChanges *pOriginalMsg = 0;
@@ -209,7 +230,7 @@ class GuiExport SelectionObserver
 
 public:
     /** Constructor
-     *
+     * 
      * @param attach: whether to attach this observer on construction
      * @param resolve: sub-object resolving mode.
      *                 0 no resolve,
@@ -218,11 +239,11 @@ public:
      */
     SelectionObserver(bool attach = true, int resolve = 1);
     /** Constructor
-     *
+     * 
      * @param vp: filtering view object.
      * @param attach: whether to attach this observer on construction
      * @param resolve: sub-object resolving mode.
-     *                 0 no resolve,
+     *                 0 no resolve, 
      *                 1 resolve sub-object with old style element name
      *                 2 resolve sub-object with new style element name
      *
@@ -364,10 +385,10 @@ public:
         float x,y,z;
     };
 
-    /// Add to selection
-    bool addSelection(const char* pDocName, const char* pObjectName=0, const char* pSubName=0,
+    /// Add to selection 
+    bool addSelection(const char* pDocName, const char* pObjectName=0, const char* pSubName=0, 
             float x=0, float y=0, float z=0, const std::vector<SelObj> *pickedList = 0, bool clearPreSelect=true);
-    bool addSelection2(const char* pDocName, const char* pObjectName=0, const char* pSubName=0,
+    bool addSelection2(const char* pDocName, const char* pObjectName=0, const char* pSubName=0, 
             float x=0, float y=0, float z=0, const std::vector<SelObj> *pickedList = 0)
     {
         return addSelection(pDocName,pObjectName,pSubName,x,y,z,pickedList,false);
@@ -377,10 +398,10 @@ public:
     bool addSelection(const SelectionObject&, bool clearPreSelect=true);
     /// Add to selection with several sub-elements
     bool addSelections(const char* pDocName, const char* pObjectName, const std::vector<std::string>& pSubNames);
-    /// Update a selection
+    /// Update a selection 
     bool updateSelection(bool show, const char* pDocName, const char* pObjectName=0, const char* pSubName=0);
     /// Remove from selection (for internal use)
-    void rmvSelection(const char* pDocName, const char* pObjectName=0, const char* pSubName=0,
+    void rmvSelection(const char* pDocName, const char* pObjectName=0, const char* pSubName=0, 
             const std::vector<SelObj> *pickedList = 0);
     /// Set the selection for a document
     void setSelection(const char* pDocName, const std::vector<App::DocumentObject*>&);
@@ -389,7 +410,7 @@ public:
     /// Clear the selection of all documents
     void clearCompleteSelection(bool clearPreSelect=true);
     /// Check if selected
-    bool isSelected(const char* pDocName, const char* pObjectName=0,
+    bool isSelected(const char* pDocName, const char* pObjectName=0, 
             const char* pSubName=0, int resolve=1) const;
     /// Check if selected
     bool isSelected(App::DocumentObject*, const char* pSubName=0, int resolve=1) const;
@@ -397,7 +418,7 @@ public:
     const char *getSelectedElement(App::DocumentObject*, const char* pSubName) const;
 
     /// set the preselected object (mostly by the 3D view)
-    int setPreselect(const char* pDocName, const char* pObjectName,
+    int setPreselect(const char* pDocName, const char* pObjectName, 
             const char* pSubName, float x=0, float y=0, float z=0, int signal=0);
     /// remove the present preselection
     void rmvPreselect(bool signal=false);
@@ -429,7 +450,7 @@ public:
      * Does basically the same as the method above unless that it accepts a string literal as first argument.
      * \a typeName must be a registered type, otherwise 0 is returned.
      */
-    unsigned int countObjectsOfType(const char* typeName,
+    unsigned int countObjectsOfType(const char* typeName, 
             const char* pDocName=0, int resolve=1) const;
 
     /** Returns a vector of objects of type \a TypeName selected for the given document name \a pDocName.
@@ -437,14 +458,14 @@ public:
      * If no objects of this document are selected an empty vector is returned.
      * @note The vector reflects the sequence of selection.
      */
-    std::vector<App::DocumentObject*> getObjectsOfType(const Base::Type& typeId,
+    std::vector<App::DocumentObject*> getObjectsOfType(const Base::Type& typeId, 
             const char* pDocName=0, int resolve=1) const;
 
     /**
      * Does basically the same as the method above unless that it accepts a string literal as first argument.
      * \a typeName must be a registered type otherwise an empty array is returned.
      */
-    std::vector<App::DocumentObject*> getObjectsOfType(const char* typeName,
+    std::vector<App::DocumentObject*> getObjectsOfType(const char* typeName, 
             const char* pDocName=0, int resolve=1) const;
     /**
      * A convenience template-based method that returns an array with the correct types already.
@@ -481,9 +502,9 @@ public:
      * @param pDocName: document name. If no document name is given the objects
      * of the active are returned. If nothing for this Document is selected an
      * empty vector is returned. If document name is "*", then all document is
-     * considered.
+     * considered. 
      * @param resolve: sub-object resolving mode
-     *                 0 no resolve,
+     *                 0 no resolve, 
      *                 1 resolve sub-object with old style element name
      *                 2 resolve sub-object with new style element name
      * @param single: if set to true, then it will return an empty vector if
@@ -497,10 +518,10 @@ public:
      * @param pDocName: document name. If no document name is given the objects
      * of the active are returned. If nothing for this Document is selected an
      * empty vector is returned. If document name is "*", then all document is
-     * considered.
+     * considered. 
      * @param typeId: specify the type of object to be returned.
      * @param resolve: sub-object resolving mode.
-     *                 0 no resolve,
+     *                 0 no resolve, 
      *                 1 resolve sub-object with old style element name
      *                 2 resolve sub-object with new style element name
      * @param single: if set to true, then it will return an empty vector if
@@ -570,11 +591,11 @@ public:
     int selStackForwardSize() const {return _SelStackForward.size();}
 
     /** Obtain selected objects from stack
-     *
+     * 
      * @param pDocName: optional filtering document, NULL for current active
      *                  document
      * @param resolve: sub-object resolving mode.
-     *                 0 no resolve,
+     *                 0 no resolve, 
      *                 1 resolve sub-object with old style element name
      *                 2 resolve sub-object with new style element name
      * @param index: optional position in the stack
@@ -590,7 +611,7 @@ public:
      */
     void selStackGoBack(int count=1);
 
-    /** Go forward selection history
+    /** Go forward selection history 
      *
      * @param count: optional number of steps to go back
      *
@@ -689,11 +710,9 @@ protected:
         std::string FeatName;
         std::string SubName;
         std::string TypeName;
-        App::Document* pDoc = 0;
-        App::DocumentObject* pObject = 0;
-        float x = 0.0f;
-        float y = 0.0f;
-        float z = 0.0f;
+        App::Document* pDoc;
+        App::DocumentObject* pObject;
+        float x,y,z;
         bool logged = false;
 
         std::pair<std::string,std::string> elementName;
@@ -706,16 +725,16 @@ protected:
     mutable std::list<_SelObj> _PickedList;
     bool _needPickedList;
 
-    typedef std::set<App::SubObjectT> SelStackItem;
+    typedef std::set<std::array<std::string,3> > SelStackItem;
     std::deque<SelStackItem> _SelStackBack;
     std::deque<SelStackItem> _SelStackForward;
 
-    int checkSelection(const char *pDocName, const char *pObjectName,
+    int checkSelection(const char *pDocName, const char *pObjectName, 
             const char *pSubName,int resolve, _SelObj &sel, const std::list<_SelObj> *selList=0) const;
 
     std::vector<Gui::SelectionObject> getObjectList(const char* pDocName,Base::Type typeId, std::list<_SelObj> &objs, int resolve, bool single=false) const;
 
-    static App::DocumentObject *getObjectOfType(_SelObj &sel, Base::Type type,
+    static App::DocumentObject *getObjectOfType(_SelObj &sel, Base::Type type, 
             int resolve, const char **subelement=0);
 
     static SelectionSingleton* _pcSingleton;

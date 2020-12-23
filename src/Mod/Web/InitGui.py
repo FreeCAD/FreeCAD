@@ -1,5 +1,12 @@
+# Web gui init module  
+# (c) 2003 Juergen Riegel
+#
+# Gathering all the information to start FreeCAD
+# This is the second one of three init scripts, the third one
+# runs when the gui is up
+
 #***************************************************************************
-#*   Copyright (c) 2002,2003 Jürgen Riegel <juergen.riegel@web.de>         *
+#*   (c) Juergen Riegel (juergen.riegel@web.de) 2002                       *
 #*                                                                         *
 #*   This file is part of the FreeCAD CAx development system.              *
 #*                                                                         *
@@ -18,13 +25,10 @@
 #*   License along with FreeCAD; if not, write to the Free Software        *
 #*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 #*   USA                                                                   *
+#*                                                                         *
+#*   Juergen Riegel 2002                                                   *
 #***************************************************************************/
 
-# Web gui init module
-#
-# Gathering all the information to start FreeCAD
-# This is the second one of three init scripts, the third one
-# runs when the gui is up
 
 
 class WebWorkbench ( Workbench ):
@@ -42,8 +46,5 @@ class WebWorkbench ( Workbench ):
         return "WebGui::Workbench"
 
 Gui.addWorkbench(WebWorkbench())
-
-# Append the open handler
-FreeCAD.addImportType("Web Page (*.html *.xhtml)", "WebGui")
 
 FreeCAD.__unit_test__ += [ "TestWebGui" ]

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+
 # ***************************************************************************
+# *                                                                         *
 # *   Copyright (c) 2015 Dan Falck <ddfalck@gmail.com>                      *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -19,7 +21,6 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-
 ''' Used for CNC machine plane selection G17,G18,G19 '''
 
 import FreeCAD
@@ -75,7 +76,7 @@ class _ViewProviderPlane:
         return None
 
     def getIcon(self):  # optional
-        return ":/icons/Path_Plane.svg"
+        return ":/icons/Path-Plane.svg"
 
     def onChanged(self, vobj, prop):  # optional
         # pylint: disable=unused-argument
@@ -106,7 +107,7 @@ class _ViewProviderPlane:
 class CommandPathPlane:
 
     def GetResources(self):
-        return {'Pixmap': 'Path_Plane',
+        return {'Pixmap': 'Path-Plane',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Plane", "Selection Plane"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Plane", "Create a Selection Plane object")}
 

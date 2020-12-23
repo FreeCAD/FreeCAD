@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="hr" sourcelanguage="en">
+<TS version="2.0" language="hr" sourcelanguage="en">
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -163,7 +163,7 @@
     </message>
     <message>
       <source>Set alias for selected cell</source>
-      <translation>Postavite pseudonim za odabrane ćelije</translation>
+      <translation>Postavite nadimak za odabrane ćelije</translation>
     </message>
   </context>
   <context>
@@ -313,7 +313,7 @@
     </message>
     <message>
       <source>Alias for this cell</source>
-      <translation>Pseudonim za ovu ćeliju</translation>
+      <translation>Nadimak za ovu ćeliju</translation>
     </message>
   </context>
   <context>
@@ -329,6 +329,10 @@
     <message>
       <source>Export file</source>
       <translation>Izvoz datoteke</translation>
+    </message>
+    <message>
+      <source>Cell contents</source>
+      <translation>Sadržaj ćelije</translation>
     </message>
     <message>
       <source>Show spreadsheet</source>
@@ -349,35 +353,6 @@
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
       <translation>Postavlja boju pozadine ćelije proračunske tablice</translation>
-    </message>
-    <message>
-      <source>Spreadsheet</source>
-      <translation>Proračunska tablica</translation>
-    </message>
-    <message>
-      <source>Spreadsheet does not support range selection when pasting.
-Please select one cell only.</source>
-      <translation>Proračunska tablica ne podržava odabir raspona prilikom umetanja.
-Odaberite samo jednu ćeliju.
-</translation>
-    </message>
-    <message>
-      <source>Copy &amp; Paste failed</source>
-      <translation>Copy &amp; Paste nije uspjelo</translation>
-    </message>
-    <message>
-      <source>Alias contains invalid characters!</source>
-      <translation>Pseudonim sadrži nevažeće znakove!
-
-</translation>
-    </message>
-    <message>
-      <source>Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation>Referenca na ćeliju sa pseudonimom, na primjer
-Spreadsheet.my_alias_name umjesto Spreadsheet.B1
-
-</translation>
     </message>
   </context>
   <context>
@@ -462,20 +437,8 @@ Spreadsheet.my_alias_name umjesto Spreadsheet.B1
       <translation>Obrazac</translation>
     </message>
     <message>
-      <source>&amp;Content:</source>
-      <translation>&amp;Sadržaj:</translation>
-    </message>
-    <message>
-      <source>&amp;Alias:</source>
-      <translation>&amp;Pseudonim:</translation>
-    </message>
-    <message>
-      <source>Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation>Referenca na ćeliju sa pseudonimom, na primjer
-Spreadsheet.my_alias_name umjesto Spreadsheet.B1
-
-</translation>
+      <source>&amp;Contents</source>
+      <translation>&amp;Sadržaj</translation>
     </message>
   </context>
   <context>

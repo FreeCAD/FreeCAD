@@ -132,62 +132,62 @@
   <context>
     <name>OpenSCAD</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="147"/>
+      <location filename="../../OpenSCADCommands.py" line="145"/>
       <source>Convert Edges to Faces</source>
       <translation>Pretvori rubove u površine</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="309"/>
+      <location filename="../../OpenSCADCommands.py" line="224"/>
       <source>Please select 3 objects first</source>
       <translation>Molim odaberite tri oblika</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="1226"/>
+      <location filename="../../importCSG.py" line="1204"/>
       <source>Unsupported Function</source>
       <translation>Nepodržana funkcija</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="1226"/>
+      <location filename="../../importCSG.py" line="1204"/>
       <source>Press OK</source>
       <translation>Pritisnite OK</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="347"/>
+      <location filename="../../OpenSCADCommands.py" line="268"/>
       <source>Add</source>
       <translation>Dodaj</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="348"/>
+      <location filename="../../OpenSCADCommands.py" line="269"/>
       <source>Clear</source>
       <translation>Brisanje</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="349"/>
+      <location filename="../../OpenSCADCommands.py" line="270"/>
       <source>as Mesh</source>
       <translation>kao Mesh</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="350"/>
+      <location filename="../../OpenSCADCommands.py" line="271"/>
       <source>Add OpenSCAD Element</source>
       <translation>Dodaj OpenSCAD Element</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="423"/>
+      <location filename="../../OpenSCADCommands.py" line="344"/>
       <source>Perform</source>
       <translation>Izvedi</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="424"/>
+      <location filename="../../OpenSCADCommands.py" line="345"/>
       <source>Mesh Boolean</source>
       <translation>Booleova mreža</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADUtils.py" line="622"/>
+      <location filename="../../OpenSCADUtils.py" line="585"/>
       <source>Error all shapes must be either 2D or both must be 3D</source>
       <translation>Greška, svi oblici moraju biti 2D ili oba moraju biti 3D</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="102"/>
+      <location filename="../../OpenSCADCommands.py" line="95"/>
       <source>Unable to explode %s</source>
       <translation>Nije moguće razdijeliti %s</translation>
     </message>
@@ -195,12 +195,12 @@
   <context>
     <name>OpenSCAD_AddOpenSCADElement</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="464"/>
+      <location filename="../../OpenSCADCommands.py" line="386"/>
       <source>Add OpenSCAD Element...</source>
       <translation>Dodaj OpenSCAD Element...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="465"/>
+      <location filename="../../OpenSCADCommands.py" line="388"/>
       <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
       <translation>Dodaj OpenSCAD element unošenjem OpenSCAD koda i pokretanjem OpenSCAD binarne datoteke</translation>
     </message>
@@ -208,12 +208,12 @@
   <context>
     <name>OpenSCAD_ColorCodeShape</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="126"/>
+      <location filename="../../OpenSCADCommands.py" line="122"/>
       <source>Color Shapes</source>
       <translation>Oboji oblike</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="127"/>
+      <location filename="../../OpenSCADCommands.py" line="124"/>
       <source>Color Shapes by validity and type</source>
       <translation>Oboji oblike po tipu i valjanosti</translation>
     </message>
@@ -221,7 +221,7 @@
   <context>
     <name>OpenSCAD_Edgestofaces</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="146"/>
+      <location filename="../../OpenSCADCommands.py" line="143"/>
       <source>Convert Edges To Faces</source>
       <translation>Pretvori rubove u površine</translation>
     </message>
@@ -229,12 +229,12 @@
   <context>
     <name>OpenSCAD_ExpandPlacements</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="291"/>
+      <location filename="../../OpenSCADCommands.py" line="204"/>
       <source>Expand Placements</source>
       <translation>Proširi postavljanja</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="292"/>
+      <location filename="../../OpenSCADCommands.py" line="206"/>
       <source>Expand all placements downwards the FeatureTree</source>
       <translation>Proširi sva postavljanja niže u stablu svojstava</translation>
     </message>
@@ -242,25 +242,25 @@
   <context>
     <name>OpenSCAD_ExplodeGroup</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="110"/>
+      <location filename="../../OpenSCADCommands.py" line="104"/>
       <source>Explode Group</source>
       <translation>Razdijeli grupu</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="111"/>
+      <location filename="../../OpenSCADCommands.py" line="106"/>
       <source>Remove fusion, apply placement to children, and color randomly</source>
-      <translation>Ukloni fuziju, dodaj položaj na potomke i obojaj ih slučajno</translation>
+      <translation>Ukloni fuziju, dodaj postavljanje na djecu slučajno i boju slučajno</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_Hull</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="497"/>
+      <location filename="../../OpenSCADCommands.py" line="421"/>
       <source>Hull</source>
       <translation>Trup</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="498"/>
+      <location filename="../../OpenSCADCommands.py" line="423"/>
       <source>Perform Hull</source>
       <translation>Izvođenje trupa</translation>
     </message>
@@ -268,12 +268,12 @@
   <context>
     <name>OpenSCAD_IncreaseToleranceFeature</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="274"/>
+      <location filename="../../OpenSCADCommands.py" line="185"/>
       <source>Increase Tolerance Feature</source>
       <translation>Povećaj toleranciju</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="275"/>
+      <location filename="../../OpenSCADCommands.py" line="187"/>
       <source>Create Feature that allows to increase the tolerance</source>
       <translation>Stvaranja svojstva koje omogućuje da se poveća tolerancija</translation>
     </message>
@@ -281,12 +281,12 @@
   <context>
     <name>OpenSCAD_MeshBoolean</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="477"/>
+      <location filename="../../OpenSCADCommands.py" line="400"/>
       <source>Mesh Boolean...</source>
       <translation>Booleova mreža...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="478"/>
+      <location filename="../../OpenSCADCommands.py" line="402"/>
       <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
       <translation>Izvoz objekata kao mreže i koristi OpenSCAD za izvođenje logičkih ( boolean) operacija</translation>
     </message>
@@ -294,33 +294,20 @@
   <context>
     <name>OpenSCAD_Minkowski</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="516"/>
+      <location filename="../../OpenSCADCommands.py" line="442"/>
       <source>Minkowski</source>
       <translation>Minkowski</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="517"/>
+      <location filename="../../OpenSCADCommands.py" line="444"/>
       <source>Perform Minkowski</source>
       <translation>Izvođenje Minkowski</translation>
     </message>
   </context>
   <context>
-    <name>OpenSCAD_MirrorMeshFeature</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="195"/>
-      <source>Mirror Mesh Feature...</source>
-      <translation>Svojstva zrcaljenja mreža...</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="196"/>
-      <source>Create Mirror Mesh Feature</source>
-      <translation>Stvori svojstvo zrcaljenja mreža</translation>
-    </message>
-  </context>
-  <context>
     <name>OpenSCAD_RefineShapeFeature</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="165"/>
+      <location filename="../../OpenSCADCommands.py" line="164"/>
       <source>Refine Shape Feature</source>
       <translation>Izgladi oblik svojstvo</translation>
     </message>
@@ -333,59 +320,33 @@
   <context>
     <name>OpenSCAD_RemoveSubtree</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="324"/>
+      <location filename="../../OpenSCADCommands.py" line="243"/>
       <source>Remove Objects and their Children</source>
       <translation>Izbriši objekte i njihove potomke</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="325"/>
+      <location filename="../../OpenSCADCommands.py" line="245"/>
       <source>Removes the selected objects and all children that are not referenced from other objects</source>
-      <translation>Briše odabrani objekt i sve potomke koji nisu referencirani od ostalih objekata</translation>
+      <translation>Briše odabrani objekt i svu djecu koja nisu referencirana od ostalih objekata</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_ReplaceObject</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="312"/>
+      <location filename="../../OpenSCADCommands.py" line="228"/>
       <source>Replace Object</source>
       <translation>Zamjeni objekt</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="313"/>
+      <location filename="../../OpenSCADCommands.py" line="230"/>
       <source>Replace an object in the Feature Tree. Please select old, new, and parent object</source>
       <translation>Zamijeni objekt u stablu svojstava. Odaberite stari, novi, i roditeljski objekt</translation>
     </message>
   </context>
   <context>
-    <name>OpenSCAD_ResizeMeshFeature</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="254"/>
-      <source>Resize Mesh Feature...</source>
-      <translation type="unfinished">Resize Mesh Feature...</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="255"/>
-      <source>Create Resize Mesh Feature</source>
-      <translation type="unfinished">Create Resize Mesh Feature</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_ScaleMeshFeature</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="224"/>
-      <source>Scale Mesh Feature...</source>
-      <translation type="unfinished">Scale Mesh Feature...</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="225"/>
-      <source>Create Scale Mesh Feature</source>
-      <translation>Stvori Svojstvo Skaliranje Mreža</translation>
-    </message>
-  </context>
-  <context>
     <name>Workbech</name>
     <message>
-      <location filename="../../InitGui.py" line="83"/>
+      <location filename="../../InitGui.py" line="80"/>
       <source>OpenSCAD Part tools</source>
       <translation>OpenSCAD alati za Dio</translation>
     </message>
@@ -393,7 +354,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../InitGui.py" line="81"/>
+      <location filename="../../InitGui.py" line="78"/>
       <source>OpenSCADTools</source>
       <translation>OpenSCAD Alati</translation>
     </message>

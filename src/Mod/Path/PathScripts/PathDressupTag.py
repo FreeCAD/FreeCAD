@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+
 # ***************************************************************************
+# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -19,24 +21,20 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-
 import FreeCAD
+import DraftGeomUtils
+import Part
 import PathScripts.PathDressup as PathDressup
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtils as PathUtils
 import math
 
-# lazily loaded modules
-from lazy_loader.lazy_loader import LazyLoader
-DraftGeomUtils = LazyLoader('DraftGeomUtils', globals(), 'DraftGeomUtils')
-Part = LazyLoader('Part', globals(), 'Part')
-
 from PathScripts.PathDressupTagPreferences import HoldingTagPreferences
 from PySide import QtCore
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#PathLog.trackModule()
+PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+PathLog.trackModule()
 
 
 # Qt translation handling
@@ -222,7 +220,7 @@ class ObjectDressup:
         PathLog.track()
 
     def toolRadius(self):
-        return float(PathDressup.toolController(self.obj.Base).Tool.Diameter) / 2.0
+        return PathDressup.toolController(self.obj.Base).Tool.Diameter / 2.0
 
     def addTagsToDocuemnt(self):
         for i, solid in enumerate(self.solids):

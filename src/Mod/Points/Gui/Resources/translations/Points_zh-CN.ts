@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="zh-CN" sourcelanguage="en">
+<TS version="2.0" language="zh-CN" sourcelanguage="en">
   <context>
     <name>CmdPointsConvert</name>
     <message>
-      <location filename="../../Command.cpp" line="189"/>
+      <location filename="../../Command.cpp" line="188"/>
       <source>Points</source>
       <translation>点</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="190"/>
+      <location filename="../../Command.cpp" line="189"/>
       <source>Convert to points...</source>
       <translation>将转换为点...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="191"/>
-      <location filename="../../Command.cpp" line="193"/>
+      <location filename="../../Command.cpp" line="190"/>
+      <location filename="../../Command.cpp" line="192"/>
       <source>Convert to points</source>
       <translation>转换为点</translation>
     </message>
@@ -42,18 +42,18 @@
   <context>
     <name>CmdPointsImport</name>
     <message>
-      <location filename="../../Command.cpp" line="67"/>
+      <location filename="../../Command.cpp" line="65"/>
       <source>Points</source>
       <translation>点</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="68"/>
+      <location filename="../../Command.cpp" line="66"/>
       <source>Import points...</source>
       <translation>导入点群...</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="67"/>
       <location filename="../../Command.cpp" line="69"/>
-      <location filename="../../Command.cpp" line="71"/>
       <source>Imports a point cloud</source>
       <translation>导入点云</translation>
     </message>
@@ -61,18 +61,18 @@
   <context>
     <name>CmdPointsMerge</name>
     <message>
-      <location filename="../../Command.cpp" line="319"/>
+      <location filename="../../Command.cpp" line="318"/>
       <source>Points</source>
       <translation>点</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="320"/>
+      <location filename="../../Command.cpp" line="319"/>
       <source>Merge point clouds</source>
       <translation>合并点云</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="321"/>
-      <location filename="../../Command.cpp" line="323"/>
+      <location filename="../../Command.cpp" line="320"/>
+      <location filename="../../Command.cpp" line="322"/>
       <source>Merge several point clouds into one</source>
       <translation>将几个点云合并为一个</translation>
     </message>
@@ -80,56 +80,37 @@
   <context>
     <name>CmdPointsPolyCut</name>
     <message>
-      <location filename="../../Command.cpp" line="274"/>
+      <location filename="../../Command.cpp" line="273"/>
       <source>Points</source>
       <translation>点</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="275"/>
+      <location filename="../../Command.cpp" line="274"/>
       <source>Cut point cloud</source>
       <translation>剪切点云</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="276"/>
-      <location filename="../../Command.cpp" line="278"/>
+      <location filename="../../Command.cpp" line="275"/>
+      <location filename="../../Command.cpp" line="277"/>
       <source>Cuts a point cloud with a picked polygon</source>
       <translation>剪切多边形选择框中的点云</translation>
     </message>
   </context>
   <context>
-    <name>CmdPointsStructure</name>
-    <message>
-      <location filename="../../Command.cpp" line="361"/>
-      <source>Points</source>
-      <translation>点</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="362"/>
-      <source>Structured point cloud</source>
-      <translation>结构化点云</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="363"/>
-      <location filename="../../Command.cpp" line="365"/>
-      <source>Convert points to structured point cloud</source>
-      <translation>将点转换为结构化点云</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdPointsTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="152"/>
+      <location filename="../../Command.cpp" line="151"/>
       <source>Points</source>
       <translation>点</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="153"/>
+      <location filename="../../Command.cpp" line="152"/>
       <source>Transform Points</source>
       <translation>变换点群</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="154"/>
-      <location filename="../../Command.cpp" line="156"/>
+      <location filename="../../Command.cpp" line="153"/>
+      <location filename="../../Command.cpp" line="155"/>
       <source>Test to transform a point cloud</source>
       <translation>变换点云测试</translation>
     </message>
@@ -139,7 +120,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="14"/>
       <source>ASCII points import</source>
-      <translation>导入 ASCII 点</translation>
+      <translation>导入ASCII点</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="34"/>
@@ -164,7 +145,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="88"/>
       <source>First line:</source>
-      <translation>第一行：</translation>
+      <translation>第一行</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="100"/>
@@ -282,24 +263,24 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="81"/>
+      <location filename="../../Command.cpp" line="79"/>
       <location filename="../../Command.cpp" line="129"/>
       <source>Point formats</source>
       <translation>点格式</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="81"/>
+      <location filename="../../Command.cpp" line="79"/>
       <location filename="../../Command.cpp" line="129"/>
       <source>All Files</source>
       <translation>所有文件</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="201"/>
+      <location filename="../../Command.cpp" line="200"/>
       <source>Distance</source>
       <translation>距离</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="202"/>
+      <location filename="../../Command.cpp" line="201"/>
       <source>Enter maximum distance:</source>
       <translation>输入的最大距离：</translation>
     </message>
@@ -314,7 +295,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="38"/>
       <source>&amp;Points</source>
-      <translation>点 (&amp;P)</translation>
+      <translation>&amp;点</translation>
     </message>
   </context>
 </TS>

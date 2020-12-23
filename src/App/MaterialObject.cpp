@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
+ *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -34,7 +34,7 @@ using namespace App;
 PROPERTY_SOURCE(App::MaterialObject, App::DocumentObject)
 
 
-MaterialObject::MaterialObject()
+MaterialObject::MaterialObject() 
 {
     ADD_PROPERTY_TYPE(Material,(),"Material",Prop_None,"Material key/value map");
 

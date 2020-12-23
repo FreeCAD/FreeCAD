@@ -93,21 +93,13 @@ public:
     App::PropertyXLink Context;
     App::PropertyInteger _Version;
 
-    enum UpdateOption {
-        UpdateNone = 0,
-        UpdateInit = 1,
-        UpdateForced = 2,
-    };
-    void update(UpdateOption options = UpdateNone);
+    void update();
 
     virtual int canLoadPartial() const override {
         return PartialLoad.getValue()?1:0;
     }
 
     virtual bool canLinkProperties() const override {return false;}
-
-    virtual App::DocumentObject *getSubObject(const char *subname, PyObject **pyObj=0, 
-            Base::Matrix4D *mat=0, bool transform=true, int depth=0) const override;
 
 protected:
     virtual App::DocumentObjectExecReturn* execute(void) override;
@@ -126,6 +118,8 @@ protected:
     typedef boost::signals2::scoped_connection Connection;
     Connection connRecomputedObj;
     App::Document *contextDoc=0;
+
+    std::vector<Part::TopoShape> _Cache;
 };
 
 } //namespace PartDesign

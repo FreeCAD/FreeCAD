@@ -56,7 +56,7 @@ public:
     virtual ~DrawProjGroupItem();
 
     App::PropertyEnumeration Type;
-    App::PropertyVector      RotationVector;    //this is superseded by dvp xdirection
+    App::PropertyVector      RotationVector;
 
     short mustExecute() const override;
     virtual void onDocumentRestored() override;
@@ -64,10 +64,6 @@ public:
 
     DrawProjGroup* getPGroup(void) const;
     double getRotateAngle();
-    virtual Base::Vector3d getXDirection(void) const override;
-    virtual Base::Vector3d getLegacyX(const Base::Vector3d& pt,
-                                      const Base::Vector3d& axis,
-                                      const bool flip = true)  const override;
 
     virtual App::DocumentObjectExecReturn *execute(void) override;
     virtual const char* getViewProviderName(void) const override {
@@ -85,9 +81,6 @@ public:
     void autoPosition(void);
     bool isAnchor(void) const;
 
-    //DPGI always fits on page since DPG handles scaling
-    virtual bool checkFit(void) const override { return true; }
-    virtual bool checkFit(DrawPage*) const override { return true; }
 
 protected:
     void onChanged(const App::Property* prop) override;

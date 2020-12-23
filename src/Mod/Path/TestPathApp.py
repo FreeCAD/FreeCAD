@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+
 # ***************************************************************************
+# *                                                                         *
 # *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -23,7 +25,6 @@
 import TestApp
 
 from PathTests.TestPathLog   import TestPathLog
-from PathTests.TestPathPreferences  import TestPathPreferences
 from PathTests.TestPathCore  import TestPathCore
 #from PathTests.TestPathPost  import PathPostTestCases
 from PathTests.TestPathGeom  import TestPathGeom
@@ -34,15 +35,11 @@ from PathTests.TestPathDressupHoldingTags import TestHoldingTags
 from PathTests.TestPathDressupDogbone import TestDressupDogbone
 from PathTests.TestPathStock import TestPathStock
 from PathTests.TestPathTool import TestPathTool
-from PathTests.TestPathToolBit  import TestPathToolBit
 from PathTests.TestPathTooltable import TestPathTooltable
 from PathTests.TestPathToolController import TestPathToolController
 from PathTests.TestPathSetupSheet import TestPathSetupSheet
 from PathTests.TestPathDeburr  import TestPathDeburr
 from PathTests.TestPathHelix  import TestPathHelix
-from PathTests.TestPathVoronoi  import TestPathVoronoi
-from PathTests.TestPathThreadMilling  import TestPathThreadMilling
-from PathTests.TestPathVcarve  import TestPathVcarve
 
 # dummy usage to get flake8 and lgtm quiet
 False if TestApp.__name__ else True
@@ -61,9 +58,4 @@ False if TestPathToolController.__name__ else True
 False if TestPathSetupSheet.__name__ else True
 False if TestPathDeburr.__name__ else True
 False if TestPathHelix.__name__ else True
-False if TestPathPreferences.__name__ else True
-False if TestPathToolBit.__name__ else True
-False if TestPathVoronoi.__name__ else True
-False if TestPathThreadMilling.__name__ else True
-False if TestPathVcarve.__name__ else True
 

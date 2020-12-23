@@ -34,13 +34,12 @@
 #include <App/ObjectIdentifier.h>
 #include <App/Document.h>
 #include <App/Application.h>
-#include <boost_bind_bind.hpp>
+#include <boost/bind.hpp>
 
 FC_LOG_LEVEL_INIT("Expression",true,true)
 
 using namespace Gui;
 using namespace App;
-namespace bp = boost::placeholders;
 
 ExpressionBinding::ExpressionBinding()
     : iconLabel(0)
@@ -84,7 +83,7 @@ void Gui::ExpressionBinding::setExpression(boost::shared_ptr<Expression> expr)
 
     if(m_autoApply)
         apply();
-
+    
     if(transaction)
         App::GetApplication().closeActiveTransaction();
 
@@ -97,10 +96,10 @@ void ExpressionBinding::bind(const App::ObjectIdentifier &_path)
     Q_ASSERT(prop != 0);
 
     path = prop->canonicalPath(_path);
-
+    
     //connect to be informed about changes
     DocumentObject * docObj = path.getDocumentObject();
-    connection = docObj->ExpressionEngine.expressionChanged.connect(boost::bind(&ExpressionBinding::expressionChange, this, bp::_1));
+    connection = docObj->ExpressionEngine.expressionChanged.connect(boost::bind(&ExpressionBinding::expressionChange, this, _1));
 }
 
 void ExpressionBinding::bind(const Property &prop)
@@ -159,7 +158,7 @@ QPixmap ExpressionBinding::getIcon(const char* name, const QSize& size) const
         .arg(size.width())
         .arg(size.height());
     QPixmap icon;
-    if (QPixmapCache::find(key, &icon))
+    if (QPixmapCache::find(key, icon))
         return icon;
 
     icon = BitmapFactory().pixmapFromSvg(name, size);
@@ -170,7 +169,7 @@ QPixmap ExpressionBinding::getIcon(const char* name, const QSize& size) const
 
 bool ExpressionBinding::apply(const std::string & propName)
 {
-    Q_UNUSED(propName);
+    Q_UNUSED(propName); 
     if (hasExpression()) {
         DocumentObject * docObj = path.getDocumentObject();
 

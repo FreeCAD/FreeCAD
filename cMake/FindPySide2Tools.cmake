@@ -20,24 +20,8 @@ if(WIN32 OR ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     set(PYSIDE_BIN_DIR ${PYTHON_BIN_DIR})
 endif(WIN32 OR ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
-# Since Qt v5.14, pyside2-uic and pyside2-rcc are directly provided by Qt5Core uic and rcc, with '-g python' option
-# We test Qt5Core version to act accordingly
-
-FIND_PACKAGE(Qt5Core)
-
-IF(Qt5Core_VERSION VERSION_LESS 5.14)
-  # Legacy (< 5.14)
-  FIND_PROGRAM(PYSIDE2UICBINARY NAMES python2-pyside2-uic pyside2-uic pyside2-uic-${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR} pyuic5 HINTS ${PYSIDE_BIN_DIR})
-  FIND_PROGRAM(PYSIDE2RCCBINARY NAMES pyside2-rcc pyside2-rcc-${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR} pyrcc5 HINTS ${PYSIDE_BIN_DIR})
-  set(UICOPTIONS "")
-  set(RCCOPTIONS "")
-ELSE(Qt5Core_VERSION VERSION_LESS 5.14)
-  # New (>= 5.14)
-  FIND_PROGRAM(PYSIDE2UICBINARY NAMES uic-qt5 uic pyside2-uic)
-  set(UICOPTIONS "--generator=python")
-  FIND_PROGRAM(PYSIDE2RCCBINARY NAMES rcc-qt5 rcc pyside2-rcc)
-  set(RCCOPTIONS "--generator=python" "--compress-algo=zlib" "--compress=1")
-ENDIF(Qt5Core_VERSION VERSION_LESS 5.14)
+FIND_PROGRAM(PYSIDE2UICBINARY NAMES python2-pyside2-uic pyside2-uic pyside2-uic-${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR} HINTS ${PYSIDE_BIN_DIR})
+FIND_PROGRAM(PYSIDE2RCCBINARY NAMES pyside2-rcc pyside2-rcc-${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR} HINTS ${PYSIDE_BIN_DIR})
 
 MACRO(PYSIDE_WRAP_UI outfiles)
   FOREACH(it ${ARGN})
@@ -49,7 +33,7 @@ MACRO(PYSIDE_WRAP_UI outfiles)
     #)
     if(WIN32 OR APPLE)
         ADD_CUSTOM_COMMAND(OUTPUT ${outfile}
-          COMMAND ${PYSIDE2UICBINARY} ${UICOPTIONS} ${infile} -o ${outfile}
+          COMMAND ${PYSIDE2UICBINARY} ${infile} -o ${outfile}
           MAIN_DEPENDENCY ${infile}
         )
     else()
@@ -57,7 +41,7 @@ MACRO(PYSIDE_WRAP_UI outfiles)
         # pyside2-uic generates in comments at beginning., which is why
         # we follow the tool command with in-place sed.
         ADD_CUSTOM_COMMAND(OUTPUT ${outfile}
-          COMMAND "${PYSIDE2UICBINARY}" ${UICOPTIONS} "${infile}" -o "${outfile}"
+          COMMAND "${PYSIDE2UICBINARY}" "${infile}" -o "${outfile}"
           COMMAND sed -i "/^# /d" "${outfile}"
           MAIN_DEPENDENCY "${infile}"
         )
@@ -76,7 +60,7 @@ MACRO(PYSIDE_WRAP_RC outfiles)
     #)
     if(WIN32 OR APPLE)
         ADD_CUSTOM_COMMAND(OUTPUT ${outfile}
-          COMMAND ${PYSIDE2RCCBINARY} ${RCCOPTIONS} ${infile} -o ${outfile}
+          COMMAND ${PYSIDE2RCCBINARY} ${infile} -o ${outfile}
           MAIN_DEPENDENCY ${infile}
         )
     else()
@@ -84,7 +68,7 @@ MACRO(PYSIDE_WRAP_RC outfiles)
         # pyside-rcc generates in comments at beginning, which is why
         # we follow the tool command with in-place sed.
         ADD_CUSTOM_COMMAND(OUTPUT "${outfile}"
-          COMMAND "${PYSIDE2RCCBINARY}" ${RCCOPTIONS} "${infile}" ${PY_ATTRIBUTE} -o "${outfile}"
+          COMMAND "${PYSIDE2RCCBINARY}" "${infile}" ${PY_ATTRIBUTE} -o "${outfile}"
           COMMAND sed -i "/^# /d" "${outfile}"
           MAIN_DEPENDENCY "${infile}"
         )

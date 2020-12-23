@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2005 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2005     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -268,7 +268,7 @@ void Material::setType(const MaterialType MatType)
         break;
     case CHROME:
         ambientColor .set(0.3500f,0.3500f,0.3500f);
-        diffuseColor .set(0.9176f,0.9176f,0.9176f);
+        diffuseColor .set(0.4000f,0.4000f,0.4000f);
         specularColor.set(0.9746f,0.9746f,0.9746f);
         emissiveColor.set(0.0000f,0.0000f,0.0000f);
         shininess    = 0.1000f;

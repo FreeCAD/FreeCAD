@@ -23,10 +23,12 @@ Create a path simulator object\n</UserDocu>
 Start a simulation process on a box shape stock with given resolution\n</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="SetToolShape">
+    <Methode Name="SetCurrentTool">
       <Documentation>
-          <UserDocu>SetToolShape(shape):\n
-Set the shape of the tool to be used for simulation\n</UserDocu>
+        <UserDocu>
+          SetCurrentTool(tool):\n
+          Set the current Path Tool for the subsequent simulator operations.\n
+        </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="GetResultMesh">

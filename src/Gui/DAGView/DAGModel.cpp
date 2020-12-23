@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <boost_bind_bind.hpp>
+#include <boost/bind.hpp>
 #include <boost/graph/topological_sort.hpp>
 #include <boost/graph/reverse_graph.hpp>
 
@@ -46,8 +46,6 @@
 #include <QAbstractEventDispatcher>
 
 #include <deque>
-#include <memory>
-
 #include <unordered_set>
 
 #include <Base/TimeInfo.h>
@@ -64,7 +62,6 @@
 
 using namespace Gui;
 using namespace DAG;
-namespace bp = boost::placeholders;
 
 LineEdit::LineEdit(QWidget* parentIn): QLineEdit(parentIn)
 {
@@ -108,8 +105,8 @@ Model::Model(QObject *parentIn, const Gui::Document &documentIn) : QGraphicsScen
   //underneath cursor.
   this->setItemIndexMethod(QGraphicsScene::NoIndex);
   
-  theGraph = std::make_shared<Graph>();
-  graphLink = std::make_shared<GraphLinkContainer>();
+  theGraph = std::shared_ptr<Graph>(new Graph());
+  graphLink = std::shared_ptr<GraphLinkContainer>(new GraphLinkContainer());
   setupViewConstants();
   setupFilters();
   
@@ -121,15 +118,15 @@ Model::Model(QObject *parentIn, const Gui::Document &documentIn) : QGraphicsScen
     selectionMode = static_cast<SelectionMode>(group->GetInt("SelectionMode", 0));
     group->SetInt("SelectionMode", static_cast<int>(selectionMode)); //ensure entry exists.
     
-  QIcon temp(Gui::BitmapFactory().iconFromTheme("dagViewVisible"));
+  QIcon temp(Gui::BitmapFactory().pixmap("dagViewVisible"));
   visiblePixmapEnabled = temp.pixmap(iconSize, iconSize, QIcon::Normal, QIcon::On);
   visiblePixmapDisabled = temp.pixmap(iconSize, iconSize, QIcon::Disabled, QIcon::Off);
   
-  QIcon passIcon(Gui::BitmapFactory().iconFromTheme("dagViewPass"));
+  QIcon passIcon(Gui::BitmapFactory().pixmap("dagViewPass"));
   passPixmap = passIcon.pixmap(iconSize, iconSize);
-  QIcon failIcon(Gui::BitmapFactory().iconFromTheme("dagViewFail"));
+  QIcon failIcon(Gui::BitmapFactory().pixmap("dagViewFail"));
   failPixmap = failIcon.pixmap(iconSize, iconSize);
-  QIcon pendingIcon(Gui::BitmapFactory().iconFromTheme("dagViewPending"));
+  QIcon pendingIcon(Gui::BitmapFactory().pixmap("dagViewPending"));
   pendingPixmap = pendingIcon.pixmap(iconSize, iconSize);
   
   renameAction = new QAction(this);
@@ -146,17 +143,11 @@ Model::Model(QObject *parentIn, const Gui::Document &documentIn) : QGraphicsScen
   connect(this->editingFinishedAction, SIGNAL(triggered()),
           this, SLOT(editingFinishedSlot()));
   
-  connectNewObject = documentIn.signalNewObject.connect(boost::bind(&Model::slotNewObject, this, bp::_1));
-  connectDelObject = documentIn.signalDeletedObject.connect(boost::bind(&Model::slotDeleteObject, this, bp::_1));
-  connectChgObject = documentIn.signalChangedObject.connect(boost::bind(&Model::slotChangeObject, this, bp::_1, bp::_2));
-  connectEdtObject = documentIn.signalInEdit.connect(boost::bind(&Model::slotInEdit, this, bp::_1));
-  connectResObject = documentIn.signalResetEdit.connect(boost::bind(&Model::slotResetEdit, this, bp::_1));
-
-  for (auto obj : documentIn.getDocument()->getObjects()) {
-    auto vpd = Base::freecad_dynamic_cast<Gui::ViewProviderDocumentObject>(documentIn.getViewProvider(obj));
-    if (vpd)
-      slotNewObject(*vpd);
-  }
+  connectNewObject = documentIn.signalNewObject.connect(boost::bind(&Model::slotNewObject, this, _1));
+  connectDelObject = documentIn.signalDeletedObject.connect(boost::bind(&Model::slotDeleteObject, this, _1));
+  connectChgObject = documentIn.signalChangedObject.connect(boost::bind(&Model::slotChangeObject, this, _1, _2));
+  connectEdtObject = documentIn.signalInEdit.connect(boost::bind(&Model::slotInEdit, this, _1));
+  connectResObject = documentIn.signalResetEdit.connect(boost::bind(&Model::slotResetEdit, this, _1));
 }
 
 Model::~Model()
@@ -253,21 +244,26 @@ void Model::slotNewObject(const ViewProviderDocumentObject &VPDObjectIn)
   auto *rectangle = (*theGraph)[virginVertex].rectangle.get();
   rectangle->setEditingBrush(QBrush(Qt::yellow));
   
-  auto icon = (*theGraph)[virginVertex].icon;
-  icon->setPixmap(VPDObjectIn.getIcon().pixmap(iconSize, iconSize));
+  (*theGraph)[virginVertex].icon->setPixmap(VPDObjectIn.getIcon().pixmap(iconSize, iconSize));
   (*theGraph)[virginVertex].stateIcon->setPixmap(passPixmap);
   (*theGraph)[virginVertex].text->setFont(this->font());
-  (*theGraph)[virginVertex].connChangeIcon = 
-      const_cast<Gui::ViewProviderDocumentObject&>(VPDObjectIn).signalChangeIcon.connect(
-          boost::bind(&Model::slotChangeIcon, this, boost::cref(VPDObjectIn), icon));
   
   graphDirty = true;
-  lastAddedVertex = Graph::null_vertex();
+  
+  //we are here before python objects are instantiated. so at this point
+  //the getIcon method doesn't reflect the python override.
+  //so we hack in a delay to get the latest icon and set it for the graphics item.
+  lastAddedVertex = virginVertex;
+  QTimer::singleShot(0, this, SLOT(iconUpdateSlot()));
 }
 
-void Model::slotChangeIcon(const ViewProviderDocumentObject &VPDObjectIn, std::shared_ptr<QGraphicsPixmapItem> icon)
+void Model::iconUpdateSlot()
 {
-  icon->setPixmap(VPDObjectIn.getIcon().pixmap(iconSize, iconSize));
+  if (lastAddedVertex == Graph::null_vertex())
+    return;
+  const ViewProviderDocumentObject *VPDObject = findRecord(lastAddedVertex, *graphLink).VPDObject;
+  (*theGraph)[lastAddedVertex].icon->setPixmap(VPDObject->getIcon().pixmap(iconSize, iconSize));
+  lastAddedVertex = Graph::null_vertex();
   this->invalidate();
 }
 
@@ -288,8 +284,6 @@ void Model::slotDeleteObject(const ViewProviderDocumentObject &VPDObjectIn)
   
   if (vertex == lastAddedVertex)
     lastAddedVertex = Graph::null_vertex();
-
-  (*theGraph)[vertex].connChangeIcon.disconnect();
   
   //remove the actual vertex.
   boost::clear_vertex(vertex, *theGraph);
@@ -317,7 +311,18 @@ void Model::slotChangeObject(const ViewProviderDocumentObject &VPDObjectIn, cons
     auto *text = (*theGraph)[record.vertex].text.get();
     text->setPlainText(QString::fromUtf8(record.DObject->Label.getValue()));
   }
-  else if (propertyIn.isDerivedFrom(App::PropertyLinkBase::getClassTypeId()))
+  
+  //link changes. these require a recalculation of connectors.
+  const static std::unordered_set<std::string> linkTypes =
+  {
+    "App::PropertyLink",
+    "App::PropertyLinkList",
+    "App::PropertyLinkSub",
+    "App::PropertyLinkSubList",
+    "App::PropertyLinkPickList"
+  };
+  
+  if (linkTypes.find(propertyIn.getTypeId().getName()) != linkTypes.end())
   {
     const GraphLinkRecord &record = findRecord(&VPDObjectIn, *graphLink);
     boost::clear_vertex(record.vertex, *theGraph);
@@ -483,7 +488,7 @@ void Model::updateSlot()
       boost::tie(edge, result) = boost::add_edge(currentVertex, otherVertex, *theGraph);
       if (result)
       {
-        (*theGraph)[edge].connector = std::make_shared<QGraphicsPathItem>();
+        (*theGraph)[edge].connector = std::shared_ptr<QGraphicsPathItem>(new QGraphicsPathItem());
         (*theGraph)[edge].connector->setZValue(0.0);
       }
     }
@@ -886,7 +891,7 @@ void Model::updateStates()
 std::size_t Model::columnFromMask(const ColumnMask &maskIn)
 {
   std::string maskString = maskIn.to_string();
-  return maskString.size() - maskString.find('1') - 1;
+  return maskString.size() - maskString.find("1") - 1;
 }
 
 RectItem* Model::getRectFromPosition(const QPointF& position)

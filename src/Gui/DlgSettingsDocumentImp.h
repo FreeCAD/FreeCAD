@@ -24,19 +24,18 @@
 #ifndef GUI_DIALOG_DLGSETTINGSDOCUMENT_IMP_H
 #define GUI_DIALOG_DLGSETTINGSDOCUMENT_IMP_H
 
+#include "ui_DlgSettingsDocument.h"
 #include "PropertyPage.h"
-#include <memory>
 
 namespace Gui {
 namespace Dialog {
-class Ui_DlgSettingsDocument;
 
 /**
  * The DlgSettingsDocumentImp class implements a preference page to change settings
  * for the document.
  * \author Jürgen Riegel
  */
-class DlgSettingsDocumentImp : public PreferencePage
+class DlgSettingsDocumentImp : public PreferencePage, public Ui_DlgSettingsDocument
 {
     Q_OBJECT
 
@@ -52,9 +51,6 @@ protected Q_SLOTS:
 
 protected:
     void changeEvent(QEvent *e);
-
-private:
-    std::unique_ptr<Ui_DlgSettingsDocument> ui;
 };
 
 } // namespace Dialog

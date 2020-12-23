@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+
 # ***************************************************************************
+# *                                                                         *
 # *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -28,7 +30,7 @@ from PySide import QtCore, QtGui
 
 __title__ = "Setup Sheet Editor"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "http://www.freecadweb.org"
 __doc__ = "Task panel editor for a SetupSheet"
 
 # Qt translation handling
@@ -110,21 +112,6 @@ class _PropertyStringEditor(_PropertyEditor):
     def setModelData(self, widget):
         self.prop.setValue(widget.text())
 
-class _PropertyAngleEditor(_PropertyEditor):
-    '''Editor for angle values - uses a line edit'''
-
-    def widget(self, parent):
-        return QtGui.QLineEdit(parent)
-
-    def setEditorData(self, widget):
-        quantity = self.prop.getValue()
-        if quantity is None:
-            quantity = FreeCAD.Units.Quantity(0, FreeCAD.Units.Angle)
-        widget.setText(quantity.getUserPreferred()[0])
-
-    def setModelData(self, widget):
-        self.prop.setValue(FreeCAD.Units.Quantity(widget.text()))
-
 class _PropertyLengthEditor(_PropertyEditor):
     '''Editor for length values - uses a line edit.'''
 
@@ -186,29 +173,16 @@ class _PropertyFloatEditor(_PropertyEditor):
     def setModelData(self, widget):
         self.prop.setValue(widget.value())
 
-class _PropertyFileEditor(_PropertyEditor):
-
-    def widget(self, parent):
-        return QtGui.QLineEdit(parent)
-
-    def setEditorData(self, widget):
-        text = '' if self.prop.getValue() is None else self.prop.getValue()
-        widget.setText(text)
-
-    def setModelData(self, widget):
-        self.prop.setValue(widget.text())
-
 _EditorFactory = {
-        PathSetupSheetOpPrototype.Property:             None,
-        PathSetupSheetOpPrototype.PropertyAngle:        _PropertyAngleEditor,
-        PathSetupSheetOpPrototype.PropertyBool:         _PropertyBoolEditor,
-        PathSetupSheetOpPrototype.PropertyDistance:     _PropertyLengthEditor,
-        PathSetupSheetOpPrototype.PropertyEnumeration:  _PropertyEnumEditor,
-        PathSetupSheetOpPrototype.PropertyFloat:        _PropertyFloatEditor,
-        PathSetupSheetOpPrototype.PropertyInteger:      _PropertyIntegerEditor,
-        PathSetupSheetOpPrototype.PropertyLength:       _PropertyLengthEditor,
-        PathSetupSheetOpPrototype.PropertyPercent:      _PropertyPercentEditor,
-        PathSetupSheetOpPrototype.PropertyString:       _PropertyStringEditor,
+        PathSetupSheetOpPrototype.Property: None,
+        PathSetupSheetOpPrototype.PropertyBool: _PropertyBoolEditor,
+        PathSetupSheetOpPrototype.PropertyDistance: _PropertyLengthEditor,
+        PathSetupSheetOpPrototype.PropertyEnumeration: _PropertyEnumEditor,
+        PathSetupSheetOpPrototype.PropertyFloat: _PropertyFloatEditor,
+        PathSetupSheetOpPrototype.PropertyInteger: _PropertyIntegerEditor,
+        PathSetupSheetOpPrototype.PropertyLength: _PropertyLengthEditor,
+        PathSetupSheetOpPrototype.PropertyPercent: _PropertyPercentEditor,
+        PathSetupSheetOpPrototype.PropertyString: _PropertyStringEditor,
         }
 
 def Editor(prop):

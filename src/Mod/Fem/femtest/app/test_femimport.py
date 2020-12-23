@@ -1,5 +1,6 @@
 # ***************************************************************************
-# *   Copyright (c) 2019 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2019 - FreeCAD Developers                               *
+# *   Author: Bernd Hahnebach <bernd@bimstatik.org>                         *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -9,26 +10,22 @@
 # *   the License, or (at your option) any later version.                   *
 # *   for detail see the LICENCE text file.                                 *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
+# *   FreeCAD is distributed in the hope that it will be useful,            *
 # *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
 # *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
 # *   GNU Library General Public License for more details.                  *
 # *                                                                         *
 # *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
+# *   License along with FreeCAD; if not, write to the Free Software        *
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
-# ***************************************************************************
+# ***************************************************************************/
 
-__title__  = "Import FEM unit tests"
-__author__ = "Bernd Hahnebach"
-__url__    = "https://www.freecadweb.org"
 
 import unittest
 
 import FreeCAD
-
 from .support_utils import fcc_print
 
 
@@ -37,7 +34,7 @@ class TestFemImport(unittest.TestCase):
 
     # ********************************************************************************************
     # no is document needed to test import Fem and import FemGui
-    # thus neither setUp nor tearDown methods are needed
+    # thus neiter setUp nor tearDown methods are needed
 
     def test_00print(
         self
@@ -88,23 +85,19 @@ class TestObjectExistance(unittest.TestCase):
         self
     ):
         # setUp is executed before every test
+        # setting up a document to hold the tests
+        self.doc_name = self.__class__.__name__
+        if FreeCAD.ActiveDocument:
+            if FreeCAD.ActiveDocument.Name != self.doc_name:
+                FreeCAD.newDocument(self.doc_name)
+        else:
+            FreeCAD.newDocument(self.doc_name)
+        FreeCAD.setActiveDocument(self.doc_name)
+        self.active_doc = FreeCAD.ActiveDocument
 
-        # new document
-        self.document = FreeCAD.newDocument(self.__class__.__name__)
-
-    # ********************************************************************************************
-    def tearDown(
-        self
-    ):
-        # tearDown is executed after every test
-        FreeCAD.closeDocument(self.document.Name)
-
-    # ********************************************************************************************
     def test_00print(
         self
     ):
-        # since method name starts with 00 this will be run first
-        # this test just prints a line with stars
         fcc_print("\n{0}\n{1} run FEM TestObjectExistance tests {2}\n{0}".format(
             100 * "*",
             10 * "*",
@@ -175,7 +168,7 @@ class TestObjectExistance(unittest.TestCase):
         expected_len = len(expected_obj_types)
         expected_obj_types = sorted(expected_obj_types)
 
-        doc = self.document
+        doc = self.active_doc
 
         # get the supportedTypes for FEM module
 
@@ -201,3 +194,9 @@ class TestObjectExistance(unittest.TestCase):
             expected_obj_types,
             obj_types
         )
+
+    # ********************************************************************************************
+    def tearDown(
+        self
+    ):
+        FreeCAD.closeDocument(self.doc_name)

@@ -1,5 +1,5 @@
 /******************************************************************************
- *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
+ *   Copyright (c)2012 Jan Rheinlaender <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
  *   This file is part of the FreeCAD CAx development system.                 *
  *                                                                            *
@@ -87,8 +87,6 @@ private Q_SLOTS:
     virtual void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj);
 
 protected:
-    virtual void addObject(App::DocumentObject*);
-    virtual void removeObject(App::DocumentObject*);
     virtual void changeEvent(QEvent *e);
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
     virtual void clearButtons();

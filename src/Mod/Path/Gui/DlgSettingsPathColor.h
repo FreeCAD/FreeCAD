@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
+ *   Copyright (c) Yorik van Havre (yorik@uncreated.net) 2014              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,14 +24,13 @@
 #ifndef PATHGUI_DIALOG_DLGSETTINGSPATHCOLOR_H
 #define PATHGUI_DIALOG_DLGSETTINGSPATHCOLOR_H
 
+#include "ui_DlgSettingsPathColor.h"
 #include <Gui/PropertyPage.h>
-#include <memory>
 
 namespace PathGui {
-class Ui_DlgSettingsPathColor;
 
-class DlgSettingsPathColor : public Gui::Dialog::PreferencePage
-{
+class DlgSettingsPathColor : public Gui::Dialog::PreferencePage, public Ui_DlgSettingsPathColor
+{ 
   Q_OBJECT
 
 public:
@@ -43,9 +42,6 @@ public:
 
 protected:
   void changeEvent(QEvent *e);
-
-private:
-  std::unique_ptr<Ui_DlgSettingsPathColor> ui;
 };
 
 } // namespace PathGui

@@ -99,14 +99,16 @@ protected:
     void setUiEdit(void);
     void enableTextUi(bool b);
     void enableVPUi(bool b);
-    double prefWeight() const;
-    App::Color prefLineColor(void);
+    
+    int getDefFontSize(void);
+    QString getDefFont(void);
 
 private:
     Ui_TaskRichAnno * ui;
     bool blockUpdate;
 
     MDIViewPage* m_mdi;
+    QGraphicsScene* m_scene;
     QGVPage* m_view;
     ViewProviderRichAnno* m_annoVP;
     TechDraw::DrawView* m_baseFeat;
@@ -130,7 +132,6 @@ private:
     QDialog* m_textDialog;
     MRichTextEdit* m_rte;
     QString m_title;
-    bool m_haveMdi;
 };
 
 class TaskDlgRichAnno : public Gui::TaskView::TaskDialog

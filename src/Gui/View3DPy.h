@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2005 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2005     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -132,7 +132,6 @@ public:
     Py::Object setName(const Py::Tuple&);
     Py::Object toggleClippingPlane(const Py::Tuple& args, const Py::Dict &);
     Py::Object hasClippingPlane(const Py::Tuple& args);
-    Py::Object graphicsView(const Py::Tuple& args);
 
     View3DInventor* getView3DIventorPtr() {return _view;}
 

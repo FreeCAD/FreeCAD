@@ -24,7 +24,6 @@
 #include "PreCompiled.h"
 
 #include "DlgStartPreferencesImp.h"
-#include "ui_DlgStartPreferences.h"
 #include <Gui/PrefWidgets.h>
 #include <Base/Console.h>
 #include <Gui/Application.h>
@@ -32,21 +31,20 @@
 using namespace StartGui;
 
 /**
- *  Constructs a DlgStartPreferencesImp which is a child of 'parent'
+ *  Constructs a DlgSettings3DViewImp which is a child of 'parent' 
  */
 DlgStartPreferencesImp::DlgStartPreferencesImp( QWidget* parent )
   : PreferencePage( parent )
-  , ui(new Ui_DlgStartPreferences)
 {
-    ui->setupUi(this);
-
+    this->setupUi(this);
+    
     // Hide currently unused controls
-    ui->label_12->hide();
-    ui->label_7->hide();
-    ui->colorButton_7->hide();
-    ui->radioButton_1->hide();
-    ui->radioButton_2->hide();
-
+    label_12->hide();
+    label_7->hide();
+    colorButton_7->hide();
+    radioButton_1->hide();
+    radioButton_2->hide();
+    
     // fills the combo box with all available workbenches
     // sorted by their menu text
     QStringList work = Gui::Application::Instance->workbenches();
@@ -61,22 +59,22 @@ DlgStartPreferencesImp::DlgStartPreferencesImp( QWidget* parent )
         QString key = QString::fromLatin1("<last>");
         QString value = QString::fromLatin1("$LastModule");
         if (px.isNull())
-            ui->AutoloadModuleCombo->addItem(key, QVariant(value));
+            AutoloadModuleCombo->addItem(key, QVariant(value));
         else
-            ui->AutoloadModuleCombo->addItem(px, key, QVariant(value));
+            AutoloadModuleCombo->addItem(px, key, QVariant(value));
     }
 
     for (QMap<QString, QString>::Iterator it = menuText.begin(); it != menuText.end(); ++it) {
         QPixmap px = Gui::Application::Instance->workbenchIcon(it.value());
         if (px.isNull())
-            ui->AutoloadModuleCombo->addItem(it.key(), QVariant(it.value()));
+            AutoloadModuleCombo->addItem(it.key(), QVariant(it.value()));
         else
-            ui->AutoloadModuleCombo->addItem(px, it.key(), QVariant(it.value()));
+            AutoloadModuleCombo->addItem(px, it.key(), QVariant(it.value()));
     }
-
+    
 }
 
-/**
+/** 
  *  Destroys the object and frees any allocated resources
  */
 DlgStartPreferencesImp::~DlgStartPreferencesImp()
@@ -86,33 +84,32 @@ DlgStartPreferencesImp::~DlgStartPreferencesImp()
 
 void DlgStartPreferencesImp::saveSettings()
 {
-    int index = ui->AutoloadModuleCombo->currentIndex();
-    QVariant data = ui->AutoloadModuleCombo->itemData(index);
+    int index = AutoloadModuleCombo->currentIndex();
+    QVariant data = AutoloadModuleCombo->itemData(index);
     QString startWbName = data.toString();
     App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Start")->
                           SetASCII("AutoloadModule", startWbName.toLatin1());
-    ui->colorButton_1->onSave();
-    ui->colorButton_2->onSave();
-    ui->colorButton_3->onSave();
-    ui->colorButton_4->onSave();
-    ui->colorButton_5->onSave();
-    ui->colorButton_6->onSave();
-    ui->colorButton_7->onSave();
-    ui->fileChooser_1->onSave();
-    ui->fileChooser_2->onSave();
-    ui->fileChooser_3->onSave();
-    ui->radioButton_1->onSave();
-    ui->radioButton_2->onSave();
-    ui->checkBox->onSave();
-    ui->checkBox_1->onSave();
-    ui->checkBox_2->onSave();
-    ui->checkBox_3->onSave();
-    ui->checkBox_4->onSave();
-    ui->checkBox_5->onSave();
-    ui->checkBox_6->onSave();
-    ui->checkBox_7->onSave();
-    ui->lineEdit->onSave();
-    ui->spinBox->onSave();
+    colorButton_1->onSave();
+    colorButton_2->onSave();
+    colorButton_3->onSave();
+    colorButton_4->onSave();
+    colorButton_5->onSave();
+    colorButton_6->onSave();
+    colorButton_7->onSave();
+    fileChooser_1->onSave();
+    fileChooser_2->onSave();
+    fileChooser_3->onSave();
+    radioButton_1->onSave();
+    radioButton_2->onSave();
+    checkBox->onSave();
+    checkBox_1->onSave();
+    checkBox_2->onSave();
+    checkBox_3->onSave();
+    checkBox_4->onSave();
+    checkBox_5->onSave();
+    checkBox_6->onSave();
+    lineEdit->onSave();
+    spinBox->onSave();
 }
 
 void DlgStartPreferencesImp::loadSettings()
@@ -121,29 +118,28 @@ void DlgStartPreferencesImp::loadSettings()
     start = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Start")->
                                   GetASCII("AutoloadModule", start.c_str());
     QString startWbName = QLatin1String(start.c_str());
-    ui->AutoloadModuleCombo->setCurrentIndex(ui->AutoloadModuleCombo->findData(startWbName));
-    ui->colorButton_1->onRestore();
-    ui->colorButton_2->onRestore();
-    ui->colorButton_3->onRestore();
-    ui->colorButton_4->onRestore();
-    ui->colorButton_5->onRestore();
-    ui->colorButton_6->onRestore();
-    ui->colorButton_7->onRestore();
-    ui->fileChooser_1->onRestore();
-    ui->fileChooser_2->onRestore();
-    ui->fileChooser_3->onRestore();
-    ui->radioButton_1->onRestore();
-    ui->radioButton_2->onRestore();
-    ui->checkBox->onRestore();
-    ui->checkBox_1->onRestore();
-    ui->checkBox_2->onRestore();
-    ui->checkBox_3->onRestore();
-    ui->checkBox_4->onRestore();
-    ui->checkBox_5->onRestore();
-    ui->checkBox_6->onRestore();
-    ui->checkBox_7->onRestore();
-    ui->lineEdit->onRestore();
-    ui->spinBox->onRestore();
+    AutoloadModuleCombo->setCurrentIndex(AutoloadModuleCombo->findData(startWbName));
+    colorButton_1->onRestore();
+    colorButton_2->onRestore();
+    colorButton_3->onRestore();
+    colorButton_4->onRestore();
+    colorButton_5->onRestore();
+    colorButton_6->onRestore();
+    colorButton_7->onRestore();
+    fileChooser_1->onRestore();
+    fileChooser_2->onRestore();
+    fileChooser_3->onRestore();
+    radioButton_1->onRestore();
+    radioButton_2->onRestore();
+    checkBox->onRestore();
+    checkBox_1->onRestore();
+    checkBox_2->onRestore();
+    checkBox_3->onRestore();
+    checkBox_4->onRestore();
+    checkBox_5->onRestore();
+    checkBox_6->onRestore();
+    lineEdit->onRestore();
+    spinBox->onRestore();
 }
 
 /**
@@ -152,7 +148,7 @@ void DlgStartPreferencesImp::loadSettings()
 void DlgStartPreferencesImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        ui->retranslateUi(this);
+        retranslateUi(this);
     }
     else {
         QWidget::changeEvent(e);

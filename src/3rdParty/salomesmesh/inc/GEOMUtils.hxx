@@ -106,11 +106,8 @@ namespace GEOMUtils
    * \brief Sort shapes in the list by their coordinates.
    * \param SL The list of shapes to sort.
    */
-  struct CompareShapes
+  struct CompareShapes : public std::binary_function<TopoDS_Shape, TopoDS_Shape, bool>
   {
-    typedef TopoDS_Shape first_argument_type;
-    typedef TopoDS_Shape second_argument_type;
-    typedef bool result_type;
     CompareShapes (bool isOldSorting)
       : myIsOldSorting(isOldSorting) {}
 

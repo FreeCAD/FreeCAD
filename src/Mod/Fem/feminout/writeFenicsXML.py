@@ -1,7 +1,6 @@
 # ***************************************************************************
-# *   Copyright (c) 2017 Johannes Hartung <j.hartung@gmx.net>               *
 # *                                                                         *
-# *   This file is part of the FreeCAD CAx development system.              *
+# *   Copyright (c) 2017 - Johannes Hartung <j.hartung@gmx.net>             *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -21,22 +20,20 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__  = "FreeCAD Fenics XML mesh writer"
+__title__ = "FreeCAD Fenics XML mesh writer"
 __author__ = "Johannes Hartung"
-__url__    = "https://www.freecadweb.org"
+__url__ = "http://www.freecadweb.org"
 
 ## @package exportFenicsXML
 #  \ingroup FEM
 #  \brief FreeCAD Fenics Mesh XML writer for FEM workbench
 
 
-from xml.etree import ElementTree as ET  # parsing xml files and exporting
-
 from FreeCAD import Console
-
 from .importToolsFem import get_FemMeshObjectDimension
 from .importToolsFem import get_FemMeshObjectElementTypes
 from .importToolsFem import get_MaxDimElementFromList
+from xml.etree import ElementTree as ET  # parsing xml files and exporting
 
 
 def write_fenics_mesh_xml(fem_mesh_obj, outputfile):
@@ -71,17 +68,17 @@ def write_fenics_mesh_xml(fem_mesh_obj, outputfile):
         "hexahedron": 8
     }
 
-    Console.PrintMessage("Converting {} to fenics XML File\n".format(fem_mesh_obj.Label))
-    Console.PrintMessage("Dimension of mesh: %d\n" % (get_FemMeshObjectDimension(fem_mesh_obj),))
+    Console.Message("Converting " + fem_mesh_obj.Label + " to fenics XML File\n")
+    Console.Message("Dimension of mesh: %d\n" % (get_FemMeshObjectDimension(fem_mesh_obj),))
 
     elements_in_mesh = get_FemMeshObjectElementTypes(fem_mesh_obj)
-    Console.PrintMessage("Elements appearing in mesh: %s" % (str(elements_in_mesh),))
+    Console.Message("Elements appearing in mesh: %s" % (str(elements_in_mesh),))
     celltype_in_mesh = get_MaxDimElementFromList(elements_in_mesh)
     (num_cells, cellname_fc, dim_cell) = celltype_in_mesh
     cellname_fenics = FreeCAD_to_Fenics_dict[cellname_fc]
     num_verts_cell = XML_Number_of_Nodes_dict[cellname_fenics]
-    Console.PrintMessage(
-        u"Celltype in mesh -> %s and its Fenics name: %s\n"
+    Console.Message(
+        "Celltype in mesh -> %s and its Fenics name: %s\n"
         % (str(celltype_in_mesh), cellname_fenics)
     )
 

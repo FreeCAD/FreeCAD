@@ -22,24 +22,20 @@
 
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#include <QCoreApplication>
-#endif
 
 #include "DlgUndoRedo.h"
 #include "Application.h"
 #include "MainWindow.h"
 #include "Document.h"
 #include "EditorView.h"
-#include "TextDocumentEditorView.h"
 
 using namespace Gui::Dialog;
 
 /* TRANSLATOR Gui::Dialog::UndoRedoDialog */
 
 /**
- *  Constructs a UndoRedoDialog which is a child of 'parent', with the
- *  name 'name'.'
+ *  Constructs a UndoRedoDialog which is a child of 'parent', with the 
+ *  name 'name'.' 
  */
 UndoDialog::UndoDialog( QWidget* parent )
   : QMenu( parent )
@@ -47,7 +43,7 @@ UndoDialog::UndoDialog( QWidget* parent )
     connect(this, SIGNAL(aboutToShow()), this, SLOT(onFetchInfo()));
 }
 
-/**
+/** 
  *  Destroys the object and frees any allocated resources.
  */
 UndoDialog::~UndoDialog()
@@ -55,35 +51,27 @@ UndoDialog::~UndoDialog()
     // no need to delete child widgets, Qt does it all for us
 }
 
-/**
- *  This method fetches the undo / redo information from the
+/** 
+ *  This method fetches the undo / redo information from the 
  *  active document and shows it in the undo / redo dialog.
  */
-void UndoDialog::onFetchInfo()
+void UndoDialog::onFetchInfo() 
 {
     clear(); // Remove first all items
-
-    MDIView* mdi =  getMainWindow()->activeWindow();
-    EditorView* editview = qobject_cast<EditorView*>(mdi);
-    TextDocumentEditorView* textedit = qobject_cast<TextDocumentEditorView*>(mdi);
-    if (editview) {
-        QStringList vecUndos = editview->undoActions();
-        for (QStringList::Iterator i = vecUndos.begin(); i != vecUndos.end(); ++i)
-            addAction(*i, this, SLOT(onSelected()));
+    Gui::Document* pcDoc = Application::Instance->activeDocument();
+    if (pcDoc)
+    {
+        std::vector<std::string> vecUndos = pcDoc->getUndoVector();
+        for (std::vector<std::string>::iterator i=vecUndos.begin(); i!=vecUndos.end(); ++i)
+            addAction(QString::fromUtf8((*i).c_str()), this, SLOT(onSelected()));
     }
-    else if (textedit) {
-        QStringList vecUndos = textedit->undoActions();
-        for (QStringList::Iterator i = vecUndos.begin(); i != vecUndos.end(); ++i)
-            addAction(*i, this, SLOT(onSelected()));
-    }
-    else if (mdi) {
-        Gui::Document* pcDoc = mdi->getGuiDocument();
-        if (pcDoc) {
-            std::vector<std::string> vecUndos = pcDoc->getUndoVector();
-            for (std::vector<std::string>::iterator i = vecUndos.begin(); i != vecUndos.end(); ++i) {
-                QString text = QCoreApplication::translate("Command", i->c_str());
-                addAction(text, this, SLOT(onSelected()));
-            }
+    else
+    {
+        EditorView* view = qobject_cast<EditorView*>(getMainWindow()->activeWindow());
+        if (view) {
+            QStringList vecUndos = view->undoActions();
+            for (QStringList::Iterator i=vecUndos.begin(); i!=vecUndos.end(); ++i)
+                addAction(*i, this, SLOT(onSelected()));
         }
     }
 }
@@ -103,8 +91,8 @@ void UndoDialog::onSelected()
 /* TRANSLATOR Gui::Dialog::RedoDialog */
 
 /**
- *  Constructs a UndoRedoDialog which is a child of 'parent', with the
- *  name 'name'.'
+ *  Constructs a UndoRedoDialog which is a child of 'parent', with the 
+ *  name 'name'.' 
  */
 RedoDialog::RedoDialog( QWidget* parent )
   : QMenu( parent )
@@ -112,7 +100,7 @@ RedoDialog::RedoDialog( QWidget* parent )
     connect(this, SIGNAL(aboutToShow()), this, SLOT(onFetchInfo()));
 }
 
-/**
+/** 
  *  Destroys the object and frees any allocated resources.
  */
 RedoDialog::~RedoDialog()
@@ -120,35 +108,27 @@ RedoDialog::~RedoDialog()
     // no need to delete child widgets, Qt does it all for us
 }
 
-/**
- *  This method fetches the undo / redo information from the
+/** 
+ *  This method fetches the undo / redo information from the 
  *  active document and shows it in the undo / redo dialog.
  */
-void RedoDialog::onFetchInfo()
+void RedoDialog::onFetchInfo() 
 {
     clear(); // Remove first all items
-
-    MDIView* mdi = getMainWindow()->activeWindow();
-    EditorView* editview = qobject_cast<EditorView*>(mdi);
-    TextDocumentEditorView* textedit = qobject_cast<TextDocumentEditorView*>(mdi);
-    if (editview) {
-        QStringList vecRedos = editview->redoActions();
-        for (QStringList::Iterator i = vecRedos.begin(); i != vecRedos.end(); ++i)
-            addAction(*i, this, SLOT(onSelected()));
+    Gui::Document* pcDoc = Application::Instance->activeDocument();
+    if (pcDoc)
+    {
+        std::vector<std::string> vecRedos = pcDoc->getRedoVector();
+        for (std::vector<std::string>::iterator i=vecRedos.begin(); i!=vecRedos.end(); ++i)
+            addAction(QString::fromUtf8((*i).c_str()), this, SLOT(onSelected()));
     }
-    else if (textedit) {
-        QStringList vecRedos = textedit->redoActions();
-        for (QStringList::Iterator i = vecRedos.begin(); i != vecRedos.end(); ++i)
-            addAction(*i, this, SLOT(onSelected()));
-    }
-    else if (mdi) {
-        Gui::Document* pcDoc = mdi->getGuiDocument();
-        if (pcDoc) {
-            std::vector<std::string> vecRedos = pcDoc->getRedoVector();
-            for (std::vector<std::string>::iterator i = vecRedos.begin(); i != vecRedos.end(); ++i) {
-                QString text = QCoreApplication::translate("Command", i->c_str());
-                addAction(text, this, SLOT(onSelected()));
-            }
+    else
+    {
+        EditorView* view = qobject_cast<EditorView*>(getMainWindow()->activeWindow());
+        if (view) {
+            QStringList vecRedos = view->redoActions();
+            for (QStringList::Iterator i=vecRedos.begin(); i!=vecRedos.end(); ++i)
+                addAction(*i, this, SLOT(onSelected()));
         }
     }
 }

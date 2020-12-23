@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
+ *   Copyright (c) 2013 Luke Parry    <l.parry@warwick.ac.uk>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -27,8 +27,6 @@
 # endif
 # include <QAction>
 # include <QMenu>
-# include <QMessageBox>
-# include <QTextStream>
 #endif
 
 #include <Base/Console.h>
@@ -48,10 +46,8 @@
 #include <Gui/SoFCSelection.h>
 #include <Gui/ViewProviderDocumentObject.h>
 
-#include <Mod/TechDraw/App/DrawLeaderLine.h>
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
-#include <Mod/TechDraw/App/DrawViewDetail.h>
-#include <Mod/TechDraw/App/DrawViewSection.h>
+
 
 #include "TaskProjGroup.h"
 #include "ViewProviderProjGroup.h"
@@ -150,97 +146,13 @@ bool ViewProviderProjGroup::doubleClicked(void)
     return true;
 }
 
-bool ViewProviderProjGroup::onDelete(const std::vector<std::string> &)
-{
-    // warn the user if the ProjGroup is not empty
-
-    QString bodyMessage;
-    QTextStream bodyMessageStream(&bodyMessage);
-    TechDraw::DrawProjGroupItem* Item = nullptr;
-    std::vector<std::string> ViewList;
-
-    // get the items in the group
-    auto objs = claimChildren();
-
-    // iterate over all item to check which ones have a section or detail view
-    for (auto ObjectIterator : objs) {
-        // get item
-        Item = static_cast<TechDraw::DrawProjGroupItem*>(ObjectIterator);
-        // get its section views
-        auto viewSection = Item->getSectionRefs();
-        // add names to a list
-        if (!viewSection.empty()) {
-            for (auto SecIterator : viewSection) {
-                ViewList.push_back(SecIterator->Label.getValue());
-            }
-        }
-        // get its detail views
-        auto viewDetail = Item->getDetailRefs();
-        if (!viewDetail.empty()) {
-            for (auto DetIterator : viewDetail) {
-                ViewList.push_back(DetIterator->Label.getValue());
-            }
-        }
-        // get its leader lines
-        auto viewLead = Item->getLeaders();
-        if (!viewLead.empty()) {
-            for (auto LeadIterator : viewLead) {
-                ViewList.push_back(LeadIterator->Label.getValue());
-            }
-        }
-    }
-
-    // if there are section or detail views we cannot delete because this would break them
-    if (!ViewList.empty()) {
-        bodyMessageStream << qApp->translate("Std_Delete",
-            "The group cannot be deleted because its items have the following\nsection or detail views, or leader lines that would get broken:");
-        bodyMessageStream << '\n';
-        for (auto ListIterator : ViewList)
-            bodyMessageStream << '\n' << QString::fromUtf8(ListIterator.c_str());
-        QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
-            QMessageBox::Ok);
-        return false;
-    }
-
-    if (!objs.empty())
-    {
-        // generate dialog
-        bodyMessageStream << qApp->translate("Std_Delete",
-            "The projection group is not empty, therefore\nthe following referencing objects might be lost:");
-        bodyMessageStream << '\n';
-        for (auto ObjIterator : objs)
-            bodyMessageStream << '\n' << QString::fromUtf8(ObjIterator->Label.getValue());
-        bodyMessageStream << "\n\n" << QObject::tr("Are you sure you want to continue?");
-        // show and evaluate dialog
-        int DialogResult = QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
-            QMessageBox::Yes, QMessageBox::No);
-        if (DialogResult == QMessageBox::Yes)
-            return true;
-        else
-            return false;
-    }
-    else
-        return true;
-}
-
-bool ViewProviderProjGroup::canDelete(App::DocumentObject *obj) const
-{
-    // deletions of views from a ProjGroup don't necessarily destroy anything
-    // thus we can pass this action
-    // we can warn the user if necessary in the object's ViewProvider in the onDelete() function
-    Q_UNUSED(obj)
-    return true;
-}
-
 std::vector<App::DocumentObject*> ViewProviderProjGroup::claimChildren(void) const
 {
     // Collect any child fields
     std::vector<App::DocumentObject*> temp;
     const std::vector<App::DocumentObject *> &views = getObject()->Views.getValues();
     try {
-      for (std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
+      for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
           temp.push_back(*it);
       }
       return temp;

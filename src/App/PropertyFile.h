@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   (c) Jürgen Riegel (juergen.riegel@web.de) 2008                        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -110,8 +110,6 @@ public:
       */
     std::string getExchangeTempFile(void) const;
     std::string getOriginalFileName(void) const;
-
-    bool isEmpty(void) const {return _cValue.empty();}
 
 protected:
     // get the transient path if the property is in a DocumentObject

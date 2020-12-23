@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2014 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
+ *   Copyright (c) 2014 Abdullah.tahiri.yo@gmail.com                       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -51,13 +51,6 @@ bool isConstructionPoint(const Sketcher::SketchObject* Obj, int GeoId);
 
 bool IsPointAlreadyOnCurve(int GeoIdCurve, int GeoIdPoint, Sketcher::PointPos PosIdPoint, Sketcher::SketchObject* Obj);
 
-bool isBsplinePole(const Part::Geometry * geo);
-
-bool isBsplinePole(const Sketcher::SketchObject* Obj, int GeoId);
-
-/// Release any currently-active handler for the document.
-/// Returns true if a handler was released, and false if not
-bool ReleaseHandler(Gui::Document* doc);
 
 // These functions are declared here to promote code reuse from other modules
 

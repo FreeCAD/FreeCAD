@@ -25,24 +25,21 @@
 #define POINTSGUI_DLGREADPOINTS_H
 
 #include <string>
-#include <memory>
-#include <QDialog>
+#include "ui_DlgPointsRead.h"
 
 namespace PointsGui {
-class Ui_DlgPointsRead;
 
 /** The points read dialog
  */
-class DlgPointsReadImp : public QDialog
+class DlgPointsReadImp : public QDialog, public Ui_DlgPointsRead
 { 
   Q_OBJECT
 
 public:
-  DlgPointsReadImp(const char *FileName, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags() );
+  DlgPointsReadImp(const char *FileName, QWidget* parent = 0, Qt::WindowFlags fl = 0 );
   ~DlgPointsReadImp();
 
 private:
-  std::unique_ptr<Ui_DlgPointsRead> ui;
   std::string _FileName;
 };
 

@@ -145,7 +145,7 @@
         <item row="3" column="1" colspan="4">
          <widget class="Gui::PrefCheckBox" name="checkboxBoundbox">
           <property name="toolTip">
-           <string>A bounding box will be displayed</string>
+           <string>A yellow bounding box will be displayed</string>
           </property>
           <property name="text">
            <string>Show bounding-box for highlighted or selected meshes</string>

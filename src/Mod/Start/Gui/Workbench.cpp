@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <QCoreApplication>
+# include <QTextStream>
 #endif
 
 #include "Workbench.h"
@@ -82,38 +83,39 @@ void StartGui::Workbench::loadStartPage()
     try {
         QByteArray utf8Title = title.toUtf8();
         std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(utf8Title);
-        std::stringstream str;
-        str << "import WebGui,sys,Start" << std::endl;
-        str << "from StartPage import StartPage" << std::endl;
-        str << std::endl;
-        str << "class WebPage(object):" << std::endl;
-        str << "    def __init__(self):" << std::endl;
-        str << "        self.browser=WebGui.openBrowserWindow(u'" << escapedstr.c_str() << "')" << std::endl;
+        QByteArray cmd;
+        QTextStream str(&cmd);
+        str << "import WebGui,sys,Start" << endl;
+        str << "from StartPage import StartPage" << endl;
+        str << endl;
+        str << "class WebPage(object):" << endl;
+        str << "    def __init__(self):" << endl;
+        str << "        self.browser=WebGui.openBrowserWindow(u'" << escapedstr.c_str() << "')" << endl;
 #if defined(FC_OS_WIN32)
-        str << "        self.browser.setHtml(StartPage.handle(), App.getResourceDir() + 'Mod/Start/StartPage/')" << std::endl;
+        str << "        self.browser.setHtml(StartPage.handle(), App.getResourceDir() + 'Mod/Start/StartPage/')" << endl;
 #else
-        str << "        self.browser.setHtml(StartPage.handle(), 'file://' + App.getResourceDir() + 'Mod/Start/StartPage/')" << std::endl;
+        str << "        self.browser.setHtml(StartPage.handle(), 'file://' + App.getResourceDir() + 'Mod/Start/StartPage/')" << endl;
 #endif
-        str << "    def onChange(self, par, reason):" << std::endl;
-        str << "        if reason == 'RecentFiles':" << std::endl;
+        str << "    def onChange(self, par, reason):" << endl;
+        str << "        if reason == 'RecentFiles':" << endl;
 #if defined(FC_OS_WIN32)
-        str << "            self.browser.setHtml(StartPage.handle(), App.getResourceDir() + 'Mod/Start/StartPage/')" << std::endl;
+        str << "            self.browser.setHtml(StartPage.handle(), App.getResourceDir() + 'Mod/Start/StartPage/')" << endl;
 #else
-        str << "            self.browser.setHtml(StartPage.handle(), 'file://' + App.getResourceDir() + 'Mod/Start/StartPage/')" << std::endl;
+        str << "            self.browser.setHtml(StartPage.handle(), 'file://' + App.getResourceDir() + 'Mod/Start/StartPage/')" << endl;
 #endif
-        str << std::endl;
-        str << "class WebView(object):" << std::endl;
-        str << "    def __init__(self):" << std::endl;
-        str << "        self.pargrp = FreeCAD.ParamGet('User parameter:BaseApp/Preferences/RecentFiles')" << std::endl;
-        str << "        self.webPage = WebPage()" << std::endl;
-        str << "        self.pargrp.Attach(self.webPage)" << std::endl;
-        str << "    def __del__(self):" << std::endl;
-        str << "        self.pargrp.Detach(self.webPage)" << std::endl;
-        str << std::endl;
-        str << "webView=WebView()" << std::endl;
-        str << "StartPage.checkPostOpenStartPage()" << std::endl;
+        str << endl;
+        str << "class WebView(object):" << endl;
+        str << "    def __init__(self):" << endl;
+        str << "        self.pargrp = FreeCAD.ParamGet('User parameter:BaseApp/Preferences/RecentFiles')" << endl;
+        str << "        self.webPage = WebPage()" << endl;
+        str << "        self.pargrp.Attach(self.webPage)" << endl;
+        str << "    def __del__(self):" << endl;
+        str << "        self.pargrp.Detach(self.webPage)" << endl;
+        str << endl;
+        str << "webView=WebView()" << endl;
+        str << "StartPage.checkPostOpenStartPage()" << endl;
 
-        Base::Interpreter().runString(str.str().c_str());
+        Base::Interpreter().runString(cmd);
         // Gui::Command::runCommand(Gui::Command::Gui, cmd);
     }
     catch (const Base::Exception& e) {
@@ -143,9 +145,9 @@ Gui::ToolBarItem* StartGui::Workbench::setupToolBars() const
                 << "Separator"
                 << "Web_OpenWebsite"
                 << "Start_StartPage"
-                << "Separator"
-                << "Web_BrowserBack"
-                << "Web_BrowserNext"
+                << "Separator" 
+                << "Web_BrowserBack" 
+                << "Web_BrowserNext" 
                 << "Web_BrowserRefresh"
                 << "Web_BrowserStop"
                 << "Separator"
@@ -166,6 +168,6 @@ Gui::DockWindowItems* StartGui::Workbench::setupDockWindows() const
 {
     Gui::DockWindowItems* root = Gui::StdWorkbench::setupDockWindows();
     root->setVisibility(false); // hide all dock windows by default
-    root->setVisibility("Std_ComboView",true); // except of the combo view
+    root->setVisibility("Std_CombiView",true); // except of the combi view
     return root;
 }

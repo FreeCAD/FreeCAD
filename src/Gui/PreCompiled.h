@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -23,14 +23,12 @@
 
 #ifndef GUI_PRECOMPILED_H
 #define GUI_PRECOMPILED_H
-
+ 
 #include <FCConfig.h>
 
 #ifdef FC_OS_WIN32
 #define WIN32_LEAN_AND_MEAN
-#ifndef NOMINMAX
 #define NOMINMAX
-#endif
 #endif
 
 // here get the warnings of too long specifiers disabled (needed for VC6)
@@ -80,7 +78,7 @@
 
 // Boost
 #include <boost/signals2.hpp>
-#include <boost/bind/bind.hpp>
+#include <boost/bind.hpp>
 #include <boost/program_options.hpp>
 #include <boost/tuple/tuple.hpp>
 #include <boost/utility.hpp>

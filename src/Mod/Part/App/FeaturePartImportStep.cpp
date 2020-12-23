@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,7 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
+ 
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <fcntl.h>

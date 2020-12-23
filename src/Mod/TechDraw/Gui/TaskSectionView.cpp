@@ -76,12 +76,9 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewPart* base) :
     ui(new Ui_TaskSectionView),
     m_base(base),
     m_section(nullptr),
-    m_saveScale(0.0),
     m_dirName(""),
-    m_doc(nullptr),
     m_createMode(true),
-    m_saved(false),
-    m_abort(false)
+    m_saved(false)
 {
 //    Base::Console().Message("TSV::TSV() - create mode\n");
     if  (m_base == nullptr)  {
@@ -90,18 +87,17 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewPart* base) :
         Base::Console().Error((msg + "\n").c_str());
         return;
     }
-    m_sectionName = std::string();
-    m_doc         = m_base->getDocument();
+ 
+   ui->setupUi(this);
 
-    m_saveBaseName = m_base->getNameInDocument();
-    m_savePageName = m_base->findParentPage()->getNameInDocument();
-
-    ui->setupUi(this);
-
-    connect(ui->pbUp, SIGNAL(clicked(bool)), this, SLOT(onUpClicked()));
-    connect(ui->pbDown, SIGNAL(clicked(bool)), this, SLOT(onDownClicked()));
-    connect(ui->pbRight, SIGNAL(clicked(bool)), this, SLOT(onRightClicked()));
-    connect(ui->pbLeft, SIGNAL(clicked(bool)), this, SLOT(onLeftClicked()));
+    connect(ui->pbUp, SIGNAL(clicked(bool)),
+            this, SLOT(onUpClicked(bool)));
+    connect(ui->pbDown, SIGNAL(clicked(bool)),
+            this, SLOT(onDownClicked(bool)));
+    connect(ui->pbRight, SIGNAL(clicked(bool)),
+            this, SLOT(onRightClicked(bool)));
+    connect(ui->pbLeft, SIGNAL(clicked(bool)),
+            this, SLOT(onLeftClicked(bool)));
 
     setUiPrimary();
 }
@@ -112,12 +108,10 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewSection* section) :
     ui(new Ui_TaskSectionView),
     m_base(nullptr),
     m_section(section),
-    m_saveScale(0.0),
-    m_doc(nullptr),
     m_createMode(false),
-    m_saved(false),
-    m_abort(false)
+    m_saved(false)
 {
+//    Base::Console().Message("TS::TS() - edit mode\n");
 
     if  (m_section == nullptr)  {
         //should be caught in CMD caller
@@ -126,8 +120,6 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewSection* section) :
         return;
     }
 
-    m_doc = m_section->getDocument();
-    m_sectionName = m_section->getNameInDocument();
     App::DocumentObject* newObj = m_section->BaseView.getValue();
     m_base = dynamic_cast<TechDraw::DrawViewPart*>(newObj);
     if ( (newObj == nullptr) ||
@@ -135,17 +127,18 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewSection* section) :
         throw Base::RuntimeError("TaskSectionView - BaseView not found");
     }
 
-    m_saveBaseName = m_base->getNameInDocument();
-    m_savePageName = m_base->findParentPage()->getNameInDocument();
-
     ui->setupUi(this);
 
-    connect(ui->pbUp, SIGNAL(clicked(bool)), this, SLOT(onUpClicked()));
-    connect(ui->pbDown, SIGNAL(clicked(bool)), this, SLOT(onDownClicked()));
-    connect(ui->pbRight, SIGNAL(clicked(bool)), this, SLOT(onRightClicked()));
-    connect(ui->pbLeft, SIGNAL(clicked(bool)), this, SLOT(onLeftClicked()));
+    connect(ui->pbUp, SIGNAL(clicked(bool)),
+            this, SLOT(onUpClicked(bool)));
+    connect(ui->pbDown, SIGNAL(clicked(bool)),
+            this, SLOT(onDownClicked(bool)));
+    connect(ui->pbRight, SIGNAL(clicked(bool)),
+            this, SLOT(onRightClicked(bool)));
+    connect(ui->pbLeft, SIGNAL(clicked(bool)),
+            this, SLOT(onLeftClicked(bool)));
 
-    m_dirName = m_section->SectionDirection.getValueAsString();
+    m_dirName = m_section->SectionDirection.getValue();
     saveSectionState();
     setUiEdit();
 }
@@ -158,7 +151,7 @@ TaskSectionView::~TaskSectionView()
 void TaskSectionView::setUiPrimary()
 {
 //    Base::Console().Message("TSV::setUiPrimary()\n");
-    setWindowTitle(QObject::tr("Create Section View"));
+    setWindowTitle(QObject::tr("Create SectionView"));
     std::string temp = m_base->getNameInDocument();
     QString qTemp    = Base::Tools::fromStdString(temp);
     ui->leBaseView->setText(qTemp);
@@ -166,60 +159,29 @@ void TaskSectionView::setUiPrimary()
     //TODO: get next symbol from page
 //    ui->leSymbol->setText();
 
-    ui->sbScale->setValue(m_base->getScale());
-    Base::Vector3d origin = m_base->getOriginalCentroid();
-    ui->sbOrgX->setUnit(Base::Unit::Length);
+    Base::Vector3d origin = m_base->getCentroid();
     ui->sbOrgX->setValue(origin.x);
-    ui->sbOrgY->setUnit(Base::Unit::Length);
     ui->sbOrgY->setValue(origin.y);
-    ui->sbOrgZ->setUnit(Base::Unit::Length);
     ui->sbOrgZ->setValue(origin.z);
-
-    // before the user did not select an orientation,
-    // the section properties cannot be changed
-    this->setToolTip(QObject::tr("Select at first an orientation"));
-    enableAll(false);
-
-    connect(ui->leSymbol, SIGNAL(editingFinished()), this, SLOT(onIdentifierChanged()));
-
-    // the UI file uses keyboardTracking = false so that a recomputation
-    // will only be triggered when the arrow keys of the spinboxes are used
-    connect(ui->sbScale, SIGNAL(valueChanged(double)), this, SLOT(onScaleChanged()));
-    connect(ui->sbOrgX, SIGNAL(valueChanged(double)), this, SLOT(onXChanged()));
-    connect(ui->sbOrgY, SIGNAL(valueChanged(double)), this, SLOT(onYChanged()));
-    connect(ui->sbOrgZ, SIGNAL(valueChanged(double)), this, SLOT(onZChanged()));
 }
 
 void TaskSectionView::setUiEdit()
 {
 //    Base::Console().Message("TSV::setUiEdit()\n");
-    setWindowTitle(QObject::tr("Edit Section View"));
+    setWindowTitle(QObject::tr("Edit SectionView"));
 
     std::string temp = m_base->getNameInDocument();
     QString qTemp    = Base::Tools::fromStdString(temp);
     ui->leBaseView->setText(qTemp);
 
     temp = m_section->SectionSymbol.getValue();
-    qTemp = Base::Tools::fromStdString(temp);
+    qTemp    = Base::Tools::fromStdString(temp);
     ui->leSymbol->setText(qTemp);
-    ui->sbScale->setValue(m_section->getScale());
     
     Base::Vector3d origin = m_section->SectionOrigin.getValue();
-    ui->sbOrgX->setUnit(Base::Unit::Length);
     ui->sbOrgX->setValue(origin.x);
-    ui->sbOrgY->setUnit(Base::Unit::Length);
     ui->sbOrgY->setValue(origin.y);
-    ui->sbOrgZ->setUnit(Base::Unit::Length);
     ui->sbOrgZ->setValue(origin.z);
-
-    connect(ui->leSymbol, SIGNAL(editingFinished()), this, SLOT(onIdentifierChanged()));
-
-    // the UI file uses keyboardTracking = false so that a recomputation
-    // will only be triggered when the arrow keys of the spinboxes are used
-    connect(ui->sbScale, SIGNAL(valueChanged(double)), this, SLOT(onScaleChanged()));
-    connect(ui->sbOrgX, SIGNAL(valueChanged(double)), this, SLOT(onXChanged()));
-    connect(ui->sbOrgY, SIGNAL(valueChanged(double)), this, SLOT(onYChanged()));
-    connect(ui->sbOrgZ, SIGNAL(valueChanged(double)), this, SLOT(onZChanged()));
 }
 
 //save the start conditions
@@ -228,11 +190,10 @@ void TaskSectionView::saveSectionState()
 //    Base::Console().Message("TSV::saveSectionState()\n");
     if (m_section != nullptr) {
         m_saveSymbol = m_section->SectionSymbol.getValue();
-        m_saveScale  = m_section->getScale();
         m_saveNormal = m_section->SectionNormal.getValue();
         m_saveDirection = m_section->Direction.getValue();
         m_saveOrigin    = m_section->SectionOrigin.getValue();
-        m_saveDirName   = m_section->SectionDirection.getValueAsString();
+        m_saveDirName   = m_section->SectionDirection.getValue();
         m_saved = true;
     }
 }
@@ -243,7 +204,6 @@ void TaskSectionView::restoreSectionState()
 //    Base::Console().Message("TSV::restoreSectionState()\n");
     if (m_section != nullptr) {
         m_section->SectionSymbol.setValue(m_saveSymbol);
-        m_section->Scale.setValue(m_saveScale);
         m_section->SectionNormal.setValue(m_saveNormal);
         m_section->Direction.setValue(m_saveDirection);
         m_section->SectionOrigin.setValue(m_saveOrigin);
@@ -251,66 +211,59 @@ void TaskSectionView::restoreSectionState()
     }
 }
 
-void TaskSectionView::onUpClicked()
+void TaskSectionView::blockButtons(bool b)
+{
+    Q_UNUSED(b);
+}
+
+// cardinal: 0 - left, 1 - right, 2 - up, 3 - down
+void TaskSectionView::onUpClicked(bool b)
 {
 //    Base::Console().Message("TSV::onUpClicked()\n");
+    Q_UNUSED(b);
     checkAll(false);
     ui->pbUp->setChecked(true);
     applyQuick("Up");
 }
 
-void TaskSectionView::onDownClicked()
+void TaskSectionView::onDownClicked(bool b)
 {
 //    Base::Console().Message("TSV::onDownClicked()\n");
+    Q_UNUSED(b);
     checkAll(false);
     ui->pbDown->setChecked(true);
     applyQuick("Down");
 }
 
-void TaskSectionView::onLeftClicked()
+void TaskSectionView::onLeftClicked(bool b)
 {
 //    Base::Console().Message("TSV::onLeftClicked()\n");
     checkAll(false);
     ui->pbLeft->setChecked(true);
+    Q_UNUSED(b);
     applyQuick("Left");
 }
 
-void TaskSectionView::onRightClicked()
+void TaskSectionView::onRightClicked(bool b)
 {
 //    Base::Console().Message("TSV::onRightClicked()\n");
+    Q_UNUSED(b);
     checkAll(false);
     ui->pbRight->setChecked(true);
     applyQuick("Right");
 }
 
-void TaskSectionView::onIdentifierChanged()
+bool TaskSectionView::apply()
 {
-    checkAll(false);
-    apply();
-}
-
-void TaskSectionView::onScaleChanged()
-{
-    checkAll(false);
-    apply();
-}
-
-void TaskSectionView::onXChanged()
-{
-    checkAll(false);
-    apply();
-}
-
-void TaskSectionView::onYChanged()
-{
-    checkAll(false);
-    apply();
-}
-
-void TaskSectionView::onZChanged()
-{
-    checkAll(false);
-    apply();
+//    Base::Console().Message("TSV::apply()\n");
+    if (m_dirName.empty()) {
+        std::string msg = Base::Tools::toStdString(tr("TSV::apply - No section direction picked yet"));
+        Base::Console().Error((msg + "\n").c_str());
+    } else {
+        checkAll(false);
+        applyQuick(m_dirName);
+    }
+    return true;
 }
 
 void TaskSectionView::checkAll(bool b)
@@ -321,241 +274,166 @@ void TaskSectionView::checkAll(bool b)
     ui->pbLeft->setChecked(b);
 }
 
-void TaskSectionView::enableAll(bool b)
-{
-    ui->leSymbol->setEnabled(b);
-    ui->sbScale->setEnabled(b);
-    ui->sbOrgX->setEnabled(b);
-    ui->sbOrgY->setEnabled(b);
-    ui->sbOrgZ->setEnabled(b);
-}
-
 //******************************************************************************
-bool TaskSectionView::apply(void)
-{
-//    Base::Console().Message("TSV::apply() - m_dirName: %s\n", m_dirName.c_str());
-    if (m_dirName.empty()) {
-        std::string msg = 
-            Base::Tools::toStdString(tr("Nothing to apply. No section direction picked yet"));
-        Base::Console().Error((msg + "\n").c_str());
-        return false;
-    }
-    if (m_section == nullptr) {          //didn't create the feature yet
-        return false;
-    }
-
-    checkAll(false);
-    applyQuick(m_dirName);
-    return true;
-}
-
 void TaskSectionView::applyQuick(std::string dir)
 {
 //    Base::Console().Message("TSV::applyQuick(%s)\n", dir.c_str());
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Apply Quick"));
+    m_dirName = dir;
+    Gui::Command::openCommand("Apply Quick");
     m_dirName = dir;
     if (m_section == nullptr) {
-        createSectionView();
+        m_section = createSectionView();
     }
-    if (isSectionValid()) {
-        updateSectionView();
-        m_section->recomputeFeature();
-        this->setToolTip(QObject::tr("Select at first an orientation"));
-        // we can in any case enable all objects in the dialog
-        // and remove the dialog-wide tooltip if there was one
-        enableAll(true);
-        this->setToolTip(QString());
-    } else {
-        failNoObject(m_sectionName);
-    }
-
-    if (isBaseValid()) {
-        m_base->requestPaint();
-        return;
-    }
+    updateSectionView();
+    m_section->recomputeFeature();
+//    m_section->requestPaint();
+    m_base->requestPaint();
 }
 
 void TaskSectionView::applyAligned(void) 
 {
     Base::Console().Message("TSV::applyAligned() - not implemented yet\n");
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Apply Aligned"));
+    Gui::Command::openCommand("Apply Aligned");
     m_dirName = "Aligned";
     //fiddle with directions here
 
+//    m_section->recomputeFeature(); //????
     m_section->requestPaint();
     m_base->requestPaint();
 }
 
-//*********************************************************************
-
-//pointer to created view is not returned, but stored in m_section
-void TaskSectionView::createSectionView(void)
+TechDraw::DrawViewSection* TaskSectionView::createSectionView(void)
 {
 //    Base::Console().Message("TSV::createSectionView()\n");
-    if (!isBaseValid()) {
-        failNoObject(m_baseName);
-        return;
-    }
 
     std::string sectionName;
     std::string baseName = m_base->getNameInDocument();
-    double baseScale = m_base->getScale();
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create SectionView"));
+    Gui::Command::openCommand("Create SectionView");
+    TechDraw::DrawViewSection* newSection = nullptr;
     if (m_section == nullptr) {
-        m_sectionName = m_base->getDocument()->getUniqueObjectName("SectionView");
+        sectionName = m_base->getDocument()->getUniqueObjectName("DrawViewSection");
         std::string sectionType = "TechDraw::DrawViewSection";
 
-        Command::doCommand(Command::Doc,"App.activeDocument().addObject('%s','%s')",
-                           sectionType.c_str(),m_sectionName.c_str());
-        Command::doCommand(Command::Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",
-                           m_savePageName.c_str(), m_sectionName.c_str());
-        Command::doCommand(Command::Doc,"App.activeDocument().%s.BaseView = App.activeDocument().%s",
-                           m_sectionName.c_str(),baseName.c_str());
-        Command::doCommand(Command::Doc,"App.activeDocument().%s.Source = App.activeDocument().%s.Source",
-                           m_sectionName.c_str(),baseName.c_str());
-        Command::doCommand(Command::Doc,
-                           "App.activeDocument().%s.SectionOrigin = FreeCAD.Vector(%.3f,%.3f,%.3f)",
-                           m_sectionName.c_str(), 
-                           ui->sbOrgX->value().getValue(),
-                           ui->sbOrgY->value().getValue(),
-                           ui->sbOrgZ->value().getValue());
-        Command::doCommand(Command::Doc,"App.activeDocument().%s.Scale = %0.6f",
-                           m_sectionName.c_str(), baseScale);
+        TechDraw::DrawPage* page = m_base->findParentPage();
+        std::string pageName = page->getNameInDocument();
 
-        App::DocumentObject* newObj = m_base->getDocument()->getObject(m_sectionName.c_str());
-        m_section = dynamic_cast<TechDraw::DrawViewSection*>(newObj);
+        Command::doCommand(Command::Doc,"App.activeDocument().addObject('%s','%s')",
+                           sectionType.c_str(),sectionName.c_str());
+        Command::doCommand(Command::Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",
+                           pageName.c_str(), sectionName.c_str());
+        Command::doCommand(Command::Doc,"App.activeDocument().%s.BaseView = App.activeDocument().%s",
+                           sectionName.c_str(),baseName.c_str());
+        Command::doCommand(Command::Doc,"App.activeDocument().%s.Source = App.activeDocument().%s.Source",
+                           sectionName.c_str(),baseName.c_str());
+        App::DocumentObject* newObj = m_base->getDocument()->getObject(sectionName.c_str());
+        newSection = dynamic_cast<TechDraw::DrawViewSection*>(newObj);
         if ( (newObj == nullptr) ||
-             (m_section == nullptr) ) {
+             (newSection == nullptr) ) {
             throw Base::RuntimeError("TaskSectionView - new section object not found");
          }
     }
-    Gui::Command::updateActive();
-    Gui::Command::commitCommand();
-
-    return;
+    return newSection;
 }
 
 void TaskSectionView::updateSectionView(void)
 {
-//    Base::Console().Message("TSV::updateSectionView() - m_sectionName: %s\n", m_sectionName.c_str());
-    if (!isSectionValid()) {
-        failNoObject(m_sectionName);
-        return;
-    }
-
+//    Base::Console().Message("TSV::updateSectionView()\n");
     if (m_section != nullptr) {
+        std::string sectionName = m_section->getNameInDocument();
         Command::doCommand(Command::Doc,"App.activeDocument().%s.SectionDirection = '%s'",
-                           m_sectionName.c_str(),m_dirName.c_str());
+                           sectionName.c_str(),m_dirName.c_str());
         Command::doCommand(Command::Doc,
                            "App.activeDocument().%s.SectionOrigin = FreeCAD.Vector(%.3f,%.3f,%.3f)",
-                           m_sectionName.c_str(), 
+                           sectionName.c_str(), 
                            ui->sbOrgX->value().getValue(),
                            ui->sbOrgY->value().getValue(),
                            ui->sbOrgZ->value().getValue());
         QString qTemp    = ui->leSymbol->text();
         std::string temp = Base::Tools::toStdString(qTemp);
         Command::doCommand(Command::Doc,"App.activeDocument().%s.SectionSymbol = '%s'",
-                           m_sectionName.c_str(),
+                           sectionName.c_str(),
                            temp.c_str());
-        std::string lblText = "Section " +
-                              temp + 
-                              " - " +
-                              temp;
-        Command::doCommand(Command::Doc,"App.activeDocument().%s.Label = '%s'",
-                           m_sectionName.c_str(),
-                           lblText.c_str());
-        Command::doCommand(Command::Doc,"App.activeDocument().%s.Scale = %0.6f",
-                           m_sectionName.c_str(),
-                           ui->sbScale->value().getValue());
-        m_section->setCSFromBase(m_dirName.c_str());
+        m_section->setNormalFromBase(m_dirName.c_str());
     }
 }
 
-void TaskSectionView::failNoObject(std::string objectName) 
+void TaskSectionView::saveButtons(QPushButton* btnOK,
+                             QPushButton* btnCancel,
+                             QPushButton* btnApply)
 {
-    QString qObjectName = Base::Tools::fromStdString(objectName);
-    QString msg = tr("Can not continue. Object * %1 * not found.").arg(qObjectName);
-    QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Operation Failed"), msg);
-    Gui::Control().closeDialog();
-    m_abort = true;
+    m_btnOK = btnOK;
+    m_btnCancel = btnCancel;
+    m_btnApply = btnApply;
 }
 
-bool TaskSectionView::isBaseValid(void)
-{
-    bool result = true;
-    if (m_base == nullptr) {
-        result = false;
-    } else {
-        App::DocumentObject* baseObj = m_doc->getObject(m_saveBaseName.c_str());
-        if (baseObj == nullptr) {
-            result = false;
-        }
-    }
-    return result;
-}
-
-bool TaskSectionView::isSectionValid(void)
-{
-    bool result = true;
-    if (m_section == nullptr) {
-        result = false;
-    } else {
-        App::DocumentObject* sectionObj = m_doc->getObject(m_sectionName.c_str());
-        if (sectionObj == nullptr) {
-            result = false;
-        }
-    }
-    return result;
-}
+//std::string TaskSectionView::prefViewSection()
+//{
+////    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
+////                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/Section");
+////                                    
+////    std::string prefString = hGrp->GetASCII("SectionPref", "default");
+////    return prefString;
+//}
 
 //******************************************************************************
 
 bool TaskSectionView::accept()
 {
 //    Base::Console().Message("TSV::accept()\n");
-    if (m_abort) {
-        return true;
+    if (m_createMode) {
+        if (m_section == nullptr) {
+            apply();
+        }
+        Gui::Command::updateActive();
+        Gui::Command::commitCommand();
+    } else {
+        Gui::Command::openCommand("Edit SectionView");
+        try {
+            updateSectionView();
+        }
+        catch (...) {
+            Base::Console().Error("TSV::accept - failed to update section\n");
+        }
+
+        Gui::Command::updateActive();
+        Gui::Command::commitCommand();
     }
-    apply();
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+    if (m_section != nullptr) {
+//        m_section->recomputeFeature();
+        m_section->requestPaint();
+    }
+    if (m_base != nullptr) {
+        m_base->requestPaint();
+    }
     return true;
 }
 
 bool TaskSectionView::reject()
 {
 //    Base::Console().Message("TSV::reject()\n");
-    if (m_section == nullptr) {                 //no section created, nothing to undo
-        Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
-        return false;
-    }
-
-    if (!isSectionValid()) {                    //section !exist. nothing to undo 
-        if (isBaseValid()) {
+    std::string PageName = m_base->findParentPage()->getNameInDocument();
+    if (m_section != nullptr) {
+        if (m_createMode) {
+            std::string SectionName = m_section->getNameInDocument();
+            Gui::Command::doCommand(Gui::Command::Gui,
+                                    "App.activeDocument().%s.removeView(App.activeDocument().%s)",
+                                    PageName.c_str(),SectionName.c_str());
+            Gui::Command::doCommand(Gui::Command::Gui,
+                                    "App.activeDocument().removeObject('%s')",
+                                    SectionName.c_str());
+        } else {
+            Base::Console().Message("TSV::reject() - edit mode\n");
+            restoreSectionState();
+            //check undo stack?
+            m_section->requestPaint();
             m_base->requestPaint();
         }
-        Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
-        return false;
+
     }
 
-    if (m_createMode) {
-        std::string SectionName = m_section->getNameInDocument();
-        Gui::Command::doCommand(Gui::Command::Gui,
-                                "App.activeDocument().%s.removeView(App.activeDocument().%s)",
-                                m_savePageName.c_str(),SectionName.c_str());
-        Gui::Command::doCommand(Gui::Command::Gui,
-                                "App.activeDocument().removeObject('%s')",
-                                SectionName.c_str());
-    } else {
-        restoreSectionState();
-        m_section->recomputeFeature();
-        m_section->requestPaint();
-    }
-
-    if (isBaseValid()) {
-        m_base->requestPaint();
-    }
-
+    Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().recompute()");
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
 
     return false;
@@ -573,7 +451,7 @@ TaskDlgSectionView::TaskDlgSectionView(TechDraw::DrawViewPart* base) :
     TaskDialog()
 {
     widget  = new TaskSectionView(base);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-SectionView"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-viewsection"),
                                          widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
@@ -583,7 +461,7 @@ TaskDlgSectionView::TaskDlgSectionView(TechDraw::DrawViewSection* section) :
     TaskDialog()
 {
     widget  = new TaskSectionView(section);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-SectionView"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-viewsection"),
                                          widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
@@ -597,9 +475,27 @@ void TaskDlgSectionView::update()
     //widget->updateTask();
 }
 
+void TaskDlgSectionView::modifyStandardButtons(QDialogButtonBox* box)
+{
+    QPushButton* btnOK = box->button(QDialogButtonBox::Ok);
+    QPushButton* btnCancel = box->button(QDialogButtonBox::Cancel);
+    QPushButton* btnApply = box->button(QDialogButtonBox::Apply);
+    widget->saveButtons(btnOK, btnCancel, btnApply);
+}
+
+
 //==== calls from the TaskView ===============================================================
 void TaskDlgSectionView::open()
 {
+}
+
+void TaskDlgSectionView::clicked(int i)
+{
+//    Q_UNUSED(i);
+//    Base::Console().Message("TDSV::clicked(%X)\n",i);
+    if (i == QMessageBox::Apply) {
+        widget->apply();
+    }
 }
 
 bool TaskDlgSectionView::accept()
@@ -607,6 +503,13 @@ bool TaskDlgSectionView::accept()
     widget->accept();
     return true;
 }
+
+//bool TaskDlgSectionView::apply()
+//{
+//    Base::Console().Message("TDSV::apply()\n");
+//    widget->apply();
+//    return true;
+//}
 
 bool TaskDlgSectionView::reject()
 {

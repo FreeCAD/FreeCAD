@@ -1,6 +1,7 @@
+''' Unit test for the Draft module'''
+
 # ***************************************************************************
-# *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
-# *   Copyright (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
+# *   (c) Yorik van Havre <yorik@uncreated.net> 2013                        *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -20,100 +21,148 @@
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
-# ***************************************************************************
-"""Unit tests for the Draft workbench, non-GUI only.
+# ***************************************************************************/
 
-From the terminal, run the following:
-FreeCAD -t TestDraft
+import FreeCAD, os, unittest, FreeCADGui, Draft
 
-From within FreeCAD, run the following:
-import Test, TestDraft
-Test.runTestsFromModule(TestDraft)
 
-For the GUI-only tests see TestDraftGui.
-"""
+class DraftTest(unittest.TestCase):
 
-# ===========================================================================
-# The unit tests can be run from the operating system terminal, or from
-# within FreeCAD itself.
-#
-# The tests can be run using the full 'FreeCAD' executable
-# or the console only 'FreeCADCmd' executable. In the latter case
-# some functions cannot be tested as the view providers (visual properties)
-# are not available.
-#
-# ===========================================================================
-# In the following, first the command to run the test from the operating
-# system terminal is listed, followed by the commands to run the test
-# from the Python console within FreeCAD.
-#
-# ===========================================================================
-# Run all Draft tests
-# ----
-# FreeCAD -t TestDraft
-#
-# >>> import Test, TestDraft
-# >>> Test.runTestsFromModule(TestDraft)
-#
-# ===========================================================================
-# Run tests from a specific module (all classes within this module)
-# ----
-# FreeCAD -t drafttests.test_creation
-#
-# >>> import Test, drafttests.test_creation
-# >>> Test.runTestsFromModule(drafttests.test_creation)
-#
-# ===========================================================================
-# Run tests from a specific class within a module
-# ----
-# FreeCAD -t drafttests.test_creation.DraftCreation
-#
-# >>> import Test, drafttests.test_creation
-# >>> Test.runTestsFromClass(drafttests.test_creation.DraftCreation)
-#
-# ===========================================================================
-# Run a specific unit test from a class within a module
-# ----
-# FreeCAD -t drafttests.test_creation.DraftCreation.test_line
-#
-# >>> import unittest
-# >>> one_test = "drafttests.test_creation.DraftCreation.test_line"
-# >>> all_tests = unittest.TestLoader().loadTestsFromName(one_test)
-# >>> unittest.TextTestRunner().run(all_tests)
+    def setUp(self):
+        '''Set up a new document to hold the tests'''
+        if FreeCAD.ActiveDocument:
+            if FreeCAD.ActiveDocument.Name != "DraftTest":
+                FreeCAD.newDocument("DraftTest")
+        else:
+            FreeCAD.newDocument("DraftTest")
+        FreeCAD.setActiveDocument("DraftTest")
 
-# ===========================================================================
-# When the full test is run
-#     FreeCAD -t TestDraft
-#
-# all classes that are found in this file are run.
-#
-# We import the classes from submodules. These classes contain
-# the actual unit tests.
-#
-# The classes will be run in alphabetical order. So, to force
-# a particular order of testing we import them with a name
-# that follows a defined alphanumeric sequence.
+    def testPivy(self):
+        '''Test Pivy'''
+        FreeCAD.Console.PrintLog('Checking Pivy...\n')
+        from pivy import coin
+        c = coin.SoCube()
+        FreeCADGui.ActiveDocument.ActiveView.getSceneGraph().addChild(c)
+        self.failUnless(c, "Pivy is not working properly")
 
-# Import tests
-from drafttests.test_import import DraftImport as DraftTest01
+    # Creation tools
 
-# Objects tests
-from drafttests.test_creation import DraftCreation as DraftTest02
-from drafttests.test_modification import DraftModification as DraftTest03
+    def testLine(self):
+        FreeCAD.Console.PrintLog('Checking Draft Line...\n')
+        Draft.makeLine(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(-2, 0, 0))
+        self.failUnless(FreeCAD.ActiveDocument.getObject("Line"),
+                        "Draft Line failed")
 
-# Handling of file formats tests
-from drafttests.test_svg import DraftSVG as DraftTest04
-from drafttests.test_dxf import DraftDXF as DraftTest05
-from drafttests.test_dwg import DraftDWG as DraftTest06
-# from drafttests.test_oca import DraftOCA as DraftTest07
-# from drafttests.test_airfoildat import DraftAirfoilDAT as DraftTest08
+    def testWire(self):
+        FreeCAD.Console.PrintLog('Checking Draft Wire...\n')
+        Draft.makeWire([FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(2, 0, 0),
+                        FreeCAD.Vector(2, 2, 0)])
+        self.failUnless(FreeCAD.ActiveDocument.getObject("Wire"),
+                        "Draft Wire failed")
 
-# Use the modules so that code checkers don't complain (flake8)
-True if DraftTest01 else False
-True if DraftTest02 else False
-True if DraftTest03 else False
-True if DraftTest04 else False
-True if DraftTest05 else False
-True if DraftTest06 else False
-# True if DraftTest07 else False
-# True if DraftTest08 else False
+    def testBSpline(self):
+        FreeCAD.Console.PrintLog('Checking Draft BSpline...\n')
+        Draft.makeBSpline([FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(2, 0, 0),
+                           FreeCAD.Vector(2, 2, 0)])
+        self.failUnless(FreeCAD.ActiveDocument.getObject("BSpline"),
+                        "Draft BSpline failed")
+
+    def testRectangle(self):
+        FreeCAD.Console.PrintLog('Checking Draft Rectangle...\n')
+        Draft.makeRectangle(4, 2)
+        self.failUnless(FreeCAD.ActiveDocument.getObject("Rectangle"),
+                        "Draft Rectangle failed")
+
+    def testArc(self):
+        FreeCAD.Console.PrintLog('Checking Draft Arc...\n')
+        Draft.makeCircle(2, startangle=0, endangle=90)
+        self.failUnless(FreeCAD.ActiveDocument.getObject("Arc"),
+                        "Draft Arc failed")
+
+    def testCircle(self):
+        FreeCAD.Console.PrintLog('Checking Draft Circle...\n')
+        Draft.makeCircle(3)
+        self.failUnless(FreeCAD.ActiveDocument.getObject("Circle"),
+                        "Draft Circle failed")
+
+    def testPolygon(self):
+        FreeCAD.Console.PrintLog('Checking Draft Polygon...\n')
+        Draft.makePolygon(5, 5)
+        self.failUnless(FreeCAD.ActiveDocument.getObject("Polygon"),
+                        "Draft Polygon failed")
+
+    def testEllipse(self):
+        FreeCAD.Console.PrintLog('Checking Draft Ellipse...\n')
+        Draft.makeEllipse(5, 3)
+        self.failUnless(FreeCAD.ActiveDocument.getObject("Ellipse"),
+                        "Draft Ellipse failed")
+
+    def testPoint(self):
+        FreeCAD.Console.PrintLog('Checking Draft Point...\n')
+        Draft.makePoint(5, 3, 2)
+        self.failUnless(FreeCAD.ActiveDocument.getObject("Point"),
+                        "Draft Point failed")
+
+    def testText(self):
+        FreeCAD.Console.PrintLog('Checking Draft Text...\n')
+        Draft.makeText("Testing Draft")
+        self.failUnless(FreeCAD.ActiveDocument.getObject("Text"),
+                        "Draft Text failed")
+
+    # def testShapeString(self):
+    #    '''Not working at this moment because it needs a font file'''
+    #    FreeCAD.Console.PrintLog('Checking Draft ShapeString...\n')
+    #    Draft.makeShapeString("Testing Draft")
+    #    self.failUnless(FreeCAD.ActiveDocument.getObject("ShapeString"),
+    #                    "Draft ShapeString failed")
+
+    def testDimension(self):
+        FreeCAD.Console.PrintLog('Checking Draft Dimension...\n')
+        Draft.makeDimension(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(2, 0, 0),
+                            FreeCAD.Vector(1, -1, 0))
+        self.failUnless(FreeCAD.ActiveDocument.getObject("Dimension"),
+                        "Draft Dimension failed")
+
+    # Modification tools
+
+    def testMove(self):
+        FreeCAD.Console.PrintLog('Checking Draft Move...\n')
+        l = Draft.makeLine(FreeCAD.Vector(0, 0, 0),
+                           FreeCAD.Vector(-2, 0, 0))
+        Draft.move(l, FreeCAD.Vector(2, 0, 0))
+        self.failUnless(l.Start == FreeCAD.Vector(2, 0, 0),
+                        "Draft Move failed")
+
+    def testCopy(self):
+        FreeCAD.Console.PrintLog('Checking Draft Move with copy...\n')
+        l = Draft.makeLine(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(2, 0, 0))
+        l2 = Draft.move(l, FreeCAD.Vector(2, 0, 0), copy=True)
+        self.failUnless(l2, "Draft Move with copy failed")
+
+    def testRotate(self):
+        FreeCAD.Console.PrintLog('Checking Draft Rotate...\n')
+        l = Draft.makeLine(FreeCAD.Vector(2, 0, 0), FreeCAD.Vector(4, 0, 0))
+        FreeCAD.ActiveDocument.recompute()
+        Draft.rotate(l, 90)
+        self.assertTrue(l.Start.isEqual(FreeCAD.Vector(0, 2, 0), 1e-12),
+                        "Draft Rotate failed")
+
+    def testOffset(self):
+        FreeCAD.Console.PrintLog('Checking Draft Offset...\n')
+        r = Draft.makeRectangle(4, 2)
+        FreeCAD.ActiveDocument.recompute()
+        r2 = Draft.offset(r, FreeCAD.Vector(-1, -1, 0), copy=True)
+        self.failUnless(r2, "Draft Offset failed")
+
+    def testCloneOfPart(self):
+        '''Test cloning of parts.
+
+        Test for a bug introduced by changes in attachment code.
+        '''
+        box = FreeCAD.ActiveDocument.addObject("Part::Box", "Box")
+        clone = Draft.clone(box)
+        self.failUnless(clone.hasExtension("Part::AttachExtension"))
+
+    def tearDown(self):
+        FreeCAD.closeDocument("DraftTest")
+        pass

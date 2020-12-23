@@ -48,9 +48,9 @@ public:
     /// destructor
     virtual ~ViewProviderLeader();
 
-    App::PropertyLength             LineWidth;
-    App::PropertyEnumeration        LineStyle;
-    App::PropertyColor              Color;
+    App::PropertyFloat    LineWidth;
+    App::PropertyInteger  LineStyle;
+    App::PropertyColor    Color;
 
     virtual void attach(App::DocumentObject *);
 /*    virtual void setDisplayMode(const char* ModeName);*/
@@ -61,10 +61,6 @@ public:
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
     virtual bool doubleClicked(void);
-    virtual bool onDelete(const std::vector<std::string> &);
-    virtual bool canDelete(App::DocumentObject* obj) const;
-
-    static const char* LineStyleEnums[];
 
     std::vector<App::DocumentObject*> claimChildren(void) const;
 
@@ -74,11 +70,6 @@ public:
 protected:
     double getDefLineWeight(void);
     App::Color getDefLineColor(void);
-    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop);
-
-private:
-    static App::PropertyIntegerConstraint::Constraints LineStyleRange;
-
 };
 
 } // namespace TechDrawGui

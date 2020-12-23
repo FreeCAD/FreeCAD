@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jan Rheinländer                                    *
- *                                   <jrheinlaender@users.sourceforge.net> *
+ *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net>        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -82,11 +81,7 @@ TaskBooleanParameters::TaskBooleanParameters(ViewProviderBoolean *BooleanView,QW
 
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
-    action->setShortcut(QKeySequence::Delete);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
-    // display shortcut behind the context menu entry
-    action->setShortcutVisibleInContextMenu(true);
-#endif
+    action->setShortcut(QString::fromLatin1("Del"));
     ui->listWidgetBodies->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onBodyDeleted()));
     ui->listWidgetBodies->setContextMenuPolicy(Qt::ActionsContextMenu);

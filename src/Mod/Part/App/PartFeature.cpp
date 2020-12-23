@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <sstream>
+
 # include <gp_Trsf.hxx>
 # include <gp_Ax1.hxx>
 # include <BRepBuilderAPI_MakeShape.hxx>
@@ -35,7 +36,6 @@
 # include <TopExp_Explorer.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
 # include <Standard_Failure.hxx>
-# include <Standard_Version.hxx>
 # include <TopoDS_Face.hxx>
 # include <gp_Dir.hxx>
 # include <gp_Pln.hxx> // for Precision::Confusion()
@@ -53,7 +53,7 @@
 #endif
 
 #include <boost/algorithm/string/predicate.hpp>
-#include <boost_bind_bind.hpp>
+#include <boost/bind.hpp>
 #include <Base/Console.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>
@@ -74,7 +74,6 @@
 #include "TopoShapePy.h"
 
 using namespace Part;
-namespace bp = boost::placeholders;
 
 FC_LOG_LEVEL_INIT("Part",true,true)
 
@@ -180,27 +179,16 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
         }
         *pyObj =  Py::new_reference_to(shape2pyshape(ts));
         return const_cast<Feature*>(this);
-    }
-    catch(Standard_Failure &e) {
-        // FIXME: Do not handle the exception here because it leads to a flood of irrelevant and
-        // annoying error messages.
-        // For example: https://forum.freecadweb.org/viewtopic.php?f=19&t=42216
-        // Instead either raise a sub-class of Base::Exception and let it handle by the calling
-        // instance or do simply nothing. For now the error message is degraded to a log message.
+    }catch(Standard_Failure &e) {
         std::ostringstream str;
         Standard_CString msg = e.GetMessageString();
-#if OCC_VERSION_HEX >= 0x070000
-        // Avoid name mangling
-        str << e.DynamicType()->get_type_name() << " ";
-#else
         str << typeid(e).name() << " ";
-#endif
         if (msg) {str << msg;}
         else     {str << "No OCCT Exception Message";}
         str << ": " << getFullName();
         if (subname) 
             str << '.' << subname;
-        FC_LOG(str.str());
+        FC_ERR(str.str());
         return 0;
     }
 }
@@ -223,11 +211,11 @@ struct ShapeCache {
             return;
         inited = true;
         App::GetApplication().signalDeleteDocument.connect(
-                boost::bind(&ShapeCache::slotDeleteDocument, this, bp::_1));
+                boost::bind(&ShapeCache::slotDeleteDocument, this, _1));
         App::GetApplication().signalDeletedObject.connect(
-                boost::bind(&ShapeCache::slotClear, this, bp::_1));
+                boost::bind(&ShapeCache::slotClear, this, _1));
         App::GetApplication().signalChangedObject.connect(
-                boost::bind(&ShapeCache::slotChanged, this, bp::_1,bp::_2));
+                boost::bind(&ShapeCache::slotChanged, this, _1,_2));
     }
 
     void slotDeleteDocument(const App::Document &doc) {
@@ -408,10 +396,9 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
         // not return the linked object when calling getLinkedObject().
         // Therefore, it should be handled here.
         TopoShape baseShape;
-        Base::Matrix4D baseMat;
         std::string op;
         if(link && link->getElementCountValue()) {
-            linked = link->getTrueLinkedObject(false,&baseMat);
+            linked = link->getTrueLinkedObject(false);
             if(linked && linked!=owner) {
                 baseShape = Feature::getTopoShape(linked,0,false,0,0,false,false);
                 // if(!link->getShowElementValue())
@@ -423,7 +410,7 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
             int visible;
             std::string childName;
             App::DocumentObject *parent=0;
-            Base::Matrix4D mat = baseMat;
+            Base::Matrix4D mat;
             App::DocumentObject *subObj=0;
             if(sub.find('.')==std::string::npos)
                 visible = 1;

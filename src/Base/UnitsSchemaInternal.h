@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2009 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
+ *   Copyright (c) 2009 Juergen Riegel  (FreeCAD@juergen-riegel.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -30,7 +30,7 @@
 #include "UnitsSchema.h"
 
 namespace Base {
-
+    
 
 /** The standard units schema
  *  Here is defined what internal (base) units FreeCAD uses.

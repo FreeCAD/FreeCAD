@@ -27,7 +27,6 @@
 # include <App/DocumentObject.h>
 # include <App/FeaturePython.h>
 # include <App/PropertyLinks.h>
-# include <Base/UnitsApi.h>
 
 #include "DrawView.h"
 
@@ -87,7 +86,7 @@ struct arcPoints
 
 class TechDrawExport DrawViewDimension : public TechDraw::DrawView
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawViewDimension);
+    PROPERTY_HEADER(TechDraw::DrawViewDimension);
 
 public:
     /// Constructor
@@ -102,52 +101,38 @@ public:
     App::PropertyBool              TheoreticalExact;
     App::PropertyBool              Inverted;
     App::PropertyString            FormatSpec;
-    App::PropertyString            FormatSpecUnderTolerance;
-    App::PropertyString            FormatSpecOverTolerance;
     App::PropertyBool              Arbitrary;
-    App::PropertyBool              ArbitraryTolerances;
-    App::PropertyQuantity          OverTolerance;
-    App::PropertyQuantity          UnderTolerance;
+    App::PropertyFloat             OverTolerance;
+    App::PropertyFloat             UnderTolerance;
 
-    enum RefType{
-            invalidRef,
-            oneEdge,
-            twoEdge,
-            twoVertex,
-            vertexEdge,
-            threeVertex
-        };
-
-
-    short mustExecute() const override;
-    virtual bool has2DReferences(void) const;
-    virtual bool has3DReferences(void) const;
+    short mustExecute() const;
+    bool has2DReferences(void) const;
+    bool has3DReferences(void) const;
     bool hasTolerance(void) const;
 
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void) override;
+    virtual App::DocumentObjectExecReturn *execute(void);
     //@}
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const override {
+    virtual const char* getViewProviderName(void) const {
         return "TechDrawGui::ViewProviderDimension";
     }
     //return PyObject as DrawViewDimensionPy
-    virtual PyObject *getPyObject(void) override;
+    virtual PyObject *getPyObject(void);
 
-    virtual std::pair<std::string, std::string> getFormattedToleranceValues(int partial = 0);
-    virtual std::string getFormattedDimensionValue(int partial = 0);
-    virtual std::string formatValue(qreal value, QString qFormatSpec, int partial = 0);
-
+    virtual std::string getFormatedValue(int partial = 0);
     virtual double getDimValue();
-    QStringList getPrefixSuffixSpec(QString fSpec);
-
-    virtual DrawViewPart* getViewPart() const;
-    virtual QRectF getRect() const override { return QRectF(0,0,1,1);}          //pretend dimensions always fit!
-    virtual int getRefType() const;             //Vertex-Vertex, Edge, Edge-Edge
-    static int getRefTypeSubElements(const std::vector<std::string> &);             //Vertex-Vertex, Edge, Edge-Edge
+    DrawViewPart* getViewPart() const;
+    virtual QRectF getRect() const { return QRectF(0,0,1,1);}                   //pretend dimensions always fit!
+    static int getRefType1(const std::string s);
+    static int getRefType2(const std::string s1, const std::string s2);
+    static int getRefType3(const std::string g1,
+                           const std::string g2,
+                           const std::string g3);
+    int getRefType() const;                                                     //Vertex-Vertex, Edge, Edge-Edge
     void setAll3DMeasurement();
     void clear3DMeasurements(void);
     virtual bool checkReferences2D(void) const;
@@ -155,23 +140,15 @@ public:
     arcPoints getArcPoints(void) {return m_arcPoints; }
     anglePoints getAnglePoints(void) {return m_anglePoints; }
     bool leaderIntersectsArc(Base::Vector3d s, Base::Vector3d pointOnCircle);
-
-    bool isMultiValueSchema(void) const;
-
-    std::string getBaseLengthUnit(Base::UnitSystem system);
-
-    pointPair getArrowPositions(void);
-    void saveArrowPositions(const Base::Vector2d positions[]);
-
-    bool showUnits() const;
-    bool useDecimals() const;
+    bool references(std::string geomName) const;
 
 protected:
-    virtual void handleChangedPropertyType(Base::XMLReader &, const char * , App::Property * ) override;
-    virtual void onChanged(const App::Property* prop) override;
-    virtual void onDocumentRestored() override;
+    virtual void onChanged(const App::Property* prop);
+    virtual void onDocumentRestored();
+    bool showUnits() const;
+    bool useDecimals() const;
     std::string getPrefix() const;
-    std::string getDefaultFormatSpec(bool isToleranceFormat = false) const;
+    std::string getDefaultFormatSpec() const;
     virtual pointPair getPointsOneEdge();
     virtual pointPair getPointsTwoEdges();
     virtual pointPair getPointsTwoVerts();
@@ -185,15 +162,13 @@ protected:
                      Base::Vector3d e2) const;
     pointPair closestPoints(TopoDS_Shape s1,
                             TopoDS_Shape s2) const;
-    pointPair   m_linearPoints;
-    pointPair   m_arrowPositions;
 
 private:
     static const char* TypeEnums[];
     static const char* MeasureTypeEnums[];
-    void dumpRefs2D(const char* text) const;
+    void dumpRefs2D(char* text) const;
     //Dimension "geometry"
-/*    pointPair   m_linearPoints;*/
+    pointPair   m_linearPoints;
     arcPoints   m_arcPoints;
     anglePoints m_anglePoints;
     bool        m_hasGeometry;

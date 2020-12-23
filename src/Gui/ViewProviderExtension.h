@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2016 Stefan Tröger <stefantroeger@gmx.net>              *
+ *   Copyright (c) Stefan Tröger          (stefantroeger@gmx.net) 2016     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -54,8 +54,8 @@ public:
 
     virtual bool extensionOnDelete(const std::vector<std::string> &){ return true;}
     virtual void extensionBeforeDelete(){}
-
-    virtual std::vector<App::DocumentObject*> extensionClaimChildren(void) const {
+ 
+    virtual std::vector<App::DocumentObject*> extensionClaimChildren(void) const { 
         return std::vector<App::DocumentObject*>(); }
 
     virtual bool extensionCanDragObjects() const { return false; }
@@ -65,14 +65,14 @@ public:
     virtual bool extensionCanDropObject(App::DocumentObject*) const { return true; }
     virtual bool extensionCanDragAndDropObject(App::DocumentObject*) const { return true; }
     virtual void extensionDropObject(App::DocumentObject*) { }
-    virtual bool extensionCanDropObjectEx(App::DocumentObject *, App::DocumentObject *,
+    virtual bool extensionCanDropObjectEx(App::DocumentObject *, App::DocumentObject *, 
             const char *, const std::vector<std::string> &) const
         { return false; }
-    virtual std::string extensionDropObjectEx(App::DocumentObject *obj, App::DocumentObject *,
-            const char *, const std::vector<std::string> &)
+    virtual std::string extensionDropObjectEx(App::DocumentObject *obj, App::DocumentObject *, 
+            const char *, const std::vector<std::string> &) 
         { extensionDropObject(obj); return std::string(); }
 
-    virtual int extensionReplaceObject(App::DocumentObject* /*oldValue*/, App::DocumentObject* /*newValue*/)
+    virtual int extensionReplaceObject(App::DocumentObject* /*oldValue*/, App::DocumentObject* /*newValue*/) 
         { return -1; }
 
     /// Hides the view provider
@@ -89,18 +89,10 @@ public:
     virtual void extensionReattach(App::DocumentObject* ) { }
     virtual void extensionSetDisplayMode(const char* ) { }
     virtual std::vector<std::string> extensionGetDisplayModes(void) const {return std::vector<std::string>();}
-    virtual void extensionSetupContextMenu(QMenu*, QObject*, const char*) {}
 
     //update data of extended opject
     virtual void extensionUpdateData(const App::Property*);
-    virtual PyObject* getExtensionPyObject();
 
-    void setIgnoreOverlayIcon(bool on) {
-        m_ignoreOverlayIcon = on;
-    }
-    bool ignoreOverlayIcon() const {
-        return m_ignoreOverlayIcon;
-    }
     virtual QIcon extensionMergeOverlayIcons(const QIcon & orig) const {return orig;}
 
     virtual void extensionStartRestoring() {}
@@ -108,9 +100,8 @@ public:
 
     virtual bool extensionGetElementPicked(const SoPickedPoint *, std::string &) const {return false;}
     virtual bool extensionGetDetailPath(const char *, SoFullPath *, SoDetail *&) const {return false;}
-
+    
 private:
-    bool m_ignoreOverlayIcon = false;
   //Gui::ViewProviderDocumentObject* m_viewBase = nullptr;
 };
 

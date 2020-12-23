@@ -90,8 +90,6 @@ public:
                                      bool large_arc_flag, bool sweep_flag,
                                      double x, double y,
                                      double curx, double cury);
-    void setExporting(bool b) { m_isExporting = b; }
-    bool getExporting(void) { return m_isExporting; }
 
 protected:
     QPainterPath drawPainterPath(TechDraw::BaseGeom *baseGeom) const;
@@ -108,10 +106,10 @@ protected:
     bool prefFaceEdges(void);
     bool prefPrintCenters(void);
 
-    bool formatGeomFromCosmetic(std::string cTag, QGIEdge* item);
-    bool formatGeomFromCenterLine(std::string cTag, QGIEdge* item);
 
-    bool m_isExporting;
+    bool formatGeomFromCosmetic(int sourceIndex, QGIEdge* item);
+    bool formatGeomFromCenterLine(int sourceIndex, QGIEdge* item);
+
 
 private:
     QList<QGraphicsItem*> deleteItems;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="de" sourcelanguage="en">
+<TS version="2.0" language="de" sourcelanguage="en">
   <context>
     <name>StartPage</name>
     <message>
@@ -82,7 +82,7 @@ Wie Sie FreeCAD selbst kompilieren können, der FreeCAD-Quellcode strukturiert i
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="57"/>
       <source>Manual</source>
-      <translation>Anleitung</translation>
+      <translation>Dokumentation</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="58"/>

@@ -24,18 +24,17 @@
 #ifndef PARTGUI_DIALOG_DLGSETTINGSOBJECTCOLOR_H
 #define PARTGUI_DIALOG_DLGSETTINGSOBJECTCOLOR_H
 
+#include "ui_DlgSettingsObjectColor.h"
 #include <Gui/PropertyPage.h>
-#include <memory>
 
 namespace PartGui {
-class Ui_DlgSettingsObjectColor;
 
 /**
  * The DlgSettingsObjectColor class implements a preference page to change color settings
  * for data objects.
  * @author Werner Mayer
  */
-class DlgSettingsObjectColor : public Gui::Dialog::PreferencePage
+class DlgSettingsObjectColor : public Gui::Dialog::PreferencePage, public Ui_DlgSettingsObjectColor
 { 
   Q_OBJECT
 
@@ -48,9 +47,6 @@ public:
 
 protected:
   void changeEvent(QEvent *e);
-
-private:
-  std::unique_ptr<Ui_DlgSettingsObjectColor> ui;
 };
 
 } // namespace Gui

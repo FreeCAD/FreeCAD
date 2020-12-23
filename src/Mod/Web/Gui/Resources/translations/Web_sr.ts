@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="sr" sourcelanguage="en">
+<TS version="2.0" language="sr" sourcelanguage="en">
   <context>
     <name>CmdWebBrowserBack</name>
     <message>
@@ -128,13 +128,13 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppWebGui.cpp" line="88"/>
-      <location filename="../../BrowserView.cpp" line="745"/>
+      <location filename="../../AppWebGui.cpp" line="80"/>
+      <location filename="../../BrowserView.cpp" line="686"/>
       <source>Browser</source>
       <translation>Прегледач</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="560"/>
+      <location filename="../../BrowserView.cpp" line="529"/>
       <source>File does not exist!</source>
       <translation>Датотека не пcтоји!</translation>
     </message>
@@ -142,18 +142,18 @@
   <context>
     <name>WebGui::BrowserView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="551"/>
-      <location filename="../../BrowserView.cpp" line="556"/>
+      <location filename="../../BrowserView.cpp" line="520"/>
+      <location filename="../../BrowserView.cpp" line="525"/>
       <source>Error</source>
       <translation>Грешка</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="556"/>
+      <location filename="../../BrowserView.cpp" line="525"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation type="unfinished">There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="716"/>
+      <location filename="../../BrowserView.cpp" line="657"/>
       <source>Loading %1...</source>
       <translation>Учитавање %1...</translation>
     </message>
@@ -161,17 +161,17 @@
   <context>
     <name>WebGui::WebView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="308"/>
+      <location filename="../../BrowserView.cpp" line="299"/>
       <source>Open in External Browser</source>
       <translation>Отвори у Екстерном Прегледачу</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="312"/>
+      <location filename="../../BrowserView.cpp" line="303"/>
       <source>Open in new window</source>
       <translation>Отвори у новом прозору</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="344"/>
+      <location filename="../../BrowserView.cpp" line="335"/>
       <source>View source</source>
       <translation type="unfinished">View source</translation>
     </message>

@@ -374,7 +374,7 @@ static void SetFromResult( CArea& area, TPolyPolygon& pp, bool reverse=true, boo
 	{
 		TPolygon& p = pp[i];
 
-		area.m_curves.emplace_back();
+		area.m_curves.push_back(CCurve());
 		CCurve &curve = area.m_curves.back();
 		SetFromResult(curve, p, reverse, is_closed);
     }

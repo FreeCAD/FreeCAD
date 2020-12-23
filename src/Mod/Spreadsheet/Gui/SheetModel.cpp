@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
+ *   Copyright (c) Eivind Kvedalen (eivind@kvedalen.name) 2015             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -38,18 +38,17 @@
 #include <Gui/Command.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
-#include <boost_bind_bind.hpp>
+#include <boost/bind.hpp>
 
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;
 using namespace App;
-namespace bp = boost::placeholders;
 
 SheetModel::SheetModel(Sheet *_sheet, QObject *parent)
     : QAbstractTableModel(parent)
     , sheet(_sheet)
 {
-    cellUpdatedConnection = sheet->cellUpdated.connect(bind(&SheetModel::cellUpdated, this, bp::_1));
+    cellUpdatedConnection = sheet->cellUpdated.connect(bind(&SheetModel::cellUpdated, this, _1));
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Spreadsheet");
     aliasBgColor = QColor(Base::Tools::fromStdString(hGrp->GetASCII("AliasedCellBackgroundColor", "#feff9e")));
@@ -75,7 +74,6 @@ int SheetModel::columnCount(const QModelIndex &parent) const
     return 26 * 26 + 26;
 }
 
-#if 0 // obsolete function
 static void appendUnit(int l, bool isNumerator, std::string unit, std::vector<std::string> & v)
 {
     if (l == 0)
@@ -145,7 +143,6 @@ static std::string getUnitString(const Base::Unit & unit)
 
     return unitStr;
 }
-#endif
 
 QVariant SheetModel::data(const QModelIndex &index, int role) const
 {
@@ -364,7 +361,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
             // Display locale specific decimal separator (#0003875,#0003876)
             if (cell->getDisplayUnit(displayUnit)) {
                 if (computedUnit.isEmpty() || computedUnit == displayUnit.unit) {
-                    QString number = QLocale().toString(floatProp->getValue() / displayUnit.scaler,'f',Base::UnitsApi::getDecimals());
+                    QString number = QLocale::system().toString(floatProp->getValue() / displayUnit.scaler,'f',Base::UnitsApi::getDecimals());
                     //QString number = QString::number(floatProp->getValue() / displayUnit.scaler);
                     v = number + Base::Tools::fromStdString(" " + displayUnit.stringRep);
                 }
@@ -373,16 +370,12 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
                 }
             }
             else {
-                //QString number = QLocale().toString(floatProp->getValue(),'f',Base::UnitsApi::getDecimals());
-                //if (!computedUnit.isEmpty())
-                //    v = number + Base::Tools::fromStdString(" " + getUnitString(computedUnit));
-                //else
-                //    v = number;
-
-                // When displaying a quantity then use the globally set scheme
-                // See: https://forum.freecadweb.org/viewtopic.php?f=3&t=50078
-                Base::Quantity value = floatProp->getQuantityValue();
-                v = value.getUserString();
+                QString number = QLocale::system().toString(floatProp->getValue(),'f',Base::UnitsApi::getDecimals());
+                //QString number = QString::number(floatProp->getValue());
+                if (!computedUnit.isEmpty())
+                    v = number + Base::Tools::fromStdString(" " + getUnitString(computedUnit));
+                else
+                    v = number;
             }
 
             return QVariant(v);
@@ -391,8 +384,8 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
             return QVariant();
         }
     }
-    else if (prop->isDerivedFrom(App::PropertyFloat::getClassTypeId())
-                || prop->isDerivedFrom(App::PropertyInteger::getClassTypeId()))
+    else if (prop->isDerivedFrom(App::PropertyFloat::getClassTypeId()) 
+                || prop->isDerivedFrom(App::PropertyInteger::getClassTypeId())) 
     {
         /* Number */
         double d;
@@ -431,12 +424,12 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
 
             // Display locale specific decimal separator (#0003875,#0003876)
             if (cell->getDisplayUnit(displayUnit)) {
-                QString number = QLocale().toString(d / displayUnit.scaler,'f',Base::UnitsApi::getDecimals());
+                QString number = QLocale::system().toString(d / displayUnit.scaler,'f',Base::UnitsApi::getDecimals());
                 //QString number = QString::number(d / displayUnit.scaler);
                 v = number + Base::Tools::fromStdString(" " + displayUnit.stringRep);
             }
             else {
-                v = QLocale().toString(d,'f',Base::UnitsApi::getDecimals());
+                v = QLocale::system().toString(d,'f',Base::UnitsApi::getDecimals());
                 //v = QString::number(d);
             }
             return QVariant(v);
@@ -454,7 +447,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
 
             if (cell->getForeground(color))
                 return QVariant::fromValue(QColor(255.0 * color.r, 255.0 * color.g, 255.0 * color.b, 255.0 * color.a));
-            else
+            else 
                 return QVariant(QColor(textFgColor));
         }
         case Qt::TextAlignmentRole: {
@@ -529,7 +522,7 @@ bool SheetModel::setData(const QModelIndex & index, const QVariant & value, int 
 
         try {
             QString str = value.toString();
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit cell"));
+            Gui::Command::openCommand("Edit cell");
             // Because of possible complication of recursively escaped
             // characters, let's take a shortcut and bypass the command
             // interface for now.
@@ -537,7 +530,7 @@ bool SheetModel::setData(const QModelIndex & index, const QVariant & value, int 
             std::string strAddress = address.toString();
             str.replace(QString::fromUtf8("\\"), QString::fromUtf8("\\\\"));
             str.replace(QString::fromUtf8("'"), QString::fromUtf8("\\'"));
-            FCMD_OBJ_CMD(sheet,"set('" << strAddress << "','" <<
+            FCMD_OBJ_CMD(sheet,"set('" << strAddress << "','" << 
                     str.toUtf8().constData() << "')");
 #else
             sheet->setContent(address, str.toUtf8().constData());

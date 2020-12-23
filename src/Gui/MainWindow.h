@@ -67,7 +67,7 @@ public:
     }
 };
 
-/**
+/** 
  * The MainWindow class provides a main window with menu bar, toolbars, dockable windows,
  * a status bar and mainly a workspace for the MDI windows.
  * @author Werner Mayer
@@ -75,7 +75,7 @@ public:
 class GuiExport MainWindow : public QMainWindow
 {
     Q_OBJECT
-
+ 
 public:
     /**
      * Constructs an empty main window. For default \a parent is 0, as there usually is
@@ -119,10 +119,6 @@ public:
      */
     void appendRecentFile(const QString& filename);
     /**
-     * MRU: Appends \a macro to the list of recent macros.
-     */
-    void appendRecentMacro(const QString& filename);
-    /**
      * Returns true that the context menu contains the 'Customize...' menu item.
      */
     QMenu * createPopupMenu();
@@ -141,7 +137,7 @@ public:
     void showDocumentation(const QString& help);
     //@}
 
-    /** @name Layout Methods
+    /** @name Layout Methods 
      */
     //@{
     /// Loads the main window settings.
@@ -190,10 +186,6 @@ public:
 
 public Q_SLOTS:
     /**
-     * Updates the standard actions of a text editor such as Cut, Copy, Paste, Undo and Redo.
-     */
-    void updateEditorActions();
-    /**
      * Sets text to the pane in the status bar.
      */
     void setPaneText(int i, QString text);
@@ -214,7 +206,7 @@ public Q_SLOTS:
      */
     void closeActiveWindow ();
     /**
-     * Closes all document window.
+     * Closes all document window. 
      */
     bool closeAllDocuments (bool close=true);
     /** Pop up a message box asking for saving document
@@ -293,7 +285,7 @@ private Q_SLOTS:
      * Fills up the menu with the current dock windows.
      */
     void onDockWindowMenuAboutToShow();
-    /**
+    /** 
      * This method gets frequently activated and test the commands if they are still active.
      */
     void _updateActions();

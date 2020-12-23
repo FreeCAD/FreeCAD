@@ -35,17 +35,6 @@ QT_END_NAMESPACE
 namespace TechDrawGui
 {
 
-/*enum ArrowType {*/
-/*    FILLED_TRIANGLE = 0,*/
-/*    OPEN_ARROW,*/
-/*    HASH_MARK,*/
-/*    DOT,*/
-/*    OPEN_CIRCLE,*/
-/*    FORK,*/
-/*    PYRAMID,*/
-/*    NONE*/
-/*};*/
-
 class TechDrawGuiExport QGIArrow : public QGIPrimPath
 {
 public:
@@ -86,8 +75,6 @@ protected:
     QPainterPath makeOpenDot(double length, double width, bool flipped); 
     QPainterPath makeForkArrow(double length, double width, bool flipped);
     QPainterPath makeForkArrow(Base::Vector3d dir, double length, double width);
-    QPainterPath makePyramid(double length, bool flipped);
-    QPainterPath makePyramid(Base::Vector3d dir, double length);
 
 private:
     QBrush m_brush;

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #/******************************************************************************
-# *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
+# *   Copyright (c)2012 Jan Rheinlaender <jrheinlaender@users.sourceforge.net> *
 # *                                                                            *
 # *   This file is part of the FreeCAD CAx development system.                 *
 # *                                                                            *
@@ -53,12 +53,12 @@ class Shaft:
     wstrings = (("",  "",  "",  "",  ""), 
                         ("Translation [y]",  "x",  "mm",  "w_y",  "mm"), 
                         ("Translation [z]",  "x",  "mm",  "w_z",  "mm"))
-    sigmaNstrings =  (("Normal stress [x]",  "x", "mm", "\\sigma_x",  u"N/mm²"),
-                        ("Shear stress [y]",  "x",  "mm",  "\\sigma_y",  u"N/mm²"),
-                        ("Shear stress [z]",  "x",  "mm",  "\\sigma_z",  u"N/mm²"))
-    sigmaBstrings = (("Torque stress [x]",  "x", "mm", "\\tau_t",  u"N/mm²"),
-                        ("Bending stress [z]",  "x",  "mm",  "\\sigma_{b,z}",  u"N/mm²"),
-                        ("Bending stress [y]",  "x",  "mm",  "\\sigma_{b,y}",  u"N/mm²"))
+    sigmaNstrings =  (("Normal stress [x]",  "x", "mm", "\sigma_x",  u"N/mm²"), 
+                        ("Shear stress [y]",  "x",  "mm",  "\sigma_y",  u"N/mm²"), 
+                        ("Shear stress [z]",  "x",  "mm",  "\sigma_z",  u"N/mm²"))
+    sigmaBstrings = (("Torque stress [x]",  "x", "mm", "\tau_t",  u"N/mm²"), 
+                        ("Bending stress [z]",  "x",  "mm",  "\sigma_{b,z}",  u"N/mm²"), 
+                        ("Bending stress [y]",  "x",  "mm",  "\sigma_{b,y}",  u"N/mm²"))
 
     def __init__(self, parent):
         self.parent = parent
@@ -88,7 +88,7 @@ class Shaft:
         # We don't call equilibrium() here because the new segment has no constraints defined yet
         # Fix face reference of fixed segment if it is the last one
         for i in range(1,  len(self.segments)):
-            if self.segments[i].constraintType != "Fixed":
+            if self.segments[i].constraintType is not "Fixed":
                 continue
             if i == len(self.segments) - 1:
                 self.segments[index].constraint.References = [( self.feature.feature,  "Face%u" % (2 * (index+1) + 1) )]
@@ -162,7 +162,6 @@ class Shaft:
     def updateEdge(self, column, start):
         App.Console.PrintMessage("Not implemented yet - waiting for robust references...")
         return
-        """
         if self.sketchClosed is not True:
             return
         # Create a chamfer or fillet at the start or end edge of the segment
@@ -187,7 +186,6 @@ class Shaft:
         edgeName = "Edge%u" % self.getEdgeIndex(column, idx, edgeType)
         self.doc.getObject(objName).Base = (self.doc.getObject("RevolutionShaft"),"[%s]" % edgeName)
         # etc. etc.
-        """
 
     def getEdgeIndex(self, column, startIdx):
         # FIXME: This is impossible without robust references anchored in the sketch!!!

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2016 Wandererfan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -29,6 +29,8 @@
 #define TECHDRAW_EDGEWALKER_H
 
 #include <vector>
+#include <iostream>
+
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/properties.hpp>
 #include <boost/graph/graph_traits.hpp>
@@ -43,23 +45,23 @@
 #include <TopoDS_Wire.hxx>
 
 namespace TechDraw {
-//using namespace boost;
+using namespace boost;
 
 typedef
-    boost::adjacency_list
-        < boost::vecS,
-          boost::vecS,
-          boost::undirectedS,
-          boost::property<boost::vertex_index_t, int>,
-          boost::property<boost::edge_index_t, int>
+    adjacency_list
+        < vecS,
+          vecS,
+          undirectedS,
+          property<vertex_index_t, int>,
+          property<edge_index_t, int>
         >
         graph;
 
 typedef
-    boost::graph_traits < graph >::vertex_descriptor
+    graph_traits < graph >::vertex_descriptor
         vertex_t;
 typedef
-    boost::graph_traits < graph >::edge_descriptor
+    graph_traits < graph >::edge_descriptor
         edge_t;
 
 typedef
@@ -68,7 +70,7 @@ typedef
 
 typedef
     boost::iterator_property_map< planar_embedding_storage_t::iterator,
-                                  boost::property_map<graph, boost::vertex_index_t>::type
+                                  property_map<graph, vertex_index_t>::type
                                 >
         planar_embedding_t;
 
@@ -92,7 +94,7 @@ public:
 
     std::vector<WalkerEdge>  wedges;      //[WE] representing 1 wire
     void push_back(WalkerEdge w);
-    void clear() {wedges.clear();}
+    void clear() {wedges.clear();};
     int size(void);
 };
 
@@ -108,7 +110,7 @@ public:
 
 
 
-class edgeVisitor : public boost::planar_face_traversal_visitor
+class edgeVisitor : public planar_face_traversal_visitor
 {
 public:
     template <typename Edge>
@@ -127,7 +129,7 @@ private:
 class incidenceItem
 {
 public:
-    incidenceItem() {iEdge = 0; angle = 0.0;}
+    incidenceItem() {}
     incidenceItem(int idx, double a, edge_t ed)  {iEdge = idx; angle = a; eDesc = ed;}
     ~incidenceItem() {}
     static bool iiCompare(const incidenceItem& i1, const incidenceItem& i2);

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -63,7 +63,7 @@ CmdRobotSetHomePos::CmdRobotSetHomePos()
 
 void CmdRobotSetHomePos::activated(int)
 {
-   const char * SelFilter =
+   const char * SelFilter = 
         "SELECT Robot::RobotObject COUNT 1 ";
 
     Gui::SelectionFilter filter(SelFilter);
@@ -79,13 +79,13 @@ void CmdRobotSetHomePos::activated(int)
 
 
     std::string FeatName = pcRobotObject->getNameInDocument();
-
+ 
     const char* n = FeatName.c_str();
     openCommand("Set home");
     doCommand(Doc,"App.activeDocument().%s.Home = [App.activeDocument().%s.Axis1,App.activeDocument().%s.Axis2,App.activeDocument().%s.Axis3,App.activeDocument().%s.Axis4,App.activeDocument().%s.Axis5,App.activeDocument().%s.Axis6]",n,n,n,n,n,n,n);
     updateActive();
     commitCommand();
-
+      
 }
 
 bool CmdRobotSetHomePos::isActive(void)
@@ -112,7 +112,7 @@ CmdRobotRestoreHomePos::CmdRobotRestoreHomePos()
 
 void CmdRobotRestoreHomePos::activated(int)
 {
-    const char * SelFilter =
+    const char * SelFilter = 
         "SELECT Robot::RobotObject COUNT 1 ";
 
     Gui::SelectionFilter filter(SelFilter);
@@ -128,7 +128,7 @@ void CmdRobotRestoreHomePos::activated(int)
 
 
     std::string FeatName = pcRobotObject->getNameInDocument();
-
+ 
     const char* n = FeatName.c_str();
     openCommand("Move to home");
     doCommand(Doc,"App.activeDocument().%s.Axis1 = App.activeDocument().%s.Home[0]",n,n);
@@ -139,7 +139,7 @@ void CmdRobotRestoreHomePos::activated(int)
     doCommand(Doc,"App.activeDocument().%s.Axis6 = App.activeDocument().%s.Home[5]",n,n);
     updateActive();
     commitCommand();
-
+      
 }
 
 bool CmdRobotRestoreHomePos::isActive(void)
@@ -179,7 +179,7 @@ void CmdRobotConstraintAxle::activated(int)
     doCommand(Doc,"App.activeDocument().%s.Axis5 = 45",FeatName.c_str());
     updateActive();
     commitCommand();
-
+      
 }
 
 bool CmdRobotConstraintAxle::isActive(void)
@@ -208,7 +208,7 @@ CmdRobotSimulate::CmdRobotSimulate()
 void CmdRobotSimulate::activated(int)
 {
 #if 1
-    const char * SelFilter =
+    const char * SelFilter = 
         "SELECT Robot::RobotObject  \n"
         "SELECT Robot::TrajectoryObject  ";
 
@@ -234,11 +234,11 @@ void CmdRobotSimulate::activated(int)
 
     Gui::TaskView::TaskDialog* dlg = new TaskDlgSimulate(pcRobotObject,pcTrajectoryObject);
     Gui::Control().showDialog(dlg);
-
+     
 #else
 
-
-   const char * SelFilter =
+ 
+   const char * SelFilter = 
        "SELECT Robot::RobotObject  \n"
        "SELECT Robot::TrajectoryObject  ";
 
@@ -256,7 +256,7 @@ void CmdRobotSimulate::activated(int)
 
     RobotGui::TrajectorySimulate dlg(pcRobotObject,pcTrajectoryObject,Gui::getMainWindow());
     dlg.exec();
-#endif
+#endif  
 }
 
 bool CmdRobotSimulate::isActive(void)

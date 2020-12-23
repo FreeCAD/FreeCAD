@@ -57,21 +57,18 @@ using namespace std;
 //**************************************************************************
 // Construction/Destruction
 
-const char* ViewProvider2DObjectGrid::GridStyleEnums[]= {"Dashed","Light",NULL};
-App::PropertyQuantityConstraint::Constraints ViewProvider2DObjectGrid::GridSizeRange = {0.001,DBL_MAX,1.0};
+const char* ViewProvider2DObject::GridStyleEnums[]= {"Dashed","Light",NULL};
+App::PropertyQuantityConstraint::Constraints ViewProvider2DObject::GridSizeRange = {0.001,DBL_MAX,1.0};
 
-PROPERTY_SOURCE(PartGui::ViewProvider2DObjectGrid, PartGui::ViewProvider2DObject)
+PROPERTY_SOURCE(PartGui::ViewProvider2DObject, PartGui::ViewProviderPart)
 
-ViewProvider2DObjectGrid::ViewProvider2DObjectGrid()
+ViewProvider2DObject::ViewProvider2DObject()
 {
     ADD_PROPERTY_TYPE(ShowGrid,(false),"Grid",(App::PropertyType)(App::Prop_None),"Switch the grid on/off");
-    ADD_PROPERTY_TYPE(ShowOnlyInEditMode,(true),"Grid",(App::PropertyType)(App::Prop_None),"Show only while in edit mode");
-    ADD_PROPERTY_TYPE(GridSize,(10.0),"Grid",(App::PropertyType)(App::Prop_None),"Gap size of the grid");
-    ADD_PROPERTY_TYPE(GridStyle,(0L),"Grid",(App::PropertyType)(App::Prop_None),"Appearance style of the grid");
+    ADD_PROPERTY_TYPE(GridSize,(10),"Grid",(App::PropertyType)(App::Prop_None),"Gap size of the grid");
+    ADD_PROPERTY_TYPE(GridStyle,((long)0),"Grid",(App::PropertyType)(App::Prop_None),"Appearance style of the grid");
     ADD_PROPERTY_TYPE(TightGrid,(true),"Grid",(App::PropertyType)(App::Prop_None),"Switch the tight grid mode on/off");
     ADD_PROPERTY_TYPE(GridSnap,(false),"Grid",(App::PropertyType)(App::Prop_None),"Switch the grid snap on/off");
-    ADD_PROPERTY_TYPE(GridAutoSize,(true),"Grid",(App::PropertyType)(App::Prop_Hidden),"Autosize grid based on shape boundbox");
-    ADD_PROPERTY_TYPE(maxNumberOfLines,(10000),"Grid",(App::PropertyType)(App::Prop_None),"Maximum Number of Lines in grid");
 
     GridRoot = new SoAnnotation();
     GridRoot->ref();
@@ -83,10 +80,10 @@ ViewProvider2DObjectGrid::ViewProvider2DObjectGrid()
 
     pcRoot->addChild(GridRoot);
 
-    sPixmap = "Part_2D_object";
+    sPixmap = "Tree_Part2D";
 }
 
-ViewProvider2DObjectGrid::~ViewProvider2DObjectGrid()
+ViewProvider2DObject::~ViewProvider2DObject()
 {
      GridRoot->unref();
 }
@@ -94,7 +91,7 @@ ViewProvider2DObjectGrid::~ViewProvider2DObjectGrid()
 
 // **********************************************************************************
 
-SoSeparator* ViewProvider2DObjectGrid::createGrid(void)
+SoSeparator* ViewProvider2DObject::createGrid(void)
 {
     //double dx = 10 * GridSize.getValue();                       // carpet size
     //double dy = 10 * GridSize.getValue();
@@ -124,10 +121,10 @@ SoSeparator* ViewProvider2DObjectGrid::createGrid(void)
         MaY = std::max<float>(MaY,(float)exp(ceil(log(std::abs(0.1f*yMin)))));
     }
     //Round the values otherwise grid is not aligned with center
-    MiX = (floor(MiX / Step)-0.5) * Step;
-    MaX = (ceil(MaX / Step)+0.5) * Step;
-    MiY = (floor(MiY / Step)-0.5) * Step;
-    MaY = (ceil(MaY / Step)+0.5) * Step;
+    MiX = floor(MiX / Step) * Step;
+    MaX = ceil(MaX / Step) * Step;
+    MiY = floor(MiY / Step) * Step;
+    MaY = ceil(MaY / Step) * Step;
 
     double zGrid = 0.0;                     // carpet-grid separation
 
@@ -202,13 +199,6 @@ SoSeparator* ViewProvider2DObjectGrid::createGrid(void)
 
     int lines = vlines + hlines;
 
-    if (lines > maxNumberOfLines.getValue()) {
-        Base::Console().Warning("Grid Disabled: Requested number of lines %d is larger than the maximum configured of %d\n.", lines, maxNumberOfLines.getValue());
-        parent->addChild(vts);
-        parent->addChild(grid);
-        return GridRoot;
-    }
-
     // set the grid indices
     grid->numVertices.setNum(lines);
     int32_t* vertices = grid->numVertices.startEditing();
@@ -241,60 +231,55 @@ SoSeparator* ViewProvider2DObjectGrid::createGrid(void)
     return GridRoot;
 }
 
-void ViewProvider2DObjectGrid::updateData(const App::Property* prop)
+void ViewProvider2DObject::updateData(const App::Property* prop)
 {
-    ViewProvider2DObject::updateData(prop);
+    ViewProviderPart::updateData(prop);
 
     if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId()) {
-        if (GridAutoSize.getValue()) {
-            Base::BoundBox3d bbox = static_cast<const Part::PropertyPartShape*>(prop)->getBoundingBox();
-            if (!bbox.IsValid()) return;
-            Gui::coinRemoveAllChildren(GridRoot);
-            Base::Placement place = static_cast<const Part::PropertyPartShape*>(prop)->getComplexData()->getPlacement();
-            place.invert();
-            Base::ViewOrthoProjMatrix proj(place.toMatrix());
-            Base::BoundBox2d bbox2d = bbox.ProjectBox(&proj);
-            this->MinX = bbox2d.MinX;
-            this->MaxX = bbox2d.MaxX;
-            this->MinY = bbox2d.MinY;
-            this->MaxY = bbox2d.MaxY;
-        }
-        if (ShowGrid.getValue() && !(ShowOnlyInEditMode.getValue() && !this->isEditing()) ) {
+        Base::BoundBox3d bbox = static_cast<const Part::PropertyPartShape*>(prop)->getBoundingBox();
+        if (!bbox.IsValid()) return;
+        Gui::coinRemoveAllChildren(GridRoot);
+        Base::Placement place = static_cast<const Part::PropertyPartShape*>(prop)->getComplexData()->getPlacement();
+        place.invert();
+        Base::ViewProjMatrix proj(place.toMatrix());
+        Base::BoundBox2d bbox2d = bbox.ProjectBox(&proj);
+        this->MinX = bbox2d.MinX;
+        this->MaxX = bbox2d.MaxX;
+        this->MinY = bbox2d.MinY;
+        this->MaxY = bbox2d.MaxY;
+        if (ShowGrid.getValue()) {
             createGrid();
-        }
-        else {
-            Gui::coinRemoveAllChildren(GridRoot);
         }
     }
 }
 
-void ViewProvider2DObjectGrid::onChanged(const App::Property* prop)
+void ViewProvider2DObject::onChanged(const App::Property* prop)
 {
     // call father
     ViewProviderPart::onChanged(prop);
 
-    if (prop == &ShowGrid || prop == &ShowOnlyInEditMode || prop == &Visibility) {
-        if (ShowGrid.getValue() && Visibility.getValue() && !(ShowOnlyInEditMode.getValue() && !this->isEditing()))
+    if (prop == &ShowGrid) {
+        if (ShowGrid.getValue())
             createGrid();
         else
             Gui::coinRemoveAllChildren(GridRoot);
     }
-
     if ((prop == &GridSize) || (prop == &GridStyle) || (prop == &TightGrid)) {
-        if (ShowGrid.getValue() && !(ShowOnlyInEditMode.getValue() && !this->isEditing())) {
+        if (ShowGrid.getValue()) {
+            Gui::coinRemoveAllChildren(GridRoot);
             createGrid();
         }
     }
 }
 
-void ViewProvider2DObjectGrid::Restore(Base::XMLReader &reader)
+void ViewProvider2DObject::Restore(Base::XMLReader &reader)
 {
     ViewProviderPart::Restore(reader);
 }
 
-void ViewProvider2DObjectGrid::handleChangedPropertyType(Base::XMLReader &reader,
-                                                         const char * TypeName,
-                                                         App::Property * prop)
+void ViewProvider2DObject::handleChangedPropertyType(Base::XMLReader &reader,
+                                                     const char * TypeName,
+                                                     App::Property * prop)
 {
     Base::Type inputType = Base::Type::fromName(TypeName);
     if (prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId()) &&
@@ -307,54 +292,22 @@ void ViewProvider2DObjectGrid::handleChangedPropertyType(Base::XMLReader &reader
     }
 }
 
-void ViewProvider2DObjectGrid::attach(App::DocumentObject *pcFeat)
+void ViewProvider2DObject::attach(App::DocumentObject *pcFeat)
 {
-    ViewProvider2DObject::attach(pcFeat);
+    ViewProviderPart::attach(pcFeat);
 
-    if (ShowGrid.getValue() && !(ShowOnlyInEditMode.getValue() && !this->isEditing()))
+    if (ShowGrid.getValue())
         createGrid();
 }
 
-bool ViewProvider2DObjectGrid::setEdit(int)
+bool ViewProvider2DObject::setEdit(int)
 {
-    if (ShowGrid.getValue())
-        createGrid();
-
     return false;
 }
 
-void ViewProvider2DObjectGrid::unsetEdit(int)
+void ViewProvider2DObject::unsetEdit(int)
 {
-    if (ShowGrid.getValue() && ShowOnlyInEditMode.getValue())
-        Gui::coinRemoveAllChildren(GridRoot);
-}
 
-void ViewProvider2DObjectGrid::updateGridExtent(float minx, float maxx, float miny, float maxy)
-{
-    bool redraw = false;
-
-    if (minx < MinX || maxx > MaxX || miny < MinY || maxy > MaxY)
-        redraw = true;
-
-    MinX = minx;
-    MaxX = maxx;
-    MinY = miny;
-    MaxY = maxy;
-
-    if (redraw && ShowGrid.getValue() && !(ShowOnlyInEditMode.getValue() && !this->isEditing()))
-        createGrid();
-}
-
-// -----------------------------------------------------------------------
-
-PROPERTY_SOURCE(PartGui::ViewProvider2DObject, PartGui::ViewProviderPart)
-
-ViewProvider2DObject::ViewProvider2DObject()
-{
-}
-
-ViewProvider2DObject::~ViewProvider2DObject()
-{
 }
 
 std::vector<std::string> ViewProvider2DObject::getDisplayModes(void) const
@@ -373,8 +326,10 @@ std::vector<std::string> ViewProvider2DObject::getDisplayModes(void) const
 
 const char* ViewProvider2DObject::getDefaultDisplayMode() const
 {
-    return "Wireframe";
+  return "Wireframe";
 }
+
+// -----------------------------------------------------------------------
 
 namespace Gui {
 /// @cond DOXERR

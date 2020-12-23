@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2011 Luke Parry                                         *
+ *   Copyright (c)2011  Luke Parry                                         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -100,15 +100,8 @@ void SoAutoZoomTranslation::GLRender(SoGLRenderAction * action)
 void SoAutoZoomTranslation::doAction(SoAction * action)
 {
     float sf = this->getScaleFactor(action);
-    auto state = action->getState();
-    SbRotation r,so;
-    SbVec3f s,t;
-    SbMatrix matrix = SoModelMatrixElement::get(action->getState());
-    matrix.getTransform(t,r,s,so);
-    matrix.multVecMatrix(SbVec3f(0,0,0),t);
-    // reset current model scale factor
-    matrix.setTransform(t,r,SbVec3f(sf,sf,sf));
-    SoModelMatrixElement::set(state,this,matrix);
+    SoModelMatrixElement::scaleBy(action->getState(), this,
+                                SbVec3f(sf,sf,sf));
 }
 
 // set the auto scale factor.
@@ -126,15 +119,14 @@ void SoAutoZoomTranslation::getMatrix(SoGetMatrixAction * action)
 {
     float sf = this->getScaleFactor(action);
 
-    SbMatrix &m = action->getMatrix();
+    SbVec3f scalevec = SbVec3f(sf,sf,sf);
+    SbMatrix m;
 
-    SbRotation r,so;
-    SbVec3f s,t;
-    m.getTransform(t,r,s,so);
-    m.multVecMatrix(SbVec3f(0,0,0),t);
-    m.setTransform(t,r,SbVec3f(sf,sf,sf));
+    m.setScale(scalevec);
+    action->getMatrix().multLeft(m);
 
-    action->getInverse() = m.inverse();
+    m.setScale(SbVec3f(1.0f / scalevec[0], 1.0f / scalevec[1], 1.0f / scalevec[2]));
+    action->getInverse().multRight(m);
 }
 
 void SoAutoZoomTranslation::callback(SoCallbackAction * action)

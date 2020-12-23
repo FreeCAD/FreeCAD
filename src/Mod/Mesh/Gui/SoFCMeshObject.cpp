@@ -167,7 +167,7 @@ private:
 
 // Defines all required member variables and functions for a
 // single-value field
-SO_SFIELD_SOURCE(SoSFMeshObject, Base::Reference<const Mesh::MeshObject>, Base::Reference<const Mesh::MeshObject>)
+SO_SFIELD_SOURCE(SoSFMeshObject, const Mesh::MeshObject*, const Mesh::MeshObject*)
 
 
 void SoSFMeshObject::initClass()
@@ -1046,7 +1046,8 @@ void SoFCMeshObjectShape::stopSelection(SoAction * action, const Mesh::MeshObjec
     GLuint index=0;
     for (GLint ii=0;ii<hits && index<bufSize;ii++) {
         GLint ct = (GLint)selectBuf[index];
-        hit.emplace_back(selectBuf[index+1]/4294967295.0,selectBuf[index+3]);
+        hit.push_back(std::pair<double,unsigned int>
+            (selectBuf[index+1]/4294967295.0,selectBuf[index+3]));
         index = index+ct+3;
     }
 

@@ -161,7 +161,7 @@ def saveShape(csg,filename,shape,name,hasplacement = True,cleanshape=False):
         sh=shape.copy()
         sh.Placement=FreeCAD.Placement()
         # it not yet tested if changing the placement recreated the
-        # tessellation. But for now we simply do the cleaning once again
+        # tessellation. but for now we simply do the cleaing once again
         # to stay on the safe side
         if cleanshape:
             shape = shape.cleaned()

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2008     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -37,7 +37,6 @@
 # include <Geom2dAPI_ProjectPointOnCurve.hxx>
 # include <GeomAPI.hxx>
 # include <BRepAdaptor_Surface.hxx>
-# include <IntRes2d_IntersectionSegment.hxx>
 #endif
 
 #ifndef M_PI
@@ -166,29 +165,14 @@ bool Part2DObject::seekTrimPoints(const std::vector<Geometry *> &geomlist,
 
                     Part::GeomBoundedCurve * bcurve = static_cast<Part::GeomBoundedCurve *>(geomlist[id]);
 
-                    points.emplace_back(bcurve->getStartPoint().x,bcurve->getStartPoint().y);
-                    points.emplace_back(bcurve->getEndPoint().x,bcurve->getEndPoint().y);
+                    points.push_back(gp_Pnt2d (bcurve->getStartPoint().x,bcurve->getStartPoint().y));
+                    points.push_back(gp_Pnt2d (bcurve->getEndPoint().x,bcurve->getEndPoint().y));
                 }
 
                 Intersector.Init(primaryCurve, secondaryCurve, 1.0e-12);
 
                 for (int i=1; i <= Intersector.NbPoints(); i++)
                     points.push_back(Intersector.Point(i));
-
-                if (Intersector.NbSegments() > 0) {
-                    const Geom2dInt_GInter& gInter = Intersector.Intersector();
-                    for (int i=1; i <= gInter.NbSegments(); i++) {
-                        const IntRes2d_IntersectionSegment& segm = gInter.Segment(i);
-                        if (segm.HasFirstPoint()) {
-                            const IntRes2d_IntersectionPoint& fp = segm.FirstPoint();
-                            points.push_back(fp.Value());
-                        }
-                        if (segm.HasLastPoint()) {
-                            const IntRes2d_IntersectionPoint& fp = segm.LastPoint();
-                            points.push_back(fp.Value());
-                        }
-                    }
-                }
 
                 for (auto p : points) {
                     // get the parameter of the intersection point on the primary curve

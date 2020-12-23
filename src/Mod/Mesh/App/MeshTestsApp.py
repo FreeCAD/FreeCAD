@@ -1,8 +1,4 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
-#  Copyright (c) 2007 Jürgen Riegel <juergen.riegel@web.de>
-#  LGPL
+#   (c) Juergen Riegel (juergen.riegel@web.de) 2007      LGPL
 
 import FreeCAD, os, sys, unittest, Mesh
 import time, tempfile, math
@@ -124,7 +120,6 @@ class PivyTestCases(unittest.TestCase):
 		from pivy import coin; import FreeCADGui
 		Mesh.show(planarMeshObject)
 		view=FreeCADGui.ActiveDocument.ActiveView
-		view.setAxisCross(False)
 		pc=coin.SoGetPrimitiveCountAction()
 		pc.apply(view.getSceneGraph())
 		self.failUnless(pc.getTriangleCount() == 2)

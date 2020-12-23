@@ -159,7 +159,7 @@
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="374"/>
       <source>Areas curve tool number of points</source>
-      <translation>Alan eğrisi aracı nokta sayısı</translation>
+      <translation>Alanlar eğri aracı puan sayısı</translation>
     </message>
   </context>
   <context>

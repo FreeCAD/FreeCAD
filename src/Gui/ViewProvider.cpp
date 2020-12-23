@@ -38,7 +38,6 @@
 # include <Inventor/actions/SoGetMatrixAction.h>
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
-# include <boost_bind_bind.hpp>
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
@@ -62,6 +61,7 @@
 #include "ViewProviderLink.h"
 #include "ViewParams.h"
 
+#include <boost/bind.hpp>
 
 FC_LOG_LEVEL_INIT("ViewProvider",true,true)
 
@@ -312,8 +312,7 @@ QIcon ViewProvider::mergeOverlayIcons (const QIcon & orig) const
     QIcon overlayedIcon = orig;
 
     for (Gui::ViewProviderExtension* ext : vector) {
-        if (!ext->ignoreOverlayIcon())
-            overlayedIcon = ext->extensionMergeOverlayIcons(overlayedIcon);
+        overlayedIcon = ext->extensionMergeOverlayIcons(overlayedIcon);
     }
 
     return overlayedIcon;
@@ -515,13 +514,6 @@ int ViewProvider::getDefaultMode() const {
     return viewOverrideMode>=0?viewOverrideMode:_iActualMode;
 }
 
-void ViewProvider::onBeforeChange(const App::Property* prop)
-{
-    Application::Instance->signalBeforeChangeObject(*this, *prop);
-
-    App::TransactionalObject::onBeforeChange(prop);
-}
-
 void ViewProvider::onChanged(const App::Property* prop)
 {
     Application::Instance->signalChangedObject(*this, *prop);
@@ -620,7 +612,7 @@ std::vector<Base::Vector3d> ViewProvider::getModelPoints(const SoPickedPoint* pp
     // the default implementation just returns the picked point from the visual representation
     std::vector<Base::Vector3d> pts;
     const SbVec3f& vec = pp->getPoint();
-    pts.emplace_back(vec[0],vec[1],vec[2]);
+    pts.push_back(Base::Vector3d(vec[0],vec[1],vec[2]));
     return pts;
 }
 
@@ -648,13 +640,6 @@ bool ViewProvider::mouseButtonPressed(int button, bool pressed,
     (void)cursorPos;
     (void)viewer;
     return false;
-}
-
-void ViewProvider::setupContextMenu(QMenu* menu, QObject* receiver, const char* method)
-{
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for (Gui::ViewProviderExtension* ext : vector)
-        ext->extensionSetupContextMenu(menu, receiver, method);
 }
 
 bool ViewProvider::onDelete(const vector< string >& subNames)
@@ -757,7 +742,7 @@ void ViewProvider::dropObject(App::DocumentObject* obj) {
     throw Base::RuntimeError("ViewProvider::dropObject: no extension for dropping given object available.");
 }
 
-bool ViewProvider::canDropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner,
+bool ViewProvider::canDropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner, 
         const char *subname, const std::vector<std::string> &elements) const
 {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
@@ -768,8 +753,8 @@ bool ViewProvider::canDropObjectEx(App::DocumentObject* obj, App::DocumentObject
     return canDropObject(obj);
 }
 
-std::string ViewProvider::dropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner,
-        const char *subname, const std::vector<std::string> &elements)
+std::string ViewProvider::dropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner, 
+        const char *subname, const std::vector<std::string> &elements) 
 {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for(Gui::ViewProviderExtension* ext : vector) {
@@ -924,7 +909,7 @@ int ViewProvider::partialRender(const std::vector<std::string> &elements, bool c
     action.setSecondary(true);
     for(auto element : elements) {
         bool hidden = hasHiddenMarker(element.c_str());
-        if(hidden)
+        if(hidden) 
             element.resize(element.size()-hiddenMarker().size());
         path->truncate(0);
         SoDetail *det = 0;
@@ -934,7 +919,7 @@ int ViewProvider::partialRender(const std::vector<std::string> &elements, bool c
                 continue;
             }
             FC_LOG("partial render (" << path->getLength() << "): " << element);
-            if(!hidden)
+            if(!hidden) 
                 action.setType(clear?SoSelectionElementAction::Remove:SoSelectionElementAction::Append);
             else
                 action.setType(clear?SoSelectionElementAction::Show:SoSelectionElementAction::Hide);

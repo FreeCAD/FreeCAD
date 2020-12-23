@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
+ *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -49,7 +49,7 @@ using namespace Gui;
 
 
 TaskTetParameter::TaskTetParameter(Fem::FemMeshShapeNetgenObject *pcObject,QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap("FEM_CreateNodesSet"),
+    : TaskBox(Gui::BitmapFactory().pixmap("fem-femmesh-create-node-by-poly"),
       tr("Tet Parameter"),
       true,
       parent),

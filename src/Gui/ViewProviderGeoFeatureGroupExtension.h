@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2011 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
+ *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
  *   Copyright (c) 2016 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
@@ -47,7 +47,6 @@ public:
     virtual void extensionAttach(App::DocumentObject* pcObject) override;
     virtual void extensionSetDisplayMode(const char* ModeName) override;
     virtual std::vector<std::string> extensionGetDisplayModes(void) const override;
-    virtual void extensionFinishRestoring() override;
 
     /// Show the object in the view: suppresses behavior of DocumentObjectGroup
     virtual void extensionShow(void) override {

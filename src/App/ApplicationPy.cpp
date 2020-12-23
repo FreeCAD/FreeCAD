@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   (c) Juergen Riegel (juergen.riegel@web.de) 2002                       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,6 +19,7 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
  *   USA                                                                   *
  *                                                                         *
+ *   Juergen Riegel 2002                                                   *
  ***************************************************************************/
 
 
@@ -72,8 +73,6 @@ PyMethodDef Application::Methods[] = {
      "Dump the configuration to the output."},
     {"addImportType",  (PyCFunction) Application::sAddImportType, METH_VARARGS,
      "Register filetype for import"},
-    {"changeImportModule",  (PyCFunction) Application::sChangeImportModule, METH_VARARGS,
-     "Change the import module name of a registered filetype"},
     {"getImportType",  (PyCFunction) Application::sGetImportType, METH_VARARGS,
      "Get the name of the module that can import the filetype"},
     {"EndingAdd",      (PyCFunction) Application::sAddImportType, METH_VARARGS, // deprecated
@@ -82,8 +81,6 @@ PyMethodDef Application::Methods[] = {
      "deprecated -- use getImportType"},
     {"addExportType",  (PyCFunction) Application::sAddExportType, METH_VARARGS,
      "Register filetype for export"},
-    {"changeExportModule",  (PyCFunction) Application::sChangeExportModule, METH_VARARGS,
-     "Change the export module name of a registered filetype"},
     {"getExportType",  (PyCFunction) Application::sGetExportType, METH_VARARGS,
      "Get the name of the module that can export the filetype"},
     {"getResourceDir", (PyCFunction) Application::sGetResourceDir, METH_VARARGS,
@@ -106,9 +103,9 @@ PyMethodDef Application::Methods[] = {
      "* If no module is given it will be determined by the file extension.\n"
      "* If more than one module can load a file the first one one will be taken.\n"
      "* If no module exists to load the file an exception will be raised."},
-    {"open",   reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) (void)>( Application::sOpenDocument )), METH_VARARGS|METH_KEYWORDS,
+    {"open",   (PyCFunction) Application::sOpenDocument, METH_VARARGS|METH_KEYWORDS,
      "See openDocument(string)"},
-    {"openDocument",   reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) (void)>( Application::sOpenDocument )), METH_VARARGS|METH_KEYWORDS,
+    {"openDocument",   (PyCFunction) Application::sOpenDocument, METH_VARARGS|METH_KEYWORDS,
      "openDocument(filepath,hidden=False) -> object\n"
      "Create a document and load the project file into the document.\n\n"
      "filepath: file path to an existing file. If the file doesn't exist\n"
@@ -118,13 +115,12 @@ PyMethodDef Application::Methods[] = {
 //  {"saveDocument",   (PyCFunction) Application::sSaveDocument, METH_VARARGS,
 //   "saveDocument(string) -- Save the document to a file."},
 //  {"saveDocumentAs", (PyCFunction) Application::sSaveDocumentAs, METH_VARARGS},
-    {"newDocument",    reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) (void)>( Application::sNewDocument )), METH_VARARGS|METH_KEYWORDS,
-     "newDocument(name, label=None, hidden=False, temp=False) -> object\n"
+    {"newDocument",    (PyCFunction) Application::sNewDocument, METH_VARARGS|METH_KEYWORDS,
+     "newDocument(name, label=None, hidden=False) -> object\n"
      "Create a new document with a given name.\n\n"
      "name: unique document name which is checked automatically.\n"
-     "label: optional user changeable label for the document.\n"
-     "hidden: whether to hide document 3D view.\n"
-     "temp: mark the document as temporary so that it will not be saved"},
+     "label: optional user changable label for the document.\n"
+     "hidden: whether to hide document 3D view."},
     {"closeDocument",  (PyCFunction) Application::sCloseDocument, METH_VARARGS,
      "closeDocument(string) -> None\n\n"
      "Close the document with a given name."},
@@ -174,9 +170,9 @@ PyMethodDef Application::Methods[] = {
      "active transaction causes any document changes to open a transaction with\n"
      "the given name and ID."},
     {"getActiveTransaction", (PyCFunction) Application::sGetActiveTransaction, METH_VARARGS,
-     "getActiveTransaction() -> (name,id) return the current active transaction name and ID"},
+     "getActiveTransaction() -> (name,id) return the current active transaction name and ID"},     
     {"closeActiveTransaction", (PyCFunction) Application::sCloseActiveTransaction, METH_VARARGS,
-     "closeActiveTransaction(abort=False) -- commit or abort current active transaction"},
+     "closeActiveTransaction(abort=False) -- commit or abort current active transaction"},     
     {"isRestoring", (PyCFunction) Application::sIsRestoring, METH_VARARGS,
      "isRestoring() -> Bool -- Test if the application is opening some document"},
     {"checkAbort", (PyCFunction) Application::sCheckAbort, METH_VARARGS,
@@ -224,8 +220,8 @@ PyObject* Application::sLoadFile(PyObject * /*self*/, PyObject *args)
         Py_Return;
     }
     catch (const Base::Exception& e) {
-        e.setPyException();
-        return nullptr;
+        PyErr_SetString(PyExc_IOError, e.what());
+        return 0;
     }
     catch (const std::exception& e) {
         // might be subclass from zipios
@@ -270,16 +266,13 @@ PyObject* Application::sNewDocument(PyObject * /*self*/, PyObject *args, PyObjec
     char *docName = 0;
     char *usrName = 0;
     PyObject *hidden = Py_False;
-    PyObject *temp = Py_False;
-    static char *kwlist[] = {"name","label","hidden","temp",0};
-    if (!PyArg_ParseTupleAndKeywords(args, kwd, "|etetOO", kwlist,
-                "utf-8", &docName, "utf-8", &usrName, &hidden, &temp))
+    static char *kwlist[] = {"name","label","hidden",0};
+    if (!PyArg_ParseTupleAndKeywords(args, kwd, "|etetO", kwlist,
+                "utf-8", &docName, "utf-8", &usrName, &hidden))
         return NULL;
 
     PY_TRY {
-        App::Document* doc = GetApplication().newDocument(docName, usrName,
-                                                          !PyObject_IsTrue(hidden),
-                                                          PyObject_IsTrue(temp));
+        App::Document* doc = GetApplication().newDocument(docName, usrName,!PyObject_IsTrue(hidden));
         PyMem_Free(docName);
         PyMem_Free(usrName);
         return doc->getPyObject();
@@ -534,18 +527,6 @@ PyObject* Application::sAddImportType(PyObject * /*self*/, PyObject *args)
     Py_Return;
 }
 
-PyObject* Application::sChangeImportModule(PyObject * /*self*/, PyObject *args)
-{
-    char *key,*oldMod,*newMod;
-
-    if (!PyArg_ParseTuple(args, "sss", &key,&oldMod,&newMod))
-        return nullptr;
-
-    GetApplication().changeImportModule(key,oldMod,newMod);
-
-    Py_Return;
-}
-
 PyObject* Application::sGetImportType(PyObject * /*self*/, PyObject *args)
 {
     char*       psKey=0;
@@ -594,18 +575,6 @@ PyObject* Application::sAddExportType(PyObject * /*self*/, PyObject *args)
         return NULL;
 
     GetApplication().addExportType(psKey,psMod);
-
-    Py_Return;
-}
-
-PyObject* Application::sChangeExportModule(PyObject * /*self*/, PyObject *args)
-{
-    char *key,*oldMod,*newMod;
-
-    if (!PyArg_ParseTuple(args, "sss", &key,&oldMod,&newMod))
-        return nullptr;
-
-    GetApplication().changeExportModule(key,oldMod,newMod);
 
     Py_Return;
 }
@@ -877,7 +846,7 @@ PyObject *Application::sGetLinksTo(PyObject * /*self*/, PyObject *args)
         auto links = GetApplication().getLinksTo(obj,options,count);
         Py::Tuple ret(links.size());
         int i=0;
-        for(auto o : links)
+        for(auto o : links) 
             ret.setItem(i++,Py::Object(o->getPyObject(),true));
         return Py::new_reference_to(ret);
     }PY_CATCH;
@@ -893,7 +862,7 @@ PyObject *Application::sGetDependentObjects(PyObject * /*self*/, PyObject *args)
     std::vector<App::DocumentObject*> objs;
     if(PySequence_Check(obj)) {
         Py::Sequence seq(obj);
-        for(Py_ssize_t i=0;i<seq.size();++i) {
+        for(size_t i=0;i<seq.size();++i) {
             if(!PyObject_TypeCheck(seq[i].ptr(),&DocumentObjectPy::Type)) {
                 PyErr_SetString(PyExc_TypeError, "Expect element in sequence to be of type document object");
                 return 0;
@@ -901,7 +870,7 @@ PyObject *Application::sGetDependentObjects(PyObject * /*self*/, PyObject *args)
             objs.push_back(static_cast<DocumentObjectPy*>(seq[i].ptr())->getDocumentObjectPtr());
         }
     }else if(!PyObject_TypeCheck(obj,&DocumentObjectPy::Type)) {
-        PyErr_SetString(PyExc_TypeError,
+        PyErr_SetString(PyExc_TypeError, 
             "Expect first argument to be either a document object or sequence of document objects");
         return 0;
     }else
@@ -911,7 +880,7 @@ PyObject *Application::sGetDependentObjects(PyObject * /*self*/, PyObject *args)
         auto ret = App::Document::getDependencyList(objs,options);
 
         Py::Tuple tuple(ret.size());
-        for(size_t i=0;i<ret.size();++i)
+        for(size_t i=0;i<ret.size();++i) 
             tuple.setItem(i,Py::Object(ret[i]->getPyObject(),true));
         return Py::new_reference_to(tuple);
     } PY_CATCH;
@@ -924,7 +893,7 @@ PyObject *Application::sSetActiveTransaction(PyObject * /*self*/, PyObject *args
     PyObject *persist = Py_False;
     if (!PyArg_ParseTuple(args, "s|O", &name,&persist))
         return 0;
-
+    
     PY_TRY {
         Py::Int ret(GetApplication().setActiveTransaction(name,PyObject_IsTrue(persist)));
         return Py::new_reference_to(ret);
@@ -935,7 +904,7 @@ PyObject *Application::sGetActiveTransaction(PyObject * /*self*/, PyObject *args
 {
     if (!PyArg_ParseTuple(args, ""))
         return 0;
-
+    
     PY_TRY {
         int id = 0;
         const char *name = GetApplication().getActiveTransaction(&id);
@@ -954,7 +923,7 @@ PyObject *Application::sCloseActiveTransaction(PyObject * /*self*/, PyObject *ar
     int id = 0;
     if (!PyArg_ParseTuple(args, "|Oi", &abort,&id))
         return 0;
-
+    
     PY_TRY {
         GetApplication().closeActiveTransaction(PyObject_IsTrue(abort),id);
         Py_Return;

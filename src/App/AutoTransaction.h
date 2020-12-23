@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (c) 2019 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
+ *   Copyright (c) 2019 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -24,8 +24,6 @@
 #define APP_AUTOTRANSACTION_H
 
 namespace App {
-
-class Application;
 
 /// Helper class to manager transaction (i.e. undo/redo)
 class AppExport AutoTransaction {
@@ -70,60 +68,15 @@ public:
      *
      * Once disabled, any empty temporary named transaction is closed. If there
      * are non-empty or non-temporary named active transaction, it will not be
-     * auto closed.
+     * auto closed. 
      *
      * This function may be used in, for example, Gui::Document::setEdit() to
-     * allow a transaction live past any command scope.
+     * allow a transaction live past any command scope. 
      */
     static void setEnable(bool enable);
 
 private:
     int tid = 0;
-};
-
-
-/** Helper class to lock a transaction from being closed or aborted.
- *
- * The helper class is used to protect some critical transaction from being
- * closed prematurely, e.g. when deleting some object.
- */
-class AppExport TransactionLocker {
-public:
-
-    /** Constructor
-     * @param lock: whether to activate the lock
-     */
-    TransactionLocker(bool lock=true);
-
-    /** Destructor
-     * Unlock the transaction is this locker is active
-     */
-    ~TransactionLocker();
-
-    /** Activate or deactivate this locker
-     * @param enable: whether to activate the locker
-     *
-     * An internal counter is used to support recursive locker. When activated,
-     * the current active transaction cannot be closed or aborted.  But the
-     * closing call (Application::closeActiveTransaction()) will be remembered,
-     * and performed when the internal lock counter reaches zero.
-     */
-    void activate(bool enable);
-
-    /// Check if the locker is active
-    bool isActive() const {return active;}
-
-    /// Check if transaction is being locked
-    static bool isLocked();
-
-    friend class Application;
-
-private:
-    /// Private new operator to prevent heap allocation
-    void* operator new(size_t size);
-
-private:
-    bool active;
 };
 
 } // namespace App

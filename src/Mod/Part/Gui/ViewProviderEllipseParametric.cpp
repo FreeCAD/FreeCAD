@@ -36,12 +36,12 @@ using namespace std;
 //**************************************************************************
 // Construction/Destruction
 
-PROPERTY_SOURCE(PartGui::ViewProviderEllipseParametric, PartGui::ViewProviderPrimitive)
+PROPERTY_SOURCE(PartGui::ViewProviderEllipseParametric, PartGui::ViewProviderPart)
 
 
 ViewProviderEllipseParametric::ViewProviderEllipseParametric()
 {
-  sPixmap = "Part_Ellipse_Parametric";
+  sPixmap = "Part_Ellipse_Parametric.svg";
 }
 
 ViewProviderEllipseParametric::~ViewProviderEllipseParametric()

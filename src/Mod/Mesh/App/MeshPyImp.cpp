@@ -169,7 +169,6 @@ PyObject*  MeshPy::read(PyObject *args, PyObject *kwds)
     ext["OFF" ] = MeshCore::MeshIO::OFF;
     ext["IV"  ] = MeshCore::MeshIO::IV;
     ext["X3D" ] = MeshCore::MeshIO::X3D;
-    ext["X3DZ"] = MeshCore::MeshIO::X3DZ;
     ext["VRML"] = MeshCore::MeshIO::VRML;
     ext["WRL" ] = MeshCore::MeshIO::VRML;
     ext["WRZ" ] = MeshCore::MeshIO::WRZ;
@@ -211,27 +210,24 @@ PyObject*  MeshPy::write(PyObject *args, PyObject *kwds)
 
     MeshCore::MeshIO::Format format = MeshCore::MeshIO::Undefined;
     std::map<std::string, MeshCore::MeshIO::Format> ext;
-    ext["BMS"  ] = MeshCore::MeshIO::BMS;
-    ext["STL"  ] = MeshCore::MeshIO::BSTL;
-    ext["AST"  ] = MeshCore::MeshIO::ASTL;
-    ext["OBJ"  ] = MeshCore::MeshIO::OBJ;
-    ext["SMF"  ] = MeshCore::MeshIO::SMF;
-    ext["OFF"  ] = MeshCore::MeshIO::OFF;
-    ext["IDTF" ] = MeshCore::MeshIO::IDTF;
-    ext["MGL"  ] = MeshCore::MeshIO::MGL;
-    ext["IV"   ] = MeshCore::MeshIO::IV;
-    ext["X3D"  ] = MeshCore::MeshIO::X3D;
-    ext["X3DZ" ] = MeshCore::MeshIO::X3DZ;
-    ext["X3DOM"] = MeshCore::MeshIO::X3DOM;
-    ext["VRML" ] = MeshCore::MeshIO::VRML;
-    ext["WRL"  ] = MeshCore::MeshIO::VRML;
-    ext["WRZ"  ] = MeshCore::MeshIO::WRZ;
-    ext["NAS"  ] = MeshCore::MeshIO::NAS;
-    ext["BDF"  ] = MeshCore::MeshIO::NAS;
-    ext["PLY"  ] = MeshCore::MeshIO::PLY;
-    ext["APLY" ] = MeshCore::MeshIO::APLY;
-    ext["PY"   ] = MeshCore::MeshIO::PY;
-    ext["ASY"  ] = MeshCore::MeshIO::ASY;
+    ext["BMS" ] = MeshCore::MeshIO::BMS;
+    ext["STL" ] = MeshCore::MeshIO::BSTL;
+    ext["AST" ] = MeshCore::MeshIO::ASTL;
+    ext["OBJ" ] = MeshCore::MeshIO::OBJ;
+    ext["SMF" ] = MeshCore::MeshIO::SMF;
+    ext["OFF" ] = MeshCore::MeshIO::OFF;
+    ext["IDTF"] = MeshCore::MeshIO::IDTF;
+    ext["MGL" ] = MeshCore::MeshIO::MGL;
+    ext["IV"  ] = MeshCore::MeshIO::IV;
+    ext["X3D" ] = MeshCore::MeshIO::X3D;
+    ext["VRML"] = MeshCore::MeshIO::VRML;
+    ext["WRL" ] = MeshCore::MeshIO::VRML;
+    ext["WRZ" ] = MeshCore::MeshIO::WRZ;
+    ext["NAS" ] = MeshCore::MeshIO::NAS;
+    ext["BDF" ] = MeshCore::MeshIO::NAS;
+    ext["PLY" ] = MeshCore::MeshIO::PLY;
+    ext["APLY"] = MeshCore::MeshIO::APLY;
+    ext["PY"  ] = MeshCore::MeshIO::PY;
 
     static char* keywords_path[] = {"Filename","Format","Name","Material",NULL};
     if (PyArg_ParseTupleAndKeywords(args, kwds, "et|ssO", keywords_path, "utf-8",
@@ -252,7 +248,7 @@ PyObject*  MeshPy::write(PyObject *args, PyObject *kwds)
                 float r = (float)Py::Float(t.getItem(0));
                 float g = (float)Py::Float(t.getItem(1));
                 float b = (float)Py::Float(t.getItem(2));
-                mat.diffuseColor.emplace_back(r,g,b);
+                mat.diffuseColor.push_back(App::Color(r,g,b));
             }
 
             if (mat.diffuseColor.size() == getMeshObjectPtr()->countPoints())
@@ -292,7 +288,7 @@ PyObject*  MeshPy::write(PyObject *args, PyObject *kwds)
                 float r = (float)Py::Float(t.getItem(0));
                 float g = (float)Py::Float(t.getItem(1));
                 float b = (float)Py::Float(t.getItem(2));
-                mat->diffuseColor.emplace_back(r,g,b);
+                mat->diffuseColor.push_back(App::Color(r,g,b));
             }
 
             if (mat->diffuseColor.size() == getMeshObjectPtr()->countPoints())
@@ -328,7 +324,7 @@ PyObject*  MeshPy::writeInventor(PyObject *args)
     std::vector<Base::Vector3f> coords;
     coords.reserve(mesh->countPoints());
     for (MeshObject::const_point_iterator it = mesh->points_begin(); it != mesh->points_end(); ++it)
-        coords.emplace_back((float)it->x,(float)it->y,(float)it->z);
+        coords.push_back(Base::Vector3f((float)it->x,(float)it->y,(float)it->z));
     indices.reserve(4*faces.size());
     for (MeshCore::MeshFacetArray::_TConstIterator it = faces.begin(); it != faces.end(); ++it) {
         indices.push_back(it->_aulPoints[0]);
@@ -714,7 +710,7 @@ PyObject*  MeshPy::addFacets(PyObject *args)
         for (Py::List::iterator it = list_v.begin(); it != list_v.end(); ++it) {
             if ((*it).isType(vType)) {
                 Base::Vector3d v = static_cast<Base::VectorPy*>((*it).ptr())->value();
-                vertices.emplace_back((float)v.x,(float)v.y,(float)v.z);
+                vertices.push_back(Base::Vector3f((float)v.x,(float)v.y,(float)v.z));
             }
         }
 
@@ -1730,26 +1726,14 @@ PyObject*  MeshPy::smooth(PyObject *args, PyObject *kwds)
 PyObject*  MeshPy::decimate(PyObject *args)
 {
     float fTol, fRed;
-    if (PyArg_ParseTuple(args, "ff", &fTol,&fRed)) {
-        PY_TRY {
-            getMeshObjectPtr()->decimate(fTol, fRed);
-        } PY_CATCH;
+    if (!PyArg_ParseTuple(args, "ff", &fTol,&fRed))
+        return NULL;
 
-        Py_Return;
-    }
+    PY_TRY {
+        getMeshObjectPtr()->decimate(fTol, fRed);
+    } PY_CATCH;
 
-    PyErr_Clear();
-    int targetSize;
-    if (PyArg_ParseTuple(args, "i", &targetSize)) {
-        PY_TRY {
-            getMeshObjectPtr()->decimate(targetSize);
-        } PY_CATCH;
-
-        Py_Return;
-    }
-
-    PyErr_SetString(PyExc_ValueError, "decimate(tolerance=float, reduction=float) or decimate(targetSize=int)");
-    return nullptr;
+    Py_Return;
 }
 
 PyObject* MeshPy::nearestFacetOnRay(PyObject *args)
@@ -1903,7 +1887,7 @@ PyObject*  MeshPy::getSegmentsByCurvature(PyObject *args)
     meshCurv.ComputePerVertex();
 
     Py::Sequence func(l);
-    std::vector<MeshCore::MeshSurfaceSegmentPtr> segm;
+    std::vector<MeshCore::MeshSurfaceSegment*> segm;
     for (Py::Sequence::iterator it = func.begin(); it != func.end(); ++it) {
         Py::Tuple t(*it);
         float c1 = (float)Py::Float(t[0]);
@@ -1915,13 +1899,13 @@ PyObject*  MeshPy::getSegmentsByCurvature(PyObject *args)
 #else
         int num = (int)Py::Int(t[4]);
 #endif
-        segm.emplace_back(std::make_shared<MeshCore::MeshCurvatureFreeformSegment>(meshCurv.GetCurvature(), num, tol1, tol2, c1, c2));
+        segm.push_back(new MeshCore::MeshCurvatureFreeformSegment(meshCurv.GetCurvature(), num, tol1, tol2, c1, c2));
     }
 
     finder.FindSegments(segm);
 
     Py::List list;
-    for (std::vector<MeshCore::MeshSurfaceSegmentPtr>::iterator segmIt = segm.begin(); segmIt != segm.end(); ++segmIt) {
+    for (std::vector<MeshCore::MeshSurfaceSegment*>::iterator segmIt = segm.begin(); segmIt != segm.end(); ++segmIt) {
         const std::vector<MeshCore::MeshSegment>& data = (*segmIt)->GetSegments();
         for (std::vector<MeshCore::MeshSegment>::const_iterator it = data.begin(); it != data.end(); ++it) {
             Py::List ary;
@@ -1934,38 +1918,7 @@ PyObject*  MeshPy::getSegmentsByCurvature(PyObject *args)
             }
             list.append(ary);
         }
-    }
-
-    return Py::new_reference_to(list);
-}
-
-PyObject* MeshPy::getCurvaturePerVertex(PyObject* args)
-{
-    if (!PyArg_ParseTuple(args, ""))
-        return NULL;
-
-    const MeshCore::MeshKernel& kernel = getMeshObjectPtr()->getKernel();
-    MeshCore::MeshSegmentAlgorithm finder(kernel);
-    MeshCore::MeshCurvature meshCurv(kernel);
-    meshCurv.ComputePerVertex();
-
-    const std::vector<MeshCore::CurvatureInfo>& curv = meshCurv.GetCurvature();
-    Py::List list;
-    for (const auto& it : curv) {
-        Py::Tuple tuple(4);
-        tuple.setItem(0, Py::Float(it.fMaxCurvature));
-        tuple.setItem(1, Py::Float(it.fMinCurvature));
-        Py::Tuple maxDir(3);
-        maxDir.setItem(0, Py::Float(it.cMaxCurvDir.x));
-        maxDir.setItem(1, Py::Float(it.cMaxCurvDir.y));
-        maxDir.setItem(2, Py::Float(it.cMaxCurvDir.z));
-        tuple.setItem(2, maxDir);
-        Py::Tuple minDir(3);
-        minDir.setItem(0, Py::Float(it.cMinCurvDir.x));
-        minDir.setItem(1, Py::Float(it.cMinCurvDir.y));
-        minDir.setItem(2, Py::Float(it.cMinCurvDir.z));
-        tuple.setItem(3, minDir);
-        list.append(tuple);
+        delete (*segmIt);
     }
 
     return Py::new_reference_to(list);

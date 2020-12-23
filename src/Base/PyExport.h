@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -168,22 +168,22 @@ public:
         return *this;
     }
 
-    /// dereference operators
+    /// derefrence operators
     HandledType &operator*() {
         return *_pHandels;
     }
 
-    /// dereference operators
+    /// derefrence operators
     HandledType *operator->() {
         return _pHandels;
     }
 
-    /// dereference operators
+    /// derefrence operators
     const HandledType &operator*() const {
         return _pHandels;
     }
 
-    /// dereference operators
+    /// derefrence operators
     const HandledType *operator->() const {
         return _pHandels;
     }

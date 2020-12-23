@@ -24,6 +24,8 @@ class Box(PartFeature):
 	def onChanged(self, fp, prop):
 		''' Print the name of the property that has changed '''
 		FreeCAD.Console.PrintMessage("Change property: " + str(prop) + "\n")
+		if prop == "Length" or prop == "Width" or prop == "Height":
+			fp.Shape = Part.makeBox(fp.Length,fp.Width,fp.Height)
 
 	def execute(self, fp):
 		''' Print a short message when doing a recomputation, this method is mandatory '''
@@ -109,11 +111,10 @@ class ViewProviderBox:
 
 
 def makeBox():
-	doc=FreeCAD.newDocument()
+	FreeCAD.newDocument()
 	a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Box")
 	Box(a)
 	ViewProviderBox(a.ViewObject)
-	doc.recompute()
 
 # -----------------------------------------------------------------------------
 
@@ -138,12 +139,11 @@ class ViewProviderLine:
 		return "Flat Lines"
 
 def makeLine():
-	doc=FreeCAD.newDocument()
+	FreeCAD.newDocument()
 	a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Line")
 	Line(a)
 	#ViewProviderLine(a.ViewObject)
 	a.ViewObject.Proxy=0 # just set it to something different from None
-	doc.recompute()
 
 # -----------------------------------------------------------------------------
 
@@ -319,11 +319,10 @@ class ViewProviderOctahedron:
 		return None
 
 def makeOctahedron():
-	doc=FreeCAD.newDocument()
+	FreeCAD.newDocument()
 	a=FreeCAD.ActiveDocument.addObject("App::FeaturePython","Octahedron")
 	Octahedron(a)
 	ViewProviderOctahedron(a.ViewObject)
-	doc.recompute()
 
 # -----------------------------------------------------------------------------
 
@@ -418,7 +417,7 @@ class ViewProviderPoints:
 
 
 def makePoints():
-	doc=FreeCAD.newDocument()
+	FreeCAD.newDocument()
 	import Mesh
 	m=Mesh.createSphere(5.0).Points
 	import Points
@@ -435,7 +434,6 @@ def makePoints():
 	a.Points=p
 	PointFeature(a)
 	ViewProviderPoints(a.ViewObject)
-	doc.recompute()
 
 # -----------------------------------------------------------------------------
 
@@ -511,24 +509,28 @@ class ViewProviderMesh:
 
 
 def makeMesh():
-	doc=FreeCAD.newDocument()
+	FreeCAD.newDocument()
 	import Mesh
 
 	a=FreeCAD.ActiveDocument.addObject("Mesh::FeaturePython","Mesh")
 	a.Mesh=Mesh.createSphere(5.0)
 	MeshFeature(a)
 	ViewProviderMesh(a.ViewObject)
-	doc.recompute()
-
+	
 # -----------------------------------------------------------------------------
 
 class Molecule:
 	def __init__(self, obj):
 		''' Add two point properties '''
 		obj.addProperty("App::PropertyVector","p1","Line","Start point")
-		obj.addProperty("App::PropertyVector","p2","Line","End point").p2=FreeCAD.Vector(5,0,0)
+		obj.addProperty("App::PropertyVector","p2","Line","End point").p2=FreeCAD.Vector(1,0,0)
 
 		obj.Proxy = self
+
+	def onChanged(self, fp, prop):
+		if prop == "p1" or prop == "p2":
+			''' Print the name of the property that has changed '''
+			fp.Shape = Part.makeLine(fp.p1,fp.p2)
 
 	def execute(self, fp):
 		''' Print a short message when doing a recomputation, this method is mandatory '''
@@ -537,6 +539,7 @@ class Molecule:
 class ViewProviderMolecule:
 	def __init__(self, obj):
 		''' Set this object to the proxy object of the actual view provider '''
+		obj.Proxy = self
 		sep1=coin.SoSeparator()
 		self.trl1=coin.SoTranslation()
 		sep1.addChild(self.trl1)
@@ -547,8 +550,6 @@ class ViewProviderMolecule:
 		sep2.addChild(coin.SoSphere())
 		obj.RootNode.addChild(sep1)
 		obj.RootNode.addChild(sep2)
-		# triggers an updateData call so the the assignment at the end
-		obj.Proxy = self
 
 	def updateData(self, fp, prop):
 		"If a property of the handled feature has changed we have the chance to handle this here"
@@ -567,11 +568,10 @@ class ViewProviderMolecule:
 		return None
 
 def makeMolecule():
-	doc=FreeCAD.newDocument()
+	FreeCAD.newDocument()
 	a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Molecule")
 	Molecule(a)
 	ViewProviderMolecule(a.ViewObject)
-	doc.recompute()
 
 # -----------------------------------------------------------------------------
 
@@ -628,12 +628,11 @@ def makeCircleSet():
 			y=y+0.5
 		x=x+0.5
 
-	doc=FreeCAD.newDocument()
+	FreeCAD.newDocument()
 	a=FreeCAD.ActiveDocument.addObject("App::FeaturePython","Circles")
 	c=CircleSet(a)
 	v=ViewProviderCircleSet(a.ViewObject)
 	a.Shape=comp
-	doc.recompute()
 
 # -----------------------------------------------------------------------------
 
@@ -645,11 +644,11 @@ class EnumTest:
 		obj.Proxy = self
 
 	def execute(self, fp):
-		return
-
+		return                                                                            
+                                                                               
 class ViewProviderEnumTest:
 	def __init__(self, obj):
-		''' Set this object to the proxy object of the actual view provider '''
+		''' Set this object to the proxy object of the actual view provider '''           
 		obj.addProperty("App::PropertyEnumeration","Enum3","","Enumeration3").Enum3=["One","Two","Three"]
 		obj.addProperty("App::PropertyEnumeration","Enum4","","Enumeration4").Enum4=["One","Two","Three"]
 		obj.Proxy = self
@@ -715,9 +714,9 @@ class DistanceBolt:
 		fp.Shape = extrude
 
 def makeDistanceBolt():
-	doc=FreeCAD.newDocument()
+	FreeCAD.newDocument()
 	bolt=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Distance_Bolt")
 	bolt.Label = "Distance bolt"
 	DistanceBolt(bolt)
 	bolt.ViewObject.Proxy=0
-	doc.recompute()
+

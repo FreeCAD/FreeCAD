@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -62,7 +62,6 @@
 # include <Geom_Plane.hxx>
 # include <Geom2d_TrimmedCurve.hxx>
 # include <Interface_Static.hxx>
-# include <Poly_Triangulation.hxx>
 # include <ShapeUpgrade_ShellSewing.hxx>
 # include <Standard_ConstructionError.hxx>
 # include <Standard_DomainError.hxx>
@@ -89,9 +88,6 @@
 # include <NCollection_List.hxx>
 # include <BRepFill_Filling.hxx>
 #endif
-
-#include <cstdio>
-#include <fstream>
 
 #include <CXX/Extensions.hxx>
 #include <CXX/Objects.hxx>
@@ -156,15 +152,15 @@ PartExport void getPyShapes(PyObject *obj, std::vector<TopoShape> &shapes) {
     if(PyObject_TypeCheck(obj,&Part::TopoShapePy::Type))
         shapes.push_back(*static_cast<TopoShapePy*>(obj)->getTopoShapePtr());
     else if (PyObject_TypeCheck(obj, &GeometryPy::Type)) 
-        shapes.emplace_back(static_cast<GeometryPy*>(obj)->getGeometryPtr()->toShape());
+        shapes.push_back(TopoShape(static_cast<GeometryPy*>(obj)->getGeometryPtr()->toShape()));
     else if(PySequence_Check(obj)) {
         Py::Sequence list(obj);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapePy::Type)))
                 shapes.push_back(*static_cast<TopoShapePy*>((*it).ptr())->getTopoShapePtr());
             else if (PyObject_TypeCheck((*it).ptr(), &GeometryPy::Type)) 
-                shapes.emplace_back(static_cast<GeometryPy*>(
-                                (*it).ptr())->getGeometryPtr()->toShape());
+                shapes.push_back(TopoShape(static_cast<GeometryPy*>(
+                                (*it).ptr())->getGeometryPtr()->toShape()));
             else
                 throw Py::TypeError("expect shape in sequence");
         }
@@ -271,68 +267,8 @@ PartExport std::list<TopoDS_Edge> sort_Edges(double tol3d, std::list<TopoDS_Edge
 }
 
 namespace Part {
-class BRepFeatModule : public Py::ExtensionModule<BRepFeatModule>
-{
-public:
-    BRepFeatModule() : Py::ExtensionModule<BRepFeatModule>("BRepFeat")
-    {
-        initialize("This is a module working with the BRepFeat package."); // register with Python
-    }
-
-    virtual ~BRepFeatModule() {}
-};
-
-class BRepOffsetAPIModule : public Py::ExtensionModule<BRepOffsetAPIModule>
-{
-public:
-    BRepOffsetAPIModule() : Py::ExtensionModule<BRepOffsetAPIModule>("BRepOffsetAPI")
-    {
-        initialize("This is a module working with the BRepOffsetAPI package."); // register with Python
-    }
-
-    virtual ~BRepOffsetAPIModule() {}
-};
-
-class Geom2dModule : public Py::ExtensionModule<Geom2dModule>
-{
-public:
-    Geom2dModule() : Py::ExtensionModule<Geom2dModule>("Geom2d")
-    {
-        initialize("This is a module working with 2d geometries."); // register with Python
-    }
-
-    virtual ~Geom2dModule() {}
-};
-
-class GeomPlateModule : public Py::ExtensionModule<GeomPlateModule>
-{
-public:
-    GeomPlateModule() : Py::ExtensionModule<GeomPlateModule>("GeomPlate")
-    {
-        initialize("This is a module working with the GeomPlate framework."); // register with Python
-    }
-
-    virtual ~GeomPlateModule() {}
-};
-
-class ShapeUpgradeModule : public Py::ExtensionModule<ShapeUpgradeModule>
-{
-public:
-    ShapeUpgradeModule() : Py::ExtensionModule<ShapeUpgradeModule>("ShapeUpgrade")
-    {
-        initialize("This is a module working with the ShapeUpgrade framework."); // register with Python
-    }
-
-    virtual ~ShapeUpgradeModule() {}
-};
-
 class Module : public Py::ExtensionModule<Module>
 {
-    BRepFeatModule brepFeat;
-    BRepOffsetAPIModule brepOffsetApi;
-    Geom2dModule geom2d;
-    GeomPlateModule geomPlate;
-    ShapeUpgradeModule shapeUpgrade;
 public:
     Module() : Py::ExtensionModule<Module>("Part")
     {
@@ -350,9 +286,6 @@ public:
         );
         add_varargs_method("show",&Module::show,
             "show(shape,[string]) -- Add the shape to the active document or create one if no document exists."
-        );
-        add_varargs_method("getFacets",&Module::getFacets,
-            "getFacets(shape): simplified mesh generation"
         );
         add_varargs_method("makeCompound",&Module::makeCompound,
             "makeCompound(list) -- Create a compound out of a list of shapes."
@@ -548,12 +481,6 @@ public:
             "joinSubname(sub,mapped,subElement) -> subname\n"
         );
         initialize("This is a module working with shapes."); // register with Python
-
-        PyModule_AddObject(m_module, "BRepFeat", brepFeat.module().ptr());
-        PyModule_AddObject(m_module, "BRepOffsetAPI", brepOffsetApi.module().ptr());
-        PyModule_AddObject(m_module, "Geom2d", geom2d.module().ptr());
-        PyModule_AddObject(m_module, "GeomPlate", geomPlate.module().ptr());
-        PyModule_AddObject(m_module, "ShapeUpgrade", shapeUpgrade.module().ptr());
     }
 
     virtual ~Module() {}
@@ -790,48 +717,6 @@ private:
 
         return Py::None();
     }
-    Py::Object getFacets(const Py::Tuple& args)
-    {
-        PyObject *shape;
-        Py::List list;
-        if (!PyArg_ParseTuple(args.ptr(), "O", &shape)) 
-            throw Py::Exception();
-        auto theShape = static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
-        for (TopExp_Explorer ex(theShape, TopAbs_FACE); ex.More(); ex.Next()) {
-            TopoDS_Face currentFace = TopoDS::Face(ex.Current());
-            TopLoc_Location loc;
-            Handle(Poly_Triangulation) facets = BRep_Tool::Triangulation(currentFace, loc);
-            const TopAbs_Orientation anOrientation = currentFace.Orientation();
-            bool flip = (anOrientation == TopAbs_REVERSED);
-            if (!facets.IsNull()) {
-                const TColgp_Array1OfPnt& nodes = facets->Nodes();
-                const Poly_Array1OfTriangle& triangles = facets->Triangles();
-                for (int i = 1; i <= triangles.Length(); i++) {
-                    Standard_Integer n1,n2,n3;
-                    triangles(i).Get(n1, n2, n3);
-                    gp_Pnt p1 = nodes(n1);
-                    gp_Pnt p2 = nodes(n2);
-                    gp_Pnt p3 = nodes(n3);
-                    p1.Transform(loc.Transformation());
-                    p2.Transform(loc.Transformation());
-                    p3.Transform(loc.Transformation());
-                    // TODO: verify if tolerance should be hard coded
-                    if (!p1.IsEqual(p2, 0.01) && !p2.IsEqual(p3, 0.01) && !p3.IsEqual(p1, 0.01)) {
-                        PyObject *t1 = PyTuple_Pack(3, PyFloat_FromDouble(p1.X()), PyFloat_FromDouble(p1.Y()), PyFloat_FromDouble(p1.Z()));
-                        PyObject *t2 = PyTuple_Pack(3, PyFloat_FromDouble(p2.X()), PyFloat_FromDouble(p2.Y()), PyFloat_FromDouble(p2.Z()));
-                        PyObject *t3 = PyTuple_Pack(3, PyFloat_FromDouble(p3.X()), PyFloat_FromDouble(p3.Y()), PyFloat_FromDouble(p3.Z()));
-                        if (flip) {
-                            list.append(Py::asObject(PyTuple_Pack(3, t2, t1, t3)));
-                        }
-                        else {
-                            list.append(Py::asObject(PyTuple_Pack(3, t1, t2, t3)));
-                        }
-                    }
-                }
-            }
-        }
-        return list;
-    }
     Py::Object makeCompound(const Py::Tuple& args)
     {
         PyObject *pcObj;
@@ -922,8 +807,17 @@ private:
 
                 fm->Build();
 
-                TopoShape topo(fm->Shape());
-                return Py::asObject(topo.getPyObject());
+                if(fm->Shape().IsNull())
+                    return Py::asObject(new TopoShapePy(new TopoShape(fm->Shape())));
+
+                switch(fm->Shape().ShapeType()){
+                case TopAbs_FACE:
+                    return Py::asObject(new TopoShapeFacePy(new TopoShape(fm->Shape())));
+                case TopAbs_COMPOUND:
+                    return Py::asObject(new TopoShapeCompoundPy(new TopoShape(fm->Shape())));
+                default:
+                    return Py::asObject(new TopoShapePy(new TopoShape(fm->Shape())));
+                }
             }
 
             throw Py::Exception(Base::BaseExceptionFreeCADError, std::string("Argument type signature not recognized. Should be either (list, string), or (shape, string)"));
@@ -978,7 +872,7 @@ private:
             }
 
             if (numConstraints == 0) {
-                throw Py::Exception(PartExceptionOCCError, "Failed to create face with no constraints");
+                throw Py::Exception(PartExceptionOCCError, "Failed to created face with no constraints");
             }
 
             builder.Build();
@@ -1895,19 +1789,11 @@ private:
             if (!p) {
                 throw Py::TypeError("** makeWireString can't convert PyString.");
             }
-#if PY_VERSION_HEX >= 0x03030000
-            pysize = PyUnicode_GetLength(p);
-#else
             pysize = PyUnicode_GetSize(p);
-#endif
             unichars = PyUnicode_AS_UNICODE(p);
         }
         else if (PyUnicode_Check(intext)) {
-#if PY_VERSION_HEX >= 0x03030000
-            pysize = PyUnicode_GetLength(intext);
-#else
             pysize = PyUnicode_GetSize(intext);
-#endif
             unichars = PyUnicode_AS_UNICODE(intext);
         }
         else {
@@ -1916,19 +1802,7 @@ private:
 
         try {
             if (useFontSpec) {
-#ifdef FC_OS_WIN32
-//    Windows doesn't do Utf8 by default and FreeType doesn't do wchar. 
-//    this is a hacky work around.
-//    copy fontspec to Ascii temp name
-                std::string tempFile = Base::FileInfo::getTempFileName();   //utf8/ascii
-				Base::FileInfo fiIn(fontspec);
-				fiIn.copyTo(tempFile.c_str());
-                CharList = FT2FC(unichars,pysize,tempFile.c_str(),height,track);
-				Base::FileInfo fiTemp(tempFile);
-				fiTemp.deleteFile();
-#else
                 CharList = FT2FC(unichars,pysize,fontspec,height,track);
-#endif
             }
             else {
                 CharList = FT2FC(unichars,pysize,dir,fontfile,height,track);
@@ -2013,7 +1887,36 @@ private:
         PyObject *object;
         if (PyArg_ParseTuple(args.ptr(),"O!",&(Part::TopoShapePy::Type), &object)) {
             TopoShape* ptr = static_cast<TopoShapePy*>(object)->getTopoShapePtr();
-            return Py::asObject(ptr->getPyObject());
+            TopoDS_Shape shape = ptr->getShape();
+            if (!shape.IsNull()) {
+                TopAbs_ShapeEnum type = shape.ShapeType();
+                switch (type)
+                {
+                case TopAbs_COMPOUND:
+                    return Py::asObject(new TopoShapeCompoundPy(new TopoShape(shape)));
+                case TopAbs_COMPSOLID:
+                    return Py::asObject(new TopoShapeCompSolidPy(new TopoShape(shape)));
+                case TopAbs_SOLID:
+                    return Py::asObject(new TopoShapeSolidPy(new TopoShape(shape)));
+                case TopAbs_SHELL:
+                    return Py::asObject(new TopoShapeShellPy(new TopoShape(shape)));
+                case TopAbs_FACE:
+                    return Py::asObject(new TopoShapeFacePy(new TopoShape(shape)));
+                case TopAbs_WIRE:
+                    return Py::asObject(new TopoShapeWirePy(new TopoShape(shape)));
+                case TopAbs_EDGE:
+                    return Py::asObject(new TopoShapeEdgePy(new TopoShape(shape)));
+                case TopAbs_VERTEX:
+                    return Py::asObject(new TopoShapeVertexPy(new TopoShape(shape)));
+                case TopAbs_SHAPE:
+                    return Py::asObject(new TopoShapePy(new TopoShape(shape)));
+                default:
+                    break;
+                }
+            }
+            else {
+                throw Py::Exception(PartExceptionOCCError, "empty shape");
+            }
         }
 
         throw Py::Exception();
@@ -2235,18 +2138,16 @@ private:
         if (!PyArg_ParseTuple(args.ptr(), "sss",&sub,&mapped,&element))
             throw Py::Exception();
         std::string subname(sub);
-        if (subname.size() && subname[subname.size()-1]!='.')
+        if(subname.size() && subname[subname.size()-1]!='.')
             subname += '.';
-        if (mapped && mapped[0]) {
-            if (!Data::ComplexGeoData::isMappedElement(mapped))
+        if(mapped && mapped[0]) {
+            if(!Data::ComplexGeoData::isMappedElement(mapped))
                 subname += Data::ComplexGeoData::elementMapPrefix();
             subname += mapped;
-        }
-        if (element && element[0]) {
-            if (subname.size() && subname[subname.size()-1]!='.')
+            if(element && element[0] && subname[subname.size()-1]!='.')
                 subname += '.';
-            subname += element;
         }
+        subname += element;
         return Py::String(subname);
     }
 };

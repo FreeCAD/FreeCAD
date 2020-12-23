@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
-# *   Copyright (c) 2015 Yorik van Havre <yorik@uncreated.net>              *
+# *   (c) Yorik van Havre (yorik@uncreated.net) 2015                        *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -20,7 +19,7 @@
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
-# ***************************************************************************
+# ***************************************************************************/
 
 
 from PySide import QtCore, QtGui
@@ -113,6 +112,7 @@ class GCodeEditorDialog(QtGui.QDialog):
         font.setPointSize(p.GetInt("FontSize", 10))
         self.editor.setFont(font)
         self.editor.setText("G01 X55 Y4.5 F300.0")
+        self.highlighter = GCodeHighlighter(self.editor.document())
         layout.addWidget(self.editor)
 
         # Note
@@ -193,24 +193,10 @@ class GCodeEditorDialog(QtGui.QDialog):
 def show(obj):
     "show(obj): shows the G-code data of the given Path object in a dialog"
 
-    prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
-    # default Max Highlighter Size = 512 Ko
-    defaultMHS = 512 * 1024
-    mhs = prefs.GetUnsigned('inspecteditorMaxHighlighterSize', defaultMHS)
-
     if hasattr(obj, "Path"):
         if obj.Path:
             dia = GCodeEditorDialog(obj.Path)
             dia.editor.setText(obj.Path.toGCode())
-            gcodeSize = len(dia.editor.toPlainText())
-            if (gcodeSize <= mhs):
-                # because of poor performance, syntax highlighting is
-                # limited to mhs octets (default 512 KB).
-                # It seems than the response time curve has an inflexion near 500 KB
-                # beyond 500 KB, the response time increases exponentially.
-                dia.highlighter = GCodeHighlighter(dia.editor.document())
-            else:
-                FreeCAD.Console.PrintMessage(translate("Path", "GCode size too big ({} o), disabling syntax highlighter.".format(gcodeSize)))
             result = dia.exec_()
             # exec_() returns 0 or 1 depending on the button pressed (Ok or
             # Cancel)
@@ -225,7 +211,7 @@ def show(obj):
 class CommandPathInspect:
 
     def GetResources(self):
-        return {'Pixmap': 'Path_Inspect',
+        return {'Pixmap': 'Path-Inspect',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Inspect", "Inspect G-code"),
                 'Accel': "P, I",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Inspect", "Inspects the G-code contents of a path")}

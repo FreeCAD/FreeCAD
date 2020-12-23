@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+
 # ***************************************************************************
+# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -31,11 +33,16 @@ from PySide import QtCore, QtGui
 
 __title__ = "Path Engrave Operation UI"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "http://www.freecadweb.org"
 __doc__ = "Engrave operation page controller and command implementation."
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#PathLog.trackModule(PathLog.thisModule())
+LOGLEVEL = False
+
+if LOGLEVEL:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
@@ -45,13 +52,6 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
 
     def super(self):
         return super(TaskPanelBaseGeometryPage, self)
-
-    def selectionSupportedAsBaseGeometry(self, selection, ignoreErrors):
-        # allow selection of an entire 2D object, which is generally not the case
-        if len(selection) == 1 and not selection[0].HasSubObjects and selection[0].Object.isDerivedFrom('Part::Part2DObject'):
-            return True
-        # Let general logic handle all other cases.
-        return self.super().selectionSupportedAsBaseGeometry(selection, ignoreErrors)
 
     def addBaseGeometry(self, selection):
         added = False
@@ -144,7 +144,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 Command = PathOpGui.SetupOperation('Engrave',
         PathEngrave.Create,
         TaskPanelOpPage,
-        'Path_Engrave',
+        'Path-Engrave',
         QtCore.QT_TRANSLATE_NOOP("PathEngrave", "Engrave"),
         QtCore.QT_TRANSLATE_NOOP("PathEngrave", "Creates an Engraving Path around a Draft ShapeString"),
         PathEngrave.SetupProperties)

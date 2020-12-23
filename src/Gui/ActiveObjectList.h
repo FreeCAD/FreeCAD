@@ -1,5 +1,5 @@
-/**************************************************************************
-*   Copyright (c) 2014 Jürgen Riegel <juergen.riegel@web.de>              *
+/***************************************************************************
+*   (c) Jürgen Riegel (juergen.riegel@web.de) 2014                        *
 *                                                                         *
 *   This file is part of the FreeCAD CAx development system.              *
 *                                                                         *
@@ -44,7 +44,7 @@ namespace Gui
 	* @see Gui::MDIViewer
 	* @author Jürgen Riegel
 	*/
-    class GuiExport ActiveObjectList
+    class GuiExport ActiveObjectList 
     {
     public:
         ActiveObjectList(Document *doc)
@@ -59,7 +59,7 @@ namespace Gui
             return dynamic_cast<_T>(getObject(it->second,true,parent,subname));
         }
         void setObject(App::DocumentObject*, const char*, const char *subname=0,
-                const Gui::HighlightMode& m = HighlightMode::UserDefined);
+                const Gui::HighlightMode& m = Gui::UserDefined);
         bool hasObject(const char*)const;
         void objectDeleted(const ViewProviderDocumentObject& viewProviderIn);
         bool hasObject(App::DocumentObject *obj, const char *, const char *subname=0) const;
@@ -85,4 +85,4 @@ namespace Gui
 static const char PDBODYKEY[] = "pdbody";
 static const char PARTKEY[] = "part";
 
-#endif
+#endif 

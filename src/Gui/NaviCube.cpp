@@ -245,7 +245,6 @@ public:
 	int m_CubeWidgetPosY = 0;
 	int m_PrevWidth = 0;
 	int m_PrevHeight = 0;
-	QColor m_TextColor;
 	QColor m_HiliteColor;
 	QColor m_ButtonColor;
 	QColor m_FrontFaceColor;
@@ -276,6 +275,7 @@ public:
 
 NaviCube::NaviCube(Gui::View3DInventorViewer* viewer) {
 	m_NaviCubeImplementation = new NaviCubeImplementation(viewer);
+
 }
 
 NaviCube::~NaviCube() {
@@ -305,37 +305,15 @@ void NaviCube::setCorner(Corner c) {
 }
 
 NaviCubeImplementation::NaviCubeImplementation(
-	Gui::View3DInventorViewer* viewer) {
-	ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube");
+		Gui::View3DInventorViewer* viewer) {
 	m_View3DInventorViewer = viewer;
-
-	m_TextColor = QColor(0,0,0,255);
-	if (hGrp->GetUnsigned("TextColor")) {
-		m_TextColor.setRgba(hGrp->GetUnsigned("TextColor"));
-	}
-
 	m_FrontFaceColor = QColor(255,255,255,128);
-	if (hGrp->GetUnsigned("FrontColor")) {
-		m_FrontFaceColor.setRgba(hGrp->GetUnsigned("FrontColor"));
-	}
-
 	m_BackFaceColor = QColor(226,233,239,128);
-	if (hGrp->GetUnsigned("BackColor")) {
-		m_BackFaceColor.setRgba(hGrp->GetUnsigned("BackColor"));
-	}
-
-	m_HiliteColor = QColor(170,226,255);
-	if (hGrp->GetUnsigned("HiliteColor")) {
-		m_HiliteColor.setRgba(hGrp->GetUnsigned("HiliteColor"));
-	}
-
+	m_HiliteColor = QColor(170,226,247);
 	m_ButtonColor = QColor(226,233,239,128);
-	if (hGrp->GetUnsigned("ButtonColor")) {
-		m_ButtonColor.setRgba(hGrp->GetUnsigned("ButtonColor"));
-	}
-
 	m_PickingFramebuffer = NULL;
-	m_CubeWidgetSize = (hGrp->GetInt("CubeSize", 132));
+	m_CubeWidgetSize = 132;
+
 	m_Menu = createNaviCubeMenu();
 }
 
@@ -392,25 +370,9 @@ GLuint NaviCubeImplementation::createCubeFaceTex(QtGLWidget* gl, float gap, floa
 	paint.begin(&image);
 
 	if (text) {
-		ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube");
 		paint.setPen(Qt::white);
 		QFont sansFont(str("Helvetica"), 0.18 * texSize);
-		QString fontString = QString::fromUtf8((hGrp->GetASCII("FontString")).c_str());
-		if (fontString.isEmpty()) {
-			// Improving readability
-			sansFont.setWeight(hGrp->GetInt("FontWeight", 87));
-			sansFont.setStretch(hGrp->GetInt("FontStretch", 62));
-		}
-		else {
-			sansFont.fromString(fontString);
-		}
-		// Override fromString
-		if (hGrp->GetInt("FontWeight") > 0) {
-			sansFont.setWeight(hGrp->GetInt("FontWeight"));
-		}
-		if (hGrp->GetInt("FontStretch") > 0) {
-			sansFont.setStretch(hGrp->GetInt("FontStretch"));
-		}
+		sansFont.setStretch(QFont::ExtraCondensed);
 		paint.setFont(sansFont);
 		paint.drawText(QRect(0, 0, texSize, texSize), Qt::AlignCenter,qApp->translate("Gui::NaviCube",text));
 	}
@@ -621,13 +583,13 @@ void NaviCubeImplementation::addFace(const Vector3f& x, const Vector3f& z, int f
 	int t = m_VertexArray.size();
 
 	m_VertexArray.push_back(z - x - y);
-	m_TextureCoordArray.emplace_back(0, 0);
+	m_TextureCoordArray.push_back(Vector2f(0, 0));
 	m_VertexArray.push_back(z + x - y);
-	m_TextureCoordArray.emplace_back(1, 0);
+	m_TextureCoordArray.push_back(Vector2f(1, 0));
 	m_VertexArray.push_back(z + x + y);
-	m_TextureCoordArray.emplace_back(1, 1);
+	m_TextureCoordArray.push_back(Vector2f(1, 1));
 	m_VertexArray.push_back(z - x + y);
-	m_TextureCoordArray.emplace_back(0, 1);
+	m_TextureCoordArray.push_back(Vector2f(0, 1));
 
 	// TEX_TOP, TEX_BACK_FACE, TEX_FRONT_FACE, TEX_TOP
 	// TEX_TOP 			frontTex,
@@ -651,7 +613,7 @@ void NaviCubeImplementation::addFace(const Vector3f& x, const Vector3f& z, int f
 			m_Textures[frontTex],
 			pickId,
 			m_Textures[pickTex],
-			m_TextColor,
+			Qt::black,
 			2);
 		m_Faces.push_back(ft);
 
@@ -715,13 +677,12 @@ void NaviCubeImplementation::initNaviCube(QtGLWidget* gl) {
 
     if (labels.size() != 6) {
         labels.clear();
-        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube");
-        labels.push_back(hGrp->GetASCII("TextFront", "FRONT"));
-        labels.push_back(hGrp->GetASCII("TextRear", "REAR"));
-        labels.push_back(hGrp->GetASCII("TextTop", "TOP"));
-        labels.push_back(hGrp->GetASCII("TextBottom", "BOTTOM"));
-        labels.push_back(hGrp->GetASCII("TextRight", "RIGHT"));
-        labels.push_back(hGrp->GetASCII("TextLeft", "LEFT"));
+        labels.push_back("FRONT");
+        labels.push_back("REAR");
+        labels.push_back("TOP");
+        labels.push_back("BOTTOM");
+        labels.push_back("RIGHT");
+        labels.push_back("LEFT");
     }
 
 	float gap = 0.12f;
@@ -831,30 +792,27 @@ void NaviCubeImplementation::handleResize() {
 		if ((m_PrevWidth > 0) && (m_PrevHeight > 0)) {
 			// maintain position relative to closest edge
 			if (m_CubeWidgetPosX > m_PrevWidth / 2)
-				m_CubeWidgetPosX = view[0] - (m_PrevWidth - m_CubeWidgetPosX);
+				m_CubeWidgetPosX = view[0] - (m_PrevWidth -m_CubeWidgetPosX);
 			if (m_CubeWidgetPosY > m_PrevHeight / 2)
 				m_CubeWidgetPosY = view[1] - (m_PrevHeight - m_CubeWidgetPosY);
 		}
 		else { // initial position
-			ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube");
-			int m_CubeWidgetOffsetX = hGrp->GetInt("OffsetX", 0);
-			int m_CubeWidgetOffsetY = hGrp->GetInt("OffsetY", 0);
 			switch (m_Corner) {
 			case NaviCube::TopLeftCorner:
-				m_CubeWidgetPosX = m_CubeWidgetSize*1.1 / 2 + m_CubeWidgetOffsetX;
-				m_CubeWidgetPosY = view[1] - m_CubeWidgetSize*1.1 / 2 - m_CubeWidgetOffsetY;
+				m_CubeWidgetPosX = m_CubeWidgetSize*1.1 / 2;
+				m_CubeWidgetPosY = view[1] - m_CubeWidgetSize*1.1 / 2;
 				break;
 			case NaviCube::TopRightCorner:
-				m_CubeWidgetPosX = view[0] - m_CubeWidgetSize*1.1 / 2 - m_CubeWidgetOffsetX;
-				m_CubeWidgetPosY = view[1] - m_CubeWidgetSize*1.1 / 2 - m_CubeWidgetOffsetY;
+				m_CubeWidgetPosX = view[0] - m_CubeWidgetSize*1.1 / 2;
+				m_CubeWidgetPosY = view[1] - m_CubeWidgetSize*1.1 / 2;
 				break;
 			case NaviCube::BottomLeftCorner:
-				m_CubeWidgetPosX = m_CubeWidgetSize*1.1 / 2 + m_CubeWidgetOffsetX;
-				m_CubeWidgetPosY = m_CubeWidgetSize*1.1 / 2 + m_CubeWidgetOffsetY;
+				m_CubeWidgetPosX = m_CubeWidgetSize*1.1 / 2;
+				m_CubeWidgetPosY = m_CubeWidgetSize*1.1 / 2;
 				break;
 			case NaviCube::BottomRightCorner:
-				m_CubeWidgetPosX = view[0] - m_CubeWidgetSize*1.1 / 2 - m_CubeWidgetOffsetX;
-				m_CubeWidgetPosY = m_CubeWidgetSize*1.1 / 2 + m_CubeWidgetOffsetY;
+				m_CubeWidgetPosX = view[0] - m_CubeWidgetSize*1.1 / 2;
+				m_CubeWidgetPosY = m_CubeWidgetSize*1.1 / 2;
 				break;
 			}
 		}
@@ -896,7 +854,6 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode) {
 	glClearDepth(1.0f);
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
-	glLineWidth(2.0);
 
 	glDisable(GL_LIGHTING);
 	//glDisable(GL_BLEND);
@@ -965,41 +922,37 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode) {
 
 	if (!pickMode) {
 		// Draw the axes
-		ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube");
-		bool ShowCS = hGrp->GetBool("ShowCS", 1);
-		if (ShowCS) {
-			glDisable(GL_TEXTURE_2D);
-			float a=1.1f;
+		glDisable(GL_TEXTURE_2D);
+		float a=1.1f;
 
-			static GLubyte xbmp[] = { 0x11,0x11,0x0a,0x04,0x0a,0x11,0x11 };
-			glColor3f(1, 0, 0);
-			glBegin(GL_LINES);
-			glVertex3f(-1.1f, -1.1f, -1.1f);
-			glVertex3f(+0.5f, -1.1f, -1.1f);
-			glEnd();
-			glRasterPos3d(a, -a, -a);
-			glBitmap(8, 7, 0, 0, 0, 0, xbmp);
+		static GLubyte xbmp[] = { 0x11,0x11,0x0a,0x04,0x0a,0x11,0x11 };
+		glColor3f(1, 0, 0);
+		glBegin(GL_LINES);
+		glVertex3f(-1 , -1, -1);
+		glVertex3f(+1 , -1, -1);
+		glEnd();
+	    glRasterPos3d(a, -a, -a);
+	    glBitmap(8, 7, 0, 0, 0, 0, xbmp);
 
-			static GLubyte ybmp[] = { 0x04,0x04,0x04,0x04,0x0a,0x11,0x11 };
-			glColor3f(0, 1, 0);
-			glBegin(GL_LINES);
-			glVertex3f(-1.1f, -1.1f, -1.1f);
-			glVertex3f(-1.1f, +0.5f, -1.1f);
-			glEnd();
-			glRasterPos3d( -a, a, -a);
-			glBitmap(8, 7, 0, 0, 0, 0, ybmp);
+		static GLubyte ybmp[] = { 0x04,0x04,0x04,0x04,0x0a,0x11,0x11 };
+		glColor3f(0, 1, 0);
+		glBegin(GL_LINES);
+		glVertex3f(-1 , -1, -1);
+		glVertex3f(-1 , +1, -1);
+		glEnd();
+	    glRasterPos3d( -a, a, -a);
+	    glBitmap(8, 7, 0, 0, 0, 0, ybmp);
 
-			static GLubyte zbmp[] = { 0x1f,0x10,0x08,0x04,0x02,0x01,0x1f };
-			glColor3f(0, 0, 1);
-			glBegin(GL_LINES);
-			glVertex3f(-1.1f, -1.1f, -1.1f);
-			glVertex3f(-1.1f, -1.1f, +0.5f);
-			glEnd();
-			glRasterPos3d( -a, -a, a);
-			glBitmap(8, 7, 0, 0, 0, 0, zbmp);
+		static GLubyte zbmp[] = { 0x1f,0x10,0x08,0x04,0x02,0x01,0x1f };
+		glColor3f(0, 0, 1);
+		glBegin(GL_LINES);
+		glVertex3f(-1 , -1, -1);
+		glVertex3f(-1 , -1, +1);
+		glEnd();
+	    glRasterPos3d( -a, -a, a);
+	    glBitmap(8, 7, 0, 0, 0, 0, zbmp);
 
-			glEnable(GL_TEXTURE_2D);
-		}
+		glEnable(GL_TEXTURE_2D);
 	}
 
 	// Draw the cube faces
@@ -1086,7 +1039,7 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode) {
 			glVertex3f(0.0f, 0.0f, 0.0f);
 			glEnd();
 		}
-
+		
 		QColor& c = m_ButtonColor;
 		glColor4f(c.redF(), c.greenF(), c.blueF(), c.alphaF());
 		glBindTexture(GL_TEXTURE_2D, m_Textures[TEX_VIEW_MENU_ICON]);
@@ -1201,11 +1154,6 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
 		float rot = 45 ; //30;
 		float tilt = 90-54.7356f ; //30; // 90 + deg(asin(-sqrt(1.0/3.0)))
 		int pick = pickFace(x, y);
-
-		ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-		long step = Base::clamp(hGrp->GetInt("NaviStepByTurn",8), 4L, 36L);
-		float rotStepAngle = 360.0f/step;
-
 		switch (pick) {
 		default:
 			return false;
@@ -1253,22 +1201,22 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
 			setView(rot - 270, 90 - tilt);
 			break;
 		case TEX_ARROW_LEFT :
-			rotateView(DIR_OUT,rotStepAngle);
+			rotateView(DIR_OUT,45);
 			break;
 		case TEX_ARROW_RIGHT :
-			rotateView(DIR_OUT,-rotStepAngle);
+			rotateView(DIR_OUT,-45);
 			break;
 		case TEX_ARROW_WEST :
-			rotateView(DIR_UP,-rotStepAngle);
+			rotateView(DIR_UP,-45);
 			break;
 		case TEX_ARROW_EAST :
-			rotateView(DIR_UP,rotStepAngle);
+			rotateView(DIR_UP,45);
 			break;
 		case TEX_ARROW_NORTH :
-			rotateView(DIR_RIGHT,-rotStepAngle);
+			rotateView(DIR_RIGHT,-45);
 			break;
 		case TEX_ARROW_SOUTH :
-			rotateView(DIR_RIGHT,rotStepAngle);
+			rotateView(DIR_RIGHT,45);
 			break;
 		case TEX_VIEW_MENU_FACE :
 			handleMenu();

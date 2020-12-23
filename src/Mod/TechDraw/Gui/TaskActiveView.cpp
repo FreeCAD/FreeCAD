@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2019 Wandererfan <wandererfan@gmail.com                 *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -68,21 +68,15 @@ using namespace TechDrawGui;
 TaskActiveView::TaskActiveView(TechDraw::DrawPage* pageFeat) :
     ui(new Ui_TaskActiveView),
     m_pageFeat(pageFeat),
-    m_symbolFeat(nullptr),
-    m_btnOK(nullptr),
-    m_btnCancel(nullptr)
+    m_symbolFeat(nullptr)
 {
 //    Base::Console().Message("TAV::TAV() - create mode\n");
     if  (m_pageFeat == nullptr)  {
         //should be caught in CMD caller
-        Base::Console().Error("TaskActiveView - bad parameters. Can not proceed.\n");
+        Base::Console().Error("TaskActiveView - bad parameters.  Can not proceed.\n");
         return;
     }
     ui->setupUi(this);
-
-    ui->qsbWidth->setUnit(Base::Unit::Length);
-    ui->qsbHeight->setUnit(Base::Unit::Length);
-    ui->qsbBorder->setUnit(Base::Unit::Length);
 
     setUiPrimary();
 }
@@ -122,7 +116,7 @@ TechDraw::DrawViewSymbol* TaskActiveView::createActiveView(void)
 {
 //    Base::Console().Message("TAV::createActiveView()\n");
 
-    std::string symbolName = m_pageFeat->getDocument()->getUniqueObjectName("ActiveView");
+    std::string symbolName = m_pageFeat->getDocument()->getUniqueObjectName("DrawActiveView");
     std::string symbolType = "TechDraw::DrawViewSymbol";
 
     std::string pageName = m_pageFeat->getNameInDocument();
@@ -143,7 +137,7 @@ TechDraw::DrawViewSymbol* TaskActiveView::createActiveView(void)
     std::string fileSpec = Base::Tools::toStdString(tempFile.fileName());
     fileSpec = Base::Tools::escapeEncodeFilename(fileSpec);
 
-    //double estScale =
+    //double estScale = 
     Grabber3d::copyActiveViewToSvgFile(appDoc, fileSpec,
                                         ui->qsbWidth->rawValue(),
                                         ui->qsbHeight->rawValue(),
@@ -159,7 +153,7 @@ TechDraw::DrawViewSymbol* TaskActiveView::createActiveView(void)
 #endif
     Command::doCommand(Command::Doc,"svg = f.read()");
 //    Command::doCommand(Command::Doc,"print('length of svg: {}'.format(len(svg)))");
-
+    
     Command::doCommand(Command::Doc,"f.close()");
     Command::doCommand(Command::Doc,"App.activeDocument().%s.Symbol = svg",symbolName.c_str());
 
@@ -193,7 +187,7 @@ void TaskActiveView::enableTaskButtons(bool b)
 bool TaskActiveView::accept()
 {
 //    Base::Console().Message("TAV::accept()\n");
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create ActiveView"));
+    Gui::Command::openCommand("Create ActiveView");
     m_symbolFeat = createActiveView();
 //    m_symbolFeat->requestPaint();
     m_symbolFeat->recomputeFeature();
@@ -208,7 +202,7 @@ bool TaskActiveView::accept()
 bool TaskActiveView::reject()
 {
 //    Base::Console().Message("TAV::reject()\n");
-      //nothing to remove.
+      //nothing to remove. 
 
     Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().recompute()");
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
@@ -220,7 +214,7 @@ TaskDlgActiveView::TaskDlgActiveView(TechDraw::DrawPage* page)
     : TaskDialog()
 {
     widget  = new TaskActiveView(page);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-ActiveView"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-activeview"),
                                              widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -36,9 +36,7 @@
 #endif
 
 #ifdef FC_OS_WIN32
-# ifndef NOMINMAX
 # define NOMINMAX
-# endif
 #endif
 
 #ifdef _PreComp_

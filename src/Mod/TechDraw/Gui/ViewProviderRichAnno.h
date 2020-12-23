@@ -47,9 +47,6 @@ public:
     /// destructor
     virtual ~ViewProviderRichAnno();
 
-    App::PropertyLength      LineWidth;
-    App::PropertyEnumeration LineStyle;
-    App::PropertyColor       LineColor;
 
     virtual void attach(App::DocumentObject *);
     virtual bool useNewSelectionModel(void) const {return false;}
@@ -58,9 +55,6 @@ public:
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
     virtual bool doubleClicked(void);
-    virtual bool canDelete(App::DocumentObject* obj) const;
-
-    static const char* LineStyleEnums[];
 
     virtual TechDraw::DrawRichAnno* getViewObject() const;
     TechDraw::DrawRichAnno* getFeature()  const;
@@ -69,11 +63,6 @@ protected:
     App::Color getDefLineColor(void);
     std::string getDefFont(void);
     double getDefFontSize(void);
-    double getDefLineWeight(void);
-    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop);
-
-private:
-    static App::PropertyIntegerConstraint::Constraints LineStyleRange;
 
 };
 

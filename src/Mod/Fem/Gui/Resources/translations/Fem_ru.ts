@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ru" sourcelanguage="en">
+<TS version="2.0" language="ru" sourcelanguage="en">
   <context>
     <name>BoundarySelector</name>
     <message>
@@ -12,11 +12,6 @@
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="130"/>
       <source>To add references select them in the 3D view and then click "Add".</source>
       <translation>Чтобы добавить ориентиры, выберите их в 3D виде и нажмите "Добавить".</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="133"/>
-      <source>To add references: select them in the 3D view  and click "Add".</source>
-      <translation>Чтобы добавить ориентиры: выберите их в 3D виде и нажмите "Добавить".</translation>
     </message>
   </context>
   <context>
@@ -65,65 +60,6 @@
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="315"/>
       <source>Abort</source>
       <translation>Прервать</translation>
-    </message>
-  </context>
-  <context>
-    <name>GeometryElementsSelection</name>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
-      <source>Geometry reference selector for a </source>
-      <translation>Выбор геометрии для </translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
-      <source>Add</source>
-      <translation>Добавить</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="255"/>
-      <source>Click on "Add" and select geometric elements to add them to the list. If no geometry is added to the list, all remaining ones are used. The following geometry elements are allowed to select: </source>
-      <translation>Нажмите на кнопку «Добавить» и выберите геометрические элементы, чтобы добавить их в список. Если геометрические элементы не добавлены в список, будут использованы все оставшиеся. Следующие геометрические элементы разрешены для выбора: </translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>
-      <source>Selection mode</source>
-      <translation>Режим выбора</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
-      <source>Solid</source>
-      <translation>Твердотельный объект</translation>
-    </message>
-  </context>
-  <context>
-    <name>SolidSelector</name>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="147"/>
-      <source>Select Solids</source>
-      <translation>Выделить объекты</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="148"/>
-      <source>Select elements part of the solid that shall be added to the list. To than add the solid click "Add".</source>
-      <translation>Выделите простые части объекта, которые должны быть добавлены в список. Чтобы добавить объект нажмите кнопку "Добавить".</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="152"/>
-      <source>Select elements part of the solid that shall be added to the list. To add the solid click "Add".</source>
-      <translation>Выберите части элементов твёрдотельного объекта, которые должны быть добавлены в список. Чтобы добавить объект нажмите кнопку "Добавить".</translation>
-    </message>
-  </context>
-  <context>
-    <name>_Selector</name>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="49"/>
-      <source>Add</source>
-      <translation>Добавить</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
-      <source>Remove</source>
-      <translation>Удалить</translation>
     </message>
   </context>
   <context>
@@ -336,6 +272,11 @@
       <source>Fluxsolver heat</source>
       <translation>Решатель тепла Fluxsolver</translation>
     </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="530"/>
+      <source>Fluxsolver heat</source>
+      <translation>Решатель тепла Fluxsolver</translation>
+    </message>
   </context>
   <context>
     <name>FEM_FEMMesh2Mesh</name>
@@ -354,6 +295,11 @@
     <name>FEM_MaterialFluid</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="397"/>
+      <source>Material for fluid</source>
+      <translation>Текучий материал</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="582"/>
       <source>Material for fluid</source>
       <translation>Текучий материал</translation>
     </message>
@@ -380,19 +326,29 @@
       <source>Creates a nonlinear mechanical material</source>
       <translation>Создает нелинейный механический материал</translation>
     </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="618"/>
+      <source>Creates a nonlinear mechanical material</source>
+      <translation>Создает нелинейный механический материал</translation>
+    </message>
   </context>
   <context>
     <name>FEM_MaterialReinforced</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="674"/>
       <source>Reinforced material (concrete)</source>
-      <translation>Усиленный материал (бетон)</translation>
+      <translation type="unfinished">Reinforced material (concrete)</translation>
     </message>
   </context>
   <context>
     <name>FEM_MaterialSolid</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="452"/>
+      <source>Material for solid</source>
+      <translation>Твердотельный материал</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="705"/>
       <source>Material for solid</source>
       <translation>Твердотельный материал</translation>
     </message>
@@ -476,6 +432,11 @@
     <name>FEM_MeshNetgenFromShape</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="603"/>
+      <source>FEM mesh from shape by Netgen</source>
+      <translation>Cетка МКЭ из фигуры генерируемая построителем Netgen</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="957"/>
       <source>FEM mesh from shape by Netgen</source>
       <translation>Cетка МКЭ из фигуры генерируемая построителем Netgen</translation>
     </message>
@@ -576,6 +537,11 @@
       <source>Solver Elmer</source>
       <translation>Решатель Elmer</translation>
     </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="1174"/>
+      <source>Solver Elmer</source>
+      <translation>Решатель Elmer</translation>
+    </message>
   </context>
   <context>
     <name>FEM_SolverRun</name>
@@ -617,6 +583,34 @@
     </message>
   </context>
   <context>
+    <name>GeometryElementsSelection</name>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
+      <source>Geometry reference selector for a </source>
+      <translation>Выбор геометрии для </translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
+      <source>Add</source>
+      <translation>Добавить</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="255"/>
+      <source>Click on "Add" and select geometric elements to add them to the list. If no geometry is added to the list, all remaining ones are used. The following geometry elements are allowed to select: </source>
+      <translation>Нажмите на кнопку «Добавить» и выберите геометрические элементы, чтобы добавить их в список. Если геометрические элементы не добавлены в список, будут использованы все оставшиеся. Следующие геометрические элементы разрешены для выбора: </translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>
+      <source>Selection mode</source>
+      <translation>Режим выбора</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
+      <source>Solid</source>
+      <translation>Твердотельный объект</translation>
+    </message>
+  </context>
+  <context>
     <name>Material_Editor</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="382"/>
@@ -627,6 +621,37 @@
       <location filename="../../../femcommands/commands.py" line="384"/>
       <source>Opens the FreeCAD material editor</source>
       <translation>Открывает редактор материалов FreeCAD</translation>
+    </message>
+  </context>
+  <context>
+    <name>SolidSelector</name>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="147"/>
+      <source>Select Solids</source>
+      <translation>Выделить объекты</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="148"/>
+      <source>Select elements part of the solid that shall be added to the list. To than add the solid click "Add".</source>
+      <translation>Выделите простые части объекта, которые должны быть добавлены в список. Чтобы добавить объект нажмите кнопку "Добавить".</translation>
+    </message>
+  </context>
+  <context>
+    <name>_Selector</name>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="49"/>
+      <source>Add</source>
+      <translation>Добавить</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
+      <source>Remove</source>
+      <translation>Удалить</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
+      <source>Remove</source>
+      <translation>Удалить</translation>
     </message>
   </context>
   <context>
@@ -2371,7 +2396,7 @@
       <location filename="../../TaskFemConstraintDisplacement.ui" line="295"/>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="340"/>
       <source>Fixed</source>
-      <translation>Зафиксировано</translation>
+      <translation>Закфиксировано</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="137"/>

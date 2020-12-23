@@ -6,12 +6,12 @@
     <message>
       <location filename="../../InitGui.py" line="64"/>
       <source>Ship design</source>
-      <translation>Konštrukcia lodí</translation>
+      <translation type="unfinished">Ship design</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="67"/>
       <source>Weights</source>
-      <translation>Hmotnosť</translation>
+      <translation type="unfinished">Weights</translation>
     </message>
     <message>
       <location filename="../../Instance.py" line="44"/>
@@ -21,22 +21,22 @@
     <message>
       <location filename="../../Instance.py" line="53"/>
       <source>Ship length [m]</source>
-      <translation>Dĺžka lode [m]</translation>
+      <translation type="unfinished">Ship length [m]</translation>
     </message>
     <message>
       <location filename="../../Instance.py" line="61"/>
       <source>Ship breadth [m]</source>
-      <translation>Šírka lode [m]</translation>
+      <translation type="unfinished">Ship breadth [m]</translation>
     </message>
     <message>
       <location filename="../../Instance.py" line="69"/>
       <source>Ship draft [m]</source>
-      <translation>Ponor lode [m]</translation>
+      <translation type="unfinished">Ship draft [m]</translation>
     </message>
     <message>
       <location filename="../../Instance.py" line="79"/>
       <source>Set of external faces of the ship hull</source>
-      <translation>Sada vonkajších stien lodného trupu</translation>
+      <translation type="unfinished">Set of external faces of the ship hull</translation>
     </message>
     <message>
       <location filename="../../Instance.py" line="87"/>
@@ -59,7 +59,7 @@
     <message>
       <location filename="../../ShipGui.py" line="94"/>
       <source>Areas curve</source>
-      <translation>Krivka oblastí</translation>
+      <translation type="unfinished">Areas curve</translation>
     </message>
     <message>
       <location filename="../../ShipGui.py" line="97"/>
@@ -72,7 +72,7 @@
     <message>
       <location filename="../../ShipGui.py" line="60"/>
       <source>Create a new ship</source>
-      <translation>Vytvorte novú loď</translation>
+      <translation type="unfinished">Create a new ship</translation>
     </message>
     <message>
       <location filename="../../ShipGui.py" line="63"/>
@@ -85,7 +85,7 @@
     <message>
       <location filename="../../ShipGui.py" line="111"/>
       <source>Hydrostatics</source>
-      <translation>Hydrostatika</translation>
+      <translation type="unfinished">Hydrostatics</translation>
     </message>
     <message>
       <location filename="../../ShipGui.py" line="114"/>
@@ -111,7 +111,7 @@
     <message>
       <location filename="../../ShipGui.py" line="77"/>
       <source>Outline draw</source>
-      <translation>Obrysový nákres</translation>
+      <translation type="unfinished">Outline draw</translation>
     </message>
     <message>
       <location filename="../../ShipGui.py" line="80"/>
@@ -124,12 +124,12 @@
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="224"/>
       <source>Draft</source>
-      <translation>Ponor</translation>
+      <translation type="unfinished">Draft</translation>
     </message>
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="319"/>
       <source>Displacement</source>
-      <translation>Premiestnenie</translation>
+      <translation type="unfinished">Displacement</translation>
     </message>
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="344"/>
@@ -149,7 +149,7 @@
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="229"/>
       <source>Trim angle</source>
-      <translation>Orezať uhol</translation>
+      <translation type="unfinished">Trim angle</translation>
     </message>
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="234"/>
@@ -190,7 +190,7 @@
     <message>
       <location filename="../../shipCreateShip/TaskPanel.py" line="157"/>
       <source>Please create or load a ship hull geometry before using this tool</source>
-      <translation>Pred použitím tohto nástroja vytvorte alebo vložte geometriu lodného trupu</translation>
+      <translation type="unfinished">Please create or load a ship hull geometry before using this tool</translation>
     </message>
     <message>
       <location filename="../../shipCreateShip/TaskPanel.py" line="151"/>
@@ -225,17 +225,17 @@
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="197"/>
       <source>A ship instance must be selected before using this tool (no objects selected)</source>
-      <translation>Pred použitím tohto nástroja musí byť vybraná inštancia lode (nie sú vybraté žiadne objekty)</translation>
+      <translation type="unfinished">A ship instance must be selected before using this tool (no objects selected)</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="213"/>
       <source>More than one ship have been selected (the extra ships will be ignored)</source>
-      <translation>Vybrali ste viac ako jednu loď (ďalšie lode budú ignorované)</translation>
+      <translation type="unfinished">More than one ship have been selected (the extra ships will be ignored)</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="223"/>
       <source>A ship instance must be selected before using this tool (no valid ship found at the selected objects)</source>
-      <translation>A ship instance must be selected before using this tool (no valid ship found at the selected objects)</translation>
+      <translation type="unfinished">A ship instance must be selected before using this tool (no valid ship found at the selected objects)</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/PlotAux.py" line="57"/>
@@ -245,17 +245,17 @@
     <message>
       <location filename="../../shipOutlineDraw/TaskPanel.py" line="192"/>
       <source>A ship instance must be selected before use this tool (no objects selected)</source>
-      <translation>Pred použitím tohto nástroja musí byť vybraná inštancia lode (nie sú vybraté žiadne objekty)</translation>
+      <translation type="unfinished">A ship instance must be selected before use this tool (no objects selected)</translation>
     </message>
     <message>
       <location filename="../../shipOutlineDraw/TaskPanel.py" line="210"/>
       <source>More than one ship has been selected (just the first one will be used)</source>
-      <translation>Vybrali ste viac ako jednu loď (použije sa iba prvá)</translation>
+      <translation type="unfinished">More than one ship has been selected (just the first one will be used)</translation>
     </message>
     <message>
       <location filename="../../shipOutlineDraw/TaskPanel.py" line="220"/>
       <source>A ship instance must be selected before use this tool (novalid ships found in the selected objects)</source>
-      <translation>Pred použitím tohto nástroja musí byť vybraná inštancia lode (nevalidné lode nájdené vo vybratých objektoch)</translation>
+      <translation type="unfinished">A ship instance must be selected before use this tool (novalid ships found in the selected objects)</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="41"/>
@@ -290,17 +290,17 @@
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="133"/>
       <source>A loading condition instance must be selected before using this tool (no objects selected)</source>
-      <translation>Pred použitím tohto nástroja musí byť vybraná inštancia podmienok načítania (nie sú vybraté žiadne objekty)</translation>
+      <translation type="unfinished">A loading condition instance must be selected before using this tool (no objects selected)</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="196"/>
       <source>Wrong Ship label! (no instances labeled as'{}' found)</source>
-      <translation>Nesprávny štítok lode! (nenašli sa žiadne prípady označené ako '{}')</translation>
+      <translation type="unfinished">Wrong Ship label! (no instances labeled as'{}' found)</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="204"/>
       <source>Ambiguous Ship label! ({} instances labeled as'{}' found)</source>
-      <translation>Nejednoznačný štítok lode! ({} prípadov označených ako '{}')</translation>
+      <translation type="unfinished">Ambiguous Ship label! ({} instances labeled as'{}' found)</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="182"/>
@@ -320,17 +320,17 @@
     <message>
       <location filename="../../shipGZ/Tools.py" line="229"/>
       <source>Wrong Weight label! (no instances labeled as'{}' found)</source>
-      <translation>Nesprávný štítok s hmotnosťou! (nenašli sa žiadne inštancie označené ako '{}')</translation>
+      <translation type="unfinished">Wrong Weight label! (no instances labeled as'{}' found)</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="237"/>
       <source>Ambiguous Weight label! ({} instances labeled as'{}' found)</source>
-      <translation>Nejednoznačný štítok s hmotnosťou! ({} prípady označené ako '{}')</translation>
+      <translation type="unfinished">Ambiguous Weight label! ({} instances labeled as'{}' found)</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="249"/>
       <source>Invalid Weight! (the object labeled as'{}' is not a weight)</source>
-      <translation>Neplatná váha! (objekt označený ako '{}' nie je váhou)</translation>
+      <translation type="unfinished">Invalid Weight! (the object labeled as'{}' is not a weight)</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="274"/>
@@ -418,7 +418,7 @@
     <message>
       <location filename="../../shipCreateShip/TaskPanel.py" line="216"/>
       <source>Create a new ship</source>
-      <translation>Vytvorte novú loď</translation>
+      <translation type="unfinished">Create a new ship</translation>
     </message>
     <message>
       <location filename="../../shipCreateShip/TaskPanel.py" line="220"/>
@@ -433,7 +433,7 @@
     <message>
       <location filename="../../shipCreateShip/TaskPanel.py" line="230"/>
       <source>Draft</source>
-      <translation>Ponor</translation>
+      <translation type="unfinished">Draft</translation>
     </message>
   </context>
   <context>
@@ -451,7 +451,7 @@
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="243"/>
       <source>Maximum angle</source>
-      <translation>Maximálny uhol</translation>
+      <translation type="unfinished">Maximum angle</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="248"/>
@@ -499,12 +499,12 @@
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="283"/>
       <source>Minimum draft</source>
-      <translation>Minimálny ponor</translation>
+      <translation type="unfinished">Minimum draft</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="288"/>
       <source>Maximum draft</source>
-      <translation>Maximálny ponor</translation>
+      <translation type="unfinished">Maximum draft</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="293"/>
@@ -563,7 +563,7 @@
     <message>
       <location filename="../../shipOutlineDraw/TaskPanel.py" line="233"/>
       <source>Outline draw</source>
-      <translation>Obrysový nákres</translation>
+      <translation type="unfinished">Outline draw</translation>
     </message>
     <message>
       <location filename="../../shipOutlineDraw/TaskPanel.py" line="237"/>
@@ -573,7 +573,7 @@
     <message>
       <location filename="../../shipOutlineDraw/TaskPanel.py" line="242"/>
       <source>Delete all sections</source>
-      <translation>Vymazať všetky časti</translation>
+      <translation type="unfinished">Delete all sections</translation>
     </message>
     <message>
       <location filename="../../shipOutlineDraw/TaskPanel.py" line="247"/>
@@ -641,7 +641,7 @@
     <message>
       <location filename="../../shipCreateTank/TaskPanel.py" line="164"/>
       <source>Ship</source>
-      <translation>Loď</translation>
+      <translation type="unfinished">Ship</translation>
     </message>
   </context>
   <context>
@@ -694,7 +694,7 @@
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="217"/>
       <source>Ship</source>
-      <translation>Loď</translation>
+      <translation type="unfinished">Ship</translation>
     </message>
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="223"/>
@@ -714,7 +714,7 @@
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="241"/>
       <source>Density</source>
-      <translation>Hustota</translation>
+      <translation type="unfinished">Density</translation>
     </message>
     <message>
       <location filename="../../WeightInstance.py" line="73"/>

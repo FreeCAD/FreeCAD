@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2010     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -95,22 +95,14 @@ void PropertyGeometryList::setValue(const Geometry* lValue)
 
 void PropertyGeometryList::setValues(const std::vector<Geometry*>& lValue)
 {
-    auto copy = lValue;
-    for(auto &geo : copy) // copy of the individual geometry pointers
-        geo = geo->clone();
-
-    setValues(std::move(copy));
-}
-
-void PropertyGeometryList::setValues(const std::vector<Geometry*>&& rValue)
-{
     aboutToSetValue();
     std::vector<Geometry*> oldVals(_lValueList);
-    _lValueList = std::move(rValue);
-
-    for(auto &ov : oldVals)
-        delete ov;
-
+    _lValueList.resize(lValue.size());
+    // copy all objects
+    for (unsigned int i = 0; i < lValue.size(); i++)
+        _lValueList[i] = lValue[i]->clone();
+    for (unsigned int i = 0; i < oldVals.size(); i++)
+        delete oldVals[i];
     hasSetValue();
 }
 

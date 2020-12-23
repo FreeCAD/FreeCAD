@@ -27,16 +27,14 @@
 
 #include "Gui/Application.h"
 #include "DlgSettingsFemZ88Imp.h"
-#include "ui_DlgSettingsFemZ88.h"
 #include <Gui/PrefWidgets.h>
 
 using namespace FemGui;
 
 DlgSettingsFemZ88Imp::DlgSettingsFemZ88Imp( QWidget* parent )
   : PreferencePage( parent )
-  , ui(new Ui_DlgSettingsFemZ88Imp)
 {
-    ui->setupUi(this);
+    this->setupUi(this);
 }
 
 DlgSettingsFemZ88Imp::~DlgSettingsFemZ88Imp()
@@ -46,14 +44,14 @@ DlgSettingsFemZ88Imp::~DlgSettingsFemZ88Imp()
 
 void DlgSettingsFemZ88Imp::saveSettings()
 {
-    ui->cb_z88_binary_std->onSave();
-    ui->fc_z88_binary_path->onSave();
+    cb_z88_binary_std->onSave();
+    fc_z88_binary_path->onSave();
 }
 
 void DlgSettingsFemZ88Imp::loadSettings()
 {
-    ui->cb_z88_binary_std->onRestore();
-    ui->fc_z88_binary_path->onRestore();
+    cb_z88_binary_std->onRestore();
+    fc_z88_binary_path->onRestore();
 }
 
 /**
@@ -62,7 +60,6 @@ void DlgSettingsFemZ88Imp::loadSettings()
 void DlgSettingsFemZ88Imp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        ui->retranslateUi(this);
     }
     else {
         QWidget::changeEvent(e);

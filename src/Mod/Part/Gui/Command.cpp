@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -59,6 +59,7 @@
 
 #include "../App/PartFeature.h"
 #include <Mod/Part/App/Part2DObject.h>
+#include "DlgPartImportStepImp.h"
 #include "DlgBooleanOperation.h"
 #include "DlgExtrusion.h"
 #include "DlgRevolution.h"
@@ -144,7 +145,7 @@ CmdPartBox2::CmdPartBox2()
 void CmdPartBox2::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    openCommand(QT_TRANSLATE_NOOP("Command", "Part Box Create"));
+    openCommand("Part Box Create");
     doCommand(Doc,"from FreeCAD import Base");
     doCommand(Doc,"import Part");
     doCommand(Doc,"__fb__ = App.ActiveDocument.addObject(\"Part::Box\",\"PartBox\")");
@@ -185,7 +186,7 @@ CmdPartBox3::CmdPartBox3()
 void CmdPartBox3::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    openCommand(QT_TRANSLATE_NOOP("Command", "Part Box Create"));
+    openCommand("Part Box Create");
     doCommand(Doc,"from FreeCAD import Base");
     doCommand(Doc,"import Part");
     doCommand(Doc,"__fb__ = App.ActiveDocument.addObject(\"Part::Box\",\"PartBox\")");
@@ -220,7 +221,7 @@ CmdPartPrimitives::CmdPartPrimitives()
     sToolTipText  = QT_TR_NOOP("Creation of parametrized geometric primitives");
     sWhatsThis    = "Part_Primitives";
     sStatusTip    = sToolTipText;
-    sPixmap       = "Part_Primitives";
+    sPixmap       = "Part_CreatePrimitives";
 }
 
 void CmdPartPrimitives::activated(int iMsg)
@@ -304,7 +305,7 @@ void CmdPartCut::activated(int iMsg)
 
     std::string FeatName = getUniqueObjectName("Cut");
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Part Cut"));
+    openCommand("Part Cut");
     doCommand(Doc,"App.activeDocument().addObject(\"Part::Cut\",\"%s\")",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Base = App.activeDocument().%s",FeatName.c_str(),Sel[0].getFeatName());
     doCommand(Doc,"App.activeDocument().%s.Tool = App.activeDocument().%s",FeatName.c_str(),Sel[1].getFeatName());
@@ -405,7 +406,7 @@ void CmdPartCommon::activated(int iMsg)
     }
     str << "]";
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Common"));
+    openCommand("Common");
     doCommand(Doc,"App.activeDocument().addObject(\"Part::MultiCommon\",\"%s\")",FeatName.c_str());
     runCommand(Doc,str.str().c_str());
 
@@ -505,7 +506,7 @@ void CmdPartFuse::activated(int iMsg)
     }
     str << "]";
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Fusion"));
+    openCommand("Fusion");
     doCommand(Doc,"App.activeDocument().addObject(\"Part::MultiFuse\",\"%s\")",FeatName.c_str());
     runCommand(Doc,str.str().c_str());
 
@@ -918,7 +919,7 @@ void CmdPartCompound::activated(int iMsg)
     }
     str << "]";
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Compound"));
+    openCommand("Compound");
     doCommand(Doc,"App.activeDocument().addObject(\"Part::Compound\",\"%s\")",FeatName.c_str());
     runCommand(Doc,str.str().c_str());
     updateActive();
@@ -963,7 +964,7 @@ void CmdPartSection::activated(int iMsg)
     std::string BaseName  = Sel[0].getFeatName();
     std::string ToolName  = Sel[1].getFeatName();
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Section"));
+    openCommand("Section");
     doCommand(Doc,"App.activeDocument().addObject(\"Part::Section\",\"%s\")",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Base = App.activeDocument().%s",FeatName.c_str(),BaseName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Tool = App.activeDocument().%s",FeatName.c_str(),ToolName.c_str());
@@ -1014,7 +1015,7 @@ void CmdPartImport::activated(int iMsg)
         if (!pDoc) return; // no document
 
         fn = Base::Tools::escapeEncodeFilename(fn);
-        openCommand(QT_TRANSLATE_NOOP("Command", "Import Part"));
+        openCommand("Import Part");
         if (select == filter[1] ||
             select == filter[3]) {
             doCommand(Doc, "import ImportGui");
@@ -1120,7 +1121,7 @@ void CmdPartImportCurveNet::activated(int iMsg)
     QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), filter.join(QLatin1String(";;")));
     if (!fn.isEmpty()) {
         QFileInfo fi; fi.setFile(fn);
-        openCommand(QT_TRANSLATE_NOOP("Command", "Part Import Curve Net"));
+        openCommand("Part Import Curve Net");
         doCommand(Doc,"f = App.activeDocument().addObject(\"Part::CurveNet\",\"%s\")", (const char*)fi.baseName().toLatin1());
         doCommand(Doc,"f.FileName = \"%s\"",(const char*)fn.toLatin1());
         commitCommand();
@@ -1228,7 +1229,6 @@ CmdPartReverseShape::CmdPartReverseShape()
     sToolTipText  = QT_TR_NOOP("Reverse orientation of shapes");
     sWhatsThis    = "Part_ReverseShape";
     sStatusTip    = sToolTipText;
-    sPixmap       = "Part_Reverse_Shape";
 }
 
 void CmdPartReverseShape::activated(int iMsg)
@@ -1236,29 +1236,24 @@ void CmdPartReverseShape::activated(int iMsg)
     Q_UNUSED(iMsg);
     std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType
         (Part::Feature::getClassTypeId());
-    openCommand(QT_TRANSLATE_NOOP("Command", "Reverse"));
+    runCommand(Doc, "import Part");
     for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it != objs.end(); ++it) {
         const TopoDS_Shape& shape = Part::Feature::getShape(*it);
         if (!shape.IsNull()) {
-            std::string name = (*it)->getNameInDocument();
-            name += "_rev";
-            name = getUniqueObjectName(name.c_str());
-
             QString str = QString::fromLatin1(
-                "__o__=App.ActiveDocument.addObject(\"Part::Reverse\",\"%1\")\n"
-                "__o__.Source=App.ActiveDocument.%2\n"
-                "__o__.Label=\"%3 (Rev)\"\n"
-                "del __o__"
+                "__s__=App.ActiveDocument.%1.Shape.copy()\n"
+                "__s__.reverse()\n"
+                "__o__=App.ActiveDocument.addObject(\"Part::Feature\",\"%1_rev\")\n"
+                "__o__.Label=\"%2 (Rev)\"\n"
+                "__o__.Shape=__s__\n"
+                "del __s__, __o__"
                 )
-                .arg(QString::fromLatin1(name.c_str()),
-                     QString::fromLatin1((*it)->getNameInDocument()),
-                     QString::fromLatin1((*it)->Label.getValue()));
+                .arg(QLatin1String((*it)->getNameInDocument()))
+                .arg(QLatin1String((*it)->Label.getValue()));
 
             try {
-                runCommand(Doc, str.toLatin1());
-                copyVisual(name.c_str(), "ShapeColor", (*it)->getNameInDocument());
-                copyVisual(name.c_str(), "LineColor" , (*it)->getNameInDocument());
-                copyVisual(name.c_str(), "PointColor", (*it)->getNameInDocument());
+                if (!str.isEmpty())
+                    runCommand(Doc, str.toLatin1());
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("Cannot convert %s because %s.\n",
@@ -1266,9 +1261,6 @@ void CmdPartReverseShape::activated(int iMsg)
             }
         }
     }
-
-    commitCommand();
-    updateActive();
 }
 
 bool CmdPartReverseShape::isActive(void)
@@ -1356,9 +1348,7 @@ void CmdPartMakeFace::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     auto sketches = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId(),0,3);
-    if(sketches.empty())
-        return;
-    openCommand(QT_TRANSLATE_NOOP("Command", "Make face"));
+    openCommand("Make face");
 
     try {
         App::DocumentT doc(sketches.front()->getDocument());
@@ -1646,13 +1636,10 @@ CmdPartOffset::CmdPartOffset()
 void CmdPartOffset::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    auto shapes = getSelection().getObjectsOfType(Part::Feature::getClassTypeId(),0,3);
-    if(shapes.empty())
-        return;
-    App::DocumentObject* shape = shapes.front();
+    App::DocumentObject* shape = getSelection().getObjectsOfType(Part::Feature::getClassTypeId()).front();
     std::string offset = getUniqueObjectName("Offset");
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Make Offset"));
+    openCommand("Make Offset");
     doCommand(Doc,"App.ActiveDocument.addObject(\"Part::Offset\",\"%s\")",offset.c_str());
     doCommand(Doc,"App.ActiveDocument.%s.Source = App.ActiveDocument.%s" ,offset.c_str(), shape->getNameInDocument());
     doCommand(Doc,"App.ActiveDocument.%s.Value = 1.0",offset.c_str());
@@ -1698,13 +1685,10 @@ CmdPartOffset2D::CmdPartOffset2D()
 void CmdPartOffset2D::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    auto shapes = getSelection().getObjectsOfType(Part::Feature::getClassTypeId(),0,3);
-    if(shapes.empty())
-        return;
-    App::DocumentObject* shape = shapes.front();
+    App::DocumentObject* shape = getSelection().getObjectsOfType(Part::Feature::getClassTypeId(),0,3).front();
     std::string offset = getUniqueObjectName("Offset2D");
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Make 2D Offset"));
+    openCommand("Make 2D Offset");
     doCommand(Doc,"App.ActiveDocument.addObject(\"Part::Offset2D\",\"%s\")",offset.c_str());
     doCommand(Doc,"App.ActiveDocument.%s.Source = App.ActiveDocument.%s" ,offset.c_str(), shape->getNameInDocument());
     doCommand(Doc,"App.ActiveDocument.%s.Value = 1.0",offset.c_str());
@@ -1872,7 +1856,7 @@ void CmdPartThickness::activated(int iMsg)
 
     std::string thick = getUniqueObjectName("Thickness");
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Make Thickness"));
+    openCommand("Make Thickness");
     doCommand(Doc,"App.ActiveDocument.addObject(\"Part::Thickness\",\"%s\")",thick.c_str());
     doCommand(Doc,"App.ActiveDocument.%s.Faces = %s" ,thick.c_str(), selection.c_str());
     doCommand(Doc,"App.ActiveDocument.%s.Value = 1.0",thick.c_str());
@@ -2097,7 +2081,7 @@ void CmdPartRuledSurface::activated(int iMsg)
         return;
     }
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Create ruled surface"));
+    openCommand("Create ruled surface");
     doCommand(Doc, "FreeCAD.ActiveDocument.addObject('Part::RuledSurface', 'Ruled Surface')");
     doCommand(Doc, "FreeCAD.ActiveDocument.ActiveObject.Curve1=(FreeCAD.ActiveDocument.%s,['%s'])"
                  ,obj1.c_str(), link1.c_str());
@@ -2158,11 +2142,9 @@ CmdColorPerFace::CmdColorPerFace()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Color per face");
-    sToolTipText  = QT_TR_NOOP("Set the color of each individual face "
-                               "of the selected object.");
+    sToolTipText  = QT_TR_NOOP("Set color per face");
     sStatusTip    = sToolTipText;
     sWhatsThis    = "Part_ColorPerFace";
-    sPixmap       = "Part_ColorFace";
 }
 
 void CmdColorPerFace::activated(int iMsg)
@@ -2171,11 +2153,11 @@ void CmdColorPerFace::activated(int iMsg)
     if (getActiveGuiDocument()->getInEdit())
         getActiveGuiDocument()->resetEdit();
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(Part::Feature::getClassTypeId());
-    if (sel.empty())
-        return;
-    PartGui::ViewProviderPartExt* vp = dynamic_cast<PartGui::ViewProviderPartExt*>(Gui::Application::Instance->getViewProvider(sel.front()));
+    Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(sel.front());
+    // FIXME: Need a way to force 'Color' edit mode
+    // #0000477: Proper interface for edit modes of view provider
     if (vp)
-        vp->changeFaceColors();
+        getActiveGuiDocument()->setEdit(vp, Gui::ViewProvider::Color);
 }
 
 bool CmdColorPerFace::isActive(void)
@@ -2197,9 +2179,7 @@ CmdMeasureLinear::CmdMeasureLinear()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Measure Linear");
-    sToolTipText  = QT_TR_NOOP("Measure the linear distance between two points;\n"
-                               "if edges or faces are picked, it will measure\n"
-                               "between two vertices of them.");
+    sToolTipText  = QT_TR_NOOP("Measure Linear");
     sWhatsThis    = "Part_Measure_Linear";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Measure_Linear";
@@ -2228,7 +2208,7 @@ CmdMeasureAngular::CmdMeasureAngular()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Measure Angular");
-    sToolTipText  = QT_TR_NOOP("Measure the angle between two edges.");
+    sToolTipText  = QT_TR_NOOP("Measure Angular");
     sWhatsThis    = "Part_Measure_Angular";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Measure_Angular";
@@ -2257,8 +2237,7 @@ CmdMeasureRefresh::CmdMeasureRefresh()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Refresh");
-    sToolTipText  = QT_TR_NOOP("Recalculate the dimensions\n"
-                               "if the measured points have moved.");
+    sToolTipText  = QT_TR_NOOP("Refresh");
     sWhatsThis    = "Part_Measure_Refresh";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Measure_Refresh";
@@ -2287,7 +2266,7 @@ CmdMeasureClearAll::CmdMeasureClearAll()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Clear All");
-    sToolTipText  = QT_TR_NOOP("Clear all dimensions from the screen.");
+    sToolTipText  = QT_TR_NOOP("Clear All");
     sWhatsThis    = "Part_Measure_Clear_All";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Measure_Clear_All";
@@ -2316,9 +2295,7 @@ CmdMeasureToggleAll::CmdMeasureToggleAll()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Toggle All");
-    sToolTipText  = QT_TR_NOOP("Toggle on and off "
-                               "all currently visible dimensions,\n"
-                               "direct, orthogonal, and angular.");
+    sToolTipText  = QT_TR_NOOP("Toggle All");
     sWhatsThis    = "Part_Measure_Toggle_All";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Measure_Toggle_All";
@@ -2342,23 +2319,21 @@ bool CmdMeasureToggleAll::isActive(void)
 }
 
 //===========================================================================
-// Part_Measure_Toggle_3D
+// Part_Measure_Toggle_3d
 //===========================================================================
 
 DEF_STD_CMD_A(CmdMeasureToggle3d)
 
 CmdMeasureToggle3d::CmdMeasureToggle3d()
-  : Command("Part_Measure_Toggle_3D")
+  : Command("Part_Measure_Toggle_3d")
 {
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
-    sMenuText     = QT_TR_NOOP("Toggle 3D");
-    sToolTipText  = QT_TR_NOOP("Toggle on and off "
-                               "all direct dimensions,\n"
-                               "including angular.");
-    sWhatsThis    = "Part_Measure_Toggle_3D";
+    sMenuText     = QT_TR_NOOP("Toggle 3d");
+    sToolTipText  = QT_TR_NOOP("Toggle 3d");
+    sWhatsThis    = "Part_Measure_Toggle_3d";
     sStatusTip    = sToolTipText;
-    sPixmap       = "Part_Measure_Toggle_3D";
+    sPixmap       = "Part_Measure_Toggle_3d";
 }
 
 void CmdMeasureToggle3d::activated(int iMsg)
@@ -2384,10 +2359,7 @@ CmdMeasureToggleDelta::CmdMeasureToggleDelta()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Toggle Delta");
-    sToolTipText  = QT_TR_NOOP("Toggle on and off "
-                               "all orthogonal dimensions,\n"
-                               "meaning that a direct dimension will be decomposed\n"
-                               "into its X, Y, and Z components.");
+    sToolTipText  = QT_TR_NOOP("Toggle Delta");
     sWhatsThis    = "Part_Measure_Toggle_Delta";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Measure_Toggle_Delta";
@@ -2435,35 +2407,32 @@ bool CmdBoxSelection::isActive(void)
 }
 
 //===========================================================================
-// Part_ProjectionOnSurface
+// Part_projectionOnSurface
 //===========================================================================
 DEF_STD_CMD_A(CmdPartProjectionOnSurface)
 
 CmdPartProjectionOnSurface::CmdPartProjectionOnSurface()
-    :Command("Part_ProjectionOnSurface")
+  :Command("Part_projectionOnSurface")
 {
-    sAppModule = "Part";
-    sGroup = QT_TR_NOOP("Part");
-    sMenuText = QT_TR_NOOP("Create projection on surface...");
-    sToolTipText = QT_TR_NOOP("Project edges, wires, or faces of one object\n"
-                              "onto a face of another object.\n"
-                              "The camera view determines the direction\n"
-                              "of projection.");
-    sWhatsThis = "Part_ProjectionOnSurface";
-    sStatusTip = sToolTipText;
-    sPixmap = "Part_ProjectionOnSurface";
+  sAppModule = "Part";
+  sGroup = QT_TR_NOOP("Part");
+  sMenuText = QT_TR_NOOP("Create projection on surface...");
+  sToolTipText = QT_TR_NOOP("Create projection on surface...");
+  sWhatsThis = "Part_projectionOnSurface";
+  sStatusTip = sToolTipText;
+  sPixmap = "Part_ProjectionOnSurface";
 }
 
 void CmdPartProjectionOnSurface::activated(int iMsg)
 {
-    Q_UNUSED(iMsg);
-    PartGui::TaskProjectionOnSurface* dlg = new PartGui::TaskProjectionOnSurface();
-    Gui::Control().showDialog(dlg);
+  Q_UNUSED(iMsg);
+  PartGui::TaskProjectionOnSurface* dlg = new PartGui::TaskProjectionOnSurface();
+  Gui::Control().showDialog(dlg);
 }
 
 bool CmdPartProjectionOnSurface::isActive(void)
 {
-    return (hasActiveDocument() && !Gui::Control().activeDialog());
+  return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
 
 void CreatePartCommands(void)

@@ -24,19 +24,10 @@
 #ifndef GUI_DIALOG_DLGINPUTDIALOGIMP_H
 #define GUI_DIALOG_DLGINPUTDIALOGIMP_H
 
-#include <memory>
-#include <QDialog>
-
-class QSpinBox;
-class QDoubleSpinBox;
-class QLineEdit;
-class QComboBox;
+#include "ui_DlgInputDialog.h"
 
 namespace Gui {
-class UIntSpinBox;
-
 namespace Dialog {
-class Ui_DlgInputDialog;
 
 /**
  * The DlgInputDialogImp dialog class does basically the same as Qt's QInputDialog
@@ -45,7 +36,7 @@ class Ui_DlgInputDialog;
  * the flexibility.
  * \author Werner Mayer
  */
-class GuiExport DlgInputDialogImp : public QDialog
+class GuiExport DlgInputDialogImp : public QDialog, public Ui_DlgInputDialog
 {
   Q_OBJECT
 
@@ -70,9 +61,6 @@ protected Q_SLOTS:
 
 protected:
   Type inputtype;
-
-private:
-  std::unique_ptr<Ui_DlgInputDialog> ui;
 };
 
 } // namespace Dialog

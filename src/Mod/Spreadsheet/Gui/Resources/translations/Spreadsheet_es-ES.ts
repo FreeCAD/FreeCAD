@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="es-ES" sourcelanguage="en">
+<TS version="2.0" language="es-ES" sourcelanguage="en">
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -253,7 +253,7 @@
     </message>
     <message>
       <source>&amp;Alignment</source>
-      <translation>&amp;Alinear</translation>
+      <translation>&amp;Alineacion</translation>
     </message>
     <message>
       <source>Horizontal</source>
@@ -331,6 +331,10 @@
       <translation>Exportar archivo</translation>
     </message>
     <message>
+      <source>Cell contents</source>
+      <translation>Contenido de la celda</translation>
+    </message>
+    <message>
       <source>Show spreadsheet</source>
       <translation>Mostrar la hoja de cálculo</translation>
     </message>
@@ -349,30 +353,6 @@
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
       <translation>Ajuste de color de fondo de celda(s) de la hoja de cálculo</translation>
-    </message>
-    <message>
-      <source>Spreadsheet</source>
-      <translation>Hoja de cálculo</translation>
-    </message>
-    <message>
-      <source>Spreadsheet does not support range selection when pasting.
-Please select one cell only.</source>
-      <translation>La hoja de cálculo no soporta la selección de rango al pegar.
-Por favor, seleccione una única celda.</translation>
-    </message>
-    <message>
-      <source>Copy &amp; Paste failed</source>
-      <translation>Copiar &amp; Pegar ha fallado</translation>
-    </message>
-    <message>
-      <source>Alias contains invalid characters!</source>
-      <translation>¡El alias contiene caracteres no válidos!</translation>
-    </message>
-    <message>
-      <source>Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation>Consulte la celda por alias, por ejemplo
-Spreadsheet.my_alias_name en lugar de Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -457,18 +437,8 @@ Spreadsheet.my_alias_name en lugar de Spreadsheet.B1</translation>
       <translation>Formulario</translation>
     </message>
     <message>
-      <source>&amp;Content:</source>
-      <translation>&amp;Contenido:</translation>
-    </message>
-    <message>
-      <source>&amp;Alias:</source>
-      <translation>&amp;Alias:</translation>
-    </message>
-    <message>
-      <source>Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation>Consulte la celda por alias, por ejemplo
-Spreadsheet.my_alias_name en lugar de Spreadsheet.B1</translation>
+      <source>&amp;Contents</source>
+      <translation>&amp;Contenido</translation>
     </message>
   </context>
   <context>

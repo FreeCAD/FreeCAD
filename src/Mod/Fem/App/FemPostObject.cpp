@@ -24,7 +24,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Python.h>
 # include <vtkPointData.h>
 # include <vtkCellData.h>
 #endif

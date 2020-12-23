@@ -43,7 +43,7 @@
 # include <QItemSelection>
 # include <QItemSelectionModel>
 # include <QTimer>
-# include <boost_bind_bind.hpp>
+# include <boost/bind.hpp>
 # include <Python.h>
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/details/SoLineDetail.h>
@@ -75,7 +75,6 @@
 #include <Gui/Window.h>
 
 using namespace PartGui;
-namespace bp = boost::placeholders;
 
 FilletRadiusDelegate::FilletRadiusDelegate(QObject *parent) : QItemDelegate(parent)
 {
@@ -111,7 +110,7 @@ void FilletRadiusDelegate::setModelData(QWidget *editor, QAbstractItemModel *mod
     spinBox->interpretText();
     //double value = spinBox->value();
     //QString value = QString::fromLatin1("%1").arg(spinBox->value(),0,'f',2);
-    //QString value = QLocale().toString(spinBox->value().getValue(),'f',Base::UnitsApi::getDecimals());
+    //QString value = QLocale::system().toString(spinBox->value().getValue(),'f',Base::UnitsApi::getDecimals());
     Base::Quantity value = spinBox->value();
 
     model->setData(index, QVariant::fromValue<Base::Quantity>(value), Qt::EditRole);
@@ -246,9 +245,9 @@ DlgFilletEdges::DlgFilletEdges(FilletType type, Part::FilletBase* fillet, QWidge
 
     d->fillet = fillet;
     d->connectApplicationDeletedObject = App::GetApplication().signalDeletedObject
-        .connect(boost::bind(&DlgFilletEdges::onDeleteObject, this, bp::_1));
+        .connect(boost::bind(&DlgFilletEdges::onDeleteObject, this, _1));
     d->connectApplicationDeletedDocument = App::GetApplication().signalDeleteDocument
-        .connect(boost::bind(&DlgFilletEdges::onDeleteDocument, this, bp::_1));
+        .connect(boost::bind(&DlgFilletEdges::onDeleteDocument, this, _1));
     // set tree view with three columns
     QStandardItemModel* model = new FilletRadiusModel(this);
     connect(model, SIGNAL(toggleCheckState(const QModelIndex&)),
@@ -595,8 +594,8 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
             if (it != d->edge_ids.end()) {
                 int index = it - d->edge_ids.begin();
                 model->setData(model->index(index, 0), Qt::Checked, Qt::CheckStateRole);
-                //model->setData(model->index(index, 1), QVariant(QLocale().toString(et->radius1,'f',Base::UnitsApi::getDecimals())));
-                //model->setData(model->index(index, 2), QVariant(QLocale().toString(et->radius2,'f',Base::UnitsApi::getDecimals())));
+                //model->setData(model->index(index, 1), QVariant(QLocale::system().toString(et->radius1,'f',Base::UnitsApi::getDecimals())));
+                //model->setData(model->index(index, 2), QVariant(QLocale::system().toString(et->radius2,'f',Base::UnitsApi::getDecimals())));
                 model->setData(model->index(index, 1), QVariant::fromValue<Base::Quantity>(Base::Quantity(et->radius1, Base::Unit::Length)));
                 model->setData(model->index(index, 2), QVariant::fromValue<Base::Quantity>(Base::Quantity(et->radius2, Base::Unit::Length)));
 
@@ -698,13 +697,13 @@ void DlgFilletEdges::changeEvent(QEvent *e)
     }
 }
 
-void DlgFilletEdges::on_shapeObject_activated(int itemPos)
+void DlgFilletEdges::on_shapeObject_activated(int index)
 {
     d->object = 0;
     QStandardItemModel *model = qobject_cast<QStandardItemModel*>(ui->treeView->model());
     model->removeRows(0, model->rowCount());
 
-    QByteArray name = ui->shapeObject->itemData(itemPos).toByteArray();
+    QByteArray name = ui->shapeObject->itemData(index).toByteArray();
     App::Document* doc = App::GetApplication().getActiveDocument();
     if (!doc)
         return;
@@ -752,8 +751,8 @@ void DlgFilletEdges::on_shapeObject_activated(int itemPos)
         for (std::vector<int>::iterator it = d->edge_ids.begin(); it != d->edge_ids.end(); ++it) {
             model->setData(model->index(index, 0), QVariant(tr("Edge%1").arg(*it)));
             model->setData(model->index(index, 0), QVariant(*it), Qt::UserRole);
-          //model->setData(model->index(index, 1), QVariant(QLocale().toString(1.0,'f',Base::UnitsApi::getDecimals())));
-          //model->setData(model->index(index, 2), QVariant(QLocale().toString(1.0,'f',Base::UnitsApi::getDecimals())));
+          //model->setData(model->index(index, 1), QVariant(QLocale::system().toString(1.0,'f',Base::UnitsApi::getDecimals())));
+          //model->setData(model->index(index, 2), QVariant(QLocale::system().toString(1.0,'f',Base::UnitsApi::getDecimals())));
             model->setData(model->index(index, 1), QVariant::fromValue<Base::Quantity>(Base::Quantity(1.0,Base::Unit::Length)));
             model->setData(model->index(index, 2), QVariant::fromValue<Base::Quantity>(Base::Quantity(1.0,Base::Unit::Length)));
             std::stringstream element;

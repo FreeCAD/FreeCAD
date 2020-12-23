@@ -24,7 +24,6 @@
 #include "PreCompiled.h"
 
 #include "DlgSettingsImageImp.h"
-#include "ui_DlgSettingsImage.h"
 #include "SpinBox.h"
 
 using namespace Gui::Dialog;
@@ -38,24 +37,15 @@ using namespace std;
  */
 DlgSettingsImageImp::DlgSettingsImageImp( QWidget* parent )
   : QWidget( parent )
-  , ui(new Ui_DlgSettingsImage)
 {
-    ui->setupUi(this);
+    this->setupUi(this);
     SbVec2s res = SoOffscreenRenderer::getMaximumResolution();
-    ui->spinWidth->setMaximum((int)res[0]);
-    ui->spinHeight->setMaximum((int)res[1]);
+    spinWidth->setMaximum((int)res[0]);
+    spinHeight->setMaximum((int)res[1]);
 
     _width = width();
     _height = height();
     _fRatio = (float)_width/(float)_height;
-
-    ui->comboMethod->addItem(tr("Offscreen (New)"), QByteArray("QtOffscreenRenderer"));
-    ui->comboMethod->addItem(tr("Offscreen (Old)"), QByteArray("CoinOffscreenRenderer"));
-    ui->comboMethod->addItem(tr("Framebuffer (custom)"), QByteArray("FramebufferObject"));
-    ui->comboMethod->addItem(tr("Framebuffer (as is)"), QByteArray("GrabFramebuffer"));
-#if QT_VERSION < 0x050000
-    ui->comboMethod->addItem(tr("Pixel buffer"), QByteArray("PixelBuffer"));
-#endif
 }
 
 /**
@@ -69,7 +59,7 @@ DlgSettingsImageImp::~DlgSettingsImageImp()
 void DlgSettingsImageImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        ui->retranslateUi(this);
+        this->retranslateUi(this);
     }
     QWidget::changeEvent(e);
 }
@@ -80,10 +70,10 @@ void DlgSettingsImageImp::changeEvent(QEvent *e)
 void DlgSettingsImageImp::setImageSize(int w, int h)
 {
     // set current screen size
-    ui->standardSizeBox->setItemData(0, QSize(w,h));
+    standardSizeBox->setItemData(0, QSize(w,h));
 
-    ui->spinWidth->setValue(w);
-    ui->spinHeight->setValue(h);
+    spinWidth->setValue(w);
+    spinHeight->setValue(h);
 
     // As the image size is in pixel why shouldn't _width and _height be integers?
     _width  = w;
@@ -97,10 +87,10 @@ void DlgSettingsImageImp::setImageSize(int w, int h)
 void DlgSettingsImageImp::setImageSize( const QSize& s )
 {
     // set current screen size
-    ui->standardSizeBox->setItemData(0, s);
+    standardSizeBox->setItemData(0, s);
 
-    ui->spinWidth->setValue( s.width() );
-    ui->spinHeight->setValue( s.height() );
+    spinWidth->setValue( s.width() );
+    spinHeight->setValue( s.height() );
 
     // As the image size is in pixel why shouldn't _width and _height be integers?
     _width  = s.width();
@@ -113,7 +103,7 @@ void DlgSettingsImageImp::setImageSize( const QSize& s )
  */
 QSize DlgSettingsImageImp::imageSize() const
 {
-    return QSize( ui->spinWidth->value(), ui->spinHeight->value() );
+    return QSize( spinWidth->value(), spinHeight->value() );
 }
 
 /**
@@ -121,7 +111,7 @@ QSize DlgSettingsImageImp::imageSize() const
  */
 int DlgSettingsImageImp::imageWidth() const
 {
-    return ui->spinWidth->value();
+    return spinWidth->value();
 }
 
 /**
@@ -129,24 +119,24 @@ int DlgSettingsImageImp::imageWidth() const
  */
 int DlgSettingsImageImp::imageHeight() const
 {
-    return ui->spinHeight->value();
+    return spinHeight->value();
 }
 
 /**
  * Returns the comment of the picture. If for the currently selected image format no comments are supported
- * QString() is returned.
+ * QString::null is returned.
  */
 QString DlgSettingsImageImp::comment() const
 {
-    if ( !ui->textEditComment->isEnabled() )
-        return QString();
+    if ( !textEditComment->isEnabled() )
+        return QString::null;
     else
-        return ui->textEditComment->toPlainText();
+        return textEditComment->toPlainText();
 }
 
 int DlgSettingsImageImp::backgroundType() const
 {
-    return ui->comboBackground->currentIndex();
+    return comboBackground->currentIndex();
 }
 
 /**
@@ -154,13 +144,13 @@ int DlgSettingsImageImp::backgroundType() const
  */
 void DlgSettingsImageImp::setBackgroundType(int t)
 {
-    if ( t < ui->comboBackground->count() )
-        ui->comboBackground->setCurrentIndex(t);
+    if ( t < comboBackground->count() )
+        comboBackground->setCurrentIndex(t);
 }
 
 bool DlgSettingsImageImp::addWatermark() const
 {
-    return ui->checkWatermark->isChecked();
+    return checkWatermark->isChecked();
 }
 
 void DlgSettingsImageImp::onSelectedFilter(const QString& filter)
@@ -168,23 +158,23 @@ void DlgSettingsImageImp::onSelectedFilter(const QString& filter)
     bool ok = (filter.startsWith(QLatin1String("JPG")) ||
                filter.startsWith(QLatin1String("JPEG")) ||
                filter.startsWith(QLatin1String("PNG")));
-    ui->buttonGroupComment->setEnabled( ok );
+    buttonGroupComment->setEnabled( ok );
 }
 
 void DlgSettingsImageImp::adjustImageSize(float fRatio)
 {
     // if width has changed then adjust height and vice versa, if both has changed then adjust width
-    if (_height != ui->spinHeight->value())
+    if (_height != spinHeight->value())
     {
-        _height = ui->spinHeight->value();
+        _height = spinHeight->value();
         _width = (int)((float)_height*fRatio);
-        ui->spinWidth->setValue( (int)_width );
+        spinWidth->setValue( (int)_width );
     }
     else // if( _width != spinWidth->value() )
     {
-        _width = ui->spinWidth->value();
+        _width = spinWidth->value();
         _height = (int)((float)_width/fRatio);
-        ui->spinHeight->setValue( (int)_height );
+        spinHeight->setValue( (int)_height );
     }
 }
 
@@ -212,50 +202,22 @@ void DlgSettingsImageImp::on_standardSizeBox_activated(int index)
 {
     if (index == 0) {
         // we have set the user data for the 1st item
-        QSize s = ui->standardSizeBox->itemData(0).toSize();
-        ui->spinWidth->setValue(s.width());
-        ui->spinHeight->setValue(s.height());
+        QSize s = standardSizeBox->itemData(0).toSize();
+        spinWidth->setValue(s.width());
+        spinHeight->setValue(s.height());
     }
     else {
         // try to extract from the string
-        QString text = ui->standardSizeBox->itemText(index);
-        QRegExp rx(QLatin1String("\\b\\d{2,5}\\b"));
+        QString text = standardSizeBox->itemText(index);
+        QRegExp rx(QLatin1String("\\b\\d{2,4}\\b"));
         int pos = 0;
         pos = rx.indexIn(text, pos);
         QString w = text.mid(pos, rx.matchedLength());
-        ui->spinWidth->setValue(w.toInt());
+        spinWidth->setValue(w.toInt());
         pos += rx.matchedLength();
         pos = rx.indexIn(text, pos);
         QString h = text.mid(pos, rx.matchedLength());
-        ui->spinHeight->setValue(h.toInt());
-    }
-}
-
-void DlgSettingsImageImp::setMethod(const QByteArray& m)
-{
-    int index = ui->comboMethod->findData(m);
-    if (index >= 0)
-        ui->comboMethod->setCurrentIndex(index);
-}
-
-QByteArray DlgSettingsImageImp::method() const
-{
-#if QT_VERSION < 0x050000
-    int index = ui->comboMethod->currentIndex();
-    return ui->comboMethod->itemData(index).toByteArray();
-#else
-    return ui->comboMethod->currentData().toByteArray();
-#endif
-}
-
-void DlgSettingsImageImp::on_comboMethod_activated(int index)
-{
-    QByteArray data = ui->comboMethod->itemData(index).toByteArray();
-    if (data == QByteArray("GrabFramebuffer")) {
-        ui->comboBackground->setEnabled(false);
-    }
-    else {
-        ui->comboBackground->setEnabled(true);
+        spinHeight->setValue(h.toInt());
     }
 }
 

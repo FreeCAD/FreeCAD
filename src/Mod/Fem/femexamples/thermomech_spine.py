@@ -1,6 +1,5 @@
 # ***************************************************************************
 # *   Copyright (c) 2019 Bernd Hahnebach <bernd@bimstatik.org>              *
-# *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com    *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -10,29 +9,22 @@
 # *   the License, or (at your option) any later version.                   *
 # *   for detail see the LICENCE text file.                                 *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
+# *   FreeCAD is distributed in the hope that it will be useful,            *
 # *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
 # *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
 # *   GNU Library General Public License for more details.                  *
 # *                                                                         *
 # *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
+# *   License along with FreeCAD; if not, write to the Free Software        *
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
 
-# to run the example use:
-"""
-from femexamples.thermomech_spine import setup
-setup()
-
-"""
 
 import FreeCAD
-
-import Fem
 import ObjectsFem
+import Fem
 
 mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
 
@@ -43,34 +35,23 @@ def init_doc(doc=None):
     return doc
 
 
-def get_information():
-    info = {"name": "Thermomech Spine",
-            "meshtype": "solid",
-            "meshelement": "Tet10",
-            "constraints": ["fixed", "initial temperature", "temperature", "heatflux"],
-            "solvers": ["calculix"],
-            "material": "solid",
-            "equation": "thermomechanical"
-            }
-    return info
-
-
 def setup(doc=None, solvertype="ccxtools"):
     # setup model
 
     if doc is None:
         doc = init_doc()
 
-    # geometry object
-    geom_obj = doc.addObject("Part::Box", "Box")
-    geom_obj.Height = 25.4
-    geom_obj.Width = 25.4
-    geom_obj.Length = 203.2
+    # part
+    box_obj = doc.addObject("Part::Box", "Box")
+    box_obj.Height = 25.4
+    box_obj.Width = 25.4
+    box_obj.Length = 203.2
     doc.recompute()
 
     if FreeCAD.GuiUp:
-        geom_obj.ViewObject.Document.activeView().viewAxonometric()
-        geom_obj.ViewObject.Document.activeView().fitAll()
+        import FreeCADGui
+        FreeCADGui.ActiveDocument.activeView().viewAxonometric()
+        FreeCADGui.SendMsgToActiveView("ViewFit")
 
     # analysis
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
@@ -88,13 +69,7 @@ def setup(doc=None, solvertype="ccxtools"):
     # should be possible with elmer too
     # elif solvertype == "elmer":
     #     analysis.addObject(ObjectsFem.makeSolverElmer(doc, "SolverElmer"))
-    else:
-        FreeCAD.Console.PrintWarning(
-            "Not known or not supported solver type: {}. "
-            "No solver object was created.\n".format(solvertype)
-        )
     if solvertype == "calculix" or solvertype == "ccxtools":
-        solver_object.SplitInputWriter = False
         solver_object.AnalysisType = "thermomech"
         solver_object.GeometricalNonlinearity = "linear"
         solver_object.ThermoMechSteadyState = True
@@ -120,7 +95,7 @@ def setup(doc=None, solvertype="ccxtools"):
     fixed_constraint = analysis.addObject(
         ObjectsFem.makeConstraintFixed(doc, "FemConstraintFixed")
     )[0]
-    fixed_constraint.References = [(geom_obj, "Face1")]
+    fixed_constraint.References = [(box_obj, "Face1")]
 
     # initialtemperature_constraint
     initialtemperature_constraint = analysis.addObject(
@@ -132,7 +107,7 @@ def setup(doc=None, solvertype="ccxtools"):
     temperature_constraint = analysis.addObject(
         ObjectsFem.makeConstraintTemperature(doc, "FemConstraintTemperature")
     )[0]
-    temperature_constraint.References = [(geom_obj, "Face1")]
+    temperature_constraint.References = [(box_obj, "Face1")]
     temperature_constraint.Temperature = 310.93
 
     # heatflux_constraint
@@ -140,10 +115,10 @@ def setup(doc=None, solvertype="ccxtools"):
         ObjectsFem.makeConstraintHeatflux(doc, "FemConstraintHeatflux")
     )[0]
     heatflux_constraint.References = [
-        (geom_obj, "Face3"),
-        (geom_obj, "Face4"),
-        (geom_obj, "Face5"),
-        (geom_obj, "Face6")
+        (box_obj, "Face3"),
+        (box_obj, "Face4"),
+        (box_obj, "Face5"),
+        (box_obj, "Face6")
     ]
     heatflux_constraint.AmbientTemp = 255.3722
     heatflux_constraint.FilmCoef = 5.678
@@ -158,11 +133,16 @@ def setup(doc=None, solvertype="ccxtools"):
     if not control:
         FreeCAD.Console.PrintError("Error on creating elements.\n")
     femmesh_obj = analysis.addObject(
-        ObjectsFem.makeMeshGmsh(doc, mesh_name)
+        doc.addObject("Fem::FemMeshObject", mesh_name)
     )[0]
     femmesh_obj.FemMesh = fem_mesh
-    femmesh_obj.Part = geom_obj
-    femmesh_obj.SecondOrderLinear = False
 
     doc.recompute()
     return doc
+
+
+"""
+from femexamples import thermomech_spine as spine
+spine.setup()
+
+"""

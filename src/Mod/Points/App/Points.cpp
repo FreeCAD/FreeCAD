@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Juergen Riegel         <juergen.riegel@web.de>          *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -156,10 +156,10 @@ std::vector<PointKernel::value_type> PointKernel::getValidPoints() const
         if (!(boost::math::isnan(it->x) || 
               boost::math::isnan(it->y) ||
               boost::math::isnan(it->z)))
-            valid.emplace_back(
+            valid.push_back(value_type(
                     static_cast<float_type>(it->x),
                     static_cast<float_type>(it->y),
-                    static_cast<float_type>(it->z));
+                    static_cast<float_type>(it->z)));
     }
     return valid;
 }

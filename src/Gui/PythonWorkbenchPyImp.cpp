@@ -32,8 +32,8 @@
 using namespace Gui;
 
 /** @class PythonWorkbenchPy
- * The workbench Python class provides additional methods for manipulation of python
- * workbench objects.
+ * The workbench Python class provides additional methods for manipulation of python worbench
+ * objects. 
  * From the view of Python PythonWorkbenchPy is also derived from WorkbenchPy as in C++.
  * @see Workbench
  * @see WorkbenchPy
@@ -54,7 +54,7 @@ PyObject*  PythonWorkbenchPy::appendMenu(PyObject *args)
         PyObject* pPath;
         PyObject* pItems;
         if ( !PyArg_ParseTuple(args, "OO", &pPath, &pItems) )
-            return nullptr;
+            return NULL;                             // NULL triggers exception 
 
         // menu path
         std::list<std::string> path;
@@ -95,7 +95,7 @@ PyObject*  PythonWorkbenchPy::appendMenu(PyObject *args)
 #endif
         } else {
             PyErr_SetString(PyExc_AssertionError, "Expected either a string or a stringlist as first argument");
-            return nullptr;
+            return NULL;                             // NULL triggers exception 
         }
 
         // menu items
@@ -137,12 +137,12 @@ PyObject*  PythonWorkbenchPy::appendMenu(PyObject *args)
 #endif
         } else {
             PyErr_SetString(PyExc_AssertionError, "Expected either a string or a stringlist as first argument");
-            return nullptr;
+            return NULL;                             // NULL triggers exception 
         }
 
         getPythonBaseWorkbenchPtr()->appendMenu( path, items );
 
-        Py_Return;
+        Py_Return; 
     } PY_CATCH;
 }
 
@@ -151,11 +151,34 @@ PyObject*  PythonWorkbenchPy::removeMenu(PyObject *args)
 {
     PY_TRY {
         char *psMenu;
-        if (!PyArg_ParseTuple(args, "s", &psMenu))
-            return nullptr;
-
+        if (!PyArg_ParseTuple(args, "s", &psMenu))     // convert args: Python->C 
+            return NULL;                             // NULL triggers exception 
+    
         getPythonBaseWorkbenchPtr()->removeMenu( psMenu );
-        Py_Return;
+        Py_Return; 
+    } PY_CATCH;
+}
+
+/** Shows a list of all menus */
+PyObject*  PythonWorkbenchPy::listMenus(PyObject *args)
+{
+    PY_TRY {
+        if (!PyArg_ParseTuple(args, ""))
+            return NULL;
+
+        std::list<std::string> menus = getPythonBaseWorkbenchPtr()->listMenus();
+
+        PyObject* pyList = PyList_New(menus.size());
+        int i=0;
+        for (std::list<std::string>::iterator it = menus.begin(); it != menus.end(); ++it, ++i ) {
+#if PY_MAJOR_VERSION >= 3
+            PyObject* str = PyUnicode_FromString(it->c_str());
+#else
+            PyObject* str = PyString_FromString(it->c_str());
+#endif
+            PyList_SetItem(pyList, i, str);
+        }
+        return pyList; 
     } PY_CATCH;
 }
 
@@ -166,7 +189,7 @@ PyObject*  PythonWorkbenchPy::appendContextMenu(PyObject *args)
         PyObject* pPath;
         PyObject* pItems;
         if ( !PyArg_ParseTuple(args, "OO", &pPath, &pItems) )
-            return nullptr;
+            return NULL;                             // NULL triggers exception 
 
         // menu path
         std::list<std::string> path;
@@ -207,7 +230,7 @@ PyObject*  PythonWorkbenchPy::appendContextMenu(PyObject *args)
 #endif
         } else {
             PyErr_SetString(PyExc_AssertionError, "Expected either a string or a stringlist as first argument");
-            return nullptr;
+            return NULL;                             // NULL triggers exception 
         }
 
         // menu items
@@ -249,12 +272,12 @@ PyObject*  PythonWorkbenchPy::appendContextMenu(PyObject *args)
 #endif
         } else {
             PyErr_SetString(PyExc_AssertionError, "Expected either a string or a stringlist as first argument");
-            return nullptr;
+            return NULL;                             // NULL triggers exception 
         }
 
         getPythonBaseWorkbenchPtr()->appendContextMenu( path, items );
 
-        Py_Return;
+        Py_Return; 
     } PY_CATCH;
 }
 
@@ -263,11 +286,11 @@ PyObject*  PythonWorkbenchPy::removeContextMenu(PyObject *args)
 {
     PY_TRY {
         char *psMenu;
-        if (!PyArg_ParseTuple(args, "s", &psMenu))
-            return nullptr;
-
+        if (!PyArg_ParseTuple(args, "s", &psMenu))     // convert args: Python->C 
+            return NULL;                             // NULL triggers exception 
+    
         getPythonBaseWorkbenchPtr()->removeContextMenu( psMenu );
-        Py_Return;
+        Py_Return; 
     } PY_CATCH;
 }
 
@@ -278,10 +301,10 @@ PyObject*  PythonWorkbenchPy::appendToolbar(PyObject *args)
         PyObject* pObject;
         char* psToolBar;
         if ( !PyArg_ParseTuple(args, "sO", &psToolBar, &pObject) )
-            return nullptr;
+            return NULL;                             // NULL triggers exception 
         if (!PyList_Check(pObject)) {
             PyErr_SetString(PyExc_AssertionError, "Expected a list as second argument");
-            return nullptr;
+            return NULL;                             // NULL triggers exception 
         }
 
         std::list<std::string> items;
@@ -307,7 +330,7 @@ PyObject*  PythonWorkbenchPy::appendToolbar(PyObject *args)
         }
         getPythonBaseWorkbenchPtr()->appendToolbar( psToolBar, items );
 
-        Py_Return;
+        Py_Return; 
     } PY_CATCH;
 }
 
@@ -316,11 +339,34 @@ PyObject*  PythonWorkbenchPy::removeToolbar(PyObject *args)
 {
     PY_TRY {
         char *psToolBar;
-        if (!PyArg_ParseTuple(args, "s", &psToolBar))
-            return nullptr;
-
+        if (!PyArg_ParseTuple(args, "s", &psToolBar))     // convert args: Python->C 
+            return NULL;                             // NULL triggers exception 
+    
         getPythonBaseWorkbenchPtr()->removeToolbar( psToolBar );
-        Py_Return;
+        Py_Return; 
+    } PY_CATCH;
+}
+
+/** Shows a list of all toolbars */
+PyObject*  PythonWorkbenchPy::listToolbars(PyObject *args)
+{
+    PY_TRY {
+        if (!PyArg_ParseTuple(args, ""))
+            return NULL;
+
+        std::list<std::string> bars = getPythonBaseWorkbenchPtr()->listToolbars();
+
+        PyObject* pyList = PyList_New(bars.size());
+        int i=0;
+        for (std::list<std::string>::iterator it = bars.begin(); it != bars.end(); ++it, ++i ) {
+#if PY_MAJOR_VERSION >= 3
+            PyObject* str = PyUnicode_FromString(it->c_str());
+#else
+            PyObject* str = PyString_FromString(it->c_str());
+#endif
+            PyList_SetItem(pyList, i, str);
+        }
+        return pyList; 
     } PY_CATCH;
 }
 
@@ -331,10 +377,10 @@ PyObject*  PythonWorkbenchPy::appendCommandbar(PyObject *args)
         PyObject* pObject;
         char* psToolBar;
         if ( !PyArg_ParseTuple(args, "sO", &psToolBar, &pObject) )
-            return nullptr;
+            return NULL;                             // NULL triggers exception 
         if (!PyList_Check(pObject)) {
             PyErr_SetString(PyExc_AssertionError, "Expected a list as second argument");
-            return nullptr;
+            return NULL;                             // NULL triggers exception 
         }
 
         std::list<std::string> items;
@@ -361,7 +407,7 @@ PyObject*  PythonWorkbenchPy::appendCommandbar(PyObject *args)
 
         getPythonBaseWorkbenchPtr()->appendCommandbar( psToolBar, items );
 
-        Py_Return;
+        Py_Return; 
     } PY_CATCH;
 }
 
@@ -370,25 +416,46 @@ PyObject*  PythonWorkbenchPy::removeCommandbar(PyObject *args)
 {
     PY_TRY {
         char *psToolBar;
-        if (!PyArg_ParseTuple(args, "s", &psToolBar))
-            return nullptr;
-
+        if (!PyArg_ParseTuple(args, "s", &psToolBar))     // convert args: Python->C 
+            return NULL;                             // NULL triggers exception 
+    
         getPythonBaseWorkbenchPtr()->removeCommandbar( psToolBar );
-        Py_Return;
+        Py_Return; 
     } PY_CATCH;
 }
 
-PyObject* PythonWorkbenchPy::getCustomAttributes(const char* ) const
+/** Shows a list of all command bars */
+PyObject*  PythonWorkbenchPy::listCommandbars(PyObject *args)
 {
-    return nullptr;
+    PY_TRY {
+        if (!PyArg_ParseTuple(args, ""))
+            return NULL;
+
+        std::list<std::string> bars = getPythonBaseWorkbenchPtr()->listCommandbars();
+
+        PyObject* pyList = PyList_New(bars.size());
+        int i=0;
+        for (std::list<std::string>::iterator it = bars.begin(); it != bars.end(); ++it, ++i) {
+#if PY_MAJOR_VERSION >= 3
+            PyObject* str = PyUnicode_FromString(it->c_str());
+#else
+            PyObject* str = PyString_FromString(it->c_str());
+#endif
+            PyList_SetItem(pyList, i, str);
+        }
+        return pyList; 
+    } PY_CATCH;
 }
 
-int PythonWorkbenchPy::setCustomAttributes(const char* , PyObject *)
+PyObject *PythonWorkbenchPy::getCustomAttributes(const char* ) const
 {
     return 0;
 }
 
-// deprecated methods
+int PythonWorkbenchPy::setCustomAttributes(const char* , PyObject *)
+{
+    return 0; 
+}
 
 PyObject*  PythonWorkbenchPy::AppendMenu(PyObject *args)
 {
@@ -444,3 +511,5 @@ PyObject*  PythonWorkbenchPy::ListCommandbars(PyObject *args)
 {
     return listCommandbars(args);
 }
+
+

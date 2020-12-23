@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="fi" sourcelanguage="en">
+<TS version="2.0" language="fi" sourcelanguage="en">
   <context>
     <name>AttachmentEditor</name>
     <message>
@@ -26,7 +26,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="229"/>
       <source>Attachment</source>
-      <translation>Liite</translation>
+      <translation type="unfinished">Attachment</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="218"/>
@@ -71,7 +71,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="551"/>
       <source>Selecting...</source>
-      <translation>Valitaan...</translation>
+      <translation type="unfinished">Selecting...</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="575"/>
@@ -99,11 +99,6 @@
       <translation type="unfinished">Attachment Offset:</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="608"/>
-      <source>Attachment Offset (in local coordinates):</source>
-      <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
-    </message>
-    <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="598"/>
       <source>Attachment Offset (inactive - not attached):</source>
       <translation type="unfinished">Attachment Offset (inactive - not attached):</translation>
@@ -127,17 +122,6 @@
       <translation type="unfinished">Compound Filter</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="59"/>
-      <source>Filter out objects from a selected compound by characteristics like volume,
-area, or length, or by choosing specific items.
-If a second object is selected, it will be used as reference, for example,
-for collision or distance filtering.</source>
-      <translation type="unfinished">Filter out objects from a selected compound by characteristics like volume,
-area, or length, or by choosing specific items.
-If a second object is selected, it will be used as reference, for example,
-for collision or distance filtering.</translation>
-    </message>
-    <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="60"/>
       <source>Compound Filter: remove some childs from a compound</source>
       <translation type="unfinished">Compound Filter: remove some childs from a compound</translation>
@@ -148,9 +132,9 @@ for collision or distance filtering.</translation>
       <translation type="unfinished">Select a shape that is a compound, first! Second selected item (optional) will be treated as a stencil.</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="73"/>
-      <source>First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</source>
-      <translation type="unfinished">First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</translation>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
+      <source>Bad selection</source>
+      <translation type="unfinished">Bad selection</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
@@ -165,24 +149,6 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
     </message>
-    <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
-      <source>Bad selection</source>
-      <translation>Virheellinen valinta</translation>
-    </message>
-    <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="106"/>
-      <source>Computing the result failed with an error: 
-
-{errstr}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error: 
-
-{errstr}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
-    </message>
   </context>
   <context>
     <name>Part_ExplodeCompound</name>
@@ -190,13 +156,6 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="57"/>
       <source>Explode compound</source>
       <translation type="unfinished">Explode compound</translation>
-    </message>
-    <message>
-      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="58"/>
-      <source>Split up a compound of shapes into separate objects.
-It will create a 'Compound Filter' for each shape.</source>
-      <translation type="unfinished">Split up a compound of shapes into separate objects.
-It will create a 'Compound Filter' for each shape.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="59"/>
@@ -210,13 +169,8 @@ It will create a 'Compound Filter' for each shape.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="68"/>
-      <source>First select a shape that is a compound.</source>
-      <translation type="unfinished">First select a shape that is a compound.</translation>
-    </message>
-    <message>
-      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="68"/>
       <source>Bad selection</source>
-      <translation>Virheellinen valinta</translation>
+      <translation type="unfinished">Bad selection</translation>
     </message>
   </context>
   <context>
@@ -261,29 +215,6 @@ It will create a 'Compound Filter' for each shape.</translation>
   <context>
     <name>Part_JoinFeatures</name>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="86"/>
-      <source>Computing the result failed with an error:
-
-{err}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error:
-
-{err}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="373"/>
-      <source>Bad selection</source>
-      <translation>Virheellinen valinta</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="89"/>
-      <source>Continue</source>
-      <translation type="unfinished">Continue</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="85"/>
       <source>Computing the result failed with an error: 
 
@@ -297,14 +228,19 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
  Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
     </message>
     <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="373"/>
+      <source>Bad selection</source>
+      <translation type="unfinished">Bad selection</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="89"/>
+      <source>Continue</source>
+      <translation type="unfinished">Continue</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
       <source>Select at least two objects, or one or more compounds, first!</source>
       <translation type="unfinished">Select at least two objects, or one or more compounds, first!</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="208"/>
-      <source>Select at least two objects, or one or more compounds</source>
-      <translation type="unfinished">Select at least two objects, or one or more compounds</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="283"/>
@@ -312,125 +248,26 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <translation type="unfinished">Select base object, then the object to embed, and invoke this tool.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="304"/>
-      <source>Select base object, then the object to embed, and then invoke this tool.</source>
-      <translation type="unfinished">Select base object, then the object to embed, and then invoke this tool.</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
       <source>Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</source>
       <translation type="unfinished">Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</translation>
     </message>
+  </context>
+  <context>
+    <name>Part_MakeTube</name>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="399"/>
-      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</source>
-      <translation type="unfinished">Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</translation>
+      <location filename="../../../BasicShapes/Shapes.py" line="59"/>
+      <source>Create tube</source>
+      <translation>Luo putki</translation>
+    </message>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="62"/>
+      <source>Creates a tube</source>
+      <translation type="unfinished">Creates a tube</translation>
     </message>
   </context>
   <context>
     <name>Part_SplitFeatures</name>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
-      <source>Computing the result failed with an error:
-
-{err}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error:
-
-{err}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
-      <source>Bad selection</source>
-      <translation>Virheellinen valinta</translation>
-    </message>
-    <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
-      <source>Continue</source>
-      <translation type="unfinished">Continue</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="188"/>
-      <source>Boolean fragments</source>
-      <translation type="unfinished">Boolean fragments</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="190"/>
-      <source>Create a 'Boolean Fragments' object from two or more selected objects,
-or from the shapes inside a compound.
-This is a boolean union which is then sliced at the intersections
-of the original shapes.
-A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation type="unfinished">Create a 'Boolean Fragments' object from two or more selected objects,
-or from the shapes inside a compound.
-This is a boolean union which is then sliced at the intersections
-of the original shapes.
-A 'Compound Filter' can be used to extract the individual slices.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="543"/>
-      <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
-      <translation type="unfinished">Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
-      <source>Slice to compound</source>
-      <translation type="unfinished">Slice to compound</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
-      <source>Slice a selected object by using other objects as cutting tools.
-The resulting pieces will be stored in a compound.
-A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation type="unfinished">Slice a selected object by using other objects as cutting tools.
-The resulting pieces will be stored in a compound.
-A 'Compound Filter' can be used to extract the individual slices.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="391"/>
-      <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
-      <translation type="unfinished">Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
-      <source>Slice apart</source>
-      <translation type="unfinished">Slice apart</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation type="unfinished">Boolean Fragments</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation type="unfinished">Split objects where they intersect</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="312"/>
-      <source>Split object by intersections with other objects, and pack the pieces into a compound.</source>
-      <translation type="unfinished">Split object by intersections with other objects, and pack the pieces into a compound.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="336"/>
-      <source>Split object by intersections with other objects.</source>
-      <translation type="unfinished">Split object by intersections with other objects.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
-      <source>Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</source>
-      <translation type="unfinished">Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
-      <source>Slice a selected object by other objects, and split it apart.
-It will create a 'Compound Filter' for each slice.</source>
-      <translation type="unfinished">Slice a selected object by other objects, and split it apart.
-It will create a 'Compound Filter' for each slice.</translation>
-    </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="446"/>
       <source>Computing the result failed with an error: 
@@ -445,9 +282,24 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
-      <source>Remove intersection fragments</source>
-      <translation type="unfinished">Remove intersection fragments</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
+      <source>Bad selection</source>
+      <translation type="unfinished">Bad selection</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
+      <source>Continue</source>
+      <translation type="unfinished">Continue</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation type="unfinished">Boolean Fragments</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation type="unfinished">Split objects where they intersect</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="478"/>
@@ -455,46 +307,39 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <translation type="unfinished">Select at least two objects, or one or more compounds, first! If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</translation>
     </message>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
+      <source>Slice to compound</source>
+      <translation type="unfinished">Slice to compound</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="312"/>
+      <source>Split object by intersections with other objects, and pack the pieces into a compound.</source>
+      <translation type="unfinished">Split object by intersections with other objects, and pack the pieces into a compound.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
+      <source>Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</source>
+      <translation type="unfinished">Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
+      <source>Slice apart</source>
+      <translation type="unfinished">Slice apart</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="336"/>
+      <source>Split object by intersections with other objects.</source>
+      <translation type="unfinished">Split object by intersections with other objects.</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="468"/>
       <source>Boolean XOR</source>
       <translation type="unfinished">Boolean XOR</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="531"/>
-      <source>Perform an 'exclusive OR' boolean operation with two or more selected objects,
-or with the shapes inside a compound.
-This means the overlapping volumes of the shapes will be removed.
-A 'Compound Filter' can be used to extract the remaining pieces.</source>
-      <translation type="unfinished">Perform an 'exclusive OR' boolean operation with two or more selected objects,
-or with the shapes inside a compound.
-This means the overlapping volumes of the shapes will be removed.
-A 'Compound Filter' can be used to extract the remaining pieces.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Part_Tube</name>
-    <message>
-      <location filename="../../../BasicShapes/Shapes.py" line="85"/>
-      <source>Create tube</source>
-      <translation>Luo putki</translation>
-    </message>
-    <message>
-      <location filename="../../../BasicShapes/Shapes.py" line="89"/>
-      <source>Creates a tube</source>
-      <translation>Luo putken</translation>
-    </message>
-  </context>
-  <context>
-    <name>Part_MakeTube</name>
-    <message>
-      <location filename="../../../BasicShapes/Shapes.py" line="59"/>
-      <source>Create tube</source>
-      <translation>Luo putki</translation>
-    </message>
-    <message>
-      <location filename="../../../BasicShapes/Shapes.py" line="62"/>
-      <source>Creates a tube</source>
-      <translation>Luo putken</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
+      <source>Remove intersection fragments</source>
+      <translation type="unfinished">Remove intersection fragments</translation>
     </message>
   </context>
   <context>
@@ -1648,7 +1493,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="2355"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2356"/>
@@ -1663,7 +1508,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="2104"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2105"/>
@@ -1681,7 +1526,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="2138"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2139"/>
@@ -1699,7 +1544,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="2204"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2205"/>
@@ -1713,7 +1558,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="2233"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2234"/>
@@ -1727,7 +1572,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="2175"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2176"/>
@@ -1741,7 +1586,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="2297"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2298"/>
@@ -1755,7 +1600,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="2262"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2263"/>
@@ -1769,7 +1614,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="2326"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2327"/>
@@ -1783,7 +1628,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1274"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1275"/>
@@ -1801,7 +1646,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="87"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="88"/>
@@ -1821,7 +1666,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="135"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="136"/>
@@ -1839,7 +1684,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="176"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="177"/>
@@ -1857,7 +1702,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1535"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1536"/>
@@ -1875,7 +1720,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1439"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1440"/>
@@ -1893,7 +1738,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="349"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="350"/>
@@ -1911,7 +1756,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="782"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="783"/>
@@ -1929,12 +1774,12 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="554"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="555"/>
       <source>Join objects...</source>
-      <translation>Yhdistä objektit...</translation>
+      <translation type="unfinished">Join objects...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="556"/>
@@ -1947,7 +1792,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1720"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1721"/>
@@ -1965,7 +1810,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="660"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="661"/>
@@ -1983,7 +1828,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="889"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="890"/>
@@ -2001,7 +1846,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="169"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="170"/>
@@ -2021,7 +1866,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1495"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1496"/>
@@ -2039,7 +1884,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="271"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="272"/>
@@ -2057,7 +1902,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="46"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="47"/>
@@ -2077,7 +1922,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="271"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="272"/>
@@ -2095,7 +1940,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1047"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1048"/>
@@ -2113,7 +1958,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1305"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1306"/>
@@ -2131,7 +1976,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1411"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1412"/>
@@ -2149,7 +1994,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="451"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="452"/>
@@ -2167,7 +2012,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="987"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="988"/>
@@ -2185,7 +2030,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1094"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1095"/>
@@ -2203,7 +2048,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1564"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1565"/>
@@ -2221,7 +2066,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1333"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1334"/>
@@ -2239,7 +2084,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1142"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1143"/>
@@ -2257,7 +2102,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1467"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1468"/>
@@ -2275,7 +2120,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1622"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1623"/>
@@ -2293,7 +2138,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1672"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1673"/>
@@ -2311,7 +2156,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="89"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="90"/>
@@ -2329,7 +2174,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="217"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="218"/>
@@ -2347,7 +2192,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="218"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="219"/>
@@ -2365,7 +2210,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1220"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1221"/>
@@ -2383,7 +2228,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1383"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1384"/>
@@ -2401,7 +2246,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1988"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1989"/>
@@ -2419,7 +2264,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="940"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="941"/>
@@ -2437,7 +2282,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="108"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="109"/>
@@ -2455,7 +2300,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="172"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="173"/>
@@ -2473,7 +2318,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="57"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="58"/>
@@ -2491,7 +2336,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="128"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="129"/>
@@ -2511,7 +2356,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1593"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1594"/>
@@ -2529,7 +2374,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1813"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1814"/>
@@ -2563,7 +2408,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="210"/>
       <source>Part</source>
-      <translation>Osa</translation>
+      <translation>osa</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="211"/>
@@ -2588,7 +2433,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="20"/>
       <source>Selection accepted</source>
-      <translation>Valinta hyväksytty</translation>
+      <translation type="unfinished">Selection accepted</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="35"/>
@@ -2976,7 +2821,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="181"/>
       <source>Selecting...</source>
-      <translation>Valitaan...</translation>
+      <translation type="unfinished">Selecting...</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="422"/>
@@ -4017,7 +3862,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
       <source>Maximum angular deflection</source>
       <translation type="unfinished">Maximum angular deflection</translation>
     </message>
-    <message>
+    <message utf8="true">
       <location filename="../../DlgSettings3DViewPart.ui" line="107"/>
       <source> °</source>
       <translation> °</translation>
@@ -4149,7 +3994,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="261"/>
       <source>Annotations</source>
-      <translation>Merkinnät</translation>
+      <translation type="unfinished">Annotations</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="275"/>
@@ -4198,7 +4043,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="81"/>
       <source>Selected profiles</source>
-      <translation>Valitut profiilit</translation>
+      <translation type="unfinished">Selected profiles</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="180"/>
@@ -4396,7 +4241,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="137"/>
       <source>Selected profiles</source>
-      <translation>Valitut profiilit</translation>
+      <translation type="unfinished">Selected profiles</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="282"/>
@@ -4472,7 +4317,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="20"/>
       <source>Selection accepted</source>
-      <translation>Valinta hyväksytty</translation>
+      <translation type="unfinished">Selection accepted</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="35"/>
@@ -4553,7 +4398,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="304"/>
       <source>unknown error</source>
-      <translation>tuntematon virhe</translation>
+      <translation type="unfinished">unknown error</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="307"/>
@@ -4593,7 +4438,7 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="690"/>
       <source>Selecting...</source>
-      <translation>Valitaan...</translation>
+      <translation type="unfinished">Selecting...</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="694"/>
@@ -4889,7 +4734,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../App/FaceMaker.cpp" line="172"/>
       <source>Simple</source>
-      <translation>Yksinkertainen</translation>
+      <translation type="unfinished">Simple</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMaker.cpp" line="177"/>
@@ -4996,7 +4841,7 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../Command.cpp" line="1107"/>
       <source>All CAD Files</source>
-      <translation>Kaikki CAD tiedostot</translation>
+      <translation type="unfinished">All CAD Files</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1112"/>
@@ -5022,7 +4867,7 @@ Haluatko jatkaa?</translation>
       <location filename="../../TaskAttacher.cpp" line="71"/>
       <location filename="../../TaskAttacher.cpp" line="104"/>
       <source>No reference selected</source>
-      <translation>Ei viittausta valittuna</translation>
+      <translation type="unfinished">No reference selected</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="80"/>

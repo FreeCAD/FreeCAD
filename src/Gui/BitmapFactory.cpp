@@ -23,7 +23,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QString>
 # include <QApplication>
 # include <QBitmap>
 # include <QDir>
@@ -37,6 +36,7 @@
 # include <QStyleOption>
 # include <sstream>
 #endif
+
 #if defined (FC_OS_WIN32) && QT_VERSION < 0x050000
 #define QTWEBKIT
 #endif
@@ -57,7 +57,7 @@
 using namespace Gui;
 
 /* XPM */
-static const char *not_found[]={
+static const char *px[]={
 "24 24 2 1",
 "# c #000000",
 ". c #ffffff",
@@ -293,11 +293,10 @@ QPixmap BitmapFactoryInst::pixmap(const char* name) const
     }
 
     Base::Console().Warning("Cannot find icon: %s\n", name);
-    return QPixmap(not_found);
+    return QPixmap(px);
 }
 
-QPixmap BitmapFactoryInst::pixmapFromSvg(const char* name, const QSizeF& size,
-    const std::map<unsigned long, unsigned long>& colorMapping) const
+QPixmap BitmapFactoryInst::pixmapFromSvg(const char* name, const QSize& size) const
 {
     // If an absolute path is given
     QPixmap icon;
@@ -326,26 +325,15 @@ QPixmap BitmapFactoryInst::pixmapFromSvg(const char* name, const QSizeF& size,
         QFile file(iconPath);
         if (file.open(QFile::ReadOnly | QFile::Text)) {
             QByteArray content = file.readAll();
-            icon = pixmapFromSvg(content, size, colorMapping);
+            icon = pixmapFromSvg(content, size);
         }
     }
 
     return icon;
 }
 
-QPixmap BitmapFactoryInst::pixmapFromSvg(const QByteArray& originalContents, const QSizeF& size,
-    const std::map<unsigned long, unsigned long>& colorMapping) const
+QPixmap BitmapFactoryInst::pixmapFromSvg(const QByteArray& contents, const QSize& size) const
 {
-    QString stringContents = QString::fromUtf8(originalContents);
-    for ( const auto &colorToColor : colorMapping ) {
-        ulong fromColor = colorToColor.first;
-        ulong toColor = colorToColor.second;
-        QString fromColorString = QString::fromLatin1(":#%1;").arg(fromColor, 6, 16,  QChar::fromLatin1('0'));
-        QString toColorString = QString::fromLatin1(":#%1;").arg(toColor, 6, 16,  QChar::fromLatin1('0'));
-        stringContents = stringContents.replace(fromColorString, toColorString);
-    }
-    QByteArray contents = stringContents.toUtf8();
-
 #ifdef QTWEBKIT
     // There is a crash when using the Webkit engine in debug mode
     // for a couple of SVG files. Thus, use the qsvg plugin.
@@ -431,7 +419,7 @@ QPixmap BitmapFactoryInst::pixmapFromSvg(const QByteArray& originalContents, con
     return QPixmap::fromImage(image);
 #endif // QT_VERSION
 #else //QTWEBKIT
-    QImage image(size.toSize(), QImage::Format_ARGB32_Premultiplied);
+    QImage image(size, QImage::Format_ARGB32_Premultiplied);
     image.fill(0x00000000);
 
     QPainter p(&image);
@@ -633,11 +621,7 @@ void BitmapFactoryInst::convert(const QImage& p, SoSFImage& img) const
     size[0] = p.width();
     size[1] = p.height();
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
-    int buffersize = static_cast<int>(p.sizeInBytes());
-#else
     int buffersize = p.byteCount();
-#endif
     int numcomponents = 0;
     QVector<QRgb> table = p.colorTable();
     if (!table.isEmpty()) {
@@ -709,8 +693,6 @@ void BitmapFactoryInst::convert(const SoSFImage& p, QImage& img) const
     int numcomponents;
 
     const unsigned char * bytes = p.getValue(size, numcomponents);
-    if (!bytes)
-        return;
 
     int width  = (int)size[0];
     int height = (int)size[1];

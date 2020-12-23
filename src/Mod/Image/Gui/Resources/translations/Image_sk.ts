@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="sk" sourcelanguage="en">
+<TS version="2.0" language="sk" sourcelanguage="en">
   <context>
     <name>Dialog</name>
     <message>
@@ -11,12 +11,12 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="135"/>
       <source>Distance [mm]</source>
-      <translation>Vzdialenosť [mm]</translation>
+      <translation type="unfinished">Distance [mm]</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="136"/>
       <source>Select first point</source>
-      <translation>Vyberte prvý bod</translation>
+      <translation type="unfinished">Select first point</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="154"/>
@@ -31,7 +31,7 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="182"/>
       <source>Select second point</source>
-      <translation>Vyberte druhý bod</translation>
+      <translation type="unfinished">Select second point</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="191"/>
@@ -67,7 +67,7 @@
     <message>
       <location filename="../../Command.cpp" line="103"/>
       <source>Create a planar image in the 3D space</source>
-      <translation>Vytvoriť planárný obraz v 3D priestore</translation>
+      <translation>vytvoriť planárny obraz v 3D priestore</translation>
     </message>
   </context>
   <context>
@@ -243,12 +243,12 @@
     <message>
       <location filename="../../Command.cpp" line="128"/>
       <source>Error opening image</source>
-      <translation>Chyba pri otváraní obrázka</translation>
+      <translation type="unfinished">Error opening image</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="129"/>
       <source>Could not load the chosen image</source>
-      <translation>Vybraný obrázok sa nepodarilo načítať</translation>
+      <translation type="unfinished">Could not load the chosen image</translation>
     </message>
   </context>
   <context>

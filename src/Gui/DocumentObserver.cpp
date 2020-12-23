@@ -25,8 +25,9 @@
 
 #ifndef _PreComp_
 # include <sstream>
-# include <boost_bind_bind.hpp>
 #endif
+
+#include <boost/bind.hpp>
 
 #include "Application.h"
 #include "Document.h"
@@ -35,7 +36,6 @@
 #include <App/Document.h>
 
 using namespace Gui;
-namespace bp = boost::placeholders;
 
 
 DocumentT::DocumentT()
@@ -50,11 +50,6 @@ DocumentT::DocumentT(Document* doc)
 DocumentT::DocumentT(const std::string& name)
 {
     document = name;
-}
-
-DocumentT::DocumentT(const DocumentT& doc)
-{
-    document = doc.document;
 }
 
 DocumentT::~DocumentT()
@@ -128,12 +123,6 @@ ViewProviderT::ViewProviderT(ViewProviderDocumentObject* obj)
 {
     object = obj->getObject()->getNameInDocument();
     document = obj->getObject()->getDocument()->getName();
-}
-
-ViewProviderT::ViewProviderT(const ViewProviderT& vp)
-{
-    object = vp.object;
-    document = vp.document;
 }
 
 ViewProviderT::~ViewProviderT()
@@ -210,142 +199,6 @@ std::string ViewProviderT::getObjectPython() const
 
 // -----------------------------------------------------------------------------
 
-class DocumentWeakPtrT::Private {
-public:
-    Private(Gui::Document* doc) : _document(doc) {
-        if (doc) {
-            connectApplicationDeletedDocument = doc->signalDeleteDocument.connect(boost::bind
-                (&Private::deletedDocument, this, bp::_1));
-        }
-    }
-
-    void deletedDocument(const Gui::Document& doc) {
-        if (_document == &doc)
-            reset();
-    }
-    void reset() {
-        connectApplicationDeletedDocument.disconnect();
-        _document = nullptr;
-    }
-
-    Gui::Document* _document;
-    typedef boost::signals2::scoped_connection Connection;
-    Connection connectApplicationDeletedDocument;
-};
-
-DocumentWeakPtrT::DocumentWeakPtrT(Gui::Document* doc) noexcept
-  : d(new Private(doc))
-{
-}
-
-DocumentWeakPtrT::~DocumentWeakPtrT()
-{
-}
-
-void DocumentWeakPtrT::reset() noexcept
-{
-    d->reset();
-}
-
-bool DocumentWeakPtrT::expired() const noexcept
-{
-    return (d->_document == nullptr);
-}
-
-Gui::Document* DocumentWeakPtrT::operator->() noexcept
-{
-    return d->_document;
-}
-
-// -----------------------------------------------------------------------------
-
-class ViewProviderWeakPtrT::Private {
-public:
-    Private(ViewProviderDocumentObject* obj) : object(obj), indocument(false) {
-        try {
-            if (obj) {
-                Gui::Document* doc = obj->getDocument();
-                indocument = true;
-                connectApplicationDeletedDocument = doc->signalDeleteDocument.connect(boost::bind
-                    (&Private::deletedDocument, this, bp::_1));
-                connectDocumentCreatedObject = doc->signalNewObject.connect(boost::bind
-                    (&Private::createdObject, this, bp::_1));
-                connectDocumentDeletedObject = doc->signalDeletedObject.connect(boost::bind
-                    (&Private::deletedObject, this, bp::_1));
-            }
-        }
-        catch (const Base::RuntimeError&) {
-            // getDocument() may raise an exception
-        }
-    }
-    void deletedDocument(const Gui::Document& doc) {
-        // When deleting document then there is no way to undo it
-        if (object && object->getDocument() == &doc) {
-            reset();
-        }
-    }
-    void createdObject(const Gui::ViewProvider& obj) {
-        // When undoing the removal
-        if (object == &obj) {
-            indocument = true;
-        }
-    }
-    void deletedObject(const Gui::ViewProvider& obj) {
-        if (object == &obj) {
-            indocument = false;
-        }
-    }
-    void reset() {
-        connectApplicationDeletedDocument.disconnect();
-        connectDocumentCreatedObject.disconnect();
-        connectDocumentDeletedObject.disconnect();
-        object = nullptr;
-        indocument = false;
-    }
-    ViewProviderDocumentObject* get() const {
-        return indocument ? object : nullptr;
-    }
-
-    Gui::ViewProviderDocumentObject* object;
-    bool indocument;
-    typedef boost::signals2::scoped_connection Connection;
-    Connection connectApplicationDeletedDocument;
-    Connection connectDocumentCreatedObject;
-    Connection connectDocumentDeletedObject;
-};
-
-ViewProviderWeakPtrT::ViewProviderWeakPtrT(ViewProviderDocumentObject* obj) noexcept
-  : d(new Private(obj))
-{
-}
-
-ViewProviderWeakPtrT::~ViewProviderWeakPtrT()
-{
-
-}
-
-ViewProviderDocumentObject* ViewProviderWeakPtrT::_get() const noexcept
-{
-    return d->get();
-}
-
-void ViewProviderWeakPtrT::reset() noexcept
-{
-    d->reset();
-}
-
-bool ViewProviderWeakPtrT::expired() const noexcept
-{
-    return !d->indocument;
-}
-
-ViewProviderDocumentObject* ViewProviderWeakPtrT::operator->() noexcept
-{
-    return d->get();
-}
-
-// -----------------------------------------------------------------------------
-
 DocumentObserver::DocumentObserver()
 {
 }
@@ -362,25 +215,25 @@ void DocumentObserver::attachDocument(Document* doc)
         return;
 
     this->connectDocumentCreatedObject = doc->signalNewObject.connect(boost::bind
-        (&DocumentObserver::slotCreatedObject, this, bp::_1));
+        (&DocumentObserver::slotCreatedObject, this, _1));
     this->connectDocumentDeletedObject = doc->signalDeletedObject.connect(boost::bind
-        (&DocumentObserver::slotDeletedObject, this, bp::_1));
+        (&DocumentObserver::slotDeletedObject, this, _1));
     this->connectDocumentChangedObject = doc->signalChangedObject.connect(boost::bind
-        (&DocumentObserver::slotChangedObject, this, bp::_1, bp::_2));
+        (&DocumentObserver::slotChangedObject, this, _1, _2));
     this->connectDocumentRelabelObject = doc->signalRelabelObject.connect(boost::bind
-        (&DocumentObserver::slotRelabelObject, this, bp::_1));
+        (&DocumentObserver::slotRelabelObject, this, _1));
     this->connectDocumentActivateObject = doc->signalActivatedObject.connect(boost::bind
-        (&DocumentObserver::slotActivatedObject, this, bp::_1));
+        (&DocumentObserver::slotActivatedObject, this, _1));
     this->connectDocumentEditObject = doc->signalInEdit.connect(boost::bind
-        (&DocumentObserver::slotEnterEditObject, this, bp::_1));
+        (&DocumentObserver::slotEnterEditObject, this, _1));
     this->connectDocumentResetObject = doc->signalResetEdit.connect(boost::bind
-        (&DocumentObserver::slotResetEditObject, this, bp::_1));
+        (&DocumentObserver::slotResetEditObject, this, _1));
     this->connectDocumentUndo = doc->signalUndoDocument.connect(boost::bind
-        (&DocumentObserver::slotUndoDocument, this, bp::_1));
+        (&DocumentObserver::slotUndoDocument, this, _1));
     this->connectDocumentRedo = doc->signalRedoDocument.connect(boost::bind
-        (&DocumentObserver::slotRedoDocument, this, bp::_1));
+        (&DocumentObserver::slotRedoDocument, this, _1));
     this->connectDocumentDelete = doc->signalDeleteDocument.connect(boost::bind
-        (&DocumentObserver::slotDeleteDocument, this, bp::_1));
+        (&DocumentObserver::slotDeleteDocument, this, _1));
 }
 
 void DocumentObserver::detachDocument()

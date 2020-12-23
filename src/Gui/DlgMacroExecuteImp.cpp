@@ -24,14 +24,12 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QInputDialog>
-# include <QLabel>
 # include <QHeaderView>
 # include <QMessageBox>
 # include <QComboBox>
 #endif
 
 #include "DlgMacroExecuteImp.h"
-#include "ui_DlgMacroExecute.h"
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Command.h"
@@ -78,23 +76,21 @@ namespace Gui {
  *  true to construct a modal dialog.
  */
 DlgMacroExecuteImp::DlgMacroExecuteImp( QWidget* parent, Qt::WindowFlags fl )
-    : QDialog( parent, fl )
-    , WindowParameter( "Macro" )
-    , ui(new Ui_DlgMacroExecute)
+    : QDialog( parent, fl ), WindowParameter( "Macro" )
 {
-    ui->setupUi(this);
+    this->setupUi(this);
     // retrieve the macro path from parameter or use the user data as default
     std::string path = getWindowParameter()->GetASCII("MacroPath",
         App::Application::getUserMacroDir().c_str());
     this->macroPath = QString::fromUtf8(path.c_str());
-    ui->fileChooser->setFileName(this->macroPath);
+    fileChooser->setFileName(this->macroPath);
 
     // Fill the List box
     QStringList labels; labels << tr("Macros");
-    ui->userMacroListBox->setHeaderLabels(labels);
-    ui->userMacroListBox->header()->hide();
-    ui->systemMacroListBox->setHeaderLabels(labels);
-    ui->systemMacroListBox->header()->hide();
+    userMacroListBox->setHeaderLabels(labels);
+    userMacroListBox->header()->hide();
+    systemMacroListBox->setHeaderLabels(labels);
+    systemMacroListBox->header()->hide();
     fillUpList();
 }
 
@@ -115,72 +111,72 @@ void DlgMacroExecuteImp::fillUpList(void)
     QDir dir(this->macroPath, QLatin1String("*.FCMacro *.py"));
 
     // fill up with the directory
-    ui->userMacroListBox->clear();
+    userMacroListBox->clear();
     for (unsigned int i=0; i<dir.count(); i++ ) {
-        MacroItem* item = new MacroItem(ui->userMacroListBox,false);
+        MacroItem* item = new MacroItem(userMacroListBox,false);
         item->setText(0, dir[i]);
     }
 
     QString dirstr = QString::fromUtf8(App::GetApplication().getHomePath()) + QString::fromUtf8("Macro");
     dir = QDir(dirstr, QLatin1String("*.FCMacro *.py"));
 
-    ui->systemMacroListBox->clear();
+    systemMacroListBox->clear();
     if (dir.exists()) {
         for (unsigned int i=0; i<dir.count(); i++ ) {
-            MacroItem* item = new MacroItem(ui->systemMacroListBox,true);
+            MacroItem* item = new MacroItem(systemMacroListBox,true);
             item->setText(0, dir[i]);
         }
     }
 }
 
-/**
+/** 
  * Selects a macro file in the list view.
  */
 void DlgMacroExecuteImp::on_userMacroListBox_currentItemChanged(QTreeWidgetItem* item)
 {
     if (item) {
-        ui->LineEditMacroName->setText(item->text(0));
+        LineEditMacroName->setText(item->text(0));
 
-        ui->executeButton->setEnabled(true);
-        ui->deleteButton->setEnabled(true);
-        ui->toolbarButton->setEnabled(true);
-        ui->createButton->setEnabled(true);
-        ui->editButton->setEnabled(true);
-        ui->renameButton->setEnabled(true);
-        ui->duplicateButton->setEnabled(true);
+        executeButton->setEnabled(true);
+        deleteButton->setEnabled(true);
+        toolbarButton->setEnabled(true);
+        createButton->setEnabled(true);
+        editButton->setEnabled(true);
+        renameButton->setEnabled(true);
+        duplicateButton->setEnabled(true);
     }
     else {
-        ui->executeButton->setEnabled(false);
-        ui->deleteButton->setEnabled(false);
-        ui->toolbarButton->setEnabled(false);
-        ui->createButton->setEnabled(true);
-        ui->editButton->setEnabled(false);
-        ui->renameButton->setEnabled(false);
-        ui->duplicateButton->setEnabled(false);
+        executeButton->setEnabled(false);
+        deleteButton->setEnabled(false);
+        toolbarButton->setEnabled(false);
+        createButton->setEnabled(true);
+        editButton->setEnabled(false);
+        renameButton->setEnabled(false);
+        duplicateButton->setEnabled(false);
     }
 }
 
 void DlgMacroExecuteImp::on_systemMacroListBox_currentItemChanged(QTreeWidgetItem* item)
 {
     if (item) {
-        ui->LineEditMacroName->setText(item->text(0));
+        LineEditMacroName->setText(item->text(0));
 
-        ui->executeButton->setEnabled(true);
-        ui->deleteButton->setEnabled(false);
-        ui->toolbarButton->setEnabled(false);
-        ui->createButton->setEnabled(false);
-        ui->editButton->setEnabled(true); //look but don't touch
-        ui->renameButton->setEnabled(false);
-        ui->duplicateButton->setEnabled(false);
+        executeButton->setEnabled(true);
+        deleteButton->setEnabled(false);
+        toolbarButton->setEnabled(false);
+        createButton->setEnabled(false);
+        editButton->setEnabled(true); //look but don't touch
+        renameButton->setEnabled(false);
+        duplicateButton->setEnabled(false);
     }
     else {
-        ui->executeButton->setEnabled(false);
-        ui->deleteButton->setEnabled(false);
-        ui->toolbarButton->setEnabled(false);
-        ui->createButton->setEnabled(false);
-        ui->editButton->setEnabled(false);
-        ui->renameButton->setEnabled(false);
-        ui->duplicateButton->setEnabled(false);
+        executeButton->setEnabled(false);
+        deleteButton->setEnabled(false);
+        toolbarButton->setEnabled(false);
+        createButton->setEnabled(false);
+        editButton->setEnabled(false);
+        renameButton->setEnabled(false);
+        duplicateButton->setEnabled(false);
     }
 }
 
@@ -189,54 +185,54 @@ void DlgMacroExecuteImp::on_tabMacroWidget_currentChanged(int index)
     QTreeWidgetItem* item;
 
     if (index == 0) { //user-specific
-        item = ui->userMacroListBox->currentItem();
+        item = userMacroListBox->currentItem();
         if (item) {
-            ui->executeButton->setEnabled(true);
-            ui->deleteButton->setEnabled(true);
-            ui->toolbarButton->setEnabled(true);
-            ui->createButton->setEnabled(true);
-            ui->editButton->setEnabled(true);
-            ui->renameButton->setEnabled(true);
-            ui->duplicateButton->setEnabled(true);
+            executeButton->setEnabled(true);
+            deleteButton->setEnabled(true);
+            toolbarButton->setEnabled(true);
+            createButton->setEnabled(true);
+            editButton->setEnabled(true);
+            renameButton->setEnabled(true);
+            duplicateButton->setEnabled(true);
         }
         else {
-            ui->executeButton->setEnabled(false);
-            ui->deleteButton->setEnabled(false);
-            ui->toolbarButton->setEnabled(false);
-            ui->createButton->setEnabled(true);
-            ui->editButton->setEnabled(false);
-            ui->renameButton->setEnabled(false);
-            ui->duplicateButton->setEnabled(false);
+            executeButton->setEnabled(false);
+            deleteButton->setEnabled(false);
+            toolbarButton->setEnabled(false);
+            createButton->setEnabled(true);
+            editButton->setEnabled(false);
+            renameButton->setEnabled(false);
+            duplicateButton->setEnabled(false);
         }
     }
     else { //index==1 system-wide
-        item = ui->systemMacroListBox->currentItem();
+        item = systemMacroListBox->currentItem();
 
         if (item) {
-            ui->executeButton->setEnabled(true);
-            ui->deleteButton->setEnabled(false);
-            ui->toolbarButton->setEnabled(false);
-            ui->createButton->setEnabled(false);
-            ui->editButton->setEnabled(true); //but you can't save it
-            ui->renameButton->setEnabled(false);
-            ui->duplicateButton->setEnabled(false);
+            executeButton->setEnabled(true);
+            deleteButton->setEnabled(false);
+            toolbarButton->setEnabled(false);
+            createButton->setEnabled(false);
+            editButton->setEnabled(true); //but you can't save it
+            renameButton->setEnabled(false);
+            duplicateButton->setEnabled(false);
         }
         else {
-            ui->executeButton->setEnabled(false);
-            ui->deleteButton->setEnabled(false);
-            ui->toolbarButton->setEnabled(false);
-            ui->createButton->setEnabled(false);
-            ui->editButton->setEnabled(false);
-            ui->renameButton->setEnabled(false);
-            ui->duplicateButton->setEnabled(false);
+            executeButton->setEnabled(false);
+            deleteButton->setEnabled(false);
+            toolbarButton->setEnabled(false);
+            createButton->setEnabled(false);
+            editButton->setEnabled(false);
+            renameButton->setEnabled(false);
+            duplicateButton->setEnabled(false);
         }
     }
 
     if (item) {
-        ui->LineEditMacroName->setText(item->text(0));
+        LineEditMacroName->setText(item->text(0));
     }
     else {
-        ui->LineEditMacroName->clear();
+        LineEditMacroName->clear();
     }
 }
 
@@ -247,13 +243,13 @@ void DlgMacroExecuteImp::accept()
 {
     QTreeWidgetItem* item;
 
-    int index = ui->tabMacroWidget->currentIndex();
+    int index = tabMacroWidget->currentIndex();
     if (index == 0) { //user-specific
-        item = ui->userMacroListBox->currentItem();
+        item = userMacroListBox->currentItem();
     }
     else {
         //index == 1 system-wide
-        item = ui->systemMacroListBox->currentItem();
+        item = systemMacroListBox->currentItem();
     }
     if (!item)
         return;
@@ -274,7 +270,6 @@ void DlgMacroExecuteImp::accept()
 
     QFileInfo fi(dir, item->text(0));
     try {
-        getMainWindow()->appendRecentMacro(fi.filePath());
         Application::Instance->macroManager()->run(Gui::MacroManager::File, fi.filePath().toUtf8());
         // after macro run recalculate the document
         if (Application::Instance->activeDocument())
@@ -311,14 +306,14 @@ void DlgMacroExecuteImp::on_editButton_clicked()
     QDir dir;
     QTreeWidgetItem* item = 0;
 
-    int index = ui->tabMacroWidget->currentIndex();
+    int index = tabMacroWidget->currentIndex();
     if (index == 0) { //user-specific
-        item = ui->userMacroListBox->currentItem();
+        item = userMacroListBox->currentItem();
         dir.setPath(this->macroPath);
     }
     else {
         //index == 1 system-wide
-        item = ui->systemMacroListBox->currentItem();
+        item = systemMacroListBox->currentItem();
         dir.setPath(QString::fromUtf8(App::GetApplication().getHomePath()) + QString::fromUtf8("Macro"));
     }
 
@@ -331,11 +326,10 @@ void DlgMacroExecuteImp::on_editButton_clicked()
     PythonEditor* editor = new PythonEditor();
     editor->setWindowIcon(Gui::BitmapFactory().iconFromTheme("applications-python"));
     PythonEditorView* edit = new PythonEditorView(editor, getMainWindow());
-    edit->setDisplayName(PythonEditorView::FileName);
     edit->open(file);
     edit->resize(400, 300);
     getMainWindow()->addWindow(edit);
-    getMainWindow()->appendRecentMacro(file);
+    edit->setWindowTitle(item->text(0));
 
     if (mitem->systemWide) {
         editor->setReadOnly(true);
@@ -343,6 +337,7 @@ void DlgMacroExecuteImp::on_editButton_clicked()
         shownName = QString::fromLatin1("%1[*] - [%2]").arg(item->text(0), tr("Read-only"));
         edit->setWindowTitle(shownName);
     }
+
     close();
 }
 
@@ -351,7 +346,7 @@ void DlgMacroExecuteImp::on_createButton_clicked()
 {
     // query file name
     QString fn = QInputDialog::getText(this, tr("Macro file"), tr("Enter a file name, please:"),
-        QLineEdit::Normal, QString(), nullptr, Qt::MSWindowsFixedSizeDialogHint);
+        QLineEdit::Normal, QString::null, 0);
     if (!fn.isEmpty())
     {
         QString suffix = QFileInfo(fn).suffix().toLower();
@@ -381,7 +376,6 @@ void DlgMacroExecuteImp::on_createButton_clicked()
             editor->setWindowIcon(Gui::BitmapFactory().iconFromTheme("applications-python"));
             PythonEditorView* edit = new PythonEditorView(editor, getMainWindow());
             edit->open(fi.absoluteFilePath());
-            getMainWindow()->appendRecentMacro(fi.absoluteFilePath());
             edit->setWindowTitle(QString::fromLatin1("%1[*]").arg(fn));
             edit->resize(400, 300);
             getMainWindow()->addWindow(edit);
@@ -393,7 +387,7 @@ void DlgMacroExecuteImp::on_createButton_clicked()
 /** Deletes the selected macro file from your harddisc. */
 void DlgMacroExecuteImp::on_deleteButton_clicked()
 {
-    QTreeWidgetItem* item = ui->userMacroListBox->currentItem();
+    QTreeWidgetItem* item = userMacroListBox->currentItem();
     if (!item)
         return;
 
@@ -413,8 +407,8 @@ void DlgMacroExecuteImp::on_deleteButton_clicked()
     {
         QDir dir(this->macroPath);
         dir.remove(fn);
-        int index = ui->userMacroListBox->indexOfTopLevelItem(item);
-        ui->userMacroListBox->takeTopLevelItem(index);
+        int index = userMacroListBox->indexOfTopLevelItem(item);
+        userMacroListBox->takeTopLevelItem(index);
         delete item;
     }
 }
@@ -454,7 +448,7 @@ Note: your changes will be applied when you next switch workbenches\n"));
         }
     }
 
-    QTreeWidgetItem* item = ui->userMacroListBox->currentItem();
+    QTreeWidgetItem* item = userMacroListBox->currentItem();
     if (!item)
         return;
 
@@ -665,9 +659,9 @@ void DlgMacroExecuteImp::on_renameButton_clicked()
     QDir dir;
     QTreeWidgetItem* item = 0;
 
-    int index = ui->tabMacroWidget->currentIndex();
+    int index = tabMacroWidget->currentIndex();
     if (index == 0) { //user-specific
-        item = ui->userMacroListBox->currentItem();
+        item = userMacroListBox->currentItem();
         dir.setPath(this->macroPath);
     }
 
@@ -680,7 +674,7 @@ void DlgMacroExecuteImp::on_renameButton_clicked()
 
     // query new name
     QString fn = QInputDialog::getText(this, tr("Renaming Macro File"),
-        tr("Enter new name:"), QLineEdit::Normal, oldName, nullptr, Qt::MSWindowsFixedSizeDialogHint);
+        tr("Enter new name:"), QLineEdit::Normal, oldName, 0);
     if (!fn.isEmpty() && fn != oldName) {
         QString suffix = QFileInfo(fn).suffix().toLower();
         if (suffix != QLatin1String("fcmacro") && suffix != QLatin1String("py"))
@@ -698,7 +692,7 @@ void DlgMacroExecuteImp::on_renameButton_clicked()
         else {
             // keep the item selected although it's not necessarily in alphabetic order
             item->setText(0, fn);
-            ui->LineEditMacroName->setText(fn);
+            LineEditMacroName->setText(fn);
         }
     }
 }
@@ -714,9 +708,9 @@ void DlgMacroExecuteImp::on_duplicateButton_clicked()
     QDir dir;
     QTreeWidgetItem* item = 0;
 
-    int index = ui->tabMacroWidget->currentIndex();
+    int index = tabMacroWidget->currentIndex();
     if (index == 0) { //user-specific
-        item = ui->userMacroListBox->currentItem();
+        item = userMacroListBox->currentItem();
         dir.setPath(this->macroPath);
     }
 
@@ -767,8 +761,7 @@ void DlgMacroExecuteImp::on_duplicateButton_clicked()
 
     // give user a chance to pick a different name from digitized name suggested
     QString fn = QInputDialog::getText(this, tr("Duplicate Macro"),
-        tr("Enter new name:"), QLineEdit::Normal, oldNameDigitized, 
-        nullptr, Qt::MSWindowsFixedSizeDialogHint);
+        tr("Enter new name:"), QLineEdit::Normal, oldNameDigitized, 0);
     if (!fn.isEmpty() && fn != oldName) {
         QString suffix = QFileInfo(fn).suffix().toLower();
         if (suffix != QLatin1String("fcmacro") && suffix != QLatin1String("py")){

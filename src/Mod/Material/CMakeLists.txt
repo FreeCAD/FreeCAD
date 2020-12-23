@@ -45,7 +45,7 @@ SET (FluidMaterial_Files
     FluidMaterial/None.FCMat
     FluidMaterial/Air.FCMat
     FluidMaterial/Water.FCMat
-    FluidMaterial/Readme.md
+    FluidMaterial/Readme.txt
 )
 SOURCE_GROUP("MatLib" FILES ${FluidMaterial_Files})
 

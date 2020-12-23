@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>356</width>
+    <width>277</width>
     <height>467</height>
    </rect>
   </property>
@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Boundaries</string>
+   <string>Filling</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
@@ -25,7 +25,7 @@
      <item>
       <widget class="QPushButton" name="buttonInitFace">
        <property name="text">
-        <string>Support surface</string>
+        <string>Initial Face</string>
        </property>
       </widget>
      </item>
@@ -38,26 +38,16 @@
      </item>
     </layout>
    </item>
-   <item row="2" column="0">
+   <item row="1" column="0">
     <widget class="QGroupBox" name="groupBox">
-     <property name="toolTip">
-      <string>Add the edges that will limit the surface.</string>
-     </property>
      <property name="title">
-      <string>Boundary edges</string>
+      <string>Boundary</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="1" column="0" colspan="3">
-       <widget class="QListWidget" name="listBoundary">
-        <property name="toolTip">
-         <string>Drag the items to reorder the list</string>
-        </property>
-        <property name="dragDropMode">
-         <enum>QAbstractItemView::InternalMove</enum>
-        </property>
-       </widget>
+       <widget class="QListWidget" name="listBoundary"/>
       </item>
-      <item row="4" column="0">
+      <item row="3" column="0">
        <widget class="QLabel" name="label">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
@@ -70,14 +60,14 @@
         </property>
        </widget>
       </item>
-      <item row="4" column="1" colspan="2">
+      <item row="3" column="1" colspan="2">
        <widget class="QComboBox" name="comboBoxFaces">
         <property name="enabled">
          <bool>false</bool>
         </property>
        </widget>
       </item>
-      <item row="5" column="0">
+      <item row="4" column="0">
        <widget class="QLabel" name="label_2">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
@@ -90,14 +80,14 @@
         </property>
        </widget>
       </item>
-      <item row="5" column="1" colspan="2">
+      <item row="4" column="1" colspan="2">
        <widget class="QComboBox" name="comboBoxCont">
         <property name="enabled">
          <bool>false</bool>
         </property>
        </widget>
       </item>
-      <item row="6" column="0">
+      <item row="5" column="0">
        <spacer name="horizontalSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -113,7 +103,7 @@
         </property>
        </spacer>
       </item>
-      <item row="6" column="1">
+      <item row="5" column="1">
        <widget class="QPushButton" name="buttonAccept">
         <property name="enabled">
          <bool>false</bool>
@@ -123,7 +113,7 @@
         </property>
        </widget>
       </item>
-      <item row="6" column="2">
+      <item row="5" column="2">
        <widget class="QPushButton" name="buttonIgnore">
         <property name="enabled">
          <bool>false</bool>
@@ -170,19 +160,6 @@
        </layout>
       </item>
       <item row="2" column="0" colspan="3">
-       <widget class="QLabel" name="label_3">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Drag the items to reorder the list.</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0" colspan="3">
        <widget class="QLabel" name="statusLabel">
         <property name="text">
          <string notr="true">Status messages</string>

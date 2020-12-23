@@ -1,4 +1,3 @@
-#**************************************************************************
 #   Copyright (c) 2018 Werner Mayer <wmayer[at]users.sourceforge.net>     *
 #                                                                         *
 #   This file is part of the FreeCAD CAx development system.              *

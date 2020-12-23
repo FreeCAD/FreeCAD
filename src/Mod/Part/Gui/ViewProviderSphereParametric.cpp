@@ -34,11 +34,11 @@ using namespace PartGui;
 //**************************************************************************
 // Construction/Destruction
 
-PROPERTY_SOURCE(PartGui::ViewProviderSphereParametric, PartGui::ViewProviderPrimitive)
+PROPERTY_SOURCE(PartGui::ViewProviderSphereParametric, PartGui::ViewProviderPart)
 
 ViewProviderSphereParametric::ViewProviderSphereParametric()
 {
-  sPixmap = "Part_Sphere_Parametric";
+  sPixmap = "Tree_Part_Sphere_Parametric.svg";
 }
 
 ViewProviderSphereParametric::~ViewProviderSphereParametric()
@@ -61,11 +61,11 @@ std::vector<std::string> ViewProviderSphereParametric::getDisplayModes(void) con
 
 // ----------------------------------------------------------------------------
 
-PROPERTY_SOURCE(PartGui::ViewProviderEllipsoid, PartGui::ViewProviderPrimitive)
+PROPERTY_SOURCE(PartGui::ViewProviderEllipsoid, PartGui::ViewProviderPart)
 
 ViewProviderEllipsoid::ViewProviderEllipsoid()
 {
-    sPixmap = "Part_Ellipsoid_Parametric";
+    sPixmap = "Tree_Part_Ellipsoid_Parametric.svg";
 }
 
 ViewProviderEllipsoid::~ViewProviderEllipsoid()

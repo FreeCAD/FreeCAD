@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="eu" sourcelanguage="en">
+<TS version="2.0" language="eu" sourcelanguage="en">
   <context>
     <name>BoundarySelector</name>
     <message>
@@ -12,11 +12,6 @@
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="130"/>
       <source>To add references select them in the 3D view and then click "Add".</source>
       <translation>Erreferentziak gehitzeko, hautatu horiek 3D bistan eta, ondoren, sakatu 'Gehitu'.</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="133"/>
-      <source>To add references: select them in the 3D view  and click "Add".</source>
-      <translation>Erreferentziak gehitzeko, hautatu horiek 3D bistan eta sakatu "Gehitu".</translation>
     </message>
   </context>
   <context>
@@ -65,65 +60,6 @@
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="315"/>
       <source>Abort</source>
       <translation>Abortatu</translation>
-    </message>
-  </context>
-  <context>
-    <name>GeometryElementsSelection</name>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
-      <source>Geometry reference selector for a </source>
-      <translation>Geometria-erreferentziaren hautatzailea honetarako:</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
-      <source>Add</source>
-      <translation>Gehitu</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="255"/>
-      <source>Click on "Add" and select geometric elements to add them to the list. If no geometry is added to the list, all remaining ones are used. The following geometry elements are allowed to select: </source>
-      <translation>Sakatu "Gehitu" eta hautatu elementu geometrikoak, haiek zerrendari gehitzeko. Zerrendari geometriarik gehitzen ez bazaio, geratzen diren guztiak erabiliko dira. Honako geometria-elementuak hauta daitezke: </translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>
-      <source>Selection mode</source>
-      <translation>Hautapen modua</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
-      <source>Solid</source>
-      <translation>Solidoa</translation>
-    </message>
-  </context>
-  <context>
-    <name>SolidSelector</name>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="147"/>
-      <source>Select Solids</source>
-      <translation>Hautatu solidoak</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="148"/>
-      <source>Select elements part of the solid that shall be added to the list. To than add the solid click "Add".</source>
-      <translation>Hautatu zerrendari gehi dakizkiokeen elementu-zatiak solidoan. Ondoren, solidoa gehitzeko, sakatu 'Gehitu'.</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="152"/>
-      <source>Select elements part of the solid that shall be added to the list. To add the solid click "Add".</source>
-      <translation>Hautatu zerrendari gehi dakizkiokeen elementu-zatiak solidoan. Solidoa gehitzeko, sakatu 'Gehitu'.</translation>
-    </message>
-  </context>
-  <context>
-    <name>_Selector</name>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="49"/>
-      <source>Add</source>
-      <translation>Gehitu</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
-      <source>Remove</source>
-      <translation>Kendu</translation>
     </message>
   </context>
   <context>
@@ -336,24 +272,34 @@
       <source>Fluxsolver heat</source>
       <translation>Fluxua ebaztearen beroa</translation>
     </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="530"/>
+      <source>Fluxsolver heat</source>
+      <translation>Fluxua ebaztearen beroa</translation>
+    </message>
   </context>
   <context>
     <name>FEM_FEMMesh2Mesh</name>
     <message>
       <location filename="_CommandFemMesh2Mesh.py" line="42"/>
       <source>FEM mesh to mesh</source>
-      <translation>FEM amaraunetik amaraunera</translation>
+      <translation>FEM saretik sarera</translation>
     </message>
     <message>
       <location filename="_CommandFemMesh2Mesh.py" line="43"/>
       <source>Convert the surface of a FEM mesh to a mesh</source>
-      <translation>Bihurtu amaraun FEM amaraun baten gainazala</translation>
+      <translation>Bihurtu sare FEM sare baten gainazala</translation>
     </message>
   </context>
   <context>
     <name>FEM_MaterialFluid</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="397"/>
+      <source>Material for fluid</source>
+      <translation>Materiala jariakinerako</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="582"/>
       <source>Material for fluid</source>
       <translation>Materiala jariakinerako</translation>
     </message>
@@ -380,19 +326,29 @@
       <source>Creates a nonlinear mechanical material</source>
       <translation>Material mekaniko ez-lineal bat sortzen du</translation>
     </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="618"/>
+      <source>Creates a nonlinear mechanical material</source>
+      <translation>Material mekaniko ez-lineal bat sortzen du</translation>
+    </message>
   </context>
   <context>
     <name>FEM_MaterialReinforced</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="674"/>
       <source>Reinforced material (concrete)</source>
-      <translation>Indartutako materiala (hormigoia)</translation>
+      <translation type="unfinished">Reinforced material (concrete)</translation>
     </message>
   </context>
   <context>
     <name>FEM_MaterialSolid</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="452"/>
+      <source>Material for solid</source>
+      <translation>Materiala solidorako</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="705"/>
       <source>Material for solid</source>
       <translation>Materiala solidorako</translation>
     </message>
@@ -407,12 +363,12 @@
     <message>
       <location filename="_CommandFemMeshBoundaryLayer.py" line="41"/>
       <source>FEM mesh boundary layer</source>
-      <translation>FEM amaraunaren muga-geruza</translation>
+      <translation>FEM sarearen muga-geruza</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshBoundaryLayer.py" line="43"/>
       <source>Creates a FEM mesh boundary layer</source>
-      <translation>FEM amaraunaren muga-geruza sortzen du</translation>
+      <translation>FEM sarearen muga-geruza sortzen du</translation>
     </message>
   </context>
   <context>
@@ -420,12 +376,12 @@
     <message>
       <location filename="_CommandFemMeshClear.py" line="41"/>
       <source>Clear FEM mesh</source>
-      <translation>Garbitu FEM amarauna</translation>
+      <translation>Garbitu FEM sarea</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshClear.py" line="43"/>
       <source>Clear the Mesh of a FEM mesh object</source>
-      <translation>Garbitu FEM amaraun-objektu baten amarauna</translation>
+      <translation>Garbitu FEM sare-objektu baten sarea</translation>
     </message>
   </context>
   <context>
@@ -433,7 +389,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="538"/>
       <source>Display FEM mesh info</source>
-      <translation>Bistaratu FEM amaraunaren informazioa</translation>
+      <translation>Bistaratu FEM sarearen informazioa</translation>
     </message>
   </context>
   <context>
@@ -441,22 +397,22 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="556"/>
       <source>FEM mesh from shape by Gmsh</source>
-      <translation>FEM amarauna formatik, Gmsh bidez</translation>
+      <translation>FEM sarea formatik, Gmsh bidez</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="557"/>
       <source>Create a FEM mesh from a shape by Gmsh mesher</source>
-      <translation>Sortu FEM amaraun bat forma batetik abiatuz, Gmsh amaraun-sortzailea erabiliz</translation>
+      <translation>Sortu FEM sare bat forma batetik abiatuz, Gmsh sare-sortzailea erabiliz</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshGmshFromShape.py" line="42"/>
       <source>FEM mesh from shape by GMSH</source>
-      <translation>FEM amarauna formatik, GMSH bidez</translation>
+      <translation>FEM sarea formatik, GMSH bidez</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshGmshFromShape.py" line="43"/>
       <source>Create a FEM mesh from a shape by GMSH mesher</source>
-      <translation>Sortu FEM amaraun bat forma batetik abiatuz, GMSH amaraun-sortzailea erabiliz</translation>
+      <translation>Sortu FEM sare bat forma batetik abiatuz, GMSH sare-sortzailea erabiliz</translation>
     </message>
   </context>
   <context>
@@ -464,12 +420,12 @@
     <message>
       <location filename="_CommandFemMeshGroup.py" line="41"/>
       <source>FEM mesh group</source>
-      <translation>FEM amaraun-taldea</translation>
+      <translation>FEM sare-taldea</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshGroup.py" line="43"/>
       <source>Creates a FEM mesh group</source>
-      <translation>FEM amaraun-talde bat sortzen du</translation>
+      <translation>FEM sare-talde bat sortzen du</translation>
     </message>
   </context>
   <context>
@@ -477,7 +433,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="603"/>
       <source>FEM mesh from shape by Netgen</source>
-      <translation>FEM amarauna formatik, Netgen bidez</translation>
+      <translation>FEM sarea formatik, Netgen bidez</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="957"/>
+      <source>FEM mesh from shape by Netgen</source>
+      <translation>FEM sarea formatik, Netgen bidez</translation>
     </message>
   </context>
   <context>
@@ -485,12 +446,12 @@
     <message>
       <location filename="_CommandFemMeshRegion.py" line="41"/>
       <source>FEM mesh region</source>
-      <translation>FEM amaraun-eskualdea</translation>
+      <translation>FEM sare-eskualdea</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshRegion.py" line="43"/>
       <source>Creates a FEM mesh region</source>
-      <translation>FEM amaraun-eskualde bat sortzen du</translation>
+      <translation>FEM sare-eskualde bat sortzen du</translation>
     </message>
   </context>
   <context>
@@ -575,6 +536,11 @@
       <source>Solver Elmer</source>
       <translation>Elmer ebazlea</translation>
     </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="1174"/>
+      <source>Solver Elmer</source>
+      <translation>Elmer ebazlea</translation>
+    </message>
   </context>
   <context>
     <name>FEM_SolverRun</name>
@@ -616,6 +582,34 @@
     </message>
   </context>
   <context>
+    <name>GeometryElementsSelection</name>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
+      <source>Geometry reference selector for a </source>
+      <translation>Geometria-erreferentziaren hautatzailea honetarako:</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
+      <source>Add</source>
+      <translation>Gehitu</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="255"/>
+      <source>Click on "Add" and select geometric elements to add them to the list. If no geometry is added to the list, all remaining ones are used. The following geometry elements are allowed to select: </source>
+      <translation>Sakatu "Gehitu" eta hautatu elementu geometrikoak, haiek zerrendari gehitzeko. Zerrendari geometriarik gehitzen ez bazaio, geratzen diren guztiak erabiliko dira. Honako geometria-elementuak hauta daitezke: </translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>
+      <source>Selection mode</source>
+      <translation>Hautapen modua</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
+      <source>Solid</source>
+      <translation>Solidoa</translation>
+    </message>
+  </context>
+  <context>
     <name>Material_Editor</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="382"/>
@@ -629,16 +623,47 @@
     </message>
   </context>
   <context>
+    <name>SolidSelector</name>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="147"/>
+      <source>Select Solids</source>
+      <translation>Hautatu solidoak</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="148"/>
+      <source>Select elements part of the solid that shall be added to the list. To than add the solid click "Add".</source>
+      <translation>Hautatu zerrendari gehi dakizkiokeen elementu-zatiak solidoan. Ondoren, solidoa gehitzeko, sakatu 'Gehitu'.</translation>
+    </message>
+  </context>
+  <context>
+    <name>_Selector</name>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="49"/>
+      <source>Add</source>
+      <translation>Gehitu</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
+      <source>Remove</source>
+      <translation>Kendu</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
+      <source>Remove</source>
+      <translation>Kendu</translation>
+    </message>
+  </context>
+  <context>
     <name>FEM_MeshFromShape</name>
     <message>
       <location filename="_CommandFemMeshNetgenFromShape.py" line="42"/>
       <source>FEM mesh from shape by Netgen</source>
-      <translation>FEM amarauna formatik, Netgen bidez</translation>
+      <translation>FEM sarea formatik, Netgen bidez</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshNetgenFromShape.py" line="43"/>
       <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation>Sortu FEM bolumen-amaraun bat solido batetik edo aurpegi-forma batetik, Netgen barneko amaraun-sortzailea erabiliz</translation>
+      <translation>Sortu FEM bolumen-sare bat solido batetik edo aurpegi-forma batetik, Netgen barneko sare-sortzailea erabiliz</translation>
     </message>
   </context>
   <context>
@@ -646,7 +671,7 @@
     <message>
       <location filename="_CommandFemMeshPrintInfo.py" line="43"/>
       <source>Print FEM mesh info</source>
-      <translation>Inprimatu FEM amaraun-informazioa</translation>
+      <translation>Inprimatu FEM sare-informazioa</translation>
     </message>
   </context>
   <context>
@@ -739,12 +764,12 @@
     <message>
       <location filename="_CommandClearMesh.py" line="41"/>
       <source>Clear FEM mesh</source>
-      <translation>Garbitu FEM amarauna</translation>
+      <translation>Garbitu FEM sarea</translation>
     </message>
     <message>
       <location filename="_CommandClearMesh.py" line="43"/>
       <source>Clear the Mesh of a FEM mesh object</source>
-      <translation>Garbitu FEM amaraun-objektu baten amarauna</translation>
+      <translation>Garbitu FEM sare-objektu baten sarea</translation>
     </message>
   </context>
   <context>
@@ -778,12 +803,12 @@
     <message>
       <location filename="_CommandFEMMesh2Mesh.py" line="42"/>
       <source>FEM mesh to mesh</source>
-      <translation>FEM amaraunetik amaraunera</translation>
+      <translation>FEM saretik sarera</translation>
     </message>
     <message>
       <location filename="_CommandFEMMesh2Mesh.py" line="43"/>
       <source>Convert the surface of a FEM mesh to a mesh</source>
-      <translation>Bihurtu amaraun FEM amaraun baten gainazala</translation>
+      <translation>Bihurtu sare FEM sare baten gainazala</translation>
     </message>
   </context>
   <context>
@@ -827,12 +852,12 @@
     <message>
       <location filename="_CommandMeshNetgenFromShape.py" line="41"/>
       <source>FEM mesh from shape by Netgen</source>
-      <translation>FEM amarauna formatik, Netgen bidez</translation>
+      <translation>FEM sarea formatik, Netgen bidez</translation>
     </message>
     <message>
       <location filename="_CommandMeshNetgenFromShape.py" line="42"/>
       <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation>Sortu FEM bolumen-amaraun bat solido batetik edo aurpegi-forma batetik, Netgen barneko amaraun-sortzailea erabiliz</translation>
+      <translation>Sortu FEM bolumen-sare bat solido batetik edo aurpegi-forma batetik, Netgen barneko sare-sortzailea erabiliz</translation>
     </message>
   </context>
   <context>
@@ -840,12 +865,12 @@
     <message>
       <location filename="_CommandMeshGmshFromShape.py" line="42"/>
       <source>FEM mesh from shape by GMSH</source>
-      <translation>FEM amarauna formatik, GMSH bidez</translation>
+      <translation>FEM sarea formatik, GMSH bidez</translation>
     </message>
     <message>
       <location filename="_CommandMeshGmshFromShape.py" line="43"/>
       <source>Create a FEM mesh from a shape by GMSH mesher</source>
-      <translation>Sortu FEM amaraun bat forma batetik abiatuz, GMSH amaraun-sortzailea erabiliz</translation>
+      <translation>Sortu FEM sare bat forma batetik abiatuz, GMSH sare-sortzailea erabiliz</translation>
     </message>
   </context>
   <context>
@@ -853,12 +878,12 @@
     <message>
       <location filename="_CommandMeshRegion.py" line="41"/>
       <source>FEM mesh region</source>
-      <translation>FEM amaraun-eskualdea</translation>
+      <translation>FEM sare-eskualdea</translation>
     </message>
     <message>
       <location filename="_CommandMeshRegion.py" line="43"/>
       <source>Creates a FEM mesh region</source>
-      <translation>FEM amaraun-eskualde bat sortzen du</translation>
+      <translation>FEM sare-eskualde bat sortzen du</translation>
     </message>
   </context>
   <context>
@@ -866,7 +891,7 @@
     <message>
       <location filename="_CommandPrintMeshInfo.py" line="44"/>
       <source>Print FEM mesh info</source>
-      <translation>Inprimatu FEM amaraun-informazioa</translation>
+      <translation>Inprimatu FEM sare-informazioa</translation>
     </message>
   </context>
   <context>
@@ -982,12 +1007,12 @@
     <message>
       <location filename="_CommandFemFromShape.py" line="39"/>
       <source>Create FEM mesh</source>
-      <translation>Sortu FEM amarauna</translation>
+      <translation>Sortu FEM sarea</translation>
     </message>
     <message>
       <location filename="_CommandFemFromShape.py" line="40"/>
       <source>Create FEM mesh from shape</source>
-      <translation>Sortu FEM amarauna formatik</translation>
+      <translation>Sortu FEM sarea formatik</translation>
     </message>
   </context>
   <context>
@@ -1243,7 +1268,7 @@
     <message>
       <location filename="../../Command.cpp" line="750"/>
       <source>Select a single FEM mesh or nodes set, please.</source>
-      <translation>Hautatu FEM amaraun bakar bat edo nodoen multzo bat.</translation>
+      <translation>Hautatu FEM sare bakar bat edo nodoen multzo bat.</translation>
     </message>
   </context>
   <context>
@@ -1479,12 +1504,12 @@
     <message>
       <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="75"/>
       <source>Edit FEM mesh</source>
-      <translation>Editatu FEM amarauna</translation>
+      <translation>Editatu FEM sarea</translation>
     </message>
     <message>
       <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="106"/>
       <source>Meshing failure</source>
-      <translation>Hutsegitea amarauna sortzean</translation>
+      <translation>Saretze-hutsegitea</translation>
     </message>
   </context>
   <context>
@@ -1745,12 +1770,12 @@
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="76"/>
       <source>Meshing failure</source>
-      <translation>Hutsegitea amarauna sortzean</translation>
+      <translation>Saretze-hutsegitea</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="77"/>
       <source>The FEM module is built without NETGEN support. Meshing will not work!!!</source>
-      <translation>FEM modulua NETGEN euskarririk gabe sortu da. Amaraunek ez dute funtzionatuko!!!</translation>
+      <translation>FEM modulua NETGEN euskarririk gabe sortu da. Sareek ez dute funtzionatuko!!!</translation>
     </message>
   </context>
   <context>
@@ -1961,7 +1986,7 @@
       <location filename="../../Command.cpp" line="177"/>
       <location filename="../../Command.cpp" line="240"/>
       <source>Your FreeCAD is build without NETGEN support. Meshing will not work....</source>
-      <translation>Zure FreeCAD bertsioa NETGEN euskarririk gabe sortu da. Amaraunek ez dute funtzionatuko...</translation>
+      <translation>Zure FreeCAD bertsioa NETGEN euskarririk gabe sortu da. Sareek ez dute funtzionatuko...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="123"/>
@@ -2017,7 +2042,7 @@
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="62"/>
       <source>Meshing</source>
-      <translation>Amarauna sortzea</translation>
+      <translation>Saretzea</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="343"/>
@@ -2124,7 +2149,7 @@
     <message>
       <location filename="../../TaskAnalysisInfo.ui" line="32"/>
       <source>Meshes:</source>
-      <translation>Amaraunak:</translation>
+      <translation>Sareak:</translation>
     </message>
     <message>
       <location filename="../../TaskAnalysisInfo.ui" line="48"/>

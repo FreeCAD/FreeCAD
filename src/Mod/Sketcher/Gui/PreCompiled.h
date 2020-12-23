@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -67,7 +67,7 @@
 
 // Boost
 #include <boost/math/special_functions/fpclassify.hpp>
-#include <boost/bind/bind.hpp>
+#include <boost/bind.hpp>
 #include <boost/scoped_ptr.hpp>
 
 #ifdef FC_OS_WIN32
@@ -76,7 +76,7 @@
 #endif
 
 // OCC
-#include <Standard_Version.hxx>
+#include <TopoDS_Shape.hxx>
 #include <GC_MakeEllipse.hxx>
 #include <BRep_Tool.hxx>
 #include <gp_Pnt.hxx>
@@ -87,7 +87,6 @@
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
-#include <TopoDS_Shape.hxx>
 #include <TopoDS_Vertex.hxx>
 
 // Qt Toolkit

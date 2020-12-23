@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Riegel         <juergen.riegel@web.de>                  *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -54,7 +54,7 @@ using namespace std;
 // ---------------------------------------------------------------------------
 //  StdInputStream: Constructors and Destructor
 // ---------------------------------------------------------------------------
-StdInputStream::StdInputStream( std::istream& Stream, XERCES_CPP_NAMESPACE_QUALIFIER MemoryManager* const manager )
+StdInputStream::StdInputStream( std::istream& Stream, XERCES_CPP_NAMESPACE_QUALIFIER MemoryManager* const manager ) 
   : stream(Stream), fMemoryManager(manager)
 {
     state.flags |= QTextCodec::IgnoreHeader;
@@ -82,7 +82,7 @@ unsigned int StdInputStream::readBytes( XMLByte* const  toFill, const unsigned i
   //  Read up to the maximum bytes requested. We return the number
   //  actually read.
   //
-
+  
   stream.read((char *)toFill,maxToRead);
   XMLSize_t len = stream.gcount();
 
@@ -116,7 +116,7 @@ XMLSize_t StdInputStream::readBytes( XMLByte* const  toFill, const XMLSize_t max
   //  Read up to the maximum bytes requested. We return the number
   //  actually read.
   //
-
+  
   stream.read((char *)toFill,maxToRead);
   XMLSize_t len = stream.gcount();
 

@@ -28,7 +28,6 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 #include "AreaOrderer.h"
-#include <memory>
 #include "Area.h"
 
 using namespace std;
@@ -133,7 +132,7 @@ void CInnerCurves::Unite(shared_ptr<CInnerCurves> c)
 		else
 		{
 			if(curve.IsClockwise())curve.Reverse();
-			Insert(std::make_shared<CCurve>(curve));
+			Insert(shared_ptr<CCurve>(new CCurve(curve)));
 		}
 	}
 }

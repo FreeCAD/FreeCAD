@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2019 Wandererfan <wandererfan@gmail.com                 *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -46,13 +46,10 @@
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
-#include <Mod/TechDraw/App/ArrowPropEnum.h>
-//#include <Mod/TechDraw/App/Preferences.h>
 
 #include <Mod/TechDraw/Gui/ui_TaskLeaderLine.h>
 
 #include "DrawGuiStd.h"
-#include "PreferencesGui.h"
 #include "QGVPage.h"
 #include "QGIView.h"
 #include "QGIPrimPath.h"
@@ -73,76 +70,45 @@ using namespace TechDrawGui;
 //ctor for edit
 TaskLeaderLine::TaskLeaderLine(TechDrawGui::ViewProviderLeader* leadVP) :
     ui(new Ui_TaskLeaderLine),
-    blockUpdate(false),
     m_tracker(nullptr),
-    m_mdi(nullptr),
-    m_scene(nullptr),
-    m_view(nullptr),
     m_lineVP(leadVP),
     m_baseFeat(nullptr),
     m_basePage(nullptr),
     m_lineFeat(nullptr),
-    m_qgParent(nullptr),
     m_createMode(false),
     m_leadLine(nullptr),
-    m_trackerMode(QGTracker::None),
-    m_saveContextPolicy(Qt::DefaultContextMenu),
     m_inProgressLock(false),
     m_qgLine(nullptr),
-    m_btnOK(nullptr),
-    m_btnCancel(nullptr),
-    m_pbTrackerState(TRACKEREDIT),
-    m_saveX(0.0),
-    m_saveY(0.0),
-    m_haveMdi(false)
+    m_pbTrackerState(TRACKEREDIT)
 {
     if (m_lineVP == nullptr)  {
         //should be caught in CMD caller
         Base::Console().Error("TaskLeaderLine - bad parameters.  Can not proceed.\n");
         return;
     }
-
+    ui->setupUi(this);
+    
     m_lineFeat = m_lineVP->getFeature();
 
-    m_basePage = m_lineFeat->findParentPage();
-    if ( m_basePage == nullptr ) {
-        Base::Console().Error("TaskRichAnno - bad parameters (2).  Can not proceed.\n");
-        return;
-    }
     App::DocumentObject* obj = m_lineFeat->LeaderParent.getValue();
-    if (obj != nullptr) {
-        if (obj->isDerivedFrom(TechDraw::DrawView::getClassTypeId()) )  {
-            m_baseFeat = static_cast<TechDraw::DrawView*>(m_lineFeat->LeaderParent.getValue());
-        }
+    if ( obj->isDerivedFrom(TechDraw::DrawView::getClassTypeId()) )  {
+        m_baseFeat = static_cast<TechDraw::DrawView*>(m_lineFeat->LeaderParent.getValue());
     }
-
-    Gui::Document* activeGui = Gui::Application::Instance->getDocument(m_basePage->getDocument());
-    Gui::ViewProvider* vp = activeGui->getViewProvider(m_basePage);
-    ViewProviderPage* vpp = static_cast<ViewProviderPage*>(vp);
-
-    m_qgParent = nullptr;
-    m_haveMdi = true;
-    m_mdi = vpp->getMDIViewPage();
-    if (m_mdi != nullptr) {
-        m_scene = m_mdi->m_scene;
-        m_view = m_mdi->getQGVPage();
-        if (m_baseFeat != nullptr) {
-            m_qgParent = m_view->findQViewForDocObj(m_baseFeat);
-        }
-    } else {
-        m_haveMdi = false;
-    }
+    m_basePage = m_lineFeat->findParentPage();
 
     //TODO: when/if leaders are allowed to be parented to Page, check for m_baseFeat will be removed
-    if ( (m_baseFeat == nullptr) ||
+    if ( (m_lineFeat == nullptr) ||
+         (m_baseFeat == nullptr) ||
          (m_basePage == nullptr) ) {
         Base::Console().Error("TaskLeaderLine - bad parameters (2).  Can not proceed.\n");
         return;
     }
 
-    ui->setupUi(this);
-
     setUiEdit();
+
+    m_mdi = m_lineVP->getMDIViewPage();
+    m_scene = m_mdi->m_scene;
+    m_view = m_mdi->getQGVPage();
 
     m_attachPoint = Rez::guiX(Base::Vector3d(m_lineFeat->X.getValue(),
                                             -m_lineFeat->Y.getValue(),
@@ -157,37 +123,23 @@ TaskLeaderLine::TaskLeaderLine(TechDrawGui::ViewProviderLeader* leadVP) :
     saveState();
 
     m_trackerMode = QGTracker::TrackerMode::Line;
-    if (m_haveMdi) {
-        m_saveContextPolicy = m_mdi->contextMenuPolicy();
-    }
+    m_saveContextPolicy = m_mdi->contextMenuPolicy();
 }
 
 //ctor for creation
 TaskLeaderLine::TaskLeaderLine(TechDraw::DrawView* baseFeat,
                                TechDraw::DrawPage* page) :
     ui(new Ui_TaskLeaderLine),
-    blockUpdate(false),
     m_tracker(nullptr),
-    m_mdi(nullptr),
-    m_scene(nullptr),
-    m_view(nullptr),
     m_lineVP(nullptr),
     m_baseFeat(baseFeat),
     m_basePage(page),
     m_lineFeat(nullptr),
-    m_qgParent(nullptr),
     m_createMode(true),
     m_leadLine(nullptr),
-    m_trackerMode(QGTracker::None),
-    m_saveContextPolicy(Qt::DefaultContextMenu),
     m_inProgressLock(false),
     m_qgLine(nullptr),
-    m_btnOK(nullptr),
-    m_btnCancel(nullptr),
-    m_pbTrackerState(TRACKERPICK),
-    m_saveX(0.0),
-    m_saveY(0.0),
-    m_haveMdi(false)
+    m_pbTrackerState(TRACKERPICK)
 {
     if ( (m_basePage == nullptr) ||
          (m_baseFeat == nullptr) )  {
@@ -196,28 +148,17 @@ TaskLeaderLine::TaskLeaderLine(TechDraw::DrawView* baseFeat,
         return;
     }
 
+    ui->setupUi(this);
+
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(m_basePage->getDocument());
     Gui::ViewProvider* vp = activeGui->getViewProvider(m_basePage);
     ViewProviderPage* vpp = static_cast<ViewProviderPage*>(vp);
-//    vpp->show();
-
-    m_qgParent = nullptr;
-    m_haveMdi = true;
     m_mdi = vpp->getMDIViewPage();
-    if (m_mdi != nullptr) {
-        m_scene = m_mdi->m_scene;
-        m_view = m_mdi->getQGVPage();
-        if (baseFeat != nullptr) {
-            m_qgParent = m_view->findQViewForDocObj(baseFeat);
-        }
-    } else {
-        m_haveMdi = false;
-    }
-
-    ui->setupUi(this);
+    m_scene = m_mdi->m_scene;
+    m_view = m_mdi->getQGVPage();
 
     setUiPrimary();
-
+    
     connect(ui->pbTracker, SIGNAL(clicked(bool)),
             this, SLOT(onTrackerClicked(bool)));
     connect(ui->pbCancelEdit, SIGNAL(clicked(bool)),
@@ -225,9 +166,7 @@ TaskLeaderLine::TaskLeaderLine(TechDraw::DrawView* baseFeat,
     ui->pbCancelEdit->setEnabled(false);
 
     m_trackerMode = QGTracker::TrackerMode::Line;
-    if (m_haveMdi) {
-        m_saveContextPolicy = m_mdi->contextMenuPolicy();
-    }
+    m_saveContextPolicy = m_mdi->contextMenuPolicy();
 
 }
 
@@ -271,39 +210,20 @@ void TaskLeaderLine::changeEvent(QEvent *e)
 void TaskLeaderLine::setUiPrimary()
 {
 //    Base::Console().Message("TTL::setUiPrimary()\n");
-    enableVPUi(true);
+    enableVPUi(false);
     setWindowTitle(QObject::tr("New Leader Line"));
 
     if (m_baseFeat != nullptr) {
         std::string baseName = m_baseFeat->getNameInDocument();
-        ui->tbBaseView->setText(Base::Tools::fromStdString(baseName));
+        ui->leBaseView->setText(Base::Tools::fromStdString(baseName));
     }
-
     ui->pbTracker->setText(QString::fromUtf8("Pick points"));
-    if (m_haveMdi) {
-        ui->pbTracker->setEnabled(true);
-        ui->pbCancelEdit->setEnabled(true);
-    } else {
-        ui->pbTracker->setEnabled(false);
-        ui->pbCancelEdit->setEnabled(false);
-    }
-
-    DrawGuiUtil::loadArrowBox(ui->cboxStartSym);
-    int aStyle = getPrefArrowStyle();
-    ui->cboxStartSym->setCurrentIndex(aStyle);
-
-    DrawGuiUtil::loadArrowBox(ui->cboxEndSym);
-    ui->cboxEndSym->setCurrentIndex(TechDraw::ArrowType::NONE);
-
-    ui->dsbWeight->setUnit(Base::Unit::Length);
-    ui->dsbWeight->setMinimum(0);
-    ui->dsbWeight->setValue(prefWeight());
-
-    ui->cpLineColor->setColor(prefLineColor().asValue<QColor>());
+    ui->pbTracker->setEnabled(true);
+    ui->pbCancelEdit->setEnabled(true);
+   int aSize = getPrefArrowStyle() + 1;
+    ui->cboxStartSym->setCurrentIndex(aSize);
 }
 
-//switch widgets related to ViewProvider on/off
-//there is no ViewProvider until some time after feature is created.
 void TaskLeaderLine::enableVPUi(bool b)
 {
     ui->cpLineColor->setEnabled(b);
@@ -319,23 +239,12 @@ void TaskLeaderLine::setUiEdit()
 
     if (m_lineFeat != nullptr) {
         std::string baseName = m_lineFeat->LeaderParent.getValue()->getNameInDocument();
-        ui->tbBaseView->setText(Base::Tools::fromStdString(baseName));
-
-        DrawGuiUtil::loadArrowBox(ui->cboxStartSym);
-        ui->cboxStartSym->setCurrentIndex(m_lineFeat->StartSymbol.getValue());
-        connect(ui->cboxStartSym, SIGNAL(currentIndexChanged(int)), this, SLOT(onStartSymbolChanged()));
-        DrawGuiUtil::loadArrowBox(ui->cboxEndSym);
-        ui->cboxEndSym->setCurrentIndex(m_lineFeat->EndSymbol.getValue());
-        connect(ui->cboxEndSym, SIGNAL(currentIndexChanged(int)), this, SLOT(onEndSymbolChanged()));
-
+        ui->leBaseView->setText(Base::Tools::fromStdString(baseName));
+        ui->cboxStartSym->setCurrentIndex(m_lineFeat->StartSymbol.getValue() + 1);
+        ui->cboxEndSym->setCurrentIndex(m_lineFeat->EndSymbol.getValue() + 1);
         ui->pbTracker->setText(QString::fromUtf8("Edit points"));
-        if (m_haveMdi) {
-            ui->pbTracker->setEnabled(true);
-            ui->pbCancelEdit->setEnabled(true);
-        } else {
-            ui->pbTracker->setEnabled(false);
-            ui->pbCancelEdit->setEnabled(false);
-        }
+        ui->pbTracker->setEnabled(true);
+        ui->pbCancelEdit->setEnabled(true);
     }
 
     if (m_lineVP != nullptr) {
@@ -343,49 +252,6 @@ void TaskLeaderLine::setUiEdit()
         ui->dsbWeight->setValue(m_lineVP->LineWidth.getValue());
         ui->cboxStyle->setCurrentIndex(m_lineVP->LineStyle.getValue());
     }
-    connect(ui->cpLineColor, SIGNAL(changed()), this, SLOT(onColorChanged()));
-    ui->dsbWeight->setMinimum(0);
-    connect(ui->dsbWeight, SIGNAL(valueChanged(double)), this, SLOT(onLineWidthChanged()));
-    connect(ui->cboxStyle, SIGNAL(currentIndexChanged(int)), this, SLOT(onLineStyleChanged()));
-}
-
-void TaskLeaderLine::recomputeFeature()
-{
-    App::DocumentObject* objVP = m_lineVP->getObject();
-    assert(objVP);
-    objVP->getDocument()->recomputeFeature(objVP);
-}
-
-void TaskLeaderLine::onStartSymbolChanged()
-{
-    m_lineFeat->StartSymbol.setValue(ui->cboxStartSym->currentIndex());
-    recomputeFeature();
-}
-
-void TaskLeaderLine::onEndSymbolChanged()
-{
-    m_lineFeat->EndSymbol.setValue(ui->cboxEndSym->currentIndex());
-    recomputeFeature();
-}
-
-void TaskLeaderLine::onColorChanged()
-{
-    App::Color ac;
-    ac.setValue<QColor>(ui->cpLineColor->color());
-    m_lineVP->Color.setValue(ac);
-    recomputeFeature();
-}
-
-void TaskLeaderLine::onLineWidthChanged()
-{
-    m_lineVP->LineWidth.setValue(ui->dsbWeight->rawValue());
-    recomputeFeature();
-}
-
-void TaskLeaderLine::onLineStyleChanged()
-{
-    m_lineVP->LineStyle.setValue(ui->cboxStyle->currentIndex());
-    recomputeFeature();
 }
 
 
@@ -393,12 +259,12 @@ void TaskLeaderLine::onLineStyleChanged()
 void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> converted)
 {
 //    Base::Console().Message("TTL::createLeaderFeature()\n");
-    m_leaderName = m_basePage->getDocument()->getUniqueObjectName("LeaderLine");
+    m_leaderName = m_basePage->getDocument()->getUniqueObjectName("DrawLeaderLine");
     m_leaderType = "TechDraw::DrawLeaderLine";
 
     std::string PageName = m_basePage->getNameInDocument();
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Leader"));
+    Gui::Command::openCommand("Create Leader");
     Command::doCommand(Command::Doc,"App.activeDocument().addObject('%s','%s')",
                        m_leaderType.c_str(),m_leaderName.c_str());
     Command::doCommand(Command::Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",
@@ -421,59 +287,32 @@ void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> converted)
         }
         commonFeatureUpdate();
     }
-
-    if (m_lineFeat != nullptr) {
-        Gui::ViewProvider* vp = QGIView::getViewProvider(m_lineFeat);
-        auto leadVP = dynamic_cast<ViewProviderLeader*>(vp);
-        if ( leadVP != nullptr ) {
-            App::Color ac;
-            ac.setValue<QColor>(ui->cpLineColor->color());
-            leadVP->Color.setValue(ac);
-            leadVP->LineWidth.setValue(ui->dsbWeight->rawValue());
-            leadVP->LineStyle.setValue(ui->cboxStyle->currentIndex());
-        }
-    }
-
+    
     Gui::Command::updateActive();
     Gui::Command::commitCommand();
-
-    //trigger claimChildren in tree
-    if (m_baseFeat != nullptr) {
-        m_baseFeat->touch();
-    }
-
-    m_basePage->touch();
-
-    if (m_lineFeat != nullptr) {
-        m_lineFeat->requestPaint();
-    }
+    m_lineFeat->requestPaint();
 }
 
 void TaskLeaderLine::updateLeaderFeature(void)
 {
 //    Base::Console().Message("TTL::updateLeaderFeature()\n");
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit Leader"));
+    Gui::Command::openCommand("Edit Leader");
     //waypoints & x,y are updated by QGILeaderLine (for edits only!)
     commonFeatureUpdate();
     App::Color ac;
     ac.setValue<QColor>(ui->cpLineColor->color());
     m_lineVP->Color.setValue(ac);
-    m_lineVP->LineWidth.setValue(ui->dsbWeight->rawValue());
+    m_lineVP->LineWidth.setValue(ui->dsbWeight->value());
     m_lineVP->LineStyle.setValue(ui->cboxStyle->currentIndex());
 
-    Gui::Command::updateActive();
     Gui::Command::commitCommand();
-
-    if (m_baseFeat != nullptr) {
-        m_baseFeat->requestPaint();
-    }
     m_lineFeat->requestPaint();
 }
 
 void TaskLeaderLine::commonFeatureUpdate(void)
 {
-    int start = ui->cboxStartSym->currentIndex();
-    int end   = ui->cboxEndSym->currentIndex();
+    int start = ui->cboxStartSym->currentIndex() - 1;
+    int end   = ui->cboxEndSym->currentIndex() - 1;
     m_lineFeat->StartSymbol.setValue(start);
     m_lineFeat->EndSymbol.setValue(end);
 }
@@ -511,16 +350,12 @@ void TaskLeaderLine::onTrackerClicked(bool b)
     Q_UNUSED(b);
 //    Base::Console().Message("TTL::onTrackerClicked() m_pbTrackerState: %d\n",
 //                            m_pbTrackerState);
-    if (!m_haveMdi) {
-        Base::Console().Message("TLL::onTrackerClicked - no Mdi, no Tracker!\n");
-        return;
-    }
-
     if ( (m_pbTrackerState == TRACKERSAVE) &&
          (getCreateMode())  ){
         if (m_tracker != nullptr) {
             m_tracker->terminateDrawing();
         }
+
         m_pbTrackerState = TRACKERPICK;
         ui->pbTracker->setText(QString::fromUtf8("Pick Points"));
         ui->pbCancelEdit->setEnabled(false);
@@ -529,12 +364,13 @@ void TaskLeaderLine::onTrackerClicked(bool b)
         setEditCursor(Qt::ArrowCursor);
         return;
     } else  if ( (m_pbTrackerState == TRACKERSAVE) &&
-                 (!getCreateMode()) ) {                //edit mode
+                 (!getCreateMode()) ) {
         if (m_qgLine != nullptr) {
             m_qgLine->closeEdit();
         }
+
         m_pbTrackerState = TRACKERPICK;
-        ui->pbTracker->setText(QString::fromUtf8("Edit Points"));
+        ui->pbTracker->setText(QString::fromUtf8("Pick Points"));
         ui->pbCancelEdit->setEnabled(false);
         enableTaskButtons(true);
 
@@ -568,7 +404,7 @@ void TaskLeaderLine::onTrackerClicked(bool b)
             QGVPage* qgvp = m_mdi->getQGVPage();
             QGIView* qgiv = qgvp->findQViewForDocObj(m_lineFeat);
             QGILeaderLine* qgLead = dynamic_cast<QGILeaderLine*>(qgiv);
-
+            
             if (qgLead == nullptr) {
                 //tarfu
                 Base::Console().Error("TaskLeaderLine - can't find leader graphic\n");
@@ -610,9 +446,6 @@ void TaskLeaderLine::onTrackerClicked(bool b)
 void TaskLeaderLine::startTracker(void)
 {
 //    Base::Console().Message("TTL::startTracker()\n");
-    if (!m_haveMdi) {
-        return;
-    }
     if (m_trackerMode == QGTracker::TrackerMode::None) {
         return;
     }
@@ -635,12 +468,24 @@ void TaskLeaderLine::startTracker(void)
 
 void TaskLeaderLine::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParent)
 {
-    //in this case, we already know who the parent is.  We don't need QGTracker to tell us.
-    (void) qgParent;
 //    Base::Console().Message("TTL::onTrackerFinished() - parent: %X\n",qgParent);
     if (pts.empty()) {
         Base::Console().Error("TaskLeaderLine - no points available\n");
         return;
+    }
+
+    if (qgParent == nullptr) {
+        //do something;
+        m_qgParent = findParentQGIV();
+    } else {
+        QGIView* qgiv = dynamic_cast<QGIView*>(qgParent);
+        if (qgiv != nullptr) {
+            m_qgParent = qgiv;
+        } else {
+            Base::Console().Message("TTL::onTrackerFinished - can't find parent graphic!\n");
+            //blow up!?
+            throw Base::RuntimeError("TaskLeaderLine - can not find parent graphic");
+        }
     }
 
     if (m_qgParent != nullptr) {
@@ -670,9 +515,6 @@ void TaskLeaderLine::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgPare
 void TaskLeaderLine::removeTracker(void)
 {
 //    Base::Console().Message("TTL::removeTracker()\n");
-    if (!m_haveMdi) {
-        return;
-    }
     if ( (m_tracker != nullptr) &&
          (m_tracker->scene() != nullptr) ) {
         m_scene->removeItem(m_tracker);
@@ -715,9 +557,6 @@ QGIView* TaskLeaderLine::findParentQGIV()
 
 void TaskLeaderLine::setEditCursor(QCursor c)
 {
-    if (!m_haveMdi) {
-        return;
-    }
     if (m_baseFeat != nullptr) {
         QGIView* qgivBase = m_view->findQViewForDocObj(m_baseFeat);
         qgivBase->setCursor(c);
@@ -742,7 +581,7 @@ void TaskLeaderLine::onPointEditComplete(void)
 {
 //    Base::Console().Message("TTL::onPointEditComplete()\n");
     m_inProgressLock = false;
-
+    
     m_pbTrackerState = TRACKEREDIT;
     ui->pbTracker->setText(QString::fromUtf8("Edit points"));
     ui->pbTracker->setEnabled(true);
@@ -784,21 +623,10 @@ void TaskLeaderLine::enableTaskButtons(bool b)
 
 int TaskLeaderLine::getPrefArrowStyle()
 {
-    return PreferencesGui::dimArrowStyle();
-}
-
-double TaskLeaderLine::prefWeight() const
-{
-    int lgNumber = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
-    double weight = lg->getWeight("Thin");
-    delete lg;                                   //Coverity CID 174670
-    return weight;
-}
-
-App::Color TaskLeaderLine::prefLineColor(void)
-{
-    return PreferencesGui::leaderColor();
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
+                                         GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
+    int style = hGrp->GetInt("ArrowStyle", 0);
+    return style;
 }
 
 //******************************************************************************
@@ -828,9 +656,7 @@ bool TaskLeaderLine::accept()
 
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
 
-    if (m_haveMdi) {
-        m_mdi->setContextMenuPolicy(m_saveContextPolicy);
-    }
+    m_mdi->setContextMenuPolicy(m_saveContextPolicy);
     return true;
 }
 
@@ -843,7 +669,7 @@ bool TaskLeaderLine::reject()
         removeTracker();
         return false;
     }
-
+    
     Gui::Document* doc = Gui::Application::Instance->getDocument(m_basePage->getDocument());
     if (!doc) return false;
 
@@ -860,7 +686,7 @@ bool TaskLeaderLine::reject()
     m_trackerMode = QGTracker::TrackerMode::None;
     removeTracker();
 
-    //make sure any dangling objects are cleaned up
+    //make sure any dangling objects are cleaned up 
     Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().recompute()");
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
 
@@ -877,7 +703,7 @@ TaskDlgLeaderLine::TaskDlgLeaderLine(TechDraw::DrawView* baseFeat,
     : TaskDialog()
 {
     widget  = new TaskLeaderLine(baseFeat,page);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-LeaderLine"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-mline"),
                                              widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
@@ -887,7 +713,7 @@ TaskDlgLeaderLine::TaskDlgLeaderLine(TechDrawGui::ViewProviderLeader* leadVP)
     : TaskDialog()
 {
     widget  = new TaskLeaderLine(leadVP);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-LeaderLine"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-mline"),
                                              widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);

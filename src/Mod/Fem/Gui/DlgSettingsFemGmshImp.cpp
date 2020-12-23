@@ -25,18 +25,16 @@
 
 #include "PreCompiled.h"
 
+#include "Gui/Application.h"
 #include "DlgSettingsFemGmshImp.h"
-#include "ui_DlgSettingsFemGmsh.h"
-#include <Gui/Application.h>
 #include <Gui/PrefWidgets.h>
 
 using namespace FemGui;
 
 DlgSettingsFemGmshImp::DlgSettingsFemGmshImp( QWidget* parent )
   : PreferencePage( parent )
-  , ui(new Ui_DlgSettingsFemGmshImp)
 {
-    ui->setupUi(this);
+    this->setupUi(this);
 }
 
 DlgSettingsFemGmshImp::~DlgSettingsFemGmshImp()
@@ -46,14 +44,14 @@ DlgSettingsFemGmshImp::~DlgSettingsFemGmshImp()
 
 void DlgSettingsFemGmshImp::saveSettings()
 {
-    ui->cb_gmsh_binary_std->onSave();
-    ui->fc_gmsh_binary_path->onSave();
+    cb_gmsh_binary_std->onSave();
+    fc_gmsh_binary_path->onSave();
 }
 
 void DlgSettingsFemGmshImp::loadSettings()
 {
-    ui->cb_gmsh_binary_std->onRestore();
-    ui->fc_gmsh_binary_path->onRestore();
+    cb_gmsh_binary_std->onRestore();
+    fc_gmsh_binary_path->onRestore();
 }
 
 /**
@@ -62,7 +60,6 @@ void DlgSettingsFemGmshImp::loadSettings()
 void DlgSettingsFemGmshImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        ui->retranslateUi(this);
     }
     else {
         QWidget::changeEvent(e);

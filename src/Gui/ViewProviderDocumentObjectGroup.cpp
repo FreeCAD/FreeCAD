@@ -84,7 +84,7 @@ QIcon ViewProviderDocumentObjectGroup::getIcon(void) const
 }
 
 /**
- * Extracts the associated view providers of the objects of the associated object group group.
+ * Extracts the associated view providers of the objects of the associated object group group. 
  */
 void ViewProviderDocumentObjectGroup::getViewProviders(std::vector<ViewProviderDocumentObject*>& vp) const
 {

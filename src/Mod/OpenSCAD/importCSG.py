@@ -41,6 +41,7 @@ else:
     if printverbose: print("FreeCAD Gui not present.")
     gui = False
 
+
 import ply.lex as lex
 import ply.yacc as yacc
 import Part
@@ -51,24 +52,21 @@ from OpenSCADUtils import *
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
 printverbose = params.GetBool('printVerbose',False)
 
-printverbose = True
-
 # Get the token map from the lexer.  This is required.
 import tokrules
 from tokrules import tokens
 
-if gui:
-    try:
-        _encoding = QtGui.QApplication.UnicodeUTF8
-        def translate(context, text):
-            "convenience function for Qt translator"
-            from PySide import QtGui
-            return QtGui.QApplication.translate(context, text, None, _encoding)
-    except AttributeError:
-        def translate(context, text):
-            "convenience function for Qt translator"
-            from PySide import QtGui
-            return QtGui.QApplication.translate(context, text, None)
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def translate(context, text):
+        "convenience function for Qt translator"
+        from PySide import QtGui
+        return QtGui.QApplication.translate(context, text, None, _encoding)
+except AttributeError:
+    def translate(context, text):
+        "convenience function for Qt translator"
+        from PySide import QtGui
+        return QtGui.QApplication.translate(context, text, None)
 
 def open(filename):
     "called when freecad opens a file."
@@ -342,7 +340,6 @@ def p_operation(p):
               | linear_extrude_with_twist
               | rotate_extrude_file
               | import_file1
-              | resize_action
               | surface_action
               | projection_action
               | hull_action
@@ -381,7 +378,6 @@ def CGALFeatureObj(name,children,arguments=[]):
 
 def p_offset_action(p):
     'offset_action : offset LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'
-    subobj=None
     if len(p[6]) == 0:
         newobj = placeholder('group',[],'{}')
     elif (len(p[6]) == 1 ): #single object
@@ -423,28 +419,10 @@ def p_minkowski_action(p):
     minkowski_action : minkowski LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'''
     p[0] = [ CGALFeatureObj(p[1],p[6],p[3]) ]
 
-def p_resize_action(p):
-    '''
-    resize_action : resize LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE '''
-    import Draft
-    print(p[3])
-    newsize = p[3]['newsize']
-    auto    = p[3]['auto'] 
-    print(newsize)
-    print(auto)
-    for r in range(0,3) :
-        if auto[r] == '1' :
-           newsize[r] = newsize[0]
-        if newsize[r] == '0' :
-           newsize[r] = '1'
-    print(newsize)
-    scale = FreeCAD.Vector(float(newsize[0]), float(newsize[1]), float(newsize[2]))
-    print(scale)       
-    p[0] = [Draft.scale(p[6],scale)]
-
 def p_not_supported(p):
     '''
     not_supported : glide LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE
+                  | resize LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE
                   | subdiv LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE
                   '''
     if gui and not FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
@@ -587,7 +565,7 @@ def p_intersection_action(p):
     p[0] = [mycommon]
     if printverbose: print("End Intersection")
 
-def process_rotate_extrude(obj):
+def process_rotate_extrude(obj,angle):
     newobj=doc.addObject("Part::FeaturePython",'RefineRotateExtrude')
     RefineShape(newobj,obj)
     if gui:
@@ -602,7 +580,7 @@ def process_rotate_extrude(obj):
     myrev.Source = newobj
     myrev.Axis = (0.00,1.00,0.00)
     myrev.Base = (0.00,0.00,0.00)
-    myrev.Angle = 360.00
+    myrev.Angle = angle
     myrev.Placement=FreeCAD.Placement(FreeCAD.Vector(),FreeCAD.Rotation(0,0,90))
     if gui:
         newobj.ViewObject.hide()
@@ -615,7 +593,8 @@ def p_rotate_extrude_action(p):
         part = fuse(p[6],"Rotate Extrude Union")
     else :
         part = p[6][0]
-    p[0] = [process_rotate_extrude(part)]
+    angle = float(p[3]['angle'])    
+    p[0] = [process_rotate_extrude(part,angle)]
     if printverbose: print("End Rotate Extrude")
 
 def p_rotate_extrude_file(p):
@@ -927,7 +906,7 @@ def p_cylinder_action(p):
     n = int(round(float(p[3]['$fn'])))
     fnmax = FreeCAD.ParamGet(\
         "User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
-        GetInt('useMaxFN', 16)
+        GetInt('useMaxFN')
     if printverbose: print(p[3])
     if h > 0:
         if ( r1 == r2 and r1 > 0):
@@ -1036,7 +1015,7 @@ def p_circle_action(p) :
     n = int(p[3]['$fn'])
     fnmax = FreeCAD.ParamGet(\
         "User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
-        GetInt('useMaxFN',16)
+        GetInt('useMaxFN',50)
     # Alter Max polygon to control if polygons are circles or polygons
     # in the modules preferences
     import Draft

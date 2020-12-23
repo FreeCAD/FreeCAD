@@ -86,7 +86,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="297"/>
       <source>Undefined</source>
-      <translation>Không xác định</translation>
+      <translation type="unfinished">Undefined</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="70"/>

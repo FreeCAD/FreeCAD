@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ja" sourcelanguage="en">
+<TS version="2.0" language="ja" sourcelanguage="en">
   <context>
     <name>BoundarySelector</name>
     <message>
@@ -12,11 +12,6 @@
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="130"/>
       <source>To add references select them in the 3D view and then click "Add".</source>
       <translation>参照を追加するには、3次元ビューでそれらを選択し「追加」をクリック</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="133"/>
-      <source>To add references: select them in the 3D view  and click "Add".</source>
-      <translation>参照の追加: 3次元ビューで選択し「追加」をクリック</translation>
     </message>
   </context>
   <context>
@@ -65,65 +60,6 @@
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="315"/>
       <source>Abort</source>
       <translation>中止</translation>
-    </message>
-  </context>
-  <context>
-    <name>GeometryElementsSelection</name>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
-      <source>Geometry reference selector for a </source>
-      <translation>ジオメトリー参照セレクター </translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
-      <source>Add</source>
-      <translation>追加</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="255"/>
-      <source>Click on "Add" and select geometric elements to add them to the list. If no geometry is added to the list, all remaining ones are used. The following geometry elements are allowed to select: </source>
-      <translation>「追加」をクリックし、リストにジオメトリー要素を追加します。リストにジオメトリーが追加されていない場合、残されている全てのジオメトリーが使用されます。次のジオメトリー要素を選択できます: </translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>
-      <source>Selection mode</source>
-      <translation>選択モード</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
-      <source>Solid</source>
-      <translation>ソリッド</translation>
-    </message>
-  </context>
-  <context>
-    <name>SolidSelector</name>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="147"/>
-      <source>Select Solids</source>
-      <translation>ソリッドを選択</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="148"/>
-      <source>Select elements part of the solid that shall be added to the list. To than add the solid click "Add".</source>
-      <translation>リストに追加するソリッドの要素パーツを選択。ソリッドを追加するには"追加"をクリック。</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="152"/>
-      <source>Select elements part of the solid that shall be added to the list. To add the solid click "Add".</source>
-      <translation>リストに追加するソリッドの要素パーツを選択。ソリッドを追加するには「追加」をクリック。</translation>
-    </message>
-  </context>
-  <context>
-    <name>_Selector</name>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="49"/>
-      <source>Add</source>
-      <translation>追加</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
-      <source>Remove</source>
-      <translation>削除</translation>
     </message>
   </context>
   <context>
@@ -336,6 +272,11 @@
       <source>Fluxsolver heat</source>
       <translation>フラックスソルバー ヒート</translation>
     </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="530"/>
+      <source>Fluxsolver heat</source>
+      <translation>フラックスソルバー ヒート</translation>
+    </message>
   </context>
   <context>
     <name>FEM_FEMMesh2Mesh</name>
@@ -354,6 +295,11 @@
     <name>FEM_MaterialFluid</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="397"/>
+      <source>Material for fluid</source>
+      <translation>流体のためのマテリアル</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="582"/>
       <source>Material for fluid</source>
       <translation>流体のためのマテリアル</translation>
     </message>
@@ -380,19 +326,29 @@
       <source>Creates a nonlinear mechanical material</source>
       <translation>非線形機械材料を作成</translation>
     </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="618"/>
+      <source>Creates a nonlinear mechanical material</source>
+      <translation>非線形機械材料を作成</translation>
+    </message>
   </context>
   <context>
     <name>FEM_MaterialReinforced</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="674"/>
       <source>Reinforced material (concrete)</source>
-      <translation>強化材料 (コンクリート)</translation>
+      <translation type="unfinished">Reinforced material (concrete)</translation>
     </message>
   </context>
   <context>
     <name>FEM_MaterialSolid</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="452"/>
+      <source>Material for solid</source>
+      <translation>個体のためのマテリアル</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="705"/>
       <source>Material for solid</source>
       <translation>個体のためのマテリアル</translation>
     </message>
@@ -476,6 +432,11 @@
     <name>FEM_MeshNetgenFromShape</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="603"/>
+      <source>FEM mesh from shape by Netgen</source>
+      <translation>Netgenによる形状からのFEMメッシュ</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="957"/>
       <source>FEM mesh from shape by Netgen</source>
       <translation>Netgenによる形状からのFEMメッシュ</translation>
     </message>
@@ -575,6 +536,11 @@
       <source>Solver Elmer</source>
       <translation>ソルバー Elmer</translation>
     </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="1174"/>
+      <source>Solver Elmer</source>
+      <translation>ソルバー Elmer</translation>
+    </message>
   </context>
   <context>
     <name>FEM_SolverRun</name>
@@ -616,6 +582,34 @@
     </message>
   </context>
   <context>
+    <name>GeometryElementsSelection</name>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
+      <source>Geometry reference selector for a </source>
+      <translation>ジオメトリー参照セレクター </translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
+      <source>Add</source>
+      <translation>追加</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="255"/>
+      <source>Click on "Add" and select geometric elements to add them to the list. If no geometry is added to the list, all remaining ones are used. The following geometry elements are allowed to select: </source>
+      <translation>「追加」をクリックし、リストにジオメトリー要素を追加します。リストにジオメトリーが追加されていない場合、残されている全てのジオメトリーが使用されます。次のジオメトリー要素を選択できます: </translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>
+      <source>Selection mode</source>
+      <translation>選択モード</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
+      <source>Solid</source>
+      <translation>ソリッド</translation>
+    </message>
+  </context>
+  <context>
     <name>Material_Editor</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="382"/>
@@ -626,6 +620,37 @@
       <location filename="../../../femcommands/commands.py" line="384"/>
       <source>Opens the FreeCAD material editor</source>
       <translation>FreeCAD 材料エディターを開く</translation>
+    </message>
+  </context>
+  <context>
+    <name>SolidSelector</name>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="147"/>
+      <source>Select Solids</source>
+      <translation>ソリッドを選択</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="148"/>
+      <source>Select elements part of the solid that shall be added to the list. To than add the solid click "Add".</source>
+      <translation>リストに追加するソリッドの要素パーツを選択。ソリッドを追加するには"追加"をクリック。</translation>
+    </message>
+  </context>
+  <context>
+    <name>_Selector</name>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="49"/>
+      <source>Add</source>
+      <translation>追加</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
+      <source>Remove</source>
+      <translation>削除</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
+      <source>Remove</source>
+      <translation>削除</translation>
     </message>
   </context>
   <context>
@@ -2086,7 +2111,7 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="96"/>
       <source>Max:</source>
-      <translation>最大:</translation>
+      <translation>最大：</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="123"/>
@@ -2329,7 +2354,7 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="35"/>
       <source>Prescribed Displacement</source>
-      <translation>デフォルトの変位</translation>
+      <translation>既定の変位</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="50"/>

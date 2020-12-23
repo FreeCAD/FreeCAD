@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2019 Wandererfan <wandererfan@gmail.com                 *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -48,6 +48,10 @@ SymbolChooser::SymbolChooser(QWidget *parent,
     m_source(source)
 {
     ui->setupUi(this);
+    connect(ui->pbOK, SIGNAL(clicked(bool)),
+            this, SLOT(onOKClicked(bool)));
+    connect(ui->pbCancel, SIGNAL(clicked(bool)),
+            this, SLOT(onCancelClicked(bool)));
     connect(ui->fcSymbolDir, SIGNAL(fileNameSelected(const QString&)),
             this, SLOT(onDirectorySelected(const QString&)));
     connect(ui->lwSymbols, SIGNAL(itemClicked(QListWidgetItem*)),    //double click?
@@ -66,7 +70,7 @@ void SymbolChooser::setUiPrimary()
     } else {
         std::string resourceDir = App::Application::getResourceDir();
         std::string defPath = "Mod/TechDraw/Symbols/Welding/AWS/";
-        resourceDir = resourceDir + defPath;
+        resourceDir = resourceDir + defPath; 
         QString defDir = QString::fromUtf8(resourceDir.c_str());
         ui->fcSymbolDir->setFileName(defDir);
         loadSymbolNames(defDir);
@@ -81,23 +85,28 @@ void SymbolChooser::setUiPrimary()
     ui->lwSymbols->setAcceptDrops(false);
 }
 
-void SymbolChooser::onOKClicked()
+void SymbolChooser::onOKClicked(bool b)
 {
-    QDialog::accept();
+    Q_UNUSED(b);
+//    Base::Console().Message("SC::OnOKClicked()\n");
     QListWidgetItem* sourceItem = ui->lwSymbols->currentItem();
     if (!sourceItem)
         return;
     QString targetText = sourceItem->text();
-    m_symbolPath = m_symbolDir +
+    m_symbolPath = m_symbolDir + 
                    targetText +
                    QString::fromUtf8(".svg");
 
     Q_EMIT symbolSelected(m_symbolPath, m_source);
+//    Base::Console().Message("SC::onOKClicked - symbol; %s\n", qPrintable(m_symbolPath));
+    accept();
 }
 
-void SymbolChooser::onCancelClicked()
+void SymbolChooser::onCancelClicked(bool b)
 {
-    QDialog::reject();
+    Q_UNUSED(b);
+//    Base::Console().Message("SC::OnCancelCicked()\n");
+    reject();
 }
 
 void SymbolChooser::onItemClicked(QListWidgetItem* item)
@@ -107,7 +116,7 @@ void SymbolChooser::onItemClicked(QListWidgetItem* item)
     //are item and currentItem() the same?  should use item?
     QListWidgetItem* sourceItem = ui->lwSymbols->currentItem();
     QString targetText = sourceItem->text();
-    m_symbolPath = m_symbolDir +
+    m_symbolPath = m_symbolDir + 
                    targetText +
                    QString::fromUtf8(".svg");
     Q_EMIT symbolSelected(m_symbolPath, m_source);
@@ -135,7 +144,7 @@ void SymbolChooser::loadSymbolNames(QString pathToSymbols)
         QFileInfo fi(fn);
         item->setText(fi.baseName());
         QIcon symbolIcon(pathToSymbols + fn);
-        item->setIcon(symbolIcon);
+        item->setIcon(symbolIcon); 
         ui->lwSymbols->addItem(item);
     }
     ui->lwSymbols->setCurrentRow(0);

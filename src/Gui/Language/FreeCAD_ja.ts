@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ja" sourcelanguage="en">
+<TS version="2.0" language="ja" sourcelanguage="en">
   <context>
     <name>Angle</name>
     <message>
@@ -23,35 +23,35 @@
       <source>Angle Snap</source>
       <translation>角度スナップ</translation>
     </message>
-    <message>
+    <message utf8="true">
       <source>1 °</source>
       <translation>1 °</translation>
     </message>
-    <message>
+    <message utf8="true">
       <source>2 °</source>
       <translation>2 °</translation>
     </message>
-    <message>
+    <message utf8="true">
       <source>5 °</source>
       <translation>5 °</translation>
     </message>
-    <message>
+    <message utf8="true">
       <source>10 °</source>
       <translation>10 °</translation>
     </message>
-    <message>
+    <message utf8="true">
       <source>20 °</source>
       <translation>20 °</translation>
     </message>
-    <message>
+    <message utf8="true">
       <source>45 °</source>
       <translation>45 °</translation>
     </message>
-    <message>
+    <message utf8="true">
       <source>90 °</source>
       <translation>90 °</translation>
     </message>
-    <message>
+    <message utf8="true">
       <source>180 °</source>
       <translation>180 °</translation>
     </message>
@@ -121,13 +121,6 @@
     </message>
   </context>
   <context>
-    <name>Command</name>
-    <message>
-      <source>Edit</source>
-      <translation>編集</translation>
-    </message>
-  </context>
-  <context>
     <name>DlgCustomizeSpNavSettings</name>
     <message>
       <source>Spaceball Motion</source>
@@ -181,16 +174,12 @@
       <translation>結果：</translation>
     </message>
     <message>
+      <source>&amp;Discard</source>
+      <translation>破棄(&amp;D)</translation>
+    </message>
+    <message>
       <source>Ok</source>
       <translation>OK</translation>
-    </message>
-    <message>
-      <source>&amp;Clear</source>
-      <translation>クリア(&amp;C)</translation>
-    </message>
-    <message>
-      <source>Revert to last calculated value (as constant)</source>
-      <translation>最後に計算した (定数) 値を元に戻す</translation>
     </message>
   </context>
   <context>
@@ -287,11 +276,11 @@
     </message>
     <message>
       <source>Press middle mouse button</source>
-      <translation>マウスの中ボタンを押す</translation>
+      <translation>マウスの中央のボタンを押す</translation>
     </message>
     <message>
       <source>Scroll middle mouse button</source>
-      <translation>マウスの中ボタンをスクロールする</translation>
+      <translation>マウスの中央ボタンをスクロールする</translation>
     </message>
   </context>
   <context>
@@ -302,16 +291,16 @@
     </message>
     <message>
       <source>Press middle mouse button</source>
-      <translation>マウスの中ボタンを押す</translation>
+      <translation>マウスの中央のボタンを押す</translation>
     </message>
     <message>
       <source>Press middle+left or middle+right button</source>
-      <translation>中ボタン+左ボタンまたは、中ボタン+右ボタンを押してください。</translation>
+      <translation>middle+leftまたは、middle+rightボタンを押してください。</translation>
     </message>
     <message>
       <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation>スクロールするには、左または右クリックをしながら中ボタン、あるいは中央ボタンを押したままにして、マウスを上下に移動させる。</translation>
+      <translation>マウスホイールをスクロールまたはマウス中央ボタンを押したまま左右どちらかをクリックして、マウスを上下に移動</translation>
     </message>
   </context>
   <context>
@@ -423,10 +412,6 @@ while doing a left or right click and move the mouse up or down</source>
       <source>License</source>
       <translation>ライセンス</translation>
     </message>
-    <message>
-      <source>Collection</source>
-      <translation>コレクション</translation>
-    </message>
   </context>
   <context>
     <name>Gui::Dialog::ButtonModel</name>
@@ -437,14 +422,6 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Out Of Range</source>
       <translation>範囲外</translation>
-    </message>
-    <message>
-      <source> "</source>
-      <translation type="unfinished"> "</translation>
-    </message>
-    <message>
-      <source>"</source>
-      <translation type="unfinished">"</translation>
     </message>
   </context>
   <context>
@@ -562,11 +539,11 @@ while doing a left or right click and move the mouse up or down</source>
       <source>Angle</source>
       <translation>角度</translation>
     </message>
-    <message>
+    <message utf8="true">
       <source>90°</source>
       <translation>90°</translation>
     </message>
-    <message>
+    <message utf8="true">
       <source>-90°</source>
       <translation>-90°</translation>
     </message>
@@ -603,49 +580,6 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Windows</source>
       <translation>ウィンドウ</translation>
-    </message>
-  </context>
-  <context>
-    <name>Gui::Dialog::DlgAddProperty</name>
-    <message>
-      <source>Add property</source>
-      <translation>プロパティの追加</translation>
-    </message>
-    <message>
-      <source>Type</source>
-      <translation>タイプ</translation>
-    </message>
-    <message>
-      <source>Group</source>
-      <translation>グループ</translation>
-    </message>
-    <message>
-      <source>Name</source>
-      <translation>名前</translation>
-    </message>
-    <message>
-      <source>Verbose description of the new property.</source>
-      <translation>新しいプロパティの詳細な説明。</translation>
-    </message>
-    <message>
-      <source>Documentation</source>
-      <translation>ドキュメント</translation>
-    </message>
-    <message>
-      <source>Prefix the property name with the group name in the form 'Group_Name' to avoid conflicts with an existing property.
-In this case the prefix will be automatically trimmed when shown in the property editor.
-However, the property is still used in a script with the full name, like 'obj.Group_Name'.
-
-If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</source>
-      <translation>既存のプロパティ名と競合を避けるため、プロパティ名に'Group_Name' という形式のブレフィックスをグループ名に付加します。
-この場合、プロパティ・エディタの表示ではプレフィックスは自動的にトリムされます。
-但し、プロパティは 'obj.Group_Name'のように完全な名前としてスクリプトで使用されます。
-
-ここにチェックを入れない場合、プロパティはユニークな名称であれば、'obj.Name'のようにアクセスされます。</translation>
-    </message>
-    <message>
-      <source>Prefix group name</source>
-      <translation>グループ名をプレフィックスにする</translation>
     </message>
   </context>
   <context>
@@ -1033,10 +967,6 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <source>Global</source>
       <translation>全体</translation>
     </message>
-    <message>
-      <source>%1 module not loaded</source>
-      <translation>%1 モジュールが読み込まれていません</translation>
-    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCustomizeImp</name>
@@ -1075,16 +1005,16 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>ボタン</translation>
     </message>
     <message>
+      <source>Clear</source>
+      <translation>クリア</translation>
+    </message>
+    <message>
       <source>Print Reference</source>
       <translation>リファレンスを印刷</translation>
     </message>
     <message>
       <source>Spaceball Buttons</source>
       <translation>SpaceNavigatorのボタン</translation>
-    </message>
-    <message>
-      <source>Reset</source>
-      <translation>リセット</translation>
     </message>
   </context>
   <context>
@@ -1280,6 +1210,10 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>タブを維持</translation>
     </message>
     <message>
+      <source>Display Items</source>
+      <translation>表示項目</translation>
+    </message>
+    <message>
       <source>Family:</source>
       <translation>ファミリー:</translation>
     </message>
@@ -1294,46 +1228,6 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <source/>
       <translation>[empty string]</translation>
-    </message>
-    <message>
-      <source>Code lines will be numbered </source>
-      <translation>コード行に番号を付ける </translation>
-    </message>
-    <message>
-      <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
-      <translation>&lt;Tab&gt;を押すと定義されたインデント・サイズが挿入されます。</translation>
-    </message>
-    <message>
-      <source>Tabulator raster (how many spaces)</source>
-      <translation>タブ・サイズ (スペース数)</translation>
-    </message>
-    <message>
-      <source>How many spaces will be inserted when pressing &lt;Tab&gt;</source>
-      <translation>&lt;Tab&gt; を押した時に挿入されるスペースの数</translation>
-    </message>
-    <message>
-      <source>Pressing &lt;Tab&gt; will insert a tabulator with defined tab size</source>
-      <translation>&lt;Tab&gt;を押すと定義されたタブ・サイズでタブが挿入されます。</translation>
-    </message>
-    <message>
-      <source>Display items</source>
-      <translation>表示項目</translation>
-    </message>
-    <message>
-      <source>Font size to be used for selected code type</source>
-      <translation>選択したコードタイプで使用されるフォント・サイズ</translation>
-    </message>
-    <message>
-      <source>Color and font settings will be applied to selected type</source>
-      <translation>色とフォント設定が選択したタイプに適用されます</translation>
-    </message>
-    <message>
-      <source>Font family to be used for selected code type</source>
-      <translation>選択したコードタイプで使用されるフォント・ファミリー</translation>
-    </message>
-    <message>
-      <source>Color:</source>
-      <translation>色：</translation>
     </message>
   </context>
   <context>
@@ -1390,63 +1284,6 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <source>Enable word wrap</source>
       <translation>行の折り返しを有効</translation>
     </message>
-    <message>
-      <source>Language of the application's user interface</source>
-      <translation>アプリケーションのユーザーインターフェイスの言語</translation>
-    </message>
-    <message>
-      <source>How many files should be listed in recent files list</source>
-      <translation>最近のファイルのリストにいくつのファイルを表示するか</translation>
-    </message>
-    <message>
-      <source>Background of the main window will consist of tiles of a special image.
-See the FreeCAD Wiki for details about the image.</source>
-      <translation>メインウィンドウの背景を特別な画像のタイルで構成。
-画像の詳細については FreeCAD ウィキを参照。</translation>
-    </message>
-    <message>
-      <source>Style sheet how user interface will look like</source>
-      <translation>ユーザーインターフェイスをどの様に表示するかを指定するスタイルシート</translation>
-    </message>
-    <message>
-      <source>Choose your preference for toolbar icon size. You can adjust
-this according to your screen size or personal taste</source>
-      <translation>ツールバーのアイコンのサイズの設定を行ってください。
-使用しているスクリーンサイズや好みに合わせて調整できます。</translation>
-    </message>
-    <message>
-      <source>Tree view mode:</source>
-      <translation>ツリービューモード:</translation>
-    </message>
-    <message>
-      <source>Customize how tree view is shown in the panel (restart required).
-
-'ComboView': combine tree view and property view into one panel.
-'TreeView and PropertyView': split tree view and property view into separate panel.
-'Both': keep all three panels, and you can have two sets of tree view and property view.</source>
-      <translation>パネルでツリービューをどのように表示するかのカスタマイズ (再起動が必要です)。
-
-'コンボビュー': ツリービューとプロパティビューを1つのパネルに結合
-'ツリービュー': ツリービューとプロパティビューを別々のパネルに分割
-'両方': 3つのパネルすべてを維持。ツリービューとプロパティビューを2組保持できます。</translation>
-    </message>
-    <message>
-      <source>A Splash screen is a small loading window that is shown
-when FreeCAD is launching. If this option is checked, FreeCAD will
-display the splash screen</source>
-      <translation>スプラッシュ画面とは FreeCAD 起動時に表示される小さな読み込みウィンドウのことです。
-このオプションがチェックされている場合、FreeCAD はスプラッシュ画面を表示します。</translation>
-    </message>
-    <message>
-      <source>Choose which workbench will be activated and shown
-after FreeCAD launches</source>
-      <translation>FreeCAD 起動後にどのワークベンチをアクティブにして表示するかを選択</translation>
-    </message>
-    <message>
-      <source>Words will be wrapped when they exceed available
-horizontal space in Python console</source>
-      <translation>Python コンソールで利用可能な水平方向スペースを超えた場合に文字を折返し</translation>
-    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgGeneralImp</name>
@@ -1473,18 +1310,6 @@ horizontal space in Python console</source>
     <message>
       <source>Custom (%1px)</source>
       <translation>カスタム（%1px）</translation>
-    </message>
-    <message>
-      <source>Combo View</source>
-      <translation>コンボビュー</translation>
-    </message>
-    <message>
-      <source>TreeView and PropertyView</source>
-      <translation>ツリービューとプロパティービュー</translation>
-    </message>
-    <message>
-      <source>Both</source>
-      <translation>両方</translation>
     </message>
   </context>
   <context>
@@ -1558,10 +1383,6 @@ horizontal space in Python console</source>
     <message>
       <source>Addons...</source>
       <translation>アドオン...</translation>
-    </message>
-    <message>
-      <source>Toolbar</source>
-      <translation>ツールバー</translation>
     </message>
   </context>
   <context>
@@ -1642,48 +1463,6 @@ Perhaps a file permission error?</source>
 Perhaps a file permission error?</source>
       <translation>'%1' を複製に失敗しました。
 ファイル アクセス権のエラーかもしれません。</translation>
-    </message>
-    <message>
-      <source>Do not show again</source>
-      <translation>今後表示しない</translation>
-    </message>
-    <message>
-      <source>Guided Walkthrough</source>
-      <translation>ガイド・ウォークスルー</translation>
-    </message>
-    <message>
-      <source>This will guide you in setting up this macro in a custom global toolbar.  Instructions will be in red text inside the dialog.
-
-Note: your changes will be applied when you next switch workbenches
-</source>
-      <translation>カスタムグローバルツールバーにこのマクロを設定する方法を説明します。手順はダイアログ内に赤色のテキストで表示されます。
-
-注意: 次回のワークベンチ切り替え時に変更が適用されます。
-</translation>
-    </message>
-    <message>
-      <source>Walkthrough, dialog 1 of 2</source>
-      <translation>ウォークスルー・ダイアログ1/2</translation>
-    </message>
-    <message>
-      <source>Walkthrough instructions: Fill in missing fields (optional) then click Add, then Close</source>
-      <translation>ウォークスルーの手順: 不足しているフィールドを入力（省略可能）して、追加をクリックし、閉じます。</translation>
-    </message>
-    <message>
-      <source>Walkthrough, dialog 1 of 1</source>
-      <translation>ウォークスルー・ダイアログ1/1</translation>
-    </message>
-    <message>
-      <source>Walkthrough, dialog 2 of 2</source>
-      <translation>ウォークスルー・ダイアログ2/2</translation>
-    </message>
-    <message>
-      <source>Walkthrough instructions: Click right arrow button (-&gt;), then Close.</source>
-      <translation>ウォークスルーの手順: 右矢印ボタン（→）をクリックし、閉じます。</translation>
-    </message>
-    <message>
-      <source>Walkthrough instructions: Click New, then right arrow (-&gt;) button, then Close.</source>
-      <translation>ウォークスルーの手順: 新規をクリックし、さらに右矢印ボタン（→）をクリックし、閉じます。</translation>
     </message>
   </context>
   <context>
@@ -1841,22 +1620,6 @@ Specify another directory, please.</source>
       <source>Find...</source>
       <translation>検索...</translation>
     </message>
-    <message>
-      <source>Sorted</source>
-      <translation>並び替え</translation>
-    </message>
-    <message>
-      <source>Quick search</source>
-      <translation>クイック検索</translation>
-    </message>
-    <message>
-      <source>Type in a group name to find it</source>
-      <translation>検索するグループ名のタイプ</translation>
-    </message>
-    <message>
-      <source>Search Group</source>
-      <translation>グループの検索</translation>
-    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgParameterFind</name>
@@ -1935,10 +1698,6 @@ Specify another directory, please.</source>
       <source>System parameter</source>
       <translation>システム パラメータ</translation>
     </message>
-    <message>
-      <source>Search Group</source>
-      <translation>グループの検索</translation>
-    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgPreferences</name>
@@ -1986,7 +1745,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Commen&amp;t:</source>
-      <translation>コメント(&amp;T):</translation>
+      <translation>コメント(&amp;t):</translation>
     </message>
     <message>
       <source>Path:</source>
@@ -1994,23 +1753,23 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&amp;Last modified by:</source>
-      <translation>最終更新者(&amp;L):</translation>
+      <translation>最終更新日時(&amp;L):</translation>
     </message>
     <message>
       <source>Created &amp;by:</source>
-      <translation>作成者(&amp;B):</translation>
+      <translation>作成者(&amp;b):</translation>
     </message>
     <message>
       <source>Com&amp;pany:</source>
-      <translation>企業(&amp;P):</translation>
+      <translation>企業名(&amp;p):</translation>
     </message>
     <message>
       <source>Last &amp;modification date:</source>
-      <translation>最終更新日(&amp;M)：</translation>
+      <translation>最終更新日(&amp;m)：</translation>
     </message>
     <message>
       <source>Creation &amp;date:</source>
-      <translation>作成日(&amp;D):</translation>
+      <translation>作成日(&amp;d):</translation>
     </message>
     <message>
       <source/>
@@ -2031,10 +1790,6 @@ Specify another directory, please.</source>
     <message>
       <source>Open in browser</source>
       <translation>ブラウザで開く</translation>
-    </message>
-    <message>
-      <source>Program version:</source>
-      <translation>プログラムのバージョン:</translation>
     </message>
   </context>
   <context>
@@ -2100,6 +1855,18 @@ Specify another directory, please.</source>
       <translation>リンク</translation>
     </message>
     <message>
+      <source>Show all object types</source>
+      <translation>全てのオブジェクトタイプを表示</translation>
+    </message>
+    <message>
+      <source>No selection</source>
+      <translation>選択されていません</translation>
+    </message>
+    <message>
+      <source>Please select an object from the list</source>
+      <translation>リスト上のオブジェクトを選択してください。</translation>
+    </message>
+    <message>
       <source>Search</source>
       <translation>検索　</translation>
     </message>
@@ -2108,24 +1875,8 @@ Specify another directory, please.</source>
       <translation>上記結果をフィルター処理するための検索パターン</translation>
     </message>
     <message>
-      <source>Filter by type</source>
-      <translation>タイプでフィルタリング</translation>
-    </message>
-    <message>
-      <source>Sync sub-object selection</source>
-      <translation>サブオブジェクト選択と動機</translation>
-    </message>
-    <message>
-      <source>Reset</source>
-      <translation>リセット</translation>
-    </message>
-    <message>
-      <source>Clear</source>
-      <translation>クリア</translation>
-    </message>
-    <message>
-      <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
-      <translation type="unfinished">If enabled, then 3D view selection will be synchronized with full object hierarchy.</translation>
+      <source>None (Remove link)</source>
+      <translation>無し（リンクを削除）</translation>
     </message>
   </context>
   <context>
@@ -2164,7 +1915,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Warnings:</source>
-      <translation>警告:</translation>
+      <translation>警告メッセージ:</translation>
     </message>
     <message>
       <source>Errors:</source>
@@ -2185,96 +1936,6 @@ Specify another directory, please.</source>
     <message>
       <source>Python interpreter</source>
       <translation>Python インタプリター</translation>
-    </message>
-    <message>
-      <source>Log messages will be recorded</source>
-      <translation>ログメッセージが記録されます。</translation>
-    </message>
-    <message>
-      <source>Warnings will be recorded</source>
-      <translation>警告が記録されます。</translation>
-    </message>
-    <message>
-      <source>Error messages will be recorded</source>
-      <translation>エラーメッセージが記録されます。</translation>
-    </message>
-    <message>
-      <source>When an error has occurred, the Report View dialog becomes visible
-on-screen while displaying the error</source>
-      <translation>エラーが生じた場合に、レポートビューダイアログがスクリーンに現れてエラーを表示します。</translation>
-    </message>
-    <message>
-      <source>Show report view on error</source>
-      <translation>エラー時にレポートビューを表示</translation>
-    </message>
-    <message>
-      <source>When a warning has occurred, the Report View dialog becomes visible
-on-screen while displaying the warning</source>
-      <translation>警告が生じた場合に、レポートビューダイアログがスクリーンに現れて警告を表示します。</translation>
-    </message>
-    <message>
-      <source>Show report view on warning</source>
-      <translation>警告時にレポートビューを表示</translation>
-    </message>
-    <message>
-      <source>When a normal message has occurred, the Report View dialog becomes visible
-on-screen while displaying the message</source>
-      <translation>通常メッセージが生じた場合に、レポートビューダイアログがスクリーンに現れてメッセージを表示します。</translation>
-    </message>
-    <message>
-      <source>Show report view on normal message</source>
-      <translation>通常メッセージ時にレポートビューを表示</translation>
-    </message>
-    <message>
-      <source>When a log message has occurred, the Report View dialog becomes visible
-on-screen while displaying the log message</source>
-      <translation>ログメッセージが生じた場合に、レポートビューダイアログがスクリーンに現れてログメッセージを表示します。</translation>
-    </message>
-    <message>
-      <source>Show report view on log message</source>
-      <translation>ログメッセージ時にレポートビューを表示</translation>
-    </message>
-    <message>
-      <source>Font color for normal messages in Report view panel</source>
-      <translation>レポートビューパネルでの通常メッセージのフォント色</translation>
-    </message>
-    <message>
-      <source>Font color for log messages in Report view panel</source>
-      <translation>レポートビューパネルでのログメッセージのフォント色</translation>
-    </message>
-    <message>
-      <source>Font color for warning messages in Report view panel</source>
-      <translation>レポートビューパネルでの警告メッセージのフォント色</translation>
-    </message>
-    <message>
-      <source>Font color for error messages in Report view panel</source>
-      <translation>レポートビューパネルでのエラーメッセージのフォント色</translation>
-    </message>
-    <message>
-      <source>Internal Python output will be redirected
-from Python console to Report view panel</source>
-      <translation>内部のPythonの出力がPythonコンソールからレポートビューパネルにリダイレクトされます</translation>
-    </message>
-    <message>
-      <source>Internal Python error messages will be redirected
-from Python console to Report view panel</source>
-      <translation>内部のPythonのエラーメッセージがPythonコンソールからレポートビューパネルにリダイレクトされます</translation>
-    </message>
-    <message>
-      <source>Include a timecode for each report</source>
-      <translation>各レポートのタイムコードを含める</translation>
-    </message>
-    <message>
-      <source>Include a timecode for each entry</source>
-      <translation>各エントリにタイムコードを含める</translation>
-    </message>
-    <message>
-      <source>Normal messages will be recorded</source>
-      <translation>通常メッセージが記録されます。</translation>
-    </message>
-    <message>
-      <source>Record normal messages</source>
-      <translation>通常メッセージを記録</translation>
     </message>
   </context>
   <context>
@@ -2323,6 +1984,10 @@ from Python console to Report view panel</source>
       <translation>3D ビュー</translation>
     </message>
     <message>
+      <source>3D View settings</source>
+      <translation>3D ビューの設定</translation>
+    </message>
+    <message>
       <source>Show coordinate system in the corner</source>
       <translation>ウィンドウの隅に座標系を表示</translation>
     </message>
@@ -2331,12 +1996,60 @@ from Python console to Report view panel</source>
       <translation>1 秒あたりのフレーム数のカウンターを表示</translation>
     </message>
     <message>
+      <source>Enable animation</source>
+      <translation>アニメーションを有効</translation>
+    </message>
+    <message>
+      <source>Eye to eye distance for stereo modes:</source>
+      <translation>視点間の距離　ステレオモード時:</translation>
+    </message>
+    <message>
       <source>Camera type</source>
       <translation>カメラの種類</translation>
     </message>
     <message>
       <source/>
       <translation>[empty string]</translation>
+    </message>
+    <message>
+      <source>3D Navigation</source>
+      <translation>3Dナビゲーション</translation>
+    </message>
+    <message>
+      <source>Mouse...</source>
+      <translation>マウス...</translation>
+    </message>
+    <message>
+      <source>Intensity of backlight</source>
+      <translation>バックライトの強度</translation>
+    </message>
+    <message>
+      <source>Enable backlight color</source>
+      <translation>バックライトの色を有効</translation>
+    </message>
+    <message>
+      <source>Orbit style</source>
+      <translation>軌道スタイル</translation>
+    </message>
+    <message>
+      <source>Turntable</source>
+      <translation>ターン テーブル</translation>
+    </message>
+    <message>
+      <source>Trackball</source>
+      <translation>トラックボール</translation>
+    </message>
+    <message>
+      <source>Invert zoom</source>
+      <translation>ズームを反転</translation>
+    </message>
+    <message>
+      <source>Zoom at cursor</source>
+      <translation>カーソルの位置にズーム</translation>
+    </message>
+    <message>
+      <source>Zoom step</source>
+      <translation>ズーム量</translation>
     </message>
     <message>
       <source>Anti-Aliasing</source>
@@ -2371,164 +2084,52 @@ from Python console to Report view panel</source>
       <translation>透視投影レンダリング(&amp;g)</translation>
     </message>
     <message>
+      <source>Show navigation cube</source>
+      <translation>ナビゲーションキューブを表示</translation>
+    </message>
+    <message>
+      <source>Corner</source>
+      <translation>コーナー</translation>
+    </message>
+    <message>
+      <source>Top left</source>
+      <translation>左上</translation>
+    </message>
+    <message>
+      <source>Top right</source>
+      <translation>右上</translation>
+    </message>
+    <message>
+      <source>Bottom left</source>
+      <translation>左下</translation>
+    </message>
+    <message>
+      <source>Bottom right</source>
+      <translation>右下</translation>
+    </message>
+    <message>
+      <source>Use OpenGL Vertex Buffer Object</source>
+      <translation>OpenGL 頂点バッファー オブジェクトを使用。</translation>
+    </message>
+    <message>
+      <source>New Document Camera Orientation</source>
+      <translation>新しいドキュメントのカメラの向き</translation>
+    </message>
+    <message>
+      <source>Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</source>
+      <translation>ピンチズーム時のビューのチルトを防ぎます。ジェスチャーナビゲーションスタイルに対してのみ有効です。この設定ではマウスでのチルトは無効化されません。</translation>
+    </message>
+    <message>
+      <source>Disable touchscreen tilt gesture</source>
+      <translation>タッチスクリーンのチルトジェスチャーを無効化</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation>カーソルでドラッグ</translation>
+    </message>
+    <message>
       <source>Marker size:</source>
       <translation>マーカーサイズ:</translation>
-    </message>
-    <message>
-      <source>General</source>
-      <translation>標準</translation>
-    </message>
-    <message>
-      <source>Main coordinate system will always be shown in
-lower right corner within opened files</source>
-      <translation>メイン座標系が開かれたファイルの右下に常に表示されます。</translation>
-    </message>
-    <message>
-      <source>Time needed for last operation and resulting frame rate
-will be shown at the lower left corner in opened files</source>
-      <translation>最後の操作に要した時間と結果表示のフレームレートが開かれたファイルの左下に表示されます。</translation>
-    </message>
-    <message>
-      <source>If checked, application will remember which workbench is active for each tab of the viewport</source>
-      <translation>チェックした場合、ビューポートの各タブでどのワークベンチがアクティブかをアプリケーションが記憶します。</translation>
-    </message>
-    <message>
-      <source>Remember active workbench by tab</source>
-      <translation>タブでのアクティブなワークベンチを記憶</translation>
-    </message>
-    <message>
-      <source>Rendering</source>
-      <translation>レンダリング</translation>
-    </message>
-    <message>
-      <source>If selected, Vertex Buffer Objects (VBO) will be used.
-A VBO is an OpenGL feature that provides methods for uploading
-vertex data (position, normal vector, color, etc.) to the graphics card.
-VBOs offer substantial performance gains because the data resides
-in the graphics memory rather than the system memory and so it
-can be rendered directly by GPU. 
-
-Note: Sometimes this feature may lead to a host of different
-issues ranging from graphical anomalies to GPU crash bugs. Remember to
-report this setting as enabled when seeking support on the FreeCAD forums</source>
-      <translation>選択した場合、頂点バッファオブジェクト (VBO) が使用されます。
-VBOはOpenGLの機能で、頂点データ (位置、法線ベクトル、色など) をグラフィックカードへアップロードするためのメソッドを提供します。データがシステムメモリーではなくグラフィックメモリーに配置され、GPUで直接レンダリングされるようになるので、VBO によってかなりのパフォーマンス改善を実現できます。
-
-注意: この機能を使用すると描画の異常やGPUをクラッシュさせる不具合といった様々な問題が起きる場合があります。FreeCADフォーラムでサポートを受ける場合はこの設定を有効にしていることを忘れずに報告してください。</translation>
-    </message>
-    <message>
-      <source>Use OpenGL VBO (Vertex Buffer Object)</source>
-      <translation>OpenGL VBO（頂点バッファーオブジェクト）を使用</translation>
-    </message>
-    <message>
-      <source>Render cache</source>
-      <translation>レンダリングのキャッシュ</translation>
-    </message>
-    <message>
-      <source>'Render Caching' is another way to say 'Rendering Acceleration'.
-There are 3 options available to achieve this: 
-1) 'Auto' (default), let Coin3D decide where to cache.
-2) 'Distributed', manually turn on cache for all view provider root node.
-3) 'Centralized', manually turn off cache in all nodes of all view provider, and
-only cache at the scene graph root node. This offers the fastest rendering speed
-but slower response to any scene changes.</source>
-      <translation>「レンダリングのキャッシュ」は「レンダリング・アクセラレーション」の別名です。
-これを行うためには3つの選択肢があります: 
-1) '自動' (デフォルト) どこでキャッシュを行うかをCoin3Dに決めさせます。
-2) '分散' 全てのビュープロバイダーのルートノードでのキャッシュを手動で無効にします。
-3) '集中'  全てのビュープロバイダーの全てのノードでのキャッシュを手動で無効にし、シーングラフのルートノードでのみキャッシュさせます。この設定を使うとレンダリング速度は最速になりますが、シーン変更での応答は遅くなります。</translation>
-    </message>
-    <message>
-      <source>Auto</source>
-      <translation>自動</translation>
-    </message>
-    <message>
-      <source>Distributed</source>
-      <translation>分散</translation>
-    </message>
-    <message>
-      <source>Centralized</source>
-      <translation>集中</translation>
-    </message>
-    <message>
-      <source>What kind of multisample anti-aliasing is used </source>
-      <translation>使用されているマルチサンプル・アンチエイリアスの種類</translation>
-    </message>
-    <message>
-      <source>Transparent objects:</source>
-      <translation>透明オブジェクト:</translation>
-    </message>
-    <message>
-      <source>Render types of transparent objects</source>
-      <translation>透明オブジェクトのレンダータイプ</translation>
-    </message>
-    <message>
-      <source>One pass</source>
-      <translation type="unfinished">One pass</translation>
-    </message>
-    <message>
-      <source>Backface pass</source>
-      <translation type="unfinished">Backface pass</translation>
-    </message>
-    <message>
-      <source>Size of vertices in the Sketcher workbench</source>
-      <translation>スケッチャーワークベンチでの頂点のサイズ</translation>
-    </message>
-    <message>
-      <source>Eye to eye distance for stereo modes</source>
-      <translation>ステレオモードでの目と目の間の距離　</translation>
-    </message>
-    <message>
-      <source>Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed. </source>
-      <translation>ステレオ投影で使用される目と目の間の距離。
-現在表示されている 3D オブジェクトのバウンディングボックスサイズと掛け合わされる係数の値を指定します。</translation>
-    </message>
-    <message>
-      <source>Backlight is enabled with the defined color</source>
-      <translation>定義された色でバックライトが有効になります。</translation>
-    </message>
-    <message>
-      <source>Backlight color</source>
-      <translation>バックライトの色</translation>
-    </message>
-    <message>
-      <source>Intensity</source>
-      <translation>強度</translation>
-    </message>
-    <message>
-      <source>Intensity of the backlight</source>
-      <translation>バックライトの強度</translation>
-    </message>
-    <message>
-      <source>Objects will be projected in orthographic projection</source>
-      <translation>オブジェクトは正投影で投影されます。</translation>
-    </message>
-    <message>
-      <source>Objects will appear in a perspective projection</source>
-      <translation>オブジェクトは透視投影で表示されます。</translation>
-    </message>
-    <message>
-      <source>Axis cross will be shown by default at file
-opening or creation</source>
-      <translation>ファイルを開くまたは作成する際に、既定で交差軸が表示されます</translation>
-    </message>
-    <message>
-      <source>Show axis cross by default</source>
-      <translation>既定で交差軸を表示</translation>
-    </message>
-    <message>
-      <source>Pick radius (px):</source>
-      <translation>ピック半径（px）:</translation>
-    </message>
-    <message>
-      <source>Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.
-               </source>
-      <translation type="unfinished">Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.
-               </translation>
     </message>
   </context>
   <context>
@@ -2564,6 +2165,46 @@ Larger value eases to pick things, but can make small features impossible to sel
     <message>
       <source>15px</source>
       <translation>15px</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>アイソメトリック</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>ダイメトリック</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>不等角投影図法</translation>
+    </message>
+    <message>
+      <source>Top</source>
+      <translation>上面図</translation>
+    </message>
+    <message>
+      <source>Front</source>
+      <translation>正面図</translation>
+    </message>
+    <message>
+      <source>Left</source>
+      <translation>左面図</translation>
+    </message>
+    <message>
+      <source>Right</source>
+      <translation>右面図</translation>
+    </message>
+    <message>
+      <source>Rear</source>
+      <translation>背面図</translation>
+    </message>
+    <message>
+      <source>Bottom</source>
+      <translation>底面</translation>
+    </message>
+    <message>
+      <source>Custom</source>
+      <translation>色の編集</translation>
     </message>
   </context>
   <context>
@@ -2705,7 +2346,7 @@ Larger value eases to pick things, but can make small features impossible to sel
     </message>
     <message>
       <source>Save thumbnail into project file when saving document</source>
-      <translation>ドキュメントを保存する時にサムネイルをプロジェクトファイルに保存</translation>
+      <translation>ドキュメントを保存するときにサムネールをプロジェクトファイルに保存</translation>
     </message>
     <message>
       <source>Maximum number of backup files to keep when resaving document</source>
@@ -2736,6 +2377,14 @@ Larger value eases to pick things, but can make small features impossible to sel
       <translation>作成者</translation>
     </message>
     <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name to use on document creation.&lt;/p&gt;&lt;p&gt;Keep blank for anonymous.&lt;/p&gt;&lt;p&gt;You can also use the form:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;名前はドキュメント作成に用いられます。&lt;/p&gt;&lt;p&gt;空欄のままだと匿名。&lt;/p&gt;&lt;p&gt;また、フォームを使用することもできます：&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>If this is checked, the "Last modified by" field will be set when saving the file</source>
+      <translation>チェックするとファイル保存時に「最終更新者」フィールドがセットされます</translation>
+    </message>
+    <message>
       <source>Set on save</source>
       <translation>保存時に設定</translation>
     </message>
@@ -2748,8 +2397,36 @@ Larger value eases to pick things, but can make small features impossible to sel
       <translation>既定のライセンス</translation>
     </message>
     <message>
+      <source>The default license for new documents</source>
+      <translation>新規ドキュメントにおける既定ライセンス</translation>
+    </message>
+    <message>
       <source>All rights reserved</source>
       <translation>著作権表示</translation>
+    </message>
+    <message>
+      <source>CreativeCommons Attribution</source>
+      <translation>クリエイティブコモンズ（帰属の表示）</translation>
+    </message>
+    <message>
+      <source>CreativeCommons Attribution-ShareAlike</source>
+      <translation>クリエイティブコモンズ（帰属の継承）</translation>
+    </message>
+    <message>
+      <source>CreativeCommons Attribution-NoDerivatives</source>
+      <translation>クリエイティブコモンズ（帰属と改変禁止）</translation>
+    </message>
+    <message>
+      <source>CreativeCommons Attribution-NonCommercial</source>
+      <translation>クリエイティブコモンズ（非営利のみに限定）</translation>
+    </message>
+    <message>
+      <source>CreativeCommons Attribution-NonCommercial-ShareAlike</source>
+      <translation>クリエイティブコモンズ（帰属表示と非営利に限定した許諾）</translation>
+    </message>
+    <message>
+      <source>CreativeCommons Attribution-NonCommercial-NoDerivatives</source>
+      <translation>クリエイティブコモンズ（帰属表示と非営利限定および改変禁止）</translation>
     </message>
     <message>
       <source>Public Domain</source>
@@ -2768,6 +2445,10 @@ Larger value eases to pick things, but can make small features impossible to sel
       <translation>ライセンス URL</translation>
     </message>
     <message>
+      <source>The default company to use for new files</source>
+      <translation>新規ファイルに使用するデフォルトの会社名</translation>
+    </message>
+    <message>
       <source>Run AutoRecovery at startup</source>
       <translation>起動時に自動修復を実行</translation>
     </message>
@@ -2780,155 +2461,8 @@ Larger value eases to pick things, but can make small features impossible to sel
       <translation>生成されたサムネイルにプログラムのロゴを追加</translation>
     </message>
     <message>
-      <source>The application will create a new document when started</source>
-      <translation>起動時にアプリケーションは新規ドキュメントを作成します。</translation>
-    </message>
-    <message>
-      <source>Compression level for FCStd files</source>
-      <translation>FCStd ファイルの圧縮レベル</translation>
-    </message>
-    <message>
-      <source>All changes in documents are stored so that they can be undone/redone</source>
-      <translation>元に戻す/やり直しをできるようにドキュメントでの全ての変更を保持</translation>
-    </message>
-    <message>
-      <source>How many Undo/Redo steps should be recorded</source>
-      <translation>記録される「元に戻す/やり直し」のステップ数</translation>
-    </message>
-    <message>
-      <source>Allow user aborting document recomputation by pressing ESC.
-This feature may slightly increase recomputation time.</source>
-      <translation>ESC を押してドキュメントの再計算の破棄をできるようにするかどうか。
-この機能を使用すると再計算時間がわずかに増加する可能性があります。</translation>
-    </message>
-    <message>
-      <source>Allow aborting recomputation</source>
-      <translation>再計算の破棄を許可</translation>
-    </message>
-    <message>
-      <source>If there is a recovery file available the application will
-automatically run a file recovery when it is started.</source>
-      <translation>利用可能な復旧用ファイルがある場合、アプリケーションは起動時に復旧するファイルを自動的に読み込みます。</translation>
-    </message>
-    <message>
-      <source>How often a recovery file is written</source>
-      <translation>復旧用ファイルの書き込み頻度</translation>
-    </message>
-    <message>
-      <source>A thumbnail will be stored when document is saved</source>
-      <translation>ドキュメントを保存する時にサムネイルが保存されます。</translation>
-    </message>
-    <message>
-      <source>Size</source>
-      <translation>サイズ</translation>
-    </message>
-    <message>
-      <source>Sets the size of the thumbnail that is stored in the document.
-Common sizes are 128, 256 and 512</source>
-      <translation>ドキュメント内に保存されるサムネイルのサイズ設定。
-一般的なサイズは128、256、512です。</translation>
-    </message>
-    <message>
-      <source>The program logo will be added to the thumbnail</source>
-      <translation>サムネイルにプログラムのロゴが追加されます。</translation>
-    </message>
-    <message>
-      <source>How many backup files will be kept when saving document</source>
-      <translation>ドキュメント保存時にいくつのバックアップファイルを保持するか。</translation>
-    </message>
-    <message>
-      <source>Backup files will get extension '.FCbak' and file names
-get date suffix according to the specified format</source>
-      <translation>バックアップファイルには拡張子「.FCbak」が付けられ、ファイル名には指定された形式に従って日付サファイックスが追加されます。</translation>
-    </message>
-    <message>
-      <source>Use date and FCBak extension</source>
-      <translation>日付とFCBakの拡張子を使用</translation>
-    </message>
-    <message>
-      <source>Date format</source>
-      <translation>日付のフォーマット</translation>
-    </message>
-    <message>
-      <source>Allow objects to have same label/name</source>
-      <translation>オブジェクトが同じラベル/名前を持つことを許可</translation>
-    </message>
-    <message>
-      <source>Enable partial loading of external linked documents.
-Then only referenced objects and their dependencies will be loaded
-when a linked document is auto-opened together with the main document.
-A partially loaded document cannot be edited. Double click the document
-icon in the tree view to fully reload it.</source>
-      <translation>外部リンクドキュメントの部分読み込みを有効化。
-メインドキュメントと共にリンクされたドキュメントが自動で開かれた時に参照されているオブジェクトとその依存先のみが読み込まれます。
-部分読み込みされたドキュメントは編集できません。ツリービューのドキュメントアイコンをダブルクリックすると全体が再読み込みされます。</translation>
-    </message>
-    <message>
-      <source>Disable partial loading of external linked objects</source>
-      <translation>外部リンクオブジェクトの部分読み込みを無効化</translation>
-    </message>
-    <message>
-      <source>All documents that will be created will get the specified author name.
-Keep blank for anonymous.
-You can also use the form: John Doe &lt;john@doe.com&gt;</source>
-      <translation>作成される全てのドキュメントに指定された作成者名が設定されます。
-匿名の場合は空欄のままにしてください。
-John Doe &lt;john@doe.com&gt; 形式を使用することもできます。</translation>
-    </message>
-    <message>
-      <source>The field 'Last modified by' will be set to specified author when saving the file</source>
-      <translation>ファイルの保存時に「最終更新者」フィールドに指定された作成者が設定されます</translation>
-    </message>
-    <message>
-      <source>Default company name to use for new files</source>
-      <translation>新規ファイルに使用するデフォルトの会社名</translation>
-    </message>
-    <message>
-      <source>Default license for new documents</source>
-      <translation>新規ドキュメントにおけるデフォルトのライセンス</translation>
-    </message>
-    <message>
-      <source>Creative Commons Attribution</source>
-      <translation>クリエイティブ・コモンズ (表示)</translation>
-    </message>
-    <message>
-      <source>Creative Commons Attribution-ShareAlike</source>
-      <translation>クリエイティブ・コモンズ (表示 - 継承)</translation>
-    </message>
-    <message>
-      <source>Creative Commons Attribution-NoDerivatives</source>
-      <translation>クリエイティブ・コモンズ (表示 - 改変禁止)</translation>
-    </message>
-    <message>
-      <source>Creative Commons Attribution-NonCommercial</source>
-      <translation>クリエイティブ・コモンズ (表示 - 非営利)</translation>
-    </message>
-    <message>
-      <source>Creative Commons Attribution-NonCommercial-ShareAlike</source>
-      <translation>クリエイティブ・コモンズ (表示 - 非営利 - 継承)</translation>
-    </message>
-    <message>
-      <source>Creative Commons Attribution-NonCommercial-NoDerivatives</source>
-      <translation>クリエイティブ・コモンズ (表示 - 非営利 - 改変禁止)</translation>
-    </message>
-    <message>
-      <source>URL describing more about the license</source>
-      <translation>ライセンスについてさらに詳しく説明した URL</translation>
-    </message>
-  </context>
-  <context>
-    <name>Gui::Dialog::DlgSettingsDocumentImp</name>
-    <message>
-      <source>The format of the date to use.</source>
-      <translation>使用する日付のフォーマット</translation>
-    </message>
-    <message>
-      <source>Default</source>
-      <translation>デフォルト</translation>
-    </message>
-    <message>
-      <source>Format</source>
-      <translation>フォーマット</translation>
+      <source>A URL where the user can find more details about the license</source>
+      <translation>この URL でユーザーはライセンスについての詳細を確認できます。</translation>
     </message>
   </context>
   <context>
@@ -3053,6 +2587,82 @@ John Doe &lt;john@doe.com&gt; 形式を使用することもできます。</tra
       <translation>アイコン 128 × 128</translation>
     </message>
     <message>
+      <source>CGA       320 x 200</source>
+      <translation>CGA 320 x 200</translation>
+    </message>
+    <message>
+      <source>QVGA     320 x 240</source>
+      <translation>QVGA 320 x 240</translation>
+    </message>
+    <message>
+      <source>VGA       640 x 480</source>
+      <translation>VGA 640 x 480</translation>
+    </message>
+    <message>
+      <source>NTSC     720 x 480</source>
+      <translation>NTSC 720 x 480</translation>
+    </message>
+    <message>
+      <source>PAL        768 x 578</source>
+      <translation>PAL 768 x 578</translation>
+    </message>
+    <message>
+      <source>SVGA     800 x 600</source>
+      <translation>SVGA 800 x 600</translation>
+    </message>
+    <message>
+      <source>XGA       1024 x 768</source>
+      <translation>XGA 1024 x 768</translation>
+    </message>
+    <message>
+      <source>HD720   1280 x 720</source>
+      <translation>HD720 1280 × 720</translation>
+    </message>
+    <message>
+      <source>SXGA     1280 x 1024</source>
+      <translation>SXGA 1280 x 1024</translation>
+    </message>
+    <message>
+      <source>SXGA+   1400 x 1050</source>
+      <translation>SXGA + 1400 x 1050</translation>
+    </message>
+    <message>
+      <source>UXGA     1600 x 1200</source>
+      <translation>UXGA 1600 x 1200</translation>
+    </message>
+    <message>
+      <source>HD1080 1920 x 1080</source>
+      <translation>HD1080 1920 × 1080</translation>
+    </message>
+    <message>
+      <source>WUXGA  1920 x 1200</source>
+      <translation>WUXGA 1920 x 1200</translation>
+    </message>
+    <message>
+      <source>QXGA     2048 x 1538</source>
+      <translation>QXGA 2048 x 1651</translation>
+    </message>
+    <message>
+      <source>WQXGA  2560 x 1600</source>
+      <translation>WQXGA 2560 x 1600</translation>
+    </message>
+    <message>
+      <source>QSXGA   2560 x 2048</source>
+      <translation>QSXGA 2560 x 2048</translation>
+    </message>
+    <message utf8="true">
+      <source>QUXGA   3200 × 2400</source>
+      <translation>QUXGA 3200 × 2400</translation>
+    </message>
+    <message utf8="true">
+      <source>HUXGA   6400 × 4800</source>
+      <translation>HUXGA 6400 × 4800</translation>
+    </message>
+    <message>
+      <source>!!!          10000 x 10000</source>
+      <translation>!!!10000 x 10000</translation>
+    </message>
+    <message>
       <source>Standard sizes:</source>
       <translation>標準サイズ:</translation>
     </message>
@@ -3116,33 +2726,6 @@ John Doe &lt;john@doe.com&gt; 形式を使用することもできます。</tra
       <source>Add watermark</source>
       <translation>ウォーターマークを追加</translation>
     </message>
-    <message>
-      <source>Creation method:</source>
-      <translation>作成方法:</translation>
-    </message>
-  </context>
-  <context>
-    <name>Gui::Dialog::DlgSettingsImageImp</name>
-    <message>
-      <source>Offscreen (New)</source>
-      <translation>オフスクリーン (新)</translation>
-    </message>
-    <message>
-      <source>Offscreen (Old)</source>
-      <translation>オフスクリーン (旧)</translation>
-    </message>
-    <message>
-      <source>Framebuffer (custom)</source>
-      <translation>フレームバッファ (カスタム)</translation>
-    </message>
-    <message>
-      <source>Framebuffer (as is)</source>
-      <translation>フレームバッファ (そのまま)</translation>
-    </message>
-    <message>
-      <source>Pixel buffer</source>
-      <translation>ピクセルバッファ</translation>
-    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsMacro</name>
@@ -3194,250 +2777,6 @@ John Doe &lt;john@doe.com&gt; 形式を使用することもできます。</tra
       <source>Record GUI commands</source>
       <translation>GUI コマンドの記録</translation>
     </message>
-    <message>
-      <source>Variables defined by macros are created as local variables</source>
-      <translation>マクロで定義された変数はローカル変数として作成されます</translation>
-    </message>
-    <message>
-      <source>Commands executed by macro scripts are shown in Python console</source>
-      <translation>マクロスクリプトで実行されるコマンドは Python コンソールに表示されます</translation>
-    </message>
-    <message>
-      <source>Recorded macros will also contain user interface commands</source>
-      <translation>記録されたマクロには、ユーザーインターフェイス・コマンドも含まれます</translation>
-    </message>
-    <message>
-      <source>Recorded macros will also contain user interface commands as comments</source>
-      <translation>記録されたマクロには、コメントとしてユーザー インターフェイス・コマンドも含まれます</translation>
-    </message>
-    <message>
-      <source>The directory in which the application will search for macros</source>
-      <translation>アプリケーションがマクロを検索するディレクトリ</translation>
-    </message>
-    <message>
-      <source>Recent macros menu</source>
-      <translation type="unfinished">Recent macros menu</translation>
-    </message>
-    <message>
-      <source>Size of recent macro list</source>
-      <translation type="unfinished">Size of recent macro list</translation>
-    </message>
-    <message>
-      <source>How many macros should be listed in recent macros list</source>
-      <translation type="unfinished">How many macros should be listed in recent macros list</translation>
-    </message>
-    <message>
-      <source>Shortcut count</source>
-      <translation type="unfinished">Shortcut count</translation>
-    </message>
-    <message>
-      <source>How many recent macros should have shortcuts</source>
-      <translation type="unfinished">How many recent macros should have shortcuts</translation>
-    </message>
-    <message>
-      <source>Keyboard Modifiers</source>
-      <translation type="unfinished">Keyboard Modifiers</translation>
-    </message>
-    <message>
-      <source>Keyboard modifiers, default = Ctrl+Shift+</source>
-      <translation type="unfinished">Keyboard modifiers, default = Ctrl+Shift+</translation>
-    </message>
-  </context>
-  <context>
-    <name>Gui::Dialog::DlgSettingsNavigation</name>
-    <message>
-      <source>Navigation</source>
-      <translation>ナビゲーション</translation>
-    </message>
-    <message>
-      <source>Navigation cube</source>
-      <translation>ナビゲーションキューブ</translation>
-    </message>
-    <message>
-      <source>Steps by turn</source>
-      <translation>曲がり角のステップ数</translation>
-    </message>
-    <message>
-      <source>Number of steps by turn when using arrows (default = 8 : step angle = 360/8 = 45 deg)</source>
-      <translation>矢印使用時の曲がり角のステップ数 (デフォルトは8：ステップ角度 = 360/8 = 45度)</translation>
-    </message>
-    <message>
-      <source>Corner</source>
-      <translation>コーナー</translation>
-    </message>
-    <message>
-      <source>Corner where navigation cube is shown</source>
-      <translation>ナビゲーションキューブが表示される位置</translation>
-    </message>
-    <message>
-      <source>Top left</source>
-      <translation>左上</translation>
-    </message>
-    <message>
-      <source>Top right</source>
-      <translation>右上</translation>
-    </message>
-    <message>
-      <source>Bottom left</source>
-      <translation>左下</translation>
-    </message>
-    <message>
-      <source>Bottom right</source>
-      <translation>右下</translation>
-    </message>
-    <message>
-      <source>3D Navigation</source>
-      <translation>3Dナビゲーション</translation>
-    </message>
-    <message>
-      <source>List the mouse button configs for each chosen navigation setting.
-Select a set and then press the button to view said configurations.</source>
-      <translation>選択したナビゲーション設定ごとにマウスボタン設定をリスト表示。
-設定を選択し、ボタンを押すとその設定が表示されます。</translation>
-    </message>
-    <message>
-      <source>Mouse...</source>
-      <translation>マウス...</translation>
-    </message>
-    <message>
-      <source>Navigation settings set</source>
-      <translation>ナビゲーション設定</translation>
-    </message>
-    <message>
-      <source>Orbit style</source>
-      <translation>軌道スタイル</translation>
-    </message>
-    <message>
-      <source>Rotation orbit style.
-Trackball: moving the mouse horizontally will rotate the part around the y-axis
-Turntable: the part will be rotated around the z-axis.</source>
-      <translation>回転軌道スタイル。
-トラックボール: マウスを水平方向に動かすと、Y軸周りに部品が回転
-ターンテーブル: Z軸周りに部品が回転</translation>
-    </message>
-    <message>
-      <source>Turntable</source>
-      <translation>ターン テーブル</translation>
-    </message>
-    <message>
-      <source>Trackball</source>
-      <translation>トラックボール</translation>
-    </message>
-    <message>
-      <source>New document scale</source>
-      <translation>新しいドキュメントの尺度</translation>
-    </message>
-    <message>
-      <source>Sets camera zoom for new documents.
-The value is the diameter of the sphere to fit on the screen.</source>
-      <translation>新しいドキュメントのカメラズームを設定。
-値は画面にちょうど収まる球の直径。</translation>
-    </message>
-    <message>
-      <source>mm</source>
-      <translation>mm</translation>
-    </message>
-    <message>
-      <source>Enable animated rotations</source>
-      <translation>アニメーション回転を有効</translation>
-    </message>
-    <message>
-      <source>Enable animation</source>
-      <translation>アニメーションを有効</translation>
-    </message>
-    <message>
-      <source>Zoom operations will be performed at position of mouse pointer</source>
-      <translation>ズーム操作はマウスポインタの位置で実行されます</translation>
-    </message>
-    <message>
-      <source>Zoom at cursor</source>
-      <translation>カーソルの位置にズーム</translation>
-    </message>
-    <message>
-      <source>Zoom step</source>
-      <translation>ズーム量</translation>
-    </message>
-    <message>
-      <source>How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step. </source>
-      <translation>どの程度ズームを行うか。
-ズーム量「1」はズーム 1 段階ごとに 7.5 倍することを意味します。
- </translation>
-    </message>
-    <message>
-      <source>Direction of zoom operations will be inverted</source>
-      <translation>ズーム操作の方向を反転</translation>
-    </message>
-    <message>
-      <source>Invert zoom</source>
-      <translation>ズームを反転</translation>
-    </message>
-    <message>
-      <source>Prevents view tilting when pinch-zooming.
-Affects only gesture navigation style.
-Mouse tilting is not disabled by this setting.</source>
-      <translation>ピンチズーム時のビューのチルトを防ぎます。ジェスチャーナビゲーションスタイルに対してのみ有効です。この設定ではマウスでのチルトは無効化されません。</translation>
-    </message>
-    <message>
-      <source>Disable touchscreen tilt gesture</source>
-      <translation>タッチスクリーンのチルトジェスチャーを無効化</translation>
-    </message>
-    <message>
-      <source>Rotations in 3D will use current cursor position as center for rotation</source>
-      <translation>3D回転では現在のカーソル位置が回転中心として使用されます。</translation>
-    </message>
-    <message>
-      <source>Rotate at cursor</source>
-      <translation>カーソル位置で回転</translation>
-    </message>
-    <message>
-      <source>Isometric</source>
-      <translation>アイソメトリック</translation>
-    </message>
-    <message>
-      <source>Dimetric</source>
-      <translation>ダイメトリック</translation>
-    </message>
-    <message>
-      <source>Trimetric</source>
-      <translation>不等角投影図法</translation>
-    </message>
-    <message>
-      <source>Top</source>
-      <translation>上面図</translation>
-    </message>
-    <message>
-      <source>Front</source>
-      <translation>正面図</translation>
-    </message>
-    <message>
-      <source>Left</source>
-      <translation>左面図</translation>
-    </message>
-    <message>
-      <source>Right</source>
-      <translation>右面図</translation>
-    </message>
-    <message>
-      <source>Rear</source>
-      <translation>背面図</translation>
-    </message>
-    <message>
-      <source>Bottom</source>
-      <translation>底面</translation>
-    </message>
-    <message>
-      <source>Custom</source>
-      <translation>色の編集</translation>
-    </message>
-    <message>
-      <source>Default camera orientation</source>
-      <translation>デフォルトのカメラの向き</translation>
-    </message>
-    <message>
-      <source>Default camera orientation when creating a new document or selecting the home view</source>
-      <translation>新しいドキュメントを作成、またはホームビューを選択した場合のデフォルトのカメラの向き</translation>
-    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsUnits</name>
@@ -3477,17 +2816,30 @@ Mouse tilting is not disabled by this setting.</source>
       <source>Imperial decimal (in/lb)</source>
       <translation>英ヤード・ポンド法 (in/lb)</translation>
     </message>
-    <message>
+    <message utf8="true">
       <source>Building Euro (cm/m²/m³)</source>
       <translation>建築 ユーロ （cm/m²/m³）</translation>
+    </message>
+    <message>
+      <source>Building US (ft-in/sqft/cuft)</source>
+      <translation>建築 US （フィート-インチ/平方フィート/立法フィート）</translation>
     </message>
     <message>
       <source>Metric small parts &amp; CNC(mm, mm/min)</source>
       <translation>メートル法での小部品 &amp; CNC (mm、mm/分)</translation>
     </message>
     <message>
+      <source>Imperial Civil (ft/ft^2/ft^3)</source>
+      <translation>帝国単位系（ft/ft²/ft³）
+</translation>
+    </message>
+    <message>
       <source>Minimum fractional inch:</source>
       <translation>最小分数インチ:</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum fractional inch to display.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;表示するインチの最小分数値。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>1/2"</source>
@@ -3519,31 +2871,7 @@ Mouse tilting is not disabled by this setting.</source>
     </message>
     <message>
       <source>Unit system:</source>
-      <translation>単位系:</translation>
-    </message>
-    <message>
-      <source>Number of decimals that should be shown for numbers and dimensions</source>
-      <translation>数字と寸法の小数点以下の表示桁数</translation>
-    </message>
-    <message>
-      <source>Unit system that should be used for all parts the application</source>
-      <translation>アプリケーションのすべての部品で使用される単位系</translation>
-    </message>
-    <message>
-      <source>Minimum fractional inch to be displayed</source>
-      <translation>表示される最小分数インチ</translation>
-    </message>
-    <message>
-      <source>Building US (ft-in/sqft/cft)</source>
-      <translation>建築 US (ft-in/sqft/cft)</translation>
-    </message>
-    <message>
-      <source>Imperial for Civil Eng (ft, ft/sec)</source>
-      <translation>土木用 帝国単位 (ft, ft/sec)</translation>
-    </message>
-    <message>
-      <source>FEM (mm, N, sec)</source>
-      <translation type="unfinished">FEM (mm, N, sec)</translation>
+      <translation>単位システム</translation>
     </message>
   </context>
   <context>
@@ -3581,56 +2909,24 @@ Mouse tilting is not disabled by this setting.</source>
       <translation>単色</translation>
     </message>
     <message>
+      <source>Pick radius (px):</source>
+      <translation>ピック半径（px）:</translation>
+    </message>
+    <message>
+      <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
+      <translation>3Dビューでの要素ピックの判定領域を設定します。大きな値を設定するとピックしやすくなりますが、小さなフィーチャーの一部は選択できなくなる可能性があります。</translation>
+    </message>
+    <message>
+      <source>Tree View</source>
+      <translation>ツリービュー</translation>
+    </message>
+    <message>
       <source>Object being edited</source>
       <translation>編集中のオブジェクト</translation>
     </message>
     <message>
       <source>Active container</source>
       <translation>アクティブなコンテナー</translation>
-    </message>
-    <message>
-      <source>Enable preselection and highlight by specified color</source>
-      <translation>事前選択と指定色での強調表示を有効</translation>
-    </message>
-    <message>
-      <source>Enable selection highlighting and use specified color</source>
-      <translation>選択時の強調表示を有効にし、指定色を使用</translation>
-    </message>
-    <message>
-      <source>Background color for the model view</source>
-      <translation>モデルビューの背景色</translation>
-    </message>
-    <message>
-      <source>Background will have selected color</source>
-      <translation>選択した色が背景に使用されます。</translation>
-    </message>
-    <message>
-      <source>Color gradient will get selected color as middle color</source>
-      <translation>色グラデーションで選択した色が中間色となります。</translation>
-    </message>
-    <message>
-      <source>Bottom color</source>
-      <translation>下部色</translation>
-    </message>
-    <message>
-      <source>Background will have selected color gradient</source>
-      <translation>選択した色グラデーションが背景に使用されます。</translation>
-    </message>
-    <message>
-      <source>Top color</source>
-      <translation>上部色</translation>
-    </message>
-    <message>
-      <source>Tree view</source>
-      <translation>ツリービュー</translation>
-    </message>
-    <message>
-      <source>Background color for objects in tree view that are currently edited</source>
-      <translation>ツリービューでの編集中オブジェクトの背景色</translation>
-    </message>
-    <message>
-      <source>Background color for active containers in tree view</source>
-      <translation>ツリービューでのアクティブなコンテナーの背景色</translation>
     </message>
   </context>
   <context>
@@ -3659,6 +2955,14 @@ Mouse tilting is not disabled by this setting.</source>
       <translation>数値:</translation>
     </message>
     <message>
+      <source>Units:</source>
+      <translation>単位:</translation>
+    </message>
+    <message>
+      <source>Help</source>
+      <translation>ヘルプ</translation>
+    </message>
+    <message>
       <source>Copy</source>
       <translation>コピー</translation>
     </message>
@@ -3666,67 +2970,11 @@ Mouse tilting is not disabled by this setting.</source>
       <source>Close</source>
       <translation>閉じる</translation>
     </message>
-    <message>
-      <source>Input the source value and unit</source>
-      <translation>元となる値と単位を入力</translation>
-    </message>
-    <message>
-      <source>Input here the unit for the result</source>
-      <translation>結果の単位をここに入力</translation>
-    </message>
-    <message>
-      <source>Result</source>
-      <translation>結果</translation>
-    </message>
-    <message>
-      <source>List of last used calculations 
-To add a calculation press Return in the value input field</source>
-      <translation>最近使用した計算のリスト
-計算を追加するには値の入力フィールドでリターンキーを押します。</translation>
-    </message>
-    <message>
-      <source>Quantity</source>
-      <translation>数量</translation>
-    </message>
-    <message>
-      <source>Unit system:</source>
-      <translation>単位系:</translation>
-    </message>
-    <message>
-      <source>Unit system to be used for the Quantity
-The preference system is the one set in the general preferences.</source>
-      <translation>数量に使用する単位系
-単位系設定は標準設定で行います。</translation>
-    </message>
-    <message>
-      <source>Decimals:</source>
-      <translation>小数:</translation>
-    </message>
-    <message>
-      <source>Decimals for the Quantity</source>
-      <translation>小数点以下の桁数</translation>
-    </message>
-    <message>
-      <source>Unit category:</source>
-      <translation>単位の区分:</translation>
-    </message>
-    <message>
-      <source>Unit category for the Quantity</source>
-      <translation>数値の単位区分</translation>
-    </message>
-    <message>
-      <source>Copy the result into the clipboard</source>
-      <translation>結果をクリップボードにコピー</translation>
-    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
-      <source>unknown unit: </source>
-      <translation>不明な単位: </translation>
-    </message>
-    <message>
-      <source>unit mismatch</source>
+      <source>Unit mismatch</source>
       <translation>単位の不一致</translation>
     </message>
   </context>
@@ -3781,16 +3029,16 @@ The preference system is the one set in the general preferences.</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;選択されているアイテムを上に移動。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;アイテムが上に移動されます&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt;Note:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; The changes become active the next time you start FreeCAD&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt;Note:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; 変更は、次回 FreeCAD を起動するときにアクティブになります&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
       <source>Add all to enabled workbenches</source>
       <translation>有効なワークベンチに全て追加</translation>
     </message>
     <message>
       <source>&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</source>
       <translation>&lt;p&gt;ワークベンチの並べ替えを有効にする&lt;/p&gt;</translation>
-    </message>
-    <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt;Note:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; The changes become active the next time you start the application&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt;Note:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; 変更は、次回 アプリケーションを起動するときにアクティブになります&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -4084,6 +3332,10 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>折りたたむ</translation>
     </message>
     <message>
+      <source>Do really want to remove this parameter group?</source>
+      <translation>本当にこのパラメーターーのグループを削除しますか。</translation>
+    </message>
+    <message>
       <source>Existing sub-group</source>
       <translation>既存のサブグループ</translation>
     </message>
@@ -4106,10 +3358,6 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>Reading from '%1' failed.</source>
       <translation>'%1' からの読み取りに失敗しました。</translation>
-    </message>
-    <message>
-      <source>Do you really want to remove this parameter group?</source>
-      <translation>本当にこのパラメーターグループを削除しますか?</translation>
     </message>
   </context>
   <context>
@@ -4202,6 +3450,18 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>中心:</translation>
     </message>
     <message>
+      <source>Pitch:</source>
+      <translation>ピッチ:</translation>
+    </message>
+    <message>
+      <source>Roll:</source>
+      <translation>横回転:</translation>
+    </message>
+    <message>
+      <source>Yaw:</source>
+      <translation>縦回転:</translation>
+    </message>
+    <message>
       <source>Rotation axis with angle</source>
       <translation>回転軸と角度</translation>
     </message>
@@ -4224,6 +3484,10 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>There are input fields with incorrect input, please ensure valid placement values!</source>
       <translation>入力欄に不適切な入力がされています。適切な位置かどうか確認してください！</translation>
+    </message>
+    <message>
+      <source>Euler angles (XY'Z'')</source>
+      <translation>オイラー角 (XY'Z'')</translation>
     </message>
     <message>
       <source>Use center of mass</source>
@@ -4253,34 +3517,6 @@ The 'Status' column shows whether the document could be recovered.</source>
       <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
       <translation>このボタンをクリックする前に1つ、2つ、または3つの点を選択してください。 点は頂点、面、またはエッジ上にあります。面またはエッジ上の点を使用する場合は面またはエッジに沿ったマウス位置にある点を使います。1つの点を選択した場合には点が回転中心として使用されます。2つの点を選択した場合にはその中点が回転中心となり、必要に応じて新しいカスタム軸が作成されます。3つの点を選択した場合には1つ目の点が回転中心となり、3点によって定義される平面の法線となるベクトル上に配置されます。距離と角度の情報はレポートビューに表示されます。この情報はオブジェクトを配置する際に便利です。簡単のために Shift + クリックで適切な距離と角度がクリップボードにコピーされます。</translation>
     </message>
-    <message>
-      <source>Around y-axis:</source>
-      <translation>Y軸周り:</translation>
-    </message>
-    <message>
-      <source>Around z-axis:</source>
-      <translation>Z軸周り:</translation>
-    </message>
-    <message>
-      <source>Around x-axis:</source>
-      <translation>X軸周り:</translation>
-    </message>
-    <message>
-      <source>Rotation around the x-axis</source>
-      <translation>X軸周りの回転</translation>
-    </message>
-    <message>
-      <source>Rotation around the y-axis</source>
-      <translation>Y軸周りの回転</translation>
-    </message>
-    <message>
-      <source>Rotation around the z-axis</source>
-      <translation>Z軸周りの回転</translation>
-    </message>
-    <message>
-      <source>Euler angles (xy'z'')</source>
-      <translation>オイラー角度 (xy'z'')</translation>
-    </message>
   </context>
   <context>
     <name>Gui::Dialog::PrintModel</name>
@@ -4291,37 +3527,6 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>Command</source>
       <translation>コマンド</translation>
-    </message>
-  </context>
-  <context>
-    <name>Gui::Dialog::RemoteDebugger</name>
-    <message>
-      <source>Attach to remote debugger</source>
-      <translation>リモートデバッガーにアタッチ</translation>
-    </message>
-    <message>
-      <source>winpdb</source>
-      <translation>winpdb</translation>
-    </message>
-    <message>
-      <source>Password:</source>
-      <translation>パスワード:</translation>
-    </message>
-    <message>
-      <source>VS Code</source>
-      <translation>VS Code</translation>
-    </message>
-    <message>
-      <source>Address:</source>
-      <translation>アドレス:</translation>
-    </message>
-    <message>
-      <source>Port:</source>
-      <translation>ポート:</translation>
-    </message>
-    <message>
-      <source>Redirect output</source>
-      <translation>出力をリダイレクト</translation>
     </message>
   </context>
   <context>
@@ -4405,45 +3610,6 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
   </context>
   <context>
-    <name>Gui::DlgObjectSelection</name>
-    <message>
-      <source>Object selection</source>
-      <translation>オブジェクト選択</translation>
-    </message>
-    <message>
-      <source>The selected objects contain other dependencies. Please select which objects to export. All dependencies are auto selected by default.</source>
-      <translation>選択されているオブジェクトには他に依存が含まれています。どのオブジェクトをエクスポートするか選んでください。デフォルトでは全ての依存が自動選択されています。</translation>
-    </message>
-    <message>
-      <source>Dependency</source>
-      <translation>依存</translation>
-    </message>
-    <message>
-      <source>Document</source>
-      <translation>ドキュメント</translation>
-    </message>
-    <message>
-      <source>Name</source>
-      <translation>名前</translation>
-    </message>
-    <message>
-      <source>State</source>
-      <translation>状態</translation>
-    </message>
-    <message>
-      <source>Hierarchy</source>
-      <translation>階層</translation>
-    </message>
-    <message>
-      <source>Selected</source>
-      <translation>選択</translation>
-    </message>
-    <message>
-      <source>Partial</source>
-      <translation>部分</translation>
-    </message>
-  </context>
-  <context>
     <name>Gui::DlgTreeWidget</name>
     <message>
       <source>Dialog</source>
@@ -4459,18 +3625,18 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
   </context>
   <context>
-    <name>Gui::DockWnd::ComboView</name>
+    <name>Gui::DockWnd::CombiView</name>
     <message>
-      <source>Combo View</source>
-      <translation>コンボビュー</translation>
-    </message>
-    <message>
-      <source>Model</source>
-      <translation>モデル</translation>
+      <source>CombiView</source>
+      <translation>コンビビュー</translation>
     </message>
     <message>
       <source>Tasks</source>
       <translation>タスク</translation>
+    </message>
+    <message>
+      <source>Model</source>
+      <translation>モデル</translation>
     </message>
   </context>
   <context>
@@ -4482,6 +3648,18 @@ The 'Status' column shows whether the document could be recovered.</source>
   </context>
   <context>
     <name>Gui::DockWnd::ReportOutput</name>
+    <message>
+      <source>Logging</source>
+      <translation>ログ記録</translation>
+    </message>
+    <message>
+      <source>Warning</source>
+      <translation>警告</translation>
+    </message>
+    <message>
+      <source>Error</source>
+      <translation>エラー</translation>
+    </message>
     <message>
       <source>Options</source>
       <translation>オプション</translation>
@@ -4513,30 +3691,6 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>Plain Text Files</source>
       <translation>プレーンテキストファイル</translation>
-    </message>
-    <message>
-      <source>Display message types</source>
-      <translation>表示メッセージタイプ</translation>
-    </message>
-    <message>
-      <source>Normal messages</source>
-      <translation>通常メッセージ</translation>
-    </message>
-    <message>
-      <source>Log messages</source>
-      <translation>ログメッセージ</translation>
-    </message>
-    <message>
-      <source>Warnings</source>
-      <translation>警告</translation>
-    </message>
-    <message>
-      <source>Errors</source>
-      <translation>エラー</translation>
-    </message>
-    <message>
-      <source>Show report view on</source>
-      <translation>レポートビューを表示</translation>
     </message>
   </context>
   <context>
@@ -4628,10 +3782,6 @@ The 'Status' column shows whether the document could be recovered.</source>
       <source>Creates a standalone copy of this subshape in the document</source>
       <translation>ドキュメント内のこのサブシェイプの独立したコピーを作成</translation>
     </message>
-    <message>
-      <source>Picked object list</source>
-      <translation>選択オブジェクトのリスト</translation>
-    </message>
   </context>
   <context>
     <name>Gui::DocumentModel</name>
@@ -4701,20 +3851,6 @@ Do you want to save your changes?</source>
     </message>
   </context>
   <context>
-    <name>Gui::ExpressionLineEdit</name>
-    <message>
-      <source>Exact match</source>
-      <translation type="unfinished">Exact match</translation>
-    </message>
-  </context>
-  <context>
-    <name>Gui::ExpressionTextEdit</name>
-    <message>
-      <source>Exact match</source>
-      <translation type="unfinished">Exact match</translation>
-    </message>
-  </context>
-  <context>
     <name>Gui::FileChooser</name>
     <message>
       <source>Select a file</source>
@@ -4744,7 +3880,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>All files (*.*)</source>
-      <translation>全てのファイル (*.*)</translation>
+      <translation>すべてのファイル (*.*)</translation>
     </message>
   </context>
   <context>
@@ -4782,11 +3918,11 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</source>
-      <translation>画面を1本の指でドラッグするか、マウス左ボタンを押します。スケッチャーなどの編集モードではさらにALTキーを押しっぱなしにします。</translation>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
       <source>Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation>ピンチ（スクリーンに二本の指を置き、互いに離すようにドラッグ）、または中マウスボタンをスクロール、またはキーボードのPgUp/PgDownキーを押す。</translation>
+      <translation type="unfinished">Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -4867,7 +4003,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>Press middle mouse button</source>
-      <translation>マウスの中ボタンを押す</translation>
+      <translation>マウスの中央のボタンを押す</translation>
     </message>
     <message>
       <source>Press left mouse button</source>
@@ -4875,7 +4011,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>Scroll middle mouse button</source>
-      <translation>マウスの中ボタンをスクロールする</translation>
+      <translation>マウスの中央ボタンをスクロールする</translation>
     </message>
   </context>
   <context>
@@ -4969,18 +4105,13 @@ Do you want to save your changes?</source>
       <translation>すべて閉じる</translation>
     </message>
     <message>
-      <source>Unsaved document</source>
-      <translation>未保存のドキュメント</translation>
+      <source>Object dependencies</source>
+      <translation>オブジェクトの依存関係</translation>
     </message>
     <message>
-      <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
-      <translation>エクスポートされたオブジェクトには外部リンクがふくまれています。エクスポートの前に少なくとも一度ドキュメントを保存してください。</translation>
-    </message>
-    <message>
-      <source>To link to external objects, the document must be saved at least once.
-Do you want to save the document now?</source>
-      <translation>外部オブジェクトにリンクするにはドキュメントを少なくとも一度保存する必要があります。
-ドキュメントを保存しますか?</translation>
+      <source>The selected objects have a dependency to unselected objects.
+Do you want to copy them, too?</source>
+      <translation>選択したオブジェクトには未選択のオブジェクトに依存関係があります。同時に複製しますか？</translation>
     </message>
   </context>
   <context>
@@ -5167,41 +4298,17 @@ How do you want to proceed?</source>
     </message>
   </context>
   <context>
-    <name>Gui::PropertyEditor::LinkSelection</name>
+    <name>Gui::PropertyEditor::LinkListLabel</name>
     <message>
-      <source>Error</source>
-      <translation>エラー</translation>
-    </message>
-    <message>
-      <source>Object not found</source>
-      <translation>オブジェクトが見つかりません</translation>
+      <source>Change the linked objects</source>
+      <translation>リンクされたオブジェクトを変更</translation>
     </message>
   </context>
   <context>
     <name>Gui::PropertyEditor::PropertyEditor</name>
     <message>
-      <source>Edit</source>
-      <translation>編集</translation>
-    </message>
-    <message>
-      <source>property</source>
-      <translation>プロパティ</translation>
-    </message>
-    <message>
-      <source>Show all</source>
-      <translation>全て表示</translation>
-    </message>
-    <message>
-      <source>Add property</source>
-      <translation>プロパティの追加</translation>
-    </message>
-    <message>
-      <source>Remove property</source>
-      <translation>プロパティーの削除</translation>
-    </message>
-    <message>
-      <source>Expression...</source>
-      <translation>条件式...</translation>
+      <source>Edit %1</source>
+      <translation>%1を編集</translation>
     </message>
   </context>
   <context>
@@ -5219,7 +4326,7 @@ How do you want to proceed?</source>
     <name>Gui::PropertyView</name>
     <message>
       <source>View</source>
-      <translation>ビュー</translation>
+      <translation>表示</translation>
     </message>
     <message>
       <source>Data</source>
@@ -5309,14 +4416,6 @@ Do you want to exit without saving your data?</source>
       <source>All Files</source>
       <translation>すべてのファイル</translation>
     </message>
-    <message>
-      <source>Save history</source>
-      <translation>履歴の保存</translation>
-    </message>
-    <message>
-      <source>Saves Python history across %1 sessions</source>
-      <translation>%1 セッションでPythonの履歴を保存します</translation>
-    </message>
   </context>
   <context>
     <name>Gui::PythonEditor</name>
@@ -5345,21 +4444,6 @@ Do you want to exit without saving your data?</source>
     </message>
   </context>
   <context>
-    <name>Gui::RecentMacrosAction</name>
-    <message>
-      <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
-      <translation type="unfinished">Run macro %1 (Shift+click to edit) shortcut: %2</translation>
-    </message>
-    <message>
-      <source>File not found</source>
-      <translation>ファイルが見つかりませんでした</translation>
-    </message>
-    <message>
-      <source>The file '%1' cannot be opened.</source>
-      <translation>ファイル '%1' を開くことができませんでした。</translation>
-    </message>
-  </context>
-  <context>
     <name>Gui::RevitNavigationStyle</name>
     <message>
       <source>Press left mouse button</source>
@@ -5367,7 +4451,7 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
       <source>Press middle mouse button</source>
-      <translation>マウスの中ボタンを押す</translation>
+      <translation>マウスの中央のボタンを押す</translation>
     </message>
     <message>
       <source>Press SHIFT and middle mouse button</source>
@@ -5375,7 +4459,7 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
       <source>Scroll middle mouse button</source>
-      <translation>マウスの中ボタンをスクロールする</translation>
+      <translation>マウスの中央ボタンをスクロールする</translation>
     </message>
   </context>
   <context>
@@ -5496,45 +4580,6 @@ Do you want to specify another directory?</source>
     </message>
   </context>
   <context>
-    <name>Gui::TaskElementColors</name>
-    <message>
-      <source>Set element color</source>
-      <translation>要素の色を設定</translation>
-    </message>
-    <message>
-      <source>TextLabel</source>
-      <translation>テキストラベル</translation>
-    </message>
-    <message>
-      <source>Recompute after commit</source>
-      <translation>コミット後に再計算</translation>
-    </message>
-    <message>
-      <source>Remove</source>
-      <translation>削除</translation>
-    </message>
-    <message>
-      <source>Edit</source>
-      <translation>編集</translation>
-    </message>
-    <message>
-      <source>Remove all</source>
-      <translation>すべて削除</translation>
-    </message>
-    <message>
-      <source>Hide</source>
-      <translation>非表示</translation>
-    </message>
-    <message>
-      <source>Box select</source>
-      <translation>矩形選択</translation>
-    </message>
-    <message>
-      <source>On-top when selected</source>
-      <translation>選択時にトップへ移動</translation>
-    </message>
-  </context>
-  <context>
     <name>Gui::TaskView::TaskAppearance</name>
     <message>
       <source>Plot mode:</source>
@@ -5616,10 +4661,6 @@ Do you want to specify another directory?</source>
       <source>If you don't save, your changes will be lost.</source>
       <translation>保存しない場合、変更内容は失われます。</translation>
     </message>
-    <message>
-      <source>Edit text</source>
-      <translation>テキストを編集</translation>
-    </message>
   </context>
   <context>
     <name>Gui::TouchpadNavigationStyle</name>
@@ -5638,153 +4679,6 @@ Do you want to specify another directory?</source>
     <message>
       <source>Press CTRL and SHIFT buttons</source>
       <translation>Ctrl キーと Shift キーを押す</translation>
-    </message>
-  </context>
-  <context>
-    <name>Gui::Translator</name>
-    <message>
-      <source>English</source>
-      <translation>英語</translation>
-    </message>
-    <message>
-      <source>German</source>
-      <translation>ドイツ語</translation>
-    </message>
-    <message>
-      <source>Spanish</source>
-      <translation>スペイン語</translation>
-    </message>
-    <message>
-      <source>French</source>
-      <translation>フランス語</translation>
-    </message>
-    <message>
-      <source>Italian</source>
-      <translation>イタリア語</translation>
-    </message>
-    <message>
-      <source>Japanese</source>
-      <translation>日本語</translation>
-    </message>
-    <message>
-      <source>Chinese Simplified</source>
-      <translation>中国語 (簡体)</translation>
-    </message>
-    <message>
-      <source>Chinese Traditional</source>
-      <translation>中国語 (繁体)</translation>
-    </message>
-    <message>
-      <source>Korean</source>
-      <translation>韓国語</translation>
-    </message>
-    <message>
-      <source>Russian</source>
-      <translation>ロシア語</translation>
-    </message>
-    <message>
-      <source>Swedish</source>
-      <translation>スウェーデン語</translation>
-    </message>
-    <message>
-      <source>Afrikaans</source>
-      <translation>アフリカーンス語</translation>
-    </message>
-    <message>
-      <source>Norwegian</source>
-      <translation>ノルウェー語</translation>
-    </message>
-    <message>
-      <source>Portuguese, Brazilian</source>
-      <translation>ポルトガル語、ブラジル語</translation>
-    </message>
-    <message>
-      <source>Portuguese</source>
-      <translation>ポルトガル語</translation>
-    </message>
-    <message>
-      <source>Dutch</source>
-      <translation>オランダ語</translation>
-    </message>
-    <message>
-      <source>Ukrainian</source>
-      <translation>ウクライナ語</translation>
-    </message>
-    <message>
-      <source>Finnish</source>
-      <translation>フィンランド語</translation>
-    </message>
-    <message>
-      <source>Croatian</source>
-      <translation>クロアチア語</translation>
-    </message>
-    <message>
-      <source>Polish</source>
-      <translation>ポーランド語</translation>
-    </message>
-    <message>
-      <source>Czech</source>
-      <translation>チェコ語</translation>
-    </message>
-    <message>
-      <source>Hungarian</source>
-      <translation>ハンガリー語</translation>
-    </message>
-    <message>
-      <source>Romanian</source>
-      <translation>ルーマニア語</translation>
-    </message>
-    <message>
-      <source>Slovak</source>
-      <translation>スロバキア語</translation>
-    </message>
-    <message>
-      <source>Turkish</source>
-      <translation>トルコ語</translation>
-    </message>
-    <message>
-      <source>Slovenian</source>
-      <translation>スロベニア語</translation>
-    </message>
-    <message>
-      <source>Basque</source>
-      <translation>バスク語</translation>
-    </message>
-    <message>
-      <source>Catalan</source>
-      <translation>カタロニア語</translation>
-    </message>
-    <message>
-      <source>Galician</source>
-      <translation>ガリシア語</translation>
-    </message>
-    <message>
-      <source>Kabyle</source>
-      <translation>カビル語</translation>
-    </message>
-    <message>
-      <source>Filipino</source>
-      <translation>フィリピン語</translation>
-    </message>
-    <message>
-      <source>Indonesian</source>
-      <translation>インドネシア語</translation>
-    </message>
-    <message>
-      <source>Lithuanian</source>
-      <translation>リトアニア語</translation>
-    </message>
-    <message>
-      <source>Valencian</source>
-      <translation>バレンシア語</translation>
-    </message>
-    <message>
-      <source>Arabic</source>
-      <translation>アラビア語</translation>
-    </message>
-    <message>
-      <source>Vietnamese</source>
-      <translation>ベトナム語</translation>
     </message>
   </context>
   <context>
@@ -5874,77 +4768,6 @@ Do you want to specify another directory?</source>
     <message>
       <source>Search for objects</source>
       <translation>オブジェクトの検索</translation>
-    </message>
-    <message>
-      <source>Description</source>
-      <translation>説明</translation>
-    </message>
-    <message>
-      <source>Show hidden items</source>
-      <translation>非表示のアイテムを表示</translation>
-    </message>
-    <message>
-      <source>Show hidden tree view items</source>
-      <translation>非表示のツリービューアイテムを表示</translation>
-    </message>
-    <message>
-      <source>Hide item</source>
-      <translation>アイテムを非表示</translation>
-    </message>
-    <message>
-      <source>Hide the item in tree</source>
-      <translation>ツリーのアイテムを非表示</translation>
-    </message>
-    <message>
-      <source>Close document</source>
-      <translation>ドキュメントを閉じる</translation>
-    </message>
-    <message>
-      <source>Close the document</source>
-      <translation>ドキュメントを閉じる</translation>
-    </message>
-    <message>
-      <source>Reload document</source>
-      <translation>ドキュメントを再読み込み</translation>
-    </message>
-    <message>
-      <source>Reload a partially loaded document</source>
-      <translation>特定の読み込み済みドキュメントを再読み込み</translation>
-    </message>
-    <message>
-      <source>Allow partial recomputes</source>
-      <translation>部分的な再計算を許可</translation>
-    </message>
-    <message>
-      <source>Enable or disable recomputating editing object when 'skip recomputation' is enabled</source>
-      <translation>「再計算のスキップ」が有効な場合の編集オブジェクト再計算の有効、無効を切り替え</translation>
-    </message>
-    <message>
-      <source>Recompute object</source>
-      <translation>オブジェクトを再計算</translation>
-    </message>
-    <message>
-      <source>Recompute the selected object</source>
-      <translation>選択したオブジェクトを再計算する</translation>
-    </message>
-    <message>
-      <source> (but must be executed)</source>
-      <translation> (実行する必要があります)</translation>
-    </message>
-  </context>
-  <context>
-    <name>Gui::VectorListEditor</name>
-    <message>
-      <source>Vectors</source>
-      <translation>ベクトル</translation>
-    </message>
-    <message>
-      <source>Table</source>
-      <translation>表</translation>
-    </message>
-    <message>
-      <source>...</source>
-      <translation>...</translation>
     </message>
   </context>
   <context>
@@ -6531,205 +5354,6 @@ Be aware the point where you click matters.</source>
       <source>Edit text</source>
       <translation>テキストを編集</translation>
     </message>
-    <message>
-      <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
-      <translation>エクスポートされたオブジェクトには外部リンクがふくまれています。エクスポートの前に少なくとも一度ドキュメントを保存してください。</translation>
-    </message>
-    <message>
-      <source>Delete failed</source>
-      <translation>削除に失敗しました</translation>
-    </message>
-    <message>
-      <source>Dependency error</source>
-      <translation>依存関係エラー</translation>
-    </message>
-    <message>
-      <source>Copy selected</source>
-      <translation>選択内容のコピー</translation>
-    </message>
-    <message>
-      <source>Copy active document</source>
-      <translation>アクティブなドキュメントをコピー</translation>
-    </message>
-    <message>
-      <source>Copy all documents</source>
-      <translation>全てのドキュメントをコピー</translation>
-    </message>
-    <message>
-      <source>Paste</source>
-      <translation>貼り付け</translation>
-    </message>
-    <message>
-      <source>Expression error</source>
-      <translation>式にエラーがあります</translation>
-    </message>
-    <message>
-      <source>Failed to parse some of the expressions.
-Please check the Report View for more details.</source>
-      <translation>幾つか式の構文解析に失敗しました。
-詳細に就いては、レポートビューを確認してください。</translation>
-    </message>
-    <message>
-      <source>Failed to paste expressions</source>
-      <translation>式の貼り付けに失敗しました</translation>
-    </message>
-    <message>
-      <source>Simple group</source>
-      <translation>単純グループ</translation>
-    </message>
-    <message>
-      <source>Group with links</source>
-      <translation>リンクを含むグループ</translation>
-    </message>
-    <message>
-      <source>Group with transform links</source>
-      <translation>変換リンクを含むグループ</translation>
-    </message>
-    <message>
-      <source>Create link group failed</source>
-      <translation>リンクグループの作成に失敗しました。</translation>
-    </message>
-    <message>
-      <source>Create link failed</source>
-      <translation>リンクグループの作成</translation>
-    </message>
-    <message>
-      <source>Failed to create relative link</source>
-      <translation>相対リンクの作成に失敗</translation>
-    </message>
-    <message>
-      <source>Unlink failed</source>
-      <translation>リンク解除に失敗</translation>
-    </message>
-    <message>
-      <source>Replace link failed</source>
-      <translation>リンクの置き換えに失敗</translation>
-    </message>
-    <message>
-      <source>Failed to import links</source>
-      <translation>リンクのインポートに失敗</translation>
-    </message>
-    <message>
-      <source>Failed to import all links</source>
-      <translation>すべてのリンクのインポートに失敗</translation>
-    </message>
-    <message>
-      <source>Invalid name</source>
-      <translation>無効な名前</translation>
-    </message>
-    <message>
-      <source>The property name or group name must only contain alpha numericals,
-underscore, and must not start with a digit.</source>
-      <translation>プロパティ名またはグループ名には、半角英数字のみ用いることができ、なおかつアンダースコアを含める必要があり、数字から始めることはできません。</translation>
-    </message>
-    <message>
-      <source>The property '%1' already exists in '%2'</source>
-      <translation>プロパティ '%1' は、 '%2' において既に存在します</translation>
-    </message>
-    <message>
-      <source>Add property</source>
-      <translation>プロパティの追加</translation>
-    </message>
-    <message>
-      <source>Failed to add property to '%1': %2</source>
-      <translation>'%1' へプロパティの追加に失敗しました: %2</translation>
-    </message>
-    <message>
-      <source>Save dependent files</source>
-      <translation>依存ファイルを保存</translation>
-    </message>
-    <message>
-      <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
-      <translation>このファイルには外部依存関係が含まれています。依存ファイルも保存しますか?</translation>
-    </message>
-    <message>
-      <source>Failed to save document</source>
-      <translation>ドキュメントの保存に失敗</translation>
-    </message>
-    <message>
-      <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
-      <translation>ドキュメントに循環する依存関係が含まれています。保存の続行を続けますか?</translation>
-    </message>
-    <message>
-      <source>Undo</source>
-      <translation>元に戻す</translation>
-    </message>
-    <message>
-      <source>Redo</source>
-      <translation>やり直す</translation>
-    </message>
-    <message>
-      <source>There are grouped transactions in the following documents with other preceding transactions</source>
-      <translation>以下のドキュメントには先行する他のトランザクションとグループ化されたトランザクショが含まれています。</translation>
-    </message>
-    <message>
-      <source>Choose 'Yes' to roll back all preceding transactions.
-Choose 'No' to roll back in the active document only.
-Choose 'Abort' to abort</source>
-      <translation>「はい」を選択すると、以前のトランザクション全てがロールバックします。
-「いいえ」を選択すると、アクティブなドキュメントだけがロールバックします。
-中止するには「中止」を選択してください</translation>
-    </message>
-    <message>
-      <source>Do you want to save your changes to document before closing?</source>
-      <translation>閉じる前にドキュメントに変更を保存しますか?</translation>
-    </message>
-    <message>
-      <source>Apply answer to all</source>
-      <translation>すべてに適用</translation>
-    </message>
-    <message>
-      <source>Drag &amp; drop failed</source>
-      <translation>ドラッグ&amp;ドロップ失敗</translation>
-    </message>
-    <message>
-      <source>Override colors...</source>
-      <translation>色を上書き...</translation>
-    </message>
-    <message>
-      <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
-
-</source>
-      <translation type="unfinished">Identical physical path detected. It may cause unwanted overwrite of existing document!
-
-</translation>
-    </message>
-    <message>
-      <source>Are you sure you want to continue?</source>
-      <translation>本当に続行しますか？</translation>
-    </message>
-    <message>
-      <source>
-
-Please check report view for more...</source>
-      <translation type="unfinished">
-
-Please check report view for more...</translation>
-    </message>
-    <message>
-      <source>
-
-Pyhsical path: </source>
-      <translation type="unfinished">
-
-Pyhsical path: </translation>
-    </message>
-    <message>
-      <source>
-Document: </source>
-      <translation type="unfinished">
-Document: </translation>
-    </message>
-    <message>
-      <source>
-  Path: </source>
-      <translation type="unfinished">
-  Path: </translation>
-    </message>
-    <message>
-      <source>Identical physical path</source>
-      <translation type="unfinished">Identical physical path</translation>
-    </message>
   </context>
   <context>
     <name>SelectionFilter</name>
@@ -6740,17 +5364,6 @@ Document: </translation>
     <message>
       <source>Selection not allowed by filter</source>
       <translation>フィルターによる選択は許可されていません。</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdBoxElementSelection</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>標準ビュー</translation>
-    </message>
-    <message>
-      <source>Box element selection</source>
-      <translation>ボックス要素選択</translation>
     </message>
   </context>
   <context>
@@ -6802,7 +5415,7 @@ Document: </translation>
     </message>
     <message>
       <source>Ne&amp;xt</source>
-      <translation>次へ(&amp;X)</translation>
+      <translation>次へ(&amp;x)</translation>
     </message>
     <message>
       <source>Activate next window</source>
@@ -6817,7 +5430,7 @@ Document: </translation>
     </message>
     <message>
       <source>Pre&amp;vious</source>
-      <translation>前へ(&amp;V)</translation>
+      <translation>前へ(&amp;v)</translation>
     </message>
     <message>
       <source>Activate previous window</source>
@@ -6986,21 +5599,6 @@ Document: </translation>
     </message>
   </context>
   <context>
-    <name>StdCmdDependencyGraph</name>
-    <message>
-      <source>Tools</source>
-      <translation>ツール</translation>
-    </message>
-    <message>
-      <source>Dependency graph...</source>
-      <translation>依存関係グラフ...</translation>
-    </message>
-    <message>
-      <source>Show the dependency graph of the objects in the active document</source>
-      <translation>アクティブドキュメント内のオブジェクトの依存関係グラフを表示する</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdDlgCustomize</name>
     <message>
       <source>Tools</source>
@@ -7008,7 +5606,7 @@ Document: </translation>
     </message>
     <message>
       <source>Cu&amp;stomize...</source>
-      <translation>カスタマイズ(&amp;S)</translation>
+      <translation>カスタマイズ(&amp;s)</translation>
     </message>
     <message>
       <source>Customize toolbars and command bars</source>
@@ -7068,7 +5666,7 @@ Document: </translation>
     </message>
     <message>
       <source>E&amp;dit parameters ...</source>
-      <translation>パラメーターを変更(&amp;D)...</translation>
+      <translation>パラメーターを変更(&amp;d)...</translation>
     </message>
     <message>
       <source>Opens a Dialog to edit the parameters</source>
@@ -7094,7 +5692,7 @@ Document: </translation>
     <name>StdCmdDockViewMenu</name>
     <message>
       <source>View</source>
-      <translation>ビュー</translation>
+      <translation>表示</translation>
     </message>
     <message>
       <source>Panels</source>
@@ -7114,10 +5712,6 @@ Document: </translation>
     <message>
       <source>Draw style</source>
       <translation>描画スタイル</translation>
-    </message>
-    <message>
-      <source>Change the draw style of the objects</source>
-      <translation>オブジェクトの描画スタイルを変更</translation>
     </message>
   </context>
   <context>
@@ -7178,14 +5772,18 @@ Document: </translation>
     </message>
   </context>
   <context>
-    <name>StdCmdExpression</name>
+    <name>StdCmdExportGraphviz</name>
     <message>
-      <source>Edit</source>
-      <translation>編集</translation>
+      <source>Tools</source>
+      <translation>ツール</translation>
     </message>
     <message>
-      <source>Expression actions</source>
-      <translation>式アクション</translation>
+      <source>Dependency graph...</source>
+      <translation>依存関係グラフ...</translation>
+    </message>
+    <message>
+      <source>Show the dependency graph of the objects in the active document</source>
+      <translation>アクティブドキュメント内のオブジェクトの依存関係グラフを表示する</translation>
     </message>
   </context>
   <context>
@@ -7370,198 +5968,7 @@ Document: </translation>
     </message>
     <message>
       <source>All files (*.*)</source>
-      <translation>全てのファイル (*.*)</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdLinkActions</name>
-    <message>
-      <source>View</source>
-      <translation>ビュー</translation>
-    </message>
-    <message>
-      <source>Link actions</source>
-      <translation>リンクアクション</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdLinkImport</name>
-    <message>
-      <source>Link</source>
-      <translation>リンク</translation>
-    </message>
-    <message>
-      <source>Import links</source>
-      <translation>リンクのインポート</translation>
-    </message>
-    <message>
-      <source>Import selected external link(s)</source>
-      <translation>選択した（複数の）外部リンクをインポート</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdLinkImportAll</name>
-    <message>
-      <source>Link</source>
-      <translation>リンク</translation>
-    </message>
-    <message>
-      <source>Import all links</source>
-      <translation>全てのリンクをインポートする</translation>
-    </message>
-    <message>
-      <source>Import all links of the active document</source>
-      <translation>アクティブなドキュメントのすべてのリンクをインポート</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdLinkMake</name>
-    <message>
-      <source>Link</source>
-      <translation>リンク</translation>
-    </message>
-    <message>
-      <source>Make link</source>
-      <translation>リンクを作成</translation>
-    </message>
-    <message>
-      <source>Create a link to the selected object(s)</source>
-      <translation>選択したオブジェクトへのリンクを作成</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdLinkMakeGroup</name>
-    <message>
-      <source>Link</source>
-      <translation>リンク</translation>
-    </message>
-    <message>
-      <source>Make link group</source>
-      <translation>リンクグループを作成</translation>
-    </message>
-    <message>
-      <source>Create a group of links</source>
-      <translation>リンクのグループを作成</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdLinkMakeRelative</name>
-    <message>
-      <source>Link</source>
-      <translation>リンク</translation>
-    </message>
-    <message>
-      <source>Make sub-link</source>
-      <translation>サブリンクを作成</translation>
-    </message>
-    <message>
-      <source>Create a sub-object or sub-element link</source>
-      <translation>サブオブジェクトまたはサブ要素リンクを作成</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdLinkReplace</name>
-    <message>
-      <source>Link</source>
-      <translation>リンク</translation>
-    </message>
-    <message>
-      <source>Replace with link</source>
-      <translation>リンクで置換</translation>
-    </message>
-    <message>
-      <source>Replace the selected object(s) with link</source>
-      <translation>選択したオブジェクトをリンクに置き換え</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdLinkSelectActions</name>
-    <message>
-      <source>View</source>
-      <translation>ビュー</translation>
-    </message>
-    <message>
-      <source>Link navigation</source>
-      <translation>リンクのナビゲーション</translation>
-    </message>
-    <message>
-      <source>Link navigation actions</source>
-      <translation>リンク・ナビゲーション・アクション</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdLinkSelectAllLinks</name>
-    <message>
-      <source>Link</source>
-      <translation>リンク</translation>
-    </message>
-    <message>
-      <source>Select all links</source>
-      <translation>すべてのリンクを選択</translation>
-    </message>
-    <message>
-      <source>Select all links to the current selected object</source>
-      <translation>現在選択されているオブジェクトへの全てのリンクを選択します</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdLinkSelectLinked</name>
-    <message>
-      <source>Link</source>
-      <translation>リンク</translation>
-    </message>
-    <message>
-      <source>Go to linked object</source>
-      <translation>リンクされたオブジェクトへ移動</translation>
-    </message>
-    <message>
-      <source>Select the linked object and switch to its owner document</source>
-      <translation>リンクされたオブジェクトを選択し、それを含むドキュメントに切り替え</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdLinkSelectLinkedFinal</name>
-    <message>
-      <source>Link</source>
-      <translation>リンク</translation>
-    </message>
-    <message>
-      <source>Go to the deepest linked object</source>
-      <translation>最も深いリンクされたオブジェクトへ移動</translation>
-    </message>
-    <message>
-      <source>Select the deepest linked object and switch to its owner document</source>
-      <translation>最も深いリンクされたオブジェクトを選択し、それを含むドキュメントに切り替え</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdLinkUnlink</name>
-    <message>
-      <source>Link</source>
-      <translation>リンク</translation>
-    </message>
-    <message>
-      <source>Unlink</source>
-      <translation>リンク解除</translation>
-    </message>
-    <message>
-      <source>Strip on level of link</source>
-      <translation type="unfinished">Strip on level of link</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdMacroAttachDebugger</name>
-    <message>
-      <source>Macro</source>
-      <translation>マクロ</translation>
-    </message>
-    <message>
-      <source>Attach to remote debugger...</source>
-      <translation>リモートデバッガーにアタッチ...</translation>
-    </message>
-    <message>
-      <source>Attach to a remotely running debugger</source>
-      <translation>リモートで実行されているデバッガーにアタッチ</translation>
+      <translation>すべてのファイル (*.*)</translation>
     </message>
   </context>
   <context>
@@ -7635,7 +6042,7 @@ Document: </translation>
     <name>StdCmdMeasureDistance</name>
     <message>
       <source>View</source>
-      <translation>ビュー</translation>
+      <translation>表示</translation>
     </message>
     <message>
       <source>Measure distance</source>
@@ -7745,7 +6152,7 @@ Document: </translation>
     </message>
     <message>
       <source>All files (*.*)</source>
-      <translation>全てのファイル (*.*)</translation>
+      <translation>すべてのファイル (*.*)</translation>
     </message>
     <message>
       <source>Cannot open file</source>
@@ -7858,7 +6265,7 @@ Document: </translation>
     </message>
     <message>
       <source>Project i&amp;nformation...</source>
-      <translation>プロジェクト情報(&amp;N)</translation>
+      <translation>プロジェクトインフォメーション(&amp;n)</translation>
     </message>
     <message>
       <source>Show details of the currently active project</source>
@@ -7937,21 +6344,6 @@ Document: </translation>
     </message>
   </context>
   <context>
-    <name>StdCmdRecentMacros</name>
-    <message>
-      <source>Macro</source>
-      <translation>マクロ</translation>
-    </message>
-    <message>
-      <source>Recent macros</source>
-      <translation type="unfinished">Recent macros</translation>
-    </message>
-    <message>
-      <source>Recent macro list</source>
-      <translation type="unfinished">Recent macro list</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdRedo</name>
     <message>
       <source>Edit</source>
@@ -8012,21 +6404,6 @@ Document: </translation>
     </message>
   </context>
   <context>
-    <name>StdCmdSaveAll</name>
-    <message>
-      <source>File</source>
-      <translation>ファイル</translation>
-    </message>
-    <message>
-      <source>Save All</source>
-      <translation>全て保存</translation>
-    </message>
-    <message>
-      <source>Save all opened document</source>
-      <translation>開かれている全てのドキュメントを保存</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdSaveAs</name>
     <message>
       <source>File</source>
@@ -8072,51 +6449,6 @@ Document: </translation>
     </message>
   </context>
   <context>
-    <name>StdCmdSelBack</name>
-    <message>
-      <source>View</source>
-      <translation>ビュー</translation>
-    </message>
-    <message>
-      <source>&amp;Back</source>
-      <translation>戻る(&amp;B)</translation>
-    </message>
-    <message>
-      <source>Go back to previous selection</source>
-      <translation>前の選択に戻る</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdSelBoundingBox</name>
-    <message>
-      <source>View</source>
-      <translation>ビュー</translation>
-    </message>
-    <message>
-      <source>&amp;Bounding box</source>
-      <translation>バウンディングボックス(&amp;B)</translation>
-    </message>
-    <message>
-      <source>Show selection bounding box</source>
-      <translation>選択バウンディングボックスを表示</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdSelForward</name>
-    <message>
-      <source>View</source>
-      <translation>ビュー</translation>
-    </message>
-    <message>
-      <source>&amp;Forward</source>
-      <translation>進む(&amp;F)</translation>
-    </message>
-    <message>
-      <source>Repeat the backed selection</source>
-      <translation type="unfinished">Repeat the backed selection</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdSelectAll</name>
     <message>
       <source>Edit</source>
@@ -8144,21 +6476,6 @@ Document: </translation>
     <message>
       <source>Select visible objects in the active document</source>
       <translation>アクティブなドキュメント内の表示オブジェクトを選択</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdSendToPythonConsole</name>
-    <message>
-      <source>Edit</source>
-      <translation>編集</translation>
-    </message>
-    <message>
-      <source>&amp;Send to Python Console</source>
-      <translation>Python コンソールへ送信(&amp;S)</translation>
-    </message>
-    <message>
-      <source>Sends the selected object to the Python console</source>
-      <translation>選択したオブジェクトを Python コンソールに送信</translation>
     </message>
   </context>
   <context>
@@ -8210,7 +6527,7 @@ Document: </translation>
     <name>StdCmdStatusBar</name>
     <message>
       <source>View</source>
-      <translation>ビュー</translation>
+      <translation>表示</translation>
     </message>
     <message>
       <source>Status bar</source>
@@ -8219,21 +6536,6 @@ Document: </translation>
     <message>
       <source>Toggles the status bar</source>
       <translation>ステータス バーを切り替えます</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdTextDocument</name>
-    <message>
-      <source>Tools</source>
-      <translation>ツール</translation>
-    </message>
-    <message>
-      <source>Add text document</source>
-      <translation>テキストドキュメントの追加</translation>
-    </message>
-    <message>
-      <source>Add text document to active document</source>
-      <translation>アクティブなドキュメントにテキストドキュメントを追加</translation>
     </message>
   </context>
   <context>
@@ -8356,7 +6658,7 @@ Document: </translation>
     <name>StdCmdToolBarMenu</name>
     <message>
       <source>View</source>
-      <translation>ビュー</translation>
+      <translation>表示</translation>
     </message>
     <message>
       <source>Tool&amp;bars</source>
@@ -8398,63 +6700,18 @@ Document: </translation>
     </message>
   </context>
   <context>
-    <name>StdCmdTreeCollapse</name>
+    <name>StdCmdTreeSelection</name>
     <message>
       <source>View</source>
-      <translation>ビュー</translation>
+      <translation>表示</translation>
     </message>
     <message>
-      <source>Collapse selected item</source>
-      <translation>現在の選択アイテムの折りたたみ</translation>
+      <source>Go to selection</source>
+      <translation>選択範囲に移動</translation>
     </message>
     <message>
-      <source>Collapse currently selected tree items</source>
-      <translation>現在選択しているツリーアイテムを折りたたむ</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdTreeExpand</name>
-    <message>
-      <source>View</source>
-      <translation>ビュー</translation>
-    </message>
-    <message>
-      <source>Expand selected item</source>
-      <translation>現在の選択アイテムの展開</translation>
-    </message>
-    <message>
-      <source>Expand currently selected tree items</source>
-      <translation>現在選択しているツリーアイテムを展開</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdTreeSelectAllInstances</name>
-    <message>
-      <source>View</source>
-      <translation>ビュー</translation>
-    </message>
-    <message>
-      <source>Select all instances</source>
-      <translation>全てのインスタンスを選択</translation>
-    </message>
-    <message>
-      <source>Select all instances of the current selected object</source>
-      <translation>現在選択しているオブジェクトの全てのインスタンスを選択</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdTreeViewActions</name>
-    <message>
-      <source>View</source>
-      <translation>ビュー</translation>
-    </message>
-    <message>
-      <source>TreeView actions</source>
-      <translation>ツリービューアクション</translation>
-    </message>
-    <message>
-      <source>TreeView behavior options and actions</source>
-      <translation>ツリービューの動作設定と振る舞い</translation>
+      <source>Scroll to first selected item</source>
+      <translation>最初に選択した項目までスクロール</translation>
     </message>
   </context>
   <context>
@@ -8491,7 +6748,7 @@ Document: </translation>
     <name>StdCmdUserInterface</name>
     <message>
       <source>View</source>
-      <translation>ビュー</translation>
+      <translation>表示</translation>
     </message>
     <message>
       <source>Dock views</source>
@@ -8555,7 +6812,7 @@ Document: </translation>
     </message>
     <message>
       <source>Inventor example #1</source>
-      <translation>構想の例 #1</translation>
+      <translation>発明者の例 #1</translation>
     </message>
     <message>
       <source>Shows a 3D texture with manipulator</source>
@@ -8570,7 +6827,7 @@ Document: </translation>
     </message>
     <message>
       <source>Inventor example #2</source>
-      <translation>構想の例 #2</translation>
+      <translation>発明者の例 #2</translation>
     </message>
     <message>
       <source>Shows spheres and drag-lights</source>
@@ -8585,7 +6842,7 @@ Document: </translation>
     </message>
     <message>
       <source>Inventor example #3</source>
-      <translation>構想の例 #3</translation>
+      <translation>発明者の例 #3</translation>
     </message>
     <message>
       <source>Shows a animated texture</source>
@@ -8635,21 +6892,6 @@ Document: </translation>
     <message>
       <source>Set to front view</source>
       <translation>前面ビューに設定</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdViewHome</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>標準ビュー</translation>
-    </message>
-    <message>
-      <source>Home</source>
-      <translation>ホーム</translation>
-    </message>
-    <message>
-      <source>Set to default home view</source>
-      <translation>デフォルトのホームビューに設定</translation>
     </message>
   </context>
   <context>
@@ -8813,8 +7055,8 @@ Document: </translation>
       <translation>左に回転</translation>
     </message>
     <message>
-      <source>Rotate the view by 90° counter-clockwise</source>
-      <translation>ビューを反時計回りに90度回転</translation>
+      <source>Rotate the view by 90Â° counter-clockwise</source>
+      <translation>ビューを反時計回りに90度ずつ回転します。</translation>
     </message>
   </context>
   <context>
@@ -8828,8 +7070,8 @@ Document: </translation>
       <translation>右に回転</translation>
     </message>
     <message>
-      <source>Rotate the view by 90° clockwise</source>
-      <translation>ビューを時計回りに90度回転</translation>
+      <source>Rotate the view by 90Â° clockwise</source>
+      <translation>ビューを時計回りに 90度ずつ回転します。</translation>
     </message>
   </context>
   <context>
@@ -8885,11 +7127,11 @@ Document: </translation>
     </message>
     <message>
       <source>&amp;What's This?</source>
-      <translation>これは何か？(&amp;W)</translation>
+      <translation>これは何であるか？(&amp;W)</translation>
     </message>
     <message>
       <source>What's This</source>
-      <translation>これは何か？</translation>
+      <translation>これは何であるか？</translation>
     </message>
   </context>
   <context>
@@ -8922,7 +7164,7 @@ Document: </translation>
     <name>StdCmdWorkbench</name>
     <message>
       <source>View</source>
-      <translation>ビュー</translation>
+      <translation>表示</translation>
     </message>
     <message>
       <source>Workbench</source>
@@ -8981,6 +7223,10 @@ Document: </translation>
   <context>
     <name>StdTreeCollapseDocument</name>
     <message>
+      <source>View</source>
+      <translation>表示</translation>
+    </message>
+    <message>
       <source>Collapse/Expand</source>
       <translation>折りたたみ/展開</translation>
     </message>
@@ -8988,144 +7234,50 @@ Document: </translation>
       <source>Expand active document and collapse all others</source>
       <translation>アクティブなドキュメントを展開し、他の全てを折りたたむ</translation>
     </message>
-    <message>
-      <source>TreeView</source>
-      <translation>ツリービュー</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdTreeDrag</name>
-    <message>
-      <source>TreeView</source>
-      <translation>ツリービュー</translation>
-    </message>
-    <message>
-      <source>Initiate dragging</source>
-      <translation>ドラッグの開始</translation>
-    </message>
-    <message>
-      <source>Initiate dragging of current selected tree items</source>
-      <translation>現在選択されているツリー項目のドラッグを開始</translation>
-    </message>
   </context>
   <context>
     <name>StdTreeMultiDocument</name>
     <message>
-      <source>Display all documents in the tree view</source>
-      <translation>全てのドキュメントをツリービューに表示</translation>
+      <source>View</source>
+      <translation>表示</translation>
     </message>
     <message>
-      <source>TreeView</source>
-      <translation>ツリービュー</translation>
-    </message>
-    <message>
-      <source>Multi document</source>
+      <source>Multi Document</source>
       <translation>マルチドキュメント</translation>
     </message>
-  </context>
-  <context>
-    <name>StdTreePreSelection</name>
     <message>
-      <source>TreeView</source>
-      <translation>ツリービュー</translation>
-    </message>
-    <message>
-      <source>Pre-selection</source>
-      <translation>事前選択</translation>
-    </message>
-    <message>
-      <source>Preselect the object in 3D view when mouse over the tree item</source>
-      <translation>ツリーアイテムの上をマウスが通過した時に 3D ビューでオブジェクトを事前選択</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdTreeRecordSelection</name>
-    <message>
-      <source>TreeView</source>
-      <translation>ツリービュー</translation>
-    </message>
-    <message>
-      <source>Record selection</source>
-      <translation>選択の記録</translation>
-    </message>
-    <message>
-      <source>Record selection in tree view in order to go back/forward using navigation button</source>
-      <translation>ナビゲーションボタンを使用した戻る/進むの動作のためにツリー ビューでの選択を記録</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdTreeSelection</name>
-    <message>
-      <source>TreeView</source>
-      <translation>ツリービュー</translation>
-    </message>
-    <message>
-      <source>Go to selection</source>
-      <translation>選択範囲に移動</translation>
-    </message>
-    <message>
-      <source>Scroll to first selected item</source>
-      <translation>最初に選択した項目までスクロール</translation>
+      <source>Display all documents in the tree view</source>
+      <translation>全てのドキュメントをツリービューに表示</translation>
     </message>
   </context>
   <context>
     <name>StdTreeSingleDocument</name>
     <message>
+      <source>View</source>
+      <translation>表示</translation>
+    </message>
+    <message>
+      <source>Single Document</source>
+      <translation>シングルドキュメント</translation>
+    </message>
+    <message>
       <source>Only display the active document in the tree view</source>
       <translation>アクティブなドキュメントのみをツリービューに表示</translation>
     </message>
-    <message>
-      <source>TreeView</source>
-      <translation>ツリービュー</translation>
-    </message>
-    <message>
-      <source>Single document</source>
-      <translation>シングルドキュメント</translation>
-    </message>
   </context>
   <context>
-    <name>StdTreeSyncPlacement</name>
+    <name>StdTreeViewDocument</name>
     <message>
-      <source>TreeView</source>
-      <translation>ツリービュー</translation>
+      <source>View</source>
+      <translation>表示</translation>
     </message>
     <message>
-      <source>Sync placement</source>
-      <translation>配置の同期</translation>
+      <source>Document Tree</source>
+      <translation>ドキュメントツリー</translation>
     </message>
     <message>
-      <source>Auto adjust placement on drag and drop objects across coordinate systems</source>
-      <translation>座標系間でのオブジェクトのドラッグ&amp;ドロップ時に配置を自動調整</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdTreeSyncSelection</name>
-    <message>
-      <source>TreeView</source>
-      <translation>ツリービュー</translation>
-    </message>
-    <message>
-      <source>Sync selection</source>
-      <translation>選択の同期</translation>
-    </message>
-    <message>
-      <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
-      <translation>対応するオブジェクトが3Dビューで選択された場合にツリーアイテムを自動的に展開</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdTreeSyncView</name>
-    <message>
-      <source>TreeView</source>
-      <translation>ツリービュー</translation>
-    </message>
-    <message>
-      <source>Sync view</source>
-      <translation>ビューの同期</translation>
-    </message>
-    <message>
-      <source>Auto switch to the 3D view containing the selected item</source>
-      <translation>選択したアイテムを含む3Dビューへ自動切り替え</translation>
+      <source>Set visibility of inactive documents in tree view</source>
+      <translation>アクティブでないドキュメントのツリービューでの表示状態を設定</translation>
     </message>
   </context>
   <context>
@@ -9239,29 +7391,20 @@ Document: </translation>
   <context>
     <name>Std_Delete</name>
     <message>
-      <source>The following referencing objects might break.
-
-Are you sure you want to continue?
-</source>
-      <translation>以下の参照しているオブジェクトが壊れる可能性があります。
-
-続行しますか？ 
-</translation>
-    </message>
-    <message>
-      <source>Object dependencies</source>
-      <translation>オブジェクトの依存関係</translation>
+      <source>These items are linked to items selected for deletion and might break.</source>
+      <translation>これらのアイテムは削除対象として選択したアイテムにリンクされていて、壊れる可能性があります。</translation>
     </message>
     <message>
       <source>These items are selected for deletion, but are not in the active document.</source>
       <translation>これらのアイテムは削除対象として選択されていますが、アクテイブなドキュメント内に存在しません。</translation>
     </message>
-  </context>
-  <context>
-    <name>Std_DependencyGraph</name>
     <message>
-      <source>Dependency graph</source>
-      <translation>依存関係グラフ</translation>
+      <source>Are you sure you want to continue?</source>
+      <translation>本当に続行しますか？</translation>
+    </message>
+    <message>
+      <source>Delete Selection Issues</source>
+      <translation>選択されている問題を削除</translation>
     </message>
   </context>
   <context>
@@ -9330,10 +7473,16 @@ Are you sure you want to continue?
       <translation>オブジェクトの依存関係</translation>
     </message>
     <message>
-      <source>To link to external objects, the document must be saved at least once.
-Do you want to save the document now?</source>
-      <translation>外部オブジェクトにリンクするにはドキュメントを少なくとも一度保存する必要があります。
-ドキュメントを保存しますか?</translation>
+      <source>The selected objects have a dependency to unselected objects.
+Do you want to duplicate them, too?</source>
+      <translation>選択したオブジェクトには未選択のオブジェクトに依存関係があります。同時に複製しますか？</translation>
+    </message>
+  </context>
+  <context>
+    <name>Std_ExportGraphviz</name>
+    <message>
+      <source>Dependency graph</source>
+      <translation>依存関係グラフ</translation>
     </message>
   </context>
   <context>
@@ -9341,19 +7490,6 @@ Do you want to save the document now?</source>
     <message>
       <source>Group</source>
       <translation>グループ</translation>
-    </message>
-  </context>
-  <context>
-    <name>Std_Refresh</name>
-    <message>
-      <source>The document contains dependency cycles.
-Please check the Report View for more details.
-
-Do you still want to proceed?</source>
-      <translation>このドキュメントには依存の循環が含まれています。
-詳細はレポートビューを確認してください。
-
-続行しますか？</translation>
     </message>
   </context>
   <context>
@@ -9475,7 +7611,7 @@ Do you still want to proceed?</source>
     </message>
     <message>
       <source>View</source>
-      <translation>ビュー</translation>
+      <translation>表示</translation>
     </message>
     <message>
       <source>Special Ops</source>

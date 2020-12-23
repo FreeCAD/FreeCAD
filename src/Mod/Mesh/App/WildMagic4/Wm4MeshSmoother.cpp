@@ -89,8 +89,8 @@ void MeshSmoother<Real>::Destroy ()
 template <class Real>
 void MeshSmoother<Real>::Update (Real fTime)
 {
-    std::fill_n(m_akNormal,m_iVQuantity,Vector3<Real>{0,0,0});
-    std::fill_n(m_akMean,m_iVQuantity,Vector3<Real>{0,0,0});
+    memset(m_akNormal,0,m_iVQuantity*sizeof(Vector3<Real>));
+    memset(m_akMean,0,m_iVQuantity*sizeof(Vector3<Real>));
 
     const int* piIndex = m_aiIndex;
     int i;

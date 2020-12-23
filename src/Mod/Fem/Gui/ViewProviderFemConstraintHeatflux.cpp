@@ -54,7 +54,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintHeatflux, FemGui::ViewProviderF
 
 ViewProviderFemConstraintHeatflux::ViewProviderFemConstraintHeatflux()
 {
-    sPixmap = "FEM_ConstraintHeatflux";
+    sPixmap = "fem-constraint-heatflux";
     ADD_PROPERTY(FaceColor,(0.2f,0.3f,0.2f));
 }
 
@@ -109,7 +109,7 @@ void ViewProviderFemConstraintHeatflux::updateData(const App::Property* prop)
     float scaledradius = RADIUS * pcConstraint->Scale.getValue(); //OvG: Calculate scaled values once only
     float scaledheight = HEIGHT * pcConstraint->Scale.getValue();
     //float ambienttemp = pcConstraint->AmbientTemp.getValue();
-    // //float facetemp = pcConstraint->FaceTemp.getValue();
+    ////float facetemp = pcConstraint->FaceTemp.getValue();
     //float filmcoef = pcConstraint->FilmCoef.getValue();
 
     if (strcmp(prop->getName(),"Points") == 0) {

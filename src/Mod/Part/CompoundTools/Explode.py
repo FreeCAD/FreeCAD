@@ -23,4 +23,3 @@ def explodeCompound(compound_obj, b_group = None):
         cf.ViewObject.DontUnhideOnDelete = True
         features_created.append(cf)
     return (group, features_created)
-

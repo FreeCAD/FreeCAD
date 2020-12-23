@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2008     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -57,7 +57,6 @@ enum ConstraintType {
     SnellsLaw = 16,
     Block = 17,
     Diameter = 18,
-    Weight = 19,
     NumConstraintTypes // must be the last item!
 };
 
@@ -118,7 +117,7 @@ public:
 
     inline bool isDimensional() const {
         return Type == Distance || Type == DistanceX || Type == DistanceY ||
-               Type == Radius || Type == Diameter || Type == Angle || Type == SnellsLaw || Type == Weight;
+               Type == Radius || Type == Diameter || Type == Angle || Type == SnellsLaw;
     }
 
     friend class PropertyConstraintList;

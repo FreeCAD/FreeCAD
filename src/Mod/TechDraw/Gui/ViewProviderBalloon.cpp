@@ -47,14 +47,11 @@
 #include <Gui/ViewProviderDocumentObject.h>
 
 #include <Mod/TechDraw/App/LineGroup.h>
-//#include <Mod/TechDraw/App/Preferences.h>
 
-#include "PreferencesGui.h"
 #include "TaskBalloon.h"
 #include "ViewProviderBalloon.h"
 
 using namespace TechDrawGui;
-using namespace TechDraw;
 
 PROPERTY_SOURCE(TechDrawGui::ViewProviderBalloon, TechDrawGui::ViewProviderDrawingView)
 
@@ -67,18 +64,30 @@ ViewProviderBalloon::ViewProviderBalloon()
 
     static const char *group = "Balloon Format";
 
-    ADD_PROPERTY_TYPE(Font,(Preferences::labelFont().c_str()),group,App::Prop_None, "The name of the font to use");
-    ADD_PROPERTY_TYPE(Fontsize,(Preferences::dimFontSizeMM()),
-                                group,(App::PropertyType)(App::Prop_None),"Balloon text size in units");
-    int lgNumber = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+                                         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Labels");
+    std::string fontName = hGrp->GetASCII("LabelFont", "osifont");
+
+    hGrp = App::GetApplication().GetUserParameter()
+                                         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
+    double fontSize = hGrp->GetFloat("FontSize", QGIView::DefaultFontSizeInMM);
+    ADD_PROPERTY_TYPE(Font ,(fontName.c_str()),group,App::Prop_None, "The name of the font to use");
+    ADD_PROPERTY_TYPE(Fontsize,(fontSize)    ,group,(App::PropertyType)(App::Prop_None),"Dimension text size in units");
+
+
+    hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
+    std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
+    auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
     double weight = lg->getWeight("Thin");
     delete lg;                                   //Coverity CID 174670
-    ADD_PROPERTY_TYPE(LineWidth,(weight),group,(App::PropertyType)(App::Prop_None),"Leader line width");
-    ADD_PROPERTY_TYPE(LineVisible,(true),group,(App::PropertyType)(App::Prop_None),"Balloon line visible or hidden");
+    ADD_PROPERTY_TYPE(LineWidth,(weight)    ,group,(App::PropertyType)(App::Prop_None),"Dimension line weight");
 
-    ADD_PROPERTY_TYPE(Color,(PreferencesGui::dimColor()),
-                                              group,App::Prop_None,"Color of the balloon");
+
+    hGrp = App::GetApplication().GetUserParameter()
+                                        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
+    App::Color fcColor;
+    fcColor.setPackedValue(hGrp->GetUnsigned("Color", 0x00000000));
+    ADD_PROPERTY_TYPE(Color,(fcColor),group,App::Prop_None,"The color of the Dimension");
 }
 
 ViewProviderBalloon::~ViewProviderBalloon()
@@ -114,7 +123,7 @@ bool ViewProviderBalloon::setEdit(int ModNum)
         Gui::Selection().clearSelection();
         auto qgivBalloon(dynamic_cast<QGIViewBalloon*>(getQView()));
         if (qgivBalloon) {
-            Gui::Control().showDialog(new TaskDlgBalloon(qgivBalloon, this));
+            Gui::Control().showDialog(new TaskDlgBalloon(qgivBalloon));
         }
         return true;
     } else {
@@ -148,9 +157,7 @@ void ViewProviderBalloon::onChanged(const App::Property* p)
 {
     if ((p == &Font)  ||
         (p == &Fontsize) ||
-        (p == &Color) ||
-        (p == &LineWidth) ||
-        (p == &LineVisible)) {
+        (p == &LineWidth)) {
         QGIView* qgiv = getQView();
         if (qgiv) {
             qgiv->updateView(true);
@@ -162,24 +169,4 @@ void ViewProviderBalloon::onChanged(const App::Property* p)
 TechDraw::DrawViewBalloon* ViewProviderBalloon::getViewObject() const
 {
     return dynamic_cast<TechDraw::DrawViewBalloon*>(pcObject);
-}
-
-void ViewProviderBalloon::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
-// transforms properties that had been changed
-{
-    // property LineWidth had the App::PropertyFloat and was changed to App::PropertyLength
-    if (prop == &LineWidth && strcmp(TypeName, "App::PropertyFloat") == 0) {
-        App::PropertyFloat LineWidthProperty;
-        // restore the PropertyFloat to be able to set its value
-        LineWidthProperty.Restore(reader);
-        LineWidth.setValue(LineWidthProperty.getValue());
-    }
-}
-
-bool ViewProviderBalloon::canDelete(App::DocumentObject *obj) const
-{
-    // deletions of a balloon object doesn't destroy anything
-    // thus we can pass this action
-    Q_UNUSED(obj)
-    return true;
 }

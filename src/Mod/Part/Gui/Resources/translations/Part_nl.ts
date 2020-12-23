@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="nl" sourcelanguage="en">
+<TS version="2.0" language="nl" sourcelanguage="en">
   <context>
     <name>AttachmentEditor</name>
     <message>
@@ -99,11 +99,6 @@
       <translation>De verschuiving van de bijlage:</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="608"/>
-      <source>Attachment Offset (in local coordinates):</source>
-      <translation>Bijlageverschuiving (in lokale coördinaten):</translation>
-    </message>
-    <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="598"/>
       <source>Attachment Offset (inactive - not attached):</source>
       <translation>Bijlage Verschuiving (inactieve - niet toegevoegd):</translation>
@@ -127,17 +122,6 @@
       <translation>Samenstellings Filter</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="59"/>
-      <source>Filter out objects from a selected compound by characteristics like volume,
-area, or length, or by choosing specific items.
-If a second object is selected, it will be used as reference, for example,
-for collision or distance filtering.</source>
-      <translation type="unfinished">Filter out objects from a selected compound by characteristics like volume,
-area, or length, or by choosing specific items.
-If a second object is selected, it will be used as reference, for example,
-for collision or distance filtering.</translation>
-    </message>
-    <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="60"/>
       <source>Compound Filter: remove some childs from a compound</source>
       <translation>Samenstellings Filter: sommige kinderen uit een verbinding verwijderen</translation>
@@ -148,9 +132,9 @@ for collision or distance filtering.</translation>
       <translation>Selecteer eerst een vorm die is samengesteld! Het tweede geselecteerde item (optioneel) zal worden behandeld als een stencil.</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="73"/>
-      <source>First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</source>
-      <translation type="unfinished">First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</translation>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
+      <source>Bad selection</source>
+      <translation>Foute selectie</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
@@ -159,29 +143,11 @@ for collision or distance filtering.</translation>
 {err}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>De berekenen van het resultaat is mislukt met een fout: 
+      <translation>Het resultaat berekenen is mislukt met een fout: 
 
 {err}
 
-Klik op 'Doorgaan' om de functie toch te maken, of op 'Afbreken' als u wilt annuleren.</translation>
-    </message>
-    <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
-      <source>Bad selection</source>
-      <translation>Foute selectie</translation>
-    </message>
-    <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="106"/>
-      <source>Computing the result failed with an error: 
-
-{errstr}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>De berekening van het resultaat is mislukt met een fout: 
-
-{errstr}
-
-Klik op 'Doorgaan' om de functie toch aan te maken, of op 'Afbreken' als u wilt annuleren.</translation>
+Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.</translation>
     </message>
   </context>
   <context>
@@ -192,13 +158,6 @@ Klik op 'Doorgaan' om de functie toch aan te maken, of op 'Afbreken' als u wilt 
       <translation>Ontleed samengestelde</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="58"/>
-      <source>Split up a compound of shapes into separate objects.
-It will create a 'Compound Filter' for each shape.</source>
-      <translation type="unfinished">Split up a compound of shapes into separate objects.
-It will create a 'Compound Filter' for each shape.</translation>
-    </message>
-    <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="59"/>
       <source>Explode compound: split up a list of shapes into separate objects</source>
       <translation>Samengestelde ontleden: een lijst van vormen in afzonderlijke objecten opsplitsen</translation>
@@ -207,11 +166,6 @@ It will create a 'Compound Filter' for each shape.</translation>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="67"/>
       <source>Select a shape that is a compound, first!</source>
       <translation>Selecteer eers een vorm die een samengestelde is!</translation>
-    </message>
-    <message>
-      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="68"/>
-      <source>First select a shape that is a compound.</source>
-      <translation type="unfinished">First select a shape that is a compound.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="68"/>
@@ -261,17 +215,17 @@ It will create a 'Compound Filter' for each shape.</translation>
   <context>
     <name>Part_JoinFeatures</name>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="86"/>
-      <source>Computing the result failed with an error:
+      <location filename="../../../BOPTools/JoinFeatures.py" line="85"/>
+      <source>Computing the result failed with an error: 
 
 {err}
 
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error:
+ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Het resultaat berekenen is mislukt met een fout: 
 
 {err}
 
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="373"/>
@@ -284,27 +238,9 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <translation>Doorgaan</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="85"/>
-      <source>Computing the result failed with an error: 
-
-{err}
-
- Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>De berekening van het resultaat is mislukt met een fout: 
-
-{err}
-
-Klik op 'Doorgaan' om de functie toch te maken, of op 'Afbreken' als u wilt annuleren.</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
       <source>Select at least two objects, or one or more compounds, first!</source>
       <translation>Selecteer eerst minstens twee objecten, of een of meer samengestelden!</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="208"/>
-      <source>Select at least two objects, or one or more compounds</source>
-      <translation type="unfinished">Select at least two objects, or one or more compounds</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="283"/>
@@ -312,176 +248,9 @@ Klik op 'Doorgaan' om de functie toch te maken, of op 'Afbreken' als u wilt annu
       <translation>Selecteer basisobject en vervolgens het object dat u wilt invoegen, en activeer dit hulpprogramma.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="304"/>
-      <source>Select base object, then the object to embed, and then invoke this tool.</source>
-      <translation type="unfinished">Select base object, then the object to embed, and then invoke this tool.</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
       <source>Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</source>
       <translation>Selecteer het object waar u de uitsparing in wil maken, vervolgens het object dat in de uitsparing moet passen, en activeer dit hulpprogramma.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="399"/>
-      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</source>
-      <translation type="unfinished">Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Part_SplitFeatures</name>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
-      <source>Computing the result failed with an error:
-
-{err}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error:
-
-{err}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
-      <source>Bad selection</source>
-      <translation>Foute selectie</translation>
-    </message>
-    <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
-      <source>Continue</source>
-      <translation>Doorgaan</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="188"/>
-      <source>Boolean fragments</source>
-      <translation type="unfinished">Boolean fragments</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="190"/>
-      <source>Create a 'Boolean Fragments' object from two or more selected objects,
-or from the shapes inside a compound.
-This is a boolean union which is then sliced at the intersections
-of the original shapes.
-A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation type="unfinished">Create a 'Boolean Fragments' object from two or more selected objects,
-or from the shapes inside a compound.
-This is a boolean union which is then sliced at the intersections
-of the original shapes.
-A 'Compound Filter' can be used to extract the individual slices.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="543"/>
-      <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
-      <translation type="unfinished">Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
-      <source>Slice to compound</source>
-      <translation>Versnijden tot groep</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
-      <source>Slice a selected object by using other objects as cutting tools.
-The resulting pieces will be stored in a compound.
-A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation type="unfinished">Slice a selected object by using other objects as cutting tools.
-The resulting pieces will be stored in a compound.
-A 'Compound Filter' can be used to extract the individual slices.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="391"/>
-      <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
-      <translation type="unfinished">Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
-      <source>Slice apart</source>
-      <translation>Snij door</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Booleaanse fragmenten</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Splits voorwerpen waar ze overlappen</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="312"/>
-      <source>Split object by intersections with other objects, and pack the pieces into a compound.</source>
-      <translation>Splits object door middel van kruispunten met andere objecten, en voeg de onderdelen in een compound.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="336"/>
-      <source>Split object by intersections with other objects.</source>
-      <translation>Splits objecten op de kruispunten met andere objecten.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
-      <source>Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</source>
-      <translation>Selecteer eerst ten minste twee voorwerpen! Het eerste voorwerp moet worden versneden; de overige voorwerpen zijn bedoeld om mee te snijden.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
-      <source>Slice a selected object by other objects, and split it apart.
-It will create a 'Compound Filter' for each slice.</source>
-      <translation type="unfinished">Slice a selected object by other objects, and split it apart.
-It will create a 'Compound Filter' for each slice.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="446"/>
-      <source>Computing the result failed with an error: 
-
-{err}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>De berekenen van het resultaat is mislukt met een fout: 
-
-{err}
-
-Klik op 'Doorgaan' om de functie toch te maken, of op 'Afbreken' als u wilt annuleren.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
-      <source>Remove intersection fragments</source>
-      <translation>Verwijder fragmenten van snijpunten</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="478"/>
-      <source>Select at least two objects, or one or more compounds, first! If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
-      <translation>Selecteer eerst minstens twee objecten, of een of meer verbindingen! Als er slechts één verbinding is geselecteerd, dan zulen de samengestelde vormen worden doorsneden tussen elkaar (anders, zijn verbindingen met eigen kruispunten ongeldig).</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="468"/>
-      <source>Boolean XOR</source>
-      <translation>Overlap verwijderen</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="531"/>
-      <source>Perform an 'exclusive OR' boolean operation with two or more selected objects,
-or with the shapes inside a compound.
-This means the overlapping volumes of the shapes will be removed.
-A 'Compound Filter' can be used to extract the remaining pieces.</source>
-      <translation type="unfinished">Perform an 'exclusive OR' boolean operation with two or more selected objects,
-or with the shapes inside a compound.
-This means the overlapping volumes of the shapes will be removed.
-A 'Compound Filter' can be used to extract the remaining pieces.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Part_Tube</name>
-    <message>
-      <location filename="../../../BasicShapes/Shapes.py" line="85"/>
-      <source>Create tube</source>
-      <translation>Buis aanmaken</translation>
-    </message>
-    <message>
-      <location filename="../../../BasicShapes/Shapes.py" line="89"/>
-      <source>Creates a tube</source>
-      <translation>Maakt een Buis</translation>
     </message>
   </context>
   <context>
@@ -495,6 +264,82 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../../BasicShapes/Shapes.py" line="62"/>
       <source>Creates a tube</source>
       <translation>Maakt een Buis</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_SplitFeatures</name>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="446"/>
+      <source>Computing the result failed with an error: 
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Het resultaat berekenen is mislukt met een fout: 
+
+{err}
+
+Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
+      <source>Bad selection</source>
+      <translation>Foute selectie</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
+      <source>Continue</source>
+      <translation>Doorgaan</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Booleaanse fragmenten</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Splits voorwerpen waar ze overlappen</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="478"/>
+      <source>Select at least two objects, or one or more compounds, first! If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
+      <translation>Selecteer eerst minstens twee objecten, of een of meer verbindingen! Als er slechts één verbinding is geselecteerd, dan zulen de samengestelde vormen worden doorsneden tussen elkaar (anders, zijn verbindingen met eigen kruispunten ongeldig).</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
+      <source>Slice to compound</source>
+      <translation>Versnijden tot groep</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="312"/>
+      <source>Split object by intersections with other objects, and pack the pieces into a compound.</source>
+      <translation>Splits object door middel van kruispunten met andere objecten, en voeg de onderdelen in een compound.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
+      <source>Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</source>
+      <translation>Selecteer eerst ten minste twee voorwerpen! Het eerste voorwerp moet worden versneden; de overige voorwerpen zijn bedoeld om mee te snijden.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
+      <source>Slice apart</source>
+      <translation>Snij door</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="336"/>
+      <source>Split object by intersections with other objects.</source>
+      <translation>Splits objecten op de kruispunten met andere objecten.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="468"/>
+      <source>Boolean XOR</source>
+      <translation>Overlap verwijderen</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
+      <source>Remove intersection fragments</source>
+      <translation>Verwijder fragmenten van snijpunten</translation>
     </message>
   </context>
   <context>
@@ -581,7 +426,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="327"/>
       <source>Revolve</source>
       <comment>Attacher reference type</comment>
-      <translation>Wentelen</translation>
+      <translation>Draaien</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="328"/>
@@ -611,7 +456,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="333"/>
       <source>Solid</source>
       <comment>Attacher reference type</comment>
-      <translation>Volumemodel</translation>
+      <translation>Solid</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="334"/>
@@ -644,7 +489,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="273"/>
       <source>Point is put at object's Placement.Position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Het punt wordt op de Plaatsing.Positie van het object gezet. Werkt op objecten met plaatsingen en elliptische/parabool-/hyperboolranden.</translation>
+      <translation type="unfinished">Point is put at object's Placement.Position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="275"/>
@@ -734,25 +579,25 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="296"/>
       <source>Proximity point 1</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>Nabijheidspunt 1</translation>
+      <translation>Nabijheid punt 1</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="297"/>
       <source>Point on first reference that is closest to second reference.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Punt op de eerste referentie dat het dichtst bij de tweede referentie ligt.</translation>
+      <translation type="unfinished">Point on first reference that is closest to second reference.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="299"/>
       <source>Proximity point 2</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>Nabijheidspunt 2</translation>
+      <translation type="unfinished">Proximity point 2</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="300"/>
       <source>Point on second reference that is closest to first reference.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Punt op de tweede referentie dat het dichtst bij de tweede referentie ligt.</translation>
+      <translation type="unfinished">Point on second reference that is closest to first reference.</translation>
     </message>
   </context>
   <context>
@@ -780,7 +625,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="210"/>
       <source>Line is aligned along local X axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Lijn is uitgelijnd langs de lokale X-as van het object. Werkt op objecten met plaatsingen en elliptische/parabool-/hyperboolranden.</translation>
+      <translation type="unfinished">Line is aligned along local X axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="206"/>
@@ -792,7 +637,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="207"/>
       <source>Line is aligned along local Y axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Lijn is uitgelijnd langs de lokale Y-as van het object. Werkt op objecten met plaatsingen en elliptische/parabool-/hyperboolranden.</translation>
+      <translation type="unfinished">Line is aligned along local Y axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="209"/>
@@ -810,31 +655,31 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="213"/>
       <source>Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Lijn die een as is van een raakcirkel aan een gebogen rand. Een optioneel eindpunt definieert waar.</translation>
+      <translation type="unfinished">Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="215"/>
       <source>Directrix1</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Richtlijn1</translation>
+      <translation type="unfinished">Directrix1</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="216"/>
       <source>Directrix line for ellipse, parabola, hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Richtlijn voor ellips, parabool, hyperbool.</translation>
+      <translation type="unfinished">Directrix line for ellipse, parabola, hyperbola.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="218"/>
       <source>Directrix2</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Richtlijn2</translation>
+      <translation type="unfinished">Directrix2</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="219"/>
       <source>Second directrix line for ellipse and hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Tweede richtlijn voor ellips en hyperbool.</translation>
+      <translation type="unfinished">Second directrix line for ellipse and hyperbola.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="221"/>
@@ -870,7 +715,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="228"/>
       <source>Line tangent to an edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Lijn raakt aan een rand. Optionele eindpuntsverbinding definieert de plaats.</translation>
+      <translation type="unfinished">Line tangent to an edge. Optional vertex link defines where.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="230"/>
@@ -882,19 +727,19 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="231"/>
       <source>Align to N vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Lijn uit aan de n-vector van het Frenet-Serret coördinaatsysteem van een gebogen rand. Optionele eindpuntsverbinding bepaalt plaats er van.</translation>
+      <translation type="unfinished">Align to N vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="233"/>
       <source>Binormal</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Binormaal</translation>
+      <translation type="unfinished">Binormal</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="234"/>
       <source>Align to B vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Lijn uit aan de b-vector van het Frenet-Serret coördinaatsysteem van een gebogen rand. Optionele eindpuntsverbinding bepaalt plaats er van.</translation>
+      <translation type="unfinished">Align to B vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="236"/>
@@ -1072,7 +917,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="141"/>
       <source>Plane is aligned to coincide planar face.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Vlak is uitgelijnd om met het planaire vlak samen te vallen.</translation>
+      <translation>Vlak is uitgelijnd om met oppervlakte samen te vallen.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="143"/>
@@ -1102,7 +947,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="149"/>
       <source>Frenet NB</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Frenet NB</translation>
+      <translation type="unfinished">Frenet NB</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="150"/>
@@ -1116,85 +961,85 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="152"/>
       <source>Frenet TN</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Frenet TN</translation>
+      <translation type="unfinished">Frenet TN</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="155"/>
       <source>Frenet TB</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Frenet TB</translation>
+      <translation type="unfinished">Frenet TB</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="158"/>
       <source>Concentric</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Concentrisch</translation>
+      <translation type="unfinished">Concentric</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="159"/>
       <source>Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Lijn uit met het vlak met de raakcirkel van een rand. De oorsprong wordt uitgelijnd met het krommingspunt. Optionele eindpuntverbinding definieert waar.</translation>
+      <translation type="unfinished">Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="161"/>
       <source>Revolution Section</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Wentelsectie</translation>
+      <translation type="unfinished">Revolution Section</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="162"/>
       <source>Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Het vlak staat loodrecht op de rand en de Y-as is afgestemd op de as van de raakcirkel. Optionele eindpuntverbinding definieert waar.</translation>
+      <translation type="unfinished">Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="164"/>
       <source>Plane by 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Vlak langs 3 punten</translation>
+      <translation type="unfinished">Plane by 3 points</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="165"/>
       <source>Align plane to pass through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Lijn het vlak uit om door drie eindpunten te gaan.</translation>
+      <translation type="unfinished">Align plane to pass through three vertices.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="167"/>
       <source>Normal to 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Normaal tot 3 punten</translation>
+      <translation type="unfinished">Normal to 3 points</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="168"/>
       <source>Plane will pass through first two vertices, and perpendicular to plane that passes through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Het vlak zal door de eerste twee eindpunten gaan, en loodrecht op het vlak dat door drie eindpunten gaat.</translation>
+      <translation type="unfinished">Plane will pass through first two vertices, and perpendicular to plane that passes through three vertices.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="170"/>
       <source>Folding</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Vouwing</translation>
+      <translation type="unfinished">Folding</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="171"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. Plane will be aligned to folding the first edge.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Gespecialiseerde modus voor het vouwen van veelvlakken. Selecteer 4 randen in volgorde: vouwbare rand, vouwlijn, andere vouwlijn, andere vouwlijn, andere vouwbare rand. Het vlak wordt uitgelijnd met de vouwing van de eerste rand.</translation>
+      <translation type="unfinished">Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. Plane will be aligned to folding the first edge.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="173"/>
       <source>Inertia 2-3</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Inertie 2-3</translation>
+      <translation type="unfinished">Inertia 2-3</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="174"/>
       <source>Plane constructed on second and third principal axes of inertia (passes through center of mass).</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Vlak gebouwd op de tweede en derde hoofdas van inertie (gaat door het massamiddelpunt).</translation>
+      <translation type="unfinished">Plane constructed on second and third principal axes of inertia (passes through center of mass).</translation>
     </message>
   </context>
   <context>
@@ -1233,7 +1078,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="57"/>
       <source>Placement is made equal to Placement of linked object.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Plaatsing is gelijk gemaakt aan de Plaatsing van een gekoppeld object.</translation>
+      <translation type="unfinished">Placement is made equal to Placement of linked object.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="59"/>
@@ -1245,7 +1090,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="60"/>
       <source>X', Y', Z' axes are matched with object's local X, Z, -Y, respectively.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>X', Y', Z' assen worden respectievelijk afgestemd op de lokale X, Z, -Y van het object.</translation>
+      <translation type="unfinished">X', Y', Z' axes are matched with object's local X, Z, -Y, respectively.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="62"/>
@@ -1257,49 +1102,49 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="63"/>
       <source>X', Y', Z' axes are matched with object's local Y, Z, X, respectively.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>X', Y', Z' assen worden respectievelijk afgestemd op de lokale Y, Z, X, van het object.</translation>
+      <translation type="unfinished">X', Y', Z' axes are matched with object's local Y, Z, X, respectively.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="65"/>
       <source>XY on plane</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>XY op het vlak</translation>
+      <translation type="unfinished">XY on plane</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="66"/>
       <source>X' Y' plane is aligned to coincide planar face.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>X' Y'-vlak is zodanig uitgelijnd dat het vlak samenvalt met het planaire vlak.</translation>
+      <translation type="unfinished">X' Y' plane is aligned to coincide planar face.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="68"/>
       <source>XY tangent to surface</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>XY-raaklijn aan het oppervlak</translation>
+      <translation type="unfinished">XY tangent to surface</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="69"/>
       <source>X' Y' plane is made tangent to surface at vertex.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>X' Y'-vlak raakt aan het oppervlak bij het eindpunt.</translation>
+      <translation type="unfinished">X' Y' plane is made tangent to surface at vertex.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="71"/>
       <source>Z tangent to edge</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Z-raaklijn aan de rand</translation>
+      <translation type="unfinished">Z tangent to edge</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="72"/>
       <source>Z' axis is aligned to be tangent to edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>De Z-as is zodanig uitgelijnd dat deze de rand raakt. Optionele eindpuntverbinding definieert waar.</translation>
+      <translation type="unfinished">Z' axis is aligned to be tangent to edge. Optional vertex link defines where.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="74"/>
       <source>Frenet NBT</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Frenet NBT</translation>
+      <translation type="unfinished">Frenet NBT</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="75"/>
@@ -1313,109 +1158,109 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="77"/>
       <source>Frenet TNB</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Frenet TNB</translation>
+      <translation type="unfinished">Frenet TNB</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="80"/>
       <source>Frenet TBN</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Frenet TBN</translation>
+      <translation type="unfinished">Frenet TBN</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="83"/>
       <source>Concentric</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Concentrisch</translation>
+      <translation type="unfinished">Concentric</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="84"/>
       <source>Align XY plane to osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Lijn het XY-vlak uit met de raakcirkel van een rand. Optionele eindpuntverbinding definieert waar.</translation>
+      <translation type="unfinished">Align XY plane to osculating circle of an edge. Optional vertex link defines where.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="86"/>
       <source>Revolution Section</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Wentelsectie</translation>
+      <translation type="unfinished">Revolution Section</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="87"/>
       <source>Align Y' axis to match axis of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Lijn de Y'-as uit om deze in overeenstemming te brengen met de as van de raakcirkel van een rand. Optionele eindpuntverbinding definieert waar.</translation>
+      <translation type="unfinished">Align Y' axis to match axis of osculating circle of an edge. Optional vertex link defines where.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="89"/>
       <source>XY plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>XY-vlak langs 3 punten</translation>
+      <translation type="unfinished">XY plane by 3 points</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="90"/>
       <source>Align XY plane to pass through three vertices.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Lijn het XY-vlak uit om door drie eindpunten te gaan.</translation>
+      <translation type="unfinished">Align XY plane to pass through three vertices.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="92"/>
       <source>XZ plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>XZ-vlak langs 3 punten</translation>
+      <translation type="unfinished">XZ plane by 3 points</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="93"/>
       <source>Align XZ plane to pass through 3 points; X axis will pass through two first points.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Lijn het XZ-vlak uit om door 3 punten te gaan; de X-as zal door twee eerste punten gaan.</translation>
+      <translation type="unfinished">Align XZ plane to pass through 3 points; X axis will pass through two first points.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="95"/>
       <source>Folding</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Vouwing</translation>
+      <translation type="unfinished">Folding</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="96"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY plane will be aligned to folding the first edge.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Gespecialiseerde modus voor het vouwen van veelvlakken. Selecteer 4 randen in volgorde: vouwbare rand, vouwlijn, andere vouwlijn, andere vouwlijn, andere vouwbare rand. Het XY-vlak wordt uitgelijnd met de vouwing van de eerste rand.</translation>
+      <translation type="unfinished">Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY plane will be aligned to folding the first edge.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="98"/>
       <source>Inertial CS</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Traagheidscoördinatensysteem</translation>
+      <translation type="unfinished">Inertial CS</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="99"/>
       <source>Inertial coordinate system, constructed on principal axes of inertia and center of mass.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Traagheidscoördinatensysteem, gebouwd op de hoofdassen van de traagheid en het massamiddelpunt.</translation>
+      <translation type="unfinished">Inertial coordinate system, constructed on principal axes of inertia and center of mass.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="101"/>
       <source>Align O-Z-X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>O-Z-X uitlijnen</translation>
+      <translation type="unfinished">Align O-Z-X</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="102"/>
       <source>Match origin with first Vertex. Align Z' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Stem de oorsprong af op het eerste eindpunt. Lijn de Z'- en X'-assen uit in de richting van het eindpunt/langs de lijn.</translation>
+      <translation type="unfinished">Match origin with first Vertex. Align Z' and X' axes towards vertex/along line.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="104"/>
       <source>Align O-Z-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>O-Z-Y uitlijnen</translation>
+      <translation type="unfinished">Align O-Z-Y</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="105"/>
       <source>Match origin with first Vertex. Align Z' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Stem de oorsprong af op het eerste eindpunt. Lijn de Z'- en Y'-assen uit in de richting van het eindpunt/langs de lijn.</translation>
+      <translation type="unfinished">Match origin with first Vertex. Align Z' and Y' axes towards vertex/along line.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="107"/>
@@ -1428,7 +1273,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="108"/>
       <source>Match origin with first Vertex. Align X' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Stem de oorsprong af op het eerste eindpunt. Lijn de X'- en Y'-assen uit in de richting van het eindpunt/langs de lijn.</translation>
+      <translation type="unfinished">Match origin with first Vertex. Align X' and Y' axes towards vertex/along line.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="110"/>
@@ -1440,7 +1285,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="111"/>
       <source>Match origin with first Vertex. Align X' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Stem de oorsprong af op het eerste eindpunt. Lijn de X'- en Z'-assen uit in de richting van het eindpunt/langs de lijn.</translation>
+      <translation type="unfinished">Match origin with first Vertex. Align X' and Z' axes towards vertex/along line.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="113"/>
@@ -1452,7 +1297,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="114"/>
       <source>Match origin with first Vertex. Align Y' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Stem de oorsprong af op het eerste eindpunt. Lijn de Y'- en Z'-assen uit in de richting van het eindpunt/langs de lijn.</translation>
+      <translation type="unfinished">Match origin with first Vertex. Align Y' and Z' axes towards vertex/along line.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="116"/>
@@ -1465,7 +1310,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="117"/>
       <source>Match origin with first Vertex. Align Y' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Stem de oorsprong af op het eerste eindpunt. Lijn de Y'- en X'-assen uit in de richting van het eindpunt/langs de lijn.</translation>
+      <translation type="unfinished">Match origin with first Vertex. Align Y' and X' axes towards vertex/along line.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="176"/>
@@ -1477,7 +1322,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="177"/>
       <source>Match origin with first Vertex. Align normal and horizontal plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Stem de oorsprong af op het eerste eindpunt. Lijn de normale en horizontale vlakke as uit naar het eindpunt/langs de lijn.</translation>
+      <translation type="unfinished">Match origin with first Vertex. Align normal and horizontal plane axis towards vertex/along line.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="179"/>
@@ -1489,13 +1334,13 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="180"/>
       <source>Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Stem de oorsprong af op het eerste eindpunt. Lijn de normale en verticale vlakke as uit naar het eindpunt/langs de lijn.</translation>
+      <translation type="unfinished">Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="183"/>
       <source>Match origin with first Vertex. Align horizontal and vertical plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Stem de oorsprong af op het eerste eindpunt. Lijn de horizontale en verticale vlakke assen uit naar het eindpunt/langs de lijn.</translation>
+      <translation type="unfinished">Match origin with first Vertex. Align horizontal and vertical plane axes towards vertex/along line.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="185"/>
@@ -1507,7 +1352,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="186"/>
       <source>Match origin with first Vertex. Align horizontal plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Stem de oorsprong af op het eerste eindpunt. Lijn de horizontale vlakke as en de normale uit naar het eindpunt/langs de lijn.</translation>
+      <translation type="unfinished">Match origin with first Vertex. Align horizontal plane axis and normal towards vertex/along line.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="188"/>
@@ -1519,13 +1364,13 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../AttacherTexts.cpp" line="189"/>
       <source>Match origin with first Vertex. Align vertical plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Stem de oorsprong af op het eerste eindpunt. Lijn de verticale vlakke as en de normale uit in de richting van het eindpunt/langs de lijn.</translation>
+      <translation type="unfinished">Match origin with first Vertex. Align vertical plane axis and normal towards vertex/along line.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="192"/>
       <source>Match origin with first Vertex. Align vertical and horizontal plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Stem de oorsprong af op het eerste eindpunt. Lijn de verticale horizontale vlakke assen uit in de richting van het eindpunt/langs de lijn.</translation>
+      <translation type="unfinished">Match origin with first Vertex. Align vertical and horizontal plane axes towards vertex/along line.</translation>
     </message>
   </context>
   <context>
@@ -1719,7 +1564,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../Command.cpp" line="2234"/>
       <location filename="../../Command.cpp" line="2235"/>
       <source>Clear All</source>
-      <translation>Alles wissen</translation>
+      <translation>Alles &amp;Leegmaken</translation>
     </message>
   </context>
   <context>
@@ -1916,12 +1761,12 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="783"/>
       <source>Counpound tools</source>
-      <translation>Samenstellingsgereedschappen</translation>
+      <translation type="unfinished">Counpound tools</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="784"/>
       <source>Compound tools: working with lists of shapes.</source>
-      <translation>Samenstellingsgereedschappen: werken met lijsten van vormen.</translation>
+      <translation type="unfinished">Compound tools: working with lists of shapes.</translation>
     </message>
   </context>
   <context>
@@ -1939,7 +1784,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="556"/>
       <source>Join walled objects</source>
-      <translation>Objecten met wanden toevoegen</translation>
+      <translation type="unfinished">Join walled objects</translation>
     </message>
   </context>
   <context>
@@ -1957,7 +1802,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1722"/>
       <source>Tools to offset shapes (construct parallel shapes)</source>
-      <translation>Gereedschap om vormen te verschuiven (bouw parallelle vormen)</translation>
+      <translation type="unfinished">Tools to offset shapes (construct parallel shapes)</translation>
     </message>
   </context>
   <context>
@@ -1975,7 +1820,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="662"/>
       <source>Shape splitting tools. Compsolid creation tools. OCC 6.9.0 or later is required.</source>
-      <translation>Vormsplitsingsgereedschappen. Gereedschappen voor het maken van Compsolid. OCC 6.9.0 of nieuwer is vereist.</translation>
+      <translation type="unfinished">Shape splitting tools. Compsolid creation tools. OCC 6.9.0 or later is required.</translation>
     </message>
   </context>
   <context>
@@ -1993,7 +1838,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="891"/>
       <source>Make a compound of several shapes</source>
-      <translation>Maak een samenstelling van meerdere vormen</translation>
+      <translation type="unfinished">Make a compound of several shapes</translation>
     </message>
   </context>
   <context>
@@ -2013,7 +1858,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="171"/>
       <source>Create a cone solid</source>
-      <translation>Maak een kegelvormig volumemodel</translation>
+      <translation>Een kegel volumemodel maken</translation>
     </message>
   </context>
   <context>
@@ -2082,12 +1927,12 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="272"/>
       <source>Defeaturing</source>
-      <translation>Onttakeling</translation>
+      <translation type="unfinished">Defeaturing</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="273"/>
       <source>Remove feature from a shape</source>
-      <translation>Verwijder kenmerk uit een vorm</translation>
+      <translation type="unfinished">Remove feature from a shape</translation>
     </message>
   </context>
   <context>
@@ -2208,12 +2053,12 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1565"/>
       <source>Loft...</source>
-      <translation>Loft...</translation>
+      <translation type="unfinished">Loft...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1566"/>
       <source>Utility to loft</source>
-      <translation>Gereedschap voor loft</translation>
+      <translation type="unfinished">Utility to loft</translation>
     </message>
   </context>
   <context>
@@ -2226,12 +2071,12 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1334"/>
       <source>Make face from wires</source>
-      <translation>Maak vlak vanuit draden</translation>
+      <translation type="unfinished">Make face from wires</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1335"/>
       <source>Make face from set of wires (e.g. from a sketch)</source>
-      <translation>Maak een vlak vanuit een draadset (bijv. vanuit een schets)</translation>
+      <translation type="unfinished">Make face from set of wires (e.g. from a sketch)</translation>
     </message>
   </context>
   <context>
@@ -2285,7 +2130,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1624"/>
       <source>Utility to offset in 3D</source>
-      <translation>Gereedschap om te verschuiven in 3D</translation>
+      <translation type="unfinished">Utility to offset in 3D</translation>
     </message>
   </context>
   <context>
@@ -2298,12 +2143,12 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1673"/>
       <source>2D Offset...</source>
-      <translation>2D-verschuiving...</translation>
+      <translation type="unfinished">2D Offset...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1674"/>
       <source>Utility to offset planar shapes</source>
-      <translation>Gereedschap om planaire vormen te verschuiven</translation>
+      <translation type="unfinished">Utility to offset planar shapes</translation>
     </message>
   </context>
   <context>
@@ -2352,12 +2197,12 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="219"/>
       <source>Refine shape</source>
-      <translation>Verfijn vorm</translation>
+      <translation type="unfinished">Refine shape</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="220"/>
       <source>Refine the copy of a shape</source>
-      <translation>Verfijn de kopie van een vorm</translation>
+      <translation type="unfinished">Refine the copy of a shape</translation>
     </message>
   </context>
   <context>
@@ -2388,12 +2233,12 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1384"/>
       <source>Revolve...</source>
-      <translation>Wentelen...</translation>
+      <translation>Draaien...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1385"/>
       <source>Revolve a selected shape</source>
-      <translation>Een geselecteerde vorm wentelen</translation>
+      <translation>Een geselecteerde vorm draaien</translation>
     </message>
   </context>
   <context>
@@ -2406,12 +2251,12 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1989"/>
       <source>Create ruled surface</source>
-      <translation>Maak een geregeerd oppervlak aan</translation>
+      <translation type="unfinished">Create ruled surface</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1990"/>
       <source>Create a ruled surface from either two Edges or two wires</source>
-      <translation>Maak een geregeerd oppervlak vanuit twee randen of twee draden</translation>
+      <translation type="unfinished">Create a ruled surface from either two Edges or two wires</translation>
     </message>
   </context>
   <context>
@@ -2503,7 +2348,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="130"/>
       <source>Create a sphere solid</source>
-      <translation>Maak een bolvormig volumemodel</translation>
+      <translation>Maak een bol volumemodel</translation>
     </message>
   </context>
   <context>
@@ -2516,12 +2361,12 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1594"/>
       <source>Sweep...</source>
-      <translation>Sweep...</translation>
+      <translation type="unfinished">Sweep...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1595"/>
       <source>Utility to sweep</source>
-      <translation>Sweepgereedschap</translation>
+      <translation type="unfinished">Utility to sweep</translation>
     </message>
   </context>
   <context>
@@ -2555,7 +2400,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1848"/>
       <source>Selected shape is not a solid</source>
-      <translation>Geselecteerde vorm is geen volumemodel</translation>
+      <translation>Geselecteerde vorm is geen solid</translation>
     </message>
   </context>
   <context>
@@ -2575,7 +2420,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="212"/>
       <source>Create a torus solid</source>
-      <translation>Maak een torsisch volumemodel</translation>
+      <translation>Een torus volumemodel maken</translation>
     </message>
   </context>
   <context>
@@ -2588,7 +2433,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="20"/>
       <source>Selection accepted</source>
-      <translation>Selectie aanvaard</translation>
+      <translation type="unfinished">Selection accepted</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="35"/>
@@ -2613,12 +2458,12 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="101"/>
       <source>Attachment mode:</source>
-      <translation>Bijlagemodus:</translation>
+      <translation type="unfinished">Attachment mode:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="121"/>
       <source>AttachmentOffset property. The placement is expressed in local space of object being attached.</source>
-      <translation>BijlageVerschuivingseigenschap. De plaatsing wordt uitgedrukt in de lokale ruimte van het object dat wordt toegevoegd.</translation>
+      <translation type="unfinished">AttachmentOffset property. The placement is expressed in local space of object being attached.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="124"/>
@@ -2658,7 +2503,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="328"/>
       <source>Flip sides</source>
-      <translation>Zijden spiegelen</translation>
+      <translation type="unfinished">Flip sides</translation>
     </message>
   </context>
   <context>
@@ -2671,7 +2516,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../CrossSections.ui" line="20"/>
       <source>Guiding plane</source>
-      <translation>Gidsvlak</translation>
+      <translation type="unfinished">Guiding plane</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="26"/>
@@ -2755,7 +2600,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../DlgBooleanOperation.ui" line="81"/>
       <location filename="../../DlgBooleanOperation.ui" line="119"/>
       <source>Solids</source>
-      <translation>Volumemodellen</translation>
+      <translation>Volumemodel</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="86"/>
@@ -2783,7 +2628,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="155"/>
       <source>Swap selection</source>
-      <translation>Wissel selectie om</translation>
+      <translation>Wissel selectie</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="378"/>
@@ -2813,17 +2658,17 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="415"/>
       <source>Performing union on non-solids is not possible</source>
-      <translation>De vereniging van non-volumemodellen is niet mogelijk</translation>
+      <translation type="unfinished">Performing union on non-solids is not possible</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="424"/>
       <source>Performing intersection on non-solids is not possible</source>
-      <translation>De intersectie van non-volumemodellen is niet mogelijk</translation>
+      <translation type="unfinished">Performing intersection on non-solids is not possible</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="433"/>
       <source>Performing difference on non-solids is not possible</source>
-      <translation>De Aftrekking van non-volumemodellen is niet mogelijk</translation>
+      <translation type="unfinished">Performing difference on non-solids is not possible</translation>
     </message>
   </context>
   <context>
@@ -2831,7 +2676,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="1038"/>
       <source>Chamfer Edges</source>
-      <translation>Randen afschuinen</translation>
+      <translation>Afschuinen Randen</translation>
     </message>
   </context>
   <context>
@@ -2849,7 +2694,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="32"/>
       <source>If checked, direction of extrusion is reversed.</source>
-      <translation>Indien aangevinkt, wordt de richting van de extrusie omgekeerd.</translation>
+      <translation type="unfinished">If checked, direction of extrusion is reversed.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="35"/>
@@ -2859,7 +2704,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="42"/>
       <source>Specify direction manually using X,Y,Z values.</source>
-      <translation>Geef richting handmatig aan met behulp van X,Y,Z-waarden.</translation>
+      <translation type="unfinished">Specify direction manually using X,Y,Z values.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="45"/>
@@ -2869,7 +2714,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="52"/>
       <source>Extrude perpendicularly to plane of input shape.</source>
-      <translation>Extrudeer loodrecht aan het vlak van de inputvorm.</translation>
+      <translation type="unfinished">Extrude perpendicularly to plane of input shape.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="55"/>
@@ -2879,7 +2724,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="65"/>
       <source>Click to start selecting an edge in 3d view.</source>
-      <translation>Klik om te beginnen met het selecteren van een rand in 3d-weergave.</translation>
+      <translation type="unfinished">Click to start selecting an edge in 3d view.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="68"/>
@@ -2890,12 +2735,12 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="78"/>
       <source>Set direction to match a direction of straight edge. Hint: to account for length of the edge too, set both lengths to zero.</source>
-      <translation>Stel de richting in die overeenkomt met de richting van de rechte rand. Tip: om ook rekening te houden met de lengte van de rand, moet u beide lengtes op nul zetten.</translation>
+      <translation type="unfinished">Set direction to match a direction of straight edge. Hint: to account for length of the edge too, set both lengths to zero.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="81"/>
       <source>Along edge:</source>
-      <translation>Langs de rand:</translation>
+      <translation type="unfinished">Along edge:</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="99"/>
@@ -2925,7 +2770,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="204"/>
       <source>Length to extrude along direction (can be negative). If both lengths are zero, magnitude of direction is used.</source>
-      <translation>Lengte om langs richting te extruderen (kan negatief zijn). Als beide lengten nul zijn, wordt de richtingsomvang gebruikt.</translation>
+      <translation type="unfinished">Length to extrude along direction (can be negative). If both lengths are zero, magnitude of direction is used.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="223"/>
@@ -2935,12 +2780,12 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="242"/>
       <source>Length to extrude against direction (can be negative).</source>
-      <translation>Lengte om tegen richting uit te extruderen (kan negatief zijn).</translation>
+      <translation type="unfinished">Length to extrude against direction (can be negative).</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="261"/>
       <source>Distribute extrusion length equally to both sides.</source>
-      <translation>Verspreid de lengte van de extrusie evenzeer aan beide zijden.</translation>
+      <translation type="unfinished">Distribute extrusion length equally to both sides.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="264"/>
@@ -2956,12 +2801,12 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../DlgExtrusion.ui" line="289"/>
       <location filename="../../DlgExtrusion.ui" line="314"/>
       <source>Apply slope (draft) to extrusion side faces.</source>
-      <translation>Pas helling (schets) toe op geëxtrudeerde zijvlakken.</translation>
+      <translation type="unfinished">Apply slope (draft) to extrusion side faces.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="335"/>
       <source>If checked, extruding closed wires will give solids, not shells.</source>
-      <translation>Indien aangevinkt, zullen de geëxtrudeerde gesloten draden volumemodellen geven, niet schillen.</translation>
+      <translation type="unfinished">If checked, extruding closed wires will give solids, not shells.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="338"/>
@@ -2989,52 +2834,52 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <source>Creating Extrusion failed.
 
 %1</source>
-      <translation>Het creëren van de extrusie is mislukt.
+      <translation type="unfinished">Creating Extrusion failed.
 
 %1</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="542"/>
       <source>Object not found: %1</source>
-      <translation>Object niet gevonden: %1</translation>
+      <translation type="unfinished">Object not found: %1</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="604"/>
       <source>No shapes selected for extrusion. Select some, first.</source>
-      <translation>Geen vormen geselecteerd voor de extrusie. Selecteer eerst een aantal.</translation>
+      <translation type="unfinished">No shapes selected for extrusion. Select some, first.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="625"/>
       <source>Extrusion direction link is invalid.
 
 %1</source>
-      <translation>Extrusierichtingskoppeling is ongeldig.
+      <translation type="unfinished">Extrusion direction link is invalid.
 
 %1</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="627"/>
       <source>Direction mode is to use an edge, but no edge is linked.</source>
-      <translation>Richtingsmodus is bedoeld om een rand te gebruiken, maar geen rand is gekoppeld.</translation>
+      <translation type="unfinished">Direction mode is to use an edge, but no edge is linked.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="650"/>
       <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
 
 (%1)</source>
-      <translation>Kan de normale vector van de te extruderen vorm niet bepalen. Gelieve een andere modus te gebruiken. 
+      <translation type="unfinished">Can't determine normal vector of shape to be extruded. Please use other mode. 
 
 (%1)</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="660"/>
       <source>Extrusion direction is zero-length. It must be non-zero.</source>
-      <translation>Extrusierichting is nul-lengte. Deze moet niet gelijk zijn aan nul.</translation>
+      <translation type="unfinished">Extrusion direction is zero-length. It must be non-zero.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="671"/>
       <source>Total extrusion length is zero (length1 == -length2). It must be nonzero.</source>
-      <translation>Totale extrusielengte is nul (length1 == -lengte2). Het moet niet gelijk aan nul zijn.</translation>
+      <translation type="unfinished">Total extrusion length is zero (length1 == -length2). It must be nonzero.</translation>
     </message>
   </context>
   <context>
@@ -3231,17 +3076,17 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="65"/>
       <source>Write solids and shells as</source>
-      <translation>Schrijf volumemodellen en schillen als</translation>
+      <translation type="unfinished">Write solids and shells as</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="71"/>
       <source>Groups of Trimmed Surfaces (type 144)</source>
-      <translation>Groepen van getrimde oppervlakken (type 144)</translation>
+      <translation type="unfinished">Groups of Trimmed Surfaces (type 144)</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="81"/>
       <source>Solids (type 186) and Shells (type 514) / B-REP mode</source>
-      <translation>Volumemodellen (type 186) en schillen (type 514) / B-REP-modus</translation>
+      <translation type="unfinished">Solids (type 186) and Shells (type 514) / B-REP mode</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="94"/>
@@ -3334,7 +3179,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="130"/>
       <source>Write out curves in parametric space of surface</source>
-      <translation>Schrijf de curven uit in de parametrische oppervlakruimte</translation>
+      <translation type="unfinished">Write out curves in parametric space of surface</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="153"/>
@@ -3344,12 +3189,12 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="159"/>
       <source>If this is checked, no Compound merge will be done during file reading (slower but higher details).</source>
-      <translation>Indien aangevinkt, zal geen samenvoeging van samenstellingen plaatsvinden tijdens het lezen van bestanden (langzamer, maar hogere details).</translation>
+      <translation type="unfinished">If this is checked, no Compound merge will be done during file reading (slower but higher details).</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="162"/>
       <source>Enable STEP Compound merge</source>
-      <translation>STEP-samenstelling samenvoegen inschakelen</translation>
+      <translation type="unfinished">Enable STEP Compound merge</translation>
     </message>
   </context>
   <context>
@@ -3787,12 +3632,12 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1590"/>
       <source>Major radius:</source>
-      <translation>Hoofdstraal:</translation>
+      <translation>Grote straal:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1597"/>
       <source>Minor radius:</source>
-      <translation>Substraal:</translation>
+      <translation>Kleine straal:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1679"/>
@@ -3853,17 +3698,17 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="20"/>
       <source>Revolve</source>
-      <translation>Wentelen</translation>
+      <translation>Draaien</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="32"/>
       <source>If checked, revolving wires will produce solids. If not, revolving a wire yields a shell.</source>
-      <translation>Indien aangevinkt, zullen de wentelende draden volumemodellen produceren. Zo niet, levert de wentelende draad een schil op.</translation>
+      <translation type="unfinished">If checked, revolving wires will produce solids. If not, revolving a wire yields a shell.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="35"/>
       <source>Create Solid</source>
-      <translation>Maak een volumemodel</translation>
+      <translation>Creëer Solid</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="52"/>
@@ -3878,7 +3723,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="111"/>
       <source>Revolution axis</source>
-      <translation>Omwentelingsas</translation>
+      <translation type="unfinished">Revolution axis</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="119"/>
@@ -3899,22 +3744,22 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
       <location filename="../../DlgRevolution.ui" line="201"/>
       <location filename="../../DlgRevolution.ui" line="242"/>
       <source>Click to set this as axis</source>
-      <translation>Klik om deze as in te stellen</translation>
+      <translation type="unfinished">Click to set this as axis</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="204"/>
       <source>Dir. X:</source>
-      <translation>Richting X:</translation>
+      <translation type="unfinished">Dir. X:</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="245"/>
       <source>Dir. Y:</source>
-      <translation>Richting Y:</translation>
+      <translation type="unfinished">Dir. Y:</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="283"/>
       <source>Dir. Z:</source>
-      <translation>Richting Z:</translation>
+      <translation type="unfinished">Dir. Z:</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="305"/>
@@ -3925,7 +3770,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="325"/>
       <source>If checked, revolution will extend forwards and backwards by half the angle.</source>
-      <translation>Indien aangevinkt, zal de omwenteling zich voorover en achterover uitbreiden met de helft van de hoek.</translation>
+      <translation type="unfinished">If checked, revolution will extend forwards and backwards by half the angle.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="328"/>
@@ -3935,7 +3780,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../DlgRevolution.cpp" line="173"/>
       <source>Object not found: %1</source>
-      <translation>Object niet gevonden: %1</translation>
+      <translation type="unfinished">Object not found: %1</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="254"/>
@@ -3949,19 +3794,19 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
       <source>Revolution axis link is invalid.
 
 %1</source>
-      <translation>De omwentelingsaskoppeling is ongeldig.
+      <translation type="unfinished">Revolution axis link is invalid.
 
 %1</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="289"/>
       <source>Revolution axis direction is zero-length. It must be non-zero.</source>
-      <translation>De richting van de omwentelingsas is nul-lengte. Het moet niet gelijk zijn aan nul.</translation>
+      <translation type="unfinished">Revolution axis direction is zero-length. It must be non-zero.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="299"/>
       <source>Revolution angle span is zero. It must be non-zero.</source>
-      <translation>De omwentelingshoek is nul. Het moet niet gelijk zijn aan nul.</translation>
+      <translation type="unfinished">Revolution angle span is zero. It must be non-zero.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="428"/>
@@ -3969,7 +3814,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
       <source>Creating Revolve failed.
 
 %1</source>
-      <translation>Het creëren van de omwenteling is mislukt.
+      <translation type="unfinished">Creating Revolve failed.
 
 %1</translation>
     </message>
@@ -3999,7 +3844,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="87"/>
       <source>Defines the deviation of tessellation to the actual surface</source>
-      <translation>Definieert de afwijking van de tessellatie naar het werkelijke oppervlak</translation>
+      <translation type="unfinished">Defines the deviation of tessellation to the actual surface</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="90"/>
@@ -4009,14 +3854,14 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="93"/>
       <source>Maximum deviation depending on the model bounding box</source>
-      <translation>Maximale afwijking afhankelijk van het model begrenzingsdoos</translation>
+      <translation type="unfinished">Maximum deviation depending on the model bounding box</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="100"/>
       <source>Maximum angular deflection</source>
-      <translation>Maximale hoekdeflectie</translation>
+      <translation type="unfinished">Maximum angular deflection</translation>
     </message>
-    <message>
+    <message utf8="true">
       <location filename="../../DlgSettings3DViewPart.ui" line="107"/>
       <source> °</source>
       <translation>°</translation>
@@ -4090,7 +3935,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="47"/>
       <source>Bounding box color</source>
-      <translation>Begrenzingsdooskleur</translation>
+      <translation>Selectiekader kleur</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="60"/>
@@ -4123,7 +3968,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="151"/>
       <source>The color of bounding boxes in the 3D view</source>
-      <translation>De kleur van de begrenzingsdoos in de 3D-weergave</translation>
+      <translation>De kleur van de selectiekaders in het 3D weergave</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="177"/>
@@ -4143,7 +3988,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="230"/>
       <source>Random shape color</source>
-      <translation>Willekeurige vormkleur</translation>
+      <translation type="unfinished">Random shape color</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="261"/>
@@ -4192,12 +4037,12 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="80"/>
       <source>Available profiles</source>
-      <translation>Beschikbare profielen</translation>
+      <translation type="unfinished">Available profiles</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="81"/>
       <source>Selected profiles</source>
-      <translation>Geselecteerde profielen</translation>
+      <translation type="unfinished">Selected profiles</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="180"/>
@@ -4207,7 +4052,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="180"/>
       <source>At least two vertices, edges, wires or faces are required.</source>
-      <translation>Minstens twee eindpunten, randen, draden of vlakken zijn vereist.</translation>
+      <translation type="unfinished">At least two vertices, edges, wires or faces are required.</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="214"/>
@@ -4217,12 +4062,12 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="243"/>
       <source>Vertex/Edge/Wire/Face</source>
-      <translation>Eindpunt/Rand/Draad/Vlak</translation>
+      <translation type="unfinished">Vertex/Edge/Wire/Face</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="244"/>
       <source>Loft</source>
-      <translation>Loft</translation>
+      <translation type="unfinished">Loft</translation>
     </message>
   </context>
   <context>
@@ -4362,7 +4207,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="522"/>
       <source>Select adjacent edges</source>
-      <translation>Selecteer aangrenzende randen</translation>
+      <translation type="unfinished">Select adjacent edges</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="529"/>
@@ -4390,24 +4235,24 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="136"/>
       <source>Available profiles</source>
-      <translation>Beschikbare profielen</translation>
+      <translation type="unfinished">Available profiles</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="137"/>
       <source>Selected profiles</source>
-      <translation>Geselecteerde profielen</translation>
+      <translation type="unfinished">Selected profiles</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="282"/>
       <location filename="../../TaskSweep.cpp" line="414"/>
       <location filename="../../TaskSweep.cpp" line="422"/>
       <source>Sweep path</source>
-      <translation>Sweeppad</translation>
+      <translation type="unfinished">Sweep path</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="282"/>
       <source>Select one or more connected edges you want to sweep along.</source>
-      <translation>Selecteer een of meer aangesloten randen waar u langs wilt vegen.</translation>
+      <translation type="unfinished">Select one or more connected edges you want to sweep along.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="310"/>
@@ -4417,7 +4262,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="310"/>
       <source>At least one edge or wire is required.</source>
-      <translation>Minstens één rand of draad is vereist.</translation>
+      <translation type="unfinished">At least one edge or wire is required.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="317"/>
@@ -4427,7 +4272,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="317"/>
       <source>'%1' cannot be used as profile and path.</source>
-      <translation>'%1' kan niet gebruikt worden als profiel en pad.</translation>
+      <translation type="unfinished">'%1' cannot be used as profile and path.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="355"/>
@@ -4442,13 +4287,13 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="390"/>
       <source>Select one or more connected edges in the 3d view and press 'Done'</source>
-      <translation>Selecteer een of meer verbonden randen in de 3d-weergave en druk op 'Klaar'</translation>
+      <translation type="unfinished">Select one or more connected edges in the 3d view and press 'Done'</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="414"/>
       <location filename="../../TaskSweep.cpp" line="422"/>
       <source>The selected sweep path is invalid.</source>
-      <translation>Het geselecteerde sweeppad is ongeldig.</translation>
+      <translation type="unfinished">The selected sweep path is invalid.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="434"/>
@@ -4458,7 +4303,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="435"/>
       <source>Sweep</source>
-      <translation>Sweep</translation>
+      <translation type="unfinished">Sweep</translation>
     </message>
   </context>
   <context>
@@ -4471,7 +4316,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="20"/>
       <source>Selection accepted</source>
-      <translation>Selectie aanvaard</translation>
+      <translation type="unfinished">Selection accepted</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="35"/>
@@ -4496,12 +4341,12 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="101"/>
       <source>Attachment mode:</source>
-      <translation>Bijlagemodus:</translation>
+      <translation type="unfinished">Attachment mode:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="121"/>
       <source>AttachmentOffset property. The placement is expressed in local space of object being attached.</source>
-      <translation>BijlageVerschuivingseigenschap. De plaatsing wordt uitgedrukt in de lokale ruimte van het object dat wordt toegevoegd.</translation>
+      <translation type="unfinished">AttachmentOffset property. The placement is expressed in local space of object being attached.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="124"/>
@@ -4542,7 +4387,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="328"/>
       <source>Flip sides</source>
-      <translation>Zijden spiegelen</translation>
+      <translation type="unfinished">Flip sides</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="302"/>
@@ -4638,7 +4483,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="421"/>
       <source>Check geometry</source>
-      <translation>Controleer geometrie</translation>
+      <translation type="unfinished">Check geometry</translation>
     </message>
   </context>
   <context>
@@ -4682,7 +4527,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskLoft.ui" line="14"/>
       <source>Loft</source>
-      <translation>Loft</translation>
+      <translation type="unfinished">Loft</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.ui" line="23"/>
@@ -4692,7 +4537,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskLoft.ui" line="30"/>
       <source>Ruled surface</source>
-      <translation>Geregeerd oppervlak</translation>
+      <translation>Aan de oppervlakte aangepast</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.ui" line="50"/>
@@ -4731,7 +4576,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="60"/>
       <source>Join type</source>
-      <translation>Type aansluiting</translation>
+      <translation type="unfinished">Join type</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="68"/>
@@ -4752,7 +4597,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="93"/>
       <source>Self-intersection</source>
-      <translation>Zelfintersectie</translation>
+      <translation type="unfinished">Self-intersection</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="100"/>
@@ -4786,7 +4631,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="33"/>
       <source>Shell from faces</source>
-      <translation>Schil van oppervlakken</translation>
+      <translation>Schil van oppervlakten</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="40"/>
@@ -4801,17 +4646,17 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="54"/>
       <source>Solid from shell</source>
-      <translation>Volumemodel vanuit schil</translation>
+      <translation type="unfinished">Solid from shell</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="68"/>
       <source>Planar</source>
-      <translation>Planair</translation>
+      <translation type="unfinished">Planar</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="75"/>
       <source>Refine shape</source>
-      <translation>Verfijn vorm</translation>
+      <translation type="unfinished">Refine shape</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="85"/>
@@ -4826,7 +4671,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="116"/>
       <source>Wire from edges</source>
-      <translation>Draad vanuit randen</translation>
+      <translation type="unfinished">Wire from edges</translation>
     </message>
   </context>
   <context>
@@ -4834,12 +4679,12 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskSweep.ui" line="14"/>
       <source>Sweep</source>
-      <translation>Sweep</translation>
+      <translation type="unfinished">Sweep</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="23"/>
       <source>Sweep Path</source>
-      <translation>Sweeppad</translation>
+      <translation type="unfinished">Sweep Path</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="50"/>
@@ -4849,7 +4694,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskSweep.ui" line="57"/>
       <source>Frenet</source>
-      <translation>Frenet</translation>
+      <translation type="unfinished">Frenet</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="464"/>
@@ -4871,7 +4716,7 @@ in de 3D-weergave voor het veegpad.</translation>
     <message>
       <location filename="../../TaskThickness.cpp" line="159"/>
       <source>Select faces of the source object and press 'Done'</source>
-      <translation>Selecteer de oppervlakken van het bronobject en druk op 'Gereed'</translation>
+      <translation>Selecteer de oppervlakten van het bronobject en druk op 'Gereed'</translation>
     </message>
     <message>
       <location filename="../../TaskThickness.cpp" line="162"/>
@@ -4894,37 +4739,37 @@ in de 3D-weergave voor het veegpad.</translation>
     <message>
       <location filename="../../../App/FaceMaker.cpp" line="177"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
-      <translation>Maakt een afzonderlijk planair vlak vanuit elke draad. Geen ondersteuning voor gaten; de draden kunnen zich op verschillende vlakken bevinden.</translation>
+      <translation type="unfinished">Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="69"/>
       <source>Bull's-eye facemaker</source>
-      <translation>Bull's-eye vlakkengenerator</translation>
+      <translation type="unfinished">Bull's-eye facemaker</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="74"/>
       <source>Supports making planar faces with holes with islands.</source>
-      <translation>Ondersteunt het maken van planaire vlakken met gaten met eilanden.</translation>
+      <translation type="unfinished">Supports making planar faces with holes with islands.</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerCheese.cpp" line="248"/>
       <source>Cheese facemaker</source>
-      <translation>Cheese vlakkengenerator</translation>
+      <translation type="unfinished">Cheese facemaker</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerCheese.cpp" line="253"/>
       <source>Supports making planar faces with holes, but no islands inside holes.</source>
-      <translation>Ondersteunt het maken van planaire vlakken met gaten, maar zonder eilanden binnen de gaten.</translation>
+      <translation type="unfinished">Supports making planar faces with holes, but no islands inside holes.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrusion.cpp" line="515"/>
       <source>Part Extrude facemaker</source>
-      <translation>Vlakkengenerator voor geëxtrudeerde onderdelen</translation>
+      <translation type="unfinished">Part Extrude facemaker</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrusion.cpp" line="520"/>
       <source>Supports making faces with holes, does not support nesting.</source>
-      <translation>Ondersteunt het maken van vlakken met gaten, ondersteunt nestingen niet.</translation>
+      <translation type="unfinished">Supports making faces with holes, does not support nesting.</translation>
     </message>
   </context>
   <context>
@@ -4981,12 +4826,12 @@ Wilt u doorgaan?</translation>
     <message>
       <location filename="../../Command.cpp" line="382"/>
       <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</source>
-      <translation>Gelieve twee of meer vormen te kiezen. Of, selecteer één samenstelling met twee of meer vormen om gemeenschappelijke tussen de twee of meer vormen te berekenen.</translation>
+      <translation type="unfinished">Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="484"/>
       <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</source>
-      <translation>Gelieve twee of meer vormen te kiezen. Of, selecteer één samenstelling met twee of meer vormen die samengevoegd moeten worden.</translation>
+      <translation type="unfinished">Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="903"/>
@@ -5011,12 +4856,12 @@ Wilt u doorgaan?</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="120"/>
       <source>Sewing Tolerance</source>
-      <translation>Naaitolerantie</translation>
+      <translation type="unfinished">Sewing Tolerance</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="121"/>
       <source>Enter tolerance for sewing shape:</source>
-      <translation>Voer tolerantie in voor het naaien van vorm:</translation>
+      <translation type="unfinished">Enter tolerance for sewing shape:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="71"/>
@@ -5050,12 +4895,12 @@ Wilt u doorgaan?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="79"/>
       <source>Compound Solid</source>
-      <translation>Samengesteld volumemodel</translation>
+      <translation type="unfinished">Compound Solid</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="80"/>
       <source>Solid</source>
-      <translation>Volumemodel</translation>
+      <translation>Solid</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="81"/>
@@ -5125,17 +4970,17 @@ Wilt u doorgaan?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="111"/>
       <source>Invalid Same Range Flag</source>
-      <translation>Ongeldige zelfde bereikvlag</translation>
+      <translation type="unfinished">Invalid Same Range Flag</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="112"/>
       <source>Invalid Same Parameter Flag</source>
-      <translation>Ongeldige zelfde parametervlag</translation>
+      <translation type="unfinished">Invalid Same Parameter Flag</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="113"/>
       <source>Invalid Degenerated Flag</source>
-      <translation>Ongeldige gedegenereerde vlag</translation>
+      <translation type="unfinished">Invalid Degenerated Flag</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="114"/>
@@ -5145,7 +4990,7 @@ Wilt u doorgaan?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="115"/>
       <source>Invalid MultiConnexity</source>
-      <translation>Ongeldige meervoudige connectiviteit</translation>
+      <translation type="unfinished">Invalid MultiConnexity</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="116"/>
@@ -5190,7 +5035,7 @@ Wilt u doorgaan?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="124"/>
       <source>Invalid Imbrication Of Wires</source>
-      <translation>Ongeldige imbricatie van de draden</translation>
+      <translation type="unfinished">Invalid Imbrication Of Wires</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="125"/>
@@ -5230,12 +5075,12 @@ Wilt u doorgaan?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="132"/>
       <source>Bad Orientation Of Sub Shape</source>
-      <translation>Slechte oriëntatie van de subvorm</translation>
+      <translation type="unfinished">Bad Orientation Of Sub Shape</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="133"/>
       <source>Invalid Tolerance Value</source>
-      <translation>Ongeldige Tolerantiewaarde</translation>
+      <translation type="unfinished">Invalid Tolerance Value</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="134"/>
@@ -5250,67 +5095,67 @@ Wilt u doorgaan?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="148"/>
       <source>Out Of Enum Range: </source>
-      <translation>Buiten het opsommingsbereik: </translation>
+      <translation type="unfinished">Out Of Enum Range: </translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="160"/>
       <source>BOPAlgo CheckUnknown</source>
-      <translation>BOPAlgo CheckUnknown</translation>
+      <translation type="unfinished">BOPAlgo CheckUnknown</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="161"/>
       <source>BOPAlgo BadType</source>
-      <translation>BOPAlgo BadType</translation>
+      <translation type="unfinished">BOPAlgo BadType</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="162"/>
       <source>BOPAlgo SelfIntersect</source>
-      <translation>BOPAlgo SelfIntersect</translation>
+      <translation type="unfinished">BOPAlgo SelfIntersect</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="163"/>
       <source>BOPAlgo TooSmallEdge</source>
-      <translation>BOPAlgo TooSmallEdge</translation>
+      <translation type="unfinished">BOPAlgo TooSmallEdge</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="164"/>
       <source>BOPAlgo NonRecoverableFace</source>
-      <translation>BOPAlgo NonRecoverableFace</translation>
+      <translation type="unfinished">BOPAlgo NonRecoverableFace</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="165"/>
       <source>BOPAlgo IncompatibilityOfVertex</source>
-      <translation>BOPAlgo IncompatibilityOfVertex</translation>
+      <translation type="unfinished">BOPAlgo IncompatibilityOfVertex</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="166"/>
       <source>BOPAlgo IncompatibilityOfEdge</source>
-      <translation>BOPAlgo IncompatibilityOfEdge</translation>
+      <translation type="unfinished">BOPAlgo IncompatibilityOfEdge</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="167"/>
       <source>BOPAlgo IncompatibilityOfFace</source>
-      <translation>BOPAlgo IncompatibilityOfFace</translation>
+      <translation type="unfinished">BOPAlgo IncompatibilityOfFace</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="168"/>
       <source>BOPAlgo OperationAborted</source>
-      <translation>BOPAlgo OperationAborted</translation>
+      <translation type="unfinished">BOPAlgo OperationAborted</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="169"/>
       <source>BOPAlgo GeomAbs_C0</source>
-      <translation>BOPAlgo GeomAbs_C0</translation>
+      <translation type="unfinished">BOPAlgo GeomAbs_C0</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="170"/>
       <source>BOPAlgo_InvalidCurveOnSurface</source>
-      <translation>BOPAlgo_InvalidCurveOnSurface</translation>
+      <translation type="unfinished">BOPAlgo_InvalidCurveOnSurface</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="171"/>
       <source>BOPAlgo NotValid</source>
-      <translation>BOPAlgo NotValid</translation>
+      <translation type="unfinished">BOPAlgo NotValid</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="463"/>
@@ -5333,7 +5178,7 @@ Wilt u doorgaan?</translation>
     <message>
       <location filename="../../TaskDimension.cpp" line="1340"/>
       <source>Reset Dialog</source>
-      <translation>Herstel dialoog</translation>
+      <translation type="unfinished">Reset Dialog</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1344"/>
@@ -5348,7 +5193,7 @@ Wilt u doorgaan?</translation>
     <message>
       <location filename="../../TaskDimension.cpp" line="1354"/>
       <source>Clear All</source>
-      <translation>Alles wissen</translation>
+      <translation>Alles &amp;Leegmaken</translation>
     </message>
     <message>
       <location filename="../../ViewProviderExt.cpp" line="847"/>
@@ -5383,7 +5228,7 @@ Wilt u doorgaan?</translation>
     <message>
       <location filename="../../ViewProviderSpline.cpp" line="81"/>
       <source>Show control points</source>
-      <translation>Toon controlepunten</translation>
+      <translation>Toon Controlle Punten</translation>
     </message>
   </context>
   <context>
@@ -5406,7 +5251,7 @@ Wilt u doorgaan?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
       <source>Solids</source>
-      <translation>Volumemodellen</translation>
+      <translation>Volumemodel</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="41"/>
@@ -5426,7 +5271,7 @@ Wilt u doorgaan?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>Join</source>
-      <translation>Samenvoegen</translation>
+      <translation type="unfinished">Join</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>

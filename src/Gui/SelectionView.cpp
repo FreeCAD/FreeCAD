@@ -56,7 +56,6 @@ using namespace Gui::DockWnd;
 SelectionView::SelectionView(Gui::Document* pcDocument, QWidget *parent)
   : DockWindow(pcDocument,parent)
   , SelectionObserver(false,0)
-  , x(0.0f), y(0.0f), z(0.0f)
 {
     setWindowTitle(tr("Selection View"));
 

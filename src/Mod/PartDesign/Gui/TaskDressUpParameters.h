@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2012 Jan Rheinländer                                    *
- *                                   <jrheinlaender@users.sourceforge.net> *
+ *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net>        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -31,9 +30,7 @@
 #include "TaskFeatureParameters.h"
 #include "ViewProviderDressUp.h"
 
-class QAction;
 class QListWidget;
-class QListWidgetItem;
 
 namespace Part {
     class Feature;
@@ -57,30 +54,21 @@ public:
     void setupTransaction();
 
     /// Apply the changes made to the object to it
-    virtual void apply() {}
-
-    int getTransactionID() const {
-        return transactionID;
-    }
+    virtual void apply() {};
 
 protected Q_SLOTS:
     void onButtonRefAdd(const bool checked);
     void onButtonRefRemove(const bool checked);
-    void doubleClicked(QListWidgetItem* item);
-    void setSelection(QListWidgetItem* current);
-    void itemClickedTimeout();
-    virtual void onRefDeleted(void) = 0;
-    void createDeleteAction(QListWidget* parentList, QWidget* parentButton);
+    virtual void onRefDeleted(void)=0;
 
 protected:
     void exitSelectionMode();
     bool referenceSelected(const Gui::SelectionChanges& msg);
-    bool wasDoubleClicked = false;
-    bool KeyEvent(QEvent *e);
 
 protected:
     enum selectionModes { none, refAdd, refRemove, plane, line };
     virtual void clearButtons(const selectionModes notThis) = 0;
+    virtual void changeEvent(QEvent *e) = 0;
     static void removeItemFromListWidget(QListWidget* widget, const char* itemstr);
 
     ViewProviderDressUp* getDressUpView() const
@@ -89,7 +77,6 @@ protected:
 protected:
     QWidget* proxy;
     ViewProviderDressUp *DressUpView;
-    QAction* deleteAction;
 
     bool allowFaces, allowEdges;
     selectionModes selectionMode;    

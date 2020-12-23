@@ -72,7 +72,7 @@ public:
     /// Returns the BaseFeature property's shape (if any)
     virtual const TopoDS_Shape& getBaseShape() const;
     /// Returns the BaseFeature property's TopoShape (if any)
-    Part::TopoShape getBaseTopoShape(bool silent=false) const;
+    const Part::TopoShape getBaseTopoShape() const;
 
     virtual PyObject* getPyObject(void);
 

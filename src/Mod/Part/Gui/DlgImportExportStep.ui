@@ -55,10 +55,10 @@
          <string>Export invisible objects</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>ExportHiddenObject</cstring>
+         <string>ExportHiddenObject</string>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>Mod/Import</cstring>
+         <string>Mod/Import</string>
         </property>
        </widget>
       </item>
@@ -114,10 +114,10 @@
          <string>Use legacy exporter</string>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>Mod/Import</cstring>
+         <string>Mod/Import</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>ExportLegacy</cstring>
+         <string>ExportLegacy</string>
         </property>
        </widget>
       </item>
@@ -133,10 +133,10 @@ it inside the Placement property.</string>
          <string>Export single object placement</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>ExportKeepPlacement</cstring>
+         <string>ExportKeepPlacement</string>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>Mod/Import</cstring>
+         <string>Mod/Import</string>
         </property>
        </widget>
       </item>
@@ -233,10 +233,10 @@ during file reading (slower but higher details).</string>
          <string>Use LinkGroup</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>UseLinkGroup</cstring>
+         <string>UseLinkGroup</string>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>Mod/Import</cstring>
+         <string>Mod/Import</string>
         </property>
        </widget>
       </item>
@@ -249,10 +249,10 @@ during file reading (slower but higher details).</string>
          <string>Import invisible objects</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>ImportHiddenObject</cstring>
+         <string>ImportHiddenObject</string>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>Mod/Import</cstring>
+         <string>Mod/Import</string>
         </property>
        </widget>
       </item>
@@ -265,10 +265,10 @@ during file reading (slower but higher details).</string>
          <string>Reduce number of objects</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>ReduceObjects</cstring>
+         <string>ReduceObjects</string>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>Mod/Import</cstring>
+         <string>Mod/Import</string>
         </property>
        </widget>
       </item>
@@ -281,10 +281,10 @@ during file reading (slower but higher details).</string>
          <string>Expand compound shape</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>ExpandCompound</cstring>
+         <string>ExpandCompound</string>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>Mod/Import</cstring>
+         <string>Mod/Import</string>
         </property>
        </widget>
       </item>
@@ -297,10 +297,10 @@ during file reading (slower but higher details).</string>
          <string>Show progress bar when importing</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>ShowProgress</cstring>
+         <string>ShowProgress</string>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>Mod/Import</cstring>
+         <string>Mod/Import</string>
         </property>
        </widget>
       </item>
@@ -313,10 +313,10 @@ during file reading (slower but higher details).</string>
          <string>Ignore instance names</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>UseBaseName</cstring>
+         <string>UseBaseName</string>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>Mod/Import</cstring>
+         <string>Mod/Import</string>
         </property>
        </widget>
       </item>
@@ -338,10 +338,10 @@ during file reading (slower but higher details).</string>
            </sizepolicy>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>ImportMode</cstring>
+           <string>ImportMode</string>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>Mod/Import</cstring>
+           <string>Mod/Import</string>
           </property>
           <item>
            <property name="text">

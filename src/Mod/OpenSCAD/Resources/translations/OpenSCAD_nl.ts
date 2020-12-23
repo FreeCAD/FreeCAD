@@ -41,12 +41,12 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="153"/>
       <source>The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</source>
-      <translation>Het maximale aantal vlakken van een veelhoek, prisma of frustum. Als fn groter is dan deze waarde wordt het object beschouwd als een cirkelvormig object. Zet op 0 voor geen limiet</translation>
+      <translation type="unfinished">The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="133"/>
       <source>Maximum number of faces for polygons (fn)</source>
-      <translation>Maximaal aantal vlakken voor veelhoeken (fn)</translation>
+      <translation type="unfinished">Maximum number of faces for polygons (fn)</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="177"/>
@@ -61,7 +61,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="208"/>
       <source>angular (fa)</source>
-      <translation>hoekig (fa)</translation>
+      <translation type="unfinished">angular (fa)</translation>
     </message>
     <message encoding="UTF-8">
       <location filename="../ui/openscadprefs-base.ui" line="218"/>
@@ -81,12 +81,12 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="304"/>
       <source>convexity</source>
-      <translation>convexiteit</translation>
+      <translation type="unfinished">convexity</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="341"/>
       <source>Mesh fallback</source>
-      <translation>Reservemesh</translation>
+      <translation type="unfinished">Mesh fallback</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="383"/>
@@ -132,96 +132,96 @@
   <context>
     <name>OpenSCAD</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="147"/>
+      <location filename="../../OpenSCADCommands.py" line="145"/>
       <source>Convert Edges to Faces</source>
       <translation>Randen omzetten naar vlakken</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="309"/>
+      <location filename="../../OpenSCADCommands.py" line="224"/>
       <source>Please select 3 objects first</source>
       <translation>Selecteer eerst 3 objecten</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="1226"/>
+      <location filename="../../importCSG.py" line="1204"/>
       <source>Unsupported Function</source>
       <translation>Niet-ondersteunde functie</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="1226"/>
+      <location filename="../../importCSG.py" line="1204"/>
       <source>Press OK</source>
       <translation>Druk op OK</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="347"/>
+      <location filename="../../OpenSCADCommands.py" line="268"/>
       <source>Add</source>
       <translation>Toevoegen</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="348"/>
+      <location filename="../../OpenSCADCommands.py" line="269"/>
       <source>Clear</source>
       <translation>Wissen</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="349"/>
+      <location filename="../../OpenSCADCommands.py" line="270"/>
       <source>as Mesh</source>
       <translation>als net</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="350"/>
+      <location filename="../../OpenSCADCommands.py" line="271"/>
       <source>Add OpenSCAD Element</source>
       <translation>Een OpenSCAD element toevoegen</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="423"/>
+      <location filename="../../OpenSCADCommands.py" line="344"/>
       <source>Perform</source>
       <translation>Uitvoeren</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="424"/>
+      <location filename="../../OpenSCADCommands.py" line="345"/>
       <source>Mesh Boolean</source>
-      <translation>Meshboolean</translation>
+      <translation type="unfinished">Mesh Boolean</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADUtils.py" line="622"/>
+      <location filename="../../OpenSCADUtils.py" line="585"/>
       <source>Error all shapes must be either 2D or both must be 3D</source>
       <translation>Fout alle vormen moeten ofwel 2D zijn of beide moeten 3D zijn</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="102"/>
+      <location filename="../../OpenSCADCommands.py" line="95"/>
       <source>Unable to explode %s</source>
-      <translation>Kan %s niet ontleden</translation>
+      <translation type="unfinished">Unable to explode %s</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_AddOpenSCADElement</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="464"/>
+      <location filename="../../OpenSCADCommands.py" line="386"/>
       <source>Add OpenSCAD Element...</source>
       <translation>OpenSCAD element toevoegen...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="465"/>
+      <location filename="../../OpenSCADCommands.py" line="388"/>
       <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
-      <translation>Voeg een OpenSCAD-element toe door de OpenSCAD-code in te voeren en het OpenSCAD-binaire uit te voeren</translation>
+      <translation type="unfinished">Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_ColorCodeShape</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="126"/>
+      <location filename="../../OpenSCADCommands.py" line="122"/>
       <source>Color Shapes</source>
       <translation>Vormen inkleuren</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="127"/>
+      <location filename="../../OpenSCADCommands.py" line="124"/>
       <source>Color Shapes by validity and type</source>
-      <translation>Kleurvormen per geldigheid en type</translation>
+      <translation type="unfinished">Color Shapes by validity and type</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_Edgestofaces</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="146"/>
+      <location filename="../../OpenSCADCommands.py" line="143"/>
       <source>Convert Edges To Faces</source>
       <translation>Randen omzetten naar vlakken</translation>
     </message>
@@ -229,173 +229,134 @@
   <context>
     <name>OpenSCAD_ExpandPlacements</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="291"/>
+      <location filename="../../OpenSCADCommands.py" line="204"/>
       <source>Expand Placements</source>
-      <translation>Plaatsingen uitvouwen</translation>
+      <translation type="unfinished">Expand Placements</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="292"/>
+      <location filename="../../OpenSCADCommands.py" line="206"/>
       <source>Expand all placements downwards the FeatureTree</source>
-      <translation>Vouw alle plaatsingen neerwaarts in de onderdelenstructuur uit</translation>
+      <translation type="unfinished">Expand all placements downwards the FeatureTree</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_ExplodeGroup</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="110"/>
+      <location filename="../../OpenSCADCommands.py" line="104"/>
       <source>Explode Group</source>
-      <translation>Ontleed groep</translation>
+      <translation type="unfinished">Explode Group</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="111"/>
+      <location filename="../../OpenSCADCommands.py" line="106"/>
       <source>Remove fusion, apply placement to children, and color randomly</source>
-      <translation>Verwijder fusie, pas plaatsing willekeurig toe op kinderen en kleur</translation>
+      <translation type="unfinished">Remove fusion, apply placement to children, and color randomly</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_Hull</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="497"/>
+      <location filename="../../OpenSCADCommands.py" line="421"/>
       <source>Hull</source>
       <translation>Romp</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="498"/>
+      <location filename="../../OpenSCADCommands.py" line="423"/>
       <source>Perform Hull</source>
-      <translation>Voer romp uit</translation>
+      <translation type="unfinished">Perform Hull</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_IncreaseToleranceFeature</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="274"/>
+      <location filename="../../OpenSCADCommands.py" line="185"/>
       <source>Increase Tolerance Feature</source>
-      <translation>Verhoog tolerantiefunctie</translation>
+      <translation type="unfinished">Increase Tolerance Feature</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="275"/>
+      <location filename="../../OpenSCADCommands.py" line="187"/>
       <source>Create Feature that allows to increase the tolerance</source>
-      <translation>Maak functie die het mogelijk maakt om de tolerantie te verhogen</translation>
+      <translation type="unfinished">Create Feature that allows to increase the tolerance</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_MeshBoolean</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="477"/>
+      <location filename="../../OpenSCADCommands.py" line="400"/>
       <source>Mesh Boolean...</source>
-      <translation>Meshboolean...</translation>
+      <translation type="unfinished">Mesh Boolean...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="478"/>
+      <location filename="../../OpenSCADCommands.py" line="402"/>
       <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
-      <translation>Objecten als mazen exporteren en OpenSCAD gebruiken om een booleaanse bewerking uit te voeren</translation>
+      <translation type="unfinished">Export objects as meshes and use OpenSCAD to perform a boolean operation</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_Minkowski</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="516"/>
+      <location filename="../../OpenSCADCommands.py" line="442"/>
       <source>Minkowski</source>
       <translation>Minkowski</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="517"/>
+      <location filename="../../OpenSCADCommands.py" line="444"/>
       <source>Perform Minkowski</source>
-      <translation>Voer Minkowski uit</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_MirrorMeshFeature</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="195"/>
-      <source>Mirror Mesh Feature...</source>
-      <translation>Spiegel Draadframe Kenmerk...</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="196"/>
-      <source>Create Mirror Mesh Feature</source>
-      <translation>Maak Spiegelbeeld Draadframe Kenmerk</translation>
+      <translation type="unfinished">Perform Minkowski</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_RefineShapeFeature</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="165"/>
+      <location filename="../../OpenSCADCommands.py" line="164"/>
       <source>Refine Shape Feature</source>
-      <translation>Verfijnde vormgevingsfunctie</translation>
+      <translation type="unfinished">Refine Shape Feature</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="166"/>
       <source>Create Refine Shape Feature</source>
-      <translation>Maak een functie voor de verfijnde vormgeving</translation>
+      <translation type="unfinished">Create Refine Shape Feature</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_RemoveSubtree</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="324"/>
+      <location filename="../../OpenSCADCommands.py" line="243"/>
       <source>Remove Objects and their Children</source>
       <translation>Objecten en hun kinderen verwijderen</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="325"/>
+      <location filename="../../OpenSCADCommands.py" line="245"/>
       <source>Removes the selected objects and all children that are not referenced from other objects</source>
-      <translation>Verwijdert de geselecteerde objecten en alle kinderen die niet uit andere objecten worden vermeld</translation>
+      <translation type="unfinished">Removes the selected objects and all children that are not referenced from other objects</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_ReplaceObject</name>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="312"/>
+      <location filename="../../OpenSCADCommands.py" line="228"/>
       <source>Replace Object</source>
       <translation>Voorwerp vervangen</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="313"/>
+      <location filename="../../OpenSCADCommands.py" line="230"/>
       <source>Replace an object in the Feature Tree. Please select old, new, and parent object</source>
-      <translation>Vervang een object in de onderdelenstructuur. Selecteer oud, nieuw en bovenliggende object</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_ResizeMeshFeature</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="254"/>
-      <source>Resize Mesh Feature...</source>
-      <translation type="unfinished">Resize Mesh Feature...</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="255"/>
-      <source>Create Resize Mesh Feature</source>
-      <translation type="unfinished">Create Resize Mesh Feature</translation>
-    </message>
-  </context>
-  <context>
-    <name>OpenSCAD_ScaleMeshFeature</name>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="224"/>
-      <source>Scale Mesh Feature...</source>
-      <translation type="unfinished">Scale Mesh Feature...</translation>
-    </message>
-    <message>
-      <location filename="../../OpenSCADCommands.py" line="225"/>
-      <source>Create Scale Mesh Feature</source>
-      <translation type="unfinished">Create Scale Mesh Feature</translation>
+      <translation type="unfinished">Replace an object in the Feature Tree. Please select old, new, and parent object</translation>
     </message>
   </context>
   <context>
     <name>Workbech</name>
     <message>
-      <location filename="../../InitGui.py" line="83"/>
+      <location filename="../../InitGui.py" line="80"/>
       <source>OpenSCAD Part tools</source>
-      <translation>OpenSCAD Onderdeel-gereedschap</translation>
+      <translation type="unfinished">OpenSCAD Part tools</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../InitGui.py" line="81"/>
+      <location filename="../../InitGui.py" line="78"/>
       <source>OpenSCADTools</source>
-      <translation>OpenSCADTools</translation>
+      <translation type="unfinished">OpenSCADTools</translation>
     </message>
   </context>
 </TS>

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2009 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
+ *   Copyright (c) 2009 Juergen Riegel  (FreeCAD@juergen-riegel.net>       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -33,7 +33,7 @@
 namespace Base {
 
 /** Units systems */
-enum class UnitSystem {
+enum UnitSystem {
     SI1 = 0 , /** internal (mm,kg,s) SI system (http://en.wikipedia.org/wiki/International_System_of_Units) */
     SI2 = 1 , /** MKS (m,kg,s) SI system */
     Imperial1 = 2, /** the Imperial system (http://en.wikipedia.org/wiki/Imperial_units) */
@@ -42,16 +42,15 @@ enum class UnitSystem {
     ImperialBuilding = 5, /** All lengths in feet + inches + fractions */
     MmMin = 6, /** Lengths in mm, Speed in mm/min. Angle in degrees. Useful for small parts & CNC */
     ImperialCivil = 7, /** Lengths in ft, Speed in ft/sec. Used in Civil Eng in North America */
-    FemMilliMeterNewton = 8, /** Lengths in mm, Mass in t, TimeSpan in s, thus force is in N */
     NumUnitSystemTypes // must be the last item!
 };
 
 
 /** The UnitSchema class
- * The subclasses of this class define the stuff for a
- * certain units schema.
+ * The subclasses of this class define the stuff for a 
+ * certain units schema. 
  */
-class UnitsSchema
+class UnitsSchema 
 {
 public:
     virtual ~UnitsSchema(){}

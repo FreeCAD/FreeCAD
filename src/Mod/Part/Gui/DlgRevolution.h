@@ -36,7 +36,7 @@ class DlgRevolution : public QDialog, public Gui::SelectionObserver
     Q_OBJECT
 
 public:
-    DlgRevolution(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
+    DlgRevolution(QWidget* parent = 0, Qt::WindowFlags fl = 0);
     ~DlgRevolution();
     void accept();
 
@@ -76,6 +76,7 @@ private:
     void autoSolid();
 
 private:
+    //typedef Gui::LocationInterfaceComp<Ui_DlgRevolution> Ui_RevolutionComp;
     Ui_DlgRevolution* ui;
     class EdgeSelection;
     EdgeSelection* filter;

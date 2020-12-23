@@ -37,7 +37,6 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
-#include <Gui/Command.h>
 #include <Gui/SelectionObject.h>
 #include <Mod/Mesh/App/Core/Approximation.h>
 #include <Mod/Mesh/App/Core/Segmentation.h>
@@ -55,7 +54,7 @@ public:
     virtual std::vector<float> getParameter(FitParameter::Points pts) const {
         std::vector<float> values;
         MeshCore::PlaneFit fit;
-        fit.AddPoints(pts.points);
+        fit.AddPoints(pts);
         if (fit.Fit() < FLOAT_MAX) {
             Base::Vector3f base = fit.GetBase();
             Base::Vector3f axis = fit.GetNormal();
@@ -78,20 +77,9 @@ public:
     virtual std::vector<float> getParameter(FitParameter::Points pts) const {
         std::vector<float> values;
         MeshCore::CylinderFit fit;
-        fit.AddPoints(pts.points);
-        if (!pts.normals.empty()) {
-            Base::Vector3f base = fit.GetGravity();
-            Base::Vector3f axis = fit.GetInitialAxisFromNormals(pts.normals);
-            fit.SetInitialValues(base, axis);
-
-#if defined(FC_DEBUG)
-            Base::Console().Message("Initial axis: (%f, %f, %f)\n", axis.x, axis.y, axis.z);
-#endif
-        }
-
+        fit.AddPoints(pts);
         if (fit.Fit() < FLOAT_MAX) {
-            Base::Vector3f base, top;
-            fit.GetBounding(base, top);
+            Base::Vector3f base = fit.GetBase();
             Base::Vector3f axis = fit.GetAxis();
             float radius = fit.GetRadius();
             values.push_back(base.x);
@@ -101,25 +89,6 @@ public:
             values.push_back(axis.y);
             values.push_back(axis.z);
             values.push_back(radius);
-
-#if defined(FC_DEBUG)
-            // Only for testing purposes
-            try {
-                float height = Base::Distance(base, top);
-                Gui::Command::doCommand(Gui::Command::App,
-                                        "cyl = App.ActiveDocument.addObject('Part::Cylinder', 'Cylinder')\n"
-                                        "cyl.Radius = %f\n"
-                                        "cyl.Height = %f\n"
-                                        "cyl.Placement = App.Placement(App.Vector(%f,%f,%f), App.Rotation(App.Vector(0,0,1), App.Vector(%f,%f,%f)))\n",
-                                        radius, height, base.x, base.y, base.z, axis.x, axis.y, axis.z);
-
-                Gui::Command::doCommand(Gui::Command::App,
-                                        "axis = cyl.Placement.Rotation.multVec(App.Vector(0,0,1))\n"
-                                        "print('Final axis: ({}, {}, {})'.format(axis.x, axis.y, axis.z))\n");
-            }
-            catch (...) {
-            }
-#endif
         }
         return values;
     }
@@ -133,7 +102,7 @@ public:
     virtual std::vector<float> getParameter(FitParameter::Points pts) const {
         std::vector<float> values;
         MeshCore::SphereFit fit;
-        fit.AddPoints(pts.points);
+        fit.AddPoints(pts);
         if (fit.Fit() < FLOAT_MAX) {
             Base::Vector3f base = fit.GetCenter();
             float radius = fit.GetRadius();
@@ -228,17 +197,14 @@ ParametersDialog::ParametersDialog(std::vector<float>& val, FitParameter* fitPar
     Gui::SelectionObject obj(mesh);
     std::vector<Gui::SelectionObject> sel;
     sel.push_back(obj);
-    Gui::Selection().clearSelection();
     meshSel.setObjects(sel);
     meshSel.setCheckOnlyPointToUserTriangles(true);
     meshSel.setCheckOnlyVisibleTriangles(true);
-    meshSel.setEnabledViewerSelection(false);
 }
 
 ParametersDialog::~ParametersDialog()
 {
     meshSel.clearSelection();
-    meshSel.setEnabledViewerSelection(true);
     delete fitParameter;
 }
 
@@ -261,15 +227,14 @@ void ParametersDialog::on_compute_clicked()
 {
     const Mesh::MeshObject& kernel = myMesh->Mesh.getValue();
     if (kernel.hasSelectedFacets()) {
-        FitParameter::Points fitpts;
         std::vector<unsigned long> facets, points;
         kernel.getFacetsFromSelection(facets);
         points = kernel.getPointsFromFacets(facets);
         MeshCore::MeshPointArray coords = kernel.getKernel().GetPoints(points);
-        fitpts.normals = kernel.getKernel().GetFacetNormals(facets);
 
         // Copy points into right format
-        fitpts.points.insert(fitpts.points.end(), coords.begin(), coords.end());
+        FitParameter::Points fitpts;
+        fitpts.insert(fitpts.end(), coords.begin(), coords.end());
         coords.clear();
 
         values = fitParameter->getParameter(fitpts);
@@ -414,7 +379,7 @@ void SegmentationBestFit::accept()
 
     MeshCore::MeshSegmentAlgorithm finder(kernel);
 
-    std::vector<MeshCore::MeshSurfaceSegmentPtr> segm;
+    std::vector<MeshCore::MeshSurfaceSegment*> segm;
     if (ui->groupBoxCyl->isChecked()) {
         MeshCore::AbstractSurfaceFit* fitter;
         if (cylinderParameter.size() == 7) {
@@ -427,7 +392,7 @@ void SegmentationBestFit::accept()
         else {
             fitter = new MeshCore::CylinderSurfaceFit;
         }
-        segm.emplace_back(std::make_shared<MeshCore::MeshDistanceGenericSurfaceFitSegment>
+        segm.push_back(new MeshCore::MeshDistanceGenericSurfaceFitSegment
             (fitter, kernel, ui->numCyl->value(), ui->tolCyl->value()));
     }
     if (ui->groupBoxSph->isChecked()) {
@@ -441,7 +406,7 @@ void SegmentationBestFit::accept()
         else {
             fitter = new MeshCore::SphereSurfaceFit;
         }
-        segm.emplace_back(std::make_shared<MeshCore::MeshDistanceGenericSurfaceFitSegment>
+        segm.push_back(new MeshCore::MeshDistanceGenericSurfaceFitSegment
             (fitter, kernel, ui->numSph->value(), ui->tolSph->value()));
     }
     if (ui->groupBoxPln->isChecked()) {
@@ -455,7 +420,7 @@ void SegmentationBestFit::accept()
         else {
             fitter = new MeshCore::PlaneSurfaceFit;
         }
-        segm.emplace_back(std::make_shared<MeshCore::MeshDistanceGenericSurfaceFitSegment>
+        segm.push_back(new MeshCore::MeshDistanceGenericSurfaceFitSegment
             (fitter, kernel, ui->numPln->value(), ui->tolPln->value()));
     }
     finder.FindSegments(segm);
@@ -470,7 +435,7 @@ void SegmentationBestFit::accept()
     std::string labelname = "Segments ";
     labelname += myMesh->Label.getValue();
     group->Label.setValue(labelname);
-    for (std::vector<MeshCore::MeshSurfaceSegmentPtr>::iterator it = segm.begin(); it != segm.end(); ++it) {
+    for (std::vector<MeshCore::MeshSurfaceSegment*>::iterator it = segm.begin(); it != segm.end(); ++it) {
         const std::vector<MeshCore::MeshSegment>& data = (*it)->GetSegments();
         for (std::vector<MeshCore::MeshSegment>::const_iterator jt = data.begin(); jt != data.end(); ++jt) {
             Mesh::MeshObject* segment = mesh->meshFromSegment(*jt);
@@ -484,6 +449,7 @@ void SegmentationBestFit::accept()
             label << feaSegm->Label.getValue() << " (" << (*it)->GetType() << ")";
             feaSegm->Label.setValue(label.str());
         }
+        delete (*it);
     }
     document->commitTransaction();
 }

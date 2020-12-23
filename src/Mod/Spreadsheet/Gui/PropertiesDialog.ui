@@ -29,9 +29,6 @@
      <property name="currentIndex">
       <number>0</number>
      </property>
-     <property name="usesScrollButtons">
-      <bool>false</bool>
-     </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
        <string>&amp;Color</string>

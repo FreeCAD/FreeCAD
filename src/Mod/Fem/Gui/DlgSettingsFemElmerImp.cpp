@@ -25,18 +25,16 @@
 
 #include "PreCompiled.h"
 
+#include "Gui/Application.h"
 #include "DlgSettingsFemElmerImp.h"
-#include "ui_DlgSettingsFemElmer.h"
-#include <Gui/Application.h>
 #include <Gui/PrefWidgets.h>
 
 using namespace FemGui;
 
 DlgSettingsFemElmerImp::DlgSettingsFemElmerImp( QWidget* parent )
   : PreferencePage( parent )
-  , ui(new Ui_DlgSettingsFemElmerImp)
 {
-    ui->setupUi(this);
+    this->setupUi(this);
 }
 
 DlgSettingsFemElmerImp::~DlgSettingsFemElmerImp()
@@ -46,20 +44,20 @@ DlgSettingsFemElmerImp::~DlgSettingsFemElmerImp()
 
 void DlgSettingsFemElmerImp::saveSettings()
 {
-    ui->cb_elmer_binary_std->onSave();
-    ui->fc_elmer_binary_path->onSave();
+    cb_elmer_binary_std->onSave();
+    fc_elmer_binary_path->onSave();
 
-    ui->cb_grid_binary_std->onSave();
-    ui->fc_grid_binary_path->onSave();
+    cb_grid_binary_std->onSave();
+    fc_grid_binary_path->onSave();
 }
 
 void DlgSettingsFemElmerImp::loadSettings()
 {
-    ui->cb_elmer_binary_std->onRestore();
-    ui->fc_elmer_binary_path->onRestore();
+    cb_elmer_binary_std->onRestore();
+    fc_elmer_binary_path->onRestore();
 
-    ui->cb_grid_binary_std->onRestore();
-    ui->fc_grid_binary_path->onRestore();
+    cb_grid_binary_std->onRestore();
+    fc_grid_binary_path->onRestore();
 }
 
 /**
@@ -68,7 +66,6 @@ void DlgSettingsFemElmerImp::loadSettings()
 void DlgSettingsFemElmerImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        ui->retranslateUi(this);
     }
     else {
         QWidget::changeEvent(e);

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2011 Konstantinos Poulios <logari81@gmail.com>          *
+ *   Copyright (c) Konstantinos Poulios      (logari81@gmail.com) 2011     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -28,7 +28,14 @@
 
 namespace GCS
 {
-    class Point
+    class DependentParameters 
+    {
+    public:
+        DependentParameters():hasDependentParameters(false) {}
+        bool hasDependentParameters;
+    };
+    
+    class Point : public DependentParameters
     {
     public:
         Point(){x = 0; y = 0;}
@@ -38,7 +45,7 @@ namespace GCS
     };
 
     typedef std::vector<Point> VEC_P;
-
+    
     ///Class DeriVector2 holds a vector value and its derivative on the
     ///parameter that the derivatives are being calculated for now. x,y is the
     ///actual vector (v). dx,dy is a derivative of the vector by a parameter
@@ -89,7 +96,7 @@ namespace GCS
     // Geometries
     ///////////////////////////////////////
 
-    class Curve //a base class for all curve-based objects (line, circle/arc, ellipse/arc)
+    class Curve: public DependentParameters //a base class for all curve-based objects (line, circle/arc, ellipse/arc)
     {
     public:
         virtual ~Curve(){}
@@ -162,7 +169,7 @@ namespace GCS
         virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt);
         virtual Arc* Copy();
     };
-
+    
     class MajorRadiusConic: public Curve
     {
     public:
@@ -172,13 +179,13 @@ namespace GCS
         virtual double getRadMaj() = 0;
         DeriVector2 CalculateNormal(Point &p, double* derivparam = 0) = 0;
     };
-
+    
     class Ellipse: public MajorRadiusConic
     {
     public:
         Ellipse(){ radmin = 0;}
         virtual ~Ellipse(){}
-        Point center;
+        Point center; 
         Point focus1;
         double *radmin;
         virtual double getRadMaj(const DeriVector2 &center, const DeriVector2 &f1, double b, double db, double &ret_dRadMaj);
@@ -190,7 +197,7 @@ namespace GCS
         virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt);
         virtual Ellipse* Copy();
     };
-
+    
     class ArcOfEllipse: public Ellipse
     {
     public:
@@ -208,13 +215,13 @@ namespace GCS
         virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt);
         virtual ArcOfEllipse* Copy();
     };
-
+    
     class Hyperbola: public MajorRadiusConic
     {
     public:
         Hyperbola(){ radmin = 0;}
         virtual ~Hyperbola(){}
-        Point center;
+        Point center; 
         Point focus1;
         double *radmin;
         virtual double getRadMaj(const DeriVector2 &center, const DeriVector2 &f1, double b, double db, double &ret_dRadMaj);
@@ -225,7 +232,7 @@ namespace GCS
         virtual int PushOwnParams(VEC_pD &pvec);
         virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt);
         virtual Hyperbola* Copy();
-    };
+    };    
 
     class ArcOfHyperbola: public Hyperbola
     {
@@ -242,20 +249,20 @@ namespace GCS
         virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt);
         virtual ArcOfHyperbola* Copy();
     };
-
+    
     class Parabola: public Curve
     {
     public:
         Parabola(){ }
         virtual ~Parabola(){}
-        Point vertex;
+        Point vertex; 
         Point focus1;
         DeriVector2 CalculateNormal(Point &p, double* derivparam = 0);
         virtual DeriVector2 Value(double u, double du, double* derivparam = 0);
         virtual int PushOwnParams(VEC_pD &pvec);
         virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt);
         virtual Parabola* Copy();
-    };
+    };    
 
     class ArcOfParabola: public Parabola
     {
@@ -299,7 +306,7 @@ namespace GCS
         virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt);
         virtual BSpline* Copy();
     };
-
+    
 } //namespace GCS
 
 #endif // PLANEGCS_GEO_H

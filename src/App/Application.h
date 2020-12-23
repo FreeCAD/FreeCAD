@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   (c) Jürgen Riegel (juergen.riegel@web.de) 2002                        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,6 +19,7 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
  *   USA                                                                   *
  *                                                                         *
+ *   Juergen Riegel 2002                                                   *
  ***************************************************************************/
 
 #ifndef APP_APPLICATION_H
@@ -48,7 +49,6 @@ class DocumentObject;
 class ApplicationObserver;
 class Property;
 class AutoTransaction;
-class ExtensionContainer;
 
 enum GetLinkOption {
     /// Get all links (both directly and in directly) linked to the given object
@@ -72,7 +72,7 @@ class AppExport Application
 public:
 
     //---------------------------------------------------------------------
-    // exported functions go here +++++++++++++++++++++++++++++++++++++++++
+    // exported functions goes here +++++++++++++++++++++++++++++++++++++++
     //---------------------------------------------------------------------
 
     /** @name methods for document handling */
@@ -86,12 +86,11 @@ public:
      * The second name is a UTF8 name of any kind. It's that name normally shown to
      * the user and stored in the App::Document::Name property.
      */
-    App::Document* newDocument(const char * Name=0l, const char * UserName=0l,
-            bool createView=true, bool tempDoc=false);
+    App::Document* newDocument(const char * Name=0l, const char * UserName=0l, bool createView=true);
     /// Closes the document \a name and removes it from the application.
     bool closeDocument(const char* name);
     /// find a unique document name
-    std::string getUniqueDocumentName(const char *Name, bool tempDoc=false) const;
+    std::string getUniqueDocumentName(const char *Name) const;
     /// Open an existing document from a file
     App::Document* openDocument(const char * FileName=0l, bool createView=true);
     /** Open multiple documents
@@ -111,7 +110,7 @@ public:
      *
      * This function will also open any external referenced files.
      */
-    std::vector<Document*> openDocuments(const std::vector<std::string> &filenames,
+    std::vector<Document*> openDocuments(const std::vector<std::string> &filenames, 
             const std::vector<std::string> *paths=0,
             const std::vector<std::string> *labels=0,
             std::vector<std::string> *errs=0,
@@ -136,7 +135,7 @@ public:
     /// Indicate the application is closing all document
     bool isClosingAll() const;
     //@}
-
+    
     /** @name Application-wide trandaction setting */
     //@{
     /** Setup a pending application-wide active transaction
@@ -264,18 +263,6 @@ public:
     boost::signals2::signal<void (const App::Document&, const App::Property&)> signalChangePropertyEditor;
     //@}
 
-    /** @name Signals of extension changes
-     * These signals are emitted on dynamic extension addition. Dynamic extensions are the ones added by python (c++ ones are part
-     * of the class definition, hence not dynamic)
-     * The extension in question is provided as parameter.
-     */
-    //@{
-    /// signal before adding the extension
-    boost::signals2::signal<void (const App::ExtensionContainer&, std::string extension)> signalBeforeAddingDynamicExtension;
-    /// signal after the extension was added
-    boost::signals2::signal<void (const App::ExtensionContainer&, std::string extension)> signalAddedDynamicExtension;
-     //@}
-
 
     /** @name methods for parameter handling */
     //@{
@@ -314,8 +301,6 @@ public:
     //@{
     /// Register an import filetype and a module name
     void addImportType(const char* Type, const char* ModuleName);
-    /// Change the module name of a registered filetype
-    void changeImportModule(const char* Type, const char* OldModuleName, const char* NewModuleName);
     /// Return a list of modules that support the given filetype.
     std::vector<std::string> getImportModules(const char* Type) const;
     /// Return a list of all modules.
@@ -332,8 +317,6 @@ public:
     //@{
     /// Register an export filetype and a module name
     void addExportType(const char* Type, const char* ModuleName);
-    /// Change the module name of a registered filetype
-    void changeExportModule(const char* Type, const char* OldModuleName, const char* NewModuleName);
     /// Return a list of modules that support the given filetype.
     std::vector<std::string> getExportModules(const char* Type) const;
     /// Return a list of all modules.
@@ -382,7 +365,7 @@ public:
 
     /** @name Link handling */
     //@{
-
+    
     /** Check for link recursion depth
      *
      * @param depth: current depth
@@ -398,7 +381,7 @@ public:
     /** Return the links to a given object
      *
      * @param obj: the linked object. If NULL, then all links are returned.
-     * @param option: @sa App::GetLinkOption
+     * @param option: @sa App::GetLinkOptions
      * @param maxCount: limit the number of links returned, 0 means no limit
      */
     std::set<DocumentObject*> getLinksTo(
@@ -476,10 +459,8 @@ private:
     static PyObject* sSetConfig         (PyObject *self,PyObject *args);
     static PyObject* sDumpConfig        (PyObject *self,PyObject *args);
     static PyObject* sAddImportType     (PyObject *self,PyObject *args);
-    static PyObject* sChangeImportModule(PyObject *self,PyObject *args);
     static PyObject* sGetImportType     (PyObject *self,PyObject *args);
     static PyObject* sAddExportType     (PyObject *self,PyObject *args);
-    static PyObject* sChangeExportModule(PyObject *self,PyObject *args);
     static PyObject* sGetExportType     (PyObject *self,PyObject *args);
     static PyObject* sGetResourceDir    (PyObject *self,PyObject *args);
     static PyObject* sGetUserAppDataDir (PyObject *self,PyObject *args);
@@ -513,7 +494,7 @@ private:
     static PyObject *sGetActiveTransaction  (PyObject *self,PyObject *args);
     static PyObject *sCloseActiveTransaction(PyObject *self,PyObject *args);
     static PyObject *sCheckAbort(PyObject *self,PyObject *args);
-    static PyMethodDef    Methods[];
+    static PyMethodDef    Methods[]; 
 
     friend class ApplicationObserver;
 
@@ -526,7 +507,7 @@ private:
     static Application *_pcSingleton;
     /// argument helper function
     static void ParseOptions(int argc, char ** argv);
-    /// checks if the environment is alright
+    /// checks if the environment is allreight
     //static void CheckEnv(void);
     /// Search for the FreeCAD home path based on argv[0]
     /*!

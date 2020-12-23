@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
+ *   Copyright (c) Eivind Kvedalen (eivind@kvedalen.name) 2015             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -27,7 +27,7 @@
 #include <App/Range.h>
 #include <App/Document.h>
 #include <App/ExpressionParser.h>
-#include <Gui/CommandT.h>
+#include <Gui/Command.h>
 #include "ui_PropertiesDialog.h"
 
 using namespace App;
@@ -225,23 +225,23 @@ PropertiesDialog::~PropertiesDialog()
 void PropertiesDialog::apply()
 {
     if (ranges.size() > 0) {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Set cell properties"));
+        Gui::Command::openCommand("Set cell properties");
         std::vector<Range>::const_iterator i = ranges.begin();
         bool changes = false;
 
         for (; i != ranges.end(); ++i) {
             if (orgAlignment != alignment) {
-                Gui::cmdAppObjectArgs(sheet, "setAlignment('%s', '%s')",
+                FCMD_OBJ_CMD2("setAlignment('%s', '%s')", sheet,
                                         i->rangeString().c_str(), Cell::encodeAlignment(alignment).c_str());
                 changes = true;
             }
             if (orgStyle != style) {
-                Gui::cmdAppObjectArgs(sheet, "setStyle('%s', '%s')",
+                FCMD_OBJ_CMD2("setStyle('%s', '%s')", sheet,
                                         i->rangeString().c_str(), Cell::encodeStyle(style).c_str());
                 changes = true;
             }
             if (orgForegroundColor != foregroundColor) {
-                Gui::cmdAppObjectArgs(sheet, "setForeground('%s', (%f,%f,%f,%f))",
+                FCMD_OBJ_CMD2("setForeground('%s', (%f,%f,%f,%f))", sheet,
                                         i->rangeString().c_str(),
                                         foregroundColor.r,
                                         foregroundColor.g,
@@ -250,7 +250,7 @@ void PropertiesDialog::apply()
                 changes = true;
             }
             if (orgBackgroundColor != backgroundColor) {
-                Gui::cmdAppObjectArgs(sheet, "setBackground('%s', (%f,%f,%f,%f))",
+                FCMD_OBJ_CMD2("setBackground('%s', (%f,%f,%f,%f))", sheet,
                                         i->rangeString().c_str(),
                                         backgroundColor.r,
                                         backgroundColor.g,
@@ -260,12 +260,12 @@ void PropertiesDialog::apply()
             }
             if (orgDisplayUnit != displayUnit) {
                 std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(displayUnit.stringRep.c_str());
-                Gui::cmdAppObjectArgs(sheet, "setDisplayUnit('%s', '%s')",
+                FCMD_OBJ_CMD2("setDisplayUnit('%s', '%s')", sheet,
                                         i->rangeString().c_str(), escapedstr.c_str());
-                changes = true;
+                changes = true;               
             }
             if (ranges.size() == 1 && ranges[0].size() == 1 && orgAlias != alias) {
-                Gui::cmdAppObjectArgs(sheet, "setAlias('%s', '%s')",
+                FCMD_OBJ_CMD2("setAlias('%s', '%s')", sheet,
                                         i->address().c_str(), alias.c_str());
                 changes = true;
             }

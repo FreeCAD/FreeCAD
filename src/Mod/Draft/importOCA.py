@@ -17,6 +17,7 @@ maintained.
 # flake8 --ignore=E226,E266,E401,W503
 
 # ***************************************************************************
+# *                                                                         *
 # *   Copyright (c) 2009 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -39,7 +40,7 @@ maintained.
 
 __title__ = "FreeCAD Draft Workbench - OCA importer/exporter"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
-__url__ = "https://www.freecadweb.org"
+__url__ = ["http://www.freecadweb.org"]
 
 import FreeCAD, os, Part, DraftVecUtils, DraftGeomUtils
 from FreeCAD import Vector

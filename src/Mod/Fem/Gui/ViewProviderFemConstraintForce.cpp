@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jan Rheinländer                                    *
- *                                   <jrheinlaender@users.sourceforge.net> *
+ *   Copyright (c) 2013 Jan Rheinländer <jrheinlaender[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -50,7 +49,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintForce, FemGui::ViewProviderFemC
 
 ViewProviderFemConstraintForce::ViewProviderFemConstraintForce()
 {
-    sPixmap = "FEM_ConstraintForce";
+    sPixmap = "fem-constraint-force";
 }
 
 ViewProviderFemConstraintForce::~ViewProviderFemConstraintForce()
@@ -109,7 +108,7 @@ bool ViewProviderFemConstraintForce::setEdit(int ModNum)
 }
 
 #define ARROWLENGTH (4)
-#define ARROWHEADRADIUS (ARROWLENGTH/3.0f)
+#define ARROWHEADRADIUS (ARROWLENGTH/3)
 //#define USE_MULTIPLE_COPY  //OvG: MULTICOPY fails to update scaled arrows on initial drawing - so disable
 
 void ViewProviderFemConstraintForce::updateData(const App::Property* prop)

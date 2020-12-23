@@ -125,8 +125,7 @@ Py::Object OffsetCurvePy::getBasisCurve(void) const
 {
     Handle(Geom_OffsetCurve) curve = Handle(Geom_OffsetCurve)::DownCast(getGeometryPtr()->handle());
     Handle(Geom_Curve) basis = curve->BasisCurve();
-    std::unique_ptr<GeomCurve> ptr(Part::makeFromCurve(basis));
-    return Py::asObject(ptr->getPyObject());
+    throw Py::Exception(PyExc_NotImplementedError, "Not yet implemented");
 }
 
 void OffsetCurvePy::setBasisCurve(Py::Object arg)

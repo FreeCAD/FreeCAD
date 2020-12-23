@@ -26,7 +26,7 @@
 
 #include <unordered_map>
 #include <QTreeWidget>
-#include <QElapsedTimer>
+#include <QTime>
 #include <QStyledItemDelegate>
 
 #include <Base/Parameter.h>
@@ -49,22 +49,20 @@ typedef std::shared_ptr<DocumentObjectData> DocumentObjectDataPtr;
 class DocumentItem;
 
 /// highlight modes for the tree items
-enum class HighlightMode {
-    Underlined,
-    Italic,
-    Overlined,
-    Bold,
-    Blue,
-    LightBlue,
-    UserDefined
+enum HighlightMode {  Underlined,
+                      Italic,
+                      Overlined,
+                      Bold,
+                      Blue,
+                      LightBlue,
+                      UserDefined
 };
 
 /// highlight modes for the tree items
-enum class TreeItemMode {
-    ExpandItem,
-    ExpandPath,
-    CollapseItem,
-    ToggleItem
+enum TreeItemMode {  ExpandItem,
+                     ExpandPath,
+                     CollapseItem,
+                     ToggleItem
 };
 
 
@@ -81,8 +79,8 @@ public:
 
     static void scrollItemToTop();
     void selectAllInstances(const ViewProviderDocumentObject &vpd);
-    void selectLinkedObject(App::DocumentObject *linked);
-    void selectAllLinks(App::DocumentObject *obj);
+    void selectLinkedObject(App::DocumentObject *linked); 
+    void selectAllLinks(App::DocumentObject *obj); 
     void expandSelectedItems(TreeItemMode mode);
 
     bool eventFilter(QObject *, QEvent *ev) override;
@@ -107,8 +105,6 @@ public:
 
     void markItem(const App::DocumentObject* Obj,bool mark);
     void syncView(ViewProviderDocumentObject *vp);
-
-    virtual void selectAll() override;
 
     const char *getTreeName() const;
 
@@ -202,7 +198,7 @@ private:
     void changeEvent(QEvent *e) override;
     void setupText();
 
-    void updateChildren(App::DocumentObject *obj,
+    void updateChildren(App::DocumentObject *obj, 
             const std::set<DocumentObjectDataPtr> &data, bool output, bool force);
 
 private:
@@ -228,7 +224,7 @@ private:
     QTimer* statusTimer;
     QTimer* selectTimer;
     QTimer* preselectTimer;
-    QElapsedTimer preselectTime;
+    QTime preselectTime;
     static std::unique_ptr<QPixmap> documentPixmap;
     static std::unique_ptr<QPixmap> documentPartialPixmap;
     std::unordered_map<const Gui::Document*,DocumentItem*> DocumentMap;
@@ -329,13 +325,13 @@ protected:
 
     bool updateObject(const Gui::ViewProviderDocumentObject&, const App::Property &prop);
 
-    bool createNewItem(const Gui::ViewProviderDocumentObject&,
-                    QTreeWidgetItem *parent=0, int index=-1,
+    bool createNewItem(const Gui::ViewProviderDocumentObject&, 
+                    QTreeWidgetItem *parent=0, int index=-1, 
                     DocumentObjectDataPtr ptrs = DocumentObjectDataPtr());
 
     int findRootIndex(App::DocumentObject *childObj);
 
-    DocumentObjectItem *findItemByObject(bool sync,
+    DocumentObjectItem *findItemByObject(bool sync, 
             App::DocumentObject *obj, const char *subname, bool select=false);
 
     DocumentObjectItem *findItem(bool sync, DocumentObjectItem *item, const char *subname, bool select=true);
@@ -402,8 +398,8 @@ public:
 
     // check if a new item is required at root
     bool requiredAtRoot(bool excludeSelf=true) const;
-
-    // return the owner, and full qualified subname
+    
+    // return the owner, and full quanlified subname
     App::DocumentObject *getFullSubName(std::ostringstream &str,
             DocumentObjectItem *parent = 0) const;
 
@@ -411,17 +407,17 @@ public:
     // 'cousin'.
     App::DocumentObject *getRelativeParent(
             std::ostringstream &str,
-            DocumentObjectItem *cousin,
+            DocumentObjectItem *cousin, 
             App::DocumentObject **topParent=0,
             std::string *topSubname=0) const;
 
     // return the top most linked group owner's name, and subname.  This method
-    // is necessary despite have getFullSubName above is because native geo group
+    // is necssary despite have getFullSubName above is because native geo group
     // cannot handle selection with sub name. So only a linked group can have
     // subname in selection
     int getSubName(std::ostringstream &str, App::DocumentObject *&topParent) const;
 
-    void setHighlight(bool set, HighlightMode mode = HighlightMode::LightBlue);
+    void setHighlight(bool set, Gui::HighlightMode mode = Gui::LightBlue);
 
     const char *getName() const;
     const char *getTreeName() const;
@@ -481,6 +477,9 @@ class TreeDockWidget : public Gui::DockWindow
 public:
     TreeDockWidget(Gui::Document*  pcDocument,QWidget *parent=0);
     ~TreeDockWidget();
+
+private:
+    QTreeWidget* treeWidget;
 };
 
 
@@ -491,7 +490,7 @@ class TreeWidgetEditDelegate: public QStyledItemDelegate {
     Q_OBJECT
 public:
     TreeWidgetEditDelegate(QObject* parent=0);
-    virtual QWidget* createEditor(QWidget *parent,
+    virtual QWidget* createEditor(QWidget *parent, 
             const QStyleOptionViewItem &, const QModelIndex &index) const;
 };
 

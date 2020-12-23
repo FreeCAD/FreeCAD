@@ -281,7 +281,7 @@
     <message>
       <location filename="../../Command.cpp" line="1878"/>
       <source>Mirrored</source>
-      <translation>Zrcadlit</translation>
+      <translation>Zrcadlený</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1879"/>

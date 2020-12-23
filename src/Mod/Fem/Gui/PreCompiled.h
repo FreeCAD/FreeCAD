@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -29,13 +29,11 @@
 // Importing of App classes
 #ifdef FC_OS_WIN32
 # define AppFemExport   __declspec(dllimport)
-# define FemExport   __declspec(dllimport)
 # define PartExport  __declspec(dllimport)
 # define FemGuiExport   __declspec(dllexport)
 #else // for Linux
 # define PartExport
 # define AppFemExport
-# define FemExport
 # define FemGuiExport
 #endif
 
@@ -69,7 +67,7 @@
 #include <sstream>
 
 // boost
-#include <boost/bind/bind.hpp>
+#include <boost/bind.hpp>
 #include <boost/lexical_cast.hpp>
 
 #ifdef FC_OS_WIN32

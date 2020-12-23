@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2009 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
+ *   Copyright (c) 2009 Juergen Riegel  (FreeCAD@juergen-riegel.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -30,7 +30,7 @@
 #include "UnitsSchema.h"
 
 namespace Base {
-
+    
 
 /** The schema class for the imperial unit system
  *  Here are the definitions for the imperial unit system.
@@ -69,7 +69,7 @@ public:
 };
 
 /** The schema class for Civil Engineering in the imperial unit system
- *  All measurements in ft, ft^2, ft^3, ft/sec.
+ *  All measurements in ft, ft^2, ft^3, ft/sec.  
  *  Pressure is in psi.
  */
 class UnitsSchemaImperialCivil: public UnitsSchema

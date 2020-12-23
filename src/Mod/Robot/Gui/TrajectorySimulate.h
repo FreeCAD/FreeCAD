@@ -26,7 +26,7 @@
 
 
 #include <QDialog>
-#include <memory>
+#include "ui_TrajectorySimulate.h"
 
 #include <Mod/Robot/App/RobotObject.h>
 #include <Mod/Robot/App/Robot6Axis.h>
@@ -39,9 +39,9 @@
 
 namespace RobotGui { 
 
-class Ui_DlgTrajectorySimulate;
 
-class TrajectorySimulate : public QDialog
+
+class TrajectorySimulate : public QDialog, public Ui_DlgTrajectorySimulate
 {
     Q_OBJECT
 
@@ -75,9 +75,8 @@ protected:
 
     float timePos;
     float duration;
-
 private:
-    std::unique_ptr<Ui_DlgTrajectorySimulate> ui;
+
 };
 
 } //namespace PartDesignGui

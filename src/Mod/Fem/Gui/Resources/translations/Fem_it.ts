@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="it" sourcelanguage="en">
+<TS version="2.0" language="it" sourcelanguage="en">
   <context>
     <name>BoundarySelector</name>
     <message>
@@ -12,11 +12,6 @@
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="130"/>
       <source>To add references select them in the 3D view and then click "Add".</source>
       <translation>Per aggiungere dei riferimenti, selezionarli nella vista 3D e quindi fare click su "Aggiungi".</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="133"/>
-      <source>To add references: select them in the 3D view  and click "Add".</source>
-      <translation>Per aggiungere dei riferimenti: selezionarli nella vista 3D e cliccare su "Aggiungi".</translation>
     </message>
   </context>
   <context>
@@ -68,65 +63,6 @@
     </message>
   </context>
   <context>
-    <name>GeometryElementsSelection</name>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
-      <source>Geometry reference selector for a </source>
-      <translation>Selettore della geometria di riferimento per </translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
-      <source>Add</source>
-      <translation>Aggiungi</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="255"/>
-      <source>Click on "Add" and select geometric elements to add them to the list. If no geometry is added to the list, all remaining ones are used. The following geometry elements are allowed to select: </source>
-      <translation>Fare clic su "Aggiungi" e selezionare gli elementi geometrici per aggiungerli alla lista. Se all'elenco non viene aggiunta nessuna geometria, sono utilizzate tutte quelli restanti. Si possono selezionare i seguenti elementi geometrici: </translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>
-      <source>Selection mode</source>
-      <translation>Modalità di selezione</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
-      <source>Solid</source>
-      <translation>Solido</translation>
-    </message>
-  </context>
-  <context>
-    <name>SolidSelector</name>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="147"/>
-      <source>Select Solids</source>
-      <translation>Seleziona i solidi</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="148"/>
-      <source>Select elements part of the solid that shall be added to the list. To than add the solid click "Add".</source>
-      <translation>Seleziona gli elementi solidi che devono essere aggiunti alla lista. Per aggiungere il solido clicca su "Aggiungi".</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="152"/>
-      <source>Select elements part of the solid that shall be added to the list. To add the solid click "Add".</source>
-      <translation>Selezionare gli elementi solidi che devono essere aggiunti alla lista. Per aggiungere il solido cliccare su "Aggiungi".</translation>
-    </message>
-  </context>
-  <context>
-    <name>_Selector</name>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="49"/>
-      <source>Add</source>
-      <translation>Aggiungi</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
-      <source>Remove</source>
-      <translation>Rimuovi</translation>
-    </message>
-  </context>
-  <context>
     <name>FEM_Analysis</name>
     <message>
       <location filename="_CommandFemAnalysis.py" line="41"/>
@@ -165,7 +101,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="115"/>
       <source>Constraint body heat source</source>
-      <translation>Vincolo fonte di calore</translation>
+      <translation>Vincolo Fonte di calore</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="118"/>
@@ -178,7 +114,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="136"/>
       <source>Constraint electrostatic potential</source>
-      <translation>Vincolo potenziale elettrostatico</translation>
+      <translation>Potenziale elettrostatico di vincolo</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="139"/>
@@ -191,7 +127,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="159"/>
       <source>Constraint flow velocity</source>
-      <translation>Vincolo velocità di flusso</translation>
+      <translation>Vincolo Velocità di flusso</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="162"/>
@@ -204,7 +140,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="182"/>
       <source>Constraint initial flow velocity</source>
-      <translation>Vincolo velocità di flusso iniziale</translation>
+      <translation>Vincolo Velocità di flusso iniziale</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="185"/>
@@ -336,6 +272,11 @@
       <source>Fluxsolver heat</source>
       <translation>Risolutore del flusso di calore</translation>
     </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="530"/>
+      <source>Fluxsolver heat</source>
+      <translation>Risolutore del flusso di calore</translation>
+    </message>
   </context>
   <context>
     <name>FEM_FEMMesh2Mesh</name>
@@ -354,6 +295,11 @@
     <name>FEM_MaterialFluid</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="397"/>
+      <source>Material for fluid</source>
+      <translation>Materiale per fluido</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="582"/>
       <source>Material for fluid</source>
       <translation>Materiale per fluido</translation>
     </message>
@@ -380,19 +326,29 @@
       <source>Creates a nonlinear mechanical material</source>
       <translation>Crea un materiale meccanico non lineare</translation>
     </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="618"/>
+      <source>Creates a nonlinear mechanical material</source>
+      <translation>Crea un materiale meccanico non lineare</translation>
+    </message>
   </context>
   <context>
     <name>FEM_MaterialReinforced</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="674"/>
       <source>Reinforced material (concrete)</source>
-      <translation>Materiale rinforzato (calcestruzzo)</translation>
+      <translation type="unfinished">Reinforced material (concrete)</translation>
     </message>
   </context>
   <context>
     <name>FEM_MaterialSolid</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="452"/>
+      <source>Material for solid</source>
+      <translation>Materiale per solido</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="705"/>
       <source>Material for solid</source>
       <translation>Materiale per solido</translation>
     </message>
@@ -476,6 +432,11 @@
     <name>FEM_MeshNetgenFromShape</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="603"/>
+      <source>FEM mesh from shape by Netgen</source>
+      <translation>Mesh FEM da forma con Netgen</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="957"/>
       <source>FEM mesh from shape by Netgen</source>
       <translation>Mesh FEM da forma con Netgen</translation>
     </message>
@@ -575,13 +536,18 @@
       <source>Solver Elmer</source>
       <translation>Risolutore Elmer</translation>
     </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="1174"/>
+      <source>Solver Elmer</source>
+      <translation>Risolutore Elmer</translation>
+    </message>
   </context>
   <context>
     <name>FEM_SolverRun</name>
     <message>
       <location filename="_CommandFemSolverRun.py" line="40"/>
       <source>Run solver calculations</source>
-      <translation>Avvia il solutore</translation>
+      <translation>Esegui i calcoli con il solutore</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverRun.py" line="42"/>
@@ -616,6 +582,34 @@
     </message>
   </context>
   <context>
+    <name>GeometryElementsSelection</name>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
+      <source>Geometry reference selector for a </source>
+      <translation>Selettore della geometria di riferimento per </translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
+      <source>Add</source>
+      <translation>Aggiungi</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="255"/>
+      <source>Click on "Add" and select geometric elements to add them to the list. If no geometry is added to the list, all remaining ones are used. The following geometry elements are allowed to select: </source>
+      <translation>Fare clic su "Aggiungi" e selezionare gli elementi geometrici per aggiungerli alla lista. Se all'elenco non viene aggiunta nessuna geometria, sono utilizzate tutte quelli restanti. Si possono selezionare i seguenti elementi geometrici: </translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>
+      <source>Selection mode</source>
+      <translation>Modalità di selezione</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
+      <source>Solid</source>
+      <translation>Solido</translation>
+    </message>
+  </context>
+  <context>
     <name>Material_Editor</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="382"/>
@@ -626,6 +620,37 @@
       <location filename="../../../femcommands/commands.py" line="384"/>
       <source>Opens the FreeCAD material editor</source>
       <translation>Apre l'editor dei materiale di FreeCAD</translation>
+    </message>
+  </context>
+  <context>
+    <name>SolidSelector</name>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="147"/>
+      <source>Select Solids</source>
+      <translation>Seleziona i solidi</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="148"/>
+      <source>Select elements part of the solid that shall be added to the list. To than add the solid click "Add".</source>
+      <translation>Seleziona gli elementi solidi che devono essere aggiunti alla lista. Per aggiungere il solido clicca su "Aggiungi".</translation>
+    </message>
+  </context>
+  <context>
+    <name>_Selector</name>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="49"/>
+      <source>Add</source>
+      <translation>Aggiungi</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
+      <source>Remove</source>
+      <translation>Rimuovi</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
+      <source>Remove</source>
+      <translation>Rimuovi</translation>
     </message>
   </context>
   <context>
@@ -809,7 +834,7 @@
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="42"/>
       <source>Mechanical material...</source>
-      <translation>Materiale meccanico...</translation>
+      <translation>Materiale...</translation>
     </message>
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="44"/>
@@ -892,7 +917,7 @@
     <message>
       <location filename="_CommandRunSolver.py" line="40"/>
       <source>Run solver calculations</source>
-      <translation>Avvia il solutore</translation>
+      <translation>Esegui i calcoli con il solutore</translation>
     </message>
     <message>
       <location filename="_CommandRunSolver.py" line="42"/>
@@ -1047,7 +1072,7 @@
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="42"/>
       <source>Mechanical material...</source>
-      <translation>Materiale meccanico...</translation>
+      <translation>Materiale...</translation>
     </message>
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="44"/>
@@ -2028,7 +2053,7 @@
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="587"/>
       <location filename="../../TaskFemConstraintPressure.cpp" line="243"/>
       <source>Constraint normal stress</source>
-      <translation>Vincolo stress normale</translation>
+      <translation>Vincolo normal stress</translation>
     </message>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="98"/>
@@ -2504,12 +2529,12 @@
     <message>
       <location filename="../../TaskTetParameter.ui" line="64"/>
       <source>VeryCoarse</source>
-      <translation>Molto grossa</translation>
+      <translation>Molto grossolana</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="69"/>
       <source>Coarse</source>
-      <translation>Grossa</translation>
+      <translation>Grossolana</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="74"/>

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Riegel         <juergen.riegel@web.de>                  *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -101,7 +101,7 @@ public:
      *    writer << writer.ind() << "<Mesh file=\"" << writer.addFile("MeshKernel.bms", this) << "\"/>" << std::endl;
      * }
      * \endcode
-     * The writer.isForceXML() is an indication to force you to write XML. Regardless of size and effectiveness.
+     * The writer.isForceXML() is an indication to force you to write XML. Regardless of size and effectivness.
      * The second part informs the Base::writer through writer.addFile("MeshKernel.bms", this) that this object
      * wants to write a file with the given name. The method addFile() returns a unique name that then is written
      * in the XML stream.

@@ -27,7 +27,6 @@
 #include <QGraphicsSceneHoverEvent>
 #include <QMouseEvent>
 #include <QPainter>
-#include <QPainterPath>
 #include <QStyleOptionGraphicsItem>
 #endif
 
@@ -36,7 +35,6 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 
-#include "PreferencesGui.h"
 #include "QGIPrimPath.h"
 #include "QGIVertex.h"
 
@@ -46,7 +44,12 @@ QGIVertex::QGIVertex(int index) :
     projIndex(index),
     m_radius(2)
 {
-    QColor vertexColor = PreferencesGui::vertexQColor();
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
+                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
+    App::Color fcColor;
+    fcColor.setPackedValue(hGrp->GetUnsigned("VertexColor", 0x00000000));
+    QColor vertexColor = fcColor.asValue<QColor>();
+
     setFill(vertexColor, Qt::SolidPattern);
 
     setRadius(m_radius);

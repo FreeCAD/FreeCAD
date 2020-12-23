@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2008     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -55,13 +55,6 @@ PyObject *TopoShapeCompSolidPy::PyMake(struct _typeobject *, PyObject *, PyObjec
 
 int TopoShapeCompSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
-    if (PyArg_ParseTuple(args, "")) {
-        // Undefined CompSolid
-        getTopoShapePtr()->setShape(TopoDS_CompSolid());
-        return 0;
-    }
-
-    PyErr_Clear();
     PyObject *pcObj;
     if (!PyArg_ParseTuple(args, "O", &pcObj))
         return -1;

@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jan Rheinländer                                    *
- *                                   <jrheinlaender@users.sourceforge.net> *
+ *   Copyright (c) 2013 Jan Rheinländer <jrheinlaender[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -49,7 +48,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintPulley, FemGui::ViewProviderFem
 
 ViewProviderFemConstraintPulley::ViewProviderFemConstraintPulley()
 {
-    sPixmap = "FEM_ConstraintPulley";
+    sPixmap = "fem-constraint-pulley";
 }
 
 ViewProviderFemConstraintPulley::~ViewProviderFemConstraintPulley()

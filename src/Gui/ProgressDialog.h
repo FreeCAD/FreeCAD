@@ -24,26 +24,26 @@
 #ifndef GUI_PROGRESSDIALOG_H
 #define GUI_PROGRESSDIALOG_H
 
-#include <Base/Sequencer.h>
-#include <QProgressDialog>
-#ifdef QT_WINEXTRAS_LIB
-#include <QWinTaskbarProgress>
-#include <QWinTaskbarButton>
+#ifndef __Qt4All__
+# include "Qt4All.h"
 #endif
+
+#include <Base/Sequencer.h>
 
 namespace Gui {
 
 struct SequencerDialogPrivate;
 
 class ProgressDialog;
-class GuiExport SequencerDialog : public Base::SequencerBase
+class SequencerDialog : public Base::SequencerBase
 {
 public:
     static SequencerDialog* instance();
     void pause();
     void resume();
     bool isBlocking() const;
-    bool canAbort() const;
+
+    virtual void checkAbort() override;
 
 protected:
     /** Construction */
@@ -57,8 +57,6 @@ protected:
     void startStep();
     /** Increase the step indicator of the progress dialog. */
     void nextStep(bool canAbort);
-    /** Sets the progress indicator to a certain position. */
-    void setProgress(size_t);
     /** Resets the sequencer */
     void resetData();
     void showRemainingTime();
@@ -66,7 +64,7 @@ protected:
 private:
     /** @name for internal use only */
     //@{
-    void setValue(int step);
+    void setProgress(int step);
     /** Throws an exception to stop the pending operation. */
     void abort();
     //@}
@@ -87,30 +85,24 @@ public:
     /** Destruction */
     ~ProgressDialog ();
 
+    /** Handles all incoming events while the progress bar is running. All key
+     * and mouse events are ignored to block user input.
+     */
+    bool eventFilter(QObject* o, QEvent* e);
+
 protected Q_SLOTS:
     void onCancel();
 
-private Q_SLOTS:
-    void resetEx();
-    void setRangeEx(int minimum, int maximum);
-    void setValueEx(int value);
-    void aboutToShow();
-    void aboutToHide();
-    void showEvent(QShowEvent*);
-    void hideEvent(QHideEvent*);
-
 protected:
     bool canAbort() const;
+    /** Gets the events under control */
+    void enterControlEvents();
+    /** Loses the control over incoming events*/
+    void leaveControlEvents();
 
 private:
     SequencerDialog* sequencer;
 
-#ifdef QT_WINEXTRAS_LIB
-    /* Set up the taskbar progress in windows */
-    void setupTaskBarProgress(void);
-    QWinTaskbarProgress* m_taskbarProgress;
-    QWinTaskbarButton* m_taskbarButton;
-#endif
     friend class SequencerDialog;
 };
 

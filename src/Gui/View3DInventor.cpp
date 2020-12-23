@@ -84,7 +84,6 @@
 #include <Inventor/nodes/SoOrthographicCamera.h>
 
 #include "View3DInventorExamples.h"
-#include "ViewProviderDocumentObject.h"
 #include "SoFCSelectionAction.h"
 #include "View3DPy.h"
 #include "SoFCDB.h"
@@ -161,7 +160,6 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
     // apply the user settings
     OnChange(*hGrp,"EyeDistance");
     OnChange(*hGrp,"CornerCoordSystem");
-    OnChange(*hGrp,"ShowAxisCross");
     OnChange(*hGrp,"UseAutoRotation");
     OnChange(*hGrp,"Gradient");
     OnChange(*hGrp,"BackgroundColor");
@@ -190,7 +188,6 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
     OnChange(*hGrp,"Dimensions3dVisible");
     OnChange(*hGrp,"DimensionsDeltaVisible");
     OnChange(*hGrp,"PickRadius");
-    OnChange(*hGrp,"TransparentObjectRenderType");
 
     stopSpinTimer = new QTimer(this);
     connect(stopSpinTimer, SIGNAL(timeout()), this, SLOT(stopAnimating()));
@@ -200,7 +197,7 @@ View3DInventor::~View3DInventor()
 {
     if(_pcDocument) {
         SoCamera * Cam = _viewer->getSoRenderManager()->getCamera();
-        if (Cam)
+        if (Cam) 
             _pcDocument->saveCameraSettings(SoFCDB::writeNodesToString(Cam).c_str());
     }
     hGrp->Detach(this);
@@ -357,28 +354,15 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         float val = rGrp.GetFloat("ZoomStep", 0.0f);
         _viewer->navigationStyle()->setZoomStep(val);
     }
-    else if (strcmp(Reason,"RotationMode") == 0) {
-        long mode = rGrp.GetInt("RotationMode", 1);
-        if (mode == 0) {
-            _viewer->navigationStyle()->setRotationCenterMode(NavigationStyle::RotationCenterMode::WindowCenter);
-        }
-        else if (mode == 1) {
-            _viewer->navigationStyle()->setRotationCenterMode(NavigationStyle::RotationCenterMode::ScenePointAtCursor |
-                                                              NavigationStyle::RotationCenterMode::FocalPointAtCursor);
-        }
-        else if (mode == 2) {
-            _viewer->navigationStyle()->setRotationCenterMode(NavigationStyle::RotationCenterMode::ScenePointAtCursor |
-                                                              NavigationStyle::RotationCenterMode::BoundingBoxCenter);
-        }
+    else if (strcmp(Reason,"DragAtCursor") == 0) {
+        bool on = rGrp.GetBool("DragAtCursor", false);
+        _viewer->navigationStyle()->setDragAtCursor(on);
     }
     else if (strcmp(Reason,"EyeDistance") == 0) {
         _viewer->getSoRenderManager()->setStereoOffset(rGrp.GetFloat("EyeDistance",5.0));
     }
     else if (strcmp(Reason,"CornerCoordSystem") == 0) {
         _viewer->setFeedbackVisibility(rGrp.GetBool("CornerCoordSystem",true));
-    }
-    else if (strcmp(Reason,"ShowAxisCross") == 0) {
-        _viewer->setAxisCross(rGrp.GetBool("ShowAxisCross",false));
     }
     else if (strcmp(Reason,"UseAutoRotation") == 0) {
         _viewer->setAnimationEnabled(rGrp.GetBool("UseAutoRotation",false));
@@ -428,17 +412,6 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     }
     else if (strcmp(Reason, "PickRadius") == 0) {
         _viewer->setPickRadius(rGrp.GetFloat("PickRadius", 5.0f));
-    }
-    else if (strcmp(Reason, "TransparentObjectRenderType") == 0) {
-        long renderType = rGrp.GetInt("TransparentObjectRenderType", 0);
-        if (renderType == 0) {
-            _viewer->getSoRenderManager()->getGLRenderAction()
-                   ->setTransparentDelayedObjectRenderType(SoGLRenderAction::ONE_PASS);
-        }
-        else if (renderType == 1) {
-            _viewer->getSoRenderManager()->getGLRenderAction()
-                   ->setTransparentDelayedObjectRenderType(SoGLRenderAction::NONSOLID_SEPARATE_BACKFACE_PASS);
-        }
     }
     else {
         unsigned long col1 = rGrp.GetUnsigned("BackgroundColor",3940932863UL);
@@ -541,11 +514,6 @@ void View3DInventor::print(QPrinter* printer)
     _viewer->imageFromFramebuffer(rect.width(), rect.height(), 8, QColor(255,255,255), img);
     p.drawImage(0,0,img);
     p.end();
-}
-
-bool View3DInventor::containsViewProvider(const ViewProvider* vp) const
-{
-    return _viewer->containsViewProvider(vp);
 }
 
 // **********************************************************************************
@@ -849,29 +817,16 @@ void View3DInventor::restoreOverrideCursor()
     _viewer->getWidget()->setCursor(QCursor(Qt::ArrowCursor));
 }
 
-// defined in SoFCDB.cpp
-extern SoNode* replaceSwitchesInSceneGraph(SoNode*);
-
-void View3DInventor::dump(const char* filename, bool onlyVisible)
+void View3DInventor::dump(const char* filename)
 {
     SoGetPrimitiveCountAction action;
     action.setCanApproximate(true);
     action.apply(_viewer->getSceneGraph());
 
-    SoNode* node = _viewer->getSceneGraph();
-    if (onlyVisible) {
-        node = replaceSwitchesInSceneGraph(node);
-        node->ref();
-    }
-
     if ( action.getTriangleCount() > 100000 || action.getPointCount() > 30000 || action.getLineCount() > 10000 )
-        _viewer->dumpToFile(node, filename, true);
+        _viewer->dumpToFile(_viewer->getSceneGraph(), filename, true);
     else
-        _viewer->dumpToFile(node, filename, false);
-
-    if (onlyVisible) {
-        node->unref();
-    }
+        _viewer->dumpToFile(_viewer->getSceneGraph(), filename, false);
 }
 
 void View3DInventor::windowStateChanged(MDIView* view)

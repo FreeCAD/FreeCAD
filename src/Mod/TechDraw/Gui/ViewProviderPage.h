@@ -81,18 +81,17 @@ public:
     Connection connectGuiRepaint;
 
     void unsetEdit(int ModNum) override;
-    MDIViewPage* getMDIViewPage() const;
+    MDIViewPage* getMDIViewPage();
     bool showMDIViewPage();
     void removeMDIView(void);
 
-    virtual Gui::MDIView *getMDIView() const override;
+    virtual Gui::MDIView *getMDIView() override;
 
     bool getFrameState(void);
     void setFrameState(bool state);
     void toggleFrameState(void);
     void setTemplateMarkers(bool state);
     void setGraphicsView(QGVPage* gv);
-    virtual bool canDelete(App::DocumentObject* obj) const override;
 
 protected:
     bool setEdit(int ModNum) override;

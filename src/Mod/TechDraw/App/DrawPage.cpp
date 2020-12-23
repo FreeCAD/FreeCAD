@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -51,7 +51,6 @@
 #include "DrawViewDimension.h"
 #include "DrawViewBalloon.h"
 #include "DrawLeaderLine.h"
-#include "Preferences.h"
 
 #include <Mod/TechDraw/App/DrawPagePy.h>  // generated from DrawPagePy.xml
 
@@ -65,7 +64,7 @@ using namespace std;
 
 App::PropertyFloatConstraint::Constraints DrawPage::scaleRange = {Precision::Confusion(),
                                                                   std::numeric_limits<double>::max(),
-                                                                  (0.1)}; // increment by 0.1
+                                                                  pow(10,- Base::UnitsApi::getDecimals())};
 
 PROPERTY_SOURCE(TechDraw::DrawPage, App::DocumentObject)
 
@@ -78,9 +77,12 @@ DrawPage::DrawPage(void)
     static const char *group = "Page";
     nowUnsetting = false;
     forceRedraw(false);
+    
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+    bool autoUpdate = hGrp->GetBool("KeepPagesUpToDate", true);   //this is the default value for new pages!
 
-    ADD_PROPERTY_TYPE(KeepUpdated, (Preferences::keepPagesUpToDate()),
-                                             group, (App::PropertyType)(App::Prop_Output), "Keep page in sync with model");
+    ADD_PROPERTY_TYPE(KeepUpdated, (autoUpdate), group, (App::PropertyType)(App::Prop_Output), "Keep page in sync with model");
     ADD_PROPERTY_TYPE(Template, (0), group, (App::PropertyType)(App::Prop_None), "Attached Template");
     Template.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(Views, (0), group, (App::PropertyType)(App::Prop_None), "Attached Views");
@@ -88,20 +90,26 @@ DrawPage::DrawPage(void)
 
     // Projection Properties
     ProjectionType.setEnums(ProjectionTypeEnums);
-    ADD_PROPERTY(ProjectionType, ((long)Preferences::projectionAngle()));
 
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                                         GetGroup("BaseApp")->GetGroup("Preferences")->
-                                         GetGroup("Mod/TechDraw/General");
-    double defScale = hGrp->GetFloat("DefaultScale",1.0);
-    ADD_PROPERTY_TYPE(Scale, (defScale), group, (App::PropertyType)(App::Prop_None), "Scale factor for this Page");
+    hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
 
+    // In preferences, 0 -> First Angle 1 -> Third Angle
+    int projType = hGrp->GetInt("ProjectionAngle", -1);
+
+    if (projType == -1) {
+        ADD_PROPERTY(ProjectionType, ((long)0)); // Default to first angle
+    } else {
+        ADD_PROPERTY(ProjectionType, ((long)projType));
+    }
+
+    ADD_PROPERTY_TYPE(Scale, (1.0), group, (App::PropertyType)(App::Prop_None), "Scale factor for this Page");
     ADD_PROPERTY_TYPE(NextBalloonIndex, (1), group, (App::PropertyType)(App::Prop_None),
                      "Auto-numbering for Balloons");
 
     Scale.setConstraints(&scaleRange);
+    double defScale = hGrp->GetFloat("DefaultScale",1.0);
+    Scale.setValue(defScale);
     balloonPlacing = false;
-    balloonParent = nullptr;
 }
 
 DrawPage::~DrawPage()
@@ -372,15 +380,6 @@ void DrawPage::updateAllViews()
             line->recomputeFeature();
         }
     }
-
-    //fourth, try to execute all spreadsheets.
-    for (it = featViews.begin(); it != featViews.end(); ++it) {
-        TechDraw::DrawViewSpreadsheet *sheet = dynamic_cast<TechDraw::DrawViewSpreadsheet *>(*it);
-        if (sheet != nullptr) {
-            sheet->recomputeFeature();
-        }
-    }
-
 }
 
 std::vector<App::DocumentObject*> DrawPage::getAllViews(void) 

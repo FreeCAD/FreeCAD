@@ -24,7 +24,9 @@
 #ifndef GUI_DIALOG_CLIPPING_H
 #define GUI_DIALOG_CLIPPING_H
 
-#include <QDialog>
+#include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
+#include <QWidget>
 
 namespace Gui {
 class View3DInventor;
@@ -33,13 +35,12 @@ namespace Dialog {
 /**
  * @author Werner Mayer
  */
-class GuiExport Clipping : public QDialog
+class GuiExport Clipping : public QWidget
 {
     Q_OBJECT
 
 public:
-    static Clipping* makeDockWidget(Gui::View3DInventor*);
-    Clipping(Gui::View3DInventor* view, QWidget* parent = nullptr);
+    Clipping(Gui::View3DInventor* view, QWidget* parent = 0);
     ~Clipping();
 
 protected Q_SLOTS:
@@ -60,12 +61,25 @@ protected Q_SLOTS:
     void on_dirY_valueChanged(double);
     void on_dirZ_valueChanged(double);
 
-public:
-    void reject();
+private:
 
 private:
     class Private;
     Private* d;
+};
+
+/**
+ * Embed the panel into a task dialog.
+ */
+class TaskClipping : public Gui::TaskView::TaskDialog
+{
+public:
+    TaskClipping(Gui::View3DInventor* view);
+    ~TaskClipping();
+
+public:
+    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    { return QDialogButtonBox::Close; }
 };
 
 } // namespace Dialog

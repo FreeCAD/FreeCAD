@@ -14,7 +14,6 @@ SET(StartPage_PythonResources
     StartPage.js
     StartPage.html
     EnableDownload.py
-    OpenSettings.py
 )
 
 SET(StartPage_ImageResources
@@ -25,7 +24,6 @@ SET(StartPage_ImageResources
     images/freecad.png
     images/installed.png
     images/new_file_thumbnail.svg
-    images/settings.png
 )
 
 SET(StartPage_Resources

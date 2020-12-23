@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>390</width>
-    <height>247</height>
+    <height>183</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,9 +24,6 @@ installed addons will be checked for available updates
      <property name="text">
       <string>Automatically check for updates at start (requires GitPython)</string>
      </property>
-     <property name="autoExclusive">
-      <bool>false</bool>
-     </property>
     </widget>
    </item>
    <item>
@@ -40,50 +37,9 @@ installed addons will be checked for available updates
     <widget class="QTextEdit" name="customRepositories">
      <property name="toolTip">
       <string>You can use this window to specify additional addon repositories
-to be scanned for available addons</string>
+sto be scanned for available addons</string>
      </property>
     </widget>
-   </item>
-   <item>
-    <widget class="Line" name="line">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLabel" name="labelProxy">
-     <property name="text">
-      <string>Proxy </string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QRadioButton" name="radioButtonNoProxy">
-     <property name="text">
-      <string>No proxy</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QRadioButton" name="radioButtonSystemProxy">
-     <property name="text">
-      <string>User system proxy</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QRadioButton" name="radioButtonUserProxy">
-     <property name="text">
-      <string>User defined proxy :</string>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QTextEdit" name="userProxy"/>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
@@ -106,12 +62,12 @@ to be scanned for available addons</string>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>257</x>
-     <y>237</y>
+     <x>248</x>
+     <y>254</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
-     <y>246</y>
+     <y>274</y>
     </hint>
    </hints>
   </connection>
@@ -122,12 +78,12 @@ to be scanned for available addons</string>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>325</x>
-     <y>237</y>
+     <x>316</x>
+     <y>260</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>
-     <y>246</y>
+     <y>274</y>
     </hint>
    </hints>
   </connection>

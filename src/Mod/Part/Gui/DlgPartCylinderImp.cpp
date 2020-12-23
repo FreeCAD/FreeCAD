@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -26,36 +26,27 @@
 #endif
 
 #include "DlgPartCylinderImp.h"
-#include "ui_DlgPartCylinder.h"
 
 using namespace PartGui;
 
+/* 
+ *  Constructs a DlgPartCylinder which is a child of 'parent', with the 
+ *  name 'name' and widget flags set to 'f' 
+ *
+ *  The dialog will by default be modeless, unless you set 'modal' to
+ *  true to construct a modal dialog.
+ */
 DlgPartCylinderImp::DlgPartCylinderImp(QWidget* parent, Qt::WindowFlags fl)
-  : Gui::LocationDialogUiImp(new Ui_DlgPartCylinder, parent, fl)
+  : Gui::LocationInterface<Ui_DlgPartCylinder>(parent, fl)
 {
 }
 
-/*
+/*  
  *  Destroys the object and frees any allocated resources
  */
 DlgPartCylinderImp::~DlgPartCylinderImp()
 {
     // no need to delete child widgets, Qt does it all for us
-}
-
-Ui_DlgPartCylinderPtr DlgPartCylinderImp::getUi() const
-{
-    return boost::any_cast< Ui_DlgPartCylinderPtr >(ui->get());
-}
-
-double DlgPartCylinderImp::getRadius() const
-{
-    return getUi()->radius->value().getValue();
-}
-
-double DlgPartCylinderImp::getLength() const
-{
-    return getUi()->length->value().getValue();
 }
 
 #include "moc_DlgPartCylinderImp.cpp"

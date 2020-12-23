@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="pl" sourcelanguage="en">
+<TS version="2.0" language="pl" sourcelanguage="en">
   <context>
     <name>TestGui::UnitTest</name>
     <message>
       <location filename="../../UnitTest.ui" line="16"/>
       <source>FreeCAD UnitTest</source>
-      <translation>Środowisko pracy FreeCAD UnitTest</translation>
+      <translation>FreeCAD UnitTest</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="31"/>
@@ -86,7 +86,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="248"/>
       <source>Run:</source>
-      <translation>Wykonaj:</translation>
+      <translation>Uruchom:</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="258"/>
@@ -102,34 +102,31 @@
   <context>
     <name>TestGui::UnitTestDialog</name>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="164"/>
+      <location filename="../../UnitTestImp.cpp" line="162"/>
       <source>Help</source>
       <translation>Pomoc</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="164"/>
+      <location filename="../../UnitTestImp.cpp" line="162"/>
       <source>Enter the name of a callable object which, when called, will return a TestCase.
 Click 'start', and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it, including the stack trace.</source>
-      <translation>Wprowadź nazwę obiektu typu callable, który po wywołaniu zwróci TestCase.
-Kliknij 'start', a utworzony w ten sposób test zostanie uruchomiony.
-
-Kliknij dwukrotnie na pozycję z błędem w widoku drzewa, aby zobaczyć więcej informacji na jego temat, w tym śledzenie stosu.</translation>
+      <translation>Wprowadź nazwę wywoływanego obiektu, jeżeli zostanie wywołany, zwróci TestCase. Wybierz 'start', a utworzony test zostanie uruchomiony.</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="176"/>
+      <location filename="../../UnitTestImp.cpp" line="174"/>
       <source>About FreeCAD UnitTest</source>
-      <translation>O środowisku pracy FreeCAD UnitTest</translation>
+      <translation>O FreeCAD UnitTest</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="176"/>
+      <location filename="../../UnitTestImp.cpp" line="174"/>
       <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
       <translation>Copyright (c) Werner Mayer
 
-Środowisko pracy FreeCAD UnitTest jest częścią FreeCAD i wspiera pisanie własnych testów dla własnych modułów.</translation>
+FreeCAD UnitTest jest częścią FreeCAD i wspiera pisanie Jednostek Testowych dla własnych modułów.</translation>
     </message>
   </context>
 </TS>

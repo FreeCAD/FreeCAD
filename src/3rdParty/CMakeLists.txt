@@ -2,5 +2,3 @@
 if (BUILD_SMESH AND NOT FREECAD_USE_EXTERNAL_SMESH)
     add_subdirectory(salomesmesh)
 endif()
-
-add_subdirectory(lazy_loader)

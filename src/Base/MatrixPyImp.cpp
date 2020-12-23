@@ -54,7 +54,7 @@ std::string MatrixPy::representation(void) const
 
 PyObject *MatrixPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of MatrixPy and the Twin object
+    // create a new instance of MatrixPy and the Twin object 
     return new MatrixPy(new Matrix4D);
 }
 
@@ -178,10 +178,10 @@ PyObject * MatrixPy::number_power_handler (PyObject* self, PyObject* other, PyOb
     Base::Matrix4D a = static_cast<MatrixPy*>(self)->value();
 
     long b = Py::Int(other);
-    if (!b)
+    if(!b)
         return new MatrixPy(Matrix4D());
 
-    if (b < 0) {
+    if(b < 0) {
         if (fabs(a.determinant()) > DBL_EPSILON)
             a.inverseGauss();
         else {
@@ -192,7 +192,7 @@ PyObject * MatrixPy::number_power_handler (PyObject* self, PyObject* other, PyOb
     }
 
     auto res = a;
-    for (--b;b;--b)
+    for(--b;b;--b)
         res *= a;
     return new MatrixPy(res);
 }
@@ -239,13 +239,13 @@ PyObject* MatrixPy::move(PyObject * args)
         vec.y = y;
         vec.z = z;
     }
-    else if (PyArg_ParseTuple(args, "O!:three floats or a vector is needed",
+    else if (PyArg_ParseTuple(args, "O!:three floats or a vector is needed", 
         &PyTuple_Type, &pcVecObj)) {
         vec = getVectorFromTuple<double>(pcVecObj);
         // clears the error from the first PyArg_ParseTuple()6
         PyErr_Clear();
     }
-    else if (PyArg_ParseTuple(args, "O!:three floats or a vector is needed",
+    else if (PyArg_ParseTuple(args, "O!:three floats or a vector is needed", 
         &(Base::VectorPy::Type), &pcVecObj)) {
         Base::VectorPy  *pcObject = static_cast<Base::VectorPy*>(pcVecObj);
         Base::Vector3d* val = pcObject->getVectorPtr();
@@ -275,7 +275,7 @@ PyObject* MatrixPy::scale(PyObject * args)
         vec.y = y;
         vec.z = z;
     }
-    else if (PyArg_ParseTuple(args, "O!:three floats or a vector is needed",
+    else if (PyArg_ParseTuple(args, "O!:three floats or a vector is needed", 
         &PyTuple_Type, &pcVecObj)) {
         vec = getVectorFromTuple<double>(pcVecObj);
         // clears the error from the first PyArg_ParseTuple()6
@@ -303,7 +303,7 @@ PyObject* MatrixPy::scale(PyObject * args)
 PyObject* MatrixPy::hasScale(PyObject * args)
 {
     double tol=0;
-    if (!PyArg_ParseTuple(args, "|d", &tol))
+    if(!PyArg_ParseTuple(args, "|d", &tol))
         return 0;
     return Py::new_reference_to(Py::Int(getMatrixPtr()->hasScale(tol)));
 }
@@ -829,7 +829,7 @@ PyObject *MatrixPy::getCustomAttributes(const char* /*attr*/) const
 
 int MatrixPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0;
+    return 0; 
 }
 
 PyObject * MatrixPy::number_divide_handler (PyObject* /*self*/, PyObject* /*other*/)

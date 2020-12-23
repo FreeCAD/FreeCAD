@@ -53,7 +53,6 @@
 #include "MainWindow.h"
 #include "FileDialog.h"
 #include "ui_DlgAuthorization.h"
-#include "Tools.h"
 
 using namespace Gui::Dialog;
 
@@ -101,7 +100,7 @@ SqueezeLabel::SqueezeLabel(QWidget *parent) : QLabel(parent)
 void SqueezeLabel::paintEvent(QPaintEvent *event)
 {
     QFontMetrics fm = fontMetrics();
-    if (Gui::QtTools::horizontalAdvance(fm, text()) > contentsRect().width()) {
+    if (fm.width(text()) > contentsRect().width()) {
         QString elided = fm.elidedText(text(), Qt::ElideMiddle, width());
         QString oldText = text();
         setText(elided);
@@ -130,7 +129,7 @@ AutoSaver::~AutoSaver()
 
 void AutoSaver::changeOccurred()
 {
-    if (!m_firstChange.isValid())
+    if (m_firstChange.isNull())
         m_firstChange.start();
 
     if (m_firstChange.elapsed() > MAXWAIT) {
@@ -154,7 +153,7 @@ void AutoSaver::saveIfNecessary()
     if (!m_timer.isActive())
         return;
     m_timer.stop();
-    m_firstChange = QElapsedTimer();
+    m_firstChange = QTime();
     if (!QMetaObject::invokeMethod(parent(), "save", Qt::DirectConnection)) {
         qWarning() << "AutoSaver: error invoking slot save() on parent";
     }

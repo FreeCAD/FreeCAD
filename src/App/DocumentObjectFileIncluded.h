@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   (c) Jürgen Riegel (juergen.riegel@web.de) 2008                        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -41,12 +41,12 @@ public:
     DocumentObjectFileIncluded(void);
     virtual ~DocumentObjectFileIncluded();
 
-
+ 
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {
         return "Gui::ViewProviderDocumentObject";
     }
-
+ 
     /// Properties
     PropertyFileIncluded File;
 

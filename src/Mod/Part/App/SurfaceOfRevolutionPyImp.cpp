@@ -144,16 +144,9 @@ void  SurfaceOfRevolutionPy::setDirection(Py::Object arg)
     }
 }
 
-namespace Part {
-    extern const Py::Object makeGeometryCurvePy(const Handle(Geom_Curve)& c);
-}
-
 Py::Object SurfaceOfRevolutionPy::getBasisCurve(void) const
 {
-    Handle(Geom_SurfaceOfRevolution) surf = Handle(Geom_SurfaceOfRevolution)::DownCast
-        (getGeometryPtr()->handle());
-    Handle(Geom_Curve) curve = surf->BasisCurve();
-    return makeGeometryCurvePy(curve);
+    throw Py::Exception(PyExc_NotImplementedError, "Not yet implemented");
 }
 
 void  SurfaceOfRevolutionPy::setBasisCurve(Py::Object arg)

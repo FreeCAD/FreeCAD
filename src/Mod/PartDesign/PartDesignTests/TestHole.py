@@ -1,5 +1,4 @@
-#**************************************************************************
-#   Copyright (c) 2017 Kurt Kremitzki <kkremitzki@gmail.com>              *
+#   Copyright (c) Kurt Kremitzki <kkremitzki@gmail.com>          2017     *
 #                                                                         *
 #   This file is part of the FreeCAD CAx development system.              *
 #                                                                         *
@@ -68,7 +67,7 @@ class TestHole(unittest.TestCase):
     def testTaperedHole(self):
         self.Hole.Diameter = 6
         self.Hole.Depth = 5
-        self.Hole.TaperedAngle = 60
+        self.Hole.TaperedAngle = 45
         self.Hole.ThreadType = 0
         self.Hole.HoleCutType = 0
         self.Hole.DepthType = 0

@@ -1704,7 +1704,7 @@ kojeg treba ukloniti;
     <message>
       <location filename="../../TaskPadParameters.ui" line="91"/>
       <source>2nd length</source>
-      <translation>druga dužina</translation>
+      <translation>druga duljina</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="109"/>
@@ -1981,7 +1981,7 @@ kojeg treba ukloniti;
     <message>
       <location filename="../../TaskPocketParameters.ui" line="91"/>
       <source>2nd length</source>
-      <translation>druga dužina</translation>
+      <translation>druga duljina</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.ui" line="109"/>
@@ -3130,7 +3130,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="202"/>
       <source>Custom dimensions</source>
-      <translation>Prilagođena dimenzija</translation>
+      <translation>Korisnička dimenzija</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="218"/>
@@ -3158,7 +3158,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="399"/>
       <source> Custom thread length</source>
-      <translation> Prilagođena dužina navoja</translation>
+      <translation> Korisnička dužina navoja</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="423"/>

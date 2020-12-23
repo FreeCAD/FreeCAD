@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
- *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de)          *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -42,7 +41,7 @@
 #include "DocumentObjectExtension.h"
 #include "GeoFeatureGroupExtension.h"
 #include <App/DocumentObjectPy.h>
-#include <boost/bind/bind.hpp>
+#include <boost/bind.hpp>
 
 FC_LOG_LEVEL_INIT("App",true,true)
 
@@ -113,12 +112,7 @@ App::DocumentObjectExecReturn *DocumentObject::recompute(void)
 
 DocumentObjectExecReturn *DocumentObject::execute(void)
 {
-    return executeExtensions();
-}
-
-App::DocumentObjectExecReturn* DocumentObject::executeExtensions()
-{
-    //execute extensions but stop on error
+    //call all extensions
     auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
     for(auto ext : vector) {
         auto ret = ext->extensionExecute();
@@ -289,24 +283,14 @@ void DocumentObject::getOutList(int options, std::vector<DocumentObject*> &res) 
     std::vector<Property*> props;
     getPropertyList(props);
     bool noHidden = !!(options & OutListNoHidden);
-    std::size_t size = res.size();
+    bool noXLinked = !!(options & OutListNoXLinked);
     for(auto prop : props) {
         auto link = dynamic_cast<PropertyLinkBase*>(prop);
-        if(link)
+        if(link && (!noXLinked || !PropertyXLink::supportXLink(prop)))
             link->getLinks(res,noHidden);
     }
     if(!(options & OutListNoExpression))
         ExpressionEngine.getLinks(res);
-
-    if(options & OutListNoXLinked) {
-        for(auto it=res.begin()+size;it!=res.end();) {
-            auto obj = *it;
-            if(obj && obj->getDocument()!=getDocument())
-                it = res.erase(it);
-            else
-                ++it;
-        }
-    }
 }
 
 std::vector<App::DocumentObject*> DocumentObject::getOutListOfProperty(App::Property* prop) const
@@ -704,7 +688,7 @@ void DocumentObject::onChanged(const Property* prop)
         return;
 
     if(!GetApplication().isRestoring() && 
-       !prop->testStatus(Property::PartialTrigger) &&
+       prop && !prop->testStatus(Property::PartialTrigger) &&
        getDocument() && 
        getDocument()->testStatus(Document::PartialDoc))
     {
@@ -939,11 +923,6 @@ void DocumentObject::onDocumentRestored()
         ext->onExtendedDocumentRestored();
     if(Visibility.testStatus(Property::Output))
         Visibility.setStatus(Property::NoModify,true);
-}
-
-void DocumentObject::onUndoRedoFinished()
-{
-
 }
 
 void DocumentObject::onSettingDocument()

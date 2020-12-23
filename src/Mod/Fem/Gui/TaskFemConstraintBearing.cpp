@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jan Rheinländer                                    *
- *                                   <jrheinlaender@users.sourceforge.net> *
+ *   Copyright (c) 2013 Jan Rheinländer <jrheinlaender@users.sourceforge.net>        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -27,11 +26,10 @@
 #ifndef _PreComp_
 # include <sstream>
 
-# include <QAction>
-# include <QKeyEvent>
-# include <QMessageBox>
 # include <QRegExp>
 # include <QTextStream>
+# include <QMessageBox>
+# include <QAction>
 
 # include <Precision.hxx>
 # include <TopoDS.hxx>
@@ -77,9 +75,12 @@ TaskFemConstraintBearing::TaskFemConstraintBearing(ViewProviderFemConstraint *Co
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
-    // create a context menu for the listview of the references
-    createDeleteAction(ui->listReferences);
-    deleteAction->connect(deleteAction, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
+    // Create a context menu for the listview of the references
+    QAction* action = new QAction(tr("Delete"), ui->listReferences);
+    action->connect(action, SIGNAL(triggered()),
+                    this, SLOT(onReferenceDeleted()));
+    ui->listReferences->addAction(action);
+    ui->listReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
 
     connect(ui->spinDistance, SIGNAL(valueChanged(double)),
             this, SLOT(onDistanceChanged(double)));
@@ -300,11 +301,6 @@ TaskFemConstraintBearing::~TaskFemConstraintBearing()
     delete ui;
 }
 
-bool TaskFemConstraintBearing::event(QEvent *e)
-{
-    return TaskFemConstraint::KeyEvent(e);
-}
-
 void TaskFemConstraintBearing::changeEvent(QEvent *e)
 {
     TaskBox::changeEvent(e);
@@ -337,7 +333,7 @@ bool TaskDlgFemConstraintBearing::accept()
     const TaskFemConstraintBearing* parameterBearing = static_cast<const TaskFemConstraintBearing*>(parameter);
 
     try {
-        //Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "FEM force constraint changed"));
+        //Gui::Command::openCommand("FEM force constraint changed");
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Dist = %f",name.c_str(), parameterBearing->getDistance());
 
         std::string locname = parameterBearing->getLocationName().data();

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="zh-CN" sourcelanguage="en">
+<TS version="2.0" language="zh-CN" sourcelanguage="en">
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -331,6 +331,10 @@
       <translation>导出文件</translation>
     </message>
     <message>
+      <source>Cell contents</source>
+      <translation>单元格内容</translation>
+    </message>
+    <message>
       <source>Show spreadsheet</source>
       <translation>显示电子表格</translation>
     </message>
@@ -349,30 +353,6 @@
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
       <translation>设置电子表格单元背景色</translation>
-    </message>
-    <message>
-      <source>Spreadsheet</source>
-      <translation>电子表格</translation>
-    </message>
-    <message>
-      <source>Spreadsheet does not support range selection when pasting.
-Please select one cell only.</source>
-      <translation>粘贴单元格时不支持范围选择。
-请只选择一个单元格。</translation>
-    </message>
-    <message>
-      <source>Copy &amp; Paste failed</source>
-      <translation>复制粘贴失败</translation>
-    </message>
-    <message>
-      <source>Alias contains invalid characters!</source>
-      <translation type="unfinished">Alias contains invalid characters!</translation>
-    </message>
-    <message>
-      <source>Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -457,18 +437,8 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
       <translation>窗体</translation>
     </message>
     <message>
-      <source>&amp;Content:</source>
-      <translation type="unfinished">&amp;Content:</translation>
-    </message>
-    <message>
-      <source>&amp;Alias:</source>
-      <translation type="unfinished">&amp;Alias:</translation>
-    </message>
-    <message>
-      <source>Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+      <source>&amp;Contents</source>
+      <translation>内容(&amp;C)</translation>
     </message>
   </context>
   <context>

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2008     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -49,7 +49,7 @@ public:
     /// set the FemMesh shape
     void setValue(const FemMesh&);
     /// does nothing, for add property macro
-    void setValue(void){}
+    void setValue(void){};
     /// get the FemMesh shape
     const FemMesh &getValue(void) const;
     const Data::ComplexGeoData* getComplexData() const;

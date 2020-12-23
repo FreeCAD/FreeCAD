@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2015 Kirill Gavrilov <kirill.gavrilov@opencascade.com>  *
+ *   Copyright (c) 2015 Kirill Gavrilov <kirill.gavrilov[at]opencascade.com> *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -35,6 +35,8 @@
 # include <QMetaObject>
 # include <QRegExp>
 #endif
+
+#include <Inventor/sensors/SoTimerSensor.h>
 
 #include <App/Application.h>
 #include "NavigationStyle.h"
@@ -255,6 +257,11 @@ SbBool OpenCascadeNavigationStyle::processSoEvent(const SoEvent * const ev)
                 processed = true;
             }
             this->button3down = press;
+            break;
+        case SoMouseButtonEvent::BUTTON4:
+        case SoMouseButtonEvent::BUTTON5:
+            doZoom(viewer->getSoRenderManager()->getCamera(), button == SoMouseButtonEvent::BUTTON4, posn);
+            processed = true;
             break;
         default:
             break;

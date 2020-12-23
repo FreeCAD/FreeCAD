@@ -1,6 +1,9 @@
 # -*- coding: utf8 -*-
+
 #***************************************************************************
-#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
+#*                                                                         *
+#*   Copyright (c) 2011                                                    *
+#*   Yorik van Havre <yorik@uncreated.net>                                 *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -34,9 +37,9 @@ else:
         return txt
     # \endcond
 
-__title__  = "FreeCAD Building"
+__title__="FreeCAD Building"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__ = "http://www.freecadweb.org"
 
 ## @package ArchBuilding
 #  \ingroup ARCH

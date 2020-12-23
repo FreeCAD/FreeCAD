@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (c) 2019 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
+ *   Copyright (c) 2019 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -21,9 +21,7 @@
  ****************************************************************************/
 
 #include "PreCompiled.h"
-
 #include <Base/Console.h>
-#include <Base/Interpreter.h>
 #include "Application.h"
 #include "Transactions.h"
 #include "Document.h"
@@ -32,9 +30,6 @@
 FC_LOG_LEVEL_INIT("App",true,true)
 
 using namespace App;
-
-static int _TransactionLock;
-static int _TransactionClosed;
 
 AutoTransaction::AutoTransaction(const char *name, bool tmpName) {
     auto &app = GetApplication();
@@ -50,7 +45,7 @@ AutoTransaction::AutoTransaction(const char *name, bool tmpName) {
     // We use negative transaction guard to disable auto transaction from here
     // and any stack below. This is to support user setting active transaction
     // before having any existing AutoTransaction on stack, or 'persist'
-    // transaction that can out live AutoTransaction.
+    // transaction that can out live AutoTransaction. 
     if(app._activeTransactionGuard<0)
         --app._activeTransactionGuard;
     else if(tid || app._activeTransactionGuard>0)
@@ -130,11 +125,7 @@ int Application::setActiveTransaction(const char *name, bool persist) {
                 AutoTransaction::setEnable(false);
             return 0;
         }
-    } else if (_TransactionLock) {
-        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
-            FC_WARN("Transaction locked, ignore new transaction '" << name << "'");
-        return 0;
-    } else {
+    }else{
         FC_LOG("set active transaction '" << name << "'");
         _activeTransactionID = 0;
         for(auto &v : DocMap)
@@ -165,17 +156,10 @@ void Application::closeActiveTransaction(bool abort, int id) {
         return;
     }
 
-    if(_TransactionLock) {
-        if(_TransactionClosed >= 0)
-            _TransactionLock = abort?-1:1;
-        FC_LOG("pending " << (abort?"abort":"close") << " transaction");
-        return;
-    }
-
     FC_LOG("close transaction '" << _activeTransactionName << "' " << abort);
     _activeTransactionID = 0;
 
-    TransactionSignaller signaller(abort,false);
+    TransactionSignaller siganller(abort,false);
     for(auto &v : DocMap) {
         if(v.second->getTransactionID(true) != id)
             continue;
@@ -185,58 +169,4 @@ void Application::closeActiveTransaction(bool abort, int id) {
             v.second->_commitTransaction();
     }
 }
-
-////////////////////////////////////////////////////////////////////////
-
-TransactionLocker::TransactionLocker(bool lock)
-    :active(lock)
-{
-    if(lock)
-        ++_TransactionLock;
-}
-
-TransactionLocker::~TransactionLocker()
-{
-    if(active) {
-        try {
-            activate(false);
-            return;
-        } catch (Base::Exception &e) {
-            e.ReportException();
-        } catch (Py::Exception &) {
-            Base::PyException e;
-            e.ReportException();
-        } catch (std::exception &e) {
-            FC_ERR(e.what());
-        } catch (...) {
-        }
-        FC_ERR("Exception when unlocking transaction");
-    }
-}
-
-void TransactionLocker::activate(bool enable)
-{
-    if(active == enable)
-        return;
-
-    active = enable;
-    if(active) {
-        ++_TransactionLock;
-        return;
-    }
-
-    if(--_TransactionLock != 0)
-        return;
-
-    if(_TransactionClosed) {
-        bool abort = (_TransactionClosed<0);
-        _TransactionClosed = 0;
-        GetApplication().closeActiveTransaction(abort);
-    }
-}
-
-bool TransactionLocker::isLocked() {
-    return _TransactionLock > 0;
-}
-
 

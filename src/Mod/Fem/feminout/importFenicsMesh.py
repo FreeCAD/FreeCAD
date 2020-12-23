@@ -1,7 +1,6 @@
 # ***************************************************************************
-# *   Copyright (c) 2017 Johannes Hartung <j.hartung@gmx.net>               *
 # *                                                                         *
-# *   This file is part of the FreeCAD CAx development system.              *
+# *   Copyright (c) 2017 - Johannes Hartung <j.hartung@gmx.net>             *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -21,9 +20,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__  = "Mesh import and export for Fenics mesh file format"
+__title__ = "FreeCAD Fenics mesh reader and writer"
 __author__ = "Johannes Hartung"
-__url__    = "https://www.freecadweb.org"
+__url__ = "http://www.freecadweb.org"
 
 ## @package importFenicsMesh
 #  \ingroup FEM
@@ -33,7 +32,6 @@ import os
 
 import FreeCAD
 from FreeCAD import Console
-
 from . import importToolsFem
 from . import readFenicsXML
 from . import writeFenicsXML
@@ -187,7 +185,7 @@ def export(objectslist, fileString, group_values_dict_nogui=None):
             writeFenicsXML.write_fenics_mesh_xml(obj, fileString)
         elif fileExtension.lower() == ".xdmf":
             mesh_groups = importToolsFem.get_FemMeshObjectMeshGroups(obj)
-            if mesh_groups != ():
+            if mesh_groups is not ():
                 # if there are groups found, make task panel available if GuiUp
                 if FreeCAD.GuiUp == 1:
                     panel = WriteXDMFTaskPanel(obj, fileString)

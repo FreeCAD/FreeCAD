@@ -41,10 +41,7 @@ class Ui_SegmentationBestFit;
 class FitParameter
 {
 public:
-    struct Points {
-        std::vector<Base::Vector3f> points;
-        std::vector<Base::Vector3f> normals;
-    };
+    typedef std::vector<Base::Vector3f> Points;
     virtual ~FitParameter() {}
     virtual std::vector<float> getParameter(Points) const = 0;
 };
@@ -82,7 +79,7 @@ class MeshGuiExport SegmentationBestFit : public QWidget
     Q_OBJECT
 
 public:
-    SegmentationBestFit(Mesh::Feature* mesh, QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
+    SegmentationBestFit(Mesh::Feature* mesh, QWidget* parent = 0, Qt::WindowFlags fl = 0);
     ~SegmentationBestFit();
     void accept();
 

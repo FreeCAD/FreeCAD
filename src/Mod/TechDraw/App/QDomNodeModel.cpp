@@ -273,7 +273,7 @@ QString    QDomNodeModel::stringValue ( const QXmlNodeModelIndex & ni ) const
 
 QVariant QDomNodeModel::typedValue ( const QXmlNodeModelIndex & ni ) const
 {
-    return QVariant::fromValue(stringValue(ni));
+    return qVariantFromValue(stringValue(ni));
 }
 
 QXmlNodeModelIndex QDomNodeModel::fromDomNode(const QDomNode &n) const

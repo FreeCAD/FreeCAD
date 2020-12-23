@@ -69,10 +69,10 @@ TaskLineDecor::TaskLineDecor(TechDraw::DrawViewPart* partFeat,
     getDefaults();
     ui->setupUi(this);
 
-    connect(ui->cb_Style, SIGNAL(currentIndexChanged(int)), this, SLOT(onStyleChanged(void)));
-    connect(ui->cc_Color, SIGNAL(changed()), this, SLOT(onColorChanged(void)));
-    connect(ui->dsb_Weight, SIGNAL(valueChanged(double)), this, SLOT(onWeightChanged(void)));
-    connect(ui->cb_Visible, SIGNAL(currentIndexChanged(int)), this, SLOT(onVisibleChanged(void)));
+    connect(ui->cb_Style, SIGNAL(currentIndexChanged( int )), this, SLOT(onStyleChanged(void)));
+    connect(ui->cc_Color, SIGNAL(changed(  )), this, SLOT(onColorChanged(void)));
+    connect(ui->dsb_Weight, SIGNAL(valueChanged( double  )), this, SLOT(onWeightChanged( void )));
+    connect(ui->cb_Visible, SIGNAL(currentIndexChanged( int )), this, SLOT(onVisibleChanged( void )));
 
     initUi();
 }
@@ -101,7 +101,6 @@ void TaskLineDecor::initUi()
     ui->cb_Style->setCurrentIndex(m_style - 1);          //combobox does not have 0:NoLine choice
     ui->cc_Color->setColor(m_color.asValue<QColor>());
     ui->dsb_Weight->setValue(m_weight);
-    ui->dsb_Weight->setSingleStep(0.1);
     ui->cb_Visible->setCurrentIndex(m_visible);
 }
 
@@ -120,21 +119,20 @@ void TaskLineDecor::getDefaults(void)
         if (bg != nullptr) {
             if (bg->cosmetic) {
                 if (bg->source() == 1) {
-                    TechDraw::CosmeticEdge* ce = m_partFeat->getCosmeticEdgeBySelection(m_edges.front());
+                    TechDraw::CosmeticEdge* ce = m_partFeat->getCosmeticEdgeByIndex(bg->sourceIndex());
                     m_style = ce->m_format.m_style;
                     m_color = ce->m_format.m_color;
                     m_weight = ce->m_format.m_weight;
                     m_visible = ce->m_format.m_visible;
                 } else if (bg->source() == 2) {
-//                    TechDraw::CenterLine* cl = m_partFeat->getCenterLine(bg->getCosmeticTag);
-                    TechDraw::CenterLine* cl = m_partFeat->getCenterLineBySelection(m_edges.front());
+                    TechDraw::CenterLine* cl = m_partFeat->getCenterLineByIndex(bg->sourceIndex());
                     m_style = cl->m_format.m_style;
                     m_color = cl->m_format.m_color;
                     m_weight = cl->m_format.m_weight;
                     m_visible = cl->m_format.m_visible;
                 }
             } else {
-                TechDraw::GeomFormat* gf = m_partFeat->getGeomFormatBySelection(num);
+                TechDraw::GeomFormat* gf = m_partFeat->getGeomFormatByGeom(num);
                 if (gf != nullptr) {
                     m_style = gf->m_format.m_style;
                     m_color = gf->m_format.m_color;
@@ -143,7 +141,7 @@ void TaskLineDecor::getDefaults(void)
                 } else {
                     Gui::ViewProvider* vp = QGIView::getViewProvider(m_partFeat);
                     auto partVP = dynamic_cast<ViewProviderViewPart*>(vp);
-                    if ( partVP != nullptr ) {
+                    if ( vp != nullptr ) {
                         m_weight = partVP->LineWidth.getValue();
                         m_style = Qt::SolidLine;                  // = 1
                         m_color = LineFormat::getDefEdgeColor();
@@ -158,29 +156,25 @@ void TaskLineDecor::getDefaults(void)
 void TaskLineDecor::onStyleChanged(void)
 {
     m_style = ui->cb_Style->currentIndex() + 1;
-    applyDecorations();
-    m_partFeat->requestPaint();
+    //livePreview(); 
 }
 
 void TaskLineDecor::onColorChanged(void)
 {
     m_color.setValue<QColor>(ui->cc_Color->color());
-    applyDecorations();
-    m_partFeat->requestPaint();
+    //livePreview(); 
 }
 
 void TaskLineDecor::onWeightChanged(void)
 {
-    m_weight = ui->dsb_Weight->value().getValue();
-    applyDecorations();
-    m_partFeat->requestPaint();
+    m_weight = ui->dsb_Weight->value();
+    //livePreview();
 }
 
 void TaskLineDecor::onVisibleChanged(void)
 {
     m_visible = ui->cb_Visible->currentIndex();
-    applyDecorations();
-    m_partFeat->requestPaint();
+    //livePreview();
 }
 
 void TaskLineDecor::applyDecorations(void)
@@ -192,21 +186,20 @@ void TaskLineDecor::applyDecorations(void)
         if (bg != nullptr) {
             if (bg->cosmetic) {
                 if (bg->source() == 1) {
-                    TechDraw::CosmeticEdge* ce = m_partFeat->getCosmeticEdgeBySelection(e);
+                    TechDraw::CosmeticEdge* ce = m_partFeat->getCosmeticEdgeByIndex(bg->sourceIndex());
                     ce->m_format.m_style = m_style;
                     ce->m_format.m_color = m_color;
                     ce->m_format.m_weight = m_weight;
                     ce->m_format.m_visible = m_visible;
                 } else if (bg->source() == 2) {
-//                    TechDraw::CenterLine* cl = m_partFeat->getCenterLine(bg->getCosmeticTag());
-                    TechDraw::CenterLine* cl = m_partFeat->getCenterLineBySelection(e);
+                    TechDraw::CenterLine* cl = m_partFeat->getCenterLineByIndex(bg->sourceIndex());
                     cl->m_format.m_style = m_style;
                     cl->m_format.m_color = m_color;
                     cl->m_format.m_weight = m_weight;
                     cl->m_format.m_visible = m_visible;
                 }
             } else {
-                TechDraw::GeomFormat* gf = m_partFeat->getGeomFormatBySelection(num);
+                TechDraw::GeomFormat* gf = m_partFeat->getGeomFormatByGeom(num);
                 if (gf != nullptr) {
                     gf->m_format.m_style = m_style;
                     gf->m_format.m_color = m_color;
@@ -225,6 +218,7 @@ void TaskLineDecor::applyDecorations(void)
             }
         }
     }
+    
 }
 
 bool TaskLineDecor::accept()
@@ -437,7 +431,7 @@ TaskDlgLineDecor::TaskDlgLineDecor(TechDraw::DrawViewPart* partFeat,
     TaskDialog()
 {
     widget  = new TaskLineDecor(partFeat, edgeNames);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-DecorateLine"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-linedecor"),
                                          widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
@@ -448,7 +442,7 @@ TaskDlgLineDecor::TaskDlgLineDecor(TechDraw::DrawViewPart* partFeat,
     TaskLineDecor* parent = dynamic_cast<TaskLineDecor*>(widget);
     if (parent != nullptr) {
         restore = new TaskRestoreLines(partFeat, parent);
-        restoreBox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-DecorateLine"),
+        restoreBox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-linedecor"),
                                              tr("Restore Invisible Lines"), true, 0);
         restoreBox->groupLayout()->addWidget(restore);
         Content.push_back(restoreBox);

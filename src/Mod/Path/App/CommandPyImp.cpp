@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
+ *   Copyright (c) Yorik van Havre (yorik@uncreated.net) 2014              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -157,11 +157,15 @@ void CommandPy::setName(Py::String arg)
 
 Py::Dict CommandPy::getParameters(void) const
 {
-    Py::Dict dict;
+    PyObject *dict = PyDict_New();
     for(std::map<std::string,double>::iterator i = getCommandPtr()->Parameters.begin(); i != getCommandPtr()->Parameters.end(); ++i) {
-        dict.setItem(i->first, Py::Float(i->second));
+#if PY_MAJOR_VERSION >= 3
+        PyDict_SetItem(dict,PyUnicode_FromString(i->first.c_str()),PyFloat_FromDouble(i->second));
+#else
+        PyDict_SetItem(dict,PyString_FromString(i->first.c_str()),PyFloat_FromDouble(i->second));
+#endif
     }
-    return dict;
+    return Py::Dict(dict);
 }
 
 void CommandPy::setParameters(Py::Dict arg)

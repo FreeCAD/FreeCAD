@@ -140,7 +140,7 @@
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="201"/>
       <source>Scales</source>
-      <translation>Mierky</translation>
+      <translation>Mierka</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="205"/>
@@ -296,7 +296,7 @@
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="174"/>
       <source>X axis title font size</source>
-      <translation>Veľkosť písma nadpisu na ose X</translation>
+      <translation>Velľkosť písma nadpisu na ose X</translation>
     </message>
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="179"/>
@@ -344,7 +344,7 @@
     <message>
       <location filename="../../plotPositions/TaskPanel.py" line="135"/>
       <source>List of modifiable items</source>
-      <translation>Zoznam upraviteľných položiek</translation>
+      <translation type="unfinished">List of modifiable items</translation>
     </message>
   </context>
   <context>
@@ -445,17 +445,17 @@
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="158"/>
       <source>Remove series</source>
-      <translation>Odstrániť sériu</translation>
+      <translation type="unfinished">Remove series</translation>
     </message>
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="183"/>
       <source>If checked, series will not be considered for legend</source>
-      <translation>Ak je zaškrtnuté, séria nebude použitá pre legendu</translation>
+      <translation type="unfinished">If checked, series will not be considered for legend</translation>
     </message>
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="213"/>
       <source>Removes this series</source>
-      <translation>Odstráni túto sériu</translation>
+      <translation type="unfinished">Removes this series</translation>
     </message>
   </context>
 </TS>

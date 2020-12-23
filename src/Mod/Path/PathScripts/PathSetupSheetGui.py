@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+
 # ***************************************************************************
+# *                                                                         *
 # *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -34,7 +36,7 @@ from PySide import QtCore, QtGui
 
 __title__ = "Setup Sheet Editor"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "http://www.freecadweb.org"
 __doc__ = "Task panel editor for a SetupSheet"
 
 # Qt translation handling
@@ -67,7 +69,7 @@ class ViewProvider:
         self.obj = vobj.Object
 
     def getIcon(self):
-        return ":/icons/Path_SetupSheet.svg"
+        return ":/icons/Path-SetupSheet.svg"
 
     def __getstate__(self):
         return None
@@ -304,9 +306,9 @@ class GlobalEditor(object):
     def getFields(self):
         def updateExpression(name, widget):
             value = str(widget.text())
-            val = PathUtil.getProperty(self.obj, name)
+            val = PathGui.getProperty(self.obj, name)
             if val != value:
-                PathUtil.setProperty(self.obj, name, value)
+                PathGui.setProperty(self.obj, name, value)
 
         updateExpression('StartDepthExpression',        self.form.setupStartDepthExpr)
         updateExpression('FinalDepthExpression',        self.form.setupFinalDepthExpr)

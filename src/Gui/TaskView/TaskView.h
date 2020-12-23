@@ -47,7 +47,7 @@ class Property;
 namespace Gui {
 class ControlSingleton;
 namespace DockWnd{
-class ComboView;
+class CombiView;
 }
 namespace TaskView {
 
@@ -180,7 +180,7 @@ public:
     virtual void OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
                           Gui::SelectionSingleton::MessageType Reason);
 
-    friend class Gui::DockWnd::ComboView;
+    friend class Gui::DockWnd::CombiView;
     friend class Gui::ControlSingleton;
 
     void addTaskWatcher(const std::vector<TaskWatcher*> &Watcher);

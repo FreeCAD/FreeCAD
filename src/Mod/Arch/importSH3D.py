@@ -1,4 +1,5 @@
 #***************************************************************************
+#*                                                                         *
 #*   Copyright (c) 2016 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -20,9 +21,9 @@
 #***************************************************************************
 
 from __future__ import print_function
-__title__  = "FreeCAD SweetHome3D Importer"
+__title__ =  "FreeCAD SweetHome3D importer"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__ =    "http://www.freecadweb.org"
 
 import os,zipfile,xml.sax,FreeCAD,Part,Draft,Arch,Mesh,tempfile,math,Sketcher
 
@@ -46,7 +47,7 @@ def open(filename):
     FreeCAD.ActiveDocument = doc
     read(filename)
     return doc
-
+    
 
 def insert(filename,docname):
     "called when freecad wants to import a file"
@@ -74,7 +75,7 @@ def decode(name):
 
 def read(filename):
     "reads the file and creates objects in the active document"
-
+    
     z = zipfile.ZipFile(filename)
     homexml = z.read("Home.xml")
     handler = SH3DHandler(z)
@@ -105,15 +106,15 @@ def read(filename):
 class SH3DHandler(xml.sax.ContentHandler):
 
     def __init__(self,z):
-
+        
         self.makeIndividualWalls = False
         self.z = z
         self.windows = []
         self.furniture = []
         self.lines = {}
-
+        
     def startElement(self, tag, attributes):
-
+        
         if tag == "wall":
             name = attributes["id"]
             p1 = FreeCAD.Vector(float(attributes["xStart"])*10,float(attributes["yStart"])*10,0)
@@ -127,7 +128,7 @@ class SH3DHandler(xml.sax.ContentHandler):
                 wall.Label = name
             else:
                 self.lines.setdefault(str(thickness)+";"+str(height),[]).append(line)
-
+            
         elif tag == "pieceOfFurniture":
             name = attributes["name"]
             data = self.z.read(attributes["model"])
@@ -156,7 +157,7 @@ class SH3DHandler(xml.sax.ContentHandler):
             obj = FreeCAD.ActiveDocument.addObject("Mesh::Feature",name)
             obj.Mesh = m
             self.furniture.append(obj)
-
+            
         elif tag == "doorOrWindow":
             name = attributes["name"]
             data = self.z.read(attributes["model"])

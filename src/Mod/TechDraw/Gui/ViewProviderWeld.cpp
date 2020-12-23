@@ -24,8 +24,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QMessageBox>
-# include <QTextStream>
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
@@ -45,12 +43,11 @@
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 
-#include "PreferencesGui.h"
 #include "TaskWeldingSymbol.h"
+
 #include "ViewProviderWeld.h"
 
 using namespace TechDrawGui;
-using namespace TechDraw;
 
 PROPERTY_SOURCE(TechDrawGui::ViewProviderWeld, TechDrawGui::ViewProviderDrawingView)
 
@@ -60,13 +57,6 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderWeld, TechDrawGui::ViewProviderDrawingV
 ViewProviderWeld::ViewProviderWeld()
 {
     sPixmap = "actions/techdraw-weldsymbol";
-    static const char *group = "Text";
-
-    ADD_PROPERTY_TYPE(Font, (prefFontName().c_str()),group,App::Prop_None, "The name of the font to use");
-    ADD_PROPERTY_TYPE(FontSize, (prefFontSize()), group,
-                                (App::PropertyType)(App::Prop_None),"Tail text size");
-    ADD_PROPERTY_TYPE(TileFontSize, (prefFontSize() * prefTileTextAdjust()), group,
-                                (App::PropertyType)(App::Prop_None),"Text size on individual symbol tiles");
 }
 
 ViewProviderWeld::~ViewProviderWeld()
@@ -95,16 +85,6 @@ std::vector<std::string> ViewProviderWeld::getDisplayModes(void) const
 void ViewProviderWeld::updateData(const App::Property* prop)
 {
     ViewProviderDrawingView::updateData(prop);
-}
-
-void ViewProviderWeld::onChanged(const App::Property* p)
-{
-    QGIView* qgiv = getQView();
-    if (qgiv) {
-        qgiv->updateView(true);
-    }
-
-    ViewProviderDrawingView::onChanged(p);
 }
 
 std::vector<App::DocumentObject*> ViewProviderWeld::claimChildren(void) const
@@ -162,56 +142,6 @@ bool ViewProviderWeld::doubleClicked(void)
     return true;
 }
 
-std::string ViewProviderWeld::prefFontName(void)
-{
-    return Preferences::labelFont();
-}
-
-double ViewProviderWeld::prefFontSize(void)
-{
-    return Preferences::labelFontSizeMM();
-}
-
-double ViewProviderWeld::prefTileTextAdjust(void)
-{
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-                                         .GetGroup("BaseApp")->GetGroup("Preferences")->
-                                 GetGroup("Mod/TechDraw/Dimensions");
-    double adjust   = hGrp->GetFloat("TileTextAdjust", 0.75);
-    return adjust;
-}
-
-bool ViewProviderWeld::onDelete(const std::vector<std::string> &)
-{
-    // a weld cannot be deleted if it has a tile
-
-    // get childs
-    auto childs = claimChildren();
-
-    if (!childs.empty()) {
-        QString bodyMessage;
-        QTextStream bodyMessageStream(&bodyMessage);
-        bodyMessageStream << qApp->translate("Std_Delete",
-            "You cannot delete this weld symbol because\nit has a tile weld that would become broken.");
-        QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
-            QMessageBox::Ok);
-        return false;
-    }
-    else {
-        return true;
-    }
-}
-
-bool ViewProviderWeld::canDelete(App::DocumentObject *obj) const
-{
-    // deletions of Weld objects don't destroy anything
-    // thus we can pass this action
-    // that the parent LeaderLine cannot be deleted is handled
-    // in its onDelete() function
-    Q_UNUSED(obj)
-    return true;
-}
 
 TechDraw::DrawWeldSymbol* ViewProviderWeld::getViewObject() const
 {

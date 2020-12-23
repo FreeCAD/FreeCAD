@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Riegel         <juergen.riegel@web.de>                  *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -37,7 +37,7 @@ using namespace Base;
 using namespace std;
 
 
-struct Base::TypeData
+struct Base::TypeData 
 {
   TypeData(const char *theName,
            const Type type = Type::badType(),
@@ -91,12 +91,12 @@ void *Type::createInstance(void)
 void *Type::createInstanceByName(const char* TypeName, bool bLoadModule)
 {
   // if not already, load the module
-  if (bLoadModule)
+  if(bLoadModule)
     importModule(TypeName);
 
   // now the type should be in the type map
   Type t = fromName(TypeName);
-  if (t == badType())
+  if(t == badType())
     return 0;
 
   return t.createInstance();
@@ -125,7 +125,7 @@ string Type::getModuleName(const char* ClassName)
   string temp(ClassName);
   std::string::size_type pos = temp.find_first_of("::");
 
-  if (pos != std::string::npos)
+  if(pos != std::string::npos)
     return string(temp,0,pos);
   else
     return string();
@@ -176,9 +176,9 @@ void Type::destruct(void)
 Type Type::fromName(const char *name)
 {
   std::map<std::string,unsigned int>::const_iterator pos;
-
+  
   pos = typemap.find(name);
-  if (pos != typemap.end())
+  if(pos != typemap.end())
     return typedata[pos->second]->type;
   else
     return Type::badType();
@@ -186,7 +186,7 @@ Type Type::fromName(const char *name)
 
 Type Type::fromKey(unsigned int key)
 {
-  if (key < typedata.size())
+  if(key < typedata.size())
     return typedata[key]->type;
   else
     return Type::badType();
@@ -204,10 +204,10 @@ const Type Type::getParent(void) const
 
 bool Type::isDerivedFrom(const Type type) const
 {
-
+  
   Type temp(*this);
   do {
-    if (temp == type)
+    if(temp == type)
       return true;
     temp = temp.getParent();
   } while (temp != badType());
@@ -221,7 +221,7 @@ int Type::getAllDerivedFrom(const Type type, std::vector<Type> & List)
 
   for(std::vector<TypeData*>::const_iterator it = typedata.begin();it!= typedata.end();++it)
   {
-    if ((*it)->type.isDerivedFrom(type))
+    if((*it)->type.isDerivedFrom(type))
     {
       List.push_back((*it)->type);
       cnt++;

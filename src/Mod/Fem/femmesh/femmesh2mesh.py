@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2016 Frantisek Loeffelmann <LoffF@email.cz>             *
+# *   Copyright (c) 2016 - Frantisek Loeffelmann <LoffF@email.cz>           *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,9 +20,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__  = "FemMesh to Mesh converter"
+__title__ = "FemMesh to Mesh converter"
 __author__ = "Frantisek Loeffelmann, Ulrich Brammer, Bernd Hahnebach"
-__url__    = "https://www.freecadweb.org"
+__url__ = "http://www.freecadweb.org"
 
 ## @package FwmMesh2Mesh
 #  \ingroup FEM
@@ -34,12 +34,12 @@ import FreeCAD
 
 
 """
-from femexamples.manager import *
-doc = run_ccx_cantileverfaceload()
-fem_mesh = doc.getObject("Mesh").FemMesh  # do not remove the _
-result = doc.getObject("CCX_Results")
-from femmesh import femmesh2mesh
-out_mesh = femmesh2mesh.femmesh_2_mesh(fem_mesh, result)
+load FreeCADs 3D FEM example from Start Workbench
+
+femmesh = App.ActiveDocument.getObject("Box_Mesh").FemMesh
+result = App.ActiveDocument.getObject("CalculiX_static_results")
+import femmesh.femmesh2mesh
+out_mesh = femmesh.femmesh2mesh.femmesh_2_mesh(femmesh, result)
 import Mesh
 Mesh.show(Mesh.Mesh(out_mesh))
 
@@ -92,7 +92,7 @@ def femmesh_2_mesh(myFemMesh, myResults=None):
     # This code generates a dict and a faceCode for each face of all elements
     # All faceCodes are than sorted.
 
-    start_time = time.process_time()
+    start_time = time.clock()
     faceCodeList = []
     faceCodeDict = {}
 
@@ -196,7 +196,7 @@ def femmesh_2_mesh(myFemMesh, myResults=None):
                 output_mesh.extend(triangle)
                 # print("my 2. triangle: ", triangle)
 
-    end_time = time.process_time()
+    end_time = time.clock()
     FreeCAD.Console.PrintMessage(
         "Mesh by surface search method: {}\n".format(end_time - start_time)
     )

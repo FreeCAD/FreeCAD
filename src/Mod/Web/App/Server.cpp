@@ -21,7 +21,7 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+#include "PreCompiled.h" 
 
 #include <QCoreApplication>
 #include <QTcpSocket>
@@ -151,14 +151,6 @@ void AppServer::customEvent(QEvent* e)
     QByteArray msg = ev->request();
     QTcpSocket* socket = ev->socket();
 
-    std::string str = runPython(msg);
-
-    socket->write(str.c_str());
-    socket->close();
-}
-
-std::string AppServer::runPython(const QByteArray& msg)
-{
     std::string str;
 
     try {
@@ -183,7 +175,8 @@ std::string AppServer::runPython(const QByteArray& msg)
         str = "Unknown exception thrown";
     }
 
-    return str;
+    socket->write(str.c_str());
+    socket->close();
 }
 
 #include "moc_Server.cpp"

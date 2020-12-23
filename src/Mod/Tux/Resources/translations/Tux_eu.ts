@@ -26,7 +26,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="66"/>
       <source>Tilt</source>
-      <translation>Inklinatu</translation>
+      <translation>Mugitu gora-behera</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="67"/>

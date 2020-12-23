@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (c) 2017 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
+ *   Copyright (c) 2017 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -35,7 +35,7 @@ PROPERTY_SOURCE(PathGui::ViewProviderArea, PartGui::ViewProviderPlaneParametric)
 
 ViewProviderArea::ViewProviderArea()
 {
-    sPixmap = "Path_Area.svg";
+    sPixmap = "Path-Area.svg";
 }
 
 ViewProviderArea::~ViewProviderArea()
@@ -119,7 +119,7 @@ PROPERTY_SOURCE(PathGui::ViewProviderAreaView, PartGui::ViewProviderPlaneParamet
 
 ViewProviderAreaView::ViewProviderAreaView()
 {
-    sPixmap = "Path_Area_View.svg";
+    sPixmap = "Path-Area-View.svg";
 }
 
 ViewProviderAreaView::~ViewProviderAreaView()

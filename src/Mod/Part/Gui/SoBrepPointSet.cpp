@@ -72,9 +72,8 @@ void SoBrepPointSet::initClass()
 }
 
 SoBrepPointSet::SoBrepPointSet()
-    : selContext(std::make_shared<SelContext>())
-    , selContext2(std::make_shared<SelContext>())
-    , packedColor(0)
+    :selContext(std::make_shared<SelContext>())
+    ,selContext2(std::make_shared<SelContext>())
 {
     SO_NODE_CONSTRUCTOR(SoBrepPointSet);
 }

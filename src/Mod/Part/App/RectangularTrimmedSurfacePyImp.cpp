@@ -86,39 +86,56 @@ int RectangularTrimmedSurfacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
     return -1;
 }
 
-PyObject* RectangularTrimmedSurfacePy::setTrim(PyObject *args)
+PyObject* RectangularTrimmedSurfacePy::uIso(PyObject * args)
 {
-    double u1, u2, v1, v2;
-    if (!PyArg_ParseTuple(args, "dddd", &u1, &u2, &v1, &v2))
-        return nullptr;
+    double v;
+    if (!PyArg_ParseTuple(args, "d", &v))
+        return 0;
 
     try {
-        Handle(Geom_RectangularTrimmedSurface) surf = Handle(Geom_RectangularTrimmedSurface)::DownCast
+        Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast
             (getGeometryPtr()->handle());
-        if (surf.IsNull()) {
-            PyErr_SetString(PyExc_TypeError, "geometry is not a surface");
-            return nullptr;
+        Handle(Geom_Curve) c = surf->UIso(v);
+        if (c->IsKind(STANDARD_TYPE(Geom_TrimmedCurve))) {
+            Handle(Geom_TrimmedCurve) aCurve = Handle(Geom_TrimmedCurve)::DownCast(c);
+            return new GeometryCurvePy(new GeomTrimmedCurve(aCurve));
         }
 
-        surf->SetTrim(u1, u2, v1, v2);
-        Py_Return;
+        PyErr_Format(PyExc_NotImplementedError, "Iso curve is of type '%s'",
+            c->DynamicType()->Name());
+        return 0;
     }
-    catch (const Standard_Failure& e) {
-        PyErr_SetString(PyExc_RuntimeError, e.GetMessageString());
-        return nullptr;
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
+        return 0;
     }
 }
 
-Py::Object RectangularTrimmedSurfacePy::getBasisSurface() const
+PyObject* RectangularTrimmedSurfacePy::vIso(PyObject * args)
 {
-    Handle(Geom_RectangularTrimmedSurface) surf = Handle(Geom_RectangularTrimmedSurface)::DownCast
-        (getGeometryPtr()->handle());
-    if (surf.IsNull()) {
-        throw Py::TypeError("geometry is not a surface");
-    }
+    double v;
+    if (!PyArg_ParseTuple(args, "d", &v))
+        return 0;
 
-    std::unique_ptr<GeomSurface> geo(makeFromSurface(surf->BasisSurface()));
-    return Py::asObject(geo->getPyObject());
+    try {
+        Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast
+            (getGeometryPtr()->handle());
+        Handle(Geom_Curve) c = surf->VIso(v);
+        if (c->IsKind(STANDARD_TYPE(Geom_TrimmedCurve))) {
+            Handle(Geom_TrimmedCurve) aCurve = Handle(Geom_TrimmedCurve)::DownCast(c);
+            return new GeometryCurvePy(new GeomTrimmedCurve(aCurve));
+        }
+
+        PyErr_Format(PyExc_NotImplementedError, "Iso curve is of type '%s'",
+            c->DynamicType()->Name());
+        return 0;
+    }
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
+        return 0;
+    }
 }
 
 PyObject *RectangularTrimmedSurfacePy::getCustomAttributes(const char* /*attr*/) const

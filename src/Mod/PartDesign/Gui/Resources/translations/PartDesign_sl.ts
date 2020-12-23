@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="1403"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Oblikovanje delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1404"/>
@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="1405"/>
       <source>Loft a selected profile through other profile sections</source>
-      <translation>Ostreši izbran prerez preko ostalih prerezov</translation>
+      <translation>Navleci izbrani prerez skozi preko ostalih prerezov</translation>
     </message>
   </context>
   <context>
@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="1303"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Oblikovanje delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1304"/>
@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="1305"/>
       <source>Sweep a selected sketch along a path or to other profiles</source>
-      <translation>Povleči izbrano skico vzdolž poti ali do drugih prerezov</translation>
+      <translation>Vzdolži izbrani očrt vzdolž poti ali do drugih prerezov</translation>
     </message>
   </context>
   <context>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="91"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Oblikovanje delov</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="92"/>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../Command.cpp" line="2235"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Oblikovanje delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2236"/>
@@ -78,7 +78,7 @@
     <message>
       <location filename="../../Command.cpp" line="242"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Oblikovanje delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="243"/>
@@ -88,7 +88,7 @@
     <message>
       <location filename="../../Command.cpp" line="244"/>
       <source>Create a new local coordinate system</source>
-      <translation>Ustvari nov krajevni koordinatni sistem</translation>
+      <translation>Ustvari nov krajeven koordinatni sistem</translation>
     </message>
   </context>
   <context>
@@ -96,7 +96,7 @@
     <message>
       <location filename="../../Command.cpp" line="1635"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Oblikovanje delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1636"/>
@@ -114,7 +114,7 @@
     <message>
       <location filename="../../Command.cpp" line="339"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Oblikovanje delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="340"/>
@@ -132,7 +132,7 @@
     <message>
       <location filename="../../Command.cpp" line="1664"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Oblikovanje delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1665"/>
@@ -150,7 +150,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="632"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Oblikovanje delov</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="633"/>
@@ -168,7 +168,7 @@
     <message>
       <location filename="../../Command.cpp" line="1607"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Oblikovanje delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1608"/>
@@ -186,7 +186,7 @@
     <message>
       <location filename="../../Command.cpp" line="1235"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Oblikovanje delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1236"/>
@@ -204,7 +204,7 @@
     <message>
       <location filename="../../Command.cpp" line="1129"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Oblikovanje delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1130"/>
@@ -222,7 +222,7 @@
     <message>
       <location filename="../../Command.cpp" line="186"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Oblikovanje delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="187"/>
@@ -232,7 +232,7 @@
     <message>
       <location filename="../../Command.cpp" line="188"/>
       <source>Create a new datum line</source>
-      <translation>Ustvari novo sklicno črto</translation>
+      <translation>Ustvari novo referenčno črto</translation>
     </message>
   </context>
   <context>
@@ -240,7 +240,7 @@
     <message>
       <location filename="../../Command.cpp" line="1941"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Oblikovanje delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1942"/>
@@ -258,7 +258,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="338"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Oblikovanje delov</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="339"/>
@@ -268,7 +268,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="340"/>
       <source>Migrate document to the modern PartDesign workflow</source>
-      <translation>Preseli dokument v sodobni PartDesignov delotok</translation>
+      <translation>Preseli dokument v sodobni PartDesign poteka dela</translation>
     </message>
   </context>
   <context>
@@ -276,7 +276,7 @@
     <message>
       <location filename="../../Command.cpp" line="1877"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Oblikovanje delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1878"/>
@@ -294,7 +294,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="688"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Oblikovanje delov</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="689"/>
@@ -312,7 +312,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="851"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Oblikovanje delov</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="852"/>
@@ -330,7 +330,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="552"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Oblikovanje delov</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="553"/>
@@ -348,7 +348,7 @@
     <message>
       <location filename="../../Command.cpp" line="2114"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Oblikovanje delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2115"/>
@@ -366,17 +366,17 @@
     <message>
       <location filename="../../Command.cpp" line="400"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Oblikovanje delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="401"/>
       <source>Create sketch</source>
-      <translation>Ustvari očrt</translation>
+      <translation>Ustvari skico</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="402"/>
       <source>Create a new sketch</source>
-      <translation>Ustvari nov očrt</translation>
+      <translation type="unfinished">Create a new sketch</translation>
     </message>
   </context>
   <context>
@@ -384,7 +384,7 @@
     <message>
       <location filename="../../Command.cpp" line="1031"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Oblikovanje delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1032"/>
@@ -394,7 +394,7 @@
     <message>
       <location filename="../../Command.cpp" line="1033"/>
       <source>Pad a selected sketch</source>
-      <translation>Izboči izbrano skico</translation>
+      <translation>Ustvari izboklino iz skice</translation>
     </message>
   </context>
   <context>
@@ -402,7 +402,7 @@
     <message>
       <location filename="../../Command.cpp" line="158"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Oblikovanje delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="159"/>
@@ -420,7 +420,7 @@
     <message>
       <location filename="../../Command.cpp" line="1082"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Oblikovanje delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1083"/>
@@ -438,7 +438,7 @@
     <message>
       <location filename="../../Command.cpp" line="214"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Oblikovanje delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="215"/>
@@ -456,7 +456,7 @@
     <message>
       <location filename="../../Command.cpp" line="2007"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Oblikovanje delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2008"/>
@@ -474,7 +474,7 @@
     <message>
       <location filename="../../Command.cpp" line="1175"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Oblikovanje delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1176"/>
@@ -492,7 +492,7 @@
     <message>
       <location filename="../../Command.cpp" line="2074"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Oblikovanje delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2075"/>
@@ -510,7 +510,7 @@
     <message>
       <location filename="../../Command.cpp" line="274"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Oblikovanje delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="275"/>
@@ -528,7 +528,7 @@
     <message>
       <location filename="../../Command.cpp" line="1453"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Oblikovanje delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1454"/>
@@ -538,7 +538,7 @@
     <message>
       <location filename="../../Command.cpp" line="1455"/>
       <source>Loft a selected profile through other profile sections and remove it from the body</source>
-      <translation>Ostreši izbran prerez preko drugih prerezov in ga odstrani iz telesa</translation>
+      <translation>Navleci izbrani prerez preko drugih izbranih prerezov in ga odstrani iz telesa</translation>
     </message>
   </context>
   <context>
@@ -546,7 +546,7 @@
     <message>
       <location filename="../../Command.cpp" line="1353"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Oblikovanje delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1354"/>
@@ -556,7 +556,7 @@
     <message>
       <location filename="../../Command.cpp" line="1355"/>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
-      <translation>Povleči izbrano skico vzdolž poti ali do drugih prerezov in odstrani obliko iz telesa</translation>
+      <translation>Vzdolži izbrani očrt vzdolž poti ali do drugih prerezov in ga odstrani iz telesa</translation>
     </message>
   </context>
   <context>
@@ -564,7 +564,7 @@
     <message>
       <location filename="../../Command.cpp" line="1721"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Oblikovanje delov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1722"/>
@@ -582,13 +582,13 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="68"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Oblikovanje delov</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="69"/>
       <location filename="../../CommandPrimitive.cpp" line="70"/>
       <source>Create an additive primitive</source>
-      <translation>Dodaj osnovnik</translation>
+      <translation>Ustvari dodajni osnovnik</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="191"/>
@@ -636,13 +636,13 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="235"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Oblikovanje delov</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="236"/>
       <location filename="../../CommandPrimitive.cpp" line="237"/>
       <source>Create a subtractive primitive</source>
-      <translation>Odvzemi osnovnik</translation>
+      <translation>Ustvari odjemni osnovnik</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="356"/>
@@ -715,7 +715,7 @@
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="50"/>
       <source>Base plane</source>
-      <translation>Osnovna ravnina</translation>
+      <translation>Osnovna ravniva</translation>
     </message>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="51"/>
@@ -746,7 +746,7 @@
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="14"/>
       <source>Involute parameter</source>
-      <translation>Določilka evolvente</translation>
+      <translation>Parameter evolvente</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="20"/>
@@ -864,7 +864,7 @@
       <location filename="../../TaskPrimitiveParameters.ui" line="305"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1159"/>
       <source>Angle:</source>
-      <translation>Kót:</translation>
+      <translation>Kot:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="251"/>
@@ -893,12 +893,12 @@
       <location filename="../../TaskPrimitiveParameters.ui" line="455"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="646"/>
       <source>U parameter:</source>
-      <translation>Določilka U:</translation>
+      <translation>Spremenljivka U:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="462"/>
       <source>V parameters:</source>
-      <translation>Določilke V:</translation>
+      <translation>Spremenljivke V:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="599"/>
@@ -909,12 +909,12 @@
       <location filename="../../TaskPrimitiveParameters.ui" line="669"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="759"/>
       <source>V parameter:</source>
-      <translation>Določilka V:</translation>
+      <translation>Spremenljivka V:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="736"/>
       <source>U Parameter:</source>
-      <translation>Določilka U:</translation>
+      <translation>Spremenljivka U:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="886"/>
@@ -1113,7 +1113,7 @@
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="55"/>
       <source>Boolean parameters</source>
-      <translation>Določilke logičnih vrednosti</translation>
+      <translation>Spremenljivke logičnih vrednosti</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="81"/>
@@ -1126,7 +1126,7 @@
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="54"/>
       <source>Primitive parameters</source>
-      <translation>Določilke osnovnika</translation>
+      <translation>Parametri osnovnika</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="646"/>
@@ -1167,7 +1167,7 @@
     <message>
       <location filename="../../TaskDatumParameters.cpp" line="73"/>
       <source> parameters</source>
-      <translation> določilke</translation>
+      <translation> parametri</translation>
     </message>
   </context>
   <context>
@@ -1348,7 +1348,7 @@
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="72"/>
       <source>Base plane</source>
-      <translation>Osnovna ravnina</translation>
+      <translation>Osnovna ravniva</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="73"/>
@@ -1394,7 +1394,7 @@
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="48"/>
       <source>Hole parameters</source>
-      <translation>Določilke luknje</translation>
+      <translation>Parametri luknje</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="69"/>
@@ -1530,7 +1530,7 @@
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="59"/>
       <source>Loft parameters</source>
-      <translation>Določilke navlečka</translation>
+      <translation>Parametri navlečka</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="80"/>
@@ -1676,7 +1676,7 @@
       <location filename="../../TaskPadParameters.cpp" line="124"/>
       <location filename="../../TaskPadParameters.cpp" line="412"/>
       <source>Dimension</source>
-      <translation>Mera</translation>
+      <translation>Kota</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="42"/>
@@ -1718,7 +1718,7 @@
     <message>
       <location filename="../../TaskPadParameters.cpp" line="56"/>
       <source>Pad parameters</source>
-      <translation>Določilke izbokline</translation>
+      <translation>Parametri izbokline</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="63"/>
@@ -1766,12 +1766,12 @@
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="36"/>
       <source>Standard</source>
-      <translation>Običajno</translation>
+      <translation>Standard</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="41"/>
       <source>Fixed</source>
-      <translation>Nepremičen</translation>
+      <translation>Pritrjen</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="46"/>
@@ -1880,7 +1880,7 @@
     <message>
       <location filename="../../TaskPipeParameters.ui" line="85"/>
       <source>Path to sweep along</source>
-      <translation>Pot vzdolž katere povleči</translation>
+      <translation>Pot ob kateri se vzdolži</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="119"/>
@@ -1895,7 +1895,7 @@
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="74"/>
       <source>Pipe parameters</source>
-      <translation>Določilke cevi</translation>
+      <translation>Spremenljivke cevi</translation>
     </message>
   </context>
   <context>
@@ -1953,7 +1953,7 @@
       <location filename="../../TaskPocketParameters.cpp" line="119"/>
       <location filename="../../TaskPocketParameters.cpp" line="439"/>
       <source>Dimension</source>
-      <translation>Mera</translation>
+      <translation>Kota</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.ui" line="42"/>
@@ -1995,7 +1995,7 @@
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="56"/>
       <source>Pocket parameters</source>
-      <translation>Določilke ugreza</translation>
+      <translation>Parametri ugreza</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="64"/>
@@ -2135,7 +2135,7 @@
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="67"/>
       <source>Angle:</source>
-      <translation>Kót:</translation>
+      <translation>Kot:</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="98"/>
@@ -2155,7 +2155,7 @@
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="61"/>
       <source>Revolution parameters</source>
-      <translation>Določilke zvrtenja</translation>
+      <translation>Parametri zvrtenja</translation>
     </message>
   </context>
   <context>
@@ -2226,7 +2226,7 @@
     <message>
       <location filename="../../TaskShapeBinder.cpp" line="61"/>
       <source>Datum shape parameters</source>
-      <translation>Določilke sklicne oblike</translation>
+      <translation>Parametri sklicne oblike</translation>
     </message>
   </context>
   <context>
@@ -2386,42 +2386,42 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="192"/>
       <source>Create an additive box by its width, height and length</source>
-      <translation>Dodaj kvader z njegovo širino, višino in dolžino</translation>
+      <translation>Ustvari dodajni kvader z njegovo širino, višino in dolžino</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="196"/>
       <source>Create an additive cylinder by its radius, height and angle</source>
-      <translation>Dodaj valj z njegovim polmerom, višino in kotom</translation>
+      <translation>Ustvari dodajni valj z njegovim polmerom, višino in kotom</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="200"/>
       <source>Create an additive sphere by its radius and various angles</source>
-      <translation>Dodaj kroglo z njenim polmerom in kotoma</translation>
+      <translation>Ustvari dodajno kroglo z njenim polmerom in kotoma</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="204"/>
       <source>Create an additive cone</source>
-      <translation>Dodaj stožec</translation>
+      <translation>Ustvari dodajni stožec</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="208"/>
       <source>Create an additive ellipsoid</source>
-      <translation>Dodaj elipsoid</translation>
+      <translation>Ustvari dodajni elipsoid</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="212"/>
       <source>Create an additive torus</source>
-      <translation>Dodaj svitek</translation>
+      <translation>Ustvari dodajni svitek</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="216"/>
       <source>Create an additive prism</source>
-      <translation>Dodaj prizmo</translation>
+      <translation>Ustvari dodajno prizmo</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="220"/>
       <source>Create an additive wedge</source>
-      <translation>Dodaj klin</translation>
+      <translation>Ustvari dodajni klin</translation>
     </message>
   </context>
   <context>
@@ -2429,42 +2429,42 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="357"/>
       <source>Create a subtractive box by its width, height and length</source>
-      <translation>Odvzemi kvader z njegovo širino, višino in dolžino</translation>
+      <translation>Ustvari odvzemni kvader z njegovo širino, višino in dolžino</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="361"/>
       <source>Create a subtractive cylinder by its radius, height and angle</source>
-      <translation>Odvzemi valj z njegovim polmerom, višino in kotom</translation>
+      <translation>Ustvari odvzemni valj z njegovim polmerom, višino in kotom</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="365"/>
       <source>Create a subtractive sphere by its radius and various angles</source>
-      <translation>Odvzemi kroglo z njenim polmerom in kotoma</translation>
+      <translation>Ustvari odvzemno kroglo z njenim polmerom in kotoma</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="369"/>
       <source>Create a subtractive cone</source>
-      <translation>Odvzemi stožec</translation>
+      <translation>Ustvari odjemni stožec</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="373"/>
       <source>Create a subtractive ellipsoid</source>
-      <translation>Odvzemi elipsoid</translation>
+      <translation>Ustvari odjemni elipsoid</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="377"/>
       <source>Create a subtractive torus</source>
-      <translation>Odvzemi svitek</translation>
+      <translation>Ustvari odjemni svitek</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="381"/>
       <source>Create a subtractive prism</source>
-      <translation>Odvzemi prizmo</translation>
+      <translation>Ustvari odjemno prizmo</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="385"/>
       <source>Create a subtractive wedge</source>
-      <translation>Odvzemi klin</translation>
+      <translation>Ustvari odjemni klin</translation>
     </message>
   </context>
   <context>
@@ -2650,7 +2650,7 @@
     <message>
       <location filename="../../Command.cpp" line="1843"/>
       <source>Please create a subtractive or additive feature first.</source>
-      <translation>Najprej ustvari značilko dodajanja ali odvzemanja.</translation>
+      <translation>Najprej ustvarite značilnost dodajanja ali odvzemanja.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1848"/>
@@ -2833,7 +2833,7 @@ To lahko pripelje do nepričakovanih rezultatov.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="262"/>
       <source>It is not possible to create a subtractive feature without a base feature available</source>
-      <translation>Značilke odvzemanja ni mogoče ustvariti, če osnovna značilnost ni na voljo</translation>
+      <translation>Odjemne značilnosti ni mogoče ustvariti, če osnovna značilnost ni na voljo</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.cpp" line="303"/>
@@ -2980,7 +2980,7 @@ Ta značilnost je pokvarjena in je ni mogoče urejati.</translation>
     <message>
       <location filename="../../ViewProviderLoft.cpp" line="77"/>
       <source>Edit loft</source>
-      <translation>Uredi ostrešje</translation>
+      <translation>Uredi navleček</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPad.cpp" line="54"/>
@@ -3135,7 +3135,7 @@ Neglede na to je selitev v bodoče z "Oblikovanje delov -&gt; Preseli" mogoča k
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="218"/>
       <source>Tolerance</source>
-      <translation>Dopustno odstopanje</translation>
+      <translation>Toleranca</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="249"/>
@@ -3196,7 +3196,7 @@ Neglede na to je selitev v bodoče z "Oblikovanje delov -&gt; Preseli" mogoča k
     <message>
       <location filename="../../TaskHoleParameters.ui" line="14"/>
       <source>Task Hole Parameters</source>
-      <translation>Določilke luknje</translation>
+      <translation>Parametri luknje</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="33"/>
@@ -3294,7 +3294,7 @@ Neglede na to je selitev v bodoče z "Oblikovanje delov -&gt; Preseli" mogoča k
     <message>
       <location filename="../../TaskHoleParameters.ui" line="353"/>
       <source>Dimension</source>
-      <translation>Mera</translation>
+      <translation>Kota</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="358"/>

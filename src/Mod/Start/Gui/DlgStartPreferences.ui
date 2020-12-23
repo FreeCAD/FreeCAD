@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>482</width>
-    <height>795</height>
+    <height>769</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -107,7 +107,7 @@
       <item row="2" column="1">
        <widget class="Gui::PrefFileChooser" name="fileChooser_3">
         <property name="toolTip">
-         <string>An optional custom folder to be displayed at the bottom of the first page. By using ";;" to separate paths, you can add several folders here</string>
+         <string>An optional custom folder to be displayed at the bottom of the first page</string>
         </property>
         <property name="mode">
          <enum>Gui::FileChooser::Directory</enum>
@@ -140,32 +140,6 @@
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>ShowNotes</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Start</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="label_19">
-        <property name="text">
-         <string>Show tips</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1">
-       <widget class="Gui::PrefCheckBox" name="checkBox_7">
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>ShowTips</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Start</cstring>
@@ -571,9 +545,6 @@
       </item>
       <item row="12" column="1">
        <widget class="Gui::PrefCheckBox" name="checkBox_6">
-        <property name="toolTip">
-         <string>If this is selected, the 'New File' icon shows a gradient icon instead of the normal icon</string>
-        </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
         </property>
@@ -598,16 +569,12 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="1">
-       <widget class="QComboBox" name="AutoloadModuleCombo">
-        <property name="toolTip">
-         <string>Choose which workbench to switch to after the program launches</string>
-        </property>
-       </widget>
+       <widget class="QComboBox" name="AutoloadModuleCombo"/>
       </item>
       <item row="1" column="1">
        <widget class="Gui::PrefCheckBox" name="checkBox_2">
         <property name="toolTip">
-         <string>If checked, will automatically close the Start page when FreeCAD launches</string>
+         <string>Should the start page be closed after loading?</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>

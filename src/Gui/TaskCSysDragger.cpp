@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2015 Thomas Anderson <blobfish[at]gmx.com>              *
+ *   Copyright (c) 2015 Thomas Anderson         <blobfish[at]gmx.com>      *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *

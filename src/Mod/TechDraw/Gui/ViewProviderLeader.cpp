@@ -25,11 +25,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QMessageBox>
-# include <QTextStream>
 #endif
-
-#include <QMessageBox>
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Console.h>
@@ -55,7 +51,6 @@
 #include <Mod/TechDraw/App/DrawRichAnno.h>
 #include <Mod/TechDraw/App/DrawWeldSymbol.h>
 
-#include "PreferencesGui.h"
 #include "MDIViewPage.h"
 #include "QGVPage.h"
 #include "QGIView.h"
@@ -63,31 +58,21 @@
 #include "ViewProviderLeader.h"
 
 using namespace TechDrawGui;
-using namespace TechDraw;
 
 PROPERTY_SOURCE(TechDrawGui::ViewProviderLeader, TechDrawGui::ViewProviderDrawingView)
-
-const char* ViewProviderLeader::LineStyleEnums[] = { "NoLine",
-                                                  "Continuous",
-                                                  "Dash",
-                                                  "Dot",
-                                                  "DashDot",
-                                                  "DashDotDot",
-                                                  NULL };
 
 //**************************************************************************
 // Construction/Destruction
 
 ViewProviderLeader::ViewProviderLeader()
 {
-    sPixmap = "actions/techdraw-LeaderLine";
+    sPixmap = "actions/techdraw-mline";
 
     static const char *group = "Line Format";
 
-    ADD_PROPERTY_TYPE(LineWidth,(getDefLineWeight()),group,(App::PropertyType)(App::Prop_None),"Line width");
-    LineStyle.setEnums(LineStyleEnums);
-    ADD_PROPERTY_TYPE(LineStyle,(1),group,(App::PropertyType)(App::Prop_None),"Line style");
-    ADD_PROPERTY_TYPE(Color,(getDefLineColor()),group,App::Prop_None,"Color of the Markup");
+    ADD_PROPERTY_TYPE(LineWidth,(getDefLineWeight())    ,group,(App::PropertyType)(App::Prop_None),"Line weight");
+    ADD_PROPERTY_TYPE(LineStyle,(1)    ,group,(App::PropertyType)(App::Prop_None),"Line style");
+    ADD_PROPERTY_TYPE(Color,(getDefLineColor()),group,App::Prop_None,"The color of the Markup");
 }
 
 ViewProviderLeader::~ViewProviderLeader()
@@ -106,6 +91,7 @@ bool ViewProviderLeader::setEdit(int ModNum)
         if (Gui::Control().activeDialog())  {         //TaskPanel already open!
             return false;
         }
+        // clear the selection (convenience)
         Gui::Selection().clearSelection();
         Gui::Control().showDialog(new TaskDlgLeaderLine(this));
         return true;
@@ -197,11 +183,13 @@ TechDraw::DrawLeaderLine* ViewProviderLeader::getFeature() const
     return dynamic_cast<TechDraw::DrawLeaderLine*>(pcObject);
 }
 
+
 double ViewProviderLeader::getDefLineWeight(void)
 {
     double result = 0.0;
-    int lgNumber = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
+    std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
+    auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
     result = lg->getWeight("Thin");
     delete lg;                                   //Coverity CID 174670
     return result;
@@ -209,65 +197,11 @@ double ViewProviderLeader::getDefLineWeight(void)
 
 App::Color ViewProviderLeader::getDefLineColor(void)
 {
-    return PreferencesGui::leaderColor();
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
+                                 GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Markups");
+    App::Color result;
+    result.setPackedValue(hGrp->GetUnsigned("Color", 0x00000000));
+    return result;
 }
 
-void ViewProviderLeader::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
-// transforms properties that had been changed
-{
-    // property LineWidth had the App::PropertyFloat and was changed to App::PropertyLength
-    if (prop == &LineWidth && strcmp(TypeName, "App::PropertyFloat") == 0) {
-        App::PropertyFloat LineWidthProperty;
-        // restore the PropertyFloat to be able to set its value
-        LineWidthProperty.Restore(reader);
-        LineWidth.setValue(LineWidthProperty.getValue());
-    }
 
-    // property LineStyle had the App::PropertyInteger and was changed to App::PropertyIntegerConstraint
-    if (prop == &LineStyle && strcmp(TypeName, "App::PropertyInteger") == 0) {
-        App::PropertyInteger LineStyleProperty;
-        // restore the PropertyInteger to be able to set its value
-        LineStyleProperty.Restore(reader);
-        LineStyle.setValue(LineStyleProperty.getValue());
-    }
-
-    // property LineStyle had the App::PropertyIntegerConstraint and was changed to App::PropertyEnumeration
-    if (prop == &LineStyle && strcmp(TypeName, "App::PropertyIntegerConstraint") == 0) {
-        App::PropertyIntegerConstraint LineStyleProperty;
-        // restore the PropertyIntegerConstraint to be able to set its value
-        LineStyleProperty.Restore(reader);
-        LineStyle.setValue(LineStyleProperty.getValue());
-    }
-}
-
-bool ViewProviderLeader::onDelete(const std::vector<std::string> &)
-{
-    // a leader line cannot be deleted if it has a child weld symbol
-
-    // get childs
-    auto childs = claimChildren();
-
-    if (!childs.empty()) {
-        QString bodyMessage;
-        QTextStream bodyMessageStream(&bodyMessage); 
-        bodyMessageStream << qApp->translate("Std_Delete",
-            "You cannot delete this leader line because\nit has a weld symbol that would become broken.");
-        QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
-            QMessageBox::Ok);
-        return false;
-    }
-    else {
-        return true;
-    }
-}
-
-bool ViewProviderLeader::canDelete(App::DocumentObject *obj) const
-{
-    // deletions of Leader line objects don't destroy anything
-    // thus we can pass this action
-    // that the parent view cannot be deleted is handled
-    // in its onDelete() function
-    Q_UNUSED(obj)
-    return true;
-}

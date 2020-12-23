@@ -1,23 +1,6 @@
-#***************************************************************************
-#*   Copyright (c) 2016 Werner Mayer <wmayer[at]users.sourceforge.net>     *
-#*   Copyright (c) 2016 Eivind Kvedalen <eivind@kvedalen.name>             *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU General Public License (GPL)            *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   FreeCAD is distributed in the hope that it will be useful,            *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with FreeCAD; if not, write to the Free Software        *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#***************************************************************************/
+# (c) 2016 Werner Mayer
+# (c) 2016 Eivind Kvedalen
+# LGPL
 
 import os
 import sys
@@ -367,7 +350,7 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertTrue(sheet.C27.startswith(u'ERR: Units must be equal'))
         self.assertMostlyEqual(sheet.D27, Units.Quantity("3 mm"))
         FreeCAD.closeDocument(doc.Name)
-
+        
     def testRelationalOperators(self):
         """ Test relational operators """
         sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
@@ -667,7 +650,7 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertEqual(sheet.A16, 1)
         self.assertEqual(sheet.A17, 0.5)
         self.assertEqual(sheet.A18, 0.5)
-
+        
     def testRemoveRows(self):
         """ Removing rows -- check renaming of internal cells """
         sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
@@ -681,9 +664,6 @@ class SpreadsheetCases(unittest.TestCase):
         sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
         sheet.set('B1', '=B2')
         sheet.set('B2', '124')
-        # Calling getContents() here activates ObjectIdentifier internal cache,
-        # which needs to be tested as well.
-        self.assertEqual(sheet.getContents("B1"),"=B2")
         sheet.insertRows('2', 1)
         self.assertEqual(sheet.getContents("B1"),"=B3")
 
@@ -785,7 +765,7 @@ class SpreadsheetCases(unittest.TestCase):
         """ Object name is equal to property name (bug #2389) """
         if not FreeCAD.GuiUp:
             return
-
+        
         import FreeCADGui
         o = self.doc.addObject("Part::FeaturePython","Placement")
         FreeCADGui.Selection.addSelection(o)
@@ -800,7 +780,7 @@ class SpreadsheetCases(unittest.TestCase):
         self.doc.recompute()
         sketch=self.doc.addObject('Sketcher::SketchObject','Sketch')
         sketch.addGeometry(Part.LineSegment(v(0,0,0),v(10,10,0)),False)
-        sketch.addConstraint(Sketcher.Constraint('Distance',0,65.285388))
+        sketch.addConstraint(Sketcher.Constraint('Distance',0,65.285388)) 
         sketch.setExpression('Constraints[0]', 'InvoluteGear.NumberOfTeeth')
         self.doc.recompute()
         self.assertIn('Up-to-date',sketch.State)
@@ -815,7 +795,7 @@ class SpreadsheetCases(unittest.TestCase):
         self.doc.recompute()
 
         index=sketch.addGeometry(Part.LineSegment(v(0,0,0),v(10,10,0)),False)
-        sketch.addConstraint(Sketcher.Constraint('Distance',index,14.0))
+        sketch.addConstraint(Sketcher.Constraint('Distance',index,14.0)) 
         self.doc.recompute()
         sketch.setExpression('Constraints[0]', u'<<Spreadsheet>>.Length')
         self.doc.recompute()
@@ -855,7 +835,7 @@ class SpreadsheetCases(unittest.TestCase):
 
     def testMatrix(self):
         ''' Test Matrix/Vector/Placement/Rotation operations'''
-
+        
         def plm_equal(plm1, plm2):
             from math import sqrt
             qpair = zip(plm1.Rotation.Q, plm2.Rotation.Q)
@@ -1034,57 +1014,6 @@ class SpreadsheetCases(unittest.TestCase):
         self.doc.recompute()
         self.assertEqual(sheet.get('C1'), Units.Quantity('3 mm'))
 
-    def testInsertRowsAlias(self):
-        """ Regression test for issue 4429; insert rows to sheet with aliases"""
-        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
-        sheet.set('A3', '1')
-        sheet.setAlias('A3', 'alias1')
-        sheet.set('A4', '=alias1 + 1')
-        sheet.setAlias('A4', 'alias2')
-        sheet.set('A5', '=alias2 + 1')
-        self.doc.recompute()
-        sheet.insertRows('1', 1)
-        self.doc.recompute()
-        self.assertEqual(sheet.A6, 3)
-
-    def testInsertColumnsAlias(self):
-        """ Regression test for issue 4429; insert columns to sheet with aliases"""
-        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
-        sheet.set('C1', '1')
-        sheet.setAlias('C1', 'alias1')
-        sheet.set('D1', '=alias1 + 1')
-        sheet.setAlias('D1', 'alias2')
-        sheet.set('E1', '=alias2 + 1')
-        self.doc.recompute()
-        sheet.insertColumns('A', 1)
-        self.doc.recompute()
-        self.assertEqual(sheet.F1, 3)
-
-    def testRemoveRowsAlias(self):
-        """ Regression test for issue 4429; remove rows from sheet with aliases"""
-        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
-        sheet.set('A3', '1')
-        sheet.setAlias('A3', 'alias1')
-        sheet.set('A5', '=alias1 + 1')
-        sheet.setAlias('A5', 'alias2')
-        sheet.set('A4', '=alias2 + 1')
-        self.doc.recompute()
-        sheet.removeRows('1', 1)
-        self.doc.recompute()
-        self.assertEqual(sheet.A3, 3)
-
-    def testRemoveColumnsAlias(self):
-        """ Regression test for issue 4429; remove columns from sheet with aliases"""
-        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
-        sheet.set('C1', '1')
-        sheet.setAlias('C1', 'alias1')
-        sheet.set('E1', '=alias1 + 1')
-        sheet.setAlias('E1', 'alias2')
-        sheet.set('D1', '=alias2 + 1')
-        self.doc.recompute()
-        sheet.removeColumns('A', 1)
-        self.doc.recompute()
-        self.assertEqual(sheet.C1, 3)
 
     def tearDown(self):
         #closing doc

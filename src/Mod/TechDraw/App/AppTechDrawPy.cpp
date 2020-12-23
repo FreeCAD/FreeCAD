@@ -1,7 +1,7 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
- *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
- *                                                                         *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) WandererFan            (wandererfan@gmail.com) 2016     *
+*                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
  *   This library is free software; you can redistribute it and/or         *
@@ -197,8 +197,7 @@ private:
         } else {
             biggie = false;
         }
-
-        Py::List result;
+        PyObject* result = PyList_New(0);
 
         try {
             EdgeWalker ew;
@@ -208,18 +207,16 @@ private:
                 std::vector<TopoDS_Wire> rw = ew.getResultNoDups();
                 std::vector<TopoDS_Wire> sortedWires = ew.sortStrip(rw,biggie);   //false==>do not include biggest wires
                 for (auto& w:sortedWires) {
-                    PyObject* wire = new TopoShapeWirePy(new TopoShape(w));
-                    result.append(Py::asObject(wire));
+                    PyList_Append(result,new TopoShapeWirePy(new TopoShape(w)));
                 }
-            }
-            else {
+            } else {
                 Base::Console().Warning("edgeWalker: input is not planar graph. Wire detection not done\n");
             }
         }
         catch (Base::Exception &e) {
             throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
         }
-        return result;
+        return Py::asObject(result);
     }
 
     Py::Object findOuterWire(const Py::Tuple& args)
@@ -642,12 +639,11 @@ private:
                         double parentX = dvp->X.getValue() + grandParentX;
                         double parentY = dvp->Y.getValue() + grandParentY;
                         Base::Vector3d parentPos(parentX,parentY,0.0);
-                        std::string sDimText = dvd->getFormattedDimensionValue();
+                        std::string sDimText = dvd->getFormatedValue();
                         char* dimText = &sDimText[0u];                  //hack for const-ness
                         float gap = 5.0;                                //hack. don't know font size here.
                         layerName = dvd->getNameInDocument();
                         writer.setLayerName(layerName);
-                        int type = 0;                                   //Aligned/Distance
                         if ( dvd->Type.isValue("Distance")  ||
                              dvd->Type.isValue("DistanceX") ||
                              dvd->Type.isValue("DistanceY") )  {
@@ -662,12 +658,7 @@ private:
                                                            Base::Vector3d(parentX,parentY,0.0);
                             Base::Vector3d extLine2Start = Base::Vector3d(pts.second.x, -pts.second.y, 0.0) +
                                                            Base::Vector3d(parentX,parentY,0.0);
-                            if (dvd->Type.isValue("DistanceX") ) {
-                                type = 1;
-                            } else if (dvd->Type.isValue("DistanceY") ) {
-                                type = 2;
-                            }
-                            writer.exportLinearDim(textLocn, lineLocn, extLine1Start, extLine2Start, dimText, type);
+                            writer.exportLinearDim(textLocn, lineLocn, extLine1Start, extLine2Start, dimText);
                         } else if (dvd->Type.isValue("Angle")) {
                             Base::Vector3d textLocn(dvd->X.getValue() + parentX, dvd->Y.getValue() + parentY, 0.0);
                             Base::Vector3d lineLocn(dvd->X.getValue() + parentX, dvd->Y.getValue() + parentY,0.0);
@@ -797,8 +788,6 @@ private:
 
     Py::Object makeDistanceDim(const Py::Tuple& args)
     {
-    //points come in unscaled,but makeDistDim unscales them so we need to prescale here. 
-    //makeDistDim was built for extent dims which work from scaled geometry 
         PyObject* pDvp;
         PyObject* pDimType;
         PyObject* pFrom;
@@ -813,11 +802,8 @@ private:
         }
         //TODO: errors for all the type checks
         if (PyObject_TypeCheck(pDvp, &(TechDraw::DrawViewPartPy::Type))) {
-            App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(pDvp)->getDocumentObjectPtr();
-            dvp = static_cast<TechDraw::DrawViewPart*>(obj);
-        }
-        else {
-            throw Py::TypeError("expected (DrawViewPart, dimType, from, to");
+                App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(pDvp)->getDocumentObjectPtr();
+                dvp = static_cast<TechDraw::DrawViewPart*>(obj);
         }
 #if PY_MAJOR_VERSION >= 3
         if (PyUnicode_Check(pDimType) ) {
@@ -835,14 +821,12 @@ private:
         if (PyObject_TypeCheck(pTo, &(Base::VectorPy::Type))) {
             to = static_cast<Base::VectorPy*>(pTo)->value();
         }
-        DrawViewDimension* dvd = 
         DrawDimHelper::makeDistDim(dvp,
                                    dimType,
-                                   DrawUtil::invertY(from),
-                                   DrawUtil::invertY(to));
-        PyObject* dvdPy = dvd->getPyObject();
-        return Py::asObject(dvdPy);
-//        return Py::None();
+                                   from,
+                                   to);
+
+        return Py::None();
     }
 
     Py::Object makeDistanceDim3d(const Py::Tuple& args)
@@ -861,11 +845,8 @@ private:
         }
         //TODO: errors for all the type checks
         if (PyObject_TypeCheck(pDvp, &(TechDraw::DrawViewPartPy::Type))) {
-            App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(pDvp)->getDocumentObjectPtr();
-            dvp = static_cast<TechDraw::DrawViewPart*>(obj);
-        }
-        else {
-            throw Py::TypeError("expected (DrawViewPart, dimType, from, to");
+                App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(pDvp)->getDocumentObjectPtr();
+                dvp = static_cast<TechDraw::DrawViewPart*>(obj);
         }
 #if PY_MAJOR_VERSION >= 3
         if (PyUnicode_Check(pDimType)) {
@@ -882,10 +863,8 @@ private:
         if (PyObject_TypeCheck(pTo, &(Base::VectorPy::Type))) {
             to = static_cast<Base::VectorPy*>(pTo)->value();
         }
-        //3d points are not scaled
         from = DrawUtil::invertY(dvp->projectPoint(from));
         to   = DrawUtil::invertY(dvp->projectPoint(to));
-        //DrawViewDimension* = 
         DrawDimHelper::makeDistDim(dvp,
                                    dimType,
                                    from,

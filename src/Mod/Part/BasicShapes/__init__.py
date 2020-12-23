@@ -1,4 +1,5 @@
 # ***************************************************************************
+# *                                                                         *
 # *   Copyright (c) 2019 Werner Mayer <wmayer[at]users.sourceforge.net>     *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *

@@ -25,7 +25,7 @@
 
 #ifndef _PreComp_
 # include <iomanip>
-# include <iostream>
+# include <ios>
 # include <map>
 # include <set>
 #endif

@@ -26,7 +26,6 @@ set(SketcherGui_LIBS
 )
 
 set(SketcherGui_MOC_HDRS
-    EditDatumDialog.h
     TaskSketcherConstrains.h
     TaskSketcherElements.h
     TaskSketcherCreateCommands.h
@@ -63,7 +62,6 @@ set(SketcherGui_UIC_SRCS
     SketchMirrorDialog.ui
     SketcherSettings.ui
     SketcherSettingsColors.ui
-    SketcherSettingsDisplay.ui
     SketchRectangularArrayDialog.ui
     SketcherRegularPolygonDialog.ui
 )
@@ -140,8 +138,6 @@ SET(SketcherGui_SRCS
     TaskDlgEditSketch.h
     ViewProviderPython.cpp
     ViewProviderPython.h
-    ViewProviderSketchGeometryExtension.h
-    ViewProviderSketchGeometryExtension.cpp
 )
 
 if(FREECAD_USE_PCH)

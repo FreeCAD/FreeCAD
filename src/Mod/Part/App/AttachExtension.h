@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2015 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
+ *   Copyright (c) Victor Titov (DeepSOIC)                                 *
+ *                                           (vv.titov@gmail.com) 2015     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -52,6 +53,8 @@ public:
    AttachEngineException();
    AttachEngineException(const char * sMessage);
    AttachEngineException(const std::string& sMessage);
+   /// Construction
+   AttachEngineException(const AttachEngineException &inst);
    /// Destruction
    virtual ~AttachEngineException() throw() {}
 };

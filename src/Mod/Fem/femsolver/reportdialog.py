@@ -1,8 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *                                                                         *
-# *   This file is part of the FreeCAD CAx development system.              *
-# *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
 # *   as published by the Free Software Foundation; either version 2 of     *
@@ -21,15 +19,13 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__  = "FreeCAD FEM solver report dialog"
+__title__ = "FreeCAD FEM solver report dialog"
 __author__ = "Markus Hovorka"
-__url__    = "https://www.freecadweb.org"
+__url__ = "http://www.freecadweb.org"
 
 ## \addtogroup FEM
 #  @{
 
-# it is a Gui only module and should only be imported in Gui mode
-# thus no guard is needed
 from PySide import QtGui
 
 

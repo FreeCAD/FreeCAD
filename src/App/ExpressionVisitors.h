@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2016 Eivind Kvedalen <eivind@kvedalen.name>             *
+ *   Copyright (c) Eivind Kvedalen (eivind@kvedalen.name) 2016             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *

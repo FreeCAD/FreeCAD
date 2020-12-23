@@ -48,7 +48,7 @@ public:
 
 private Q_SLOTS:
     void onCurrentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*);
-    void on_buttonPath_toggled(bool);
+    void on_buttonPath_clicked();
 
 private:
     void changeEvent(QEvent *e);

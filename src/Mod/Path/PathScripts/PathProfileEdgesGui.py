@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+
 # ***************************************************************************
+# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -19,34 +21,33 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-# *   Major modifications: 2020 Russell Johnson <russ4262@gmail.com>        *
 
 import FreeCAD
 import PathScripts.PathOpGui as PathOpGui
-import PathScripts.PathProfile as PathProfile
-import PathScripts.PathProfileGui as PathProfileGui
+import PathScripts.PathProfileBaseGui as PathProfileBaseGui
+import PathScripts.PathProfileEdges as PathProfileEdges
+
 from PySide import QtCore
 
-
-__title__ = "Path Profile Edges Operation UI (depreciated)"
+__title__ = "Path Profile based on edges Operation UI"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
-__doc__ = "Profile Edges operation page controller and command implementation (depreciated)."
+__url__ = "http://www.freecadweb.org"
+__doc__ = "Profile based on edges operation page controller and command implementation."
 
+class TaskPanelOpPage(PathProfileBaseGui.TaskPanelOpPage):
+    '''Page controller for profile based on edges operation.'''
 
-class TaskPanelOpPage(PathProfileGui.TaskPanelOpPage):
-    '''Psuedo page controller class for Profile operation,
-    allowing for backward compatibility with pre-existing "Profile Edges" operations.'''
-    pass
-# Eclass
+    def profileFeatures(self):
+        '''profileFeatures() ... return FeatureSide
+        See PathProfileBaseGui.py for details.'''
+        return PathProfileBaseGui.FeatureSide
 
-
-Command = PathOpGui.SetupOperation('Profile',
-        PathProfile.Create,
+Command = PathOpGui.SetupOperation('Profile Edges',
+        PathProfileEdges.Create,
         TaskPanelOpPage,
-        'Path_Contour',
-        QtCore.QT_TRANSLATE_NOOP("Path_Profile", "Profile"),
-        QtCore.QT_TRANSLATE_NOOP("Path_Profile", "Profile entire model, selected face(s) or selected edge(s)"),
-        PathProfile.SetupProperties)
+        'Path-Profile-Edges',
+        QtCore.QT_TRANSLATE_NOOP("PathProfile", "Edge Profile"),
+        QtCore.QT_TRANSLATE_NOOP("PathProfile", "Profile based on edges"),
+        PathProfileEdges.SetupProperties)
 
 FreeCAD.Console.PrintLog("Loading PathProfileEdgesGui... done\n")

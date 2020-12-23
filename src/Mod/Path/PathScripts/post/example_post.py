@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
+# *   (c) Yorik van Havre (yorik@uncreated.net) 2014                        *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -19,8 +19,7 @@
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
-# ***************************************************************************
-
+# ***************************************************************************/
 from __future__ import print_function
 
 TOOLTIP='''
@@ -100,4 +99,4 @@ def parse(inputstring):
     print("done postprocessing.")
     return output
 
-# print(__name__ + " gcode postprocessor loaded.")
+print(__name__ + " gcode postprocessor loaded.")

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2010 Jürgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -36,7 +36,7 @@ class RobotGuiExport ViewProviderTrajectoryDressUp : public ViewProviderTrajecto
 public:
     //virtual bool doubleClicked(void);
 
-    /// grouping handling
+    /// grouping handling 
     std::vector<App::DocumentObject*> claimChildren(void)const;
 
 protected:

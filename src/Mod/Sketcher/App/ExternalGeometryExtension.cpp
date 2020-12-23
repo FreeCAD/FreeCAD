@@ -33,11 +33,16 @@ using namespace Sketcher;
 
 //---------- Geometry Extension
 
-constexpr std::array<const char *, ExternalGeometryExtension::NumFlags> ExternalGeometryExtension::flag2str;
+constexpr std::array<const char *,ExternalGeometryExtension::NumFlags> ExternalGeometryExtension::flag2str;
 
-TYPESYSTEM_SOURCE(Sketcher::ExternalGeometryExtension,Part::GeometryPersistenceExtension)
+TYPESYSTEM_SOURCE(Sketcher::ExternalGeometryExtension,Part::GeometryExtension)
 
 // Persistence implementer
+unsigned int ExternalGeometryExtension::getMemSize (void) const
+{
+    return sizeof(long int);
+}
+
 void ExternalGeometryExtension::Save(Base::Writer &writer) const
 {
     writer.Stream() << writer.ind() << "<GeoExtension type=\"" << this->getTypeId().getName();
@@ -61,18 +66,14 @@ void ExternalGeometryExtension::Restore(Base::XMLReader &reader)
 
 std::unique_ptr<Part::GeometryExtension> ExternalGeometryExtension::copy(void) const
 {
-    auto cpy = std::make_unique<ExternalGeometryExtension>();
+    std::unique_ptr<ExternalGeometryExtension> cpy = std::make_unique<ExternalGeometryExtension>();
 
     cpy->Ref = this->Ref;
     cpy->Flags = this->Flags;
 
     cpy->setName(this->getName()); // Base Class
 
-#if defined (__GNUC__) && (__GNUC__ <=4)
     return std::move(cpy);
-#else
-    return cpy;
-#endif
 }
 
 PyObject * ExternalGeometryExtension::getPyObject(void)
@@ -80,20 +81,3 @@ PyObject * ExternalGeometryExtension::getPyObject(void)
     return new ExternalGeometryExtensionPy(new ExternalGeometryExtension(*this));
 }
 
-bool ExternalGeometryExtension::getFlagsFromName(std::string str, ExternalGeometryExtension::Flag &flag)
-{
-    auto pos = std::find_if(    ExternalGeometryExtension::flag2str.begin(),
-                                ExternalGeometryExtension::flag2str.end(),
-                                [str](const char * val) {
-                                    return strcmp(val,str.c_str())==0;}
-                                );
-
-    if( pos != ExternalGeometryExtension::flag2str.end()) {
-            int index = std::distance( ExternalGeometryExtension::flag2str.begin(), pos );
-
-            flag = static_cast<ExternalGeometryExtension::Flag>(index);
-            return true;
-    }
-
-    return false;
-}

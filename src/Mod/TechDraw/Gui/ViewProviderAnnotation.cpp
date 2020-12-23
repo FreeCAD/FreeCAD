@@ -49,7 +49,7 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderAnnotation, TechDrawGui::ViewProviderDr
 
 ViewProviderAnnotation::ViewProviderAnnotation()
 {
-    sPixmap = "actions/techdraw-annotation";
+    sPixmap = "TechDraw_Tree_Annotation";
 }
 
 ViewProviderAnnotation::~ViewProviderAnnotation()

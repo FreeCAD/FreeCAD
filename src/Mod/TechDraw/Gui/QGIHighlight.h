@@ -25,12 +25,9 @@
 
 #include <QFont>
 #include <QPointF>
-#include <QObject>
 #include <QGraphicsTextItem>
 #include <QGraphicsRectItem>
 #include <QGraphicsEllipseItem>
-#include <QGraphicsScene>
-#include <QGraphicsSceneEvent>
 #include <QPainterPath>
 #include <QColor>
 
@@ -48,25 +45,19 @@ class TechDrawGuiExport QGIHighlight : public QGIDecoration
 {
 public:
     explicit QGIHighlight();
-    ~QGIHighlight();
+    ~QGIHighlight() {}
 
-    enum {Type = QGraphicsItem::UserType + 176};
-    int type() const override { return Type;}
+    enum {Type = QGraphicsItem::UserType + 172};
+    int type() const { return Type;}
 
-    virtual void paint(QPainter * painter,
-                       const QStyleOptionGraphicsItem * option, 
-                       QWidget * widget = 0 ) override;
+    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
 
     void setBounds(double x1,double y1,double x2,double y2);
     void setReference(char* sym);
     void setFont(QFont f, double fsize);
-    virtual void draw() override;
-    void setInteractive(bool state);
+    virtual void draw();
 
 protected:
-/*    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;*/
-/*    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;*/
-/*    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;*/
     QColor getHighlightColor();
     Qt::PenStyle getHighlightStyle();
     void makeHighlight();
@@ -74,7 +65,6 @@ protected:
     void setTools();
     int getHoleStyle(void);
 
-/*    bool m_dragging;*/
 
 private:
     char* m_refText;

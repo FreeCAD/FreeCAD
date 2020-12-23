@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
- *                                                                         *
+ *   Copyright (c) WandererFan            (wandererfan@gmail.com) 2016     *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
  *   This library is free software; you can redistribute it and/or         *
@@ -50,7 +49,7 @@ namespace TechDraw
 
 class TechDrawExport DrawViewDetail : public DrawViewPart
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(Part::DrawViewDetail);
+    PROPERTY_HEADER(Part::DrawViewDetail);
 
 public:
     /// Constructor
@@ -62,25 +61,20 @@ public:
     App::PropertyFloat  Radius;
     App::PropertyString Reference;
 
-    virtual short mustExecute() const override;
-    virtual App::DocumentObjectExecReturn *execute(void) override;
-    virtual void onChanged(const App::Property* prop) override;
-    virtual const char* getViewProviderName(void) const override {
+    virtual short mustExecute() const;
+    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual void onChanged(const App::Property* prop);
+    virtual const char* getViewProviderName(void) const {
         return "TechDrawGui::ViewProviderViewPart";
     }
-    virtual void unsetupObject() override;
 
-
-    void detailExec(TopoDS_Shape s, 
-                    DrawViewPart* baseView,
-                    DrawViewSection* sectionAlias);
+public:
     double getFudgeRadius(void);
 
 protected:
     Base::Vector3d toR3(const gp_Ax2 fromSystem, const Base::Vector3d fromPoint);
     void getParameters(void);
     double m_fudge;
-    bool debugDetail(void) const;
 
 };
 

@@ -31,7 +31,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="67"/>
       <source>Navigation style</source>
-      <translation>화면탐색 형식</translation>
+      <translation type="unfinished">Navigation style</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="68"/>
@@ -51,7 +51,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="74"/>
       <source>Navigation style not recognized.</source>
-      <translation>인식할 수 없는 화면탐색 형식</translation>
+      <translation type="unfinished">Navigation style not recognized.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="291"/>
@@ -91,7 +91,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="70"/>
       <source>Middle mouse button or H key.</source>
-      <translation>가운데버튼 또는 'H' 키</translation>
+      <translation type="unfinished">Middle mouse button or H key.</translation>
     </message>
   </context>
 </TS>

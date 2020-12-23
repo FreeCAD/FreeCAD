@@ -82,13 +82,10 @@
 // Inventor
 #ifndef __InventorAll__
 # include <Gui/InventorAll.h>
-# include <Inventor/annex/ForeignFiles/SoSTLFileKit.h>
 #endif
 
 #elif defined(FC_OS_WIN32)
-#ifndef NOMINMAX
 #define NOMINMAX
-#endif
 #include <Windows.h>
 #endif  //_PreComp_
 

@@ -228,7 +228,7 @@ void VisualInspection::accept()
 
         // open a new command
         Gui::Document* doc = Gui::Application::Instance->activeDocument();
-        doc->openCommand(QT_TRANSLATE_NOOP("Command", "Visual Inspection"));
+        doc->openCommand("Visual Inspection");
 
         // create a group
         Gui::Command::runCommand(

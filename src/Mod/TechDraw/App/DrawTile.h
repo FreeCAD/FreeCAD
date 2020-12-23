@@ -40,9 +40,9 @@ public:
     virtual ~DrawTile();
 
     App::PropertyLink         TileParent;           //eg DrawWeldSymbol
-    App::PropertyIntegerConstraint TileRow;
-    App::PropertyIntegerConstraint::Constraints  TileRowConstraints;
+    App::PropertyInteger      TileRow;
     App::PropertyInteger      TileColumn;
+/*    App::PropertyVector       TileOrigin;           //sb call to TileParent - WeldingSymbol*/
 
     virtual short mustExecute() const;
     virtual App::DocumentObjectExecReturn *execute(void);
@@ -55,7 +55,6 @@ public:
 
 protected:
     virtual void onChanged(const App::Property* prop);
-    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop);
 
 private:
 };

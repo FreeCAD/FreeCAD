@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+
 # ***************************************************************************
+# *                                                                         *
 # *   Copyright (c) 2019 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -22,24 +24,18 @@
 
 import FreeCAD
 import FreeCADGui
+import Part
 import PathScripts
 import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
-import PathScripts.PathToolBitGui as PathToolBitGui
 import PathScripts.PathToolEdit as PathToolEdit
 import PathScripts.PathUtil as PathUtil
 
 from PySide import QtCore, QtGui
 
-# lazily loaded modules
-from lazy_loader.lazy_loader import LazyLoader
-Part = LazyLoader('Part', globals(), 'Part')
-
-
 # Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
-
 
 class ViewProvider:
 
@@ -67,7 +63,7 @@ class ViewProvider:
         return None
 
     def getIcon(self):
-        return ":/icons/Path_ToolController.svg"
+        return ":/icons/Path-ToolController.svg"
 
     def onChanged(self, vobj, prop):
         # pylint: disable=unused-argument
@@ -82,7 +78,6 @@ class ViewProvider:
     def onDelete(self, vobj, args=None):
         # pylint: disable=unused-argument
         PathUtil.clearExpressionEngine(vobj.Object)
-        self.vobj.Object.Proxy.onDelete(vobj.Object, args)
         return True
 
     def updateData(self, vobj, prop):
@@ -118,22 +113,11 @@ class ViewProvider:
         action.triggered.connect(self.setEdit)
         menu.addAction(action)
 
-    def claimChildren(self):
-        obj = self.vobj.Object
-        if obj and obj.Proxy and not obj.Proxy.usesLegacyTool(obj):
-            return [obj.Tool]
-        return []
-
-
-def Create(name='Default Tool', tool=None, toolNumber=1):
+def Create(name = 'Default Tool', tool=None, toolNumber=1):
     PathLog.track(tool, toolNumber)
 
     obj = PathScripts.PathToolController.Create(name, tool, toolNumber)
     ViewProvider(obj.ViewObject)
-    if not obj.Proxy.usesLegacyTool(obj):
-        # ToolBits are visible by default, which is typically not what the user wants
-        if tool and tool.ViewObject and tool.ViewObject.Visibility:
-            tool.ViewObject.Visibility = False
     return obj
 
 
@@ -141,40 +125,20 @@ class CommandPathToolController(object):
     # pylint: disable=no-init
 
     def GetResources(self):
-        return {'Pixmap': 'Path_LengthOffset',
+        return {'Pixmap': 'Path-LengthOffset',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_ToolController", "Add Tool Controller to the Job"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_ToolController", "Add Tool Controller")}
 
-    def selectedJob(self):
-        if FreeCAD.ActiveDocument:
-            sel = FreeCADGui.Selection.getSelectionEx()
-            if sel and sel[0].Object.Name[:3] == 'Job':
-                return sel[0].Object
-        jobs = [o for o in FreeCAD.ActiveDocument.Objects if o.Name[:3] == 'Job']
-        if 1 == len(jobs):
-            return jobs[0]
-        return None
-
     def IsActive(self):
-        return self.selectedJob() is not None
+        if FreeCAD.ActiveDocument is not None:
+            for o in FreeCAD.ActiveDocument.Objects:
+                if o.Name[:3] == "Job":
+                    return True
+        return False
 
     def Activated(self):
         PathLog.track()
-        job = self.selectedJob()
-        if job:
-            tool = PathToolBitGui.ToolBitSelector().getTool()
-            if tool:
-                toolNr = None
-                for tc in job.ToolController:
-                    if tc.Tool == tool:
-                        toolNr = tc.ToolNumber
-                        break
-                if not toolNr:
-                    toolNr = max([tc.ToolNumber for tc in job.ToolController]) + 1
-                tc = Create("TC: {}".format(tool.Label), tool, toolNr)
-                job.Proxy.addToolController(tc)
-                FreeCAD.ActiveDocument.recompute()
-
+        Create()
 
 class ToolControllerEditor(object):
 
@@ -184,22 +148,12 @@ class ToolControllerEditor(object):
             self.form.buttonBox.hide()
         self.obj = obj
 
-        self.vertFeed = PathGui.QuantitySpinBox(self.form.vertFeed, obj,
-                                                'VertFeed')
-        self.horizFeed = PathGui.QuantitySpinBox(self.form.horizFeed, obj,
-                                                 'HorizFeed')
-        self.vertRapid = PathGui.QuantitySpinBox(self.form.vertRapid, obj,
-                                                 'VertRapid')
-        self.horizRapid = PathGui.QuantitySpinBox(self.form.horizRapid, obj,
-                                                  'HorizRapid')
+        self.vertFeed = PathGui.QuantitySpinBox(self.form.vertFeed, obj, 'VertFeed')
+        self.horizFeed = PathGui.QuantitySpinBox(self.form.horizFeed, obj, 'HorizFeed')
+        self.vertRapid = PathGui.QuantitySpinBox(self.form.vertRapid, obj, 'VertRapid')
+        self.horizRapid = PathGui.QuantitySpinBox(self.form.horizRapid, obj, 'HorizRapid')
 
-        if obj.Proxy.usesLegacyTool(obj):
-            self.editor = PathToolEdit.ToolEditor(obj.Tool,
-                                                  self.form.toolEditor)
-        else:
-            self.editor = None
-            self.form.toolBox.widget(1).hide()
-            self.form.toolBox.removeItem(1)
+        self.editor = PathToolEdit.ToolEditor(obj.Tool, self.form.toolEditor)
 
     def updateUi(self):
         tc = self.obj
@@ -210,13 +164,11 @@ class ToolControllerEditor(object):
         self.vertFeed.updateSpinBox()
         self.vertRapid.updateSpinBox()
         self.form.spindleSpeed.setValue(tc.SpindleSpeed)
-        index = self.form.spindleDirection.findText(tc.SpindleDir,
-                                                    QtCore.Qt.MatchFixedString)
+        index = self.form.spindleDirection.findText(tc.SpindleDir, QtCore.Qt.MatchFixedString)
         if index >= 0:
             self.form.spindleDirection.setCurrentIndex(index)
 
-        if self.editor:
-            self.editor.updateUI()
+        self.editor.updateUI()
 
     def updateToolController(self):
         tc = self.obj
@@ -230,13 +182,12 @@ class ToolControllerEditor(object):
             tc.SpindleSpeed = self.form.spindleSpeed.value()
             tc.SpindleDir = self.form.spindleDirection.currentText()
 
-            if self.editor:
-                self.editor.updateTool()
-                tc.Tool = self.editor.tool
+            self.editor.updateTool()
+            tc.Tool = self.editor.tool
 
-        except Exception as e:
-            PathLog.error(translate("PathToolController",
-                                    "Error updating TC: %s") % e)
+        except Exception as e: # pylint: disable=broad-except
+            PathLog.error(translate("PathToolController", "Error updating TC: %s") % e)
+
 
     def refresh(self):
         self.form.blockSignals(True)
@@ -245,16 +196,13 @@ class ToolControllerEditor(object):
         self.form.blockSignals(False)
 
     def setupUi(self):
-        if self.editor:
-            self.editor.setupUI()
+        self.editor.setupUI()
 
         self.form.tcName.editingFinished.connect(self.refresh)
         self.form.horizFeed.editingFinished.connect(self.refresh)
         self.form.vertFeed.editingFinished.connect(self.refresh)
         self.form.horizRapid.editingFinished.connect(self.refresh)
         self.form.vertRapid.editingFinished.connect(self.refresh)
-        self.form.spindleSpeed.editingFinished.connect(self.refresh)
-        self.form.spindleDirection.currentIndexChanged.connect(self.refresh)
 
 
 class TaskPanel:
@@ -271,13 +219,13 @@ class TaskPanel:
 
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Control.closeDialog()
-        if self.toolrep:
+        if self.toolrep is not None:
             FreeCAD.ActiveDocument.removeObject(self.toolrep.Name)
         FreeCAD.ActiveDocument.recompute()
 
     def reject(self):
         FreeCADGui.Control.closeDialog()
-        if self.toolrep:
+        if self.toolrep is not None:
             FreeCAD.ActiveDocument.removeObject(self.toolrep.Name)
         FreeCAD.ActiveDocument.recompute()
 
@@ -288,12 +236,11 @@ class TaskPanel:
     def setFields(self):
         self.editor.updateUi()
 
-        if self.toolrep:
-            tool = self.obj.Tool
-            radius = float(tool.Diameter) / 2
-            length = tool.CuttingEdgeHeight
-            t = Part.makeCylinder(radius, length)
-            self.toolrep.Shape = t
+        tool = self.obj.Tool
+        radius = tool.Diameter / 2
+        length = tool.CuttingEdgeHeight
+        t = Part.makeCylinder(radius, length)
+        self.toolrep.Shape = t
 
     def edit(self, item, column):
         # pylint: disable=unused-argument
@@ -306,11 +253,9 @@ class TaskPanel:
         FreeCAD.ActiveDocument.recompute()
 
     def setupUi(self):
-        if self.editor.editor:
-            t = Part.makeCylinder(1, 1)
-            self.toolrep = FreeCAD.ActiveDocument.addObject("Part::Feature",
-                                                            "tool")
-            self.toolrep.Shape = t
+        t = Part.makeCylinder(1, 1)
+        self.toolrep = FreeCAD.ActiveDocument.addObject("Part::Feature", "tool")
+        self.toolrep.Shape = t
 
         self.setFields()
         self.editor.setupUi()
@@ -324,7 +269,7 @@ class DlgToolControllerEdit:
         self.obj = obj
 
     def exec_(self):
-        restoreTC = self.obj.Proxy.templateAttrs(self.obj)
+        restoreTC   = self.obj.Proxy.templateAttrs(self.obj)
 
         rc = False
         if not self.editor.form.exec_():
@@ -332,7 +277,6 @@ class DlgToolControllerEdit:
             self.obj.Proxy.setFromTemplate(self.obj, restoreTC)
             rc = True
         return rc
-
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command

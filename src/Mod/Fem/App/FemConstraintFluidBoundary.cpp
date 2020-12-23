@@ -1,7 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2013 Jan Rheinländer                                    *
- *                                   <jrheinlaender@users.sourceforge.net> *
- *                                                                         *
+ *                          <jrheinlaender[at]users.sourceforge.net>       *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
  *   This library is free software; you can redistribute it and/or         *
@@ -42,8 +41,6 @@
 using namespace Fem;
 
 PROPERTY_SOURCE(Fem::ConstraintFluidBoundary, Fem::Constraint)
-
-// see forum topic: https://forum.freecadweb.org/viewtopic.php?&p=407901
 
 // also defined in TaskFemConstraintFluidBoundary.cpp and FoamCaseBuilder/BasicBuilder.py, update simultaneously
 // the second (index 1) item is the default enum, as index 0 causes compiling error

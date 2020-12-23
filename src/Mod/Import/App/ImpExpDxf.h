@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2015 Yorik van Havre (yorik@uncreated.net)              *
+ *   Copyright (c) Yorik van Havre (yorik@uncreated.net) 2015              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -83,7 +83,7 @@ namespace Import
         void exportText(const char* text, Base::Vector3d position1, Base::Vector3d position2, double size, int just);
         void exportLinearDim(Base::Vector3d textLocn, Base::Vector3d lineLocn, 
                              Base::Vector3d extLine1Start, Base::Vector3d extLine2Start, 
-                             char* dimText, int type);
+                             char* dimText);
         void exportAngularDim(Base::Vector3d textLocn, Base::Vector3d lineLocn, 
                              Base::Vector3d extLine1Start, Base::Vector3d extLine2Start, 
                              Base::Vector3d apexPoint,

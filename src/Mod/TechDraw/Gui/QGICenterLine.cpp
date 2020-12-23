@@ -23,7 +23,6 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <QPainter>
-#include <QPainterPath>
 #include <QStyleOptionGraphicsItem>
 #endif
 
@@ -34,7 +33,6 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 
-#include "PreferencesGui.h"
 #include "QGICenterLine.h"
 
 using namespace TechDrawGui;
@@ -73,7 +71,10 @@ void QGICenterLine::setBounds(double x1,double y1,double x2,double y2)
 
 QColor QGICenterLine::getCenterColor()
 {
-    return PreferencesGui::centerQColor();
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
+    App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("CenterColor", 0x00000000));
+    return fcColor.asValue<QColor>();
 }
 
 Qt::PenStyle QGICenterLine::getCenterStyle()

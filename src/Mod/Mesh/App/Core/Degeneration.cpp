@@ -102,7 +102,8 @@ typedef MeshPointArray::_TConstIterator VertexIterator;
  * '==' operator of MeshPoint) we use the same operator when comparing the
  * points in the function object.
  */
-struct Vertex_EqualTo
+struct Vertex_EqualTo  : public std::binary_function<const VertexIterator&,
+                                                     const VertexIterator&, bool>
 {
     bool operator()(const VertexIterator& x,
                     const VertexIterator& y) const
@@ -115,7 +116,8 @@ struct Vertex_EqualTo
     }
 };
 
-struct Vertex_Less
+struct Vertex_Less  : public std::binary_function<const VertexIterator&,
+                                                  const VertexIterator&, bool>
 {
     bool operator()(const VertexIterator& x,
                     const VertexIterator& y) const
@@ -275,7 +277,8 @@ typedef MeshFacetArray::_TConstIterator FaceIterator;
 /*
  * The facet with the lowset index is regarded as 'less'.
  */
-struct MeshFacet_Less
+struct MeshFacet_Less  : public std::binary_function<const FaceIterator&, 
+                                                     const FaceIterator&, bool>
 {
     bool operator()(const FaceIterator& x, 
                     const FaceIterator& y) const
@@ -316,7 +319,8 @@ struct MeshFacet_Less
  * Two facets are equal if all its three point indices refer to the same
  * location in the point array of the mesh kernel they belong to.
  */
-struct MeshFacet_EqualTo
+struct MeshFacet_EqualTo  : public std::binary_function<const FaceIterator&, 
+                                                        const FaceIterator&, bool>
 {
     bool operator()(const FaceIterator& x,
                     const FaceIterator& y) const
@@ -1158,7 +1162,7 @@ bool MeshEvalRangePoint::Evaluate()
     unsigned long ulCtPoints = _rclMesh.CountPoints();
 
     for (MeshFacetArray::_TConstIterator it = rFaces.begin(); it != rFaces.end(); ++it) {
-        if (std::find_if(it->_aulPoints, it->_aulPoints + 3, [ulCtPoints](unsigned long i) { return i >= ulCtPoints; }) < it->_aulPoints + 3)
+        if (std::find_if(it->_aulPoints, it->_aulPoints + 3, std::bind2nd(std::greater_equal<unsigned long>(), ulCtPoints)) < it->_aulPoints + 3)
             return false;
     }
 
@@ -1173,7 +1177,7 @@ std::vector<unsigned long> MeshEvalRangePoint::GetIndices() const
 
     unsigned long ind=0;
     for (MeshFacetArray::_TConstIterator it = rFaces.begin(); it != rFaces.end(); ++it, ind++) {
-        if (std::find_if(it->_aulPoints, it->_aulPoints + 3, [ulCtPoints](unsigned long i) { return i >= ulCtPoints; }) < it->_aulPoints + 3)
+        if (std::find_if(it->_aulPoints, it->_aulPoints + 3, std::bind2nd(std::greater_equal<unsigned long>(), ulCtPoints)) < it->_aulPoints + 3)
             aInds.push_back(ind);
     }
 

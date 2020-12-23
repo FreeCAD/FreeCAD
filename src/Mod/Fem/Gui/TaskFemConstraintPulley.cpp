@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jan Rheinländer                                    *
- *                                   <jrheinlaender@users.sourceforge.net> *
+ *   Copyright (c) 2013 Jan Rheinländer <jrheinlaender@users.sourceforge.net>        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -51,7 +50,7 @@ using namespace Gui;
 /* TRANSLATOR FemGui::TaskFemConstraintPulley */
 
 TaskFemConstraintPulley::TaskFemConstraintPulley(ViewProviderFemConstraintPulley *ConstraintView,QWidget *parent)
-    : TaskFemConstraintGear(ConstraintView, parent, "FEM_ConstraintPulley")
+    : TaskFemConstraintGear(ConstraintView, parent, "fem-constraint-pulley")
 {
     connect(ui->spinOtherDiameter, SIGNAL(valueChanged(double)),
             this, SLOT(onOtherDiameterChanged(double)));
@@ -206,7 +205,7 @@ bool TaskDlgFemConstraintPulley::accept()
     const TaskFemConstraintPulley* parameterPulley = static_cast<const TaskFemConstraintPulley*>(parameter);
 
     try {
-        //Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "FEM pulley constraint changed"));
+        //Gui::Command::openCommand("FEM pulley constraint changed");
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.OtherDiameter = %f",name.c_str(), parameterPulley->getOtherDiameter());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.CenterDistance = %f",name.c_str(), parameterPulley->getCenterDistance());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.IsDriven = %s",name.c_str(), parameterPulley->getIsDriven() ? "True" : "False");

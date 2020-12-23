@@ -45,11 +45,8 @@ public:
     ~QGCustomText() {}
 
     enum {Type = QGraphicsItem::UserType + 130};
-    int type() const override { return Type;}
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 ) override;
-    virtual QRectF boundingRect() const override;
-    QRectF tightBoundingRect() const;
-    QPointF tightBoundingAdjust() const;
+    int type() const { return Type;}
+    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
 
     void setHighlighted(bool state);
     virtual void setPrettyNormal();
@@ -71,20 +68,17 @@ public:
     virtual QColor getSelectColor(void);
     virtual void setColor(QColor c);
 
-    virtual void setTightBounding(bool tight);
-
     void makeMark(double x, double y);
     void makeMark(Base::Vector3d v);
 
 protected:
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
     Base::Reference<ParameterGrp> getParmGroup(void);
 
     bool isHighlighted;
-    bool tightBounding;  // Option to use tighter boundingRect(), works only for plaintext QGCustomText
     QColor m_colCurrent;
     QColor m_colNormal;
 

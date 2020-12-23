@@ -32,7 +32,6 @@
 #include <Mod/TechDraw/App/DrawViewPart.h>
 
 #include "QGIViewBalloon.h"
-#include "ViewProviderBalloon.h"
 
 class Ui_TaskBalloon;
 
@@ -44,28 +43,16 @@ class TaskBalloon : public QWidget
     Q_OBJECT
 
 public:
-    TaskBalloon(QGIViewBalloon *parent, ViewProviderBalloon *balloonVP);
+    TaskBalloon(QGIViewBalloon *parent);
     ~TaskBalloon();
 
 public:
     virtual bool accept();
     virtual bool reject();
-    void recomputeFeature();
-
-private Q_SLOTS:
-    void onTextChanged();
-    void onColorChanged();
-    void onFontsizeChanged();
-    void onShapeChanged();
-    void onShapeScaleChanged();
-    void onEndTypeChanged();
-    void onLineWidthChanged();
-    void onBalloonKinkChanged();  
 
 private:
     Ui_TaskBalloon *ui;
     QGIViewBalloon *m_parent;
-    ViewProviderBalloon* m_balloonVP;
 };
 
 class TaskDlgBalloon : public Gui::TaskView::TaskDialog
@@ -73,7 +60,7 @@ class TaskDlgBalloon : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgBalloon(QGIViewBalloon *parent, ViewProviderBalloon *balloonVP);
+    TaskDlgBalloon(QGIViewBalloon *parent);
     ~TaskDlgBalloon();
 
 public:

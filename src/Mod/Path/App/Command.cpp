@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
+ *   Copyright (c) Yorik van Havre (yorik@uncreated.net) 2014              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -60,7 +60,7 @@ Command::~Command()
 
 // New methods
 
-Placement Command::getPlacement (const Base::Vector3d pos) const
+Placement Command::getPlacement (void) const
 {
     static const std::string x = "X";
     static const std::string y = "Y";
@@ -68,7 +68,7 @@ Placement Command::getPlacement (const Base::Vector3d pos) const
     static const std::string a = "A";
     static const std::string b = "B";
     static const std::string c = "C";
-    Vector3d vec(getParam(x, pos.x),getParam(y, pos.y),getParam(z, pos.z));
+    Vector3d vec(getParam(x),getParam(y),getParam(z));
     Rotation rot;
     rot.setYawPitchRoll(getParam(a),getParam(b),getParam(c));
     Placement plac(vec,rot);
@@ -250,7 +250,7 @@ void Command::setCenter(const Base::Vector3d &pos, bool clockwise)
     Parameters[k] = kval;
 }
 
-Command Command::transform(const Base::Placement& other)
+Command Command::transform(const Base::Placement other)
 {
     Base::Placement plac = getPlacement();
     plac *= other;

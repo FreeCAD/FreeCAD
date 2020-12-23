@@ -1,12 +1,9 @@
 
 # Many warnings caused by vtk
 if(CMAKE_COMPILER_IS_CLANGXX)
-    add_compile_options(-Wno-pedantic) # needed for vtk headers
-    if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 4.0)
-        add_compile_options(-Wno-inconsistent-missing-override)
-    endif()
+    set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -Wno-inconsistent-missing-override -Wno-pedantic") # needed for vtk headers
 elseif(CMAKE_COMPILER_IS_GNUCXX)
-    add_compile_options(-Wno-pedantic) # needed for vtk headers
+    set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -Wno-pedantic") # needed for vtk headers
 endif()
 
 if(MSVC)

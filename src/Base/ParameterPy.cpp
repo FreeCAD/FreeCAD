@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   (c) Jürgen Riegel (juergen.riegel@web.de) 2002                        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,6 +19,7 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
  *   USA                                                                   *
  *                                                                         *
+ *   Juergen Riegel 2002                                                   *
  ***************************************************************************/
 
 
@@ -272,9 +273,9 @@ Py::Object ParameterGrpPy::getGroup(const Py::Tuple& args)
     // get the Handle of the wanted group
     Base::Reference<ParameterGrp> handle = _cParamGrp->GetGroup(pstr);
     if (handle.isValid()) {
-        // create a python wrapper class
+        // crate a python wrapper class
         ParameterGrpPy *pcParamGrp = new ParameterGrpPy(handle);
-        // increment the ref count
+        // increment the reff count
         return Py::asObject(pcParamGrp);
     }
     else {
@@ -341,7 +342,7 @@ Py::Object ParameterGrpPy::setInt(const Py::Tuple& args)
         throw Py::Exception();
 
     _cParamGrp->SetInt(pstr,Int);
-    return Py::None();
+    return Py::None(); 
 }
 
 Py::Object ParameterGrpPy::getInt(const Py::Tuple& args)
@@ -420,7 +421,7 @@ Py::Object ParameterGrpPy::setFloat(const Py::Tuple& args)
         throw Py::Exception();
 
     _cParamGrp->SetFloat(pstr,Float);
-    return Py::None();
+    return Py::None(); 
 }
 
 Py::Object ParameterGrpPy::getFloat(const Py::Tuple& args)
@@ -456,7 +457,7 @@ Py::Object ParameterGrpPy::setString(const Py::Tuple& args)
         throw Py::Exception();
 
     _cParamGrp->SetASCII(pstr,str);
-    return Py::None();
+    return Py::None(); 
 }
 
 Py::Object ParameterGrpPy::getString(const Py::Tuple& args)

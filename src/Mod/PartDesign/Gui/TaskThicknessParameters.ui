@@ -18,10 +18,6 @@
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QToolButton" name="buttonRefAdd">
-       <property name="toolTip">
-        <string>Click button to enter selection mode,
-click again to end selection</string>
-       </property>
        <property name="text">
         <string>Add face</string>
        </property>
@@ -32,10 +28,6 @@ click again to end selection</string>
      </item>
      <item>
       <widget class="QToolButton" name="buttonRefRemove">
-       <property name="toolTip">
-        <string>Click button to enter selection mode,
-click again to end selection</string>
-       </property>
        <property name="text">
         <string>Remove face</string>
        </property>
@@ -47,15 +39,7 @@ click again to end selection</string>
     </layout>
    </item>
    <item>
-    <widget class="QListWidget" name="listWidgetReferences">
-     <property name="toolTip">
-      <string>- select an item to highlight it
-- double-click on an item to see the features</string>
-     </property>
-     <property name="selectionMode">
-      <enum>QAbstractItemView::MultiSelection</enum>
-     </property>
-    </widget>
+    <widget class="QListWidget" name="listWidgetReferences"/>
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_2">
@@ -67,23 +51,23 @@ click again to end selection</string>
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="Gui::QuantitySpinBox" name="Value">
-       <property name="keyboardTracking">
-        <bool>false</bool>
+      <widget class="Gui::QuantitySpinBox" name="Value" native="true">
+       <property name="focusPolicy">
+        <enum>Qt::TabFocus</enum>
        </property>
        <property name="unit" stdset="0">
         <string notr="true">mm</string>
        </property>
-       <property name="minimum">
+       <property name="minimum" stdset="0">
         <double>0.000000000000000</double>
        </property>
-       <property name="maximum">
+       <property name="maximum" stdset="0">
         <double>999999999.000000000000000</double>
        </property>
-       <property name="singleStep">
+       <property name="singleStep" stdset="0">
         <double>0.100000000000000</double>
        </property>
-       <property name="value">
+       <property name="value" stdset="0">
         <double>1.000000000000000</double>
        </property>
       </widget>

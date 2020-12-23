@@ -30,6 +30,7 @@
 #include <Base/Placement.h>
 
 #include <boost/signals2.hpp>
+#include <boost/bind.hpp>
 
 class QSignalMapper;
 
@@ -45,12 +46,11 @@ class GuiExport Placement : public Gui::LocationDialog
     Q_OBJECT
 
 public:
-    Placement(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
+    Placement(QWidget* parent = 0, Qt::WindowFlags fl = 0);
     ~Placement();
     void accept();
     void reject();
 
-    void bindObject();
     Base::Vector3d getDirection() const;
     void setPlacement(const Base::Placement&);
     Base::Placement getPlacement() const;
@@ -89,7 +89,7 @@ Q_SIGNALS:
     void directionChanged();
 
 private:
-    typedef Gui::LocationUi<Ui_Placement> Ui_PlacementComp;
+    typedef Gui::LocationInterfaceComp<Ui_Placement> Ui_PlacementComp;
     typedef boost::signals2::connection Connection;
     Ui_PlacementComp* ui;
     QSignalMapper* signalMapper;
@@ -116,7 +116,7 @@ class GuiExport DockablePlacement : public Placement
     Q_OBJECT
 
 public:
-    DockablePlacement(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
+    DockablePlacement(QWidget* parent = 0, Qt::WindowFlags fl = 0);
     ~DockablePlacement();
 
     void accept();
@@ -134,7 +134,6 @@ public:
 public:
     void setPropertyName(const QString&);
     void setPlacement(const Base::Placement&);
-    void bindObject();
     bool accept();
     bool reject();
     void clicked(int id);

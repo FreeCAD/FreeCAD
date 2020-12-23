@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2009 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
+ *   Copyright (c) 2009 Juergen Riegel  (FreeCAD@juergen-riegel.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -25,7 +25,6 @@
 #define BASE_UNITSAPI_H
 
 #include <CXX/WrapPython.h>
-#include <memory>
 #include <string>
 #include <QString>
 #include "UnitsSchema.h"
@@ -33,12 +32,12 @@
 
 
 namespace Base {
-typedef std::unique_ptr<UnitsSchema> UnitsSchemaPtr;
+    
 
 /**
  * The UnitsApi
  */
-class BaseExport UnitsApi
+class BaseExport UnitsApi 
 {
 
 public:
@@ -50,7 +49,7 @@ public:
     /** set Schema
      * set the UnitsSchema of the Application
      * this a represented by a class of type UnitSchema which
-     * defines a set of standard units for that schema and rules
+     * defines a set of standard units for that schema and rules 
      * for representative strings.
      */
     static void setSchema(UnitSystem s);
@@ -73,7 +72,7 @@ public:
 
     // set the number of decimals
     static void setDecimals(int);
-    // get the number of decimals
+    // fet the number of decimals
     static int getDecimals();
     /// set the application defaults
     //static void setDefaults(void);
@@ -86,12 +85,13 @@ public:
 
     static double defaultFactor;
 
+protected:
     /// return an instance of the given enum value
-    static UnitsSchemaPtr createSchema(UnitSystem s);
+    static UnitsSchema* createSchema(UnitSystem s);
 
 protected:
     // not used at the moment
-    static UnitsSchemaPtr UserPrefSystem;
+    static UnitsSchema *  UserPrefSystem;
     static UnitSystem actSystem;
     /// number of decimals for floats
     static int      UserPrefDecimals;

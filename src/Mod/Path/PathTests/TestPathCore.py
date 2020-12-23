@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+
 # ***************************************************************************
+# *                                                                         *
 # *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -152,15 +154,4 @@ G0 Z0.500000
         table.addTools(t2)
 
         self.assertEqual(len(table.Tools), 2)
-        # gcc7 build needs some special treatment (makes 1L out of a 1) ...
-        if str(table.Tools) != '{1L: Tool 12.7mm Drill Bit, 2L: Tool my other tool}':
-            self.assertEqual(str(table.Tools), '{1: Tool 12.7mm Drill Bit, 2: Tool my other tool}')
-
-    def test50(self):
-        """Test Path.Length calculation"""
-        commands = []
-        commands.append(Path.Command("G1",{"X":1}))
-        commands.append(Path.Command("G1",{"Y":1}))
-        path = Path.Path(commands)
-
-        self.assertEqual(path.Length, 2)
+        self.assertEqual(str(table.Tools), '{1: Tool 12.7mm Drill Bit, 2: Tool my other tool}' )

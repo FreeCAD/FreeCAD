@@ -27,7 +27,6 @@
 #endif
 
 #include "DlgSettingsRayImp.h"
-#include "ui_DlgSettingsRay.h"
 #include <Gui/PrefWidgets.h>
 #include <Base/Console.h>
 
@@ -36,15 +35,14 @@ using namespace RaytracingGui;
 /* TRANSLATOR RaytracingGui::DlgSettingsRayImp */
 
 /**
- *  Constructs a DlgSettingsRayImp which is a child of 'parent', with the
+ *  Constructs a DlgSettings3DViewImp which is a child of 'parent', with the 
  *  name 'name' and widget flags set to 'f' 
  */
 DlgSettingsRayImp::DlgSettingsRayImp( QWidget* parent )
   : PreferencePage( parent )
-  , ui(new Ui_DlgSettingsRay)
 {
-    ui->setupUi(this);
-    ui->prefFileChooser2->setToolTip(tr("The path to the POV-Ray executable, if you want to render from %1").arg(qApp->applicationName()));
+    this->setupUi(this);
+    prefFileChooser2->setToolTip(tr("The path to the POV-Ray executable, if you want to render from %1").arg(qApp->applicationName()));
 }
 
 /** 
@@ -57,32 +55,32 @@ DlgSettingsRayImp::~DlgSettingsRayImp()
 
 void DlgSettingsRayImp::saveSettings()
 {
-    ui->prefFileChooser1->onSave();
-    ui->prefFileChooser2->onSave();
-    ui->prefFileChooser3->onSave();
-    ui->prefLineEdit2->onSave();
-    ui->prefLineEdit3->onSave();
-    ui->prefFloatSpinBox1->onSave();
-    ui->prefCheckBox8->onSave();
-    ui->prefCheckBox9->onSave();
-    ui->prefIntSpinBox1->onSave();
-    ui->prefIntSpinBox2->onSave();
-    ui->prefLineEdit1->onSave();
+    prefFileChooser1->onSave();
+    prefFileChooser2->onSave();
+    prefFileChooser3->onSave();
+    prefLineEdit2->onSave();
+    prefLineEdit3->onSave();
+    prefFloatSpinBox1->onSave();
+    prefCheckBox8->onSave();
+    prefCheckBox9->onSave();
+    prefIntSpinBox1->onSave();
+    prefIntSpinBox2->onSave();
+    prefLineEdit1->onSave();
 }
 
 void DlgSettingsRayImp::loadSettings()
 {
-    ui->prefFileChooser1->onRestore();
-    ui->prefFileChooser2->onRestore();
-    ui->prefFileChooser3->onRestore();
-    ui->prefLineEdit2->onRestore();
-    ui->prefLineEdit3->onRestore();
-    ui->prefFloatSpinBox1->onRestore();
-    ui->prefCheckBox8->onRestore();
-    ui->prefCheckBox9->onRestore();
-    ui->prefIntSpinBox1->onRestore();
-    ui->prefIntSpinBox2->onRestore();
-    ui->prefLineEdit1->onRestore();
+    prefFileChooser1->onRestore();
+    prefFileChooser2->onRestore();
+    prefFileChooser3->onRestore();
+    prefLineEdit2->onRestore();
+    prefLineEdit3->onRestore();
+    prefFloatSpinBox1->onRestore();
+    prefCheckBox8->onRestore();
+    prefCheckBox9->onRestore();
+    prefIntSpinBox1->onRestore();
+    prefIntSpinBox2->onRestore();
+    prefLineEdit1->onRestore();
 }
 
 /**
@@ -91,7 +89,7 @@ void DlgSettingsRayImp::loadSettings()
 void DlgSettingsRayImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        ui->retranslateUi(this);
+        retranslateUi(this);
     }
     else {
         QWidget::changeEvent(e);

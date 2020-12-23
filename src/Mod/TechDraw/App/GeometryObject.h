@@ -75,11 +75,9 @@ TopoDS_Shape TechDrawExport moveShape(const TopoDS_Shape &input,
 gp_Pnt TechDrawExport findCentroid(const TopoDS_Shape &shape,
                         const Base::Vector3d &direction);
 gp_Pnt TechDrawExport findCentroid(const TopoDS_Shape &shape,
-                                      const gp_Ax2 &viewAxis);
+                                      const gp_Ax2 viewAxis);
 Base::Vector3d TechDrawExport findCentroidVec(const TopoDS_Shape &shape,
                         const Base::Vector3d &direction);
-Base::Vector3d TechDrawExport findCentroidVec(const TopoDS_Shape &shape,
-                                              const gp_Ax2& cs);
 
 gp_Ax2 TechDrawExport getViewAxis(const Base::Vector3d origin,
                                   const Base::Vector3d& direction,
@@ -88,9 +86,6 @@ gp_Ax2 TechDrawExport getViewAxis(const Base::Vector3d origin,
                                   const Base::Vector3d& direction,
                                   const Base::Vector3d& xAxis,
                                   const bool flip=true);
-gp_Ax2 TechDrawExport legacyViewAxis1(const Base::Vector3d origin,
-                                     const Base::Vector3d& direction,
-                                     const bool flip=true);
 
 class TechDrawExport GeometryObject
 {
@@ -108,16 +103,11 @@ public:
     const std::vector<BaseGeom *> & getEdgeGeometry() const { return edgeGeom; }
     const std::vector<BaseGeom *> getVisibleFaceEdges(bool smooth, bool seam) const;
     const std::vector<Face *>     & getFaceGeometry() const { return faceGeom; }
-    
-    void setVertexGeometry(std::vector<Vertex*> newVerts) {vertexGeom = newVerts; }
-    void setEdgeGeometry(std::vector<BaseGeom*> newGeoms) {edgeGeom = newGeoms; }
 
     void projectShape(const TopoDS_Shape &input,
-                      const gp_Ax2 &viewAxis);
+                      const gp_Ax2 viewAxis);
     void projectShapeWithPolygonAlgo(const TopoDS_Shape &input,
-                                     const gp_Ax2 &viewAxis);
-    TopoDS_Shape projectFace(const TopoDS_Shape &face,
-                             const gp_Ax2 &CS);
+                                     const gp_Ax2 viewAxis);
 
     void extractGeometry(edgeClass category, bool visible);
     void addFaceGeom(Face * f);
@@ -132,9 +122,6 @@ public:
     double getFocus(void) { return m_focus; }
     void pruneVertexGeom(Base::Vector3d center, double radius);
 
-    //dupl mirrorShape???
-    static TopoDS_Shape invertGeometry(const TopoDS_Shape s);
-
     TopoDS_Shape getVisHard(void)    { return visHard; }
     TopoDS_Shape getVisOutline(void) { return visOutline; }
     TopoDS_Shape getVisSmooth(void)  { return visSmooth; }
@@ -146,27 +133,11 @@ public:
     TopoDS_Shape getHidSeam(void)    { return hidSeam; }
     TopoDS_Shape getHidIso(void)     { return hidIso; }
 
-    void addVertex(TechDraw::Vertex* v);
-    void addEdge(TechDraw::BaseGeom* bg);
-
-
-    int addCosmeticVertex(CosmeticVertex* cv);
-    int addCosmeticVertex(Base::Vector3d pos);
-    int addCosmeticVertex(Base::Vector3d pos,
-                          std::string tagString);
-
-    int addCosmeticEdge(CosmeticEdge* ce);
-    int addCosmeticEdge(Base::Vector3d start,
-                        Base::Vector3d end);
-    int addCosmeticEdge(Base::Vector3d start,
-                        Base::Vector3d end,
-                        std::string tagString);
-    int addCosmeticEdge(TechDraw::BaseGeom* base,
-                        std::string tagString);
-
-    int addCenterLine(TechDraw::BaseGeom* bg,
-                      std::string tag);
-/*                       int s = 0, int si = -1);*/
+    //Are removeXXXXX functions really needed for GO?
+    int addCosmeticVertex(Base::Vector3d pos, int link = -1);
+    int addCosmeticVertex(Base::Vector3d pos, std::string tagString, int link = -1);
+    int addCosmeticEdge(TechDraw::BaseGeom* bg, int s = 0, int si = -1);
+    int addCenterLine(TechDraw::BaseGeom* bg, int s = 0, int si = -1);
 
 protected:
     //HLR output

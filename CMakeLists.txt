@@ -1,12 +1,21 @@
-# april 2020, the oldest we have to support : Ununtu 16.04 LTS (Xenial)
-cmake_minimum_required(VERSION 3.5.1 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.3 FATAL_ERROR)
 
-# policy CMP0072 was introduced with CMake 3.11
-# relates to FindOpenGL module
-# and cache variables OPENGL_gl_LIBRARY, OPENGL_glu_LIBRARY
-if (POLICY CMP0072)
-    cmake_policy(SET CMP0072 OLD)
-endif(POLICY CMP0072)
+if(COMMAND cmake_policy)
+    cmake_policy(SET CMP0003 NEW)
+    if(POLICY CMP0020)
+        cmake_policy(SET CMP0020 NEW)
+    endif(POLICY CMP0020)
+    # added in cmake 3.0
+    if(POLICY CMP0050)
+        cmake_policy(SET CMP0050 NEW)
+    endif(POLICY CMP0050)
+    if (POLICY CMP0045)
+        cmake_policy(SET CMP0045 NEW)
+    endif(POLICY CMP0045)
+    if (POLICY CMP0072)
+        cmake_policy(SET CMP0072 OLD)
+    endif(POLICY CMP0072)
+endif(COMMAND cmake_policy)
 
 find_program(CCACHE_PROGRAM ccache)  #This check should occur before project()
 if(CCACHE_PROGRAM)
@@ -19,15 +28,12 @@ set(PACKAGE_VERSION_NAME "Vulcan")
 set(PACKAGE_VERSION_MAJOR "0")
 set(PACKAGE_VERSION_MINOR "19")
 set(PACKAGE_VERSION_PATCH "16100")
-set(PACKAGE_VERSION_SUFFIX "dev") # either "dev" for development snapshot or "" (empty string)
-set(FREECAD_VERSION_PATCH "0") # number of patch release (e.g. "4" for the 0.18.4 release)
 
 set(FREECAD_VERSION "${PACKAGE_VERSION_MAJOR}.${PACKAGE_VERSION_MINOR}")
 set(PACKAGE_VERSION "${PACKAGE_VERSION_MAJOR}.${PACKAGE_VERSION_MINOR}.${PACKAGE_VERSION_PATCH}")
 set(PACKAGE_STRING "${PROJECT_NAME} ${PACKAGE_VERSION}")
 
 # include local modules
-include(CheckCXXCompilerFlag)
 include(AddFileDependencies)
 include(cMake/FreeCadMacros.cmake)
 # include helper functions/macros
@@ -40,7 +46,6 @@ ConfigureCMakeVariables()
 InitializeFreeCADBuildOptions()
 CheckInterModuleDependencies()
 FreeCADLibpackChecks()
-SetupDoxygen()
 if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
     SetupPython()
     SetupPCL()

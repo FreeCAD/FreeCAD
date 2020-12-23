@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+
 # ***************************************************************************
+# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -32,47 +34,14 @@ other than PathLog, then it probably doesn't belong here.
 
 import six
 import PathScripts.PathLog as PathLog
-import PySide
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+LOGLEVEL = False
 
-def translate(context, text, disambig=None):
-    return PySide.QtCore.QCoreApplication.translate(context, text, disambig)
-
-def _getProperty(obj, prop):
-    o = obj
-    attr = obj
-    name = None
-    for name in prop.split('.'):
-        o = attr
-        if not hasattr(o, name):
-            break
-        attr = getattr(o, name)
-
-    if o == attr:
-        PathLog.warning(translate('PathGui', "%s has no property %s (%s))") % (obj.Label, prop, name))
-        return (None, None, None)
-
-    #PathLog.debug("found property %s of %s (%s: %s)" % (prop, obj.Label, name, attr))
-    return(o, attr, name)
-
-def getProperty(obj, prop):
-    '''getProperty(obj, prop) ... answer obj's property defined by its canonical name.'''
-    o, attr, name = _getProperty(obj, prop) # pylint: disable=unused-variable
-    return attr
-
-def getPropertyValueString(obj, prop):
-    '''getPropertyValueString(obj, prop) ... answer a string representation of an object's property's value.'''
-    attr = getProperty(obj, prop)
-    if hasattr(attr, 'UserString'):
-        return attr.UserString
-    return str(attr)
-
-def setProperty(obj, prop, value):
-    '''setProperty(obj, prop, value) ... set the property value of obj's property defined by its canonical name.'''
-    o, attr, name = _getProperty(obj, prop) # pylint: disable=unused-variable
-    if o and name:
-        setattr(o, name, value)
+if LOGLEVEL:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 # NotValidBaseTypeIds = ['Sketcher::SketchObject']
 NotValidBaseTypeIds = []
@@ -83,9 +52,6 @@ def isValidBaseObject(obj):
     if hasattr(obj, 'getParentGeoFeatureGroup') and obj.getParentGeoFeatureGroup():
         # Can't link to anything inside a geo feature group anymore
         PathLog.debug("%s is inside a geo feature group" % obj.Label)
-        return False
-    if hasattr(obj, 'BitBody') and hasattr(obj, 'BitShape'):
-        # ToolBit's are not valid base objects
         return False
     if obj.TypeId in NotValidBaseTypeIds:
         PathLog.debug("%s is blacklisted (%s)" % (obj.Label, obj.TypeId))
@@ -102,19 +68,15 @@ def isSolid(obj):
     shape = Part.getShape(obj)
     return not shape.isNull() and shape.Volume and shape.isClosed()
 
-def opProperty(op, prop):
-    '''opProperty(op, prop) ... return the value of property prop of the underlying operation (or None if prop does not exist)'''
-    if hasattr(op, prop):
-        return getattr(op, prop)
-    if hasattr(op, 'Base'):
-        return opProperty(op.Base, prop)
-    return None
-
 def toolControllerForOp(op):
     '''toolControllerForOp(op) ... return the tool controller used by the op.
     If the op doesn't have its own tool controller but has a Base object, return its tool controller.
     Otherwise return None.'''
-    return opProperty(op, 'ToolController')
+    if hasattr(op, 'ToolController'):
+        return op.ToolController
+    if hasattr(op, 'Base'):
+        return toolControllerForOp(op.Base)
+    return None
 
 def getPublicObject(obj):
     '''getPublicObject(obj) ... returns the object which should be used to reference a feature of the given object.'''

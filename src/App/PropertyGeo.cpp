@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -643,10 +643,6 @@ void PropertyPlacement::setPathValue(const ObjectIdentifier &path, const boost::
             avalue =  boost::any_cast<short>(value);
         else if (value.type() == typeid(unsigned short))
             avalue =  boost::any_cast<unsigned short>(value);
-        else if (value.type() == typeid(long))
-            avalue =  boost::any_cast<long>(value);
-        else if (value.type() == typeid(unsigned long))
-            avalue =  boost::any_cast<unsigned long>(value);
         else
             throw std::bad_cast();
 

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,7 +24,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <algorithm>
 # include <array>
 # include <cmath>
 # include <cstdlib>
@@ -78,7 +77,6 @@
 # include <BRepOffsetAPI_ThruSections.hxx>
 # include <BRepPrimAPI_MakePrism.hxx>
 # include <BRepPrimAPI_MakeRevol.hxx>
-# include <BRepPrimAPI_MakeTorus.hxx>
 # include <BRepTools.hxx>
 # include <BRepTools_ReShape.hxx>
 # include <BRepTools_ShapeSet.hxx>
@@ -145,7 +143,6 @@
 # include <Standard_Failure.hxx>
 # include <StlAPI_Writer.hxx>
 # include <Standard_Failure.hxx>
-# include <gp_Circ.hxx>
 # include <gp_GTrsf.hxx>
 # include <gp_Pln.hxx>
 # include <ShapeAnalysis_Shell.hxx>
@@ -171,8 +168,6 @@
 # include <APIHeaderSection_MakeHeader.hxx>
 # include <ShapeAnalysis_FreeBoundsProperties.hxx>
 # include <ShapeAnalysis_FreeBoundData.hxx>
-# include <BRepLProp_SLProps.hxx>
-# include <BRepGProp_Face.hxx>
 
 #if OCC_VERSION_HEX < 0x070300
 # include <BRepAlgo_Fuse.hxx>
@@ -203,11 +198,6 @@
 #include "TopoShapeFacePy.h"
 #include "TopoShapeEdgePy.h"
 #include "TopoShapeVertexPy.h"
-#include "TopoShapeWirePy.h"
-#include "TopoShapeShellPy.h"
-#include "TopoShapeSolidPy.h"
-#include "TopoShapeCompoundPy.h"
-#include "TopoShapeCompSolidPy.h"
 #include "ProgressIndicator.h"
 #include "modelRefine.h"
 #include "Tools.h"
@@ -242,23 +232,6 @@ const char* BRepBuilderAPI_FaceErrorText(BRepBuilderAPI_FaceError et)
     }
 }
 
-/**
- * Derive a roughly proportional default angular deflection from a linear
- * tolerance. This is a work-around for unreliable linear tolerance enforcement
- * in OCC, especially on nurbs surfaces. The intention is to provide sane
- * baseline (default) behavior with linear tolerances only, until OCC is fixed.
- * If needed for specific use cases, explicit angular deflection parameters can
- * still be exposed separately.
- */
-inline double defaultAngularDeflection(double linearTolerance) {
-    // Default OCC angular deflection is 0.5 radians, or about 28.6 degrees.
-    // That is a bit coarser than necessary for performance, so we default to at
-    // most 0.1 radians, or 5.7 degrees. We also do not go finer than 0.005, or
-    // roughly 0.28 degree angular resolution, to avoid performance tanking
-    // completely at very fine resolutions.
-    return std::min(0.1, linearTolerance * 5 + 0.005);
-}
-
 // ------------------------------------------------
 
 NullShapeException::NullShapeException()
@@ -276,6 +249,11 @@ NullShapeException::NullShapeException(const std::string& sMessage)
 {
 }
 
+NullShapeException::NullShapeException(const NullShapeException &inst)
+  : ValueError(inst)
+{
+}
+
 // ------------------------------------------------
 
 BooleanException::BooleanException()
@@ -290,6 +268,11 @@ BooleanException::BooleanException(const char * sMessage)
 
 BooleanException::BooleanException(const std::string& sMessage)
   : CADKernelError(sMessage)
+{
+}
+
+BooleanException::BooleanException(const BooleanException &inst)
+  : CADKernelError(inst)
 {
 }
 
@@ -390,7 +373,7 @@ TopoDS_Shape TopoShape::getSubShape(TopAbs_ShapeEnum type, int index, bool silen
 unsigned long TopoShape::countSubShapes(const char* Type) const
 {
     if(!Type) return 0;
-    if(strcmp(Type,"SubShape")==0)
+    if(strcmp(Type,"SubShape")==0) 
         return countSubShapes(TopAbs_SHAPE);
     auto type = shapeType(Type,true);
     if(type == TopAbs_SHAPE)
@@ -423,35 +406,6 @@ bool TopoShape::hasSubShape(TopAbs_ShapeEnum type) const {
 bool TopoShape::hasSubShape(const char *Type) const {
     auto idx = shapeTypeAndIndex(Type);
     return idx.second>0 && idx.second<=(int)countSubShapes(idx.first);
-}
-
-template<class T>
-static inline std::vector<T> _getSubShapes(const TopoDS_Shape &s, TopAbs_ShapeEnum type) {
-    std::vector<T> shapes;
-    if(s.IsNull())
-        return shapes;
-
-    if(type == TopAbs_SHAPE) {
-        for(TopoDS_Iterator it(s);it.More();it.Next())
-            shapes.emplace_back(it.Value());
-        return shapes;
-    }
-
-    TopTools_IndexedMapOfShape anIndices;
-    TopExp::MapShapes(s, type, anIndices);
-    int count = anIndices.Extent();
-    shapes.reserve(count);
-    for(int i=1;i<=count;++i)
-        shapes.emplace_back(anIndices.FindKey(i));
-    return shapes;
-}
-
-std::vector<TopoShape> TopoShape::getSubTopoShapes(TopAbs_ShapeEnum type) const {
-    return _getSubShapes<TopoShape>(_Shape,type);
-}
-
-std::vector<TopoDS_Shape> TopoShape::getSubShapes(TopAbs_ShapeEnum type) const {
-    return _getSubShapes<TopoDS_Shape>(_Shape,type);
 }
 
 static std::array<std::string,TopAbs_SHAPE> _ShapeNames;
@@ -549,62 +503,6 @@ const std::string &TopoShape::shapeName(bool silent) const {
 PyObject * TopoShape::getPySubShape(const char* Type, bool silent) const
 {
     return Py::new_reference_to(shape2pyshape(getSubShape(Type,silent)));
-}
-
-PyObject * TopoShape::getPyObject()
-{
-    Base::PyObjectBase* prop = nullptr;
-    if (_Shape.IsNull()) {
-        prop = new TopoShapePy(new TopoShape(_Shape));
-    }
-    else {
-        TopAbs_ShapeEnum type = _Shape.ShapeType();
-        switch (type)
-        {
-        case TopAbs_COMPOUND:
-            prop = new TopoShapeCompoundPy(new TopoShape(_Shape));
-            break;
-        case TopAbs_COMPSOLID:
-            prop = new TopoShapeCompSolidPy(new TopoShape(_Shape));
-            break;
-        case TopAbs_SOLID:
-            prop = new TopoShapeSolidPy(new TopoShape(_Shape));
-            break;
-        case TopAbs_SHELL:
-            prop = new TopoShapeShellPy(new TopoShape(_Shape));
-            break;
-        case TopAbs_FACE:
-            prop = new TopoShapeFacePy(new TopoShape(_Shape));
-            break;
-        case TopAbs_WIRE:
-            prop = new TopoShapeWirePy(new TopoShape(_Shape));
-            break;
-        case TopAbs_EDGE:
-            prop = new TopoShapeEdgePy(new TopoShape(_Shape));
-            break;
-        case TopAbs_VERTEX:
-            prop = new TopoShapeVertexPy(new TopoShape(_Shape));
-            break;
-        case TopAbs_SHAPE:
-        default:
-            prop = new TopoShapePy(new TopoShape(_Shape));
-            break;
-        }
-    }
-
-    return prop;
-}
-
-void TopoShape::setPyObject(PyObject* obj)
-{
-    if (PyObject_TypeCheck(obj, &TopoShapePy::Type)) {
-        this->_Shape = static_cast<TopoShapePy*>(obj)->getTopoShapePtr()->getShape();
-    }
-    else {
-        std::string error = std::string("type must be 'Shape', not ");
-        error += obj->ob_type->tp_name;
-        throw Base::TypeError(error);
-    }
 }
 
 void TopoShape::operator = (const TopoShape& sh)
@@ -804,21 +702,17 @@ void TopoShape::importIges(const char *FileName)
         if (aReader.ReadFile(encodeFilename(FileName).c_str()) != IFSelect_RetDone)
             throw Base::FileException("Error in reading IGES");
 
-#if OCC_VERSION_HEX < 0x070500
         Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
         pi->NewScope(100, "Reading IGES file...");
         pi->Show();
         aReader.WS()->MapReader()->SetProgress(pi);
-#endif
 
         // make brep
         aReader.ClearShapes();
         aReader.TransferRoots();
         // one shape that contains all subshapes
         this->_Shape = aReader.OneShape();
-#if OCC_VERSION_HEX < 0x070500
         pi->EndScope();
-#endif
     }
     catch (Standard_Failure& e) {
         throw Base::CADKernelError(e.GetMessageString());
@@ -832,20 +726,16 @@ void TopoShape::importStep(const char *FileName)
         if (aReader.ReadFile(encodeFilename(FileName).c_str()) != IFSelect_RetDone)
             throw Base::FileException("Error in reading STEP");
 
-#if OCC_VERSION_HEX < 0x070500
         Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
         aReader.WS()->MapReader()->SetProgress(pi);
         pi->NewScope(100, "Reading STEP file...");
         pi->Show();
-#endif
 
         // Root transfers
         aReader.TransferRoots();
         // one shape that contains all subshapes
         this->_Shape = aReader.OneShape();
-#if OCC_VERSION_HEX < 0x070500
         pi->EndScope();
-#endif
     }
     catch (Standard_Failure& e) {
         throw Base::CADKernelError(e.GetMessageString());
@@ -858,7 +748,7 @@ void TopoShape::importBrep(const char *FileName)
         // read brep-file
         BRep_Builder aBuilder;
         TopoDS_Shape aShape;
-#if OCC_VERSION_HEX >= 0x060300 && OCC_VERSION_HEX < 0x070500
+#if OCC_VERSION_HEX >= 0x060300
         Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
         pi->NewScope(100, "Reading BREP file...");
         pi->Show();
@@ -880,19 +770,16 @@ void TopoShape::importBrep(std::istream& str, int indicator)
         // read brep-file
         BRep_Builder aBuilder;
         TopoDS_Shape aShape;
-#if OCC_VERSION_HEX >= 0x060300 && OCC_VERSION_HEX < 0x070500
+#if OCC_VERSION_HEX >= 0x060300
         if (indicator) {
             Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
             pi->NewScope(100, "Reading BREP file...");
             pi->Show();
             BRepTools::Read(aShape,str,aBuilder,pi);
             pi->EndScope();
-        }
-        else {
+        } else
             BRepTools::Read(aShape,str,aBuilder);
-        }
 #else
-        (void)indicator;
         BRepTools::Read(aShape,str,aBuilder);
 #endif
         this->_Shape = aShape;
@@ -945,7 +832,7 @@ void TopoShape::write(const char *FileName) const
     }
     else if (File.hasExtension("stl")) {
         // read brep-file
-        exportStl(File.filePath().c_str(), 0.01);
+        exportStl(File.filePath().c_str(),0);
     }
     else{
         throw Base::FileException("Unknown extension");
@@ -981,20 +868,16 @@ void TopoShape::exportStep(const char *filename) const
 
         const Handle(XSControl_TransferWriter)& hTransferWriter = aWriter.WS()->TransferWriter();
         Handle(Transfer_FinderProcess) hFinder = hTransferWriter->FinderProcess();
-
-#if OCC_VERSION_HEX < 0x070500
         Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
         hFinder->SetProgress(pi);
         pi->NewScope(100, "Writing STEP file...");
         pi->Show();
-#endif
 
         if (aWriter.Transfer(this->_Shape, STEPControl_AsIs) != IFSelect_RetDone)
             throw Base::FileException("Error in transferring STEP");
 
         APIHeaderSection_MakeHeader makeHeader(aWriter.Model());
-        // https://forum.freecadweb.org/viewtopic.php?f=8&t=52967
-        //makeHeader.SetName(new TCollection_HAsciiString((Standard_CString)(encodeFilename(filename).c_str())));
+        makeHeader.SetName(new TCollection_HAsciiString((Standard_CString)(encodeFilename(filename).c_str())));
         makeHeader.SetAuthorValue (1, new TCollection_HAsciiString("FreeCAD"));
         makeHeader.SetOrganizationValue (1, new TCollection_HAsciiString("FreeCAD"));
         makeHeader.SetOriginatingSystem(new TCollection_HAsciiString("FreeCAD"));
@@ -1002,9 +885,7 @@ void TopoShape::exportStep(const char *filename) const
 
         if (aWriter.Write(encodeFilename(filename).c_str()) != IFSelect_RetDone)
             throw Base::FileException("Writing of STEP failed");
-#if OCC_VERSION_HEX < 0x070500
         pi->EndScope();
-#endif
     }
     catch (Standard_Failure& e) {
         throw Base::CADKernelError(e.GetMessageString());
@@ -1059,11 +940,7 @@ void TopoShape::exportStl(const char *filename, double deflection) const
         writer.SetDeflection(deflection);
     }
 #else
-    BRepMesh_IncrementalMesh aMesh(this->_Shape, deflection,
-                                   /*isRelative*/ Standard_False,
-                                   /*theAngDeflection*/
-                                   defaultAngularDeflection(deflection),
-                                   /*isInParallel*/ true);
+    BRepMesh_IncrementalMesh aMesh(this->_Shape, deflection);
 #endif
     writer.Write(this->_Shape,encodeFilename(filename).c_str());
 }
@@ -1082,11 +959,7 @@ void TopoShape::exportFaceSet(double dev, double ca,
     bool supportFaceColors = (numFaces == colors.size());
 
     std::size_t index=0;
-    BRepMesh_IncrementalMesh MESH(this->_Shape, dev,
-                                  /*isRelative*/ Standard_False,
-                                  /*theAngDeflection*/
-                                  defaultAngularDeflection(dev),
-                                  /*isInParallel*/ true);
+    BRepMesh_IncrementalMesh MESH(this->_Shape,dev);
     for (ex.Init(this->_Shape, TopAbs_FACE); ex.More(); ex.Next(), index++) {
         // get the shape and mesh it
         const TopoDS_Face& aFace = TopoDS::Face(ex.Current());
@@ -2292,48 +2165,6 @@ TopoDS_Shape TopoShape::makeSweep(const TopoDS_Shape& profile, double tol, int f
     return mkBuilder.Face();
 }
 
-TopoDS_Shape TopoShape::makeTorus(Standard_Real radius1, Standard_Real radius2,
-                                  Standard_Real angle1, Standard_Real angle2,
-                                  Standard_Real angle3, Standard_Boolean isSolid) const
-{
-    // https://forum.freecadweb.org/viewtopic.php?f=3&t=1445
-    // https://forum.freecadweb.org/viewtopic.php?f=3&t=52719
-#if 1
-    // Build a torus
-    gp_Circ circle;
-    circle.SetRadius(radius2);
-    gp_Pnt pos(radius1,0,0);
-    gp_Dir dir(0,1,0);
-    circle.SetAxis(gp_Ax1(pos, dir));
-
-    BRepBuilderAPI_MakeEdge mkEdge(circle, Base::toRadians<double>(angle1),
-                                           Base::toRadians<double>(angle2));
-    BRepBuilderAPI_MakeWire mkWire;
-    mkWire.Add(mkEdge.Edge());
-
-    if ((angle1 > -180.0 || angle2 < 180.0) && isSolid) {
-        BRepBuilderAPI_MakeVertex mkVertex(pos);
-        BRepBuilderAPI_MakeEdge mkEdge1(mkVertex.Vertex(), mkEdge.Vertex1());
-        BRepBuilderAPI_MakeEdge mkEdge2(mkVertex.Vertex(), mkEdge.Vertex2());
-        mkWire.Add(mkEdge1.Edge());
-        mkWire.Add(mkEdge2.Edge());
-    }
-
-    BRepBuilderAPI_MakeFace mkFace(mkWire.Wire());
-    BRepPrimAPI_MakeRevol mkRevol(mkFace.Face(), gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)),
-        Base::toRadians<double>(angle3), Standard_True);
-    return mkRevol.Shape();
-#else
-    (void)isSolid;
-    BRepPrimAPI_MakeTorus mkTorus(radius1,
-                                  radius2,
-                                  Base::toRadians<double>(angle1),
-                                  Base::toRadians<double>(angle2),
-                                  Base::toRadians<double>(angle3));
-    return mkTorus.Solid();
-#endif
-}
-
 TopoDS_Shape TopoShape::makeHelix(Standard_Real pitch, Standard_Real height,
                                   Standard_Real radius, Standard_Real angle,
                                   Standard_Boolean leftHanded,
@@ -2391,7 +2222,7 @@ TopoDS_Shape TopoShape::makeHelix(Standard_Real pitch, Standard_Real height,
     TopoDS_Edge edgeOnSurf = BRepBuilderAPI_MakeEdge(segm , surf);
     TopoDS_Wire wire = BRepBuilderAPI_MakeWire(edgeOnSurf);
     BRepLib::BuildCurves3d(wire);
-    return TopoDS_Shape(std::move(wire));
+    return std::move(wire);
 }
 
 //***********
@@ -2477,7 +2308,7 @@ TopoDS_Shape TopoShape::makeLongHelix(Standard_Real pitch, Standard_Real height,
 
     TopoDS_Wire wire = mkWire.Wire();
     BRepLib::BuildCurves3d(wire);
-    return TopoDS_Shape(std::move(wire));
+    return std::move(wire);
 }
 
 TopoDS_Shape TopoShape::makeThread(Standard_Real pitch,
@@ -3095,10 +2926,9 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
         TopoDS_Compound result;
         BRep_Builder builder;
         builder.MakeCompound(result);
-        for(TopoDS_Shape &sh : shapesToReturn) {
+        for(TopoDS_Shape &sh : shapesToReturn)
             builder.Add(result, sh);
-        }
-        return TopoDS_Shape(std::move(result));
+        return std::move(result);
     }
     else {
         return shapesToReturn[0];
@@ -3175,9 +3005,6 @@ TopoDS_Shape TopoShape::mirror(const gp_Ax2& ax2) const
 
 TopoDS_Shape TopoShape::toNurbs() const
 {
-    if (this->_Shape.IsNull())
-        Standard_Failure::Raise("Cannot convert null shape to NURBS");
-
     BRepBuilderAPI_NurbsConvert mkNurbs(this->_Shape);
     return mkNurbs.Shape();
 }
@@ -3348,7 +3175,7 @@ TopoDS_Shape TopoShape::removeSplitter() const
                 builder.Add(comp, xp.Current());
         }
 
-        return TopoDS_Shape(std::move(comp));
+        return std::move(comp);
     }
 
     return _Shape;
@@ -3367,14 +3194,8 @@ void TopoShape::getDomains(std::vector<Domain>& domains) const
 
         TopLoc_Location loc;
         Handle(Poly_Triangulation) theTriangulation = BRep_Tool::Triangulation(face, loc);
-        if (theTriangulation.IsNull()) {
-            // For a face that cannot be meshed append an empty domain.
-            // It's important for some algorithms (e.g. color mapping) that the numbers of
-            // faces and domains match
-            Domain domain;
-            domains.push_back(domain);
+        if (theTriangulation.IsNull())
             continue;
-        }
 
         Domain domain;
         // copy the points
@@ -3385,7 +3206,7 @@ void TopoShape::getDomains(std::vector<Domain>& domains) const
             p.Transform(loc.Transformation());
             Standard_Real X, Y, Z;
             p.Coord (X, Y, Z);
-            domain.points.emplace_back(X, Y, Z);
+            domain.points.push_back(Base::Vector3d(X, Y, Z));
         }
 
         // copy the triangles
@@ -3454,11 +3275,7 @@ void TopoShape::getFaces(std::vector<Base::Vector3d> &aPoints,
         return;
 
     // get the meshes of all faces and then merge them
-    BRepMesh_IncrementalMesh aMesh(this->_Shape, accuracy,
-                                   /*isRelative*/ Standard_False,
-                                   /*theAngDeflection*/
-                                   defaultAngularDeflection(accuracy),
-                                   /*isInParallel*/ true);
+    BRepMesh_IncrementalMesh aMesh(this->_Shape, accuracy);
     std::vector<Domain> domains;
     getDomains(domains);
 
@@ -3582,20 +3399,13 @@ void TopoShape::setFaces(const std::vector<Base::Vector3d> &Points,
 
     aSewingTool.Load(aComp);
 
-#if OCC_VERSION_HEX < 0x070500
     Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
     pi->NewScope(100, "Sewing Faces...");
     pi->Show();
 
     aSewingTool.Perform(pi);
-#else
-    aSewingTool.Perform();
-#endif
-
     _Shape = aSewingTool.SewedShape();
-#if OCC_VERSION_HEX < 0x070500
     pi->EndScope();
-#endif
     if (_Shape.IsNull())
         _Shape = aComp;
 }
@@ -3614,7 +3424,7 @@ void TopoShape::getPoints(std::vector<Base::Vector3d> &Points,
     for (TopExp_Explorer xp(_Shape, TopAbs_VERTEX, TopAbs_EDGE); xp.More(); xp.Next()) {
         gp_Pnt p = BRep_Tool::Pnt(TopoDS::Vertex(xp.Current()));
         Points.push_back(Base::convertTo<Base::Vector3d>(p));
-        Normals.emplace_back(0,0,0);
+        Normals.push_back(Base::Vector3d(0,0,0));
     }
 
     // sample inner points of all free edges
@@ -3626,7 +3436,7 @@ void TopoShape::getPoints(std::vector<Base::Vector3d> &Points,
             for (int i=1; i<=nbPoints; i++) {
                 gp_Pnt p = curve.Value (discretizer.Parameter(i));
                 Points.push_back(Base::convertTo<Base::Vector3d>(p));
-                Normals.emplace_back(0,0,0);
+                Normals.push_back(Base::Vector3d(0,0,0));
             }
         }
     }
@@ -3700,7 +3510,7 @@ void TopoShape::getPoints(std::vector<Base::Vector3d> &Points,
                         Normals.push_back(Base::convertTo<Base::Vector3d>(normal));
                     }
                     else {
-                        Normals.emplace_back(0,0,0);
+                        Normals.push_back(Base::Vector3d(0,0,0));
                     }
                 }
             }
@@ -3797,7 +3607,7 @@ void TopoShape::getLinesFromSubelement(const Data::Segment* element,
                     vertices.emplace_back(V.X(),V.Y(),V.Z());
                 }
             }
-
+            
             if(line_start+1 < vertices.size()) {
                 lines.emplace_back();
                 lines.back().I1 = line_start;
@@ -4009,7 +3819,7 @@ TopoDS_Shape TopoShape::makeShell(const TopoDS_Shape& input) const
 #define HANDLE_NULL_INPUT _HANDLE_NULL_SHAPE("Null input shape",true)
 #define WARN_NULL_INPUT _HANDLE_NULL_SHAPE("Null input shape",false)
 
-TopoShape &TopoShape::makEWires(const TopoShape &shape, const char *op, bool fix, double tol)
+TopoShape &TopoShape::makEWires(const TopoShape &shape, const char *op, bool fix, double tol) 
 {
     _Shape.Nullify();
 
@@ -4085,7 +3895,7 @@ TopoShape &TopoShape::makECompound(const std::vector<TopoShape> &shapes, const c
     (void)op;
     _Shape.Nullify();
 
-    if(shapes.empty())
+    if(shapes.empty()) 
         HANDLE_NULL_INPUT;
 
     if(!force && shapes.size()==1) {
@@ -4103,9 +3913,9 @@ TopoShape &TopoShape::makECompound(const std::vector<TopoShape> &shapes, const c
             continue;
         }
         builder.Add(comp,s.getShape());
-        ++count;
+        ++count; 
     }
-    if(!count)
+    if(!count) 
         HANDLE_NULL_SHAPE;
     _Shape = comp;
     return *this;
@@ -4114,8 +3924,8 @@ TopoShape &TopoShape::makECompound(const std::vector<TopoShape> &shapes, const c
 TopoShape &TopoShape::makEFace(const TopoShape &shape, const char *op, const char *maker)
 {
     std::vector<TopoShape> shapes;
-    if(shape.shapeType() == TopAbs_COMPOUND) {
-        for(TopoDS_Iterator it(shape.getShape());it.More();it.Next())
+    if(shape.getShape().ShapeType() == TopAbs_COMPOUND) {
+        for(TopoDS_Iterator it(_Shape);it.More();it.Next())
             shapes.push_back(it.Value());
     } else
         shapes.push_back(shape);
@@ -4144,7 +3954,7 @@ TopoShape &TopoShape::makERefine(const TopoShape &shape, const char *op, bool no
     (void)op;
     _Shape.Nullify();
     if(shape.isNull()) {
-        if(!no_fail)
+        if(!no_fail) 
             HANDLE_NULL_SHAPE;
         return *this;
     }
@@ -4163,13 +3973,26 @@ bool TopoShape::findPlane(gp_Pln &pln, double tol) const {
     if(_Shape.IsNull())
         return false;
     TopoDS_Shape shape = _Shape;
-    TopExp_Explorer exp(_Shape,TopAbs_EDGE);
+    TopExp_Explorer exp(_Shape,TopAbs_FACE);
     if(exp.More()) {
-        TopoDS_Shape edge = exp.Current();
+        auto face = exp.Current();
         exp.Next();
-        if (!exp.More()) {
-            // To deal with OCCT bug of wrong edge transformation
-            shape = BRepBuilderAPI_Copy(_Shape).Shape();
+        if(!exp.More()) {
+            BRepAdaptor_Surface adapt(TopoDS::Face(face));
+            if(adapt.GetType() != GeomAbs_Plane)
+                return false;
+            pln = adapt.Plane();
+            return true;
+        }
+    }else{
+        TopExp_Explorer exp(_Shape,TopAbs_EDGE);
+        if(exp.More()) {
+            TopoDS_Shape edge = exp.Current();
+            exp.Next();
+            if(!exp.More()) {
+                // To deal with OCCT bug of wrong edge transformation
+                shape = BRepBuilderAPI_Copy(edge).Shape();
+            }
         }
     }
     try {
@@ -4177,28 +4000,10 @@ bool TopoShape::findPlane(gp_Pln &pln, double tol) const {
         if (!finder.Found())
             return false;
         pln = GeomAdaptor_Surface(finder.Surface()).Plane();
-
-        // To make the returned plane normal more stable, if the shape has any
-        // face, use the normal of the first face.
-        TopExp_Explorer exp(shape, TopAbs_FACE);
-        if(exp.More()) {
-            BRepAdaptor_Surface adapt(TopoDS::Face(exp.Current()));
-            double u = adapt.FirstUParameter()
-                + (adapt.LastUParameter() - adapt.FirstUParameter())/2.;
-            double v = adapt.FirstVParameter()
-                + (adapt.LastVParameter() - adapt.FirstVParameter())/2.;
-            BRepLProp_SLProps prop(adapt,u,v,2,Precision::Confusion());
-            if(prop.IsNormalDefined()) {
-                gp_Pnt pnt; gp_Vec vec;
-                // handles the orientation state of the shape
-                BRepGProp_Face(TopoDS::Face(exp.Current())).Normal(u,v,pnt,vec);
-                pln = gp_Pln(pnt, gp_Dir(vec));
-            }
-        }
         return true;
     }catch (Standard_Failure &e) {
         // For some reason the above BRepBuilderAPI_Copy failed to copy
-        // the geometry of some edge, causing exception with message
+        // the geometry of some edge, causing exception with message 
         // BRepAdaptor_Curve::No geometry. However, without the above
         // copy, circular edges often have the wrong transformation!
         FC_LOG("failed to find surface: " << e.GetMessageString());
@@ -4206,37 +4011,10 @@ bool TopoShape::findPlane(gp_Pln &pln, double tol) const {
     }
 }
 
-bool TopoShape::isInfinite() const
-{
-    if (_Shape.IsNull())
-        return false;
-
-    try {
-        // If the shape is empty an exception may be thrown
-        Bnd_Box bounds;
-        BRepBndLib::Add(_Shape, bounds);
-        bounds.SetGap(0.0);
-        Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
-        bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
-
-        if (Precision::IsInfinite(xMax - xMin))
-            return true;
-        if (Precision::IsInfinite(yMax - yMin))
-            return true;
-        if (Precision::IsInfinite(zMax - zMin))
-            return true;
-
-        return false;
-    }
-    catch (Standard_Failure&) {
-        return false;
-    }
-}
-
 bool TopoShape::isCoplanar(const TopoShape &other, double tol) const {
     if(isNull() || other.isNull())
         return false;
-    if(_Shape.IsEqual(other._Shape))
+    if(_Shape.IsEqual(other._Shape)) 
         return true;
     gp_Pln pln1,pln2;
     if(!findPlane(pln1,tol) || !other.findPlane(pln2,tol))
@@ -4246,7 +4024,7 @@ bool TopoShape::isCoplanar(const TopoShape &other, double tol) const {
     return pln1.Position().IsCoplanar(pln2.Position(),tol,tol);
 }
 
-bool TopoShape::_makETransform(const TopoShape &shape,
+bool TopoShape::_makETransform(const TopoShape &shape, 
         const Base::Matrix4D &rclTrf, const char *op, bool checkScale, bool copy)
 {
     if(checkScale) {
@@ -4261,7 +4039,7 @@ bool TopoShape::_makETransform(const TopoShape &shape,
 
 TopoShape &TopoShape::makETransform(const TopoShape &shape, const gp_Trsf &trsf, const char *op, bool copy) {
     // resetElementMap();
-
+    
     if(!copy) {
         // OCCT checks the ScaleFactor against gp::Resolution() which is DBL_MIN!!!
         copy = trsf.ScaleFactor()*trsf.HVectorialPart().Determinant() < 0. ||
@@ -4288,7 +4066,7 @@ TopoShape &TopoShape::makETransform(const TopoShape &shape, const gp_Trsf &trsf,
     return *this;
 }
 
-TopoShape &TopoShape::makEGTransform(const TopoShape &shape,
+TopoShape &TopoShape::makEGTransform(const TopoShape &shape, 
         const Base::Matrix4D &rclTrf, const char *op, bool copy)
 {
     (void)op;

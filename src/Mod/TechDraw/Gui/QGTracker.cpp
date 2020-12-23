@@ -29,7 +29,6 @@
 #include <QEvent>
 #include <QMouseEvent>
 #include <QPainter>
-#include <QPainterPath>
 #include <QPainterPathStroker>
 #include <QStyleOptionGraphicsItem>
 #include <QKeyEvent>
@@ -258,12 +257,11 @@ void QGTracker::onMousePress(QPointF pos)
                 break;
         }
     } else if (m_points.size() == 1) {   //first point selected  
-        //just return pos to caller
         getPickedQGIV(pos);
-        setCursor(Qt::CrossCursor);  //why cross??
+        setCursor(Qt::CrossCursor);
 //        Q_EMIT qViewPicked(pos, m_qgParent);   //not in use yet.
         if (mode == TrackerMode::Point) {
-            setPoint(m_points);  //first point is mouse click scene pos
+            setPoint(m_points);
             terminateDrawing();
         }
     }

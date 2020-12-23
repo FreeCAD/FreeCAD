@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+
 # ***************************************************************************
+# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -29,7 +31,7 @@ from PySide import QtCore, QtGui
 
 __title__ = "Base for Circular Hole based operations' UI"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "http://www.freecadweb.org"
 __doc__ = "Implementation of circular hole specific base geometry page controller."
 
 LOGLEVEL = False
@@ -49,8 +51,6 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
     DataFeatureName = QtCore.Qt.ItemDataRole.UserRole
     DataObject      = QtCore.Qt.ItemDataRole.UserRole + 1
     DataObjectSub   = QtCore.Qt.ItemDataRole.UserRole + 2
-
-    InitBase = False
 
     def getForm(self):
         '''getForm() ... load and return page'''

@@ -1,5 +1,5 @@
 /******************************************************************************
- *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
+ *   Copyright (c)2012 Jan Rheinlaender <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
  *   This file is part of the FreeCAD CAx development system.                 *
  *                                                                            *
@@ -110,16 +110,10 @@ void TaskMirroredParameters::setupUI()
 
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
-    action->setShortcut(QKeySequence::Delete);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
-    // display shortcut behind the context menu entry
-    action->setShortcutVisibleInContextMenu(true);
-#endif
+    action->setShortcut(QString::fromLatin1("Del"));
     ui->listWidgetFeatures->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onFeatureDeleted()));
     ui->listWidgetFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
-    connect(ui->listWidgetFeatures->model(),
-        SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), this, SLOT(indexesMoved()));
 
     connect(ui->comboPlane, SIGNAL(activated(int)),
             this, SLOT(onPlaneChanged(int)));
@@ -184,23 +178,6 @@ void TaskMirroredParameters::updateUI()
     }
 
     blockUpdate = false;
-}
-
-void TaskMirroredParameters::addObject(App::DocumentObject* obj)
-{
-    QString label = QString::fromUtf8(obj->Label.getValue());
-    QString objectName = QString::fromLatin1(obj->getNameInDocument());
-
-    QListWidgetItem* item = new QListWidgetItem();
-    item->setText(label);
-    item->setData(Qt::UserRole, objectName);
-    ui->listWidgetFeatures->addItem(item);
-}
-
-void TaskMirroredParameters::removeObject(App::DocumentObject* obj)
-{
-    QString label = QString::fromUtf8(obj->Label.getValue());
-    removeItemFromListWidget(ui->listWidgetFeatures, label);
 }
 
 void TaskMirroredParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -280,15 +257,10 @@ void TaskMirroredParameters::onFeatureDeleted(void)
 {
     PartDesign::Transformed* pcTransformed = getObject();
     std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
-    int currentRow = ui->listWidgetFeatures->currentRow();
-    if (currentRow < 0) {
-        Base::Console().Error("PartDesign MirroredPattern: No feature selected for removing.\n");
-        return; //no current row selected
-    }
-    originals.erase(originals.begin() + currentRow);
+    originals.erase(originals.begin() + ui->listWidgetFeatures->currentRow());
     setupTransaction();
     pcTransformed->Originals.setValues(originals);
-    ui->listWidgetFeatures->model()->removeRow(currentRow);
+    ui->listWidgetFeatures->model()->removeRow(ui->listWidgetFeatures->currentRow());
     recomputeFeature();
 }
 

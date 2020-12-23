@@ -1,5 +1,7 @@
 # -*- coding: utf8 -*-
+
 #***************************************************************************
+#*                                                                         *
 #*   Copyright (c) 2018 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -50,9 +52,9 @@ if sys.version_info.major >= 3:
 #  This module provides tools to build BuildingPart objects.
 #  BuildingParts are used to group different Arch objects
 
-__title__  = "FreeCAD Arch BuildingPart"
+__title__="FreeCAD Arch BuildingPart"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__ = "http://www.freecadweb.org"
 
 
 BuildingTypes = ['Undefined',
@@ -308,7 +310,6 @@ class CommandBuildingPart:
         FreeCADGui.addModule("Arch")
         FreeCADGui.doCommand("obj = Arch.makeBuildingPart("+ss+")")
         FreeCADGui.addModule("Draft")
-        FreeCADGui.doCommand("obj.Placement = FreeCAD.DraftWorkingPlane.getPlacement()")
         FreeCADGui.doCommand("Draft.autogroup(obj)")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
@@ -443,8 +444,8 @@ class BuildingPart(ArchIFC.IfcProduct):
         "recursively get the shapes of objects inside this BuildingPart"
 
         shapes = []
-        for child in Draft.get_group_contents(obj):
-            if hasattr(child,'Shape'):
+        for child in Draft.getGroupContents(obj):
+            if child.isDerivedFrom("Part::Feature"):
                 shapes.extend(child.Shape.Faces)
         return shapes
 
@@ -460,7 +461,7 @@ class BuildingPart(ArchIFC.IfcProduct):
         return g
 
     def touchChildren(self,obj):
-
+        
         "Touches all descendents where applicable"
 
         for child in obj.Group:
@@ -470,15 +471,6 @@ class BuildingPart(ArchIFC.IfcProduct):
                     child.Proxy.execute(child)
             elif Draft.getType(child) in ["Group","BuildingPart"]:
                 self.touchChildren(child)
-
-    def addObject(self,obj,child):
-
-        "Adds an object to the group of this BuildingPart"
-
-        if not child in obj.Group:
-            g = obj.Group
-            g.append(child)
-            obj.Group = g
 
 
 class ViewProviderBuildingPart:
@@ -536,11 +528,11 @@ class ViewProviderBuildingPart:
         if not "RestoreView" in pl:
             vobj.addProperty("App::PropertyBool","RestoreView","Interaction",QT_TRANSLATE_NOOP("App::Property","If set, the view stored in this object will be restored on double-click"))
         if not "DoubleClickActivates" in pl:
-            vobj.addProperty("App::PropertyBool","DoubleClickActivates","Interaction",QT_TRANSLATE_NOOP("App::Property","If True, double-clicking this object in the tree activates it"))
+            vobj.addProperty("App::PropertyBool","DoubleClickActivates","Interaction",QT_TRANSLATE_NOOP("App::Property","If True, double-clicking this object in the tree turns it active"))
 
         # inventor saving
         if not "SaveInventor" in pl:
-            vobj.addProperty("App::PropertyBool","SaveInventor","Interaction",QT_TRANSLATE_NOOP("App::Property","If this is enabled, the inventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode."))
+            vobj.addProperty("App::PropertyBool","SaveInventor","Interaction",QT_TRANSLATE_NOOP("App::Property","If this is enabled, the inventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other file sin lightweight mode."))
         if not "SavedInventor" in pl:
             vobj.addProperty("App::PropertyFileIncluded","SavedInventor","Interaction",QT_TRANSLATE_NOOP("App::Property","A slot to save the inventor representation of this object, if enabled"))
             vobj.setEditorMode("SavedInventor",2)
@@ -573,7 +565,7 @@ class ViewProviderBuildingPart:
 
     def onDocumentRestored(self,vobj):
 
-        self.setProperties(vobj)
+        selt.setProperties(vobj)
 
     def getIcon(self):
 
@@ -652,9 +644,9 @@ class ViewProviderBuildingPart:
         "recursively get the colors of objects inside this BuildingPart"
 
         colors = []
-        for child in Draft.get_group_contents(obj):
-            if hasattr(child,'Shape') and (hasattr(child.ViewObject,"DiffuseColor") or hasattr(child.ViewObject,"ShapeColor")):
-                if hasattr(child.ViewObject,"DiffuseColor") and len(child.ViewObject.DiffuseColor) == len(child.Shape.Faces):
+        for child in Draft.getGroupContents(obj):
+            if child.isDerivedFrom("Part::Feature"):
+                if len(child.ViewObject.DiffuseColor) == len(child.Shape.Faces):
                     colors.extend(child.ViewObject.DiffuseColor)
                 else:
                     c = child.ViewObject.ShapeColor[:3]+(child.ViewObject.Transparency/100.0,)
@@ -738,8 +730,7 @@ class ViewProviderBuildingPart:
                     if self.clip:
                         sg.removeChild(self.clip)
                         self.clip = None
-                    for o in Draft.get_group_contents(vobj.Object.Group,
-                                                      walls=True):
+                    for o in Draft.getGroupContents(vobj.Object.Group,walls=True):
                         if hasattr(o.ViewObject,"Lighting"):
                             o.ViewObject.Lighting = "One side"
                     self.clip = coin.SoClipPlane()
@@ -764,8 +755,7 @@ class ViewProviderBuildingPart:
                     if self.clip:
                         sg.removeChild(self.clip)
                         self.clip = None
-                    for o in Draft.get_group_contents(vobj.Object.Group,
-                                                      walls=True):
+                    for o in Draft.getGroupContents(vobj.Object.Group,walls=True):
                         if hasattr(o.ViewObject,"Lighting"):
                             o.ViewObject.Lighting = "Two side"
         elif prop == "Visibility":
@@ -780,7 +770,7 @@ class ViewProviderBuildingPart:
         if self.clip:
             sg.removeChild(self.clip)
             self.clip = None
-        for o in Draft.get_group_contents(vobj.Object.Group, walls=True):
+        for o in Draft.getGroupContents(vobj.Object.Group,walls=True):
             if hasattr(o.ViewObject,"Lighting"):
                 o.ViewObject.Lighting = "Two side"
         return True
@@ -848,7 +838,6 @@ class ViewProviderBuildingPart:
                 else:
                     self.wptext = FreeCADGui.draftToolBar.wplabel.text()
                     FreeCADGui.draftToolBar.wplabel.setText(self.Object.Label)
-            FreeCAD.DraftWorkingPlane.lastBuildingPart = self.Object.Name
 
     def writeCamera(self):
 

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
+ *   Copyright (c) Yorik van Havre (yorik@uncreated.net) 2014              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -26,7 +26,6 @@
 #endif
 
 #include "DlgSettingsPathColor.h"
-#include "ui_DlgSettingsPathColor.h"
 #include <Gui/PrefWidgets.h>
 #include <Base/Console.h>
 
@@ -40,9 +39,8 @@ using namespace PathGui;
  */
 DlgSettingsPathColor::DlgSettingsPathColor(QWidget* parent)
     : PreferencePage(parent)
-    , ui(new Ui_DlgSettingsPathColor)
 {
-    ui->setupUi(this);
+    this->setupUi(this);
 }
 
 /**
@@ -56,39 +54,33 @@ DlgSettingsPathColor::~DlgSettingsPathColor()
 void DlgSettingsPathColor::saveSettings()
 {
     // Part
-    ui->DefaultNormalPathColor->onSave();
-    ui->DefaultRapidPathColor->onSave();
-    ui->DefaultPathLineWidth->onSave();
-    ui->DefaultPathMarkerColor->onSave();
-    ui->DefaultExtentsColor->onSave();
-    ui->DefaultProbePathColor->onSave();
-    ui->DefaultHighlightPathColor->onSave();
-    ui->DefaultBBoxSelectionColor->onSave();
-    ui->DefaultBBoxNormalColor->onSave();
-    ui->DefaultSelectionStyle->onSave();
-    ui->DefaultTaskPanelLayout->onSave();
-    ui->WarningSuppressAllSpeeds->onSave();
-    ui->WarningSuppressRapidSpeeds->onSave();
-    ui->WarningSuppressSelectionMode->onSave();
+    DefaultNormalPathColor->onSave();
+    DefaultRapidPathColor->onSave();
+    DefaultPathLineWidth->onSave();
+    DefaultPathMarkerColor->onSave();
+    DefaultExtentsColor->onSave();
+    DefaultProbePathColor->onSave();
+    DefaultHighlightPathColor->onSave();
+    DefaultBBoxSelectionColor->onSave();
+    DefaultBBoxNormalColor->onSave();
+	DefaultSelectionStyle->onSave();
+    DefaultTaskPanelLayout->onSave();
 }
 
 void DlgSettingsPathColor::loadSettings()
 {
     // Part
-    ui->DefaultNormalPathColor->onRestore();
-    ui->DefaultRapidPathColor->onRestore();
-    ui->DefaultPathLineWidth->onRestore();
-    ui->DefaultPathMarkerColor->onRestore();
-    ui->DefaultExtentsColor->onRestore();
-    ui->DefaultProbePathColor->onRestore();
-    ui->DefaultHighlightPathColor->onRestore();
-    ui->DefaultBBoxSelectionColor->onRestore();
-    ui->DefaultBBoxNormalColor->onRestore();
-    ui->DefaultSelectionStyle->onRestore();
-    ui->DefaultTaskPanelLayout->onRestore();
-    ui->WarningSuppressAllSpeeds->onRestore();
-    ui->WarningSuppressRapidSpeeds->onRestore();
-    ui->WarningSuppressSelectionMode->onRestore();
+    DefaultNormalPathColor->onRestore();
+    DefaultRapidPathColor->onRestore();
+    DefaultPathLineWidth->onRestore();
+    DefaultPathMarkerColor->onRestore();
+    DefaultExtentsColor->onRestore();
+    DefaultProbePathColor->onRestore();
+    DefaultHighlightPathColor->onRestore();
+    DefaultBBoxSelectionColor->onRestore();
+    DefaultBBoxNormalColor->onRestore();
+	DefaultSelectionStyle->onRestore();
+    DefaultTaskPanelLayout->onRestore();
 }
 
 /**
@@ -97,7 +89,7 @@ void DlgSettingsPathColor::loadSettings()
 void DlgSettingsPathColor::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        ui->retranslateUi(this);
+        retranslateUi(this);
     }
     else {
         QWidget::changeEvent(e);

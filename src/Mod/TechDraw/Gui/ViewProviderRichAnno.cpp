@@ -47,10 +47,7 @@
 #include <Gui/ViewProviderDocumentObject.h>
 
 #include <Mod/TechDraw/App/DrawRichAnno.h>
-#include <Mod/TechDraw/App/LineGroup.h>
-//#include <Mod/TechDraw/App/Preferences.h>
 
-#include "PreferencesGui.h"
 #include "MDIViewPage.h"
 #include "QGVPage.h"
 #include "QGIView.h"
@@ -58,31 +55,15 @@
 #include "ViewProviderRichAnno.h"
 
 using namespace TechDrawGui;
-using namespace TechDraw;
 
 PROPERTY_SOURCE(TechDrawGui::ViewProviderRichAnno, TechDrawGui::ViewProviderDrawingView)
-
-const char* ViewProviderRichAnno::LineStyleEnums[] = { "NoLine",
-                                                  "Continuous",
-                                                  "Dash",
-                                                  "Dot",
-                                                  "DashDot",
-                                                  "DashDotDot",
-                                                  NULL };
 
 //**************************************************************************
 // Construction/Destruction
 
 ViewProviderRichAnno::ViewProviderRichAnno()
 {
-    sPixmap = "actions/techdraw-RichTextAnnotation";
-
-    static const char *group = "Frame Format";
-
-    ADD_PROPERTY_TYPE(LineWidth, (getDefLineWeight()), group,(App::PropertyType)(App::Prop_None), "Frame line width");
-    LineStyle.setEnums(LineStyleEnums);
-    ADD_PROPERTY_TYPE(LineStyle, (1), group, (App::PropertyType)(App::Prop_None), "Frame line style");
-    ADD_PROPERTY_TYPE(LineColor, (getDefLineColor()), group, App::Prop_None, "The color of the frame");
+    sPixmap = "actions/techdraw-textleader";
 
 }
 
@@ -102,6 +83,7 @@ bool ViewProviderRichAnno::setEdit(int ModNum)
         if (Gui::Control().activeDialog())  {         //TaskPanel already open!
             return false;
         }
+        // clear the selection (convenience)
         Gui::Selection().clearSelection();
         Gui::Control().showDialog(new TaskDlgRichAnno(this));
         return true;
@@ -131,33 +113,11 @@ bool ViewProviderRichAnno::doubleClicked(void)
 
 void ViewProviderRichAnno::updateData(const App::Property* p)
 {
-    // only if there is a frame we can enable the frame line parameters
-    if (getViewObject() != nullptr) {
-        if (getViewObject()->ShowFrame.getValue()) {
-            LineWidth.setStatus(App::Property::ReadOnly, false);
-            LineStyle.setStatus(App::Property::ReadOnly, false);
-            LineColor.setStatus(App::Property::ReadOnly, false);
-        }
-        else {
-            LineWidth.setStatus(App::Property::ReadOnly, true);
-            LineStyle.setStatus(App::Property::ReadOnly, true);
-            LineColor.setStatus(App::Property::ReadOnly, true);
-        }
-    }
     ViewProviderDrawingView::updateData(p);
 }
 
 void ViewProviderRichAnno::onChanged(const App::Property* p)
 {
-    if ((p == &LineColor) ||
-        (p == &LineWidth) ||
-        (p == &LineStyle)) {
-        QGIView* qgiv = getQView();
-        if (qgiv) {
-            qgiv->updateView(true);
-        }
-    }
-
     ViewProviderDrawingView::onChanged(p);
 }
 
@@ -173,63 +133,25 @@ TechDraw::DrawRichAnno* ViewProviderRichAnno::getFeature() const
 
 App::Color ViewProviderRichAnno::getDefLineColor(void)
 {
-    return PreferencesGui::leaderColor();
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
+                                 GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Markups");
+    App::Color result;
+    result.setPackedValue(hGrp->GetUnsigned("Color", 0x00000000));
+    return result;
 }
 
 std::string ViewProviderRichAnno::getDefFont(void)
 {
-    return Preferences::labelFont();
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Labels");
+    std::string fontName = hGrp->GetASCII("LabelFont", "osifont");
+    return fontName;
 }
 
 double ViewProviderRichAnno::getDefFontSize()
 {
-    return Preferences::dimFontSizeMM();
-}
-
-double ViewProviderRichAnno::getDefLineWeight(void)
-{
-    double result = 0.0;
-    int lgNumber = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
-    result = lg->getWeight("Graphics");
-    delete lg;
-    return result;
-}
-
-void ViewProviderRichAnno::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
-// transforms properties that had been changed
-{
-    // property LineWidth had App::PropertyFloat and was changed to App::PropertyLength
-    if (prop == &LineWidth && strcmp(TypeName, "App::PropertyFloat") == 0) {
-        App::PropertyFloat LineWidthProperty;
-        // restore the PropertyFloat to be able to set its value
-        LineWidthProperty.Restore(reader);
-        LineWidth.setValue(LineWidthProperty.getValue());
-    }
-
-    // property LineStyle had App::PropertyInteger and was changed to App::PropertyIntegerConstraint
-    if (prop == &LineStyle && strcmp(TypeName, "App::PropertyInteger") == 0) {
-        App::PropertyInteger LineStyleProperty;
-        // restore the PropertyInteger to be able to set its value
-        LineStyleProperty.Restore(reader);
-        LineStyle.setValue(LineStyleProperty.getValue());
-    }
-
-    // property LineStyle had App::PropertyIntegerConstraint and was changed to App::PropertyEnumeration
-    if (prop == &LineStyle && strcmp(TypeName, "App::PropertyIntegerConstraint") == 0) {
-        App::PropertyIntegerConstraint LineStyleProperty;
-        // restore the PropertyIntegerConstraint to be able to set its value
-        LineStyleProperty.Restore(reader);
-        LineStyle.setValue(LineStyleProperty.getValue());
-    }
-}
-
-bool ViewProviderRichAnno::canDelete(App::DocumentObject *obj) const
-{
-    // deletions of RichAnno objects don't destroy anything
-    // thus we can pass this action
-    // only for information: RichAnnos that have a parent
-    // view will get the page as new parent if the view is deleted
-    Q_UNUSED(obj)
-    return true;
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
+    double fontSize = hGrp->GetFloat("FontSize", 5.0);
+    return fontSize;
 }

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel <juergen.riegel@web.de>                   *
+ *   Copyright (c) Juergen Riegel         <juergen.riegel@web.de>          *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -32,7 +32,7 @@
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "UnitsApi.h"
 #include "Quantity.h"
-#include "QuantityPy.h"
+#include "QuantityPy.h" 
 
 
 
@@ -57,13 +57,13 @@ PyMethodDef UnitsApi::Methods[] = {
     // " That means if no unit is issued the user prefs are in \n"
     // " charge. If one unit is used the user prefs get ignored\n"
     // " type can be: \n"
-    // " Length  \n"
-    // " Area  \n"
-    // " Volume  \n"
-    // " Angle  \n"
+    // " Length  \n"  
+    // " Area  \n"  
+    // " Volume  \n"  
+    // " Angle  \n" 
     // " TimeSpan  \n"
     // " Velocity  \n"
-    // " Acceleration \n"
+    // " Acceleration \n" 
     // " Mass   \n"
     // " Temperature \n"
 
@@ -169,7 +169,7 @@ PyObject* UnitsApi::sParseQuantity(PyObject * /*self*/, PyObject *args)
 PyObject* UnitsApi::sListSchemas(PyObject * /*self*/, PyObject *args)
 {
     if (PyArg_ParseTuple(args, "")) {
-        int num = static_cast<int>(UnitSystem::NumUnitSystemTypes);
+        int num = NumUnitSystemTypes;
         Py::Tuple tuple(num);
         for (int i=0; i<num; i++) {
             tuple.setItem(i, Py::String(UnitsApi::getDescription(static_cast<UnitSystem>(i))));
@@ -181,7 +181,7 @@ PyObject* UnitsApi::sListSchemas(PyObject * /*self*/, PyObject *args)
     PyErr_Clear();
     int index;
     if (PyArg_ParseTuple(args, "i", &index)) {
-        int num = static_cast<int>(UnitSystem::NumUnitSystemTypes);
+        int num = NumUnitSystemTypes;
         if (index < 0 || index >= num) {
             PyErr_SetString(PyExc_ValueError, "invalid schema value");
             return 0;
@@ -207,7 +207,7 @@ PyObject* UnitsApi::sSetSchema(PyObject * /*self*/, PyObject *args)
     PyErr_Clear();
     int index;
     if (PyArg_ParseTuple(args, "i", &index)) {
-        int num = static_cast<int>(UnitSystem::NumUnitSystemTypes);
+        int num = NumUnitSystemTypes;
         if (index < 0 || index >= num) {
             PyErr_SetString(PyExc_ValueError, "invalid schema value");
             return 0;

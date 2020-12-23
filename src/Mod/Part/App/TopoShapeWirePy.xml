@@ -49,7 +49,7 @@ Make a loft defined by a list of profiles along a wire. Transition can be
 0 (default), 1 (right corners) or 2 (rounded corners).</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="approximate" Const="true" Keyword="true">
+    <Methode Name="approximate" Const="true">
       <Documentation>
         <UserDocu>Approximate B-Spline-curve from this wire</UserDocu>
       </Documentation>
@@ -157,12 +157,6 @@ coordinate system.</UserDocu>
        <UserDocu>List of ordered edges in this shape.</UserDocu>
       </Documentation>
       <Parameter Name="OrderedEdges" Type="List"/>
-   </Attribute>
-   <Attribute Name="Continuity" ReadOnly="true">
-       <Documentation>
-           <UserDocu>Returns the continuity</UserDocu>
-       </Documentation>
-       <Parameter Name="Continuity" Type="String"/>
    </Attribute>
    <Attribute Name="OrderedVertexes" ReadOnly="true">
      <Documentation>

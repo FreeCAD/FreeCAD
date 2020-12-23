@@ -26,7 +26,6 @@
 # include <QSurfaceFormat>
 # include <QMessageBox>
 # include <QPainter>
-# include <QPainterPath>
 #endif
 
 #if defined(__MINGW32__)

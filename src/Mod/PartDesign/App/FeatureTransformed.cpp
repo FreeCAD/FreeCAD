@@ -1,5 +1,5 @@
 /******************************************************************************
- *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
+ *   Copyright (c)2012 Jan Rheinlaender <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
  *   This file is part of the FreeCAD CAx development system.                 *
  *                                                                            *
@@ -240,9 +240,6 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
 
     // create an untransformed copy of the support shape
     Part::TopoShape supportShape(supportTopShape);
-
-    gp_Trsf trsfInv = supportShape.getShape().Location().Transformation().Inverted();
-
     supportShape.setTransform(Base::Matrix4D());
     TopoDS_Shape support = supportShape.getShape();
 
@@ -259,19 +256,15 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     {
         // Extract the original shape and determine whether to cut or to fuse
         TopoDS_Shape shape;
-        Part::TopoShape fuseShape;
-        Part::TopoShape cutShape;
+        bool fuse;
 
         if ((*o)->getTypeId().isDerivedFrom(PartDesign::FeatureAddSub::getClassTypeId())) {
             PartDesign::FeatureAddSub* feature = static_cast<PartDesign::FeatureAddSub*>(*o);
-            feature->getAddSubShape(fuseShape, cutShape);
-            if (fuseShape.isNull() && cutShape.isNull())
-                return new App::DocumentObjectExecReturn("Shape of addsub feature is empty");
-            gp_Trsf trsf = feature->getLocation().Transformation().Multiplied(trsfInv);
-            if (!fuseShape.isNull())
-                fuseShape = fuseShape.makETransform(trsf);
-            if (!cutShape.isNull())
-                cutShape = cutShape.makETransform(trsf);
+            shape = feature->AddSubShape.getShape().getShape();
+            if (shape.IsNull())
+                return new App::DocumentObjectExecReturn("Shape of additive feature is empty");
+            
+            fuse = (feature->getAddSubType() == FeatureAddSub::Additive) ? true : false;
         } 
         else {
             return new App::DocumentObjectExecReturn("Only additive and subtractive features can be transformed");
@@ -287,7 +280,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         for (; t != transformations.end(); ++t) {
             // Make an explicit copy of the shape because the "true" parameter to BRepBuilderAPI_Transform
             // seems to be pretty broken
-            BRepBuilderAPI_Copy copy(fuseShape.isNull()?cutShape.getShape():fuseShape.getShape());
+            BRepBuilderAPI_Copy copy(shape);
             shape = copy.Shape();
             if (shape.IsNull())
                 return new App::DocumentObjectExecReturn("Transformed: Linked shape object is empty");
@@ -296,24 +289,15 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             if (!mkTrf.IsDone())
                 return new App::DocumentObjectExecReturn("Transformation failed", (*o));
 
-            shape = mkTrf.Shape();
+            // Check for intersection with support
             try {
-                // Intersection checking for additive shape is redundant.
-                // Because according to CheckIntersection() source code, it is
-                // implemented using fusion and counting of the resulting
-                // solid, which will be done in the following modeling step
-                // anyway.
-                //
-                // There is little reason for doing intersection checking on
-                // subtractive shape either, because it does not produce
-                // multiple solids.
-                //
-                // if (!Part::checkIntersection(support, mkTrf.Shape(), false, true)) {
 
-
-                TopoDS_Shape current = support;
-
-                if (!fuseShape.isNull()) {
+                if (!Part::checkIntersection(support, mkTrf.Shape(), false, true)) {
+#ifdef FC_DEBUG // do not write this in release mode because a message appears already in the task view
+                    Base::Console().Warning("Transformed shape does not intersect support %s: Removed\n", (*o)->getNameInDocument());
+#endif
+                    nointersect_trsfms[*o].insert(t);
+                } else {
                     // We cannot wait to fuse a transformation with the support until all the transformations are done,
                     // because the "support" potentially changes with every transformation, basically when checking intersection
                     // above you need:
@@ -326,7 +310,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                     
                     /*v_transformations.push_back(t);
                     v_transformedShapes.push_back(mkTrf.Shape());*/
-    
+
                     // Note: Transformations that do not intersect the support are ignored in the overlap tests
                     
                     //insert scheme here.
@@ -336,45 +320,48 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                     
                     // Fuse/Cut the compounded transformed shapes with the support
                     //TopoDS_Shape result;
+                    TopoDS_Shape current = support;
+                    
+                    if (fuse) {
+                        BRepAlgoAPI_Fuse mkFuse(current, mkTrf.Shape());
+                        if (!mkFuse.IsDone())
+                            return new App::DocumentObjectExecReturn("Fusion with support failed", *o);
+                        // we have to get the solids (fuse sometimes creates compounds)
+                        current = this->getSolid(mkFuse.Shape());
+                        // lets check if the result is a solid
+                        if (current.IsNull())
+                            return new App::DocumentObjectExecReturn("Resulting shape is not a solid", *o);
 
-                    BRepAlgoAPI_Fuse mkFuse(current, shape);
-                    if (!mkFuse.IsDone())
-                        return new App::DocumentObjectExecReturn("Fusion with support failed", *o);
-
-                    if(Part::TopoShape(current).countSubShapes(TopAbs_SOLID)
-                            != Part::TopoShape(mkFuse.Shape()).countSubShapes(TopAbs_SOLID))
-                    {
-#ifdef FC_DEBUG // do not write this in release mode because a message appears already in the task view
-                        Base::Console().Warning("Transformed shape does not intersect support %s: Removed\n", (*o)->getNameInDocument());
-#endif
-                        nointersect_trsfms[*o].insert(t);
-                        continue;
+                        /*std::vector<TopoDS_Shape>::const_iterator individualIt;
+                        for (individualIt = individualTools.begin(); individualIt != individualTools.end(); ++individualIt)
+                        {
+                            BRepAlgoAPI_Fuse mkFuse2(current, *individualIt);
+                            if (!mkFuse2.IsDone())
+                                return new App::DocumentObjectExecReturn("Fusion with support failed", *o);
+                            // we have to get the solids (fuse sometimes creates compounds)
+                            current = this->getSolid(mkFuse2.Shape());
+                            // lets check if the result is a solid
+                            if (current.IsNull())
+                                return new App::DocumentObjectExecReturn("Resulting shape is not a solid", *o);
+                        }*/
+                    } else {
+                        BRepAlgoAPI_Cut mkCut(current, mkTrf.Shape());
+                        if (!mkCut.IsDone())
+                            return new App::DocumentObjectExecReturn("Cut out of support failed", *o);
+                        current = mkCut.Shape();
+                        /*std::vector<TopoDS_Shape>::const_iterator individualIt;
+                        for (individualIt = individualTools.begin(); individualIt != individualTools.end(); ++individualIt)
+                        {
+                            BRepAlgoAPI_Cut mkCut2(current, *individualIt);
+                            if (!mkCut2.IsDone())
+                                return new App::DocumentObjectExecReturn("Cut out of support failed", *o);
+                            current = this->getSolid(mkCut2.Shape());
+                            if (current.IsNull())
+                                return new App::DocumentObjectExecReturn("Resulting shape is not a solid", *o);
+                        }*/
                     }
-                    // we have to get the solids (fuse sometimes creates compounds)
-                    current = this->getSolid(mkFuse.Shape());
-                    // lets check if the result is a solid
-                    if (current.IsNull())
-                        return new App::DocumentObjectExecReturn("Resulting shape is not a solid", *o);
-
-                    if (!cutShape.isNull()) {
-                        BRepBuilderAPI_Copy copy(cutShape.getShape());
-                        shape = copy.Shape();
-                        if (shape.IsNull())
-                            return new App::DocumentObjectExecReturn("Transformed: Linked shape object is empty");
-            
-                        BRepBuilderAPI_Transform mkTrf(shape, *t, false); // No need to copy, now
-                        if (!mkTrf.IsDone())
-                            return new App::DocumentObjectExecReturn("Transformation failed", (*o));
-                        shape = mkTrf.Shape();
-                    }
+                    support = current; // Use result of this operation for fuse/cut of next original
                 }
-                if (!cutShape.isNull()) {
-                    BRepAlgoAPI_Cut mkCut(current, shape);
-                    if (!mkCut.IsDone())
-                        return new App::DocumentObjectExecReturn("Cut out of support failed", *o);
-                    current = mkCut.Shape();
-                }
-                support = current; // Use result of this operation for fuse/cut of next original
             } catch (Standard_Failure& e) {
                 // Note: Ignoring this failure is probably pointless because if the intersection check fails, the later
                 // fuse operation of the transformation result will also fail

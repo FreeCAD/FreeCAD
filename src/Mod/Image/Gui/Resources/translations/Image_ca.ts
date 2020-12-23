@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ca" sourcelanguage="en">
+<TS version="2.0" language="ca" sourcelanguage="en">
   <context>
     <name>Dialog</name>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="134"/>
       <source>Scale image plane</source>
-      <translation>Escala el pla de la imatge</translation>
+      <translation type="unfinished">Scale image plane</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="135"/>
       <source>Distance [mm]</source>
-      <translation>Distància [mm]</translation>
+      <translation type="unfinished">Distance [mm]</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="136"/>
       <source>Select first point</source>
-      <translation>Seleccioneu el primer punt</translation>
+      <translation type="unfinished">Select first point</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="154"/>
       <source>&lt;font color='red'&gt;Enter distance&lt;/font&gt;</source>
-      <translation>&lt;font color='red'&gt;Introduïu la distància&lt;/font&gt;</translation>
+      <translation type="unfinished">&lt;font color='red'&gt;Enter distance&lt;/font&gt;</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="157"/>
       <source>&lt;font color='red'&gt;Select ImagePlane&lt;/font&gt;</source>
-      <translation>&lt;font color='red'&gt;Seleccioneu Plad'Imatge&lt;/font&gt;</translation>
+      <translation type="unfinished">&lt;font color='red'&gt;Select ImagePlane&lt;/font&gt;</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="182"/>
       <source>Select second point</source>
-      <translation>Seleccioneu el segon punt</translation>
+      <translation type="unfinished">Select second point</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="191"/>
       <source>Select Image Plane and type distance</source>
-      <translation>Seleccioneu el pla de la imatge i teclegeu la distància</translation>
+      <translation type="unfinished">Select Image Plane and type distance</translation>
     </message>
   </context>
   <context>
@@ -44,12 +44,12 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="63"/>
       <source>Scale image plane</source>
-      <translation>Escala el pla de la imatge</translation>
+      <translation type="unfinished">Scale image plane</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="65"/>
       <source>Scales an image plane by defining a distance between two points</source>
-      <translation>Ajusta la mida de la imatge definint la distància entre dos punts</translation>
+      <translation type="unfinished">Scales an image plane by defining a distance between two points</translation>
     </message>
   </context>
   <context>

@@ -38,6 +38,7 @@
 #include <QObject>
 #include <Base/Console.h>
 #include <App/DocumentObject.h>
+#include <QListWidgetItem>
 
 class Ui_TaskFemConstraintContact;
 
@@ -60,6 +61,7 @@ private Q_SLOTS:
     void removeFromSelectionSlave();
     void addToSelectionMaster();
     void removeFromSelectionMaster();
+    void setSelection(QListWidgetItem* item);
 
 protected:
     void changeEvent(QEvent *e);

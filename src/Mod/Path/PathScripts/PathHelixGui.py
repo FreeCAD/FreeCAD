@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+
 # ***************************************************************************
+# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -86,9 +88,9 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 Command = PathOpGui.SetupOperation('Helix',
         PathHelix.Create,
         TaskPanelOpPage,
-        'Path_Helix',
-        QtCore.QT_TRANSLATE_NOOP("Path_Helix", "Helix"),
-        QtCore.QT_TRANSLATE_NOOP("Path_Helix", "Creates a Path Helix object from a features of a base object"),
+        'Path-Helix',
+        QtCore.QT_TRANSLATE_NOOP("PathHelix", "Helix"),
+        QtCore.QT_TRANSLATE_NOOP("PathHelix", "Creates a Path Helix object from a features of a base object"),
         PathHelix.SetupProperties)
 
 FreeCAD.Console.PrintLog("Loading PathHelixGui... done\n")

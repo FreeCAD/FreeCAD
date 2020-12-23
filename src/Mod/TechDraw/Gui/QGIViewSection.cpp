@@ -34,7 +34,6 @@
 #include <QGraphicsSceneHoverEvent>
 #include <QPainterPathStroker>
 #include <QPainter>
-#include <QPainterPath>
 #include <QTextOption>
 #endif
 
@@ -83,7 +82,8 @@ void QGIViewSection::drawSectionFace()
 
     float lineWidth    = sectionVp->LineWidth.getValue();
 
-    auto sectionFaces( section->getTDFaceGeometry() );
+
+    auto sectionFaces( section->getFaceGeometry() );
     if (sectionFaces.empty()) {
         Base::Console().
              Log("INFO - QGIViewSection::drawSectionFace - No sectionFaces available. Check Section plane.\n");
@@ -112,27 +112,27 @@ void QGIViewSection::drawSectionFace()
             newFace->setFillColor(faceColor);
             newFace->setFillStyle(Qt::SolidPattern);
         } else if (section->CutSurfaceDisplay.isValue("SvgHatch")) {
-            if (getExporting()) {
-                newFace->hideSvg(true);
-            } else {
-                newFace->hideSvg(false);
-            }
+            newFace->isHatched(true);
             newFace->setFillMode(QGIFace::SvgFill);
             newFace->setHatchColor(sectionVp->HatchColor.getValue());
             newFace->setHatchScale(section->HatchScale.getValue());
-//                std::string hatchSpec = section->FileHatchPattern.getValue();
-            std::string hatchSpec = section->SvgIncluded.getValue();
+            std::string hatchSpec = section->FileHatchPattern.getValue();
             newFace->setHatchFile(hatchSpec);
         } else if (section->CutSurfaceDisplay.isValue("PatHatch")) {
             newFace->isHatched(true);
             newFace->setFillMode(QGIFace::GeomHatchFill);
-            newFace->setHatchColor(sectionVp->GeomHatchColor.getValue());
+            newFace->setHatchColor(sectionVp->HatchColor.getValue());
             newFace->setHatchScale(section->HatchScale.getValue());
             newFace->setLineWeight(sectionVp->WeightPattern.getValue());
-            std::vector<TechDraw::LineSet> lineSets = section->getDrawableLines(i);
+            std::vector<LineSet> lineSets = section->getDrawableLines(i);
             if (!lineSets.empty()) {
                 newFace->clearLineSets();
                 for (auto& ls: lineSets) {
+                    QPainterPath bigPath;
+                    for (auto& g: ls.getGeoms()) {
+                        QPainterPath smallPath = drawPainterPath(g);
+                        bigPath.addPath(smallPath);
+                    }
                     newFace->addLineSet(ls);
                 }
             }
@@ -155,8 +155,13 @@ void QGIViewSection::updateView(bool update)
     if( viewPart == nullptr ) {
         return;
     }
+
+    std::string dbHatch = viewPart->FileHatchPattern.getValue();
+
     draw();
+
     QGIView::updateView(update);
+
 }
 
 void QGIViewSection::drawSectionLine(TechDraw::DrawViewSection* s, bool b)

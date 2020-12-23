@@ -41,14 +41,6 @@ struct Point3d
    {
    }
 
-   Point3d(const Point3d& pnt) : p(pnt.p), i(pnt.i)
-   {
-   }
-
-   ~Point3d()
-   {
-   }
-
    inline value_type operator[](const int N) const
    {
        return p[N];
@@ -82,10 +74,6 @@ public:
     MyKDTree kd_tree;
 };
 
-MeshKDTree::MeshKDTree() : d(new Private)
-{
-}
-
 MeshKDTree::MeshKDTree(const std::vector<Base::Vector3f>& points) : d(new Private)
 {
     unsigned long index=0;
@@ -105,28 +93,6 @@ MeshKDTree::MeshKDTree(const MeshPointArray& points) : d(new Private)
 MeshKDTree::~MeshKDTree()
 {
     delete d;
-}
-
-void MeshKDTree::AddPoint(Base::Vector3f& point)
-{
-    unsigned long index=d->kd_tree.size();
-    d->kd_tree.insert(Point3d(point, index));
-}
-
-void MeshKDTree::AddPoints(const std::vector<Base::Vector3f>& points)
-{
-    unsigned long index=d->kd_tree.size();
-    for (std::vector<Base::Vector3f>::const_iterator it = points.begin(); it != points.end(); ++it) {
-        d->kd_tree.insert(Point3d(*it, index++));
-    }
-}
-
-void MeshKDTree::AddPoints(const MeshPointArray& points)
-{
-    unsigned long index=d->kd_tree.size();
-    for (MeshPointArray::_TConstIterator it = points.begin(); it != points.end(); ++it) {
-        d->kd_tree.insert(Point3d(*it, index++));
-    }
 }
 
 bool MeshKDTree::IsEmpty() const

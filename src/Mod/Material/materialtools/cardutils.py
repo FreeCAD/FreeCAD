@@ -99,12 +99,11 @@ def get_material_resources(category='Solid'):
         custom_mat_dir = mat_prefs.GetString("CustomMaterialsDir", "")
         if os.path.exists(custom_mat_dir):
             resources[custom_mat_dir] = ":/icons/user.svg"
-        # fail silently
-        # else:
-        #     FreeCAD.Console.PrintError(
-        #         'Custom material directory set by user: {} does not exist.\n'
-        #         .format(custom_mat_dir)
-        #     )
+        else:
+            FreeCAD.Console.PrintError(
+                'Custom material directory set by user: {} does not exist.\n'
+                .format(custom_mat_dir)
+            )
 
     return resources
 
@@ -149,7 +148,7 @@ def add_cards_from_a_dir(materials, cards, icons, mat_dir, icon, template=False)
     for a_path in dir_path_list:
         try:
             mat_dict = read(a_path)
-        except Exception:
+        except:
             FreeCAD.Console.PrintError(
                 'Error on reading card data. The card data will be empty for card:\n{}\n'
                 .format(a_path)
@@ -230,18 +229,14 @@ def get_material_template(withSpaces=False):
         # on attributes, add a space before a capital letter
         # will be used for better display in the ui
         import re
-        new_template = []
         for group in template_data:
-            new_group = {}
             gg = list(group.keys())[0]  # group dict has only one key
             # iterating over a dict and changing it is not allowed
             # thus it is iterated over a list of the keys
-            new_group[gg] = {}
             for proper in list(group[gg].keys()):
                 new_proper = re.sub(r"(\w)([A-Z]+)", r"\1 \2", proper)
-                new_group[gg][new_proper] = group[gg][proper]
-            new_template.append(new_group)
-        template_data = new_template
+                group[gg][new_proper] = group[gg][proper]
+                del group[gg][proper]
     return template_data
 
 
@@ -483,7 +478,7 @@ def check_value_unit(param, value):
                     '{} Unit {} is known by FreeCAD, but wrong for parameter {}.\n'
                     .format(some_text, unitproblem, param)
                 )
-            except Exception:
+            except:
                 FreeCAD.Console.PrintError(
                     '{} Not known problem.\n'
                     .format(some_text)
@@ -494,7 +489,7 @@ def check_value_unit(param, value):
                 '{} Unit {} is not known by FreeCAD.\n'
                 .format(some_text, unitproblem)
             )
-        except Exception:
+        except:
             FreeCAD.Console.PrintError(
                 '{} Not known problem.\n'
                 .format(some_text)
@@ -584,7 +579,7 @@ def output_value_unit_info(param, value):
                     '{} Unit {} is known by FreeCAD, but wrong for parameter {}.\n'
                     .format(some_text, unitproblem, param)
                 )
-            except Exception:
+            except:
                 FreeCAD.Console.PrintError(
                     '{} Not known problem.\n'
                     .format(some_text)
@@ -597,7 +592,7 @@ def output_value_unit_info(param, value):
                 .format(some_text, unitproblem)
             )
 
-        except Exception:
+        except:
             FreeCAD.Console.PrintError(
                 '{} Not known problem.\n'
                 .format(some_text)

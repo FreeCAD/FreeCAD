@@ -42,7 +42,6 @@ class SketcherWorkbench ( Workbench ):
         # load the module
         import SketcherGui
         import Sketcher
-
         try:
             import Profiles
         except ImportError:

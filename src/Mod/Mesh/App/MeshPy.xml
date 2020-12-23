@@ -469,7 +469,7 @@ an empty dictionary if there is no intersection.
 				<UserDocu>getPlanarSegments(dev,[min faces=0]) -> list
 Get all planes of the mesh as segment.
 In the worst case each triangle can be regarded as single
-plane if none of its neighbors are coplanar.</UserDocu>
+plane if none of its neighours is coplanar.</UserDocu>
 			</Documentation>
 		</Methode>
         <Methode Name="getSegmentsOfType" Const="true">
@@ -491,15 +491,7 @@ mesh.getSegmentsByCurvature([c,p])
 				</UserDocu>
 			</Documentation>
 		</Methode>
-    <Methode Name="getCurvaturePerVertex" Const="true">
-      <Documentation>
-        <UserDocu>
-getCurvaturePerVertex() -> list
-The items in the list contains minimum and maximum curvature with their directions
-        </UserDocu>
-      </Documentation>
-    </Methode>
-    <Attribute Name="Points" ReadOnly="true">
+		<Attribute Name="Points" ReadOnly="true">
 			<Documentation>
 				<UserDocu>A collection of the mesh points
 With this attribute it is possible to get access to the points of the mesh

@@ -27,7 +27,6 @@
 # include <QPushButton>
 # include <sstream>
 # include <Python.h>
-# include <boost_bind_bind.hpp>
 
 # include <TopoDS_Shape.hxx>
 # include <TopoDS_Vertex.hxx>
@@ -79,8 +78,6 @@
 
 #include "TaskDimension.h"
 
-namespace bp = boost::placeholders;
-
 static bool _MeasureInfoInited;
 
 static void slotDeleteDocument(const App::Document &doc);
@@ -94,7 +91,7 @@ struct MeasureInfo {
     {
         if(!_MeasureInfoInited) {
             _MeasureInfoInited = true;
-            App::GetApplication().signalDeleteDocument.connect(boost::bind(slotDeleteDocument, bp::_1));
+            App::GetApplication().signalDeleteDocument.connect(boost::bind(slotDeleteDocument, _1));
         }
     }
 };
@@ -134,7 +131,7 @@ bool PartGui::evaluateLinearPreSelection(TopoDS_Shape &shape1, TopoDS_Shape &sha
     if (shape.IsNull())
       break;
     shapes.push_back(shape);
-    sels[i].selections.emplace_back();
+    sels[i].selections.push_back(DimSelections::DimSelection());
     auto &sel = sels[i].selections[0];
     ++i;
     sel.documentName = it->DocName;
@@ -844,9 +841,9 @@ bool PartGui::evaluateAngularPreSelection(VectorAdapter &vector1Out, VectorAdapt
            sels.back().selections.back().shapeType!=DimSelections::Vertex ||
            sels.back().selections.size()==1) 
         {
-            sels.emplace_back();
+            sels.push_back(PartGui::DimSelections());
         }
-        sels.back().selections.emplace_back();
+        sels.back().selections.push_back(DimSelections::DimSelection());
         auto &sel = sels.back().selections.back();
         sel.documentName = it->DocName;
         sel.objectName = it->FeatName;
@@ -861,14 +858,14 @@ bool PartGui::evaluateAngularPreSelection(VectorAdapter &vector1Out, VectorAdapt
       TopoDS_Vertex currentVertex = TopoDS::Vertex(shape);
       if (!lastVertex.IsNull())
       {
-        //need something here for 0 length vector.
-        //create a point half way between to vertices.
-        adapters.emplace_back(currentVertex, lastVertex);
-        lastVertex = TopoDS_Vertex();
+	//need something here for 0 length vector.
+	//create a point half way between to vertices.
+	adapters.push_back(VectorAdapter(currentVertex, lastVertex));
+	lastVertex = TopoDS_Vertex();
       }
       else
       {
-        lastVertex = currentVertex;
+	lastVertex = currentVertex;
       }
       continue;
     }
@@ -883,8 +880,8 @@ bool PartGui::evaluateAngularPreSelection(VectorAdapter &vector1Out, VectorAdapt
       continue;
     }
 
-    sels.emplace_back();
-    sels.back().selections.emplace_back();
+    sels.push_back(PartGui::DimSelections());
+    sels.back().selections.push_back(DimSelections::DimSelection());
     auto &sel = sels.back().selections.back();
     sel.documentName = it->DocName;
     sel.objectName = it->FeatName;
@@ -906,12 +903,12 @@ bool PartGui::evaluateAngularPreSelection(VectorAdapter &vector1Out, VectorAdapt
       double lastDistance = (lastPoint - pickPoint).Magnitude();
       if (lastDistance > firstDistance)
       {
-        if (edge.Orientation() == TopAbs_FORWARD)
-          edge.Orientation(TopAbs_REVERSED);
-        else
-          edge.Orientation(TopAbs_FORWARD);
+	if (edge.Orientation() == TopAbs_FORWARD)
+	  edge.Orientation(TopAbs_REVERSED);
+	else
+	  edge.Orientation(TopAbs_FORWARD);
       }
-      adapters.emplace_back(edge, pickPoint);
+      adapters.push_back(VectorAdapter(edge, pickPoint));
       continue;
     }
 
@@ -919,7 +916,7 @@ bool PartGui::evaluateAngularPreSelection(VectorAdapter &vector1Out, VectorAdapt
     {
       sel.shapeType = DimSelections::Face;
       TopoDS_Face face = TopoDS::Face(shape);
-      adapters.emplace_back(face, pickPoint);
+      adapters.push_back(VectorAdapter(face, pickPoint));
       continue;
     }
   }
@@ -1007,9 +1004,9 @@ void PartGui::goDimensionAngularNoTask(const VectorAdapter &vector1Adapter, cons
     if (xAxis.IsParallel(vector1, Precision::Angular()))
     {
       if (!xAxis.IsParallel(gp_Vec(0.0, 0.0, 1.0), Precision::Angular()))
-        zAxis = gp_Vec(0.0, 0.0, 1.0);
+	zAxis = gp_Vec(0.0, 0.0, 1.0);
       else
-        zAxis = gp_Vec(0.0, 1.0, 0.0);
+	zAxis = gp_Vec(0.0, 1.0, 0.0);
     }
     else
       zAxis = xAxis.Crossed(vector1).Normalized();
@@ -1139,8 +1136,8 @@ PartGui::DimensionAngular::DimensionAngular()
     SO_NODE_ADD_FIELD(dColor, (1.0, 0.0, 0.0));//dimension color.
     SO_NODE_ADD_FIELD(matrix, (1.0, 0.0, 0.0, 0.0,
                                0.0, 1.0, 0.0, 0.0,
-                               0.0, 0.0, 1.0, 0.0,
-                               0.0, 0.0, 0.0, 1.0));
+			       0.0, 0.0, 1.0, 0.0,
+			       0.0, 0.0, 0.0, 1.0));
 }
 
 PartGui::DimensionAngular::~DimensionAngular()
@@ -1236,10 +1233,8 @@ void PartGui::DimensionAngular::setupDimension()
 
   //text
   SoSeparator *textSep = static_cast<SoSeparator *>(getPart("textSep", true));
-  if (!textSep)
-      return;
-
-  textSep->addChild(material);
+  if (textSep)
+    textSep->addChild(material);
 
   SoCalculator *textVecCalc = new SoCalculator();
   textVecCalc->a.connectFrom(&angle);
@@ -1454,21 +1449,21 @@ PartGui::DimensionControl::DimensionControl(QWidget* parent): QWidget(parent)
   this->setLayout(commandLayout);
 
   resetButton = new QPushButton(Gui::BitmapFactory().pixmap("Part_Measure_Linear"),
-                                QObject::tr("Reset selection"), this);
+				QObject::tr("Reset Dialog"), this);
   commandLayout->addWidget(resetButton);
 
-  QPushButton *toggle3dButton = new QPushButton(Gui::BitmapFactory().pixmap("Part_Measure_Toggle_3D"),
-                                                QObject::tr("Toggle direct dimensions"), this);
+  QPushButton *toggle3dButton = new QPushButton(Gui::BitmapFactory().pixmap("Part_Measure_Toggle_3d"),
+						QObject::tr("Toggle 3d"), this);
   QObject::connect(toggle3dButton, SIGNAL(clicked(bool)), this, SLOT(toggle3dSlot(bool)));
   commandLayout->addWidget(toggle3dButton);
 
   QPushButton *toggleDeltaButton = new QPushButton(Gui::BitmapFactory().pixmap("Part_Measure_Toggle_Delta"),
-                                                   QObject::tr("Toggle orthogonal dimensions"), this);
+						QObject::tr("Toggle Delta"), this);
   QObject::connect(toggleDeltaButton, SIGNAL(clicked(bool)), this, SLOT(toggleDeltaSlot(bool)));
   commandLayout->addWidget(toggleDeltaButton);
 
   QPushButton *clearAllButton = new QPushButton(Gui::BitmapFactory().pixmap("Part_Measure_Clear_All"),
-                                                QObject::tr("Clear all dimensions"), this);
+						QObject::tr("Clear All"), this);
   QObject::connect(clearAllButton, SIGNAL(clicked(bool)), this, SLOT(clearAllSlot(bool)));
   commandLayout->addWidget(clearAllButton);
 }
@@ -1524,29 +1519,29 @@ void PartGui::TaskMeasureAngular::onSelectionChanged(const Gui::SelectionChanges
     {
       if (shape.ShapeType() == TopAbs_VERTEX)
       {
-        //if we have previous selection it should be only one vertex.
-        if (selections1.selections.size() > 1)
-            selections1.selections.clear();
-        else if(selections1.selections.size() == 1)
-        {
-          //make sure it is a vertex.
-          if (selections1.selections.at(0).shapeType != DimSelections::Vertex)
-              selections1.selections.clear();
-        }
+	//if we have previous selection it should be only one vertex.
+	if (selections1.selections.size() > 1)
+	  selections1.selections.clear();
+	else if(selections1.selections.size() == 1)
+	{
+	  //make sure it is a vertex.
+	  if (selections1.selections.at(0).shapeType != DimSelections::Vertex)
+	    selections1.selections.clear();
+	}
 
-        newSelection.shapeType = DimSelections::Vertex;
-        selections1.selections.push_back(newSelection);
-        if (selections1.selections.size() == 1)
-            return;
-        //here we should have 2 vertices, but will check to make sure.
-        assert(selections1.selections.size() == 2);
-        assert(selections1.selections.at(0).shapeType == DimSelections::Vertex);
-        assert(selections1.selections.at(1).shapeType == DimSelections::Vertex);
-        
-        QTimer::singleShot(0, this, SLOT(selectionClearDelayedSlot()));
-        stepped->getButton(1)->setEnabled(true);
-        stepped->getButton(1)->setChecked(true);
-        return;
+	newSelection.shapeType = DimSelections::Vertex;
+	selections1.selections.push_back(newSelection);
+	if (selections1.selections.size() == 1)
+	  return;
+	//here we should have 2 vertices, but will check to make sure.
+	assert(selections1.selections.size() == 2);
+	assert(selections1.selections.at(0).shapeType == DimSelections::Vertex);
+	assert(selections1.selections.at(1).shapeType == DimSelections::Vertex);
+
+	QTimer::singleShot(0, this, SLOT(selectionClearDelayedSlot()));
+	stepped->getButton(1)->setEnabled(true);
+	stepped->getButton(1)->setChecked(true);
+	return;
       }
 
       //here there should only be one in the selections container. so just clear it.
@@ -1554,14 +1549,14 @@ void PartGui::TaskMeasureAngular::onSelectionChanged(const Gui::SelectionChanges
 
       if (shape.ShapeType() == TopAbs_EDGE)
       {
-        newSelection.shapeType = DimSelections::Edge;
-        selections1.selections. push_back(newSelection);
+	newSelection.shapeType = DimSelections::Edge;
+	selections1.selections. push_back(newSelection);
       }
 
       if (shape.ShapeType() == TopAbs_FACE)
       {
-        newSelection.shapeType = DimSelections::Face;
-        selections1.selections.push_back(newSelection);
+	newSelection.shapeType = DimSelections::Face;
+	selections1.selections.push_back(newSelection);
       }
 
       QTimer::singleShot(0, this, SLOT(selectionClearDelayedSlot()));
@@ -1576,45 +1571,45 @@ void PartGui::TaskMeasureAngular::onSelectionChanged(const Gui::SelectionChanges
     {
       if (shape.ShapeType() == TopAbs_VERTEX)
       {
-        //if we have previous selection it should be only one vertex.
-        if (selections2.selections.size() > 1)
-          selections2.selections.clear();
-        else if(selections2.selections.size() == 1)
-        {
-          //make sure it is a vertex.
-          if (selections2.selections.at(0).shapeType != DimSelections::Vertex)
-            selections2.selections.clear();
-        }
+	//if we have previous selection it should be only one vertex.
+	if (selections2.selections.size() > 1)
+	  selections2.selections.clear();
+	else if(selections2.selections.size() == 1)
+	{
+	  //make sure it is a vertex.
+	  if (selections2.selections.at(0).shapeType != DimSelections::Vertex)
+	    selections2.selections.clear();
+	}
 
-        newSelection.shapeType = DimSelections::Vertex;
-        selections2.selections.push_back(newSelection);
-        if (selections2.selections.size() == 1)
-          return;
-        //here we should have 2 vertices, but will check to make sure.
-        assert(selections2.selections.size() == 2);
-        assert(selections2.selections.at(0).shapeType == DimSelections::Vertex);
-        assert(selections2.selections.at(1).shapeType == DimSelections::Vertex);
+	newSelection.shapeType = DimSelections::Vertex;
+	selections2.selections.push_back(newSelection);
+	if (selections2.selections.size() == 1)
+	  return;
+	//here we should have 2 vertices, but will check to make sure.
+	assert(selections2.selections.size() == 2);
+	assert(selections2.selections.at(0).shapeType == DimSelections::Vertex);
+	assert(selections2.selections.at(1).shapeType == DimSelections::Vertex);
 
-        buildDimension();
-        clearSelection();
-        QTimer::singleShot(0, this, SLOT(selectionClearDelayedSlot()));
-        stepped->getButton(0)->setChecked(true);
-        stepped->getButton(1)->setEnabled(false);
-        return;
+	buildDimension();
+	clearSelection();
+	QTimer::singleShot(0, this, SLOT(selectionClearDelayedSlot()));
+	stepped->getButton(0)->setChecked(true);
+	stepped->getButton(1)->setEnabled(false);
+	return;
       }
       //vertices have to be selected in succession. if we get here,clear temp selection.
       selections2.selections.clear();
 
       if (shape.ShapeType() == TopAbs_EDGE)
       {
-        newSelection.shapeType = DimSelections::Edge;
-        selections2.selections. push_back(newSelection);
+	newSelection.shapeType = DimSelections::Edge;
+	selections2.selections. push_back(newSelection);
       }
 
       if (shape.ShapeType() == TopAbs_FACE)
       {
-        newSelection.shapeType = DimSelections::Face;
-        selections2.selections.push_back(newSelection);
+	newSelection.shapeType = DimSelections::Face;
+	selections2.selections.push_back(newSelection);
       }
 
       buildDimension();
@@ -1676,7 +1671,7 @@ PartGui::VectorAdapter PartGui::TaskMeasureAngular::buildAdapter(const PartGui::
     {
       TopoDS_Shape faceShape;
       if (!getShapeFromStrings(faceShape, current.documentName, current.objectName, current.subObjectName,&mat))
-        return VectorAdapter();
+	return VectorAdapter();
 
       TopoDS_Face face = TopoDS::Face(faceShape);
       Base::Vector3d v(current.x,current.y,current.z);
@@ -1719,7 +1714,7 @@ void PartGui::TaskMeasureAngular::buildDimension(const DimSelections &sel1, cons
     return;
   }
   auto doc = App::GetApplication().getActiveDocument();
-  if(doc)
+  if(doc) 
     _Measures[doc->getName()].emplace_back(sel1,sel2,false);
   goDimensionAngularNoTask(adapt1, adapt2);
 }

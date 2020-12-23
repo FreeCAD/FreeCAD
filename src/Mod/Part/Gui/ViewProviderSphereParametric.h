@@ -24,11 +24,11 @@
 #ifndef PARTGUI_VIEWPROVIDERSPHEREPARAMETRIC_H
 #define PARTGUI_VIEWPROVIDERSPHEREPARAMETRIC_H
 
-#include "ViewProviderPrimitive.h"
+#include "ViewProvider.h"
 
 namespace PartGui {
 
-class PartGuiExport ViewProviderSphereParametric : public ViewProviderPrimitive
+class PartGuiExport ViewProviderSphereParametric : public ViewProviderPart
 {
     PROPERTY_HEADER(PartGui::ViewProviderSphereParametric);
 
@@ -44,7 +44,7 @@ protected:
 
 };
 
-class PartGuiExport ViewProviderEllipsoid : public ViewProviderPrimitive
+class PartGuiExport ViewProviderEllipsoid : public ViewProviderPart
 {
     PROPERTY_HEADER(PartGui::ViewProviderEllipsoid);
 

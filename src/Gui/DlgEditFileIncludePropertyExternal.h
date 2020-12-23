@@ -31,15 +31,15 @@ namespace Gui {
 namespace Dialog {
 
 /**
- *
+ * 
  * \author Jürgen Riegel
  */
-class GuiExport DlgEditFileIncludePropertyExternal : public DlgRunExternal
-{
+class GuiExport DlgEditFileIncludePropertyExternal : public DlgRunExternal 
+{ 
     Q_OBJECT
 
 public:
-    DlgEditFileIncludePropertyExternal( App::PropertyFileIncluded& Prop, QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags() );
+    DlgEditFileIncludePropertyExternal( App::PropertyFileIncluded& Prop, QWidget* parent = 0, Qt::WindowFlags fl = 0 );
     virtual ~DlgEditFileIncludePropertyExternal();
 
     int Do(void);

@@ -20,21 +20,6 @@
                 <UserDocu></UserDocu>
             </Documentation>
         </Methode>
-        <Methode Name="resetNodeColor">
-            <Documentation>
-                <UserDocu>Reset color set by method setNodeColorByScalars.</UserDocu>
-            </Documentation>
-        </Methode>
-        <Methode Name="resetNodeDisplacement">
-            <Documentation>
-                <UserDocu>Reset displacements set by method setNodeDisplacementByVectors.</UserDocu>
-            </Documentation>
-        </Methode>
-        <Methode Name="resetHighlightedNodes">
-            <Documentation>
-                <UserDocu>Reset highlighted nodes.</UserDocu>
-            </Documentation>
-        </Methode>
         <Methode Name="setNodeColorByScalars">
             <Documentation>
                 <UserDocu>Sets mesh node colors using element list and value list.</UserDocu>

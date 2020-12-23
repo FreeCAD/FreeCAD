@@ -22,12 +22,9 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <boost_bind_bind.hpp>
 #include <QAbstractEventDispatcher>
 #include <QVBoxLayout>
 #endif
-
-#include <memory>
 
 #include <sstream>
 
@@ -42,7 +39,6 @@
 
 using namespace Gui;
 using namespace DAG;
-namespace bp = boost::placeholders;
 
 DAG::DockWindow::DockWindow(Gui::Document* gDocumentIn, QWidget* parent): Gui::DockWindow(gDocumentIn, parent)
 {
@@ -56,8 +52,8 @@ View::View(QWidget* parentIn): QGraphicsView(parentIn)
 {
   this->setRenderHint(QPainter::Antialiasing, true);
   this->setRenderHint(QPainter::TextAntialiasing, true);
-  Application::Instance->signalActiveDocument.connect(boost::bind(&View::slotActiveDocument, this, bp::_1));
-  Application::Instance->signalDeleteDocument.connect(boost::bind(&View::slotDeleteDocument, this, bp::_1));
+  Application::Instance->signalActiveDocument.connect(boost::bind(&View::slotActiveDocument, this, _1));
+  Application::Instance->signalDeleteDocument.connect(boost::bind(&View::slotDeleteDocument, this, _1));
   
   //just update the dagview when the gui process is idle.
   connect(QAbstractEventDispatcher::instance(), SIGNAL(awake()), this, SLOT(awakeSlot()));
@@ -65,18 +61,16 @@ View::View(QWidget* parentIn): QGraphicsView(parentIn)
 
 View::~View()
 {
-  Application::Instance->signalActiveDocument.disconnect(boost::bind(&View::slotActiveDocument, this, bp::_1));
-  Application::Instance->signalDeleteDocument.disconnect(boost::bind(&View::slotDeleteDocument, this, bp::_1));
+  Application::Instance->signalActiveDocument.disconnect(boost::bind(&View::slotActiveDocument, this, _1));
+  Application::Instance->signalDeleteDocument.disconnect(boost::bind(&View::slotDeleteDocument, this, _1));
 }
 
 void View::slotActiveDocument(const Document &documentIn)
 {
-  if (Gui::Selection().hasSelection())
-      return;
   ModelMap::const_iterator it = modelMap.find(&documentIn);
   if (it == modelMap.end())
   {
-    ModelMap::value_type entry(std::make_pair(&documentIn, std::make_shared<Model>(this, documentIn)));
+    ModelMap::value_type entry(std::make_pair(&documentIn, std::shared_ptr<Model>(new Model(this, documentIn))));
     modelMap.insert(entry);
     this->setScene(entry.second.get());
   }
@@ -102,31 +96,24 @@ void View::awakeSlot()
 
 void View::onSelectionChanged(const SelectionChanges& msg)
 {
-  switch(msg.Type) {
-  case SelectionChanges::AddSelection:
-  case SelectionChanges::RmvSelection:
-  case SelectionChanges::SetSelection:
-    if (!msg.pDocName || !msg.pDocName[0])
-      return;
-    break;
-  case SelectionChanges::ClrSelection:
-    if (!msg.pDocName || !msg.pDocName[0]) {
-      for (auto &v : modelMap) {
-        v.second->selectionChanged(msg);
-      }
+  //dispatch to appropriate document.
+  ModelMap::iterator it;
+  for (auto it = modelMap.begin(); it != modelMap.end(); ++it)
+  {
+    if (std::string(it->first->getDocument()->getName()) == std::string(msg.pDocName))
+    {
+      it->second->selectionChanged(msg);
       return;
     }
-    break;
-  default:
-    return;
   }
-  auto doc = Gui::Application::Instance->getDocument(msg.pDocName);
-  if (!doc) return;
-  auto &model = modelMap[doc];
-  if(!model)
-    model = std::make_shared<Model>(this, *doc);
-  this->setScene(model.get());
-  model->selectionChanged(msg);
+  
+  //FIXME: why am I getting a spontaneous event with an empty name?
+  //also getting events after the document has been removed from modelMap.
+  //just ignore for now.
+//   std::ostringstream stream;
+//   stream << std::endl << "couldn't find document of name: " << std::string(msg.pDocName) << std::endl << std::endl;
+//   Base::Console().Warning(stream.str().c_str());
+//   assert(0); //no document of name.
 }
 
 

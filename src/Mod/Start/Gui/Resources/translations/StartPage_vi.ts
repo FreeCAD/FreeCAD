@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="vi" sourcelanguage="en">
+<TS version="2.0" language="vi" sourcelanguage="en">
   <context>
     <name>StartPage</name>
     <message>
@@ -26,7 +26,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="46"/>
       <source>Recent files</source>
-      <translation>Tập tin mới dùng</translation>
+      <translation>Những tệp gần đây</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="47"/>
@@ -36,17 +36,17 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="48"/>
       <source>Adjust the number of recent files to be shown here in menu Edit -&gt; Preferences -&gt; General -&gt; Size of recent file list</source>
-      <translation>𝐍1𝐊7𝐁𝐍𝐕𝐏3𝐘𝐏6𝐇𝐑</translation>
+      <translation type="unfinished">Adjust the number of recent files to be shown here in menu Edit -&gt; Preferences -&gt; General -&gt; Size of recent file list</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="49"/>
       <source>Examples</source>
-      <translation>Ví dụ</translation>
+      <translation type="unfinished">Examples</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="50"/>
       <source>General documentation</source>
-      <translation>Tài liệu chung</translation>
+      <translation type="unfinished">General documentation</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="51"/>
@@ -81,7 +81,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="57"/>
       <source>Manual</source>
-      <translation>Hướng dẫn sử dụng</translation>
+      <translation type="unfinished">Manual</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="58"/>
@@ -101,7 +101,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="61"/>
       <source>Getting help from the community</source>
-      <translation>Tìm trợ giúp từ cộng đồng</translation>
+      <translation type="unfinished">Getting help from the community</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="62"/>
@@ -151,7 +151,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
       <source>See all commits on github</source>
-      <translation>Xem mọi lần chuyển giao mã nguồn trên github</translation>
+      <translation type="unfinished">See all commits on github</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
@@ -171,12 +171,12 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="75"/>
       <source>Create new...</source>
-      <translation>Tạo mới...</translation>
+      <translation type="unfinished">Create new...</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="76"/>
       <source>Unknown</source>
-      <translation>Không rõ</translation>
+      <translation type="unfinished">Unknown</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="77"/>
@@ -186,7 +186,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="78"/>
       <source>The latest posts on the &lt;a href="https://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt;:</source>
-      <translation>Bài gửi mới nhất trên &lt;a href="https://forum.freecadweb.org"&gt;diễn đàn FreeCAD&lt;/a&gt;:</translation>
+      <translation type="unfinished">The latest posts on the &lt;a href="https://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt;:</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="79"/>
@@ -196,17 +196,17 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="80"/>
       <source>Creation date</source>
-      <translation>Ngày tạo</translation>
+      <translation type="unfinished">Creation date</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="81"/>
       <source>Last modification</source>
-      <translation>Chỉnh sửa lần cuối</translation>
+      <translation type="unfinished">Last modification</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="82"/>
       <source>Notes</source>
-      <translation>Ghi chú</translation>
+      <translation type="unfinished">Notes</translation>
     </message>
   </context>
   <context>
@@ -215,7 +215,7 @@
       <location filename="../../Command.cpp" line="58"/>
       <location filename="../../Workbench.cpp" line="65"/>
       <source>Start page</source>
-      <translation>Trang bắt đầu</translation>
+      <translation type="unfinished">Start page</translation>
     </message>
   </context>
   <context>
@@ -228,12 +228,12 @@
     <message>
       <location filename="../../Command.cpp" line="45"/>
       <source>Start Page</source>
-      <translation>Trang bắt đầu</translation>
+      <translation type="unfinished">Start Page</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="46"/>
       <source>Displays the start page in a browser view</source>
-      <translation>Mở trang bắt đầu trong bộ xem trình duyệt</translation>
+      <translation type="unfinished">Displays the start page in a browser view</translation>
     </message>
   </context>
   <context>
@@ -241,12 +241,12 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="14"/>
       <source>Start page options</source>
-      <translation>Tùy chọn trang bắt đầu</translation>
+      <translation type="unfinished">Start page options</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="20"/>
       <source>Start page template</source>
-      <translation>Mẫu trang bắt đầu</translation>
+      <translation type="unfinished">Start page template</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="26"/>
@@ -256,27 +256,27 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="42"/>
       <source>Contents</source>
-      <translation>Nội dung</translation>
+      <translation type="unfinished">Contents</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="48"/>
       <source>Show forum</source>
-      <translation>Hiển thị diễn đàn</translation>
+      <translation type="unfinished">Show forum</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="55"/>
       <source>Show examples folder contents</source>
-      <translation>Hiển thị nội dung thư mục chứa ví dụ</translation>
+      <translation type="unfinished">Show examples folder contents</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="62"/>
       <source>Show additional folder</source>
-      <translation>Hiển thị thêm các thư mục khác</translation>
+      <translation type="unfinished">Show additional folder</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="69"/>
       <source>If you want the examples to show on the first page</source>
-      <translation>Nếu bạn muốn các ví dụ hiển thị ở trang bắt đầu</translation>
+      <translation type="unfinished">If you want the examples to show on the first page</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="91"/>
@@ -301,7 +301,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="155"/>
       <source>Fonts and colors</source>
-      <translation>Phông chữ và màu sắc</translation>
+      <translation type="unfinished">Fonts and colors</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="167"/>
@@ -316,12 +316,12 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="199"/>
       <source>in FreeCAD</source>
-      <translation>trong FreeCAD</translation>
+      <translation type="unfinished">in FreeCAD</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="218"/>
       <source>In external browser</source>
-      <translation>Dùng trình duyệt ngoài</translation>
+      <translation type="unfinished">In external browser</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="236"/>
@@ -356,12 +356,12 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="321"/>
       <source>The color of the text on the main pages</source>
-      <translation>Màu của chữ trong trang chính</translation>
+      <translation type="unfinished">The color of the text on the main pages</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="341"/>
       <source>Background image</source>
-      <translation>Hình ảnh nền</translation>
+      <translation type="unfinished">Background image</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="348"/>
@@ -371,22 +371,22 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="361"/>
       <source>The color of the links</source>
-      <translation>Màu sắc của liên kết</translation>
+      <translation type="unfinished">The color of the links</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="387"/>
       <source>The background color of the boxes inside the pages</source>
-      <translation>Màu nền của hộp bên trong các trang</translation>
+      <translation type="unfinished">The background color of the boxes inside the pages</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="407"/>
       <source>Box background color</source>
-      <translation>Màu nền hộp</translation>
+      <translation type="unfinished">Box background color</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="420"/>
       <source>The background color behind the panels</source>
-      <translation>Màu nền đằng sau bảng điều khiển</translation>
+      <translation type="unfinished">The background color behind the panels</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="449"/>
@@ -396,17 +396,17 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="472"/>
       <source>Open links</source>
-      <translation>Mở liên kết</translation>
+      <translation type="unfinished">Open links</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="479"/>
       <source>Background text color</source>
-      <translation>Màu nền chữ</translation>
+      <translation type="unfinished">Background text color</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="486"/>
       <source>Use FreeCAD style sheet</source>
-      <translation>Dùng kiểu dáng FreeCAD</translation>
+      <translation type="unfinished">Use FreeCAD style sheet</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="493"/>
@@ -416,7 +416,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="502"/>
       <source>The font family to use on the start page. Can be a font name or a comma-separated series of fallback fonts</source>
-      <translation>Họ phông chữ được dùng trong trang bắt đầu. Có thể là một tên phông chữ hoặc một danh sách ngăn cách bằng dấu phẩy các phông chữ</translation>
+      <translation type="unfinished">The font family to use on the start page. Can be a font name or a comma-separated series of fallback fonts</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="508"/>
@@ -426,7 +426,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="521"/>
       <source>The base font size to use for all texts of the Start page</source>
-      <translation>Cỡ phông chữ cơ sở dùng cho mọi chữ trong trang Bắt đầu</translation>
+      <translation type="unfinished">The base font size to use for all texts of the Start page</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="524"/>

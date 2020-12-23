@@ -48,40 +48,39 @@ public:
 
 public:
     virtual bool accept();
+    virtual bool apply();
     virtual bool reject();
+    void modifyStandardButtons(QDialogButtonBox* box);
+    void saveButtons(QPushButton* btnOK,
+                     QPushButton* btnCancel,
+                     QPushButton* btnApply);
+
 
 protected Q_SLOTS:
-    void onUpClicked();
-    void onDownClicked();
-    void onLeftClicked();
-    void onRightClicked();
-    void onIdentifierChanged();
-    void onScaleChanged();
-    void onXChanged();
-    void onYChanged();
-    void onZChanged();
+    void onUpClicked(bool b);
+    void onDownClicked(bool b);
+    void onLeftClicked(bool b);
+    void onRightClicked(bool b);
 
 protected:
+    void blockButtons(bool b);
+
     void changeEvent(QEvent *e);
     void saveSectionState();
     void restoreSectionState();
 
-    bool apply(void);
     void applyQuick(std::string dir);
     void applyAligned(void);
 
-    void createSectionView(void);
+    TechDraw::DrawViewSection* createSectionView(void);
     void updateSectionView(void);
 
     void setUiPrimary();
     void setUiEdit();
 
     void checkAll(bool b);
-    void enableAll(bool b);
 
-    void failNoObject(std::string objName);
-    bool isBaseValid(void);
-    bool isSectionValid(void);
+//    std::string prefViewSection();
 
 private:
     Ui_TaskSectionView * ui;
@@ -97,20 +96,15 @@ private:
     Base::Vector3d m_saveNormal;
     Base::Vector3d m_saveDirection;
     Base::Vector3d m_saveOrigin;
-    double m_saveScale;
 
     std::string m_dirName;
-    std::string m_sectionName;
-    std::string m_baseName;
-    App::Document* m_doc;
+
+    QPushButton* m_btnOK;
+    QPushButton* m_btnCancel;
+    QPushButton* m_btnApply;
 
     bool m_createMode;
     bool m_saved;
-
-    std::string m_saveBaseName;
-    std::string m_savePageName;
-
-    bool m_abort;
 
 };
 
@@ -127,7 +121,7 @@ public:
     /// is called the TaskView when the dialog is opened
     virtual void open();
     /// is called by the framework if an button is clicked which has no accept or reject role
-/*    virtual void clicked(int);*/
+    virtual void clicked(int);
     /// is called by the framework if the dialog is accepted (Ok)
     virtual bool accept();
     /// is called by the framework if the dialog is rejected (Cancel)
@@ -135,16 +129,14 @@ public:
     /// is called by the framework if the user presses the help button
     virtual void helpRequested() { return;}
 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
-    { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
-/*    virtual void modifyStandardButtons(QDialogButtonBox* box);*/
-
-    void update();
-
-    virtual bool isAllowedAlterSelection(void) const
-    { return false; }
     virtual bool isAllowedAlterDocument(void) const
     { return false; }
+
+    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    { return QDialogButtonBox::Ok | QDialogButtonBox::Apply | QDialogButtonBox::Cancel; }
+    virtual void modifyStandardButtons(QDialogButtonBox* box);
+
+    void update();
 
 protected:
 

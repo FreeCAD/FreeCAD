@@ -24,13 +24,13 @@
 #ifndef PARTGUI_VIEWPROVIDERPRISM_H
 #define PARTGUI_VIEWPROVIDERPRISM_H
 
-#include "ViewProviderPrimitive.h"
+#include "ViewProvider.h"
 
 
 namespace PartGui {
 
 
-class PartGuiExport ViewProviderPrism : public ViewProviderPrimitive
+class PartGuiExport ViewProviderPrism : public ViewProviderPart
 {
     PROPERTY_HEADER(PartGui::ViewProviderPrism);
 
@@ -46,7 +46,7 @@ protected:
 
 };
 
-class PartGuiExport ViewProviderWedge : public ViewProviderPrimitive
+class PartGuiExport ViewProviderWedge : public ViewProviderPart
 {
     PROPERTY_HEADER(PartGui::ViewProviderWedge);
 

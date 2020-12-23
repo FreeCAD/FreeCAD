@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
 #***************************************************************************
-#*   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
+#*   (c) Yorik van Havre (yorik@uncreated.net) 2014                        *
 #*                                                                         *
 #*   This file is part of the FreeCAD CAx development system.              *
 #*                                                                         *
@@ -20,7 +19,8 @@
 #*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 #*   USA                                                                   *
 #*                                                                         *
-#***************************************************************************
+#***************************************************************************/
+
 
 '''
 These are a common functions and classes for creating custom post processors.
@@ -78,6 +78,7 @@ class GCodeEditorDialog(QtGui.QDialog):
         font.setPointSize(10)
         self.editor.setFont(font)
         self.editor.setText("G01 X55 Y4.5 F300.0")
+        self.highlighter = GCodeHighlighter(self.editor.document())
         layout.addWidget(self.editor)
 
         # OK and Cancel buttons
@@ -121,7 +122,7 @@ def stringsplit(commandline):
     for word in wordlist[1:]:
         returndict[word[0]] = word[1:]
 
-    return returndict
+    return returndict 
 
 def fmt(num,dec,units):
     ''' used to format axis moves, feedrate, etc for decimal places and units'''
@@ -133,23 +134,8 @@ def fmt(num,dec,units):
 
 def editor(gcode):
     '''pops up a handy little editor to look at the code output '''
-
-    prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
-    # default Max Highlighter Size = 512 Ko
-    defaultMHS = 512 * 1024
-    mhs = prefs.GetUnsigned('inspecteditorMaxHighlighterSize', defaultMHS)
-
     dia = GCodeEditorDialog()
     dia.editor.setText(gcode)
-    gcodeSize = len(dia.editor.toPlainText())
-    if (gcodeSize <= mhs):
-        # because of poor performance, syntax highlighting is
-        # limited to mhs octets (default 512 KB).
-        # It seems than the response time curve has an inflexion near 500 KB
-        # beyond 500 KB, the response time increases exponentially.
-        dia.highlighter = GCodeHighlighter(dia.editor.document())
-    else:
-        FreeCAD.Console.PrintMessage(translate("Path", "GCode size too big ({} o), disabling syntax highlighter.".format(gcodeSize)))
     result = dia.exec_()
     if result:  # If user selected 'OK' get modified G Code
         final = dia.editor.toPlainText()

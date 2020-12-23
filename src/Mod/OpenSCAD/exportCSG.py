@@ -32,11 +32,9 @@ __url__ = ["http://www.sloan-home.co.uk/Export/Export.html"]
 import FreeCAD, os, Part, math
 from FreeCAD import Vector
 
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    gui = True
-else:
-    gui = False
+try: import FreeCADGui
+except ValueError: gui = False
+else: gui = True
 
 #***************************************************************************
 # Tailor following to your requirements ( Should all be strings )          *
@@ -82,9 +80,7 @@ def check_multmatrix(csg,ob,x,y,z):
 def mesh2polyhedron(mesh):
     pointstr=','.join(['[%f,%f,%f]' % tuple(vec) for vec in mesh.Topology[0]])
     trianglestr=','.join(['[%d,%d,%d]' % tuple(tri) for tri in mesh.Topology[1]])
-    #avoid deprecation warning by changing triangles to faces
-    #return 'polyhedron ( points = [%s], triangles = [%s]);' % (pointstr,trianglestr)
-    return 'polyhedron ( points = [%s], faces = [%s]);' % (pointstr,trianglestr)
+    return 'polyhedron ( points = [%s], triangles = [%s]);' % (pointstr,trianglestr)
 
 def vector2d(v):
     return [v[0],v[1]]

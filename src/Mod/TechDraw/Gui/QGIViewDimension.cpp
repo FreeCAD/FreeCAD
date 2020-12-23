@@ -21,12 +21,6 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
-#ifdef FC_OS_WIN32
-#define _USE_MATH_DEFINES            //re Windows & M_PI issues
-#endif
-#include <cmath>
-
 #ifndef _PreComp_
   #include <BRep_Builder.hxx>
   #include <TopoDS_Compound.hxx>
@@ -39,10 +33,10 @@
   # include <QGraphicsScene>
   # include <QGraphicsSceneMouseEvent>
   # include <QPainter>
-  # include <QPainterPath>
   # include <QPaintDevice>
   # include <QSvgGenerator>
 
+  # include <cmath>
 #endif
 
 #include <App/Application.h>
@@ -59,11 +53,9 @@
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/Geometry.h>
-//#include <Mod/TechDraw/App/Preferences.h>
 
 #include "Rez.h"
 #include "ZVALUE.h"
-#include "PreferencesGui.h"
 
 #include "QGCustomLabel.h"
 #include "QGCustomBorder.h"
@@ -76,10 +68,6 @@
 #include "QGIViewDimension.h"
 #include "ViewProviderDimension.h"
 #include "DrawGuiUtil.h"
-
-#define NORMAL 0
-#define PRE 1
-#define SEL 2
 
 
 //TODO: hide the Qt coord system (+y down).  
@@ -95,7 +83,6 @@ enum SnapMode{
 
 QGIDatumLabel::QGIDatumLabel()
 {
-    verticalSep = false;
     posX = 0;
     posY = 0;
 
@@ -104,22 +91,16 @@ QGIDatumLabel::QGIDatumLabel()
     setFlag(ItemIsMovable, true);
     setFlag(ItemIsSelectable, true);
     setAcceptHoverEvents(true);
-    setFiltersChildEvents(true);
 
     m_dimText = new QGCustomText();
-    m_dimText->setTightBounding(true);
     m_dimText->setParentItem(this);
-    m_tolTextOver = new QGCustomText();
-    m_tolTextOver->setTightBounding(true);
-    m_tolTextOver->setParentItem(this);
-    m_tolTextUnder = new QGCustomText();
-    m_tolTextUnder->setTightBounding(true);
-    m_tolTextUnder->setParentItem(this);
+    m_tolText = new QGCustomText();
+    m_tolText->setParentItem(this);
     m_unitText = new QGCustomText();
-    m_unitText->setTightBounding(true);
     m_unitText->setParentItem(this);
 
     m_ctrl = false;
+    hasHover = false;
 
     m_isFramed = false;
     m_lineWidth = Rez::guiX(0.5);
@@ -129,8 +110,10 @@ QVariant QGIDatumLabel::itemChange(GraphicsItemChange change, const QVariant &va
 {
     if (change == ItemSelectedHasChanged && scene()) {
         if(isSelected()) {
+            Q_EMIT selected(true);
             setPrettySel();
         } else {
+            Q_EMIT selected(false);
             setPrettyNormal();
         }
         update();
@@ -161,7 +144,6 @@ void QGIDatumLabel::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 
 void QGIDatumLabel::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
-//    Base::Console().Message("QGIDL::mouseReleaseEvent()\n");
     m_ctrl = false;
     if(scene() && this == scene()->mouseGrabberItem()) {
         Q_EMIT dragFinished();
@@ -173,6 +155,7 @@ void QGIDatumLabel::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 void QGIDatumLabel::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     Q_EMIT hover(true);
+    hasHover = true;
     if (!isSelected()) {
         setPrettyPre();
     } else {
@@ -183,7 +166,12 @@ void QGIDatumLabel::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 
 void QGIDatumLabel::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
+    QGIView *view = dynamic_cast<QGIView *> (parentItem());
+    assert(view != 0);
+    Q_UNUSED(view);
+
     Q_EMIT hover(false);
+    hasHover = false;
     if (!isSelected()) {
         setPrettyNormal();
     } else {
@@ -207,9 +195,6 @@ void QGIDatumLabel::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
-//    painter->setPen(Qt::blue);
-//    painter->drawRect(boundingRect());          //good for debugging
-
     if (m_isFramed) {
         QPen prevPen = painter->pen();
         QPen framePen(prevPen);
@@ -225,57 +210,19 @@ void QGIDatumLabel::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
 
 void QGIDatumLabel::setPosFromCenter(const double &xCenter, const double &yCenter)
 {
-    prepareGeometryChange();
-    QGIViewDimension* qgivd = dynamic_cast<QGIViewDimension*>(parentItem());
-    if( qgivd == nullptr ) {
-        return;                  //tarfu
-    }
-    const auto dim( dynamic_cast<TechDraw::DrawViewDimension *>(qgivd->getViewObject()) );
-    if( dim == nullptr ) {
-        return;
-    }
-
     //set label's Qt position(top,left) given boundingRect center point
     setPos(xCenter - m_dimText->boundingRect().width() / 2., yCenter - m_dimText->boundingRect().height() / 2.);
 
-    QString uText = m_unitText->toPlainText();
-    if ( (uText.size() > 0) &&
-         (uText.at(0) != QChar::fromLatin1(' ')) ) {
-        QString vText = m_dimText->toPlainText();
-        vText = vText + uText;
-        m_dimText->setPlainText(vText);
-        m_unitText->setPlainText(QString());
-    }
-
+    //set tolerance position
     QRectF labelBox = m_dimText->boundingRect();
     double right = labelBox.right();
     double top   = labelBox.top();
-    double bottom = labelBox.bottom();
-    double middle = (top + bottom) / 2.0;
+    m_tolText->setPos(right,top);
 
     //set unit position
-    QRectF unitBox = m_unitText->boundingRect();
-    double unitWidth = unitBox.width();
-    double unitRight = right + unitWidth;
-    // Set the m_unitText font *baseline* at same height as the m_dimText font baseline
-    m_unitText->setPos(right, 0.0);
-
-    //set tolerance position
-    QRectF overBox = m_tolTextOver->boundingRect();
-    double overWidth  = overBox.width();
-    QRectF underBox = m_tolTextUnder->boundingRect();
-    double underWidth = underBox.width();
-    double width = underWidth;
-    if (overWidth > underWidth) {
-        width = overWidth;
-    }
-    double tolRight = unitRight + width;
-
-    // Adjust for difference in tight and original bounding box sizes, note the y-coord down system
-    QPointF tol_adj = m_tolTextOver->tightBoundingAdjust();
-    m_tolTextOver->justifyRightAt(tolRight + tol_adj.x(), middle - tol_adj.y(), false);
-    tol_adj = m_tolTextUnder->tightBoundingAdjust();
-    m_tolTextUnder->justifyRightAt(tolRight + tol_adj.x(), middle + overBox.height() - tol_adj.y(), false);
+    QRectF tolBox = m_tolText->boundingRect();
+    right = right + tolBox.right();
+    m_unitText->setPos(right,top);
 }
 
 void QGIDatumLabel::setLabelCenter()
@@ -287,15 +234,13 @@ void QGIDatumLabel::setLabelCenter()
 
 void QGIDatumLabel::setFont(QFont f)
 {
-    prepareGeometryChange();
     m_dimText->setFont(f);
     m_unitText->setFont(f);
     QFont tFont(f);
     double fontSize = f.pixelSize();
     double tolAdj = getTolAdjust();
     tFont.setPixelSize((int) (fontSize * tolAdj));
-    m_tolTextOver->setFont(tFont);
-    m_tolTextUnder->setFont(tFont);
+    m_tolText->setFont(tFont);
 }
 
 void QGIDatumLabel::setDimString(QString t)
@@ -322,37 +267,32 @@ void QGIDatumLabel::setTolString()
     if( dim == nullptr ) {
         return;
     } else if (!dim->hasTolerance()) {
-        m_tolTextOver->hide();
-        m_tolTextUnder->hide();        // don't show if both zero
         return;
     }
-    m_tolTextOver->show();
-    m_tolTextUnder->show();
+    
+    double overTol = dim->OverTolerance.getValue();
+    double underTol = dim->UnderTolerance.getValue();
 
-    QString tolSuffix;
-    if ((dim->Type.isValue("Angle")) || (dim->Type.isValue("Angle3Pt"))) {
-        tolSuffix = QString::fromUtf8(dim->getFormattedDimensionValue(2).c_str()); //just the unit
-    }
+    int precision = getPrecision();
+    QString qsPrecision = QString::number(precision);
+    QString qsFormat = QString::fromUtf8("%+.") +            //show sign
+                       qsPrecision +
+                       QString::fromUtf8("g");               //trim trailing zeroes
 
-    std::pair<std::string, std::string> labelTexts, unitTexts;
+    QString overFormat;
+    QString underFormat;
+    #if QT_VERSION >= 0x050000
+        overFormat = QString::asprintf(qsFormat.toStdString().c_str(), overTol);
+        underFormat = QString::asprintf(qsFormat.toStdString().c_str(), underTol);
+    #else
+        QString qs2;
+        overFormat = qs2.sprintf(qsFormat.toStdString().c_str(), overTol);
+        underFormat = qs2.sprintf(qsFormat.toStdString().c_str(), underTol);
+    #endif
 
-    if (dim->ArbitraryTolerances.getValue()) {
-        labelTexts = dim->getFormattedToleranceValues(1); //just the number pref/spec/suf
-        unitTexts.first = "";
-        unitTexts.second = "";
-    } else {
-        if (dim->isMultiValueSchema()) {
-            labelTexts = dim->getFormattedToleranceValues(0); //don't format multis
-            unitTexts.first = "";
-            unitTexts.second = "";
-        } else {
-            labelTexts = dim->getFormattedToleranceValues(1); //just the number pref/spec/suf
-            unitTexts  = dim->getFormattedToleranceValues(2); //just the unit
-        }
-    }
-
-    m_tolTextUnder->setPlainText(QString::fromUtf8(labelTexts.first.c_str()) + QString::fromUtf8(unitTexts.first.c_str()));
-    m_tolTextOver->setPlainText(QString::fromUtf8(labelTexts.second.c_str()) + QString::fromUtf8(unitTexts.second.c_str()));
+    QString html = QString::fromUtf8("<div>%1 <br/>%2 </div>");
+    html = html.arg(overFormat).arg(underFormat);
+    m_tolText->setHtml(html);
 
     return;
 } 
@@ -368,13 +308,12 @@ int QGIDatumLabel::getPrecision(void)
 {
     int precision;
     bool global = false;
-    global = Preferences::useGlobalDecimals();
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
+    global = hGrp->GetBool("UseGlobalDecimals", true);
     if (global) {
         precision = Base::UnitsApi::getDecimals();
     } else {
-        Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                                             GetGroup("BaseApp")->GetGroup("Preferences")->
-                                             GetGroup("Mod/TechDraw/Dimensions");
         precision = hGrp->GetInt("AltDecimals", 2);
     }
     return precision;
@@ -392,41 +331,30 @@ double QGIDatumLabel::getTolAdjust(void)
 
 void QGIDatumLabel::setPrettySel(void)
 {
-//    Base::Console().Message("QGIDL::setPrettySel()\n");
     m_dimText->setPrettySel();
-    m_tolTextOver->setPrettySel();
-    m_tolTextUnder->setPrettySel();
+    m_tolText->setPrettySel();
     m_unitText->setPrettySel();
-    Q_EMIT setPretty(SEL);
 }
 
 void QGIDatumLabel::setPrettyPre(void)
 {
-//    Base::Console().Message("QGIDL::setPrettyPre()\n");
     m_dimText->setPrettyPre();
-    m_tolTextOver->setPrettyPre();
-    m_tolTextUnder->setPrettyPre();
+    m_tolText->setPrettyPre();
     m_unitText->setPrettyPre();
-    Q_EMIT setPretty(PRE);
 }
 
 void QGIDatumLabel::setPrettyNormal(void)
 {
-//    Base::Console().Message("QGIDL::setPrettyNormal()\n");
     m_dimText->setPrettyNormal();
-    m_tolTextOver->setPrettyNormal();
-    m_tolTextUnder->setPrettyNormal();
+    m_tolText->setPrettyNormal();
     m_unitText->setPrettyNormal();
-    Q_EMIT setPretty(NORMAL);
 }
 
 void QGIDatumLabel::setColor(QColor c)
 {
-//    Base::Console().Message("QGIDL::setColor(%s)\n", qPrintable(c.name()));
     m_colNormal = c;
     m_dimText->setColor(m_colNormal);
-    m_tolTextOver->setColor(m_colNormal);
-    m_tolTextUnder->setColor(m_colNormal);
+    m_tolText->setColor(m_colNormal);
     m_unitText->setColor(m_colNormal);
 }
 
@@ -438,28 +366,40 @@ QGIViewDimension::QGIViewDimension() :
     setHandlesChildEvents(false);
     setFlag(QGraphicsItem::ItemIsMovable, false);
     setFlag(QGraphicsItem::ItemIsSelectable, false);
+//    setAcceptHoverEvents(true);
     setAcceptHoverEvents(false);
     setCacheMode(QGraphicsItem::NoCache);
 
     datumLabel = new QGIDatumLabel();
-//    datumLabel->m_parent = this;         //for dialog setup eventually
-
     addToGroup(datumLabel);
+    datumLabel->setColor(getNormalColor());
+    datumLabel->setPrettyNormal();
 
     dimLines = new QGIDimLines();
     addToGroup(dimLines);
+    dimLines->setNormalColor(getNormalColor());
+    dimLines->setPrettyNormal();
 
     aHead1 = new QGIArrow();
     addToGroup(aHead1);
+    aHead1->setNormalColor(getNormalColor());
+    aHead1->setFillColor(getNormalColor());
+    aHead1->setPrettyNormal();
 
     aHead2 = new QGIArrow();
     addToGroup(aHead2);
+    aHead2->setNormalColor(getNormalColor());
+    aHead2->setFillColor(getNormalColor());
+    aHead2->setPrettyNormal();
 
     datumLabel->setZValue(ZVALUE::DIMENSION);
+    dimLines->setZValue(ZVALUE::DIMENSION);
     aHead1->setZValue(ZVALUE::DIMENSION);
     aHead2->setZValue(ZVALUE::DIMENSION);
-    dimLines->setZValue(ZVALUE::DIMENSION);
-    dimLines->setStyle(Qt::SolidLine);
+
+    //centerMark = new QGICMark();
+    //addToGroup(centerMark);
+
 
     // connecting the needed slots and signals
     QObject::connect(
@@ -478,12 +418,18 @@ QGIViewDimension::QGIViewDimension() :
         datumLabel, SIGNAL(hover(bool)),
         this  , SLOT  (hover(bool)));
 
-    QObject::connect(
-        datumLabel, SIGNAL(setPretty(int)),
-        this  , SLOT  (onPrettyChanged(int)));
+    dimLines->setStyle(Qt::SolidLine);
 
     setZValue(ZVALUE::DIMENSION);         //note: this won't paint dimensions over another View if it stacks
                                           //above this Dimension's parent view.   need Layers?
+
+    m_label->hide();
+    m_border->hide();
+    m_caption->hide();
+    m_lock->hide();
+
+    setPrettyNormal();
+
 }
 
 QVariant QGIViewDimension::itemChange(GraphicsItemChange change, const QVariant &value)
@@ -492,6 +438,7 @@ QVariant QGIViewDimension::itemChange(GraphicsItemChange change, const QVariant 
         if(isSelected()) {
             setSelected(false);
             datumLabel->setSelected(true);
+            
         } else {
             datumLabel->setSelected(false);
         }
@@ -500,34 +447,39 @@ QVariant QGIViewDimension::itemChange(GraphicsItemChange change, const QVariant 
     return QGIView::itemChange(change, value);
 }
 
-//Set selection state for this and it's children
-void QGIViewDimension::setGroupSelection(bool b)
-{
-//    Base::Console().Message("QGIVD::setGroupSelection(%d)\n",b);
-    setSelected(b);
-    datumLabel->setSelected(b);
-    dimLines->setSelected(b);
-    aHead1->setSelected(b);
-    aHead2->setSelected(b);
-}
-
 void QGIViewDimension::select(bool state)
 {
-    Q_UNUSED(state)
-//    setSelected(state);
-//    draw();
+//    Base::Console().Message("QGIVD::select(%d)\n", state);
+    if (state) {
+        setPrettySel();
+    } else {
+        setPrettyNormal();
+    }
+    draw();
 }
 
 //surrogate for hover enter (true), hover leave (false) events
 void QGIViewDimension::hover(bool state)
 {
     hasHover = state;
+    if (state) {
+        if (datumLabel->isSelected()) {
+            setPrettySel();
+        } else {
+            setPrettyPre();     //have hover, not selected -> preselect
+        }
+    } else {
+        if (datumLabel->isSelected()) {
+            setPrettySel();
+        } else {
+            setPrettyNormal();
+        }
+    }
     draw();
 }
 
 void QGIViewDimension::setViewPartFeature(TechDraw::DrawViewDimension *obj)
 {
-//    Base::Console().Message("QGIVD::setViewPartFeature()\n");
     if(obj == 0)
         return;
 
@@ -539,32 +491,8 @@ void QGIViewDimension::setViewPartFeature(TechDraw::DrawViewDimension *obj)
 
     datumLabel->setPosFromCenter(x, y);
 
-    setNormalColorAll();
-    setPrettyNormal();
-
     updateDim();
     draw();
-}
-
-void QGIViewDimension::setNormalColorAll()
-{
-    QColor qc = prefNormalColor();
-    datumLabel->setColor(qc); 
-    dimLines->setNormalColor(qc);
-    aHead1->setNormalColor(qc);
-    aHead1->setFillColor(qc);
-    aHead2->setNormalColor(qc);
-    aHead2->setFillColor(qc);
-}
-
-
-//special handling to prevent unwanted repositioning
-//clicking on the dimension, but outside the label, should do nothing to position
-//label will get clicks before QGIVDim
-void QGIViewDimension::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
-{
-//    Base::Console().Message("QGIVDim::mouseReleaseEvent() - %s\n",getViewName());
-    QGraphicsItem::mouseReleaseEvent(event);
 }
 
 void QGIViewDimension::updateView(bool update)
@@ -611,20 +539,17 @@ void QGIViewDimension::updateDim()
         return;
     }
  
-//    QString labelText = QString::fromUtf8(dim->getFormattedDimensionValue().c_str());
+//    QString labelText = QString::fromUtf8(dim->getFormatedValue().c_str());
     //want this split into value and unit
     QString labelText;
     QString unitText;
     if (dim->Arbitrary.getValue()) {
-        labelText = QString::fromUtf8(dim->getFormattedDimensionValue(1).c_str()); //just the number pref/spec/suf
+        labelText = QString::fromUtf8(dim->getFormatedValue(1).c_str()); //just the number pref/spec/suf
     } else {
-        if (dim->isMultiValueSchema()) {
-            labelText = QString::fromUtf8(dim->getFormattedDimensionValue(0).c_str()); //don't format multis
-        } else {
-            labelText = QString::fromUtf8(dim->getFormattedDimensionValue(1).c_str()); //just the number pref/spec/suf
-            unitText  = QString::fromUtf8(dim->getFormattedDimensionValue(2).c_str()); //just the unit
-        }
+        labelText = QString::fromUtf8(dim->getFormatedValue(1).c_str()); //just the number pref/spec/suf
+        unitText  = QString::fromUtf8(dim->getFormatedValue(2).c_str()); //just the unit
     }
+    
     QFont font = datumLabel->getFont();
     font.setFamily(QString::fromUtf8(vp->Font.getValue()));
     font.setPixelSize(calculateFontPixelSize(vp->Fontsize.getValue()));
@@ -638,6 +563,16 @@ void QGIViewDimension::updateDim()
 
     datumLabel->setFramed(dim->TheoreticalExact.getValue());
     datumLabel->setLineWidth(m_lineWidth);
+}
+
+//this is for formatting and finding centers, not display
+QString QGIViewDimension::getLabelText(void)
+{
+    QString result;
+    QString first = datumLabel->getDimText()->toPlainText();
+    QString second = datumLabel->getTolText()->toPlainText();
+    result = first + second;
+    return result;
 }
 
 void QGIViewDimension::datumLabelDragged(bool ctrl)
@@ -656,31 +591,15 @@ void QGIViewDimension::datumLabelDragFinished()
 
     double x = Rez::appX(datumLabel->X()),
            y = Rez::appX(datumLabel->Y());
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Drag Dimension"));
+    Gui::Command::openCommand("Drag Dimension");
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.X = %f", dim->getNameInDocument(), x);
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Y = %f", dim->getNameInDocument(), -y);
     Gui::Command::commitCommand();
 }
 
-//this is for formatting and finding centers, not display
-QString QGIViewDimension::getLabelText(void)
-{
-    QString result;
-    QString first = datumLabel->getDimText()->toPlainText();
-    QString second = datumLabel->getTolTextOver()->toPlainText();
-    QString third = datumLabel->getTolTextUnder()->toPlainText();
-    if (second.length() > third.length()) {
-        result = first + second;
-    } else {
-        result = first + third;
-    }
-
-    return result;
-}
 
 void QGIViewDimension::draw()
 {
-    prepareGeometryChange();
     if (!isVisible()) {
         return;
     }
@@ -695,9 +614,6 @@ void QGIViewDimension::draw()
     }
 
     const TechDraw::DrawViewPart *refObj = dim->getViewPart();
-    if (refObj == nullptr) {
-        return;
-    }
     if(!refObj->hasGeometry()) {                                       //nothing to draw yet (restoring)
         datumLabel->hide();
         hide();
@@ -712,6 +628,9 @@ void QGIViewDimension::draw()
     }
 
     m_lineWidth = Rez::guiX(vp->LineWidth.getValue());
+    m_colNormal = getNormalColor();
+
+    datumLabel->setColor(m_colNormal);
     datumLabel->setRotation(0.0);
     datumLabel->show();
 
@@ -806,8 +725,8 @@ int QGIViewDimension::compareAngleStraightness(double straightAngle, double left
 
 double QGIViewDimension::getIsoStandardLinePlacement(double labelAngle)
 {
-    // According to ISO 129-1 Standard Figure 23, the bordering angle is 1/2 PI, resp. -1/2 PI
-    return labelAngle < -M_PI/2.0 || labelAngle > +M_PI/2.0
+    // According to ISO 129-1 Standard Figure 23, the bordering angle is 2/3 PI, resp. -1/3 PI
+    return labelAngle < -M_PI/3.0 || labelAngle > +2.0*M_PI/3.0
            ? +1.0 : -1.0;
 }
 
@@ -1178,8 +1097,6 @@ void QGIViewDimension::drawArrows(int count, const Base::Vector2d positions[], d
     const int arrowCount = 2;
     QGIArrow *arrows[arrowCount] = { aHead1, aHead2 };
 
-    arrowPositionsToFeature(positions);
-
     for (int i = 0; i < arrowCount; ++i) {
         QGIArrow *arrow = arrows[i];
 
@@ -1197,22 +1114,9 @@ void QGIViewDimension::drawArrows(int count, const Base::Vector2d positions[], d
         arrow->setSize(QGIArrow::getPrefArrowSize());
         arrow->setFlipped(flipped);
 
-        if (QGIArrow::getPrefArrowStyle() != 7) { // if not "None"
-            arrow->draw();
-            arrow->show();
-        }
-        else
-            arrow->hide();
+        arrow->draw();
+        arrow->show();
     }
-}
-
-void QGIViewDimension::arrowPositionsToFeature(const Base::Vector2d positions[]) const
-{
-    auto dim( dynamic_cast<TechDraw::DrawViewDimension*>(getViewObject()) );
-    if( dim == nullptr )
-        return;
-
-    dim->saveArrowPositions(positions);
 }
 
 void QGIViewDimension::drawSingleLine(QPainterPath &painterPath, const Base::Vector2d &lineOrigin, double lineAngle,
@@ -2076,35 +1980,24 @@ void QGIViewDimension::drawAngle(TechDraw::DrawViewDimension *dimension, ViewPro
     dimLines->setPath(anglePath);
 }
 
-QColor QGIViewDimension::prefNormalColor()
+QColor QGIViewDimension::getNormalColor()
 {
-    m_colNormal = PreferencesGui::dimQColor();
-
-//    auto dim( dynamic_cast<TechDraw::DrawViewDimension*>(getViewObject()) );
-    TechDraw::DrawViewDimension* dim = nullptr;
-    TechDraw::DrawView* dv = getViewObject();
-    if (dv != nullptr) {
-        dim = dynamic_cast<TechDraw::DrawViewDimension*>(dv);
-        if( dim == nullptr ) {
-            return m_colNormal;
-        }
-    } else {
-        return m_colNormal;
-    }
-
-    ViewProviderDimension* vpDim = nullptr;
-    Gui::ViewProvider* vp = getViewProvider(dim);
-    if ( vp != nullptr ) {
-        vpDim = dynamic_cast<ViewProviderDimension*>(vp);
-        if (vpDim == nullptr) {
-            return m_colNormal;
-        }
-    } else {
-        return m_colNormal;
-    }
-
-    App::Color fcColor = vpDim->Color.getValue();
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+                                        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
+    App::Color fcColor;
+    fcColor.setPackedValue(hGrp->GetUnsigned("Color", 0x00000000));
     m_colNormal = fcColor.asValue<QColor>();
+
+    auto dim( dynamic_cast<TechDraw::DrawViewDimension*>(getViewObject()) );
+    if( dim == nullptr )  
+        return m_colNormal;
+
+    auto vp = static_cast<ViewProviderDimension*>(getViewProvider(getViewObject()));
+    if ( vp == nullptr ) {
+        return m_colNormal;
+    }
+
+    m_colNormal = vp->Color.getValue().asValue<QColor>();
     return m_colNormal;
 }
 
@@ -2159,18 +2052,6 @@ Base::Vector3d QGIViewDimension::findIsoExt(Base::Vector3d dir)
     }
 
     return dirExt;
-}
-
-void QGIViewDimension::onPrettyChanged(int state)
-{
-//    Base::Console().Message("QGIVD::onPrettyChange(%d)\n", state);
-    if (state == NORMAL) {
-        setPrettyNormal();
-    } else if (state == PRE) {
-        setPrettyPre();
-    } else {                //if state = SEL
-        setPrettySel();
-    }
 }
 
 void QGIViewDimension::setPrettyPre(void)
@@ -2264,8 +2145,6 @@ void QGIViewDimension::paint ( QPainter * painter, const QStyleOptionGraphicsIte
     } else {
         setPens();
     }
-
-//    painter->setPen(Qt::red);
 //    painter->drawRect(boundingRect());          //good for debugging
 
 //    QGIView::paint (painter, &myOption, widget);
@@ -2287,21 +2166,5 @@ void QGIViewDimension::setPens(void)
     aHead1->setWidth(m_lineWidth);
     aHead2->setWidth(m_lineWidth);
 }
-
-double QGIViewDimension::toDeg(double a) 
-{
-    return a*180/M_PI;
-}
-
-double QGIViewDimension::toQtRad(double a) 
-{
-    return -a; 
-}
-
-double QGIViewDimension::toQtDeg(double a) 
-{
-    return -a*180.0/M_PI; 
-}
-
 
 #include <Mod/TechDraw/Gui/moc_QGIViewDimension.cpp>

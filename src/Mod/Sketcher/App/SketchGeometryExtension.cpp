@@ -31,27 +31,29 @@
 
 using namespace Sketcher;
 
-
 //---------- Geometry Extension
-constexpr std::array<const char *, InternalType::NumInternalGeometryType> SketchGeometryExtension::internaltype2str;
-constexpr std::array<const char *,GeometryMode::NumGeometryMode> SketchGeometryExtension::geometrymode2str;
 
-TYPESYSTEM_SOURCE(Sketcher::SketchGeometryExtension,Part::GeometryPersistenceExtension)
+TYPESYSTEM_SOURCE(Sketcher::SketchGeometryExtension,Part::GeometryExtension)
 
 // scoped within the class, multithread ready
 std::atomic<long> SketchGeometryExtension::_GeometryID;
 
-SketchGeometryExtension::SketchGeometryExtension():Id(++SketchGeometryExtension::_GeometryID),InternalGeometryType(InternalType::None)
+SketchGeometryExtension::SketchGeometryExtension():Id(++SketchGeometryExtension::_GeometryID)
 {
 
 }
 
-SketchGeometryExtension::SketchGeometryExtension(long cid):Id(cid),InternalGeometryType(InternalType::None)
+SketchGeometryExtension::SketchGeometryExtension(long cid):Id(cid)
 {
 
 }
 
 // Persistence implementer
+unsigned int SketchGeometryExtension::getMemSize (void) const
+{
+    return sizeof(long int);
+}
+
 void SketchGeometryExtension::Save(Base::Writer &writer) const
 {
     writer.Stream() << writer.ind() << "<GeoExtension type=\"" << this->getTypeId().getName();
@@ -61,79 +63,29 @@ void SketchGeometryExtension::Save(Base::Writer &writer) const
     if(name.size() > 0)
         writer.Stream() << "\" name=\"" << name;
 
-    writer.Stream() // << "\" id=\"" << Id // This is removed as the stored Id is not used and it may interfere with RT's future implementation
-                    << "\" internalGeometryType=\"" << (int) InternalGeometryType
-                    << "\" geometryModeFlags=\""    << GeometryModeFlags.to_string()
-                    << "\"/>" << std::endl;
+    writer.Stream() << "\" id=\"" << Id << "\"/>" << std::endl;
 }
 
 void SketchGeometryExtension::Restore(Base::XMLReader &reader)
 {
     restoreNameAttribute(reader);
 
-    if(reader.hasAttribute("id"))
-        Id = reader.getAttributeAsInteger("id");
-
-    InternalGeometryType = (InternalType::InternalType) reader.getAttributeAsInteger("internalGeometryType");
-
-    GeometryModeFlags = GeometryModeFlagType(reader.getAttribute("geometryModeFlags"));
+    Id = reader.getAttributeAsInteger("id");
 }
 
 std::unique_ptr<Part::GeometryExtension> SketchGeometryExtension::copy(void) const
 {
-    auto cpy = std::make_unique<SketchGeometryExtension>();
+    std::unique_ptr<SketchGeometryExtension> cpy = std::make_unique<SketchGeometryExtension>();
 
     cpy->Id = this->Id;
-    cpy->InternalGeometryType = this->InternalGeometryType;
-    cpy->GeometryModeFlags  = this->GeometryModeFlags;
 
     cpy->setName(this->getName()); // Base Class
 
-#if defined (__GNUC__) && (__GNUC__ <=4)
     return std::move(cpy);
-#else
-    return cpy;
-#endif
 }
 
 PyObject * SketchGeometryExtension::getPyObject(void)
 {
     return new SketchGeometryExtensionPy(new SketchGeometryExtension(*this));
-}
-
-bool SketchGeometryExtension::getInternalTypeFromName(std::string str, InternalType::InternalType &type)
-{
-    auto pos = std::find_if(    SketchGeometryExtension::internaltype2str.begin(),
-                                SketchGeometryExtension::internaltype2str.end(),
-                                [str](const char * val) {
-                                    return strcmp(val,str.c_str())==0;}
-                                );
-
-    if( pos != SketchGeometryExtension::internaltype2str.end()) {
-            int index = std::distance( SketchGeometryExtension::internaltype2str.begin(), pos );
-
-            type = static_cast<InternalType::InternalType>(index);
-            return true;
-    }
-
-    return false;
-}
-
-bool SketchGeometryExtension::getGeometryModeFromName(std::string str, GeometryMode::GeometryMode &type)
-{
-    auto pos = std::find_if(    SketchGeometryExtension::geometrymode2str.begin(),
-                                SketchGeometryExtension::geometrymode2str.end(),
-                                [str](const char * val) {
-                                    return strcmp(val,str.c_str())==0;}
-                                );
-
-    if( pos != SketchGeometryExtension::geometrymode2str.end()) {
-            int index = std::distance( SketchGeometryExtension::geometrymode2str.begin(), pos );
-
-            type = static_cast<GeometryMode::GeometryMode>(index);
-            return true;
-    }
-
-    return false;
 }
 

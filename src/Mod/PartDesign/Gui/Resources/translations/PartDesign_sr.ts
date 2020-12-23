@@ -232,7 +232,7 @@
     <message>
       <location filename="../../Command.cpp" line="188"/>
       <source>Create a new datum line</source>
-      <translation>Нова котна линија</translation>
+      <translation type="unfinished">Create a new datum line</translation>
     </message>
   </context>
   <context>
@@ -286,7 +286,7 @@
     <message>
       <location filename="../../Command.cpp" line="1879"/>
       <source>Create a mirrored feature</source>
-      <translation>Пресликати облик</translation>
+      <translation type="unfinished">Create a mirrored feature</translation>
     </message>
   </context>
   <context>
@@ -690,12 +690,12 @@
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="45"/>
       <source>Valid</source>
-      <translation>Исправно</translation>
+      <translation type="unfinished">Valid</translation>
     </message>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="46"/>
       <source>Invalid shape</source>
-      <translation>Неисправан облик</translation>
+      <translation type="unfinished">Invalid shape</translation>
     </message>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="47"/>
@@ -1316,12 +1316,12 @@
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="65"/>
       <source>Valid</source>
-      <translation>Исправно</translation>
+      <translation type="unfinished">Valid</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="66"/>
       <source>Invalid shape</source>
-      <translation>Неисправан облик</translation>
+      <translation type="unfinished">Invalid shape</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="67"/>
@@ -1789,7 +1789,7 @@
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="56"/>
       <source>Binormal</source>
-      <translation>Бинормала</translation>
+      <translation type="unfinished">Binormal</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="76"/>
@@ -1809,12 +1809,12 @@
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="117"/>
       <source>Add Edge</source>
-      <translation>Додај ивицу</translation>
+      <translation type="unfinished">Add Edge</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="136"/>
       <source>Remove Edge</source>
-      <translation>Уклони ивицу</translation>
+      <translation type="unfinished">Remove Edge</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="158"/>
@@ -1873,7 +1873,7 @@
     <message>
       <location filename="../../TaskPipeParameters.ui" line="70"/>
       <source>Right Corner</source>
-      <translation>Десни угао</translation>
+      <translation type="unfinished">Right Corner</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="75"/>
@@ -1888,12 +1888,12 @@
     <message>
       <location filename="../../TaskPipeParameters.ui" line="119"/>
       <source>Add Edge</source>
-      <translation>Додај ивицу</translation>
+      <translation type="unfinished">Add Edge</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="138"/>
       <source>Remove Edge</source>
-      <translation>Уклони ивицу</translation>
+      <translation type="unfinished">Remove Edge</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="74"/>
@@ -1916,7 +1916,7 @@
     <message>
       <location filename="../../TaskPipeScaling.ui" line="36"/>
       <source>Constant</source>
-      <translation>Константа</translation>
+      <translation type="unfinished">Constant</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="41"/>
@@ -2475,12 +2475,12 @@
     <message>
       <location filename="../../CommandBody.cpp" line="755"/>
       <source>Select body</source>
-      <translation>Изаберите тело</translation>
+      <translation type="unfinished">Select body</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="756"/>
       <source>Select a body from the list</source>
-      <translation>Изаберите тело са листе</translation>
+      <translation type="unfinished">Select a body from the list</translation>
     </message>
   </context>
   <context>
@@ -2501,7 +2501,7 @@
     <message>
       <location filename="../../Command.cpp" line="135"/>
       <source>Invalid selection</source>
-      <translation>Неисправан избор</translation>
+      <translation type="unfinished">Invalid selection</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="135"/>
@@ -2589,7 +2589,7 @@
     <message>
       <location filename="../../Command.cpp" line="907"/>
       <source>No sketch to work on</source>
-      <translation>Нема радне скице</translation>
+      <translation type="unfinished">No sketch to work on</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="908"/>
@@ -2607,7 +2607,7 @@
     <message>
       <location filename="../../Command.cpp" line="1514"/>
       <source>Select an edge, face or body.</source>
-      <translation>Изаберите ивицу, површ или тело.</translation>
+      <translation type="unfinished">Select an edge, face or body.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1518"/>
@@ -2673,7 +2673,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="73"/>
       <source>Part creation failed</source>
-      <translation>Неуспело креирање дела</translation>
+      <translation type="unfinished">Part creation failed</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="74"/>
@@ -2978,7 +2978,7 @@ This feature is broken and can't be edited.</translation>
     <message>
       <location filename="../../ViewProviderHole.cpp" line="64"/>
       <source>Edit hole</source>
-      <translation>Изменити рупу</translation>
+      <translation type="unfinished">Edit hole</translation>
     </message>
     <message>
       <location filename="../../ViewProviderLoft.cpp" line="77"/>
@@ -3108,7 +3108,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
       <location filename="../../../FeatureHole/TaskHole.ui" line="152"/>
       <location filename="../../../FeatureHole/TaskHole.ui" line="492"/>
       <source>Depth</source>
-      <translation>Дубина</translation>
+      <translation type="unfinished">Depth</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="161"/>
@@ -3217,7 +3217,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
       <location filename="../../TaskHoleParameters.ui" line="47"/>
       <location filename="../../TaskHoleParameters.ui" line="332"/>
       <source>Depth</source>
-      <translation>Дубина</translation>
+      <translation type="unfinished">Depth</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="57"/>
@@ -3262,12 +3262,12 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../TaskHoleParameters.ui" line="220"/>
       <source>Right hand</source>
-      <translation>Десни навој</translation>
+      <translation type="unfinished">Right hand</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="227"/>
       <source>Left hand</source>
-      <translation>Леви навој</translation>
+      <translation type="unfinished">Left hand</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="240"/>
@@ -3317,7 +3317,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../TaskHoleParameters.ui" line="385"/>
       <source>Close fit</source>
-      <translation>Преклоп</translation>
+      <translation type="unfinished">Close fit</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="396"/>

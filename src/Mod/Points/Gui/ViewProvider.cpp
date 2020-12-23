@@ -72,9 +72,7 @@ App::PropertyFloatConstraint::Constraints ViewProviderPoints::floatRange = {1.0,
 
 ViewProviderPoints::ViewProviderPoints()
 {
-    static const char *osgroup = "Object Style";
-
-    ADD_PROPERTY_TYPE(PointSize, (2.0f), osgroup, App::Prop_None, "Set point size");
+    ADD_PROPERTY(PointSize,(2.0f));
     PointSize.setConstraints(&floatRange);
 
     // Create the selection node
@@ -82,9 +80,6 @@ ViewProviderPoints::ViewProviderPoints()
     pcHighlight->ref();
     if (pcHighlight->selectionMode.getValue() == Gui::SoFCSelection::SEL_OFF)
         Selectable.setValue(false);
-
-    // BBOX
-    SelectionStyle.setValue(1);
 
     pcPointsCoord = new SoCoordinate3();
     pcPointsCoord->ref();
@@ -112,10 +107,6 @@ void ViewProviderPoints::onChanged(const App::Property* prop)
 {
     if (prop == &PointSize) {
         pcPointStyle->pointSize = PointSize.getValue();
-    }
-    else if (prop == &SelectionStyle) {
-        pcHighlight->style = SelectionStyle.getValue() ? Gui::SoFCSelection::BOX
-                                                       : Gui::SoFCSelection::EMISSIVE;
     }
     else {
         ViewProviderGeometryObject::onChanged(prop);
@@ -338,7 +329,7 @@ void ViewProviderPoints::clipPointsCallback(void *, SoEventCallback * n)
     if (clPoly.front() != clPoly.back())
         clPoly.push_back(clPoly.front());
 
-    std::vector<Gui::ViewProvider*> views = view->getDocument()->getViewProvidersOfType(ViewProviderPoints::getClassTypeId());
+    std::vector<Gui::ViewProvider*> views = view->getViewProvidersOfType(ViewProviderPoints::getClassTypeId());
     for (std::vector<Gui::ViewProvider*>::iterator it = views.begin(); it != views.end(); ++it) {
         ViewProviderPoints* that = static_cast<ViewProviderPoints*>(*it);
         if (that->getEditingMode() > -1) {
@@ -465,7 +456,7 @@ void ViewProviderScattered::cut(const std::vector<SbVec2f>& picked, Gui::View3DI
         return; // nothing needs to be done
 
     //Remove the points from the cloud and open a transaction object for the undo/redo stuff
-    Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Cut points"));
+    Gui::Application::Instance->activeDocument()->openCommand("Cut points");
 
     // sets the points outside the polygon to update the Inventor node
     fea->Points.removeIndices(removeIndices);
@@ -624,7 +615,7 @@ void ViewProviderStructured::cut(const std::vector<SbVec2f>& picked, Gui::View3D
 
     if (invalidatePoints) {
         //Remove the points from the cloud and open a transaction object for the undo/redo stuff
-        Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Cut points"));
+        Gui::Application::Instance->activeDocument()->openCommand("Cut points");
 
         // sets the points outside the polygon to update the Inventor node
         fea->Points.setValue(newKernel);

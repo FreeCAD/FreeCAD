@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>312</width>
-    <height>254</height>
+    <width>275</width>
+    <height>210</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,10 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="Gui::PrefCheckBox" name="checkBoxShowGrid">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
+    <widget class="QCheckBox" name="checkBoxShowGrid">
      <property name="toolTip">
       <string>A grid will be shown</string>
      </property>
@@ -26,13 +23,7 @@
       <string>Show grid</string>
      </property>
      <property name="checked">
-      <bool>false</bool>
-     </property>
-     <property name="prefEntry" stdset="0">
-      <cstring>ShowGrid</cstring>
-     </property>
-     <property name="prefPath" stdset="0">
-      <cstring>Mod/Sketcher/General</cstring>
+      <bool>true</bool>
      </property>
     </widget>
    </item>
@@ -66,20 +57,14 @@
         <double>1.000000000000000</double>
        </property>
        <property name="value" stdset="0">
-        <double>10.000000000000000</double>
-       </property>
-       <property name="prefEntry" stdset="0">
-        <cstring>GridSize</cstring>
-       </property>
-       <property name="prefPath" stdset="0">
-        <cstring>Mod/Sketcher/General/GridSize</cstring>
+        <double>0.000000100000000</double>
        </property>
       </widget>
      </item>
     </layout>
    </item>
    <item>
-    <widget class="Gui::PrefCheckBox" name="checkBoxGridSnap">
+    <widget class="QCheckBox" name="checkBoxGridSnap">
      <property name="enabled">
       <bool>true</bool>
      </property>
@@ -90,16 +75,10 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
      <property name="text">
       <string>Grid snap</string>
      </property>
-     <property name="prefEntry" stdset="0">
-      <cstring>GridSnap</cstring>
-     </property>
-     <property name="prefPath" stdset="0">
-      <cstring>Mod/Sketcher/General</cstring>
-     </property>
     </widget>
    </item>
    <item>
-    <widget class="Gui::PrefCheckBox" name="checkBoxAutoconstraints">
+    <widget class="QCheckBox" name="checkBoxAutoconstraints">
      <property name="enabled">
       <bool>true</bool>
      </property>
@@ -111,12 +90,6 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
      </property>
      <property name="checked">
       <bool>true</bool>
-     </property>
-     <property name="prefEntry" stdset="0">
-      <cstring>AutoConstraints</cstring>
-     </property>
-     <property name="prefPath" stdset="0">
-      <cstring>Mod/Sketcher/General</cstring>
      </property>
     </widget>
    </item>
@@ -135,14 +108,14 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
       <cstring>AvoidRedundantAutoconstraints</cstring>
      </property>
      <property name="prefPath" stdset="0">
-      <cstring>Mod/Sketcher/General</cstring>
+      <cstring>Mod/Sketcher</cstring>
      </property>
     </widget>
    </item>
    <item>
     <widget class="QLabel" name="label_2">
      <property name="text">
-      <string>Rendering order (global):</string>
+      <string>Rendering order:</string>
      </property>
     </widget>
    </item>
@@ -181,13 +154,13 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Gui::PrefCheckBox</class>
-   <extends>QCheckBox</extends>
+   <class>Gui::PrefQuantitySpinBox</class>
+   <extends>QWidget</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefQuantitySpinBox</class>
-   <extends>QWidget</extends>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

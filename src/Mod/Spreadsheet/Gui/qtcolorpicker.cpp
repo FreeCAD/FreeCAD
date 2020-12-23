@@ -64,10 +64,6 @@
 #include <QtGui/QMouseEvent>
 #include <math.h>
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-# include <QScreen>
-#endif
-
 #include "qtcolorpicker.h"
 
 /*! \class QtColorPicker
@@ -172,7 +168,7 @@ class ColorPickerItem : public QFrame
     Q_OBJECT
 
 public:
-    ColorPickerItem(const QColor &color = Qt::white, const QString &text = QString(),
+    ColorPickerItem(const QColor &color = Qt::white, const QString &text = QString::null,
               QWidget *parent = 0);
     ~ColorPickerItem();
 
@@ -316,11 +312,7 @@ void QtColorPicker::buttonPressed(bool toggled)
     if (!toggled)
         return;
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-    const QRect desktop = QApplication::primaryScreen()->geometry();
-#else
     const QRect desktop = QApplication::desktop()->geometry();
-#endif
     // Make sure the popup is inside the desktop.
     QPoint pos = mapToGlobal(rect().bottomLeft());
     if (pos.x() < desktop.left())

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2007 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2007     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -149,6 +149,6 @@ PyObject *PersistencePy::getCustomAttributes(const char*) const
 
 int PersistencePy::setCustomAttributes(const char*,PyObject*)
 {
-    return 0;
+    return 0; 
 }
 

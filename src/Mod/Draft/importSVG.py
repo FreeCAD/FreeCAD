@@ -1,4 +1,25 @@
+## @package importSVG
+#  \ingroup DRAFT
+#  \brief SVG file importer & exporter
+'''@package importSVG
+\ingroup DRAFT
+\brief SVG file importer & exporter
+
+This module provides support for importing and exporting SVG files. It
+enables importing/exporting objects directly to/from the 3D document, but
+doesn't handle the SVG output from the Drawing and TechDraw modules.
+
+Currently it only reads the following entities:
+* paths, lines, circular arcs, rects, circles, ellipses, polygons, polylines.
+
+Currently unsupported:
+* use, image.
+'''
+# Check code with
+# flake8 --ignore=E226,E266,E401,W503
+
 # ***************************************************************************
+# *                                                                         *
 # *   Copyright (c) 2009 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -18,29 +39,12 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides support for importing and exporting SVG files.
-
-It enables importing/exporting objects directly to/from the 3D document
-but doesn't handle the SVG output from the Drawing and TechDraw modules.
-
-Currently it only reads the following entities:
-* paths, lines, circular arcs, rects, circles, ellipses, polygons, polylines.
-
-Currently unsupported:
-* use, image.
-"""
-## @package importSVG
-#  \ingroup DRAFT
-#  \brief SVG file importer and exporter
-
-# Check code with
-# flake8 --ignore=E226,E266,E401,W503
 
 __title__ = "FreeCAD Draft Workbench - SVG importer/exporter"
 __author__ = "Yorik van Havre, Sebastian Hoogen"
-__url__ = "https://www.freecadweb.org"
+__url__ = ["http://www.freecadweb.org"]
 
-# TODO:
+# ToDo:
 # ignoring CDATA
 # handle image element (external references and inline base64)
 # debug Problem with 'Sans' font from Inkscape
@@ -48,28 +52,27 @@ __url__ = "https://www.freecadweb.org"
 # implement inheriting fill style from group
 # handle relative units
 
-import math
-import os
-import re
-import xml.sax
-
-import FreeCAD
-import Draft
-import DraftVecUtils
+import xml.sax, FreeCAD, os, math, re, Draft, DraftVecUtils
 from FreeCAD import Vector
-from draftutils.translate import translate
-from draftutils.messages import _msg, _wrn, _err
+from FreeCAD import Console as FCC
 
 if FreeCAD.GuiUp:
+    from DraftTools import translate
     from PySide import QtGui
-    import FreeCADGui
-    gui = True
-    try:
-        draftui = FreeCADGui.draftToolBar
-    except AttributeError:
-        draftui = None
 else:
+    def translate(context, txt):
+        return txt
+
+try:
+    import FreeCADGui
+except ImportError:
     gui = False
+else:
+    gui = True
+
+try:
+    draftui = FreeCADGui.draftToolBar
+except AttributeError:
     draftui = None
 
 # Save the native open function to avoid collisions
@@ -353,7 +356,7 @@ def getsize(length, mode='discard', base=1):
         tomm = {
             '': 25.4/90,  # default
             'px': 25.4/90,
-            'pt': 4.0/3 * 25.4/90,
+            'pt': 1.25 * 25.4/90,
             'pc': 15 * 25.4/90,
             'mm': 1.0,
             'cm': 10.0,
@@ -366,7 +369,7 @@ def getsize(length, mode='discard', base=1):
         tomm = {
             '': 25.4/96,  # default
             'px': 25.4/96,
-            'pt': 4.0/3 * 25.4/96,
+            'pt': 1.25 * 25.4/96,
             'pc': 15 * 25.4/96,
             'mm': 1.0,
             'cm': 10.0,
@@ -379,7 +382,7 @@ def getsize(length, mode='discard', base=1):
         topx = {
             '': 1.0,  # default
             'px': 1.0,
-            'pt': 4.0/3,
+            'pt': 1.25,
             'pc': 15,
             'mm': 90.0/25.4,
             'cm': 90.0/254.0,
@@ -392,7 +395,7 @@ def getsize(length, mode='discard', base=1):
         topx = {
             '': 1.0,  # default
             'px': 1.0,
-            'pt': 4.0/3,
+            'pt': 1.25,
             'pc': 15,
             'mm': 96.0/25.4,
             'cm': 96.0/254.0,
@@ -465,7 +468,7 @@ def makewire(path, checkclosed=False, donttry=False):
                                        10**(-1 * (Draft.precision() - 2)))
         sh = _sh.Wires[0]
         if len(sh.Edges) != len(path):
-            _wrn("Unable to form a wire")
+            FCC.PrintWarning("Unable to form a wire\n")
             sh = comp
     return sh
 
@@ -580,9 +583,8 @@ def arcend2center(lastvec, currentvec, rx, ry,
         try:
             scalefacpos = math.sqrt(numer/denom)
         except ValueError:
-            _msg("sqrt({0}/{1})".format(numer, denom))
+            FCC.PrintMessage('sqrt(%f/%f)\n' % (numer, denom))
             scalefacpos = 0
-
     # Calculate two values because the square root may be positive or negative
     for scalefacsign in (1, -1):
         scalefac = scalefacpos * scalefacsign
@@ -613,10 +615,6 @@ def arcend2center(lastvec, currentvec, rx, ry,
                                                 (-v1.y - vcx1.y)/ry,
                                                 0))  # eq. 5.6
         results.append((vcenter, angle1, angledelta))
-
-        if rx < 0 or ry < 0:
-            _wrn("Warning: 'rx' or 'ry' is negative, check the SVG file")
-
     return results, (rx, ry)
 
 
@@ -697,8 +695,9 @@ class svgHandler(xml.sax.ContentHandler):
             Dictionary of content of the elements
         """
         self.count += 1
-        _msg('processing element {0}: {1}'.format(self.count, name))
-        _msg('existing group transform: {}'.format(self.grouptransform))
+        FCC.PrintMessage('processing element %d: %s\n' % (self.count, name))
+        FCC.PrintMessage('existing group transform: %s\n'
+                         % (str(self.grouptransform)))
 
         data = {}
         for (keyword, content) in list(attrs.items()):
@@ -715,27 +714,28 @@ class svgHandler(xml.sax.ContentHandler):
         if self.count == 1 and name == 'svg':
             if 'inkscape:version' in data:
                 inks_doc_name = attrs.getValue('sodipodi:docname')
-                inks_full_ver = attrs.getValue('inkscape:version')
-                inks_ver_pars = re.search("\d+\.\d+", inks_full_ver)
-                if inks_ver_pars != None:
-                    inks_ver_f = float(inks_ver_pars.group(0))
-                else:
-                    inks_ver_f = 99.99
+                inks_full_ver = attrs.getValue('inkscape:version')[:4]
+                inks_full_ver_list = inks_full_ver.split('.')
+                _maj = int(inks_full_ver_list[0])
+                _min = int(inks_full_ver_list[1])
+
                 # Inkscape before 0.92 used 90 dpi as resolution
                 # Newer versions use 96 dpi
-                if inks_ver_f < 0.92:
+                if _maj == 0 and _min > 91:
+                    self.svgdpi = 96.0
+                elif _maj == 0 and _min < 92:
                     self.svgdpi = 90.0
-                else:
+                elif _maj > 0:
                     self.svgdpi = 96.0
             if 'inkscape:version' not in data:
-                _inf = ("This SVG file does not appear to have been produced "
+                _msg = ("This SVG file does not appear to have been produced "
                         "by Inkscape. If it does not contain absolute units "
                         "then a DPI setting will be used.")
                 _qst = ("Do you wish to use 96 dpi? Choosing 'No' "
                         "will use the older standard 90 dpi.")
                 if FreeCAD.GuiUp:
                     msgBox = QtGui.QMessageBox()
-                    msgBox.setText(translate("ImportSVG", _inf))
+                    msgBox.setText(translate("ImportSVG", _msg))
                     msgBox.setInformativeText(translate("ImportSVG", _qst))
                     msgBox.setStandardButtons(QtGui.QMessageBox.Yes
                                               | QtGui.QMessageBox.No)
@@ -746,19 +746,20 @@ class svgHandler(xml.sax.ContentHandler):
                     else:
                         self.svgdpi = 90.0
                     if ret:
-                        _msg(translate("ImportSVG", _inf))
-                        _msg(translate("ImportSVG", _qst))
-                        _msg("*** User specified {} "
-                             "dpi ***".format(self.svgdpi))
+                        FCC.PrintMessage(translate("ImportSVG", _msg) + "\n")
+                        FCC.PrintMessage(translate("ImportSVG", _qst) + "\n")
+                        FCC.PrintMessage("*** User specified "
+                                         + str(self.svgdpi) + " dpi ***\n")
                 else:
                     self.svgdpi = 96.0
-                    _msg(_inf)
-                    _msg("*** Assuming {} dpi ***".format(self.svgdpi))
+                    FCC.PrintMessage(_msg + "\n")
+                    FCC.PrintMessage("*** Assuming " + str(self.svgdpi)
+                                     + " dpi ***\n")
             if self.svgdpi == 1.0:
-                _wrn("This SVG file (" + inks_doc_name + ") "
-                     "has an unrecognised format which means "
-                     "the dpi could not be determined; "
-                     "assuming 96 dpi")
+                FCC.PrintWarning("This SVG file (" + inks_doc_name + ") "
+                                 "has an unrecognised format which means "
+                                 "the dpi could not be determined; "
+                                 "assuming 96 dpi\n")
                 self.svgdpi = 96.0
 
         if 'style' in data:
@@ -818,7 +819,7 @@ class svgHandler(xml.sax.ContentHandler):
                     if uniformscaling:
                         m.scale(Vector(sx, sy, 1))
                     else:
-                        _wrn('Scaling factors do not match!')
+                        FCC.PrintWarning('Scaling factors do not match!\n')
                         if preservearstr.startswith('none'):
                             m.scale(Vector(sx, sy, 1))
                         else:
@@ -859,11 +860,11 @@ class svgHandler(xml.sax.ContentHandler):
         pathname = None
         if 'id' in data:
             pathname = data['id'][0]
-            _msg('name: {}'.format(pathname))
+            FCC.PrintMessage('name: %s\n' % pathname)
 
         # Process paths
         if name == "path":
-            _msg('data: {}'.format(data))
+            FCC.PrintMessage('data: %s\n' % str(data))
 
             if not pathname:
                 pathname = 'Path'
@@ -928,7 +929,7 @@ class svgHandler(xml.sax.ContentHandler):
                     else:
                         lastvec = Vector(x, -y, 0)
                     firstvec = lastvec
-                    _msg('move {}'.format(lastvec))
+                    FCC.PrintMessage('move %s\n' % str(lastvec))
                     lastpole = None
 
                 if (d == "L" or d == "l") \
@@ -941,7 +942,8 @@ class svgHandler(xml.sax.ContentHandler):
                         if not DraftVecUtils.equals(lastvec, currentvec):
                             _seg = Part.LineSegment(lastvec, currentvec)
                             seg = _seg.toShape()
-                            _msg("line {} {}".format(lastvec, currentvec))
+                            FCC.PrintMessage("line %s %s\n"
+                                             % (lastvec, currentvec))
                             lastvec = currentvec
                             path.append(seg)
                         lastpole = None
@@ -1269,10 +1271,6 @@ class svgHandler(xml.sax.ContentHandler):
                             -data['y'] - ry,
                             0)
 
-                if rx < 0 or ry < 0:
-                    _wrn("Warning: 'rx' or 'ry' is negative, "
-                         "check the SVG file")
-
                 if rx >= ry:
                     e = Part.Ellipse(Vector(), rx, ry)
                     e1a = Part.Arc(e, math.radians(180), math.radians(270))
@@ -1341,7 +1339,7 @@ class svgHandler(xml.sax.ContentHandler):
             if not pathname:
                 pathname = 'Polyline'
             points = [float(d) for d in data['points']]
-            _msg('points {}'.format(points))
+            FCC.PrintMessage('points %s\n' % str(points))
             lenpoints = len(points)
             if lenpoints >= 4 and lenpoints % 2 == 0:
                 lastvec = Vector(points[0], -points[1], 0)
@@ -1372,10 +1370,6 @@ class svgHandler(xml.sax.ContentHandler):
             c = Vector(data.get('cx', 0), -data.get('cy', 0), 0)
             rx = data['rx']
             ry = data['ry']
-
-            if rx < 0 or ry < 0:
-                _wrn("Warning: 'rx' or 'ry' is negative, check the SVG file")
-
             if rx > ry:
                 sh = Part.Ellipse(c, rx, ry).toShape()
             else:
@@ -1419,7 +1413,7 @@ class svgHandler(xml.sax.ContentHandler):
         # Process texts
         if name in ["text", "tspan"]:
             if "freecad:skip" not in data:
-                _msg("processing a text")
+                FCC.PrintMessage("processing a text\n")
                 if 'x' in data:
                     self.x = data['x']
                 else:
@@ -1448,7 +1442,7 @@ class svgHandler(xml.sax.ContentHandler):
             if "xlink:href" in data:
                 symbol = data["xlink:href"][0][1:]
                 if symbol in self.symbols:
-                    _msg("using symbol " + symbol)
+                    FCC.PrintMessage("using symbol " + symbol + "\n")
                     shapes = []
                     for o in self.symbols[symbol]:
                         if o.isDerivedFrom("Part::Feature"):
@@ -1462,18 +1456,17 @@ class svgHandler(xml.sax.ContentHandler):
                         obj.Shape = sh
                         self.format(obj)
                 else:
-                    _msg("no symbol data")
+                    FCC.PrintMessage("no symbol data\n")
 
-        _msg("done processing element {}".format(self.count))
+        FCC.PrintMessage("done processing element %d\n" % self.count)
     # startElement()
 
     def characters(self, content):
         """Read characters from the given string."""
         if self.text:
-            _msg("reading characters {}".format(content))
+            FCC.PrintMessage("reading characters %s\n" % content)
             obj = self.doc.addObject("App::Annotation", 'Text')
-            # use ignore to not break import if char is not found in latin1
-            obj.LabelText = content.encode('latin1', 'ignore')
+            obj.LabelText = content.encode('latin1')
             if self.currentsymbol:
                 self.symbols[self.currentsymbol].append(obj)
             vec = Vector(self.x, -self.y, 0)
@@ -1504,7 +1497,7 @@ class svgHandler(xml.sax.ContentHandler):
             self.transform = None
             self.text = None
         if name == "g" or name == "svg":
-            _msg("closing group")
+            FCC.PrintMessage("closing group\n")
             self.grouptransform.pop()
         if name == "symbol":
             if self.doc.getObject("svgsymbols"):
@@ -1526,26 +1519,28 @@ class svgHandler(xml.sax.ContentHandler):
         """
         if isinstance(sh, Part.Shape):
             if self.transform:
-                _msg("applying object transform: {}".format(self.transform))
+                FCC.PrintMessage("applying object transform: %s\n"
+                                 % self.transform)
                 # sh = transformCopyShape(sh, self.transform)
                 # see issue #2062
                 sh = sh.transformGeometry(self.transform)
             for transform in self.grouptransform[::-1]:
-                _msg("applying group transform: {}".format(transform))
+                FCC.PrintMessage("applying group transform: %s\n" % transform)
                 # sh = transformCopyShape(sh, transform)
                 # see issue #2062
                 sh = sh.transformGeometry(transform)
             return sh
-        elif Draft.getType(sh) in ["Dimension","LinearDimension"]:
+        elif Draft.getType(sh) == "Dimension":
             pts = []
             for p in [sh.Start, sh.End, sh.Dimline]:
                 cp = Vector(p)
                 if self.transform:
-                    _msg("applying object transform: "
-                         "{}".format(self.transform))
+                    FCC.PrintMessage("applying object transform: %s\n"
+                                     % self.transform)
                     cp = self.transform.multiply(cp)
                 for transform in self.grouptransform[::-1]:
-                    _msg("applying group transform: {}".format(transform))
+                    FCC.PrintMessage("applying group transform: %s\n"
+                                     % transform)
                     cp = transform.multiply(cp)
                 pts.append(cp)
             sh.Start = pts[0]
@@ -1664,7 +1659,8 @@ def decodeName(name):
         try:
             decodedName = (name.decode("latin1"))
         except UnicodeDecodeError:
-            _err("SVG error: couldn't determine character encoding")
+            FCC.PrintError("SVG error: "
+                           "couldn't determine character encoding\n")
             decodedName = name
     return decodedName
 
@@ -1804,34 +1800,28 @@ def export(exportList, filename):
     _prefs = "User parameter:BaseApp/Preferences/Mod/Draft"
     svg_export_style = FreeCAD.ParamGet(_prefs).GetInt("svg_export_style")
     if svg_export_style != 0 and svg_export_style != 1:
-        _msg(translate("ImportSVG",
-                       "Unknown SVG export style, switching to Translated"))
+        FCC.PrintMessage(translate("ImportSVG",
+                                   "Unknown SVG export style, "
+                                   "switching to Translated") + "\n")
         svg_export_style = 0
 
     # Determine the size of the page by adding the bounding boxes
     # of all shapes
-    bb = FreeCAD.BoundBox()
-    for obj in exportList:
-        if (hasattr(obj, "Shape")
-                and obj.Shape
-                and obj.Shape.BoundBox.isValid()):
-            bb.add(obj.Shape.BoundBox)
-        else:
-            # if Draft.get_type(obj) in ("Text", "LinearDimension", ...)
-            _wrn("'{}': no Shape, "
-                 "calculate manual bounding box".format(obj.Label))
-            bb.add(Draft.get_bbox(obj))
-
-    if not bb.isValid():
-        _err(translate("ImportSVG",
-                       "The export list contains no object "
-                       "with a valid bounding box"))
+    bb = None
+    for ob in exportList:
+        if ob.isDerivedFrom("Part::Feature"):
+            if bb:
+                bb.add(ob.Shape.BoundBox)
+            else:
+                bb = ob.Shape.BoundBox
+    if bb:
+        minx = bb.XMin
+        maxx = bb.XMax
+        miny = bb.YMin
+        maxy = bb.YMax
+    else:
+        FCC.PrintError("The export list contains no shape\n")
         return
-
-    minx = bb.XMin
-    maxx = bb.XMax
-    miny = bb.YMin
-    maxy = bb.YMax
 
     if svg_export_style == 0:
         # translated-style exports get a bit of a margin
@@ -1867,7 +1857,6 @@ def export(exportList, filename):
         # We need the negative Y here because SVG is upside down, and we
         # flip the sketch right-way up with a scale later
         svg.write(' viewBox="%f %f %f %f"' % (minx, -maxy, sizex, sizey))
-
     svg.write(' xmlns="http://www.w3.org/2000/svg" version="1.1"')
     svg.write('>\n')
 
@@ -1884,8 +1873,7 @@ def export(exportList, filename):
         else:
             # raw-style exports do not translate the sketch
             svg.write('<g id="%s" transform="scale(1,-1)">\n' % ob.Name)
-
-        svg.write(Draft.get_svg(ob))
+        svg.write(Draft.getSVG(ob))
         _label_enc = str(ob.Label.encode('utf8'))
         _label = _label_enc.replace('<', '&lt;').replace('>', '&gt;')
         # replace('"', "&quot;")

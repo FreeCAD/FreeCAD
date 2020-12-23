@@ -45,7 +45,6 @@
 
 #include <Mod/Sketcher/App/Constraint.h>
 #include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/Sketcher/App/GeometryFacade.h>
 #include <Mod/Part/App/Geometry.h>
 
 #include "SketchAnalysis.h"
@@ -69,7 +68,8 @@ struct SketchAnalysis::VertexIds {
     Sketcher::PointPos PosId;
 };
 
-struct SketchAnalysis::Vertex_Less
+struct SketchAnalysis::Vertex_Less : public std::binary_function<const VertexIds&,
+                                                                   const VertexIds&, bool>
 {
     Vertex_Less(double tolerance) : tolerance(tolerance){}
     bool operator()(const VertexIds& x,
@@ -87,7 +87,8 @@ private:
     double tolerance;
 };
 
-struct SketchAnalysis::Vertex_EqualTo
+struct SketchAnalysis::Vertex_EqualTo : public std::binary_function<const VertexIds&,
+                                                                        const VertexIds&, bool>
 {
     Vertex_EqualTo(double tolerance) : tolerance(tolerance){}
     bool operator()(const VertexIds& x,
@@ -111,7 +112,8 @@ struct SketchAnalysis::EdgeIds {
     int GeoId;
 };
 
-struct SketchAnalysis::Edge_Less
+struct SketchAnalysis::Edge_Less : public std::binary_function<const EdgeIds&,
+const EdgeIds&, bool>
 {
     Edge_Less(double tolerance) : tolerance(tolerance){}
     bool operator()(const EdgeIds& x,
@@ -125,7 +127,8 @@ private:
     double tolerance;
 };
 
-struct SketchAnalysis::Edge_EqualTo
+struct SketchAnalysis::Edge_EqualTo : public std::binary_function<const EdgeIds&,
+const EdgeIds&, bool>
 {
     Edge_EqualTo(double tolerance) : tolerance(tolerance){}
     bool operator()(const EdgeIds& x,
@@ -145,13 +148,13 @@ int SketchAnalysis::detectMissingPointOnPointConstraints(double precision, bool 
     std::vector<VertexIds> vertexIds;
     const std::vector<Part::Geometry *>& geom = sketch->getInternalGeometry();
     for (std::size_t i=0; i<geom.size(); i++) {
-        auto gf = GeometryFacade::getFacade(geom[i]);
+        Part::Geometry* g = geom[i];
 
-        if(gf->getConstruction() && !includeconstruction)
+        if(g->Construction && !includeconstruction)
             continue;
 
-        if (gf->getGeometry()->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-            const Part::GeomLineSegment *segm = static_cast<const Part::GeomLineSegment*>(gf->getGeometry());
+        if (g->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+            const Part::GeomLineSegment *segm = static_cast<const Part::GeomLineSegment*>(g);
             VertexIds id;
             id.GeoId = (int)i;
             id.PosId = Sketcher::start;
@@ -162,8 +165,8 @@ int SketchAnalysis::detectMissingPointOnPointConstraints(double precision, bool 
             id.v = segm->getEndPoint();
             vertexIds.push_back(id);
         }
-        else if (gf->getGeometry()->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
-            const Part::GeomArcOfCircle *segm = static_cast<const Part::GeomArcOfCircle*>(gf->getGeometry());
+        else if (g->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+            const Part::GeomArcOfCircle *segm = static_cast<const Part::GeomArcOfCircle*>(g);
             VertexIds id;
             id.GeoId = (int)i;
             id.PosId = Sketcher::start;
@@ -174,8 +177,8 @@ int SketchAnalysis::detectMissingPointOnPointConstraints(double precision, bool 
             id.v = segm->getEndPoint(/*emulateCCW=*/true);
             vertexIds.push_back(id);
         }
-        else if (gf->getGeometry()->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
-            const Part::GeomArcOfEllipse *segm = static_cast<const Part::GeomArcOfEllipse*>(gf->getGeometry());
+        else if (g->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
+            const Part::GeomArcOfEllipse *segm = static_cast<const Part::GeomArcOfEllipse*>(g);
             VertexIds id;
             id.GeoId = (int)i;
             id.PosId = Sketcher::start;
@@ -186,8 +189,8 @@ int SketchAnalysis::detectMissingPointOnPointConstraints(double precision, bool 
             id.v = segm->getEndPoint(/*emulateCCW=*/true);
             vertexIds.push_back(id);
         }
-        else if (gf->getGeometry()->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
-            const Part::GeomArcOfHyperbola *segm = static_cast<const Part::GeomArcOfHyperbola*>(gf->getGeometry());
+        else if (g->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
+            const Part::GeomArcOfHyperbola *segm = static_cast<const Part::GeomArcOfHyperbola*>(g);
             VertexIds id;
             id.GeoId = (int)i;
             id.PosId = Sketcher::start;
@@ -198,8 +201,8 @@ int SketchAnalysis::detectMissingPointOnPointConstraints(double precision, bool 
             id.v = segm->getEndPoint();
             vertexIds.push_back(id);
         }
-        else if (gf->getGeometry()->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
-            const Part::GeomArcOfParabola *segm = static_cast<const Part::GeomArcOfParabola*>(gf->getGeometry());
+        else if (g->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
+            const Part::GeomArcOfParabola *segm = static_cast<const Part::GeomArcOfParabola*>(g);
             VertexIds id;
             id.GeoId = (int)i;
             id.PosId = Sketcher::start;
@@ -210,8 +213,8 @@ int SketchAnalysis::detectMissingPointOnPointConstraints(double precision, bool 
             id.v = segm->getEndPoint();
             vertexIds.push_back(id);
         }
-        else if (gf->getGeometry()->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
-            const Part::GeomBSplineCurve *segm = static_cast<const Part::GeomBSplineCurve*>(gf->getGeometry());
+        else if (g->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+            const Part::GeomBSplineCurve *segm = static_cast<const Part::GeomBSplineCurve*>(g);
             VertexIds id;
             id.GeoId = (int)i;
             id.PosId = Sketcher::start;
@@ -357,9 +360,7 @@ void SketchAnalysis::makeMissingPointOnPointCoincident(bool onebyone)
         c->SecondPos = it->SecondPos;
 
         if(onebyone) {
-            // addConstraint() creates a clone
             sketch->addConstraint(c);
-            delete c;
 
             solvesketch(status,dofs,true);
 
@@ -438,9 +439,7 @@ void SketchAnalysis::makeMissingVerticalHorizontal(bool onebyone)
         c->SecondPos = it->SecondPos;
 
         if(onebyone) {
-            // addConstraint() creates a clone
             sketch->addConstraint(c);
-            delete c;
 
             solvesketch(status,dofs,true);
 
@@ -635,9 +634,7 @@ void SketchAnalysis::makeMissingEquality(bool onebyone)
         c->SecondPos = it->SecondPos;
 
         if(onebyone) {
-            // addConstraint() creates a clone
             sketch->addConstraint(c);
-            delete c;
 
             solvesketch(status,dofs,true);
 
@@ -822,50 +819,4 @@ std::vector<Base::Vector3d> SketchAnalysis::getOpenVertices(void) const
     }
 
     return points;
-}
-
-int SketchAnalysis::detectDegeneratedGeometries(double tolerance)
-{
-    int countDegenerated = 0;
-    const std::vector<Part::Geometry *>& geom = sketch->getInternalGeometry();
-    for (std::size_t i=0; i<geom.size(); i++) {
-        auto gf = GeometryFacade::getFacade(geom[i]);
-
-        if (gf->getConstruction())
-            continue;
-
-        if (gf->getGeometry()->getTypeId().isDerivedFrom(Part::GeomCurve::getClassTypeId())) {
-            Part::GeomCurve* curve = static_cast<Part::GeomCurve*>(gf->getGeometry());
-            double len = curve->length(curve->getFirstParameter(), curve->getLastParameter());
-            if (len < tolerance)
-                countDegenerated++;
-        }
-    }
-
-    return countDegenerated;
-}
-
-int SketchAnalysis::removeDegeneratedGeometries(double tolerance)
-{
-    std::set<int> delInternalGeometries;
-    const std::vector<Part::Geometry *>& geom = sketch->getInternalGeometry();
-    for (std::size_t i=0; i<geom.size(); i++) {
-         auto gf = GeometryFacade::getFacade(geom[i]);
-
-        if (gf->getConstruction())
-            continue;
-
-        if (gf->getGeometry()->getTypeId().isDerivedFrom(Part::GeomCurve::getClassTypeId())) {
-            Part::GeomCurve* curve = static_cast<Part::GeomCurve*>(gf->getGeometry());
-            double len = curve->length(curve->getFirstParameter(), curve->getLastParameter());
-            if (len < tolerance)
-                delInternalGeometries.insert(static_cast<int>(i));
-        }
-    }
-
-    for (auto it = delInternalGeometries.rbegin(); it != delInternalGeometries.rend(); ++it) {
-        sketch->delGeometry(*it);
-    }
-
-    return static_cast<int>(delInternalGeometries.size());
 }

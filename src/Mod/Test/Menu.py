@@ -1,5 +1,9 @@
+# Menu test module  
+# (c) 2005 Werner Mayer
+#
+
 #***************************************************************************
-#*   Copyright (c) 2005 Werner Mayer <werner.wm.mayer@gmx.de>              *
+#*   (c) Werner Mayer <werner.wm.mayer@gmx.de> 2005                        *
 #*                                                                         *
 #*   This file is part of the FreeCAD CAx development system.              *
 #*                                                                         *
@@ -21,8 +25,6 @@
 #*                                                                         *
 #*   Werner Mayer 2005                                                     *
 #***************************************************************************/
-
-# Menu test module
 
 import FreeCAD, os, unittest, FreeCADGui
 

@@ -31,6 +31,8 @@
 #include "ui_DlgEvaluateMesh.h"
 #include "DlgEvaluateSettings.h"
 
+#include <boost/bind.hpp>
+
 #include <Base/Interpreter.h>
 #include <Base/Sequencer.h>
 #include <Gui/Application.h>
@@ -480,7 +482,7 @@ void DlgEvaluateMeshImp::on_repairOrientationButton_clicked()
         const char* docName = App::GetApplication().getDocumentName(d->meshFeature->getDocument());
         const char* objName = d->meshFeature->getNameInDocument();
         Gui::Document* doc = Gui::Application::Instance->getDocument(docName);
-        doc->openCommand(QT_TRANSLATE_NOOP("Command", "Harmonize normals"));
+        doc->openCommand("Harmonize normals");
         try {
             Gui::Command::doCommand(Gui::Command::App
                     , "App.getDocument(\"%s\").getObject(\"%s\").harmonizeNormals()"
@@ -583,7 +585,7 @@ void DlgEvaluateMeshImp::on_repairNonmanifoldsButton_clicked()
         const char* docName = App::GetApplication().getDocumentName(d->meshFeature->getDocument());
         const char* objName = d->meshFeature->getNameInDocument();
         Gui::Document* doc = Gui::Application::Instance->getDocument(docName);
-        doc->openCommand(QT_TRANSLATE_NOOP("Command", "Remove non-manifolds"));
+        doc->openCommand("Remove non-manifolds");
         try {
             Gui::Command::doCommand(Gui::Command::App
                     , "App.getDocument(\"%s\").getObject(\"%s\").removeNonManifolds()"
@@ -682,7 +684,7 @@ void DlgEvaluateMeshImp::on_repairIndicesButton_clicked()
         const char* docName = App::GetApplication().getDocumentName(d->meshFeature->getDocument());
         const char* objName = d->meshFeature->getNameInDocument();
         Gui::Document* doc = Gui::Application::Instance->getDocument(docName);
-        doc->openCommand(QT_TRANSLATE_NOOP("Command", "Fix indices"));
+        doc->openCommand("Fix indices");
         try {
             Gui::Command::doCommand(Gui::Command::App
                     , "App.getDocument(\"%s\").getObject(\"%s\").fixIndices()"
@@ -748,7 +750,7 @@ void DlgEvaluateMeshImp::on_repairDegeneratedButton_clicked()
         const char* docName = App::GetApplication().getDocumentName(d->meshFeature->getDocument());
         const char* objName = d->meshFeature->getNameInDocument();
         Gui::Document* doc = Gui::Application::Instance->getDocument(docName);
-        doc->openCommand(QT_TRANSLATE_NOOP("Command", "Remove degenerated faces"));
+        doc->openCommand("Remove degenerated faces");
         try {
             Gui::Command::doCommand(Gui::Command::App
                     , "App.getDocument(\"%s\").getObject(\"%s\").fixDegenerations(%f)"
@@ -815,7 +817,7 @@ void DlgEvaluateMeshImp::on_repairDuplicatedFacesButton_clicked()
         const char* docName = App::GetApplication().getDocumentName(d->meshFeature->getDocument());
         const char* objName = d->meshFeature->getNameInDocument();
         Gui::Document* doc = Gui::Application::Instance->getDocument(docName);
-        doc->openCommand(QT_TRANSLATE_NOOP("Command", "Remove duplicated faces"));
+        doc->openCommand("Remove duplicated faces");
         try {
             Gui::Command::doCommand(Gui::Command::App
                     , "App.getDocument(\"%s\").getObject(\"%s\").removeDuplicatedFacets()"
@@ -880,7 +882,7 @@ void DlgEvaluateMeshImp::on_repairDuplicatedPointsButton_clicked()
         const char* docName = App::GetApplication().getDocumentName(d->meshFeature->getDocument());
         const char* objName = d->meshFeature->getNameInDocument();
         Gui::Document* doc = Gui::Application::Instance->getDocument(docName);
-        doc->openCommand(QT_TRANSLATE_NOOP("Command", "Remove duplicated points"));
+        doc->openCommand("Remove duplicated points");
         try {
             Gui::Command::doCommand(Gui::Command::App
                     , "App.getDocument(\"%s\").getObject(\"%s\").removeDuplicatedPoints()"
@@ -964,7 +966,7 @@ void DlgEvaluateMeshImp::on_repairSelfIntersectionButton_clicked()
         const char* objName = d->meshFeature->getNameInDocument();
 #endif
         Gui::Document* doc = Gui::Application::Instance->getDocument(docName);
-        doc->openCommand(QT_TRANSLATE_NOOP("Command", "Fix self-intersections"));
+        doc->openCommand("Fix self-intersections");
 #if 0
         try {
             Gui::Application::Instance->runCommand(
@@ -1051,7 +1053,7 @@ void DlgEvaluateMeshImp::on_repairFoldsButton_clicked()
         const char* objName = d->meshFeature->getNameInDocument();
         Gui::Document* doc = Gui::Application::Instance->getDocument(docName);
         qApp->setOverrideCursor(Qt::WaitCursor);
-        doc->openCommand(QT_TRANSLATE_NOOP("Command", "Remove folds"));
+        doc->openCommand("Remove folds");
         try {
             Gui::Command::doCommand(Gui::Command::App
                     , "App.getDocument(\"%s\").getObject(\"%s\").removeFoldsOnSurface()"
@@ -1091,7 +1093,7 @@ void DlgEvaluateMeshImp::on_repairAllTogether_clicked()
         const char* docName = App::GetApplication().getDocumentName(d->meshFeature->getDocument());
         const char* objName = d->meshFeature->getNameInDocument();
         Gui::Document* doc = Gui::Application::Instance->getDocument(docName);
-        doc->openCommand(QT_TRANSLATE_NOOP("Command", "Repair mesh"));
+        doc->openCommand("Repair mesh");
 
         bool run = false;
         bool self = true;

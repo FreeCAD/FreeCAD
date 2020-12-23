@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2013     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -36,47 +36,17 @@ using namespace Base;
 std::string QuantityPy::representation(void) const
 {
     std::stringstream ret;
-#if 0
     //ret.precision(getQuantityPtr()->getFormat().precision);
     //ret.setf(std::ios::fixed, std::ios::floatfield);
-    ret << getQuantityPtr()->getValue() << " ";
+    ret << getQuantityPtr()->getValue() << " "; 
     ret << getQuantityPtr()->getUnit().getString().toUtf8().constData();
-#else
-    double val= getQuantityPtr()->getValue();
-    Unit unit = getQuantityPtr()->getUnit();
-
-    // Use Python's implementation to repr() a float
-    Py::Float flt(val);
-    ret << static_cast<std::string>(flt.repr());
-    if (!unit.isEmpty())
-        ret << " " << unit.getString().toUtf8().constData();
-#endif
 
     return ret.str();
 }
 
-PyObject* QuantityPy::toStr(PyObject* args)
-{
-    int prec = getQuantityPtr()->getFormat().precision;
-    if (!PyArg_ParseTuple(args,"|i", &prec))
-        return nullptr;
-
-    double val= getQuantityPtr()->getValue();
-    Unit unit = getQuantityPtr()->getUnit();
-
-    std::stringstream ret;
-    ret.precision(prec);
-    ret.setf(std::ios::fixed, std::ios::floatfield);
-    ret << val;
-    if (!unit.isEmpty())
-        ret << " " << unit.getString().toUtf8().constData();
-
-    return Py_BuildValue("s", ret.str().c_str());
-}
-
 PyObject *QuantityPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of QuantityPy and the Twin object
+    // create a new instance of QuantityPy and the Twin object 
     return new QuantityPy(new Quantity);
 }
 
@@ -235,17 +205,6 @@ PyObject* QuantityPy::getValueAs(PyObject *args)
     return new QuantityPy(new Quantity(quant));
 }
 
-PyObject * QuantityPy::__round__ (PyObject *args)
-{
-    double val= getQuantityPtr()->getValue();
-    Unit unit = getQuantityPtr()->getUnit();
-    Py::Float flt(val);
-    Py::Callable func(flt.getAttr("__round__"));
-    double rnd = static_cast<double>(Py::Float(func.apply(args)));
-
-    return new QuantityPy(new Quantity(rnd, unit));
-}
-
 PyObject * QuantityPy::number_float_handler (PyObject *self)
 {
     if (!PyObject_TypeCheck(self, &(QuantityPy::Type))) {
@@ -331,7 +290,7 @@ static Quantity &pyToQuantity(Quantity &q, PyObject *pyobj) {
     else if (PyLong_Check(pyobj))
         q = Quantity(PyLong_AsLong(pyobj));
     else {
-        PyErr_Format(PyExc_TypeError,"Cannot convert %s to Quantity",Py_TYPE(pyobj)->tp_name);
+        PyErr_Format(PyExc_TypeError,"Cannot convert %s to Quantity",Py_TYPE(pyobj)->tp_name); 
         throw Py::Exception();
     }
     return q;
@@ -471,7 +430,7 @@ PyObject * QuantityPy::number_power_handler (PyObject *self, PyObject *other, Py
             Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
             Base::Quantity *b = static_cast<QuantityPy*>(other)->getQuantityPtr();
             Base::Quantity q(a->pow(*b)); // to prevent memory leak in case of exception
-
+            
             return new QuantityPy(new Quantity(q));
         }
         else if (PyFloat_Check(other)) {
@@ -695,7 +654,7 @@ PyObject *QuantityPy::getCustomAttributes(const char* attr) const
 
 int QuantityPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0;
+    return 0; 
 }
 
 PyObject * QuantityPy::number_invert_handler (PyObject* /*self*/)

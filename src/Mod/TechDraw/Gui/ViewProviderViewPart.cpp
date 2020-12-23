@@ -23,8 +23,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <QMessageBox>
-#include <QTextStream>
 # ifdef FC_OS_WIN32
 #  include <windows.h>
 # endif
@@ -37,44 +35,23 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Gui/Control.h>
-#include <Gui/Document.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
 
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 #include <Mod/TechDraw/App/DrawViewBalloon.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
 #include <Mod/TechDraw/App/DrawRichAnno.h>
 #include <Mod/TechDraw/App/DrawViewMulti.h>
-#include <Mod/TechDraw/App/DrawViewDetail.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
 #include <Mod/TechDraw/App/DrawGeomHatch.h>
-#include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawWeldSymbol.h>
 #include <Mod/TechDraw/App/LineGroup.h>
 
-#include "PreferencesGui.h"
-#include "QGIView.h"
-#include "TaskDetail.h"
+#include<Mod/TechDraw/App/DrawPage.h>
 #include "ViewProviderViewPart.h"
 
 using namespace TechDrawGui;
-using namespace TechDraw;
 
 PROPERTY_SOURCE(TechDrawGui::ViewProviderViewPart, TechDrawGui::ViewProviderDrawingView)
-
-const char* ViewProviderViewPart::LineStyleEnums[] = { "NoLine",
-                                                  "Continuous",
-                                                  "Dash",
-                                                  "Dot",
-                                                  "DashDot",
-                                                  "DashDotDot",
-                                                  NULL };
 
 //**************************************************************************
 // Construction/Destruction
@@ -88,8 +65,10 @@ ViewProviderViewPart::ViewProviderViewPart()
     static const char *hgroup = "Highlight";
 
     //default line weights
-    int lgNumber = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
+                                                    GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
+    std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
+    auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
 
     double weight = lg->getWeight("Thick");
     ADD_PROPERTY_TYPE(LineWidth,(weight),group,App::Prop_None,"The thickness of visible lines (line groups xx.2");
@@ -104,12 +83,11 @@ ViewProviderViewPart::ViewProviderViewPart()
     ADD_PROPERTY_TYPE(ExtraWidth,(weight),group,App::Prop_None,"The thickness of LineGroup Extra lines, if enabled");
     delete lg;                            //Coverity CID 174664
 
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
+    hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                                     GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
+    double defScale = hGrp->GetFloat("CenterMarkScale",2.0);
+    bool   defShowCenters = hGrp->GetBool("ShowCenterMarks", true);
 
-    double defScale = hGrp->GetFloat("CenterMarkScale",0.50);
-    bool   defShowCenters = hGrp->GetBool("ShowCenterMarks", false);
-    
     //decorations
     ADD_PROPERTY_TYPE(HorizCenterLine ,(false),dgroup,App::Prop_None,"Show a horizontal centerline through view");
     ADD_PROPERTY_TYPE(VertCenterLine ,(false),dgroup,App::Prop_None,"Show a vertical centerline through view");
@@ -118,18 +96,8 @@ ViewProviderViewPart::ViewProviderViewPart()
 
     //properties that affect Section Line
     ADD_PROPERTY_TYPE(ShowSectionLine ,(true)    ,dgroup,App::Prop_None,"Show/hide section line if applicable");
-    SectionLineStyle.setEnums(LineStyleEnums);
-    ADD_PROPERTY_TYPE(SectionLineStyle, (PreferencesGui::sectionLineStyle()), dgroup, App::Prop_None, 
-                        "Set section line style if applicable");
-    ADD_PROPERTY_TYPE(SectionLineColor, (prefSectionColor()), dgroup, App::Prop_None, 
-                        "Set section line color if applicable");
     
     //properties that affect Detail Highlights
-    HighlightLineStyle.setEnums(LineStyleEnums);
-    ADD_PROPERTY_TYPE(HighlightLineStyle, (prefHighlightStyle()), hgroup, App::Prop_None, 
-                        "Set highlight line style if applicable");
-    ADD_PROPERTY_TYPE(HighlightLineColor, (prefHighlightColor()), hgroup, App::Prop_None, 
-                        "Set highlight line color if applicable");
     ADD_PROPERTY_TYPE(HighlightAdjust,(0.0),hgroup,App::Prop_None,"Adjusts the rotation of the Detail highlight");
 
     ADD_PROPERTY_TYPE(ShowAllEdges ,(false)    ,dgroup,App::Prop_None,"Temporarily show invisible lines");
@@ -155,10 +123,6 @@ void ViewProviderViewPart::onChanged(const App::Property* prop)
         prop == &(ArcCenterMarks) ||
         prop == &(CenterScale) ||
         prop == &(ShowSectionLine)  ||
-        prop == &(SectionLineStyle) ||
-        prop == &(SectionLineColor) ||
-        prop == &(HighlightLineStyle) ||
-        prop == &(HighlightLineColor) ||
         prop == &(HorizCenterLine)  ||
         prop == &(VertCenterLine) ) {
         // redraw QGIVP
@@ -175,11 +139,8 @@ void ViewProviderViewPart::onChanged(const App::Property* prop)
 void ViewProviderViewPart::attach(App::DocumentObject *pcFeat)
 {
     TechDraw::DrawViewMulti* dvm = dynamic_cast<TechDraw::DrawViewMulti*>(pcFeat);
-    TechDraw::DrawViewDetail* dvd = dynamic_cast<TechDraw::DrawViewDetail*>(pcFeat);
     if (dvm != nullptr) {
         sPixmap = "TechDraw_Tree_Multi";
-    } else if (dvd != nullptr) {
-        sPixmap = "actions/techdraw-DetailView";
     }
 
     ViewProviderDrawingView::attach(pcFeat);
@@ -244,57 +205,6 @@ std::vector<App::DocumentObject*> ViewProviderViewPart::claimChildren(void) cons
         return tmp;
     }
 }
-bool ViewProviderViewPart::setEdit(int ModNum)
-{
-    if (ModNum == ViewProvider::Default ) {
-        if (Gui::Control().activeDialog())  {         //TaskPanel already open!
-            return false;
-        }
-        TechDraw::DrawViewPart* dvp = getViewObject();
-        TechDraw::DrawViewDetail* dvd = dynamic_cast<TechDraw::DrawViewDetail*>(dvp);
-        if (dvd != nullptr) { 
-            // clear the selection (convenience)
-            Gui::Selection().clearSelection();
-            Gui::Control().showDialog(new TaskDlgDetail(dvd));
-//            Gui::Selection().clearSelection();
-// flush any lingering gui objects
-            Gui::Selection().addSelection(dvd->getDocument()->getName(),
-                                          dvd->getNameInDocument());
-            Gui::Selection().clearSelection();
-            Gui::Selection().addSelection(dvd->getDocument()->getName(),
-                                          dvd->getNameInDocument());
-
-//Gui.ActiveDocument.resetEdit()
-//>>> # Gui.Selection.addSelection('aaStart121','Detail')
-//>>> # Gui.Selection.clearSelection()
-//>>> # Gui.Selection.addSelection('aaStart121','Detail')
-//>>> # Gui.Selection.addSelection('aaStart121','Detail')
-//>>> # Gui.Selection.clearSelection()
-//>>> # Gui.Selection.addSelection('aaStart121','Detail')            
-            return true;
-        }
-    } else {
-        return ViewProviderDrawingView::setEdit(ModNum);
-    }
-    return true;
-}
-
-void ViewProviderViewPart::unsetEdit(int ModNum)
-{
-    Q_UNUSED(ModNum);
-    if (ModNum == ViewProvider::Default) {
-        Gui::Control().closeDialog();
-    }
-    else {
-        ViewProviderDrawingView::unsetEdit(ModNum);
-    }
-}
-
-bool ViewProviderViewPart::doubleClicked(void)
-{
-    setEdit(ViewProvider::Default);
-    return true;
-}
 
 TechDraw::DrawViewPart* ViewProviderViewPart::getViewObject() const
 {
@@ -305,105 +215,3 @@ TechDraw::DrawViewPart* ViewProviderViewPart::getViewPart() const
 {
     return getViewObject();
 }
-
-void ViewProviderViewPart::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
-// transforms properties that had been changed
-{
-    // property LineWidth had the App::PropertyFloat and was changed to App::PropertyLength
-    if (prop == &LineWidth && strcmp(TypeName, "App::PropertyFloat") == 0) {
-        App::PropertyFloat LineWidthProperty;
-        // restore the PropertyFloat to be able to set its value
-        LineWidthProperty.Restore(reader);
-        LineWidth.setValue(LineWidthProperty.getValue());
-    }
-    // property HiddenWidth had the App::PropertyFloat and was changed to App::PropertyLength
-    else if (prop == &HiddenWidth && strcmp(TypeName, "App::PropertyFloat") == 0) {
-        App::PropertyFloat HiddenWidthProperty;
-        HiddenWidthProperty.Restore(reader);
-        HiddenWidth.setValue(HiddenWidthProperty.getValue());
-    }
-    // property IsoWidth had the App::PropertyFloat and was changed to App::PropertyLength
-    else if (prop == &IsoWidth && strcmp(TypeName, "App::PropertyFloat") == 0) {
-        App::PropertyFloat IsoWidthProperty;
-        IsoWidthProperty.Restore(reader);
-        IsoWidth.setValue(IsoWidthProperty.getValue());
-    }
-    // property ExtraWidth had the App::PropertyFloat and was changed to App::PropertyLength
-    else if (prop == &ExtraWidth && strcmp(TypeName, "App::PropertyFloat") == 0) {
-        App::PropertyFloat  ExtraWidthProperty;
-        ExtraWidthProperty.Restore(reader);
-        ExtraWidth.setValue(ExtraWidthProperty.getValue());
-    }
-}
-
-bool ViewProviderViewPart::onDelete(const std::vector<std::string> &)
-{
-    // we cannot delete if the view has a section or detail view
-
-    QString bodyMessage;
-    QTextStream bodyMessageStream(&bodyMessage);
-
-    // get child views
-    auto viewSection = getViewObject()->getSectionRefs();
-    auto viewDetail = getViewObject()->getDetailRefs();
-    auto viewLeader = getViewObject()->getLeaders();
-    
-    if (!viewSection.empty()) {
-        bodyMessageStream << qApp->translate("Std_Delete",
-            "You cannot delete this view because it has a section view that would become broken.");
-        QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
-            QMessageBox::Ok);
-        return false;
-    }
-    else if (!viewDetail.empty()) {
-        bodyMessageStream << qApp->translate("Std_Delete",
-            "You cannot delete this view because it has a detail view that would become broken.");
-        QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
-            QMessageBox::Ok);
-        return false;
-    }
-    else if (!viewLeader.empty()) {
-        bodyMessageStream << qApp->translate("Std_Delete",
-            "You cannot delete this view because it has a leader line that would become broken.");
-        QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
-            QMessageBox::Ok);
-        return false;
-    }
-    else {
-        return true;
-    }
-}
-
-bool ViewProviderViewPart::canDelete(App::DocumentObject *obj) const
-{
-    // deletions of part objects (detail view, View etc.) are valid
-    // that it cannot be deleted if it has a child view is handled in the onDelete() function
-    Q_UNUSED(obj)
-    return true;
-}
-
-App::Color ViewProviderViewPart::prefSectionColor(void)
-{
-    return PreferencesGui::sectionLineColor();
-}
-
-App::Color ViewProviderViewPart::prefHighlightColor(void)
-{
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("HighlightColor", 0x00000000));
-    return fcColor;
-}
-
-int ViewProviderViewPart::prefHighlightStyle(void)
-{
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    return hGrp->GetInt("HighlightStyle", 2);
-}
-
-

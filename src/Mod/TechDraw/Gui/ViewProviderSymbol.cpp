@@ -93,7 +93,7 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderDraft, TechDrawGui::ViewProviderSymbol)
 
 ViewProviderDraft::ViewProviderDraft()
 {
-    sPixmap = "actions/techdraw-DraftView.svg";
+    sPixmap = "actions/techdraw-draft-view.svg";
 }
 
 ViewProviderDraft::~ViewProviderDraft()
@@ -108,7 +108,7 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderArch, TechDrawGui::ViewProviderSymbol)
 
 ViewProviderArch::ViewProviderArch()
 {
-    sPixmap = "actions/techdraw-ArchView.svg";
+    sPixmap = "actions/techdraw-arch-view.svg";
 }
 
 ViewProviderArch::~ViewProviderArch()

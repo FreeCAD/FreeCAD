@@ -27,7 +27,7 @@
 #include <CXX/Objects.hxx>
 
 #include <boost/signals2.hpp>
-#include <boost/bind/bind.hpp>
+#include <boost/bind.hpp>
 
 namespace Gui
 {
@@ -35,7 +35,7 @@ namespace Gui
 /**
  * The DocumentObserverPython class is used to notify registered Python instances
  * whenever something happens to a document, like creation, destruction, adding or
- * removing viewproviders or when viewprovider property changes. This is the equivalent to the app
+ * removing viewproviders or when viewprovider property changes. This is the equivalent to the app 
  * python document observer
 */
 class GuiExport DocumentObserverPython
@@ -49,7 +49,7 @@ public:
     static void addObserver(const Py::Object& obj);
     static void removeObserver(const Py::Object& obj);
 
-private:
+private:   
     /** Checks if a new document was created */
     void slotCreatedDocument(const Gui::Document& Doc);
     /** Checks if the given document is about to be closed */
@@ -65,8 +65,6 @@ private:
     /** Checks if the given object is about to be removed. */
     void slotDeletedObject(const Gui::ViewProvider& Obj);
     /** The property of an observed object has changed */
-    void slotBeforeChangeObject(const Gui::ViewProvider& Obj, const App::Property& Prop);
-    /** The property of an observed object has changed */
     void slotChangedObject(const Gui::ViewProvider& Obj, const App::Property& Prop);
     /** The object was set into edit mode */
     void slotInEdit(const Gui::ViewProviderDocumentObject& Obj);
@@ -77,25 +75,26 @@ private:
     Py::Object inst;
     static std::vector<DocumentObserverPython*> _instances;
 
-    typedef struct PythonObject {
-       boost::signals2::scoped_connection slot;
-       Py::Object py;
-       PyObject* ptr() {
-           return py.ptr();
-       }
-    } Connection;
+    typedef boost::signals2::connection Connection;
 
-    Connection pyCreatedDocument;
-    Connection pyDeletedDocument;
-    Connection pyRelabelDocument;
-    Connection pyRenameDocument;
-    Connection pyActivateDocument;
-    Connection pyCreatedObject;
-    Connection pyDeletedObject;
-    Connection pyBeforeChangeObject;
-    Connection pyChangedObject;
-    Connection pyInEdit;
-    Connection pyResetEdit;
+#define FC_PY_GDOC_OBSERVER \
+    FC_PY_ELEMENT(CreatedDocument,_1) \
+    FC_PY_ELEMENT(DeletedDocument,_1) \
+    FC_PY_ELEMENT(RelabelDocument,_1) \
+    FC_PY_ELEMENT(RenameDocument,_1) \
+    FC_PY_ELEMENT(ActivateDocument,_1) \
+    FC_PY_ELEMENT(CreatedObject,_1) \
+    FC_PY_ELEMENT(DeletedObject,_1) \
+    FC_PY_ELEMENT(ChangedObject,_1,_2) \
+    FC_PY_ELEMENT(InEdit,_1) \
+    FC_PY_ELEMENT(ResetEdit,_1)
+
+#undef FC_PY_ELEMENT
+#define FC_PY_ELEMENT(_name,...) \
+    Connection connect##_name;\
+    Py::Object py##_name;
+
+    FC_PY_GDOC_OBSERVER
 };
 
 } //namespace Gui

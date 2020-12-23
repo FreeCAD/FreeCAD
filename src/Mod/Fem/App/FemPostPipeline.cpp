@@ -24,7 +24,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Python.h>
 # include <SMESH_Mesh.hxx>
 # include <vtkDataSetReader.h>
 # include <vtkGeometryFilter.h>
@@ -248,12 +247,8 @@ bool FemPostPipeline::holdsPostObject(FemPostObject* obj) {
 }
 
 void FemPostPipeline::load(FemResultObject* res) {
-    if (!res->Mesh.getValue()) {
-        Base::Console().Log("Result mesh object is empty.\n");
-        return;
-    }
-    if(!res->Mesh.getValue()->isDerivedFrom(Fem::FemMeshObject::getClassTypeId())) {
-        Base::Console().Log("Result mesh object is not derived from Fem::FemMeshObject.\n");
+    if(!res->Mesh.getValue() || !res->Mesh.getValue()->isDerivedFrom(Fem::FemMeshObject::getClassTypeId())) {
+        Base::Console().Warning("Mesh of result object is empty or not derived from Fem::FemMeshObject\n");
         return;
     }
 

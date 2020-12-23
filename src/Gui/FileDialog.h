@@ -28,7 +28,6 @@
 #include <QFileIconProvider>
 #include <QFileSystemModel>
 #include <QCompleter>
-#include <QPointer>
 
 class QButtonGroup;
 class QGridLayout;
@@ -48,14 +47,14 @@ class GuiExport FileDialog : public QFileDialog
     Q_OBJECT
 
 public:
-    static QString getOpenFileName( QWidget * parent = 0, const QString & caption = QString(), const QString & dir = QString(),
-                                    const QString & filter = QString(), QString * selectedFilter = 0, Options options = Options() );
-    static QString getSaveFileName( QWidget * parent = 0, const QString & caption = QString(), const QString & dir = QString(),
-                                    const QString & filter = QString(), QString * selectedFilter = 0, Options options = Options() );
-    static QString getExistingDirectory( QWidget * parent = 0, const QString & caption = QString(), const QString & dir = QString(),
+    static QString getOpenFileName( QWidget * parent = 0, const QString & caption = QString(), const QString & dir = QString(), 
+                                    const QString & filter = QString(), QString * selectedFilter = 0, Options options = 0 );
+    static QString getSaveFileName( QWidget * parent = 0, const QString & caption = QString(), const QString & dir = QString(), 
+                                    const QString & filter = QString(), QString * selectedFilter = 0, Options options = 0 );
+    static QString getExistingDirectory( QWidget * parent = 0, const QString & caption = QString(), const QString & dir = QString(), 
                                          Options options = ShowDirsOnly );
     static QStringList getOpenFileNames( QWidget * parent = 0, const QString & caption = QString(), const QString & dir = QString(),
-                                         const QString & filter = QString(), QString * selectedFilter = 0, Options options = Options() );
+                                         const QString & filter = QString(), QString * selectedFilter = 0, Options options = 0 );
 
     /*! Return the last directory a file was read from or saved to. */
     static QString getWorkingDirectory();
@@ -80,7 +79,7 @@ private:
 // ----------------------------------------------------------------------
 
 /**
- * The FileOptionsDialog class provides an extensible file dialog with an additional widget either at the right
+ * The FileOptionsDialog class provides an extensible file dialog with an additional widget either at the right 
  * or at the bottom, that can be shown or hidden with the 'Extended' button.
  * @author Werner Mayer
  */
@@ -106,10 +105,7 @@ protected Q_SLOTS:
     void toggleExtension();
 
 private:
-    QSize oldSize;
-    ExtensionPosition extensionPos;
     QPushButton* extensionButton;
-    QPointer<QWidget> extensionWidget;
 };
 
 // ----------------------------------------------------------------------
@@ -142,25 +138,22 @@ class GuiExport FileChooser : public QWidget
 
     Q_ENUMS( Mode )
     Q_PROPERTY( Mode mode READ mode WRITE setMode )
-    Q_ENUMS( AcceptMode )
-    Q_PROPERTY( AcceptMode acceptMode READ acceptMode WRITE setAcceptMode    )
     Q_PROPERTY( QString  fileName  READ fileName      WRITE setFileName      )
     Q_PROPERTY( QString  filter    READ filter        WRITE setFilter        )
     Q_PROPERTY( QString  buttonText  READ buttonText  WRITE setButtonText    )
 
 public:
     enum Mode { File, Directory };
-    enum AcceptMode { AcceptOpen, AcceptSave };
 
     FileChooser ( QWidget * parent = 0 );
     virtual ~FileChooser();
 
-    /**
+    /** 
     * Returns the set filter.
     */
     QString filter() const;
 
-    /**
+    /** 
     * Returns the filename.
     */
     QString fileName() const;
@@ -175,19 +168,6 @@ public:
     * Returns the button's text.
     */
     QString buttonText() const;
-
-    /**
-     * Sets the accept mode.
-     */
-    void setAcceptMode(AcceptMode mode) {
-        accMode = mode;
-    }
-    /**
-     * Returns the accept mode.
-     */
-    AcceptMode acceptMode() const {
-        return accMode;
-    }
 
 public Q_SLOTS:
     virtual void setFileName( const QString &fn );
@@ -212,7 +192,6 @@ private:
     QFileSystemModel *fs_model;
     QPushButton *button;
     Mode md;
-    AcceptMode accMode;
     QString _filter;
 };
 
@@ -234,7 +213,7 @@ public:
     virtual ~SelectModule();
     QString getModule() const;
 
-    /** @name Import/Export handler
+    /** @name Import/Export handler 
      * These methods accepts a file name or a list of file names and return
      * a map of file names with the associated Python module that should open
      * the file.

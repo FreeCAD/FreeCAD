@@ -51,13 +51,9 @@
 # pragma clang diagnostic push
 # pragma clang diagnostic ignored "-Wmismatched-tags"
 # pragma clang diagnostic ignored "-Wunused-parameter"
-# if __clang_major__ > 3
-# pragma clang diagnostic ignored "-Wkeyword-macro"
-# endif
 #elif defined (__GNUC__)
 # pragma GCC diagnostic push
 # pragma GCC diagnostic ignored "-Wunused-parameter"
-# pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #endif
 
 #ifdef HAVE_SHIBOKEN
@@ -91,8 +87,7 @@ PyTypeObject** SbkPySide_QtGuiTypes=nullptr;
 // This helps to avoid to include the PySide2 headers since MSVC has a compiler bug when
 // compiling together with std::bitset (https://bugreports.qt.io/browse/QTBUG-72073)
 
-// Do not use SHIBOKEN_MICRO_VERSION; it might contain a dot
-# define SHIBOKEN_FULL_VERSION QT_VERSION_CHECK(SHIBOKEN_MAJOR_VERSION, SHIBOKEN_MINOR_VERSION, 0)
+# define SHIBOKEN_FULL_VERSION QT_VERSION_CHECK(SHIBOKEN_MAJOR_VERSION, SHIBOKEN_MINOR_VERSION, SHIBOKEN_MICRO_VERSION)
 # if (SHIBOKEN_FULL_VERSION >= QT_VERSION_CHECK(5, 12, 0))
 # define HAVE_SHIBOKEN_TYPE_FOR_TYPENAME
 # endif
@@ -387,31 +382,6 @@ QObject* PythonWrapper::toQObject(const Py::Object& pyobject)
     return 0;
 }
 
-QGraphicsItem* PythonWrapper::toQGraphicsItem(PyObject* pyPtr)
-{
-#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
-    PyTypeObject* type = getPyTypeObjectForTypeName<QObject>();
-    if (type) {
-        if (Shiboken::Object::checkType(pyPtr)) {
-            SbkObject* sbkobject = reinterpret_cast<SbkObject*>(pyPtr);
-            void* cppobject = Shiboken::Object::cppPointer(sbkobject, type);
-            return reinterpret_cast<QGraphicsItem*>(cppobject);
-        }
-    }
-#elif QT_VERSION >= 0x050000
-    // Access shiboken2/PySide2 via Python
-    //
-    void* ptr = qt_getCppPointer(Py::asObject(pyPtr), "shiboken2", "getCppPointer");
-    return reinterpret_cast<QGraphicsItem*>(ptr);
-#else
-    // Access shiboken/PySide via Python
-    //
-    void* ptr = qt_getCppPointer(Py::asObject(pyPtr), "shiboken", "getCppPointer");
-    return reinterpret_cast<QGraphicsItem*>(ptr);
-#endif
-    return nullptr;
-}
-
 Py::Object PythonWrapper::fromQIcon(const QIcon* icon)
 {
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
@@ -447,44 +417,6 @@ QIcon *PythonWrapper::toQIcon(PyObject *pyobj)
     Q_UNUSED(pyobj);
 #endif
     return 0;
-}
-
-Py::Object PythonWrapper::fromQObject(QObject* object, const char* className)
-{
-#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
-    // Access shiboken/PySide via C++
-    //
-    PyTypeObject * type = getPyTypeObjectForTypeName<QObject>();
-    if (type) {
-        SbkObjectType* sbk_type = reinterpret_cast<SbkObjectType*>(type);
-        std::string typeName;
-        if (className)
-            typeName = className;
-        else
-            typeName = object->metaObject()->className();
-        PyObject* pyobj = Shiboken::Object::newObject(sbk_type, object, false, false, typeName.c_str());
-        return Py::asObject(pyobj);
-    }
-    throw Py::RuntimeError("Failed to wrap object");
-
-#elif QT_VERSION >= 0x050000
-    // Access shiboken2/PySide2 via Python
-    //
-    return qt_wrapInstance<QObject*>(object, className, "shiboken2", "PySide2.QtCore", "wrapInstance");
-#else
-    // Access shiboken/PySide via Python
-    //
-    return qt_wrapInstance<QObject*>(object, className, "shiboken", "PySide.QtCore", "wrapInstance");
-#endif
-
-#if 0 // Unwrapping using sip/PyQt
-    Q_UNUSED(className);
-#if QT_VERSION >= 0x050000
-    return qt_wrapInstance<QObject*>(object, "QObject", "sip", "PyQt5.QtCore", "wrapinstance");
-#else
-    return qt_wrapInstance<QObject*>(object, "QObject", "sip", "PyQt4.Qt", "wrapinstance");
-#endif
-#endif
 }
 
 Py::Object PythonWrapper::fromQWidget(QWidget* widget, const char* className)
@@ -682,7 +614,7 @@ void WidgetFactoryInst::destruct ()
 
 /**
  * Creates a widget with the name \a sName which is a child of \a parent.
- * To create an instance of this widget once it must has been registered.
+ * To create an instance of this widget once it must has been registered. 
  * If there is no appropriate widget registered 0 is returned.
  */
 QWidget* WidgetFactoryInst::createWidget (const char* sName, QWidget* parent) const
@@ -724,7 +656,7 @@ QWidget* WidgetFactoryInst::createWidget (const char* sName, QWidget* parent) co
 
 /**
  * Creates a widget with the name \a sName which is a child of \a parent.
- * To create an instance of this widget once it must has been registered.
+ * To create an instance of this widget once it must has been registered. 
  * If there is no appropriate widget registered 0 is returned.
  */
 Gui::Dialog::PreferencePage* WidgetFactoryInst::createPreferencePage (const char* sName, QWidget* parent) const
@@ -762,9 +694,9 @@ Gui::Dialog::PreferencePage* WidgetFactoryInst::createPreferencePage (const char
 }
 
 /**
- * Creates a preference widget with the name \a sName and the preference name \a sPref
+ * Creates a preference widget with the name \a sName and the preference name \a sPref 
  * which is a child of \a parent.
- * To create an instance of this widget once it must has been registered.
+ * To create an instance of this widget once it must has been registered. 
  * If there is no appropriate widget registered 0 is returned.
  * After creation of this widget its recent preferences are restored automatically.
  */
@@ -1434,7 +1366,7 @@ void PyResource::load(const char* name)
 /**
  * Makes a connection between the sender widget \a sender and its signal \a signal
  * of the created resource and Python callback function \a cb.
- * If the sender widget does not exist or no resource has been loaded this method returns false,
+ * If the sender widget does not exist or no resource has been loaded this method returns false, 
  * otherwise it returns true.
  */
 bool PyResource::connect(const char* sender, const char* signal, PyObject* cb)
@@ -1715,11 +1647,7 @@ void SignalConnect::onExecute()
 
     /* Time to call the callback */
     arglist = Py_BuildValue("(O)", myResource);
-#if PY_VERSION_HEX < 0x03090000
     result = PyEval_CallObject(myCallback, arglist);
-#else
-    result = PyObject_CallObject(myCallback, arglist);
-#endif
     Py_XDECREF(result);
     Py_DECREF(arglist);
 }

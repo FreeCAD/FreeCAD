@@ -1,8 +1,7 @@
 # ***************************************************************************
-# *   Copyright (c) 2015 Przemo Fiszt <przemo@firszt.eu>                    *
-# *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
-# *   This file is part of the FreeCAD CAx development system.              *
+# *   Copyright (c) 2015 - FreeCAD Developers                               *
+# *   Author (c) 2015 - Przemo Fiszt < przemo@firszt.eu>                    *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -22,49 +21,38 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__  = "FreeCAD FEM command base class"
-__author__ = "Przemo Firszt, Bernd Hahnebach"
-__url__    = "https://www.freecadweb.org"
+__title__ = "Fem Commands"
+__author__ = "Przemo Firszt"
+__url__ = "http://www.freecadweb.org"
 
-## @package manager
-#  \ingroup FEM
-#  \brief FreeCAD FEM command base class
+## \addtogroup FEM
+#  @{
 
 import FreeCAD
-
-from femtools.femutils import is_of_type
+import femtools.femutils as femutils
 
 if FreeCAD.GuiUp:
-    from PySide import QtCore
     import FreeCADGui
     import FemGui
+    from PySide import QtCore
 
 
 class CommandManager(object):
 
     def __init__(self):
-
-        self.command = "FEM" + self.__class__.__name__
-        self.pixmap = self.command
-        self.menuetext = self.__class__.__name__.lstrip("_")
-        self.accel = ""
-        self.tooltip = "Creates a {}".format(self.menuetext)
-        self.resources = None
-
+        self.resources = {
+            "Pixmap": "FemWorkbench",
+            "MenuText": QtCore.QT_TRANSLATE_NOOP("Fem_Command", "Default Fem Command MenuText"),
+            "Accel": "",
+            "ToolTip": QtCore.QT_TRANSLATE_NOOP("Fem_Command", "Default Fem Command ToolTip")
+        }
+        # FIXME add option description
         self.is_active = None
-        self.do_activated = None
         self.selobj = None
         self.selobj2 = None
         self.active_analysis = None
 
     def GetResources(self):
-        if self.resources is None:
-            self.resources = {
-                "Pixmap": self.pixmap,
-                "MenuText": QtCore.QT_TRANSLATE_NOOP(self.command, self.menuetext),
-                "Accel": self.accel,
-                "ToolTip": QtCore.QT_TRANSLATE_NOOP(self.command, self.tooltip)
-            }
         return self.resources
 
     def IsActive(self):
@@ -87,8 +75,8 @@ class CommandManager(object):
             )
         elif self.is_active == "with_selresult":
             active = (
-                # on import of Frd file in a empty document not Analysis will be there
-                FreeCADGui.ActiveDocument is not None
+                FemGui.getActiveAnalysis() is not None
+                and self.active_analysis_in_active_doc()
                 and self.result_selected()
             )
         elif self.is_active == "with_part_feature":
@@ -117,11 +105,12 @@ class CommandManager(object):
                 and self.active_analysis_in_active_doc()
                 and self.material_selected()
             )
-        elif self.is_active == "with_material_solid":
+        elif self.is_active == "with_material_solid_which_has_no_nonlinear_material":
             active = (
                 FemGui.getActiveAnalysis() is not None
                 and self.active_analysis_in_active_doc()
                 and self.material_solid_selected()
+                and self.has_no_nonlinear_material()
             )
         elif self.is_active == "with_solver":
             active = (
@@ -143,17 +132,6 @@ class CommandManager(object):
             )
         return active
 
-    def Activated(self):
-        if self.do_activated == "add_obj_on_gui_noset_edit":
-            self.add_obj_on_gui_noset_edit(self.__class__.__name__.lstrip("_"))
-        elif self.do_activated == "add_obj_on_gui_set_edit":
-            self.add_obj_on_gui_set_edit(self.__class__.__name__.lstrip("_"))
-        elif self.do_activated == "add_obj_on_gui_selobj_noset_edit":
-            self.add_obj_on_gui_selobj_noset_edit(self.__class__.__name__.lstrip("_"))
-        elif self.do_activated == "add_obj_on_gui_selobj_set_edit":
-            self.add_obj_on_gui_selobj_set_edit(self.__class__.__name__.lstrip("_"))
-        # in all other cases Activated is implemented it the command class
-
     def results_present(self):
         results = False
         analysis_members = FemGui.getActiveAnalysis().Group
@@ -166,15 +144,17 @@ class CommandManager(object):
         result_mesh = False
         analysis_members = FemGui.getActiveAnalysis().Group
         for o in analysis_members:
-            if is_of_type(o, "Fem::MeshResult"):
+            if femutils.is_of_type(o, "Fem::FemMeshResult"):
                 result_mesh = True
         return result_mesh
 
     def result_selected(self):
         sel = FreeCADGui.Selection.getSelection()
         if len(sel) == 1 and sel[0].isDerivedFrom("Fem::FemResultObject"):
-            self.selobj = sel[0]
-            return True
+            for o in FemGui.getActiveAnalysis().Group:
+                if o == sel[0]:
+                    self.selobj = o
+                    return True
         return False
 
     def part_feature_selected(self):
@@ -195,7 +175,11 @@ class CommandManager(object):
 
     def gmsh_femmesh_selected(self):
         sel = FreeCADGui.Selection.getSelection()
-        if len(sel) == 1 and is_of_type(sel[0], "Fem::FemMeshGmsh"):
+        if (
+            len(sel) == 1
+            and hasattr(sel[0], "Proxy")
+            and sel[0].Proxy.Type == "Fem::FemMeshGmsh"
+        ):
             self.selobj = sel[0]
             return True
         else:
@@ -220,6 +204,23 @@ class CommandManager(object):
             return True
         else:
             return False
+
+    def has_no_nonlinear_material(self):
+        "check if an nonlinear material exists which is already based on the selected material"
+        for o in FreeCAD.ActiveDocument.Objects:
+            if (
+                hasattr(o, "Proxy")
+                and o.Proxy is not None
+                and o.Proxy.Type == "Fem::MaterialMechanicalNonlinear"
+                and o.LinearBaseMaterial == self.selobj
+            ):
+                FreeCAD.Console.PrintError(
+                    "{} is based on the selected material: {}. "
+                    "Only one nonlinear object for each material allowed.\n"
+                    .format(o.Name, self.selobj)
+                )
+                return False
+        return True
 
     def with_femmesh_andor_res_selected(self):
         sel = FreeCADGui.Selection.getSelection()
@@ -264,7 +265,11 @@ class CommandManager(object):
 
     def solver_elmer_selected(self):
         sel = FreeCADGui.Selection.getSelection()
-        if len(sel) == 1 and is_of_type(sel[0], "Fem::SolverElmer"):
+        if (
+            len(sel) == 1
+            and hasattr(sel[0], "Proxy")
+            and sel[0].Proxy.Type == "Fem::FemSolverObjectElmer"
+        ):
             self.selobj = sel[0]
             return True
         else:
@@ -302,9 +307,6 @@ class CommandManager(object):
         FreeCADGui.addModule(
             "ObjectsFem"
         )
-        FreeCADGui.addModule(
-            "FemGui"
-        )
         FreeCADGui.doCommand(
             "FemGui.getActiveAnalysis().addObject(ObjectsFem."
             "make{}(FreeCAD.ActiveDocument))"
@@ -324,9 +326,6 @@ class CommandManager(object):
         )
         FreeCADGui.addModule(
             "ObjectsFem"
-        )
-        FreeCADGui.addModule(
-            "FemGui"
         )
         FreeCADGui.doCommand(
             "FemGui.getActiveAnalysis().addObject(ObjectsFem."
@@ -371,3 +370,6 @@ class CommandManager(object):
         )
         FreeCADGui.Selection.clearSelection()
         FreeCAD.ActiveDocument.recompute()
+
+
+##  @}

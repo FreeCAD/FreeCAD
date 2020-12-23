@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -31,8 +31,8 @@
 class SoDragger;
 class SoJackDragger;
 class SoCoordinate3;
-class SoDrawStyle;
-class SoLineSet;
+class SoDrawStyle;  
+class SoLineSet; 
 
 namespace RobotGui
 {
@@ -55,7 +55,7 @@ public:
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member);
 
 protected:
-
+ 
     Gui::SoFCSelection    * pcTrajectoryRoot;
     SoCoordinate3         * pcCoords;
     SoDrawStyle           * pcDrawStyle;

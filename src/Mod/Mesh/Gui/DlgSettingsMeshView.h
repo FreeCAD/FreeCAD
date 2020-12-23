@@ -24,31 +24,28 @@
 #ifndef MESHGUI_DLGSETTINGSMESHVIEW_H
 #define MESHGUI_DLGSETTINGSMESHVIEW_H
 
+#include "ui_DlgSettingsMeshView.h"
 #include <Gui/PropertyPage.h>
-#include <memory>
 
 namespace MeshGui {
-class Ui_DlgSettingsMeshView;
+
 /**
  * The DlgSettingsMeshView class implements a preference page to change settings
  * for display of meshes.
  * @author Werner Mayer
  */
-class DlgSettingsMeshView : public Gui::Dialog::PreferencePage
+class DlgSettingsMeshView : public Gui::Dialog::PreferencePage, public Ui_DlgSettingsMeshView
 { 
     Q_OBJECT
 
 public:
-    DlgSettingsMeshView(QWidget* parent = nullptr);
+    DlgSettingsMeshView(QWidget* parent = 0);
     ~DlgSettingsMeshView();
 
 protected:
     void saveSettings();
     void loadSettings();
     void changeEvent(QEvent *e);
-
-private:
-    std::unique_ptr<Ui_DlgSettingsMeshView> ui;
 };
 
 } // namespace Gui
