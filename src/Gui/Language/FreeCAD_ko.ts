@@ -127,6 +127,74 @@
       <source>Edit</source>
       <translation>편집</translation>
     </message>
+    <message>
+      <source>Import</source>
+      <translation>가져오기</translation>
+    </message>
+    <message>
+      <source>Delete</source>
+      <translation>삭제</translation>
+    </message>
+    <message>
+      <source>Paste expressions</source>
+      <translation type="unfinished">Paste expressions</translation>
+    </message>
+    <message>
+      <source>Make link group</source>
+      <translation type="unfinished">Make link group</translation>
+    </message>
+    <message>
+      <source>Make link</source>
+      <translation type="unfinished">Make link</translation>
+    </message>
+    <message>
+      <source>Make sub-link</source>
+      <translation type="unfinished">Make sub-link</translation>
+    </message>
+    <message>
+      <source>Import links</source>
+      <translation type="unfinished">Import links</translation>
+    </message>
+    <message>
+      <source>Import all links</source>
+      <translation type="unfinished">Import all links</translation>
+    </message>
+    <message>
+      <source>Insert measurement</source>
+      <translation type="unfinished">Insert measurement</translation>
+    </message>
+    <message>
+      <source>Insert text document</source>
+      <translation type="unfinished">Insert text document</translation>
+    </message>
+    <message>
+      <source>Add a part</source>
+      <translation type="unfinished">Add a part</translation>
+    </message>
+    <message>
+      <source>Add a group</source>
+      <translation type="unfinished">Add a group</translation>
+    </message>
+    <message>
+      <source>Align</source>
+      <translation type="unfinished">Align</translation>
+    </message>
+    <message>
+      <source>Placement</source>
+      <translation>위치 설정</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation type="unfinished">Transform</translation>
+    </message>
+    <message>
+      <source>Link Transform</source>
+      <translation type="unfinished">Link Transform</translation>
+    </message>
+    <message>
+      <source>Measure distance</source>
+      <translation>거리측정</translation>
+    </message>
   </context>
   <context>
     <name>DlgCustomizeSpNavSettings</name>
@@ -1992,7 +2060,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Commen&amp;t:</source>
-      <translation>주석(&amp;t):</translation>
+      <translation>설명(&amp;T):</translation>
     </message>
     <message>
       <source>Path:</source>
@@ -2000,11 +2068,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&amp;Last modified by:</source>
-      <translation type="unfinished">&amp;Last modified by:</translation>
+      <translation>최종 수정자(&amp;L):</translation>
     </message>
     <message>
       <source>Created &amp;by:</source>
-      <translation type="unfinished">Created &amp;by:</translation>
+      <translation>작성자(&amp;B):</translation>
     </message>
     <message>
       <source>Com&amp;pany:</source>
@@ -2012,11 +2080,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Last &amp;modification date:</source>
-      <translation type="unfinished">Last &amp;modification date:</translation>
+      <translation>최종 수정일(&amp;M):</translation>
     </message>
     <message>
       <source>Creation &amp;date:</source>
-      <translation type="unfinished">Creation &amp;date:</translation>
+      <translation>작성일(&amp;D):</translation>
     </message>
     <message>
       <source/>
@@ -2032,7 +2100,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>License URL</source>
-      <translation type="unfinished">License URL</translation>
+      <translation>사용권 URL:</translation>
     </message>
     <message>
       <source>Open in browser</source>
@@ -2040,7 +2108,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Program version:</source>
-      <translation type="unfinished">Program version:</translation>
+      <translation>프로그램 버전</translation>
     </message>
   </context>
   <context>
@@ -2553,6 +2621,18 @@ Larger value eases to pick things, but can make small features impossible to sel
 Larger value eases to pick things, but can make small features impossible to select.
                </translation>
     </message>
+    <message>
+      <source>This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</source>
+      <translation type="unfinished">This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</translation>
+    </message>
+    <message>
+      <source>Use software OpenGL</source>
+      <translation type="unfinished">Use software OpenGL</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
@@ -2789,7 +2869,7 @@ Larger value eases to pick things, but can make small features impossible to sel
     </message>
     <message>
       <source>License URL</source>
-      <translation type="unfinished">License URL</translation>
+      <translation>사용권 URL:</translation>
     </message>
     <message>
       <source>Run AutoRecovery at startup</source>
@@ -3416,10 +3496,6 @@ Mouse tilting is not disabled by this setting.</translation>
       <translation type="unfinished">Rotations in 3D will use current cursor position as center for rotation</translation>
     </message>
     <message>
-      <source>Rotate at cursor</source>
-      <translation type="unfinished">Rotate at cursor</translation>
-    </message>
-    <message>
       <source>Isometric</source>
       <translation type="unfinished">Isometric</translation>
     </message>
@@ -3466,6 +3542,22 @@ Mouse tilting is not disabled by this setting.</translation>
     <message>
       <source>Default camera orientation when creating a new document or selecting the home view</source>
       <translation type="unfinished">Default camera orientation when creating a new document or selecting the home view</translation>
+    </message>
+    <message>
+      <source>Rotation mode</source>
+      <translation type="unfinished">Rotation mode</translation>
+    </message>
+    <message>
+      <source>Window center</source>
+      <translation type="unfinished">Window center</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation type="unfinished">Drag at cursor</translation>
+    </message>
+    <message>
+      <source>Object center</source>
+      <translation type="unfinished">Object center</translation>
     </message>
   </context>
   <context>
@@ -5366,7 +5458,7 @@ Do you want to exit without saving your data?</source>
     <name>Gui::RecentFilesAction</name>
     <message>
       <source>Open file %1</source>
-      <translation type="unfinished">Open file %1</translation>
+      <translation>파일 열기 %1</translation>
     </message>
     <message>
       <source>File not found</source>
@@ -6275,7 +6367,7 @@ Do you want to continue?</translation>
     </message>
     <message>
       <source>Cannot open file '%1'.</source>
-      <translation type="unfinished">Cannot open file '%1'.</translation>
+      <translation>'%1' 파일을 열 수 없습니다.</translation>
     </message>
     <message>
       <source>files</source>
@@ -6925,7 +7017,7 @@ Document: </translation>
     </message>
     <message>
       <source>Cl&amp;ose</source>
-      <translation>닫기(&amp;o)</translation>
+      <translation>닫기(&amp;O)</translation>
     </message>
     <message>
       <source>Close active window</source>
@@ -7203,7 +7295,7 @@ Document: </translation>
     </message>
     <message>
       <source>Export an object in the active document</source>
-      <translation type="unfinished">Export an object in the active document</translation>
+      <translation>활성 문서의 개체 내보내기</translation>
     </message>
     <message>
       <source>No selection</source>
@@ -7211,7 +7303,7 @@ Document: </translation>
     </message>
     <message>
       <source>Please select first the objects you want to export.</source>
-      <translation type="unfinished">Please select first the objects you want to export.</translation>
+      <translation>내보낼 개체를 먼저 선택하십시오.</translation>
     </message>
   </context>
   <context>
@@ -7786,11 +7878,11 @@ Document: </translation>
     </message>
     <message>
       <source>Cannot open file</source>
-      <translation type="unfinished">Cannot open file</translation>
+      <translation>파일을 열 수 없습니다</translation>
     </message>
     <message>
       <source>Loading the file %1 is not supported</source>
-      <translation type="unfinished">Loading the file %1 is not supported</translation>
+      <translation>파일 %1 읽기는 지원하지 않습니다</translation>
     </message>
   </context>
   <context>
@@ -7940,11 +8032,11 @@ Document: </translation>
     </message>
     <message>
       <source>E&amp;xit</source>
-      <translation type="unfinished">E&amp;xit</translation>
+      <translation>종료(&amp;X)</translation>
     </message>
     <message>
       <source>Quits the application</source>
-      <translation type="unfinished">Quits the application</translation>
+      <translation>프로그램 종료</translation>
     </message>
   </context>
   <context>
@@ -8030,7 +8122,7 @@ Document: </translation>
     </message>
     <message>
       <source>Reverts to the saved version of this file</source>
-      <translation type="unfinished">Reverts to the saved version of this file</translation>
+      <translation>저장된 버전의 파일로 되돌리기</translation>
     </message>
   </context>
   <context>
@@ -8041,11 +8133,11 @@ Document: </translation>
     </message>
     <message>
       <source>&amp;Save</source>
-      <translation>저장하기(&amp;S)</translation>
+      <translation>저장(&amp;S)</translation>
     </message>
     <message>
       <source>Save the active document</source>
-      <translation type="unfinished">Save the active document</translation>
+      <translation>활성 문서 저장하기</translation>
     </message>
   </context>
   <context>
@@ -8056,11 +8148,11 @@ Document: </translation>
     </message>
     <message>
       <source>Save All</source>
-      <translation type="unfinished">Save All</translation>
+      <translation>모두 저장</translation>
     </message>
     <message>
       <source>Save all opened document</source>
-      <translation type="unfinished">Save all opened document</translation>
+      <translation>열린 문서 모두 저장하기</translation>
     </message>
   </context>
   <context>
@@ -8071,11 +8163,11 @@ Document: </translation>
     </message>
     <message>
       <source>Save &amp;As...</source>
-      <translation>다른 이름으로 저장하기(&amp;A)...</translation>
+      <translation>다른 이름으로 저장(&amp;A)...</translation>
     </message>
     <message>
       <source>Save the active document under a new file name</source>
-      <translation type="unfinished">Save the active document under a new file name</translation>
+      <translation>활성 문서를 새 파일 이름으로 저장하기</translation>
     </message>
   </context>
   <context>
@@ -8086,7 +8178,7 @@ Document: </translation>
     </message>
     <message>
       <source>Save a &amp;Copy...</source>
-      <translation>복사본 저장하기(&amp;C)</translation>
+      <translation>사본 저장(&amp;C)</translation>
     </message>
     <message>
       <source>Save a copy of the active document under a new file name</source>
@@ -8825,6 +8917,21 @@ Document: </translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewRestoreCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>표준 뷰</translation>
+    </message>
+    <message>
+      <source>Restore saved camera</source>
+      <translation type="unfinished">Restore saved camera</translation>
+    </message>
+    <message>
+      <source>Restore saved camera settings</source>
+      <translation type="unfinished">Restore saved camera settings</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewRight</name>
     <message>
       <source>Standard-View</source>
@@ -8867,6 +8974,21 @@ Document: </translation>
     <message>
       <source>Rotate the view by 90° clockwise</source>
       <translation type="unfinished">Rotate the view by 90° clockwise</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewSaveCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>표준 뷰</translation>
+    </message>
+    <message>
+      <source>Save current camera</source>
+      <translation type="unfinished">Save current camera</translation>
+    </message>
+    <message>
+      <source>Save current camera settings</source>
+      <translation type="unfinished">Save current camera settings</translation>
     </message>
   </context>
   <context>

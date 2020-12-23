@@ -860,7 +860,7 @@ kojeg treba ukloniti;
       <location filename="../../TaskPrimitiveParameters.ui" line="913"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1152"/>
       <source>Height:</source>
-      <translation>Duljina:</translation>
+      <translation>Visina:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="198"/>
@@ -2796,7 +2796,7 @@ To može dovesti do neočekivanih rezultata.</translation>
       <location filename="../../CommandBody.cpp" line="728"/>
       <location filename="../../CommandBody.cpp" line="743"/>
       <source>Features cannot be moved</source>
-      <translation>Elementi se ne mogu pomjeriti</translation>
+      <translation>Elementi se ne mogu pomicati</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="707"/>
@@ -2816,7 +2816,7 @@ To može dovesti do neočekivanih rezultata.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="879"/>
       <source>Impossible to move the base feature of a body.</source>
-      <translation>Nemoguće je pomjeriti osnovni element tijela.</translation>
+      <translation>Nemoguće je pomaknuti osnovni element tijela.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="886"/>

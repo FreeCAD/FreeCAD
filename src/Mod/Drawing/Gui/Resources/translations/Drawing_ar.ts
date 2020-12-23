@@ -246,7 +246,7 @@
     <message>
       <location filename="../../DrawingView.cpp" line="225"/>
       <source>&amp;Outline</source>
-      <translation type="unfinished">&amp;Outline</translation>
+      <translation>الخط الخارجي</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="231"/>
@@ -491,12 +491,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="642"/>
       <source>Isometric</source>
-      <translation type="unfinished">Isometric</translation>
+      <translation>متساوي القياس</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="647"/>
       <source>Dimetric</source>
-      <translation type="unfinished">Dimetric</translation>
+      <translation>ثنائي الأبعاد</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="652"/>
@@ -506,7 +506,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="660"/>
       <source> Scale</source>
-      <translation type="unfinished"> Scale</translation>
+      <translation> ناسب</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="667"/>

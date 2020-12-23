@@ -29,7 +29,7 @@
       <translation>Stilul de numerotare</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="262"/>
+      <location filename="../../ArchBuildingPart.py" line="261"/>
       <source>The type of this building</source>
       <translation>Tipul contrucției</translation>
     </message>
@@ -44,12 +44,12 @@
       <translation>Obiectul pe care această componentă îl clonează</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="616"/>
+      <location filename="../../ArchSite.py" line="615"/>
       <source>Other shapes that are appended to this object</source>
       <translation>Alte forme care aparțin acestui obiect</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="618"/>
+      <location filename="../../ArchSite.py" line="617"/>
       <source>Other shapes that are subtracted from this object</source>
       <translation>Alte forme care sunt eliminate din acest obiect</translation>
     </message>
@@ -79,7 +79,7 @@
       <translation>Aria tuturor fetelor verticale ale acestui obiect</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="620"/>
+      <location filename="../../ArchSite.py" line="619"/>
       <source>The area of the projection of this object onto the XY plane</source>
       <translation>Aria proiecției acestui obiect pe planul XY</translation>
     </message>
@@ -89,32 +89,32 @@
       <translation>Perimetrul ariei orizontale</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="292"/>
+      <location filename="../../ArchEquipment.py" line="291"/>
       <source>The model description of this equipment</source>
       <translation>Descrierea echipamentului</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="298"/>
+      <location filename="../../ArchEquipment.py" line="297"/>
       <source>Additional snap points for this equipment</source>
       <translation>Punct de legătură adițional pentru echipament</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="300"/>
+      <location filename="../../ArchEquipment.py" line="299"/>
       <source>The electric power needed by this equipment in Watts</source>
       <translation>Puterea electrica necesara pentru acest echipament în wați</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="206"/>
+      <location filename="../../ArchFloor.py" line="205"/>
       <source>The height of this object</source>
       <translation>Înălțimea acestui obiect</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="208"/>
+      <location filename="../../ArchFloor.py" line="207"/>
       <source>The computed floor area of this floor</source>
       <translation>Aria calculata a acestei podele</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="910"/>
+      <location filename="../../ArchSectionPlane.py" line="915"/>
       <source>The placement of this object</source>
       <translation>Amplasarea acestui obiect</translation>
     </message>
@@ -154,42 +154,42 @@
       <translation>Lățimea acestui element, dacă nu e bazat pe un profil</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="409"/>
+      <location filename="../../ArchPanel.py" line="408"/>
       <source>The thickness or extrusion depth of this element</source>
       <translation>Grosimea sau adâncimea de extrudare al acestui element</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="411"/>
+      <location filename="../../ArchPanel.py" line="410"/>
       <source>The number of sheets to use</source>
       <translation>Numărul foilor de utilizat</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="414"/>
+      <location filename="../../ArchPanel.py" line="413"/>
       <source>The offset between this panel and its baseline</source>
       <translation>Distanta dintre acest panou și baza lui</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="416"/>
+      <location filename="../../ArchPanel.py" line="415"/>
       <source>The length of waves for corrugated elements</source>
       <translation>Lungimea cutelor pentru elemente ondulate</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="418"/>
+      <location filename="../../ArchPanel.py" line="417"/>
       <source>The height of waves for corrugated elements</source>
       <translation>Înălțimea cutelor pentru elemente ondulate</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="422"/>
+      <location filename="../../ArchPanel.py" line="421"/>
       <source>The direction of waves for corrugated elements</source>
       <translation>Direcția cutelor pentru elemente ondulate</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="424"/>
+      <location filename="../../ArchPanel.py" line="423"/>
       <source>The type of waves for corrugated elements</source>
       <translation>Tipul cutelor pentru elemente ondulate</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="429"/>
+      <location filename="../../ArchPanel.py" line="428"/>
       <source>The area of this panel</source>
       <translation>Aria acestui panou</translation>
     </message>
@@ -204,132 +204,132 @@
       <translation>Direcția normala de extrudare a acestui obiect (păstrează (0,0,0) pentru normare automata)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1257"/>
+      <location filename="../../ArchSectionPlane.py" line="1262"/>
       <source>The linked object</source>
       <translation>Obiectul corelat</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1267"/>
+      <location filename="../../ArchSectionPlane.py" line="1272"/>
       <source>The line width of the rendered objects</source>
       <translation>Lățimea liniei ale obiectelor redate</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="845"/>
+      <location filename="../../ArchPanel.py" line="844"/>
       <source>The color of the panel outline</source>
       <translation>Culoarea de contur a panoului</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1222"/>
+      <location filename="../../ArchPanel.py" line="1221"/>
       <source>The size of the tag text</source>
       <translation>Mărimea textului din eticheta</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="850"/>
+      <location filename="../../ArchPanel.py" line="849"/>
       <source>The color of the tag text</source>
       <translation>Culoarea textului din eticheta</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="853"/>
+      <location filename="../../ArchPanel.py" line="852"/>
       <source>The X offset of the tag text</source>
       <translation>Distanta etichetei pe direcția X</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="856"/>
+      <location filename="../../ArchPanel.py" line="855"/>
       <source>The Y offset of the tag text</source>
       <translation>Distanta etichetei pe direcția Y</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1229"/>
+      <location filename="../../ArchPanel.py" line="1228"/>
       <source>The font of the tag text</source>
       <translation>Fontul textului din eticheta</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="944"/>
+      <location filename="../../ArchPanel.py" line="943"/>
       <source>The text to display. Can be %tag%, %label% or %description% to display the panel tag or label</source>
       <translation>Textul de afișat. Poate fi %tag%, %label% sau %description% pentru a afișa eticheta sau denumirea</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1225"/>
+      <location filename="../../ArchPanel.py" line="1224"/>
       <source>The position of the tag text. Keep (0,0,0) for center position</source>
       <translation>Poziția textului tag. Păstrează (0,0,0) pentru poziție centrată</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1227"/>
+      <location filename="../../ArchPanel.py" line="1226"/>
       <source>The rotation of the tag text</source>
       <translation>Rotirea textului din eticheta</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1393"/>
+      <location filename="../../ArchPanel.py" line="1392"/>
       <source>A margin inside the boundary</source>
       <translation>Margine în interiorul limitei</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1395"/>
+      <location filename="../../ArchPanel.py" line="1394"/>
       <source>Turns the display of the margin on/off</source>
       <translation>Afișarea/ascunderea marginii</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1218"/>
+      <location filename="../../ArchPanel.py" line="1217"/>
       <source>The linked Panel cuts</source>
       <translation>Secțiuni în panourile conectate</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1220"/>
+      <location filename="../../ArchPanel.py" line="1219"/>
       <source>The tag text to display</source>
       <translation>Afișarea textului din eticheta</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1232"/>
+      <location filename="../../ArchPanel.py" line="1231"/>
       <source>The width of the sheet</source>
       <translation>Lățimea foii</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1235"/>
+      <location filename="../../ArchPanel.py" line="1234"/>
       <source>The height of the sheet</source>
       <translation>Înălțimea foii</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1238"/>
+      <location filename="../../ArchPanel.py" line="1237"/>
       <source>The fill ratio of this sheet</source>
       <translation>Raportul de umplere al foii</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="199"/>
+      <location filename="../../ArchPipe.py" line="198"/>
       <source>The diameter of this pipe, if not based on a profile</source>
       <translation>Diametrul acestei tubulaturi, dacă nu are la baza un profil</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="201"/>
+      <location filename="../../ArchPipe.py" line="200"/>
       <source>The length of this pipe, if not based on an edge</source>
       <translation>Lungimea tubulaturii, dacă nu are la baza o ruta</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="203"/>
+      <location filename="../../ArchPipe.py" line="202"/>
       <source>An optional closed profile to base this pipe on</source>
       <translation>Un profil închis pentru baza unei tubulaturi</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="205"/>
+      <location filename="../../ArchPipe.py" line="204"/>
       <source>Offset from the start point</source>
       <translation>Decalaj de la punctul de inceput</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="207"/>
+      <location filename="../../ArchPipe.py" line="206"/>
       <source>Offset from the end point</source>
       <translation>Decalaj de la punctul de sfarsit</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="358"/>
+      <location filename="../../ArchPipe.py" line="357"/>
       <source>The curvature radius of this connector</source>
       <translation>Raza curburii acestei conexiuni</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="360"/>
+      <location filename="../../ArchPipe.py" line="359"/>
       <source>The pipes linked by this connector</source>
       <translation>Tubulatura unita prin aceasta conexiune</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="362"/>
+      <location filename="../../ArchPipe.py" line="361"/>
       <source>The type of this connector</source>
       <translation>Tipul acestui conector</translation>
     </message>
@@ -539,277 +539,277 @@
       <translation>Fileul de aplicat unghiului profilului de bază. Această valoare este înmulțită cu diametrul barei.</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="97"/>
+      <location filename="../../ArchSchedule.py" line="96"/>
       <source>The description column</source>
       <translation>Coloana descriere</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="99"/>
+      <location filename="../../ArchSchedule.py" line="98"/>
       <source>The values column</source>
       <translation>Coloana valorilor</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="101"/>
+      <location filename="../../ArchSchedule.py" line="100"/>
       <source>The units column</source>
       <translation>Coloana unităților de măsură</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="103"/>
+      <location filename="../../ArchSchedule.py" line="102"/>
       <source>The objects column</source>
       <translation>Coloana obiectelor</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="105"/>
+      <location filename="../../ArchSchedule.py" line="104"/>
       <source>The filter column</source>
       <translation>Coloana filtrelor</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="109"/>
+      <location filename="../../ArchSchedule.py" line="108"/>
       <source>The spreadsheet to print the results to</source>
       <translation>Foaia de calcul unde se tipăresc rezultatele</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="916"/>
+      <location filename="../../ArchSectionPlane.py" line="921"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
       <translation>Dacă valoarea este &lt;&lt;false&gt;&gt;, elementele non solide vor fi de asemenea secționate, posibil să se obțină rezultate imprevizibile.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="986"/>
+      <location filename="../../ArchSectionPlane.py" line="991"/>
       <source>The display length of this section plane</source>
       <translation>Lungimea vederii de afișare al acestui plan de secționare</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="992"/>
+      <location filename="../../ArchSectionPlane.py" line="997"/>
       <source>The display height of this section plane</source>
       <translation>Înălțimea vederii de afișare a acestui plan de secționare</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="998"/>
+      <location filename="../../ArchSectionPlane.py" line="1003"/>
       <source>The size of the arrows of this section plane</source>
       <translation>Dimensiunea săgeţilor acestui plan de secțiune</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1012"/>
+      <location filename="../../ArchSectionPlane.py" line="1017"/>
       <source>Show the cut in the 3D view</source>
       <translation>Arată secțiunea în vizualizarea 3D</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1259"/>
+      <location filename="../../ArchSectionPlane.py" line="1264"/>
       <source>The rendering mode to use</source>
       <translation>Modul de redare de utilizat</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1263"/>
+      <location filename="../../ArchSectionPlane.py" line="1268"/>
       <source>If cut geometry is shown or not</source>
       <translation>Dacă geometria secțiunii este afișată sau nu</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1265"/>
+      <location filename="../../ArchSectionPlane.py" line="1270"/>
       <source>If cut geometry is filled or not</source>
       <translation>Dacă geometria secțiunii este umplută sau nu</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1270"/>
+      <location filename="../../ArchSectionPlane.py" line="1275"/>
       <source>The size of the texts inside this object</source>
       <translation>Dimensiunea textelor în interiorul acestui obiect</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1273"/>
+      <location filename="../../ArchSectionPlane.py" line="1278"/>
       <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
       <translation>În cazul în care bifat, sursa de obiecte sunt afişată indiferent dacă sunt vizibile sau nu în modelul 3D</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="591"/>
+      <location filename="../../ArchSite.py" line="590"/>
       <source>The base terrain of this site</source>
       <translation>Terenul de bază al acestui site</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="595"/>
+      <location filename="../../ArchSite.py" line="594"/>
       <source>The postal or zip code of this site</source>
       <translation>Codul poştal de pe acest site</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="597"/>
+      <location filename="../../ArchSite.py" line="596"/>
       <source>The city of this site</source>
       <translation>Oraşul acestui site</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="601"/>
+      <location filename="../../ArchSite.py" line="600"/>
       <source>The country of this site</source>
       <translation>Țara acestui șantier</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="605"/>
+      <location filename="../../ArchSite.py" line="604"/>
       <source>The latitude of this site</source>
       <translation>Latitudinea acestui șantier</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="607"/>
+      <location filename="../../ArchSite.py" line="606"/>
       <source>Angle between the true North and the North direction in this document</source>
       <translation>Unghiul dintre nordul adevărat şi direcţia nord în acest document</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="612"/>
+      <location filename="../../ArchSite.py" line="611"/>
       <source>The elevation of level 0 of this site</source>
       <translation>Înălțimea parterului pentru aceasta construcție</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="622"/>
+      <location filename="../../ArchSite.py" line="621"/>
       <source>The perimeter length of this terrain</source>
       <translation>Perimetrul terenului</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="624"/>
+      <location filename="../../ArchSite.py" line="623"/>
       <source>The volume of earth to be added to this terrain</source>
       <translation>Volumul de pământ ce trebuie adăugat pe acest teren</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="626"/>
+      <location filename="../../ArchSite.py" line="625"/>
       <source>The volume of earth to be removed from this terrain</source>
       <translation>Volumul de pământ ce trebuie eliminat de pe acest teren</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="628"/>
+      <location filename="../../ArchSite.py" line="627"/>
       <source>An extrusion vector to use when performing boolean operations</source>
       <translation>Folosirea unui vector extrudor pentru efectuarea unei operații booleene</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="631"/>
+      <location filename="../../ArchSite.py" line="630"/>
       <source>Remove splitters from the resulting shape</source>
       <translation>Eliminarea delimitatoarelor din forma finala</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="839"/>
+      <location filename="../../ArchSite.py" line="838"/>
       <source>Show solar diagram or not</source>
       <translation>Arata/ascunde diagrama solara</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="841"/>
+      <location filename="../../ArchSite.py" line="840"/>
       <source>The scale of the solar diagram</source>
       <translation>Scala diagramei solare</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="844"/>
+      <location filename="../../ArchSite.py" line="843"/>
       <source>The position of the solar diagram</source>
       <translation>Poziția diagramei solare</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="846"/>
+      <location filename="../../ArchSite.py" line="845"/>
       <source>The color of the solar diagram</source>
       <translation>Culoarea diagramei solare</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="271"/>
+      <location filename="../../ArchSpace.py" line="270"/>
       <source>The objects that make the boundaries of this space object</source>
       <translation>Obiectele care delimitează perimetrul acestui obiect spatial</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="273"/>
+      <location filename="../../ArchSpace.py" line="272"/>
       <source>The computed floor area of this space</source>
       <translation>Aria pardoselii calculata pentru acest spațiu</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="275"/>
+      <location filename="../../ArchSpace.py" line="274"/>
       <source>The finishing of the floor of this space</source>
       <translation>Finisajul pardoselii acestui spațiu</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="277"/>
+      <location filename="../../ArchSpace.py" line="276"/>
       <source>The finishing of the walls of this space</source>
       <translation>Finisajul pereților acestui spațiu</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="279"/>
+      <location filename="../../ArchSpace.py" line="278"/>
       <source>The finishing of the ceiling of this space</source>
       <translation>Finisajul tavanului acestui spațiu</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="281"/>
+      <location filename="../../ArchSpace.py" line="280"/>
       <source>Objects that are included inside this space, such as furniture</source>
       <translation>Obiectele incluse în acest spațiu, de exemplu mobila</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="283"/>
+      <location filename="../../ArchSpace.py" line="282"/>
       <source>The type of this space</source>
       <translation>Tipul acestui spațiu</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="286"/>
+      <location filename="../../ArchSpace.py" line="285"/>
       <source>The thickness of the floor finish</source>
       <translation>Grosimea finisajului din podea</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="288"/>
+      <location filename="../../ArchSpace.py" line="287"/>
       <source>The number of people who typically occupy this space</source>
       <translation>Numărul de oameni care de obicei ocupa acest spaţiu</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="290"/>
+      <location filename="../../ArchSpace.py" line="289"/>
       <source>The electric power needed to light this space in Watts</source>
       <translation>Energia electrica necesara pentru luminarea acestui spațiu în wați</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="292"/>
+      <location filename="../../ArchSpace.py" line="291"/>
       <source>The electric power needed by the equipment of this space in Watts</source>
       <translation>Energiei electrice necesare de aparatul de acest spaţiu în wați</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="294"/>
+      <location filename="../../ArchSpace.py" line="293"/>
       <source>If True, Equipment Power will be automatically filled by the equipment included in this space</source>
       <translation>Dacă este adevărat, Equipment Power vor fi completate automat de echipamente incluse în acest spaţiu</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="296"/>
+      <location filename="../../ArchSpace.py" line="295"/>
       <source>The type of air conditioning of this space</source>
       <translation>Tipul de aer condiţionat din acest spaţiu</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="507"/>
+      <location filename="../../ArchSpace.py" line="506"/>
       <source>The text to show. Use $area, $label, $tag, $floor, $walls, $ceiling to insert the respective data</source>
       <translation>Textul să arate. Utilizaţi $area, $label, $tag, $floor, $walls, $ceiling pentru a insera datele respective</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="510"/>
+      <location filename="../../ArchSpace.py" line="509"/>
       <source>The name of the font</source>
       <translation>Numele fontului</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="513"/>
+      <location filename="../../ArchSpace.py" line="512"/>
       <source>The color of the area text</source>
       <translation>Culoarea textului din aria respectiva</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="516"/>
+      <location filename="../../ArchSpace.py" line="515"/>
       <source>The size of the text font</source>
       <translation>Dimensiunea fontului din text</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="519"/>
+      <location filename="../../ArchSpace.py" line="518"/>
       <source>The size of the first line of text</source>
       <translation>Dimensiunea a primei linii de text</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="522"/>
+      <location filename="../../ArchSpace.py" line="521"/>
       <source>The space between the lines of text</source>
       <translation>Spaţiul dintre liniile de text</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="525"/>
+      <location filename="../../ArchSpace.py" line="524"/>
       <source>The position of the text. Leave (0,0,0) for automatic position</source>
       <translation>Poziția textului. Păstrați (0,0,0) pentru poziționare automata</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="527"/>
+      <location filename="../../ArchSpace.py" line="526"/>
       <source>The justification of the text</source>
       <translation>Spațierea textului</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="531"/>
+      <location filename="../../ArchSpace.py" line="530"/>
       <source>The number of decimals to use for calculated texts</source>
       <translation>Numărul de zecimale pentru calculul textelor</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="534"/>
+      <location filename="../../ArchSpace.py" line="533"/>
       <source>Show the unit suffix</source>
       <translation>Arată sufixul unității folosite</translation>
     </message>
@@ -1039,12 +1039,12 @@
       <translation>Lista de grosimi de strat</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1275"/>
+      <location filename="../../ArchSectionPlane.py" line="1280"/>
       <source>The line color of the projected objects</source>
       <translation>Culoarea obiectelor proiectate</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1277"/>
+      <location filename="../../ArchSectionPlane.py" line="1282"/>
       <source>The color of the cut faces (if turned on)</source>
       <translation>Culoarea tăiate feţele (dacă este activată)</translation>
     </message>
@@ -1054,7 +1054,7 @@
       <translation>Le chevauchement des poutres au-dessus du bas des semelles</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1322"/>
+      <location filename="../../ArchWindow.py" line="1384"/>
       <source>The number of the wire that defines the hole. A value of 0 means automatic</source>
       <translation>Numărul de fire care defineşte gaura. O valoare 0 înseamnă automat</translation>
     </message>
@@ -1094,32 +1094,32 @@
       <translation>Dacă este adevărat, geometria este fuzionată, altfel un compus</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1241"/>
+      <location filename="../../ArchPanel.py" line="1240"/>
       <source>If True, the object is rendered as a face, if possible.</source>
       <translation>Dacă este adevărat, obiectul este randat ca o fata, daca este posibil.</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="959"/>
+      <location filename="../../ArchPanel.py" line="958"/>
       <source>The allowed angles this object can be rotated to when placed on sheets</source>
       <translation>Unghiurile permis acest obiect poate fi rotit la atunci când sunt plasate pe foi</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1243"/>
+      <location filename="../../ArchPanel.py" line="1242"/>
       <source>Specifies an angle for the wood grain (Clockwise, 0 is North)</source>
       <translation>Specifică un unghi pentru fibra lemnului ( în sensul acelor de ceasornic, 0 este nord)</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1245"/>
+      <location filename="../../ArchPanel.py" line="1244"/>
       <source>Specifies the scale applied to each panel view.</source>
       <translation>Specifică scara aplicate pentru fiecare panou de vizualizare.</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1248"/>
+      <location filename="../../ArchPanel.py" line="1247"/>
       <source>A list of possible rotations for the nester</source>
       <translation>O listă de posibile rotaţii pentru imbricare</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1397"/>
+      <location filename="../../ArchPanel.py" line="1396"/>
       <source>Turns the display of the wood grain texture on/off</source>
       <translation>Active ou désactive l’affichage de la texture de grain de bois</translation>
     </message>
@@ -1209,72 +1209,72 @@
       <translation>Plasarea acestui sistem de axe</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="341"/>
+      <location filename="../../ArchBuildingPart.py" line="340"/>
       <source>The level of the (0,0,0) point of this level</source>
       <translation>Nivelul punctului (0,0,0) la acest nivel</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="912"/>
+      <location filename="../../ArchSectionPlane.py" line="917"/>
       <source>The shape of this object</source>
       <translation>Forma acestui obiect</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1004"/>
+      <location filename="../../ArchSectionPlane.py" line="1009"/>
       <source>The line width of this object</source>
       <translation>Lățimea liniei acestui obiect</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="505"/>
+      <location filename="../../ArchBuildingPart.py" line="504"/>
       <source>An optional unit to express levels</source>
       <translation>O unitate opţională pentru a exprima nivelele</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="507"/>
+      <location filename="../../ArchBuildingPart.py" line="506"/>
       <source>A transformation to apply to the level mark</source>
       <translation>O transformare aplicabilă pentru fiecare etichetă de nivel</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="510"/>
+      <location filename="../../ArchBuildingPart.py" line="509"/>
       <source>If true, show the level</source>
       <translation>Dacă este adevărat, Arată nivelul</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="513"/>
+      <location filename="../../ArchBuildingPart.py" line="512"/>
       <source>If true, show the unit on the level tag</source>
       <translation>Dacă este adevărat, arată unitatea pe tag-ul de nivel</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="530"/>
+      <location filename="../../ArchBuildingPart.py" line="529"/>
       <source>If true, when activated, the working plane will automatically adapt to this level</source>
       <translation>Dacă este adevărat, atunci când este activată, planul de lucru va adapta automat la acest nivel</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="520"/>
+      <location filename="../../ArchBuildingPart.py" line="519"/>
       <source>The font to be used for texts</source>
       <translation>Fontul de utilizat pentru texte</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="523"/>
+      <location filename="../../ArchBuildingPart.py" line="522"/>
       <source>The font size of texts</source>
       <translation>Dimensiunea fontului de texte</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="535"/>
+      <location filename="../../ArchBuildingPart.py" line="534"/>
       <source>Camera position data associated with this object</source>
       <translation>Datele despre poziția camerei asociate cu acest obiect</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="538"/>
+      <location filename="../../ArchBuildingPart.py" line="537"/>
       <source>If set, the view stored in this object will be restored on double-click</source>
       <translation>Dacă este activat, vizualizarea înregistrată în acest obiect va fi restaurată printr-un dublu click</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="526"/>
+      <location filename="../../ArchBuildingPart.py" line="525"/>
       <source>The individual face colors</source>
       <translation>Culorile fațetelor individuale</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="533"/>
+      <location filename="../../ArchBuildingPart.py" line="532"/>
       <source>If set to True, the working plane will be kept on Auto mode</source>
       <translation>Dacă este setat la True, planul de lucru va fi păstrat pe modul Auto</translation>
     </message>
@@ -1284,7 +1284,7 @@
       <translation>Un standard opţional (OmniClass, etc...) codul pentru această componentă</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="294"/>
+      <location filename="../../ArchEquipment.py" line="293"/>
       <source>The URL of the product page of this equipment</source>
       <translation>Pagina de internet a acestui echipament</translation>
     </message>
@@ -1294,22 +1294,22 @@
       <translation>Un URL unde se găsesc informatii despre acest material</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="420"/>
+      <location filename="../../ArchPanel.py" line="419"/>
       <source>The horizontal offset of waves for corrugated elements</source>
       <translation>Direcția cutelor pentru valurile elementelor ondulate</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="427"/>
+      <location filename="../../ArchPanel.py" line="426"/>
       <source>If the wave also affects the bottom side or not</source>
       <translation>Dacă valul afectează și partea de jos sau nu</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1230"/>
+      <location filename="../../ArchPanel.py" line="1229"/>
       <source>The font file</source>
       <translation>Fişier de font</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="962"/>
+      <location filename="../../ArchPanel.py" line="961"/>
       <source>An offset value to move the cut plane from the center point</source>
       <translation>O valoare offset pentru a muta planul de tăiere de la punctul de centru</translation>
     </message>
@@ -1344,47 +1344,47 @@
       <translation>Dacă este adevărat, culorile din fişierul conectat vor fi actualizate</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="914"/>
+      <location filename="../../ArchSectionPlane.py" line="919"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
       <translation>Obiectele care trebuiesc luate în considerare de acest plan de secționare. Gol înseamnă tot documentul.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1001"/>
+      <location filename="../../ArchSectionPlane.py" line="1006"/>
       <source>The transparency of this object</source>
       <translation>Transparenţa acestui obiect</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1009"/>
+      <location filename="../../ArchSectionPlane.py" line="1014"/>
       <source>The color of this object</source>
       <translation>Culoare acest obiect</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1014"/>
+      <location filename="../../ArchSectionPlane.py" line="1019"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>Distanța dintre planul de secțiune și planul actual de vedere (păstrează o valoare foarte mică, dar nu zero)</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="593"/>
+      <location filename="../../ArchSite.py" line="592"/>
       <source>The street and house number of this site, with postal box or apartment number if needed</source>
       <translation>Strada și numărul acestui amplasament, cu numărul cutiei poștale sau a apartamentului dacă este necesar</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="599"/>
+      <location filename="../../ArchSite.py" line="598"/>
       <source>The region, province or county of this site</source>
       <translation>Regiune, provincie sau judeţ a acestui site</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="614"/>
+      <location filename="../../ArchSite.py" line="613"/>
       <source>A url that shows this site in a mapping website</source>
       <translation>O adresă Url ce arată acest teren pe o pagină web topografică</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="633"/>
+      <location filename="../../ArchSite.py" line="632"/>
       <source>An optional offset between the model (0,0,0) origin and the point indicated by the geocoordinates</source>
       <translation>Un opţional offset între originea model (0,0,0) şi punctul indicat de geocoordonates</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="299"/>
+      <location filename="../../ArchSpace.py" line="298"/>
       <source>Specifies if this space is internal or external</source>
       <translation>Specifică dacă acest spaţiu este intern sau extern</translation>
     </message>
@@ -1534,82 +1534,82 @@
       <translation>Specificați dacă mutarea acestui obiect mută baza sa</translation>
     </message>
     <message>
-      <location filename="../../ArchFence.py" line="39"/>
+      <location filename="../../ArchFence.py" line="62"/>
       <source>A single section of the fence</source>
       <translation>O singură secțiune de gard</translation>
     </message>
     <message>
-      <location filename="../../ArchFence.py" line="43"/>
+      <location filename="../../ArchFence.py" line="66"/>
       <source>A single fence post</source>
       <translation>Un singur stâlp de gard</translation>
     </message>
     <message>
-      <location filename="../../ArchFence.py" line="47"/>
+      <location filename="../../ArchFence.py" line="70"/>
       <source>The Path the fence should follow</source>
       <translation>Traiectoria pe care gardul trebuie să o urmeze</translation>
     </message>
     <message>
-      <location filename="../../ArchFence.py" line="51"/>
+      <location filename="../../ArchFence.py" line="74"/>
       <source>The number of sections the fence is built of</source>
       <translation>Numărul de secțiuni din care este construit gardul</translation>
     </message>
     <message>
-      <location filename="../../ArchFence.py" line="56"/>
+      <location filename="../../ArchFence.py" line="79"/>
       <source>The number of posts used to build the fence</source>
       <translation>Numărul de stâlpi utilizați pentru construirea gardului</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="637"/>
+      <location filename="../../ArchSite.py" line="636"/>
       <source>The type of this object</source>
       <translation>Tipul acestui obiect</translation>
     </message>
     <message>
-      <location filename="../../ArchIFC.py" line="43"/>
+      <location filename="../../ArchIFC.py" line="66"/>
       <source>IFC data</source>
       <translation>IFC data</translation>
     </message>
     <message>
-      <location filename="../../ArchIFC.py" line="50"/>
+      <location filename="../../ArchIFC.py" line="73"/>
       <source>IFC properties of this object</source>
       <translation>Proprietățile IFC ale acestui obiect</translation>
     </message>
     <message>
-      <location filename="../../ArchIFC.py" line="271"/>
+      <location filename="../../ArchIFC.py" line="294"/>
       <source>Description of IFC attributes are not yet implemented</source>
       <translation>Descrierea atributelor IFC nu este deocamdată implementat</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="919"/>
+      <location filename="../../ArchSectionPlane.py" line="924"/>
       <source>If True, resulting views will be clipped to the section plane area.</source>
       <translation>Dacă este Adevărat, vederile rezultate vor fi restrânse la zona planului de secțiune.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="921"/>
+      <location filename="../../ArchSectionPlane.py" line="926"/>
       <source>If true, the color of the objects material will be used to fill cut areas.</source>
       <translation>Dacă este Adevărat, culoarea materialului obiectului va fi folosit pentru a umple zonele secțiunii.</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="849"/>
+      <location filename="../../ArchSite.py" line="848"/>
       <source>When set to 'True North' the whole geometry will be rotated to match the true north of this site</source>
       <translation>Când est definit 'True North' întreaga geometrie va fi rotită pentru a se potrivi acest site cu adevăratul Nord</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="854"/>
+      <location filename="../../ArchSite.py" line="853"/>
       <source>Show compass or not</source>
       <translation>Afișează busola sau nu</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="856"/>
+      <location filename="../../ArchSite.py" line="855"/>
       <source>The rotation of the Compass relative to the Site</source>
       <translation>Rotația busolei relativ la Site</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="858"/>
+      <location filename="../../ArchSite.py" line="857"/>
       <source>The position of the Compass relative to the Site placement</source>
       <translation>Poziția busolei relativ la amplasamentul Site ului</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="860"/>
+      <location filename="../../ArchSite.py" line="859"/>
       <source>Update the Declination value based on the compass rotation</source>
       <translation>Actualizarea valorii Declinației bazată pe rotația busolei</translation>
     </message>
@@ -1624,172 +1624,172 @@
       <translation>'Conturul dreapta' a tuturor segmentelor scării </translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="551"/>
+      <location filename="../../ArchBuildingPart.py" line="550"/>
       <source>If true, show the objects contained in this Building Part will adopt these line, color and transparency settings</source>
       <translation>Dacă Adevărat, toate obeictele conținute în această Piesă de Construcție vor adopta acesti parametri de linie, culoare și transparență</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="553"/>
+      <location filename="../../ArchBuildingPart.py" line="552"/>
       <source>The line width of child objects</source>
       <translation>Lățimea liniei acestor obiecte copil</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="556"/>
+      <location filename="../../ArchBuildingPart.py" line="555"/>
       <source>The line color of child objects</source>
       <translation>Culoarea liniei acestor obiecte copil</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="560"/>
+      <location filename="../../ArchBuildingPart.py" line="559"/>
       <source>The shape color of child objects</source>
       <translation>Culoarea formelor acestor obiecte copil</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="564"/>
+      <location filename="../../ArchBuildingPart.py" line="563"/>
       <source>The transparency of child objects</source>
       <translation>Transparenţa acestor obiecte copil</translation>
     </message>
     <message>
-      <location filename="../../ArchFence.py" line="245"/>
+      <location filename="../../ArchFence.py" line="269"/>
       <source>When true, the fence will be colored like the original post and section.</source>
       <translation>Dacă este Adevărat, gardul va fi colorat ca stâlpul și secțiunea originale.</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="338"/>
+      <location filename="../../ArchBuildingPart.py" line="337"/>
       <source>If true, the height value propagates to contained objects</source>
       <translation type="unfinished">If true, the height value propagates to contained objects</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="351"/>
+      <location filename="../../ArchBuildingPart.py" line="350"/>
       <source>This property stores an inventor representation for this object</source>
       <translation type="unfinished">This property stores an inventor representation for this object</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="515"/>
+      <location filename="../../ArchBuildingPart.py" line="514"/>
       <source>If true, display offset will affect the origin mark too</source>
       <translation type="unfinished">If true, display offset will affect the origin mark too</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="517"/>
+      <location filename="../../ArchBuildingPart.py" line="516"/>
       <source>If true, the object's label is displayed</source>
       <translation>Dacă este adevărat, eticheta obiectului este afișată</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="544"/>
+      <location filename="../../ArchBuildingPart.py" line="543"/>
       <source>If this is enabled, the inventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</source>
       <translation type="unfinished">If this is enabled, the inventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="546"/>
+      <location filename="../../ArchBuildingPart.py" line="545"/>
       <source>A slot to save the inventor representation of this object, if enabled</source>
       <translation type="unfinished">A slot to save the inventor representation of this object, if enabled</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="568"/>
+      <location filename="../../ArchBuildingPart.py" line="567"/>
       <source>Cut the view above this level</source>
       <translation type="unfinished">Cut the view above this level</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="570"/>
+      <location filename="../../ArchBuildingPart.py" line="569"/>
       <source>The distance between the level plane and the cut line</source>
       <translation type="unfinished">The distance between the level plane and the cut line</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="573"/>
+      <location filename="../../ArchBuildingPart.py" line="572"/>
       <source>Turn cutting on when activating this level</source>
       <translation type="unfinished">Turn cutting on when activating this level</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1157"/>
+      <location filename="../../ArchComponent.py" line="1159"/>
       <source>Use the material color as this object's shape color, if available</source>
       <translation type="unfinished">Use the material color as this object's shape color, if available</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="181"/>
+      <location filename="../../ArchCurtainWall.py" line="180"/>
       <source>The number of vertical mullions</source>
       <translation type="unfinished">The number of vertical mullions</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="185"/>
+      <location filename="../../ArchCurtainWall.py" line="184"/>
       <source>If the profile of the vertical mullions get aligned with the surface or not</source>
       <translation type="unfinished">If the profile of the vertical mullions get aligned with the surface or not</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="188"/>
+      <location filename="../../ArchCurtainWall.py" line="187"/>
       <source>The number of vertical sections of this curtain wall</source>
       <translation type="unfinished">The number of vertical sections of this curtain wall</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="204"/>
+      <location filename="../../ArchCurtainWall.py" line="203"/>
       <source>A profile for vertical mullions (disables vertical mullion size)</source>
       <translation type="unfinished">A profile for vertical mullions (disables vertical mullion size)</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="207"/>
+      <location filename="../../ArchCurtainWall.py" line="206"/>
       <source>The number of horizontal mullions</source>
       <translation type="unfinished">The number of horizontal mullions</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="211"/>
+      <location filename="../../ArchCurtainWall.py" line="210"/>
       <source>If the profile of the horizontal mullions gets aligned with the surface or not</source>
       <translation type="unfinished">If the profile of the horizontal mullions gets aligned with the surface or not</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="214"/>
+      <location filename="../../ArchCurtainWall.py" line="213"/>
       <source>The number of horizontal sections of this curtain wall</source>
       <translation type="unfinished">The number of horizontal sections of this curtain wall</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="230"/>
+      <location filename="../../ArchCurtainWall.py" line="229"/>
       <source>A profile for horizontal mullions (disables horizontal mullion size)</source>
       <translation type="unfinished">A profile for horizontal mullions (disables horizontal mullion size)</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="233"/>
+      <location filename="../../ArchCurtainWall.py" line="232"/>
       <source>The number of diagonal mullions</source>
       <translation type="unfinished">The number of diagonal mullions</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="237"/>
+      <location filename="../../ArchCurtainWall.py" line="236"/>
       <source>The size of the diagonal mullions, if any, if no profile is used</source>
       <translation type="unfinished">The size of the diagonal mullions, if any, if no profile is used</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="241"/>
+      <location filename="../../ArchCurtainWall.py" line="240"/>
       <source>A profile for diagonal mullions, if any (disables horizontal mullion size)</source>
       <translation type="unfinished">A profile for diagonal mullions, if any (disables horizontal mullion size)</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="244"/>
+      <location filename="../../ArchCurtainWall.py" line="243"/>
       <source>The number of panels</source>
       <translation type="unfinished">The number of panels</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="248"/>
+      <location filename="../../ArchCurtainWall.py" line="247"/>
       <source>The thickness of the panels</source>
       <translation type="unfinished">The thickness of the panels</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="252"/>
+      <location filename="../../ArchCurtainWall.py" line="251"/>
       <source>Swaps horizontal and vertical lines</source>
       <translation type="unfinished">Swaps horizontal and vertical lines</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="255"/>
+      <location filename="../../ArchCurtainWall.py" line="254"/>
       <source>Perform subtractions between components so none overlap</source>
       <translation type="unfinished">Perform subtractions between components so none overlap</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="258"/>
+      <location filename="../../ArchCurtainWall.py" line="257"/>
       <source>Centers the profile over the edges or not</source>
       <translation type="unfinished">Centers the profile over the edges or not</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="262"/>
+      <location filename="../../ArchCurtainWall.py" line="261"/>
       <source>The vertical direction reference to be used by this object to deduce vertical/horizontal directions. Keep it close to the actual vertical direction of your curtain wall</source>
       <translation type="unfinished">The vertical direction reference to be used by this object to deduce vertical/horizontal directions. Keep it close to the actual vertical direction of your curtain wall</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="209"/>
+      <location filename="../../ArchPipe.py" line="208"/>
       <source>The wall thickness of this pipe, if not based on a profile</source>
       <translation type="unfinished">The wall thickness of this pipe, if not based on a profile</translation>
     </message>
@@ -1799,92 +1799,92 @@
       <translation type="unfinished">The way the referenced objects are included in the current document. 'Normal' includes the shape, 'Transient' discards the shape when the object is switched off (smaller filesize), 'Lightweight' does not import the shape but only the OpenInventor representation</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="107"/>
+      <location filename="../../ArchSchedule.py" line="106"/>
       <source>If True, a spreadsheet containing the results is recreated when needed</source>
       <translation type="unfinished">If True, a spreadsheet containing the results is recreated when needed</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="111"/>
+      <location filename="../../ArchSchedule.py" line="110"/>
       <source>If True, additional lines with each individual object are added to the results</source>
       <translation type="unfinished">If True, additional lines with each individual object are added to the results</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="641"/>
+      <location filename="../../ArchSite.py" line="640"/>
       <source>The time zone where this site is located</source>
       <translation type="unfinished">The time zone where this site is located</translation>
     </message>
     <message>
-      <location filename="../../ArchTruss.py" line="153"/>
+      <location filename="../../ArchTruss.py" line="152"/>
       <source>The angle of the truss</source>
       <translation type="unfinished">The angle of the truss</translation>
     </message>
     <message>
-      <location filename="../../ArchTruss.py" line="157"/>
+      <location filename="../../ArchTruss.py" line="156"/>
       <source>The slant type of this truss</source>
       <translation type="unfinished">The slant type of this truss</translation>
     </message>
     <message>
-      <location filename="../../ArchTruss.py" line="161"/>
+      <location filename="../../ArchTruss.py" line="160"/>
       <source>The normal direction of this truss</source>
       <translation type="unfinished">The normal direction of this truss</translation>
     </message>
     <message>
-      <location filename="../../ArchTruss.py" line="165"/>
+      <location filename="../../ArchTruss.py" line="164"/>
       <source>The height of the truss at the start position</source>
       <translation type="unfinished">The height of the truss at the start position</translation>
     </message>
     <message>
-      <location filename="../../ArchTruss.py" line="169"/>
+      <location filename="../../ArchTruss.py" line="168"/>
       <source>The height of the truss at the end position</source>
       <translation type="unfinished">The height of the truss at the end position</translation>
     </message>
     <message>
-      <location filename="../../ArchTruss.py" line="173"/>
+      <location filename="../../ArchTruss.py" line="172"/>
       <source>An optional start offset for the top strut</source>
       <translation type="unfinished">An optional start offset for the top strut</translation>
     </message>
     <message>
-      <location filename="../../ArchTruss.py" line="176"/>
+      <location filename="../../ArchTruss.py" line="175"/>
       <source>An optional end offset for the top strut</source>
       <translation type="unfinished">An optional end offset for the top strut</translation>
     </message>
     <message>
-      <location filename="../../ArchTruss.py" line="179"/>
+      <location filename="../../ArchTruss.py" line="178"/>
       <source>The height of the main top and bottom elements of the truss</source>
       <translation type="unfinished">The height of the main top and bottom elements of the truss</translation>
     </message>
     <message>
-      <location filename="../../ArchTruss.py" line="183"/>
+      <location filename="../../ArchTruss.py" line="182"/>
       <source>The width of the main top and bottom elements of the truss</source>
       <translation type="unfinished">The width of the main top and bottom elements of the truss</translation>
     </message>
     <message>
-      <location filename="../../ArchTruss.py" line="187"/>
+      <location filename="../../ArchTruss.py" line="186"/>
       <source>The type of the middle element of the truss</source>
       <translation type="unfinished">The type of the middle element of the truss</translation>
     </message>
     <message>
-      <location filename="../../ArchTruss.py" line="191"/>
+      <location filename="../../ArchTruss.py" line="190"/>
       <source>The direction of the rods</source>
       <translation type="unfinished">The direction of the rods</translation>
     </message>
     <message>
-      <location filename="../../ArchTruss.py" line="195"/>
+      <location filename="../../ArchTruss.py" line="194"/>
       <source>The diameter or side of the rods</source>
       <translation type="unfinished">The diameter or side of the rods</translation>
     </message>
     <message>
-      <location filename="../../ArchTruss.py" line="199"/>
+      <location filename="../../ArchTruss.py" line="198"/>
       <source>The number of rod sections</source>
       <translation type="unfinished">The number of rod sections</translation>
     </message>
     <message>
-      <location filename="../../ArchTruss.py" line="203"/>
+      <location filename="../../ArchTruss.py" line="202"/>
       <source>If the truss has a rod at its endpoint or not</source>
       <translation type="unfinished">If the truss has a rod at its endpoint or not</translation>
     </message>
     <message>
-      <location filename="../../ArchTruss.py" line="206"/>
+      <location filename="../../ArchTruss.py" line="205"/>
       <source>How to draw the rods</source>
       <translation type="unfinished">How to draw the rods</translation>
     </message>
@@ -1904,47 +1904,47 @@
       <translation type="unfinished">The area of this wall as a simple Height * Length calculation</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="540"/>
+      <location filename="../../ArchBuildingPart.py" line="539"/>
       <source>If True, double-clicking this object in the tree activates it</source>
       <translation type="unfinished">If True, double-clicking this object in the tree activates it</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="175"/>
+      <location filename="../../ArchCurtainWall.py" line="174"/>
       <source>An optional host object for this curtain wall</source>
       <translation type="unfinished">An optional host object for this curtain wall</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="177"/>
+      <location filename="../../ArchCurtainWall.py" line="176"/>
       <source>The height of the curtain wall, if based on an edge</source>
       <translation type="unfinished">The height of the curtain wall, if based on an edge</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="196"/>
+      <location filename="../../ArchCurtainWall.py" line="195"/>
       <source>The height of the vertical mullions profile, if no profile is used</source>
       <translation type="unfinished">The height of the vertical mullions profile, if no profile is used</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="200"/>
+      <location filename="../../ArchCurtainWall.py" line="199"/>
       <source>The width of the vertical mullions profile, if no profile is used</source>
       <translation type="unfinished">The width of the vertical mullions profile, if no profile is used</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="222"/>
+      <location filename="../../ArchCurtainWall.py" line="221"/>
       <source>The height of the horizontal mullions profile, if no profile is used</source>
       <translation type="unfinished">The height of the horizontal mullions profile, if no profile is used</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="226"/>
+      <location filename="../../ArchCurtainWall.py" line="225"/>
       <source>The width of the horizontal mullions profile, if no profile is used</source>
       <translation type="unfinished">The width of the horizontal mullions profile, if no profile is used</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="643"/>
+      <location filename="../../ArchSite.py" line="642"/>
       <source>An optional EPW File for the location of this site. Refer to the Site documentation to know how to obtain one</source>
       <translation type="unfinished">An optional EPW File for the location of this site. Refer to the Site documentation to know how to obtain one</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="837"/>
+      <location filename="../../ArchSite.py" line="836"/>
       <source>Show wind rose diagram or not. Uses solar diagram scale. Needs Ladybug module</source>
       <translation type="unfinished">Show wind rose diagram or not. Uses solar diagram scale. Needs Ladybug module</translation>
     </message>
@@ -2009,7 +2009,7 @@
       <translation type="unfinished">Specifies if the direction of the roof should be flipped</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1017"/>
+      <location filename="../../ArchSectionPlane.py" line="1022"/>
       <source>Show the label in the 3D view</source>
       <translation type="unfinished">Show the label in the 3D view</translation>
     </message>
@@ -2017,17 +2017,17 @@
   <context>
     <name>Arch</name>
     <message>
-      <location filename="../../ArchWindow.py" line="1567"/>
+      <location filename="../../ArchWindow.py" line="1634"/>
       <source>Components</source>
       <translation>Componente</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1940"/>
+      <location filename="../../ArchComponent.py" line="1942"/>
       <source>Components of this object</source>
       <translation>Componente ale acestui obiect</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1945"/>
+      <location filename="../../ArchComponent.py" line="1947"/>
       <source>Axes</source>
       <translation>Axe</translation>
     </message>
@@ -2037,12 +2037,12 @@
       <translation>Creați axa</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1561"/>
+      <location filename="../../ArchWindow.py" line="1628"/>
       <source>Remove</source>
       <translation>Elimină</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1562"/>
+      <location filename="../../ArchWindow.py" line="1629"/>
       <source>Add</source>
       <translation>Adaugă</translation>
     </message>
@@ -2062,67 +2062,67 @@
       <translation>Unghi</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="705"/>
+      <location filename="../../ArchCommands.py" line="704"/>
       <source>is not closed</source>
       <translation>nu este închis</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="707"/>
+      <location filename="../../ArchCommands.py" line="706"/>
       <source>is not valid</source>
       <translation>nu este valid</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="709"/>
+      <location filename="../../ArchCommands.py" line="708"/>
       <source>doesn't contain any solid</source>
       <translation>nu conține nici un solid</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="715"/>
+      <location filename="../../ArchCommands.py" line="714"/>
       <source>contains a non-closed solid</source>
       <translation>conţine un solid deschis</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="717"/>
+      <location filename="../../ArchCommands.py" line="716"/>
       <source>contains faces that are not part of any solid</source>
       <translation>conţine feţe care nu sunt parte a nici unui solid</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1363"/>
+      <location filename="../../ArchCommands.py" line="1362"/>
       <source>Grouping</source>
       <translation>Gruparea</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1395"/>
+      <location filename="../../ArchCommands.py" line="1394"/>
       <source>Ungrouping</source>
       <translation>Anularea grupării</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1426"/>
+      <location filename="../../ArchCommands.py" line="1425"/>
       <source>Split Mesh</source>
       <translation>Divide plasa</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1466"/>
+      <location filename="../../ArchCommands.py" line="1465"/>
       <source>Mesh to Shape</source>
       <translation>Discretizare în forma</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1941"/>
+      <location filename="../../ArchComponent.py" line="1943"/>
       <source>Base component</source>
       <translation>Component de bază</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1942"/>
+      <location filename="../../ArchComponent.py" line="1944"/>
       <source>Additions</source>
       <translation>Completări</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1943"/>
+      <location filename="../../ArchComponent.py" line="1945"/>
       <source>Subtractions</source>
       <translation>Scăderi</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1944"/>
+      <location filename="../../ArchComponent.py" line="1946"/>
       <source>Objects</source>
       <translation>Obiecte</translation>
     </message>
@@ -2142,7 +2142,7 @@
       <translation>Nu pot crea acoperișul</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="104"/>
+      <location filename="../../ArchPanel.py" line="103"/>
       <source>Page</source>
       <translation>Pagină</translation>
     </message>
@@ -2152,12 +2152,12 @@
       <translation>Vedere a</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="889"/>
+      <location filename="../../ArchSectionPlane.py" line="894"/>
       <source>Create Section Plane</source>
       <translation>Creare plan de secționare</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="544"/>
+      <location filename="../../ArchSite.py" line="543"/>
       <source>Create Site</source>
       <translation>Crează teren</translation>
     </message>
@@ -2192,42 +2192,42 @@
       <translation>Creare fereastră</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1563"/>
+      <location filename="../../ArchWindow.py" line="1630"/>
       <source>Edit</source>
       <translation>Editare</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1564"/>
+      <location filename="../../ArchWindow.py" line="1631"/>
       <source>Create/update component</source>
       <translation>Crează/actualizează componentul</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1565"/>
+      <location filename="../../ArchWindow.py" line="1632"/>
       <source>Base 2D object</source>
       <translation>Obiectul 2D de bază</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1571"/>
+      <location filename="../../ArchWindow.py" line="1638"/>
       <source>Wires</source>
       <translation>Polilinii</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1568"/>
+      <location filename="../../ArchWindow.py" line="1635"/>
       <source>Create new component</source>
       <translation>Crează component nou</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1569"/>
+      <location filename="../../ArchWindow.py" line="1636"/>
       <source>Name</source>
       <translation>Nume</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1570"/>
+      <location filename="../../ArchWindow.py" line="1637"/>
       <source>Type</source>
       <translation>Tip</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1572"/>
+      <location filename="../../ArchWindow.py" line="1639"/>
       <source>Thickness</source>
       <translation>Grosime</translation>
     </message>
@@ -2242,22 +2242,22 @@
       <translation>fişierul %s a fost creat cu succes.</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1359"/>
+      <location filename="../../ArchCommands.py" line="1358"/>
       <source>Add space boundary</source>
       <translation>Adaugă limită de spaţiu</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1391"/>
+      <location filename="../../ArchCommands.py" line="1390"/>
       <source>Remove space boundary</source>
       <translation>Elimină limită de spațiu</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="251"/>
+      <location filename="../../ArchSpace.py" line="250"/>
       <source>Please select a base object</source>
       <translation>Selectați un obiect de bază</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1947"/>
+      <location filename="../../ArchComponent.py" line="1949"/>
       <source>Fixtures</source>
       <translation>Obiecte fixate</translation>
     </message>
@@ -2277,7 +2277,7 @@
       <translation>Crează bară de armare</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="237"/>
+      <location filename="../../ArchSpace.py" line="236"/>
       <source>Create Space</source>
       <translation>Crează spațiu</translation>
     </message>
@@ -2322,7 +2322,7 @@
       <translation>Distanţele (mm) şi unghiurile (grade) între axe</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="910"/>
+      <location filename="../../ArchComponent.py" line="912"/>
       <source>Error computing the shape of this object</source>
       <translation>Eroare la calcularea formei acestui obiect</translation>
     </message>
@@ -2332,32 +2332,32 @@
       <translation>Crează sistem structural</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1151"/>
+      <location filename="../../ArchCommands.py" line="1150"/>
       <source>Object doesn't have settable IFC Attributes</source>
       <translation>Obiectul nu are atribute IFC reglabile</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1157"/>
+      <location filename="../../ArchCommands.py" line="1156"/>
       <source>Disabling Brep force flag of object</source>
       <translation>Dezactivarea Brep force flag-ul obiectului</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1163"/>
+      <location filename="../../ArchCommands.py" line="1162"/>
       <source>Enabling Brep force flag of object</source>
       <translation>Activarea Brep force flag-ul obiectului</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="931"/>
+      <location filename="../../ArchComponent.py" line="933"/>
       <source>has no solid</source>
       <translation>nu are nici un solid</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="938"/>
+      <location filename="../../ArchComponent.py" line="940"/>
       <source>has an invalid shape</source>
       <translation>are o formă nevalidă</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="940"/>
+      <location filename="../../ArchComponent.py" line="942"/>
       <source>has a null shape</source>
       <translation>are o formă nulă</translation>
     </message>
@@ -2367,42 +2367,42 @@
       <translation>Tăiere</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="203"/>
+      <location filename="../../ArchEquipment.py" line="202"/>
       <source>Create Equipment</source>
       <translation>Creare Echipament</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="238"/>
+      <location filename="../../ArchEquipment.py" line="237"/>
       <source>You must select exactly one base object</source>
       <translation>Trebuie să selectaţi un singur obiect bază</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="242"/>
+      <location filename="../../ArchEquipment.py" line="241"/>
       <source>The selected object must be a mesh</source>
       <translation>Obiectul selectat trebuie să fie o plasă</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="246"/>
+      <location filename="../../ArchEquipment.py" line="245"/>
       <source>This mesh has more than 1000 facets.</source>
       <translation>Această plasă are mai mult de 1000 de faţete.</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="247"/>
+      <location filename="../../ArchEquipment.py" line="246"/>
       <source>This operation can take a long time. Proceed?</source>
       <translation>Această operaţiune poate dura mult timp. Procedez?</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="254"/>
+      <location filename="../../ArchEquipment.py" line="253"/>
       <source>The mesh has more than 500 facets. This will take a couple of minutes...</source>
       <translation>Plasa are mai mult de 500 de faţete. Va dura câteva minute...</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="255"/>
+      <location filename="../../ArchEquipment.py" line="254"/>
       <source>Create 3 views</source>
       <translation>Creează 3 vederi</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="200"/>
+      <location filename="../../ArchPanel.py" line="199"/>
       <source>Create Panel</source>
       <translation>Creează panou</translation>
     </message>
@@ -2462,7 +2462,7 @@
       <translation>Înălțime (mm)</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1624"/>
+      <location filename="../../ArchCommands.py" line="1623"/>
       <source>Create Component</source>
       <translation>Creare component</translation>
     </message>
@@ -2477,7 +2477,7 @@
       <translation>Pereții nu pot fi creați decăt cu ajutorul unui obiect tip Piesă sau Plasă</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="774"/>
+      <location filename="../../ArchSpace.py" line="773"/>
       <source>Set text position</source>
       <translation>Alegeți poziția textului</translation>
     </message>
@@ -2487,47 +2487,47 @@
       <translation>Categorie</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1645"/>
+      <location filename="../../ArchCommands.py" line="1644"/>
       <source>Key</source>
       <translation>Tastă</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="603"/>
+      <location filename="../../ArchSchedule.py" line="602"/>
       <source>Value</source>
       <translation>Valoare</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="603"/>
+      <location filename="../../ArchSchedule.py" line="602"/>
       <source>Unit</source>
       <translation>Unitate</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1673"/>
+      <location filename="../../ArchCommands.py" line="1672"/>
       <source>Create IFC properties spreadsheet</source>
       <translation>Création d'une feuille de calcul de propriétés Ifc</translation>
     </message>
     <message>
-      <location filename="../../ArchBuilding.py" line="254"/>
+      <location filename="../../ArchBuilding.py" line="253"/>
       <source>Create Building</source>
       <translation>Creați o clădire</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1948"/>
+      <location filename="../../ArchComponent.py" line="1950"/>
       <source>Group</source>
       <translation>Grup</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="163"/>
+      <location filename="../../ArchFloor.py" line="162"/>
       <source>Create Floor</source>
       <translation>Crează planșeu</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="347"/>
+      <location filename="../../ArchPanel.py" line="346"/>
       <source>Create Panel Cut</source>
       <translation>Creează Panel Cut</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="373"/>
+      <location filename="../../ArchPanel.py" line="372"/>
       <source>Create Panel Sheet</source>
       <translation>Creează Panel Sheet</translation>
     </message>
@@ -2537,22 +2537,22 @@
       <translation>FaceMaker a întors o eroare</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1496"/>
+      <location filename="../../ArchPanel.py" line="1495"/>
       <source>Tools</source>
       <translation>Instrumente</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1500"/>
+      <location filename="../../ArchPanel.py" line="1499"/>
       <source>Edit views positions</source>
       <translation>Editare poziţiei de vedere</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="130"/>
+      <location filename="../../ArchPipe.py" line="129"/>
       <source>Create Pipe</source>
       <translation>Creează o țeavă</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="169"/>
+      <location filename="../../ArchPipe.py" line="168"/>
       <source>Create Connector</source>
       <translation>Creaţi conector</translation>
     </message>
@@ -2687,32 +2687,32 @@
       <translation>Rotaţie</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1573"/>
+      <location filename="../../ArchWindow.py" line="1640"/>
       <source>Offset</source>
       <translation>Compensare</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="294"/>
+      <location filename="../../ArchSchedule.py" line="293"/>
       <source>Unable to retrieve value from object</source>
       <translation>Impossibil de récupérat valoarea obiectului</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="505"/>
+      <location filename="../../ArchSchedule.py" line="504"/>
       <source>Import CSV File</source>
       <translation>Importă fișierul CSV</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="539"/>
+      <location filename="../../ArchSchedule.py" line="538"/>
       <source>Export CSV File</source>
       <translation>Exporta fisierul CSV</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="662"/>
+      <location filename="../../ArchSchedule.py" line="661"/>
       <source>Schedule</source>
       <translation>Planificare</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="536"/>
+      <location filename="../../ArchSite.py" line="535"/>
       <source>There is no valid object in the selection.
 Site creation aborted.</source>
       <translation>Nu este un obiect valid în selecția făcută. Crearea construcției abandonată.</translation>
@@ -2770,27 +2770,27 @@ Site creation aborted.</source>
 </translation>
     </message>
     <message>
-      <location filename="../../ArchWindowPresets.py" line="486"/>
+      <location filename="../../ArchWindowPresets.py" line="503"/>
       <source>Door</source>
       <translation>Ușă</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1574"/>
+      <location filename="../../ArchWindow.py" line="1641"/>
       <source>Hinge</source>
       <translation>Balama</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1575"/>
+      <location filename="../../ArchWindow.py" line="1642"/>
       <source>Opening mode</source>
       <translation>Modul de deschidere</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1580"/>
+      <location filename="../../ArchWindow.py" line="1647"/>
       <source>Get selected edge</source>
       <translation>Obține marginea sélectionnată</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1581"/>
+      <location filename="../../ArchWindow.py" line="1648"/>
       <source>Press to retrieve the selected edge</source>
       <translation>Apăsaţi pentru a prelua marginea selectate</translation>
     </message>
@@ -2800,7 +2800,7 @@ Site creation aborted.</source>
       <translation>Care parte se taie</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="183"/>
+      <location filename="../../ArchEquipment.py" line="182"/>
       <source>You must select a base shape object and optionally a mesh object</source>
       <translation>Trebuie să selectaţi un obiect de formă de bază şi eventual un obiect Plasă</translation>
     </message>
@@ -2825,12 +2825,12 @@ Site creation aborted.</source>
       <translation>Presetările de perete...</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1558"/>
+      <location filename="../../ArchWindow.py" line="1625"/>
       <source>Hole wire</source>
       <translation>Gaura de fir</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1560"/>
+      <location filename="../../ArchWindow.py" line="1627"/>
       <source>Pick selected</source>
       <translation>Choix sélectionné</translation>
     </message>
@@ -2910,12 +2910,12 @@ Site creation aborted.</source>
       <translation>Coloane</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1590"/>
+      <location filename="../../ArchPanel.py" line="1589"/>
       <source>This object has no face</source>
       <translation>Cet objet n’a pas de face</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="778"/>
+      <location filename="../../ArchSpace.py" line="777"/>
       <source>Space boundaries</source>
       <translation>Limites de l’espace</translation>
     </message>
@@ -2925,57 +2925,57 @@ Site creation aborted.</source>
       <translation>Erreur : Impossible de modifier l’objet base de ce mur</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1557"/>
+      <location filename="../../ArchWindow.py" line="1624"/>
       <source>Window elements</source>
       <translation>Élémente ale ferestrei</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1012"/>
+      <location filename="../../ArchCommands.py" line="1011"/>
       <source>Survey</source>
       <translation>Sondaj</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1013"/>
+      <location filename="../../ArchCommands.py" line="1012"/>
       <source>Set description</source>
       <translation>Setaţi o descriere</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1014"/>
+      <location filename="../../ArchCommands.py" line="1013"/>
       <source>Clear</source>
       <translation>Șterge</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1015"/>
+      <location filename="../../ArchCommands.py" line="1014"/>
       <source>Copy Length</source>
       <translation>Copiază lungimea</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1016"/>
+      <location filename="../../ArchCommands.py" line="1015"/>
       <source>Copy Area</source>
       <translation>Copiază suprafața</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1017"/>
+      <location filename="../../ArchCommands.py" line="1016"/>
       <source>Export CSV</source>
       <translation>Export CSV</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="603"/>
+      <location filename="../../ArchSchedule.py" line="602"/>
       <source>Description</source>
       <translation>Descriere</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1018"/>
+      <location filename="../../ArchCommands.py" line="1017"/>
       <source>Area</source>
       <translation>Suprafață</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1067"/>
+      <location filename="../../ArchCommands.py" line="1066"/>
       <source>Total</source>
       <translation>Total</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1949"/>
+      <location filename="../../ArchComponent.py" line="1951"/>
       <source>Hosts</source>
       <translation>Gazde</translation>
     </message>
@@ -3010,93 +3010,93 @@ Site creation aborted.</source>
       <translation>Dimensiune totală a coloanei este mai mare decât lăţimea</translation>
     </message>
     <message>
-      <location filename="../../ArchBuilding.py" line="246"/>
+      <location filename="../../ArchBuilding.py" line="245"/>
       <source>There is no valid object in the selection.
 Building creation aborted.</source>
       <translation>Nu este un obiect valid în selecția făcută. Crearea construcției abandonată.</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="208"/>
+      <location filename="../../ArchBuildingPart.py" line="207"/>
       <source>BuildingPart</source>
       <translation>BuildingPart</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="308"/>
+      <location filename="../../ArchBuildingPart.py" line="307"/>
       <source>Create BuildingPart</source>
       <translation>Creați BuildingPart</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="427"/>
+      <location filename="../../ArchCommands.py" line="426"/>
       <source>Invalid cutplane</source>
       <translation>Plan de tăiere invalid</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1547"/>
+      <location filename="../../ArchCommands.py" line="1546"/>
       <source>All good! No problems found</source>
       <translation>Toate bune! Nici o problemă identificată</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1655"/>
+      <location filename="../../ArchCommands.py" line="1654"/>
       <source>The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:</source>
       <translation>Obiectul nu posedă atributul IfcProperties. Annulați crearea foii de calcul pentru obiectul:</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1509"/>
+      <location filename="../../ArchComponent.py" line="1511"/>
       <source>Toggle subcomponents</source>
       <translation>Activează/dezactivează subcomponente</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1632"/>
+      <location filename="../../ArchComponent.py" line="1634"/>
       <source>Closing Sketch edit</source>
       <translation>Închide editarea schiței</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1937"/>
+      <location filename="../../ArchComponent.py" line="1939"/>
       <source>Component</source>
       <translation>Componenta</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1950"/>
+      <location filename="../../ArchComponent.py" line="1952"/>
       <source>Edit IFC properties</source>
       <translation>Editarea Proprietăţilor IFC</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1951"/>
+      <location filename="../../ArchComponent.py" line="1953"/>
       <source>Edit standard code</source>
       <translation>Editați codul standard</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1997"/>
+      <location filename="../../ArchComponent.py" line="1999"/>
       <source>Property</source>
       <translation>Proprietate</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2002"/>
+      <location filename="../../ArchComponent.py" line="2004"/>
       <source>Add property...</source>
       <translation>Adăugaţi proprietatea...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2003"/>
+      <location filename="../../ArchComponent.py" line="2005"/>
       <source>Add property set...</source>
       <translation>Adăugați un ansamblu de propreități...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2003"/>
+      <location filename="../../ArchComponent.py" line="2005"/>
       <source>New...</source>
       <translation>Nou...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2145"/>
+      <location filename="../../ArchComponent.py" line="2147"/>
       <source>New property</source>
       <translation>Proprietate nouă</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2181"/>
+      <location filename="../../ArchComponent.py" line="2183"/>
       <source>New property set</source>
       <translation>Ansamblu nou de proprietăți</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="149"/>
+      <location filename="../../ArchFloor.py" line="148"/>
       <source>You can put anything but the following objects: Site, Building, and Floor - in a Floor object.
 Floor object is not allowed to accept Site, Building, or Floor objects.
 Site, Building, and Floor objects will be removed from the selection.
@@ -3104,7 +3104,7 @@ You can change that in the preferences.</source>
       <translation>Puteți pune orice, în afară de obiectele, Site, Construcție și Podea, într-un obiect Podea. Elementele de Podea nu au voie să accepte un obiect Site, Construcție sau obiect Podea. Site, Construcție și obiectele Podea vor fi eliminate din selecție. Puteți modifica acest lucru în preferințe.</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="155"/>
+      <location filename="../../ArchFloor.py" line="154"/>
       <source>There is no valid object in the selection.
 Floor creation aborted.</source>
       <translation>Nu există nici un obiect valid din selecţie. Crearea podelei este abandonată.</translation>
@@ -3115,77 +3115,77 @@ Floor creation aborted.</source>
       <translation>Punctul de trecere nu a fost găsit în profil.</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="743"/>
+      <location filename="../../ArchPanel.py" line="742"/>
       <source>Error computing shape of</source>
       <translation>Eroare apărută pe durata calcului formei</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="160"/>
+      <location filename="../../ArchPipe.py" line="159"/>
       <source>Please select exactly 2 or 3 Pipe objects</source>
       <translation>Rugăm selectați exact 2 sau 3 obiecte Țeavă</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="165"/>
+      <location filename="../../ArchPipe.py" line="164"/>
       <source>Please select only Pipe objects</source>
       <translation>Rugăm selectați doar un obiect Țeavă</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="223"/>
+      <location filename="../../ArchPipe.py" line="222"/>
       <source>Unable to build the base path</source>
       <translation>Impossibil de générat o traiectori e de bază</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="239"/>
+      <location filename="../../ArchPipe.py" line="238"/>
       <source>Unable to build the profile</source>
       <translation>Imposibil de generat profilul</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="271"/>
+      <location filename="../../ArchPipe.py" line="270"/>
       <source>Unable to build the pipe</source>
       <translation>Imposibil de generat Țeava</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="290"/>
+      <location filename="../../ArchPipe.py" line="289"/>
       <source>The base object is not a Part</source>
       <translation>Objectul de bază un este o Piesă</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="293"/>
+      <location filename="../../ArchPipe.py" line="292"/>
       <source>Too many wires in the base shape</source>
       <translation>Prea multe fire în forma de bază</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="296"/>
+      <location filename="../../ArchPipe.py" line="295"/>
       <source>The base wire is closed</source>
       <translation>Linia de bază este închisă</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="310"/>
+      <location filename="../../ArchPipe.py" line="309"/>
       <source>The profile is not a 2D Part</source>
       <translation>Profilul nu este o 2D Part</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="313"/>
+      <location filename="../../ArchPipe.py" line="312"/>
       <source>The profile is not closed</source>
       <translation>Acest profil nu este închis</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="381"/>
+      <location filename="../../ArchPipe.py" line="380"/>
       <source>Only the 3 first wires will be connected</source>
       <translation>Doar primele 3 fire vor fi conectate</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="445"/>
+      <location filename="../../ArchPipe.py" line="444"/>
       <source>Common vertex not found</source>
       <translation>Vertex comun negăsit</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="417"/>
+      <location filename="../../ArchPipe.py" line="416"/>
       <source>Pipes are already aligned</source>
       <translation>Tevile deja sunt aliniate</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="457"/>
+      <location filename="../../ArchPipe.py" line="456"/>
       <source>At least 2 pipes must align</source>
       <translation>Cel puţin 2 țevi trebuiesc aliniate</translation>
     </message>
@@ -3205,37 +3205,37 @@ Floor creation aborted.</source>
       <translation>Creează o referință externă</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1494"/>
+      <location filename="../../ArchSectionPlane.py" line="1499"/>
       <source>Section plane settings</source>
       <translation>Reglarea planului de secțiune</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1499"/>
+      <location filename="../../ArchSectionPlane.py" line="1504"/>
       <source>Objects seen by this section plane:</source>
       <translation>Obiect vizualizat în acest plan:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1500"/>
+      <location filename="../../ArchSectionPlane.py" line="1505"/>
       <source>Section plane placement:</source>
       <translation>Amplasamentul planului de secțiune:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1501"/>
+      <location filename="../../ArchSectionPlane.py" line="1506"/>
       <source>Rotate X</source>
       <translation>Rotaţie X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1503"/>
+      <location filename="../../ArchSectionPlane.py" line="1508"/>
       <source>Rotate Y</source>
       <translation>Rotaţie Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1505"/>
+      <location filename="../../ArchSectionPlane.py" line="1510"/>
       <source>Rotate Z</source>
       <translation>Rotaţie Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1507"/>
+      <location filename="../../ArchSectionPlane.py" line="1512"/>
       <source>Resize</source>
       <translation>Redimensionați</translation>
     </message>
@@ -3245,7 +3245,7 @@ Floor creation aborted.</source>
       <translation>Centru</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="530"/>
+      <location filename="../../ArchSite.py" line="529"/>
       <source>Please either select only Building objects or nothing at all!
 Site is not allowed to accept any other object besides Building.
 Other objects will be removed from the selection.
@@ -3298,27 +3298,27 @@ Note: You can change that in the preferences.</source>
       <translation>Alege o față pe un obiect existent sau selectaţi o presetare</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1519"/>
+      <location filename="../../ArchWindow.py" line="1586"/>
       <source>Unable to create component</source>
       <translation>Imposibil de creat componentul</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1559"/>
+      <location filename="../../ArchWindow.py" line="1626"/>
       <source>The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</source>
       <translation>Numărul de fire care defineşte o gaură în obiectul gazdă. O valoare de zero va adopta automat firul mai mare</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1578"/>
+      <location filename="../../ArchWindow.py" line="1645"/>
       <source>+ default</source>
       <translation>+ implicit</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1577"/>
+      <location filename="../../ArchWindow.py" line="1644"/>
       <source>If this is checked, the default Frame value of this window will be added to the value entered here</source>
       <translation>În cazul în care acest lucru este bifat, valoarea Cadrului implicit pt această fereastră va fi adăugată la valoarea introdusă aici</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1579"/>
+      <location filename="../../ArchWindow.py" line="1646"/>
       <source>If this is checked, the default Offset value of this window will be added to the value entered here</source>
       <translation>În cazul în care acest lucru este bifat, valoarea implicită Offset pt această fereastră va fi adăugată la valoarea introdusă aici</translation>
     </message>
@@ -3363,7 +3363,7 @@ Note: You can change that in the preferences.</source>
       <translation>Eroare: versiunea de IfcOpenShell este prea veche</translation>
     </message>
     <message>
-      <location filename="../../importOBJ.py" line="273"/>
+      <location filename="../../importWebGL.py" line="788"/>
       <source>Successfully written</source>
       <translation>Scrierea a reușit</translation>
     </message>
@@ -3378,7 +3378,7 @@ Note: You can change that in the preferences.</source>
       <translation>Import efectuat cu succes</translation>
     </message>
     <message>
-      <location filename="../../ArchBuilding.py" line="240"/>
+      <location filename="../../ArchBuilding.py" line="239"/>
       <source>You can put anything but Site and Building objects in a Building object.
 Building object is not allowed to accept Site and Building objects.
 Site and Building objects will be removed from the selection.
@@ -3386,42 +3386,42 @@ You can change that in the preferences.</source>
       <translation>Puteți pune orice, în afară de Site, Obiecte de construcție, într-un obiect Construcție. Obiectele Construcție nu au voie să accepte un obiect Site sau obiecte Construcție. Site-ul și Obiectele Construcția vor fi eliminate din selecție. Puteți modifica acest lucru în preferințe.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1496"/>
+      <location filename="../../ArchSectionPlane.py" line="1501"/>
       <source>Remove highlighted objects from the list above</source>
       <translation>Eliminați obiectele evidențiate din lista de mai sus</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1497"/>
+      <location filename="../../ArchSectionPlane.py" line="1502"/>
       <source>Add selected</source>
       <translation>Adaugă Selecția</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1498"/>
+      <location filename="../../ArchSectionPlane.py" line="1503"/>
       <source>Add selected object(s) to the scope of this section plane</source>
       <translation>Adăugați obiectul(ele) selectate la spațiul planului de sețiune</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1502"/>
+      <location filename="../../ArchSectionPlane.py" line="1507"/>
       <source>Rotates the plane along the X axis</source>
       <translation>Rotiți planul în jurul axei Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1504"/>
+      <location filename="../../ArchSectionPlane.py" line="1509"/>
       <source>Rotates the plane along the Y axis</source>
       <translation>Rotiți planul în jurul axei X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1506"/>
+      <location filename="../../ArchSectionPlane.py" line="1511"/>
       <source>Rotates the plane along the Z axis</source>
       <translation>Rotiți planul în jurul axei Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1508"/>
+      <location filename="../../ArchSectionPlane.py" line="1513"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation>Redimensionează planul pentru a se potrivi la obiectele din lista de mai sus</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1510"/>
+      <location filename="../../ArchSectionPlane.py" line="1515"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation>Centrează planul pentru a se potrivi pe obiectele din lista de mai sus</translation>
     </message>
@@ -3541,17 +3541,17 @@ You can change that in the preferences.</source>
       <translation>Înălțime parapet</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="85"/>
+      <location filename="../../ArchCurtainWall.py" line="84"/>
       <source>Curtain Wall</source>
       <translation type="unfinished">Curtain Wall</translation>
     </message>
     <message>
-      <location filename="../../ArchTruss.py" line="98"/>
+      <location filename="../../ArchTruss.py" line="97"/>
       <source>Please select only one base object or none</source>
       <translation type="unfinished">Please select only one base object or none</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="147"/>
+      <location filename="../../ArchCurtainWall.py" line="146"/>
       <source>Create Curtain Wall</source>
       <translation type="unfinished">Create Curtain Wall</translation>
     </message>
@@ -3566,32 +3566,32 @@ You can change that in the preferences.</source>
       <translation type="unfinished">depends on the object</translation>
     </message>
     <message>
-      <location filename="../../ArchProject.py" line="127"/>
+      <location filename="../../ArchProject.py" line="126"/>
       <source>Create Project</source>
       <translation>Creaţi un proiect</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="563"/>
+      <location filename="../../ArchSchedule.py" line="562"/>
       <source>Unable to recognize that file type</source>
       <translation type="unfinished">Unable to recognize that file type</translation>
     </message>
     <message>
-      <location filename="../../ArchTruss.py" line="68"/>
+      <location filename="../../ArchTruss.py" line="67"/>
       <source>Truss</source>
       <translation type="unfinished">Truss</translation>
     </message>
     <message>
-      <location filename="../../ArchTruss.py" line="129"/>
+      <location filename="../../ArchTruss.py" line="128"/>
       <source>Create Truss</source>
       <translation type="unfinished">Create Truss</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="141"/>
+      <location filename="../../InitGui.py" line="143"/>
       <source>Arch</source>
       <translation type="unfinished">Arch</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="92"/>
+      <location filename="../../InitGui.py" line="94"/>
       <source>Rebar tools</source>
       <translation type="unfinished">Rebar tools</translation>
     </message>
@@ -3611,52 +3611,52 @@ You can change that in the preferences.</source>
       <translation>Crează profil</translation>
     </message>
     <message>
-      <location filename="../../importSHP.py" line="71"/>
+      <location filename="../../importSHP.py" line="70"/>
       <source>Shapes elevation</source>
       <translation type="unfinished">Shapes elevation</translation>
     </message>
     <message>
-      <location filename="../../importSHP.py" line="71"/>
+      <location filename="../../importSHP.py" line="70"/>
       <source>Choose which field provides shapes elevations:</source>
       <translation type="unfinished">Choose which field provides shapes elevations:</translation>
     </message>
     <message>
-      <location filename="../../importSHP.py" line="114"/>
+      <location filename="../../importSHP.py" line="113"/>
       <source>No shape found in this file</source>
       <translation type="unfinished">No shape found in this file</translation>
     </message>
     <message>
-      <location filename="../../importSHP.py" line="138"/>
+      <location filename="../../importSHP.py" line="137"/>
       <source>Shapefile module not found</source>
       <translation type="unfinished">Shapefile module not found</translation>
     </message>
     <message>
-      <location filename="../../importSHP.py" line="146"/>
+      <location filename="../../importSHP.py" line="145"/>
       <source>Error: Unable to download from:</source>
       <translation type="unfinished">Error: Unable to download from:</translation>
     </message>
     <message>
-      <location filename="../../importSHP.py" line="158"/>
+      <location filename="../../importSHP.py" line="157"/>
       <source>Could not download shapefile module. Aborting.</source>
       <translation type="unfinished">Could not download shapefile module. Aborting.</translation>
     </message>
     <message>
-      <location filename="../../importSHP.py" line="161"/>
+      <location filename="../../importSHP.py" line="160"/>
       <source>Shapefile module not downloaded. Aborting.</source>
       <translation type="unfinished">Shapefile module not downloaded. Aborting.</translation>
     </message>
     <message>
-      <location filename="../../importSHP.py" line="164"/>
+      <location filename="../../importSHP.py" line="163"/>
       <source>Shapefile module not found. Aborting.</source>
       <translation type="unfinished">Shapefile module not found. Aborting.</translation>
     </message>
     <message>
-      <location filename="../../importSHP.py" line="165"/>
+      <location filename="../../importSHP.py" line="164"/>
       <source>The shapefile library can be downloaded from the following URL and installed in your macros folder:</source>
       <translation type="unfinished">The shapefile library can be downloaded from the following URL and installed in your macros folder:</translation>
     </message>
     <message>
-      <location filename="../../importSHP.py" line="138"/>
+      <location filename="../../importSHP.py" line="137"/>
       <source>The shapefile python library was not found on your system. Would you like to download it now from &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github.com/GeospatialPython/pyshp&lt;/a&gt;? It will be placed in your macros folder.</source>
       <translation type="unfinished">The shapefile python library was not found on your system. Would you like to download it now from &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github.com/GeospatialPython/pyshp&lt;/a&gt;? It will be placed in your macros folder.</translation>
     </message>
@@ -3689,6 +3689,21 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchWall.py" line="110"/>
       <source>Wall</source>
       <translation>Perete</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWindow.py" line="1168"/>
+      <source>This window has no defined opening</source>
+      <translation type="unfinished">This window has no defined opening</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWindow.py" line="1649"/>
+      <source>Invert opening direction</source>
+      <translation type="unfinished">Invert opening direction</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWindow.py" line="1650"/>
+      <source>Invert hinge position</source>
+      <translation type="unfinished">Invert hinge position</translation>
     </message>
   </context>
   <context>
@@ -3802,12 +3817,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
   <context>
     <name>Arch_3Views</name>
     <message>
-      <location filename="../../ArchEquipment.py" line="227"/>
+      <location filename="../../ArchEquipment.py" line="226"/>
       <source>3 views from mesh</source>
       <translation>3 vederi din plasă</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="228"/>
+      <location filename="../../ArchEquipment.py" line="227"/>
       <source>Creates 3 views (top, front, side) from a mesh-based object</source>
       <translation>Creează 3 vizualizări (partea de sus, faţă, laterale) dintr-un obiect bazat pe plasă</translation>
     </message>
@@ -3815,12 +3830,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
   <context>
     <name>Arch_Add</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1350"/>
+      <location filename="../../ArchCommands.py" line="1349"/>
       <source>Add component</source>
       <translation>Adaugă componentă</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1351"/>
+      <location filename="../../ArchCommands.py" line="1350"/>
       <source>Adds the selected components to the active object</source>
       <translation>Adaugă componentele selectate în obiectul activ</translation>
     </message>
@@ -3872,12 +3887,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
   <context>
     <name>Arch_Building</name>
     <message>
-      <location filename="../../ArchBuilding.py" line="216"/>
+      <location filename="../../ArchBuilding.py" line="215"/>
       <source>Building</source>
       <translation>Construcţia</translation>
     </message>
     <message>
-      <location filename="../../ArchBuilding.py" line="218"/>
+      <location filename="../../ArchBuilding.py" line="217"/>
       <source>Creates a building object including selected objects.</source>
       <translation>Crează un obiect-construcţie incluzând obiectele selectate.</translation>
     </message>
@@ -3885,12 +3900,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
   <context>
     <name>Arch_BuildingPart</name>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="293"/>
+      <location filename="../../ArchBuildingPart.py" line="292"/>
       <source>BuildingPart</source>
       <translation>BuildingPart</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="295"/>
+      <location filename="../../ArchBuildingPart.py" line="294"/>
       <source>Creates a BuildingPart object including selected objects</source>
       <translation>Crează un obiect-Building Part incluzând obiectele selectate</translation>
     </message>
@@ -3898,12 +3913,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
   <context>
     <name>Arch_Check</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1538"/>
+      <location filename="../../ArchCommands.py" line="1537"/>
       <source>Check</source>
       <translation>Verifică</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1539"/>
+      <location filename="../../ArchCommands.py" line="1538"/>
       <source>Checks the selected objects for problems</source>
       <translation>Verifică obiectele selectate pentru probleme</translation>
     </message>
@@ -3911,12 +3926,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
   <context>
     <name>Arch_CloneComponent</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1614"/>
+      <location filename="../../ArchCommands.py" line="1613"/>
       <source>Clone component</source>
       <translation>Clona componentă</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1616"/>
+      <location filename="../../ArchCommands.py" line="1615"/>
       <source>Clones an object as an undefined architectural component</source>
       <translation>Clone un obiect ca o componentă arhitecturale nedefinit</translation>
     </message>
@@ -3924,12 +3939,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
   <context>
     <name>Arch_CloseHoles</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1521"/>
+      <location filename="../../ArchCommands.py" line="1520"/>
       <source>Close holes</source>
       <translation>Închide găuri</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1522"/>
+      <location filename="../../ArchCommands.py" line="1521"/>
       <source>Closes holes in open shapes, turning them solids</source>
       <translation>Închide găurile din formele deschise, transformându-le în solide</translation>
     </message>
@@ -3937,12 +3952,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
   <context>
     <name>Arch_Component</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1589"/>
+      <location filename="../../ArchCommands.py" line="1588"/>
       <source>Component</source>
       <translation>Componenta</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1591"/>
+      <location filename="../../ArchCommands.py" line="1590"/>
       <source>Creates an undefined architectural component</source>
       <translation>Creează o componentă arhitecturale nedefinită</translation>
     </message>
@@ -3950,12 +3965,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
   <context>
     <name>Arch_CurtainWall</name>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="104"/>
+      <location filename="../../ArchCurtainWall.py" line="103"/>
       <source>Curtain Wall</source>
       <translation type="unfinished">Curtain Wall</translation>
     </message>
     <message>
-      <location filename="../../ArchCurtainWall.py" line="106"/>
+      <location filename="../../ArchCurtainWall.py" line="105"/>
       <source>Creates a curtain wall object from selected line or from scratch</source>
       <translation type="unfinished">Creates a curtain wall object from selected line or from scratch</translation>
     </message>
@@ -3986,12 +4001,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
   <context>
     <name>Arch_Equipment</name>
     <message>
-      <location filename="../../ArchEquipment.py" line="171"/>
+      <location filename="../../ArchEquipment.py" line="170"/>
       <source>Equipment</source>
       <translation>Echipament</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="173"/>
+      <location filename="../../ArchEquipment.py" line="172"/>
       <source>Creates an equipment object from a selected object (Part or Mesh)</source>
       <translation>Creează un obiect de echipament dintr-un obiect selectat (tip Piesă sau Plasă)</translation>
     </message>
@@ -3999,12 +4014,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
   <context>
     <name>Arch_Fence</name>
     <message>
-      <location filename="../../ArchFence.py" line="365"/>
+      <location filename="../../ArchFence.py" line="389"/>
       <source>Fence</source>
       <translation>Gard</translation>
     </message>
     <message>
-      <location filename="../../ArchFence.py" line="366"/>
+      <location filename="../../ArchFence.py" line="390"/>
       <source>Creates a fence object from a selected section, post and path</source>
       <translation>Creează un obiect gard pornind de la secțiunea, stălpul și calea selectate</translation>
     </message>
@@ -4012,12 +4027,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
   <context>
     <name>Arch_Floor</name>
     <message>
-      <location filename="../../ArchFloor.py" line="114"/>
+      <location filename="../../ArchFloor.py" line="113"/>
       <source>Level</source>
       <translation>Nivel</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="116"/>
+      <location filename="../../ArchFloor.py" line="115"/>
       <source>Creates a Building Part object that represents a level, including selected objects</source>
       <translation type="unfinished">Creates a Building Part object that represents a level, including selected objects</translation>
     </message>
@@ -4101,12 +4116,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
   <context>
     <name>Arch_IfcSpreadsheet</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1664"/>
+      <location filename="../../ArchCommands.py" line="1663"/>
       <source>Create IFC spreadsheet...</source>
       <translation>Creare foaie de calcul IFPC...</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1666"/>
+      <location filename="../../ArchCommands.py" line="1665"/>
       <source>Creates a spreadsheet to store IFC properties of an object.</source>
       <translation>Creează o foaie de calcul pentru a stoca proprietățile IFC ale unui obiect.</translation>
     </message>
@@ -4148,12 +4163,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
   <context>
     <name>Arch_MeshToShape</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1442"/>
+      <location filename="../../ArchCommands.py" line="1441"/>
       <source>Mesh to Shape</source>
       <translation>Discretizare în forma</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1443"/>
+      <location filename="../../ArchCommands.py" line="1442"/>
       <source>Turns selected meshes into Part Shape objects</source>
       <translation>Transformă plaselee selectate în obiecte forma</translation>
     </message>
@@ -4174,12 +4189,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
   <context>
     <name>Arch_Nest</name>
     <message>
-      <location filename="../../ArchPanel.py" line="1519"/>
+      <location filename="../../ArchPanel.py" line="1518"/>
       <source>Nest</source>
       <translation>Cuib</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1521"/>
+      <location filename="../../ArchPanel.py" line="1520"/>
       <source>Nests a series of selected shapes in a container</source>
       <translation>Cuiburi pentru o serie de formele selectate într-un container</translation>
     </message>
@@ -4187,12 +4202,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
   <context>
     <name>Arch_Panel</name>
     <message>
-      <location filename="../../ArchPanel.py" line="149"/>
+      <location filename="../../ArchPanel.py" line="148"/>
       <source>Panel</source>
       <translation>Panou</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="151"/>
+      <location filename="../../ArchPanel.py" line="150"/>
       <source>Creates a panel object from scratch or from a selected object (sketch, wire, face or solid)</source>
       <translation>Creează un obiect de panoul de la zero sau de la un obiect selectat (schiță, wire, față sau solid)</translation>
     </message>
@@ -4200,7 +4215,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
   <context>
     <name>Arch_PanelTools</name>
     <message>
-      <location filename="../../ArchPanel.py" line="1688"/>
+      <location filename="../../ArchPanel.py" line="1687"/>
       <source>Panel tools</source>
       <translation>Panou instrumente</translation>
     </message>
@@ -4208,7 +4223,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
   <context>
     <name>Arch_Panel_Cut</name>
     <message>
-      <location filename="../../ArchPanel.py" line="336"/>
+      <location filename="../../ArchPanel.py" line="335"/>
       <source>Panel Cut</source>
       <translation>Panoul de tăiat</translation>
     </message>
@@ -4216,17 +4231,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
   <context>
     <name>Arch_Panel_Sheet</name>
     <message>
-      <location filename="../../ArchPanel.py" line="338"/>
+      <location filename="../../ArchPanel.py" line="337"/>
       <source>Creates 2D views of selected panels</source>
       <translation>Creaza vizualizari forma 2D pentru obiectele selectate</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="363"/>
+      <location filename="../../ArchPanel.py" line="362"/>
       <source>Panel Sheet</source>
       <translation>Panou de foaie</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="365"/>
+      <location filename="../../ArchPanel.py" line="364"/>
       <source>Creates a 2D sheet which can contain panel cuts</source>
       <translation>Creează o foaie 2D, care pot conţine părți ale panoul</translation>
     </message>
@@ -4234,17 +4249,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
   <context>
     <name>Arch_Pipe</name>
     <message>
-      <location filename="../../ArchPipe.py" line="108"/>
+      <location filename="../../ArchPipe.py" line="107"/>
       <source>Pipe</source>
       <translation>Teava</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="110"/>
+      <location filename="../../ArchPipe.py" line="109"/>
       <source>Creates a pipe object from a given Wire or Line</source>
       <translation>Creează un obiect ţeavă din fire sau linie</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="149"/>
+      <location filename="../../ArchPipe.py" line="148"/>
       <source>Creates a connector between 2 or 3 selected pipes</source>
       <translation>Creează un conector între 2 sau 3 țevi selectate</translation>
     </message>
@@ -4252,7 +4267,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
   <context>
     <name>Arch_PipeConnector</name>
     <message>
-      <location filename="../../ArchPipe.py" line="147"/>
+      <location filename="../../ArchPipe.py" line="146"/>
       <source>Connector</source>
       <translation>Conector</translation>
     </message>
@@ -4260,7 +4275,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
   <context>
     <name>Arch_PipeTools</name>
     <message>
-      <location filename="../../ArchPipe.py" line="513"/>
+      <location filename="../../ArchPipe.py" line="512"/>
       <source>Pipe tools</source>
       <translation>Instrumente de ţeavă</translation>
     </message>
@@ -4281,12 +4296,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
   <context>
     <name>Arch_Project</name>
     <message>
-      <location filename="../../ArchProject.py" line="98"/>
+      <location filename="../../ArchProject.py" line="97"/>
       <source>Project</source>
       <translation>Proiect</translation>
     </message>
     <message>
-      <location filename="../../ArchProject.py" line="100"/>
+      <location filename="../../ArchProject.py" line="99"/>
       <source>Creates a project entity aggregating the selected sites.</source>
       <translation type="unfinished">Creates a project entity aggregating the selected sites.</translation>
     </message>
@@ -4320,12 +4335,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
   <context>
     <name>Arch_Remove</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1382"/>
+      <location filename="../../ArchCommands.py" line="1381"/>
       <source>Remove component</source>
       <translation>Elimină componentă</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1383"/>
+      <location filename="../../ArchCommands.py" line="1382"/>
       <source>Remove the selected components from their parents, or create a hole in a component</source>
       <translation>Elimină componentele selectate din obiectele-părinte sau crează o gaură în componentă</translation>
     </message>
@@ -4333,12 +4348,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
   <context>
     <name>Arch_RemoveShape</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1506"/>
+      <location filename="../../ArchCommands.py" line="1505"/>
       <source>Remove Shape from Arch</source>
       <translation>Înlătura forma din arhitectura</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1507"/>
+      <location filename="../../ArchCommands.py" line="1506"/>
       <source>Removes cubic shapes from Arch components</source>
       <translation>Înlătura formele cubice din componentele arhitecturale</translation>
     </message>
@@ -4359,12 +4374,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
   <context>
     <name>Arch_Schedule</name>
     <message>
-      <location filename="../../ArchSchedule.py" line="63"/>
+      <location filename="../../ArchSchedule.py" line="62"/>
       <source>Schedule</source>
       <translation>Planificare</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="64"/>
+      <location filename="../../ArchSchedule.py" line="63"/>
       <source>Creates a schedule to collect data from the model</source>
       <translation>Creează o planificare pentru a colecta datele modelului</translation>
     </message>
@@ -4372,12 +4387,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
   <context>
     <name>Arch_SectionPlane</name>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="873"/>
+      <location filename="../../ArchSectionPlane.py" line="878"/>
       <source>Section Plane</source>
       <translation>Planul de selecţie</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="874"/>
+      <location filename="../../ArchSectionPlane.py" line="879"/>
       <source>Creates a section plane object, including the selected objects</source>
       <translation>Crează un obiect - secţiune plană incluzând obiectele selectate</translation>
     </message>
@@ -4385,12 +4400,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
   <context>
     <name>Arch_SelectNonSolidMeshes</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1477"/>
+      <location filename="../../ArchCommands.py" line="1476"/>
       <source>Select non-manifold meshes</source>
       <translation>Selectaţi plasele ne-manufacturabile</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1478"/>
+      <location filename="../../ArchCommands.py" line="1477"/>
       <source>Selects all non-manifold meshes from the document or from the selected groups</source>
       <translation>Selectaţi toate plasele ne-manufacturabile din document sau din grupurile selectate</translation>
     </message>
@@ -4398,12 +4413,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
   <context>
     <name>Arch_Site</name>
     <message>
-      <location filename="../../ArchSite.py" line="506"/>
+      <location filename="../../ArchSite.py" line="505"/>
       <source>Site</source>
       <translation>Teren</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="508"/>
+      <location filename="../../ArchSite.py" line="507"/>
       <source>Creates a site object including selected objects.</source>
       <translation>Crează un obiect teren, incluzând obiectele selectate.</translation>
     </message>
@@ -4411,12 +4426,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
   <context>
     <name>Arch_Space</name>
     <message>
-      <location filename="../../ArchSpace.py" line="227"/>
+      <location filename="../../ArchSpace.py" line="226"/>
       <source>Space</source>
       <translation>Spaţiu</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="229"/>
+      <location filename="../../ArchSpace.py" line="228"/>
       <source>Creates a space object from selected boundary objects</source>
       <translation>Creează un spaţiu obiect din limitele obiectelor selectate</translation>
     </message>
@@ -4429,12 +4444,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
   <context>
     <name>Arch_SplitMesh</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1417"/>
+      <location filename="../../ArchCommands.py" line="1416"/>
       <source>Split Mesh</source>
       <translation>Divide plasa</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1418"/>
+      <location filename="../../ArchCommands.py" line="1417"/>
       <source>Splits selected meshes into independent components</source>
       <translation>Împarte ochiuri de plasă selectate în componente independente</translation>
     </message>
@@ -4463,12 +4478,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
   <context>
     <name>Arch_Survey</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1559"/>
+      <location filename="../../ArchCommands.py" line="1558"/>
       <source>Survey</source>
       <translation>Sondaj</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1560"/>
+      <location filename="../../ArchCommands.py" line="1559"/>
       <source>Starts survey</source>
       <translation>Pornește sondajul</translation>
     </message>
@@ -4476,12 +4491,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
   <context>
     <name>Arch_ToggleIfcBrepFlag</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1574"/>
+      <location filename="../../ArchCommands.py" line="1573"/>
       <source>Toggle IFC Brep flag</source>
       <translation>Activează /dezactivează marcajul Brep IFC</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1575"/>
+      <location filename="../../ArchCommands.py" line="1574"/>
       <source>Force an object to be exported as Brep or not</source>
       <translation>Forţează un obiect să fie exportat ca Brep sau nu</translation>
     </message>
@@ -4489,12 +4504,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
   <context>
     <name>Arch_ToggleSubs</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1690"/>
+      <location filename="../../ArchCommands.py" line="1689"/>
       <source>Toggle subcomponents</source>
       <translation>Activează/dezactivează subcomponente</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1691"/>
+      <location filename="../../ArchCommands.py" line="1690"/>
       <source>Shows or hides the subcomponents of this object</source>
       <translation>Afişează sau ascunde subcomponente de acest obiect</translation>
     </message>
@@ -4502,12 +4517,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
   <context>
     <name>Arch_Truss</name>
     <message>
-      <location filename="../../ArchTruss.py" line="86"/>
+      <location filename="../../ArchTruss.py" line="85"/>
       <source>Truss</source>
       <translation type="unfinished">Truss</translation>
     </message>
     <message>
-      <location filename="../../ArchTruss.py" line="88"/>
+      <location filename="../../ArchTruss.py" line="87"/>
       <source>Creates a truss object from selected line or from scratch</source>
       <translation type="unfinished">Creates a truss object from selected line or from scratch</translation>
     </message>
@@ -4844,32 +4859,32 @@ Leave blank to use all objects from the document</translation>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="859"/>
+      <location filename="../../ArchBuildingPart.py" line="858"/>
       <source>Writing camera position</source>
       <translation>Scrie poziţia camerei</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="111"/>
+      <location filename="../../InitGui.py" line="113"/>
       <source>Draft creation tools</source>
       <translation type="unfinished">Draft creation tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="112"/>
+      <location filename="../../InitGui.py" line="114"/>
       <source>Draft annotation tools</source>
       <translation type="unfinished">Draft annotation tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="113"/>
+      <location filename="../../InitGui.py" line="115"/>
       <source>Draft modification tools</source>
       <translation type="unfinished">Draft modification tools</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="147"/>
+      <location filename="../../InitGui.py" line="149"/>
       <source>Draft</source>
       <translation>Pescaj</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="185"/>
+      <location filename="../../InitGui.py" line="187"/>
       <source>Import-Export</source>
       <translation>Import/Export</translation>
     </message>
@@ -6169,7 +6184,7 @@ are placed in a 'Group' instead.
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../InitGui.py" line="110"/>
+      <location filename="../../InitGui.py" line="112"/>
       <source>Arch tools</source>
       <translation>Unelte Arch</translation>
     </message>
@@ -6177,32 +6192,32 @@ are placed in a 'Group' instead.
   <context>
     <name>arch</name>
     <message>
-      <location filename="../../InitGui.py" line="130"/>
+      <location filename="../../InitGui.py" line="132"/>
       <source>&amp;Draft</source>
       <translation>&amp;Schiţă</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="130"/>
+      <location filename="../../InitGui.py" line="132"/>
       <source>Utilities</source>
       <translation>Utilități</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="119"/>
+      <location filename="../../InitGui.py" line="121"/>
       <source>&amp;Arch</source>
       <translation>&amp;Architecture</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="121"/>
+      <location filename="../../InitGui.py" line="123"/>
       <source>Creation</source>
       <translation type="unfinished">Creation</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="124"/>
+      <location filename="../../InitGui.py" line="126"/>
       <source>Annotation</source>
       <translation>Notatie</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="127"/>
+      <location filename="../../InitGui.py" line="129"/>
       <source>Modification</source>
       <translation type="unfinished">Modification</translation>
     </message>
