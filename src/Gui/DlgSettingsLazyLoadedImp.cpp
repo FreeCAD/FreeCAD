@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 
 #include "DlgSettingsLazyLoadedImp.h"
-#include "Ui_DlgSettingsLazyLoaded.h"
+#include "ui_DlgSettingsLazyLoaded.h"
 #include "PrefWidgets.h"
 #include "AutoSaver.h"
 
