@@ -320,7 +320,7 @@ def getSVG(source,
            lineColor=(0.0, 0.0, 0.0),
            fontsize=1,
            showFill=False,
-           fillColor=(1.0, 1.0, 1.0),
+           fillColor=(0.8, 0.8, 0.8),
            techdraw=False,
            fillSpaces=False,
            cutlinewidth=0,
@@ -400,10 +400,10 @@ def getSVG(source,
     svgSymbolLineWidth = str(linewidth * yt)
     hiddenPattern = archUserParameters.GetString("archHiddenPattern","30,10")
     svgHiddenPattern = hiddenPattern.replace(" ","")
-    #fillpattern = '<pattern id="sectionfill" patternUnits="userSpaceOnUse" patternTransform="matrix(5,0,0,5,0,0)"'
-    #fillpattern += ' x="0" y="0" width="10" height="10">'
-    #fillpattern += '<g>'
-    #fillpattern += '<rect width="10" height="10" style="stroke:none; fill:#ffffff" /><path style="stroke:#000000; stroke-width:1" d="M0,0 l10,10" /></g></pattern>'
+    fillpattern = '<pattern id="sectionfill" patternUnits="userSpaceOnUse" patternTransform="matrix(5,0,0,5,0,0)"'
+    fillpattern += ' x="0" y="0" width="10" height="10">'
+    fillpattern += '<g>'
+    fillpattern += '<rect width="10" height="10" style="stroke:none; fill:#ffffff" /><path style="stroke:#000000; stroke-width:1" d="M0,0 l10,10" /></g></pattern>'
     svgLineColor = Draft.getrgb(lineColor)
     svg = ''
     # reading cached version
@@ -444,16 +444,11 @@ def getSVG(source,
                 render.cut(cutplane,showHidden)
             else:
                 render.cut(cutplane)
-            g = '<g transform="scale(1,-1)">\n'
-            if hasattr(source.ViewObject,"RotateSolidRender"):
-                if (source.ViewObject.RotateSolidRender.Value != 0):
-                    g = '<g transform="scale(1,-1) rotate('
-                    g += str(source.ViewObject.RotateSolidRender.Value)
-                    g += ')">\n'
-            svgcache += g
+            svgcache += '<g transform="scale(1,-1)">\n'
             svgcache += render.getViewSVG(linewidth="SVGLINEWIDTH")
-            #svgcache += fillpattern
-            svgcache += render.getSectionSVG(linewidth="SVGCUTLINEWIDTH",fillpattern="#ffffff")
+            svgcache += fillpattern
+            svgcache += render.getSectionSVG(linewidth="SVGCUTLINEWIDTH",
+                                        fillpattern="sectionfill")
             if showHidden:
                 svgcache += render.getHiddenSVG(linewidth="SVGLINEWIDTH")
             svgcache += '</g>\n'

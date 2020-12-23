@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>266</width>
-    <height>691</height>
+    <width>453</width>
+    <height>424</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,18 +22,6 @@
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <widget class="QComboBox" name="comboBoxStyles">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>60</width>
-          <height>0</height>
-         </size>
-        </property>
         <property name="toolTip">
          <string>The name of your style. Existing style names can be edited.</string>
         </property>
@@ -58,16 +46,10 @@
          <bool>false</bool>
         </property>
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>60</width>
-          <height>0</height>
-         </size>
         </property>
         <property name="maximumSize">
          <size>
@@ -89,16 +71,10 @@
          <bool>false</bool>
         </property>
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>60</width>
-          <height>0</height>
-         </size>
         </property>
         <property name="maximumSize">
          <size>
@@ -132,9 +108,9 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-58</y>
-        <width>233</width>
-        <height>624</height>
+        <y>-290</y>
+        <width>420</width>
+        <height>589</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -176,18 +152,6 @@
           </item>
           <item row="0" column="1">
            <widget class="QFontComboBox" name="FontName">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>60</width>
-              <height>0</height>
-             </size>
-            </property>
             <property name="toolTip">
              <string>The font to use for texts and dimensions</string>
             </property>
@@ -436,18 +400,6 @@
           </item>
           <item row="4" column="1">
            <widget class="QComboBox" name="ArrowType">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>60</width>
-              <height>0</height>
-             </size>
-            </property>
             <property name="toolTip">
              <string>The type of arrows or markers to use at the end of dimension lines</string>
             </property>
@@ -520,30 +472,6 @@
           </item>
          </layout>
         </widget>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
-         <item>
-          <widget class="QPushButton" name="pushButtonImport">
-           <property name="toolTip">
-            <string>Import styles from json file</string>
-           </property>
-           <property name="text">
-            <string>Import...</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButtonExport">
-           <property name="toolTip">
-            <string>Export styles to json file</string>
-           </property>
-           <property name="text">
-            <string>Export...</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
        </item>
       </layout>
      </widget>
