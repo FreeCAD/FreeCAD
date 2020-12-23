@@ -1900,7 +1900,7 @@ private:
 #else
             pysize = PyUnicode_GetSize(p);
 #endif
-#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION < 9
+#if PY_VERSION_HEX < 0x03090000
             unichars = PyUnicode_AS_UNICODE(p);
 #else
             unichars = (Py_UNICODE *)PyUnicode_AsUCS4Copy(p);
@@ -1912,7 +1912,7 @@ private:
 #else
             pysize = PyUnicode_GetSize(intext);
 #endif
-#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION < 9
+#if PY_VERSION_HEX < 0x03090000
             unichars = PyUnicode_AS_UNICODE(intext);
 #else
             unichars = (Py_UNICODE *)PyUnicode_AsUCS4Copy(intext);
@@ -1941,7 +1941,7 @@ private:
             else {
                 CharList = FT2FC(unichars,pysize,dir,fontfile,height,track);
             }
-#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 9
+#if PY_VERSION_HEX >= 0x03090000
             if (unichars) {
                 PyMem_Free(unichars);
             }
