@@ -925,8 +925,10 @@ int SketchObject::setUpSketch()
     lastConflicting=solvedSketch.getConflicting();
     lastRedundant=solvedSketch.getRedundant();
 
-    if(lastHasRedundancies || lastDoF < 0 || lastHasConflict)
-        Constraints.touch();
+    if (!internaltransaction) {
+        if(lastHasRedundancies || lastDoF < 0 || lastHasConflict)
+            Constraints.touch();
+    }
 
     return lastDoF;
 
@@ -7914,6 +7916,8 @@ void SketchObject::onChanged(const App::Property* prop)
                         else {
                             Base::Console().Error("SketchObject::onChanged(): Unmanaged change of Geometry Property results in invalid constraint indices\n");
                         }
+                        Base::StateLocker lock(internaltransaction, true);
+                        setUpSketch();
                     }
                 }
                 else { // Change is in Constraints
@@ -7934,7 +7938,8 @@ void SketchObject::onChanged(const App::Property* prop)
                         else {
                             Base::Console().Error("SketchObject::onChanged(): Unmanaged change of Constraint Property results in invalid constraint indices\n");
                         }
-
+                        Base::StateLocker lock(internaltransaction, true);
+                        setUpSketch();
                     }
                 }
             }
