@@ -47,7 +47,7 @@ DlgSettingsLazyLoadedImp::DlgSettingsLazyLoadedImp( QWidget* parent )
 {
     ui->setupUi(this);
     buildUnloadedWorkbenchList();
-    connect(ui->loadButton, &QPushButton::clicked, this, &DlgSettingsLazyLoadedImp::onLoadClicked);
+    connect(ui->loadButton, SIGNAL(clicked()), this, SLOT(onLoadClicked()));
 }
 
 /**
