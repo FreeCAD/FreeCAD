@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>372</width>
-    <height>518</height>
+    <height>466</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -37,7 +37,7 @@
         <x>0</x>
         <y>0</y>
         <width>354</width>
-        <height>470</height>
+        <height>418</height>
        </rect>
       </property>
       <attribute name="label">
@@ -109,13 +109,6 @@
            </widget>
           </item>
           <item>
-           <widget class="Line" name="line_2">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-           </widget>
-          </item>
-          <item>
            <widget class="QLabel" name="label_2">
             <property name="text">
              <string>Extend Out:</string>
@@ -140,13 +133,6 @@
            <widget class="QCheckBox" name="chkLeadIn">
             <property name="text">
              <string>Enable LeadIn</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="Line" name="line">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
             </property>
            </widget>
           </item>
@@ -224,13 +210,6 @@
               <string>Perpendicular</string>
              </property>
             </item>
-           </widget>
-          </item>
-          <item>
-           <widget class="Line" name="line_3">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
            </widget>
           </item>
           <item>
