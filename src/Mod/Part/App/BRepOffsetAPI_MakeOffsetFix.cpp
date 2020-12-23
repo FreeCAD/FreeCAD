@@ -82,7 +82,7 @@ void BRepOffsetAPI_MakeOffsetFix::AddWire(const TopoDS_Wire& Spine)
             edgeLocation = edge.Location();
             edge.Location(TopLoc_Location());
             mkWire.Add(edge);
-            myLocations.emplace_back(edge, edgeLocation);
+            myLocations.push_back(std::make_pair(edge, edgeLocation));
             xp.Next();
         }
 
@@ -159,11 +159,6 @@ const TopoDS_Shape& BRepOffsetAPI_MakeOffsetFix::Shape()
 {
     if (myResult.IsNull()) {
         TopoDS_Shape result = mkOffset.Shape();
-        if (result.IsNull()) {
-            myResult = result;
-            return myResult;
-        }
-
         if (result.ShapeType() == TopAbs_WIRE) {
             MakeWire(result);
         }

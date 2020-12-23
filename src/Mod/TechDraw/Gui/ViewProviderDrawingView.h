@@ -22,8 +22,8 @@
  ***************************************************************************/
 
 
-#ifndef TECHDRAWGUI_VIEWPROVIDERVIEW_H
-#define TECHDRAWGUI_VIEWPROVIDERVIEW_H
+#ifndef DRAWINGGUI_VIEWPROVIDERVIEW_H
+#define DRAWINGGUI_VIEWPROVIDERVIEW_H
 
 #include <boost/signals2.hpp> 
 
@@ -70,7 +70,7 @@ public:
 
     QGIView* getQView(void);
     MDIViewPage* getMDIViewPage() const;
-    virtual Gui::MDIView *getMDIView() const override;
+    virtual Gui::MDIView *getMDIView() override;
 
     /** @name Restoring view provider from document load */
     //@{
@@ -93,4 +93,4 @@ private:
 } // namespace TechDrawGui
 
 
-#endif // TECHDRAWGUI_VIEWPROVIDERVIEW_H
+#endif // DRAWINGGUI_VIEWPROVIDERVIEW_H

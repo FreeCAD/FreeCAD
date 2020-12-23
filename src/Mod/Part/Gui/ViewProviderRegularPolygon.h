@@ -24,13 +24,13 @@
 #ifndef PARTGUI_VIEWPROVIDERREGULARPOLYGON_H
 #define PARTGUI_VIEWPROVIDERREGULARPOLYGON_H
 
-#include "ViewProviderPrimitive.h"
+#include "ViewProvider.h"
 
 
 namespace PartGui {
 
 
-class PartGuiExport ViewProviderRegularPolygon : public ViewProviderPrimitive
+class PartGuiExport ViewProviderRegularPolygon : public ViewProviderPart
 {
     PROPERTY_HEADER(PartGui::ViewProviderRegularPolygon);
 

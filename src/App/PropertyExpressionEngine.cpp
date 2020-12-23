@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
+ *   Copyright (c) Eivind Kvedalen (eivind@kvedalen.name) 2015             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -34,7 +34,7 @@
 #include "PropertyStandard.h"
 #include "PropertyUnits.h"
 #include <CXX/Objects.hxx>
-#include <boost/bind/bind.hpp>
+#include <boost/bind.hpp>
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/adjacency_list.hpp>
 
@@ -245,7 +245,7 @@ void PropertyExpressionEngine::buildGraphStructures(const ObjectIdentifier & pat
                     int s = nodes.size();
                     nodes[cPath] = s;
                 }
-                edges.emplace_back(nodes[path], nodes[cPath]);
+                edges.push_back(std::make_pair(nodes[path], nodes[cPath]));
             }
         }
     }

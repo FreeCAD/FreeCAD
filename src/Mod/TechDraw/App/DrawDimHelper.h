@@ -23,12 +23,13 @@
 #ifndef _DrawDimHelper_h_
 #define _DrawDimHelper_h_
 
-#include <Geom2d_Curve.hxx>
+#include <Standard_Handle.hxx>
 
 #include <string>
 #include <Base/Vector3D.h>
 
 class gp_Pnt2d;
+class Geom2d_Curve;
 
 namespace TechDraw
 {
@@ -37,7 +38,7 @@ class DrawViewPart;
 
 class TechDrawExport hTrimCurve {
     public:
-    hTrimCurve() : first(0.0), last(0.0) {}
+    hTrimCurve() {}
     hTrimCurve(Handle(Geom2d_Curve) hCurveIn,
                double parm1,
                double parm2);

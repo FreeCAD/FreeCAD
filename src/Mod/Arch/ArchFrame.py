@@ -1,5 +1,7 @@
 #***************************************************************************
-#*   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
+#*                                                                         *
+#*   Copyright (c) 2013                                                    *
+#*   Yorik van Havre <yorik@uncreated.net>                                 *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -42,9 +44,9 @@ else:
 #  Frames are objects made of a profile and an object with
 #  edges along which the profile gets extruded
 
-__title__  = "FreeCAD Arch Frame"
+__title__="FreeCAD Arch Frame"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__ = "http://www.freecadweb.org"
 
 
 def makeFrame(baseobj,profile,name=translate("Arch","Frame")):

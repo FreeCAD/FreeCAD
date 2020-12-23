@@ -24,26 +24,24 @@
 #ifndef GUI_DIALOG_DLGMACRORECORDIMP_H
 #define GUI_DIALOG_DLGMACRORECORDIMP_H
 
+#include "ui_DlgMacroRecord.h"
 #include "Window.h"
-#include <QDialog>
-#include <memory>
 
 
 namespace Gui {
 class MacroManager;
 namespace Dialog {
-class Ui_DlgMacroRecord;
 
 /**
  * The DlgMacroRecordImp class implements a dialog to record a macro.
  * \author Jürgen Riegel
  */
-class DlgMacroRecordImp : public QDialog, public Gui::WindowParameter
+class DlgMacroRecordImp : public QDialog, public Ui_DlgMacroRecord, public Gui::WindowParameter
 {
     Q_OBJECT
 
 public:
-    DlgMacroRecordImp( QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags() );
+    DlgMacroRecordImp( QWidget* parent = 0, Qt::WindowFlags fl = 0 );
     virtual ~DlgMacroRecordImp();
 
 protected Q_SLOTS:
@@ -53,8 +51,7 @@ protected Q_SLOTS:
     void on_pushButtonChooseDir_clicked();
     void on_lineEditMacroPath_textChanged ( const QString & );
 
-private:
-    std::unique_ptr<Ui_DlgMacroRecord> ui;
+protected:
     /// convenience pointer
     MacroManager* macroManager;
     QString macroPath; // Macro file to save in

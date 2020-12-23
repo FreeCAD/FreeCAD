@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2019 Wanderer Fan <wandererfan@gmail.com>               *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -49,17 +49,8 @@ DrawTile::DrawTile(void)
 
     ADD_PROPERTY_TYPE(TileParent,(0),group,(App::PropertyType)(App::Prop_None),
                       "Object to which this tile is attached");
-    ADD_PROPERTY_TYPE(TileRow, (0), group, App::Prop_None, "Row in parent object\n 0 for arrow side, -1 for other side");
-    ADD_PROPERTY_TYPE(TileColumn, (0), group, App::Prop_None, "Column in parent object");
-
-    // there is currently only one column, this don't allow to edit
-    TileColumn.setStatus(App::Property::ReadOnly, true);
-    // the row can only have the value 0 or -1
-    // allow its editing because this way the tiles can be flipped
-    TileRowConstraints.LowerBound = -1;
-    TileRowConstraints.UpperBound = 0;
-    TileRowConstraints.StepSize = 1;
-    TileRow.setConstraints(&TileRowConstraints);
+    ADD_PROPERTY_TYPE(TileRow, (0), group, App::Prop_None, "Row in parent");
+    ADD_PROPERTY_TYPE(TileColumn, (0), group, App::Prop_None, "Column in parent");
 }
 
 DrawTile::~DrawTile()
@@ -81,21 +72,9 @@ short DrawTile::mustExecute() const
 }
 
 App::DocumentObjectExecReturn *DrawTile::execute(void)
-{
+{ 
 //    Base::Console().Message("DT::execute()\n");
     return DocumentObject::execute();
-}
-
-void DrawTile::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
-// transforms properties that had been changed
-{
-    // property TileRow had App::PropertyInteger and was changed to App::PropertyIntegerConstraint
-    if (prop == &TileRow && strcmp(TypeName, "App::PropertyInteger") == 0) {
-        App::PropertyInteger TileRowProperty;
-        // restore the PropertyInteger to be able to set its value
-        TileRowProperty.Restore(reader);
-        TileRow.setValue(TileRowProperty.getValue());
-    }
 }
 
 DrawView* DrawTile::getParent(void) const

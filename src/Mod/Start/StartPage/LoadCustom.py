@@ -1,6 +1,6 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2018 Yorik van Havre <yorik@uncreated.net>              *
+#*   Copyright (c) 2018 Yorik van Havre <yorik@uncreated.net>              *  
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -26,20 +26,14 @@ if sys.version_info.major < 3:
 else:
     from urllib.parse import unquote
 # filename will be given before this script is run
-cfolders = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetString("ShowCustomFolder","")
-if cfolders:
-    dirnumber = int(filename[0])
-    filename = filename[2:]
-    cfolder = cfolders.split(";;")[dirnumber]
+cfolder = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetString("ShowCustomFolder","")
+if cfolder:
     if not os.path.isdir(cfolder):
         cfolder = os.path.dirname(cfolder)
     f = unquote(filename).replace("+"," ")
-    if f.lower().endswith(".fcstd"):
-        FreeCAD.open(os.path.join(cfolder,f))
-    else:
-        FreeCAD.loadFile(os.path.join(cfolder,f))
+    FreeCAD.open(os.path.join(cfolder,f))
     FreeCADGui.activeDocument().sendMsgToViews("ViewFit")
 
     from StartPage import StartPage
     StartPage.postStart()
-
+    

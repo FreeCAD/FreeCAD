@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2009     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -26,7 +26,6 @@
 #ifndef _PreComp_
 # include <cstdlib>
 # include <memory>
-# include <Python.h>
 # include <Bnd_Box.hxx>
 # include <BRep_Tool.hxx>
 # include <BRepBndLib.hxx>
@@ -596,7 +595,7 @@ std::list<std::pair<int, int> > FemMesh::getVolumesByFace(const TopoDS_Face &fac
 
             // For curved faces it is possible that a volume contributes more than one face
             if (element_face_nodes.size() == static_cast<std::size_t>(numNodes)) {
-                result.emplace_back(vol->GetID(), face->GetID());
+                result.push_back(std::make_pair(vol->GetID(), face->GetID()));
             }
         }
     }
@@ -1024,7 +1023,7 @@ void FemMesh::readNastran(const std::string &Filename)
     {
         std::getline(inputfile,line1);
         if (line1.size() == 0) continue;
-        if (!nastran_free_format && line1.find(',')!= std::string::npos)
+        if (!nastran_free_format && line1.find(",")!= std::string::npos)
             nastran_free_format = true;
         if (!nastran_free_format && line1.find("GRID*")!= std::string::npos ) //We found a Grid line
         {
@@ -2054,71 +2053,3 @@ Base::Quantity FemMesh::getVolume(void)const
 
 
 }
-
-int FemMesh::addGroup(const std::string TypeString, const std::string Name, const int theId)
-{
-    // define mapping between typestring and ElementType
-    // TODO: remove code doubling by providing mappings for all FemMesh functions
-    typedef std::map<std::string, SMDSAbs_ElementType> string_eltype_map;
-    string_eltype_map mapping;
-    mapping["All"] = SMDSAbs_All;
-    mapping["Node"] = SMDSAbs_Node;
-    mapping["Edge"] = SMDSAbs_Edge;
-    mapping["Face"] = SMDSAbs_Face;
-    mapping["Volume"] = SMDSAbs_Volume;
-    mapping["0DElement"] = SMDSAbs_0DElement;
-    mapping["Ball"] = SMDSAbs_Ball;
-
-    int aId = theId;
-
-    // check whether typestring is valid
-    bool typeStringValid = false;
-    for (string_eltype_map::const_iterator it = mapping.begin(); it != mapping.end(); ++it)
-    {
-        std::string key = it->first;
-        if (key == TypeString)
-            typeStringValid = true;
-    }
-    if (!typeStringValid)
-        throw std::runtime_error("AddGroup: Invalid type string! Allowed: All, Node, Edge, Face, Volume, 0DElement, Ball");
-    // add group to mesh
-    SMESH_Group* group = this->getSMesh()->AddGroup(mapping[TypeString], Name.c_str(), aId);
-    if (!group)
-        throw std::runtime_error("AddGroup: Failed to create new group.");
-    return aId;
-}
-
-void FemMesh::addGroupElements(int GroupId, const std::set<int>& ElementIds)
-{
-    SMESH_Group* group = this->getSMesh()->GetGroup(GroupId);
-    if (!group) {
-        throw std::runtime_error("AddGroupElements: No group for given id.");
-    }
-    SMESHDS_Group* groupDS = dynamic_cast<SMESHDS_Group*>(group->GetGroupDS());
-    if (!groupDS) {
-        throw std::runtime_error("addGroupElements: Failed to add group elements.");
-    }
-
-    // Traverse the full mesh and add elements to group if id is in set 'ids'
-    // and if group type is compatible with element
-    SMDSAbs_ElementType aElementType = groupDS->GetType();
-
-    SMDS_ElemIteratorPtr aElemIter = this->getSMesh()->GetMeshDS()->elementsIterator(aElementType);
-    while (aElemIter->more()) {
-        const SMDS_MeshElement* aElem = aElemIter->next();
-        std::set<int>::iterator it;
-        it = ElementIds.find(aElem->GetID());
-        if (it != ElementIds.end())
-        {
-            // the element was in the list
-            if (!groupDS->Contains(aElem)) // check whether element is already in group
-                groupDS->Add(aElem); // if not, add it
-        }
-    }
-}
-
-bool FemMesh::removeGroup(int GroupId)
-{
-    return this->getSMesh()->RemoveGroup(GroupId);
-}
-

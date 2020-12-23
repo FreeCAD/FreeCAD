@@ -1,4 +1,4 @@
-// geo file for meshing with Gmsh meshing software created by FreeCAD
+// geo file for meshing with GMSH meshing software created by FreeCAD
 
 // open brep geometry
 Merge "/tmp/tmp0TVZbM.brep";
@@ -13,7 +13,7 @@ Physical Volume("Solid1") = {1};
 // no boundary layer settings for this mesh
 // min, max Characteristic Length
 Mesh.CharacteristicLengthMax = 1e+22;
-Mesh.CharacteristicLengthMin = 8.0;
+Mesh.CharacteristicLengthMin = 9.0;
 
 // optimize the mesh
 Mesh.Optimize = 1;
@@ -22,7 +22,6 @@ Mesh.HighOrderOptimize = 0;  // for more HighOrderOptimize parameter check http:
 
 // mesh order
 Mesh.ElementOrder = 2;
-Mesh.SecondOrderLinear = 0; // Second order nodes are created by linear interpolation instead by curvilinear
 
 // mesh algorithm, only a few algorithms are usable with 3D boundary layer generation
 // 2D mesh algorithm (1=MeshAdapt, 2=Automatic, 5=Delaunay, 6=Frontal, 7=BAMG, 8=DelQuad)
@@ -42,14 +41,14 @@ Mesh.SaveAll = 1;
 Save "/tmp/tmpjVhNNb.unv";
 
 
-// **********************************************************************
-// Gmsh documentation:
+//////////////////////////////////////////////////////////////////////
+// GMSH documentation:
 // http://gmsh.info/doc/texinfo/gmsh.html#Mesh
 //
-// We do not check if something went wrong, like negative jacobians etc. You can run Gmsh manually yourself: 
+// We do not check if something went wrong, like negative jacobians etc. You can run GMSH manually yourself: 
 //
-// to see full Gmsh log, run in bash:
-// /usr/bin/gmsh - /tmp/tmputZ_uU.geo
+// to see full GMSH log, run in bash:
+// /usr/local/bin/gmsh - /tmp/tmputZ_uU.geo
 //
-// to run Gmsh and keep file in Gmsh GUI (with log), run in bash:
-// /usr/bin/gmsh /tmp/tmputZ_uU.geo
+// to run GMSH and keep file in GMSH GUI (with log), run in bash:
+// /usr/local/bin/gmsh /tmp/tmputZ_uU.geo

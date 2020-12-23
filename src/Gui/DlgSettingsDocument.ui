@@ -7,34 +7,105 @@
     <x>0</x>
     <y>0</y>
     <width>607</width>
-    <height>859</height>
+    <height>720</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Document</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
+   <item row="4" column="0">
+    <spacer>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>429</width>
+       <height>37</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
    <item row="0" column="0">
     <widget class="QGroupBox" name="GroupBox5">
      <property name="title">
       <string>General</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
-      <property name="leftMargin">
-       <number>9</number>
-      </property>
-      <property name="topMargin">
-       <number>9</number>
-      </property>
-      <property name="rightMargin">
-       <number>9</number>
-      </property>
-      <property name="bottomMargin">
+      <property name="margin">
        <number>9</number>
       </property>
       <property name="spacing">
        <number>6</number>
       </property>
+      <item row="2" column="0">
+       <layout class="QHBoxLayout">
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <property name="margin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="textLabel1">
+          <property name="text">
+           <string>Document save compression level
+(0 = none, 9 = highest, 3 = default)</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefSpinBox" name="prefCompression">
+          <property name="toolTip">
+           <string>Compression level for FCStd files</string>
+          </property>
+          <property name="value">
+           <number>3</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>CompressionLevel</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Document</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="5" column="0">
+       <layout class="QHBoxLayout">
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <property name="margin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="textLabel1_2">
+          <property name="text">
+           <string>Maximum Undo/Redo steps</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefSpinBox" name="prefUndoRedoSize">
+          <property name="toolTip">
+           <string>How many Undo/Redo steps should be recorded</string>
+          </property>
+          <property name="value">
+           <number>20</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>MaxUndoSize</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Document</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
       <item row="0" column="0">
        <widget class="Gui::PrefCheckBox" name="prefCheckNewDoc">
         <property name="toolTip">
@@ -66,49 +137,6 @@
          <enum>Qt::Horizontal</enum>
         </property>
        </widget>
-      </item>
-      <item row="2" column="0">
-       <layout class="QHBoxLayout">
-        <property name="spacing">
-         <number>6</number>
-        </property>
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-        <item>
-         <widget class="QLabel" name="textLabel1">
-          <property name="text">
-           <string>Document save compression level
-(0 = none, 9 = highest, 3 = default)</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefSpinBox" name="prefCompression">
-          <property name="toolTip">
-           <string>Compression level for FCStd files</string>
-          </property>
-          <property name="value">
-           <number>3</number>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>CompressionLevel</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Document</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
       </item>
       <item row="3" column="0">
        <widget class="Line" name="line1_2">
@@ -142,48 +170,6 @@
         </property>
        </widget>
       </item>
-      <item row="5" column="0">
-       <layout class="QHBoxLayout">
-        <property name="spacing">
-         <number>6</number>
-        </property>
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-        <item>
-         <widget class="QLabel" name="textLabel1_2">
-          <property name="text">
-           <string>Maximum Undo/Redo steps</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefSpinBox" name="prefUndoRedoSize">
-          <property name="toolTip">
-           <string>How many Undo/Redo steps should be recorded</string>
-          </property>
-          <property name="value">
-           <number>20</number>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>MaxUndoSize</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Document</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
       <item row="6" column="0">
        <widget class="Line" name="line">
         <property name="orientation">
@@ -201,10 +187,10 @@ This feature may slightly increase recomputation time.</string>
          <string>Allow aborting recomputation</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>CanAbortRecompute</cstring>
+         <string>CanAbortRecompute</string>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>Document</cstring>
+         <string>Document</string>
         </property>
        </widget>
       </item>
@@ -328,93 +314,15 @@ automatically run a file recovery when it is started.</string>
        </widget>
       </item>
       <item row="5" column="0">
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <item>
-         <widget class="Gui::PrefCheckBox" name="prefSaveThumbnail">
-          <property name="toolTip">
-           <string>A thumbnail will be stored when document is saved</string>
-          </property>
-          <property name="text">
-           <string>Save thumbnail into project file when saving document</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>SaveThumbnail</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Document</cstring>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Maximum</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>91</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_6">
-          <property name="text">
-           <string>Size</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefSpinBox" name="prefThumbnailSize">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="toolTip">
-           <string>Sets the size of the thumbnail that is stored in the document.
-Common sizes are 128, 256 and 512</string>
-          </property>
-          <property name="minimum">
-           <number>64</number>
-          </property>
-          <property name="maximum">
-           <number>512</number>
-          </property>
-          <property name="value">
-           <number>128</number>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ThumbnailSize</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Document</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item row="6" column="0">
-       <widget class="Gui::PrefCheckBox" name="prefAddLogo">
+       <widget class="Gui::PrefCheckBox" name="prefSaveThumbnail">
         <property name="toolTip">
-         <string>The program logo will be added to the thumbnail</string>
+         <string>A thumbnail will be stored when document is saved</string>
         </property>
         <property name="text">
-         <string>Add the program logo to the generated thumbnail</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
+         <string>Save thumbnail into project file when saving document</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>AddThumbnailLogo</cstring>
+         <cstring>SaveThumbnail</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Document</cstring>
@@ -426,16 +334,7 @@ Common sizes are 128, 256 and 512</string>
         <property name="spacing">
          <number>6</number>
         </property>
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
+        <property name="margin">
          <number>0</number>
         </property>
         <item>
@@ -488,61 +387,24 @@ Common sizes are 128, 256 and 512</string>
         </item>
        </layout>
       </item>
-      <item row="8" column="0">
-       <layout class="QHBoxLayout">
-        <property name="spacing">
-         <number>6</number>
+      <item row="6" column="0">
+       <widget class="Gui::PrefCheckBox" name="prefAddLogo">
+        <property name="toolTip">
+         <string>Program logo will be added to the thumbnail</string>
         </property>
-        <property name="leftMargin">
-         <number>0</number>
+        <property name="text">
+         <string>Add the program logo to the generated thumbnail</string>
         </property>
-        <property name="topMargin">
-         <number>0</number>
+        <property name="checked">
+         <bool>true</bool>
         </property>
-        <property name="rightMargin">
-         <number>0</number>
+        <property name="prefEntry" stdset="0">
+         <cstring>AddThumbnailLogo</cstring>
         </property>
-        <property name="bottomMargin">
-         <number>0</number>
+        <property name="prefPath" stdset="0">
+         <cstring>Document</cstring>
         </property>
-        <item>
-         <widget class="Gui::PrefCheckBox" name="prefSaveBackupExtension">
-          <property name="toolTip">
-           <string>Backup files will get extension '.FCbak' and file names
-get date suffix according to the specified format</string>
-          </property>
-          <property name="text">
-           <string>Use date and FCBak extension</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>UseFCBakExtension</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Document</cstring>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_5">
-          <property name="text">
-           <string>Date format</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefLineEdit" name="prefSaveBackupDateFormat">
-          <property name="text">
-           <string notr="true">%Y%m%d-%H%M%S</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>SaveBackupDateFormat</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Document</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -571,13 +433,6 @@ get date suffix according to the specified format</string>
       </item>
       <item row="1" column="0">
        <widget class="Gui::PrefCheckBox" name="prefPartialLoading">
-        <property name="toolTip">
-         <string>Enable partial loading of external linked documents.
-Then only referenced objects and their dependencies will be loaded
-when a linked document is auto-opened together with the main document.
-A partially loaded document cannot be edited. Double click the document
-icon in the tree view to fully reload it.</string>
-        </property>
         <property name="text">
          <string>Disable partial loading of external linked objects</string>
         </property>
@@ -761,31 +616,18 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</string>
      </layout>
     </widget>
    </item>
-   <item row="4" column="0">
-    <spacer>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>429</width>
-       <height>37</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>Gui::PrefCheckBox</class>
-   <extends>QCheckBox</extends>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefSpinBox</class>
-   <extends>QSpinBox</extends>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
@@ -799,6 +641,15 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</string>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>prefCheckNewDoc</tabstop>
+  <tabstop>prefCompression</tabstop>
+  <tabstop>prefUndoRedo</tabstop>
+  <tabstop>prefUndoRedoSize</tabstop>
+  <tabstop>prefSaveTransaction</tabstop>
+  <tabstop>prefDiscardTransaction</tabstop>
+  <tabstop>prefSaveThumbnail</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
@@ -808,12 +659,12 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</string>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>150</x>
-     <y>525</y>
+     <x>106</x>
+     <y>325</y>
     </hint>
     <hint type="destinationlabel">
-     <x>584</x>
-     <y>527</y>
+     <x>479</x>
+     <y>326</y>
     </hint>
    </hints>
   </connection>
@@ -824,60 +675,12 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</string>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>218</x>
-     <y>385</y>
+     <x>196</x>
+     <y>253</y>
     </hint>
     <hint type="destinationlabel">
-     <x>582</x>
-     <y>387</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>prefSaveBackupFiles</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>prefSaveBackupExtension</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>280</x>
-     <y>525</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>204</x>
-     <y>559</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>prefSaveBackupFiles</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>prefSaveBackupDateFormat</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>326</x>
-     <y>525</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>584</x>
-     <y>560</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>prefSaveThumbnail</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>prefThumbnailSize</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>313</x>
-     <y>412</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>398</x>
-     <y>452</y>
+     <x>275</x>
+     <y>254</y>
     </hint>
    </hints>
   </connection>

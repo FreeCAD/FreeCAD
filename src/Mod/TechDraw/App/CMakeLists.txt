@@ -67,7 +67,6 @@ generate_from_xml(CosmeticVertexPy)
 generate_from_xml(DrawTilePy)
 generate_from_xml(DrawTileWeldPy)
 generate_from_xml(DrawWeldSymbolPy)
-generate_from_xml(CosmeticExtensionPy)
 
 SET(Draw_SRCS
     DrawPage.cpp
@@ -100,8 +99,6 @@ SET(Draw_SRCS
     DrawViewDimension.h
     DrawViewDimExtent.cpp
     DrawViewDimExtent.h
-    LandmarkDimension.cpp
-    LandmarkDimension.h
     DrawViewBalloon.cpp
     DrawViewBalloon.h
     DrawViewSection.cpp
@@ -153,10 +150,6 @@ SET(TechDraw_SRCS
     DrawProjectSplit.h
     LineGroup.cpp
     LineGroup.h
-    ArrowPropEnum.cpp
-    ArrowPropEnum.h
-    Preferences.cpp
-    Preferences.h
 )
 
 SET(Geometry_SRCS
@@ -174,8 +167,6 @@ SET(Geometry_SRCS
     PropertyCosmeticEdgeList.h
     PropertyCosmeticVertexList.cpp
     PropertyCosmeticVertexList.h
-    CosmeticExtension.cpp
-    CosmeticExtension.h
 )
 
 SET(Python_SRCS
@@ -229,8 +220,6 @@ SET(Python_SRCS
     DrawTileWeldPyImp.cpp
     DrawWeldSymbolPy.xml
     DrawWeldSymbolPyImp.cpp
-    CosmeticExtensionPy.xml
-    CosmeticExtensionPyImp.cpp
     )
 
 SOURCE_GROUP("Mod" FILES ${TechDraw_SRCS})

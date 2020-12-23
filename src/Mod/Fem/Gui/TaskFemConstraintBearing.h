@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jan Rheinländer                                    *
- *                                   <jrheinlaender@users.sourceforge.net> *
+ *   Copyright (c) 2013 Jan Rheinländer <jrheinlaender@users.sourceforge.net>        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -32,8 +31,6 @@
 #include "TaskFemConstraint.h"
 #include "ViewProviderFemConstraintBearing.h"
 
-#include <QKeyEvent>
-
 class Ui_TaskFemConstraintBearing;
 
 namespace App {
@@ -52,7 +49,7 @@ class TaskFemConstraintBearing : public TaskFemConstraint
 
 public:
     TaskFemConstraintBearing(ViewProviderFemConstraint *ConstraintView, QWidget *parent = 0,
-                             const char* pixmapname = "FEM_ConstraintBearing");
+                             const char* pixmapname = "fem-constraint-bearing");
     virtual ~TaskFemConstraintBearing();
 
     double getDistance(void) const;
@@ -68,7 +65,6 @@ private Q_SLOTS:
     void onCheckAxial(bool);
 
 protected:
-    bool event(QEvent *e);
     virtual void changeEvent(QEvent *e);
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
 

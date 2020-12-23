@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
- *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
+ *   Copyright (c) Stefan Tröger          (stefantroeger@gmx.net) 2015     *
+ *   Copyright (c) Alexander Golubev (Fat-Zer) <fatzer2@gmail.com> 2015    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -28,7 +28,6 @@
 #include "GeoFeature.h"
 
 #include "OriginFeature.h"
-#include "GeoFeatureGroupExtension.h"
 #include "PropertyLinks.h"
 
 namespace App
@@ -136,15 +135,6 @@ private:
     struct SetupData;
     void setupOriginFeature (App::PropertyLink &featProp, const SetupData &data);
 
-    class OriginExtension : public GeoFeatureGroupExtension {
-        Origin* obj;
-    public:
-        OriginExtension(Origin* obj);
-        void initExtension(ExtensionContainer* obj);
-        bool extensionGetSubObject(DocumentObject *&ret, const char *subname,
-                PyObject **, Base::Matrix4D *, bool, int) const;
-    };
-    OriginExtension extension;
 };
 
 } //namespace App

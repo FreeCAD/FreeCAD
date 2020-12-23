@@ -83,9 +83,6 @@ public:
     virtual void drawBorder(void);
     virtual void isVisible(bool state);
     virtual bool isVisible(void);
-
-    virtual void setGroupSelection(bool b);
-
     virtual void draw(void);
     virtual void drawCaption(void);
     virtual void rotateView(void);
@@ -121,15 +118,7 @@ public:
     static int calculateFontPixelWidth(const QFont &font);
     static const double DefaultFontSizeInMM;
 
-    static QString getPrefFont(void);
-    static double getPrefFontSize(void);
-    static double getDimFontSize(void);
-
-
     MDIViewPage* getMDIViewPage(void) const;
-    virtual void removeChild(QGIView* child);
-
-    virtual void addArbitraryItem(QGraphicsItem* qgi);
 
     // Mouse handling
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
@@ -148,11 +137,11 @@ protected:
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
     virtual QRectF customChildrenBoundingRect(void) const;
-    void dumpRect(const char* text, QRectF r);
+    void dumpRect(char* text, QRectF r);
 
-/*    QString getPrefFont(void);*/
-/*    double getPrefFontSize(void);*/
-/*    double getDimFontSize(void);*/
+    QString getPrefFont(void);
+    double getPrefFontSize(void);
+    double getDimFontSize(void);
 
     Base::Reference<ParameterGrp> getParmGroupCol(void);
 
@@ -181,7 +170,7 @@ protected:
     double m_lockWidth;
     double m_lockHeight;
 
-//    std::vector<QGraphicsItem*> m_randomItems;
+    int m_selectState;
 };
 
 } // namespace

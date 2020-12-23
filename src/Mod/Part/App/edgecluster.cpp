@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2010 Joachim Zettler <Joachim.Zettler@gmx.de>           *
+ *   Copyright (c) 2010                                                    *
+ *   Joachim Zettler <Joachim.Zettler@gmx.de>                              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *

@@ -43,7 +43,6 @@
 #include <Inventor/nodes/SoMaterialBinding.h>
 #include <Inventor/nodes/SoNormal.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/actions/SoSearchAction.h>
 
 #include <Base/Exception.h>
 #include <App/PropertyLinks.h>
@@ -98,7 +97,6 @@ ViewProviderInspection::ViewProviderInspection() : search_radius(FLT_MAX)
     pcPointStyle->ref();
     pcPointStyle->style = SoDrawStyle::POINTS;
     pcPointStyle->pointSize = PointSize.getValue();
-    SelectionStyle.setValue(1); // BBOX
 }
 
 ViewProviderInspection::~ViewProviderInspection()
@@ -202,16 +200,16 @@ void ViewProviderInspection::updateData(const App::Property* prop)
             // set the Distance property to the correct size to sync size of material node with number
             // of vertices/points of the referenced geometry
             if (object->getTypeId().isDerivedFrom(meshId)) {
-                App::Property* propM = object->getPropertyByName("Mesh");
-                if (propM && propM->getTypeId().isDerivedFrom(propId)) {
-                    const Data::ComplexGeoData* data = static_cast<App::PropertyComplexGeoData*>(propM)->getComplexData();
+                App::Property* prop = object->getPropertyByName("Mesh");
+                if (prop && prop->getTypeId().isDerivedFrom(propId)) {
+                    const Data::ComplexGeoData* data = static_cast<App::PropertyComplexGeoData*>(prop)->getComplexData();
                     data->getFaces(points, faces, accuracy);
                 }
             }
             else if (object->getTypeId().isDerivedFrom(shapeId)) {
-                App::Property* propS = object->getPropertyByName("Shape");
-                if (propS && propS->getTypeId().isDerivedFrom(propId)) {
-                    const Data::ComplexGeoData* data = static_cast<App::PropertyComplexGeoData*>(propS)->getComplexData();
+                App::Property* prop = object->getPropertyByName("Shape");
+                if (prop && prop->getTypeId().isDerivedFrom(propId)) {
+                    const Data::ComplexGeoData* data = static_cast<App::PropertyComplexGeoData*>(prop)->getComplexData();
                     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
                         ("User parameter:BaseApp/Preferences/Mod/Part");
                     float deviation = hGrp->GetFloat("MeshDeviation",0.2);
@@ -222,9 +220,9 @@ void ViewProviderInspection::updateData(const App::Property* prop)
                 }
             }
             else if (object->getTypeId().isDerivedFrom(pointId)) {
-                App::Property* propP = object->getPropertyByName("Points");
-                if (propP && propP->getTypeId().isDerivedFrom(propId)) {
-                    const Data::ComplexGeoData* data = static_cast<App::PropertyComplexGeoData*>(propP)->getComplexData();
+                App::Property* prop = object->getPropertyByName("Points");
+                if (prop && prop->getTypeId().isDerivedFrom(propId)) {
+                    const Data::ComplexGeoData* data = static_cast<App::PropertyComplexGeoData*>(prop)->getComplexData();
                     std::vector<Base::Vector3d> normals;
                     data->getPoints(points, normals, accuracy);
                 }
@@ -474,7 +472,6 @@ void ViewProviderInspection::inspectCallback(void * ud, SoEventCallback * n)
                 view->getWidget()->setCursor(QCursor(Qt::ArrowCursor));
                 view->setRedirectToSceneGraph(false);
                 view->setRedirectToSceneGraphEnabled(false);
-                view->setSelectionEnabled(true);
                 view->removeEventCallback(SoButtonEvent::getClassTypeId(), inspectCallback, ud);
             }
         }
@@ -488,7 +485,7 @@ void ViewProviderInspection::inspectCallback(void * ud, SoEventCallback * n)
             n->setHandled();
 
             // check if we have picked one a node of the view provider we are insterested in
-            Gui::ViewProvider* vp = view->getDocument()->getViewProviderByPathFromTail(point->getPath());
+            Gui::ViewProvider* vp = static_cast<Gui::ViewProvider*>(view->getViewProviderByPath(point->getPath()));
             if (vp && vp->getTypeId().isDerivedFrom(ViewProviderInspection::getClassTypeId())) {
                 ViewProviderInspection* that = static_cast<ViewProviderInspection*>(vp);
                 QString info = that->inspectDistance(point);
@@ -508,10 +505,10 @@ void ViewProviderInspection::inspectCallback(void * ud, SoEventCallback * n)
                 const SoPickedPointList& pps = action.getPickedPointList();
                 for (int i=0; i<pps.getLength(); ++i) {
                     const SoPickedPoint * point = pps[i];
-                    vp = view->getDocument()->getViewProviderByPathFromTail(point->getPath());
+                    vp = static_cast<Gui::ViewProvider*>(view->getViewProviderByPath(point->getPath()));
                     if (vp && vp->getTypeId().isDerivedFrom(ViewProviderInspection::getClassTypeId())) {
-                        ViewProviderInspection* self = static_cast<ViewProviderInspection*>(vp);
-                        QString info = self->inspectDistance(point);
+                        ViewProviderInspection* that = static_cast<ViewProviderInspection*>(vp);
+                        QString info = that->inspectDistance(point);
                         Gui::getMainWindow()->setPaneText(1,info);
                         if (addflag)
                             ViewProviderProxyObject::addFlag(view, info, point);
@@ -586,24 +583,15 @@ QString ViewProviderInspection::inspectDistance(const SoPickedPoint* pp) const
                     info = QObject::tr("Distance: < %1").arg(-fSearchRadius);
                 }
                 else {
-                    SoSearchAction searchAction;
-                    searchAction.setType(SoCoordinate3::getClassTypeId());
-                    searchAction.setInterest(SoSearchAction::FIRST);
-                    searchAction.apply(pp->getPath()->getNodeFromTail(1));
-                    SoPath* selectionPath = searchAction.getPath();
-
-                    if (selectionPath) {
-                        SoCoordinate3* coords = static_cast<SoCoordinate3*>(selectionPath->getTail());
-                        const SbVec3f& v1 = coords->point[index1];
-                        const SbVec3f& v2 = coords->point[index2];
-                        const SbVec3f& v3 = coords->point[index3];
-                        const SbVec3f& p = pp->getObjectPoint();
-                        // get the weights
-                        float w1, w2, w3;
-                        calcWeights(v1, v2, v3, p, w1, w2, w3);
-                        float fVal = w1 * fVal1 + w2 * fVal2 + w3 * fVal3;
-                        info = QObject::tr("Distance: %1").arg(fVal);
-                    }
+                    const SbVec3f& v1 = this->pcCoords->point[index1];
+                    const SbVec3f& v2 = this->pcCoords->point[index2];
+                    const SbVec3f& v3 = this->pcCoords->point[index3];
+                    const SbVec3f& p = pp->getObjectPoint();
+                    // get the weights
+                    float w1, w2, w3;
+                    calcWeights(v1,v2,v3,p,w1,w2,w3);
+                    float fVal = w1*fVal1+w2*fVal2+w3*fVal3;
+                    info = QObject::tr("Distance: %1").arg(fVal);
                 }
             }
         }

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2009 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
+ *   Copyright (c) 2009 Juergen Riegel (FreeCAD@juergen-riegel.net)        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -34,8 +34,6 @@
 #include "UnitsSchemaMKS.h"
 #include "UnitsSchemaCentimeters.h"
 #include "UnitsSchemaMmMin.h"
-#include "UnitsSchemaFemMilliMeterNewton.h"
-#include "StdStlTools.h"
 
 #ifndef M_PI
 #define M_PI       3.14159265358979323846
@@ -57,14 +55,14 @@ using namespace Base;
 //{
 //    // check limits
 //    assert(t<9);
-//    // returns
+//    // returns 
 //    return QString::fromLatin1(QuantityNames[t]);
 //}
 // === static attributes  ================================================
 double UnitsApi::defaultFactor = 1.0;
 
-UnitsSchemaPtr  UnitsApi::UserPrefSystem(new UnitsSchemaInternal());
-UnitSystem    UnitsApi::actSystem = UnitSystem::SI1;
+UnitsSchema  *UnitsApi::UserPrefSystem = new UnitsSchemaInternal();
+UnitSystem    UnitsApi::actSystem = SI1;
 
 //double   UnitsApi::UserPrefFactor [50];
 //QString  UnitsApi::UserPrefUnit   [50];
@@ -85,61 +83,59 @@ UnitsApi::~UnitsApi()
 const char* UnitsApi::getDescription(UnitSystem system)
 {
     switch (system) {
-    case UnitSystem::SI1:
+    case SI1:
         return "Standard (mm/kg/s/degree)";
-    case UnitSystem::SI2:
+    case SI2:
         return "MKS (m/kg/s/degree)";
-    case UnitSystem::Imperial1:
+    case Imperial1:
         return "US customary (in/lb)";
-    case UnitSystem::ImperialDecimal:
+    case ImperialDecimal:
         return "Imperial decimal (in/lb)";
-    case UnitSystem::Centimeters:
+    case Centimeters:
         return "Building Euro (cm/m²/m³)";
-    case UnitSystem::ImperialBuilding:
-        return "Building US (ft-in/sqft/cft)";
-    case UnitSystem::MmMin:
+    case ImperialBuilding:
+        return "Building US (ft-in/sqft/cuft)";
+    case MmMin:
         return "Metric small parts & CNC(mm, mm/min)";
-    case UnitSystem::ImperialCivil:
+    case ImperialCivil:
         return "Imperial for Civil Eng (ft, ft/sec)";
-    case UnitSystem::FemMilliMeterNewton:
-        return "FEM (mm, N, s)";
     default:
         return "Unknown schema";
     }
 }
 
-UnitsSchemaPtr UnitsApi::createSchema(UnitSystem s)
+UnitsSchema* UnitsApi::createSchema(UnitSystem s)
 {
     switch (s) {
-    case UnitSystem::SI1:
-        return std::make_unique<UnitsSchemaInternal>();
-    case UnitSystem::SI2:
-        return std::make_unique<UnitsSchemaMKS>();
-    case UnitSystem::Imperial1:
-        return std::make_unique<UnitsSchemaImperial1>();
-    case UnitSystem::ImperialDecimal:
-        return std::make_unique<UnitsSchemaImperialDecimal>();
-    case UnitSystem::Centimeters:
-        return std::make_unique<UnitsSchemaCentimeters>();
-    case UnitSystem::ImperialBuilding:
-        return std::make_unique<UnitsSchemaImperialBuilding>();
-    case UnitSystem::MmMin:
-        return std::make_unique<UnitsSchemaMmMin>();
-    case UnitSystem::ImperialCivil:
-        return std::make_unique<UnitsSchemaImperialCivil>();
-    case UnitSystem::FemMilliMeterNewton:
-        return std::make_unique<UnitsSchemaFemMilliMeterNewton>();
+    case SI1:
+        return new UnitsSchemaInternal();
+    case SI2:
+        return new UnitsSchemaMKS();
+    case Imperial1:
+        return new UnitsSchemaImperial1();
+    case ImperialDecimal:
+        return new UnitsSchemaImperialDecimal();
+    case Centimeters:
+        return new UnitsSchemaCentimeters();
+    case ImperialBuilding:
+        return new UnitsSchemaImperialBuilding();
+    case MmMin:
+        return new UnitsSchemaMmMin();
+    case ImperialCivil:
+        return new UnitsSchemaImperialCivil();
     default:
         break;
     }
 
-    return nullptr;
+    return 0;
 }
 
 void UnitsApi::setSchema(UnitSystem s)
 {
     if (UserPrefSystem) {
         UserPrefSystem->resetSchemaUnits(); // for schemas changed the Quantity constants
+        delete UserPrefSystem;
+        UserPrefSystem = 0;
     }
 
     UserPrefSystem = createSchema(s);
@@ -147,8 +143,8 @@ void UnitsApi::setSchema(UnitSystem s)
 
     // for wrong value fall back to standard schema
     if (!UserPrefSystem) {
-        UserPrefSystem = std::make_unique<UnitsSchemaInternal>();
-        actSystem = UnitSystem::SI1;
+        UserPrefSystem = new UnitsSchemaInternal();
+        actSystem = SI1;
     }
 
     UserPrefSystem->setSchemaUnits(); // if necessary a unit schema can change the constants in Quantity (e.g. mi=1.8km rather then 1.6km).

@@ -141,7 +141,7 @@ void ViewProviderMeshTransformDemolding::calcNormalVector(void)
     const MeshGeomFacet& rFace = *cFIt;
 
     Base::Vector3f norm(rFace.GetNormal());
-    normalVector.emplace_back(norm.x,norm.y,norm.z);
+    normalVector.push_back(SbVec3f(norm.x,norm.y,norm.z));
   }
 }
 

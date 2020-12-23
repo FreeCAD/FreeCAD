@@ -99,17 +99,10 @@ public:
         Trackball
     };
 
-#if QT_VERSION < 0x050000
     enum RotationCenterMode {
-#else
-    enum class RotationCenterMode {
-#endif
-        WindowCenter       = 0, /**< The center of the window */
-        ScenePointAtCursor = 1, /**< Find the point in the scene at the cursor position. If there is no point then the focal plane is used */
-        FocalPointAtCursor = 2, /**< Find the point on the focal plane at the cursor position. */
-        BoundingBoxCenter  = 4  /**< Find the center point of the bounding box of the scene. */
+        ScenePointAtCursor,     /**< Find the point in the scene at the cursor position. If there is no point then the focal plane is used */
+        FocalPointAtCursor      /**< Find the point on the focal plane at the cursor position. */
     };
-    Q_DECLARE_FLAGS(RotationCenterModes, RotationCenterMode)
 
 public:
     NavigationStyle();
@@ -138,8 +131,10 @@ public:
     SbBool isZoomAtCursor() const;
     void zoomIn();
     void zoomOut();
-    void setRotationCenterMode(RotationCenterModes);
-    RotationCenterModes getRotationCenterMode() const;
+    void setDragAtCursor(SbBool);
+    SbBool isDragAtCursor() const;
+    void setRotationCenterMode(RotationCenterMode);
+    RotationCenterMode getRotationCenterMode() const;
     void setRotationCenter(const SbVec3f& cnt);
     SbVec3f getFocalPoint() const;
 
@@ -193,10 +188,9 @@ protected:
                    const SbVec2f & current);
     void pan(SoCamera* camera);
     void panToCenter(const SbPlane & pplane, const SbVec2f & currpos);
-    int getDelta() const;
     void zoom(SoCamera * camera, float diffvalue);
     void zoomByCursor(const SbVec2f & thispos, const SbVec2f & prevpos);
-    void doZoom(SoCamera * camera, int wheeldelta, const SbVec2f& pos);
+    void doZoom(SoCamera * camera, SbBool forward, const SbVec2f& pos);
     void doZoom(SoCamera * camera, float logzoomfactor, const SbVec2f& pos);
     void doRotate(SoCamera * camera, float angle, const SbVec2f& pos);
     void spin(const SbVec2f & pointerpos);
@@ -269,7 +263,7 @@ private:
  * in the above dialog.
  * This mechanism is useful to implement special navigation styles which are
  * only needed for certain purposes. Thus, it should not be possible to be
- * choosable by the user
+ * choosable by the user 
  * @author Werner Mayer
  */
 class GuiExport UserNavigationStyle : public NavigationStyle {
@@ -415,6 +409,4 @@ private:
 
 } // namespace Gui
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(Gui::NavigationStyle::RotationCenterModes)
-
-#endif // GUI_NAVIGATIONSTYLE_H
+#endif // GUI_NAVIGATIONSTYLE_H 

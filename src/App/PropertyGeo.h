@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -224,9 +224,6 @@ public:
     virtual void Paste(const Property &from) override;
 
     virtual unsigned int getMemSize (void) const override;
-    const char* getEditorName(void) const override {
-        return "Gui::PropertyEditor::PropertyVectorListItem";
-    }
 
 protected:
     Base::Vector3d getPyValue(PyObject *) const override;

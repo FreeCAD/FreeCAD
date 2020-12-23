@@ -1,5 +1,7 @@
 #***************************************************************************
-#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
+#*                                                                         *
+#*   Copyright (c) 2011                                                    *
+#*   Yorik van Havre <yorik@uncreated.net>                                 *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -29,8 +31,6 @@ if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
-    import ArchPrecast
-    import draftguitools.gui_trackers as DraftTrackers
 else:
     # \cond
     def translate(ctxt,txt):
@@ -48,9 +48,9 @@ else:
 #  elements that have a structural function, that is, that
 #  support other parts of the building.
 
-__title__= "FreeCAD Structure"
+__title__="FreeCAD Structure"
 __author__ = "Yorik van Havre"
-__url__ = "https://www.freecadweb.org"
+__url__ = "http://www.freecadweb.org"
 
 
 #Reads preset profiles and categorizes them
@@ -116,7 +116,7 @@ def makeStructure(baseobj=None,length=None,width=None,height=None,name="Structur
             elif height and not length:
                 obj.Width = w
                 obj.Length = h
-
+            
     if not height and not length:
         obj.IfcType = "Undefined"
     elif obj.Length > obj.Height:
@@ -249,7 +249,7 @@ class _CommandStructure:
         # interactive mode
         if hasattr(FreeCAD,"DraftWorkingPlane"):
             FreeCAD.DraftWorkingPlane.setup()
-
+        import DraftTrackers,ArchPrecast
         self.points = []
         self.tracker = DraftTrackers.boxTracker()
         self.tracker.width(self.Width)
@@ -344,7 +344,7 @@ class _CommandStructure:
             self.Activated()
 
     def _createItemlist(self, baselist):
-
+        
         "create nice labels for presets in the task panel"
 
         ilist=[]
@@ -671,14 +671,14 @@ class _Structure(ArchComponent.Component):
                 else:
                     pli = pla[-1].copy()
                 shi.Placement = pli.multiply(shi.Placement)
-                if not isinstance(evi, FreeCAD.Vector):
+                extv = pla[0].Rotation.multVec(evi)
+                if obj.Tool:
                     try:
-                        shi = evi.makePipe(shi)
+                        shi = obj.Tool.Shape.copy().makePipe(obj.Base.Shape.copy())
                     except Part.OCCError:
                         FreeCAD.Console.PrintError(translate("Arch","Error: The base shape couldn't be extruded along this tool object")+"\n")
                         return
                 else:
-                    extv = pla[0].Rotation.multVec(evi)
                     shi = shi.extrude(extv)
                 base.append(shi)
             if len(base) == 1:
@@ -686,7 +686,7 @@ class _Structure(ArchComponent.Component):
             else:
                 base = Part.makeCompound(base)
         if obj.Base:
-            if hasattr(obj.Base,'Shape'):
+            if obj.Base.isDerivedFrom("Part::Feature"):
                 if obj.Base.Shape.isNull():
                     return
                 if not obj.Base.Shape.isValid():
@@ -734,12 +734,12 @@ class _Structure(ArchComponent.Component):
         base = None
         placement = None
         if obj.Base:
-            if hasattr(obj.Base,'Shape'):
+            if obj.Base.isDerivedFrom("Part::Feature"):
                 if obj.Base.Shape:
                     if obj.Base.Shape.Solids:
                         return None
                     elif obj.Base.Shape.Faces:
-                        if not DraftGeomUtils.isCoplanar(obj.Base.Shape.Faces,tol=0.01):
+                        if not DraftGeomUtils.isCoplanar(obj.Base.Shape.Faces,tolerance=0.01):
                             return None
                         else:
                             base,placement = self.rebase(obj.Base.Shape)
@@ -809,31 +809,23 @@ class _Structure(ArchComponent.Component):
             baseface = Part.Face(Part.makePolygon([v1,v2,v3,v4,v1]))
             base,placement = self.rebase(baseface)
         if base and placement:
-            if obj.Tool:
-                if obj.Tool.Shape:
-                    edges = obj.Tool.Shape.Edges
-                    if len(edges) == 1 and DraftGeomUtils.geomType(edges[0]) == "Line":
-                        extrusion = DraftGeomUtils.vec(edges[0])
-                    else:
-                        extrusion = obj.Tool.Shape.copy()
-            else:
-                if obj.Normal.Length:
-                    normal = Vector(obj.Normal).normalize()
-                    if isinstance(placement,list):
-                        normal = placement[0].inverse().Rotation.multVec(normal)
-                    else:
-                        normal = placement.inverse().Rotation.multVec(normal)
-                if not normal:
-                    normal = Vector(0,0,1)
-                if not normal.Length:
-                    normal = Vector(0,0,1)
-                extrusion = normal
-                if (length > height) and (IfcType != "Slab"):
-                    if length:
-                        extrusion = normal.multiply(length)
+            if obj.Normal.Length:
+                normal = Vector(obj.Normal)
+                if isinstance(placement,list):
+                    normal = placement[0].inverse().Rotation.multVec(normal)
                 else:
-                    if height:
-                        extrusion = normal.multiply(height)
+                    normal = placement.inverse().Rotation.multVec(normal)
+            if not normal:
+                normal = Vector(0,0,1)
+            if not normal.Length:
+                normal = Vector(0,0,1)
+            extrusion = normal
+            if (length > height) and (IfcType != "Slab"):
+                if length:
+                    extrusion = normal.multiply(length)
+            else:
+                if height:
+                    extrusion = normal.multiply(height)
             return (base,extrusion,placement)
         return None
 
@@ -850,7 +842,6 @@ class _Structure(ArchComponent.Component):
             extdata = self.getExtrusionData(obj)
             if extdata and not isinstance(extdata[0],list):
                 nodes = extdata[0]
-                ev = extdata[2].Rotation.multVec(extdata[1])
                 nodes.Placement = nodes.Placement.multiply(extdata[2])
                 if IfcType not in ["Slab"]:
                     if obj.Tool:
@@ -858,7 +849,7 @@ class _Structure(ArchComponent.Component):
                     elif extdata[1].Length > 0:
                         if hasattr(nodes,"CenterOfMass"):
                             import Part
-                            nodes = Part.LineSegment(nodes.CenterOfMass,nodes.CenterOfMass.add(ev)).toShape()
+                            nodes = Part.LineSegment(nodes.CenterOfMass,nodes.CenterOfMass.add(extdata[1])).toShape()
             offset = FreeCAD.Vector()
             if hasattr(obj,"NodesOffset"):
                 offset = FreeCAD.Vector(0,0,obj.NodesOffset.Value)
@@ -1224,7 +1215,7 @@ class _StructuralSystem(ArchComponent.Component): # OBSOLETE - All Arch objects 
         # creating base shape
         pl = obj.Placement
         if obj.Base:
-            if hasattr(obj.Base,'Shape'):
+            if obj.Base.isDerivedFrom("Part::Feature"):
                 if obj.Base.Shape.isNull():
                     return
                 if not obj.Base.Shape.Solids:

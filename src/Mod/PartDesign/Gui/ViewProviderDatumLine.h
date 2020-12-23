@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jan Rheinländer                                    *
- *                                   <jrheinlaender@users.sourceforge.net> *
+ *   Copyright (c) 2013 Jan Rheinlaender <jrheinlaender@users.sourceforge.net>        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -43,8 +42,7 @@ public:
     virtual void attach ( App::DocumentObject *obj );
     virtual void updateData(const App::Property*);
 
-    void setExtents (Base::BoundBox3d bbox);
-    void setExtents(double l);
+    virtual void setExtents (Base::BoundBox3d bbox);
 
 private:
     SoCoordinate3 *pCoords;

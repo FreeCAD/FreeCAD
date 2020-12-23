@@ -82,10 +82,10 @@ not belonging to faces and faces not belonging to volumes.</string>
            <string>element parameter: All: all elements, highest: highest elements only, FEM: FEM elements only (only edges not belonging to faces and faces not belonging to volumes)</string>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>AbaqusElementChoice</cstring>
+           <string>AbaqusElementChoice</string>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>Mod/Fem/Abaqus</cstring>
+           <string>Mod/Fem/Abaqus</string>
           </property>
           <item>
            <property name="text">

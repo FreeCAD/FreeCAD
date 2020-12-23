@@ -93,7 +93,7 @@ namespace Gui {
 class NS::Event : public sc::event<NS::Event>
 {
 public:
-    Event():inventor_event(nullptr), flags(new Flags){}
+    Event():flags(new Flags){}
     virtual ~Event(){}
 
     void log() const {
@@ -301,6 +301,16 @@ public:
             return transit<NS::AwaitingReleaseState>();
         }
 
+        //wheel events
+        if(ev.isMouseButtonEvent() && ev.asMouseButtonEvent()->getButton() == SoMouseButtonEvent::BUTTON4){
+            ns.doZoom(ns.viewer->getSoRenderManager()->getCamera(), true, posn);
+            ev.flags->processed = true;
+        }
+        if(ev.isMouseButtonEvent() && ev.asMouseButtonEvent()->getButton() == SoMouseButtonEvent::BUTTON5){
+            ns.doZoom(ns.viewer->getSoRenderManager()->getCamera(), false, posn);
+            ev.flags->processed = true;
+        }
+
         //touchscreen gestures
         if(ev.isGestureActive()){
             ev.flags->processed = true;
@@ -314,17 +324,17 @@ public:
             bool press = (kbev->getState() == SoKeyboardEvent::DOWN);
             switch (kbev->getKey()) {
                 case SoKeyboardEvent::H:
-                    if (!press)
+                    if (press)
                         ns.onSetRotationCenter(kbev->getPosition());
                 break;
                 case SoKeyboardEvent::PAGE_UP:
-                    if(!press){
-                        ns.doZoom(ns.viewer->getSoRenderManager()->getCamera(), ns.getDelta(), posn);
+                    if(press){
+                        ns.doZoom(ns.viewer->getSoRenderManager()->getCamera(), true, posn);
                     }
                 break;
                 case SoKeyboardEvent::PAGE_DOWN:
-                    if(!press){
-                        ns.doZoom(ns.viewer->getSoRenderManager()->getCamera(), -ns.getDelta(), posn);
+                    if(press){
+                        ns.doZoom(ns.viewer->getSoRenderManager()->getCamera(), false, posn);
                     }
                 break;
                 default:

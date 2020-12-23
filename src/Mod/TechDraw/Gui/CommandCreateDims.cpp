@@ -54,7 +54,6 @@
 # include <Mod/TechDraw/App/DrawProjGroup.h>
 # include <Mod/TechDraw/App/DrawViewDimension.h>
 # include <Mod/TechDraw/App/DrawDimHelper.h>
-# include <Mod/TechDraw/App/LandmarkDimension.h>
 # include <Mod/TechDraw/App/DrawPage.h>
 # include <Mod/TechDraw/App/DrawUtil.h>
 # include <Mod/TechDraw/App/Geometry.h>
@@ -114,123 +113,123 @@ void execVExtent(Gui::Command* cmd);
 
 // this is deprecated. use individual add dimension commands.
 
-DEF_STD_CMD_A(CmdTechDrawDimension)
+DEF_STD_CMD_A(CmdTechDrawNewDimension)
 
-CmdTechDrawDimension::CmdTechDrawDimension()
-  : Command("TechDraw_Dimension")
+CmdTechDrawNewDimension::CmdTechDrawNewDimension()
+  : Command("TechDraw_NewDimension")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert Dimension");
-    sToolTipText    = sMenuText;
-    sWhatsThis      = "TechDraw_Dimension";
+    sMenuText       = QT_TR_NOOP("Insert a dimension into a drawing");
+    sToolTipText    = QT_TR_NOOP("Insert a new dimension");
+    sWhatsThis      = "TechDraw_NewDimension";
     sStatusTip      = sToolTipText;
     sPixmap         = "TechDraw_Dimension";
 }
 
-void CmdTechDrawDimension::activated(int iMsg)
+void CmdTechDrawNewDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-//    bool result = _checkSelection(this,2);
-//    if (!result)
-//        return;
-//    result = _checkDrawViewPart(this);
-//    if (!result)
-//        return;
+    bool result = _checkSelection(this,2);
+    if (!result)
+        return;
+    result = _checkDrawViewPart(this);
+    if (!result)
+        return;
 
-////do we still need to pick DVPs out of selection? or should we complain about junk?
-//    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-//    TechDraw::DrawViewPart* objFeat = 0;
-//    std::vector<std::string> SubNames;
-//    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
-//    for (; itSel != selection.end(); itSel++)  {
-//        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
-//            objFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
-//            SubNames = (*itSel).getSubNames();
-//        }
-//    }
-//    TechDraw::DrawPage* page = objFeat->findParentPage();
-//    std::string PageName = page->getNameInDocument();
+//do we still need to pick DVPs out of selection? or should we complain about junk?
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    TechDraw::DrawViewPart* objFeat = 0;
+    std::vector<std::string> SubNames;
+    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
+    for (; itSel != selection.end(); itSel++)  {
+        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+            objFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
+            SubNames = (*itSel).getSubNames();
+        }
+    }
+    TechDraw::DrawPage* page = objFeat->findParentPage();
+    std::string PageName = page->getNameInDocument();
 
-//    TechDraw::DrawViewDimension *dim = 0;
-//    std::string FeatName = getUniqueObjectName("Dimension");
-//    std::string dimType;
+    TechDraw::DrawViewDimension *dim = 0;
+    std::string FeatName = getUniqueObjectName("Dimension");
+    std::string dimType;
 
-//    std::vector<App::DocumentObject *> objs;
-//    std::vector<std::string> subs;
+    std::vector<App::DocumentObject *> objs;
+    std::vector<std::string> subs;
 
-//    int edgeType = _isValidSingleEdge(this);
+    int edgeType = _isValidSingleEdge(this);
 
-//    if (edgeType) {
-//        if (edgeType < isCircle) {
-//            dimType = "Distance";
-//            objs.push_back(objFeat);
-//            subs.push_back(SubNames[0]);
-//        } else if (edgeType == isCircle) {
-//            dimType = "Radius";
-//        } else {
-//            dimType = "Radius";
-//        }
-//    } else if (_isValidVertexes(this)) {
-//        dimType = "Distance";
-//        objs.push_back(objFeat);
-//        objs.push_back(objFeat);
-//        subs.push_back(SubNames[0]);
-//        subs.push_back(SubNames[1]);
-//    } else if (_isValidEdgeToEdge(this)) {
-//        int edgeCase = _isValidEdgeToEdge(this);
-//        objs.push_back(objFeat);
-//        objs.push_back(objFeat);
-//        subs.push_back(SubNames[0]);
-//        subs.push_back(SubNames[1]);
-//        switch (edgeCase) {
-//             case isHorizontal:
-//                dimType = "DistanceX";
-//                break;
-//             case isVertical:
-//                dimType = "DistanceY";
-//                break;
-//            case isDiagonal:
-//                dimType = "Distance";
-//                break;
-//            case isAngle:
-//                dimType = "Angle";
-//            default:
-//                break;
-//        }
-//    } else if (_isValidVertexToEdge(this)) {
-//        dimType = "Distance";
-//        objs.push_back(objFeat);
-//        objs.push_back(objFeat);
-//        subs.push_back(SubNames[0]);
-//        subs.push_back(SubNames[1]);
-//    } else {
-//        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
-//                                                   QObject::tr("Can not make a Dimension from this selection"));
-//        return;
-//    }
+    if (edgeType) {
+        if (edgeType < isCircle) {
+            dimType = "Distance";
+            objs.push_back(objFeat);
+            subs.push_back(SubNames[0]);
+        } else if (edgeType == isCircle) {
+            dimType = "Radius";
+        } else {
+            dimType = "Radius";
+        }
+    } else if (_isValidVertexes(this)) {
+        dimType = "Distance";
+        objs.push_back(objFeat);
+        objs.push_back(objFeat);
+        subs.push_back(SubNames[0]);
+        subs.push_back(SubNames[1]);
+    } else if (_isValidEdgeToEdge(this)) {
+        int edgeCase = _isValidEdgeToEdge(this);
+        objs.push_back(objFeat);
+        objs.push_back(objFeat);
+        subs.push_back(SubNames[0]);
+        subs.push_back(SubNames[1]);
+        switch (edgeCase) {
+             case isHorizontal:
+                dimType = "DistanceX";
+                break;
+             case isVertical:
+                dimType = "DistanceY";
+                break;
+            case isDiagonal:
+                dimType = "Distance";
+                break;
+            case isAngle:
+                dimType = "Angle";
+            default:
+                break;
+        }
+    } else if (_isValidVertexToEdge(this)) {
+        dimType = "Distance";
+        objs.push_back(objFeat);
+        objs.push_back(objFeat);
+        subs.push_back(SubNames[0]);
+        subs.push_back(SubNames[1]);
+    } else {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
+                                                   QObject::tr("Can not make a Dimension from this selection"));
+        return;
+    }
 
-//    openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
-//    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
-//    doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
-//                                                       ,dimType.c_str());
+    openCommand("Create Dimension");
+    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
+                                                       ,dimType.c_str());
 
-//    dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
-//    if (!dim) {
-//        throw Base::TypeError("CmdTechDrawNewDimension - dim not found\n");
-//    }
-//    dim->References2D.setValues(objs, subs);
+    dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
+    if (!dim) {
+        throw Base::TypeError("CmdTechDrawNewDimension - dim not found\n");
+    }
+    dim->References2D.setValues(objs, subs);
 
-//    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
-//    commitCommand();
-//    dim->recomputeFeature();
+    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    commitCommand();
+    dim->recomputeFeature();
 
-//    //Horrible hack to force Tree update
-//    double x = objFeat->X.getValue();
-//    objFeat->X.setValue(x);
+    //Horrible hack to force Tree update
+    double x = objFeat->X.getValue();
+    objFeat->X.setValue(x);
 }
 
-bool CmdTechDrawDimension::isActive(void)
+bool CmdTechDrawNewDimension::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -238,24 +237,24 @@ bool CmdTechDrawDimension::isActive(void)
 }
 
 //===========================================================================
-// TechDraw_RadiusDimension
+// TechDraw_NewRadiusDimension
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawRadiusDimension)
+DEF_STD_CMD_A(CmdTechDrawNewRadiusDimension)
 
-CmdTechDrawRadiusDimension::CmdTechDrawRadiusDimension()
-  : Command("TechDraw_RadiusDimension")
+CmdTechDrawNewRadiusDimension::CmdTechDrawNewRadiusDimension()
+  : Command("TechDraw_NewRadiusDimension")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert Radius Dimension");
-    sToolTipText    = sMenuText;
-    sWhatsThis      = "TechDraw_RadiusDimension";
+    sMenuText       = QT_TR_NOOP("Insert a new radius dimension");
+    sToolTipText    = QT_TR_NOOP("Insert a new radius dimension");
+    sWhatsThis      = "TechDraw_Dimension_Radius";
     sStatusTip      = sToolTipText;
-    sPixmap         = "TechDraw_RadiusDimension";
+    sPixmap         = "TechDraw_Dimension_Radius";
 }
 
-void CmdTechDrawRadiusDimension::activated(int iMsg)
+void CmdTechDrawNewRadiusDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     bool result = _checkSelection(this,1);
@@ -330,7 +329,7 @@ void CmdTechDrawRadiusDimension::activated(int iMsg)
         return;
     }
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
+    openCommand("Create Dimension");
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
                                                        ,"Radius");
@@ -352,7 +351,7 @@ void CmdTechDrawRadiusDimension::activated(int iMsg)
     objFeat->X.setValue(x);
 }
 
-bool CmdTechDrawRadiusDimension::isActive(void)
+bool CmdTechDrawNewRadiusDimension::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -360,24 +359,24 @@ bool CmdTechDrawRadiusDimension::isActive(void)
 }
 
 //===========================================================================
-// TechDraw_DiameterDimension
+// TechDraw_NewDiameterDimension
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawDiameterDimension)
+DEF_STD_CMD_A(CmdTechDrawNewDiameterDimension)
 
-CmdTechDrawDiameterDimension::CmdTechDrawDiameterDimension()
-  : Command("TechDraw_DiameterDimension")
+CmdTechDrawNewDiameterDimension::CmdTechDrawNewDiameterDimension()
+  : Command("TechDraw_NewDiameterDimension")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert Diameter Dimension");
-    sToolTipText    = sMenuText;
-    sWhatsThis      = "TechDraw_DiameterDimension";
+    sMenuText       = QT_TR_NOOP("Insert a new diameter dimension");
+    sToolTipText    = QT_TR_NOOP("Insert a new diameter dimension feature");
+    sWhatsThis      = "TechDraw_Dimension_Diameter";
     sStatusTip      = sToolTipText;
-    sPixmap         = "TechDraw_DiameterDimension";
+    sPixmap         = "TechDraw_Dimension_Diameter";
 }
 
-void CmdTechDrawDiameterDimension::activated(int iMsg)
+void CmdTechDrawNewDiameterDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     bool result = _checkSelection(this,1);
@@ -452,7 +451,7 @@ void CmdTechDrawDiameterDimension::activated(int iMsg)
         return;
     }
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
+    openCommand("Create Dimension");
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
                                                        ,"Diameter");
@@ -473,7 +472,7 @@ void CmdTechDrawDiameterDimension::activated(int iMsg)
     objFeat->X.setValue(x);
 }
 
-bool CmdTechDrawDiameterDimension::isActive(void)
+bool CmdTechDrawNewDiameterDimension::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -481,24 +480,24 @@ bool CmdTechDrawDiameterDimension::isActive(void)
 }
 
 //===========================================================================
-// TechDraw_LengthDimension
+// TechDraw_NewLengthDimension
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawLengthDimension)
+DEF_STD_CMD_A(CmdTechDrawNewLengthDimension)
 
-CmdTechDrawLengthDimension::CmdTechDrawLengthDimension()
-  : Command("TechDraw_LengthDimension")
+CmdTechDrawNewLengthDimension::CmdTechDrawNewLengthDimension()
+  : Command("TechDraw_NewLengthDimension")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert Length Dimension");
-    sToolTipText    = sMenuText;
-    sWhatsThis      = "TechDraw_LengthDimension";
+    sMenuText       = QT_TR_NOOP("Insert a new length dimension");
+    sToolTipText    = QT_TR_NOOP("Insert a new length dimension");
+    sWhatsThis      = "TechDraw_Dimension_Length";
     sStatusTip      = sToolTipText;
-    sPixmap         = "TechDraw_LengthDimension";
+    sPixmap         = "TechDraw_Dimension_Length";
 }
 
-void CmdTechDrawLengthDimension::activated(int iMsg)
+void CmdTechDrawNewLengthDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     bool result = _checkSelection(this,2);
@@ -529,27 +528,40 @@ void CmdTechDrawLengthDimension::activated(int iMsg)
     std::vector<App::DocumentObject *> objs;
     std::vector<std::string> subs;
 
-    if (_isValidSingleEdge(this) ) {
+    int edgeType = _isValidSingleEdge(this);
+    if ((edgeType == isHorizontal) ||
+        (edgeType == isVertical) ||
+        (edgeType == isDiagonal)) {
         objs.push_back(objFeat);
         subs.push_back(SubNames[0]);
-    } else if (  _isValidVertexes(this) || 
-                (_isValidEdgeToEdge(this) == isVertical)   ||
-                (_isValidEdgeToEdge(this) == isHorizontal) ||
-                (_isValidEdgeToEdge(this) == isDiagonal) ||
-                (_isValidVertexToEdge(this)) ) {
+    } else if (_isValidVertexes(this)) {
+        objs.push_back(objFeat);
+        objs.push_back(objFeat);
+        subs.push_back(SubNames[0]);
+        subs.push_back(SubNames[1]);
+    } else if ((_isValidEdgeToEdge(this) == isHorizontal) ||
+               (_isValidEdgeToEdge(this) == isVertical) ||
+               (_isValidEdgeToEdge(this) == isDiagonal) ||
+               (_isValidEdgeToEdge(this) == isAngle)) {
+        edgeType = _isValidEdgeToEdge(this);
+        objs.push_back(objFeat);
+        objs.push_back(objFeat);
+        subs.push_back(SubNames[0]);
+        subs.push_back(SubNames[1]);
+    } else if (_isValidVertexToEdge(this)) {
         objs.push_back(objFeat);
         objs.push_back(objFeat);
         subs.push_back(SubNames[0]);
         subs.push_back(SubNames[1]);
     } else {
         std::stringstream edgeMsg;
-        edgeMsg << "Need 2 Vertexes, 2 Edges or 1 Vertex and 1 Edge for Distance Dimension";
+        edgeMsg << "Need 2 Vertexes, 1 straight Edge, 1 Vertex/1 straight edge or 2 straight Edges for length Dimension (edge type: " << _edgeTypeToText(edgeType) << ")";
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
                                                    QObject::tr(edgeMsg.str().c_str()));
         return;
     }
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
+    openCommand("Create Dimension");
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')", FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Type = '%s'", FeatName.c_str()
                                                        , "Distance");
@@ -573,7 +585,7 @@ void CmdTechDrawLengthDimension::activated(int iMsg)
     objFeat->X.setValue(x);
 }
 
-bool CmdTechDrawLengthDimension::isActive(void)
+bool CmdTechDrawNewLengthDimension::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -581,25 +593,24 @@ bool CmdTechDrawLengthDimension::isActive(void)
 }
 
 //===========================================================================
-// TechDraw_HorizontalDimension
+// TechDraw_NewDistanceXDimension
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawHorizontalDimension)
+DEF_STD_CMD_A(CmdTechDrawNewDistanceXDimension)
 
-CmdTechDrawHorizontalDimension::CmdTechDrawHorizontalDimension()
-  : Command("TechDraw_HorizontalDimension")
+CmdTechDrawNewDistanceXDimension::CmdTechDrawNewDistanceXDimension()
+  : Command("TechDraw_NewDistanceXDimension")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert Horizontal Dimension");
-    sToolTipText    = sMenuText;
-    sWhatsThis      = "TechDraw_HorizontalDimension";
+    sMenuText       = QT_TR_NOOP("Insert a new horizontal dimension");
+    sToolTipText    = QT_TR_NOOP("Insert a new horizontal distance dimension");
+    sWhatsThis      = "TechDraw_Dimension_Horizontal";
     sStatusTip      = sToolTipText;
-    sPixmap         = "TechDraw_HorizontalDimension";
-    sAccel          = "SHIFT+H";
+    sPixmap         = "TechDraw_Dimension_Horizontal";
 }
 
-void CmdTechDrawHorizontalDimension::activated(int iMsg)
+void CmdTechDrawNewDistanceXDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     bool result = _checkSelection(this,2);
@@ -630,27 +641,39 @@ void CmdTechDrawHorizontalDimension::activated(int iMsg)
     std::vector<App::DocumentObject *> objs;
     std::vector<std::string> subs;
 
-    if (_isValidSingleEdge(this) ) {
+    int edgeType = _isValidSingleEdge(this);
+    if ((edgeType == isHorizontal) ||
+        (edgeType == isDiagonal)) {
         objs.push_back(objFeat);
         subs.push_back(SubNames[0]);
-    } else if (  _isValidVertexes(this) || 
-                (_isValidEdgeToEdge(this) == isVertical)   ||
-                (_isValidEdgeToEdge(this) == isHorizontal) ||
-                (_isValidEdgeToEdge(this) == isDiagonal) ||
-                (_isValidVertexToEdge(this)) ) {
+    } else if (_isValidVertexes(this)) {
+        objs.push_back(objFeat);
+        objs.push_back(objFeat);
+        subs.push_back(SubNames[0]);
+        subs.push_back(SubNames[1]);
+    } else if ((_isValidEdgeToEdge(this) == isHorizontal) ||
+               (_isValidEdgeToEdge(this) == isVertical)   ||
+               (_isValidEdgeToEdge(this) == isDiagonal)   ||
+               (_isValidEdgeToEdge(this) == isAngle)) {
+        edgeType = _isValidEdgeToEdge(this);
+        objs.push_back(objFeat);
+        objs.push_back(objFeat);
+        subs.push_back(SubNames[0]);
+        subs.push_back(SubNames[1]);
+    } else if (_isValidVertexToEdge(this)) {
         objs.push_back(objFeat);
         objs.push_back(objFeat);
         subs.push_back(SubNames[0]);
         subs.push_back(SubNames[1]);
     } else {
         std::stringstream edgeMsg;
-        edgeMsg << "Need 2 Vertexes, 2 Edges or 1 Vertex and 1 Edge for Horizontal Dimension";
+        edgeMsg << "Need 2 Vertexes, 1 straight Edge, 1 Vertex/1 straight edge or 2 straight Edges for Horizontal Dimension (edge type: " << _edgeTypeToText(edgeType) << ")";
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
                                                    QObject::tr(edgeMsg.str().c_str()));
         return;
     }
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
+    openCommand("Create Dimension");
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
                                                        ,"DistanceX");
@@ -675,7 +698,7 @@ void CmdTechDrawHorizontalDimension::activated(int iMsg)
     objFeat->X.setValue(x);
 }
 
-bool CmdTechDrawHorizontalDimension::isActive(void)
+bool CmdTechDrawNewDistanceXDimension::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -683,25 +706,24 @@ bool CmdTechDrawHorizontalDimension::isActive(void)
 }
 
 //===========================================================================
-// TechDraw_VerticalDimension
+// TechDraw_NewDistanceYDimension
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawVerticalDimension)
+DEF_STD_CMD_A(CmdTechDrawNewDistanceYDimension)
 
-CmdTechDrawVerticalDimension::CmdTechDrawVerticalDimension()
-  : Command("TechDraw_VerticalDimension")
+CmdTechDrawNewDistanceYDimension::CmdTechDrawNewDistanceYDimension()
+  : Command("TechDraw_NewDistanceYDimension")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert Vertical Dimension");
-    sToolTipText    = sMenuText;
-    sWhatsThis      = "TechDraw_VerticalDimension";
+    sMenuText       = QT_TR_NOOP("Insert a new vertical dimension");
+    sToolTipText    = QT_TR_NOOP("Insert a new vertical distance dimension");
+    sWhatsThis      = "TechDraw_Dimension_Vertical";
     sStatusTip      = sToolTipText;
-    sPixmap         = "TechDraw_VerticalDimension";
-    sAccel          = "SHIFT+V";
+    sPixmap         = "TechDraw_Dimension_Vertical";
 }
 
-void CmdTechDrawVerticalDimension::activated(int iMsg)
+void CmdTechDrawNewDistanceYDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     bool result = _checkSelection(this,2);
@@ -732,27 +754,39 @@ void CmdTechDrawVerticalDimension::activated(int iMsg)
     std::vector<App::DocumentObject *> objs;
     std::vector<std::string> subs;
 
-    if (_isValidSingleEdge(this) ) {
+    int edgeType = _isValidSingleEdge(this);
+    if ((edgeType == isVertical) ||
+        (edgeType == isDiagonal)) {
         objs.push_back(objFeat);
         subs.push_back(SubNames[0]);
-    } else if (  _isValidVertexes(this) || 
-                (_isValidEdgeToEdge(this) == isVertical)   ||
-                (_isValidEdgeToEdge(this) == isHorizontal) ||
-                (_isValidEdgeToEdge(this) == isDiagonal) ||
-                (_isValidVertexToEdge(this)) ) {
+    } else if (_isValidVertexes(this)) {
+        objs.push_back(objFeat);
+        objs.push_back(objFeat);
+        subs.push_back(SubNames[0]);
+        subs.push_back(SubNames[1]);
+    } else if ((_isValidEdgeToEdge(this) == isVertical)   ||
+               (_isValidEdgeToEdge(this) == isHorizontal) ||
+               (_isValidEdgeToEdge(this) == isDiagonal) ||
+               (_isValidEdgeToEdge(this) == isAngle))  {
+        edgeType = _isValidEdgeToEdge(this);
+        objs.push_back(objFeat);
+        objs.push_back(objFeat);
+        subs.push_back(SubNames[0]);
+        subs.push_back(SubNames[1]);
+    } else if (_isValidVertexToEdge(this)) {
         objs.push_back(objFeat);
         objs.push_back(objFeat);
         subs.push_back(SubNames[0]);
         subs.push_back(SubNames[1]);
     } else {
         std::stringstream edgeMsg;
-        edgeMsg << "Need 2 Vertexes, 2 Edges or 1 Vertex and 1 Edge for Vertical Dimension";
+        edgeMsg << "Need 2 Vertexes, 1 straight Edge, 1 Vertex/1 straight edge or 2 straight Edges for Horizontal Dimension (edge type: " << _edgeTypeToText(edgeType) << ")";
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
                                                    QObject::tr(edgeMsg.str().c_str()));
         return;
     }
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
+    openCommand("Create Dimension");
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
                                                        ,"DistanceY");
@@ -776,7 +810,7 @@ void CmdTechDrawVerticalDimension::activated(int iMsg)
     objFeat->X.setValue(x);
 }
 
-bool CmdTechDrawVerticalDimension::isActive(void)
+bool CmdTechDrawNewDistanceYDimension::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -784,24 +818,24 @@ bool CmdTechDrawVerticalDimension::isActive(void)
 }
 
 //===========================================================================
-// TechDraw_AngleDimension
+// TechDraw_NewAngleDimension
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawAngleDimension)
+DEF_STD_CMD_A(CmdTechDrawNewAngleDimension)
 
-CmdTechDrawAngleDimension::CmdTechDrawAngleDimension()
-  : Command("TechDraw_AngleDimension")
+CmdTechDrawNewAngleDimension::CmdTechDrawNewAngleDimension()
+  : Command("TechDraw_NewAngleDimension")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert Angle Dimension");
-    sToolTipText    = sMenuText;
-    sWhatsThis      = "TechDraw_AngleDimension";
+    sMenuText       = QT_TR_NOOP("Insert a new angle dimension");
+    sToolTipText    = QT_TR_NOOP("Insert a new angle dimension");
+    sWhatsThis      = "TechDraw_Dimension_Angle";
     sStatusTip      = sToolTipText;
-    sPixmap         = "TechDraw_AngleDimension";
+    sPixmap         = "TechDraw_Dimension_Angle";
 }
 
-void CmdTechDrawAngleDimension::activated(int iMsg)
+void CmdTechDrawNewAngleDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     bool result = _checkSelection(this,2);
@@ -843,14 +877,14 @@ void CmdTechDrawAngleDimension::activated(int iMsg)
         return;
     }
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
+    openCommand("Create Dimension");
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
                                                        ,"Angle");
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
-        throw Base::TypeError("CmdTechDrawAngleDimension - dim not found\n");
+        throw Base::TypeError("CmdTechDrawNewAngleDimension - dim not found\n");
     }
     dim->References2D.setValues(objs, subs);
 
@@ -864,7 +898,7 @@ void CmdTechDrawAngleDimension::activated(int iMsg)
     objFeat->X.setValue(x);
 }
 
-bool CmdTechDrawAngleDimension::isActive(void)
+bool CmdTechDrawNewAngleDimension::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -872,24 +906,24 @@ bool CmdTechDrawAngleDimension::isActive(void)
 }
 
 //===========================================================================
-// TechDraw_3PtAngleDimension
+// TechDraw_NewAngle3PtDimension
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDraw3PtAngleDimension)
+DEF_STD_CMD_A(CmdTechDrawNewAngle3PtDimension)
 
-CmdTechDraw3PtAngleDimension::CmdTechDraw3PtAngleDimension()
-  : Command("TechDraw_3PtAngleDimension")
+CmdTechDrawNewAngle3PtDimension::CmdTechDrawNewAngle3PtDimension()
+  : Command("TechDraw_NewAngle3PtDimension")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert 3-Point Angle Dimension");
-    sToolTipText    = sMenuText;
-    sWhatsThis      = "TechDraw_3PtAngleDimension";
+    sMenuText       = QT_TR_NOOP("Insert a new 3 point Angle dimension");
+    sToolTipText    = QT_TR_NOOP("Insert a new 3 point Angle dimension");
+    sWhatsThis      = "TechDraw_Dimension_Angle3Pt";
     sStatusTip      = sToolTipText;
-    sPixmap         = "TechDraw_3PtAngleDimension";
+    sPixmap         = "TechDraw_Dimension_Angle3Pt";
 }
 
-void CmdTechDraw3PtAngleDimension::activated(int iMsg)
+void CmdTechDrawNewAngle3PtDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     bool result = _checkSelection(this,3);
@@ -932,7 +966,7 @@ void CmdTechDraw3PtAngleDimension::activated(int iMsg)
         return;
     }
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
+    openCommand("Create Dimension");
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
                                                        ,"Angle3Pt");
@@ -953,7 +987,7 @@ void CmdTechDraw3PtAngleDimension::activated(int iMsg)
     objFeat->X.setValue(x);
 }
 
-bool CmdTechDraw3PtAngleDimension::isActive(void)
+bool CmdTechDrawNewAngle3PtDimension::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -974,8 +1008,8 @@ CmdTechDrawLinkDimension::CmdTechDrawLinkDimension()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Link Dimension to 3D Geometry");
-    sToolTipText    = sMenuText;
+    sMenuText       = QT_TR_NOOP("Link a dimension to 3D geometry");
+    sToolTipText    = QT_TR_NOOP("Link a dimension to 3D geometry");
     sWhatsThis      = "TechDraw_Dimension_Link";
     sStatusTip      = sToolTipText;
     sPixmap         = "TechDraw_Dimension_Link";
@@ -1042,24 +1076,24 @@ bool CmdTechDrawLinkDimension::isActive(void)
 }
 
 //===========================================================================
-// TechDraw_ExtentGroup
+// ExtentGroup
 //===========================================================================
 
-DEF_STD_CMD_ACL(CmdTechDrawExtentGroup)
+DEF_STD_CMD_ACL(CmdTechDrawExtentGrp)
 
-CmdTechDrawExtentGroup::CmdTechDrawExtentGroup()
-  : Command("TechDraw_ExtentGroup")
+CmdTechDrawExtentGrp::CmdTechDrawExtentGrp()
+  : Command("TechDraw_ExtentGrp")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Insert Extent Dimension");
-    sToolTipText    = sMenuText;
-    sWhatsThis      = "TechDraw_ExtentGroup";
+    sToolTipText    = QT_TR_NOOP("Insert Extent Dimension");
+    sWhatsThis      = "TechDraw_ExtentGrp";
     sStatusTip      = sToolTipText;
 //    eType           = ForEdit;
 }
 
-void CmdTechDrawExtentGroup::activated(int iMsg)
+void CmdTechDrawExtentGrp::activated(int iMsg)
 {
 //    Base::Console().Message("CMD::ExtentGrp - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
@@ -1083,20 +1117,20 @@ void CmdTechDrawExtentGroup::activated(int iMsg)
     };
 }
 
-Gui::Action * CmdTechDrawExtentGroup::createAction(void)
+Gui::Action * CmdTechDrawExtentGrp::createAction(void)
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
     applyCommandData(this->className(), pcAction);
 
     QAction* p1 = pcAction->addAction(QString());
-    p1->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_HorizontalExtentDimension"));
-    p1->setObjectName(QString::fromLatin1("TechDraw_HorizontalExtentDimension"));
-    p1->setWhatsThis(QString::fromLatin1("TechDraw_HorizontalExtentDimension"));
+    p1->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_Dimension_HExtent"));
+    p1->setObjectName(QString::fromLatin1("TechDraw_HorizontalExtent"));
+    p1->setWhatsThis(QString::fromLatin1("TechDraw_HorizontalExtent"));
     QAction* p2 = pcAction->addAction(QString());
-    p2->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_VerticalExtentDimension"));
-    p2->setObjectName(QString::fromLatin1("TechDraw_VerticalExtentDimension"));
-    p2->setWhatsThis(QString::fromLatin1("TechDraw_VerticalExtentDimension"));
+    p2->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_Dimension_VExtent"));
+    p2->setObjectName(QString::fromLatin1("TechDraw_VerticalExtent"));
+    p2->setWhatsThis(QString::fromLatin1("TechDraw_VerticalExtent"));
 
     _pcAction = pcAction;
     languageChange();
@@ -1108,7 +1142,7 @@ Gui::Action * CmdTechDrawExtentGroup::createAction(void)
     return pcAction;
 }
 
-void CmdTechDrawExtentGroup::languageChange()
+void CmdTechDrawExtentGrp::languageChange()
 {
     Command::languageChange();
 
@@ -1118,16 +1152,16 @@ void CmdTechDrawExtentGroup::languageChange()
     QList<QAction*> a = pcAction->actions();
 
     QAction* arc1 = a[0];
-    arc1->setText(QApplication::translate("CmdTechDrawExtentGroup","Horizontal Extent"));
-    arc1->setToolTip(QApplication::translate("TechDraw_HorizontalExtent","Insert Horizontal Extent Dimension"));
+    arc1->setText(QApplication::translate("CmdTechDrawExtentGrp","Horizontal Extent"));
+    arc1->setToolTip(QApplication::translate("TechDraw_HorizontalExtent","Insert a Horizontal Extent dimension"));
     arc1->setStatusTip(arc1->toolTip());
     QAction* arc2 = a[1];
-    arc2->setText(QApplication::translate("CmdTechDrawExtentGroup","Vertical Extent"));
-    arc2->setToolTip(QApplication::translate("TechDraw_VerticalExtentDimension","Insert Vertical Extent Dimension"));
+    arc2->setText(QApplication::translate("CmdTechDrawExtentGrp","Vertical Extent"));
+    arc2->setToolTip(QApplication::translate("TechDraw_VerticalExtent","Insert a Vertical Extent dimension"));
     arc2->setStatusTip(arc2->toolTip());
 }
 
-bool CmdTechDrawExtentGroup::isActive(void)
+bool CmdTechDrawExtentGrp::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this, false);
@@ -1135,24 +1169,24 @@ bool CmdTechDrawExtentGroup::isActive(void)
 }
 
 //===========================================================================
-// TechDraw_HorizontalExtentDimension
+// TechDraw_HorizontalExtent
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawHorizontalExtentDimension)
+DEF_STD_CMD_A(CmdTechDrawHorizontalExtent)
 
-CmdTechDrawHorizontalExtentDimension::CmdTechDrawHorizontalExtentDimension()
-  : Command("TechDraw_HorizontalExtentDimension")
+CmdTechDrawHorizontalExtent::CmdTechDrawHorizontalExtent()
+  : Command("TechDraw_HorizontalExtent")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert Horizontal Extent Dimension");
-    sToolTipText    = sMenuText;
-    sWhatsThis      = "TechDraw_HorizontalExtentDimension";
+    sMenuText       = QT_TR_NOOP("Add a Horizontal Extent dimension");
+    sToolTipText    = QT_TR_NOOP("Add a Horizontal Extent dimension");
+    sWhatsThis      = "TechDraw_HorizontalExtent";
     sStatusTip      = sToolTipText;
-    sPixmap         = "TechDraw_HorizontalExtentDimension";
+    sPixmap         = "TechDraw_Dimension_HExtent";
 }
 
-void CmdTechDrawHorizontalExtentDimension::activated(int iMsg)
+void CmdTechDrawHorizontalExtent::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
@@ -1166,7 +1200,7 @@ void CmdTechDrawHorizontalExtentDimension::activated(int iMsg)
     execHExtent(this);
 }
 
-bool CmdTechDrawHorizontalExtentDimension::isActive(void)
+bool CmdTechDrawHorizontalExtent::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this, false);
@@ -1222,24 +1256,24 @@ void execHExtent(Gui::Command* cmd)
 }
 
 //===========================================================================
-// TechDraw_VerticalExtentDimension
+// TechDraw_VerticalExtent
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawVerticalExtentDimension)
+DEF_STD_CMD_A(CmdTechDrawVerticalExtent)
 
-CmdTechDrawVerticalExtentDimension::CmdTechDrawVerticalExtentDimension()
-  : Command("TechDraw_VerticalExtentDimension")
+CmdTechDrawVerticalExtent::CmdTechDrawVerticalExtent()
+  : Command("TechDraw_VerticalExtent")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert Vertical Extent Dimension");
-    sToolTipText    = sMenuText;
-    sWhatsThis      = "TechDraw_VerticalExtentDimension";
+    sMenuText       = QT_TR_NOOP("Add a Vertical Extent dimension");
+    sToolTipText    = QT_TR_NOOP("Add a Vertical Extent dimension");
+    sWhatsThis      = "TechDraw_VerticalExtent";
     sStatusTip      = sToolTipText;
-    sPixmap         = "TechDraw_VerticalExtentDimension";
+    sPixmap         = "TechDraw_Dimension_VExtent";
 }
 
-void CmdTechDrawVerticalExtentDimension::activated(int iMsg)
+void CmdTechDrawVerticalExtent::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
@@ -1253,7 +1287,7 @@ void CmdTechDrawVerticalExtentDimension::activated(int iMsg)
     execVExtent(this);
 }
 
-bool CmdTechDrawVerticalExtentDimension::isActive(void)
+bool CmdTechDrawVerticalExtent::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this, false);
@@ -1304,121 +1338,23 @@ void execVExtent(Gui::Command* cmd)
                                  1);
 }
 
-//===========================================================================
-// TechDraw_LandmarkDimension
-//===========================================================================
-
-DEF_STD_CMD_A(CmdTechDrawLandmarkDimension)
-
-CmdTechDrawLandmarkDimension::CmdTechDrawLandmarkDimension()
-  : Command("TechDraw_LandmarkDimension")
-{
-    sAppModule      = "TechDraw";
-    sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert Landmark Dimension - EXPERIMENTAL");
-    sToolTipText    = sMenuText;
-    sWhatsThis      = "TechDraw_LandmarkDimension";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "techdraw-landmarkdistance";
-}
-
-void CmdTechDrawLandmarkDimension::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    bool result = _checkSelection(this,3);
-    if (!result)
-        return;
-
-    const std::vector<App::DocumentObject*> objects = getSelection().
-                                        getObjectsOfType(Part::Feature::getClassTypeId());  //??
-    if (objects.size() != 2) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select 2 point objects and 1 View. (1)"));
-        return;
-    }
-
-    const std::vector<App::DocumentObject*> views = getSelection().
-                                        getObjectsOfType(TechDraw::DrawViewPart::getClassTypeId());
-    if (views.size() != 1) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select 2 point objects and 1 View. (2)"));
-        return;
-    }
-
-    TechDraw::DrawViewPart* dvp = static_cast<TechDraw::DrawViewPart*>(views.front());
-
-    std::vector<App::DocumentObject*> refs2d;
-
-    std::vector<std::string> subs;
-    subs.push_back("Vertex1");
-    subs.push_back("Vertex1");
-    TechDraw::DrawPage* page = dvp->findParentPage();
-    std::string parentName = dvp->getNameInDocument();
-    std::string PageName = page->getNameInDocument();
-
-    TechDraw::LandmarkDimension *dim = 0;
-    std::string FeatName = getUniqueObjectName("LandmarkDim");
-
-    openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
-    doCommand(Doc,"App.activeDocument().addObject('TechDraw::LandmarkDimension','%s')",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
-    if (objects.size() == 2) {
-        //what about distanceX and distanceY??
-        doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str(), "Distance");
-        refs2d.push_back(dvp);
-        refs2d.push_back(dvp);
-    }
-//    } else if (objects.size() == 3) {             //not implemented yet
-//        doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str(), "Angle3Pt");
-//        refs2d.push_back(dvp);
-//        refs2d.push_back(dvp);
-//        refs2d.push_back(dvp);
-//        //subs.push_back("Vertex1");
-//        //subs.push_back("Vertex1");
-//        //subs.push_back("Vertex1");
-//    }
-
-    dim = dynamic_cast<TechDraw::LandmarkDimension *>(getDocument()->getObject(FeatName.c_str()));
-    if (!dim) {
-        throw Base::TypeError("CmdTechDrawLandmarkDimension - dim not found\n");
-    }
-    dim->References2D.setValues(refs2d, subs);
-    dim->References3D.setValues(objects, subs);
-    
-    commitCommand();
-    dim->recomputeFeature();
-
-    //Horrible hack to force Tree update
-    double x = dvp->X.getValue();
-    dvp->X.setValue(x);
-}
-
-bool CmdTechDrawLandmarkDimension::isActive(void)
-{
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
-    return (havePage && haveView);
-}
-
-
 //------------------------------------------------------------------------------
 void CreateTechDrawCommandsDims(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
-    rcCmdMgr.addCommand(new CmdTechDrawDimension());
-    rcCmdMgr.addCommand(new CmdTechDrawRadiusDimension());
-    rcCmdMgr.addCommand(new CmdTechDrawDiameterDimension());
-    rcCmdMgr.addCommand(new CmdTechDrawLengthDimension());
-    rcCmdMgr.addCommand(new CmdTechDrawHorizontalDimension());
-    rcCmdMgr.addCommand(new CmdTechDrawVerticalDimension());
-    rcCmdMgr.addCommand(new CmdTechDrawAngleDimension());
-    rcCmdMgr.addCommand(new CmdTechDraw3PtAngleDimension());
-    rcCmdMgr.addCommand(new CmdTechDrawExtentGroup());
-    rcCmdMgr.addCommand(new CmdTechDrawVerticalExtentDimension());
-    rcCmdMgr.addCommand(new CmdTechDrawHorizontalExtentDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawNewDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawNewRadiusDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawNewDiameterDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawNewLengthDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawNewDistanceXDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawNewDistanceYDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawNewAngleDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawNewAngle3PtDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawExtentGrp());
+    rcCmdMgr.addCommand(new CmdTechDrawVerticalExtent());
+    rcCmdMgr.addCommand(new CmdTechDrawHorizontalExtent());
     rcCmdMgr.addCommand(new CmdTechDrawLinkDimension());
-    rcCmdMgr.addCommand(new CmdTechDrawLandmarkDimension());
 }
 
 //===========================================================================
@@ -1553,6 +1489,7 @@ bool _isValidVertexes(Gui::Command* cmd, int count) {
 
 //! verify that the Selection contains valid geometries for an Edge to Edge Dimension
 int _isValidEdgeToEdge(Gui::Command* cmd) {
+//TODO: can the edges be in 2 different features??
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
 
     auto objFeat0( dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject()) );
@@ -1564,15 +1501,14 @@ int _isValidEdgeToEdge(Gui::Command* cmd) {
 
     int edgeType = isInvalid;
     const std::vector<std::string> SubNames = selection[0].getSubNames();
-    if(SubNames.size() == 2) {                                                   //there are 2
-        if (TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge" &&    //they both start with "Edge"
+    if(SubNames.size() == 2) {                                         //there are 2
+        if (TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge" &&                      //they both start with "Edge"
             TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]) == "Edge") {
             int GeoId0( TechDraw::DrawUtil::getIndexFromName(SubNames[0]) );
             int GeoId1( TechDraw::DrawUtil::getIndexFromName(SubNames[1]) );
             TechDraw::BaseGeom* geom0 = objFeat0->getGeomByIndex(GeoId0);
             TechDraw::BaseGeom* geom1 = objFeat0->getGeomByIndex(GeoId1);
-
-            if ((!geom0) || (!geom1)) {                                         // missing gometry
+            if ((!geom0) || (!geom1)) {
                 Base::Console().Error("Logic Error: no geometry for GeoId: %d or GeoId: %d\n",GeoId0,GeoId1);
                 return isInvalid;
             }
@@ -1583,21 +1519,26 @@ int _isValidEdgeToEdge(Gui::Command* cmd) {
                 TechDraw::Generic *gen1 = static_cast<TechDraw::Generic *>(geom1);
                 if(gen0->points.size() > 2 ||
                    gen1->points.size() > 2) {                          //the edge is a polyline
-                    return isInvalid;                                  //not supported yet
+                    return isInvalid;
                 }
                 Base::Vector3d line0 = gen0->points.at(1) - gen0->points.at(0);
                 Base::Vector3d line1 = gen1->points.at(1) - gen1->points.at(0);
                 double xprod = fabs(line0.x * line1.y - line0.y * line1.x);
-                if (xprod > FLT_EPSILON) {                              //edges are not parallel
-                    return isAngle;                                 //angle or distance
+                if(xprod > FLT_EPSILON) {                              //edges are not parallel
+                    return isAngle;
+                }
+                if(fabs(line0.x) < FLT_EPSILON && fabs(line1.x) < FLT_EPSILON) {   //both horizontal
+                    edgeType = isHorizontal;
+                } else if(fabs(line0.y) < FLT_EPSILON && fabs(line1.y) < FLT_EPSILON) {  //both vertical
+                    edgeType = isVertical;
                 } else {
-                    return isDiagonal;                              //distance || line
+                    edgeType = isDiagonal;
                 }
             } else {
-                return isDiagonal;                                  //two edges, not both straight lines
+                return isInvalid;
             }
-        }  //edges
-    } // 2 sub objects
+        }
+    }
     return edgeType;
 }
 
@@ -1606,6 +1547,7 @@ bool _isValidVertexToEdge(Gui::Command* cmd) {
     bool result = false;
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
     TechDraw::DrawViewPart* objFeat0 = static_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
+    //TechDraw::DrawViewPart* objFeat1 = static_castt<TechDraw::DrawViewPart *>(selection[1].getObject());
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     if(SubNames.size() == 2) {                                         //there are 2
         int eId,vId;
@@ -1626,6 +1568,9 @@ bool _isValidVertexToEdge(Gui::Command* cmd) {
         v = objFeat0->getProjVertexByIndex(vId);
         if ((!e) || (!v)) {
             Base::Console().Error("Logic Error: no geometry for GeoId: %d or GeoId: %d\n",eId,vId);
+            return false;
+        }
+        if (e->geomType != TechDraw::GENERIC)  {      //only vertex-line for now.
             return false;
         }
         result = true;
@@ -1673,4 +1618,24 @@ char* _edgeTypeToText(int e)
     return result;
 }
 
-
+//bool _checkActive(Gui::Command* cmd, Base::Type classType, bool needSubs)
+//{
+//    //need a page, a selected classType and [a subelement]
+//    bool active = false;
+//    if (cmd->hasActiveDocument()) {
+//        auto drawPageType( TechDraw::DrawPage::getClassTypeId() );
+//        auto selPages = cmd->getDocument()->getObjectsOfType(drawPageType);
+//        if (!selPages.empty()) {
+//            std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
+//            for (auto& s:selection) {
+//                if (s.getObject()->isDerivedFrom(classType)) {
+//                    if (needSubs && !(s.getSubNames().empty())) {
+//                        active = true;
+//                        break;
+//                    }
+//                }
+//            }
+//         }
+//    }
+//    return active;
+//}

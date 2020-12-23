@@ -39,10 +39,8 @@ struct ConstraintIds {
         Sketcher::ConstraintType Type;
 };
 
-struct Constraint_Equal
+struct Constraint_Equal  : public std::unary_function<const struct Sketcher::ConstraintIds&, bool>
 {
-    typedef ConstraintIds argument_type;
-    typedef bool result_type;
     struct Sketcher::ConstraintIds c;
     Constraint_Equal(const ConstraintIds& c) : c(c)
     {

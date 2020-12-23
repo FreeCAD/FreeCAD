@@ -41,7 +41,6 @@
 #include <Gui/WaitCursor.h>
 
 #include "DlgRegularSolidImp.h"
-#include "ui_DlgRegularSolid.h"
 
 using namespace MeshGui;
 
@@ -49,53 +48,52 @@ using namespace MeshGui;
 
 DlgRegularSolidImp::DlgRegularSolidImp(QWidget* parent, Qt::WindowFlags fl)
   : QDialog( parent, fl )
-  , ui(new Ui_DlgRegularSolid)
 {
-    ui->setupUi(this);
+    this->setupUi(this);
     Gui::Command::doCommand(Gui::Command::Doc, "import Mesh,BuildRegularGeoms");
 
     // set limits
     // Box
-    ui->boxLength->setMaximum(DBL_MAX);
-    ui->boxLength->setMinimum(0);
-    ui->boxWidth->setMaximum(DBL_MAX);
-    ui->boxWidth->setMinimum(0);
-    ui->boxHeight->setMaximum(DBL_MAX);
-    ui->boxHeight->setMinimum(0);
+    boxLength->setMaximum(DBL_MAX);
+    boxLength->setMinimum(0);
+    boxWidth->setMaximum(DBL_MAX);
+    boxWidth->setMinimum(0);
+    boxHeight->setMaximum(DBL_MAX);
+    boxHeight->setMinimum(0);
     // Cylinder
-    ui->cylinderRadius->setMaximum(DBL_MAX);
-    ui->cylinderRadius->setMinimum(0);
-    ui->cylinderLength->setMaximum(DBL_MAX);
-    ui->cylinderLength->setMinimum(0);
-    ui->cylinderEdgeLength->setMaximum(DBL_MAX);
-    ui->cylinderEdgeLength->setMinimum(0);
-    ui->cylinderCount->setMaximum(1000);
+    cylinderRadius->setMaximum(DBL_MAX);
+    cylinderRadius->setMinimum(0);
+    cylinderLength->setMaximum(DBL_MAX);
+    cylinderLength->setMinimum(0);
+    cylinderEdgeLength->setMaximum(DBL_MAX);
+    cylinderEdgeLength->setMinimum(0);
+    cylinderCount->setMaximum(1000);
     // Cone
-    ui->coneRadius1->setMaximum(DBL_MAX);
-    ui->coneRadius1->setMinimum(0);
-    ui->coneRadius2->setMaximum(DBL_MAX);
-    ui->coneRadius2->setMinimum(0);
-    ui->coneLength->setMaximum(DBL_MAX);
-    ui->coneLength->setMinimum(0);
-    ui->coneEdgeLength->setMaximum(DBL_MAX);
-    ui->coneEdgeLength->setMinimum(0);
-    ui->coneCount->setMaximum(1000);
+    coneRadius1->setMaximum(DBL_MAX);
+    coneRadius1->setMinimum(0);
+    coneRadius2->setMaximum(DBL_MAX);
+    coneRadius2->setMinimum(0);
+    coneLength->setMaximum(DBL_MAX);
+    coneLength->setMinimum(0);
+    coneEdgeLength->setMaximum(DBL_MAX);
+    coneEdgeLength->setMinimum(0);
+    coneCount->setMaximum(1000);
     // Sphere
-    ui->sphereRadius->setMaximum(DBL_MAX);
-    ui->sphereRadius->setMinimum(0);
-    ui->sphereCount->setMaximum(1000);
+    sphereRadius->setMaximum(DBL_MAX);
+    sphereRadius->setMinimum(0);
+    sphereCount->setMaximum(1000);
     // Ellipsoid
-    ui->ellipsoidRadius1->setMaximum(DBL_MAX);
-    ui->ellipsoidRadius1->setMinimum(0);
-    ui->ellipsoidRadius2->setMaximum(DBL_MAX);
-    ui->ellipsoidRadius2->setMinimum(0);
-    ui->ellipsoidCount->setMaximum(1000);
+    ellipsoidRadius1->setMaximum(DBL_MAX);
+    ellipsoidRadius1->setMinimum(0);
+    ellipsoidRadius2->setMaximum(DBL_MAX);
+    ellipsoidRadius2->setMinimum(0);
+    ellipsoidCount->setMaximum(1000);
     // Torus
-    ui->toroidRadius1->setMaximum(DBL_MAX);
-    ui->toroidRadius1->setMinimum(0);
-    ui->toroidRadius2->setMaximum(DBL_MAX);
-    ui->toroidRadius2->setMinimum(0);
-    ui->toroidCount->setMaximum(1000);
+    toroidRadius1->setMaximum(DBL_MAX);
+    toroidRadius1->setMinimum(0);
+    toroidRadius2->setMaximum(DBL_MAX);
+    toroidRadius2->setMinimum(0);
+    toroidCount->setMaximum(1000);
 }
 
 /**
@@ -109,7 +107,7 @@ DlgRegularSolidImp::~DlgRegularSolidImp()
 void DlgRegularSolidImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        ui->retranslateUi(this);
+        this->retranslateUi(this);
     }
     QDialog::changeEvent(e);
 }
@@ -124,10 +122,10 @@ void DlgRegularSolidImp::on_createSolidButton_clicked()
         QString cmd; std::string name;
         App::Document* doc = App::GetApplication().getActiveDocument();
         if (!doc) {
-            QMessageBox::warning(this, tr("Create %1").arg(ui->comboBox1->currentText()), tr("No active document"));
+            QMessageBox::warning(this, tr("Create %1").arg(comboBox1->currentText()), tr("No active document"));
             return;
         }
-        if (ui->comboBox1->currentIndex() == 0) {         // cube
+        if (comboBox1->currentIndex() == 0) {         // cube
             name = doc->getUniqueObjectName("Cube");
             cmd = QString(QLatin1String(
                 "App.ActiveDocument.addObject(\"Mesh::Cube\",\"%1\")\n"
@@ -135,11 +133,11 @@ void DlgRegularSolidImp::on_createSolidButton_clicked()
                 "App.ActiveDocument.%1.Width=%3\n"
                 "App.ActiveDocument.%1.Height=%4\n"))
                 .arg(QLatin1String(name.c_str()))
-                .arg(ui->boxLength->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->boxWidth->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->boxHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
+                .arg(boxLength->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(boxWidth->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(boxHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
         }
-        else if (ui->comboBox1->currentIndex() == 1) {  // cylinder
+        else if (comboBox1->currentIndex() == 1) {  // cylinder
             name = doc->getUniqueObjectName("Cylinder");
             cmd = QString(QLatin1String(
                 "App.ActiveDocument.addObject(\"Mesh::Cylinder\",\"%1\")\n"
@@ -149,13 +147,13 @@ void DlgRegularSolidImp::on_createSolidButton_clicked()
                 "App.ActiveDocument.%1.Closed=%5\n"
                 "App.ActiveDocument.%1.Sampling=%6\n"))
                 .arg(QLatin1String(name.c_str()))
-                .arg(ui->cylinderRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->cylinderLength->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->cylinderEdgeLength->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(QLatin1String((ui->cylinderClosed->isChecked()?"True":"False")))
-                .arg(ui->cylinderCount->value());
+                .arg(cylinderRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(cylinderLength->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(cylinderEdgeLength->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(QLatin1String((cylinderClosed->isChecked()?"True":"False")))
+                .arg(cylinderCount->value());
         }
-        else if (ui->comboBox1->currentIndex() == 2) {  // cone
+        else if (comboBox1->currentIndex() == 2) {  // cone
             name = doc->getUniqueObjectName("Cone");
             cmd = QString(QLatin1String(
                 "App.ActiveDocument.addObject(\"Mesh::Cone\",\"%1\")\n"
@@ -166,24 +164,24 @@ void DlgRegularSolidImp::on_createSolidButton_clicked()
                 "App.ActiveDocument.%1.Closed=%6\n"
                 "App.ActiveDocument.%1.Sampling=%7\n"))
                 .arg(QLatin1String(name.c_str()))
-                .arg(ui->coneRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->coneRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->coneLength->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->coneEdgeLength->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(QLatin1String((ui->coneClosed->isChecked()?"True":"False")))
-                .arg(ui->coneCount->value());
+                .arg(coneRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(coneRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(coneLength->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(coneEdgeLength->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(QLatin1String((coneClosed->isChecked()?"True":"False")))
+                .arg(coneCount->value());
         }
-        else if (ui->comboBox1->currentIndex() == 3) {  // sphere
+        else if (comboBox1->currentIndex() == 3) {  // sphere
             name = doc->getUniqueObjectName("Sphere");
             cmd = QString(QLatin1String(
                 "App.ActiveDocument.addObject(\"Mesh::Sphere\",\"%1\")\n"
                 "App.ActiveDocument.%1.Radius=%2\n"
                 "App.ActiveDocument.%1.Sampling=%3\n"))
                 .arg(QLatin1String(name.c_str()))
-                .arg(ui->sphereRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->sphereCount->value());
+                .arg(sphereRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(sphereCount->value());
         }
-        else if (ui->comboBox1->currentIndex() == 4) {  // ellipsoid
+        else if (comboBox1->currentIndex() == 4) {  // ellipsoid
             name = doc->getUniqueObjectName("Ellipsoid");
             cmd = QString(QLatin1String(
                 "App.ActiveDocument.addObject(\"Mesh::Ellipsoid\",\"%1\")\n"
@@ -191,11 +189,11 @@ void DlgRegularSolidImp::on_createSolidButton_clicked()
                 "App.ActiveDocument.%1.Radius2=%3\n"
                 "App.ActiveDocument.%1.Sampling=%4\n"))
                 .arg(QLatin1String(name.c_str()))
-                .arg(ui->ellipsoidRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->ellipsoidRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->ellipsoidCount->value());
+                .arg(ellipsoidRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ellipsoidRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(ellipsoidCount->value());
         }
-        else if (ui->comboBox1->currentIndex() == 5) {  // toroid
+        else if (comboBox1->currentIndex() == 5) {  // toroid
             name = doc->getUniqueObjectName("Torus");
             cmd = QString(QLatin1String(
                 "App.ActiveDocument.addObject(\"Mesh::Torus\",\"%1\")\n"
@@ -203,13 +201,13 @@ void DlgRegularSolidImp::on_createSolidButton_clicked()
                 "App.ActiveDocument.%1.Radius2=%3\n"
                 "App.ActiveDocument.%1.Sampling=%4\n"))
                 .arg(QLatin1String(name.c_str()))
-                .arg(ui->toroidRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->toroidRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->toroidCount->value());
+                .arg(toroidRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(toroidRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                .arg(toroidCount->value());
         }
 
         // Execute the Python block
-        QString solid = tr("Create %1").arg(ui->comboBox1->currentText());
+        QString solid = tr("Create %1").arg(comboBox1->currentText());
         Gui::Application::Instance->activeDocument()->openCommand(solid.toUtf8());
         Gui::Command::doCommand(Gui::Command::Doc, (const char*)cmd.toLatin1());
         Gui::Application::Instance->activeDocument()->commitCommand();
@@ -217,9 +215,55 @@ void DlgRegularSolidImp::on_createSolidButton_clicked()
         Gui::Command::doCommand(Gui::Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
     }
     catch (const Base::PyException& e) {
-        QMessageBox::warning(this, tr("Create %1").arg(ui->comboBox1->currentText()),
+        QMessageBox::warning(this, tr("Create %1").arg(comboBox1->currentText()),
             QString::fromLatin1(e.what()));
     }
+}
+
+// -------------------------------------------------------------
+
+SingleDlgRegularSolidImp* SingleDlgRegularSolidImp::_instance=0;
+
+SingleDlgRegularSolidImp* SingleDlgRegularSolidImp::instance()
+{
+    // not initialized?
+    if(!_instance) {
+        _instance = new SingleDlgRegularSolidImp( Gui::getMainWindow());
+        _instance->setAttribute(Qt::WA_DeleteOnClose);
+    }
+
+    return _instance;
+}
+
+void SingleDlgRegularSolidImp::destruct ()
+{
+    if (_instance != 0) {
+        SingleDlgRegularSolidImp *pTmp = _instance;
+        _instance = 0;
+        delete pTmp;
+    }
+}
+
+bool SingleDlgRegularSolidImp::hasInstance()
+{
+    return _instance != 0;
+}
+
+/**
+ *  Constructs a SingleDlgRegularSolidImp which is a child of 'parent', with the
+ *  name 'name' and widget flags set to 'f'
+ */
+SingleDlgRegularSolidImp::SingleDlgRegularSolidImp(QWidget* parent, Qt::WindowFlags fl)
+  : DlgRegularSolidImp(parent, fl)
+{
+}
+
+/**
+ *  Destroys the object and frees any allocated resources
+ */
+SingleDlgRegularSolidImp::~SingleDlgRegularSolidImp()
+{
+    _instance = 0;
 }
 
 #include "moc_DlgRegularSolidImp.cpp"

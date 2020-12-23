@@ -26,11 +26,11 @@ __url__ = "http://www.freecadweb.org"
 
 import os
 import sys
-from PySide import QtCore, QtGui, QtSvg
+from PySide import QtCore, QtGui
+# from PySide import QtUiTools, QtSvg
 
 import FreeCAD
 import FreeCADGui
-# import Material_rc
 
 # is this still needed after the move to card utils???
 if sys.version_info.major >= 3:
@@ -61,14 +61,6 @@ class MaterialEditor:
             os.path.dirname(__file__) + os.sep + "materials-editor.ui"
         )
 
-        self.widget.setWindowIcon(QtGui.QIcon(":/icons/preview-rendered.svg"))
-
-        # restore size and position
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material")
-        w = p.GetInt("MaterialEditorWidth", 441)
-        h = p.GetInt("MaterialEditorHeight", 626)
-        self.widget.resize(w, h)
-
         # additional UI fixes and tweaks
         widget = self.widget
         buttonURL = widget.ButtonURL
@@ -80,16 +72,9 @@ class MaterialEditor:
         comboMaterial = widget.ComboMaterial
         treeView = widget.treeView
 
-        # create preview svg slots
-        self.widget.PreviewRender = QtSvg.QSvgWidget(":/icons/preview-rendered.svg")
-        self.widget.PreviewRender.setMaximumWidth(64)
-        self.widget.PreviewRender.setMinimumHeight(64)
-        self.widget.topLayout.addWidget(self.widget.PreviewRender)
-        self.widget.PreviewVector = QtSvg.QSvgWidget(":/icons/preview-vector.svg")
-        self.widget.PreviewVector.setMaximumWidth(64)
-        self.widget.PreviewVector.setMinimumHeight(64)
-        self.widget.topLayout.addWidget(self.widget.PreviewVector)
-        self.updatePreviews(mat=material)
+        # temporarily hide preview fields, as they are not used yet
+        # TODO : implement previews
+        widget.PreviewGroup.hide()
 
         buttonURL.setIcon(QtGui.QIcon(":/icons/internet-web-browser.svg"))
         buttonDeleteProperty.setEnabled(False)
@@ -107,7 +92,7 @@ class MaterialEditor:
         comboMaterial.currentIndexChanged[int].connect(self.chooseMaterial)
         buttonAddProperty.clicked.connect(self.addCustomProperty)
         buttonDeleteProperty.clicked.connect(self.deleteCustomProperty)
-        treeView.clicked.connect(self.onClickTree)
+        treeView.clicked.connect(self.checkDeletable)
 
         model = QtGui.QStandardItemModel()
         treeView.setModel(model)
@@ -141,7 +126,6 @@ class MaterialEditor:
 
         '''implements the model with the material attribute structure.'''
 
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material")
         widget = self.widget
         treeView = widget.treeView
         model = treeView.model()
@@ -163,20 +147,18 @@ class MaterialEditor:
             for properName in group[gg]:
                 pp = properName  # property name
                 item = QtGui.QStandardItem(pp)
-                item.setToolTip(group[gg][properName]['Description'])
                 self.internalprops.append(pp)
 
                 it = QtGui.QStandardItem()
-                it.setToolTip(group[gg][properName]['Description'])
 
                 tt = group[gg][properName]['Type']
                 itType = QtGui.QStandardItem(tt)
 
                 top.appendRow([item, it, itType])
-                treeView.setExpanded(top.index(), p.GetBool("TreeExpand"+gg, True))
-            # top.sortChildren(0)
 
-        # treeView.expandAll()
+            top.sortChildren(0)
+
+        treeView.expandAll()
 
     def updateMatParamsInTree(self, data):
 
@@ -199,11 +181,6 @@ class MaterialEditor:
                     it.setText(value)
                     del data[kk]
                 except KeyError:
-                    # treat here changes in Material Card Template
-                    # Norm -> StandardCode
-                    if (kk == "Standard Code") and ("Norm" in data) and data["Norm"]:
-                        it.setText(data["Norm"])
-                        del data["Norm"]
                     it.setText("")
 
         userGroup = root.child(gg + 1, 0)
@@ -218,7 +195,6 @@ class MaterialEditor:
             self.customprops.append(k)
 
     def chooseMaterial(self, index):
-
         if index < 0:
             return
         self.card_path = self.widget.ComboMaterial.itemData(index)
@@ -280,25 +256,12 @@ class MaterialEditor:
     def accept(self):
         ""
 
-        self.storeSize()
         QtGui.QDialog.accept(self.widget)
 
     def reject(self):
         ""
 
-        self.storeSize()
         QtGui.QDialog.reject(self.widget)
-
-    def storeSize(self):
-        "stores the widget size"
-        # store widths
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material")
-        p.SetInt("MaterialEditorWidth", self.widget.width())
-        p.SetInt("MaterialEditorHeight", self.widget.height())
-        root = self.widget.treeView.model().invisibleRootItem()
-        for gg in range(root.rowCount()):
-            group = root.child(gg)
-            p.SetBool("TreeExpand"+group.text(), self.widget.treeView.isExpanded(group.index()))
 
     def expandKey(self, key):
         "adds spaces before caps in a KeyName"
@@ -375,7 +338,7 @@ class MaterialEditor:
 
         buttonDeleteProperty.setEnabled(False)
 
-    def onClickTree(self, index):
+    def checkDeletable(self, index):
 
         '''Checks if the current item is a custom or an internal property,
         and enable the delete property or delete value button.'''
@@ -407,14 +370,10 @@ class MaterialEditor:
             buttonDeleteProperty.setEnabled(False)
             buttonDeleteProperty.setProperty("text", "Delete property")
 
-        self.updatePreviews()
-
     def getDict(self):
         "returns a dictionary from the contents of the editor."
 
         model = self.widget.treeView.model()
-        if model is None:
-            return {}
         root = model.invisibleRootItem()
 
         d = {}
@@ -454,52 +413,6 @@ class MaterialEditor:
                     self.widget.PreviewVector.setPixmap(QtGui.QPixmap(pattern))
                     self.widget.PreviewVector.show()
     '''
-
-    def updatePreviews(self, mat=None):
-        "updates the preview images from the content of the editor"
-        if not mat:
-            mat = self.getDict()
-        diffcol = None
-        highlightcol = None
-        sectioncol = None
-        if "DiffuseColor" in mat:
-            diffcol = mat["DiffuseColor"]
-        elif "ViewColor" in mat:
-            diffcol = mat["ViwColor"]
-        elif "Color" in mat:
-            diffcol = mat["Color"]
-        if "SpecularColor" in mat:
-            highlightcol = mat["SpecularColor"]
-        if "SectionColor" in mat:
-            sectioncol = mat["SectionColor"]
-        if diffcol or highlightcol:
-            fd = QtCore.QFile(":/icons/preview-rendered.svg")
-            if fd.open(QtCore.QIODevice.ReadOnly | QtCore.QIODevice.Text):
-                svg = QtCore.QTextStream(fd).readAll()
-                fd.close()
-                if diffcol:
-                    svg = svg.replace("#d3d7cf", self.getColorHash(diffcol, val=255))
-                    svg = svg.replace("#555753", self.getColorHash(diffcol, val=125))
-                if highlightcol:
-                    svg = svg.replace("#fffffe", self.getColorHash(highlightcol, val=255))
-                self.widget.PreviewRender.load(QtCore.QByteArray(bytes(svg, encoding="utf8")))
-        if diffcol or sectioncol:
-            fd = QtCore.QFile(":/icons/preview-vector.svg")
-            if fd.open(QtCore.QIODevice.ReadOnly | QtCore.QIODevice.Text):
-                svg = QtCore.QTextStream(fd).readAll()
-                fd.close()
-                if diffcol:
-                    svg = svg.replace("#d3d7cf", self.getColorHash(diffcol, val=255))
-                    svg = svg.replace("#555753", self.getColorHash(diffcol, val=125))
-                if sectioncol:
-                    svg = svg.replace("#ffffff", self.getColorHash(sectioncol, val=255))
-                self.widget.PreviewVector.load(QtCore.QByteArray(bytes(svg, encoding="utf8")))
-
-    def getColorHash(self, col, val=255):
-        "returns a '#000000' string from a '(0.1,0.2,0.3)' string"
-        col = [float(x.strip()) for x in col.strip("()").split(",")]
-        color = QtGui.QColor(int(col[0]*val), int(col[1]*val), int(col[2]*val))
-        return color.name()
 
     def openfile(self):
         "Opens a FCMat file"
@@ -637,7 +550,7 @@ class MaterialsDelegate(QtGui.QStyledItemDelegate):
         if Type == "Color":
 
             color = editor.property('color')
-            color = tuple([v/255.0 for v in color.getRgb()])
+            color = color.getRgb()
             item.setText(str(color))
 
         elif Type == "File":
@@ -737,7 +650,7 @@ def string2tuple(string):
     "provisionally"
     value = string[1:-1]
     value = value.split(',')
-    value = [int(float(v)*255) for v in value]
+    value = [int(v) for v in value]
     value = tuple(value)
     return value
 

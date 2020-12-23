@@ -45,8 +45,6 @@ public:
     MeshSelection();
     ~MeshSelection();
 
-    void setEnabledViewerSelection(bool);
-
     void startSelection();
     void startDeselection();
     void stopSelection();

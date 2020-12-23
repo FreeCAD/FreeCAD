@@ -42,10 +42,7 @@ public:
     virtual QIcon extensionMergeOverlayIcons(const QIcon & orig) const override;
 
     virtual void extensionUpdateData(const App::Property*) override;
-    virtual void extensionSetupContextMenu(QMenu*, QObject*, const char*) override;
 
-private:
-    void showAttachmentEditor();
 };
 
 typedef Gui::ViewProviderExtensionPythonT<PartGui::ViewProviderAttachExtension> ViewProviderAttachExtensionPython;

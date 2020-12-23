@@ -69,10 +69,10 @@ exported from FreeCAD.</string>
            <number>0</number>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>ImportObject</cstring>
+           <string>ImportObject</string>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>Mod/Fem/InOutVtk</cstring>
+           <string>Mod/Fem/InOutVtk</string>
           </property>
           <item>
            <property name="text">

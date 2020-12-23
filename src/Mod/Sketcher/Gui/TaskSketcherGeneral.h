@@ -49,28 +49,30 @@ class SketcherGeneralWidget : public QWidget
 public:
     SketcherGeneralWidget(QWidget *parent=0);
     ~SketcherGeneralWidget();
-    
-    bool eventFilter(QObject *object, QEvent *event);
 
     void saveSettings();
-    void saveOrderingOrder();
     void loadSettings();
-    void loadOrderingOrder();
     void setGridSize(double val);
     void checkGridView(bool);
     void checkGridSnap(bool);
     void checkAutoconstraints(bool);
-    void checkAvoidRedundant(bool);
-    void enableGridSettings(bool);
-    void enableAvoidRedundant(bool);
+
+    bool isGridViewChecked() const;
+    void saveGridViewChecked();
 
 Q_SIGNALS:
     void emitToggleGridView(bool);
-    void emitToggleGridSnap(bool);
+    void emitToggleGridSnap(int);
     void emitSetGridSize(double);
-    void emitToggleAutoconstraints(bool);
-    void emitToggleAvoidRedundant(bool);
+    void emitToggleAutoconstraints(int);
     void emitRenderOrderChanged();
+
+private Q_SLOTS:
+    void onToggleGridView(bool on);
+    void onSetGridSize(double val);
+    void onToggleGridSnap(int state);
+    void onRenderOrderChanged();
+    void on_checkBoxRedundantAutoconstraints_stateChanged(int);
 
 protected:
     void changeEvent(QEvent *e);
@@ -94,9 +96,8 @@ public:
 public Q_SLOTS:
     void onToggleGridView(bool on);
     void onSetGridSize(double val);
-    void onToggleGridSnap(bool on);
-    void onToggleAutoconstraints(bool on);
-    void onToggleAvoidRedundant(bool);
+    void onToggleGridSnap(int state);
+    void onToggleAutoconstraints(int state);
     void onRenderOrderChanged();
 
 private:

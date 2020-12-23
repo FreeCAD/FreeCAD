@@ -1,5 +1,7 @@
 #***************************************************************************
-#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
+#*                                                                         *
+#*   Copyright (c) 2011                                                    *
+#*   Yorik van Havre <yorik@uncreated.net>                                 *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -19,10 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import os
-
 import FreeCAD,Draft,ArchComponent,DraftVecUtils,ArchCommands
-import ArchWindowPresets
 from FreeCAD import Units
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
@@ -30,7 +29,6 @@ if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui, QtSvg
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
-    import draftguitools.gui_trackers as DraftTrackers
 else:
     # \cond
     def translate(ctxt,txt):
@@ -48,19 +46,21 @@ else:
 #  of wires, and that can be inserted into other Arch objects,
 #  by defining a volume that gets subtracted from them.
 
-__title__  = "FreeCAD Window"
+__title__="FreeCAD Window"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__ = "http://www.freecadweb.org"
 
 # presets
 WindowPartTypes = ["Frame","Solid panel","Glass panel","Louvre"]
 AllowedHosts =    ["Wall","Structure","Roof"]
+WindowPresets =   ["Fixed", "Open 1-pane", "Open 2-pane", "Sash 2-pane",
+                   "Sliding 2-pane", "Simple door", "Glass door", "Sliding 4-pane"]
 WindowOpeningModes = ["None","Arc 90","Arc 90 inv","Arc 45","Arc 45 inv","Arc 180",
                       "Arc 180 inv","Triangle","Triangle inv","Sliding","Sliding inv"]
-WindowPresets = ArchWindowPresets.WindowPresets
 
 
-def makeWindow(baseobj=None,width=None,height=None,parts=None,name=None):
+
+def makeWindow(baseobj=None,width=None,height=None,parts=None,name="Window"):
 
     '''makeWindow(baseobj,[width,height,parts,name]): creates a window based on the
     given base 2D object (sketch or draft).'''
@@ -75,10 +75,7 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name=None):
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Window")
     _Window(obj)
-    if name:
-        obj.Label = name
-    else:
-        obj.Label = translate("Arch","Window")
+    obj.Label = translate("Arch","Window")
     if FreeCAD.GuiUp:
         _ViewProviderWindow(obj.ViewObject)
         #obj.ViewObject.Transparency=p.GetInt("WindowTransparency",85)
@@ -93,7 +90,7 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name=None):
         obj.WindowParts = parts
     else:
         if baseobj:
-            if baseobj.getLinkedObject().isDerivedFrom("Part::Part2DObject"):
+            if baseobj.isDerivedFrom("Part::Part2DObject"):
                 if baseobj.Shape.Wires:
                     i = 0
                     ws = ''
@@ -103,13 +100,6 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name=None):
                             ws += "Wire" + str(i)
                             i += 1
                     obj.WindowParts = ["Default","Frame",ws,"1","0"]
-            else:
-                # bind properties from base obj if existing
-                for prop in ["Height","Width","Subvolume","Tag","Description","Material"]:
-                    for p in baseobj.PropertiesList:
-                        if (p == prop) or p.endswith("_"+prop):
-                            obj.setExpression(prop, baseobj.Name+"."+p)
-
     if obj.Base and FreeCAD.GuiUp:
         obj.Base.ViewObject.DisplayMode = "Wireframe"
         obj.Base.ViewObject.hide()
@@ -117,26 +107,475 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name=None):
         todo.delay(recolorize,[obj.Document.Name,obj.Name])
     return obj
 
-def recolorize(attr): # names is [docname,objname]
+def recolorize(names): # names is [docname,objname]
 
-    """Recolorizes an object or a [documentname,objectname] list
-    This basically calls the Proxy.colorize(obj) methods of objects that
-    have one."""
+    if names[0] in FreeCAD.listDocuments():
+        doc = FreeCAD.getDocument(names[0])
+        obj = doc.getObject(names[1])
+        if obj:
+            if obj.ViewObject:
+                if obj.ViewObject.Proxy:
+                    obj.ViewObject.Proxy.colorize(obj,force=True)
 
-    if isinstance(attr,list):
-        if attr[0] in FreeCAD.listDocuments():
-            doc = FreeCAD.getDocument(attr[0])
-            obj = doc.getObject(attr[1])
-            if obj:
-                if obj.ViewObject:
-                    if obj.ViewObject.Proxy:
-                        obj.ViewObject.Proxy.colorize(obj,force=True)
-    elif hasattr(attr,"ViewObject") and attr.ViewObject:
-        obj = attr
-        if hasattr(obj.ViewObject,"Proxy") and hasattr(obj.ViewObject.Proxy,"colorize"):
-            obj.ViewObject.Proxy.colorize(obj,force=True)
+def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None):
 
+    """makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,[placement]): makes a
+    window object based on the given data. windowtype must be one of the names
+    defined in Arch.WindowPresets"""
 
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("No active document. Aborting\n")
+        return
+
+    def makeSketch(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2):
+
+        import Part,Sketcher
+        width = float(width)
+        height = float(height)
+        h1 = float(h1)
+        h2 = float(h2)
+        h3 = float(h3)
+        w1 = float(w1)
+        w2 = float(w2)
+        o1 = float(o1)
+        o2 = float(o2)
+        # small spacing to avoid wrong auto-wires in sketch
+        tol = h1/10
+        # glass size divider
+        gla = 10
+        s = FreeCAD.ActiveDocument.addObject('Sketcher::SketchObject','Sketch')
+
+        def addFrame(s,p1,p2,p3,p4,p5,p6,p7,p8):
+
+            "adds two rectangles to the given sketch"
+
+            idx = s.GeometryCount
+            s.addGeometry(Part.LineSegment(p1,p2))
+            s.addGeometry(Part.LineSegment(p2,p3))
+            s.addGeometry(Part.LineSegment(p3,p4))
+            s.addGeometry(Part.LineSegment(p4,p1))
+            s.addConstraint(Sketcher.Constraint('Coincident',idx,2,idx+1,1))
+            s.addConstraint(Sketcher.Constraint('Coincident',idx+1,2,idx+2,1))
+            s.addConstraint(Sketcher.Constraint('Coincident',idx+2,2,idx+3,1))
+            s.addConstraint(Sketcher.Constraint('Coincident',idx+3,2,idx,1))
+            s.addConstraint(Sketcher.Constraint('Horizontal',idx))
+            s.addConstraint(Sketcher.Constraint('Horizontal',idx+2))
+            s.addConstraint(Sketcher.Constraint('Vertical',idx+1))
+            s.addConstraint(Sketcher.Constraint('Vertical',idx+3))
+            s.addGeometry(Part.LineSegment(p5,p6))
+            s.addGeometry(Part.LineSegment(p6,p7))
+            s.addGeometry(Part.LineSegment(p7,p8))
+            s.addGeometry(Part.LineSegment(p8,p5))
+            s.addConstraint(Sketcher.Constraint('Coincident',idx+4,2,idx+5,1))
+            s.addConstraint(Sketcher.Constraint('Coincident',idx+5,2,idx+6,1))
+            s.addConstraint(Sketcher.Constraint('Coincident',idx+6,2,idx+7,1))
+            s.addConstraint(Sketcher.Constraint('Coincident',idx+7,2,idx+4,1))
+            s.addConstraint(Sketcher.Constraint('Horizontal',idx+4))
+            s.addConstraint(Sketcher.Constraint('Horizontal',idx+6))
+            s.addConstraint(Sketcher.Constraint('Vertical',idx+5))
+            s.addConstraint(Sketcher.Constraint('Vertical',idx+7))
+
+        def outerFrame(s,width,height,h1,w1,o1):
+
+            p1 = Vector(0,0,0)
+            p2 = Vector(width,0,0)
+            p3 = Vector(width,height,0)
+            p4 = Vector(0,height,0)
+            p5 = Vector(h1,h1,0)
+            p6 = Vector(width-h1,h1,0)
+            p7 = Vector(width-h1,height-h1,0)
+            p8 = Vector(h1,height-h1,0)
+            addFrame(s,p1,p2,p3,p4,p5,p6,p7,p8)
+            s.addConstraint(Sketcher.Constraint('DistanceY',1,height)) #16
+            s.addConstraint(Sketcher.Constraint('DistanceX',0,width)) #17
+            s.renameConstraint(16, 'Height')
+            s.renameConstraint(17, 'Width')
+            s.addConstraint(Sketcher.Constraint('DistanceY',6,2,2,2,h1))
+            s.addConstraint(Sketcher.Constraint('DistanceX',2,2,6,2,h1))
+            s.addConstraint(Sketcher.Constraint('DistanceX',4,2,0,2,h1))
+            s.addConstraint(Sketcher.Constraint('DistanceY',0,2,4,2,h1))
+            s.renameConstraint(18, 'Frame1')
+            s.renameConstraint(19, 'Frame2')
+            s.renameConstraint(20, 'Frame3')
+            s.renameConstraint(21, 'Frame4')
+            s.addConstraint(Sketcher.Constraint('Coincident',0,1,-1,1))
+            return ["OuterFrame","Frame","Wire0,Wire1",str(w1-w2)+"+V","0.00+V"]
+
+        def doorFrame(s,width,height,h1,w1,o1):
+
+            p1 = Vector(0,0,0)
+            p2 = Vector(width,0,0)
+            p3 = Vector(width,height,0)
+            p4 = Vector(0,height,0)
+            p5 = Vector(h1,0,0)
+            p6 = Vector(width-h1,0,0)
+            p7 = Vector(width-h1,height-h1,0)
+            p8 = Vector(h1,height-h1,0)
+            addFrame(s,p1,p2,p3,p4,p5,p6,p7,p8)
+            s.addConstraint(Sketcher.Constraint('DistanceY',1,height)) #16
+            s.addConstraint(Sketcher.Constraint('DistanceX',0,width)) #17
+            s.renameConstraint(16, 'Height')
+            s.renameConstraint(17, 'Width')
+            s.addConstraint(Sketcher.Constraint('DistanceY',6,2,2,2,h1))
+            s.addConstraint(Sketcher.Constraint('DistanceX',2,2,6,2,h1))
+            s.addConstraint(Sketcher.Constraint('DistanceX',4,2,0,2,h1))
+            s.addConstraint(Sketcher.Constraint('DistanceY',0,2,4,2,0.0))
+            s.addConstraint(Sketcher.Constraint('Coincident',0,1,-1,1))
+            s.renameConstraint(18, 'Frame1')
+            s.renameConstraint(19, 'Frame2')
+            s.renameConstraint(20, 'Frame3')
+            return ["OuterFrame","Frame","Wire0,Wire1",str(w1-w2)+"+V","0.00+V"]
+
+        if windowtype == "Fixed":
+
+            wp = outerFrame(s,width,height,h1,w1,o1)
+            wp.extend(["Glass","Glass panel","Wire1",str(w1/gla),str(w1/2)+"+V"])
+
+        elif windowtype == "Open 1-pane":
+
+            wp = outerFrame(s,width,height,h1,w1,o1)
+            p1 = Vector(h1+tol,h1+tol,0)
+            p2 = Vector(width-(h1+tol),h1+tol,0)
+            p3 = Vector(width-(h1+tol),height-(h1+tol),0)
+            p4 = Vector(h1+tol,height-(h1+tol),0)
+            p5 = Vector(h1+h2,h1+h2,0)
+            p6 = Vector(width-(h1+h2),h1+h2,0)
+            p7 = Vector(width-(h1+h2),height-(h1+h2),0)
+            p8 = Vector(h1+h2,height-(h1+h2),0)
+            addFrame(s,p1,p2,p3,p4,p5,p6,p7,p8)
+            s.addConstraint(Sketcher.Constraint('DistanceX',8,1,12,1,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceY',8,1,12,1,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceX',14,1,10,1,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceY',14,1,10,1,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceX',4,1,8,1,tol))
+            s.addConstraint(Sketcher.Constraint('DistanceY',4,1,8,1,tol))
+            s.addConstraint(Sketcher.Constraint('DistanceX',10,1,6,1,tol))
+            s.addConstraint(Sketcher.Constraint('DistanceY',10,1,6,1,tol))
+            if h2 == h1:
+                s.renameConstraint(39,'Frame5')
+                s.renameConstraint(40,'Frame6')
+                s.renameConstraint(42,'Frame7')
+                s.renameConstraint(41,'Frame8')
+            fw = str(w2)
+            if w2 == w1:
+                fw = "0.00+V"
+            wp.extend(["InnerFrame","Frame","Wire2,Wire3",fw,str(o2)+"+V"])
+            wp.extend(["InnerGlass","Glass panel","Wire3",str(w2/gla),str(o2+w2/2)+"+V"])
+
+        elif windowtype == "Open 2-pane":
+
+            wp = outerFrame(s,width,height,h1,w1,o1)
+            p1 = Vector(h1+tol,h1+tol,0)
+            p2 = Vector((width/2)-tol,h1+tol,0)
+            p3 = Vector((width/2)-tol,height-(h1+tol),0)
+            p4 = Vector(h1+tol,height-(h1+tol),0)
+            p5 = Vector(h1+h2,h1+h2,0)
+            p6 = Vector((width/2)-h2,h1+h2,0)
+            p7 = Vector((width/2)-h2,height-(h1+h2),0)
+            p8 = Vector(h1+h2,height-(h1+h2),0)
+            addFrame(s,p1,p2,p3,p4,p5,p6,p7,p8)
+            p1 = Vector((width/2)+tol,h1+tol,0)
+            p2 = Vector(width-(h1+tol),h1+tol,0)
+            p3 = Vector(width-(h1+tol),height-(h1+tol),0)
+            p4 = Vector((width/2)+tol,height-(h1+tol),0)
+            p5 = Vector((width/2)+h2,h1+h2,0)
+            p6 = Vector(width-(h1+h2),h1+h2,0)
+            p7 = Vector(width-(h1+h2),height-(h1+h2),0)
+            p8 = Vector((width/2)+h2,height-(h1+h2),0)
+            addFrame(s,p1,p2,p3,p4,p5,p6,p7,p8)
+            s.addConstraint(Sketcher.Constraint('DistanceY',8,1,12,1,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceX',8,1,12,1,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceX',21,2,17,2,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceY',21,2,17,2,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceX',16,1,20,1,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceX',14,1,10,1,h2))
+            s.addConstraint(Sketcher.Constraint('Equal',22,14))
+            s.addConstraint(Sketcher.Constraint('DistanceY',8,2,16,1,0.0))
+            s.addConstraint(Sketcher.Constraint('DistanceY',10,1,18,2,0.0))
+            s.addConstraint(Sketcher.Constraint('DistanceX',4,1,8,1,tol))
+            s.addConstraint(Sketcher.Constraint('DistanceY',4,1,8,1,tol))
+            s.addConstraint(Sketcher.Constraint('DistanceX',6,1,18,1,-tol))
+            s.addConstraint(Sketcher.Constraint('DistanceY',6,1,18,1,-tol))
+            s.addConstraint(Sketcher.Constraint('DistanceX',9,1,19,2,tol))
+            s.addConstraint(Sketcher.Constraint('PointOnObject',13,2,22))
+            s.addConstraint(Sketcher.Constraint('PointOnObject',20,1,12))
+            if h1 == h2:
+                s.renameConstraint(55,'Frame5')
+                s.renameConstraint(56,'Frame6')
+                s.renameConstraint(57,'Frame7')
+                s.renameConstraint(58,'Frame8')
+                s.renameConstraint(59,'Frame9')
+                s.renameConstraint(60,'Frame10')
+            fw = str(w2)
+            if w2 == w1:
+                fw = "0.00+V"
+            wp.extend(["LeftFrame","Frame","Wire2,Wire3",fw,str(o2)+"+V"])
+            wp.extend(["LeftGlass","Glass panel","Wire3",str(w2/gla),str(o2+w2/2)+"+V"])
+            wp.extend(["RightFrame","Frame","Wire4,Wire5",fw,str(o2)+"+V"])
+            wp.extend(["RightGlass","Glass panel","Wire5",str(w2/gla),str(o2+w2/2)+"+V"])
+
+        elif windowtype == "Sash 2-pane":
+
+            wp = outerFrame(s,width,height,h1,w1,o1)
+            p1 = Vector(h1+tol,h1+tol,0)
+            p2 = Vector(width-(h1+tol),h1+tol,0)
+            p3 = Vector(width-(h1+tol),(height/2)-tol,0)
+            p4 = Vector(h1+tol,(height/2)-tol,0)
+            p5 = Vector(h1+h2,h1+h2,0)
+            p6 = Vector(width-(h1+h2),h1+h2,0)
+            p7 = Vector(width-(h1+h2),(height/2)-h2,0)
+            p8 = Vector(h1+h2,(height/2)-h2,0)
+            addFrame(s,p1,p2,p3,p4,p5,p6,p7,p8)
+            p1 = Vector(h1+tol,(height/2)+tol,0)
+            p2 = Vector(width-(h1+tol),(height/2)+tol,0)
+            p3 = Vector(width-(h1+tol),height-(h1+tol),0)
+            p4 = Vector(h1+tol,height-(h1+tol),0)
+            p5 = Vector(h1+h2,(height/2)+h2,0)
+            p6 = Vector(width-(h1+h2),(height/2)+h2,0)
+            p7 = Vector(width-(h1+h2),height-(h1+h2),0)
+            p8 = Vector(h1+h2,height-(h1+h2),0)
+            addFrame(s,p1,p2,p3,p4,p5,p6,p7,p8)
+            s.addConstraint(Sketcher.Constraint('DistanceY',8,1,12,1,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceX',8,1,12,1,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceX',21,2,17,2,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceY',21,2,17,2,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceY',16,2,20,1,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceY',10,2,14,2,-h2))
+            s.addConstraint(Sketcher.Constraint('Equal',23,15))
+            s.addConstraint(Sketcher.Constraint('DistanceX',12,1,20,1,0.0))
+            s.addConstraint(Sketcher.Constraint('DistanceX',13,2,20,2,0.0))
+            s.addConstraint(Sketcher.Constraint('DistanceX',4,1,8,1,tol))
+            s.addConstraint(Sketcher.Constraint('DistanceY',4,1,8,1,tol))
+            s.addConstraint(Sketcher.Constraint('DistanceX',6,1,18,1,-tol))
+            s.addConstraint(Sketcher.Constraint('DistanceY',6,1,18,1,-tol))
+            s.addConstraint(Sketcher.Constraint('DistanceY',10,1,16,1,tol))
+            s.addConstraint(Sketcher.Constraint('PointOnObject',9,2,17))
+            s.addConstraint(Sketcher.Constraint('PointOnObject',16,1,11))
+            if h1 == h2:
+                s.renameConstraint(55,'Frame5')
+                s.renameConstraint(56,'Frame6')
+                s.renameConstraint(57,'Frame7')
+                s.renameConstraint(58,'Frame8')
+                s.renameConstraint(59,'Frame9')
+                s.renameConstraint(60,'F10')
+                s.setExpression('.Constraints.F10','-.Constraints.Frame5')
+            fw = str(w2)
+            if w2 == w1:
+                fw = "0.00+V"
+            wp.extend(["LowerFrame","Frame","Wire2,Wire3",fw,str(o2+w2)+"+V"])
+            wp.extend(["LowerGlass","Glass panel","Wire3",str(w2/gla),str(o2+w2+w2/2)+"+V"])
+            wp.extend(["UpperFrame","Frame","Wire4,Wire5",fw,str(o2)+"+V"])
+            wp.extend(["UpperGlass","Glass panel","Wire5",str(w2/gla),str(o2+w2/2)+"+V"])
+
+        elif windowtype == "Sliding 2-pane":
+
+            wp = outerFrame(s,width,height,h1,w1,o1)
+            p1 = Vector(h1+tol,h1+tol,0)
+            p2 = Vector((width/2)-tol,h1+tol,0)
+            p3 = Vector((width/2)-tol,height-(h1+tol),0)
+            p4 = Vector(h1+tol,height-(h1+tol),0)
+            p5 = Vector(h1+h2,h1+h2,0)
+            p6 = Vector((width/2)-h2,h1+h2,0)
+            p7 = Vector((width/2)-h2,height-(h1+h2),0)
+            p8 = Vector(h1+h2,height-(h1+h2),0)
+            addFrame(s,p1,p2,p3,p4,p5,p6,p7,p8)
+            p1 = Vector((width/2)+tol,h1+tol,0)
+            p2 = Vector(width-(h1+tol),h1+tol,0)
+            p3 = Vector(width-(h1+tol),height-(h1+tol),0)
+            p4 = Vector((width/2)+tol,height-(h1+tol),0)
+            p5 = Vector((width/2)+h2,h1+h2,0)
+            p6 = Vector(width-(h1+h2),h1+h2,0)
+            p7 = Vector(width-(h1+h2),height-(h1+h2),0)
+            p8 = Vector((width/2)+h2,height-(h1+h2),0)
+            addFrame(s,p1,p2,p3,p4,p5,p6,p7,p8)
+            s.addConstraint(Sketcher.Constraint('DistanceY',8,1,12,1,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceX',8,1,12,1,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceX',21,2,17,2,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceY',21,2,17,2,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceX',16,1,20,1,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceX',14,1,10,1,h2))
+            s.addConstraint(Sketcher.Constraint('Equal',22,14))
+            s.addConstraint(Sketcher.Constraint('DistanceY',8,2,16,1,0.0))
+            s.addConstraint(Sketcher.Constraint('DistanceY',10,1,18,2,0.0))
+            s.addConstraint(Sketcher.Constraint('DistanceX',4,1,8,1,tol))
+            s.addConstraint(Sketcher.Constraint('DistanceY',4,1,8,1,tol))
+            s.addConstraint(Sketcher.Constraint('DistanceX',6,1,18,1,-tol))
+            s.addConstraint(Sketcher.Constraint('DistanceY',6,1,18,1,-tol))
+            s.addConstraint(Sketcher.Constraint('DistanceX',9,1,19,2,tol))
+            s.addConstraint(Sketcher.Constraint('PointOnObject',13,2,22))
+            s.addConstraint(Sketcher.Constraint('PointOnObject',12,2,20))
+            if h1 == h2:
+                s.renameConstraint(55,'Frame5')
+                s.renameConstraint(56,'Frame6')
+                s.renameConstraint(57,'Frame7')
+                s.renameConstraint(58,'Frame8')
+                s.renameConstraint(59,'Frame9')
+                s.renameConstraint(60,'Frame10')
+            fw = str(w2)
+            if w2 == w1:
+                fw = "0.00+V"
+            wp.extend(["LeftFrame","Frame","Wire2,Wire3",fw,str(o2)+"+V"])
+            wp.extend(["LeftGlass","Glass panel","Wire3",str(w2/gla),str(o2+w2/2)+"+V"])
+            wp.extend(["RightFrame","Frame","Wire4,Wire5",fw,str(o2+w2)+"+V"])
+            wp.extend(["RightGlass","Glass panel","Wire5",str(w2/gla),str(o2+w2+w2/2)+"+V"])
+
+        elif windowtype == "Sliding 4-pane":
+
+            wp = outerFrame(s,width,height,h1,w1,o1)
+            p1 = Vector(h1+tol,h1+tol,0)
+            p2 = Vector(width/4-tol,h1+tol,0)
+            p3 = Vector(width/4-tol,height-(h1+tol),0)
+            p4 = Vector(h1+tol,height-(h1+tol),0)
+            p5 = Vector(h1+h2,h1+h2,0)
+            p6 = Vector(width/4-h2,h1+h2,0)
+            p7 = Vector(width/4-h2,height-(h1+h2),0)
+            p8 = Vector(h1+h2,height-(h1+h2),0)
+            addFrame(s,p1,p2,p3,p4,p5,p6,p7,p8)
+            p1 = Vector(width/4+tol,h1+tol,0)
+            p2 = Vector(width/2-tol,h1+tol,0)
+            p3 = Vector(width/2-tol,height-(h1+tol),0)
+            p4 = Vector(width/4+tol,height-(h1+tol),0)
+            p5 = Vector(width/4+h2,h1+h2,0)
+            p6 = Vector(width/2-h2,h1+h2,0)
+            p7 = Vector(width/2-h2,height-(h1+h2),0)
+            p8 = Vector(width/4+h2,height-(h1+h2),0)
+            addFrame(s,p1,p2,p3,p4,p5,p6,p7,p8)
+            p1 = Vector(width/2+tol,h1+tol,0)
+            p2 = Vector(width*3/4-tol,h1+tol,0)
+            p3 = Vector(width*3/4-tol,height-(h1+tol),0)
+            p4 = Vector(width/2+tol,height-(h1+tol),0)
+            p5 = Vector(width/2+h2,h1+h2,0)
+            p6 = Vector(width*3/4-h2,h1+h2,0)
+            p7 = Vector(width*3/4-h2,height-(h1+h2),0)
+            p8 = Vector(width/2+h2,height-(h1+h2),0)
+            addFrame(s,p1,p2,p3,p4,p5,p6,p7,p8)
+            p1 = Vector(width*3/4+tol,h1+tol,0)
+            p2 = Vector(width-(h1+tol),h1+tol,0)
+            p3 = Vector(width-(h1+tol),height-(h1+tol),0)
+            p4 = Vector(width*3/4+tol,height-(h1+tol),0)
+            p5 = Vector(width*3/4+h2,h1+h2,0)
+            p6 = Vector(width-(h1+h2),h1+h2,0)
+            p7 = Vector(width-(h1+h2),height-(h1+h2),0)
+            p8 = Vector(width*3/4+h2,height-(h1+h2),0)
+            addFrame(s,p1,p2,p3,p4,p5,p6,p7,p8)
+            s.addConstraint(Sketcher.Constraint('DistanceX',4,1,8,1,tol))
+            s.addConstraint(Sketcher.Constraint('DistanceX',8,2,16,1,tol))
+            s.addConstraint(Sketcher.Constraint('DistanceX',17,1,27,2,tol))
+            s.addConstraint(Sketcher.Constraint('DistanceX',24,2,32,1,tol))
+            s.addConstraint(Sketcher.Constraint('DistanceX',32,2,4,2,tol))
+            s.addConstraint(Sketcher.Constraint('DistanceY',4,1,8,1,tol))
+            s.addConstraint(Sketcher.Constraint('DistanceY',10,2,6,2,tol))
+            s.addConstraint(Sketcher.Constraint('DistanceY',17,2,26,2,0.0))
+            s.addConstraint(Sketcher.Constraint('DistanceY',25,2,34,2,0.0))
+            s.addConstraint(Sketcher.Constraint('DistanceY',8,2,16,1,0.0))
+            s.addConstraint(Sketcher.Constraint('DistanceY',9,2,18,2,0.0))
+            s.addConstraint(Sketcher.Constraint('DistanceY',16,2,24,1,0.0))
+            s.addConstraint(Sketcher.Constraint('DistanceY',24,2,32,1,0.0))
+            s.addConstraint(Sketcher.Constraint('DistanceX',8,1,12,1,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceY',8,1,12,1,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceX',13,2,9,2,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceY',13,2,9,2,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceX',16,1,20,1,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceY',16,1,20,1,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceX',21,2,17,2,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceY',21,2,17,2,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceX',24,1,28,1,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceY',24,1,28,1,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceX',29,2,25,2,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceY',29,2,25,2,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceX',32,1,36,1,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceY',32,1,36,1,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceX',37,2,33,2,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceY',37,2,33,2,h2))
+            s.addConstraint(Sketcher.Constraint('Equal',14,22))
+            s.addConstraint(Sketcher.Constraint('Equal',22,30))
+            s.addConstraint(Sketcher.Constraint('Equal',30,38))
+            if h1 == h2:
+                s.renameConstraint(100,'Frame5')
+                s.renameConstraint(101,'Frame6')
+                s.renameConstraint(102,'Frame7')
+                s.renameConstraint(103,'Frame8')
+                s.renameConstraint(104,'Frame9')
+                s.renameConstraint(105,'Frame10')
+                s.renameConstraint(106,'Frame11')
+                s.renameConstraint(107,'Frame12')
+                s.renameConstraint(108,'Frame13')
+                s.renameConstraint(109,'Frame14')
+                s.renameConstraint(110,'Frame15')
+                s.renameConstraint(111,'Frame16')
+                s.renameConstraint(112,'Frame17')
+                s.renameConstraint(113,'Frame18')
+                s.renameConstraint(114,'Frame19')
+                s.renameConstraint(115,'Frame20')
+            fw = str(w2)
+            if w2 == w1:
+                fw = "0.00+V"
+            wp.extend(["LeftMostFrame","Frame","Wire2,Wire3",fw,str(o2)+"+V"])
+            wp.extend(["LeftMostGlass","Glass panel","Wire3",str(w2/gla),str(o2+w2/2)+"+V"])
+            wp.extend(["LeftFrame","Frame","Wire4,Wire5",fw,str(o2+w2)+"+V"])
+            wp.extend(["LeftGlass","Glass panel","Wire5",str(w2/gla),str(o2+w2+w2/2)+"+V"])
+            wp.extend(["RightFrame","Frame","Wire6,Wire7",fw,str(o2+w2)+"+V"])
+            wp.extend(["RightGlass","Glass panel","Wire7",str(w2/gla),str(o2+w2+w2/2)+"+V"])
+            wp.extend(["RightMostFrame","Frame","Wire8,Wire9",fw,str(o2)+"+V"])
+            wp.extend(["RightMostGlass","Glass panel","Wire9",str(w2/gla),str(o2+w2/2)+"+V"])
+
+        elif windowtype == "Simple door":
+
+            wp = doorFrame(s,width,height,h1,w1,o1)
+            wp.extend(["Door","Solid panel","Wire1",str(w2),str(o2)+"+V"])
+
+        elif windowtype == "Glass door":
+
+            wp = doorFrame(s,width,height,h1,w1,o1)
+            p1 = Vector(h1+tol,h1+tol,0)
+            p2 = Vector(width-(h1+tol),h1+tol,0)
+            p3 = Vector(width-(h1+tol),height-(h1+tol),0)
+            p4 = Vector(h1+tol,height-(h1+tol),0)
+            p5 = Vector(h1+h2,h1+h3,0)
+            p6 = Vector(width-(h1+h2),h1+h3,0)
+            p7 = Vector(width-(h1+h2),height-(h1+h2),0)
+            p8 = Vector(h1+h2,height-(h1+h2),0)
+            addFrame(s,p1,p2,p3,p4,p5,p6,p7,p8)
+            s.addConstraint(Sketcher.Constraint('DistanceX',8,1,12,1,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceY',8,1,12,1,h3))
+            s.addConstraint(Sketcher.Constraint('DistanceX',14,1,10,1,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceY',14,1,10,1,h2))
+            s.addConstraint(Sketcher.Constraint('DistanceX',4,1,8,1,tol))
+            s.addConstraint(Sketcher.Constraint('DistanceY',4,1,8,1,tol))
+            s.addConstraint(Sketcher.Constraint('DistanceX',10,1,6,1,tol))
+            s.addConstraint(Sketcher.Constraint('DistanceY',10,1,6,1,tol))
+            if h2 == h1:
+                s.renameConstraint(39,'Frame5')
+                s.renameConstraint(40,'Frame6')
+                s.renameConstraint(42,'Frame7')
+                s.renameConstraint(41,'Frame8')
+            fw = str(w2)
+            if w2 == w1:
+                fw = "0.00+V"
+            wp.extend(["InnerFrame","Frame","Wire2,Wire3",fw,str(o2)+"+V"])
+            wp.extend(["InnerGlass","Glass panel","Wire3",str(w2/gla),str(o2+w2/2)+"+V"])
+
+        return (s,wp)
+
+    if windowtype in WindowPresets:
+        default = makeSketch(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2)
+        FreeCAD.ActiveDocument.recompute()
+        if default:
+            if placement:
+                default[0].Placement = placement
+                FreeCAD.ActiveDocument.recompute()
+            obj = makeWindow(default[0],width,height,default[1])
+            obj.Preset = WindowPresets.index(windowtype)+1
+            obj.Frame = h1
+            obj.Offset = o1
+            obj.Placement = FreeCAD.Placement() # unable to find where this bug comes from...
+            if "door" in windowtype:
+                obj.IfcType = "Door"
+                obj.Label = translate("Arch","Door")
+            FreeCAD.ActiveDocument.recompute()
+            return obj
+
+    print("Arch: Unknown window type")
 
 
 
@@ -145,7 +584,7 @@ class _CommandWindow:
     "the Arch Window command definition"
 
     def __init__(self):
-
+        
         self.doormode = False
 
     def GetResources(self):
@@ -181,7 +620,7 @@ class _CommandWindow:
         if FreeCADGui.Selection.getSelectionEx():
             FreeCADGui.draftToolBar.offUi()
             obj = self.sel[0]
-            if hasattr(obj,'Shape'):
+            if obj.isDerivedFrom("Part::Feature"):
                 if obj.Shape.Wires and (not obj.Shape.Solids) and (not obj.Shape.Shells):
                     FreeCADGui.Control.closeDialog()
                     host = None
@@ -213,21 +652,10 @@ class _CommandWindow:
                     FreeCAD.ActiveDocument.recompute()
                     return
 
-                # Try to detect an object to use as a window type - TODO we must make this safer
-
-                elif obj.Shape.Solids and (Draft.getType(obj) not in ["Wall","Structure","Roof"]):
-                    # we consider the selected object as a type
-                    FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Window"))
-                    FreeCADGui.addModule("Arch")
-                    FreeCADGui.doCommand("Arch.makeWindow(FreeCAD.ActiveDocument."+obj.Name+")")
-                    FreeCAD.ActiveDocument.commitTransaction()
-                    FreeCAD.ActiveDocument.recompute()
-                    return
-
         # interactive mode
         if hasattr(FreeCAD,"DraftWorkingPlane"):
             FreeCAD.DraftWorkingPlane.setup()
-
+        import DraftTrackers
         self.tracker = DraftTrackers.boxTracker()
         self.tracker.length(self.Width)
         self.tracker.width(self.Thickness)
@@ -344,6 +772,7 @@ class _CommandWindow:
         self.librarypresets = []
         librarypath = FreeCAD.ParamGet('User parameter:Plugins/parts_library').GetString('destination','')
         if librarypath:
+            import os
             if os.path.exists(librarypath):
                 for wtype in ["Windows","Doors"]:
                     wdir = os.path.join(librarypath,"Architectural Parts",wtype)
@@ -356,15 +785,6 @@ class _CommandWindow:
                                         self.librarypresets.append([wtype+" - "+subtype+" - "+os.path.splitext(subfile)[0],os.path.join(subdir,subfile)])
             else:
                 librarypath = None
-        # check for existing presets
-        presetdir = os.path.join(FreeCAD.getUserAppDataDir(),"Arch")
-        for tp in ["Windows","Doors"]:
-            wdir = os.path.join(presetdir,tp)
-            if os.path.exists(wdir):
-                for wfile in os.listdir(wdir):
-                    if wfile.lower().endswith(".fcstd"):
-                        self.librarypresets.append([tp[:-1]+" - "+wfile[:-6],wfile])
-
 
         # presets box
         labelp = QtGui.QLabel(translate("Arch","Preset"))
@@ -475,7 +895,7 @@ class _CommandWindow:
             self.im.show()
             if i == 0:
                 self.im.load(":/ui/ParametersWindowFixed.svg")
-            elif i in [1,8]:
+            elif i == 1:
                 self.im.load(":/ui/ParametersWindowSimple.svg")
             elif i == 6:
                 self.im.load(":/ui/ParametersDoorGlass.svg")
@@ -600,11 +1020,22 @@ class _Window(ArchComponent.Component):
                         # mark host to recompute so it can detect this object
                         host.touch()
             if prop in ["Width","Height","Frame"]:
-                if obj.Base:
-                    if hasattr(obj.Base,"Constraints") and (prop in [c.Name for c in obj.Base.Constraints]):
-                        val = getattr(obj,prop).Value
-                        if val > 0:
-                            obj.Base.setDatum(prop,val)
+                if obj.Base and hasattr(obj.Base,"Constraints"):
+                    if prop == "Height":
+                        if obj.Height.Value > 0:
+                            for c in obj.Base.Constraints:
+                                if c.Name == "Height":
+                                    obj.Base.setDatum(c.Name,obj.Height.Value)
+                    elif prop == "Width":
+                        if obj.Width.Value > 0:
+                            for c in obj.Base.Constraints:
+                                if c.Name == "Width":
+                                    obj.Base.setDatum(c.Name,obj.Width.Value)
+                    elif prop == "Frame":
+                        if obj.Frame.Value > 0:
+                            for c in obj.Base.Constraints:
+                                if "Frame" in c.Name:
+                                    obj.Base.setDatum(c.Name,obj.Frame.Value)
             else:
                 ArchComponent.Component.onChanged(self,obj,prop)
 
@@ -674,8 +1105,7 @@ class _Window(ArchComponent.Component):
                         if proj.Length > 0:
                             #chord = p.sub(ev1.add(proj))
                             #p = v1.add(chord)
-                            p = p.sub(proj)
-                            chord = p.sub(ev1)
+                            p = p.add(proj.negative())
                         # calculate symbols
                         v4 = p.add(DraftVecUtils.scale(enorm,0.5))
                         if omode == 1: # Arc 90
@@ -788,7 +1218,7 @@ class _Window(ArchComponent.Component):
                             bb.enlarge(10)
                             step = obj.LouvreWidth.Value+obj.LouvreSpacing.Value
                             if step < bb.ZLength:
-                                box = Part.makeBox(bb.XLength,bb.YLength,obj.LouvreSpacing.Value)
+                                box = Part.makeBox(bb.XLength,bb.YLength,obj.LouvreWidth.Value)
                                 boxes = []
                                 for i in range(int(bb.ZLength/step)+1):
                                     b = box.copy()
@@ -824,7 +1254,7 @@ class _Window(ArchComponent.Component):
         self.sshapes = []
         self.vshapes = []
         if obj.Base:
-            if hasattr(obj,'Shape'):
+            if obj.Base.isDerivedFrom("Part::Feature"):
                 if hasattr(obj,"WindowParts"):
                     if obj.WindowParts and (len(obj.WindowParts)%5 == 0):
                         shapes = self.buildShapes(obj)
@@ -833,9 +1263,8 @@ class _Window(ArchComponent.Component):
                     elif not obj.WindowParts:
                         if not obj.Base.Shape.isNull():
                             base = obj.Base.Shape.copy()
-                            # obj placement is already added by applyShape() below
-                            #if not DraftGeomUtils.isNull(pl):
-                            #    base.Placement = base.Placement.multiply(pl)
+                            if not DraftGeomUtils.isNull(pl):
+                                base.Placement = base.Placement.multiply(pl)
                     else:
                         print("Arch: Bad formatting of window parts definitions")
 
@@ -870,14 +1299,11 @@ class _Window(ArchComponent.Component):
         # check if we have a custom subvolume
         if hasattr(obj,"Subvolume"):
             if obj.Subvolume:
-                if hasattr(obj.Subvolume,'Shape'):
+                if obj.Subvolume.isDerivedFrom("Part::Feature"):
                     if not obj.Subvolume.Shape.isNull():
                         sh = obj.Subvolume.Shape.copy()
-                        pl = FreeCAD.Placement(sh.Placement)
-                        pl = pl.multiply(obj.Placement)
                         if plac:
-                            pl = pl.multiply(plac)
-                        sh.Placement = pl
+                            sh.Placement = plac
                         return sh
 
         # getting extrusion depth
@@ -885,7 +1311,7 @@ class _Window(ArchComponent.Component):
         if obj.Base:
             base = obj.Base
         width = 0
-        if hasattr(obj,"HoleDepth"):  # the code have not checked whether this is a clone and use the original's HoleDepth; if HoleDepth is set in this object, even it is a clone, the original's HoleDepth is overridden
+        if hasattr(obj,"HoleDepth"):
             if obj.HoleDepth.Value:
                 width = obj.HoleDepth.Value
         if not width:
@@ -893,14 +1319,13 @@ class _Window(ArchComponent.Component):
                 b = base.Shape.BoundBox
                 width = max(b.XLength,b.YLength,b.ZLength)
         if not width:
-            if Draft.isClone(obj,"Window"):  # check whether this is a clone and use the original's HoleDepth or Shape's Boundbox
+            if Draft.isClone(obj,"Window"):
                 if hasattr(obj,"CloneOf"):
                     orig = obj.CloneOf
                 else:
                     orig = obj.Objects[0]
                 if orig.Base:
                     base = orig.Base
-
                 if hasattr(orig,"HoleDepth"):
                     if orig.HoleDepth.Value:
                         width = orig.HoleDepth.Value
@@ -910,33 +1335,16 @@ class _Window(ArchComponent.Component):
                         width = max(b.XLength,b.YLength,b.ZLength)
         if not width:
             width = 1.1112 # some weird value to have little chance to overlap with an existing face
-
         if not base:
-            if Draft.isClone(obj,"Window"):  # if this object has not base, check whether this is a clone and use the original's base
-                if hasattr(obj,"CloneOf"):
-                    orig = obj.CloneOf
-                else:
-                    orig = obj.Objects[0]  # not sure what is this exactly
-                if orig.Base:
-                    base = orig.Base
-                else:
-                    return None
+            return None
 
         # finding which wire to use to drill the hole
 
         f = None
-        if hasattr(obj,"HoleWire"):  # the code have not checked whether this is a clone and use the original's HoleWire; if HoleWire is set in this object, even it is a clone, the original's BoundBox/HoleWire is overridden
+        if hasattr(obj,"HoleWire"):
             if obj.HoleWire > 0:
                 if obj.HoleWire <= len(base.Shape.Wires):
                     f = base.Shape.Wires[obj.HoleWire-1]
-
-        if not f:
-            if Draft.isClone(obj,"Window"):
-                # check original HoleWire then
-                if orig.HoleWire > 0:
-                    if orig.HoleWire <= len(base.Shape.Wires):
-                        f = base.Shape.Wires[obj.HoleWire-1]
-
         if not f:
             # finding biggest wire in the base shape
             max_length = 0
@@ -1052,6 +1460,8 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
             if self.areDifferentColors(obj.ViewObject.DiffuseColor,obj.CloneOf.ViewObject.DiffuseColor) or force:
                 obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
             return
+        if not obj.WindowParts:
+            return
         if not obj.Shape:
             return
         if not obj.Shape.Solids:
@@ -1062,23 +1472,25 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         base = obj.ViewObject.ShapeColor
         for i in range(len(solids)):
             ccol = None
-            if obj.WindowParts and len(obj.WindowParts) > i*5:
-                # WindowParts-based window
+            if len(obj.WindowParts) > i*5:
                 name = obj.WindowParts[(i*5)]
                 mtype = obj.WindowParts[(i*5)+1]
-                ccol = self.getSolidMaterial(obj,name,mtype)
-            elif obj.Base and hasattr(obj.Base,"Shape"):
-                # Type-based window: obj.Base furnishes the window solids
-                sol1 = self.getSolidSignature(solids[i])
-                # here we look for all the ways to retrieve a name for each
-                # solid. Currently we look for similar solids in the
-                if hasattr(obj.Base,"Group"):
-                    for child in obj.Base.Group:
-                        if hasattr(child,"Shape") and child.Shape and child.Shape.Solids:
-                            sol2 = self.getSolidSignature(child.Shape)
-                            if sol1 == sol2:
-                                ccol = self.getSolidMaterial(obj,child.Label)
-                                break
+                if hasattr(obj,"Material"):
+                    if obj.Material:
+                        if hasattr(obj.Material,"Materials"):
+                            if obj.Material.Names:
+                                mat = None
+                                if name in obj.Material.Names:
+                                    mat = obj.Material.Materials[obj.Material.Names.index(name)]
+                                elif mtype in obj.Material.Names:
+                                    mat = obj.Material.Materials[obj.Material.Names.index(mtype)]
+                                if mat:
+                                    if 'DiffuseColor' in mat.Material:
+                                        if "(" in mat.Material['DiffuseColor']:
+                                            ccol = tuple([float(f) for f in mat.Material['DiffuseColor'].strip("()").split(",")])
+                                    if ccol and ('Transparency' in mat.Material):
+                                        t = float(mat.Material['Transparency'])/100.0
+                                        ccol = (ccol[0],ccol[1],ccol[2],t)
             if not ccol:
                 typeidx = (i*5)+1
                 if typeidx < len(obj.WindowParts):
@@ -1091,82 +1503,6 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         #print("colors: ",colors)
         if self.areDifferentColors(colors,obj.ViewObject.DiffuseColor) or force:
             obj.ViewObject.DiffuseColor = colors
-
-    def getSolidSignature(self,solid):
-
-        """Returns a tuple defining as uniquely as possible a solid"""
-
-        return (solid.ShapeType,solid.Volume,solid.Area,solid.Length)
-
-    def getSolidMaterial(self,obj,name,mtype=None):
-
-        ccol = None
-        if hasattr(obj,"Material"):
-            if obj.Material:
-                if hasattr(obj.Material,"Materials"):
-                    if obj.Material.Names:
-                        mat = None
-                        if name in obj.Material.Names:
-                            mat = obj.Material.Materials[obj.Material.Names.index(name)]
-                        elif mtype and (mtype in obj.Material.Names):
-                            mat = obj.Material.Materials[obj.Material.Names.index(mtype)]
-                        if mat:
-                            if 'DiffuseColor' in mat.Material:
-                                if "(" in mat.Material['DiffuseColor']:
-                                    ccol = tuple([float(f) for f in mat.Material['DiffuseColor'].strip("()").split(",")])
-                            if ccol and ('Transparency' in mat.Material):
-                                t = float(mat.Material['Transparency'])/100.0
-                                ccol = (ccol[0],ccol[1],ccol[2],t)
-        return ccol
-
-    def setupContextMenu(self,vobj,menu):
-
-        if hasattr(self,"Object"):
-            from PySide import QtCore,QtGui
-            import Draft_rc
-            action1 = QtGui.QAction(QtGui.QIcon(":/icons/Arch_Window_Tree.svg"),"Invert opening direction",menu)
-            QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.invertOpening)
-            menu.addAction(action1)
-            action2 = QtGui.QAction(QtGui.QIcon(":/icons/Arch_Window_Tree.svg"),"Invert hinge position",menu)
-            QtCore.QObject.connect(action2,QtCore.SIGNAL("triggered()"),self.invertHinge)
-            menu.addAction(action2)
-
-    def invertOpening(self):
-
-        """swaps the opening modes found in this window"""
-
-        pairs = [["Mode"+str(i),"Mode"+str(i+1)] for i in range(1,len(WindowOpeningModes),2)]
-        self.invertPairs(pairs)
-
-    def invertHinge(self):
-
-        """swaps the hinges found in this window"""
-
-        pairs = [["Edge6","Edge8"],["Edge5","Edge7"]]
-        self.invertPairs(pairs)
-
-    def invertPairs(self,pairs):
-
-        """scans the WindowParts of this window and swaps the two elements of each pair, if found"""
-
-        if hasattr(self,"Object"):
-            windowparts = self.Object.WindowParts
-            nparts = []
-            for part in windowparts:
-                for pair in pairs:
-                    if pair[0] in part:
-                        part = part.replace(pair[0],pair[1])
-                        break
-                    elif pair[1] in part:
-                        part = part.replace(pair[1],pair[0])
-                        break
-                nparts.append(part)
-            if nparts != self.Object.WindowParts:
-                self.Object.WindowParts = nparts
-                FreeCAD.ActiveDocument.recompute()
-            else:
-                FreeCAD.Console.PrintWarning(translate("Arch","This window has no defined opening")+"\n")
-
 
 
 class _ArchWindowTaskPanel:
@@ -1233,18 +1569,6 @@ class _ArchWindowTaskPanel:
         self.grid.addWidget(self.delButton, 4, 6, 1, 1)
         self.delButton.setMaximumSize(QtCore.QSize(70,40))
         self.delButton.setEnabled(False)
-
-        # invert buttons
-        self.invertOpeningButton = QtGui.QPushButton(self.baseform)
-        self.invertOpeningButton.setIcon(QtGui.QIcon(":/icons/Arch_Window_Tree.svg"))
-        self.invertOpeningButton.clicked.connect(self.invertOpening)
-        self.grid.addWidget(self.invertOpeningButton, 5, 0, 1, 7)
-        self.invertOpeningButton.setEnabled(False)
-        self.invertHingeButton = QtGui.QPushButton(self.baseform)
-        self.invertHingeButton.setIcon(QtGui.QIcon(":/icons/Arch_Window_Tree.svg"))
-        self.invertHingeButton.clicked.connect(self.invertHinge)
-        self.grid.addWidget(self.invertHingeButton, 6, 0, 1, 7)
-        self.invertHingeButton.setEnabled(False)
 
         # add new
 
@@ -1387,13 +1711,11 @@ class _ArchWindowTaskPanel:
     def getIcon(self,obj):
 
         if hasattr(obj.ViewObject,"Proxy"):
-            if hasattr(obj.ViewObject.Proxy,"getIcon"):
-                return QtGui.QIcon(obj.ViewObject.Proxy.getIcon())
+            return QtGui.QIcon(obj.ViewObject.Proxy.getIcon())
         elif obj.isDerivedFrom("Sketcher::SketchObject"):
             return QtGui.QIcon(":/icons/Sketcher_Sketch.svg")
-        elif hasattr(obj.ViewObject, "Icon"):
-            return QtGui.QIcon(obj.ViewObject.Icon)
-        return QtGui.QIcon(":/icons/Part_3D_object.svg")
+        else:
+            return QtGui.QIcon(":/icons/Tree_Part.svg")
 
     def update(self):
 
@@ -1407,7 +1729,7 @@ class _ArchWindowTaskPanel:
                 item = QtGui.QTreeWidgetItem(self.tree)
                 item.setText(0,self.obj.Base.Name)
                 item.setIcon(0,self.getIcon(self.obj.Base))
-                if hasattr(self.obj.Base,'Shape'):
+                if self.obj.Base.isDerivedFrom("Part::Feature"):
                     i = 0
                     for w in self.obj.Base.Shape.Wires:
                         if w.isClosed():
@@ -1419,7 +1741,7 @@ class _ArchWindowTaskPanel:
                     for p in range(0,len(self.obj.WindowParts),5):
                         item = QtGui.QTreeWidgetItem(self.comptree)
                         item.setText(0,self.obj.WindowParts[p])
-                        item.setIcon(0, QtGui.QIcon(":/icons/Part_3D_object.svg"))
+                        item.setIcon(0,QtGui.QIcon(":/icons/Tree_Part.svg"))
                 if hasattr(self.obj,"HoleWire"):
                     self.holeNumber.setText(str(self.obj.HoleWire))
                 else:
@@ -1428,11 +1750,6 @@ class _ArchWindowTaskPanel:
             self.retranslateUi(self.baseform)
             self.basepanel.obj = self.obj
             self.basepanel.update()
-            for wp in self.obj.WindowParts:
-                if ("Edge" in wp) and ("Mode" in wp):
-                    self.invertOpeningButton.setEnabled(True)
-                    self.invertHingeButton.setEnabled(True)
-                    break
 
     def addElement(self):
 
@@ -1646,22 +1963,11 @@ class _ArchWindowTaskPanel:
         self.addp5.setToolTip(QtGui.QApplication.translate("Arch", "If this is checked, the default Offset value of this window will be added to the value entered here", None))
         self.field6.setText(QtGui.QApplication.translate("Arch", "Get selected edge", None))
         self.field6.setToolTip(QtGui.QApplication.translate("Arch", "Press to retrieve the selected edge", None))
-        self.invertOpeningButton.setText(QtGui.QApplication.translate("Arch", "Invert opening direction", None))
-        self.invertHingeButton.setText(QtGui.QApplication.translate("Arch", "Invert hinge position", None))
         for i in range(len(WindowPartTypes)):
             self.field2.setItemText(i, QtGui.QApplication.translate("Arch", WindowPartTypes[i], None))
         for i in range(len(WindowOpeningModes)):
             self.field7.setItemText(i, QtGui.QApplication.translate("Arch", WindowOpeningModes[i], None))
 
-    def invertOpening(self):
-
-        if self.obj:
-            self.obj.ViewObject.Proxy.invertOpening()
-
-    def invertHinge(self):
-
-        if self.obj:
-            self.obj.ViewObject.Proxy.invertHinge()
 
 
 if FreeCAD.GuiUp:

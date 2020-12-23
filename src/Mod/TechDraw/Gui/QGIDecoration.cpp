@@ -37,14 +37,12 @@
 #include <Base/Parameter.h>
 
 #include "Rez.h"
-#include "PreferencesGui.h"
 #include "ZVALUE.h"
 #include "DrawGuiUtil.h"
 #include "QGICMark.h"
 #include "QGIDecoration.h"
 
 using namespace TechDrawGui;
-using namespace TechDraw;
 
 QGIDecoration::QGIDecoration() :
     m_colCurrent(Qt::black),
@@ -93,24 +91,36 @@ void QGIDecoration::setColor(QColor c)
 
 QColor QGIDecoration::prefNormalColor()
 {
-    return PreferencesGui::normalQColor();
+    QColor result;
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
+    App::Color fcColor;
+    fcColor.setPackedValue(hGrp->GetUnsigned("NormalColor", 0x00000000));
+    result = fcColor.asValue<QColor>();
+    return result;
 }
 
 QColor QGIDecoration::prefPreColor()
 {
-    return PreferencesGui::preselectQColor();
+    QColor result;
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
+    App::Color fcColor;
+    fcColor.setPackedValue(hGrp->GetUnsigned("PreSelectColor", 0x00000000));
+    result = fcColor.asValue<QColor>();
+    return result;
 }
 
 QColor QGIDecoration::prefSelectColor()
 {
-    return PreferencesGui::selectQColor();
+    QColor result;
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
+    App::Color fcColor;
+    fcColor.setPackedValue(hGrp->GetUnsigned("SelectColor", 0x00000000));
+    result = fcColor.asValue<QColor>();
+    return result;
 }
-
-QRectF QGIDecoration::boundingRect() const
-{
-    return childrenBoundingRect();
-}
-
 
 void QGIDecoration::makeMark(double x, double y)
 {

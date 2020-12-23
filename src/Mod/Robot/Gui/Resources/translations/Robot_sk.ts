@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="sk" sourcelanguage="en">
+<TS version="2.0" language="sk" sourcelanguage="en">
   <context>
     <name>CmdRobotAddToolShape</name>
     <message>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="159"/>
       <source>Place robot...</source>
-      <translation>Umiestniť robota...</translation>
+      <translation type="unfinished">Place robot...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="160"/>
       <source>Place a robot (experimental!)</source>
-      <translation>Umiestniť robota (experimentálný!)</translation>
+      <translation type="unfinished">Place a robot (experimental!)</translation>
     </message>
   </context>
   <context>
@@ -47,7 +47,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="63"/>
       <source>Create trajectory</source>
-      <translation>Vytvorte trajektóriu</translation>
+      <translation type="unfinished">Create trajectory</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="64"/>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="322"/>
       <source>Generate a Trajectory from a set of edges</source>
-      <translation>Vytvorte trajektóriu z množiny hrán</translation>
+      <translation type="unfinished">Generate a Trajectory from a set of edges</translation>
     </message>
   </context>
   <context>
@@ -196,7 +196,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="97"/>
       <source>Insert robot Tool location into trajectory</source>
-      <translation>Vložte polohu nástroja robota do trajektórie</translation>
+      <translation type="unfinished">Insert robot Tool location into trajectory</translation>
     </message>
   </context>
   <context>
@@ -241,7 +241,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="217"/>
       <source>Set default orientation</source>
-      <translation>Použiť predvolenú orientáciu</translation>
+      <translation type="unfinished">Set default orientation</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="218"/>
@@ -259,7 +259,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="255"/>
       <source>Set default values</source>
-      <translation>Nastaviť predvolené hodnoty</translation>
+      <translation type="unfinished">Set default values</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="256"/>
@@ -278,7 +278,7 @@
       <location filename="../../Command.cpp" line="56"/>
       <location filename="../../Command.cpp" line="57"/>
       <source>Set the home position</source>
-      <translation>Nastavte východiskovú polohu</translation>
+      <translation type="unfinished">Set the home position</translation>
     </message>
   </context>
   <context>
@@ -291,12 +291,12 @@
     <message>
       <location filename="../../Command.cpp" line="200"/>
       <source>Simulate a trajectory</source>
-      <translation>Simulovať trajektóriu</translation>
+      <translation type="unfinished">Simulate a trajectory</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="201"/>
       <source>Run a simulation on a trajectory</source>
-      <translation>Spustiť simuláciu na trajektórii</translation>
+      <translation type="unfinished">Run a simulation on a trajectory</translation>
     </message>
   </context>
   <context>
@@ -378,7 +378,7 @@
     <message>
       <location filename="../../Command.cpp" line="125"/>
       <source>Select one Robot</source>
-      <translation>Vybrať jedného robota</translation>
+      <translation type="unfinished">Select one Robot</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="225"/>
@@ -387,12 +387,12 @@
       <location filename="../../CommandExport.cpp" line="128"/>
       <location filename="../../CommandTrajectory.cpp" line="112"/>
       <source>Select one Robot and one Trajectory object.</source>
-      <translation>Vybrať jeden robot a jeden objekt trajektórie.</translation>
+      <translation type="unfinished">Select one Robot and one Trajectory object.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="230"/>
       <source>Trajectory not valid</source>
-      <translation>Trajektória nie je platná</translation>
+      <translation type="unfinished">Trajectory not valid</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="231"/>
@@ -603,17 +603,17 @@
       <translation>A6</translation>
     </message>
     <message>
-      <location filename="../../TaskRobot6Axis.ui" line="313"/>
+      <location filename="../../TaskRobot6Axis.ui" line="314"/>
       <source>TCP: (200.23,300.23,400.23,234,343,343)</source>
       <translation>TCP: (200.23,300.23,400.23,234,343,343)</translation>
     </message>
     <message>
-      <location filename="../../TaskRobot6Axis.ui" line="329"/>
+      <location filename="../../TaskRobot6Axis.ui" line="331"/>
       <source>Tool: (0,0,400,0,0,0)</source>
       <translation>Nástroj: (0,0,400,0,0,0)</translation>
     </message>
     <message>
-      <location filename="../../TaskRobot6Axis.ui" line="345"/>
+      <location filename="../../TaskRobot6Axis.ui" line="347"/>
       <source>...</source>
       <translation>...</translation>
     </message>
@@ -707,32 +707,32 @@
       <translation>1 s</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectory.ui" line="291"/>
+      <location filename="../../TaskTrajectory.ui" line="292"/>
       <source>Pos: (200.23, 300.23, 400.23, 234, 343 ,343)</source>
       <translation>Pos: (200,23, 300,23, 400,23, 234, 343, 343)</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectory.ui" line="317"/>
+      <location filename="../../TaskTrajectory.ui" line="318"/>
       <source>Type</source>
       <translation>Typ</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectory.ui" line="322"/>
+      <location filename="../../TaskTrajectory.ui" line="323"/>
       <source>Name</source>
       <translation>Názov</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectory.ui" line="327"/>
+      <location filename="../../TaskTrajectory.ui" line="328"/>
       <source>C</source>
       <translation>C</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectory.ui" line="332"/>
+      <location filename="../../TaskTrajectory.ui" line="333"/>
       <source>V</source>
       <translation>V</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectory.ui" line="337"/>
+      <location filename="../../TaskTrajectory.ui" line="338"/>
       <source>A</source>
       <translation>A</translation>
     </message>
@@ -875,27 +875,27 @@
       <source>World</source>
       <translation>Svet</translation>
     </message>
-    <message>
+    <message utf8="true">
       <location filename="../../TaskRobotControl.ui" line="287"/>
       <source>50mm / 5°</source>
       <translation>50mm / 5°</translation>
     </message>
-    <message>
+    <message utf8="true">
       <location filename="../../TaskRobotControl.ui" line="292"/>
       <source>20mm / 2°</source>
       <translation>20 mm / 2 °</translation>
     </message>
-    <message>
+    <message utf8="true">
       <location filename="../../TaskRobotControl.ui" line="297"/>
       <source>10mm / 1°</source>
       <translation>10 mm/1 °</translation>
     </message>
-    <message>
+    <message utf8="true">
       <location filename="../../TaskRobotControl.ui" line="302"/>
       <source>5mm / 0.5°</source>
       <translation>5 mm/0,5 °</translation>
     </message>
-    <message>
+    <message utf8="true">
       <location filename="../../TaskRobotControl.ui" line="307"/>
       <source>1mm / 0.1°</source>
       <translation>1 mm/0,1 °</translation>

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2010     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -63,6 +63,8 @@ PropertyCosmeticVertexList::PropertyCosmeticVertexList()
 
 PropertyCosmeticVertexList::~PropertyCosmeticVertexList()
 {
+    for (std::vector<CosmeticVertex*>::iterator it = _lValueList.begin(); it != _lValueList.end(); ++it)
+        if (*it) delete *it;
 }
 
 void PropertyCosmeticVertexList::setSize(int newSize)
@@ -77,12 +79,15 @@ int PropertyCosmeticVertexList::getSize(void) const
     return static_cast<int>(_lValueList.size());
 }
 
-void PropertyCosmeticVertexList::setValue(CosmeticVertex* lValue)
+void PropertyCosmeticVertexList::setValue(const CosmeticVertex* lValue)
 {
     if (lValue) {
         aboutToSetValue();
+        CosmeticVertex* newVal = lValue->clone();
+        for (unsigned int i = 0; i < _lValueList.size(); i++)
+            delete _lValueList[i];
         _lValueList.resize(1);
-        _lValueList[0] = lValue;
+        _lValueList[0] = newVal;
         hasSetValue();
     }
 }
@@ -90,9 +95,13 @@ void PropertyCosmeticVertexList::setValue(CosmeticVertex* lValue)
 void PropertyCosmeticVertexList::setValues(const std::vector<CosmeticVertex*>& lValue)
 {
     aboutToSetValue();
+    std::vector<CosmeticVertex*> oldVals(_lValueList);
     _lValueList.resize(lValue.size());
+    // copy all objects
     for (unsigned int i = 0; i < lValue.size(); i++)
-        _lValueList[i] = lValue[i];
+        _lValueList[i] = lValue[i]->clone();
+    for (unsigned int i = 0; i < oldVals.size(); i++)
+        delete oldVals[i];
     hasSetValue();
 }
 
@@ -125,6 +134,8 @@ void PropertyCosmeticVertexList::setPyObject(PyObject *value)
         }
 
         setValues(values);
+//        if (part2d)
+//            part2d->acceptCosmeticVertex();
     }
     else if (PyObject_TypeCheck(value, &(CosmeticVertexPy::Type))) {
         CosmeticVertexPy  *pcObject = static_cast<CosmeticVertexPy*>(value);

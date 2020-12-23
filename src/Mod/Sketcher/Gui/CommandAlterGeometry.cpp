@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2011 Jürgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -30,7 +30,7 @@
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
-#include <Gui/CommandT.h>
+#include <Gui/Command.h>
 #include <Gui/MainWindow.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/DlgEditFileIncludePropertyExternal.h>
@@ -75,7 +75,7 @@ CmdSketcherToggleConstruction::CmdSketcherToggleConstruction()
     sToolTipText    = QT_TR_NOOP("Toggles the toolbar or selected geometry to/from construction mode");
     sWhatsThis      = "Sketcher_ToggleConstruction";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_ToggleConstruction";
+    sPixmap         = "Sketcher_AlterConstruction";
     sAccel          = "C,M";
     eType           = ForEdit;
 
@@ -134,7 +134,7 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
         }
 
         // undo command open
-        openCommand(QT_TRANSLATE_NOOP("Command", "Toggle draft from/to draft"));
+        openCommand("Toggle draft from/to draft");
 
         // go through the selected subelements
         for (std::vector<std::string>::const_iterator it=SubNames.begin();it!=SubNames.end();++it){
@@ -142,7 +142,7 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
             if (it->size() > 4 && it->substr(0,4) == "Edge") {
                 int GeoId = std::atoi(it->substr(4,4000).c_str()) - 1;
                 // issue the actual commands to toggle
-                Gui::cmdAppObjectArgs(selection[0].getObject(), "toggleConstruction(%d) ", GeoId);
+                FCMD_OBJ_CMD2("toggleConstruction(%d) ",selection[0].getObject(),GeoId);
             }
         }
         // finish the transaction and update

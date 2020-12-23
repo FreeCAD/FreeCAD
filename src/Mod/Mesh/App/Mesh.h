@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel <juergen.riegel@web.de>                   *
+ *   Copyright (c) Juergen Riegel         <juergen.riegel@web.de>          *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -217,7 +217,6 @@ public:
     void setPoint(unsigned long, const Base::Vector3d& v);
     void smooth(int iterations, float d_max);
     void decimate(float fTolerance, float fReduction);
-    void decimate(int targetSize);
     Base::Vector3d getPointNormal(unsigned long) const;
     std::vector<Base::Vector3d> getPointNormals() const;
     void crossSections(const std::vector<TPlane>&, std::vector<TPolylines> &sections,
@@ -387,8 +386,6 @@ private:
     void updateMesh(const std::vector<unsigned long>&);
     void updateMesh();
     void swapKernel(MeshCore::MeshKernel& m, const std::vector<std::string>& g);
-    void copySegments(const MeshObject&);
-    void swapSegments(MeshObject&);
 
 private:
     Base::Matrix4D _Mtrx;

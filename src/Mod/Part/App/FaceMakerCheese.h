@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2016 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
+ *   Copyright (c) 2016 Victor Titov (DeepSOIC)      <vv.titov@gmail.com>  *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -50,7 +50,8 @@ public: //in Extrusion, they used to be private. but they are also used by PartD
     /**
      * @brief The Wire_Compare class is for sorting wires by bounding box diagonal length
      */
-    class Wire_Compare
+    class Wire_Compare : public std::binary_function<const TopoDS_Wire&,
+            const TopoDS_Wire&, bool>
     {
     public:
         bool operator() (const TopoDS_Wire& w1, const TopoDS_Wire& w2);

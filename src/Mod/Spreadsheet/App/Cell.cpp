@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
+ *   Copyright (c) Eivind Kvedalen (eivind@kvedalen.name) 2015             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -297,16 +297,14 @@ void Cell::setContent(const char * value)
                 setParseException(e.what());
             }
         }
-        else if (*value == '\'') {
+        else if (*value == '\'')
             expr = new App::StringExpression(owner->sheet(), value + 1);
-        }
         else if (*value != '\0') {
             char * end;
             errno = 0;
             double float_value = strtod(value, &end);
-            if (!*end && errno == 0) {
+            if (!*end && errno == 0)
                 expr = new App::NumberExpression(owner->sheet(), Quantity(float_value));
-            }
             else {
                 try {
                     expr = ExpressionParser::parse(owner->sheet(), value);
@@ -323,15 +321,15 @@ void Cell::setContent(const char * value)
     try {
         setExpression(App::ExpressionPtr(expr));
         signaller.tryInvoke();
-    }
-    catch (Base::Exception &e) {
-        if (value) {
-            std::string _value = value;
-            if (_value[0] != '=') {
-                _value.insert (0, 1, '=');
+    } catch (Base::Exception &e) {
+        if(value) {
+            std::string _value;
+            if(*value != '=') {
+                _value = "=";
+                _value += value;
+                value = _value.c_str();
             }
-
-            setExpression(App::ExpressionPtr(new App::StringExpression(owner->sheet(), _value)));
+            setExpression(App::ExpressionPtr(new App::StringExpression(owner->sheet(), value)));
             setParseException(e.what());
         }
     }
@@ -985,11 +983,11 @@ std::string Cell::getFormattedQuantity(void)
         bool hasDisplayUnit = getDisplayUnit(du);
         double duScale = du.scaler;
         const Base::Unit& computedUnit = floatProp->getUnit();
-        qFormatted = QLocale().toString(rawVal,'f',Base::UnitsApi::getDecimals());
+        qFormatted = QLocale::system().toString(rawVal,'f',Base::UnitsApi::getDecimals());
         if (hasDisplayUnit) {
             if (computedUnit.isEmpty() || computedUnit == du.unit) {
                 QString number =
-                    QLocale().toString(rawVal / duScale,'f',Base::UnitsApi::getDecimals());
+                    QLocale::system().toString(rawVal / duScale,'f',Base::UnitsApi::getDecimals());
                 qFormatted = number + Base::Tools::fromStdString(" " + displayUnit.stringRep);
             }
         }
@@ -999,9 +997,9 @@ std::string Cell::getFormattedQuantity(void)
         DisplayUnit du;
         bool hasDisplayUnit = getDisplayUnit(du);
         double duScale = du.scaler;
-        qFormatted = QLocale().toString(rawVal,'f',Base::UnitsApi::getDecimals());
+        qFormatted = QLocale::system().toString(rawVal,'f',Base::UnitsApi::getDecimals());
         if (hasDisplayUnit) {
-            QString number = QLocale().toString(rawVal / duScale, 'f',Base::UnitsApi::getDecimals());
+            QString number = QLocale::system().toString(rawVal / duScale, 'f',Base::UnitsApi::getDecimals());
             qFormatted = number + Base::Tools::fromStdString(" " + displayUnit.stringRep);
         }
     } else if (prop->isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
@@ -1010,9 +1008,9 @@ std::string Cell::getFormattedQuantity(void)
         bool hasDisplayUnit = getDisplayUnit(du);
         double duScale = du.scaler;
         int iRawVal = std::round(rawVal);
-        qFormatted = QLocale().toString(iRawVal);
+        qFormatted = QLocale::system().toString(iRawVal);
         if (hasDisplayUnit) {
-            QString number = QLocale().toString(rawVal / duScale, 'f',Base::UnitsApi::getDecimals());
+            QString number = QLocale::system().toString(rawVal / duScale, 'f',Base::UnitsApi::getDecimals());
             qFormatted = number + Base::Tools::fromStdString(" " + displayUnit.stringRep);
         }
     }

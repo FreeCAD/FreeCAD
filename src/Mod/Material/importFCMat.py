@@ -204,7 +204,7 @@ def write(filename, dictionary, write_group_section=True):
         FreeCAD.Console.PrintMessage("File CardName is used: {}\n".format(card_name_file))
     if sys.version_info.major >= 3:
         f.write("; " + card_name_file + "\n")
-        # f.write("; " + header["AuthorAndLicense"] + "\n")
+        #f.write("; " + header["AuthorAndLicense"] + "\n")
         f.write("; " + header.get("AuthorAndLicense", "no author") + "\n")
     else:
         f.write("; " + header["CardName"].encode("utf8") + "\n")

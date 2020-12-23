@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2015 Ian Rees <ian.rees@gmail.com>                      *
+ *   Copyright (c) Ian Rees                    (ian.rees@gmail.com) 2015   *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -220,7 +220,7 @@ bool Enumeration::contains(const char *value) const
     // using string methods without set, use setEnums(const char** plEnums) first!
     //assert(_EnumArray);
 
-    if (!getEnums()) {
+    if (!isValid()) {
         return false;
     }
 

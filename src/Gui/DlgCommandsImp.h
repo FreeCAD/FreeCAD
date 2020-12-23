@@ -24,15 +24,12 @@
 #ifndef GUI_DIALOG_DLGCOMMANDS_IMP_H
 #define GUI_DIALOG_DLGCOMMANDS_IMP_H
 
+#include "ui_DlgCommands.h"
 #include "PropertyPage.h"
-#include <memory>
-
-class QTreeWidgetItem;
 
 namespace Gui {
 class Command;
 namespace Dialog {
-class Ui_DlgCustomCommands;
 
 /** Shows an overview of all available commands of all groups and modules.
  * You can customize your workbenches just by drag&dropping any commands
@@ -41,7 +38,7 @@ class Ui_DlgCustomCommands;
  * customize your own toolbars or commandbars.
  * \author Werner Mayer
  */
-class DlgCustomCommandsImp : public CustomizeActionPage
+class DlgCustomCommandsImp : public CustomizeActionPage, public Ui_DlgCustomCommands
 {
   Q_OBJECT
 
@@ -58,9 +55,6 @@ protected Q_SLOTS:
 
 protected:
     void changeEvent(QEvent *e);
-
-private:
-    std::unique_ptr<Ui_DlgCustomCommands> ui;
 };
 
 } // namespace Dialog

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+
 # ***************************************************************************
+# *                                                                         *
 # *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -21,6 +23,7 @@
 # ***************************************************************************
 
 import FreeCAD
+import Part
 import Path
 import PathScripts.PathLog as PathLog
 import math
@@ -28,19 +31,20 @@ import math
 from FreeCAD import Vector
 from PySide import QtCore
 
-# lazily loaded modules
-from lazy_loader.lazy_loader import LazyLoader
-Part = LazyLoader('Part', globals(), 'Part')
-
 __title__ = "PathGeom - geometry utilities for Path"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "http://www.freecadweb.org"
 __doc__ = "Functions to extract and convert between Path.Command and Part.Edge and utility functions to reason about them."
 
 Tolerance = 0.000001
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#PathLog.trackModule(PathLog.thisModule())
+LOGLEVEL = False
+
+if LOGLEVEL:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 # Qt translation handling
 def translate(context, text, disambig=None):
@@ -83,7 +87,6 @@ CmdMoveCW       = ['G2', 'G02']
 CmdMoveCCW      = ['G3', 'G03']
 CmdMoveArc      = CmdMoveCW + CmdMoveCCW
 CmdMove         = CmdMoveStraight + CmdMoveArc
-CmdMoveAll      = CmdMove + CmdMoveRapid
 
 def isRoughly(float1, float2, error=Tolerance):
     """isRoughly(float1, float2, [error=Tolerance])
@@ -222,7 +225,7 @@ def speedBetweenPoints(p0, p1, hSpeed, vSpeed):
         pitch = pitch + 1
     while pitch > 1:
         pitch = pitch - 1
-    PathLog.debug("  pitch = %g %g (%.2f, %.2f, %.2f) -> %.2f" % (pitch, math.atan2(xy(d).Length, d.z), d.x, d.y, d.z, xy(d).Length))
+    print("  pitch = %g %g (%.2f, %.2f, %.2f) -> %.2f" % (pitch, math.atan2(xy(d).Length, d.z), d.x, d.y, d.z, xy(d).Length))
     speed = vSpeed + pitch * (hSpeed - vSpeed)
     if speed > hSpeed and speed > vSpeed:
         return max(hSpeed, vSpeed)
@@ -251,7 +254,7 @@ def cmdsForEdge(edge, flip = False, useHelixForBSpline = True, segm = 50, hSpeed
         p2 = edge.valueAt((edge.FirstParameter + edge.LastParameter)/2)
         p3 = pt
 
-        if hasattr(edge.Curve, 'Axis') and ((type(edge.Curve) == Part.Circle and isRoughly(edge.Curve.Axis.x, 0) and isRoughly(edge.Curve.Axis.y, 0)) or (useHelixForBSpline and type(edge.Curve) == Part.BSplineCurve)):
+        if (type(edge.Curve) == Part.Circle and isRoughly(edge.Curve.Axis.x, 0) and isRoughly(edge.Curve.Axis.y, 0)) or (useHelixForBSpline and type(edge.Curve) == Part.BSplineCurve):
             # This is an arc or a helix and it should be represented by a simple G2/G3 command
             if edge.Curve.Axis.z < 0:
                 cmd = 'G2' if not flip else 'G3'
@@ -314,9 +317,6 @@ def edgeForCmd(cmd, startPoint):
     """edgeForCmd(cmd, startPoint).
     Returns an Edge representing the given command, assuming a given startPoint."""
 
-    PathLog.debug("cmd: {}".format(cmd))
-    PathLog.debug("startpoint {}".format(startPoint))
-
     endPoint = commandEndPoint(cmd, startPoint)
     if (cmd.Name in CmdMoveStraight) or (cmd.Name in CmdMoveRapid):
         if pointsCoincide(startPoint, endPoint):
@@ -347,10 +347,6 @@ def edgeForCmd(cmd, startPoint):
         if isRoughly(startPoint.z, endPoint.z):
             midPoint = center + Vector(math.cos(angle), math.sin(angle), 0) * R
             PathLog.debug("arc: (%.2f, %.2f) -> (%.2f, %.2f) -> (%.2f, %.2f)" % (startPoint.x, startPoint.y, midPoint.x, midPoint.y, endPoint.x, endPoint.y))
-            PathLog.debug("StartPoint:{}".format(startPoint))
-            PathLog.debug("MidPoint:{}".format(midPoint))
-            PathLog.debug("EndPoint:{}".format(endPoint))
-
             return Part.Edge(Part.Arc(startPoint, midPoint, endPoint))
 
         # It's a Helix
@@ -385,8 +381,6 @@ def wireForPath(path, startPoint = Vector(0, 0, 0)):
                     rapid.append(edge)
                 edges.append(edge)
                 startPoint = commandEndPoint(cmd, startPoint)
-    if not edges:
-        return (None, rapid)
     return (Part.Wire(edges), rapid)
 
 def wiresForPath(path, startPoint = Vector(0, 0, 0)):
@@ -400,9 +394,8 @@ def wiresForPath(path, startPoint = Vector(0, 0, 0)):
                 edges.append(edgeForCmd(cmd, startPoint))
                 startPoint = commandEndPoint(cmd, startPoint)
             elif cmd.Name in CmdMoveRapid:
-                if len(edges) > 0:
-                    wires.append(Part.Wire(edges))
-                    edges = []
+                wires.append(Part.Wire(edges))
+                edges = []
                 startPoint = commandEndPoint(cmd, startPoint)
         if edges:
             wires.append(Part.Wire(edges))
@@ -442,10 +435,22 @@ def splitArcAt(edge, pt):
     """splitArcAt(edge, pt)
     Returns a list of 2 edges which together form the original arc split at the given point.
     The Vector pt has to represent a point on the given arc."""
-    p = edge.Curve.parameter(pt)
-    e0 = Part.Arc(edge.Curve.copy(), edge.FirstParameter, p).toShape()
-    e1 = Part.Arc(edge.Curve.copy(), p, edge.LastParameter).toShape()
-    return [e0, e1]
+    p1 = edge.valueAt(edge.FirstParameter)
+    p2 = pt
+    p3 = edge.valueAt(edge.LastParameter)
+    edges = []
+
+    p = edge.Curve.parameter(p2)
+    #print("splitArcAt(%.2f, %.2f, %.2f): %.2f - %.2f - %.2f" % (pt.x, pt.y, pt.z, edge.FirstParameter, p, edge.LastParameter))
+
+    p12 = edge.Curve.value((edge.FirstParameter + p)/2)
+    p23 = edge.Curve.value((p + edge.LastParameter)/2)
+    #print("splitArcAt: p12=(%.2f, %.2f, %.2f) p23=(%.2f, %.2f, %.2f)" % (p12.x, p12.y, p12.z, p23.x, p23.y, p23.z))
+
+    edges.append(Part.Edge(Part.Arc(p1, p12, p2)))
+    edges.append(Part.Edge(Part.Arc(p2, p23, p3)))
+
+    return edges
 
 def splitEdgeAt(edge, pt):
     """splitEdgeAt(edge, pt)
@@ -515,11 +520,8 @@ def flipEdge(edge):
         # Now the edge always starts at 0 and LastParameter is the value range
         arc = Part.Edge(circle, 0, edge.LastParameter - edge.FirstParameter)
         return arc
-    elif type(edge.Curve) in [Part.BSplineCurve, Part.BezierCurve]:
-        if type(edge.Curve) == Part.BSplineCurve:
-            spline = edge.Curve
-        else:
-            spline = edge.Curve.toBSpline()
+    elif Part.BSplineCurve == type(edge.Curve):
+        spline = edge.Curve
 
         mults = spline.getMultiplicities()
         weights = spline.getWeights()
@@ -551,6 +553,4 @@ def flipWire(wire):
     '''Flip the entire wire and all its edges so it is being processed the other way around.'''
     edges = [flipEdge(e) for e in wire.Edges]
     edges.reverse()
-    PathLog.debug(edges)
     return Part.Wire(edges)
-

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2019 Wanderer Fan <wandererfan@gmail.com>               *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -62,48 +62,11 @@ DrawWeldSymbol::DrawWeldSymbol(void)
     Caption.setStatus(App::Property::Hidden,true);
     Scale.setStatus(App::Property::Hidden,true);
     ScaleType.setStatus(App::Property::Hidden,true);
-    Rotation.setStatus(App::Property::Hidden, true);
+
 }
 
 DrawWeldSymbol::~DrawWeldSymbol()
 {
-}
-
-//DWS always has exactly 2 child tiles - ArrowSide and OtherSide.
-//OtherSide tile may be hidden;
-//once DWS has been added to the document, add 2x DrawTileWeld
-//but if this is a restore of an existing DWS, the tiles will loaded elsewhere
-void DrawWeldSymbol::onSettingDocument()
-{
-//    Base::Console().Message("DWS::onSettingDocument() - doc: %s\n", getDocument()->getName());
-    App::Document* doc = getDocument();
-
-    if (doc->testStatus(App::Document::Status::Restoring)) {
-//        Base::Console().Message("DWS::onSettingDocument() - restoring!\n");
-        return;
-    }
-
-    std::vector<DrawTileWeld*> existingTiles = getTiles();
-    if (!existingTiles.empty()) {
-        return;
-    }
-
-    std::string tileName1 = doc->getUniqueObjectName("TileWeld");
-    auto tile1Obj( doc->addObject( "TechDraw::DrawTileWeld", tileName1.c_str() ) );
-    DrawTileWeld* tile1 = dynamic_cast<DrawTileWeld*>(tile1Obj);
-    if (tile1 != nullptr) {
-        tile1->TileParent.setValue(this);
-    }
-
-    std::string tileName2 = doc->getUniqueObjectName("TileWeld");
-    auto tile2Obj( doc->addObject( "TechDraw::DrawTileWeld", tileName2.c_str() ) );
-    DrawTileWeld* tile2 = dynamic_cast<DrawTileWeld*>(tile2Obj);
-    if (tile2 != nullptr) {
-        tile2->TileParent.setValue(this);
-        tile2->TileRow.setValue(-1);   //other side is row -1
-    }
-
-    DrawView::onSettingDocument();
 }
 
 void DrawWeldSymbol::onChanged(const App::Property* prop)
@@ -120,7 +83,7 @@ short DrawWeldSymbol::mustExecute() const
 }
 
 App::DocumentObjectExecReturn *DrawWeldSymbol::execute(void)
-{
+{ 
 //    Base::Console().Message("DWS::execute()\n");
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
@@ -132,6 +95,7 @@ App::DocumentObjectExecReturn *DrawWeldSymbol::execute(void)
 std::vector<DrawTileWeld*> DrawWeldSymbol::getTiles(void) const
 {
 //    Base::Console().Message("DWS::getTiles()\n");
+//    std::vector<App::DocumentObject*> temp;
     std::vector<DrawTileWeld*> result;
 
     std::vector<App::DocumentObject*> tiles = getInList();

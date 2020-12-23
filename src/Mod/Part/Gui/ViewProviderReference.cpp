@@ -161,7 +161,7 @@ ViewProviderPartReference::ViewProviderPartReference()
     //pShapeHints->ref();
     //Lighting.touch();
 
-    sPixmap = "Part_3D_object";
+    sPixmap = "Tree_Part";
     //loadParameter();
 }
 
@@ -274,7 +274,7 @@ void ViewProviderPartReference::setDisplayMode(const char* ModeName)
 {
     if ( strcmp("Reference",ModeName)==0 )
         setDisplayMaskMode("Reference");
-
+	
     ViewProviderGeometryObject::setDisplayMode( ModeName );
 }
 

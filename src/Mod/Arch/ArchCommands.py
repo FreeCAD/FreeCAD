@@ -1,6 +1,9 @@
 # -*- coding: utf8 -*-
+
 #***************************************************************************
-#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
+#*                                                                         *
+#*   Copyright (c) 2011                                                    *
+#*   Yorik van Havre <yorik@uncreated.net>                                 *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -26,21 +29,20 @@ from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtGui,QtCore
-    from draftutils.translate import translate
-    from draftutils.utils import utf8_decode
+    from DraftTools import translate, utf8_decode
 else:
     # \cond
     def translate(ctxt,txt):
         return txt
     # \endcond
 
-__title__  = "FreeCAD Arch Commands"
+__title__="FreeCAD Arch Commands"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__ = "http://www.freecadweb.org"
 
 ## @package ArchCommands
 #  \ingroup ARCH
-#  \brief Utility functions for the Arch Workbench
+#  \brief Utility functions for theArch Workbench
 #
 #  This module provides general functions used by Arch tools
 #  and utility commands
@@ -63,7 +65,7 @@ def string_replace(text, pattern, replacement):
     if sys.version_info.major < 3:
         text = text.encode("utf8")
     return text.replace(pattern, replacement)
-
+    
 
 def getStringList(objects):
     '''getStringList(objects): returns a string defining a list
@@ -123,7 +125,7 @@ def addComponents(objectsList,host):
         if hasattr(host,"Axes"):
             x = host.Axes
         for o in objectsList:
-            if hasattr(o,'Shape'):
+            if o.isDerivedFrom("Part::Feature"):
                 if Draft.getType(o) == "Window":
                     if hasattr(o,"Hosts"):
                         if not host in o.Hosts:
@@ -235,7 +237,7 @@ def makeComponent(baseobj=None,name="Component",delete=False):
         ArchComponent.ViewProviderComponent(obj.ViewObject)
     if baseobj:
         import Part
-        if hasattr(baseobj,'Shape'):
+        if baseobj.isDerivedFrom("Part::Feature"):
             obj.Shape = baseobj.Shape
             obj.Placement = baseobj.Placement
             if delete:
@@ -691,12 +693,12 @@ def download(url,force=False):
 
 def check(objectslist,includehidden=False):
     """check(objectslist,includehidden=False): checks if the given objects contain only solids"""
-    objs = Draft.get_group_contents(objectslist)
+    objs = Draft.getGroupContents(objectslist)
     if not includehidden:
         objs = Draft.removeHidden(objs)
     bad = []
     for o in objs:
-        if not hasattr(o,'Shape'):
+        if not o.isDerivedFrom("Part::Feature"):
             bad.append([o,"is not a Part-based object"])
         else:
             s = o.Shape
@@ -750,8 +752,6 @@ def pruneIncluded(objectslist,strict=False):
                             if hasattr(parent,"Host") and (parent.Host == obj):
                                 pass
                             elif hasattr(parent,"Hosts") and (obj in parent.Hosts):
-                                pass
-                            elif hasattr(parent,"TypeId") and (parent.TypeId == "Part::Mirroring"):
                                 pass
                             elif hasattr(parent,"CloneOf"):
                                 if parent.CloneOf:
@@ -840,7 +840,7 @@ def survey(callback=False):
                         newsels.append(o)
                 if newsels:
                     for o in newsels:
-                        if hasattr(o.Object, 'Shape'):
+                        if o.Object.isDerivedFrom("Part::Feature"):
                             n = o.Object.Label
                             showUnit = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("surveyUnits",True)
                             t = ""
@@ -1188,37 +1188,35 @@ def cleanArchSplitter(objects=None):
     if not isinstance(objects,list):
         objects = [objects]
     for obj in objects:
-        if hasattr(obj,'Shape'):
+        if obj.isDerivedFrom("Part::Feature"):
             if hasattr(obj,"Base"):
                 if obj.Base:
                     print("Attempting to clean splitters from ", obj.Label)
-                    base = obj.Base.getLinkedObject()
-                    if base.isDerivedFrom("Part::Feature"):
-                        if not base.Shape.isNull():
-                            base.Shape = base.Shape.removeSplitter()
+                    if obj.Base.isDerivedFrom("Part::Feature"):
+                        if not obj.Base.Shape.isNull():
+                            obj.Base.Shape = obj.Base.Shape.removeSplitter()
     FreeCAD.ActiveDocument.recompute()
 
 
 def rebuildArchShape(objects=None):
-    """rebuildArchShape([objects]): takes the faces from the base shape of the given (or selected
+    """rebuildArchShape([objects]): takes the faces from the base shape of the given (or selected 
     if objects is None) Arch objects, and tries to rebuild a valid solid from them."""
-    import FreeCAD,Part
-    if not objects and FreeCAD.GuiUp:
+    import FreeCAD,FreeCADGui,Part
+    if not objects:
         objects = FreeCADGui.Selection.getSelection()
     if not isinstance(objects,list):
         objects = [objects]
     for obj in objects:
         success = False
-        if hasattr(obj,'Shape'):
+        if obj.isDerivedFrom("Part::Feature"):
             if hasattr(obj,"Base"):
                 if obj.Base:
                     try:
                         print("Attempting to rebuild ", obj.Label)
-                        base = obj.Base.getLinkedObject()
-                        if base.isDerivedFrom("Part::Feature"):
-                            if not base.Shape.isNull():
+                        if obj.Base.isDerivedFrom("Part::Feature"):
+                            if not obj.Base.Shape.isNull():
                                 faces = []
-                                for f in base.Shape.Faces:
+                                for f in obj.Base.Shape.Faces:
                                     f2 = Part.Face(f.Wires)
                                     #print("rebuilt face: isValid is ", f2.isValid())
                                     faces.append(f2)
@@ -1233,7 +1231,7 @@ def rebuildArchShape(objects=None):
                                                 solid = Part.Solid(solid)
                                             #print("rebuilt solid: isValid is ",solid.isValid())
                                             if solid.isValid():
-                                                base.Shape = solid
+                                                obj.Base.Shape = solid
                                                 success = True
                     except:
                         pass
@@ -1243,38 +1241,9 @@ def rebuildArchShape(objects=None):
 
 
 def getExtrusionData(shape,sortmethod="area"):
-    """If a shape has been extruded, returns the base face, and extrusion vector.
-
-    Determines if a shape appears to have been extruded from some base face, and
-    extruded at the normal from that base face. IE: it looks like a cuboid.
-    https://en.wikipedia.org/wiki/Cuboid#Rectangular_cuboid
-
-    If this is the case, returns what appears to be the base face, and the vector
-    used to make that extrusion.
-
-    The base face is determined based on the sortmethod parameter, which can either
-    be:
-
-    "area" = Of the faces with the smallest area, the one with the lowest z coordinate.
-    "z" = The face with the lowest z coordinate.
-    a 3D vector = the face which center is closest to the given 3D point
-
-    Parameters
-    ----------
-    shape: <Part.Shape>
-        Shape to examine.
-    sortmethod: {"area", "z"}
-        Which sorting algorithm to use to determine the base face.
-
-    Returns
-    -------
-    Extrusion data: list
-        Two item list containing the base face, and the vector used to create the
-        extrusion. In that order.
-    Failure: None
-        Returns None if the object does not appear to be an extrusion.
-    """
-
+    """getExtrusionData(shape,sortmethod): returns a base face and an extrusion vector
+    if this shape can be described as a perpendicular extrusion, or None if not.
+    sortmethod can be "area" (default) or "z"."""
     if shape.isNull():
         return None
     if not shape.Solids:
@@ -1316,11 +1285,9 @@ def getExtrusionData(shape,sortmethod="area"):
     if valids:
         if sortmethod == "z":
             valids.sort(key=lambda v: v[0].CenterOfMass.z)
-        elif sortmethod == "area":
+        else:
             # sort by smallest area
             valids.sort(key=lambda v: v[0].Area)
-        else:
-            valids.sort(key=lambda v: (v[0].CenterOfMass.sub(sortmethod)).Length)
         return valids[0]
     return None
 

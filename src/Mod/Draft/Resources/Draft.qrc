@@ -1,10 +1,8 @@
 <RCC>
     <qresource> 
         <file>icons/Draft_2DShapeView.svg</file>
-        <file>icons/Draft_AddConstruction.svg</file>
         <file>icons/Draft_AddPoint.svg</file>
         <file>icons/Draft_AddToGroup.svg</file>
-        <file>icons/Draft_Annotation_Style.svg</file>
         <file>icons/Draft_Apply.svg</file>
         <file>icons/Draft_Arc.svg</file>
         <file>icons/Draft_Arc_3Points.svg</file>
@@ -18,18 +16,13 @@
         <file>icons/Draft_BezTanNode.svg</file>
         <file>icons/Draft_BSpline.svg</file>
         <file>icons/Draft_Circle.svg</file>
-        <file>icons/Draft_CircularArray.svg</file>
-        <file>icons/Draft_CircularLinkArray.svg</file>
         <file>icons/Draft_Clone.svg</file>
         <file>icons/Draft_Construction.svg</file>
-        <file>icons/Draft_Continue.svg</file>
         <file>icons/Draft_CubicBezCurve.svg</file>
         <file>icons/Draft_Cursor.svg</file>
         <file>icons/Draft_DelPoint.svg</file>
         <file>icons/Draft_Dimension.svg</file>
         <file>icons/Draft_Dimension_Tree.svg</file>
-        <file>icons/Draft_DimensionAngular.svg</file>
-        <file>icons/Draft_DimensionRadius.svg</file>
         <file>icons/Draft_Dot.svg</file>
         <file>icons/Draft_Downgrade.svg</file>
         <file>icons/Draft_Draft.svg</file>
@@ -53,20 +46,11 @@
         <file>icons/Draft_Macro.svg</file>
         <file>icons/Draft_Mirror.svg</file>
         <file>icons/Draft_Move.svg</file>
-        <file>icons/Draft_N-Curve.svg</file>
-        <file>icons/Draft_N-Linear.svg</file>
-        <file>icons/Draft_N-Polygon.svg</file>
         <file>icons/Draft_Offset.svg</file>
         <file>icons/Draft_PathArray.svg</file>
         <file>icons/Draft_PathLinkArray.svg</file>
-        <file>icons/Draft_PathTwistedArray.svg</file>
-        <file>icons/Draft_PathTwistedLinkArray.svg</file>
-        <file>icons/Draft_PlaneProxy.svg</file>
         <file>icons/Draft_Point.svg</file>
         <file>icons/Draft_PointArray.svg</file>
-        <file>icons/Draft_PointLinkArray.svg</file>
-        <file>icons/Draft_PolarArray.svg</file>
-        <file>icons/Draft_PolarLinkArray.svg</file>
         <file>icons/Draft_Polygon.svg</file>
         <file>icons/Draft_Rectangle.svg</file>
         <file>icons/Draft_Rotate.svg</file>
@@ -74,12 +58,11 @@
         <file>icons/Draft_SelectGroup.svg</file>
         <file>icons/Draft_SelectPlane.svg</file>
         <file>icons/Draft_ShapeString.svg</file>
-        <file>icons/Draft_ShapeString_tree.svg</file>
         <file>icons/Draft_Slope.svg</file>
         <file>icons/Draft_Snap.svg</file>
         <file>icons/Draft_Split.svg</file>
         <file>icons/Draft_Stretch.svg</file>
-        <file>icons/Draft_SubelementHighlight.svg</file>
+        <file>icons/Draft_SubelementModify.svg</file>
         <file>icons/Draft_SwitchMode.svg</file>
         <file>icons/Draft_Text.svg</file>
         <file>icons/Draft_Trimex.svg</file>
@@ -105,31 +88,21 @@
         <file>icons/Snap_Perpendicular.svg</file>
         <file>icons/Snap_Special.svg</file>
         <file>icons/Snap_WorkingPlane.svg</file>
-        <file>icons/Draft_NewLayer.svg</file>
-        <file>patterns/aluminium.svg</file>
-        <file>patterns/brick01.svg</file>
+        <file>patterns/brick01</file>
         <file>patterns/concrete.svg</file>
         <file>patterns/cross.svg</file>
-        <file>patterns/cuprous.svg</file>
         <file>patterns/diagonal1.svg</file>
         <file>patterns/diagonal2.svg</file>
         <file>patterns/earth.svg</file>
-        <file>patterns/general_steel.svg</file>
-        <file>patterns/glass.svg</file>
-        <file>patterns/hatch45L.svg</file>
-        <file>patterns/hatch45R.svg</file>
         <file>patterns/hbone.svg</file>
         <file>patterns/line.svg</file>
-        <file>patterns/plastic.svg</file>
         <file>patterns/plus.svg</file>
         <file>patterns/simple.svg</file>
         <file>patterns/solid.svg</file>
         <file>patterns/square.svg</file>
         <file>patterns/steel.svg</file>
-        <file>patterns/titanium.svg</file>
         <file>patterns/wood.svg</file>
         <file>patterns/woodgrain.svg</file>
-        <file>patterns/zinc.svg</file>
         <file>translations/Draft_af.qm</file>
         <file>translations/Draft_ar.qm</file>
         <file>translations/Draft_ca.qm</file>
@@ -168,7 +141,6 @@
         <file>translations/Draft_zh-CN.qm</file>
         <file>translations/Draft_zh-TW.qm</file>
         <file>ui/preferences-draft.ui</file>
-        <file>ui/preferences-draftinterface.ui</file>
         <file>ui/preferences-draftsnap.ui</file>
         <file>ui/preferences-drafttexts.ui</file>
         <file>ui/preferences-draftvisual.ui</file>
@@ -176,12 +148,7 @@
         <file>ui/preferences-dxf.ui</file>
         <file>ui/preferences-oca.ui</file>
         <file>ui/preferences-svg.ui</file>
-        <file>ui/TaskPanel_CircularArray.ui</file>
-        <file>ui/TaskPanel_OrthoArray.ui</file>
-        <file>ui/TaskPanel_PolarArray.ui</file>
         <file>ui/TaskSelectPlane.ui</file>
         <file>ui/TaskShapeString.ui</file>
-        <file>ui/dialog_AnnotationStyleEditor.ui</file>
-        <file>ui/TaskPanel_SetStyle.ui</file>
     </qresource>
 </RCC> 

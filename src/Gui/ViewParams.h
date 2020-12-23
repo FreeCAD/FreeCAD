@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (c) 2018 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
+ *   Copyright (c) 2018 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -28,7 +28,7 @@
 
 namespace Gui {
 
-/** Convenient class to obtain view provider related parameters
+/** Convenient class to obtain view provider related parameters 
  *
  * The parameters are under group "User parameter:BaseApp/Preferences/View"
  */
@@ -56,7 +56,6 @@ public:
     FC_VIEW_PARAM(DefaultShapeLineColor,unsigned long,Unsigned,421075455UL) \
     FC_VIEW_PARAM(DefaultShapeColor,unsigned long,Unsigned,0xCCCCCC00) \
     FC_VIEW_PARAM(DefaultShapeLineWidth,int,Int,2) \
-    FC_VIEW_PARAM(DefaultShapePointSize,int,Int,2) \
     FC_VIEW_PARAM(CoinCycleCheck,bool,Bool,true) \
     FC_VIEW_PARAM(EnablePropertyViewForInactiveDocument,bool,Bool,true) \
     FC_VIEW_PARAM(ShowSelectionBoundingBox,bool,Bool,false) \

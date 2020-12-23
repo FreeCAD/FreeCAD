@@ -24,7 +24,7 @@
 #ifndef PARTGUI_VIEWPROVIDERBOX_H
 #define PARTGUI_VIEWPROVIDERBOX_H
 
-#include "ViewProviderPrimitive.h"
+#include "ViewProvider.h"
 
 
 class TopoDS_Shape;
@@ -36,7 +36,7 @@ class SoTransform;
 namespace PartGui {
 
 
-class PartGuiExport ViewProviderBox : public ViewProviderPrimitive
+class PartGuiExport ViewProviderBox:public ViewProviderPart
 {
     PROPERTY_HEADER(PartGui::ViewProviderBox);
 

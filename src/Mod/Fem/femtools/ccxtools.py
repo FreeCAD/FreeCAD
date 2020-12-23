@@ -1,8 +1,7 @@
 # ***************************************************************************
-# *   Copyright (c) 2015 Przemo Firszt <przemo@firszt.eu>                   *
-# *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
-# *   This file is part of the FreeCAD CAx development system.              *
+# *   Copyright (c) 2015 - Przemo Firszt <przemo@firszt.eu>                 *
+# *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -22,9 +21,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__  = "FemToolsCcx"
+__title__ = "FemToolsCcx"
 __author__ = "Przemo Firszt, Bernd Hahnebach"
-__url__    = "https://www.freecadweb.org"
+__url__ = "http://www.freecadweb.org"
 
 ## \addtogroup FEM
 #  @{
@@ -32,13 +31,9 @@ __url__    = "https://www.freecadweb.org"
 import os
 import sys
 import subprocess
-
 import FreeCAD
-
-from femtools import femutils
-from femtools import membertools
-
-from PySide import QtCore  # there might be a special reason this is not guarded ?!?
+import femtools.femutils as femutils
+from PySide import QtCore
 if FreeCAD.GuiUp:
     from PySide import QtGui
     import FemGui
@@ -62,11 +57,43 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
     working_dir : str
     results_present : bool
         indicating if there are calculation results ready for us
-    members : class femtools/membertools/AnalysisMember
-        contains references to all analysis member except solvers and mesh
-        Updated with update_objects
+
+    materials_linear : list of dictionaries
+        list of nonlinear materials from the analysis. Updated with update_objects
+    fixed_constraints :  list of dictionaries
+        list of fixed constraints from the analysis. Updated with update_objects
+    selfweight_constraints : list of dictionaries
+        list of selfweight constraints from the analysis. Updated with update_objects
+    force_constraints : list of dictionaries
+        list of force constraints from the analysis. Updated with update_objects
+    pressure_constraints : list of dictionaries
+        list of pressure constraints from the analysis. Updated with update_objects
+    beam_sections : list of dictionaries
+        list of beam sections from the analysis. Updated with update_objects
+    beam_rotations :  list of dictionaries
+        list of beam rotations from the analysis. Updated with update_objects
+    fluid_sections : list of dictionaries
+        list of fluid sections from the analysis. Updated with update_objects
+    shell_thicknesses : list of dictionaries
+        list of shell thicknesses from the analysis. Updated with update_objects
+    displacement_constraints : list of dictionaries
+        list of displacements for the analysis. Updated with update_objects
+    temperature_constraints : list of dictionaries
+        list of temperatures for the analysis. Updated with update_objects
+    heatflux_constraints : list of dictionaries
+        list of heatflux constraints for the analysis. Updated with update_objects
+    initialtemperature_constraints : list of dictionaries
+        list of initial temperatures for the analysis. Updated with update_objects
+    planerotation_constraints : list of dictionaries
+        list of plane rotation constraints from the analysis. Updated with update_objects
+    contact_constraints : list of dictionaries
+        list of contact constraints from the analysis. Updated with update_objects
+    transform_constraints : list of dictionaries
+        list of transform constraints from the analysis. Updated with update_objects
+
     """
 
+    known_analysis_types = ["static", "frequency", "thermomech", "check"]
     finished = QtCore.Signal(int)
 
     def __init__(self, analysis=None, solver=None, test_mode=False):
@@ -100,7 +127,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     raise Exception("FEM: No solver found!")
         else:
             if solver:
-                # solver given, search for the analysis
+                # solver given, searche for the analysis
                 self.solver = solver
                 self.find_solver_analysis()
                 if not self.analysis:
@@ -119,15 +146,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 self.find_solver()
                 if not self.solver:
                     raise Exception("FEM: No solver found!")
-
-        if self.analysis.Document is not self.solver.Document:
-            raise Exception(
-                "FEM: The analysis and solver are not in the same document!"
-            )
-        if self.solver not in self.analysis.Group:
-            raise Exception(
-                "FEM: The solver is not part of the analysis Group!"
-            )
 
         # print(self.solver)
         # print(self.analysis)
@@ -170,7 +188,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         self.purge_results()
 
     def _get_several_member(self, obj_type):
-        return membertools.get_several_member(self.analysis, obj_type)
+        return femutils.get_several_member(self.analysis, obj_type)
 
     def find_analysis(self):
         if FreeCAD.GuiUp:
@@ -178,8 +196,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         if self.analysis:
             return
         found_analysis = False
-        # search in the active document
-        for m in FreeCAD.activeDocument().Objects:
+        for m in FreeCAD.ActiveDocument.Objects:
             if femutils.is_of_type(m, "Fem::FemAnalysis"):
                 if not found_analysis:
                     self.analysis = m
@@ -203,7 +220,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
     def find_solver(self):
         found_solver_for_use = False
         for m in self.analysis.Group:
-            if femutils.is_of_type(m, "Fem::SolverCcxTools"):
+            if femutils.is_of_type(m, "Fem::FemSolverCalculixCcxTools"):
                 # we are going to explicitly check for the ccx tools solver type only,
                 # thus it is possible to have lots of framework solvers inside the analysis anyway
                 # for some methods no solver is needed (purge_results) --> solver could be none
@@ -228,7 +245,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         ## @var mesh
         #  mesh of the analysis. Used to generate .inp file and to show results
         self.mesh = None
-        mesh, message = membertools.get_mesh_to_solve(self.analysis)
+        mesh, message = femutils.get_mesh_to_solve(self.analysis)
         if mesh is not None:
             self.mesh = mesh
         else:
@@ -236,33 +253,376 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 QtGui.QMessageBox.critical(None, "Missing prerequisite", message)
             raise Exception(message + "\n")
 
-        ## @var members
-        # members of the analysis. All except solvers and the mesh
-        self.member = membertools.AnalysisMember(self.analysis)
+        # [{"Object":materials_linear}, {}, ...]
+        # [{"Object":materials_nonlinear}, {}, ...]
+        # [{"Object":fixed_constraints, "NodeSupports":bool}, {}, ...]
+        # [{"Object":force_constraints, "NodeLoad":value}, {}, ...
+        # [{"Object":pressure_constraints, "xxxxxxxx":value}, {}, ...]
+        # [{"Object":temerature_constraints, "xxxxxxxx":value}, {}, ...]
+        # [{"Object":heatflux_constraints, "xxxxxxxx":value}, {}, ...]
+        # [{"Object":initialtemperature_constraints, "xxxxxxxx":value}, {}, ...]
+        # [{"Object":beam_sections, "xxxxxxxx":value}, {}, ...]
+        # [{"Object":beam_rotations, "xxxxxxxx":value}, {}, ...]
+        # [{"Object":fluid_sections, "xxxxxxxx":value}, {}, ...]
+        # [{"Object":shell_thicknesses, "xxxxxxxx":value}, {}, ...]
+        # [{"Object":contact_constraints, "xxxxxxxx":value}, {}, ...]
+
+        self.materials_linear = (
+            self._get_several_member("Fem::Material")
+            + self._get_several_member("Fem::MaterialReinforced")
+        )
+        self.materials_nonlinear = self._get_several_member("Fem::MaterialMechanicalNonlinear")
+        self.fixed_constraints = self._get_several_member("Fem::ConstraintFixed")
+        self.selfweight_constraints = self._get_several_member("Fem::ConstraintSelfWeight")
+        self.force_constraints = self._get_several_member("Fem::ConstraintForce")
+        self.pressure_constraints = self._get_several_member("Fem::ConstraintPressure")
+        self.beam_sections = self._get_several_member("Fem::FemElementGeometry1D")
+        self.beam_rotations = self._get_several_member("Fem::FemElementRotation1D")
+        self.fluid_sections = self._get_several_member("Fem::FemElementFluid1D")
+        self.shell_thicknesses = self._get_several_member("Fem::FemElementGeometry2D")
+        self.displacement_constraints = self._get_several_member("Fem::ConstraintDisplacement")
+        self.temperature_constraints = self._get_several_member("Fem::ConstraintTemperature")
+        self.heatflux_constraints = self._get_several_member("Fem::ConstraintHeatflux")
+        self.initialtemperature_constraints = self._get_several_member(
+            "Fem::ConstraintInitialTemperature"
+        )
+        self.planerotation_constraints = self._get_several_member("Fem::ConstraintPlaneRotation")
+        self.contact_constraints = self._get_several_member("Fem::ConstraintContact")
+        self.transform_constraints = self._get_several_member("Fem::ConstraintTransform")
 
     def check_prerequisites(self):
         FreeCAD.Console.PrintMessage("Check prerequisites.\n")
+        from FreeCAD import Units
         message = ""
         # analysis
         if not self.analysis:
             message += "No active Analysis\n"
-        # solver
-        if not self.solver:
-            message += "No solver object defined in the analysis\n"
         if not self.working_dir:
             message += "Working directory not set\n"
         if not (os.path.isdir(self.working_dir)):
-            message += (
-                "Working directory \'{}\' doesn't exist."
-                .format(self.working_dir)
-            )
-        from femtools.checksanalysis import check_analysismember
-        message += check_analysismember(
-            self.analysis,
-            self.solver,
-            self.mesh,
-            self.member
-        )
+                message += (
+                    "Working directory \'{}\' doesn't exist."
+                    .format(self.working_dir)
+                )
+        # solver
+        if not self.solver:
+            message += "No solver object defined in the analysis\n"
+        else:
+            if self.solver.AnalysisType not in self.known_analysis_types:
+                message += (
+                    "Unknown analysis type: {}\n"
+                    .format(self.solver.AnalysisType)
+                )
+            if self.solver.AnalysisType == "frequency":
+                if not hasattr(self.solver, "EigenmodeHighLimit"):
+                    message += "Frequency analysis: Solver has no EigenmodeHighLimit.\n"
+                elif not hasattr(self.solver, "EigenmodeLowLimit"):
+                    message += "Frequency analysis: Solver has no EigenmodeLowLimit.\n"
+                elif not hasattr(self.solver, "EigenmodesCount"):
+                    message += "Frequency analysis: Solver has no EigenmodesCount.\n"
+            if hasattr(self.solver, "MaterialNonlinearity") \
+                    and self.solver.MaterialNonlinearity == "nonlinear":
+                if not self.materials_nonlinear:
+                    message += (
+                        "Solver is set to nonlinear materials, "
+                        "but there is no nonlinear material in the analysis.\n"
+                    )
+                if self.solver.Proxy.Type == "Fem::FemSolverCalculixCcxTools" \
+                        and self.solver.GeometricalNonlinearity != "nonlinear":
+                    # nonlinear geometry --> should be set
+                    # https://forum.freecadweb.org/viewtopic.php?f=18&t=23101&p=180489#p180489
+                    message += (
+                        "Solver CalculiX triggers nonlinear geometry for nonlinear material, "
+                        "thus it should to be set too.\n"
+                    )
+        # mesh
+        if not self.mesh:
+            message += "No mesh object defined in the analysis\n"
+        if self.mesh:
+            if self.mesh.FemMesh.VolumeCount == 0 \
+                    and self.mesh.FemMesh.FaceCount > 0 \
+                    and not self.shell_thicknesses:
+                message += (
+                    "FEM mesh has no volume elements, "
+                    "either define a shell thicknesses or "
+                    "provide a FEM mesh with volume elements.\n"
+                )
+            if self.mesh.FemMesh.VolumeCount == 0 \
+                    and self.mesh.FemMesh.FaceCount == 0 \
+                    and self.mesh.FemMesh.EdgeCount > 0 \
+                    and not self.beam_sections \
+                    and not self.fluid_sections:
+                message += (
+                    "FEM mesh has no volume and no shell elements, "
+                    "either define a beam/fluid section or provide "
+                    "a FEM mesh with volume elements.\n"
+                )
+            if self.mesh.FemMesh.VolumeCount == 0 \
+                    and self.mesh.FemMesh.FaceCount == 0 \
+                    and self.mesh.FemMesh.EdgeCount == 0:
+                message += (
+                    "FEM mesh has neither volume nor shell or edge elements. "
+                    "Provide a FEM mesh with elements!\n"
+                )
+        # material linear and nonlinear
+        if not self.materials_linear:
+            message += "No material object defined in the analysis\n"
+        has_no_references = False
+        for m in self.materials_linear:
+            if len(m["Object"].References) == 0:
+                if has_no_references is True:
+                    message += (
+                        "More than one material has an empty references list "
+                        "(Only one empty references list is allowed!).\n"
+                    )
+                has_no_references = True
+        mat_ref_shty = ""
+        for m in self.materials_linear:
+            ref_shty = femutils.get_refshape_type(m["Object"])
+            if not mat_ref_shty:
+                mat_ref_shty = ref_shty
+            if mat_ref_shty and ref_shty and ref_shty != mat_ref_shty:
+                # mat_ref_shty could be empty in one material
+                # only the not empty ones should have the same shape type
+                message += (
+                    "Some material objects do not have the same reference shape type "
+                    "(all material objects must have the same reference shape type, "
+                    "at the moment).\n"
+                )
+        for m in self.materials_linear:
+            mat_map = m["Object"].Material
+            mat_obj = m["Object"]
+            if mat_obj.Category == "Solid":
+                if "YoungsModulus" in mat_map:
+                    # print(Units.Quantity(mat_map["YoungsModulus"]).Value)
+                    if not Units.Quantity(mat_map["YoungsModulus"]).Value:
+                        message += "Value of YoungsModulus is set to 0.0.\n"
+                else:
+                    message += "No YoungsModulus defined for at least one material.\n"
+                if "PoissonRatio" not in mat_map:
+                    # PoissonRatio is allowed to be 0.0 (in ccx), but it should be set anyway.
+                    message += "No PoissonRatio defined for at least one material.\n"
+            if self.solver.AnalysisType == "frequency" or self.selfweight_constraints:
+                if "Density" not in mat_map:
+                    message += "No Density defined for at least one material.\n"
+            if self.solver.AnalysisType == "thermomech":
+                if "ThermalConductivity" in mat_map:
+                    if not Units.Quantity(mat_map["ThermalConductivity"]).Value:
+                        message += "Value of ThermalConductivity is set to 0.0.\n"
+                else:
+                    message += (
+                        "Thermomechanical analysis: No ThermalConductivity defined "
+                        "for at least one material.\n"
+                    )
+                if "ThermalExpansionCoefficient" not in mat_map and mat_obj.Category == "Solid":
+                    message += (
+                        "Thermomechanical analysis: No ThermalExpansionCoefficient defined "
+                        "for at least one material.\n"  # allowed to be 0.0 (in ccx)
+                    )
+                if "SpecificHeat" not in mat_map:
+                    message += (
+                        "Thermomechanical analysis: No SpecificHeat "
+                        "defined for at least one material.\n"  # allowed to be 0.0 (in ccx)
+                    )
+            if femutils.is_of_type(mat_obj, "Fem::MaterialReinforced"):
+                # additional tests for reinforced materials,
+                # they are needed for result calculation not for ccx analysis
+                mat_map_m = mat_obj.Material
+                if "AngleOfFriction" in mat_map_m:
+                    # print(Units.Quantity(mat_map_m["AngleOfFriction"]).Value)
+                    if not Units.Quantity(mat_map_m["AngleOfFriction"]).Value:
+                        message += (
+                            "Value of AngleOfFriction is set to 0.0 "
+                            "for the matrix of a reinforced material.\n"
+                        )
+                else:
+                    message += (
+                        "No AngleOfFriction defined for the matrix "
+                        "of at least one reinforced material.\n"
+                    )
+                if "CompressiveStrength" in mat_map_m:
+                    # print(Units.Quantity(mat_map_m["CompressiveStrength"]).Value)
+                    if not Units.Quantity(mat_map_m["CompressiveStrength"]).Value:
+                        message += (
+                            "Value of CompressiveStrength is set to 0.0 "
+                            "for the matrix of a reinforced material.\n"
+                        )
+                else:
+                    message += (
+                        "No CompressiveStrength defined for the matrinx "
+                        "of at least one reinforced material.\n"
+                    )
+                mat_map_r = mat_obj.Reinforcement
+                if "YieldStrength" in mat_map_r:
+                    # print(Units.Quantity(mat_map_r["YieldStrength"]).Value)
+                    if not Units.Quantity(mat_map_r["YieldStrength"]).Value:
+                        message += (
+                            "Value of YieldStrength is set to 0.0 "
+                            "for the reinforcement of a reinforced material.\n"
+                        )
+                else:
+                    message += (
+                        "No YieldStrength defined for the reinforcement "
+                        "of at least one reinforced material.\n"
+                    )
+        if len(self.materials_linear) == 1:
+            mobj = self.materials_linear[0]["Object"]
+            if hasattr(mobj, "References") and mobj.References:
+                FreeCAD.Console.PrintError(
+                    "Only one material object, but this one has a reference shape. "
+                    "The reference shape will be ignored.\n"
+                )
+        for m in self.materials_linear:
+            has_nonlinear_material = False
+            for nlm in self.materials_nonlinear:
+                if nlm["Object"].LinearBaseMaterial == m["Object"]:
+                    if has_nonlinear_material is False:
+                        has_nonlinear_material = True
+                    else:
+                        message += (
+                            "At least two nonlinear materials use the same linear base material. "
+                            "Only one nonlinear material for each linear material allowed.\n"
+                        )
+        # which analysis needs which constraints
+        # no check in the regard of loads existence (constraint force, pressure, self weight)
+        # is done, because an analysis without loads at all is an valid analysis too
+        if self.solver.AnalysisType == "static":
+            if not (self.fixed_constraints or self.displacement_constraints):
+                message += (
+                    "Static analysis: Neither constraint fixed nor "
+                    "constraint displacement defined.\n"
+                )
+        if self.solver.AnalysisType == "thermomech":
+            if not self.initialtemperature_constraints:
+                if not self.fluid_sections:
+                    message += "Thermomechanical analysis: No initial temperature defined.\n"
+            if len(self.initialtemperature_constraints) > 1:
+                message += "Thermomechanical analysis: Only one initial temperature is allowed.\n"
+        # constraints
+        # fixed
+        if self.fixed_constraints:
+            for c in self.fixed_constraints:
+                if len(c["Object"].References) == 0:
+                    message += "At least one constraint fixed has an empty reference.\n"
+        # displacement
+        if self.displacement_constraints:
+            for di in self.displacement_constraints:
+                if len(di["Object"].References) == 0:
+                    message += "At least one constraint displacement has an empty reference.\n"
+        # plane rotation
+        if self.planerotation_constraints:
+            for c in self.planerotation_constraints:
+                if len(c["Object"].References) == 0:
+                    message += "At least one constraint plane rotation has an empty reference.\n"
+        # contact
+        if self.contact_constraints:
+            for c in self.contact_constraints:
+                if len(c["Object"].References) == 0:
+                    message += "At least one constraint contact has an empty reference.\n"
+        # transform
+        if self.transform_constraints:
+            for c in self.transform_constraints:
+                if len(c["Object"].References) == 0:
+                    message += "At least one constraint transform has an empty reference.\n"
+        # pressure
+        if self.pressure_constraints:
+            for c in self.pressure_constraints:
+                if len(c["Object"].References) == 0:
+                    message += "At least one constraint pressure has an empty reference.\n"
+        # force
+        if self.force_constraints:
+            for c in self.force_constraints:
+                if len(c["Object"].References) == 0:
+                    message += "At least one constraint force has an empty reference.\n"
+        # temperature
+        if self.temperature_constraints:
+            for c in self.temperature_constraints:
+                if len(c["Object"].References) == 0:
+                    message += "At least one constraint temperature has an empty reference.\n"
+        # heat flux
+        if self.heatflux_constraints:
+            for c in self.heatflux_constraints:
+                if len(c["Object"].References) == 0:
+                    message += "At least one constraint heat flux has an empty reference.\n"
+        # beam section
+        if self.beam_sections:
+            if self.shell_thicknesses:
+                # this needs to be checked only once either here or in shell_thicknesses
+                message += (
+                    "Beam sections and shell thicknesses in one analysis "
+                    "is not supported at the moment.\n"
+                )
+            if self.fluid_sections:
+                # this needs to be checked only once either here or in shell_thicknesses
+                message += (
+                    "Beam sections and fluid sections in one analysis "
+                    "is not supported at the moment.\n"
+                )
+            has_no_references = False
+            for b in self.beam_sections:
+                if len(b["Object"].References) == 0:
+                    if has_no_references is True:
+                        message += (
+                            "More than one beam section has an empty references "
+                            "list (Only one empty references list is allowed!).\n"
+                        )
+                    has_no_references = True
+            if self.mesh:
+                if self.mesh.FemMesh.FaceCount > 0 or self.mesh.FemMesh.VolumeCount > 0:
+                    message += (
+                        "Beam sections defined but FEM mesh has volume or shell elements.\n"
+                    )
+                if self.mesh.FemMesh.EdgeCount == 0:
+                    message += (
+                        "Beam sections defined but FEM mesh has no edge elements.\n"
+                    )
+            if len(self.beam_rotations) > 1:
+                message += (
+                    "Multiple beam rotations in one analysis are not supported at the moment.\n"
+                )
+        # beam rotations
+        if self.beam_rotations and not self.beam_sections:
+            message += "Beam rotations in the analysis but no beam sections defined.\n"
+        # shell thickness
+        if self.shell_thicknesses:
+            has_no_references = False
+            for s in self.shell_thicknesses:
+                if len(s["Object"].References) == 0:
+                    if has_no_references is True:
+                        message += (
+                            "More than one shell thickness has an empty references "
+                            "list (Only one empty references list is allowed!).\n"
+                        )
+                    has_no_references = True
+            if self.mesh:
+                if self.mesh.FemMesh.VolumeCount > 0:
+                    message += "Shell thicknesses defined but FEM mesh has volume elements.\n"
+                if self.mesh.FemMesh.FaceCount == 0:
+                    message += "Shell thicknesses defined but FEM mesh has no shell elements.\n"
+        # fluid section
+        if self.fluid_sections:
+            if not self.selfweight_constraints:
+                message += (
+                    "A fluid network analysis requires self weight constraint to be applied\n"
+                )
+            if self.solver.AnalysisType != "thermomech":
+                message += "A fluid network analysis can only be done in a thermomech analysis\n"
+            has_no_references = False
+            for f in self.fluid_sections:
+                if len(f["Object"].References) == 0:
+                    if has_no_references is True:
+                        message += (
+                            "More than one fluid section has an empty references list "
+                            "(Only one empty references list is allowed!).\n"
+                        )
+                    has_no_references = True
+            if self.mesh:
+                if self.mesh.FemMesh.FaceCount > 0 or self.mesh.FemMesh.VolumeCount > 0:
+                    message += (
+                        "Fluid sections defined but FEM mesh has volume or shell elements.\n"
+                    )
+                if self.mesh.FemMesh.EdgeCount == 0:
+                    message += "Fluid sections defined but FEM mesh has no edge elements.\n"
         return message
 
     def set_base_name(self, base_name=None):
@@ -373,11 +733,27 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 self.analysis,
                 self.solver,
                 self.mesh,
-                self.member,
+                self.materials_linear,
+                self.materials_nonlinear,
+                self.fixed_constraints,
+                self.displacement_constraints,
+                self.contact_constraints,
+                self.planerotation_constraints,
+                self.transform_constraints,
+                self.selfweight_constraints,
+                self.force_constraints,
+                self.pressure_constraints,
+                self.temperature_constraints,
+                self.heatflux_constraints,
+                self.initialtemperature_constraints,
+                self.beam_sections,
+                self.beam_rotations,
+                self.shell_thicknesses,
+                self.fluid_sections,
                 self.working_dir
             )
             self.inp_file_name = inp_writer.write_calculix_input_file()
-        except Exception:
+        except:
             FreeCAD.Console.PrintError(
                 "Unexpected error when writing CalculiX input file: {}\n"
                 .format(sys.exc_info()[0])
@@ -476,7 +852,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 # If user doesn't give a file but a path without a file or
                 # a file which is not a binary no exception at all is raised.
         except OSError as e:
-            FreeCAD.Console.PrintError("{}\n".format(e))
+            FreeCAD.Console.PrintError(str(e))
             if e.errno == 2:
                 error_message = (
                     "FEM: CalculiX binary ccx \'{}\' not found. "
@@ -488,7 +864,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     QtGui.QMessageBox.critical(None, error_title, error_message)
                 raise Exception(error_message)
         except Exception as e:
-            FreeCAD.Console.PrintError("{}\n".format(e))
+            FreeCAD.Console.PrintError(str(e))
             error_message = (
                 "FEM: CalculiX ccx \'{}\' output \'{}\' doesn't "
                 "contain expected phrase \'{}\'. "
@@ -655,7 +1031,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                         )
                     return False
                 else:
-                    FreeCAD.Console.PrintMessage("**** try to read result files\n")
                     self.load_results()
                     # TODO: output an error message if there where problems reading the results
         return True
@@ -806,20 +1181,10 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         """
         import feminout.importCcxDatResults as importCcxDatResults
         dat_result_file = os.path.splitext(self.inp_file_name)[0] + ".dat"
-
         if os.path.isfile(dat_result_file):
             mode_frequencies = importCcxDatResults.import_dat(dat_result_file, self.analysis)
-
-            obj = FreeCAD.ActiveDocument.addObject("App::TextDocument", "ccx dat file")
-            # TODO this object should be inside analysis or under result object
-            # self.result_object.addObject(obj)
-            file = open(dat_result_file, "r")
-            obj.Text = file.read()
-            file.close()
-            # TODO make the Text of obj read only, or the obj itself
         else:
             raise Exception("FEM: No .dat results found at {}!".format(dat_result_file))
-
         if mode_frequencies:
             # print(mode_frequencies)
             for m in self.analysis.Group:

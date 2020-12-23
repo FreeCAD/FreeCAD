@@ -1,23 +1,13 @@
 /***************************************************************************
- *   Copyright (c) 2007 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Library General Public License as       *
+ *   published by the Free Software Foundation; either version 2 of the    *
+ *   License, or (at your option) any later version.                       *
+ *   for detail see the LICENCE text file.                                 *
+ *   Jürgen Riegel 2007                                                    *
  *                                                                         *
  ***************************************************************************/
-
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
@@ -38,7 +28,6 @@
 #include "DrawViewAnnotation.h"
 #include "DrawViewDimension.h"
 #include "DrawViewDimExtent.h"
-#include "LandmarkDimension.h"
 #include "DrawProjGroupItem.h"
 #include "DrawProjGroup.h"
 #include "DrawViewSymbol.h"
@@ -63,8 +52,6 @@
 #include "PropertyCosmeticEdgeList.h"
 #include "PropertyCosmeticVertexList.h"
 
-#include "CosmeticExtension.h"
-
 namespace TechDraw {
     extern PyObject* initModule();
 }
@@ -84,6 +71,11 @@ PyMOD_INIT_FUNC(TechDraw)
     PyObject* mod = TechDraw::initModule();
     Base::Console().Log("Loading TechDraw module... done\n");
 
+
+    // NOTE: To finish the initialization of our own type objects we must
+    // call PyType_Ready, otherwise we run into a segmentation fault, later on.
+    // This function is responsible for adding inherited slots from a type's base class.
+
     TechDraw::DrawPage            ::init();
     TechDraw::DrawView            ::init();
     TechDraw::DrawViewCollection  ::init();
@@ -96,7 +88,6 @@ PyMOD_INIT_FUNC(TechDraw)
     TechDraw::DrawViewMulti       ::init();
     TechDraw::DrawViewDimension   ::init();
     TechDraw::DrawViewDimExtent   ::init();
-    TechDraw::LandmarkDimension     ::init();
     TechDraw::DrawProjGroup       ::init();
     TechDraw::DrawProjGroupItem   ::init();
     TechDraw::DrawViewDetail      ::init();
@@ -127,10 +118,6 @@ PyMOD_INIT_FUNC(TechDraw)
     TechDraw::PropertyCosmeticVertexList::init();
     TechDraw::CosmeticVertex        ::init();
 
-    TechDraw::CosmeticExtension     ::init();
-    TechDraw::CosmeticExtensionPython::init();
-
-   // are these python init calls required?  some modules don't have them
    // Python Types
     TechDraw::DrawPagePython      ::init();
     TechDraw::DrawViewPython      ::init();
@@ -143,6 +130,5 @@ PyMOD_INIT_FUNC(TechDraw)
     TechDraw::DrawTilePython      ::init();
     TechDraw::DrawTileWeldPython  ::init();
     TechDraw::DrawWeldSymbolPython::init();
-
     PyMOD_Return(mod);
 }

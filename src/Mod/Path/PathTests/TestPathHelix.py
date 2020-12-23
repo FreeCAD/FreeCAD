@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+
 # ***************************************************************************
+# *                                                                         *
 # *   Copyright (c) 2019 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -27,15 +29,13 @@ import PathScripts.PathJob as PathJob
 import PathScripts.PathLog as PathLog
 import PathTests.PathTestUtils as PathTestUtils
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#PathLog.trackModule(PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+PathLog.trackModule(PathLog.thisModule())
 
 
 class TestPathHelix(PathTestUtils.PathTestBase):
-    RotateBy = 45
 
     def setUp(self):
-        self.clone = None
         self.doc = FreeCAD.open(FreeCAD.getHomePath() + 'Mod/Path/PathTests/test_holes00.fcstd')
         self.job = PathJob.Create('Job', [self.doc.Body])
 
@@ -68,7 +68,7 @@ class TestPathHelix(PathTestUtils.PathTestBase):
         proxy = op.Proxy
         model = self.job.Model.Group[0]
 
-        for deg in range(self.RotateBy, 360, self.RotateBy):
+        for deg in range(5, 360, 5):
             model.Placement.Rotation = FreeCAD.Rotation(deg, 0, 0)
             for base in op.Base:
                 model = base[0]
@@ -81,7 +81,7 @@ class TestPathHelix(PathTestUtils.PathTestBase):
     def test03(self):
         '''Verify Helix generates proper holes for rotated base model'''
 
-        for deg in range(self.RotateBy, 360, self.RotateBy):
+        for deg in range(5, 360, 5):
             self.tearDown()
             self.doc = FreeCAD.open(FreeCAD.getHomePath() + 'Mod/Path/PathTests/test_holes00.fcstd')
             self.doc.Body.Placement.Rotation = FreeCAD.Rotation(deg, 0, 0)
@@ -102,7 +102,7 @@ class TestPathHelix(PathTestUtils.PathTestBase):
 
     def test04(self):
         '''Verify Helix generates proper holes for rotated clone base model'''
-        for deg in range(self.RotateBy, 360, self.RotateBy):
+        for deg in range(5, 360, 5):
             self.tearDown()
             self.doc = FreeCAD.open(FreeCAD.getHomePath() + 'Mod/Path/PathTests/test_holes00.fcstd')
             self.clone = Draft.clone(self.doc.Body)

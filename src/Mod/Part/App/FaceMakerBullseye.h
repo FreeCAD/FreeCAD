@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2016 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
+ *   Copyright (c) 2016 Victor Titov (DeepSOIC)      <vv.titov@gmail.com>  *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -74,17 +74,17 @@ protected:
     class FaceDriller
     {
     public:
-        FaceDriller(const gp_Pln& plane, TopoDS_Wire outerWire);
+        FaceDriller(gp_Pln plane, TopoDS_Wire outerWire);
 
         /**
          * @brief hitTest: returns True if point is on the face
          * @param point
          */
-        bool hitTest(const gp_Pnt& point) const;
+        bool hitTest(gp_Pnt point) const;
 
         void addHole(TopoDS_Wire w);
 
-        const TopoDS_Face& Face() const {return myFace;}
+        TopoDS_Face Face() {return myFace;}
     public:
         /**
          * @brief wireDirection: determines direction of wire with respect to

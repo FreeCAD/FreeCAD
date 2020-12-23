@@ -1,6 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2015 FreeCAD Developers                                 *
  *   Author: Przemo Firszt <przemo@firszt.eu>                              *
+ *   Based on DlgToolbars.cpp file                                         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,8 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-// Based on DlgToolbars.cpp
-
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
@@ -31,7 +30,6 @@
 #endif
 
 #include "DlgWorkbenchesImp.h"
-#include "ui_DlgWorkbenches.h"
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Command.h"
@@ -49,18 +47,17 @@ const QString DlgWorkbenchesImp::all_workbenches = QString::fromLatin1("ALL");
 
 DlgWorkbenchesImp::DlgWorkbenchesImp(QWidget* parent)
     : CustomizeActionPage(parent)
-    , ui(new Ui_DlgWorkbenches)
 {
-    ui->setupUi(this);
-    set_lw_properties(ui->lw_enabled_workbenches);
-    set_lw_properties(ui->lw_disabled_workbenches);
-    ui->lw_disabled_workbenches->setProperty("OnlyAcceptFrom",
-        QStringList() << ui->lw_enabled_workbenches->objectName());
-    ui->lw_disabled_workbenches->setSortingEnabled(true);
+    this->setupUi(this);
+    set_lw_properties(lw_enabled_workbenches);
+    set_lw_properties(lw_disabled_workbenches);
+    lw_disabled_workbenches->setProperty("OnlyAcceptFrom",
+        QStringList() << lw_enabled_workbenches->objectName());
+    lw_disabled_workbenches->setSortingEnabled(true);
 
-    ui->lw_enabled_workbenches->setProperty("OnlyAcceptFrom",
-        QStringList() << ui->lw_enabled_workbenches->objectName()
-                      << ui->lw_disabled_workbenches->objectName());
+    lw_enabled_workbenches->setProperty("OnlyAcceptFrom",
+        QStringList() << lw_enabled_workbenches->objectName()
+                      << lw_disabled_workbenches->objectName());
 
     QStringList enabled_wbs_list = load_enabled_workbenches();
     QStringList disabled_wbs_list = load_disabled_workbenches();
@@ -68,21 +65,21 @@ DlgWorkbenchesImp::DlgWorkbenchesImp(QWidget* parent)
 
     for (QStringList::Iterator it = enabled_wbs_list.begin(); it != enabled_wbs_list.end(); ++it) {
         if (workbenches.contains(*it)) {
-            add_workbench(ui->lw_enabled_workbenches, *it);
+            add_workbench(lw_enabled_workbenches, *it);
         } else {
             qDebug() << "Ignoring unknown" << *it << "workbench found in user preferences.";
         }
     }
     for (QStringList::Iterator it = workbenches.begin(); it != workbenches.end(); ++it) {
         if (disabled_wbs_list.contains(*it)){
-            add_workbench(ui->lw_disabled_workbenches, *it);
+            add_workbench(lw_disabled_workbenches, *it);
         } else if (!enabled_wbs_list.contains(*it)){
             qDebug() << "Adding unknown " << *it << "workbench.";
-            add_workbench(ui->lw_enabled_workbenches, *it);
+            add_workbench(lw_enabled_workbenches, *it);
         }
     }
-    ui->lw_enabled_workbenches->setCurrentRow(0);
-    ui->lw_disabled_workbenches->setCurrentRow(0);
+    lw_enabled_workbenches->setCurrentRow(0);
+    lw_disabled_workbenches->setCurrentRow(0);
 }
 
 /** Destroys the object and frees any allocated resources */
@@ -112,7 +109,7 @@ void DlgWorkbenchesImp::add_workbench(QListWidgetCustom *lw, const QString& it)
 void DlgWorkbenchesImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        ui->retranslateUi(this);
+        retranslateUi(this);
     }
     else {
         QWidget::changeEvent(e);
@@ -151,17 +148,17 @@ void DlgWorkbenchesImp::move_workbench(QListWidgetCustom *lwc_dest,
 
 void DlgWorkbenchesImp::on_add_to_enabled_workbenches_btn_clicked()
 {
-    QListWidgetItem* ci = ui->lw_disabled_workbenches->currentItem();
+    QListWidgetItem* ci = lw_disabled_workbenches->currentItem();
     if (ci) {
-        move_workbench(ui->lw_enabled_workbenches, ci);
+        move_workbench(lw_enabled_workbenches, ci);
     }
 }
 
 void DlgWorkbenchesImp::on_remove_from_enabled_workbenches_btn_clicked()
 {
-    QListWidgetItem* ci = ui->lw_enabled_workbenches->currentItem();
+    QListWidgetItem* ci = lw_enabled_workbenches->currentItem();
     if (ci) {
-        move_workbench(ui->lw_disabled_workbenches, ci);
+        move_workbench(lw_disabled_workbenches, ci);
     }
 }
 
@@ -173,11 +170,11 @@ void DlgWorkbenchesImp::shift_workbench(bool up)
     } else {
         direction = 1;
     }
-    if (ui->lw_enabled_workbenches->currentItem()) {
-        int index = ui->lw_enabled_workbenches->currentRow();
-        QListWidgetItem *item = ui->lw_enabled_workbenches->takeItem(index);
-        ui->lw_enabled_workbenches->insertItem(index + direction, item);
-        ui->lw_enabled_workbenches->setCurrentRow(index + direction);
+    if (lw_enabled_workbenches->currentItem()) {
+        int index = lw_enabled_workbenches->currentRow();
+        QListWidgetItem *item = lw_enabled_workbenches->takeItem(index);
+        lw_enabled_workbenches->insertItem(index + direction, item);
+        lw_enabled_workbenches->setCurrentRow(index + direction);
     }
 }
 
@@ -193,14 +190,14 @@ void DlgWorkbenchesImp::on_shift_workbench_down_btn_clicked()
 
 void DlgWorkbenchesImp::on_sort_enabled_workbenches_btn_clicked()
 {
-    ui->lw_enabled_workbenches->sortItems();
+    lw_enabled_workbenches->sortItems();
 }
 
 void DlgWorkbenchesImp::on_add_all_to_enabled_workbenches_btn_clicked()
 {
-    while (ui->lw_disabled_workbenches->count() > 0) {
-        QListWidgetItem* item = ui->lw_disabled_workbenches->item(0);
-        move_workbench(ui->lw_enabled_workbenches, item);
+    while (lw_disabled_workbenches->count() > 0) {
+        QListWidgetItem* item = lw_disabled_workbenches->item(0);
+        move_workbench(lw_enabled_workbenches, item);
     }
 }
 
@@ -212,11 +209,7 @@ QStringList DlgWorkbenchesImp::load_enabled_workbenches()
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Workbenches");
     enabled_wbs = QString::fromStdString(hGrp->GetASCII("Enabled", all_workbenches.toStdString().c_str()).c_str());
-#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
-    enabled_wbs_list = enabled_wbs.split(QLatin1String(","), Qt::SkipEmptyParts);
-#else
     enabled_wbs_list = enabled_wbs.split(QLatin1String(","), QString::SkipEmptyParts);
-#endif
 
     if (enabled_wbs_list.at(0) == all_workbenches) {
         enabled_wbs_list.removeFirst();
@@ -237,11 +230,7 @@ QStringList DlgWorkbenchesImp::load_disabled_workbenches()
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Workbenches");
     disabled_wbs = QString::fromStdString(hGrp->GetASCII("Disabled", ""));
-#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
-    disabled_wbs_list = disabled_wbs.split(QLatin1String(","), Qt::SkipEmptyParts);
-#else
     disabled_wbs_list = disabled_wbs.split(QLatin1String(","), QString::SkipEmptyParts);
-#endif
 
     return disabled_wbs_list;
 }
@@ -255,19 +244,19 @@ void DlgWorkbenchesImp::save_workbenches()
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Workbenches");
     hGrp->Clear();
 
-    if (ui->lw_enabled_workbenches->count() == 0) {
+    if (lw_enabled_workbenches->count() == 0) {
         enabled_wbs.append(QString::fromLatin1("NoneWorkbench"));
     } else {
-        for (int i = 0; i < ui->lw_enabled_workbenches->count(); i++) {
-            QVariant item_data = ui->lw_enabled_workbenches->item(i)->data(Qt::UserRole);
+        for (int i = 0; i < lw_enabled_workbenches->count(); i++) {
+            QVariant item_data = lw_enabled_workbenches->item(i)->data(Qt::UserRole);
             QString name = item_data.toString();
             enabled_wbs.append(name + QString::fromLatin1(","));
         }
     }
     hGrp->SetASCII("Enabled", enabled_wbs.toLatin1());
 
-    for (int i = 0; i < ui->lw_disabled_workbenches->count(); i++) {
-        QVariant item_data = ui->lw_disabled_workbenches->item(i)->data(Qt::UserRole);
+    for (int i = 0; i < lw_disabled_workbenches->count(); i++) {
+        QVariant item_data = lw_disabled_workbenches->item(i)->data(Qt::UserRole);
         QString name = item_data.toString();
         disabled_wbs.append(name + QString::fromLatin1(","));
     }

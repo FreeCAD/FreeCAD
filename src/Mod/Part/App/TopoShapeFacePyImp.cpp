@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2008     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -117,13 +117,6 @@ PyObject *TopoShapeFacePy::PyMake(struct _typeobject *, PyObject *, PyObject *) 
 // constructor method
 int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
-    if (PyArg_ParseTuple(args, "")) {
-        // Undefined Face
-        getTopoShapePtr()->setShape(TopoDS_Face());
-        return 0;
-    }
-
-    PyErr_Clear();
     PyObject *pW;
     if (PyArg_ParseTuple(args, "O!", &(Part::TopoShapePy::Type), &pW)) {
         try {
@@ -379,45 +372,6 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
       "(surface, list_of_wires)\n"
                     );
     return -1;
-}
-
-/*!
- * \brief TopoShapeFacePy::addWire
- * \code
-circle = Part.Circle()
-circle.Radius = 10
-wire = Part.Wire(circle.toShape())
-Part.show(wire)
-
-circle2 = Part.Circle()
-circle2.Radius = 4
-wire2 = Part.Wire(circle2.toShape())
-Part.show(wire2)
-
-plane = Part.Plane()
-face = plane.toShape()
-
-face.addWire(wire)
-face.Area
-Part.show(face)
-
-face.addWire(wire2.reversed())
-face.Area
-Part.show(face)
- * \endcode
- */
-PyObject* TopoShapeFacePy::addWire(PyObject *args)
-{
-    PyObject* wire;
-    if (!PyArg_ParseTuple(args, "O!", &TopoShapeWirePy::Type, &wire))
-        return nullptr;
-
-    BRep_Builder aBuilder;
-    TopoDS_Face face = TopoDS::Face(getTopoShapePtr()->getShape());
-    const TopoDS_Shape& shape = static_cast<TopoShapeWirePy*>(wire)->getTopoShapePtr()->getShape();
-    aBuilder.Add(face, shape);
-    getTopoShapePtr()->setShape(face);
-    Py_Return;
 }
 
 PyObject* TopoShapeFacePy::makeOffset(PyObject *args)
@@ -720,7 +674,7 @@ PyObject* TopoShapeFacePy::curveOnSurface(PyObject *args)
 
         Standard_Real first, last;
         Handle(Geom2d_Curve) curve = BRep_Tool::CurveOnSurface(edge, face, first, last);
-        std::unique_ptr<Part::Geom2dCurve> geo2d = makeFromCurve2d(curve);
+        std::unique_ptr<Part::Geom2dCurve> geo2d = getCurve2dFromGeom2d(curve);
         if (!geo2d)
             Py_Return;
 

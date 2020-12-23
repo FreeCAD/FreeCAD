@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2010     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -27,8 +27,6 @@
 # include <boost/shared_ptr.hpp>
 #endif
 
-#include <Base/StdStlTools.h>
-
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Part/App/LinePy.h>
 #include <Mod/Part/App/Geometry.h>
@@ -47,8 +45,6 @@
 #include "SketchObjectPy.cpp"
 // other python types
 #include "ConstraintPy.h"
-#include "GeometryFacade.h"
-#include "GeometryFacadePy.h"
 
 using namespace Sketcher;
 
@@ -945,22 +941,6 @@ PyObject* SketchObjectPy::movePoint(PyObject *args)
 
 }
 
-PyObject* SketchObjectPy::getGeoVertexIndex(PyObject *args)
-{
-    int index;
-    if (!PyArg_ParseTuple(args, "i", &index))
-        return 0;
-
-    SketchObject* obj = this->getSketchObjectPtr();
-    int geoId;
-    PointPos posId;
-    obj->getGeoVertexIndex(index, geoId, posId);
-    Py::Tuple tuple(2);
-    tuple.setItem(0, Py::Long(geoId));
-    tuple.setItem(1, Py::Long(posId));
-    return Py::new_reference_to(tuple);
-}
-
 PyObject* SketchObjectPy::getPoint(PyObject *args)
 {
     int GeoId, PointType;
@@ -1138,25 +1118,19 @@ PyObject* SketchObjectPy::addCopy(PyObject *args)
 #endif
         }
 
-        try {
-            int ret = this->getSketchObjectPtr()->addCopy(geoIdList, vect, false, PyObject_IsTrue(clone) ? true : false) + 1;
+        int ret = this->getSketchObjectPtr()->addCopy(geoIdList, vect, false, PyObject_IsTrue(clone) ? true : false) + 1;
 
-            if(ret == -1)
-                throw Py::TypeError("Copy operation unsuccessful!");
+        if(ret == -1)
+            throw Py::TypeError("Copy operation unsuccessful!");
 
-            std::size_t numGeo = geoIdList.size();
-            Py::Tuple tuple(numGeo);
-            for (std::size_t i=0; i<numGeo; ++i) {
-                int geoId = ret - int(numGeo - i);
-                tuple.setItem(i, Py::Long(geoId));
-            }
-
-            return Py::new_reference_to(tuple);
-        }
-        catch(const Base::ValueError & e) {
-            throw Py::ValueError(e.getMessage());
+        std::size_t numGeo = geoIdList.size();
+        Py::Tuple tuple(numGeo);
+        for (std::size_t i=0; i<numGeo; ++i) {
+            int geoId = ret - int(numGeo - i);
+            tuple.setItem(i, Py::Long(geoId));
         }
 
+        return Py::new_reference_to(tuple);
     }
 
     std::string error = std::string("type must be list of GeoIds, not ");
@@ -1225,18 +1199,11 @@ PyObject* SketchObjectPy::addRectangularArray(PyObject *args)
 #endif
         }
 
-        try {
-            int ret = this->getSketchObjectPtr()->addCopy(geoIdList,vect, false, PyObject_IsTrue(clone) ? true : false,
-                                                        rows, cols, PyObject_IsTrue(constraindisplacement) ? true : false, perpscale) + 1;
+        int ret = this->getSketchObjectPtr()->addCopy(geoIdList,vect, false, PyObject_IsTrue(clone) ? true : false,
+                                                      rows, cols, PyObject_IsTrue(constraindisplacement) ? true : false, perpscale) + 1;
 
-            if(ret == -1)
-                throw Py::TypeError("Copy operation unsuccessful!");
-
-        }
-        catch(const Base::ValueError & e) {
-            throw Py::ValueError(e.getMessage());
-        }
-
+        if(ret == -1)
+            throw Py::TypeError("Copy operation unsuccessful!");
         Py_Return;
     }
 
@@ -1411,18 +1378,6 @@ PyObject* SketchObjectPy::increaseBSplineDegree(PyObject *args)
     }
 
     Py_Return;
-}
-
-PyObject* SketchObjectPy::decreaseBSplineDegree(PyObject *args)
-{
-    int GeoId;
-    int decr = 1;
-
-    if (!PyArg_ParseTuple(args, "i|i", &GeoId, &decr))
-        return nullptr;
-
-    bool ok = this->getSketchObjectPtr()->decreaseBSplineDegree(GeoId, decr);
-    return Py_BuildValue("O", (ok ? Py_True : Py_False));
 }
 
 PyObject* SketchObjectPy::modifyBSplineKnotMultiplicity(PyObject *args)
@@ -1766,82 +1721,6 @@ Py::Long SketchObjectPy::getAxisCount(void) const
 {
     return Py::Long(this->getSketchObjectPtr()->getAxisCount());
 }
-
-
-Py::List SketchObjectPy::getGeometryFacadeList(void) const
-{
-    Py::List list;
-
-    for (int i = 0; i < getSketchObjectPtr()->Geometry.getSize(); i++) {
-
-        // we create a python copy and add it to the list
-        std::unique_ptr<GeometryFacade> geofacade = GeometryFacade::getFacade(getSketchObjectPtr()->Geometry[i]->clone());
-
-        Py::Object gfp = Py::Object(new GeometryFacadePy(geofacade.release()),true);
-
-        list.append(gfp);
-    }
-    return list;
-}
-
-void SketchObjectPy::setGeometryFacadeList(Py::List value)
-{
-    std::vector<Part::Geometry *> list;
-    list.reserve(value.size());
-
-    for (const auto & ti : value) {
-        if (PyObject_TypeCheck(ti.ptr(), &(GeometryFacadePy::Type))) {
-
-            GeometryFacadePy * gfp = static_cast<GeometryFacadePy *>(ti.ptr());
-
-            GeometryFacade * gf = gfp->getGeometryFacadePtr();
-
-            Part::Geometry * geo = gf->getGeometry()->clone();
-
-            list.push_back(geo);
-        }
-    }
-
-    getSketchObjectPtr()->Geometry.setValues(std::move(list));
-}
-
-PyObject* SketchObjectPy::getGeometryId(PyObject *args)
-{
-    int Index;
-    if (!PyArg_ParseTuple(args, "i", &Index))
-        return 0;
-
-    long Id;
-
-    if (this->getSketchObjectPtr()->getGeometryId(Index, Id)) {
-        std::stringstream str;
-        str << "Not able to get geometry Id of a geometry with the given index: " << Index;
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
-        Py_Return;
-    }
-
-    return  Py::new_reference_to(Py::Long(Id));
-}
-
-PyObject* SketchObjectPy::setGeometryId(PyObject *args)
-{
-    int Index;
-    long Id;
-    if (!PyArg_ParseTuple(args, "il", &Index, &Id))
-        return 0;
-
-    if (this->getSketchObjectPtr()->setGeometryId(Index, Id)) {
-        std::stringstream str;
-        str << "Not able to set geometry Id of a geometry with the given index: " << Index;
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
-        return 0;
-    }
-
-    Py_Return;
-}
-
-
-
 
 PyObject *SketchObjectPy::getCustomAttributes(const char* /*attr*/) const
 {

@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2012 Yorik van Havre <yorik@uncreated.net>              *
- *   Copyright (c) 2015 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) Yorik van Havre <yorik@uncreated.net> 2012              *
+ *   Copyright (c) WandererFan <wandererfan@gmail.com> 2015                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -69,12 +69,6 @@ DrawViewClip::~DrawViewClip()
 
 void DrawViewClip::onChanged(const App::Property* prop)
 {
-    if ((prop == &Height) ||
-        (prop == &Width) ||
-        (prop == &ShowFrame) ||
-        (prop == &Views)) {
-        requestPaint();
-    }
     DrawView::onChanged(prop);
 }
 

@@ -317,7 +317,7 @@ void ViewProviderSubShapeBinder::updatePlacement(bool transaction) {
     if(!transaction) {
         if(relative)
             self->Context.setValue(parent,parentSub.c_str());
-        self->update(PartDesign::SubShapeBinder::UpdateForced);
+        self->update();
         return;
     }
 
@@ -325,7 +325,7 @@ void ViewProviderSubShapeBinder::updatePlacement(bool transaction) {
     try{
         if(relative)
             self->Context.setValue(parent,parentSub.c_str());
-        self->update(PartDesign::SubShapeBinder::UpdateForced);
+        self->update();
         App::GetApplication().closeActiveTransaction();
         return;
     }catch(Base::Exception &e) {
@@ -343,26 +343,9 @@ void ViewProviderSubShapeBinder::updatePlacement(bool transaction) {
 
 std::vector<App::DocumentObject*> ViewProviderSubShapeBinder::claimChildren(void) const {
     std::vector<App::DocumentObject *> ret;
-    auto self = Base::freecad_dynamic_cast<PartDesign::SubShapeBinder>(getObject());
-    if(self && self->ClaimChildren.getValue() && self->Support.getValue()) {
-        std::set<App::DocumentObject *> objSet;
-        for(auto &l : self->Support.getSubListValues()) {
-            auto obj = l.getValue();
-            if(!obj)
-                continue;
-            const auto &subs = l.getSubValues();
-            if(subs.empty()) {
-                if(objSet.insert(obj).second)
-                    ret.push_back(obj);
-                continue;
-            }
-            for(auto &sub : subs) {
-                auto sobj = obj->getSubObject(sub.c_str());
-                if(sobj && objSet.insert(sobj).second)
-                    ret.push_back(sobj);
-            }
-        }
-    }
+    auto self = dynamic_cast<PartDesign::SubShapeBinder*>(getObject());
+    if(self && self->ClaimChildren.getValue() && self->Support.getValue())
+        ret.push_back(self->Support.getValue());
     return ret;
 }
 

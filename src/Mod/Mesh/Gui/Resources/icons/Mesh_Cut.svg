@@ -15,9 +15,9 @@
    id="svg3167"
    version="1.1"
    inkscape:version="0.48.5 r10040"
-   sodipodi:docname="Mesh_Cut.svg">
+   sodipodi:docname="mesh_cut.svg">
   <title
-     id="title3747">Mesh_Cut</title>
+     id="title3747">mesh_cut</title>
   <defs
      id="defs3169">
     <linearGradient
@@ -889,11 +889,11 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title>Mesh_Cut</dc:title>
+        <dc:title>mesh_cut</dc:title>
         <cc:license
            rdf:resource="https://www.gnu.org/copyleft/lesser.html" />
         <dc:source>https://commons.wikimedia.org/wiki/Tango_icons#/media/File:Edit-cut.svg</dc:source>
-        <dc:identifier>FreeCAD/src/Mod/Mesh/Gui/Resources/icons/Mesh_Cut.svg</dc:identifier>
+        <dc:identifier>FreeCAD/src/Mod/Mesh/Gui/Resources/icons/mesh_cut.svg</dc:identifier>
         <dc:contributor>
           <cc:Agent>
             <dc:title>[agryson] Alexander Gryson</dc:title>

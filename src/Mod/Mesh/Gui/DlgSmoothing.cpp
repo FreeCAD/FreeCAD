@@ -149,7 +149,6 @@ TaskSmoothing::TaskSmoothing()
 
     selection = new Selection();
     selection->setObjects(Gui::Selection().getSelectionEx(0, Mesh::Feature::getClassTypeId()));
-    Gui::Selection().clearSelection();
 #if !defined (QSINT_ACTIONPANEL)
     Gui::TaskView::TaskGroup* tasksel = new Gui::TaskView::TaskGroup();
 #else
@@ -175,7 +174,7 @@ bool TaskSmoothing::accept()
         return true;
 
     Gui::WaitCursor wc;
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Mesh Smoothing"));
+    Gui::Command::openCommand("Mesh Smoothing");
 
     bool hasSelection = false;
     for (std::vector<App::DocumentObject*>::const_iterator it = meshes.begin(); it != meshes.end(); ++it) {

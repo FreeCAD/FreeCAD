@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Instance.py" line="44"/>
       <source>True if it is a valid ship instance, False otherwise</source>
-      <translation>Waar als het een geldige scheepsinstantie is, anders Onwaar</translation>
+      <translation>True als het een geldige scheepsinstantie is, anders False</translation>
     </message>
     <message>
       <location filename="../../Instance.py" line="53"/>
@@ -149,7 +149,7 @@
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="229"/>
       <source>Trim angle</source>
-      <translation>Trimhoek</translation>
+      <translation>Trim hoek</translation>
     </message>
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="234"/>
@@ -200,32 +200,32 @@
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="94"/>
       <source>Computing hydrostatics</source>
-      <translation>Berekening van de hydrostatica</translation>
+      <translation>Hydrostatica berekenen</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="486"/>
       <source>Computing external faces</source>
-      <translation>Berekening van externe vlakken</translation>
+      <translation type="unfinished">Computing external faces</translation>
     </message>
     <message>
       <location filename="../../shipOutlineDraw/Preview.py" line="54"/>
       <source>Computing sections</source>
-      <translation>Berekening van de secties</translation>
+      <translation>Berekenen secties</translation>
     </message>
     <message>
       <location filename="../../shipOutlineDraw/Preview.py" line="127"/>
       <source>Any valid ship section found</source>
-      <translation>Geen geldige scheepssectie gevonden</translation>
+      <translation type="unfinished">Any valid ship section found</translation>
     </message>
     <message>
       <location filename="../../shipCreateShip/TaskPanel.py" line="132"/>
       <source>Ship objects can only be created on top of hull geometry (no objects selected)</source>
-      <translation>Scheepsobjecten kunnen alleen boven op de rompgeometrie aangemaakt worden (geen objecten geselecteerd)</translation>
+      <translation type="unfinished">Ship objects can only be created on top of hull geometry (no objects selected)</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="197"/>
       <source>A ship instance must be selected before using this tool (no objects selected)</source>
-      <translation>Een scheepsinstantie moet worden geselecteerd voordat u dit gereedschap kunt gebruiken (geen objecten geselecteerd)</translation>
+      <translation type="unfinished">A ship instance must be selected before using this tool (no objects selected)</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="213"/>
@@ -235,17 +235,17 @@
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="223"/>
       <source>A ship instance must be selected before using this tool (no valid ship found at the selected objects)</source>
-      <translation>Een scheepsinstantie moet worden geselecteerd voordat u dit gereedschap kunt gebruiken (geen geldig schip gevonden in de geselecteerde objecten)</translation>
+      <translation type="unfinished">A ship instance must be selected before using this tool (no valid ship found at the selected objects)</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/PlotAux.py" line="57"/>
       <source>Plot module is disabled, so I cannot perform the plot</source>
-      <translation>Plotmodule is uitgeschakeld, dus ik kan de plot niet uitvoeren</translation>
+      <translation type="unfinished">Plot module is disabled, so I cannot perform the plot</translation>
     </message>
     <message>
       <location filename="../../shipOutlineDraw/TaskPanel.py" line="192"/>
       <source>A ship instance must be selected before use this tool (no objects selected)</source>
-      <translation>Een scheepsinstantie moet worden geselecteerd voordat u dit gereedschap gebruikt (geen objecten geselecteerd)</translation>
+      <translation type="unfinished">A ship instance must be selected before use this tool (no objects selected)</translation>
     </message>
     <message>
       <location filename="../../shipOutlineDraw/TaskPanel.py" line="210"/>
@@ -255,27 +255,27 @@
     <message>
       <location filename="../../shipOutlineDraw/TaskPanel.py" line="220"/>
       <source>A ship instance must be selected before use this tool (novalid ships found in the selected objects)</source>
-      <translation>Een scheepsinstantie moet worden geselecteerd voordat u dit gereedschap gebruikt (geen geldig schip gevonden in de geselecteerde objecten)</translation>
+      <translation type="unfinished">A ship instance must be selected before use this tool (novalid ships found in the selected objects)</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="41"/>
       <source>Plot module is disabled, tools cannot graph output curves</source>
-      <translation>Plotmodule is uitgeschakeld, gereedschappen kunnen geen grafiek van de outputcurves tekenen</translation>
+      <translation type="unfinished">Plot module is disabled, tools cannot graph output curves</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="85"/>
       <source>Failure detecting external faces from the ship object</source>
-      <translation>Fout bij het detecteren van externe vlakken van het scheepsobject</translation>
+      <translation type="unfinished">Failure detecting external faces from the ship object</translation>
     </message>
     <message>
       <location filename="../../shipCapacityCurve/TaskPanel.py" line="118"/>
       <source>A tank instance must be selected before using this tool (no objects selected)</source>
-      <translation>Een tankinstantie moet geselecteerd zijn voordat u deze functie kunt gebruiken (geen geldige objecten geselecteerd)</translation>
+      <translation type="unfinished">A tank instance must be selected before using this tool (no objects selected)</translation>
     </message>
     <message>
       <location filename="../../shipCapacityCurve/TaskPanel.py" line="134"/>
       <source>More than one tank have been selected (the extra tanks will be ignored)</source>
-      <translation>Er zijn meer dan één tank geselecteerd (de extra tanks zullen worden genegeerd)</translation>
+      <translation type="unfinished">More than one tank have been selected (the extra tanks will be ignored)</translation>
     </message>
     <message>
       <location filename="../../shipCapacityCurve/TaskPanel.py" line="143"/>
@@ -285,22 +285,22 @@
     <message>
       <location filename="../../TankInstance.py" line="128"/>
       <source>Tank volume operation failed. The tool is retrying that slightly moving the free surface position</source>
-      <translation>Tankvolumebewerking is mislukt. Het gereerdschap probeert opnieuw om de vrije oppervlaktepositie te verplaatsen</translation>
+      <translation type="unfinished">Tank volume operation failed. The tool is retrying that slightly moving the free surface position</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="133"/>
       <source>A loading condition instance must be selected before using this tool (no objects selected)</source>
-      <translation>Een laadvoorwaarde-instantie moet worden geselecteerd voordat u dit gereedschap kunt gebruiken (geen objecten geselecteerd)</translation>
+      <translation type="unfinished">A loading condition instance must be selected before using this tool (no objects selected)</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="196"/>
       <source>Wrong Ship label! (no instances labeled as'{}' found)</source>
-      <translation>Verkeerd scheepslabel! (geen exemplaren aangeduid als '{}' gevonden)</translation>
+      <translation type="unfinished">Wrong Ship label! (no instances labeled as'{}' found)</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="204"/>
       <source>Ambiguous Ship label! ({} instances labeled as'{}' found)</source>
-      <translation>Onduidelijk scheepslabel! ({} instanties aangeduid als '{}' gevonden)</translation>
+      <translation type="unfinished">Ambiguous Ship label! ({} instances labeled as'{}' found)</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="182"/>
@@ -310,12 +310,12 @@
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="192"/>
       <source>A loading condition instance must be selected before using this tool (no valid loading condition found at the selected objects)</source>
-      <translation>Een laadvoorwaarde-instantie moet worden geselecteerd voor u dit gereedschap gebruikt (geen geldige laadvoorwaarde gevonden bij de geselecteerde objecten)</translation>
+      <translation type="unfinished">A loading condition instance must be selected before using this tool (no valid loading condition found at the selected objects)</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="117"/>
       <source>Too much weight! The ship will never displace water enough</source>
-      <translation>Te zwaar! Het schip zal nooit genoeg water verplaatsen</translation>
+      <translation type="unfinished">Too much weight! The ship will never displace water enough</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="229"/>
@@ -325,7 +325,7 @@
     <message>
       <location filename="../../shipGZ/Tools.py" line="237"/>
       <source>Ambiguous Weight label! ({} instances labeled as'{}' found)</source>
-      <translation>Onduidelijk gewichtslabel! ({} instanties aangeduid als '{}' gevonden)</translation>
+      <translation type="unfinished">Ambiguous Weight label! ({} instances labeled as'{}' found)</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="249"/>
@@ -335,27 +335,27 @@
     <message>
       <location filename="../../shipGZ/Tools.py" line="274"/>
       <source>Wrong Tank label! (no instances labeled as'{}' found)</source>
-      <translation>Verkeerd tanklabel! (geen exemplaren aangeduid als '{}' gevonden)</translation>
+      <translation type="unfinished">Wrong Tank label! (no instances labeled as'{}' found)</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="282"/>
       <source>Ambiguous Tank label! ({} instances labeled as'{}' found)</source>
-      <translation>Onduidelijk tanklabel! ({} instanties aangeduid als '{}' gevonden)</translation>
+      <translation type="unfinished">Ambiguous Tank label! ({} instances labeled as'{}' found)</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="294"/>
       <source>Invalid Tank! (the object labeled as'{}' is not a tank)</source>
-      <translation>Ongeldige tank! (het object dat is aangeduid als '{}' is geen tank)</translation>
+      <translation type="unfinished">Invalid Tank! (the object labeled as'{}' is not a tank)</translation>
     </message>
     <message>
       <location filename="../../shipCapacityCurve/Tools.py" line="49"/>
       <source>Computing capacity curves</source>
-      <translation>Berekening van de capaciteitscurves</translation>
+      <translation type="unfinished">Computing capacity curves</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="122"/>
       <source>Boolean operation failed when trying to get the underwater side. The tool is retrying such operation slightly moving the free surface position</source>
-      <translation>De Booleaanse bewerking is mislukt tijdens een poging om de onderwaterzijde te krijgen. Het gereedschap probeert een dergelijke handeling opnieuw uit te voeren door de vrije oppervlaktepositie licht te verplaatsen</translation>
+      <translation type="unfinished">Boolean operation failed when trying to get the underwater side. The tool is retrying such operation slightly moving the free surface position</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="197"/>
@@ -365,7 +365,7 @@
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="273"/>
       <source>ZeroDivisionError: Null volume found during the displacement computation!</source>
-      <translation>ZeroDivisionfout: Nulvolume gevonden tijdens de verplaatsing van de berekening!</translation>
+      <translation type="unfinished">ZeroDivisionError: Null volume found during the displacement computation!</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="374"/>
@@ -375,17 +375,17 @@
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="386"/>
       <source>ZeroDivisionError: Null area found during the floating area computation!</source>
-      <translation>ZeroDivisionfout: Nulgebied gevonden tijdens de berekening van het zwevend gebied!</translation>
+      <translation type="unfinished">ZeroDivisionError: Null area found during the floating area computation!</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="461"/>
       <source>Part.OCCError: Main frame area cannot be computed</source>
-      <translation>Part.OCCError: Hoofdkadergebied kan niet worden berekend</translation>
+      <translation type="unfinished">Part.OCCError: Main frame area cannot be computed</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="474"/>
       <source>ZeroDivisionError: Null area found during the main frame area coefficient computation!</source>
-      <translation>ZeroDivisionfout: Nulgebied gevonden tijdens de berekening van de coëfficiënt van het hoofdkadergebied!</translation>
+      <translation type="unfinished">ZeroDivisionError: Null area found during the main frame area coefficient computation!</translation>
     </message>
   </context>
   <context>
@@ -403,12 +403,12 @@
     <message>
       <location filename="../../shipCreateShip/Preview.py" line="98"/>
       <source>Forward perpendicular</source>
-      <translation>Voorwaarts loodrecht</translation>
+      <translation type="unfinished">Forward perpendicular</translation>
     </message>
     <message>
       <location filename="../../shipCreateShip/Preview.py" line="114"/>
       <source>After perpendicular</source>
-      <translation>Achterwaarts loodrecht</translation>
+      <translation type="unfinished">After perpendicular</translation>
     </message>
     <message>
       <location filename="../../shipCreateShip/Preview.py" line="130"/>
@@ -441,12 +441,12 @@
     <message>
       <location filename="../../ShipGui.py" line="196"/>
       <source>GZ curve computation</source>
-      <translation>Berekening van de GZ-curve</translation>
+      <translation type="unfinished">GZ curve computation</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="239"/>
       <source>Plot the GZ curve</source>
-      <translation>Plot de GZ-curve</translation>
+      <translation type="unfinished">Plot the GZ curve</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="243"/>
@@ -461,27 +461,27 @@
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="253"/>
       <source>Variable trim</source>
-      <translation>Variabele trim</translation>
+      <translation type="unfinished">Variable trim</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="258"/>
       <source>The ship will be rotated to the equilibrium trim angle for each roll angle. It will significantly increase the required computing time</source>
-      <translation>Het schip zal gedraaid worden tot aan de evenwichtstrimhoek voor elke rolhoek. Het zal de benodigde rekentijd aanzienlijk verlengen</translation>
+      <translation type="unfinished">The ship will be rotated to the equilibrium trim angle for each roll angle. It will significantly increase the required computing time</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="284"/>
       <source>GZ curve tool angle selected [deg]</source>
-      <translation>Hoek van het GZ-curvegereedschap geselecteerd [deg]</translation>
+      <translation type="unfinished">GZ curve tool angle selected [deg]</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="299"/>
       <source>GZ curve tool number of points selected</source>
-      <translation>Aantal punten van het GZ-curvegereedschap geselecteerd</translation>
+      <translation type="unfinished">GZ curve tool number of points selected</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="314"/>
       <source>GZ curve tool variable trim angle selection</source>
-      <translation>Variabele trimhoek van het GZ-curvegereedschap geselecteerd</translation>
+      <translation type="unfinished">GZ curve tool variable trim angle selection</translation>
     </message>
   </context>
   <context>
@@ -519,17 +519,17 @@
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="423"/>
       <source>Hydrostatics tool minimum draft selected [m]</source>
-      <translation>Minimumdiepgang van het hydrostatische gereedschap geselecteerd [m]</translation>
+      <translation type="unfinished">Hydrostatics tool minimum draft selected [m]</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="436"/>
       <source>Hydrostatics tool maximum draft selected [m]</source>
-      <translation>Maximumdiepgang van het hydrostatische gereedschap geselecteerd [m]</translation>
+      <translation type="unfinished">Hydrostatics tool maximum draft selected [m]</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="449"/>
       <source>Hydrostatics tool number of points selected</source>
-      <translation>Aantal punten van het hydrostatische gereedschap geselecteerd</translation>
+      <translation type="unfinished">Hydrostatics tool number of points selected</translation>
     </message>
   </context>
   <context>
@@ -542,7 +542,7 @@
     <message>
       <location filename="../../shipLoadExample/TaskPanel.py" line="110"/>
       <source>Select ship example geometry</source>
-      <translation>Selecteer voorbeeld scheepsgeometrie</translation>
+      <translation type="unfinished">Select ship example geometry</translation>
     </message>
   </context>
   <context>
@@ -568,7 +568,7 @@
     <message>
       <location filename="../../shipOutlineDraw/TaskPanel.py" line="237"/>
       <source>Auto create</source>
-      <translation>Automatisch aanmaken</translation>
+      <translation type="unfinished">Auto create</translation>
     </message>
     <message>
       <location filename="../../shipOutlineDraw/TaskPanel.py" line="242"/>
@@ -616,7 +616,7 @@
     <message>
       <location filename="../../TankInstance.py" line="50"/>
       <source>True if it is a valid tank instance, False otherwise</source>
-      <translation>Waar als het een geldige tankinstantie is, anders Onwaar</translation>
+      <translation type="unfinished">True if it is a valid tank instance, False otherwise</translation>
     </message>
     <message>
       <location filename="../../shipCreateTank/TaskPanel.py" line="160"/>
@@ -626,17 +626,17 @@
     <message>
       <location filename="../../shipCreateTank/TaskPanel.py" line="109"/>
       <source>Tanks objects can only be created on top of its geometry (no objects selected)</source>
-      <translation>Tankobjecten kunnen alleen boven op hun geometrie aangemaakt worden (geen objecten geselecteerd)</translation>
+      <translation type="unfinished">Tanks objects can only be created on top of its geometry (no objects selected)</translation>
     </message>
     <message>
       <location filename="../../shipCreateTank/TaskPanel.py" line="122"/>
       <source>No solids found in the selected objects</source>
-      <translation>Geen volumemodellen vormen gevonden in de geselecteerde objecten</translation>
+      <translation type="unfinished">No solids found in the selected objects</translation>
     </message>
     <message>
       <location filename="../../shipCreateTank/TaskPanel.py" line="139"/>
       <source>There are not ship objects to create weights into them</source>
-      <translation>Er zijn geen scheepsobjecten om er gewichten in aan te brengen</translation>
+      <translation type="unfinished">There are not ship objects to create weights into them</translation>
     </message>
     <message>
       <location filename="../../shipCreateTank/TaskPanel.py" line="164"/>
@@ -654,7 +654,7 @@
     <message>
       <location filename="../../WeightInstance.py" line="46"/>
       <source>True if it is a valid weight instance, False otherwise</source>
-      <translation>Waar als het een geldige gewichtsinstantie is, anders Onwaar</translation>
+      <translation type="unfinished">True if it is a valid weight instance, False otherwise</translation>
     </message>
     <message>
       <location filename="../../WeightInstance.py" line="55"/>
@@ -674,22 +674,22 @@
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="113"/>
       <source>Weight objects can only be created on top of its geometry (no objects selected)</source>
-      <translation>Gewichtsobjecten kunnen alleen boven op hun geometrie aangemaakt worden (geen objecten geselecteerd)</translation>
+      <translation type="unfinished">Weight objects can only be created on top of its geometry (no objects selected)</translation>
     </message>
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="126"/>
       <source>No geometrical shapes found in the selected objects</source>
-      <translation>Geen geometrische vormen gevonden in de geselecteerde objecten</translation>
+      <translation type="unfinished">No geometrical shapes found in the selected objects</translation>
     </message>
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="179"/>
       <source>There are not ship objects to create weights into them</source>
-      <translation>Er zijn geen scheepsobjecten om er gewichten in aan te brengen</translation>
+      <translation type="unfinished">There are not ship objects to create weights into them</translation>
     </message>
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="213"/>
       <source>Create a new weight</source>
-      <translation>Een nieuw gewicht aanmaken</translation>
+      <translation type="unfinished">Create a new weight</translation>
     </message>
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="217"/>
@@ -724,7 +724,7 @@
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="162"/>
       <source>Unknown object shapes selected</source>
-      <translation>Onbekende objectvormen geselecteerd</translation>
+      <translation type="unfinished">Unknown object shapes selected</translation>
     </message>
   </context>
 </TS>

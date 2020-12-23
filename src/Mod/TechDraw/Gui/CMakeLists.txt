@@ -44,18 +44,12 @@ set(TechDrawGui_MOC_HDRS
     QGIViewDimension.h
     QGIViewBalloon.h
     TaskProjGroup.h
-    DlgPrefsTechDrawGeneralImp.h
-    DlgPrefsTechDrawScaleImp.h
-    DlgPrefsTechDrawAnnotationImp.h
-    DlgPrefsTechDrawDimensionsImp.h
-    DlgPrefsTechDrawColorsImp.h
-    DlgPrefsTechDrawAdvancedImp.h
-    DlgPrefsTechDrawHLRImp.h
+    DlgPrefsTechDrawImp.h
+    DlgPrefsTechDraw2Imp.h
     TaskLinkDim.h
     DlgTemplateField.h
     TaskSectionView.h
     TaskGeomHatch.h
-    TaskHatch.h
     TaskLeaderLine.h
     TaskRichAnno.h
     TaskCosVertex.h
@@ -73,9 +67,6 @@ set(TechDrawGui_MOC_HDRS
     QGIWeldSymbol.h
     SymbolChooser.h
     TaskActiveView.h
-    TaskDetail.h
-    QGIGhostHighlight.h
-    TaskCosmeticLine.h
 )
 
 fc_wrap_cpp(TechDrawGui_MOC_SRCS ${TechDrawGui_MOC_HDRS})
@@ -88,32 +79,25 @@ else()
 endif()
 
 set(TechDrawGui_UIC_SRCS
-    DlgPrefsTechDrawGeneral.ui
-    DlgPrefsTechDrawScale.ui
-    DlgPrefsTechDrawAnnotation.ui
-    DlgPrefsTechDrawDimensions.ui
-    DlgPrefsTechDrawColors.ui
-    DlgPrefsTechDrawAdvanced.ui
-    DlgPrefsTechDrawHLR.ui
+    DlgPrefsTechDraw.ui
+    DlgPrefsTechDraw2.ui
     TaskProjGroup.ui
     TaskLinkDim.ui
     DlgTemplateField.ui
     TaskSectionView.ui
     TaskGeomHatch.ui
-    TaskHatch.ui
     TaskLeaderLine.ui
     TaskRichAnno.ui
     mrichtextedit.ui
     TaskBalloon.ui
     TaskCosVertex.ui
     TaskCenterLine.ui
+    TaskCL2Lines.ui
     TaskLineDecor.ui
     TaskRestoreLines.ui
     TaskWeldingSymbol.ui
     SymbolChooser.ui
     TaskActiveView.ui
-    TaskDetail.ui
-    TaskCosmeticLine.ui
 )
 
 if(BUILD_QT5)
@@ -153,27 +137,12 @@ SET(TechDrawGui_SRCS
     TaskProjGroup.ui
     TaskProjGroup.cpp
     TaskProjGroup.h
-    DlgPrefsTechDrawGeneral.ui
-    DlgPrefsTechDrawGeneralImp.cpp
-    DlgPrefsTechDrawGeneralImp.h
-    DlgPrefsTechDrawScale.ui
-    DlgPrefsTechDrawScaleImp.cpp
-    DlgPrefsTechDrawScaleImp.h
-    DlgPrefsTechDrawAnnotation.ui
-    DlgPrefsTechDrawAnnotationImp.cpp
-    DlgPrefsTechDrawAnnotationImp.h
-    DlgPrefsTechDrawDimensions.ui
-    DlgPrefsTechDrawDimensionsImp.cpp
-    DlgPrefsTechDrawDimensionsImp.h
-    DlgPrefsTechDrawColors.ui
-    DlgPrefsTechDrawColorsImp.cpp
-    DlgPrefsTechDrawColorsImp.h
-    DlgPrefsTechDrawAdvanced.ui
-    DlgPrefsTechDrawAdvancedImp.cpp
-    DlgPrefsTechDrawAdvancedImp.h
-    DlgPrefsTechDrawHLR.ui
-    DlgPrefsTechDrawHLRImp.cpp
-    DlgPrefsTechDrawHLRImp.h
+    DlgPrefsTechDraw.ui
+    DlgPrefsTechDrawImp.cpp
+    DlgPrefsTechDrawImp.h
+    DlgPrefsTechDraw2.ui
+    DlgPrefsTechDraw2Imp.cpp
+    DlgPrefsTechDraw2Imp.h
     TaskLinkDim.ui
     TaskLinkDim.cpp
     TaskLinkDim.h
@@ -189,9 +158,6 @@ SET(TechDrawGui_SRCS
     TaskGeomHatch.ui
     TaskGeomHatch.cpp
     TaskGeomHatch.h
-    TaskHatch.ui
-    TaskHatch.cpp
-    TaskHatch.h
     TaskLeaderLine.ui
     TaskLeaderLine.cpp
     TaskLeaderLine.h
@@ -208,6 +174,7 @@ SET(TechDrawGui_SRCS
     TaskLineDecor.cpp
     TaskLineDecor.h
     TaskRestoreLines.ui
+    TaskCL2Lines.ui
     TaskWeldingSymbol.ui
     TaskWeldingSymbol.cpp
     TaskWeldingSymbol.h
@@ -223,14 +190,6 @@ SET(TechDrawGui_SRCS
     TaskActiveView.h
     Grabber3d.cpp
     Grabber3d.h
-    TaskDetail.ui
-    TaskDetail.cpp
-    TaskDetail.h
-    PreferencesGui.cpp
-    PreferencesGui.h
-    TaskCosmeticLine.ui
-    TaskCosmeticLine.cpp
-    TaskCosmeticLine.h
 )
 
 SET(TechDrawGuiView_SRCS
@@ -327,8 +286,6 @@ SET(TechDrawGuiView_SRCS
     TemplateTextField.cpp
     TemplateTextField.h
     ZVALUE.h
-    QGIGhostHighlight.cpp
-    QGIGhostHighlight.h
 )
 SET(TechDrawGuiViewProvider_SRCS
     ViewProviderPage.cpp
@@ -357,10 +314,10 @@ SET(TechDrawGuiViewProvider_SRCS
     ViewProviderSpreadsheet.h
     ViewProviderViewClip.cpp
     ViewProviderViewClip.h
-    ViewProviderGeomHatch.cpp
-    ViewProviderGeomHatch.h
     ViewProviderHatch.cpp
     ViewProviderHatch.h
+    ViewProviderGeomHatch.cpp
+    ViewProviderGeomHatch.h
     ViewProviderImage.cpp
     ViewProviderImage.h
     ViewProviderLeader.cpp
@@ -371,8 +328,6 @@ SET(TechDrawGuiViewProvider_SRCS
     ViewProviderTile.h
     ViewProviderWeld.cpp
     ViewProviderWeld.h
-    ViewProviderCosmeticExtension.cpp
-    ViewProviderCosmeticExtension.h 
 )
 
 SOURCE_GROUP("MRTE" FILES ${MRTE_SRCS})
@@ -385,7 +340,6 @@ SET(TechDrawGuiTaskDlgs_SRCS
     TaskLinkDim.ui
     TaskSectionView.ui
     TaskGeomHatch.ui
-    TaskHatch.ui
     TaskLeaderLine.ui
     TaskRichAnno.ui
     TaskCosVertex.ui
@@ -394,11 +348,10 @@ SET(TechDrawGuiTaskDlgs_SRCS
     TaskCenterLine.ui
     TaskLineDecor.ui
     TaskRestoreLines.ui
+    TaskCL2Lines.ui
     TaskWeldingSymbol.ui
     SymbolChooser.ui
     TaskActiveView.ui
-    TaskDetail.ui
-    TaskCosmeticLine.ui
 )
 SOURCE_GROUP("TaskDialogs" FILES ${TechDrawGuiTaskDlgs_SRCS})
 

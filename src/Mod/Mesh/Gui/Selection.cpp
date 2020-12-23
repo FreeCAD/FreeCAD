@@ -41,7 +41,6 @@ Selection::Selection(QWidget* parent)
 
     meshSel.setCheckOnlyVisibleTriangles(ui->visibleTriangles->isChecked());
     meshSel.setCheckOnlyPointToUserTriangles(ui->screenTriangles->isChecked());
-    meshSel.setEnabledViewerSelection(false);
 }
 
 /*
@@ -52,7 +51,6 @@ Selection::~Selection()
     // no need to delete child widgets, Qt does it all for us
     delete ui;
     meshSel.clearSelection();
-    meshSel.setEnabledViewerSelection(true);
 }
 
 void Selection::setObjects(const std::vector<Gui::SelectionObject>& o)

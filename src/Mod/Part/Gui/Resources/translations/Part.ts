@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1">
+<TS version="2.0">
 <context>
     <name>AttachmentEditor</name>
     <message>
@@ -99,11 +99,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="608"/>
-        <source>Attachment Offset (in local coordinates):</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="598"/>
         <source>Attachment Offset (inactive - not attached):</source>
         <translation type="unfinished"></translation>
@@ -127,14 +122,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="59"/>
-        <source>Filter out objects from a selected compound by characteristics like volume,
-area, or length, or by choosing specific items.
-If a second object is selected, it will be used as reference, for example,
-for collision or distance filtering.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="60"/>
         <source>Compound Filter: remove some childs from a compound</source>
         <translation type="unfinished"></translation>
@@ -145,8 +132,8 @@ for collision or distance filtering.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="73"/>
-        <source>First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</source>
+        <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
+        <source>Bad selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -154,20 +141,6 @@ for collision or distance filtering.</source>
         <source>Computing the result failed with an error: 
 
 {err}
-
-Click &apos;Continue&apos; to create the feature anyway, or &apos;Abort&apos; to cancel.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
-        <source>Bad selection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="106"/>
-        <source>Computing the result failed with an error: 
-
-{errstr}
 
 Click &apos;Continue&apos; to create the feature anyway, or &apos;Abort&apos; to cancel.</source>
         <translation type="unfinished"></translation>
@@ -181,12 +154,6 @@ Click &apos;Continue&apos; to create the feature anyway, or &apos;Abort&apos; to
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="58"/>
-        <source>Split up a compound of shapes into separate objects.
-It will create a &apos;Compound Filter&apos; for each shape.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="59"/>
         <source>Explode compound: split up a list of shapes into separate objects</source>
         <translation type="unfinished"></translation>
@@ -194,11 +161,6 @@ It will create a &apos;Compound Filter&apos; for each shape.</source>
     <message>
         <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="67"/>
         <source>Select a shape that is a compound, first!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="68"/>
-        <source>First select a shape that is a compound.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -249,12 +211,12 @@ It will create a &apos;Compound Filter&apos; for each shape.</source>
 <context>
     <name>Part_JoinFeatures</name>
     <message>
-        <location filename="../../../BOPTools/JoinFeatures.py" line="86"/>
-        <source>Computing the result failed with an error:
+        <location filename="../../../BOPTools/JoinFeatures.py" line="85"/>
+        <source>Computing the result failed with an error: 
 
 {err}
 
-Click &apos;Continue&apos; to create the feature anyway, or &apos;Abort&apos; to cancel.</source>
+ Click &apos;Continue&apos; to create the feature anyway, or &apos;Abort&apos; to cancel.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -268,22 +230,8 @@ Click &apos;Continue&apos; to create the feature anyway, or &apos;Abort&apos; to
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../BOPTools/JoinFeatures.py" line="85"/>
-        <source>Computing the result failed with an error: 
-
-{err}
-
- Click &apos;Continue&apos; to create the feature anyway, or &apos;Abort&apos; to cancel.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
         <source>Select at least two objects, or one or more compounds, first!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../BOPTools/JoinFeatures.py" line="208"/>
-        <source>Select at least two objects, or one or more compounds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -292,26 +240,29 @@ Click &apos;Continue&apos; to create the feature anyway, or &apos;Abort&apos; to
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../BOPTools/JoinFeatures.py" line="304"/>
-        <source>Select base object, then the object to embed, and then invoke this tool.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
         <source>Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</source>
         <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>Part_MakeTube</name>
     <message>
-        <location filename="../../../BOPTools/JoinFeatures.py" line="399"/>
-        <source>Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</source>
+        <location filename="../../../BasicShapes/Shapes.py" line="59"/>
+        <source>Create tube</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BasicShapes/Shapes.py" line="62"/>
+        <source>Creates a tube</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Part_SplitFeatures</name>
     <message>
-        <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
-        <source>Computing the result failed with an error:
+        <location filename="../../../BOPTools/SplitFeatures.py" line="446"/>
+        <source>Computing the result failed with an error: 
 
 {err}
 
@@ -329,47 +280,6 @@ Click &apos;Continue&apos; to create the feature anyway, or &apos;Abort&apos; to
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../BOPTools/SplitFeatures.py" line="188"/>
-        <source>Boolean fragments</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../BOPTools/SplitFeatures.py" line="190"/>
-        <source>Create a &apos;Boolean Fragments&apos; object from two or more selected objects,
-or from the shapes inside a compound.
-This is a boolean union which is then sliced at the intersections
-of the original shapes.
-A &apos;Compound Filter&apos; can be used to extract the individual slices.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../BOPTools/SplitFeatures.py" line="543"/>
-        <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
-        <source>Slice to compound</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
-        <source>Slice a selected object by using other objects as cutting tools.
-The resulting pieces will be stored in a compound.
-A &apos;Compound Filter&apos; can be used to extract the individual slices.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../BOPTools/SplitFeatures.py" line="391"/>
-        <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
-        <source>Slice apart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
         <source>Boolean Fragments</source>
         <translation type="unfinished"></translation>
@@ -380,13 +290,18 @@ A &apos;Compound Filter&apos; can be used to extract the individual slices.</sou
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../BOPTools/SplitFeatures.py" line="312"/>
-        <source>Split object by intersections with other objects, and pack the pieces into a compound.</source>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="478"/>
+        <source>Select at least two objects, or one or more compounds, first! If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../BOPTools/SplitFeatures.py" line="336"/>
-        <source>Split object by intersections with other objects.</source>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
+        <source>Slice to compound</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="312"/>
+        <source>Split object by intersections with other objects, and pack the pieces into a compound.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -395,28 +310,13 @@ A &apos;Compound Filter&apos; can be used to extract the individual slices.</sou
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
-        <source>Slice a selected object by other objects, and split it apart.
-It will create a &apos;Compound Filter&apos; for each slice.</source>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
+        <source>Slice apart</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../BOPTools/SplitFeatures.py" line="446"/>
-        <source>Computing the result failed with an error: 
-
-{err}
-
-Click &apos;Continue&apos; to create the feature anyway, or &apos;Abort&apos; to cancel.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
-        <source>Remove intersection fragments</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../BOPTools/SplitFeatures.py" line="478"/>
-        <source>Select at least two objects, or one or more compounds, first! If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="336"/>
+        <source>Split object by intersections with other objects.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -425,37 +325,8 @@ Click &apos;Continue&apos; to create the feature anyway, or &apos;Abort&apos; to
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../BOPTools/SplitFeatures.py" line="531"/>
-        <source>Perform an &apos;exclusive OR&apos; boolean operation with two or more selected objects,
-or with the shapes inside a compound.
-This means the overlapping volumes of the shapes will be removed.
-A &apos;Compound Filter&apos; can be used to extract the remaining pieces.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>Part_Tube</name>
-    <message>
-        <location filename="../../../BasicShapes/Shapes.py" line="85"/>
-        <source>Create tube</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../BasicShapes/Shapes.py" line="89"/>
-        <source>Creates a tube</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>Part_MakeTube</name>
-    <message>
-        <location filename="../../../BasicShapes/Shapes.py" line="59"/>
-        <source>Create tube</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../BasicShapes/Shapes.py" line="62"/>
-        <source>Creates a tube</source>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
+        <source>Remove intersection fragments</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3967,7 +3838,7 @@ Please check one or more edge entities first.</source>
         <source>Maximum angular deflection</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../../DlgSettings3DViewPart.ui" line="107"/>
         <source> °</source>
         <translation type="unfinished"></translation>

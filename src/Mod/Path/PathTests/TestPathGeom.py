@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+
 # ***************************************************************************
+# *                                                                         *
 # *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -393,8 +395,6 @@ class TestPathGeom(PathTestBase):
 
     def test65(self):
         """Verify splitEdgeAt."""
-
-        # split a line segment
         e = PathGeom.splitEdgeAt(Part.Edge(Part.LineSegment(Vector(), Vector(2, 4, 6))), Vector(1, 2, 3))
         self.assertLine(e[0], Vector(), Vector(1,2,3))
         self.assertLine(e[1], Vector(1,2,3), Vector(2,4,6))
@@ -425,35 +425,6 @@ class TestPathGeom(PathTestBase):
         p23 = Vector(10 - o, +o, 7.5)
         self.assertCurve(e[0], p1, p12, p2)
         self.assertCurve(e[1], p2, p23, p3)
-
-    def test66(self):
-        '''Split arc real world sample'''
-
-        af = Vector(421.55, 378.41, 1)
-        am = Vector(459.51, 372.61, 1)
-        al = Vector(491.75, 351.75, 1)
-        arc = Part.Edge(Part.ArcOfCircle(af, am, al))
-        ac = arc.Curve.Center
-
-        s = Vector(434.54, 378.26, 1)
-        head, tail = PathGeom.splitEdgeAt(arc, s)
-
-        # make sure the arcs connect as they should
-        self.assertCoincide(arc.valueAt(arc.FirstParameter), head.valueAt(head.FirstParameter), 0.005)
-        self.assertCoincide(s, head.valueAt(head.LastParameter), 0.005)
-        self.assertCoincide(s, tail.valueAt(tail.FirstParameter), 0.005)
-        i = arc.valueAt(arc.LastParameter)
-        j = tail.valueAt(tail.LastParameter)
-        print("(%.2f, %.2f, %.2f) vs. (%.2f, %.2f, %.2f)" % (i.x, i.y, i.z, j.x, j.y, j.z))
-        self.assertCoincide(arc.valueAt(arc.LastParameter), tail.valueAt(tail.LastParameter), 0.005)
-
-        # make sure the radii match
-        self.assertRoughly(arc.Curve.Radius, head.Curve.Radius, 0.001)
-        self.assertRoughly(arc.Curve.Radius, tail.Curve.Radius, 0.001)
-
-        # also, all arcs should have the same center
-        self.assertCoincide(arc.Curve.Center, head.Curve.Center, 0.001)
-        self.assertCoincide(arc.Curve.Center, tail.Curve.Center, 0.001)
 
     def test70(self):
         '''Flip a line.'''

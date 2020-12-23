@@ -55,7 +55,7 @@ std::string VectorPy::representation(void) const
 
 PyObject *VectorPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of VectorPy and the Twin object
+    // create a new instance of VectorPy and the Twin object 
     return new VectorPy(new Vector3d);
 }
 
@@ -330,7 +330,7 @@ PyObject*  VectorPy::negative(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return 0;
-
+        
     VectorPy::PointerType this_ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
     Base::Vector3d v = -(*this_ptr);
     return new VectorPy(v);
@@ -433,32 +433,6 @@ PyObject*  VectorPy::cross(PyObject *args)
 
     Base::Vector3d v = (*this_ptr) % (*vect_ptr);
     return new VectorPy(v);
-}
-
-PyObject*  VectorPy::isOnLineSegment(PyObject *args)
-{
-    PyObject *start, *end;
-    if (!PyArg_ParseTuple(args, "OO",&start, &end))
-        return 0;
-    if (!PyObject_TypeCheck(start, &(VectorPy::Type))) {
-        PyErr_SetString(PyExc_TypeError, "First arg must be Vector");
-        return 0;
-    }
-    if (!PyObject_TypeCheck(end, &(VectorPy::Type))) {
-        PyErr_SetString(PyExc_TypeError, "Second arg must be Vector");
-        return 0;
-    }
-
-    VectorPy* start_vec = static_cast<VectorPy*>(start);
-    VectorPy* end_vec = static_cast<VectorPy*>(end);
-
-    VectorPy::PointerType this_ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
-    VectorPy::PointerType start_ptr = reinterpret_cast<VectorPy::PointerType>(start_vec->_pcTwinPointer);
-    VectorPy::PointerType end_ptr = reinterpret_cast<VectorPy::PointerType>(end_vec->_pcTwinPointer);
-
-    Py::Boolean result = this_ptr->IsOnLineSegment(*start_ptr, *end_ptr);
-
-    return Py::new_reference_to(result);
 }
 
 PyObject*  VectorPy::getAngle(PyObject *args)

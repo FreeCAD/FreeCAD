@@ -36,12 +36,12 @@ using namespace std;
 //**************************************************************************
 // Construction/Destruction
 
-PROPERTY_SOURCE(PartGui::ViewProviderCylinderParametric, PartGui::ViewProviderPrimitive)
+PROPERTY_SOURCE(PartGui::ViewProviderCylinderParametric, PartGui::ViewProviderPart)
 
 
 ViewProviderCylinderParametric::ViewProviderCylinderParametric()
 {
-  sPixmap = "Part_Cylinder_Parametric";
+  sPixmap = "Tree_Part_Cylinder_Parametric.svg";
 }
 
 ViewProviderCylinderParametric::~ViewProviderCylinderParametric()

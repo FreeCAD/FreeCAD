@@ -35,7 +35,7 @@
 
 namespace Gui {
 
-struct SequencerBarPrivate;
+struct SequencerPrivate;
 struct ProgressBarPrivate;
 class ProgressBar;
 
@@ -52,7 +52,7 @@ class ProgressBar;
  *   seq.next();
  *   // do one step of your algorithm
  * }
- *
+ * 
  * \endcode
  *
  * The example below shows how to use two nested progresses.
@@ -70,7 +70,7 @@ class ProgressBar;
  *   }
  *
  * }
- *
+ * 
  * void function2()
  * {
  *   unsigned long steps = ...
@@ -90,14 +90,14 @@ class ProgressBar;
  * just a busy indicator instead of percentage steps.
  * @author Werner Mayer
  */
-class GuiExport SequencerBar : public Base::SequencerBase
+class GuiExport Sequencer : public Base::SequencerBase
 {
 public:
     /** Returns the sequencer object. */
-    static SequencerBar* instance();
-    /** This restores the last overridden cursor and release the keyboard while the progress bar
+    static Sequencer* instance();
+    /** This restores the last overridden cursor and release the keyboard while the progress bar 
     * is running. This is useful e.g. if a modal dialog appears while a long operation is performed
-    * to indicate that the user can click on the dialog. Every pause() must eventually be followed
+    * to indicate that the user can click on the dialog. Every pause() must eventually be followed 
     * by a corresponding @ref resume().
     */
     void pause() override;
@@ -111,9 +111,9 @@ public:
 
 protected:
     /** Construction */
-    SequencerBar();
+    Sequencer ();
     /** Destruction */
-    ~SequencerBar();
+    ~Sequencer ();
 
     /** Puts text to the status bar */
     void setText (const char* pszTxt) override;
@@ -134,8 +134,8 @@ private:
     /** Throws an exception to stop the pending operation. */
     void abort();
     //@}
-    SequencerBarPrivate* d;
-    static SequencerBar* _pclSingleton;
+    SequencerPrivate* d;
+    static Sequencer* _pclSingleton;
 
     friend class ProgressBar;
 };
@@ -146,7 +146,7 @@ class ProgressBar : public QProgressBar
 
 public:
     /** Construction */
-    ProgressBar (SequencerBar* s, QWidget * parent=0);
+    ProgressBar (Sequencer* s, QWidget * parent=0);
     /** Destruction */
     ~ProgressBar ();
 
@@ -158,10 +158,11 @@ public:
     */
     int minimumDuration() const;
 
-private Q_SLOTS:
-    void resetEx();
-    void setRangeEx(int minimum, int maximum);
-    void setValueEx(int value);
+    void reset();
+    void setRange(int minimum, int maximum);
+    void setMinimum(int minimum);
+    void setMaximum(int maximum);
+    void setValue(int value);
 
 
 public Q_SLOTS:
@@ -188,22 +189,22 @@ private:
     //@{
     void resetObserveEventFilter();
     /** Gets the events under control */
-    void enterControlEvents(bool);
+    void enterControlEvents();
     /** Loses the control over incoming events*/
-    void leaveControlEvents(bool);
+    void leaveControlEvents();
 
 
     //@}
     ProgressBarPrivate* d;
-    SequencerBar* sequencer;
-
+    Sequencer* sequencer;
+    
 #ifdef QT_WINEXTRAS_LIB
     /* Set up the taskbar progress in windows */
     void setupTaskBarProgress(void);
     QWinTaskbarProgress* m_taskbarProgress;
     QWinTaskbarButton* m_taskbarButton;
 #endif
-    friend class SequencerBar;
+    friend class Sequencer;
 };
 
 } // namespace Gui

@@ -33,9 +33,9 @@
 #include <App/Application.h>
 #include <App/AutoTransaction.h>
 #include <App/Document.h>
-#include <Gui/CommandT.h>
+#include <Gui/Command.h>
 #include <Gui/MainWindow.h>
-#include <boost_bind_bind.hpp>
+#include <boost/bind.hpp>
 #include "../App/Utils.h"
 #include "../App/Cell.h"
 #include <App/Range.h>
@@ -46,7 +46,6 @@
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;
 using namespace App;
-namespace bp = boost::placeholders;
 
 void SheetViewHeader::mouseReleaseEvent(QMouseEvent *event)
 {
@@ -138,8 +137,8 @@ std::vector<Range> SheetTableView::selectedRanges() const
         std::pair<int, int> ul = (*i).first;
         std::pair<int, int> size = (*i).second;
 
-        result.emplace_back(ul.first, ul.second,
-                                                   ul.first + size.first - 1, ul.second + size.second - 1);
+        result.push_back(Range(ul.first, ul.second,
+                                                   ul.first + size.first - 1, ul.second + size.second - 1));
     }
 
     return result;
@@ -158,7 +157,7 @@ void SheetTableView::insertRows()
     std::sort(sortedRows.begin(), sortedRows.end());
 
     /* Insert rows */
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert rows"));
+    Gui::Command::openCommand("Insert rows");
     std::vector<int>::const_reverse_iterator it = sortedRows.rbegin();
     while (it != sortedRows.rend()) {
         int prev = *it;
@@ -176,7 +175,8 @@ void SheetTableView::insertRows()
                 break;
         }
 
-        Gui::cmdAppObjectArgs(sheet, "insertRows('%s', %d)", rowName(prev).c_str(), count);
+        FCMD_OBJ_CMD2("insertRows('%s', %d)", sheet,
+                                rowName(prev).c_str(), count);
     }
     Gui::Command::commitCommand();
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
@@ -195,9 +195,10 @@ void SheetTableView::removeRows()
     std::sort(sortedRows.begin(), sortedRows.end(), std::greater<int>());
 
     /* Remove rows */
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Remove rows"));
+    Gui::Command::openCommand("Remove rows");
     for (std::vector<int>::const_iterator it = sortedRows.begin(); it != sortedRows.end(); ++it) {
-        Gui::cmdAppObjectArgs(sheet, "removeRows('%s', %d)", rowName(*it).c_str(), 1);
+        FCMD_OBJ_CMD2("removeRows('%s', %d)", sheet,
+                                rowName(*it).c_str(), 1);
     }
     Gui::Command::commitCommand();
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
@@ -216,7 +217,7 @@ void SheetTableView::insertColumns()
     std::sort(sortedColumns.begin(), sortedColumns.end());
 
     /* Insert columns */
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert columns"));
+    Gui::Command::openCommand("Insert columns");
     std::vector<int>::const_reverse_iterator it = sortedColumns.rbegin();
     while (it != sortedColumns.rend()) {
         int prev = *it;
@@ -234,8 +235,8 @@ void SheetTableView::insertColumns()
                 break;
         }
 
-        Gui::cmdAppObjectArgs(sheet, "insertColumns('%s', %d)",
-                                     columnName(prev).c_str(), count);
+        FCMD_OBJ_CMD2("insertColumns('%s', %d)", sheet,
+                                columnName(prev).c_str(), count);
     }
     Gui::Command::commitCommand();
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
@@ -254,10 +255,10 @@ void SheetTableView::removeColumns()
     std::sort(sortedColumns.begin(), sortedColumns.end(), std::greater<int>());
 
     /* Remove columns */
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Remove rows"));
+    Gui::Command::openCommand("Remove rows");
     for (std::vector<int>::const_iterator it = sortedColumns.begin(); it != sortedColumns.end(); ++it)
-        Gui::cmdAppObjectArgs(sheet, "removeColumns('%s', %d)",
-                                     columnName(*it).c_str(), 1);
+        FCMD_OBJ_CMD2("removeColumns('%s', %d)", sheet,
+                                columnName(*it).c_str(), 1);
     Gui::Command::commitCommand();
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
 }
@@ -280,7 +281,7 @@ void SheetTableView::updateCellSpan(CellAddress address)
 void SheetTableView::setSheet(Sheet * _sheet)
 {
     sheet = _sheet;
-    cellSpanChangedConnection = sheet->cellSpanChanged.connect(bind(&SheetTableView::updateCellSpan, this, bp::_1));
+    cellSpanChangedConnection = sheet->cellSpanChanged.connect(bind(&SheetTableView::updateCellSpan, this, _1));
 
     // Update row and column spans
     std::vector<std::string> usedCells = sheet->getUsedCells();
@@ -419,7 +420,7 @@ void SheetTableView::deleteSelection()
     QModelIndexList selection = selectionModel()->selectedIndexes();
 
     if (selection.size() > 0) {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Clear cell(s)"));
+        Gui::Command::openCommand("Clear cell(s)");
         std::vector<Range> ranges = selectedRanges();
         std::vector<Range>::const_iterator i = ranges.begin();
 

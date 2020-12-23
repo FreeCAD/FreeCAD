@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jan Rheinländer                                    *
- *                                   <jrheinlaender@users.sourceforge.net> *
+ *   Copyright (c) 2013 Jan Rheinlaender <jrheinlaender@users.sourceforge.net>*
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -31,6 +30,7 @@
 # include <QMessageBox>
 # include <Precision.hxx>
 # include <Standard_Failure.hxx>
+# include <boost/bind.hpp>
 #endif
 
 #include <Base/Console.h>
@@ -137,7 +137,7 @@ bool TaskDlgDatumParameters::accept() {
     //the user has to decide which option we should take if external references are used
     bool extReference = false;
     for (App::DocumentObject* obj : pcDatum->Support.getValues()) {
-        if (pcActiveBody && !pcActiveBody->hasObject(obj) && !pcActiveBody->getOrigin()->hasObject(obj))
+        if (!pcActiveBody->hasObject(obj) && !pcActiveBody->getOrigin()->hasObject(obj))
             extReference = true;
     }
 
@@ -156,7 +156,7 @@ bool TaskDlgDatumParameters::accept() {
             std::vector<std::string> subs = pcDatum->Support.getSubValues();
             int index = 0;
             for (App::DocumentObject* obj : pcDatum->Support.getValues()) {
-                if (pcActiveBody && !pcActiveBody->hasObject(obj) && !pcActiveBody->getOrigin()->hasObject(obj)) {
+                if (!pcActiveBody->hasObject(obj) && !pcActiveBody->getOrigin()->hasObject(obj)) {
                     auto* copy = PartDesignGui::TaskFeaturePick::makeCopy(obj, subs[index], dlg.radioIndependent->isChecked());
                     if (copy) {
                         copyObjects.push_back(copy);

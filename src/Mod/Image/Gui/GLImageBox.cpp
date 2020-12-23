@@ -246,10 +246,8 @@ void GLImageBox::getDisplayedImageAreaSize(int &dx, int &dy)
             dx = 0;
             dy = 0;
         }
-        else {
-            dx = ibrx - itlx + 1;
-            dy = ibry - itly + 1;
-        }
+        dx = ibrx - itlx + 1;
+        dy = ibry - itly + 1;
     }
 }
 

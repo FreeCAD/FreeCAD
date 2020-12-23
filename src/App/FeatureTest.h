@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2006 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2006     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -66,7 +66,7 @@ public:
   App::PropertyEnumeration       Enum;
   App::PropertyIntegerConstraint ConstraintInt;
   App::PropertyFloatConstraint   ConstraintFloat;
-
+ 
   // Standard Properties (PrppertyStandard.h)
   App::PropertyIntegerList IntegerList;
   App::PropertyFloatList   FloatList;
@@ -90,7 +90,7 @@ public:
   App::PropertyString   ExecResult;
   App::PropertyInteger  ExceptionType;
   App::PropertyInteger  ExecCount;
-
+  
   App::PropertyInteger   TypeHidden;
   App::PropertyInteger   TypeReadOnly;
   App::PropertyInteger   TypeOutput;

@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <algorithm>
+# include <boost/bind.hpp>
 #endif
 
 #include "ui_TaskSelectLinkProperty.h"

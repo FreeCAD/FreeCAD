@@ -6,7 +6,7 @@
 # runs when the gui is up
 
 #***************************************************************************
-#*   Copyright (c) 2004 Werner Mayer <werner.wm.mayer@gmx.de>              *
+#*   (c) Werner Mayer <werner.wm.mayer@gmx.de> 2004                        *
 #*                                                                         *
 #*   This file is part of the FreeCAD CAx development system.              *
 #*                                                                         *
@@ -26,6 +26,7 @@
 #*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 #*   USA                                                                   *
 #*                                                                         *
+#*   Werner Mayer 2004                                                     *
 #***************************************************************************/
 
 class MeshWorkbench (Workbench):

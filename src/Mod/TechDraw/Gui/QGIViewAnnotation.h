@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
- *   Copyright (c) 2014 WandererFan <wandererfan@gmail.com>                *
+ *                 2014 wandererfan <WandererFan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *

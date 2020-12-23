@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2019 Wanderer Fan <wandererfan@gmail.com>               *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -49,12 +49,13 @@ DrawRichAnno::DrawRichAnno(void)
 
     ADD_PROPERTY_TYPE(AnnoParent,(0),group,(App::PropertyType)(App::Prop_None),
                       "Object to which this annontation is attached");
-    ADD_PROPERTY_TYPE(AnnoText, (""), group, App::Prop_None, "Annotation text");
+    ADD_PROPERTY_TYPE(AnnoText, (""), group, App::Prop_None, "Anno text");
     ADD_PROPERTY_TYPE(ShowFrame, (true), group, App::Prop_None, "Outline rectangle on/off");
     ADD_PROPERTY_TYPE(MaxWidth, (-1.0), group, App::Prop_None, "Width limit before auto wrap");
     Caption.setStatus(App::Property::Hidden,true);
     Scale.setStatus(App::Property::Hidden,true);
     ScaleType.setStatus(App::Property::Hidden,true);
+
 
 }
 
@@ -65,11 +66,7 @@ DrawRichAnno::~DrawRichAnno()
 void DrawRichAnno::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {
-        if ((prop == &AnnoText) ||
-            (prop == &ShowFrame) ||
-            (prop == &MaxWidth) ) {
-            requestPaint();
-        }
+        //nothing in particular
     }
     DrawView::onChanged(prop);
 
@@ -90,7 +87,7 @@ short DrawRichAnno::mustExecute() const
 
 App::DocumentObjectExecReturn *DrawRichAnno::execute(void)
 { 
-//    Base::Console().Message("DRA::execute() - @ (%.3f, %.3f)\n", X.getValue(), Y.getValue());
+//    Base::Console().Message("DRA::execute()\n");
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }

@@ -24,19 +24,18 @@
 #ifndef GUI_DIALOG_DLGSETTINGSMACROIMP_H
 #define GUI_DIALOG_DLGSETTINGSMACROIMP_H
 
+#include "ui_DlgSettingsMacro.h"
 #include "PropertyPage.h"
-#include <memory>
 
 namespace Gui {
 namespace Dialog {
-class Ui_DlgSettingsMacro;
 
 /**
  * The DlgSettingsMacroImp class implements a preference page to change settings
  * for macro stuff.
  * \author Jürgen Riegel
  */
-class DlgSettingsMacroImp : public PreferencePage
+class DlgSettingsMacroImp : public PreferencePage, public Ui_DlgSettingsMacro
 {
     Q_OBJECT
 
@@ -49,10 +48,6 @@ public:
 
 protected:
     void changeEvent(QEvent *e);
-
-private:
-    std::unique_ptr<Ui_DlgSettingsMacro> ui;
-    void setRecentMacroSize();
 };
 
 } // namespace Dialog

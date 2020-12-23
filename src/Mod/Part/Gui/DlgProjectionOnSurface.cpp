@@ -45,7 +45,6 @@
 # include <BRepPrimAPI_MakePrism.hxx>
 # include <gp_Ax1.hxx>
 # include <BRepBuilderAPI_Transform.hxx>
-#include <BRepExtrema_DistShapeShape.hxx>
 #endif
 
 #include "DlgProjectionOnSurface.h"
@@ -367,7 +366,7 @@ void PartGui::DlgProjectionOnSurface::store_current_selected_parts(std::vector<S
             std::string parentName = aPart->getNameInDocument();
             auto currentShape =  aPart->Shape.getShape().getSubShape(itName->c_str());
 
-            transform_shape_to_global_position(currentShape, aPart);
+            transform_shape_to_global_postion(currentShape, aPart);
 
             currentShapeStore.inputShape = currentShape;
             currentShapeStore.partName = *itName;
@@ -378,7 +377,7 @@ void PartGui::DlgProjectionOnSurface::store_current_selected_parts(std::vector<S
         }
         else
         {
-          transform_shape_to_global_position(currentShapeStore.inputShape,currentShapeStore.partFeature);
+          transform_shape_to_global_postion(currentShapeStore.inputShape,currentShapeStore.partFeature);
           auto store = store_part_in_vector(currentShapeStore, iStoreVec);
           higlight_object(aPart, aPart->Shape.getName(), store, iColor);
         }
@@ -453,38 +452,16 @@ void PartGui::DlgProjectionOnSurface::create_projection_wire(std::vector<SShapeS
         for (auto itWire : itCurrentShape.aWireVec)
         {
           BRepProj_Projection aProjection(itWire, itCurrentShape.surfaceToProject, itCurrentShape.aProjectionDir);
-          double minDistance = std::numeric_limits<double>::max();
-          TopoDS_Wire wireToTake;
-          for ( ; aProjection.More(); aProjection.Next() )
-          {
-            auto it = aProjection.Current();
-            BRepExtrema_DistShapeShape distanceMeasure(it, itCurrentShape.aFace);
-            distanceMeasure.Perform();
-            auto currentDistance = distanceMeasure.Value();
-            if ( currentDistance > minDistance ) continue;
-            wireToTake = it;
-            minDistance = currentDistance;
-          }
-          auto aWire = sort_and_heal_wire(wireToTake, itCurrentShape.surfaceToProject);
+          auto currentProjection = aProjection.Shape();
+          auto aWire = sort_and_heal_wire(currentProjection, itCurrentShape.surfaceToProject);
           itCurrentShape.aProjectedWireVec.push_back(aWire);
         }
       }
       else if (!itCurrentShape.aEdge.IsNull())
       {
         BRepProj_Projection aProjection(itCurrentShape.aEdge, itCurrentShape.surfaceToProject, itCurrentShape.aProjectionDir);
-        double minDistance = std::numeric_limits<double>::max();
-        TopoDS_Wire wireToTake;
-        for (; aProjection.More(); aProjection.Next())
-        {
-          auto it = aProjection.Current();
-          BRepExtrema_DistShapeShape distanceMeasure(it, itCurrentShape.aEdge);
-          distanceMeasure.Perform();
-          auto currentDistance = distanceMeasure.Value();
-          if (currentDistance > minDistance) continue;
-          wireToTake = it;
-          minDistance = currentDistance;
-        }
-        for (TopExp_Explorer aExplorer(wireToTake, TopAbs_EDGE); aExplorer.More(); aExplorer.Next())
+        auto currentProjection = aProjection.Shape();
+        for (TopExp_Explorer aExplorer(currentProjection, TopAbs_EDGE); aExplorer.More(); aExplorer.Next())
         {
           itCurrentShape.aProjectedEdgeVec.push_back(TopoDS::Edge(aExplorer.Current()));
         }
@@ -565,7 +542,7 @@ TopoDS_Shape PartGui::DlgProjectionOnSurface::create_compound(const std::vector<
       }
     }
   }
-  return TopoDS_Shape(std::move(aCompound));
+  return std::move(aCompound);
 }
 
 void PartGui::DlgProjectionOnSurface::show_projected_shapes(const std::vector<SShapeStore>& iShapeStoreVec)
@@ -616,7 +593,7 @@ void PartGui::DlgProjectionOnSurface::higlight_object(Part::Feature* iCurrentObj
 {
   if (!iCurrentObject) return;
   auto partenShape = iCurrentObject->Shape.getShape().getShape();
-  auto subShape = iCurrentObject->Shape.getShape().getSubShape(iShapeName.c_str(), true);
+  auto subShape = iCurrentObject->Shape.getShape().getSubShape(iShapeName.c_str());
 
   TopoDS_Shape currentShape = subShape;
   if (subShape.IsNull()) currentShape = partenShape;
@@ -807,8 +784,8 @@ TopoDS_Wire PartGui::DlgProjectionOnSurface::sort_and_heal_wire(const std::vecto
   {
     auto aShape = TopoDS::Wire(aWireWireHandle->Value(it));
     ShapeFix_Wire aWireRepair(aShape, iFaceToProject, 0.0001);
-    aWireRepair.FixAddCurve3dMode() = 1;
-    aWireRepair.FixAddPCurveMode() = 1;
+    aWireRepair.FixAddCurve3dMode();
+    aWireRepair.FixAddPCurveMode();
     aWireRepair.Perform();
     //return aWireRepair.Wire();
     ShapeFix_Wireframe aWireFramFix(aWireRepair.Wire());
@@ -918,12 +895,12 @@ void PartGui::DlgProjectionOnSurface::set_xyz_dir_spinbox(QDoubleSpinBox* icurre
   icurrentSpinBox->setValue(newVal);
 }
 
-void PartGui::DlgProjectionOnSurface::transform_shape_to_global_position(TopoDS_Shape& ioShape, Part::Feature* iPart)
+void PartGui::DlgProjectionOnSurface::transform_shape_to_global_postion(TopoDS_Shape& ioShape, Part::Feature* iPart)
 {
   auto currentPos = iPart->Placement.getValue().getPosition();
   auto currentRotation = iPart->Placement.getValue().getRotation();
   auto globalPlacement = iPart->globalPlacement();
-  auto globalPosition = globalPlacement.getPosition();
+  auto globalPostion = globalPlacement.getPosition();
   auto globalRotation = globalPlacement.getRotation();
 
   if (currentRotation != globalRotation)
@@ -939,10 +916,10 @@ void PartGui::DlgProjectionOnSurface::transform_shape_to_global_position(TopoDS_
     ioShape = BRepBuilderAPI_Transform(ioShape, aAngleTransform, true).Shape();
   }
 
-  if (currentPos != globalPosition)
+  if (currentPos != globalPostion)
   {
     gp_Trsf aPosTransform;
-    aPosTransform.SetTranslation(gp_Pnt(currentPos.x, currentPos.y, currentPos.z), gp_Pnt(globalPosition.x, globalPosition.y, globalPosition.z));
+    aPosTransform.SetTranslation(gp_Pnt(currentPos.x, currentPos.y, currentPos.z), gp_Pnt(globalPostion.x, globalPostion.y, globalPostion.z));
     ioShape = BRepBuilderAPI_Transform(ioShape, aPosTransform, true).Shape();
   }
 }

@@ -15,11 +15,11 @@
    id="svg9484"
    sodipodi:version="0.32"
    inkscape:version="0.48.5 r10040"
-   sodipodi:docname="Mesh_Boundary.svg"
+   sodipodi:docname="mesh_boundary.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.1">
   <title
-     id="title3749">Mesh_Boundary</title>
+     id="title3749">mesh_boundary</title>
   <defs
      id="defs9486">
     <linearGradient
@@ -108,7 +108,7 @@
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
         <cc:license
            rdf:resource="https://www.gnu.org/copyleft/lesser.html" />
-        <dc:title>Mesh_Boundary</dc:title>
+        <dc:title>mesh_boundary</dc:title>
         <dc:description>A single triangular mesh face with a hole in it</dc:description>
         <dc:contributor>
           <cc:Agent>
@@ -124,7 +124,7 @@
           </rdf:Bag>
         </dc:subject>
         <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
-        <dc:identifier>FreeCAD/src/Mod/Mesh/Gui/Resources/icons/Mesh_Boundary.svg</dc:identifier>
+        <dc:identifier>FreeCAD/src/Mod/Mesh/Gui/Resources/icons/mesh_boundary.svg</dc:identifier>
         <dc:publisher>
           <cc:Agent>
             <dc:title>FreeCAD</dc:title>

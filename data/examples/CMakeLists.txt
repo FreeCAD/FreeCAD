@@ -1,7 +1,7 @@
 
 SET(Examples_Files 
     Schenkel.stp
-    draft_test_objects.FCStd
+    DrawingExample.FCStd
     EngineBlock.FCStd
     PartDesignExample.FCStd
     RobotExample.FCStd

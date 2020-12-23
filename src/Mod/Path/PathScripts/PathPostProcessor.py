@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+
 # ***************************************************************************
+# *                                                                         *
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -36,7 +38,7 @@ class PostProcessor:
     def load(cls, processor):
         PathLog.track(processor)
         syspath = sys.path
-        paths = PathPreferences.searchPathsPost()
+        paths = PathPreferences.searchPaths()
         paths.extend(sys.path)
         sys.path = paths
 

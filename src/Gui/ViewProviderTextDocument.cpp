@@ -26,7 +26,7 @@
 #ifndef _PreComp_
 # include <QMenu>
 # include <QPlainTextEdit>
-# include <boost_bind_bind.hpp>
+# include <boost/bind.hpp>
 #endif
 
 #include <Base/Type.h>
@@ -35,7 +35,6 @@
 #include <Gui/MainWindow.h>
 #include <Gui/Document.h>
 #include <Gui/ActionFunction.h>
-#include <Gui/PythonEditor.h>
 
 #include "ViewProviderTextDocument.h"
 
@@ -43,32 +42,10 @@
 using namespace Gui;
 
 PROPERTY_SOURCE(Gui::ViewProviderTextDocument, Gui::ViewProviderDocumentObject)
-const char* ViewProviderTextDocument::SyntaxEnums[]= {"None","Python",nullptr};
 
 ViewProviderTextDocument::ViewProviderTextDocument()
 {
     sPixmap = "TextDocument";
-
-    ADD_PROPERTY_TYPE(
-            ReadOnly, (false), "Editor", App::Prop_None,
-            "Defines whether the content can be edited.");
-
-    QFont font;
-    font.setFamily(QString::fromLatin1(App::GetApplication().GetUserParameter().
-        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Editor")->GetASCII("Font", font.family().toLatin1()).c_str()));
-    font.setPointSize(App::GetApplication().GetUserParameter().
-        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Editor")->GetInt("FontSize", font.pointSize()));
-
-    ADD_PROPERTY_TYPE(FontSize,(font.pointSize()), "Editor", App::Prop_None, "Font size");
-    ADD_PROPERTY_TYPE(FontName,((const char*)font.family().toLatin1()), "Editor", App::Prop_None, "Font name");
-
-    ADD_PROPERTY_TYPE(SyntaxHighlighter,(static_cast<long>(0)), "Editor", App::Prop_None, "Syntax highlighting");
-    SyntaxHighlighter.setEnums(SyntaxEnums);
-
-    DisplayMode.setStatus(App::Property::Hidden, true);
-    OnTopWhenSelected.setStatus(App::Property::Hidden, true);
-    SelectionStyle.setStatus(App::Property::Hidden, true);
-    Visibility.setStatus(App::Property::Hidden, true);
 }
 
 void ViewProviderTextDocument::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
@@ -83,56 +60,13 @@ void ViewProviderTextDocument::setupContextMenu(QMenu* menu, QObject* receiver, 
 bool ViewProviderTextDocument::doubleClicked()
 {
     if (!activateView()) {
-        editorWidget = new QPlainTextEdit {};
-        editorWidget->setReadOnly(ReadOnly.getValue());
-        FontName.touch();
-        SyntaxHighlighter.touch();
-
+        auto* editorWidget = new QPlainTextEdit {};
         getMainWindow()->addWindow(
             new TextDocumentEditorView {
                 static_cast<App::TextDocument*>(getObject()),
                 editorWidget, getMainWindow()});
     }
     return true;
-}
-
-void ViewProviderTextDocument::onChanged(const App::Property* prop)
-{
-    if (editorWidget) {
-        if (prop == &ReadOnly) {
-            editorWidget->setReadOnly(ReadOnly.getValue());
-        }
-        else if (prop == &FontSize || prop == &FontName) {
-            QFont font(QString::fromLatin1(this->FontName.getValue()), (int)this->FontSize.getValue());
-            editorWidget->setFont(font);
-        }
-        else if (prop == &SyntaxHighlighter) {
-            long value = SyntaxHighlighter.getValue();
-            if (value == 1) {
-                PythonSyntaxHighlighter* pythonSyntax = new PythonSyntaxHighlighter(editorWidget);
-                pythonSyntax->setDocument(editorWidget->document());
-            }
-            else {
-                QSyntaxHighlighter* shl = editorWidget->findChild<QSyntaxHighlighter*>();
-                if (shl)
-                    shl->deleteLater();
-            }
-        }
-    }
-    ViewProviderDocumentObject::onChanged(prop);
-}
-
-MDIView* ViewProviderTextDocument::getMDIView() const
-{
-    auto views = getDocument()->getMDIViewsOfType(
-            TextDocumentEditorView::getClassTypeId());
-    for (auto v : views) {
-        auto textView = static_cast<TextDocumentEditorView *>(v);
-        if (textView->getTextObject() == getObject()) {
-            return textView;
-        }
-    }
-    return nullptr;
 }
 
 bool ViewProviderTextDocument::activateView() const

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
+ *   Copyright (c) Yorik van Havre (yorik@uncreated.net) 2014              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -27,13 +27,10 @@
 # include <boost/regex.hpp>
 #endif
 
-#include <App/Application.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
+#include <Base/Writer.h>
 #include <Base/Reader.h>
 #include <Base/Stream.h>
-#include <Base/Writer.h>
+#include <Base/Exception.h>
 
 // KDL stuff - at the moment, not used
 //#include "Mod/Robot/App/kdl_cp/path_line.hpp"
@@ -132,7 +129,7 @@ double Toolpath::getLength()
     Vector3d next;
     for(std::vector<Command*>::const_iterator it = vpcCommands.begin();it!=vpcCommands.end();++it) {
         std::string name = (*it)->Name;
-        next = (*it)->getPlacement(last).getPosition();
+        next = (*it)->getPlacement().getPosition();
         if ( (name == "G0") || (name == "G00") || (name == "G1") || (name == "G01") ) {
             // straight line
             l += (next - last).Length();
@@ -147,71 +144,6 @@ double Toolpath::getLength()
         }
     }
     return l;
-}
-
-double Toolpath::getCycleTime(double hFeed, double vFeed, double hRapid, double vRapid)
-{
-    // check the feedrates are set
-    if ((hFeed == 0) || (vFeed == 0)) {
-        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Path");
-        if (!hGrp->GetBool("WarningsSuppressAllSpeeds", true)) {
-            Base::Console().Warning("Feed Rate Error: Check Tool Controllers have Feed Rates");
-        }
-        return 0;
-    }
-
-    if (hRapid == 0) {
-        hRapid = hFeed;
-    }
-
-    if (vRapid == 0) {
-        vRapid = vFeed;
-    }
-
-    if (vpcCommands.size() == 0) {
-        return 0;
-    }
-    double l = 0;
-    double time = 0;
-    bool verticalMove = false;
-    Vector3d last(0,0,0);
-    Vector3d next;
-    for (std::vector<Command*>::const_iterator it = vpcCommands.begin();it!=vpcCommands.end();++it) {
-        std::string name = (*it)->Name;
-        float feedrate = (*it)->getParam("F");
-
-        l = 0;
-        verticalMove = false;
-        feedrate = hFeed;
-        next = (*it)->getPlacement(last).getPosition();
-
-        if (last.z != next.z){
-            verticalMove = true;
-            feedrate = vFeed;
-        }
-
-        if ((name == "G0") || (name == "G00")){
-            // Rapid Move
-            l += (next - last).Length();
-            feedrate = hRapid;
-            if(verticalMove){
-                feedrate = vRapid;
-            }
-        }else if ((name == "G1") || (name == "G01")) {
-            // Feed Move
-            l += (next - last).Length();
-        }else if ((name == "G2") || (name == "G02") || (name == "G3") || (name == "G03") ) {
-            // Arc Move
-            Vector3d center = (*it)->getCenter();
-            double radius = (last - center).Length();
-            double angle = (next - center).GetAngle(last - center);
-            l += angle * radius;
-        }
-
-        time += l / feedrate;
-        last = next;
-    }
-    return time;
 }
 
 class BoundBoxSegmentVisitor : public PathSegmentVisitor
@@ -329,7 +261,7 @@ void Toolpath::setFromGCode(const std::string instr)
             }
             mode = "comment";
             last = found;
-            found = str.find_first_of(')', found+1);
+            found = str.find_first_of(")", found+1);
         } else if (str[found] == ')') {
             // end of comment
             std::string gcodestr = str.substr(last, found-last+1);

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) WandererFan            (wandererfan@gmail.com) 2016     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -115,8 +115,7 @@ std::vector<TopoDS_Edge> DrawProjectSplit::getEdgesForWalker(TopoDS_Shape shape,
     TopoDS_Shape scaledShape;
     scaledShape = TechDraw::scaleShape(copyShape,
                                                scale);
-//    gp_Ax2 viewAxis = TechDraw::getViewAxis(Base::Vector3d(0.0,0.0,0.0),direction);
-    gp_Ax2 viewAxis = TechDraw::legacyViewAxis1(Base::Vector3d(0.0,0.0,0.0),direction);
+    gp_Ax2 viewAxis = TechDraw::getViewAxis(Base::Vector3d(0.0,0.0,0.0),direction);
     TechDraw::GeometryObject* go = buildGeometryObject(scaledShape,viewAxis);
     result = getEdges(go);
 

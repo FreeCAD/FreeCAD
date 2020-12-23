@@ -24,7 +24,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <boost_bind_bind.hpp>
 #endif
 
 #include "DocumentObjectGroup.h"
@@ -37,16 +36,8 @@
 #include <Base/Tools.h>
 
 using namespace App;
-namespace bp = boost::placeholders;
 
 EXTENSION_PROPERTY_SOURCE(App::GroupExtension, App::DocumentObjectExtension)
-
-namespace App {
-EXTENSION_PROPERTY_SOURCE_TEMPLATE(App::GroupExtensionPython, App::GroupExtension)
-
-// explicit template instantiation
-template class AppExport ExtensionPythonT<GroupExtensionPythonT<GroupExtension>>;
-}
 
 GroupExtension::GroupExtension()
 {
@@ -300,13 +291,11 @@ int GroupExtension::countObjectsOfType(const Base::Type& typeId) const
 
 DocumentObject* GroupExtension::getGroupOfObject(const DocumentObject* obj)
 {
-    //note that we return here only Groups, but nothing derived from it, e.g. no GeoFeatureGroups.
+    //note that we return here only Groups, but nothing derived from it, e.g. no GeoFeatureGroups. 
     //That is important as there are clear differences between groups/geofeature groups (e.g. an object
     //can be in only one group, and only one geofeaturegroup, however, it can be in both at the same time)
     for (auto o : obj->getInList()) {
-        if (o->hasExtension(App::GroupExtension::getExtensionClassTypeId(), false))
-            return o;
-        if (o->hasExtension(App::GroupExtensionPython::getExtensionClassTypeId(), false))
+        if(o->hasExtension(App::GroupExtension::getExtensionClassTypeId(), false))
             return o;
     }
 
@@ -363,7 +352,7 @@ void GroupExtension::extensionOnChanged(const Property* p) {
         for(auto obj : Group.getValue()) {
             if(obj && obj->getNameInDocument()) {
                 _Conns[obj] = obj->signalChanged.connect(boost::bind(
-                            &GroupExtension::slotChildChanged,this,bp::_1, bp::_2));
+                            &GroupExtension::slotChildChanged,this,_1,_2));
             }
         }
     }
@@ -438,4 +427,11 @@ void GroupExtension::getAllChildren(std::vector<App::DocumentObject*> &res,
         if(ext) 
             ext->getAllChildren(res,rset);
     }
+}
+
+namespace App {
+EXTENSION_PROPERTY_SOURCE_TEMPLATE(App::GroupExtensionPython, App::GroupExtension)
+
+// explicit template instantiation
+template class AppExport ExtensionPythonT<GroupExtensionPythonT<GroupExtension>>;
 }

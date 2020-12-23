@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2014 Nathan Miller <Nathan.A.Mill[at]gmail.com>         *
+ *   Copyright (c) YEAR YOUR NAME         <Your e-mail address>            *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -61,7 +61,6 @@
 
 //opencascade
 #include "OpenCascadeAll.h"
-#include <GeomFill_NSections.hxx>
 
 #endif //_PreComp_
 

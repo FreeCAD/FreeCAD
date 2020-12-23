@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   (c) Jürgen Riegel (juergen.riegel@web.de) 2002                        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,6 +19,7 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
  *   USA                                                                   *
  *                                                                         *
+ *   Juergen Riegel 2002                                                   *
  ***************************************************************************/
 
 
@@ -484,9 +485,9 @@ std::vector<std::pair<std::string,bool> > ParameterGrp::GetBoolMap(const char * 
         // check on filter condition
         if (sFilter == NULL || Name.find(sFilter)!= std::string::npos) {
             if (strcmp(StrX(static_cast<DOMElement*>(pcTemp)->getAttribute(XStr("Value").unicodeForm())).c_str(),"1"))
-                vrValues.emplace_back(Name, false);
+                vrValues.push_back(std::make_pair(Name, false));
             else
-                vrValues.emplace_back(Name, true);
+                vrValues.push_back(std::make_pair(Name, true));
         }
         pcTemp = FindNextElement(pcTemp,"FCBool");
     }
@@ -548,8 +549,8 @@ std::vector<std::pair<std::string,long> > ParameterGrp::GetIntMap(const char * s
         Name = StrX(static_cast<DOMElement*>(pcTemp)->getAttributes()->getNamedItem(XStr("Name").unicodeForm())->getNodeValue()).c_str();
         // check on filter condition
         if (sFilter == NULL || Name.find(sFilter)!= std::string::npos) {
-            vrValues.emplace_back(Name,
-                               ( atol (StrX(static_cast<DOMElement*>(pcTemp)->getAttribute(XStr("Value").unicodeForm())).c_str())));
+            vrValues.push_back(std::make_pair(Name,
+                               ( atol (StrX(static_cast<DOMElement*>(pcTemp)->getAttribute(XStr("Value").unicodeForm())).c_str()))));
         }
         pcTemp = FindNextElement(pcTemp,"FCInt") ;
     }
@@ -611,8 +612,8 @@ std::vector<std::pair<std::string,unsigned long> > ParameterGrp::GetUnsignedMap(
         Name = StrX(static_cast<DOMElement*>(pcTemp)->getAttributes()->getNamedItem(XStr("Name").unicodeForm())->getNodeValue()).c_str();
         // check on filter condition
         if (sFilter == NULL || Name.find(sFilter)!= std::string::npos) {
-            vrValues.emplace_back(Name,
-                               ( strtoul (StrX(static_cast<DOMElement*>(pcTemp)->getAttribute(XStr("Value").unicodeForm())).c_str(),0,10) ));
+            vrValues.push_back(std::make_pair(Name,
+                               ( strtoul (StrX(static_cast<DOMElement*>(pcTemp)->getAttribute(XStr("Value").unicodeForm())).c_str(),0,10) )));
         }
         pcTemp = FindNextElement(pcTemp,"FCUInt");
     }
@@ -674,8 +675,8 @@ std::vector<std::pair<std::string,double> > ParameterGrp::GetFloatMap(const char
         Name = StrX(static_cast<DOMElement*>(pcTemp)->getAttributes()->getNamedItem(XStr("Name").unicodeForm())->getNodeValue()).c_str();
         // check on filter condition
         if (sFilter == NULL || Name.find(sFilter)!= std::string::npos) {
-            vrValues.emplace_back(Name,
-                               ( atof (StrX(static_cast<DOMElement*>(pcTemp)->getAttribute(XStr("Value").unicodeForm())).c_str())));
+            vrValues.push_back(std::make_pair(Name,
+                               ( atof (StrX(static_cast<DOMElement*>(pcTemp)->getAttribute(XStr("Value").unicodeForm())).c_str()))));
         }
         pcTemp = FindNextElement(pcTemp,"FCFloat");
     }
@@ -753,7 +754,7 @@ std::vector<std::string> ParameterGrp::GetASCIIs(const char * sFilter) const
             // retrieve the text element
             DOMNode *pcElem2 = pcTemp->getFirstChild();
             if (pcElem2)
-                vrValues.emplace_back(StrXUTF8(pcElem2->getNodeValue()).c_str() );
+                vrValues.push_back( std::string(StrXUTF8(pcElem2->getNodeValue()).c_str()) );
         }
         pcTemp = FindNextElement(pcTemp,"FCText");
     }
@@ -775,7 +776,7 @@ std::vector<std::pair<std::string,std::string> > ParameterGrp::GetASCIIMap(const
             // retrieve the text element
             DOMNode *pcElem2 = pcTemp->getFirstChild();
             if (pcElem2)
-                vrValues.emplace_back(Name, std::string(StrXUTF8(pcElem2->getNodeValue()).c_str()));
+                vrValues.push_back(std::make_pair(Name, std::string(StrXUTF8(pcElem2->getNodeValue()).c_str())));
         }
         pcTemp = FindNextElement(pcTemp,"FCText");
     }
@@ -882,12 +883,10 @@ void ParameterGrp::RemoveGrp(const char* Name)
 
     // if this or any of its children is referenced by an observer
     // it cannot be deleted
-#if 1
     if (!it->second->ShouldRemove()) {
         it->second->Clear();
     }
     else {
-#endif
         // check if Element in group
         DOMElement *pcElem = FindElement(_pGroupNode,"FCParamGroup",Name);
         // if not return
@@ -899,34 +898,10 @@ void ParameterGrp::RemoveGrp(const char* Name)
 
         DOMNode* node = _pGroupNode->removeChild(pcElem);
         node->release();
-#if 1
     }
-#endif
 
     // trigger observer
     Notify(Name);
-}
-
-bool ParameterGrp::RenameGrp(const char* OldName, const char* NewName)
-{
-    auto it = _GroupMap.find(OldName);
-    if (it == _GroupMap.end())
-        return false;
-    auto jt = _GroupMap.find(NewName);
-    if (jt != _GroupMap.end())
-        return false;
-
-    // rename group handle
-    _GroupMap[NewName] = _GroupMap[OldName];
-    _GroupMap.erase(OldName);
-    _GroupMap[NewName]->_cName = NewName;
-
-    // check if Element in group
-    DOMElement *pcElem = FindElement(_pGroupNode, "FCParamGroup", OldName);
-    if (pcElem)
-        pcElem-> setAttribute(XStr("Name").unicodeForm(), XStr(NewName).unicodeForm());
-
-    return true;
 }
 
 void ParameterGrp::Clear(void)
@@ -1582,7 +1557,7 @@ void  ParameterManager::CheckDocument() const
         parser.parse(xmlFile);
 
         if (parser.getErrorCount() > 0) {
-            Base::Console().Error("Unexpected XML structure detected: %zu errors\n", parser.getErrorCount());
+            Base::Console().Error("Unexpected XML structure detected: %d errors\n", parser.getErrorCount());
         }
     }
     catch (XMLException& e) {

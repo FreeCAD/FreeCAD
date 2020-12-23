@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2006 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2006     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -36,9 +36,9 @@
 #include <Inventor/SbColor.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
-#include <Inventor/SoInteraction.h>
+#include <Inventor/SoInteraction.h> 
 #include <Inventor/SbLinear.h>
-#include <Inventor/SoOffscreenRenderer.h>
+#include <Inventor/SoOffscreenRenderer.h> 
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/SbTesselator.h>
@@ -49,9 +49,9 @@
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/actions/SoHandleEventAction.h>
+#include <Inventor/actions/SoHandleEventAction.h> 
 #include <Inventor/actions/SoLineHighlightRenderAction.h>
-#include <Inventor/actions/SoRayPickAction.h>
+#include <Inventor/actions/SoRayPickAction.h> 
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoToVRML2Action.h>
 #include <Inventor/actions/SoWriteAction.h>
@@ -78,11 +78,10 @@
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoTextureEnabledElement.h>
-#include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/engines/SoComposeVec3f.h>
 #include <Inventor/engines/SoComposeRotationFromTo.h>
 #include <Inventor/engines/SoComposeRotation.h>
-#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/errors/SoDebugError.h> 
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/events/SoEvent.h>
 #include <Inventor/events/SoKeyboardEvent.h>
@@ -99,7 +98,7 @@
 #include <Inventor/nodes/SoAntiSquish.h>
 #include <Inventor/nodes/SoAsciiText.h>
 #include <Inventor/nodes/SoBaseColor.h>
-#include <Inventor/nodes/SoCallback.h>
+#include <Inventor/nodes/SoCallback.h> 
 #include <Inventor/nodes/SoComplexity.h>
 #include <Inventor/nodes/SoCone.h>
 #include <Inventor/nodes/SoCoordinate3.h>
@@ -159,7 +158,6 @@
 #include <Inventor/projectors/SbSpherePlaneProjector.h>
 #include <Inventor/projectors/SbSphereSheetProjector.h>
 #include <Inventor/sensors/SoNodeSensor.h>
-#include <Inventor/sensors/SoTimerSensor.h>
 #include <Inventor/system/inttypes.h>
 #include <Inventor/VRMLnodes/SoVRMLGroup.h>
 

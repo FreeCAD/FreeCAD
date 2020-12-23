@@ -31,7 +31,7 @@
     <message>
       <location filename="../../Instance.py" line="69"/>
       <source>Ship draft [m]</source>
-      <translation>Creux du navire [m]</translation>
+      <translation>Projet de navire [m]</translation>
     </message>
     <message>
       <location filename="../../Instance.py" line="79"/>

@@ -1,5 +1,7 @@
 #***************************************************************************
-#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
+#*                                                                         *
+#*   Copyright (c) 2011                                                    *  
+#*   Yorik van Havre <yorik@uncreated.net>                                 *  
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -35,7 +37,7 @@ __url__ = "http://www.freecadweb.org"
 
 # config
 subtractiveTypes = ["IfcOpeningElement"] # elements that must be subtracted from their parents
-SCHEMA = "http://www.steptools.com/support/stdev_docs/ifcbim/ifc4.exp" # only for internal parser
+SCHEMA = "http://www.steptools.com/support/stdev_docs/ifcbim/ifc4.exp" # only for internal prser
 MAKETEMPFILES = False # if True, shapes are passed from ifcopenshell to freecad through temp files
 DEBUG = True # this is only for the python console, this value is overridden when importing through the GUI
 SKIP = ["IfcBuildingElementProxy","IfcFlowTerminal","IfcFurnishingElement"] # default. overwritten by the GUI options
@@ -971,8 +973,7 @@ def export(exportList,filename):
     txt = []
 
     # get all children and reorder list to get buildings and floors processed first
-    objectslist = Draft.get_group_contents(exportList, walls=True,
-                                           addgroups=True)
+    objectslist = Draft.getGroupContents(exportList,walls=True,addgroups=True)
     objectslist = Arch.pruneIncluded(objectslist)
 
     sites = []
@@ -1015,17 +1016,15 @@ def export(exportList,filename):
         # setting the IFC type
         if hasattr(obj,"Role"):
             ifctype = obj.Role.replace(" ","")
-        elif otype == "Foundation":
-            ifctype = "Footing"
-        elif otype == "Rebar":
-            ifctype = "ReinforcingBar"
-        elif otype == "Undefined":
-            ifctype = "BuildingElementProxy"
-        elif otype.startswith("Part::"):
-            ifctype = "BuildingElementProxy"
         else:
             ifctype = otype
-
+        if ifctype == "Foundation":
+            ifctype = "Footing"
+        elif ifctype == "Rebar":
+            ifctype = "ReinforcingBar"
+        elif ifctype in ["Part","Undefined"]:
+            ifctype = "BuildingElementProxy"
+            
         # getting the "Force BREP" flag
         brepflag = False
         if hasattr(obj,"IfcAttributes"):
@@ -1108,7 +1107,7 @@ def export(exportList,filename):
                 extra = [obj.Width.Value*scaling, obj.Height.Value*scaling]
             elif otype == "Space":
                 extra = ["ELEMENT","INTERNAL",getIfcElevation(obj)]
-            elif otype.startswith("Part::"):
+            elif otype == "Part":
                 extra = ["ELEMENT"]
             if not ifctype in supportedIfcTypes:
                 if DEBUG: print("   Type ",ifctype," is not supported yet. Exporting as IfcBuildingElementProxy instead")
@@ -1837,7 +1836,7 @@ def explorer(filename,schema="IFC2X3_TC1.exp"):
             elif e.type in ["IFCROOF"]:
                 item.setIcon(1,QtGui.QIcon(":icons/Arch_Roof_Tree.svg"))
             elif e.type in ["IFCEXTRUDEDAREASOLID","IFCCLOSEDSHELL"]:
-                item.setIcon(1, QtGui.QIcon(":/icons/Part_3D_object.svg"))
+                item.setIcon(1,QtGui.QIcon(":icons/Tree_Part.svg"))
             elif e.type in ["IFCFACE"]:
                 item.setIcon(1,QtGui.QIcon(":icons/Draft_SwitchMode.svg"))
             elif e.type in ["IFCARBITRARYCLOSEDPROFILEDEF","IFCPOLYLOOP"]:

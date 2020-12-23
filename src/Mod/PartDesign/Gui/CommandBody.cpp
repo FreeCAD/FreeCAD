@@ -27,6 +27,7 @@
 # include <QMessageBox>
 # include <QInputDialog>
 # include <Inventor/C/basic.h>
+# include <Inventor/nodes/SoCamera.h>
 # include <TopExp_Explorer.hxx>
 #endif
 
@@ -39,7 +40,9 @@
 #include <Gui/Application.h>
 #include <Gui/ActiveObjectList.h>
 #include <Gui/MainWindow.h>
+#include <Gui/ViewProviderOrigin.h>
 #include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/PartDesign/App/Body.h>
@@ -91,7 +94,7 @@ CmdPartDesignBody::CmdPartDesignBody()
     sToolTipText  = QT_TR_NOOP("Create a new body and make it active");
     sWhatsThis    = "PartDesign_Body";
     sStatusTip    = sToolTipText;
-    sPixmap       = "PartDesign_Body";
+    sPixmap       = "PartDesign_Body_Create_New";
 }
 
 void CmdPartDesignBody::activated(int iMsg)
@@ -107,6 +110,7 @@ void CmdPartDesignBody::activated(int iMsg)
     std::vector<App::DocumentObject*> features =
         getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
     App::DocumentObject* baseFeature = nullptr;
+    bool viewAll = features.empty();
     bool addtogroup = false;
 
 
@@ -192,7 +196,7 @@ void CmdPartDesignBody::activated(int iMsg)
     }
 
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Add a Body"));
+    openCommand("Add a Body");
 
     std::string bodyName = getUniqueObjectName("Body");
 
@@ -293,6 +297,26 @@ void CmdPartDesignBody::activated(int iMsg)
         }
     }
 
+    // The method 'SoCamera::viewBoundingBox' is still declared as protected in Coin3d versions
+    // older than 4.0.
+#if COIN_MAJOR_VERSION >= 4
+    // if no part feature was there then auto-adjust the camera
+    if (viewAll) {
+        Gui::Document* doc = Gui::Application::Instance->getDocument(getDocument());
+        Gui::View3DInventor* view = doc ? qobject_cast<Gui::View3DInventor*>(doc->getActiveView()) : nullptr;
+        if (view) {
+            SoCamera* camera = view->getViewer()->getCamera();
+            SbViewportRegion vpregion = view->getViewer()->getViewportRegion();
+            float aspectratio = vpregion.getViewportAspectRatio();
+
+            float size = Gui::ViewProviderOrigin::defaultSize();
+            SbBox3f bbox;
+            bbox.setBounds(-size,-size,-size,size,size,size);
+            camera->viewBoundingBox(bbox, aspectratio, 1.0f);
+        }
+    }
+#endif
+
     updateActive();
 }
 
@@ -370,7 +394,7 @@ void CmdPartDesignMigrate::activated(int iMsg)
             // we are basing on some partdesign feature which supposed to belong to some body
             PartDesign::Feature *baseFeat = static_cast <PartDesign::Feature *>( base );
 
-            auto baseFeatSetIt = migrateFeatures.find(baseFeat);
+            auto baseFeatSetIt = find ( migrateFeatures.begin (), migrateFeatures.end (), baseFeat );
 
             if ( baseFeatSetIt != migrateFeatures.end() ) {
                 // base feature is pending for migration, switch to it and continue over
@@ -428,7 +452,7 @@ void CmdPartDesignMigrate::activated(int iMsg)
     }
 
     // do the actual migration
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Migrate legacy part design features to Bodies"));
+    Gui::Command::openCommand("Migrate legacy part design features to Bodies");
 
     for ( auto chainIt = featureChains.begin(); !featureChains.empty();
             featureChains.erase (chainIt), chainIt = featureChains.begin () ) {
@@ -573,7 +597,7 @@ void CmdPartDesignMoveTip::activated(int iMsg)
         return;
     }
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Move tip to selected feature"));
+    openCommand("Move tip to selected feature");
 
     if (selFeature == body) {
         FCMD_OBJ_CMD(body,"Tip = None");
@@ -618,7 +642,7 @@ void CmdPartDesignDuplicateSelection::activated(int iMsg)
 
     std::vector<App::DocumentObject*> beforeFeatures = getDocument()->getObjects();
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Duplicate a PartDesign object"));
+    openCommand("Duplicate a PartDesign object");
     doCommand(Doc,"FreeCADGui.runCommand('Std_DuplicateSelection')");
 
     if (pcActiveBody) {
@@ -638,8 +662,7 @@ void CmdPartDesignDuplicateSelection::activated(int iMsg)
         }
 
         // Adjust visibility of features
-        if (!newFeatures.empty())
-            FCMD_OBJ_SHOW(newFeatures.back());
+        FCMD_OBJ_SHOW(newFeatures.back());
     }
 
     updateActive();
@@ -729,14 +752,14 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
     QString text = QInputDialog::getItem(Gui::getMainWindow(),
         qApp->translate("PartDesign_MoveFeature", "Select body"),
         qApp->translate("PartDesign_MoveFeature", "Select a body from the list"),
-        items, 0, false, &ok, Qt::MSWindowsFixedSizeDialogHint);
+        items, 0, false, &ok);
     if (!ok) return;
     int index = items.indexOf(text);
     if (index < 0) return;
 
     PartDesign::Body* target = static_cast<PartDesign::Body*>(target_bodies[index]);
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Move an object"));
+    openCommand("Move an object");
 
     std::stringstream stream;
     stream << "features_ = [" << getObjectCmd(features.back());
@@ -842,13 +865,13 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
     bool allFeaturesFromSameBody = true;
 
     if ( body ) {
-        bodyBase = body->BaseFeature.getValue();
+        bodyBase= body->BaseFeature.getValue();
         for ( auto feat: features ) {
             if ( !body->hasObject ( feat ) ) {
                 allFeaturesFromSameBody = false;
                 break;
             }
-            if ( bodyBase == feat) {
+            if ( bodyBase== feat) {
                 QMessageBox::warning (0, QObject::tr( "Selection error" ),
                         QObject::tr( "Impossible to move the base feature of a body." ) );
                 return;
@@ -879,13 +902,13 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
     QString text = QInputDialog::getItem(Gui::getMainWindow(),
         qApp->translate("PartDesign_MoveFeatureInTree", "Select feature"),
         qApp->translate("PartDesign_MoveFeatureInTree", "Select a feature from the list"),
-        items, 0, false, &ok, Qt::MSWindowsFixedSizeDialogHint);
+        items, 0, false, &ok);
     if (!ok) return;
     int index = items.indexOf(text);
     // first object is the beginning of the body
     App::DocumentObject* target = index != 0 ? model[index-1] : nullptr;
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Move an object inside tree"));
+    openCommand("Move an object inside tree");
 
     App::DocumentObject* lastObject = nullptr;
     for ( auto feat: features ) {
@@ -943,19 +966,17 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
 
     // If the selected objects have been moved after the current tip then ask the
     // user if he wants the last object to be the new tip.
-    // Only do this for features that can hold a tip (not for e.g. datums)
-    if ( lastObject && body->Tip.getValue() == target
-        && lastObject->isDerivedFrom(PartDesign::Feature::getClassTypeId()) ) {
+    if (lastObject && body->Tip.getValue() == target) {
         QMessageBox msgBox(Gui::getMainWindow());
         msgBox.setIcon(QMessageBox::Question);
-        msgBox.setWindowTitle(qApp->translate("PartDesign_MoveFeatureInTree", "Move tip"));
-        msgBox.setText(qApp->translate("PartDesign_MoveFeatureInTree", "The moved feature appears after the currently set tip."));
-        msgBox.setInformativeText(qApp->translate("PartDesign_MoveFeatureInTree", "Do you want the last feature to be the new tip?"));
+        msgBox.setWindowTitle(qApp->translate("PartDesign_MoveFeatureInTree","Move tip"));
+        msgBox.setText(qApp->translate("PartDesign_MoveFeatureInTree","The moved feature appears after the currently set tip."));
+        msgBox.setInformativeText(qApp->translate("PartDesign_MoveFeatureInTree","Do you want the last feature to be the new tip?"));
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox.setDefaultButton(QMessageBox::No);
         int ret = msgBox.exec();
         if (ret == QMessageBox::Yes)
-            FCMD_OBJ_CMD(body, "Tip = " << getObjectCmd(lastObject));
+            FCMD_OBJ_CMD(body,"Tip = " << getObjectCmd(lastObject));
     }
 
     updateActive();

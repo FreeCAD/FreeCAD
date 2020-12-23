@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -36,9 +36,7 @@
 #endif
 
 #ifdef FC_OS_WIN32
-# ifndef NOMINMAX
 # define NOMINMAX
-# endif
 #endif
 
 // here get the warnings of too long specifiers disabled (needed for VC6)
@@ -81,9 +79,7 @@
 #include <Standard_Failure.hxx>
 #include <Standard_Version.hxx>
 
-#if OCC_VERSION_HEX < 0x070400
 #include <BRepMesh.hxx>
-#endif
 #include <BRepMesh_IncrementalMesh.hxx>
 #include <Poly_Connect.hxx>
 #include <Poly_Polygon3D.hxx>
@@ -178,7 +174,7 @@
 
 // Boost
 #include <boost/signals2.hpp>
-#include <boost/bind/bind.hpp>
+#include <boost/bind.hpp>
 
 // Qt Toolkit
 #ifndef __Qt4All__

@@ -1,5 +1,5 @@
 /******************************************************************************
- *   Copyright (c) 2012 Konstantinos Poulios <logari81@gmail.com>             *
+ *   Copyright (c)2012 Konstantinos Poulios <logari81@gmail.com>              *
  *                                                                            *
  *   This file is part of the FreeCAD CAx development system.                 *
  *                                                                            *
@@ -195,22 +195,21 @@ bool CombineSelectionFilterGates::allow(App::Document* pDoc, App::DocumentObject
 namespace PartDesignGui
 {
 
-bool getReferencedSelection(const App::DocumentObject* thisObj, const Gui::SelectionChanges& msg,
+void getReferencedSelection(const App::DocumentObject* thisObj, const Gui::SelectionChanges& msg,
                             App::DocumentObject*& selObj, std::vector<std::string>& selSub)
 {
-    selObj = nullptr;
     if (!thisObj)
-        return false;
+        return;
 
     if (strcmp(thisObj->getDocument()->getName(), msg.pDocName) != 0)
-        return false;
-
+        return;
+    
     selObj = thisObj->getDocument()->getObject(msg.pObjectName);
     if (selObj == thisObj)
-        return false;
-
+        return;
+    
     std::string subname = msg.pSubName;
-
+    
     //check if the selection is an external reference and ask the user what to do
     //of course only if thisObj is in a body, as otherwise the old workflow would not 
     //be supported
@@ -218,27 +217,33 @@ bool getReferencedSelection(const App::DocumentObject* thisObj, const Gui::Selec
     bool originfeature = selObj->isDerivedFrom(App::OriginFeature::getClassTypeId());
     if (!originfeature && body) {
         PartDesign::Body* selBody = PartDesignGui::getBodyFor(selObj, false);
-        if (!selBody || body != selBody) {
+        if(!selBody || body != selBody) {
+            
+            auto* pcActivePart = PartDesignGui::getPartFor(body, false);
+
             QDialog dia(Gui::getMainWindow());
             Ui_DlgReference dlg;
             dlg.setupUi(&dia);
             dia.setModal(true);
             int result = dia.exec();
             if (result == QDialog::DialogCode::Rejected) {
-                selObj = nullptr;
-                return false;
+                selObj = NULL;
+                return;
             }
-
-            if (!dlg.radioXRef->isChecked()) {
+            else if(!dlg.radioXRef->isChecked()) {
                 App::Document* document = thisObj->getDocument();
                 document->openTransaction("Make copy");
                 auto copy = PartDesignGui::TaskFeaturePick::makeCopy(selObj, subname, dlg.radioIndependent->isChecked());
-                body->addObject(copy);
+                if (body)
+                    body->addObject(copy);
+                else if (pcActivePart)
+                    pcActivePart->addObject(copy);
 
                 selObj = copy;
                 subname.erase(std::remove_if(subname.begin(), subname.end(), &isdigit), subname.end());
                 subname.append("1");
             }
+        
         }
     }
 
@@ -248,8 +253,6 @@ bool getReferencedSelection(const App::DocumentObject* thisObj, const Gui::Selec
     }
 
     selSub = std::vector<std::string>(1,subname);
-
-    return true;
 }
 
 QString getRefStr(const App::DocumentObject* obj, const std::vector<std::string>& sub)

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2008     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -67,9 +67,6 @@
 # include <StepBasic_ProductDefinitionFormation.hxx>
 #endif
 
-# include <StepElement_AnalysisItemWithinRepresentation.hxx>
-# include <StepVisual_AnnotationCurveOccurrence.hxx>
-
 #include <Base/Console.h>
 #include <Base/Sequencer.h>
 #include <App/Application.h>
@@ -89,11 +86,6 @@ bool ReadNames (const Handle(XSControl_WorkSession) &WS);
 
 int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
 {
-    // Use this to force to link against TKSTEPBase, TKSTEPAttr and TKStep209
-    // in order to make RUNPATH working on Linux
-    StepElement_AnalysisItemWithinRepresentation stepElement;
-    StepVisual_AnnotationCurveOccurrence stepVis;
-
     STEPControl_Reader aReader;
     TopoDS_Shape aShape;
     Base::FileInfo fi(Name);
@@ -111,12 +103,10 @@ int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
         throw Base::FileException("Cannot open STEP file");
     }
 
-#if OCC_VERSION_HEX < 0x070500
     Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
     aReader.WS()->MapReader()->SetProgress(pi);
     pi->NewScope(100, "Reading STEP file...");
     pi->Show();
-#endif
 
     // Root transfers
     Standard_Integer nbr = aReader.NbRootsForTransfer();
@@ -125,9 +115,7 @@ int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
         Base::Console().Log("STEP: Transferring Root %d\n",n);
         aReader.TransferRoot(n);
     }
-#if OCC_VERSION_HEX < 0x070500
     pi->EndScope();
-#endif
 
     // Collecting resulting entities
     Standard_Integer nbs = aReader.NbShapes();

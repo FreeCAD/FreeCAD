@@ -28,7 +28,6 @@
 #endif
 
 #include "DlgOnlineHelpImp.h"
-#include "ui_DlgOnlineHelp.h"
 #include "PrefWidgets.h"
 
 #include <Base/Parameter.h>
@@ -39,25 +38,24 @@ using namespace Gui::Dialog;
 /* TRANSLATOR Gui::Dialog::DlgOnlineHelpImp */
 
 /**
- *  Constructs a DlgOnlineHelpImp which is a child of 'parent', with the
- *  name 'name' and widget flags set to 'f'
+ *  Constructs a DlgOnlineHelpImp which is a child of 'parent', with the 
+ *  name 'name' and widget flags set to 'f' 
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
  *  true to construct a modal dialog.
  */
 DlgOnlineHelpImp::DlgOnlineHelpImp( QWidget* parent )
   : PreferencePage(parent)
-  , ui(new Ui_DlgOnlineHelp)
 {
-    ui->setupUi(this);
+    this->setupUi(this);
 
-    ui->prefStartPage->setFilter(QString::fromLatin1("%1 (*.html *.htm)").arg(tr("HTML files")));
-    if (ui->prefStartPage->fileName().isEmpty()) {
-        ui->prefStartPage->setFileName(getStartpage());
+    prefStartPage->setFilter(QString::fromLatin1("%1 (*.html *.htm)").arg(tr("HTML files")));
+    if (prefStartPage->fileName().isEmpty()) {
+        prefStartPage->setFileName(getStartpage());
     }
 }
 
-/**
+/** 
  *  Destroys the object and frees any allocated resources
  */
 DlgOnlineHelpImp::~DlgOnlineHelpImp()
@@ -78,12 +76,12 @@ QString DlgOnlineHelpImp::getStartpage()
 
 void DlgOnlineHelpImp::saveSettings()
 {
-    ui->prefStartPage->onSave();
+    prefStartPage->onSave();
 }
 
 void DlgOnlineHelpImp::loadSettings()
 {
-    ui->prefStartPage->onRestore();
+    prefStartPage->onRestore();
 }
 
 /**
@@ -92,7 +90,7 @@ void DlgOnlineHelpImp::loadSettings()
 void DlgOnlineHelpImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        ui->retranslateUi(this);
+        retranslateUi(this);
     }
     else {
         QWidget::changeEvent(e);

@@ -604,7 +604,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 	double	atn360(double dx, double dy);									// angle 0 to 2pi
 
 	// distance functions
-	//double Dist(double px, double py, double p1x, double p1y);				// distance between 2 points (2d)
+	//double Dist(double px, double py, double p1x, double p1y);				// diatance between 2 points (2d)
 	//double Dist(Point& p0, Point& p1);										// distance between 2 points (3d)
 	//double Dist(CLine& s, Point& p1);											// distance between cline & point
 
@@ -875,7 +875,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 
 
 		void	AddIndex(int vertexNumber, const SpanDataObject* data);
-		bool	Split(double MaximumRadius, double reslution);	// split arcs larger than MaximumRadius to resolution
+		bool	Split(double MaximumRadius, double reslution);	// split arcs larger than MaximumRadius to resoultion
 		int	IntExtWire( Kurve& kSec, double Ref, double Sec, double height, Kurve* kOut);	// interpolate / extrapolate a mid height kurve (wire)
 		void	SetZ(double z) { e[11] = z; if(fabs(z) > 1.0e-6) m_unit = false;}				// assigns kurve to fixed height (wire)
 

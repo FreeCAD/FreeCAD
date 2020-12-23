@@ -86,10 +86,7 @@ public:
             "projectPointsOnMesh(list of points, Mesh, Vector, [float]) -> list of points\n"
         );
         add_varargs_method("wireFromSegment",&Module::wireFromSegment,
-            "Create wire(s) from boundary of a mesh segment\n"
-        );
-        add_varargs_method("wireFromMesh",&Module::wireFromMesh,
-            "Create wire(s) from boundary of a mesh\n"
+            "Create wire(s) from boundary of segment\n"
         );
         add_keyword_method("meshFromShape",&Module::meshFromShape,
             "Create surface mesh from shape\n"
@@ -116,7 +113,7 @@ public:
             "currently):\n"
             "\n"
             "    meshFromShape(Shape, Fineness, SecondOrder=0,\n"
-            "                         Optimize=1, AllowQuad=0, MaxLength=0, MinLength=0)\n"
+            "                         Optimize=1, AllowQuad=0)\n"
             "    meshFromShape(Shape, GrowthRate=0, SegPerEdge=0,\n"
             "                  SegPerRadius=0, SecondOrder=0, Optimize=1,\n"
             "                  AllowQuad=0)\n"
@@ -133,9 +130,9 @@ public:
             "    Deflection (required, float)\n"
             "    MinLength (required, float)\n"
             "    Fineness (required, integer)\n"
-            "    SecondOrder (optional, integer boolean)\n"
-            "    Optimize (optional, integer boolean)\n"
-            "    AllowQuad (optional, integer boolean)\n"
+            "    SecondOrder (optional, integral boolean)\n"
+            "    Optimize (optional, integeral boolean)\n"
+            "    AllowQuad (optional, integeral boolean)\n"
             "    GrowthRate (optional, float)\n"
             "    SegPerEdge (optional, float)\n"
             "    SegPerRadius (optional, float)\n"
@@ -421,41 +418,13 @@ private:
         Mesh::MeshObject* mesh = static_cast<Mesh::MeshPy*>(m)->getMeshObjectPtr();
         std::vector<unsigned long> segm;
         segm.reserve(list.size());
-        for (Py_ssize_t i=0; i<list.size(); i++) {
+        for (unsigned int i=0; i<list.size(); i++) {
             segm.push_back((long)Py::Long(list[i]));
         }
 
         std::list<std::vector<Base::Vector3f> > bounds;
         MeshCore::MeshAlgorithm algo(mesh->getKernel());
         algo.GetFacetBorders(segm, bounds);
-
-        Py::List wires;
-        std::list<std::vector<Base::Vector3f> >::iterator bt;
-
-        for (bt = bounds.begin(); bt != bounds.end(); ++bt) {
-            BRepBuilderAPI_MakePolygon mkPoly;
-            for (std::vector<Base::Vector3f>::reverse_iterator it = bt->rbegin(); it != bt->rend(); ++it) {
-                mkPoly.Add(gp_Pnt(it->x,it->y,it->z));
-            }
-            if (mkPoly.IsDone()) {
-                PyObject* wire = new Part::TopoShapeWirePy(new Part::TopoShape(mkPoly.Wire()));
-                wires.append(Py::Object(wire, true));
-            }
-        }
-
-        return wires;
-    }
-    Py::Object wireFromMesh(const Py::Tuple& args)
-    {
-        PyObject *m;
-        if (!PyArg_ParseTuple(args.ptr(), "O!", &(Mesh::MeshPy::Type), &m))
-            throw Py::Exception();
-
-        Mesh::MeshObject* mesh = static_cast<Mesh::MeshPy*>(m)->getMeshObjectPtr();
-
-        std::list<std::vector<Base::Vector3f> > bounds;
-        MeshCore::MeshAlgorithm algo(mesh->getKernel());
-        algo.GetMeshBorders(bounds);
 
         Py::List wires;
         std::list<std::vector<Base::Vector3f> >::iterator bt;
@@ -576,30 +545,28 @@ private:
         }
 
 #if defined (HAVE_NETGEN)
-        static char* kwds_fineness[] = {"Shape", "Fineness", "SecondOrder", "Optimize", "AllowQuad", "MinLength", "MaxLength", NULL};
+        static char* kwds_fineness[] = {"Shape", "Fineness", "SecondOrder", "Optimize", "AllowQuad",NULL};
         PyErr_Clear();
         int fineness=0, secondOrder=0, optimize=1, allowquad=0;
-        if (PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!i|iiidd", kwds_fineness,
+        if (PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!i|iii", kwds_fineness,
                                         &(Part::TopoShapePy::Type), &shape, &fineness,
-                                        &secondOrder, &optimize, &allowquad, &minLen, &maxLen)) {
+                                        &secondOrder, &optimize, &allowquad)) {
             MeshPart::Mesher mesher(static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->getShape());
             mesher.setMethod(MeshPart::Mesher::Netgen);
             mesher.setFineness(fineness);
             mesher.setSecondOrder(secondOrder != 0);
             mesher.setOptimize(optimize != 0);
             mesher.setQuadAllowed(allowquad != 0);
-            mesher.setMinMaxLengths(minLen, maxLen);
             return Py::asObject(new Mesh::MeshPy(mesher.createMesh()));
         }
 
-        static char* kwds_user[] = {"Shape", "GrowthRate", "SegPerEdge", "SegPerRadius", "SecondOrder",
-                                    "Optimize", "AllowQuad", "MinLength", "MaxLength", NULL };
+        static char* kwds_user[] = {"Shape", "GrowthRate", "SegPerEdge", "SegPerRadius", "SecondOrder", "Optimize", "AllowQuad",NULL};
         PyErr_Clear();
         double growthRate=0, nbSegPerEdge=0, nbSegPerRadius=0;
-        if (PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!|dddiiidd", kwds_user,
+        if (PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!|dddiii", kwds_user,
                                         &(Part::TopoShapePy::Type), &shape,
                                         &growthRate, &nbSegPerEdge, &nbSegPerRadius,
-                                        &secondOrder, &optimize, &allowquad, &minLen, &maxLen)) {
+                                        &secondOrder, &optimize, &allowquad)) {
             MeshPart::Mesher mesher(static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->getShape());
             mesher.setMethod(MeshPart::Mesher::Netgen);
             mesher.setGrowthRate(growthRate);
@@ -608,7 +575,6 @@ private:
             mesher.setSecondOrder(secondOrder != 0);
             mesher.setOptimize(optimize != 0);
             mesher.setQuadAllowed(allowquad != 0);
-            mesher.setMinMaxLengths(minLen, maxLen);
             return Py::asObject(new Mesh::MeshPy(mesher.createMesh()));
         }
 #endif

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Riegel         <juergen.riegel@web.de>                  *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -101,7 +101,7 @@ std::string Persistence::encodeAttribute(const std::string& str)
 
 void Persistence::dumpToStream(std::ostream& stream, int compression)
 {
-    //we need to close the zipstream to get a good result, the only way to do this is to delete the ZipWriter.
+    //we need to close the zipstream to get a good result, the only way to do this is to delete the ZipWriter. 
     //Hence the scope...
     {
         //create the writer

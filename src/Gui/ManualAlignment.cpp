@@ -47,9 +47,9 @@
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoTranslation.h>
 # include <Inventor/sensors/SoNodeSensor.h>
-# include <boost_bind_bind.hpp>
 #endif
 
+#include <boost/bind.hpp>
 
 #include <App/Document.h>
 #include <App/GeoFeature.h>
@@ -67,11 +67,9 @@
 #include "ManualAlignment.h"
 #include "BitmapFactory.h"
 #include "SoAxisCrossKit.h"
-#include "Tools.h"
 
 
 using namespace Gui;
-namespace bp = boost::placeholders;
 
 AlignmentGroup::AlignmentGroup()
 {
@@ -246,21 +244,6 @@ int AlignmentGroup::count() const
     return this->_views.size();
 }
 
-Base::BoundBox3d AlignmentGroup::getBoundingBox() const
-{
-    Base::BoundBox3d box;
-    std::vector<Gui::ViewProviderDocumentObject*>::const_iterator it;
-    for (it = this->_views.begin(); it != this->_views.end(); ++it) {
-        if ((*it)->isDerivedFrom(Gui::ViewProviderGeometryObject::getClassTypeId())) {
-            App::GeoFeature* geo = static_cast<App::GeoFeature*>((*it)->getObject());
-            const App::PropertyComplexGeoData* prop = geo->getPropertyOfGeometry();
-            if (prop)
-                box.Add(prop->getBoundingBox());
-        }
-    }
-    return box;
-}
-
 // ------------------------------------------------------------------
 
 MovableGroup::MovableGroup()
@@ -351,16 +334,6 @@ const MovableGroup& MovableGroupModel::getGroup(int i) const
     return this->_groups[i];
 }
 
-Base::BoundBox3d MovableGroupModel::getBoundingBox() const
-{
-    Base::BoundBox3d box;
-    std::vector<MovableGroup>::const_iterator it;
-    for (it = this->_groups.begin(); it != this->_groups.end(); ++it) {
-        box.Add(it->getBoundingBox());
-    }
-    return box;
-}
-
 // ------------------------------------------------------------------
 
 namespace Gui {
@@ -369,7 +342,7 @@ class AlignmentView : public Gui::AbstractSplitView
 public:
     QLabel* myLabel;
 
-    AlignmentView(Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags=Qt::WindowFlags())
+    AlignmentView(Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags=0)
         : AbstractSplitView(pcDocument, parent, wflags)
     {
         //anti-aliasing settings
@@ -473,7 +446,7 @@ public:
         QColor front;
         front.setRgbF(0.8f, 0.8f, 0.8f);
 
-        int w = QtTools::horizontalAdvance(fm, text);
+        int w = fm.width(text);
         int h = fm.height();
 
         QImage image(w,h,QImage::Format_ARGB32_Premultiplied);
@@ -509,7 +482,7 @@ public:
     SbRotation rot_cam1, rot_cam2;
     SbVec3f pos_cam1, pos_cam2;
 
-    Private()
+    Private() 
       : sensorCam1(0), sensorCam2(0)
     {
         // left view
@@ -551,7 +524,7 @@ public:
                             SoCamera* cam2, SbRotation& rot_cam2, SbVec3f& pos_cam2)
     {
         Q_UNUSED(pos_cam2);
-
+ 
         // recompute the diff we have applied to the camera's orientation
         SbRotation rot = cam1->orientation.getValue();
         SbRotation dif = rot * rot_cam1.inverse();
@@ -670,7 +643,7 @@ ManualAlignment::ManualAlignment()
 {
     // connect with the application's signal for deletion of documents
     this->connectApplicationDeletedDocument = Gui::Application::Instance->signalDeleteDocument
-        .connect(boost::bind(&ManualAlignment::slotDeletedDocument, this, bp::_1));
+        .connect(boost::bind(&ManualAlignment::slotDeletedDocument, this, _1));
 
     // setup sensor connection
     d->sensorCam1 = new SoNodeSensor(Private::syncCameraCB, this);
@@ -713,7 +686,7 @@ void ManualAlignment::destruct()
 }
 
 /**
- * Checks whether the one instance exists.
+ * Checks whether the one instance exists. 
  */
 bool ManualAlignment::hasInstance()
 {
@@ -851,10 +824,10 @@ void ManualAlignment::startAlignment(Base::Type mousemodel)
     }
 
     myViewer->getViewer(0)->setEditing(true);
-    myViewer->getViewer(0)->addEventCallback(SoMouseButtonEvent::getClassTypeId(),
+    myViewer->getViewer(0)->addEventCallback(SoMouseButtonEvent::getClassTypeId(), 
         ManualAlignment::probePickedCallback);
     myViewer->getViewer(1)->setEditing(true);
-    myViewer->getViewer(1)->addEventCallback(SoMouseButtonEvent::getClassTypeId(),
+    myViewer->getViewer(1)->addEventCallback(SoMouseButtonEvent::getClassTypeId(), 
         ManualAlignment::probePickedCallback);
     // apply the mouse model
     myViewer->getViewer(0)->setNavigationType(mousemodel);
@@ -864,7 +837,7 @@ void ManualAlignment::startAlignment(Base::Type mousemodel)
     if (this->connectDocumentDeletedObject.connected())
         this->connectDocumentDeletedObject.disconnect();
     this->connectDocumentDeletedObject = myDocument->signalDeletedObject.connect(boost::bind
-        (&ManualAlignment::slotDeletedObject, this, bp::_1));
+        (&ManualAlignment::slotDeletedObject, this, _1));
 
     continueAlignment();
 }
@@ -966,19 +939,19 @@ void ManualAlignment::cancel()
 
 void ManualAlignment::align()
 {
-    // Now we can start the actual alignment
+    // Now we can start the actual alignment 
     if (myAlignModel.activeGroup().countPoints() < myPickPoints) {
-        QMessageBox::warning(myViewer, tr("Manual alignment"),
+        QMessageBox::warning(myViewer, tr("Manual alignment"), 
                 tr("Too few points picked in the left view."
                    " At least %1 points are needed.").arg(myPickPoints));
     }
     else if (myFixedGroup.countPoints() < myPickPoints) {
-        QMessageBox::warning(myViewer, tr("Manual alignment"),
+        QMessageBox::warning(myViewer, tr("Manual alignment"), 
                 tr("Too few points picked in the right view."
                   " At least %1 points are needed.").arg(myPickPoints));
     }
     else if (myAlignModel.activeGroup().countPoints() != myFixedGroup.countPoints()) {
-        QMessageBox::warning(myViewer, tr("Manual alignment"),
+        QMessageBox::warning(myViewer, tr("Manual alignment"), 
                 tr("Different number of points picked in left and right view.\n"
                    "On the left view %1 points are picked,\n"
                    "on the right view %2 points are picked.")
@@ -996,7 +969,7 @@ void ManualAlignment::align()
         bool ok = computeAlignment(myAlignModel.activeGroup().getPoints(), myFixedGroup.getPoints());
         if (ok && myDocument) {
             // Align views
-            myDocument->openCommand(QT_TRANSLATE_NOOP("Command", "Align"));
+            myDocument->openCommand("Align");
             for (std::vector<App::DocumentObject*>::iterator it = pViews.begin(); it != pViews.end(); ++it)
                 alignObject(*it);
             myDocument->commitCommand();
@@ -1010,7 +983,7 @@ void ManualAlignment::align()
         }
         else {
             // Inform user that alignment failed
-            int ret = QMessageBox::critical(myViewer, tr("Manual alignment"),
+            int ret = QMessageBox::critical(myViewer, tr("Manual alignment"), 
                 tr("The alignment failed.\nHow do you want to proceed?"),
                 tr("Retry"), tr("Ignore"), tr("Abort"));
             if ( ret == 1 ) {
@@ -1028,7 +1001,7 @@ void ManualAlignment::align()
 
 void ManualAlignment::showInstructions()
 {
-    // Now we can start the actual alignment
+    // Now we can start the actual alignment 
     if (myAlignModel.activeGroup().countPoints() < myPickPoints) {
         Gui::getMainWindow()->showMessage(
             tr("Too few points picked in the left view."
@@ -1224,7 +1197,7 @@ void ManualAlignment::onCancel()
 
 void ManualAlignment::probePickedCallback(void * ud, SoEventCallback * n)
 {
-    Q_UNUSED(ud);
+    Q_UNUSED(ud); 
 
     Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
     const SoEvent* ev = n->getEvent();
@@ -1237,7 +1210,7 @@ void ManualAlignment::probePickedCallback(void * ud, SoEventCallback * n)
         if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
             // if we are in 'align' mode then handle the click event
             ManualAlignment* self = ManualAlignment::instance();
-            // Get the closest point to the camera of the whole scene.
+            // Get the closest point to the camera of the whole scene. 
             // This point doesn't need to be part of this view provider.
             Gui::WaitCursor wc;
             const SoPickedPoint * point = view->getPickedPoint(n);

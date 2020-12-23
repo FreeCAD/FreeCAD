@@ -39,11 +39,6 @@
 using namespace MeshCore;
 using namespace Wm4;
 
-MeshPointArray::MeshPointArray(const MeshPointArray& ary)
-  : TMeshPointArray(ary)
-{
-}
-
 unsigned long MeshPointArray::Get (const MeshPoint &rclPoint)
 {
   iterator clIter;
@@ -101,12 +96,6 @@ void MeshPointArray::Transform(const Base::Matrix4D& mat)
   for (_TIterator pP = begin(); pP != end(); ++pP)
     mat.multVec(*pP,*pP);
 }
-
-MeshFacetArray::MeshFacetArray(const MeshFacetArray& ary)
-  : TMeshFacetArray(ary)
-{
-}
-
 
 void MeshFacetArray::Erase (_TIterator pIter)
 {

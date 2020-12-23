@@ -92,7 +92,7 @@ ProfileBased::ProfileBased()
     ADD_PROPERTY_TYPE(Midplane,(0),"SketchBased", App::Prop_None, "Extrude symmetric to sketch face");
     ADD_PROPERTY_TYPE(Reversed, (0),"SketchBased", App::Prop_None, "Reverse extrusion direction");
     ADD_PROPERTY_TYPE(UpToFace,(0),"SketchBased",(App::PropertyType)(App::Prop_None),"Face where feature will end");
-    ADD_PROPERTY_TYPE(AllowMultiFace,(false),"SketchBased", App::Prop_None, "Allow multiple faces in profile");
+
 }
 
 short ProfileBased::mustExecute() const
@@ -103,11 +103,6 @@ short ProfileBased::mustExecute() const
         UpToFace.isTouched())
         return 1;
     return PartDesign::FeatureAddSub::mustExecute();
-}
-
-void ProfileBased::setupObject()
-{
-    AllowMultiFace.setValue(true);
 }
 
 void ProfileBased::positionByPrevious(void)
@@ -178,51 +173,13 @@ Part::Feature* ProfileBased::getVerifiedObject(bool silent) const {
     return static_cast<Part::Feature*>(result);
 }
 
-Part::TopoShape ProfileBased::getProfileShape() const
-{
-    auto shape = getTopoShape(Profile.getValue());
-    if(!shape.isNull() && Profile.getSubValues().size()) {
-        std::vector<Part::TopoShape> shapes;
-        for(auto &sub : Profile.getSubValues(true))
-            shapes.emplace_back(shape.getSubShape(sub.c_str()));
-        shape = Part::TopoShape().makECompound(shapes);
-    }
-    return shape;
-}
-
 TopoDS_Shape ProfileBased::getVerifiedFace(bool silent) const {
 
     App::DocumentObject* result = Profile.getValue();
     const char* err = nullptr;
-    std::string _err;
 
     if (!result) {
         err = "No profile linked";
-    } else if (AllowMultiFace.getValue()) {
-        try {
-            auto shape = getProfileShape();
-            if(shape.isNull())
-                err = "Linked shape object is empty";
-            else {
-                auto faces = shape.getSubTopoShapes(TopAbs_FACE);
-                if(faces.empty()) {
-                    if(!shape.hasSubShape(TopAbs_WIRE))
-                        shape = shape.makEWires();
-                    if(shape.hasSubShape(TopAbs_WIRE)) 
-                        shape = shape.makEFace(0,"Part::FaceMakerCheese");
-                    else
-                        err = "Cannot make face from profile";
-                } else if (faces.size() == 1)
-                    shape = faces.front();
-                else
-                    shape = TopoShape().makECompound(faces);
-            }
-            if(!err)
-                return shape.getShape();
-        }catch (Standard_Failure &e) {
-            _err = e.GetMessageString();
-            err = _err.c_str();
-        }
     } else {
         if (result->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
 
@@ -579,7 +536,7 @@ void ProfileBased::generatePrism(TopoDS_Shape& prism,
 
         // Its better not to use BRepFeat_MakePrism here even if we have a support because the
         // resulting shape creates problems with Pocket
-        BRepPrimAPI_MakePrism PrismMaker(from, Ltotal*gp_Vec(dir), 0, 1); // finite prism
+        BRepPrimAPI_MakePrism PrismMaker(from, Ltotal*gp_Vec(dir), 0,1); // finite prism
         if (!PrismMaker.IsDone())
             throw Base::RuntimeError("ProfileBased: Length: Could not extrude the sketch!");
         prism = PrismMaker.Shape();
@@ -884,7 +841,8 @@ void ProfileBased::remapSupportShape(const TopoDS_Shape& newShape)
 }
 
 namespace PartDesign {
-struct gp_Pnt_Less
+struct gp_Pnt_Less  : public std::binary_function<const gp_Pnt&,
+                                                  const gp_Pnt&, bool>
 {
     bool operator()(const gp_Pnt& p1,
                     const gp_Pnt& p2) const
@@ -953,7 +911,6 @@ bool ProfileBased::isEqualGeometry(const TopoDS_Shape& s1, const TopoDS_Shape& s
         }
     }
     else if (s1.ShapeType() == TopAbs_EDGE && s2.ShapeType() == TopAbs_EDGE) {
-        // Do nothing here
     }
     else if (s1.ShapeType() == TopAbs_VERTEX && s2.ShapeType() == TopAbs_VERTEX) {
         gp_Pnt p1 = BRep_Tool::Pnt(TopoDS::Vertex(s1));
@@ -1092,14 +1049,7 @@ void ProfileBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std
             throw Base::ValueError("No rotation axis reference specified");
         const Part::Feature* refFeature = static_cast<const Part::Feature*>(pcReferenceAxis);
         Part::TopoShape refShape = refFeature->Shape.getShape();
-        TopoDS_Shape ref;
-        try {
-            // if an exception is raised then convert it into a FreeCAD-specific exception
-            ref = refShape.getSubShape(subReferenceAxis[0].c_str());
-        }
-        catch (const Standard_Failure& e) {
-            throw Base::RuntimeError(e.GetMessageString());
-        }
+        TopoDS_Shape ref = refShape.getSubShape(subReferenceAxis[0].c_str());
 
         if (ref.ShapeType() == TopAbs_EDGE) {
             TopoDS_Edge refEdge = TopoDS::Edge(ref);

@@ -28,53 +28,16 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
 #include <App/DocumentObserver.h>
-#include <Mod/Mesh/Gui/RemeshGmsh.h>
 #include <memory>
-#include <QPointer>
 
-namespace App {
-class Document;
-class SubObjectT;
-}
+class QButtonGroup;
+
 namespace MeshPartGui {
-
-/**
- * Non-modal dialog to mesh a shape.
- * @author Werner Mayer
- */
-class Mesh2ShapeGmsh : public MeshGui::GmshWidget
-{
-    Q_OBJECT
-
-public:
-    Mesh2ShapeGmsh(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
-    ~Mesh2ShapeGmsh();
-
-    void process(App::Document* doc, const std::list<App::SubObjectT>&);
-
-Q_SIGNALS:
-    void processed();
-
-protected:
-    virtual bool writeProject(QString& inpFile, QString& outFile);
-    virtual bool loadOutput();
-
-private:
-    class Private;
-    std::unique_ptr<Private> d;
-};
 
 class Ui_Tessellation;
 class Tessellation : public QWidget
 {
     Q_OBJECT
-
-    enum {
-        Standard,
-        Mefisto,
-        Netgen,
-        Gmsh
-    };
 
 public:
     Tessellation(QWidget* parent = 0);
@@ -84,17 +47,18 @@ public:
 protected:
     void changeEvent(QEvent *e);
 
+private:
+    std::list<App::DocumentObjectT> findShapes();
+
 private Q_SLOTS:
     void meshingMethod(int id);
-    void on_estimateMaximumEdgeLength_clicked();
     void on_comboFineness_currentIndexChanged(int);
     void on_checkSecondOrder_toggled(bool);
     void on_checkQuadDominated_toggled(bool);
-    void gmshProcessed();
 
 private:
     QString document;
-    QPointer<Mesh2ShapeGmsh> gmsh;
+    QButtonGroup* buttonGroup;
     std::unique_ptr<Ui_Tessellation> ui;
 };
 

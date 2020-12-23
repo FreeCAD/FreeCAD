@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2008     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -228,9 +228,9 @@ PyObject* TopoShapePy::replaceShape(PyObject *args)
             Py::Tuple tuple(*it);
             Py::TopoShape sh1(tuple[0]);
             Py::TopoShape sh2(tuple[1]);
-            shapes.emplace_back(
+            shapes.push_back(std::make_pair(
                 sh1.extensionObject()->getTopoShapePtr()->getShape(),
-                sh2.extensionObject()->getTopoShapePtr()->getShape()
+                sh2.extensionObject()->getTopoShapePtr()->getShape())
             );
         }
         PyTypeObject* type = this->GetType();
@@ -580,7 +580,7 @@ PyObject*  TopoShapePy::__setstate__(PyObject *args) {
 
 PyObject*  TopoShapePy::exportStl(PyObject *args)
 {
-    double deflection = 0.01;
+    double deflection = 0;
     char* Name;
     if (!PyArg_ParseTuple(args, "et|d","utf-8",&Name,&deflection))
         return NULL;
@@ -1492,7 +1492,7 @@ PyObject*  TopoShapePy::scale(PyObject *args)
     double factor;
     PyObject* p=0;
     if (!PyArg_ParseTuple(args, "d|O!", &factor, &(Base::VectorPy::Type), &p))
-        return nullptr;
+        return NULL;
 
     gp_Pnt pos(0,0,0);
     if (p) {
@@ -1502,20 +1502,17 @@ PyObject*  TopoShapePy::scale(PyObject *args)
         pos.SetZ(pnt.z);
     }
     if (fabs(factor) < Precision::Confusion()) {
-        PyErr_SetString(PyExc_ValueError, "scale factor too small");
-        return nullptr;
+        PyErr_SetString(PartExceptionOCCError, "scale factor too small");
+        return NULL;
     }
 
     PY_TRY {
-        const TopoDS_Shape& shape = getTopoShapePtr()->getShape();
-        if (!shape.IsNull()) {
-            gp_Trsf scl;
-            scl.SetScale(pos, factor);
-            BRepBuilderAPI_Transform BRepScale(scl);
-            bool bCopy = true;
-            BRepScale.Perform(shape, bCopy);
-            getTopoShapePtr()->setShape(BRepScale.Shape());
-        }
+        gp_Trsf scl;
+        scl.SetScale(pos, factor);
+        BRepBuilderAPI_Transform BRepScale(scl);
+        bool bCopy = true;
+        BRepScale.Perform(getTopoShapePtr()->getShape(),bCopy);
+        getTopoShapePtr()->setShape(BRepScale.Shape());
         return IncRef();
     } PY_CATCH_OCC
 }
@@ -1772,31 +1769,6 @@ PyObject*  TopoShapePy::reverse(PyObject *args)
     Py_Return;
 }
 
-PyObject*  TopoShapePy::reversed(PyObject *args)
-{
-    if (!PyArg_ParseTuple(args, ""))
-        return NULL;
-
-    TopoDS_Shape shape = getTopoShapePtr()->getShape();
-    shape = shape.Reversed();
-
-    PyTypeObject* type = this->GetType();
-    PyObject* cpy = nullptr;
-
-    // let the type object decide
-    if (type->tp_new)
-        cpy = type->tp_new(type, this, 0);
-    if (!cpy) {
-        PyErr_SetString(PyExc_TypeError, "failed to create copy of shape");
-        return nullptr;
-    }
-
-    if (!shape.IsNull()) {
-        static_cast<TopoShapePy*>(cpy)->getTopoShapePtr()->setShape(shape);
-    }
-    return cpy;
-}
-
 PyObject*  TopoShapePy::complement(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
@@ -1894,17 +1866,6 @@ PyObject*  TopoShapePy::isCoplanar(PyObject *args)
         return Py::new_reference_to(Py::Boolean(getTopoShapePtr()->isCoplanar(
                     *static_cast<TopoShapePy*>(pyObj)->getTopoShapePtr(),tol)));
     }PY_CATCH_OCC
-}
-
-PyObject*  TopoShapePy::isInfinite(PyObject *args)
-{
-    if (!PyArg_ParseTuple(args, ""))
-        return nullptr;
-
-    PY_TRY {
-        return Py::new_reference_to(Py::Boolean(getTopoShapePtr()->isInfinite()));
-    }
-    PY_CATCH_OCC
 }
 
 PyObject*  TopoShapePy::findPlane(PyObject *args)
@@ -2504,7 +2465,7 @@ PyObject* TopoShapePy::limitTolerance(PyObject *args)
     }
 }
 
-PyObject* _getSupportIndex(const char* suppStr, TopoShape* ts, TopoDS_Shape suppShape) {
+PyObject* _getSupportIndex(char* suppStr, TopoShape* ts, TopoDS_Shape suppShape) {
     std::stringstream ss;
     TopoDS_Shape subShape;
 
@@ -2535,16 +2496,16 @@ PyObject* TopoShapePy::proximity(PyObject *args)
     PyObject* ps2;
     Standard_Real tol = Precision::Confusion();
     if (!PyArg_ParseTuple(args, "O!|d",&(TopoShapePy::Type), &ps2, &tol))
-        return nullptr;
+        return 0;
     const TopoDS_Shape& s1 = getTopoShapePtr()->getShape();
     const TopoDS_Shape& s2 = static_cast<Part::TopoShapePy*>(ps2)->getTopoShapePtr()->getShape();
     if (s1.IsNull()) {
         PyErr_SetString(PyExc_ValueError, "proximity: Shape object is invalid");
-        return nullptr;
+        return 0;
     }
     if (s2.IsNull()) {
         PyErr_SetString(PyExc_ValueError, "proximity: Shape parameter is invalid");
-        return nullptr;
+        return 0;
     }
 
     BRepExtrema_ShapeProximity proximity;
@@ -2562,7 +2523,7 @@ PyObject* TopoShapePy::proximity(PyObject *args)
               BRep_Tool::Triangulation(TopoDS::Face(xp.Current()), aLoc);
             if (aTriangulation.IsNull()) {
                 PyErr_SetString(PartExceptionOCCError, "BRepExtrema_ShapeProximity not done, call 'tessellate' beforehand");
-                return nullptr;
+                return 0;
             }
         }
 
@@ -2572,7 +2533,7 @@ PyObject* TopoShapePy::proximity(PyObject *args)
               BRep_Tool::Triangulation(TopoDS::Face(xp.Current()), aLoc);
             if (aTriangulation.IsNull()) {
                 PyErr_SetString(PartExceptionOCCError, "BRepExtrema_ShapeProximity not done, call 'tessellate' beforehand");
-                return nullptr;
+                return 0;
             }
         }
 
@@ -2583,7 +2544,7 @@ PyObject* TopoShapePy::proximity(PyObject *args)
               BRep_Tool::Polygon3D(TopoDS::Edge(xp.Current()), aLoc);
             if (aPoly3D.IsNull()) {
                 PyErr_SetString(PartExceptionOCCError, "BRepExtrema_ShapeProximity not done, call 'tessellate' beforehand");
-                return nullptr;
+                return 0;
             }
         }
 
@@ -2593,29 +2554,37 @@ PyObject* TopoShapePy::proximity(PyObject *args)
               BRep_Tool::Polygon3D(TopoDS::Edge(xp.Current()), aLoc);
             if (aPoly3D.IsNull()) {
                 PyErr_SetString(PartExceptionOCCError, "BRepExtrema_ShapeProximity not done, call 'tessellate' beforehand");
-                return nullptr;
+                return 0;
             }
         }
 
         // another problem must have occurred
         PyErr_SetString(PartExceptionOCCError, "BRepExtrema_ShapeProximity not done");
-        return nullptr;
+        return 0;
     }
-
-    Py::List overlappssindex1;
-    Py::List overlappssindex2;
+    //PyObject* overlappss1 = PyList_New(0);
+    //PyObject* overlappss2 = PyList_New(0);
+    PyObject* overlappssindex1 = PyList_New(0);
+    PyObject* overlappssindex2 = PyList_New(0);
 
     for (BRepExtrema_OverlappedSubShapes::Iterator anIt1 (proximity.OverlapSubShapes1()); anIt1.More(); anIt1.Next()) {
-        overlappssindex1.append(Py::Long(anIt1.Key() + 1));
+        //PyList_Append(overlappss1, new TopoShapeFacePy(new TopoShape(proximity.GetSubShape1 (anIt1.Key()))));
+#if PY_MAJOR_VERSION >= 3
+        PyList_Append(overlappssindex1,PyLong_FromLong(anIt1.Key()+1));
+#else
+        PyList_Append(overlappssindex1,PyInt_FromLong(anIt1.Key()+1));
+#endif
     }
     for (BRepExtrema_OverlappedSubShapes::Iterator anIt2 (proximity.OverlapSubShapes2()); anIt2.More(); anIt2.Next()) {
-        overlappssindex2.append(Py::Long(anIt2.Key() + 1));
+        //PyList_Append(overlappss2, new TopoShapeFacePy(new TopoShape(proximity.GetSubShape2 (anIt2.Key()))));
+#if PY_MAJOR_VERSION >= 3
+        PyList_Append(overlappssindex2,PyLong_FromLong(anIt2.Key()+1));
+#else
+        PyList_Append(overlappssindex2,PyInt_FromLong(anIt2.Key()+1));
+#endif
     }
-
-    Py::Tuple tuple(2);
-    tuple.setItem(0, overlappssindex1);
-    tuple.setItem(1, overlappssindex2);
-    return Py::new_reference_to(tuple); //face indexes
+    //return Py_BuildValue("OO", overlappss1, overlappss2); //subshapes
+    return Py_BuildValue("OO", overlappssindex1, overlappssindex2); //face indexes
 #else
     (void)args;
     PyErr_SetString(PyExc_NotImplementedError, "proximity requires OCCT >= 6.8.1");
@@ -2626,6 +2595,8 @@ PyObject* TopoShapePy::proximity(PyObject *args)
 PyObject* TopoShapePy::distToShape(PyObject *args)
 {
     PyObject* ps2;
+    PyObject *pts,*geom,*pPt1,*pPt2,*pSuppType1,*pSuppType2,
+             *pSupportIndex1, *pSupportIndex2, *pParm1, *pParm2;
     gp_Pnt P1,P2;
     BRepExtrema_SupportType supportType1,supportType2;
     TopoDS_Shape suppS1,suppS2;
@@ -2657,110 +2628,131 @@ PyObject* TopoShapePy::distToShape(PyObject *args)
         PyErr_SetString(PyExc_RuntimeError, "BRepExtrema_DistShapeShape failed");
         return 0;
     }
-    Py::List solnPts;
-    Py::List solnGeom;
+    PyObject* solnPts = PyList_New(0);
+    PyObject* solnGeom = PyList_New(0);
     int count = extss.NbSolution();
     if (count != 0) {
         minDist = extss.Value();
         //extss.Dump(std::cout);
         for (int i=1; i<= count; i++) {
-            Py::Object pt1, pt2;
-            Py::String suppType1, suppType2;
-            Py::Long suppIndex1, suppIndex2;
-            Py::Object param1, param2;
-
             P1 = extss.PointOnShape1(i);
-            pt1 = Py::asObject( new Base::VectorPy(new Base::Vector3d(P1.X(),P1.Y(),P1.Z())));
+            pPt1 = new Base::VectorPy(new Base::Vector3d(P1.X(),P1.Y(),P1.Z()));
             supportType1 = extss.SupportTypeShape1(i);
             suppS1 = extss.SupportOnShape1(i);
             switch (supportType1) {
                 case BRepExtrema_IsVertex:
-                    suppType1 = Py::String("Vertex");
-                    suppIndex1 = Py::asObject(_getSupportIndex("Vertex",ts1,suppS1));
-                    param1 = Py::None();
+#if PY_MAJOR_VERSION >= 3
+                    pSuppType1 = PyBytes_FromString("Vertex");
+#else
+                    pSuppType1 = PyString_FromString("Vertex");
+#endif
+                    pSupportIndex1 = _getSupportIndex("Vertex",ts1,suppS1);
+                    pParm1 = Py_None;
+                    pParm2 = Py_None;
                     break;
                 case BRepExtrema_IsOnEdge:
-                    suppType1 = Py::String("Edge");
-                    suppIndex1 = Py::asObject(_getSupportIndex("Edge",ts1,suppS1));
+#if PY_MAJOR_VERSION >= 3
+                    pSuppType1 = PyBytes_FromString("Edge");
+#else
+                    pSuppType1 = PyString_FromString("Edge");
+#endif
+                    pSupportIndex1 = _getSupportIndex("Edge",ts1,suppS1);
                     extss.ParOnEdgeS1(i,t1);
-                    param1 = Py::Float(t1);
+                    pParm1 = PyFloat_FromDouble(t1);
+                    pParm2 = Py_None;
                     break;
                 case BRepExtrema_IsInFace:
-                    suppType1 = Py::String("Face");
-                    suppIndex1 = Py::asObject(_getSupportIndex("Face",ts1,suppS1));
+#if PY_MAJOR_VERSION >= 3
+                    pSuppType1 = PyBytes_FromString("Face");
+#else
+                    pSuppType1 = PyString_FromString("Face");
+#endif
+                    pSupportIndex1 = _getSupportIndex("Face",ts1,suppS1);
                     extss.ParOnFaceS1(i,u1,v1);
-                    {
-                        Py::Tuple tup(2);
-                        tup[0] = Py::Float(u1);
-                        tup[1] = Py::Float(v1);
-                        param1 = tup;
-                    }
+                    pParm1 = PyTuple_New(2);
+                    pParm2 = Py_None;
+                    PyTuple_SetItem(pParm1,0,PyFloat_FromDouble(u1));
+                    PyTuple_SetItem(pParm1,1,PyFloat_FromDouble(v1));
                     break;
                 default:
                     Base::Console().Message("distToShape: supportType1 is unknown: %d \n",supportType1);
-                    suppType1 = Py::String("Unknown");
-                    suppIndex1 = -1;
-                    param1 = Py::None();
+#if PY_MAJOR_VERSION >= 3
+                    pSuppType1 = PyBytes_FromString("Unknown");
+                    pSupportIndex1 = PyLong_FromLong(-1);
+#else
+                    pSuppType1 = PyString_FromString("Unknown");
+                    pSupportIndex1 = PyInt_FromLong(-1);
+#endif
+                    pParm1 = Py_None;
+                    pParm2 = Py_None;
             }
 
             P2 = extss.PointOnShape2(i);
-            pt2 = Py::asObject(new Base::VectorPy(new Base::Vector3d(P2.X(),P2.Y(),P2.Z())));
+            pPt2 = new Base::VectorPy(new Base::Vector3d(P2.X(),P2.Y(),P2.Z()));
             supportType2 = extss.SupportTypeShape2(i);
             suppS2 = extss.SupportOnShape2(i);
             switch (supportType2) {
                 case BRepExtrema_IsVertex:
-                    suppType2 = Py::String("Vertex");
-                    suppIndex2 = Py::asObject(_getSupportIndex("Vertex",ts2,suppS2));
-                    param2 = Py::None();
+#if PY_MAJOR_VERSION >= 3
+                    pSuppType2 = PyBytes_FromString("Vertex");
+#else
+                    pSuppType2 = PyString_FromString("Vertex");
+#endif
+                    pSupportIndex2 = _getSupportIndex("Vertex",ts2,suppS2);
+                    pParm2 = Py_None;
                     break;
                 case BRepExtrema_IsOnEdge:
-                    suppType2 = Py::String("Edge");
-                    suppIndex2 = Py::asObject(_getSupportIndex("Edge",ts2,suppS2));
+#if PY_MAJOR_VERSION >= 3
+                    pSuppType2 = PyBytes_FromString("Edge");
+#else
+                    pSuppType2 = PyString_FromString("Edge");
+#endif
+                    pSupportIndex2 = _getSupportIndex("Edge",ts2,suppS2);
                     extss.ParOnEdgeS2(i,t2);
-                    param2 = Py::Float(t2);
+                    pParm2 = PyFloat_FromDouble(t2);
                     break;
                 case BRepExtrema_IsInFace:
-                    suppType2 = Py::String("Face");
-                    suppIndex2 = Py::asObject(_getSupportIndex("Face",ts2,suppS2));
+#if PY_MAJOR_VERSION >= 3
+                    pSuppType2 = PyBytes_FromString("Face");
+#else
+                    pSuppType2 = PyString_FromString("Face");
+#endif
+                    pSupportIndex2 = _getSupportIndex("Face",ts2,suppS2);
                     extss.ParOnFaceS2(i,u2,v2);
-                    {
-                        Py::Tuple tup(2);
-                        tup[0] = Py::Float(u2);
-                        tup[1] = Py::Float(v2);
-                        param2 = tup;
-                    }
+                    pParm2 = PyTuple_New(2);
+                    PyTuple_SetItem(pParm2,0,PyFloat_FromDouble(u2));
+                    PyTuple_SetItem(pParm2,1,PyFloat_FromDouble(v2));
                     break;
                 default:
-                    Base::Console().Message("distToShape: supportType2 is unknown: %d \n",supportType2);
-                    suppType2 = Py::String("Unknown");
-                    suppIndex2 = -1;
-                    param2 = Py::None();
+                    Base::Console().Message("distToShape: supportType2 is unknown: %d \n",supportType1);
+#if PY_MAJOR_VERSION >= 3
+                    pSuppType2 = PyBytes_FromString("Unknown");
+                    pSupportIndex2 = PyLong_FromLong(-1);
+#else
+                    pSuppType2 = PyString_FromString("Unknown");
+                    pSupportIndex2 = PyInt_FromLong(-1);
+#endif
             }
-            Py::Tuple pts(2);
-            pts[0] = pt1;
-            pts[1] = pt2;
-            solnPts.append(pts);
+            pts = PyTuple_New(2);
+            PyTuple_SetItem(pts,0,pPt1);
+            PyTuple_SetItem(pts,1,pPt2);
+            PyList_Append(solnPts, pts);
 
-            Py::Tuple geom(6);
-            geom[0] = suppType1;
-            geom[1] = suppIndex1;
-            geom[2] = param1;
-            geom[3] = suppType2;
-            geom[4] = suppIndex2;
-            geom[5] = param2;
-
-            solnGeom.append(geom);
+            geom = PyTuple_New(6);
+            PyTuple_SetItem(geom,0,pSuppType1);
+            PyTuple_SetItem(geom,1,pSupportIndex1);
+            PyTuple_SetItem(geom,2,pParm1);
+            PyTuple_SetItem(geom,3,pSuppType2);
+            PyTuple_SetItem(geom,4,pSupportIndex2);
+            PyTuple_SetItem(geom,5,pParm2);
+            PyList_Append(solnGeom, geom);
         }
     }
     else {
         PyErr_SetString(PyExc_TypeError, "distToShape: No Solutions Found.");
         return 0;
     }
-    Py::Tuple ret(3);
-    ret[0] = Py::Float(minDist);
-    ret[1] = solnPts;
-    ret[2] = solnGeom;
-    return Py::new_reference_to(ret);
+    return Py_BuildValue("dOO", minDist, solnPts,solnGeom);
 }
 
 PyObject* TopoShapePy::optimalBoundingBox(PyObject *args)

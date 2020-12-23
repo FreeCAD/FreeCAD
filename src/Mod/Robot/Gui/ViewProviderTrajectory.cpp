@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -65,7 +65,7 @@ PROPERTY_SOURCE(RobotGui::ViewProviderTrajectory, Gui::ViewProviderGeometryObjec
 
 ViewProviderTrajectory::ViewProviderTrajectory()
 {
-
+    
 	pcTrajectoryRoot = new Gui::SoFCSelection();
     pcTrajectoryRoot->highlightMode = Gui::SoFCSelection::OFF;
     pcTrajectoryRoot->selectionMode = Gui::SoFCSelection::SEL_OFF;

@@ -1,5 +1,6 @@
 # ***************************************************************************
-# *   Copyright (c) 2017 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *                                                                         *
+# *   Copyright (c) 2017 - Bernd Hahnebach <bernd@bimstatik.org>            *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -19,19 +20,17 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__  = "Fem Tools for results"
+__title__ = "Fem Tools for results"
 __author__ = "Bernd Hahnebach"
-__url__    = "https://www.freecadweb.org"
+__url__ = "http://www.freecadweb.org"
 
 ## \addtogroup FEM
 #  @{
 
+import FreeCAD
+import femtools.femutils as femutils
 import numpy as np
 from math import isnan
-
-import FreeCAD
-
-from femtools.femutils import is_of_type
 
 
 def purge_results(analysis):
@@ -44,19 +43,21 @@ def purge_results(analysis):
     """
 
     for m in analysis.Group:
-        if m.isDerivedFrom("Fem::FemResultObject"):
-            if m.Mesh and is_of_type(m.Mesh, "Fem::MeshResult"):
+        if (m.isDerivedFrom("Fem::FemResultObject")):
+            if m.Mesh \
+                    and hasattr(m.Mesh, "Proxy") \
+                    and m.Mesh.Proxy.Type == "Fem::FemMeshResult":
                 analysis.Document.removeObject(m.Mesh.Name)
             analysis.Document.removeObject(m.Name)
-    analysis.Document.recompute()
+    FreeCAD.ActiveDocument.recompute()
     # if analysis typ check is used result mesh
     # without result obj is created in the analysis
     # we could run into trouble in one loop because
     # we will delete objects and try to access them later
     for m in analysis.Group:
-        if is_of_type(m, "Fem::MeshResult"):
+        if femutils.is_of_type(m, "Fem::FemMeshResult"):
             analysis.Document.removeObject(m.Name)
-    analysis.Document.recompute()
+    FreeCAD.ActiveDocument.recompute()
 
 
 def reset_mesh_deformation(resultobj):
@@ -64,7 +65,7 @@ def reset_mesh_deformation(resultobj):
 
     Parameters
     ----------
-    resultobj : Fem::ResultMechanical
+    resultobj : Fem::FemResultMechanical
         FreeCAD FEM mechanical result object
     """
 
@@ -78,7 +79,7 @@ def reset_mesh_color(resultobj):
 
     Parameters
     ----------
-    resultobj : Fem::ResultMechanical
+    resultobj : Fem::FemResultMechanical
         FreeCAD FEM mechanical result object
     """
 
@@ -106,7 +107,7 @@ def show_result(resultobj, result_type="Sabs", limit=None):
 
     Parameters
     ----------
-    resultobj : Fem::ResultMechanical
+    resultobj : Fem::FemResultMechanical
         FreeCAD FEM mechanical result object
     result_type : str, optional
         default is Sabs
@@ -124,7 +125,7 @@ def show_result(resultobj, result_type="Sabs", limit=None):
         return
     if resultobj:
         if result_type == "Sabs":
-            values = resultobj.vonMises
+            values = resultobj.StressValues
         elif result_type == "Uabs":
             values = resultobj.DisplacementLengths
         # TODO: the result object does have more result types to show, implement them
@@ -142,7 +143,7 @@ def show_color_by_scalar_with_cutoff(resultobj, values, limit=None):
 
     Parameters
     ----------
-    resultobj : Fem::ResultMechanical
+    resultobj : Fem::FemResultMechanical
         FreeCAD FEM mechanical result object
     values : list of floats
         the values to be colored and cutoff
@@ -171,21 +172,21 @@ def show_color_by_scalar_with_cutoff(resultobj, values, limit=None):
 
 
 def get_stats(res_obj, result_type):
-    """Returns minimum and maximum value for provided result type
+    """Returns minimum, average and maximum value for provided result type
 
     Parameters
     ----------
-    resultobj : Fem::ResultMechanical
+    resultobj : Fem::FemResultMechanical
         FreeCAD FEM mechanical result object
     result_type : str
         type of FEM result
         allowed are: see dict keys in def get_all_stats()
-        None - always return (0.0, 0.0)
+        None - always return (0.0, 0.0, 0.0)
 
     """
 
     match_table = get_all_stats(res_obj)
-    match_table["None"] = (0.0, 0.0)
+    match_table["None"] = (0.0, 0.0, 0.0)
     stats = ()
     if result_type in match_table:
         stats = match_table[result_type]
@@ -227,7 +228,7 @@ def get_all_stats(res_obj):
 
     Parameters
     ----------
-    resultobj : Fem::ResultMechanical
+    resultobj : Fem::FemResultMechanical
         FreeCAD FEM mechanical result object
 
 
@@ -235,19 +236,19 @@ def get_all_stats(res_obj):
 
     m = res_obj.Stats
     stats_dict = {
-        "U1": (m[0], m[1]),
-        "U2": (m[2], m[3]),
-        "U3": (m[4], m[5]),
-        "Uabs": (m[6], m[7]),
-        "Sabs": (m[8], m[9]),
-        "MaxPrin": (m[10], m[11]),
-        "MidPrin": (m[12], m[13]),
-        "MinPrin": (m[14], m[15]),
-        "MaxShear": (m[16], m[17]),
-        "Peeq": (m[18], m[19]),
-        "Temp": (m[20], m[21]),
-        "MFlow": (m[22], m[23]),
-        "NPress": (m[24], m[25])
+        "U1": (m[0], m[1], m[2]),
+        "U2": (m[3], m[4], m[5]),
+        "U3": (m[6], m[7], m[8]),
+        "Uabs": (m[9], m[10], m[11]),
+        "Sabs": (m[12], m[13], m[14]),
+        "MaxPrin": (m[15], m[16], m[17]),
+        "MidPrin": (m[18], m[19], m[20]),
+        "MinPrin": (m[21], m[22], m[23]),
+        "MaxShear": (m[24], m[25], m[26]),
+        "Peeq": (m[27], m[28], m[29]),
+        "Temp": (m[30], m[31], m[32]),
+        "MFlow": (m[33], m[34], m[35]),
+        "NPress": (m[36], m[37], m[38])
     }
     return stats_dict
 
@@ -257,69 +258,83 @@ def fill_femresult_stats(res_obj):
 
     Parameters
     ----------
-    resultobj : Fem::ResultMechanical
+    resultobj : Fem::FemResultMechanical
         FreeCAD FEM mechanical result object
     """
 
     FreeCAD.Console.PrintLog(
         "Calculate stats list for result obj: " + res_obj.Name + "\n"
     )
+    no_of_values = 1  # to avoid division by zero
     # set stats values to 0, they may not exist in res_obj
-    x_min = y_min = z_min = x_max = y_max = z_max = 0
-    a_max = a_min = s_max = s_min = 0
-    p1_min = p1_max = p2_min = p2_max = p3_min = p3_max = 0
-    ms_min = ms_max = peeq_min = peeq_max = 0
-    temp_min = temp_max = 0
-    mflow_min = mflow_max = npress_min = npress_max = 0
+    x_min = y_min = z_min = x_max = y_max = z_max = x_avg = y_avg = z_avg = 0
+    a_max = a_min = a_avg = s_max = s_min = s_avg = 0
+    p1_min = p1_avg = p1_max = p2_min = p2_avg = p2_max = p3_min = p3_avg = p3_max = 0
+    ms_min = ms_avg = ms_max = peeq_min = peeq_avg = peeq_max = 0
+    temp_min = temp_avg = temp_max = 0
+    mflow_min = mflow_avg = mflow_max = npress_min = npress_avg = npress_max = 0
 
     if res_obj.DisplacementVectors:
+        no_of_values = len(res_obj.DisplacementVectors)
         x_max, y_max, z_max = map(max, zip(*res_obj.DisplacementVectors))
         x_min, y_min, z_min = map(min, zip(*res_obj.DisplacementVectors))
-    if res_obj.DisplacementLengths:
+        sum_list = map(sum, zip(*res_obj.DisplacementVectors))
+        x_avg, y_avg, z_avg = [i / no_of_values for i in sum_list]
         a_min = min(res_obj.DisplacementLengths)
+        a_avg = sum(res_obj.DisplacementLengths) / no_of_values
         a_max = max(res_obj.DisplacementLengths)
-    if res_obj.vonMises:
-        s_min = min(res_obj.vonMises)
-        s_max = max(res_obj.vonMises)
+    if res_obj.StressValues:
+        s_min = min(res_obj.StressValues)
+        s_avg = sum(res_obj.StressValues) / no_of_values
+        s_max = max(res_obj.StressValues)
     if res_obj.PrincipalMax:
         p1_min = min(res_obj.PrincipalMax)
+        p1_avg = sum(res_obj.PrincipalMax) / no_of_values
         p1_max = max(res_obj.PrincipalMax)
     if res_obj.PrincipalMed:
         p2_min = min(res_obj.PrincipalMed)
+        p2_avg = sum(res_obj.PrincipalMed) / no_of_values
         p2_max = max(res_obj.PrincipalMed)
     if res_obj.PrincipalMin:
         p3_min = min(res_obj.PrincipalMin)
+        p3_avg = sum(res_obj.PrincipalMin) / no_of_values
         p3_max = max(res_obj.PrincipalMin)
     if res_obj.MaxShear:
         ms_min = min(res_obj.MaxShear)
+        ms_avg = sum(res_obj.MaxShear) / no_of_values
         ms_max = max(res_obj.MaxShear)
     if res_obj.Peeq:
         peeq_min = min(res_obj.Peeq)
+        peeq_avg = sum(res_obj.Peeq) / no_of_values
         peeq_max = max(res_obj.Peeq)
     if res_obj.Temperature:
         temp_min = min(res_obj.Temperature)
+        temp_avg = sum(res_obj.Temperature) / no_of_values
         temp_max = max(res_obj.Temperature)
     if res_obj.MassFlowRate:
         # DisplacementVectors is empty, no_of_values needs to be set
+        no_of_values = len(res_obj.MassFlowRate)
         mflow_min = min(res_obj.MassFlowRate)
+        mflow_avg = sum(res_obj.MassFlowRate) / no_of_values
         mflow_max = max(res_obj.MassFlowRate)
     if res_obj.NetworkPressure:
         npress_min = min(res_obj.NetworkPressure)
+        npress_avg = sum(res_obj.NetworkPressure) / no_of_values
         npress_max = max(res_obj.NetworkPressure)
 
-    res_obj.Stats = [x_min, x_max,
-                     y_min, y_max,
-                     z_min, z_max,
-                     a_min, a_max,
-                     s_min, s_max,
-                     p1_min, p1_max,
-                     p2_min, p2_max,
-                     p3_min, p3_max,
-                     ms_min, ms_max,
-                     peeq_min, peeq_max,
-                     temp_min, temp_max,
-                     mflow_min, mflow_max,
-                     npress_min, npress_max]
+    res_obj.Stats = [x_min, x_avg, x_max,
+                     y_min, y_avg, y_max,
+                     z_min, z_avg, z_max,
+                     a_min, a_avg, a_max,
+                     s_min, s_avg, s_max,
+                     p1_min, p1_avg, p1_max,
+                     p2_min, p2_avg, p2_max,
+                     p3_min, p3_avg, p3_max,
+                     ms_min, ms_avg, ms_max,
+                     peeq_min, peeq_avg, peeq_max,
+                     temp_min, temp_avg, temp_max,
+                     mflow_min, mflow_avg, mflow_max,
+                     npress_min, npress_avg, npress_max]
     """
     stat_types = [
         "U1",
@@ -368,16 +383,12 @@ def add_von_mises(res_obj):
     )
     for Sxx, Syy, Szz, Sxy, Sxz, Syz in iterator:
         mstress.append(calculate_von_mises((Sxx, Syy, Szz, Sxy, Sxz, Syz)))
-    res_obj.vonMises = mstress
-    FreeCAD.Console.PrintLog("Added von Mises stress.\n")
+    res_obj.StressValues = mstress
+    FreeCAD.Console.PrintLog("Added StressValues (von Mises).\n")
     return res_obj
 
 
 def add_principal_stress_std(res_obj):
-    # saved into PrincipalMax, PrincipalMed, PrincipalMin
-    # TODO may be use only one container for principal stresses in result object
-    # https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&p=416006#p416006
-    # but which one is better
     prinstress1 = []
     prinstress2 = []
     prinstress3 = []
@@ -400,7 +411,7 @@ def add_principal_stress_std(res_obj):
     res_obj.PrincipalMed = prinstress2
     res_obj.PrincipalMin = prinstress3
     res_obj.MaxShear = shearstress
-    FreeCAD.Console.PrintLog("Added standard principal stresses and max shear values.\n")
+    FreeCAD.Console.PrintLog("Added principal stress and max shear values.\n")
     return res_obj
 
 
@@ -423,7 +434,7 @@ def get_concrete_nodes(res_obj):
 
     for obj in res_obj.getParentGroup().Group:
         if obj.isDerivedFrom("App::MaterialObjectPython") \
-                and is_of_type(obj, "Fem::MaterialReinforced"):
+                and femutils.is_of_type(obj, "Fem::MaterialReinforced"):
             FreeCAD.Console.PrintMessage("ReinforcedMaterial\n")
             if obj.References == []:
                 for iic in range(nsr):
@@ -435,7 +446,7 @@ def get_concrete_nodes(res_obj):
                     for cn in concrete_nodes:
                         ic[cn - 1] = 1
         elif obj.isDerivedFrom("App::MaterialObjectPython") \
-                and is_of_type(obj, "Fem::MaterialCommon"):
+                and femutils.is_of_type(obj, "Fem::Material"):
             FreeCAD.Console.PrintMessage("No ReinforcedMaterial\n")
             if obj.References == []:
                 for iic in range(nsr):
@@ -459,10 +470,6 @@ def add_principal_stress_reinforced(res_obj):
     #
     # calculate principal and max Shear and fill them in res_obj
     #
-    # saved into PS1Vector, PS2Vector, PS3Vector
-    # TODO may be use only one container for principal stresses in result object
-    # https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&p=416006#p416006
-    # but which one is better
     prinstress1 = []
     prinstress2 = []
     prinstress3 = []
@@ -481,7 +488,7 @@ def add_principal_stress_reinforced(res_obj):
 
     # material parameter
     for obj in res_obj.getParentGroup().Group:
-        if is_of_type(obj, "Fem::MaterialReinforced"):
+        if femutils.is_of_type(obj, "Fem::MaterialReinforced"):
             matrix_af = float(
                 FreeCAD.Units.Quantity(obj.Material["AngleOfFriction"]).getValueAs("rad")
             )
@@ -560,9 +567,9 @@ def add_principal_stress_reinforced(res_obj):
     res_obj.PS2Vector = ps2v
     res_obj.PS3Vector = ps3v
 
-    FreeCAD.Console.PrintLog(
-        "Added reinforcement principal stresses and max shear values as well as "
-        "reinforcment ratios, Mohr Coloumb values.\n"
+    FreeCAD.Console.PrintMessage(
+        "Added principal stress and max shear values as well as"
+        "reinforcment rations, Mohr Coloumb values.\n"
     )
     return res_obj
 
@@ -574,8 +581,8 @@ def compact_result(res_obj):
     # as workaround for https://www.freecadweb.org/tracker/view.php?id=2873
 
     # get compact mesh data
-    from femmesh.meshtools import compact_mesh
-    compact_femmesh_data = compact_mesh(res_obj.Mesh.FemMesh)
+    from femmesh.meshtools import compact_mesh as cm
+    compact_femmesh_data = cm(res_obj.Mesh.FemMesh)
     compact_femmesh = compact_femmesh_data[0]
     node_map = compact_femmesh_data[1]
     # FreeCAD result obj does not support elem results ATM

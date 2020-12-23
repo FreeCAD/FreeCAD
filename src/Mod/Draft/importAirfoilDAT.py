@@ -15,6 +15,7 @@ Note (2019): this module has been unmaintained for a long time.
 # flake8 --ignore=E226,E266,E401,W503
 
 # ***************************************************************************
+# *                                                                         *
 # *   Copyright (c) 2010 Heiko Jakob <heiko.jakob@gediegos.de>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -37,7 +38,6 @@ Note (2019): this module has been unmaintained for a long time.
 
 __title__ = "FreeCAD Draft Workbench - Airfoil data importer"
 __author__ = "Heiko Jakob <heiko.jakob@gediegos.de>"
-__url__ = "https://www.freecadweb.org"
 
 import re, FreeCAD, Draft, Part, os
 from FreeCAD import Vector
@@ -157,9 +157,9 @@ def process(doc, filename):
         with the parsed information.
     """
     # Regex to identify data rows and throw away unused metadata
-    xval = r'(?P<xval>(\-|\d*)\.*\d*([Ee]\-?\d+)?)'
-    yval = r'(?P<yval>\-?\s*\d*\.*\d*([Ee]\-?\d+)?)'
-    _regex = r'^\s*' + xval + r'\,?\s*' + yval + r'\s*$'
+    xval = '(?P<xval>(\-|\d*)\.\d+(E\-?\d+)?)'
+    yval = '(?P<yval>\-?\s*\d*\.\d+(E\-?\d+)?)'
+    _regex = '^\s*' + xval + '\,?\s*' + yval + '\s*$'
 
     regex = re.compile(_regex)
     afile = pythonopen(filename, 'r')

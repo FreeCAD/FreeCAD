@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2015 Balázs Bámer                                       *
- *   Copyright (c) 2015 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *                      Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -98,7 +98,7 @@ void ViewProviderGeomFillSurface::unsetEdit(int ModNum)
 
 QIcon ViewProviderGeomFillSurface::getIcon(void) const
 {
-    return Gui::BitmapFactory().pixmap("Surface_BSplineSurface");
+    return Gui::BitmapFactory().pixmap("BSplineSurf");
 }
 
 void ViewProviderGeomFillSurface::highlightReferences(bool on)
@@ -585,7 +585,7 @@ TaskGeomFillSurface::TaskGeomFillSurface(ViewProviderGeomFillSurface* vp, Surfac
     widget = new GeomFillSurface(vp, obj);
     widget->setWindowTitle(QObject::tr("Surface"));
     taskbox = new Gui::TaskView::TaskBox(
-        Gui::BitmapFactory().pixmap("Surface_BSplineSurface"),
+        Gui::BitmapFactory().pixmap("BezSurf"),
         widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);

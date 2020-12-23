@@ -31,7 +31,7 @@
     <message>
       <location filename="../../Instance.py" line="69"/>
       <source>Ship draft [m]</source>
-      <translation>Projekt statku [m]</translation>
+      <translation>Szkic statku [m]</translation>
     </message>
     <message>
       <location filename="../../Instance.py" line="79"/>
@@ -129,7 +129,7 @@
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="319"/>
       <source>Displacement</source>
-      <translation>Odkształcenie</translation>
+      <translation>Wyporność</translation>
     </message>
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="344"/>
@@ -139,7 +139,7 @@
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="220"/>
       <source>Plot the transversal areas curve</source>
-      <translation>Drukuje krzywą obszaru poprzecznego</translation>
+      <translation>Drukuje krzywą poprzecznego obszaru</translation>
     </message>
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="359"/>

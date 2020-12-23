@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -33,17 +33,12 @@
 #include "SketchObject.h"
 #include "SketchGeometryExtension.h"
 #include "ExternalGeometryExtension.h"
-#include "SolverGeometryExtension.h"
-#include "GeometryFacade.h"
-#include "ExternalGeometryFacade.h"
 #include "Constraint.h"
 #include "Sketch.h"
 #include "ConstraintPy.h"
 #include "SketchPy.h"
 #include "SketchGeometryExtensionPy.h"
 #include "ExternalGeometryExtensionPy.h"
-#include "GeometryFacadePy.h"
-#include "ExternalGeometryFacadePy.h"
 #include "PropertyConstraintList.h"
 
 
@@ -70,9 +65,7 @@ PyMOD_INIT_FUNC(Sketcher)
     Base::Interpreter().addType(&Sketcher::ConstraintPy                 ::Type,sketcherModule,"Constraint");
     Base::Interpreter().addType(&Sketcher::SketchPy                     ::Type,sketcherModule,"Sketch");
     Base::Interpreter().addType(&Sketcher::ExternalGeometryExtensionPy  ::Type,sketcherModule,"ExternalGeometryExtension");
-    Base::Interpreter().addType(&Sketcher::SketchGeometryExtensionPy  	::Type,sketcherModule,"SketchGeometryExtension");
-    Base::Interpreter().addType(&Sketcher::GeometryFacadePy  	        ::Type,sketcherModule,"GeometryFacade");
-    Base::Interpreter().addType(&Sketcher::ExternalGeometryFacadePy  	::Type,sketcherModule,"ExternalGeometryFacade");
+    Base::Interpreter().addType(&Sketcher::SketchGeometryExtensionPy  ::Type,sketcherModule,"SketchGeometryExtension");
 
 
     // NOTE: To finish the initialization of our own type objects we must
@@ -81,9 +74,6 @@ PyMOD_INIT_FUNC(Sketcher)
 
     Sketcher::SketchGeometryExtension	::init();
     Sketcher::ExternalGeometryExtension	::init();
-    Sketcher::SolverGeometryExtension	::init();
-    Sketcher::GeometryFacade	        ::init();
-    Sketcher::ExternalGeometryFacade	::init();
     Sketcher::SketchObjectSF        	::init();
     Sketcher::SketchObject          	::init();
     Sketcher::SketchObjectPython    	::init();

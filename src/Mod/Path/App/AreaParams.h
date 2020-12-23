@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (c) 2017 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
+ *   Copyright (c) 2017 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -96,7 +96,7 @@
 
 /** Pocket parameters
  *
- * These parameters corresponds to CAreaPocketParams in libarea
+ * These parameters cooresponds to CAreaPocketParams in libarea
  * */
 #define AREA_PARAMS_POCKET \
     ((enum,mode,PocketMode,0,"Selects the pocket toolpath pattern",\

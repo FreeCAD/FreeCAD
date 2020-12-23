@@ -31,6 +31,7 @@ std::string ViewProviderFemMeshPy::representation(void) const
 }
 
 
+
 PyObject* ViewProviderFemMeshPy::applyDisplacement(PyObject * args)
 {
     double factor;
@@ -41,7 +42,6 @@ PyObject* ViewProviderFemMeshPy::applyDisplacement(PyObject * args)
 
     Py_Return;
 }
-
 
 App::Color calcColor(double value,double min, double max)
 {
@@ -106,15 +106,6 @@ PyObject* ViewProviderFemMeshPy::setNodeColorByScalars(PyObject *args)
 }
 
 
-PyObject* ViewProviderFemMeshPy::resetNodeColor(PyObject *args)
-{
-    if (!PyArg_ParseTuple(args, ""))
-        return 0;
-    this->getViewProviderFemMeshPtr()->resetColorByNodeId();
-    Py_Return;
-}
-
-
 PyObject* ViewProviderFemMeshPy::setNodeDisplacementByVectors(PyObject *args)
 {
     PyObject *node_ids_py;
@@ -143,22 +134,11 @@ PyObject* ViewProviderFemMeshPy::setNodeDisplacementByVectors(PyObject *args)
     Py_Return;
 }
 
-
-PyObject* ViewProviderFemMeshPy::resetNodeDisplacement(PyObject *args)
-{
-    if (!PyArg_ParseTuple(args, ""))
-        return 0;
-    this->getViewProviderFemMeshPtr()->resetDisplacementByNodeId();
-    Py_Return;
-}
-
-
 Py::Dict ViewProviderFemMeshPy::getNodeColor(void) const
 {
     //return Py::List();
     throw Py::AttributeError("Not yet implemented");
 }
-
 
 void ViewProviderFemMeshPy::setNodeColor(Py::Dict arg)
 {
@@ -193,13 +173,11 @@ void ViewProviderFemMeshPy::setNodeColor(Py::Dict arg)
     }
 }
 
-
 Py::Dict ViewProviderFemMeshPy::getElementColor(void) const
 {
     //return Py::List();
     throw Py::AttributeError("Not yet implemented");
 }
-
 
 void ViewProviderFemMeshPy::setElementColor(Py::Dict arg)
 {
@@ -217,13 +195,11 @@ void ViewProviderFemMeshPy::setElementColor(Py::Dict arg)
     }
 }
 
-
 Py::Dict ViewProviderFemMeshPy::getNodeDisplacement(void) const
 {
     //return Py::Dict();
     throw Py::AttributeError("Not yet implemented");
 }
-
 
 void  ViewProviderFemMeshPy::setNodeDisplacement(Py::Dict arg)
 {
@@ -245,7 +221,6 @@ void  ViewProviderFemMeshPy::setNodeDisplacement(Py::Dict arg)
     }
 }
 
-
 Py::List ViewProviderFemMeshPy::getHighlightedNodes(void) const
 {
     Py::List list;
@@ -256,7 +231,6 @@ Py::List ViewProviderFemMeshPy::getHighlightedNodes(void) const
     }
     return list;
 }
-
 
 void ViewProviderFemMeshPy::setHighlightedNodes(Py::List arg)
 {
@@ -274,16 +248,6 @@ void ViewProviderFemMeshPy::setHighlightedNodes(Py::List arg)
 
     this->getViewProviderFemMeshPtr()->setHighlightNodes(res);
 }
-
-
-PyObject* ViewProviderFemMeshPy::resetHighlightedNodes(PyObject *args)
-{
-    if (!PyArg_ParseTuple(args, ""))
-        return 0;
-    this->getViewProviderFemMeshPtr()->resetHighlightNodes();
-    Py_Return;
-}
-
 
 Py::List ViewProviderFemMeshPy::getVisibleElementFaces(void) const
 {
@@ -325,7 +289,6 @@ PyObject *ViewProviderFemMeshPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;
 }
-
 
 int ViewProviderFemMeshPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {

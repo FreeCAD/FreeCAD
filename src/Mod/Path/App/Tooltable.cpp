@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
+ *   Copyright (c) Yorik van Havre (yorik@uncreated.net) 2014              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -38,7 +38,6 @@ TYPESYSTEM_SOURCE(Path::Tooltable , Base::Persistence)
 
 Tooltable::Tooltable()
 {
-    Version = 0;
 }
 
 Tooltable::~Tooltable()

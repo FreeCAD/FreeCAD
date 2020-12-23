@@ -204,17 +204,6 @@ public:
     virtual ~ViewProviderRefine();
 };
 
-class ViewProviderReverse : public ViewProviderPart
-{
-    PROPERTY_HEADER(PartGui::ViewProviderReverse);
-
-public:
-    /// constructor
-    ViewProviderReverse();
-    /// destructor
-    virtual ~ViewProviderReverse();
-};
-
 } // namespace PartGui
 
 

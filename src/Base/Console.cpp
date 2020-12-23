@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   (c) Jürgen Riegel (juergen.riegel@web.de) 2002                        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,6 +19,7 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
  *   USA                                                                   *
  *                                                                         *
+ *   Juergen Riegel 2002                                                   *
  ***************************************************************************/
 
 #include "PreCompiled.h"
@@ -126,12 +127,14 @@ ConsoleSingleton::ConsoleSingleton(void)
   ,_defaultLogLevel(FC_LOGLEVEL_MSG)
 #endif
 {
+    // make sure this object is part of the main thread
+    ConsoleOutput::getInstance();
 }
 
 ConsoleSingleton::~ConsoleSingleton()
 {
     ConsoleOutput::destruct();
-    for (std::set<ILogger * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();++Iter)
+    for(std::set<ILogger * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();++Iter)
         delete (*Iter);
 }
 
@@ -231,11 +234,6 @@ bool ConsoleSingleton::IsMsgTypeEnabled(const char* sObs, FreeCAD_ConsoleMsgType
 void ConsoleSingleton::SetConnectionMode(ConnectionMode mode)
 {
     connectionMode = mode;
-
-    // make sure this method gets called from the main thread
-    if (connectionMode == Queued) {
-        ConsoleOutput::getInstance();
-    }
 }
 
 /** Prints a Message
@@ -386,32 +384,32 @@ void ConsoleSingleton::DetachObserver(ILogger *pcObserver)
 
 void ConsoleSingleton::NotifyMessage(const char *sMsg)
 {
-    for (std::set<ILogger * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();++Iter) {
-        if ((*Iter)->bMsg)
+    for(std::set<ILogger * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();++Iter) {
+        if((*Iter)->bMsg)
             (*Iter)->SendLog(sMsg, LogStyle::Message);   // send string to the listener
     }
 }
 
 void ConsoleSingleton::NotifyWarning(const char *sMsg)
 {
-    for (std::set<ILogger * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();++Iter) {
-        if ((*Iter)->bWrn)
+    for(std::set<ILogger * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();++Iter) {
+        if((*Iter)->bWrn)
             (*Iter)->SendLog(sMsg, LogStyle::Warning);   // send string to the listener
     }
 }
 
 void ConsoleSingleton::NotifyError(const char *sMsg)
 {
-    for (std::set<ILogger * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();++Iter) {
-        if ((*Iter)->bErr)
+    for(std::set<ILogger * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();++Iter) {
+        if((*Iter)->bErr)
             (*Iter)->SendLog(sMsg, LogStyle::Error);   // send string to the listener
     }
 }
 
 void ConsoleSingleton::NotifyLog(const char *sMsg)
 {
-    for (std::set<ILogger * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();++Iter) {
-        if ((*Iter)->bLog)
+    for(std::set<ILogger * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();++Iter) {
+        if((*Iter)->bLog)
             (*Iter)->SendLog(sMsg, LogStyle::Log);   // send string to the listener
     }
 }
@@ -419,26 +417,26 @@ void ConsoleSingleton::NotifyLog(const char *sMsg)
 ILogger *ConsoleSingleton::Get(const char *Name) const
 {
     const char* OName;
-    for (std::set<ILogger * >::const_iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();++Iter) {
+    for(std::set<ILogger * >::const_iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();++Iter) {
         OName = (*Iter)->Name();   // get the name
-        if (OName && strcmp(OName,Name) == 0)
+        if(OName && strcmp(OName,Name) == 0)
             return *Iter;
     }
     return 0;
 }
 
 int *ConsoleSingleton::GetLogLevel(const char *tag, bool create) {
-    if (!tag) tag = "";
-    if (_logLevels.find(tag) != _logLevels.end())
+    if(!tag) tag = "";
+    if(_logLevels.find(tag) != _logLevels.end())
         return &_logLevels[tag];
-    if (!create) return 0;
+    if(!create) return 0;
     int &ret = _logLevels[tag];
     ret = -1;
     return &ret;
 }
 
 void ConsoleSingleton::Refresh() {
-    if (_bCanRefresh)
+    if(_bCanRefresh)
         qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
 }
 
@@ -462,7 +460,7 @@ void ConsoleSingleton::Destruct(void)
 ConsoleSingleton & ConsoleSingleton::Instance(void)
 {
     // not initialized?
-    if (!_pcSingleton)
+    if(!_pcSingleton)
     {
         _pcSingleton = new ConsoleSingleton();
     }
@@ -684,19 +682,19 @@ PyObject *ConsoleSingleton::sPyGetStatus(PyObject * /*self*/, PyObject *args)
     PY_TRY{
         bool b=false;
         ILogger *pObs = Instance().Get(pstr1);
-        if (!pObs)
+        if(!pObs)
         {
             Py_INCREF(Py_None);
             return Py_None;
         }
 
-        if (strcmp(pstr2,"Log") == 0)
+        if(strcmp(pstr2,"Log") == 0)
             b = pObs->bLog;
-        else if (strcmp(pstr2,"Wrn") == 0)
+        else if(strcmp(pstr2,"Wrn") == 0)
             b = pObs->bWrn;
-        else if (strcmp(pstr2,"Msg") == 0)
+        else if(strcmp(pstr2,"Msg") == 0)
             b = pObs->bMsg;
-        else if (strcmp(pstr2,"Err") == 0)
+        else if(strcmp(pstr2,"Err") == 0)
             b = pObs->bErr;
 
         return Py_BuildValue("i",b?1:0);
@@ -713,23 +711,22 @@ PyObject *ConsoleSingleton::sPySetStatus(PyObject * /*self*/, PyObject *args)
 
     PY_TRY{
         ILogger *pObs = Instance().Get(pstr1);
-        if (pObs)
+        if(pObs)
         {
-            if (strcmp(pstr2,"Log") == 0)
+            if(strcmp(pstr2,"Log") == 0)
                 pObs->bLog = (Bool==0)?false:true;
-            else if (strcmp(pstr2,"Wrn") == 0)
+            else if(strcmp(pstr2,"Wrn") == 0)
                 pObs->bWrn = (Bool==0)?false:true;
-            else if (strcmp(pstr2,"Msg") == 0)
+            else if(strcmp(pstr2,"Msg") == 0)
                 pObs->bMsg = (Bool==0)?false:true;
-            else if (strcmp(pstr2,"Err") == 0)
+            else if(strcmp(pstr2,"Err") == 0)
                 pObs->bErr = (Bool==0)?false:true;
             else
                 Py_Error(Base::BaseExceptionFreeCADError,"Unknown Message Type (use Log, Err, Msg or Wrn)");
 
             Py_INCREF(Py_None);
             return Py_None;
-        }
-	else {
+        } else {
             Py_Error(Base::BaseExceptionFreeCADError,"Unknown Console Type");
     }
 
@@ -952,8 +949,8 @@ std::stringstream &LogLevel::prefix(std::stringstream &str, const char *src, int
 {
     static FC_TIME_POINT s_tstart;
     static bool s_timing = false;
-    if (print_time) {
-        if (!s_timing) {
+    if(print_time) {
+        if(!s_timing) {
             s_timing = true;
             _FC_TIME_INIT(s_tstart);
         }
@@ -961,10 +958,10 @@ std::stringstream &LogLevel::prefix(std::stringstream &str, const char *src, int
         auto d = std::chrono::duration_cast<FC_DURATION>(tnow-s_tstart);
         str << d.count() << ' ';
     }
-    if (print_tag) str << '<' << tag << "> ";
-    if (print_src==2) {
+    if(print_tag) str << '<' << tag << "> ";
+    if(print_src==2) {
         PyFrameObject* frame = PyEval_GetFrame();
-        if (frame) {
+        if(frame) {
             line = PyFrame_GetLineNumber(frame);
 #if PY_MAJOR_VERSION >= 3
             src = PyUnicode_AsUTF8(frame->f_code->co_filename);
@@ -973,7 +970,7 @@ std::stringstream &LogLevel::prefix(std::stringstream &str, const char *src, int
 #endif
         }
     }
-    if (print_src && src && src[0]) {
+    if(print_src && src && src[0]) {
 #ifdef FC_OS_WIN32
         const char *_f = std::strrchr(src, '\\');
 #else

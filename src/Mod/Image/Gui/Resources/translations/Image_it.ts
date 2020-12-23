@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="it" sourcelanguage="en">
+<TS version="2.0" language="it" sourcelanguage="en">
   <context>
     <name>Dialog</name>
     <message>
@@ -118,7 +118,7 @@
       <location filename="../../GLImageBox.cpp" line="333"/>
       <location filename="../../OpenGLImageBox.cpp" line="385"/>
       <source>Undefined type of colour space for image viewing</source>
-      <translation>Tipo di spazio colore indefinito per la visualizzazione delle immagini</translation>
+      <translation>Spazio colore indefinito per la visualizzazione delle immagini</translation>
     </message>
   </context>
   <context>

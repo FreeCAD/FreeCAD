@@ -1,8 +1,11 @@
 # -*- coding: utf8 -*-
+
+
 # Check code with
 # flake8 --ignore=E226,E266,E401,W503
 
 # ***************************************************************************
+# *                                                                         *
 # *   Copyright (c) 2009 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -25,7 +28,7 @@
 
 __title__ = "FreeCAD Draft Workbench - DXF importer/exporter"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
-__url__ = "https://www.freecadweb.org"
+__url__ = ["http://www.freecadweb.org"]
 
 ## @package importDXF
 #  \ingroup DRAFT
@@ -83,7 +86,7 @@ dxfColorMap = None
 dxfLibrary = None
 
 # Save the native open function to avoid collisions
-# with the function declared here
+# with the function declated here
 if open.__module__ in ['__builtin__', 'io']:
     pythonopen = open
 
@@ -129,7 +132,7 @@ from menu Tools -> Addon Manager""")
                     QtGui.QMessageBox.information(None, "", message)
                 else:
                     FCC.PrintWarning("The DXF import/export libraries needed by FreeCAD to handle the DXF format are not installed.\n")
-                    FCC.PrintWarning("Please install the dxf Library addon from Tools -> Addon Manager\n")
+                    FCC.PrintWarning("Please install the dxf Library addon from Tools -> Addons Manager\n")
                 break
         progressbar.stop()
         sys.path.append(FreeCAD.ConfigGet("UserAppData"))
@@ -160,7 +163,7 @@ To enabled FreeCAD to download these libraries, answer Yes.""")
             _maj = _ver[0]
             _min = _ver[1]
             if float(_maj + "." + _min) >= 0.17:
-                FCC.PrintWarning("Please install the dxf Library addon from Tools -> Addon Manager\n")
+                FCC.PrintWarning("Please install the dxf Library addon from Tools -> Addons Manager\n")
             else:
                 FCC.PrintWarning("Please check https://github.com/yorikvanhavre/Draft-dxf-importer\n")
 
@@ -182,10 +185,7 @@ def getDXFlibs():
         global dxfLibrary, dxfColorMap, dxfReader
         import dxfLibrary
         import dxfColorMap
-        try:
-            import dxfReader
-        except:
-            libsok = False
+        import dxfReader
     except ImportError:
         libsok = False
         FCC.PrintWarning("DXF libraries not found. Trying to download...\n")
@@ -2181,24 +2181,21 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
     shapes = []
 
     # Create layers
-    if hasattr(drawing, "tables"):
-        for table in drawing.tables.get_type("table"):
-            for layer in table.get_type("layer"):
-                name = layer.name
-                color = tuple(dxfColorMap.color_map[layer.color])
-                drawstyle = "Solid"
-                lt = rawValue(layer, 6)
-                if "DASHED" in lt.upper():
-                    drawstyle = "Dashed"
-                elif "HIDDEN" in lt.upper():
-                    drawstyle = "Dotted"
-                if ("DASHDOT" in lt.upper()) or ("CENTER" in lt.upper()):
-                    drawstyle = "Dashdot"
-                locateLayer(name, color, drawstyle)
-    else:
-        locateLayer("0", [0.0, 0.0, 0.0], "Solid")
+    for table in drawing.tables.get_type("table"):
+        for layer in table.get_type("layer"):
+            name = layer.name
+            color = tuple(dxfColorMap.color_map[layer.color])
+            drawstyle = "Solid"
+            lt = rawValue(layer, 6)
+            if "DASHED" in lt.upper():
+                drawstyle = "Dashed"
+            elif "HIDDEN" in lt.upper():
+                drawstyle = "Dotted"
+            if ("DASHDOT" in lt.upper()) or ("CENTER" in lt.upper()):
+                drawstyle = "Dashdot"
+            locateLayer(name, color, drawstyle)
 
-     # Draw lines
+    # Draw lines
     lines = drawing.entities.get_type("line")
     if lines:
         FCC.PrintMessage("drawing " + str(len(lines)) + " lines...\n")
@@ -3599,7 +3596,7 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
     if dxfLibrary:
         global exportList
         exportList = objectslist
-        exportList = Draft.get_group_contents(exportList)
+        exportList = Draft.getGroupContents(exportList)
 
         nlist = []
         exportLayers = []
@@ -3800,7 +3797,7 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
                                                    style='STANDARD',
                                                    layer=getStrGroup(ob)))
 
-                elif Draft.getType(ob) in ("DraftText","Text"):
+                elif Draft.getType(ob) == "DraftText":
                     # texts
                     if gui:
                         height = float(ob.ViewObject.FontSize)
@@ -3817,7 +3814,7 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
                                                    style='STANDARD',
                                                    layer=getStrGroup(ob)))
 
-                elif Draft.getType(ob) in ["Dimension","LinearDimension"]:
+                elif Draft.getType(ob) == "Dimension":
                     p1 = DraftVecUtils.tup(ob.Start)
                     p2 = DraftVecUtils.tup(ob.End)
                     base = Part.LineSegment(ob.Start, ob.End).toShape()
@@ -3932,7 +3929,7 @@ def exportPage(page, filename):
     c = dxfcounter()
     pat = re.compile("(_handle_)")
     template = pat.sub(c.incr, template)
-    f = pythonopen(filename, "w")
+    f = pythonopen(filename, "wb")
     f.write(template)
     f.close()
 
@@ -3944,7 +3941,7 @@ def getViewBlock(geom, view, blockcount):
     If the global variable `dxfExportBlocks` exists, it will create
     the appropriate strings for `BLOCK` and `INSERT` sections,
     and increment the `blockcount`.
-    Otherwise, it will just create an insert by changing the layer,
+    Otherwise, it will just creaate an insert by changing the layer,
     and setting a handle.
 
     Parameters
@@ -4023,7 +4020,7 @@ def getViewDXF(view, blocks=True):
     and if the global variable `dxfExportBlocks` exists, it will create
     the appropriate strings for `BLOCK` and `INSERT` sections,
     and increment the `blockcount`.
-    Otherwise, it will just create an insert by changing the layer,
+    Otherwise, it will just creaate an insert by changing the layer,
     and setting a handle
 
     Parameters
@@ -4169,7 +4166,7 @@ def readPreferences():
     # reading parameters
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
     if FreeCAD.GuiUp and p.GetBool("dxfShowDialog", False):
-        FreeCADGui.showPreferences("Import-Export", 3)
+        FreeCADGui.showPreferences("Import-Export", 2)
     global dxfCreatePart, dxfCreateDraft, dxfCreateSketch
     global dxfDiscretizeCurves, dxfStarBlocks
     global dxfMakeBlocks, dxfJoin, dxfRenderPolylineWidth

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="no" sourcelanguage="en">
+<TS version="2.0" language="no" sourcelanguage="en">
   <context>
     <name>StartPage</name>
     <message>
@@ -181,7 +181,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="77"/>
       <source>Forum</source>
-      <translation>Forum</translation>
+      <translation type="unfinished">Forum</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="78"/>
@@ -411,7 +411,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="493"/>
       <source>Font family</source>
-      <translation>Skrift familie</translation>
+      <translation type="unfinished">Font family</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="502"/>

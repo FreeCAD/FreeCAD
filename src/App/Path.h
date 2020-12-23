@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2014 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2014     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -34,7 +34,7 @@ namespace App
 
 /** Base class of all geometric document objects.
  */
-class AppExport Path
+class AppExport Path 
 {
 protected:
 	std::vector<Base::Persistence *> _PathVector;

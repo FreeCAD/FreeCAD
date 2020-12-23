@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2011 Juergen Riegel                                     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -146,7 +146,7 @@ Unit Unit::pow(signed char exp) const
 
 bool Unit::isEmpty(void)const
 {
-    return (this->Sig.Length == 0)
+    return (this->Sig.Length == 0) 
         && (this->Sig.Mass == 0)
         && (this->Sig.Time == 0)
         && (this->Sig.ElectricCurrent == 0)
@@ -158,7 +158,7 @@ bool Unit::isEmpty(void)const
 
 bool Unit::operator ==(const Unit& that) const
 {
-    return (this->Sig.Length == that.Sig.Length)
+    return (this->Sig.Length == that.Sig.Length) 
         && (this->Sig.Mass == that.Sig.Mass)
         && (this->Sig.Time == that.Sig.Time)
         && (this->Sig.ElectricCurrent == that.Sig.ElectricCurrent)
@@ -355,7 +355,7 @@ QString Unit::getString(void) const
         }
 
         if (Sig.Mass < 0) {
-            if (mult)
+            if(mult)
                 ret<<'*';
             mult = true;
             ret << "kg";
@@ -364,7 +364,7 @@ QString Unit::getString(void) const
         }
 
         if (Sig.Time < 0) {
-            if (mult)
+            if(mult)
                 ret<<'*';
             mult = true;
             ret << "s";
@@ -373,7 +373,7 @@ QString Unit::getString(void) const
         }
 
         if (Sig.ElectricCurrent < 0) {
-            if (mult)
+            if(mult)
                 ret<<'*';
             mult = true;
             ret << "A";
@@ -439,14 +439,6 @@ QString Unit::getTypeString(void) const
     if(*this == Unit::Temperature                 )       return QString::fromLatin1("Temperature");
     if(*this == Unit::ElectricCurrent             )       return QString::fromLatin1("ElectricCurrent");
     if(*this == Unit::ElectricPotential           )       return QString::fromLatin1("ElectricPotential");
-    if(*this == Unit::ElectricCharge              )       return QString::fromLatin1("ElectricCharge");
-    if(*this == Unit::MagneticFieldStrength       )       return QString::fromLatin1("MagneticFieldStrength");
-    if(*this == Unit::MagneticFlux                )       return QString::fromLatin1("MagneticFlux");
-    if(*this == Unit::MagneticFluxDensity         )       return QString::fromLatin1("MagneticFluxDensity");
-    if(*this == Unit::ElectricalCapacitance       )       return QString::fromLatin1("ElectricalCapacitance");
-    if(*this == Unit::ElectricalInductance        )       return QString::fromLatin1("ElectricalInductance");
-    if(*this == Unit::ElectricalConductance       )       return QString::fromLatin1("ElectricalConductance");
-    if(*this == Unit::ElectricalResistance        )       return QString::fromLatin1("ElectricalResistance");
     if(*this == Unit::AmountOfSubstance           )       return QString::fromLatin1("AmountOfSubstance");
     if(*this == Unit::LuminousIntensity           )       return QString::fromLatin1("LuminousIntensity");
     if(*this == Unit::Pressure                    )       return QString::fromLatin1("Pressure");
@@ -456,7 +448,6 @@ QString Unit::getTypeString(void) const
     if(*this == Unit::SpecificEnergy              )       return QString::fromLatin1("SpecificEnergy");
     if(*this == Unit::ThermalConductivity         )       return QString::fromLatin1("ThermalConductivity");
     if(*this == Unit::ThermalExpansionCoefficient )       return QString::fromLatin1("ThermalExpansionCoefficient");
-    if(*this == Unit::VolumetricThermalExpansionCoefficient )       return QString::fromLatin1("VolumetricThermalExpansionCoefficient");
     if(*this == Unit::SpecificHeat                )       return QString::fromLatin1("SpecificHeat");
     if(*this == Unit::ThermalTransferCoefficient  )       return QString::fromLatin1("ThermalTransferCoefficient");
     if(*this == Unit::HeatFlux                    )       return QString::fromLatin1("HeatFlux");
@@ -487,14 +478,6 @@ Unit Unit::Temperature(0,0,0,0,1);
 
 Unit Unit::ElectricCurrent(0,0,0,1);
 Unit Unit::ElectricPotential(2,1,-3,-1);
-Unit Unit::ElectricCharge(0,0,1,1);
-Unit Unit::MagneticFieldStrength(-1,0,0,1);
-Unit Unit::MagneticFlux(2,1,-2,-1);
-Unit Unit::MagneticFluxDensity(0,1,-2,-1);
-Unit Unit::ElectricalCapacitance(-2,-1,4,2);
-Unit Unit::ElectricalInductance(2,1,-2,-2);
-Unit Unit::ElectricalConductance(-2,-1,3,2);
-Unit Unit::ElectricalResistance(2,1,-3,-2);
 Unit Unit::AmountOfSubstance(0,0,0,0,0,1);
 Unit Unit::LuminousIntensity(0,0,0,0,0,0,1);
 
@@ -514,7 +497,6 @@ Unit Unit::Power   (2,1,-3);
 Unit Unit::SpecificEnergy              (2,0,-2);
 Unit Unit::ThermalConductivity         (1,1,-3,0,-1);
 Unit Unit::ThermalExpansionCoefficient (0,0,0,0,-1);
-Unit Unit::VolumetricThermalExpansionCoefficient (0,0,0,0,-1);
 Unit Unit::SpecificHeat                (2,0,-2,0,-1);
 Unit Unit::ThermalTransferCoefficient  (0,1,-3,0,-1);
 Unit Unit::HeatFlux                    (0,1,-3,0,0);

@@ -11,7 +11,7 @@
     <message>
       <location filename="../../Command.cpp" line="1404"/>
       <source>Additive loft</source>
-      <translation>دور علوي مضاف</translation>
+      <translation type="unfinished">Additive loft</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1405"/>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="1304"/>
       <source>Additive pipe</source>
-      <translation>اضافة دائرة للمسار</translation>
+      <translation type="unfinished">Additive pipe</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1305"/>
       <source>Sweep a selected sketch along a path or to other profiles</source>
-      <translation>قم بلف الشكل المحدد على طول المسار أو إلى ملفات التعريف الأخرى</translation>
+      <translation type="unfinished">Sweep a selected sketch along a path or to other profiles</translation>
     </message>
   </context>
   <context>
@@ -83,12 +83,12 @@
     <message>
       <location filename="../../Command.cpp" line="243"/>
       <source>Create a local coordinate system</source>
-      <translation>إنشاء نظام إحداثيات محلي إضافي</translation>
+      <translation type="unfinished">Create a local coordinate system</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="244"/>
       <source>Create a new local coordinate system</source>
-      <translation>إنشاء نظام إحداثيات محلي جديد</translation>
+      <translation type="unfinished">Create a new local coordinate system</translation>
     </message>
   </context>
   <context>
@@ -101,12 +101,12 @@
     <message>
       <location filename="../../Command.cpp" line="1636"/>
       <source>Chamfer</source>
-      <translation>شطف الحافة</translation>
+      <translation type="unfinished">Chamfer</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1637"/>
       <source>Chamfer the selected edges of a shape</source>
-      <translation>شطف الحافة المختارة من الشكل</translation>
+      <translation type="unfinished">Chamfer the selected edges of a shape</translation>
     </message>
   </context>
   <context>
@@ -173,12 +173,12 @@
     <message>
       <location filename="../../Command.cpp" line="1608"/>
       <source>Fillet</source>
-      <translation>تنعيم الحافة</translation>
+      <translation type="unfinished">Fillet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1609"/>
       <source>Make a fillet on an edge, face or body</source>
-      <translation>عمل تنعيم للحافة او السطح او الشكل</translation>
+      <translation type="unfinished">Make a fillet on an edge, face or body</translation>
     </message>
   </context>
   <context>
@@ -191,12 +191,12 @@
     <message>
       <location filename="../../Command.cpp" line="1236"/>
       <source>Groove</source>
-      <translation>بثق</translation>
+      <translation type="unfinished">Groove</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1237"/>
       <source>Groove a selected sketch</source>
-      <translation>بثق الشكل المختار</translation>
+      <translation type="unfinished">Groove a selected sketch</translation>
     </message>
   </context>
   <context>
@@ -593,7 +593,7 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="191"/>
       <source>Additive Box</source>
-      <translation>اضافة صندوق</translation>
+      <translation type="unfinished">Additive Box</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="195"/>
@@ -603,7 +603,7 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="199"/>
       <source>Additive Sphere</source>
-      <translation>اضافة مخروط</translation>
+      <translation type="unfinished">Additive Sphere</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="203"/>
@@ -613,22 +613,22 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="207"/>
       <source>Additive Ellipsoid</source>
-      <translation>اضافة اهليلجي</translation>
+      <translation type="unfinished">Additive Ellipsoid</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="211"/>
       <source>Additive Torus</source>
-      <translation>اضافة طارة</translation>
+      <translation type="unfinished">Additive Torus</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="215"/>
       <source>Additive Prism</source>
-      <translation>اضافة موشور</translation>
+      <translation type="unfinished">Additive Prism</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="219"/>
       <source>Additive Wedge</source>
-      <translation>اضافة وتد</translation>
+      <translation type="unfinished">Additive Wedge</translation>
     </message>
   </context>
   <context>
@@ -1116,7 +1116,7 @@
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="55"/>
       <source>Boolean parameters</source>
-      <translation>اعدادات قيمة منطقية</translation>
+      <translation type="unfinished">Boolean parameters</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="81"/>
@@ -1129,12 +1129,12 @@
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="54"/>
       <source>Primitive parameters</source>
-      <translation>معايير الشكل الاولي</translation>
+      <translation type="unfinished">Primitive parameters</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="646"/>
       <source>Create primitive</source>
-      <translation>انشاء شكل اولي</translation>
+      <translation type="unfinished">Create primitive</translation>
     </message>
   </context>
   <context>
@@ -1440,12 +1440,12 @@
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation>أضف ميزة</translation>
+      <translation type="unfinished">Add feature</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="32"/>
       <source>Remove feature</source>
-      <translation>إزالة ميزة</translation>
+      <translation type="unfinished">Remove feature</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="49"/>
@@ -1551,12 +1551,12 @@
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation>أضف ميزة</translation>
+      <translation type="unfinished">Add feature</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="32"/>
       <source>Remove feature</source>
-      <translation>إزالة ميزة</translation>
+      <translation type="unfinished">Remove feature</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="49"/>
@@ -1594,12 +1594,12 @@
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation>أضف ميزة</translation>
+      <translation type="unfinished">Add feature</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="32"/>
       <source>Remove feature</source>
-      <translation>إزالة ميزة</translation>
+      <translation type="unfinished">Remove feature</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="47"/>
@@ -2041,12 +2041,12 @@
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation>أضف ميزة</translation>
+      <translation type="unfinished">Add feature</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="32"/>
       <source>Remove feature</source>
-      <translation>إزالة ميزة</translation>
+      <translation type="unfinished">Remove feature</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="49"/>
@@ -2171,12 +2171,12 @@
     <message>
       <location filename="../../TaskScaledParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation>أضف ميزة</translation>
+      <translation type="unfinished">Add feature</translation>
     </message>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="32"/>
       <source>Remove feature</source>
-      <translation>إزالة ميزة</translation>
+      <translation type="unfinished">Remove feature</translation>
     </message>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="49"/>

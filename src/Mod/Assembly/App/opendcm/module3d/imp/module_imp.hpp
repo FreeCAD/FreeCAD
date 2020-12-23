@@ -22,11 +22,10 @@
 
 #include "../module.hpp"
 
-#include <boost_bind_bind.hpp>
+#include <boost/bind.hpp>
 
 #include "constraint3d_imp.hpp"
 #include "geometry3d_imp.hpp"
-namespace bp = boost::placeholders;
 
 namespace dcm {
 
@@ -113,7 +112,7 @@ void Module3D<Typelist, ID>::type<Sys>::inheriter_base::removeGeometry3D(Geom g)
     g->template emitSignal<remove>(g);
 
     //remove the vertex from graph and emit all edges that get removed with the functor
-    boost::function<void(GlobalEdge)> functor = boost::bind(&inheriter_base::apply_edge_remove, this, bp::_1);
+    boost::function<void(GlobalEdge)> functor = boost::bind(&inheriter_base::apply_edge_remove, this, _1);
     m_this->m_cluster->removeVertex(v, functor);
     m_this->erase(g);
 };

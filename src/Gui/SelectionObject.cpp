@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2009 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
+ *   Copyright (c) 2009 Juergen Riegel (FreeCAD@juergen-riegel.net)             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -52,7 +52,7 @@ SelectionObject::SelectionObject(const Gui::SelectionChanges& msg)
     TypeName = msg.pTypeName ? msg.pTypeName : "";
     if (msg.pSubName) {
         SubNames.push_back(msg.pSubName);
-        SelPoses.emplace_back(msg.x, msg.y, msg.z);
+        SelPoses.push_back(Base::Vector3d(msg.x, msg.y, msg.z));
     }
 }
 
@@ -77,7 +77,7 @@ const App::DocumentObject * SelectionObject::getObject(void) const
     return 0;
 }
 
-App::DocumentObject * SelectionObject::getObject(void)
+App::DocumentObject * SelectionObject::getObject(void) 
 {
     if (!DocName.empty()) {
         App::Document *doc = App::GetApplication().getDocument(DocName.c_str());

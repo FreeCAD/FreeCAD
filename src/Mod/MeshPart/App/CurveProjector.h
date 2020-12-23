@@ -62,7 +62,7 @@ public:
   };
 
   template<class T>
-    struct TopoDSLess {
+    struct TopoDSLess : public std::binary_function<T, T, bool> {
     bool operator()(const T& x, const T& y) const { 
       return x.HashCode(INT_MAX-1) < y.HashCode(INT_MAX-1);
     }

@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <QApplication>
+# include <QEventLoop>
 # include <QMessageBox>
 # include <QTextStream>
 # include <QTimer>
@@ -63,6 +64,7 @@ class SweepWidget::Private
 {
 public:
     Ui_TaskSweep ui;
+    QEventLoop loop;
     QString buttonText;
     std::string document;
     Private()
@@ -82,7 +84,7 @@ public:
         bool allow(App::Document* /*pDoc*/, App::DocumentObject*pObj, const char*sSubName)
         {
             if (pObj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-                if (!sSubName || sSubName[0] == '\0') {
+                if (!sSubName) {
                     // If selecting again the same edge the passed sub-element is empty. If the whole
                     // shape is an edge or wire we can use it completely.
                     const TopoDS_Shape& shape = static_cast<Part::Feature*>(pObj)->Shape.getValue();
@@ -146,7 +148,6 @@ SweepWidget::SweepWidget(QWidget* parent)
 SweepWidget::~SweepWidget()
 {
     delete d;
-    Gui::Selection().rmvSelectionGate();
 }
 
 void SweepWidget::findShapes()
@@ -271,7 +272,7 @@ bool SweepWidget::isPathValid(const Gui::SelectionObject& sel) const
 
 bool SweepWidget::accept()
 {
-    if (d->ui.buttonPath->isChecked())
+    if (d->loop.isRunning())
         return false;
     Gui::SelectionFilter edgeFilter  ("SELECT Part::Feature SUBELEMENT Edge COUNT 1..");
     Gui::SelectionFilter partFilter  ("SELECT Part::Feature COUNT 1");
@@ -339,7 +340,7 @@ bool SweepWidget::accept()
         Gui::Document* doc = Gui::Application::Instance->getDocument(d->document.c_str());
         if (!doc)
             throw Base::RuntimeError("Document doesn't exist anymore");
-        doc->openCommand(QT_TRANSLATE_NOOP("Command", "Sweep"));
+        doc->openCommand("Sweep");
         Gui::Command::runCommand(Gui::Command::App, cmd.toLatin1());
         doc->getDocument()->recompute();
         App::DocumentObject* obj = doc->getDocument()->getActiveObject();
@@ -360,7 +361,7 @@ bool SweepWidget::accept()
 
 bool SweepWidget::reject()
 {
-    if (d->ui.buttonPath->isChecked())
+    if (d->loop.isRunning())
         return false;
     return true;
 }
@@ -377,9 +378,9 @@ void SweepWidget::onCurrentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem
     }
 }
 
-void SweepWidget::on_buttonPath_toggled(bool on)
+void SweepWidget::on_buttonPath_clicked()
 {
-    if (on) {
+    if (!d->loop.isRunning()) {
         QList<QWidget*> c = this->findChildren<QWidget*>();
         for (QList<QWidget*>::iterator it = c.begin(); it != c.end(); ++it)
             (*it)->setEnabled(false);
@@ -391,6 +392,7 @@ void SweepWidget::on_buttonPath_toggled(bool on)
 
         Gui::Selection().clearSelection();
         Gui::Selection().addSelectionGate(new Private::EdgeSelection());
+        d->loop.exec();
     }
     else {
         QList<QWidget*> c = this->findChildren<QWidget*>();
@@ -399,6 +401,7 @@ void SweepWidget::on_buttonPath_toggled(bool on)
         d->ui.buttonPath->setText(d->buttonText);
         d->ui.labelPath->clear();
         Gui::Selection().rmvSelectionGate();
+        d->loop.quit();
 
         Gui::SelectionFilter edgeFilter  ("SELECT Part::Feature SUBELEMENT Edge COUNT 1..");
         Gui::SelectionFilter partFilter  ("SELECT Part::Feature COUNT 1");

@@ -117,16 +117,9 @@ void  SurfaceOfExtrusionPy::setDirection(Py::Object arg)
     }
 }
 
-namespace Part {
-    extern const Py::Object makeGeometryCurvePy(const Handle(Geom_Curve)& c);
-}
-
 Py::Object SurfaceOfExtrusionPy::getBasisCurve(void) const
 {
-    Handle(Geom_SurfaceOfLinearExtrusion) surf = Handle(Geom_SurfaceOfLinearExtrusion)::DownCast
-    (getGeometryPtr()->handle());
-    Handle(Geom_Curve) curve = surf->BasisCurve();
-    return makeGeometryCurvePy(curve);
+    throw Py::Exception(PyExc_NotImplementedError, "Not yet implemented");
 }
 
 void  SurfaceOfExtrusionPy::setBasisCurve(Py::Object arg)
@@ -148,6 +141,88 @@ void  SurfaceOfExtrusionPy::setBasisCurve(Py::Object arg)
         catch (Standard_Failure& e) {
             throw Py::RuntimeError(e.GetMessageString());
         }
+    }
+}
+
+PyObject* SurfaceOfExtrusionPy::uIso(PyObject * args)
+{
+    double v;
+    if (!PyArg_ParseTuple(args, "d", &v))
+        return 0;
+
+    try {
+        Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast
+            (getGeometryPtr()->handle());
+        Handle(Geom_Curve) c = surf->UIso(v);
+        if (c->IsKind(STANDARD_TYPE(Geom_TrimmedCurve))) {
+            Handle(Geom_TrimmedCurve) aCurve = Handle(Geom_TrimmedCurve)::DownCast(c);
+            return new GeometryCurvePy(new GeomTrimmedCurve(aCurve));
+        }
+        if (c->IsKind(STANDARD_TYPE(Geom_BezierCurve))) {
+            Handle(Geom_BezierCurve) aCurve = Handle(Geom_BezierCurve)::DownCast(c);
+            return new BezierCurvePy(new GeomBezierCurve(aCurve));
+        }
+        if (c->IsKind(STANDARD_TYPE(Geom_BSplineCurve))) {
+            Handle(Geom_BSplineCurve) aCurve = Handle(Geom_BSplineCurve)::DownCast(c);
+            return new BSplineCurvePy(new GeomBSplineCurve(aCurve));
+        }
+        if (c->IsKind(STANDARD_TYPE(Geom_Line))) {
+            Handle(Geom_Line) aLine = Handle(Geom_Line)::DownCast(c);
+            GeomLine* line = new GeomLine();
+            Handle(Geom_Line) this_line = Handle(Geom_Line)::DownCast
+                (line->handle());
+            this_line->SetLin(aLine->Lin());
+            return new LinePy(line);
+        }
+        PyErr_Format(PyExc_NotImplementedError, "Iso curve is of type '%s'",
+            c->DynamicType()->Name());
+        return 0;
+    }
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
+        return 0;
+    }
+}
+
+PyObject* SurfaceOfExtrusionPy::vIso(PyObject * args)
+{
+    double v;
+    if (!PyArg_ParseTuple(args, "d", &v))
+        return 0;
+
+    try {
+        Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast
+            (getGeometryPtr()->handle());
+        Handle(Geom_Curve) c = surf->VIso(v);
+        if (c->IsKind(STANDARD_TYPE(Geom_TrimmedCurve))) {
+            Handle(Geom_TrimmedCurve) aCurve = Handle(Geom_TrimmedCurve)::DownCast(c);
+            return new GeometryCurvePy(new GeomTrimmedCurve(aCurve));
+        }
+        if (c->IsKind(STANDARD_TYPE(Geom_BezierCurve))) {
+            Handle(Geom_BezierCurve) aCurve = Handle(Geom_BezierCurve)::DownCast(c);
+            return new BezierCurvePy(new GeomBezierCurve(aCurve));
+        }
+        if (c->IsKind(STANDARD_TYPE(Geom_BSplineCurve))) {
+            Handle(Geom_BSplineCurve) aCurve = Handle(Geom_BSplineCurve)::DownCast(c);
+            return new BSplineCurvePy(new GeomBSplineCurve(aCurve));
+        }
+        if (c->IsKind(STANDARD_TYPE(Geom_Line))) {
+            Handle(Geom_Line) aLine = Handle(Geom_Line)::DownCast(c);
+            GeomLine* line = new GeomLine();
+            Handle(Geom_Line) this_curv = Handle(Geom_Line)::DownCast
+                (line->handle());
+            this_curv->SetLin(aLine->Lin());
+            return new LinePy(line);
+        }
+        PyErr_Format(PyExc_NotImplementedError, "Iso curve is of type '%s'",
+            c->DynamicType()->Name());
+        return 0;
+    }
+    catch (Standard_Failure& e) {
+
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
+        return 0;
     }
 }
 

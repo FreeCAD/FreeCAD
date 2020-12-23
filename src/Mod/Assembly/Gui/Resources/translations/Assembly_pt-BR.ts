@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="pt-BR" sourcelanguage="en">
+<TS version="2.0" language="pt-BR" sourcelanguage="en">
   <context>
     <name>AssemblyGui::TaskAssemblyConstraints</name>
     <message>
-      <location filename="../../TaskAssemblyConstraints.cpp" line="52"/>
+      <location filename="../../TaskAssemblyConstraints.cpp" line="53"/>
       <source>Constraints</source>
       <translation>Restrições</translation>
     </message>
@@ -32,7 +32,7 @@
     <message>
       <location filename="../../Command.cpp" line="156"/>
       <source>Add a existing Component into the active Assembly, STEP, IGES or BREP</source>
-      <translation type="unfinished">Add a existing Component into the active Assembly, STEP, IGES or BREP</translation>
+      <translation>Adicionar um componente existente para a Assemblagem ativa, STEP, IGES ou BREP</translation>
     </message>
   </context>
   <context>
@@ -50,7 +50,7 @@
     <message>
       <location filename="../../Command.cpp" line="110"/>
       <source>Add a new Subassembly into the active Assembly</source>
-      <translation type="unfinished">Add a new Subassembly into the active Assembly</translation>
+      <translation>Adicionar um novo subconjunto à Assemblagem ativa</translation>
     </message>
   </context>
   <context>
@@ -63,12 +63,12 @@
     <message>
       <location filename="../../Command.cpp" line="53"/>
       <source>Add new Part</source>
-      <translation type="unfinished">Add new Part</translation>
+      <translation>Adicionar nova peça</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="54"/>
       <source>Add a new Part into the active Assembly</source>
-      <translation type="unfinished">Add a new Part into the active Assembly</translation>
+      <translation>Adicionar uma nova peça à Assemblagem ativa</translation>
     </message>
   </context>
   <context>
@@ -86,7 +86,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="120"/>
       <source>Add arbitrary constraints to the assembly</source>
-      <translation type="unfinished">Add arbitrary constraints to the assembly</translation>
+      <translation>Adicionar restrições arbitrárias à Assemblagem</translation>
     </message>
   </context>
   <context>
@@ -171,12 +171,12 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="270"/>
       <source>Constraint Fix...</source>
-      <translation type="unfinished">Constraint Fix...</translation>
+      <translation>Restrição fixa...</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="271"/>
       <source>Fix a part in it's rotation and translation</source>
-      <translation type="unfinished">Fix a part in it's rotation and translation</translation>
+      <translation>Fixa uma parte na sua rotação e translação</translation>
     </message>
   </context>
   <context>
@@ -189,7 +189,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="404"/>
       <source>Constraint Orientation...</source>
-      <translation type="unfinished">Constraint Orientation...</translation>
+      <translation>Restringir Orientação...</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="405"/>
@@ -207,12 +207,12 @@
     <message>
       <location filename="../../Command.cpp" line="218"/>
       <source>Import assembly...</source>
-      <translation type="unfinished">Import assembly...</translation>
+      <translation>Importar assemblagem...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="219"/>
       <source>Import one or more files and create a assembly structure.</source>
-      <translation type="unfinished">Import one or more files and create a assembly structure.</translation>
+      <translation>Importar um ou mais arquivos e criar uma estrutura de assemblagem.</translation>
     </message>
   </context>
   <context>
@@ -222,28 +222,28 @@
       <location filename="../../Command.cpp" line="129"/>
       <location filename="../../Command.cpp" line="175"/>
       <source>No active or selected assembly</source>
-      <translation type="unfinished">No active or selected assembly</translation>
+      <translation>Nenhum assemblagem ativa ou selecionada</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="74"/>
       <source>You need a active or selected assembly to insert a part in.</source>
-      <translation type="unfinished">You need a active or selected assembly to insert a part in.</translation>
+      <translation>Precisa de uma assemblagem de ativa ou selecionada para inserir uma peça.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="130"/>
       <location filename="../../Command.cpp" line="176"/>
       <source>You need a active or selected assembly to insert a component in.</source>
-      <translation type="unfinished">You need a active or selected assembly to insert a component in.</translation>
+      <translation>Precisa de uma assemblagem de ativa ou selecionada para inserir um componente.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="70"/>
       <source>No active Assembly</source>
-      <translation type="unfinished">No active Assembly</translation>
+      <translation>Nenhuma Assemblagem ativa</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="71"/>
       <source>You need a active (blue) Assembly to insert a Constraint. Please create a new one or make one active (double click).</source>
-      <translation type="unfinished">You need a active (blue) Assembly to insert a Constraint. Please create a new one or make one active (double click).</translation>
+      <translation>Precisa de uma Assemblagem ativa (azul) para inserir uma restrição. Por favor, crie uma nova ou ative-a (duplo clique).</translation>
     </message>
   </context>
   <context>
@@ -256,12 +256,12 @@
     <message>
       <location filename="../../TaskAssemblyConstraints.ui" line="22"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The first geometry to which the constraint relates. Note that first and second geometry can be swapt. If you want to clear it, use the button to the right. If it is empty, just select any geometry in the 3D view and it will be added here.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The first geometry to which the constraint relates. Note that first and second geometry can be swapt. If you want to clear it, use the button to the right. If it is empty, just select any geometry in the 3D view and it will be added here.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;a primeira geometria a que se refere a restrição. Note que a primeira e segunda geometria podem ser trocadas. Se desejar desmarcá-la, use o botão para a direita. Se ele estiver vazio, basta selecionar qualquer geometria na vista 3D, e ele será adicionado aqui.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyConstraints.ui" line="35"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clear the first geometry&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clear the first geometry&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;Desmarque a primeira geometria&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyConstraints.ui" line="38"/>
@@ -275,17 +275,17 @@
     <message>
       <location filename="../../TaskAssemblyConstraints.ui" line="56"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The second geometry to which the constraint relates. Note that first and second geometry can be swapt. If you want to clear it, use the button to the right. If it is empty, just select any geometry in the 3D view and it will be added here.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The second geometry to which the constraint relates. Note that first and second geometry can be swapt. If you want to clear it, use the button to the right. If it is empty, just select any geometry in the 3D view and it will be added here.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;a segunda geometria a que se refere a restrição. Observe que a primeira e segunda geometria podem ser trocadas. Se desejar desmarcá-la, use o botão para a direita. Se ele estiver vazio, basta selecionar qualquer geometria na vista 3D, e ele será adicionado aqui.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyConstraints.ui" line="69"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clear the second geometry&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clear the second geometry&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;Desmarque a segunda geometria&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyConstraints.ui" line="113"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the angle between the geometries normals&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the angle between the geometries normals&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;Definir o ângulo entre os normais da geometrias&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyConstraints.ui" line="116"/>
@@ -300,12 +300,12 @@
     <message>
       <location filename="../../TaskAssemblyConstraints.ui" line="157"/>
       <source>Coincident</source>
-      <translation type="unfinished">Coincident</translation>
+      <translation>Coincidente</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyConstraints.ui" line="195"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fixes the first geometry in its rotation and translation. Note that fix only works its the direct parent assembly. If you stack assemblies, the parent assembly will not be fixed inside the other ones.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fixes the first geometry in its rotation and translation. Note that fix only works its the direct parent assembly. If you stack assemblies, the parent assembly will not be fixed inside the other ones.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fixes the first geometry in its rotation and translation. Note that fix only works its the direct parent assembly. If you stack assemblys, the parent assembly will not be fixed inside the other ones.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fixes the first geometry in its rotation and translation. Note that fix only works its the direct parent assembly. If you stack assemblys, the parent assembly will not be fixed inside the other ones.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyConstraints.ui" line="198"/>
@@ -345,7 +345,7 @@
     <message>
       <location filename="../../TaskAssemblyConstraints.ui" line="413"/>
       <source>value</source>
-      <translation type="unfinished">value</translation>
+      <translation>valor</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyConstraints.ui" line="436"/>
@@ -380,7 +380,7 @@
     <message>
       <location filename="../../TaskAssemblyConstraints.ui" line="607"/>
       <source>Equal</source>
-      <translation type="unfinished">Equal</translation>
+      <translation>Igual</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyConstraints.ui" line="645"/>
@@ -390,7 +390,7 @@
     <message>
       <location filename="../../TaskAssemblyConstraints.ui" line="648"/>
       <source>Opposite</source>
-      <translation type="unfinished">Opposite</translation>
+      <translation>Oposto</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyConstraints.ui" line="683"/>

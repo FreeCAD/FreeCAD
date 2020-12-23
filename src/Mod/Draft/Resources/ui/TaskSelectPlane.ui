@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>210</width>
-    <height>568</height>
+    <width>200</width>
+    <height>547</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,8 +17,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Select a face or working plane proxy or 3 vertices.
-Or choose one of the options below</string>
+      <string>Select a face or working plane proxy or 3 vertices, or choose one of the options below</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -68,8 +67,7 @@ Or choose one of the options below</string>
    <item>
     <widget class="QPushButton" name="buttonAuto">
      <property name="toolTip">
-      <string>The working plane will align to the current
-view each time a command is started</string>
+      <string>The working plane will align to the current view each time a command is started</string>
      </property>
      <property name="statusTip">
       <string/>
@@ -84,9 +82,7 @@ view each time a command is started</string>
      <item row="0" column="1">
       <widget class="Gui::InputField" name="fieldOffset">
        <property name="toolTip">
-        <string>An optional offset to give to the working plane
-above its base position. Use this together with one
-of the buttons above</string>
+        <string>an optional offset to give to the working plane above its base position. Use this together with one of the buttons above</string>
        </property>
        <property name="unit" stdset="0">
         <string notr="true"/>
@@ -103,9 +99,7 @@ of the buttons above</string>
      <item row="1" column="0">
       <widget class="QLabel" name="label_5">
        <property name="toolTip">
-        <string>If this is selected, the working plane will be
-centered on the current view when pressing one
-of the buttons above</string>
+        <string>if this is checked, the working plane will be centered on the current view when pressing one of the buttons above</string>
        </property>
        <property name="text">
         <string>Center plane on view</string>
@@ -115,9 +109,7 @@ of the buttons above</string>
      <item row="1" column="1">
       <widget class="QCheckBox" name="checkCenter">
        <property name="toolTip">
-        <string>If this is selected, the working plane will be
-centered on the current view when pressing one
-of the buttons above</string>
+        <string>if this is checked, the working plane will be centered on the current view when pressing one of the buttons above</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::LeftToRight</enum>
@@ -132,9 +124,7 @@ of the buttons above</string>
    <item>
     <widget class="QLabel" name="label_7">
      <property name="text">
-      <string>Or select a single vertex to move the current
-working plane without changing its orientation.
-Then, press the button below</string>
+      <string>Or select a single vertex to move the current working plane without changing its orientation. Then, press the button below</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -144,9 +134,7 @@ Then, press the button below</string>
    <item>
     <widget class="QPushButton" name="buttonMove">
      <property name="toolTip">
-      <string>Moves the working plane without changing its
-orientation. If no point is selected, the plane
-will be moved to the center of the view</string>
+      <string>Moves the working plane without changing its orientation. If no point is selected, the plane will be moved to the center of the view</string>
      </property>
      <property name="text">
       <string>Move working plane</string>
@@ -178,7 +166,7 @@ will be moved to the center of the view</string>
      <item row="2" column="0">
       <widget class="QLabel" name="label_4">
        <property name="toolTip">
-        <string>The number of squares between each main line of the grid</string>
+        <string>the number of squares between each main line of the grid</string>
        </property>
        <property name="text">
         <string>Main line every</string>
@@ -188,48 +176,24 @@ will be moved to the center of the view</string>
      <item row="2" column="1">
       <widget class="QSpinBox" name="fieldGridMainLine">
        <property name="toolTip">
-        <string>The number of squares between each main line of the grid</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="1">
-      <widget class="QSpinBox" name="fieldSnapRadius">
-       <property name="toolTip">
-        <string>The distance at which a point can be snapped to
-when approaching the mouse. You can also change this
-value by using the [ and ] keys while drawing</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="label_6">
-       <property name="toolTip">
-        <string>The distance at which a point can be snapped to
-when approaching the mouse. You can also change this
-value by using the [ and ] keys while drawing</string>
-       </property>
-       <property name="text">
-        <string>Snapping radius</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="label_8">
-       <property name="text">
-        <string>Grid extension</string>
+        <string>the number of squares between each main line of the grid</string>
        </property>
       </widget>
      </item>
      <item row="3" column="1">
-      <widget class="QSpinBox" name="fieldGridExtension">
-       <property name="suffix">
-        <string> lines</string>
+      <widget class="QSpinBox" name="fieldSnapRadius">
+       <property name="toolTip">
+        <string>The distance at which a point can be snapped to when approaching the mouse. You can alsochange this value by using the [ and ] keys while drawing</string>
        </property>
-       <property name="minimum">
-        <number>1</number>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_6">
+       <property name="toolTip">
+        <string>The distance at which a point can be snapped to when approaching the mouse. You can alsochange this value by using the [ and ] keys while drawing</string>
        </property>
-       <property name="maximum">
-        <number>9999</number>
+       <property name="text">
+        <string>Snapping radius</string>
        </property>
       </widget>
      </item>

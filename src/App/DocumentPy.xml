@@ -94,13 +94,11 @@ viewType (String): override the view provider type directly, only effective when
     <Methode Name="copyObject">
       <Documentation>
           <UserDocu>
-copyObject(object, with_dependencies=False, return_all=False)
+copyObject(object, with_dependencies=False)
 Copy an object or objects from another document to this document. 
 
 object: can either a single object or sequence of objects
 with_dependencies: if True, all internal dependent objects are copied too.
-return_all: if True, return all copied objects, or else return only the copied
-            object corresponding to the input objects.
           </UserDocu>
       </Documentation>
     </Methode>
@@ -160,11 +158,11 @@ object of this document.
 NOTE: It's possible that several objects have the same label name.</UserDocu>
 		</Documentation>
 	</Methode>
-    <Methode Name="findObjects" Keyword="true">
+	<Methode Name="findObjects">
 		<Documentation>
-            <UserDocu>findObjects([Type=string], [Name=string], [Label=string]) -&gt; list
-Return a list of objects that match the specified type, name or label.
-Name and label support regular expressions. All parameters are optional.</UserDocu>
+			<UserDocu>findObjects([string (type)], [string (name)]) -&gt; list
+Return a list of objects that match the specified type and name.
+Both parameters are optional.</UserDocu>
 		</Documentation>
 	</Methode>
     <Methode Name="getLinksTo">
@@ -329,12 +327,6 @@ sort: whether to topologically sort the return list
             <UserDocu>Contains the old label before change</UserDocu>
         </Documentation>
         <Parameter Name="OldLabel" Type="String"/>
-    </Attribute>
-    <Attribute Name="Temporary" ReadOnly="true" >
-        <Documentation>
-            <UserDocu>Check if this is a temporary document</UserDocu>
-        </Documentation>
-        <Parameter Name="Temporary" Type="Boolean"/>
     </Attribute>
     <CustomAttributes />
   </PythonExport>

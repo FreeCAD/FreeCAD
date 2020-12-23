@@ -32,14 +32,9 @@ namespace MeshCore
 class MeshExport MeshKDTree
 {
 public:
-    MeshKDTree();
     MeshKDTree(const std::vector<Base::Vector3f>& points);
     MeshKDTree(const MeshPointArray& points);
     ~MeshKDTree();
-
-    void AddPoint(Base::Vector3f& point);
-    void AddPoints(const std::vector<Base::Vector3f>& points);
-    void AddPoints(const MeshPointArray& points);
 
     bool IsEmpty() const;
     void Clear();

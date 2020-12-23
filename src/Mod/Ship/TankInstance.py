@@ -173,7 +173,6 @@ class Tank:
             return Vector()
         if vol >= fp.Shape.Volume:
             vol = 0.0
-            cog = Vector()
             for solid in fp.Shape.Solids:
                 vol += solid.Volume
                 sCoG = solid.CenterOfMass

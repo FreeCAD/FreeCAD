@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="sl" sourcelanguage="en">
+<TS version="2.0" language="sl" sourcelanguage="en">
   <context>
     <name>CmdRobotAddToolShape</name>
     <message>
@@ -327,12 +327,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="385"/>
       <source>Dress-up trajectory...</source>
-      <translation>Dodelaj pot …</translation>
+      <translation>Prilagodi pot …</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="386"/>
       <source>Create a dress-up object which overrides some aspects of a trajectory</source>
-      <translation>Ustvari izpopolnitveni predmet, ki preglasi nekatere vidike poti</translation>
+      <translation>Ustvari objekt prilagoditve, ki preglasi nekatere parametre poti</translation>
     </message>
   </context>
   <context>
@@ -603,17 +603,17 @@
       <translation>A6</translation>
     </message>
     <message>
-      <location filename="../../TaskRobot6Axis.ui" line="313"/>
+      <location filename="../../TaskRobot6Axis.ui" line="314"/>
       <source>TCP: (200.23,300.23,400.23,234,343,343)</source>
       <translation>TCP: (200.23,300.23,400.23,234,343,343)</translation>
     </message>
     <message>
-      <location filename="../../TaskRobot6Axis.ui" line="329"/>
+      <location filename="../../TaskRobot6Axis.ui" line="331"/>
       <source>Tool: (0,0,400,0,0,0)</source>
       <translation>Orodje: (0,0,400,0,0,0)</translation>
     </message>
     <message>
-      <location filename="../../TaskRobot6Axis.ui" line="345"/>
+      <location filename="../../TaskRobot6Axis.ui" line="347"/>
       <source>...</source>
       <translation>...</translation>
     </message>
@@ -707,32 +707,32 @@
       <translation>1 s</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectory.ui" line="291"/>
+      <location filename="../../TaskTrajectory.ui" line="292"/>
       <source>Pos: (200.23, 300.23, 400.23, 234, 343 ,343)</source>
       <translation>Pol.: (200.23, 300.23, 400.23, 234, 343 ,343)</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectory.ui" line="317"/>
+      <location filename="../../TaskTrajectory.ui" line="318"/>
       <source>Type</source>
       <translation>Vrsta</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectory.ui" line="322"/>
+      <location filename="../../TaskTrajectory.ui" line="323"/>
       <source>Name</source>
       <translation>Ime</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectory.ui" line="327"/>
+      <location filename="../../TaskTrajectory.ui" line="328"/>
       <source>C</source>
       <translation>C</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectory.ui" line="332"/>
+      <location filename="../../TaskTrajectory.ui" line="333"/>
       <source>V</source>
       <translation>V</translation>
     </message>
     <message>
-      <location filename="../../TaskTrajectory.ui" line="337"/>
+      <location filename="../../TaskTrajectory.ui" line="338"/>
       <source>A</source>
       <translation>A</translation>
     </message>
@@ -875,27 +875,27 @@
       <source>World</source>
       <translation>Okolje</translation>
     </message>
-    <message>
+    <message utf8="true">
       <location filename="../../TaskRobotControl.ui" line="287"/>
       <source>50mm / 5°</source>
       <translation>50 mm / 5 °</translation>
     </message>
-    <message>
+    <message utf8="true">
       <location filename="../../TaskRobotControl.ui" line="292"/>
       <source>20mm / 2°</source>
       <translation>20 mm / 2 °</translation>
     </message>
-    <message>
+    <message utf8="true">
       <location filename="../../TaskRobotControl.ui" line="297"/>
       <source>10mm / 1°</source>
       <translation>10 mm / 1 °</translation>
     </message>
-    <message>
+    <message utf8="true">
       <location filename="../../TaskRobotControl.ui" line="302"/>
       <source>5mm / 0.5°</source>
       <translation>5 mm / 0,5 °</translation>
     </message>
-    <message>
+    <message utf8="true">
       <location filename="../../TaskRobotControl.ui" line="307"/>
       <source>1mm / 0.1°</source>
       <translation>1 mm / 0,1 °</translation>

@@ -24,28 +24,27 @@
 #ifndef GUI_DIALOG_DLGTOOLBARS_IMP_H
 #define GUI_DIALOG_DLGTOOLBARS_IMP_H
 
+#include "ui_DlgToolbars.h"
 #include "PropertyPage.h"
-#include <memory>
 
 namespace Gui {
 namespace Dialog {
-class Ui_DlgCustomToolbars;
 
 /** This class implements the creation of user defined toolbars.
  * In the left panel are shown all command groups with their command objects.
- * If any changeable toolbar was created in the left panel are shown all commands
+ * If any changeable toolbar was created in the left panel are shown all commands 
  * of the currently edited toolbar, otherwise it is empty.
  * All changes to a toolbar is done immediately.
- *
+ * 
  * \author Werner Mayer
  */
-class DlgCustomToolbars : public CustomizeActionPage
-{
+class DlgCustomToolbars : public CustomizeActionPage, public Ui_DlgCustomToolbars
+{ 
     Q_OBJECT
 
 protected:
     enum Type { Toolbar, Toolboxbar };
-
+    
     DlgCustomToolbars(Type, QWidget* parent = 0);
     virtual ~DlgCustomToolbars();
 
@@ -78,8 +77,6 @@ private:
     void importCustomToolbars(const QByteArray&);
     void exportCustomToolbars(const QByteArray&);
 
-protected:
-    std::unique_ptr<Ui_DlgCustomToolbars> ui;
 private:
     Type type;
 };
@@ -90,7 +87,7 @@ private:
  * \author Werner Mayer
  */
 class DlgCustomToolbarsImp : public DlgCustomToolbars
-{
+{ 
     Q_OBJECT
 
 public:
@@ -113,7 +110,7 @@ private:
 };
 
 /** This class implements the creation of user defined toolbox bars.
- * A toolbox bar is the same as a toolbar - a collection of several
+ * A toolbox bar is the same as a toolbar - a collection of several 
  * action objects - unless a toolbox bar is placed in a toolbox,
  * while a toolbar is placed in the dock areas of the main window.
  * So toolbox bars are predestinated to save place on your desktop.
@@ -122,7 +119,7 @@ private:
  * \author Werner Mayer
  */
 class DlgCustomToolBoxbarsImp : public DlgCustomToolbars
-{
+{ 
     Q_OBJECT
 
 public:

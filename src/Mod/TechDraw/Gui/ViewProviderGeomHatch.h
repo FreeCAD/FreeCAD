@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
- *   Copyright (c) 2017 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2017 Wandererfan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -28,6 +28,7 @@
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyStandard.h>
+
 #include <Gui/ViewProviderFeature.h>
 
 
@@ -51,24 +52,26 @@ public:
     App::PropertyFloat       WeightPattern;
     App::PropertyColor       ColorPattern;
 
+
     virtual void attach(App::DocumentObject *) override;
     virtual void updateData(const App::Property*) override;
     virtual void onChanged(const App::Property *prop) override;
     virtual bool setEdit(int ModNum) override;
     virtual void unsetEdit(int ModNum) override;
     virtual bool doubleClicked(void) override;
+
     virtual bool useNewSelectionModel(void) const override {return false;}
     virtual void setDisplayMode(const char* ModeName) override;
     virtual std::vector<std::string> getDisplayModes(void) const override;
     void updateGraphic(void);
     void getParameters(void);
-    virtual bool canDelete(App::DocumentObject* obj) const override;
 
     TechDraw::DrawGeomHatch* getViewObject() const;
 
-    virtual Gui::MDIView *getMDIView() const override;
+    virtual Gui::MDIView *getMDIView() override;
 };
 
 } // namespace TechDrawGui
+
 
 #endif // DRAWINGGUI_VIEWPROVIDERHATCH_H

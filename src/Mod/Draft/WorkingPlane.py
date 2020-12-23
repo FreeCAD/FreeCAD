@@ -1,5 +1,24 @@
+## @package WorkingPlane
+#  \ingroup DRAFT
+#  \brief This module handles the Working Plane and grid of the Draft module.
+#
+#  This module provides the plane class which provides a virtual working plane
+#  in FreeCAD and a couple of utility functions.
+"""@package WorkingPlane
+\ingroup DRAFT
+\brief This module handles the working plane and grid of the Draft Workbench.
+
+This module provides the plane class which provides a virtual working plane
+in FreeCAD and a couple of utility functions.
+The working plane is mostly intended to be used in the Draft Workbench
+to draw 2D objects in various orientations, not only in the standard XY,
+YZ, and XZ planes.
+"""
+
 # ***************************************************************************
-# *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
+# *                                                                         *
+# *   Copyright (c) 2009, 2010                                              *
+# *   Ken Cline <cline@frii.com>                                            *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -18,87 +37,64 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provide the working plane code and utilities for the Draft Workbench.
 
-This module provides the plane class which provides a virtual working plane
-in FreeCAD and a couple of utility functions.
-The working plane is mostly intended to be used in the Draft Workbench
-to draw 2D objects in various orientations, not only in the standard XY,
-YZ, and XZ planes.
-"""
-## @package WorkingPlane
-#  \ingroup DRAFT
-#  \brief This module handles the Working Plane and grid of the Draft module.
-#
-#  This module provides the plane class which provides a virtual working plane
-#  in FreeCAD and a couple of utility functions.
 
-import math
-
-import FreeCAD
-import DraftVecUtils
+import FreeCAD, math, DraftVecUtils
 from FreeCAD import Vector
+from FreeCAD import Console as FCC
 
 __title__ = "FreeCAD Working Plane utility"
 __author__ = "Ken Cline"
-__url__ = "https://www.freecadweb.org"
+__url__ = "http://www.freecadweb.org"
 
 
-class Plane:
+class plane:
     """A WorkPlane object.
-
-    Parameters
-    ----------
-    u: Base::Vector3, optional
-        An axis (vector) that helps define the working plane.
-        It defaults to `(1, 0, 0)`, or the +X axis.
-
-    v: Base::Vector3, optional
-        An axis (vector) that helps define the working plane.
-        It defaults to `(0, 1, 0)`, or the +Y axis.
-
-    w: Base::Vector3, optional
-        An axis that is supposed to be perpendicular to `u` and `v`;
-        it is redundant.
-        It defaults to `(0, 0, 1)`, or the +Z axis.
-
-    pos: Base::Vector3, optional
-        A point through which the plane goes through.
-        It defaults to the origin `(0, 0, 0)`.
 
     Attributes
     ----------
-    doc: App::Document
+    doc : App::Document
         The active document. Reset view when `doc` changes.
-
-    weak: bool
+    weak : bool
         It is `True` if the plane has been defined by `setup()`
         or has been reset. A weak plane can be changed
         (it is the "auto" mode), while a strong plane will keep
         its position until weakened (it is "locked")
-
-    u: Base::Vector3
+    u : Base::Vector3
         An axis (vector) that helps define the working plane.
-
-    v: Base::Vector3
+    v : Base::Vector3
         An axis (vector) that helps define the working plane.
-
-    axis: Base::Vector3
+    axis : Base::Vector3
         A vector that is supposed to be perpendicular to `u` and `v`;
         it is helpful although redundant.
-
-    position: Base::Vector3
+    position : Base::Vector3
         A point, which the plane goes through,
         that helps define the working plane.
-
-    stored: bool
+    stored : bool
         A placeholder for a stored state.
     """
 
     def __init__(self,
                  u=Vector(1, 0, 0), v=Vector(0, 1, 0), w=Vector(0, 0, 1),
                  pos=Vector(0, 0, 0)):
+        """Initialize the working plane.
 
+        Parameters
+        ----------
+        u : Base::Vector3, optional
+            An axis (vector) that helps define the working plane.
+            It defaults to `(1, 0, 0)`, or the +X axis.
+        v : Base::Vector3, optional
+            An axis (vector) that helps define the working plane.
+            It defaults to `(0, 1, 0)`, or the +Y axis.
+        w : Base::Vector3, optional
+            An axis that is supposed to be perpendicular to `u` and `v`;
+            it is redundant.
+            It defaults to `(0, 0, 1)`, or the +Z axis.
+        pos : Base::Vector3, optional
+            A point through which the plane goes through.
+            It defaults to the origin `(0, 0, 0)`.
+        """
         # keep track of active document.  Reset view when doc changes.
         self.doc = None
         self.weak = True
@@ -128,7 +124,6 @@ class Plane:
         ----------
         p : Base::Vector3
             The external point to consider.
-
         direction : Base::Vector3, optional
             The unit vector that indicates the direction of the distance.
 
@@ -333,8 +328,8 @@ class Plane:
         offsetVector.multiply(offset)
         self.position = point.add(offsetVector)
         self.weak = False
-        # Console.PrintMessage("(position = " + str(self.position) + ")\n")
-        # Console.PrintMessage(self.__repr__() + "\n")
+        # FCC.PrintMessage("(position = " + str(self.position) + ")\n")
+        # FCC.PrintMessage(self.__repr__() + "\n")
 
     def alignToPointAndAxis_SVG(self, point, axis, offset=0):
         """Align the working plane to a point and an axis (vector).
@@ -443,14 +438,14 @@ class Plane:
 
         # spat_vec = self.u.cross(self.v)
         # spat_res = spat_vec.dot(axis)
-        # Console.PrintMessage(projcase + " spat Prod = " + str(spat_res) + "\n")
+        # FCC.PrintMessage(projcase + " spat Prod = " + str(spat_res) + "\n")
 
         offsetVector = Vector(axis)
         offsetVector.multiply(offset)
         self.position = point.add(offsetVector)
         self.weak = False
-        # Console.PrintMessage("(position = " + str(self.position) + ")\n")
-        # Console.PrintMessage(self.__repr__() + "\n")
+        # FCC.PrintMessage("(position = " + str(self.position) + ")\n")
+        # FCC.PrintMessage(self.__repr__() + "\n")
 
     def alignToCurve(self, shape, offset=0):
         """Align plane to curve. NOT YET IMPLEMENTED.
@@ -638,7 +633,7 @@ class Plane:
         When the interface is not loaded it should fail and print
         a message, `FreeCAD.Console.PrintError()`.
 
-        See Also
+        See also
         --------
         alignToFace, alignToCurve
         """
@@ -659,7 +654,7 @@ class Plane:
             return False
 
     def setup(self, direction=None, point=None, upvec=None, force=False):
-        """Set up the working plane if it exists but is undefined.
+        """Setup the working plane if it exists but is undefined.
 
         If `direction` and `point` are present,
         it calls `alignToPointAndAxis(point, direction, 0, upvec)`.
@@ -694,7 +689,7 @@ class Plane:
         if self.weak or force:
             if direction and point:
                 self.alignToPointAndAxis(point, direction, 0, upvec)
-            elif FreeCAD.GuiUp:
+            else:
                 try:
                     import FreeCADGui
                     from pivy import coin
@@ -711,7 +706,7 @@ class Plane:
                         # perpendicular to the current view
                         self.alignToPointAndAxis(Vector(0, 0, 0),
                                                  vdir.negative(), 0, upvec)
-                except Exception:
+                except:
                     pass
             if force:
                 self.weak = False
@@ -725,39 +720,6 @@ class Plane:
         """
         self.doc = None
         self.weak = True
-
-    def setTop(self):
-        """sets the WP to top position and updates the GUI"""
-        self.alignToPointAndAxis(FreeCAD.Vector(0.0, 0.0, 0.0), FreeCAD.Vector(0, 0, 1), 0.0)
-        if FreeCAD.GuiUp:
-            import FreeCADGui
-            from draftutils.translate import translate
-            if hasattr(FreeCADGui,"Snapper"):
-                FreeCADGui.Snapper.setGrid()
-            if hasattr(FreeCADGui,"draftToolBar"):
-                FreeCADGui.draftToolBar.wplabel.setText(translate("draft", "Top"))
-
-    def setFront(self):
-        """sets the WP to front position and updates the GUI"""
-        self.alignToPointAndAxis(FreeCAD.Vector(0.0, 0.0, 0.0), FreeCAD.Vector(0, 1, 0), 0.0)
-        if FreeCAD.GuiUp:
-            import FreeCADGui
-            from draftutils.translate import translate
-            if hasattr(FreeCADGui,"Snapper"):
-                FreeCADGui.Snapper.setGrid()
-            if hasattr(FreeCADGui,"draftToolBar"):
-                FreeCADGui.draftToolBar.wplabel.setText(translate("draft", "Front"))
-
-    def setSide(self):
-        """sets the WP to top position and updates the GUI"""
-        self.alignToPointAndAxis(FreeCAD.Vector(0.0, 0.0, 0.0), FreeCAD.Vector(-1, 0, 0), 0.0)
-        if FreeCAD.GuiUp:
-            import FreeCADGui
-            from draftutils.translate import translate
-            if hasattr(FreeCADGui,"Snapper"):
-                FreeCADGui.Snapper.setGrid()
-            if hasattr(FreeCADGui,"draftToolBar"):
-                FreeCADGui.draftToolBar.wplabel.setText(translate("draft", "Side"))
 
     def getRotation(self):
         """Return a placement describing the plane orientation only.
@@ -777,12 +739,11 @@ class Plane:
         # Arch active container
         if FreeCAD.GuiUp:
             import FreeCADGui
-            if FreeCADGui.ActiveDocument:
-                view = FreeCADGui.ActiveDocument.ActiveView
-                if view:
-                    a = view.getActiveObject("Arch")
-                    if a:
-                        p = a.Placement.inverse().multiply(p)
+            view = FreeCADGui.ActiveDocument.ActiveView
+            if view:
+                a = view.getActiveObject("Arch")
+                if a:
+                    p = a.Placement.inverse().multiply(p)
         return p
 
     def getPlacement(self, rotated=False):
@@ -919,7 +880,7 @@ class Plane:
         Base::Vector3
             The relative coordinates of the point from the plane.
 
-        See Also
+        See also
         --------
         getGlobalCoords, getLocalRot, getGlobalRot
 
@@ -985,7 +946,7 @@ class Plane:
         Base::Vector3
             The coordinates of the point from the absolute origin.
 
-        See Also
+        See also
         --------
         getLocalCoords, getLocalRot, getGlobalRot
 
@@ -1040,7 +1001,7 @@ class Plane:
             The relative coordinates of the point from the plane,
             if the plane had its `position` at the global origin.
 
-        See Also
+        See also
         --------
         getLocalCoords, getGlobalCoords, getGlobalRot
         """
@@ -1080,7 +1041,7 @@ class Plane:
         Base::Vector3
             The coordinates of the point from the absolute origin.
 
-        See Also
+        See also
         --------
         getGlobalCoords, getLocalCoords, getLocalRot
         """
@@ -1185,7 +1146,7 @@ class Plane:
             Angle between the `u` vector, and a projected vector
             on the global horizontal plane.
 
-        See Also
+        See also
         --------
         DraftVecUtils.angle
         """
@@ -1195,9 +1156,6 @@ class Plane:
         else:
             norm = proj.cross(self.u)
             return DraftVecUtils.angle(self.u, proj, norm)
-
-
-plane = Plane
 
 
 def getPlacementFromPoints(points):
@@ -1229,7 +1187,7 @@ def getPlacementFromPoints(points):
         defined by `points`,
         or `None` is it fails to use the points.
 
-    See Also
+    See also
     --------
     getPlacement
     """
@@ -1242,7 +1200,7 @@ def getPlacementFromPoints(points):
             pl.axis = (points[3].sub(points[0]).normalize())
         else:
             pl.axis = ((pl.u).cross(pl.v)).normalize()
-    except Exception:
+    except:
         return None
     p = pl.getPlacement()
     del pl
@@ -1273,14 +1231,14 @@ def getPlacementFromFace(face, rotated=False):
         defined by `face`,
         or `None` if it fails to use `face`.
 
-    See Also
+    See also
     --------
     alignToFace, getPlacement
     """
     pl = plane()
     try:
         pl.alignToFace(face)
-    except Exception:
+    except:
         return None
     p = pl.getPlacement(rotated)
     del pl

@@ -548,8 +548,6 @@ public:
   MeshPointArray (void) { }
   // constructor
   MeshPointArray (unsigned long ulSize) : TMeshPointArray(ulSize) { }
-  /// copy-constructor
-  MeshPointArray (const MeshPointArray&);
   // Destructor
   ~MeshPointArray (void) { }
   //@}
@@ -602,8 +600,6 @@ public:
     MeshFacetArray (void) { }
     /// constructor
     MeshFacetArray (unsigned long ulSize) : TMeshFacetArray(ulSize) { }
-    /// copy-constructor
-    MeshFacetArray (const MeshFacetArray&);
     /// destructor
     ~MeshFacetArray (void) { }
     //@}
@@ -1079,12 +1075,9 @@ inline bool MeshFacet::IsEqual (const MeshFacet& rcFace) const
  * Binary function to query the flags for use with generic STL functions.
  */
 template <class TCLASS>
-class MeshIsFlag
+class MeshIsFlag : public std::binary_function<TCLASS, typename TCLASS::TFlagType, bool>
 {
 public:
-    typedef TCLASS first_argument_type;
-    typedef typename TCLASS::TFlagType second_argument_type;
-    typedef bool result_type;
     bool operator () (const TCLASS& rclElem, typename TCLASS::TFlagType tFlag) const
     { return rclElem.IsFlag(tFlag); }
 };
@@ -1093,12 +1086,9 @@ public:
  * Binary function to query the flags for use with generic STL functions.
  */
 template <class TCLASS>
-class MeshIsNotFlag
+class MeshIsNotFlag : public std::binary_function<TCLASS, typename TCLASS::TFlagType, bool>
 {
 public:
-    typedef TCLASS first_argument_type;
-    typedef typename TCLASS::TFlagType second_argument_type;
-    typedef bool result_type;
     bool operator () (const TCLASS& rclElem, typename TCLASS::TFlagType tFlag) const
     { return !rclElem.IsFlag(tFlag); }
 };
@@ -1107,12 +1097,9 @@ public:
  * Binary function to set the flags for use with generic STL functions.
  */
 template <class TCLASS>
-class MeshSetFlag
+class MeshSetFlag : public std::binary_function<TCLASS, typename TCLASS::TFlagType, bool>
 {
 public:
-    typedef TCLASS first_argument_type;
-    typedef typename TCLASS::TFlagType second_argument_type;
-    typedef bool result_type;
     bool operator () (const TCLASS& rclElem, typename TCLASS::TFlagType tFlag) const
     { rclElem.SetFlag(tFlag); return true; }
 };
@@ -1121,12 +1108,9 @@ public:
  * Binary function to reset the flags for use with generic STL functions.
  */
 template <class TCLASS>
-class MeshResetFlag
+class MeshResetFlag : public std::binary_function<TCLASS, typename TCLASS::TFlagType, bool>
 {
 public:
-    typedef TCLASS first_argument_type;
-    typedef typename TCLASS::TFlagType second_argument_type;
-    typedef bool result_type;
     bool operator () (const TCLASS& rclElem, typename TCLASS::TFlagType tFlag) const
     { rclElem.ResetFlag(tFlag); return true; }
 };

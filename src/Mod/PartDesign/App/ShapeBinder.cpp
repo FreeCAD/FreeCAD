@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <cfloat>
-# include <boost_bind_bind.hpp>
+# include <boost/bind.hpp>
 # include <gp_Lin.hxx>
 # include <gp_Pln.hxx>
 # include <BRep_Builder.hxx>
@@ -32,8 +32,6 @@
 # include <BRepBuilderAPI_MakeFace.hxx>
 #endif
 
-#include <unordered_map>
-#include <unordered_set>
 #include <boost/algorithm/string/predicate.hpp>
 
 #include <Base/Console.h>
@@ -52,7 +50,6 @@ FC_LOG_LEVEL_INIT("PartDesign",true,true)
 #endif
 
 using namespace PartDesign;
-namespace bp = boost::placeholders;
 
 // ============================================================================
 
@@ -231,7 +228,7 @@ void ShapeBinder::onSettingDocument()
     App::Document* document = getDocument();
     if (document) {
         this->connectDocumentChangedObject = document->signalChangedObject.connect(boost::bind
-            (&ShapeBinder::slotChangedObject, this, bp::_1, bp::_2));
+            (&ShapeBinder::slotChangedObject, this, _1, _2));
     }
 }
 
@@ -278,26 +275,20 @@ PROPERTY_SOURCE(PartDesign::SubShapeBinder, Part::Feature)
 
 SubShapeBinder::SubShapeBinder()
 {
-    ADD_PROPERTY_TYPE(Support, (0), "",(App::PropertyType)(App::Prop_None), "Support of the geometry");
-    Support.setStatus(App::Property::ReadOnly, true);
-    ADD_PROPERTY_TYPE(Fuse, (false), "Base",App::Prop_None,"Fuse solids from bound shapes");
-    ADD_PROPERTY_TYPE(MakeFace, (true), "Base",App::Prop_None,"Create face using wires from bound shapes");
+    ADD_PROPERTY_TYPE(Support, (0), "",(App::PropertyType)(App::Prop_Hidden|App::Prop_None),
+            "Support of the geometry");
+    Support.setStatus(App::Property::Immutable,true);
+    ADD_PROPERTY_TYPE(Fuse, (false), "Base",App::Prop_None,"Fused linked solid shapes");
+    ADD_PROPERTY_TYPE(MakeFace, (true), "Base",App::Prop_None,"Create face for linked wires");
     ADD_PROPERTY_TYPE(ClaimChildren, (false), "Base",App::Prop_Output,"Claim linked object as children");
-    ADD_PROPERTY_TYPE(Relative, (true), "Base",App::Prop_None,"Enable relative sub-object binding");
-    ADD_PROPERTY_TYPE(BindMode, ((long)0), "Base", App::Prop_None, 
-            "Synchronized: auto update binder shape on changed of bound object.\n"
-            "Frozen: disable auto update, but can be updated manually using context menu.\n"
-            "Detached: copy the shape of bound object and then remove the binding immediately.");
-    ADD_PROPERTY_TYPE(PartialLoad, (false), "Base", App::Prop_None,
-            "Enable partial loading, which disables auto loading of external document for"
-            "external bound object.");
+    ADD_PROPERTY_TYPE(Relative, (true), "Base",App::Prop_None,"Enable relative sub-object linking");
+    ADD_PROPERTY_TYPE(BindMode, ((long)0), "Base", App::Prop_None, "Binding mode");
+    ADD_PROPERTY_TYPE(PartialLoad, (false), "Base", App::Prop_None, "Enable partial loading");
     PartialLoad.setStatus(App::Property::PartialTrigger,true);
     static const char *BindModeEnum[] = {"Synchronized", "Frozen", "Detached", 0};
     BindMode.setEnums(BindModeEnum);
 
-    ADD_PROPERTY_TYPE(Context, (0), "Base", App::Prop_Hidden,
-            "Stores the context of this binder. It is used for monitoring and auto updating\n"
-            "the relative placement of the bound shape");
+    ADD_PROPERTY_TYPE(Context, (0), "Base", App::Prop_Hidden, "Enable partial loading");
     Context.setScope(App::LinkScope::Hidden);
 
     ADD_PROPERTY_TYPE(_Version,(0),"Base",(App::PropertyType)(
@@ -305,55 +296,13 @@ SubShapeBinder::SubShapeBinder()
 }
 
 void SubShapeBinder::setupObject() {
-    _Version.setValue(2);
+    _Version.setValue(1);
     checkPropertyStatus();
 }
 
-App::DocumentObject *SubShapeBinder::getSubObject(const char *subname, PyObject **pyObj,
-        Base::Matrix4D *mat, bool transform, int depth) const
-{
-    auto sobj = Part::Feature::getSubObject(subname,pyObj,mat,transform,depth);
-    if(sobj)
-        return sobj;
-    if(Data::ComplexGeoData::findElementName(subname)==subname)
-        return nullptr;
-
-    const char *dot = strchr(subname, '.');
-    if(!dot)
-        return nullptr;
-
-    App::GetApplication().checkLinkDepth(depth);
-    std::string name(subname,dot-subname);
-    for(auto &l : Support.getSubListValues()) {
-        auto obj = l.getValue();
-        if(!obj || !obj->getNameInDocument())
-            continue;
-        for(auto &sub : l.getSubValues()) {
-            auto sobj = obj->getSubObject(sub.c_str());
-            if(!sobj || !sobj->getNameInDocument())
-                continue;
-            if(subname[0] == '$') {
-                if(sobj->Label.getStrValue() != name.c_str()+1)
-                    continue;
-            } else if(!boost::equals(sobj->getNameInDocument(), name))
-                continue;
-            name = Data::ComplexGeoData::noElementName(sub.c_str());
-            name += dot+1;
-            if(mat && transform)
-                *mat *= Placement.getValue().toMatrix();
-            return obj->getSubObject(name.c_str(),pyObj,mat,true,depth+1);
-        }
-    }
-    return nullptr;
-}
-
-void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
+void SubShapeBinder::update() {
     Part::TopoShape result;
     std::vector<Part ::TopoShape> shapes;
-    std::vector<const Base::Matrix4D*> shapeMats;
-
-    bool forced = (Shape.getValue().IsNull() || (options & UpdateForced)) ? true : false;
-    bool init = (!forced && (options & UpdateForced)) ? true : false;
 
     std::string errMsg;
     auto parent = Context.getValue();
@@ -380,7 +329,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
             Context.setValue(parent,parentSub.c_str());
     }
     bool first = false;
-    std::unordered_map<const App::DocumentObject*, Base::Matrix4D> mats;
+    std::map<const App::DocumentObject*, Base::Matrix4D> mats;
     for(auto &l : Support.getSubListValues()) {
         auto obj = l.getValue();
         if(!obj || !obj->getNameInDocument())
@@ -424,9 +373,6 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                 }
             }
         }
-        if(init)
-            continue;
-
         const auto &subvals = l.getSubValues();
         std::set<std::string> subs(subvals.begin(),subvals.end());
         static std::string none("");
@@ -438,8 +384,15 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
             try {
                 auto shape = Part::Feature::getTopoShape(obj,sub.c_str(),true);
                 if(!shape.isNull()) {
+                    shape = shape.makETransform(res.first->second);
+                    // if(shape.Hasher
+                    //         && shape.getElementMapSize()
+                    //         && shape.Hasher != getDocument()->getStringHasher())
+                    // {
+                    //     shape.reTagElementMap(getID(),
+                    //             getDocument()->getStringHasher(),TOPOP_SHAPEBINDER);
+                    // }
                     shapes.push_back(shape);
-                    shapeMats.push_back(&res.first->second);
                 }
             } catch(Base::Exception &e) {
                 e.ReportException();
@@ -455,130 +408,58 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
             }
         }
     }
+    if(errMsg.size()) 
+        FC_THROWM(Base::RuntimeError, errMsg);
 
-    std::string objName;
-    // lambda function for generating matrix cache property
-    auto cacheName = [this,&objName](const App::DocumentObject *obj) {
-        objName = "Cache_";
-        objName += obj->getNameInDocument();
-        if(obj->getDocument() != getDocument()) {
-            objName += "_";
-            objName += obj->getDocument()->getName();
-        }
-        return objName.c_str();
-    };
-
-    if(!init) {
-
-        if(errMsg.size()) {
-            if(!(options & UpdateInit))
-                FC_THROWM(Base::RuntimeError, errMsg);
-            if(!Shape.getValue().IsNull())
-                return;
-        }
-
-        // If not forced, only rebuild when there is any change in
-        // transformation matrix
-        if(!forced) {
-            bool hit = true;
-            for(auto &v : mats) {
-                auto prop = Base::freecad_dynamic_cast<App::PropertyMatrix>(
-                        getDynamicPropertyByName(cacheName(v.first)));
-                if(!prop || prop->getValue()!=v.second) {
-                    hit = false;
-                    break;
-                }
-            }
-            if(hit)
-                return;
-        }
-        
-        if(shapes.size()==1 && !Relative.getValue())
-            shapes.back().setPlacement(Base::Placement());
-        else {
-            for(size_t i=0;i<shapes.size();++i) {
-                auto &shape = shapes[i];
-                shape = shape.makETransform(*shapeMats[i]);
-                // if(shape.Hasher
-                //         && shape.getElementMapSize()
-                //         && shape.Hasher != getDocument()->getStringHasher())
-                // {
-                //     shape.reTagElementMap(getID(),
-                //             getDocument()->getStringHasher(),TOPOP_SHAPEBINDER);
-                // }
+    if(shapes.size()==_Cache.size()) {
+        bool hit = true;
+        for(size_t i=0;i<shapes.size();++i) {
+            if(!shapes[i].getShape().IsPartner(_Cache[i].getShape())
+                    || shapes[i].getPlacement() != _Cache[i].getPlacement())
+            {
+                hit = false;
+                break;
             }
         }
-
-        if(shapes.empty()) {
-            // Shape.resetElementMapVersion();
+        if(hit)
             return;
-        }
+    }
+    _Cache = std::move(shapes);
 
-        result.makECompound(shapes);
-
-        bool fused = false;
-        if(Fuse.getValue()) {
-            // If the compound has solid, fuse them together, and ignore other type of
-            // shapes
-            std::vector<TopoDS_Shape> solids;
-            Part::TopoShape solid;
-            for(auto &s : result.getSubTopoShapes(TopAbs_SOLID)) {
-                if(solid.isNull())
-                    solid = s;
-                else 
-                    solids.push_back(s.getShape());
-            }
-            if(solids.size()) {
-                solid.fuse(solids);
-                result = solid.makERefine();
-                fused = true;
-            } else if (!solid.isNull()) {
-                // wrap the single solid in compound to keep its placement
-                result.makECompound({solid});
-                fused = true;
-            }
-        } 
-        
-        if(!fused && MakeFace.getValue()
-                && !result.hasSubShape(TopAbs_FACE)
-                && result.hasSubShape(TopAbs_EDGE))
-        {
-            result = result.makEWires();
-            try {
-                result = result.makEFace(0);
-            }catch(...){}
-        }
-
-        result.setPlacement(Placement.getValue());
-        Shape.setValue(result);
+    if(_Cache.empty()) {
+        // Shape.resetElementMapVersion();
+        return;
     }
 
-    // collect transformation matrix cache entries
-    std::unordered_set<std::string> caches;
-    for(const auto &name : getDynamicPropertyNames()) {
-        if(boost::starts_with(name,"Cache_"))
-            caches.emplace(name);
-    }
+    result.makECompound(_Cache);
 
-    // update transformation matrix cache
-    for(auto &v : mats) {
-        const char *name = cacheName(v.first);
-        auto prop = getDynamicPropertyByName(name);
-        if(!prop || !prop->isDerivedFrom(App::PropertyMatrix::getClassTypeId())) {
-            if(prop)
-                removeDynamicProperty(name);
-            prop = addDynamicProperty("App::PropertyMatrix",name,"Cache",0,0,false,true);
+    bool fused = false;
+    if(Fuse.getValue()) {
+        // If the compound has solid, fuse them together, and ignore other type of
+        // shapes
+        std::vector<TopoDS_Shape> solids;
+        for(auto &s : _Cache) {
+            if(s.shapeType(true) == TopAbs_SOLID)
+                solids.push_back(s.getShape());
         }
-        caches.erase(name);
-        static_cast<App::PropertyMatrix*>(prop)->setValue(v.second);
-    }
-
-    // remove any non-used cache entries.
-    for(const auto &name : caches) {
+        if(solids.size()) {
+            result.fuse(solids);
+            result = result.makERefine();
+            fused = true;
+        }
+    } 
+    
+    if(!fused && MakeFace.getValue() && 
+       !result.hasSubShape(TopAbs_FACE) &&
+       result.hasSubShape(TopAbs_EDGE))
+    {
+        result = result.makEWires();
         try {
-            removeDynamicProperty(name.c_str());
-        } catch(...) {}
+            result = result.makEFace(0);
+        }catch(...){}
     }
+
+    Shape.setValue(result);
 }
 
 void SubShapeBinder::slotRecomputedObject(const App::DocumentObject& Obj) {
@@ -591,13 +472,13 @@ void SubShapeBinder::slotRecomputedObject(const App::DocumentObject& Obj) {
 
 App::DocumentObjectExecReturn* SubShapeBinder::execute(void) {
     if(BindMode.getValue()==0)
-        update(UpdateForced);
+        update();
     return inherited::execute();
 }
 
 void SubShapeBinder::onDocumentRestored() {
-    if(_Version.getValue()<2)
-        update(UpdateInit);
+    if(Shape.testStatus(App::Property::Transient))
+        update();
     inherited::onDocumentRestored();
 }
 
@@ -610,7 +491,7 @@ void SubShapeBinder::onChanged(const App::Property *prop) {
         {
             contextDoc = Context.getValue()->getDocument();
             connRecomputedObj = contextDoc->signalRecomputedObject.connect(
-                    boost::bind(&SubShapeBinder::slotRecomputedObject, this, bp::_1));
+                    boost::bind(&SubShapeBinder::slotRecomputedObject, this, _1));
         }
     }else if(!isRestoring()) {
         if(prop == &Support) {

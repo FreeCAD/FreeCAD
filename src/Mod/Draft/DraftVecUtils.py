@@ -1,6 +1,23 @@
+## \defgroup DRAFTVECUTILS DraftVecUtils
+#  \ingroup UTILITIES
+#  \brief Vector math utilities used in Draft workbench
+#
+# Vector math utilities used primarily in the Draft workbench
+# but which can also be used in other workbenches and in macros.
+"""\defgroup DRAFTVECUTILS DraftVecUtils
+\ingroup UTILITIES
+\brief Vector math utilities used in Draft workbench
+
+Vector math utilities used primarily in the Draft workbench
+but which can also be used in other workbenches and in macros.
+"""
+# Check code with
+# flake8 --ignore=E226,E266,E401,W503
+
 # ***************************************************************************
-# *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
-# *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
+# *                                                                         *
+# *   Copyright (c) 2009, 2010                                              *
+# *   Yorik van Havre <yorik@uncreated.net>, Ken Cline <cline@frii.com>     *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -19,31 +36,18 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provide vector math utilities used in the Draft workbench.
-
-Vector math utilities used primarily in the Draft workbench
-but which can also be used in other workbenches and in macros.
-"""
-## \defgroup DRAFTVECUTILS DraftVecUtils
-#  \ingroup UTILITIES
-#  \brief Vector math utilities used in Draft workbench
-#
-# Vector math utilities used primarily in the Draft workbench
-# but which can also be used in other workbenches and in macros.
-
-# Check code with
-# flake8 --ignore=E226,E266,E401,W503
-
-import math
-import sys
-
-import FreeCAD
-from FreeCAD import Vector
-import draftutils.messages as messages
 
 __title__ = "FreeCAD Draft Workbench - Vector library"
 __author__ = "Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline"
-__url__ = "https://www.freecadweb.org"
+__url__ = ["http://www.freecadweb.org"]
+
+## \addtogroup DRAFTVECUTILS
+#  @{
+
+import sys
+import math, FreeCAD
+from FreeCAD import Vector, Matrix
+from FreeCAD import Console as FCC
 
 # Python 2 has two integer types, int and long.
 # In Python 3 there is no 'long' anymore, so make it 'int'.
@@ -53,9 +57,6 @@ except NameError:
     long = int
 
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-
-## \addtogroup DRAFTVECUTILS
-#  @{
 
 
 def precision():
@@ -97,15 +98,16 @@ def typecheck(args_and_types, name="?"):
         Defaults to `'?'`. The name of the check.
 
     Raises
-    ------
+    -------
     TypeError
         If the first element in the tuple is not an instance of the second
         element.
     """
     for v, t in args_and_types:
         if not isinstance(v, t):
-            _msg = "typecheck[{0}]: {1} is not {2}".format(name, v, t)
-            messages._wrn(_msg)
+            _msg = ("typecheck[" + str(name) + "]: "
+                    + str(v) + " is not " + str(t) + "\n")
+            FCC.PrintWarning(_msg)
             raise TypeError("fcvec." + str(name))
 
 
@@ -207,7 +209,7 @@ def equals(u, v):
         The second vector.
 
     Returns
-    -------
+    ------
     bool
         `True` if the vectors are within the precision, `False` otherwise.
     """
@@ -496,9 +498,9 @@ def rotate(u, angle, axis=Vector(0, 0, 1)):
     ys = y * s
     zs = z * s
 
-    m = FreeCAD.Matrix(c + x*x*t,   xyt - zs,   xzt + ys,   0,
-                       xyt + zs,    c + y*y*t,  yzt - xs,   0,
-                       xzt - ys,    yzt + xs,   c + z*z*t,  0)
+    m = Matrix(c + x*x*t,   xyt - zs,   xzt + ys,   0,
+               xyt + zs,    c + y*y*t,  yzt - xs,   0,
+               xzt - ys,    yzt + xs,   c + z*z*t,  0)
 
     return m.multiply(u)
 
@@ -546,7 +548,7 @@ def getRotation(vector, reference=Vector(1, 0, 0)):
 
 
 def isNull(vector):
-    """Return False if each of the components of the vector is zero.
+    """Returns `False` if each of the components of the vector is zero.
 
     Due to rounding errors, an element is probably never going to be
     exactly zero. Therefore, it rounds the element by the number
@@ -602,7 +604,7 @@ def find(vector, vlist):
     return None
 
 
-def closest(vector, vlist, return_length=False):
+def closest(vector, vlist):
     """Find the closest point to one point in a list of points (vectors).
 
     The scalar distance between the original point and one point in the list
@@ -611,24 +613,15 @@ def closest(vector, vlist, return_length=False):
 
     Parameters
     ----------
-    vector: Base::Vector3
-        The tested point or vector.
-
-    vlist: list
-        A list of points or vectors.
-
-    return_length: bool, optional
-        It defaults to `False`.
-        If it is `True`, the value of the smallest distance will be returned.
+    vector : Base::Vector3
+        The tested point (or vector).
+    vlist : list
+        A list of points (or vectors).
 
     Returns
     -------
     int
         The index of the list where the closest point is found.
-
-    int, float
-        If `return_length` is `True`, it returns both the index
-        and the length to the closest point.
     """
     typecheck([(vector, Vector), (vlist, list)], "closest")
 
@@ -637,15 +630,11 @@ def closest(vector, vlist, return_length=False):
     dist = 9999999999999999
     index = None
     for i, v in enumerate(vlist):
-        d = (vector - v).Length
+        d = vector.sub(v).Length
         if d < dist:
             dist = d
             index = i
-
-    if return_length:
-        return index, dist
-    else:
-        return index
+    return index
 
 
 def isColinear(vlist):
@@ -716,9 +705,8 @@ def isColinear(vlist):
     return True
 
 
-def rounded(v,d=None):
-    """Return a vector rounded to the `precision` in the parameter database
-    or to the given decimals value
+def rounded(v):
+    """Return a vector rounded to the `precision` in the parameter database.
 
     Each of the components of the vector is rounded to the decimal
     precision set in the parameter database.
@@ -727,7 +715,6 @@ def rounded(v,d=None):
     ----------
     v : Base::Vector3
         The input vector.
-    d : (Optional) the number of decimals to round to
 
     Returns
     -------
@@ -737,8 +724,6 @@ def rounded(v,d=None):
         in the parameter database.
     """
     p = precision()
-    if d:
-        p = d
     return Vector(round(v.x, p), round(v.y, p), round(v.z, p))
 
 

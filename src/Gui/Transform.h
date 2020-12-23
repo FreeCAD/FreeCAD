@@ -71,7 +71,7 @@ class GuiExport Transform : public Gui::LocationDialog
     Q_OBJECT
 
 public:
-    Transform(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
+    Transform(QWidget* parent = 0, Qt::WindowFlags fl = 0);
     ~Transform();
     void accept();
     void reject();
@@ -96,7 +96,7 @@ Q_SIGNALS:
     void directionChanged();
 
 private:
-    typedef Gui::LocationUi<Ui_Placement> Ui_TransformComp;
+    typedef Gui::LocationInterfaceComp<Ui_Placement> Ui_TransformComp;
     Ui_TransformComp* ui;
     Base::Placement pm;
     std::set<App::DocumentObject*> selection;

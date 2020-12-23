@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jan Rheinländer                                    *
- *                                   <jrheinlaender@users.sourceforge.net> *
+ *   Copyright (c) 2013 Jan Rheinländer <jrheinlaender@users.sourceforge.net>*
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -197,21 +196,19 @@ QVariant TaskSketchBasedParameters::objectNameByLabel(const QString& label,
     return QVariant(); // no such feature found
 }
 
-QString TaskSketchBasedParameters::getFaceReference(const QString& obj, const QString& sub) const
+QString TaskSketchBasedParameters::getFaceReference(const QString& obj, const QString& sub)
 {
-    App::Document* doc = this->vp->getObject()->getDocument();
     QString o = obj.left(obj.indexOf(QString::fromLatin1(":")));
 
     if (o.isEmpty())
         return QString();
-
-    return QString::fromLatin1("(App.getDocument(\"%1\").%2, [\"%3\"])")
-            .arg(QString::fromLatin1(doc->getName()), o, sub);
+    else
+        return QString::fromLatin1("(App.activeDocument().") + o +
+                QString::fromLatin1(", [\"") + sub + QString::fromLatin1("\"])");
 }
 
 TaskSketchBasedParameters::~TaskSketchBasedParameters()
 {
-    Gui::Selection().rmvSelectionGate();
 }
 
 

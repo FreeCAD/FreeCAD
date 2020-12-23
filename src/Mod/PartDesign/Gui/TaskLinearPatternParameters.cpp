@@ -1,5 +1,5 @@
 /******************************************************************************
- *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
+ *   Copyright (c)2012 Jan Rheinlaender <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
  *   This file is part of the FreeCAD CAx development system.                 *
  *                                                                            *
@@ -113,23 +113,17 @@ void TaskLinearPatternParameters::setupUI()
 
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
-    action->setShortcut(QKeySequence::Delete);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
-    // display shortcut behind the context menu entry
-    action->setShortcutVisibleInContextMenu(true);
-#endif
+    action->setShortcut(QString::fromLatin1("Del"));
     ui->listWidgetFeatures->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onFeatureDeleted()));
     ui->listWidgetFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
-    connect(ui->listWidgetFeatures->model(),
-        SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), this, SLOT(indexesMoved()));
 
     updateViewTimer = new QTimer(this);
     updateViewTimer->setSingleShot(true);
     updateViewTimer->setInterval(getUpdateViewTimeout());
+
     connect(updateViewTimer, SIGNAL(timeout()),
             this, SLOT(onUpdateViewTimer()));
-
     connect(ui->comboDirection, SIGNAL(activated(int)),
             this, SLOT(onDirectionChanged(int)));
     connect(ui->checkReverse, SIGNAL(toggled(bool)),
@@ -233,30 +227,12 @@ void TaskLinearPatternParameters::kickUpdateViewTimer() const
     updateViewTimer->start();
 }
 
-void TaskLinearPatternParameters::addObject(App::DocumentObject* obj)
-{
-    QString label = QString::fromUtf8(obj->Label.getValue());
-    QString objectName = QString::fromLatin1(obj->getNameInDocument());
-
-    QListWidgetItem* item = new QListWidgetItem();
-    item->setText(label);
-    item->setData(Qt::UserRole, objectName);
-    ui->listWidgetFeatures->addItem(item);
-}
-
-void TaskLinearPatternParameters::removeObject(App::DocumentObject* obj)
-{
-    QString label = QString::fromUtf8(obj->Label.getValue());
-    removeItemFromListWidget(ui->listWidgetFeatures, label);
-}
-
 void TaskLinearPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    if (selectionMode != none && msg.Type == Gui::SelectionChanges::AddSelection) {
+    if (selectionMode!=none && msg.Type == Gui::SelectionChanges::AddSelection) {
         if (originalSelected(msg)) {
             exitSelectionMode();
-        }
-        else if (selectionMode == reference) {
+        } else {
             // TODO check if this works correctly (2015-09-01, Fat-Zer)
             exitSelectionMode();
             std::vector<std::string> directions;
@@ -365,15 +341,10 @@ void TaskLinearPatternParameters::onFeatureDeleted(void)
 {
     PartDesign::Transformed* pcTransformed = getObject();
     std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
-    int currentRow = ui->listWidgetFeatures->currentRow();
-    if (currentRow < 0) {
-        Base::Console().Error("PartDesign LinearPattern: No feature selected for removing.\n");
-        return; //no current row selected
-    }
-    originals.erase(originals.begin() + currentRow);
+    originals.erase(originals.begin() + ui->listWidgetFeatures->currentRow());
     setupTransaction();
     pcTransformed->Originals.setValues(originals);
-    ui->listWidgetFeatures->model()->removeRow(currentRow);
+    ui->listWidgetFeatures->model()->removeRow(ui->listWidgetFeatures->currentRow());
     recomputeFeature();
 }
 

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2014 Stefan Tröger <stefantroeger@gmx.net>              *
+ *   Copyright (c) Stefan Tröger          (stefantroeger@gmx.net) 2014     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -260,7 +260,7 @@ Py::Object View3DInventorViewerPy::seekToPoint(const Py::Tuple& args)
         else {
             Py::Int x(tuple[0]);
             Py::Int y(tuple[1]);
-
+            
             SbVec2s hitpoint ((long)x,(long)y);
             _viewer->seekToPoint(hitpoint);
         }
@@ -276,7 +276,7 @@ Py::Object View3DInventorViewerPy::setFocalDistance(const Py::Tuple& args)
 {
     float distance;
     if (!PyArg_ParseTuple(args.ptr(), "f", &distance))
-        throw Py::Exception();
+        throw Py::Exception(); 
 
     try {
         SoCamera* cam = _viewer->getSoRenderManager()->getCamera();
@@ -295,7 +295,7 @@ Py::Object View3DInventorViewerPy::setFocalDistance(const Py::Tuple& args)
     catch(...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
-
+    
     return Py::None();
 }
 
@@ -303,7 +303,7 @@ Py::Object View3DInventorViewerPy::getFocalDistance(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
-
+    
     try {
         double d = _viewer->getSoRenderManager()->getCamera()->focalDistance.getValue();
         return Py::Float(d);

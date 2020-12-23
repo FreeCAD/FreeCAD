@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <boost_bind_bind.hpp>
+# include <boost/bind.hpp>
 # include <QAbstractSpinBox>
 # include <QActionEvent>
 # include <QApplication>
@@ -53,7 +53,6 @@
 #endif
 
 using namespace Gui::TaskView;
-namespace bp = boost::placeholders;
 
 //**************************************************************************
 //**************************************************************************
@@ -399,16 +398,16 @@ TaskView::TaskView(QWidget *parent)
 
     connectApplicationActiveDocument = 
     App::GetApplication().signalActiveDocument.connect
-        (boost::bind(&Gui::TaskView::TaskView::slotActiveDocument, this, bp::_1));
+        (boost::bind(&Gui::TaskView::TaskView::slotActiveDocument, this, _1));
     connectApplicationDeleteDocument = 
     App::GetApplication().signalDeletedDocument.connect
         (boost::bind(&Gui::TaskView::TaskView::slotDeletedDocument, this));
     connectApplicationUndoDocument = 
     App::GetApplication().signalUndoDocument.connect
-        (boost::bind(&Gui::TaskView::TaskView::slotUndoDocument, this, bp::_1));
+        (boost::bind(&Gui::TaskView::TaskView::slotUndoDocument, this, _1));
     connectApplicationRedoDocument = 
     App::GetApplication().signalRedoDocument.connect
-        (boost::bind(&Gui::TaskView::TaskView::slotRedoDocument, this, bp::_1));
+        (boost::bind(&Gui::TaskView::TaskView::slotRedoDocument, this, _1));
 }
 
 TaskView::~TaskView()
@@ -478,7 +477,7 @@ void TaskView::keyPressEvent(QKeyEvent* ke)
                 }
             }
         }
-        else if (ke->key() == Qt::Key_Escape && ActiveDialog->isEscapeButtonEnabled()) {
+        else if (ke->key() == Qt::Key_Escape) {
             // get only the buttons of the button box
             QDialogButtonBox* box = ActiveCtrl->standardButtons();
             QList<QAbstractButton*> list = box->buttons();

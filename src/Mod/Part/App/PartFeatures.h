@@ -173,25 +173,6 @@ public:
     //@}
 };
 
-class Reverse : public Part::Feature
-{
-    PROPERTY_HEADER(Part::Reverse);
-
-public:
-    Reverse();
-
-    App::PropertyLink Source;
-
-    /** @name methods override feature */
-    //@{
-    /// recalculate the feature
-    App::DocumentObjectExecReturn* execute(void);
-    const char* getViewProviderName(void) const {
-        return "PartGui::ViewProviderReverse";
-    }
-    //@}
-};
-
 } //namespace Part
 
 

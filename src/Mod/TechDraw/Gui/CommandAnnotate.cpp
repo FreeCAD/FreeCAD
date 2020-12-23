@@ -64,7 +64,6 @@
 #include "TaskCenterLine.h"
 #include "TaskLineDecor.h"
 #include "TaskWeldingSymbol.h"
-#include "TaskCosmeticLine.h"
 #include "ViewProviderPage.h"
 #include "ViewProviderViewPart.h"
 #include "QGVPage.h"
@@ -79,14 +78,11 @@ bool _checkSelectionHatch(Gui::Command* cmd);
 
 void execCosmeticVertex(Gui::Command* cmd);
 void execMidpoints(Gui::Command* cmd);
-void execQuadrants(Gui::Command* cmd);
+void execQuadrant(Gui::Command* cmd);
 void execCenterLine(Gui::Command* cmd);
 void exec2LineCenterLine(Gui::Command* cmd);
 void exec2PointCenterLine(Gui::Command* cmd);
-void execLine2Points(Gui::Command* cmd);
-std::vector<std::string> getSelectedSubElements(Gui::Command* cmd, 
-                                                TechDraw::DrawViewPart* &dvp,
-                                                std::string subType = "Edge");
+
 
 //===========================================================================
 // TechDraw_Leader
@@ -99,11 +95,11 @@ CmdTechDrawLeaderLine::CmdTechDrawLeaderLine()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Add Leaderline to View");
-    sToolTipText    = sMenuText;
+    sMenuText       = QT_TR_NOOP("Add a line to a view");
+    sToolTipText    = QT_TR_NOOP("Add a line to a view");
     sWhatsThis      = "TechDraw_LeaderLine";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-LeaderLine";
+    sPixmap         = "actions/techdraw-mline";
 }
 
 void CmdTechDrawLeaderLine::activated(int iMsg)
@@ -127,20 +123,18 @@ void CmdTechDrawLeaderLine::activated(int iMsg)
     if (!selection.empty()) {
         baseFeat =  dynamic_cast<TechDraw::DrawView *>(selection[0].getObject());
         if( baseFeat == nullptr ) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
                                  QObject::tr("Can not attach leader.  No base View selected."));
             return;
         }
     } else {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
                                  QObject::tr("You must select a base View for the line."));
             return;
     }
 
     Gui::Control().showDialog(new TechDrawGui::TaskDlgLeaderLine(baseFeat,
-                                                                 page));
-    updateActive();
-    Gui::Selection().clearSelection();
+                                                    page));
 }
 
 bool CmdTechDrawLeaderLine::isActive(void)
@@ -151,24 +145,24 @@ bool CmdTechDrawLeaderLine::isActive(void)
 }
 
 //===========================================================================
-// TechDraw_RichTextAnnotation
+// TechDraw_RichAnno
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawRichTextAnnotation)
+DEF_STD_CMD_A(CmdTechDrawRichAnno)
 
-CmdTechDrawRichTextAnnotation::CmdTechDrawRichTextAnnotation()
-  : Command("TechDraw_RichTextAnnotation")
+CmdTechDrawRichAnno::CmdTechDrawRichAnno()
+  : Command("TechDraw_RichAnno")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert Rich Text Annotation");
-    sToolTipText    = sMenuText;
-    sWhatsThis      = "TechDraw_RichTextAnnotation";
+    sMenuText       = QT_TR_NOOP("Add a rich text annotation");
+    sToolTipText    = QT_TR_NOOP("Add a rich text annotation");
+    sWhatsThis      = "TechDraw_RichAnno";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-RichTextAnnotation";
+    sPixmap         = "actions/techdraw-textleader";
 }
 
-void CmdTechDrawRichTextAnnotation::activated(int iMsg)
+void CmdTechDrawRichAnno::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
@@ -191,38 +185,37 @@ void CmdTechDrawRichTextAnnotation::activated(int iMsg)
 
     Gui::Control().showDialog(new TaskDlgRichAnno(baseFeat,
                                                   page));
-    updateActive();
-    Gui::Selection().clearSelection();
 }
 
-bool CmdTechDrawRichTextAnnotation::isActive(void)
+bool CmdTechDrawRichAnno::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
-    return havePage;
+    bool haveView = DrawGuiUtil::needView(this, false);
+    return (havePage && haveView);
 }
 
 
 //===========================================================================
-// TechDraw_CosmeticVertexGroup
+// CosmeticVertexGroup
 //===========================================================================
 
-DEF_STD_CMD_ACL(CmdTechDrawCosmeticVertexGroup)
+DEF_STD_CMD_ACL(CmdTechDrawCosmeticVertexGrp)
 
-CmdTechDrawCosmeticVertexGroup::CmdTechDrawCosmeticVertexGroup()
-  : Command("TechDraw_CosmeticVertexGroup")
+CmdTechDrawCosmeticVertexGrp::CmdTechDrawCosmeticVertexGrp()
+  : Command("TechDraw_CosmeticVertexGrp")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Insert Cosmetic Vertex");
-    sToolTipText    = sMenuText;
-    sWhatsThis      = "TechDraw_CosmeticVertexGroup";
+    sToolTipText    = QT_TR_NOOP("Insert Cosmetic Vertex");
+    sWhatsThis      = "TechDraw_CosmeticVertexGrp";
     sStatusTip      = sToolTipText;
 //    eType           = ForEdit;
 }
 
-void CmdTechDrawCosmeticVertexGroup::activated(int iMsg)
+void CmdTechDrawCosmeticVertexGrp::activated(int iMsg)
 {
-//    Base::Console().Message("CMD::CosmeticVertexGroup - activated(%d)\n", iMsg);
+//    Base::Console().Message("CMD::CosmeticVertexGrp - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
     if (dlg != nullptr) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
@@ -240,33 +233,32 @@ void CmdTechDrawCosmeticVertexGroup::activated(int iMsg)
             execMidpoints(this);
             break;
         case 2:
-            execQuadrants(this);
+            execQuadrant(this);
             break;
         default:
             Base::Console().Message("CMD::CVGrp - invalid iMsg: %d\n",iMsg);
     };
-    updateActive();
-    Gui::Selection().clearSelection();
+//    Base::Console().Message("CMD::CosmeticVertexGrp - activated - exits\n");
 }
 
-Gui::Action * CmdTechDrawCosmeticVertexGroup::createAction(void)
+Gui::Action * CmdTechDrawCosmeticVertexGrp::createAction(void)
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
     applyCommandData(this->className(), pcAction);
 
     QAction* p1 = pcAction->addAction(QString());
-    p1->setIcon(Gui::BitmapFactory().iconFromTheme("actions/techdraw-CosmeticVertex"));
+    p1->setIcon(Gui::BitmapFactory().iconFromTheme("actions/techdraw-point"));
     p1->setObjectName(QString::fromLatin1("TechDraw_CosmeticVertex"));
     p1->setWhatsThis(QString::fromLatin1("TechDraw_CosmeticVertx"));
     QAction* p2 = pcAction->addAction(QString());
-    p2->setIcon(Gui::BitmapFactory().iconFromTheme("actions/techdraw-Midpoints"));
+    p2->setIcon(Gui::BitmapFactory().iconFromTheme("actions/techdraw-midpoint"));
     p2->setObjectName(QString::fromLatin1("TechDraw_Midpoints"));
     p2->setWhatsThis(QString::fromLatin1("TechDraw_Midpoints"));
     QAction* p3 = pcAction->addAction(QString());
-    p3->setIcon(Gui::BitmapFactory().iconFromTheme("actions/techdraw-Quadrants"));
-    p3->setObjectName(QString::fromLatin1("TechDraw_Quadrants"));
-    p3->setWhatsThis(QString::fromLatin1("TechDraw_Quadrants"));
+    p3->setIcon(Gui::BitmapFactory().iconFromTheme("actions/techdraw-quadrant"));
+    p3->setObjectName(QString::fromLatin1("TechDraw_Quadrant"));
+    p3->setWhatsThis(QString::fromLatin1("TechDraw_Quadrant"));
 
     _pcAction = pcAction;
     languageChange();
@@ -278,7 +270,7 @@ Gui::Action * CmdTechDrawCosmeticVertexGroup::createAction(void)
     return pcAction;
 }
 
-void CmdTechDrawCosmeticVertexGroup::languageChange()
+void CmdTechDrawCosmeticVertexGrp::languageChange()
 {
     Command::languageChange();
 
@@ -288,20 +280,20 @@ void CmdTechDrawCosmeticVertexGroup::languageChange()
     QList<QAction*> a = pcAction->actions();
 
     QAction* arc1 = a[0];
-    arc1->setText(QApplication::translate("CmdTechDrawCosmeticVertexGroup","Add Cosmetic Vertex"));
-    arc1->setToolTip(QApplication::translate("TechDraw_CosmeticVertex","Inserts a Cosmetic Vertex into a View"));
+    arc1->setText(QApplication::translate("CmdTechDrawCosmeticVertexGrp","Cosmetic Vertex"));
+    arc1->setToolTip(QApplication::translate("TechDraw_CosmeticVertex","Insert a Cosmetic Vertex into a View"));
     arc1->setStatusTip(arc1->toolTip());
     QAction* arc2 = a[1];
-    arc2->setText(QApplication::translate("CmdMidpoints","Add Midpoint Vertices"));
-    arc2->setToolTip(QApplication::translate("TechDraw_Midpoints","Inserts Cosmetic Vertices at Midpoint of selected Edges"));
+    arc2->setText(QApplication::translate("CmdMidpoints","Midpoints"));
+    arc2->setToolTip(QApplication::translate("TechDraw_Midpoints","Insert Cosmetic Vertex at midpoint of Edge(s)"));
     arc2->setStatusTip(arc2->toolTip());
     QAction* arc3 = a[2];
-    arc3->setText(QApplication::translate("CmdQuadrants","Add Quadrant Vertices"));
-    arc3->setToolTip(QApplication::translate("TechDraw_Quadrants","Inserts Cosmetic Vertices at Quadrant Points of selected Circles"));
+    arc3->setText(QApplication::translate("CmdQuadrant","Quadrant"));
+    arc3->setToolTip(QApplication::translate("TechDraw_Quadrant","Insert Cosmetic Vertex at quadrant points of Circle(s)"));
     arc3->setStatusTip(arc3->toolTip());
 }
 
-bool CmdTechDrawCosmeticVertexGroup::isActive(void)
+bool CmdTechDrawCosmeticVertexGrp::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this, true);
@@ -329,60 +321,96 @@ void execCosmeticVertex(Gui::Command* cmd)
         return;
     }
 
-    //shapes not empty and only contains dvp
     TechDraw::DrawViewPart* baseFeat = nullptr;
     baseFeat =  dynamic_cast<TechDraw::DrawViewPart*>((*shapes.begin()));
+    if (baseFeat == nullptr) {
+        Base::Console().Message("CMD::CosmeticVertex - 1st shape is not DVP.  WTF?\n");
+        return;
+    }
 
     Gui::Control().showDialog(new TaskDlgCosVertex(baseFeat,
                                                    page));
+//    Base::Console().Message("execCosmeticVertex - exits\n");
 }
 
 void execMidpoints(Gui::Command* cmd)
 {
 //    Base::Console().Message("execMidpoints()\n");
-    TechDraw::DrawViewPart * dvp = nullptr;
-    std::vector<std::string> selectedEdges = getSelectedSubElements(cmd, dvp, "Edge");
+    TechDraw::DrawViewPart * objFeat = 0;
+    std::vector<std::string> SubNames;
 
-    if ( (dvp == nullptr) || 
-         (selectedEdges.empty()) ) {
-        return;
+    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
+    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
+    for (; itSel != selection.end(); itSel++)  {
+        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+            objFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
+            SubNames = (*itSel).getSubNames();
+        }
     }
 
-    const std::vector<TechDraw::BaseGeom*> edges = dvp->getEdgeGeometry();
-    double scale = dvp->getScale();
-    for (auto& s: selectedEdges) {
+    for (auto& s: SubNames) {
+        if (TechDraw::DrawUtil::getGeomTypeFromName(s) == "Edge") {
+            continue;
+        } else {
+            std::stringstream edgeMsg;
+            edgeMsg << "Please select only Edges for this function";
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
+                                                   QObject::tr(edgeMsg.str().c_str()));
+            return;
+        }
+    }
+
+    const std::vector<TechDraw::BaseGeom*> edges = objFeat->getEdgeGeometry();
+    double scale = objFeat->getScale();
+    for (auto& s: SubNames) {
         int GeoId(TechDraw::DrawUtil::getIndexFromName(s));
         TechDraw::BaseGeom* geom = edges.at(GeoId);
         Base::Vector3d mid = geom->getMidPoint();
         mid = DrawUtil::invertY(mid);
-        dvp->addCosmeticVertex(mid / scale);
+        objFeat->addCosmeticVertex(mid / scale);
     }
-    dvp->recomputeFeature();
+    cmd->updateActive();
 }
 
-void execQuadrants(Gui::Command* cmd)
+void execQuadrant(Gui::Command* cmd)
 {
-//    Base::Console().Message("execQuadrants()\n");
-    TechDraw::DrawViewPart* dvp = nullptr;
-    std::vector<std::string> selectedEdges = getSelectedSubElements(cmd, dvp, "Edge");
+//    Base::Console().Message("execQuadrant()\n");
+    TechDraw::DrawViewPart * objFeat = 0;
+    std::vector<std::string> SubNames;
 
-    if ( (dvp == nullptr) || 
-         (selectedEdges.empty()) ) {
-        return;
+    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
+    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
+    for (; itSel != selection.end(); itSel++)  {
+        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+            objFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
+            SubNames = (*itSel).getSubNames();
+        }
     }
 
-    const std::vector<TechDraw::BaseGeom*> edges = dvp->getEdgeGeometry();
-    double scale = dvp->getScale();
-    for (auto& s: selectedEdges) {
+    for (auto& s: SubNames) {
+        if (TechDraw::DrawUtil::getGeomTypeFromName(s) == "Edge") {
+            continue;
+        } else {
+            std::stringstream edgeMsg;
+            edgeMsg << "Please select only Edges for this function";
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
+                                                   QObject::tr(edgeMsg.str().c_str()));
+            return;
+        }
+    }
+
+    const std::vector<TechDraw::BaseGeom*> edges = objFeat->getEdgeGeometry();
+    double scale = objFeat->getScale();
+    for (auto& s: SubNames) {
         int GeoId(TechDraw::DrawUtil::getIndexFromName(s));
         TechDraw::BaseGeom* geom = edges.at(GeoId);
             std::vector<Base::Vector3d> quads = geom->getQuads();
             for (auto& q: quads) {
                 Base::Vector3d iq = DrawUtil::invertY(q);
-                dvp->addCosmeticVertex(iq / scale);
+                objFeat->addCosmeticVertex(iq / scale);
             }
     }
-    dvp->recomputeFeature();
+    cmd->updateActive();
 }
 
 DEF_STD_CMD_A(CmdTechDrawCosmeticVertex)
@@ -392,11 +420,11 @@ CmdTechDrawCosmeticVertex::CmdTechDrawCosmeticVertex()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Add Cosmetic Vertex");
-    sToolTipText    = sMenuText;
+    sMenuText       = QT_TR_NOOP("Add a cosmetic vertex");
+    sToolTipText    = QT_TR_NOOP("Add a cosmetic vertex");
     sWhatsThis      = "TechDraw_CosmeticVertex";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-CosmeticVertex";
+    sPixmap         = "actions/techdraw-point";
 }
 
 void CmdTechDrawCosmeticVertex::activated(int iMsg)
@@ -431,8 +459,6 @@ void CmdTechDrawCosmeticVertex::activated(int iMsg)
 
     Gui::Control().showDialog(new TaskDlgCosVertex(baseFeat,
                                                    page));
-    updateActive();
-    Gui::Selection().clearSelection();
 }
 
 bool CmdTechDrawCosmeticVertex::isActive(void)
@@ -453,11 +479,11 @@ CmdTechDrawMidpoints::CmdTechDrawMidpoints()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Add Midpoint Vertices");
-    sToolTipText    = sMenuText;
+    sMenuText       = QT_TR_NOOP("Add midpoint vertices");
+    sToolTipText    = QT_TR_NOOP("Add midpoint vertices");
     sWhatsThis      = "TechDraw_Midpoints";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-Midpoints";
+    sPixmap         = "actions/techdraw-midpoint";
 }
 
 void CmdTechDrawMidpoints::activated(int iMsg)
@@ -470,8 +496,6 @@ void CmdTechDrawMidpoints::activated(int iMsg)
         return;
     }
     execMidpoints(this);
-    updateActive();
-    Gui::Selection().clearSelection();
 }
 
 bool CmdTechDrawMidpoints::isActive(void)
@@ -482,24 +506,24 @@ bool CmdTechDrawMidpoints::isActive(void)
 }
 
 //===========================================================================
-// TechDraw_Quadrants
+// TechDraw_Quadrant
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawQuadrants)
+DEF_STD_CMD_A(CmdTechDrawQuadrant)
 
-CmdTechDrawQuadrants::CmdTechDrawQuadrants()
-  : Command("TechDraw_Quadrants")
+CmdTechDrawQuadrant::CmdTechDrawQuadrant()
+  : Command("TechDraw_Quadrant")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Add Quadrant Vertices");
-    sToolTipText    = sMenuText;
-    sWhatsThis      = "TechDraw_Quadrants";
+    sMenuText       = QT_TR_NOOP("Add quadrant vertices");
+    sToolTipText    = QT_TR_NOOP("Add quadrant vertices");
+    sWhatsThis      = "TechDraw_Quadrant";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-Quadrants";
+    sPixmap         = "actions/techdraw-quadrant";
 }
 
-void CmdTechDrawQuadrants::activated(int iMsg)
+void CmdTechDrawQuadrant::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
@@ -508,12 +532,10 @@ void CmdTechDrawQuadrants::activated(int iMsg)
             QObject::tr("Close active task dialog and try again."));
         return;
     }
-    execQuadrants(this);
-    updateActive();
-    Gui::Selection().clearSelection();
+    execQuadrant(this);
 }
 
-bool CmdTechDrawQuadrants::isActive(void)
+bool CmdTechDrawQuadrant::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this, true);
@@ -532,7 +554,7 @@ CmdTechDrawAnnotation::CmdTechDrawAnnotation()
     // setting the Gui eye-candy
     sGroup        = QT_TR_NOOP("TechDraw");
     sMenuText     = QT_TR_NOOP("Insert Annotation");
-    sToolTipText  = sMenuText;
+    sToolTipText  = QT_TR_NOOP("Insert Annotation");
     sWhatsThis    = "TechDraw_NewAnnotation";
     sStatusTip    = sToolTipText;
     sPixmap       = "actions/techdraw-annotation";
@@ -548,7 +570,7 @@ void CmdTechDrawAnnotation::activated(int iMsg)
     std::string PageName = page->getNameInDocument();
 
     std::string FeatName = getUniqueObjectName("Annotation");
-    openCommand(QT_TRANSLATE_NOOP("Command", "Create Annotation"));
+    openCommand("Create Annotation");
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewAnnotation','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
     updateActive();
@@ -561,26 +583,26 @@ bool CmdTechDrawAnnotation::isActive(void)
 }
 
 //===========================================================================
-// TechDraw_CenterLineGroup
+// CenterLineGroup
 //===========================================================================
 
-DEF_STD_CMD_ACL(CmdTechDrawCenterLineGroup)
+DEF_STD_CMD_ACL(CmdTechDrawCenterLineGrp)
 
-CmdTechDrawCenterLineGroup::CmdTechDrawCenterLineGroup()
-  : Command("TechDraw_CenterLineGroup")
+CmdTechDrawCenterLineGrp::CmdTechDrawCenterLineGrp()
+  : Command("TechDraw_CenterLineGrp")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Insert Center Line");
-    sToolTipText    = sMenuText;
-    sWhatsThis      = "TechDraw_CenterLineGroup";
+    sToolTipText    = QT_TR_NOOP("Insert Center Line");
+    sWhatsThis      = "TechDraw_CenterLineGrp";
     sStatusTip      = sToolTipText;
 //    eType           = ForEdit;
 }
 
-void CmdTechDrawCenterLineGroup::activated(int iMsg)
+void CmdTechDrawCenterLineGrp::activated(int iMsg)
 {
-//    Base::Console().Message("CMD::CenterLineGroup - activated(%d)\n", iMsg);
+//    Base::Console().Message("CMD::CenterLineGrp - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
     if (dlg != nullptr) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
@@ -591,13 +613,13 @@ void CmdTechDrawCenterLineGroup::activated(int iMsg)
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     pcAction->setIcon(pcAction->actions().at(iMsg)->icon());
     switch(iMsg) {
-        case 0:                 //faces
+        case 0:
             execCenterLine(this);
             break;
-        case 1:                 //2 lines
+        case 1:
             exec2LineCenterLine(this);
             break;
-        case 2:                 //2 points
+        case 2:
             exec2PointCenterLine(this);
             break;
         default:
@@ -605,7 +627,7 @@ void CmdTechDrawCenterLineGroup::activated(int iMsg)
     };
 }
 
-Gui::Action * CmdTechDrawCenterLineGroup::createAction(void)
+Gui::Action * CmdTechDrawCenterLineGrp::createAction(void)
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
@@ -634,7 +656,7 @@ Gui::Action * CmdTechDrawCenterLineGroup::createAction(void)
     return pcAction;
 }
 
-void CmdTechDrawCenterLineGroup::languageChange()
+void CmdTechDrawCenterLineGrp::languageChange()
 {
     Command::languageChange();
 
@@ -644,20 +666,20 @@ void CmdTechDrawCenterLineGroup::languageChange()
     QList<QAction*> a = pcAction->actions();
 
     QAction* arc1 = a[0];
-    arc1->setText(QApplication::translate("CmdTechDrawCenterLineGroup","Add Centerline to Faces"));
-    arc1->setToolTip(QApplication::translate("TechDraw_FaceCenterLine","Adds a Centerline to Faces"));
+    arc1->setText(QApplication::translate("CmdTechDrawCenterLineGrp","Center Line"));
+    arc1->setToolTip(QApplication::translate("TechDraw_FaceCenterLine","Insert a CenterLine into a Face(s)"));
     arc1->setStatusTip(arc1->toolTip());
     QAction* arc2 = a[1];
-    arc2->setText(QApplication::translate("Cmd2LineCenterLine","Add Centerline between 2 Lines"));
-    arc2->setToolTip(QApplication::translate("TechDraw_2LineCenterLine","Adds a Centerline between 2 Lines"));
+    arc2->setText(QApplication::translate("Cmd2LineCenterLine","2 Line CenterLine"));
+    arc2->setToolTip(QApplication::translate("TechDraw_2LineCenterLine","Insert CenterLine between 2 lines"));
     arc2->setStatusTip(arc2->toolTip());
     QAction* arc3 = a[2];
-    arc3->setText(QApplication::translate("Cmd2PointCenterLine","Add Centerline between 2 Points"));
-    arc3->setToolTip(QApplication::translate("TechDraw_2PointCenterLine","Adds a Centerline between 2 Points"));
+    arc3->setText(QApplication::translate("Cmd2PointCenterLine","2 Point CenterLine"));
+    arc3->setToolTip(QApplication::translate("TechDraw_2PointCenterLine","Insert CenterLine between 2 points"));
     arc3->setStatusTip(arc3->toolTip());
 }
 
-bool CmdTechDrawCenterLineGroup::isActive(void)
+bool CmdTechDrawCenterLineGrp::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this, true);
@@ -674,8 +696,8 @@ CmdTechDrawFaceCenterLine::CmdTechDrawFaceCenterLine()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Add Centerline to Faces");
-    sToolTipText    = sMenuText;
+    sMenuText       = QT_TR_NOOP("Add a centerline to a Face(s)");
+    sToolTipText    = QT_TR_NOOP("Add a centerline to a Face(s)");
     sWhatsThis      = "TechDraw_FaceCenterLine";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/techdraw-facecenterline";
@@ -714,28 +736,28 @@ void execCenterLine(Gui::Command* cmd)
     if (!selection.empty()) {
         baseFeat =  dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
         if( baseFeat == nullptr ) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
                                  QObject::tr("No base View in Selection."));
             return;
         }
     } else {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
                                  QObject::tr("You must select a base View for the line."));
             return;
     }
 
-    std::vector<std::string> subNames;
+    std::vector<std::string> SubNames;
 
     std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
     for (; itSel != selection.end(); itSel++)  {
         if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
             baseFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
-            subNames = (*itSel).getSubNames();
+            SubNames = (*itSel).getSubNames();
         }
     }
     std::vector<std::string> faceNames;
     std::vector<std::string> edgeNames;
-    for (auto& s: subNames) {
+    for (auto& s: SubNames) {
         std::string geomType = DrawUtil::getGeomTypeFromName(s);
         if (geomType == "Face") {
             faceNames.push_back(s);
@@ -746,30 +768,34 @@ void execCenterLine(Gui::Command* cmd)
 
     if ( (faceNames.empty()) && 
          (edgeNames.empty()) ) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
-                             QObject::tr("You must select Faces or an existing CenterLine."));
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+                             QObject::tr("You must select a Face(s) or an existing CenterLine."));
         return;
     }
     if (!faceNames.empty()) {
         Gui::Control().showDialog(new TaskDlgCenterLine(baseFeat,
                                                         page,
-                                                        faceNames,
-                                                        false));
+                                                        faceNames));
     } else if (edgeNames.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
                              QObject::tr("No CenterLine in selection."));
         return;
     } else {
-        TechDraw::CenterLine* cl = baseFeat->getCenterLineBySelection(edgeNames.front());
+        std::string edgeName = edgeNames.front();
+        int geomIdx = DrawUtil::getIndexFromName(edgeName);
+        const std::vector<TechDraw::BaseGeom  *> &geoms = baseFeat->getEdgeGeometry();
+        BaseGeom* bg = geoms.at(geomIdx);
+        int clIdx = bg->sourceIndex();
+        TechDraw::CenterLine* cl = baseFeat->getCenterLineByIndex(clIdx);
         if (cl == nullptr) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
-                             QObject::tr("Selection is not a CenterLine."));
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+                                 QObject::tr("No CenterLine in selection."));
             return;
         }
+
         Gui::Control().showDialog(new TaskDlgCenterLine(baseFeat,
                                                         page,
-                                                        edgeNames.front(),
-                                                        true));
+                                                        edgeNames.front()));
     }
 }
 
@@ -784,7 +810,7 @@ CmdTechDraw2LineCenterLine::CmdTechDraw2LineCenterLine()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Add Centerline between 2 Lines");
+    sMenuText       = QT_TR_NOOP("Add a centerline between 2 lines");
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_2LineCenterLine";
     sStatusTip      = sToolTipText;
@@ -818,34 +844,69 @@ void exec2LineCenterLine(Gui::Command* cmd)
     if (!page) {
         return;
     }
-    TechDraw::DrawViewPart* dvp = nullptr;
-    std::vector<std::string> selectedEdges = getSelectedSubElements(cmd, dvp, "Edge");
 
-    if ( (dvp == nullptr) || 
-         (selectedEdges.empty()) ) {
-        return;
+    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
+    TechDraw::DrawViewPart* baseFeat = nullptr;
+    if (!selection.empty()) {
+        baseFeat =  dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
+        if( baseFeat == nullptr ) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+                                 QObject::tr("No base View in Selection."));
+            return;
+        }
+    } else {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+                                 QObject::tr("You must select a base View for the line."));
+            return;
     }
 
-    if (selectedEdges.size() == 2) {
-        Gui::Control().showDialog(new TaskDlgCenterLine(dvp,
+    std::vector<std::string> SubNames;
+
+    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
+    for (; itSel != selection.end(); itSel++)  {
+        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+            baseFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
+            SubNames = (*itSel).getSubNames();
+        }
+    }
+    std::vector<std::string> faceNames;
+    std::vector<std::string> edgeNames;
+    for (auto& s: SubNames) {
+        std::string geomType = DrawUtil::getGeomTypeFromName(s);
+        if (geomType == "Edge") {
+            edgeNames.push_back(s);
+        }
+    }
+
+    if (edgeNames.empty()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+                             QObject::tr("You must select 2 lines or an existing CenterLine."));
+        return;
+    }
+    if (!edgeNames.empty() && (edgeNames.size() == 2)) {
+        Gui::Control().showDialog(new TaskDlgCenterLine(baseFeat,
                                                         page,
-                                                        selectedEdges,
-                                                        false));
-    } else if (selectedEdges.size() == 1) {
-        TechDraw::CenterLine* cl = dvp->getCenterLineBySelection(selectedEdges.front());
+                                                        edgeNames));
+    } else if (!edgeNames.empty() && (edgeNames.size() == 1)) {
+        std::string edgeName = edgeNames.front();
+        int geomIdx = DrawUtil::getIndexFromName(edgeName);
+        const std::vector<TechDraw::BaseGeom  *> &geoms = baseFeat->getEdgeGeometry();
+        BaseGeom* bg = geoms.at(geomIdx);
+        int clIdx = bg->sourceIndex();
+        TechDraw::CenterLine* cl = baseFeat->getCenterLineByIndex(clIdx);
         if (cl == nullptr) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
-                             QObject::tr("Selection is not a CenterLine."));
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+                                 QObject::tr("No CenterLine in selection."));
             return;
         } else {
-            Gui::Control().showDialog(new TaskDlgCenterLine(dvp,
+            Base::Console().Message("CMD::2LineCenter - show edit dialog here\n");
+            Gui::Control().showDialog(new TaskDlgCenterLine(baseFeat,
                                                             page,
-                                                            selectedEdges.front(),
-                                                            true));
+                                                            edgeNames.front()));
         }
-    } else {  //not create, not edit, what is this???
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
-                             QObject::tr("Selection not understood."));
+    } else if (edgeNames.empty()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+                             QObject::tr("No CenterLine in selection."));
         return;
     }
 }
@@ -861,7 +922,7 @@ CmdTechDraw2PointCenterLine::CmdTechDraw2PointCenterLine()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Add Centerline between 2 Points");
+    sMenuText       = QT_TR_NOOP("Add a centerline between 2 points");
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_2PointCenterLine";
     sStatusTip      = sToolTipText;
@@ -880,8 +941,6 @@ void CmdTechDraw2PointCenterLine::activated(int iMsg)
     }
 
     exec2PointCenterLine(this);
-    updateActive();
-    Gui::Selection().clearSelection();
 }
 
 bool CmdTechDraw2PointCenterLine::isActive(void)
@@ -903,28 +962,28 @@ void exec2PointCenterLine(Gui::Command* cmd)
     if (!selection.empty()) {
         baseFeat =  dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
         if( baseFeat == nullptr ) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
                                  QObject::tr("No base View in Selection."));
             return;
         }
     } else {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
                                  QObject::tr("You must select a base View for the line."));
             return;
     }
 
-    std::vector<std::string> subNames;
+    std::vector<std::string> SubNames;
 
     std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
     for (; itSel != selection.end(); itSel++)  {
         if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
             baseFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
-            subNames = (*itSel).getSubNames();
+            SubNames = (*itSel).getSubNames();
         }
     }
     std::vector<std::string> edgeNames;
     std::vector<std::string> vertexNames;
-    for (auto& s: subNames) {
+    for (auto& s: SubNames) {
         std::string geomType = DrawUtil::getGeomTypeFromName(s);
         if (geomType == "Vertex") {
             vertexNames.push_back(s);
@@ -935,185 +994,25 @@ void exec2PointCenterLine(Gui::Command* cmd)
 
     if (vertexNames.empty() &&
         edgeNames.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
                              QObject::tr("You must select 2 Vertexes or an existing CenterLine."));
         return;
     }
     if (!vertexNames.empty() && (vertexNames.size() == 2)) {
         Gui::Control().showDialog(new TaskDlgCenterLine(baseFeat,
                                                         page,
-                                                        vertexNames,
-                                                        false));
+                                                        vertexNames));
     } else if (!edgeNames.empty() && (edgeNames.size() == 1)) {
-        TechDraw::CenterLine* cl = baseFeat->getCenterLineBySelection(edgeNames.front());
-        if (cl == nullptr) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
-                             QObject::tr("Selection is not a CenterLine."));
-            return;
-        }
-
         Gui::Control().showDialog(new TaskDlgCenterLine(baseFeat,
                                                         page,
-                                                        edgeNames.front(),
-                                                        false));
+                                                        edgeNames.front()));
     } else if (vertexNames.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
-                             QObject::tr("Need 2 Vertices or 1 CenterLine."));
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+                             QObject::tr("No CenterLine in selection."));
         return;
     }
 }
 
-//===========================================================================
-// TechDraw_2PointCosmeticLine
-//===========================================================================
-
-DEF_STD_CMD_A(CmdTechDraw2PointCosmeticLine)
-
-CmdTechDraw2PointCosmeticLine::CmdTechDraw2PointCosmeticLine()
-  : Command("TechDraw_2PointCosmeticLine")
-{
-    sAppModule      = "TechDraw";
-    sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Add Cosmetic Line Through 2 Points");
-    sToolTipText    = sMenuText;
-    sWhatsThis      = "TechDraw_2PointCosmeticLine";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-line2points";
-}
-
-void CmdTechDraw2PointCosmeticLine::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-
-    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-    if (dlg != nullptr) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
-            QObject::tr("Close active task dialog and try again."));
-        return;
-    }
-
-    execLine2Points(this);
-
-    updateActive();
-    Gui::Selection().clearSelection();
-}
-
-bool CmdTechDraw2PointCosmeticLine::isActive(void)
-{
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this, true);
-    return (havePage && haveView);
-}
-
-void execLine2Points(Gui::Command* cmd)
-{
-    TechDraw::DrawPage* page = DrawGuiUtil::findPage(cmd);
-    if (!page) {
-        return;
-    }
-
-    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    TechDraw::DrawViewPart* baseFeat = nullptr;
-    std::vector<std::string> subNames2D;
-    std::vector< std::pair<Part::Feature*, std::string> > objs3D;
-    if (!selection.empty()) {
-        for (auto& so: selection) {
-            if (so.getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
-                baseFeat = static_cast<TechDraw::DrawViewPart*> (so.getObject());
-                subNames2D = so.getSubNames();
-            } else if (so.getObject()->isDerivedFrom(Part::Feature::getClassTypeId())) {
-                std::vector<std::string> subNames3D = so.getSubNames();
-                for (auto& sub3D: subNames3D) {
-                    std::pair<Part::Feature*, std::string> temp;
-                    temp.first = static_cast<Part::Feature*>(so.getObject());
-                    temp.second = sub3D;
-                    objs3D.push_back(temp);
-                }
-            } else {
-                //garbage
-            }
-        }
-    } else {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
-                             QObject::tr("Selection is empty."));
-        return;
-    }
-    
-    if (baseFeat == nullptr) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
-                             QObject::tr("You must select a base View for the line."));
-        return;
-    }
-
-    //TODO: should be a smarter check
-    if ( (subNames2D.empty()) &&
-         (objs3D.empty()) )  {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
-                             QObject::tr("Not enough points in selection."));
-        return;
-    }
-
-    std::vector<std::string> edgeNames;
-    std::vector<std::string> vertexNames;
-    for (auto& s: subNames2D) {
-        std::string geomType = DrawUtil::getGeomTypeFromName(s);
-        if (geomType == "Vertex") {
-            vertexNames.push_back(s);
-        } else if (geomType == "Edge") {
-            edgeNames.push_back(s);
-        }
-    }
-
-    //check if editing existing edge
-    if (!edgeNames.empty() && (edgeNames.size() == 1)) {
-        TechDraw::CosmeticEdge* ce = baseFeat->getCosmeticEdgeBySelection(edgeNames.front());
-        if (ce == nullptr) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
-                             QObject::tr("Selection is not a Cosmetic Line."));
-            return;
-        }
-        Gui::Control().showDialog(new TaskDlgCosmeticLine(baseFeat,
-                                                          edgeNames.front()));
-        return;
-    }
-
-    double scale = baseFeat->getScale();
-    std::vector<Base::Vector3d> points;
-    std::vector<bool> is3d;
-    //get the 2D points
-    if (!vertexNames.empty()) {
-        for (auto& v2d: vertexNames) {
-            int idx = DrawUtil::getIndexFromName(v2d);
-            TechDraw::Vertex* v = baseFeat->getProjVertexByIndex(idx);
-            if (v) {
-                Base::Vector3d p = DrawUtil::invertY(v->pnt);
-                points.push_back(p / scale);
-                is3d.push_back(false);
-            }
-        }
-    }
-    //get the 3D points
-    if (!objs3D.empty()) {
-        for (auto& o3D: objs3D) {
-            int idx = DrawUtil::getIndexFromName(o3D.second);
-            Part::TopoShape s = o3D.first->Shape.getShape();
-            TopoDS_Vertex v = TopoDS::Vertex(s.getSubShape(TopAbs_VERTEX, idx));
-            Base::Vector3d p = DrawUtil::vertex2Vector(v);
-            points.push_back(p);
-            is3d.push_back(true);
-        }
-    }
-
-    if (points.size() != 2) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
-                             QObject::tr("You must select 2 Vertexes."));
-        return;
-    }
-
-    Gui::Control().showDialog(new TaskDlgCosmeticLine(baseFeat,
-                                                      points,
-                                                      is3d));
-}
 
 //===========================================================================
 // TechDraw_CosmeticEraser
@@ -1126,11 +1025,11 @@ CmdTechDrawCosmeticEraser::CmdTechDrawCosmeticEraser()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Remove Cosmetic Object");
-    sToolTipText    = sMenuText;
+    sMenuText       = QT_TR_NOOP("Remove a cosmetic object");
+    sToolTipText    = QT_TR_NOOP("Remove a cosmetic object");
     sWhatsThis      = "TechDraw_CosmeticEraser";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-CosmeticEraser";
+    sPixmap         = "actions/techdraw-eraser";
 }
 
 void CmdTechDrawCosmeticEraser::activated(int iMsg)
@@ -1171,20 +1070,17 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
     }
 
     TechDraw::DrawViewPart * objFeat = nullptr;
-    std::vector<std::string> subNames;
+    std::vector<std::string> SubNames;
     std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
     for (; itSel != selection.end(); itSel++)  {
         if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
             objFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
-            subNames = (*itSel).getSubNames();
-        }
-        if (objFeat == nullptr) {
-            break;
+            SubNames = (*itSel).getSubNames();
         }
         std::vector<std::string> cv2Delete;
-        std::vector<std::string> ce2Delete;
-        std::vector<std::string> cl2Delete;
-        for (auto& s: subNames) {
+        std::vector<int> ce2Delete;
+        std::vector<int> cl2Delete;
+        for (auto& s: SubNames) {
             int idx = TechDraw::DrawUtil::getIndexFromName(s);
             std::string geomType = TechDraw::DrawUtil::getGeomTypeFromName(s);
             if (geomType == "Edge") {
@@ -1192,24 +1088,26 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
                 if ((bg != nullptr) &&
                     (bg->cosmetic) ) {
                     int source = bg->source();
-                    std::string tag = bg->getCosmeticTag();
+                    int sourceIndex = bg->sourceIndex();
                     if (source == 1) {  //this is a "CosmeticEdge"
-                        ce2Delete.push_back(tag);
+                        ce2Delete.push_back(sourceIndex);
                     } else if (source == 2) { //this is a "CenterLine"
-                        cl2Delete.push_back(tag);
+                        cl2Delete.push_back(sourceIndex);
                     } else {
                         Base::Console().Message(
                             "CMD::CosmeticEraserP - edge: %d is confused - source: %d\n",idx,source);
                     }
                 }
             } else if (geomType == "Vertex") {
+                //TODO: delete by tag
                 TechDraw::Vertex* tdv = objFeat->getProjVertexByIndex(idx);
                 if (tdv != nullptr) {
+//                    int delIndex = tdv->cosmeticLink;
                     std::string delTag = tdv->cosmeticTag;
                     if (!delTag.empty()) {
                         cv2Delete.push_back(delTag);
                     } else {
-                        Base::Console().Warning("Vertex%d is not cosmetic! Can not erase.\n", idx);
+                        Base::Console().Message("CMD::eraser - geom: %d has no cv\n", idx);
                     }
                 } else {
                     Base::Console().Message("CMD::eraser - geom: %d not found!\n", idx);
@@ -1222,16 +1120,26 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
 
         }
         if (!cv2Delete.empty()) {
-            objFeat->removeCosmeticVertex(cv2Delete);
+            for (auto& cvTag: cv2Delete) {
+                objFeat->removeCosmeticVertex(cvTag);
+            }
+            objFeat->enforceRecompute();
         }
         
         if (!ce2Delete.empty()) {
-            objFeat->removeCosmeticEdge(ce2Delete);
+            std::sort(ce2Delete.begin(), ce2Delete.end());
+            auto itce = ce2Delete.rbegin();
+            for ( ; itce != ce2Delete.rend(); itce++) {
+                objFeat->removeCosmeticEdge((*itce));
+            }
         }
         if (!cl2Delete.empty()) {
-            objFeat->removeCenterLine(cl2Delete);
+            std::sort(cl2Delete.begin(), cl2Delete.end());
+            auto itcl = cl2Delete.rbegin();
+            for ( ; itcl != cl2Delete.rend(); itcl++) {
+                objFeat->removeCenterLine((*itcl));
+            }
         }
-    objFeat->recomputeFeature();
     }
 }
 
@@ -1253,11 +1161,11 @@ CmdTechDrawDecorateLine::CmdTechDrawDecorateLine()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Change Appearance of Lines");
-    sToolTipText    = "Change Appearance of selected Lines";
+    sMenuText       = QT_TR_NOOP("Change the appearance of a line");
+    sToolTipText    = QT_TR_NOOP("Change the appearance of a line");
     sWhatsThis      = "TechDraw_DecorateLine";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-DecorateLine";
+    sPixmap         = "actions/techdraw-linedecor";
 }
 
 void CmdTechDrawDecorateLine::activated(int iMsg)
@@ -1281,27 +1189,27 @@ void CmdTechDrawDecorateLine::activated(int iMsg)
     if (!selection.empty()) {
         baseFeat =  dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
         if( baseFeat == nullptr ) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
                                  QObject::tr("No View in Selection."));
             return;
         }
     } else {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
-                                 QObject::tr("You must select a View and/or lines."));
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+                                 QObject::tr("You must select a View and/or line(s)."));
             return;
     }
 
-    std::vector<std::string> subNames;
+    std::vector<std::string> SubNames;
 
     std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
     for (; itSel != selection.end(); itSel++)  {
         if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
             baseFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
-            subNames = (*itSel).getSubNames();
+            SubNames = (*itSel).getSubNames();
         }
     }
     std::vector<std::string> edgeNames;
-    for (auto& s: subNames) {
+    for (auto& s: SubNames) {
         std::string geomType = DrawUtil::getGeomTypeFromName(s);
         if (geomType == "Edge") {
             edgeNames.push_back(s);
@@ -1310,8 +1218,6 @@ void CmdTechDrawDecorateLine::activated(int iMsg)
 
     Gui::Control().showDialog(new TaskDlgLineDecor(baseFeat,
                                                    edgeNames));
-    updateActive();
-    Gui::Selection().clearSelection();
 }
 
 bool CmdTechDrawDecorateLine::isActive(void)
@@ -1332,7 +1238,7 @@ CmdTechDrawShowAll::CmdTechDrawShowAll()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Show/Hide Invisible Edges");
+    sMenuText       = QT_TR_NOOP("Show/Hide invisible edges in a View");
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_ShowAll";
     sStatusTip      = sToolTipText;
@@ -1371,7 +1277,7 @@ void CmdTechDrawShowAll::activated(int iMsg)
 
     Gui::ViewProvider* vp = QGIView::getViewProvider(baseFeat);
     auto partVP = dynamic_cast<ViewProviderViewPart*>(vp);
-    if ( partVP != nullptr ) {
+    if ( vp != nullptr ) {
         bool state = partVP->ShowAllEdges.getValue();
         state = !state;
         partVP->ShowAllEdges.setValue(state);
@@ -1397,7 +1303,7 @@ CmdTechDrawWeldSymbol::CmdTechDrawWeldSymbol()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Add Welding Information to Leaderline");
+    sMenuText       = QT_TR_NOOP("Add welding information to a leader");
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_WeldSymbol";
     sStatusTip      = sToolTipText;
@@ -1439,8 +1345,6 @@ void CmdTechDrawWeldSymbol::activated(int iMsg)
         weldFeat = static_cast<TechDraw::DrawWeldSymbol*> (welds.front());
         Gui::Control().showDialog(new TaskDlgWeldingSymbol(weldFeat));
     }
-    updateActive();
-    Gui::Selection().clearSelection();
 }
 
 bool CmdTechDrawWeldSymbol::isActive(void)
@@ -1456,16 +1360,15 @@ void CreateTechDrawCommandsAnnotate(void)
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
     rcCmdMgr.addCommand(new CmdTechDrawLeaderLine());
-    rcCmdMgr.addCommand(new CmdTechDrawRichTextAnnotation());
-    rcCmdMgr.addCommand(new CmdTechDrawCosmeticVertexGroup());
+    rcCmdMgr.addCommand(new CmdTechDrawRichAnno());
+    rcCmdMgr.addCommand(new CmdTechDrawCosmeticVertexGrp());
     rcCmdMgr.addCommand(new CmdTechDrawCosmeticVertex());
     rcCmdMgr.addCommand(new CmdTechDrawMidpoints());
-    rcCmdMgr.addCommand(new CmdTechDrawQuadrants());
-    rcCmdMgr.addCommand(new CmdTechDrawCenterLineGroup());
+    rcCmdMgr.addCommand(new CmdTechDrawQuadrant());
+    rcCmdMgr.addCommand(new CmdTechDrawCenterLineGrp());
     rcCmdMgr.addCommand(new CmdTechDrawFaceCenterLine());
     rcCmdMgr.addCommand(new CmdTechDraw2LineCenterLine());
     rcCmdMgr.addCommand(new CmdTechDraw2PointCenterLine());
-    rcCmdMgr.addCommand(new CmdTechDraw2PointCosmeticLine());
     rcCmdMgr.addCommand(new CmdTechDrawAnnotation());
     rcCmdMgr.addCommand(new CmdTechDrawCosmeticEraser());
     rcCmdMgr.addCommand(new CmdTechDrawDecorateLine());
@@ -1476,45 +1379,3 @@ void CreateTechDrawCommandsAnnotate(void)
 //===========================================================================
 // Selection Validation Helpers
 //===========================================================================
-
-std::vector<std::string> getSelectedSubElements(Gui::Command* cmd,
-                                                TechDraw::DrawViewPart* &dvp,
-                                                std::string subType)
-{
-//    Base::Console().Message("getSelectedSubElements() - dvp: %X\n", dvp);
-    std::vector<std::string> selectedSubs;
-    std::vector<std::string> subNames;
-    dvp = nullptr;
-    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
-    for (; itSel != selection.end(); itSel++)  {
-        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
-            dvp = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
-            subNames = (*itSel).getSubNames();
-            break;
-        }
-    }
-    if (dvp == nullptr) {
-        std::stringstream edgeMsg;
-        edgeMsg << "No Part View in Selection";
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
-                             QObject::tr(edgeMsg.str().c_str()));
-            return selectedSubs;
-    }
-    
-    for (auto& s: subNames) {
-        if (TechDraw::DrawUtil::getGeomTypeFromName(s) == subType) {
-            selectedSubs.push_back(s);
-        }
-    }
-
-    if (selectedSubs.empty()) {
-        std::stringstream edgeMsg;
-        edgeMsg << "No " << subType << " in Selection";
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
-                            QObject::tr(edgeMsg.str().c_str()));
-        return selectedSubs;
-    }
-
-    return selectedSubs;
-}

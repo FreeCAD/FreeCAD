@@ -22,83 +22,61 @@
 
 
 #include "PreCompiled.h"
+
 #include "DlgSettingsMacroImp.h"
-#include "ui_DlgSettingsMacro.h"
-#include "Action.h"
 #include "Application.h"
-#include "MainWindow.h"
 
 using namespace Gui::Dialog;
 
 /* TRANSLATOR Gui::Dialog::DlgSettingsMacroImp */
 
 /**
- *  Constructs a DlgSettingsMacroImp which is a child of 'parent', with the
- *  name 'name' and widget flags set to 'f'
+ *  Constructs a DlgSettingsMacroImp which is a child of 'parent', with the 
+ *  name 'name' and widget flags set to 'f' 
  */
 DlgSettingsMacroImp::DlgSettingsMacroImp( QWidget* parent )
   : PreferencePage( parent )
-  , ui(new Ui_DlgSettingsMacro)
 {
-    ui->setupUi(this);
+    this->setupUi(this);
 
     // Was never implemented, so hide it
-    ui->FileLogCheckBox->hide();
-    ui->MacroPath_2->hide();
+    this->FileLogCheckBox->hide();
+    this->MacroPath_2->hide();
 
-    if (ui->MacroPath->fileName().isEmpty()) {
+    if (MacroPath->fileName().isEmpty()) {
         QDir d(QString::fromUtf8(App::GetApplication().getUserMacroDir().c_str()));
-        ui->MacroPath->setFileName(d.path());
+        MacroPath->setFileName(d.path());
     }
 }
 
-/**
+/** 
  *  Destroys the object and frees any allocated resources
  */
 DlgSettingsMacroImp::~DlgSettingsMacroImp()
 {
     // no need to delete child widgets, Qt does it all for us
 }
-/** Sets the size of the recent macros list from the user parameters.
- * @see RecentMacrosAction
- * @see StdCmdRecentMacros
- */
-void DlgSettingsMacroImp::setRecentMacroSize()
-{
-    RecentMacrosAction *recent = getMainWindow()->findChild<RecentMacrosAction *>(QLatin1String("recentMacros"));
-    if (recent) {
-        ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("RecentMacros");
-        recent->resizeList(hGrp->GetInt("RecentMacros", 4));
-    }
-}
 
 void DlgSettingsMacroImp::saveSettings()
 {
-    ui->PrefCheckBox_LocalEnv->onSave();
-    ui->MacroPath->onSave();
-    ui->PrefCheckBox_RecordGui->onSave();
-    ui->PrefCheckBox_GuiAsComment->onSave();
-    ui->PConsoleCheckBox->onSave();
-    ui->FileLogCheckBox->onSave();
-    ui->MacroPath_2->onSave();
-    ui->RecentMacros->onSave();
-    ui->ShortcutModifiers->onSave();
-    ui->ShortcutCount->onSave();
-    setRecentMacroSize();
+    PrefCheckBox_LocalEnv->onSave();
+    MacroPath->onSave();
+    PrefCheckBox_RecordGui->onSave();
+    PrefCheckBox_GuiAsComment->onSave();
+    PConsoleCheckBox->onSave();
+    FileLogCheckBox->onSave();
+    MacroPath_2->onSave();
 }
 
 void DlgSettingsMacroImp::loadSettings()
 {
-    ui->PrefCheckBox_LocalEnv->onRestore();
-    ui->MacroPath->onRestore();
-    ui->PrefCheckBox_RecordGui->onRestore();
-    ui->PrefCheckBox_GuiAsComment->onRestore();
-    ui->PConsoleCheckBox->onRestore();
-    ui->FileLogCheckBox->onRestore();
-    ui->MacroPath_2->onRestore();
-    ui->RecentMacros->onRestore();
-    ui->ShortcutModifiers->onRestore();
-    ui->ShortcutCount->onRestore();
+    PrefCheckBox_LocalEnv->onRestore();
+    MacroPath->onRestore();
+    PrefCheckBox_RecordGui->onRestore();
+    PrefCheckBox_GuiAsComment->onRestore();
+    PConsoleCheckBox->onRestore();
+    FileLogCheckBox->onRestore();
+    MacroPath_2->onRestore();
 }
 
 /**
@@ -107,7 +85,7 @@ void DlgSettingsMacroImp::loadSettings()
 void DlgSettingsMacroImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        ui->retranslateUi(this);
+        retranslateUi(this);
     }
     else {
         QWidget::changeEvent(e);

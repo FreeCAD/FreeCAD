@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
- *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
+ *   Copyright (c) Stefan Tr�ger          (stefantroeger@gmx.net) 2015     *
+ *   Copyright (c) Alexander Golubev (Fat-Zer) <fatzer2@gmail.com> 2015    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -48,12 +48,11 @@ PROPERTY_SOURCE(App::Origin, App::DocumentObject)
 const char* Origin::AxisRoles[3] = {"X_Axis", "Y_Axis", "Z_Axis"};
 const char* Origin::PlaneRoles[3] = {"XY_Plane", "XZ_Plane", "YZ_Plane"};
 
-Origin::Origin(void) : extension(this) {
+Origin::Origin(void) {
     ADD_PROPERTY_TYPE ( OriginFeatures, (0), 0, App::Prop_Hidden,
             "Axis and baseplanes controlled by the origin" );
 
     setStatus(App::NoAutoExpand,true);
-    extension.initExtension(this);
 }
 
 
@@ -181,46 +180,5 @@ void Origin::unsetupObject () {
                 obj->getDocument()->removeObject (obj->getNameInDocument());
             }
         }
-    }
-}
-
-// ----------------------------------------------------------------------------
-
-Origin::OriginExtension::OriginExtension(Origin* obj)
-    : obj(obj)
-{
-    Group.setStatus(Property::Transient, true);
-}
-
-void Origin::OriginExtension::initExtension(ExtensionContainer* obj) {
-    App::GroupExtension::initExtension(obj);
-}
-
-bool Origin::OriginExtension::extensionGetSubObject(DocumentObject *&ret, const char *subname,
-                                                    PyObject **, Base::Matrix4D *, bool, int) const {
-    if (!subname || subname[0] == '\0') {
-        return false;
-    }
-
-    // mapping of object name to role name
-    std::string name(subname);
-    for (int i=0; i<3; i++) {
-        if (name.rfind(Origin::AxisRoles[i], 0) == 0) {
-            name = Origin::AxisRoles[i];
-            break;
-        }
-        if (name.rfind(Origin::PlaneRoles[i], 0) == 0) {
-            name = Origin::PlaneRoles[i];
-            break;
-        }
-    }
-
-    try {
-        ret = obj->getOriginFeature(name.c_str());
-        return true;
-    }
-    catch (const Base::Exception& e) {
-        e.ReportException();
-        return false;
     }
 }

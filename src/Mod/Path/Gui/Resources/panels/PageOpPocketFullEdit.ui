@@ -24,7 +24,7 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="0">
-       <widget class="QLabel" name="toolController_label">
+       <widget class="QLabel" name="label">
         <property name="text">
          <string>Tool Controller</string>
         </property>
@@ -38,7 +38,7 @@
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QLabel" name="coolantController_label">
+       <widget class="QLabel" name="label_5">
         <property name="text">
          <string>Coolant Mode</string>
         </property>
@@ -64,17 +64,12 @@
         </property>
         <item>
          <property name="text">
-          <string>Boundbox</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Face Region</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
           <string>Perimeter</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Boundbox</string>
          </property>
         </item>
         <item>
@@ -85,7 +80,7 @@
        </widget>
       </item>
       <item row="0" column="0">
-       <widget class="QLabel" name="boundaryShape_label">
+       <widget class="QLabel" name="label_12">
         <property name="text">
          <string>Boundary Shape</string>
         </property>
@@ -101,7 +96,7 @@
        <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
       </property>
       <item row="0" column="0">
-       <widget class="QLabel" name="cutMode_label">
+       <widget class="QLabel" name="label_2">
         <property name="text">
          <string>Cut Mode</string>
         </property>
@@ -125,7 +120,7 @@
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QLabel" name="offsetPattern_label">
+       <widget class="QLabel" name="label_3">
         <property name="text">
          <string>Pattern</string>
         </property>
@@ -136,9 +131,6 @@
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pattern the tool bit is moved in to clear the material.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
-        <property name="currentText">
-         <string notr="true">ZigZag</string>
-        </property>
         <item>
          <property name="text">
           <string>ZigZag</string>
@@ -146,7 +138,7 @@
         </item>
         <item>
          <property name="text">
-          <string notr="true">Offset</string>
+          <string>Offset</string>
          </property>
         </item>
         <item>
@@ -177,7 +169,7 @@
        </widget>
       </item>
       <item row="2" column="0">
-       <widget class="QLabel" name="zigZagAngle_label">
+       <widget class="QLabel" name="label_4">
         <property name="text">
          <string>Angle</string>
         </property>
@@ -191,7 +183,7 @@
        </widget>
       </item>
       <item row="3" column="0">
-       <widget class="QLabel" name="stepOverPercent_label">
+       <widget class="QLabel" name="label_6">
         <property name="text">
          <string>Step Over Percent</string>
         </property>
@@ -217,7 +209,7 @@
        </widget>
       </item>
       <item row="4" column="0">
-       <widget class="QLabel" name="extraOffset_label">
+       <widget class="QLabel" name="extraOffsetLabel">
         <property name="text">
          <string>Material Allowance</string>
         </property>
@@ -228,37 +220,6 @@
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount of material that should be left by this operation in relation to the target shape.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
-       </widget>
-      </item>
-      <item row="5" column="0">
-       <widget class="QLabel" name="enableRotation_label">
-        <property name="text">
-         <string>Enable Rotation</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="1">
-       <widget class="QComboBox" name="enableRotation">
-        <item>
-         <property name="text">
-          <string>Off</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>A(x)</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>B(y)</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>A &amp; B</string>
-         </property>
-        </item>
        </widget>
       </item>
      </layout>
@@ -291,13 +252,6 @@
         </property>
         <property name="text">
          <string>Use Start Point</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QCheckBox" name="clearEdges">
-        <property name="text">
-         <string>Clear Edges</string>
         </property>
        </widget>
       </item>

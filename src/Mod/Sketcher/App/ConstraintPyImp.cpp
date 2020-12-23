@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2010     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -164,13 +164,6 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             }
             else if (strcmp("Diameter",ConstraintType) == 0) {
                 this->getConstraintPtr()->Type = Diameter;
-                // set a value that is out of range of result of atan2
-                // this value is handled in ViewProviderSketch
-                this->getConstraintPtr()->LabelPosition = 10;
-                valid = true;
-            }
-            else if (strcmp("Weight",ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = Weight;
                 // set a value that is out of range of result of atan2
                 // this value is handled in ViewProviderSketch
                 this->getConstraintPtr()->LabelPosition = 10;
@@ -510,7 +503,6 @@ std::string ConstraintPy::representation(void) const
         case Block            	: result << "'Block' (" << getConstraintPtr()->First << ")>";break;
         case Radius             : result << "'Radius'>";break;
         case Diameter           : result << "'Diameter'>";break;
-        case Weight             : result << "'Weight'>";break;
         case Parallel           : result << "'Parallel'>";break;
         case Tangent            :
             if (this->getConstraintPtr()->Third == Constraint::GeoUndef)
@@ -562,7 +554,6 @@ Py::String ConstraintPy::getType(void) const
         case Block              : return Py::String("Block");break;
         case Radius             : return Py::String("Radius");break;
         case Diameter           : return Py::String("Diameter");break;
-        case Weight             : return Py::String("Weight");break;
         case Parallel           : return Py::String("Parallel");break;
         case Tangent            : return Py::String("Tangent");break;
         case Perpendicular      : return Py::String("Perpendicular");break;

@@ -1,5 +1,6 @@
 # ***************************************************************************
-# *   Copyright (c) 2018 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2018 - FreeCAD Developers                               *
+# *   Author: Bernd Hahnebach <bernd@bimstatik.org>                         *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -9,29 +10,25 @@
 # *   the License, or (at your option) any later version.                   *
 # *   for detail see the LICENCE text file.                                 *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
+# *   FreeCAD is distributed in the hope that it will be useful,            *
 # *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
 # *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
 # *   GNU Library General Public License for more details.                  *
 # *                                                                         *
 # *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
+# *   License along with FreeCAD; if not, write to the Free Software        *
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
-# ***************************************************************************
+# ***************************************************************************/
 
-__title__  = "Results FEM unit tests"
-__author__ = "Bernd Hahnebach"
-__url__    = "https://www.freecadweb.org"
-
-import unittest
-from os.path import join
 
 import FreeCAD
-
+import unittest
 from . import support_utils as testtools
 from .support_utils import fcc_print
+
+from os.path import join
 
 
 class TestResult(unittest.TestCase):
@@ -42,23 +39,19 @@ class TestResult(unittest.TestCase):
         self
     ):
         # setUp is executed before every test
+        # setting up a document to hold the tests
+        self.doc_name = self.__class__.__name__
+        if FreeCAD.ActiveDocument:
+            if FreeCAD.ActiveDocument.Name != self.doc_name:
+                FreeCAD.newDocument(self.doc_name)
+        else:
+            FreeCAD.newDocument(self.doc_name)
+        FreeCAD.setActiveDocument(self.doc_name)
+        self.active_doc = FreeCAD.ActiveDocument
 
-        # new document
-        self.document = FreeCAD.newDocument(self.__class__.__name__)
-
-    # ********************************************************************************************
-    def tearDown(
-        self
-    ):
-        # tearDown is executed after every test
-        FreeCAD.closeDocument(self.document.Name)
-
-    # ********************************************************************************************
     def test_00print(
         self
     ):
-        # since method name starts with 00 this will be run first
-        # this test just prints a line with stars
         fcc_print("\n{0}\n{1} run FEM TestResult tests {2}\n{0}".format(
             100 * "*",
             10 * "*",
@@ -72,8 +65,8 @@ class TestResult(unittest.TestCase):
         # read data from frd file
         frd_file = join(
             testtools.get_fem_test_home_dir(),
-            "calculix",
-            "thermomech_flow1D.frd"
+            "ccx",
+            "Flow1D_thermomech.frd"
         )
         from feminout.importCcxFrdResults import read_frd_result as read_frd
         frd_content = read_frd(frd_file)
@@ -82,22 +75,22 @@ class TestResult(unittest.TestCase):
         frd_content_len = []
         for key in sorted(frd_content.keys()):
             frd_content_len.append(len(frd_content[key]))
-        # print("read data")
-        # print(frd_content_len)
-        # print(sorted(frd_content.keys()))
-        # # print(frd_content)
+        print("read data")
+        print(frd_content_len)
+        print(sorted(frd_content.keys()))
+        # print(frd_content)
         read_mflow = frd_content["Results"][12]["mflow"]
         read_npressure = frd_content["Results"][12]["npressure"]
         res_len = [
             len(read_mflow),
             len(read_npressure)
         ]
-        # print(res_len)
-        # print(read_mflow)
-        # print(read_npressure)
+        print(res_len)
+        print(read_mflow)
+        print(read_npressure)
 
         # create the expected data
-        # print("\nexpected data")
+        print("\nexpected data")
         efc = {}  # expected frd content
         efc["Nodes"] = {
             2: FreeCAD.Vector(0.0, 0.0, -50.0),
@@ -236,8 +229,8 @@ class TestResult(unittest.TestCase):
         expected_frd_content_len = []
         for key in sorted(expected_frd_content.keys()):
             expected_frd_content_len.append(len(expected_frd_content[key]))
-        # print(expected_frd_content_len)
-        # print(sorted(expected_frd_content.keys()))
+        print(expected_frd_content_len)
+        print(sorted(expected_frd_content.keys()))
         # expected results
         expected_mflow = expected_frd_content["Results"][12]["mflow"]
         expected_npressure = expected_frd_content["Results"][12]["npressure"]
@@ -245,9 +238,9 @@ class TestResult(unittest.TestCase):
             len(expected_mflow),
             len(expected_npressure)
         ]
-        # print(expected_res_len)
-        # print(expected_mflow)
-        # print(expected_npressure)
+        print(expected_res_len)
+        print(expected_mflow)
+        print(expected_npressure)
 
         # tests
         self.assertEqual(
@@ -460,3 +453,10 @@ class TestResult(unittest.TestCase):
             expected_dispabs,
             "Calculated displacement abs are not the expected values."
         )
+
+    # ********************************************************************************************
+    def tearDown(
+        self
+    ):
+        # clearance, is executed after every test
+        FreeCAD.closeDocument(self.doc_name)

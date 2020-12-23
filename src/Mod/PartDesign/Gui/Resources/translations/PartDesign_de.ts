@@ -317,12 +317,12 @@
     <message>
       <location filename="../../CommandBody.cpp" line="852"/>
       <source>Move object after other object</source>
-      <translation>Objekt hinter ein anderes Objekt verschieben</translation>
+      <translation>Objekt nach einem anderen Objekt verschieben</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="853"/>
       <source>Moves the selected object and insert it after another object</source>
-      <translation>Verschiebt das ausgewählte Objekt und fügt es hinter einem anderen Objekt ein</translation>
+      <translation>Verschiebt das ausgewählte Objekt und fügt es nach einem anderen Objekt ein</translation>
     </message>
   </context>
   <context>
@@ -1422,7 +1422,7 @@
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="73"/>
       <source>UTS fine profile</source>
-      <translation>UTS Feinprofil</translation>
+      <translation>UST Feinprofil</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="74"/>
@@ -1721,7 +1721,7 @@
     <message>
       <location filename="../../TaskPadParameters.cpp" line="56"/>
       <source>Pad parameters</source>
-      <translation>Parameter der Extrusion</translation>
+      <translation>Parameter der Aufpolsterung</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="63"/>
@@ -1774,7 +1774,7 @@
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="41"/>
       <source>Fixed</source>
-      <translation>Fixiert</translation>
+      <translation>fixiert</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="46"/>
@@ -2987,7 +2987,7 @@ Dieses Objekt ist beschädigt und kann nicht bearbeitet werden.</translation>
     <message>
       <location filename="../../ViewProviderPad.cpp" line="54"/>
       <source>Edit pad</source>
-      <translation>Extrusion bearbeiten</translation>
+      <translation>Block bearbeiten</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPipe.cpp" line="80"/>
@@ -3132,7 +3132,7 @@ Du kannst die Teile später jederzeit mit 'Part Design -&gt; Migrieren...' migri
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="202"/>
       <source>Custom dimensions</source>
-      <translation>Benutzerdefinierte Maße</translation>
+      <translation>Standard-Abmessungen</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="218"/>

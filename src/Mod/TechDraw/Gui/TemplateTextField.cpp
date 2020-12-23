@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2015 Ian Rees <ian.rees@gmail.com>                      *
+ *   Copyright (c) Ian Rees                    (ian.rees@gmail.com) 2015   *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -66,7 +66,7 @@ void TemplateTextField::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         ui.setFieldContent(tmplte->EditableTexts[fieldNameStr]);
 
         if (ui.exec() == QDialog::Accepted) {
-        //WF: why is this escaped?
+        //WF: why is this escaped? 
         //    "<" is converted elsewhere and no other characters cause problems.
         //    escaping causes "&" to appear as "&amp;" etc
 //#if QT_VERSION >= 0x050000

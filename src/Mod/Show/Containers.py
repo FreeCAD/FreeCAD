@@ -255,7 +255,7 @@ def VisGroupChain(feat):
 class ContainerError(RuntimeError):
     pass
 class NotAContainerError(ContainerError):
-    def __init__(self, name="None"):
-        ContainerError.__init__(self, "'{}' is not recognized as container".format(name))
+    def __init__(self):
+        ContainerError.__init__(self, u"{obj} is not recognized as container".format(obj.Name))
 class ContainerTreeError(ContainerError):
     pass

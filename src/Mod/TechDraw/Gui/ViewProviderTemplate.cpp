@@ -24,8 +24,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QMessageBox>
-# include <QTextStream>
 # ifdef FC_OS_WIN32
 #  include <windows.h>
 # endif
@@ -118,7 +116,7 @@ void ViewProviderTemplate::onChanged(const App::Property *prop)
     }
 
     if (prop == &Visibility) {
-        if (Visibility.getValue()) {
+        if(Visibility.getValue()) {
             show();
         } else {
             hide();
@@ -184,32 +182,7 @@ void ViewProviderTemplate::setMarkers(bool state)
     }
 }
 
-bool ViewProviderTemplate::onDelete(const std::vector<std::string> &)
-{
-    // deleting the template will break the page view, thus warn the user
-
-    // get the page
-    auto page = getTemplate()->getParentPage();
-
-    // generate dialog
-    QString bodyMessage;
-    QTextStream bodyMessageStream(&bodyMessage);
-    bodyMessageStream << qApp->translate("Std_Delete",
-        "The following referencing object might break:");
-    bodyMessageStream << "\n\n" << QString::fromUtf8(page->Label.getValue());
-    bodyMessageStream << "\n\n" << QObject::tr("Are you sure you want to continue?");
-
-    // show and evaluate dialog
-    int DialogResult = QMessageBox::warning(Gui::getMainWindow(),
-        qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
-        QMessageBox::Yes, QMessageBox::No);
-    if (DialogResult == QMessageBox::Yes)
-        return true;
-    else
-        return false;
-}
-
-MDIViewPage* ViewProviderTemplate::getMDIViewPage(void) const
+MDIViewPage* ViewProviderTemplate::getMDIViewPage(void)
 {
     MDIViewPage* myMdi = nullptr;
     auto t = getTemplate();
@@ -222,8 +195,7 @@ MDIViewPage* ViewProviderTemplate::getMDIViewPage(void) const
     return myMdi;
 }
 
-Gui::MDIView *ViewProviderTemplate::getMDIView() const
-{
+Gui::MDIView *ViewProviderTemplate::getMDIView() {
     return getMDIViewPage();
 }
 

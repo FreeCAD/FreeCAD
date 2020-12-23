@@ -1,8 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *                                                                         *
-# *   This file is part of the FreeCAD CAx development system.              *
-# *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
 # *   as published by the Free Software Foundation; either version 2 of     *
@@ -21,9 +19,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__  = "FreeCAD FEM solver Elmer equation object _NonLinear"
+__title__ = "FreeCAD FEM solver Elmer equation object _NonLinear"
 __author__ = "Markus Hovorka"
-__url__    = "https://www.freecadweb.org"
+__url__ = "http://www.freecadweb.org"
 
 ## \addtogroup FEM
 #  @{
@@ -41,35 +39,20 @@ class Proxy(linear.Proxy):
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
         obj.addProperty(
-            "App::PropertyFloat",
-            "NonlinearTolerance",
-            "Nonlinear System",
-            ""
-        )
+            "App::PropertyFloat", "NonlinearTolerance",
+            "Nonlinear System", "Select type of solver for linear system")
         obj.addProperty(
-            "App::PropertyInteger",
-            "NonlinearIterations",
-            "Nonlinear System",
-            ""
-        )
+            "App::PropertyInteger", "NonlinearIterations",
+            "Nonlinear System", "Select type of solver for linear system")
         obj.addProperty(
-            "App::PropertyFloat",
-            "RelaxationFactor",
-            "Nonlinear System",
-            ""
-        )
+            "App::PropertyFloat", "RelaxationFactor",
+            "Nonlinear System", "Select type of solver for linear system")
         obj.addProperty(
-            "App::PropertyInteger",
-            "NonlinearNewtonAfterIterations",
-            "Nonlinear System",
-            ""
-        )
+            "App::PropertyInteger", "NonlinearNewtonAfterIterations",
+            "Nonlinear System", "Select type of solver for linear system")
         obj.addProperty(
-            "App::PropertyFloat",
-            "NonlinearNewtonAfterTolerance",
-            "Nonlinear System",
-            ""
-        )
+            "App::PropertyFloat", "NonlinearNewtonAfterTolerance",
+            "Nonlinear System", "Select type of solver for linear system")
         obj.NonlinearTolerance = 1e-8
         obj.NonlinearIterations = 500
         obj.RelaxationFactor = 1

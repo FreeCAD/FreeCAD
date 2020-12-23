@@ -35,19 +35,16 @@
 #include <App/Material.h>
 #include <Base/Console.h>
 
-#include "PreferencesGui.h"
 #include "QGIPrimPath.h"
 #include "QGIView.h"
 
 using namespace TechDrawGui;
-using namespace TechDraw;
 
 QGIPrimPath::QGIPrimPath():
     m_width(0),
     m_capStyle(Qt::RoundCap),
-    m_fillStyleCurrent (Qt::NoBrush),
-//    m_fillStyleCurrent (Qt::SolidPattern),
-    m_fillOverride(false)
+    m_fillStyleCurrent (Qt::NoBrush)
+//    m_fillStyleCurrent (Qt::SolidPattern)
 {
     setCacheMode(QGraphicsItem::NoCache);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
@@ -131,17 +128,13 @@ void QGIPrimPath::setPrettyNormal() {
 void QGIPrimPath::setPrettyPre() {
 //    Base::Console().Message("QGIPP::setPrettyPre()\n");
     m_colCurrent = getPreColor();
-    if (!m_fillOverride) {
-        m_fillColorCurrent = getPreColor();
-    }
+    m_fillColorCurrent = getPreColor();
 }
 
 void QGIPrimPath::setPrettySel() {
 //    Base::Console().Message("QGIPP::setPrettySel()\n");
     m_colCurrent = getSelectColor();
-    if (!m_fillOverride) {
-        m_fillColorCurrent = getSelectColor();
-    }
+    m_fillColorCurrent = getSelectColor();
 }
 
 //wf: why would a face use it's parent's normal colour?
@@ -166,7 +159,10 @@ QColor QGIPrimPath::getNormalColor()
     if (parent != nullptr) {
         result = parent->getNormalColor();
     } else {
-        result = PreferencesGui::normalQColor();
+        Base::Reference<ParameterGrp> hGrp = getParmGroup();
+        App::Color fcColor;
+        fcColor.setPackedValue(hGrp->GetUnsigned("NormalColor", 0x00000000));
+        result = fcColor.asValue<QColor>();
     }
 
     return result;
@@ -186,7 +182,10 @@ QColor QGIPrimPath::getPreColor()
     if (parent != nullptr) {
         result = parent->getPreColor();
     } else {
-        result = PreferencesGui::preselectQColor();
+        Base::Reference<ParameterGrp> hGrp = getParmGroup();
+        App::Color fcColor;
+        fcColor.setPackedValue(hGrp->GetUnsigned("PreSelectColor", 0xFFFF0000));
+        result = fcColor.asValue<QColor>();
     }
     return result;
 }
@@ -205,7 +204,10 @@ QColor QGIPrimPath::getSelectColor()
     if (parent != nullptr) {
         result = parent->getSelectColor();
     } else {
-        result = PreferencesGui::selectQColor();
+        Base::Reference<ParameterGrp> hGrp = getParmGroup();
+        App::Color fcColor;
+        fcColor.setPackedValue(hGrp->GetUnsigned("SelectColor", 0x00FF0000));
+        result = fcColor.asValue<QColor>();
     }
     return result;
 }
@@ -249,27 +251,13 @@ Base::Reference<ParameterGrp> QGIPrimPath::getParmGroup()
     return hGrp;
 }
 
-//EdgeCapStyle param changed from UInt (Qt::PenCapStyle) to Int (QComboBox index)
 Qt::PenCapStyle QGIPrimPath::prefCapStyle()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
     Qt::PenCapStyle result;
-    int newStyle;
-    newStyle = hGrp->GetInt("EdgeCapStyle", 32);    //0x00 FlatCap, 0x10 SquareCap, 0x20 RoundCap
-    switch (newStyle) {
-        case 0:
-            result = (Qt::PenCapStyle) 0x20;   //round;
-            break;
-        case 1:
-            result = (Qt::PenCapStyle) 0x10;   //square;
-            break;
-        case 2:
-            result = (Qt::PenCapStyle) 0x00;   //flat
-            break;
-        default:
-            result = (Qt::PenCapStyle) 0x20;
-    }
+    unsigned int cap = hGrp->GetUnsigned("EdgeCapStyle", 0x20);    //0x00 FlatCap, 0x10 SquareCap, 0x20 RoundCap
+    result = (Qt::PenCapStyle) cap;
     return result;
 }
 

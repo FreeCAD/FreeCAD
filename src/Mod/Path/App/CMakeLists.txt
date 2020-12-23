@@ -36,10 +36,6 @@ generate_from_xml(TooltablePy)
 generate_from_xml(FeaturePathCompoundPy)
 generate_from_xml(AreaPy)
 generate_from_xml(FeatureAreaPy)
-generate_from_xml(VoronoiPy)
-generate_from_xml(VoronoiCellPy)
-generate_from_xml(VoronoiEdgePy)
-generate_from_xml(VoronoiVertexPy)
 
 SET(Python_SRCS
     CommandPy.xml
@@ -56,14 +52,6 @@ SET(Python_SRCS
     AreaPyImp.cpp
     FeatureAreaPy.xml
     FeatureAreaPyImp.cpp
-    VoronoiPy.xml
-    VoronoiPyImp.cpp
-    VoronoiCellPy.xml
-    VoronoiCellPyImp.cpp
-    VoronoiEdgePy.xml
-    VoronoiEdgePyImp.cpp
-    VoronoiVertexPy.xml
-    VoronoiVertexPyImp.cpp
 )
 
 SET(Mod_SRCS
@@ -102,14 +90,6 @@ SET(Path_SRCS
     FeatureArea.h
     PathSegmentWalker.h
     PathSegmentWalker.cpp
-    Voronoi.cpp
-    Voronoi.h
-    VoronoiCell.cpp
-    VoronoiCell.h
-    VoronoiEdge.cpp
-    VoronoiEdge.h
-    VoronoiVertex.cpp
-    VoronoiVertex.h
     ${Mod_SRCS}
     ${Python_SRCS}
 )

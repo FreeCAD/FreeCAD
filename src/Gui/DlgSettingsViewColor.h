@@ -24,20 +24,19 @@
 #ifndef GUI_DIALOG_DLGSETTINGSVIEWCOLOR_H
 #define GUI_DIALOG_DLGSETTINGSVIEWCOLOR_H
 
+#include "ui_DlgSettingsViewColor.h"
 #include "PropertyPage.h"
-#include <memory>
 
 namespace Gui {
 namespace Dialog {
-class Ui_DlgSettingsViewColor;
 
 /**
  * The DlgSettingsViewColor class implements a preference page to change color settings
  * for the Inventor viewer like background and selection.
  * @author Werner Mayer
  */
-class DlgSettingsViewColor : public PreferencePage
-{
+class DlgSettingsViewColor : public PreferencePage, public Ui_DlgSettingsViewColor
+{ 
   Q_OBJECT
 
 public:
@@ -49,9 +48,6 @@ public:
 
 protected:
   void changeEvent(QEvent *e);
-
-private:
-  std::unique_ptr<Ui_DlgSettingsViewColor> ui;
 };
 
 } // namespace Dialog

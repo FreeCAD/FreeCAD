@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="eu" sourcelanguage="en">
+<TS version="2.0" language="eu" sourcelanguage="en">
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -265,7 +265,7 @@
     </message>
     <message>
       <source>Center</source>
-      <translation>Zentroa</translation>
+      <translation>Erdia</translation>
     </message>
     <message>
       <source>Right</source>
@@ -331,6 +331,10 @@
       <translation>Esportatu fitxategia</translation>
     </message>
     <message>
+      <source>Cell contents</source>
+      <translation>Gelaxka-edukiak</translation>
+    </message>
+    <message>
       <source>Show spreadsheet</source>
       <translation>Erakutsi kalkulu-orria</translation>
     </message>
@@ -349,30 +353,6 @@
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
       <translation>Kalkulu-orriko gelaxk(ar)en atzeko planoaren kolorea ezartzen du</translation>
-    </message>
-    <message>
-      <source>Spreadsheet</source>
-      <translation>Kalkulu-orria</translation>
-    </message>
-    <message>
-      <source>Spreadsheet does not support range selection when pasting.
-Please select one cell only.</source>
-      <translation>Kalkulu-orriak ez du onartzen barrutien hautapena itsastean.
-Aukeratu gelaxka bakar bat.</translation>
-    </message>
-    <message>
-      <source>Copy &amp; Paste failed</source>
-      <translation>Kopiatu eta itsasteak huts egin du</translation>
-    </message>
-    <message>
-      <source>Alias contains invalid characters!</source>
-      <translation>Aliasak karaktere baliogabeak ditu!</translation>
-    </message>
-    <message>
-      <source>Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation>Egin erreferentzia gelaxkei aliasa erabilita, adibidez
-'KalkuluOrria.nire_aliasa' erabili 'KalkuluOrria.B1' erabili ordez</translation>
     </message>
   </context>
   <context>
@@ -457,18 +437,8 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Inprimakia</translation>
     </message>
     <message>
-      <source>&amp;Content:</source>
-      <translation>&amp;Edukia:</translation>
-    </message>
-    <message>
-      <source>&amp;Alias:</source>
-      <translation>&amp;Aliasa:</translation>
-    </message>
-    <message>
-      <source>Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation>Egin erreferentzia gelaxkei aliasa erabilita, adibidez
-'KalkuluOrria.nire_aliasa' erabili 'KalkuluOrria.B1' erabili ordez</translation>
+      <source>&amp;Contents</source>
+      <translation>Ed&amp;ukiak</translation>
     </message>
   </context>
   <context>

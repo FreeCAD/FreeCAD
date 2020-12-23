@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+
 # ***************************************************************************
+# *                                                                         *
 # *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -21,23 +23,25 @@
 # ***************************************************************************
 
 import FreeCAD
+import Part
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import math
 
 from PySide import QtCore
 
-# lazily loaded modules
-from lazy_loader.lazy_loader import LazyLoader
-Part = LazyLoader('Part', globals(), 'Part')
-
 __title__ = "PathOpTools - Tools for Path operations."
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "http://www.freecadweb.org"
 __doc__ = "Collection of functions used by various Path operations. The functions are specific to Path and the algorithms employed by Path's operations."
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#PathLog.trackModule(PathLog.thisModule())
+LOGLEVEL = False
+
+if LOGLEVEL:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 PrintWireDebug = False
 
@@ -134,7 +138,6 @@ def orientWire(w, forward=True):
     If forward = True (the default) the wire is oriented clockwise, looking down the negative Z axis.
     If forward = False the wire is oriented counter clockwise.
     If forward = None the orientation is determined by the order in which the edges appear in the wire.'''
-    PathLog.debug('orienting forward: {}'.format(forward))
     wire = Part.Wire(_orientEdges(w.Edges))
     if forward is not None:
         if forward != _isWireClockwise(wire):
@@ -143,7 +146,7 @@ def orientWire(w, forward=True):
         PathLog.track('orientWire - ok')
     return wire
 
-def offsetWire(wire, base, offset, forward):#, Side = None):
+def offsetWire(wire, base, offset, forward):
     '''offsetWire(wire, base, offset, forward) ... offsets the wire away from base and orients the wire accordingly.
     The function tries to avoid most of the pitfalls of Part.makeOffset2D which is possible because all offsetting
     happens in the XY plane.
@@ -155,7 +158,7 @@ def offsetWire(wire, base, offset, forward):#, Side = None):
         curve = edge.Curve
         if Part.Circle == type(curve) and wire.isClosed():
             # it's a full circle and there are some problems with that, see
-            # https://www.freecadweb.org/wiki/Part%20Offset2D
+            # http://www.freecadweb.org/wiki/Part%20Offset2D
             # it's easy to construct them manually though
             z = -1 if forward else 1
             edge = Part.makeCircle(curve.Radius + offset, curve.Center, FreeCAD.Vector(0, 0, z))
@@ -197,12 +200,8 @@ def offsetWire(wire, base, offset, forward):#, Side = None):
     if wire.isClosed():
         if not base.isInside(owire.Edges[0].Vertexes[0].Point, offset/2, True):
             PathLog.track('closed - outside')
-            # if Side:
-            #     Side[0] = "Outside"
             return orientWire(owire, forward)
         PathLog.track('closed - inside')
-        # if Side:
-        #     Side[0] = "Inside"
         try:
             owire = wire.makeOffset2D(-offset)
         except Exception: # pylint: disable=broad-except
@@ -218,7 +217,7 @@ def offsetWire(wire, base, offset, forward):#, Side = None):
     # Of the remaining edges we take the longest wire to be the engraving side
     # Looking for a circle with the start vertex as center marks and end
     #  starting from there follow the edges until a circle with the end vertex as center is found
-    #  if the traversed edges include any of the remaining from above, all those edges are remaining
+    #  if the traversed edges include any oof the remainig from above, all those edges are remaining
     #  this is to also include edges which might partially be inside shape
     #  if they need to be discarded, split, that should happen in a post process
     # Depending on the Axis of the circle, and which side remains we know if the wire needs to be flipped

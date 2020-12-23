@@ -27,7 +27,6 @@
 #endif
 
 #include "DlgSettingsObjectColor.h"
-#include "ui_DlgSettingsObjectColor.h"
 #include <Gui/PrefWidgets.h>
 
 using namespace PartGui;
@@ -40,10 +39,9 @@ using namespace PartGui;
  */
 DlgSettingsObjectColor::DlgSettingsObjectColor(QWidget* parent)
     : PreferencePage(parent)
-    , ui(new Ui_DlgSettingsObjectColor)
 {
-    ui->setupUi(this);
-    ui->DefaultShapeColor->setDisabled(ui->checkRandomColor->isChecked());
+    this->setupUi(this);
+    this->DefaultShapeColor->setDisabled(this->checkRandomColor->isChecked());
 }
 
 /** 
@@ -57,31 +55,29 @@ DlgSettingsObjectColor::~DlgSettingsObjectColor()
 void DlgSettingsObjectColor::saveSettings()
 {
     // Part
-    ui->DefaultShapeColor->onSave();
-    ui->checkRandomColor->onSave();
-    ui->DefaultShapeLineColor->onSave();
-    ui->DefaultShapeLineWidth->onSave();
-    ui->DefaultShapeVertexColor->onSave();
-    ui->DefaultShapeVertexSize->onSave();
-    ui->BoundingBoxColor->onSave();
-    ui->twosideRendering->onSave();
+    DefaultShapeColor->onSave();
+    checkRandomColor->onSave();
+    DefaultShapeLineColor->onSave();
+    DefaultShapeLineWidth->onSave();
+    DefaultShapeVertexColor->onSave();
+    DefaultShapeVertexWidth->onSave();
+    BoundingBoxColor->onSave();
     // Annotations
-    ui->AnnotationTextColor->onSave();
+    AnnotationTextColor->onSave();
 }
 
 void DlgSettingsObjectColor::loadSettings()
 {
     // Part
-    ui->DefaultShapeColor->onRestore();
-    ui->checkRandomColor->onRestore();
-    ui->DefaultShapeLineColor->onRestore();
-    ui->DefaultShapeLineWidth->onRestore();
-    ui->DefaultShapeVertexColor->onRestore();
-    ui->DefaultShapeVertexSize->onRestore();
-    ui->BoundingBoxColor->onRestore();
-    ui->twosideRendering->onRestore();
+    DefaultShapeColor->onRestore();
+    checkRandomColor->onRestore();
+    DefaultShapeLineColor->onRestore();
+    DefaultShapeLineWidth->onRestore();
+    DefaultShapeVertexColor->onRestore();
+    DefaultShapeVertexWidth->onRestore();
+    BoundingBoxColor->onRestore();
     // Annotations
-    ui->AnnotationTextColor->onRestore();
+    AnnotationTextColor->onRestore();
 }
 
 /**
@@ -90,7 +86,7 @@ void DlgSettingsObjectColor::loadSettings()
 void DlgSettingsObjectColor::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        ui->retranslateUi(this);
+        retranslateUi(this);
     }
     else {
         QWidget::changeEvent(e);

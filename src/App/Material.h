@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2005 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2005     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -284,10 +284,10 @@ public:
 
     bool operator==(const Material& m) const
     {
-        return _matType==m._matType && shininess==m.shininess &&
-            transparency==m.transparency && ambientColor==m.ambientColor &&
-            diffuseColor==m.diffuseColor && specularColor==m.specularColor &&
-            emissiveColor==m.emissiveColor;
+        return _matType!=m._matType || shininess!=m.shininess ||
+            transparency!=m.transparency || ambientColor!=m.ambientColor ||
+            diffuseColor!=m.diffuseColor || specularColor!=m.specularColor ||
+            emissiveColor!=m.emissiveColor;
     }
     bool operator!=(const Material& m) const
     {

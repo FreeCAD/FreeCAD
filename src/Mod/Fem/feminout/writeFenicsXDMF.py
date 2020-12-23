@@ -1,7 +1,6 @@
 # ***************************************************************************
-# *   Copyright (c) 2017 Johannes Hartung <j.hartung@gmx.net>               *
 # *                                                                         *
-# *   This file is part of the FreeCAD CAx development system.              *
+# *   Copyright (c) 2017 - Johannes Hartung <j.hartung@gmx.net>             *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -21,24 +20,23 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__  = "FreeCAD Fenics XDMF mesh writer"
+__title__ = "FreeCAD Fenics XDMF mesh writer"
 __author__ = "Johannes Hartung"
-__url__    = "https://www.freecadweb.org"
+__url__ = "http://www.freecadweb.org"
 
 ## @package exportFenicsXDMF
 #  \ingroup FEM
 #  \brief FreeCAD Fenics Mesh XDMF writer for FEM workbench
 
-import numpy as np
-from xml.etree import ElementTree as ET  # parsing xml files and exporting
-
 from FreeCAD import Console
-
-from .importToolsFem import get_FemMeshObjectDimension
-from .importToolsFem import get_FemMeshObjectElementTypes
-from .importToolsFem import get_FemMeshObjectOrder
-from .importToolsFem import get_FemMeshObjectMeshGroups
-from .importToolsFem import get_MaxDimElementFromList
+from .importToolsFem import \
+    get_FemMeshObjectDimension,\
+    get_FemMeshObjectElementTypes,\
+    get_MaxDimElementFromList,\
+    get_FemMeshObjectOrder,\
+    get_FemMeshObjectMeshGroups
+from xml.etree import ElementTree as ET  # parsing xml files and exporting
+import numpy as np
 
 
 ENCODING_ASCII = "ASCII"
@@ -318,7 +316,7 @@ def write_fenics_mesh_xdmf(
     fem_mesh = fem_mesh_obj.FemMesh
     gmshgroups = get_FemMeshObjectMeshGroups(fem_mesh_obj)
 
-    if gmshgroups != ():
+    if gmshgroups is not ():
         Console.PrintMessage("found mesh groups\n")
 
     for g in gmshgroups:

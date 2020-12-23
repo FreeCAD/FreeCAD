@@ -24,13 +24,11 @@
 #ifndef GUI_DIALOG_DLGDISPLAYPROPERTIES_IMP_H
 #define GUI_DIALOG_DLGDISPLAYPROPERTIES_IMP_H
 
-#include <memory>
 #include <vector>
-#include <QDialog>
+#include <boost/signals2.hpp>
 
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
+#include "ui_DlgDisplayProperties.h"
+#include "Selection.h"
 #include <App/Material.h>
 
 namespace App
@@ -44,25 +42,24 @@ namespace Gui {
   class Command;
 
 namespace Dialog {
+typedef boost::signals2::connection DlgDisplayPropertiesImp_Connection;
 
 /**
  * The DlgDisplayPropertiesImp class implements a dialog containing all available document
  * templates to create a new document.
  * \author Jürgen Riegel
  */
-class DlgDisplayPropertiesImp : public QDialog,
+class DlgDisplayPropertiesImp : public QDialog, public Ui_DlgDisplayProperties,
                                 public Gui::SelectionSingleton::ObserverType
 {
     Q_OBJECT
 
 public:
-    DlgDisplayPropertiesImp(bool floating, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    DlgDisplayPropertiesImp( QWidget* parent = 0, Qt::WindowFlags fl = 0 );
     ~DlgDisplayPropertiesImp();
     /// Observer message from the Selection
     void OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
                   Gui::SelectionSingleton::MessageType Reason);
-    void showDefaultButtons(bool);
-    void reject();
 
 private Q_SLOTS:
     void on_changeMaterial_activated(int);
@@ -82,6 +79,7 @@ protected:
 
 private:
     void slotChangedObject(const Gui::ViewProvider&, const App::Property& Prop);
+    void reject();
     void setDisplayModes(const std::vector<ViewProvider*>&);
     void setMaterial(const std::vector<ViewProvider*>&);
     void setColorPlot(const std::vector<ViewProvider*>&);
@@ -94,33 +92,7 @@ private:
     void setLineTransparency(const std::vector<ViewProvider*>&);
     std::vector<ViewProvider*> getSelection() const;
 
-private:
-    class Private;
-    std::unique_ptr<Private> d;
-};
-
-class TaskDisplayProperties : public Gui::TaskView::TaskDialog
-{
-    Q_OBJECT
-
-public:
-    TaskDisplayProperties();
-    ~TaskDisplayProperties();
-
-public:
-    bool reject();
-
-    bool isAllowedAlterDocument(void) const
-    { return true; }
-    bool isAllowedAlterView(void) const
-    { return true; }
-    bool isAllowedAlterSelection(void) const
-    { return true; }
-    QDialogButtonBox::StandardButtons getStandardButtons() const;
-
-private:
-    DlgDisplayPropertiesImp* widget;
-    Gui::TaskView::TaskBox* taskbox;
+    DlgDisplayPropertiesImp_Connection connectChangedObject;
 };
 
 } // namespace Dialog

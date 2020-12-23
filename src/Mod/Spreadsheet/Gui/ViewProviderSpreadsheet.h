@@ -65,7 +65,7 @@ public:
 
     virtual bool isShow(void) const override { return true; }
 
-    virtual Gui::MDIView *getMDIView() const override;
+    virtual Gui::MDIView *getMDIView() override;
 
 protected:
     SheetView* showSpreadsheetView();

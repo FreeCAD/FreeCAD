@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2017 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2017 Wandererfan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,12 +19,15 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-
+ 
 //! LineGroup - Classes related to processing LineGroup definition CSV files
 
 #ifndef _TechDraw_LINEGROUP_H_
 #define _TechDraw_LINEGROUP_H_
 
+#include <iostream>
+#include <sstream>
+#include <fstream>
 #include <string>
 
 namespace TechDraw
@@ -32,14 +35,14 @@ namespace TechDraw
 
 class TechDrawExport LineGroup
 {
-public:
+public: 
     LineGroup();
     LineGroup(std::string groupName);
     ~LineGroup();
     double getWeight(std::string s);
     void setWeight(std::string s, double weight);
 //    void setWeight(const char* s, double weight);
-    void dump(const char* title);
+    void dump(char* title);
     std::string getName(void) { return m_name; }
     void setName(std::string s) { m_name = s; }
 
@@ -47,15 +50,10 @@ public:
     static std::vector<double> split(std::string line);
 
     //static support function: find group defn in file
-    static std::string getRecordFromFile(std::string parmFile, int groupNumber);
+    static std::string getRecordFromFile(std::string parmFile, std::string groupName);
 
     //static LineGroup maker
-    static LineGroup* lineGroupFactory(int groupNumber);
-
-    static double getDefaultWidth(std::string weightName, int groupNumber = -1);
-
-    static std::string getGroupNamesFromFile(std::string FileName);
-
+    static LineGroup* lineGroupFactory(std::string groupName);
 
 protected:
     void init(void);

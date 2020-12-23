@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+
 # ***************************************************************************
+# *                                                                         *
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -21,6 +23,7 @@
 # ***************************************************************************
 
 import FreeCAD
+import Part
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathPocketBase as PathPocketBase
@@ -28,21 +31,22 @@ import PathScripts.PathUtils as PathUtils
 
 from PySide import QtCore
 
-# lazily loaded modules
-from lazy_loader.lazy_loader import LazyLoader
-Part = LazyLoader('Part', globals(), 'Part')
-
 __title__ = "Path 3D Pocket Operation"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
-__url__ = "https://www.freecadweb.org"
+__url__ = "http://www.freecadweb.org"
 __doc__ = "Class and implementation of the 3D Pocket operation."
 __contributors__ = "russ4262 (Russell Johnson)"
 __created__ = "2014"
-__scriptVersion__ = "2e"
-__lastModified__ = "2020-02-13 17:22 CST"
+__scriptVersion__ = "2g testing"
+__lastModified__ = "2019-07-20 22:02 CST"
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
+LOGLEVEL = False
+
+if LOGLEVEL:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 # Qt translation handling
@@ -103,11 +107,8 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     allSubsFaceType = False
 
                 if allSubsFaceType is True and obj.HandleMultipleFeatures == 'Collectively':
-                    (fzmin, fzmax) = self.getMinMaxOfFaces(Faces)
-                    if obj.FinalDepth.Value < fzmin:
-                        PathLog.warning(translate('PathPocket', 'Final depth set below ZMin of face(s) selected.'))
-                    '''
                     if obj.OpFinalDepth == obj.FinalDepth:
+                        (fzmin, fzmax) = self.getMinMaxOfFaces(Faces)
                         obj.FinalDepth.Value = fzmin
                         finish_step = obj.FinishDepth.Value if hasattr(obj, "FinishDepth") else 0.0
                         self.depthparams = PathUtils.depth_params(
@@ -119,7 +120,6 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                             final_depth=fzmin,
                             user_depths=None)
                         PathLog.info("Updated obj.FinalDepth.Value and self.depthparams to zmin: {}".format(fzmin))
-                    '''
 
                     if obj.AdaptivePocketStart is True or obj.AdaptivePocketFinish is True:
                         pocketTup = self.calculateAdaptivePocket(obj, base, subObjTups)
@@ -153,9 +153,8 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             PathLog.debug("processing the whole job base object")
             strDep = obj.StartDepth.Value
             finDep = obj.FinalDepth.Value
-            # recomputeDepthparams = False
+            recomputeDepthparams = False
             for base in self.model:
-                '''
                 if obj.OpFinalDepth == obj.FinalDepth:
                     if base.Shape.BoundBox.ZMin < obj.FinalDepth.Value:
                         obj.FinalDepth.Value = base.Shape.BoundBox.ZMin
@@ -179,13 +178,11 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                         final_depth=obj.FinalDepth.Value,
                         user_depths=None)
                     recomputeDepthparams = False
-                '''
 
                 if obj.ProcessStockArea is True:
                     job = PathUtils.findParentJob(obj)
-
-                    '''
                     finish_step = obj.FinishDepth.Value if hasattr(obj, "FinishDepth") else 0.0
+
                     depthparams = PathUtils.depth_params(
                         clearance_height=obj.ClearanceHeight.Value,
                         safe_height=obj.SafeHeight.Value,
@@ -195,8 +192,6 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                         final_depth=base.Shape.BoundBox.ZMin,
                         user_depths=None)
                     stockEnvShape = PathUtils.getEnvelope(job.Stock.Shape, subshape=None, depthparams=depthparams)
-                    '''
-                    stockEnvShape = PathUtils.getEnvelope(job.Stock.Shape, subshape=None, depthparams=self.depthparams)
 
                     obj.removalshape = stockEnvShape.cut(base.Shape)
                     obj.removalshape.tessellate(0.1)
@@ -235,6 +230,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         tryNonPlanar = False
         isHighFacePlanar = True
         isLowFacePlanar = True
+        faceType = 0
 
         for (sub, face) in subObjTups:
             Faces.append(face)

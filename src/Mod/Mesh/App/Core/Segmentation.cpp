@@ -126,15 +126,13 @@ PlaneSurfaceFit::~PlaneSurfaceFit()
 void PlaneSurfaceFit::Initialize(const MeshCore::MeshGeomFacet& tria)
 {
     if (fitter) {
-        basepoint = tria.GetGravityPoint();
-        normal = tria.GetNormal();
-
         fitter->Clear();
 
+        basepoint = tria.GetGravityPoint();
+        normal = tria.GetNormal();
         fitter->AddPoint(tria._aclPoints[0]);
         fitter->AddPoint(tria._aclPoints[1]);
         fitter->AddPoint(tria._aclPoints[2]);
-        fitter->Fit();
     }
 }
 
@@ -173,25 +171,6 @@ float PlaneSurfaceFit::GetDistanceToSurface(const Base::Vector3f& pnt) const
         return fitter->GetDistanceToPlane(pnt);
 }
 
-std::vector<float> PlaneSurfaceFit::Parameters() const
-{
-    Base::Vector3f base = basepoint;
-    Base::Vector3f norm = normal;
-    if (fitter) {
-        base = fitter->GetBase();
-        norm = fitter->GetNormal();
-    }
-
-    std::vector<float> c;
-    c.push_back(base.x);
-    c.push_back(base.y);
-    c.push_back(base.z);
-    c.push_back(norm.x);
-    c.push_back(norm.y);
-    c.push_back(norm.z);
-    return c;
-}
-
 // --------------------------------------------------------
 
 CylinderSurfaceFit::CylinderSurfaceFit()
@@ -203,7 +182,7 @@ CylinderSurfaceFit::CylinderSurfaceFit()
 
 /*!
  * \brief CylinderSurfaceFit::CylinderSurfaceFit
- * Set a predefined cylinder. Internal cylinder fits are not done, then.
+ * Set a pre-defined cylinder. Internal cylinder fits are not done, then.
  */
 CylinderSurfaceFit::CylinderSurfaceFit(const Base::Vector3f& b, const Base::Vector3f& a, float r)
     : basepoint(b)
@@ -276,28 +255,6 @@ float CylinderSurfaceFit::GetDistanceToSurface(const Base::Vector3f& pnt) const
     }
     float dist = pnt.DistanceToLine(basepoint, axis);
     return (dist - radius);
-}
-
-std::vector<float> CylinderSurfaceFit::Parameters() const
-{
-    Base::Vector3f base = basepoint;
-    Base::Vector3f norm = axis;
-    float radval = radius;
-    if (fitter) {
-        base = fitter->GetBase();
-        norm = fitter->GetAxis();
-        radval = fitter->GetRadius();
-    }
-
-    std::vector<float> c;
-    c.push_back(base.x);
-    c.push_back(base.y);
-    c.push_back(base.z);
-    c.push_back(norm.x);
-    c.push_back(norm.y);
-    c.push_back(norm.z);
-    c.push_back(radval);
-    return c;
 }
 
 // --------------------------------------------------------
@@ -375,23 +332,6 @@ float SphereSurfaceFit::GetDistanceToSurface(const Base::Vector3f& pnt) const
     return (dist - radius);
 }
 
-std::vector<float> SphereSurfaceFit::Parameters() const
-{
-    Base::Vector3f base = center;
-    float radval = radius;
-    if (fitter) {
-        base = fitter->GetCenter();
-        radval = fitter->GetRadius();
-    }
-
-    std::vector<float> c;
-    c.push_back(base.x);
-    c.push_back(base.y);
-    c.push_back(base.z);
-    c.push_back(radval);
-    return c;
-}
-
 // --------------------------------------------------------
 
 MeshDistanceGenericSurfaceFitSegment::MeshDistanceGenericSurfaceFitSegment(AbstractSurfaceFit* fit,
@@ -441,11 +381,6 @@ void MeshDistanceGenericSurfaceFitSegment::AddFacet(const MeshFacet& face)
 {
     MeshGeomFacet triangle = kernel.GetFacet(face);
     fitter->AddTriangle(triangle);
-}
-
-std::vector<float> MeshDistanceGenericSurfaceFitSegment::Parameters() const
-{
-    return fitter->Parameters();
 }
 
 // --------------------------------------------------------
@@ -536,7 +471,7 @@ bool MeshSurfaceVisitor::Visit (const MeshFacet & face, const MeshFacet &,
 
 // --------------------------------------------------------
 
-void MeshSegmentAlgorithm::FindSegments(std::vector<MeshSurfaceSegmentPtr>& segm)
+void MeshSegmentAlgorithm::FindSegments(std::vector<MeshSurfaceSegment*>& segm)
 {
     // reset VISIT flags
     unsigned long startFacet;
@@ -552,18 +487,13 @@ void MeshSegmentAlgorithm::FindSegments(std::vector<MeshSurfaceSegmentPtr>& segm
     cAlgo.CountFacetFlag(MeshCore::MeshFacet::VISIT);
     std::vector<unsigned long> resetVisited;
 
-    for (std::vector<MeshSurfaceSegmentPtr>::iterator it = segm.begin(); it != segm.end(); ++it) {
+    for (std::vector<MeshSurfaceSegment*>::iterator it = segm.begin(); it != segm.end(); ++it) {
         cAlgo.ResetFacetsFlag(resetVisited, MeshCore::MeshFacet::VISIT);
         resetVisited.clear();
 
-        MeshCore::MeshIsNotFlag<MeshCore::MeshFacet> flag;
-        iCur = std::find_if(iBeg, iEnd, [flag](const MeshFacet& f) {
-            return flag(f, MeshFacet::VISIT);
-        });
-        if (iCur < iEnd)
-            startFacet = iCur - iBeg;
-        else
-            startFacet = ULONG_MAX;
+        iCur = std::find_if(iBeg, iEnd, std::bind2nd(MeshCore::MeshIsNotFlag<MeshCore::MeshFacet>(),
+            MeshCore::MeshFacet::VISIT));
+        startFacet = iCur - iBeg;
         while (startFacet != ULONG_MAX) {
             // collect all facets of the same geometry
             std::vector<unsigned long> indices;
@@ -582,9 +512,8 @@ void MeshSegmentAlgorithm::FindSegments(std::vector<MeshSurfaceSegmentPtr>& segm
             }
 
             // search for the next start facet
-            iCur = std::find_if(iCur, iEnd, [flag](const MeshFacet& f) {
-                return flag(f, MeshFacet::VISIT);
-            });
+            iCur = std::find_if(iCur, iEnd, std::bind2nd(MeshCore::MeshIsNotFlag<MeshCore::MeshFacet>(),
+                MeshCore::MeshFacet::VISIT));
             if (iCur < iEnd)
                 startFacet = iCur - iBeg;
             else

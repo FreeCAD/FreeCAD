@@ -47,80 +47,58 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 {
     Gui::MenuItem* root = StdWorkbench::setupMenuBar();
     Gui::MenuItem* item = root->findItem("&Windows");
+
     Gui::MenuItem* draw = new Gui::MenuItem;
     root->insertItem(item, draw);
-
-    // dimensions
-    Gui::MenuItem* dimensions = new Gui::MenuItem;
-    dimensions->setCommand("Dimensions");
-    *dimensions << "TechDraw_LengthDimension";
-    *dimensions << "TechDraw_HorizontalDimension";
-    *dimensions << "TechDraw_VerticalDimension";
-    *dimensions << "TechDraw_RadiusDimension";
-    *dimensions << "TechDraw_DiameterDimension";
-    *dimensions << "TechDraw_AngleDimension";
-    *dimensions << "TechDraw_HorizontalExtentDimension";
-    *dimensions << "TechDraw_VerticalExtentDimension";
-    *dimensions << "TechDraw_LinkDimension";
-    *dimensions << "TechDraw_LandmarkDimension";
-
-    // annotations
-    Gui::MenuItem* annotations = new Gui::MenuItem;
-    annotations->setCommand("Annotations");
-    *annotations << "TechDraw_Annotation";
-    *annotations << "TechDraw_RichTextAnnotation";
-    *annotations << "TechDraw_Balloon";
-
-    // lines
-    Gui::MenuItem* lines = new Gui::MenuItem;
-    lines->setCommand("Add Lines");
-    *lines << "TechDraw_LeaderLine";
-    *lines << "TechDraw_FaceCenterLine";
-    *lines << "TechDraw_2LineCenterLine";
-    *lines << "TechDraw_2PointCenterLine";
-    *lines << "TechDraw_2PointCosmeticLine";
-
-    // vertices
-    Gui::MenuItem* vertices = new Gui::MenuItem;
-    vertices->setCommand("Add Vertices");
-    *vertices << "TechDraw_CosmeticVertex";
-    *vertices << "TechDraw_Midpoints";
-    *vertices << "TechDraw_Quadrants";
-
-    // main menu
     draw->setCommand("TechDraw");
-    *draw << "TechDraw_PageDefault";
-    *draw << "TechDraw_PageTemplate";
-    *draw << "TechDraw_RedrawPage";
+    *draw << "TechDraw_NewPageDef";
+    *draw << "TechDraw_NewPage";
+    *draw << "TechDraw_Redraw";
     *draw << "Separator";
-    *draw << "TechDraw_View";
-    *draw << "TechDraw_ActiveView";
-    *draw << "TechDraw_ProjectionGroup";
-    *draw << "TechDraw_SectionView";
-    *draw << "TechDraw_DetailView";
+    *draw << "TechDraw_NewView";
+    *draw << "TechDraw_NewActiveView";
+//    *draw << "TechDraw_NewMulti";     //deprecated
+    *draw << "TechDraw_ProjGroup";
+    *draw << "TechDraw_NewViewSection";
+    *draw << "TechDraw_NewViewDetail";
     *draw << "Separator";
     *draw << "TechDraw_DraftView";
     *draw << "TechDraw_ArchView";
-    *draw << "TechDraw_SpreadsheetView";
+    *draw << "TechDraw_Spreadsheet";
     *draw << "Separator";
-    *draw << "TechDraw_ClipGroup";
-    *draw << "TechDraw_ClipGroupAdd";
-    *draw << "TechDraw_ClipGroupRemove";
+    *draw << "TechDraw_Clip";
+    *draw << "TechDraw_ClipPlus";
+    *draw << "TechDraw_ClipMinus";
     *draw << "Separator";
-    *draw << dimensions;
+    *draw << "TechDraw_NewLengthDimension";
+    *draw << "TechDraw_NewDistanceXDimension";
+    *draw << "TechDraw_NewDistanceYDimension";
+    *draw << "TechDraw_NewRadiusDimension";
+    *draw << "TechDraw_NewDiameterDimension";
+    *draw << "TechDraw_NewAngleDimension";
+    *draw << "TechDraw_HorizontalExtent";
+    *draw << "TechDraw_VerticalExtent";
+    *draw << "TechDraw_LinkDimension";
+    *draw << "TechDraw_NewBalloon";
     *draw << "Separator";
-    *draw << "TechDraw_ExportPageSVG";
-    *draw << "TechDraw_ExportPageDXF";
+    *draw << "TechDraw_ExportPage";
+    *draw << "TechDraw_ExportPageDxf";
     *draw << "Separator";
-    *draw << "TechDraw_Hatch";
-    *draw << "TechDraw_GeometricHatch";
+    *draw << "TechDraw_NewHatch";
+    *draw << "TechDraw_NewGeomHatch";
     *draw << "TechDraw_Symbol";
     *draw << "TechDraw_Image";
     *draw << "TechDraw_ToggleFrame";
     *draw << "Separator";
-    *draw << annotations;
-    *draw << lines;
-    *draw << vertices;
+    *draw << "TechDraw_Annotation";
+    *draw << "TechDraw_LeaderLine";
+    *draw << "TechDraw_RichAnno";
+    *draw << "TechDraw_CosmeticVertex";
+    *draw << "TechDraw_Midpoints";
+    *draw << "TechDraw_Quadrant";
+    *draw << "TechDraw_FaceCenterLine";
+    *draw << "TechDraw_2LineCenterLine";
+    *draw << "TechDraw_2PointCenterLine";
     *draw << "TechDraw_CosmeticEraser";
     *draw << "TechDraw_DecorateLine";
     *draw << "TechDraw_ShowAll";
@@ -133,53 +111,53 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
     Gui::ToolBarItem* pages = new Gui::ToolBarItem(root);
     pages->setCommand("TechDraw Pages");
-    *pages << "TechDraw_PageDefault";
-    *pages << "TechDraw_PageTemplate";
-    *pages << "TechDraw_RedrawPage";
+    *pages << "TechDraw_NewPageDef";
+    *pages << "TechDraw_NewPage";
+    *pages << "TechDraw_Redraw";
 
     Gui::ToolBarItem *views = new Gui::ToolBarItem(root);
     views->setCommand("TechDraw Views");
-    *views << "TechDraw_View";
-    *views << "TechDraw_ActiveView";
-    *views << "TechDraw_ProjectionGroup";
-    *views << "TechDraw_SectionView";
-    *views << "TechDraw_DetailView";
+    *views << "TechDraw_NewView";
+    *views << "TechDraw_NewActiveView";
+//    *views << "TechDraw_NewMulti";    //deprecated
+    *views << "TechDraw_ProjGroup";
+    *views << "TechDraw_NewViewSection";
+    *views << "TechDraw_NewViewDetail";
     *views << "TechDraw_DraftView";
     *views << "TechDraw_ArchView";
-    *views << "TechDraw_SpreadsheetView";
+    *views << "TechDraw_Spreadsheet";
 
     Gui::ToolBarItem *clips = new Gui::ToolBarItem(root);
     clips->setCommand("TechDraw Clips");
-    *clips << "TechDraw_ClipGroup";
-    *clips << "TechDraw_ClipGroupAdd";
-    *clips << "TechDraw_ClipGroupRemove";
+    *clips << "TechDraw_Clip";
+    *clips << "TechDraw_ClipPlus";
+    *clips << "TechDraw_ClipMinus";
 
     Gui::ToolBarItem *dims = new Gui::ToolBarItem(root);
     dims->setCommand("TechDraw Dimensions");
-    *dims << "TechDraw_LengthDimension";
-    *dims << "TechDraw_HorizontalDimension";
-    *dims << "TechDraw_VerticalDimension";
-    *dims << "TechDraw_RadiusDimension";
-    *dims << "TechDraw_DiameterDimension";
-    *dims << "TechDraw_AngleDimension";
-    *dims << "TechDraw_3PtAngleDimension";
-    *dims << "TechDraw_ExtentGroup";
-//    *dims << "TechDraw_HorizontalExtentDimension";
-//    *dims << "TechDraw_VerticalExtentDimension";
+    *dims << "TechDraw_NewLengthDimension";
+    *dims << "TechDraw_NewDistanceXDimension";
+    *dims << "TechDraw_NewDistanceYDimension";
+    *dims << "TechDraw_NewRadiusDimension";
+    *dims << "TechDraw_NewDiameterDimension";
+    *dims << "TechDraw_NewAngleDimension";
+    *dims << "TechDraw_NewAngle3PtDimension";
+    *dims << "TechDraw_ExtentGrp";
+//    *dims << "TechDraw_HorizontalExtent";
+//    *dims << "TechDraw_VerticalExtent";
     *dims << "TechDraw_LinkDimension";
-    *dims << "TechDraw_Balloon";
-    *dims << "TechDraw_LandmarkDimension";
-//    *dims << "TechDraw_Dimension"
+    *dims << "TechDraw_NewBalloon";
+//    *dims << "TechDraw_NewDimension"
 
     Gui::ToolBarItem *file = new Gui::ToolBarItem(root);
     file->setCommand("TechDraw File Access");
-    *file << "TechDraw_ExportPageSVG";
-    *file << "TechDraw_ExportPageDXF";
+    *file << "TechDraw_ExportPage";
+    *file << "TechDraw_ExportPageDxf";
 
     Gui::ToolBarItem *decor = new Gui::ToolBarItem(root);
     decor->setCommand("TechDraw Decoration");
-    *decor << "TechDraw_Hatch";
-    *decor << "TechDraw_GeometricHatch";
+    *decor << "TechDraw_NewHatch";
+    *decor << "TechDraw_NewGeomHatch";
     *decor << "TechDraw_Symbol";
     *decor << "TechDraw_Image";
     *decor << "TechDraw_ToggleFrame";
@@ -188,13 +166,12 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     anno->setCommand("TechDraw Annotation");
     *anno << "TechDraw_Annotation";
     *anno << "TechDraw_LeaderLine";
-    *anno << "TechDraw_RichTextAnnotation";
-    *anno << "TechDraw_CosmeticVertexGroup";
-    *anno << "TechDraw_CenterLineGroup";
+    *anno << "TechDraw_RichAnno";
+    *anno << "TechDraw_CosmeticVertexGrp";
+    *anno << "TechDraw_CenterLineGrp";
 //    *anno << "TechDraw_FaceCenterLine";
 //    *anno << "TechDraw_2LineCenterLine";
 //    *anno << "TechDraw_2PointCenterLine";
-    *anno << "TechDraw_2PointCosmeticLine";
     *anno << "TechDraw_CosmeticEraser";
     *anno << "TechDraw_DecorateLine";
     *anno << "TechDraw_ShowAll";
@@ -207,53 +184,52 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     Gui::ToolBarItem* root = new Gui::ToolBarItem;
     Gui::ToolBarItem *pages = new Gui::ToolBarItem(root);
     pages->setCommand("TechDraw Pages");
-    *pages << "TechDraw_PageDefault";
-    *pages << "TechDraw_PageTemplate";
-    *pages << "TechDraw_RedrawPage";
+    *pages << "TechDraw_NewPageDef";
+    *pages << "TechDraw_NewPage";
+    *pages << "TechDraw_Redraw";
 
     Gui::ToolBarItem *views = new Gui::ToolBarItem(root);
     views->setCommand("Views");
-    *views << "TechDraw_View";
-    *views << "TechDraw_ActiveView";
+    *views << "TechDraw_NewView";
+    *views << "TechDraw_NewActiveView";
 //    *views << "TechDraw_NewMulti";    //deprecated
-    *views << "TechDraw_ProjectionGroup";
-    *views << "TechDraw_SectionView";
-    *views << "TechDraw_DetailView";
+    *views << "TechDraw_ProjGroup";
+    *views << "TechDraw_NewViewSection";
+    *views << "TechDraw_NewViewDetail";
     *views << "TechDraw_DraftView";
-    *views << "TechDraw_SpreadsheetView";
+    *views << "TechDraw_Spreadsheet";
 
     Gui::ToolBarItem *clips = new Gui::ToolBarItem(root);
     clips->setCommand("TechDraw Clips");
-    *clips << "TechDraw_ClipGroup";
-    *clips << "TechDraw_ClipGroupAdd";
-    *clips << "TechDraw_ClipGroupRemove";
+    *clips << "TechDraw_Clip";
+    *clips << "TechDraw_ClipPlus";
+    *clips << "TechDraw_ClipMinus";
 
     Gui::ToolBarItem *dims = new Gui::ToolBarItem(root);
     dims->setCommand("TechDraw Dimensions");
-    *dims << "TechDraw_LengthDimension";
-    *dims << "TechDraw_HorizontalDimension";
-    *dims << "TechDraw_VerticalDimension";
-    *dims << "TechDraw_RadiusDimension";
-    *dims << "TechDraw_DiameterDimension";
-    *dims << "TechDraw_AngleDimension";
-    *dims << "TechDraw_3PtAngleDimension";
-    *dims << "TechDraw_ExtentGroup";
-//    *dims << "TechDraw_HorizontalExtentDimension";
-//    *dims << "TechDraw_VerticalExtentDimension";
+    *dims << "TechDraw_NewLengthDimension";
+    *dims << "TechDraw_NewDistanceXDimension";
+    *dims << "TechDraw_NewDistanceYDimension";
+    *dims << "TechDraw_NewRadiusDimension";
+    *dims << "TechDraw_NewDiameterDimension";
+    *dims << "TechDraw_NewAngleDimension";
+    *dims << "TechDraw_NewAngle3PtDimension";
+    *dims << "TechDraw_ExtentGrp";
+//    *dims << "TechDraw_HorizontalExtent";
+//    *dims << "TechDraw_VerticalExtent";
     *dims << "TechDraw_LinkDimension";
-    *dims << "TechDraw_Balloon";
-    *dims << "TechDraw_LandmarkDimension";
-//    *dims << "TechDraw_Dimension";
+    *dims << "TechDraw_NewBalloon";
+//    *dims << "TechDraw_NewDimension";
 
     Gui::ToolBarItem *file = new Gui::ToolBarItem(root);
     file->setCommand("TechDraw File Access");
-    *file << "TechDraw_ExportPageSVG";
-    *file << "TechDraw_ExportPageDXF";
+    *file << "TechDraw_ExportPage";
+    *file << "TechDraw_ExportPageDxf";
  
     Gui::ToolBarItem *decor = new Gui::ToolBarItem(root);
     decor->setCommand("TechDraw Decoration");
-    *decor << "TechDraw_Hatch";
-    *decor << "TechDraw_GeometricHatch";
+    *decor << "TechDraw_NewHatch";
+    *decor << "TechDraw_NewGeomHatch";
     *decor << "TechDraw_Symbol";
     *decor << "TechDraw_Image";
     *decor << "TechDraw_ToggleFrame";
@@ -262,13 +238,12 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     anno->setCommand("TechDraw Annotation");
     *anno << "TechDraw_Annotation";
     *anno << "TechDraw_LeaderLine";
-    *anno << "TechDraw_RichTextAnnotation";
-    *anno << "TechDraw_CosmeticVertexGroup";
-    *anno << "TechDraw_CenterLineGroup";
+    *anno << "TechDraw_RichAnno";
+    *anno << "TechDraw_CosmeticVertexGrp";
+    *anno << "TechDraw_CenterLineGrp";
 //    *anno << "TechDraw_FaceCenterLine";
 //    *anno << "TechDraw_2LineCenterLine";
 //    *anno << "TechDraw_2PointCenterLine";
-    *anno << "TechDraw_2PointCosmeticLine";
     *anno << "TechDraw_CosmeticEraser";
     *anno << "TechDraw_DecorateLine";
     *anno << "TechDraw_ShowAll";

@@ -107,7 +107,6 @@ private:
     void setEditorMode(const QModelIndex & parent, int start, int end);
     void updateItemEditor(bool enable, int column, const QModelIndex& parent);
     void setupTransaction(const QModelIndex &);
-    void closeTransaction();
 
 private:
     PropertyItemDelegate *delegate;
@@ -118,12 +117,10 @@ private:
     bool autoupdate;
     bool committing;
     bool delaybuild;
-    bool binding;
-
-    int transactionID = 0;
-
     QColor groupColor;
     QBrush background;
+
+    bool binding;
 
     friend class Gui::PropertyView;
 };

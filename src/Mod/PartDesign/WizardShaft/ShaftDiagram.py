@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
 #/******************************************************************************
-# *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
+# *   Copyright (c)2012 Jan Rheinlaender <jrheinlaender@users.sourceforge.net> *
 # *                                                                            *
 # *   This file is part of the FreeCAD CAx development system.                 *
 # *                                                                            *
@@ -27,7 +26,7 @@ import FreeCAD, FreeCADGui
 class Diagram:
     def create(self, title, function, xlength, xname, xunit, xscale, yname, yunit, yscale, numxpoints):
         # Initialize
-        from freecad.plot import Plot
+        import Plot
         self.title = title
         self.function = function # This is assumed to be always a SegmentFunction
         self.xlength = xlength

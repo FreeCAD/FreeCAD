@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ar" sourcelanguage="en">
+<TS version="2.0" language="ar" sourcelanguage="en">
   <context>
     <name>CmdWebBrowserBack</name>
     <message>
@@ -48,7 +48,7 @@
       <location filename="../../Command.cpp" line="135"/>
       <location filename="../../Command.cpp" line="136"/>
       <source>Refresh web page</source>
-      <translation>تحديث الصفحة</translation>
+      <translation>تحديث صفحة الويب</translation>
     </message>
   </context>
   <context>
@@ -62,7 +62,9 @@
       <location filename="../../Command.cpp" line="251"/>
       <location filename="../../Command.cpp" line="252"/>
       <source>Set URL</source>
-      <translation>تحديد الرابط</translation>
+      <translation>CmdWebBrowserSetURL
+../../Command.cpp:251
+../../Command.cpp:252</translation>
     </message>
   </context>
   <context>
@@ -128,13 +130,13 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppWebGui.cpp" line="88"/>
-      <location filename="../../BrowserView.cpp" line="745"/>
+      <location filename="../../AppWebGui.cpp" line="80"/>
+      <location filename="../../BrowserView.cpp" line="686"/>
       <source>Browser</source>
       <translation>المتصفح</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="560"/>
+      <location filename="../../BrowserView.cpp" line="529"/>
       <source>File does not exist!</source>
       <translation>الملف غير موجود!</translation>
     </message>
@@ -142,18 +144,18 @@
   <context>
     <name>WebGui::BrowserView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="551"/>
-      <location filename="../../BrowserView.cpp" line="556"/>
+      <location filename="../../BrowserView.cpp" line="520"/>
+      <location filename="../../BrowserView.cpp" line="525"/>
       <source>Error</source>
       <translation>خطأ</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="556"/>
+      <location filename="../../BrowserView.cpp" line="525"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
-      <translation>ظهرت أخطاء أثناء تحميل الملف. ربما قد تم تعديل بعض البيانات أو أنه لم يتم استرجاعها. للمزيد من المعلومات المحددة عن العناصر المعنية يرجى الاطلاع على التقرير.</translation>
+      <translation>ظهرت أخطاء أثناء تحميل الملف. ربما قد تم تعديل بعض البيانات أو أنه لم يتم استرجاعها. للمزيد من المعلومات المحددة عن العناصر المعنية يرجى الاطلاع على عرض التقرير.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="716"/>
+      <location filename="../../BrowserView.cpp" line="657"/>
       <source>Loading %1...</source>
       <translation>تحميل %1...</translation>
     </message>
@@ -161,19 +163,20 @@
   <context>
     <name>WebGui::WebView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="308"/>
+      <location filename="../../BrowserView.cpp" line="299"/>
       <source>Open in External Browser</source>
       <translation>فتح في متصفح خارجي</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="312"/>
+      <location filename="../../BrowserView.cpp" line="303"/>
       <source>Open in new window</source>
       <translation>فتح في صفحة جديدة</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="344"/>
+      <location filename="../../BrowserView.cpp" line="335"/>
       <source>View source</source>
-      <translation>عرض المصدر</translation>
+      <translation>WebGui::WebView
+../../BrowserView.cpp:335</translation>
     </message>
   </context>
   <context>
@@ -181,7 +184,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
       <source>Navigation</source>
-      <translation>التصفح</translation>
+      <translation>التنقل</translation>
     </message>
   </context>
 </TS>

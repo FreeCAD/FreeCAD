@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>451</width>
+    <width>446</width>
     <height>768</height>
    </rect>
   </property>
@@ -27,7 +27,7 @@
           <item row="1" column="0">
            <widget class="QRadioButton" name="rb_abs_displacement">
             <property name="text">
-             <string>Displacement Magnitude</string>
+             <string>Abs displacement</string>
             </property>
            </widget>
           </item>
@@ -44,14 +44,14 @@
           <item row="3" column="0">
            <widget class="QRadioButton" name="rb_y_displacement">
             <property name="text">
-             <string>Displacement Y</string>
+             <string>Y displacement</string>
             </property>
            </widget>
           </item>
           <item row="2" column="0">
            <widget class="QRadioButton" name="rb_x_displacement">
             <property name="text">
-             <string>Displacement X</string>
+             <string>X displacement</string>
             </property>
            </widget>
           </item>
@@ -65,7 +65,7 @@
           <item row="5" column="0">
            <widget class="QRadioButton" name="rb_z_displacement">
             <property name="text">
-             <string>Displacement Z</string>
+             <string>Z displacement</string>
             </property>
            </widget>
           </item>
@@ -79,28 +79,28 @@
           <item row="1" column="1">
            <widget class="QRadioButton" name="rb_vm_stress">
             <property name="text">
-             <string>von Mises Stress</string>
+             <string>Von Mises stress</string>
             </property>
            </widget>
           </item>
           <item row="2" column="1">
            <widget class="QRadioButton" name="rb_maxprin">
             <property name="text">
-             <string>Max Principal Stress</string>
+             <string>Max Principal stress</string>
             </property>
            </widget>
           </item>
           <item row="3" column="1">
            <widget class="QRadioButton" name="rb_minprin">
             <property name="text">
-             <string>Min Principal Stress</string>
+             <string>Min Principal stress</string>
             </property>
            </widget>
           </item>
           <item row="5" column="1">
            <widget class="QRadioButton" name="rb_max_shear_stress">
             <property name="text">
-             <string>Max Shear Stress (Tresca)</string>
+             <string>Max shear stress(Tresca)</string>
             </property>
            </widget>
           </item>
@@ -122,10 +122,37 @@
         </item>
         <item>
          <layout class="QFormLayout" name="formLayout">
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_4">
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_2">
             <property name="text">
-             <string>Min:</string>
+             <string>Avg:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="Gui::InputField" name="le_avg">
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+            <property name="unit" stdset="0">
+             <string notr="true">mm</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Max:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="Gui::InputField" name="le_max">
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+            <property name="unit" stdset="0">
+             <string notr="true">mm</string>
             </property>
            </widget>
           </item>
@@ -139,27 +166,10 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_4">
             <property name="text">
-             <string>Max:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="Gui::InputField" name="le_max">
-            <property name="readOnly">
-             <bool>true</bool>
-            </property>
-            <property name="unit" stdset="0">
-             <string notr="true">mm</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QPushButton" name="show_histogram">
-            <property name="text">
-             <string>Histogram</string>
+             <string>Min:</string>
             </property>
            </widget>
           </item>
@@ -197,9 +207,6 @@
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="maximum">
-             <number>100</number>
-            </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -220,21 +227,21 @@
            </widget>
           </item>
           <item>
-           <widget class="QDoubleSpinBox" name="sb_displacement_factor">
+           <widget class="QSpinBox" name="sb_displacement_factor">
             <property name="enabled">
-             <bool>true</bool>
-            </property>
-            <property name="inputMethodHints">
-             <set>Qt::ImhFormattedNumbersOnly</set>
+             <bool>false</bool>
             </property>
             <property name="readOnly">
              <bool>false</bool>
             </property>
-            <property name="decimals">
-             <number>1</number>
-            </property>
             <property name="maximum">
-             <double>1000000.000000000000000</double>
+             <number>1000000</number>
+            </property>
+            <property name="singleStep">
+             <number>10</number>
+            </property>
+            <property name="value">
+             <number>1</number>
             </property>
            </widget>
           </item>
@@ -253,21 +260,21 @@
            </widget>
           </item>
           <item>
-           <widget class="QDoubleSpinBox" name="sb_displacement_factor_max">
+           <widget class="QSpinBox" name="sb_displacement_factor_max">
             <property name="enabled">
-             <bool>true</bool>
-            </property>
-            <property name="inputMethodHints">
-             <set>Qt::ImhFormattedNumbersOnly</set>
+             <bool>false</bool>
             </property>
             <property name="readOnly">
              <bool>false</bool>
             </property>
-            <property name="decimals">
-             <number>1</number>
-            </property>
             <property name="maximum">
-             <double>1000000.000000000000000</double>
+             <number>1000000</number>
+            </property>
+            <property name="singleStep">
+             <number>10</number>
+            </property>
+            <property name="value">
+             <number>100</number>
             </property>
            </widget>
           </item>
@@ -297,8 +304,89 @@
              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu';&quot;&gt;P1-P3 # Stress intensity stress equation. Available values are numpy array format. Calculation np.function can be used on available values. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt;P1-P3 # Stress intensity stress equation. Available values are numpy array format. Calculation np.function can be used on available values. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="user_def_head_1">
+            <property name="text">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Available result types:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="user_def_head_2">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="lineWidth">
+             <number>1</number>
+            </property>
+            <property name="text">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;displacement (x,y,z) and strain (exx,eyy,ezz,exy,exz,eyz)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="scaledContents">
+             <bool>false</bool>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+            <property name="indent">
+             <number>-1</number>
+            </property>
+            <property name="textInteractionFlags">
+             <set>Qt::NoTextInteraction</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="user_def_head_3">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="lineWidth">
+             <number>1</number>
+            </property>
+            <property name="text">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;stresses (sxx,syy,szz,sxy,sxz,syz) and principal stresses (P1,P2,P3)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="scaledContents">
+             <bool>false</bool>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+            <property name="indent">
+             <number>-1</number>
+            </property>
+            <property name="textInteractionFlags">
+             <set>Qt::NoTextInteraction</set>
             </property>
            </widget>
           </item>
@@ -352,6 +440,22 @@ p, li { white-space: pre-wrap; }
   <connection>
    <sender>cb_show_displacement</sender>
    <signal>toggled(bool)</signal>
+   <receiver>sb_displacement_factor</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>112</x>
+     <y>240</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>124</x>
+     <y>269</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cb_show_displacement</sender>
+   <signal>toggled(bool)</signal>
    <receiver>label_7</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
@@ -362,6 +466,22 @@ p, li { white-space: pre-wrap; }
     <hint type="destinationlabel">
      <x>86</x>
      <y>309</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cb_show_displacement</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>sb_displacement_factor_max</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>161</x>
+     <y>237</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>159</x>
+     <y>302</y>
     </hint>
    </hints>
   </connection>

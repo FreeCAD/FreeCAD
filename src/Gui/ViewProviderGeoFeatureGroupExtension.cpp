@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2011 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
+ *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
  *   Copyright (c) 2016 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
@@ -75,7 +75,7 @@ std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensio
     for (auto obj: model) {
         //stuff in another geofeaturegroup is not in the model anyway
         if (!obj || obj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) { continue; }
-
+        
         Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider ( obj );
         if (!vp || vp == getExtendedViewProvider()) { continue; }
 
@@ -88,7 +88,7 @@ std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensio
     for(auto obj : model) {
         if(!obj || !obj->getNameInDocument())
             continue;
-        if(outSet.count(obj))
+        if(outSet.count(obj)) 
             obj->setStatus(App::ObjectStatus::GeoExcluded,true);
         else {
             obj->setStatus(App::ObjectStatus::GeoExcluded,false);
@@ -96,13 +96,6 @@ std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensio
         }
     }
     return Result;
-}
-
-void ViewProviderGeoFeatureGroupExtension::extensionFinishRestoring()
-{
-    // setup GeoExlcuded flag for children
-    extensionClaimChildren();
-    ViewProviderGroupExtension::extensionFinishRestoring();
 }
 
 void ViewProviderGeoFeatureGroupExtension::extensionAttach(App::DocumentObject* pcObject)

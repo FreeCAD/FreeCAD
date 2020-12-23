@@ -20,12 +20,6 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-// Suppress warning due to use of #import an macOS inside Aspect_RenderingContext.hxx
-#if defined(__clang__)
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Wimport-preprocessor-directive-pedantic"
-#endif
-
 #include <Standard_Stream.hxx>
 
 #include <GEOMUtils.hxx>
@@ -649,7 +643,7 @@ TopoDS_Shape GEOMUtils::CompsolidToCompound (const TopoDS_Shape& theCompsolid)
     }
   }
 
-  return TopoDS_Shape(std::move(aCompound));
+  return std::move(aCompound);
 }
 
 //=======================================================================

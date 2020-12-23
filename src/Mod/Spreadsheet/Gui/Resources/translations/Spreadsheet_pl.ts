@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="pl" sourcelanguage="en">
+<TS version="2.0" language="pl" sourcelanguage="en">
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -9,11 +9,11 @@
     </message>
     <message>
       <source>Create spreadsheet</source>
-      <translation>Utwórz arkusz</translation>
+      <translation>Utworzyć arkusz kalkulacyjny</translation>
     </message>
     <message>
       <source>Create a new spreadsheet</source>
-      <translation>Utwórz nowy arkusz</translation>
+      <translation>Utwórz nowy arkusz kalkulacyjny</translation>
     </message>
   </context>
   <context>
@@ -24,7 +24,7 @@
     </message>
     <message>
       <source>Align bottom</source>
-      <translation>Wyrównaj w dół</translation>
+      <translation>Wyrównaj do dołu</translation>
     </message>
     <message>
       <source>Bottom-align contents of selected cells</source>
@@ -43,7 +43,7 @@
     </message>
     <message>
       <source>Center-align contents of selected cells</source>
-      <translation>Wyśrodkuj zawartość wybranych komórek</translation>
+      <translation>Wyrównaj do środka zawartość wybranych komórek</translation>
     </message>
   </context>
   <context>
@@ -84,11 +84,11 @@
     </message>
     <message>
       <source>Align top</source>
-      <translation>Wyrównaj w górę</translation>
+      <translation>Wyrównaj do góry</translation>
     </message>
     <message>
       <source>Top-align contents of selected cells</source>
-      <translation>Wyrównaj w górę zawartość wybranych komórek</translation>
+      <translation>Wyrównaj do góry zawartość wybranych komórek</translation>
     </message>
   </context>
   <context>
@@ -99,11 +99,11 @@
     </message>
     <message>
       <source>Vertically center-align</source>
-      <translation>Wyśrodkuj w pionie</translation>
+      <translation>Wyrównaj do środka pionowo</translation>
     </message>
     <message>
       <source>Vertically center-align contents of selected cells</source>
-      <translation>Wyśrodkuj w pionie zawartość wybranych komórek</translation>
+      <translation type="unfinished">Vertically center-align contents of selected cells</translation>
     </message>
   </context>
   <context>
@@ -114,11 +114,11 @@
     </message>
     <message>
       <source>Export spreadsheet</source>
-      <translation>Eksportuj arkusz</translation>
+      <translation>Eksportuj arkusz kalkulacyjny</translation>
     </message>
     <message>
       <source>Export spreadsheet to CSV file</source>
-      <translation>Eksportuj arkusz do pliku CSV</translation>
+      <translation>Eksportuj arkusz kalkulacyjny do pliku CSV</translation>
     </message>
   </context>
   <context>
@@ -129,11 +129,11 @@
     </message>
     <message>
       <source>Import spreadsheet</source>
-      <translation>Importuj arkusz</translation>
+      <translation>Importuj arkusz kalkulacyjny</translation>
     </message>
     <message>
       <source>Import CSV file into spreadsheet</source>
-      <translation>Importuj zawartość pliku CSV do arkusza</translation>
+      <translation>Importuj plik CSV do arkusza</translation>
     </message>
   </context>
   <context>
@@ -148,7 +148,7 @@
     </message>
     <message>
       <source>Merge selected cells</source>
-      <translation>Scal wybrane komórki</translation>
+      <translation type="unfinished">Merge selected cells</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@
     </message>
     <message>
       <source>Split previously merged cells</source>
-      <translation>Rozdziel uprzednio scalone komórki</translation>
+      <translation type="unfinished">Split previously merged cells</translation>
     </message>
   </context>
   <context>
@@ -189,11 +189,11 @@
     </message>
     <message>
       <source>Bold text</source>
-      <translation>Pogrubienie</translation>
+      <translation>Tekst pogrubiony</translation>
     </message>
     <message>
       <source>Set text in selected cells bold</source>
-      <translation>Umieść tekst w zaznaczonych komórkach pogrubioną czcionką</translation>
+      <translation type="unfinished">Set text in selected cells bold</translation>
     </message>
   </context>
   <context>
@@ -208,7 +208,7 @@
     </message>
     <message>
       <source>Set text in selected cells italic</source>
-      <translation>Umieść tekst w zaznaczonych komórkach pochyłą czcionką</translation>
+      <translation type="unfinished">Set text in selected cells italic</translation>
     </message>
   </context>
   <context>
@@ -219,11 +219,11 @@
     </message>
     <message>
       <source>Underline text</source>
-      <translation>Podkreślenie</translation>
+      <translation>Podkreśl tekst</translation>
     </message>
     <message>
       <source>Underline text in selected cells</source>
-      <translation>Podkreśl tekst w zaznaczonych komórkach</translation>
+      <translation type="unfinished">Underline text in selected cells</translation>
     </message>
   </context>
   <context>
@@ -253,35 +253,35 @@
     </message>
     <message>
       <source>&amp;Alignment</source>
-      <translation>&amp;Wyrównanie</translation>
+      <translation>Wyrów&amp;nanie</translation>
     </message>
     <message>
       <source>Horizontal</source>
-      <translation>Poziomo</translation>
+      <translation>Pozioma</translation>
     </message>
     <message>
       <source>Left</source>
-      <translation>W lewo</translation>
+      <translation>Lewa</translation>
     </message>
     <message>
       <source>Center</source>
-      <translation>Wyśrodkowane</translation>
+      <translation>Środek</translation>
     </message>
     <message>
       <source>Right</source>
-      <translation>W prawo</translation>
+      <translation>Prawo</translation>
     </message>
     <message>
       <source>Vertical</source>
-      <translation>Pionowo</translation>
+      <translation>Pionowa</translation>
     </message>
     <message>
       <source>Top</source>
-      <translation>W górę</translation>
+      <translation>Góra</translation>
     </message>
     <message>
       <source>Bottom</source>
-      <translation>W dół</translation>
+      <translation>U dołu</translation>
     </message>
     <message>
       <source>&amp;Style</source>
@@ -305,7 +305,7 @@
     </message>
     <message>
       <source>Unit string</source>
-      <translation>Nazwa jednostki</translation>
+      <translation>Ciąg jednostek</translation>
     </message>
     <message>
       <source>A&amp;lias</source>
@@ -331,16 +331,20 @@
       <translation>Eksportuj plik</translation>
     </message>
     <message>
+      <source>Cell contents</source>
+      <translation>Zawartość komórki</translation>
+    </message>
+    <message>
       <source>Show spreadsheet</source>
-      <translation>Pokaż arkusz</translation>
+      <translation>Pokaż arkusz kalkulacyjny</translation>
     </message>
     <message>
       <source>Set cell(s) foreground color</source>
-      <translation>Ustaw kolor komórki</translation>
+      <translation>Ustaw kolor pierwszego planu komórki (komórek)</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) foreground color</source>
-      <translation>Ustawia kolor tła komórki(ek) Arkusza kalkulacyjnego</translation>
+      <translation>Ustawia kolor pierwszego planu komórki(ek) Arkusza kalkulacyjnego</translation>
     </message>
     <message>
       <source>Set cell(s) background color</source>
@@ -349,30 +353,6 @@
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
       <translation>Ustawia kolor tła komórki(ek) Arkusza kalkulacyjnego</translation>
-    </message>
-    <message>
-      <source>Spreadsheet</source>
-      <translation>Arkusz kalkulacyjny</translation>
-    </message>
-    <message>
-      <source>Spreadsheet does not support range selection when pasting.
-Please select one cell only.</source>
-      <translation>Arkusz kalkulacyjny nie obsługuje wyboru zakresu podczas wklejania.
-Wybierz tylko jedną komórkę.</translation>
-    </message>
-    <message>
-      <source>Copy &amp; Paste failed</source>
-      <translation>Kopiowanie i wklejanie nie powiodło się</translation>
-    </message>
-    <message>
-      <source>Alias contains invalid characters!</source>
-      <translation>Określenie nazwy zawiera nieprawidłowe znaki!</translation>
-    </message>
-    <message>
-      <source>Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation>Odniesienie do komórki według oznaczenia nazwy (alias), np.
-Arkusz.mój_alias zamiast Arkusz.B1</translation>
     </message>
   </context>
   <context>
@@ -457,25 +437,15 @@ Arkusz.mój_alias zamiast Arkusz.B1</translation>
       <translation>Formularz</translation>
     </message>
     <message>
-      <source>&amp;Content:</source>
-      <translation>&amp;Zawartość:</translation>
-    </message>
-    <message>
-      <source>&amp;Alias:</source>
-      <translation>&amp;Alias:</translation>
-    </message>
-    <message>
-      <source>Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation>Odniesienie do komórki według oznaczenia nazwy (alias), np.
-Arkusz.mój_alias zamiast Arkusz.B1</translation>
+      <source>&amp;Contents</source>
+      <translation>&amp;Zawartość</translation>
     </message>
   </context>
   <context>
     <name>SpreadsheetGui::Module</name>
     <message>
       <source>Unnamed</source>
-      <translation>Bez nazwy</translation>
+      <translation>Nienazwany</translation>
     </message>
   </context>
   <context>

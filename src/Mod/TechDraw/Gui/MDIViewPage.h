@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef TECHDRAWGUI_MDIVIEWPAGE_H
-#define TECHDRAWGUI_MDIVIEWPAGE_H
+#ifndef DRAWINGGUI_DRAWINGVIEW_H
+#define DRAWINGGUI_DRAWINGVIEW_H
 
 #include <Gui/MDIView.h>
 #include <Gui/Selection.h>
@@ -57,21 +57,18 @@ public:
     MDIViewPage(ViewProviderPage *page, Gui::Document* doc, QWidget* parent = 0);
     virtual ~MDIViewPage();
 
-    void addChildrenToPage(void);
-
-
     /// Observer message from the Tree Selection mechanism
     void onSelectionChanged(const Gui::SelectionChanges& msg);
     void preSelectionChanged(const QPoint &pos);
 
-    /// QGraphicsScene selection routines
+    /// QGraphicsScene seletion routines
     void selectQGIView(App::DocumentObject *obj, bool state);
     void clearSceneSelection();
     void blockSelection(bool isBlocked);
 
     void attachTemplate(TechDraw::DrawTemplate *obj);
     void updateTemplate(bool force = false);
-    void fixOrphans(bool force = false);
+    void updateDrawing(bool force = false);
     void matchSceneRectToTemplate(void);
     
     bool onMsg(const char* pMsg,const char** ppReturn);
@@ -163,11 +160,11 @@ private:
     QPrinter::PaperSize m_paperSize;
     ViewProviderPage *m_vpPage;
 
-    QList<QGraphicsItem*> m_qgSceneSelected;        //items in selection order
+    QList<QGraphicsItem*> m_sceneSelected;
     QList<QGIView *> deleteItems;
 };
 
 
 } // namespace MDIViewPageGui
 
-#endif // TECHDRAWGUI_MDIVIEWPAGE_H
+#endif // DRAWINGGUI_DRAWINGVIEW_H

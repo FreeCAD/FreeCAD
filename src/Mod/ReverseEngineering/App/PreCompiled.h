@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -45,11 +45,6 @@
 #   pragma warning(disable : 4275)
 #   pragma warning(disable : 4305)
 #   pragma warning(disable : 4522)
-#endif
-
-// pcl headers include <boost/bind.hpp> instead of <boost/bind/bind.hpp>
-#ifndef BOOST_BIND_GLOBAL_PLACEHOLDERS
-#define BOOST_BIND_GLOBAL_PLACEHOLDERS
 #endif
 
 #ifdef _PreComp_

@@ -24,18 +24,17 @@
 #ifndef GUI_DIALOG_DLG_REPORT_VIEW_IMP
 #define GUI_DIALOG_DLG_REPORT_VIEW_IMP
 
+#include "ui_DlgReportView.h"
 #include "PropertyPage.h"
-#include <memory>
 
 namespace Gui {
 namespace Dialog {
-class Ui_DlgReportView;
 
-/** The DlgReportViewImp class implements the available settings for the
+/** The DlgReportViewImp class implements the available settings for the 
  * report output window to change.
  * \author Werner Mayer
  */
-class DlgReportViewImp : public PreferencePage
+class DlgReportViewImp : public PreferencePage, public Ui_DlgReportView
 {
     Q_OBJECT
 
@@ -48,9 +47,6 @@ public:
 
 protected:
     void changeEvent(QEvent *e);
-
-private:
-    std::unique_ptr<Ui_DlgReportView> ui;
 };
 
 } // namespace Dialog

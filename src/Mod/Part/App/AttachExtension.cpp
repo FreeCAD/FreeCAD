@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2015 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
+ *   Copyright (c) Victor Titov (DeepSOIC)                                 *
+ *                                           (vv.titov@gmail.com) 2015     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -302,6 +303,11 @@ AttachEngineException::AttachEngineException(const char * sMessage)
 
 AttachEngineException::AttachEngineException(const std::string& sMessage)
   : Base::Exception(sMessage)
+{
+}
+
+AttachEngineException::AttachEngineException(const AttachEngineException &inst)
+  : Base::Exception(inst)
 {
 }
 

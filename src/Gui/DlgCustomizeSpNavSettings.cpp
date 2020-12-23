@@ -23,7 +23,6 @@
 #include "PreCompiled.h"
 
 #include "DlgCustomizeSpNavSettings.h"
-#include "ui_DlgCustomizeSpNavSettings.h"
 #include "GuiApplicationNativeEventAware.h"
 #include "Application.h"
 
@@ -31,9 +30,7 @@
 using namespace Gui::Dialog;
 
 DlgCustomizeSpNavSettings::DlgCustomizeSpNavSettings(QWidget *parent) :
-    CustomizeActionPage(parent)
-  , ui(new Ui_DlgCustomizeSpNavSettings)
-  , init(false)
+    CustomizeActionPage(parent), init(false)
 {
     GUIApplicationNativeEventAware *app = qobject_cast<GUIApplicationNativeEventAware *>(QApplication::instance());
 
@@ -46,7 +43,7 @@ DlgCustomizeSpNavSettings::DlgCustomizeSpNavSettings(QWidget *parent) :
         return;
     }
     this->init = true;
-    ui->setupUi(this);
+    this->setupUi(this);
     initialize();
 }
 
@@ -70,7 +67,7 @@ void DlgCustomizeSpNavSettings::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         if (this->init) {
-            ui->retranslateUi(this);
+            this->retranslateUi(this);
         }
         else {
             this->setWindowTitle(tr("Spaceball Motion"));
@@ -94,232 +91,232 @@ void DlgCustomizeSpNavSettings::on_ButtonCalibrate_clicked()
 
 void DlgCustomizeSpNavSettings::initialize()
 {
-    ui->CBDominant->setChecked(spaceballMotionGroup()->GetBool("Dominant", false));
-    ui->CBFlipYZ->setChecked(spaceballMotionGroup()->GetBool("FlipYZ", false));
-    ui->CBRotations->setChecked(spaceballMotionGroup()->GetBool("Rotations", true));
-    ui->CBTranslations->setChecked(spaceballMotionGroup()->GetBool("Translations", true));
-    ui->SliderGlobal->setValue(spaceballMotionGroup()->GetInt("GlobalSensitivity", 0));
+    CBDominant->setChecked(spaceballMotionGroup()->GetBool("Dominant", false));
+    CBFlipYZ->setChecked(spaceballMotionGroup()->GetBool("FlipYZ", false));
+    CBRotations->setChecked(spaceballMotionGroup()->GetBool("Rotations", true));
+    CBTranslations->setChecked(spaceballMotionGroup()->GetBool("Translations", true));
+    SliderGlobal->setValue(spaceballMotionGroup()->GetInt("GlobalSensitivity", 0));
 
-    ui->CBEnablePanLR ->setChecked(spaceballMotionGroup()->GetBool("PanLREnable", true));
-    ui->CBReversePanLR->setChecked(spaceballMotionGroup()->GetBool("PanLRReverse", false));
-    ui->SliderPanLR   ->setValue(spaceballMotionGroup()->GetInt("PanLRSensitivity", 0));
+    CBEnablePanLR ->setChecked(spaceballMotionGroup()->GetBool("PanLREnable", true));
+    CBReversePanLR->setChecked(spaceballMotionGroup()->GetBool("PanLRReverse", false));
+    SliderPanLR   ->setValue(spaceballMotionGroup()->GetInt("PanLRSensitivity", 0));
 
-    ui->CBEnablePanUD ->setChecked(spaceballMotionGroup()->GetBool("PanUDEnable", true));
-    ui->CBReversePanUD->setChecked(spaceballMotionGroup()->GetBool("PanUDReverse", false));
-    ui->SliderPanUD   ->setValue(spaceballMotionGroup()->GetInt("PanUDSensitivity", 0));
+    CBEnablePanUD ->setChecked(spaceballMotionGroup()->GetBool("PanUDEnable", true));
+    CBReversePanUD->setChecked(spaceballMotionGroup()->GetBool("PanUDReverse", false));
+    SliderPanUD   ->setValue(spaceballMotionGroup()->GetInt("PanUDSensitivity", 0));
 
-    ui->CBEnableZoom ->setChecked(spaceballMotionGroup()->GetBool("ZoomEnable", true));
-    ui->CBReverseZoom->setChecked(spaceballMotionGroup()->GetBool("ZoomReverse", false));
-    ui->SliderZoom   ->setValue(spaceballMotionGroup()->GetInt("ZoomSensitivity", 0));
+    CBEnableZoom ->setChecked(spaceballMotionGroup()->GetBool("ZoomEnable", true));
+    CBReverseZoom->setChecked(spaceballMotionGroup()->GetBool("ZoomReverse", false));
+    SliderZoom   ->setValue(spaceballMotionGroup()->GetInt("ZoomSensitivity", 0));
 
-    ui->CBEnableTilt ->setChecked(spaceballMotionGroup()->GetBool("TiltEnable", true));
-    ui->CBReverseTilt->setChecked(spaceballMotionGroup()->GetBool("TiltReverse", false));
-    ui->SliderTilt   ->setValue(spaceballMotionGroup()->GetInt("TiltSensitivity", 0));
+    CBEnableTilt ->setChecked(spaceballMotionGroup()->GetBool("TiltEnable", true));
+    CBReverseTilt->setChecked(spaceballMotionGroup()->GetBool("TiltReverse", false));
+    SliderTilt   ->setValue(spaceballMotionGroup()->GetInt("TiltSensitivity", 0));
 
-    ui->CBEnableRoll ->setChecked(spaceballMotionGroup()->GetBool("RollEnable", true));
-    ui->CBReverseRoll->setChecked(spaceballMotionGroup()->GetBool("RollReverse", false));
-    ui->SliderRoll   ->setValue(spaceballMotionGroup()->GetInt("RollSensitivity", 0));
+    CBEnableRoll ->setChecked(spaceballMotionGroup()->GetBool("RollEnable", true));
+    CBReverseRoll->setChecked(spaceballMotionGroup()->GetBool("RollReverse", false));
+    SliderRoll   ->setValue(spaceballMotionGroup()->GetInt("RollSensitivity", 0));
 
-    ui->CBEnableSpin ->setChecked(spaceballMotionGroup()->GetBool("SpinEnable", true));
-    ui->CBReverseSpin->setChecked(spaceballMotionGroup()->GetBool("SpinReverse", false));
-    ui->SliderSpin   ->setValue(spaceballMotionGroup()->GetInt("SpinSensitivity", 0));
+    CBEnableSpin ->setChecked(spaceballMotionGroup()->GetBool("SpinEnable", true));
+    CBReverseSpin->setChecked(spaceballMotionGroup()->GetBool("SpinReverse", false));
+    SliderSpin   ->setValue(spaceballMotionGroup()->GetInt("SpinSensitivity", 0)); 
 
-    ui->CBEnableTilt ->setEnabled(ui->CBRotations->isChecked());
-    ui->CBReverseTilt->setEnabled(ui->CBRotations->isChecked() && ui->CBEnableTilt->isChecked());
-    ui->SliderTilt   ->setEnabled(ui->CBRotations->isChecked() && ui->CBEnableTilt->isChecked());
-    ui->CBEnableRoll ->setEnabled(ui->CBRotations->isChecked());
-    ui->CBReverseRoll->setEnabled(ui->CBRotations->isChecked() && ui->CBEnableRoll->isChecked());
-    ui->SliderRoll   ->setEnabled(ui->CBRotations->isChecked() && ui->CBEnableRoll->isChecked());
-    ui->CBEnableSpin ->setEnabled(ui->CBRotations->isChecked());
-    ui->CBReverseSpin->setEnabled(ui->CBRotations->isChecked() && ui->CBEnableSpin->isChecked());
-    ui->SliderSpin   ->setEnabled(ui->CBRotations->isChecked() && ui->CBEnableSpin->isChecked());
+    CBEnableTilt ->setEnabled(CBRotations->isChecked());
+    CBReverseTilt->setEnabled(CBRotations->isChecked() && CBEnableTilt->isChecked()); 
+    SliderTilt   ->setEnabled(CBRotations->isChecked() && CBEnableTilt->isChecked());
+    CBEnableRoll ->setEnabled(CBRotations->isChecked());
+    CBReverseRoll->setEnabled(CBRotations->isChecked() && CBEnableRoll->isChecked());
+    SliderRoll   ->setEnabled(CBRotations->isChecked() && CBEnableRoll->isChecked());
+    CBEnableSpin ->setEnabled(CBRotations->isChecked());
+    CBReverseSpin->setEnabled(CBRotations->isChecked() && CBEnableSpin->isChecked());
+    SliderSpin   ->setEnabled(CBRotations->isChecked() && CBEnableSpin->isChecked());
 
-    ui->CBEnablePanLR ->setEnabled(ui->CBTranslations->isChecked());
-    ui->CBReversePanLR->setEnabled(ui->CBTranslations->isChecked() && ui->CBEnablePanLR->isChecked());
-    ui->SliderPanLR   ->setEnabled(ui->CBTranslations->isChecked() && ui->CBEnablePanLR->isChecked());
-    ui->CBEnablePanUD ->setEnabled(ui->CBTranslations->isChecked());
-    ui->CBReversePanUD->setEnabled(ui->CBTranslations->isChecked() && ui->CBEnablePanUD->isChecked());
-    ui->SliderPanUD   ->setEnabled(ui->CBTranslations->isChecked() && ui->CBEnablePanUD->isChecked());
-    ui->CBEnableZoom  ->setEnabled(ui->CBTranslations->isChecked());
-    ui->CBReverseZoom ->setEnabled(ui->CBTranslations->isChecked() && ui->CBEnableZoom->isChecked());
-    ui->SliderZoom    ->setEnabled(ui->CBTranslations->isChecked() && ui->CBEnableZoom->isChecked());
+    CBEnablePanLR ->setEnabled(CBTranslations->isChecked());
+    CBReversePanLR->setEnabled(CBTranslations->isChecked() && CBEnablePanLR->isChecked()); 
+    SliderPanLR   ->setEnabled(CBTranslations->isChecked() && CBEnablePanLR->isChecked());
+    CBEnablePanUD ->setEnabled(CBTranslations->isChecked());
+    CBReversePanUD->setEnabled(CBTranslations->isChecked() && CBEnablePanUD->isChecked());
+    SliderPanUD   ->setEnabled(CBTranslations->isChecked() && CBEnablePanUD->isChecked());
+    CBEnableZoom  ->setEnabled(CBTranslations->isChecked());
+    CBReverseZoom ->setEnabled(CBTranslations->isChecked() && CBEnableZoom->isChecked());
+    SliderZoom    ->setEnabled(CBTranslations->isChecked() && CBEnableZoom->isChecked());
 }
 
 void DlgCustomizeSpNavSettings::on_ButtonDefaultSpNavMotions_clicked()
 {
-    spaceballMotionGroup()->Clear();
+    spaceballMotionGroup()->Clear(); 
     initialize();
 }
 
 void DlgCustomizeSpNavSettings::on_CBDominant_clicked()
 {
-    spaceballMotionGroup()->SetBool("Dominant", ui->CBDominant->isChecked());
+    spaceballMotionGroup()->SetBool("Dominant", CBDominant->isChecked());
 }
 
 void DlgCustomizeSpNavSettings::on_CBFlipYZ_clicked()
 {
-    spaceballMotionGroup()->SetBool("FlipYZ", ui->CBFlipYZ->isChecked());
+    spaceballMotionGroup()->SetBool("FlipYZ", CBFlipYZ->isChecked());
 }
 
 void DlgCustomizeSpNavSettings::on_CBRotations_clicked()
 {
-    spaceballMotionGroup()->SetBool("Rotations", ui->CBRotations->isChecked());
+    spaceballMotionGroup()->SetBool("Rotations", CBRotations->isChecked());
 
-    ui->CBEnableTilt ->setEnabled(ui->CBRotations->isChecked());
-    ui->CBReverseTilt->setEnabled(ui->CBRotations->isChecked() && ui->CBEnableTilt->isChecked());
-    ui->SliderTilt   ->setEnabled(ui->CBRotations->isChecked() && ui->CBEnableTilt->isChecked());
-    ui->CBEnableRoll ->setEnabled(ui->CBRotations->isChecked());
-    ui->CBReverseRoll->setEnabled(ui->CBRotations->isChecked() && ui->CBEnableRoll->isChecked());
-    ui->SliderRoll   ->setEnabled(ui->CBRotations->isChecked() && ui->CBEnableRoll->isChecked());
-    ui->CBEnableSpin ->setEnabled(ui->CBRotations->isChecked());
-    ui->CBReverseSpin->setEnabled(ui->CBRotations->isChecked() && ui->CBEnableSpin->isChecked());
-    ui->SliderSpin   ->setEnabled(ui->CBRotations->isChecked() && ui->CBEnableSpin->isChecked());
+    CBEnableTilt ->setEnabled(CBRotations->isChecked());
+    CBReverseTilt->setEnabled(CBRotations->isChecked() && CBEnableTilt->isChecked()); 
+    SliderTilt   ->setEnabled(CBRotations->isChecked() && CBEnableTilt->isChecked());
+    CBEnableRoll ->setEnabled(CBRotations->isChecked());
+    CBReverseRoll->setEnabled(CBRotations->isChecked() && CBEnableRoll->isChecked());
+    SliderRoll   ->setEnabled(CBRotations->isChecked() && CBEnableRoll->isChecked());
+    CBEnableSpin ->setEnabled(CBRotations->isChecked());
+    CBReverseSpin->setEnabled(CBRotations->isChecked() && CBEnableSpin->isChecked());
+    SliderSpin   ->setEnabled(CBRotations->isChecked() && CBEnableSpin->isChecked());
 }
 
 void DlgCustomizeSpNavSettings::on_CBTranslations_clicked()
 {
-    spaceballMotionGroup()->SetBool("Translations", ui->CBTranslations->isChecked());
+    spaceballMotionGroup()->SetBool("Translations", CBTranslations->isChecked());
 
-    ui->CBEnablePanLR ->setEnabled(ui->CBTranslations->isChecked());
-    ui->CBReversePanLR->setEnabled(ui->CBTranslations->isChecked() && ui->CBEnablePanLR->isChecked());
-    ui->SliderPanLR   ->setEnabled(ui->CBTranslations->isChecked() && ui->CBEnablePanLR->isChecked());
-    ui->CBEnablePanUD ->setEnabled(ui->CBTranslations->isChecked());
-    ui->CBReversePanUD->setEnabled(ui->CBTranslations->isChecked() && ui->CBEnablePanUD->isChecked());
-    ui->SliderPanUD   ->setEnabled(ui->CBTranslations->isChecked() && ui->CBEnablePanUD->isChecked());
-    ui->CBEnableZoom  ->setEnabled(ui->CBTranslations->isChecked());
-    ui->CBReverseZoom ->setEnabled(ui->CBTranslations->isChecked() && ui->CBEnableZoom->isChecked());
-    ui->SliderZoom    ->setEnabled(ui->CBTranslations->isChecked() && ui->CBEnableZoom->isChecked());
+    CBEnablePanLR ->setEnabled(CBTranslations->isChecked());
+    CBReversePanLR->setEnabled(CBTranslations->isChecked() && CBEnablePanLR->isChecked()); 
+    SliderPanLR   ->setEnabled(CBTranslations->isChecked() && CBEnablePanLR->isChecked());
+    CBEnablePanUD ->setEnabled(CBTranslations->isChecked());
+    CBReversePanUD->setEnabled(CBTranslations->isChecked() && CBEnablePanUD->isChecked());
+    SliderPanUD   ->setEnabled(CBTranslations->isChecked() && CBEnablePanUD->isChecked());
+    CBEnableZoom  ->setEnabled(CBTranslations->isChecked());
+    CBReverseZoom ->setEnabled(CBTranslations->isChecked() && CBEnableZoom->isChecked());
+    SliderZoom    ->setEnabled(CBTranslations->isChecked() && CBEnableZoom->isChecked());
 }
 
 void DlgCustomizeSpNavSettings::on_SliderGlobal_sliderReleased()
 {
-    spaceballMotionGroup()->SetInt("GlobalSensitivity", ui->SliderGlobal->value());
+    spaceballMotionGroup()->SetInt("GlobalSensitivity", SliderGlobal->value());
 }
 
 void DlgCustomizeSpNavSettings::on_CBEnablePanLR_clicked()
-{
-    spaceballMotionGroup()->SetBool("PanLREnable", ui->CBEnablePanLR->isChecked());
+{    
+    spaceballMotionGroup()->SetBool("PanLREnable", CBEnablePanLR->isChecked());
 
-    ui->CBReversePanLR->setEnabled(ui->CBEnablePanLR->isChecked());
-    ui->SliderPanLR   ->setEnabled(ui->CBEnablePanLR->isChecked());
+    CBReversePanLR->setEnabled(CBEnablePanLR->isChecked()); 
+    SliderPanLR   ->setEnabled(CBEnablePanLR->isChecked());
 }
 
 void DlgCustomizeSpNavSettings::on_CBReversePanLR_clicked()
 {
-    spaceballMotionGroup()->SetBool("PanLRReverse", ui->CBReversePanLR->isChecked());
+    spaceballMotionGroup()->SetBool("PanLRReverse", CBReversePanLR->isChecked());
 }
 
 void DlgCustomizeSpNavSettings::on_SliderPanLR_sliderReleased()
 {
-    spaceballMotionGroup()->SetInt("PanLRSensitivity", ui->SliderPanLR->value());
+    spaceballMotionGroup()->SetInt("PanLRSensitivity", SliderPanLR->value());
 }
 
 void DlgCustomizeSpNavSettings::on_CBEnablePanUD_clicked()
 {
-    spaceballMotionGroup()->SetBool("PanUDEnable", ui->CBEnablePanUD->isChecked());
+    spaceballMotionGroup()->SetBool("PanUDEnable", CBEnablePanUD->isChecked());
 
-    ui->CBReversePanUD->setEnabled(ui->CBEnablePanUD->isChecked());
-    ui->SliderPanUD   ->setEnabled(ui->CBEnablePanUD->isChecked());
+    CBReversePanUD->setEnabled(CBEnablePanUD->isChecked());
+    SliderPanUD   ->setEnabled(CBEnablePanUD->isChecked());
 }
 
 void DlgCustomizeSpNavSettings::on_CBReversePanUD_clicked()
 {
-    spaceballMotionGroup()->SetBool("PanUDReverse", ui->CBReversePanUD->isChecked());
+    spaceballMotionGroup()->SetBool("PanUDReverse", CBReversePanUD->isChecked());
 }
 
 void DlgCustomizeSpNavSettings::on_SliderPanUD_sliderReleased()
 {
-    spaceballMotionGroup()->SetInt("PanUDSensitivity", ui->SliderPanUD->value());
+    spaceballMotionGroup()->SetInt("PanUDSensitivity", SliderPanUD->value());
 }
 
 void DlgCustomizeSpNavSettings::on_CBEnableZoom_clicked()
-{
-    spaceballMotionGroup()->SetBool("ZoomEnable", ui->CBEnableZoom->isChecked());
+{    
+    spaceballMotionGroup()->SetBool("ZoomEnable", CBEnableZoom->isChecked());
 
-    ui->CBReverseZoom ->setEnabled(ui->CBEnableZoom->isChecked());
-    ui->SliderZoom    ->setEnabled(ui->CBEnableZoom->isChecked());
+    CBReverseZoom ->setEnabled(CBEnableZoom->isChecked());
+    SliderZoom    ->setEnabled(CBEnableZoom->isChecked());
 }
 
 void DlgCustomizeSpNavSettings::on_CBReverseZoom_clicked()
 {
-    spaceballMotionGroup()->SetBool("ZoomReverse", ui->CBReverseZoom->isChecked());
+    spaceballMotionGroup()->SetBool("ZoomReverse", CBReverseZoom->isChecked());
 }
 
 void DlgCustomizeSpNavSettings::on_SliderZoom_sliderReleased()
 {
-    spaceballMotionGroup()->SetInt("ZoomSensitivity", ui->SliderZoom->value());
+    spaceballMotionGroup()->SetInt("ZoomSensitivity", SliderZoom->value());
 }
 
 void DlgCustomizeSpNavSettings::on_CBEnableTilt_clicked()
 {
-    spaceballMotionGroup()->SetBool("TiltEnable", ui->CBEnableTilt->isChecked());
+    spaceballMotionGroup()->SetBool("TiltEnable", CBEnableTilt->isChecked());
 
-    ui->CBReverseTilt->setEnabled(ui->CBEnableTilt->isChecked());
-    ui->SliderTilt   ->setEnabled(ui->CBEnableTilt->isChecked());
+    CBReverseTilt->setEnabled(CBEnableTilt->isChecked()); 
+    SliderTilt   ->setEnabled(CBEnableTilt->isChecked());
 }
 
 void DlgCustomizeSpNavSettings::on_CBReverseTilt_clicked()
 {
-    spaceballMotionGroup()->SetBool("TiltReverse", ui->CBReverseTilt->isChecked());
+    spaceballMotionGroup()->SetBool("TiltReverse", CBReverseTilt->isChecked());
 }
 
-void DlgCustomizeSpNavSettings::on_SliderTilt_sliderReleased()
+void DlgCustomizeSpNavSettings::on_SliderTilt_sliderReleased() 
 {
-    spaceballMotionGroup()->SetInt("TiltSensitivity", ui->SliderTilt->value());
+    spaceballMotionGroup()->SetInt("TiltSensitivity", SliderTilt->value());
 }
 
-void DlgCustomizeSpNavSettings::on_CBEnableRoll_clicked()
+void DlgCustomizeSpNavSettings::on_CBEnableRoll_clicked()  
 {
-    spaceballMotionGroup()->SetBool("RollEnable", ui->CBEnableRoll->isChecked());
+    spaceballMotionGroup()->SetBool("RollEnable", CBEnableRoll->isChecked());
 
-    ui->CBReverseRoll->setEnabled(ui->CBEnableRoll->isChecked());
-    ui->SliderRoll   ->setEnabled(ui->CBEnableRoll->isChecked());
+    CBReverseRoll->setEnabled(CBEnableRoll->isChecked());
+    SliderRoll   ->setEnabled(CBEnableRoll->isChecked());
 }
 
 void DlgCustomizeSpNavSettings::on_CBReverseRoll_clicked()
 {
-    spaceballMotionGroup()->SetBool("RollReverse", ui->CBReverseRoll->isChecked());
+    spaceballMotionGroup()->SetBool("RollReverse", CBReverseRoll->isChecked());
 }
 
 void DlgCustomizeSpNavSettings::on_SliderRoll_sliderReleased()
 {
-    spaceballMotionGroup()->SetInt("RollSensitivity", ui->SliderRoll->value());
+    spaceballMotionGroup()->SetInt("RollSensitivity", SliderRoll->value());
 }
 
 void DlgCustomizeSpNavSettings::on_CBEnableSpin_clicked()
 {
-    spaceballMotionGroup()->SetBool("SpinEnable", ui->CBEnableSpin->isChecked());
+    spaceballMotionGroup()->SetBool("SpinEnable", CBEnableSpin->isChecked());
 
-    ui->CBReverseSpin->setEnabled(ui->CBEnableSpin->isChecked());
-    ui->SliderSpin   ->setEnabled(ui->CBEnableSpin->isChecked());
+    CBReverseSpin->setEnabled(CBEnableSpin->isChecked());
+    SliderSpin   ->setEnabled(CBEnableSpin->isChecked());
 }
 
 void DlgCustomizeSpNavSettings::on_CBReverseSpin_clicked()
 {
-    spaceballMotionGroup()->SetBool("SpinReverse", ui->CBReverseSpin->isChecked());
+    spaceballMotionGroup()->SetBool("SpinReverse", CBReverseSpin->isChecked());
 }
 
 void DlgCustomizeSpNavSettings::on_SliderSpin_sliderReleased()
 {
-    spaceballMotionGroup()->SetInt("SpinSensitivity", ui->SliderSpin->value());
+    spaceballMotionGroup()->SetInt("SpinSensitivity", SliderSpin->value());
 }
 
 void DlgCustomizeSpNavSettings::onAddMacroAction(const QByteArray &macroName)
 {
     //don't need to do anything here.
-    Q_UNUSED(macroName);
+    Q_UNUSED(macroName); 
 }
 
 void DlgCustomizeSpNavSettings::onRemoveMacroAction(const QByteArray &macroName)
 {
     //don't need to do anything here.
-    Q_UNUSED(macroName);
+    Q_UNUSED(macroName); 
 }
 
 void DlgCustomizeSpNavSettings::onModifyMacroAction(const QByteArray &macroName)
 {
     //don't need to do anything here.
-    Q_UNUSED(macroName);
+    Q_UNUSED(macroName); 
 }
 
 #include "moc_DlgCustomizeSpNavSettings.cpp"

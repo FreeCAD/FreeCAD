@@ -84,20 +84,20 @@ App::DocumentObjectExecReturn* RuledSurface::getShape(const App::PropertyLinkSub
                                                       TopoDS_Shape& shape) const
 {
     App::DocumentObject* obj = link.getValue();
-    if (!(obj && obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())))
+    if(!obj)
         return new App::DocumentObjectExecReturn("No shape linked.");
 
     // if no explicit sub-shape is selected use the whole part
     const std::vector<std::string>& element = link.getSubValues();
     if (element.empty()) {
-        shape = static_cast<Part::Feature*>(obj)->Shape.getValue();
+        shape = Feature::getShape(obj);
         return nullptr;
     }
     else if (element.size() != 1) {
         return new App::DocumentObjectExecReturn("Not exactly one sub-shape linked.");
     }
 
-    const Part::TopoShape& part = static_cast<Part::Feature*>(obj)->Shape.getValue();
+    const Part::TopoShape& part = Feature::getTopoShape(obj);
     if (!part.getShape().IsNull()) {
         if (!element[0].empty()) {
             shape = part.getSubShape(element[0].c_str());
@@ -691,33 +691,6 @@ App::DocumentObjectExecReturn *Refine::execute(void)
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {
-        return new App::DocumentObjectExecReturn(e.GetMessageString());
-    }
-}
-
-// ----------------------------------------------------------------------------
-
-PROPERTY_SOURCE(Part::Reverse, Part::Feature)
-
-Reverse::Reverse()
-{
-    ADD_PROPERTY_TYPE(Source, (0), "Reverse", App::Prop_None, "Source shape");
-}
-
-App::DocumentObjectExecReturn* Reverse::execute(void)
-{
-    Part::Feature* source = Source.getValue<Part::Feature*>();
-    if (!source)
-        return new App::DocumentObjectExecReturn("No part object linked.");
-
-    try {
-        TopoDS_Shape myShape = source->Shape.getValue();
-        if (!myShape.IsNull())
-            this->Shape.setValue(myShape.Reversed());
-        this->Placement.setValue(source->Placement.getValue());
-        return App::DocumentObject::StdReturn;
-    }
-    catch (Standard_Failure & e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 }

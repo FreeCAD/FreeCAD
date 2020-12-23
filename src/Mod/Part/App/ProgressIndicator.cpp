@@ -54,7 +54,6 @@ using namespace Part;
   \endcode
  */
 
-#if OCC_VERSION_HEX < 0x070500
 ProgressIndicator::ProgressIndicator (int theMaxVal)
   : myProgress(new Base::SequencerLauncher("", theMaxVal))
 {
@@ -84,4 +83,3 @@ Standard_Boolean ProgressIndicator::UserBreak()
 {
     return myProgress->wasCanceled();
 }
-#endif

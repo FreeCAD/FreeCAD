@@ -1,8 +1,6 @@
 # ***************************************************************************
-# *   Copyright (c) 2015 Przemo Firszt <przemo@firszt.eu>                   *
-# *   Copyright (c) 2015 Bernd Hahnebach <bernd@bimstatik.org>              *
-# *                                                                         *
-# *   This file is part of the FreeCAD CAx development system.              *
+# *   Copyright (c) 2015 - FreeCAD Developers                               *
+# *   Author: Przemo Firszt <przemo@firszt.eu>                              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -22,18 +20,17 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__  = "Result import for Calculix dat file format"
+__title__ = "importCcxDatResults"
 __author__ = "Przemo Firszt, Bernd Hahnebach"
-__url__    = "https://www.freecadweb.org"
+__url__ = "http://www.freecadweb.org"
 
 ## @package importCcxDatResults
 #  \ingroup FEM
 #  \brief FreeCAD Calculix DAT reader for FEM workbench
 
-import os
-
 import FreeCAD
 from FreeCAD import Console
+import os
 
 
 EIGENVALUE_OUTPUT_SECTION = "     E I G E N V A L U E   O U T P U T"
@@ -101,7 +98,7 @@ def readResult(
                 m["frequency"] = mode_frequency
                 results.append(m)
                 mode_reading = True
-            except Exception:
+            except:
                 if mode_reading:
                     # Conversion error after mode reading started, so it's the end of section
                     eigenvalue_output_section_found = False

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel <juergen.riegel@web.de>                   *
+ *   Copyright (c) Juergen Riegel         <juergen.riegel@web.de>          *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -83,7 +83,7 @@ MeshObject::MeshObject(const MeshObject& mesh)
   : _Mtrx(mesh._Mtrx),_kernel(mesh._kernel)
 {
     // copy the mesh structure
-    copySegments(mesh);
+    this->_segments = mesh._segments;
 }
 
 MeshObject::~MeshObject()
@@ -161,33 +161,13 @@ Base::BoundBox3d MeshObject::getBoundBox(void)const
     return Bnd2;
 }
 
-void MeshObject::copySegments(const MeshObject& mesh)
-{
-    // After copying the segments the mesh pointers must be adjusted
-    this->_segments = mesh._segments;
-    std::for_each(this->_segments.begin(), this->_segments.end(), [this](Segment& s) {
-        s._mesh = this;
-    });
-}
-
-void MeshObject::swapSegments(MeshObject& mesh)
-{
-    this->_segments.swap(mesh._segments);
-    std::for_each(this->_segments.begin(), this->_segments.end(), [this](Segment& s) {
-        s._mesh = this;
-    });
-    std::for_each(mesh._segments.begin(), mesh._segments.end(), [&mesh](Segment& s) {
-        s._mesh = &mesh;
-    });
-}
-
 void MeshObject::operator = (const MeshObject& mesh)
 {
     if (this != &mesh) {
         // copy the mesh structure
         setTransform(mesh._Mtrx);
         this->_kernel = mesh._kernel;
-        copySegments(mesh);
+        this->_segments = mesh._segments;
     }
 }
 
@@ -208,7 +188,7 @@ void MeshObject::swap(MeshCore::MeshKernel& Kernel)
 void MeshObject::swap(MeshObject& mesh)
 {
     this->_kernel.Swap(mesh._kernel);
-    swapSegments(mesh);
+    this->_segments.swap(mesh._segments);
     Base::Matrix4D tmp=this->_Mtrx;
     this->_Mtrx = mesh._Mtrx;
     mesh._Mtrx = tmp;
@@ -478,7 +458,7 @@ void MeshObject::swapKernel(MeshCore::MeshKernel& kernel,
         if (prop < it->_ulProp) {
             prop = it->_ulProp;
             if (!segment.empty()) {
-                this->_segments.emplace_back(this,segment,true);
+                this->_segments.push_back(Segment(this,segment,true));
                 segment.clear();
             }
         }
@@ -488,7 +468,7 @@ void MeshObject::swapKernel(MeshCore::MeshKernel& kernel,
 
     // if the whole mesh is a single object then don't mark as segment
     if (!segment.empty() && (segment.size() < faces.size())) {
-        this->_segments.emplace_back(this,segment,true);
+        this->_segments.push_back(Segment(this,segment,true));
     }
 
     // apply the group names to the segments
@@ -685,9 +665,8 @@ void MeshObject::deletedFacets(const std::vector<unsigned long>& remFacets)
             // remove the invalid indices
             std::sort(segm.begin(), segm.end());
             std::vector<unsigned long>::iterator ft = std::find_if
-                (segm.begin(), segm.end(), [](unsigned long v) {
-                    return v == ULONG_MAX;
-                });
+                (segm.begin(), segm.end(), 
+                std::bind2nd(std::equal_to<unsigned long>(), ULONG_MAX));
             if (ft != segm.end())
                 segm.erase(ft, segm.end());
             it->_indices = segm;
@@ -840,9 +819,8 @@ unsigned long MeshObject::getPointDegree(const std::vector<unsigned long>& indic
         pointDeg[face._aulPoints[2]]--;
     }
 
-    unsigned long countInvalids = std::count_if(pointDeg.begin(), pointDeg.end(), [](unsigned long v) {
-        return v == 0;
-    });
+    unsigned long countInvalids = std::count_if(pointDeg.begin(), pointDeg.end(),
+        std::bind2nd(std::equal_to<unsigned long>(), 0));
 
     point_degree.swap(pointDeg);
     return countInvalids;
@@ -989,12 +967,6 @@ void MeshObject::decimate(float fTolerance, float fReduction)
 {
     MeshCore::MeshSimplify dm(this->_kernel);
     dm.simplify(fTolerance, fReduction);
-}
-
-void MeshObject::decimate(int targetSize)
-{
-    MeshCore::MeshSimplify dm(this->_kernel);
-    dm.simplify(targetSize);
 }
 
 Base::Vector3d MeshObject::getPointNormal(unsigned long index) const
@@ -1241,7 +1213,7 @@ void MeshObject::splitEdges()
             if (!pF->IsFlag(MeshCore::MeshFacet::VISIT) && !rFace.IsFlag(MeshCore::MeshFacet::VISIT)) {
                 pF->SetFlag(MeshCore::MeshFacet::VISIT);
                 rFace.SetFlag(MeshCore::MeshFacet::VISIT);
-                adjacentFacet.emplace_back(pF-rFacets.begin(), pF->_aulNeighbours[id]);
+                adjacentFacet.push_back(std::make_pair(pF-rFacets.begin(), pF->_aulNeighbours[id]));
             }
         }
     }
@@ -1388,15 +1360,15 @@ void MeshObject::removeSelfIntersections(const std::vector<unsigned long>& indic
     // make sure that the number of indices is even and are in range
     if (indices.size() % 2 != 0)
         return;
-    unsigned long cntfacets = _kernel.CountFacets();
-    if (std::find_if(indices.begin(), indices.end(), [cntfacets](unsigned long v) { return v >= cntfacets; }) < indices.end())
+    if (std::find_if(indices.begin(), indices.end(), 
+        std::bind2nd(std::greater_equal<unsigned long>(), _kernel.CountFacets())) < indices.end())
         return;
     std::vector<std::pair<unsigned long, unsigned long> > selfIntersections;
     std::vector<unsigned long>::const_iterator it;
     for (it = indices.begin(); it != indices.end(); ) {
         unsigned long id1 = *it; ++it;
         unsigned long id2 = *it; ++it;
-        selfIntersections.emplace_back(id1,id2);
+        selfIntersections.push_back(std::make_pair(id1,id2));
     }
 
     if (!selfIntersections.empty()) {
@@ -1775,7 +1747,7 @@ void MeshObject::addSegment(const std::vector<unsigned long>& inds)
             throw Base::IndexError("Index out of range");
     }
 
-    this->_segments.emplace_back(this,inds,true);
+    this->_segments.push_back(Segment(this,inds,true));
 }
 
 const Segment& MeshObject::getSegment(unsigned long index) const
@@ -1812,7 +1784,7 @@ std::vector<Segment> MeshObject::getSegmentsOfType(MeshObject::GeometryType type
         return segm;
 
     MeshCore::MeshSegmentAlgorithm finder(this->_kernel);
-    std::shared_ptr<MeshCore::MeshDistanceSurfaceSegment> surf;
+    std::unique_ptr<MeshCore::MeshDistanceSurfaceSegment> surf;
     switch (type) {
     case PLANE:
         //surf.reset(new MeshCore::MeshDistancePlanarSegment(this->_kernel, minFacets, dev));
@@ -1832,13 +1804,13 @@ std::vector<Segment> MeshObject::getSegmentsOfType(MeshObject::GeometryType type
     }
 
     if (surf.get()) {
-        std::vector<MeshCore::MeshSurfaceSegmentPtr> surfaces;
-        surfaces.push_back(surf);
+        std::vector<MeshCore::MeshSurfaceSegment*> surfaces;
+        surfaces.push_back(surf.get());
         finder.FindSegments(surfaces);
 
         const std::vector<MeshCore::MeshSegment>& data = surf->GetSegments();
         for (std::vector<MeshCore::MeshSegment>::const_iterator it = data.begin(); it != data.end(); ++it) {
-            segm.emplace_back(const_cast<MeshObject*>(this), *it, false);
+            segm.push_back(Segment(const_cast<MeshObject*>(this), *it, false));
         }
     }
 

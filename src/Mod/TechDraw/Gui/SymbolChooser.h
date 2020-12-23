@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2019 Wandererfan <wandererfan@gmail.com                 *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -35,13 +35,13 @@ class TechDrawGuiExport SymbolChooser : public QDialog
     Q_OBJECT
 
 public:
-    SymbolChooser(QWidget *parent = 0,
+    SymbolChooser(QWidget *parent = 0, 
                   QString startDir = QString(),
                   QString source = QString());
 
 public Q_SLOTS:
-    void onOKClicked();
-    void onCancelClicked();
+    void onOKClicked(bool b);
+    void onCancelClicked(bool b);
     void onItemClicked(QListWidgetItem* item);
     void onDirectorySelected(const QString& newDir);
 

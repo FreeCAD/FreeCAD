@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -59,7 +59,7 @@
 #include <QDateTime>
 
 // Boost
-#include <boost/bind/bind.hpp>
+#include <boost/bind.hpp>
 #include <boost/shared_ptr.hpp>
 
 // Opencascade
@@ -86,9 +86,7 @@
 #include <Python.h>
 
 #elif defined(FC_OS_WIN32)
-#ifndef NOMINMAX
 #define NOMINMAX
-#endif
 #include <windows.h>
 #endif // _PreComp_
 #endif

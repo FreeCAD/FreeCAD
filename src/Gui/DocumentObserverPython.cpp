@@ -24,7 +24,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <boost_bind_bind.hpp>
 #endif
 
 #include "Application.h"
@@ -36,7 +35,6 @@
 #include <Base/Console.h>
 
 using namespace Gui;
-namespace bp = boost::placeholders;
 
 std::vector<DocumentObserverPython*> DocumentObserverPython::_instances;
 
@@ -62,37 +60,27 @@ void DocumentObserverPython::removeObserver(const Py::Object& obj)
 
 DocumentObserverPython::DocumentObserverPython(const Py::Object& obj) : inst(obj)
 {
-#define FC_PY_ELEMENT_ARG1(_name1, _name2) do {\
-        FC_PY_GetCallable(obj.ptr(), "slot" #_name1, py##_name1.py);\
-        if (!py##_name1.py.isNone())\
-            py##_name1.slot = Application::Instance->signal##_name2.connect(\
-                    boost::bind(&DocumentObserverPython::slot##_name1, this, bp::_1));\
-    }\
-    while(0);
+#define signalCreatedDocument signalNewDocument
+#define signalCreatedObject signalNewObject
+#define signalDeletedDocument signalDeleteDocument
+#define signalActivateDocument signalActiveDocument
 
-#define FC_PY_ELEMENT_ARG2(_name1, _name2) do {\
-        FC_PY_GetCallable(obj.ptr(), "slot" #_name1, py##_name1.py);\
-        if (!py##_name1.py.isNone())\
-            py##_name1.slot = Application::Instance->signal##_name2.connect(\
-                    boost::bind(&DocumentObserverPython::slot##_name1, this, bp::_1, bp::_2));\
-    }\
-    while(0);
+#undef FC_PY_ELEMENT
+#define FC_PY_ELEMENT(_name,...) \
+    FC_PY_GetCallable(obj.ptr(),"slot" #_name, py##_name);\
+    if(!py##_name.isNone())\
+        connect##_name = Application::Instance->signal##_name.connect(\
+                boost::bind(&DocumentObserverPython::slot##_name, this, ## __VA_ARGS__));
 
-    FC_PY_ELEMENT_ARG1(CreatedDocument, NewDocument)
-    FC_PY_ELEMENT_ARG1(DeletedDocument, DeleteDocument)
-    FC_PY_ELEMENT_ARG1(RelabelDocument, RelabelDocument)
-    FC_PY_ELEMENT_ARG1(RenameDocument, RenameDocument)
-    FC_PY_ELEMENT_ARG1(ActivateDocument, ActiveDocument)
-    FC_PY_ELEMENT_ARG1(CreatedObject, NewObject)
-    FC_PY_ELEMENT_ARG1(DeletedObject, DeletedObject)
-    FC_PY_ELEMENT_ARG2(BeforeChangeObject, BeforeChangeObject)
-    FC_PY_ELEMENT_ARG2(ChangedObject, ChangedObject)
-    FC_PY_ELEMENT_ARG1(InEdit, InEdit)
-    FC_PY_ELEMENT_ARG1(ResetEdit, ResetEdit)
+    FC_PY_GDOC_OBSERVER
 }
 
 DocumentObserverPython::~DocumentObserverPython()
 {
+#undef FC_PY_ELEMENT
+#define FC_PY_ELEMENT(_name,...) connect##_name.disconnect();
+
+    FC_PY_GDOC_OBSERVER
 }
 
 void DocumentObserverPython::slotCreatedDocument(const Gui::Document& Doc)
@@ -186,27 +174,6 @@ void DocumentObserverPython::slotDeletedObject(const Gui::ViewProvider& Obj)
         Py::Tuple args(1);
         args.setItem(0, Py::Object(const_cast<Gui::ViewProvider&>(Obj).getPyObject(), true));
         Base::pyCall(pyDeletedObject.ptr(),args.ptr());
-    }
-    catch (Py::Exception&) {
-        Base::PyException e; // extract the Python error text
-        e.ReportException();
-    }
-}
-
-void DocumentObserverPython::slotBeforeChangeObject(const Gui::ViewProvider& Obj,
-                                                    const App::Property& Prop)
-{
-    Base::PyGILStateLocker lock;
-    try {
-        Py::Tuple args(2);
-        args.setItem(0, Py::Object(const_cast<Gui::ViewProvider&>(Obj).getPyObject(), true));
-        // If a property is touched but not part of a document object then its name is null.
-        // In this case the slot function must not be called.
-        const char* prop_name = Obj.getPropertyName(&Prop);
-        if (prop_name) {
-            args.setItem(1, Py::String(prop_name));
-            Base::pyCall(pyBeforeChangeObject.ptr(),args.ptr());
-        }
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text

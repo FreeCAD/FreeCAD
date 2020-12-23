@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (c) 2017 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
+ *   Copyright (c) 2017 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -40,10 +40,6 @@
 #include "GroupExtension.h"
 
 //FIXME: ISO C++11 requires at least one argument for the "..." in a variadic macro
-#if defined(__clang__)
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
-#endif
 
 #define LINK_THROW(_type,_msg) do{\
     if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))\
@@ -54,7 +50,7 @@
 namespace App
 {
 
-class AppExport LinkBaseExtension : public App::DocumentObjectExtension
+class AppExport LinkBaseExtension : public App::DocumentObjectExtension 
 {
     EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(App::LinkExtension);
     typedef App::DocumentObjectExtension inherited;
@@ -126,10 +122,6 @@ public:
 #define LINK_PARAM_MODE(...) \
     (LinkMode, long, App::PropertyEnumeration, ((long)0), "Link group mode", ##__VA_ARGS__)
 
-#define LINK_PARAM_LINK_EXECUTE(...) \
-    (LinkExecute, const char*, App::PropertyString, (""),\
-     "Link execute function. Default to 'appLinkExecute'. 'None' to disable.", ##__VA_ARGS__)
-
 #define LINK_PARAM_COLORED_ELEMENTS(...) \
     (ColoredElements, App::DocumentObject*, App::PropertyLinkSubHidden, \
      0, "Link colored elements", ##__VA_ARGS__)
@@ -159,8 +151,7 @@ public:
     LINK_PARAM(ELEMENTS)\
     LINK_PARAM(SHOW_ELEMENT)\
     LINK_PARAM(MODE)\
-    LINK_PARAM(LINK_EXECUTE)\
-    LINK_PARAM(COLORED_ELEMENTS)\
+    LINK_PARAM(COLORED_ELEMENTS)
 
     enum PropIndex {
 #define LINK_PINDEX_DEFINE(_1,_2,_param) LINK_PINDEX(_param),
@@ -181,10 +172,10 @@ public:
         const char *doc;
 
         PropInfo(int index, const char *name,Base::Type type,const char *doc)
-            : index(index), name(name), type(type), doc(doc)
+            :index(index),name(name),type(type),doc(doc)
         {}
 
-        PropInfo() : index(0), name(0), doc(0) {}
+        PropInfo() {}
     };
 
 #define LINK_PROP_INFO(_1,_var,_param) \
@@ -239,7 +230,7 @@ public:
 
     bool linkTransform() const;
 
-    const char *getSubName() const {
+    const char *getSubName() const { 
         parseSubName();
         return mySubName.size()?mySubName.c_str():0;
     }
@@ -249,12 +240,12 @@ public:
         return mySubElements;
     }
 
-    bool extensionGetSubObject(DocumentObject *&ret, const char *subname,
+    bool extensionGetSubObject(DocumentObject *&ret, const char *subname, 
             PyObject **pyObj=0, Base::Matrix4D *mat=0, bool transform=false, int depth=0) const override;
 
     bool extensionGetSubObjects(std::vector<std::string>&ret, int reason) const override;
 
-    bool extensionGetLinkedObject(DocumentObject *&ret,
+    bool extensionGetLinkedObject(DocumentObject *&ret, 
             bool recurse, Base::Matrix4D *mat, bool transform, int depth) const override;
 
     virtual App::DocumentObjectExecReturn *extensionExecute(void) override;
@@ -293,13 +284,13 @@ public:
     void cacheChildLabel(int enable=-1) const;
 
 protected:
-    void _handleChangedPropertyName(Base::XMLReader &reader,
+    void _handleChangedPropertyName(Base::XMLReader &reader, 
             const char * TypeName, const char *PropName);
     void parseSubName() const;
     void update(App::DocumentObject *parent, const Property *prop);
     void syncElementList();
     void detachElement(App::DocumentObject *obj);
-    void checkGeoElementMap(const App::DocumentObject *obj,
+    void checkGeoElementMap(const App::DocumentObject *obj, 
         const App::DocumentObject *linked, PyObject **pyObj, const char *postfix) const;
     void updateGroup();
     void slotChangedPlainGroup(const App::DocumentObject &, const App::Property &);
@@ -310,7 +301,7 @@ protected:
     mutable std::vector<std::string> mySubElements;
     mutable std::string mySubName;
 
-    std::unordered_map<const App::DocumentObject*,
+    std::unordered_map<const App::DocumentObject*, 
         boost::signals2::scoped_connection> plainGroupConns;
 
     long myOwner;
@@ -336,10 +327,10 @@ public:
     LinkExtension();
     virtual ~LinkExtension();
 
-    /** \name Helpers for defining extended parameter
+    /** \name Helpers for defining extended parameter 
      *
-     * extended parameter definition
-     * (Name, Type, Property_Type, Default, Document, Property_Name,
+     * extended parameter definition 
+     * (Name, Type, Property_Type, Default, Document, Property_Name, 
      *  Derived_Property_Type, App_Property_Type, Group)
      *
      * This helper simply reuses Name as Property_Name, Property_Type as
@@ -422,7 +413,7 @@ public:
 
 #define LINK_PROP_DEFINE(_1,_2,_param) LINK_ETYPE(_param) LINK_ENAME(_param);
 #define LINK_PROPS_DEFINE(_seq) BOOST_PP_SEQ_FOR_EACH(LINK_PROP_DEFINE,_,_seq)
-
+    
     // defines the actual properties
     LINK_PROPS_DEFINE(LINK_PARAMS_EXT)
 
@@ -451,7 +442,6 @@ public:
     LINK_PARAM_EXT(PLACEMENT)\
     LINK_PARAM_EXT(SHOW_ELEMENT)\
     LINK_PARAM_EXT_TYPE(COUNT,App::PropertyIntegerConstraint)\
-    LINK_PARAM_EXT(LINK_EXECUTE)\
     LINK_PARAM_EXT_ATYPE(COLORED_ELEMENTS,App::Prop_Hidden)\
 
     LINK_PROPS_DEFINE(LINK_PARAMS_LINK)
@@ -467,7 +457,7 @@ public:
         inherited::onDocumentRestored();
     }
 
-    void handleChangedPropertyName(Base::XMLReader &reader,
+    void handleChangedPropertyName(Base::XMLReader &reader, 
             const char * TypeName, const char *PropName) override
     {
         _handleChangedPropertyName(reader,TypeName,PropName);
@@ -508,7 +498,7 @@ public:
 
     bool canDelete() const;
 
-    void handleChangedPropertyName(Base::XMLReader &reader,
+    void handleChangedPropertyName(Base::XMLReader &reader, 
             const char * TypeName, const char *PropName) override
     {
         _handleChangedPropertyName(reader,TypeName,PropName);
@@ -550,9 +540,5 @@ typedef App::FeaturePythonT<LinkGroup> LinkGroupPython;
 
 } //namespace App
 
-
-#if defined(__clang__)
-# pragma clang diagnostic pop
-#endif
 
 #endif // APP_LINK_H

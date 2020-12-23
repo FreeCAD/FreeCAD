@@ -1,16 +1,12 @@
-; None means nothing, as the starting point of making a new fluid material
-
-[General]
+[FCdMat]
 Name = None
-Description = "None"
+Description = None
 
-[Fluidic]
 Density = 0 kg/m^3
 DynamicViscosity = 0 kg/m/s
 KinematicViscosity = 0 m^2/s
+VolumetricThermalExpansionCoefficient = 0 m/m/K
 
-[Thermal]
 SpecificHeat = 0 J/kg/K
 ThermalConductivity = 0 W/m/K
 ThermalExpansionCoefficient = 0 um/m/K
-VolumetricThermalExpansionCoefficient = 0 m/m/K

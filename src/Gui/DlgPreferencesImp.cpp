@@ -34,12 +34,8 @@
 # include <QScrollBar>
 #endif
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-# include <QScreen>
-#endif
-
 #include <Base/Exception.h>
-#include <Base/Console.h>
+#include <Base/Console.h> 
 #include <App/Application.h>
 #include "DlgPreferencesImp.h"
 #include "ui_DlgPreferences.h"
@@ -94,7 +90,7 @@ void DlgPreferencesImp::setupPages()
     for (std::list<TGroupPages>::iterator it = _pages.begin(); it != _pages.end(); ++it) {
         QTabWidget* tabWidget = new QTabWidget;
         ui->tabWidgetStack->addWidget(tabWidget);
-
+        
         QByteArray group = it->first.c_str();
         QListWidgetItem *item = new QListWidgetItem(ui->listBox);
         item->setData(Qt::UserRole, QVariant(group));
@@ -303,7 +299,6 @@ void DlgPreferencesImp::applyChanges()
 void DlgPreferencesImp::showEvent(QShowEvent* ev)
 {
     //canEmbedScrollArea = false;
-    this->adjustSize();
     QDialog::showEvent(ev);
 }
 
@@ -312,11 +307,7 @@ void DlgPreferencesImp::resizeEvent(QResizeEvent* ev)
     if (canEmbedScrollArea) {
         // embed the widget stack into a scroll area if the size is
         // bigger than the available desktop
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-        QRect rect = QApplication::primaryScreen()->availableGeometry();
-#else
         QRect rect = QApplication::desktop()->availableGeometry();
-#endif
         int maxHeight = rect.height() - 60;
         int maxWidth = rect.width();
         if (height() > maxHeight || width() > maxWidth) {

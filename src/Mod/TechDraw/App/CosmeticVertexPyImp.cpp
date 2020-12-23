@@ -27,17 +27,9 @@
 # include <boost/uuid/uuid_io.hpp>
 #endif
 
-#include <Base/Console.h>
-#include <Base/Vector3D.h>
-#include <Base/VectorPy.h>
-#include <Base/GeometryPyCXX.h>
-
-
 #include "Cosmetic.h"
 #include "CosmeticVertexPy.h"
 #include "CosmeticVertexPy.cpp"
-
-#include "DrawUtil.h"
 
 using namespace TechDraw;
 
@@ -67,7 +59,7 @@ PyObject* CosmeticVertexPy::clone(PyObject *args)
         return NULL;
 
     TechDraw::CosmeticVertex* geom = this->getCosmeticVertexPtr();
-//    geom->dump("CEPYI::clone");
+    geom->dump("CEPYI::clone");
     PyTypeObject* type = this->GetType();
     PyObject* cpy = 0;
     // let the type object decide
@@ -95,7 +87,7 @@ PyObject* CosmeticVertexPy::copy(PyObject *args)
         return NULL;
 
     TechDraw::CosmeticVertex* geom = this->getCosmeticVertexPtr();
-//    geom->dump("CEPYI::copy");
+    geom->dump("CEPYI::copy");
     PyTypeObject* type = this->GetType();
     PyObject* cpy = 0;
     // let the type object decide
@@ -121,119 +113,6 @@ Py::String CosmeticVertexPy::getTag(void) const
 {
     std::string tmp = boost::uuids::to_string(getCosmeticVertexPtr()->getTag());
     return Py::String(tmp);
-}
-
-Py::Object CosmeticVertexPy::getPoint(void) const
-{
-    Base::Vector3d point = getCosmeticVertexPtr()->permaPoint;
-    point = DrawUtil::invertY(point);
-    return Py::asObject(new Base::VectorPy(point));
-}
-
-void CosmeticVertexPy::setPoint(Py::Object arg)
-{
-    PyObject* p = arg.ptr();
-    if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
-        Base::Vector3d point = static_cast<Base::VectorPy*>(p)->value();
-        getCosmeticVertexPtr()->permaPoint = 
-                DrawUtil::invertY(point);
-    }
-    else if (PyObject_TypeCheck(p, &PyTuple_Type)) {
-        Base::Vector3d point = Base::getVectorFromTuple<double>(p);
-        getCosmeticVertexPtr()->permaPoint = 
-                DrawUtil::invertY(point);
-    }
-    else {
-        std::string error = std::string("type must be 'Vector', not ");
-        error += p->ob_type->tp_name;
-        throw Py::TypeError(error);
-    }
-}
-
-Py::Boolean CosmeticVertexPy::getShow(void) const
-{
-    bool show = getCosmeticVertexPtr()->visible;
-    return Py::Boolean(show);
-}
-
-void CosmeticVertexPy::setShow(Py::Boolean arg)
-{
-    PyObject* p = arg.ptr();
-    if (PyBool_Check(p)) {
-        if (p == Py_True) {
-            getCosmeticVertexPtr()->visible = true;
-        } else {
-            getCosmeticVertexPtr()->visible = false;
-        }
-    }
-}
-
-Py::Object CosmeticVertexPy::getColor(void) const
-{
-    App::Color color = getCosmeticVertexPtr()->color;
-    PyObject* pyColor = DrawUtil::colorToPyTuple(color);
-    return Py::asObject(pyColor);
-}
-
-void CosmeticVertexPy::setColor(Py::Object arg)
-{
-    PyObject* pTuple = arg.ptr();
-    double red = 0.0, green = 0.0, blue = 0.0, alpha = 0.0;
-    App::Color c(red, green, blue, alpha);
-    if (PyTuple_Check(pTuple)) {
-        c = DrawUtil::pyTupleToColor(pTuple);
-        CosmeticVertex* cv = getCosmeticVertexPtr();
-        cv->color = c;
-    } else {
-        Base::Console().Error("CEPI::setColor - not a tuple!\n");
-        std::string error = std::string("type must be 'tuple', not ");
-        error += pTuple->ob_type->tp_name;
-        throw Py::TypeError(error);
-    }
-}
-
-Py::Object CosmeticVertexPy::getSize(void) const
-{
-    CosmeticVertex* cv = getCosmeticVertexPtr();
-    double size = cv->size;
-    PyObject* pSize = PyFloat_FromDouble(size);
-    return Py::asObject(pSize);
-}
-
-void CosmeticVertexPy::setSize(Py::Object arg)
-{
-    double size = 1.0;
-    PyObject* p = arg.ptr();
-    if (PyFloat_Check(p)) {
-        size = PyFloat_AsDouble(p);
-    } else if (PyLong_Check(p)) {
-        size = (double) PyLong_AsLong(p);
-    } else {
-        throw Py::TypeError("expected (float)");
-    }
-    CosmeticVertex* cv = getCosmeticVertexPtr();
-    cv->size = size;
-}
-
-Py::Object CosmeticVertexPy::getStyle(void) const
-{
-    CosmeticVertex* cv = getCosmeticVertexPtr();
-    double style = cv->style;
-    PyObject* pStyle = PyLong_FromLong((long) style);
-    return Py::asObject(pStyle);
-}
-
-void CosmeticVertexPy::setStyle(Py::Object arg)
-{
-    int style = 1;
-    PyObject* p = arg.ptr();
-    if (PyLong_Check(p)) {
-        style = (int) PyLong_AsLong(p);
-    } else {
-        throw Py::TypeError("expected (float)");
-    }
-    CosmeticVertex* cv = getCosmeticVertexPtr();
-    cv->style = style;
 }
 
 PyObject *CosmeticVertexPy::getCustomAttributes(const char* /*attr*/) const

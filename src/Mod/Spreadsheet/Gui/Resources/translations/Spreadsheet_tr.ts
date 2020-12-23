@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="tr" sourcelanguage="en">
+<TS version="2.0" language="tr" sourcelanguage="en">
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -148,7 +148,7 @@
     </message>
     <message>
       <source>Merge selected cells</source>
-      <translation>Seçili hücreleri birleştir</translation>
+      <translation type="unfinished">Merge selected cells</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@
     </message>
     <message>
       <source>Split previously merged cells</source>
-      <translation>Daha önce birleştirilmiş hücreleri Böl</translation>
+      <translation type="unfinished">Split previously merged cells</translation>
     </message>
   </context>
   <context>
@@ -193,7 +193,7 @@
     </message>
     <message>
       <source>Set text in selected cells bold</source>
-      <translation>Seçili hücrelerdeki metni kalın olarak ayarla</translation>
+      <translation type="unfinished">Set text in selected cells bold</translation>
     </message>
   </context>
   <context>
@@ -208,7 +208,7 @@
     </message>
     <message>
       <source>Set text in selected cells italic</source>
-      <translation>Seçili hücrelerdeki metni italik olarak ayarla</translation>
+      <translation type="unfinished">Set text in selected cells italic</translation>
     </message>
   </context>
   <context>
@@ -331,6 +331,10 @@
       <translation>Dosyayı Dışarı Aktar</translation>
     </message>
     <message>
+      <source>Cell contents</source>
+      <translation>Hücre içeriği</translation>
+    </message>
+    <message>
       <source>Show spreadsheet</source>
       <translation>Hesap tablosunu göster</translation>
     </message>
@@ -349,29 +353,6 @@
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
       <translation>Hesap tablosu hücre(ler) inin arka plan rengini ayarlar</translation>
-    </message>
-    <message>
-      <source>Spreadsheet</source>
-      <translation>Hesap Tablosu</translation>
-    </message>
-    <message>
-      <source>Spreadsheet does not support range selection when pasting.
-Please select one cell only.</source>
-      <translation>Hesap tablosu, yapıştırma esnasında aralık seçimini desteklemiyor.
-Lütfen yalnızca bir hücre seçin.</translation>
-    </message>
-    <message>
-      <source>Copy &amp; Paste failed</source>
-      <translation>Kopyala Yapıştır başarısız oldu</translation>
-    </message>
-    <message>
-      <source>Alias contains invalid characters!</source>
-      <translation>Alias geçersiz karakterler içeriyor!</translation>
-    </message>
-    <message>
-      <source>Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation>Hücreye alias'lı bir isim atayın, örneğin Spreadsheet.B1 yerine Spreadsheet.my_alias_name</translation>
     </message>
   </context>
   <context>
@@ -456,17 +437,8 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Şekil:</translation>
     </message>
     <message>
-      <source>&amp;Content:</source>
-      <translation>&amp;İçerik:</translation>
-    </message>
-    <message>
-      <source>&amp;Alias:</source>
-      <translation>&amp;Alias:</translation>
-    </message>
-    <message>
-      <source>Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation>Hücreye alias'lı bir isim atayın, örneğin Spreadsheet.B1 yerine Spreadsheet.my_alias_name</translation>
+      <source>&amp;Contents</source>
+      <translation>&amp;İçerikler</translation>
     </message>
   </context>
   <context>

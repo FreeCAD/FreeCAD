@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -62,6 +62,6 @@ std::vector<App::DocumentObject*> ViewProviderTrajectoryDressUp::claimChildren(v
 {
     std::vector<App::DocumentObject*> temp;
     temp.push_back(static_cast<Robot::TrajectoryDressUpObject*>(getObject())->Source.getValue());
-
+ 
     return temp;
 }

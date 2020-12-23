@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+
 # ***************************************************************************
+# *                                                                         *
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -20,7 +22,9 @@
 # *                                                                         *
 # ***************************************************************************
 
+import ArchPanel
 import FreeCAD
+import Part
 import Path
 import PathScripts.PathEngraveBase as PathEngraveBase
 import PathScripts.PathLog as PathLog
@@ -29,15 +33,15 @@ import PathScripts.PathUtils as PathUtils
 
 from PySide import QtCore
 
-# lazily loaded modules
-from lazy_loader.lazy_loader import LazyLoader
-ArchPanel = LazyLoader('ArchPanel', globals(), 'ArchPanel')
-Part = LazyLoader('Part', globals(), 'Part')
-
 __doc__ = "Class and implementation of Path Engrave operation"
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#PathLog.trackModule(PathLog.thisModule())
+LOGLEVEL = False
+
+if LOGLEVEL:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 # Qt translation handling
@@ -54,7 +58,7 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
 
     def opFeatures(self, obj):
         '''opFeatures(obj) ... return all standard features and edges based geomtries'''
-        return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureHeights | PathOp.FeatureStepDown | PathOp.FeatureBaseEdges | PathOp.FeatureCoolant
+        return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureHeights | PathOp.FeatureStepDown | PathOp.FeatureBaseEdges | PathOp.FeatureCoolant 
 
     def setupAdditionalProperties(self, obj):
         if not hasattr(obj, 'BaseShapes'):
@@ -80,7 +84,6 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
         jobshapes = []
 
         if len(obj.Base) >= 1:  # user has selected specific subelements
-            PathLog.track(len(obj.Base))
             wires = []
             for base, subs in obj.Base:
                 edges = []
@@ -100,10 +103,7 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
                 wires.extend(basewires)
                 jobshapes.append(Part.makeCompound(wires))
 
-        elif len(obj.BaseShapes) > 0:  # user added specific shapes
-            jobshapes.extend([base.Shape for base in obj.BaseShapes])
-        else:
-            PathLog.track(self.model)
+        else:  # Use the Job Base object
             for base in self.model:
                 PathLog.track(base.Label)
                 if base.isDerivedFrom('Part::Part2DObject'):
@@ -121,15 +121,15 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
 
         if len(jobshapes) > 0:
             PathLog.debug('processing {} jobshapes'.format(len(jobshapes)))
+            PathLog.track()
             wires = []
             for shape in jobshapes:
-                shapeWires = shape.Wires
                 PathLog.debug('jobshape has {} edges'.format(len(shape.Edges)))
                 self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
-                self.buildpathocc(obj, shapeWires, self.getZValues(obj))
+                shapeWires = shape.Wires
+                self.buildpathocc(obj, shape.Wires, self.getZValues(obj))
                 wires.extend(shapeWires)
             self.wires = wires
-            PathLog.debug('processing {} jobshapes -> {} wires'.format(len(jobshapes), len(wires)))
         # the last command is a move to clearance, which is automatically added by PathOp
         if self.commandlist:
             self.commandlist.pop()

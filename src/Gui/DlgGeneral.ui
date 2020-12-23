@@ -214,11 +214,11 @@ this according to your screen size or personal taste</string>
            <item>
             <widget class="QComboBox" name="treeMode">
              <property name="toolTip">
-               <string>Customize how tree view is shown in the panel (restart required).
-
-'ComboView': combine tree view and property view into one panel.
-'TreeView and PropertyView': split tree view and property view into separate panel.
-'Both': keep all three panels, and you can have two sets of tree view and property view.</string>
+              <string>Tree View Mode provides the option the option to
+customize the properties panel. The options are:
+1. 'Combiview'
+2. 'TreeView + PropertyView
+3. 'Both'</string>
              </property>
             </widget>
            </item>

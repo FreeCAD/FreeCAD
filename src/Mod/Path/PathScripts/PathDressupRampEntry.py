@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+
 # ***************************************************************************
+# *                                                                         *
 # *   Copyright (c) 2017 Pekka Roivainen <pekkaroi@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -19,9 +21,9 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-
 import FreeCAD
 import Path
+import Part
 import PathScripts.PathDressup as PathDressup
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
@@ -29,10 +31,6 @@ import math
 
 from PathScripts import PathUtils
 from PySide import QtCore
-
-# lazily loaded modules
-from lazy_loader.lazy_loader import LazyLoader
-Part = LazyLoader('Part', globals(), 'Part')
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -54,11 +52,11 @@ class ObjectDressup:
         obj.addProperty("App::PropertyAngle", "Angle", "Path", QtCore.QT_TRANSLATE_NOOP("Path_DressupRampEntry", "Angle of ramp."))
         obj.addProperty("App::PropertyEnumeration", "Method", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Ramping Method"))
         obj.addProperty("App::PropertyEnumeration", "RampFeedRate", "FeedRate", QtCore.QT_TRANSLATE_NOOP("App::Property", "Which feed rate to use for ramping"))
-        obj.addProperty("App::PropertySpeed", "CustomFeedRate", "FeedRate", QtCore.QT_TRANSLATE_NOOP("App::Property", "Custom feed rate"))
+        obj.addProperty("App::PropertySpeed", "CustomFeedRate", "FeedRate", QtCore.QT_TRANSLATE_NOOP("App::Property", "Custom feedrate"))
         obj.addProperty("App::PropertyBool", "UseStartDepth", "StartDepth", QtCore.QT_TRANSLATE_NOOP("App::Property", "Should the dressup ignore motion commands above DressupStartDepth"))
         obj.addProperty("App::PropertyDistance", "DressupStartDepth", "StartDepth", QtCore.QT_TRANSLATE_NOOP("App::Property", "The depth where the ramp dressup is enabled. Above this ramps are not generated, but motion commands are passed through as is."))
         obj.Method = ['RampMethod1', 'RampMethod2', 'RampMethod3', 'Helix']
-        obj.RampFeedRate = ['Horizontal Feed Rate', 'Vertical Feed Rate', 'Ramp Feed Rate', 'Custom']
+        obj.RampFeedRate = ['Horizontal Feed Rate', 'Vertical Feed Rate', 'Custom']
         obj.Proxy = self
         self.setEditorProperties(obj)
 
@@ -503,7 +501,7 @@ class ObjectDressup:
         1. Start from the original startpoint of the plunge
         2. Calculate the distance on the path which is needed to implement the ramp
            and travel that distance while maintaining start depth
-        3. Start ramping while traveling the original path backwards until reaching the
+        3. Start ramping while travelling the original path backwards until reaching the
            original plunge end point
         4. Continue with the original path
         """
@@ -543,7 +541,7 @@ class ObjectDressup:
                     curPoint = newPoint
 
                 else:
-                    # we are traveling on start depth
+                    # we are travelling on start depth
                     newPoint = FreeCAD.Base.Vector(redge.valueAt(redge.LastParameter).x, redge.valueAt(redge.LastParameter).y, p0.z)
                     outedges.append(self.createRampEdge(redge, curPoint, newPoint))
                     curPoint = newPoint
@@ -584,16 +582,12 @@ class ObjectDressup:
 
         horizFeed = tc.HorizFeed.Value
         vertFeed = tc.VertFeed.Value
-
         if obj.RampFeedRate == "Horizontal Feed Rate":
             rampFeed = tc.HorizFeed.Value
         elif obj.RampFeedRate == "Vertical Feed Rate":
             rampFeed = tc.VertFeed.Value
-        elif obj.RampFeedRate == 'Ramp Feed Rate':
-            rampFeed = math.sqrt(pow(tc.VertFeed.Value, 2) + pow(tc.HorizFeed.Value, 2))
         else:
             rampFeed = obj.CustomFeedRate.Value
-
         horizRapid = tc.HorizRapid.Value
         vertRapid = tc.VertRapid.Value
 
@@ -660,12 +654,10 @@ class ViewProviderDressup:
         '''this makes sure that the base operation is added back to the project and visible'''
         # pylint: disable=unused-argument
         PathLog.debug("Deleting Dressup")
-        if arg1.Object and arg1.Object.Base:
-            FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
-            job = PathUtils.findParentJob(self.obj)
-            if job:
-                job.Proxy.addOperation(arg1.Object.Base, arg1.Object)
-            arg1.Object.Base = None
+        FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
+        job = PathUtils.findParentJob(self.obj)
+        job.Proxy.addOperation(arg1.Object.Base, arg1.Object)
+        arg1.Object.Base = None
         return True
 
     def __getstate__(self):
@@ -679,7 +671,7 @@ class CommandPathDressupRampEntry:
     # pylint: disable=no-init
 
     def GetResources(self):
-        return {'Pixmap': 'Path_Dressup',
+        return {'Pixmap': 'Path-Dressup',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_DressupRampEntry", "RampEntry Dress-up"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_DressupRampEntry", "Creates a Ramp Entry Dress-up object from a selected path")}
 

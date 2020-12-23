@@ -18,6 +18,7 @@
     <widget class="QLabel" name="labelTransformationStatus">
      <property name="font">
       <font>
+       <family>Bitstream Charter</family>
        <pointsize>9</pointsize>
       </font>
      </property>

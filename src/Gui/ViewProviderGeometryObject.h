@@ -60,6 +60,7 @@ public:
     App::PropertyMaterial ShapeMaterial;
     App::PropertyBool BoundingBox;
     App::PropertyBool Selectable;
+    App::PropertyEnumeration SelectionStyle;
 
     /**
      * Attaches the document object to this view provider.
@@ -72,7 +73,7 @@ public:
     /**
      * Returns a list of picked points from the geometry under \a getRoot().
      * If \a pickAll is false (the default) only the intersection point closest to the camera will be picked, otherwise
-     * all intersection points will be picked.
+     * all intersection points will be picked. 
      */
     SoPickedPointList getPickedPoints(const SbVec2s& pos, const View3DInventorViewer& viewer,bool pickAll=false) const;
     /**

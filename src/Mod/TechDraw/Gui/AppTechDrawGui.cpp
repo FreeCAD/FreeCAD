@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2007 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2007     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -39,13 +39,8 @@
 #include "Workbench.h"
 #include "MDIViewPage.h"
 
-#include "DlgPrefsTechDrawGeneralImp.h"
-#include "DlgPrefsTechDrawScaleImp.h"
-#include "DlgPrefsTechDrawAnnotationImp.h"
-#include "DlgPrefsTechDrawDimensionsImp.h"
-#include "DlgPrefsTechDrawColorsImp.h"
-#include "DlgPrefsTechDrawAdvancedImp.h"
-#include "DlgPrefsTechDrawHLRImp.h"
+#include "DlgPrefsTechDrawImp.h"
+#include "DlgPrefsTechDraw2Imp.h"
 #include "ViewProviderPage.h"
 #include "ViewProviderDrawingView.h"
 #include "ViewProviderDimension.h"
@@ -66,8 +61,6 @@
 #include "ViewProviderLeader.h"
 #include "ViewProviderTile.h"
 #include "ViewProviderWeld.h"
-
-#include "ViewProviderCosmeticExtension.h"
 
 
 // use a different name to CreateCommand()
@@ -148,16 +141,9 @@ PyMOD_INIT_FUNC(TechDrawGui)
     TechDrawGui::ViewProviderTile::init();
     TechDrawGui::ViewProviderWeld::init();
 
-    TechDrawGui::ViewProviderCosmeticExtension::init();
-
     // register preferences pages
-    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawGeneralImp> ("TechDraw");    //General
-    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawScaleImp> ("TechDraw");      //Scale
-    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawDimensionsImp>("TechDraw");  //Dimensions
-    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawAnnotationImp> ("TechDraw"); //Annotation
-    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawColorsImp>("TechDraw");      //Colors
-    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawHLRImp> ("TechDraw");        //HLR
-    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawAdvancedImp> ("TechDraw");   //Advanced
+    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawImp> ("TechDraw");
+    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDraw2Imp> ("TechDraw");
 
     // add resources and reloads the translators
     loadTechDrawResource();

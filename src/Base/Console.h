@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   (c) Jürgen Riegel (juergen.riegel@web.de) 2002                        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,6 +19,7 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
  *   USA                                                                   *
  *                                                                         *
+ *   Juergen Riegel 2002                                                   *
  ***************************************************************************/
 
 #pragma once
@@ -34,12 +35,6 @@
 #include <cstring>
 #include <sstream>
 #include <chrono>
-
-//FIXME: ISO C++11 requires at least one argument for the "..." in a variadic macro
-#if defined(__clang__)
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
-#endif
 
 //**************************************************************************
 // Logging levels
@@ -137,7 +132,7 @@
  *
  * // print file and line number, default 0, if set to 2 then print python
  * // source from current call frame.
- * FC_LOG_INSTANCE.print_src = 1;
+ * FC_LOG_INSTANCE.print_src = 1; 
  *
  * FC_LOG_INSTANCE.print_tag = false; // do not print tag, default true
  * FC_LOG_INSTANCE.add_eol = false; // do not add eol
@@ -486,7 +481,7 @@ namespace Base {
                 :bErr(true),bMsg(true),bLog(true),bWrn(true){};
             virtual ~ILogger() = 0;
 
-            /** Used to send a Log message at the given level.
+            /** Used to send a Log message at the given level. 
              */
             virtual void SendLog(const std::string& msg, LogStyle level) = 0;
 
@@ -527,13 +522,13 @@ namespace Base {
             /// Prints a log Message
             virtual void Log     ( const char * pMsg, ... );
 
-            // observer processing
+            // observer processing 
             void NotifyMessage(const char *sMsg);
             void NotifyWarning(const char *sMsg);
             void NotifyError  (const char *sMsg);
             void NotifyLog    (const char *sMsg);
 
-            /// Delivers a time/date string
+            /// Delivers a time/date string 
             const char* Time(void);
             /// Attaches an Observer to FCConsole
             void AttachObserver(ILogger *pcObserver);
@@ -747,7 +742,3 @@ private:
 
 
 } // namespace Base
-
-#if defined(__clang__)
-# pragma clang diagnostic pop
-#endif

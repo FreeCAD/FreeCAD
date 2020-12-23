@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="sr" sourcelanguage="en">
+<TS version="2.0" language="sr" sourcelanguage="en">
   <context>
     <name>Dialog</name>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="134"/>
       <source>Scale image plane</source>
-      <translation>Скалирај раван слике</translation>
+      <translation type="unfinished">Scale image plane</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="135"/>
       <source>Distance [mm]</source>
-      <translation>Удаљеност [mm]</translation>
+      <translation type="unfinished">Distance [mm]</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="136"/>
       <source>Select first point</source>
-      <translation>Изаберите прву тачку</translation>
+      <translation type="unfinished">Select first point</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="154"/>
       <source>&lt;font color='red'&gt;Enter distance&lt;/font&gt;</source>
-      <translation>&lt;font color='red'&gt;Унеси растојање&lt;/font&gt;</translation>
+      <translation type="unfinished">&lt;font color='red'&gt;Enter distance&lt;/font&gt;</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="157"/>
       <source>&lt;font color='red'&gt;Select ImagePlane&lt;/font&gt;</source>
-      <translation>&lt;font color='red'&gt;Изабери раван слике&lt;/font&gt;</translation>
+      <translation type="unfinished">&lt;font color='red'&gt;Select ImagePlane&lt;/font&gt;</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="182"/>
       <source>Select second point</source>
-      <translation>Изабери другу тачку</translation>
+      <translation type="unfinished">Select second point</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="191"/>
       <source>Select Image Plane and type distance</source>
-      <translation>Изабери раван слике и унеси растојање</translation>
+      <translation type="unfinished">Select Image Plane and type distance</translation>
     </message>
   </context>
   <context>
@@ -44,12 +44,12 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="63"/>
       <source>Scale image plane</source>
-      <translation>Скалирај раван слике</translation>
+      <translation type="unfinished">Scale image plane</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="65"/>
       <source>Scales an image plane by defining a distance between two points</source>
-      <translation>Скалира раван слике дефинишући растојање између две тачке</translation>
+      <translation type="unfinished">Scales an image plane by defining a distance between two points</translation>
     </message>
   </context>
   <context>
@@ -62,7 +62,7 @@
     <message>
       <location filename="../../Command.cpp" line="102"/>
       <source>Create image plane...</source>
-      <translation>Креирање равни слике...</translation>
+      <translation>Креирање равни слике ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="103"/>
@@ -80,7 +80,7 @@
     <message>
       <location filename="../../Command.cpp" line="54"/>
       <source>Open...</source>
-      <translation>Отвори...</translation>
+      <translation>Отвори ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="55"/>
@@ -98,12 +98,12 @@
     <message>
       <location filename="../../Command.cpp" line="176"/>
       <source>Scale...</source>
-      <translation>Размера...</translation>
+      <translation type="unfinished">Scale...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="177"/>
       <source>Image Scaling</source>
-      <translation>Скалирање слике</translation>
+      <translation type="unfinished">Image Scaling</translation>
     </message>
   </context>
   <context>
@@ -131,7 +131,7 @@
     <message>
       <location filename="../../ImageOrientationDialog.ui" line="20"/>
       <source>Image plane</source>
-      <translation>Раван слике</translation>
+      <translation>Раван од слике</translation>
     </message>
     <message>
       <location filename="../../ImageOrientationDialog.ui" line="26"/>
@@ -164,7 +164,7 @@
     <message>
       <location filename="../../ImageView.cpp" line="111"/>
       <source>&amp;Fit image</source>
-      <translation>&amp;Уклопи слику</translation>
+      <translation>&amp;Уклапање слике</translation>
     </message>
     <message>
       <location filename="../../ImageView.cpp" line="113"/>
@@ -174,12 +174,12 @@
     <message>
       <location filename="../../ImageView.cpp" line="117"/>
       <source>&amp;1:1 scale</source>
-      <translation>&amp;1:1 размера</translation>
+      <translation>&amp;1:1 мера</translation>
     </message>
     <message>
       <location filename="../../ImageView.cpp" line="119"/>
       <source>Display the image at a 1:1 scale</source>
-      <translation>Приказ слике у размери 1:1</translation>
+      <translation>Приказ слике у мерилу 1:1</translation>
     </message>
     <message>
       <location filename="../../ImageView.cpp" line="128"/>
@@ -194,7 +194,7 @@
     <message>
       <location filename="../../ImageView.cpp" line="539"/>
       <source>grey</source>
-      <translation>сива боја</translation>
+      <translation>сиве боје</translation>
     </message>
     <message>
       <location filename="../../ImageView.cpp" line="540"/>
@@ -243,12 +243,12 @@
     <message>
       <location filename="../../Command.cpp" line="128"/>
       <source>Error opening image</source>
-      <translation>Грешка при отварању слике</translation>
+      <translation type="unfinished">Error opening image</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="129"/>
       <source>Could not load the chosen image</source>
-      <translation>Није могуће учитати изабрану слику</translation>
+      <translation type="unfinished">Could not load the chosen image</translation>
     </message>
   </context>
   <context>

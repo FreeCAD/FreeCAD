@@ -27,7 +27,6 @@
 # include <App/DocumentObject.h>
 # include <App/FeaturePython.h>
 # include <App/PropertyLinks.h>
-# include <App/PropertyUnits.h>
 
 #include "DrawView.h"
 
@@ -42,60 +41,46 @@ class DrawViewPart;
 
 class TechDrawExport DrawViewBalloon : public TechDraw::DrawView
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawViewBalloon);
+    PROPERTY_HEADER(TechDraw::DrawViewBalloon);
 
 public:
     /// Constructor
     DrawViewBalloon();
     virtual ~DrawViewBalloon();
 
-    App::PropertyLink            SourceView;
-    App::PropertyString          Text;
-    App::PropertyEnumeration     EndType;
-    App::PropertyEnumeration     BubbleShape;
-    App::PropertyFloatConstraint ShapeScale;
-    App::PropertyFloatConstraint EndTypeScale;
-    App::PropertyDistance        OriginX;
-    App::PropertyDistance        OriginY;
-    App::PropertyFloat           TextWrapLen;
-    App::PropertyDistance        KinkLength;
+    App::PropertyLink        sourceView;
+    App::PropertyString      Text;
+    App::PropertyEnumeration EndType;
+    App::PropertyEnumeration Symbol;
+    App::PropertyFloat       SymbolScale;
+    App::PropertyFloat       OriginX;
+    App::PropertyFloat       OriginY;
+    App::PropertyBool        OriginIsSet;
+    App::PropertyFloat       TextWrapLen;
 
-    short mustExecute() const override;
+    short mustExecute() const;
 
     DrawViewPart* getViewPart() const;
     QPointF origin;
 
     //virtual PyObject *getPyObject(void);
 
-    virtual App::DocumentObjectExecReturn *execute(void) override;
+    virtual App::DocumentObjectExecReturn *execute(void);
+    //@}
 
-    virtual const char* getViewProviderName(void) const override {
+    /// returns the type name of the ViewProvider
+    virtual const char* getViewProviderName(void) const {
         return "TechDrawGui::ViewProviderBalloon";
     }
 
     static const char* balloonTypeEnums[];
-
-    void handleXYLock(void) override;
-
-    double prefKinkLength(void) const;
-    int prefShape(void) const;
-    int prefEnd(void) const;
-    void setOrigin(Base::Vector3d newOrigin);
-
-    Base::Vector3d getOriginOffset() const;
+    static const char* endTypeEnums[];
 
 protected:
-    void onChanged(const App::Property* prop) override;
-    virtual void handleChangedPropertyType(Base::XMLReader &reader, 
-                                           const char *TypeName, 
-                                           App::Property * prop) override;
-    virtual void handleChangedPropertyName(Base::XMLReader &reader, 
-                                           const char * TypeName, 
-                                           const char *PropName) override;
+    void onChanged(const App::Property* prop);
+    virtual void onDocumentRestored();
 
 private:
-    static App::PropertyFloatConstraint::Constraints SymbolScaleRange;
-
 };
 
 } //namespace TechDraw

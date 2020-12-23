@@ -1,5 +1,7 @@
 #***************************************************************************
-#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
+#*                                                                         *
+#*   Copyright (c) 2011                                                    *
+#*   Yorik van Havre <yorik@uncreated.net>                                 *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -26,7 +28,6 @@ if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
-    import draftguitools.gui_trackers as DraftTrackers
 else:
     # \cond
     def translate(ctxt,txt):
@@ -43,9 +44,10 @@ else:
 #  Panels consist of a closed shape that gets extruded to
 #  produce a flat object.
 
-__title__  = "FreeCAD Panel"
+
+__title__="FreeCAD Panel"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__ = "http://www.freecadweb.org"
 
 #           Description                 l    w    t
 
@@ -180,7 +182,7 @@ class CommandPanel:
         # interactive mode
         if hasattr(FreeCAD,"DraftWorkingPlane"):
             FreeCAD.DraftWorkingPlane.setup()
-
+        import DraftTrackers
         self.points = []
         self.tracker = DraftTrackers.boxTracker()
         self.tracker.width(self.Width)
@@ -456,7 +458,7 @@ class _Panel(ArchComponent.Component):
 
         # base tests
         if obj.Base:
-            if hasattr(obj.Base,'Shape'):
+            if obj.Base.isDerivedFrom("Part::Feature"):
                 if obj.Base.Shape.isNull():
                     return
             elif obj.Base.isDerivedFrom("Mesh::Feature"):
@@ -476,7 +478,7 @@ class _Panel(ArchComponent.Component):
         else:
             if not obj.Base:
                 return
-            elif hasattr(obj.Base,'Shape'):
+            elif obj.Base.isDerivedFrom("Part::Feature"):
                 if not obj.Base.Shape.Solids:
                     return
         if hasattr(obj,"Material"):
@@ -978,7 +980,7 @@ class PanelCut(Draft._DraftObject):
                 if obj.Source.Base:
                     baseobj = obj.Source.Base
                 if baseobj:
-                    if hasattr(baseobj,'Shape'):
+                    if baseobj.isDerivedFrom("Part::Feature"):
                         if baseobj.Shape.Solids:
                             center = baseobj.Shape.BoundBox.Center
                             diag = baseobj.Shape.BoundBox.DiagonalLength
@@ -1273,7 +1275,7 @@ class PanelSheet(Draft._DraftObject):
             area = obj.Width.Value * obj.Height.Value
             subarea = 0
             for v in obj.Group:
-                if hasattr(v,'Shape'):
+                if v.isDerivedFrom("Part::Feature"):
                     wires.extend(v.Shape.Wires)
                     if Draft.getType(v) == "PanelCut":
                         if v.Source:
@@ -1319,7 +1321,7 @@ class PanelSheet(Draft._DraftObject):
                             w.Placement = obj.Placement.multiply(w.Placement)
                         outp.append(w)
             if not ispanel:
-                if hasattr(p,'Shape'):
+                if p.isDerivedFrom("Part::Feature"):
                     for w in p.Shape.Wires:
                         w.scale(obj.Scale, FreeCAD.Vector())
                         if transform:
@@ -1382,7 +1384,7 @@ class ViewProviderPanelSheet(Draft._ViewProviderDraft):
     def __init__(self,vobj):
 
         Draft._ViewProviderDraft.__init__(self,vobj)
-        self.setProperties(vobj)
+        self.setProperties(self,vobj)
         vobj.PatternSize = 0.0035
 
     def setProperties(self,vobj):
@@ -1579,7 +1581,7 @@ class NestTaskPanel:
 
         s = FreeCADGui.Selection.getSelection()
         if len(s) == 1:
-            if hasattr(s[0],'Shape'):
+            if s[0].isDerivedFrom("Part::Feature"):
                 if len(s[0].Shape.Faces) == 1:
                     if not (s[0] in self.shapes):
                         self.form.Container.clear()
@@ -1596,7 +1598,7 @@ class NestTaskPanel:
 
         s = FreeCADGui.Selection.getSelection()
         for o in s:
-            if hasattr(o,'Shape'):
+            if o.isDerivedFrom("Part::Feature"):
                 if not o in self.shapes:
                     if o != self.container:
                         self.addObject(o,self.form.Shapes)
@@ -1610,10 +1612,8 @@ class NestTaskPanel:
         if hasattr(obj.ViewObject,"Proxy"):
             if hasattr(obj.ViewObject.Proxy,"getIcon"):
                 i.setIcon(QtGui.QIcon(obj.ViewObject.Proxy.getIcon()))
-        elif hasattr(obj.ViewObject, "Icon"):
-            i.setIcon(QtGui.QIcon(obj.ViewObject.Icon))
         else:
-            i.setIcon(QtGui.QIcon(":/icons/Part_3D_object.svg"))
+            i.setIcon(QtGui.QIcon(":/icons/Tree_Part.svg"))
         form.addItem(i)
 
     def removeShapes(self):

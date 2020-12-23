@@ -1,5 +1,6 @@
 # ***************************************************************************
-# *   Copyright (c) 2016 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
+# *                                                                         *
+# *   Copyright (c) 2016 - Victor Titov (DeepSOIC) <vv.titov@gmail.com>     *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -52,12 +53,10 @@ if FreeCAD.GuiUp:
 class _CommandExplodeCompound:
     "Command to explode a compound"
     def GetResources(self):
-        return {'Pixmap': "Part_ExplodeCompound",
+        return {'Pixmap': ":/icons/Part_ExplodeCompound.svg",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_ExplodeCompound", "Explode compound"),
                 'Accel': "",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_ExplodeCompound",
-                                                    "Split up a compound of shapes into separate objects.\n"
-                                                    "It will create a 'Compound Filter' for each shape.")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_ExplodeCompound", "Explode compound: split up a list of shapes into separate objects")}
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelection()) == 1:
@@ -65,7 +64,7 @@ class _CommandExplodeCompound:
         else:
             mb = QtGui.QMessageBox()
             mb.setIcon(mb.Icon.Warning)
-            mb.setText(_translate("Part_ExplodeCompound", "First select a shape that is a compound.", None))
+            mb.setText(_translate("Part_ExplodeCompound", "Select a shape that is a compound, first!", None))
             mb.setWindowTitle(_translate("Part_ExplodeCompound", "Bad selection", None))
             mb.exec_()
 

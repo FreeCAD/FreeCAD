@@ -1,7 +1,6 @@
 # ***************************************************************************
-# *   Copyright (c) 2017 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
-# *   This file is part of the FreeCAD CAx development system.              *
+# *   Copyright (c) 2017 - Bernd Hahnebach <bernd@bimstatik.org>            *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -21,9 +20,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__  = "FreeCAD FEM import tools"
+__title__ = "FreeCAD FEM import tools"
 __author__ = "Bernd Hahnebach"
-__url__    = "https://www.freecadweb.org"
+__url__ = "http://www.freecadweb.org"
 
 ## @package importToolsFem
 #  \ingroup FEM
@@ -215,7 +214,7 @@ def make_femmesh(
                 e = elms_seg3[i]
                 mesh.addEdge([e[0], e[1], e[2]], i)
             Console.PrintLog(
-                "imported mesh: {} nodes, {} HEXA8, {} PENTA6, {} TETRA4, {} TETRA10, {} PENTA15\n"
+                "imported mesh: {} nodes, {} HEXA8, {} PENTA6, {} TETRA4, {} TETRA10, {} PENTA15"
                 .format(
                     len(nds),
                     len(elms_hexa8),
@@ -226,8 +225,7 @@ def make_femmesh(
                 )
             )
             Console.PrintLog(
-                "imported mesh: {} "
-                "HEXA20, {} TRIA3, {} TRIA6, {} QUAD4, {} QUAD8, {} SEG2, {} SEG3\n"
+                "imported mesh: {} HEXA20, {} TRIA3, {} TRIA6, {} QUAD4, {} QUAD8, {} SEG2, {} SEG3"
                 .format(
                     len(elms_hexa20),
                     len(elms_tria3),
@@ -430,26 +428,25 @@ def fill_femresult_mechanical(
         if eigenmode_number > 0:
             res_obj.Eigenmode = eigenmode_number
 
-        # it is assumed Temperature can not exist without disp
-        # TODO really proof this
-        # if temperature can exist without disp:
-        # move them out of disp if conditiona and set NodeNumbers
-        if "temp" in result_set:
-            Temperature = result_set["temp"]
-            if len(Temperature) > 0:
-                if len(Temperature.values()) != len(disp.values()):
-                    Temp = []
-                    Temp_extra_nodes = list(Temperature.values())
-                    nodes = len(disp.values())
-                    for i in range(nodes):
-                        # how is this possible? An example is needed!
-                        Console.PrintError("Temperature seams to have exptra nodes.\n")
-                        Temp_value = Temp_extra_nodes[i]
-                        Temp.append(Temp_value)
-                    res_obj.Temperature = list(map((lambda x: x), Temp))
-                else:
-                    res_obj.Temperature = list(map((lambda x: x), Temperature.values()))
-                res_obj.Time = step_time
+    # fill res_obj.Temperature if they exist
+    # TODO, check if it is possible to have Temperature without disp
+    # we would need to set NodeNumbers than
+    if "temp" in result_set:
+        Temperature = result_set["temp"]
+        if len(Temperature) > 0:
+            if len(Temperature.values()) != len(disp.values()):
+                Temp = []
+                Temp_extra_nodes = list(Temperature.values())
+                nodes = len(disp.values())
+                for i in range(nodes):
+                    # how is this possible? An example is needed!
+                    Console.PrintError("Temperature seams to have exptra nodes.\n")
+                    Temp_value = Temp_extra_nodes[i]
+                    Temp.append(Temp_value)
+                res_obj.Temperature = list(map((lambda x: x), Temp))
+            else:
+                res_obj.Temperature = list(map((lambda x: x), Temperature.values()))
+            res_obj.Time = step_time
 
     # fill res_obj.MassFlow
     if "mflow" in result_set:

@@ -25,18 +25,16 @@
 
 #include "PreCompiled.h"
 
+#include "Gui/Application.h"
 #include "DlgSettingsFemGeneralImp.h"
-#include "ui_DlgSettingsFemGeneral.h"
-#include <Gui/Application.h>
 #include <Gui/PrefWidgets.h>
 
 using namespace FemGui;
 
 DlgSettingsFemGeneralImp::DlgSettingsFemGeneralImp( QWidget* parent )
   : PreferencePage( parent )
-  , ui(new Ui_DlgSettingsFemGeneralImp)
 {
-    ui->setupUi(this);
+    this->setupUi(this);
 }
 
 DlgSettingsFemGeneralImp::~DlgSettingsFemGeneralImp()
@@ -46,32 +44,34 @@ DlgSettingsFemGeneralImp::~DlgSettingsFemGeneralImp()
 
 void DlgSettingsFemGeneralImp::saveSettings()
 {
-    ui->cb_analysis_group_meshing->onSave();
 
-    ui->cb_restore_result_dialog->onSave();
-    ui->cb_keep_results_on_rerun->onSave();
-    ui->cb_hide_constraint->onSave();
+    cb_analysis_group_meshing->onSave();
 
-    ui->cb_wd_temp->onSave();
-    ui->cb_wd_beside->onSave();
-    ui->cb_wd_custom->onSave();
-    ui->le_wd_custom->onSave();
-    ui->cb_overwrite_solver_working_directory->onSave();
+    cb_restore_result_dialog->onSave();
+    cb_keep_results_on_rerun->onSave();
+    cb_hide_constraint->onSave();
+
+    cb_wd_temp->onSave();
+    cb_wd_beside->onSave();
+    cb_wd_custom->onSave();
+    le_wd_custom->onSave();
+    cb_overwrite_solver_working_directory->onSave();
 }
 
 void DlgSettingsFemGeneralImp::loadSettings()
 {
-    ui->cb_analysis_group_meshing->onRestore();
 
-    ui->cb_restore_result_dialog->onRestore();
-    ui->cb_keep_results_on_rerun->onRestore();
-    ui->cb_hide_constraint->onRestore();
+    cb_analysis_group_meshing->onRestore();
 
-    ui->cb_wd_temp->onRestore();
-    ui->cb_wd_beside->onRestore();
-    ui->cb_wd_custom->onRestore();
-    ui->le_wd_custom->onRestore();
-    ui->cb_overwrite_solver_working_directory->onRestore();
+    cb_restore_result_dialog->onRestore();
+    cb_keep_results_on_rerun->onRestore();
+    cb_hide_constraint->onRestore();
+
+    cb_wd_temp->onRestore();
+    cb_wd_beside->onRestore();
+    cb_wd_custom->onRestore();
+    le_wd_custom->onRestore();
+    cb_overwrite_solver_working_directory->onRestore();
 }
 
 /**
@@ -80,7 +80,6 @@ void DlgSettingsFemGeneralImp::loadSettings()
 void DlgSettingsFemGeneralImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        ui->retranslateUi(this);
     }
     else {
         QWidget::changeEvent(e);

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ar" sourcelanguage="en">
+<TS version="2.0" language="ar" sourcelanguage="en">
   <context>
     <name>StartPage</name>
     <message>
@@ -81,7 +81,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="57"/>
       <source>Manual</source>
-      <translation>الدليل</translation>
+      <translation type="unfinished">Manual</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="58"/>
@@ -161,12 +161,12 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="73"/>
       <source>version</source>
-      <translation>إصدار</translation>
+      <translation type="unfinished">version</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="74"/>
       <source>build</source>
-      <translation>بنية</translation>
+      <translation type="unfinished">build</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="75"/>
@@ -176,7 +176,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="76"/>
       <source>Unknown</source>
-      <translation>مجهول</translation>
+      <translation type="unfinished">Unknown</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="77"/>
@@ -228,7 +228,7 @@
     <message>
       <location filename="../../Command.cpp" line="45"/>
       <source>Start Page</source>
-      <translation>صفحة البداية</translation>
+      <translation type="unfinished">Start Page</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="46"/>
@@ -241,7 +241,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="14"/>
       <source>Start page options</source>
-      <translation>اعدادات صفحة البداية</translation>
+      <translation type="unfinished">Start page options</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="20"/>
@@ -256,7 +256,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="42"/>
       <source>Contents</source>
-      <translation>المحتويات</translation>
+      <translation type="unfinished">Contents</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="48"/>
@@ -316,12 +316,12 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="199"/>
       <source>in FreeCAD</source>
-      <translation>في FreeCAD</translation>
+      <translation type="unfinished">in FreeCAD</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="218"/>
       <source>In external browser</source>
-      <translation>في متصفح خارجي</translation>
+      <translation type="unfinished">In external browser</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="236"/>
@@ -331,12 +331,12 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="249"/>
       <source>The color of the version text</source>
-      <translation>لون نص الإصدار</translation>
+      <translation type="unfinished">The color of the version text</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="269"/>
       <source>Link color</source>
-      <translation>لون الرابط</translation>
+      <translation type="unfinished">Link color</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="276"/>
@@ -361,12 +361,12 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="341"/>
       <source>Background image</source>
-      <translation>صورة الخلفية</translation>
+      <translation type="unfinished">Background image</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="348"/>
       <source>Page text color</source>
-      <translation>لون نص الصفحة</translation>
+      <translation type="unfinished">Page text color</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="361"/>
@@ -396,12 +396,12 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="472"/>
       <source>Open links</source>
-      <translation>فتح الروابط</translation>
+      <translation type="unfinished">Open links</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="479"/>
       <source>Background text color</source>
-      <translation>لون نص الخلفية</translation>
+      <translation type="unfinished">Background text color</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="486"/>

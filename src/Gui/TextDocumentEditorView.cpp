@@ -22,19 +22,13 @@
 
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QAbstractTextDocumentLayout>
-# include <QApplication>
-# include <QClipboard>
-# include <QString>
-# include <QMessageBox>
-# include <QPushButton>
-# include <QTextBlock>
-# include <iostream>
-# include <boost_bind_bind.hpp>
-# include <boost/signals2.hpp>
-#endif
 
+#include <iostream>
+#include <boost/bind.hpp>
+#include <boost/signals2.hpp>
+#include <QString>
+#include <QMessageBox>
+#include <QPushButton>
 
 #include <App/TextDocument.h>
 #include <Gui/Document.h>
@@ -59,40 +53,11 @@ TextDocumentEditorView::TextDocumentEditorView(
     setupEditor();
     setupConnection();
     setCentralWidget(editor);
-
-    // update editor actions on request
-    Gui::MainWindow* mw = Gui::getMainWindow();
-    connect(editor, SIGNAL(undoAvailable(bool)), mw, SLOT(updateEditorActions()));
-    connect(editor, SIGNAL(redoAvailable(bool)), mw, SLOT(updateEditorActions()));
-    connect(editor, SIGNAL(copyAvailable(bool)), mw, SLOT(updateEditorActions()));
 }
 
 TextDocumentEditorView::~TextDocumentEditorView()
 {
     textConnection.disconnect();
-    labelConnection.disconnect();
-}
-
-void TextDocumentEditorView::showEvent(QShowEvent* event)
-{
-    Gui::MainWindow* mw = Gui::getMainWindow();
-    mw->updateEditorActions();
-    MDIView::showEvent(event);
-}
-
-void TextDocumentEditorView::hideEvent(QHideEvent* event)
-{
-    MDIView::hideEvent(event);
-}
-
-void TextDocumentEditorView::closeEvent(QCloseEvent* event)
-{
-    MDIView::closeEvent(event);
-    if (event->isAccepted()) {
-        aboutToClose = true;
-        Gui::MainWindow* mw = Gui::getMainWindow();
-        mw->updateEditorActions();
-    }
 }
 
 bool TextDocumentEditorView::event(QEvent *event)
@@ -108,6 +73,7 @@ void TextDocumentEditorView::setupEditor()
 {
     connect(getEditor()->document(), SIGNAL(modificationChanged(bool)),
             this, SLOT(setWindowModified(bool)));
+    getEditor()->setReadOnly(textDocument->ReadOnly.getValue());
     setWindowTitle(QString::fromUtf8(textDocument->Label.getValue())
             + QString::fromLatin1("[*]"));
     getEditor()->setPlainText(
@@ -116,10 +82,8 @@ void TextDocumentEditorView::setupEditor()
 
 void TextDocumentEditorView::setupConnection()
 {
-    textConnection = textDocument->connectText(
+    textConnection = textDocument->connect(
             boost::bind(&TextDocumentEditorView::sourceChanged, this));
-    labelConnection = textDocument->connectLabel(
-            boost::bind(&TextDocumentEditorView::labelChanged, this));
 }
 
 void TextDocumentEditorView::sourceChanged()
@@ -130,12 +94,6 @@ void TextDocumentEditorView::sourceChanged()
     } else {
         sourceModified = true;
     }
-}
-
-void TextDocumentEditorView::labelChanged()
-{
-    setWindowTitle(QString::fromUtf8(textDocument->Label.getValue())
-            + QString::fromLatin1("[*]"));
 }
 
 void TextDocumentEditorView::refresh()
@@ -161,32 +119,8 @@ void TextDocumentEditorView::refresh()
 
 bool TextDocumentEditorView::onMsg(const char* msg, const char**)
 {
-    // don't allow any actions if the editor is being closed
-    if (aboutToClose)
-        return false;
-
     if (strcmp(msg,"Save") == 0) {
         saveToObject();
-        return true;
-    }
-    if (strcmp(msg,"Cut") == 0) {
-        getEditor()->cut();
-        return true;
-    }
-    if (strcmp(msg,"Copy") == 0) {
-        getEditor()->copy();
-        return true;
-    }
-    if (strcmp(msg,"Paste") == 0) {
-        getEditor()->paste();
-        return true;
-    }
-    if (strcmp(msg,"Undo") == 0) {
-        getEditor()->undo();
-        return true;
-    }
-    if (strcmp(msg,"Redo") == 0) {
-        getEditor()->redo();
         return true;
     }
     return false;
@@ -199,33 +133,8 @@ bool TextDocumentEditorView::isEditorModified() const
 
 bool TextDocumentEditorView::onHasMsg(const char* msg) const
 {
-    // don't allow any actions if the editor is being closed
-    if (aboutToClose)
-        return false;
-
-    if (strcmp(msg,"Save") == 0) {
+    if (strcmp(msg,"Save") == 0)
         return isEditorModified();
-    }
-    if (strcmp(msg,"Cut") == 0) {
-        return (!getEditor()->isReadOnly() &&
-                getEditor()->textCursor().hasSelection());
-    }
-    if (strcmp(msg,"Copy") == 0) {
-        return (getEditor()->textCursor().hasSelection());
-    }
-    if (strcmp(msg,"Paste") == 0) {
-        if (getEditor()->isReadOnly())
-            return false;
-        QClipboard *cb = QApplication::clipboard();
-        QString text = cb->text();
-        return !text.isEmpty();
-    }
-    if (strcmp(msg,"Undo") == 0) {
-        return (getEditor()->document()->isUndoAvailable());
-    }
-    if (strcmp(msg,"Redo") == 0) {
-        return (getEditor()->document()->isRedoAvailable());
-    }
     return false;
 }
 
@@ -258,7 +167,6 @@ bool TextDocumentEditorView::canClose()
             discardBtn->setShortcut(QKeySequence::mnemonic(text));
         }
 
-        box.adjustSize();
         switch (box.exec())
         {
         case QMessageBox::Save:
@@ -288,18 +196,5 @@ void TextDocumentEditorView::saveToObject()
     getEditor()->document()->setModified(false);
 }
 
-QStringList TextDocumentEditorView::undoActions() const
-{
-    QStringList undo;
-    undo << tr("Edit text");
-    return undo;
-}
-
-QStringList TextDocumentEditorView::redoActions() const
-{
-    QStringList redo;
-    redo << tr("Edit text");
-    return redo;
-}
 
 #include "moc_TextDocumentEditorView.cpp"

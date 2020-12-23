@@ -27,6 +27,7 @@
 #endif
 
 #include <QString>
+#include <QLocale>
 #include "Exception.h"
 #include "UnitsApi.h"
 #include "UnitsSchemaCentimeters.h"

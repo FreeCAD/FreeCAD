@@ -19,27 +19,28 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the Image_Scaling GuiCommand."""
 
 __title__ = "ImageTools._CommandImageScaling"
-__author__ = "JAndersM"
-__url__ = "http://www.freecadweb.org/index-fr.html"
+__author__  = "JAndersM"
+__url__     = "http://www.freecadweb.org/index-fr.html"
 __version__ = "00.02"
-__date__ = "03/05/2019"
-
-import math
+__date__    = "03/05/2019" 
+ 
+ 
 import FreeCAD
-from PySide import QtCore
-
 if FreeCAD.GuiUp:
-    from PySide import QtGui
-    import pivy.coin as pvy
-
     import FreeCADGui
+    from PySide import QtGui
+    from PySide import QtCore
+    import FreeCADGui, FreeCAD, Part
+    import math
+    import pivy.coin as pvy
+    from PySide import QtCore, QtGui
+    import DraftTrackers, Draft
 
-# Translation-related code
-# See forum thread "A new Part tool is being born... JoinFeatures!"
-# http://forum.freecadweb.org/viewtopic.php?f=22&t=11112&start=30#p90239
+# translation-related code
+#(see forum thread "A new Part tool is being born... JoinFeatures!"
+#http://forum.freecadweb.org/viewtopic.php?f=22&t=11112&start=30#p90239 )
     try:
         _fromUtf8 = QtCore.QString.fromUtf8
     except (Exception):
@@ -64,8 +65,7 @@ class _CommandImageScaling:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Image_Scaling", "Scales an image plane by defining a distance between two points")}
 
     def Activated(self):
-        import draftguitools.gui_trackers as trackers
-        cmdCreateImageScaling(name="ImageScaling", trackers=trackers)
+        cmdCreateImageScaling(name="ImageScaling")
         
     def IsActive(self):
         if FreeCAD.ActiveDocument:
@@ -78,7 +78,7 @@ if FreeCAD.GuiUp:
 
 
 # helper
-def cmdCreateImageScaling(name, trackers):
+def cmdCreateImageScaling(name):
 
     def distance(p1,p2):
         dx=p2[0]-p1[0]
@@ -86,13 +86,14 @@ def cmdCreateImageScaling(name, trackers):
         dz=p2[2]-p1[2]
         return math.sqrt(dx*dx+dy*dy+dz*dz)
         
+    sizeX = 300; sizeY = 102
     def centerOnScreen (widg):
         '''centerOnScreen()
         Centers the window on the screen.'''
-        resolution = QtGui.QDesktopWidget().screenGeometry() # TODO: fix multi monitor support
-        xp=(resolution.width() / 2) - widg.frameGeometry().width()/2
-        yp=(resolution.height() / 2) - widg.frameGeometry().height()/2
-        widg.move(xp, yp)
+        resolution = QtGui.QDesktopWidget().screenGeometry()
+        xp=(resolution.width() / 2) - sizeX/2
+        yp=(resolution.height() / 2) - sizeY/2
+        widg.setGeometry(xp, yp, sizeX, sizeY)
     
     class Ui_Dialog(object):
         def setupUi(self, Dialog):
@@ -104,38 +105,27 @@ def cmdCreateImageScaling(name, trackers):
             self.dialog=Dialog
             Dialog.setObjectName(_fromUtf8("Dialog"))
             Dialog.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
-
-            self.verticalLayout = QtGui.QVBoxLayout(Dialog)
-            self.verticalLayout.setObjectName("verticalLayout")
-            self.horizontalLayout = QtGui.QHBoxLayout()
-            self.horizontalLayout.setObjectName("horizontalLayout")
-
-            self.label = QtGui.QLabel(Dialog)
-            self.label.setObjectName(_fromUtf8("label"))
-            self.horizontalLayout.addWidget(self.label)
-
-            self.lineEdit = QtGui.QLineEdit(Dialog)
-            self.lineEdit.setObjectName(_fromUtf8("lineEdit"))
-            self.horizontalLayout.addWidget(self.lineEdit)
-
-            self.label1 = QtGui.QLabel(Dialog)
-            self.label1.setObjectName(_fromUtf8("label1"))
-
+            Dialog.resize(sizeX, sizeY)
             self.buttonBox = QtGui.QDialogButtonBox(Dialog)
+            self.buttonBox.setGeometry(QtCore.QRect(50, 70, 191, 32))
             self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
             self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
             self.buttonBox.setObjectName(_fromUtf8("buttonBox"))
             self.buttonBox.button(QtGui.QDialogButtonBox.Ok).setEnabled(False)
-
-            self.verticalLayout.addLayout(self.horizontalLayout)
-            self.verticalLayout.addWidget(self.label1)
-            self.verticalLayout.addWidget(self.buttonBox)
-
+            self.label = QtGui.QLabel(Dialog)
+            self.label.setGeometry(QtCore.QRect(30, 10, 86, 17))
+            self.label.setObjectName(_fromUtf8("label"))
+            self.lineEdit = QtGui.QLineEdit(Dialog)
+            self.lineEdit.setGeometry(QtCore.QRect(140, 10, 153, 29))
+            self.lineEdit.setObjectName(_fromUtf8("lineEdit"))
+            self.label1 = QtGui.QLabel(Dialog)
+            self.label1.setGeometry(QtCore.QRect(20, 45, 260, 17))
+            self.label1.setObjectName(_fromUtf8("label1"))
             self.retranslateUi(Dialog)
             QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("accepted()")), self.accept)
             QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("rejected()")), self.reject)
             QtCore.QMetaObject.connectSlotsByName(Dialog)
-            self.tracker = trackers.lineTracker(scolor=(1,0,0))
+            self.tracker = DraftTrackers.lineTracker(scolor=(1,0,0))
             self.tracker.raiseTracker()
             self.tracker.on()
             self.dialog.show()
@@ -162,7 +152,7 @@ def cmdCreateImageScaling(name, trackers):
                 s=d/self.distance
                 sel[0].XSize.Value=sel[0].XSize.Value*s
                 sel[0].YSize.Value=sel[0].YSize.Value*s
-                FreeCAD.Console.PrintMessage("Image: Scale="+str(s)+"\n")
+                FreeCAD.Console.PrintMessage("Scale="+str(s))
                 self.tracker.off()
                 self.tracker.finalize()
                 self.dialog.hide()

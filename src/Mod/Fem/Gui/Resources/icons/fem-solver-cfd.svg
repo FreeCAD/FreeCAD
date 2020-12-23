@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="64px" height="64px" id="svg2860" sodipodi:version="0.32" inkscape:version="0.48.5 r10040" sodipodi:docname="fem-cfd-analysis.svg" inkscape:output_extension="org.inkscape.output.svg.inkscape" version="1.1">
+  <defs id="defs2862">
+    <linearGradient inkscape:collect="always" id="linearGradient3768">
+      <stop style="stop-color:#edd400;stop-opacity:1;" offset="0" id="stop3770"/>
+      <stop style="stop-color:#edd400;stop-opacity:0;" offset="1" id="stop3772"/>
+    </linearGradient>
+    <radialGradient inkscape:collect="always" xlink:href="#linearGradient3377" id="radialGradient3692" cx="45.883327" cy="28.869568" fx="45.883327" fy="28.869568" r="19.467436" gradientUnits="userSpaceOnUse"/>
+    <radialGradient inkscape:collect="always" xlink:href="#linearGradient3377" id="radialGradient3703" gradientUnits="userSpaceOnUse" cx="135.38333" cy="97.369568" fx="135.38333" fy="97.369568" r="19.467436" gradientTransform="matrix(0.97435,0.2250379,-0.4623105,2.0016728,48.487554,-127.99883)"/>
+    <linearGradient id="linearGradient3377">
+      <stop id="stop3379" offset="0" style="stop-color:#faff2b;stop-opacity:1;"/>
+      <stop id="stop3381" offset="1" style="stop-color:#ffaa00;stop-opacity:1;"/>
+    </linearGradient>
+    <radialGradient inkscape:collect="always" xlink:href="#linearGradient3377" id="radialGradient3705" gradientUnits="userSpaceOnUse" cx="148.88333" cy="81.869568" fx="148.88333" fy="81.869568" r="19.467436" gradientTransform="matrix(1.3852588,-5.1367833e-2,3.7056289e-2,0.9993132,-60.392403,7.7040438)"/>
+    <inkscape:perspective sodipodi:type="inkscape:persp3d" inkscape:vp_x="0 : 32 : 1" inkscape:vp_y="0 : 1000 : 0" inkscape:vp_z="64 : 32 : 1" inkscape:persp3d-origin="32 : 21.333333 : 1" id="perspective2868"/>
+    <linearGradient inkscape:collect="always" xlink:href="#linearGradient3768" id="linearGradient3774" x1="43" y1="37" x2="31" y2="7" gradientUnits="userSpaceOnUse"/>
+    <linearGradient inkscape:collect="always" xlink:href="#linearGradient3768" id="linearGradient3788" gradientUnits="userSpaceOnUse" x1="43" y1="37" x2="31" y2="7"/>
+  </defs>
+  <sodipodi:namedview id="base" pagecolor="#ffffff" bordercolor="#666666" borderopacity="1.0" inkscape:pageopacity="0.0" inkscape:pageshadow="2" inkscape:zoom="7.7781746" inkscape:cx="36.77016" inkscape:cy="28.804499" inkscape:current-layer="layer1" showgrid="true" inkscape:document-units="px" inkscape:grid-bbox="true" inkscape:window-width="1600" inkscape:window-height="837" inkscape:window-x="0" inkscape:window-y="27" inkscape:window-maximized="1" inkscape:snap-nodes="false" inkscape:snap-bbox="true">
+    <inkscape:grid type="xygrid" id="grid2993" empspacing="2" visible="true" enabled="true" snapvisiblegridlinesonly="true"/>
+  </sodipodi:namedview>
+  <metadata id="metadata2865">
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+        <dc:title/>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[qingfengxia]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:title>fem-cfd-analysis</dc:title>
+        <dc:date>2016-08-10</dc:date>
+        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/</dc:identifier>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g id="layer1" inkscape:label="Layer 1" inkscape:groupmode="layer">
+    <g transform="matrix(1.3636193,0,0,1.6799586,-14.455353,-39.135338)" style="font-size:22.03626633000000012px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ef2929;fill-opacity:1;stroke:#a40000;stroke-width:1.32139944999999992;stroke-linejoin:round;font-family:Bitstream Vera Sans" id="text2991">
+      <path d="m 25.755667,44.466664 0,2.291858 c -0.731686,-0.681447 -1.513571,-1.190748 -2.345657,-1.527905 -0.824936,-0.337129 -1.70366,-0.505701 -2.636174,-0.505715 -1.836363,1.4e-5 -3.242322,0.563115 -4.217879,1.689303 -0.975568,1.119041 -1.46335,2.740197 -1.463346,4.863473 -4e-6,2.116119 0.487778,3.737275 1.463346,4.863473 0.975557,1.119031 2.381516,1.678545 4.217879,1.678544 0.932514,10e-7 1.811238,-0.16857 2.636174,-0.505715 0.832086,-0.337142 1.613971,-0.846443 2.345657,-1.527906 l 0,2.270338 c -0.760379,0.516476 -1.56737,0.903832 -2.420976,1.162069 -0.846456,0.258237 -1.743113,0.387356 -2.689974,0.387356 -2.431743,0 -4.347003,-0.742432 -5.745784,-2.227298 -1.398789,-1.492036 -2.098181,-3.525654 -2.09818,-6.100861 -1e-6,-2.582364 0.699391,-4.615983 2.09818,-6.100861 1.398781,-1.492023 3.314041,-2.238042 5.745784,-2.238058 0.961207,1.6e-5 1.865038,0.129135 2.711494,0.387356 0.853605,0.25108 1.653423,0.631263 2.399456,1.140549" id="path3777" inkscape:connector-curvature="0" style="fill:#ef2929;stroke:#a40000;stroke-width:1.32139944999999992;stroke-linejoin:round"/>
+      <path d="m 29.134275,43.229276 9.23199,0 0,1.829182 -7.058491,0 0,4.734354 6.369858,0 0,1.829183 -6.369858,0 0,7.671805 -2.173499,0 0,-16.064524" id="path3779" inkscape:connector-curvature="0" style="fill:#ef2929;stroke:#a40000;stroke-width:1.32139944999999992;stroke-linejoin:round"/>
+      <path d="m 44.00445,45.015419 0,12.492239 2.625414,0 c 2.21653,10e-7 3.837686,-0.502127 4.863473,-1.506386 1.032937,-1.004252 1.549412,-2.589542 1.549425,-4.755874 -1.3e-5,-2.151969 -0.516488,-3.726498 -1.549425,-4.723594 -1.025787,-1.004243 -2.646943,-1.506371 -4.863473,-1.506385 l -2.625414,0 m -2.173499,-1.786143 4.465357,0 c 3.113186,1.6e-5 5.397869,0.649196 6.854053,1.947541 1.456158,1.291201 2.184243,3.314059 2.184259,6.068581 -1.6e-5,2.768885 -0.731688,4.802504 -2.195019,6.100861 -1.463358,1.298362 -3.744453,1.947541 -6.843293,1.947541 l -4.465357,0 0,-16.064524" id="path3781" inkscape:connector-curvature="0" style="fill:#ef2929;stroke:#a40000;stroke-width:1.32139944999999992;stroke-linejoin:round"/>
+    </g>
+    <g id="g3783" transform="matrix(0.81056367,0,0,0.83951051,6.0401219,0.58006947)">
+      <g id="text3014" style="font-size:54.47337341px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffff00;fill-opacity:1;stroke:#302b00;stroke-width:2.42450643;stroke-linejoin:round;stroke-miterlimit:4;stroke-dashoffset:4.1;font-family:DejaVu Serif;-inkscape-font-specification:DejaVu Serif" transform="scale(1.0450343,0.95690641)">
+        <path id="path3764" style="stroke:#302b00;stroke-width:2.42450643" d="m 21.750465,28.45671 14.575883,0 L 29.038407,9.5718981 21.750465,28.45671 m -11.224494,14.389695 0,-2.819423 3.484381,0 14.15031,-36.891879 4.468519,0 14.176908,36.891879 3.909954,0 0,2.819423 -14.442892,0 0,-2.819423 4.415323,0 -3.324791,-8.724251 -16.703749,0 -3.324791,8.724251 4.362125,0 0,2.819423 -11.171297,0" inkscape:connector-curvature="0"/>
+      </g>
+      <path sodipodi:nodetypes="cc" inkscape:connector-curvature="0" id="path3766" d="M 45,37 32,6" style="fill:#edd400;stroke:url(#linearGradient3788);stroke-width:1.21225321px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"/>
+    </g>
+  </g>
+</svg>

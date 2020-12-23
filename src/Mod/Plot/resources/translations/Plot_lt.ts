@@ -329,22 +329,22 @@
     <message>
       <location filename="../../plotPositions/TaskPanel.py" line="140"/>
       <source>X item position</source>
-      <translation>nario X padėtis</translation>
+      <translation>X elemento padėtis</translation>
     </message>
     <message>
       <location filename="../../plotPositions/TaskPanel.py" line="145"/>
       <source>Y item position</source>
-      <translation>nario Y padėtis</translation>
+      <translation>Y elemento padėtis</translation>
     </message>
     <message>
       <location filename="../../plotPositions/TaskPanel.py" line="150"/>
       <source>Item size</source>
-      <translation>Nario dydis</translation>
+      <translation>Elemento dydis</translation>
     </message>
     <message>
       <location filename="../../plotPositions/TaskPanel.py" line="135"/>
       <source>List of modifiable items</source>
-      <translation>Keičiamų narių sąrašas</translation>
+      <translation>Keičiamų elementų sąrašas</translation>
     </message>
   </context>
   <context>

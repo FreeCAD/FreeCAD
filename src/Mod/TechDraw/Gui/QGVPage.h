@@ -110,7 +110,7 @@ public:
 
     TechDraw::DrawPage * getDrawPage();
 
-    void setExporting(bool enable);
+    void toggleHatch(bool enable);
     virtual void refreshViews(void);
 
 

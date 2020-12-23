@@ -1,158 +1,152 @@
 <RCC>
-    <qresource>
-        <file>icons/Arch_3Views.svg</file>
+    <qresource> 
+        <file>icons/Arch_Building.svg</file>
+        <file>icons/Arch_Floor.svg</file>
+        <file>icons/Arch_Cell.svg</file>
+        <file>icons/Arch_Wall.svg</file>
+        <file>icons/Arch_Site.svg</file>
+        <file>icons/Arch_Project.svg</file>
+        <file>icons/Arch_Structure.svg</file>
         <file>icons/Arch_Add.svg</file>
+        <file>icons/Arch_Remove.svg</file>
+        <file>icons/Arch_MeshToShape.svg</file>
+        <file>icons/Arch_SplitMesh.svg</file>
+        <file>icons/preferences-arch.svg</file>
+        <file>icons/Arch_RemoveShape.svg</file>
+        <file>icons/Arch_SectionPlane.svg</file>
+        <file>icons/Arch_Window.svg</file>
+        <file>icons/Arch_Wall_Tree.svg</file>
+        <file>icons/Arch_Wall_Clone.svg</file>
+        <file>icons/Arch_Cell_Tree.svg</file>
+        <file>icons/Arch_Building_Tree.svg</file>
+        <file>icons/Arch_Floor_Tree.svg</file>
+        <file>icons/Arch_SectionPlane_Tree.svg</file>
+        <file>icons/Arch_Site_Tree.svg</file>
+        <file>icons/Arch_Project_Tree.svg</file>
+        <file>icons/Arch_Structure_Tree.svg</file>
+        <file>icons/Arch_Structure_Clone.svg</file>
+        <file>icons/Arch_Window_Tree.svg</file>
+        <file>icons/Arch_Window_Clone.svg</file>
         <file>icons/Arch_Axis.svg</file>
+        <file>icons/Arch_Axis_Tree.svg</file>
         <file>icons/Arch_Axis_System.svg</file>
         <file>icons/Arch_Axis_System_Tree.svg</file>
-        <file>icons/Arch_Axis_Tree.svg</file>
-        <file>icons/Arch_Bimserver.svg</file>
-        <file>icons/Arch_BuildingPart.svg</file>
-        <file>icons/Arch_BuildingPart_Tree.svg</file>
-        <file>icons/Arch_Building.svg</file>
-        <file>icons/Arch_Building_Tree.svg</file>
-        <file>icons/Arch_Cell.svg</file>
-        <file>icons/Arch_Cell_Tree.svg</file>
-        <file>icons/Arch_Check.svg</file>
+        <file>icons/Arch_Roof.svg</file>
+        <file>icons/Arch_Roof_Tree.svg</file>
         <file>icons/Arch_CloseHoles.svg</file>
-        <file>icons/Arch_Component.svg</file>
-        <file>icons/Arch_Component_Clone.svg</file>
-        <file>icons/Arch_CurtainWall.svg</file>
-        <file>icons/Arch_CurtainWall_Tree.svg</file>
-        <file>icons/Arch_CutLine.svg</file>
-        <file>icons/Arch_CutPlane.svg</file>
-        <file>icons/Arch_Equipment.svg</file>
-        <file>icons/Arch_Equipment_Clone.svg</file>
-        <file>icons/Arch_Equipment_Tree.svg</file>
-        <file>icons/Arch_Fence.svg</file>
-        <file>icons/Arch_Fence_Tree.svg</file>
+        <file>icons/Arch_Check.svg</file>
+        <file>icons/Arch_SelectNonManifold.svg</file>
+        <file>icons/Arch_MergeWalls.svg</file>
+        <file>icons/Arch_Wall_Tree_Assembly.svg</file>
         <file>icons/Arch_Fixture.svg</file>
-        <file>icons/Arch_Floor.svg</file>
-        <file>icons/Arch_Floor_Tree.svg</file>
+        <file>icons/Arch_Space.svg</file>
+        <file>icons/Arch_Space_Tree.svg</file>
+        <file>icons/Arch_Space_Clone.svg</file>
+        <file>icons/Arch_Stairs.svg</file>
+        <file>icons/Arch_Stairs_Tree.svg</file>
+        <file>icons/Arch_Rebar.svg</file>
+        <file>icons/Arch_Rebar_Tree.svg</file>
         <file>icons/Arch_Frame.svg</file>
         <file>icons/Arch_Frame_Tree.svg</file>
-        <file>icons/Arch_Grid.svg</file>
-        <file>icons/Arch_Material.svg</file>
-        <file>icons/Arch_Material_Group.svg</file>
-        <file>icons/Arch_Material_Multi.svg</file>
-        <file>icons/Arch_MergeWalls.svg</file>
-        <file>icons/Arch_MeshToShape.svg</file>
-        <file>icons/Arch_Nest.svg</file>
         <file>icons/Arch_Panel.svg</file>
+        <file>icons/Arch_Panel_Tree.svg</file>
         <file>icons/Arch_Panel_Clone.svg</file>
         <file>icons/Arch_Panel_Cut.svg</file>
         <file>icons/Arch_Panel_Sheet.svg</file>
-        <file>icons/Arch_Panel_Tree.svg</file>
+        <file>icons/Arch_Equipment.svg</file>
+        <file>icons/Arch_Equipment_Tree.svg</file>
+        <file>icons/Arch_Equipment_Clone.svg</file>
+        <file>icons/Arch_Survey.svg</file>
+        <file>icons/Arch_3Views.svg</file>
+        <file>icons/IFC.svg</file>
+        <file>icons/Arch_StructuralSystem.svg</file>
+        <file>icons/Arch_StructuralSystem_Tree.svg</file>
+        <file>icons/Arch_ToggleIfcBrepFlag.svg</file>
+        <file>icons/Arch_CutPlane.svg</file>
+        <file>icons/Arch_Bimserver.svg</file>
+        <file>icons/Git.svg</file>
+        <file>icons/Arch_Component.svg</file>
+        <file>icons/Arch_Component_Clone.svg</file>
+        <file>icons/Arch_Subcomponent.svg</file>
+        <file>icons/Arch_Material.svg</file>
+        <file>icons/Arch_Material_Group.svg</file>
+        <file>icons/Arch_Material_Multi.svg</file>
+        <file>icons/Arch_Schedule.svg</file>
+        <file>icons/ArchWorkbench.svg</file>
+        <file>icons/Arch_Fence.svg</file>
+        <file>icons/Arch_Fence_Tree.svg</file>
+        <file>ui/preferences-arch.ui</file>
+        <file>ui/preferences-archdefaults.ui</file>
+        <file>ui/preferences-ifc.ui</file>
+        <file>ui/preferences-dae.ui</file>
+        <file>ui/ArchMaterial.ui</file>
+        <file>ui/ArchMultiMaterial.ui</file>
+        <file>ui/ArchSchedule.ui</file>
         <file>icons/Arch_Pipe.svg</file>
         <file>icons/Arch_Pipe_Tree.svg</file>
         <file>icons/Arch_PipeConnector.svg</file>
-        <file>icons/Arch_Profile.svg</file>
-        <file>icons/Arch_Project.svg</file>
-        <file>icons/Arch_Project_Tree.svg</file>
-        <file>icons/Arch_Rebar.svg</file>
-        <file>icons/Arch_Rebar_Tree.svg</file>
-        <file>icons/Arch_Reference.svg</file>
-        <file>icons/Arch_Remove.svg</file>
-        <file>icons/Arch_RemoveShape.svg</file>
-        <file>icons/Arch_Roof.svg</file>
-        <file>icons/Arch_Roof_Tree.svg</file>
-        <file>icons/Arch_Schedule.svg</file>
-        <file>icons/Arch_SectionPlane.svg</file>
-        <file>icons/Arch_SectionPlane_Tree.svg</file>
-        <file>icons/Arch_SelectNonManifold.svg</file>
-        <file>icons/Arch_Site.svg</file>
-        <file>icons/Arch_Site_Tree.svg</file>
-        <file>icons/Arch_Space.svg</file>
-        <file>icons/Arch_Space_Clone.svg</file>
-        <file>icons/Arch_Space_Tree.svg</file>
-        <file>icons/Arch_SplitMesh.svg</file>
-        <file>icons/Arch_Stairs.svg</file>
-        <file>icons/Arch_Stairs_Tree.svg</file>
-        <file>icons/Arch_Structure.svg</file>
-        <file>icons/Arch_Structure_Clone.svg</file>
-        <file>icons/Arch_Structure_Tree.svg</file>
-        <file>icons/Arch_StructuralSystem.svg</file>
-        <file>icons/Arch_StructuralSystem_Tree.svg</file>
-        <file>icons/Arch_Subcomponent.svg</file>
-        <file>icons/Arch_Survey.svg</file>
-        <file>icons/Arch_ToggleIfcBrepFlag.svg</file>
         <file>icons/Arch_ToggleSubs.svg</file>
-        <file>icons/Arch_Truss.svg</file>
-        <file>icons/Arch_Truss_Tree.svg</file>
-        <file>icons/Arch_Wall.svg</file>
-        <file>icons/Arch_Wall_Clone.svg</file>
-        <file>icons/Arch_Wall_Tree.svg</file>
-        <file>icons/Arch_Wall_Tree_Assembly.svg</file>
-        <file>icons/Arch_Window.svg</file>
-        <file>icons/Arch_Window_Clone.svg</file>
-        <file>icons/Arch_Window_Tree.svg</file>
-        <file>icons/ArchWorkbench.svg</file>
-        <file>icons/Git.svg</file>
-        <file>icons/IFC.svg</file>
-        <file>icons/preferences-arch.svg</file>
-        <file>ui/ArchMaterial.ui</file>
-        <file>ui/ArchMultiMaterial.ui</file>
-        <file>ui/ArchNest.ui</file>
-        <file>ui/ArchSchedule.ui</file>
+        <file>icons/Arch_Nest.svg</file>
+        <file>icons/Arch_Grid.svg</file>
+        <file>icons/Arch_BuildingPart.svg</file>
+        <file>icons/Arch_BuildingPart_Tree.svg</file>
+        <file>icons/Arch_Profile.svg</file>
+        <file>icons/Arch_Reference.svg</file>
+        <file>ui/ParametersWindowDouble.svg</file>
+        <file>ui/ParametersWindowSimple.svg</file>
+        <file>ui/ParametersWindowFixed.svg</file>
+        <file>ui/ParametersWindowStash.svg</file>
+        <file>ui/ParametersDoorSimple.svg</file>
+        <file>ui/ParametersDoorGlass.svg</file>
+        <file>ui/ParametersBeam.svg</file>
+        <file>ui/ParametersPillar.svg</file>
+        <file>ui/ParametersDent.svg</file>
+        <file>ui/ParametersPanel.svg</file>
+        <file>ui/ParametersSlab.svg</file>
+        <file>ui/ParametersIbeam.svg</file>
+        <file>ui/ParametersStairs.svg</file>
         <file>ui/BimServerTaskPanel.ui</file>
+        <file>ui/GitTaskPanel.ui</file>
         <file>ui/DialogBimServerLogin.ui</file>
         <file>ui/DialogDisplayText.ui</file>
+        <file>ui/ArchNest.ui</file>
         <file>ui/DialogIfcProperties.ui</file>
-        <file>ui/GitTaskPanel.ui</file>
-        <file>ui/ParametersBeam.svg</file>
-        <file>ui/ParametersDent.svg</file>
-        <file>ui/ParametersDoorGlass.svg</file>
-        <file>ui/ParametersDoorSimple.svg</file>
-        <file>ui/ParametersIbeam.svg</file>
-        <file>ui/ParametersPanel.svg</file>
-        <file>ui/ParametersPillar.svg</file>
-        <file>ui/ParametersSlab.svg</file>
-        <file>ui/ParametersStairs.svg</file>
-        <file>ui/ParametersWindowDouble.svg</file>
-        <file>ui/ParametersWindowFixed.svg</file>
-        <file>ui/ParametersWindowSimple.svg</file>
-        <file>ui/ParametersWindowStash.svg</file>
-        <file>ui/preferences-arch.ui</file>
-        <file>ui/preferences-archdefaults.ui</file>
-        <file>ui/preferences-dae.ui</file>
-        <file>ui/preferences-ifc.ui</file>
-        <file>ui/preferences-ifc-export.ui</file>
         <file>translations/Arch_af.qm</file>
-        <file>translations/Arch_ar.qm</file>
-        <file>translations/Arch_ca.qm</file>
-        <file>translations/Arch_cs.qm</file>
         <file>translations/Arch_de.qm</file>
-        <file>translations/Arch_el.qm</file>
-        <file>translations/Arch_es-ES.qm</file>
-        <file>translations/Arch_eu.qm</file>
         <file>translations/Arch_fi.qm</file>
-        <file>translations/Arch_fil.qm</file>
         <file>translations/Arch_fr.qm</file>
-        <file>translations/Arch_gl.qm</file>
-        <file>translations/Arch_hr.qm</file>
-        <file>translations/Arch_hu.qm</file>
-        <file>translations/Arch_id.qm</file>
         <file>translations/Arch_it.qm</file>
-        <file>translations/Arch_ja.qm</file>
-        <file>translations/Arch_kab.qm</file>
-        <file>translations/Arch_ko.qm</file>
-        <file>translations/Arch_lt.qm</file>
         <file>translations/Arch_nl.qm</file>
         <file>translations/Arch_no.qm</file>
-        <file>translations/Arch_pl.qm</file>
-        <file>translations/Arch_pt-BR.qm</file>
-        <file>translations/Arch_pt-PT.qm</file>
-        <file>translations/Arch_ro.qm</file>
         <file>translations/Arch_ru.qm</file>
-        <file>translations/Arch_sk.qm</file>
-        <file>translations/Arch_sl.qm</file>
-        <file>translations/Arch_sr.qm</file>
-        <file>translations/Arch_sv-SE.qm</file>
-        <file>translations/Arch_tr.qm</file>
         <file>translations/Arch_uk.qm</file>
-        <file>translations/Arch_val-ES.qm</file>
-        <file>translations/Arch_vi.qm</file>
-        <file>translations/Arch_zh-CN.qm</file>
+        <file>translations/Arch_pl.qm</file>
+        <file>translations/Arch_hr.qm</file>
+        <file>translations/Arch_ja.qm</file>
+        <file>translations/Arch_hu.qm</file>
+        <file>translations/Arch_tr.qm</file>
+        <file>translations/Arch_sv-SE.qm</file>
         <file>translations/Arch_zh-TW.qm</file>
+        <file>translations/Arch_pt-BR.qm</file>
+        <file>translations/Arch_cs.qm</file>
+        <file>translations/Arch_sk.qm</file>
+        <file>translations/Arch_es-ES.qm</file>
+        <file>translations/Arch_zh-CN.qm</file>
+        <file>translations/Arch_ro.qm</file>
+        <file>translations/Arch_pt-PT.qm</file>
+        <file>translations/Arch_sr.qm</file>
+        <file>translations/Arch_el.qm</file>
+        <file>translations/Arch_sl.qm</file>
+        <file>translations/Arch_eu.qm</file>
+        <file>translations/Arch_ca.qm</file>
+        <file>translations/Arch_gl.qm</file>
+        <file>translations/Arch_kab.qm</file>
+        <file>translations/Arch_ko.qm</file>
+        <file>translations/Arch_fil.qm</file>
+        <file>translations/Arch_id.qm</file>
+        <file>translations/Arch_lt.qm</file>
+        <file>translations/Arch_val-ES.qm</file>
+        <file>translations/Arch_ar.qm</file>
+        <file>translations/Arch_vi.qm</file>
     </qresource>
-</RCC>
+</RCC> 

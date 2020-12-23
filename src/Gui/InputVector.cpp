@@ -100,7 +100,7 @@ void LocationWidget::retranslateUi()
     yLabel->setText(QApplication::translate("Gui::LocationWidget", "Y:"));
     zLabel->setText(QApplication::translate("Gui::LocationWidget", "Z:"));
     dLabel->setText(QApplication::translate("Gui::LocationWidget", "Direction:"));
-
+    
     if (dValue->count() == 0) {
         dValue->insertItems(0, QStringList()
          << QApplication::translate("Gui::LocationDialog", "X")
@@ -120,7 +120,7 @@ void LocationWidget::retranslateUi()
         dValue->setItemText(0, QApplication::translate("Gui::LocationDialog", "X"));
         dValue->setItemText(1, QApplication::translate("Gui::LocationDialog", "Y"));
         dValue->setItemText(2, QApplication::translate("Gui::LocationDialog", "Z"));
-        dValue->setItemText(dValue->count()-1,
+        dValue->setItemText(dValue->count()-1, 
             QApplication::translate("Gui::LocationDialog", "User defined..."));
     }
 }
@@ -254,38 +254,6 @@ Base::Vector3d LocationDialog::getUserDirection(bool* ok) const
 void LocationDialog::on_direction_activated(int index)
 {
     directionActivated(index);
-}
-
-// -----------------------------------------------------------
-
-LocationDialogUiImp::~LocationDialogUiImp()
-{
-    // no need to delete child widgets, Qt does it all for us
-}
-
-Base::Vector3d LocationDialogUiImp::getDirection() const
-{
-    return ui->getDirection();
-}
-
-Base::Vector3d LocationDialogUiImp::getPosition() const
-{
-    return ui->getPosition();
-}
-
-void LocationDialogUiImp::changeEvent(QEvent *e)
-{
-    if (e->type() == QEvent::LanguageChange) {
-        ui->retranslate(this);
-    }
-    else {
-        QDialog::changeEvent(e);
-    }
-}
-
-void LocationDialogUiImp::directionActivated(int index)
-{
-    ui->directionActivated(this,index);
 }
 
 #include "moc_InputVector.cpp"

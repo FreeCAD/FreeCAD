@@ -1,7 +1,7 @@
 # ***************************************************************************
-# *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
-# *   This file is part of the FreeCAD CAx development system.              *
+# *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
+
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -21,20 +21,17 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__  = "Mesh import and export for Z88 mesh file format"
+__title__ = "FreeCAD Z88 Mesh reader and writer"
 __author__ = "Bernd Hahnebach"
-__url__    = "https://www.freecadweb.org"
+__url__ = "http://www.freecadweb.org"
 
 ## @package importZ88Mesh
 #  \ingroup FEM
 #  \brief FreeCAD Z88 Mesh reader and writer for FEM workbench
 
 import os
-
 import FreeCAD
 from FreeCAD import Console
-
-from femmesh import meshtools
 
 # ************************************************************************************************
 # ********* generic FreeCAD import and export methods ********************************************
@@ -89,9 +86,10 @@ def export(
         Console.PrintError("No FEM mesh object selected.\n")
         return
     femnodes_mesh = obj.FemMesh.Nodes
-    femelement_table = meshtools.get_femelement_table(obj.FemMesh)
+    import femmesh.meshtools as FemMeshTools
+    femelement_table = FemMeshTools.get_femelement_table(obj.FemMesh)
     z88_element_type = get_z88_element_type(obj.FemMesh, femelement_table)
-    f = pyopen(filename, "w")
+    f = pyopen(filename, "wb")
     write_z88_mesh_to_file(femnodes_mesh, femelement_table, z88_element_type, f)
     f.close()
 
@@ -191,11 +189,15 @@ def read_z88_mesh(
     elemts_first_line = nodes_last_line + 1
     elements_last_line = elemts_first_line - 1 + elements_count * 2
 
-    Console.PrintLog("{}\n".format(nodes_count))
-    Console.PrintLog("{}\n".format(elements_count))
-    Console.PrintLog("{}\n".format(nodes_last_line))
-    Console.PrintLog("{}\n".format(elemts_first_line))
-    Console.PrintLog("{}\n".format(elements_last_line))
+    Console.PrintLog(nodes_count)
+    Console.PrintLog("\n")
+    Console.PrintLog(elements_count)
+    FreeCAD.Console.PrintLog("\n")
+    Console.PrintLog(nodes_last_line)
+    Console.PrintLog("\n")
+    Console.PrintLog(elemts_first_line)
+    Console.PrintLog("\n")
+    Console.PrintLog(elements_last_line)
 
     z88_mesh_file.seek(0)  # go back to the beginning of the file
     for no, line in enumerate(z88_mesh_file):
@@ -431,7 +433,8 @@ def write(
         Console.PrintError("Not a FemMesh was given as parameter.\n")
         return
     femnodes_mesh = fem_mesh.Nodes
-    femelement_table = meshtools.get_femelement_table(fem_mesh)
+    import femmesh.meshtools as FemMeshTools
+    femelement_table = FemMeshTools.get_femelement_table(fem_mesh)
     z88_element_type = get_z88_element_type(fem_mesh, femelement_table)
     f = pyopen(filename, "w")
     write_z88_mesh_to_file(femnodes_mesh, femelement_table, z88_element_type, f)
@@ -555,17 +558,18 @@ def get_z88_element_type(
     femmesh,
     femelement_table=None
 ):
+    import femmesh.meshtools as FemMeshTools
     if not femmesh:
-        Console.PrintError("Error: No femmesh.\n")
+        Console.PrintError("Error: No femmesh!")
     if not femelement_table:
-        Console.PrintError("The femelement_table need to be calculated.\n")
-        femelement_table = meshtools.get_femelement_table(femmesh)
+        Console.PrintError("We need to get the femelement_table first!")
+        femelement_table = FemMeshTools.get_femelement_table(femmesh)
     # in some cases lowest key in femelement_table is not [1]
     for elem in sorted(femelement_table):
         elem_length = len(femelement_table[elem])
-        Console.PrintLog("Node count of first element: {}\n".format(elem_length))
+        Console.PrintLog("node count of first element: " + str(elem_length) + "\n")
         break  # break after the first elem
-    if meshtools.is_solid_femmesh(femmesh):
+    if FemMeshTools.is_solid_femmesh(femmesh):
         if femmesh.TetraCount == femmesh.VolumeCount:
             if elem_length == 4:
                 return 17
@@ -583,7 +587,7 @@ def get_z88_element_type(
                 return 0
         else:
             Console.PrintError("no tetra, no hexa or Mixed Volume Elements.\n")
-    elif meshtools.is_face_femmesh(femmesh):
+    elif FemMeshTools.is_face_femmesh(femmesh):
         if femmesh.TriangleCount == femmesh.FaceCount:
             if elem_length == 3:
                 Console.PrintError("tria3mesh, not supported by Z88.\n")
@@ -605,7 +609,7 @@ def get_z88_element_type(
         else:
             Console.PrintError("no tria, no quad\n")
             return 0
-    elif meshtools.is_edge_femmesh(femmesh):
+    elif FemMeshTools.is_edge_femmesh(femmesh):
         Console.PrintMessage("Edge femmesh will be exported as 3D truss element nr 4.\n")
         return 4
     else:

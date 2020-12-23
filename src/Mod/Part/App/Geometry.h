@@ -24,7 +24,6 @@
 #ifndef PART_GEOMETRY_H
 #define PART_GEOMETRY_H
 
-#include <Adaptor3d_Curve.hxx>
 #include <Geom_CartesianPoint.hxx>
 #include <Geom_BezierCurve.hxx>
 #include <Geom_BSplineCurve.hxx>
@@ -56,12 +55,9 @@
 #include <gp_Pnt.hxx>
 #include <gp_Vec.hxx>
 #include <list>
-#include <memory>
 #include <vector>
 #include <Base/Persistence.h>
 #include <Base/Vector3D.h>
-#include <Base/Matrix.h>
-#include <Base/Placement.h>
 
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
@@ -93,35 +89,28 @@ public:
     /// If you do not desire to have the same tag, then a copy can be performed by using a constructor (which will generate another tag)
     /// and then, if necessary (e.g. if the constructor did not take a handle as a parameter), set a new handle.
     Geometry *clone(void) const;
+    /// construction geometry (means no impact on a later built topo)
+    /// Note: In the Sketcher and only for the specific case of a point, it has a special meaning:
+    /// a construction point has fixed coordinates for the solver (it has fixed parameters)
+    bool Construction;
     /// returns the tag of the geometry object
     boost::uuids::uuid getTag() const;
 
-    std::vector<std::weak_ptr<const GeometryExtension>> getExtensions() const;
+    const std::vector<std::weak_ptr<GeometryExtension>> getExtensions() const;
 
     bool hasExtension(Base::Type type) const;
     bool hasExtension(std::string name) const;
-    std::weak_ptr<const GeometryExtension> getExtension(Base::Type type) const;
-    std::weak_ptr<const GeometryExtension> getExtension(std::string name) const;
-    std::weak_ptr<GeometryExtension> getExtension(Base::Type type);
-    std::weak_ptr<GeometryExtension> getExtension(std::string name);
+    const std::weak_ptr<GeometryExtension> getExtension(Base::Type type) const;
+    const std::weak_ptr<GeometryExtension> getExtension(std::string name) const;
     void setExtension(std::unique_ptr<GeometryExtension> &&geo);
     void deleteExtension(Base::Type type);
     void deleteExtension(std::string name);
-
-    void mirror(const Base::Vector3d& point);
-    void mirror(const Base::Vector3d& point, const Base::Vector3d& dir);
-    void rotate(const Base::Placement& plm);
-    void scale(const Base::Vector3d& vec, double scale);
-    void transform(const Base::Matrix4D& mat);
-    void translate(const Base::Vector3d& vec);
 
 protected:
     /// create a new tag for the geometry object
     void createNewTag();
     /// copies the tag from the geometry passed as a parameter to this object
     void assignTag(const Part::Geometry *);
-
-    void copyNonTag(const Part::Geometry *);
 
 protected:
     Geometry();
@@ -296,13 +285,11 @@ public:
     int getMultiplicity(int index) const;
     int getDegree() const;
     bool isPeriodic() const;
-    bool isRational() const;
     bool join(const Handle(Geom_BSplineCurve)&);
     void makeC1Continuous(double, double);
     std::list<Geometry*> toBiArcs(double tolerance) const;
 
-    void increaseDegree(int degree);
-    bool approximate(double tol3d, int maxSegments, int maxDegree, int continuity);
+    void increaseDegree(double degree);
 
     void increaseMultiplicity(int index, int multiplicity);
     bool removeKnot(int index, int multiplicity, double tolerance = Precision::PConfusion());
@@ -1092,16 +1079,7 @@ PartExport
 GeomArcOfCircle *createFilletGeometry(const GeomLineSegment *lineSeg1, const GeomLineSegment *lineSeg2,
                                       const Base::Vector3d &center, double radius);
 PartExport
-std::unique_ptr<GeomSurface> makeFromSurface(const Handle(Geom_Surface)&);
-
-PartExport
-std::unique_ptr<GeomCurve> makeFromCurve(const Handle(Geom_Curve)&);
-
-PartExport
-std::unique_ptr<GeomCurve> makeFromTrimmedCurve(const Handle(Geom_Curve)&, double f, double l);
-
-PartExport
-std::unique_ptr<GeomCurve> makeFromCurveAdaptor(const Adaptor3d_Curve&);
+GeomSurface *makeFromSurface(const Handle(Geom_Surface)&);
 }
 
 #endif // PART_GEOMETRY_H

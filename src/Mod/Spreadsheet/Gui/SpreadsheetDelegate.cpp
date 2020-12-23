@@ -62,11 +62,8 @@ void SpreadsheetDelegate::commitAndCloseEditor()
         return;
     }
 
-    // See https://forum.freecadweb.org/viewtopic.php?f=3&t=41694
-    // It looks like the slot commitAndCloseEditor() is not needed any more and even
-    // causes a crash when doing so because the LineEdit is still accessed after its destruction.
-    //Q_EMIT commitData(editor);
-    //Q_EMIT closeEditor(editor);
+    Q_EMIT commitData(editor);
+    Q_EMIT closeEditor(editor);
 }
 
 void SpreadsheetDelegate::setEditorData(QWidget *editor,

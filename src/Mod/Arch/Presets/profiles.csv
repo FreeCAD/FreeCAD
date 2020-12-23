@@ -1051,27 +1051,3 @@ UPE,UPE300,U,300,100,9.5,15
 UPE,UPE330,U,330,105,11,16
 UPE,UPE360,U,360,110,12,17
 UPE,UPE400,U,400,115,13.5,18
-
-# US Aluminium C channels
-
-Aluminium C Channel,2x1 Channel,U,50.8,25.4,3.302,3.302
-Aluminium C Channel,2x1.25 Channel,U,50.8,31.75,6.604,4.318
-Aluminium C Channel,3x1.5 Channel,U,76.2,38.1,5.08,3.302
-Aluminium C Channel,3x1.75 Channel,U,76.2,44.45,6.604,4.318
-Aluminium C Channel,4x2 Channel,U,101.6,50.8,5.842,3.81
-Aluminium C Channel,4x2.25 Channel,U,101.6,57.15,7.366,4.826
-Aluminium C Channel,5x2.25 Channel,U,127,57.15,6.604,3.81
-Aluminium C Channel,5x2.75 Channel,U,127,69.85,8.128,4.826
-Aluminium C Channel,6x2.5 Channel,U,152.4,63.5,7.366,4.318
-Aluminium C Channel,6x3.25 Channel,U,152.4,82.55,8.89,5.334
-Aluminium C Channel,7x2.75 Channel,U,177.8,69.85,7.366,4.318
-Aluminium C Channel,7x3.5 Channel,U,177.8,88.9,9.652,5.334
-Aluminium C Channel,8x3 Channel,U,203.2,76.2,8.89,4.826
-Aluminium C Channel,8x3.75 Channel,U,203.2,95.25,10.414,6.35
-Aluminium C Channel,9x3.25 Channel,U,228.6,82.55,8.89,5.842
-Aluminium C Channel,9x4 Channel,U,228.6,101.6,11.176,7.366
-Aluminium C Channel,10x3.5 Channel,U,254,88.9,10.414,6.35
-Aluminium C Channel,10x4.25 Channel,U,254,107.95,12.7,7.874
-Aluminium C Channel,12x4 Channel,U,304.8,101.6,11.938,7.366
-Aluminium C Channel,12x5 Channel,U,304.8,127,15.748,8.89
-

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2010     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -63,12 +63,14 @@ PropertyCosmeticEdgeList::PropertyCosmeticEdgeList()
 
 PropertyCosmeticEdgeList::~PropertyCosmeticEdgeList()
 {
+    for (std::vector<CosmeticEdge*>::iterator it = _lValueList.begin(); it != _lValueList.end(); ++it)
+        if (*it) delete *it;
 }
 
 void PropertyCosmeticEdgeList::setSize(int newSize)
 {
-//    for (unsigned int i = newSize; i < _lValueList.size(); i++)
-//        delete _lValueList[i];
+    for (unsigned int i = newSize; i < _lValueList.size(); i++)
+        delete _lValueList[i];
     _lValueList.resize(newSize);
 }
 
@@ -77,14 +79,15 @@ int PropertyCosmeticEdgeList::getSize(void) const
     return static_cast<int>(_lValueList.size());
 }
 
-
-//_lValueList is not const. so why do we pass a const parameter?
-void PropertyCosmeticEdgeList::setValue(CosmeticEdge* lValue)
+void PropertyCosmeticEdgeList::setValue(const CosmeticEdge* lValue)
 {
     if (lValue) {
         aboutToSetValue();
+        CosmeticEdge* newVal = lValue->clone();
+        for (unsigned int i = 0; i < _lValueList.size(); i++)
+            delete _lValueList[i];
         _lValueList.resize(1);
-        _lValueList[0] = lValue;
+        _lValueList[0] = newVal;
         hasSetValue();
     }
 }
@@ -92,9 +95,13 @@ void PropertyCosmeticEdgeList::setValue(CosmeticEdge* lValue)
 void PropertyCosmeticEdgeList::setValues(const std::vector<CosmeticEdge*>& lValue)
 {
     aboutToSetValue();
+    std::vector<CosmeticEdge*> oldVals(_lValueList);
     _lValueList.resize(lValue.size());
+    // copy all objects
     for (unsigned int i = 0; i < lValue.size(); i++)
-        _lValueList[i] = lValue[i];
+        _lValueList[i] = lValue[i]->clone();
+    for (unsigned int i = 0; i < oldVals.size(); i++)
+        delete oldVals[i];
     hasSetValue();
 }
 
@@ -108,6 +115,9 @@ PyObject *PropertyCosmeticEdgeList::getPyObject(void)
 
 void PropertyCosmeticEdgeList::setPyObject(PyObject *value)
 {
+    // check container of this property to notify about changes
+//    Part2DObject* part2d = dynamic_cast<Part2DObject*>(this->getContainer());
+
     if (PySequence_Check(value)) {
         Py_ssize_t nSize = PySequence_Size(value);
         std::vector<CosmeticEdge*> values;
@@ -125,6 +135,8 @@ void PropertyCosmeticEdgeList::setPyObject(PyObject *value)
         }
 
         setValues(values);
+//        if (part2d)
+//            part2d->acceptCosmeticEdge();
     }
     else if (PyObject_TypeCheck(value, &(CosmeticEdgePy::Type))) {
         CosmeticEdgePy  *pcObject = static_cast<CosmeticEdgePy*>(value);

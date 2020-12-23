@@ -38,7 +38,7 @@ using namespace Gui::TaskView;
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskDialog::TaskDialog()
-    : QObject(0), pos(North), escapeButton(true)
+    : QObject(0), pos(North)
 {
 
 }

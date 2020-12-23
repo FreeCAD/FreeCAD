@@ -27,7 +27,6 @@
 # include <QHeaderView>
 # include <QTextEdit>
 # include <QCheckBox>
-# include <QScrollBar>
 # include <QTextStream>
 # include <QThread>
 # include <QTreeWidget>
@@ -64,7 +63,6 @@
 #endif //_PreComp_
 
 #include "../App/PartFeature.h"
-#include <Base/Interpreter.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Selection.h>
 #include <Gui/Document.h>
@@ -417,25 +415,15 @@ void TaskCheckGeometryResults::setupInterface()
 void TaskCheckGeometryResults::goCheck()
 {
     Gui::WaitCursor wc;
-    auto selection = Gui::Selection().getSelection();
-
     int selectedCount(0), checkedCount(0), invalidShapes(0);
     ResultEntry *theRoot = new ResultEntry();
-
-#if OCC_VERSION_HEX < 0x070500
     Handle(Message_ProgressIndicator) theProgress = new BOPProgressIndicator(tr("Check geometry"), Gui::getMainWindow());
     theProgress->NewScope("BOP check...");
 #if OCC_VERSION_HEX >= 0x060900
     theProgress->Show();
 #endif
-#else
-    Handle(Message_ProgressIndicator) theProgress = new BOPProgressIndicator(tr("Check geometry"), Gui::getMainWindow());
-    Message_ProgressRange theRange(theProgress->Start());
-    Message_ProgressScope theScope(theRange, TCollection_AsciiString("BOP check..."), selection.size());
-    theScope.Show();
-#endif // 0x070500
 
-    for(const auto &sel :  selection) {
+    for(const auto &sel :  Gui::Selection().getSelection()) {
         selectedCount++;
         TopoDS_Shape shape = Part::Feature::getShape(sel.pObject,sel.SubName,true);
         if (shape.IsNull())
@@ -483,20 +471,11 @@ void TaskCheckGeometryResults::goCheck()
             std::string label = "Checking ";
             label += sel.pObject->Label.getStrValue();
             label += "...";
-#if OCC_VERSION_HEX < 0x070500
             theProgress->NewScope(label.c_str());
             invalidShapes += goBOPSingleCheck(shape, theRoot, baseName, theProgress);
             theProgress->EndScope();
             if (theProgress->UserBreak())
               break;
-#else
-            Message_ProgressScope theInnerScope(theScope.Next(), TCollection_AsciiString(label.c_str()), 1);
-            theInnerScope.Show();
-            invalidShapes += goBOPSingleCheck(shape, theRoot, baseName, theInnerScope);
-            theInnerScope.Close();
-            if (theScope.UserBreak())
-              break;
-#endif
           }
         }
     }
@@ -586,85 +565,16 @@ void TaskCheckGeometryResults::checkSub(const BRepCheck_Analyzer &shapeCheck, co
 
 void TaskCheckGeometryResults::buildShapeContent(const QString &baseName, const TopoDS_Shape &shape)
 {
-    ParameterGrp::handle group = App::GetApplication().GetUserParameter().
-            GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Units");
-    int decimals = group->GetInt("Decimals", 2);
-    group = App::GetApplication().GetUserParameter().
-        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
-    bool advancedShapeContent = group->GetBool("AdvancedShapeContent", true);
-    std::ostringstream stream;
-    if (!shapeContentString.empty())
-        stream << std::endl << std::endl;
-    stream << "Checked object: ";
-    std::ostringstream cmdstream;
-    cmdstream << "_basename = '" << baseName.toStdString().c_str() << "'" << std::endl;
-    cmdstream << "_obj = _basename[_basename.index('.')+1:]" << std::endl;
-    cmdstream << "_doc = _basename[:_basename.index(_obj)-1]" << std::endl;
-    cmdstream << "_shp = App.ActiveDocument.getObject(_obj).Shape" << std::endl;
-    cmdstream << "_type = str(_shp.ShapeType)" << std::endl;
-    cmdstream << "_result = _doc+'.'+App.ActiveDocument.getObject(_obj).Label+' ('+_obj+'):\\n'" << std::endl;
-    cmdstream << "_result += 'Shape type:  '+_type+'\\n'" << std::endl;
-    cmdstream << "_result += 'Vertices:  '+str(len(_shp.Vertexes))+'\\n'" << std::endl;
-    cmdstream << "_result += 'Edges:  '+str(len(_shp.Edges))+'\\n'" << std::endl;
-    cmdstream << "_result += 'Wires:  '+str(len(_shp.Wires))+'\\n'" << std::endl;
-    cmdstream << "_result += 'Faces:  '+str(len(_shp.Faces))+'\\n'" << std::endl;
-    cmdstream << "_result += 'Shells:  '+str(len(_shp.Shells))+'\\n'" << std::endl;
-    cmdstream << "_result += 'Solids:  '+str(len(_shp.Solids))+'\\n'" << std::endl;
-    cmdstream << "_result += 'CompSolids:  '+str(len(_shp.CompSolids))+'\\n'" << std::endl;
-    cmdstream << "_result += 'Compounds:  '+str(len(_shp.Compounds))+'\\n'" << std::endl;
-    cmdstream << "_result += 'Shapes:  '+str(len(_shp.Vertexes+_shp.Edges+_shp.Wires+_shp.Faces+_shp.Shells+_shp.Solids+_shp.CompSolids+_shp.Compounds))+'\\n'" << std::endl;
-    if (advancedShapeContent){
-        cmdstream << "_result += '----------\\n'" << std::endl;
-        cmdstream << "if hasattr(_shp,'Area') and not 'Wire' in _type and not 'Edge' in _type and not 'Vertex' in _type:" << std::endl;
-        cmdstream << "    _result += 'Area:  '+str(round(_shp.Area, " << decimals << "))+'\\n'" << std::endl;
-        cmdstream << "if hasattr(_shp,'Volume') and not 'Wire' in _type and not 'Edge' in _type and not 'Vertex' in _type and not 'Face' in _type:" << std::endl;
-        cmdstream << "    _result += 'Volume:  '+str(round(_shp.Volume, " << decimals << "))+'\\n'" << std::endl;
-        cmdstream << "if hasattr(_shp,'Mass'):" << std::endl;
-        cmdstream << "    _result += 'Mass:  '+str(round(_shp.Mass, " << decimals << "))+'\\n'" << std::endl;
-        cmdstream << "if hasattr(_shp,'Length'):" << std::endl;
-        cmdstream << "    _result += 'Length:  '+str(round(_shp.Length, " << decimals << "))+'\\n'" << std::endl;
-        cmdstream << "if hasattr(_shp,'Curve') and hasattr(_shp.Curve,'Radius'):" << std::endl;
-        cmdstream << "    _result += 'Radius:  '+str(round(_shp.Curve.Radius, " << decimals << "))+'\\n'" << std::endl;
-        cmdstream << "if hasattr(_shp,'Curve') and hasattr(_shp.Curve,'Center'):" << std::endl;
-        cmdstream << "    _result += 'Curve center:  '+str([round(vv," << decimals << ") for vv in _shp.Curve.Center])+'\\n'" << std::endl;
-        cmdstream << "if hasattr(_shp,'Curve') and hasattr(_shp.Curve,'Continuity'):" << std::endl;
-        cmdstream << "    _result += 'Continuity:  '+str(_shp.Curve.Continuity)+'\\n'" << std::endl;
-        cmdstream << "if hasattr(_shp,'CenterOfMass'):" << std::endl;
-        cmdstream << "    _result += 'CenterOfMass:  '+str([round(vv," << decimals << ") for vv in _shp.CenterOfMass])+'\\n'" << std::endl;
-        cmdstream << "if hasattr(_shp,'normalAt'):" << std::endl;
-        cmdstream << "    try:" << std::endl;
-        cmdstream << "        _result += 'normalAt(0):  '+str([round(vv," << decimals << ") for vv in _shp.normalAt(0)]) +'\\n'" << std::endl;
-        cmdstream << "    except:" << std::endl;
-        cmdstream << "        try:" << std::endl;
-        cmdstream << "            _result += 'normalAt(0,0):  '+str([round(vv," << decimals << ") for vv in _shp.normalAt(0,0)]) +'\\n'" << std::endl;
-        cmdstream << "        except:" << std::endl;
-        cmdstream << "            pass" << std::endl;
-        cmdstream << "if hasattr(_shp, 'isClosed') and ('Wire' in _type or 'Edge' in _type):" << std::endl;
-        cmdstream << "    _result += 'isClosed:  '+str(_shp.isClosed())+'\\n'" << std::endl;
-        cmdstream << "if hasattr(_shp, 'Orientation'):" << std::endl;
-        cmdstream << "    _result += 'Orientation:  '+str(_shp.Orientation)+'\\n'" << std::endl;
-        cmdstream << "if hasattr(_shp, 'PrincipalProperties'):" << std::endl;
-        cmdstream << "    _props = _shp.PrincipalProperties" << std::endl;
-        cmdstream << "    for _p in _props:" << std::endl;
-        cmdstream << "        if 'Base.Vector' in str(type(_props[_p])) or 'tuple' in str(type(_props[_p])):" << std::endl;
-        cmdstream << "            _result += str(_p)+':  '+str([round(vv," << decimals << ") for vv in _props[_p]]) +'\\n'" << std::endl;
-        cmdstream << "        else:" << std::endl;
-        cmdstream << "            _result += str(_p)+':  '+str(_props[_p])+'\\n'" << std::endl;
-    }
+  std::ostringstream stream;
+  if (!shapeContentString.empty())
+    stream << std::endl << std::endl;
+  stream << baseName.toLatin1().data() << ":" << std::endl;
 
-    std::string cmd = cmdstream.str();
+  BRepTools_ShapeSet set;
+  set.Add(shape);
+  set.DumpExtent(stream);
 
-    try {
-        std::string result = Base::Interpreter().runStringWithKey(cmd.c_str(),"_result");
-        stream << result;
-    }
-    catch (Base::PyException&) { //script had runtime error so fall back on OCCT method
-        stream << baseName.toLatin1().data() << std::endl;
-        BRepTools_ShapeSet set;
-        set.Add(shape);
-        set.DumpExtent(stream);
-    }
-    shapeContentString += stream.str();
+  shapeContentString += stream.str();
 }
 
 QString TaskCheckGeometryResults::getShapeContentString()
@@ -672,13 +582,8 @@ QString TaskCheckGeometryResults::getShapeContentString()
   return QString::fromStdString(shapeContentString);
 }
 
-#if OCC_VERSION_HEX < 0x070500
 int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, ResultEntry *theRoot, const QString &baseName,
                                                const Handle(Message_ProgressIndicator)& theProgress)
-#else
-int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, ResultEntry *theRoot, const QString &baseName,
-                                               const Message_ProgressScope& theScope)
-#endif
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
@@ -709,11 +614,7 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
   TopoDS_Shape BOPCopy = BRepBuilderAPI_Copy(shapeIn).Shape();
   BOPAlgo_ArgumentAnalyzer BOPCheck;
 #if OCC_VERSION_HEX >= 0x060900
-#if OCC_VERSION_HEX < 0x070500
   BOPCheck.SetProgressIndicator(theProgress);
-#else
-  BOPCheck.SetProgressIndicator(theScope);
-#endif // 0x070500
 #else
   Q_UNUSED(theProgress);
 #endif
@@ -803,7 +704,7 @@ BOPCheck.Perform();
 
       /*log BOPCheck errors to report view*/
       if (logErrors){
-          std::clog << faultyEntry->parent->name.toStdString().c_str() << " : "
+          std::cerr << faultyEntry->parent->name.toStdString().c_str() << " : "
                     << faultyEntry->name.toStdString().c_str() << " : "
                     << faultyEntry->type.toStdString().c_str() << " : "
                     << faultyEntry->error.toStdString().c_str()
@@ -836,7 +737,7 @@ void TaskCheckGeometryResults::dispatchError(ResultEntry *entry, const BRepCheck
 
     /*log BRepCheck errors to report view*/
     if (logErrors){
-        std::clog << entry->parent->name.toStdString().c_str() << " : "
+        std::cerr << entry->parent->name.toStdString().c_str() << " : "
                   << entry->name.toStdString().c_str() << " : "
                   << entry->type.toStdString().c_str() << " : "
                   << entry->error.toStdString().c_str() << " (BRepCheck)"
@@ -846,13 +747,13 @@ void TaskCheckGeometryResults::dispatchError(ResultEntry *entry, const BRepCheck
 
 void TaskCheckGeometryResults::setupFunctionMap()
 {
-    functionMap.emplace_back(TopAbs_SHELL, BRepCheck_NotClosed, goSetupResultShellNotClosed);
-    functionMap.emplace_back(TopAbs_WIRE, BRepCheck_NotClosed, goSetupResultWireNotClosed);
-    functionMap.emplace_back(TopAbs_VERTEX, BRepCheck_InvalidPointOnCurve, goSetupResultInvalidPointCurve);
-    functionMap.emplace_back(TopAbs_FACE, BRepCheck_IntersectingWires, goSetupResultIntersectingWires);
-    functionMap.emplace_back(TopAbs_EDGE, BRepCheck_InvalidCurveOnSurface, goSetupResultInvalidCurveSurface);
-    functionMap.emplace_back(TopAbs_EDGE, BRepCheck_InvalidSameParameterFlag, goSetupResultInvalidSameParameterFlag);
-    functionMap.emplace_back(TopAbs_FACE, BRepCheck_UnorientableShape, goSetupResultUnorientableShapeFace);
+    functionMap.push_back(FunctionMapType(TopAbs_SHELL, BRepCheck_NotClosed, goSetupResultShellNotClosed));
+    functionMap.push_back(FunctionMapType(TopAbs_WIRE, BRepCheck_NotClosed, goSetupResultWireNotClosed));
+    functionMap.push_back(FunctionMapType(TopAbs_VERTEX, BRepCheck_InvalidPointOnCurve, goSetupResultInvalidPointCurve));
+    functionMap.push_back(FunctionMapType(TopAbs_FACE, BRepCheck_IntersectingWires, goSetupResultIntersectingWires));
+    functionMap.push_back(FunctionMapType(TopAbs_EDGE, BRepCheck_InvalidCurveOnSurface, goSetupResultInvalidCurveSurface));
+    functionMap.push_back(FunctionMapType(TopAbs_EDGE, BRepCheck_InvalidSameParameterFlag, goSetupResultInvalidSameParameterFlag));
+    functionMap.push_back(FunctionMapType(TopAbs_FACE, BRepCheck_UnorientableShape, goSetupResultUnorientableShapeFace));
 }
 
 void TaskCheckGeometryResults::currentRowChanged (const QModelIndex &current, const QModelIndex &previous)
@@ -1046,8 +947,7 @@ void PartGui::goSetupResultUnorientableShapeFace(ResultEntry *entry)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-TaskCheckGeometryDialog::TaskCheckGeometryDialog()
-    : widget(0), contentLabel(0), okBtn(0), settingsBtn(0), resultsBtn(0)
+TaskCheckGeometryDialog::TaskCheckGeometryDialog() : widget(0), contentLabel(0)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
@@ -1124,16 +1024,6 @@ the check geometry tool.  Default: false"));
     connect(expandShapeContentCheckBox, SIGNAL(toggled(bool)),
             this, SLOT(on_expandShapeContentCheckBox_toggled(bool)));
     settingsBox->groupLayout()->addWidget(expandShapeContentCheckBox);
-
-    advancedShapeContentCheckBox = new QCheckBox();
-    advancedShapeContentCheckBox->setText(tr("Advanced shape content"));
-    advancedShapeContentCheckBox->setToolTip(tr("\
-Show advanced shape content.  Changes will take effect next time you use \n\
-the check geometry tool.  Default: false"));
-    advancedShapeContentCheckBox->setChecked(group->GetBool("AdvancedShapeContent", true));
-    connect(advancedShapeContentCheckBox, SIGNAL(toggled(bool)),
-            this, SLOT(on_advancedShapeContentCheckBox_toggled(bool)));
-    settingsBox->groupLayout()->addWidget(advancedShapeContentCheckBox);
 
     settingsBox->groupLayout()->addWidget(new QLabel(tr("\nIndividual BOP Checks:")));
 
@@ -1225,11 +1115,7 @@ bool TaskCheckGeometryDialog::accept()
     shapeContentBox->show();
     taskbox->show();
     widget->goCheck();
-    QScrollBar *v = contentLabel->verticalScrollBar();
-    v->setValue(v->maximum()); //scroll to bottom
-    int curval = v->value(); //save position
     contentLabel->setText(widget->getShapeContentString());
-    v->setValue(curval+(v->maximum()-curval)/5);
     return false;
 }
 
@@ -1319,13 +1205,6 @@ void TaskCheckGeometryDialog::on_expandShapeContentCheckBox_toggled(bool isOn)
     group->SetBool("ExpandShapeContent", isOn);
 }
 
-void TaskCheckGeometryDialog::on_advancedShapeContentCheckBox_toggled(bool isOn)
-{
-    ParameterGrp::handle group = App::GetApplication().GetUserParameter().
-    GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
-    group->SetBool("AdvancedShapeContent", isOn);
-}
-
 void TaskCheckGeometryDialog::on_selfInterModeCheckBox_toggled(bool isOn)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
@@ -1402,7 +1281,6 @@ BOPProgressIndicator::BOPProgressIndicator (const QString& title, QWidget* paren
 {
     steps = 0;
     canceled = false;
-
     myProgress = new QProgressDialog(parent);
     myProgress->setWindowTitle(title);
     myProgress->setAttribute(Qt::WA_DeleteOnClose);
@@ -1413,7 +1291,6 @@ BOPProgressIndicator::~BOPProgressIndicator ()
     myProgress->close();
 }
 
-#if OCC_VERSION_HEX < 0x070500
 Standard_Boolean BOPProgressIndicator::Show (const Standard_Boolean theForce)
 {
     if (theForce) {
@@ -1434,31 +1311,6 @@ Standard_Boolean BOPProgressIndicator::Show (const Standard_Boolean theForce)
 
     return Standard_True;
 }
-#else
-void BOPProgressIndicator::Show (const Message_ProgressScope& theScope,
-                                 const Standard_Boolean isForce)
-{
-    Standard_CString aName = theScope.Name(); //current step
-    myProgress->setLabelText (QString::fromLatin1(aName));
-
-    if (isForce) {
-        myProgress->show();
-    }
-
-    QCoreApplication::processEvents();
-}
-
-void BOPProgressIndicator::Reset()
-{
-    steps = 0;
-    canceled = false;
-
-    time.start();
-
-    myProgress->setRange(0, 0);
-    myProgress->setValue(0);
-}
-#endif
 
 Standard_Boolean BOPProgressIndicator::UserBreak()
 {

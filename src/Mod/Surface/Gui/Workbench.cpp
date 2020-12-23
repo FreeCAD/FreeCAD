@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2014 Nathan Miller <Nathan.A.Mill[at]gmail.com>         *
- *   Copyright (c) 2014 Balázs Bámer                                       *
+ *   Copyright (c) 2014 Nathan Miller         <Nathan.A.Mill[at]gmail.com> *
+ *                      Balázs Bámer                                       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -52,14 +52,12 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* surface = new Gui::MenuItem;
     root->insertItem( item, surface );
     surface->setCommand("Surface");
-    *surface << "Surface_Filling"
-             << "Surface_GeomFillSurface"
-             << "Surface_Sections"
+    *surface << "Surface_CurveOnMesh"
              << "Surface_ExtendFace"
-             << "Surface_CurveOnMesh";
-/*
-    *surface << "Surface_Cut";
-*/
+             << "Surface_Filling"
+             << "Surface_GeomFillSurface";
+/*    *surface << "Surface_Filling";
+    *surface << "Surface_Cut";*/
 
     return root;
 }
@@ -69,15 +67,10 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
 
     Gui::ToolBarItem* surface = new Gui::ToolBarItem(root);
-    surface->setCommand("Surface");
+    surface->setCommand( "Surface" );
     *surface << "Surface_Filling"
-             << "Surface_GeomFillSurface"
-             << "Surface_Sections"
-             << "Surface_ExtendFace"
-             << "Surface_CurveOnMesh";
-/*
-    *surface << "Surface_Cut";
-*/
+             << "Surface_GeomFillSurface";
+/*  *surface << "Surface_Cut"; */
 
     return root;
 }

@@ -11,7 +11,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="63"/>
       <source>Zoom</source>
-      <translation>Lupa</translation>
+      <translation>Zoom</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="64"/>
@@ -56,7 +56,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="291"/>
       <source>Settings</source>
-      <translation>Paràmetres</translation>
+      <translation type="unfinished">Settings</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="292"/>
@@ -91,7 +91,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="70"/>
       <source>Middle mouse button or H key.</source>
-      <translation>Botó central del ratolí o tecla H.</translation>
+      <translation type="unfinished">Middle mouse button or H key.</translation>
     </message>
   </context>
 </TS>

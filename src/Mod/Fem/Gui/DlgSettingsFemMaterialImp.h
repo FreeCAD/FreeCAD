@@ -1,7 +1,7 @@
  /**************************************************************************
  *   Copyright (c) 2018 FreeCAD Developers                                 *
  *   Author: Bernd Hahnebach <bernd@bimstatik.ch>                          *
- *   Based on src/Mod/Fem/Gui/DlgSettingsFemElmer.h                        *
+ *   Based on src/Mod/Fem/Gui/DlgSettingsFemElmer.h                         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -26,13 +26,12 @@
 #ifndef FEMGUI_DLGSETTINGSFEMMATERIALIMP_H
 #define FEMGUI_DLGSETTINGSFEMMATERIALIMP_H
 
+#include "ui_DlgSettingsFemMaterial.h"
 #include <Gui/PropertyPage.h>
-#include <memory>
 
 namespace FemGui {
-class Ui_DlgSettingsFemMaterialImp;
 
-class DlgSettingsFemMaterialImp : public Gui::Dialog::PreferencePage
+class DlgSettingsFemMaterialImp : public Gui::Dialog::PreferencePage, public Ui_DlgSettingsFemMaterialImp
 {
     Q_OBJECT
 
@@ -44,9 +43,6 @@ protected:
     void saveSettings();
     void loadSettings();
     void changeEvent(QEvent *e);
-
-private:
-    std::unique_ptr<Ui_DlgSettingsFemMaterialImp> ui;
 };
 
 } // namespace FemGui

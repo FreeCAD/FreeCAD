@@ -26,7 +26,7 @@
 # include <vector>
 # include <list>
 # include <set>
-# include <boost_bind_bind.hpp>
+# include <boost/bind.hpp>
 # include <QMessageBox>
 # include <QPushButton>
 #endif
@@ -43,7 +43,6 @@
 
 
 using namespace PartDesignGui;
-namespace bp = boost::placeholders;
 
 
 WorkflowManager * WorkflowManager::_instance = nullptr;
@@ -56,11 +55,11 @@ WorkflowManager::WorkflowManager() {
    }
 
     connectNewDocument = App::GetApplication().signalNewDocument.connect(
-            boost::bind( &WorkflowManager::slotNewDocument, this, bp::_1 ) );
+            boost::bind( &WorkflowManager::slotNewDocument, this, _1 ) );
     connectFinishRestoreDocument = App::GetApplication().signalFinishRestoreDocument.connect(
-            boost::bind( &WorkflowManager::slotFinishRestoreDocument, this, bp::_1 ) );
+            boost::bind( &WorkflowManager::slotFinishRestoreDocument, this, _1 ) );
     connectDeleteDocument = App::GetApplication().signalDeleteDocument.connect(
-            boost::bind( &WorkflowManager::slotDeleteDocument, this, bp::_1 ) );
+            boost::bind( &WorkflowManager::slotDeleteDocument, this, _1 ) );
 }
 
 WorkflowManager::~WorkflowManager() {

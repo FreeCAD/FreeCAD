@@ -1,8 +1,5 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
-# *   Copyright (c) 2017 Bernd Hahnebach <bernd@bimstatik.org>              *
-# *                                                                         *
-# *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -32,29 +29,24 @@ mainly implemented by the :mod:`femsolver.task` and :mod:`femsolver.signal`
 modules.
 """
 
-__title__  = "FreeCAD FEM solver run"
-__author__ = "Markus Hovorka, Bernd Hahnebach"
-__url__    = "https://www.freecadweb.org"
+__title__ = "FreeCAD FEM solver run"
+__author__ = "Markus Hovorka"
+__url__ = "http://www.freecadweb.org"
 
 import os
 import os.path
-import shutil
-import tempfile
 # import threading  # not used ATM
+import shutil
 
 import FreeCAD as App
-
+import femtools.femutils as femutils
 from . import settings
 from . import signal
 from . import task
-from femtools import femutils
-from femtools import membertools
-from femtools.errors import DirectoryDoesNotExistError
-from femtools.errors import MustSaveError
 
 if App.GuiUp:
-    from PySide import QtGui
     import FreeCADGui
+    from PySide import QtGui
 
 
 CHECK = 0
@@ -99,7 +91,7 @@ def run_fem_solver(solver, working_dir=None):
         :class:`Machine`.
     """
 
-    if solver.Proxy.Type == "Fem::SolverCcxTools":
+    if solver.Proxy.Type == "Fem::FemSolverCalculixCcxTools":
         App.Console.PrintMessage("CalxuliX ccx tools solver!\n")
         from femtools.ccxtools import CcxTools as ccx
         fea = ccx(solver)
@@ -124,7 +116,7 @@ def run_fem_solver(solver, working_dir=None):
                 machine = getMachine(solver, working_dir)
             else:
                 machine = getMachine(solver)
-        except MustSaveError:
+        except femutils.MustSaveError:
             error_message = (
                 "Please save the file before executing the solver. "
                 "This must be done because the location of the working "
@@ -138,7 +130,7 @@ def run_fem_solver(solver, working_dir=None):
                     error_message
                 )
             return
-        except DirectoryDoesNotExistError:
+        except femutils.DirectoryDoesNotExistError:
             error_message = "Selected working directory doesn't exist."
             App.Console.PrintError(error_message + "\n")
             if App.GuiUp:
@@ -153,17 +145,6 @@ def run_fem_solver(solver, working_dir=None):
             machine.target = RESULTS
             machine.start()
             machine.join()  # wait for the machine to finish.
-            if machine.failed is True:
-                App.Console.PrintError("Machine failed to run.\n")
-                from .report import displayLog
-                displayLog(machine.report)
-                if App.GuiUp:
-                    error_message = (
-                        "Failed to run. Please try again after all "
-                        "of the following errors are resolved."
-                    )
-                    from .report import display
-                    display(machine.report, "Run Report", error_message)
 
 
 def getMachine(solver, path=None):
@@ -180,13 +161,10 @@ def getMachine(solver, path=None):
     :param path:
         A valid filesystem path which shall be associetad with the machine.
     """
-    # print(path)
     _DocObserver.attach()
     m = _machines.get(solver)
     if m is None or not _isPathValid(m, path):
         m = _createMachine(solver, path, testmode=False)
-        # print(m.__dir__())  # document these attributes somewhere
-        # print(m.directory)
     return m
 
 
@@ -198,7 +176,7 @@ def _isPathValid(m, path):
     if setting == settings.DirSetting.BESIDE:
         if t == settings.DirSetting.BESIDE:
             base = os.path.split(m.directory.rstrip("/"))[0]
-            return base == _getBesideBase(m.solver)
+            return base == femutils.get_beside_base(m.solver)
         return False
     if setting == settings.DirSetting.TEMPORARY:
         return t == settings.DirSetting.TEMPORARY
@@ -206,7 +184,7 @@ def _isPathValid(m, path):
         if t == settings.DirSetting.CUSTOM:
             firstBase = os.path.split(m.directory.rstrip("/"))[0]
             customBase = os.path.split(firstBase)[0]
-            return customBase == _getCustomBase(m.solver)
+            return customBase == femutils.get_custom_base(m.solver)
         return False
 
 
@@ -215,83 +193,21 @@ def _createMachine(solver, path, testmode):
     setting = settings.get_dir_setting()
     if path is not None:
         _dirTypes[path] = None
-    elif setting == settings.DirSetting.BESIDE:
-        path = _getBesideDir(solver)
-        _dirTypes[path] = settings.DirSetting.BESIDE
-    elif setting == settings.DirSetting.TEMPORARY:
-        path = _getTempDir(solver)
-        _dirTypes[path] = settings.DirSetting.TEMPORARY
-    elif setting == settings.DirSetting.CUSTOM:
-        path = _getCustomDir(solver)
-        _dirTypes[path] = settings.DirSetting.CUSTOM
+    elif setting == settings.BESIDE:
+        path = femutils.get_beside_dir(solver)
+        _dirTypes[path] = settings.BESIDE
+    elif setting == settings.TEMPORARY:
+        path = femutils.get_temp_dir(solver)
+        _dirTypes[path] = settings.TEMPORARY
+    elif setting == settings.CUSTOM:
+        path = femutils.get_custom_dir(solver)
+        _dirTypes[path] = settings.CUSTOM
     m = solver.Proxy.createMachine(solver, path, testmode)
     oldMachine = _machines.get(solver)
     if oldMachine is not None and _dirTypes.get(oldMachine.directory) is not None:
         del _dirTypes[oldMachine.directory]
     _machines[solver] = m
     return m
-
-
-def _getTempDir(solver):
-    return tempfile.mkdtemp(prefix="fem")
-
-
-def _getBesideDir(solver):
-    base = _getBesideBase(solver)
-    specificPath = os.path.join(base, solver.Label)
-    specificPath = _getUniquePath(specificPath)
-    if not os.path.isdir(specificPath):
-        os.makedirs(specificPath)
-    return specificPath
-
-
-def _getBesideBase(solver):
-    path = os.path.splitext(solver.Document.FileName)[0]
-    # doc=App.newDocument()
-    # doc.FileName
-    # the above returns an empty string in FreeCAD 0.19
-    # https://forum.freecadweb.org/viewtopic.php?f=10&t=48842
-    if path == "":
-        error_message = (
-            "Please save the file before executing the solver. "
-            "This must be done because the location of the working "
-            "directory is set to \"Beside *.FCStd File\"."
-        )
-        App.Console.PrintError(error_message + "\n")
-        if App.GuiUp:
-            QtGui.QMessageBox.critical(
-                FreeCADGui.getMainWindow(),
-                "Can't start Solver",
-                error_message
-            )
-        raise MustSaveError()
-        # TODO may be do not abort but use a temporary directory
-    return path
-
-
-def _getCustomDir(solver):
-    base = _getCustomBase(solver)
-    specificPath = os.path.join(
-        base, solver.Document.Name, solver.Label)
-    specificPath = _getUniquePath(specificPath)
-    if not os.path.isdir(specificPath):
-        os.makedirs(specificPath)
-    return specificPath
-
-
-def _getCustomBase(solver):
-    path = settings.get_custom_dir()
-    if not os.path.isdir(path):
-        error_message = "Selected working directory doesn't exist."
-        App.Console.PrintError(error_message + "\n")
-        if App.GuiUp:
-            QtGui.QMessageBox.critical(
-                FreeCADGui.getMainWindow(),
-                "Can't start Solver",
-                error_message
-            )
-        raise DirectoryDoesNotExistError("Invalid path")
-    return path
 
 
 def _getUniquePath(path):
@@ -314,7 +230,7 @@ class BaseTask(task.Thread):
 
     @property
     def analysis(self):
-        return self.solver.getParentGroup()
+        return femutils.findAnalysisOfMember(self.solver)
 
 
 class Machine(BaseTask):
@@ -417,7 +333,7 @@ class Machine(BaseTask):
 class Check(BaseTask):
 
     def checkMesh(self):
-        meshes = membertools.get_member(
+        meshes = femutils.get_member(
             self.analysis, "Fem::FemMeshObject")
         if len(meshes) == 0:
             self.report.error("Missing a mesh object.")
@@ -432,7 +348,7 @@ class Check(BaseTask):
         return True
 
     def checkMaterial(self):
-        matObjs = membertools.get_member(
+        matObjs = femutils.get_member(
             self.analysis, "App::MaterialObjectPython")
         if len(matObjs) == 0:
             self.report.error(
@@ -543,7 +459,7 @@ class _DocObserver(object):
                     _machines[o].reset()
 
     def _checkSolver(self, obj):
-        analysis = obj.getParentGroup()
+        analysis = femutils.findAnalysisOfMember(obj)
         for m in iter(_machines.values()):
             if analysis == m.analysis and obj == m.solver:
                 m.reset()
@@ -561,7 +477,7 @@ class _DocObserver(object):
 
     def _checkModel(self, obj):
         if self._partOfModel(obj):
-            analysis = obj.getParentGroup()
+            analysis = femutils.findAnalysisOfMember(obj)
             if analysis is not None:
                 self._resetAll(analysis)
 

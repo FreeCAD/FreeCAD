@@ -34,8 +34,6 @@
 #include <Precision.hxx>
 #include <Bnd_Box2d.hxx>
 #include <BndLib_Add2dCurve.hxx>
-#include <Bnd_Box.hxx>
-#include <BRepBndLib.hxx>
 #include <Extrema_ExtCC2d.hxx>
 #include <Geom2dAdaptor_Curve.hxx>
 #include <Geom2d_Curve.hxx>
@@ -85,14 +83,14 @@ hTrimCurve::hTrimCurve(Handle(Geom2d_Curve) hCurveIn,
     //just a convenient struct for now.
 }
 
-//All this OCC math is being done on on edges(&vertices) that have been through the center/scale/mirror process.
+//All this occ math is being done on on edges(&vertices) that have been through the center/scale/mirror process.
 
 //TODO: this needs to be exposed to Python
 void DrawDimHelper::makeExtentDim(DrawViewPart* dvp,
                                   std::vector<std::string> edgeNames,
                                   int direction)
 {
-//    Base::Console().Message("DDH::makeExtentDim() - dvp: %s edgeNames: %d\n",
+//    Base::Console().Message("DDH::makeExtentDim() - dvp: %s edgeNames: %d\n", 
 //                            dvp->Label.getValue(), edgeNames.size());
     if (dvp == nullptr) {
 //        Base::Console().Message("DDH::makeExtentDim - dvp: %X\n", dvp);
@@ -109,8 +107,8 @@ void DrawDimHelper::makeExtentDim(DrawViewPart* dvp,
     std::pair<Base::Vector3d, Base::Vector3d> endPoints = minMax(dvp,
                                                                  edgeNames,
                                                                  direction);
-    Base::Vector3d refMin = endPoints.first / dvp->getScale();     //unscale from geometry
-    Base::Vector3d refMax = endPoints.second / dvp->getScale();
+    Base::Vector3d refMin = endPoints.first;
+    Base::Vector3d refMax = endPoints.second;
 
     //pause recomputes
     dvp->getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
@@ -133,11 +131,11 @@ void DrawDimHelper::makeExtentDim(DrawViewPart* dvp,
         int idx1 = DrawUtil::getIndexFromName(subElements[1]);
         v0 = dvp->getProjVertexByIndex(idx0);
         v1 = dvp->getProjVertexByIndex(idx1);
-        if ( (v0 != nullptr) &&
+        if ( (v0 != nullptr) && 
              (!v0->cosmeticTag.empty()) ) {
             tag0 = v0->cosmeticTag;
         }
-        if ( (v1 != nullptr) &&
+        if ( (v1 != nullptr) && 
              (!v1->cosmeticTag.empty()) ) {
             tag1 = v1->cosmeticTag;
         }
@@ -187,14 +185,10 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawDimHelper::minMax(DrawViewPart* dv
         selEdges = dvp->getEdgeGeometry();                  //do the whole View
     }
 
-    Bnd_Box edgeBbx;
-    edgeBbx.SetGap(0.0);
-
     std::vector<Handle(Geom_Curve)> selCurves;
     std::vector<hTrimCurve> hTCurve2dList;
     for (auto& bg: selEdges) {
         TopoDS_Edge e = bg->occEdge;
-        BRepBndLib::Add(e, edgeBbx);
         double first = 0.0;
         double last = 0.0;
         Handle(Geom_Curve) hCurve = BRep_Tool::Curve(e, first, last);
@@ -204,18 +198,19 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawDimHelper::minMax(DrawViewPart* dv
     }
 
     //can't use Bnd_Box2d here as BndLib_Add2dCurve::Add adds the poles of splines to the box.
-    //poles are not necessarily on the curve! 3d Bnd_Box does it properly. 
-    //this has to be the bbx of the selected edges, not the dvp!!!
-    double minX, minY, minZ, maxX, maxY, maxZ;
-    edgeBbx.Get(minX, minY, minZ, maxX, maxY, maxZ);
-    double xMid = (maxX + minX) / 2.0;
-    double yMid = (maxY + minY) / 2.0;
+    //poles are not neccessarily on the curve!  3d Bnd_Box does it properly. FC bbx3 is already calculated
+    //bbx3 is scaled??
+//    double scale = dvp->getScale();
+    
+    Base::BoundBox3d bbx3 = dvp->getBoundingBox();
 
-    gp_Pnt2d rightMid(maxX, yMid);
-    gp_Pnt2d leftMid(minX, yMid);
-    gp_Pnt2d topMid(xMid, maxY);
-    gp_Pnt2d bottomMid(xMid, minY);
-
+    double xMid = (bbx3.MaxX + bbx3.MinX) / 2.0;
+    double yMid = (bbx3.MaxY + bbx3.MinY) / 2.0;
+    
+    gp_Pnt2d rightMid(bbx3.MaxX, yMid);
+    gp_Pnt2d leftMid(bbx3.MinX, yMid);
+    gp_Pnt2d topMid(xMid, bbx3.MaxY);
+    gp_Pnt2d bottomMid(xMid, bbx3.MinY);
     gp_Dir2d xDir(1.0, 0.0);
     gp_Dir2d yDir(0.0, 1.0);
 
@@ -331,10 +326,11 @@ gp_Pnt2d DrawDimHelper::findClosestPoint(std::vector<hTrimCurve> hTCurve2dList,
     return result;
 }
 
+//TODO: this needs to be exposed to Python
 DrawViewDimension* DrawDimHelper::makeDistDim(DrawViewPart* dvp,
                                               std::string dimType,
-                                              Base::Vector3d inMin,      //is this scaled or unscaled??
-                                              Base::Vector3d inMax,      //expects scaled from makeExtentDim
+                                              Base::Vector3d inMin,
+                                              Base::Vector3d inMax,
                                               bool extent)
 {
 //    Base::Console().Message("DDH::makeDistDim() - inMin: %s inMax: %s\n",
@@ -350,12 +346,14 @@ DrawViewDimension* DrawDimHelper::makeDistDim(DrawViewPart* dvp,
         dimName = doc->getUniqueObjectName("DimExtent");
     }
 
-    Base::Vector3d cleanMin = DrawUtil::invertY(inMin);
-    std::string tag1 = dvp->addCosmeticVertex(cleanMin);
+    double scale = dvp->getScale();
+
+    //regular dims will have trouble with geom indexes!
+    Base::Vector3d cleanMin = DrawUtil::invertY(inMin) / scale;
+    std::string tag1 = dvp->addCosmeticVertexSS(cleanMin);
     int iGV1 = dvp->add1CVToGV(tag1);
-    
-    Base::Vector3d cleanMax = DrawUtil::invertY(inMax);
-    std::string tag2 = dvp->addCosmeticVertex(cleanMax);
+    Base::Vector3d cleanMax = DrawUtil::invertY(inMax) / scale;
+    std::string tag2 = dvp->addCosmeticVertexSS(cleanMax);
     int iGV2 = dvp->add1CVToGV(tag2);
 
     std::vector<App::DocumentObject *> objs;
@@ -368,7 +366,6 @@ DrawViewDimension* DrawDimHelper::makeDistDim(DrawViewPart* dvp,
     objs.push_back(dvp);
 
     ss.clear();
-    ss.str(std::string());
     ss << "Vertex" << iGV2;
     vertexName = ss.str();
     subs.push_back(vertexName);
@@ -393,7 +390,7 @@ DrawViewDimension* DrawDimHelper::makeDistDim(DrawViewPart* dvp,
     if (!dim) {
         throw Base::TypeError("DDH::makeDistDim - dim not found\n");
     }
-
+    
     dim->References2D.setValues(objs, subs);
 
     dvp->requestPaint();
@@ -401,3 +398,4 @@ DrawViewDimension* DrawDimHelper::makeDistDim(DrawViewPart* dvp,
 
     return dim;
 }
+

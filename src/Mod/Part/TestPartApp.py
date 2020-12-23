@@ -19,12 +19,10 @@
 #   USA                                                                   *
 #**************************************************************************
 
-import FreeCAD, unittest, Part
+import FreeCAD, os, sys, unittest, Part
 import copy 
 from FreeCAD import Units
 App = FreeCAD
-
-from parttests.regression_tests import RegressionTests
 
 #---------------------------------------------------------------------------
 # define the test cases to test the FreeCAD Part module

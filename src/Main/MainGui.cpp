@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   (c) Jürgen Riegel (juergen.riegel@web.de) 2008                        *   
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -10,17 +10,17 @@
  *   for detail see the LICENCE text file.                                 *
  *                                                                         *
  *   FreeCAD is distributed in the hope that it will be useful,            *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        * 
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
  *   GNU Library General Public License for more details.                  *
  *                                                                         *
  *   You should have received a copy of the GNU Library General Public     *
- *   License along with FreeCAD; if not, write to the Free Software        *
+ *   License along with FreeCAD; if not, write to the Free Software        * 
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
  *   USA                                                                   *
  *                                                                         *
+ *   Juergen Riegel 2002                                                   *
  ***************************************************************************/
-
 #include <FCConfig.h>
 
 #ifdef _PreComp_
@@ -38,7 +38,6 @@
 #include <map>
 #include <vector>
 #include <algorithm>
-#include <stdexcept>
 
 #include <cstdio>
 #include <QApplication>
@@ -59,9 +58,7 @@
 
 void PrintInitHelp(void);
 
-const char sBanner[] = "\xc2\xa9 Juergen Riegel, Werner Mayer, Yorik van Havre and others 2001-2020\n"\
-"FreeCAD is free and open-source software licensed under the terms of LGPL2+ license.\n"\
-"FreeCAD wouldn't be possible without FreeCAD community.\n"\
+const char sBanner[] = "\xc2\xa9 Juergen Riegel, Werner Mayer, Yorik van Havre 2001-2019\n"\
 "  #####                 ####  ###   ####  \n" \
 "  #                    #      # #   #   # \n" \
 "  #     ##  #### ####  #     #   #  #   # \n" \
@@ -196,7 +193,7 @@ int main( int argc, char ** argv )
         App::Application::Config()["Console"] = "0";
         App::Application::Config()["LoggingConsole"] = "1";
 
-        // Inits the Application
+        // Inits the Application 
 #if defined (FC_OS_WIN32)
         App::Application::init(argc_, argv_.data());
 #else
@@ -310,10 +307,6 @@ int main( int argc, char ** argv )
         e.ReportException();
         exit(1);
     }
-    catch (const std::exception& e) {
-        Base::Console().Error("Application unexpectedly terminated: %s\n", e.what());
-        exit(1);
-    }
     catch (...) {
         Base::Console().Error("Application unexpectedly terminated\n");
         exit(1);
@@ -326,7 +319,7 @@ int main( int argc, char ** argv )
     // Destruction phase ===========================================================
     Base::Console().Log("%s terminating...\n",App::Application::Config()["ExeName"].c_str());
 
-    // cleans up
+    // cleans up 
     App::Application::destruct();
 
     Base::Console().Log("%s completely terminated\n",App::Application::Config()["ExeName"].c_str());

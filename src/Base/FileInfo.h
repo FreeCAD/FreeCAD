@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2005 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   (c) Jürgen Riegel (juergen.riegel@web.de) 2005                        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -10,15 +10,16 @@
  *   for detail see the LICENCE text file.                                 *
  *                                                                         *
  *   FreeCAD is distributed in the hope that it will be useful,            *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        * 
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
  *   GNU Library General Public License for more details.                  *
  *                                                                         *
  *   You should have received a copy of the GNU Library General Public     *
- *   License along with FreeCAD; if not, write to the Free Software        *
+ *   License along with FreeCAD; if not, write to the Free Software        * 
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
  *   USA                                                                   *
  *                                                                         *
+ *   Juergen Riegel 2002                                                   *
  ***************************************************************************/
 
 
@@ -47,7 +48,7 @@ public:
         ReadWrite = 0x03,
     };
 
-    /// Construction
+    /// Constrction
     FileInfo (const char* _FileName="");
     FileInfo (const std::string &_FileName);
     /// Set a new file name
@@ -104,7 +105,7 @@ public:
     bool isFile () const;
     /// Checks if it is a directory (not a file)
     bool isDir () const;
-    /// The size of the file
+    /// The size of the file 
     unsigned int size () const;
     /// Returns the time when the file was last modified.
     TimeInfo lastModified() const;
@@ -118,7 +119,7 @@ public:
     bool createDirectory( void ) const;
     /// Get a list of the directory content
     std::vector<Base::FileInfo> getDirectoryContent(void) const;
-    /// Delete an empty directory
+    /// Delete an empty directory 
     bool deleteDirectory(void) const;
     /// Delete a directory and all its content.
     bool deleteDirectoryRecursive(void) const;

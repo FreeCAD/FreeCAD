@@ -28,7 +28,7 @@
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <App/DocumentObserver.h>
-#include <boost/bind/bind.hpp>
+#include <boost/bind.hpp>
 
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderHole.h"
@@ -67,7 +67,7 @@ public:
     long   getThreadClass() const;
     long   getThreadFit() const;
     Base::Quantity getDiameter() const;
-    long   getThreadDirection() const;
+    bool   getThreadDirection() const;
     long   getHoleCutType() const;
     Base::Quantity getHoleCutDiameter() const;
     Base::Quantity getHoleCutDepth() const;
@@ -101,7 +101,6 @@ private Q_SLOTS:
     void drillPointChanged();
     void drillPointAngledValueChanged(double value);
     void taperedChanged();
-    void reversedChanged();
     void taperedAngleChanged(double value);   
 private:
     class Observer : public App::DocumentObserver {

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+
 #***************************************************************************
+#*                                                                         *
 #*   Copyright (c) 2017 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -79,7 +81,7 @@ class Nester:
         if not self.shapes:
             self.shapes = []
         for obj in objects:
-            if hasattr(obj,'Shape'):
+            if obj.isDerivedFrom("Part::Feature"):
                 h = obj.Shape.hashCode()
                 if not h in self.objects:
                     self.objects[h] = obj
@@ -89,7 +91,7 @@ class Nester:
 
         """addContainer(object): adds a FreeCAD DocumentObject as the container"""
 
-        if hasattr(container,'Shape'):
+        if container.isDerivedFrom("Part::Feature"):
             self.container = container.Shape
 
     def clear(self):
@@ -430,7 +432,7 @@ class Nester:
                             #for i,p in enumerate(faceverts):
                             #    Draft.makeText([str(i)],point=p)
                             return
-
+                            
                         if pol.isValid():
                             nofitpol.append(pol)
                             #Part.show(pol)

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 WandererFan <wandererfan (at) gmail.com>           *
+ *   Copyright (c) wandererfan       <wandererfan (at) gmail.com> 2013     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -44,3 +44,4 @@ PyObject* FT2FC(const Py_UNICODE *unichars,
                 const double tracking);
 
 #endif // FT2FC_H
+

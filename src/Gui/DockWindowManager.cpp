@@ -154,7 +154,7 @@ QDockWidget* DockWindowManager::addDockWindow(const char* name, QWidget* widget,
 
     // set object name and window title needed for i18n stuff
     dw->setObjectName(QLatin1String(name));
-    dw->setWindowTitle(QDockWidget::tr(name));
+    dw->setWindowTitle(QDockWidget::trUtf8(name));
     dw->setFeatures(QDockWidget::AllDockWidgetFeatures);
 
     d->_dockedWindows.push_back(dw);
@@ -257,14 +257,14 @@ void DockWindowManager::retranslate()
  * \li Std_PropertyView
  * \li Std_ReportView
  * \li Std_ToolBox
- * \li Std_ComboView
+ * \li Std_CombiView
  * \li Std_SelectionView
  *
  * To avoid name clashes the caller should use names of the form \a module_widgettype, i. e. if a analyse dialog for
- * the mesh module is added the name must then be Mesh_AnalyzeDialog.
+ * the mesh module is added the name must then be Mesh_AnalyzeDialog. 
  *
- * To make use of dock windows when a workbench gets loaded the method setupDockWindows() must reimplemented in a
- * subclass of Gui::Workbench.
+ * To make use of dock windows when a workbench gets loaded the method setupDockWindows() must reimplemented in a 
+ * subclass of Gui::Workbench. 
  */
 bool DockWindowManager::registerDockWindow(const char* name, QWidget* widget)
 {

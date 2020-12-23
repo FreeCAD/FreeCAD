@@ -47,7 +47,7 @@
 
 # include <QMessageBox>
 
-# include <boost_bind_bind.hpp>
+# include <boost/bind.hpp>
 
 # include <math.h>
 #endif
@@ -69,13 +69,12 @@
 #include "ui_SphereWidget.h"
 
 using namespace FemGui;
-namespace bp = boost::placeholders;
 
 void FunctionWidget::setViewProvider(ViewProviderFemPostFunction* view) {
 
     m_view = view;
     m_object = static_cast<Fem::FemPostFunction*>(view->getObject());
-    m_connection = m_object->getDocument()->signalChangedObject.connect(boost::bind(&FunctionWidget::onObjectsChanged, this, bp::_1, bp::_2));
+    m_connection = m_object->getDocument()->signalChangedObject.connect(boost::bind(&FunctionWidget::onObjectsChanged, this, _1, _2));
 }
 
 void FunctionWidget::onObjectsChanged(const App::DocumentObject& obj, const App::Property& p) {
@@ -137,8 +136,7 @@ void ViewProviderFemPostFunctionProvider::updateSize() {
 
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostFunction, Gui::ViewProviderDocumentObject)
 
-ViewProviderFemPostFunction::ViewProviderFemPostFunction()
-    : m_manip(nullptr), m_autoscale(false), m_isDragging(false), m_autoRecompute(false)
+ViewProviderFemPostFunction::ViewProviderFemPostFunction() : m_autoscale(false), m_isDragging(false)
 {
 
     ADD_PROPERTY_TYPE(AutoScaleFactorX, (1), "AutoScale", App::Prop_Hidden, "Automatic scaling factor");
@@ -179,7 +177,6 @@ void ViewProviderFemPostFunction::attach(App::DocumentObject *pcObj)
     m_manip->ref();
 
     SoSeparator* pcEditNode = new SoSeparator();
-    pcEditNode->ref();
 
     pcEditNode->addChild(color);
     pcEditNode->addChild(m_transform);
@@ -208,7 +205,6 @@ void ViewProviderFemPostFunction::attach(App::DocumentObject *pcObj)
 
     addDisplayMaskMode(pcEditNode, "Default");
     setDisplayMaskMode("Default");
-    pcEditNode->unref();
 }
 
 bool ViewProviderFemPostFunction::doubleClicked(void) {
@@ -233,7 +229,7 @@ std::vector<std::string> ViewProviderFemPostFunction::getDisplayModes(void) cons
 void ViewProviderFemPostFunction::dragStartCallback(void *data, SoDragger *)
 {
     // This is called when a manipulator is about to manipulating
-    Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Edit Mirror"));
+    Gui::Application::Instance->activeDocument()->openCommand("Edit Mirror");
     reinterpret_cast<ViewProviderFemPostFunction*>(data)->m_isDragging = true;
 
     ViewProviderFemPostFunction* that = reinterpret_cast<ViewProviderFemPostFunction*>(data);

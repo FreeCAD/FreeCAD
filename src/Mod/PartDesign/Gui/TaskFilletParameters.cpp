@@ -25,9 +25,6 @@
 
 #ifndef _PreComp_
 # include <QAction>
-# include <QKeyEvent>
-# include <QListWidget>
-# include <QMessageBox>
 #endif
 
 #include "ui_TaskFilletParameters.h"
@@ -52,7 +49,7 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskFilletParameters */
 
-TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp *DressUpView, QWidget *parent)
+TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp *DressUpView,QWidget *parent)
     : TaskDressUpParameters(DressUpView, true, true, parent)
 {
     // we need a separate container widget to add all controls to
@@ -80,61 +77,33 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp *DressUpView, QWi
     QMetaObject::connectSlotsByName(this);
 
     connect(ui->filletRadius, SIGNAL(valueChanged(double)),
-        this, SLOT(onLengthChanged(double)));
+            this, SLOT(onLengthChanged(double)));
     connect(ui->buttonRefAdd, SIGNAL(toggled(bool)),
-        this, SLOT(onButtonRefAdd(bool)));
+            this, SLOT(onButtonRefAdd(bool)));
     connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
-        this, SLOT(onButtonRefRemove(bool)));
+            this, SLOT(onButtonRefRemove(bool)));
 
     // Create context menu
-    createDeleteAction(ui->listWidgetReferences, ui->buttonRefRemove);
-    connect(deleteAction, SIGNAL(triggered()), this, SLOT(onRefDeleted()));
-
-    connect(ui->listWidgetReferences, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
-        this, SLOT(setSelection(QListWidgetItem*)));
-    connect(ui->listWidgetReferences, SIGNAL(itemClicked(QListWidgetItem*)),
-        this, SLOT(setSelection(QListWidgetItem*)));
-    connect(ui->listWidgetReferences, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
-        this, SLOT(doubleClicked(QListWidgetItem*)));
+    QAction* action = new QAction(tr("Remove"), this);
+    action->setShortcut(QString::fromLatin1("Del"));
+    ui->listWidgetReferences->addAction(action);
+    connect(action, SIGNAL(triggered()), this, SLOT(onRefDeleted()));
+    ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
 }
 
 void TaskFilletParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    // executed when the user selected something in the CAD object
-    // adds/deletes the selection accordingly
-
     if (selectionMode == none)
         return;
 
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         if (referenceSelected(msg)) {
-            if (selectionMode == refAdd) {
+            if (selectionMode == refAdd)
                 ui->listWidgetReferences->addItem(QString::fromStdString(msg.pSubName));
-                // it might be the second one so we can enable the context menu
-                if (ui->listWidgetReferences->count() > 1) {
-                    deleteAction->setEnabled(true);
-                    deleteAction->setStatusTip(QString());
-                    ui->buttonRefRemove->setEnabled(true);
-                    ui->buttonRefRemove->setToolTip(tr("Click button to enter selection mode,\nclick again to end selection"));
-                }
-            }
-            else {
+            else
                 removeItemFromListWidget(ui->listWidgetReferences, msg.pSubName);
-                // remove its selection too
-                Gui::Selection().clearSelection();
-                // if there is only one item left, it cannot be deleted
-                if (ui->listWidgetReferences->count() == 1) {
-                    deleteAction->setEnabled(false);
-                    deleteAction->setStatusTip(tr("There must be at least one item"));
-                    ui->buttonRefRemove->setEnabled(false);
-                    ui->buttonRefRemove->setToolTip(tr("There must be at least one item"));
-                    // we must also end the selection mode
-                    exitSelectionMode();
-                    clearButtons(none);
-                }
-            }
-            // highlight existing references for possible further selections
-            DressUpView->highlightReferences(true);
+            clearButtons(none);
+            exitSelectionMode();
         }
     }
 }
@@ -148,52 +117,14 @@ void TaskFilletParameters::clearButtons(const selectionModes notThis)
 
 void TaskFilletParameters::onRefDeleted(void)
 {
-    // assure we we are not in selection mode
-    exitSelectionMode();
-    clearButtons(none);
-    // delete any selections since the reference(s) might be highlighted
-    Gui::Selection().clearSelection();
-    DressUpView->highlightReferences(false);
-
-    // get the list of items to be deleted
-    QList<QListWidgetItem*> selectedList = ui->listWidgetReferences->selectedItems();
-
-    // if all items are selected, we must stop because one must be kept to avoid that the feature gets broken
-    if (selectedList.count() == ui->listWidgetReferences->model()->rowCount()){
-        QMessageBox::warning(this, tr("Selection error"), tr("At least one item must be kept."));
-        return;
-    }
-
-    // get the fillet object
     PartDesign::Fillet* pcFillet = static_cast<PartDesign::Fillet*>(DressUpView->getObject());
     App::DocumentObject* base = pcFillet->Base.getValue();
-    // get all fillet references
     std::vector<std::string> refs = pcFillet->Base.getSubValues();
+    refs.erase(refs.begin() + ui->listWidgetReferences->currentRow());
     setupTransaction();
-
-    // delete the selection backwards to assure the list index keeps valid for the deletion
-    for (int i = selectedList.count()-1; i > -1; i--) {
-        // the ref index is the same as the listWidgetReferences index
-        // so we can erase using the row number of the element to be deleted
-        int rowNumber = ui->listWidgetReferences->row(selectedList.at(i));
-        // erase the reference
-        refs.erase(refs.begin() + rowNumber);
-        // remove from the list
-        ui->listWidgetReferences->model()->removeRow(rowNumber);
-    }
-
-    // update the object
     pcFillet->Base.setValue(base, refs);
-    // recompute the feature
-    pcFillet->recomputeFeature();
-
-    // if there is only one item left, it cannot be deleted
-    if (ui->listWidgetReferences->count() == 1) {
-        deleteAction->setEnabled(false);
-        deleteAction->setStatusTip(tr("There must be at least one item"));
-        ui->buttonRefRemove->setEnabled(false);
-        ui->buttonRefRemove->setToolTip(tr("There must be at least one item"));
-    }
+    ui->listWidgetReferences->model()->removeRow(ui->listWidgetReferences->currentRow());
+    pcFillet->getDocument()->recomputeFeature(pcFillet);
 }
 
 void TaskFilletParameters::onLengthChanged(double len)
@@ -212,15 +143,8 @@ double TaskFilletParameters::getLength(void) const
 
 TaskFilletParameters::~TaskFilletParameters()
 {
-    Gui::Selection().clearSelection(); 
     Gui::Selection().rmvSelectionGate();
-
     delete ui;
-}
-
-bool TaskFilletParameters::event(QEvent *e)
-{
-    return TaskDressUpParameters::KeyEvent(e);
 }
 
 void TaskFilletParameters::changeEvent(QEvent *e)
@@ -235,7 +159,7 @@ void TaskFilletParameters::apply()
 {
     std::string name = getDressUpView()->getObject()->getNameInDocument();
 
-    //Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Fillet changed"));
+    //Gui::Command::openCommand("Fillet changed");
     ui->filletRadius->apply();
 }
 

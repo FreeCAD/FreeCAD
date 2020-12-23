@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2019 Wanderer Fan <wandererfan@gmail.com>               *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -42,8 +42,10 @@ public:
 
     App::PropertyLink         AnnoParent;
     App::PropertyString       AnnoText;
+//    App::PropertyVector       TextPosition;
     App::PropertyBool         ShowFrame;
     App::PropertyFloat        MaxWidth;
+    App::PropertyVector       AttachPoint;
 
     virtual short mustExecute() const;
     virtual App::DocumentObjectExecReturn *execute(void);

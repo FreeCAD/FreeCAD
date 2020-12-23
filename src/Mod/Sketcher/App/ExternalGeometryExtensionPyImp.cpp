@@ -104,10 +104,15 @@ PyObject* ExternalGeometryExtensionPy::testFlag(PyObject *args)
     char* flag;
     if (PyArg_ParseTuple(args, "s",&flag)) {
 
-        ExternalGeometryExtension::Flag flagtype;
+        auto pos = std::find_if(getExternalGeometryExtensionPtr()->flag2str.begin(),
+                    getExternalGeometryExtensionPtr()->flag2str.end(),
+                    [flag](const char * val) { return strcmp(val,flag) == 0;});
 
-        if(getExternalGeometryExtensionPtr()->getFlagsFromName(flag, flagtype))
-            return new_reference_to(Py::Boolean(this->getExternalGeometryExtensionPtr()->testFlag(flagtype)));
+        if( pos != getExternalGeometryExtensionPtr()->flag2str.end()) {
+            int index = std::distance( getExternalGeometryExtensionPtr()->flag2str.begin(), pos );
+
+            return new_reference_to(Py::Boolean(this->getExternalGeometryExtensionPtr()->testFlag(index)));
+        }
 
         PyErr_SetString(PyExc_TypeError, "Flag string does not exist.");
         return NULL;
@@ -124,11 +129,16 @@ PyObject* ExternalGeometryExtensionPy::setFlag(PyObject *args)
     PyObject * bflag = Py_True;
     if (PyArg_ParseTuple(args, "s|O!", &flag, &PyBool_Type, &bflag)) {
 
-        ExternalGeometryExtension::Flag flagtype;
+        auto pos = std::find_if(getExternalGeometryExtensionPtr()->flag2str.begin(),
+                                getExternalGeometryExtensionPtr()->flag2str.end(),
+                                [flag](const char * val) {
+                                    return strcmp(val,flag)==0;}
+                                );
 
-        if(getExternalGeometryExtensionPtr()->getFlagsFromName(flag, flagtype)) {
+        if( pos != getExternalGeometryExtensionPtr()->flag2str.end()) {
+            int index = std::distance( getExternalGeometryExtensionPtr()->flag2str.begin(), pos );
 
-            this->getExternalGeometryExtensionPtr()->setFlag(flagtype,PyObject_IsTrue(bflag) ? true : false);
+            this->getExternalGeometryExtensionPtr()->setFlag(index,PyObject_IsTrue(bflag) ? true : false);
             Py_Return;
         }
 

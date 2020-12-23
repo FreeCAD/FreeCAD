@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="nl" sourcelanguage="en">
+<TS version="2.0" language="nl" sourcelanguage="en">
   <context>
     <name>CmdWebBrowserBack</name>
     <message>
@@ -62,7 +62,7 @@
       <location filename="../../Command.cpp" line="251"/>
       <location filename="../../Command.cpp" line="252"/>
       <source>Set URL</source>
-      <translation>URL instellen</translation>
+      <translation type="unfinished">Set URL</translation>
     </message>
   </context>
   <context>
@@ -128,13 +128,13 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppWebGui.cpp" line="88"/>
-      <location filename="../../BrowserView.cpp" line="745"/>
+      <location filename="../../AppWebGui.cpp" line="80"/>
+      <location filename="../../BrowserView.cpp" line="686"/>
       <source>Browser</source>
       <translation>Browser</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="560"/>
+      <location filename="../../BrowserView.cpp" line="529"/>
       <source>File does not exist!</source>
       <translation>Bestand bestaat niet!</translation>
     </message>
@@ -142,18 +142,18 @@
   <context>
     <name>WebGui::BrowserView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="551"/>
-      <location filename="../../BrowserView.cpp" line="556"/>
+      <location filename="../../BrowserView.cpp" line="520"/>
+      <location filename="../../BrowserView.cpp" line="525"/>
       <source>Error</source>
       <translation>Fout</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="556"/>
+      <location filename="../../BrowserView.cpp" line="525"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation>Er zijn fouten opgetreden tijdens het laden van het bestand. Sommige gegevens zijn misschien gewijzigd of helemaal hersteld. Kijk in de rapportweergave voor meer specifieke informatie over de objecten die hierbij zijn betrokken.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="716"/>
+      <location filename="../../BrowserView.cpp" line="657"/>
       <source>Loading %1...</source>
       <translation>Laden %1...</translation>
     </message>
@@ -161,19 +161,19 @@
   <context>
     <name>WebGui::WebView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="308"/>
+      <location filename="../../BrowserView.cpp" line="299"/>
       <source>Open in External Browser</source>
       <translation>Open in externe Browser</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="312"/>
+      <location filename="../../BrowserView.cpp" line="303"/>
       <source>Open in new window</source>
       <translation>In nieuw venster openen</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="344"/>
+      <location filename="../../BrowserView.cpp" line="335"/>
       <source>View source</source>
-      <translation>Bron weergeven</translation>
+      <translation type="unfinished">View source</translation>
     </message>
   </context>
   <context>

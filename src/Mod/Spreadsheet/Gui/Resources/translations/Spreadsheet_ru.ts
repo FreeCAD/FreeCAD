@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ru" sourcelanguage="en">
+<TS version="2.0" language="ru" sourcelanguage="en">
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -331,6 +331,10 @@
       <translation>Экспорт файла</translation>
     </message>
     <message>
+      <source>Cell contents</source>
+      <translation>Содержимое ячейки</translation>
+    </message>
+    <message>
       <source>Show spreadsheet</source>
       <translation>Показать таблицу</translation>
     </message>
@@ -349,30 +353,6 @@
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
       <translation>Задает цвет фона ячеек таблицы</translation>
-    </message>
-    <message>
-      <source>Spreadsheet</source>
-      <translation>Электронная таблица</translation>
-    </message>
-    <message>
-      <source>Spreadsheet does not support range selection when pasting.
-Please select one cell only.</source>
-      <translation>Таблица не поддерживает выбор диапазона при вставке.
-Пожалуйста, выберите только одну ячейку.</translation>
-    </message>
-    <message>
-      <source>Copy &amp; Paste failed</source>
-      <translation>Скопировать и вставить не удалось</translation>
-    </message>
-    <message>
-      <source>Alias contains invalid characters!</source>
-      <translation>Псевдоним содержит недопустимые символы!</translation>
-    </message>
-    <message>
-      <source>Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation>Обратитесь к ячейке по псевдониму, например
-Spreadsheet.my_alias_name вместо Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -457,18 +437,8 @@ Spreadsheet.my_alias_name вместо Spreadsheet.B1</translation>
       <translation>Форма</translation>
     </message>
     <message>
-      <source>&amp;Content:</source>
-      <translation>&amp;Содержание:</translation>
-    </message>
-    <message>
-      <source>&amp;Alias:</source>
-      <translation>&amp;Псевдоним:</translation>
-    </message>
-    <message>
-      <source>Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation>Обратитесь к ячейке по псевдониму, например
-Spreadsheet.my_alias_name вместо Spreadsheet.B1</translation>
+      <source>&amp;Contents</source>
+      <translation>&amp;Содержание</translation>
     </message>
   </context>
   <context>

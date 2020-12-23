@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="vi" sourcelanguage="en">
+<TS version="2.0" language="vi" sourcelanguage="en">
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -148,7 +148,7 @@
     </message>
     <message>
       <source>Merge selected cells</source>
-      <translation>Trộn các ô đã chọn</translation>
+      <translation type="unfinished">Merge selected cells</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@
     </message>
     <message>
       <source>Split previously merged cells</source>
-      <translation>Tách rời các ô đã được hòa trộn trước đây</translation>
+      <translation type="unfinished">Split previously merged cells</translation>
     </message>
   </context>
   <context>
@@ -189,11 +189,11 @@
     </message>
     <message>
       <source>Bold text</source>
-      <translation>In đậm chữ</translation>
+      <translation>Chữ in đậm</translation>
     </message>
     <message>
       <source>Set text in selected cells bold</source>
-      <translation>Đặt chữ trong các ô thành đậm</translation>
+      <translation type="unfinished">Set text in selected cells bold</translation>
     </message>
   </context>
   <context>
@@ -204,11 +204,11 @@
     </message>
     <message>
       <source>Italic text</source>
-      <translation>Làm nghiêng chữ</translation>
+      <translation>Chữ in nghiêng</translation>
     </message>
     <message>
       <source>Set text in selected cells italic</source>
-      <translation>Đặt chữ trong các ô thành nghiêng</translation>
+      <translation type="unfinished">Set text in selected cells italic</translation>
     </message>
   </context>
   <context>
@@ -219,18 +219,18 @@
     </message>
     <message>
       <source>Underline text</source>
-      <translation>Gạch chân chữ</translation>
+      <translation>Chữ gạch chân</translation>
     </message>
     <message>
       <source>Underline text in selected cells</source>
-      <translation>Gạch chân chữ trong ô đã chọn</translation>
+      <translation type="unfinished">Underline text in selected cells</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
       <source>Custom Color</source>
-      <translation>Màu tự chọn</translation>
+      <translation type="unfinished">Custom Color</translation>
     </message>
   </context>
   <context>
@@ -257,7 +257,7 @@
     </message>
     <message>
       <source>Horizontal</source>
-      <translation>Nằm ngang</translation>
+      <translation type="unfinished">Horizontal</translation>
     </message>
     <message>
       <source>Left</source>
@@ -273,7 +273,7 @@
     </message>
     <message>
       <source>Vertical</source>
-      <translation>Nằm dọc</translation>
+      <translation type="unfinished">Vertical</translation>
     </message>
     <message>
       <source>Top</source>
@@ -331,6 +331,10 @@
       <translation>Xuất tập tin</translation>
     </message>
     <message>
+      <source>Cell contents</source>
+      <translation>Nội dung trong ô</translation>
+    </message>
+    <message>
       <source>Show spreadsheet</source>
       <translation>Hiển thị bảng tính</translation>
     </message>
@@ -349,30 +353,6 @@
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
       <translation>Đặt màu nền sau cho (các) ô trong bảng tính</translation>
-    </message>
-    <message>
-      <source>Spreadsheet</source>
-      <translation>Bảng tính</translation>
-    </message>
-    <message>
-      <source>Spreadsheet does not support range selection when pasting.
-Please select one cell only.</source>
-      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
-Please select one cell only.</translation>
-    </message>
-    <message>
-      <source>Copy &amp; Paste failed</source>
-      <translation type="unfinished">Copy &amp; Paste failed</translation>
-    </message>
-    <message>
-      <source>Alias contains invalid characters!</source>
-      <translation type="unfinished">Alias contains invalid characters!</translation>
-    </message>
-    <message>
-      <source>Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -447,7 +427,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     </message>
     <message>
       <source>Custom Color</source>
-      <translation>Màu tự chọn</translation>
+      <translation type="unfinished">Custom Color</translation>
     </message>
   </context>
   <context>
@@ -457,18 +437,8 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
       <translation>Hình thức</translation>
     </message>
     <message>
-      <source>&amp;Content:</source>
-      <translation type="unfinished">&amp;Content:</translation>
-    </message>
-    <message>
-      <source>&amp;Alias:</source>
-      <translation type="unfinished">&amp;Alias:</translation>
-    </message>
-    <message>
-      <source>Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+      <source>&amp;Contents</source>
+      <translation>&amp;Nội dung</translation>
     </message>
   </context>
   <context>

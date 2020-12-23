@@ -738,7 +738,7 @@ Py::Object BSplineCurve2dPy::getLastUKnotIndex(void) const
 #if PY_MAJOR_VERSION >= 3
     return Py::Long(curve->LastUKnotIndex()); 
 #else
-    return Py::Int(curve->LastUKnotIndex());
+    return Py::Int(curve->FirstUKnotIndex()); 
 #endif
 }
 
@@ -925,7 +925,7 @@ PyObject* BSplineCurve2dPy::getCardinalSplineTangents(PyObject *args, PyObject *
         interpPoints.reserve(list.size());
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             Base::Vector2d pnt = Py::toVector2d(*it);
-            interpPoints.emplace_back(pnt.x,pnt.y);
+            interpPoints.push_back(gp_Pnt2d(pnt.x,pnt.y));
         }
 
         Geom2dBSplineCurve* bspline = this->getGeom2dBSplineCurvePtr();
@@ -952,7 +952,7 @@ PyObject* BSplineCurve2dPy::getCardinalSplineTangents(PyObject *args, PyObject *
         interpPoints.reserve(list.size());
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             Base::Vector2d pnt = Py::toVector2d(*it);
-            interpPoints.emplace_back(pnt.x,pnt.y);
+            interpPoints.push_back(gp_Pnt2d(pnt.x,pnt.y));
         }
 
         Py::Sequence list2(tgs);

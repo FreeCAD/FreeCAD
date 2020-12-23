@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -39,9 +39,7 @@
 
 #ifdef FC_OS_WIN32
 #define WIN32_LEAN_AND_MEAN
-#ifndef NOMINMAX
 #define NOMINMAX
-#endif
 #endif
 
 #ifdef _PreComp_
@@ -63,7 +61,7 @@
 #include <iostream>
 #include <sstream>
 
-// STL
+// STL 
 #include <string>
 #include <list>
 #include <map>
@@ -81,7 +79,7 @@
 
 // Boost
 #include <boost/signals2.hpp>
-#include <boost/bind/bind.hpp>
+#include <boost/bind.hpp>
 #include <boost/regex.hpp>
 
 #include <boost/tuple/tuple.hpp>

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
+# *                                                                         *
 # *   Copyright (c) 2015 Dan Falck <ddfalck@gmail.com>                      *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -19,8 +20,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-
-'''Used for CNC machine Stops for Path module. Create an Optional or Mandatory Stop.'''
+''' Used for CNC machine Stops for Path module. Create an Optional or Mandatory Stop.'''
 
 import FreeCAD
 import FreeCADGui
@@ -82,7 +82,7 @@ class _ViewProviderStop:
         return None
 
     def getIcon(self):  # optional
-        return ":/icons/Path_Stop.svg"
+        return ":/icons/Path-Stop.svg"
 
     def onChanged(self, vobj, prop):  # optional
         # pylint: disable=unused-argument
@@ -101,7 +101,7 @@ class _ViewProviderStop:
 class CommandPathStop:
 
     def GetResources(self):
-        return {'Pixmap': 'Path_Stop',
+        return {'Pixmap': 'Path-Stop',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Stop", "Stop"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Stop", "Add Optional or Mandatory Stop to the program")}
 

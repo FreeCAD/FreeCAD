@@ -1,5 +1,6 @@
 #/***************************************************************************
-# *   Copyright (c) 2016 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
+# *   Copyright (c) Victor Titov (DeepSOIC)                                 *
+# *                                           (vv.titov@gmail.com) 2016     *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -32,8 +33,7 @@ from .GeneralFuseResult import GeneralFuseResult
 from .Utils import compoundLeaves
 
 def shapeOfMaxSize(list_of_shapes):
-    """shapeOfMaxSize(list_of_shapes): finds the shape that has the largest "
-    "mass in the list and returns it. The shapes in the list must be of same dimension."""
+    """shapeOfMaxSize(list_of_shapes): finds the shape that has the largest mass in the list and returns it. The shapes in the list must be of same dimension."""
     #first, check if shapes can be compared by size
     ShapeMerge.dimensionOfShapes(list_of_shapes)
 

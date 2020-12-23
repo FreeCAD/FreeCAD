@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) YEAR YOUR NAME         <Your e-mail address>            *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -89,7 +89,6 @@ void CmdInspectElement::activated(int)
         viewer->setEditing(true);
         viewer->setRedirectToSceneGraphEnabled(true);
         viewer->setRedirectToSceneGraph(true);
-        viewer->setSelectionEnabled(false);
         viewer->setEditingCursor(QCursor(Gui::BitmapFactory().pixmapFromSvg("inspect_pipette",QSize(32,32)),4,29));
         viewer->addEventCallback(SoButtonEvent::getClassTypeId(),
             InspectionGui::ViewProviderInspection::inspectCallback);

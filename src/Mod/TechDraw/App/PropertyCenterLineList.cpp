@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2010     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -63,12 +63,14 @@ PropertyCenterLineList::PropertyCenterLineList()
 
 PropertyCenterLineList::~PropertyCenterLineList()
 {
+    for (std::vector<CenterLine*>::iterator it = _lValueList.begin(); it != _lValueList.end(); ++it)
+        if (*it) delete *it;
 }
 
 void PropertyCenterLineList::setSize(int newSize)
 {
-//    for (unsigned int i = newSize; i < _lValueList.size(); i++)
-//        delete _lValueList[i];
+    for (unsigned int i = newSize; i < _lValueList.size(); i++)
+        delete _lValueList[i];
     _lValueList.resize(newSize);
 }
 
@@ -77,12 +79,15 @@ int PropertyCenterLineList::getSize(void) const
     return static_cast<int>(_lValueList.size());
 }
 
-void PropertyCenterLineList::setValue(CenterLine* lValue)
+void PropertyCenterLineList::setValue(const CenterLine* lValue)
 {
     if (lValue) {
         aboutToSetValue();
+        CenterLine* newVal = lValue->clone();
+        for (unsigned int i = 0; i < _lValueList.size(); i++)
+            delete _lValueList[i];
         _lValueList.resize(1);
-        _lValueList[0] = lValue;
+        _lValueList[0] = newVal;
         hasSetValue();
     }
 }
@@ -90,9 +95,13 @@ void PropertyCenterLineList::setValue(CenterLine* lValue)
 void PropertyCenterLineList::setValues(const std::vector<CenterLine*>& lValue)
 {
     aboutToSetValue();
+    std::vector<CenterLine*> oldVals(_lValueList);
     _lValueList.resize(lValue.size());
+    // copy all objects
     for (unsigned int i = 0; i < lValue.size(); i++)
-        _lValueList[i] = lValue[i];
+        _lValueList[i] = lValue[i]->clone();
+    for (unsigned int i = 0; i < oldVals.size(); i++)
+        delete oldVals[i];
     hasSetValue();
 }
 
@@ -106,6 +115,9 @@ PyObject *PropertyCenterLineList::getPyObject(void)
 
 void PropertyCenterLineList::setPyObject(PyObject *value)
 {
+    // check container of this property to notify about changes
+//    Part2DObject* part2d = dynamic_cast<Part2DObject*>(this->getContainer());
+
     if (PySequence_Check(value)) {
         Py_ssize_t nSize = PySequence_Size(value);
         std::vector<CenterLine*> values;
@@ -123,6 +135,8 @@ void PropertyCenterLineList::setPyObject(PyObject *value)
         }
 
         setValues(values);
+//        if (part2d)
+//            part2d->acceptCenterLine();
     }
     else if (PyObject_TypeCheck(value, &(CenterLinePy::Type))) {
         CenterLinePy  *pcObject = static_cast<CenterLinePy*>(value);
@@ -139,7 +153,7 @@ void PropertyCenterLineList::Save(Writer &writer) const
 {
     writer.Stream() << writer.ind() << "<CenterLineList count=\"" << getSize() <<"\">" << endl;
     writer.incInd();
-    for (int i = 0; i < getSize(); i++) { 
+    for (int i = 0; i < getSize(); i++) {
         writer.Stream() << writer.ind() << "<CenterLine  type=\""
                         << _lValueList[i]->getTypeId().getName() << "\">" << endl;
         writer.incInd();

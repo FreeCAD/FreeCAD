@@ -71,10 +71,6 @@
 #include <QOpenGLDebugLogger>
 #endif
 
-#if COIN_MAJOR_VERSION >= 4
-#include <Inventor/SbByteBuffer.h>
-#endif
-
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/system/gl.h>
 #include <Inventor/events/SoEvents.h>
@@ -154,7 +150,7 @@ class CustomGLWidget : public QOpenGLWidget {
 public:
     QSurfaceFormat myFormat;
 
-    CustomGLWidget(const QSurfaceFormat& format, QWidget* parent = 0, const QOpenGLWidget* shareWidget = 0, Qt::WindowFlags f = Qt::WindowFlags())
+    CustomGLWidget(const QSurfaceFormat& format, QWidget* parent = 0, const QOpenGLWidget* shareWidget = 0, Qt::WindowFlags f = 0)
      : QOpenGLWidget(parent, f), myFormat(format)
     {
         Q_UNUSED(shareWidget);
@@ -191,21 +187,6 @@ public:
                 this, &CustomGLWidget::aboutToDestroyGLContext, Qt::DirectConnection);
         }
         connect(this, &CustomGLWidget::resized, this, &CustomGLWidget::slotResized);
-    }
-    // paintGL() is invoked when e.g. using the method grabFramebuffer of this class
-    // \code
-    // from PySide2 import QtWidgets
-    // mw = Gui.getMainWindow()
-    // mdi = mw.findChild(QtWidgets.QMdiArea)
-    // gl = mdi.findChild(QtWidgets.QOpenGLWidget)
-    // img = gl.grabFramebuffer()
-    // \endcode
-    void paintGL()
-    {
-        QuarterWidget* qw = qobject_cast<QuarterWidget*>(parentWidget());
-        if (qw) {
-            qw->redraw();
-        }
     }
     void aboutToDestroyGLContext()
     {
@@ -905,11 +886,7 @@ void QuarterWidget::paintEvent(QPaintEvent* event)
     glMatrixMode(GL_PROJECTION);
 
     QtGLWidget* w = static_cast<QtGLWidget*>(this->viewport());
-    if (!w->isValid()) {
-        qWarning() << "No valid GL context found!";
-        return;
-    }
-    //assert(w->isValid() && "No valid GL context found!");
+    assert(w->isValid() && "No valid GL context found!");
     // We might have to process the delay queue here since we don't know
     // if paintGL() is called from Qt, and we might have some sensors
     // waiting to trigger (the redraw sensor has a lower priority than a
@@ -1034,33 +1011,11 @@ QuarterWidget::redraw(void)
   // we're triggering the next paintGL(). Set a flag to remember this
   // to avoid that we process the delay queue in paintGL()
   PRIVATE(this)->processdelayqueue = false;
-
-  // When stylesheet is used, there is recursive repaint warning caused by
-  // repaint() here. It happens when switching active documents. Based on call
-  // stacks, it happens like this, the repaint event first triggers a series
-  // calls of QWidgetPrivate::paintSiblingsRecrusive(), and then reaches one of
-  // the QuarterWidget. From its paintEvent(), it calls
-  // SoSensorManager::processDelayQueue(), which triggers redraw() of another
-  // QuarterWidget. And if repaint() is called here, it will trigger another
-  // series call of QWidgetPrivate::paintSiblingRecursive(), and eventually
-  // back to the first QuarterWidget, at which time the "Recursive repaint
-  // detected" Qt warning message will be printed.
-  //
-  // Note that, the recursive repaint is not infinite due to setting
-  // 'processdelayqueue = false' above. However, it does cause annoying
-  // flickering, and actually crash on Windows.
-#if 1
-  this->viewport()->update();
-#else
-
-// #if QT_VERSION >= 0x050500 && QT_VERSION < 0x050600
-#if 1
+#if QT_VERSION >= 0x050500 && QT_VERSION < 0x050600
   // With Qt 5.5.x there is a major performance problem
   this->viewport()->update();
 #else
   this->viewport()->repaint();
-#endif
-
 #endif
 }
 

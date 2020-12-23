@@ -1,8 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
-# *   This file is part of the FreeCAD CAx development system.              *
-# *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
 # *   as published by the Free Software Foundation; either version 2 of     *
@@ -21,22 +19,23 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__  = "FreeCAD FEM solver object Z88"
+__title__ = "FreeCAD FEM solver object Z88"
 __author__ = "Bernd Hahnebach"
-__url__    = "https://www.freecadweb.org"
+__url__ = "http://www.freecadweb.org"
 
 ## @package SolverZ88
 #  \ingroup FEM
 
-import glob
 import os
+import glob
 
 import FreeCAD
+import femtools.femutils as femutils
 
-from . import tasks
 from .. import run
 from .. import solverbase
-from femtools import femutils
+from . import tasks
+
 
 if FreeCAD.GuiUp:
     import FemGui
@@ -53,7 +52,7 @@ class Proxy(solverbase.Proxy):
     """The Fem::FemSolver's Proxy python type, add solver specific properties
     """
 
-    Type = "Fem::SolverZ88"
+    Type = "Fem::FemSolverObjectZ88"
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
@@ -88,8 +87,6 @@ class Proxy(solverbase.Proxy):
 
 
 class ViewProxy(solverbase.ViewProxy):
-
-    def getIcon(self):
-        return ":/icons/FEM_SolverZ88.svg"
+    pass
 
 ##  @}

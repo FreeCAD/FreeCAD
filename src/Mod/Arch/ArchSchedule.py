@@ -1,6 +1,8 @@
 # -*- coding: utf8 -*-
+
 #***************************************************************************
-#*   Copyright (c) 2015 Yorik van Havre <yorik@uncreated.net>              *
+#*                                                                         *
+#*   Copyright (c) 2015 - Yorik van Havre <yorik@uncreated.net>            *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -46,7 +48,7 @@ else:
 
 __title__ = "Arch Schedule"
 __author__ = "Yorik van Havre"
-__url__ = "https://www.freecadweb.org"
+__url__ = "http://www.freecadweb.org"
 
 
 verbose = True # change this for silent recomputes
@@ -199,7 +201,7 @@ class _ArchSchedule:
                     # remove object itself if the object is a group
                     if objs[0].isDerivedFrom("App::DocumentObjectGroup"):
                         objs = objs[0].Group
-                objs = Draft.get_group_contents(objs)
+                objs = Draft.getGroupContents(objs)
                 objs = Arch.pruneIncluded(objs,strict=True)
                 # remove the schedule object and its result from the list
                 objs = [o for o in objs if not o == obj]
@@ -535,27 +537,20 @@ class ArchScheduleTaskPanel:
         if not self.obj.Proxy.data:
             return
 
-        filename = QtGui.QFileDialog.getSaveFileName(QtGui.QApplication.activeWindow(),
-                                                     translate("Arch","Export CSV File"),
-                                                     None,
-                                                     "Comma-separated values (*.csv);;TAB-separated values (*.tsv);;Markdown (*.md)");
+        filename = QtGui.QFileDialog.getSaveFileName(QtGui.QApplication.activeWindow(), translate("Arch","Export CSV File"), None, "CSV (*.csv);;Markdown (*.md)");
         if filename:
             filt = filename[1]
             filename = filename[0]
             if sys.version_info.major < 3:
                 filename = filename.encode("utf8")
             # add missing extension
-            if (not filename.lower().endswith(".csv")) and (not filename.lower().endswith(".tsv")) and (not filename.lower().endswith(".md")):
+            if (not filename.lower().endswith(".csv")) and (not filename.lower().endswith(".md")):
                 if "csv" in filt:
                     filename += ".csv"
-                elif "tsv" in filt:
-                    filename += ".tsv"
                 else:
                     filename += ".md"
             if filename.lower().endswith(".csv"):
-                self.exportCSV(filename,delimiter=",")
-            elif filename.lower().endswith(".tsv"):
-                self.exportCSV(filename,delimiter="\t")
+                self.exportCSV(filename)
             elif filename.lower().endswith(".md"):
                 self.exportMD(filename)
             else:
@@ -574,13 +569,16 @@ class ArchScheduleTaskPanel:
         rows.sort(key=int)
         return rows
 
-    def exportCSV(self,filename,delimiter="\t"):
+    def exportCSV(self,filename):
 
-        """Exports the results as a CSV/TSV file"""
+        """Exports the results as a CSV file"""
+
+        # use TAB to separate values
+        DELIMITER = "\t"
 
         import csv
         with open(filename, 'w') as csvfile:
-            csvfile = csv.writer(csvfile,delimiter=delimiter)
+            csvfile = csv.writer(csvfile,delimiter=DELIMITER)
             csvfile.writerow([translate("Arch","Description"),translate("Arch","Value"),translate("Arch","Unit")])
             if self.obj.DetailedResults:
                 csvfile.writerow(["","",""])

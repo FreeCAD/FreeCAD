@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="pt-PT" sourcelanguage="en">
+<TS version="2.0" language="pt-PT" sourcelanguage="en">
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -148,7 +148,7 @@
     </message>
     <message>
       <source>Merge selected cells</source>
-      <translation>Unir células selecionadas</translation>
+      <translation type="unfinished">Merge selected cells</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@
     </message>
     <message>
       <source>Split previously merged cells</source>
-      <translation>Dividir células anteriormente unidas</translation>
+      <translation type="unfinished">Split previously merged cells</translation>
     </message>
   </context>
   <context>
@@ -193,7 +193,7 @@
     </message>
     <message>
       <source>Set text in selected cells bold</source>
-      <translation>Definir texto em células selecionadas para negrito</translation>
+      <translation type="unfinished">Set text in selected cells bold</translation>
     </message>
   </context>
   <context>
@@ -208,7 +208,7 @@
     </message>
     <message>
       <source>Set text in selected cells italic</source>
-      <translation>Definir texto em células selecionadas para itálico</translation>
+      <translation type="unfinished">Set text in selected cells italic</translation>
     </message>
   </context>
   <context>
@@ -331,6 +331,10 @@
       <translation>Exportar ficheiro</translation>
     </message>
     <message>
+      <source>Cell contents</source>
+      <translation>Conteúdo da célula</translation>
+    </message>
+    <message>
       <source>Show spreadsheet</source>
       <translation>Mostrar folha de cálculo</translation>
     </message>
@@ -349,30 +353,6 @@
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
       <translation>Definir a cor de plano de fundo das células da Tabela (folha de cálculo)</translation>
-    </message>
-    <message>
-      <source>Spreadsheet</source>
-      <translation>Folha de cálculo</translation>
-    </message>
-    <message>
-      <source>Spreadsheet does not support range selection when pasting.
-Please select one cell only.</source>
-      <translation>A folha de cálculo não suporta seleção de intervalo ao colar.
-Por favor, selecione apenas uma célula.</translation>
-    </message>
-    <message>
-      <source>Copy &amp; Paste failed</source>
-      <translation>Falha ao copiar e colar</translation>
-    </message>
-    <message>
-      <source>Alias contains invalid characters!</source>
-      <translation>O Alias contém caracteres inválidos!</translation>
-    </message>
-    <message>
-      <source>Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation>Consulte a célula por alias, por exemplo
-Spreadsheet.my_alias_name em vez de Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -457,18 +437,8 @@ Spreadsheet.my_alias_name em vez de Spreadsheet.B1</translation>
       <translation>Formulário</translation>
     </message>
     <message>
-      <source>&amp;Content:</source>
-      <translation>&amp;Conteúdo:</translation>
-    </message>
-    <message>
-      <source>&amp;Alias:</source>
-      <translation>&amp;Alias:</translation>
-    </message>
-    <message>
-      <source>Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation>Consulte a célula por alias, por exemplo
-Spreadsheet.my_alias_name em vez de Spreadsheet.B1</translation>
+      <source>&amp;Contents</source>
+      <translation>&amp;Conteúdos</translation>
     </message>
   </context>
   <context>

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
+# *                                                                         *
 # *   Copyright (c) 2015 Dan Falck <ddfalck@gmail.com>                      *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -19,22 +20,24 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-
-'''Used to create material stock around a machined part - for visualization'''
+'''used to create material stock around a machined part- for visualization '''
 
 import FreeCAD
+import Part
 import PathScripts.PathIconViewProvider as PathIconViewProvider
 import PathScripts.PathLog as PathLog
 import math
 
 from PySide import QtCore
 
-# lazily loaded modules
-from lazy_loader.lazy_loader import LazyLoader
-Part = LazyLoader('Part', globals(), 'Part')
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#PathLog.trackModule(PathLog.thisModule())
+LOGLEVEL = False
+
+if LOGLEVEL:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 # Qt translation handling
 def translate(context, text, disambig=None):
@@ -97,13 +100,12 @@ class StockFromBase(Stock):
     def __init__(self, obj, base):
         "Make stock"
         obj.addProperty("App::PropertyLink", "Base", "Base", QtCore.QT_TRANSLATE_NOOP("PathStock", "The base object this stock is derived from"))
-        obj.addProperty("App::PropertyDistance", "ExtXneg", "Stock", QtCore.QT_TRANSLATE_NOOP("PathStock", "Extra allowance from part bound box in negative X direction"))
-        obj.addProperty("App::PropertyDistance", "ExtXpos", "Stock", QtCore.QT_TRANSLATE_NOOP("PathStock", "Extra allowance from part bound box in positive X direction"))
-        obj.addProperty("App::PropertyDistance", "ExtYneg", "Stock", QtCore.QT_TRANSLATE_NOOP("PathStock", "Extra allowance from part bound box in negative Y direction"))
-        obj.addProperty("App::PropertyDistance", "ExtYpos", "Stock", QtCore.QT_TRANSLATE_NOOP("PathStock", "Extra allowance from part bound box in positive Y direction"))
-        obj.addProperty("App::PropertyDistance", "ExtZneg", "Stock", QtCore.QT_TRANSLATE_NOOP("PathStock", "Extra allowance from part bound box in negative Z direction"))
-        obj.addProperty("App::PropertyDistance", "ExtZpos", "Stock", QtCore.QT_TRANSLATE_NOOP("PathStock", "Extra allowance from part bound box in positive Z direction"))
-        obj.addProperty("App::PropertyLink","Material","Component", QtCore.QT_TRANSLATE_NOOP("App::Property","A material for this object"))
+        obj.addProperty("App::PropertyLength", "ExtXneg", "Stock", QtCore.QT_TRANSLATE_NOOP("PathStock", "Extra allowance from part bound box in negative X direction"))
+        obj.addProperty("App::PropertyLength", "ExtXpos", "Stock", QtCore.QT_TRANSLATE_NOOP("PathStock", "Extra allowance from part bound box in positive X direction"))
+        obj.addProperty("App::PropertyLength", "ExtYneg", "Stock", QtCore.QT_TRANSLATE_NOOP("PathStock", "Extra allowance from part bound box in negative Y direction"))
+        obj.addProperty("App::PropertyLength", "ExtYpos", "Stock", QtCore.QT_TRANSLATE_NOOP("PathStock", "Extra allowance from part bound box in positive Y direction"))
+        obj.addProperty("App::PropertyLength", "ExtZneg", "Stock", QtCore.QT_TRANSLATE_NOOP("PathStock", "Extra allowance from part bound box in negative Z direction"))
+        obj.addProperty("App::PropertyLength", "ExtZpos", "Stock", QtCore.QT_TRANSLATE_NOOP("PathStock", "Extra allowance from part bound box in positive Z direction"))
 
         obj.Base = base
         obj.ExtXneg= 1.0
@@ -231,22 +233,9 @@ def SetupStockObject(obj, stockType):
         obj.ViewObject.Transparency = 90
         obj.ViewObject.DisplayMode = 'Wireframe'
 
-class FakeJob(object):
-    def __init__(self, base):
-        self.Group = [base]
-
-def _getBase(job):
-    if job and hasattr(job, 'Model'):
-        return job.Model
-    if job:
-        import PathScripts.PathUtils as PathUtils
-        job = PathUtils.findParentJob(job)
-        return job.Model if job else None
-    return None
-
 def CreateFromBase(job, neg=None, pos=None, placement=None):
     PathLog.track(job.Label, neg, pos, placement)
-    base = _getBase(job)
+    base = job.Model if job else None
     obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', 'Stock')
     obj.Proxy = StockFromBase(obj, base)
 
@@ -269,7 +258,7 @@ def CreateFromBase(job, neg=None, pos=None, placement=None):
     return obj
 
 def CreateBox(job, extent=None, placement=None):
-    base = _getBase(job)
+    base = job.Model if job else None
     obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', 'Stock')
     obj.Proxy = StockCreateBox(obj)
 
@@ -294,7 +283,7 @@ def CreateBox(job, extent=None, placement=None):
     return obj
 
 def CreateCylinder(job, radius=None, height=None, placement=None):
-    base = _getBase(job)
+    base = job.Model if job else None
     obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', 'Stock')
     obj.Proxy = StockCreateCylinder(obj)
 
@@ -367,7 +356,7 @@ def CreateFromTemplate(job, template):
             rotZ = template.get('rotZ')
             rotW = template.get('rotW')
             if posX is not None and posY is not None and posZ is not None and rotX is not None and rotY is not None and rotZ is not None and rotW is not None:
-                pos = FreeCAD.Vector(float(posX), float(posY), float(posZ))
+                pos = FreeCAD.Vector(float(posX), float(posY), float(posZ)) 
                 rot = FreeCAD.Rotation(float(rotX), float(rotY), float(rotZ), float(rotW))
                 placement = FreeCAD.Placement(pos, rot)
             elif posX is not None or posY is not None or posZ is not None or rotX is not None or rotY is not None or rotZ is not None or rotW is not None:

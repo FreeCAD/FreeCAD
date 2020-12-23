@@ -25,7 +25,6 @@
 #ifndef _PreComp_
 # include <QCoreApplication>
 # include <QStatusBar>
-# include <QEvent>
 #endif
 
 #include "Command.h"
@@ -61,7 +60,7 @@ StdCmdArrangeIcons::StdCmdArrangeIcons()
 
 void StdCmdArrangeIcons::activated(int iMsg)
 {
-    Q_UNUSED(iMsg);
+    Q_UNUSED(iMsg); 
     getMainWindow()->arrangeIcons ();
 }
 
@@ -89,7 +88,7 @@ StdCmdTileWindows::StdCmdTileWindows()
 
 void StdCmdTileWindows::activated(int iMsg)
 {
-    Q_UNUSED(iMsg);
+    Q_UNUSED(iMsg); 
     getMainWindow()->tile();
 }
 
@@ -117,7 +116,7 @@ StdCmdCascadeWindows::StdCmdCascadeWindows()
 
 void StdCmdCascadeWindows::activated(int iMsg)
 {
-    Q_UNUSED(iMsg);
+    Q_UNUSED(iMsg); 
     getMainWindow()->cascade();
 }
 
@@ -143,13 +142,12 @@ StdCmdCloseActiveWindow::StdCmdCloseActiveWindow()
     // collide with this shortcut. Thus the shortcut of QMdiSubWindow will be
     // reset in MainWindow::addWindow() (#0002631)
     sAccel        = keySequenceToAccel(QKeySequence::Close);
-    sPixmap       = "Std_CloseActiveWindow";
     eType         = NoTransaction;
 }
 
 void StdCmdCloseActiveWindow::activated(int iMsg)
 {
-    Q_UNUSED(iMsg);
+    Q_UNUSED(iMsg); 
     getMainWindow()->closeActiveWindow();
 }
 
@@ -171,13 +169,12 @@ StdCmdCloseAllWindows::StdCmdCloseAllWindows()
     sToolTipText  = QT_TR_NOOP("Close all windows");
     sWhatsThis    = "Std_CloseAllWindows";
     sStatusTip    = QT_TR_NOOP("Close all windows");
-    sPixmap       = "Std_CloseAllWindows";
     eType         = NoTransaction;
 }
 
 void StdCmdCloseAllWindows::activated(int iMsg)
 {
-    Q_UNUSED(iMsg);
+    Q_UNUSED(iMsg); 
     getMainWindow()->closeAllDocuments();
 }
 
@@ -206,7 +203,7 @@ StdCmdActivateNextWindow::StdCmdActivateNextWindow()
 
 void StdCmdActivateNextWindow::activated(int iMsg)
 {
-    Q_UNUSED(iMsg);
+    Q_UNUSED(iMsg); 
     getMainWindow()->activateNextWindow();
 }
 
@@ -235,7 +232,7 @@ StdCmdActivatePrevWindow::StdCmdActivatePrevWindow()
 
 void StdCmdActivatePrevWindow::activated(int iMsg)
 {
-    Q_UNUSED(iMsg);
+    Q_UNUSED(iMsg); 
     getMainWindow()->activatePreviousWindow();
 }
 
@@ -263,7 +260,7 @@ StdCmdWindows::StdCmdWindows()
 
 void StdCmdWindows::activated(int iMsg)
 {
-    Q_UNUSED(iMsg);
+    Q_UNUSED(iMsg); 
     Gui::Dialog::DlgActivateWindowImp dlg( getMainWindow() );
     dlg.exec();
 }
@@ -309,7 +306,7 @@ StdCmdDockViewMenu::StdCmdDockViewMenu()
 void StdCmdDockViewMenu::activated(int iMsg)
 {
     // Handled by the related QAction objects
-    Q_UNUSED(iMsg);
+    Q_UNUSED(iMsg); 
 }
 
 bool StdCmdDockViewMenu::isActive(void)
@@ -345,7 +342,7 @@ StdCmdToolBarMenu::StdCmdToolBarMenu()
 void StdCmdToolBarMenu::activated(int iMsg)
 {
     // Handled by the related QAction objects
-    Q_UNUSED(iMsg);
+    Q_UNUSED(iMsg); 
 }
 
 bool StdCmdToolBarMenu::isActive(void)
@@ -365,24 +362,6 @@ Action * StdCmdToolBarMenu::createAction(void)
 // Std_ViewStatusBar
 //===========================================================================
 
-class FilterStatusBar : public QObject
-{
-//    Q_OBJECT
-
-public:
-    FilterStatusBar(Action * action):QObject() {this->action = action;}
-//    virtual ~FilterStatusBar() {}
-protected:
-    Action * action;
-    bool eventFilter(QObject *obj, QEvent *event)
-    {
-        if (getMainWindow()->findChild<QStatusBar *>() != nullptr && obj == getMainWindow()->statusBar() && ((event->type() == QEvent::Hide) || (event->type() == QEvent::Show))) {
-            this->action->setChecked(getMainWindow()->statusBar()->isVisible());
-        }
-        return false;
-    }
-};
-
 DEF_STD_CMD_AC(StdCmdStatusBar)
 
 StdCmdStatusBar::StdCmdStatusBar()
@@ -400,9 +379,7 @@ Action * StdCmdStatusBar::createAction(void)
 {
     Action *pcAction = Command::createAction();
     pcAction->setCheckable(true);
-    pcAction->setChecked(false, true);
-    FilterStatusBar *fsb = new FilterStatusBar(pcAction);
-    getMainWindow()->statusBar()->installEventFilter(fsb);
+    pcAction->setChecked(true);
 
     return pcAction;
 }
@@ -445,7 +422,7 @@ StdCmdWindowsMenu::StdCmdWindowsMenu()
 void StdCmdWindowsMenu::activated(int iMsg)
 {
     // already handled by the main window
-    Q_UNUSED(iMsg);
+    Q_UNUSED(iMsg); 
 }
 
 bool StdCmdWindowsMenu::isActive(void)
@@ -503,3 +480,5 @@ void CreateWindowStdCommands(void)
 }
 
 } // namespace Gui
+
+

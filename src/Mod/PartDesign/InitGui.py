@@ -39,10 +39,7 @@ class PartDesignWorkbench ( Workbench ):
     def Initialize(self):
         # load the module
         try:
-            import traceback
             from PartDesign.WizardShaft import WizardShaft
-        except RuntimeError:
-            print ("{}".format(traceback.format_exc()))
         except ImportError:
             print("Wizard shaft module cannot be loaded")
             try:
@@ -54,7 +51,6 @@ class PartDesignWorkbench ( Workbench ):
         import PartDesign
         try:
             from PartDesign import InvoluteGearFeature
-            from PartDesign import SprocketFeature
         except ImportError:
             print("Involute gear module cannot be loaded")
             #try:

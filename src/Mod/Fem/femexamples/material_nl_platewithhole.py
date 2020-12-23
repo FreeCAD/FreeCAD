@@ -1,6 +1,5 @@
 # ***************************************************************************
 # *   Copyright (c) 2019 Bernd Hahnebach <bernd@bimstatik.org>              *
-# *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com    *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -10,48 +9,23 @@
 # *   the License, or (at your option) any later version.                   *
 # *   for detail see the LICENCE text file.                                 *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
+# *   FreeCAD is distributed in the hope that it will be useful,            *
 # *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
 # *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
 # *   GNU Library General Public License for more details.                  *
 # *                                                                         *
 # *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
+# *   License along with FreeCAD; if not, write to the Free Software        *
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
 
-# to run the example use:
-"""
-from femexamples.material_nl_platewithhole import setup
-setup()
-
-"""
-
-# Nonlinear material example, plate with hole.
-
-# https://forum.freecadweb.org/viewtopic.php?f=24&t=31997&start=30
-# https://forum.freecadweb.org/viewtopic.php?t=33974&start=90
-# https://forum.freecadweb.org/viewtopic.php?t=35893
-# https://forum.freecadweb.org/viewtopic.php?t=23101
-
-# plate: 400x200x10 mm
-# hole: diameter 100 mm (half cross section)
-# load: 130 MPa tension
-# linear material: Steel, E = 210000 MPa, my = 0.3
-# nonlinear material: '240.0, 0.0' to '270.0, 0.025'
-# TODO nonlinear material: give more information, use values from harry
-# TODO compare results with example from HarryvL
 
 import FreeCAD
-from FreeCAD import Vector as vec
-
-import Fem
 import ObjectsFem
-import Part
-from Part import makeCircle as ci
-from Part import makeLine as ln
+import Fem
+
 
 mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
 
@@ -62,25 +36,32 @@ def init_doc(doc=None):
     return doc
 
 
-def get_information():
-    info = {"name": "Material NL Plate with Hole",
-            "meshtype": "solid",
-            "meshelement": "Tet10",
-            "constraints": ["fixed", "force"],
-            "solvers": ["calculix"],
-            "material": "multimaterial",
-            "equation": "mechanical"
-            }
-    return info
-
-
 def setup(doc=None, solvertype="ccxtools"):
-    # setup model
+    """ Nonlinear material example, plate with hole.
+
+    https://forum.freecadweb.org/viewtopic.php?f=24&t=31997&start=30
+    https://forum.freecadweb.org/viewtopic.php?t=33974&start=90
+    https://forum.freecadweb.org/viewtopic.php?t=35893
+
+    plate: 400x200x10 mm
+    hole: diameter 100 mm (half cross section)
+    load: 130 MPa tension
+    linear material: Steel, E = 210000 MPa, my = 0.3
+    nonlinear material: '240.0, 0.0' to '270.0, 0.025'
+    TODO nonlinear material: give more information, use values from harry
+    TODO compare results with example from HarryvL
+
+    """
 
     if doc is None:
         doc = init_doc()
 
-    # geometry objects
+    # part
+    import Part
+    from FreeCAD import Vector as vec
+    from Part import makeLine as ln
+    from Part import makeCircle as ci
+
     v1 = vec(-200, -100, 0)
     v2 = vec(200, -100, 0)
     v3 = vec(200, 100, 0)
@@ -92,13 +73,14 @@ def setup(doc=None, solvertype="ccxtools"):
     v5 = vec(0, 0, 0)
     c1 = ci(50, v5)
     face = Part.makeFace([Part.Wire([l1, l2, l3, l4]), c1], "Part::FaceMakerBullseye")
-    geom_obj = doc.addObject("Part::Feature", "Hole_Plate")
-    geom_obj.Shape = face.extrude(vec(0, 0, 10))
+    partfem = doc.addObject("Part::Feature", "Hole_Plate")
+    partfem.Shape = face.extrude(vec(0, 0, 10))
     doc.recompute()
 
     if FreeCAD.GuiUp:
-        geom_obj.ViewObject.Document.activeView().viewAxonometric()
-        geom_obj.ViewObject.Document.activeView().fitAll()
+        import FreeCADGui
+        FreeCADGui.ActiveDocument.activeView().viewAxonometric()
+        FreeCADGui.SendMsgToActiveView("ViewFit")
 
     # analysis
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
@@ -113,13 +95,7 @@ def setup(doc=None, solvertype="ccxtools"):
             ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
         )[0]
         solver.WorkingDir = u""
-    else:
-        FreeCAD.Console.PrintWarning(
-            "Not known or not supported solver type: {}. "
-            "No solver object was created.\n".format(solvertype)
-        )
     if solvertype == "calculix" or solvertype == "ccxtools":
-        solver.SplitInputWriter = False
         solver.AnalysisType = "static"
         solver.GeometricalNonlinearity = "linear"
         solver.ThermoMechSteadyState = False
@@ -151,13 +127,13 @@ def setup(doc=None, solvertype="ccxtools"):
     fixed_constraint = analysis.addObject(
         ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
     )[0]
-    fixed_constraint.References = [(geom_obj, "Face4")]
+    fixed_constraint.References = [(partfem, "Face4")]
 
     # force constraint
     pressure_constraint = doc.Analysis.addObject(
         ObjectsFem.makeConstraintPressure(doc, "ConstraintPressure")
     )[0]
-    pressure_constraint.References = [(geom_obj, "Face2")]
+    pressure_constraint.References = [(partfem, "Face2")]
     pressure_constraint.Pressure = 130.0
     pressure_constraint.Reversed = True
 
@@ -171,11 +147,16 @@ def setup(doc=None, solvertype="ccxtools"):
     if not control:
         FreeCAD.Console.PrintError("Error on creating elements.\n")
     femmesh_obj = analysis.addObject(
-        ObjectsFem.makeMeshGmsh(doc, mesh_name)
+        doc.addObject("Fem::FemMeshObject", mesh_name)
     )[0]
     femmesh_obj.FemMesh = fem_mesh
-    femmesh_obj.Part = geom_obj
-    femmesh_obj.SecondOrderLinear = False
 
     doc.recompute()
     return doc
+
+
+"""
+from femexamples import material_nl_platewithhole as nlmat
+nlmat.setup()
+
+"""

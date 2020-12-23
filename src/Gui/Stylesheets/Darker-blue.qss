@@ -1,7 +1,7 @@
 /*
 ABOUT
 ============================================================================================================
-version 2.22
+version 2.20
 Qt theme (stylesheet) specially developed for FreeCAD (https://www.freecadweb.org/).
 It might work with other software that uses Qt styling.
 
@@ -57,8 +57,7 @@ If you would like to change the overall look/style of the theme, just find and r
 
 KNOWN BUGS and TO DO
 ============================================================================================================
-Please, follow the link to get updated information: https://forum.freecadweb.org/viewtopic.php?f=10&t=12417
-
+- please, follow the link to get updated information: https://forum.freecadweb.org/viewtopic.php?f=10&t=12417
 */
 
 
@@ -97,18 +96,6 @@ QMdiArea {
     background-image: url(qss:images_dark-light/background_freecad_dark.svg);
     background-position: center center;
     background-repeat: no-repeat;
-}
-
-
-/*==================================================================================================
-Sub windows
-==================================================================================================*/
-QMdiSubWindow {
-    border:1px solid #333333;
-    margin-top: 30px;    
-    margin-left: 4px;    
-    margin-right: 4px;
-    margin-bottom:4px;
 }
 
 
@@ -259,16 +246,6 @@ QGroupBox:title {
     top: -8px;
     left: 12px;
 }
-
-/* NOTE: QGroupBox checkboxes are styles with regular ones so that the all get the same style */
-/* QGroupBox::indicator {
-    width: 13px;
-    height: 13px;
-}
-
-QGroupBox::indicator:unchecked {
-    image: url(:/images/checkbox_unchecked.png);
-} */
 
 
 /*==================================================================================================
@@ -1177,8 +1154,8 @@ QDateEdit,
 QDateTimeEdit {
     color: #bebebe;
     background-color: #2a2a2a;
-    selection-color: white;
-    selection-background-color: #1b3774 ;
+    selection-color: #cbd8e6;
+    selection-background-color: #2053c0;
     border: 1px solid #2a2a2a;
     border-radius: 3px;
     min-width: 50px; /* it ensures the default value is correctly displayed */
@@ -1666,8 +1643,7 @@ QCheckBox:disabled {
     background-color: transparent;
 }
 
-QCheckBox::indicator,
-QGroupBox::indicator {
+QCheckBox::indicator {
     color: black;
     background-color: rgba(0,0,0,40);
     border: 1px solid #787878;
@@ -1679,16 +1655,11 @@ QGroupBox::indicator {
 QCheckBox::indicator:pressed,
 QCheckBox::indicator:non-exclusive:checked:pressed,
 QCheckBox::indicator:indeterminate:pressed,
-QCheckBox::indicator:checked:pressed,
-QGroupBox::indicator:pressed,
-QGroupBox::indicator:non-exclusive:checked:pressed,
-QGroupBox::indicator:indeterminate:pressed,
-QGroupBox::indicator:checked:pressed {
+QCheckBox::indicator:checked:pressed {
     border-color: #cbd8e6;
 }
 
-QCheckBox::indicator:checked,
-QGroupBox::indicator:checked {
+QCheckBox::indicator:checked {
     background-color: #2053c0; /* QRadioButton has the same color */
     border: 1px solid #2053c0; /* QRadioButton has the same color */
     image:url(qss:images_dark-light/checkbox_light.svg);
@@ -1699,14 +1670,12 @@ QCheckBox:disabled {
     background-color: transparent;
 }
 
-QCheckBox::indicator:disabled,
-QGroupBox::indicator:disabled {
+QCheckBox::indicator:disabled {
     background-color: rgba(0,0,0,0);
     border: 1px solid rgba(0,0,0,20);
 }
 
-QCheckBox::indicator:indeterminate,
-QGroupBox::indicator:indeterminate {
+QCheckBox::indicator:indeterminate {
     background-color: #2053c0;
     border: 1px solid #2053c0;
     image: url(qss:images_dark-light/checkbox_indeterminate_light.svg);
@@ -2143,7 +2112,7 @@ QTableView > QWidget > QDateTimeEdit:read-only {
 
 
 /*==================================================================================================
-SELECTORTOOLBAR widget (3rd party plugin)
+TABBAR widget (3rd party plugin)
 ==================================================================================================*/
 QToolBar:horizontal#Selector,
 QToolBar:vertical#Selector {
@@ -2182,7 +2151,7 @@ QToolButton[toolbar_orientation="horizontal"] {
 }
 
 QToolButton[toolbar_orientation="vertical"] {
-    /* nothing, when Horizontal there's no need to add special parameters */
+    width: 100%;
 }
 
 QToolBar#Selector QToolButton {
@@ -2214,24 +2183,6 @@ QToolBar#Selector QToolButton:!checked:hover {
 /* Unactive tabs (pressed) */
 QToolBar#Selector QToolButton:!checked:pressed {
     background-color: rgba(255,255,255,40);
-}
-
-
-/*==================================================================================================
-TABBAR widget (3rd party plugin)
-==================================================================================================*/
-QTabWidget#TabBar > QTabBar {
-    border-top: 0;
-}
-
-QTabWidget#TabBar > QTabBar::tab:top,
-QTabWidget#TabBar > QTabBar::tab:bottom {
-    min-width: -1;
-}
-
-QTabWidget#TabBar > QTabBar::tab:left,
-QTabWidget#TabBar > QTabBar::tab:right {
-    min-height: -1;
 }
 
 

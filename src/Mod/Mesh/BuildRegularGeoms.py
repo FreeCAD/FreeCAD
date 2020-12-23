@@ -1,10 +1,9 @@
-# Copyright (c) 2005 Berthold Grupp
-# License: LGPL
-
-
 """Python Module for building solid regular geometric objects.
 
 Return value are list of vectors, 3 vectors define a facet.
+
+Copyright (c) Berthold Grupp          2005
+License: LGPL
 
 Sample code for creating a mesh:
 	facets = Cube(3.0, 4.0, 5.0)
@@ -17,9 +16,9 @@ import math
 
 def Sphere (radius, count):
     """Creates a sphere with a given radius.
-
+    
     bla bla bla
-
+    
     """
     return Ellipsoid(radius, radius, count)
 
@@ -92,9 +91,9 @@ def Toroid (radius1, radius2, count):
 
 def RotationBody (polyline, count):
     """Build a rotation body from a given (closed) polyline, rotation axis is the X-Axis.
-
+    
     Parameter: polyline: list of tuple of 2 floats (2d vector)
-
+    
     """
     facets = []
 

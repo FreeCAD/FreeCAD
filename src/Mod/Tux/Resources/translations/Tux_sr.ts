@@ -11,7 +11,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="63"/>
       <source>Zoom</source>
-      <translation>Приближити</translation>
+      <translation type="unfinished">Zoom</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="64"/>
@@ -21,37 +21,37 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="65"/>
       <source>Pan</source>
-      <translation>Померити</translation>
+      <translation type="unfinished">Pan</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="66"/>
       <source>Tilt</source>
-      <translation>Нагнути</translation>
+      <translation type="unfinished">Tilt</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="67"/>
       <source>Navigation style</source>
-      <translation>Стил навигације</translation>
+      <translation type="unfinished">Navigation style</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="68"/>
       <source>Page Up or Page Down key.</source>
-      <translation>Page Up или Page Down дугме.</translation>
+      <translation type="unfinished">Page Up or Page Down key.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="69"/>
       <source>Rotation focus</source>
-      <translation>Фокус ротације</translation>
+      <translation type="unfinished">Rotation focus</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="71"/>
       <source>Middle mouse button.</source>
-      <translation>Средње дугме миша.</translation>
+      <translation type="unfinished">Middle mouse button.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="74"/>
       <source>Navigation style not recognized.</source>
-      <translation>Стил навигације није препознат.</translation>
+      <translation type="unfinished">Navigation style not recognized.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="291"/>
@@ -66,12 +66,12 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="293"/>
       <source>Compact</source>
-      <translation>Компактно</translation>
+      <translation type="unfinished">Compact</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="294"/>
       <source>Tooltip</source>
-      <translation>Објашњење</translation>
+      <translation type="unfinished">Tooltip</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="295"/>
@@ -91,7 +91,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="70"/>
       <source>Middle mouse button or H key.</source>
-      <translation>Средње дугме миша или H дугме.</translation>
+      <translation type="unfinished">Middle mouse button or H key.</translation>
     </message>
   </context>
 </TS>

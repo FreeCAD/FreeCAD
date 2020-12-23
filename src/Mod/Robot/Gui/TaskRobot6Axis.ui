@@ -304,6 +304,7 @@
     <widget class="QLabel" name="label_TCP">
      <property name="font">
       <font>
+       <family>Arial</family>
        <pointsize>7</pointsize>
        <weight>75</weight>
        <bold>true</bold>
@@ -320,6 +321,7 @@
       <widget class="QLabel" name="label_Tool">
        <property name="font">
         <font>
+         <family>Arial</family>
          <pointsize>8</pointsize>
          <weight>75</weight>
          <bold>true</bold>

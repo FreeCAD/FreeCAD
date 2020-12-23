@@ -37,36 +37,25 @@
 #include <qmath.h>
 #include "Rez.h"
 #include "DrawGuiUtil.h"
-#include "PreferencesGui.h"
 #include "QGIView.h"
 #include "QGIHighlight.h"
 
 using namespace TechDrawGui;
-using namespace TechDraw;
 
 QGIHighlight::QGIHighlight()
 {
     m_refText = "";
     m_refSize = 0.0;
-    setInteractive(false);
-
     m_circle = new QGraphicsEllipseItem();
     addToGroup(m_circle);
-    m_circle->setFlag(QGraphicsItem::ItemIsSelectable, false);
-
     m_rect = new QGCustomRect();
     addToGroup(m_rect);
-    m_rect->setFlag(QGraphicsItem::ItemIsSelectable, false);
-
     m_reference = new QGCustomText();
     addToGroup(m_reference);
-    m_reference->setFlag(QGraphicsItem::ItemIsSelectable, false);
 
     setWidth(Rez::guiX(0.75));
-}
-
-QGIHighlight::~QGIHighlight()
-{
+    setStyle(getHighlightStyle());
+    setColor(getHighlightColor());
 
 }
 
@@ -111,15 +100,6 @@ void QGIHighlight::makeReference()
     }
 }
 
-void QGIHighlight::setInteractive(bool state)
-{
-//    setAcceptHoverEvents(state);
-    setFlag(QGraphicsItem::ItemIsSelectable, state);
-    setFlag(QGraphicsItem::ItemIsMovable, state);
-    setFlag(QGraphicsItem::ItemSendsScenePositionChanges, state);
-    setFlag(QGraphicsItem::ItemSendsGeometryChanges, state);
-}
-
 void QGIHighlight::setBounds(double x1,double y1,double x2,double y2)
 {
     m_start = QPointF(Rez::guiX(x1),Rez::guiX(-y1));
@@ -138,26 +118,34 @@ void QGIHighlight::setFont(QFont f, double fsize)
 }
 
 
-//obs?
 QColor QGIHighlight::getHighlightColor()
 {
-    return PreferencesGui::sectionLineQColor();
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
+    App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("SectionColor", 0x08080800));
+    return fcColor.asValue<QColor>();
 }
 
-//obs??
 Qt::PenStyle QGIHighlight::getHighlightStyle()
 {
-    return PreferencesGui::sectionLineStyle();
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
+                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw");
+    Qt::PenStyle sectStyle = static_cast<Qt::PenStyle> (hGrp->GetInt("SectionLine",2));
+    return sectStyle;
 }
 
 int QGIHighlight::getHoleStyle()
 {
-    return PreferencesGui::mattingStyle();
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+                                        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
+    int style = hGrp->GetInt("MattingStyle", 1l);
+    return style;
 }
+
 
 void QGIHighlight::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
     QStyleOptionGraphicsItem myOption(*option);
-//    myOption.state &= ~QStyle::State_Selected;
+    myOption.state &= ~QStyle::State_Selected;
 
     setTools();
 //    painter->drawRect(boundingRect());          //good for debugging
@@ -177,4 +165,3 @@ void QGIHighlight::setTools()
 
     m_reference->setDefaultTextColor(m_colCurrent);
 }
-

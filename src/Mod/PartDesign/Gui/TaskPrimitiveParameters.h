@@ -24,7 +24,6 @@
 #ifndef GUI_TASKVIEW_TaskPrimitiveParameters_H
 #define GUI_TASKVIEW_TaskPrimitiveParameters_H
 
-#include <memory>
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
 #include <Gui/DocumentObserver.h>
@@ -35,6 +34,9 @@
 #include "TaskDatumParameters.h"
 #include <Mod/PartDesign/App/DatumCS.h>
 #include <Mod/PartDesign/App/FeaturePrimitive.h>
+#include "ui_TaskPrimitiveParameters.h"
+
+class Ui_TaskPrimitiveParameters;
 
 namespace App {
 class Property;
@@ -45,7 +47,7 @@ class ViewProvider;
 }
 
 namespace PartDesignGui { 
-class Ui_DlgPrimitives;
+
 class TaskBoxPrimitives : public Gui::TaskView::TaskBox,
                           public Gui::DocumentObserver
 {
@@ -85,19 +87,17 @@ public Q_SLOTS:
     void onTorusAngle3Changed(double);
     void onPrismCircumradiusChanged(double);
     void onPrismHeightChanged(double);
-    void onPrismXSkewChanged(double);
-    void onPrismYSkewChanged(double);
     void onPrismPolygonChanged(int);
     void onWedgeXmaxChanged(double);
-    void onWedgeXminChanged(double);
+    void onWedgeXinChanged(double);
     void onWedgeYmaxChanged(double);
-    void onWedgeYminChanged(double);
+    void onWedgeYinChanged(double);
     void onWedgeZmaxChanged(double);
-    void onWedgeZminChanged(double);
+    void onWedgeZinChanged(double);
     void onWedgeX2maxChanged(double);
-    void onWedgeX2minChanged(double);
+    void onWedgeX2inChanged(double);
     void onWedgeZ2maxChanged(double);
-    void onWedgeZ2minChanged(double);
+    void onWedgeZ2inChanged(double);
 
 private:
     /** Notifies when the object is about to be removed. */
@@ -105,7 +105,7 @@ private:
 
 private:
     QWidget* proxy;
-    std::unique_ptr<Ui_DlgPrimitives> ui;
+    Ui_DlgPrimitives ui;
     ViewProviderPrimitive* vp;
 };
 

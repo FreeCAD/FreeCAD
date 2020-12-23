@@ -46,7 +46,7 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderViewClip, TechDrawGui::ViewProviderDraw
 
 ViewProviderViewClip::ViewProviderViewClip()
 {
-    sPixmap = "actions/techdraw-ClipGroup";
+    sPixmap = "actions/techdraw-clip";
 
     // Do not show in property editor
     //DisplayMode.StatusBits.set(3, true);
@@ -120,14 +120,6 @@ void ViewProviderViewClip::hide(void)
 bool ViewProviderViewClip::isShow(void) const
 {
     return Visibility.getValue();
-}
-
-bool ViewProviderViewClip::canDelete(App::DocumentObject *obj) const
-{
-    // deletions of Clip objects don't destroy anything
-    // thus we can pass this action
-    Q_UNUSED(obj)
-    return true;
 }
 
 TechDraw::DrawViewClip* ViewProviderViewClip::getViewObject() const

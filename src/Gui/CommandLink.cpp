@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (c) 2017 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
+ *   Copyright (c) 2017 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -96,13 +96,9 @@ Action * StdCmdLinkMakeGroup::createAction(void)
     applyCommandData(this->className(), pcAction);
 
     // add the action items
-    QAction* action = nullptr;
-    action = pcAction->addAction(QObject::tr("Simple group"));
-    action->setWhatsThis(QString::fromLatin1(sWhatsThis));
-    action = pcAction->addAction(QObject::tr("Group with links"));
-    action->setWhatsThis(QString::fromLatin1(sWhatsThis));
-    action = pcAction->addAction(QObject::tr("Group with transform links"));
-    action->setWhatsThis(QString::fromLatin1(sWhatsThis));
+    pcAction->addAction(QObject::tr("Simple group"));
+    pcAction->addAction(QObject::tr("Group with links"));
+    pcAction->addAction(QObject::tr("Group with transform links"));
     return pcAction;
 }
 
@@ -140,7 +136,7 @@ void StdCmdLinkMakeGroup::activated(int option) {
     Selection().selStackPush();
     Selection().clearCompleteSelection();
 
-    Command::openCommand(QT_TRANSLATE_NOOP("Command", "Make link group"));
+    Command::openCommand("Make link group");
     try {
         std::string groupName = doc->getUniqueObjectName("LinkGroup");
         Command::doCommand(Command::Doc,
@@ -236,7 +232,7 @@ void StdCmdLinkMake::activated(int) {
     Selection().selStackPush();
     Selection().clearCompleteSelection();
 
-    Command::openCommand(QT_TRANSLATE_NOOP("Command", "Make link"));
+    Command::openCommand("Make link");
     try {
         if(objs.empty()) {
             std::string name = doc->getUniqueObjectName("Link");
@@ -289,7 +285,7 @@ void StdCmdLinkMakeRelative::activated(int) {
         FC_ERR("no active document");
         return;
     }
-    Command::openCommand(QT_TRANSLATE_NOOP("Command", "Make sub-link"));
+    Command::openCommand("Make sub-link");
     try {
         std::map<std::pair<App::DocumentObject*,std::string>,
                  std::pair<App::DocumentObject*, std::vector<std::string> > > linkInfo;
@@ -320,7 +316,7 @@ void StdCmdLinkMakeRelative::activated(int) {
                 ss << "'" << s << "',";
             ss << ']';
             FCMD_DOC_CMD(doc,"addObject('App::Link','" << name << "').setLink("
-                    << getObjectCmd(key.first) << ",'" << key.second
+                    << getObjectCmd(key.first) << ",'" << key.second 
                     << "'," << ss.str() << ")");
             auto link = doc->getObject(name.c_str());
             FCMD_OBJ_CMD(link,"LinkTransform = True");
@@ -547,7 +543,7 @@ StdCmdLinkImport::StdCmdLinkImport()
     sPixmap       = "LinkImport";
 }
 
-static std::map<App::Document*, std::vector<App::DocumentObject*> > getLinkImportSelections()
+static std::map<App::Document*, std::vector<App::DocumentObject*> > getLinkImportSelections() 
 {
     std::map<App::Document*, std::vector<App::DocumentObject*> > objMap;
     for(auto &sel : Selection().getCompleteSelection(false)) {
@@ -576,7 +572,7 @@ bool StdCmdLinkImport::isActive() {
 }
 
 void StdCmdLinkImport::activated(int) {
-    Command::openCommand(QT_TRANSLATE_NOOP("Command", "Import links"));
+    Command::openCommand("Import links");
     try {
         WaitCursor wc;
         wc.setIgnoreEvents(WaitCursor::NoEvents);
@@ -617,7 +613,7 @@ bool StdCmdLinkImportAll::isActive() {
 }
 
 void StdCmdLinkImportAll::activated(int) {
-    Command::openCommand(QT_TRANSLATE_NOOP("Command", "Import all links"));
+    Command::openCommand("Import all links");
     try {
         WaitCursor wc;
         wc.setIgnoreEvents(WaitCursor::NoEvents);
@@ -678,7 +674,7 @@ static App::DocumentObject *getSelectedLink(bool finalLink, std::string *subname
             if(obj->getDocument()!=sels[0].pObject->getDocument()) {
                 if(finalLink)
                     return sobj==obj?0:sobj;
-                if(subname)
+                if(subname) 
                     *subname = std::string(dot+1);
                 return obj;
             }
@@ -705,7 +701,7 @@ static App::DocumentObject *getSelectedLink(bool finalLink, std::string *subname
         for(auto &v : linked->getParents()) {
             if(v.first != sels[0].pObject)
                 continue;
-
+            
             const char *sub = v.second.c_str();
             const char *dot = sub;
             for(const char *s=sels[0].SubName; *s && *sub==*s; ++s,++sub) {
@@ -713,9 +709,9 @@ static App::DocumentObject *getSelectedLink(bool finalLink, std::string *subname
                     dot = sub;
             }
             found = true;
-            if(dot-v.second.c_str() > pre_len
-                    || (dot-v.second.c_str()==pre_len
-                        && v.second.size()<post_len))
+            if(dot-v.second.c_str() > pre_len 
+                    || (dot-v.second.c_str()==pre_len 
+                        && v.second.size()<post_len)) 
             {
                 pre_len = dot-v.second.c_str();
                 prefix = std::string(sels[0].SubName,pre_len) + (v.second.c_str()+pre_len);

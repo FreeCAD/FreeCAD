@@ -8484,9 +8484,9 @@ int yy_flex_debug = 0;
 char *yytext;
 #line 1 "<stdin>"
 #line 2 "<stdin>"
-/* Lexer for the FreeCAD Expression language   */
-/* (c) 2010 Jürgen Riegel  LGPL                */
-/* (c) 2015 Eivind Kvedalen LGPL               */
+/* Lexer for the FreeCAD  Expression language   */
+/* (c) 2010 Juergen Riegel  LGPL           */
+/* (c) 2015 Eivind Kvedalen LGPL           */
 
 
 /* This disables inclusion of unistd.h, which is not available under Visual C++
@@ -9286,9 +9286,9 @@ YY_RULE_SETUP
                             s.erase(i + 1);
                             std::map<std::string, FunctionExpression::Function>::const_iterator j = registered_functions.find(s);
                             if (j != registered_functions.end())
-                              yylval.func.first = j->second;
+                              yylval.func = j->second;
                             else
-                            { yylval.func.first = FunctionExpression::NONE; yylval.func.second = std::move(s); }
+                              yylval.func = FunctionExpression::NONE;
                             return FUNC;
                         }
 	YY_BREAK

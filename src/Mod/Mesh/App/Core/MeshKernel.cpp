@@ -259,10 +259,8 @@ unsigned long MeshKernel::AddFacets(const std::vector<MeshFacet> &rclFAry,
 
     // Do not insert directly to the data structure because we should get the correct size of new
     // facets, otherwise std::vector reallocates too much memory which can't be freed so easily
-    MeshIsNotFlag<MeshFacet> flag;
-    unsigned long countValid = std::count_if(rclFAry.begin(), rclFAry.end(), [flag](const MeshFacet& f) {
-        return flag(f, MeshFacet::INVALID);
-    });
+    unsigned long countValid = std::count_if(rclFAry.begin(), rclFAry.end(),
+        std::bind2nd(MeshIsNotFlag<MeshFacet>(), MeshFacet::INVALID));
     _aclFacetArray.reserve( _aclFacetArray.size() + countValid );
     // now start inserting the facets to the data structure and set the correct neighbourhood as well
     unsigned long startIndex = CountFacets();
@@ -376,9 +374,8 @@ void MeshKernel::Merge(const MeshPointArray& rPoints, const MeshFacetArray& rFac
         this->_aclFacetArray.push_back(face);
     }
 
-    unsigned long countNewPoints = std::count_if(increments.begin(), increments.end(),[](unsigned long v) {
-        return v > 0;
-    });
+    unsigned long countNewPoints = std::count_if(increments.begin(), increments.end(),
+                                   std::bind2nd(std::greater<unsigned long>(), 0));
     // Reserve the additional memory to append the new points
     unsigned long index = this->_aclPointArray.size();
     this->_aclPointArray.reserve(this->_aclPointArray.size() + countNewPoints);
@@ -660,7 +657,7 @@ void MeshKernel::RemoveInvalids ()
 
     // delete point, number of valid points
     unsigned long ulNewPts = std::count_if(_aclPointArray.begin(), _aclPointArray.end(),
-                                           [](const MeshPoint& p) { return p.IsValid(); });
+        std::mem_fun_ref(&MeshPoint::IsValid));
     // tmp. point array
     MeshPointArray  aclTempPt(ulNewPts);
     MeshPointArray::_TIterator pPTemp = aclTempPt.begin();
@@ -705,7 +702,7 @@ void MeshKernel::RemoveInvalids ()
 
     // delete facets, number of valid facets
     unsigned long ulDelFacets = std::count_if(_aclFacetArray.begin(), _aclFacetArray.end(),
-                                              [](const MeshFacet& f) { return f.IsValid(); });
+        std::mem_fun_ref(&MeshFacet::IsValid));
     MeshFacetArray aclFArray(ulDelFacets);
     MeshFacetArray::_TIterator pFTemp = aclFArray.begin();  
     pFEnd  = _aclFacetArray.end();
@@ -748,36 +745,11 @@ std::vector<unsigned long> MeshKernel::GetFacetPoints(const std::vector<unsigned
         points.push_back(p0);
         points.push_back(p1);
         points.push_back(p2);
-    }
+  }
 
     std::sort(points.begin(), points.end());
     points.erase(std::unique(points.begin(), points.end()), points.end());
     return points;
-}
-
-std::vector<unsigned long> MeshKernel::GetPointFacets(const std::vector<unsigned long>& points) const
-{
-    _aclPointArray.ResetFlag(MeshPoint::TMP0);
-    _aclFacetArray.ResetFlag(MeshFacet::TMP0);
-    for (std::vector<unsigned long>::const_iterator pI = points.begin(); pI != points.end(); ++pI)
-        _aclPointArray[*pI].SetFlag(MeshPoint::TMP0);
-
-    // mark facets if at least one corner point is marked
-    for (MeshFacetArray::_TConstIterator pF = _aclFacetArray.begin(); pF != _aclFacetArray.end(); ++pF) {
-        const MeshPoint &rclP0 = _aclPointArray[pF->_aulPoints[0]];
-        const MeshPoint &rclP1 = _aclPointArray[pF->_aulPoints[1]];
-        const MeshPoint &rclP2 = _aclPointArray[pF->_aulPoints[2]];
-
-        if (rclP0.IsFlag(MeshPoint::TMP0) ||
-            rclP1.IsFlag(MeshPoint::TMP0) ||
-            rclP2.IsFlag(MeshPoint::TMP0)) {
-            pF->SetFlag(MeshFacet::TMP0);
-        }
-    }
-
-    std::vector<unsigned long> facets;
-    MeshAlgorithm(*this).GetFacetsFlag(facets, MeshFacet::TMP0);
-    return facets;
 }
 
 std::vector<unsigned long> MeshKernel::HasFacets (const MeshPointIterator &rclIter) const
@@ -1077,26 +1049,6 @@ std::vector<Base::Vector3f> MeshKernel::CalcVertexNormals() const
         normals[p1] += Norm;
         normals[p2] += Norm;
         normals[p3] += Norm;
-    }
-
-    return normals;
-}
-
-std::vector<Base::Vector3f> MeshKernel::GetFacetNormals(const std::vector<unsigned long>& facets) const
-{
-    std::vector<Base::Vector3f> normals;
-    normals.reserve(facets.size());
-
-    for (std::vector<unsigned long>::const_iterator it = facets.begin(); it != facets.end(); ++it) {
-        const MeshFacet& face = _aclFacetArray[*it];
-
-        const Base::Vector3f& p1 = _aclPointArray[face._aulPoints[0]];
-        const Base::Vector3f& p2 = _aclPointArray[face._aulPoints[1]];
-        const Base::Vector3f& p3 = _aclPointArray[face._aulPoints[2]];
-
-        Base::Vector3f n = (p2 - p1) % (p3 - p1);
-        n.Normalize();
-        normals.emplace_back(n);
     }
 
     return normals;

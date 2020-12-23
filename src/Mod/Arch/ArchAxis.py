@@ -1,5 +1,7 @@
 #***************************************************************************
-#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
+#*                                                                         *
+#*   Copyright (c) 2011                                                    *
+#*   Yorik van Havre <yorik@uncreated.net>                                 *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -37,9 +39,9 @@ else:
         return txt
     # \endcond
 
-__title__  = "FreeCAD Axis System"
+__title__="FreeCAD Axis System"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecadweb.org"
+__url__ = "http://www.freecadweb.org"
 
 ## @package ArchAxis
 #  \ingroup ARCH
@@ -246,10 +248,10 @@ class _Axis:
             obj.Shape = sh
             obj.Placement = pl
 
-    def onChanged(self,obj,prop):
+    #def onChanged(self,obj,prop):
 
-        if prop in ["Angles","Distances","Placement"]:
-            obj.touch()
+    #    if prop in ["Angles","Distances","Placement"]:
+    #        self.execute(obj)
 
     def __getstate__(self):
 
@@ -1001,9 +1003,8 @@ class AxisSystemTaskPanel:
             return QtGui.QIcon(":/icons/Sketcher_Sketch.svg")
         elif obj.isDerivedFrom("App::DocumentObjectGroup"):
             return QtGui.QApplication.style().standardIcon(QtGui.QStyle.SP_DirIcon)
-        elif hasattr(obj.ViewObject, "Icon"):
-            return QtGui.QIcon(obj.ViewObject.Icon)
-        return QtGui.QIcon(":/icons/Part_3D_object.svg")
+        else:
+            return QtGui.QIcon(":/icons/Tree_Part.svg")
 
     def update(self):
 

@@ -24,23 +24,20 @@
 #ifndef GUI_DIALOG_DLGEDITORSETTINGSIMP_H
 #define GUI_DIALOG_DLGEDITORSETTINGSIMP_H
 
+#include "ui_DlgEditor.h"
 #include "PropertyPage.h"
-#include <memory>
-
-class QTreeWidgetItem;
 
 namespace Gui {
 class PythonSyntaxHighlighter;
 
 namespace Dialog {
-class Ui_DlgEditorSettings;
 
 /** This class implements a preferences page for the editor settings.
  *  Here you can change different color settings and font for editors.
  *  @author Werner Mayer
  */
 struct DlgSettingsEditorP;
-class DlgSettingsEditorImp : public PreferencePage
+class DlgSettingsEditorImp : public PreferencePage, public Ui_DlgEditorSettings
 {
     Q_OBJECT
 
@@ -62,7 +59,6 @@ protected:
     void changeEvent(QEvent *e);
 
 private:
-    std::unique_ptr<Ui_DlgEditorSettings> ui;
     DlgSettingsEditorP* d;
     Gui::PythonSyntaxHighlighter* pythonSyntax;
 

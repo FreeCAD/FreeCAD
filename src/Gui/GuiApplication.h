@@ -83,15 +83,6 @@ private:
     QScopedPointer<Private> d_ptr;
 };
 
-class WheelEventFilter : public QObject
-{
-    Q_OBJECT
-
-public:
-    WheelEventFilter(QObject* parent);
-    bool eventFilter(QObject* obj, QEvent* ev);
-};
-
 }
 
 #endif // GUI_APPLICATION_H

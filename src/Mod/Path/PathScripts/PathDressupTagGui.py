@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+
 # ***************************************************************************
+# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -19,7 +21,6 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-
 import FreeCAD
 import FreeCADGui
 import PathScripts.PathGeom as PathGeom
@@ -421,9 +422,8 @@ class PathDressupTagViewProvider:
         if self.obj.Base.ViewObject:
             self.obj.Base.ViewObject.Visibility = True
         job = PathUtils.findParentJob(self.obj)
-        if arg1.Object and arg1.Object.Base and job:
-            job.Proxy.addOperation(arg1.Object.Base, arg1.Object)
-            arg1.Object.Base = None
+        job.Proxy.addOperation(arg1.Object.Base, arg1.Object)
+        arg1.Object.Base = None
         # if self.debugDisplay():
         #    self.vobj.Debug.removeObjectsFromDocument()
         #    self.vobj.Debug.Document.removeObject(self.vobj.Debug.Name)
@@ -535,7 +535,7 @@ class CommandPathDressupTag:
     # pylint: disable=no-init
 
     def GetResources(self):
-        return {'Pixmap': 'Path_Dressup',
+        return {'Pixmap': 'Path-Dressup',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('Path_DressupTag', 'Tag Dress-up'),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP('Path_DressupTag', 'Creates a Tag Dress-up object from a selected path')}
 

@@ -1,5 +1,7 @@
 # ***************************************************************************
-# *   Copyright (c) 2019 Yorik van Havre <yorik@uncreated.net>              *
+# *                                                                         *
+# *   Copyright (c) 2019                                                    *
+# *   Yorik van Havre <yorik@uncreated.net>                                 *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -35,27 +37,6 @@ def getObjectsOfIfcType(objects, ifcType):
             if object.IfcType == ifcType:
                 results.append(object)
     return results
-
-
-def writeUnits(ifcfile,unit="metre"):
-
-    """adds additional units settings to the given ifc file if needed"""
-    # so far, only metre or foot possible (which is all revit knows anyway)
-
-    if unit == "foot":
-        d1 = ifcfile.createIfcDimensionalExponents(1,0,0,0,0,0,0);
-        d2 = ifcfile.createIfcMeasureWithUnit(ifcfile.createIfcRatioMeasure(0.3048),ifcfile[13])
-        d3 = ifcfile.createIfcConversionBasedUnit(d1,'LENGTHUNIT','FOOT',d2)
-        d4 = ifcfile.createIfcDimensionalExponents(2,0,0,0,0,0,0);
-        d5 = ifcfile.createIfcMeasureWithUnit(ifcfile.createIfcRatioMeasure(0.09290304000000001),ifcfile[14])
-        d6 = ifcfile.createIfcConversionBasedUnit(d4,'AREAUNIT','SQUARE FOOT',d5)
-        d7 = ifcfile.createIfcDimensionalExponents(3,0,0,0,0,0,0);
-        d8 = ifcfile.createIfcMeasureWithUnit(ifcfile.createIfcRatioMeasure(0.028316846592),ifcfile[15])
-        d9 = ifcfile.createIfcConversionBasedUnit(d7,'VOLUMEUNIT','CUBIC FOOT',d8)
-        ifcfile.createIfcUnitAssignment((d3,d6,d9,ifcfile[18]))
-    else: # default = metre, no need to add anything
-        ifcfile.createIfcUnitAssignment((ifcfile[13],ifcfile[14],ifcfile[15],ifcfile[18]))
-    return ifcfile
 
 
 class SIUnitCreator:
@@ -144,7 +125,7 @@ class ContextCreator:
 
     def createTrueNorth(self):
         return self.file.createIfcDirection(
-            (self.calculateXAxisAbscissa(), self.calculateXAxisOrdinate()))
+            (self.calculateXAxisAbscissa(), self.calculateXAxisOrdinate(), 0.))
 
     def calculateXAxisAbscissa(self):
         if "true_north" in self.project_data:
@@ -208,7 +189,6 @@ class recycler:
 
         self.ifcfile = ifcfile
         self.compress = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("ifcCompress",True)
-        self.mergeProfiles = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("ifcMergeProfiles",False)
         self.cartesianpoints = {(0,0,0):self.ifcfile[8]} # from template
         self.directions = {(1,0,0):self.ifcfile[6],(0,0,1):self.ifcfile[7],(0,1,0):self.ifcfile[10]} # from template
         self.polylines = {}
@@ -223,7 +203,6 @@ class recycler:
         self.transformationoperators = {}
         self.psas = {}
         self.spared = 0
-        self.profiledefs = {}
 
     def createIfcCartesianPoint(self,points):
         if self.compress and points in self.cartesianpoints:
@@ -280,11 +259,7 @@ class recycler:
                 self.propertysinglevalues[key] = c
             return c
 
-    def createIfcAxis2Placement3D(self,p1=None,p2=None,p3=None):
-        if not p1:
-            p1 = self.createIfcCartesianPoint((0.0,0.0,0.0))
-            p2 = self.createIfcDirection((0.0,0.0,1.0))
-            p3 = self.createIfcDirection((1.0,0.0,0.0))
+    def createIfcAxis2Placement3D(self,p1,p2,p3):
         if p2:
             tp2 = str(p2.DirectionRatios)
         else:
@@ -314,9 +289,7 @@ class recycler:
                 self.axis2placement2ds[key] = c
             return c
 
-    def createIfcLocalPlacement(self,gpl=None):
-        if not gpl:
-            gpl = self.createIfcAxis2Placement3D()
+    def createIfcLocalPlacement(self,gpl):
         key = str(gpl.Location.Coordinates) + str(gpl.Axis.DirectionRatios) + str(gpl.RefDirection.DirectionRatios)
         if self.compress and key in self.localplacements:
             self.spared += 1
@@ -378,7 +351,7 @@ class recycler:
                 self.sstyles[key] = c
             return c
 
-    def createIfcPresentationStyleAssignment(self,name,r,g,b,t=0,ifc4=False):
+    def createIfcPresentationStyleAssignment(self,name,r,g,b,t=0):
         if name:
             key = name+str((r,g,b,t))
         else:
@@ -388,40 +361,7 @@ class recycler:
             return self.psas[key]
         else:
             iss = self.createIfcSurfaceStyle(name,r,g,b,t)
-            if ifc4:
-                c = iss
-            else:
-                c = self.ifcfile.createIfcPresentationStyleAssignment([iss])
+            c = self.ifcfile.createIfcPresentationStyleAssignment([iss])
             if self.compress:
                 self.psas[key] = c
-            return c
-
-    def createIfcRectangleProfileDef(self,name,mode,pt,b,h):
-        key = "RECT"+str(name)+str(mode)+str(pt)+str(b)+str(h)
-        if self.compress and self.mergeProfiles and key in self.profiledefs:
-            return self.profiledefs[key]
-        else:
-            c = self.ifcfile.createIfcRectangleProfileDef(name,mode,pt,b,h)
-            if self.compress and self.mergeProfiles:
-                self.profiledefs[key] = c
-            return c
-
-    def createIfcCircleProfileDef(self,name,mode,pt,r):
-        key = "CIRC"+str(name)+str(mode)+str(pt)+str(r)
-        if self.compress and self.mergeProfiles and key in self.profiledefs:
-            return self.profiledefs[key]
-        else:
-            c = self.ifcfile.createIfcCircleProfileDef(name,mode,pt,r)
-            if self.compress and self.mergeProfiles:
-                self.profiledefs[key] = c
-            return c
-
-    def createIfcEllipseProfileDef(self,name,mode,pt,majr,minr):
-        key = "ELLI"+str(name)+str(mode)+str(pt)+str(majr)+str(minr)
-        if self.compress and self.mergeProfiles and key in self.profiledefs:
-            return self.profiledefs[key]
-        else:
-            c = self.ifcfile.createIfcEllipseProfileDef(name,mode,pt,majr,minr)
-            if self.compress and self.mergeProfiles:
-                self.profiledefs[key] = c
             return c

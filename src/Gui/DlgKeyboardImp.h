@@ -24,14 +24,11 @@
 #ifndef GUI_DIALOG_DLGKEYBOARD_IMP_H
 #define GUI_DIALOG_DLGKEYBOARD_IMP_H
 
+#include "ui_DlgKeyboard.h"
 #include "PropertyPage.h"
-#include <memory>
-
-class QTreeWidgetItem;
 
 namespace Gui {
 namespace Dialog {
-class Ui_DlgCustomKeyboard;
 
 /** Shows an overview of all available commands of all groups and modules.
  * You can customize your workbenches just by drag&dropping any commands
@@ -40,7 +37,7 @@ class Ui_DlgCustomKeyboard;
  * customize your own toolbars or commandbars.
  * \author Werner Mayer
  */
-class DlgCustomKeyboardImp : public CustomizeActionPage
+class DlgCustomKeyboardImp : public CustomizeActionPage, public Ui_DlgCustomKeyboard
 {
     Q_OBJECT
 
@@ -65,10 +62,8 @@ protected Q_SLOTS:
 
 protected:
     void changeEvent(QEvent *e);
-    void setShortcutOfCurrentAction(const QString&);
 
 private:
-    std::unique_ptr<Ui_DlgCustomKeyboard> ui;
     bool firstShow;
 };
 

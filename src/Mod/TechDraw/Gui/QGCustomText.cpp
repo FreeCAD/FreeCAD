@@ -45,22 +45,21 @@
 #include "DrawGuiUtil.h"
 #include "QGICMark.h"
 #include "QGIView.h"
-#include "PreferencesGui.h"
 #include "QGCustomText.h"
 
 using namespace TechDrawGui;
 
 QGCustomText::QGCustomText(QGraphicsItem* parent) :
-    QGraphicsTextItem(parent), isHighlighted(false)
+    QGraphicsTextItem(parent)
 {
     setCacheMode(QGraphicsItem::NoCache);
     setAcceptHoverEvents(false);
     setFlag(QGraphicsItem::ItemIsSelectable, false);
     setFlag(QGraphicsItem::ItemIsMovable, false);
 
+    isHighlighted = false;
     m_colCurrent = getNormalColor();
     m_colNormal  = m_colCurrent;
-    tightBounding = false;
 }
 
 void QGCustomText::centerAt(QPointF centerPos)
@@ -145,7 +144,7 @@ void QGCustomText::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 
 void QGCustomText::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
-    if(!isSelected()) {
+    if(!isSelected() && !isHighlighted) {
         setPrettyNormal();
     }
     QGraphicsTextItem::hoverLeaveEvent(event);
@@ -174,12 +173,7 @@ void QGCustomText::setColor(QColor c)
     m_colNormal = c;
     m_colCurrent = c;
     QGraphicsTextItem::setDefaultTextColor(c);
-}
-
-void QGCustomText::setTightBounding(bool tight)
-{
-    tightBounding = tight;
-}
+ }
 
 void QGCustomText::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
     QStyleOptionGraphicsItem myOption(*option);
@@ -191,54 +185,30 @@ void QGCustomText::paint ( QPainter * painter, const QStyleOptionGraphicsItem * 
     QGraphicsTextItem::paint (painter, &myOption, widget);
 }
 
-QRectF QGCustomText::boundingRect() const
-{
-    if (toPlainText().isEmpty()) {
-        return QRectF();
-    } else if (tightBounding) {
-        return tightBoundingRect();
-    } else {
-        return QGraphicsTextItem::boundingRect();
-    }
-}
-
-QRectF QGCustomText::tightBoundingRect() const
-{
-    QFontMetrics qfm(font());
-    QRectF result = QGraphicsTextItem::boundingRect();
-    QRectF tight = qfm.tightBoundingRect(toPlainText());
-    qreal x_adj = (result.width() - tight.width())/4.0;
-    qreal y_adj = (result.height() - tight.height())/4.0;
-
-    // Adjust the bounding box 50% towards the Qt tightBoundingRect(),
-    // except chomp some extra empty space above the font (1.75*y_adj)
-    result.adjust(x_adj, 1.75*y_adj, -x_adj, -y_adj);
-
-    return result;
-}
-
-// Calculate the amount of difference between tight and relaxed bounding boxes
-QPointF QGCustomText::tightBoundingAdjust() const
-{
-    QRectF original = QGraphicsTextItem::boundingRect();
-    QRectF tight = tightBoundingRect();
-
-    return QPointF(tight.x()-original.x(), tight.y()-original.y());
-}
-
 QColor QGCustomText::getNormalColor()    //preference!
 {
-    return PreferencesGui::normalQColor();
+    QColor result;
+    Base::Reference<ParameterGrp> hGrp = getParmGroup();
+    App::Color fcColor;
+    fcColor.setPackedValue(hGrp->GetUnsigned("NormalColor", 0x00000000));
+    result = fcColor.asValue<QColor>();
+    return result;
 }
 
 QColor QGCustomText::getPreColor()
 {
-    return PreferencesGui::preselectQColor();
+    Base::Reference<ParameterGrp> hGrp = getParmGroup();
+    App::Color fcColor;
+    fcColor.setPackedValue(hGrp->GetUnsigned("PreSelectColor", 0xFFFF0000));
+    return fcColor.asValue<QColor>();
 }
 
 QColor QGCustomText::getSelectColor()
 {
-    return PreferencesGui::selectQColor();
+    Base::Reference<ParameterGrp> hGrp = getParmGroup();
+    App::Color fcColor;
+    fcColor.setPackedValue(hGrp->GetUnsigned("SelectColor", 0x00FF0000));
+    return fcColor.asValue<QColor>();
 }
 
 Base::Reference<ParameterGrp> QGCustomText::getParmGroup()
@@ -262,4 +232,5 @@ void QGCustomText::makeMark(Base::Vector3d v)
 {
     makeMark(v.x,v.y);
 }
+
 

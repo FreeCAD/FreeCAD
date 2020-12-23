@@ -22,12 +22,12 @@
 
 
 #include "PreCompiled.h"
-#include <sstream>
+#include "PyExport.h"
+#include "Exception.h"
 #if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
 #if defined(__clang__)
 # pragma clang diagnostic push
 # pragma clang diagnostic ignored "-Wdeprecated-register"
-# pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #elif defined (__GNUC__)
 # pragma GCC diagnostic push
 # pragma GCC diagnostic ignored "-Wmissing-field-initializers"
@@ -35,8 +35,6 @@
 # pragma GCC diagnostic ignored "-Wcast-function-type"
 # endif
 #endif
-#include "PyExport.h"
-#include "Exception.h"
 namespace Swig_python {
 #define SWIG_PYTHON_NO_BUILD_NONE
 #include <swigpyrun.h>

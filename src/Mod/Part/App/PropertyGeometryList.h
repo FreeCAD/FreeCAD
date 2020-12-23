@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2010     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -64,7 +64,6 @@ public:
      */
     void setValue(const Geometry*);
     void setValues(const std::vector<Geometry*>&);
-    void setValues(const std::vector<Geometry*>&&);
 
     /// index operator
     const Geometry *operator[] (const int idx) const {

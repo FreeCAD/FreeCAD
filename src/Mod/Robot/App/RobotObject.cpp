@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -163,3 +163,4 @@ void RobotObject::Restore(Base::XMLReader &reader)
     Tcp.setValue(robot.getTcp());
     block = false;
 }
+

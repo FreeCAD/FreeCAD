@@ -1,8 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
-# *   This file is part of the FreeCAD CAx development system.              *
-# *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
 # *   as published by the Free Software Foundation; either version 2 of     *
@@ -21,37 +19,67 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__  = "FreeCAD FEM solver Z88 writer"
+__title__ = "FreeCAD FEM solver Z88 writer"
 __author__ = "Bernd Hahnebach"
-__url__    = "https://www.freecadweb.org"
+__url__ = "http://www.freecadweb.org"
 
 ## \addtogroup FEM
 #  @{
 
-import time
-
 import FreeCAD
+import time
+import femmesh.meshtools as FemMeshTools
+import feminout.importZ88Mesh as importZ88Mesh
+from .. import writerbase as FemInputWriter
 
-from .. import writerbase
-from feminout import importZ88Mesh
-from femmesh import meshtools
 
-
-class FemInputWriterZ88(writerbase.FemInputWriter):
+class FemInputWriterZ88(FemInputWriter.FemInputWriter):
     def __init__(
         self,
         analysis_obj,
         solver_obj,
         mesh_obj,
-        member,
+        matlin_obj,
+        matnonlin_obj,
+        fixed_obj,
+        displacement_obj,
+        contact_obj,
+        planerotation_obj,
+        transform_obj,
+        selfweight_obj,
+        force_obj,
+        pressure_obj,
+        temperature_obj,
+        heatflux_obj,
+        initialtemperature_obj,
+        beamsection_obj,
+        beamrotation_obj,
+        shellthickness_obj,
+        fluidsection_obj,
         dir_name=None
     ):
-        writerbase.FemInputWriter.__init__(
+        FemInputWriter.FemInputWriter.__init__(
             self,
             analysis_obj,
             solver_obj,
             mesh_obj,
-            member,
+            matlin_obj,
+            matnonlin_obj,
+            fixed_obj,
+            displacement_obj,
+            contact_obj,
+            planerotation_obj,
+            transform_obj,
+            selfweight_obj,
+            force_obj,
+            pressure_obj,
+            temperature_obj,
+            heatflux_obj,
+            initialtemperature_obj,
+            beamsection_obj,
+            beamrotation_obj,
+            shellthickness_obj,
+            fluidsection_obj,
             dir_name
         )
         from os.path import join
@@ -64,12 +92,11 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
         )
 
     def write_z88_input(self):
-        timestart = time.process_time()
-        FreeCAD.Console.PrintMessage("Write z88 input files to: {}\n".format(self.dir_name))
+        timestart = time.clock()
         if not self.femnodes_mesh:
             self.femnodes_mesh = self.femmesh.Nodes
         if not self.femelement_table:
-            self.femelement_table = meshtools.get_femelement_table(self.femmesh)
+            self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
             self.element_count = len(self.femelement_table)
         self.set_z88_elparam()
         self.write_z88_mesh()
@@ -82,7 +109,7 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
         self.write_z88_solver_parameter()
         writing_time_string = (
             "Writing time input file: {} seconds"
-            .format(round((time.process_time() - timestart), 2))
+            .format(round((time.clock() - timestart), 2))
         )
         FreeCAD.Console.PrintMessage(writing_time_string + " \n\n")
         return self.dir_name
@@ -194,7 +221,7 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
     def write_z88_elements_properties(self):
         element_properties_file_path = self.file_name + "elp.txt"
         elements_data = []
-        if meshtools.is_edge_femmesh(self.femmesh):
+        if FemMeshTools.is_edge_femmesh(self.femmesh):
             if len(self.beamsection_objects) == 1:
                 beam_obj = self.beamsection_objects[0]["Object"]
                 width = beam_obj.RectWidth.getValueAs("mm")
@@ -208,7 +235,7 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
                 )
             else:
                 FreeCAD.Console.PrintError("Multiple beamsections for Z88 not yet supported!\n")
-        elif meshtools.is_face_femmesh(self.femmesh):
+        elif FemMeshTools.is_face_femmesh(self.femmesh):
             if len(self.shellthickness_objects) == 1:
                 thick_obj = self.shellthickness_objects[0]["Object"]
                 thickness = str(thick_obj.Thickness.getValueAs("mm"))
@@ -219,7 +246,7 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
                 FreeCAD.Console.PrintError(
                     "Multiple thicknesses for Z88 not yet supported!\n"
                 )
-        elif meshtools.is_solid_femmesh(self.femmesh):
+        elif FemMeshTools.is_solid_femmesh(self.femmesh):
             elements_data.append("1 " + str(self.element_count) + " 0 0 0 0 0 0 0")
         else:
             FreeCAD.Console.PrintError("Error!\n")

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) YEAR YOUR NAME         <Your e-mail address>            *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -40,9 +40,7 @@
 #endif
 
 #ifdef FC_OS_WIN32
-# ifndef NOMINMAX
 # define NOMINMAX
-# endif
 #endif
 
 #ifdef _MSC_VER

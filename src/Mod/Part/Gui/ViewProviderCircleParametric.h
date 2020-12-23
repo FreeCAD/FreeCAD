@@ -24,7 +24,7 @@
 #ifndef PARTGUI_VIEWPROVIDERCIRCLEPARAMETRIC_H
 #define PARTGUI_VIEWPROVIDERCIRCLEPARAMETRIC_H
 
-#include "ViewProviderPrimitive.h"
+#include "ViewProvider.h"
 
 
 class TopoDS_Shape;
@@ -36,7 +36,7 @@ class SoTransform;
 namespace PartGui {
 
 
-class PartGuiExport ViewProviderCircleParametric : public ViewProviderPrimitive
+class PartGuiExport ViewProviderCircleParametric:public ViewProviderPart
 {
     PROPERTY_HEADER(PartGui::ViewProviderCircleParametric);
 

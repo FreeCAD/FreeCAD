@@ -1,6 +1,5 @@
 /**************************************************************************
-*   Copyright (c) 2018 Kresimir Tusek <kresimir.tusek@gmail.com>          *
-*                                                                         *
+*   Copyright (c) Kresimir Tusek         (kresimir.tusek@gmail.com) 2018  *
 *   This file is part of the FreeCAD CAx development system.              *
 *                                                                         *
 *   This library is free software; you can redistribute it and/or         *

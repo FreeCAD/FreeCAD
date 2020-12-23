@@ -1,6 +1,7 @@
 # ***************************************************************************
-# *   Copyright (c) 2010 Juergen Riegel <juergen.riegel@web.de>             *
-# *   Copyright (c) 2018 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *                                                                         *
+# *   Copyright (c) 2010 - Juergen Riegel <juergen.riegel@web.de>           *
+# *   Copyright (c) 2018 - Bernd Hahnebach <bernd@bimstatik.org>            *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -10,21 +11,21 @@
 # *   the License, or (at your option) any later version.                   *
 # *   for detail see the LICENCE text file.                                 *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
+# *   FreeCAD is distributed in the hope that it will be useful,            *
 # *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
 # *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   GNU Lesser General Public License for more details.                   *
 # *                                                                         *
 # *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
+# *   License along with FreeCAD; if not, write to the Free Software        *
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
 
-__title__  = "FreeCAD tetgen exporter"
+__title__ = "FreeCAD tetgen exporter"
 __author__ = "Juergen Riegel"
-__url__    = "https://www.freecadweb.org"
+__url__ = "http://www.freecadweb.org"
 
 ## \addtogroup FEM
 #  @{
@@ -342,8 +343,8 @@ def createMesh():
     # exportMeshToTetGenPoly(pnMesh.Mesh,filePath,beVerbose)
 
     if FreeCAD.GuiUp:
-        pnMesh.ViewObject.Document.activeView().viewAxonometric()
-        pnMesh.ViewObject.Document.activeView().fitAll()
+        Gui.activeDocument().activeView().viewAxometric()
+        Gui.SendMsgToActiveView("ViewFit")
 
     if beVerbose == 1:
         Console.PrintMessage("\nScript finished without errors.")

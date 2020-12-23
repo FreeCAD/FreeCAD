@@ -11,7 +11,6 @@
         <file>icons/BOLTSFC_workbench_icon.svg</file>
         <file>icons/CADExchanger_workbench_icon.svg</file>
         <file>icons/cadquery_module_workbench_icon.svg</file>
-        <file>icons/Cfd_workbench_icon.svg</file>
         <file>icons/CfdOF_workbench_icon.svg</file>
         <file>icons/CurvedShapes_workbench_icon.svg</file>
         <file>icons/Curves_workbench_icon.svg</file>
@@ -23,11 +22,9 @@
         <file>icons/ExplodedAssembly_workbench_icon.svg</file>
         <file>icons/fasteners_workbench_icon.svg</file>
         <file>icons/flamingo_workbench_icon.svg</file>
-        <file>icons/GDML_workbench_icon.svg</file>
         <file>icons/GDT_workbench_icon.svg</file>
         <file>icons/FCGear_workbench_icon.svg</file>
         <file>icons/Geomatics_workbench_icon.svg</file>
-        <file>icons/ImportNURBS_workbench_icon.svg</file>
         <file>icons/InventorLoader_workbench_icon.svg</file>
         <file>icons/kicadStepUpMod_workbench_icon.svg</file>
         <file>icons/lattice2_workbench_icon.svg</file>
@@ -35,12 +32,9 @@
         <file>icons/Lithophane_workbench_icon.svg</file>
         <file>icons/Manipulator_workbench_icon.svg</file>
         <file>icons/MeshRemodel_workbench_icon.svg</file>
-        <file>icons/ModernUI_workbench_icon.svg</file>
         <file>icons/MOOC_workbench_icon.svg</file>
-        <file>icons/OSE3dPrinter_workbench_icon.svg</file>
         <file>icons/Part-o-magic_workbench_icon.svg</file>
         <file>icons/Plot_workbench_icon.svg</file>
-        <file>icons/POV-Ray-Rendering_workbench_icon.svg</file>
         <file>icons/pyrate_workbench_icon.svg</file>
         <file>icons/Reinforcement_workbench_icon.svg</file>
         <file>icons/Reporting_workbench_icon.svg</file>
@@ -48,7 +42,6 @@
         <file>icons/sheetmetal_workbench_icon.svg</file>
         <file>icons/slic3r-tools_workbench_icon.svg</file>
         <file>icons/Ship_workbench_icon.svg</file>
-        <file>icons/Silk_workbench_icon.svg</file>
         <file>icons/timber_workbench_icon.svg</file>
         <file>icons/ThreadProfile_workbench_icon.svg</file>
         <file>icons/WebTools_workbench_icon.svg</file>

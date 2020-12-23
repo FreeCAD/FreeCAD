@@ -1,5 +1,6 @@
+
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -25,7 +26,6 @@
 #endif
 
 #include "DlgPointsReadImp.h"
-#include "ui_DlgPointsRead.h"
 
 using namespace PointsGui;
 
@@ -33,9 +33,7 @@ using namespace PointsGui;
 
 DlgPointsReadImp::DlgPointsReadImp(const char *FileName, QWidget* parent,  Qt::WindowFlags fl )
     : QDialog( parent, fl )
-    , ui(new Ui_DlgPointsRead)
 {
-  ui->setupUi(this);
   _FileName = FileName;
 }
 

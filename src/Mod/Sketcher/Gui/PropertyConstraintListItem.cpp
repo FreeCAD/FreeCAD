@@ -23,7 +23,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <memory>
 # include <QDebug>
 # include <QTextStream>
 #endif
@@ -338,9 +337,8 @@ bool PropertyConstraintListItem::event (QEvent* ev)
                         double datum = quant.getValue();
                         if ((*it)->Type == Sketcher::Angle)
                             datum = Base::toRadians<double>(datum);
-                        std::unique_ptr<Sketcher::Constraint> copy((*it)->clone());
-                        copy->setValue(datum);
-                        item->set1Value(id, copy.get());
+                        const_cast<Sketcher::Constraint *>((*it))->setValue(datum);
+                        item->set1Value(id,(*it));
                         break;
                     }
                 }

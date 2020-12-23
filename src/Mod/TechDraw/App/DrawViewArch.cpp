@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2016 York van Havre <yorik@uncreated.net>               *
+ *   Copyright (c) York van Havre 2016 yorik@uncreated.net                 *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -104,15 +104,7 @@ App::DocumentObjectExecReturn *DrawViewArch::execute(void)
 
     App::DocumentObject* sourceObj = Source.getValue();
     if (sourceObj) {
-        //if (sourceObj is not ArchSection) return
-        App::Property* proxy = sourceObj->getPropertyByName("Proxy");
-        if (proxy == nullptr) {
-            Base::Console().Error("DVA::execute - %s is not an ArchSection\n", sourceObj->Label.getValue());
-            //this is definitely not an ArchSection
-            return DrawView::execute();
-        }
-
-      //std::string svgFrag;
+        std::string svgFrag;
         std::string svgHead = getSVGHead();
         std::string svgTail = getSVGTail();
         std::string FeatName = getNameInDocument();

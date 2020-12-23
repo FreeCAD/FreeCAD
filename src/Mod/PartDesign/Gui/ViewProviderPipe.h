@@ -25,7 +25,6 @@
 #define PARTGUI_ViewProviderPipe_H
 
 #include "ViewProviderAddSub.h"
-#include <map>
 
 namespace PartDesignGui {
 
@@ -34,13 +33,6 @@ class PartDesignGuiExport ViewProviderPipe : public ViewProviderAddSub
     PROPERTY_HEADER(PartDesignGui::ViewProviderPipe);
 
 public:
-    enum Reference {
-        Spine,
-        AuxiliarySpine,
-        Profile,
-        Section
-    };
-
     /// constructor
     ViewProviderPipe();
     /// destructor
@@ -52,7 +44,7 @@ public:
     bool doubleClicked();
 
     virtual bool onDelete(const std::vector<std::string> &);
-    void highlightReferences(Reference mode, bool on);
+    void highlightReferences(const bool on, bool auxiliary);
     
 protected:
     virtual QIcon getIcon(void) const;
@@ -61,12 +53,9 @@ protected:
     
     /// Returns a newly created TaskDlgPipeParameters
     virtual TaskDlgFeatureParameters *getEditDialog();
-
+    
 private:
-    void highlightReferences(Part::Feature*, const std::vector<std::string>&, bool);
-
-private:
-    std::map<long, std::vector<App::Color>> originalLineColors;
+    std::vector<App::Color> originalLineColors;
 };
 
 

@@ -56,6 +56,7 @@ private:
 
 private:
     std::unique_ptr<Ui_DlgGeneral> ui;
+    QString selectedStyleSheet;
 };
 
 } // namespace Dialog

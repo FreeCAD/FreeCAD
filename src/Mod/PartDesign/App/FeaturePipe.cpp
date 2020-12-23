@@ -177,7 +177,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         auto multisections = Sections.getValues();
         std::vector<std::vector<TopoDS_Wire>> wiresections;
         for(TopoDS_Wire& wire : wires)
-            wiresections.emplace_back(1, wire);
+            wiresections.push_back(std::vector<TopoDS_Wire>(1, wire));
         //maybe we need a sacling law
         Handle(Law_Function) scalinglaw;
 
@@ -224,10 +224,6 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
 
             scalinglaw = s;
         }*/
-
-        // Verify that path is not a null shape
-        if (path.IsNull())
-            return new App::DocumentObjectExecReturn("Path must not be a null shape");
 
         //build all shells
         std::vector<TopoDS_Shape> shells;

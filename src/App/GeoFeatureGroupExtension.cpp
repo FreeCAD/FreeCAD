@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2014 Jürgen Riegel <juergen.riegel@web.de>              *
- *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
+ *   Copyright (c) Juergen Riegel          (juergen.riegel@web.de) 2014    *
+ *   Copyright (c) Alexander Golubev (Fat-Zer) <fatzer2@gmail.com> 2015    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -29,7 +29,6 @@
 
 #include <App/Document.h>
 
-#include "Link.h"
 #include "GeoFeatureGroupExtension.h"
 #include "OriginFeature.h"
 #include "Origin.h"
@@ -194,9 +193,8 @@ void GeoFeatureGroupExtension::extensionOnChanged(const Property* p) {
     //objects are only allowed in a single GeoFeatureGroup
     if(p == &Group && !Group.testStatus(Property::User3)) {
     
-        if((!getExtendedObject()->isRestoring()
-                || getExtendedObject()->getDocument()->testStatus(Document::Importing))
-            && !getExtendedObject()->getDocument()->isPerformingTransaction()) {
+        if(!getExtendedObject()->isRestoring() &&
+           !getExtendedObject()->getDocument()->isPerformingTransaction()) {
                 
             bool error = false;
             auto corrected = Group.getValues();
@@ -377,10 +375,7 @@ bool GeoFeatureGroupExtension::extensionGetSubObject(DocumentObject *&ret, const
         }
         if(ret) {
             if(dot) ++dot;
-            if(dot && *dot 
-                    && !ret->hasExtension(App::LinkBaseExtension::getExtensionClassTypeId())
-                    && !ret->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) 
-            {
+            if(dot && *dot && !ret->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) {
                 // Consider this
                 // Body
                 //  | -- Pad

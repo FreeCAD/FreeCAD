@@ -115,8 +115,6 @@ Compound2::Compound2() {
 }
 
 void Compound2::onDocumentRestored() {
-    Base::Placement pla = Placement.getValue();
     auto res = execute();
     delete res;
-    Placement.setValue(pla);
 }

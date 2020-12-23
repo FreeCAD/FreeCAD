@@ -185,23 +185,23 @@ bool MeshProjection::projectLineOnMesh(const MeshFacetGrid& grid,
                         continue;
                     }
 
-                    cutLine.emplace_back(e1, e2);
+                    cutLine.push_back(std::pair<Base::Vector3f, Base::Vector3f>(e1, e2));
                 }
                 else {
                     if (*it == f1) { // start facet
                         if (((e2 - v1) * dir) > 0.0f)
-                            cutLine.emplace_back(v1, e2);
+                            cutLine.push_back(std::pair<Base::Vector3f, Base::Vector3f>(v1, e2));
                         else
-                            cutLine.emplace_back(v1, e1);
+                            cutLine.push_back(std::pair<Base::Vector3f, Base::Vector3f>(v1, e1));
 
                         //start = it - facets.begin();
                     }
 
                     if (*it == f2) { // end facet
                         if (((e2 - v2) * -dir) > 0.0f)
-                            cutLine.emplace_back(v2, e2);
+                            cutLine.push_back(std::pair<Base::Vector3f, Base::Vector3f>(v2, e2));
                         else
-                            cutLine.emplace_back(v2, e1);
+                            cutLine.push_back(std::pair<Base::Vector3f, Base::Vector3f>(v2, e1));
 
                         //end = it - facets.begin();
                     }

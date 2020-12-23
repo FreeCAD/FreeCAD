@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jan Rheinlaender                                   *
- *                                   <jrheinlaender@users.sourceforge.net> *
+ *   Copyright (c) 2013 Jan Rheinlaender <jrheinlaender@users.sourceforge.net>        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -94,7 +93,7 @@ public:
      * Computes appropriate bounding box for the given list of objects to be passed to setExtents ()
      * @param bboxAction  a coin action for traverse the given objects views.
      * @param objs        the list of objects to traverse, due to we traverse the scene graph, the geo children
-     *                    will likely be traversed too.
+     *                    will likely be traveresed too.
      */
     static SbBox3f getRelevantBoundBox (
             SoGetBoundingBoxAction &bboxAction,
