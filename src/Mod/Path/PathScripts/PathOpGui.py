@@ -601,12 +601,13 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
     def importBaseGeometry(self):
         opLabel = str(self.form.geometryImportList.currentText())
         ops = FreeCAD.ActiveDocument.getObjectsByLabel(opLabel)
-        if ops.__len__() > 1:
+        if len(ops) > 1:
             msg = translate('PathOpGui', 'Mulitiple operations are labeled as')
             msg += " {}\n".format(opLabel)
             FreeCAD.Console.PrintWarning(msg)
-        for (base, subList) in ops[0].Base:
-            FreeCADGui.Selection.addSelection(base, subList)
+        (base, subList) = ops[0].Base[0]
+        FreeCADGui.Selection.clearSelection()
+        FreeCADGui.Selection.addSelection(base, subList)
         self.addBase()
 
     def registerSignalHandlers(self, obj):
