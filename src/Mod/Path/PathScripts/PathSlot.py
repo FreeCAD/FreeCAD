@@ -792,7 +792,7 @@ class ObjectSlot(PathOp.ObjectOp):
         flag = 1
         eCnt = len(shape.Edges)
         lstE = eCnt - 1
-        for i in range(0, eCnt):  # populate empty parrallel edge flag list
+        for i in range(0, eCnt):  # populate empty parallel edge flag list
             parallel_edge_flags.append(0)        
         for i in range(0, eCnt):  # Cycle through edges to identify parallel pairs
             if i < lstE:
@@ -1075,7 +1075,7 @@ class ObjectSlot(PathOp.ObjectOp):
 
     def _normalizeVector(self, v):
         """_normalizeVector(v)...
-        Returns a copy of the vector recieved with values rounded to 10 decimal places."""
+        Returns a copy of the vector received with values rounded to 10 decimal places."""
         posTol = 0.0000000001
         negTol = -1 * posTol
         V = FreeCAD.Vector(v.x, v.y, v.z)
@@ -1220,7 +1220,7 @@ class ObjectSlot(PathOp.ObjectOp):
     def _extendArcSlot(self, p1, p2, cent, begExt, endExt):
         """_extendArcSlot(p1, p2, cent, begExt, endExt)...
         This function extends an arc defined by two end points, p1 and p2, and the center.
-        The arc is extended along the circumferance with begExt and endExt values.
+        The arc is extended along the circumference with begExt and endExt values.
         The function returns the new end points as tuple (n1, n2) to replace p1 and p2."""
         cancel = True
         n1 = p1
