@@ -283,6 +283,10 @@ Format options are:
 %D - the date and time, in local timezone, ISO 8601
 Any other characters are treated literally, though if the filename is illegal
 it will be changed on saving.
+
+The format string is stored in two user preferences (not currently exposed in the GUI):
+* BaseApp/Preferences/General/ExportDefaultFilenameSingle
+* BaseApp/Preferences/General/ExportDefaultFilenameMultiple
 */
 QString createDefaultExportBasename()
 {
@@ -290,14 +294,12 @@ QString createDefaultExportBasename()
 
     auto selection = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId());
     QString exportFormatString;
-    if (selection.size() == 1) {
+    if (selection.size() == 1)
         exportFormatString = QString::fromStdString (App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
             GetASCII("ExportDefaultFilenameSingle", "%F-%P-"));
-    } 
-    else {
+    else
         exportFormatString = QString::fromStdString (App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
             GetASCII("ExportDefaultFilenameMultiple", "%F"));
-    }
 
     // For code simplicity, pull all values we might need
 
@@ -305,15 +307,13 @@ QString createDefaultExportBasename()
     QString docFilename = QString::fromUtf8(App::GetApplication().getActiveDocument()->getFileName());
     QFileInfo fi(docFilename);
     QString fcstdBasename = fi.completeBaseName();
-    if (fcstdBasename.isEmpty()) {
+    if (fcstdBasename.isEmpty()) 
         fcstdBasename = QString::fromStdString(App::GetApplication().getActiveDocument()->Label.getStrValue());
-    }
 
     // %L - the label of the selected object(s)
     QStringList objectLabels;
-    for (const auto& object : selection) {
+    for (const auto& object : selection)
         objectLabels.push_back(QString::fromStdString(object->Label.getStrValue()));
-    }
 
     // %P - the label of the selected objects and their first parent
     QStringList parentLabels;
@@ -333,16 +333,22 @@ QString createDefaultExportBasename()
     QDateTime local = utc.toLocalTime();
     QString localISO8601 = local.toString(Qt::ISODate);
 
+    // Parse the format string one character at a time:
     for (int i = 0; i < exportFormatString.size(); ++i) {
         auto c = exportFormatString.at(i);
         if (c != QLatin1Char('%')) {
+            // Anything that's not a format start character is just a literal
             defaultFilename.append(c);
         }
         else {
+            // The format start character now requires us to look at at least the next single
+            // character (if there isn't another character, the % just gets eaten)
             if (i < exportFormatString.size() - 1) {
                 ++i;
                 auto formatChar = exportFormatString.at(i);
                 QChar separatorChar = QLatin1Char('-');
+                // If this format type requires an additional char, read that now (or default to
+                // '-' if the format string ends) 
                 if (formatChar == QLatin1Char('L') ||
                     formatChar == QLatin1Char('P')) {
                     if (i < exportFormatString.size() - 1) {
@@ -352,31 +358,25 @@ QString createDefaultExportBasename()
                 }
 
                 // Handle our format characters:
-                if (formatChar == QLatin1Char('F')) {
+                if (formatChar == QLatin1Char('F'))
                     defaultFilename.append(fcstdBasename);
-                }
-                else if (formatChar == QLatin1Char('L')) {
+                else if (formatChar == QLatin1Char('L'))
                     defaultFilename.append(objectLabels.join(separatorChar));
-                }
-                else if (formatChar == QLatin1Char('P')) {
+                else if (formatChar == QLatin1Char('P'))
                     defaultFilename.append(parentLabels.join(separatorChar));
-                }
-                else if (formatChar == QLatin1Char('U')) {
+                else if (formatChar == QLatin1Char('U'))
                     defaultFilename.append(utcISO8601);
-                }
-                else if (formatChar == QLatin1Char('D')) {
+                else if (formatChar == QLatin1Char('D'))
                     defaultFilename.append(localISO8601);
-                }
-                else {
+                else
                     FC_WARN("When parsing default export filename format string, %" 
                         << QString(formatChar).toStdString() 
                         << " is not a known format string.");
-                }
             }
         }
     }
 
-    // Finally, clean the string:
+    // Finally, clean the string so it's valid for all operating systems:
     QString invalidCharacters = QLatin1String("/\\?%*:|\"<>");
     for (const auto &c : invalidCharacters)
         defaultFilename.replace(c,QLatin1String("_"));
@@ -405,17 +405,15 @@ void StdCmdExport::activated(int iMsg)
     std::map<std::string, std::string> filterMap = App::GetApplication().getExportFilters();
     for (const auto &filter : filterMap) {
         // ignore the project file format
-        if (filter.first.find("(*.FCStd)") == std::string::npos) {
+        if (filter.first.find("(*.FCStd)") == std::string::npos)
             filterList << QString::fromStdString(filter.first);
-        }
     }
     QString formatList = filterList.join(QLatin1String(";;"));
     Base::Reference<ParameterGrp> hPath = 
         App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General");
     QString selectedFilter = QString::fromStdString(hPath->GetASCII("FileExportFilter"));
-    if (!lastExportFilterUsed.isEmpty()) {
+    if (!lastExportFilterUsed.isEmpty())
         selectedFilter = lastExportFilterUsed;
-    }
 
     // Create a default filename for the export
     // * If this is the first export this session default, generate a new default.
@@ -452,9 +450,8 @@ void StdCmdExport::activated(int iMsg)
             // Append the last extension used, if there is one.
             if (!lastExportFullPath.isEmpty()) {
                 QFileInfo lastExportFile(lastExportFullPath);
-                if (!lastExportFile.suffix().isEmpty()) {
+                if (!lastExportFile.suffix().isEmpty())
                     defaultFilename += QLatin1String(".") + lastExportFile.suffix();
-                }
             }
             filenameWasGenerated = true;
         }
@@ -480,12 +477,10 @@ void StdCmdExport::activated(int iMsg)
         QFileInfo defaultExportFI(defaultFilename);
         QFileInfo thisExportFI(fileName);
         if (filenameWasGenerated && 
-            thisExportFI.completeBaseName() == defaultExportFI.completeBaseName()) {
+            thisExportFI.completeBaseName() == defaultExportFI.completeBaseName())
             lastExportUsedGeneratedFilename = true;
-        }
-        else {
+        else
             lastExportUsedGeneratedFilename = false;
-        }
         lastExportFullPath = fileName;
     }
 }
