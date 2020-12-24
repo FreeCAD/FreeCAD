@@ -27,12 +27,21 @@
 
 ## \addtogroup draftfuctions
 # @{
+
+import lazy_loader.lazy_loader as lz
+
 import FreeCAD as App
 import draftutils.gui_utils as gui_utils
 import draftmake.make_block as make_block
 import draftmake.make_wire as make_wire
 import draftmake.make_circle as make_circle
+import draftmake.make_bspline as make_bspline
+import draftmake.make_bezcurve as make_bezcurve
+import draftmake.make_arc_3points as make_arc_3points
 
+# Delay import of module until first use because it is heavy
+Part = lz.LazyLoader("Part", globals(), "Part")
+DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 
 def draftify(objectslist, makeblock=False, delete=True):
     """draftify(objectslist,[makeblock],[delete])
@@ -52,24 +61,18 @@ def draftify(objectslist, makeblock=False, delete=True):
     delete : bool
         If delete = False, old objects are not deleted
     """
-    import Part
-    import DraftGeomUtils
 
     if not isinstance(objectslist,list):
         objectslist = [objectslist]
     newobjlist = []
     for obj in objectslist:
         if hasattr(obj,'Shape'):
-            for cluster in Part.getSortedClusters(obj.Shape.Edges):
+            for cluster in Part.sortEdges(obj.Shape.Edges):
                 w = Part.Wire(cluster)
-                if DraftGeomUtils.hasCurves(w):
-                    if (len(w.Edges) == 1) and (DraftGeomUtils.geomType(w.Edges[0]) == "Circle"):
-                        nobj = make_circle.make_circle(w.Edges[0])
-                    else:
-                        nobj = App.ActiveDocument.addObject("Part::Feature", obj.Name)
-                        nobj.Shape = w
-                else:
-                    nobj = make_wire.make_wire(w)
+                nobj = draftify_shape(w)
+                if nobj == None:
+                    nobj = App.ActiveDocument.addObject("Part::Feature", obj.Name)
+                    nobj.Shape = w
                 newobjlist.append(nobj)
                 gui_utils.format_object(nobj, obj)
                 # sketches are always in wireframe mode. In Draft we don't like that!
@@ -84,5 +87,35 @@ def draftify(objectslist, makeblock=False, delete=True):
         if len(newobjlist) == 1:
             return newobjlist[0]
         return newobjlist
+
+def draftify_shape(shape):
+
+    nobj = None
+    if DraftGeomUtils.hasCurves(shape):
+        if (len(shape.Edges) == 1):
+            edge = shape.Edges[0]
+            edge_type = DraftGeomUtils.geomType(edge)
+            if edge_type == "Circle":
+                if edge.isClosed():
+                    nobj = make_circle.make_circle(edge)
+                else:
+                    first_parameter = edge.FirstParameter
+                    last_parameter = edge.LastParameter
+                    points = [edge.Curve.value(first_parameter),
+                              edge.Curve.value((first_parameter + last_parameter)/2),
+                              edge.Curve.value(last_parameter)]
+                    nobj = make_arc_3points.make_arc_3points(points)
+           # TODO: take into consideration trimmed curves and capture the specific
+           # type of BSpline and Bezier that can be converted to a draft object.
+           # elif edge_type == "BSplineCurve":
+           #     knots = [edge.Curve.value(p) for p in edge.Curve.getKnots()]
+           #     nobj = make_bspline.make_bspline(knots, closed=edge.isClosed())
+           # elif edge_type == "BezierCurve":
+           #     nobj = make_bezcurve.make_bezcurve(edge.Curve.getPoles(),
+           #                                        closed=edge.isClosed())
+    else:
+        nobj = make_wire.make_wire(shape)
+
+    return nobj
 
 ## @}
