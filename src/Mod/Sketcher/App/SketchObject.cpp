@@ -1155,12 +1155,10 @@ int SketchObject::toggleConstruction(int GeoId)
         }
     }
 
-    // There is not actual intertransaction going on here, however for a toggle neither the geometry indices nor the vertices need to be updated
-    // so this is a convenient way of preventing it.
-    {
-        Base::StateLocker lock(internaltransaction, true);
-        this->Geometry.setValues(std::move(newVals));
-    }
+    // While it may seem that there is not a need to trigger an update at this time, because the solver has its own copy of the geometry,
+    // and updateColors of the viewprovider may be triggered by the clearselection of the UI command, this won't update the elements widget,
+    // in the accumulative of actions it is judged that it is worth to trigger an update here.
+    this->Geometry.setValues(std::move(newVals));
 
     solverNeedsUpdate=true;
     return 0;
@@ -1188,12 +1186,10 @@ int SketchObject::setConstruction(int GeoId, bool on)
         }
     }
 
-    // There is not actual intertransaction going on here, however for a toggle neither the geometry indices nor the vertices need to be updated
-    // so this is a convenient way of preventing it.
-    {
-        Base::StateLocker lock(internaltransaction, true);
-        this->Geometry.setValues(std::move(newVals));
-    }
+    // While it may seem that there is not a need to trigger an update at this time, because the solver has its own copy of the geometry,
+    // and updateColors of the viewprovider may be triggered by the clearselection of the UI command, this won't update the elements widget,
+    // in the accumulative of actions it is judged that it is worth to trigger an update here.
+    this->Geometry.setValues(std::move(newVals));
 
     solverNeedsUpdate=true;
     return 0;
