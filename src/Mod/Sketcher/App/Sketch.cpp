@@ -62,8 +62,8 @@
 
 #include "Sketch.h"
 
-#define DEBUG_BLOCK_CONSTRAINT
-//#undef DEBUG_BLOCK_CONSTRAINT
+//#define DEBUG_BLOCK_CONSTRAINT
+#undef DEBUG_BLOCK_CONSTRAINT
 
 using namespace Sketcher;
 using namespace Base;
@@ -265,17 +265,25 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
 
                         auto blocked = std::find(blockedGeoIds.begin(),blockedGeoIds.end(),element->second.first);
 
-                        if( blocked != blockedGeoIds.end()) { // this dependent parameter group contains a parameter that should be blocked
-                            params_to_block.push_back(thisparam);
+                        if( blocked != blockedGeoIds.end()) {
+                            // This dependent parameter group contains a parameter that should be blocked.
+                            //
+                            // One parameter per group is enough to fix the group, but it must be a different one for each group or
+                            // it will create a different dependency group
+                            auto already_in = std::find(params_to_block.begin(),params_to_block.end(), thisparam);
+
+                            if( already_in == params_to_block.end()) {
+                                params_to_block.push_back(thisparam);
 
 #ifdef DEBUG_BLOCK_CONSTRAINT
-                            Base::Console().Log("\nBlocking:  Param=%x ,GeoId=%d, GeoPos=%d",
-                            element->first,
-                            element->second.first,
-                            element->second.second);
+                                Base::Console().Log("\nBlocking:  Param=%x ,GeoId=%d, GeoPos=%d",
+                                element->first,
+                                element->second.first,
+                                element->second.second);
 #endif //DEBUG_BLOCK_CONSTRAINT
 
-                            break; // one parameter per group is enough to fix the group
+                                break;
+                            }
                         }
                     }
                 }
