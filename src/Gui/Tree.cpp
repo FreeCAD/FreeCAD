@@ -4589,26 +4589,32 @@ void DocumentItem::slotInEdit(const Gui::ViewProviderDocumentObject& v)
 {
     (void)v;
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/TreeView");
     unsigned long col = hGrp->GetUnsigned("TreeEditColor",4294902015);
     QColor color((col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff);
 
+    auto doc = Application::Instance->editDocument();
+    if(!doc)
+        return;
+    auto docitem = getTree()->getDocumentItem(doc);
+    if (!docitem)
+        return;
+
     if(!getTree()->editingItem) {
-        auto doc = Application::Instance->editDocument();
-        if(!doc)
-            return;
         ViewProviderDocumentObject *parentVp=0;
         std::string subname;
         auto vp = doc->getInEdit(&parentVp,&subname);
         if(!parentVp)
             parentVp = dynamic_cast<ViewProviderDocumentObject*>(vp);
         if(parentVp)
-            getTree()->editingItem = findItemByObject(true,parentVp->getObject(),subname.c_str());
+            getTree()->editingItem = docitem->findItemByObject(
+                    true,parentVp->getObject(),subname.c_str());
     }
 
     if(getTree()->editingItem) {
         getTree()->editingItem->setBackground(0,color);
-        showItem(getTree()->editingItem, false, true);
+        docitem->showItem(getTree()->editingItem, false, true);
         getTree()->scrollToItem(getTree()->editingItem);
     } else{
         FOREACH_ITEM(item,v)
