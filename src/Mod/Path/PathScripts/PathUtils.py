@@ -401,7 +401,7 @@ def getToolControllers(obj, proxy=None):
     except Exception:  # pylint: disable=broad-except
         job = None
 
-    print("op={} ({})".format(obj.Label, type(obj)))
+    PathLog.debug("op={} ({})".format(obj.Label, type(obj)))
     if job:
         return [c for c in job.ToolController if proxy.isToolSupported(obj, c.Tool)]
     return []
@@ -538,7 +538,7 @@ def arc(cx, cy, sx, sy, ex, ey, horizFeed=0, ez=None, ccw=False):
 
     eps = 0.01
     if (math.sqrt((cx - sx)**2 + (cy - sy)**2) - math.sqrt((cx - ex)**2 + (cy - ey)**2)) >= eps:
-        print("ERROR: Illegal arc: Start and end radii not equal")
+        PathLog.error(translate("Path", "Illegal arc: Start and end radii not equal"))
         return ""
 
     retstr = ""

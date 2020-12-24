@@ -6,7 +6,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="536"/>
       <source>Installed location</source>
-      <translation type="unfinished">Installed location</translation>
+      <translation>Yükleme konumu</translation>
     </message>
   </context>
   <context>
@@ -219,12 +219,12 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="548"/>
       <source>This addon is marked as obsolete</source>
-      <translation type="unfinished">This addon is marked as obsolete</translation>
+      <translation>Bu eklenti eskimiş olarak işaretleniyor</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="549"/>
       <source>This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</source>
-      <translation type="unfinished">This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</translation>
+      <translation>Bu ifade genellikle, eklentinin artık sürdürülmediği ve bu listedeki bazı daha gelişmiş eklentilerin aynı işlevselliği sunacağı anlamına gelmektedir.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="870"/>
@@ -234,32 +234,32 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="318"/>
       <source>Something went wrong with the Git Macro Retrieval, possibly the Git executable is not in the path</source>
-      <translation type="unfinished">Something went wrong with the Git Macro Retrieval, possibly the Git executable is not in the path</translation>
+      <translation>Git Makro Çağırma ile ilgili bir şeyler ters gitti; muhtemelen Git çalıştırılabilir, adres yolunda değil</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="560"/>
       <source>This addon is marked as Python 2 Only</source>
-      <translation type="unfinished">This addon is marked as Python 2 Only</translation>
+      <translation>Bu eklenti, Sadece Python 2 olarak işaretleniyor</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="561"/>
       <source>This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.</source>
-      <translation type="unfinished">This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.</translation>
+      <translation>Bu tezgah artık sürdürülemeyebilir ve bunu Python 3 sistemine yüklemek, başlangıç hatalarında veya kullanım sırasında daha iyi sonuç verecektir.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="721"/>
       <source>User requested updating a Python 2 workbench on a system running Python 3 - </source>
-      <translation type="unfinished">User requested updating a Python 2 workbench on a system running Python 3 - </translation>
+      <translation>Kullanıcı, Python 3 çalıştıran bir sistemde bir Python 2 tezgahını güncellemek istedi - </translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="757"/>
       <source>Workbench successfully updated. Please restart FreeCAD to apply the changes.</source>
-      <translation type="unfinished">Workbench successfully updated. Please restart FreeCAD to apply the changes.</translation>
+      <translation>Tezgah başarıyla güncellendi. Değişikliklerin uygulanması için lütfen FreeCAD' i yeniden başlatın.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="765"/>
       <source>User requested installing a Python 2 workbench on a system running Python 3 - </source>
-      <translation type="unfinished">User requested installing a Python 2 workbench on a system running Python 3 - </translation>
+      <translation>Kullanıcı, Python 3 çalıştıran bir sistemde bir Python 2 tezgahını yüklemek istedi - </translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="342"/>
@@ -364,51 +364,51 @@
       <source>If this option is selected, when launching the Addon Manager,
 installed addons will be checked for available updates
 (this requires the GitPython package installed on your system)</source>
-      <translation type="unfinished">If this option is selected, when launching the Addon Manager,
-installed addons will be checked for available updates
-(this requires the GitPython package installed on your system)</translation>
+      <translation>Bu seçenek seçiliyse, Eklenti Yöneticisi çalıştırıldığında
+yüklü eklentiler, kullanılabilir güncellemeler için denetlenecektir
+(Sisteminizde yüklü GitPython paketi olması gerekir)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="25"/>
       <source>Automatically check for updates at start (requires GitPython)</source>
-      <translation type="unfinished">Automatically check for updates at start (requires GitPython)</translation>
+      <translation>Güncelleştirmeleri başlangıçta otomatik denetle (GitPython gerektirir)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="57"/>
       <source>Proxy </source>
-      <translation type="unfinished">Proxy </translation>
+      <translation>Vekil Sunucu </translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="64"/>
       <source>No proxy</source>
-      <translation type="unfinished">No proxy</translation>
+      <translation>Vekil sunucu yok</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="71"/>
       <source>User system proxy</source>
-      <translation type="unfinished">User system proxy</translation>
+      <translation>Kullanıcı sistem vekil sunucusu</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="78"/>
       <source>User defined proxy :</source>
-      <translation type="unfinished">User defined proxy :</translation>
+      <translation>Kullanıcı tanımlı vekil sunucu:</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="14"/>
       <source>Addon Manager</source>
-      <translation type="unfinished">Addon Manager</translation>
+      <translation>Eklenti Yöneticisi</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="157"/>
       <source>Close the Addon Manager</source>
-      <translation type="unfinished">Close the Addon Manager</translation>
+      <translation>Eklenti Yöneticisi' ni kapat</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="42"/>
       <source>You can use this window to specify additional addon repositories
 to be scanned for available addons</source>
-      <translation type="unfinished">You can use this window to specify additional addon repositories
-to be scanned for available addons</translation>
+      <translation>Bu pencereyi, mevcut eklentilerin taranması için ilave eklenti depolarını
+belirtmede kullanabilirsiniz</translation>
     </message>
   </context>
   <context>

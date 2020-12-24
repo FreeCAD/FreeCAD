@@ -88,12 +88,12 @@
   <context>
     <name>CmdTechDrawActiveView</name>
     <message>
-      <location filename="../../Command.cpp" line="400"/>
+      <location filename="../../Command.cpp" line="410"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="401"/>
+      <location filename="../../Command.cpp" line="411"/>
       <source>Insert Active View (3D View)</source>
       <translation>Voeg de actieve weergave in (3D-weergave)</translation>
     </message>
@@ -127,17 +127,17 @@
   <context>
     <name>CmdTechDrawArchView</name>
     <message>
-      <location filename="../../Command.cpp" line="1125"/>
+      <location filename="../../Command.cpp" line="1135"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1126"/>
+      <location filename="../../Command.cpp" line="1136"/>
       <source>Insert Arch Workbench Object</source>
       <translation>Voeg een Arch-werkbankobject in</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1127"/>
+      <location filename="../../Command.cpp" line="1137"/>
       <source>Insert a View of a Section Plane from Arch Workbench</source>
       <translation>Voeg een aanzicht van een sectievlak in vanuit de Arch-werkbank</translation>
     </message>
@@ -145,12 +145,12 @@
   <context>
     <name>CmdTechDrawBalloon</name>
     <message>
-      <location filename="../../Command.cpp" line="754"/>
+      <location filename="../../Command.cpp" line="764"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="755"/>
+      <location filename="../../Command.cpp" line="765"/>
       <source>Insert Balloon Annotation</source>
       <translation>Voeg een ballonannotatie in</translation>
     </message>
@@ -176,12 +176,12 @@
   <context>
     <name>CmdTechDrawClipGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="803"/>
+      <location filename="../../Command.cpp" line="813"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="804"/>
+      <location filename="../../Command.cpp" line="814"/>
       <source>Insert Clip Group</source>
       <translation>Voeg een uitsnijdingsgroep in</translation>
     </message>
@@ -189,12 +189,12 @@
   <context>
     <name>CmdTechDrawClipGroupAdd</name>
     <message>
-      <location filename="../../Command.cpp" line="842"/>
+      <location filename="../../Command.cpp" line="852"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="843"/>
+      <location filename="../../Command.cpp" line="853"/>
       <source>Add View to Clip Group</source>
       <translation>Voeg een weergave toe aan uitsnijdingsgroep</translation>
     </message>
@@ -202,12 +202,12 @@
   <context>
     <name>CmdTechDrawClipGroupRemove</name>
     <message>
-      <location filename="../../Command.cpp" line="925"/>
+      <location filename="../../Command.cpp" line="935"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="926"/>
+      <location filename="../../Command.cpp" line="936"/>
       <source>Remove View from Clip Group</source>
       <translation>Verwijder een weergave van uitsnijdingsgroep</translation>
     </message>
@@ -272,12 +272,12 @@
   <context>
     <name>CmdTechDrawDetailView</name>
     <message>
-      <location filename="../../Command.cpp" line="484"/>
+      <location filename="../../Command.cpp" line="494"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="485"/>
+      <location filename="../../Command.cpp" line="495"/>
       <source>Insert Detail View</source>
       <translation>Voeg een detailweergave in</translation>
     </message>
@@ -311,17 +311,17 @@
   <context>
     <name>CmdTechDrawDraftView</name>
     <message>
-      <location filename="../../Command.cpp" line="1059"/>
+      <location filename="../../Command.cpp" line="1069"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1060"/>
+      <location filename="../../Command.cpp" line="1070"/>
       <source>Insert Draft Workbench Object</source>
       <translation>Voeg een schetswerkbankobject in</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1061"/>
+      <location filename="../../Command.cpp" line="1071"/>
       <source>Insert a View of a Draft Workbench object</source>
       <translation>Voeg een aanzicht van een Draft Workbench object toe</translation>
     </message>
@@ -329,22 +329,22 @@
   <context>
     <name>CmdTechDrawExportPageDXF</name>
     <message>
-      <location filename="../../Command.cpp" line="1293"/>
+      <location filename="../../Command.cpp" line="1303"/>
       <source>File</source>
       <translation>Bestand</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1294"/>
+      <location filename="../../Command.cpp" line="1304"/>
       <source>Export Page as DXF</source>
       <translation>Exporteer pagina als DXF</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1327"/>
+      <location filename="../../Command.cpp" line="1337"/>
       <source>Save Dxf File </source>
       <translation>Bewaar Dxf-bestand </translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1329"/>
+      <location filename="../../Command.cpp" line="1339"/>
       <source>Dxf (*.dxf)</source>
       <translation>Dxf (*.dxf)</translation>
     </message>
@@ -352,12 +352,12 @@
   <context>
     <name>CmdTechDrawExportPageSVG</name>
     <message>
-      <location filename="../../Command.cpp" line="1249"/>
+      <location filename="../../Command.cpp" line="1259"/>
       <source>File</source>
       <translation>Bestand</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1250"/>
+      <location filename="../../Command.cpp" line="1260"/>
       <source>Export Page as SVG</source>
       <translation>Exporteer pagina als DXF</translation>
     </message>
@@ -547,12 +547,12 @@
   <context>
     <name>CmdTechDrawPageDefault</name>
     <message>
-      <location filename="../../Command.cpp" line="102"/>
+      <location filename="../../Command.cpp" line="112"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="103"/>
+      <location filename="../../Command.cpp" line="113"/>
       <source>Insert Default Page</source>
       <translation>Voeg een standaardpagina in</translation>
     </message>
@@ -560,22 +560,22 @@
   <context>
     <name>CmdTechDrawPageTemplate</name>
     <message>
-      <location filename="../../Command.cpp" line="165"/>
+      <location filename="../../Command.cpp" line="175"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="166"/>
+      <location filename="../../Command.cpp" line="176"/>
       <source>Insert Page using Template</source>
       <translation>Voeg een pagina in met behulp van een sjabloon</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="178"/>
+      <location filename="../../Command.cpp" line="188"/>
       <source>Select a Template File</source>
       <translation>Selecteer een sjabloonbestand</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="180"/>
+      <location filename="../../Command.cpp" line="190"/>
       <source>Template (*.svg *.dxf)</source>
       <translation>Sjabloon (*.svg *.dxf)</translation>
     </message>
@@ -583,17 +583,17 @@
   <context>
     <name>CmdTechDrawProjectionGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="533"/>
+      <location filename="../../Command.cpp" line="543"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="534"/>
+      <location filename="../../Command.cpp" line="544"/>
       <source>Insert Projection Group</source>
       <translation>Voeg een projectiegroep in</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="535"/>
+      <location filename="../../Command.cpp" line="545"/>
       <source>Insert multiple linked views of drawable object(s)</source>
       <translation>Voeg meerdere gelinkte weergaven van het/de object(en) in</translation>
     </message>
@@ -627,12 +627,12 @@
   <context>
     <name>CmdTechDrawRedrawPage</name>
     <message>
-      <location filename="../../Command.cpp" line="242"/>
+      <location filename="../../Command.cpp" line="252"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="243"/>
+      <location filename="../../Command.cpp" line="253"/>
       <source>Redraw Page</source>
       <translation>Herteken pagina</translation>
     </message>
@@ -653,12 +653,12 @@
   <context>
     <name>CmdTechDrawSectionView</name>
     <message>
-      <location filename="../../Command.cpp" line="434"/>
+      <location filename="../../Command.cpp" line="444"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="435"/>
+      <location filename="../../Command.cpp" line="445"/>
       <source>Insert Section View</source>
       <translation>Voeg een sectieweergave in</translation>
     </message>
@@ -679,17 +679,17 @@
   <context>
     <name>CmdTechDrawSpreadsheetView</name>
     <message>
-      <location filename="../../Command.cpp" line="1190"/>
+      <location filename="../../Command.cpp" line="1200"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1191"/>
+      <location filename="../../Command.cpp" line="1201"/>
       <source>Insert Spreadsheet View</source>
       <translation>Voeg een rekenbladweergave in</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1192"/>
+      <location filename="../../Command.cpp" line="1202"/>
       <source>Insert View to a spreadsheet</source>
       <translation>Weergave toevoegen aan een rekenblad</translation>
     </message>
@@ -697,17 +697,17 @@
   <context>
     <name>CmdTechDrawSymbol</name>
     <message>
-      <location filename="../../Command.cpp" line="1000"/>
+      <location filename="../../Command.cpp" line="1010"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1001"/>
+      <location filename="../../Command.cpp" line="1011"/>
       <source>Insert SVG Symbol</source>
       <translation>Vog een SVG-symbool in</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1002"/>
+      <location filename="../../Command.cpp" line="1012"/>
       <source>Insert symbol from an SVG file</source>
       <translation type="unfinished">Insert symbol from an SVG file</translation>
     </message>
@@ -755,17 +755,17 @@
   <context>
     <name>CmdTechDrawView</name>
     <message>
-      <location filename="../../Command.cpp" line="279"/>
+      <location filename="../../Command.cpp" line="289"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="280"/>
+      <location filename="../../Command.cpp" line="290"/>
       <source>Insert View</source>
       <translation>Weergave toevoegen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="281"/>
+      <location filename="../../Command.cpp" line="291"/>
       <source>Insert a View</source>
       <translation>Weergave toevoegen</translation>
     </message>
@@ -781,6 +781,189 @@
       <location filename="../../CommandAnnotate.cpp" line="1400"/>
       <source>Add Welding Information to Leaderline</source>
       <translation>Voeg lasinformatie toe aan leiderslijn</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../Command.cpp" line="132"/>
+      <location filename="../../Command.cpp" line="202"/>
+      <source>Drawing create page</source>
+      <translation type="unfinished">Drawing create page</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="356"/>
+      <source>Create view</source>
+      <translation type="unfinished">Create view</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="609"/>
+      <source>Create Projection Group</source>
+      <translation type="unfinished">Create Projection Group</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="831"/>
+      <source>Create Clip</source>
+      <translation type="unfinished">Create Clip</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="904"/>
+      <source>ClipGroupAdd</source>
+      <translation type="unfinished">ClipGroupAdd</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="977"/>
+      <source>ClipGroupRemove</source>
+      <translation type="unfinished">ClipGroupRemove</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1038"/>
+      <source>Create Symbol</source>
+      <translation type="unfinished">Create Symbol</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1102"/>
+      <source>Create DraftView</source>
+      <translation type="unfinished">Create DraftView</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1177"/>
+      <source>Create ArchView</source>
+      <translation type="unfinished">Create ArchView</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1225"/>
+      <source>Create spreadsheet view</source>
+      <translation type="unfinished">Create spreadsheet view</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1346"/>
+      <location filename="../../MDIViewPage.cpp" line="936"/>
+      <source>Save page to dxf</source>
+      <translation type="unfinished">Save page to dxf</translation>
+    </message>
+    <message>
+      <location filename="../../CommandAnnotate.cpp" line="551"/>
+      <source>Create Annotation</source>
+      <translation type="unfinished">Create Annotation</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="333"/>
+      <location filename="../../CommandCreateDims.cpp" line="455"/>
+      <location filename="../../CommandCreateDims.cpp" line="552"/>
+      <location filename="../../CommandCreateDims.cpp" line="653"/>
+      <location filename="../../CommandCreateDims.cpp" line="755"/>
+      <location filename="../../CommandCreateDims.cpp" line="846"/>
+      <location filename="../../CommandCreateDims.cpp" line="935"/>
+      <location filename="../../CommandCreateDims.cpp" line="1362"/>
+      <source>Create Dimension</source>
+      <translation type="unfinished">Create Dimension</translation>
+    </message>
+    <message>
+      <location filename="../../CommandDecorate.cpp" line="251"/>
+      <source>Create Hatch</source>
+      <translation type="unfinished">Create Hatch</translation>
+    </message>
+    <message>
+      <location filename="../../CommandDecorate.cpp" line="354"/>
+      <source>Create GeomHatch</source>
+      <translation type="unfinished">Create GeomHatch</translation>
+    </message>
+    <message>
+      <location filename="../../CommandDecorate.cpp" line="422"/>
+      <source>Create Image</source>
+      <translation type="unfinished">Create Image</translation>
+    </message>
+    <message>
+      <location filename="../../QGIViewBalloon.cpp" line="487"/>
+      <source>Drag Balloon</source>
+      <translation type="unfinished">Drag Balloon</translation>
+    </message>
+    <message>
+      <location filename="../../QGIViewDimension.cpp" line="659"/>
+      <source>Drag Dimension</source>
+      <translation type="unfinished">Drag Dimension</translation>
+    </message>
+    <message>
+      <location filename="../../QGVPage.cpp" line="1197"/>
+      <location filename="../../QGVPage.cpp" line="1200"/>
+      <source>Create Balloon</source>
+      <translation type="unfinished">Create Balloon</translation>
+    </message>
+    <message>
+      <location filename="../../TaskActiveView.cpp" line="196"/>
+      <source>Create ActiveView</source>
+      <translation type="unfinished">Create ActiveView</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCenterLine.cpp" line="347"/>
+      <source>Create CenterLine</source>
+      <translation type="unfinished">Create CenterLine</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCenterLine.cpp" line="392"/>
+      <source>Edit CenterLine</source>
+      <translation type="unfinished">Edit CenterLine</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCosmeticLine.cpp" line="272"/>
+      <source>Update CosmeticLine</source>
+      <translation type="unfinished">Update CosmeticLine</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDetail.cpp" line="473"/>
+      <source>Create Detail View</source>
+      <translation type="unfinished">Create Detail View</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDetail.cpp" line="510"/>
+      <source>Update Detail</source>
+      <translation type="unfinished">Update Detail</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLeaderLine.cpp" line="401"/>
+      <source>Create Leader</source>
+      <translation type="unfinished">Create Leader</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLeaderLine.cpp" line="455"/>
+      <source>Edit Leader</source>
+      <translation type="unfinished">Edit Leader</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRichAnno.cpp" line="358"/>
+      <source>Create Anno</source>
+      <translation type="unfinished">Create Anno</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRichAnno.cpp" line="417"/>
+      <source>Edit Anno</source>
+      <translation type="unfinished">Edit Anno</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSectionView.cpp" line="355"/>
+      <source>Apply Quick</source>
+      <translation type="unfinished">Apply Quick</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSectionView.cpp" line="381"/>
+      <source>Apply Aligned</source>
+      <translation type="unfinished">Apply Aligned</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSectionView.cpp" line="404"/>
+      <source>Create SectionView</source>
+      <translation type="unfinished">Create SectionView</translation>
+    </message>
+    <message>
+      <location filename="../../TaskWeldingSymbol.cpp" line="653"/>
+      <source>Create WeldSymbol</source>
+      <translation type="unfinished">Create WeldSymbol</translation>
+    </message>
+    <message>
+      <location filename="../../TaskWeldingSymbol.cpp" line="661"/>
+      <source>Edit WeldSymbol</source>
+      <translation type="unfinished">Edit WeldSymbol</translation>
     </message>
   </context>
   <context>
@@ -1013,12 +1196,12 @@
       <translation>URL van de koppeling:</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="674"/>
+      <location filename="../../mrichtextedit.cpp" line="675"/>
       <source>Select an image</source>
       <translation>Kies een afbeelding</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="676"/>
+      <location filename="../../mrichtextedit.cpp" line="677"/>
       <source>JPEG (*.jpg);; GIF (*.gif);; PNG (*.png);; BMP (*.bmp);; All (*)</source>
       <translation>JPEG (*.jpg);; GIF (*.gif);; PNG (*.png);; BMP (*.bmp);; All (*)</translation>
     </message>
@@ -1026,21 +1209,21 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="338"/>
-      <location filename="../../Command.cpp" line="452"/>
-      <location filename="../../Command.cpp" line="503"/>
-      <location filename="../../Command.cpp" line="591"/>
-      <location filename="../../Command.cpp" line="855"/>
-      <location filename="../../Command.cpp" line="871"/>
-      <location filename="../../Command.cpp" line="876"/>
-      <location filename="../../Command.cpp" line="885"/>
-      <location filename="../../Command.cpp" line="939"/>
-      <location filename="../../Command.cpp" line="959"/>
-      <location filename="../../Command.cpp" line="1080"/>
-      <location filename="../../Command.cpp" line="1105"/>
-      <location filename="../../Command.cpp" line="1154"/>
-      <location filename="../../Command.cpp" line="1160"/>
-      <location filename="../../Command.cpp" line="1203"/>
+      <location filename="../../Command.cpp" line="348"/>
+      <location filename="../../Command.cpp" line="462"/>
+      <location filename="../../Command.cpp" line="513"/>
+      <location filename="../../Command.cpp" line="601"/>
+      <location filename="../../Command.cpp" line="865"/>
+      <location filename="../../Command.cpp" line="881"/>
+      <location filename="../../Command.cpp" line="886"/>
+      <location filename="../../Command.cpp" line="895"/>
+      <location filename="../../Command.cpp" line="949"/>
+      <location filename="../../Command.cpp" line="969"/>
+      <location filename="../../Command.cpp" line="1090"/>
+      <location filename="../../Command.cpp" line="1115"/>
+      <location filename="../../Command.cpp" line="1164"/>
+      <location filename="../../Command.cpp" line="1170"/>
+      <location filename="../../Command.cpp" line="1213"/>
       <location filename="../../CommandAnnotate.cpp" line="327"/>
       <location filename="../../CommandAnnotate.cpp" line="420"/>
       <location filename="../../CommandAnnotate.cpp" line="1154"/>
@@ -1055,104 +1238,104 @@
       <translation>Verkeerde selectie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="339"/>
-      <location filename="../../Command.cpp" line="592"/>
+      <location filename="../../Command.cpp" line="349"/>
+      <location filename="../../Command.cpp" line="602"/>
       <source>No Shapes, Groups or Links in this selection</source>
       <translation>Geen vormen, groepen of links in deze selectie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="453"/>
-      <location filename="../../Command.cpp" line="504"/>
+      <location filename="../../Command.cpp" line="463"/>
+      <location filename="../../Command.cpp" line="514"/>
       <source>Select at least 1 DrawViewPart object as Base.</source>
       <translation>Selecteer minstens 1 DrawViewPart-object als basis.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="856"/>
+      <location filename="../../Command.cpp" line="866"/>
       <source>Select one Clip group and one View.</source>
       <translation>Selecteer één clipgroep en één weergave.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="872"/>
+      <location filename="../../Command.cpp" line="882"/>
       <source>Select exactly one View to add to group.</source>
       <translation>Selecteer precies één Aanzicht om aan groep toe te voegen.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="877"/>
+      <location filename="../../Command.cpp" line="887"/>
       <source>Select exactly one Clip group.</source>
       <translation>Selecteer precies één Clip groep.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="886"/>
+      <location filename="../../Command.cpp" line="896"/>
       <source>Clip and View must be from same Page.</source>
       <translation>Clip en weergave moeten van dezelfde pagina zijn.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="940"/>
+      <location filename="../../Command.cpp" line="950"/>
       <source>Select exactly one View to remove from Group.</source>
       <translation>Selecteer precies één Aanzicht om van groep te verwijderen.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="960"/>
+      <location filename="../../Command.cpp" line="970"/>
       <source>View does not belong to a Clip</source>
       <translation>Weergave behoort niet tot een clip</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1019"/>
+      <location filename="../../Command.cpp" line="1029"/>
       <source>Choose an SVG file to open</source>
       <translation>Kies een SVG-bestand om te openen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1021"/>
+      <location filename="../../Command.cpp" line="1031"/>
       <source>Scalable Vector Graphic</source>
       <translation>Schaalbare vectorafbeelding</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1022"/>
+      <location filename="../../Command.cpp" line="1032"/>
       <source>All Files</source>
       <translation>Alle bestanden</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1081"/>
+      <location filename="../../Command.cpp" line="1091"/>
       <source>Select at least one object.</source>
       <translation>Selecteer minstens één object.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1106"/>
+      <location filename="../../Command.cpp" line="1116"/>
       <source>There were no DraftWB objects in the selection.</source>
       <translation>Er waren geen DraftWB-objecten in de selectie.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1155"/>
+      <location filename="../../Command.cpp" line="1165"/>
       <source>Please select only 1 Arch Section.</source>
       <translation>Selecteer slechts 1 boogsectie.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1161"/>
+      <location filename="../../Command.cpp" line="1171"/>
       <source>No Arch Sections in selection.</source>
       <translation>Geen boogsecties in selectie.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1313"/>
+      <location filename="../../Command.cpp" line="1323"/>
       <source>Can not export selection</source>
       <translation>Selectie kan niet worden geëxporteerd</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1314"/>
+      <location filename="../../Command.cpp" line="1324"/>
       <source>Page contains DrawViewArch which will not be exported. Continue?</source>
       <translation>Pagina bevat DrawViewArch die niet zal worden geëxporteerd. Doorgaan?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1204"/>
+      <location filename="../../Command.cpp" line="1214"/>
       <source>Select exactly one Spreadsheet object.</source>
       <translation>Selecteer exact één Spreadsheet-object.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1273"/>
+      <location filename="../../Command.cpp" line="1283"/>
       <source>No Drawing View</source>
       <translation>Geen tekenweergave</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1274"/>
+      <location filename="../../Command.cpp" line="1284"/>
       <source>Open Drawing View before attempting export to SVG.</source>
       <translation>Open de tekenweergave voordat u probeert te exporteren naar SVG.</translation>
     </message>
@@ -1244,10 +1427,10 @@
       <translation>Selecteer 2 punten en 1 aanzicht. (2)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="715"/>
-      <location filename="../../Command.cpp" line="722"/>
-      <location filename="../../Command.cpp" line="729"/>
-      <location filename="../../Command.cpp" line="741"/>
+      <location filename="../../Command.cpp" line="725"/>
+      <location filename="../../Command.cpp" line="732"/>
+      <location filename="../../Command.cpp" line="739"/>
+      <location filename="../../Command.cpp" line="751"/>
       <location filename="../../CommandCreateDims.cpp" line="1433"/>
       <location filename="../../CommandCreateDims.cpp" line="1440"/>
       <location filename="../../CommandCreateDims.cpp" line="1447"/>
@@ -1260,25 +1443,25 @@
       <translation>Onjuiste selectie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="716"/>
+      <location filename="../../Command.cpp" line="726"/>
       <location filename="../../CommandCreateDims.cpp" line="1434"/>
       <source>Select an object first</source>
       <translation>Selecteer eerst een object</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="723"/>
+      <location filename="../../Command.cpp" line="733"/>
       <location filename="../../CommandCreateDims.cpp" line="1441"/>
       <source>Too many objects selected</source>
       <translation>Te veel objecten geselecteerd</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="730"/>
+      <location filename="../../Command.cpp" line="740"/>
       <location filename="../../CommandCreateDims.cpp" line="1448"/>
       <source>Create a page first.</source>
       <translation>Maak eerst een pagina.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="742"/>
+      <location filename="../../Command.cpp" line="752"/>
       <location filename="../../CommandCreateDims.cpp" line="1460"/>
       <source>No View of a Part in selection.</source>
       <translation>Geen aanzicht van een onderdeel in de selectie.</translation>
@@ -2196,42 +2379,42 @@ in complexe modellen kan er een prestatieboete worden opgelegd.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="77"/>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="287"/>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="780"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="777"/>
       <source>NeverShow</source>
       <translation>Nooit tonen</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="86"/>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="296"/>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="789"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="786"/>
       <source>Continuous</source>
       <translation>Doorlopend</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="95"/>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="305"/>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="798"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="795"/>
       <source>Dash</source>
       <translation>Streep</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="104"/>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="314"/>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="807"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="804"/>
       <source>Dot</source>
       <translation>punt</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="113"/>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="323"/>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="816"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="813"/>
       <source>DashDot</source>
       <translation>Streepstip</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="122"/>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="332"/>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="825"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="822"/>
       <source>DashDotDot</source>
       <translation>Streepstipstip</translation>
     </message>
@@ -2377,72 +2560,72 @@ in complexe modellen kan er een prestatieboete worden opgelegd.</translation>
       <translation>Toon middenmarkeringen</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="595"/>
-      <source>Default name in LineGroup CSV file</source>
-      <translation>Standaardnaam in LineGroup CSV-bestand</translation>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="696"/>
+      <source>Line group used to set line widths</source>
+      <translation type="unfinished">Line group used to set line widths</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="619"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="699"/>
+      <source>Line Width Group</source>
+      <translation type="unfinished">Line Width Group</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="613"/>
       <source>Detail View Outline Shape</source>
       <translation>Detailweergave van omlijningsvorm</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="638"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="632"/>
       <source>Style for balloon leader line ends</source>
       <translation>Stijl voor de uiteinden van de ballonlijn</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="656"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="650"/>
       <source>Length of horizontal portion of Balloon leader</source>
       <translation>Lengte van het horizontale gedeelte van de ballonleider</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="659"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="653"/>
       <source>Ballon Leader Kink Length</source>
       <translation>Kinklengte van de ballonleider</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="678"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="672"/>
       <source>Restrict Filled Triangle line end to vertical or horizontal directions</source>
       <translation>Beperk gevulde driehoekslinie-uiteinde naar verticale of horizontale richtingen</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="681"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="675"/>
       <source>Balloon Orthogonal Triangle</source>
       <translation>Ballon met orthogonale driehoek</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="702"/>
-      <source>Line Group Name</source>
-      <translation>Naam van de lijngroep</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="714"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="711"/>
       <source>Balloon Shape</source>
       <translation>Ballonvorm</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="733"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="730"/>
       <source>Show arc centers in printed output</source>
       <translation>Toon boogmidden in afgedrukte output</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="736"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="733"/>
       <source>Print Center Marks</source>
       <translation>Middenmarkeringen afrukken</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="754"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="751"/>
       <source>Line style of detail highlight on base view</source>
       <translation>Lijnstijl van detailmarkering op de basisweergave</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="757"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="754"/>
       <source>Detail Highlight Style</source>
       <translation>Detailmarkeringstijl</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="848"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="845"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Opmerking:&lt;/span&gt; items in &lt;span style=&quot; font-style:italic;&quot;&gt;cursief&lt;/span&gt; zijn standaard waarden voor nieuwe objecten. Ze hebben geen effect op bestaande objecten.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -2650,132 +2833,132 @@ in complexe modellen kan er een prestatieboete worden opgelegd.</translation>
       <translation>ASME-referentie</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="116"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="121"/>
       <source>Use system setting for number of decimals</source>
       <translation>Systeeminstelling gebruiken voor decimalen</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="119"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="124"/>
       <source>Use Global Decimals</source>
       <translation>Gebruik globale decimalen</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="147"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="152"/>
       <source>Append unit to dimension values</source>
       <translation>Voeg eenheid toe aan de afmetingswaarden</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="150"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="155"/>
       <source>Show Units</source>
       <translation>Eenheden weergeven</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="163"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="168"/>
       <source>Alternate Decimals</source>
       <translation>Decimalen afwisselen</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="185"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="190"/>
       <source>Number of decimals if &apos;Use Global Decimals&apos; is not used</source>
       <translation>Aantal decimalen als &apos;Gebruik globale decimalen&apos; niet wordt gebruikt</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="209"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="214"/>
       <source>Font Size</source>
       <translation>Lettergrootte</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="241"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="246"/>
       <source>Dimension text font size</source>
       <translation>Lettergrootte van de afmeting</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="260"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="265"/>
       <source>Diameter Symbol</source>
       <translation>Diametersymbool</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="284"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="289"/>
       <source>Character used to indicate diameter dimensions</source>
       <translation>Gebruikt teken om de afmeting van de diameter aan te geven</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="287"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="292"/>
       <source>⌀</source>
       <translation>⌀</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="308"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="313"/>
       <source>Arrow Style</source>
       <translation>Pijltype</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="327"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="332"/>
       <source>Arrowhead style</source>
       <translation>Pijlpunttype</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="348"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="353"/>
       <source>Arrow Size</source>
       <translation>Pijlgrootte</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="367"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="372"/>
       <source>Arrowhead size</source>
       <translation>Pijlpuntgrootte</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="415"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="420"/>
       <source>Conventions</source>
       <translation>Conventies</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="436"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="441"/>
       <source>Projection Group Angle</source>
       <translation>Projectiegroephoek</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="455"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="460"/>
       <source>Use first- or third-angle multiview projection convention</source>
       <translation type="unfinished">Use first- or third-angle multiview projection convention</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="465"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="470"/>
       <source>First</source>
       <translation>Eerste</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="470"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="475"/>
       <source>Third</source>
       <translation>Derde</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="475"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="480"/>
       <source>Page</source>
       <translation>Pagina</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="483"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="488"/>
       <source>Hidden Line Style</source>
       <translation>Verborgen lijnstijl</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="502"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="507"/>
       <source>Style for hidden lines</source>
       <translation>Stijl voor verborgen lijnen</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="512"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="517"/>
       <source>Continuous</source>
       <translation>Doorlopend</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="521"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="526"/>
       <source>Dashed</source>
       <translation>Gestreept</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="544"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="549"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Opmerking:&lt;/span&gt; items in &lt;span style=&quot; font-style:italic;&quot;&gt;cursief&lt;/span&gt; zijn standaard waarden voor nieuwe objecten. Ze hebben geen effect op bestaande objecten.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>

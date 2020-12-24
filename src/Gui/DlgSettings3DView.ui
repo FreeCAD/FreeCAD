@@ -109,6 +109,24 @@ will be shown at the lower left corner in opened files</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
+       <widget class="Gui::PrefCheckBox" name="CheckBox_use_SW_OpenGL">
+        <property name="toolTip">
+         <string>This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</string>
+        </property>
+        <property name="text">
+         <string>Use software OpenGL</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>UseSoftwareOpenGL</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>OpenGL</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="Gui::PrefCheckBox" name="CheckBox_useVBO">
         <property name="toolTip">
          <string>If selected, Vertex Buffer Objects (VBO) will be used.

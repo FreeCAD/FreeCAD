@@ -41,12 +41,8 @@ __doc__ = "Class and implementation of Mill Facing operation."
 __contributors__ = "russ4262 (Russell Johnson)"
 
 
-DEBUG = False
-if DEBUG:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule()
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+# PathLog.trackModule()
 
 
 # Qt translation handling
@@ -82,7 +78,7 @@ class ObjectFace(PathPocketBase.ObjectPocket):
                 obj.OpStartDepth = job.Stock.Shape.BoundBox.ZMax
 
             if len(obj.Base) >= 1:
-                print('processing')
+                PathLog.debug('processing')
                 sublist = []
                 for i in obj.Base:
                     o = i[0]

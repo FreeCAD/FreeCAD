@@ -46,7 +46,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="71"/>
       <source>Middle mouse button.</source>
-      <translation>Orta fare tuşu.</translation>
+      <translation>Farenin orta tuşu.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="74"/>

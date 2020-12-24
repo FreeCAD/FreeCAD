@@ -717,14 +717,14 @@ void QGIViewBalloon::draw()
     double yAdj = 0.0;
     int endType = balloon->EndType.getValue();
     double arrowAdj = QGIArrow::getOverlapAdjust(endType,
-                                                 QGIArrow::getPrefArrowSize());
+                                                 balloon->EndTypeScale.getValue()*QGIArrow::getPrefArrowSize());
 
     if (endType == ArrowType::NONE) {
         arrow->hide();
     } else {
         arrow->setStyle(endType);
 
-        arrow->setSize(QGIArrow::getPrefArrowSize());
+        arrow->setSize(balloon->EndTypeScale.getValue()*QGIArrow::getPrefArrowSize());
         arrow->draw();
 
         Base::Vector3d arrowTipPos(arrowTipX, arrowTipY, 0.0);
@@ -738,7 +738,7 @@ void QGIViewBalloon::draw()
         float arAngle = atan2(dirballoonLinesLine.y, dirballoonLinesLine.x) * 180 / M_PI;
 
         arrow->setPos(arrowTipX, arrowTipY);
-        if ( (endType == ArrowType::FILLED_TRIANGLE) && 
+        if ( (endType == ArrowType::FILLED_TRIANGLE) &&
              (prefOrthoPyramid()) ) {
             if (arAngle < 0.0) {
                 arAngle += 360.0;
@@ -764,6 +764,12 @@ void QGIViewBalloon::draw()
     }
     dLinePath.lineTo(arrowTipX - xAdj, arrowTipY - yAdj);
     balloonLines->setPath(dLinePath);
+
+    // This overwrites the previously created QPainterPath with empty one, in case it should be hidden.  Should be refactored.
+    if (!vp->LineVisible.getValue()) {
+        arrow->hide();
+        balloonLines->setPath(QPainterPath());
+    }
 
     // redraw the Balloon and the parent View
     if (hasHover && !isSelected()) {

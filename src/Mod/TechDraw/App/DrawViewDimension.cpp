@@ -106,8 +106,8 @@ DrawViewDimension::DrawViewDimension(void)
     References3D.setScope(App::LinkScope::Global);
 
     ADD_PROPERTY_TYPE(FormatSpec,(getDefaultFormatSpec()) , "Format", App::Prop_Output,"Dimension Format");
-    ADD_PROPERTY_TYPE(FormatSpecOverTolerance,("%+g") , "Format", App::Prop_Output,"Dimension Overtolerance Format");
-    ADD_PROPERTY_TYPE(FormatSpecUnderTolerance,("%+g") , "Format", App::Prop_Output,"Dimension Undertolerance Format");
+    ADD_PROPERTY_TYPE(FormatSpecOverTolerance,(getDefaultFormatSpec(true)) , "Format", App::Prop_Output,"Dimension Overtolerance Format");
+    ADD_PROPERTY_TYPE(FormatSpecUnderTolerance,(getDefaultFormatSpec(true)) , "Format", App::Prop_Output,"Dimension Undertolerance Format");
     ADD_PROPERTY_TYPE(Arbitrary,(false) ,"Format", App::Prop_Output,"Value overridden by user");
     ADD_PROPERTY_TYPE(ArbitraryTolerances,(false) ,"Format", App::Prop_Output,"Tolerance values overridden by user");
 
@@ -614,6 +614,7 @@ std::string DrawViewDimension::formatValue(qreal value, QString qFormatSpec, int
     QString qUserStringUnits;
     QString formattedValue;
     bool angularMeasure = false;
+    QLocale loc;
 
     Base::Quantity asQuantity;
     asQuantity.setValue(value);
@@ -686,34 +687,17 @@ std::string DrawViewDimension::formatValue(qreal value, QString qFormatSpec, int
         if ((pos = rxUnits.indexIn(qUserString, 0)) != -1) {
             qUserStringUnits = rxUnits.cap(0); // entire capture - non numerics at end of qUserString
         }
+        
+        // get value in the base unit with default decimals
+        // for the conversion we use the same method as in DlgUnitsCalculator::valueChanged
+        // get the conversion factor for the unit
+        double convertValue = Base::Quantity::parse(QString::fromLatin1("1") + QString::fromStdString(BaseLengthUnit)).getValue();
+        // the result is now just val / convertValue because val is always in the base unit
+        double userVal = asQuantity.getValue() / convertValue;
 
-        // we can have 2 possible results:
-        // - the value in the base unit but without displayed unit
-        // - the value + unit (not necessarily the base unit!)
-        // the user can overwrite the decimal settings, so we must in every case use the formatSpecifier
-        // if useDecimals(), then formatSpecifier = global decimals, otherwise it is %.2f
-        QLocale loc;
-        double userVal;
-        bool checkDecimals = true;
-        if (showUnits() || (Type.isValue("Angle")) || (Type.isValue("Angle3Pt"))) {
-            formattedValue = qUserString; // result value + unit (not necessarily base unit!)
-            // remove unit
-            formattedValue.remove(rxUnits);
-            // to number
-            userVal = loc.toDouble(formattedValue);
-            if (userVal >= 1.0)
-                // we can assure we didn't make an error > 10% via getUserString()
-                checkDecimals = false;
-        }
-        if (checkDecimals){
-            // get value in the base unit with default decimals
-            // for the conversion we use the same method as in DlgUnitsCalculator::valueChanged
-            // get the conversion factor for the unit
-            double convertValue = Base::Quantity::parse(QString::fromLatin1("1") + QString::fromStdString(BaseLengthUnit)).getValue();
-            // the result is now just val / convertValue because val is always in the base unit
-            userVal = asQuantity.getValue() / convertValue;
-        }
         // we reformat the value
+        // the user can overwrite the decimal settings, so we must in every case use the formatSpecifier
+        // the default is: if useDecimals(), then formatSpecifier = global decimals, otherwise it is %.2f
 #if QT_VERSION >= 0x050000
         formattedValue = QString::asprintf(Base::Tools::toStdString(formatSpecifier).c_str(), userVal);
 #else
@@ -750,7 +734,6 @@ std::string DrawViewDimension::formatValue(qreal value, QString qFormatSpec, int
             //qUserString from Quantity includes units - prefix + R + nnn ft + suffix
             qMultiValueStr = formatPrefix + qGenPrefix + qUserString + formatSuffix;
         }
-
         formattedValue = qMultiValueStr;
     }
 
@@ -1310,7 +1293,7 @@ std::string DrawViewDimension::getPrefix() const
     return result;
 }
 
-std::string DrawViewDimension::getDefaultFormatSpec() const
+std::string DrawViewDimension::getDefaultFormatSpec(bool isToleranceFormat) const
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
                                          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
@@ -1341,6 +1324,10 @@ std::string DrawViewDimension::getDefaultFormatSpec() const
         qPrefix = QString::fromUtf8(prefix.data(),prefix.size());
         formatSpec = qPrefix + QString::fromStdString(prefFormat);
 
+    }
+
+    if (isToleranceFormat) {
+        formatSpec.replace(QString::fromUtf8("%"), QString::fromUtf8("%+"));
     }
 
     return Base::Tools::toStdString(formatSpec);
