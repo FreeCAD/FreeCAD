@@ -27,6 +27,17 @@
 #include <boost/concept_check.hpp>
 #include <boost/graph/graph_concepts.hpp>
 
+#include <Eigen/QR>
+
+#define EIGEN_VERSION (EIGEN_WORLD_VERSION * 10000 \
++ EIGEN_MAJOR_VERSION * 100 \
++ EIGEN_MINOR_VERSION)
+
+#if EIGEN_VERSION >= 30202
+    #define EIGEN_SPARSEQR_COMPATIBLE
+    #include <Eigen/Sparse>
+#endif
+
 namespace GCS
 {
     ///////////////////////////////////////
@@ -91,7 +102,11 @@ namespace GCS
         VEC_pD pdrivenlist; // list of parameters of driven constraints
         MAP_pD_I pIndex;
 
-        VEC_pD pdependentparameters; // list of dependent parameters by the system
+        VEC_pD pDependentParameters; // list of dependent parameters by the system
+
+        // This is a map of primary and secondary identifiers that are found dependent by the solver
+        // GCS ignores from a type point
+        std::vector< std::set<double *> > pDependentParametersGroups;
 
         std::vector<Constraint *> clist;
         std::map<Constraint *,VEC_pD > c2p; // constraint to parameter adjacency list
@@ -116,11 +131,65 @@ namespace GCS
         bool hasDiagnosis; // if dofs, conflictingTags, redundantTags are up to date
         bool isInit;       // if plists, clists, reductionmaps are up to date
 
+        bool emptyDiagnoseMatrix; // false only if there is at least one driving constraint.
+
         int solve_BFGS(SubSystem *subsys, bool isFine=true, bool isRedundantsolving=false);
         int solve_LM(SubSystem *subsys, bool isRedundantsolving=false);
         int solve_DL(SubSystem *subsys, bool isRedundantsolving=false);
 
         void makeReducedJacobian(Eigen::MatrixXd &J, std::map<int,int> &jacobianconstraintmap, GCS::VEC_pD &pdiagnoselist, std::map< int , int> &tagmultiplicity);
+
+        void makeDenseQRDecomposition(  const Eigen::MatrixXd &J,
+                                        const std::map<int,int> &jacobianconstraintmap,
+                                        Eigen::FullPivHouseholderQR<Eigen::MatrixXd>& qrJT,
+                                        int &rank, Eigen::MatrixXd &R, bool transposeJ = true, bool silent = false);
+
+#ifdef EIGEN_SPARSEQR_COMPATIBLE
+        void makeSparseQRDecomposition( const Eigen::MatrixXd &J,
+                                        const std::map<int,int> &jacobianconstraintmap,
+                                        Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> > &SqrJT,
+                                        int &rank, Eigen::MatrixXd &R, bool transposeJ = true, bool silent = false);
+#endif
+        // This function name is long for a reason:
+        // - Only for DenseQR
+        // - Only for Transposed Jacobian QR decomposition
+        void identifyDependentGeometryParametersInTransposedJacobianDenseQRDecomposition(
+                                        const Eigen::FullPivHouseholderQR<Eigen::MatrixXd>& qrJT,
+                                        const GCS::VEC_pD &pdiagnoselist,
+                                        int paramsNum, int rank
+        );
+
+        template <typename T>
+        void identifyConflictingRedundantConstraints(   Algorithm alg,
+                                                        const T & qrJT,
+                                                        const std::map<int,int> &jacobianconstraintmap,
+                                                        const std::map< int , int> &tagmultiplicity,
+                                                        GCS::VEC_pD &pdiagnoselist,
+                                                        Eigen::MatrixXd &R,
+                                                        int constrNum, int rank,
+                                                        int &nonredundantconstrNum
+        );
+
+        void eliminateNonZerosOverPivotInUpperTriangularMatrix(Eigen::MatrixXd &R, int rank);
+
+#ifdef EIGEN_SPARSEQR_COMPATIBLE
+        void identifyDependentParametersSparseQR( const Eigen::MatrixXd &J,
+                                                  const std::map<int,int> &jacobianconstraintmap,
+                                                  const GCS::VEC_pD &pdiagnoselist,
+                                                  bool silent=true);
+#endif
+
+        void identifyDependentParametersDenseQR(  const Eigen::MatrixXd &J,
+                                                  const std::map<int,int> &jacobianconstraintmap,
+                                                  const GCS::VEC_pD &pdiagnoselist,
+                                                  bool silent=true);
+
+        template <typename T>
+        void identifyDependentParameters(   T & qrJ,
+                                            Eigen::MatrixXd &Rparams,
+                                            int rank,
+                                            const GCS::VEC_pD &pdiagnoselist,
+                                            bool silent=true);
 
         #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
         void extractSubsystem(SubSystem *subsys, bool isRedundantsolving);
@@ -292,8 +361,12 @@ namespace GCS
           { conflictingOut = hasDiagnosis ? conflictingTags : VEC_I(0); }
         void getRedundant(VEC_I &redundantOut) const
           { redundantOut = hasDiagnosis ? redundantTags : VEC_I(0); }
-        void getDependentParams(VEC_pD &pconstraintplistOut) const
-          { pconstraintplistOut = pdependentparameters;}
+        void getDependentParams(VEC_pD &pdependentparameterlist) const
+          { pdependentparameterlist = pDependentParameters;}
+        void getDependentParamsGroups(std::vector<std::set<double *>> &pdependentparametergroups) const
+          { pdependentparametergroups = pDependentParametersGroups;}
+        bool isEmptyDiagnoseMatrix() const {return emptyDiagnoseMatrix;}
+        void invalidatedDiagnosis();
     };
 
 

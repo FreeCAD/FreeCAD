@@ -14,219 +14,249 @@
       <translation>Nom de l'estil</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="38"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="50"/>
       <source>Add new...</source>
       <translation>Afegeix nou...</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="61"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="79"/>
       <source>Renames the selected style</source>
       <translation>Canvia el nom als elements seleccionats</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="64"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="82"/>
       <source>Rename</source>
       <translation>Reanomena</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="86"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="110"/>
       <source>Deletes the selected style</source>
       <translation>Esborra l'estil seleccionat</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="89"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="113"/>
       <source>Delete</source>
       <translation>Elimina</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="120"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="144"/>
       <source>Text</source>
       <translation>Text</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="129"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="153"/>
       <source>Font size</source>
       <translation>Mida del tipus de lletra</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="139"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="163"/>
       <source>Line spacing</source>
       <translation>Interlineat</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="149"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="173"/>
       <source>Font name</source>
       <translation>Nom de la font</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="156"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="192"/>
       <source>The font to use for texts and dimensions</source>
       <translation>Font a emprar per a textos i dimensions</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="183"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="219"/>
       <source>Units</source>
       <translation>Unitats</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="192"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="228"/>
       <source>Scale multiplier</source>
       <translation>Multiplicador d'escala</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="202"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="238"/>
       <source>Decimals</source>
       <translation>Decimals</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="212"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="248"/>
       <source>Unit override</source>
       <translation>Substitució d'unitat</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="222"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="258"/>
       <source>Show unit</source>
       <translation>Mostra les unitats</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="275"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="311"/>
       <source>Line and arrows</source>
       <translation>Línies i fletxes</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="284"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="320"/>
       <source>Line width</source>
       <translation>Amplada de línia</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="294"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="330"/>
       <source>Extension overshoot</source>
       <translation>Superació de l'extensió</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="304"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="340"/>
       <source>Arrow size</source>
       <translation>Mida de la fletxa</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="314"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="350"/>
       <source>Show lines</source>
       <translation>Mostra les línies</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="324"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="360"/>
       <source>Dimension overshoot</source>
       <translation>Superació de la dimensió</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="334"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="370"/>
       <source>Extension lines</source>
       <translation>Línies d'extensió</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="344"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="380"/>
       <source>Arrow type</source>
       <translation>Tipus de fletxa</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="354"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="390"/>
       <source>Line / text color</source>
       <translation>Línia / text color</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="377"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="413"/>
       <source>The width of the dimension lines</source>
       <translation>L'amplària de les línies d'acotació</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="380"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="416"/>
       <source>px</source>
       <translation>px</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="390"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="426"/>
       <source>The color of dimension lines, arrows and texts</source>
       <translation>El color de les línies d'acotació, fletxes i textos</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="408"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="456"/>
       <source>Dot</source>
       <translation>Punt</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="413"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="466"/>
       <source>Arrow</source>
       <translation>Fletxa</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="418"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="471"/>
       <source>Tick</source>
       <translation>Tick</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="26"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="38"/>
       <source>The name of your style. Existing style names can be edited.</source>
       <translation>El nom del vostre estil. Els noms d'estil existent poden ser editats.</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="163"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="199"/>
       <source>Font size in the system units</source>
       <translation>Mida de la font en unitats del sistema</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="136"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="160"/>
       <source>Line spacing in system units</source>
       <translation>Espai entre línies en unitats del sistema</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="229"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="265"/>
       <source>A multiplier factor that affects the size of texts and markers</source>
       <translation>Un factor multiplicador que afecta la mida del text i marcadors</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="249"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="285"/>
       <source>The number of decimals to show for dimension values</source>
       <translation>El nombre de decimals pels valors de les acotacions</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="242"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="278"/>
       <source>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</source>
       <translation type="unfinished">Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="259"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="295"/>
       <source>If it is checked it will show the unit next to the dimension value</source>
       <translation type="unfinished">If it is checked it will show the unit next to the dimension value</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="456"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="514"/>
       <source>The distance that the extension lines are additionally extended beyond the dimension line</source>
       <translation type="unfinished">The distance that the extension lines are additionally extended beyond the dimension line</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="426"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="484"/>
       <source>The size of the dimension arrows or markers in system units</source>
       <translation type="unfinished">The size of the dimension arrows or markers in system units</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="361"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="397"/>
       <source>If it is checked it will display the dimension line</source>
       <translation type="unfinished">If it is checked it will display the dimension line</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="436"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="494"/>
       <source>The distance that the dimension line is additionally extended</source>
       <translation type="unfinished">The distance that the dimension line is additionally extended</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="446"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="504"/>
       <source>The length of the extension lines</source>
       <translation type="unfinished">The length of the extension lines</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="404"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="452"/>
       <source>The type of arrows or markers to use at the end of dimension lines</source>
       <translation type="unfinished">The type of arrows or markers to use at the end of dimension lines</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="461"/>
+      <source>Circle</source>
+      <translation>Cercle</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="476"/>
+      <source>Tick-2</source>
+      <translation>Tick-2</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="529"/>
+      <source>Import styles from json file</source>
+      <translation type="unfinished">Import styles from json file</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="532"/>
+      <source>Import...</source>
+      <translation>Importa...</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="539"/>
+      <source>Export styles to json file</source>
+      <translation type="unfinished">Export styles to json file</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="542"/>
+      <source>Export...</source>
+      <translation type="unfinished">Export...</translation>
     </message>
   </context>
   <context>
@@ -874,209 +904,219 @@ valor mitjançant les tecles [ i ] mentre es dibuixa</translation>
       <translation type="unfinished">Style settings</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="22"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="207"/>
       <source>Text color</source>
       <translation type="unfinished">Text color</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="29"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="132"/>
       <source>Shape color</source>
       <translation type="unfinished">Shape color</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="36"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="50"/>
       <source>Line width</source>
       <translation>Amplada de línia</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="43"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="29"/>
       <source>The color of faces</source>
       <translation type="unfinished">The color of faces</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="50"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="168"/>
       <source>The type of dimension arrows</source>
       <translation type="unfinished">The type of dimension arrows</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="54"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="172"/>
       <source>Dot</source>
       <translation>Punt</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="59"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="177"/>
       <source>Circle</source>
       <translation>Cercle</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="64"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="182"/>
       <source>Arrow</source>
       <translation>Fletxa</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="69"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="187"/>
       <source>Tick</source>
       <translation>Tick</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="74"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="192"/>
       <source>Tick-2</source>
       <translation>Tick-2</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="82"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="234"/>
       <source>The color of texts and dimension texts</source>
       <translation type="unfinished">The color of texts and dimension texts</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="89"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="241"/>
       <source>The size of texts and dimension texts</source>
       <translation type="unfinished">The size of texts and dimension texts</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="99"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="281"/>
       <source>Show unit</source>
       <translation>Mostra les unitats</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="106"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="43"/>
       <source>Line color</source>
       <translation>Color de línia</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="113"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="271"/>
       <source>The size of dimension arrows</source>
       <translation type="unfinished">The size of dimension arrows</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="129"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="220"/>
       <source>The font to use for texts and dimensions</source>
       <translation>Font a emprar per a textos i dimensions</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="136"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="64"/>
       <source>The line style</source>
       <translation type="unfinished">The line style</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="140"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="68"/>
       <source>Solid</source>
       <translation>Sòlid</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="145"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="73"/>
       <source>Dashed</source>
       <translation>Discontínua</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="150"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="78"/>
       <source>Dotted</source>
       <translation>Puntejada</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="155"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="83"/>
       <source>DashDot</source>
       <translation>Guió punt</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="163"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="227"/>
       <source>Text size</source>
       <translation type="unfinished">Text size</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="170"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="295"/>
       <source>Unit override</source>
       <translation>Substitució d'unitat</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="177"/>
-      <source>If the unit siffix is shown on dimension texts or not</source>
-      <translation type="unfinished">If the unit siffix is shown on dimension texts or not</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="190"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="302"/>
       <source>The unit to use for dimensions. Leave blank to use current FreeCAD unit</source>
       <translation type="unfinished">The unit to use for dimensions. Leave blank to use current FreeCAD unit</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="197"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="146"/>
       <source>The transparency of faces</source>
       <translation type="unfinished">The transparency of faces</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="200"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="149"/>
       <source> %</source>
       <translation> %</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="210"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="139"/>
       <source>Transparency</source>
       <translation>Transparència</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="217"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="98"/>
       <source>Display mode</source>
       <translation>Mode de visualització</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="224"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="200"/>
       <source>Text font</source>
       <translation type="unfinished">Text font</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="231"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="288"/>
       <source>Arrow size</source>
       <translation>Mida de la fletxa</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="238"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="105"/>
       <source>The display mode for faces</source>
       <translation type="unfinished">The display mode for faces</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="242"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="109"/>
       <source>Flat Lines</source>
       <translation type="unfinished">Flat Lines</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="247"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="114"/>
       <source>Wireframe</source>
       <translation>Filferro</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="252"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="119"/>
       <source>Shaded</source>
       <translation>Ombrejat</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="257"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="124"/>
       <source>Points</source>
       <translation>Punts</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="265"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="36"/>
       <source>Draw style</source>
       <translation>Estil de dibuix</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="272"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="57"/>
       <source>The color of lines</source>
       <translation type="unfinished">The color of lines</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="279"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="251"/>
       <source>Arrow style</source>
       <translation type="unfinished">Arrow style</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="286"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="91"/>
       <source> px</source>
       <translation> px</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="295"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="312"/>
       <source>Apply to selected objects</source>
       <translation>S'apliquen a objectes seleccionats</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="20"/>
+      <source>Lines and faces</source>
+      <translation type="unfinished">Lines and faces</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="162"/>
+      <source>Annotations</source>
+      <translation>Anotacions</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="258"/>
+      <source>If the unit suffix is shown on dimension texts or not</source>
+      <translation type="unfinished">If the unit suffix is shown on dimension texts or not</translation>
     </message>
   </context>
   <context>
@@ -1260,22 +1300,22 @@ such as "Arial:Bold"</source>
       <translation>Use grid</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="383"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="402"/>
       <source>Grid spacing</source>
       <translation>Espaiat de la quadrícula</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="406"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="425"/>
       <source>The spacing between each grid line</source>
       <translation>L'espaiat entre cada línia de la quadrícula</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="334"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="353"/>
       <source>Main lines every</source>
       <translation>Principals línies cada</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="357"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="376"/>
       <source>Mainlines will be drawn thicker. Specify here how many squares between mainlines.</source>
       <translation>Mainlines s'extrauran més gruixuda. Especifiqueu aquí quantes places entre mainlines.</translation>
     </message>
@@ -1565,12 +1605,12 @@ such as "Arial:Bold"</source>
       <translation>mm</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="438"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="457"/>
       <source>Grid size</source>
       <translation>Mida de reixat</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="464"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="483"/>
       <source> lines</source>
       <translation> línies</translation>
     </message>
@@ -1790,14 +1830,9 @@ such as "Arial:Bold"</source>
       <translation>La tecla modificadora Alt</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="458"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="477"/>
       <source>The number of horizontal or vertical lines of the grid</source>
       <translation>El nombre de línies horitzontals o verticals de la quadrícula</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="507"/>
-      <source>The default color for new objects</source>
-      <translation>El color per defecte per als nous objectes</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="87"/>
@@ -2112,11 +2147,6 @@ Els valors amb diferències per sota d'aquest valor es tractaran com a iguals. A
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="487"/>
-      <source>Grid color</source>
-      <translation>Color de la quadrícula</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-draft.ui" line="194"/>
       <source>If this option is checked, the layers drop-down list will also show groups, allowing you to automatically add objects to groups too.</source>
       <translation>Si es marca aquesta opció, la llista desplegable de capes també mostrarà grups, cosa que us permetrà afegir objectes automàticament a grups.</translation>
@@ -2209,32 +2239,32 @@ Tingueu en compte que això no és totalment compatible i que molts objectes no 
       <translation>Giny d'escala d'anotació</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="532"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="567"/>
       <source>Draft Edit preferences</source>
       <translation>Preferències d'edició d'esborrany</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="535"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="570"/>
       <source>Edit</source>
       <translation>Edita</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="549"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="584"/>
       <source>Maximum number of contemporary edited objects</source>
       <translation>Nombre màxim d'objectes simultanis editats</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="572"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="607"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the maximum number of objects Draft Edit&lt;/p&gt;&lt;p&gt;can process at the same time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Estableix el nombre màxim d'objectes que Edició d'esborrany&lt;/p&gt;&lt;p&gt;pot processar al mateix temps&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="610"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="645"/>
       <source>Draft edit pick radius</source>
       <translation>Radi de selecció de l'edició d'esborranys</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="633"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="668"/>
       <source>Controls pick radius of edit nodes</source>
       <translation>Controla el radi de selecció dels nodes d’edició</translation>
     </message>
@@ -2445,6 +2475,31 @@ This value is the maximum segment length. </source>
       <source>The default size of hatch patterns</source>
       <translation type="unfinished">The default size of hatch patterns</translation>
     </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="329"/>
+      <source>If set, the grid will have its two main axes colored in red, green or blue when they match global axes</source>
+      <translation type="unfinished">If set, the grid will have its two main axes colored in red, green or blue when they match global axes</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="332"/>
+      <source>Use colored axes</source>
+      <translation type="unfinished">Use colored axes</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="506"/>
+      <source>Grid color and transparency</source>
+      <translation type="unfinished">Grid color and transparency</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="526"/>
+      <source>The color of the grid</source>
+      <translation type="unfinished">The color of the grid</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="546"/>
+      <source>The overall transparency of the grid</source>
+      <translation type="unfinished">The overall transparency of the grid</translation>
+    </message>
   </context>
   <context>
     <name>ImportDWG</name>
@@ -2485,7 +2540,7 @@ This value is the maximum segment length. </source>
       <translation>Activar/desactivar el mode de construcció</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1887"/>
+      <location filename="../../DraftGui.py" line="1894"/>
       <source>Autogroup off</source>
       <translation>Desactivar Auto-agrupar</translation>
     </message>
@@ -2705,82 +2760,82 @@ This value is the maximum segment length. </source>
       <translation>Edita</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1123"/>
+      <location filename="../../DraftGui.py" line="1124"/>
       <source>Global X</source>
       <translation>Global X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1124"/>
+      <location filename="../../DraftGui.py" line="1125"/>
       <source>Global Y</source>
       <translation>Global Y</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1125"/>
+      <location filename="../../DraftGui.py" line="1126"/>
       <source>Global Z</source>
       <translation>Global Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1128"/>
+      <location filename="../../DraftGui.py" line="1129"/>
       <source>Local X</source>
       <translation>Local X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1129"/>
+      <location filename="../../DraftGui.py" line="1130"/>
       <source>Local Y</source>
       <translation>Local Y</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1130"/>
+      <location filename="../../DraftGui.py" line="1131"/>
       <source>Local Z</source>
       <translation>Local Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1359"/>
+      <location filename="../../DraftGui.py" line="1360"/>
       <source>Invalid Size value. Using 200.0.</source>
       <translation>Valor de mida no vàlid. Utilitzant 200.0.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1367"/>
+      <location filename="../../DraftGui.py" line="1368"/>
       <source>Invalid Tracking value. Using 0.</source>
       <translation>Valor de seguiment no és vàlid. Utilitzant 0.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1381"/>
+      <location filename="../../DraftGui.py" line="1382"/>
       <source>Please enter a text string.</source>
       <translation>Si us plau, introduïu una cadena de text.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1389"/>
+      <location filename="../../DraftGui.py" line="1390"/>
       <source>Select a Font file</source>
       <translation>Seleccioneu un fitxer de tipus de lletra</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1420"/>
+      <location filename="../../DraftGui.py" line="1421"/>
       <source>Please enter a font file.</source>
       <translation>Si us plau, introduïu un fitxer de tipus de lletra.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1880"/>
+      <location filename="../../DraftGui.py" line="1887"/>
       <source>Autogroup: </source>
       <translation>Auto-agrupar: </translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2181"/>
+      <location filename="../../DraftGui.py" line="2188"/>
       <source>Faces</source>
       <translation>Cares</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2182"/>
+      <location filename="../../DraftGui.py" line="2189"/>
       <source>Remove</source>
       <translation>Elimina</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2183"/>
+      <location filename="../../DraftGui.py" line="2190"/>
       <source>Add</source>
       <translation>Afig</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2184"/>
+      <location filename="../../DraftGui.py" line="2191"/>
       <source>Facebinder elements</source>
       <translation>Elements de lligam de cares</translation>
     </message>

@@ -485,6 +485,474 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     </message>
   </context>
   <context>
+    <name>QObject</name>
+    <message>
+      <location filename="../../../BasicShapes/CommandShapes.py" line="51"/>
+      <source>Create tube</source>
+      <translation type="unfinished">Create tube</translation>
+    </message>
+    <message>
+      <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
+      <source>Edit %1</source>
+      <translation type="unfinished">Edit %1</translation>
+    </message>
+    <message>
+      <location filename="../../AppPartGui.cpp" line="210"/>
+      <location filename="../../AppPartGui.cpp" line="211"/>
+      <source>Part design</source>
+      <translation>부품 설계</translation>
+    </message>
+    <message>
+      <location filename="../../AppPartGui.cpp" line="212"/>
+      <location filename="../../AppPartGui.cpp" line="213"/>
+      <source>Import-Export</source>
+      <translation>가져오기 내보내기</translation>
+    </message>
+    <message>
+      <location filename="../../AppPartGui.cpp" line="214"/>
+      <source>Display</source>
+      <translation type="unfinished">Display</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="284"/>
+      <location filename="../../Command.cpp" line="381"/>
+      <location filename="../../Command.cpp" line="483"/>
+      <location filename="../../Command.cpp" line="902"/>
+      <location filename="../../Command.cpp" line="953"/>
+      <location filename="../../Command.cpp" line="2074"/>
+      <source>Wrong selection</source>
+      <translation>잘못 된 선택</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="285"/>
+      <location filename="../../Command.cpp" line="954"/>
+      <source>Select two shapes please.</source>
+      <translation>두 개의 셰이프를 선택 해 주세요</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="295"/>
+      <location filename="../../Command.cpp" line="397"/>
+      <location filename="../../Command.cpp" line="499"/>
+      <source>Non-solids selected</source>
+      <translation>비-솔리드 선택</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="296"/>
+      <location filename="../../Command.cpp" line="398"/>
+      <location filename="../../Command.cpp" line="500"/>
+      <source>The use of non-solids for boolean operations may lead to unexpected results.
+Do you want to continue?</source>
+      <translation>부울 작업 비-솔리드를 사용 하 여 예기치 않은 결과가 발생할 수 있습니다. 계속 하 시겠습니까?</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="382"/>
+      <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</source>
+      <translation type="unfinished">Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="484"/>
+      <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</source>
+      <translation type="unfinished">Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="903"/>
+      <source>Select one shape or more, please.</source>
+      <translation>셰이프를 하나 이상 선택하세요.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1107"/>
+      <source>All CAD Files</source>
+      <translation type="unfinished">All CAD Files</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1112"/>
+      <source>All Files</source>
+      <translation>모든 파일</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2075"/>
+      <source>You have to select either two edges or two wires.</source>
+      <translation>두 개의 모서리 또는 두 개의 와이어를 선택 해야 합니다.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSimple.cpp" line="120"/>
+      <source>Sewing Tolerance</source>
+      <translation>Sewing 공차</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSimple.cpp" line="121"/>
+      <source>Enter tolerance for sewing shape:</source>
+      <translation>Sewing 모양에 대 한 허용 오차를 입력 합니다.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAttacher.cpp" line="71"/>
+      <location filename="../../TaskAttacher.cpp" line="104"/>
+      <source>No reference selected</source>
+      <translation type="unfinished">No reference selected</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAttacher.cpp" line="80"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="82"/>
+      <source>Face</source>
+      <translation>면 선택</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAttacher.cpp" line="83"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
+      <source>Edge</source>
+      <translation>모서리</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAttacher.cpp" line="86"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="85"/>
+      <source>Vertex</source>
+      <translation type="unfinished">Vertex</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="78"/>
+      <source>Compound</source>
+      <translation>복합체</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="79"/>
+      <source>Compound Solid</source>
+      <translation>솔리드 복합체</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="80"/>
+      <source>Solid</source>
+      <translation>복합체</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
+      <source>Shell</source>
+      <translation>쉘</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
+      <source>Wire</source>
+      <translation>와이어</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="86"/>
+      <source>Shape</source>
+      <translation>셰이프</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="101"/>
+      <source>No Error</source>
+      <translation>오류 없음</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="102"/>
+      <source>Invalid Point On Curve</source>
+      <translation>잘못된 곡선위의 점</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="103"/>
+      <source>Invalid Point On Curve On Surface</source>
+      <translation>표면 곡선의 잘못된 점</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="104"/>
+      <source>Invalid Point On Surface</source>
+      <translation>표면에 잘못 된 점</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="105"/>
+      <source>No 3D Curve</source>
+      <translation>3 차원 곡선 아님</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="106"/>
+      <source>Multiple 3D Curve</source>
+      <translation>여러 3 차원 곡선</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="107"/>
+      <source>Invalid 3D Curve</source>
+      <translation>잘못 된 3D 곡선</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="108"/>
+      <source>No Curve On Surface</source>
+      <translation>표면에 곡선 없음</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="109"/>
+      <source>Invalid Curve On Surface</source>
+      <translation>표면에 잘못 된 곡선</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="110"/>
+      <source>Invalid Curve On Closed Surface</source>
+      <translation>닫힌 표면에 잘못된 곡선</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="111"/>
+      <source>Invalid Same Range Flag</source>
+      <translation>잘못 된 동일한 범위 플래그</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="112"/>
+      <source>Invalid Same Parameter Flag</source>
+      <translation>잘못 된 동일한 매개 변수 플래그</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="113"/>
+      <source>Invalid Degenerated Flag</source>
+      <translation>잘못된 악화된 플래그</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="114"/>
+      <source>Free Edge</source>
+      <translation>자유 모서리</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="115"/>
+      <source>Invalid MultiConnexity</source>
+      <translation>잘못된 멀티연결</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="116"/>
+      <source>Invalid Range</source>
+      <translation>잘못 된 범위</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="117"/>
+      <source>Empty Wire</source>
+      <translation>빈 와이어</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="118"/>
+      <source>Redundant Edge</source>
+      <translation>중복 모서리</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="119"/>
+      <source>Self Intersecting Wire</source>
+      <translation>스스로 교차하는 와이어</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="120"/>
+      <source>No Surface</source>
+      <translation>표면 없음</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="121"/>
+      <source>Invalid Wire</source>
+      <translation>잘못 된 와이어</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="122"/>
+      <source>Redundant Wire</source>
+      <translation>중복 와이어</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="123"/>
+      <source>Intersecting Wires</source>
+      <translation>교차 와이어</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="124"/>
+      <source>Invalid Imbrication Of Wires</source>
+      <translation>와이어의 잘못 된 Imbrication</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="125"/>
+      <source>Empty Shell</source>
+      <translation>비어있는 쉘</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="126"/>
+      <source>Redundant Face</source>
+      <translation type="unfinished">Redundant Face</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="127"/>
+      <source>Unorientable Shape</source>
+      <translation>중복면</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="128"/>
+      <source>Not Closed</source>
+      <translation>닫히지 않습니다</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="129"/>
+      <source>Not Connected</source>
+      <translation>연결되지 않았습니다</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="130"/>
+      <source>Sub Shape Not In Shape</source>
+      <translation>서브 셰이프가 셰이프안에 있지 않습니다</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="131"/>
+      <source>Bad Orientation</source>
+      <translation>잘못된 방향</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="132"/>
+      <source>Bad Orientation Of Sub Shape</source>
+      <translation>하위 셰이프의 잘못된 방향</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="133"/>
+      <source>Invalid Tolerance Value</source>
+      <translation>잘못 된 공차 값</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="134"/>
+      <source>Check Failed</source>
+      <translation>확인 실패</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="144"/>
+      <source>No Result</source>
+      <translation>결과 없음</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="148"/>
+      <source>Out Of Enum Range: </source>
+      <translation>열거형 범위 초과:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="160"/>
+      <source>BOPAlgo CheckUnknown</source>
+      <translation>BOPAlgo CheckUnknown</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="161"/>
+      <source>BOPAlgo BadType</source>
+      <translation>BOPAlgo BadType</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="162"/>
+      <source>BOPAlgo SelfIntersect</source>
+      <translation>BOPAlgo SelfIntersect</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="163"/>
+      <source>BOPAlgo TooSmallEdge</source>
+      <translation>BOPAlgo TooSmallEdge</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="164"/>
+      <source>BOPAlgo NonRecoverableFace</source>
+      <translation>BOPAlgo NonRecoverableFace</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="165"/>
+      <source>BOPAlgo IncompatibilityOfVertex</source>
+      <translation>BOPAlgo IncompatibilityOfVertex</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="166"/>
+      <source>BOPAlgo IncompatibilityOfEdge</source>
+      <translation>BOPAlgo IncompatibilityOfEdge</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="167"/>
+      <source>BOPAlgo IncompatibilityOfFace</source>
+      <translation>BOPAlgo IncompatibilityOfFace</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="168"/>
+      <source>BOPAlgo OperationAborted</source>
+      <translation>BOPAlgo OperationAborted</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="169"/>
+      <source>BOPAlgo GeomAbs_C0</source>
+      <translation>BOPAlgo GeomAbs_C0</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="170"/>
+      <source>BOPAlgo_InvalidCurveOnSurface</source>
+      <translation type="unfinished">BOPAlgo_InvalidCurveOnSurface</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="171"/>
+      <source>BOPAlgo NotValid</source>
+      <translation>BOPAlgo NotValid</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="463"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="659"/>
+      <source>Invalid</source>
+      <translation>올바르지 않음</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="556"/>
+      <location filename="../../TaskDimension.cpp" line="1602"/>
+      <source>Selections</source>
+      <translation>선택</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="563"/>
+      <location filename="../../TaskDimension.cpp" line="1609"/>
+      <source>Control</source>
+      <translation type="unfinished">Control</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="1340"/>
+      <source>Reset Dialog</source>
+      <translation>대화창 재설정</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="1344"/>
+      <source>Toggle 3d</source>
+      <translation>3d 전환</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="1349"/>
+      <source>Toggle Delta</source>
+      <translation>델타 전환</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="1354"/>
+      <source>Clear All</source>
+      <translation>모두 지우기</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderExt.cpp" line="847"/>
+      <source>Set colors...</source>
+      <translation>색 설정...</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderMirror.cpp" line="79"/>
+      <source>Edit mirror plane</source>
+      <translation>대칭 평면을 편집</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderMirror.cpp" line="276"/>
+      <source>Edit fillet edges</source>
+      <translation>필렛 모서리 편집</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderMirror.cpp" line="379"/>
+      <source>Edit chamfer edges</source>
+      <translation>모따기 모서리 편집</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderMirror.cpp" line="520"/>
+      <source>Edit offset</source>
+      <translation>오프셋을 편집</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderMirror.cpp" line="606"/>
+      <source>Edit thickness</source>
+      <translation>두께 편집</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderSpline.cpp" line="81"/>
+      <source>Show control points</source>
+      <translation type="unfinished">Show control points</translation>
+    </message>
+  </context>
+  <context>
     <name>Part_MakeTube</name>
     <message>
       <location filename="../../../BasicShapes/Shapes.py" line="59"/>
@@ -4924,464 +5392,6 @@ in the 3D view for the sweep path.</source>
       <location filename="../../../App/FeatureExtrusion.cpp" line="520"/>
       <source>Supports making faces with holes, does not support nesting.</source>
       <translation type="unfinished">Supports making faces with holes, does not support nesting.</translation>
-    </message>
-  </context>
-  <context>
-    <name>QObject</name>
-    <message>
-      <location filename="../../AppPartGui.cpp" line="210"/>
-      <location filename="../../AppPartGui.cpp" line="211"/>
-      <source>Part design</source>
-      <translation>부품 설계</translation>
-    </message>
-    <message>
-      <location filename="../../AppPartGui.cpp" line="212"/>
-      <location filename="../../AppPartGui.cpp" line="213"/>
-      <source>Import-Export</source>
-      <translation>가져오기 내보내기</translation>
-    </message>
-    <message>
-      <location filename="../../AppPartGui.cpp" line="214"/>
-      <source>Display</source>
-      <translation type="unfinished">Display</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="284"/>
-      <location filename="../../Command.cpp" line="381"/>
-      <location filename="../../Command.cpp" line="483"/>
-      <location filename="../../Command.cpp" line="902"/>
-      <location filename="../../Command.cpp" line="953"/>
-      <location filename="../../Command.cpp" line="2074"/>
-      <source>Wrong selection</source>
-      <translation>잘못 된 선택</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="285"/>
-      <location filename="../../Command.cpp" line="954"/>
-      <source>Select two shapes please.</source>
-      <translation>두 개의 셰이프를 선택 해 주세요</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="295"/>
-      <location filename="../../Command.cpp" line="397"/>
-      <location filename="../../Command.cpp" line="499"/>
-      <source>Non-solids selected</source>
-      <translation>비-솔리드 선택</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="296"/>
-      <location filename="../../Command.cpp" line="398"/>
-      <location filename="../../Command.cpp" line="500"/>
-      <source>The use of non-solids for boolean operations may lead to unexpected results.
-Do you want to continue?</source>
-      <translation>부울 작업 비-솔리드를 사용 하 여 예기치 않은 결과가 발생할 수 있습니다. 계속 하 시겠습니까?</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="382"/>
-      <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</source>
-      <translation type="unfinished">Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="484"/>
-      <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</source>
-      <translation type="unfinished">Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="903"/>
-      <source>Select one shape or more, please.</source>
-      <translation>셰이프를 하나 이상 선택하세요.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1107"/>
-      <source>All CAD Files</source>
-      <translation type="unfinished">All CAD Files</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1112"/>
-      <source>All Files</source>
-      <translation>모든 파일</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2075"/>
-      <source>You have to select either two edges or two wires.</source>
-      <translation>두 개의 모서리 또는 두 개의 와이어를 선택 해야 합니다.</translation>
-    </message>
-    <message>
-      <location filename="../../CommandSimple.cpp" line="120"/>
-      <source>Sewing Tolerance</source>
-      <translation>Sewing 공차</translation>
-    </message>
-    <message>
-      <location filename="../../CommandSimple.cpp" line="121"/>
-      <source>Enter tolerance for sewing shape:</source>
-      <translation>Sewing 모양에 대 한 허용 오차를 입력 합니다.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskAttacher.cpp" line="71"/>
-      <location filename="../../TaskAttacher.cpp" line="104"/>
-      <source>No reference selected</source>
-      <translation type="unfinished">No reference selected</translation>
-    </message>
-    <message>
-      <location filename="../../TaskAttacher.cpp" line="80"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="82"/>
-      <source>Face</source>
-      <translation>면 선택</translation>
-    </message>
-    <message>
-      <location filename="../../TaskAttacher.cpp" line="83"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
-      <source>Edge</source>
-      <translation>모서리</translation>
-    </message>
-    <message>
-      <location filename="../../TaskAttacher.cpp" line="86"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="85"/>
-      <source>Vertex</source>
-      <translation type="unfinished">Vertex</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="78"/>
-      <source>Compound</source>
-      <translation>복합체</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="79"/>
-      <source>Compound Solid</source>
-      <translation>솔리드 복합체</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="80"/>
-      <source>Solid</source>
-      <translation>복합체</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
-      <source>Shell</source>
-      <translation>쉘</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
-      <source>Wire</source>
-      <translation>와이어</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="86"/>
-      <source>Shape</source>
-      <translation>셰이프</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="101"/>
-      <source>No Error</source>
-      <translation>오류 없음</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="102"/>
-      <source>Invalid Point On Curve</source>
-      <translation>잘못된 곡선위의 점</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="103"/>
-      <source>Invalid Point On Curve On Surface</source>
-      <translation>표면 곡선의 잘못된 점</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="104"/>
-      <source>Invalid Point On Surface</source>
-      <translation>표면에 잘못 된 점</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="105"/>
-      <source>No 3D Curve</source>
-      <translation>3 차원 곡선 아님</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="106"/>
-      <source>Multiple 3D Curve</source>
-      <translation>여러 3 차원 곡선</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="107"/>
-      <source>Invalid 3D Curve</source>
-      <translation>잘못 된 3D 곡선</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="108"/>
-      <source>No Curve On Surface</source>
-      <translation>표면에 곡선 없음</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="109"/>
-      <source>Invalid Curve On Surface</source>
-      <translation>표면에 잘못 된 곡선</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="110"/>
-      <source>Invalid Curve On Closed Surface</source>
-      <translation>닫힌 표면에 잘못된 곡선</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="111"/>
-      <source>Invalid Same Range Flag</source>
-      <translation>잘못 된 동일한 범위 플래그</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="112"/>
-      <source>Invalid Same Parameter Flag</source>
-      <translation>잘못 된 동일한 매개 변수 플래그</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="113"/>
-      <source>Invalid Degenerated Flag</source>
-      <translation>잘못된 악화된 플래그</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="114"/>
-      <source>Free Edge</source>
-      <translation>자유 모서리</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="115"/>
-      <source>Invalid MultiConnexity</source>
-      <translation>잘못된 멀티연결</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="116"/>
-      <source>Invalid Range</source>
-      <translation>잘못 된 범위</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="117"/>
-      <source>Empty Wire</source>
-      <translation>빈 와이어</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="118"/>
-      <source>Redundant Edge</source>
-      <translation>중복 모서리</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="119"/>
-      <source>Self Intersecting Wire</source>
-      <translation>스스로 교차하는 와이어</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="120"/>
-      <source>No Surface</source>
-      <translation>표면 없음</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="121"/>
-      <source>Invalid Wire</source>
-      <translation>잘못 된 와이어</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="122"/>
-      <source>Redundant Wire</source>
-      <translation>중복 와이어</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="123"/>
-      <source>Intersecting Wires</source>
-      <translation>교차 와이어</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="124"/>
-      <source>Invalid Imbrication Of Wires</source>
-      <translation>와이어의 잘못 된 Imbrication</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="125"/>
-      <source>Empty Shell</source>
-      <translation>비어있는 쉘</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="126"/>
-      <source>Redundant Face</source>
-      <translation type="unfinished">Redundant Face</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="127"/>
-      <source>Unorientable Shape</source>
-      <translation>중복면</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="128"/>
-      <source>Not Closed</source>
-      <translation>닫히지 않습니다</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="129"/>
-      <source>Not Connected</source>
-      <translation>연결되지 않았습니다</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="130"/>
-      <source>Sub Shape Not In Shape</source>
-      <translation>서브 셰이프가 셰이프안에 있지 않습니다</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="131"/>
-      <source>Bad Orientation</source>
-      <translation>잘못된 방향</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="132"/>
-      <source>Bad Orientation Of Sub Shape</source>
-      <translation>하위 셰이프의 잘못된 방향</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="133"/>
-      <source>Invalid Tolerance Value</source>
-      <translation>잘못 된 공차 값</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="134"/>
-      <source>Check Failed</source>
-      <translation>확인 실패</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="144"/>
-      <source>No Result</source>
-      <translation>결과 없음</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="148"/>
-      <source>Out Of Enum Range: </source>
-      <translation>열거형 범위 초과:</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="160"/>
-      <source>BOPAlgo CheckUnknown</source>
-      <translation>BOPAlgo CheckUnknown</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="161"/>
-      <source>BOPAlgo BadType</source>
-      <translation>BOPAlgo BadType</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="162"/>
-      <source>BOPAlgo SelfIntersect</source>
-      <translation>BOPAlgo SelfIntersect</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="163"/>
-      <source>BOPAlgo TooSmallEdge</source>
-      <translation>BOPAlgo TooSmallEdge</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="164"/>
-      <source>BOPAlgo NonRecoverableFace</source>
-      <translation>BOPAlgo NonRecoverableFace</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="165"/>
-      <source>BOPAlgo IncompatibilityOfVertex</source>
-      <translation>BOPAlgo IncompatibilityOfVertex</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="166"/>
-      <source>BOPAlgo IncompatibilityOfEdge</source>
-      <translation>BOPAlgo IncompatibilityOfEdge</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="167"/>
-      <source>BOPAlgo IncompatibilityOfFace</source>
-      <translation>BOPAlgo IncompatibilityOfFace</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="168"/>
-      <source>BOPAlgo OperationAborted</source>
-      <translation>BOPAlgo OperationAborted</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="169"/>
-      <source>BOPAlgo GeomAbs_C0</source>
-      <translation>BOPAlgo GeomAbs_C0</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="170"/>
-      <source>BOPAlgo_InvalidCurveOnSurface</source>
-      <translation type="unfinished">BOPAlgo_InvalidCurveOnSurface</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="171"/>
-      <source>BOPAlgo NotValid</source>
-      <translation>BOPAlgo NotValid</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="463"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="659"/>
-      <source>Invalid</source>
-      <translation>올바르지 않음</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="556"/>
-      <location filename="../../TaskDimension.cpp" line="1602"/>
-      <source>Selections</source>
-      <translation>선택</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="563"/>
-      <location filename="../../TaskDimension.cpp" line="1609"/>
-      <source>Control</source>
-      <translation type="unfinished">Control</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="1340"/>
-      <source>Reset Dialog</source>
-      <translation>대화창 재설정</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="1344"/>
-      <source>Toggle 3d</source>
-      <translation>3d 전환</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="1349"/>
-      <source>Toggle Delta</source>
-      <translation>델타 전환</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="1354"/>
-      <source>Clear All</source>
-      <translation>모두 지우기</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderExt.cpp" line="847"/>
-      <source>Set colors...</source>
-      <translation>색 설정...</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderMirror.cpp" line="79"/>
-      <source>Edit mirror plane</source>
-      <translation>대칭 평면을 편집</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderMirror.cpp" line="276"/>
-      <source>Edit fillet edges</source>
-      <translation>필렛 모서리 편집</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderMirror.cpp" line="379"/>
-      <source>Edit chamfer edges</source>
-      <translation>모따기 모서리 편집</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderMirror.cpp" line="520"/>
-      <source>Edit offset</source>
-      <translation>오프셋을 편집</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderMirror.cpp" line="606"/>
-      <source>Edit thickness</source>
-      <translation>두께 편집</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderSpline.cpp" line="81"/>
-      <source>Show control points</source>
-      <translation type="unfinished">Show control points</translation>
     </message>
   </context>
   <context>

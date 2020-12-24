@@ -137,8 +137,8 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
     builder.MakeCompound(comp);
     bool found = false;
     for (auto& s:sourceShapes) {
-        if (s.IsNull()) {
-            continue;    //has no shape
+        if (s.IsNull() || Part::TopoShape(s).isInfinite()) {
+            continue;    // has no shape or the shape is infinite
         }
         found = true;
         BRepBuilderAPI_Copy BuilderCopy(s);
@@ -313,7 +313,7 @@ std::vector<TopoDS_Shape> ShapeExtractor::extractDrawableShapes(const TopoDS_Sha
         TopExp_Explorer expSolid(shapeIn, TopAbs_SOLID);
         for (int i = 1; expSolid.More(); expSolid.Next(), i++) {
             TopoDS_Solid s = TopoDS::Solid(expSolid.Current());
-            if (!s.IsNull()) {
+            if (!s.IsNull() && !Part::TopoShape(s).isInfinite()) {
                 extShapes.push_back(s);
             }
         }
@@ -322,7 +322,7 @@ std::vector<TopoDS_Shape> ShapeExtractor::extractDrawableShapes(const TopoDS_Sha
         TopExp_Explorer expEdge(shapeIn, TopAbs_EDGE, TopAbs_SOLID);
         for (int i = 1; expEdge.More(); expEdge.Next(), i++) {
             TopoDS_Shape s = expEdge.Current();
-            if (!s.IsNull()) {
+            if (!s.IsNull() && !Part::TopoShape(s).isInfinite()) {
                 extEdges.push_back(s);
             }
         }
@@ -331,7 +331,7 @@ std::vector<TopoDS_Shape> ShapeExtractor::extractDrawableShapes(const TopoDS_Sha
         TopExp_Explorer expSolid(shapeIn, TopAbs_SOLID);
         for (int i = 1; expSolid.More(); expSolid.Next(), i++) {
             TopoDS_Solid s = TopoDS::Solid(expSolid.Current());
-            if (!s.IsNull()) {
+            if (!s.IsNull() && !Part::TopoShape(s).isInfinite()) {
                 extShapes.push_back(s);
             }
         }
@@ -341,7 +341,7 @@ std::vector<TopoDS_Shape> ShapeExtractor::extractDrawableShapes(const TopoDS_Sha
         TopExp_Explorer expEdge(shapeIn, TopAbs_EDGE, TopAbs_SOLID);
         for (int i = 1; expEdge.More(); expEdge.Next(), i++) {
             TopoDS_Shape s = expEdge.Current();
-            if (!s.IsNull()) {
+            if (!s.IsNull() && !Part::TopoShape(s).isInfinite()) {
                 extEdges.push_back(s);
             }
         }

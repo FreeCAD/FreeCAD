@@ -126,6 +126,74 @@
       <source>Edit</source>
       <translation>編集</translation>
     </message>
+    <message>
+      <source>Import</source>
+      <translation>インポート</translation>
+    </message>
+    <message>
+      <source>Delete</source>
+      <translation>削除</translation>
+    </message>
+    <message>
+      <source>Paste expressions</source>
+      <translation type="unfinished">Paste expressions</translation>
+    </message>
+    <message>
+      <source>Make link group</source>
+      <translation>リンクグループを作成</translation>
+    </message>
+    <message>
+      <source>Make link</source>
+      <translation>リンクを作成</translation>
+    </message>
+    <message>
+      <source>Make sub-link</source>
+      <translation>サブリンクを作成</translation>
+    </message>
+    <message>
+      <source>Import links</source>
+      <translation>リンクのインポート</translation>
+    </message>
+    <message>
+      <source>Import all links</source>
+      <translation>全てのリンクをインポートする</translation>
+    </message>
+    <message>
+      <source>Insert measurement</source>
+      <translation type="unfinished">Insert measurement</translation>
+    </message>
+    <message>
+      <source>Insert text document</source>
+      <translation type="unfinished">Insert text document</translation>
+    </message>
+    <message>
+      <source>Add a part</source>
+      <translation type="unfinished">Add a part</translation>
+    </message>
+    <message>
+      <source>Add a group</source>
+      <translation type="unfinished">Add a group</translation>
+    </message>
+    <message>
+      <source>Align</source>
+      <translation type="unfinished">Align</translation>
+    </message>
+    <message>
+      <source>Placement</source>
+      <translation>配置</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>変換</translation>
+    </message>
+    <message>
+      <source>Link Transform</source>
+      <translation type="unfinished">Link Transform</translation>
+    </message>
+    <message>
+      <source>Measure distance</source>
+      <translation>距離を測定</translation>
+    </message>
   </context>
   <context>
     <name>DlgCustomizeSpNavSettings</name>
@@ -2530,6 +2598,18 @@ Larger value eases to pick things, but can make small features impossible to sel
 Larger value eases to pick things, but can make small features impossible to select.
                </translation>
     </message>
+    <message>
+      <source>This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</source>
+      <translation type="unfinished">This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</translation>
+    </message>
+    <message>
+      <source>Use software OpenGL</source>
+      <translation type="unfinished">Use software OpenGL</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
@@ -3387,10 +3467,6 @@ Mouse tilting is not disabled by this setting.</source>
       <translation>3D回転では現在のカーソル位置が回転中心として使用されます。</translation>
     </message>
     <message>
-      <source>Rotate at cursor</source>
-      <translation>カーソル位置で回転</translation>
-    </message>
-    <message>
       <source>Isometric</source>
       <translation>アイソメトリック</translation>
     </message>
@@ -3437,6 +3513,22 @@ Mouse tilting is not disabled by this setting.</source>
     <message>
       <source>Default camera orientation when creating a new document or selecting the home view</source>
       <translation>新しいドキュメントを作成、またはホームビューを選択した場合のデフォルトのカメラの向き</translation>
+    </message>
+    <message>
+      <source>Rotation mode</source>
+      <translation type="unfinished">Rotation mode</translation>
+    </message>
+    <message>
+      <source>Window center</source>
+      <translation type="unfinished">Window center</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation type="unfinished">Drag at cursor</translation>
+    </message>
+    <message>
+      <source>Object center</source>
+      <translation type="unfinished">Object center</translation>
     </message>
   </context>
   <context>
@@ -8788,6 +8880,21 @@ Document: </translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewRestoreCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>標準ビュー</translation>
+    </message>
+    <message>
+      <source>Restore saved camera</source>
+      <translation type="unfinished">Restore saved camera</translation>
+    </message>
+    <message>
+      <source>Restore saved camera settings</source>
+      <translation type="unfinished">Restore saved camera settings</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewRight</name>
     <message>
       <source>Standard-View</source>
@@ -8830,6 +8937,21 @@ Document: </translation>
     <message>
       <source>Rotate the view by 90° clockwise</source>
       <translation>ビューを時計回りに90度回転</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewSaveCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>標準ビュー</translation>
+    </message>
+    <message>
+      <source>Save current camera</source>
+      <translation type="unfinished">Save current camera</translation>
+    </message>
+    <message>
+      <source>Save current camera settings</source>
+      <translation type="unfinished">Save current camera settings</translation>
     </message>
   </context>
   <context>

@@ -121,6 +121,7 @@
 #include "TaskSketcherValidation.h"
 #include "CommandConstraints.h"
 #include "ViewProviderSketchGeometryExtension.h"
+#include <Mod/Sketcher/App/SolverGeometryExtension.h>
 
 FC_LOG_LEVEL_INIT("Sketch",true,true)
 
@@ -143,24 +144,28 @@ using namespace SketcherGui;
 using namespace Sketcher;
 namespace bp = boost::placeholders;
 
-SbColor ViewProviderSketch::VertexColor                 (1.0f,0.149f,0.0f);   // #FF2600 -> (255, 38,  0)
-SbColor ViewProviderSketch::CurveColor                  (1.0f,1.0f,1.0f);     // #FFFFFF -> (255,255,255)
-SbColor ViewProviderSketch::CurveDraftColor             (0.0f,0.0f,0.86f);    // #0000DC -> (  0,  0,220)
-SbColor ViewProviderSketch::CurveExternalColor          (0.8f,0.2f,0.6f);     // #CC3399 -> (204, 51,153)
-SbColor ViewProviderSketch::CrossColorH                 (0.8f,0.4f,0.4f);     // #CC6666 -> (204,102,102)
-SbColor ViewProviderSketch::CrossColorV                 (0.4f,0.8f,0.4f);     // #66CC66 -> (102,204,102)
-SbColor ViewProviderSketch::FullyConstrainedColor       (0.0f,1.0f,0.0f);     // #00FF00 -> (  0,255,  0)
-SbColor ViewProviderSketch::ConstrDimColor              (1.0f,0.149f,0.0f);   // #FF2600 -> (255, 38,  0)
-SbColor ViewProviderSketch::ConstrIcoColor              (1.0f,0.149f,0.0f);   // #FF2600 -> (255, 38,  0)
-SbColor ViewProviderSketch::NonDrivingConstrDimColor    (0.0f,0.149f,1.0f);   // #0026FF -> (  0, 38,255)
-SbColor ViewProviderSketch::ExprBasedConstrDimColor     (1.0f,0.5f,0.149f);   // #FF7F26 -> (255, 127,  38)
-SbColor ViewProviderSketch::InformationColor            (0.0f,1.0f,0.0f);     // #00FF00 -> (  0,255,  0)
-SbColor ViewProviderSketch::PreselectColor              (0.88f,0.88f,0.0f);   // #E1E100 -> (225,225,  0)
-SbColor ViewProviderSketch::SelectColor                 (0.11f,0.68f,0.11f);  // #1CAD1C -> ( 28,173, 28)
-SbColor ViewProviderSketch::PreselectSelectedColor      (0.36f,0.48f,0.11f);  // #5D7B1C -> ( 93,123, 28)
-SbColor ViewProviderSketch::CreateCurveColor            (0.8f,0.8f,0.8f);     // #CCCCCC -> (204,204,204)
-SbColor ViewProviderSketch::DeactivatedConstrDimColor   (0.8f,0.8f,0.8f);     // #CCCCCC -> (204,204,204)
-SbColor ViewProviderSketch::InternalAlignedGeoColor     (0.7f,0.7f,0.5f);      // #B2B27F -> (178,178,127)
+SbColor ViewProviderSketch::VertexColor                             (1.0f,0.149f,0.0f);   // #FF2600 -> (255, 38,  0)
+SbColor ViewProviderSketch::CurveColor                              (1.0f,1.0f,1.0f);     // #FFFFFF -> (255,255,255)
+SbColor ViewProviderSketch::CurveDraftColor                         (0.0f,0.0f,0.86f);    // #0000DC -> (  0,  0,220)
+SbColor ViewProviderSketch::CurveExternalColor                      (0.8f,0.2f,0.6f);     // #CC3399 -> (204, 51,153)
+SbColor ViewProviderSketch::CrossColorH                             (0.8f,0.4f,0.4f);     // #CC6666 -> (204,102,102)
+SbColor ViewProviderSketch::CrossColorV                             (0.4f,0.8f,0.4f);     // #66CC66 -> (102,204,102)
+SbColor ViewProviderSketch::FullyConstrainedColor                   (0.0f,1.0f,0.0f);     // #00FF00 -> (  0,255,  0)
+SbColor ViewProviderSketch::ConstrDimColor                          (1.0f,0.149f,0.0f);   // #FF2600 -> (255, 38,  0)
+SbColor ViewProviderSketch::ConstrIcoColor                          (1.0f,0.149f,0.0f);   // #FF2600 -> (255, 38,  0)
+SbColor ViewProviderSketch::NonDrivingConstrDimColor                (0.0f,0.149f,1.0f);   // #0026FF -> (  0, 38,255)
+SbColor ViewProviderSketch::ExprBasedConstrDimColor                 (1.0f,0.5f,0.149f);   // #FF7F26 -> (255, 127,  38)
+SbColor ViewProviderSketch::InformationColor                        (0.0f,1.0f,0.0f);     // #00FF00 -> (  0,255,  0)
+SbColor ViewProviderSketch::PreselectColor                          (0.88f,0.88f,0.0f);   // #E1E100 -> (225,225,  0)
+SbColor ViewProviderSketch::SelectColor                             (0.11f,0.68f,0.11f);  // #1CAD1C -> ( 28,173, 28)
+SbColor ViewProviderSketch::PreselectSelectedColor                  (0.36f,0.48f,0.11f);  // #5D7B1C -> ( 93,123, 28)
+SbColor ViewProviderSketch::CreateCurveColor                        (0.8f,0.8f,0.8f);     // #CCCCCC -> (204,204,204)
+SbColor ViewProviderSketch::DeactivatedConstrDimColor               (0.8f,0.8f,0.8f);     // #CCCCCC -> (204,204,204)
+SbColor ViewProviderSketch::InternalAlignedGeoColor                 (0.7f,0.7f,0.5f);     // #B2B27F -> (178,178,127)
+SbColor ViewProviderSketch::FullyConstraintElementColor             (0.50f,0.81f,0.62f);  // #80D0A0 -> (128,208,160)
+SbColor ViewProviderSketch::FullyConstraintConstructionElementColor (0.56f,0.66f,0.99f);  // #8FA9FD -> (143,169,253)
+SbColor ViewProviderSketch::FullyConstraintInternalAlignmentColor   (0.87f,0.87f,0.78f);  // #DEDEC8 -> (222,222,200)
+SbColor ViewProviderSketch::FullyConstraintConstructionPointColor   (1.0f,0.58f,0.50f);   // #FF9580 -> (255,149,128)
 // Variables for holding previous click
 SbTime  ViewProviderSketch::prvClickTime;
 SbVec2s ViewProviderSketch::prvClickPos;
@@ -1166,24 +1171,64 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
                 // This is because dragging gives unwanted cosmetic results due to the scale ratio.
                 // This is an heuristic as it does not check all indirect routes.
                 if(GeometryFacade::isInternalType(geo, InternalType::BSplineControlPoint)) {
-                    bool weight = false;
-                    bool weight_driven = false;
-                    bool equal = false;
-                    bool block = false;
+                    if(geo->hasExtension(Sketcher::SolverGeometryExtension::getClassTypeId())) {
+                        auto solvext = std::static_pointer_cast<const Sketcher::SolverGeometryExtension>(
+                                        geo->getExtension(Sketcher::SolverGeometryExtension::getClassTypeId()).lock());
 
-                    for(auto c : getSketchObject()->Constraints.getValues()) {
-                        weight = weight || (c->Type == Sketcher::Weight && c->First == edit->DragCurve);
-                        weight_driven = weight_driven || (c->Type == Sketcher::Weight && !c->isDriving && c->First == edit->DragCurve);
-                        equal = equal || (c->Type == Sketcher::Equal && (c->First == edit->DragCurve || c->Second == edit->DragCurve));
-                        block = block || (c->Type == Sketcher::Block && c->First == edit->DragCurve);
+                        // Edge parameters are Independent, so weight won't move
+                        if(solvext->getEdge()==Sketcher::SolverGeometryExtension::Independent) {
+                            Mode = STATUS_NONE;
+                            return false;
+                        }
+
+                        // The B-Spline is constrained to be non-rational (equal weights), moving produces a bad effect
+                        // because OCCT will normalize the values of the weights.
+                        auto grp = getSketchObject()->getSolvedSketch().getDependencyGroup(edit->DragCurve, Sketcher::none);
+
+                        int bsplinegeoid = -1;
+
+                        std::vector<int> polegeoids;
+
+                        for( auto c : getSketchObject()->Constraints.getValues()) {
+                            if( c->Type == Sketcher::InternalAlignment &&
+                                c->AlignmentType == BSplineControlPoint &&
+                                c->First == edit->DragCurve ) {
+
+                                bsplinegeoid = c->Second;
+                                break;
+                            }
+                        }
+
+                        if(bsplinegeoid == -1) {
+                            Mode = STATUS_NONE;
+                            return false;
+                        }
+
+                        for( auto c : getSketchObject()->Constraints.getValues()) {
+                            if( c->Type == Sketcher::InternalAlignment &&
+                                c->AlignmentType == BSplineControlPoint &&
+                                c->Second == bsplinegeoid ) {
+
+                                polegeoids.push_back(c->First);
+                            }
+                        }
+
+                        bool allingroup = true;
+
+                        for( auto polegeoid : polegeoids ) {
+                            std::pair< int, Sketcher::PointPos > thispole = std::make_pair(polegeoid,Sketcher::none);
+
+                            if(grp.find(thispole) == grp.end()) // not found
+                                allingroup  = false;
+                        }
+
+                        if(allingroup) { // it is constrained to be non-rational
+                            Mode = STATUS_NONE;
+                            return false;
+                        }
+
                     }
 
-                    if( (weight && !weight_driven)  ||
-                        (equal && !weight_driven)   ||
-                        block) {
-                        Mode = STATUS_NONE;
-                        return false;
-                    }
                 }
 
                 getSketchObject()->getSolvedSketch().initMove(edit->DragCurve, Sketcher::none, false);
@@ -2747,11 +2792,34 @@ void ViewProviderSketch::updateColor(void)
         return false;
     };
 
+    auto isDefinedGeomPoint = [](Sketcher::SketchObject* obj, int GeoId) -> bool {
+        const Part::Geometry* geom = obj->getGeometry(GeoId);
+        if (geom)
+            return geom->getTypeId() == Part::GeomPoint::getClassTypeId() && !Sketcher::GeometryFacade::getConstruction(geom);
+        return false;
+    };
+
     auto isInternalAlignedGeom = [](Sketcher::SketchObject* obj, int GeoId) -> bool {
         const Part::Geometry* geom = obj->getGeometry(GeoId);
         if (geom) {
             auto gf = Sketcher::GeometryFacade::getFacade(geom);
             return gf->isInternalAligned();
+        }
+        return false;
+    };
+
+    auto isFullyConstraintElement = [](Sketcher::SketchObject* obj, int GeoId) -> bool {
+
+        const Part::Geometry* geom = obj->getGeometry(GeoId);
+
+        if(geom) {
+            if(geom->hasExtension(Sketcher::SolverGeometryExtension::getClassTypeId())) {
+
+                auto solvext = std::static_pointer_cast<const Sketcher::SolverGeometryExtension>(
+                                    geom->getExtension(Sketcher::SolverGeometryExtension::getClassTypeId()).lock());
+
+                return (solvext->getGeometry() == Sketcher::SolverGeometryExtension::FullyConstraint);
+            }
         }
         return false;
     };
@@ -2765,10 +2833,29 @@ void ViewProviderSketch::updateColor(void)
         for (int  i=0; i < PtNum; i++) {
             int GeoId = edit->PointIdToGeoId[i];
 
-            if(isInternalAlignedGeom(getSketchObject(), GeoId))
-                pcolor[i] = InternalAlignedGeoColor;
-            else
-                pcolor[i] = VertexColor;
+            bool constrainedElement = isFullyConstraintElement(getSketchObject(), GeoId);
+
+            if(isInternalAlignedGeom(getSketchObject(), GeoId)) {
+                if(constrainedElement)
+                    pcolor[i] = FullyConstraintInternalAlignmentColor;
+                else
+                    pcolor[i] = InternalAlignedGeoColor;
+            }
+            else {
+                if(!isDefinedGeomPoint(getSketchObject(), GeoId)) {
+
+                    if(constrainedElement)
+                        pcolor[i] = FullyConstraintConstructionPointColor;
+                    else
+                        pcolor[i] = VertexColor;
+                }
+                else { // this is a defined GeomPoint
+                    if(constrainedElement)
+                        pcolor[i] = FullyConstraintElementColor;
+                    else
+                        pcolor[i] = CurveColor;
+                }
+            }
         }
     }
 
@@ -2820,6 +2907,8 @@ void ViewProviderSketch::updateColor(void)
         bool selected = (edit->SelCurvSet.find(GeoId) != edit->SelCurvSet.end());
         bool preselected = (edit->PreselectCurve == GeoId);
 
+        bool constrainedElement = isFullyConstraintElement(getSketchObject(), GeoId);
+
         if (selected && preselected) {
             color[i] = PreselectSelectedColor;
             for (int k=j; j<k+indexes; j++) {
@@ -2849,10 +2938,18 @@ void ViewProviderSketch::updateColor(void)
             }
         }
         else if (isConstructionGeom(getSketchObject(), GeoId)) {
-            if(isInternalAlignedGeom(getSketchObject(), GeoId))
-                color[i] = InternalAlignedGeoColor;
-            else
-                color[i] = CurveDraftColor;
+            if(isInternalAlignedGeom(getSketchObject(), GeoId)) {
+                if(constrainedElement)
+                    color[i] = FullyConstraintInternalAlignmentColor;
+                else
+                    color[i] = InternalAlignedGeoColor;
+            }
+            else {
+                if(constrainedElement)
+                    color[i] = FullyConstraintConstructionElementColor;
+                else
+                    color[i] = CurveDraftColor;
+            }
 
             for (int k=j; j<k+indexes; j++) {
                 verts[j].getValue(x,y,z);
@@ -2861,6 +2958,13 @@ void ViewProviderSketch::updateColor(void)
         }
         else if (edit->FullyConstrained) {
             color[i] = FullyConstrainedColor;
+            for (int k=j; j<k+indexes; j++) {
+                verts[j].getValue(x,y,z);
+                verts[j] = SbVec3f(x,y,zNormLine);
+            }
+        }
+        else if (isFullyConstraintElement(getSketchObject(), GeoId)) {
+            color[i] = FullyConstraintElementColor;
             for (int k=j; j<k+indexes; j++) {
                 verts[j].getValue(x,y,z);
                 verts[j] = SbVec3f(x,y,zNormLine);
@@ -3769,6 +3873,16 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
                             Coords.emplace_back(x, y, 0);
 
                             // save scale factor for any prospective dragging operation
+                            // 1. Solver must be updated, in case a dragging operation starts
+                            // 2. if temp geometry is being used (with memory allocation), then the copy we have here must be updated. If
+                            //    no temp geometry is being used, then the normal geometry must be updated.
+                            {// make solver be ready for a dragging operation
+                                auto vpext = std::make_unique<SketcherGui::ViewProviderSketchGeometryExtension>();
+                                vpext->setRepresentationFactor(scalefactor);
+
+                                getSketchObject()->getSolvedSketch().updateExtension(GeoId, std::move(vpext));
+                            }
+
                             if(!circle->hasExtension(SketcherGui::ViewProviderSketchGeometryExtension::getClassTypeId()))
                             {
                                 // It is ok to add this kind of extension to a const geometry because:
@@ -6040,10 +6154,30 @@ bool ViewProviderSketch::setEdit(int ModNum)
     color = (unsigned long)(CurveDraftColor.getPackedValue());
     color = hGrp->GetUnsigned("ConstructionColor", color);
     CurveDraftColor.setPackedValue((uint32_t)color, transparency);
-    // set the construction curve color
+    // set the internal alignment geometry color
     color = (unsigned long)(InternalAlignedGeoColor.getPackedValue());
     color = hGrp->GetUnsigned("InternalAlignedGeoColor", color);
     InternalAlignedGeoColor.setPackedValue((uint32_t)color, transparency);
+    // set the color for a fully constrained element
+    color = (unsigned long)(FullyConstraintElementColor.getPackedValue());
+    color = hGrp->GetUnsigned("FullyConstraintElementColor", color);
+    FullyConstraintElementColor.setPackedValue((uint32_t)color, transparency);
+    // set the color for fully constrained construction element
+    color = (unsigned long)(FullyConstraintConstructionElementColor.getPackedValue());
+    color = hGrp->GetUnsigned("FullyConstraintConstructionElementColor", color);
+    FullyConstraintConstructionElementColor.setPackedValue((uint32_t)color, transparency);
+    // set the color for fully constrained internal alignment element
+    color = (unsigned long)(FullyConstraintInternalAlignmentColor.getPackedValue());
+    color = hGrp->GetUnsigned("FullyConstraintInternalAlignmentColor", color);
+    FullyConstraintInternalAlignmentColor.setPackedValue((uint32_t)color, transparency);
+    // set the color for fully constrained construction points
+    color = (unsigned long)(FullyConstraintConstructionPointColor.getPackedValue());
+    color = hGrp->GetUnsigned("FullyConstraintConstructionPointColor", color);
+    FullyConstraintConstructionPointColor.setPackedValue((uint32_t)color, transparency);
+    // set fullyconstraint element color
+    color = (unsigned long)(FullyConstraintElementColor.getPackedValue());
+    color = hGrp->GetUnsigned("FullyConstraintElementColor", color);
+    FullyConstraintElementColor.setPackedValue((uint32_t)color, transparency);
     // set the cross lines color
     //CrossColorV.setPackedValue((uint32_t)color, transparency);
     //CrossColorH.setPackedValue((uint32_t)color, transparency);
@@ -6101,14 +6235,17 @@ bool ViewProviderSketch::setEdit(int ModNum)
             getSketchObject()->validateExternalLinks();
     }
 
-    // First drawing with non-temporal geometry, then updating solver information
-    // This ensures that any ViewProvider geometry extension is set before the geometry
-    // is loaded into the solver, which ensures that any prospective draw using temporal
-    // geometry (draw with first parameter true) has the right ViewProvider geometry extensions
-    // set - This fixes Weight constraint dragging on a just opened sketch.
-    getSketchObject()->solve(false);
-    UpdateSolverInformation();
-    draw(false,true);
+    // There are geometry extensions introduced by the solver and geometry extensions introduced by the viewprovider.
+    // 1. It is important that the solver has geometry with updated extensions.
+    // 2. It is important that the viewprovider has up-to-date solver information
+    //
+    // The decision is to maintain the "first solve then draw" order, which is consistent with the rest of the Sketcher
+    // for example in geometry creation. Then, the ViewProvider is responsible for updating the solver geometry when
+    // appropriate, as it is the ViewProvider that is introducing its geometry extensions.
+    //
+    // In order to have updated solver information, solve must take "true", this cause the Geometry property to be updated
+    // with the solver information, including solver extensions, and triggers a draw(true) via ViewProvider::UpdateData.
+    getSketchObject()->solve(true);
 
     connectUndoDocument = getDocument()
         ->signalUndoDocument.connect(boost::bind(&ViewProviderSketch::slotUndoDocument, this, bp::_1));
