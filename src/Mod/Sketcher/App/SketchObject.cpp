@@ -8006,6 +8006,27 @@ int SketchObject::autoRemoveRedundants(bool updategeo)
     return redundants.size();
 }
 
+int SketchObject::renameConstraint(int GeoId, std::string name)
+{
+    // only change the constraint item if the names are different
+    const Constraint* item = Constraints[GeoId];
+
+    if (item->Name != name) {
+        Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
+        Constraint* copy = item->clone();
+        copy->Name = name;
+        Constraints.set1Value(GeoId, copy);
+        delete copy;
+
+        // Make sure the solver has updated constraint information (e.g. to avoid a dragging operation from using invalid constraint information)
+        setUpSketch();
+
+        return 0;
+    }
+    return -1;
+}
+
 std::vector<Base::Vector3d> SketchObject::getOpenVertices(void) const
 {
     std::vector<Base::Vector3d> points;

@@ -422,6 +422,8 @@ public:
     /// returns the number of redundant constraints detected
     int autoRemoveRedundants(bool updategeo = true);
 
+    int renameConstraint(int GeoId, std::string name);
+
     // Validation routines
     std::vector<Base::Vector3d> getOpenVertices(void) const;
 
