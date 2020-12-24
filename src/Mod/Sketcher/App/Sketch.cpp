@@ -62,6 +62,8 @@
 
 #include "Sketch.h"
 
+#define DEBUG_BLOCK_CONSTRAINT
+//#undef DEBUG_BLOCK_CONSTRAINT
 
 using namespace Sketcher;
 using namespace Base;
@@ -183,60 +185,102 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
         geoindex++;
     }
 
-    for(auto c : ConstraintList) {
-        if(c->Type == InternalAlignment) {
+    if(isSomethingBlocked) {
 
-            auto geoit = std::find(blockedGeoIds.begin(),blockedGeoIds.end(),c->Second);
+        // 0. look for internal geometry linked IAs
+        for(auto c : ConstraintList) {
+            if(c->Type == InternalAlignment) {
 
-            if(geoit != blockedGeoIds.end()) { // internal alignment geometry found, add to list
-                blockedGeoIds.push_back(*geoit);
+                auto geoit = std::find(blockedGeoIds.begin(),blockedGeoIds.end(),c->Second);
+
+                if(geoit != blockedGeoIds.end()) { // internal alignment geometry found, add to list
+                    blockedGeoIds.push_back(*geoit);
+                }
             }
         }
-    }
 
-    if(isSomethingBlocked) {
 
         // 1. Look what needs blocking
         std::vector<double *> params_to_block;
         std::vector < std::set < double*>> groups;
         GCSsys.getDependentParamsGroups(groups);
 
-        // Debug code block
-        for(size_t i = 0; i < groups.size(); i++) {
-            Base::Console().Log("\nDepParams: Group %d:",i);
-            for(size_t j = 0; j < groups[i].size(); j++)
-                Base::Console().Log("\n  Param=%x ,GeoId=%d, GeoPos=%d",
-                                  param2geoelement.find(*std::next(groups[i].begin(), j))->first,
-                                  param2geoelement.find(*std::next(groups[i].begin(), j))->second.first,
-                                  param2geoelement.find(*std::next(groups[i].begin(), j))->second.second);
+        if(GCSsys.isEmptyDiagnoseMatrix()) { // special case in which no other driving constraint is in the system
+            for(auto geoid : blockedGeoIds) {
+                switch(Geoms[geoid].type) {
+                    case Point:
+                        params_to_block.push_back(Points[Geoms[geoid].index].x);
+                        params_to_block.push_back(Points[Geoms[geoid].index].y);
+                        break;
+                    case Line:
+                        Lines[Geoms[geoid].index].PushOwnParams(params_to_block);
+                    break;
+                    case Arc:
+                        Arcs[Geoms[geoid].index].PushOwnParams(params_to_block);
+                        break;
+                    case Circle:
+                        Circles[Geoms[geoid].index].PushOwnParams(params_to_block);
+                        break;
+                    case Ellipse:
+                        Ellipses[Geoms[geoid].index].PushOwnParams(params_to_block);
+                        break;
+                    case ArcOfEllipse:
+                        ArcsOfEllipse[Geoms[geoid].index].PushOwnParams(params_to_block);
+                        break;
+                    case ArcOfHyperbola:
+                        ArcsOfHyperbola[Geoms[geoid].index].PushOwnParams(params_to_block);
+                        break;
+                    case ArcOfParabola:
+                        ArcsOfParabola[Geoms[geoid].index].PushOwnParams(params_to_block);
+                        break;
+                    case BSpline:
+                        BSplines[Geoms[geoid].index].PushOwnParams(params_to_block);
+                        break;
+                    case None:
+                        break;
+                }
+            }
+
         }
+        else {
+#ifdef DEBUG_BLOCK_CONSTRAINT
+            for(size_t i = 0; i < groups.size(); i++) {
+                Base::Console().Log("\nDepParams: Group %d:",i);
+                for(size_t j = 0; j < groups[i].size(); j++)
+                    Base::Console().Log("\n  Param=%x ,GeoId=%d, GeoPos=%d",
+                                    param2geoelement.find(*std::next(groups[i].begin(), j))->first,
+                                    param2geoelement.find(*std::next(groups[i].begin(), j))->second.first,
+                                    param2geoelement.find(*std::next(groups[i].begin(), j))->second.second);
+            }
+#endif //DEBUG_BLOCK_CONSTRAINT
 
-        for(size_t i = 0; i < groups.size(); i++) {
-            for(size_t j = 0; j < groups[i].size(); j++) {
+            for(size_t i = 0; i < groups.size(); i++) {
+                for(size_t j = 0; j < groups[i].size(); j++) {
 
-                double * thisparam = *std::next(groups[i].begin(), j);
+                    double * thisparam = *std::next(groups[i].begin(), j);
 
-                auto element = param2geoelement.find(thisparam);
+                    auto element = param2geoelement.find(thisparam);
 
-                if (element != param2geoelement.end()) {
+                    if (element != param2geoelement.end()) {
 
-                    auto blocked = std::find(blockedGeoIds.begin(),blockedGeoIds.end(),element->second.first);
+                        auto blocked = std::find(blockedGeoIds.begin(),blockedGeoIds.end(),element->second.first);
 
-                    if( blocked != blockedGeoIds.end()) { // this dependent parameter group contains a parameter that should be blocked
-                        params_to_block.push_back(thisparam);
+                        if( blocked != blockedGeoIds.end()) { // this dependent parameter group contains a parameter that should be blocked
+                            params_to_block.push_back(thisparam);
 
-                        // Debug block
-                        Base::Console().Log("\nBlocking:  Param=%x ,GeoId=%d, GeoPos=%d",
-                        element->first,
-                        element->second.first,
-                        element->second.second);
+#ifdef DEBUG_BLOCK_CONSTRAINT
+                            Base::Console().Log("\nBlocking:  Param=%x ,GeoId=%d, GeoPos=%d",
+                            element->first,
+                            element->second.first,
+                            element->second.second);
+#endif //DEBUG_BLOCK_CONSTRAINT
 
-
-                        break; // one parameter per group is enough to fix the group
+                            break; // one parameter per group is enough to fix the group
+                        }
                     }
                 }
             }
-        }
+        } // if(!GCSsys.isEmptyDiagnoseMatrix())
 
         // 2. If something needs blocking, block-it
         if(params_to_block.size() > 0) {
@@ -263,7 +307,7 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
 
             calculateDependentParametersElements();
 
-            // Debug code block
+#ifdef DEBUG_BLOCK_CONSTRAINT
             std::vector < std::set < double*>> groups;
             GCSsys.getDependentParamsGroups(groups);
 
@@ -276,10 +320,8 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
                                     param2geoelement.find(*std::next(groups[i].begin(), j))->second.first,
                                     param2geoelement.find(*std::next(groups[i].begin(), j))->second.second);
             }
-
+#endif //DEBUG_BLOCK_CONSTRAINT
         }
-
-
     }
 
     if (debugMode==GCS::Minimal || debugMode==GCS::IterationLevel) {
