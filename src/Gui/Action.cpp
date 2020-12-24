@@ -276,6 +276,7 @@ void ActionGroup::addTo(QWidget *w)
             QMenu *menu = new QMenu(w);
             QAction* action = qobject_cast<QMenu*>(w)->addMenu(menu);
             action->setMenuRole(_action->menuRole());
+            menu->setTitle(_action->text());
             menu->addActions(_group->actions());
         }
         else if (w->inherits("QToolBar")) {
