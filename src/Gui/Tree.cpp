@@ -318,6 +318,10 @@ struct SelUpMenuGuard
 class TreeWidget::Private
 {
 public:
+    Private(TreeWidget *master)
+        :master(master)
+    {}
+
     void setOverrideCursor(Qt::CursorShape shape, bool replace=true)
     {
         int cursorSize = 32;
@@ -450,6 +454,27 @@ public:
             qApp->setOverrideCursor(cursor);
     }
 
+    void syncView(DocumentObjectItem *item)
+    {
+        if (disableSyncView || !item || !item->getOwnerDocument())
+            return;
+        auto docitem = item->getOwnerDocument();
+        if(TreeParams::Instance()->SyncView()) {
+            bool focus = master->hasFocus();
+            auto view = docitem->document()->setActiveView(item->object());
+            if(focus)
+                master->setFocus();
+            if(view) {
+                const char** pReturnIgnore=0;
+                view->onMsg("ViewSelectionExtend",pReturnIgnore);
+            }
+        }
+    }
+
+    TreeWidget *master;
+
+    bool disableSyncView = false;
+
     QPixmap pxMove;
     QPixmap pxCopy;
     QPixmap pxLink;
@@ -459,6 +484,7 @@ public:
     QPixmap pixmapLink;
     QPixmap pixmapReplace;
 };
+
 
 //--------------------------------------------------------------------------
 
@@ -804,10 +830,10 @@ QTreeWidgetItem *TreeWidget::contextItem;
 TreeWidget::TreeWidget(const char *name, QWidget* parent)
     : QTreeWidget(parent), SelectionObserver(true,0)
     , searchObject(0), searchDoc(0), searchContextDoc(0)
-    , editingItem(0), hiddenItem(0), currentDocItem(0)
+    , editingItem(0), hiddenItem(0)
     , myName(name)
 {
-    pimpl.reset(new Private);
+    pimpl.reset(new Private(this));
 
     Instances.insert(this);
 
@@ -1176,9 +1202,7 @@ void TreeWidget::itemSearch(const QString &text, bool select) {
             Gui::Selection().addSelection(obj->getDocument()->getName(),
                     obj->getNameInDocument(),subname.c_str());
 
-            currentDocItem = item->myOwner;
-            syncView(item->object());
-            currentDocItem = nullptr;
+            pimpl->syncView(item);
         }
 
         if (!select) {
@@ -1563,7 +1587,7 @@ void TreeWidget::_selectAllInstances(const ViewProviderDocumentObject &vpd) {
     else
         _updateStatus(false);
 
-    for(const auto &v : DocumentMap) 
+    for(const auto &v : DocumentMap)
         v.second->selectAllInstances(vpd);
 }
 
@@ -3416,7 +3440,7 @@ void TreeWidget::onUpdateStatus(void)
 
     if(Selection().hasSelection() && !selectTimer->isActive() && !this->isConnectionBlocked()) {
         this->blockConnection(true);
-        currentDocItem = 0;
+        Base::StateLocker guard(pimpl->disableSyncView);
         for(auto &v : DocumentMap) {
             v.second->setSelected(false);
             v.second->selectItems();
@@ -3571,9 +3595,7 @@ void TreeWidget::scrollItemToTop()
                     continue;
                 auto doc = docItem->document()->getDocument();
                 if(Gui::Selection().hasSelection(doc->getName())) {
-                    tree->currentDocItem = docItem;
                     docItem->selectItems(DocumentItem::SR_FORCE_EXPAND);
-                    tree->currentDocItem = 0;
                     break;
                 }
             }
@@ -3691,6 +3713,9 @@ void TreeWidget::setupText()
 
 void TreeWidget::syncView(ViewProviderDocumentObject *vp)
 {
+    (void)vp;
+    // Deprecated. To be removed it in the next merge
+#if 0 
     if(currentDocItem && TreeParams::Instance()->SyncView()) {
         bool focus = hasFocus();
         auto view = currentDocItem->document()->setActiveView(vp);
@@ -3701,7 +3726,9 @@ void TreeWidget::syncView(ViewProviderDocumentObject *vp)
             view->onMsg("ViewSelectionExtend",pReturnIgnore);
         }
     }
+#endif
 }
+
 
 void TreeWidget::onShowHidden()
 {
@@ -3839,11 +3866,8 @@ void TreeWidget::onItemSelectionChanged ()
                 Gui::Selection().signalSelectionChanged(SelectionChanges());
             }
         }
-        for(auto &v : DocumentMap) {
-            currentDocItem = v.second;
+        for(auto &v : DocumentMap)
             v.second->clearSelection(item);
-            currentDocItem = 0;
-        }
         if(TreeParams::Instance()->RecordSelection())
             Gui::Selection().selStackPush();
 
@@ -3853,11 +3877,8 @@ void TreeWidget::onItemSelectionChanged ()
                     preselObj->getNameInDocument(),preselSub.c_str(),0,0,0,2);
         }
     }else{
-        for (auto pos = DocumentMap.begin();pos!=DocumentMap.end();++pos) {
-            currentDocItem = pos->second;
+        for (auto pos = DocumentMap.begin();pos!=DocumentMap.end();++pos)
             pos->second->updateSelection(pos->second);
-            currentDocItem = 0;
-        }
         if(TreeParams::Instance()->RecordSelection())
             Gui::Selection().selStackPush(true,true);
     }
@@ -3875,9 +3896,7 @@ void TreeWidget::onSelectTimer() {
     if(Selection().hasSelection()) {
         for(auto &v : DocumentMap) {
             v.second->setSelected(false);
-            currentDocItem = v.second;
             v.second->selectItems(syncSelect?DocumentItem::SR_EXPAND:DocumentItem::SR_SELECT);
-            currentDocItem = 0;
         }
     }else{
         for(auto &v : DocumentMap)
@@ -4485,9 +4504,7 @@ void TreeWidget::_selectLinkedObject(App::DocumentObject *linked) {
         linkedItem = *it->second->items.begin();
 
     if(linkedDoc->showItem(linkedItem,true)) {
-        currentDocItem = linkedItem->myOwner;
-        syncView(linkedVp);
-        currentDocItem = 0;
+        pimpl->syncView(linkedItem);
         scrollToItem(linkedItem);
     }
 }
@@ -5454,7 +5471,7 @@ void DocumentItem::updateItemSelection(DocumentObjectItem *item) {
             return;
         }
     }
-    getTree()->syncView(item->object());
+    getTree()->pimpl->syncView(item);
 }
 
 App::DocumentObject *DocumentItem::getTopParent(
@@ -5676,7 +5693,7 @@ void DocumentItem::selectItems(SelectionReason reason) {
             if (reason == SR_FORCE_EXPAND) {
                 // If reason is not force expand, then the selection is most likely
                 // triggered from 3D view.
-                getTree()->syncView(newSelect->object());
+                getTree()->pimpl->syncView(newSelect);
             }
             getTree()->scrollToItem(newSelect);
         }
