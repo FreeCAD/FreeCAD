@@ -2347,7 +2347,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
             }
             constrId++;
         }
-        /* It is possible that the trimming entity has both a PointOnObject constrait to the trimmed entity, and a simple Tangent contstrait
+        /* It is possible that the trimming entity has both a PointOnObject constraint to the trimmed entity, and a simple Tangent contstrait
          * to the trimmed entity. In this case we want to change to a single end-to-end tangency, i.e we want to ensure that constrType1 is
          * set to Sketcher::Tangent, that the secondPos1 is captured from the PointOnObject, and also make sure that the PointOnObject constraint
          * is deleted. The below loop ensures this, also in case the ordering of the constraints is first Tangent and then PointOnObject. */
@@ -2808,7 +2808,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
         }
         if (GeoId1 >= 0) {
             creategeometryundopoint(); // for when geometry will change, but no new geometry will be committed.
-            ConstraintType constrType1 = Sketcher::PointOnObject; // So this is the fallback contraint type here.
+            ConstraintType constrType1 = Sketcher::PointOnObject; // So this is the fallback constraint type here.
             PointPos secondPos1 = Sketcher::none;
 
             getTransformParamsAndDeleteConstraints(GeoId, GeoId1, point1, constrType1, secondPos1);
