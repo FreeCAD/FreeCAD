@@ -104,6 +104,8 @@ public:
     inline bool hasRedundancies(void) const { return !Redundant.empty(); }
     inline const std::vector<int> &getRedundant(void) const { return Redundant; }
 
+    inline float getSolveTime() const { return SolveTime; }
+
     inline bool hasMalformedConstraints(void) const { return malformedConstraints; }
 public:
     std::set < std::pair< int, Sketcher::PointPos>> getDependencyGroup(int geoId, PointPos pos) const;
@@ -131,6 +133,16 @@ public:
       * The relative flag permits moving relatively to the current position
       */
     int movePoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative=false);
+
+    /**
+     * Sets whether the initial solution should be recalculated while dragging after a certain distance from the previous drag point
+     * for smoother dragging operation.
+     */
+    bool getRecalculateInitialSolutionWhileMovingPoint() const
+        {return RecalculateInitialSolutionWhileMovingPoint;}
+
+    void setRecalculateInitialSolutionWhileMovingPoint(bool recalculateInitialSolutionWhileMovingPoint)
+        {RecalculateInitialSolutionWhileMovingPoint = recalculateInitialSolutionWhileMovingPoint;}
 
     /// add dedicated geometry
     //@{
@@ -378,6 +390,7 @@ public:
         BSpline = 9
     };
 
+protected:
     float SolveTime;
     bool RecalculateInitialSolutionWhileMovingPoint;
 

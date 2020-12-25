@@ -294,7 +294,7 @@ int SketchObject::solve(bool updateGeoAfterSolving/*=true*/)
         Base::Console().Error("Sketch %s has malformed constraints!\n",this->getNameInDocument());
     }
 
-    lastSolveTime=solvedSketch.SolveTime;
+    lastSolveTime=solvedSketch.getSolveTime();
 
     if (err == 0 && updateGeoAfterSolving) {
         // set the newly solved geometry
