@@ -1489,7 +1489,7 @@ void OverlayTabWidget::setSizeDelta(int delta)
 
 void OverlayTabWidget::setRect(QRect rect)
 {
-    if(busy || !parentWidget())
+    if(busy || !parentWidget() || !getMainWindow() || !getMainWindow()->getMdiArea())
         return;
 
     if (rect.width() == 0)
@@ -1526,6 +1526,8 @@ void OverlayTabWidget::setRect(QRect rect)
     }
     rectOverlay = rect;
 
+    QPoint offset = getMainWindow()->getMdiArea()->pos();
+
     if(getAutoHideRect(rect) || _state == State_Hint) {
         QRect rectHint = rect;
         if (_state != State_Hint)
@@ -1556,14 +1558,14 @@ void OverlayTabWidget::setRect(QRect rect)
                 break;
             }
 
-            setGeometry(rect);
+            setGeometry(rect.translated(offset));
         }
-        proxyWidget->setGeometry(rectHint);
+        proxyWidget->setGeometry(rectHint.translated(offset));
         proxyWidget->show();
         proxyWidget->raise();
 
     } else {
-        setGeometry(rectOverlay);
+        setGeometry(rectOverlay.translated(offset));
 
         for(int i=0, count=splitter->count(); i<count; ++i)
             splitter->widget(i)->show();
@@ -1823,8 +1825,12 @@ void OverlayTabWidget::changeSize(int changes, bool checkModify)
 
 void OverlayTabWidget::onSizeGripMove(const QPoint &p)
 {
+    if (!getMainWindow() || !getMainWindow()->getMdiArea())
+        return;
+
     QPoint pos = mapFromGlobal(p) + this->pos();
-    QRect rect = this->rectOverlay;
+    QPoint offset = getMainWindow()->getMdiArea()->pos();
+    QRect rect = this->rectOverlay.translated(offset);
 
     switch(dockArea) {
     case Qt::LeftDockWidgetArea:
@@ -1848,7 +1854,7 @@ void OverlayTabWidget::onSizeGripMove(const QPoint &p)
         rect.setTop(pos.y());
         break;
     }
-    this->setRect(rect);
+    this->setRect(rect.translated(-offset));
     OverlayManager::instance()->refresh();
 }
 
@@ -3653,9 +3659,7 @@ void OverlayManager::destruct()
 
 OverlayManager::OverlayManager()
 {
-    auto mdi = getMainWindow()->getMdiArea();
-    assert(mdi);
-    d = new Private(this, mdi);
+    d = new Private(this, getMainWindow());
 }
 
 OverlayManager::~OverlayManager()
