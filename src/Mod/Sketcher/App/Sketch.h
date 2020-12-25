@@ -356,7 +356,7 @@ public:
     double calculateAngleViaPoint(int geoId1, int geoId2, double px, double py );
 
     //This is to be used for rendering of angle-via-point constraint.
-    Base::Vector3d calculateNormalAtPoint(int geoIdCurve, double px, double py);
+    Base::Vector3d calculateNormalAtPoint(int geoIdCurve, double px, double py) const;
 
     //icstr should be the value returned by addXXXXConstraint
     //see more info in respective function in GCS.
@@ -485,6 +485,7 @@ private:
     /// checks if the index bounds and converts negative indices to positive
     int checkGeoId(int geoId) const;
     GCS::Curve* getGCSCurveByGeoId(int geoId);
+    const GCS::Curve* getGCSCurveByGeoId(int geoId) const;
 };
 
 } //namespace Part
