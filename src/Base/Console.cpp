@@ -38,6 +38,7 @@
 #include "Console.h"
 #include "Exception.h"
 #include "PyObjectBase.h"
+#include "Interpreter.h"
 #include <QCoreApplication>
 #include <frameobject.h>
 
@@ -977,17 +978,20 @@ std::stringstream &LogLevel::prefix(std::stringstream &str, const char *src, int
     if (print_tag) str << '<' << tag << "> ";
 
     const char *c_src = src;
+    std::string _src;
     int cline = line;
 
     if (print_src==2 || _TracePySrc) {
+        PyGILStateLocker lock;
         PyFrameObject* frame = PyEval_GetFrame();
         if (frame) {
             line = PyFrame_GetLineNumber(frame);
 #if PY_MAJOR_VERSION >= 3
-            src = PyUnicode_AsUTF8(frame->f_code->co_filename);
+            _src = PyUnicode_AsUTF8(frame->f_code->co_filename);
 #else
-            src = PyString_AsString(frame->f_code->co_filename);
+            _src = PyString_AsString(frame->f_code->co_filename);
 #endif
+            src = _src.c_str();
             if (src && strcmp(src,"<string>")==0) {
                 src = c_src;
                 line = cline;
