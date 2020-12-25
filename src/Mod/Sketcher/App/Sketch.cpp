@@ -1427,6 +1427,13 @@ GCS::Curve* Sketch::getGCSCurveByGeoId(int geoId)
     };
 }
 
+const GCS::Curve* Sketch::getGCSCurveByGeoId(int geoId) const
+{
+    // I hereby guarantee that if I modify the non-const version, I will still
+    // never modify (this). I return const copy to enforce on my users.
+    return const_cast<Sketch *>(this)->getGCSCurveByGeoId(geoId);
+}
+
 // constraint adding ==========================================================
 
 int Sketch::addConstraint(const Constraint *constraint)
@@ -3177,7 +3184,7 @@ double Sketch::calculateAngleViaPoint(int geoId1, int geoId2, double px, double 
     return GCSsys.calculateAngleViaPoint(*crv1, *crv2, p);
 }
 
-Base::Vector3d Sketch::calculateNormalAtPoint(int geoIdCurve, double px, double py)
+Base::Vector3d Sketch::calculateNormalAtPoint(int geoIdCurve, double px, double py) const
 {
     geoIdCurve = checkGeoId(geoIdCurve);
 
@@ -3186,7 +3193,7 @@ Base::Vector3d Sketch::calculateNormalAtPoint(int geoIdCurve, double px, double 
     p.y = &py;
 
     //check pointers
-    GCS::Curve* crv = getGCSCurveByGeoId(geoIdCurve);
+    const GCS::Curve* crv = getGCSCurveByGeoId(geoIdCurve);
     if (!crv) {
         throw Base::ValueError("calculateNormalAtPoint: getGCSCurveByGeoId returned NULL!\n");
     }
