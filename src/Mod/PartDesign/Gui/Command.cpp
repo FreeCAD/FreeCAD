@@ -55,6 +55,7 @@
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureGroove.h>
 #include <Mod/PartDesign/App/FeatureRevolution.h>
+
 #include <Mod/PartDesign/App/FeatureTransformed.h>
 #include <Mod/PartDesign/App/FeatureMultiTransform.h>
 #include <Mod/PartDesign/App/DatumPoint.h>
@@ -384,7 +385,7 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
         }
         values = std::move(links);
     }
-        
+
     PartDesign::SubShapeBinder *binder = 0;
     try {
         openCommand(QT_TRANSLATE_NOOP("Command", "Create SubShapeBinder"));
@@ -403,7 +404,7 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
         commitCommand();
     } catch (Base::Exception &e) {
         e.ReportException();
-        QMessageBox::critical(Gui::getMainWindow(), 
+        QMessageBox::critical(Gui::getMainWindow(),
                 QObject::tr("Sub-Shape Binder"), QString::fromUtf8(e.what()));
         abortCommand();
     }
@@ -994,7 +995,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
 
         FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::" << which << "','" << FeatName << "')");
         auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
-        
+
         auto objCmd = Gui::Command::getObjectCmd(feature);
         if (feature->isDerivedFrom(Part::Part2DObject::getClassTypeId()) || subs.empty()) {
             FCMD_OBJ_CMD(Feat,"Profile = " << objCmd);
@@ -1003,7 +1004,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
             std::ostringstream ss;
             for (auto &s : subs)
                 ss << "'" << s << "',";
-            FCMD_OBJ_CMD(Feat,"Profile = (" << objCmd << ", [" << ss.str() << "])");   
+            FCMD_OBJ_CMD(Feat,"Profile = (" << objCmd << ", [" << ss.str() << "])");
         }
 
         //for additive and subtractive lofts allow the user to preselect the sections
@@ -1042,10 +1043,44 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
         func(static_cast<Part::Feature*>(feature), Feat);
     };
 
+
+    // in case of subtractive types, check that there is something to subtract from
+    if ((which.find("Subtractive") != std::string::npos)  ||
+        (which.compare("Groove") == 0) ||
+        (which.compare("Pocket") == 0)) {
+
+        if (!pcActiveBody->isSolid()) {
+            QMessageBox msgBox;
+            msgBox.setText(QObject::tr("Cannot use this command as there is no solid to subtract from."));
+            msgBox.setInformativeText(QObject::tr("Ensure that the body contains a feature  before attempting a subtractive command."));
+            msgBox.setStandardButtons(QMessageBox::Ok);
+            msgBox.setDefaultButton(QMessageBox::Ok);
+            msgBox.exec();
+            return;
+        }
+    }
+
+
     //if a profile is selected we can make our life easy and fast
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
     if (!selection.empty()) {
-        base_worker(selection.front().getObject(), selection.front().getSubNames());
+        bool onlyAllowed = true;
+        for (auto it = selection.begin(); it!=selection.end(); ++it){
+            if (PartDesign::Body::findBodyOf((*it).getObject()) != pcActiveBody) {  // the selected objects must belong to the body
+                onlyAllowed = false;
+                break;
+            }
+        }
+        if (!onlyAllowed) {
+            QMessageBox msgBox;
+            msgBox.setText(QObject::tr("Cannot use selected object. Selected object must belong to the active body"));
+            msgBox.setInformativeText(QObject::tr("Consider using a ShapeBinder or a BaseFeature to reference external geometry in a body."));
+            msgBox.setStandardButtons(QMessageBox::Ok);
+            msgBox.setDefaultButton(QMessageBox::Ok);
+            msgBox.exec();
+        } else {
+            base_worker(selection.front().getObject(), selection.front().getSubNames());
+        }
         return;
     }
 
@@ -1418,7 +1453,7 @@ void CmdPartDesignGroove::activated(int iMsg)
         else {
             FCMD_OBJ_CMD(Feat,"ReferenceAxis = ("<<getObjectCmd(pcActiveBody->getOrigin()->getY())<<",[''])");
         }
-        
+
         FCMD_OBJ_CMD(Feat,"Angle = 360.0");
 
         try {
@@ -1639,6 +1674,119 @@ void CmdPartDesignSubtractiveLoft::activated(int iMsg)
 }
 
 bool CmdPartDesignSubtractiveLoft::isActive(void)
+{
+    return hasActiveDocument();
+}
+
+//===========================================================================
+// PartDesign_Additive_Helix
+//===========================================================================
+DEF_STD_CMD_A(CmdPartDesignAdditiveHelix)
+
+CmdPartDesignAdditiveHelix::CmdPartDesignAdditiveHelix()
+  : Command("PartDesign_AdditiveHelix")
+{
+    sAppModule    = "PartDesign";
+    sGroup        = QT_TR_NOOP("PartDesign");
+    sMenuText     = QT_TR_NOOP("Additive helix");
+    sToolTipText  = QT_TR_NOOP("Sweep a selected sketch along a helix");
+    sWhatsThis    = "PartDesign_AdditiveHelix";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "PartDesign_Additive_Helix";
+}
+
+void CmdPartDesignAdditiveHelix::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    App::Document *doc = getDocument();
+    if (!PartDesignGui::assureModernWorkflow(doc))
+        return;
+
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+
+    if (!pcActiveBody)
+        return;
+
+    Gui::Command* cmd = this;
+    auto worker = [cmd, &pcActiveBody](Part::Feature* sketch, App::DocumentObject *Feat) {
+
+        if (!Feat) return;
+
+        // specific parameters for helix
+        Gui::Command::updateActive();
+
+        if (sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+            FCMD_OBJ_CMD(Feat,"ReferenceAxis = (" << getObjectCmd(sketch) << ",['V_Axis'])");
+        }
+        else {
+            FCMD_OBJ_CMD(Feat,"ReferenceAxis = (" << getObjectCmd(pcActiveBody->getOrigin()->getY()) << ",[''])");
+        }
+
+        finishProfileBased(cmd, sketch, Feat);
+        cmd->adjustCameraPosition();
+    };
+
+    prepareProfileBased(pcActiveBody, this, "AdditiveHelix", worker);
+}
+
+bool CmdPartDesignAdditiveHelix::isActive(void)
+{
+    return hasActiveDocument();
+}
+
+
+//===========================================================================
+// PartDesign_Subtractive_Helix
+//===========================================================================
+DEF_STD_CMD_A(CmdPartDesignSubtractiveHelix)
+
+CmdPartDesignSubtractiveHelix::CmdPartDesignSubtractiveHelix()
+  : Command("PartDesign_SubtractiveHelix")
+{
+    sAppModule    = "PartDesign";
+    sGroup        = QT_TR_NOOP("PartDesign");
+    sMenuText     = QT_TR_NOOP("Subtractive helix");
+    sToolTipText  = QT_TR_NOOP("Sweep a selected sketch along a helix and remove it from the body");
+    sWhatsThis    = "PartDesign_SubtractiveHelix";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "PartDesign_Subtractive_Helix";
+}
+
+void CmdPartDesignSubtractiveHelix::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    App::Document *doc = getDocument();
+    if (!PartDesignGui::assureModernWorkflow(doc))
+        return;
+
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+
+    if (!pcActiveBody)
+        return;
+
+    Gui::Command* cmd = this;
+    auto worker = [cmd, &pcActiveBody](Part::Feature* sketch, App::DocumentObject *Feat) {
+
+        if (!Feat) return;
+
+        // specific parameters for helix
+        Gui::Command::updateActive();
+
+        if (sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+            FCMD_OBJ_CMD(Feat,"ReferenceAxis = (" << getObjectCmd(sketch) << ",['V_Axis'])");
+        }
+        else {
+            FCMD_OBJ_CMD(Feat,"ReferenceAxis = (" << getObjectCmd(pcActiveBody->getOrigin()->getY()) << ",[''])");
+        }
+
+        finishProfileBased(cmd, sketch, Feat);
+        cmd->adjustCameraPosition();
+    };
+
+    prepareProfileBased(pcActiveBody, this, "SubtractiveHelix", worker);
+}
+
+bool CmdPartDesignSubtractiveHelix::isActive(void)
 {
     return hasActiveDocument();
 }
@@ -2176,7 +2324,7 @@ void CmdPartDesignPolarPattern::activated(int iMsg)
         }
         if (!direction) {
             auto body = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(features.front()));
-            if (body) {                
+            if (body) {
                 FCMD_OBJ_CMD(Feat,"Axis = ("<<Gui::Command::getObjectCmd(body->getOrigin()->getZ())<<",[''])");
             }
         }
@@ -2397,7 +2545,7 @@ void CmdPartDesignBoolean::activated(int iMsg)
     std::string FeatName = getUniqueObjectName("Boolean",pcActiveBody);
     FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::Boolean','"<<FeatName<<"')");
     auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
-    
+
     // If we don't add an object to the boolean group then don't update the body
     // as otherwise this will fail and it will be marked as invalid
     bool updateDocument = false;
@@ -2456,6 +2604,8 @@ void CreatePartDesignCommands(void)
     rcCmdMgr.addCommand(new CmdPartDesignSubtractivePipe);
     rcCmdMgr.addCommand(new CmdPartDesignAdditiveLoft);
     rcCmdMgr.addCommand(new CmdPartDesignSubtractiveLoft);
+    rcCmdMgr.addCommand(new CmdPartDesignAdditiveHelix);
+    rcCmdMgr.addCommand(new CmdPartDesignSubtractiveHelix);
 
     rcCmdMgr.addCommand(new CmdPartDesignFillet());
     rcCmdMgr.addCommand(new CmdPartDesignDraft());
