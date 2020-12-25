@@ -224,7 +224,6 @@ void SoBrepEdgeSet::glRender(SoGLRenderAction *action, bool inpath)
 
     SoColorPacker packer;
     float trans = 0.0;
-    float width = 0.0;
 
     for(;pass<=2;++pass) {
         state->push();
@@ -236,11 +235,6 @@ void SoBrepEdgeSet::glRender(SoGLRenderAction *action, bool inpath)
                     glLineStipple((GLint) (Gui::ViewParams::getSelectionLinePatternScale()),
                                 (GLushort) (pattern & 0xffff));
             }
-            width = Gui::ViewParams::getSelectionHiddenLineWidth();
-            if(width>0.0 && SoLineWidthElement::get(state) < width)
-                SoLineWidthElement::set(state,width);
-            else
-                width = 0.0;
         } else if(pass==1) {
             depthGuard.set(GL_LEQUAL);
             if(!Gui::SoFCSwitch::testTraverseState(Gui::SoFCSwitch::TraverseInvisible)) {
@@ -251,8 +245,14 @@ void SoBrepEdgeSet::glRender(SoGLRenderAction *action, bool inpath)
                 // (but forced to shown by on top rendering)
                 SoLazyElement::setTransparency(state,this,1,&trans,&packer);
             }
-            if(width != 0.0)
-                SoLineWidthElement::set(state,width);
+            float width = SoLineWidthElement::get(state);
+            if(width < 1.0)
+                width = 1.0;
+            if (Gui::SoFCDisplayModeElement::showHiddenLines(state))
+                width = std::max(width, (float)Gui::ViewParams::instance()->getSelectionHiddenLineWidth());
+            else if(Gui::ViewParams::instance()->getSelectionLineThicken()>1.0)
+                width *= Gui::ViewParams::instance()->getSelectionLineThicken();
+            SoLineWidthElement::set(state,width);
             pass = 2;
         }
 
@@ -289,9 +289,14 @@ void SoBrepEdgeSet::glRender(SoGLRenderAction *action, bool inpath)
                 // Work around Coin bug of losing per line/point color when
                 // rendering with transparency type SORTED_OBJECT_SORTED_TRIANGLE_BLEND
                 SoShapeStyleElement::setTransparencyType(state,SoGLRenderAction::SORTED_OBJECT_BLEND);
+
                 inherited::GLRender(action);
             } else {
                 state->push();
+                if (pass == 0 && !Gui::SoFCDisplayModeElement::showHiddenLines(state)) {
+                    trans = Gui::SoFCDisplayModeElement::getTransparency(state);
+                } else
+                    trans = 0.0f;
                 SoLazyElement::setTransparency(state,this,1,&trans,&packer);
                 SoLightModelElement::set(state,SoLightModelElement::BASE_COLOR);
                 auto lineColor = Gui::SoFCDisplayModeElement::getLineColor(state);
