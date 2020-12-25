@@ -231,14 +231,6 @@ SketcherSettingsColors::SketcherSettingsColors(QWidget* parent)
     : PreferencePage(parent), ui(new Ui_SketcherSettingsColors)
 {
     ui->setupUi(this);
-
-    // Don't need them at the moment
-    ui->label_16->hide();
-    ui->SketcherDatumWidth->hide();
-    ui->label_12->hide();
-    ui->DefaultSketcherVertexWidth->hide();
-    ui->label_13->hide();
-    ui->DefaultSketcherLineWidth->hide();
 }
 
 /**
@@ -272,10 +264,6 @@ void SketcherSettingsColors::saveSettings()
     ui->ExprBasedConstrDimColor->onSave();
     ui->DeactivatedConstrDimColor->onSave();
 
-    ui->SketcherDatumWidth->onSave();
-    ui->DefaultSketcherVertexWidth->onSave();
-    ui->DefaultSketcherLineWidth->onSave();
-
     ui->CursorTextColor->onSave();
     ui->CursorCrosshairColor->onSave();
     ui->CreateLineColor->onSave();
@@ -302,10 +290,6 @@ void SketcherSettingsColors::loadSettings()
     ui->DatumColor->onRestore();
     ui->ExprBasedConstrDimColor->onRestore();
     ui->DeactivatedConstrDimColor->onRestore();
-
-    ui->SketcherDatumWidth->onRestore();
-    ui->DefaultSketcherVertexWidth->onRestore();
-    ui->DefaultSketcherLineWidth->onRestore();
 
     ui->CursorTextColor->onRestore();
     ui->CursorCrosshairColor->onRestore();
