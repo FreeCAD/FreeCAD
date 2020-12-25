@@ -1,5 +1,5 @@
 /***************************************************************************
- *  Copyright (C) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>     *
+ *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,55 +21,42 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+#ifndef PARTGUI_ViewProviderHelix_H
+#define PARTGUI_ViewProviderHelix_H
 
-#ifndef _PreComp_
-#endif
-
-#include <Gui/Application.h>
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/PartDesign/App/FeatureSketchBased.h>
-
-#include "ViewProviderSketchBased.h"
+#include "ViewProviderAddSub.h"
 
 
-using namespace PartDesignGui;
+namespace PartDesignGui {
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderSketchBased, PartDesignGui::ViewProvider)
-
-
-ViewProviderSketchBased::ViewProviderSketchBased()
+class PartDesignGuiExport ViewProviderHelix : public ViewProviderAddSub
 {
-}
+    PROPERTY_HEADER(PartDesignGui::ViewProviderHelix);
+
+public:
+    /// constructor
+    ViewProviderHelix();
+    /// destructor
+    virtual ~ViewProviderHelix();
+
+    void setupContextMenu(QMenu*, QObject*, const char*);
+
+    /// grouping handling
+    std::vector<App::DocumentObject*> claimChildren(void)const;
+
+    virtual bool onDelete(const std::vector<std::string> &);
+
+protected:
+    virtual QIcon getIcon(void) const;
+
+    /// Returns a newly created TaskDlgHelixParameters
+    virtual TaskDlgFeatureParameters *getEditDialog();
+    virtual bool  setEdit(int ModNum);
+    virtual void unsetEdit(int ModNum);
+};
 
 
-ViewProviderSketchBased::~ViewProviderSketchBased()
-{
-}
+} // namespace PartDesignGui
 
 
-std::vector<App::DocumentObject*> ViewProviderSketchBased::claimChildren(void) const {
-    std::vector<App::DocumentObject*> temp;
-    App::DocumentObject* sketch = static_cast<PartDesign::ProfileBased*>(getObject())->Profile.getValue();
-    if (sketch != NULL && sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
-        temp.push_back(sketch);
-
-    return temp;
-}
-
-
-bool ViewProviderSketchBased::onDelete(const std::vector<std::string> &s) {
-    PartDesign::ProfileBased* feature = static_cast<PartDesign::ProfileBased*>(getObject());
-
-    // get the Sketch
-    Sketcher::SketchObject *pcSketch = 0;
-    if (feature->Profile.getValue())
-        pcSketch = static_cast<Sketcher::SketchObject*>(feature->Profile.getValue());
-
-    // if abort command deleted the object the sketch is visible again
-    if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
-        Gui::Application::Instance->getViewProvider(pcSketch)->show();
-
-    return ViewProvider::onDelete(s);
-}
-
+#endif // PARTGUI_ViewProviderHelix_H

@@ -208,7 +208,7 @@ TopoDS_Shape ProfileBased::getVerifiedFace(bool silent) const {
                 if(faces.empty()) {
                     if(!shape.hasSubShape(TopAbs_WIRE))
                         shape = shape.makEWires();
-                    if(shape.hasSubShape(TopAbs_WIRE)) 
+                    if(shape.hasSubShape(TopAbs_WIRE))
                         shape = shape.makEFace(0,"Part::FaceMakerCheese");
                     else
                         err = "Cannot make face from profile";
@@ -1012,7 +1012,7 @@ double ProfileBased::getReversedAngle(const Base::Vector3d &b, const Base::Vecto
 }
 
 void ProfileBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std::vector<std::string> &subReferenceAxis,
-                          Base::Vector3d& base, Base::Vector3d& dir)
+                          Base::Vector3d& base, Base::Vector3d& dir, bool checkPerpendicular)
 {
     dir = Base::Vector3d(0,0,0); // If unchanged signals that no valid axis was found
     if (pcReferenceAxis == NULL)
@@ -1071,7 +1071,7 @@ void ProfileBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std
         dir = line->getDirection();
 
         // Check that axis is perpendicular with sketch plane!
-        if (sketchplane.Axis().Direction().IsParallel(gp_Dir(dir.x, dir.y, dir.z), Precision::Angular()))
+        if (checkPerpendicular && sketchplane.Axis().Direction().IsParallel(gp_Dir(dir.x, dir.y, dir.z), Precision::Angular()))
             throw Base::ValueError("Rotation axis must not be perpendicular with the sketch plane");
         return;
     }
@@ -1082,7 +1082,7 @@ void ProfileBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std
         line->Placement.getValue().multVec(Base::Vector3d (1,0,0), dir);
 
         // Check that axis is perpendicular with sketch plane!
-        if (sketchplane.Axis().Direction().IsParallel(gp_Dir(dir.x, dir.y, dir.z), Precision::Angular()))
+        if (checkPerpendicular && sketchplane.Axis().Direction().IsParallel(gp_Dir(dir.x, dir.y, dir.z), Precision::Angular()))
             throw Base::ValueError("Rotation axis must not be perpendicular with the sketch plane");
         return;
     }

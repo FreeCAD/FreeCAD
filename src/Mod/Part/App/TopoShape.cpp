@@ -2437,7 +2437,7 @@ TopoDS_Shape TopoShape::makeLongHelix(Standard_Real pitch, Standard_Real height,
     Handle(Geom_Surface) surf;
     Standard_Boolean isCylinder;
 
-    if (angle < Precision::Confusion()) {                                      // Cylindrical helix
+    if (std::fabs(angle) < Precision::Confusion()) {                           // Cylindrical helix
         if (radius < Precision::Confusion())
             Standard_Failure::Raise("Radius of helix too small");
         surf= new Geom_CylindricalSurface(cylAx2, radius);
@@ -2445,8 +2445,6 @@ TopoDS_Shape TopoShape::makeLongHelix(Standard_Real pitch, Standard_Real height,
     }
     else {                                                                     // Conical helix
         angle = Base::toRadians(angle);
-        if (angle < Precision::Confusion())
-            Standard_Failure::Raise("Angle of helix too small");
         surf = new Geom_ConicalSurface(gp_Ax3(cylAx2), angle, radius);
         isCylinder = false;
     }

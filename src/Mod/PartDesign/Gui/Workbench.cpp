@@ -409,6 +409,8 @@ void Workbench::activated()
         "PartDesign_SubtractivePipe",
         "PartDesign_AdditiveLoft",
         "PartDesign_SubtractiveLoft",
+        "PartDesign_AdditiveHelix",
+        "PartDesign_SubtractiveHelix",
         0};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT Sketcher::SketchObject COUNT 1",
@@ -496,14 +498,14 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* additives = new Gui::MenuItem;
     additives->setCommand("Create an additive feature");
     *additives << "PartDesign_Pad" << "PartDesign_Revolution"
-        << "PartDesign_AdditiveLoft" << "PartDesign_AdditivePipe";
+        << "PartDesign_AdditiveLoft" << "PartDesign_AdditivePipe" << "PartDesign_AdditiveHelix";
 
     // subtractives
     Gui::MenuItem* subtractives = new Gui::MenuItem;
     subtractives->setCommand("Create a subtractive feature");
     *subtractives << "PartDesign_Pocket" << "PartDesign_Hole"
         << "PartDesign_Groove" << "PartDesign_SubtractiveLoft"
-        << "PartDesign_SubtractivePipe";
+        << "PartDesign_SubtractivePipe" << "PartDesign_SubtractiveHelix";
 
     // transformations
     Gui::MenuItem* transformations = new Gui::MenuItem;
@@ -598,6 +600,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "PartDesign_Revolution"
           << "PartDesign_AdditiveLoft"
           << "PartDesign_AdditivePipe"
+          << "PartDesign_AdditiveHelix"
           << "PartDesign_CompPrimitiveAdditive"
           << "Separator"
           << "PartDesign_Pocket"
@@ -605,6 +608,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "PartDesign_Groove"
           << "PartDesign_SubtractiveLoft"
           << "PartDesign_SubtractivePipe"
+          << "PartDesign_SubtractiveHelix"
           << "PartDesign_CompPrimitiveSubtractive"
           << "Separator"
           << "PartDesign_Mirrored"

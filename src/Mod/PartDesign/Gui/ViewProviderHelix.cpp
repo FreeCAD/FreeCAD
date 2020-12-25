@@ -1,5 +1,5 @@
 /***************************************************************************
- *  Copyright (C) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>     *
+ *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,31 +24,77 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QAction>
+# include <QMenu>
 #endif
+
+#include <Mod/PartDesign/App/FeatureHelix.h>
+#include <Gui/BitmapFactory.h>
 
 #include <Gui/Application.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
 
-#include "ViewProviderSketchBased.h"
-
+#include "TaskHelixParameters.h"
+#include "ViewProviderHelix.h"
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderSketchBased, PartDesignGui::ViewProvider)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderHelix,PartDesignGui::ViewProvider)
 
 
-ViewProviderSketchBased::ViewProviderSketchBased()
+ViewProviderHelix::ViewProviderHelix()
 {
 }
 
-
-ViewProviderSketchBased::~ViewProviderSketchBased()
+ViewProviderHelix::~ViewProviderHelix()
 {
 }
 
+void ViewProviderHelix::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    QAction* act;
+    act = menu->addAction(QObject::tr("Edit helix"), receiver, member);
+    act->setData(QVariant((int)ViewProvider::Default));
+    PartDesignGui::ViewProviderAddSub::setupContextMenu(menu, receiver, member);
+}
 
-std::vector<App::DocumentObject*> ViewProviderSketchBased::claimChildren(void) const {
+TaskDlgFeatureParameters *ViewProviderHelix::getEditDialog()
+{
+    return new TaskDlgHelixParameters( this );
+}
+
+QIcon ViewProviderHelix::getIcon(void) const {
+    QString str = QString::fromLatin1("PartDesign_");
+    auto* prim = static_cast<PartDesign::Helix*>(getObject());
+    if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)
+        str += QString::fromLatin1("Additive_");
+    else
+        str += QString::fromLatin1("Subtractive_");
+
+    str += QString::fromLatin1("Helix.svg");
+    return PartDesignGui::ViewProvider::mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
+}
+
+bool ViewProviderHelix::setEdit(int ModNum)
+{
+
+    if (ModNum == ViewProvider::Default ) {
+        auto* prim = static_cast<PartDesign::Helix*>(getObject());
+        setPreviewDisplayMode(prim->getAddSubType() == PartDesign::FeatureAddSub::Subtractive);
+    }
+    return ViewProviderAddSub::setEdit(ModNum);
+}
+
+void ViewProviderHelix::unsetEdit(int ModNum)
+{
+    setPreviewDisplayMode(false);
+    // Rely on parent class to:
+    // restitute old workbench (set setEdit above) and close the dialog if exiting editing
+    PartDesignGui::ViewProvider::unsetEdit(ModNum);
+}
+
+std::vector<App::DocumentObject*> ViewProviderHelix::claimChildren(void) const {
     std::vector<App::DocumentObject*> temp;
     App::DocumentObject* sketch = static_cast<PartDesign::ProfileBased*>(getObject())->Profile.getValue();
     if (sketch != NULL && sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
@@ -57,8 +103,7 @@ std::vector<App::DocumentObject*> ViewProviderSketchBased::claimChildren(void) c
     return temp;
 }
 
-
-bool ViewProviderSketchBased::onDelete(const std::vector<std::string> &s) {
+bool ViewProviderHelix::onDelete(const std::vector<std::string> &s) {
     PartDesign::ProfileBased* feature = static_cast<PartDesign::ProfileBased*>(getObject());
 
     // get the Sketch
