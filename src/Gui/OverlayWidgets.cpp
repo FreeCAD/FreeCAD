@@ -84,19 +84,24 @@ static std::array<OverlayTabWidget*, 4> _Overlays;
 static OverlayDragFrame *_DragFrame;
 static QWidget *_Dragging;
 
-static const int _TitleButtonSize = 12;
 static const int _MinimumOverlaySize = 30;
 
 #define TITLE_BUTTON_COLOR "# c #202020"
 
-static QWidget *createTitleButton(QAction *action)
+static inline int widgetMinSize(const QWidget *widget, bool margin=false)
+{
+    return widget->fontMetrics().ascent()
+        + widget->fontMetrics().descent() + (margin?4:0);
+}
+
+static QWidget *createTitleButton(QAction *action, int size)
 {
     auto button = new OverlayToolButton(nullptr);
     button->setObjectName(action->data().toString());
     button->setDefaultAction(action);
     button->setAutoRaise(true);
     button->setContentsMargins(0,0,0,0);
-    button->setFixedSize(_TitleButtonSize,_TitleButtonSize);
+    button->setFixedSize(size,size);
     return button;
 }
 
@@ -1685,7 +1690,7 @@ void OverlayTabWidget::setupLayout()
             tsize = tabBar()->height();
         tabSize = tsize;
     }
-    int titleBarSize = _TitleButtonSize + 4;
+    int titleBarSize = widgetMinSize(this, true);
     QRect rect, rectTitle;
     switch(tabPosition()) {
     case West:
@@ -2044,12 +2049,12 @@ OverlaySizeGrip::OverlaySizeGrip(QWidget * parent, bool vertical)
 {
     if (vertical) {
         this->setFixedHeight(6);
-        this->setMinimumWidth(_TitleButtonSize);
+        this->setMinimumWidth(widgetMinSize(this,true));
         this->setCursor(Qt::SizeVerCursor);
     }
     else {
         this->setFixedWidth(6);
-        this->setMinimumHeight(_TitleButtonSize);
+        this->setMinimumHeight(widgetMinSize(this,true));
         this->setCursor(Qt::SizeHorCursor);
     }
     setMouseTracking(true);
@@ -2115,13 +2120,14 @@ QSplitterHandle * OverlaySplitter::createHandle()
     bool vertical = this->orientation() != Qt::Vertical;
     layout->addSpacing(5);
     layout->setContentsMargins(1,1,1,1);
-    auto spacer = new QSpacerItem(_TitleButtonSize,_TitleButtonSize,
+    int buttonSize = widgetMinSize(this);
+    auto spacer = new QSpacerItem(buttonSize,buttonSize,
                 vertical?QSizePolicy::Minimum:QSizePolicy::Expanding,
                 vertical?QSizePolicy::Expanding:QSizePolicy::Minimum);
     layout->addSpacerItem(spacer);
     widget->setTitleItem(spacer);
 
-    layout->addWidget(createTitleButton(&widget->actFloat));
+    layout->addWidget(createTitleButton(&widget->actFloat, widgetMinSize(widget)));
 
     if (tabWidget) {
         auto grip = new OverlaySizeGrip(tabWidget, vertical);
@@ -2149,10 +2155,11 @@ OverlaySplitterHandle::OverlaySplitterHandle(Qt::Orientation orientation, QSplit
 QSize OverlaySplitterHandle::sizeHint() const
 { 
     QSize size = QSplitterHandle::sizeHint();
+    int minSize = widgetMinSize(this,true);
     if (this->orientation() == Qt::Vertical)
-        size.setHeight(std::max(_TitleButtonSize+4, size.height()));
+        size.setHeight(std::max(minSize, size.height()));
     else
-        size.setWidth(std::max(_TitleButtonSize+4, size.width()));
+        size.setWidth(std::max(minSize, size.width()));
     return size;
 }
 
@@ -3241,7 +3248,8 @@ public:
         }
         layout->addSpacing(5);
         layout->setContentsMargins(1,1,1,1);
-        auto spacer = new QSpacerItem(_TitleButtonSize,_TitleButtonSize,
+        int buttonSize = widgetMinSize(widget);
+        auto spacer = new QSpacerItem(buttonSize,buttonSize,
                     vertical?QSizePolicy::Minimum:QSizePolicy::Expanding,
                     vertical?QSizePolicy::Expanding:QSizePolicy::Minimum);
         layout->addSpacerItem(spacer);
@@ -3249,10 +3257,10 @@ public:
 
         if(tabWidget) {
             for(auto action : tabWidget->actions())
-                layout->addWidget(createTitleButton(action));
+                layout->addWidget(createTitleButton(action, buttonSize));
         } else {
             for(auto action : _actions)
-                layout->addWidget(createTitleButton(action));
+                layout->addWidget(createTitleButton(action, buttonSize));
         }
 
         if (tabWidget) {
