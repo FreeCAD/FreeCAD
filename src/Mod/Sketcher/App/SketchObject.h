@@ -353,9 +353,23 @@ public:
     inline const std::vector<int> &getLastConflicting(void) const { return lastConflicting; }
     /// gets the redundant constraints of last solver execution
     inline const std::vector<int> &getLastRedundant(void) const { return lastRedundant; }
-    /// gets the solved sketch as a reference
-    inline Sketch &getSolvedSketch(void) {return solvedSketch;}
 
+public: /* Solver exposed interface */
+    /// gets the solved sketch as a reference
+    inline const Sketch &getSolvedSketch(void) const {return solvedSketch;}
+    /// enables/disables solver initial solution recalculation when moving point mode (useful for dragging)
+    inline void setRecalculateInitialSolutionWhileMovingPoint(bool recalculateInitialSolutionWhileMovingPoint)
+        {solvedSketch.setRecalculateInitialSolutionWhileMovingPoint(recalculateInitialSolutionWhileMovingPoint);}
+    /// Forwards a request for a temporary initMove to the solver using the current sketch state as a reference (enables dragging)
+    inline int initTemporaryMove(int geoId, PointPos pos, bool fine=true)
+        { return solvedSketch.initMove(geoId,pos,fine);}
+    /// Forwards a request for point or curve temporary movement to the solver using the current state as a reference (enables dragging)
+    inline int moveTemporaryPoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative=false)
+        { return solvedSketch.movePoint(geoId, pos, toPoint, relative);}
+    inline void updateSolverExtension(int geoId, std::unique_ptr<Part::GeometryExtension> && ext)
+        { return solvedSketch.updateExtension(geoId, std::move(ext));}
+
+public:
     /// returns the geometric elements/vertex which the solver detects as having dependent parameters.
     /// these parameters relate to not fully constraint edges/vertices.
     void getGeometryWithDependentParameters(std::vector<std::pair<int,PointPos>>& geometrymap);
