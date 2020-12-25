@@ -148,7 +148,13 @@ void EditDatumDialog::exec(bool atCursor)
             dlg.setGeometry(x, y, dlg.geometry().width(), dlg.geometry().height());
         }
 
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/Mod/Sketcher");
+        int width = hGrp->GetInt("DatumDialogWidth",0);
+        if (width > 100)
+            dlg.resize(width, dlg.height());
         dlg.exec();
+        hGrp->SetInt("DatumDialogWidth", dlg.width());
     }
 }
 
