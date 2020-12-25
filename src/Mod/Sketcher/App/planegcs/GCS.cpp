@@ -1298,19 +1298,19 @@ int System::addConstraintInternalAlignmentBSplineControlPoint(BSpline &b, Circle
 //points are supplied, p is used for first curve and p2 for second, yielding a
 //remote angle computation (this is useful when the endpoints haven't) been
 //made coincident yet
-double System::calculateAngleViaPoint(Curve &crv1, Curve &crv2, Point &p)
+double System::calculateAngleViaPoint(const Curve &crv1, const Curve &crv2, Point &p) const
 {
     return calculateAngleViaPoint(crv1, crv2, p, p);
 }
 
-double System::calculateAngleViaPoint(Curve &crv1, Curve &crv2, Point &p1, Point &p2)
+double System::calculateAngleViaPoint(const Curve &crv1, const Curve &crv2, Point &p1, Point &p2) const
 {
     GCS::DeriVector2 n1 = crv1.CalculateNormal(p1);
     GCS::DeriVector2 n2 = crv2.CalculateNormal(p2);
     return atan2(-n2.x*n1.y+n2.y*n1.x, n2.x*n1.x + n2.y*n1.y);
 }
 
-void System::calculateNormalAtPoint(Curve &crv, Point &p, double &rtnX, double &rtnY)
+void System::calculateNormalAtPoint(const Curve &crv, const Point &p, double &rtnX, double &rtnY) const
 {
     GCS::DeriVector2 n1 = crv.CalculateNormal(p);
     rtnX = n1.x;
