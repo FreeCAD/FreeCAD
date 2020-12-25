@@ -6094,7 +6094,12 @@ bool ViewProviderSketch::setEdit(int ModNum)
     // if we just close the sketch without touching anything.
     getSketchObject()->solve(false);
     UpdateSolverInformation();
-    draw(false,true);
+
+    // delay calling of draw() until setEditViewer() where edit->viewer is set.
+    // Because of possible external editing, we can only know the editting
+    // viewer in setEditViewer().
+    //
+    // draw(false,true);
 
     connectUndoDocument = getDocument()
         ->signalUndoDocument.connect(boost::bind(&ViewProviderSketch::slotUndoDocument, this, bp::_1));
@@ -6567,6 +6572,7 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
 
     viewer->setupEditingRoot();
     edit->viewer = viewer;
+    draw(false,true);
 
     ViewProvider2DObjectGrid::setEditViewer(viewer, ModNum);
 }
