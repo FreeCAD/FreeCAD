@@ -307,7 +307,7 @@ void SoFCUnifiedSelection::getPickedInfo(std::vector<PickedInfo> &ret,
             break;
         }
 
-        if(!info.vpd->getElementPicked(info.pp,info.subname) || info.subname.empty())
+        if(!info.vpd->getElementPicked(info.pp,info.subname))
             continue;
 
         if(singlePick) 
