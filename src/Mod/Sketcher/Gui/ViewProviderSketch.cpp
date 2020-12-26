@@ -1231,8 +1231,6 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
 
                 }
 
-                getSketchObject()->initTemporaryMove(edit->DragCurve, Sketcher::none, false);
-
                 if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId() ||
                     geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
                     relative = true;
@@ -1249,6 +1247,9 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
                     xInit = 0;
                     yInit = 0;
                 }
+
+                getSketchObject()->initTemporaryMove(edit->DragCurve, Sketcher::none, false);
+
             } else {
                 Mode = STATUS_NONE;
             }
