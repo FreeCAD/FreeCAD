@@ -3822,6 +3822,9 @@ void System::makeReducedJacobian(Eigen::MatrixXd &J,
             jacobianconstraintmap[jacobianconstraintcount-1] = allcount-1;
         }
     }
+
+    if(jacobianconstraintcount == 0) // only driven constraints
+        J.resize(0,0);
 }
 
 int System::diagnose(Algorithm alg)
