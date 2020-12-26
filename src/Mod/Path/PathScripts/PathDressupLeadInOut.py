@@ -26,7 +26,6 @@ from __future__ import print_function
 import FreeCAD
 import FreeCADGui
 import Path
-#import PathScripts.PathDressupLeadInOut as PathDressupLeadInOut
 import PathScripts.PathDressup as PathDressup
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
