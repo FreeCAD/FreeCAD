@@ -892,6 +892,8 @@ void SoFCSelection::glRender(SoGLRenderAction *action, bool inpath)
     this->uniqueId ^= std::hash<void*>()(ctx.get()) + 0x9e3779b9 + (oldId << 6) + (oldId >> 2);
 
     if(mystyle == SoFCSelection::BOX || ViewParams::instance()->getShowSelectionBoundingBox()) {
+        if (action->isRenderingDelayedPaths())
+            guard.set(GL_ALWAYS);
         SoFCSelectionRoot::renderBBox(action,this,
                 preselected?ctx->highlightColor:ctx->selectionColor,0,true);
         this->uniqueId = oldId;
