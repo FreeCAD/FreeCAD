@@ -24,7 +24,9 @@
 from __future__ import print_function
 
 import FreeCAD
+import FreeCADGui
 import Path
+#import PathScripts.PathDressupLeadInOut as PathDressupLeadInOut
 import PathScripts.PathDressup as PathDressup
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
@@ -32,7 +34,7 @@ import PathScripts.PathUtils as PathUtils
 import math
 import copy
 
-from PySide import QtCore
+from PySide import QtCore, QtGui
 
 __doc__ = """LeadInOut Dressup MASHIN-CRC USE ROLL-ON ROLL-OFF to profile"""
 
@@ -468,8 +470,29 @@ class TaskPanel:
     def __init__(self, obj):
         self.obj = obj
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/DressUpLeadInOutEdit.ui")
+        self.setupUi()
 
         FreeCAD.ActiveDocument.openTransaction(translate("Path_DressupLeadInOut", "Edit LeadInOut Dress-up"))
+    
+    def getStandardButtons(self):
+        return int(QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Cancel)
+
+    def modifyStandardButtons(self, buttonBox):
+        self.buttonBox = buttonBox
+
+    def setDirty(self):
+        self.isDirty = True
+        self.buttonBox.button(QtGui.QDialogButtonBox.Apply).setEnabled(True)
+
+    def setClean(self):
+        self.isDirty = False
+        self.buttonBox.button(QtGui.QDialogButtonBox.Apply).setEnabled(False)
+
+    def clicked(self, button):
+        # callback for standard buttons
+        if button == QtGui.QDialogButtonBox.Apply:
+            self.updateModel()
+            FreeCAD.ActiveDocument.recompute()
 
     def reject(self):
         FreeCAD.ActiveDocument.abortTransaction()
@@ -539,9 +562,9 @@ class TaskPanel:
 
 
 class ViewProviderDressup:
-
     def __init__(self, vobj):
         self.obj = vobj.Object
+        self.setEdit(vobj)
 
     def attach(self, vobj):
         self.obj = vobj.Object
@@ -625,9 +648,9 @@ class CommandPathDressupLeadInOut:
         FreeCADGui.doCommand('job = PathScripts.PathUtils.findParentJob(base)')
         FreeCADGui.doCommand('obj.Base = base')
         FreeCADGui.doCommand('job.Proxy.addOperation(obj, base)')
+        FreeCADGui.doCommand('dbo.setup(obj)')
         FreeCADGui.doCommand('obj.ViewObject.Proxy = PathScripts.PathDressupLeadInOut.ViewProviderDressup(obj.ViewObject)')
         FreeCADGui.doCommand('Gui.ActiveDocument.getObject(base.Name).Visibility = False')
-        FreeCADGui.doCommand('dbo.setup(obj)')
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
