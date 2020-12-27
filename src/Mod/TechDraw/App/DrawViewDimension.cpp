@@ -779,8 +779,16 @@ std::pair<std::string, std::string> DrawViewDimension::getFormattedToleranceValu
         underTolerance = underFormatSpec;
         overTolerance = overFormatSpec;
     } else {
-        underTolerance = QString::fromUtf8(formatValue(UnderTolerance.getValue(), underFormatSpec, partial).c_str());
-        overTolerance = QString::fromUtf8(formatValue(OverTolerance.getValue(), overFormatSpec, partial).c_str());
+        if (DrawUtil::fpCompare(UnderTolerance.getValue(), 0.0)) {
+            underTolerance = QString::fromUtf8(formatValue(UnderTolerance.getValue(), QString::fromUtf8("%.0f"), partial).c_str());
+        } else {
+            underTolerance = QString::fromUtf8(formatValue(UnderTolerance.getValue(), underFormatSpec, partial).c_str());
+        }
+        if (DrawUtil::fpCompare(OverTolerance.getValue(), 0.0)) {
+            overTolerance = QString::fromUtf8(formatValue(OverTolerance.getValue(), QString::fromUtf8("%.0f"), partial).c_str());
+        } else {
+            overTolerance = QString::fromUtf8(formatValue(OverTolerance.getValue(), overFormatSpec, partial).c_str());
+        }
     }
 
     tolerances.first = underTolerance.toStdString();
