@@ -102,10 +102,10 @@ public:
     App::PropertyBool              TheoreticalExact;
     App::PropertyBool              Inverted;
     App::PropertyString            FormatSpec;
-    App::PropertyString            FormatSpecUnderTolerance;
-    App::PropertyString            FormatSpecOverTolerance;
+    App::PropertyString            FormatSpecTolerance;
     App::PropertyBool              Arbitrary;
     App::PropertyBool              ArbitraryTolerances;
+    App::PropertyBool              EqualTolerance;
     App::PropertyQuantity          OverTolerance;
     App::PropertyQuantity          UnderTolerance;
 
@@ -122,7 +122,7 @@ public:
     short mustExecute() const override;
     virtual bool has2DReferences(void) const;
     virtual bool has3DReferences(void) const;
-    bool hasTolerance(void) const;
+    bool hasOverUnderTolerance(void) const;
 
     /** @name methods override Feature */
     //@{
@@ -137,6 +137,7 @@ public:
     //return PyObject as DrawViewDimensionPy
     virtual PyObject *getPyObject(void) override;
 
+    virtual std::string getFormattedToleranceValue(int partial);
     virtual std::pair<std::string, std::string> getFormattedToleranceValues(int partial = 0);
     virtual std::string getFormattedDimensionValue(int partial = 0);
     virtual std::string formatValue(qreal value, QString qFormatSpec, int partial = 0);
@@ -168,6 +169,7 @@ public:
 
 protected:
     virtual void handleChangedPropertyType(Base::XMLReader &, const char * , App::Property * ) override;
+    virtual void Restore(Base::XMLReader& reader) override;
     virtual void onChanged(const App::Property* prop) override;
     virtual void onDocumentRestored() override;
     std::string getPrefix() const;
