@@ -43,7 +43,7 @@ pairs, or a placement, or a vector</UserDocu>
         </Methode>
         <Methode Name="setFromGCode">
             <Documentation>
-                <UserDocu>toGCode(): returns a GCode representation of the command</UserDocu>
+                <UserDocu>setFromGCode(): sets the path from the contents of the given GCode string</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="transform">
@@ -51,5 +51,8 @@ pairs, or a placement, or a vector</UserDocu>
                 <UserDocu>transform(Placement): returns a copy of this command transformed by the given placement</UserDocu>
             </Documentation>
         </Methode>
+        <ClassDeclarations>
+            mutable Py::Dict parameters_copy_dict;
+        </ClassDeclarations>
     </PythonExport>
 </GenerateModel>

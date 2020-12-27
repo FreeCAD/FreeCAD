@@ -117,6 +117,7 @@ int CommandPy::PyInit(PyObject* args, PyObject* kwd)
             }
             getCommandPtr()->Parameters[ckey]=cvalue;
         }
+          parameters_copy_dict.clear();
         return 0;
     }
     PyErr_Clear(); // set by PyArg_ParseTuple()
@@ -157,11 +158,13 @@ void CommandPy::setName(Py::String arg)
 
 Py::Dict CommandPy::getParameters(void) const
 {
-    Py::Dict dict;
-    for(std::map<std::string,double>::iterator i = getCommandPtr()->Parameters.begin(); i != getCommandPtr()->Parameters.end(); ++i) {
-        dict.setItem(i->first, Py::Float(i->second));
+    // dict now a class member , https://forum.freecadweb.org/viewtopic.php?f=15&t=50583&
+    if (parameters_copy_dict.length()==0) {    
+      for(std::map<std::string,double>::iterator i = getCommandPtr()->Parameters.begin(); i != getCommandPtr()->Parameters.end(); ++i) {
+          parameters_copy_dict.setItem(i->first, Py::Float(i->second));
+      }
     }
-    return dict;
+    return parameters_copy_dict;
 }
 
 void CommandPy::setParameters(Py::Dict arg)
@@ -200,6 +203,7 @@ void CommandPy::setParameters(Py::Dict arg)
             throw Py::TypeError("The dictionary can only contain number values");
         }
         getCommandPtr()->Parameters[ckey]=cvalue;
+        parameters_copy_dict.clear();
     }
 }
 
@@ -224,6 +228,7 @@ PyObject* CommandPy::setFromGCode(PyObject *args)
         std::string gcode(pstr);
         try {
             getCommandPtr()->setFromGCode(gcode);
+            parameters_copy_dict.clear();
         }
         catch (const Base::Exception& e) {
             PyErr_SetString(PyExc_ValueError, e.what());
@@ -249,6 +254,7 @@ void CommandPy::setPlacement(Py::Object arg)
     Py::Type PlacementType(pyType.o);
     if(arg.isType(PlacementType)) {
         getCommandPtr()->setFromPlacement( *static_cast<Base::PlacementPy*>((*arg))->getPlacementPtr() );
+        parameters_copy_dict.clear();
     } else
     throw Py::TypeError("Argument must be a placement");
 }
@@ -259,6 +265,7 @@ PyObject* CommandPy::transform(PyObject *args)
     if ( PyArg_ParseTuple(args, "O!", &(Base::PlacementPy::Type), &placement) ) {
         Base::PlacementPy *p = static_cast<Base::PlacementPy*>(placement);
         Path::Command trCmd = getCommandPtr()->transform( *p->getPlacementPtr() );
+        parameters_copy_dict.clear();
         return new CommandPy(new Path::Command(trCmd));
     } else
     throw Py::TypeError("Argument must be a placement");
@@ -302,6 +309,7 @@ int CommandPy::setCustomAttributes(const char* attr, PyObject* obj)
                 return 0;
             }
             getCommandPtr()->Parameters[satt]=cvalue;
+            parameters_copy_dict.clear();
             return 1;
         }
     }
