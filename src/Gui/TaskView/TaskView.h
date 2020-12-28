@@ -29,7 +29,7 @@
 #include <map>
 #include <string>
 #include <vector>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 #include <QScrollArea>
 
 #if !defined (QSINT_ACTIONPANEL)

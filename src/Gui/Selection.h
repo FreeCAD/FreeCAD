@@ -32,7 +32,7 @@
 #include <list>
 #include <map>
 #include <deque>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 #include <CXX/Objects.hxx>
 
 #include <Base/Observer.h>

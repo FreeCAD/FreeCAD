@@ -26,7 +26,7 @@
 
 #include "TaskView.h"
 #include <Gui/Selection.h>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 
 
 namespace App {

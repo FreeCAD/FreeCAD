@@ -79,7 +79,7 @@
 #include <unordered_map>
 
 // Boost
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 #include <boost/bind/bind.hpp>
 #include <boost/program_options.hpp>
 #include <boost/tuple/tuple.hpp>

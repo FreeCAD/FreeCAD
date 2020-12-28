@@ -29,7 +29,7 @@
 
 #include <gp_Ax2.hxx>
 #include <vector>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 
 #include <Mod/Drawing/App/FeatureViewPart.h>
 

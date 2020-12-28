@@ -29,7 +29,7 @@
 #include <string>
 #include <bitset>
 #include <QIcon>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 #include <boost/intrusive_ptr.hpp>
 
 #include <App/TransactionalObject.h>

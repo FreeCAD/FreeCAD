@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <boost/signals2.hpp>
+# include <boost_signals2.hpp>
 # include <boost_bind_bind.hpp>
 # include <QAbstractItemView>
 # include <QActionEvent>
