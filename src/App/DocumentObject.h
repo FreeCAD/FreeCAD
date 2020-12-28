@@ -407,7 +407,7 @@ public:
      *
      * @param newLabel: input as the new label, which can be modified by object itself
      *
-     * This function is is called before onBeforeChange()
+     * This function is called before onBeforeChange()
      */
     virtual void onBeforeChangeLabel(std::string &newLabel) {(void)newLabel;}
 
