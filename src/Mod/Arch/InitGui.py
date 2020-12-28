@@ -178,6 +178,14 @@ class ArchWorkbench(FreeCADGui.Workbench):
 
 FreeCADGui.addWorkbench(ArchWorkbench)
 
+def _init_params(names):
+    param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+    for name in names:
+        if param.GetBool(name, True) != param.GetBool(name, False):
+            param.SetBool(name, True)
+
+_init_params(('ColladaExportInstances', 'ColladaImportInstances'))
+
 # Preference pages for importing and exporting various file formats
 # are independent of the loading of the workbench and can be loaded at startup
 import Arch_rc

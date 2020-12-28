@@ -19,7 +19,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, Mesh, os, numpy, MeshPart, Arch, Draft, Part, types
+import FreeCAD, Mesh, ArchCommands, os, numpy, MeshPart, Draft, Part, types
 from collections import defaultdict
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -87,19 +87,27 @@ def checkCollada():
         collada.scene.Node.__init__ = _collada_node_init
     return True
 
+_param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+
+if _param.GetBool('ColladaExportInstances', True) != \
+        _param.GetBool('ColladaExportInstances', False):
+    _param.SetBool('ColladaExportInstances', True)
+
+if _param.GetBool('ColladaImportInstances', True) != \
+        _param.GetBool('ColladaImportInstances', False):
+    _param.SetBool('ColladaImportInstances', True)
 
 def triangulate(shape, dosegment):
     "triangulates the given face"
 
-    param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-    mesher = param.GetInt("ColladaMesher",0)
-    tessellation = param.GetFloat("ColladaTessellation",1.0)
-    grading = param.GetFloat("ColladaGrading",0.3)
-    segsperedge = param.GetInt("ColladaSegsPerEdge",1)
-    segsperradius = param.GetInt("ColladaSegsPerRadius",2)
-    secondorder = param.GetBool("ColladaSecondOrder",False)
-    optimize = param.GetBool("ColladaOptimize",True)
-    allowquads = param.GetBool("ColladaAllowQuads",False)
+    mesher = _param.GetInt("ColladaMesher",0)
+    tessellation = _param.GetFloat("ColladaTessellation",1.0)
+    grading = _param.GetFloat("ColladaGrading",0.3)
+    segsperedge = _param.GetInt("ColladaSegsPerEdge",1)
+    segsperradius = _param.GetInt("ColladaSegsPerRadius",2)
+    secondorder = _param.GetBool("ColladaSecondOrder",False)
+    optimize = _param.GetBool("ColladaOptimize",True)
+    allowquads = _param.GetBool("ColladaAllowQuads",False)
 
     if mesher == 0:
         angulardeflect = min(0.1, tessellation * 0.5 + 0.005)
@@ -211,8 +219,7 @@ def read(filename):
 
     "reads a DAE file"
 
-    param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-    instancing = param.GetBool("ColladaImportInstances",False)
+    instancing = _param.GetBool("ColladaImportInstances",False)
 
     col = collada.Collada(filename, ignore=[collada.DaeUnsupportedError])
     # Read the unitmeter info from dae file and compute unit to convert to mm
@@ -510,9 +517,8 @@ def _build_geom(colmesh, mesh, scale, obj, ind, dosegment):
 
 def _export(exportSet, filename, colors):
     if not checkCollada(): return
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-    instancing = p.GetBool("ColladaExportInstances",False)
-    scale = p.GetFloat("ColladaScalingFactor",1.0)
+    instancing = _param.GetBool("ColladaExportInstances",True)
+    scale = _param.GetFloat("ColladaScalingFactor",1.0)
     scale = scale * 0.001 # from millimeters (FreeCAD) to meters (Collada)
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
     c = p.GetUnsigned("DefaultShapeColor",4294967295)
@@ -544,7 +550,7 @@ def _export(exportSet, filename, colors):
 
     objectslist = Draft.get_group_contents(exportList, walls=True,
                                            addgroups=True)
-    objectslist = Arch.pruneIncluded(objectslist)
+    objectslist = ArchCommands.pruneIncluded(objectslist)
 
     if colors is None:
         colors = {}
@@ -552,8 +558,7 @@ def _export(exportSet, filename, colors):
     matrix0 = FreeCAD.Matrix()
     instances = []
 
-    param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-    dosegment = param.GetBool("ColladaExportSegments", False)
+    dosegment = _param.GetBool("ColladaExportSegments", False)
 
     for parentobj, sub in objectslist:
         path = parentobj.Name + '.' + sub
