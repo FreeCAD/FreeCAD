@@ -228,7 +228,7 @@ public:
     void LogGroupOfConstraints(const std::string & str, std::vector< std::vector<Constraint *> > constraintgroups);
 
     void LogMatrix(const std::string str, Eigen::MatrixXd matrix);
-    void LogMatrix(const std::string str, MatrixIndexType matrix );
+    void LogMatrix(const std::string str, MatrixIndexType matrix);
 
 private:
     SolverReportingManager();
@@ -361,7 +361,7 @@ void SolverReportingManager::LogGroupOfConstraints(const std::string & str, std:
         for(auto c :group)
             tempstream << c->getTag() << " ";
 
-        tempstream << "]" << '\n';;
+        tempstream << "]" << '\n';
     }
 
     LogString(tempstream.str());
@@ -369,26 +369,26 @@ void SolverReportingManager::LogGroupOfConstraints(const std::string & str, std:
 
 
 #ifdef _GCS_DEBUG
-void SolverReportingManager::LogMatrix(const std::string str, Eigen::MatrixXd matrix )
+void SolverReportingManager::LogMatrix(const std::string str, Eigen::MatrixXd matrix)
 {
     std::stringstream tempstream;
 
     tempstream << '\n' << " " << str << " =" << '\n';
     tempstream << "[" << '\n';
-    tempstream << matrix << '\n' ;
+    tempstream << matrix << '\n';
     tempstream << "]" << '\n';
 
     LogString(tempstream.str());
 
 }
 
-void SolverReportingManager::LogMatrix(const std::string str, MatrixIndexType matrix )
+void SolverReportingManager::LogMatrix(const std::string str, MatrixIndexType matrix)
 {
     std::stringstream tempstream;
 
     stream << '\n' << " " << str << " =" << '\n';
     stream << "[" << '\n';
-    stream << matrix << '\n' ;
+    stream << matrix << '\n';
     stream << "]" << '\n';
 
     LogString(tempstream.str());
@@ -3955,7 +3955,7 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
             // nows if it can run the task in parallel or is oversubscribed and should deferred it.
             // Care to wait() for the future before any prospective detection of conflicting/redundant, because the redundant solve
             // modifies pdiagnoselist and it would NOT be thread-safe. Care to call the thread with silent=true, unless the present thread
-            // does not use Base::Console, or the lauch policy is set to std::lauch::deferred policy,, as it is not thread-safe to use them
+            // does not use Base::Console, or the launch policy is set to std::launch::deferred policy, as it is not thread-safe to use them
             // in both at the same time.
             //
             // identifyDependentParametersDenseQR(J, jacobianconstraintmap, pdiagnoselist, true)
@@ -4010,7 +4010,7 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
             // nows if it can run the task in parallel or is oversubscribed and should deferred it.
             // Care to wait() for the future before any prospective detection of conflicting/redundant, because the redundant solve
             // modifies pdiagnoselist and it would NOT be thread-safe. Care to call the thread with silent=true, unless the present thread
-            // does not use Base::Console, or the lauch policy is set to std::lauch::deferred policy,, as it is not thread-safe to use them
+            // does not use Base::Console, or the launch policy is set to std::launch::deferred policy, as it is not thread-safe to use them
             // in both at the same time.
             //
             // identifyDependentParametersSparseQR(J, jacobianconstraintmap, pdiagnoselist, true)
