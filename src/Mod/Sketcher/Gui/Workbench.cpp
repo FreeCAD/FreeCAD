@@ -57,17 +57,21 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* root = StdWorkbench::setupMenuBar();
     Gui::MenuItem* item = root->findItem("&Windows");
 
+    /*
 // == Profile menu ==========================================
+   
     Gui::MenuItem* profile = new Gui::MenuItem;
     root->insertItem(item, profile);
     profile->setCommand("P&rofiles");
 
     *profile << "Sketcher_ProfilesHexagon1";
+    */
+
 
 // == Sketcher menu ==========================================
 
     Gui::MenuItem* sketch = new Gui::MenuItem;
-    root->insertItem(profile, sketch);
+    root->insertItem(root->findItem("&Tools"), sketch);
     sketch->setCommand("S&ketch");
     Gui::MenuItem* geom = new Gui::MenuItem();
     geom->setCommand("Sketcher geometries");
@@ -87,7 +91,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     Gui::MenuItem* virtualspace = new Gui::MenuItem();
     virtualspace->setCommand("Sketcher virtual space");
-    addSketcherWorkbenchVirtualSpace(*virtualspace);
+    //addSketcherWorkbenchVirtualSpace(*virtualspace);
 
     addSketcherWorkbenchSketchActions( *sketch );
     *sketch << geom
@@ -97,7 +101,14 @@ Gui::MenuItem* Workbench::setupMenuBar() const
             << virtualspace;
 
     return root;
+
+
+    // == "Simulation" menu ==========================================
+    Gui::MenuItem* simulation = new Gui::MenuItem;
+    root->insertItem(root->findItem("&Help"), simulation);
+    sketch->setCommand("Simulation");
 }
+
 
 Gui::ToolBarItem* Workbench::setupToolBars() const
 {
@@ -341,20 +352,22 @@ inline void SketcherAddWorkspaceSketchExtra(T& /*sketch*/){
 
 template <>
 inline void SketcherAddWorkspaceSketchExtra<Gui::MenuItem>(Gui::MenuItem& sketch){
-    sketch  << "Sketcher_ReorientSketch"
-            << "Sketcher_ValidateSketch"
-            << "Sketcher_MergeSketches"
-            << "Sketcher_MirrorSketch";
+    sketch
+        //<< "Sketcher_ReorientSketch"
+        << "Sketcher_ValidateSketch";
+        //<< "Sketcher_MergeSketches"
+        //<< "Sketcher_MirrorSketch"
 }
 
 template <typename T>
 inline void Sketcher_addWorkbenchSketchActions(T& sketch){
-    sketch  << "Sketcher_NewSketch"
-            << "Sketcher_EditSketch"
-            << "Sketcher_LeaveSketch"
-            << "Sketcher_ViewSketch"
-            << "Sketcher_ViewSection"
-            << "Sketcher_MapSketch";
+    sketch
+        //<< "Sketcher_NewSketch"
+        << "Sketcher_EditSketch";
+        //<< "Sketcher_LeaveSketch"
+        //<< "Sketcher_ViewSketch"
+        //<< "Sketcher_ViewSection"
+        //<< "Sketcher_MapSketch";
     SketcherAddWorkspaceSketchExtra( sketch );
 }
 
