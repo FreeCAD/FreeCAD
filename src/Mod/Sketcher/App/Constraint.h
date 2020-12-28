@@ -37,7 +37,7 @@ namespace Sketcher
  This is mandatory in order to keep the handling of constraint types upward compatible which means that
  this program version ignores later introduced constraint types when reading them from a project file.
  */
-enum ConstraintType {
+enum class ConstraintType {
     None = 0,
     Coincident = 1,
     Horizontal = 2,
@@ -117,8 +117,17 @@ public:
     }
 
     inline bool isDimensional() const {
-        return Type == Distance || Type == DistanceX || Type == DistanceY ||
-               Type == Radius || Type == Diameter || Type == Angle || Type == SnellsLaw || Type == Weight;
+        return Type == ConstraintType::Distance || Type == ConstraintType::DistanceX || Type == ConstraintType::DistanceY ||
+               Type == ConstraintType::Radius || Type == ConstraintType::Diameter || Type == ConstraintType::Angle || Type == ConstraintType::SnellsLaw || Type == ConstraintType::Weight;
+    }
+    inline bool isDatum() {
+       return 
+       Type == ConstraintType::Distance || // Datum constraint
+       Type == ConstraintType::DistanceX ||
+       Type == ConstraintType::DistanceY ||
+       Type == ConstraintType::Radius ||
+       Type == ConstraintType::Diameter ||
+       Type == ConstraintType::Angle;
     }
 
     friend class PropertyConstraintList;

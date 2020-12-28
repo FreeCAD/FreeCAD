@@ -179,7 +179,7 @@ void removeRedundantHorizontalVertical(Sketcher::SketchObject* psketch,
             axis = false;
 
             for(std::vector<AutoConstraint>::const_iterator it = sug.begin(); it!=sug.end(); ++it) {
-                if( (*it).Type == Sketcher::Coincident && ext == false) {
+                if( (*it).Type == Sketcher::ConstraintType::Coincident && ext == false) {
                     const std::map<int, Sketcher::PointPos> coincidents = psketch->getAllCoincidentPoints((*it).GeoId, (*it).PosId);
 
                     if(!coincidents.empty()) {
@@ -200,7 +200,7 @@ void removeRedundantHorizontalVertical(Sketcher::SketchObject* psketch,
                         orig = ((*it).GeoId == -1 && (*it).PosId == Sketcher::start);
                     }
                 }
-                else if( (*it).Type == Sketcher::PointOnObject && axis == false) {
+                else if( (*it).Type == Sketcher::ConstraintType::PointOnObject && axis == false) {
                     axis = (((*it).GeoId == -1 && (*it).PosId == Sketcher::none) || ((*it).GeoId == -2 && (*it).PosId == Sketcher::none));
                 }
 
@@ -219,7 +219,7 @@ void removeRedundantHorizontalVertical(Sketcher::SketchObject* psketch,
 
         if(rmvhorvert) {
             for(std::vector<AutoConstraint>::reverse_iterator it = sug2.rbegin(); it!=sug2.rend(); ++it) {
-                if( (*it).Type == Sketcher::Horizontal || (*it).Type == Sketcher::Vertical) {
+                if( (*it).Type == Sketcher::ConstraintType::Horizontal || (*it).Type == Sketcher::ConstraintType::Vertical) {
                     sug2.erase(std::next(it).base());
                     it = sug2.rbegin(); // erase invalidates the iterator
                 }
@@ -887,7 +887,7 @@ public:
             // we set up a transition from the neighbouring segment.
             // (peviousCurve, previousPosId, dirVec, TransitionMode)
             for (unsigned int i=0; i < sugConstr1.size(); i++)
-                if (sugConstr1[i].Type == Sketcher::Coincident) {
+                if (sugConstr1[i].Type == Sketcher::ConstraintType::Coincident) {
                     const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(sugConstr1[i].GeoId);
                     if ((geom->getTypeId() == Part::GeomLineSegment::getClassTypeId() ||
                          geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) &&
@@ -1071,7 +1071,7 @@ public:
                     // exclude any coincidence constraints
                     std::vector<AutoConstraint> sugConstr;
                     for (unsigned int i=0; i < sugConstr2.size(); i++) {
-                        if (sugConstr2[i].Type != Sketcher::Coincident)
+                        if (sugConstr2[i].Type != Sketcher::ConstraintType::Coincident)
                             sugConstr.push_back(sugConstr2[i]);
                     }
                     createAutoConstraints(sugConstr, getHighestCurveIndex(), Sketcher::end);
@@ -4109,7 +4109,7 @@ public:
 
             // check if coincident with first pole
             for(std::vector<AutoConstraint>::const_iterator it = sugConstr[CurrentConstraint].begin(); it != sugConstr[CurrentConstraint].end(); it++) {
-                if( (*it).Type == Sketcher::Coincident && (*it).GeoId == FirstPoleGeoId && (*it).PosId == Sketcher::mid ) {
+                if( (*it).Type == Sketcher::ConstraintType::Coincident && (*it).GeoId == FirstPoleGeoId && (*it).PosId == Sketcher::mid ) {
 
                     IsClosed = true;
                     }
@@ -4571,7 +4571,7 @@ public:
             if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f,0.f),
                                    AutoConstraint::CURVE)) {
                 // Disable tangent snap on 1st point
-                if (sugConstr1.back().Type == Sketcher::Tangent)
+                if (sugConstr1.back().Type == Sketcher::ConstraintType::Tangent)
                     sugConstr1.pop_back();
                 else
                     renderSuggestConstraintsCursor(sugConstr1);
@@ -4609,7 +4609,7 @@ public:
                     if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f,0.f),
                                         AutoConstraint::CURVE)) {
                         // Disable tangent snap on 2nd point
-                        if (sugConstr2.back().Type == Sketcher::Tangent)
+                        if (sugConstr2.back().Type == Sketcher::ConstraintType::Tangent)
                             sugConstr2.pop_back();
                         else
                             renderSuggestConstraintsCursor(sugConstr2);

@@ -283,19 +283,19 @@ std::vector<QPixmap> DrawSketchHandler::suggestedConstraintsPixmaps(
         QString iconType;
         switch (it->Type)
         {
-        case Horizontal:
+        case ConstraintType::Horizontal:
             iconType = QString::fromLatin1("Constraint_Horizontal");
             break;
-        case Vertical:
+        case ConstraintType::Vertical:
             iconType = QString::fromLatin1("Constraint_Vertical");
             break;
-        case Coincident:
+        case ConstraintType::Coincident:
             iconType = QString::fromLatin1("Constraint_PointOnPoint");
             break;
-        case PointOnObject:
+        case ConstraintType::PointOnObject:
             iconType = QString::fromLatin1("Constraint_PointOnObject");
             break;
-        case Tangent:
+        case ConstraintType::Tangent:
             iconType = QString::fromLatin1("Constraint_Tangent");
             break;
         default:
@@ -368,19 +368,19 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
 
         // Currently only considers objects in current Sketcher
         AutoConstraint constr;
-        constr.Type = Sketcher::None;
+        constr.Type = Sketcher::ConstraintType::None;
         constr.GeoId = GeoId;
         constr.PosId = PosId;
         if (type == AutoConstraint::VERTEX && PosId != Sketcher::none)
-            constr.Type = Sketcher::Coincident;
+            constr.Type = Sketcher::ConstraintType::Coincident;
         else if (type == AutoConstraint::CURVE && PosId != Sketcher::none)
-            constr.Type = Sketcher::PointOnObject;
+            constr.Type = Sketcher::ConstraintType::PointOnObject;
         else if (type == AutoConstraint::VERTEX && PosId == Sketcher::none && hitobject->getTypeId() != Part::GeomBSplineCurve::getClassTypeId())
-            constr.Type = Sketcher::PointOnObject;
+            constr.Type = Sketcher::ConstraintType::PointOnObject;
         else if (type == AutoConstraint::CURVE && PosId == Sketcher::none)
-            constr.Type = Sketcher::Tangent;
+            constr.Type = Sketcher::ConstraintType::Tangent;
 
-        if(constr.Type == Sketcher::Tangent && Dir.Length() > 1e-8 && hitShapeDir.Length() > 1e-8) { // We are hitting a line and have hitting vector information
+        if(constr.Type == Sketcher::ConstraintType::Tangent && Dir.Length() > 1e-8 && hitShapeDir.Length() > 1e-8) { // We are hitting a line and have hitting vector information
             Base::Vector3d dir3d = Base::Vector3d(Dir.x,Dir.y,0);
             double cosangle=dir3d.Normalize()*hitShapeDir.Normalize();
 
@@ -393,7 +393,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
             return suggestedConstraints.size();
         }
 
-        if (constr.Type != Sketcher::None)
+        if (constr.Type != Sketcher::ConstraintType::None)
             suggestedConstraints.push_back(constr);
     }
 
@@ -408,18 +408,18 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
     const double angleDevRad = angleDev *  M_PI / 180.;
 
     AutoConstraint constr;
-    constr.Type = Sketcher::None;
+    constr.Type = Sketcher::ConstraintType::None;
     constr.GeoId = Constraint::GeoUndef;
     constr.PosId = Sketcher::none;
     double angle = std::abs(atan2(Dir.y, Dir.x));
     if (angle < angleDevRad || (M_PI - angle) < angleDevRad )
         // Suggest horizontal constraint
-        constr.Type = Sketcher::Horizontal;
+        constr.Type = Sketcher::ConstraintType::Horizontal;
     else if (std::abs(angle - M_PI_2) < angleDevRad)
         // Suggest vertical constraint
-        constr.Type = Sketcher::Vertical;
+        constr.Type = Sketcher::ConstraintType::Vertical;
 
-    if (constr.Type != Sketcher::None)
+    if (constr.Type != Sketcher::ConstraintType::None)
         suggestedConstraints.push_back(constr);
 
     // Find if there are tangent constraints (currently arcs and circles)
@@ -570,7 +570,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
         if (tangId > getHighestCurveIndex()) // external Geometry
             tangId = getHighestCurveIndex() - tangId;
         // Suggest vertical constraint
-        constr.Type = Tangent;
+        constr.Type = ConstraintType::Tangent;
         constr.GeoId = tangId;
         constr.PosId = Sketcher::none;
         suggestedConstraints.push_back(constr);
@@ -597,14 +597,14 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint> 
         for (; it != autoConstrs.end(); ++it) {
             switch (it->Type)
             {
-            case Sketcher::Coincident: {
+            case Sketcher::ConstraintType::Coincident: {
                 if (posId1 == Sketcher::none)
                     continue;
                 // If the auto constraint has a point create a coincident otherwise it is an edge on a point
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Coincident',%i,%i,%i,%i)) "
                                      , geoId1, posId1, it->GeoId, it->PosId);
                 } break;
-            case Sketcher::PointOnObject: {
+            case Sketcher::ConstraintType::PointOnObject: {
                 int geoId2 = it->GeoId;
                 Sketcher::PointPos posId2 = it->PosId;
                 if (posId1 == Sketcher::none) {
@@ -616,13 +616,13 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint> 
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('PointOnObject',%i,%i,%i)) "
                                      , geoId1, posId1, geoId2);
                 } break;
-            case Sketcher::Horizontal: {
+            case Sketcher::ConstraintType::Horizontal: {
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Horizontal',%i)) ", geoId1);
                 } break;
-            case Sketcher::Vertical: {
+            case Sketcher::ConstraintType::Vertical: {
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Vertical',%i)) ", geoId1);
                 } break;
-            case Sketcher::Tangent: {
+            case Sketcher::ConstraintType::Tangent: {
                 Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(sketchgui->getObject());
 
                 const Part::Geometry *geom1 = Obj->getGeometry(geoId1);

@@ -28,6 +28,7 @@
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/TopoShape.h>
 #include "Constraint.h"
+#include "SketchStorage.h"
 
 #include "planegcs/GCS.h"
 
@@ -148,8 +149,6 @@ public:
     //@{
     /// add a point
     int addPoint(const Part::GeomPoint &point, bool fixed=false);
-    /// add an infinite line
-    int addLine(const Part::GeomLineSegment &line, bool fixed=false);
     /// add a line segment
     int addLineSegment(const Part::GeomLineSegment &lineSegment, bool fixed=false);
     /// add a arc (circle segment)
@@ -375,52 +374,16 @@ public:
     double calculateConstraintError(int icstr) { return GCSsys.calculateConstraintErrorByTag(icstr);}
 
     /// Returns the size of the Geometry
-    int getGeometrySize(void) const {return Geoms.size();}
+    int getGeometrySize(void) const {return storage.Geoms.size();}
 
-    enum GeoType {
-        None    = 0,
-        Point   = 1, // 1 Point(start), 2 Parameters(x,y)
-        Line    = 2, // 2 Points(start,end), 4 Parameters(x1,y1,x2,y2)
-        Arc     = 3, // 3 Points(start,end,mid), (4)+5 Parameters((x1,y1,x2,y2),x,y,r,a1,a2)
-        Circle  = 4, // 1 Point(mid), 3 Parameters(x,y,r)
-        Ellipse = 5,  // 1 Point(mid), 5 Parameters(x,y,r1,r2,phi)  phi=angle xaxis of ellipse with respect of sketch xaxis
-        ArcOfEllipse = 6,
-        ArcOfHyperbola = 7,
-        ArcOfParabola = 8,
-        BSpline = 9
-    };
+
 
 protected:
     float SolveTime;
     bool RecalculateInitialSolutionWhileMovingPoint;
 
 protected:
-    /// container element to store and work with the geometric elements of this sketch
-    struct GeoDef {
-        GeoDef() : geo(0),type(None),external(false),index(-1),
-                   startPointId(-1),midPointId(-1),endPointId(-1) {}
-        Part::Geometry  * geo;             // pointer to the geometry
-        GeoType           type;            // type of the geometry
-        bool              external;        // flag for external geometries
-        int               index;           // index in the corresponding storage vector (Lines, Arcs, Circles, ...)
-        int               startPointId;    // index in Points of the start point of this geometry
-        int               midPointId;      // index in Points of the start point of this geometry
-        int               endPointId;      // index in Points of the end point of this geometry
-    };
-    /// container element to store and work with the constraints of this sketch
-    struct ConstrDef {
-        ConstrDef() : constr(0)
-                    , driving(true)
-                    , value(0)
-                    , secondvalue(0) {}
-        Constraint *    constr;             // pointer to the constraint
-        bool            driving;
-        double *        value;
-        double *        secondvalue;        // this is needed for SnellsLaw
-    };
 
-    std::vector<GeoDef> Geoms;
-    std::vector<ConstrDef> Constrs;
     GCS::System GCSsys;
     int ConstraintsCounter;
     std::vector<int> Conflicting;
@@ -438,15 +401,7 @@ protected:
     std::vector<double*> DrivenParameters;    // with memory allocation
     std::vector<double*> FixParameters; // with memory allocation
     std::vector<double> MoveParameters, InitParameters;
-    std::vector<GCS::Point>  Points;
-    std::vector<GCS::Line>   Lines;
-    std::vector<GCS::Arc>    Arcs;
-    std::vector<GCS::Circle> Circles;
-    std::vector<GCS::Ellipse> Ellipses;
-    std::vector<GCS::ArcOfEllipse> ArcsOfEllipse;
-    std::vector<GCS::ArcOfHyperbola> ArcsOfHyperbola;
-    std::vector<GCS::ArcOfParabola> ArcsOfParabola;
-    std::vector<GCS::BSpline> BSplines;
+    SketchStorage storage;
 
     bool isInitMove;
     bool isFine;

@@ -67,17 +67,17 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     // ConstraintType, GeoIndex
     if (PyArg_ParseTuple(args, "si", &ConstraintType, &FirstIndex)) {
         if (strcmp("Horizontal",ConstraintType) == 0) {
-            this->getConstraintPtr()->Type = Horizontal;
+            this->getConstraintPtr()->Type = ConstraintType::Horizontal;
             this->getConstraintPtr()->First = FirstIndex;
             return 0;
         }
         else if (strcmp("Vertical",ConstraintType) == 0) {
-            this->getConstraintPtr()->Type = Vertical;
+            this->getConstraintPtr()->Type = ConstraintType::Vertical;
             this->getConstraintPtr()->First = FirstIndex;
             return 0;
         }
         else if (strcmp("Block",ConstraintType) == 0) {
-            this->getConstraintPtr()->Type = Block;
+            this->getConstraintPtr()->Type = ConstraintType::Block;
             this->getConstraintPtr()->First = FirstIndex;
             return 0;
         }
@@ -95,23 +95,23 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 #endif
             bool valid = false;
             if (strcmp("Tangent",ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = Tangent;
+                this->getConstraintPtr()->Type = ConstraintType::Tangent;
                 valid = true;
             }
             else if (strcmp("Parallel",ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = Parallel;
+                this->getConstraintPtr()->Type = ConstraintType::Parallel;
                 valid = true;
             }
             else if (strcmp("Perpendicular",ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = Perpendicular;
+                this->getConstraintPtr()->Type = ConstraintType::Perpendicular;
                 valid = true;
             }
             else if (strcmp("Equal",ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = Equal;
+                this->getConstraintPtr()->Type = ConstraintType::Equal;
                 valid = true;
             }
             else if (strstr(ConstraintType,"InternalAlignment") != NULL) {
-                this->getConstraintPtr()->Type = InternalAlignment;
+                this->getConstraintPtr()->Type = ConstraintType::InternalAlignment;
 
                 valid = true;
                 if(strstr(ConstraintType,"EllipseMajorDiameter") != NULL)
@@ -135,7 +135,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             Value = PyFloat_AsDouble(index_or_value);
             bool valid = false;
             if (strcmp("Distance",ConstraintType) == 0 ) {
-                this->getConstraintPtr()->Type = Distance;
+                this->getConstraintPtr()->Type = ConstraintType::Distance;
                 valid = true;
             }
             else if (strcmp("Angle",ConstraintType) == 0 ) {
@@ -144,33 +144,33 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                     if (q.getUnit() == Base::Unit::Angle)
                         Value = q.getValueAs(Base::Quantity::Radian);
                 }
-                this->getConstraintPtr()->Type = Angle;
+                this->getConstraintPtr()->Type = ConstraintType::Angle;
                 valid = true;
             }
             else if (strcmp("DistanceX",ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = DistanceX;
+                this->getConstraintPtr()->Type = ConstraintType::DistanceX;
                 valid = true;
             }
             else if (strcmp("DistanceY",ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = DistanceY;
+                this->getConstraintPtr()->Type = ConstraintType::DistanceY;
                 valid = true;
             }
             else if (strcmp("Radius",ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = Radius;
+                this->getConstraintPtr()->Type = ConstraintType::Radius;
                 // set a value that is out of range of result of atan2
                 // this value is handled in ViewProviderSketch
                 this->getConstraintPtr()->LabelPosition = 10;
                 valid = true;
             }
             else if (strcmp("Diameter",ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = Diameter;
+                this->getConstraintPtr()->Type = ConstraintType::Diameter;
                 // set a value that is out of range of result of atan2
                 // this value is handled in ViewProviderSketch
                 this->getConstraintPtr()->LabelPosition = 10;
                 valid = true;
             }
             else if (strcmp("Weight",ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = Weight;
+                this->getConstraintPtr()->Type = ConstraintType::Weight;
                 // set a value that is out of range of result of atan2
                 // this value is handled in ViewProviderSketch
                 this->getConstraintPtr()->LabelPosition = 10;
@@ -198,19 +198,19 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 #endif
             bool valid = false;
             if (strcmp("Perpendicular", ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = Perpendicular;
+                this->getConstraintPtr()->Type = ConstraintType::Perpendicular;
                 valid = true;
             }
             else if (strcmp("Tangent", ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = Tangent;
+                this->getConstraintPtr()->Type = ConstraintType::Tangent;
                 valid = true;
             }
             else if (strcmp("PointOnObject", ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = PointOnObject;
+                this->getConstraintPtr()->Type = ConstraintType::PointOnObject;
                 valid = true;
             }
             else if (strstr(ConstraintType,"InternalAlignment") != NULL) {
-                this->getConstraintPtr()->Type = InternalAlignment;
+                this->getConstraintPtr()->Type = ConstraintType::InternalAlignment;
 
                 valid = true;
 
@@ -249,7 +249,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                     if (q.getUnit() == Base::Unit::Angle)
                         Value = q.getValueAs(Base::Quantity::Radian);
                 }
-                this->getConstraintPtr()->Type   = Angle;
+                this->getConstraintPtr()->Type   = ConstraintType::Angle;
                 this->getConstraintPtr()->First  = FirstIndex;
                 this->getConstraintPtr()->Second = SecondIndex;
                 this->getConstraintPtr()->setValue(Value);
@@ -258,7 +258,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             else if (strcmp("DistanceX",ConstraintType) == 0) {
                 FirstPos = SecondIndex;
                 SecondIndex = -1;
-                this->getConstraintPtr()->Type = DistanceX;
+                this->getConstraintPtr()->Type = ConstraintType::DistanceX;
                 this->getConstraintPtr()->First    = FirstIndex;
                 this->getConstraintPtr()->FirstPos = (Sketcher::PointPos) FirstPos;
                 this->getConstraintPtr()->setValue(Value);
@@ -267,7 +267,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             else if (strcmp("DistanceY",ConstraintType) == 0) {
                 FirstPos = SecondIndex;
                 SecondIndex = -1;
-                this->getConstraintPtr()->Type = DistanceY;
+                this->getConstraintPtr()->Type = ConstraintType::DistanceY;
                 this->getConstraintPtr()->First    = FirstIndex;
                 this->getConstraintPtr()->FirstPos = (Sketcher::PointPos) FirstPos;
                 this->getConstraintPtr()->setValue(Value);
@@ -288,27 +288,27 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 #endif
             bool valid = false;
             if (strcmp("Coincident", ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = Coincident;
+                this->getConstraintPtr()->Type = ConstraintType::Coincident;
                 valid = true;
             }
             else if (strcmp("Horizontal", ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = Horizontal;
+                this->getConstraintPtr()->Type = ConstraintType::Horizontal;
                 valid = true;
             }
             else if (strcmp("Vertical", ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = Vertical;
+                this->getConstraintPtr()->Type = ConstraintType::Vertical;
                 valid = true;
             }
             else if (strcmp("Perpendicular", ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = Perpendicular;
+                this->getConstraintPtr()->Type = ConstraintType::Perpendicular;
                 valid = true;
             }
             else if (strcmp("Tangent", ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = Tangent;
+                this->getConstraintPtr()->Type = ConstraintType::Tangent;
                 valid = true;
             }
             else if (strcmp("TangentViaPoint", ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = Tangent;
+                this->getConstraintPtr()->Type = ConstraintType::Tangent;
                 //valid = true;//non-standard assignment
                 this->getConstraintPtr()->First     = intArg1;
                 this->getConstraintPtr()->FirstPos  = Sketcher::none;
@@ -319,7 +319,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 return 0;
             }
             else if (strcmp("PerpendicularViaPoint", ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = Perpendicular;
+                this->getConstraintPtr()->Type = ConstraintType::Perpendicular;
                 //valid = true;//non-standard assignment
                 this->getConstraintPtr()->First     = intArg1;
                 this->getConstraintPtr()->FirstPos  = Sketcher::none;
@@ -330,7 +330,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 return 0;
             }
             else if (strstr(ConstraintType,"InternalAlignment") != NULL) { // InteralAlignment with InternalElementIndex argument
-                this->getConstraintPtr()->Type = InternalAlignment;
+                this->getConstraintPtr()->Type = ConstraintType::InternalAlignment;
 
                 valid = true;
 
@@ -363,7 +363,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         if (PyNumber_Check(oNumArg4)) { // can be float or int
             Value = PyFloat_AsDouble(oNumArg4);
             if (strcmp("Distance",ConstraintType) == 0 ) {
-                this->getConstraintPtr()->Type = Distance;
+                this->getConstraintPtr()->Type = ConstraintType::Distance;
                 this->getConstraintPtr()->First    = intArg1;
                 this->getConstraintPtr()->FirstPos = (Sketcher::PointPos) intArg2;
                 this->getConstraintPtr()->Second   = intArg3;
@@ -384,7 +384,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             intArg5 = PyInt_AsLong(oNumArg5);
 #endif
             if (strcmp("Symmetric",ConstraintType) == 0 ) {
-                this->getConstraintPtr()->Type = Symmetric;
+                this->getConstraintPtr()->Type = ConstraintType::Symmetric;
                 this->getConstraintPtr()->First     = intArg1;
                 this->getConstraintPtr()->FirstPos  = (Sketcher::PointPos) intArg2;
                 this->getConstraintPtr()->Second    = intArg3;
@@ -398,15 +398,15 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             Value = PyFloat_AsDouble(oNumArg5);
             bool valid=false;
             if (strcmp("Distance",ConstraintType) == 0 ) {
-                this->getConstraintPtr()->Type = Distance;
+                this->getConstraintPtr()->Type = ConstraintType::Distance;
                 valid = true;
             }
             else if (strcmp("DistanceX",ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = DistanceX;
+                this->getConstraintPtr()->Type = ConstraintType::DistanceX;
                 valid = true;
             }
             else if (strcmp("DistanceY",ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = DistanceY;
+                this->getConstraintPtr()->Type = ConstraintType::DistanceY;
                 valid = true;
             }
             else if (strcmp("Angle",ConstraintType) == 0 ) {
@@ -415,7 +415,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                     if (q.getUnit() == Base::Unit::Angle)
                         Value = q.getValueAs(Base::Quantity::Radian);
                 }
-                this->getConstraintPtr()->Type = Angle;
+                this->getConstraintPtr()->Type = ConstraintType::Angle;
                 valid = true;
             }
             else if (strcmp("AngleViaPoint",ConstraintType) == 0 ) {
@@ -424,7 +424,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                     if (q.getUnit() == Base::Unit::Angle)
                         Value = q.getValueAs(Base::Quantity::Radian);
                 }
-                this->getConstraintPtr()->Type = Angle;
+                this->getConstraintPtr()->Type = ConstraintType::Angle;
                 //valid = true;//non-standard assignment
                 this->getConstraintPtr()->First     = intArg1;
                 this->getConstraintPtr()->FirstPos  = Sketcher::none;
@@ -457,7 +457,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 #endif
             // ConstraintType, GeoIndex1, PosIndex1, GeoIndex2, PosIndex2, GeoIndex3, PosIndex3
             if (strcmp("Symmetric",ConstraintType) == 0 ) {
-                this->getConstraintPtr()->Type = Symmetric;
+                this->getConstraintPtr()->Type = ConstraintType::Symmetric;
                 this->getConstraintPtr()->First     = FirstIndex;
                 this->getConstraintPtr()->FirstPos  = (Sketcher::PointPos) FirstPos;
                 this->getConstraintPtr()->Second    = SecondIndex;
@@ -470,7 +470,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         if (PyNumber_Check(index_or_value)) { // can be float or int
             Value = PyFloat_AsDouble(index_or_value);
             if (strcmp("SnellsLaw",ConstraintType) == 0 ) {
-                this->getConstraintPtr()->Type = SnellsLaw;
+                this->getConstraintPtr()->Type = ConstraintType::SnellsLaw;
                 this->getConstraintPtr()->First     = FirstIndex;
                 this->getConstraintPtr()->FirstPos  = (Sketcher::PointPos) FirstPos;
                 this->getConstraintPtr()->Second    = SecondIndex;
@@ -501,39 +501,39 @@ std::string ConstraintPy::representation(void) const
     std::stringstream result;
     result << "<Constraint " ;
     switch(this->getConstraintPtr()->Type) {
-        case None               : result << "'None'>";break;
-        case DistanceX          : result << "'DistanceX'>";break;
-        case DistanceY          : result << "'DistanceY'>";break;
-        case Coincident         : result << "'Coincident'>";break;
-        case Horizontal         : result << "'Horizontal' (" << getConstraintPtr()->First << ")>";break;
-        case Vertical           : result << "'Vertical' (" << getConstraintPtr()->First << ")>";break;
-        case Block            	: result << "'Block' (" << getConstraintPtr()->First << ")>";break;
-        case Radius             : result << "'Radius'>";break;
-        case Diameter           : result << "'Diameter'>";break;
-        case Weight             : result << "'Weight'>";break;
-        case Parallel           : result << "'Parallel'>";break;
-        case Tangent            :
+        case ConstraintType::None               : result << "'None'>";break;
+        case ConstraintType::DistanceX          : result << "'DistanceX'>";break;
+        case ConstraintType::DistanceY          : result << "'DistanceY'>";break;
+        case ConstraintType::Coincident         : result << "'Coincident'>";break;
+        case ConstraintType::Horizontal         : result << "'Horizontal' (" << getConstraintPtr()->First << ")>";break;
+        case ConstraintType::Vertical           : result << "'Vertical' (" << getConstraintPtr()->First << ")>";break;
+        case ConstraintType::Block            	: result << "'Block' (" << getConstraintPtr()->First << ")>";break;
+        case ConstraintType::Radius             : result << "'Radius'>";break;
+        case ConstraintType::Diameter           : result << "'Diameter'>";break;
+        case ConstraintType::Weight             : result << "'Weight'>";break;
+        case ConstraintType::Parallel           : result << "'Parallel'>";break;
+        case ConstraintType::Tangent            :
             if (this->getConstraintPtr()->Third == Constraint::GeoUndef)
                 result << "'Tangent'>";
             else
                 result << "'TangentViaPoint'>";
         break;
-        case Perpendicular            :
+        case ConstraintType::Perpendicular            :
             if (this->getConstraintPtr()->Third == Constraint::GeoUndef)
                 result << "'Perpendicular'>";
             else
                 result << "'PerpendicularViaPoint'>";
         break;
-        case Distance           : result << "'Distance'>";break;
-        case Angle              :
+        case ConstraintType::Distance           : result << "'Distance'>";break;
+        case ConstraintType::Angle              :
             if (this->getConstraintPtr()->Third == Constraint::GeoUndef)
                 result << "'Angle'>";
             else
                 result << "'AngleViaPoint'>";
         break;
-        case Symmetric          : result << "'Symmetric'>"; break;
-        case SnellsLaw          : result << "'SnellsLaw'>"; break;
-        case InternalAlignment  :
+        case ConstraintType::Symmetric          : result << "'Symmetric'>"; break;
+        case ConstraintType::SnellsLaw          : result << "'SnellsLaw'>"; break;
+        case ConstraintType::InternalAlignment  :
             switch(this->getConstraintPtr()->AlignmentType) {
                 case Undef                  : result << "'InternalAlignment:Undef'>";break;
                 case EllipseMajorDiameter   : result << "'InternalAlignment:EllipseMajorDiameter'>";break;
@@ -543,8 +543,8 @@ std::string ConstraintPy::representation(void) const
                 default                     : result << "'InternalAlignment:?'>";break;
             }
         break;
-        case Equal              : result << "'Equal' (" << getConstraintPtr()->First << "," << getConstraintPtr()->Second << ")>";break;
-        case PointOnObject      : result << "'PointOnObject' (" << getConstraintPtr()->First << "," << getConstraintPtr()->Second << ")>";break;
+        case ConstraintType::Equal              : result << "'Equal' (" << getConstraintPtr()->First << "," << getConstraintPtr()->Second << ")>";break;
+        case ConstraintType::PointOnObject      : result << "'PointOnObject' (" << getConstraintPtr()->First << "," << getConstraintPtr()->Second << ")>";break;
         default                 : result << "'?'>";break;
     }
     return result.str();
@@ -553,26 +553,26 @@ std::string ConstraintPy::representation(void) const
 Py::String ConstraintPy::getType(void) const
 {
     switch(this->getConstraintPtr()->Type) {
-        case None               : return Py::String("None");break;
-        case DistanceX          : return Py::String("DistanceX");break;
-        case DistanceY          : return Py::String("DistanceY");break;
-        case Coincident         : return Py::String("Coincident");break;
-        case Horizontal         : return Py::String("Horizontal");break;
-        case Vertical           : return Py::String("Vertical");break;
-        case Block              : return Py::String("Block");break;
-        case Radius             : return Py::String("Radius");break;
-        case Diameter           : return Py::String("Diameter");break;
-        case Weight             : return Py::String("Weight");break;
-        case Parallel           : return Py::String("Parallel");break;
-        case Tangent            : return Py::String("Tangent");break;
-        case Perpendicular      : return Py::String("Perpendicular");break;
-        case Distance           : return Py::String("Distance");break;
-        case Angle              : return Py::String("Angle");break;
-        case Symmetric          : return Py::String("Symmetric"); break;
-        case SnellsLaw          : return Py::String("SnellsLaw"); break;
-        case InternalAlignment  : return Py::String("InternalAlignment"); break;
-        case Equal              : return Py::String("Equal"); break;
-        case PointOnObject      : return Py::String("PointOnObject"); break;
+        case ConstraintType::None               : return Py::String("None");break;
+        case ConstraintType::DistanceX          : return Py::String("DistanceX");break;
+        case ConstraintType::DistanceY          : return Py::String("DistanceY");break;
+        case ConstraintType::Coincident         : return Py::String("Coincident");break;
+        case ConstraintType::Horizontal         : return Py::String("Horizontal");break;
+        case ConstraintType::Vertical           : return Py::String("Vertical");break;
+        case ConstraintType::Block              : return Py::String("Block");break;
+        case ConstraintType::Radius             : return Py::String("Radius");break;
+        case ConstraintType::Diameter           : return Py::String("Diameter");break;
+        case ConstraintType::Weight             : return Py::String("Weight");break;
+        case ConstraintType::Parallel           : return Py::String("Parallel");break;
+        case ConstraintType::Tangent            : return Py::String("Tangent");break;
+        case ConstraintType::Perpendicular      : return Py::String("Perpendicular");break;
+        case ConstraintType::Distance           : return Py::String("Distance");break;
+        case ConstraintType::Angle              : return Py::String("Angle");break;
+        case ConstraintType::Symmetric          : return Py::String("Symmetric"); break;
+        case ConstraintType::SnellsLaw          : return Py::String("SnellsLaw"); break;
+        case ConstraintType::InternalAlignment  : return Py::String("InternalAlignment"); break;
+        case ConstraintType::Equal              : return Py::String("Equal"); break;
+        case ConstraintType::PointOnObject      : return Py::String("PointOnObject"); break;
         default                 : return Py::String("Undefined");break;
     }
 }

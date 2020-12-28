@@ -1116,18 +1116,18 @@ void CmdSketcherConstrainHorizontal::activated(int iMsg)
             // check if the edge already has a Horizontal/Vertical/Block constraint
             for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
                  it != vals.end(); ++it) {
-                if ((*it)->Type == Sketcher::Horizontal && (*it)->First == GeoId && (*it)->FirstPos == Sketcher::none){
+                if ((*it)->Type == Sketcher::ConstraintType::Horizontal && (*it)->First == GeoId && (*it)->FirstPos == Sketcher::none){
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Double constraint"),
                         QObject::tr("The selected edge already has a horizontal constraint!"));
                     return;
                 }
-                if ((*it)->Type == Sketcher::Vertical && (*it)->First == GeoId && (*it)->FirstPos == Sketcher::none) {
+                if ((*it)->Type == Sketcher::ConstraintType::Vertical && (*it)->First == GeoId && (*it)->FirstPos == Sketcher::none) {
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
                                          QObject::tr("The selected edge already has a vertical constraint!"));
                     return;
                 }
                 // check if the edge already has a Block constraint
-                if ((*it)->Type == Sketcher::Block && (*it)->First == GeoId && (*it)->FirstPos == Sketcher::none) {
+                if ((*it)->Type == Sketcher::ConstraintType::Block && (*it)->First == GeoId && (*it)->FirstPos == Sketcher::none) {
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
                                          QObject::tr("The selected edge already has a Block constraint!"));
                     return;
@@ -1354,18 +1354,18 @@ void CmdSketcherConstrainVertical::activated(int iMsg)
             // check if the edge already has a Horizontal/Vertical/Block constraint
             for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
                  it != vals.end(); ++it) {
-                if ((*it)->Type == Sketcher::Vertical && (*it)->First == GeoId && (*it)->FirstPos == Sketcher::none){
+                if ((*it)->Type == Sketcher::ConstraintType::Vertical && (*it)->First == GeoId && (*it)->FirstPos == Sketcher::none){
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Double constraint"),
                                          QObject::tr("The selected edge already has a vertical constraint!"));
                     return;
                 }
-                if ((*it)->Type == Sketcher::Horizontal && (*it)->First == GeoId && (*it)->FirstPos == Sketcher::none) {
+                if ((*it)->Type == Sketcher::ConstraintType::Horizontal && (*it)->First == GeoId && (*it)->FirstPos == Sketcher::none) {
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
                                          QObject::tr("The selected edge already has a horizontal constraint!"));
                     return;
                 }
                 // check if the edge already has a Block constraint
-                if ((*it)->Type == Sketcher::Block && (*it)->First == GeoId && (*it)->FirstPos == Sketcher::none) {
+                if ((*it)->Type == Sketcher::ConstraintType::Block && (*it)->First == GeoId && (*it)->FirstPos == Sketcher::none) {
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
                                          QObject::tr("The selected edge already has a Block constraint!"));
                     return;
@@ -1447,18 +1447,18 @@ void CmdSketcherConstrainVertical::applyConstraint(std::vector<SelIdPair> &selSe
             // check if the edge already has a Horizontal or Vertical constraint
             for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
                  it != vals.end(); ++it) {
-                if ((*it)->Type == Sketcher::Horizontal && (*it)->First == CrvId && (*it)->FirstPos == Sketcher::none){
+                if ((*it)->Type == Sketcher::ConstraintType::Horizontal && (*it)->First == CrvId && (*it)->FirstPos == Sketcher::none){
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
                                          QObject::tr("The selected edge already has a horizontal constraint!"));
                     return;
                 }
-                if ((*it)->Type == Sketcher::Vertical && (*it)->First == CrvId && (*it)->FirstPos == Sketcher::none) {
+                if ((*it)->Type == Sketcher::ConstraintType::Vertical && (*it)->First == CrvId && (*it)->FirstPos == Sketcher::none) {
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Double constraint"),
                                          QObject::tr("The selected edge already has a vertical constraint!"));
                     return;
                 }
                 // check if the edge already has a Block constraint
-                if ((*it)->Type == Sketcher::Block && (*it)->First == CrvId && (*it)->FirstPos == Sketcher::none) {
+                if ((*it)->Type == Sketcher::ConstraintType::Block && (*it)->First == CrvId && (*it)->FirstPos == Sketcher::none) {
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
                                          QObject::tr("The selected edge already has a Block constraint!"));
                     return;
@@ -1822,7 +1822,7 @@ void CmdSketcherConstrainBlock::activated(int iMsg)
         }
 
         // check if the edge already has a Block constraint
-        if ( checkConstraint(vals, Sketcher::Block, GeoIdt, Sketcher::none)) {
+        if ( checkConstraint(vals, Sketcher::ConstraintType::Block, GeoIdt, Sketcher::none)) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Double constraint"),
                                  QObject::tr("The selected edge already has a Block constraint!"));
             return;
@@ -1870,7 +1870,7 @@ void CmdSketcherConstrainBlock::applyConstraint(std::vector<SelIdPair> &selSeq, 
             // check if the edge already has a Block constraint
             const std::vector< Sketcher::Constraint * > &vals = static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->Constraints.getValues();
 
-            if ( checkConstraint(vals, Sketcher::Block, selSeq.front().GeoId, Sketcher::none)) {
+            if ( checkConstraint(vals, Sketcher::ConstraintType::Block, selSeq.front().GeoId, Sketcher::none)) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Double constraint"),
                                      QObject::tr("The selected edge already has a Block constraint!"));
                 return;
@@ -2141,7 +2141,7 @@ void CmdSketcherConstrainCoincident::activated(int iMsg)
 
         int j=0;
         for (std::vector<Constraint *>::const_iterator it = cvals.begin(); it != cvals.end(); ++it,++j) {
-            if( (*it)->Type == Sketcher::Tangent &&
+            if( (*it)->Type == Sketcher::ConstraintType::Tangent &&
                 (*it)->FirstPos == Sketcher::none && (*it)->SecondPos == Sketcher::none &&
                 (*it)->Third == Constraint::GeoUndef &&
                 (((*it)->First == GeoId1 && (*it)->Second == GeoId2) ||
@@ -4305,7 +4305,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
             const std::vector< Constraint * > &cvals = Obj->Constraints.getValues();
 
             for (std::vector<Constraint *>::const_iterator it = cvals.begin(); it != cvals.end(); ++it) {
-                if( (*it)->Type == Sketcher::Coincident &&
+                if( (*it)->Type == Sketcher::ConstraintType::Coincident &&
                     (((*it)->First == GeoId1 && (*it)->Second == GeoId2) ||
                     ((*it)->Second == GeoId1 && (*it)->First == GeoId2)) ) {
 
@@ -7182,7 +7182,7 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
 
         for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
                 it != vals.end(); ++it) {
-            if((*it)->Type == Sketcher::InternalAlignment && (*it)->Second == GeoId)
+            if((*it)->Type == Sketcher::ConstraintType::InternalAlignment && (*it)->Second == GeoId)
             {
                 switch((*it)->AlignmentType){
                     case Sketcher::EllipseMajorDiameter:
@@ -7360,7 +7360,7 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
 
         for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
                 it != vals.end(); ++it) {
-            if((*it)->Type == Sketcher::InternalAlignment && (*it)->First == GeoId)
+            if((*it)->Type == Sketcher::ConstraintType::InternalAlignment && (*it)->First == GeoId)
             {
                 switch((*it)->AlignmentType){
                     case Sketcher::EllipseMajorDiameter:

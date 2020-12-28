@@ -1190,7 +1190,7 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
                         std::vector<int> polegeoids;
 
                         for( auto c : getSketchObject()->Constraints.getValues()) {
-                            if( c->Type == Sketcher::InternalAlignment &&
+                            if( c->Type == Sketcher::ConstraintType::InternalAlignment &&
                                 c->AlignmentType == BSplineControlPoint &&
                                 c->First == edit->DragCurve ) {
 
@@ -1205,7 +1205,7 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
                         }
 
                         for( auto c : getSketchObject()->Constraints.getValues()) {
-                            if( c->Type == Sketcher::InternalAlignment &&
+                            if( c->Type == Sketcher::ConstraintType::InternalAlignment &&
                                 c->AlignmentType == BSplineControlPoint &&
                                 c->Second == bsplinegeoid ) {
 
@@ -1389,8 +1389,8 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d &toPo
            || Constr->First != Constraint::GeoUndef);
 #endif
 
-    if (Constr->Type == Distance || Constr->Type == DistanceX || Constr->Type == DistanceY ||
-        Constr->Type == Radius || Constr->Type == Diameter || Constr-> Type == Weight) {
+    if (Constr->Type == ConstraintType::Distance || Constr->Type == ConstraintType::DistanceX || Constr->Type == ConstraintType::DistanceY ||
+        Constr->Type == ConstraintType::Radius || Constr->Type == ConstraintType::Diameter || Constr-> Type == ConstraintType::Weight) {
 
         Base::Vector3d p1(0.,0.,0.), p2(0.,0.,0.);
         if (Constr->SecondPos != Sketcher::none) { // point to point distance
@@ -1433,7 +1433,7 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d &toPo
                     angle = atan2(tmpDir.y, tmpDir.x);
                 }
 
-                if(Constr->Type == Sketcher::Diameter)
+                if(Constr->Type == Sketcher::ConstraintType::Diameter)
                     p1 = center - radius * Base::Vector3d(cos(angle),sin(angle),0.);
 
                 p2 = center + radius * Base::Vector3d(cos(angle),sin(angle),0.);
@@ -1448,10 +1448,10 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d &toPo
 
                 Base::Vector3d dir = radius * tmpDir.Normalize();
 
-                if(Constr->Type == Sketcher::Diameter)
+                if(Constr->Type == Sketcher::ConstraintType::Diameter)
                     p1 = center - dir;
 
-                if(Constr->Type == Sketcher::Weight) {
+                if(Constr->Type == Sketcher::ConstraintType::Weight) {
 
                     double scalefactor = 1.0;
 
@@ -1477,27 +1477,27 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d &toPo
         Base::Vector3d vec = Base::Vector3d(toPos.x, toPos.y, 0) - p2;
 
         Base::Vector3d dir;
-        if (Constr->Type == Distance || Constr->Type == Radius || Constr->Type == Diameter || Constr->Type == Weight)
+        if (Constr->Type == ConstraintType::Distance || Constr->Type == ConstraintType::Radius || Constr->Type == ConstraintType::Diameter || Constr->Type == ConstraintType::Weight)
             dir = (p2-p1).Normalize();
-        else if (Constr->Type == DistanceX)
+        else if (Constr->Type == ConstraintType::DistanceX)
             dir = Base::Vector3d( (p2.x - p1.x >= FLT_EPSILON) ? 1 : -1, 0, 0);
-        else if (Constr->Type == DistanceY)
+        else if (Constr->Type == ConstraintType::DistanceY)
             dir = Base::Vector3d(0, (p2.y - p1.y >= FLT_EPSILON) ? 1 : -1, 0);
 
-        if (Constr->Type == Radius || Constr->Type == Diameter || Constr->Type == Weight) {
+        if (Constr->Type == ConstraintType::Radius || Constr->Type == ConstraintType::Diameter || Constr->Type == ConstraintType::Weight) {
             Constr->LabelDistance = vec.x * dir.x + vec.y * dir.y;
             Constr->LabelPosition = atan2(dir.y, dir.x);
         } else {
             Base::Vector3d normal(-dir.y,dir.x,0);
             Constr->LabelDistance = vec.x * normal.x + vec.y * normal.y;
-            if (Constr->Type == Distance ||
-                Constr->Type == DistanceX || Constr->Type == DistanceY) {
+            if (Constr->Type == ConstraintType::Distance ||
+                Constr->Type == ConstraintType::DistanceX || Constr->Type == ConstraintType::DistanceY) {
                 vec = Base::Vector3d(toPos.x, toPos.y, 0) - (p2 + p1) / 2;
                 Constr->LabelPosition = vec.x * dir.x + vec.y * dir.y;
             }
         }
     }
-    else if (Constr->Type == Angle) {
+    else if (Constr->Type == ConstraintType::Angle) {
 
         Base::Vector3d p0(0.,0.,0.);
         double factor = 0.5;
@@ -3006,20 +3006,20 @@ void ViewProviderSketch::updateColor(void)
         // Check Constraint Type
         Sketcher::Constraint* constraint = getSketchObject()->Constraints.getValues()[i];
         ConstraintType type = constraint->Type;
-        bool hasDatumLabel  = (type == Sketcher::Angle ||
-                               type == Sketcher::Radius ||
-                               type == Sketcher::Diameter ||
-                               type == Sketcher::Weight ||
-                               type == Sketcher::Symmetric ||
-                               type == Sketcher::Distance ||
-                               type == Sketcher::DistanceX ||
-                               type == Sketcher::DistanceY);
+        bool hasDatumLabel  = (type == Sketcher::ConstraintType::Angle ||
+                               type == Sketcher::ConstraintType::Radius ||
+                               type == Sketcher::ConstraintType::Diameter ||
+                               type == Sketcher::ConstraintType::Weight ||
+                               type == Sketcher::ConstraintType::Symmetric ||
+                               type == Sketcher::ConstraintType::Distance ||
+                               type == Sketcher::ConstraintType::DistanceX ||
+                               type == Sketcher::ConstraintType::DistanceY);
 
         // Non DatumLabel Nodes will have a material excluding coincident
         bool hasMaterial = false;
 
         SoMaterial *m = 0;
-        if (!hasDatumLabel && type != Sketcher::Coincident && type != Sketcher::InternalAlignment) {
+        if (!hasDatumLabel && type != Sketcher::ConstraintType::Coincident && type != Sketcher::ConstraintType::InternalAlignment) {
             hasMaterial = true;
             m = static_cast<SoMaterial *>(s->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
         }
@@ -3030,7 +3030,7 @@ void ViewProviderSketch::updateColor(void)
                 l->textColor = SelectColor;
             } else if (hasMaterial) {
                 m->diffuseColor = SelectColor;
-            } else if (type == Sketcher::Coincident) {
+            } else if (type == Sketcher::ConstraintType::Coincident) {
                 auto selectpoint = [this, pcolor, PtNum](int geoid, Sketcher::PointPos pos){
                     if(geoid >= 0) {
                         int index = getSolvedSketch().getPointId(geoid, pos) + 1;
@@ -3041,7 +3041,7 @@ void ViewProviderSketch::updateColor(void)
 
                 selectpoint(constraint->First, constraint->FirstPos);
                 selectpoint(constraint->Second, constraint->SecondPos);
-            } else if (type == Sketcher::InternalAlignment) {
+            } else if (type == Sketcher::ConstraintType::InternalAlignment) {
                 switch(constraint->AlignmentType) {
                     case EllipseMajorDiameter:
                     case EllipseMinorDiameter:
@@ -3195,25 +3195,25 @@ QString ViewProviderSketch::iconTypeFromConstraint(Constraint *constraint)
 {
     /*! TODO: Consider pushing this functionality up into Constraint */
     switch(constraint->Type) {
-    case Horizontal:
+    case ConstraintType::Horizontal:
         return QString::fromLatin1("small/Constraint_Horizontal_sm");
-    case Vertical:
+    case ConstraintType::Vertical:
         return QString::fromLatin1("small/Constraint_Vertical_sm");
-    case PointOnObject:
+    case ConstraintType::PointOnObject:
         return QString::fromLatin1("small/Constraint_PointOnObject_sm");
-    case Tangent:
+    case ConstraintType::Tangent:
         return QString::fromLatin1("small/Constraint_Tangent_sm");
-    case Parallel:
+    case ConstraintType::Parallel:
         return QString::fromLatin1("small/Constraint_Parallel_sm");
-    case Perpendicular:
+    case ConstraintType::Perpendicular:
         return QString::fromLatin1("small/Constraint_Perpendicular_sm");
-    case Equal:
+    case ConstraintType::Equal:
         return QString::fromLatin1("small/Constraint_EqualLength_sm");
-    case Symmetric:
+    case ConstraintType::Symmetric:
         return QString::fromLatin1("small/Constraint_Symmetric_sm");
-    case SnellsLaw:
+    case ConstraintType::SnellsLaw:
         return QString::fromLatin1("small/Constraint_SnellsLaw_sm");
-    case Block:
+    case ConstraintType::Block:
         return QString::fromLatin1("small/Constraint_Block_sm");
     default:
         return QString();
@@ -3305,7 +3305,7 @@ void ViewProviderSketch::drawConstraintIcons()
 
         switch((*it)->Type) {
 
-        case Tangent:
+        case ConstraintType::Tangent:
             {   // second icon is available only for colinear line segments
                 const Part::Geometry *geo1 = getSketchObject()->getGeometry((*it)->First);
                 const Part::Geometry *geo2 = getSketchObject()->getGeometry((*it)->Second);
@@ -3315,8 +3315,8 @@ void ViewProviderSketch::drawConstraintIcons()
                 }
             }
             break;
-        case Horizontal:
-        case Vertical:
+        case ConstraintType::Horizontal:
+        case ConstraintType::Vertical:
             {   // second icon is available only for point alignment
                 if ((*it)->Second != Constraint::GeoUndef &&
                     (*it)->FirstPos != Sketcher::none &&
@@ -3325,15 +3325,15 @@ void ViewProviderSketch::drawConstraintIcons()
                 }
             }
             break;
-        case Parallel:
+        case ConstraintType::Parallel:
             multipleIcons = true;
             break;
-        case Perpendicular:
+        case ConstraintType::Perpendicular:
             // second icon is available only when there is no common point
             if ((*it)->FirstPos == Sketcher::none && (*it)->Third == Constraint::GeoUndef)
                 multipleIcons = true;
             break;
-        case Equal:
+        case ConstraintType::Equal:
             multipleIcons = true;
             break;
         default:
@@ -3368,7 +3368,7 @@ void ViewProviderSketch::drawConstraintIcons()
         thisIcon.destination = coinIconPtr;
         thisIcon.infoPtr = infoPtr;
 
-        if ((*it)->Type==Symmetric) {
+        if ((*it)->Type==ConstraintType::Symmetric) {
             Base::Vector3d startingpoint = getSketchObject()->getPoint((*it)->First,(*it)->FirstPos);
             Base::Vector3d endpoint = getSketchObject()->getPoint((*it)->Second,(*it)->SecondPos);
 
@@ -3839,7 +3839,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             // This code produces the scaled up version of the geometry for the scenograph
             if(gf->getInternalType() == InternalType::BSplineControlPoint) {
                 for( auto c : getSketchObject()->Constraints.getValues()) {
-                    if( c->Type == InternalAlignment && c->AlignmentType == BSplineControlPoint && c->First == GeoId) {
+                    if( c->Type == ConstraintType::InternalAlignment && c->AlignmentType == BSplineControlPoint && c->First == GeoId) {
                         auto bspline = dynamic_cast<const Part::GeomBSplineCurve *>((*geomlist)[c->Second]);
 
                         if(bspline){
@@ -4745,12 +4745,12 @@ Restart:
 
             // distinguish different constraint types to build up
             switch (Constr->Type) {
-                case Block:
-                case Horizontal: // write the new position of the Horizontal constraint Same as vertical position.
-                case Vertical: // write the new position of the Vertical constraint
+                case ConstraintType::Block:
+                case ConstraintType::Horizontal: // write the new position of the Horizontal constraint Same as vertical position.
+                case ConstraintType::Vertical: // write the new position of the Vertical constraint
                     {
                         assert(Constr->First >= -extGeoCount && Constr->First < intGeoCount);
-                        bool alignment = Constr->Type!=Block && Constr->Second != Constraint::GeoUndef;
+                        bool alignment = Constr->Type!=ConstraintType::Block && Constr->Second != Constraint::GeoUndef;
 
                         // get the geometry
                         const Part::Geometry *geo = GeoById(*geomlist, Constr->First);
@@ -4908,7 +4908,7 @@ Restart:
                         }
                     }
                     break;
-                case Perpendicular:
+                case ConstraintType::Perpendicular:
                     {
                         assert(Constr->First >= -extGeoCount && Constr->First < intGeoCount);
                         assert(Constr->Second >= -extGeoCount && Constr->Second < intGeoCount);
@@ -5007,8 +5007,8 @@ Restart:
 
                     }
                     break;
-                case Parallel:
-                case Equal:
+                case ConstraintType::Parallel:
+                case ConstraintType::Equal:
                     {
                         assert(Constr->First >= -extGeoCount && Constr->First < intGeoCount);
                         assert(Constr->Second >= -extGeoCount && Constr->Second < intGeoCount);
@@ -5020,7 +5020,7 @@ Restart:
                         Base::Vector3d midpos2, dir2, norm2;
                         if (geo1->getTypeId() != Part::GeomLineSegment::getClassTypeId() ||
                             geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
-                            if (Constr->Type == Equal) {
+                            if (Constr->Type == ConstraintType::Equal) {
                                 double r1a=0,r1b=0,r2a=0,r2b=0;
                                 double angle1,angle1plus=0.,  angle2, angle2plus=0.;//angle1 = rotation of object as a whole; angle1plus = arc angle (t parameter for ellipses).
                                 if (geo1->getTypeId() == Part::GeomCircle::getClassTypeId()) {
@@ -5198,9 +5198,9 @@ Restart:
 
                     }
                     break;
-                case Distance:
-                case DistanceX:
-                case DistanceY:
+                case ConstraintType::Distance:
+                case ConstraintType::DistanceX:
+                case ConstraintType::DistanceY:
                     {
                         assert(Constr->First >= -extGeoCount && Constr->First < intGeoCount);
 
@@ -5251,11 +5251,11 @@ Restart:
                         // Get presentation string (w/o units if option is set)
                         asciiText->string = SbString( getPresentationString(Constr).toUtf8().constData() );
 
-                        if (Constr->Type == Distance)
+                        if (Constr->Type == ConstraintType::Distance)
                             asciiText->datumtype = SoDatumLabel::DISTANCE;
-                        else if (Constr->Type == DistanceX)
+                        else if (Constr->Type == ConstraintType::DistanceX)
                             asciiText->datumtype = SoDatumLabel::DISTANCEX;
-                        else if (Constr->Type == DistanceY)
+                        else if (Constr->Type == ConstraintType::DistanceY)
                              asciiText->datumtype = SoDatumLabel::DISTANCEY;
 
                         // Assign the Datum Points
@@ -5272,18 +5272,18 @@ Restart:
                         asciiText->param2 = Constr->LabelPosition;
                     }
                     break;
-                case PointOnObject:
-                case Tangent:
-                case SnellsLaw:
+                case ConstraintType::PointOnObject:
+                case ConstraintType::Tangent:
+                case ConstraintType::SnellsLaw:
                     {
                         assert(Constr->First >= -extGeoCount && Constr->First < intGeoCount);
                         assert(Constr->Second >= -extGeoCount && Constr->Second < intGeoCount);
 
                         Base::Vector3d pos, relPos;
-                        if (  Constr->Type == PointOnObject ||
-                              Constr->Type == SnellsLaw ||
-                              (Constr->Type == Tangent && Constr->Third != Constraint::GeoUndef) || //Tangency via point
-                              (Constr->Type == Tangent && Constr->FirstPos != Sketcher::none) //endpoint-to-curve or endpoint-to-endpoint tangency
+                        if (  Constr->Type == ConstraintType::PointOnObject ||
+                              Constr->Type == ConstraintType::SnellsLaw ||
+                              (Constr->Type == ConstraintType::Tangent && Constr->Third != Constraint::GeoUndef) || //Tangency via point
+                              (Constr->Type == ConstraintType::Tangent && Constr->FirstPos != Sketcher::none) //endpoint-to-curve or endpoint-to-endpoint tangency
                                 ) {
 
                             //find the point of tangency/point that is on object
@@ -5312,7 +5312,7 @@ Restart:
                             static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->abPos = SbVec3f(pos.x, pos.y, zConstr); //Absolute Reference
                             static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->translation = SbVec3f(relPos.x, relPos.y, 0);
                         }
-                        else if (Constr->Type == Tangent) {
+                        else if (Constr->Type == ConstraintType::Tangent) {
                             // get the geometry
                             const Part::Geometry *geo1 = GeoById(*geomlist, Constr->First);
                             const Part::Geometry *geo2 = GeoById(*geomlist, Constr->Second);
@@ -5425,7 +5425,7 @@ Restart:
                         }
                     }
                     break;
-                case Symmetric:
+                case ConstraintType::Symmetric:
                     {
                         assert(Constr->First >= -extGeoCount && Constr->First < intGeoCount);
                         assert(Constr->Second >= -extGeoCount && Constr->Second < intGeoCount);
@@ -5453,7 +5453,7 @@ Restart:
                         static_cast<SoTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->translation = (p1 + p2)/2;
                     }
                     break;
-                case Angle:
+                case ConstraintType::Angle:
                     {
                         assert(Constr->First >= -extGeoCount && Constr->First < intGeoCount);
                         assert((Constr->Second >= -extGeoCount && Constr->Second < intGeoCount) ||
@@ -5568,7 +5568,7 @@ Restart:
 
                     }
                     break;
-                case Diameter:
+                case ConstraintType::Diameter:
                     {
                         assert(Constr->First >= -extGeoCount && Constr->First < intGeoCount);
 
@@ -5626,8 +5626,8 @@ Restart:
                         asciiText->pnts.finishEditing();
                     }
                     break;
-                    case Weight:
-                    case Radius:
+                    case ConstraintType::Weight:
+                    case ConstraintType::Radius:
                     {
                         assert(Constr->First >= -extGeoCount && Constr->First < intGeoCount);
 
@@ -5654,7 +5654,7 @@ Restart:
 
                                 double radius;
 
-                                if(Constr->Type == Weight) {
+                                if(Constr->Type == ConstraintType::Weight) {
                                     double scalefactor = 1.0;
 
                                     if(circle->hasExtension(SketcherGui::ViewProviderSketchGeometryExtension::getClassTypeId()))
@@ -5689,7 +5689,7 @@ Restart:
                         SoDatumLabel *asciiText = static_cast<SoDatumLabel *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
 
                         // Get display string with units hidden if so requested
-                        if(Constr->Type == Weight)
+                        if(Constr->Type == ConstraintType::Weight)
                             asciiText->string = SbString( QString::number(Constr->getValue()).toStdString().c_str());
                         else
                             asciiText->string = SbString( getPresentationString(Constr).toUtf8().constData() );
@@ -5707,10 +5707,10 @@ Restart:
                         asciiText->pnts.finishEditing();
                     }
                     break;
-                case Coincident: // nothing to do for coincident
-                case None:
-                case InternalAlignment:
-                case NumConstraintTypes:
+                case ConstraintType::Coincident: // nothing to do for coincident
+                case ConstraintType::None:
+                case ConstraintType::InternalAlignment:
+                case ConstraintType::NumConstraintTypes:
                     break;
             }
 
@@ -5777,13 +5777,13 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
 
         // distinguish different constraint types to build up
         switch ((*it)->Type) {
-            case Distance:
-            case DistanceX:
-            case DistanceY:
-            case Radius:
-            case Diameter:
-            case Weight:
-            case Angle:
+            case ConstraintType::Distance:
+            case ConstraintType::DistanceX:
+            case ConstraintType::DistanceY:
+            case ConstraintType::Radius:
+            case ConstraintType::Diameter:
+            case ConstraintType::Weight:
+            case ConstraintType::Angle:
             {
                 SoDatumLabel *text = new SoDatumLabel();
                 text->norm.setValue(norm);
@@ -5808,9 +5808,9 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
                 continue; // jump to next constraint
             }
             break;
-            case Horizontal:
-            case Vertical:
-            case Block:
+            case ConstraintType::Horizontal:
+            case ConstraintType::Vertical:
+            case ConstraintType::Block:
             {
                 // #define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
                 sep->addChild(mat);
@@ -5831,12 +5831,12 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
                 edit->vConstrType.push_back((*it)->Type);
             }
             break;
-            case Coincident: // no visual for coincident so far
-                edit->vConstrType.push_back(Coincident);
+            case ConstraintType::Coincident: // no visual for coincident so far
+                edit->vConstrType.push_back(ConstraintType::Coincident);
                 break;
-            case Parallel:
-            case Perpendicular:
-            case Equal:
+            case ConstraintType::Parallel:
+            case ConstraintType::Perpendicular:
+            case ConstraintType::Equal:
             {
                 // #define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
                 sep->addChild(mat);
@@ -5857,9 +5857,9 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
                 edit->vConstrType.push_back((*it)->Type);
             }
             break;
-            case PointOnObject:
-            case Tangent:
-            case SnellsLaw:
+            case ConstraintType::PointOnObject:
+            case ConstraintType::Tangent:
+            case ConstraintType::SnellsLaw:
             {
                 // #define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
                 sep->addChild(mat);
@@ -5870,7 +5870,7 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
                 // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID 3
                 sep->addChild(new SoInfo());
 
-                if ((*it)->Type == Tangent) {
+                if ((*it)->Type == ConstraintType::Tangent) {
                     const Part::Geometry *geo1 = getSketchObject()->getGeometry((*it)->First);
                     const Part::Geometry *geo2 = getSketchObject()->getGeometry((*it)->Second);
                     if (!geo1 || !geo2) {
@@ -5890,7 +5890,7 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
                 edit->vConstrType.push_back((*it)->Type);
             }
             break;
-            case Symmetric:
+            case ConstraintType::Symmetric:
             {
                 SoDatumLabel *arrows = new SoDatumLabel();
                 arrows->norm.setValue(norm);
@@ -5909,7 +5909,7 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
                 edit->vConstrType.push_back((*it)->Type);
             }
             break;
-            case InternalAlignment:
+            case ConstraintType::InternalAlignment:
             {
                 edit->vConstrType.push_back((*it)->Type);
             }
@@ -6928,7 +6928,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
 
             if (GeoId != Constraint::GeoUndef) {
                 for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin(); it != vals.end(); ++it) {
-                    if (((*it)->Type == Sketcher::Coincident) && (((*it)->First == GeoId && (*it)->FirstPos == PosId) ||
+                    if (((*it)->Type == Sketcher::ConstraintType::Coincident) && (((*it)->First == GeoId && (*it)->FirstPos == PosId) ||
                         ((*it)->Second == GeoId && (*it)->SecondPos == PosId)) ) {
                         try {
                             Gui::cmdAppObjectArgs(getObject(), "delConstraintOnPoint(%i,%i)", GeoId, (int)PosId);

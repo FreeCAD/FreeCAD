@@ -658,7 +658,7 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
         const std::vector<Sketcher::Constraint *> &vals = Obj->Constraints.getValues();
 
         for (std::vector<Sketcher::Constraint *>::const_iterator it= vals.begin(); it != vals.end(); ++it) {
-            if ((*it)->Type == Sketcher::InternalAlignment
+            if ((*it)->Type == Sketcher::ConstraintType::InternalAlignment
                 && (*it)->First == GeoId
                 && (*it)->AlignmentType == Sketcher::BSplineKnotPoint)
             {
@@ -813,7 +813,7 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
         const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
 
         for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin(); it != vals.end(); ++it) {
-            if ((*it)->Type == Sketcher::InternalAlignment
+            if ((*it)->Type == Sketcher::ConstraintType::InternalAlignment
                 && (*it)->First == GeoId
                 && (*it)->AlignmentType == Sketcher::BSplineKnotPoint)
             {

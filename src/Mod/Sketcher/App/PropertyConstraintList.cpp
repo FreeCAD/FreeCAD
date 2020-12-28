@@ -330,7 +330,7 @@ void PropertyConstraintList::Restore(Base::XMLReader &reader)
         Constraint *newC = new Constraint();
         newC->Restore(reader);
         // To keep upward compatibility ignore unknown constraint types
-        if (newC->Type < Sketcher::NumConstraintTypes) {
+        if (newC->Type < ConstraintType::NumConstraintTypes) {
             values.push_back(newC);
         }
         else {
@@ -514,7 +514,7 @@ void PropertyConstraintList::setPathValue(const ObjectIdentifier &path, const bo
     if (c1.isArray()) {
         size_t index = c1.getIndex(_lValueList.size());
         switch (_lValueList[index]->Type) {
-        case Angle:
+        case ConstraintType::Angle:
             dvalue = Base::toRadians<double>(dvalue);
             break;
         default:
@@ -531,7 +531,7 @@ void PropertyConstraintList::setPathValue(const ObjectIdentifier &path, const bo
 
             if ((*it)->Name == c1.getName()) {
                 switch (_lValueList[index]->Type) {
-                case Angle:
+                case ConstraintType::Angle:
                     dvalue = Base::toRadians<double>(dvalue);
                     break;
                 default:

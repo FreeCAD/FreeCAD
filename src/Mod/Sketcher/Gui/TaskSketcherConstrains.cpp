@@ -123,27 +123,27 @@ public:
             QString name = Base::Tools::fromStdString(Sketcher::PropertyConstraintList::getConstraintName(constraint->Name, ConstraintNbr));
 
             switch (constraint->Type) {
-            case Sketcher::Horizontal:
-            case Sketcher::Vertical:
-            case Sketcher::Coincident:
-            case Sketcher::PointOnObject:
-            case Sketcher::Parallel:
-            case Sketcher::Perpendicular:
-            case Sketcher::Tangent:
-            case Sketcher::Equal:
-            case Sketcher::Symmetric:
-            case Sketcher::Block:
+            case Sketcher::ConstraintType::Horizontal:
+            case Sketcher::ConstraintType::Vertical:
+            case Sketcher::ConstraintType::Coincident:
+            case Sketcher::ConstraintType::PointOnObject:
+            case Sketcher::ConstraintType::Parallel:
+            case Sketcher::ConstraintType::Perpendicular:
+            case Sketcher::ConstraintType::Tangent:
+            case Sketcher::ConstraintType::Equal:
+            case Sketcher::ConstraintType::Symmetric:
+            case Sketcher::ConstraintType::Block:
                 break;
-            case Sketcher::Distance:
-            case Sketcher::DistanceX:
-            case Sketcher::DistanceY:
-            case Sketcher::Radius:
-            case Sketcher::Weight:
-            case Sketcher::Diameter:
-            case Sketcher::Angle:
+            case Sketcher::ConstraintType::Distance:
+            case Sketcher::ConstraintType::DistanceX:
+            case Sketcher::ConstraintType::DistanceY:
+            case Sketcher::ConstraintType::Radius:
+            case Sketcher::ConstraintType::Weight:
+            case Sketcher::ConstraintType::Diameter:
+            case Sketcher::ConstraintType::Angle:
                 name = QString::fromLatin1("%1 (%2)").arg(name).arg(constraint->getPresentationValue().getUserString());
                 break;
-            case Sketcher::SnellsLaw: {
+            case Sketcher::ConstraintType::SnellsLaw: {
                 double v = constraint->getPresentationValue().getValue();
                 double n1 = 1.0;
                 double n2 = 1.0;
@@ -155,7 +155,7 @@ public:
                 name = QString::fromLatin1("%1 (%2/%3)").arg(name).arg(n2).arg(n1);
                 break;
             }
-            case Sketcher::InternalAlignment:
+            case Sketcher::ConstraintType::InternalAlignment:
                 break;
             default:
                 break;
@@ -231,42 +231,42 @@ public:
             };
 
             switch(constraint->Type){
-            case Sketcher::Horizontal:
+            case Sketcher::ConstraintType::Horizontal:
                 return selicon(constraint,horiz,horiz);
-            case Sketcher::Vertical:
+            case Sketcher::ConstraintType::Vertical:
                 return selicon(constraint,vert,vert);
-            case Sketcher::Coincident:
+            case Sketcher::ConstraintType::Coincident:
                 return selicon(constraint,coinc,coinc);
-            case Sketcher::Block:
+            case Sketcher::ConstraintType::Block:
                 return selicon(constraint,block,block);
-            case Sketcher::PointOnObject:
+            case Sketcher::ConstraintType::PointOnObject:
                 return selicon(constraint,pntoo,pntoo);
-            case Sketcher::Parallel:
+            case Sketcher::ConstraintType::Parallel:
                 return selicon(constraint,para,para);
-            case Sketcher::Perpendicular:
+            case Sketcher::ConstraintType::Perpendicular:
                 return selicon(constraint,perp,perp);
-            case Sketcher::Tangent:
+            case Sketcher::ConstraintType::Tangent:
                 return selicon(constraint,tang,tang);
-            case Sketcher::Equal:
+            case Sketcher::ConstraintType::Equal:
                 return selicon(constraint,equal,equal);
-            case Sketcher::Symmetric:
+            case Sketcher::ConstraintType::Symmetric:
                 return selicon(constraint,symm,symm);
-            case Sketcher::Distance:
+            case Sketcher::ConstraintType::Distance:
                 return selicon(constraint,dist,dist_driven);
-            case Sketcher::DistanceX:
+            case Sketcher::ConstraintType::DistanceX:
                 return selicon(constraint,hdist,hdist_driven);
-            case Sketcher::DistanceY:
+            case Sketcher::ConstraintType::DistanceY:
                 return selicon(constraint,vdist,vdist_driven);
-            case Sketcher::Radius:
-            case Sketcher::Weight:
+            case Sketcher::ConstraintType::Radius:
+            case Sketcher::ConstraintType::Weight:
                 return selicon(constraint,radi,radi_driven);
-            case Sketcher::Diameter:
+            case Sketcher::ConstraintType::Diameter:
                 return selicon(constraint,dia,dia_driven);
-            case Sketcher::Angle:
+            case Sketcher::ConstraintType::Angle:
                 return selicon(constraint,angl,angl_driven);
-            case Sketcher::SnellsLaw:
+            case Sketcher::ConstraintType::SnellsLaw:
                 return selicon(constraint,snell,snell_driven);
-            case Sketcher::InternalAlignment:
+            case Sketcher::ConstraintType::InternalAlignment:
                 switch(constraint->AlignmentType){
                 case Sketcher::EllipseMajorDiameter:
                     return selicon(constraint,iaellipsemajoraxis,iaellipsemajoraxis);
@@ -308,31 +308,31 @@ public:
         const Sketcher::Constraint * constraint = sketch->Constraints[ConstraintNbr];
 
         switch (constraint->Type) {
-        case Sketcher::None:
-        case Sketcher::NumConstraintTypes:
+        case Sketcher::ConstraintType::None:
+        case Sketcher::ConstraintType::NumConstraintTypes:
             assert( false );
             return false;
-        case Sketcher::Horizontal:
-        case Sketcher::Vertical:
-        case Sketcher::Coincident:
-        case Sketcher::Block:
-        case Sketcher::PointOnObject:
-        case Sketcher::Parallel:
-        case Sketcher::Perpendicular:
-        case Sketcher::Tangent:
-        case Sketcher::Equal:
-        case Sketcher::Symmetric:
+        case Sketcher::ConstraintType::Horizontal:
+        case Sketcher::ConstraintType::Vertical:
+        case Sketcher::ConstraintType::Coincident:
+        case Sketcher::ConstraintType::Block:
+        case Sketcher::ConstraintType::PointOnObject:
+        case Sketcher::ConstraintType::Parallel:
+        case Sketcher::ConstraintType::Perpendicular:
+        case Sketcher::ConstraintType::Tangent:
+        case Sketcher::ConstraintType::Equal:
+        case Sketcher::ConstraintType::Symmetric:
             return true;
-        case Sketcher::Distance:
-        case Sketcher::DistanceX:
-        case Sketcher::DistanceY:
-        case Sketcher::Radius:
-        case Sketcher::Diameter:
-        case Sketcher::Weight:
-        case Sketcher::Angle:
-        case Sketcher::SnellsLaw:
+        case Sketcher::ConstraintType::Distance:
+        case Sketcher::ConstraintType::DistanceX:
+        case Sketcher::ConstraintType::DistanceY:
+        case Sketcher::ConstraintType::Radius:
+        case Sketcher::ConstraintType::Diameter:
+        case Sketcher::ConstraintType::Weight:
+        case Sketcher::ConstraintType::Angle:
+        case Sketcher::ConstraintType::SnellsLaw:
             return ( constraint->First >= 0 || constraint->Second >= 0 || constraint->Third >= 0 );
-        case Sketcher::InternalAlignment:
+        case Sketcher::ConstraintType::InternalAlignment:
             return true;
         }
         return false;
@@ -932,29 +932,29 @@ void TaskSketcherConstrains::slotConstraintsChanged(void)
         bool hideInternalAlignment = this->ui->filterInternalAlignment->isChecked();
 
         switch(constraint->Type) {
-        case Sketcher::Horizontal:
-        case Sketcher::Vertical:
-        case Sketcher::Coincident:
-        case Sketcher::PointOnObject:
-        case Sketcher::Parallel:
-        case Sketcher::Perpendicular:
-        case Sketcher::Tangent:
-        case Sketcher::Equal:
-        case Sketcher::Symmetric:
-        case Sketcher::Block:
+        case Sketcher::ConstraintType::Horizontal:
+        case Sketcher::ConstraintType::Vertical:
+        case Sketcher::ConstraintType::Coincident:
+        case Sketcher::ConstraintType::PointOnObject:
+        case Sketcher::ConstraintType::Parallel:
+        case Sketcher::ConstraintType::Perpendicular:
+        case Sketcher::ConstraintType::Tangent:
+        case Sketcher::ConstraintType::Equal:
+        case Sketcher::ConstraintType::Symmetric:
+        case Sketcher::ConstraintType::Block:
             visible = showNormal || showNamed;
             break;
-        case Sketcher::Distance:
-        case Sketcher::DistanceX:
-        case Sketcher::DistanceY:
-        case Sketcher::Radius:
-        case Sketcher::Weight:
-        case Sketcher::Diameter:
-        case Sketcher::Angle:
-        case Sketcher::SnellsLaw:
+        case Sketcher::ConstraintType::Distance:
+        case Sketcher::ConstraintType::DistanceX:
+        case Sketcher::ConstraintType::DistanceY:
+        case Sketcher::ConstraintType::Radius:
+        case Sketcher::ConstraintType::Weight:
+        case Sketcher::ConstraintType::Diameter:
+        case Sketcher::ConstraintType::Angle:
+        case Sketcher::ConstraintType::SnellsLaw:
             visible = (showDatums || showNamed || showNonDriving);
             break;
-        case Sketcher::InternalAlignment:
+        case Sketcher::ConstraintType::InternalAlignment:
             visible = ((showNormal || showNamed) && !hideInternalAlignment);
         default:
             break;

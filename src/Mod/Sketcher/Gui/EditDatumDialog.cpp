@@ -91,31 +91,31 @@ void EditDatumDialog::exec(bool atCursor)
         }
         double datum = Constr->getValue();
 
-        if (Constr->Type == Sketcher::Angle) {
+        if (Constr->Type == Sketcher::ConstraintType::Angle) {
             datum = Base::toDegrees<double>(datum);
             dlg.setWindowTitle(tr("Insert angle"));
             init_val.setUnit(Base::Unit::Angle);
             ui_ins_datum->label->setText(tr("Angle:"));
             ui_ins_datum->labelEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/SketcherAngle"));
         }
-        else if (Constr->Type == Sketcher::Radius) {
+        else if (Constr->Type == Sketcher::ConstraintType::Radius) {
             dlg.setWindowTitle(tr("Insert radius"));
             init_val.setUnit(Base::Unit::Length);
             ui_ins_datum->label->setText(tr("Radius:"));
             ui_ins_datum->labelEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/SketcherLength"));
         }
-        else if (Constr->Type == Sketcher::Diameter) {
+        else if (Constr->Type == Sketcher::ConstraintType::Diameter) {
             dlg.setWindowTitle(tr("Insert diameter"));
             init_val.setUnit(Base::Unit::Length);
             ui_ins_datum->label->setText(tr("Diameter:"));
             ui_ins_datum->labelEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/SketcherLength"));
         }
-        else if (Constr->Type == Sketcher::Weight) {
+        else if (Constr->Type == Sketcher::ConstraintType::Weight) {
             dlg.setWindowTitle(tr("Insert weight"));
             ui_ins_datum->label->setText(tr("Weight:"));
             ui_ins_datum->labelEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/SketcherWeight"));
         }
-        else if (Constr->Type == Sketcher::SnellsLaw) {
+        else if (Constr->Type == Sketcher::ConstraintType::SnellsLaw) {
             dlg.setWindowTitle(tr("Refractive index ratio", "Constraint_SnellsLaw"));
             ui_ins_datum->label->setText(tr("Ratio n2/n1:", "Constraint_SnellsLaw"));
             ui_ins_datum->labelEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/SketcherRefrIndexRatio"));
@@ -164,8 +164,8 @@ void EditDatumDialog::accepted()
 {
     Base::Quantity newQuant = ui_ins_datum->labelEdit->value();
     if( newQuant.isQuantity() ||
-        (Constr->Type == Sketcher::SnellsLaw && newQuant.isDimensionless()) ||
-        (Constr->Type == Sketcher::Weight && newQuant.isDimensionless())) {
+        (Constr->Type == Sketcher::ConstraintType::SnellsLaw && newQuant.isDimensionless()) ||
+        (Constr->Type == Sketcher::ConstraintType::Weight && newQuant.isDimensionless())) {
 
         // save the value for the history
         ui_ins_datum->labelEdit->pushToHistory();

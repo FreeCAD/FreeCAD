@@ -47,7 +47,7 @@ const int Constraint::GeoUndef = -2000;
 
 Constraint::Constraint()
 : Value(0.0),
-  Type(None),
+  Type(ConstraintType::None),
   AlignmentType(Undef),
   Name(""),
   First(GeoUndef),
@@ -113,20 +113,20 @@ Quantity Constraint::getPresentationValue() const
 {
     Quantity quantity;
     switch (Type) {
-    case Distance:
-    case Radius:
-    case Diameter:
-    case DistanceX:
-    case DistanceY:
+    case ConstraintType::Distance:
+    case ConstraintType::Radius:
+    case ConstraintType::Diameter:
+    case ConstraintType::DistanceX:
+    case ConstraintType::DistanceY:
         quantity.setValue(Value);
         quantity.setUnit(Unit::Length);
         break;
-    case Angle:
+    case ConstraintType::Angle:
         quantity.setValue(toDegrees<double>(Value));
         quantity.setUnit(Unit::Angle);
         break;
-    case SnellsLaw:
-    case Weight:
+    case ConstraintType::SnellsLaw:
+    case ConstraintType::Weight:
         quantity.setValue(Value);
         break;
     default:
@@ -153,7 +153,7 @@ void Constraint::Save (Writer &writer) const
     writer.Stream() << writer.ind()     << "<Constrain "
     << "Name=\""                        <<  encodeName              << "\" "
     << "Type=\""                        <<  (int)Type               << "\" ";
-    if(this->Type==InternalAlignment)
+    if(this->Type==ConstraintType::InternalAlignment)
         writer.Stream()
         << "InternalAlignmentType=\""   <<  (int)AlignmentType      << "\" "
         << "InternalAlignmentIndex=\""  <<  InternalAlignmentIndex  << "\" ";
@@ -185,7 +185,7 @@ void Constraint::Restore(XMLReader &reader)
     Second    = reader.getAttributeAsInteger("Second");
     SecondPos = (PointPos)  reader.getAttributeAsInteger("SecondPos");
 
-    if(this->Type==InternalAlignment) {
+    if(this->Type==ConstraintType::InternalAlignment) {
         AlignmentType = (InternalAlignmentType) reader.getAttributeAsInteger("InternalAlignmentType");
 
         if (reader.hasAttribute("InternalAlignmentIndex"))

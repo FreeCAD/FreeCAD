@@ -726,19 +726,19 @@ PyObject* SketchObjectPy::getDatum(PyObject *args)
     while (false);
 
     ConstraintType type = constr->Type;
-    if (type != Distance &&
-        type != DistanceX &&
-        type != DistanceY &&
-        type != Radius &&
-        type != Diameter &&
-        type != Angle) {
+    if (type != ConstraintType::Distance &&
+        type != ConstraintType::DistanceX &&
+        type != ConstraintType::DistanceY &&
+        type != ConstraintType::Radius &&
+        type != ConstraintType::Diameter &&
+        type != ConstraintType::Angle) {
         PyErr_SetString(PyExc_TypeError, "Constraint is not a datum");
         return 0;
     }
 
     Base::Quantity datum;
     datum.setValue(constr->getValue());
-    if (type == Angle) {
+    if (type == ConstraintType::Angle) {
         datum.setValue(Base::toDegrees<double>(datum.getValue()));
         datum.setUnit(Base::Unit::Angle);
     }
@@ -1579,7 +1579,7 @@ Py::List SketchObjectPy::getMissingPointOnPointConstraints(void) const
         t.setItem(1, Py::Long(((c.FirstPos == Sketcher::none)?0:(c.FirstPos == Sketcher::start)?1:(c.FirstPos == Sketcher::end)?2:3)));
         t.setItem(2, Py::Long(c.Second));
         t.setItem(3, Py::Long(((c.SecondPos == Sketcher::none)?0:(c.SecondPos == Sketcher::start)?1:(c.SecondPos == Sketcher::end)?2:3)));
-        t.setItem(4, Py::Long(c.Type));
+        t.setItem(4, Py::Long((long)c.Type));
         list.append(t);
     }
     return list;
@@ -1620,7 +1620,7 @@ Py::List SketchObjectPy::getMissingVerticalHorizontalConstraints(void) const
         t.setItem(1, Py::Long(((c.FirstPos == Sketcher::none)?0:(c.FirstPos == Sketcher::start)?1:(c.FirstPos == Sketcher::end)?2:3)));
         t.setItem(2, Py::Long(c.Second));
         t.setItem(3, Py::Long(((c.SecondPos == Sketcher::none)?0:(c.SecondPos == Sketcher::start)?1:(c.SecondPos == Sketcher::end)?2:3)));
-        t.setItem(4, Py::Long(c.Type));
+        t.setItem(4, Py::Long((long)c.Type));
         list.append(t);
     }
     return list;
@@ -1682,7 +1682,7 @@ void SketchObjectPy::setMissingLineEqualityConstraints(Py::List arg)
         c.FirstPos = checkpos(t,1);
         c.Second = (long)Py::Long(t.getItem(2));
         c.SecondPos = checkpos(t,3);
-        c.Type = Sketcher::Equal;
+        c.Type = ConstraintType::Equal;
 
         constraints.push_back(c);
     }
@@ -1722,7 +1722,7 @@ void SketchObjectPy::setMissingRadiusConstraints(Py::List arg)
         c.FirstPos = checkpos(t,1);
         c.Second = (long)Py::Long(t.getItem(2));
         c.SecondPos = checkpos(t,3);
-        c.Type = Sketcher::Equal;
+        c.Type = ConstraintType::Equal;
 
         constraints.push_back(c);
     }

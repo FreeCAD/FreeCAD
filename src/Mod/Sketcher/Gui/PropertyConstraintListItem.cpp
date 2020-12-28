@@ -76,12 +76,7 @@ void PropertyConstraintListItem::initialize()
     std::vector<PropertyUnitItem *> unnamed;
 
     for (std::vector< Sketcher::Constraint* >::const_iterator it = vals.begin();it != vals.end(); ++it, ++id) {
-        if ((*it)->Type == Sketcher::Distance || // Datum constraint
-            (*it)->Type == Sketcher::DistanceX ||
-            (*it)->Type == Sketcher::DistanceY ||
-            (*it)->Type == Sketcher::Radius ||
-            (*it)->Type == Sketcher::Diameter ||
-            (*it)->Type == Sketcher::Angle ) {
+        if ((*it)->isDatum()) {
 
             PropertyUnitItem* item = static_cast<PropertyUnitItem*>(PropertyUnitItem::create());
 
@@ -169,12 +164,7 @@ void PropertyConstraintListItem::assignProperty(const App::Property* prop)
     this->onlyUnnamed = true;
 
     for (std::vector< Sketcher::Constraint* >::const_iterator it = vals.begin();it != vals.end(); ++it, ++id) {
-        if ((*it)->Type == Sketcher::Distance || // Datum constraint
-            (*it)->Type == Sketcher::DistanceX ||
-            (*it)->Type == Sketcher::DistanceY ||
-            (*it)->Type == Sketcher::Radius ||
-            (*it)->Type == Sketcher::Diameter ||
-            (*it)->Type == Sketcher::Angle ) {
+        if ((*it)->isDatum() ) {
 
             PropertyUnitItem* child = nullptr;
             if ((*it)->Name.empty()) {
@@ -246,15 +236,10 @@ QVariant PropertyConstraintListItem::value(const App::Property* prop) const
 
     const std::vector< Sketcher::Constraint * > &vals = static_cast<const Sketcher::PropertyConstraintList*>(prop)->getValues();
     for (std::vector< Sketcher::Constraint* >::const_iterator it = vals.begin();it != vals.end(); ++it, ++id) {
-        if ((*it)->Type == Sketcher::Distance || // Datum constraint
-            (*it)->Type == Sketcher::DistanceX ||
-            (*it)->Type == Sketcher::DistanceY ||
-            (*it)->Type == Sketcher::Radius ||
-            (*it)->Type == Sketcher::Diameter ||
-            (*it)->Type == Sketcher::Angle ) {
+        if ((*it)->isDatum()) {
 
             Base::Quantity quant;
-            if ((*it)->Type == Sketcher::Angle ) {
+            if ((*it)->Type == Sketcher::ConstraintType::Angle ) {
                 double datum = Base::toDegrees<double>((*it)->getValue());
                 quant.setUnit(Base::Unit::Angle);
                 quant.setValue(datum);
@@ -325,18 +310,13 @@ bool PropertyConstraintListItem::event (QEvent* ev)
 
             const std::vector< Sketcher::Constraint * > &vals = item->getValues();
             for (std::vector< Sketcher::Constraint* >::const_iterator it = vals.begin();it != vals.end(); ++it, ++id) {
-                if ((*it)->Type == Sketcher::Distance || // Datum constraint
-                    (*it)->Type == Sketcher::DistanceX ||
-                    (*it)->Type == Sketcher::DistanceY ||
-                    (*it)->Type == Sketcher::Radius ||
-                    (*it)->Type == Sketcher::Diameter ||
-                    (*it)->Type == Sketcher::Angle ) {
+                if ((*it)->isDatum() ) {
 
                     // Get the internal name
                     QString internalName = QString::fromLatin1("Constraint%1").arg(id+1);
                     if (internalName == propName) {
                         double datum = quant.getValue();
-                        if ((*it)->Type == Sketcher::Angle)
+                        if ((*it)->Type == Sketcher::ConstraintType::Angle)
                             datum = Base::toRadians<double>(datum);
                         std::unique_ptr<Sketcher::Constraint> copy((*it)->clone());
                         copy->setValue(datum);

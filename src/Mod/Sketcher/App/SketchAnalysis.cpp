@@ -238,7 +238,7 @@ int SketchAnalysis::detectMissingPointOnPointConstraints(double precision, bool 
             for (vn = vt+1; vn != vertexIds.end(); ++vn) {
                 if (pred(*vt,*vn)) {
                     ConstraintIds id;
-                    id.Type = Coincident; // default point on point restriction
+                    id.Type = ConstraintType::Coincident; // default point on point restriction
                     id.v = vt->v;
                     id.First = vt->GeoId;
                     id.FirstPos = vt->PosId;
@@ -260,9 +260,9 @@ int SketchAnalysis::detectMissingPointOnPointConstraints(double precision, bool 
     // If there is none but two vertexes can be considered equal a coincident constraint is missing.
     std::vector<Sketcher::Constraint*> constraint = sketch->Constraints.getValues();
     for (std::vector<Sketcher::Constraint*>::iterator it = constraint.begin(); it != constraint.end(); ++it) {
-        if ((*it)->Type == Sketcher::Coincident ||
-            (*it)->Type == Sketcher::Tangent ||
-            (*it)->Type == Sketcher::Perpendicular) {
+        if ((*it)->Type == ConstraintType::Coincident ||
+            (*it)->Type == ConstraintType::Tangent ||
+            (*it)->Type == ConstraintType::Perpendicular) {
             ConstraintIds id;
             id.First = (*it)->First;
             id.FirstPos = (*it)->FirstPos;
@@ -325,10 +325,10 @@ void SketchAnalysis::analyseMissingPointOnPointCoincident(double angleprecision)
                 Base::Vector3d tgv2 = curve2->firstDerivativeAtParameter(u2).Normalize();
 
                 if(fabs(tgv1*tgv2)>fabs(cos(angleprecision))) {
-                    vc.Type = Sketcher::Tangent;
+                    vc.Type = ConstraintType::Tangent;
                 }
                 else if(fabs(tgv1*tgv2)<fabs(cos(M_PI/2 - angleprecision))) {
-                    vc.Type = Sketcher::Perpendicular;
+                    vc.Type = ConstraintType::Perpendicular;
                 }
 
             }
@@ -411,11 +411,11 @@ int SketchAnalysis::detectMissingVerticalHorizontalConstraints(double anglepreci
             id.SecondPos = Sketcher::none;
 
             if( checkVertical(dir, angleprecision) ) {
-                id.Type = Sketcher::Vertical;
+                id.Type = ConstraintType::Vertical;
                 verthorizConstraints.push_back(id);
             }
             else if (checkHorizontal(dir, angleprecision)  ) {
-                id.Type = Sketcher::Horizontal;
+                id.Type = ConstraintType::Horizontal;
                 verthorizConstraints.push_back(id);
             }
         }
@@ -525,7 +525,7 @@ int SketchAnalysis::detectMissingEqualityConstraints(double precision)
             for (vn = vt+1; vn != lineedgeIds.end(); ++vn) {
                 if (pred(*vt,*vn)) {
                     ConstraintIds id;
-                    id.Type = Equal;
+                    id.Type = ConstraintType::Equal;
                     id.v.x = vt->l;
                     id.First = vt->GeoId;
                     id.FirstPos = Sketcher::none;
@@ -555,7 +555,7 @@ int SketchAnalysis::detectMissingEqualityConstraints(double precision)
             for (vn = vt+1; vn != radiusedgeIds.end(); ++vn) {
                 if (pred(*vt,*vn)) {
                     ConstraintIds id;
-                    id.Type = Equal;
+                    id.Type = ConstraintType::Equal;
                     id.v.x = vt->l;
                     id.First = vt->GeoId;
                     id.FirstPos = Sketcher::none;
@@ -578,7 +578,7 @@ int SketchAnalysis::detectMissingEqualityConstraints(double precision)
     // If there is none but two vertexes can be considered equal a coincident constraint is missing.
     std::vector<Sketcher::Constraint*> constraint = sketch->Constraints.getValues();
     for (std::vector<Sketcher::Constraint*>::iterator it = constraint.begin(); it != constraint.end(); ++it) {
-        if ((*it)->Type == Sketcher::Equal) {
+        if ((*it)->Type == ConstraintType::Equal) {
             ConstraintIds id;
             id.First = (*it)->First;
             id.FirstPos = (*it)->FirstPos;
