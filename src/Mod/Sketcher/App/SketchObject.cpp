@@ -3412,7 +3412,7 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
     std::map<int, bool> isStartEndInverted;
 
     // Find out if reference is aligned with V or H axis,
-    // if so we can keep Vertical and Horizontal constrants in the mirrored geometry.
+    // if so we can keep Vertical and Horizontal constraints in the mirrored geometry.
     bool refIsAxisAligned = false;
     if (refGeoId == Sketcher::GeoEnum::VAxis || refGeoId == Sketcher::GeoEnum::HAxis) {
         refIsAxisAligned = true;
