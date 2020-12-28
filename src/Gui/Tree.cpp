@@ -3745,9 +3745,15 @@ void TreeWidget::onShowHidden()
 void TreeWidget::onShowTempDoc()
 {
     bool show = showTempDocAction->isChecked();
+    App::Document *currentDoc = App::GetApplication().getActiveDocument();
+    if (!show && currentDoc && currentDoc->testStatus(App::Document::TempDoc))
+        currentDoc = nullptr;
     for(auto doc : App::GetApplication().getDocuments()) {
-        if(!doc->testStatus(App::Document::TempDoc))
+        if(!doc->testStatus(App::Document::TempDoc)) {
+            if (!currentDoc)
+                currentDoc = doc;
             continue;
+        }
         auto gdoc = Application::Instance->getDocument(doc);
         if(!gdoc)
             continue;
@@ -3769,6 +3775,13 @@ void TreeWidget::onShowTempDoc()
     }
     if(NewObjects.size())
         _updateStatus();
+
+    if (!show && currentDoc) {
+        App::GetApplication().setActiveDocument(currentDoc);
+        auto item = getDocumentItem(Application::Instance->activeDocument());
+        if (item)
+            scrollToItem(item);
+    }
 }
 
 void TreeWidget::onHideInTree()
