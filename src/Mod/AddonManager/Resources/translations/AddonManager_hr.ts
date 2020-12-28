@@ -275,7 +275,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="433"/>
       <source>Raw markdown displayed</source>
-      <translation type="unfinished">Raw markdown displayed</translation>
+      <translation>Prikazan čisti markdown kod</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="435"/>

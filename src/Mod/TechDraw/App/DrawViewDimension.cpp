@@ -614,6 +614,7 @@ std::string DrawViewDimension::formatValue(qreal value, QString qFormatSpec, int
     QString qUserStringUnits;
     QString formattedValue;
     bool angularMeasure = false;
+    QLocale loc;
 
     Base::Quantity asQuantity;
     asQuantity.setValue(value);
@@ -686,25 +687,17 @@ std::string DrawViewDimension::formatValue(qreal value, QString qFormatSpec, int
         if ((pos = rxUnits.indexIn(qUserString, 0)) != -1) {
             qUserStringUnits = rxUnits.cap(0); // entire capture - non numerics at end of qUserString
         }
+        
+        // get value in the base unit with default decimals
+        // for the conversion we use the same method as in DlgUnitsCalculator::valueChanged
+        // get the conversion factor for the unit
+        double convertValue = Base::Quantity::parse(QString::fromLatin1("1") + QString::fromStdString(BaseLengthUnit)).getValue();
+        // the result is now just val / convertValue because val is always in the base unit
+        double userVal = asQuantity.getValue() / convertValue;
 
-        // we can have 2 possible results:
-        // - the value in the base unit but without displayed unit
-        // - the value + unit (not necessarily the base unit!)
+        // we reformat the value
         // the user can overwrite the decimal settings, so we must in every case use the formatSpecifier
         // the default is: if useDecimals(), then formatSpecifier = global decimals, otherwise it is %.2f
-        QLocale loc;
-        double userVal;
-        if (showUnits() || (Type.isValue("Angle")) || (Type.isValue("Angle3Pt"))) {
-            userVal = asQuantity.getValue();
-        } else {
-            // get value in the base unit with default decimals
-            // for the conversion we use the same method as in DlgUnitsCalculator::valueChanged
-            // get the conversion factor for the unit
-            double convertValue = Base::Quantity::parse(QString::fromLatin1("1") + QString::fromStdString(BaseLengthUnit)).getValue();
-            // the result is now just val / convertValue because val is always in the base unit
-            userVal = asQuantity.getValue() / convertValue;
-        }
-        // we reformat the value
 #if QT_VERSION >= 0x050000
         formattedValue = QString::asprintf(Base::Tools::toStdString(formatSpecifier).c_str(), userVal);
 #else

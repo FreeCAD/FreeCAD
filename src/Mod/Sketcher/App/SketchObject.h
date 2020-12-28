@@ -353,9 +353,24 @@ public:
     inline const std::vector<int> &getLastConflicting(void) const { return lastConflicting; }
     /// gets the redundant constraints of last solver execution
     inline const std::vector<int> &getLastRedundant(void) const { return lastRedundant; }
-    /// gets the solved sketch as a reference
-    inline Sketch &getSolvedSketch(void) {return solvedSketch;}
 
+public: /* Solver exposed interface */
+    /// gets the solved sketch as a reference
+    inline const Sketch &getSolvedSketch(void) const {return solvedSketch;}
+    /// enables/disables solver initial solution recalculation when moving point mode (useful for dragging)
+    inline void setRecalculateInitialSolutionWhileMovingPoint(bool recalculateInitialSolutionWhileMovingPoint)
+        {solvedSketch.setRecalculateInitialSolutionWhileMovingPoint(recalculateInitialSolutionWhileMovingPoint);}
+    /// Forwards a request for a temporary initMove to the solver using the current sketch state as a reference (enables dragging)
+    inline int initTemporaryMove(int geoId, PointPos pos, bool fine=true);
+    /** Forwards a request for point or curve temporary movement to the solver using the current state as a reference (enables dragging).
+     *  NOTE: A temporary move operation must always be preceded by a initTemporaryMove() operation.
+     */
+    inline int moveTemporaryPoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative=false);
+    /// forwards a request to update an extension of a geometry of the solver to the solver.
+    inline void updateSolverExtension(int geoId, std::unique_ptr<Part::GeometryExtension> && ext)
+        { return solvedSketch.updateExtension(geoId, std::move(ext));}
+
+public:
     /// returns the geometric elements/vertex which the solver detects as having dependent parameters.
     /// these parameters relate to not fully constraint edges/vertices.
     void getGeometryWithDependentParameters(std::vector<std::pair<int,PointPos>>& geometrymap);
@@ -421,6 +436,8 @@ public:
     // helper
     /// returns the number of redundant constraints detected
     int autoRemoveRedundants(bool updategeo = true);
+
+    int renameConstraint(int GeoId, std::string name);
 
     // Validation routines
     std::vector<Base::Vector3d> getOpenVertices(void) const;
@@ -512,6 +529,22 @@ private:
 
     bool managedoperation; // indicates whether changes to properties are the deed of SketchObject or not (for input validation)
 };
+
+inline int SketchObject::initTemporaryMove(int geoId, PointPos pos, bool fine/*=true*/)
+{
+    // if a previous operation did not update the geometry (including geometry extensions)
+    // or constraints (including any deleted pointer, as in renameConstraint) of the solver,
+    // here we update them before starting a temporary operation.
+    if(solverNeedsUpdate)
+        solve();
+
+    return solvedSketch.initMove(geoId,pos,fine);
+}
+
+inline int SketchObject::moveTemporaryPoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative/*=false*/)
+{
+    return solvedSketch.movePoint(geoId, pos, toPoint, relative);
+}
 
 typedef App::FeaturePythonT<SketchObject> SketchObjectPython;
 

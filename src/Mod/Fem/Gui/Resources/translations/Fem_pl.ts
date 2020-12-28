@@ -2306,7 +2306,7 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="204"/>
       <source>Reversed direction</source>
-      <translation>Odwrócone kierunki</translation>
+      <translation>Odwróć kierunek</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="211"/>

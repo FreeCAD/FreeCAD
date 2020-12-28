@@ -490,8 +490,8 @@ def HEIDEN_End(ActualJob): #use Label for program name
         program_id = "NEW"
     return "END PGM " + program_id + " " + UNITS
 
-#def HEIDEN_ToolDef(tool_id, tool_lenght, tool_radius): # old machines don't have tool table, need tooldef list
-#    return "TOOL DEF  " + tool_id + " R" + "{:.3f}".format(tool_lenght) + " L" + "{:.3f}".format(tool_radius)
+#def HEIDEN_ToolDef(tool_id, tool_length, tool_radius): # old machines don't have tool table, need tooldef list
+#    return "TOOL DEF  " + tool_id + " R" + "{:.3f}".format(tool_length) + " L" + "{:.3f}".format(tool_radius)
 
 def HEIDEN_ToolCall(tool_Params):
     global MACHINE_SPINDLE_DIRECTION

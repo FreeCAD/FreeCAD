@@ -325,9 +325,9 @@ namespace GCS
         int addConstraintInternalAlignmentParabolaFocus(Parabola &e, Point &p1, int tagId=0, bool driving = true);
         int addConstraintInternalAlignmentBSplineControlPoint(BSpline &b, Circle &c, int poleindex, int tag=0, bool driving = true);
 
-        double calculateAngleViaPoint(Curve &crv1, Curve &crv2, Point &p);
-        double calculateAngleViaPoint(Curve &crv1, Curve &crv2, Point &p1, Point &p2);
-        void calculateNormalAtPoint(Curve &crv, Point &p, double &rtnX, double &rtnY);
+        double calculateAngleViaPoint(const Curve &crv1, const Curve &crv2, Point &p) const;
+        double calculateAngleViaPoint(const Curve &crv1, const Curve &crv2, Point &p1, Point &p2) const;
+        void calculateNormalAtPoint(const Curve &crv, const Point &p, double &rtnX, double &rtnY) const;
 
         // Calculates errors of all constraints which have a tag equal to
         // the one supplied. Individual errors are summed up using RMS.

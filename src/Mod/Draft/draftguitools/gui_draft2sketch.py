@@ -24,7 +24,7 @@
 # ***************************************************************************
 """Provides GUI tools to convert Draft objects to Sketches and back.
 
-Many Draft objects will be converted to a single non-contrainted Sketch.
+Many Draft objects will be converted to a single non-constrained Sketch.
 
 However, a single sketch with disconnected traces will be converted
 into several individual Draft objects.

@@ -126,6 +126,74 @@
       <source>Edit</source>
       <translation>Upravit</translation>
     </message>
+    <message>
+      <source>Import</source>
+      <translation>Import</translation>
+    </message>
+    <message>
+      <source>Delete</source>
+      <translation>Odstranit</translation>
+    </message>
+    <message>
+      <source>Paste expressions</source>
+      <translation type="unfinished">Paste expressions</translation>
+    </message>
+    <message>
+      <source>Make link group</source>
+      <translation type="unfinished">Make link group</translation>
+    </message>
+    <message>
+      <source>Make link</source>
+      <translation type="unfinished">Make link</translation>
+    </message>
+    <message>
+      <source>Make sub-link</source>
+      <translation type="unfinished">Make sub-link</translation>
+    </message>
+    <message>
+      <source>Import links</source>
+      <translation type="unfinished">Import links</translation>
+    </message>
+    <message>
+      <source>Import all links</source>
+      <translation type="unfinished">Import all links</translation>
+    </message>
+    <message>
+      <source>Insert measurement</source>
+      <translation type="unfinished">Insert measurement</translation>
+    </message>
+    <message>
+      <source>Insert text document</source>
+      <translation type="unfinished">Insert text document</translation>
+    </message>
+    <message>
+      <source>Add a part</source>
+      <translation type="unfinished">Add a part</translation>
+    </message>
+    <message>
+      <source>Add a group</source>
+      <translation type="unfinished">Add a group</translation>
+    </message>
+    <message>
+      <source>Align</source>
+      <translation>Zarovnat</translation>
+    </message>
+    <message>
+      <source>Placement</source>
+      <translation>Umístění</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Transformace</translation>
+    </message>
+    <message>
+      <source>Link Transform</source>
+      <translation type="unfinished">Link Transform</translation>
+    </message>
+    <message>
+      <source>Measure distance</source>
+      <translation>Změřit vzdálenost</translation>
+    </message>
   </context>
   <context>
     <name>DlgCustomizeSpNavSettings</name>
@@ -186,11 +254,11 @@
     </message>
     <message>
       <source>&amp;Clear</source>
-      <translation type="unfinished">&amp;Clear</translation>
+      <translation>&amp;Vymazat</translation>
     </message>
     <message>
       <source>Revert to last calculated value (as constant)</source>
-      <translation type="unfinished">Revert to last calculated value (as constant)</translation>
+      <translation>Vrátit se k poslední vypočtené hodnotě (jako konstanta)</translation>
     </message>
   </context>
   <context>
@@ -425,7 +493,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Collection</source>
-      <translation type="unfinished">Collection</translation>
+      <translation>Kolekce</translation>
     </message>
   </context>
   <context>
@@ -440,11 +508,11 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source> "</source>
-      <translation type="unfinished"> "</translation>
+      <translation> "</translation>
     </message>
     <message>
       <source>"</source>
-      <translation type="unfinished">"</translation>
+      <translation>"</translation>
     </message>
   </context>
   <context>
@@ -609,7 +677,7 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::DlgAddProperty</name>
     <message>
       <source>Add property</source>
-      <translation type="unfinished">Add property</translation>
+      <translation>Přidat vlastnost</translation>
     </message>
     <message>
       <source>Type</source>
@@ -625,7 +693,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Verbose description of the new property.</source>
-      <translation type="unfinished">Verbose description of the new property.</translation>
+      <translation>Podrobný popis nové vlastnosti.</translation>
     </message>
     <message>
       <source>Documentation</source>
@@ -637,15 +705,15 @@ In this case the prefix will be automatically trimmed when shown in the property
 However, the property is still used in a script with the full name, like 'obj.Group_Name'.
 
 If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</source>
-      <translation type="unfinished">Prefix the property name with the group name in the form 'Group_Name' to avoid conflicts with an existing property.
-In this case the prefix will be automatically trimmed when shown in the property editor.
-However, the property is still used in a script with the full name, like 'obj.Group_Name'.
+      <translation>Začněte název vlastnosti jménem skupiny ve formě 'Skupina_Nazev', aby se předešlo konfliktům s existující vlastností.
+Název skupiny bude automaticky oříznut při zobrazení v editoru vlastností.
+Vlastnost se však stále používá ve skriptu s úplným jménem jako 'obj.Skupina_Nazev'.
 
-If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</translation>
+Pokud toto není zaškrtnuto, musí být vlastnost pojmenována jedinečně a bude přístupná jako 'obj.Nazev'.</translation>
     </message>
     <message>
       <source>Prefix group name</source>
-      <translation type="unfinished">Prefix group name</translation>
+      <translation>Začněte název jménem skupiny</translation>
     </message>
   </context>
   <context>
@@ -1034,7 +1102,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>%1 module not loaded</source>
-      <translation type="unfinished">%1 module not loaded</translation>
+      <translation>Modul %1 nebyl načten</translation>
     </message>
   </context>
   <context>
@@ -1296,39 +1364,39 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Code lines will be numbered </source>
-      <translation type="unfinished">Code lines will be numbered </translation>
+      <translation>Řádky kódu budou očíslovány </translation>
     </message>
     <message>
       <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
-      <translation type="unfinished">Pressing &lt;Tab&gt; will insert amount of defined indent size</translation>
+      <translation>Stisknutí &lt;Tab&gt; vloží množství definovaného odsazení</translation>
     </message>
     <message>
       <source>Tabulator raster (how many spaces)</source>
-      <translation type="unfinished">Tabulator raster (how many spaces)</translation>
+      <translation>Velikost tabulátoru (počet mezer)</translation>
     </message>
     <message>
       <source>How many spaces will be inserted when pressing &lt;Tab&gt;</source>
-      <translation type="unfinished">How many spaces will be inserted when pressing &lt;Tab&gt;</translation>
+      <translation>Kolik mezer bude vloženo při stisknutí &lt;Tab&gt;</translation>
     </message>
     <message>
       <source>Pressing &lt;Tab&gt; will insert a tabulator with defined tab size</source>
-      <translation type="unfinished">Pressing &lt;Tab&gt; will insert a tabulator with defined tab size</translation>
+      <translation>Stisknutí &lt;Tab&gt; vloží odrážku definované velikosti</translation>
     </message>
     <message>
       <source>Display items</source>
-      <translation type="unfinished">Display items</translation>
+      <translation>Zobrazit položky</translation>
     </message>
     <message>
       <source>Font size to be used for selected code type</source>
-      <translation type="unfinished">Font size to be used for selected code type</translation>
+      <translation>Velikost fontu použitá pro vybraný typ kódu</translation>
     </message>
     <message>
       <source>Color and font settings will be applied to selected type</source>
-      <translation type="unfinished">Color and font settings will be applied to selected type</translation>
+      <translation>Nastavení barev a fontu bude použito na vybraný typ</translation>
     </message>
     <message>
       <source>Font family to be used for selected code type</source>
-      <translation type="unfinished">Font family to be used for selected code type</translation>
+      <translation>Rodina písma, která se použije pro vybraný typ kódu</translation>
     </message>
     <message>
       <source>Color:</source>
@@ -1391,31 +1459,31 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Language of the application's user interface</source>
-      <translation type="unfinished">Language of the application's user interface</translation>
+      <translation>Jazyk uživatelského rozhraní aplikace</translation>
     </message>
     <message>
       <source>How many files should be listed in recent files list</source>
-      <translation type="unfinished">How many files should be listed in recent files list</translation>
+      <translation>Kolik souborů by mělo být uvedeno v seznamu nedávných souborů</translation>
     </message>
     <message>
       <source>Background of the main window will consist of tiles of a special image.
 See the FreeCAD Wiki for details about the image.</source>
-      <translation type="unfinished">Background of the main window will consist of tiles of a special image.
-See the FreeCAD Wiki for details about the image.</translation>
+      <translation>Pozadí hlavního okna se bude skládat z dlaždic speciálního obrázku.
+Podrobnosti o naleznete ve FreeCAD Wiki.</translation>
     </message>
     <message>
       <source>Style sheet how user interface will look like</source>
-      <translation type="unfinished">Style sheet how user interface will look like</translation>
+      <translation>Style sheet vzhledu uživatelské rozhraní</translation>
     </message>
     <message>
       <source>Choose your preference for toolbar icon size. You can adjust
 this according to your screen size or personal taste</source>
-      <translation type="unfinished">Choose your preference for toolbar icon size. You can adjust
-this according to your screen size or personal taste</translation>
+      <translation>Vyberte si preferovanou velikost ikon v panelu nástrojů. Můžete ji upravit
+podle velikosti obrazovky nebo osobní preference</translation>
     </message>
     <message>
       <source>Tree view mode:</source>
-      <translation type="unfinished">Tree view mode:</translation>
+      <translation>Režim zobrazení ve stromu:</translation>
     </message>
     <message>
       <source>Customize how tree view is shown in the panel (restart required).
@@ -1423,31 +1491,31 @@ this according to your screen size or personal taste</translation>
 'ComboView': combine tree view and property view into one panel.
 'TreeView and PropertyView': split tree view and property view into separate panel.
 'Both': keep all three panels, and you can have two sets of tree view and property view.</source>
-      <translation type="unfinished">Customize how tree view is shown in the panel (restart required).
+      <translation>Přizpůsobte si, jak je v panelu zobrazeno zobrazení stromu (vyžaduje restart).
 
-'ComboView': combine tree view and property view into one panel.
-'TreeView and PropertyView': split tree view and property view into separate panel.
-'Both': keep all three panels, and you can have two sets of tree view and property view.</translation>
+'ComboView': kombinovat zobrazení stromu a zobrazení vlastností v jednom panelu.
+'TreeView and PropertyView': rozdělit zobrazení ve stromě a zobrazení vlastností do samostatného panelu.
+'Both': zachovat všechny tři panely, můžete mít dvě sady zobrazení stromu a zobrazení vlastnosti.</translation>
     </message>
     <message>
       <source>A Splash screen is a small loading window that is shown
 when FreeCAD is launching. If this option is checked, FreeCAD will
 display the splash screen</source>
-      <translation type="unfinished">A Splash screen is a small loading window that is shown
-when FreeCAD is launching. If this option is checked, FreeCAD will
-display the splash screen</translation>
+      <translation>Splash screen je malé načítací okno, které se zobrazí
+ při spouštění FreeCADu. Je-li tato volba zaškrtnuta, 
+FreeCAD toto okno zobrazí</translation>
     </message>
     <message>
       <source>Choose which workbench will be activated and shown
 after FreeCAD launches</source>
-      <translation type="unfinished">Choose which workbench will be activated and shown
-after FreeCAD launches</translation>
+      <translation>Vyberte, které pracovní prostředí bude aktivováno a zobrazeno
+po spuštění FreeCADu</translation>
     </message>
     <message>
       <source>Words will be wrapped when they exceed available
 horizontal space in Python console</source>
-      <translation type="unfinished">Words will be wrapped when they exceed available
-horizontal space in Python console</translation>
+      <translation>Slova budou zalomena, pokud přesáhnou dostupné
+místo v konzoli Pythonu</translation>
     </message>
   </context>
   <context>
@@ -1482,11 +1550,11 @@ horizontal space in Python console</translation>
     </message>
     <message>
       <source>TreeView and PropertyView</source>
-      <translation type="unfinished">TreeView and PropertyView</translation>
+      <translation>TreeView a PropertyView</translation>
     </message>
     <message>
       <source>Both</source>
-      <translation type="unfinished">Both</translation>
+      <translation>Obě</translation>
     </message>
   </context>
   <context>
@@ -1563,7 +1631,7 @@ horizontal space in Python console</translation>
     </message>
     <message>
       <source>Toolbar</source>
-      <translation type="unfinished">Toolbar</translation>
+      <translation>Panel nástrojů</translation>
     </message>
   </context>
   <context>
@@ -1648,20 +1716,20 @@ Možná je chyba v přístupových právech k souboru?</translation>
     </message>
     <message>
       <source>Do not show again</source>
-      <translation type="unfinished">Do not show again</translation>
+      <translation>Znovu nezobrazovat</translation>
     </message>
     <message>
       <source>Guided Walkthrough</source>
-      <translation type="unfinished">Guided Walkthrough</translation>
+      <translation>Komentovaná prohlídka</translation>
     </message>
     <message>
       <source>This will guide you in setting up this macro in a custom global toolbar.  Instructions will be in red text inside the dialog.
 
 Note: your changes will be applied when you next switch workbenches
 </source>
-      <translation type="unfinished">This will guide you in setting up this macro in a custom global toolbar.  Instructions will be in red text inside the dialog.
+      <translation>Tento průvodce vás provede nastavením tohoto makra na vaší globální nástrojovou lištu. Instrukce budou v dialogovém okně v červeně.
 
-Note: your changes will be applied when you next switch workbenches
+Poznámka: změny budou aplikovány při dalším přepnutí pracovních prostředí (workbench)
 </translation>
     </message>
     <message>
@@ -1670,7 +1738,7 @@ Note: your changes will be applied when you next switch workbenches
     </message>
     <message>
       <source>Walkthrough instructions: Fill in missing fields (optional) then click Add, then Close</source>
-      <translation type="unfinished">Walkthrough instructions: Fill in missing fields (optional) then click Add, then Close</translation>
+      <translation>Instrukce průvodce: Vyplňte chybějící pole (volitelné) a klikněte na tlačítko Přidat, poté Zavřít</translation>
     </message>
     <message>
       <source>Walkthrough, dialog 1 of 1</source>
@@ -1682,11 +1750,11 @@ Note: your changes will be applied when you next switch workbenches
     </message>
     <message>
       <source>Walkthrough instructions: Click right arrow button (-&gt;), then Close.</source>
-      <translation type="unfinished">Walkthrough instructions: Click right arrow button (-&gt;), then Close.</translation>
+      <translation>Instrukce průvodce: Klikněte na tlačítko šipky doprava (-&gt;), a potom Zavřít.</translation>
     </message>
     <message>
       <source>Walkthrough instructions: Click New, then right arrow (-&gt;) button, then Close.</source>
-      <translation type="unfinished">Walkthrough instructions: Click New, then right arrow (-&gt;) button, then Close.</translation>
+      <translation>Instrukce průvodce: Klikněte na Nový, potom na pravou šipku (-&gt;) a potom Zavřít.</translation>
     </message>
   </context>
   <context>
@@ -1850,15 +1918,15 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Quick search</source>
-      <translation type="unfinished">Quick search</translation>
+      <translation>Rychlé hledání</translation>
     </message>
     <message>
       <source>Type in a group name to find it</source>
-      <translation type="unfinished">Type in a group name to find it</translation>
+      <translation>Zadejte název skupiny pro její nalezení</translation>
     </message>
     <message>
       <source>Search Group</source>
-      <translation type="unfinished">Search Group</translation>
+      <translation>Vyhledat skupinu</translation>
     </message>
   </context>
   <context>
@@ -1940,7 +2008,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Search Group</source>
-      <translation type="unfinished">Search Group</translation>
+      <translation>Vyhledat skupinu</translation>
     </message>
   </context>
   <context>
@@ -2037,7 +2105,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Program version:</source>
-      <translation type="unfinished">Program version:</translation>
+      <translation>Verze programu:</translation>
     </message>
   </context>
   <context>
@@ -2111,11 +2179,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Filter by type</source>
-      <translation type="unfinished">Filter by type</translation>
+      <translation>Filtrovat podle typu</translation>
     </message>
     <message>
       <source>Sync sub-object selection</source>
-      <translation type="unfinished">Sync sub-object selection</translation>
+      <translation>Synchronizovat výběr sub-objektu</translation>
     </message>
     <message>
       <source>Reset</source>
@@ -2127,7 +2195,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
-      <translation type="unfinished">If enabled, then 3D view selection will be synchronized with full object hierarchy.</translation>
+      <translation>Je-li povoleno, výběr 3D zobrazení bude synchronizován s celou hierarchií objektu.</translation>
     </message>
   </context>
   <context>
@@ -2190,91 +2258,91 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Log messages will be recorded</source>
-      <translation type="unfinished">Log messages will be recorded</translation>
+      <translation>Logovací zprávy budou zaznamenány</translation>
     </message>
     <message>
       <source>Warnings will be recorded</source>
-      <translation type="unfinished">Warnings will be recorded</translation>
+      <translation>Upozornění budou zaznamenána</translation>
     </message>
     <message>
       <source>Error messages will be recorded</source>
-      <translation type="unfinished">Error messages will be recorded</translation>
+      <translation>Chybové zprávy budou zaznamenány</translation>
     </message>
     <message>
       <source>When an error has occurred, the Report View dialog becomes visible
 on-screen while displaying the error</source>
-      <translation type="unfinished">When an error has occurred, the Report View dialog becomes visible
-on-screen while displaying the error</translation>
+      <translation>Když dojde k chybě, zobrazí se dialogové okno reportu
+při zobrazení chyby</translation>
     </message>
     <message>
       <source>Show report view on error</source>
-      <translation type="unfinished">Show report view on error</translation>
+      <translation>Zobrazit report při chybě</translation>
     </message>
     <message>
       <source>When a warning has occurred, the Report View dialog becomes visible
 on-screen while displaying the warning</source>
-      <translation type="unfinished">When a warning has occurred, the Report View dialog becomes visible
-on-screen while displaying the warning</translation>
+      <translation>Když dojde k varování, zobrazí se dialogové okno reportu
+při zobrazení varování</translation>
     </message>
     <message>
       <source>Show report view on warning</source>
-      <translation type="unfinished">Show report view on warning</translation>
+      <translation>Zobrazit report při varování</translation>
     </message>
     <message>
       <source>When a normal message has occurred, the Report View dialog becomes visible
 on-screen while displaying the message</source>
-      <translation type="unfinished">When a normal message has occurred, the Report View dialog becomes visible
-on-screen while displaying the message</translation>
+      <translation>Když se objeví normální zpráva, zobrazí se dialogové okno reportu
+při zobrazení této zprávy</translation>
     </message>
     <message>
       <source>Show report view on normal message</source>
-      <translation type="unfinished">Show report view on normal message</translation>
+      <translation>Zobrazit report při normální zprávě</translation>
     </message>
     <message>
       <source>When a log message has occurred, the Report View dialog becomes visible
 on-screen while displaying the log message</source>
-      <translation type="unfinished">When a log message has occurred, the Report View dialog becomes visible
-on-screen while displaying the log message</translation>
+      <translation>Když se objeví logovací zpráva, zobrazí se dialogové okno reportu
+při zobrazení této zprávy</translation>
     </message>
     <message>
       <source>Show report view on log message</source>
-      <translation type="unfinished">Show report view on log message</translation>
+      <translation>Zobrazit report při logovací zprávě</translation>
     </message>
     <message>
       <source>Font color for normal messages in Report view panel</source>
-      <translation type="unfinished">Font color for normal messages in Report view panel</translation>
+      <translation>Barva písma pro normální zprávy v panelu Report</translation>
     </message>
     <message>
       <source>Font color for log messages in Report view panel</source>
-      <translation type="unfinished">Font color for log messages in Report view panel</translation>
+      <translation>Barva písma pro logovací zprávy v panelu Report</translation>
     </message>
     <message>
       <source>Font color for warning messages in Report view panel</source>
-      <translation type="unfinished">Font color for warning messages in Report view panel</translation>
+      <translation>Barva písma pro zprávy varování v panelu Report</translation>
     </message>
     <message>
       <source>Font color for error messages in Report view panel</source>
-      <translation type="unfinished">Font color for error messages in Report view panel</translation>
+      <translation>Barva písma pro chybové zprávy v panelu Report</translation>
     </message>
     <message>
       <source>Internal Python output will be redirected
 from Python console to Report view panel</source>
-      <translation type="unfinished">Internal Python output will be redirected
-from Python console to Report view panel</translation>
+      <translation>Interní výstup Pythonu bude přesměrován
+z Python konzole do panelu Report</translation>
     </message>
     <message>
       <source>Internal Python error messages will be redirected
 from Python console to Report view panel</source>
-      <translation type="unfinished">Internal Python error messages will be redirected
-from Python console to Report view panel</translation>
+      <translation>Interní chybové hlášky Pythonu budou přesměrovány
+z Python konzole do panelu Report</translation>
     </message>
     <message>
       <source>Include a timecode for each report</source>
-      <translation type="unfinished">Include a timecode for each report</translation>
+      <translation>Zahrnout časovou známku pro každou zprávu</translation>
     </message>
     <message>
       <source>Include a timecode for each entry</source>
-      <translation type="unfinished">Include a timecode for each entry</translation>
+      <translation>Zahrnout časovou známku pro každou zprávu</translation>
     </message>
     <message>
       <source>Normal messages will be recorded</source>
@@ -2389,22 +2457,22 @@ from Python console to Report view panel</translation>
     <message>
       <source>Main coordinate system will always be shown in
 lower right corner within opened files</source>
-      <translation type="unfinished">Main coordinate system will always be shown in
-lower right corner within opened files</translation>
+      <translation>Hlavní souřadnicový systém bude vždy zobrazen v
+pravém dolním rohu v otevřených souborech</translation>
     </message>
     <message>
       <source>Time needed for last operation and resulting frame rate
 will be shown at the lower left corner in opened files</source>
-      <translation type="unfinished">Time needed for last operation and resulting frame rate
-will be shown at the lower left corner in opened files</translation>
+      <translation>Čas potřebný pro poslední operaci a výsledný frame rate
+bude zobrazena v levém dolním rohu v otevřených souborech</translation>
     </message>
     <message>
       <source>If checked, application will remember which workbench is active for each tab of the viewport</source>
-      <translation type="unfinished">If checked, application will remember which workbench is active for each tab of the viewport</translation>
+      <translation>Je-li zaškrtnuto, aplikace si pamatuje, které pracovní prostředí je aktivní pro každou kartu</translation>
     </message>
     <message>
       <source>Remember active workbench by tab</source>
-      <translation type="unfinished">Remember active workbench by tab</translation>
+      <translation>Pamatovat si aktivní pracovní prostředí záložky</translation>
     </message>
     <message>
       <source>Rendering</source>
@@ -2490,7 +2558,7 @@ but slower response to any scene changes.</translation>
     </message>
     <message>
       <source>Size of vertices in the Sketcher workbench</source>
-      <translation type="unfinished">Size of vertices in the Sketcher workbench</translation>
+      <translation>Velikost vrcholů v pracovním prostředí náčrtu</translation>
     </message>
     <message>
       <source>Eye to eye distance for stereo modes</source>
@@ -2510,15 +2578,15 @@ bounding box size of the 3D object that is currently displayed. </translation>
     </message>
     <message>
       <source>Backlight color</source>
-      <translation type="unfinished">Backlight color</translation>
+      <translation>Barva podsvícení</translation>
     </message>
     <message>
       <source>Intensity</source>
-      <translation type="unfinished">Intensity</translation>
+      <translation>Intenzita</translation>
     </message>
     <message>
       <source>Intensity of the backlight</source>
-      <translation type="unfinished">Intensity of the backlight</translation>
+      <translation>Intenzita podsvícení</translation>
     </message>
     <message>
       <source>Objects will be projected in orthographic projection</source>
@@ -2549,6 +2617,18 @@ Larger value eases to pick things, but can make small features impossible to sel
       <translation type="unfinished">Area for picking elements in 3D view.
 Larger value eases to pick things, but can make small features impossible to select.
                </translation>
+    </message>
+    <message>
+      <source>This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</source>
+      <translation type="unfinished">This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</translation>
+    </message>
+    <message>
+      <source>Use software OpenGL</source>
+      <translation type="unfinished">Use software OpenGL</translation>
     </message>
   </context>
   <context>
@@ -2869,11 +2949,11 @@ get date suffix according to the specified format</translation>
     </message>
     <message>
       <source>Date format</source>
-      <translation type="unfinished">Date format</translation>
+      <translation>Formát data</translation>
     </message>
     <message>
       <source>Allow objects to have same label/name</source>
-      <translation type="unfinished">Allow objects to have same label/name</translation>
+      <translation>Povolit objektům mít stejný štítek/název</translation>
     </message>
     <message>
       <source>Enable partial loading of external linked documents.
@@ -3412,10 +3492,6 @@ Mouse tilting is not disabled by this setting.</translation>
       <translation type="unfinished">Rotations in 3D will use current cursor position as center for rotation</translation>
     </message>
     <message>
-      <source>Rotate at cursor</source>
-      <translation type="unfinished">Rotate at cursor</translation>
-    </message>
-    <message>
       <source>Isometric</source>
       <translation>Izometrie</translation>
     </message>
@@ -3462,6 +3538,22 @@ Mouse tilting is not disabled by this setting.</translation>
     <message>
       <source>Default camera orientation when creating a new document or selecting the home view</source>
       <translation type="unfinished">Default camera orientation when creating a new document or selecting the home view</translation>
+    </message>
+    <message>
+      <source>Rotation mode</source>
+      <translation type="unfinished">Rotation mode</translation>
+    </message>
+    <message>
+      <source>Window center</source>
+      <translation type="unfinished">Window center</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation type="unfinished">Drag at cursor</translation>
+    </message>
+    <message>
+      <source>Object center</source>
+      <translation type="unfinished">Object center</translation>
     </message>
   </context>
   <context>
@@ -3759,15 +3851,15 @@ The preference system is the one set in the general preferences.</translation>
     <name>Gui::Dialog::DlgWorkbenches</name>
     <message>
       <source>Workbenches</source>
-      <translation>Pracovní stoly</translation>
+      <translation>Pracovní prostředí</translation>
     </message>
     <message>
       <source>Enabled workbenches</source>
-      <translation>Povolené workenche</translation>
+      <translation>Povolená pracovní prostředí</translation>
     </message>
     <message>
       <source>Disabled workbenches</source>
-      <translation>Vyřazené workbenche</translation>
+      <translation>Zakázaná pracovní prostředí</translation>
     </message>
     <message>
       <source>Move down</source>
@@ -3783,7 +3875,7 @@ The preference system is the one set in the general preferences.</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Remove the selected workbench from enabled workbenches&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Odstranit vybrané workbenche z povolených workenchů&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Odstranit vybraná pracovní prostředí z povolených&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Move right</source>
@@ -3791,11 +3883,11 @@ The preference system is the one set in the general preferences.</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Move the selected workbench to enabled workbenches.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Přesunout vybrané workbenche mezi povolené workbenche.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Přesunout vybraná pracovní prostředí mezi povolená.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Sort enabled workbenches</source>
-      <translation>Třídit povolené workbenche</translation>
+      <translation>Třídit povolená pracovní prostředí</translation>
     </message>
     <message>
       <source>Move up</source>
@@ -3807,7 +3899,7 @@ The preference system is the one set in the general preferences.</translation>
     </message>
     <message>
       <source>Add all to enabled workbenches</source>
-      <translation>Přidat všechny mezi povolené workbenche</translation>
+      <translation>Přidat všechny mezi povolená pracovní prostředí</translation>
     </message>
     <message>
       <source>&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</source>
@@ -3815,7 +3907,7 @@ The preference system is the one set in the general preferences.</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt;Note:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; The changes become active the next time you start the application&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt;Note:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; The changes become active the next time you start the application&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt;Pozn.:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; Změna bude aktivní po příštím startu FreeCADu&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -5222,7 +5314,7 @@ V pravém pohledu jsou %2 body vybrány.</translation>
     </message>
     <message>
       <source>Add property</source>
-      <translation type="unfinished">Add property</translation>
+      <translation>Přidat vlastnost</translation>
     </message>
     <message>
       <source>Remove property</source>
@@ -5996,7 +6088,7 @@ Do you want to specify another directory?</source>
     <name>Gui::WorkbenchGroup</name>
     <message>
       <source>Select the '%1' workbench</source>
-      <translation>Vyberte workbench '%1'</translation>
+      <translation>Vyberte '%1' pracovní prostředí</translation>
     </message>
   </context>
   <context>
@@ -6194,7 +6286,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Workbench failure</source>
-      <translation>Selhání Workbench</translation>
+      <translation>Selhání v pracovním prostředí</translation>
     </message>
     <message>
       <source>%1</source>
@@ -6222,11 +6314,11 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Cannot load workbench</source>
-      <translation>Nelze načíst workbench</translation>
+      <translation>Nelze načíst pracovní prostředí</translation>
     </message>
     <message>
       <source>A general error occurred while loading the workbench</source>
-      <translation>Došlo k obecné chybě při načítání workbench</translation>
+      <translation>Došlo k obecné chybě při načítání pracovního prostředí</translation>
     </message>
     <message>
       <source>Save views...</source>
@@ -6657,7 +6749,7 @@ underscore, and must not start with a digit.</translation>
     </message>
     <message>
       <source>Add property</source>
-      <translation type="unfinished">Add property</translation>
+      <translation>Přidat vlastnost</translation>
     </message>
     <message>
       <source>Failed to add property to '%1': %2</source>
@@ -8817,6 +8909,21 @@ Document: </translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewRestoreCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standardní pohledy</translation>
+    </message>
+    <message>
+      <source>Restore saved camera</source>
+      <translation type="unfinished">Restore saved camera</translation>
+    </message>
+    <message>
+      <source>Restore saved camera settings</source>
+      <translation type="unfinished">Restore saved camera settings</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewRight</name>
     <message>
       <source>Standard-View</source>
@@ -8859,6 +8966,21 @@ Document: </translation>
     <message>
       <source>Rotate the view by 90° clockwise</source>
       <translation type="unfinished">Rotate the view by 90° clockwise</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewSaveCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standardní pohledy</translation>
+    </message>
+    <message>
+      <source>Save current camera</source>
+      <translation type="unfinished">Save current camera</translation>
+    </message>
+    <message>
+      <source>Save current camera settings</source>
+      <translation type="unfinished">Save current camera settings</translation>
     </message>
   </context>
   <context>
@@ -8955,11 +9077,11 @@ Document: </translation>
     </message>
     <message>
       <source>Workbench</source>
-      <translation>Workbench</translation>
+      <translation>Pracovní prostředí</translation>
     </message>
     <message>
       <source>Switch between workbenches</source>
-      <translation>Přepnout mezi workbench</translation>
+      <translation>Přepnout mezi pracovními prostředími</translation>
     </message>
   </context>
   <context>
@@ -9448,11 +9570,11 @@ Do you still want to proceed?</translation>
     <name>Workbench</name>
     <message>
       <source>&amp;File</source>
-      <translation>Soubor</translation>
+      <translation>&amp;Soubor</translation>
     </message>
     <message>
       <source>&amp;Edit</source>
-      <translation>Upravit</translation>
+      <translation>&amp;Upravit</translation>
     </message>
     <message>
       <source>Standard views</source>
@@ -9460,11 +9582,11 @@ Do you still want to proceed?</translation>
     </message>
     <message>
       <source>&amp;Stereo</source>
-      <translation>Stereo</translation>
+      <translation>&amp;Stereo</translation>
     </message>
     <message>
       <source>&amp;Zoom</source>
-      <translation>Přiblížení</translation>
+      <translation>&amp;Přiblížení</translation>
     </message>
     <message>
       <source>Visibility</source>
@@ -9476,7 +9598,7 @@ Do you still want to proceed?</translation>
     </message>
     <message>
       <source>&amp;Tools</source>
-      <translation>&amp; Nástroje</translation>
+      <translation>&amp;Nástroje</translation>
     </message>
     <message>
       <source>&amp;Macro</source>
@@ -9484,11 +9606,11 @@ Do you still want to proceed?</translation>
     </message>
     <message>
       <source>&amp;Windows</source>
-      <translation>&amp; Okna</translation>
+      <translation>&amp;Okna</translation>
     </message>
     <message>
       <source>&amp;On-line help</source>
-      <translation>&amp; On-line Nápověda</translation>
+      <translation>&amp;On-line Nápověda</translation>
     </message>
     <message>
       <source>&amp;Help</source>
