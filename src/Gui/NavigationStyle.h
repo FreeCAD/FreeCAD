@@ -407,6 +407,24 @@ private:
     SoMouseButtonEvent mouseDownConsumedEvent;
 };
 
+class GuiExport PanNavigationStyle : public UserNavigationStyle {
+    typedef UserNavigationStyle inherited;
+
+    TYPESYSTEM_HEADER();
+
+public:
+    PanNavigationStyle();
+    ~PanNavigationStyle();
+    const char* mouseButtons(ViewerMode);
+
+protected:
+    SbBool processSoEvent(const SoEvent* const ev);
+
+private:
+    SbBool lockButton1;
+    SoMouseButtonEvent mouseDownConsumedEvent;
+};
+
 } // namespace Gui
 
 #endif // GUI_NAVIGATIONSTYLE_H 
