@@ -951,6 +951,66 @@ PyObject* MeshPy::getSegmentColor(PyObject *args)
     return Py::new_reference_to(res);
 }
 
+PyObject* MeshPy::setSegmentColor(PyObject *args)
+{
+    unsigned long index;
+    PyObject * pyColor;
+    if (!PyArg_ParseTuple(args, "kO", &index, &pyColor))
+        return 0;
+
+    unsigned long count = getMeshObjectPtr()->countSegments();
+    if (index >= count) {
+        PyErr_SetString(PyExc_IndexError, "index out of range");
+        return 0;
+    }
+
+    if (!PySequence_Check(pyColor) || PySequence_Size(pyColor)!=3)  {
+        PyErr_SetString(PyExc_TypeError, "Expects the second argument to be (float, float, float)");
+        return 0;
+    }
+    Py::Sequence seq(pyColor);
+    if (!PyFloat_Check(seq[0].ptr())
+        || !PyFloat_Check(seq[1].ptr())
+        || !PyFloat_Check(seq[2].ptr()))
+    {
+        PyErr_SetString(PyExc_TypeError, "Expects the second argument to be (float, float, float)");
+        return 0;
+    }
+    App::Color color(Py::Float(seq[0].ptr()), Py::Float(seq[1].ptr()), Py::Float(seq[2].ptr()));
+    getMeshObjectPtr()->getSegment(index).setColor(color.asHexString());
+    Py_Return;
+}
+
+PyObject* MeshPy::getSegmentName(PyObject *args)
+{
+    unsigned long index;
+    if (!PyArg_ParseTuple(args, "k", &index))
+        return 0;
+
+    unsigned long count = getMeshObjectPtr()->countSegments();
+    if (index >= count) {
+        PyErr_SetString(PyExc_IndexError, "index out of range");
+        return 0;
+    }
+    return Py::new_reference_to(Py::String(getMeshObjectPtr()->getSegment(index).getName()));
+}
+
+PyObject* MeshPy::setSegmentName(PyObject *args)
+{
+    unsigned long index;
+    const char *name;
+    if (!PyArg_ParseTuple(args, "kO", &index, &name))
+        return 0;
+
+    unsigned long count = getMeshObjectPtr()->countSegments();
+    if (index >= count) {
+        PyErr_SetString(PyExc_IndexError, "index out of range");
+        return 0;
+    }
+    getMeshObjectPtr()->getSegment(index).setName(name);
+    Py_Return;
+}
+
 PyObject* MeshPy::getSeparateComponents(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))

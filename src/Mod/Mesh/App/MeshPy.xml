@@ -192,6 +192,21 @@ mesh.write(Stream=file,Format='STL',[Name='Object name',Material=colors])</UserD
 				<UserDocu>Get the color of a segment</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="setSegmentColor">
+			<Documentation>
+				<UserDocu>Set the color of a segment</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="getSegmentName" Const="true">
+			<Documentation>
+				<UserDocu>Get the name of a segment</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="setSegmentName">
+			<Documentation>
+				<UserDocu>Set the name of a segment</UserDocu>
+			</Documentation>
+		</Methode>
 		<Methode Name="addSegment">
 			<Documentation>
                 <UserDocu>
