@@ -61,31 +61,25 @@ def findVert(aVertex,aList):
                     return i
     return None
 
-def getIndices(shape,offsetv,offsetvn,colors=None):
-    "returns a list with 2 lists: vertices and face indexes, offset with the given amount"
+def getIndices(shape,offsetv,offsetvn,colors,dosegment):
     vlist = []
     vnlist = []
     elist = []
     flist = []
-    segments = defaultdict(list)
+    if dosegment:
+        segments = defaultdict(list)
+    else:
+        segments = None
     mesh = None
 
     if not isinstance(colors, list):
         colors = []
 
     if isinstance(shape,Part.Shape):
-        for e in shape.Edges:
-            if isinstance(e.Curve,Part.LineSegment):
-                continue
-            myshape = shape.copy(False)
-            mesh = MeshPart.meshFromShape(Shape=myshape,
-                                          LinearDeflection=0.1,
-                                          AngularDeflection=0.7,
-                                          Relative=True,
-                                          Segments=True if colors else False,
-                                          GroupColors=colors)
-            FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating")+"\n")
-            break
+        mesh = Arch.triangulate(shape,dosegment)
+        if mesh.countSegments() and mesh.countSegments() == len(colors):
+            for i,c in enumerate(colors):
+                mesh.setSegmentColor(i, c[:3])
     elif isinstance(shape,Mesh.Mesh):
         mesh = shape
 
@@ -102,50 +96,10 @@ def getIndices(shape,offsetv,offsetvn,colors=None):
                          " "+str(vn[1]+offsetv)+"//"+str(i+offsetvn)+\
                          " "+str(vn[2]+offsetv)+"//"+str(i+offsetvn)+" ")
 
-        if mesh.countSegments():
+        if dosegment and mesh.countSegments():
             for i in range(0, mesh.countSegments()):
                 color = mesh.getSegmentColor(i)
                 segments[color] += mesh.getSegment(i)
-    else:
-        vertexes = shape.Vertexes
-        faces = shape.Faces
-        for v in vertexes:
-            vlist.append(" "+str(round(v.X,p))+" "+str(round(v.Y,p))+" "+str(round(v.Z,p)))
-        if not faces:
-            for e in shape.Edges:
-                if DraftGeomUtils.geomType(e) == "Line":
-                    ei = " " + str(findVert(e.Vertexes[0],vertexes) + offsetv)
-                    ei += " " + str(findVert(e.Vertexes[-1],vertexes) + offsetv)
-                    elist.append(ei)
-
-        for fi,f in enumerate(faces):
-            if colors and len(colors) == len(flist):
-                segment = segments[colors[fi]]
-            else:
-                segment = None
-            if len(f.Wires) > 1:
-                # if we have holes, we triangulate
-                tris = f.tessellate(1)
-                for fdata in tris[1]:
-                    fi = ""
-                    for vi in fdata:
-                        vdata = Part.Vertex(tris[0][vi])
-                        fi += " " + str(findVert(vdata,vertexes) + offsetv)
-                    if segment:
-                        segment.append(len(flist))
-                    flist.append(fi)
-            else:
-                fi = ""
-                for e in f.OuterWire.OrderedEdges:
-                    #print(e.Vertexes[0].Point,e.Vertexes[1].Point)
-                    v = e.Vertexes[0]
-                    ind = findVert(v,vertexes)
-                    if ind is None:
-                        return [None]*5
-                    fi += " " + str(ind + offsetv)
-                if segment:
-                    segment.append(len(flist))
-                flist.append(fi)
 
     return vlist,vnlist,elist,flist,segments
 
@@ -192,26 +146,6 @@ def exportSelection(filename, colors=None):
             objset.add((sel.Object, Part.splitSubname(sub)[0]))
     _export(objset, filename, colors)
 
-def _findMeshes(obj, matrix, colors):
-    res = []
-    for sub in obj.getSubObjects():
-        sobj, mat = obj.getSubObject(sub,
-                                     matrix=matrix,
-                                     retType=1,
-                                     transform=False)
-        if not sobj:
-            continue
-        linked, mat = sobj.getLinkedObject(recursive=True, matrix=mat, transform=False)
-        # DO NOT use getattr(obj, 'Mesh') because incomplete support of Mesh in
-        # Link, especially link array!
-        if linked.isDerivedFrom('Mesh::Feature'):
-            mesh = linked.Mesh.copy()
-            mesh.Placement = FreeCAD.Placement(mat)
-            res.append((sobj.Label, mesh, colors.get(sobj.FullName, None)))
-            continue
-        res += _findMeshes(linked, mat, colors)
-    return res
-
 def _export(exportSet, filename, colors):
     '''Internal function used to export a list of object to OBJ format.
 
@@ -227,6 +161,10 @@ def _export(exportSet, filename, colors):
     offsetv = 1
     offsetvn = 1
 
+    param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+    # DAE and OBJ format share the same parameters
+    dosegment = param.GetBool("ColladaExportSegments", False)
+
     exportList = list(exportSet)
     objectslist = Draft.get_group_contents(exportList, walls=True,
                                            addgroups=True)
@@ -241,6 +179,7 @@ def _export(exportSet, filename, colors):
 
     tmpobj = None
     mat0 = FreeCAD.Matrix()
+    namemap = defaultdict(list)
     for parentobj, sub in objectslist:
         sobj, mat = parentobj.getSubObject(sub, retType=1, matrix=mat0)
 
@@ -292,33 +231,28 @@ def _export(exportSet, filename, colors):
         elif obj.isDerivedFrom('Mesh::Feature'):
             mesh = obj.Mesh.copy()
             mesh.Placement = FreeCAD.Placement(mat)
-            shapelist.append((sobj.Label, mesh, colors.get(sobj.FullName, None)))
+            color = colors.get(sobj.FullName, colors.get(obj.FullName, None))
+            shapelist.append((sobj.Label, mesh, color))
         else:
-            meshes = _findMeshes(obj, mat, colors)
-            shapelist += meshes
-
             shape = Part.getShape(parentobj, sub)
             if shape.isNull():
-                if not meshes:
-                    FreeCAD.Console.PrintError("Unable to export object %s (%s.%s), Skipping.\n" \
-                                                % (sobj.Label, sobj.FullName, sub))
-                    continue
+                FreeCAD.Console.PrintError("Unable to export object %s (%s.%s), Skipping.\n" \
+                                            % (sobj.Label, sobj.FullName, sub))
+                continue
             else:
                 facecolors = None
-                try:
-                    color = colors[sobj.FullName]
+                color = colors.get(sobj.FullName, colors.get(obj.FullName, None))
+                if color:
                     if isinstance(color[0], tuple):
                         facecolors = color
                     else:
                         facecolors = [color]
-                except Exception:
-                    pass
 
                 if FreeCAD.GuiUp:
                     vobj = sobj.ViewObject
                     try:
-                        # This is to make vobj actually owns a property called
-                        # 'DiffuseColor'
+                        # This is to make sure vobj actually owns a property
+                        # called 'DiffuseColor'
                         facecolors = vobj.getPropertyByName('DiffuseColor',1)
                     except Exception:
                         # If not, then the view object is probably a link or a
@@ -353,16 +287,23 @@ def _export(exportSet, filename, colors):
                         m = True
                         colorlist = None
 
-            vlist,vnlist,elist,flist,segments = getIndices(shape,offsetv,offsetvn,colorlist)
+            vlist,vnlist,elist,flist,segments = getIndices(
+                    shape,offsetv,offsetvn,colorlist,dosegment)
             if not vlist:
                 FreeCAD.Console.PrintError("Unable to export object %s (%s), Skipping.\n" \
-                        % sobj.Label, name)
+                        % (sobj.Label, name))
                 continue
 
             offsetv += len(vlist)
             offsetvn += len(vnlist)
 
-            outfile.write("o " + name + "\n")
+            nameref = namemap[name]
+            if not nameref:
+                nameref.append(0)
+                outfile.write("o " + name + "\n")
+            else:
+                nameref[0] += 1
+                outfile.write("o %s_%d\n" % (name, nameref[0]))
 
             # write geometry
             for v in vlist:
@@ -532,7 +473,7 @@ def makeMesh(doc,activeobject,verts,facets,material,colortable):
         mobj = doc.addObject("Mesh::Feature",'Mesh')
         mobj.Label = activeobject
         mesh = Mesh.Mesh(mfacets)
-        segements = False
+        segments = False
         if len(material) > 1:
             err = None
             for name, begin, end in material:

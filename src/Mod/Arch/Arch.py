@@ -67,3 +67,4 @@ from ArchBuildingPart import *
 from ArchReference import *
 from ArchTruss import *
 from ArchCurtainWall import *
+from importDAE import triangulate

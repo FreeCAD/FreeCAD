@@ -244,22 +244,30 @@ def get_group_contents(objectslist,
                     # Skip if the group is a Drawing page
                     # Note: the Drawing workbench is obsolete
                     newlist.append(item)
+                    continue
                 else:
                     if addgroups or (spaces
                                      and utils.get_type(obj) == "Space"):
                         newlist.append(item)
+                        continue
                     if (noarchchild
                             and utils.get_type(obj) in ("Building",
                                                         "BuildingPart")):
-                        pass
-                    elif obj is not item:
-                        for o, sub in get_group_contents(
-                                [(child, '') for child in obj.Group], walls, addgroups):
-                            newlist.append((item[0], item[1] + o.Name + '.' + sub))
+                        continue
+
+            subs = obj.getSubObjects()
+            if subs:
+                children = []
+                for sub in subs:
+                    if obj is not item:
+                        children.append((item[0], item[1]+sub))
                     else:
-                        newlist.extend(get_group_contents(obj.Group,
-                                                          walls, addgroups))
-            else:
+                        sobj = obj.getSubObject(sub)
+                        if sobj:
+                            children.append(sobj)
+                newlist += get_group_contents(children, walls, False)
+
+            elif not newlist or newlist[-1] is not item:
                 # print("adding ", obj.Name)
                 newlist.append(item)
                 if walls:

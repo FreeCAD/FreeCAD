@@ -7,19 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>333</width>
-    <height>414</height>
+    <height>546</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>DAE</string>
+   <string>DAE/OBJ</string>
   </property>
-  <layout class="QVBoxLayout">
-   <property name="spacing">
-    <number>6</number>
-   </property>
-   <property name="margin">
-    <number>9</number>
-   </property>
+  <layout class="QVBoxLayout" name="verticalLayout_5">
    <item>
     <widget class="QGroupBox" name="groupBox_3">
      <property name="title">
@@ -98,6 +92,64 @@ If using Netgen, make sure that it is available.</string>
          </widget>
         </item>
        </layout>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_4">
+        <property name="toolTip">
+         <string>Enable this to use instances for linked objects/groups.
+Only supported when using DAE format.</string>
+        </property>
+        <property name="text">
+         <string>Export instances</string>
+        </property>
+        <property name="prefPath" stdset="0">
+         <string>Mod/Arch</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <string>ColladaExportInstances</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_6">
+        <property name="toolTip">
+         <string>Export mesh segments. For Part/PartDesign shapes, export segment using faces.</string>
+        </property>
+        <property name="text">
+         <string>Export segments</string>
+        </property>
+        <property name="prefPath" stdset="0">
+         <string>Mod/Arch</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <string>ColladaExportSegments</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_4">
+     <property name="title">
+      <string>Import options</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_4">
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_5">
+        <property name="toolTip">
+         <string>Import instances as links. Only supported in DAE format.</string>
+        </property>
+        <property name="text">
+         <string>Import instances</string>
+        </property>
+        <property name="prefPath" stdset="0">
+         <string>Mod/Arch</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <string>ColladaImportInstances</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
