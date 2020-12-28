@@ -19870,7 +19870,7 @@ class basic_json
 
     @throw type_error.304 if the JSON value is not an object; in this case,
     calling `at` with a key makes no sense. See example below.
-    @throw out_of_range.403 if the key @a key is is not stored in the object;
+    @throw out_of_range.403 if the key @a key is not stored in the object;
     that is, `find(key) == end()`. See example below.
 
     @exceptionsafety Strong guarantee: if an exception is thrown, there are no
@@ -19921,7 +19921,7 @@ class basic_json
 
     @throw type_error.304 if the JSON value is not an object; in this case,
     calling `at` with a key makes no sense. See example below.
-    @throw out_of_range.403 if the key @a key is is not stored in the object;
+    @throw out_of_range.403 if the key @a key is not stored in the object;
     that is, `find(key) == end()`. See example below.
 
     @exceptionsafety Strong guarantee: if an exception is thrown, there are no

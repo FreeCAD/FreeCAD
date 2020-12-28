@@ -85,7 +85,7 @@ curveonSurface(Edge) -> None or tuple
 Returns the curve  associated to the  edge in  the
 parametric  space of  the  face.  Returns None if this
 curve  does not exist. If this curve exists then a tuple
-of curve and and parameter range is returned.
+of curve and parameter range is returned.
 				</UserDocu>
 			</Documentation>
 		</Methode>
