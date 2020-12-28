@@ -865,7 +865,7 @@ void TopoShape::importBrep(const char *FileName)
         BRepTools::Read(aShape,encodeFilename(FileName).c_str(),aBuilder,pi);
         pi->EndScope();
 #else
-        BRepTools::Read(aShape,(const Standard_CString)FileName,aBuilder);
+        BRepTools::Read(aShape,(Standard_CString)FileName,aBuilder);
 #endif
         this->_Shape = aShape;
     }
