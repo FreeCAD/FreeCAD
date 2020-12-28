@@ -226,6 +226,7 @@ public:
     void LogQRSystemInformation(const System &system, int paramsNum = 0, int constrNum = 0, int rank = 0);
 
     void LogGroupOfConstraints(const std::string & str, std::vector< std::vector<Constraint *> > constraintgroups);
+    void LogGroupOfParameters(const std::string & str, std::vector< std::vector<double *> > parametergroups);
 
     void LogMatrix(const std::string str, Eigen::MatrixXd matrix);
     void LogMatrix(const std::string str, MatrixIndexType matrix);
@@ -367,6 +368,23 @@ void SolverReportingManager::LogGroupOfConstraints(const std::string & str, std:
     LogString(tempstream.str());
 }
 
+void SolverReportingManager::LogGroupOfParameters(const std::string & str, std::vector< std::vector<double *> > parametergroups)
+{
+    std::stringstream tempstream;
+
+    tempstream << str << ":" << '\n';
+
+    for(size_t i = 0; i < parametergroups.size(); i++)  {
+        tempstream << "[";
+
+        for(auto p : parametergroups[i])
+            tempstream << std::hex << p << " ";
+
+        tempstream << "]" << '\n';
+    }
+
+    LogString(tempstream.str());
+}
 
 #ifdef _GCS_DEBUG
 void SolverReportingManager::LogMatrix(const std::string str, Eigen::MatrixXd matrix)
@@ -4017,9 +4035,9 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
             //
             // Debug:
             // auto fut = std::async(std::launch::deferred,&System::identifyDependentParametersSparseQR,this,J,jacobianconstraintmap, pdiagnoselist, false);
-            auto fut = std::async(&System::identifyDependentParametersSparseQR,this,J,jacobianconstraintmap, pdiagnoselist, false);
+            auto fut = std::async(&System::identifyDependentParametersSparseQR,this,J,jacobianconstraintmap, pdiagnoselist, /*silent=*/true);
 
-            makeSparseQRDecomposition( J, jacobianconstraintmap, SqrJT, rank, R);
+            makeSparseQRDecomposition( J, jacobianconstraintmap, SqrJT, rank, R, /*transposed=*/true, /*silent=*/false);
 
             int paramsNum = SqrJT.rows();
             int constrNum = SqrJT.cols();
@@ -4260,21 +4278,31 @@ void System::identifyDependentParameters(   T & qrJ,
     if(!silent)
         SolverReportingManager::Manager().LogMatrix("Rparams_nonzeros_over_pilot", Rparams);
 #endif
+
     pDependentParametersGroups.resize(qrJ.cols()-rank);
     for (int j=rank; j < qrJ.cols(); j++) {
         for (int row=0; row < rank; row++) {
             if (fabs(Rparams(row,j)) > 1e-10) {
                 int origCol = qrJ.colsPermutation().indices()[row];
 
-                pDependentParametersGroups[j-rank].insert(pdiagnoselist[origCol]);
+                pDependentParametersGroups[j-rank].push_back(pdiagnoselist[origCol]);
                 pDependentParameters.push_back(pdiagnoselist[origCol]);
             }
         }
         int origCol = qrJ.colsPermutation().indices()[j];
 
-        pDependentParametersGroups[j-rank].insert(pdiagnoselist[origCol]);
+        pDependentParametersGroups[j-rank].push_back(pdiagnoselist[origCol]);
         pDependentParameters.push_back(pdiagnoselist[origCol]);
     }
+
+#ifdef _GCS_DEBUG
+    if(!silent) {
+        SolverReportingManager::Manager().LogMatrix("PermMatrix", (Eigen::MatrixXd)qrJ.colsPermutation());
+
+        SolverReportingManager::Manager().LogGroupOfParameters("ParameterGroups",pDependentParametersGroups);
+    }
+
+#endif
 }
 
 void System::identifyDependentGeometryParametersInTransposedJacobianDenseQRDecomposition(

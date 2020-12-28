@@ -106,7 +106,7 @@ namespace GCS
 
         // This is a map of primary and secondary identifiers that are found dependent by the solver
         // GCS ignores from a type point
-        std::vector< std::set<double *> > pDependentParametersGroups;
+        std::vector< std::vector<double *> > pDependentParametersGroups;
 
         std::vector<Constraint *> clist;
         std::map<Constraint *,VEC_pD > c2p; // constraint to parameter adjacency list
@@ -363,7 +363,7 @@ namespace GCS
           { redundantOut = hasDiagnosis ? redundantTags : VEC_I(0); }
         void getDependentParams(VEC_pD &pdependentparameterlist) const
           { pdependentparameterlist = pDependentParameters;}
-        void getDependentParamsGroups(std::vector<std::set<double *>> &pdependentparametergroups) const
+        void getDependentParamsGroups(std::vector<std::vector<double *>> &pdependentparametergroups) const
           { pdependentparametergroups = pDependentParametersGroups;}
         bool isEmptyDiagnoseMatrix() const {return emptyDiagnoseMatrix;}
         void invalidatedDiagnosis();
