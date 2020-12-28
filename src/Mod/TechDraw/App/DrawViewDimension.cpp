@@ -485,7 +485,7 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
         }
         m_arcPoints = pts;
         m_hasGeometry = true;
-    } else if(Type.isValue("Angle")){
+    } else if (Type.isValue("Angle")){
         if (getRefType() != twoEdge) {
              Base::Console().Log("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
              return App::DocumentObject::StdReturn;
@@ -529,7 +529,7 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
         pts.vertex = apex;
         m_anglePoints = pts;
         m_hasGeometry = true;
-    } else if(Type.isValue("Angle3Pt")){
+    } else if (Type.isValue("Angle3Pt")){
         if (getRefType() != threeVertex) {
              Base::Console().Log("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
              return App::DocumentObject::StdReturn;
@@ -629,8 +629,6 @@ std::string DrawViewDimension::formatValue(qreal value, QString qFormatSpec, int
     QString qUserString = asQuantity.getUserString();  // this handles mm to inch/km/parsec etc
                                                        // and decimal positions but won't give more than
                                                        // Global_Decimals precision
-                                                       // really should be able to ask units for value
-                                                       // in appropriate UoM!!
 
     //units api: get schema to figure out if this is multi-value schema(Imperial1, ImperialBuilding, etc)
     //if it is multi-unit schema, don't even try to use Alt Decimals
@@ -664,7 +662,7 @@ std::string DrawViewDimension::formatValue(qreal value, QString qFormatSpec, int
         formattedValue = qMultiValueStr;
     } else {
         if (formatSpecifier.isEmpty()) {
-            Base::Console().Warning("Warning - no numeric format in formatSpec %s - %s\n",
+            Base::Console().Warning("Warning - no numeric format in Format Spec %s - %s\n",
                                     qPrintable(qFormatSpec), getNameInDocument());
             return Base::Tools::toStdString(qFormatSpec);
         }
@@ -693,7 +691,16 @@ std::string DrawViewDimension::formatValue(qreal value, QString qFormatSpec, int
         // get the conversion factor for the unit
         double convertValue = Base::Quantity::parse(QString::fromLatin1("1") + QString::fromStdString(BaseLengthUnit)).getValue();
         // the result is now just val / convertValue because val is always in the base unit
-        double userVal = asQuantity.getValue() / convertValue;
+        // don't do this for angular values since they are not in the BaseLengthUnit
+        double userVal;
+        if (!angularMeasure) {
+            userVal = asQuantity.getValue() / convertValue;
+            // since we converted to the BaseLengthUnit we must assure it is also used for qUserStringUnits
+            qUserStringUnits = QChar::fromLatin1(' ') + QString::fromStdString(BaseLengthUnit);
+        }
+        else {
+            userVal = asQuantity.getValue();
+        }
 
         // we reformat the value
         // the user can overwrite the decimal settings, so we must in every case use the formatSpecifier
@@ -751,7 +758,7 @@ std::string DrawViewDimension::formatValue(qreal value, QString qFormatSpec, int
             Base::Tools::toStdString(formatSuffix);
     }
     else if (partial == 2) {             // just the unit
-        if ((Type.isValue("Angle")) || (Type.isValue("Angle3Pt"))) {
+        if (angularMeasure) {
             // remove space between dimension and unit if unit is not "deg"
             if ( !qUserStringUnits.contains(QString::fromLatin1("deg")) ) {
                 QRegExp space(QString::fromUtf8("\\s"));
