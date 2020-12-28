@@ -23,7 +23,7 @@
 #ifndef _DrawView_h_
 #define _DrawView_h_
 
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 
 #include <QCoreApplication>
 #include <QRectF>

@@ -35,7 +35,7 @@
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/member.hpp>
 #include <boost/multi_index/ordered_index.hpp>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 
 #include "DAGRectItem.h"
 

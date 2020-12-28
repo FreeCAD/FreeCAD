@@ -39,7 +39,7 @@
     #include <QPrinter>
     #include <QPrintDialog>
     #include <QPrintPreviewDialog>
-    #include <boost/signals2.hpp>
+    #include <boost_signals2.hpp>
     #include <boost_bind_bind.hpp>
 
 #endif  // #ifndef _PreComp_

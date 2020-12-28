@@ -177,7 +177,7 @@
 #include <Python.h>
 
 // Boost
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 #include <boost/bind/bind.hpp>
 
 // Qt Toolkit

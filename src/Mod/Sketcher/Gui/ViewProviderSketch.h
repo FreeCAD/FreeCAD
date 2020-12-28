@@ -33,7 +33,7 @@
 #include <Gui/Selection.h>
 #include <Gui/GLPainter.h>
 #include <App/Part.h>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 #include <QCoreApplication>
 #include <Gui/Document.h>
 #include "ShortcutListener.h"

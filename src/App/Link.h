@@ -24,7 +24,7 @@
 #define APP_LINK_H
 
 #include <unordered_set>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 #include <boost/preprocessor/facilities/expand.hpp>
 #include <boost/preprocessor/cat.hpp>
 #include <boost/preprocessor/seq/for_each.hpp>
