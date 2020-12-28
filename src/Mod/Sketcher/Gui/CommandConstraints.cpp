@@ -145,13 +145,13 @@ bool SketcherGui::checkBothExternal(int GeoId1, int GeoId2)
         return (GeoId1 < 0 && GeoId2 < 0);
 }
 
-bool SketcherGui::checkBothExternalOrConstructionPoints(const Sketcher::SketchObject* Obj,int GeoId1, int GeoId2)
+bool SketcherGui::checkBothExternalOrBSplinePoints(const Sketcher::SketchObject* Obj,int GeoId1, int GeoId2)
 {
     if (GeoId1 == Constraint::GeoUndef || GeoId2 == Constraint::GeoUndef)
         return false;
     else
-        return (GeoId1 < 0 && GeoId2 < 0) || (isConstructionPoint(Obj,GeoId1) && isConstructionPoint(Obj,GeoId2)) ||
-        (GeoId1 < 0 && isConstructionPoint(Obj,GeoId2)) || (GeoId2 < 0 && isConstructionPoint(Obj,GeoId1));
+        return (GeoId1 < 0 && GeoId2 < 0) || (isBsplineKnot(Obj,GeoId1) && isBsplineKnot(Obj,GeoId2)) ||
+        (GeoId1 < 0 && isBsplineKnot(Obj,GeoId2)) || (GeoId2 < 0 && isBsplineKnot(Obj,GeoId1));
 }
 
 bool SketcherGui::isPointOrSegmentFixed(const Sketcher::SketchObject* Obj, int GeoId)
@@ -161,7 +161,7 @@ bool SketcherGui::isPointOrSegmentFixed(const Sketcher::SketchObject* Obj, int G
     if (GeoId == Constraint::GeoUndef)
         return false;
     else
-        return checkConstraint(vals, Sketcher::Block, GeoId, Sketcher::none) || GeoId <= Sketcher::GeoEnum::RtPnt || isConstructionPoint(Obj,GeoId);
+        return checkConstraint(vals, Sketcher::Block, GeoId, Sketcher::none) || GeoId <= Sketcher::GeoEnum::RtPnt || isBsplineKnot(Obj,GeoId);
 }
 
 bool SketcherGui::areBothPointsOrSegmentsFixed(const Sketcher::SketchObject* Obj, int GeoId1, int GeoId2)
@@ -171,8 +171,8 @@ bool SketcherGui::areBothPointsOrSegmentsFixed(const Sketcher::SketchObject* Obj
     if (GeoId1 == Constraint::GeoUndef || GeoId2 == Constraint::GeoUndef)
         return false;
     else
-        return ((checkConstraint(vals, Sketcher::Block, GeoId1, Sketcher::none) || GeoId1 <= Sketcher::GeoEnum::RtPnt || isConstructionPoint(Obj,GeoId1)) &&
-                (checkConstraint(vals, Sketcher::Block, GeoId2, Sketcher::none) || GeoId2 <= Sketcher::GeoEnum::RtPnt || isConstructionPoint(Obj,GeoId2)));
+        return ((checkConstraint(vals, Sketcher::Block, GeoId1, Sketcher::none) || GeoId1 <= Sketcher::GeoEnum::RtPnt || isBsplineKnot(Obj,GeoId1)) &&
+                (checkConstraint(vals, Sketcher::Block, GeoId2, Sketcher::none) || GeoId2 <= Sketcher::GeoEnum::RtPnt || isBsplineKnot(Obj,GeoId2)));
 }
 
 bool SketcherGui::areAllPointsOrSegmentsFixed(const Sketcher::SketchObject* Obj, int GeoId1, int GeoId2, int GeoId3)
@@ -182,9 +182,9 @@ bool SketcherGui::areAllPointsOrSegmentsFixed(const Sketcher::SketchObject* Obj,
     if (GeoId1 == Constraint::GeoUndef || GeoId2 == Constraint::GeoUndef || GeoId3 == Constraint::GeoUndef)
         return false;
     else
-        return ((checkConstraint(vals, Sketcher::Block, GeoId1, Sketcher::none) || GeoId1 <= Sketcher::GeoEnum::RtPnt || isConstructionPoint(Obj,GeoId1)) &&
-                (checkConstraint(vals, Sketcher::Block, GeoId2, Sketcher::none) || GeoId2 <= Sketcher::GeoEnum::RtPnt || isConstructionPoint(Obj,GeoId2)) &&
-                (checkConstraint(vals, Sketcher::Block, GeoId3, Sketcher::none) || GeoId3 <= Sketcher::GeoEnum::RtPnt || isConstructionPoint(Obj,GeoId3)));
+        return ((checkConstraint(vals, Sketcher::Block, GeoId1, Sketcher::none) || GeoId1 <= Sketcher::GeoEnum::RtPnt || isBsplineKnot(Obj,GeoId1)) &&
+                (checkConstraint(vals, Sketcher::Block, GeoId2, Sketcher::none) || GeoId2 <= Sketcher::GeoEnum::RtPnt || isBsplineKnot(Obj,GeoId2)) &&
+                (checkConstraint(vals, Sketcher::Block, GeoId3, Sketcher::none) || GeoId3 <= Sketcher::GeoEnum::RtPnt || isBsplineKnot(Obj,GeoId3)));
 }
 
 void SketcherGui::getIdsFromName(const std::string &name, const Sketcher::SketchObject* Obj,
@@ -235,10 +235,10 @@ bool SketcherGui::isSimpleVertex(const Sketcher::SketchObject* Obj, int GeoId, P
         return false;
 }
 
-bool SketcherGui::isConstructionPoint(const Sketcher::SketchObject* Obj, int GeoId)
+bool SketcherGui::isBsplineKnot(const Sketcher::SketchObject* Obj, int GeoId)
 {
-    const Part::Geometry * geo = Obj->getGeometry(GeoId);
-    return (geo && geo->getTypeId() == Part::GeomPoint::getClassTypeId() && GeometryFacade::getConstruction(geo));
+    auto gf = Obj->getGeometryFacade(GeoId);
+    return (gf && gf->getInternalType() == Sketcher::InternalType::BSplineKnotPoint);
 }
 
 bool SketcherGui::IsPointAlreadyOnCurve(int GeoIdCurve, int GeoIdPoint, Sketcher::PointPos PosIdPoint, Sketcher::SketchObject* Obj)
@@ -1614,7 +1614,7 @@ void CmdSketcherConstrainLock::activated(int iMsg)
         lastconstraintindex+=2;
 
         if (edgeisblocked || GeoId[0] <= Sketcher::GeoEnum::RefExt
-                || isConstructionPoint(Obj,GeoId[0])
+                || isBsplineKnot(Obj,GeoId[0])
                 || constraintCreationMode==Reference) {
             // it is a constraint on a external line, make it non-driving
 
@@ -2409,7 +2409,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
 
             // it is a constraint on a external line, make it non-driving
             if (arebothpointsorsegmentsfixed || GeoId1 <= Sketcher::GeoEnum::RefExt ||
-                isConstructionPoint(Obj,GeoId1) || constraintCreationMode==Reference) {
+                isBsplineKnot(Obj,GeoId1) || constraintCreationMode==Reference) {
                 const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
                 Gui::cmdAppObjectArgs(selection[0].getObject(), "setDriving(%i,%s)",
@@ -2502,7 +2502,7 @@ void CmdSketcherConstrainDistance::applyConstraint(std::vector<SelIdPair> &selSe
 
             if (arebothpointsorsegmentsfixed
                     || GeoId1 <= Sketcher::GeoEnum::RefExt
-                    || isConstructionPoint(Obj,GeoId1)
+                    || isBsplineKnot(Obj,GeoId1)
                     || constraintCreationMode==Reference) {
                 // it is a constraint on a external line, make it non-driving
                 const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
@@ -3189,7 +3189,7 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
             GeoId1,PosId1,ActY);
 
         if (GeoId1 <= Sketcher::GeoEnum::RefExt
-                || isConstructionPoint(Obj,GeoId1)
+                || isBsplineKnot(Obj,GeoId1)
                 || constraintCreationMode==Reference) {
             // it is a constraint on a external line, make it non-driving
             const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
