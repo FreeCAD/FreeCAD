@@ -224,6 +224,8 @@ void SoBrepEdgeSet::glRender(SoGLRenderAction *action, bool inpath)
 
     SoColorPacker packer;
     float trans = 0.0;
+    float width = 0.0;
+    float oldWidth = 0.0f;
 
     for(;pass<=2;++pass) {
         state->push();
@@ -245,14 +247,13 @@ void SoBrepEdgeSet::glRender(SoGLRenderAction *action, bool inpath)
                 // (but forced to shown by on top rendering)
                 SoLazyElement::setTransparency(state,this,1,&trans,&packer);
             }
-            float width = SoLineWidthElement::get(state);
+            width = oldWidth = SoLineWidthElement::get(state);
             if(width < 1.0)
                 width = 1.0;
             if (Gui::SoFCDisplayModeElement::showHiddenLines(state))
                 width = std::max(width, (float)Gui::ViewParams::instance()->getSelectionHiddenLineWidth());
             else if(Gui::ViewParams::instance()->getSelectionLineThicken()>1.0)
                 width *= Gui::ViewParams::instance()->getSelectionLineThicken();
-            SoLineWidthElement::set(state,width);
             pass = 2;
         }
 
@@ -273,6 +274,10 @@ void SoBrepEdgeSet::glRender(SoGLRenderAction *action, bool inpath)
                 continue;
             }
         }
+
+        if (width != oldWidth)
+            SoLineWidthElement::set(state,width);
+
         if(!inpath && ctx2 && ctx2->isSelected())
             renderSelection(action,ctx2,false);
         else if (!inpath) {
@@ -309,6 +314,9 @@ void SoBrepEdgeSet::glRender(SoGLRenderAction *action, bool inpath)
                 state->pop();
             }
         }
+
+        if (width != oldWidth)
+            SoLineWidthElement::set(state,oldWidth);
 
         if(ctx && ctx->isSelected() && ctx->hasSelectionColor())
             renderSelection(action,ctx);

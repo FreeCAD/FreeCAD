@@ -170,7 +170,7 @@ void SoBrepPointSet::glRender(SoGLRenderAction *action, bool inpath)
                 return;
         }
         depthGuard.set(GL_LEQUAL);
-    } else if (inpath || delayrendering)
+    } else if (inpath && !delayrendering)
         depthGuard.set(GL_LEQUAL);
     else
         inpath = false;
