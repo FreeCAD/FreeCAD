@@ -670,7 +670,7 @@ def export( exportList, filename, colors = None, camera = None ):
                                 break
                         if not found: break
                     if not found:
-                        FreeCAD.Console.PrintMessage("Facet to Face Mismach.\n")
+                        FreeCAD.Console.PrintMessage("Facet to Face Mismatch.\n")
                         objdata['facesToFacets'] = []
                         break
                     
@@ -685,7 +685,7 @@ def export( exportList, filename, colors = None, camera = None ):
                                 break
                         if not found: break
                     if not found:
-                        FreeCAD.Console.PrintMessage("Facet List Mismach.\n")
+                        FreeCAD.Console.PrintMessage("Facet List Mismatch.\n")
                         objdata['facesToFacets'] = []
                         break
                     

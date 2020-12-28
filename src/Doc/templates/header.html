@@ -20,16 +20,21 @@
         $mathjax
         <link href="$relpath^$stylesheet" rel="stylesheet" type="text/css" />
         $extrastylesheet
-        <link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+        <!--<link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>-->
         <link rel="stylesheet" href="$relpath^freecad.css">
         <script type="text/javascript" src="$relpath^doxy-boot.js"></script>
-        <link rel="shortcut icon" href="favicon.ico">
+        <link rel="shortcut icon" href="https://freecadweb.org/images/favicon.ico">
     </head>
     <body>        
         <ul class="navbar" role="navigation">
+            <li>
+                <a href="https://freecadweb.org" title="FreeCAD">
+                    <img src="https://freecadweb.org/images/freecad-logo.png">
+                </a>
+            </li>
             <li><a href="$relpath^index.html" title="Index">Index</a></li>
-            <li><a href="$relpath^modules.html" title="Modules list">Modules Hierarchy</a></li>
-            <li><a href="$relpath^annotated.html" title="Annotated list">Alphabetical list</a></li>
+            <li><a href="$relpath^modules.html" title="Modules list">Modules</a></li>
+            <li><a href="$relpath^annotated.html" title="Annotated list">Classes</a></li>
         </ul>
         
         <div id="top" class="maincontents"><!-- do not remove this div, it is closed by doxygen! -->

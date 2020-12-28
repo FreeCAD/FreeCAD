@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>438</width>
-    <height>474</height>
+    <height>711</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -574,14 +574,14 @@
            </size>
           </property>
           <property name="text">
-           <string>Datum color</string>
+           <string>Dimensional constraint color</string>
           </property>
          </widget>
         </item>
         <item row="17" column="1">
          <widget class="Gui::PrefColorButton" name="DatumColor">
           <property name="toolTip">
-           <string>Color of the datum portion of a driving constraint</string>
+           <string>Color of dimensional driving constraints</string>
           </property>
           <property name="color">
            <color>

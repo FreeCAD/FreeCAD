@@ -294,7 +294,7 @@ int SketchObject::solve(bool updateGeoAfterSolving/*=true*/)
         Base::Console().Error("Sketch %s has malformed constraints!\n",this->getNameInDocument());
     }
 
-    lastSolveTime=solvedSketch.SolveTime;
+    lastSolveTime=solvedSketch.getSolveTime();
 
     if (err == 0 && updateGeoAfterSolving) {
         // set the newly solved geometry
@@ -1155,12 +1155,10 @@ int SketchObject::toggleConstruction(int GeoId)
         }
     }
 
-    // There is not actual intertransaction going on here, however for a toggle neither the geometry indices nor the vertices need to be updated
-    // so this is a convenient way of preventing it.
-    {
-        Base::StateLocker lock(internaltransaction, true);
-        this->Geometry.setValues(std::move(newVals));
-    }
+    // While it may seem that there is not a need to trigger an update at this time, because the solver has its own copy of the geometry,
+    // and updateColors of the viewprovider may be triggered by the clearselection of the UI command, this won't update the elements widget,
+    // in the accumulative of actions it is judged that it is worth to trigger an update here.
+    this->Geometry.setValues(std::move(newVals));
 
     solverNeedsUpdate=true;
     return 0;
@@ -1188,12 +1186,10 @@ int SketchObject::setConstruction(int GeoId, bool on)
         }
     }
 
-    // There is not actual intertransaction going on here, however for a toggle neither the geometry indices nor the vertices need to be updated
-    // so this is a convenient way of preventing it.
-    {
-        Base::StateLocker lock(internaltransaction, true);
-        this->Geometry.setValues(std::move(newVals));
-    }
+    // While it may seem that there is not a need to trigger an update at this time, because the solver has its own copy of the geometry,
+    // and updateColors of the viewprovider may be triggered by the clearselection of the UI command, this won't update the elements widget,
+    // in the accumulative of actions it is judged that it is worth to trigger an update here.
+    this->Geometry.setValues(std::move(newVals));
 
     solverNeedsUpdate=true;
     return 0;
@@ -2347,7 +2343,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
             }
             constrId++;
         }
-        /* It is possible that the trimming entity has both a PointOnObject constrait to the trimmed entity, and a simple Tangent contstrait
+        /* It is possible that the trimming entity has both a PointOnObject constraint to the trimmed entity, and a simple Tangent contstrait
          * to the trimmed entity. In this case we want to change to a single end-to-end tangency, i.e we want to ensure that constrType1 is
          * set to Sketcher::Tangent, that the secondPos1 is captured from the PointOnObject, and also make sure that the PointOnObject constraint
          * is deleted. The below loop ensures this, also in case the ordering of the constraints is first Tangent and then PointOnObject. */
@@ -2808,7 +2804,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
         }
         if (GeoId1 >= 0) {
             creategeometryundopoint(); // for when geometry will change, but no new geometry will be committed.
-            ConstraintType constrType1 = Sketcher::PointOnObject; // So this is the fallback contraint type here.
+            ConstraintType constrType1 = Sketcher::PointOnObject; // So this is the fallback constraint type here.
             PointPos secondPos1 = Sketcher::none;
 
             getTransformParamsAndDeleteConstraints(GeoId, GeoId1, point1, constrType1, secondPos1);
@@ -5291,20 +5287,20 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
 
         // First we search existing IA
         std::vector<int> controlpointgeoids(bsp->countPoles());
-        std::vector<int> cpassociatedcontraints(bsp->countPoles());
+        std::vector<int> cpassociatedconstraints(bsp->countPoles());
 
         std::vector<int> knotgeoids(bsp->countKnots());
-        std::vector<int> kassociatedcontraints(bsp->countKnots());
+        std::vector<int> kassociatedconstraints(bsp->countKnots());
 
         std::vector<int>::iterator it;
         std::vector<int>::iterator ita;
 
-        for (it=controlpointgeoids.begin(), ita=cpassociatedcontraints.begin(); it!=controlpointgeoids.end() && ita!=cpassociatedcontraints.end(); ++it, ++ita) {
+        for (it=controlpointgeoids.begin(), ita=cpassociatedconstraints.begin(); it!=controlpointgeoids.end() && ita!=cpassociatedconstraints.end(); ++it, ++ita) {
             (*it) = -1;
             (*ita) = 0;
         }
 
-        for (it=knotgeoids.begin(), ita=kassociatedcontraints.begin(); it!=knotgeoids.end() && ita!=kassociatedcontraints.end(); ++it, ++ita) {
+        for (it=knotgeoids.begin(), ita=kassociatedconstraints.begin(); it!=knotgeoids.end() && ita!=kassociatedconstraints.end(); ++it, ++ita) {
             (*it) = -1;
             (*ita) = 0;
         }
@@ -5329,7 +5325,7 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
 
         std::vector<int> delgeometries;
 
-        for (it=controlpointgeoids.begin(), ita=cpassociatedcontraints.begin(); it!=controlpointgeoids.end() && ita!=cpassociatedcontraints.end(); ++it, ++ita) {
+        for (it=controlpointgeoids.begin(), ita=cpassociatedconstraints.begin(); it!=controlpointgeoids.end() && ita!=cpassociatedconstraints.end(); ++it, ++ita) {
             if ((*it) != -1) {
                 // look for a circle at geoid index
                 for (std::vector< Sketcher::Constraint * >::const_iterator itc= vals.begin(); itc != vals.end(); ++itc) {
@@ -5364,7 +5360,7 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
             }
         }
 
-        for (it=knotgeoids.begin(), ita=kassociatedcontraints.begin(); it!=knotgeoids.end() && ita!=kassociatedcontraints.end(); ++it, ++ita) {
+        for (it=knotgeoids.begin(), ita=kassociatedconstraints.begin(); it!=knotgeoids.end() && ita!=kassociatedconstraints.end(); ++it, ++ita) {
             if ((*it) != -1) {
                 // look for a point at geoid index
                 for (std::vector< Sketcher::Constraint * >::const_iterator itc= vals.begin(); itc != vals.end(); ++itc) {
@@ -8004,6 +8000,27 @@ int SketchObject::autoRemoveRedundants(bool updategeo)
     delConstraints(redundants,updategeo);
 
     return redundants.size();
+}
+
+int SketchObject::renameConstraint(int GeoId, std::string name)
+{
+    // only change the constraint item if the names are different
+    const Constraint* item = Constraints[GeoId];
+
+    if (item->Name != name) {
+        Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
+        Constraint* copy = item->clone();
+        copy->Name = name;
+
+        Constraints.set1Value(GeoId, copy);
+        delete copy;
+
+        solverNeedsUpdate = true; // make sure any prospective solver access updates the constraint pointer that just got invalidated
+
+        return 0;
+    }
+    return -1;
 }
 
 std::vector<Base::Vector3d> SketchObject::getOpenVertices(void) const

@@ -6607,6 +6607,11 @@ CmdSketcherConstrainSymmetric::CmdSketcherConstrainSymmetric()
                            {SelVertex, SelExternalEdge, SelVertexOrRoot},
                            {SelRoot, SelExternalEdge, SelVertex},
                            {SelVertex, SelEdgeOrAxis, SelVertex},
+                           {SelVertex, SelVertexOrRoot,SelEdge},
+                           {SelRoot, SelVertex, SelEdge},
+                           {SelVertex, SelVertexOrRoot, SelExternalEdge},
+                           {SelRoot, SelVertex, SelExternalEdge},
+                           {SelVertex, SelVertex, SelEdgeOrAxis},
                            {SelVertex, SelVertexOrRoot, SelVertex},
                            {SelVertex, SelVertex, SelVertexOrRoot},
                            {SelVertexOrRoot, SelVertex, SelVertex}};
@@ -6794,14 +6799,29 @@ void CmdSketcherConstrainSymmetric::applyConstraint(std::vector<SelIdPair> &selS
     case 4: // {SelVertex, SelExternalEdge, SelVertexOrRoot}
     case 5: // {SelRoot, SelExternalEdge, SelVertex}
     case 6: // {SelVertex, SelEdgeOrAxis, SelVertex}
+    case 7: // {SelVertex, SelVertexOrRoot,SelEdge}
+    case 8: // {SelRoot, SelVertex, SelEdge}
+    case 9: // {SelVertex, SelVertexOrRoot, SelExternalEdge}
+    case 10: // {SelRoot, SelVertex, SelExternalEdge}
+    case 11: // {SelVertex, SelVertex, SelEdgeOrAxis}
     {
         GeoId1 = selSeq.at(0).GeoId;  GeoId2 = selSeq.at(2).GeoId; GeoId3 = selSeq.at(1).GeoId;
-        PosId1 = selSeq.at(0).PosId;  PosId2 = selSeq.at(2).PosId;
+        PosId1 = selSeq.at(0).PosId;  PosId2 = selSeq.at(2).PosId; PosId3 = selSeq.at(1).PosId;
+
+        if (isEdge(GeoId1,PosId1) && isVertex(GeoId3,PosId3)) {
+            std::swap(GeoId1,GeoId3);
+            std::swap(PosId1,PosId3);
+        }
+        else if (isEdge(GeoId2,PosId2) && isVertex(GeoId3,PosId3)) {
+            std::swap(GeoId2,GeoId3);
+            std::swap(PosId2,PosId3);
+        }
 
         if ( areAllPointsOrSegmentsFixed(Obj, GeoId1, GeoId2, GeoId3) ) {
             showNoConstraintBetweenFixedGeometry();
             return;
         }
+
         const Part::Geometry *geom = Obj->getGeometry(GeoId3);
         if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
             if (GeoId1 == GeoId2 && GeoId2 == GeoId3) {
@@ -6829,9 +6849,9 @@ void CmdSketcherConstrainSymmetric::applyConstraint(std::vector<SelIdPair> &selS
 
         return;
     }
-    case 7: // {SelVertex, SelVertexOrRoot, SelVertex}
-    case 8: // {SelVertex, SelVertex, SelVertexOrRoot}
-    case 9: // {SelVertexOrRoot, SelVertex, SelVertex}
+    case 12: // {SelVertex, SelVertexOrRoot, SelVertex}
+    case 13: // {SelVertex, SelVertex, SelVertexOrRoot}
+    case 14: // {SelVertexOrRoot, SelVertex, SelVertex}
     {
         GeoId1 = selSeq.at(0).GeoId;  GeoId2 = selSeq.at(1).GeoId; GeoId3 = selSeq.at(2).GeoId;
         PosId1 = selSeq.at(0).PosId;  PosId2 = selSeq.at(1).PosId; PosId3 = selSeq.at(2).PosId;
@@ -6976,6 +6996,7 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
         ui_Datum.labelEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/SketcherRefrIndexRatio"));
         ui_Datum.labelEdit->setToLastUsedValue();
         ui_Datum.labelEdit->selectNumber();
+        ui_Datum.labelEdit->setSingleStep(0.05);
         // Unable to bind, because the constraint does not yet exist
 
         if (dlg.exec() != QDialog::Accepted) return;

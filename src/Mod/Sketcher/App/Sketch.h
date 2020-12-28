@@ -104,6 +104,8 @@ public:
     inline bool hasRedundancies(void) const { return !Redundant.empty(); }
     inline const std::vector<int> &getRedundant(void) const { return Redundant; }
 
+    inline float getSolveTime() const { return SolveTime; }
+
     inline bool hasMalformedConstraints(void) const { return malformedConstraints; }
 public:
     std::set < std::pair< int, Sketcher::PointPos>> getDependencyGroup(int geoId, PointPos pos) const;
@@ -131,6 +133,16 @@ public:
       * The relative flag permits moving relatively to the current position
       */
     int movePoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative=false);
+
+    /**
+     * Sets whether the initial solution should be recalculated while dragging after a certain distance from the previous drag point
+     * for smoother dragging operation.
+     */
+    bool getRecalculateInitialSolutionWhileMovingPoint() const
+        {return RecalculateInitialSolutionWhileMovingPoint;}
+
+    void setRecalculateInitialSolutionWhileMovingPoint(bool recalculateInitialSolutionWhileMovingPoint)
+        {RecalculateInitialSolutionWhileMovingPoint = recalculateInitialSolutionWhileMovingPoint;}
 
     /// add dedicated geometry
     //@{
@@ -356,7 +368,7 @@ public:
     double calculateAngleViaPoint(int geoId1, int geoId2, double px, double py );
 
     //This is to be used for rendering of angle-via-point constraint.
-    Base::Vector3d calculateNormalAtPoint(int geoIdCurve, double px, double py);
+    Base::Vector3d calculateNormalAtPoint(int geoIdCurve, double px, double py) const;
 
     //icstr should be the value returned by addXXXXConstraint
     //see more info in respective function in GCS.
@@ -378,6 +390,7 @@ public:
         BSpline = 9
     };
 
+protected:
     float SolveTime;
     bool RecalculateInitialSolutionWhileMovingPoint;
 
@@ -485,6 +498,7 @@ private:
     /// checks if the index bounds and converts negative indices to positive
     int checkGeoId(int geoId) const;
     GCS::Curve* getGCSCurveByGeoId(int geoId);
+    const GCS::Curve* getGCSCurveByGeoId(int geoId) const;
 };
 
 } //namespace Part
