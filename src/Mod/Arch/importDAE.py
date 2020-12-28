@@ -301,7 +301,7 @@ def read(filename):
             for name,cnt in unsupported.items():
                 FreeCAD.Console.PrintWarning(
                     translate("Arch","Skip %d unsupported primitive %s in %s.\n" \
-                            % (cnt, name, obj.Label)))
+                            % (cnt[0], name, obj.Label)))
 
             if mesh:
                 highlight = False
@@ -323,6 +323,7 @@ def read(filename):
 
             matrix = _get_matrix(geomnode.matrix)
             t,r,s,_ = matrix.getTransform()
+            t *= unit
             if mesh and FreeCAD.Vector(s).isEqual(FreeCAD.Vector(1.0,1.0,1.0), 1e-7):
                 obj.Placement = FreeCAD.Placement(t,r)
                 if geommap is not None:
@@ -609,6 +610,9 @@ def _export(exportSet, filename, colors):
             geom = item[1]
             matref = item[2]
             segcount = item[3]
+            t,r,s,_ = matrix.getTransform()
+            t *= scale;
+            matrix.setTransform(t,r,s)
             transforms = [collada.scene.MatrixTransform(numpy.array(matrix.A))]
         else:
             mesh = Mesh.Mesh(item[0])
