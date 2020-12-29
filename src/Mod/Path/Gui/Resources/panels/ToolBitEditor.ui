@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>401</width>
+    <width>489</width>
     <height>715</height>
    </rect>
   </property>
@@ -104,7 +104,7 @@
        <item>
         <widget class="QGroupBox" name="bitParams">
          <property name="title">
-          <string>Bit Parameter</string>
+          <string>Geometry</string>
          </property>
          <layout class="QFormLayout" name="formLayout_2">
           <property name="fieldGrowthPolicy">
