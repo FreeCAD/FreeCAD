@@ -297,6 +297,7 @@ QWidget* setupMainWindow()
 
         // Activate the correct workbench
         std::string start = App::Application::Config()["StartWorkbench"];
+		start = "SketcherWorkbench";
         Base::Console().Log("Init: Activating default workbench %s\n", start.c_str());
         std::string autoload = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
                                GetASCII("AutoloadModule", start.c_str());
@@ -311,6 +312,7 @@ QWidget* setupMainWindow()
         QStringList wb = Gui::Application::Instance->workbenches();
         if (!wb.contains(QString::fromLatin1(start.c_str()))) {
             start = App::Application::Config()["StartWorkbench"];
+			start = "SketcherWorkbench";
             if ("$LastModule" == autoload) {
                 App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
                                       SetASCII("LastModule", start.c_str());
