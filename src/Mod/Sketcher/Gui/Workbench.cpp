@@ -104,9 +104,10 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
 
     // == "Simulation" menu ==========================================
-    Gui::MenuItem* simulation = new Gui::MenuItem;
+    Gui::MenuItem* simulation = new Gui::MenuItem();
     root->insertItem(root->findItem("&Help"), simulation);
-    sketch->setCommand("Simulation");
+    simulation->setCommand("Simulation");
+    addSketcherWorkbenchSketchActions( *simulation );
 }
 
 

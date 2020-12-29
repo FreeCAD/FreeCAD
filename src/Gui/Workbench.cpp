@@ -616,7 +616,8 @@ MenuItem* StdWorkbench::setupMenuBar() const
     MenuItem* view = new MenuItem(menuBar);
     view->setCommand("&View");
     *view
-        // Redraw
+        << "Std_Redraw"
+        << "Separator"
         //<< "Std_ViewCreate"
         //<< "Std_OrthographicCamera"
         //<< "Std_PerspectiveCamera"
@@ -629,8 +630,8 @@ MenuItem* StdWorkbench::setupMenuBar() const
         << "Std_ViewZoomOut"
         << "Std_ViewBoxZoom"
         << "Separator"
-        //Rotate
-        //Pan
+        << "Std_Rotate"
+        << "Std_Pan"
         << "Std_ViewRotateRight"
         << "Std_ViewRotateLeft"
         << hideShow
@@ -653,22 +654,23 @@ MenuItem* StdWorkbench::setupMenuBar() const
         //<< "Std_ToggleVisibility" << "Std_ToggleNavigation"
         //<< "Std_SetAppearance" << "Std_RandomColor" << "Separator"
         //<< "Std_Workbench"
-        << "Std_ToolBarMenu";
+        << "Separator"
+        << "Std_ToolBarMenu"
         //<< "Std_DockViewMenu" << "Separator"
         //<< "Std_TreeViewActions"
         //<< "Std_ViewStatusBar"
-        //User Interface
-        // Full Screen
+        << "Std_UserInterface"
+        << "Std_MainFullscreen";
 
     // Tools
     MenuItem* tool = new MenuItem(menuBar);
     tool->setCommand("&Tools");
     *tool
         //<< "Std_DlgParameter"
-        //Select
+        << "Std_Select"
         << "Std_BoxSelection"
         << "Std_SelectAll"
-        //Invert Selection
+        << "Std_InvertSelection"
         << "Separator"
         << "Std_ViewScreenShot"
         //<< "Std_SceneInspector"
@@ -680,7 +682,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
         //<< "Std_DemoMode"
        // << "Std_UnitsCalculator"
         //<< "Separator"
-        //Options
+        << "Std_Options"
         << "Std_DlgCustomize";
 #ifdef BUILD_ADDONMGR
     * tool << "Std_AddonMgr";
@@ -710,10 +712,16 @@ MenuItem* StdWorkbench::setupMenuBar() const
     // Help
     MenuItem* help = new MenuItem(menuBar);
     help->setCommand("&Help");
-    *help << "Std_OnlineHelp" << "Std_FreeCADWebsite"
-        << "Std_FreeCADUserHub" << "Std_FreeCADPowerUserHub"
-        << "Std_PythonHelp" << "Std_FreeCADForum"
-        << "Std_FreeCADFAQ" << "Std_About" << "Std_WhatsThis";
+    //*help
+        //<< "Std_OnlineHelp" 
+        //<< "Std_FreeCADWebsite"
+        //<< "Std_FreeCADUserHub"
+        //<< "Std_FreeCADPowerUserHub"
+        //<< "Std_PythonHelp"
+        //<< "Std_FreeCADForum"
+        //<< "Std_FreeCADFAQ"
+        //<< "Std_About"
+        //<< "Std_WhatsThis";
 
     return menuBar;
 }

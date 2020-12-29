@@ -903,6 +903,93 @@ bool StdCmdHideSelection::isActive(void)
 }
 
 //===========================================================================
+// Std_Select
+//===========================================================================
+DEF_STD_CMD_A(StdCmdSelect)
+
+StdCmdSelect::StdCmdSelect()
+    : Command("Std_Select")
+{
+    sGroup = QT_TR_NOOP("Standard-View");
+    sMenuText = QT_TR_NOOP("Select");
+    sToolTipText = QT_TR_NOOP("idk");
+    sStatusTip = QT_TR_NOOP("idk");
+    sWhatsThis = "Std_Select";
+    eType = Alter3DView;
+}
+
+void StdCmdSelect::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    // do nothing
+}
+
+bool StdCmdSelect::isActive(void)
+{
+   // return App::GetApplication().getActiveDocument();
+    return false;
+
+}
+
+//===========================================================================
+// Std_InvertSelection
+//===========================================================================
+DEF_STD_CMD_A(StdCmdInvertSelection)
+
+StdCmdInvertSelection::StdCmdInvertSelection()
+    : Command("Std_InvertSelection")
+{
+    sGroup = QT_TR_NOOP("Standard-View");
+    sMenuText = QT_TR_NOOP("Invert Selection");
+    sToolTipText = QT_TR_NOOP("idk");
+    sStatusTip = QT_TR_NOOP("idk");
+    sWhatsThis = "Std_InvertSelection";
+    eType = Alter3DView;
+}
+
+void StdCmdInvertSelection::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    // do nothing
+}
+
+bool StdCmdInvertSelection::isActive(void)
+{
+    // return App::GetApplication().getActiveDocument();
+    return false;
+
+}
+
+//===========================================================================
+// Std_Options
+//===========================================================================
+DEF_STD_CMD_A(StdCmdOptions)
+
+StdCmdOptions::StdCmdOptions()
+    : Command("Std_Options")
+{
+    sGroup = QT_TR_NOOP("Standard-View");
+    sMenuText = QT_TR_NOOP("Options");
+    sToolTipText = QT_TR_NOOP("idk");
+    sStatusTip = QT_TR_NOOP("idk");
+    sWhatsThis = "Std_Options";
+    eType = Alter3DView;
+}
+
+void StdCmdOptions::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    // do nothing
+}
+
+bool StdCmdOptions::isActive(void)
+{
+    // return App::GetApplication().getActiveDocument();
+    return false;
+
+}
+
+//===========================================================================
 // Std_SelectVisibleObjects
 //===========================================================================
 DEF_STD_CMD_A(StdCmdSelectVisibleObjects)
@@ -1851,6 +1938,119 @@ void StdViewScreenShot::activated(int iMsg)
 bool StdViewScreenShot::isActive(void)
 {
     return isViewOfType(Gui::View3DInventor::getClassTypeId());
+}
+
+
+//===========================================================================
+// Std_Redraw
+//===========================================================================
+DEF_STD_CMD_A(StdCmdRedraw)
+
+StdCmdRedraw::StdCmdRedraw()
+    : Command("Std_Redraw")
+{
+    sGroup = QT_TR_NOOP("Standard-View");
+    sMenuText = QT_TR_NOOP("Redraw");
+    sToolTipText = QT_TR_NOOP("Idk what this finna do -Luke");
+    sWhatsThis = "Std_Redraw";
+    sStatusTip = QT_TR_NOOP("Idk what this finna do -Luke");
+    sPixmap = "window-new";
+    eType = Alter3DView;
+}
+
+void StdCmdRedraw::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    // do nothing
+}
+
+bool StdCmdRedraw::isActive(void)
+{
+    return false;
+}
+
+//===========================================================================
+// Std_Rotate
+//===========================================================================
+DEF_STD_CMD_A(StdCmdRotate)
+
+StdCmdRotate::StdCmdRotate()
+    : Command("Std_Rotate")
+{
+    sGroup = QT_TR_NOOP("Standard-View");
+    sMenuText = QT_TR_NOOP("Rotate");
+    sToolTipText = QT_TR_NOOP("Idk what this finna do -Luke");
+    sWhatsThis = "Std_Rotate";
+    sStatusTip = QT_TR_NOOP("Idk what this finna do -Luke");
+    sPixmap = "window-new";
+    eType = Alter3DView;
+}
+
+void StdCmdRotate::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    // do nothing
+}
+
+bool StdCmdRotate::isActive(void)
+{
+    return false;
+}
+
+//===========================================================================
+// Std_Pan
+//===========================================================================
+DEF_STD_CMD_A(StdCmdPan)
+
+StdCmdPan::StdCmdPan()
+    : Command("Std_Pan")
+{
+    sGroup = QT_TR_NOOP("Standard-View");
+    sMenuText = QT_TR_NOOP("Pan");
+    sToolTipText = QT_TR_NOOP("Idk what this finna do -Luke");
+    sWhatsThis = "Std_Pan";
+    sStatusTip = QT_TR_NOOP("Idk what this finna do -Luke");
+    sPixmap = "window-new";
+    eType = Alter3DView;
+}
+
+void StdCmdPan::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    // do nothing
+}
+
+bool StdCmdPan::isActive(void)
+{
+    return false;
+}
+
+//===========================================================================
+// Std_Userinterface
+//===========================================================================
+DEF_STD_CMD_A(StdCmdUserinterface)
+
+StdCmdUserinterface::StdCmdUserinterface()
+    : Command("Std_Userinterface")
+{
+    sGroup = QT_TR_NOOP("Standard-View");
+    sMenuText = QT_TR_NOOP("Userinterface");
+    sToolTipText = QT_TR_NOOP("Idk what this finna do -Luke");
+    sWhatsThis = "Std_Userinterface";
+    sStatusTip = QT_TR_NOOP("Idk what this finna do -Luke");
+    sPixmap = "window-new";
+    eType = Alter3DView;
+}
+
+void StdCmdUserinterface::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    // do nothing
+}
+
+bool StdCmdUserinterface::isActive(void)
+{
+    return false;
 }
 
 
@@ -3471,6 +3671,10 @@ void CreateViewStdCommands(void)
 
     rcCmdMgr.addCommand(new StdCmdViewIvIssueCamPos());
 
+    rcCmdMgr.addCommand(new StdCmdRedraw());
+    rcCmdMgr.addCommand(new StdCmdRotate());
+    rcCmdMgr.addCommand(new StdCmdPan());
+    rcCmdMgr.addCommand(new StdCmdUserinterface());
     rcCmdMgr.addCommand(new StdCmdViewCreate());
     rcCmdMgr.addCommand(new StdViewScreenShot());
     rcCmdMgr.addCommand(new StdMainFullscreen());
@@ -3480,6 +3684,9 @@ void CreateViewStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdToggleSelectability());
     rcCmdMgr.addCommand(new StdCmdShowSelection());
     rcCmdMgr.addCommand(new StdCmdHideSelection());
+    rcCmdMgr.addCommand(new StdCmdSelect());
+    rcCmdMgr.addCommand(new StdCmdInvertSelection());
+    rcCmdMgr.addCommand(new StdCmdOptions());
     rcCmdMgr.addCommand(new StdCmdSelectVisibleObjects());
     rcCmdMgr.addCommand(new StdCmdToggleObjects());
     rcCmdMgr.addCommand(new StdCmdShowObjects());

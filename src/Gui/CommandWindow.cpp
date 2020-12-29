@@ -274,7 +274,7 @@ StdCmdUserInterface::StdCmdUserInterface()
   : Command("Std_UserInterface")
 {
     sGroup        = QT_TR_NOOP("View");
-    sMenuText     = QT_TR_NOOP("Dock views");
+    sMenuText     = QT_TR_NOOP("User Interface");
     sToolTipText  = QT_TR_NOOP("Dock all top-level views");
     sWhatsThis    = "Std_UserInterface";
     sStatusTip    = QT_TR_NOOP("Dock all top-level views");
