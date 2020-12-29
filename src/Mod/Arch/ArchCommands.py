@@ -742,7 +742,12 @@ def pruneIncluded(objectslist,strict=False):
     for obj in objectslist:
         item = obj
         if isinstance(item, tuple):
+            vis = 1 if not item[1] else item[0].isElementVisibleEx(item[1])
+            if vis == 0:
+                continue
             obj = item[0].getSubObject(item[1], retType=1)
+            if not obj or (vis < 0 and not obj.Visibility):
+                continue
         toplevel = True
         if obj.isDerivedFrom("Part::Feature"):
             if not (Draft.getType(obj) in ["Window","Clone","Pipe","Rebar"]):
