@@ -146,7 +146,7 @@ class CommandJobTemplateExport:
             attrs.pop(PathJob.JobTemplate.PostProcessorOutputFile, None)
 
         # tool controller settings
-        toolControllers = dialog.includeToolControllers() if dialog else job.ToolController
+        toolControllers = dialog.includeToolControllers() if dialog else job.ToolTable.Group
         if toolControllers:
             tcAttrs = [tc.Proxy.templateAttrs(tc) for tc in toolControllers]
             attrs[PathJob.JobTemplate.ToolController] = tcAttrs

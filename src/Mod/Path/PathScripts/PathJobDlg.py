@@ -338,7 +338,7 @@ class JobTemplateExport:
             self.dialog.settingsOpsList.addItem(item)
 
         self.dialog.toolsList.clear()
-        for tc in sorted(job.ToolController, key=lambda o: o.Label):
+        for tc in sorted(job.ToolTable.Group, key=lambda o: o.Label):
             item = QtGui.QListWidgetItem(tc.Label)
             item.setData(self.DataObject, tc)
             item.setCheckState(QtCore.Qt.CheckState.Checked)

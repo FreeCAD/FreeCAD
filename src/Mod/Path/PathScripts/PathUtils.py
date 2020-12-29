@@ -403,7 +403,7 @@ def getToolControllers(obj, proxy=None):
 
     PathLog.debug("op={} ({})".format(obj.Label, type(obj)))
     if job:
-        return [c for c in job.ToolController if proxy.isToolSupported(obj, c.Tool)]
+        return [tc for tc in job.ToolTable.Group if proxy.isToolSupported(obj, tc.Tool)]
     return []
 
 
