@@ -382,29 +382,16 @@ private:
 
         // collect all object types that can be exported as mesh
         std::vector<App::DocumentObject*> objectList;
-        std::string label;
         for (auto it : list) {
             PyObject *item = it.ptr();
             if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
                 auto obj( static_cast<App::DocumentObjectPy *>(item)->getDocumentObjectPtr() );
-                label = obj->Label.getValue();
-                if (Exporter::isSupported(obj))
-                    objectList.push_back(obj);
+                objectList.push_back(obj);
             }
         }
 
         if (objectList.empty()) {
-            std::string errorMessage;
-            if (list.length() == 1) {
-                std::stringstream str;
-                str << label << " cannot be exported to a mesh file";
-                errorMessage = str.str();
-            }
-            else {
-                errorMessage = "None of the objects can be exported to a mesh file";
-            }
-
-            throw Py::TypeError(errorMessage);
+            throw Py::TypeError("None of the objects can be exported to a mesh file");
         }
 
         auto exportFormat( MeshOutput::GetFormat(outputFileName.c_str()) );
