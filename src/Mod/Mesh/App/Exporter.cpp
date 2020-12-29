@@ -28,6 +28,7 @@
 #endif  //  #ifndef _PreComp_
 
 #include "Exporter.h"
+#include "MeshFeature.h"
 
 #include "Core/Iterator.h"
 
@@ -38,17 +39,44 @@
 #include "Base/Stream.h"
 #include "Base/Tools.h"
 
-#include "App/Part.h"
+#include "App/Application.h"
+#include "App/ComplexGeoData.h"
+#include "App/ComplexGeoDataPy.h"
+#include "App/DocumentObject.h"
 
 #include <zipios++/zipoutputstream.h>
 
 using namespace Mesh;
 using namespace MeshCore;
 
-Exporter::Exporter() :
-    meshFeatId( Base::Type::fromName("Mesh::Feature") ),
-    appPartId( Base::Type::fromName("Part::Feature") ),
-    groupExtensionId( App::GroupExtension::getExtensionClassTypeId() )
+static std::vector<std::string>
+expandSubObjects(const App::DocumentObject *obj,
+                 std::map<const App::DocumentObject*, std::vector<std::string> > &cache,
+                 int depth)
+{
+    if (!App::GetApplication().checkLinkDepth(depth))
+        return {};
+
+    auto subs = obj->getSubObjects();
+    if (subs.empty()) {
+        subs.emplace_back("");
+        return subs;
+    }
+
+    std::vector<std::string> res;
+    for (auto & sub : subs) {
+        auto sobj = obj->getSubObject(sub.c_str());
+        auto linked = sobj->getLinkedObject(true);
+        auto it = cache.find(linked);
+        if (it == cache.end())
+            it = cache.emplace(linked, expandSubObjects(linked, cache, depth+1)).first;
+        for (auto & ssub : it->second)
+            res.push_back(sub + ssub);
+    }
+    return res;
+}
+
+Exporter::Exporter()
 { }
 
 //static
@@ -63,63 +91,47 @@ std::string Exporter::xmlEscape(const std::string &input)
     return out;
 }
 
-bool Exporter::isSupported(App::DocumentObject *obj)
+int Exporter::addObject(App::DocumentObject *obj, float tol)
 {
-    Base::Type meshFeatId(Base::Type::fromName("Mesh::Feature"));
-    Base::Type appPartId(Base::Type::fromName("Part::Feature"));
-    Base::Type groupExtensionId(App::GroupExtension::getExtensionClassTypeId());
-
-    if (obj->getTypeId().isDerivedFrom(meshFeatId)) {
-        return true;
-    }
-    else if (obj->getTypeId().isDerivedFrom(appPartId)) {
-        return true;
-    }
-    else if (obj->hasExtension(groupExtensionId)) {
-        auto groupEx( obj->getExtensionByType<App::GroupExtension>() );
-        for (auto it : groupEx->Group.getValues()) {
-            bool ok = isSupported(it);
-            if (ok)
-                return true;
+    int count = 0;
+    for (std::string & sub : expandSubObjects(obj, cache, 0)) {
+        int vis = sub.empty() ? 1 : obj->isElementVisibleEx(sub.c_str());
+        if (vis == 0)
+            continue;
+        Base::Matrix4D matrix;
+        auto sobj = obj->getSubObject(sub.c_str(), nullptr, &matrix);
+        if (!sobj || (vis < 0 && !sobj->Visibility.getValue()))
+            continue;
+        auto linked = sobj->getLinkedObject(true, &matrix, false);
+        auto it = meshCache.find(linked);
+        if (it == meshCache.end()) {
+            if (linked->isDerivedFrom(Mesh::Feature::getClassTypeId())) {
+                it = meshCache.emplace(linked,
+                        static_cast<Mesh::Feature*>(linked)->Mesh.getValue()).first;
+                it->second.setTransform(Base::Matrix4D());
+            } else {
+                Base::PyGILStateLocker lock;
+                PyObject *pyobj = nullptr;
+                linked->getSubObject("", &pyobj, nullptr, false);
+                if (!pyobj)
+                    continue;
+                if (PyObject_TypeCheck(pyobj, &Data::ComplexGeoDataPy::Type)) {
+                    std::vector<Base::Vector3d> aPoints;
+                    std::vector<Data::ComplexGeoData::Facet> aTopo;
+                    auto geoData = static_cast<Data::ComplexGeoDataPy*>(pyobj)->getComplexGeoDataPtr();
+                    geoData->getFaces(aPoints, aTopo, tol);
+                    it = meshCache.emplace(linked, MeshObject()).first;
+                    it->second.setFacets(aTopo, aPoints);
+                }
+                Py_DECREF(pyobj);
+            }
         }
+        MeshObject mesh(it->second);
+        mesh.transformGeometry(matrix);
+        if (addMesh(sobj->Label.getValue(), mesh))
+            ++count;
     }
-
-    return false;
-}
-
-bool Exporter::addAppGroup(App::DocumentObject *obj, float tol)
-{
-    auto ret(true);
-
-    auto groupEx( obj->getExtensionByType<App::GroupExtension>() );
-    for (auto it : groupEx->Group.getValues()) {
-        if (it->getTypeId().isDerivedFrom(meshFeatId)) {
-            ret &= addMeshFeat(it);
-        } else if (it->getTypeId().isDerivedFrom(appPartId)) {
-            ret &= addPartFeat(it, tol);
-        } else if (it->hasExtension(groupExtensionId)) {
-            // Recurse
-            ret &= addAppGroup(it, tol);
-        }
-    }
-
-    return ret;
-}
-
-bool Exporter::addObject(App::DocumentObject *obj, float tol)
-{
-    if (obj->getTypeId().isDerivedFrom(meshFeatId)) {
-        return addMeshFeat( obj );
-    } else if (obj->getTypeId().isDerivedFrom(appPartId)) {
-        return addPartFeat( obj, tol );
-    } else if (obj->hasExtension(groupExtensionId)) {
-        return addAppGroup( obj, tol );
-    } else {
-        Base::Console().Message(
-            "'%s' is of type %s, and can not be exported as a mesh.\n",
-            obj->Label.getValue(), obj->getTypeId().getName() );
-        return false;
-    }
+    return count;
 }
 
 MergeExporter::MergeExporter(std::string fileName, MeshIO::Format)
@@ -145,14 +157,9 @@ MergeExporter::~MergeExporter()
 }
 
 
-bool MergeExporter::addMeshFeat(App::DocumentObject *obj)
+bool MergeExporter::addMesh(const char *name, const MeshObject & mesh)
 {
-    const MeshObject &mesh( static_cast<Mesh::Feature *>(obj)->Mesh.getValue() );
-    Base::Placement plm = static_cast<Mesh::Feature *>(obj)->globalPlacement();
-
-    MeshCore::MeshKernel kernel(mesh.getKernel());
-    kernel.Transform(plm.toMatrix());
-
+    const auto & kernel = mesh.getKernel();
     auto countFacets( mergingMesh.countFacets() );
     if (countFacets == 0) {
         mergingMesh.setKernel(kernel);
@@ -188,66 +195,11 @@ bool MergeExporter::addMeshFeat(App::DocumentObject *obj)
         indices.resize(mergingMesh.countFacets() - countFacets);
         std::generate(indices.begin(), indices.end(), Base::iotaGen<unsigned long>(countFacets));
         Segment segm(&mergingMesh, indices, true);
-        segm.setName(obj->Label.getValue());
+        segm.setName(name);
         mergingMesh.addSegment(segm);
     }
 
     return true;
-}
-
-bool MergeExporter::addPartFeat(App::DocumentObject *obj, float tol)
-{
-    auto *shape(obj->getPropertyByName("Shape"));
-    if (shape && shape->getTypeId().isDerivedFrom(App::PropertyComplexGeoData::getClassTypeId())) {
-        Base::Reference<MeshObject> mesh(new MeshObject());
-
-        auto countFacets( mergingMesh.countFacets() );
-
-        auto geoData( static_cast<App::PropertyComplexGeoData*>(shape)->getComplexData() );
-        if (geoData) {
-            App::GeoFeature* gf = static_cast<App::GeoFeature*>(obj);
-            Base::Placement plm = gf->globalPlacement();
-            Base::Placement pl  = gf->Placement.getValue();
-            bool applyGlobal = false;
-            if (pl == plm) {
-               //no extension placement
-               applyGlobal = false;
-            } else {
-               //there is a placement from extension
-               applyGlobal = true;
-            }
-
-            std::vector<Base::Vector3d> aPoints;
-            std::vector<Data::ComplexGeoData::Facet> aTopo;
-            geoData->getFaces(aPoints, aTopo, tol);
-
-            if (applyGlobal) {
-                Base::Placement diff_plm = plm * pl.inverse();
-                for (auto& it : aPoints) {
-                    diff_plm.multVec(it,it);
-                }
-            }
-
-            mesh->addFacets(aTopo, aPoints, false);
-            if (countFacets == 0)
-                mergingMesh = *mesh;
-            else
-                mergingMesh.addMesh(*mesh);
-        } else {
-            return false;
-        }
-
-        // now create a segment for the added mesh
-        std::vector<unsigned long> indices;
-        indices.resize(mergingMesh.countFacets() - countFacets);
-        std::generate(indices.begin(), indices.end(), Base::iotaGen<unsigned long>(countFacets));
-        Segment segm(&mergingMesh, indices, true);
-        segm.setName(obj->Label.getValue());
-        mergingMesh.addSegment(segm);
-        
-        return true;
-    }
-    return false;
 }
 
 AmfExporter::AmfExporter( std::string fileName,
@@ -304,50 +256,10 @@ AmfExporter::~AmfExporter()
     }
 }
 
-bool AmfExporter::addPartFeat(App::DocumentObject *obj, float tol)
+bool AmfExporter::addMesh(const char *name, const MeshObject & mesh)
 {
-    auto *shape(obj->getPropertyByName("Shape"));
+    const auto & kernel = mesh.getKernel();
 
-    if (shape && shape->getTypeId().isDerivedFrom(App::PropertyComplexGeoData::getClassTypeId())) {
-        Base::Reference<MeshObject> mesh(new MeshObject());
-
-        auto geoData( static_cast<App::PropertyComplexGeoData*>(shape)->getComplexData() );
-        if (geoData) {
-            std::vector<Base::Vector3d> aPoints;
-            std::vector<Data::ComplexGeoData::Facet> aTopo;
-            geoData->getFaces(aPoints, aTopo, tol);
-
-            mesh->addFacets(aTopo, aPoints, false);
-        } else {
-            return false;
-        }
-
-        MeshCore::MeshKernel kernel = mesh->getKernel();
-        kernel.Transform(mesh->getTransform());
-
-        std::map<std::string, std::string> meta;
-        meta["name"] = xmlEscape(obj->Label.getStrValue());
-
-        return addMesh(kernel, meta);
-    }
-    return false;
-}
-
-bool AmfExporter::addMeshFeat(App::DocumentObject *obj)
-{
-    const MeshObject &mesh( static_cast<Mesh::Feature *>(obj)->Mesh.getValue() );
-    MeshCore::MeshKernel kernel( mesh.getKernel() );
-    kernel.Transform(mesh.getTransform());
-
-    std::map<std::string, std::string> meta;
-    meta["name"] = xmlEscape(obj->Label.getStrValue());
-
-    return addMesh(kernel, meta);
-}
-
-bool AmfExporter::addMesh(const MeshCore::MeshKernel &kernel,
-                          const std::map<std::string, std::string> &meta)
-{
     if (!outputStreamPtr || outputStreamPtr->bad()) {
         return false;
     }
@@ -363,11 +275,8 @@ bool AmfExporter::addMesh(const MeshCore::MeshKernel &kernel,
     Base::SequencerLauncher seq("Saving...", 2 * numFacets + 1);
 
     *outputStreamPtr << "\t<object id=\"" << nextObjectIndex << "\">\n";
-
-    for (auto const &metaEntry : meta) {
-        *outputStreamPtr << "\t\t<metadata type=\"" << metaEntry.first
-                         << "\">" << metaEntry.second << "</metadata>\n";
-    }
+    *outputStreamPtr << "\t\t<metadata type=\"name\">"
+                        << xmlEscape(name) << "</metadata>\n";
     *outputStreamPtr << "\t\t<mesh>\n"
                      << "\t\t\t<vertices>\n";
 
