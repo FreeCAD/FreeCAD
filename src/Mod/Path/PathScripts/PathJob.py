@@ -255,7 +255,7 @@ class ObjectJob:
             PathUtil.clearExpressionEngine(tc)
             tc.Proxy.onDelete(tc)
             doc.removeObject(tc.Name)
-        obj.ToolTable = []
+        obj.ToolTable.Group = []
         doc.removeObject(obj.ToolTable.Name)
         obj.ToolTable = None
 
