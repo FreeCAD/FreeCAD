@@ -664,6 +664,8 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                 shape.reTagElementMap(getID(),
                         getDocument()->getStringHasher(),ss.str().c_str());
             }
+            if (!shape.hasSubShape(TopAbs_FACE) && shape.hasSubShape(TopAbs_EDGE))
+                shape = shape.makECopy();
         }
         
         if(shapes.size()==1 && !Relative.getValue())
