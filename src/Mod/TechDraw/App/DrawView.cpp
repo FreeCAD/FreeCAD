@@ -82,8 +82,8 @@ DrawView::DrawView(void):
     ADD_PROPERTY_TYPE(Rotation, (0.0), group, App::Prop_Output, "Rotation in degrees counterclockwise");
 
     ScaleType.setEnums(ScaleTypeEnums);
-    ADD_PROPERTY_TYPE(ScaleType, (prefScaleType()), group, App::Prop_Output, "Scale Type");
-    ADD_PROPERTY_TYPE(Scale, (prefScale()), group, App::Prop_Output, "Scale factor of the view. Scale factors like 1:100 can be written as =1/100");
+    ADD_PROPERTY_TYPE(ScaleType, (prefScaleType()), group, App::Prop_None, "Scale Type");
+    ADD_PROPERTY_TYPE(Scale, (prefScale()), group, App::Prop_None, "Scale factor of the view. Scale factors like 1:100 can be written as =1/100");
     Scale.setConstraints(&scaleRange);
 
     ADD_PROPERTY_TYPE(Caption, (""), group, App::Prop_Output, "Short text about the view");
@@ -137,10 +137,7 @@ void DrawView::onChanged(const App::Property* prop)
                 Scale.setStatus(App::Property::ReadOnly,true);
                 if (!checkFit(page)) {
                     double newScale = autoScale(page->getPageWidth(),page->getPageHeight());
-                    if(std::abs(newScale - getScale()) > FLT_EPSILON) {           //stops onChanged/execute loop
-                        Scale.setValue(newScale);
-                        Scale.purgeTouched();
-                    }
+                    Scale.setValue(newScale);
                 }
             }
         } else if (prop == &LockPosition) {
