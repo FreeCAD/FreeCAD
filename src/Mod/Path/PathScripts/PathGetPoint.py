@@ -48,6 +48,7 @@ class TaskPanel:
     '''
     def __init__(self, form, onPath=False):
         '''__init___(form) ... form will be replaced by PointEdit.ui while the Snapper is active.'''
+        import DraftTools
         self.formOrig = form
         self.formPoint = FreeCADGui.PySideUic.loadUi(":/panels/PointEdit.ui")
 
