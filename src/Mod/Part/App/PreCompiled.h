@@ -81,7 +81,7 @@
 
 #include <boost/tuple/tuple.hpp>
 #include <boost/utility.hpp>
-#include <boost/graph/adjacency_list.hpp>
+#include <boost_graph_adjacency_list.hpp>
 
 #include <boost/program_options.hpp>
 //namespace po = boost::program_options;

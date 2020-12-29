@@ -98,7 +98,7 @@
 #include <FCConfig.h>
 #include <Base/Console.h>
 
-#include <boost/graph/adjacency_list.hpp>
+#include <boost_graph_adjacency_list.hpp>
 #include <boost/graph/connected_components.hpp>
 
 typedef Eigen::FullPivHouseholderQR<Eigen::MatrixXd>::IntDiagSizeVectorType MatrixIndexType;

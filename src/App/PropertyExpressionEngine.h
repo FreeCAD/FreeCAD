@@ -26,7 +26,7 @@
 #include <boost/unordered/unordered_map.hpp>
 #include <boost/function.hpp>
 #include <boost_signals2.hpp>
-#include <boost/graph/adjacency_list.hpp>
+#include <boost_graph_adjacency_list.hpp>
 #include <boost/graph/topological_sort.hpp>
 #include <App/PropertyLinks.h>
 #include <App/Expression.h>
