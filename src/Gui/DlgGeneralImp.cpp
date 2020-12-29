@@ -207,6 +207,7 @@ void DlgGeneralImp::saveSettings()
 void DlgGeneralImp::loadSettings()
 {
     std::string start = App::Application::Config()["StartWorkbench"];
+	start = "SketcherWorkbench";
     start = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
                                   GetASCII("AutoloadModule", start.c_str());
     QString startWbName = QLatin1String(start.c_str());
