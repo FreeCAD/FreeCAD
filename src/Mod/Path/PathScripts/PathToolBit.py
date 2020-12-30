@@ -303,6 +303,7 @@ class ToolBit(object):
         self._deleteBitSetup(obj)
         bitBody = obj.Document.copyObject(doc.RootObjects[0], True)
 
+        docName = doc.Name
         if docOpened:
             FreeCAD.setActiveDocument(activeDoc.Name)
             FreeCAD.closeDocument(doc.Name)
@@ -326,6 +327,8 @@ class ToolBit(object):
                 obj.setEditorMode(prop, 1)
                 PathUtil.setProperty(obj, prop, src)
                 propNames.append(prop)
+        if not propNames:
+            PathLog.error(translate('PathToolBit', 'Did not find a PropertyBag in {} - not a ToolBit shape?').format(docName))
 
         # has to happen last because it could trigger op.execute evaluations
         obj.BitPropertyNames = propNames
