@@ -620,6 +620,9 @@ class Monitor
 public:
     Monitor()
     {
+        editTimer.setSingleShot(true);
+        proxy.connect(&editTimer, SIGNAL(timeout()), &proxy, SLOT(onEditTimer()));
+
         Gui::Application::Instance->signalHighlightObject.connect(
             [this](const Gui::ViewProviderDocumentObject &vp,
                    const Gui::HighlightMode &, 
@@ -741,11 +744,23 @@ public:
                 editView = view;
                 editDoc = editBodyT.getDocument();
                 if (hasEditCheckBox) {
+                    if (editObj && editObj->isDerivedFrom(
+                                PartDesign::FeaturePrimitive::getClassTypeId())) {
+                        connPrimitiveMoved = static_cast<Part::Feature*>(
+                                editObj)->Placement.signalChanged.connect(
+                                    [this](const App::Property &) {
+                                        if (!this->editPreview)
+                                            this->editTimer.start(
+                                                    PartGui::PartParams::EditRecomputeWait());
+                                    });
+                    }
                     if (PartGui::PartParams::PreviewOnEdit()) {
                         auto vp = Base::freecad_dynamic_cast<ViewProviderAddSub>(
                                 Gui::Application::Instance->getViewProvider(editObj));
-                        if (vp)
+                        if (vp) {
+                            editPreview = true;
                             vp->setPreviewDisplayMode(true);
+                        }
                     } else if (editObj)
                         editObj->Visibility.setValue(true);
                     if (PartGui::PartParams::EditOnTop())
@@ -867,6 +882,7 @@ public:
 
     void resetEdit()
     {
+        connPrimitiveMoved.disconnect();
         connVisibilityChanged.disconnect();
         auto vp = Base::freecad_dynamic_cast<ViewProviderAddSub>(
                 Gui::Application::Instance->getViewProvider(editObjT.getObject()));
@@ -888,6 +904,7 @@ public:
         editBodyT = App::SubObjectT();
         editView = nullptr;
         hasEditCheckBox = false;
+        editPreview = false;
     }
 
     void slotChangedObject(const App::DocumentObject &object, const App::Property &prop)
@@ -1032,6 +1049,7 @@ public:
     boost::signals2::scoped_connection connDeletedObject;
     boost::signals2::scoped_connection connDeleteDocument;
     boost::signals2::scoped_connection connVisibilityChanged;
+    boost::signals2::scoped_connection connPrimitiveMoved;
     PartDesign::Body *activeBody = nullptr;
     App::SubObjectT activeBodyT;
     App::DocumentObjectT editObjT;
@@ -1043,7 +1061,9 @@ public:
     QPointer<QWidget> taskWidget;
 
     MonitorProxy proxy;
+    QTimer editTimer;
     bool hasEditCheckBox = false;
+    bool editPreview = false;
 
     std::vector<std::vector<App::DocumentObjectT> > visibleFeatures;
 };
@@ -1098,9 +1118,13 @@ void MonitorProxy::onPreview(bool checked)
                 _MonitorInstance->editObjT.getObject()));
 
     if (vp) {
+        _MonitorInstance->editPreview = checked;
         vp->setPreviewDisplayMode(checked);
-        if (!checked)
+        if (!checked) {
+            App::AutoTransaction guard("Recompute");
+            vp->getObject()->recomputeFeature(true);
             vp->show();
+        }
     }
 }
 
@@ -1111,6 +1135,15 @@ void MonitorProxy::onShowOnTop(bool checked)
         return;
 
     _MonitorInstance->showEditOnTop(checked);
+}
+
+void MonitorProxy::onEditTimer()
+{
+    auto obj = _MonitorInstance->editObjT.getObject();
+    if (obj) {
+        App::AutoTransaction guard("Recompute");
+        obj->recomputeFeature(true);
+    }
 }
 
 void addTaskCheckBox(QWidget * widget, int index)

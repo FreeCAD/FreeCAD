@@ -31,6 +31,7 @@
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/nodes/SoAnnotation.h>
+# include <Inventor/nodes/SoTransform.h>
 # include <Bnd_Box.hxx>
 # include <BRepBndLib.hxx>
 # include <BRepMesh_IncrementalMesh.hxx>
@@ -63,7 +64,9 @@ ViewProviderAddSub::ViewProviderAddSub()
 {
     ADD_PROPERTY(AddSubColor,((long)0));
 
-    previewGroup = new SoAnnotation();
+    previewTransform = new SoTransform;
+    previewGroup = new SoAnnotation;
+    previewGroup->addChild(previewTransform);
 }
 
 ViewProviderAddSub::~ViewProviderAddSub()
@@ -184,6 +187,16 @@ void ViewProviderAddSub::updateData(const App::Property* p) {
                 setPreviewDisplayMode(false);
                 setPreviewDisplayMode(true);
             }
+        }
+
+        if (p == &feat->BaseFeature || p == &feat->Placement) {
+            Base::Matrix4D matrix;
+            auto base = Base::freecad_dynamic_cast<Part::Feature>(
+                    feat->BaseFeature.getValue());
+            if (base)
+                matrix = base->Placement.getValue().inverse().toMatrix()
+                         * feat->Placement.getValue().toMatrix();
+            previewTransform->setMatrix(convert(matrix));
         }
     }
     PartDesignGui::ViewProvider::updateData(p);

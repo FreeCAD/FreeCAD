@@ -105,6 +105,7 @@ public:
 protected Q_SLOTS:
     void onPreview(bool);
     void onShowOnTop(bool);
+    void onEditTimer();
 };
 
 void addTaskCheckBox(QWidget * widget, int index = 0);

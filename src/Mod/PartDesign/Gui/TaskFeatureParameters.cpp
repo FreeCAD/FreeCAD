@@ -33,6 +33,7 @@
 #include <Gui/MainWindow.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/PrefWidgets.h>
+#include <Mod/Part/Gui/PartParams.h>
 #include <Mod/PartDesign/App/FeatureAddSub.h>
 #include <Mod/PartDesign/App/Body.h>
 
@@ -106,7 +107,7 @@ void TaskFeatureParameters::recomputeFeature(bool delay)
         return;
 
     if (delay && updateViewTimer)
-        updateViewTimer->start(300);
+        updateViewTimer->start(PartGui::PartParams::EditRecomputeWait());
     else {
         setupTransaction();
         App::DocumentObject* obj = vp->getObject ();

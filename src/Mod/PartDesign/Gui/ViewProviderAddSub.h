@@ -60,6 +60,7 @@ protected:
     
 protected:
     Gui::CoinPtr<SoSeparator>   previewGroup;
+    Gui::CoinPtr<SoTransform>   previewTransform;
 
 private:
     int                         defaultChild;
