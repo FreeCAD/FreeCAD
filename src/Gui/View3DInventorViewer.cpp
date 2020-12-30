@@ -1658,6 +1658,8 @@ SoPickedPoint* View3DInventorViewer::Private::getPointOnRay(const SbVec2s& pos, 
         pickRoot->addChild(pickTransform);
         pickRoot->addChild(pickDummy);
     }
+    if (pickRoot->getChild(0) != owner->getSoRenderManager()->getCamera())
+        pickRoot->replaceChild(0, owner->getSoRenderManager()->getCamera());
     CoinPtr<SoPath> path;
     if(vp == owner->editViewProvider && owner->pcEditingRoot->getNumChildren()>1) {
         path = pickPath;
