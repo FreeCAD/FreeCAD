@@ -2026,7 +2026,7 @@ void Application::runApplication(void)
 
     // Activate the correct workbench
     std::string start = App::Application::Config()["StartWorkbench"];
-    start = "SketcherWorkbench"; // hi eugene here, i wroet this too, hopefully it works?
+    start = "SketcherWorkbench";
     Base::Console().Log("Init: Activating default workbench %s\n", start.c_str());
     std::string autoload = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
                            GetASCII("AutoloadModule", start.c_str());
@@ -2041,7 +2041,7 @@ void Application::runApplication(void)
     QStringList wb = app.workbenches();
     if (!wb.contains(QString::fromLatin1(start.c_str()))) {
         start = App::Application::Config()["StartWorkbench"];
-        start = "SketcherWorkbench"; // hi eugene here, i wrote this
+        start = "SketcherWorkbench";
         if ("$LastModule" == autoload) {
             App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
                                   SetASCII("LastModule", start.c_str());

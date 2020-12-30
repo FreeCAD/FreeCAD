@@ -1255,7 +1255,8 @@ void MainWindow::delayedStartup()
 
     // Create new document?
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Document");
-    if (hGrp->GetBool("CreateNewDoc", false)) {
+    if (true) {
+	//if (hGrp->GetBool("CreateNewDoc", false)) {
         if (App::GetApplication().getDocuments().size()==0){
             App::GetApplication().newDocument();
         }
