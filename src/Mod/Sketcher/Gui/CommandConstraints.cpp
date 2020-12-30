@@ -1194,81 +1194,81 @@ void CmdSketcherConstrainHorizontal::applyConstraint(std::vector<SelIdPair> &sel
     Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
 
     switch (seqIndex) {
-    case 0: // {Edge}
-    {
-        // create the constraint
-        const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
+        case 0: // {Edge}
+        {
+            // create the constraint
+            const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
 
-        int CrvId = selSeq.front().GeoId;
-        if (CrvId != -1) {
-            const Part::Geometry *geo = Obj->getGeometry(CrvId);
-            if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
-                                     QObject::tr("The selected edge is not a line segment"));
+            int CrvId = selSeq.front().GeoId;
+            if (CrvId != -1) {
+                const Part::Geometry *geo = Obj->getGeometry(CrvId);
+                if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
+                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
+                                        QObject::tr("The selected edge is not a line segment"));
+                    return;
+                }
+
+                // check if the edge already has a Horizontal/Vertical/Block constraint
+                for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
+                    it != vals.end(); ++it) {
+                    if ((*it)->Type == Sketcher::Horizontal && (*it)->First == CrvId && (*it)->FirstPos == Sketcher::none){
+                        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Double constraint"),
+                            QObject::tr("The selected edge already has a horizontal constraint!"));
+                        return;
+                    }
+                    if ((*it)->Type == Sketcher::Vertical && (*it)->First == CrvId && (*it)->FirstPos == Sketcher::none) {
+                        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
+                                            QObject::tr("The selected edge already has a vertical constraint!"));
+                        return;
+                    }
+                    // check if the edge already has a Block constraint
+                    if ((*it)->Type == Sketcher::Block && (*it)->First == CrvId && (*it)->FirstPos == Sketcher::none) {
+                        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
+                                            QObject::tr("The selected edge already has a Block constraint!"));
+                        return;
+                    }
+                }
+
+                // undo command open
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add horizontal constraint"));
+                // issue the actual commands to create the constraint
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Horizontal',%d)) ",CrvId);
+                // finish the transaction and update
+                Gui::Command::commitCommand();
+
+                tryAutoRecompute(Obj);
+            }
+
+            break;
+        }
+
+        case 1 : // {SelVertex, SelVertexOrRoot}
+        case 2 : // {SelRoot, SelVertex}
+        {
+            int GeoId1, GeoId2;
+            Sketcher::PointPos PosId1, PosId2;
+            GeoId1 = selSeq.at(0).GeoId;  GeoId2 = selSeq.at(1).GeoId;
+            PosId1 = selSeq.at(0).PosId;  PosId2 = selSeq.at(1).PosId;
+
+            if ( areBothPointsOrSegmentsFixed(Obj, GeoId1, GeoId2) ) {
+                showNoConstraintBetweenFixedGeometry();
                 return;
             }
 
-            // check if the edge already has a Horizontal/Vertical/Block constraint
-            for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
-                 it != vals.end(); ++it) {
-                if ((*it)->Type == Sketcher::Horizontal && (*it)->First == CrvId && (*it)->FirstPos == Sketcher::none){
-                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Double constraint"),
-                        QObject::tr("The selected edge already has a horizontal constraint!"));
-                    return;
-                }
-                if ((*it)->Type == Sketcher::Vertical && (*it)->First == CrvId && (*it)->FirstPos == Sketcher::none) {
-                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
-                                         QObject::tr("The selected edge already has a vertical constraint!"));
-                    return;
-                }
-                // check if the edge already has a Block constraint
-                if ((*it)->Type == Sketcher::Block && (*it)->First == CrvId && (*it)->FirstPos == Sketcher::none) {
-                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
-                                         QObject::tr("The selected edge already has a Block constraint!"));
-                    return;
-                }
-            }
-
             // undo command open
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add horizontal constraint"));
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add horizontal alignment"));
             // issue the actual commands to create the constraint
-            Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Horizontal',%d)) ",CrvId);
+            Gui::cmdAppObjectArgs(sketchgui->getObject()
+                                    ,"addConstraint(Sketcher.Constraint('Horizontal',%d,%d,%d,%d)) "
+                                    ,GeoId1,PosId1,GeoId2,PosId2);
             // finish the transaction and update
             Gui::Command::commitCommand();
 
             tryAutoRecompute(Obj);
+
+            break;
+
         }
-
-        break;
-    }
-
-    case 1 : // {SelVertex, SelVertexOrRoot}
-    case 2 : // {SelRoot, SelVertex}
-    {
-        int GeoId1, GeoId2;
-        Sketcher::PointPos PosId1, PosId2;
-        GeoId1 = selSeq.at(0).GeoId;  GeoId2 = selSeq.at(1).GeoId;
-        PosId1 = selSeq.at(0).PosId;  PosId2 = selSeq.at(1).PosId;
-
-        if ( areBothPointsOrSegmentsFixed(Obj, GeoId1, GeoId2) ) {
-            showNoConstraintBetweenFixedGeometry();
-            return;
-        }
-
-        // undo command open
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add horizontal alignment"));
-        // issue the actual commands to create the constraint
-        Gui::cmdAppObjectArgs(sketchgui->getObject()
-                                ,"addConstraint(Sketcher.Constraint('Horizontal',%d,%d,%d,%d)) "
-                                ,GeoId1,PosId1,GeoId2,PosId2);
-        // finish the transaction and update
-        Gui::Command::commitCommand();
-
-        tryAutoRecompute(Obj);
-
-        break;
-
-    }
     }
 }
 
@@ -1619,7 +1619,7 @@ void CmdSketcherConstrainLock::activated(int iMsg)
             // it is a constraint on a external line, make it non-driving
 
             Gui::cmdAppObjectArgs(selection[0].getObject(), "setDriving(%i,%s)",
-                                  lastconstraintindex-2,"False");
+                                  lastconstraintindex-1,"False");
 
             Gui::cmdAppObjectArgs(selection[0].getObject(), "setDriving(%i,%s)",
                                   lastconstraintindex,"False");
