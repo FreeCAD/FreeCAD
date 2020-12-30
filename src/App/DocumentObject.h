@@ -36,7 +36,7 @@
 
 #include <unordered_map>
 #include <bitset>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 
 namespace App
 {

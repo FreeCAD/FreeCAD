@@ -25,7 +25,7 @@
 
 #include <string>
 #include <fstream>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 
 #include "DocumentObject.h"
 #include "TextDocument.h"

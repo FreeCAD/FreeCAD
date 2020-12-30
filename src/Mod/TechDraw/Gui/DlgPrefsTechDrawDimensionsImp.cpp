@@ -58,16 +58,15 @@ DlgPrefsTechDrawDimensionsImp::~DlgPrefsTechDrawDimensionsImp()
 
 void DlgPrefsTechDrawDimensionsImp::saveSettings()
 {
+    ui->pcbStandardAndStyle->onSave(); 
     ui->cbGlobalDecimals->onSave();
-    ui->cbHiddenLineStyle->onSave();
-    ui->cbProjAngle->onSave();
     ui->cbShowUnits->onSave();
+    ui->sbAltDecimals->onSave();
+    ui->plsb_FontSize->onSave();
+    ui->pdsbToleranceScale->onSave();
     ui->leDiameter->onSave();
     ui->pcbArrow->onSave();
-    ui->pcbStandardAndStyle->onSave();
     ui->plsb_ArrowSize->onSave();
-    ui->plsb_FontSize->onSave();
-    ui->sbAltDecimals->onSave();
 }
 
 void DlgPrefsTechDrawDimensionsImp::loadSettings()
@@ -81,16 +80,15 @@ void DlgPrefsTechDrawDimensionsImp::loadSettings()
 //    plsb_ArrowSize->setValue(arrowDefault);
     ui->plsb_ArrowSize->setValue(fontDefault);
 
+    ui->pcbStandardAndStyle->onRestore();
     ui->cbGlobalDecimals->onRestore();
-    ui->cbHiddenLineStyle->onRestore();
-    ui->cbProjAngle->onRestore();
     ui->cbShowUnits->onRestore();
+    ui->sbAltDecimals->onRestore();
+    ui->plsb_FontSize->onRestore();
+    ui->pdsbToleranceScale->onRestore();
     ui->leDiameter->onRestore();
     ui->pcbArrow->onRestore();
-    ui->pcbStandardAndStyle->onRestore();
     ui->plsb_ArrowSize->onRestore();
-    ui->plsb_FontSize->onRestore();
-    ui->sbAltDecimals->onRestore();
 
     DrawGuiUtil::loadArrowBox(ui->pcbArrow);
     ui->pcbArrow->setCurrentIndex(prefArrowStyle());

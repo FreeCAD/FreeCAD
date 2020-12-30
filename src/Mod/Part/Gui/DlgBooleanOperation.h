@@ -25,7 +25,7 @@
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 
 class QTreeWidgetItem;
 

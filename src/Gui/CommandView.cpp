@@ -1145,7 +1145,7 @@ StdCmdSetAppearance::StdCmdSetAppearance()
     sToolTipText  = QT_TR_NOOP("Sets the display properties of the selected object");
     sWhatsThis    = "Std_SetAppearance";
     sStatusTip    = QT_TR_NOOP("Sets the display properties of the selected object");
-    sPixmap       = "Std_Tool1";
+    sPixmap       = "Std_SetAppearance";
     sAccel        = "Ctrl+D";
     eType         = Alter3DView;
 }
@@ -2289,7 +2289,7 @@ StdCmdViewIvStereoOff::StdCmdViewIvStereoOff()
     sToolTipText  = QT_TR_NOOP("Switch stereo viewing off");
     sWhatsThis    = "Std_ViewIvStereoOff";
     sStatusTip    = QT_TR_NOOP("Switch stereo viewing off");
-    sPixmap       = "Std_Tool6";
+    sPixmap       = "Std_ViewIvStereoOff";
     eType         = Alter3DView;
 }
 
@@ -2318,7 +2318,7 @@ StdCmdViewIvStereoRedGreen::StdCmdViewIvStereoRedGreen()
     sToolTipText  = QT_TR_NOOP("Switch stereo viewing to red/cyan");
     sWhatsThis    = "Std_ViewIvStereoRedGreen";
     sStatusTip    = QT_TR_NOOP("Switch stereo viewing to red/cyan");
-    sPixmap       = "Std_Tool7";
+    sPixmap       = "Std_ViewIvStereoRedGreen";
     eType         = Alter3DView;
 }
 
@@ -2346,7 +2346,7 @@ StdCmdViewIvStereoQuadBuff::StdCmdViewIvStereoQuadBuff()
     sToolTipText  = QT_TR_NOOP("Switch stereo viewing to quad buffer");
     sWhatsThis    = "Std_ViewIvStereoQuadBuff";
     sStatusTip    = QT_TR_NOOP("Switch stereo viewing to quad buffer");
-    sPixmap       = "Std_Tool7";
+    sPixmap       = "Std_ViewIvStereoQuadBuff";
     eType         = Alter3DView;
 }
 
@@ -2374,7 +2374,7 @@ StdCmdViewIvStereoInterleavedRows::StdCmdViewIvStereoInterleavedRows()
     sToolTipText  = QT_TR_NOOP("Switch stereo viewing to Interleaved Rows");
     sWhatsThis    = "Std_ViewIvStereoInterleavedRows";
     sStatusTip    = QT_TR_NOOP("Switch stereo viewing to Interleaved Rows");
-    sPixmap       = "Std_Tool7";
+    sPixmap       = "Std_ViewIvStereoInterleavedRows";
     eType         = Alter3DView;
 }
 
@@ -2402,7 +2402,7 @@ StdCmdViewIvStereoInterleavedColumns::StdCmdViewIvStereoInterleavedColumns()
     sToolTipText  = QT_TR_NOOP("Switch stereo viewing to Interleaved Columns");
     sWhatsThis    = "Std_ViewIvStereoInterleavedColumns";
     sStatusTip    = QT_TR_NOOP("Switch stereo viewing to Interleaved Columns");
-    sPixmap       = "Std_Tool7";
+    sPixmap       = "Std_ViewIvStereoInterleavedColumns";
     eType         = Alter3DView;
 }
 

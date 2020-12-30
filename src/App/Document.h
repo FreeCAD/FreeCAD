@@ -37,7 +37,7 @@
 #include <stack>
 #include <functional>
 
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 
 namespace Base {
     class Writer;

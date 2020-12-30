@@ -27,7 +27,7 @@
 #include <App/ObjectIdentifier.h>
 #include <boost/shared_ptr.hpp>
 #include <QLabel>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 
 namespace App {
 class Expression;

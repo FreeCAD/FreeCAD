@@ -30,7 +30,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 #include <QString>
 #include <QObject>
 

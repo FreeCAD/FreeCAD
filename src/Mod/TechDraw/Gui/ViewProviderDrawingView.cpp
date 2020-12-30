@@ -25,7 +25,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 #include <boost/signals2/connection.hpp>
 #include <boost_bind_bind.hpp>
 
