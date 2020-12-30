@@ -24,6 +24,7 @@
 #define SKETCHER_SOLVERGEOMETRYEXTENSION_H
 
 #include <Mod/Part/App/GeometryExtension.h>
+#include "PointPosition.h"
 
 namespace Sketcher
 {
@@ -52,38 +53,43 @@ public:
 
     virtual PyObject *getPyObject(void) override;
 
-    SolverStatus getGeometry() const  {return ( Edge == Independent &&
-                                                Start == Independent &&
-                                                End == Independent &&
-                                                Mid == Independent) ? FullyConstraint : NotFullyConstraint;}
+    SolverStatus getGeometry() const
+    {
+        for( auto status : statuses)
+        {
+            if (status != Independent)
+                return NotFullyConstraint;
+        }
+        return FullyConstraint;
+    }
+    ParameterStatus get(PointPos i) const { return statuses[i];}
+    void set(PointPos i, ParameterStatus status) { statuses[i]=status;}
+    // ParameterStatus getEdge() const  {return Edge;}
+    // void setEdge(ParameterStatus status) {Edge = status;}
 
-    ParameterStatus getEdge() const  {return Edge;}
-    void setEdge(ParameterStatus status) {Edge = status;}
+    // ParameterStatus getStart() const  {return Start;}
+    // void setStart(ParameterStatus status) {Start = status;}
 
-    ParameterStatus getStart() const  {return Start;}
-    void setStart(ParameterStatus status) {Start = status;}
+    // ParameterStatus getMid() const  {return Mid;}
+    // void setMid(ParameterStatus status) {Mid = status;}
 
-    ParameterStatus getMid() const  {return Mid;}
-    void setMid(ParameterStatus status) {Mid = status;}
+    // ParameterStatus getEnd() const  {return End;}
+    // void setEnd(ParameterStatus status) {End = status;}
 
-    ParameterStatus getEnd() const  {return End;}
-    void setEnd(ParameterStatus status) {End = status;}
+    void init(ParameterStatus s) {
 
-    void init(ParameterStatus status) {
-        Edge = status;
-        Start = status;
-        Mid = status;
-        End = status;
+        for( auto &status : statuses)
+            status=s;
     }
 
 private:
     SolverGeometryExtension(const SolverGeometryExtension&) = default;
 
 private:
-    ParameterStatus    Edge;
-    ParameterStatus    Start;
-    ParameterStatus    Mid;
-    ParameterStatus    End;
+    ParameterStatus    statuses[PointPos::size];
+    // ParameterStatus    Start;
+    // ParameterStatus    Mid;
+    // ParameterStatus    End;
 };
 
 } //namespace Sketcher

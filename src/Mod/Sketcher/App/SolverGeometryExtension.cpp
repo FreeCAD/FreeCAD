@@ -32,24 +32,18 @@ using namespace Sketcher;
 //---------- Geometry Extension
 TYPESYSTEM_SOURCE(Sketcher::SolverGeometryExtension,Part::GeometryExtension)
 
-SolverGeometryExtension::SolverGeometryExtension():
-    Edge(SolverGeometryExtension::Dependent),
-    Start(SolverGeometryExtension::Dependent),
-    Mid(SolverGeometryExtension::Dependent),
-    End(SolverGeometryExtension::Dependent)
+SolverGeometryExtension::SolverGeometryExtension()
 {
-
+    for(auto &status: statuses) 
+        status = SolverGeometryExtension::Dependent;
 }
 
 std::unique_ptr<Part::GeometryExtension> SolverGeometryExtension::copy(void) const
 {
     auto cpy = std::make_unique<SolverGeometryExtension>();
 
-    cpy->Edge = this->Edge;
-    cpy->Start = this->Start;
-    cpy->End  = this->End;
-    cpy->Mid = this->Mid;
-
+    for(PointPos i=(PointPos)0;i<PointPos::size;i=(PointPos)(i+1))
+        cpy->statuses[i]=this->statuses[i];
     cpy->setName(this->getName()); // Base Class
 
 #if defined (__GNUC__) && (__GNUC__ <=4)

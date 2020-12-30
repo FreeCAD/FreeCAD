@@ -68,6 +68,177 @@
 using namespace Sketcher;
 using namespace Base;
 using namespace Part;
+class Sketcher::GeometryRequest
+{
+public:
+    enum class Operation
+    {
+        Add,
+        Remove,
+        Clear
+    };
+    const Part::Geometry & geometry;
+    const bool fixed;
+    GeometryRequest(const Part::Geometry & geo, bool f): geometry(geo), fixed(f) {}
+    GeometryRequest(const GeometryRequest &) = default;
+    GeometryRequest withFixed(bool fixed) const { return GeometryRequest(geometry,fixed);}
+    GeometryRequest withGeometry(const Part::Geometry & geo) const { return GeometryRequest(geo,fixed);}
+};
+
+
+class Sketcher::GCSRequest
+{
+public:
+    enum class Operation
+    {
+        Add,
+        Remove,
+        Clear
+    };
+    const size_t id;
+    const bool fixed;
+    GCSRequest(size_t id, bool f): id(id), fixed(f) {}
+    GCSRequest(const GCSRequest &) = default;
+};
+
+
+template<typename DATA, typename OUTPUT>
+class SpecializedFilter : public FilterChain::Filter<DATA, OUTPUT>
+{
+public:
+    virtual typename FilterChain::Filter<DATA,OUTPUT>::OutputType execute(const typename FilterChain::Filter<DATA,OUTPUT>::InputType& input)
+    {
+        if(!accept(input))
+            return FilterChain::Filter<DATA,OUTPUT>::OutputType::defaultContinue();
+        return executeForType(input);
+    }
+    virtual typename FilterChain::Filter<DATA,OUTPUT>::OutputType executeForType(const typename FilterChain::Filter<DATA,OUTPUT>::InputType& input) = 0;
+    virtual bool accept(const typename FilterChain::Filter<DATA,OUTPUT>::InputType& input) const = 0;
+};
+
+template<class T, typename OUTPUT>
+class GeometryRequestFilter : public SpecializedFilter<GeometryRequest, OUTPUT>
+{
+public:
+    virtual  bool accept(const typename SpecializedFilter<GeometryRequest, OUTPUT>::InputType & input) const
+    {
+        return input.data.geometry.getTypeId() == T::getClassTypeId();
+    }
+};
+
+template<GeometryType::Value T, typename OUTPUT>
+class GCSRequestFilter : public SpecializedFilter<GCSRequest, OUTPUT>
+{
+public:
+    Sketch & sketch;
+    SketchStorage & storage;
+    GCSRequestFilter(Sketch & s, SketchStorage & storage): sketch(s), storage(storage) {}
+    virtual  bool accept(const typename SpecializedFilter<GCSRequest, OUTPUT>::InputType & input) const
+    {
+        return storage.Geoms[input.data.id].type == T;
+    }
+};
+
+
+class PointFilter : public GeometryRequestFilter<GeomPoint, int>
+{
+public:
+    SketchStorage &storage;
+    Sketch & sketch;
+    PointFilter(Sketch &sketch, SketchStorage & storage): storage(storage), sketch(sketch) {}
+    virtual OutputType executeForType(const InputType& input)
+    {
+
+        const Sketcher::GeometryRequest & data=input.data;
+        const GeomPoint &point = static_cast<const GeomPoint&>(data.geometry);
+    // create our own copy
+        GeomPoint *p = static_cast<GeomPoint*>(point.clone());
+        // create the definition struct for that geom
+        SketchStorage::GeoDef def;
+        def.geo  = p;
+        def.type = GeometryType::Point;
+        storage.Geoms.push_back(def);
+        size_t id= storage.Geoms.size()-1;
+
+        sketch.addGCSGeometry(id, input.data.fixed);
+
+        // GCS::Point p1 = storage.Points[gcsPosition];
+        // def.pointIds[PointPos::start] = gcsPosition;
+        // def.pointIds[PointPos::end] = gcsPosition;
+        // def.pointIds[PointPos::mid] = gcsPosition;
+        // store complete set
+        
+
+       
+
+        // return the position of the newly added geometry
+        return OutputType(FilterChain::Outcome::Stop,id);
+
+        // return OutputType::defaultContinue();
+    }
+
+};
+class GCSPointFilter : public GCSRequestFilter<GeometryType::Point, size_t>
+{
+public:
+    GCSPointFilter(Sketch & sketch, SketchStorage & storage): GCSRequestFilter(sketch, storage) {}
+    virtual OutputType executeForType(const InputType& input)
+    {
+        // std::vector<double *> &params = input.data.fixed ? sketch.FixParameters : sketch.Parameters;
+        GeomPoint &point = static_cast<GeomPoint&>(*storage.Geoms[input.data.id].geo);
+        // set the parameter for the solver
+        // params.push_back(new double(point.getPoint().x));
+        // params.push_back(new double(point.getPoint().y));
+
+        // set the points for later constraints
+        GCS::Point p1;
+        p1.x = sketch.addSolverParameter(point.getPoint().x, input.data.id, Sketcher::start, input.data.fixed);
+        p1.y = sketch.addSolverParameter(point.getPoint().y, input.data.id, Sketcher::start, input.data.fixed);
+        storage.Points.push_back(p1);
+        size_t id=storage.Points.size()-1;
+
+        storage.Geoms[input.data.id].pointIds[PointPos::start] = id;
+        storage.Geoms[input.data.id].pointIds[PointPos::end] = id;
+        storage.Geoms[input.data.id].pointIds[PointPos::mid] = id;
+
+        // if(!input.data.fixed)
+        // {
+        //     sketch.param2geoelement.emplace( std::piecewise_construct, std::forward_as_tuple(p1.x), std::forward_as_tuple(input.data.id, Sketcher::start));
+        //     sketch.param2geoelement.emplace( std::piecewise_construct, std::forward_as_tuple(p1.y), std::forward_as_tuple(input.data.id, Sketcher::start));
+        // }
+
+       
+        return OutputType(FilterChain::Outcome::Stop, id);
+    }
+};
+
+//Forces BSplineKnot points to be added as fixed
+class BSplineKnotPointFilter : public GeometryRequestFilter<GeomPoint,int>
+{
+public:
+    Sketch &sketch;
+    BSplineKnotPointFilter(Sketch & s): sketch(s) {}
+    virtual OutputType executeForType(const InputType& input)
+    {
+        if (input.data.fixed == true)
+        {
+            return OutputType::defaultContinue();
+        }
+        const Sketcher::GeometryRequest & data=input.data;
+        const GeomPoint &point = static_cast<const GeomPoint&>(data.geometry);
+        auto pointf = GeometryFacade::getFacade(&point);
+
+        if (pointf->getInternalType() == InternalType::BSplineKnotPoint )
+        {
+            return input.originator->execute(input.withData(input.data.withFixed(true)));
+
+        }
+        return OutputType::defaultContinue();
+    }
+
+};
+
+
 
 TYPESYSTEM_SOURCE(Sketcher::Sketch, Base::Persistence)
 
@@ -81,6 +252,9 @@ Sketch::Sketch()
   , defaultSolverRedundant(GCS::DogLeg)
   , debugMode(GCS::Minimal)
 {
+    geometryGCSFilterChain.filters.push_back(std::unique_ptr<FilterChain::Filter<GCSRequest,size_t> >(new GCSPointFilter(*this, this->storage)));
+    geometryFilterChain.filters.push_back(std::unique_ptr<FilterChain::Filter<GeometryRequest,int> >(new BSplineKnotPointFilter(*this)));
+    geometryFilterChain.filters.push_back(std::unique_ptr<FilterChain::Filter<GeometryRequest,int> >(new PointFilter(*this, this->storage)));
 }
 
 Sketch::~Sketch()
@@ -194,6 +368,16 @@ bool Sketch::analyseBlockedGeometry( const std::vector<Part::Geometry *> &intern
     }
 
     return doesBlockAffectOtherConstraints;
+}
+
+double * Sketch::addSolverParameter(double defaultValue, size_t geoId, PointPos pos, bool fixed)
+{
+    std::vector<double *> &params = fixed ? FixParameters : Parameters;
+    double *newParameter = new double(defaultValue);
+    params.push_back(newParameter);
+    if (!fixed)
+        param2geoelement.emplace( std::piecewise_construct, std::forward_as_tuple(params[params.size()-1]), std::forward_as_tuple(geoId, pos));
+    return newParameter;
 }
 
 int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
@@ -465,22 +649,8 @@ void Sketch::calculateDependentParametersElements(void)
         if (element != param2geoelement.end()) {
             auto solvext = std::static_pointer_cast<Sketcher::SolverGeometryExtension>(
                             storage.Geoms[element->second.first].geo->getExtension(Sketcher::SolverGeometryExtension::getClassTypeId()).lock());
-
-            switch(element->second.second) {
-                case none:
-                    solvext->setEdge(SolverGeometryExtension::Dependent);
-                    break;
-                case start:
-                    solvext->setStart(SolverGeometryExtension::Dependent);
-                    break;
-                case end:
-                    solvext->setEnd(SolverGeometryExtension::Dependent);
-                    break;
-                case mid:
-                    solvext->setMid(SolverGeometryExtension::Dependent);
-                    break;
-            }
-
+            PointPos pos = element->second.second;
+            solvext->set(pos==PointPos::none? PointPos::edge: pos, SolverGeometryExtension::Dependent);
         }
     }
 
@@ -565,48 +735,23 @@ int Sketch::resetSolver()
     return GCSsys.dofsNumber();
 }
 
-// const char* nameByType(Sketch::GeoType type)
-// {
-//     switch (type) {
-//     case Sketch::Point:
-//         return "point";
-//     case Sketch::Line:
-//         return "line";
-//     case Sketch::Arc:
-//         return "arc";
-//     case Sketch::Circle:
-//         return "circle";
-//     case Sketch::Ellipse:
-//         return "ellipse";
-//     case Sketch::ArcOfEllipse:
-//         return "arcofellipse";
-//     case Sketch::ArcOfHyperbola:
-//         return "arcofhyperbola";
-//     case Sketch::ArcOfParabola:
-//         return "arcofparabola";
-//     case Sketch::BSpline:
-//         return "bspline";
-//     case Sketch::None:
-//     default:
-//         return "unknown";
-//     }
-// }
-
 // Geometry adding ==========================================================
+
+
+int Sketch::addGCSGeometry(size_t id, bool fixed)
+{
+    auto result = geometryGCSFilterChain.execute(FilterChain::Filter<GCSRequest, size_t>::InputType(GCSRequest(id, fixed), NULL));
+    if( result.outcome == FilterChain::Outcome::Stop)
+        return result.output;
+    throw Base::TypeError("Sketch::addGCSGeometry(): Unknown or unsupported type added to a sketch");
+}
 
 int Sketch::addGeometry(const Part::Geometry *geo, bool fixed)
 {
-    if (geo->getTypeId() == GeomPoint::getClassTypeId()) { // add a point
-        const GeomPoint *point = static_cast<const GeomPoint*>(geo);
-        auto pointf = GeometryFacade::getFacade(point);
-        // create the definition struct for that geom
-        if( pointf->getInternalType() == InternalType::BSplineKnotPoint ) {
-            return addPoint(*point, true);
-        }
-        else {
-            return addPoint(*point, fixed);
-        }
-    } else if (geo->getTypeId() == GeomLineSegment::getClassTypeId()) { // add a line
+    auto result = geometryFilterChain.execute(FilterChain::Filter<GeometryRequest, int>::InputType(GeometryRequest(*geo, fixed), NULL));
+    if( result.outcome == FilterChain::Outcome::Stop)
+        return result.output;
+    if (geo->getTypeId() == GeomLineSegment::getClassTypeId()) { // add a line
         const GeomLineSegment *lineSeg = static_cast<const GeomLineSegment*>(geo);
         // create the definition struct for that geom
         return addLineSegment(*lineSeg, fixed);
@@ -666,42 +811,6 @@ int Sketch::addGeometry(const std::vector<Part::Geometry *> &geo,
     return ret;
 }
 
-int Sketch::addPoint(const Part::GeomPoint &point, bool fixed)
-{
-    std::vector<double *> &params = fixed ? FixParameters : Parameters;
-
-    // create our own copy
-    GeomPoint *p = static_cast<GeomPoint*>(point.clone());
-    // create the definition struct for that geom
-    SketchStorage::GeoDef def;
-    def.geo  = p;
-    def.type = GeometryType::Point;
-
-    // set the parameter for the solver
-    params.push_back(new double(p->getPoint().x));
-    params.push_back(new double(p->getPoint().y));
-
-    // set the points for later constraints
-    GCS::Point p1;
-    p1.x = params[params.size()-2];
-    p1.y = params[params.size()-1];
-    def.startPointId = storage.Points.size();
-    def.endPointId = storage.Points.size();
-    def.midPointId = storage.Points.size();
-    storage.Points.push_back(p1);
-
-    // store complete set
-    storage.Geoms.push_back(def);
-
-    if(!fixed) {
-        param2geoelement.emplace( std::piecewise_construct, std::forward_as_tuple(p1.x), std::forward_as_tuple(storage.Geoms.size()-1, Sketcher::start));
-        param2geoelement.emplace( std::piecewise_construct, std::forward_as_tuple(p1.y), std::forward_as_tuple(storage.Geoms.size()-1, Sketcher::start));
-    }
-
-    // return the position of the newly added geometry
-    return storage.Geoms.size()-1;
-}
-
 int Sketch::addLineSegment(const Part::GeomLineSegment &lineSegment, bool fixed)
 {
     std::vector<double *> &params = fixed ? FixParameters : Parameters;
@@ -731,8 +840,8 @@ int Sketch::addLineSegment(const Part::GeomLineSegment &lineSegment, bool fixed)
     p2.y = params[params.size()-1];
 
     // add the points
-    def.startPointId = storage.Points.size();
-    def.endPointId = storage.Points.size()+1;
+    def.pointIds[PointPos::start] = storage.Points.size();
+    def.pointIds[PointPos::end] = storage.Points.size()+1;
     storage.Points.push_back(p1);
     storage.Points.push_back(p2);
 
@@ -792,11 +901,11 @@ int Sketch::addArc(const Part::GeomArcOfCircle &circleSegment, bool fixed)
     p3.x = params[params.size()-2];
     p3.y = params[params.size()-1];
 
-    def.startPointId = storage.Points.size();
+    def.pointIds[PointPos::start] = storage.Points.size();
     storage.Points.push_back(p1);
-    def.endPointId = storage.Points.size();
+    def.pointIds[PointPos::end] = storage.Points.size();
     storage.Points.push_back(p2);
-    def.midPointId = storage.Points.size();
+    def.pointIds[PointPos::mid] = storage.Points.size();
     storage.Points.push_back(p3);
 
     params.push_back(new double(radius));
@@ -887,11 +996,11 @@ int Sketch::addArcOfEllipse(const Part::GeomArcOfEllipse &ellipseSegment, bool f
     double *f1X = params[params.size()-2];
     double *f1Y = params[params.size()-1];
 
-    def.startPointId = storage.Points.size();
+    def.pointIds[PointPos::start] = storage.Points.size();
     storage.Points.push_back(p1);
-    def.endPointId = storage.Points.size();
+    def.pointIds[PointPos::end] = storage.Points.size();
     storage.Points.push_back(p2);
-    def.midPointId = storage.Points.size();
+    def.pointIds[PointPos::mid] = storage.Points.size();
     storage.Points.push_back(p3);
 
     //Points.push_back(f1);
@@ -989,11 +1098,11 @@ int Sketch::addArcOfHyperbola(const Part::GeomArcOfHyperbola &hyperbolaSegment, 
     double *f1X = params[params.size()-2];
     double *f1Y = params[params.size()-1];
 
-    def.startPointId = storage.Points.size();
+    def.pointIds[PointPos::start] = storage.Points.size();
     storage.Points.push_back(p1);
-    def.endPointId = storage.Points.size();
+    def.pointIds[PointPos::end] = storage.Points.size();
     storage.Points.push_back(p2);
-    def.midPointId = storage.Points.size();
+    def.pointIds[PointPos::mid] = storage.Points.size();
     storage.Points.push_back(p3);
 
     // add the radius parameters
@@ -1084,11 +1193,11 @@ int Sketch::addArcOfParabola(const Part::GeomArcOfParabola &parabolaSegment, boo
     p4.x = params[params.size()-2];
     p4.y = params[params.size()-1];
 
-    def.startPointId = storage.Points.size();
+    def.pointIds[PointPos::start] = storage.Points.size();
     storage.Points.push_back(p1);
-    def.endPointId = storage.Points.size();
+    def.pointIds[PointPos::end] = storage.Points.size();
     storage.Points.push_back(p2);
-    def.midPointId = storage.Points.size();
+    def.pointIds[PointPos::mid] = storage.Points.size();
     storage.Points.push_back(p3);
 
     // add the radius parameters
@@ -1244,9 +1353,9 @@ int Sketch::addBSpline(const Part::GeomBSplineCurve &bspline, bool fixed)
     p2.x = p2x;
     p2.y = p2y;
 
-    def.startPointId = storage.Points.size();
+    def.pointIds[PointPos::start] = storage.Points.size();
     storage.Points.push_back(p1);
-    def.endPointId = storage.Points.size();
+    def.pointIds[PointPos::end] = storage.Points.size();
     storage.Points.push_back(p2);
 
     GCS::BSpline bs;
@@ -1320,7 +1429,7 @@ int Sketch::addCircle(const Part::GeomCircle &cir, bool fixed)
 
     params.push_back(new double(radius));
 
-    def.midPointId = storage.Points.size();
+    def.pointIds[PointPos::mid] = storage.Points.size();
     storage.Points.push_back(p1);
 
     // add the radius parameter
@@ -1375,7 +1484,7 @@ int Sketch::addEllipse(const Part::GeomEllipse &elip, bool fixed)
     c.x = params[params.size()-2];
     c.y = params[params.size()-1];
 
-    def.midPointId = storage.Points.size(); // this takes midPointId+1
+    def.pointIds[PointPos::mid] = storage.Points.size(); // this takes midPointId+1
     storage.Points.push_back(c);
 
     params.push_back(new double(focus1.x));
@@ -1440,7 +1549,7 @@ Py::Tuple Sketch::getPyGeometry(void) const
     int i=0;
     for (std::vector<SketchStorage::GeoDef>::const_iterator it=storage.Geoms.begin(); it != storage.Geoms.end(); ++it, i++) {
         if (it->type == GeometryType::Point) {
-            Base::Vector3d temp(*(storage.Points[it->startPointId].x),*(storage.Points[it->startPointId].y),0);
+            Base::Vector3d temp(*(storage.Points[it->pointIds[PointPos::start]].x),*(storage.Points[it->pointIds[PointPos::start]].y),0);
             tuple[i] = Py::asObject(new VectorPy(temp));
         } else if (it->type ==  GeometryType::Line) {
             GeomLineSegment *lineSeg = static_cast<GeomLineSegment*>(it->geo->clone());
@@ -2248,7 +2357,7 @@ int Sketch::addPerpendicularConstraint(int geoId1, int geoId2)
     if (storage.Geoms[geoId1].type == GeometryType::Line) {
         GCS::Line &l1 = storage.Lines[storage.Geoms[geoId1].index];
         if (storage.Geoms[geoId2].type == GeometryType::Arc || storage.Geoms[geoId2].type == GeometryType::Circle) {
-            GCS::Point &p2 = storage.Points[storage.Geoms[geoId2].midPointId];
+            GCS::Point &p2 = storage.Points[storage.Geoms[geoId2].pointIds[PointPos::mid]];
             int tag = ++ConstraintsCounter;
             GCSsys.addConstraintPointOnLine(p2, l1, tag);
             return ConstraintsCounter;
@@ -2275,8 +2384,8 @@ int Sketch::addTangentConstraint(int geoId1, int geoId2)
     if (storage.Geoms[geoId2].type == GeometryType::Line) {
         if (storage.Geoms[geoId1].type == GeometryType::Line) {
             GCS::Line &l1 = storage.Lines[storage.Geoms[geoId1].index];
-            GCS::Point &l2p1 = storage.Points[storage.Geoms[geoId2].startPointId];
-            GCS::Point &l2p2 = storage.Points[storage.Geoms[geoId2].endPointId];
+            GCS::Point &l2p1 = storage.Points[storage.Geoms[geoId2].pointIds[PointPos::start]];
+            GCS::Point &l2p2 = storage.Points[storage.Geoms[geoId2].pointIds[PointPos::end]];
             int tag = ++ConstraintsCounter;
             GCSsys.addConstraintPointOnLine(l2p1, l1, tag);
             GCSsys.addConstraintPointOnLine(l2p2, l1, tag);
@@ -2616,20 +2725,20 @@ int Sketch::addAngleConstraint(int geoId1, PointPos pos1, int geoId2, PointPos p
 
     GCS::Point *l1p1=0, *l1p2=0;
     if (pos1 == start) {
-        l1p1 = &storage.Points[storage.Geoms[geoId1].startPointId];
-        l1p2 = &storage.Points[storage.Geoms[geoId1].endPointId];
+        l1p1 = &storage.Points[storage.Geoms[geoId1].pointIds[PointPos::start]];
+        l1p2 = &storage.Points[storage.Geoms[geoId1].pointIds[PointPos::end]];
     } else if (pos1 == end) {
-        l1p1 = &storage.Points[storage.Geoms[geoId1].endPointId];
-        l1p2 = &storage.Points[storage.Geoms[geoId1].startPointId];
+        l1p1 = &storage.Points[storage.Geoms[geoId1].pointIds[PointPos::end]];
+        l1p2 = &storage.Points[storage.Geoms[geoId1].pointIds[PointPos::start]];
     }
 
     GCS::Point *l2p1=0, *l2p2=0;
     if (pos2 == start) {
-        l2p1 = &storage.Points[storage.Geoms[geoId2].startPointId];
-        l2p2 = &storage.Points[storage.Geoms[geoId2].endPointId];
+        l2p1 = &storage.Points[storage.Geoms[geoId2].pointIds[PointPos::start]];
+        l2p2 = &storage.Points[storage.Geoms[geoId2].pointIds[PointPos::end]];
     } else if (pos2 == end) {
-        l2p1 = &storage.Points[storage.Geoms[geoId2].endPointId];
-        l2p2 = &storage.Points[storage.Geoms[geoId2].startPointId];
+        l2p1 = &storage.Points[storage.Geoms[geoId2].pointIds[PointPos::end]];
+        l2p2 = &storage.Points[storage.Geoms[geoId2].pointIds[PointPos::start]];
     }
 
     if (l1p1 == 0 || l2p1 == 0)
@@ -3301,8 +3410,8 @@ bool Sketch::updateGeometry()
                 auto pointf = GeometryFacade::getFacade(point);
 
                 if(!(pointf->getInternalType() == InternalType::BSplineKnotPoint)) {
-                    point->setPoint(Vector3d(*storage.Points[it->startPointId].x,
-                                         *storage.Points[it->startPointId].y,
+                    point->setPoint(Vector3d(*storage.Points[it->pointIds[PointPos::start]].x,
+                                         *storage.Points[it->pointIds[PointPos::start]].y,
                                          0.0)
                                );
                 }
@@ -3323,8 +3432,8 @@ bool Sketch::updateGeometry()
 //                *myArc.end.x = *myArc.center.x + *myArc.rad * cos(*myArc.endAngle);
 //                *myArc.end.y = *myArc.center.y + *myArc.rad * sin(*myArc.endAngle);
                 GeomArcOfCircle *aoc = static_cast<GeomArcOfCircle*>(it->geo);
-                aoc->setCenter(Vector3d(*storage.Points[it->midPointId].x,
-                                        *storage.Points[it->midPointId].y,
+                aoc->setCenter(Vector3d(*storage.Points[it->pointIds[PointPos::mid]].x,
+                                        *storage.Points[it->pointIds[PointPos::mid]].y,
                                         0.0)
                               );
                 aoc->setRadius(*myArc.rad);
@@ -3334,7 +3443,7 @@ bool Sketch::updateGeometry()
 
                 GeomArcOfEllipse *aoe = static_cast<GeomArcOfEllipse*>(it->geo);
 
-                Base::Vector3d center = Vector3d(*storage.Points[it->midPointId].x, *storage.Points[it->midPointId].y, 0.0);
+                Base::Vector3d center = Vector3d(*storage.Points[it->pointIds[PointPos::mid]].x, *storage.Points[it->pointIds[PointPos::mid]].y, 0.0);
                 Base::Vector3d f1 = Vector3d(*myArc.focus1.x, *myArc.focus1.y, 0.0);
                 double radmin = *myArc.radmin;
 
@@ -3353,8 +3462,8 @@ bool Sketch::updateGeometry()
                 aoe->setRange(*myArc.startAngle, *myArc.endAngle, /*emulateCCW=*/true);
             } else if (it->type == GeometryType::Circle) {
                 GeomCircle *circ = static_cast<GeomCircle*>(it->geo);
-                circ->setCenter(Vector3d(*storage.Points[it->midPointId].x,
-                                         *storage.Points[it->midPointId].y,
+                circ->setCenter(Vector3d(*storage.Points[it->pointIds[PointPos::mid]].x,
+                                         *storage.Points[it->pointIds[PointPos::mid]].y,
                                          0.0)
                                );
                 circ->setRadius(*storage.Circles[it->index].rad);
@@ -3362,7 +3471,7 @@ bool Sketch::updateGeometry()
 
                 GeomEllipse *ellipse = static_cast<GeomEllipse*>(it->geo);
 
-                Base::Vector3d center = Vector3d(*storage.Points[it->midPointId].x, *storage.Points[it->midPointId].y, 0.0);
+                Base::Vector3d center = Vector3d(*storage.Points[it->pointIds[PointPos::mid]].x, *storage.Points[it->pointIds[PointPos::mid]].y, 0.0);
                 Base::Vector3d f1 = Vector3d(*storage.Ellipses[it->index].focus1.x, *storage.Ellipses[it->index].focus1.y, 0.0);
                 double radmin = *storage.Ellipses[it->index].radmin;
 
@@ -3383,7 +3492,7 @@ bool Sketch::updateGeometry()
 
                 GeomArcOfHyperbola *aoh = static_cast<GeomArcOfHyperbola*>(it->geo);
 
-                Base::Vector3d center = Vector3d(*storage.Points[it->midPointId].x, *storage.Points[it->midPointId].y, 0.0);
+                Base::Vector3d center = Vector3d(*storage.Points[it->pointIds[PointPos::mid]].x, *storage.Points[it->pointIds[PointPos::mid]].y, 0.0);
                 Base::Vector3d f1 = Vector3d(*myArc.focus1.x, *myArc.focus1.y, 0.0);
                 double radmin = *myArc.radmin;
 
@@ -3405,7 +3514,7 @@ bool Sketch::updateGeometry()
 
                 GeomArcOfParabola *aop = static_cast<GeomArcOfParabola*>(it->geo);
 
-                Base::Vector3d vertex = Vector3d(*storage.Points[it->midPointId].x, *storage.Points[it->midPointId].y, 0.0);
+                Base::Vector3d vertex = Vector3d(*storage.Points[it->pointIds[PointPos::mid]].x, *storage.Points[it->pointIds[PointPos::mid]].y, 0.0);
                 Base::Vector3d f1 = Vector3d(*myArc.focus1.x, *myArc.focus1.y, 0.0);
 
                 Base::Vector3d fd=f1-vertex;
@@ -3660,7 +3769,7 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
 
     if (storage.Geoms[geoId].type == GeometryType::Point) {
         if (pos == start) {
-            GCS::Point &point = storage.Points[storage.Geoms[geoId].startPointId];
+            GCS::Point &point = storage.Points[storage.Geoms[geoId].pointIds[PointPos::start]];
             GCS::Point p0;
             MoveParameters.resize(2); // px,py
             p0.x = &MoveParameters[0];
@@ -3676,12 +3785,12 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
             p0.x = &MoveParameters[0];
             p0.y = &MoveParameters[1];
             if (pos == start) {
-                GCS::Point &p = storage.Points[storage.Geoms[geoId].startPointId];
+                GCS::Point &p = storage.Points[storage.Geoms[geoId].pointIds[PointPos::start]];
                 *p0.x = *p.x;
                 *p0.y = *p.y;
                 GCSsys.addConstraintP2PCoincident(p0,p,GCS::DefaultTemporaryConstraint);
             } else if (pos == end) {
-                GCS::Point &p = storage.Points[storage.Geoms[geoId].endPointId];
+                GCS::Point &p = storage.Points[storage.Geoms[geoId].pointIds[PointPos::end]];
                 *p0.x = *p.x;
                 *p0.y = *p.y;
                 GCSsys.addConstraintP2PCoincident(p0,p,GCS::DefaultTemporaryConstraint);
@@ -3702,7 +3811,7 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
             GCSsys.addConstraintP2PCoincident(p2,l.p2,GCS::DefaultTemporaryConstraint);
         }
     } else if (storage.Geoms[geoId].type == GeometryType::Circle) {
-        GCS::Point &center = storage.Points[storage.Geoms[geoId].midPointId];
+        GCS::Point &center = storage.Points[storage.Geoms[geoId].pointIds[PointPos::mid]];
         GCS::Point p0,p1;
         if (pos == mid) {
             MoveParameters.resize(2); // cx,cy
@@ -3730,7 +3839,7 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
         }
     } else if (storage.Geoms[geoId].type == GeometryType::Ellipse) {
 
-        GCS::Point &center = storage.Points[storage.Geoms[geoId].midPointId];
+        GCS::Point &center = storage.Points[storage.Geoms[geoId].pointIds[PointPos::mid]];
         GCS::Point p0,p1;
         if (pos == mid || pos == none) {
             MoveParameters.resize(2); // cx,cy
@@ -3743,7 +3852,7 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
         }
     } else if (storage.Geoms[geoId].type == GeometryType::ArcOfEllipse) {
 
-        GCS::Point &center = storage.Points[storage.Geoms[geoId].midPointId];
+        GCS::Point &center = storage.Points[storage.Geoms[geoId].pointIds[PointPos::mid]];
         GCS::Point p0,p1;
         if (pos == mid || pos == none) {
             MoveParameters.resize(2); // cx,cy
@@ -3757,8 +3866,8 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
 
             MoveParameters.resize(4); // x,y,cx,cy
             if (pos == start || pos == end) {
-                GCS::Point &p = (pos == start) ? storage.Points[storage.Geoms[geoId].startPointId]
-                                            : storage.Points[storage.Geoms[geoId].endPointId];;
+                GCS::Point &p = (pos == start) ? storage.Points[storage.Geoms[geoId].pointIds[PointPos::start]]
+                                            : storage.Points[storage.Geoms[geoId].pointIds[PointPos::end]];;
                 p0.x = &MoveParameters[0];
                 p0.y = &MoveParameters[1];
                 *p0.x = *p.x;
@@ -3778,7 +3887,7 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
         }
     } else if (storage.Geoms[geoId].type == GeometryType::ArcOfHyperbola) {
 
-        GCS::Point &center = storage.Points[storage.Geoms[geoId].midPointId];
+        GCS::Point &center = storage.Points[storage.Geoms[geoId].pointIds[PointPos::mid]];
         GCS::Point p0,p1;
         if (pos == mid || pos == none) {
             MoveParameters.resize(2); // cx,cy
@@ -3792,8 +3901,8 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
 
             MoveParameters.resize(4); // x,y,cx,cy
             if (pos == start || pos == end) {
-                GCS::Point &p = (pos == start) ? storage.Points[storage.Geoms[geoId].startPointId]
-                                            : storage.Points[storage.Geoms[geoId].endPointId];;
+                GCS::Point &p = (pos == start) ? storage.Points[storage.Geoms[geoId].pointIds[PointPos::start]]
+                                            : storage.Points[storage.Geoms[geoId].pointIds[PointPos::end]];
                 p0.x = &MoveParameters[0];
                 p0.y = &MoveParameters[1];
                 *p0.x = *p.x;
@@ -3813,7 +3922,7 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
         }
     } else if (storage.Geoms[geoId].type == GeometryType::ArcOfParabola) {
 
-        GCS::Point &center = storage.Points[storage.Geoms[geoId].midPointId];
+        GCS::Point &center = storage.Points[storage.Geoms[geoId].pointIds[PointPos::mid]];
         GCS::Point p0,p1;
         if (pos == mid || pos == none) {
             MoveParameters.resize(2); // cx,cy
@@ -3827,8 +3936,8 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
 
             MoveParameters.resize(4); // x,y,cx,cy
             if (pos == start || pos == end) {
-                GCS::Point &p = (pos == start) ? storage.Points[storage.Geoms[geoId].startPointId]
-                                            : storage.Points[storage.Geoms[geoId].endPointId];;
+                GCS::Point &p = (pos == start) ? storage.Points[storage.Geoms[geoId].pointIds[PointPos::start]]
+                                            : storage.Points[storage.Geoms[geoId].pointIds[PointPos::end]];
                 p0.x = &MoveParameters[0];
                 p0.y = &MoveParameters[1];
                 *p0.x = *p.x;
@@ -3853,12 +3962,12 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
             p0.x = &MoveParameters[0];
             p0.y = &MoveParameters[1];
             if (pos == start) {
-                GCS::Point &p = storage.Points[storage.Geoms[geoId].startPointId];
+                GCS::Point &p = storage.Points[storage.Geoms[geoId].pointIds[PointPos::start]];
                 *p0.x = *p.x;
                 *p0.y = *p.y;
                 GCSsys.addConstraintP2PCoincident(p0,p,GCS::DefaultTemporaryConstraint);
             } else if (pos == end) {
-                GCS::Point &p = storage.Points[storage.Geoms[geoId].endPointId];
+                GCS::Point &p = storage.Points[storage.Geoms[geoId].pointIds[PointPos::end]];
                 *p0.x = *p.x;
                 *p0.y = *p.y;
                 GCSsys.addConstraintP2PCoincident(p0,p,GCS::DefaultTemporaryConstraint);
@@ -3882,7 +3991,7 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
 
         }
     } else if (storage.Geoms[geoId].type == GeometryType::Arc) {
-        GCS::Point &center = storage.Points[storage.Geoms[geoId].midPointId];
+        GCS::Point &center = storage.Points[storage.Geoms[geoId].pointIds[PointPos::mid]];
         GCS::Point p0,p1;
         if (pos == mid) {
             MoveParameters.resize(2); // cx,cy
@@ -3894,8 +4003,8 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
         } else if (pos == start || pos == end || pos == none) {
             MoveParameters.resize(4); // x,y,cx,cy
             if (pos == start || pos == end) {
-                GCS::Point &p = (pos == start) ? storage.Points[storage.Geoms[geoId].startPointId]
-                                               : storage.Points[storage.Geoms[geoId].endPointId];;
+                GCS::Point &p = (pos == start) ? storage.Points[storage.Geoms[geoId].pointIds[PointPos::start]]
+                                               : storage.Points[storage.Geoms[geoId].pointIds[PointPos::end]];
                 p0.x = &MoveParameters[0];
                 p0.y = &MoveParameters[1];
                 *p0.x = *p.x;
@@ -4047,22 +4156,18 @@ int Sketch::getPointId(int geoId, PointPos pos) const
     // do a range check first
     if (geoId < 0 || geoId >= (int)storage.Geoms.size())
         return -1;
-    switch (pos) {
-    case start:
-        return storage.Geoms[geoId].startPointId;
-    case end:
-        return storage.Geoms[geoId].endPointId;
-    case mid:
-        return storage.Geoms[geoId].midPointId;
-    case none:
-        break;
+    if(pos == PointPos::none || pos >=PointPos::size)
+    {
+        return -1;
     }
-    return -1;
+    return storage.Geoms[geoId].pointIds[pos];
 }
 
 Base::Vector3d Sketch::getPoint(int geoId, PointPos pos) const
 {
+    std::cout<<pos<<std::endl;
     geoId = checkGeoId(geoId);
+    std::cout<<pos<<std::endl;
     int pointId = getPointId(geoId, pos);
     if (pointId != -1)
         return Base::Vector3d(*storage.Points[pointId].x, *storage.Points[pointId].y, 0);

@@ -725,28 +725,12 @@ PyObject* SketchObjectPy::getDatum(PyObject *args)
     }
     while (false);
 
-    ConstraintType type = constr->Type;
-    if (type != ConstraintType::Distance &&
-        type != ConstraintType::DistanceX &&
-        type != ConstraintType::DistanceY &&
-        type != ConstraintType::Radius &&
-        type != ConstraintType::Diameter &&
-        type != ConstraintType::Angle) {
+    if (!constr->isDatum()) {
         PyErr_SetString(PyExc_TypeError, "Constraint is not a datum");
         return 0;
     }
 
-    Base::Quantity datum;
-    datum.setValue(constr->getValue());
-    if (type == ConstraintType::Angle) {
-        datum.setValue(Base::toDegrees<double>(datum.getValue()));
-        datum.setUnit(Base::Unit::Angle);
-    }
-    else {
-        datum.setUnit(Base::Unit::Length);
-    }
-
-    return new Base::QuantityPy(new Base::Quantity(datum));
+    return new Base::QuantityPy(new Base::Quantity(constr->getPresentationValue()));
 }
 
 PyObject* SketchObjectPy::setDriving(PyObject *args)

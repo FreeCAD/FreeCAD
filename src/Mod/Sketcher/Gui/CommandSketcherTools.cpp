@@ -637,6 +637,8 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
 
                     switch(vals[ConstrId]->FirstPos)
                     {
+                        default:
+                            break;
                         case Sketcher::none:
                             ss << "Edge" << vals[ConstrId]->First + 1;
                             break;
@@ -647,6 +649,7 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
                             if(vertex>-1)
                                 ss << "Vertex" <<  vertex + 1;
                             break;
+
                     }
 
                     Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
@@ -658,6 +661,8 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
 
                     switch(vals[ConstrId]->SecondPos)
                     {
+                        default:
+                            break;
                         case Sketcher::none:
                             ss << "Edge" << vals[ConstrId]->Second + 1;
                             break;
@@ -770,14 +775,11 @@ void CmdSketcherSelectElementsWithDoFs::activated(int iMsg)
                 if (solvext->getGeometry() == Sketcher::SolverGeometryExtension::NotFullyConstraint) {
                     // Coded for consistency with getGeometryWithDependentParameters, read the comments
                     // on that function
-                    if (solvext->getEdge() == SolverGeometryExtension::Dependent)
+                    if (solvext->get(PointPos::edge) == SolverGeometryExtension::Dependent)
                         testselectedge(geoid);
-                    if (solvext->getStart() == SolverGeometryExtension::Dependent)
-                        testselectvertex(geoid, Sketcher::start);
-                    if (solvext->getEnd() == SolverGeometryExtension::Dependent)
-                        testselectvertex(geoid, Sketcher::end);
-                    if (solvext->getMid() == SolverGeometryExtension::Dependent)
-                        testselectvertex(geoid, Sketcher::mid);
+                    for( PointPos p : {PointPos::start, PointPos::end, PointPos::mid})
+                        if (solvext->get(p) == SolverGeometryExtension::Dependent)
+                            testselectvertex(geoid, p);
                 }
             }
         }

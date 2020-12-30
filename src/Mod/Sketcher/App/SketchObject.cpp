@@ -7162,14 +7162,11 @@ void SketchObject::getGeometryWithDependentParameters(std::vector<std::pair<int,
                     //
                     // For this reason, this function returns edge as dependent parameter if and only if constraining the
                     // parameters of the points would not suffice to constraint the element.
-                    if (solvext->getEdge() == SolverGeometryExtension::Dependent)
-                        geometrymap.emplace_back(geoid,Sketcher::none);
-                    if (solvext->getStart() == SolverGeometryExtension::Dependent)
-                        geometrymap.emplace_back(geoid,Sketcher::start);
-                    if (solvext->getEnd() == SolverGeometryExtension::Dependent)
-                        geometrymap.emplace_back(geoid,Sketcher::start);
-                    if (solvext->getMid() == SolverGeometryExtension::Dependent)
-                        geometrymap.emplace_back(geoid,Sketcher::start);
+                    for(PointPos i: {PointPos::edge, PointPos::start, PointPos::end, PointPos::mid})
+                    {
+                        if (solvext->get(i) == SolverGeometryExtension::Dependent)
+                            geometrymap.emplace_back(geoid,i);
+                    }
                 }
             }
         }
@@ -7397,7 +7394,7 @@ bool SketchObject::isPointOnCurve(int geoIdCurve, double px, double py)
     Base::Vector3d pp;
     pp.x = px; pp.y = py;
     Part::GeomPoint p(pp);
-    int ipnt = sk.addPoint(p);
+    int ipnt = sk.addGeometry(&p);
     int icstr = sk.addPointOnObjectConstraint(ipnt, Sketcher::start, icrv);
     double err = sk.calculateConstraintError(icstr);
     return err*err < 10.0*sk.getSolverPrecision();

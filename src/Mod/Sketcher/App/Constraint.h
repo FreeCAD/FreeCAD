@@ -30,6 +30,8 @@
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
 
+#include "PointPosition.h"
+
 namespace Sketcher
 {
 /*!
@@ -74,9 +76,6 @@ enum InternalAlignmentType {
     BSplineControlPoint     = 9,
     BSplineKnotPoint        = 10,
 };
-
-/// define if you want to use the end or start point
-enum PointPos { none, start, end, mid };
 
 class SketcherExport Constraint : public Base::Persistence
 {

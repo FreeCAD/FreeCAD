@@ -52,6 +52,9 @@ SOURCE_GROUP("Properties" FILES ${Properties_SRCS})
 
 
 SET(Features_SRCS
+    filterChain/Filter.h
+    filterChain/FilterChain.h
+    filterChain/FilterOperation.h
     SketchObjectSF.cpp
     SketchObjectSF.h
     SketchGeometryExtension.cpp

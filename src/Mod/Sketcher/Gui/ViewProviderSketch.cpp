@@ -1176,7 +1176,7 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
                                         geo->getExtension(Sketcher::SolverGeometryExtension::getClassTypeId()).lock());
 
                         // Edge parameters are Independent, so weight won't move
-                        if(solvext->getEdge()==Sketcher::SolverGeometryExtension::Independent) {
+                        if(solvext->get(PointPos::edge)==Sketcher::SolverGeometryExtension::Independent) {
                             Mode = STATUS_NONE;
                             return false;
                         }

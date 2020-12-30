@@ -31,11 +31,15 @@
 #include "SketchStorage.h"
 
 #include "planegcs/GCS.h"
+#include "filterChain/FilterChain.h"
 
 #include <Base/Persistence.h>
 
 namespace Sketcher
 {
+
+class GeometryRequest;
+class GCSRequest;
 
 class SketcherExport Sketch :public Base::Persistence
 {
@@ -75,6 +79,10 @@ public:
                     int extGeoCount=0);
     /// return the actual geometry of the sketch a TopoShape
     Part::TopoShape toShape(void) const;
+
+
+    //TODO refactoring to encapsulate somewhere else
+    int addGCSGeometry(size_t id, bool fixed=false);
     /// add unspecified geometry
     int addGeometry(const Part::Geometry *geo, bool fixed=false);
     /// add unspecified geometry
@@ -145,10 +153,6 @@ public:
     void setRecalculateInitialSolutionWhileMovingPoint(bool recalculateInitialSolutionWhileMovingPoint)
         {RecalculateInitialSolutionWhileMovingPoint = recalculateInitialSolutionWhileMovingPoint;}
 
-    /// add dedicated geometry
-    //@{
-    /// add a point
-    int addPoint(const Part::GeomPoint &point, bool fixed=false);
     /// add a line segment
     int addLineSegment(const Part::GeomLineSegment &lineSegment, bool fixed=false);
     /// add a arc (circle segment)
@@ -377,6 +381,17 @@ public:
     int getGeometrySize(void) const {return storage.Geoms.size();}
 
 
+    // solving parameters
+    std::vector<double*> Parameters;    // with memory allocation
+    std::vector<double*> DrivenParameters;    // with memory allocation
+    std::vector<double*> FixParameters; // with memory allocation
+    std::vector<double> MoveParameters, InitParameters;
+
+    // this map is intended to convert a parameter (double *) into a GeoId/PointPos pair
+    std::map<double *, std::pair<int,Sketcher::PointPos>> param2geoelement;
+    double* addSolverParameter(double defaultValue, size_t geoId, PointPos pos, bool fixed);
+
+
 
 protected:
     float SolveTime;
@@ -384,6 +399,10 @@ protected:
 
 protected:
 
+  
+
+    FilterChain::FilterChain<GeometryRequest, int> geometryFilterChain;
+    FilterChain::FilterChain<GCSRequest, size_t> geometryGCSFilterChain;
     GCS::System GCSsys;
     int ConstraintsCounter;
     std::vector<int> Conflicting;
@@ -393,14 +412,8 @@ protected:
 
     std::vector < std::set < std::pair< int, Sketcher::PointPos>>> pDependencyGroups;
 
-    // this map is intended to convert a parameter (double *) into a GeoId/PointPos pair
-    std::map<double *, std::pair<int,Sketcher::PointPos>> param2geoelement;
 
-    // solving parameters
-    std::vector<double*> Parameters;    // with memory allocation
-    std::vector<double*> DrivenParameters;    // with memory allocation
-    std::vector<double*> FixParameters; // with memory allocation
-    std::vector<double> MoveParameters, InitParameters;
+
     SketchStorage storage;
 
     bool isInitMove;

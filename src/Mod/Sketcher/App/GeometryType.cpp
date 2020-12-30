@@ -1,4 +1,8 @@
+#include "PreCompiled.h"
 #include "GeometryType.h"
+
+#include <Mod/Part/App/Geometry.h>
+
 using namespace Sketcher;
 const char * GeometryType::str() const {
 
@@ -25,4 +29,12 @@ const char * GeometryType::str() const {
 	    default:
 	        return "unknown";
     }
+}
+
+GeometryType GeometryType::from(const Base::Type & geometryClassType) {
+
+	if(geometryClassType == Part::GeomPoint::getClassTypeId()){
+		return GeometryType::Point;
+	}
+	return GeometryType::None;
 }
