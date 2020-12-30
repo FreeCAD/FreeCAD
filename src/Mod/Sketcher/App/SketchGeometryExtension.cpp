@@ -70,7 +70,8 @@ void SketchGeometryExtension::Restore(Base::XMLReader &reader)
 {
     restoreNameAttribute(reader);
 
-    Id = reader.getAttributeAsInteger("id");
+    if (reader.hasAttribute("id"))
+        Id = reader.getAttributeAsInteger("id");
 }
 
 std::unique_ptr<Part::GeometryExtension> SketchGeometryExtension::copy(void) const

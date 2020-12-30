@@ -286,14 +286,11 @@ void Geometry::Restore(Base::XMLReader &reader)
         }
 
         reader.readEndElement("GeoExtensions");
-
-        reader.readElement("Construction"); // prepare for reading construction attribute
     }
-    else if(strcmp(reader.localName(),"Construction") != 0) { // ignore anything not known
-        reader.readElement("Construction");
-    }
+    else if(strcmp(reader.localName(),"Construction") == 0) { // legacy
 
-    Construction = (int)reader.getAttributeAsInteger("value")==0?false:true;
+        Construction = (int)reader.getAttributeAsInteger("value")==0?false:true;
+    }
 
 }
 
