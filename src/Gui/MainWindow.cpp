@@ -1259,6 +1259,12 @@ void MainWindow::delayedStartup()
 	//if (hGrp->GetBool("CreateNewDoc", false)) {
         if (App::GetApplication().getDocuments().size()==0){
             App::GetApplication().newDocument();
+			//doCommand(Doc,"App.activeDocument().addObject('Sketcher::SketchObject','%s')",FeatName.c_str());
+			//doCommand(Doc,"App.activeDocument().%s.Placement = App.Placement(App.Vector(%f,%f,%f),App.Rotation(%f,%f,%f,%f))",FeatName.c_str(),p.x,p.y,p.z,r[0],r[1],r[2],r[3]);
+			//doCommand(Doc,"App.activeDocument().%s.MapMode = \"%s\"",FeatName.c_str(),AttachEngine::getModeName(Attacher::mmDeactivated).c_str());
+			//doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+			App::GetApplication().getDocuments()[0]->addObject("Sketcher::SketchObject","Sketch");
+			//Gui::GetApplication().setEdit("Sketch");
         }
     }
 
