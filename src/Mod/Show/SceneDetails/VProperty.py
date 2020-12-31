@@ -42,7 +42,10 @@ class VProperty(SceneDetail):
             self.affects_persistence = False
         
     def scene_value(self):
-        return getattr(self.doc.getObject(self.objname).ViewObject, self.propname)
+        obj = self.doc.getObject(self.objname)
+        return getattr(obj.ViewObject, self.propname) if obj else None
     
     def apply_data(self, val):
-        setattr(self.doc.getObject(self.objname).ViewObject, self.propname, val)
+        obj = self.doc.getObject(self.objname)
+        if obj:
+            setattr(obj.ViewObject, self.propname, val)
