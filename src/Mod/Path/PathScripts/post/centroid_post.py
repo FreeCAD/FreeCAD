@@ -169,7 +169,11 @@ def export(objectslist, filename, argstring):
     # Write the preamble
     if OUTPUT_COMMENTS:
         for item in objectslist:
-            if isinstance(item.Proxy, PathScripts.PathToolController.ToolController):
+            if hasattr(item, "Proxy"):
+                itm_trgt = item.Proxy
+            else:
+                itm_trgt = item
+            if isinstance(itm_trgt, PathScripts.PathToolController.ToolController):
                 gcode += ";T{}={}\n".format(item.ToolNumber, item.Name)
         gcode += linenumber() + ";begin preamble\n"
     for line in PREAMBLE.splitlines(True):
