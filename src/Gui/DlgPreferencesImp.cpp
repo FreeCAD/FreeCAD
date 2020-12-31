@@ -32,6 +32,7 @@
 # include <QMessageBox>
 # include <QScrollArea>
 # include <QScrollBar>
+# include <QMoveEvent>
 #endif
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
@@ -47,7 +48,6 @@
 #include "WidgetFactory.h"
 #include "BitmapFactory.h"
 #include "MainWindow.h"
-
 
 using namespace Gui::Dialog;
 
@@ -202,8 +202,31 @@ void DlgPreferencesImp::activateGroupPage(const QString& group, int index)
     }
 }
 
+void DlgPreferencesImp::saveGeometry()
+{
+    std::ostringstream oss;
+    oss << savedPos.x() << " " << savedPos.y() << " "
+        << savedSize.width() << " " << savedSize.height();
+    App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/General")->SetASCII(
+                "PreferenceGeometry", oss.str().c_str());
+}
+
+void DlgPreferencesImp::moveEvent(QMoveEvent *ev)
+{
+    savedPos = this->pos();
+    QDialog::moveEvent(ev);
+}
+
+void DlgPreferencesImp::reject()
+{
+    saveGeometry();
+    QDialog::reject();
+}
+
 void DlgPreferencesImp::accept()
 {
+    saveGeometry();
     this->invalidParameter = false;
     applyChanges();
     if (!this->invalidParameter)
@@ -309,6 +332,7 @@ void DlgPreferencesImp::showEvent(QShowEvent* ev)
 
 void DlgPreferencesImp::resizeEvent(QResizeEvent* ev)
 {
+    savedSize = ev->size();
     if (canEmbedScrollArea) {
         // embed the widget stack into a scroll area if the size is
         // bigger than the available desktop
@@ -317,10 +341,12 @@ void DlgPreferencesImp::resizeEvent(QResizeEvent* ev)
 #else
         QRect rect = QApplication::desktop()->availableGeometry();
 #endif
+        canEmbedScrollArea = false;
         int maxHeight = rect.height() - 60;
         int maxWidth = rect.width();
-        if (height() > maxHeight || width() > maxWidth) {
-            canEmbedScrollArea = false;
+        int newHeight = height();
+        int newWidth = width();
+        if (newHeight > maxHeight || newWidth > maxWidth) {
             ui->hboxLayout->removeWidget(ui->tabWidgetStack);
             QScrollArea* scrollArea = new QScrollArea(this);
             scrollArea->setFrameShape(QFrame::NoFrame);
@@ -332,16 +358,37 @@ void DlgPreferencesImp::resizeEvent(QResizeEvent* ev)
             // a horizontal scroll bar.
             QScrollBar* bar = scrollArea->verticalScrollBar();
             if (bar) {
-                int newWidth = width() + bar->width();
-                newWidth = std::min<int>(newWidth, maxWidth);
-                int newHeight = std::min<int>(height(), maxHeight);
-                QMetaObject::invokeMethod(this, "resizeWindow",
-                    Qt::QueuedConnection,
-                    QGenericReturnArgument(),
-                    Q_ARG(int, newWidth),
-                    Q_ARG(int, newHeight));
+                newWidth = std::min<int>(width() + bar->width(), maxWidth);
+                newHeight = std::min<int>(newHeight, maxHeight);
             }
         }
+
+        std::string geometry = App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/General")->GetASCII(
+                    "PreferenceGeometry", "");
+        std::istringstream iss(geometry);
+        int x,y,w,h;
+        if (iss >> x >> y >> w >> h) {
+            x = std::max<int>(0, std::min<int>(maxWidth/2, x));
+#ifdef FC_OS_LINUX
+            // X11 has weird behavior on initial window placement.
+            // Just use the current y.
+            //
+            // https://doc.qt.io/qt-5/application-windows.html#x11-peculiarities
+            y = this->pos().y();
+#endif
+            y = std::max<int>(0, std::min<int>(maxHeight/2, y));
+            newWidth = std::min<int>(maxWidth-x, w);
+            newHeight = std::min<int>(maxHeight-y, h);
+            this->move(x, y);
+            savedPos = QPoint(x, y);
+        }
+
+        QMetaObject::invokeMethod(this, "resizeWindow",
+                Qt::QueuedConnection,
+                QGenericReturnArgument(),
+                Q_ARG(int, newWidth),
+                Q_ARG(int, newHeight));
     }
     QDialog::resizeEvent(ev);
 }

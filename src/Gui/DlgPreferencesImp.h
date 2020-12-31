@@ -25,6 +25,7 @@
 #define GUI_DIALOG_DLGPREFERENCESIMP_H
 
 #include <QDialog>
+#include <QTimer>
 
 class QAbstractButton;
 class QListWidgetItem;
@@ -116,12 +117,15 @@ public:
     ~DlgPreferencesImp();
 
     void accept();
+    void reject();
     void activateGroupPage(const QString& group, int id);
 
 protected:
     void changeEvent(QEvent *e);
     void showEvent(QShowEvent*);
     void resizeEvent(QResizeEvent*);
+    void saveGeometry();
+    void moveEvent(QMoveEvent *);
 
 protected Q_SLOTS:
     void changeGroup(QListWidgetItem *current, QListWidgetItem *previous);
@@ -142,6 +146,8 @@ private:
     Ui_DlgPreferences* ui;
     bool invalidParameter;
     bool canEmbedScrollArea;
+    QSize savedSize;
+    QPoint savedPos;
 };
 
 } // namespace Dialog
