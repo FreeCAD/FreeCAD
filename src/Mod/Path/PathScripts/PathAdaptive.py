@@ -174,6 +174,7 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
 
                 if obj.UseHelixArcs == False:
                     # rapid move to start point
+                    op.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
                     op.commandlist.append(Path.Command("G0", {"X": helixStart[0], "Y": helixStart[1], "Z": obj.ClearanceHeight.Value}))
 
                     # rapid move to safe height
@@ -205,6 +206,7 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
                     helixStart = [region["HelixCenterPoint"][0] + r, region["HelixCenterPoint"][1]]
 
                     # rapid move to start point
+                    op.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
                     op.commandlist.append(Path.Command("G0", {"X": helixStart[0], "Y": helixStart[1], "Z": obj.ClearanceHeight.Value}))
 
                     # rapid move to safe height
