@@ -47,8 +47,8 @@ PropertyGroupShape = 'Shape'
 
 _DebugFindTool = False
 
-PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-PathLog.trackModule()
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+#PathLog.trackModule()
 
 
 def translate(context, text, disambig=None):
@@ -294,17 +294,22 @@ class ToolBit(object):
         self._copyBitShape(obj)
 
     def toolShapeProperties(self, obj):
-        '''toolShapeProperties(obj) ... return all properties defining the geometry'''
+        '''toolShapeProperties(obj) ... return all properties defining it's shape'''
         return sorted([prop for prop in obj.BitPropertyNames if obj.getGroupOfProperty(prop) == PropertyGroupShape])
+
+    def toolAdditionalProperties(self, obj):
+        '''toolShapeProperties(obj) ... return all properties unrelated to it's shape'''
+        return sorted([prop for prop in obj.BitPropertyNames if obj.getGroupOfProperty(prop) != PropertyGroupShape])
 
     def toolGroupsAndProperties(self, obj, includeShape=True):
         '''toolGroupsAndProperties(obj) ... returns a dictionary of group names with a list of property names.'''
         category = {}
         for prop in obj.BitPropertyNames:
             group = obj.getGroupOfProperty(prop)
-            properties  = category.get(group, [])
-            properties.append(prop)
-            category[group] = properties
+            if includeShape or group != PropertyGroupShape:
+                properties  = category.get(group, [])
+                properties.append(prop)
+                category[group] = properties
         return category
 
     def getBitThumbnail(self, obj):

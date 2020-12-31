@@ -20,11 +20,13 @@
 # *                                                                         *
 # ***************************************************************************
 
+import FreeCAD
 import FreeCADGui
 import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathToolBit as PathToolBit
+import PathScripts.PathUtil as PathUtil
 import os
 import re
 
@@ -37,6 +39,90 @@ PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 # Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
+
+class _PropertyEditorBase(object):
+    '''Base class of all typed property editors'''
+
+    def __init__(self, obj, prop):
+        self.obj = obj
+        self.prop = prop
+    def getValue(self):
+        return getattr(self.obj, self.prop)
+    def setValue(self, val):
+        setattr(self.obj, self.prop, val)
+
+class _PropertyEditorInteger(_PropertyEditorBase):
+    def widget(self, parent):
+        return QtGui.QSpinBox(parent)
+    def setEditorData(self, widget):
+        widget.setValue(self.getValue())
+    def setModelData(self, widget):
+        self.setValue(widget.value())
+
+class _PropertyEditorFloat(_PropertyEditorInteger):
+    def widget(self, parent):
+        return QtGui.QDoubleSpinBox(parent)
+
+class _PropertyEditorBool(_PropertyEditorBase):
+    def widget(self, parent):
+        return QtGui.QComboBox(parent)
+    def setEditorData(self, widget):
+        widget.clear()
+        widget.addItems([str(False), str(True)])
+        widget.setCurrentIndex(1 if self.getValue() else 0)
+    def setModelData(self, widget):
+        self.setValue(widget.currentIndex() == 1)
+
+class _PropertyEditorString(_PropertyEditorBase):
+    def widget(self, parent):
+        return QtGui.QLineEdit(parent)
+    def setEditorData(self, widget):
+        widget.setText(self.getValue())
+    def setModelData(self, widget):
+        self.setValue(widget.text())
+
+class _PropertyEditorQuantity(_PropertyEditorBase):
+    def widget(self, parent):
+        qsb = FreeCADGui.UiLoader().createWidget('Gui::QuantitySpinBox', parent)
+        self.editor = PathGui.QuantitySpinBox(qsb, self.obj, self.prop)
+        return qsb
+    def setEditorData(self, widget):
+        self.editor.updateSpinBox()
+    def setModelData(self, widget):
+        self.editor.updateProperty()
+
+_PropertyEditorFactory = {
+        bool                    : _PropertyEditorBool,
+        int                     : _PropertyEditorInteger,
+        float                   : _PropertyEditorFloat,
+        str                     : _PropertyEditorString,
+        FreeCAD.Units.Quantity  : _PropertyEditorQuantity,
+        }
+
+class _Delegate(QtGui.QStyledItemDelegate):
+    '''Handles the creation of an appropriate editing widget for a given property.'''
+    ObjectRole   = QtCore.Qt.UserRole + 1
+    PropertyRole = QtCore.Qt.UserRole + 2
+    EditorRole   = QtCore.Qt.UserRole + 3
+
+    def createEditor(self, parent, option, index):
+        editor = index.data(self.EditorRole)
+        if editor is None:
+            obj = index.data(self.ObjectRole)
+            prp = index.data(self.PropertyRole)
+            editor = _PropertyEditorFactory[type(getattr(obj, prp))](obj, prp)
+            index.model().setData(index, editor, self.EditorRole)
+        return editor.widget(parent)
+
+    def setEditorData(self, widget, index):
+        # called to update the widget with the current data
+        index.data(self.EditorRole).setEditorData(widget)
+
+    def setModelData(self, widget, model, index):
+        # called to update the model with the data from the widget
+        editor = index.data(self.EditorRole)
+        editor.setModelData(widget)
+        index.model().setData(index, PathUtil.getPropertyValueString(editor.obj, editor.prop), QtCore.Qt.DisplayRole)
 
 
 class ToolBitEditor(object):
@@ -69,6 +155,7 @@ class ToolBitEditor(object):
         self.widgets = []
 
         self.setupTool(self.tool)
+        self.setupAttributes(self.tool)
 
     def setupTool(self, tool):
         PathLog.track()
@@ -119,6 +206,39 @@ class ToolBitEditor(object):
             self.form.image.setPixmap(QtGui.QPixmap(QtGui.QImage.fromData(img)))
         else:
             self.form.image.setPixmap(QtGui.QPixmap())
+
+    def setupAttributes(self, tool):
+        PathLog.track()
+
+        self.delegate = _Delegate(self.form.attrTree)
+        self.model = QtGui.QStandardItemModel(self.form.attrTree)
+        self.model.setHorizontalHeaderLabels(['Property', 'Value'])
+
+        attributes = tool.Proxy.toolGroupsAndProperties(tool, False)
+        for name in attributes:
+            group = QtGui.QStandardItem()
+            group.setData(name, QtCore.Qt.EditRole)
+            group.setEditable(False)
+            for prop in attributes[name]:
+                label = QtGui.QStandardItem()
+                label.setData(prop, QtCore.Qt.EditRole)
+                label.setEditable(False)
+
+                value = QtGui.QStandardItem()
+                value.setData(PathUtil.getPropertyValueString(tool, prop), QtCore.Qt.DisplayRole)
+                value.setData(tool, _Delegate.ObjectRole)
+                value.setData(prop, _Delegate.PropertyRole)
+
+                group.appendRow([label, value])
+            self.model.appendRow(group)
+
+
+        self.form.attrTree.setModel(self.model)
+        self.form.attrTree.setItemDelegateForColumn(1, self.delegate)
+        self.form.attrTree.expandAll()
+        self.form.attrTree.resizeColumnToContents(0)
+        self.form.attrTree.resizeColumnToContents(1)
+        #self.form.attrTree.collapseAll()
 
     def accept(self):
         PathLog.track()
