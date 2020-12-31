@@ -50,6 +50,8 @@
 #include "MouseSelection.h"
 #include "Tree.h"
 #include "SoMouseWheelEvent.h"
+#include "Command.h"
+#include "Action.h"
 
 using namespace Gui;
 
@@ -1642,7 +1644,12 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
     QAction *pickAction = 0;
     if(selList.size()) {
         separator = true;
-        pickAction = new QAction(QObject::tr("Pick geometries"),&contextMenu);
+        auto cmd = Application::Instance->commandManager().getCommandByName("Std_PickGeometry");
+        if (cmd) {
+            pickAction = new QAction(cmd->getAction()->text(), &contextMenu);
+            pickAction->setShortcut(cmd->getAction()->shortcut());
+        } else
+            pickAction = new QAction(QObject::tr("Pick geometry"), &contextMenu);
         contextMenu.insertAction(posAction,pickAction);
         contextMenu.insertSeparator(posAction);
     }
