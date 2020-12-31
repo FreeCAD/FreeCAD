@@ -38,8 +38,8 @@ import math
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
-# MeshPart = LazyLoader('MeshPart', globals(), 'MeshPart')
 Part = LazyLoader('Part', globals(), 'Part')
+PathSurfaceUtils = LazyLoader('PathScripts.PathSurfaceUtils', globals(), 'PathScripts.PathSurfaceUtils')
 
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
@@ -861,29 +861,34 @@ class ProcessSelectedFaces:
         isHole = False
         prflShp = False
         # Create envelope, extract cross-section and make offset co-planar shape
-        # baseEnv = PathUtils.getEnvelope(base.Shape, subshape=None, depthparams=self.depthParams)
 
-        try:
-            baseEnv = PathUtils.getEnvelope(partshape=base.Shape, subshape=None, depthparams=self.depthParams)  # Produces .Shape
-        except Exception as ee:
-            PathLog.error(str(ee))
-            shell = base.Shape.Shells[0]
-            solid = Part.makeSolid(shell)
+        mpf = PathSurfaceUtils.ProjectionToFace(base.Shape)
+        csFaceShape = mpf.get_projected_face()
+        if not csFaceShape:
+            PathLog.error(translate("PathSurfaceUtils", "Failed to make projection face. Attempting alternate method."))
             try:
-                baseEnv = PathUtils.getEnvelope(partshape=solid, subshape=None, depthparams=self.depthParams)  # Produces .Shape
-            except Exception as eee:
-                PathLog.error(str(eee))
-                cont = False
+                baseEnv = PathUtils.getEnvelope(partshape=base.Shape, subshape=None, depthparams=self.depthParams)  # Produces .Shape
+                Part.show(baseEnv)
+            except Exception as ee:
+                PathLog.error(str(ee))
+                shell = base.Shape.Shells[0]
+                solid = Part.makeSolid(shell)
+                try:
+                    baseEnv = PathUtils.getEnvelope(partshape=solid, subshape=None, depthparams=self.depthParams)  # Produces .Shape
+                except Exception as eee:
+                    PathLog.error(str(eee))
+                    cont = False
 
-        if cont:
-            csFaceShape = getShapeSlice(baseEnv)
-            if csFaceShape is False:
-                csFaceShape = getCrossSection(baseEnv)
+            if cont:
+                # Need to extract a cross-section of the solid.
+                csFaceShape = getShapeSlice(baseEnv)
                 if csFaceShape is False:
-                    csFaceShape = getSliceFromEnvelope(baseEnv)
-            if csFaceShape is False:
-                PathLog.debug('Failed to slice baseEnv shape.')
-                cont = False
+                    csFaceShape = getCrossSection(baseEnv)
+                    if csFaceShape is False:
+                        csFaceShape = getSliceFromEnvelope(baseEnv)
+                if csFaceShape is False:
+                    PathLog.debug('Failed to slice baseEnv shape.')
+                    cont = False
 
         if cont and self.profileEdges != 'None':
             PathLog.debug(' -Attempting profile geometry for model base.')
