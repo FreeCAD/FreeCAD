@@ -133,14 +133,8 @@ void ViewProviderAddSub::checkAddSubColor()
     if (!feat)
         return;
     App::Color color((uint32_t)PartGui::PartParams::PreviewAddColor());
-    float t = 1.0f - color.a;
     if (AddSubColor.getValue().getPackedValue()) {
         color = AddSubColor.getValue();
-        t = 1.0 - color.a;
-        if (t < 0.1)
-            t = 0.7;
-        if (t > 0.9)
-            t = 0.7;
     } else {
         if (feat) {
             if (feat->isDerivedFrom(PartDesign::DressUp::getClassTypeId())) {
@@ -149,9 +143,10 @@ void ViewProviderAddSub::checkAddSubColor()
                 color = App::Color((uint32_t)PartGui::PartParams::PreviewAddColor());
             else
                 color = App::Color((uint32_t)PartGui::PartParams::PreviewSubColor());
-            t = 1.0f - color.a;
         }
     }
+    // clamp transparency between 0.1 ~ 0.8
+    float t = std::max(0.1f, std::min(0.8f, 1.0f - color.a));
     setAddSubColor(color, t);
 }
 
@@ -162,6 +157,7 @@ void ViewProviderAddSub::setAddSubColor(const App::Color & color, float t)
         return;
     view->LineColor.setValue(color);
     auto material = view->PointMaterial.getValue();
+    material.diffuseColor = color;
     material.transparency = 1.0f;
     view->PointMaterial.setValue(material);
     view->ShapeColor.setValue(color);
