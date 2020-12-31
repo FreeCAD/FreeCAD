@@ -426,7 +426,13 @@ void StdCmdNew::activated(int iMsg)
         .arg(qApp->translate("StdCmdNew","Unnamed"));
     runCommand(Command::Doc,cmd.toUtf8());
     doCommand(Command::Gui,"Gui.activeDocument().activeView().viewDefaultOrientation()");
-
+	// added code here
+	std::string FeatName = "Sketch";
+	doCommand(Doc,"App.activeDocument().addObject('Sketcher::SketchObject','%s')",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Placement = App.Placement(App.Vector(%f,%f,%f),App.Rotation(%f,%f,%f,%f))",FeatName.c_str(),0.0,0.0,0.0,0.0,0.0,0.0,0.0);
+    //doCommand(Doc,"App.activeDocument().%s.MapMode = \"%s\"",FeatName.c_str(),AttachEngine::getModeName(Attacher::mmDeactivated).c_str());
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+	// added code ends here
     ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     if (hViewGrp->GetBool("ShowAxisCross"))
         doCommand(Command::Gui,"Gui.ActiveDocument.ActiveView.setAxisCross(True)");

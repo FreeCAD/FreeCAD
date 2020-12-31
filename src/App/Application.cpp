@@ -409,7 +409,10 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
     // add the document to the internal list
     DocMap[name] = newDoc.release(); // now owned by the Application
     _pActiveDoc = DocMap[name];
-
+	
+	// this was attempt 1 through 7 of trying to make it work
+	//_pActiveDoc->addObject("Sketcher::SketchObject","Sketch");
+	//_pActiveDoc->setEdit("Sketch");
 
     // connect the signals to the application for the new document
     _pActiveDoc->signalBeforeChange.connect(boost::bind(&App::Application::slotBeforeChangeDocument, this, _1, _2));
@@ -444,7 +447,6 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
 
     // set the UserName after notifying all observers
     _pActiveDoc->Label.setValue(userName);
-
     return _pActiveDoc;
 }
 
