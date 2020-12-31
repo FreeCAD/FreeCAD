@@ -79,11 +79,13 @@ const QString TaskFeaturePick::getFeatureStatusString(const featureStatus st)
 
 TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
                                  const std::vector<featureStatus>& status,
+                                 bool singleFeatureSelect,
                                  QWidget* parent)
   : TaskBox(Gui::BitmapFactory().pixmap("edit-select-box"),
             tr("Select feature"), true, parent)
   , ui(new Ui_TaskFeaturePick)
   , doSelection(false)
+  , singleFeatureSelect(singleFeatureSelect)
 {
 
     proxy = new QWidget(this);
@@ -96,6 +98,10 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
     connect(ui->radioDependent, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
     connect(ui->radioXRef, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
     connect(ui->listWidget, SIGNAL(itemSelectionChanged()), this, SLOT(onItemSelectionChanged()));
+
+    if (!singleFeatureSelect) {
+        ui->listWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    }
 
     enum { axisBit=0, planeBit = 1};
 
@@ -273,7 +279,6 @@ std::vector<App::DocumentObject*> TaskFeaturePick::buildFeatures()
                     result.push_back(obj);
                 }
 
-                break;
             }
 
             index++;
@@ -510,10 +515,11 @@ TaskDlgFeaturePick::TaskDlgFeaturePick( std::vector<App::DocumentObject*> &objec
                                         const std::vector<TaskFeaturePick::featureStatus> &status,
                                         boost::function<bool (std::vector<App::DocumentObject*>)> afunc,
                                         boost::function<void (std::vector<App::DocumentObject*>)> wfunc,
+                                        bool singleFeatureSelect,
                                         boost::function<void (void)> abortfunc /* = NULL */ )
     : TaskDialog(), accepted(false)
 {
-    pick  = new TaskFeaturePick(objects, status);
+    pick  = new TaskFeaturePick(objects, status, singleFeatureSelect);
     Content.push_back(pick);
 
     acceptFunction = afunc;

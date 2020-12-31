@@ -821,7 +821,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
                 Gui::Control().closeDialog();
 
             Gui::Selection().clearSelection();
-            Gui::Control().showDialog(new PartDesignGui::TaskDlgFeaturePick(planes, status, accepter, worker, quitter));
+            Gui::Control().showDialog(new PartDesignGui::TaskDlgFeaturePick(planes, status, accepter, worker, true, quitter));
         }
     }
 }
@@ -1151,7 +1151,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
             Gui::Control().closeDialog();
 
         Gui::Selection().clearSelection();
-        pickDlg = new PartDesignGui::TaskDlgFeaturePick(sketches, status, accepter, sketch_worker);
+        pickDlg = new PartDesignGui::TaskDlgFeaturePick(sketches, status, accepter, sketch_worker, true);
         // Logically dead code because 'bNoSketchWasSelected' must be true
         //if (!bNoSketchWasSelected && extReference)
         //    pickDlg->showExternal(true);
@@ -1979,7 +1979,7 @@ void prepareTransformed(PartDesign::Body *pcActiveBody, Gui::Command* cmd, const
                 Gui::Control().closeDialog();
 
             Gui::Selection().clearSelection();
-            Gui::Control().showDialog(new PartDesignGui::TaskDlgFeaturePick(features, status, accepter, worker));
+            Gui::Control().showDialog(new PartDesignGui::TaskDlgFeaturePick(features, status, accepter, worker, false));
             return;
         } else if (features.empty()) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid features in this document"),
