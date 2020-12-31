@@ -24,7 +24,6 @@ import FreeCADGui
 import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
-import PathScripts.PathSetupSheetGui as PathSetupSheetGui
 import PathScripts.PathToolBit as PathToolBit
 import os
 import re
@@ -70,7 +69,6 @@ class ToolBitEditor(object):
         self.widgets = []
 
         self.setupTool(self.tool)
-        self.setupAttributes(self.tool)
 
     def setupTool(self, tool):
         PathLog.track()
@@ -88,7 +86,7 @@ class ToolBitEditor(object):
         # for all properties either assign them to existing labels and editors
         # or create additional ones for them if not enough have already been
         # created.
-        for nr, name in enumerate(tool.BitPropertyNames):
+        for nr, name in enumerate(tool.Proxy.toolShapeProperties(tool)):
             if nr < len(self.widgets):
                 PathLog.debug("re-use row: {} [{}]".format(nr, name))
                 label, qsb, editor = self.widgets[nr]
@@ -122,99 +120,10 @@ class ToolBitEditor(object):
         else:
             self.form.image.setPixmap(QtGui.QPixmap())
 
-    def setupAttributes(self, tool):
-        PathLog.track()
-        self.proto = PathToolBit.AttributePrototype()
-        self.props = sorted(self.proto.properties)
-        self.delegate = PathSetupSheetGui.Delegate(self.form)
-        self.model = QtGui.QStandardItemModel(len(self.props)-1, 3, self.form)
-        self.model.setHorizontalHeaderLabels(['Set', 'Property', 'Value'])
-
-        for i, name in enumerate(self.props):
-            PathLog.debug("propname: %s " % name)
-
-            prop = self.proto.getProperty(name)
-            isset = hasattr(tool, name)
-
-            if isset:
-                prop.setValue(getattr(tool, name))
-
-            if name == "UserAttributes":
-                continue
-
-            else:
-
-                self.model.setData(self.model.index(i, 0), isset,
-                                   QtCore.Qt.EditRole)
-                self.model.setData(self.model.index(i, 1), name,
-                                   QtCore.Qt.EditRole)
-                self.model.setData(self.model.index(i, 2), prop,
-                                   PathSetupSheetGui.Delegate.PropertyRole)
-                self.model.setData(self.model.index(i, 2),
-                                   prop.displayString(),
-                                   QtCore.Qt.DisplayRole)
-
-                self.model.item(i, 0).setCheckable(True)
-                self.model.item(i, 0).setText('')
-                self.model.item(i, 1).setEditable(False)
-                self.model.item(i, 1).setToolTip(prop.info)
-                self.model.item(i, 2).setToolTip(prop.info)
-
-                if isset:
-                    self.model.item(i, 0).setCheckState(QtCore.Qt.Checked)
-                else:
-                    self.model.item(i, 0).setCheckState(QtCore.Qt.Unchecked)
-                    self.model.item(i, 1).setEnabled(False)
-                    self.model.item(i, 2).setEnabled(False)
-
-        if hasattr(tool, "UserAttributes"):
-            for key, value in tool.UserAttributes.items():
-                PathLog.debug(key, value)
-                c1 = QtGui.QStandardItem()
-                c1.setCheckable(False)
-                c1.setEditable(False)
-                c1.setCheckState(QtCore.Qt.CheckState.Checked)
-
-                c1.setText('')
-                c2 = QtGui.QStandardItem(key)
-                c2.setEditable(False)
-                c3 = QtGui.QStandardItem(value)
-                c3.setEditable(False)
-
-                self.model.appendRow([c1, c2, c3])
-
-        self.form.attrTable.setModel(self.model)
-        self.form.attrTable.setItemDelegateForColumn(2, self.delegate)
-        self.form.attrTable.resizeColumnsToContents()
-        self.form.attrTable.verticalHeader().hide()
-
-        self.model.dataChanged.connect(self.updateData)
-
-    def updateData(self, topLeft, bottomRight):
-        PathLog.track()
-        if 0 == topLeft.column():
-            isset = self.model.item(topLeft.row(),
-                                    0).checkState() == QtCore.Qt.Checked
-            self.model.item(topLeft.row(), 1).setEnabled(isset)
-            self.model.item(topLeft.row(), 2).setEnabled(isset)
-
     def accept(self):
         PathLog.track()
         self.refresh()
         self.tool.Proxy.unloadBitBody(self.tool)
-
-        # get the attributes
-        for i, name in enumerate(self.props):
-            PathLog.debug('in accept: {}'.format(name))
-            prop = self.proto.getProperty(name)
-            if self.model.item(i, 0) is not None:
-                enabled = self.model.item(i, 0).checkState() == QtCore.Qt.Checked
-                if enabled and not prop.getValue() is None:
-                    prop.setupProperty(self.tool, name,
-                                    PathToolBit.PropertyGroupAttribute,
-                                    prop.getValue())
-                elif hasattr(self.tool, name):
-                    self.tool.removeProperty(name)
 
     def reject(self):
         PathLog.track()

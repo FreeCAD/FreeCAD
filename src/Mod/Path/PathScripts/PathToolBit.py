@@ -43,7 +43,9 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "Class to deal with and represent a tool bit."
 
-_DebugFindTool = True
+PropertyGroupShape = 'Shape'
+
+_DebugFindTool = False
 
 PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
 PathLog.trackModule()
@@ -51,15 +53,6 @@ PathLog.trackModule()
 
 def translate(context, text, disambig=None):
     return PySide.QtCore.QCoreApplication.translate(context, text, disambig)
-
-
-ParameterTypeConstraint = {
-        'Angle':        'App::PropertyAngle',
-        'Distance':     'App::PropertyLength',
-        'DistanceX':    'App::PropertyLength',
-        'DistanceY':    'App::PropertyLength',
-        'Radius':       'App::PropertyLength'}
-
 
 def _findTool(path, typ, dbg=_DebugFindTool):
     PathLog.track(path)
@@ -136,50 +129,16 @@ def findRelativePathTool(path):
 def findRelativePathLibrary(path):
     return _findRelativePath(path, 'Library')
 
-
-def updateConstraint(sketch, name, value):
-    for i, constraint in enumerate(sketch.Constraints):
-        if constraint.Name.split(';')[0] == name:
-            constr = None
-            if constraint.Type in ['DistanceX', 'DistanceY', 'Distance', 'Radius', 'Angle']:
-                constr = Sketcher.Constraint(constraint.Type, constraint.First, constraint.FirstPos, constraint.Second, constraint.SecondPos, value)
-            else:
-                print(constraint.Name, constraint.Type)
-
-            if constr is not None:
-                if not PathGeom.isRoughly(constraint.Value, value.Value):
-                    PathLog.track(name, constraint.Type,
-                                  'update', i, "(%.2f -> %.2f)"
-                                  % (constraint.Value, value.Value))
-                    sketch.delConstraint(i)
-                    sketch.recompute()
-                    n = sketch.addConstraint(constr)
-                    sketch.renameConstraint(n, constraint.Name)
-                else:
-                    PathLog.track(name, constraint.Type, 'unchanged')
-            break
-
-
-PropertyGroupBit       = 'Bit'
-PropertyGroupAttribute = 'Attribute'
-
-
 class ToolBit(object):
 
     def __init__(self, obj, shapeFile):
         PathLog.track(obj.Label, shapeFile)
         self.obj = obj
-        obj.addProperty('App::PropertyFile', 'BitShape', 'Base',
-                        translate('PathToolBit', 'Shape for bit shape'))
-        obj.addProperty('App::PropertyLink', 'BitBody', 'Base',
-                        translate('PathToolBit',
-                        'The parametrized body representing the tool bit'))
-        obj.addProperty('App::PropertyFile', 'File', 'Base',
-                        translate('PathToolBit', 'The file of the tool'))
-        obj.addProperty('App::PropertyString', 'ShapeName', 'Base',
-                        translate('PathToolBit', 'The name of the shape file'))
-        obj.addProperty('App::PropertyStringList', 'BitPropertyNames', 'Base',
-                        translate('PathToolBit', 'List of all properties inherited from the bit'))
+        obj.addProperty('App::PropertyFile', 'BitShape', 'Base', translate('PathToolBit', 'Shape for bit shape'))
+        obj.addProperty('App::PropertyLink', 'BitBody', 'Base', translate('PathToolBit', 'The parametrized body representing the tool bit'))
+        obj.addProperty('App::PropertyFile', 'File', 'Base', translate('PathToolBit', 'The file of the tool'))
+        obj.addProperty('App::PropertyString', 'ShapeName', 'Base', translate('PathToolBit', 'The name of the shape file'))
+        obj.addProperty('App::PropertyStringList', 'BitPropertyNames', 'Base', translate('PathToolBit', 'List of all properties inherited from the bit'))
 
         if shapeFile is None:
             obj.BitShape = 'endmill.fcstd'
@@ -200,9 +159,6 @@ class ToolBit(object):
                 break
         return None
 
-    def propertyNamesAttribute(self, obj):
-        return [prop for prop in obj.PropertiesList if obj.getGroupOfProperty(prop) == PropertyGroupAttribute]
-
     def onDocumentRestored(self, obj):
         # when files are shared it is essential to be able to change/set the shape file,
         # otherwise the file is hard to use
@@ -213,17 +169,19 @@ class ToolBit(object):
         obj.setEditorMode('BitPropertyNames', 2)
 
         for prop in obj.BitPropertyNames:
-            obj.setEditorMode(prop, 1)
-        # I currently don't see why these need to be read-only
-        # for prop in self.propertyNamesAttribute(obj):
-        #    obj.setEditorMode(prop, 1)
+            if obj.getGroupOfProperty(prop) == PropertyGroupShape:
+                # properties in the Shape group can only be modified while the actual
+                # shape is loaded, so we have to disable direct property editing
+                obj.setEditorMode(prop, 1)
+            else:
+                # all other custom properties can and should be edited directly in the
+                # property editor widget, not much value in re-implementing that
+                obj.setEditorMode(prop, 0)
 
     def onChanged(self, obj, prop):
         PathLog.track(obj.Label, prop)
         if prop == 'BitShape' and 'Restore' not in obj.State:
             self._setupBitShape(obj)
-        # elif obj.getGroupOfProperty(prop) == PropertyGroupBit:
-        #    self._updateBitShape(obj, [prop])
 
     def onDelete(self, obj, arg2=None):
         PathLog.track(obj.Label)
@@ -335,6 +293,20 @@ class ToolBit(object):
         obj.BitBody = bitBody
         self._copyBitShape(obj)
 
+    def toolShapeProperties(self, obj):
+        '''toolShapeProperties(obj) ... return all properties defining the geometry'''
+        return sorted([prop for prop in obj.BitPropertyNames if obj.getGroupOfProperty(prop) == PropertyGroupShape])
+
+    def toolGroupsAndProperties(self, obj, includeShape=True):
+        '''toolGroupsAndProperties(obj) ... returns a dictionary of group names with a list of property names.'''
+        category = {}
+        for prop in obj.BitPropertyNames:
+            group = obj.getGroupOfProperty(prop)
+            properties  = category.get(group, [])
+            properties.append(prop)
+            category[group] = properties
+        return category
+
     def getBitThumbnail(self, obj):
         if obj.BitShape:
             path = findShape(obj.BitShape)
@@ -359,8 +331,7 @@ class ToolBit(object):
                 obj.File = path
             return True
         except (OSError, IOError) as e:
-            PathLog.error("Could not save tool {} to {} ({})".format(
-                          obj.Label, path, e))
+            PathLog.error("Could not save tool {} to {} ({})".format(obj.Label, path, e))
             raise
 
     def templateAttrs(self, obj):
@@ -376,12 +347,6 @@ class ToolBit(object):
             params[name] = PathUtil.getPropertyValueString(obj, name)
         attrs['parameter'] = params
         params = {}
-        for name in self.propertyNamesAttribute(obj):
-            if name == "UserAttributes":
-                for key, value in obj.UserAttributes.items():
-                    params[key] = value
-            else:
-                params[name] = PathUtil.getPropertyValueString(obj, name)
         attrs['attribute'] = params
         return attrs
 
@@ -390,32 +355,6 @@ def Declaration(path):
     PathLog.track(path)
     with open(path, 'r') as fp:
         return json.load(fp)
-
-
-class AttributePrototype(PathSetupSheetOpPrototype.OpPrototype):
-
-    def __init__(self):
-        PathSetupSheetOpPrototype.OpPrototype.__init__(self, 'ToolBitAttribute')
-        self.addProperty('App::PropertyEnumeration', 'Material',
-                PropertyGroupAttribute,
-                translate('PathToolBit', 'Tool bit material'))
-        self.Material = ['Carbide', 'CastAlloy', 'Ceramics', 'Diamond',
-                'HighCarbonToolSteel', 'HighSpeedSteel', 'Sialon']
-        self.addProperty('App::PropertyDistance', 'LengthOffset',
-                PropertyGroupAttribute, translate('PathToolBit',
-                'Length offset in Z direction'))
-        self.addProperty('App::PropertyInteger', 'Flutes',
-                PropertyGroupAttribute, translate('PathToolBit',
-                'The number of flutes'))
-        self.addProperty('App::PropertyDistance', 'ChipLoad',
-                PropertyGroupAttribute, translate('PathToolBit',
-                'Chipload as per manufacturer'))
-        self.addProperty('App::PropertyMap', 'UserAttributes',
-                PropertyGroupAttribute, translate('PathToolBit',
-                'User Defined Values'))
-        self.addProperty('App::PropertyBool', 'SpindlePower',
-                PropertyGroupAttribute, translate('PathToolBit',
-                'Whether Spindle Power should be allowed'))
 
 
 class ToolBitFactory(object):
@@ -429,21 +368,6 @@ class ToolBitFactory(object):
             PathUtil.setProperty(obj, prop, params[prop])
         obj.Proxy._updateBitShape(obj)
         obj.Proxy.unloadBitBody(obj)
-        params = attrs['attribute']
-        proto = AttributePrototype()
-        uservals = {}
-        for pname in params:
-            try:
-                prop = proto.getProperty(pname)
-                prop.setupProperty(obj, pname, PropertyGroupAttribute, prop.valueFromString(params[pname]))
-            except Exception:
-                prop = proto.getProperty("UserAttributes")
-                uservals.update({pname: params[pname]})
-
-        if len(uservals.items()) > 0:
-            prop.setupProperty(obj, "UserAttributes",
-                               PropertyGroupAttribute, uservals)
-
         return obj
 
     def CreateFrom(self, path, name='ToolBit'):
