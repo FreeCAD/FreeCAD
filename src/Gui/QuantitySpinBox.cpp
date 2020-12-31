@@ -305,24 +305,7 @@ QuantitySpinBox::QuantitySpinBox(QWidget *parent)
 
     defaultPalette = lineEdit()->palette();
 
-    /* Icon for f(x) */
-    QFontMetrics fm(lineEdit()->font());
-    int frameWidth = style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
-    iconHeight = fm.height() - frameWidth;
     iconLabel = new ExpressionLabel(lineEdit());
-    iconLabel->setCursor(Qt::ArrowCursor);
-    QPixmap pixmap = getIcon(":/icons/bound-expression-unset.svg", QSize(iconHeight, iconHeight));
-    iconLabel->setPixmap(pixmap);
-    iconLabel->setStyleSheet(QString::fromLatin1("QLabel { border: none; padding: 0px; padding-top: %2px; width: %1px; height: %1px }").arg(iconHeight).arg(frameWidth/2));
-    iconLabel->hide();
-    lineEdit()->setStyleSheet(QString::fromLatin1("QLineEdit { padding-right: %1px } ").arg(iconHeight+frameWidth));
-    // When a style sheet is set the text margins for top/bottom must be set to avoid to squash the widget
-#ifndef Q_OS_MAC
-    lineEdit()->setTextMargins(0, 2, 0, 2);
-#else
-    // https://forum.freecadweb.org/viewtopic.php?f=8&t=50615
-    lineEdit()->setTextMargins(0, 2, 0, 0);
-#endif
 
     QObject::connect(iconLabel, SIGNAL(clicked()), this, SLOT(openFormulaDialog()));
 }
@@ -340,8 +323,6 @@ void QuantitySpinBox::ignoreSizeHint(bool enable)
 void QuantitySpinBox::bind(const App::ObjectIdentifier &_path)
 {
     ExpressionBinding::bind(_path);
-
-    iconLabel->show();
 }
 
 void Gui::QuantitySpinBox::setExpression(boost::shared_ptr<Expression> expr)
@@ -351,12 +332,11 @@ void Gui::QuantitySpinBox::setExpression(boost::shared_ptr<Expression> expr)
     try {
         ExpressionBinding::setExpression(expr);
     }
-    catch (const Base::Exception & e) {
+    catch (const Base::Exception &) {
         setReadOnly(true);
         QPalette p(lineEdit()->palette());
         p.setColor(QPalette::Active, QPalette::Text, Qt::red);
         lineEdit()->setPalette(p);
-        iconLabel->setToolTip(QString::fromLatin1(e.what()));
     }
 }
 
@@ -449,23 +429,17 @@ void Gui::QuantitySpinBox::onChange()
             handlePendingEmit();
 
             setReadOnly(true);
-            QPixmap pixmap = getIcon(":/icons/bound-expression.svg", QSize(iconHeight, iconHeight));
-            iconLabel->setPixmap(pixmap);
 
             QPalette p(lineEdit()->palette());
             p.setColor(QPalette::Text, Qt::lightGray);
             lineEdit()->setPalette(p);
         }
-        iconLabel->setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
     }
     else {
         setReadOnly(false);
-        QPixmap pixmap = getIcon(":/icons/bound-expression-unset.svg", QSize(iconHeight, iconHeight));
-        iconLabel->setPixmap(pixmap);
         QPalette p(lineEdit()->palette());
         p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
         lineEdit()->setPalette(p);
-        iconLabel->setToolTip(QString());
     }
 }
 
@@ -501,11 +475,6 @@ void QuantitySpinBox::resizeEvent(QResizeEvent * event)
 {
     QAbstractSpinBox::resizeEvent(event);
 
-    int frameWidth = style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
-
-    QSize sz = iconLabel->sizeHint();
-    iconLabel->move(lineEdit()->rect().right() - frameWidth - sz.width(), 0);
-
     try {
         if (hasExpression()) {
             std::unique_ptr<Expression> result(getExpression()->eval());
@@ -513,32 +482,23 @@ void QuantitySpinBox::resizeEvent(QResizeEvent * event)
 
             if (value) {
                 setReadOnly(true);
-                QPixmap pixmap = getIcon(":/icons/bound-expression.svg", QSize(iconHeight, iconHeight));
-                iconLabel->setPixmap(pixmap);
-
                 QPalette p(lineEdit()->palette());
                 p.setColor(QPalette::Text, Qt::lightGray);
                 lineEdit()->setPalette(p);
             }
-            iconLabel->setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
         }
         else {
             setReadOnly(false);
-            QPixmap pixmap = getIcon(":/icons/bound-expression-unset.svg", QSize(iconHeight, iconHeight));
-            iconLabel->setPixmap(pixmap);
-
             QPalette p(lineEdit()->palette());
             p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
             lineEdit()->setPalette(p);
-            iconLabel->setToolTip(QString());
         }
     }
-    catch (const Base::Exception & e) {
+    catch (const Base::Exception &) {
         setReadOnly(true);
         QPalette p(lineEdit()->palette());
         p.setColor(QPalette::Active, QPalette::Text, Qt::red);
         lineEdit()->setPalette(p);
-        iconLabel->setToolTip(QString::fromLatin1(e.what()));
     }
 
 }

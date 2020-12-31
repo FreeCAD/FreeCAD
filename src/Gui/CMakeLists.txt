@@ -1162,6 +1162,7 @@ SET(Widget_CPP_SRCS
     Widgets.cpp
     Window.cpp
     ViewParams.cpp
+    ExprParams.cpp
 )
 SET(Widget_HPP_SRCS
     FileDialog.h
@@ -1178,6 +1179,7 @@ SET(Widget_HPP_SRCS
     Widgets.h
     Window.h
     ViewParams.h
+    ExprParams.h
 )
 SET(Widget_SRCS
     ${Widget_CPP_SRCS}

@@ -84,11 +84,13 @@ public:
     void setExactMatch(bool enabled=true);
 Q_SIGNALS:
     void textChanged2(QString text, int pos);
+    void sizeChanged();
 public Q_SLOTS:
     void slotTextChanged(const QString & text);
     void slotCompleteText(QString completionPrefix);
 protected:
     void contextMenuEvent(QContextMenuEvent * event);
+    void resizeEvent(QResizeEvent *);
 private:
     ExpressionCompleter * completer;
     bool noProperty;
@@ -118,13 +120,6 @@ private:
     ExpressionCompleter * completer;
     bool block;
     bool exactMatch;
-};
-
-class GuiExport ExpressionParameter {
-public:
-    static ExpressionParameter *instance();
-    bool isCaseSensitive() const;
-    bool isExactMatch() const;
 };
 
 }

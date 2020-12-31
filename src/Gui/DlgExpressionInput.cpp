@@ -32,6 +32,7 @@
 #include "ExpressionCompleter.h"
 #include "Tools.h"
 #include "MainWindow.h"
+#include "ExprParams.h"
 #include <Base/Tools.h>
 #include <Base/Console.h>
 #include <App/Application.h>
@@ -60,11 +61,11 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
     ui->setupUi(this);
 
     // Connect signal(s)
-    connect(ui->expression, SIGNAL(textChanged(QString)), this, SLOT(textChanged(QString)));
+    connect(ui->expression, SIGNAL(textChanged()), this, SLOT(textChanged()));
     connect(ui->discardBtn, SIGNAL(clicked()), this, SLOT(setDiscarded()));
     
     if (expression) {
-        ui->expression->setText(Base::Tools::fromStdString(expression->toString()));
+        ui->expression->setPlainText(Base::Tools::fromStdString(expression->toString()));
     }
     else {
         QVariant text = parent->property("text");
@@ -73,7 +74,7 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
 #else
         if (text.canConvert(QVariant::String)) {
 #endif
-            ui->expression->setText(text.toString());
+            ui->expression->setPlainText(text.toString());
         }
     }
 
@@ -84,41 +85,44 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
     // There are some platforms where setting no system background causes a black
     // rectangle to appear. To avoid this the 'NoSystemBackground' parameter can be
     // set to false. Then a normal non-modal dialog will be shown instead (#0002440).
-    this->noBackground = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Expression")->GetBool("NoSystemBackground", false);
+    this->noBackground = ExprParams::NoSystemBackground();
+
+    ui->expression->setStyleSheet(QLatin1String("margin:0px"));
 
     if (this->noBackground) {
-#if defined(Q_OS_MAC)
-        setWindowFlags(Qt::Widget | Qt::Popup | Qt::FramelessWindowHint);
-#else
-        setWindowFlags(Qt::SubWindow | Qt::Widget | Qt::Popup | Qt::FramelessWindowHint);
-#endif
+        setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint);
         setAttribute(Qt::WA_NoSystemBackground, true);
         setAttribute(Qt::WA_TranslucentBackground, true);
 
-        qApp->installEventFilter(this);
+        auto hGrp = App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/MainWindow");
+        QString mainstyle = QString::fromLatin1(hGrp->GetASCII("StyleSheet").c_str());
+        if (!mainstyle.isEmpty()) {
+            if(mainstyle.indexOf(QLatin1String("dark"),0,Qt::CaseInsensitive) < 0)
+                ui->scrollArea->setStyleSheet(QLatin1String("QScrollArea{background:#f5f5f5;border:1 solid #6e6e6e;}"));
+            else
+                ui->scrollArea->setStyleSheet(QLatin1String("QScrollArea{background:#6e6e6e;border:1 solid #505050;}"));
+        }
     }
-    else {
-        ui->expression->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-        ui->verticalLayout->setContentsMargins(9, 9, 9, 9);
-        this->adjustSize();
-        // It is strange that (at least on Linux) DlgExpressionInput will shrink
-        // to be narrower than ui->expression after calling adjustSize() above.
-        // Why?
-        if(this->width() < ui->expression->width() + 18)
-            this->resize(ui->expression->width()+18,this->height());
-    }
+    qApp->installEventFilter(this);
+    this->setMinimumHeight(120);
+    this->textChanged();
     ui->expression->setFocus();
+
+    ui->checkBox->setChecked(ExprParams::AllowReturn()
+            || ui->expression->document()->blockCount()>1);
+    connect(ui->checkBox, SIGNAL(toggled(bool)), this, SLOT(wantReturnChecked(bool)));
 
     if (parent) {
         MainWindow *mw = getMainWindow();
         for(auto p=parent; p; p=p->parentWidget()) {
             if (p == mw) {
-                QPoint topLeft = parent->mapTo(mw, QPoint(0, 0));
-                QPoint bottomRight = parent->mapTo(mw, QPoint(parent->width(), parent->height()));
+                QPoint topLeft = parent->mapToGlobal(QPoint(0, 0));
+                QPoint bottomRight = parent->mapToGlobal(QPoint(parent->width(), parent->height()));
+                int offset = mw->pos().x();
                 // Check if the parent widget is closer to the left or the
                 // right edge of the main window.
-                if (topLeft.x() > mw->width() - bottomRight.x())
+                if (topLeft.x() + bottomRight.x() - offset*2 > mw->width())
                     this->leftAligned = false;
 
                 break;
@@ -133,19 +137,35 @@ DlgExpressionInput::~DlgExpressionInput()
     delete ui;
 }
 
-void DlgExpressionInput::textChanged(const QString &text)
+void DlgExpressionInput::textChanged()
 {
     try {
+        const QString &text = ui->expression->toPlainText();
+
+        auto textdoc = ui->expression->document();
+        int linecount = textdoc->blockCount();
+        if (linecount == 0)
+            linecount = 1;
+        else if (linecount > 5)
+            linecount = 5;
+
+        QFontMetrics fm (textdoc->defaultFont());
+        QMargins margins = ui->expression->contentsMargins();
+        int height = fm.lineSpacing () * linecount
+            + (textdoc->documentMargin() + ui->expression->frameWidth ()) * 2
+            + margins.top () + margins.bottom ();
+        ui->expression->setFixedHeight(height);
+
         //resize the input field according to text size
-        QFontMetrics fm(ui->expression->font());
-        int width = QtTools::horizontalAdvance(fm, text) + 15;
-        if (width < minimumWidth)
-            ui->expression->setMinimumWidth(minimumWidth);
-        else
-            ui->expression->setMinimumWidth(width);
-        
-        if(this->width() < ui->expression->minimumWidth())
-            setMinimumWidth(ui->expression->minimumWidth());
+        // QFontMetrics fm(ui->expression->font());
+        // int width = QtTools::horizontalAdvance(fm, text) + 15;
+        // if (width < minimumWidth)
+        //     ui->expression->setMinimumWidth(minimumWidth);
+        // else
+        //     ui->expression->setMinimumWidth(width);
+        //
+        // if(this->width() < ui->expression->minimumWidth())
+        //     setMinimumWidth(ui->expression->minimumWidth());
 
         //now handle expression
         boost::shared_ptr<Expression> expr(Expression::parse(path.getDocumentObject(), text.toUtf8().constData()));
@@ -188,15 +208,14 @@ void DlgExpressionInput::textChanged(const QString &text)
             }
             else
                 ui->msg->setText(Base::Tools::fromStdString(result->toString()));
-            this->adjustSize();
         }
     }
     catch (Base::Exception & e) {
         ui->msg->setText(QString::fromUtf8(e.what()));
         ui->msg->setStyleSheet(QString::fromLatin1("*{color: red}"));
-        this->adjustSize();
         ui->okBtn->setDisabled(true);
     }
+    this->adjustSize();
 }
 
 void DlgExpressionInput::setDiscarded()
@@ -207,12 +226,7 @@ void DlgExpressionInput::setDiscarded()
 
 void DlgExpressionInput::setExpressionInputSize(int width, int height)
 {
-    if (ui->expression->minimumHeight() < height)
-        ui->expression->setMinimumHeight(height);
-
-    if (ui->expression->minimumWidth() < width)
-        ui->expression->setMinimumWidth(width);
-
+    (void)height;
     minimumWidth = width;
     adjustPosition();
 }
@@ -317,9 +331,19 @@ bool DlgExpressionInput::eventFilter(QObject *obj, QEvent *ev)
             bool on = ui->expression->completerActive();
             // Do this only if the completer is not shown
             if (!on) {
-                qApp->removeEventFilter(this);
                 reject();
             }
+        }
+    }
+    else if (ev->type() == QEvent::KeyPress && obj == ui->expression) {
+        // Intercept 'Return' key if not allowed
+        auto ke = static_cast<QKeyEvent*>(ev);
+        bool on = ui->expression->completerActive();
+        if (!on && !ExprParams::AllowReturn()
+                && ke->key() == Qt::Key_Return
+                && ke->modifiers() == Qt::NoModifier) {
+            accept();
+            return true;
         }
     }
 
@@ -336,20 +360,30 @@ void DlgExpressionInput::adjustPosition()
     Base::StateLocker lock(adjustingPosition);
 
     QPoint pos = parent->mapToGlobal(QPoint(0, 0));
-    if (this->leftAligned)
-        pos -= ui->expression->pos();
-    else if (this->noBackground) {
-        QPoint parentPos = QPoint(parent->width(), parent->height());
-        QPoint expressionPos = ui->expression->pos()
-            + QPoint(ui->expression->width(), ui->expression->height());
-        pos += parentPos - expressionPos;
+    if (this->leftAligned) {
+        QPoint offset = ui->expression->mapTo(this, 
+                QPoint(ui->expression->frameWidth(),ui->expression->frameWidth()));
+        pos -= offset;
     } else {
-        pos -= ui->expression->pos();
-        QPoint parentPos = parent->mapToGlobal(QPoint(parent->width(), parent->height()));
-        if (pos.x() + this->width() > parentPos.x())
-            pos.setX(parentPos.x() - this->width());
+        QPoint offset = ui->expression->mapTo(this, 
+                QPoint(-ui->expression->frameWidth(),-ui->expression->frameWidth()));
+        pos -= offset;
+        if (this->noBackground) {
+            QPoint parentPos = QPoint(parent->width(), parent->height());
+            QSize sz = ui->expression->frameGeometry().size();
+            pos += parentPos - QPoint(sz.width(), sz.height());
+        } else {
+            QPoint parentPos = parent->mapToGlobal(QPoint(parent->width(), parent->height()));
+            if (pos.x() + this->width() > parentPos.x())
+                pos.setX(parentPos.x() - this->width());
+        }
     }
     this->move(pos);
+}
+
+void DlgExpressionInput::wantReturnChecked(bool checked)
+{
+    ExprParams::setAllowReturn(checked);
 }
 
 #include "moc_DlgExpressionInput.cpp"

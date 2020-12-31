@@ -27,6 +27,8 @@
 #include "ExpressionBinding.h"
 #include "BitmapFactory.h"
 #include "Command.h"
+#include "Command.h"
+#include "QuantitySpinBox_p.h"
 #include <App/ExpressionParser.h>
 #include <App/DocumentObject.h>
 #include <Base/Tools.h>
@@ -63,31 +65,43 @@ void Gui::ExpressionBinding::setExpression(boost::shared_ptr<Expression> expr)
 {
     DocumentObject * docObj = path.getDocumentObject();
 
-    if (expr) {
-        const std::string error = docObj->ExpressionEngine.validateExpression(path, expr);
+    try {
+        if (expr) {
+            const std::string error = docObj->ExpressionEngine.validateExpression(path, expr);
 
-        if (error.size())
-            throw Base::RuntimeError(error.c_str());
+            if (error.size())
+                throw Base::RuntimeError(error.c_str());
 
+        }
+
+        lastExpression = getExpression();
+
+        bool transaction = !App::GetApplication().getActiveTransaction();
+        if(transaction) {
+            std::ostringstream ss;
+            ss << (expr?"Set":"Discard") << " expression " << docObj->Label.getValue();
+            App::GetApplication().setActiveTransaction(ss.str().c_str());
+        }
+
+        docObj->ExpressionEngine.setValue(path, expr);
+
+        if(m_autoApply)
+            apply();
+        
+        if(transaction)
+            App::GetApplication().closeActiveTransaction();
+
+        if (expr)
+            iconLabel->setToolTip(Base::Tools::fromStdString(expr->toString()));
+        else 
+            iconLabel->setToolTip(QString());
+        auto label = qobject_cast<ExpressionLabel*>(iconLabel);
+        if (label)
+            label->setState(expr ? ExpressionLabel::Bound : ExpressionLabel::Binding);
+    } catch (Base::Exception &e) {
+        if (iconLabel)
+            iconLabel->setToolTip(QString::fromUtf8(e.what()));
     }
-
-    lastExpression = getExpression();
-
-    bool transaction = !App::GetApplication().getActiveTransaction();
-    if(transaction) {
-        std::ostringstream ss;
-        ss << (expr?"Set":"Discard") << " expression " << docObj->Label.getValue();
-        App::GetApplication().setActiveTransaction(ss.str().c_str());
-    }
-
-    docObj->ExpressionEngine.setValue(path, expr);
-
-    if(m_autoApply)
-        apply();
-    
-    if(transaction)
-        App::GetApplication().closeActiveTransaction();
-
 }
 
 void ExpressionBinding::bind(const App::ObjectIdentifier &_path)
@@ -101,6 +115,16 @@ void ExpressionBinding::bind(const App::ObjectIdentifier &_path)
     //connect to be informed about changes
     DocumentObject * docObj = path.getDocumentObject();
     connection = docObj->ExpressionEngine.expressionChanged.connect(boost::bind(&ExpressionBinding::expressionChange, this, bp::_1));
+
+    auto label = qobject_cast<ExpressionLabel*>(iconLabel);
+    if (label) {
+        auto expr = getExpression();
+        if (expr)
+            iconLabel->setToolTip(Base::Tools::fromStdString(expr->toString()));
+        else 
+            iconLabel->setToolTip(QString());
+        label->setState(expr ? ExpressionLabel::Bound : ExpressionLabel::Binding);
+    }
 }
 
 void ExpressionBinding::bind(const Property &prop)

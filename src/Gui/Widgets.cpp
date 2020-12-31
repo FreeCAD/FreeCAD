@@ -1390,18 +1390,7 @@ ExpLineEdit::ExpLineEdit(QWidget* parent, bool expressionOnly)
 {
     defaultPalette = palette();
 
-    /* Icon for f(x) */
-    QFontMetrics fm(font());
-    int frameWidth = style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
-    iconHeight = fm.height() - frameWidth;
     iconLabel = new ExpressionLabel(this);
-    iconLabel->setCursor(Qt::ArrowCursor);
-    QPixmap pixmap = getIcon(":/icons/bound-expression-unset.svg", QSize(iconHeight, iconHeight));
-    iconLabel->setPixmap(pixmap);
-    iconLabel->setStyleSheet(QString::fromLatin1("QLabel { border: none; padding: 0px; padding-top: %2px; width: %1px; height: %1px }").arg(iconHeight).arg(frameWidth/2));
-    iconLabel->hide();
-    setStyleSheet(QString::fromLatin1("QLineEdit { padding-right: %1px } ").arg(iconHeight+frameWidth));
-
     QObject::connect(iconLabel, SIGNAL(clicked()), this, SLOT(openFormulaDialog()));
     if(expressionOnly) 
         QMetaObject::invokeMethod(this, "openFormulaDialog", Qt::QueuedConnection, QGenericReturnArgument());
@@ -1423,11 +1412,6 @@ bool ExpLineEdit::apply(const std::string& propName) {
 void ExpLineEdit::bind(const ObjectIdentifier& _path) {
     
     ExpressionBinding::bind(_path);
-
-    int frameWidth = style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
-    setStyleSheet(QString::fromLatin1("QLineEdit { padding-right: %1px } ").arg(iconLabel->sizeHint().width() + frameWidth + 1));
-
-    iconLabel->show();
 }
 
 void ExpLineEdit::setExpression(boost::shared_ptr<Expression> expr)
@@ -1437,12 +1421,11 @@ void ExpLineEdit::setExpression(boost::shared_ptr<Expression> expr)
     try {
         ExpressionBinding::setExpression(expr);
     }
-    catch (const Base::Exception & e) {
+    catch (const Base::Exception &) {
         setReadOnly(true);
         QPalette p(palette());
         p.setColor(QPalette::Active, QPalette::Text, Qt::red);
         setPalette(p);
-        iconLabel->setToolTip(QString::fromLatin1(e.what()));
     }
 }
 
@@ -1460,20 +1443,15 @@ void ExpLineEdit::onChange() {
         //     setText(QString::fromUtf8(result->toString().c_str()));
 
         setReadOnly(true);
-        iconLabel->setPixmap(getIcon(":/icons/bound-expression.svg", QSize(iconHeight, iconHeight)));
-
         QPalette p(palette());
         p.setColor(QPalette::Text, Qt::lightGray);
         setPalette(p);
-        iconLabel->setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
     }
     else {
         setReadOnly(false);
-        iconLabel->setPixmap(getIcon(":/icons/bound-expression-unset.svg", QSize(iconHeight, iconHeight)));
         QPalette p(palette());
         p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
         setPalette(p);
-        iconLabel->setToolTip(QString());
     }
 }
 
@@ -1481,39 +1459,25 @@ void ExpLineEdit::resizeEvent(QResizeEvent * event)
 {
     QLineEdit::resizeEvent(event);
 
-    int frameWidth = style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
-
-    QSize sz = iconLabel->sizeHint();
-    iconLabel->move(rect().right() - frameWidth - sz.width(), 0);
-
     try {
         if (isBound() && hasExpression()) {
             setReadOnly(true);
-            QPixmap pixmap = getIcon(":/icons/bound-expression.svg", QSize(iconHeight, iconHeight));
-            iconLabel->setPixmap(pixmap);
-
             QPalette p(palette());
             p.setColor(QPalette::Text, Qt::lightGray);
             setPalette(p);
-            iconLabel->setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
         }
         else {
             setReadOnly(false);
-            QPixmap pixmap = getIcon(":/icons/bound-expression-unset.svg", QSize(iconHeight, iconHeight));
-            iconLabel->setPixmap(pixmap);
-
             QPalette p(palette());
             p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
             setPalette(p);
-            iconLabel->setToolTip(QString());
         }
     }
-    catch (const Base::Exception & e) {
+    catch (const Base::Exception &) {
         setReadOnly(true);
         QPalette p(palette());
         p.setColor(QPalette::Active, QPalette::Text, Qt::red);
         setPalette(p);
-        iconLabel->setToolTip(QString::fromLatin1(e.what()));
     }
 }
 

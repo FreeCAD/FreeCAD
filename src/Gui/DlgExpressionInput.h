@@ -73,8 +73,9 @@ protected:
     void adjustPosition();
 
 private Q_SLOTS:
-    void textChanged(const QString & text);
+    void textChanged();
     void setDiscarded();
+    void wantReturnChecked(bool);
 
 private:
     ::Ui::DlgExpressionInput *ui;

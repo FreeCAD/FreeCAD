@@ -129,6 +129,14 @@ public:
     AccelLineEdit(QWidget * parent=0);
     bool isNone() const;
 
+    std::string latinText() const {
+        return std::string(text().toLatin1().constData());
+    }
+
+    void setLatinText(const std::string &txt) {
+        setText(QLatin1String(txt.c_str()));
+    }
+
 protected:
     void keyPressEvent(QKeyEvent * e);
 

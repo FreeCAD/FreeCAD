@@ -39,6 +39,8 @@
 
 #include "DlgSettingsUI.h"
 #include "ViewParams.h"
+#include "ExprParams.h"
+#include "Widgets.h"
 
 using namespace Gui::Dialog;
 
@@ -47,59 +49,68 @@ using namespace Gui::Dialog;
 class DlgSettingsUI::Private
 {
 public:
+#define FC_EXPRESSION_PARAMS \
+    FC_UI_CHECKBOX(ExprParams, AutoHideEditorIcon, "Auto hide editor icon") \
+    FC_UI_LINEEDIT(ExprParams, EditorTrigger, "Editor trigger shortcut") \
+    FC_UI_CHECKBOX(ExprParams, NoSystemBackground, "In place editing") \
+
 #define FC_PIEMENU_PARAMS \
-    FC_UI_SPINBOX(PieMenuIconSize, "Icon size", 0, 64, 1) \
-    FC_UI_SPINBOX(PieMenuRadius, "Radius", 10, 500, 10) \
-    FC_UI_SPINBOX(PieMenuTriggerRadius, "Trigger radius", 10, 500, 10) \
-    FC_UI_SPINBOX(PieMenuCenterRadius, "Center radius", 0, 250, 1) \
-    FC_UI_SPINBOX(PieMenuFontSize, "Font size", 0, 32, 1) \
-    FC_UI_SPINBOX(PieMenuTriggerDelay, "Trigger delay (ms)", 0, 10000, 100) \
-    FC_UI_CHECKBOX(PieMenuTriggerAction, "Trigger action") \
-    FC_UI_SPINBOX(PieMenuAnimationDuration, "Animation duration (ms)", 0, 5000, 100) \
-    FC_UI_COMBOBOX(PieMenuAnimationCurve, "Animation curve type") \
+    FC_UI_SPINBOX(ViewParams, PieMenuIconSize, "Icon size", 0, 64, 1) \
+    FC_UI_SPINBOX(ViewParams, PieMenuRadius, "Radius", 10, 500, 10) \
+    FC_UI_SPINBOX(ViewParams, PieMenuTriggerRadius, "Trigger radius", 10, 500, 10) \
+    FC_UI_SPINBOX(ViewParams, PieMenuCenterRadius, "Center radius", 0, 250, 1) \
+    FC_UI_SPINBOX(ViewParams, PieMenuFontSize, "Font size", 0, 32, 1) \
+    FC_UI_SPINBOX(ViewParams, PieMenuTriggerDelay, "Trigger delay (ViewParams, ms)", 0, 10000, 100) \
+    FC_UI_CHECKBOX(ViewParams, PieMenuTriggerAction, "Trigger action") \
+    FC_UI_SPINBOX(ViewParams, PieMenuAnimationDuration, "Animation duration (ViewParams, ms)", 0, 5000, 100) \
+    FC_UI_COMBOBOX(ViewParams, PieMenuAnimationCurve, "Animation curve type") \
 
 #define FC_OVERLAY_PARAMS \
-    FC_UI_CHECKBOX(DockOverlayHideTabBar,"Hide tab bar") \
-    FC_UI_CHECKBOX(DockOverlayHideScrollBar,"Hide scroll bar") \
-    FC_UI_CHECKBOX(DockOverlayHideHeaderView,"Hide tree view header") \
-    FC_UI_CHECKBOX(DockOverlayAutoView, "Auto hide in non 3D view") \
-    FC_UI_CHECKBOX(DockOverlayMouseThrough, "Enable ALT + Mouse pass through") \
-    FC_UI_CHECKBOX(DockOverlayAutoMouseThrough, "Auto mouse pass through") \
-    FC_UI_SPINBOX(DockOverlayAlphaRadius, "Alpha test radius", 1, 100, 1) \
-    FC_UI_CHECKBOX(DockOverlayCheckNaviCube, "Check Navigation Cube") \
-    FC_UI_SPINBOX(DockOverlayHintTriggerSize, "Hint trigger size", 1, 100, 1) \
-    FC_UI_SPINBOX(DockOverlayHintSize, "Hint width", 1, 100, 1) \
-    FC_UI_CHECKBOX(DockOverlayHintTabBar, "Hint show tab bar") \
-    FC_UI_SPINBOX(DockOverlayHintDelay, "Hint delay (ms)", 0, 1000, 100) \
-    FC_UI_CHECKBOX(DockOverlayActivateOnHover,"Activate on hover") \
-    FC_UI_SPINBOX(DockOverlayDelay, "Layout delay (ms)", 0, 5000, 100) \
-    FC_UI_SPINBOX(DockOverlayAnimationDuration, "Animation duration (ms)", 0, 5000, 100) \
-    FC_UI_COMBOBOX(DockOverlayAnimationCurve, "Animation curve type") \
+    FC_UI_CHECKBOX(ViewParams, DockOverlayHideTabBar,"Hide tab bar") \
+    FC_UI_CHECKBOX(ViewParams, DockOverlayHideScrollBar,"Hide scroll bar") \
+    FC_UI_CHECKBOX(ViewParams, DockOverlayHideHeaderView,"Hide tree view header") \
+    FC_UI_CHECKBOX(ViewParams, DockOverlayAutoView, "Auto hide in non 3D view") \
+    FC_UI_CHECKBOX(ViewParams, DockOverlayMouseThrough, "Enable ALT + Mouse pass through") \
+    FC_UI_CHECKBOX(ViewParams, DockOverlayAutoMouseThrough, "Auto mouse pass through") \
+    FC_UI_SPINBOX(ViewParams, DockOverlayAlphaRadius, "Alpha test radius", 1, 100, 1) \
+    FC_UI_CHECKBOX(ViewParams, DockOverlayCheckNaviCube, "Check Navigation Cube") \
+    FC_UI_SPINBOX(ViewParams, DockOverlayHintTriggerSize, "Hint trigger size", 1, 100, 1) \
+    FC_UI_SPINBOX(ViewParams, DockOverlayHintSize, "Hint width", 1, 100, 1) \
+    FC_UI_CHECKBOX(ViewParams, DockOverlayHintTabBar, "Hint show tab bar") \
+    FC_UI_SPINBOX(ViewParams, DockOverlayHintDelay, "Hint delay (ViewParams, ms)", 0, 1000, 100) \
+    FC_UI_CHECKBOX(ViewParams, DockOverlayActivateOnHover,"Activate on hover") \
+    FC_UI_SPINBOX(ViewParams, DockOverlayDelay, "Layout delay (ViewParams, ms)", 0, 5000, 100) \
+    FC_UI_SPINBOX(ViewParams, DockOverlayAnimationDuration, "Animation duration (ViewParams, ms)", 0, 5000, 100) \
+    FC_UI_COMBOBOX(ViewParams, DockOverlayAnimationCurve, "Animation curve type") \
 
 #define FC_UI_PARAMS \
+    FC_EXPRESSION_PARAMS \
     FC_PIEMENU_PARAMS \
     FC_OVERLAY_PARAMS
 
-#define FC_UI_CHECKBOX(_name, _label) \
-    FC_UI_PARAM(_name, _label, QCheckBox, isChecked, setChecked)
+#define FC_UI_CHECKBOX(_params, _name, _label) \
+    FC_UI_PARAM(_params, _name, _label, QCheckBox, isChecked, setChecked)
 
-#define FC_UI_COMBOBOX(_name, _label) \
-    FC_UI_PARAM(_name, _label, QComboBox, currentIndex, setCurrentIndex)
+#define FC_UI_LINEEDIT(_params, _name, _label) \
+    FC_UI_PARAM(_params, _name, _label, Gui::AccelLineEdit, latinText, setLatinText)
 
-#define FC_UI_SPINBOX(_name, _label, _min, _max, _step) \
-    FC_UI_PARAM(_name, _label, QSpinBox, value, setValue)
+#define FC_UI_COMBOBOX(_params, _name, _label) \
+    FC_UI_PARAM(_params, _name, _label, QComboBox, currentIndex, setCurrentIndex)
+
+#define FC_UI_SPINBOX(_params, _name, _label, _min, _max, _step) \
+    FC_UI_PARAM(_params, _name, _label, QSpinBox, value, setValue)
 
 #undef FC_UI_PARAM
-#define FC_UI_PARAM(_name, _label, _type, _getter, _setter) \
+#define FC_UI_PARAM(_params, _name, _label, _type, _getter, _setter) \
     _type * _name = nullptr;\
     QLabel *label##_name = nullptr;
 
     FC_UI_PARAMS
 
 #undef FC_UI_PARAM
-#define FC_UI_PARAM(_name, _label, _type, _getter, _setter) do {\
+#define FC_UI_PARAM(_params, _name, _label, _type, _getter, _setter) do {\
         label##_name->setText(tr(_label));\
-        QString tooltip = QApplication::translate("ViewParams", ViewParams::doc##_name()); \
+        QString tooltip = QApplication::translate(#_params, _params::doc##_name()); \
         if (!tooltip.isEmpty()) {\
             _name->setToolTip(tooltip); \
             label##_name->setToolTip(tooltip);\
@@ -137,40 +148,51 @@ DlgSettingsUI::DlgSettingsUI(QWidget* parent)
             this, SLOT(onStateChanged()));
 
 #undef FC_UI_PARAM
-#define FC_UI_PARAM(_name, _label, _type, _getter, _setter) do {\
+#define FC_UI_PARAM(_params, _name, _label, _type, _getter, _setter) do {\
         ui->_name = new _type(parent);\
         ui->label##_name = new QLabel(parent);\
-        ui->label##_name->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding);\
+        ui->label##_name->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);\
         layout->addWidget(ui->label##_name, row, 0);\
         layout->addWidget(ui->_name, row, 1);\
         ++row;\
     }while(0);
 
 #undef FC_UI_SPINBOX
-#define FC_UI_SPINBOX(_name, _label, _min, _max, _step) \
-    FC_UI_PARAM(_name, _label, QSpinBox, value, setValue)\
+#define FC_UI_SPINBOX(_params, _name, _label, _min, _max, _step) \
+    FC_UI_PARAM(_params, _name, _label, QSpinBox, value, setValue)\
     ui->_name->setMaximum(_max);\
     ui->_name->setMinimum(_min);\
     ui->_name->setSingleStep(_step);
 
     auto vlayout = new QVBoxLayout(this);
-    auto group = new QGroupBox(tr("Dockable Overlay"), this);
-    vlayout->addWidget(group);
-    auto layout = new QGridLayout();
-    group->setLayout(layout);
+    int row;
+    QGroupBox *group;
+    QGridLayout *layout;
 
-    int row = 0;
+    group = new QGroupBox(tr("Expression editor"), this);
+    vlayout->addWidget(group);
+    layout = new QGridLayout();
+    group->setLayout(layout);
+    row = 0;
+    FC_EXPRESSION_PARAMS;
+    ui->EditorTrigger->setFixedWidth(100);
+    layout->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Fixed), row-1, 2);
+
+    group = new QGroupBox(tr("Dockable Overlay"), this);
+    vlayout->addWidget(group);
+    layout = new QGridLayout();
+    group->setLayout(layout);
+    row = 0;
     FC_OVERLAY_PARAMS;
-    layout->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding), row-1, 2);
+    layout->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Fixed), row-1, 2);
 
     group = new QGroupBox(tr("Pie Menu"), this);
     vlayout->addWidget(group);
     layout = new QGridLayout();
     group->setLayout(layout);
-
     row = 0;
     FC_PIEMENU_PARAMS;
-    layout->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding), row-1, 2);
+    layout->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Fixed), row-1, 2);
 
     vlayout->addStretch();
 
@@ -197,12 +219,12 @@ DlgSettingsUI::DlgSettingsUI(QWidget* parent)
     ui->init();
 
 #undef FC_UI_PARAM
-#define FC_UI_PARAM(_name, _label, _type, _getter, _setter) \
-    ui->_name->_setter(ViewParams::get##_name());\
+#define FC_UI_PARAM(_params, _name, _label, _type, _getter, _setter) \
+    ui->_name->_setter(_params::get##_name());\
 
 #undef FC_UI_SPINBOX
-#define FC_UI_SPINBOX(_name, _label, _min, _max, _step) \
-    FC_UI_PARAM(_name, _label, QSpinBox, value, setValue)
+#define FC_UI_SPINBOX(_params, _name, _label, _min, _max, _step) \
+    FC_UI_PARAM(_params, _name, _label, QSpinBox, value, setValue)
 
     FC_UI_PARAMS;
 
@@ -303,8 +325,8 @@ void DlgSettingsUI::loadSettings()
 void DlgSettingsUI::saveSettings()
 {
 #undef FC_UI_PARAM
-#define FC_UI_PARAM(_name, _label, _type, _getter, _setter) \
-    ViewParams::set##_name(ui->_name->_getter());\
+#define FC_UI_PARAM(_params, _name, _label, _type, _getter, _setter) \
+    _params::set##_name(ui->_name->_getter());\
 
     FC_UI_PARAMS;
 }

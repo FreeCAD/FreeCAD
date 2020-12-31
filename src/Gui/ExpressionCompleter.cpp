@@ -28,6 +28,7 @@
 #include "Application.h"
 #include "ViewProvider.h"
 #include "BitmapFactory.h"
+#include "ExprParams.h"
 #include "CallTips.h"
 
 FC_LOG_LEVEL_INIT("Completer",true,true,true)
@@ -1993,7 +1994,8 @@ ExpressionCompleter::ExpressionCompleter(const App::DocumentObject * currentDocO
     : QCompleter(parent), currentObj(currentDocObj)
     , noProperty(noProperty), checkInList(checkInList), searchUnit(false)
 {
-    setCaseSensitivity(Qt::CaseInsensitive);
+    setCaseSensitivity(ExprParams::CompleterCaseSensitive()
+            ? Qt::CaseSensitive : Qt::CaseInsensitive);
     // setCompletionMode(UnfilteredPopupCompletion);
 }
 
@@ -2432,7 +2434,9 @@ void ExpressionCompleter::getPrefixRange(QString &prefix, int &start, int &end, 
 }
 
 bool ExpressionCompleter::eventFilter(QObject *o, QEvent *e) {
-    if (e->type() == QEvent::KeyPress && (o == widget() || o == popup())) {
+    if (e->type() == QEvent::KeyPress
+            && (o == widget() || o == popup())
+            && popup()->isVisible()) {
         QKeyEvent * ke = static_cast<QKeyEvent*>(e);
         switch(ke->key()) {
         case Qt::Key_Left:
@@ -2475,7 +2479,7 @@ ExpressionLineEdit::ExpressionLineEdit(QWidget *parent, bool noProperty, char ch
     , searchUnit(false)
     , exactMatch(false)
 {
-    exactMatch = Gui::ExpressionParameter::instance()->isExactMatch();
+    exactMatch = ExprParams::CompleterMatchExact();
     connect(this, SIGNAL(textEdited(const QString&)), this, SLOT(slotTextChanged(const QString&)));
 }
 
@@ -2494,7 +2498,6 @@ void ExpressionLineEdit::setDocumentObject(const App::DocumentObject * currentDo
         completer = new ExpressionCompleter(currentDocObj, this, noProperty, checkInList);
         completer->setSearchUnit(searchUnit);
         completer->setWidget(this);
-        completer->setCaseSensitivity(Qt::CaseInsensitive);
 #if QT_VERSION>=QT_VERSION_CHECK(5,2,0)
         if (!exactMatch)
             completer->setFilterMode(Qt::MatchContains);
@@ -2585,6 +2588,11 @@ void ExpressionLineEdit::contextMenuEvent(QContextMenuEvent *event)
 #endif
 }
 
+void ExpressionLineEdit::resizeEvent(QResizeEvent *ev)
+{
+    QLineEdit::resizeEvent(ev);
+    sizeChanged();
+}
 
 ///////////////////////////////////////////////////////////////////////
 
@@ -2594,7 +2602,7 @@ ExpressionTextEdit::ExpressionTextEdit(QWidget *parent)
     , block(true)
     , exactMatch(false)
 {
-    exactMatch = Gui::ExpressionParameter::instance()->isExactMatch();
+    exactMatch = ExprParams::CompleterMatchExact();
     connect(this, SIGNAL(textChanged()), this, SLOT(slotTextChanged()));
 }
 
@@ -2620,7 +2628,6 @@ void ExpressionTextEdit::setDocumentObject(const App::DocumentObject * currentDo
             completer->setFilterMode(Qt::MatchContains);
 #endif
         completer->setWidget(this);
-        completer->setCaseSensitivity(Qt::CaseInsensitive);
         connect(completer, SIGNAL(activated(QString)), this, SLOT(slotCompleteText(QString)));
         connect(completer, SIGNAL(highlighted(QString)), this, SLOT(slotCompleteText(QString)));
         connect(this, SIGNAL(textChanged2(QString,int)), completer, SLOT(slotUpdate(QString,int)));
@@ -2699,28 +2706,6 @@ void ExpressionTextEdit::contextMenuEvent(QContextMenuEvent *event)
 #else
     QPlainTextEdit::contextMenuEvent(event);
 #endif
-}
-
-///////////////////////////////////////////////////////////////////////
-
-ExpressionParameter* ExpressionParameter::instance()
-{
-    static ExpressionParameter* inst = new ExpressionParameter();
-    return inst;
-}
-
-bool ExpressionParameter::isCaseSensitive() const
-{
-    auto handle = GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/Expression");
-    return handle->GetBool("CompleterCaseSensitive", false);
-}
-
-bool ExpressionParameter::isExactMatch() const
-{
-    auto handle = GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/Expression");
-    return handle->GetBool("CompleterMatchExact", false);
 }
 
 #include "moc_ExpressionCompleter.cpp"
