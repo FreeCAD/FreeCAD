@@ -58,6 +58,7 @@ public:
 
     TaskFeaturePick(std::vector<App::DocumentObject*> &objects,
                     const std::vector<featureStatus> &status,
+                    bool singleFeatureSelect,
                     QWidget *parent = 0);
 
     ~TaskFeaturePick();
@@ -107,7 +108,8 @@ public:
                         const std::vector<TaskFeaturePick::featureStatus> &status,
                         boost::function<bool (std::vector<App::DocumentObject*>)> acceptfunc,
                         boost::function<void (std::vector<App::DocumentObject*>)> workfunc,
-                        boost::function<void (void)> abortfunc = 0 );
+                        bool singleFeatureSelect,
+                        boost::function<void (void)> abortfunc = 0);
     ~TaskDlgFeaturePick();
 
 public:
