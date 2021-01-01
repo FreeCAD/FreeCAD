@@ -185,7 +185,7 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
         if (solidCount > 1) {
             return new App::DocumentObjectExecReturn("Chamfer: Result has multiple solids. This is not supported at this time.");
         }
-
+        shape = refineShapeIfActive(shape);
         this->Shape.setValue(getSolid(shape));
         return App::DocumentObject::StdReturn;
     }
