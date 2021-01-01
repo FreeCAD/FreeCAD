@@ -143,6 +143,7 @@ class DocumentBasicCases(unittest.TestCase):
     self.failUnless(not L1.getDocumentationOfProperty("Source1") == "")
     self.failUnless(L1.getGroupOfProperty("Source1") == "Feature Test")
     self.failUnless(L1.getTypeOfProperty("Source1") == [])
+    self.failUnless(L1.getEnumerationsOfProperty("Source1") is None)
 
 
     # test the constraint types ( both are constraint to percent range)
@@ -170,6 +171,7 @@ class DocumentBasicCases(unittest.TestCase):
       FreeCAD.Console.PrintLog("   exception thrown, OK\n")
     else:
       self.fail("no exception thrown")
+    self.failUnless(sorted(L1.getEnumerationsOfProperty('Enum')) == sorted(['Zero', 'One', 'Two', 'Three', 'Four']))
 
     #self.failUnless(L1.IntegerList  == [4711]   )
     #f = L1.FloatList
