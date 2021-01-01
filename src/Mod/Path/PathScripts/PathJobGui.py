@@ -222,8 +222,8 @@ class ViewProvider:
         if hasattr(self.obj, 'SetupSheet'):
             # when loading a job that didn't have a setup sheet they might not've been created yet
             children.append(self.obj.SetupSheet)
-        if hasattr(self.obj, 'ToolTable'):
-            children.append(self.obj.ToolTable)
+        if hasattr(self.obj, 'Tools'):
+            children.append(self.obj.Tools)
         return children
 
     def onDelete(self, vobj, arg2=None):
@@ -709,7 +709,7 @@ class TaskPanel:
 
         vUnit = FreeCAD.Units.Quantity(1, FreeCAD.Units.Velocity).getUserPreferred()[2]
 
-        for row, tc in enumerate(sorted(self.obj.ToolTable.Group, key=lambda tc: tc.Label)):
+        for row, tc in enumerate(sorted(self.obj.Tools.Group, key=lambda tc: tc.Label)):
             self.form.activeToolController.addItem(tc.Label, tc)
             if tc == select:
                 index = row
@@ -849,7 +849,7 @@ class TaskPanel:
         # can only delete what is selected
         delete = edit
         # ... but we want to make sure there's at least one TC left
-        if len(self.obj.ToolTable.Group) == len(self.form.toolControllerList.selectedItems()):
+        if len(self.obj.Tools.Group) == len(self.form.toolControllerList.selectedItems()):
             delete = False
         # ... also don't want to delete any TCs that are already used
         if delete:

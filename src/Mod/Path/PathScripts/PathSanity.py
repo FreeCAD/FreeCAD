@@ -517,7 +517,7 @@ class CommandPathSanity:
         data = {}
 
         try:
-            for TC in obj.ToolTable.Group:
+            for TC in obj.Tools.Group:
                 if not hasattr(TC.Tool, 'BitBody'):
                     self.squawk("PathSanity",
                     "Tool number {} is a legacy tool. Legacy tools not \

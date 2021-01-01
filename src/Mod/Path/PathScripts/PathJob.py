@@ -58,7 +58,7 @@ class JobTemplate:
     PostProcessorOutputFile = 'Output'
     SetupSheet = 'SetupSheet'
     Stock = 'Stock'
-    # TCs are grouped under ToolTable in a job, the template refers to them directly though
+    # TCs are grouped under Tools in a job, the template refers to them directly though
     ToolController = 'ToolController'
     Version = 'Version'
 
@@ -194,16 +194,16 @@ class ObjectJob:
             obj.removeProperty('Base')
 
     def setupToolTable(self, obj):
-        if not hasattr(obj, 'ToolTable'):
-            obj.addProperty("App::PropertyLink", "ToolTable", "Base", QtCore.QT_TRANSLATE_NOOP("PathJob", "Collection of all tool controllers for the job"))
-            toolTable = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup", "ToolTable")
-            toolTable.Label = 'ToolTable'
+        if not hasattr(obj, 'Tools'):
+            obj.addProperty("App::PropertyLink", "Tools", "Base", QtCore.QT_TRANSLATE_NOOP("PathJob", "Collection of all tool controllers for the job"))
+            toolTable = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup", "Tools")
+            toolTable.Label = 'Tools'
             if toolTable.ViewObject:
                 toolTable.ViewObject.Visibility = False
             if hasattr(obj, 'ToolController'):
                 toolTable.addObjects(obj.ToolController)
                 obj.removeProperty('ToolController')
-            obj.ToolTable = toolTable
+            obj.Tools = toolTable
 
     def removeBase(self, obj, base, removeFromModel):
         if isResourceClone(obj, base, None):
@@ -248,16 +248,16 @@ class ObjectJob:
 
         # Tool controllers might refer to either legacy tool or toolbit
         PathLog.debug('taking down tool controller')
-        for tc in obj.ToolTable.Group:
+        for tc in obj.Tools.Group:
             if hasattr(tc.Tool, "Proxy"):
                 PathUtil.clearExpressionEngine(tc.Tool)
                 doc.removeObject(tc.Tool.Name)
             PathUtil.clearExpressionEngine(tc)
             tc.Proxy.onDelete(tc)
             doc.removeObject(tc.Name)
-        obj.ToolTable.Group = []
-        doc.removeObject(obj.ToolTable.Name)
-        obj.ToolTable = None
+        obj.Tools.Group = []
+        doc.removeObject(obj.Tools.Name)
+        obj.Tools = None
 
         # SetupSheet
         PathUtil.clearExpressionEngine(obj.SetupSheet)
@@ -351,7 +351,7 @@ class ObjectJob:
                     obj.Stock = PathStock.CreateFromTemplate(obj, attrs.get(JobTemplate.Stock))
 
                 PathLog.debug("setting tool controllers (%d)" % len(tcs))
-                obj.ToolTable.Group = tcs
+                obj.Tools.Group = tcs
             else:
                 PathLog.error(translate('PathJob', "Unsupported PathJob template version %s") % attrs.get(JobTemplate.Version))
         if not tcs:
@@ -431,12 +431,12 @@ class ObjectJob:
             op.Path.Center = self.obj.Operations.Path.Center
 
     def addToolController(self, tc):
-        group = self.obj.ToolTable.Group
+        group = self.obj.Tools.Group
         PathLog.debug("addToolController(%s): %s" % (tc.Label, [t.Label for t in group]))
         if tc.Name not in [str(t.Name) for t in group]:
             tc.setExpression('VertRapid', "%s.%s" % (self.setupSheet.expressionReference(), PathSetupSheet.Template.VertRapid))
             tc.setExpression('HorizRapid', "%s.%s" % (self.setupSheet.expressionReference(), PathSetupSheet.Template.HorizRapid))
-            self.obj.ToolTable.addObject(tc)
+            self.obj.Tools.addObject(tc)
             Notification.updateTC.emit(self.obj, tc)
 
     def allOperations(self):
