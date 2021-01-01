@@ -61,32 +61,24 @@ void DlgPrefsTechDrawScaleImp::onScaleTypeChanged(int index)
 
 void DlgPrefsTechDrawScaleImp::saveSettings()
 {
-    ui->pdsbToleranceScale->onSave();
-    ui->pdsbTemplateMark->onSave();
-    ui->pdsbVertexScale->onSave();
-    ui->pdsbCenterScale->onSave();
     ui->pdsbPageScale->onSave();
     ui->cbViewScaleType->onSave();
     ui->pdsbViewScale->onSave();
-    ui->pdsbEdgeFuzz->onSave();
-    ui->pdsbMarkFuzz->onSave();
+    ui->pdsbVertexScale->onSave(); 
+    ui->pdsbCenterScale->onSave();
     ui->pdsbTemplateMark->onSave();
     ui->pdsbSymbolScale->onSave();
 }
 
 void DlgPrefsTechDrawScaleImp::loadSettings()
 {
-    double markDefault = 3.0;
-    ui->pdsbTemplateMark->setValue(markDefault);
-    ui->pdsbToleranceScale->onRestore();
-    ui->pdsbTemplateMark->onRestore();
-    ui->pdsbVertexScale->onRestore();
-    ui->pdsbCenterScale->onRestore();
     ui->pdsbPageScale->onRestore();
     ui->cbViewScaleType->onRestore();
     ui->pdsbViewScale->onRestore();
-    ui->pdsbEdgeFuzz->onRestore();
-    ui->pdsbMarkFuzz->onRestore();
+    ui->pdsbVertexScale->onRestore();
+    ui->pdsbCenterScale->onRestore();
+    double markDefault = 3.0;
+    ui->pdsbTemplateMark->setValue(markDefault);
     ui->pdsbTemplateMark->onRestore();
     ui->pdsbSymbolScale->onRestore();
 }

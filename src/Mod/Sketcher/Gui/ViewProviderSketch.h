@@ -33,7 +33,7 @@
 #include <Gui/Selection.h>
 #include <Gui/GLPainter.h>
 #include <App/Part.h>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 #include <QCoreApplication>
 #include <Gui/Document.h>
 #include "ShortcutListener.h"
@@ -193,6 +193,18 @@ public:
     void updateColor(void);
     /// get the pointer to the sketch document object
     Sketcher::SketchObject *getSketchObject(void) const;
+
+    /** returns a const reference to the last solved sketch object. It guarantees that
+     *  the solver object does not lose synchronisation with the SketchObject properties.
+     *
+     * NOTE: Operations requiring write access to the solver must be done via SketchObject
+     * interface. See for example functions:
+     * -> inline void setRecalculateInitialSolutionWhileMovingPoint(bool recalculateInitialSolutionWhileMovingPoint)
+     * -> inline int initTemporaryMove(int geoId, PointPos pos, bool fine=true)
+     * -> inline int moveTemporaryPoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative=false)
+     * -> inline void updateSolverExtension(int geoId, std::unique_ptr<Part::GeometryExtension> && ext)
+     */
+    const Sketcher::Sketch &getSolvedSketch(void) const;
 
     /// snap points x,y (mouse coordinates) onto grid if enabled
     void snapToGrid(double &x, double &y);

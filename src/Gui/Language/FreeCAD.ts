@@ -126,6 +126,74 @@
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Import</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paste expressions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Make link group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Make link</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Make sub-link</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import links</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import all links</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert measurement</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert text document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add a part</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add a group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Placement</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Link Transform</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Measure distance</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DlgCustomizeSpNavSettings</name>
@@ -2503,6 +2571,16 @@ Larger value eases to pick things, but can make small features impossible to sel
                </source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use software OpenGL</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
@@ -3348,10 +3426,6 @@ Mouse tilting is not disabled by this setting.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Rotate at cursor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Isometric</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3397,6 +3471,22 @@ Mouse tilting is not disabled by this setting.</source>
     </message>
     <message>
         <source>Default camera orientation when creating a new document or selecting the home view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rotation mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Window center</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Drag at cursor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Object center</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -8724,6 +8814,21 @@ Document: </source>
     </message>
 </context>
 <context>
+    <name>StdCmdViewRestoreCamera</name>
+    <message>
+        <source>Standard-View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Restore saved camera</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Restore saved camera settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>StdCmdViewRight</name>
     <message>
         <source>Standard-View</source>
@@ -8765,6 +8870,21 @@ Document: </source>
     </message>
     <message>
         <source>Rotate the view by 90° clockwise</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>StdCmdViewSaveCamera</name>
+    <message>
+        <source>Standard-View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save current camera</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save current camera settings</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

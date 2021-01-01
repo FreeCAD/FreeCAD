@@ -25,7 +25,7 @@
 #define APP_DOCUMENTOBSERVER_H
 
 #include <Base/BaseClass.h>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 #include <set>
 #include <memory>
 

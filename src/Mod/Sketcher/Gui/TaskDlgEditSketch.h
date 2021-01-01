@@ -32,7 +32,7 @@
 #include "TaskSketcherGeneral.h"
 #include "TaskSketcherMessages.h"
 #include "TaskSketcherSolverAdvanced.h"
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 
 typedef boost::signals2::connection Connection;
 

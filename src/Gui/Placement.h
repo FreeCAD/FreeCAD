@@ -29,7 +29,7 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Base/Placement.h>
 
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 
 class QSignalMapper;
 

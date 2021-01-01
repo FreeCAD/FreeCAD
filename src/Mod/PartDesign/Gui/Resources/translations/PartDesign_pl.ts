@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="1304"/>
       <source>Additive pipe</source>
-      <translation>Dodatkowa rura</translation>
+      <translation>Uzupełnianie wyciągnięciem wzdłuż ścieżki</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1305"/>
       <source>Sweep a selected sketch along a path or to other profiles</source>
-      <translation>Rozciągnij wybrany rysunek wzdłuż ścieżki lub do innych profili</translation>
+      <translation>Przeprowadź wybrany szkic wzdłuż ścieżki lub do innych profili</translation>
     </message>
   </context>
   <context>
@@ -245,7 +245,7 @@
     <message>
       <location filename="../../Command.cpp" line="1942"/>
       <source>LinearPattern</source>
-      <translation>WzorzecLiniowy</translation>
+      <translation>Szyk liniowy</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1943"/>
@@ -286,7 +286,7 @@
     <message>
       <location filename="../../Command.cpp" line="1879"/>
       <source>Create a mirrored feature</source>
-      <translation>Utwórz kopię lustrzaną funkcji</translation>
+      <translation>Utwórz kopię lustrzaną</translation>
     </message>
   </context>
   <context>
@@ -461,12 +461,12 @@
     <message>
       <location filename="../../Command.cpp" line="2008"/>
       <source>PolarPattern</source>
-      <translation>WzorzecBiegunowy</translation>
+      <translation>Szyk kołowy</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2009"/>
       <source>Create a polar pattern feature</source>
-      <translation>Utwórz funkcję wzorca biegunowego</translation>
+      <translation>Utwórz szyk kołowy</translation>
     </message>
   </context>
   <context>
@@ -479,7 +479,7 @@
     <message>
       <location filename="../../Command.cpp" line="1176"/>
       <source>Revolution</source>
-      <translation>Obrót</translation>
+      <translation>Wyciągnij przez obrót</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1177"/>
@@ -574,7 +574,7 @@
     <message>
       <location filename="../../Command.cpp" line="1723"/>
       <source>Make a thick solid</source>
-      <translation>Zrób bryłę o pełnych kształtach</translation>
+      <translation>Utwórz bryłę narzędziem grubość</translation>
     </message>
   </context>
   <context>
@@ -588,7 +588,7 @@
       <location filename="../../CommandPrimitive.cpp" line="69"/>
       <location filename="../../CommandPrimitive.cpp" line="70"/>
       <source>Create an additive primitive</source>
-      <translation>Stwórz dodatkowe prymitywy</translation>
+      <translation>Utwórz bryłę pierwotną do dodania</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="191"/>
@@ -642,7 +642,7 @@
       <location filename="../../CommandPrimitive.cpp" line="236"/>
       <location filename="../../CommandPrimitive.cpp" line="237"/>
       <source>Create a subtractive primitive</source>
-      <translation>Stwórz składową prymitywu</translation>
+      <translation>Utwórz bryłę pierwotną do odjęcia</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="356"/>
@@ -1263,7 +1263,7 @@
     <message>
       <location filename="../../TaskDraftParameters.ui" line="111"/>
       <source>Reverse pull direction</source>
-      <translation>Odwrócenie kierunku wyciągania</translation>
+      <translation>Odwróć kierunek wyciągnięcia</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.cpp" line="100"/>
@@ -1440,12 +1440,12 @@
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation>Dodaj właściwość</translation>
+      <translation>Dodaj element</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="32"/>
       <source>Remove feature</source>
-      <translation>Usuń właściwość</translation>
+      <translation>Usuń element</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="49"/>
@@ -1475,7 +1475,7 @@
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="114"/>
       <source>Update view</source>
-      <translation>Aktualizacja widoku</translation>
+      <translation>Aktualizuj widok</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.cpp" line="114"/>
@@ -1551,12 +1551,12 @@
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation>Dodaj właściwość</translation>
+      <translation>Dodaj element</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="32"/>
       <source>Remove feature</source>
-      <translation>Usuń właściwość</translation>
+      <translation>Usuń element</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="49"/>
@@ -1571,7 +1571,7 @@
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="72"/>
       <source>Update view</source>
-      <translation>Aktualizacja widoku</translation>
+      <translation>Aktualizuj widok</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.cpp" line="111"/>
@@ -1594,12 +1594,12 @@
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation>Dodaj właściwość</translation>
+      <translation>Dodaj element</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="32"/>
       <source>Remove feature</source>
-      <translation>Usuń właściwość</translation>
+      <translation>Usuń element</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="47"/>
@@ -1609,7 +1609,7 @@
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="64"/>
       <source>Update view</source>
-      <translation>Aktualizacja widoku</translation>
+      <translation>Aktualizuj widok</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="76"/>
@@ -1634,12 +1634,12 @@
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="94"/>
       <source>Add linear pattern</source>
-      <translation>Dodaj wzorzec liniowy</translation>
+      <translation>Dodaj szyk liniowy</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="98"/>
       <source>Add polar pattern</source>
-      <translation>Dodaj wzorzec biegunowy</translation>
+      <translation>Dodaj szyk kołowy</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="102"/>
@@ -1689,7 +1689,7 @@
     <message>
       <location filename="../../TaskPadParameters.ui" line="60"/>
       <source>Offset</source>
-      <translation>Offset</translation>
+      <translation>Odsunięcie</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="75"/>
@@ -1716,7 +1716,7 @@
     <message>
       <location filename="../../TaskPadParameters.ui" line="128"/>
       <source>Update view</source>
-      <translation>Aktualizacja widoku</translation>
+      <translation>Aktualizuj widok</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="56"/>
@@ -1966,7 +1966,7 @@
     <message>
       <location filename="../../TaskPocketParameters.ui" line="60"/>
       <source>Offset</source>
-      <translation>Offset</translation>
+      <translation>Odsunięcie</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.ui" line="75"/>
@@ -1993,7 +1993,7 @@
     <message>
       <location filename="../../TaskPocketParameters.ui" line="128"/>
       <source>Update view</source>
-      <translation>Aktualizacja widoku</translation>
+      <translation>Aktualizuj widok</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="56"/>
@@ -2041,12 +2041,12 @@
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation>Dodaj właściwość</translation>
+      <translation>Dodaj element</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="32"/>
       <source>Remove feature</source>
-      <translation>Usuń właściwość</translation>
+      <translation>Usuń element</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="49"/>
@@ -2076,7 +2076,7 @@
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="120"/>
       <source>Update view</source>
-      <translation>Aktualizacja widoku</translation>
+      <translation>Aktualizuj widok</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.cpp" line="112"/>
@@ -2153,7 +2153,7 @@
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="119"/>
       <source>Update view</source>
-      <translation>Aktualizacja widoku</translation>
+      <translation>Aktualizuj widok</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="61"/>
@@ -2171,12 +2171,12 @@
     <message>
       <location filename="../../TaskScaledParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation>Dodaj właściwość</translation>
+      <translation>Dodaj element</translation>
     </message>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="32"/>
       <source>Remove feature</source>
-      <translation>Usuń właściwość</translation>
+      <translation>Usuń element</translation>
     </message>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="49"/>
@@ -2196,7 +2196,7 @@
     <message>
       <location filename="../../TaskScaledParameters.ui" line="86"/>
       <source>Update view</source>
-      <translation>Aktualizacja widoku</translation>
+      <translation>Aktualizuj widok</translation>
     </message>
     <message>
       <location filename="../../TaskScaledParameters.cpp" line="98"/>
@@ -2973,12 +2973,12 @@ Ta funkcja jest wadliwa i nie może być edytowana.</translation>
     <message>
       <location filename="../../ViewProviderGroove.cpp" line="51"/>
       <source>Edit groove</source>
-      <translation>Edycja rowka</translation>
+      <translation>Edytuj rowek</translation>
     </message>
     <message>
       <location filename="../../ViewProviderHole.cpp" line="64"/>
       <source>Edit hole</source>
-      <translation>Edytuj lukę</translation>
+      <translation>Edytuj otwór</translation>
     </message>
     <message>
       <location filename="../../ViewProviderLoft.cpp" line="77"/>

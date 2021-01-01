@@ -106,7 +106,7 @@ namespace GCS
 
         // This is a map of primary and secondary identifiers that are found dependent by the solver
         // GCS ignores from a type point
-        std::vector< std::set<double *> > pDependentParametersGroups;
+        std::vector< std::vector<double *> > pDependentParametersGroups;
 
         std::vector<Constraint *> clist;
         std::map<Constraint *,VEC_pD > c2p; // constraint to parameter adjacency list
@@ -325,9 +325,9 @@ namespace GCS
         int addConstraintInternalAlignmentParabolaFocus(Parabola &e, Point &p1, int tagId=0, bool driving = true);
         int addConstraintInternalAlignmentBSplineControlPoint(BSpline &b, Circle &c, int poleindex, int tag=0, bool driving = true);
 
-        double calculateAngleViaPoint(Curve &crv1, Curve &crv2, Point &p);
-        double calculateAngleViaPoint(Curve &crv1, Curve &crv2, Point &p1, Point &p2);
-        void calculateNormalAtPoint(Curve &crv, Point &p, double &rtnX, double &rtnY);
+        double calculateAngleViaPoint(const Curve &crv1, const Curve &crv2, Point &p) const;
+        double calculateAngleViaPoint(const Curve &crv1, const Curve &crv2, Point &p1, Point &p2) const;
+        void calculateNormalAtPoint(const Curve &crv, const Point &p, double &rtnX, double &rtnY) const;
 
         // Calculates errors of all constraints which have a tag equal to
         // the one supplied. Individual errors are summed up using RMS.
@@ -363,7 +363,7 @@ namespace GCS
           { redundantOut = hasDiagnosis ? redundantTags : VEC_I(0); }
         void getDependentParams(VEC_pD &pdependentparameterlist) const
           { pdependentparameterlist = pDependentParameters;}
-        void getDependentParamsGroups(std::vector<std::set<double *>> &pdependentparametergroups) const
+        void getDependentParamsGroups(std::vector<std::vector<double *>> &pdependentparametergroups) const
           { pdependentparametergroups = pDependentParametersGroups;}
         bool isEmptyDiagnoseMatrix() const {return emptyDiagnoseMatrix;}
         void invalidatedDiagnosis();

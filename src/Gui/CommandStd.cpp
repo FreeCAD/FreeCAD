@@ -377,6 +377,7 @@ Action * StdCmdDlgPreferences::createAction(void)
 {
     Action *pcAction = Command::createAction();
     pcAction->setMenuRole(QAction::PreferencesRole);
+
     return pcAction;
 }
 

@@ -162,6 +162,7 @@
         <file>Std_Revert.svg</file>
         <file>Std_SaveAll.svg</file>
         <file>Std_SaveCopy.svg</file>
+        <file>Std_SetAppearance.svg</file>
         <file>Std_Tool1.svg</file>
         <file>Std_Tool2.svg</file>
         <file>Std_Tool3.svg</file>
@@ -174,6 +175,11 @@
         <file>Std_Tool10.svg</file>
         <file>Std_Tool11.svg</file>
         <file>Std_Tool12.svg</file>
+        <file>Std_ViewIvStereoInterleavedColumns.svg</file>
+        <file>Std_ViewIvStereoInterleavedRows.svg</file>
+        <file>Std_ViewIvStereoOff.svg</file>
+        <file>Std_ViewIvStereoQuadBuff.svg</file>
+        <file>Std_ViewIvStereoRedGreen.svg</file>
         <file>Std_WindowCascade.svg</file>
         <file>Std_WindowNext.svg</file>
         <file>Std_WindowPrev.svg</file>

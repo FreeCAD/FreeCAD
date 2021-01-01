@@ -98,7 +98,7 @@
 #include <FCConfig.h>
 #include <Base/Console.h>
 
-#include <boost/graph/adjacency_list.hpp>
+#include <boost_graph_adjacency_list.hpp>
 #include <boost/graph/connected_components.hpp>
 
 typedef Eigen::FullPivHouseholderQR<Eigen::MatrixXd>::IntDiagSizeVectorType MatrixIndexType;
@@ -226,9 +226,10 @@ public:
     void LogQRSystemInformation(const System &system, int paramsNum = 0, int constrNum = 0, int rank = 0);
 
     void LogGroupOfConstraints(const std::string & str, std::vector< std::vector<Constraint *> > constraintgroups);
+    void LogGroupOfParameters(const std::string & str, std::vector< std::vector<double *> > parametergroups);
 
     void LogMatrix(const std::string str, Eigen::MatrixXd matrix);
-    void LogMatrix(const std::string str, MatrixIndexType matrix );
+    void LogMatrix(const std::string str, MatrixIndexType matrix);
 
 private:
     SolverReportingManager();
@@ -361,34 +362,51 @@ void SolverReportingManager::LogGroupOfConstraints(const std::string & str, std:
         for(auto c :group)
             tempstream << c->getTag() << " ";
 
-        tempstream << "]" << '\n';;
+        tempstream << "]" << '\n';
     }
 
     LogString(tempstream.str());
 }
 
+void SolverReportingManager::LogGroupOfParameters(const std::string & str, std::vector< std::vector<double *> > parametergroups)
+{
+    std::stringstream tempstream;
+
+    tempstream << str << ":" << '\n';
+
+    for(size_t i = 0; i < parametergroups.size(); i++)  {
+        tempstream << "[";
+
+        for(auto p : parametergroups[i])
+            tempstream << std::hex << p << " ";
+
+        tempstream << "]" << '\n';
+    }
+
+    LogString(tempstream.str());
+}
 
 #ifdef _GCS_DEBUG
-void SolverReportingManager::LogMatrix(const std::string str, Eigen::MatrixXd matrix )
+void SolverReportingManager::LogMatrix(const std::string str, Eigen::MatrixXd matrix)
 {
     std::stringstream tempstream;
 
     tempstream << '\n' << " " << str << " =" << '\n';
     tempstream << "[" << '\n';
-    tempstream << matrix << '\n' ;
+    tempstream << matrix << '\n';
     tempstream << "]" << '\n';
 
     LogString(tempstream.str());
 
 }
 
-void SolverReportingManager::LogMatrix(const std::string str, MatrixIndexType matrix )
+void SolverReportingManager::LogMatrix(const std::string str, MatrixIndexType matrix)
 {
     std::stringstream tempstream;
 
     stream << '\n' << " " << str << " =" << '\n';
     stream << "[" << '\n';
-    stream << matrix << '\n' ;
+    stream << matrix << '\n';
     stream << "]" << '\n';
 
     LogString(tempstream.str());
@@ -1298,19 +1316,19 @@ int System::addConstraintInternalAlignmentBSplineControlPoint(BSpline &b, Circle
 //points are supplied, p is used for first curve and p2 for second, yielding a
 //remote angle computation (this is useful when the endpoints haven't) been
 //made coincident yet
-double System::calculateAngleViaPoint(Curve &crv1, Curve &crv2, Point &p)
+double System::calculateAngleViaPoint(const Curve &crv1, const Curve &crv2, Point &p) const
 {
     return calculateAngleViaPoint(crv1, crv2, p, p);
 }
 
-double System::calculateAngleViaPoint(Curve &crv1, Curve &crv2, Point &p1, Point &p2)
+double System::calculateAngleViaPoint(const Curve &crv1, const Curve &crv2, Point &p1, Point &p2) const
 {
     GCS::DeriVector2 n1 = crv1.CalculateNormal(p1);
     GCS::DeriVector2 n2 = crv2.CalculateNormal(p2);
     return atan2(-n2.x*n1.y+n2.y*n1.x, n2.x*n1.x + n2.y*n1.y);
 }
 
-void System::calculateNormalAtPoint(Curve &crv, Point &p, double &rtnX, double &rtnY)
+void System::calculateNormalAtPoint(const Curve &crv, const Point &p, double &rtnX, double &rtnY) const
 {
     GCS::DeriVector2 n1 = crv.CalculateNormal(p);
     rtnX = n1.x;
@@ -3822,6 +3840,9 @@ void System::makeReducedJacobian(Eigen::MatrixXd &J,
             jacobianconstraintmap[jacobianconstraintcount-1] = allcount-1;
         }
     }
+
+    if(jacobianconstraintcount == 0) // only driven constraints
+        J.resize(0,0);
 }
 
 int System::diagnose(Algorithm alg)
@@ -3923,6 +3944,12 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
     //   questions remain open:
     //      https://stackoverflow.com/questions/49009771/getting-rows-transpositions-with-sparse-qr
     //      https://forum.kde.org/viewtopic.php?f=74&t=151239
+    //
+    //
+    // Implementation below:
+    //
+    // Two QR decompositions are used below. One for diagnosis of constraints and a second one for diagnosis of parameters, i.e.
+    // to identify whether the parameter is fully constraint (independent) or not (i.e. it is dependent).
 
     // QR decomposition method selection: SparseQR vs DenseQR
 
@@ -3946,9 +3973,11 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
             // nows if it can run the task in parallel or is oversubscribed and should deferred it.
             // Care to wait() for the future before any prospective detection of conflicting/redundant, because the redundant solve
             // modifies pdiagnoselist and it would NOT be thread-safe. Care to call the thread with silent=true, unless the present thread
-            // does not use Base::Console, as it is not thread-safe to use them in both at the same time.
+            // does not use Base::Console, or the launch policy is set to std::launch::deferred policy, as it is not thread-safe to use them
+            // in both at the same time.
             //
             // identifyDependentParametersDenseQR(J, jacobianconstraintmap, pdiagnoselist, true)
+            //
             auto fut = std::async(&System::identifyDependentParametersDenseQR,this,J,jacobianconstraintmap, pdiagnoselist, true);
 
             makeDenseQRDecomposition( J, jacobianconstraintmap, qrJT, rank, R);
@@ -3999,12 +4028,16 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
             // nows if it can run the task in parallel or is oversubscribed and should deferred it.
             // Care to wait() for the future before any prospective detection of conflicting/redundant, because the redundant solve
             // modifies pdiagnoselist and it would NOT be thread-safe. Care to call the thread with silent=true, unless the present thread
-            // does not use Base::Console, as it is not thread-safe to use them in both at the same time.
+            // does not use Base::Console, or the launch policy is set to std::launch::deferred policy, as it is not thread-safe to use them
+            // in both at the same time.
             //
             // identifyDependentParametersSparseQR(J, jacobianconstraintmap, pdiagnoselist, true)
-            auto fut = std::async(&System::identifyDependentParametersSparseQR,this,J,jacobianconstraintmap, pdiagnoselist, true);
+            //
+            // Debug:
+            // auto fut = std::async(std::launch::deferred,&System::identifyDependentParametersSparseQR,this,J,jacobianconstraintmap, pdiagnoselist, false);
+            auto fut = std::async(&System::identifyDependentParametersSparseQR,this,J,jacobianconstraintmap, pdiagnoselist, /*silent=*/true);
 
-            makeSparseQRDecomposition( J, jacobianconstraintmap, SqrJT, rank, R);
+            makeSparseQRDecomposition( J, jacobianconstraintmap, SqrJT, rank, R, /*transposed=*/true, /*silent=*/false);
 
             int paramsNum = SqrJT.rows();
             int constrNum = SqrJT.cols();
@@ -4243,23 +4276,33 @@ void System::identifyDependentParameters(   T & qrJ,
 
 #ifdef _GCS_DEBUG
     if(!silent)
-        SolverReportingManager::Manager().LogMatrix("Rparams", Rparams);
+        SolverReportingManager::Manager().LogMatrix("Rparams_nonzeros_over_pilot", Rparams);
 #endif
+
     pDependentParametersGroups.resize(qrJ.cols()-rank);
     for (int j=rank; j < qrJ.cols(); j++) {
         for (int row=0; row < rank; row++) {
             if (fabs(Rparams(row,j)) > 1e-10) {
                 int origCol = qrJ.colsPermutation().indices()[row];
 
-                pDependentParametersGroups[j-rank].insert(pdiagnoselist[origCol]);
+                pDependentParametersGroups[j-rank].push_back(pdiagnoselist[origCol]);
                 pDependentParameters.push_back(pdiagnoselist[origCol]);
             }
         }
         int origCol = qrJ.colsPermutation().indices()[j];
 
-        pDependentParametersGroups[j-rank].insert(pdiagnoselist[origCol]);
+        pDependentParametersGroups[j-rank].push_back(pdiagnoselist[origCol]);
         pDependentParameters.push_back(pdiagnoselist[origCol]);
     }
+
+#ifdef _GCS_DEBUG
+    if(!silent) {
+        SolverReportingManager::Manager().LogMatrix("PermMatrix", (Eigen::MatrixXd)qrJ.colsPermutation());
+
+        SolverReportingManager::Manager().LogGroupOfParameters("ParameterGroups",pDependentParametersGroups);
+    }
+
+#endif
 }
 
 void System::identifyDependentGeometryParametersInTransposedJacobianDenseQRDecomposition(

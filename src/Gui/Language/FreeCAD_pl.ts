@@ -126,6 +126,74 @@
       <source>Edit</source>
       <translation>Edytuj</translation>
     </message>
+    <message>
+      <source>Import</source>
+      <translation>Import</translation>
+    </message>
+    <message>
+      <source>Delete</source>
+      <translation>Usuń</translation>
+    </message>
+    <message>
+      <source>Paste expressions</source>
+      <translation type="unfinished">Paste expressions</translation>
+    </message>
+    <message>
+      <source>Make link group</source>
+      <translation>Stwórz grupę łączy</translation>
+    </message>
+    <message>
+      <source>Make link</source>
+      <translation>Utwórz łącze</translation>
+    </message>
+    <message>
+      <source>Make sub-link</source>
+      <translation>Stwórz łącze podrzędne</translation>
+    </message>
+    <message>
+      <source>Import links</source>
+      <translation>Importuj łącza</translation>
+    </message>
+    <message>
+      <source>Import all links</source>
+      <translation>Importuj wszystkie łącza</translation>
+    </message>
+    <message>
+      <source>Insert measurement</source>
+      <translation type="unfinished">Insert measurement</translation>
+    </message>
+    <message>
+      <source>Insert text document</source>
+      <translation type="unfinished">Insert text document</translation>
+    </message>
+    <message>
+      <source>Add a part</source>
+      <translation type="unfinished">Add a part</translation>
+    </message>
+    <message>
+      <source>Add a group</source>
+      <translation type="unfinished">Add a group</translation>
+    </message>
+    <message>
+      <source>Align</source>
+      <translation>Wyrównaj</translation>
+    </message>
+    <message>
+      <source>Placement</source>
+      <translation>Umiejscowienie</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Przekształć</translation>
+    </message>
+    <message>
+      <source>Link Transform</source>
+      <translation type="unfinished">Link Transform</translation>
+    </message>
+    <message>
+      <source>Measure distance</source>
+      <translation>Pomiar odległości</translation>
+    </message>
   </context>
   <context>
     <name>DlgCustomizeSpNavSettings</name>
@@ -494,7 +562,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Offset</source>
-      <translation>Offset</translation>
+      <translation>Odsunięcie</translation>
     </message>
     <message>
       <source>Clipping Y</source>
@@ -698,7 +766,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Icon folders...</source>
-      <translation>Folder ikon...</translation>
+      <translation>Folder ikonek...</translation>
     </message>
   </context>
   <context>
@@ -946,7 +1014,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; The changes become active the next time you load the appropriate workbench&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt; &lt;span style=" font-weight:600;"&gt;Uwaga:&lt;/span&gt; Zmiany stają się aktywne po następnym załadowaniu odpowiedniego warsztatu &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt; &lt;span style=" font-weight:600;"&gt;Uwaga:&lt;/span&gt; Zmiany te stają się aktywne przy następnym załadowaniu odpowiedniego Środowiska pracy. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Move right</source>
@@ -1873,7 +1941,7 @@ Proszę podać inny katalog.</translation>
     </message>
     <message>
       <source>Find what:</source>
-      <translation>Znajdź co:</translation>
+      <translation>Znajdź:</translation>
     </message>
     <message>
       <source>Look at</source>
@@ -2552,6 +2620,18 @@ Larger value eases to pick things, but can make small features impossible to sel
       <translation>Obszar do wskazania/wyboru elementów w widoku 3D.
 Większa wartość ułatwia wybieranie, ale może uniemożliwić wybór małych obiektów.               </translation>
     </message>
+    <message>
+      <source>This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</source>
+      <translation type="unfinished">This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</translation>
+    </message>
+    <message>
+      <source>Use software OpenGL</source>
+      <translation type="unfinished">Use software OpenGL</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
@@ -3173,7 +3253,7 @@ Możesz również skorzystać z formatki: John Doe &lt;john@doe.com&gt;</transla
     <name>Gui::Dialog::DlgSettingsMacro</name>
     <message>
       <source>Macro</source>
-      <translation>Makro</translation>
+      <translation>Makrodefinicje</translation>
     </message>
     <message>
       <source>Macro recording settings</source>
@@ -3413,10 +3493,6 @@ Obracanie przy pomocy myszki nie jest blokowane.</translation>
       <translation>Do obrótu w przestrzeni 3D będzie użyta pozycja kursora jako środek obrotu</translation>
     </message>
     <message>
-      <source>Rotate at cursor</source>
-      <translation>Obrót w punkcie pozycji kursora</translation>
-    </message>
-    <message>
       <source>Isometric</source>
       <translation>Izometryczny</translation>
     </message>
@@ -3463,6 +3539,22 @@ Obracanie przy pomocy myszki nie jest blokowane.</translation>
     <message>
       <source>Default camera orientation when creating a new document or selecting the home view</source>
       <translation>Domyślna orientacja kamery podczas tworzenia nowego dokumentu lub wybierania widoku głównego</translation>
+    </message>
+    <message>
+      <source>Rotation mode</source>
+      <translation type="unfinished">Rotation mode</translation>
+    </message>
+    <message>
+      <source>Window center</source>
+      <translation type="unfinished">Window center</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation type="unfinished">Drag at cursor</translation>
+    </message>
+    <message>
+      <source>Object center</source>
+      <translation type="unfinished">Object center</translation>
     </message>
   </context>
   <context>
@@ -4018,7 +4110,7 @@ Kolumna "Stan" pokazuje, czy dokument może być odzyskany.</translation>
     <name>Gui::Dialog::IconFolders</name>
     <message>
       <source>Add or remove custom icon folders</source>
-      <translation>Dodanie lub usunięcie standardowych ikon folderów</translation>
+      <translation>Dodawanie i usuwanie niestandardowych folderów z ikonami</translation>
     </message>
     <message>
       <source>Remove folder</source>
@@ -6622,7 +6714,7 @@ Please check the Report View for more details.</translation>
     </message>
     <message>
       <source>Replace link failed</source>
-      <translation type="unfinished">Replace link failed</translation>
+      <translation>Zastąpienie linku nie powiodło się</translation>
     </message>
     <message>
       <source>Failed to import links</source>
@@ -7054,7 +7146,7 @@ Dokument: </translation>
     <name>StdCmdDlgMacroExecuteDirect</name>
     <message>
       <source>Macro</source>
-      <translation>Makro</translation>
+      <translation>Makrodefinicje</translation>
     </message>
     <message>
       <source>Execute macro</source>
@@ -7077,7 +7169,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Macro</source>
-      <translation>Makro</translation>
+      <translation>Makrodefinicje</translation>
     </message>
   </context>
   <context>
@@ -7182,7 +7274,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>&amp;Export...</source>
-      <translation>Eksportuj...</translation>
+      <translation>&amp;Eksportuj...</translation>
     </message>
     <message>
       <source>Export an object in the active document</source>
@@ -7573,7 +7665,7 @@ Dokument: </translation>
     <name>StdCmdMacroAttachDebugger</name>
     <message>
       <source>Macro</source>
-      <translation>Makro</translation>
+      <translation>Makrodefinicje</translation>
     </message>
     <message>
       <source>Attach to remote debugger...</source>
@@ -7588,7 +7680,7 @@ Dokument: </translation>
     <name>StdCmdMacroStartDebug</name>
     <message>
       <source>Macro</source>
-      <translation>Makro</translation>
+      <translation>Makrodefinicje</translation>
     </message>
     <message>
       <source>Debug macro</source>
@@ -7603,7 +7695,7 @@ Dokument: </translation>
     <name>StdCmdMacroStepInto</name>
     <message>
       <source>Macro</source>
-      <translation>Makro</translation>
+      <translation>Makrodefinicje</translation>
     </message>
     <message>
       <source>Step into</source>
@@ -7614,7 +7706,7 @@ Dokument: </translation>
     <name>StdCmdMacroStepOver</name>
     <message>
       <source>Macro</source>
-      <translation>Makro</translation>
+      <translation>Makrodefinicje</translation>
     </message>
     <message>
       <source>Step over</source>
@@ -7625,7 +7717,7 @@ Dokument: </translation>
     <name>StdCmdMacroStopDebug</name>
     <message>
       <source>Macro</source>
-      <translation>Makro</translation>
+      <translation>Makrodefinicje</translation>
     </message>
     <message>
       <source>Stop debugging</source>
@@ -7640,7 +7732,7 @@ Dokument: </translation>
     <name>StdCmdMacroStopRecord</name>
     <message>
       <source>Macro</source>
-      <translation>Makro</translation>
+      <translation>Makrodefinicje</translation>
     </message>
     <message>
       <source>S&amp;top macro recording</source>
@@ -7659,7 +7751,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Measure distance</source>
-      <translation>Pomiar odległości</translation>
+      <translation>Wymiarowanie odległości</translation>
     </message>
   </context>
   <context>
@@ -7674,7 +7766,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Measure distance</source>
-      <translation>Wymiarowanie odległości</translation>
+      <translation>Pomiar odległości</translation>
     </message>
   </context>
   <context>
@@ -7960,7 +8052,7 @@ Dokument: </translation>
     <name>StdCmdRecentMacros</name>
     <message>
       <source>Macro</source>
-      <translation>Makro</translation>
+      <translation>Makrodefinicje</translation>
     </message>
     <message>
       <source>Recent macros</source>
@@ -8808,6 +8900,21 @@ Dokument: </translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewRestoreCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Widok standardowy</translation>
+    </message>
+    <message>
+      <source>Restore saved camera</source>
+      <translation type="unfinished">Restore saved camera</translation>
+    </message>
+    <message>
+      <source>Restore saved camera settings</source>
+      <translation type="unfinished">Restore saved camera settings</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewRight</name>
     <message>
       <source>Standard-View</source>
@@ -8850,6 +8957,21 @@ Dokument: </translation>
     <message>
       <source>Rotate the view by 90° clockwise</source>
       <translation>Obróć widok w prawo o 90°</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewSaveCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Widok standardowy</translation>
+    </message>
+    <message>
+      <source>Save current camera</source>
+      <translation type="unfinished">Save current camera</translation>
+    </message>
+    <message>
+      <source>Save current camera settings</source>
+      <translation type="unfinished">Save current camera settings</translation>
     </message>
   </context>
   <context>
@@ -9152,7 +9274,7 @@ Dokument: </translation>
     <name>StdViewBoxZoom</name>
     <message>
       <source>Standard-View</source>
-      <translation>Widok standardowy</translation>
+      <translation>Normalny widok</translation>
     </message>
     <message>
       <source>Box zoom</source>
@@ -9178,7 +9300,7 @@ Dokument: </translation>
     <name>StdViewDockUndockFullscreen</name>
     <message>
       <source>Standard-View</source>
-      <translation>Normalny widok</translation>
+      <translation>Widok standardowy</translation>
     </message>
     <message>
       <source>Document window</source>
@@ -9193,7 +9315,7 @@ Dokument: </translation>
     <name>StdViewFullscreen</name>
     <message>
       <source>Standard-View</source>
-      <translation>Widok standardowy</translation>
+      <translation>Normalny widok</translation>
     </message>
     <message>
       <source>Fullscreen</source>
@@ -9238,7 +9360,7 @@ Dokument: </translation>
     <name>StdViewZoomIn</name>
     <message>
       <source>Standard-View</source>
-      <translation>Widok standardowy</translation>
+      <translation>Normalny widok</translation>
     </message>
     <message>
       <source>Zoom In</source>
@@ -9296,23 +9418,23 @@ Czy na pewno kontynuować?
     </message>
     <message>
       <source>Wireframe</source>
-      <translation>Szkielet</translation>
+      <translation>Szkieletowy</translation>
     </message>
     <message>
       <source>Wireframe mode</source>
-      <translation>Tryb Szkielet</translation>
+      <translation>Tryb szkieletowy</translation>
     </message>
     <message>
       <source>Flat lines</source>
-      <translation>Linie płaskie</translation>
+      <translation>Cieniowany z krawędziami</translation>
     </message>
     <message>
       <source>Flat lines mode</source>
-      <translation>Tryb płaskiej linii</translation>
+      <translation>Tryb cieniowania z krawędziami</translation>
     </message>
     <message>
       <source>Shaded</source>
-      <translation>Zacieniony</translation>
+      <translation>Cieniowany</translation>
     </message>
     <message>
       <source>Shaded mode</source>
@@ -9320,7 +9442,7 @@ Czy na pewno kontynuować?
     </message>
     <message>
       <source>Points</source>
-      <translation>Punkty</translation>
+      <translation>Tylko punkty</translation>
     </message>
     <message>
       <source>Points mode</source>
@@ -9443,7 +9565,7 @@ Czy nadal chcesz kontynuować?</translation>
     </message>
     <message>
       <source>&amp;Edit</source>
-      <translation>&amp;Edycja</translation>
+      <translation>&amp;Edytuj</translation>
     </message>
     <message>
       <source>Standard views</source>
@@ -9471,7 +9593,7 @@ Czy nadal chcesz kontynuować?</translation>
     </message>
     <message>
       <source>&amp;Macro</source>
-      <translation>&amp;Makro</translation>
+      <translation>&amp;Makrodefinicje</translation>
     </message>
     <message>
       <source>&amp;Windows</source>
@@ -9491,7 +9613,7 @@ Czy nadal chcesz kontynuować?</translation>
     </message>
     <message>
       <source>Macro</source>
-      <translation>Makro</translation>
+      <translation>Makrodefinicje</translation>
     </message>
     <message>
       <source>View</source>

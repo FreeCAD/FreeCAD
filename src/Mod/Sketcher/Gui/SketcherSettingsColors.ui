@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>438</width>
-    <height>474</height>
+    <width>375</width>
+    <height>627</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,12 +24,6 @@
        <layout class="QGridLayout" name="gridLayout_2">
         <item row="0" column="0">
          <widget class="QLabel" name="label_17">
-          <property name="minimumSize">
-           <size>
-            <width>182</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="text">
            <string>Default edge color</string>
           </property>
@@ -57,12 +51,6 @@
         </item>
         <item row="1" column="0">
          <widget class="QLabel" name="label_18">
-          <property name="minimumSize">
-           <size>
-            <width>182</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="text">
            <string>Default vertex color</string>
           </property>
@@ -90,12 +78,6 @@
         </item>
         <item row="2" column="0">
          <widget class="QLabel" name="label_6">
-          <property name="minimumSize">
-           <size>
-            <width>182</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="text">
            <string>Making line color</string>
           </property>
@@ -123,12 +105,6 @@
         </item>
         <item row="3" column="0">
          <widget class="QLabel" name="label">
-          <property name="minimumSize">
-           <size>
-            <width>182</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="text">
            <string>Edit edge color</string>
           </property>
@@ -156,12 +132,6 @@
         </item>
         <item row="4" column="0">
          <widget class="QLabel" name="label_2">
-          <property name="minimumSize">
-           <size>
-            <width>182</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="text">
            <string>Edit vertex color</string>
           </property>
@@ -189,12 +159,6 @@
         </item>
         <item row="5" column="0">
          <widget class="QLabel" name="label_3">
-          <property name="minimumSize">
-           <size>
-            <width>182</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="text">
            <string>Construction geometry</string>
           </property>
@@ -222,12 +186,6 @@
         </item>
         <item row="6" column="0">
          <widget class="QLabel" name="label_ia">
-          <property name="minimumSize">
-           <size>
-            <width>182</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="text">
            <string>Internal alignment edge color</string>
           </property>
@@ -255,12 +213,6 @@
         </item>
         <item row="7" column="0">
          <widget class="QLabel" name="label_20">
-          <property name="minimumSize">
-           <size>
-            <width>182</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="text">
            <string>External geometry</string>
           </property>
@@ -288,12 +240,6 @@
         </item>
         <item row="8" column="0">
          <widget class="QLabel" name="label_4">
-          <property name="minimumSize">
-           <size>
-            <width>182</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="text">
            <string>Fully constrained geometry</string>
           </property>
@@ -321,12 +267,6 @@
         </item>
         <item row="9" column="0">
          <widget class="QLabel" name="label_41">
-          <property name="minimumSize">
-           <size>
-            <width>182</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="text">
            <string>Fully constrained edit edge color</string>
           </property>
@@ -354,12 +294,6 @@
         </item>
         <item row="10" column="0">
          <widget class="QLabel" name="label_42">
-          <property name="minimumSize">
-           <size>
-            <width>182</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="text">
            <string>Fully constrained edit construction edge color</string>
           </property>
@@ -387,12 +321,6 @@
         </item>
         <item row="11" column="0">
          <widget class="QLabel" name="label_43">
-          <property name="minimumSize">
-           <size>
-            <width>182</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="text">
            <string>Fully constrained edit internal alignment edge color</string>
           </property>
@@ -420,12 +348,6 @@
         </item>
         <item row="12" column="0">
          <widget class="QLabel" name="label_44">
-          <property name="minimumSize">
-           <size>
-            <width>182</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="text">
            <string>Fully constrained edit vertex color</string>
           </property>
@@ -453,12 +375,6 @@
         </item>
         <item row="13" column="0">
          <widget class="QLabel" name="label_14">
-          <property name="minimumSize">
-           <size>
-            <width>182</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="text">
            <string>Constraint color</string>
           </property>
@@ -567,21 +483,15 @@
         </item>
         <item row="17" column="0">
          <widget class="QLabel" name="label_15">
-          <property name="minimumSize">
-           <size>
-            <width>182</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="text">
-           <string>Datum color</string>
+           <string>Dimensional constraint color</string>
           </property>
          </widget>
         </item>
         <item row="17" column="1">
          <widget class="Gui::PrefColorButton" name="DatumColor">
           <property name="toolTip">
-           <string>Color of the datum portion of a driving constraint</string>
+           <string>Color of dimensional driving constraints</string>
           </property>
           <property name="color">
            <color>
@@ -599,124 +509,13 @@
          </widget>
         </item>
         <item row="18" column="0">
-         <widget class="QLabel" name="label_16">
-          <property name="minimumSize">
-           <size>
-            <width>182</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Datum text size</string>
-          </property>
-         </widget>
-        </item>
-        <item row="18" column="1">
-         <widget class="Gui::PrefSpinBox" name="SketcherDatumWidth">
-          <property name="toolTip">
-           <string>The default line thickness for new shapes</string>
-          </property>
-          <property name="suffix">
-           <string>px</string>
-          </property>
-          <property name="maximum">
-           <number>9</number>
-          </property>
-          <property name="value">
-           <number>2</number>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>DefaultSketcherVertexWidth</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="19" column="0">
-         <widget class="QLabel" name="label_12">
-          <property name="minimumSize">
-           <size>
-            <width>182</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Default vertex size</string>
-          </property>
-         </widget>
-        </item>
-        <item row="19" column="1">
-         <widget class="Gui::PrefSpinBox" name="DefaultSketcherVertexWidth">
-          <property name="toolTip">
-           <string>The default line thickness for new shapes</string>
-          </property>
-          <property name="suffix">
-           <string>px</string>
-          </property>
-          <property name="maximum">
-           <number>9</number>
-          </property>
-          <property name="value">
-           <number>2</number>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>DefaultSketcherVertexWidth</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="20" column="0">
-         <widget class="QLabel" name="label_13">
-          <property name="minimumSize">
-           <size>
-            <width>182</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Default line width</string>
-          </property>
-         </widget>
-        </item>
-        <item row="20" column="1">
-         <widget class="Gui::PrefSpinBox" name="DefaultSketcherLineWidth">
-          <property name="toolTip">
-           <string>The default line thickness for new shapes</string>
-          </property>
-          <property name="suffix">
-           <string>px</string>
-          </property>
-          <property name="maximum">
-           <number>9</number>
-          </property>
-          <property name="value">
-           <number>2</number>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>DefaultShapeLineWidth</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="21" column="0">
          <widget class="QLabel" name="label_5">
-          <property name="minimumSize">
-           <size>
-            <width>182</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="text">
            <string>Coordinate text color</string>
           </property>
          </widget>
         </item>
-        <item row="21" column="1">
+        <item row="18" column="1">
          <widget class="Gui::PrefColorButton" name="CursorTextColor">
           <property name="toolTip">
            <string>Text color of the coordinates</string>
@@ -736,20 +535,14 @@
           </property>
          </widget>
         </item>
-        <item row="22" column="0">
+        <item row="19" column="0">
          <widget class="QLabel" name="label_19">
-          <property name="minimumSize">
-           <size>
-            <width>182</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="text">
            <string>Cursor crosshair color</string>
           </property>
          </widget>
         </item>
-        <item row="22" column="1">
+        <item row="19" column="1">
          <widget class="Gui::PrefColorButton" name="CursorCrosshairColor">
           <property name="toolTip">
            <string>Color of crosshair cursor.

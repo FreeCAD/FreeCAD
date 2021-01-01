@@ -35,7 +35,7 @@
 //#include <boost/progress.hpp>
 //#include <boost/timer.hpp>
 #include <boost/foreach.hpp>
-#include <boost/python.hpp>
+#include <boost_python.hpp>
 #include <boost/python/module.hpp>
 #include <boost/python/class.hpp>
 #include <boost/python/wrapper.hpp>
@@ -532,6 +532,7 @@ BOOST_PYTHON_MODULE(area) {
 		.def_readwrite("stockToLeave", &Adaptive2d::stockToLeave)
 		.def_readwrite("helixRampDiameter", &Adaptive2d::helixRampDiameter)
 		.def_readwrite("forceInsideOut", &Adaptive2d::forceInsideOut)
+		.def_readwrite("finishingProfile", &Adaptive2d::finishingProfile)
 		//.def_readwrite("polyTreeNestingLimit", &Adaptive2d::polyTreeNestingLimit)
 		.def_readwrite("tolerance", &Adaptive2d::tolerance)
 		.def_readwrite("keepToolDownDistRatio", &Adaptive2d::keepToolDownDistRatio)
