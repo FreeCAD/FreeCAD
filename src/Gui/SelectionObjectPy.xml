@@ -56,7 +56,7 @@
 	  </Attribute>
 	  <Attribute Name="Document" ReadOnly="true">
 		  <Documentation>
-			  <UserDocu>Selected document</UserDocu>
+			  <UserDocu>Document of the selected object</UserDocu>
 		  </Documentation>
 		  <Parameter Name="Document" Type="Object" />
 	  </Attribute>
