@@ -466,8 +466,9 @@ class ObjectDressup:
 
 
 class TaskPanel:
-    def __init__(self, obj):
+    def __init__(self, obj, view):
         self.obj = obj
+        self.viewProvider = view
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/DressUpLeadInOutEdit.ui")
         self.setupUi()
 
@@ -492,6 +493,12 @@ class TaskPanel:
         if button == QtGui.QDialogButtonBox.Apply:
             self.updateModel()
             FreeCAD.ActiveDocument.recompute()
+        if button == QtGui.QDialogButtonBox.Cancel:
+            self.abort()
+    
+    def abort(self):
+        FreeCAD.ActiveDocument.abortTransaction()
+        self.cleanup(True)
 
     def reject(self):
         FreeCAD.ActiveDocument.abortTransaction()
@@ -504,6 +511,13 @@ class TaskPanel:
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.recompute()
+    
+    def cleanup(self, gui):
+        self.viewProvider.clearTaskPanel()
+        if gui:
+            #FreeCADGui.ActiveDocument.resetEdit()
+            FreeCADGui.Control.closeDialog()
+            FreeCAD.ActiveDocument.recompute()
 
     def getFields(self):
         self.obj.LeadIn = self.form.chkLeadIn.isChecked()
@@ -567,6 +581,7 @@ class ViewProviderDressup:
 
     def attach(self, vobj):
         self.obj = vobj.Object
+        self.panel = None
 
     def claimChildren(self):
         if hasattr(self.obj.Base, "InList"):
@@ -584,10 +599,14 @@ class ViewProviderDressup:
     def setEdit(self, vobj, mode=0):
         # pylint: disable=unused-argument
         FreeCADGui.Control.closeDialog()
-        panel = TaskPanel(vobj.Object)
+        panel = TaskPanel(vobj.Object, self)
         FreeCADGui.Control.showDialog(panel)
         panel.setupUi()
         return True
+    
+    def unsetEdit(self, vobj, mode=0):
+        if self.panel:
+            self.panel.abort()
 
     def onDelete(self, arg1=None, arg2=None):
         '''this makes sure that the base operation is added back to the project and visible'''
@@ -607,6 +626,9 @@ class ViewProviderDressup:
     def __setstate__(self, state):
         # pylint: disable=unused-argument
         return None
+    
+    def clearTaskPanel(self):
+        self.panel = None
 
 
 class CommandPathDressupLeadInOut:
