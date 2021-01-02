@@ -745,7 +745,7 @@ def guessDepths(objshape, subs=None):
 
 def drillTipLength(tool):
     """returns the length of the drillbit tip."""
-    if tool.CuttingEdgeAngle == 180 or tool.CuttingEdgeAngle == 0.0 or float(tool.Diameter) == 0.0:
+    if not hasattr(tool, 'CuttingEdgeAngle') or tool.CuttingEdgeAngle == 180 or tool.CuttingEdgeAngle == 0.0 or float(tool.Diameter) == 0.0:
         return 0.0
     else:
         if tool.CuttingEdgeAngle <= 0 or tool.CuttingEdgeAngle >= 180:
