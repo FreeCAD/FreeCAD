@@ -52,6 +52,7 @@ void DlgSettingsSelection::saveSettings()
     handle->SetBool("SyncSelection", ui->checkBoxAutoExpand->isChecked());
     handle->SetBool("PreSelection", ui->checkBoxPreselect->isChecked());
     handle->SetBool("RecordSelection", ui->checkBoxRecord->isChecked());
+    handle->SetBool("CheckBoxesSelection", ui->checkBoxSelectionCheckBoxes->isChecked());
 }
 
 void DlgSettingsSelection::loadSettings()
@@ -61,6 +62,7 @@ void DlgSettingsSelection::loadSettings()
     ui->checkBoxAutoExpand->setChecked(handle->GetBool("SyncSelection"));
     ui->checkBoxPreselect->setChecked(handle->GetBool("PreSelection"));
     ui->checkBoxRecord->setChecked(handle->GetBool("RecordSelection"));
+    ui->checkBoxSelectionCheckBoxes->setChecked(handle->GetBool("CheckBoxesSelection"));
 }
 
 void DlgSettingsSelection::changeEvent(QEvent *e)
