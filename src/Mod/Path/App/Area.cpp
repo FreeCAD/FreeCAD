@@ -35,7 +35,7 @@
 #   include "boost_fix/intrusive/detail/memory_util.hpp"
 #   include "boost_fix/container/detail/memory_util.hpp"
 # endif
-# include <boost/geometry.hpp>
+# include <boost_geometry.hpp>
 # include <boost/geometry/index/rtree.hpp>
 # include <boost/geometry/geometries/geometries.hpp>
 # include <boost/geometry/geometries/register/point.hpp>

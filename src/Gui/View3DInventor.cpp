@@ -536,7 +536,11 @@ void View3DInventor::print(QPrinter* printer)
         return;
     }
 
+#if QT_VERSION >= 0x050300
+    QRect rect = printer->pageLayout().paintRectPixels(printer->resolution());
+#else
     QRect rect = printer->pageRect();
+#endif
     QImage img;
     _viewer->imageFromFramebuffer(rect.width(), rect.height(), 8, QColor(255,255,255), img);
     p.drawImage(0,0,img);
