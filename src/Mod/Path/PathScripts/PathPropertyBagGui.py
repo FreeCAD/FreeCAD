@@ -148,12 +148,26 @@ class PropertyCreate(object):
         self.form.propertyGroup.currentTextChanged.connect(self.updateUI)
         self.form.propertyGroup.currentIndexChanged.connect(self.updateUI)
         self.form.propertyName.textChanged.connect(self.updateUI)
+        self.form.propertyType.currentIndexChanged.connect(self.updateUI)
+        self.form.enumValues.textChanged.connect(self.updateUI)
 
         self.updateUI()
 
     def updateUI(self):
+        typeSet = True
+        if self.propertyIsEnumeration():
+            self.form.enumLabel.setEnabled(True)
+            self.form.enumValues.setEnabled(True)
+            typeSet = self.form.enumValues.text().strip() != ''
+        else:
+            self.form.enumLabel.setEnabled(False)
+            self.form.enumValues.setEnabled(False)
+            if self.form.enumValues.text().strip():
+                self.form.enumValues.setText('')
+
         ok = self.form.buttonBox.button(QtGui.QDialogButtonBox.Ok)
-        if self.form.propertyName.text() and self.form.propertyGroup.currentText():
+
+        if typeSet and self.propertyName() and self.propertyGroup():
             ok.setEnabled(True)
         else:
             ok.setEnabled(False)
@@ -168,10 +182,15 @@ class PropertyCreate(object):
         return self.form.propertyInfo.toPlainText().strip()
     def createAnother(self):
         return self.form.createAnother.isChecked()
+    def propertyEnumerations(self):
+        return [s.strip() for s in self.form.enumValues.text().strip().split(',')]
+    def propertyIsEnumeration(self):
+        return self.propertyType() == 'App::PropertyEnumeration'
 
     def exec_(self):
         self.form.propertyName.setText('')
         self.form.propertyInfo.setText('')
+        self.form.enumValues.setText('')
         #self.form.propertyName.setFocus()
         return self.form.exec_()
 
@@ -261,6 +280,8 @@ class TaskPanel(object):
                 grp  = dialog.propertyGroup()
                 info = dialog.propertyInfo()
                 self.obj.Proxy.addCustomProperty(typ, name, grp, info)
+                if dialog.propertyIsEnumeration():
+                    setattr(self.obj, name, dialog.propertyEnumerations())
                 index = 0
                 for i in range(self.model.rowCount()):
                     index = i

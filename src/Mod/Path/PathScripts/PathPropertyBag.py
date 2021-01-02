@@ -36,7 +36,7 @@ SupportedPropertyType = {
         'Angle'         : 'App::PropertyAngle',
         'Bool'          : 'App::PropertyBool',
         'Distance'      : 'App::PropertyDistance',
-        # 'Enumeration'   : 'App::PropertyEnumeration',
+        'Enumeration'   : 'App::PropertyEnumeration',
         'File'          : 'App::PropertyFile',
         'Float'         : 'App::PropertyFloat',
         'Integer'       : 'App::PropertyInteger',

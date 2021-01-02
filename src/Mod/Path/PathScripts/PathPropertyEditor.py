@@ -78,12 +78,12 @@ class _PropertyEditorBool(_PropertyEditor):
 
     def setEditorData(self, widget):
         widget.clear()
-        widget.addItems(['false', 'true'])
+        widget.addItems([str(False), str(True)])
         index = 1 if self.propertyValue() else 0
         widget.setCurrentIndex(index)
 
     def setModelData(self, widget):
-        self.setProperty(widget.currentText() == 'true')
+        self.setProperty(widget.currentText() == str(True))
 
 class _PropertyEditorString(_PropertyEditor):
     '''Editor for string values - uses a line edit.'''
@@ -190,11 +190,24 @@ class _PropertyEditorFile(_PropertyEditor):
     def setModelData(self, widget):
         self.setProperty(widget.text())
 
+class _PropertyEditorEnumeration(_PropertyEditor):
+
+    def widget(self, parent):
+        return QtGui.QComboBox(parent)
+
+    def setEditorData(self, widget):
+        widget.clear()
+        widget.addItems(self.obj.getEnumerationsOfProperty(self.prop))
+        widget.setCurrentText(self.propertyValue())
+
+    def setModelData(self, widget):
+        self.setProperty(widget.currentText())
+
 _EditorFactory = {
         'App::PropertyAngle'       : _PropertyEditorAngle,
         'App::PropertyBool'        : _PropertyEditorBool,
         'App::PropertyDistance'    : _PropertyEditorLength,
-        #'App::PropertyEnumeration' : _PropertyEditorEnum,
+        'App::PropertyEnumeration' : _PropertyEditorEnumeration,
         #'App::PropertyFile'        : _PropertyEditorFile,
         'App::PropertyFloat'       : _PropertyEditorFloat,
         'App::PropertyInteger'     : _PropertyEditorInteger,
