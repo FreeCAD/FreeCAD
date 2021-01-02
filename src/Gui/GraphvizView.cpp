@@ -445,7 +445,11 @@ bool GraphvizView::onHasMsg(const char* pMsg) const
 void GraphvizView::print(QPrinter* printer)
 {
     QPainter p(printer);
+#if QT_VERSION >= 0x050300
+    QRect rect = printer->pageLayout().paintRectPixels(printer->resolution());
+#else
     QRect rect = printer->pageRect();
+#endif
     view->scene()->render(&p, rect);
     //QByteArray buffer = exportGraph(QString::fromLatin1("svg"));
     //QSvgRenderer svg(buffer);

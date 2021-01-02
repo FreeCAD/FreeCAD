@@ -612,12 +612,20 @@ void DrawingView::print(QPrinter* printer)
         qApp->restoreOverrideCursor();
         return;
     }
+#if QT_VERSION >= 0x050300
+    QRect rect = printer->pageLayout().fullRectPixels(printer->resolution());
+#else
     QRect rect = printer->paperRect();
+#endif
 #ifdef Q_OS_WIN32
     // On Windows the preview looks broken when using paperRect as render area.
     // Although the picture is scaled when using pageRect, it looks just fine.
     if (paintType == QPaintEngine::Picture)
-        rect = printer->pageRect();
+#if QT_VERSION >= 0x050300
+        QRect rect = printer->pageLayout().paintRectPixels(printer->resolution());
+#else
+        QRect rect = printer->pageRect();
+#endif
 #endif
     this->m_view->scene()->render(&p, rect);
     p.end();
