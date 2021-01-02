@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   width="64px"
+   height="64px"
+   id="svg3000"
+   version="1.1">
+  <title
+     id="title863">Std_ToggleNavigation</title>
+  <defs
+     id="defs3002">
+    <linearGradient
+       id="linearGradient3393">
+      <stop
+         style="stop-color:#06989a;stop-opacity:1"
+         offset="0"
+         id="stop3395" />
+      <stop
+         style="stop-color:#34e0e2;stop-opacity:1"
+         offset="1"
+         id="stop3397" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient3393"
+       id="linearGradient3399"
+       x1="1699.6969"
+       y1="1840.5964"
+       x2="2044.969"
+       y2="1629.2852"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.25534521,-0.95296128,0.96517316,0.25861737,-283.46374,3042.7301)" />
+    <linearGradient
+       xlink:href="#linearGradient3393-7"
+       id="linearGradient3399-1"
+       x1="1669.7314"
+       y1="1726.0585"
+       x2="2067.1702"
+       y2="1726.0585"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.98657811,0,0,0.99922078,20.129251,-2.6811697)" />
+    <linearGradient
+       id="linearGradient3393-7">
+      <stop
+         style="stop-color:#003ddd;stop-opacity:1;"
+         offset="0"
+         id="stop3395-4" />
+      <stop
+         style="stop-color:#639ef0;stop-opacity:1;"
+         offset="1"
+         id="stop3397-0" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient3806"
+       id="linearGradient3012"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(-6.7448605,1.6807825,-1.7046474,-6.8406287,2050.6498,1897.1039)"
+       x1="42.755482"
+       y1="44.981819"
+       x2="40.373039"
+       y2="19.265453" />
+    <linearGradient
+       id="linearGradient3806">
+      <stop
+         style="stop-color:#34e0e2;stop-opacity:1"
+         offset="0"
+         id="stop3808" />
+      <stop
+         style="stop-color:#06989a;stop-opacity:1"
+         offset="1"
+         id="stop3810" />
+    </linearGradient>
+  </defs>
+  <g
+     id="layer1">
+    <g
+       id="g3405"
+       transform="matrix(0.1369365,0,0,0.1369365,-222.21754,-203.36512)">
+      <g
+         id="g845"
+         transform="rotate(60,1857.7825,1712.6959)">
+        <path
+           style="display:inline;overflow:visible;visibility:visible;fill:url(#linearGradient3399);fill-opacity:1;fill-rule:evenodd;stroke:#042a2a;stroke-width:14.6053;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
+           d="m 1880.5373,1902.9135 c 106.1484,-2.3589 189.8111,-89.4894 186.7502,-194.4908 -3.0611,-105.0013 -91.6921,-188.303 -197.8404,-185.9442 -55.9403,1.2433 -105.6257,26.0285 -139.6708,64.565 -3.5749,0.6134 55.4935,44.1756 55.4935,44.1756 22.1039,-24.0141 53.73,-39.3793 89.2346,-40.1684 69.1228,-1.536 126.8308,52.7017 128.824,121.0778 1.9931,68.3762 -52.4788,125.1377 -121.6017,126.6738 -19.7778,0.4394 -38.6039,-3.7029 -55.475,-11.4237 l -31.3948,57.7752 c 26.0336,11.9963 55.1182,18.4389 85.6804,17.7597 z"
+           id="path2396" />
+        <path
+           style="display:inline;overflow:visible;visibility:visible;fill:none;stroke:#34e0e2;stroke-width:14.6053;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
+           d="m 1885.0707,1887.6865 c 78.8923,-1.5361 138.9163,-54.9141 161.631,-130.1829 32.4053,-107.38 -55.6977,-196.5384 -121.2835,-214.3605 -82.1688,-22.3283 -143.0328,13.9353 -176.6519,44.1474 l 34.9363,26.3413 c 48.9255,-39.4093 87.6337,-43.7301 132.6063,-32.3857 52.2393,13.1774 118.2783,78.5389 98.4143,164.5079 -17.2644,74.7179 -82.9486,105.1278 -134.9353,106.5777 -17.3999,2.1436 -33.9339,-2.2822 -47.106,-6.2036 l -17.5742,32.2101 c 20.5378,6.6037 46.0171,9.8144 69.963,9.3483 z"
+           id="path2396-9" />
+        <path
+           id="path3343"
+           d="m 1780.0348,1858.0991 -48.445,-79.2683 129.8702,-32.1384 -15.945,-66.5353 -129.864,31.7262 4.1865,-90.2537 -135.1728,159.1019 z"
+           style="fill:url(#linearGradient3012);fill-opacity:1;fill-rule:evenodd;stroke:#042a2a;stroke-width:14.6053;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+        <path
+           id="path3343-2"
+           d="m 1746.6502,1828.9145 -35.8887,-57.8065 134.1381,-34.2002 -10.6194,-40.0654 -131.4171,30.129 2.7243,-69.6957 -96.6391,116.9739 z"
+           style="fill:none;stroke:#34e0e2;stroke-width:14.6053;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4.8;stroke-dasharray:none;stroke-opacity:1" />
+      </g>
+    </g>
+  </g>
+  <metadata
+     id="metadata5324">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Std_ToggleNavigation</dc:title>
+        <cc:license
+           rdf:resource="https://www.gnu.org/licenses/lgpl-3.0.en.html" />
+        <dc:date>2020/12/17</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[bitacovir]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier />
+        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>based on Alexander Gryson, wmayer's work</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+        <dc:description />
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>esc</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:title>arrow-ccw</dc:title>
+        <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>

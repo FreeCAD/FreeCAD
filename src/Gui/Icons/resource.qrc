@@ -141,6 +141,7 @@
         <file>DrawStyleHiddenLine.svg</file>
         <file>DrawStyleNoShading.svg</file>
         <file>user.svg</file>
+        <file>Std_AxisCross.svg</file>
         <file>Std_CoordinateSystem.svg</file>
         <file>Std_CoordinateSystem_alt.svg</file>
         <file>Std_Placement.svg</file>
@@ -158,11 +159,15 @@
         <file>Std_Import.svg</file>
         <file>Std_MergeProjects.svg</file>
         <file>Std_PrintPdf.svg</file>
+        <file>Std_RandomColor.svg</file>
         <file>Std_RecentFiles.svg</file>
         <file>Std_Revert.svg</file>
         <file>Std_SaveAll.svg</file>
         <file>Std_SaveCopy.svg</file>
         <file>Std_SetAppearance.svg</file>
+        <file>Std_TextureMapping.svg</file>
+        <file>Std_ToggleClipPlane.svg</file>
+        <file>Std_ToggleNavigation.svg</file>
         <file>Std_Tool1.svg</file>
         <file>Std_Tool2.svg</file>
         <file>Std_Tool3.svg</file>
@@ -175,11 +180,14 @@
         <file>Std_Tool10.svg</file>
         <file>Std_Tool11.svg</file>
         <file>Std_Tool12.svg</file>
+        <file>Std_ViewDimetric.svg</file>
+        <file>Std_ViewHome.svg</file>
         <file>Std_ViewIvStereoInterleavedColumns.svg</file>
         <file>Std_ViewIvStereoInterleavedRows.svg</file>
         <file>Std_ViewIvStereoOff.svg</file>
         <file>Std_ViewIvStereoQuadBuff.svg</file>
         <file>Std_ViewIvStereoRedGreen.svg</file>
+        <file>Std_ViewTrimetric.svg</file>
         <file>Std_WindowCascade.svg</file>
         <file>Std_WindowNext.svg</file>
         <file>Std_WindowPrev.svg</file>
