@@ -113,9 +113,6 @@ class PointArray(gui_base_original.Modifier):
 
     def proceed(self):
         """Proceed with the command if one object was selected."""
-        if self.call:
-            self.view.removeEventCallback("SoEvent", self.call)
-
         sel = Gui.Selection.getSelectionEx()
         if len(sel) != 2:
             _err(_tr("Please select exactly two objects, "

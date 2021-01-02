@@ -78,9 +78,9 @@ class Offset(gui_base_original.Modifier):
             if not Gui.Selection.getSelection():
                 self.ui.selectUi()
                 _msg(translate("draft", "Select an object to offset"))
-                self.call = \
-                    self.view.addEventCallback("SoEvent",
-                                               gui_tool_utils.selectObject)
+                self.call = self.view.addEventCallback(
+                    "SoEvent",
+                    gui_tool_utils.selectObject)
             elif len(Gui.Selection.getSelection()) > 1:
                 _wrn(translate("draft", "Offset only works "
                                         "on one object at a time."))

@@ -70,16 +70,14 @@ class Facebinder(gui_base_original.Creator):
             if self.ui:
                 self.ui.selectUi()
                 _msg(translate("draft", "Select faces from existing objects"))
-                self.call = \
-                    self.view.addEventCallback("SoEvent",
-                                               gui_tool_utils.selectObject)
+                self.call = self.view.addEventCallback(
+                    "SoEvent",
+                    gui_tool_utils.selectObject)
         else:
             self.proceed()
 
     def proceed(self):
         """Proceed when a valid selection has been made."""
-        if self.call:
-            self.view.removeEventCallback("SoEvent", self.call)
         if Gui.Selection.getSelection():
             App.ActiveDocument.openTransaction("Create Facebinder")
             Gui.addModule("Draft")

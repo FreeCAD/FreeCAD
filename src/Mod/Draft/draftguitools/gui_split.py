@@ -112,8 +112,6 @@ class Split(gui_base_original.Modifier):
         self.commit(translate("draft", "Split line"),
                     _cmd_list)
 
-        if self.call:
-            self.view.removeEventCallback("SoEvent", self.call)
         self.finish()
 
 
