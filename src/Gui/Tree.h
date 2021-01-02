@@ -129,6 +129,8 @@ public:
     void startItemSearch(QLineEdit*);
     void itemSearch(const QString &text, bool select);
 
+    void synchronizeSelectionCheckBoxes();
+
 protected:
     /// Observer message from the Selection
     void onSelectionChanged(const SelectionChanges& msg) override;
@@ -176,6 +178,7 @@ protected Q_SLOTS:
 
 private Q_SLOTS:
     void onItemSelectionChanged(void);
+    void onItemChanged(QTreeWidgetItem*, int);
     void onItemEntered(QTreeWidgetItem * item);
     void onItemCollapsed(QTreeWidgetItem * item);
     void onItemExpanded(QTreeWidgetItem * item);
@@ -436,6 +439,8 @@ public:
     TreeWidget *getTree() const;
 
 private:
+    void setCheckState(bool checked);
+
     QBrush bgBrush;
     DocumentItem *myOwner;
     DocumentObjectDataPtr myData;

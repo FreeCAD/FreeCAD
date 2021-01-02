@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>500</width>
-    <height>363</height>
+    <width>518</width>
+    <height>468</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -500,7 +500,7 @@ Mouse tilting is not disabled by this setting.</string>
      </layout>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item row="3" column="0">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -512,6 +512,31 @@ Mouse tilting is not disabled by this setting.</string>
       </size>
      </property>
     </spacer>
+   </item>
+   <item row="2" column="0">
+    <widget class="QGroupBox" name="groupBoxSelection">
+     <property name="title">
+      <string>Selection</string>
+     </property>
+     <property name="checkable">
+      <bool>false</bool>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_6">
+      <item row="0" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkBoxSelectionCheckBoxes">
+        <property name="text">
+         <string>Add checkboxes for selection in document tree</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <string>CheckBoxSelectionCheckBoxes</string>
+        </property>
+        <property name="prefPath" stdset="0">
+         <string>View</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
   </layout>
  </widget>

@@ -107,6 +107,9 @@ void DlgSettingsNavigation::saveSettings()
         hCustom->SetFloat("Q2", q2);
         hCustom->SetFloat("Q3", q3);
     }
+
+    ui->checkBoxSelectionCheckBoxes->onSave();
+    TreeWidget::instance()->synchronizeSelectionCheckBoxes();
 }
 
 void DlgSettingsNavigation::loadSettings()
@@ -158,6 +161,8 @@ void DlgSettingsNavigation::loadSettings()
         q2 = hCustom->GetFloat("Q2", q2);
         q3 = hCustom->GetFloat("Q3", q3);
     }
+
+    ui->checkBoxSelectionCheckBoxes->onRestore();
 
     connect(ui->comboNewDocView, SIGNAL(currentIndexChanged(int)),
             this, SLOT(onNewDocViewChanged(int)));
