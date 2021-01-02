@@ -192,7 +192,17 @@ class ToolBit(object):
         if obj.BitBody is not None:
             for attributes in [o for o in obj.BitBody.Group if hasattr(o, 'Proxy') and hasattr(o.Proxy, 'getCustomProperties')]:
                 for prop in attributes.Proxy.getCustomProperties():
-                    setattr(attributes, prop, obj.getPropertyByName(prop))
+                    # the property might not exist in our local object (new attribute in shape)
+                    # for such attributes we just keep the default
+                    if hasattr(obj, prop):
+                        setattr(attributes, prop, obj.getPropertyByName(prop))
+                    else:
+                        # if the template shape has a new attribute defined we should add that
+                        # to the local object
+                        self._setupProperty(obj, prop, attributes)
+                        propNames = obj.BitPropertyNames
+                        propNames.append(prop)
+                        obj.BitPropertyNames = propNames
             self._copyBitShape(obj)
 
     def _copyBitShape(self, obj):
@@ -251,6 +261,20 @@ class ToolBit(object):
     def unloadBitBody(self, obj):
         self._removeBitBody(obj)
 
+    def _setupProperty(self, obj, prop, orig):
+        # extract property parameters and values so it can be copied
+        val = orig.getPropertyByName(prop)
+        typ = orig.getTypeIdOfProperty(prop)
+        grp = orig.getGroupOfProperty(prop)
+        dsc = orig.getDocumentationOfProperty(prop)
+
+        obj.addProperty(typ, prop, grp, dsc)
+        if 'App::PropertyEnumeration' == typ:
+            setattr(obj, prop, orig.getEnumerationsOfProperty(prop))
+
+        obj.setEditorMode(prop, 1)
+        PathUtil.setProperty(obj, prop, val)
+
     def _setupBitShape(self, obj, path=None):
         PathLog.track(obj.Label)
 
@@ -275,15 +299,7 @@ class ToolBit(object):
         for attributes in [o for o in bitBody.Group if PathPropertyBag.IsPropertyBag(o)]:
             PathLog.debug("Process properties from {}".format(attributes.Label))
             for prop in attributes.Proxy.getCustomProperties():
-                # extract property parameters and values so it can be copied
-                src = attributes.getPropertyByName(prop)
-                typ = PathPropertyBag.getPropertyType(src)
-                grp = attributes.getGroupOfProperty(prop)
-                dsc = attributes.getDocumentationOfProperty(prop)
-
-                obj.addProperty(typ, prop, grp, dsc)
-                obj.setEditorMode(prop, 1)
-                PathUtil.setProperty(obj, prop, src)
+                self._setupProperty(obj, prop, attributes)
                 propNames.append(prop)
         if not propNames:
             PathLog.error(translate('PathToolBit', 'Did not find a PropertyBag in {} - not a ToolBit shape?').format(docName))

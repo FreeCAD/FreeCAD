@@ -25,6 +25,7 @@ import FreeCADGui
 import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
+import PathScripts.PathPropertyEditor as PathPropertyEditor
 import PathScripts.PathToolBit as PathToolBit
 import PathScripts.PathUtil as PathUtil
 import os
@@ -40,65 +41,6 @@ PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
-class _PropertyEditorBase(object):
-    '''Base class of all typed property editors'''
-
-    def __init__(self, obj, prop):
-        self.obj = obj
-        self.prop = prop
-    def getValue(self):
-        return getattr(self.obj, self.prop)
-    def setValue(self, val):
-        setattr(self.obj, self.prop, val)
-
-class _PropertyEditorInteger(_PropertyEditorBase):
-    def widget(self, parent):
-        return QtGui.QSpinBox(parent)
-    def setEditorData(self, widget):
-        widget.setValue(self.getValue())
-    def setModelData(self, widget):
-        self.setValue(widget.value())
-
-class _PropertyEditorFloat(_PropertyEditorInteger):
-    def widget(self, parent):
-        return QtGui.QDoubleSpinBox(parent)
-
-class _PropertyEditorBool(_PropertyEditorBase):
-    def widget(self, parent):
-        return QtGui.QComboBox(parent)
-    def setEditorData(self, widget):
-        widget.clear()
-        widget.addItems([str(False), str(True)])
-        widget.setCurrentIndex(1 if self.getValue() else 0)
-    def setModelData(self, widget):
-        self.setValue(widget.currentIndex() == 1)
-
-class _PropertyEditorString(_PropertyEditorBase):
-    def widget(self, parent):
-        return QtGui.QLineEdit(parent)
-    def setEditorData(self, widget):
-        widget.setText(self.getValue())
-    def setModelData(self, widget):
-        self.setValue(widget.text())
-
-class _PropertyEditorQuantity(_PropertyEditorBase):
-    def widget(self, parent):
-        qsb = FreeCADGui.UiLoader().createWidget('Gui::QuantitySpinBox', parent)
-        self.editor = PathGui.QuantitySpinBox(qsb, self.obj, self.prop)
-        return qsb
-    def setEditorData(self, widget):
-        self.editor.updateSpinBox()
-    def setModelData(self, widget):
-        self.editor.updateProperty()
-
-_PropertyEditorFactory = {
-        bool                    : _PropertyEditorBool,
-        int                     : _PropertyEditorInteger,
-        float                   : _PropertyEditorFloat,
-        str                     : _PropertyEditorString,
-        FreeCAD.Units.Quantity  : _PropertyEditorQuantity,
-        }
-
 class _Delegate(QtGui.QStyledItemDelegate):
     '''Handles the creation of an appropriate editing widget for a given property.'''
     ObjectRole   = QtCore.Qt.UserRole + 1
@@ -110,7 +52,7 @@ class _Delegate(QtGui.QStyledItemDelegate):
         if editor is None:
             obj = index.data(self.ObjectRole)
             prp = index.data(self.PropertyRole)
-            editor = _PropertyEditorFactory[type(getattr(obj, prp))](obj, prp)
+            editor = PathPropertyEditor.Editor(obj, prp)
             index.model().setData(index, editor, self.EditorRole)
         return editor.widget(parent)
 
