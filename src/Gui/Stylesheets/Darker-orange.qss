@@ -1185,6 +1185,7 @@ QTextEdit {
 }
 
 /* shifts text/number editable field to the left to make space for the up/down or drop-down buttons */
+/*
 QComboBox,
 QAbstractSpinBox,
 QSpinBox,
@@ -1194,6 +1195,7 @@ QDateEdit,
 QDateTimeEdit {
     padding-right: 20px;
 }
+*/
 
 /* when QTextEdit are no editable (like Report view)*/
 QTextEdit:!editable,
