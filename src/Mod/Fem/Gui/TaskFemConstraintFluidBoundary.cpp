@@ -521,7 +521,7 @@ void TaskFemConstraintFluidBoundary::onBoundaryTypeChanged(void)
     bool ret = pcConstraint->recomputeFeature();
     if (!ret) {
         std::string boundaryType = ui->comboBoundaryType->currentText().toStdString();
-        Base::Console().Error("Fluid boundary recomputationg failed for boundaryType `%s` \n", boundaryType.c_str());
+        Base::Console().Error("Fluid boundary recomputation failed for boundaryType `%s` \n", boundaryType.c_str());
     }
 }
 
