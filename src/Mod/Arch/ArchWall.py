@@ -1097,7 +1097,7 @@ class _Wall(ArchComponent.Component):
             if obj.OverrideWidth:
                 if obj.Base.isDerivedFrom("Sketcher::SketchObject"):
                     # If Base Object is ordinary Sketch (or when ArchSketch.getWidth() not implemented yet):-
-                    # sort the width list in OverrrideWidth to correspond to indexes of sorted edges of Sketch
+                    # sort the width list in OverrideWidth to correspond to indexes of sorted edges of Sketch
                     try:
                         import ArchSketchObject
                     except:
@@ -1108,7 +1108,7 @@ class _Wall(ArchComponent.Component):
                         widths = obj.OverrideWidth
                 else:
                     # If Base Object is not Sketch, but e.g. DWire, the width
-                    # list in OverrrideWidth just correspond to sequential
+                    # list in OverrideWidth just correspond to sequential
                     # order of edges
                     widths = obj.OverrideWidth
             elif obj.Width:
