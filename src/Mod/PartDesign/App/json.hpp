@@ -16756,7 +16756,7 @@ class basic_json
     /////////////////////
 
     /// @name container types
-    /// The canonic container types to use @ref basic_json like any other STL
+    /// The canonical container types to use @ref basic_json like any other STL
     /// container.
     /// @{
 
