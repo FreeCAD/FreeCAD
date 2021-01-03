@@ -452,7 +452,7 @@ class _Rebar(ArchComponent.Component):
             else:
                 reqInfluenceArea = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value)
             # Avoid unnecessary checks to pass like. For eg.: when we have values
-            # like influenceArea is 100.00001 and reqInflueneArea is 100
+            # like influenceArea is 100.00001 and reqInfluenceArea is 100
             if round(influenceArea) > round(reqInfluenceArea):
                 FreeCAD.Console.PrintWarning("Influence area of rebars is greater than "+ str(reqInfluenceArea) + ".\n")
             elif round(influenceArea) < round(reqInfluenceArea):
