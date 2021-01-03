@@ -737,7 +737,7 @@ public:
     fusion::vector<LocalEdge, ClusterGraph*, bool> getLocalEdgeGraph(GlobalEdge e);
 
     /**
-     * @brief Get the GlobalVertex assiociated with this local one.
+     * @brief Get the GlobalVertex associated with this local one.
      *
      * @param v LocalVertex
      * @return GlobalVertex

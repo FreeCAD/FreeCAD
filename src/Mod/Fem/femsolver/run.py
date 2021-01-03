@@ -178,7 +178,7 @@ def getMachine(solver, path=None):
         to create a new :class:`Machine` on cache miss.
 
     :param path:
-        A valid filesystem path which shall be associetad with the machine.
+        A valid filesystem path which shall be associated with the machine.
     """
     # print(path)
     _DocObserver.attach()
