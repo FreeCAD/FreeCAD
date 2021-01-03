@@ -51,7 +51,7 @@ namespace Base
 
 /** The XML reader class
  * This is an important helper class for the store and retrieval system
- * of objects in FreeCAD. These classes mainly inherit the App::Persitance
+ * of objects in FreeCAD. These classes mainly inherit the App::Persistence
  * base class and implement the Restore() method.
  *  \par
  * The reader gets mainly initialized by the App::Document on retrieving a
