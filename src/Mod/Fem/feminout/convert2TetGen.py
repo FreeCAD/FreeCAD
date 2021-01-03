@@ -265,7 +265,7 @@ def createMesh():
     DepletionBox.Height = BulkHeight
     DepletionBox.Width = ModelWidth
     DepletionBox.Length = DepletionSize * 2
-    # Surface deplation layer
+    # Surface depletion layer
     SurfDepletionBox.Height = DepletionSize
     SurfDepletionBox.Width = ModelWidth
     SurfDepletionBox.Length = BulkLength * 2 + DepletionSize * 2
