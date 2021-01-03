@@ -79,22 +79,22 @@ CoinRiftWidget::CoinRiftWidget() : QGLWidget()
     resize(hmd->Resolution.w, hmd->Resolution.h);
 
     // Configure stereo settings.
-    ovrSizei recommenedTex0Size = ovrHmd_GetFovTextureSize(hmd, ovrEye_Left,
+    ovrSizei recommendedTex0Size = ovrHmd_GetFovTextureSize(hmd, ovrEye_Left,
                                                            hmd->DefaultEyeFov[0], 1.0f);
-    ovrSizei recommenedTex1Size = ovrHmd_GetFovTextureSize(hmd, ovrEye_Right,
+    ovrSizei recommendedTex1Size = ovrHmd_GetFovTextureSize(hmd, ovrEye_Right,
                                                            hmd->DefaultEyeFov[1], 1.0f);
 
 #ifdef USE_SO_OFFSCREEN_RENDERER
-    renderer = new SoOffscreenRenderer(SbViewportRegion(std::max(recommenedTex0Size.w, recommenedTex0Size.w),
-                                                        std::max(recommenedTex1Size.h, recommenedTex1Size.h)));
+    renderer = new SoOffscreenRenderer(SbViewportRegion(std::max(recommendedTex0Size.w, recommendedTex0Size.w),
+                                                        std::max(recommendedTex1Size.h, recommendedTex1Size.h)));
     renderer->setComponents(SoOffscreenRenderer::RGB_TRANSPARENCY);
     BackgroundColor = SbColor(.0f, .0f, .8f);
     renderer->setBackgroundColor(BackgroundColor);
 #endif
 #ifdef USE_FRAMEBUFFER
     m_sceneManager = new SoSceneManager();
-    m_sceneManager->setViewportRegion(SbViewportRegion(std::max(recommenedTex0Size.w, recommenedTex0Size.w),
-                                                       std::max(recommenedTex1Size.h, recommenedTex1Size.h)));
+    m_sceneManager->setViewportRegion(SbViewportRegion(std::max(recommendedTex0Size.w, recommendedTex0Size.w),
+                                                       std::max(recommendedTex1Size.h, recommendedTex1Size.h)));
     m_sceneManager->setBackgroundColor(SbColor(.0f, .0f, .8f));
 #endif
     basePosition = SbVec3f(0.0f, 0.0f, -2.0f);
@@ -134,8 +134,8 @@ CoinRiftWidget::CoinRiftWidget() : QGLWidget()
     eyeTexture[1].Header.TextureSize = eyeTexture[0].Header.TextureSize;
 #endif
 #ifdef USE_FRAMEBUFFER
-    eyeTexture[0].Header.TextureSize = recommenedTex0Size;
-    eyeTexture[1].Header.TextureSize = recommenedTex1Size;
+    eyeTexture[0].Header.TextureSize = recommendedTex0Size;
+    eyeTexture[1].Header.TextureSize = recommendedTex1Size;
 #endif
     eyeTexture[0].Header.RenderViewport.Pos.x = 0;
     eyeTexture[0].Header.RenderViewport.Pos.y = 0;
