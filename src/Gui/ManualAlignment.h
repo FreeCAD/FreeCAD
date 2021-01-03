@@ -51,7 +51,7 @@ public:
 };
 
 /**
- * The AlignemntGroup class is the base for fixed and movable groups.
+ * The AlignmentGroup class is the base for fixed and movable groups.
  * @author Werner Mayer
  */
 class GuiExport AlignmentGroup
