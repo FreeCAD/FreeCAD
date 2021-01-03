@@ -35,7 +35,7 @@ from draftviewproviders.view_base import ViewProviderDraft
 
 
 def make_polygon(nfaces, radius=1, inscribed=True, placement=None, face=None, support=None):
-    """makePolgon(edges,[radius],[inscribed],[placement],[face])
+    """makePolygon(edges,[radius],[inscribed],[placement],[face])
 
     Creates a polygon object with the given number of edges and radius.
 
