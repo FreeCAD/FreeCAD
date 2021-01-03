@@ -72,7 +72,7 @@ def downgrade(objects, delete=False, force=None):
 
     See Also
     --------
-    ugrade
+    upgrade
     """
     _name = "downgrade"
     utils.print_header(_name, "Downgrade objects")
