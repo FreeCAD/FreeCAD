@@ -502,7 +502,7 @@ void QuadraticFit::CalcEigenValues(double &dLambda1, double &dLambda2, double &d
      * A =  ( a21   a22   a23 )       wobei gilt a[i,j] = a[j,i]
      *      ( a31   a32   a33 )
      *
-     * Koeffizienten des Quadrik-Fits bezogen auf die hier verwendete Schreibweise:
+     * Koeffizienten des Quadric-Fits bezogen auf die hier verwendete Schreibweise:
      * 
      *   0 = C[0] + C[1]*X + C[2]*Y + C[3]*Z + C[4]*X^2 + C[5]*Y^2
      *     + C[6]*Z^2 + C[7]*X*Y + C[8]*X*Z + C[9]*Y*Z
