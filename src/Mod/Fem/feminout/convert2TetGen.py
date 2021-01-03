@@ -165,7 +165,7 @@ def exportMeshToTetGenPoly(meshToExport, filePath, beVerbose=1):
         f.write("%(NumOfPolygons)3i " % {"NumOfPolygons": 1})
         if BoundaryMarkerExists == 1:
             f.write("0 %(BoundaryMarker)i" % {"BoundaryMarker": BoundaryMarker[FacetIndex]})
-        f.write("\n%(NumOfConers)3i  " % {"NumOfConers": len(allFacets[FacetIndex])})
+        f.write("\n%(NumOfCorners)3i  " % {"NumOfCorners": len(allFacets[FacetIndex])})
         for PointIndex in range(len(allFacets[FacetIndex])):
             #        f.write(repr(allFacets[FacetIndex][PointIndex]))
             f.write("%(PointIndex)i " % {"PointIndex": allFacets[FacetIndex][PointIndex]})
