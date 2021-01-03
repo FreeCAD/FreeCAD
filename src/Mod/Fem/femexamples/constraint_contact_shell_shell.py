@@ -50,7 +50,7 @@ def init_doc(doc=None):
 
 
 def get_information():
-    info = {"name": "Constraint Constact Shell Shell",
+    info = {"name": "Constraint Contact Shell Shell",
             "meshtype": "solid",
             "meshelement": "Tria3",
             "constraints": ["fixed", "force", "contact"],

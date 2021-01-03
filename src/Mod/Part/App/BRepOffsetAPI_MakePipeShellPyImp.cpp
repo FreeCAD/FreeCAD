@@ -156,22 +156,22 @@ PyObject* BRepOffsetAPI_MakePipeShellPy::setAuxiliarySpine(PyObject *args)
             return 0;
         }
 
-        BRepFill_TypeOfContact typeOfCantact;
+        BRepFill_TypeOfContact typeOfContact;
         switch (PyLong_AsLong(keep)) {
         case 1:
-            typeOfCantact = BRepFill_Contact;
+            typeOfContact = BRepFill_Contact;
             break;
         case 2:
-            typeOfCantact = BRepFill_ContactOnBorder;
+            typeOfContact = BRepFill_ContactOnBorder;
             break;
         default:
-            typeOfCantact = BRepFill_NoContact;
+            typeOfContact = BRepFill_NoContact;
             break;
         }
         this->getBRepOffsetAPI_MakePipeShellPtr()->SetMode(
             TopoDS::Wire(s),
             PyObject_IsTrue(curv) ? Standard_True : Standard_False,
-            typeOfCantact);
+            typeOfContact);
         Py_Return;
     }
     catch (Standard_Failure& e) {
