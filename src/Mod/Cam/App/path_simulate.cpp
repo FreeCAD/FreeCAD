@@ -298,7 +298,7 @@ bool path_simulate::ParameterCalculation_Curve(double S1)
 
     double tmp, v_tmp;
     tmp = GetDistance(m_T);  // liefert den Weg zurück, der unter den gegebenen Parametereinstellungen,
-	                         // zum hoch- und runterbeschleunigen, midestens notwendig ist 
+	                         // zum hoch- und runterbeschleunigen, mindestens notwendig ist 
 
     if (tmp <= S1) // d.h. der Weg reicht aus
     {
@@ -307,7 +307,7 @@ bool path_simulate::ParameterCalculation_Curve(double S1)
     }
     else // Weg reicht nicht aus -> Parameterkorrektur                            
     {
-		// Berechne Geschwindigkeit die mindestenns notwendig ist damit der Weg <S1> zur Zeit <m_T> erreicht wird 
+		// Berechne Geschwindigkeit die mindestens notwendig ist damit der Weg <S1> zur Zeit <m_T> erreicht wird 
         m_v[1] = sqrt((m_a*S1 + m_v[0]*m_v[0] + m_v[2]*m_v[2])/2.0);  
 		m_t1 = m_t0 + 2*(abs(m_v[1]-m_v[0]))/m_a;
         m_t2 = m_t1;
