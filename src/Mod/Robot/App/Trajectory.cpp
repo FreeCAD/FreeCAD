@@ -172,7 +172,7 @@ void Trajectory::generateTrajectory(void)
                 first = false;
             }
             else {
-                // destinct the type of movement
+                // distinct the type of movement
                 switch((*it)->Type){
                 case Waypoint::LINE:
                 case Waypoint::PTP:{
