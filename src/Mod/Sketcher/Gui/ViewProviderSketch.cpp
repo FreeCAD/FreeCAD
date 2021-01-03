@@ -289,7 +289,7 @@ const Part::Geometry* GeoById(const std::vector<Part::Geometry*> GeoList, int Id
 
 /* TRANSLATOR SketcherGui::ViewProviderSketch */
 
-PROPERTY_SOURCE(SketcherGui::ViewProviderSketch, PartGui::ViewProvider2DObjectGrid)
+PROPERTY_SOURCE_WITH_EXTENSIONS(SketcherGui::ViewProviderSketch, PartGui::ViewProvider2DObjectGrid)
 
 
 ViewProviderSketch::ViewProviderSketch()
@@ -7005,4 +7005,34 @@ void ViewProviderSketch::showRestoreInformationLayer() {
 
     visibleInformationChanged = true ;
     draw(false,false);
+}
+
+QIcon ViewProviderSketch::mergeColorfulOverlayIcons (const QIcon & orig) const
+{
+    QIcon mergedicon = orig;
+
+    if(!getSketchObject()->FullyConstrained.getValue()) {
+        QPixmap px;
+
+        static const char * const sketcher_notfullyconstrained_xpm[]={
+            "9 9 3 1",
+            ". c None",
+            "# c #ff4500",
+            "a c #ffffff",
+            "##.....##",
+            "#a#...#a#",
+            "#aa#.#aa#",
+            ".#a#.#a#.",
+            ".#a#.#a#.",
+            ".#a#.#a#.",
+            "#aa#.#aa#",
+            "#a#...#a#",
+            "##.....##"};
+        px = QPixmap( sketcher_notfullyconstrained_xpm );
+
+        mergedicon = Gui::BitmapFactoryInst::mergePixmap(mergedicon, px, Gui::BitmapFactoryInst::BottomRight);
+
+    }
+
+    return Gui::ViewProvider::mergeColorfulOverlayIcons (mergedicon);
 }

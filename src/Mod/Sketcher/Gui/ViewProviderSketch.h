@@ -254,6 +254,9 @@ public:
     void setIsShownVirtualSpace(bool isshownvirtualspace);
     bool getIsShownVirtualSpace(void) const;
 
+    /// Icons and Icon overlays
+    virtual QIcon mergeColorfulOverlayIcons (const QIcon & orig) const override;
+
     friend class DrawSketchHandler;
     friend struct ::EditData;
 
