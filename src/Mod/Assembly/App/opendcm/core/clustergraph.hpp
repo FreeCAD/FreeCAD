@@ -921,7 +921,7 @@ public:
     * @brief Get the desired property at the specified vertex or edge
     *
     * This function allows to access the properties stored in the graph. If no property of the desired type
-    * was set before, a default construced will be returned. Accessing the property at a global edge will return
+    * was set before, a default constructed will be returned. Accessing the property at a global edge will return
     * the property of the holding local edge.
     *
     * @tparam property the property type which shall be returned
