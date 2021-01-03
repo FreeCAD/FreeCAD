@@ -164,7 +164,7 @@ class ObjectDressup:
         tc = PathDressup.toolController(obj.Base)
         horizFeed = tc.HorizFeed.Value
         vertFeed = tc.VertFeed.Value
-        toolnummer = tc.ToolNumber
+        toolnumber = tc.ToolNumber
         arcs_identical = False
 
         # Set the correct twist command
@@ -269,9 +269,9 @@ class ObjectDressup:
 
         if obj.UseMachineCRC:
             if self.getDirectionOfPath(obj) == 'right':
-                results.append(Path.Command('G42', {'D': toolnummer}))
+                results.append(Path.Command('G42', {'D': toolnumber}))
             else:
-                results.append(Path.Command('G41', {'D': toolnummer}))
+                results.append(Path.Command('G41', {'D': toolnumber}))
 
         if obj.StyleOn == 'Arc':
             arcmove = Path.Command(arcdir, {"X": p0.x+vec_off.x, "Y": p0.y+vec_off.y, "I": offsetvector.x+vec_off.x, "J": offsetvector.y+vec_off.y, "F": horizFeed})  # add G2/G3 move
