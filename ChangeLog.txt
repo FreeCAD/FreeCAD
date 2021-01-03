@@ -1014,7 +1014,7 @@ Version: V0.1B25 Date: Sun Jan 19 18:20:51 2003 +++++++++++++++++++++++++++++++
   * Big Linux port patch from Vaclav
     - some fixes on implicit type conversion (Vaclav)
     - moving all .cxx to .cpp mainly in gui
-    - moving DlgCusomizeImpl to Imp
+    - moving DlgCustomizeImpl to Imp
     - and InitGui to GuiInit
     - rmoving X() macro (trouble on Linux)
     - Linux Gui console (Vaclav)
