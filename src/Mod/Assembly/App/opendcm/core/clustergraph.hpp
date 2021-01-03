@@ -950,7 +950,7 @@ public:
      * @brief recreate the internal index maps for edges and vertices
      *
      * Quite many boost graph algorithms need the indices for vertices and edges which are provided by property
-     * maps. As we use list, and not vector, as underlaying storage we don't get that property for free and
+     * maps. As we use list, and not vector, as underlying storage we don't get that property for free and
      * need to create it ourself. To ease that procedure the internal property vertex_index_prop and edge_index_prop
      * can be used as property maps and can be initialized by calling this function.
      *
