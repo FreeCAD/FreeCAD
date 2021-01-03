@@ -199,7 +199,7 @@ void FemPostPipeline::onChanged(const Property* prop)
                 filter = nextFilter;
             };
         }
-        //if we have no input the filters are responsible for grabbing the pipeline data themself
+        //if we have no input, the filters are responsible for grabbing the pipeline data themself
         else {
             //the first filter must always grab the data
             if(filter->Input.getValue() != NULL)
