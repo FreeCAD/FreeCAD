@@ -1077,7 +1077,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
             case 4:triangleCount += 2; break;  // 4-node quadrangle face --> 2 triangles
             case 6:triangleCount += 4; break;  // 6-node triangle face   --> 4 triangles
             case 8:triangleCount += 6; break;  // 8-node quadrangle face --> 6 triangles
-            default: throw std::runtime_error("Face with unknown node count found, only display mode nodes is supported for this element (tiangleCount)");
+            default: throw std::runtime_error("Face with unknown node count found, only display mode nodes is supported for this element (triangleCount)");
         }
     }
     Base::Console().Log("    NumTriangles:%i\n",triangleCount);
