@@ -218,7 +218,7 @@ public:
      * containing all offset shapes as wires regardless of \c Fill setting.
      */
     TopoDS_Shape makeOffset(int index=-1, PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_OFFSET),
-            int reoirent=0, bool from_center=false);
+            int reorient=0, bool from_center=false);
 
     /** Make a pocket of the combined shape
      *
@@ -320,7 +320,7 @@ public:
      * its original position.
      * */
     static TopoDS_Shape toShape(const CArea &area, bool fill,
-            const gp_Trsf *trsf=NULL, int reoirent=0);
+            const gp_Trsf *trsf=NULL, int reorient=0);
 
     /** Convert a single curve into an OCC wire
      *
