@@ -2434,8 +2434,8 @@ bool ViewProviderLink::initDraggingPlacement() {
     auto modifier = QApplication::queryKeyboardModifiers();
     // Determine the dragger base position
     // if CTRL key is down, force to use bound box center,
-    // if SHIFT key is down, force to use origine,
-    // if not a sub link, use origine,
+    // if SHIFT key is down, force to use origin,
+    // if not a sub link, use origin,
     // else (e.g. group, array, sub link), use bound box center
     if(modifier != Qt::ShiftModifier
             && ((ext->getLinkedObjectValue() && !linkView->hasSubs())

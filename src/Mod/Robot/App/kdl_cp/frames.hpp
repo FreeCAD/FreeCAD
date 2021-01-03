@@ -569,7 +569,7 @@ public:
 */
 class Frame {
 public:
-    Vector p;       //!< origine of the Frame
+    Vector p;       //!< origin of the Frame
     Rotation M;     //!< Orientation of the Frame
 
 public:
@@ -1094,7 +1094,7 @@ public:
 class Frame2
  {
 public:
-    Vector2 p;          //!< origine of the Frame
+    Vector2 p;          //!< origin of the Frame
     Rotation2 M;        //!< Orientation of the Frame
 
 public:
