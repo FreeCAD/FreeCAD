@@ -23,7 +23,7 @@
 # ***************************************************************************
 """Provides various functions for Apollonius and Soddy circle operations.
 
-The 'problem of Appollonius' consists of finding a circle that is
+The 'problem of Apollonius' consists of finding a circle that is
 simultaneously tangent to three circles on a plane.
 
 - http://en.wikipedia.org/wiki/Problem_of_Apollonius#Inversive_methods
@@ -170,7 +170,7 @@ def innerSoddyCircle(circle1, circle2, circle3):
 def circleFrom3CircleTangents(circle1, circle2, circle3):
     """Return the circle that is tangent to three other circles.
 
-    This problem is called the 'Problem of Appollonius'.
+    This problem is called the 'Problem of Apollonius'.
 
     A special case is that of 'Soddy circles'.
 
