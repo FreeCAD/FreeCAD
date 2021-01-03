@@ -3784,7 +3784,7 @@ void System::makeReducedJacobian(Eigen::MatrixXd &J,
                                  GCS::VEC_pD &pdiagnoselist,
                                  std::map< int , int> &tagmultiplicity)
 {
-    // construct specific parameter list for diagonose ignoring driven constraint parameters
+    // construct specific parameter list for diagnose ignoring driven constraint parameters
     for (int j=0; j < int(plist.size()); j++) {
         auto result1 = std::find(std::begin(pdrivenlist), std::end(pdrivenlist), plist[j]);
 
