@@ -1552,9 +1552,9 @@ bool CmdFemPostFunctions::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_AC(CmdFemPostApllyChanges)
+DEF_STD_CMD_AC(CmdFemPostApplyChanges)
 
-CmdFemPostApllyChanges::CmdFemPostApllyChanges()
+CmdFemPostApplyChanges::CmdFemPostApplyChanges()
   : Command("FEM_PostApplyChanges")
 {
     sAppModule      = "Fem";
@@ -1567,7 +1567,7 @@ CmdFemPostApllyChanges::CmdFemPostApllyChanges()
     eType           = eType|ForEdit;
 }
 
-void CmdFemPostApllyChanges::activated(int iMsg)
+void CmdFemPostApplyChanges::activated(int iMsg)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Fem");
 
@@ -1577,7 +1577,7 @@ void CmdFemPostApllyChanges::activated(int iMsg)
         hGrp->SetBool("PostAutoRecompute", false);
 }
 
-bool CmdFemPostApllyChanges::isActive(void)
+bool CmdFemPostApplyChanges::isActive(void)
 {
     if (getActiveGuiDocument())
         return true;
@@ -1585,7 +1585,7 @@ bool CmdFemPostApllyChanges::isActive(void)
         return false;
 }
 
-Gui::Action * CmdFemPostApllyChanges::createAction(void)
+Gui::Action * CmdFemPostApplyChanges::createAction(void)
 {
     Gui::Action *pcAction = Command::createAction();
     pcAction->setCheckable(true);
@@ -1702,7 +1702,7 @@ void CreateFemCommands(void)
     rcCmdMgr.addCommand(new CmdFemPostScalarClipFilter);
     rcCmdMgr.addCommand(new CmdFemPostWarpVectorFilter);
     rcCmdMgr.addCommand(new CmdFemPostFunctions);
-    rcCmdMgr.addCommand(new CmdFemPostApllyChanges);
+    rcCmdMgr.addCommand(new CmdFemPostApplyChanges);
     rcCmdMgr.addCommand(new CmdFemPostPipelineFromResult);
 #endif
 }

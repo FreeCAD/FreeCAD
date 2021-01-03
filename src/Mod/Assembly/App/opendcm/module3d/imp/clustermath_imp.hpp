@@ -540,7 +540,7 @@ void ClusterMath<Sys>::applyClusterScale(Scalar scale, bool isFixed) {
         return;
     }
 
-    //if this is our scale then just applie the midpoint as shift
+    //if this is our scale then just apply the midpoint as shift
     if(Kernel::isSame(scale, m_scale, 1e-10)) {
 
     }
@@ -575,7 +575,7 @@ void ClusterMath<Sys>::applyClusterScale(Scalar scale, bool isFixed) {
 
         //TODO: it's possible that for this case we get too far away from the outer points.
         //	    The m_scale for "midpoint outside the bounding box" may be bigger than the
-        //      scale to applie, so it results in an error.
+        //      scale to apply, so it results in an error.
         //get the closest point
         typedef typename Vec::iterator iter;
         for(iter it = m_points.begin(); it != m_points.end(); it++) {
