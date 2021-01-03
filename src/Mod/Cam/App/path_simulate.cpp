@@ -1470,7 +1470,7 @@ Newtry: // Falls die generierten Weglängen nicht ausreichen, dann wird ein neue
 		// Fülle Vektoren
 		l_vec.push_back(len);  // Länge
 		v_vec.push_back(v);    // Geschwindigkeiten
-		a_vec.push_back(m_a);  // Beschleunignung
+		a_vec.push_back(m_a);  // Beschleunigung
 		
 		// Fülle hier erst die Ausgabevektoren (einmal pro Kurve)
 		if(tool)
