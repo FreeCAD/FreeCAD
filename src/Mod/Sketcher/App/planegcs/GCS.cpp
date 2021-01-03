@@ -3820,7 +3820,7 @@ void System::makeReducedJacobian(Eigen::MatrixXd &J,
 
 int System::diagnose(Algorithm alg)
 {
-    // Analyses the constrainess grad of the system and provides feedback
+    // Analyses the constraints grad of the system and provides feedback
     // The vector "conflictingTags" will hold a group of conflicting constraints
 
     // Hint 1: Only constraints with tag >= 0 are taken into account

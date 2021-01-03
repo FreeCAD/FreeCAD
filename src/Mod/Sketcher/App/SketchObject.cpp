@@ -5046,20 +5046,20 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
 
         // First we search existing IA
         std::vector<int> controlpointgeoids(bsp->countPoles());
-        std::vector<int> cpassociatedcontraints(bsp->countPoles());
+        std::vector<int> cpassociatedconstraints(bsp->countPoles());
 
         std::vector<int> knotgeoids(bsp->countKnots());
-        std::vector<int> kassociatedcontraints(bsp->countKnots());
+        std::vector<int> kassociatedconstraints(bsp->countKnots());
 
         std::vector<int>::iterator it;
         std::vector<int>::iterator ita;
 
-        for (it=controlpointgeoids.begin(), ita=cpassociatedcontraints.begin(); it!=controlpointgeoids.end() && ita!=cpassociatedcontraints.end(); ++it, ++ita) {
+        for (it=controlpointgeoids.begin(), ita=cpassociatedconstraints.begin(); it!=controlpointgeoids.end() && ita!=cpassociatedconstraints.end(); ++it, ++ita) {
             (*it) = -1;
             (*ita) = 0;
         }
 
-        for (it=knotgeoids.begin(), ita=kassociatedcontraints.begin(); it!=knotgeoids.end() && ita!=kassociatedcontraints.end(); ++it, ++ita) {
+        for (it=knotgeoids.begin(), ita=kassociatedconstraints.begin(); it!=knotgeoids.end() && ita!=kassociatedconstraints.end(); ++it, ++ita) {
             (*it) = -1;
             (*ita) = 0;
         }
@@ -5084,7 +5084,7 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
 
         std::vector<int> delgeometries;
 
-        for (it=controlpointgeoids.begin(), ita=cpassociatedcontraints.begin(); it!=controlpointgeoids.end() && ita!=cpassociatedcontraints.end(); ++it, ++ita) {
+        for (it=controlpointgeoids.begin(), ita=cpassociatedconstraints.begin(); it!=controlpointgeoids.end() && ita!=cpassociatedconstraints.end(); ++it, ++ita) {
             if ((*it) != -1) {
                 // look for a circle at geoid index
                 for (std::vector< Sketcher::Constraint * >::const_iterator itc= vals.begin(); itc != vals.end(); ++itc) {
@@ -5121,7 +5121,7 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
             }
         }
 
-        for (it=knotgeoids.begin(), ita=kassociatedcontraints.begin(); it!=knotgeoids.end() && ita!=kassociatedcontraints.end(); ++it, ++ita) {
+        for (it=knotgeoids.begin(), ita=kassociatedconstraints.begin(); it!=knotgeoids.end() && ita!=kassociatedconstraints.end(); ++it, ++ita) {
             if ((*it) != -1) {
                 // look for a point at geoid index
                 for (std::vector< Sketcher::Constraint * >::const_iterator itc= vals.begin(); itc != vals.end(); ++itc) {

@@ -73,7 +73,7 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
             self.element_count = len(self.femelement_table)
         self.set_z88_elparam()
         self.write_z88_mesh()
-        self.write_z88_contraints()
+        self.write_z88_constraints()
         self.write_z88_face_loads()
         self.write_z88_materials()
         self.write_z88_elements_properties()
@@ -120,7 +120,7 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
         )
         f.close()
 
-    def write_z88_contraints(self):
+    def write_z88_constraints(self):
         constraints_data = []  # will be a list of tuple for better sorting
 
         # fixed constraints
@@ -155,8 +155,8 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
                         constraints_data.append((n, str(n) + "  3  1  " + str(v3) + "\n"))
 
         # write constraints_data to file
-        contraints_file_path = self.file_name + "i2.txt"
-        f = open(contraints_file_path, "w")
+        constraints_file_path = self.file_name + "i2.txt"
+        f = open(constraints_file_path, "w")
         f.write(str(len(constraints_data)) + "\n")
         for c in sorted(constraints_data):
             f.write(c[1])
