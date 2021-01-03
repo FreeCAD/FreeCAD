@@ -6292,7 +6292,7 @@ void SketchObject::rebuildExternalGeometry(void)
 
                             double minorRadius;  // TODO use data type of vectors around...
                             double cosTheta;
-                            cosTheta = fabs(vec1.Dot(vec2));  // cos of angle between the two planes, assuming vectirs are normalized to 1
+                            cosTheta = fabs(vec1.Dot(vec2));  // cos of angle between the two planes, assuming vectors are normalized to 1
                             minorRadius = origCircle.Radius() * cosTheta;
 
                             Base::Vector3d vectorMajorAxis(vecMajorAxis.X(),vecMajorAxis.Y(),vecMajorAxis.Z());  // maj axis into FCAD style vector
