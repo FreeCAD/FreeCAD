@@ -40,8 +40,8 @@ using namespace boost::numeric;
 
 /*! \brief Numerical Integration according to trapezoid rules
 
- This routine assumes that the Intergral values are already corresponding with WithRespectTo
- i.e: Intergral[i] == Intergral(WithRespectTo[i]);
+ This routine assumes that the Integral values are already corresponding with WithRespectTo
+ i.e: Integral[i] == Integral(WithRespectTo[i]);
  Also, it is assumed that WithRespectTo are evenly spaced with it's stepWidth
 */
 double Routines::TrapezoidIntergration(const std::vector<double> &WithRespectTo, const std::vector<double> &Integral)
