@@ -124,7 +124,7 @@ def solve_point(W, COG, TW, VOLS, ship, tanks, roll, var_trim=True):
 
     trim = Units.parseQuantity("0 deg")
     for i in range(MAX_EQUILIBRIUM_ITERS):
-        # Get the displacement, and the bouyance application point
+        # Get the displacement, and the buoyancy application point
         disp, B, _ = Hydrostatics.displacement(ship,
                                                draft,
                                                roll,

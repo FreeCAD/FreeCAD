@@ -228,10 +228,10 @@ def displacement(ship, draft=None,
     Returned values:
     disp -- The ship displacement (a density of the water of 1025 kg/m^3 is
     assumed)
-    B -- Bouyance application point, i.e. Center of mass of the underwater side
+    B -- Buoyancy application point, i.e. Center of mass of the underwater side
     Cb -- Block coefficient
 
-    The Bouyance center is referred to the original ship position.
+    The Buoyancy center is referred to the original ship position.
     """
     if draft is None:
         draft = ship.Draft
@@ -255,7 +255,7 @@ def displacement(ship, draft=None,
     bbox = shape.BoundBox
     Vol = (bbox.XMax - bbox.XMin) * (bbox.YMax - bbox.YMin) * abs(bbox.ZMin)
 
-    # Undo the transformations on the bouyance point
+    # Undo the transformations on the buoyancy point
     B = Part.Point(Vector(cog.x, cog.y, cog.z))
     m = Matrix()
     m.move(Vector(0.0, 0.0, draft))
@@ -395,7 +395,7 @@ def floatingArea(ship, draft=None,
 
 
 def BMT(ship, draft=None, trim=Units.parseQuantity("0 deg")):
-    """Calculate "ship Bouyance center" - "transversal metacenter" radius
+    """Calculate "ship Buoyancy center" - "transversal metacenter" radius
 
     Position arguments:
     ship -- Ship object (see createShip)
@@ -488,7 +488,7 @@ class Point:
     draft -- Ship draft
     trim -- Ship trim
     disp -- Ship displacement
-    xcb -- Bouyance center X coordinate
+    xcb -- Buoyancy center X coordinate
     wet -- Wetted ship area
     mom -- Trimming 1cm ship moment
     farea -- Floating area
