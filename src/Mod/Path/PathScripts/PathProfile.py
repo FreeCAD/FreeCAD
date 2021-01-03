@@ -1383,7 +1383,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
     def _makeIntersectionTags(self, useWire, numOrigEdges, fdv):
         PathLog.debug('_makeIntersectionTags()')
-        # Create circular probe tags around perimiter of wire
+        # Create circular probe tags around perimeter of wire
         extTags = list()
         intTags = list()
         tagRad = (self.radius / 2)
