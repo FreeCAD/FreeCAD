@@ -76,7 +76,7 @@ public:
     //@{
     /// Creates an instance of the manager, should be called before any instance()
     static void init ();
-    /// Return an instance of the WorkflofManager.
+    /// Return an instance of the WorkflowManager.
     static WorkflowManager* instance();
     /// destroy the manager
     static void destruct ();
