@@ -647,17 +647,17 @@ class TestObjectType(unittest.TestCase):
         ))
 
         # ConstraintDisplacement
-        constraint_dicplacement = ObjectsFem.makeConstraintDisplacement(doc)
+        constraint_displacement = ObjectsFem.makeConstraintDisplacement(doc)
         self.assertTrue(is_derived_from(
-            constraint_dicplacement,
+            constraint_displacement,
             "App::DocumentObject"
         ))
         self.assertTrue(is_derived_from(
-            constraint_dicplacement,
+            constraint_displacement,
             "Fem::Constraint"
         ))
         self.assertTrue(is_derived_from(
-            constraint_dicplacement,
+            constraint_displacement,
             "Fem::ConstraintDisplacement"
         ))
 

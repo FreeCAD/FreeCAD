@@ -69,7 +69,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # displacement_constraint
     displacement_constraint = doc.Analysis.addObject(
-        ObjectsFem.makeConstraintDisplacement(doc, name="ConstraintDisplacmentPrescribed")
+        ObjectsFem.makeConstraintDisplacement(doc, name="ConstraintDisplacementPrescribed")
     )[0]
     displacement_constraint.References = [(doc.Box, "Face2")]
     displacement_constraint.zFix = False
