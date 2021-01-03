@@ -1360,7 +1360,7 @@ PyObject* BSplineSurfacePy::buildFromPolesMultsKnots(PyObject *args, PyObject *k
     if (!PyArg_ParseTupleAndKeywords(args, keywds, "OOO|OOO!O!iiO", kwlist,
         &poles, &umults, &vmults, //required
         &uknots, &vknots, //optional
-        &PyBool_Type, &uperiodic, &PyBool_Type, &vperiodic, //optinoal
+        &PyBool_Type, &uperiodic, &PyBool_Type, &vperiodic, //optional
         &udegree, &vdegree, &weights)) //optional
         return 0;
     try {
