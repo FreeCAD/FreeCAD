@@ -127,7 +127,7 @@ protected:
     virtual SoTransformManip*   setupManipulator();
     virtual void                draggerUpdate(SoDragger*) {}
     SoTransformManip*           getManipulator() {return m_manip;}
-    SoSeparator*                getGeometryNode() {return m_geometrySeperator;}
+    SoSeparator*                getGeometryNode() {return m_geometrySeparator;}
     SoScale*                    getScaleNode() {return m_scale;}
     SoTransform*                getTransformNode() {return m_transform;}
 
@@ -136,7 +136,7 @@ private:
     static void dragFinishCallback(void * data, SoDragger * d);
     static void dragMotionCallback(void * data, SoDragger * d);
 
-    SoSeparator*        m_geometrySeperator;
+    SoSeparator*        m_geometrySeparator;
     SoTransformManip*   m_manip;
     SoScale*            m_scale;
     SoTransform*        m_transform;

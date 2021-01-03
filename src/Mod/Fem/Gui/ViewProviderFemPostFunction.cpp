@@ -145,8 +145,8 @@ ViewProviderFemPostFunction::ViewProviderFemPostFunction()
     ADD_PROPERTY_TYPE(AutoScaleFactorY, (1), "AutoScale", App::Prop_Hidden, "Automatic scaling factor");
     ADD_PROPERTY_TYPE(AutoScaleFactorZ, (1), "AutoScale", App::Prop_Hidden, "Automatic scaling factor");
 
-    m_geometrySeperator = new SoSeparator();
-    m_geometrySeperator->ref();
+    m_geometrySeparator = new SoSeparator();
+    m_geometrySeparator->ref();
 
     m_transform = new SoTransform();
     m_transform->ref();
@@ -158,7 +158,7 @@ ViewProviderFemPostFunction::ViewProviderFemPostFunction()
 
 ViewProviderFemPostFunction::~ViewProviderFemPostFunction()
 {
-    m_geometrySeperator->unref();
+    m_geometrySeparator->unref();
     m_manip->unref();
     m_scale->unref();
     //transform is unref'd when it is replaced by the dragger
@@ -183,9 +183,9 @@ void ViewProviderFemPostFunction::attach(App::DocumentObject *pcObj)
 
     pcEditNode->addChild(color);
     pcEditNode->addChild(m_transform);
-    pcEditNode->addChild(m_geometrySeperator);
+    pcEditNode->addChild(m_geometrySeparator);
 
-    m_geometrySeperator->insertChild(m_scale, 0);
+    m_geometrySeparator->insertChild(m_scale, 0);
 
     // Now we replace the SoTransform node by a manipulator
     // Note: Even SoCenterballManip inherits from SoTransform

@@ -307,7 +307,7 @@ void PovTools::writeShapeCSV(const char *FileName,
                              float fMeshDeviation,
                              float fLength)
 {
-    const char cSeperator = ',';
+    const char cSeparator = ',';
 
     Base::Console().Log("Meshing with Deviation: %f\n",fMeshDeviation);
 
@@ -341,12 +341,12 @@ void PovTools::writeShapeCSV(const char *FileName,
         // writing per face header
         // writing vertices
         for (int i=0; i < nbNodesInFace; i++) {
-            fout << vertices[i].X() << cSeperator
-            << vertices[i].Z() << cSeperator
-            << vertices[i].Y() << cSeperator
-            << vertexnormals[i].X() * fLength <<cSeperator
-            << vertexnormals[i].Z() * fLength <<cSeperator
-            << vertexnormals[i].Y() * fLength <<cSeperator
+            fout << vertices[i].X() << cSeparator
+            << vertices[i].Z() << cSeparator
+            << vertices[i].Y() << cSeparator
+            << vertexnormals[i].X() * fLength <<cSeparator
+            << vertexnormals[i].Z() * fLength <<cSeparator
+            << vertexnormals[i].Y() * fLength <<cSeparator
             << endl;
         }
 
