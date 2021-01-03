@@ -68,7 +68,7 @@ class Constraint {
     typedef boost::shared_ptr<details::Geometry<Kernel, Dim, typename Sys::geometries> > geom_ptr;
     typedef std::vector<typename Kernel::Vector3, Eigen::aligned_allocator<typename Kernel::Vector3> > Vec;
 
-    //metafunction to create equation from consraint and tags
+    //metafunction to create equation from constraint and tags
     template<typename C, typename T1, typename T2>
     struct equation {
         typedef typename C::template type<Kernel, T1, T2> type;
