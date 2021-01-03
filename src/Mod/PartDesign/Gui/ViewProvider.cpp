@@ -298,7 +298,7 @@ void ViewProvider::setBodyMode(bool bodymode) {
 
     for(App::Property* prop : props) {
 
-        //we keep visibility and selectibility per object
+        //we keep visibility and selectability per object
         if(prop == &Visibility ||
            prop == &Selectable)
             continue;
