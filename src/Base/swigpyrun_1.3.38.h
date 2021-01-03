@@ -1730,7 +1730,7 @@ _PySwigObject_type(void) {
   if (!type_init) {
     const PyTypeObject tmp
       = {
-	/* PyOjbect header changed in Python 3 */
+	/* PyObject header changed in Python 3 */
 #if PY_VERSION_HEX >= 0x03000000
 	PyVarObject_HEAD_INIT(&PyType_Type, 0)
 #else    

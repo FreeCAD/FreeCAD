@@ -1650,7 +1650,7 @@ def getIfcTypeFromObj(obj):
 
     if not "::" in ifctype:
         ifctype = "Ifc" + ifctype
-    elif ifctype == "IfcApp::DocumentObjctGroup":
+    elif ifctype == "IfcApp::DocumentObjectGroup":
         ifctype = "IfcGroup"
     else:
         # it makes no sense to return IfcPart::Cylinder for a Part::Cylinder
