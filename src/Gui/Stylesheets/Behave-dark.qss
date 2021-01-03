@@ -2210,20 +2210,20 @@ QToolBar#Selector QToolButton:checked {
     background-color: #232932;
 }
 
-/* Unactive tabs */
+/* Inactive tabs */
 QToolBar#Selector QToolButton:!checked {
     color: rgba(255,255,255,160);
     background-color: transparent;
     margin: 0px;
 }
 
-/* Unactive tabs (hover) */
+/* Inactive tabs (hover) */
 QToolBar#Selector QToolButton:!checked:hover {
     color: rgba(255,255,255,255);
     background-color: rgba(255,255,255,20);
 }
 
-/* Unactive tabs (pressed) */
+/* Inactive tabs (pressed) */
 QToolBar#Selector QToolButton:!checked:pressed {
     background-color: rgba(255,255,255,40);
 }
