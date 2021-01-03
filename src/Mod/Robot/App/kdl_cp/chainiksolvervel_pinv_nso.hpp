@@ -96,7 +96,7 @@ namespace KDL
         /**
          *Set null psace velocity gain
          *
-         *@param alpha NUllspace velocity cgain
+         *@param alpha NUllspace velocity gain
          *
          */
         virtual int setAlpha(const double alpha);
