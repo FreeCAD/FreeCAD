@@ -246,7 +246,7 @@ def createMesh():
     # Set sizes in nanometers
     if beVerbose == 1:
         Console.PrintMessage("\nSet sizes...")
-    tessellationTollerance = 0.05
+    tessellationTolerance = 0.05
     ModelWidth = 300
     BulkHeight = 300
     BulkLength = 300
@@ -312,12 +312,12 @@ def createMesh():
     for index in range(1, len(BoxList), 1):
         fuseShape = fuseShape.fuse(BoxList[index].Shape)
     nmesh = Mesh.Mesh()
-    nmesh.addFacets(fuseShape.tessellate(tessellationTollerance))
+    nmesh.addFacets(fuseShape.tessellate(tessellationTolerance))
 
     # for index in range(len(BoxList)):
     for index in range(len(BoxList) - 1):  # Manual hack
         BoxMeshList[index].addFacets(
-            BoxList[index].Shape.tessellate(tessellationTollerance)
+            BoxList[index].Shape.tessellate(tessellationTolerance)
         )
         nmesh.addMesh(BoxMeshList[index])
 
