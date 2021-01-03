@@ -271,7 +271,7 @@ public:
     template<typename Option>
     typename Option::type& option();
     
-    //let evryone access and use our math kernel
+    //let everyone access and use our math kernel
     Kernel& kernel();
 
     void copyInto(System& into) const;
