@@ -172,7 +172,7 @@ void Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::MapSetter::oper
     if(!val.enabled)
         return;
 
-    //when in cluster, there are 6 clusterparameter we differentiat for, if not we differentiat
+    //when in cluster, there are 6 clusterparameter we differentiate for, if not we differentiate
     //for every parameter in the geometry;
     int equation = mes.setResidualMap(val.m_residual, val.access);
     
