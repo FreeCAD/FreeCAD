@@ -167,7 +167,7 @@ public:
     unsigned int getAttributeCount(void) const;
     /// check if the read element has a special attribute
     bool hasAttribute(const char* AttrName) const;
-    /// return the named attribute as an interer (does type checking)
+    /// return the named attribute as an integer (does type checking)
     long getAttributeAsInteger(const char* AttrName) const;
     unsigned long getAttributeAsUnsigned(const char* AttrName) const;
     /// return the named attribute as a double floating point (does type checking)
