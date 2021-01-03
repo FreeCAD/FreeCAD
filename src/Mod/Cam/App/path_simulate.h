@@ -323,7 +323,7 @@ private:
     std::vector<std::vector<double> > CompBounds(bool tool, std::vector<double> knots);
     /** @brief Generates output for the current tool-path*/
     bool CompPath(bool tool);
-    /** @brief determines which tool should wait (feature-based-stategy only)*/
+    /** @brief determines which tool should wait (feature-based-strategy only)*/
     bool StartingTool();
     /** @brief vector containing start- and end-times for the master-curves*/
     std::vector<std::pair<float,float> > m_PathTimes_Master;
