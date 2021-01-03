@@ -45,7 +45,7 @@ class MeshSearchNeighbours
 public:
   MeshSearchNeighbours ( const MeshKernel &rclM, float fSampleDistance = 1.0f);
   virtual ~MeshSearchNeighbours () {}
-  /** Re-initilaizes internal structures. */
+  /** Re-initializes internal structures. */
   void Reinit (float fSampleDistance);
   /** Collects all neighbour points from the facet (by index), the result are the points of the facets lying
    * inside a sphere of radius \a fDistance, center \a center of the original facet. This method uses the 

@@ -945,7 +945,7 @@ void QuarterWidget::paintEvent(QPaintEvent* event)
     this->actualRedraw();
 
     //start the standard graphics view processing for all widgets and graphic items. As 
-    //QGraphicsView initaliizes a QPainter which changes the Opengl context in an unpredictable 
+    //QGraphicsView initializes a QPainter which changes the Opengl context in an unpredictable 
     //manner we need to store the context and recreate it after Qt is done.
     glPushAttrib(GL_MULTISAMPLE_BIT_EXT);
     inherited::paintEvent(event);
