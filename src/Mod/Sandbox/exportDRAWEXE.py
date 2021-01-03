@@ -269,8 +269,8 @@ class Drawexporter(object):
                 '.'.join(FreeCAD.Version()[0:3]))
         self.csg.write('pload MODELING\n')
 
-    def write_displayonly(self,objlst):
-        self.csg.write('donly %s\n'%' '.join([obj.Name for obj in objlst]))
+    def write_displayonly(self,objlist):
+        self.csg.write('donly %s\n'%' '.join([obj.Name for obj in objlist]))
 
     def saveSweep(self,ob):
         import Part
@@ -816,8 +816,8 @@ class Drawexporter(object):
             self.csg.write('#Object Label: %s\n' % ob.Label.encode('unicode-escape'))
         return ob.Name #The object is present and can be referenced
 
-    def export_annotations(self,objlst):
-        for ob in objlst:
+    def export_annotations(self,objlist):
+        for ob in objlist:
             if ob.isDerivedFrom('App::Annotation') :
                 if ob.Name != ob.Label:
                     self.csg.write('#Annotation Name %s Label %s"\n' % \
@@ -830,16 +830,16 @@ class Drawexporter(object):
                         ob.LabelText).encode(\
                         'ascii', errors='xmlcharrefreplace')))
 
-    def export_objects(self,objlst,toplevel=True):
+    def export_objects(self,objlist,toplevel=True):
         self.write_header()
         toplevelobjs = [self.process_object(ob, toplevel=toplevel)\
-                for ob in objlst]
+                for ob in objlist]
         names = [name for name in toplevelobjs if name is not False]
         self.csg.write('donly %s\n'%(' '.join(names)))
-        self.export_annotations(objlst)
-        #for ob in objlst:
+        self.export_annotations(objlist)
+        #for ob in objlist:
         #    self.process_object(ob,toplevel=toplevel)
-        #self.write_displayonly(objlst)
+        #self.write_displayonly(objlist)
 
     def __exit__(self,exc_type, exc_val, exc_tb ):
         self.csg.close()
