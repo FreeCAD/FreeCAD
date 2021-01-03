@@ -108,7 +108,7 @@ inline WidgetFactoryInst& WidgetFactory()
 // --------------------------------------------------------------------
 
 /**
- * The UiLoader class provides the abitlity to use the widget factory
+ * The UiLoader class provides the ability to use the widget factory
  * framework of FreeCAD within the framework provided by Qt. This class
  * extends QUiLoader by the creation of FreeCAD specific widgets.
  * @author Werner Mayer
@@ -430,7 +430,7 @@ private:
 };
 
 /**
- * The SignalConnect class provides the abitlity to make a connection
+ * The SignalConnect class provides the ability to make a connection
  * between the callback function of a Python object and the slot onExecute().
  * This mechanism is used in the Python/Qt framework.
  * \author Werner Mayer
