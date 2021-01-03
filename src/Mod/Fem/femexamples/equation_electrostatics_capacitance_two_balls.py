@@ -142,9 +142,9 @@ def setup(doc=None, solvertype="elmer"):
     constraint_elect_pot2.CapacitanceBodyEnabled = True
 
     # constant vacuum permittivity
-    const_vaccum_permittivity = analysis.addObject(
+    const_vacuum_permittivity = analysis.addObject(
         ObjectsFem.makeConstantVacuumPermittivity(doc))[0]
-    const_vaccum_permittivity.VacuumPermittivity = '1 F/m'
+    const_vacuum_permittivity.VacuumPermittivity = '1 F/m'
 
     # mesh
     from .meshes.mesh_capacitance_two_balls_tetra10 import create_nodes, create_elements
