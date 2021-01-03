@@ -42,7 +42,7 @@ def ExportCompactSub(Rob,Trak,FileName):
 	# defining world and base
 	SrcFile.write(";------------- definitions ------------\n")
 	SrcFile.write("EXT BAS (BAS_COMMAND :IN,REAL :IN ) ;set base to World\n")
-	SrcFile.write("BAS (#INITMOV,0 ) ;Initialicing the defaults for Vel and so on \n\n")
+	SrcFile.write("BAS (#INITMOV,0 ) ;Initializing the defaults for Vel and so on \n\n")
 	
 	SrcFile.write("\n;------------- main part ------------\n")
 

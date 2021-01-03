@@ -23,7 +23,7 @@
 #ifdef _WIN32
 	//warning about to long decoraded names, won't affect the code correctness
 	#pragma warning( disable : 4503 )
-	//warning about changed pod initalising behaviour (boost blank in variant)
+	//warning about changed pod initializing behaviour (boost blank in variant)
 	#pragma warning( disable : 4345 )
 	//warning about multiple assignment operators in Equation
 	#pragma warning( disable : 4522 )

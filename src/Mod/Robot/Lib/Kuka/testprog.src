@@ -8,7 +8,7 @@ DEF TestProg( )
 EXT BAS (BAS_COMMAND :IN,REAL :IN )
 
 ;---------- Init -------------------------------------------
-BAS (#INITMOV,0 ) ;Initialicing the defaults for Vel and so on 
+BAS (#INITMOV,0 ) ;Initializing the defaults for Vel and so on 
 
 ; SAK 
 PTP {AXIS: A1 -21,A2 -52,A3 119,A4 -289,A5 -77,A6 -34} 
