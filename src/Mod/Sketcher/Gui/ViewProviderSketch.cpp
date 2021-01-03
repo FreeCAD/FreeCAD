@@ -2613,7 +2613,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
 void ViewProviderSketch::updateColor(void)
 {
     assert(edit);
-    //Base::Console().Log("Draw preseletion\n");
+    //Base::Console().Log("Draw preselection\n");
 
     int PtNum = edit->PointsMaterials->diffuseColor.getNum();
     SbColor *pcolor = edit->PointsMaterials->diffuseColor.startEditing();
