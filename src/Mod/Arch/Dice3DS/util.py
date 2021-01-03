@@ -1,6 +1,6 @@
 # util.py
 
-"""Utitily function for Dice3DS.
+"""Utility function for Dice3DS.
 
 Defines some routines for calculating normals and transforming points.
 
