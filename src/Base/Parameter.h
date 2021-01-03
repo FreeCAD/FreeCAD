@@ -104,7 +104,7 @@ class  BaseExport ParameterGrp : public Base::Handled,public Base::Subject <cons
 
 
 public:
-    /** @name copy and insertation */
+    /** @name copy and insertion */
     //@{
     /// make a deep copy to the other group
     void copyTo(Base::Reference<ParameterGrp>);
