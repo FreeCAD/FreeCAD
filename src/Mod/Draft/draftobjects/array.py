@@ -380,7 +380,7 @@ class Array(DraftLink):
                     obj.setPropertyStatus(pr, "Hidden")
 
     def execute(self, obj):
-        """Execture when the object is created or recomputed."""
+        """Execute when the object is created or recomputed."""
         if not obj.Base:
             return
 
