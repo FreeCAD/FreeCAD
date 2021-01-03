@@ -80,7 +80,7 @@ protected Q_SLOTS:
     // Other Commands
     void doToggleConstruction();
 
-    // Acelerators
+    // Accelerators
     void doCloseShape();
     void doConnect();
     void doSelectConstraints();

@@ -75,7 +75,7 @@ PythonEditor::PythonEditor(QWidget* parent)
     d = new PythonEditorP();
     this->setSyntaxHighlighter(new PythonSyntaxHighlighter(this));
 
-    // set acelerators
+    // set accelerators
     QShortcut* comment = new QShortcut(this);
     comment->setKey(Qt::ALT + Qt::Key_C);
 
