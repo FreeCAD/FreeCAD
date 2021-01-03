@@ -248,7 +248,7 @@ Action * StdCmdAbout::createAction(void)
     // Needs to have AboutRole set to avoid duplicates if adding the about action more than once on macOS
     pcAction->setMenuRole(QAction::AboutRole);
 #else
-    // With Qt 4.8, having AboutRole set causes it to disappear when readding it: issue #0001485
+    // With Qt 4.8, having AboutRole set causes it to disappear when re-adding it: issue #0001485
     pcAction->setMenuRole(QAction::ApplicationSpecificRole);
 #endif
     return pcAction;
