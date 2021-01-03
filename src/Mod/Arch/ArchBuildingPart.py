@@ -864,7 +864,7 @@ class ViewProviderBuildingPart:
             cdata.append(n.focalDistance.getValue())
             if isinstance(n,coin.SoOrthographicCamera):
                 cdata.append(n.height.getValue())
-                cdata.append(0.0) # orthograhic camera
+                cdata.append(0.0) # orthographic camera
             elif isinstance(n,coin.SoPerspectiveCamera):
                 cdata.append(n.heightAngle.getValue())
                 cdata.append(1.0) # perspective camera

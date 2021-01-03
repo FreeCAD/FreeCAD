@@ -400,7 +400,7 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         _viewer->setRenderCache(rGrp.GetInt("RenderCache",0));
     }
     else if (strcmp(Reason,"Orthographic") == 0) {
-        // check whether a perspective or orthogrphic camera should be set
+        // check whether a perspective or orthographic camera should be set
         if (rGrp.GetBool("Orthographic", true))
             _viewer->setCameraType(SoOrthographicCamera::getClassTypeId());
         else

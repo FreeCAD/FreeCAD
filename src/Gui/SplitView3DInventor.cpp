@@ -260,7 +260,7 @@ void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp
     }
 
     else if (strcmp(Reason,"Orthographic") == 0) {
-        // check whether a perspective or orthogrphic camera should be set
+        // check whether a perspective or orthographic camera should be set
         if (rGrp.GetBool("Orthographic", true)) {
             for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
                 (*it)->setCameraType(SoOrthographicCamera::getClassTypeId());
