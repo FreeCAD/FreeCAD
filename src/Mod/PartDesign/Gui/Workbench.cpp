@@ -180,7 +180,7 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
         }
 
         body = PartDesignGui::getBodyFor (feature, false, false, assertModern);
-        // lote of assertion so feature should be marked as a tip
+        // lots of assertion so feature should be marked as a tip
         if ( selection.size () == 1 && feature && (
             ( feature->isDerivedFrom ( PartDesign::Feature::getClassTypeId () ) && body ) ||
             ( feature->isDerivedFrom ( Part::Feature::getClassTypeId () ) && body &&
