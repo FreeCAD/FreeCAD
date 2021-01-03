@@ -274,7 +274,7 @@ public:
      **/
     typedef fusion::vector< typename details::pts<edge_properties>::type, std::vector< edge_bundle_single > > edge_bundle;
     /**
-     * @brief Iteator to access all edge_bundle_single stored in a edge_bundle
+     * @brief Iterator to access all edge_bundle_single stored in a edge_bundle
      **/
     typedef typename std::vector< edge_bundle_single >::iterator edge_single_iterator;
     /**
