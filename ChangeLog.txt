@@ -1089,7 +1089,7 @@ Version: V0.1B10 Date: Wed Dec 18 21:44:21 2002 +++++++++++++++++++++++++++++++
 
 Version: V0.1B9 Date: Mon Dec 16 14:40:59 2002 +++++++++++++++++++++++++++++++
   * First version of Werners waiting cursor
-  * Activ View finished
+  * Active View finished
   * Send Msg to view finished
   * Test1 importing BREP
 
