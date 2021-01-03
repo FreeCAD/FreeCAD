@@ -101,7 +101,7 @@ public:
     /*!
      \brief Deletes indicated geometry (by geoid).
      \param GeoId - the geometry to delete
-     \param deleteinternalgeo - if true deletes the associated and unconstraint internal geometry, otherwise deletes only the GeoId
+     \param deleteinternalgeo - if true deletes the associated and unconstrained internal geometry, otherwise deletes only the GeoId
      \retval int - 0 if successful
      */
     int delGeometry(int GeoId, bool deleteinternalgeo = true);
