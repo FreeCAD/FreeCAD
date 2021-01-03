@@ -1248,7 +1248,7 @@ class ObjectSlot(PathOp.ObjectOp):
         return (n1, n2)
 
     def _getOppMidPoints(self, same):
-        # Find mid-points between ends of equal, oppossing edges
+        # Find mid-points between ends of equal, opposing edges
         com1 = same[0].CenterOfMass
         com2 = same[1].CenterOfMass
         p1 = FreeCAD.Vector(com1.x, com1.y, 0.0)
