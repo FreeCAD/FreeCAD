@@ -263,11 +263,11 @@ def export(exportList,filename,tessellation=1,colors=None):
                 findex[list(range(i*6, i*6+6))] = (f[0],i,f[1],i,f[2],i)
 
         print(len(vindex), " vert indices, ", len(nindex), " norm indices, ", len(findex), " face indices.")
-        vert_src = collada.source.FloatSource("cubeverts-array"+str(objind), vindex, ('X', 'Y', 'Z'))
+        vert_src = collada.source.FloatSource("cuneverts-array"+str(objind), vindex, ('X', 'Y', 'Z'))
         normal_src = collada.source.FloatSource("cubenormals-array"+str(objind), nindex, ('X', 'Y', 'Z'))
         geom = collada.geometry.Geometry(colmesh, "geometry"+str(objind), obj.Name, [vert_src, normal_src])
         input_list = collada.source.InputList()
-        input_list.addInput(0, 'VERTEX', "#cubeverts-array"+str(objind))
+        input_list.addInput(0, 'VERTEX', "#cuneverts-array"+str(objind))
         input_list.addInput(1, 'NORMAL', "#cubenormals-array"+str(objind))
         matnode = None
         matref = "materialref"
