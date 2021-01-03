@@ -83,7 +83,7 @@ SHOW_EDITOR = True
 LINENUMBERS = True
 # possible values:
 #                  True      if linenumbers of the form N1 N2 ... should be included
-#                  False     linennumbers are suppressed
+#                  False     linenumbers are suppressed
 # if linenumbers are used, header and footer get numbered as well
 
 STARTLINENR = 1  # first linenumber used
