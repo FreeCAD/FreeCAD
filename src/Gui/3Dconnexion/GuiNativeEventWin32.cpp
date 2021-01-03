@@ -450,7 +450,7 @@ bool Gui::GuiNativeEvent::Is3dmouseAttached()
 		unsigned int cbSize = sizeof(rdi);
 
 		if (GetRawInputDeviceInfo(rawInputDeviceList[i].hDevice, RIDI_DEVICEINFO, &rdi, &cbSize) > 0) {
-			//skip non HID and non logitec (3DConnexion) devices
+			//skip non HID and non logitech (3DConnexion) devices
 			if (!(rdi.dwType == RIM_TYPEHID && (rdi.hid.dwVendorId == LOGITECH_VENDOR_ID || rdi.hid.dwVendorId == CONNEXION_VENDOR_ID))) {
 			continue;
 			}
