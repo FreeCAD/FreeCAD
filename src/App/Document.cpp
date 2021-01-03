@@ -2787,7 +2787,7 @@ bool Document::afterRestore(const std::vector<DocumentObject *> &objArray, bool 
     // objects has been restored. For example, PropertyExpressionEngine and
     // PropertySheet with expression containing label reference. So we add the
     // Property::afterRestore() interface to let them sort it out. Note, this
-    // API is not called in object dedpenency order, because the order
+    // API is not called in object dependency order, because the order
     // information is not ready yet.
     std::map<DocumentObject*, std::vector<App::Property*> > propMap;
     for(auto obj : objArray) {

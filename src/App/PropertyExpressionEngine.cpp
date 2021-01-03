@@ -749,7 +749,7 @@ void PropertyExpressionEngine::breakLink(App::DocumentObject *obj, bool clear) {
         const auto &deps = it->second.expression->getDepObjects();
         if(clear) {
             // here means we are breaking all expression, except those that has
-            // no depdenecy or self dependency
+            // no dependency or self dependency
             if(deps.empty() || (deps.size()==1 && *deps.begin()==owner))
                 continue;
         }else if(!deps.count(obj))

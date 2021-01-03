@@ -438,7 +438,7 @@ public:
     /// get a list of all objects linking to the given object
     std::vector<App::DocumentObject*> getInList(const DocumentObject* me) const;
 
-    /// Option bit flags used by getDepenencyList()
+    /// Option bit flags used by getDependencyList()
     enum DependencyOption {
         /// Return topological sorted list
         DepSort = 1,
