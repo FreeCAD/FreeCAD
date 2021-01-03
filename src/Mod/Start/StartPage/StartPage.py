@@ -33,7 +33,7 @@ FreeCADGui.addLanguagePath(":/translations")
 FreeCADGui.updateLocale()
 
 iconprovider = QtGui.QFileIconProvider()
-iconbank = {} # to store already created icons so we don't overpollute the temp dir
+iconbank = {} # to store already created icons so we don't overpopulate the temp dir
 tempfolder = None # store icons inside a subfolder in temp dir
 defaulticon = None # store a default icon for problematic file types
 
