@@ -239,7 +239,7 @@ bool ViewProviderCurveNet::handleEvent(const SoEvent * const ev, Gui::View3DInve
                         return true;
                     }
                 }
-                else // if(pressd)..
+                else // if(pressed)..
                 {
                     if (bMovePointMode)
                     {
