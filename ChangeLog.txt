@@ -135,7 +135,7 @@ Version: 0.14
   * Can not export. No way to select file type.
   * selftest errors
   * Unable to export file to any file format
-  * File extensions missing from supported file descriptions in open/save dialgos
+  * File extensions missing from supported file descriptions in open/save dialogs
   * [Sketcher] Small inconsistency with update
   * Hide turntable dialog when in fullscreen mode
   * Keep drop down menus open when changing to another part
