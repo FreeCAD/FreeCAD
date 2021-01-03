@@ -108,7 +108,7 @@ bool ViewProvider::setEdit(int ModNum)
         // the task panel
         Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
         TaskDlgFeatureParameters *featureDlg = qobject_cast<TaskDlgFeatureParameters *>(dlg);
-        // NOTE: if the dialog is not partDesigan dialog the featureDlg will be NULL
+        // NOTE: if the dialog is not partDesign dialog the featureDlg will be NULL
         if (featureDlg && featureDlg->viewProvider() != this) {
             featureDlg = 0; // another feature left open its task panel
         }
