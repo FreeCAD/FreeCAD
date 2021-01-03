@@ -433,7 +433,7 @@ def fill_femresult_mechanical(
         # it is assumed Temperature can not exist without disp
         # TODO really proof this
         # if temperature can exist without disp:
-        # move them out of disp if conditiona and set NodeNumbers
+        # move them out of disp if condition and set NodeNumbers
         if "temp" in result_set:
             Temperature = result_set["temp"]
             if len(Temperature) > 0:
