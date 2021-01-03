@@ -352,7 +352,7 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
             // we have rotations, so let's check our options. first search for cycles, as systems with them
             // always need the full solver power
             bool has_cycle;
-            cycle_dedector cd(has_cycle);
+            cycle_detector cd(has_cycle);
             //create the needed property maps and fill it
             property_map<vertex_index_prop, Cluster> vi_map(cluster);
             cluster->initIndexMaps();

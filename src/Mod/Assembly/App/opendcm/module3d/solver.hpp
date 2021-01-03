@@ -96,10 +96,10 @@ struct SystemSolver : public Job<Sys> {
         void operator()() {};
     };
 
-    struct cycle_dedector:public boost::default_dfs_visitor {
+    struct cycle_detector:public boost::default_dfs_visitor {
 
         bool& m_detected;
-        cycle_dedector(bool& ed) : m_detected(ed) {
+        cycle_detector(bool& ed) : m_detected(ed) {
             m_detected = false;
         };
 
