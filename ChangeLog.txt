@@ -1016,7 +1016,7 @@ Version: V0.1B25 Date: Sun Jan 19 18:20:51 2003 +++++++++++++++++++++++++++++++
     - moving all .cxx to .cpp mainly in gui
     - moving DlgCustomizeImpl to Imp
     - and InitGui to GuiInit
-    - rmoving X() macro (trouble on Linux)
+    - removing X() macro (trouble on Linux)
     - Linux Gui console (Vaclav)
     - Using new sstream on Linux (Vaclac)
     - fixing some case stuff in include (Vaclav)
