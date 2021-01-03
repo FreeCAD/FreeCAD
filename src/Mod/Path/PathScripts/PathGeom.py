@@ -289,10 +289,10 @@ def cmdsForEdge(edge, flip = False, useHelixForBSpline = True, segm = 50, hSpeed
             deviation = (p2 - esP2).Length
             if isRoughly(deviation, 0):
                 return [ Path.Command('G1', {'X': p3.x, 'Y': p3.y, 'Z': p3.z}) ]
-            # at this point pixellation is all we can do
+            # at this point pixelation is all we can do
             commands = []
             segments = int(math.ceil((deviation / eStraight.Length) * segm))
-            #print("**** pixellation with %d segments" % segments)
+            #print("**** pixelation with %d segments" % segments)
             dParameter = (edge.LastParameter - edge.FirstParameter) / segments
             # starting point
             p0 = edge.valueAt(edge.LastParameter) if flip else edge.valueAt(edge.FirstParameter)
