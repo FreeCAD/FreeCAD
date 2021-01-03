@@ -547,6 +547,7 @@ def handle():
     HTML = HTML.replace("TEXTCOLOR",TEXTCOLOR)
     HTML = HTML.replace("BGTCOLOR",BGTCOLOR)
     HTML = HTML.replace("BACKGROUND",BACKGROUND)
+    HTML = HTML.replace("SHADOW",SHADOW)
     HTML = HTML.replace("FONTFAMILY",FONTFAMILY)
     HTML = HTML.replace("FONTSIZE",str(FONTSIZE)+"px")
 
