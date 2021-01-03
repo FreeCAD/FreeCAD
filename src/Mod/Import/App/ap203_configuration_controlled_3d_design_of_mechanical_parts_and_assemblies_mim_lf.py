@@ -1396,8 +1396,8 @@ camera_model_d3_multi_clipping_interaction_select = SELECT(
 	'camera_model_d3_multi_clipping_union',
 	'plane',
 	scope = schema_scope)
-# SELECT TYPE constructive_geometry_representation_or_shape_represenation
-constructive_geometry_representation_or_shape_represenation = SELECT(
+# SELECT TYPE constructive_geometry_representation_or_shape_representation
+constructive_geometry_representation_or_shape_representation = SELECT(
 	'constructive_geometry_representation',
 	'shape_representation',
 	scope = schema_scope)
@@ -37497,7 +37497,7 @@ class constructive_geometry_representation_relationship(representation_relations
 	'''Entity constructive_geometry_representation_relationship definition.
 
 	:param representation_relationship_rep_1
-	:type representation_relationship_rep_1:constructive_geometry_representation_or_shape_represenation
+	:type representation_relationship_rep_1:constructive_geometry_representation_or_shape_representation
 
 	:param representation_relationship_rep_2
 	:type representation_relationship_rep_2:constructive_geometry_representation
@@ -37515,8 +37515,8 @@ class constructive_geometry_representation_relationship(representation_relations
 		# Mandatory argument
 			if value==None:
 				raise AssertionError('Argument representation_relationship_rep_1 is mandatory and can not be set to None')
-			if not check_type(value,constructive_geometry_representation_or_shape_represenation):
-				self._representation_relationship_rep_1 = constructive_geometry_representation_or_shape_represenation(value)
+			if not check_type(value,constructive_geometry_representation_or_shape_representation):
+				self._representation_relationship_rep_1 = constructive_geometry_representation_or_shape_representation(value)
 			else:
 				self._representation_relationship_rep_1 = value
 		return property(**locals())
