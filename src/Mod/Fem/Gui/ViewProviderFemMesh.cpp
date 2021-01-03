@@ -1126,7 +1126,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                     // tria3 face
                     switch (facesHelper[l].FaceNo){
                         case 0: { // tria3 face, 3-node triangle
-                            // prefeche all node indexes of this face
+                            // prefetch all node indexes of this face
                             int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
                             int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
                             int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
@@ -1152,7 +1152,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                     // tetra4 volume, four 3-node triangles
                     switch (facesHelper[l].FaceNo){
                         case 0: { // quad4 face, 4-node quadrangle
-                            // prefeche all node indexes of this face
+                            // prefetch all node indexes of this face
                             int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
                             int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
                             int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(2)];
@@ -1317,7 +1317,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                     // penta6 volume, two 3-node triangle and three 4-node quadrangles
                     switch (facesHelper[l].FaceNo){
                         case 0: { // tria6 face, 6-node triangle
-                            // prefeche all node indexes of this face
+                            // prefetch all node indexes of this face
                             int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
                             int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(3)];
                             int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
@@ -1453,7 +1453,7 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
                     // hexa8 volume, six 4-node quadrangles
                     switch(facesHelper[l].FaceNo){
                         case 0: { // quad8 face, 8-node quadrangle
-                            // prefeche all node indexes of this face
+                            // prefetch all node indexes of this face
                             int nIdx0 = mapNodeIndex[facesHelper[l].Element->GetNode(0)];
                             int nIdx1 = mapNodeIndex[facesHelper[l].Element->GetNode(4)];
                             int nIdx2 = mapNodeIndex[facesHelper[l].Element->GetNode(1)];
