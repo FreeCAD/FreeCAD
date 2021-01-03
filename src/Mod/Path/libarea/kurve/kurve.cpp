@@ -711,12 +711,12 @@ return;
 
 
 #endif
-	void Kurve::Get(std::vector<Span> *all, bool igNoreNullSpans)const {
+	void Kurve::Get(std::vector<Span> *all, bool ignoreNullSpans)const {
 		/// put all spans to vector
 		for(int i = 1; i <= nSpans(); i++) {
 			Span sp;
 			Get(i, sp, true);
-			if(igNoreNullSpans == true && sp.NullSpan == true) continue;
+			if(ignoreNullSpans == true && sp.NullSpan == true) continue;
 			all->push_back(sp);
 		}
 	}
