@@ -44,7 +44,7 @@ namespace Fem {
  *  applies to. Defining it in the base class exposes a common interface to code
  *  using different constraints.
  *
- *  The second purpose of @ref Constraint is to support the redering to the
+ *  The second purpose of @ref Constraint is to support the rendering to the
  *  screen done by the View Provider @ref FemGui::ViewProviderFemConstraint.
  *  The rendering is decoupled from the objects listed in the @ref References
  *  property by using a point cloud a normal vector and a scale factor which is
