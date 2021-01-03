@@ -468,7 +468,7 @@ struct Distance::type< Kernel, tag::line3D, tag::line3D > {
         Scalar diff = (-dline1.template head<3>().dot(nxn)+c.dot(nxn_diff))*nxn_n;
         diff -= c.dot(nxn)*nxn.dot(nxn_diff)/nxn_n;
 
-        //absolute value requires different differentation for different results
+        //absolute value requires different differentiation for different results
         if(cdn <= 0)
             diff *= -1;
 
@@ -494,7 +494,7 @@ struct Distance::type< Kernel, tag::line3D, tag::line3D > {
         Scalar diff = (dline2.template head<3>().dot(nxn)+c.dot(nxn_diff))*nxn_n;
         diff -= c.dot(nxn)*nxn.dot(nxn_diff)/nxn_n;
 
-        //absolute value requires different differentation for different results
+        //absolute value requires different differentiation for different results
         if(cdn <= 0)
             diff *= -1;
 
