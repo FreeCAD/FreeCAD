@@ -207,7 +207,7 @@ bool IntrTriangle3Triangle3<Real>::Find ()
         }
     }
 
-    // At this point, triangle1 tranversely intersects plane 0.  Compute the
+    // At this point, triangle1 transversely intersects plane 0.  Compute the
     // line segment of intersection.  Then test for intersection between this
     // segment and triangle 0.
     Real fT;
@@ -1238,7 +1238,7 @@ void IntrTriangle3Triangle3<Real>::FindContactSet (
     }
     else // reSide == CS_NONE
     {
-        // triangles are already intersecting tranversely
+        // triangles are already intersecting transversely
         IntrTriangle3Triangle3<Real>(rkTri0,rkTri1).Find();
     }
 }
