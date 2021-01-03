@@ -127,6 +127,6 @@ Python style is preferred over Doxygen style
     - see [PR with comment](https://github.com/FreeCAD/FreeCAD/pull/2757#discussion_r355218913)
 
 ## Icons
-### Naming plicy
+### Naming policy
 - Command icons use the command name.
 - see [forum topic](https://forum.freecadweb.org/viewtopic.php?f=18&t=43379)
