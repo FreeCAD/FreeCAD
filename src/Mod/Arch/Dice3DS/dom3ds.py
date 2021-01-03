@@ -7,7 +7,7 @@ called dom3ds because it's reminiscent of XML-DOM: it converts the 3DS
 file into a hierarchy of objects, in much the same way XML-DOM
 converts an XML file into a hierarchy of objects called the Document
 Object Model.  The dom3ds module creates an object for each chunk in
-the 3DS file, which can be accessed hierarchially as attributes.
+the 3DS file, which can be accessed hierarchically as attributes.
 
 For example, once a 3DS file is loaded, you could access the smoothing
 data of the second object like this:
