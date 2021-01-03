@@ -88,7 +88,7 @@ public:
      * save itself. In this cases it is possible to write the data in a separate file
      * inside the document archive. In case you want do so you have to re-implement
      * SaveDocFile(). First, you have to inform the framework in Save() that you want do so.
-     * Here an example from the Mesh module which can save a (pontetionaly big) triangle mesh:
+     * Here an example from the Mesh module which can save a (potentially big) triangle mesh:
      * \code
      * void PropertyMeshKernel::Save (Base::Writer &writer) const
      * {

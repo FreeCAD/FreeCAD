@@ -100,7 +100,7 @@ class PyObjectBase;
 
 /** Python Object handle class
  *  Using pointers on classes derived from PyObjectBase would
- *  be potentionaly dangerous because you would have to take
+ *  be potentially dangerous because you would have to take
  *  care of the reference counting of python by your self. Hence
  *  this class was designed. It takes care of references and
  *  as long as a object of this class exists the handled class get
