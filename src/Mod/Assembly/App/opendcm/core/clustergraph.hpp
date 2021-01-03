@@ -559,7 +559,7 @@ public:
     boost::shared_ptr<ClusterGraph> getVertexCluster(LocalVertex v);
 
     /**
-     * @brief Get the vertex descrptor which descripes the clusters position in the graph
+     * @brief Get the vertex descrptor which describes the clusters position in the graph
      *
      * This function is the inverse to \ref getVertexCluster
      *
