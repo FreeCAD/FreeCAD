@@ -161,7 +161,7 @@ def InitApplications():
 
 	# also add these directories to the sys.path to
 	# not change the old behaviour. once we have moved to
-	# proper python modules this can eventuelly be removed.
+	# proper python modules this can eventually be removed.
 	sys.path = [ModDir] + libpaths + [ExtDir] + sys.path
 
 	for Dir in ModDict.values():
