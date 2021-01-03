@@ -968,11 +968,11 @@ bool DrawViewDimension::checkReferences2D() const
                 }
             }
         } else {
-            Base::Console().Log("DVD::checkRegerences2d() - %s - subelements empty!\n",getNameInDocument());
+            Base::Console().Log("DVD::checkReferences2d() - %s - subelements empty!\n",getNameInDocument());
             result = false;
         }
     } else {
-        Base::Console().Log("DVD::checkRegerences2d() - %s - objects empty!\n",getNameInDocument());
+        Base::Console().Log("DVD::checkReferences2d() - %s - objects empty!\n",getNameInDocument());
         result = false;
     }
     return result;
