@@ -134,7 +134,7 @@ not be valid for the set of references; check for if 'message' is 'OK'.
 
 'message': general result of suggestion. 'IncompatibleGeometry', 'NoModesFit':
 no modes accept current set of references; 'OK': some modes do accept current
-set of references (though it's not guarantted the modes will work - surrestor
+set of references (though it's not guaranteed the modes will work - surrestor
 only checks for correct types); 'UnexpectedError': should never happen.
 
 'nextRefTypeHint': what more can be added to references to reach other modes
