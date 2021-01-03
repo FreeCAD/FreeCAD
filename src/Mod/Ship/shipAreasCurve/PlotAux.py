@@ -78,7 +78,7 @@ class Plot(object):
         AP.line.set_linestyle('-')
         AP.line.set_linewidth(1.0)
         AP.line.set_color((0.0, 0.0, 0.0))
-        # Add annotations for prependiculars
+        # Add annotations for perpendiculars
         ax = Plot.axes()
         ax.annotate('AP', xy=(APx + 0.01 * Lpp, 0.01 * maxArea), size=15)
         ax.annotate('AP', xy=(APx + 0.01 * Lpp, 0.95 * maxArea), size=15)
