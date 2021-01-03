@@ -309,7 +309,7 @@ void UnitTestDialog::setProgressFraction(float fraction, const QString& color)
 }
 
 /**
- * Emtpies the error listview.
+ * Empties the error listview.
  */
 void UnitTestDialog::clearErrorList()
 {
