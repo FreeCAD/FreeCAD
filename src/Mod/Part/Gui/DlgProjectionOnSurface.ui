@@ -87,7 +87,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_6">
      <item>
-      <widget class="QLabel" name="labelExtrudeHeigth">
+      <widget class="QLabel" name="labelExtrudeHeight">
        <property name="text">
         <string>Extrude height</string>
        </property>
