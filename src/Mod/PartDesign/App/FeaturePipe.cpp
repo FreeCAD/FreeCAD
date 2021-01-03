@@ -178,7 +178,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         std::vector<std::vector<TopoDS_Wire>> wiresections;
         for(TopoDS_Wire& wire : wires)
             wiresections.emplace_back(1, wire);
-        //maybe we need a sacling law
+        //maybe we need a scaling law
         Handle(Law_Function) scalinglaw;
 
         //see if we shall use multiple sections
