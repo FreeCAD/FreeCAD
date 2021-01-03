@@ -59,7 +59,7 @@ namespace Assembly {
 
 struct ConstraintInitException : std::exception {
     const char* what() const throw() {
-        return "Constraint cout not be initialised: unsoported geometry";
+        return "Constraint cout not be initialised: unsupported geometry";
     }
 };
 struct ConstraintPartException : std::exception {
@@ -69,7 +69,7 @@ struct ConstraintPartException : std::exception {
 };
 struct ConstraintLinkException : std::exception {
     const char* what() const throw() {
-        return "Constraint cout not be initialised: unsoported link type";
+        return "Constraint cout not be initialised: unsupported link type";
     }
 };
 
