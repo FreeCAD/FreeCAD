@@ -203,7 +203,7 @@ void NetworkRetriever::setFetchImages( bool img )
 }
 
 /**
- * Saves all text/html documents with .html extionsion if \a html is true.
+ * Saves all text/html documents with .html extension if \a html is true.
  * As default the html property is false.
  */
 void NetworkRetriever::setEnableHTMLExtension( bool html )
