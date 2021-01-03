@@ -641,14 +641,14 @@ class ToolBitLibrary(object):
         if filename and filename[0]:
             if filename[1] == TooltableTypeLinuxCNC:
                 path = filename[0] if filename[0].endswith('.tbl') else "{}.tbl".format(filename[0])
-                self.libararySaveLinuxCNC(path)
+                self.librarySaveLinuxCNC(path)
             else:
                 path = filename[0] if filename[0].endswith('.fctl') else "{}.fctl".format(filename[0])
                 self.path = path
                 self.librarySave()
                 self.updateToolbar()
 
-    def libararySaveLinuxCNC(self, path):
+    def librarySaveLinuxCNC(self, path):
         # linuxcnc line template
         LIN = "T{} P{} X{} Y{} Z{} A{} B{} C{} U{} V{} W{} D{} I{} J{} Q{}; {}"
         with open(path, 'w') as fp:
