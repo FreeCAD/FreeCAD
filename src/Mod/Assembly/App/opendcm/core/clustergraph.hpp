@@ -681,7 +681,7 @@ public:
      * @param source The first vertex the edge should connect
      * @param target The second vertex the edge should connect
      * @return fusion:vector< LocalEdge, GlobalEdge, success, scope > with the new global edge descriptor and the local
-     * one where it was added. Success indicates if the function was successful and scope shows the validy of the local
+     * one where it was added. Success indicates if the function was successful and scope shows the validity of the local
      * descriptor in this cluster (true means the edge is in this cluster).
      **/
     fusion::vector<LocalEdge, GlobalEdge, bool, bool> addEdge(GlobalVertex source, GlobalVertex target);
