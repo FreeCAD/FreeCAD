@@ -114,7 +114,7 @@ App::DocumentObjectExecReturn *DrawViewDraft::execute(void)
                  << ",linestyle=\"" << LineStyle.getValue() << "\""
                  << ",color=\"" << col.asCSSString() << "\""
                  << ",linespacing=" << LineSpacing.getValue()
-                 // We must set techdraw to "true" becausea couple of things behave differently than in Drawing
+                 // We must set techdraw to "true" because couple of things behave differently than in Drawing
                  << ",techdraw=True"
                  << ",override=" << (OverrideStyle.getValue() ? "True" : "False");
 
