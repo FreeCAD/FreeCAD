@@ -223,7 +223,7 @@ void ChainIdSolver_Vereshchagin::downwards_sweep(const Jacobian& alfa, const Jnt
             //R are the forces coming from the children,
             //Q is taken zero (do we need to take the previous calculated torques?)
 
-            //projection of coriolis and centrepital forces into joint subspace (0 0 Z)
+            //projection of coriolis and centripetal forces into joint subspace (0 0 Z)
             s.totalBias = -dot(s.Z, s.R + s.PC);
             s.u = torques(j) + s.totalBias;
 
