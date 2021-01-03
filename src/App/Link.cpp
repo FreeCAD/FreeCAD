@@ -1050,7 +1050,7 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
         if(enableLabelCache)
             myLabelCache.clear();
 
-        // Element list changed, we need to sychrnoize VisibilityList.
+        // Element list changed, we need to synchronize VisibilityList.
         if(_getShowElementValue() && getVisibilityListProperty()) {
             if(parent->getDocument()->isPerformingTransaction()) {
                 update(parent,getVisibilityListProperty());
