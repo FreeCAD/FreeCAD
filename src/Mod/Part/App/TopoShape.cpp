@@ -1334,7 +1334,7 @@ unsigned int TopoShape::getMemSize (void) const
         TopExp::MapShapes(_Shape, M);
         for (int i=0; i<M.Extent(); i++) {
             const TopoDS_Shape& shape = M(i+1);
-            // add the size of the underlying geomtric data
+            // add the size of the underlying geometric data
             Handle(TopoDS_TShape) tshape = shape.TShape();
             memsize += tshape->DynamicType()->Size();
 

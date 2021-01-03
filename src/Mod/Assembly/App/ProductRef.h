@@ -41,7 +41,7 @@ class AssemblyExport ProductRef : public Assembly::Item
 public:
     ProductRef();
 
-	/// The one and only GeomtricObject referenced
+	/// The one and only GeometricObject referenced
     App::PropertyLink   Item;
  
     /** @name methods override feature */
