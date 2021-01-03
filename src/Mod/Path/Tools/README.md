@@ -25,7 +25,7 @@ A tool library is a (JSON) file with a mapping of tool id to the path of the too
 can be in multiple libraries and doesn't have an `id` of it's own. The `id` is a property of the library.
 
 If a tool from a tool library (or an entire tool library) is added to a job it retains its `id` from the library as a
-property. Adding a tool bit directly rsults in the tool getting the next free id assigned.
+property. Adding a tool bit directly results in the tool getting the next free id assigned.
 
 # Tool Controllers
 
