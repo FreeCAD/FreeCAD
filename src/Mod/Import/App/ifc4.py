@@ -9400,15 +9400,15 @@ class ifctendontype(ifcreinforcingelementtype):
 	:param crosssectionarea
 	:type crosssectionarea:ifcareameasure
 
-	:param sheethdiameter
-	:type sheethdiameter:ifcpositivelengthmeasure
+	:param sheetdiameter
+	:type sheetdiameter:ifcpositivelengthmeasure
 	'''
-	def __init__( self , inherited0__globalid , inherited1__ownerhistory , inherited2__name , inherited3__description , inherited4__applicableoccurrence , inherited5__haspropertysets , inherited6__representationmaps , inherited7__tag , inherited8__elementtype , predefinedtype,nominaldiameter,crosssectionarea,sheethdiameter, ):
+	def __init__( self , inherited0__globalid , inherited1__ownerhistory , inherited2__name , inherited3__description , inherited4__applicableoccurrence , inherited5__haspropertysets , inherited6__representationmaps , inherited7__tag , inherited8__elementtype , predefinedtype,nominaldiameter,crosssectionarea,sheetdiameter, ):
 		ifcreinforcingelementtype.__init__(self , inherited0__globalid , inherited1__ownerhistory , inherited2__name , inherited3__description , inherited4__applicableoccurrence , inherited5__haspropertysets , inherited6__representationmaps , inherited7__tag , inherited8__elementtype , )
 		self.predefinedtype = predefinedtype
 		self.nominaldiameter = nominaldiameter
 		self.crosssectionarea = crosssectionarea
-		self.sheethdiameter = sheethdiameter
+		self.sheetdiameter = sheetdiameter
 
 	@apply
 	def predefinedtype():
@@ -9453,17 +9453,17 @@ class ifctendontype(ifcreinforcingelementtype):
 		return property(**locals())
 
 	@apply
-	def sheethdiameter():
+	def sheetdiameter():
 		def fget( self ):
-			return self._sheethdiameter
+			return self._sheetdiameter
 		def fset( self, value ):
 			if value != None: # OPTIONAL attribute
 				if not check_type(value,ifcpositivelengthmeasure):
-					self._sheethdiameter = ifcpositivelengthmeasure(value)
+					self._sheetdiameter = ifcpositivelengthmeasure(value)
 				else:
-					self._sheethdiameter = value
+					self._sheetdiameter = value
 			else:
-				self._sheethdiameter = value
+				self._sheetdiameter = value
 		return property(**locals())
 	def correctpredefinedtype(self):
 		eval_correctpredefinedtype_wr = ((self.predefinedtype  !=  ifctendontypeenum.self.userdefined)  or  ((self.predefinedtype  ==  ifctendontypeenum.self.userdefined)  and  EXISTS(self.self.ifcelementtype.self.elementtype)))
