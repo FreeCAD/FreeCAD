@@ -1547,7 +1547,7 @@ void SoFCSelectionRoot::doAction(SoAction *action) {
 bool SoFCSelectionRoot::doActionPrivate(Stack &stack, SoAction *action) {
     // Selection action short-circuit optimization. In case of whole object
     // selection/pre-selection, we shall store a SelContext keyed by ourself.
-    // And the action traversal can be short-curcuited once the first targeted
+    // And the action traversal can be short-circuited once the first targeted
     // SoFCSelectionRoot is found here. New function checkSelection() is exposed
     // to check for whole object selection. This greatly improve performance on
     // large group.
