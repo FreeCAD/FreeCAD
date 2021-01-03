@@ -130,7 +130,7 @@ bool UniGridApprox::MeshOffset()
     // m_Mesh.MovePoint(i,normals[i]);
     //}
 
-    // erzeuge nun ein uniformes Rechtecksgitter auf dem CAD-Netz
+    // erzeuge nun ein uniformes Rechteckgitter auf dem CAD-Netz
     m_Mesh.RecalcBoundBox();
 
     for (p_it.Begin(); p_it.More(); p_it.Next())
