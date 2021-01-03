@@ -334,7 +334,7 @@ void SoBrepPointSet::doAction(SoAction* action)
                     // the user may want to partial render only other type of
                     // geometry. So we call below to obtain a action context.
                     // If no secondary context exist, it will create an empty
-                    // one, and an empty secondary context inhibites drawing
+                    // one, and an empty secondary context inhibits drawing
                     // here.
                     auto ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext);
                     selCounter.checkAction(selaction,ctx);

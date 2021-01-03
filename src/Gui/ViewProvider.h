@@ -280,7 +280,7 @@ public:
      *
      * Tree view now calls this function instead of canDropObject(), and may
      * query for objects from other document. The default implementation
-     * (actually in ViewProviderDocumentObject) inhibites cross document
+     * (actually in ViewProviderDocumentObject) inhibits cross document
      * dropping, and calls canDropObject(obj) for the rest. Override this
      * function to enable cross document linking.
      *
