@@ -92,7 +92,7 @@ def updateInputField(obj, prop, widget, onBeforeChange=None):
 class QuantitySpinBox:
     '''Controller class to interface a Gui::QuantitySpinBox.
     The spin box gets bound to a given property and supports update in both directions.
-    QuatitySpinBox(widget, obj, prop, onBeforeChange=None)
+    QuantitySpinBox(widget, obj, prop, onBeforeChange=None)
             widget ... expected to be reference to a Gui::QuantitySpinBox
             obj    ... document object
             prop   ... canonical name of the (sub-) property
