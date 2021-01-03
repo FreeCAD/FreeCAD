@@ -58,7 +58,7 @@
 Dependency of pcl components:
 common: none
 features: common, kdtree, octree, search, (range_image)
-filters: common, kdtree, octree, sample_consenus, search
+filters: common, kdtree, octree, sample_consensus, search
 geometry: common
 io: common, octree
 kdtree: common
