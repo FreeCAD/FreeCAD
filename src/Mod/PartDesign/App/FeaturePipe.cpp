@@ -85,9 +85,9 @@ Pipe::Pipe()
     Sections.setSize(0);
     ADD_PROPERTY_TYPE(Spine,(0),"Sweep",App::Prop_None,"Path to sweep along");
     ADD_PROPERTY_TYPE(SpineTangent,(false),"Sweep",App::Prop_None,"Include tangent edges into path");
-    ADD_PROPERTY_TYPE(AuxillerySpine,(0),"Sweep",App::Prop_None,"Secondary path to orient sweep");
-    ADD_PROPERTY_TYPE(AuxillerySpineTangent,(false),"Sweep",App::Prop_None,"Include tangent edges into secondary path");
-    ADD_PROPERTY_TYPE(AuxilleryCurvelinear, (true), "Sweep", App::Prop_None,"Calculate normal between equidistant points on both spines");
+    ADD_PROPERTY_TYPE(AuxiliarySpine,(0),"Sweep",App::Prop_None,"Secondary path to orient sweep");
+    ADD_PROPERTY_TYPE(AuxiliarySpineTangent,(false),"Sweep",App::Prop_None,"Include tangent edges into secondary path");
+    ADD_PROPERTY_TYPE(AuxiliaryCurvelinear, (true), "Sweep", App::Prop_None,"Calculate normal between equidistant points on both spines");
     ADD_PROPERTY_TYPE(Mode,(long(0)),"Sweep",App::Prop_None,"Profile mode");
     ADD_PROPERTY_TYPE(Binormal,(Base::Vector3d()),"Sweep",App::Prop_None,"Binormal vector for corresponding orientation mode");
     ADD_PROPERTY_TYPE(Transition,(long(0)),"Sweep",App::Prop_None,"Transition mode");
@@ -163,10 +163,10 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         // auxiliary
         TopoDS_Shape auxpath;
         if(Mode.getValue()==3) {
-            App::DocumentObject* auxspine = AuxillerySpine.getValue();
+            App::DocumentObject* auxspine = AuxiliarySpine.getValue();
             if (!(auxspine && auxspine->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())))
                 return new App::DocumentObjectExecReturn("No auxiliary spine linked.");
-            std::vector<std::string> auxsubedge = AuxillerySpine.getSubValues();
+            std::vector<std::string> auxsubedge = AuxiliarySpine.getSubValues();
 
             const Part::TopoShape& auxshape = static_cast<Part::Feature*>(auxspine)->Shape.getValue();
             buildPipePath(auxshape, auxsubedge, auxpath);
@@ -391,8 +391,8 @@ void Pipe::setupAlgorithm(BRepOffsetAPI_MakePipeShell& mkPipeShell, TopoDS_Shape
     }
 
     if(auxiliary) {
-        mkPipeShell.SetMode(TopoDS::Wire(auxshape), AuxilleryCurvelinear.getValue());
-        //mkPipeShell.SetMode(TopoDS::Wire(auxshape), AuxilleryCurvelinear.getValue(), BRepFill_ContactOnBorder);
+        mkPipeShell.SetMode(TopoDS::Wire(auxshape), AuxiliaryCurvelinear.getValue());
+        //mkPipeShell.SetMode(TopoDS::Wire(auxshape), AuxiliaryCurvelinear.getValue(), BRepFill_ContactOnBorder);
     }
 }
 

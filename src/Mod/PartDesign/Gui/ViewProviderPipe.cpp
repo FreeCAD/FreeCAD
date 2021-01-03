@@ -74,7 +74,7 @@ std::vector<App::DocumentObject*> ViewProviderPipe::claimChildren(void)const
     if (spine != NULL && spine->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
         temp.push_back(spine);
 
-    App::DocumentObject* auxspine = pcPipe->AuxillerySpine.getValue();
+    App::DocumentObject* auxspine = pcPipe->AuxiliarySpine.getValue();
     if (auxspine != NULL && auxspine->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
         temp.push_back(auxspine);
 
@@ -139,8 +139,8 @@ void ViewProviderPipe::highlightReferences(ViewProviderPipe::Reference mode, boo
                             pcPipe->Spine.getSubValuesStartsWith("Edge"), on);
         break;
     case AuxiliarySpine:
-        highlightReferences(dynamic_cast<Part::Feature*>(pcPipe->AuxillerySpine.getValue()),
-                            pcPipe->AuxillerySpine.getSubValuesStartsWith("Edge"), on);
+        highlightReferences(dynamic_cast<Part::Feature*>(pcPipe->AuxiliarySpine.getValue()),
+                            pcPipe->AuxiliarySpine.getSubValuesStartsWith("Edge"), on);
         break;
     case Profile:
         highlightReferences(dynamic_cast<Part::Feature*>(pcPipe->Profile.getValue()),

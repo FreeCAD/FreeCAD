@@ -129,7 +129,7 @@ void ViewProviderLoft::highlightReferences(const bool /*on*/, bool /*auxiliary*/
     if(!auxiliary)
         base = static_cast<Part::Feature*>(pcLoft->Spine.getValue());
     else
-        base = static_cast<Part::Feature*>(pcLoft->AuxillerySpine.getValue());
+        base = static_cast<Part::Feature*>(pcLoft->AuxiliarySpine.getValue());
 
     if (base == NULL) return;
     PartGui::ViewProviderPart* svp = dynamic_cast<PartGui::ViewProviderPart*>(
@@ -140,7 +140,7 @@ void ViewProviderLoft::highlightReferences(const bool /*on*/, bool /*auxiliary*/
     if(!auxiliary)
         edges = pcLoft->Spine.getSubValuesStartsWith("Edge");
     else
-        edges = pcLoft->AuxillerySpine.getSubValuesStartsWith("Edge");
+        edges = pcLoft->AuxiliarySpine.getSubValuesStartsWith("Edge");
 
     if (on) {
          if (!edges.empty() && originalLineColors.empty()) {
