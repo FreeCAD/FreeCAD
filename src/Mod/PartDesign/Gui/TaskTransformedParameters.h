@@ -128,7 +128,7 @@ public:
     TaskTransformedParameters(TaskMultiTransformParameters *parentTask);
     virtual ~TaskTransformedParameters();
 
-    /// Returns the originals property of associated top feeature object
+    /// Returns the originals property of associated top feature object
     const std::vector<App::DocumentObject*> & getOriginals(void) const;
 
     /// Get the TransformedFeature object associated with this task

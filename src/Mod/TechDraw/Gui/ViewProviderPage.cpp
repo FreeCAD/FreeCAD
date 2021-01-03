@@ -329,7 +329,7 @@ std::vector<App::DocumentObject*> ViewProviderPage::claimChildren(void) const
     //                                               DrawViewBalloon
     //                                               DrawLeaderLine
     //                                               DrawRichAnno
-    //                                               any FeatuerView in a DrawViewClip
+    //                                               any FeatureView in a DrawViewClip
     //                                               DrawHatch
     //                                               DrawWeldSymbol
 

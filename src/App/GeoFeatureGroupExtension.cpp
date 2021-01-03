@@ -95,7 +95,7 @@ DocumentObject* GeoFeatureGroupExtension::getGroupOfObject(const DocumentObject*
     
     //compared to GroupExtension we do return here all GeoFeatureGroups including all extensions derived from it
     //like OriginGroup. That is needed as we use this function to get all local coordinate systems. Also there
-    //is no reason to distinguish between GeoFeatuerGroups, there is only between group/geofeaturegroup
+    //is no reason to distinguish between GeoFeatureGroups, there is only between group/geofeaturegroup
     auto list = obj->getInList();
     for (auto inObj : list) {
         

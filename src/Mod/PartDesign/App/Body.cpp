@@ -339,7 +339,7 @@ void Body::setBaseProperty(App::DocumentObject* feature)
     if (Body::isSolidFeature(feature)) {
         // Set BaseFeature property to previous feature (this might be the Tip feature)
         App::DocumentObject* prevSolidFeature = getPrevSolidFeature(feature);
-        // NULL is ok here, it just means we made the current one fiature the base solid
+        // NULL is ok here, it just means we made the current one feature the base solid
         static_cast<PartDesign::Feature*>(feature)->BaseFeature.setValue(prevSolidFeature);
 
         // Reroute the next solid feature's BaseFeature property to this feature
