@@ -1673,7 +1673,7 @@ Py::Object ObjectIdentifier::access(const ResolveResults &result, Py::Object *va
  * are just kept as Python object wrapped by App::any.
  *
  * @param pathValue: if true, calls the property's getPathValue(), which is
- * necessary for Qunatities to work.
+ * necessary for Quantities to work.
  *
  * @return The value of the property or field.
  */

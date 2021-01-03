@@ -46,7 +46,7 @@ public:
     int GetTQuantity () const;
     const int* GetIndices () const;
 
-    // derived quantites from the input mesh
+    // derived quantities from the input mesh
     const Vector3<Real>* GetNormals () const;
     const Vector3<Real>* GetMeans () const;
 

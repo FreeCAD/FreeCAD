@@ -18,7 +18,7 @@ namespace Wm4
 // Fit points with a Gaussian distribution.  The center is the mean of the
 // points, the axes are the eigenvectors of the covariance matrix, and the
 // extents are the eigenvalues of the covariance matrix and are returned in
-// increasing order.  The quantites are stored in a Box2<Real> just to have a
+// increasing order.  The quantities are stored in a Box2<Real> just to have a
 // single container.
 template <class Real> WM4_FOUNDATION_ITEM
 Box2<Real> GaussPointsFit2 (int iQuantity, const Vector2<Real>* akPoint);

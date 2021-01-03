@@ -435,7 +435,7 @@ void FemMesh::copyMeshData(const FemMesh& mesh)
                         for (int i=0; i<aPolyVol->NbNodes(); i++)
                             aNodes.push_back(aPolyVol->GetNode(i));
                         meshds->AddPolyhedralVolumeWithID(aNodes,
-                            aPolyVol->GetQuanities(), aPolyVol->GetID());
+                            aPolyVol->GetQuantities(), aPolyVol->GetID());
                     }
                 }
                 break;
