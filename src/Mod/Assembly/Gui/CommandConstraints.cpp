@@ -77,7 +77,7 @@ bool getConstraintPrerequisits(Assembly::Product** Asm, Assembly::ConstraintGrou
     // find the Constraint group of the active Assembly
     *ConstGrp = getConstraintGroup(*Asm);
 
-    // if it hasen't aleardy one, create one:
+    // if it hasen't already one, create one:
     if(!*ConstGrp) {
         Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().addObject('Assembly::ConstraintGroup','ConstraintGroup')");
         Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().ActiveObject.Label = 'ConstraintGroup'");

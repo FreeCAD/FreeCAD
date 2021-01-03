@@ -552,7 +552,7 @@ ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::addEdge(LocalVertex
     bool done;
     boost::tie(e, done) = boost::edge(source, target, *this);
 
-    //if done=true the edge alredy existed
+    //if done=true the edge already existed
     if(!done)
         boost::tie(e, done) = boost::add_edge(source, target, *this);
 
