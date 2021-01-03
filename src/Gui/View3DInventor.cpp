@@ -513,12 +513,11 @@ void View3DInventor::printPreview()
 {
     QPrinter printer(QPrinter::ScreenResolution);
     printer.setFullPage(true);
-#if (QT_VERSION > QT_VERSION_CHECK(5, 9, 0))
-    printer.setPageSize(QPrinter::A4);
-#endif
 #if QT_VERSION >= 0x050300
+    printer.setPageSize(QPageSize(QPageSize::A4));
     printer.setPageOrientation(QPageLayout::Landscape);
 #else
+    printer.setPageSize(QPrinter::A4);
     printer.setOrientation(QPrinter::Landscape);
 #endif
 
