@@ -2083,7 +2083,7 @@ bool CmdSketcherCreateCircle::isActive(void)
  *
  *    \f{eqnarray*}{
  *        r &\equiv& \textrm{ radial distance from the focus to a point on the ellipse}\\
- *        r_a &\equiv& \textrm{ radial distance from the focus to apopasis}\\
+ *        r_a &\equiv& \textrm{ radial distance from the focus to apoapsis}\\
  *        r_p &\equiv& \textrm{ radial distance from the focus to periapsis}\\
  *        a &\equiv& \textrm{ length of the semi-major axis, colloquially 'radius'}\\
  *        b &\equiv& \textrm{ length of the semi-minor axis, colloquially 'radius'}\\
