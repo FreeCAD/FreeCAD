@@ -515,7 +515,7 @@ DeriVector2 Parabola::CalculateNormal(Point &p, double* derivparam)
     // the normal is the vector from the focus to the intersection of ano thru the point p and direction
     // of the symmetry axis of the parabola with the directrix.
     // As both point to directrix and point to focus are of equal magnitude, we can work with unitary vectors
-    // to calculate the normal, substraction of those vectors.
+    // to calculate the normal, subtraction of those vectors.
 
     DeriVector2 ret = cv.subtr(f1v).getNormalized().subtr(f1v.subtr(pv).getNormalized());
 

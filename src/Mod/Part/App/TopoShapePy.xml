@@ -232,7 +232,7 @@ cut(tool) -> Shape
   or
 cut((tool1,tool2,...),[tolerance=0.0]) -> Shape
 
-Substraction of this and a given list of topo shapes.
+Subtraction of this and a given list of topo shapes.
 
 Supports:
 - Fuzzy Boolean operations (global tolerance for a Boolean operation)
