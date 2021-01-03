@@ -381,7 +381,7 @@ alpha=30.0
 beta=-35.0
  \endcode
 
- Verification code that the axonomtries are correct:
+ Verification code that the axonometries are correct:
 
  \code
 from pivy import coin
