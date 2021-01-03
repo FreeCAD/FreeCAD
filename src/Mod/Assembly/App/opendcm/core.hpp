@@ -29,7 +29,7 @@
 	#pragma warning( disable : 4522 )
 
 	//disable boost concept checks, as some of them have alignment problems which bring msvc to an error
-	//(for example DFSvisitor check in boost::graph::depht_first_search)
+	//(for example DFSvisitor check in boost::graph::depth_first_search)
 	//this has no runtime effect as these are only compile time checks
 	#include <boost/concept/assert.hpp>
 	#undef BOOST_CONCEPT_ASSERT
