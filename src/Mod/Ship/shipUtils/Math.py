@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-def isAprox(a,b,tol=0.000001):
+def isApprox(a,b,tol=0.000001):
     """returns if a value is into (b-tol,b+tol)
     @param a Value to compare.
     @param b Center of valid interval
@@ -40,7 +40,7 @@ def isSamePoint(a,b,tol=0.000001):
     @return True if twice point are the same, False otherwise
     @note FreeCAD::Base::Vector types must be provided
     """
-    if isAprox(a.x,b.x,tol) and isAprox(a.y,b.y,tol) and isAprox(a.z,b.z,tol):
+    if isApprox(a.x,b.x,tol) and isApprox(a.y,b.y,tol) and isApprox(a.z,b.z,tol):
         return True
     return False
 
@@ -52,6 +52,6 @@ def isSameVertex(a,b,tol=0.0001):
     @return True if twice point are the same, False otherwise
     @note FreeCAD::Part::Vertex types must be provided
     """
-    if isAprox(a.X,b.X,tol) and isAprox(a.Y,b.Y,tol) and isAprox(a.Z,b.Z,tol):
+    if isApprox(a.X,b.X,tol) and isApprox(a.Y,b.Y,tol) and isApprox(a.Z,b.Z,tol):
         return True
     return False
