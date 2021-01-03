@@ -220,7 +220,7 @@ protected:
 
 public:
     typedef ClusterGraph<edge_properties, vertex_properties, cluster_properties, objects> Cluster;
-    typedef Sheduler< BaseType > Shedule;
+    typedef Scheduler< BaseType > Schedule;
     typedef KernelType Kernel;
 
 public:
@@ -280,7 +280,7 @@ public:
 
     boost::shared_ptr<Cluster> m_cluster;
     boost::shared_ptr<Storage> m_storage;
-    Shedule m_sheduler;
+    Schedule m_sheduler;
     Kernel  m_kernel;
     std::vector<boost::shared_ptr<System> > m_subsystems;
 

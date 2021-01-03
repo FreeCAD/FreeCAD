@@ -51,11 +51,11 @@ struct FunctorJob : Job<System> {
 };
 
 template<typename Sys>
-class Sheduler {
+class Scheduler {
 
 public:
-    Sheduler() {};
-    ~Sheduler() {
+    Scheduler() {};
+    ~Scheduler() {
       
       std::for_each(m_preprocess.begin(), m_preprocess.end(), Deleter());
       std::for_each(m_process.begin(), m_process.end(), Deleter());
