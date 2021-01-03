@@ -267,7 +267,7 @@ void ReadDyna::ReadConstraints(std::ifstream &inputfile)
 
 /*! \brief Triangulator
 
- This will triuangulate the squares, taking note of the constraining point that might come into play.
+ This will triangulate the squares, taking note of the constraining point that might come into play.
 
  To date, only three things are considered now:- No constrains in the edges, One Constrain in the edges, and Two
  Constrains next to each other (not opposite each other!) in the edges

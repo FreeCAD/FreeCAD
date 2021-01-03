@@ -172,7 +172,7 @@ private:
 
   /** Cut mesh 1 with mesh 2 */
   void Cut (std::set<unsigned long>& facetsNotCuttingEdge0, std::set<unsigned long>& facetsCuttingEdge1);
-  /** Trianglute each facets cut with its cutting points */
+  /** Triangulate each facets cut with its cutting points */
   void TriangulateMesh (const MeshKernel &cutMesh, int side);
   /** search facets for adding (with region growing) */
   void CollectFacets (int side, float mult);
