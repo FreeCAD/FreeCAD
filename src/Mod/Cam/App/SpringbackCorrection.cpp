@@ -73,7 +73,7 @@ SpringbackCorrection::SpringbackCorrection(const TopoDS_Shape& aShape, const Mes
     MeshMap.clear();
     //Remove any existing Triangulation on the Shape
     BRepTools::Clean(m_Shape);
-    best_fit::Tesselate_Shape(m_Shape,m_CadMesh,(float) 0.1); // Basic triangulation of the entire shape
+    best_fit::Tessellate_Shape(m_Shape,m_CadMesh,(float) 0.1); // Basic triangulation of the entire shape
 
     MeshCore::MeshTopoAlgorithm algo(m_CadMesh);
     algo.HarmonizeNormals();
@@ -130,7 +130,7 @@ bool SpringbackCorrection::Load(const TopoDS_Shape& aShape, const MeshCore::Mesh
 
     //Remove any existing Triangulation on the Shape
     BRepTools::Clean(m_Shape);
-    best_fit::Tesselate_Shape(m_Shape,m_CadMesh,(float) 0.1); // Basistriangulierung des ganzen Shapes
+    best_fit::Tessellate_Shape(m_Shape,m_CadMesh,(float) 0.1); // Basistriangulierung des ganzen Shapes
 
     MeshCore::MeshTopoAlgorithm algo(m_CadMesh);
     algo.HarmonizeNormals();
@@ -562,7 +562,7 @@ bool SpringbackCorrection::Init()
     MeshMap.clear();
     //Remove any existing Triangulation on the Shape
     BRepTools::Clean(m_Shape);
-    best_fit::Tesselate_Shape(m_Shape,m_CadMesh,(float) 0.1); // Basistriangulierung des ganzen Shapes
+    best_fit::Tessellate_Shape(m_Shape,m_CadMesh,(float) 0.1); // Basistriangulierung des ganzen Shapes
 
     MeshCore::MeshTopoAlgorithm algo(m_CadMesh);
     algo.HarmonizeNormals();
@@ -1822,7 +1822,7 @@ bool SpringbackCorrection::FacetRegionGrowing(MeshCore::MeshKernel &mesh,
 // Base::Vector3f  p1,p2;
 // double curv;
 // // Triangulate Shape (vorläufig)
-// best_fit::Tesselate_Shape(m_Shape, m_Mesh, 1);
+// best_fit::Tessellate_Shape(m_Shape, m_Mesh, 1);
 //
 // MeshCurvature(m_Mesh);
 //

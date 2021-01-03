@@ -929,7 +929,7 @@ double UniGridApprox::CompMeshError()
     MeshCore::MeshKernel mesh;
     BRepBuilderAPI_MakeFace Face(aAdaptorSurface.BSpline());
     GeomAPI_ProjectPointOnSurf proj;
-    best_fit::Tesselate_Face(Face.Face(), mesh, float(0.1));
+    best_fit::Tessellate_Face(Face.Face(), mesh, float(0.1));
     cout << mesh.CountPoints() << endl;
     std::vector<Base::Vector3f> normals =  best_fit::Comp_Normals(mesh);
 

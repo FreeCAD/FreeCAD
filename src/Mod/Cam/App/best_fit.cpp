@@ -178,7 +178,7 @@ bool best_fit::Perform()
     cout << "tessellate shape" << endl;
 
 	sec1 = time(NULL);
-   	  Tesselate_Shape(m_Cad, m_CadMesh, 1); // Tessellates m_Cad Shape and stores Tessellation in m_CadMesh 
+   	  Tessellate_Shape(m_Cad, m_CadMesh, 1); // Tessellates m_Cad Shape and stores Tessellation in m_CadMesh 
 	sec2 = time(NULL);
 
 	Runtime_BestFit << "Tessellate Shape: " << sec2 - sec1 << " sec" << std::endl;  
@@ -1332,7 +1332,7 @@ bool best_fit::ShapeFit_Coarse()
     return true;
 }
 
-bool best_fit::Tesselate_Face(const TopoDS_Face &aface, MeshCore::MeshKernel &mesh, float deflection)
+bool best_fit::Tessellate_Face(const TopoDS_Face &aface, MeshCore::MeshKernel &mesh, float deflection)
 {
     Base::Builder3D aBuild;
     MeshCore::MeshBuilder builder(mesh);
@@ -1399,7 +1399,7 @@ bool best_fit::Tesselate_Face(const TopoDS_Face &aface, MeshCore::MeshKernel &me
 }
 
 
-bool best_fit::Tesselate_Shape(const TopoDS_Shape &shape, MeshCore::MeshKernel &mesh, float deflection)
+bool best_fit::Tessellate_Shape(const TopoDS_Shape &shape, MeshCore::MeshKernel &mesh, float deflection)
 {
     Base::Builder3D aBuild;
 

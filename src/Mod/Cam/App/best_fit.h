@@ -113,7 +113,7 @@ public:
         \param deflection parameter which determines the accuracy of the
                           triangulation
     */
-    static bool Tesselate_Shape(const TopoDS_Shape &shape, MeshCore::MeshKernel &mesh, float deflection);
+    static bool Tessellate_Shape(const TopoDS_Shape &shape, MeshCore::MeshKernel &mesh, float deflection);
 	
     /*! \brief Computes a triangulation on aface.
 
@@ -122,7 +122,7 @@ public:
         \param deflection parameter which determines the accuracy of the
                           triangulation
     */
-    static bool Tesselate_Face (const TopoDS_Face  &aface, MeshCore::MeshKernel &mesh, float deflection);
+    static bool Tessellate_Face (const TopoDS_Face  &aface, MeshCore::MeshKernel &mesh, float deflection);
 
     /*! \brief Returns a normal-vector of Mesh at the knots with uniform
                weighting

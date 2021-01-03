@@ -158,7 +158,7 @@ static PyObject * read(PyObject *self, PyObject *args)
 }
 
 
-static PyObject * tesselateShape(PyObject *self, PyObject *args)
+static PyObject * tessellateShape(PyObject *self, PyObject *args)
 {
 
     PyObject *pcObj;
@@ -256,7 +256,7 @@ static PyObject * best_fit_coarse(PyObject *self, PyObject *args)
 
 
         //best_fit befi(cad);
-        //best_fit::Tesselate_Shape(pcShape->getShape(),mesh,0.1);
+        //best_fit::Tessellate_Shape(pcShape->getShape(),mesh,0.1);
 
         //return new MeshPy(&befi.m_CadMesh);
 
@@ -3941,7 +3941,7 @@ static PyObject * tess_shape(PyObject *self, PyObject *args)
         //befi.ShapeFit_Coarse();
 
         MeshCore::MeshKernel mesh;
-        best_fit::Tesselate_Shape(cad, mesh, float(0.1));
+        best_fit::Tessellate_Shape(cad, mesh, float(0.1));
         MeshObject* anObject = new MeshObject(mesh);
         return new MeshPy(anObject);
 
@@ -4242,7 +4242,7 @@ struct PyMethodDef Cam_methods[] =
     //  {"makeToolPath", makeToolPath, 1},
     {"offset", offset, 1},
 // {"offset_mesh", offset_mesh, 1},
-    {"tesselateShape",tesselateShape,1},
+    {"tessellateShape",tessellateShape,1},
     {"tess_shape",tess_shape,1},
 // {"cut", cut, 1},
     {"createPlane" , createPlane, 1},

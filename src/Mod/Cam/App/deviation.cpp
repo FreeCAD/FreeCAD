@@ -150,7 +150,7 @@ bool Deviation::Compute()
 {
 	Base::Builder3D log;
 
-	best_fit::Tesselate_Shape(m_Cad, m_MeshCad, float(0.1));
+	best_fit::Tessellate_Shape(m_Cad, m_MeshCad, float(0.1));
 	GenNormals();
 
 	//return true;

@@ -188,7 +188,7 @@ bool cutting_tools::getShapeBB()
     //Die Cascade-Bounding Box funktioniert nicht richtig
     //Es wird dort wohl ne BoundingBox um dasKontrollnetz gelegt
     //Deshalb wird jetzt kurz das Shape tesseliert und dann die Bounding Box direkt ausgelesen
-    best_fit::Tesselate_Shape(m_Shape,m_CAD_Mesh,float(0.1));
+    best_fit::Tessellate_Shape(m_Shape,m_CAD_Mesh,float(0.1));
     Base::BoundBox3f aBoundBox = m_CAD_Mesh.GetBoundBox();
     m_maxlevel = aBoundBox.MaxZ;
     m_minlevel = aBoundBox.MinZ;
@@ -254,7 +254,7 @@ bool cutting_tools::fillFaceBBoxes()
         aFaceMesh.Clear();
         aBoundBox.Flush();
         atopo_surface = TopoDS::Face (Explorer.Current());
-        best_fit::Tesselate_Face(atopo_surface,aFaceMesh,float(0.1));
+        best_fit::Tessellate_Face(atopo_surface,aFaceMesh,float(0.1));
         aBoundBox = aFaceMesh.GetBoundBox();
         aBoundBox.Enlarge(2.0);
         std::pair<TopoDS_Face,Base::BoundBox3f> tempPair;
