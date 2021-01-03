@@ -328,7 +328,7 @@ bool RemeshGmsh::writeProject(QString& inpFile, QString& outFile)
             << "angle = DefineNumber[" << angle << ", Min " << minAngle << ", Max " << maxAngle << ", Step 1,\n"
             << "  Name \"Parameters/Angle for surface detection\" ];\n\n"
             << "forceParameterizablePatches = DefineNumber[0, Choices{0,1},\n"
-            << "  Name \"Parameters/Create surfaces guaranteed to be parametrizable\"];\n\n"
+            << "  Name \"Parameters/Create surfaces guaranteed to be parameterizable\"];\n\n"
             << "includeBoundary = 1;\n"
             << "ClassifySurfaces{angle * Pi/180, includeBoundary, forceParameterizablePatches};\n"
             << "// Create a geometry for all the discrete curves and surfaces in the mesh, by\n"
