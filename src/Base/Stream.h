@@ -209,7 +209,7 @@ protected:
 
 /**
  * Simple class to read data directly from Qt's QIODevice.
- * This class can only be used for readihg but not writing purposes.
+ * This class can only be used for reading but not writing purposes.
  * @author Werner Mayer
  */
 class BaseExport IODeviceIStreambuf : public std::streambuf
