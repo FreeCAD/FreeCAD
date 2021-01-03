@@ -48,7 +48,7 @@ namespace fusion = boost::fusion;
 
 /* Preprocessor implementation of emit signal. As we need many overloads with different number of
  * templated parameters we use boost preprocessor to do the hard repetive work. The definition and
- * implementation are definded first as they need to be known before usage
+ * implementation are defined first as they need to be known before usage
  * */
 #define EMIT_ARGUMENTS(z, n, data) \
     BOOST_PP_CAT(data, n)
