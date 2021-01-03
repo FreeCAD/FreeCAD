@@ -618,7 +618,7 @@ void ViewProviderFemMesh::resetDisplacementByNodeId(void)
     applyDisplacementToNodes(0.0);
     DisplacementVector.clear();
 }
-/// reaply the node displacement with a certain factor and do a redraw
+/// reapply the node displacement with a certain factor and do a redraw
 void ViewProviderFemMesh::applyDisplacementToNodes(double factor)
 {
     if(DisplacementVector.size() == 0)
