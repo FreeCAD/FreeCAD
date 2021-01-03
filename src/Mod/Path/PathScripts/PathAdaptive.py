@@ -53,7 +53,7 @@ def convertTo2d(pathArray):
 
 
 sceneGraph = None
-scenePathNodes = [] #for scene cleanup aftewards
+scenePathNodes = [] #for scene cleanup afterwards
 topZ = 10
 
 def sceneDrawPath(path, color=(0, 0, 1)):
