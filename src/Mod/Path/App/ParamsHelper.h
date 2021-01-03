@@ -142,7 +142,7 @@
  * the macro helper here to do operation on each parameter in the group. See
  * AreaParams.h file for an example of parameter definitions.
  *
- * Area.h, Area.cpp, FeatureArea.h, FeatureArea.cpp for usage of variouse macros.
+ * Area.h, Area.cpp, FeatureArea.h, FeatureArea.cpp for usage of various macros.
  *
  * See struct AreaDoc for an example of doc string generation.
  *
