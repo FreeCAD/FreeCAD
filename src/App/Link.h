@@ -86,7 +86,7 @@ public:
 
 #define LINK_PARAM_PLACEMENT(...) \
     (Placement, Base::Placement, App::PropertyPlacement, Base::Placement(), \
-     "Alias to LinkPlacement to make the link object compatibale with other objects", ##__VA_ARGS__)
+     "Alias to LinkPlacement to make the link object compatible with other objects", ##__VA_ARGS__)
 
 #define LINK_PARAM_OBJECT(...) \
     (LinkedObject, App::DocumentObject*, App::PropertyLink, 0, "Linked object", ##__VA_ARGS__)
