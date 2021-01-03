@@ -845,7 +845,7 @@ public:
     *
     * This function allows to access the objects stored in the graph. If no object of the desired type
     * was set before, a empty shared_ptr will be returned. Accessing the object at a local edge is a special
-    * case, as it can hold many global edges, each with it's own objetcs. Using a LocalEdge as key will
+    * case, as it can hold many global edges, each with it's own objects. Using a LocalEdge as key will
     * always return the object for the first GlobalEdge.
     *
     * @tparam Obj the object type which shall be returned
