@@ -372,7 +372,7 @@ public:
     typedef typename Property::type&  reference;
     typedef boost::lvalue_property_map_tag category;
 
-    //expose cutom types for easy access
+    //expose custom types for easy access
     typedef Property property;
     typedef typename dcm::details::property_selector<typename Property::kind, Graph>::sequence_type sequence;
     typedef typename dcm::details::property_selector<typename Property::kind, Graph>::property_distance distance;
