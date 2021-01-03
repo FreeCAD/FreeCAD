@@ -141,7 +141,7 @@ namespace tag {
 struct parameter : details::basic_geometry<weight::parameter, 1, false, false> {};
 } //tag
 
-struct orderd_bracket_accessor {
+struct ordered_bracket_accessor {
 
     template<typename Scalar, int ID, typename T>
     Scalar get(T& t) {
@@ -153,7 +153,7 @@ struct orderd_bracket_accessor {
     };
 };
 
-struct orderd_roundbracket_accessor {
+struct ordered_roundbracket_accessor {
 
     template<typename Scalar, int ID, typename T>
     Scalar get(T& t) {
