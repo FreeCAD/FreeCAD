@@ -17212,10 +17212,10 @@ class composite_curve_segment(founded_item):
 
 
 ####################
- # ENTITY reparametrised_composite_curve_segment #
+ # ENTITY reparameterized_composite_curve_segment #
 ####################
-class reparametrised_composite_curve_segment(composite_curve_segment):
-	'''Entity reparametrised_composite_curve_segment definition.
+class reparameterized_composite_curve_segment(composite_curve_segment):
+	'''Entity reparameterized_composite_curve_segment definition.
 
 	:param param_length
 	:type param_length:parameter_value

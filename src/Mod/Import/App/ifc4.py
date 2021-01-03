@@ -6947,10 +6947,10 @@ class ifccompositecurvesegment(ifcgeometricrepresentationitem):
 
 
 ####################
- # ENTITY ifcreparametrisedcompositecurvesegment #
+ # ENTITY ifcreparameterizedcompositecurvesegment #
 ####################
-class ifcreparametrisedcompositecurvesegment(ifccompositecurvesegment):
-	'''Entity ifcreparametrisedcompositecurvesegment definition.
+class ifcreparameterizedcompositecurvesegment(ifccompositecurvesegment):
+	'''Entity ifcreparameterizedcompositecurvesegment definition.
 
 	:param paramlength
 	:type paramlength:ifcparametervalue
