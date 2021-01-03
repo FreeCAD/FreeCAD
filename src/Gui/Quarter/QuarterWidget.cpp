@@ -1038,7 +1038,7 @@ QuarterWidget::redraw(void)
   // When stylesheet is used, there is recursive repaint warning caused by
   // repaint() here. It happens when switching active documents. Based on call
   // stacks, it happens like this, the repaint event first triggers a series
-  // calls of QWidgetPrivate::paintSiblingsRecrusive(), and then reaches one of
+  // calls of QWidgetPrivate::paintSiblingsRecursive(), and then reaches one of
   // the QuarterWidget. From its paintEvent(), it calls
   // SoSensorManager::processDelayQueue(), which triggers redraw() of another
   // QuarterWidget. And if repaint() is called here, it will trigger another

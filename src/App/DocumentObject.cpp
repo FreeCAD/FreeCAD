@@ -367,7 +367,7 @@ std::vector<App::DocumentObject*> DocumentObject::getInListRecursive(void) const
     std::vector<App::DocumentObject*> result;
     result.reserve(maxDepth);
 
-    // using a rcursie helper to collect all InLists
+    // using a recursive helper to collect all InLists
     _getInListRecursive(result, this, this, maxDepth);
 
     std::vector<App::DocumentObject*> array;
