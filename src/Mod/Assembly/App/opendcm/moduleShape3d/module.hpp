@@ -760,7 +760,7 @@ void ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D_id<Derived>::setIdentifier(
     std::stringstream str;
     str<<this->template getProperty<id_prop<Identifier> >();
     log_id.set(str.str());
-    BOOST_LOG(Base::log)<<"Identifyer set: "<<id;
+    BOOST_LOG(Base::log)<<"Identifier set: "<<id;
 #endif
 };
 

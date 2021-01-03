@@ -228,7 +228,7 @@ void Module3D<Typelist, ID>::type<Sys>::Geometry3D_id<Derived>::setIdentifier(Id
     std::stringstream str;
     str<<this->template getProperty<id_prop<Identifier> >();
     log_id.set(str.str());
-    BOOST_LOG(Base::log)<<"Identifyer set: "<<id;
+    BOOST_LOG(Base::log)<<"Identifier set: "<<id;
 #endif
 };
 

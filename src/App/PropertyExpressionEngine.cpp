@@ -253,7 +253,7 @@ void PropertyExpressionEngine::buildGraphStructures(const ObjectIdentifier & pat
 
 /**
  * @brief Create a canonical object identifier of the given object \a p.
- * @param p ObjectIndentifier
+ * @param p ObjectIdentifier
  * @return New ObjectIdentifier
  */
 
@@ -328,7 +328,7 @@ void PropertyExpressionEngine::onContainerRestored() {
 
 /**
  * @brief Get expression for \a path.
- * @param path ObjectIndentifier to query for.
+ * @param path ObjectIdentifier to query for.
  * @return Expression for \a path, or empty boost::any if not found.
  */
 
@@ -403,7 +403,7 @@ struct cycle_detector : public boost::dfs_visitor<> {
 /**
  * @brief Build a graph of all expressions in \a exprs.
  * @param exprs Expressions to use in graph
- * @param revNodes Map from int to ObjectIndentifer
+ * @param revNodes Map from int to ObjectIdentifier
  * @param g Graph to update
  */
 

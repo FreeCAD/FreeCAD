@@ -80,7 +80,7 @@ App::ObjectIdentifier PropertyConstraintList::makeArrayPath(int idx)
 App::ObjectIdentifier PropertyConstraintList::makeSimplePath(const Constraint * c)
 {
     return App::ObjectIdentifier(*this) << App::ObjectIdentifier::SimpleComponent(
-            App::ObjectIdentifier::String(c->Name, !ExpressionParser::isTokenAnIndentifier(c->Name)));
+            App::ObjectIdentifier::String(c->Name, !ExpressionParser::isTokenAnIdentifier(c->Name)));
 }
 
 App::ObjectIdentifier PropertyConstraintList::makePath(int idx, const Constraint * c)

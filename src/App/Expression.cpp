@@ -3372,7 +3372,7 @@ UnitExpression * ExpressionParser::parseUnit(const App::DocumentObject *owner, c
     }
 }
 
-bool ExpressionParser::isTokenAnIndentifier(const std::string & str)
+bool ExpressionParser::isTokenAnIdentifier(const std::string & str)
 {
     ExpressionParser::YY_BUFFER_STATE buf = ExpressionParser_scan_string(str.c_str());
     int token = ExpressionParserlex();
