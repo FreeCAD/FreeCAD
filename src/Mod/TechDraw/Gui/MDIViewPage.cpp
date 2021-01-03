@@ -117,7 +117,11 @@ TYPESYSTEM_SOURCE_ABSTRACT(TechDrawGui::MDIViewPage, Gui::MDIView)
 
 MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* parent)
   : Gui::MDIView(doc, parent),
+#if QT_VERSION >= 0x050300
+    m_orientation(QPageLayout::Landscape),
+#else
     m_orientation(QPrinter::Landscape),
+#endif
     m_paperSize(QPrinter::A4),
     m_vpPage(pageVp)
 {
@@ -311,9 +315,17 @@ void MDIViewPage::attachTemplate(TechDraw::DrawTemplate *obj)
     double height =  obj->Height.getValue();
     m_paperSize = getPaperSize(int(round(width)),int(round(height)));
     if (width > height) {
+#if QT_VERSION >= 0x050300
+        m_orientation = QPageLayout::Landscape;
+#else
         m_orientation = QPrinter::Landscape;
+#endif
     } else {
+#if QT_VERSION >= 0x050300
+        m_orientation = QPageLayout::Portrait;
+#else
         m_orientation = QPrinter::Portrait;
+#endif
     }
 }
 
@@ -664,9 +676,17 @@ void MDIViewPage::printPdf(std::string file)
     printer.setFullPage(true);
     printer.setOutputFileName(filename);
     if (m_paperSize == QPrinter::Ledger)  {
+#if QT_VERSION >= 0x050300
+        printer.setPageOrientation((QPageLayout::Orientation) (1 - m_orientation));  //reverse 0/1
+#else
         printer.setOrientation((QPrinter::Orientation) (1 - m_orientation));  //reverse 0/1
+#endif
     } else {
+#if QT_VERSION >= 0x050300
+        printer.setPageOrientation(m_orientation);
+#else
         printer.setOrientation(m_orientation);
+#endif
     }
     printer.setPaperSize(m_paperSize);
     print(&printer);
@@ -677,7 +697,11 @@ void MDIViewPage::print()
     QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage(true);
     printer.setPaperSize(m_paperSize);
+#if QT_VERSION >= 0x050300
+    printer.setPageOrientation(m_orientation);
+#else
     printer.setOrientation(m_orientation);
+#endif
     QPrintDialog dlg(&printer, this);
     if (dlg.exec() == QDialog::Accepted) {
         print(&printer);
@@ -689,7 +713,11 @@ void MDIViewPage::printPreview()
     QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage(true);
     printer.setPaperSize(m_paperSize);
+#if QT_VERSION >= 0x050300
+    printer.setPageOrientation(m_orientation);
+#else
     printer.setOrientation(m_orientation);
+#endif
 
     QPrintPreviewDialog dlg(&printer, this);
     connect(&dlg, SIGNAL(paintRequested (QPrinter *)),
@@ -722,7 +750,11 @@ void MDIViewPage::print(QPrinter* printer)
         // care if it uses wrong printer settings
         bool doPrint = paintType != QPaintEngine::Picture;
 
+#if QT_VERSION >= 0x050300
+        if (doPrint && printer->pageLayout().orientation() != m_orientation) {
+#else
         if (doPrint && printer->orientation() != m_orientation) {
+#endif
             int ret = QMessageBox::warning(this, tr("Different orientation"),
                 tr("The printer uses a different orientation  than the drawing.\n"
                    "Do you want to continue?"),
