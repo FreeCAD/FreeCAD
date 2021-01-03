@@ -1213,7 +1213,7 @@ bool MeshEvalCorruptedFacets::Evaluate()
   const MeshFacetArray& rFaces = _rclMesh.GetFacets();
 
   for ( MeshFacetArray::_TConstIterator it = rFaces.begin(); it != rFaces.end(); ++it ) {
-    // dupicated point indices
+    // duplicated point indices
     if ((it->_aulPoints[0] == it->_aulPoints[1]) || 
         (it->_aulPoints[1] == it->_aulPoints[2]) || 
         (it->_aulPoints[2] == it->_aulPoints[0]))
