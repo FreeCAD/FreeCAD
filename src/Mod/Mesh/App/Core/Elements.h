@@ -295,7 +295,7 @@ public:
   inline bool HasPoint(unsigned long) const;
   /**
    * Replaces the index of the neighbour facet that is equal to \a ulOrig
-   * by \a ulNew. If the facet does not have a neighbourt with this index
+   * by \a ulNew. If the facet does not have a neighbour with this index
    * nothing happens.
    */
   inline void ReplaceNeighbour (unsigned long ulOrig, unsigned long ulNew);
