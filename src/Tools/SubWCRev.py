@@ -222,11 +222,11 @@ class GitControl(VersionControl):
         if rr.close() is None: # exit code == 0
             self.remotes=dict(l[:-8].split('\t') for l in rrstr.splitlines() \
                     if l.endswith(' (fetch)'))
-            self.branchlst=os.popen("git show -s --pretty=%d HEAD").read()\
+            self.branchlist=os.popen("git show -s --pretty=%d HEAD").read()\
             .strip(" ()\n").split(', ') #used for possible remotes
     def geturl(self):
         urls=[]
-        for ref in self.branchlst:
+        for ref in self.branchlist:
             if '/' in ref:
                 remote,branch = ref.split('/',1)
                 if remote in self.remotes:
@@ -328,7 +328,7 @@ class GitControl(VersionControl):
             if re.match( "\*", self.branch ) != None:
                 break
         self.branch=self.branch[2:]
-        self.getremotes() #setup self.remotes and branchlst
+        self.getremotes() #setup self.remotes and branchlist
 
         remote='origin' #used to determine the url
         self.geturl()
@@ -347,8 +347,8 @@ class GitControl(VersionControl):
                 'release' not in self.branch.lower():
             self.namebranchbyparents()
         if self.branch == '(no branch)': #check for remote branches
-            if len(self.branchlst) >= 2:
-                self.branch = self.branchlst[1]
+            if len(self.branchlist) >= 2:
+                self.branch = self.branchlist[1]
                 if '/' in self.branch:
                     remote=self.branch.split('/',1)[0]
             else: # guess
