@@ -292,7 +292,7 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
                 int offset_rot = mes.setParameterMap(cm.getNormQuaternionMap(), rotation);
                 //set translation as map to the parameter vector
                 int offset = mes.setParameterMap(cm.getTranslationMap(), general);
-                //write initail values to the parameter maps
+                //write initial values to the parameter maps
                 //remember the parameter offset as all downstream geometry must use this offset
                 cm.setParameterOffset(offset_rot, rotation);
                 cm.setParameterOffset(offset, general);
