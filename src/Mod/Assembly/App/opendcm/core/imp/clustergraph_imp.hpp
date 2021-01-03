@@ -95,14 +95,14 @@ struct property_extractor  {
 };
 
 template<typename Functor, typename Graph>
-struct apply_remove_prediacte {
+struct apply_remove_predicate {
     Functor& func;
     GlobalVertex vert;
     GlobalEdge edge;
     bool isEdge;
 
-    apply_remove_prediacte(Functor& f, GlobalVertex v) : func(f), vert(v), isEdge(false) {};
-    apply_remove_prediacte(Functor& f, GlobalEdge e) : func(f), edge(e), vert(0), isEdge(true) {};
+    apply_remove_predicate(Functor& f, GlobalVertex v) : func(f), vert(v), isEdge(false) {};
+    apply_remove_predicate(Functor& f, GlobalEdge e) : func(f), edge(e), vert(0), isEdge(true) {};
     bool operator()(typename Graph::edge_bundle_single& e) {
         bool res;
 
@@ -682,7 +682,7 @@ void ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::downstreamRemo
 
     for(; it.first != it.second; it.first++) {
         std::vector<edge_bundle_single>& vec = fusion::at_c<1> ((*this) [* (it.first)]);
-        vec.erase(std::remove_if(vec.begin(), vec.end(), apply_remove_prediacte<Functor, ClusterGraph> (f, v)), vec.end());
+        vec.erase(std::remove_if(vec.begin(), vec.end(), apply_remove_predicate<Functor, ClusterGraph> (f, v)), vec.end());
 
         if(vec.empty())
             re.push_back(* (it.first));
@@ -742,7 +742,7 @@ void ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::removeEdge(Glo
 
     placeholder p;
     std::vector<edge_bundle_single>& vec = fusion::at_c<1> ((*fusion::at_c<1> (res)) [fusion::at_c<0> (res)]);
-    vec.erase(std::remove_if(vec.begin(), vec.end(), apply_remove_prediacte<placeholder, ClusterGraph> (p, id)), vec.end());
+    vec.erase(std::remove_if(vec.begin(), vec.end(), apply_remove_predicate<placeholder, ClusterGraph> (p, id)), vec.end());
 
     if(vec.empty())
         boost::remove_edge(fusion::at_c<0> (res), *fusion::at_c<1> (res));
@@ -753,7 +753,7 @@ template<typename Functor>
 void ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::removeEdge(LocalEdge id, Functor& f) {
 
     std::vector<edge_bundle_single>& vec = fusion::at_c<1> ((*this) [id]);
-    std::for_each(vec.begin(), vec.end(), boost::bind<void> (boost::ref(apply_remove_prediacte<placeholder, ClusterGraph> (f, -1)), bp::_1));
+    std::for_each(vec.begin(), vec.end(), boost::bind<void> (boost::ref(apply_remove_predicate<placeholder, ClusterGraph> (f, -1)), bp::_1));
     boost::remove_edge(id, *this);
 };
 
