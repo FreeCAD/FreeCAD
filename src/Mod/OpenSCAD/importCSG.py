@@ -802,7 +802,7 @@ def p_multmatrix_action(p):
         m1l=[float(me) for me in m1l] # assume precise output
         m1l=[(0 if (abs(me) < 1e-15) else me) for me in m1l]
         matrixisrounded=False
-    else: #trucanted numbers
+    else: #truncated numbers
         m1l=[round(float(me),12) for me in m1l] #round
         matrixisrounded=True
     transform_matrix = FreeCAD.Matrix(*tuple(m1l))
