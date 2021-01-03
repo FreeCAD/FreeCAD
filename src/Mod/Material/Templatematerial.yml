@@ -80,7 +80,7 @@
 #    KindOfMaterialDE:
 #      Type: 'String'
 #      URL: ''
-#      Description: "Germand localized kind of material"
+#      Description: "German localized kind of material"
     MaterialNumber:
       Type: 'String'
       URL: ''
