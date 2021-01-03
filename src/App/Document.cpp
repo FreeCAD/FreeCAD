@@ -3852,7 +3852,7 @@ DocumentObject * Document::addObject(const char* sType, const char* pObjectName,
     pcObject->pcNameInDocument = &(d->objectMap.find(ObjectName)->first);
     // insert in the vector
     d->objectArray.push_back(pcObject);
-    // insert in the adjacence list and reference through the ConectionMap
+    // insert in the adjacence list and reference through the ConnectionMap
     //_DepConMap[pcObject] = add_vertex(_DepList);
 
     // If we are restoring, don't set the Label object now; it will be restored later. This is to avoid potential duplicate
