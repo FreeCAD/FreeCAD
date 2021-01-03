@@ -27,7 +27,7 @@
 				Part.Cone(Point1,Point2,Radius1,Radius2)
 				    Creates a cone defined by two points and two radii
 				    The axis of the cone is the line passing through
-				    Point1 and Poin2.
+				    Point1 and Point2.
 				    Radius1 is the radius of the section passing through
 				    Point1 and Radius2 the radius of the section passing
 				    through Point2.
