@@ -129,7 +129,7 @@ class CommandPathFixture:
 import Path
 import PathScripts
 from PathScripts import PathUtils
-prjexists = False
+prjexists_variable_is_unused = False
 obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","Fixture")
 PathScripts.PathFixture.Fixture(obj)
 obj.Active = True

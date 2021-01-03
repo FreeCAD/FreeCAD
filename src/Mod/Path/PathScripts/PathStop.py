@@ -120,7 +120,7 @@ class CommandPathStop:
 import Path
 import PathScripts
 from PathScripts import PathUtils
-prjexists = False
+prjexists_variable_is_unused = False
 obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","Stop")
 PathScripts.PathStop.Stop(obj)
 
