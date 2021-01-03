@@ -197,16 +197,16 @@ void TaskPadParameters::updateUI(int index)
 {
     // disable/hide everything unless we are sure we don't need it
     // exception: the direction parameters are in any case visible
-    bool isLengthEditVisable  = false;
-    bool isLengthEdit2Visable = false;
-    bool isOffsetEditVisable  = false;
+    bool isLengthEditVisible  = false;
+    bool isLengthEdit2Visible = false;
+    bool isOffsetEditVisible  = false;
     bool isMidplateEnabled    = false;
     bool isReversedEnabled    = false;
     bool isFaceEditEnabled    = false;
 
     // dimension
     if (index == 0) {
-        isLengthEditVisable = true;
+        isLengthEditVisible = true;
         ui->lengthEdit->selectNumber();
         // Make sure that the spin box has the focus to get key events
         // Calling setFocus() directly doesn't work because the spin box is not
@@ -218,12 +218,12 @@ void TaskPadParameters::updateUI(int index)
     }
     // up to first/last
     else if (index == 1 || index == 2) {
-        isOffsetEditVisable  = true;
+        isOffsetEditVisible  = true;
         isReversedEnabled = true;
     }
     // up to face
     else if (index == 3) {
-        isOffsetEditVisable  = true;
+        isOffsetEditVisible  = true;
         isFaceEditEnabled    = true;
         QMetaObject::invokeMethod(ui->lineFaceName, "setFocus", Qt::QueuedConnection);
         // Go into reference selection mode if no face has been selected yet
@@ -232,25 +232,25 @@ void TaskPadParameters::updateUI(int index)
     }
     // two dimensions
     else {
-        isLengthEditVisable = true;
-        isLengthEdit2Visable = true;
+        isLengthEditVisible = true;
+        isLengthEdit2Visible = true;
     }
 
-    ui->lengthEdit->setVisible( isLengthEditVisable );
-    ui->lengthEdit->setEnabled( isLengthEditVisable );
-    ui->labelLength->setVisible( isLengthEditVisable );
+    ui->lengthEdit->setVisible( isLengthEditVisible );
+    ui->lengthEdit->setEnabled( isLengthEditVisible );
+    ui->labelLength->setVisible( isLengthEditVisible );
 
-    ui->offsetEdit->setVisible( isOffsetEditVisable );
-    ui->offsetEdit->setEnabled( isOffsetEditVisable );
-    ui->labelOffset->setVisible( isOffsetEditVisable );
+    ui->offsetEdit->setVisible( isOffsetEditVisible );
+    ui->offsetEdit->setEnabled( isOffsetEditVisible );
+    ui->labelOffset->setVisible( isOffsetEditVisible );
 
     ui->checkBoxMidplane->setEnabled( isMidplateEnabled );
 
     ui->checkBoxReversed->setEnabled( isReversedEnabled );
 
-    ui->lengthEdit2->setVisible( isLengthEdit2Visable );
-    ui->lengthEdit2->setEnabled( isLengthEdit2Visable );
-    ui->labelLength2->setVisible( isLengthEdit2Visable );
+    ui->lengthEdit2->setVisible( isLengthEdit2Visible );
+    ui->lengthEdit2->setEnabled( isLengthEdit2Visible );
+    ui->labelLength2->setVisible( isLengthEdit2Visible );
 
     ui->buttonFace->setEnabled( isFaceEditEnabled );
     ui->lineFaceName->setEnabled( isFaceEditEnabled );
