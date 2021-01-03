@@ -78,7 +78,7 @@ namespace dcm {
  * constructor. Therefore a interface for setting default values is added to the property. If you want
  * to assign a default value you just need to add a struct default_value which returns the wanted default
  * value with the operator(). If you don't want a default value, just don't add the struct. The implementation
- * assignes the default value to the property, therefore it should only be used with assignalble types.
+ * assignes the default value to the property, therefore it should only be used with assignable types.
  *
  *
  * A property implementation for storing integers at a graph edge with the identifier
