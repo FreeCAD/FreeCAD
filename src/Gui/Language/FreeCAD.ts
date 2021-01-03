@@ -4928,7 +4928,7 @@ Do you want to save your changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
+        <source>The exported object contains external link. Please save the document at least once before exporting.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6479,7 +6479,7 @@ Be aware the point where you click matters.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
+        <source>The exported object contains external link. Please save the document at least once before exporting.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
