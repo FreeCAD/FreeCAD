@@ -56,7 +56,7 @@ class MeshFacetGrid;
  * the edges and the facets describing a mesh object.
  * 
  * The bounding box is calculated during the buildup of the data
- * structure and gets only re-caclulated after insertion of new facets
+ * structure and gets only re-calculated after insertion of new facets
  * but not after removal of facets.
  *
  * This class provides only some rudimental querying methods.
