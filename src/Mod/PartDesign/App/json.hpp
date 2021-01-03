@@ -7678,7 +7678,7 @@ enum class cbor_tag_handler_t
 
 @note from https://stackoverflow.com/a/1001328/266378
 */
-static inline bool little_endianess(int num = 1) noexcept
+static inline bool little_endianness(int num = 1) noexcept
 {
     return *reinterpret_cast<char*>(&num) == 1;
 }
@@ -10089,7 +10089,7 @@ class binary_reader
     std::size_t chars_read = 0;
 
     /// whether we can assume little endianness
-    const bool is_little_endian = little_endianess();
+    const bool is_little_endian = little_endianness();
 
     /// the SAX parser
     json_sax_t* sax = nullptr;
@@ -14311,7 +14311,7 @@ class binary_writer
 
   private:
     /// whether we can assume little endianness
-    const bool is_little_endian = little_endianess();
+    const bool is_little_endian = little_endianness();
 
     /// the output
     output_adapter_t<CharType> oa = nullptr;
