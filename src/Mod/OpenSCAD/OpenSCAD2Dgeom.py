@@ -325,7 +325,7 @@ def edgestowires(edgelist,eps=0.001):
 
             if True:
                 tobeclosed = outerd < eps*2
-                # OpenSCAD uses 0.001 for corase grid
+                # OpenSCAD uses 0.001 for coarse grid
                 #from draftlibs import fcvec, fcgeo
                 #w2=fcgeo.superWire(path,tobeclosed)
                 w2=superWireReverse(debug,tobeclosed)
