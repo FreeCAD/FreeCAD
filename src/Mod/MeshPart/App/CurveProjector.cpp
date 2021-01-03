@@ -456,7 +456,7 @@ void CurveProjectorSimple::projectCurve( const TopoDS_Edge& aEdge,
     MeshK.GetFacetNeighbours ( uCurFacetIdx, auNeighboursIdx[0], auNeighboursIdx[1], auNeighboursIdx[2]);
 
     do{
-      // lower the step until you find a neigbourfacet to project...
+      // lower the step until you find a neighbourfacet to project...
       fStep /= 2.0;
       // still on the same facet?
       gpPt = hCurve->Value(fAct+fStep);
