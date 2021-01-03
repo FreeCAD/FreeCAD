@@ -3763,7 +3763,7 @@ static PyObject * best_fit_test(PyObject *self, PyObject *args)
             aFaceWire = TopoDS::Wire(asecondFaceExplorer.Current());
         }
         WireExplorer awireexplorer(aFaceWire);
-        //Punkte auf der Wire erzeugen und dann diese Punkte als Input in den Delaynay reinschieben
+        //Punkte auf der Wire erzeugen und dann diese Punkte als Input in den Delaunay reinschieben
         BRepAdaptor_CompCurve2 aWireAdapter(aFaceWire);
         Standard_Real first_p,last_p,delta_u;
         last_p = aWireAdapter.LastParameter();
