@@ -57,7 +57,7 @@ namespace {
     return pt;
   }
 
-  Voronoi::point_type orthognalProjection(const Voronoi::point_type &point, const Voronoi::segment_type &segment) {
+  Voronoi::point_type orthogonalProjection(const Voronoi::point_type &point, const Voronoi::segment_type &segment) {
     // move segment so it goes through the origin (s)
     Voronoi::point_type offset;
     {
@@ -140,7 +140,7 @@ namespace {
         p0.x(v0->x());
         p0.y(v0->y());
       }
-      Voronoi::point_type p1 = orthognalProjection(p0, segment);
+      Voronoi::point_type p1 = orthogonalProjection(p0, segment);
       list->append(Py::Float(distanceBetween(*v0, p1, scale)));
     } else {
       Py_INCREF(Py_None);
@@ -475,7 +475,7 @@ PyObject* VoronoiEdgePy::toShape(PyObject *args)
       // this is only the mid point of the segment if the parabola is symmetric
       Voronoi::point_type loc;
       {
-        Voronoi::point_type proj = orthognalProjection(point, segment);
+        Voronoi::point_type proj = orthogonalProjection(point, segment);
         // the location is the mid point between the projection on the segment and the point
         loc.x((proj.x() + point.x()) / 2);
         loc.y((proj.y() + point.y()) / 2);
@@ -495,8 +495,8 @@ PyObject* VoronoiEdgePy::toShape(PyObject *args)
       // the arc of the parabola in the horizontal plane
       auto pt0 = pointFromVertex(*e->ptr->vertex0());
       auto pt1 = pointFromVertex(*e->ptr->vertex1());
-      Voronoi::point_type pt0x = orthognalProjection(pt0, xaxis);
-      Voronoi::point_type pt1x = orthognalProjection(pt1, xaxis);
+      Voronoi::point_type pt0x = orthogonalProjection(pt0, xaxis);
+      Voronoi::point_type pt1x = orthogonalProjection(pt1, xaxis);
       double dist0 = distanceBetween(pt0, pt0x, e->dia->getScale()) * sideOf(pt0, xaxis);
       double dist1 = distanceBetween(pt1, pt1x, e->dia->getScale()) * sideOf(pt1, xaxis);
       if (dist1 < dist0) {
