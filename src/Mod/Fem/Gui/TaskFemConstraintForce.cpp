@@ -260,7 +260,7 @@ void TaskFemConstraintForce::onReferenceDeleted() {
 
 void TaskFemConstraintForce::onButtonDirection(const bool pressed)
 {
-    // sets the normal vector of the currently selecteed planar face as direction
+    // sets the normal vector of the currently selected planar face as direction
 
     Q_UNUSED(pressed)
     //get vector of selected objects of active document

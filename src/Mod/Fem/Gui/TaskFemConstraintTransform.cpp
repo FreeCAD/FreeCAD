@@ -77,7 +77,7 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(ViewProviderFemConstraint
     createDeleteAction(ui->lw_Rect);
     deleteAction->connect(deleteAction, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
 
-    // highlight seletcted list items in the model
+    // highlight selected list items in the model
     connect(ui->lw_Rect, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
         this, SLOT(setSelection(QListWidgetItem*)));
     connect(ui->lw_Rect, SIGNAL(itemClicked(QListWidgetItem*)),

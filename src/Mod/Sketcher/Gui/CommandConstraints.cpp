@@ -679,7 +679,7 @@ int SketchSelection::setUp(void)
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() == 1) {
-        // if one selectetd, only sketch allowed. should be done by activity of command
+        // if one selected, only sketch allowed. should be done by activity of command
         if(!selection[0].getObject()->getTypeId().isDerivedFrom(Sketcher::SketchObject::getClassTypeId()))
         {
             ErrorMsg = QObject::tr("Only sketch and its support is allowed to select");
