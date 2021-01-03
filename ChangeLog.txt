@@ -616,7 +616,7 @@ Version: V0.1B107 Date: Tue Jan 11 11:16:46 2005 +++++++++++++++++++++++++++++++
   * put Application and Document (and helper classes) in namespace App
   * put exception handling into ParameterPy wrapper
   * PIMPLE document in class and py class
-  * put the whole document python methodes with the macros and exceptions
+  * put the whole document python methods with the macros and exceptions
   * removing doctype and put Feature handling into the document
   * Bug 1100780 fixed (no color in editor after first start)
 
@@ -835,7 +835,7 @@ Version: V0.1B63 Date: Sun Jun 08 20:21:25 2003 +++++++++++++++++++++++++++++++
 Version: V0.1B62 Date: Sat May 31 11:53:56 2003 +++++++++++++++++++++++++++++++
   * redesign of Document view model
   * removing ViewContainer
-  * adding the OnHasMsg methodes
+  * adding the OnHasMsg methods
   * switching some stdCommands to message stile to allow views with own document
   * moving scintila to a passive view model
   * updated to new version of Scintilla (1.53)
@@ -918,7 +918,7 @@ Version: V0.1B47 Date: Fri Mar 28 18:24:36 2003 +++++++++++++++++++++++++++++++
   * removing Part.py and PartGui.py
 
 Version: V0.1B46 Date: Wed Mar 26 18:02:11 2003 +++++++++++++++++++++++++++++++
-  * new methodes in ParameterGrp (IsEmpty(), HasGroup() )
+  * new methods in ParameterGrp (IsEmpty(), HasGroup() )
 
 Version: V0.1B45 Date: Thu Mar 20 21:05:21 2003 +++++++++++++++++++++++++++++++
   * Testframe for Parameter and removal
@@ -1030,7 +1030,7 @@ Version: V0.1B23 Date: Fri Jan 10 17:43:13 2003 +++++++++++++++++++++++++++++++
 
 Version: V0.1B22 Date: Thu Jan 09 22:16:02 2003 +++++++++++++++++++++++++++++++
   * Add FCBmpFactory
-  * New Methodes in Gui. (python)
+  * New Methods in Gui. (python)
 
 Version: V0.1B21 Date: Mon Jan 06 20:53:48 2003 +++++++++++++++++++++++++++++++
   * Building up Part Application
@@ -1050,7 +1050,7 @@ Version: V0.1B18 Date: Fri Jan 03 19:26:56 2003 +++++++++++++++++++++++++++++++
 
 Version: V0.1B17 Date: Thu Jan 02 21:50:27 2003 +++++++++++++++++++++++++++++++
   * First Version Parameter Dialog
-  * New Methodes on FCParameterGrp
+  * New Methods on FCParameterGrp
 
 Version: V0.1B16 Date: Wed Jan 01 18:06:46 2003 +++++++++++++++++++++++++++++++
   * Needed interface in CmdBar (Werner)
