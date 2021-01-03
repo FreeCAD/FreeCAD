@@ -89,9 +89,9 @@ PyMOD_INIT_FUNC(RobotGui)
         // set some default values
         // default speed for trajectory is 1m/s
         Base::Interpreter().runString("_DefSpeed = '1 m/s'");
-        // default Cintinuity is off
+        // default Continuity is off
         Base::Interpreter().runString("_DefCont = False");
-        // default Cintinuity is off
+        // default Continuity is off
         Base::Interpreter().runString("_DefAcceleration = '1 m/s^2'");
         // default orientation of a waypoint if no other constraint
         Base::Interpreter().runString("_DefOrientation = FreeCAD.Rotation()");
