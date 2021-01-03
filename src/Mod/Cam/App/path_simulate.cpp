@@ -2210,7 +2210,7 @@ bool path_simulate::MakePathRobot()
     return true;
 }
 
-/* Wird nur zu Beginn der Ausschreibung in path_simulate::WriteOurputDouble() aufgerufen und passt die Ausgabevektoren
+/* Wird nur zu Beginn der Ausschreibung in path_simulate::WriteOutputDouble() aufgerufen und passt die Ausgabevektoren
 <m_Output_time>, <m_Output_time2> so aneinander an, dass die Endzeiten übereinstimmen*/ 
 bool path_simulate::TimeCorrection()
 {
