@@ -244,7 +244,7 @@ Err = FreeCAD.Console.PrintError
 Wrn = FreeCAD.Console.PrintWarning
 test_ascii = lambda s: all(ord(c) < 128 for c in s)
 
-#store the cmake variales
+#store the cmake variables
 App.__cmake__ = cmake;
 
 #store unit test names
