@@ -764,7 +764,7 @@ std::vector<unsigned long> MeshFixSelfIntersection::GetFacets() const
     std::vector<unsigned long> indices;
     const MeshFacetArray& rFaces = _rclMesh.GetFacets();
     for (std::vector<std::pair<unsigned long, unsigned long> >::const_iterator
-        it = selfIntersectons.begin(); it != selfIntersectons.end(); ++it) {
+        it = selfIntersections.begin(); it != selfIntersections.end(); ++it) {
         unsigned short numOpenEdges1 = rFaces[it->first].CountOpenEdges();
         unsigned short numOpenEdges2 = rFaces[it->second].CountOpenEdges();
 

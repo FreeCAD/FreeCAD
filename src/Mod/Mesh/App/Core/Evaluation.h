@@ -307,13 +307,13 @@ class MeshExport MeshFixSelfIntersection : public MeshValidation
 {
 public:
     MeshFixSelfIntersection (MeshKernel &rclB, const std::vector<std::pair<unsigned long, unsigned long> >& si)
-        : MeshValidation(rclB), selfIntersectons(si) {}
+        : MeshValidation(rclB), selfIntersections(si) {}
     virtual ~MeshFixSelfIntersection () {}
     std::vector<unsigned long> GetFacets() const;
     bool Fixup();
 
 private:
-    const std::vector<std::pair<unsigned long, unsigned long> >& selfIntersectons;
+    const std::vector<std::pair<unsigned long, unsigned long> >& selfIntersections;
 };
 
 // ----------------------------------------------------
