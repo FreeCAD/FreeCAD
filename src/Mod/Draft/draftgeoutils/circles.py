@@ -432,7 +432,7 @@ def findRadicalAxis(circle1, circle2):
     perpCenDir.normalize()
 
     # J ... The radical center.
-    # K ... The point where the cadical axis crosses the line of cen1->cen2.
+    # K ... The point where the radical axis crosses the line of cen1->cen2.
     # k1 ... Distance from cen1 to K.
     # k2 ... Distance from cen2 to K.
     # dist = k1 + k2
