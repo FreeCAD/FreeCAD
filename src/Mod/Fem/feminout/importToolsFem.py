@@ -415,7 +415,7 @@ def fill_femresult_mechanical(
             if len(Peeq) > 0:
                 if len(Peeq.values()) != len(disp.values()):
                     # how is this possible? An example is needed!
-                    Console.PrintError("PEEQ seams to have exptra nodes.\n")
+                    Console.PrintError("PEEQ seams to have extra nodes.\n")
                     Pe = []
                     Pe_extra_nodes = list(Peeq.values())
                     nodes = len(disp.values())
@@ -443,7 +443,7 @@ def fill_femresult_mechanical(
                     nodes = len(disp.values())
                     for i in range(nodes):
                         # how is this possible? An example is needed!
-                        Console.PrintError("Temperature seams to have exptra nodes.\n")
+                        Console.PrintError("Temperature seams to have extra nodes.\n")
                         Temp_value = Temp_extra_nodes[i]
                         Temp.append(Temp_value)
                     res_obj.Temperature = list(map((lambda x: x), Temp))
