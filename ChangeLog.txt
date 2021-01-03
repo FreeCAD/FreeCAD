@@ -885,7 +885,7 @@ Version: V0.1B54 Date: Thu Apr 17 12:19:12 2003 +++++++++++++++++++++++++++++++
 
 Version: V0.1B53 Date: Sun Apr 13 15:33:23 2003 +++++++++++++++++++++++++++++++
   * patch from Werner about Linux
-  * rezising the tree and the Icons
+  * resizing the tree and the Icons
 
 Version: V0.1B52 Date: Thu Apr 10 21:17:20 2003 +++++++++++++++++++++++++++++++
   * insert the TreeDockBar
