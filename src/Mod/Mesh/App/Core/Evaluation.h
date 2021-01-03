@@ -94,7 +94,7 @@ class MeshExport MeshOrientationVisitor : public MeshFacetVisitor
 public:
     MeshOrientationVisitor();
 
-    /** Returns false after the first inconsistence is found, true otherwise. */
+    /** Returns false after the first inconsistency is found, true otherwise. */
     bool Visit (const MeshFacet &, const MeshFacet &, unsigned long , unsigned long );
     bool HasNonUnifomOrientedFacets() const;
 
