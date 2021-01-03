@@ -434,7 +434,7 @@ struct PropertyOwner {
     template<typename Prop>
     void setProperty(typename Prop::type value);
 
-    /* It's imortant to not store the properties but their types. These types are
+    /* It's important to not store the properties but their types. These types are
      * stored and accessed as fusion vector.
      * */
     typedef PropertyList PropertySequence;

@@ -639,7 +639,7 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
           * will do the check
           *
         // If sub-objects are already selected then only add the un-selected parts.
-        // This is impotant to avoid recursive calls of rmvSelection() which
+        // This is important to avoid recursive calls of rmvSelection() which
         // invalidates the internal iterator (#0002200).
         if (selIt != selObj.end()) {
             std::vector<std::string> selElements = selIt->getSubNames();
