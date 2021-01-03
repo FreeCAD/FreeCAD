@@ -66,14 +66,14 @@ struct set_constraint_option {
 
 template<typename Typelist, typename ID>
 template<typename Sys>
-Module3D<Typelist, ID>::type<Sys>::inheriter_base::inheriter_base() {
+Module3D<Typelist, ID>::type<Sys>::inheritor_base::inheritor_base() {
     m_this = ((Sys*) this);
 };
 
 template<typename Typelist, typename ID>
 template<typename Sys>
 typename Module3D<Typelist, ID>::template type<Sys>::Geom
-Module3D<Typelist, ID>::type<Sys>::inheriter_base::createGeometry3D() {
+Module3D<Typelist, ID>::type<Sys>::inheritor_base::createGeometry3D() {
 
     Geom g(new Geometry3D(* ((Sys*) this)));
     fusion::vector<LocalVertex, GlobalVertex> res = m_this->m_cluster->addVertex();
@@ -87,7 +87,7 @@ template<typename Typelist, typename ID>
 template<typename Sys>
 template<typename T>
 typename Module3D<Typelist, ID>::template type<Sys>::Geom
-Module3D<Typelist, ID>::type<Sys>::inheriter_base::createGeometry3D(T geom) {
+Module3D<Typelist, ID>::type<Sys>::inheritor_base::createGeometry3D(T geom) {
 
     Geom g(new Geometry3D(geom, * ((Sys*) this)));
     fusion::vector<LocalVertex, GlobalVertex> res = m_this->m_cluster->addVertex();
@@ -99,7 +99,7 @@ Module3D<Typelist, ID>::type<Sys>::inheriter_base::createGeometry3D(T geom) {
 
 template<typename Typelist, typename ID>
 template<typename Sys>
-void Module3D<Typelist, ID>::type<Sys>::inheriter_base::removeGeometry3D(Geom g) {
+void Module3D<Typelist, ID>::type<Sys>::inheritor_base::removeGeometry3D(Geom g) {
 
     GlobalVertex v = g->template getProperty<vertex_prop>();
 
@@ -113,7 +113,7 @@ void Module3D<Typelist, ID>::type<Sys>::inheriter_base::removeGeometry3D(Geom g)
     g->template emitSignal<remove>(g);
 
     //remove the vertex from graph and emit all edges that get removed with the functor
-    boost::function<void(GlobalEdge)> functor = boost::bind(&inheriter_base::apply_edge_remove, this, bp::_1);
+    boost::function<void(GlobalEdge)> functor = boost::bind(&inheritor_base::apply_edge_remove, this, bp::_1);
     m_this->m_cluster->removeVertex(v, functor);
     m_this->erase(g);
 };
@@ -122,7 +122,7 @@ template<typename Typelist, typename ID>
 template<typename Sys>
 template<typename T1>
 typename Module3D<Typelist, ID>::template type<Sys>::Cons
-Module3D<Typelist, ID>::type<Sys>::inheriter_base::createConstraint3D(Geom first, Geom second, T1 constraint1) {
+Module3D<Typelist, ID>::type<Sys>::inheritor_base::createConstraint3D(Geom first, Geom second, T1 constraint1) {
 
     //get the fusion vector type
     typedef typename details::fusion_vec<T1>::type covec;
@@ -154,7 +154,7 @@ Module3D<Typelist, ID>::type<Sys>::inheriter_base::createConstraint3D(Geom first
 
 template<typename Typelist, typename ID>
 template<typename Sys>
-void Module3D<Typelist, ID>::type<Sys>::inheriter_base::removeConstraint3D(Cons c) {
+void Module3D<Typelist, ID>::type<Sys>::inheritor_base::removeConstraint3D(Cons c) {
 
     GlobalEdge e = c->template getProperty<edge_prop>();
     c->template emitSignal<remove>(c);
@@ -164,7 +164,7 @@ void Module3D<Typelist, ID>::type<Sys>::inheriter_base::removeConstraint3D(Cons 
 
 template<typename Typelist, typename ID>
 template<typename Sys>
-void Module3D<Typelist, ID>::type<Sys>::inheriter_base::apply_edge_remove(GlobalEdge e) {
+void Module3D<Typelist, ID>::type<Sys>::inheritor_base::apply_edge_remove(GlobalEdge e) {
     Cons c = m_this->m_cluster->template getObject<Constraint3D>(e);
     c->template emitSignal<remove>(c);
     m_this->erase(c);
@@ -174,8 +174,8 @@ template<typename Typelist, typename ID>
 template<typename Sys>
 template<typename T>
 typename Module3D<Typelist, ID>::template type<Sys>::Geom
-Module3D<Typelist, ID>::type<Sys>::inheriter_id::createGeometry3D(T geom, Identifier id) {
-    Geom g = inheriter_base::createGeometry3D(geom);
+Module3D<Typelist, ID>::type<Sys>::inheritor_id::createGeometry3D(T geom, Identifier id) {
+    Geom g = inheritor_base::createGeometry3D(geom);
     g->setIdentifier(id);
     return g;
 };
@@ -183,18 +183,18 @@ Module3D<Typelist, ID>::type<Sys>::inheriter_id::createGeometry3D(T geom, Identi
 template<typename Typelist, typename ID>
 template<typename Sys>
 typename Module3D<Typelist, ID>::template type<Sys>::Geom
-Module3D<Typelist, ID>::type<Sys>::inheriter_id::createGeometry3D(Identifier id) {
-    Geom g = inheriter_base::createGeometry3D();
+Module3D<Typelist, ID>::type<Sys>::inheritor_id::createGeometry3D(Identifier id) {
+    Geom g = inheritor_base::createGeometry3D();
     g->setIdentifier(id);
     return g;
 };
 
 template<typename Typelist, typename ID>
 template<typename Sys>
-void Module3D<Typelist, ID>::type<Sys>::inheriter_id::removeGeometry3D(Identifier id) {
+void Module3D<Typelist, ID>::type<Sys>::inheritor_id::removeGeometry3D(Identifier id) {
 
     if(hasGeometry3D(id))
-        inheriter_base::removeGeometry3D(getGeometry3D(id));
+        inheritor_base::removeGeometry3D(getGeometry3D(id));
     else
         throw module3d_error() <<  boost::errinfo_errno(410) << error_message("no geometry with this ID in this system");
 
@@ -204,16 +204,16 @@ template<typename Typelist, typename ID>
 template<typename Sys>
 template<typename T>
 typename Module3D<Typelist, ID>::template type<Sys>::Cons
-Module3D<Typelist, ID>::type<Sys>::inheriter_id::createConstraint3D(Identifier id, Geom first, Geom second, T constraint1) {
+Module3D<Typelist, ID>::type<Sys>::inheritor_id::createConstraint3D(Identifier id, Geom first, Geom second, T constraint1) {
 
-    Cons c = inheriter_base::createConstraint3D(first, second, constraint1);
+    Cons c = inheritor_base::createConstraint3D(first, second, constraint1);
     c->setIdentifier(id);
     return c;
 };
 
 template<typename Typelist, typename ID>
 template<typename Sys>
-void Module3D<Typelist, ID>::type<Sys>::inheriter_id::removeConstraint3D(Identifier id) {
+void Module3D<Typelist, ID>::type<Sys>::inheritor_id::removeConstraint3D(Identifier id) {
 
     if(hasConstraint3D(id))
         removeConstraint3D(getConstraint3D(id));
@@ -224,7 +224,7 @@ void Module3D<Typelist, ID>::type<Sys>::inheriter_id::removeConstraint3D(Identif
 
 template<typename Typelist, typename ID>
 template<typename Sys>
-bool Module3D<Typelist, ID>::type<Sys>::inheriter_id::hasGeometry3D(Identifier id) {
+bool Module3D<Typelist, ID>::type<Sys>::inheritor_id::hasGeometry3D(Identifier id) {
     if(getGeometry3D(id))
         return true;
     return false;
@@ -233,8 +233,8 @@ bool Module3D<Typelist, ID>::type<Sys>::inheriter_id::hasGeometry3D(Identifier i
 template<typename Typelist, typename ID>
 template<typename Sys>
 typename Module3D<Typelist, ID>::template type<Sys>::Geom
-Module3D<Typelist, ID>::type<Sys>::inheriter_id::getGeometry3D(Identifier id) {
-    std::vector< Geom >& vec = inheriter_base::m_this->template objectVector<Geometry3D>();
+Module3D<Typelist, ID>::type<Sys>::inheritor_id::getGeometry3D(Identifier id) {
+    std::vector< Geom >& vec = inheritor_base::m_this->template objectVector<Geometry3D>();
     typedef typename std::vector<Geom>::iterator iter;
     for(iter it=vec.begin(); it!=vec.end(); it++) {
         if(compare_traits<Identifier>::compare((*it)->getIdentifier(), id))
@@ -245,7 +245,7 @@ Module3D<Typelist, ID>::type<Sys>::inheriter_id::getGeometry3D(Identifier id) {
 
 template<typename Typelist, typename ID>
 template<typename Sys>
-bool Module3D<Typelist, ID>::type<Sys>::inheriter_id::hasConstraint3D(Identifier id) {
+bool Module3D<Typelist, ID>::type<Sys>::inheritor_id::hasConstraint3D(Identifier id) {
     if(getConstraint3D(id))
         return true;
     return false;
@@ -254,8 +254,8 @@ bool Module3D<Typelist, ID>::type<Sys>::inheriter_id::hasConstraint3D(Identifier
 template<typename Typelist, typename ID>
 template<typename Sys>
 typename Module3D<Typelist, ID>::template type<Sys>::Cons
-Module3D<Typelist, ID>::type<Sys>::inheriter_id::getConstraint3D(Identifier id) {
-    std::vector< Cons >& vec = inheriter_base::m_this->template objectVector<Constraint3D>();
+Module3D<Typelist, ID>::type<Sys>::inheritor_id::getConstraint3D(Identifier id) {
+    std::vector< Cons >& vec = inheritor_base::m_this->template objectVector<Constraint3D>();
     typedef typename std::vector<Cons>::iterator iter;
     for(iter it=vec.begin(); it!=vec.end(); it++) {
         if(compare_traits<Identifier>::compare((*it)->getIdentifier(), id))

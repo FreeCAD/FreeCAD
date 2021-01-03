@@ -117,9 +117,9 @@ boost::shared_ptr<System<KernelType, T1, T2, T3> > System<KernelType, T1, T2, T3
 #endif
     
     //inform modules that we have a subsystem now
-    Inheriter1::system_sub(s);
-    Inheriter2::system_sub(s);
-    Inheriter3::system_sub(s);
+    Inheritor1::system_sub(s);
+    Inheritor2::system_sub(s);
+    Inheritor3::system_sub(s);
     
     m_subsystems.push_back(s);
       

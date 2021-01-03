@@ -173,9 +173,9 @@ struct ModulePart {
         };
 
 
-        struct inheriter_base {
+        struct inheritor_base {
 
-            inheriter_base();
+            inheritor_base();
 
             template<typename T>
             Partptr createPart(const T& geometry);
@@ -233,7 +233,7 @@ struct ModulePart {
             };
         };
 
-        struct inheriter_id : public inheriter_base {
+        struct inheritor_id : public inheritor_base {
 
             template<typename T>
             Partptr createPart(const T& geometry, Identifier id);
@@ -241,7 +241,7 @@ struct ModulePart {
             Partptr getPart(Identifier id);
         };
 
-        struct inheriter : public mpl::if_<boost::is_same<Identifier, No_Identifier>, inheriter_base, inheriter_id>::type {};
+        struct inheritor : public mpl::if_<boost::is_same<Identifier, No_Identifier>, inheritor_base, inheritor_id>::type {};
 
         struct subsystem_property {
             typedef Sys* type;
@@ -503,7 +503,7 @@ ModulePart<Typelist, ID>::type<Sys>::Part::Part(const T& geometry, Sys& system, 
 
 template<typename Typelist, typename ID>
 template<typename Sys>
-ModulePart<Typelist, ID>::type<Sys>::inheriter_base::inheriter_base() {
+ModulePart<Typelist, ID>::type<Sys>::inheritor_base::inheritor_base() {
     m_this = ((Sys*) this);
 };
 
@@ -511,7 +511,7 @@ template<typename Typelist, typename ID>
 template<typename Sys>
 template<typename T>
 typename ModulePart<Typelist, ID>::template type<Sys>::Partptr
-ModulePart<Typelist, ID>::type<Sys>::inheriter_base::createPart(const T& geometry) {
+ModulePart<Typelist, ID>::type<Sys>::inheritor_base::createPart(const T& geometry) {
 
     typedef typename Sys::Cluster Cluster;
     std::pair<boost::shared_ptr<Cluster>, LocalVertex>  res = m_this->m_cluster->createCluster();
@@ -526,7 +526,7 @@ ModulePart<Typelist, ID>::type<Sys>::inheriter_base::createPart(const T& geometr
 
 template<typename Typelist, typename ID>
 template<typename Sys>
-void ModulePart<Typelist, ID>::type<Sys>::inheriter_base::removePart(Partptr p) {
+void ModulePart<Typelist, ID>::type<Sys>::inheritor_base::removePart(Partptr p) {
 
     remover r(*m_this);
     m_this->m_cluster->removeCluster(p->m_cluster, r);
@@ -536,13 +536,13 @@ void ModulePart<Typelist, ID>::type<Sys>::inheriter_base::removePart(Partptr p) 
 
 template<typename Typelist, typename ID>
 template<typename Sys>
-ModulePart<Typelist, ID>::type<Sys>::inheriter_base::remover::remover(Sys& s) : system(s) {
+ModulePart<Typelist, ID>::type<Sys>::inheritor_base::remover::remover(Sys& s) : system(s) {
 
 };
 
 template<typename Typelist, typename ID>
 template<typename Sys>
-void ModulePart<Typelist, ID>::type<Sys>::inheriter_base::remover::operator()(GlobalVertex v) {
+void ModulePart<Typelist, ID>::type<Sys>::inheritor_base::remover::operator()(GlobalVertex v) {
     Geom g = system.m_cluster->template getObject<Geometry3D>(v);
 
     if(g) {
@@ -560,7 +560,7 @@ void ModulePart<Typelist, ID>::type<Sys>::inheriter_base::remover::operator()(Gl
 
 template<typename Typelist, typename ID>
 template<typename Sys>
-void ModulePart<Typelist, ID>::type<Sys>::inheriter_base::remover::operator()(GlobalEdge e) {
+void ModulePart<Typelist, ID>::type<Sys>::inheritor_base::remover::operator()(GlobalEdge e) {
     Cons c = system.m_cluster->template getObject<Constraint3D>(e);
 
     if(c) {
@@ -573,15 +573,15 @@ template<typename Typelist, typename ID>
 template<typename Sys>
 template<typename T>
 typename ModulePart<Typelist, ID>::template type<Sys>::Partptr
-ModulePart<Typelist, ID>::type<Sys>::inheriter_id::createPart(const T& geometry, Identifier id) {
-    Partptr p = inheriter_base::createPart(geometry);
+ModulePart<Typelist, ID>::type<Sys>::inheritor_id::createPart(const T& geometry, Identifier id) {
+    Partptr p = inheritor_base::createPart(geometry);
     p->setIdentifier(id);
     return p;
 };
 
 template<typename Typelist, typename ID>
 template<typename Sys>
-bool ModulePart<Typelist, ID>::type<Sys>::inheriter_id::hasPart(Identifier id) {
+bool ModulePart<Typelist, ID>::type<Sys>::inheritor_id::hasPart(Identifier id) {
     if(getPart(id))
         return true;
 
@@ -591,8 +591,8 @@ bool ModulePart<Typelist, ID>::type<Sys>::inheriter_id::hasPart(Identifier id) {
 template<typename Typelist, typename ID>
 template<typename Sys>
 typename ModulePart<Typelist, ID>::template type<Sys>::Partptr
-ModulePart<Typelist, ID>::type<Sys>::inheriter_id::getPart(Identifier id) {
-    std::vector< Partptr >& vec = inheriter_base::m_this->template objectVector<Part>();
+ModulePart<Typelist, ID>::type<Sys>::inheritor_id::getPart(Identifier id) {
+    std::vector< Partptr >& vec = inheritor_base::m_this->template objectVector<Part>();
     typedef typename std::vector<Partptr>::iterator iter;
 
     for(iter it=vec.begin(); it!=vec.end(); it++) {

@@ -33,7 +33,7 @@ namespace qi = boost::spirit::qi;
 namespace dcm {
 
 template<typename Sys>
-void ModuleState::type<Sys>::inheriter::saveState(std::ostream& stream) {
+void ModuleState::type<Sys>::inheritor::saveState(std::ostream& stream) {
 
     boost::iostreams::filtering_ostream indent_stream;
     indent_stream.push(indent_filter());
@@ -46,7 +46,7 @@ void ModuleState::type<Sys>::inheriter::saveState(std::ostream& stream) {
 };
 
 template<typename Sys>
-void ModuleState::type<Sys>::inheriter::loadState(std::istream& stream) {
+void ModuleState::type<Sys>::inheritor::loadState(std::istream& stream) {
 
     //disable skipping of whitespace
     stream.unsetf(std::ios::skipws);

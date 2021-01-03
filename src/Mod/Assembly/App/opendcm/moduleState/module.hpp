@@ -32,9 +32,9 @@ struct ModuleState {
 
         typedef Unspecified_Identifier Identifier;
 
-        struct inheriter {
+        struct inheritor {
 
-            inheriter()  {
+            inheritor()  {
                 m_this = (Sys*) this;
             };
 

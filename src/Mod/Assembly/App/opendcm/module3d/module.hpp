@@ -58,7 +58,7 @@ struct Module3D {
         struct Constraint3D;
         struct Geometry3D;
         struct vertex_prop;
-        struct inheriter_base;
+        struct inheritor_base;
 
         typedef boost::shared_ptr<Geometry3D> Geom;
         typedef boost::shared_ptr<Constraint3D> Cons;
@@ -163,7 +163,7 @@ struct Module3D {
             friend struct details::ClusterMath<Sys>::map_downstream;
             friend struct details::SystemSolver<Sys>;
             friend struct details::SystemSolver<Sys>::Rescaler;
-            friend struct inheriter_base;
+            friend struct inheritor_base;
 
         public:
             //the geometry class itself does not hold an aligned eigen object, but maybe the variant
@@ -201,12 +201,12 @@ struct Module3D {
             friend struct details::SystemSolver<Sys>;
             friend struct details::SystemSolver<Sys>::Rescaler;
             friend struct details::MES<Sys>;
-            friend struct inheriter_base;
+            friend struct inheritor_base;
         };
 
-        struct inheriter_base {
+        struct inheritor_base {
 
-            inheriter_base();
+            inheritor_base();
 
             template<typename T>
             Geom createGeometry3D(T geom);
@@ -224,14 +224,14 @@ struct Module3D {
             void apply_edge_remove(GlobalEdge e);
         };
 
-        struct inheriter_id : public inheriter_base {
+        struct inheritor_id : public inheritor_base {
 
         protected:
-            using inheriter_base::m_this;
+            using inheritor_base::m_this;
 
         public:
-            using inheriter_base::createGeometry3D;
-            using inheriter_base::createConstraint3D;
+            using inheritor_base::createGeometry3D;
+            using inheritor_base::createConstraint3D;
 
             template<typename T>
             Geom createGeometry3D(T geom, Identifier id);
@@ -241,8 +241,8 @@ struct Module3D {
 
             void removeGeometry3D(Identifier id);
             void removeConstraint3D(Identifier id);
-            using inheriter_base::removeGeometry3D;
-            using inheriter_base::removeConstraint3D;
+            using inheritor_base::removeGeometry3D;
+            using inheritor_base::removeConstraint3D;
 
             bool hasGeometry3D(Identifier id);
             Geom getGeometry3D(Identifier id);
@@ -250,7 +250,7 @@ struct Module3D {
             Cons getConstraint3D(Identifier id);
         };
 
-        struct inheriter : public mpl::if_<boost::is_same<Identifier, No_Identifier>, inheriter_base, inheriter_id>::type {};
+        struct inheritor : public mpl::if_<boost::is_same<Identifier, No_Identifier>, inheritor_base, inheritor_id>::type {};
 
         struct math_prop {
             typedef cluster_property kind;

@@ -77,7 +77,7 @@
     BOOST_PP_ENUM_TRAILING_PARAMS(n, typename Arg)\
     > \
     boost::shared_ptr<typename ModuleShape3D<TypeList, ID>::template type<Sys>::Shape3D> \
-    ModuleShape3D<TypeList, ID>::type<Sys>::inheriter_base::createShape3D( \
+    ModuleShape3D<TypeList, ID>::type<Sys>::inheritor_base::createShape3D( \
             BOOST_PP_ENUM_BINARY_PARAMS(n, Arg, const& arg) \
                                               ) \
     { \
@@ -190,7 +190,7 @@ struct ModuleShape3D {
 
         typedef TypeList geometry_types;
         //forward declare
-        struct inheriter_base;
+        struct inheritor_base;
         struct Shape3D;
 
         typedef mpl::map2<
@@ -372,7 +372,7 @@ struct ModuleShape3D {
             void removed() {};
 
 
-            friend struct inheriter_base;
+            friend struct inheritor_base;
             friend struct Object<Sys, Derived, mpl::map0<> >;
         };
 
@@ -413,7 +413,7 @@ struct ModuleShape3D {
             friend struct details::ClusterMath<Sys>::map_downstream;
             friend struct details::SystemSolver<Sys>;
             friend struct details::SystemSolver<Sys>::Rescaler;
-            friend struct inheriter_base;
+            friend struct inheritor_base;
             friend struct details::ShapeGeneratorBase<Sys>;
 
         public:
@@ -421,10 +421,10 @@ struct ModuleShape3D {
             EIGEN_MAKE_ALIGNED_OPERATOR_NEW
         };
 
-        //inheriter for own functions
-        struct inheriter_base {
+        //inheritor for own functions
+        struct inheritor_base {
 
-            inheriter_base() {
+            inheritor_base() {
                 m_this = (Sys*)this;
             };
 
@@ -440,7 +440,7 @@ struct ModuleShape3D {
             void removeShape3D(boost::shared_ptr<Shape3D> g);
         };
 
-        struct inheriter_id : public inheriter_base {
+        struct inheritor_id : public inheritor_base {
             //we don't have a createshape3d method with identifier, as identifiers can be used to
             //specifie creation geometries or shapes. Therefore a call would always be ambiguous.
 
@@ -448,13 +448,13 @@ struct ModuleShape3D {
             bool hasShape3D(ID id);
             boost::shared_ptr<Shape3D> getShape3D(ID id);
 
-            using inheriter_base::removeShape3D;
+            using inheritor_base::removeShape3D;
 
         protected:
-            using inheriter_base::m_this;
+            using inheritor_base::m_this;
         };
 
-        struct inheriter : public mpl::if_<boost::is_same<ID, No_Identifier>, inheriter_base, inheriter_id>::type {};
+        struct inheritor : public mpl::if_<boost::is_same<ID, No_Identifier>, inheritor_base, inheritor_id>::type {};
 
         //add properties to geometry and constraint to evaluate their shape partipance
         struct shape_purpose_prop {
@@ -785,7 +785,7 @@ ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D::Shape3D(const T& geometry, Sys&
 
 template<typename Typelist, typename ID>
 template<typename Sys>
-void ModuleShape3D<Typelist, ID>::type<Sys>::inheriter_base::removeShape3D(boost::shared_ptr<Shape3D> g) {
+void ModuleShape3D<Typelist, ID>::type<Sys>::inheritor_base::removeShape3D(boost::shared_ptr<Shape3D> g) {
 
     //disconnect all shapes, geometries and constraints, as otherwise we would go into infinite
     //recursion
@@ -813,7 +813,7 @@ void ModuleShape3D<Typelist, ID>::type<Sys>::inheriter_base::removeShape3D(boost
 
 template<typename Typelist, typename ID>
 template<typename Sys>
-bool ModuleShape3D<Typelist, ID>::type<Sys>::inheriter_id::hasShape3D(Identifier id) {
+bool ModuleShape3D<Typelist, ID>::type<Sys>::inheritor_id::hasShape3D(Identifier id) {
     if(getShape3D(id))
         return true;
 
@@ -823,8 +823,8 @@ bool ModuleShape3D<Typelist, ID>::type<Sys>::inheriter_id::hasShape3D(Identifier
 template<typename Typelist, typename ID>
 template<typename Sys>
 boost::shared_ptr<typename ModuleShape3D<Typelist, ID>::template type<Sys>::Shape3D>
-ModuleShape3D<Typelist, ID>::type<Sys>::inheriter_id::getShape3D(Identifier id) {
-    std::vector< boost::shared_ptr<Shape3D> >& vec = inheriter_base::m_this->template objectVector<Shape3D>();
+ModuleShape3D<Typelist, ID>::type<Sys>::inheritor_id::getShape3D(Identifier id) {
+    std::vector< boost::shared_ptr<Shape3D> >& vec = inheritor_base::m_this->template objectVector<Shape3D>();
     typedef typename std::vector< boost::shared_ptr<Shape3D> >::iterator iter;
 
     for(iter it=vec.begin(); it!=vec.end(); it++) {
@@ -837,7 +837,7 @@ ModuleShape3D<Typelist, ID>::type<Sys>::inheriter_id::getShape3D(Identifier id) 
 
 template<typename Typelist, typename ID>
 template<typename Sys>
-void ModuleShape3D<Typelist, ID>::type<Sys>::inheriter_id::removeShape3D(Identifier id) {
+void ModuleShape3D<Typelist, ID>::type<Sys>::inheritor_id::removeShape3D(Identifier id) {
 
     boost::shared_ptr<Shape3D> s = getShape3D(id);
 
