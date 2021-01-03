@@ -554,7 +554,7 @@ public:
      * a cluster an empty pointer is returned.
      *
      * @param v The vertex for which the cluster is wanted
-     * @return boost::shared_ptr<ClusterGraph> the coresponding cluster orempty pointer
+     * @return boost::shared_ptr<ClusterGraph> the corresponding cluster orempty pointer
      **/
     boost::shared_ptr<ClusterGraph> getVertexCluster(LocalVertex v);
 
@@ -785,7 +785,7 @@ public:
     * Removes the vertex from the local graph and invalidates the global vertex id. Also all edges connecting
     * to this vertex will be removed after the functor was applied to them. The functor needs to implement
     * operato()(GlobalEdge e). Remark that there is no checking done if the vertex is a cluster, so you
-    * need to make sure it's not, as removing a clustervertex will not delete the coresponding cluster.
+    * need to make sure it's not, as removing a clustervertex will not delete the corresponding cluster.
     *
     * @param id Local Vertex which should be removed from the graph
     * @param f functor whose operator(GlobalEdge) is called for every removed edge

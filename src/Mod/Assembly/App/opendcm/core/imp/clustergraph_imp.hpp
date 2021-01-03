@@ -908,7 +908,7 @@ ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::moveToSubcluster(Lo
 
     std::pair<local_out_edge_iterator, local_out_edge_iterator> it =  boost::out_edges(v, *this);
 
-    /* add the later removed edges to the coressponding existing edges
+    /* add the later removed edges to the corresponding existing edges
      * (or create new edges between adjacent vertices of moved vertex and cluster).
      * also get the edge between cluster and vertex while iterating */
     for(; it.first != it.second; it.first++) {

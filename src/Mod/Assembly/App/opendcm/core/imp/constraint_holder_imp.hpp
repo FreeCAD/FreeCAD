@@ -45,7 +45,7 @@ template<typename T>
 typename boost::enable_if<typename Constraint<Sys, Dim>::template holder<ConstraintVector, tag1, tag2>::template has_option<T>::type, void>::type
 Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::OptionSetter::operator()(EquationSet<T>& val) const {
 
-    //get the index of the corresbonding equation
+    //get the index of the corresponding equation
     typedef typename mpl::find<EquationVector, T>::type iterator;
     typedef typename mpl::distance<typename mpl::begin<EquationVector>::type, iterator>::type distance;
     BOOST_MPL_ASSERT((mpl::not_<boost::is_same<iterator, typename mpl::end<EquationVector>::type > >));
