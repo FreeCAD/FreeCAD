@@ -81,7 +81,7 @@ public:
     void updateData(const App::Property*);
     /// Returns a pixmap for the associated feature type
     QIcon getIcon() const;
-    /// Once the color bar settinhs has been changed this method gets called to update the feature's representation
+    /// Once the color bar settings has been changed this method gets called to update the feature's representation
     void OnChange(Base::Subject<int> &rCaller,int rcReason);
     /// Returns a color bar
     SoSeparator* getFrontRoot(void) const;
