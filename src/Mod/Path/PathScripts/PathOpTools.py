@@ -114,7 +114,7 @@ def _isWireClockwise(w):
     if 2 == len(w.Edges) and Part.Circle == type(w.Edges[1].Curve):
         return 0 > w.Edges[1].Curve.Axis.z
 
-    # for all other wires we presume they are polygonial and refer to Gauss
+    # for all other wires we presume they are polygonal and refer to Gauss
     # https://en.wikipedia.org/wiki/Shoelace_formula
     area = 0
     for e in w.Edges:
