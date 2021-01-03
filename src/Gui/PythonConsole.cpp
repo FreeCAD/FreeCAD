@@ -801,7 +801,7 @@ void PythonConsole::appendOutput(const QString& output, int state)
         block.setUserState(state);
         block = block.next();
     }
-    cursor.endEditBlock(); // start highlightiong
+    cursor.endEditBlock(); // start highlighting
 }
 
 /**
