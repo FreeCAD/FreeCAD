@@ -116,7 +116,7 @@ class STRING(str):
     318 width_spec = '(' width ')' [ FIXED ] .
     317 width = numeric_expression .
     A string data type may be defined as either fixed or varying width (number of characters). If
-    it is not specfically defined as fixed width (by using the fixed reserved word in the dfinition)
+    it is not specfically defined as fixed width (by using the fixed reserved word in the definition)
     the string has varying width.
     
     The domain of a fixed width string data type is the set of all character sequences of exactly
