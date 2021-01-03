@@ -747,7 +747,7 @@ bool CmdDrawingDraftView::isActive(void)
 
 
 //===========================================================================
-// Drawing_Spreadheet_View
+// Drawing_Spreadsheet_View
 //===========================================================================
 
 DEF_STD_CMD_A(CmdDrawingSpreadsheetView)
