@@ -117,7 +117,7 @@ const char* MayaGestureNavigationStyle::mouseButtons(ViewerMode mode)
 }
 
 /*!
- * \brief MayaGestureNavigationStyle::testMoveThreshold tests if the mouse has moved far enough to constder it a drag.
+ * \brief MayaGestureNavigationStyle::testMoveThreshold tests if the mouse has moved far enough to consider it a drag.
  * \param currentPos current position of mouse cursor, in local pixel coordinates.
  * \return true if the mouse was moved far enough. False if it's within the boundary. Ignores MayaGestureNavigationStyle::mouseMoveThresholdBroken flag.
  */
