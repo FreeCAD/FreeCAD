@@ -65,12 +65,12 @@ public:
     const Base::Vector3d &Direction;
 
     TopoDS_Shape V ;// hard edge visibly
-    TopoDS_Shape V1;// Smoth edges visibly
+    TopoDS_Shape V1;// Smooth edges visibly
     TopoDS_Shape VN;// contour edges visibly
     TopoDS_Shape VO;// contours apparents visibly
     TopoDS_Shape VI;// isoparamtriques   visibly
     TopoDS_Shape H ;// hard edge       invisibly
-    TopoDS_Shape H1;// Smoth edges  invisibly
+    TopoDS_Shape H1;// Smooth edges  invisibly
     TopoDS_Shape HN;// contour edges invisibly
     TopoDS_Shape HO;// contours apparents invisibly
     TopoDS_Shape HI;// isoparamtriques   invisibly
