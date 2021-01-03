@@ -1338,7 +1338,7 @@ App::DocumentObjectExecReturn *Hole::execute(void)
 #if 0
         // Make thread
 
-        // This code is work in progress; making threas in OCC is not very easy, so
+        // This code is work in progress; making threads in OCC is not very easy, so
         // this work is postponed until later
         if (ModelActualThread.getValue()) {
             BRepBuilderAPI_MakeWire mkThreadWire;
