@@ -525,7 +525,7 @@ void CurveProjectorSimple::projectCurve( const TopoDS_Edge& aEdge,
   MeshFacetIterator It1(MeshK);
   for(It1.Init();It1.More();It1.Next())
   {
-    // cycling through the points and find the first projecteble point ( if the curve starts outside the mesh)
+    // cycling through the points and find the first projectable point ( if the curve starts outside the mesh)
     for( std::vector<Base::Vector3f>::const_iterator It = rclPoints.begin()+1;It!=rclPoints.end();++It)
     {
 //      MeshGeomFacet facet = MeshK.GetFacet(uStartFacetIdx);
