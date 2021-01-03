@@ -310,7 +310,7 @@ Version: V0.5B8 Date: Tue Aug 01 2006 +++++++++++++++++++++++++++++++
   * Allow to open a project file even if not everything can be loaded e.g. if a module is missing
   * Select name if a file instead of directory was given in FileDialog's getOpenFileName() or getSaveFileName() methods
   * Bug fixed in harmonizing normals of a mesh
-  * speed up a lot several algorithms that searches for independent components of a mesh or searches for inhomogenous normals
+  * speed up a lot several algorithms that searches for independent components of a mesh or searches for inhomogeneous normals
   * make MeshKernel::VisitNeighbourFacets() more robust against topologic errors in mesh
   * Option added to do one- or two-side rendering of meshes
   * Dialog to enter numbers higher than the maximum of int's, i.e numbers up to 4294967295
