@@ -73,7 +73,7 @@ public:
 
     /**
      * Update the visual size to match the given extents
-     * @note should be reimplemented in the offspings
+     * @note should be reimplemented in the offsprings
      * @note use FreeCAD-specific bbox here to simplify the math in derived classes
      */
     virtual void setExtents (Base::BoundBox3d /*bbox*/)
