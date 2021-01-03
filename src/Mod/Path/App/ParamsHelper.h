@@ -76,7 +76,7 @@
  * A sequence cannot be empty. Thus, \c () is not a sequence. And also those
  * <tt>a, b, c</tt> here cannot directly contain <tt>,</tt>. These restriction
  * is due to the fact that <tt>( ) ,</tt> are among those very few special
- * characters recognized by the preprocssor. \c a can itself be a sequence or
+ * characters recognized by the preprocessor. \c a can itself be a sequence or
  * other Boost.PP types, so by right, our parameter can be defined as something
  * like
  * \code{.sh}
