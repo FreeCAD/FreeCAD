@@ -125,7 +125,7 @@ class FeatureConnect:
     """The PartJoinFeature object."""
 
     def __init__(self,obj):
-        obj.addProperty("App::PropertyLinkList","Objects","Connect","Object to be connectded.")
+        obj.addProperty("App::PropertyLinkList","Objects","Connect","Object to be connected.")
         obj.addProperty("App::PropertyBool","Refine","Connect",
                         "True = refine resulting shape. False = output as is.")
         obj.Refine = getParamRefine()

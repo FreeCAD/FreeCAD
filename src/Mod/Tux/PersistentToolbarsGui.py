@@ -24,7 +24,7 @@ import FreeCADGui as Gui
 from PySide import QtCore
 from PySide import QtGui
 
-conectedToolbars = []
+connectedToolbars = []
 timer = QtCore.QTimer()
 mw = Gui.getMainWindow()
 
@@ -53,8 +53,8 @@ def pythonToolbars():
 def isConnected(i):
     """Connect toolbar to onSave function."""
 
-    if i not in conectedToolbars:
-        conectedToolbars.append(i)
+    if i not in connectedToolbars:
+        connectedToolbars.append(i)
         i.topLevelChanged.connect(onSave)
     else:
         pass
