@@ -219,7 +219,7 @@ class Resize :
 class MatrixTransform:
     def __init__(self, obj,matrix=None,child=None):
         obj.addProperty("App::PropertyLink","Base","Base",
-                        "The base object that must be tranfsformed")
+                        "The base object that must be transformed")
         obj.addProperty("App::PropertyMatrix","Matrix","Matrix", "Transformation Matrix")
         obj.Proxy = self
         obj.Matrix = matrix
@@ -246,7 +246,7 @@ class MatrixTransform:
 class ImportObject:
     def __init__(self, obj,child=None):
         obj.addProperty("App::PropertyLink","Base","Base",
-                        "The base object that must be tranfsformed")
+                        "The base object that must be transformed")
         obj.Proxy = self
         obj.Base = child
 
@@ -390,7 +390,7 @@ class Frustum:
 class Twist:
     def __init__(self, obj,child=None,h=1.0,angle=0.0):
         obj.addProperty("App::PropertyLink","Base","Base",
-                        "The base object that must be tranfsformed")
+                        "The base object that must be transformed")
         obj.addProperty("App::PropertyAngle","Angle","Base","Twist Angle in degrees") #degree or rad
         obj.addProperty("App::PropertyDistance","Height","Base","Height of the Extrusion")
 
@@ -464,7 +464,7 @@ class Twist:
 class OffsetShape:
     def __init__(self, obj,child=None,offset=1.0):
         obj.addProperty("App::PropertyLink","Base","Base",
-                        "The base object that must be tranfsformed")
+                        "The base object that must be transformed")
         obj.addProperty("App::PropertyDistance","Offset","Base","Offset outwards")
 
         obj.Base = child
