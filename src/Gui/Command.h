@@ -518,7 +518,7 @@ public:
     static std::string _assureWorkbench(const char *file, int line, const char * sName);
     //@}
 
-    /** @name Methods for copying visiual properties */
+    /** @name Methods for copying visual properties */
     //@{
     /// Convenience macro to copy visual properties
 #define copyVisual(...) _copyVisual(__FILE__,__LINE__,__VA_ARGS__)
