@@ -243,7 +243,7 @@ class AppExport PropertyMatrix: public Property
 public:
     /**
      * A constructor.
-     * Intitialises to an identity matrix
+     * Initialises to an identity matrix
      */
     PropertyMatrix();
 
