@@ -57,7 +57,7 @@ public:
      */
     App::PropertyLink BaseFeature;
 
-    /// Returns all Group objects prepanded by BaseFeature (if any)
+    /// Returns all Group objects prepended by BaseFeature (if any)
     std::vector<App::DocumentObject *> getFullModel () {
         std::vector<App::DocumentObject *> rv;
         if ( BaseFeature.getValue () ) {
