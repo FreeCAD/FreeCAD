@@ -89,7 +89,7 @@ protected:
  * The ActionGroup class is the link between Qt's QActionGroup class and
  * FreeCAD's command classes (@ref Command). Compared to Action with an
  * ActionGroup it is possible to implement a single command with a group
- * of toggable actions where e.g. one is set exclusive.
+ * of togglable actions where e.g. one is set exclusive.
  * @author Werner Mayer
  */
 class GuiExport ActionGroup : public Action
