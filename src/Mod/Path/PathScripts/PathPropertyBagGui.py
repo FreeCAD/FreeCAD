@@ -268,6 +268,7 @@ class TaskPanel(object):
         self.form.add.clicked.connect(self.propertyAdd)
         self.form.remove.clicked.connect(self.propertyRemove)
         self.form.modify.clicked.connect(self.propertyModify)
+        self.form.table.doubleClicked.connect(self.propertyModifyIndex)
         self.propertySelected([])
 
     def accept(self):
@@ -326,6 +327,31 @@ class TaskPanel(object):
             if not more:
                 break
 
+    def propertyModifyIndex(self, index):
+        PathLog.track(index.row(), index.column())
+        row = index.row()
+
+        obj = self.model.item(row, self.ColumnVal).data(Delegate.RoleObject)
+        nam = self.model.item(row, self.ColumnVal).data(Delegate.RoleProperty)
+        grp = obj.getGroupOfProperty(nam)
+        typ = obj.getTypeIdOfProperty(nam)
+
+        dialog = PropertyCreate(self.obj, grp, typ, False)
+        if dialog.exec_(nam):
+            val = getattr(obj, nam)
+            obj.removeProperty(nam)
+            name, info = self.addCustomProperty(self.obj, dialog)
+            try:
+                setattr(obj, nam, val)
+            except:
+                # this can happen if the old enumeration value doesn't exist anymore
+                pass
+            newVal = PathUtil.getPropertyValueString(obj, nam)
+            self.model.setData(self.model.index(row, self.ColumnVal), newVal, QtCore.Qt.DisplayRole)
+
+            #self.model.setData(self.model.index(row, self.ColumnType), info, QtCore.Qt.ToolTipRole)
+            self.model.setData(self.model.index(row, self.ColumnVal),  info, QtCore.Qt.ToolTipRole)
+
     def propertyModify(self):
         PathLog.track()
         rows = []
@@ -335,26 +361,7 @@ class TaskPanel(object):
                 continue
             rows.append(row)
 
-            obj = self.model.item(row, self.ColumnVal).data(Delegate.RoleObject)
-            nam = self.model.item(row, self.ColumnVal).data(Delegate.RoleProperty)
-            grp = obj.getGroupOfProperty(nam)
-            typ = obj.getTypeIdOfProperty(nam)
-
-            dialog = PropertyCreate(self.obj, grp, typ, False)
-            if dialog.exec_(nam):
-                val = getattr(obj, nam)
-                obj.removeProperty(nam)
-                name, info = self.addCustomProperty(self.obj, dialog)
-                try:
-                    setattr(obj, nam, val)
-                except:
-                    # this can happen if the old enumeration value doesn't exist anymore
-                    pass
-                newVal = PathUtil.getPropertyValueString(obj, nam)
-                self.model.setData(self.model.index(row, self.ColumnVal), newVal, QtCore.Qt.DisplayRole)
-
-                #self.model.setData(self.model.index(row, self.ColumnType), info, QtCore.Qt.ToolTipRole)
-                self.model.setData(self.model.index(row, self.ColumnVal),  info, QtCore.Qt.ToolTipRole)
+            self.propertyModifyIndex(index)
 
 
     def propertyRemove(self):
