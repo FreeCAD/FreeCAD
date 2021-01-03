@@ -1843,7 +1843,7 @@ PyMethodDef SelectionSingleton::Methods[] = {
     {"countObjectsOfType",   (PyCFunction) SelectionSingleton::sCountObjectsOfType, METH_VARARGS,
      "countObjectsOfType(string, [string],[resolve=1]) -- Get the number of selected objects\n"
      "The first argument defines the object type e.g. \"Part::Feature\" and the\n"
-     "second argumeht defines the document name. If no document name is given the\n"
+     "second argument defines the document name. If no document name is given the\n"
      "currently active document is used"},
     {"getSelection",         (PyCFunction) SelectionSingleton::sGetSelection, METH_VARARGS,
      "getSelection(docName='',resolve=1,single=False) -- Return a list of selected objects\n"
