@@ -3377,7 +3377,7 @@ bool Clipper::JoinPoints(Join *j, OutRec* outRec1, OutRec* outRec2)
     if (op2b->Next == op2 || op2b->Next == op1) return false; //a flat 'polygon'
 
     cInt Left, Right;
-    //Op1 --> Op1b & Op2 --> Op2b are the extremites of the horizontal edges
+    //Op1 --> Op1b & Op2 --> Op2b are the extremities of the horizontal edges
     if (!GetOverlap(op1->Pt.X, op1b->Pt.X, op2->Pt.X, op2b->Pt.X, Left, Right))
       return false;
 
