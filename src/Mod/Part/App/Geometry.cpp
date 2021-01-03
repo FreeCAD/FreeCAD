@@ -1812,7 +1812,7 @@ GeomArcOfConic::~GeomArcOfConic()
 
 /*!
  * \brief GeomArcOfConic::getStartPoint
- * \param emulateCCWXY: if true, the arc will pretent to be a CCW arc in XY plane.
+ * \param emulateCCWXY: if true, the arc will pretend to be a CCW arc in XY plane.
  * For this to work, the arc must lie in XY plane (i.e. Axis is either +Z or -Z).
  * \return XYZ of the arc's starting point.
  */
@@ -1829,7 +1829,7 @@ Base::Vector3d GeomArcOfConic::getStartPoint(bool emulateCCWXY) const
 
 /*!
  * \brief GeomArcOfConic::getEndPoint
- * \param emulateCCWXY: if true, the arc will pretent to be a CCW arc in XY plane.
+ * \param emulateCCWXY: if true, the arc will pretend to be a CCW arc in XY plane.
  * For this to work, the arc must lie in XY plane (i.e. Axis is either +Z or -Z).
  * \return
  */
@@ -2261,7 +2261,7 @@ void GeomArcOfCircle::setRadius(double Radius)
  * \brief GeomArcOfCircle::getRange
  * \param u [out] start angle of the arc, in radians.
  * \param v [out] end angle of the arc, in radians.
- * \param emulateCCWXY: if true, the arc will pretent to be a CCW arc in XY plane.
+ * \param emulateCCWXY: if true, the arc will pretend to be a CCW arc in XY plane.
  * For this to work, the arc must lie in XY plane (i.e. Axis is either +Z or -Z).
  * Additionally, arc's rotation as a whole will be included in the returned u,v
  * (ArcOfCircle specific).
@@ -2297,7 +2297,7 @@ void GeomArcOfCircle::getRange(double& u, double& v, bool emulateCCWXY) const
  * \brief GeomArcOfCircle::setRange
  * \param u [in] start angle of the arc, in radians.
  * \param v [in] end angle of the arc, in radians.
- * \param emulateCCWXY: if true, the arc will pretent to be a CCW arc in XY plane.
+ * \param emulateCCWXY: if true, the arc will pretend to be a CCW arc in XY plane.
  * For this to work, the arc must lie in XY plane (i.e. Axis is either +Z or -Z).
  * Additionally, arc's rotation as a whole will be subtracted from u,v
  * (ArcOfCircle specific).
@@ -2805,7 +2805,7 @@ void GeomArcOfEllipse::setMajorAxisDir(Base::Vector3d newdir)
  * \brief GeomArcOfEllipse::getRange
  * \param u [out] start angle of the arc, in radians.
  * \param v [out] end angle of the arc, in radians.
- * \param emulateCCWXY: if true, the arc will pretent to be a CCW arc in XY plane.
+ * \param emulateCCWXY: if true, the arc will pretend to be a CCW arc in XY plane.
  * For this to work, the arc must lie in XY plane (i.e. Axis is either +Z or -Z).
  */
 void GeomArcOfEllipse::getRange(double& u, double& v, bool emulateCCWXY) const
@@ -2828,7 +2828,7 @@ void GeomArcOfEllipse::getRange(double& u, double& v, bool emulateCCWXY) const
  * \brief GeomArcOfEllipse::setRange
  * \param u [in] start angle of the arc, in radians.
  * \param v [in] end angle of the arc, in radians.
- * \param emulateCCWXY: if true, the arc will pretent to be a CCW arc in XY plane.
+ * \param emulateCCWXY: if true, the arc will pretend to be a CCW arc in XY plane.
  * For this to work, the arc must lie in XY plane (i.e. Axis is either +Z or -Z).
  */
 void GeomArcOfEllipse::setRange(double u, double v, bool emulateCCWXY)
