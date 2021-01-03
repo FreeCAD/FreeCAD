@@ -551,7 +551,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QGroupBox" name="gb_05_frequercy_params">
+      <widget class="QGroupBox" name="gb_05_frequency_params">
        <property name="title">
         <string>Frequency defaults</string>
        </property>
