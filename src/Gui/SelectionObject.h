@@ -77,7 +77,7 @@ public:
     /// check the selected object is a special type or derived of
     bool isObjectTypeOf(const Base::Type& typeId) const;
 
-    /// returns python expreasion sutably for assigning to a LinkSub property
+    /// returns python expression sutably for assigning to a LinkSub property
     std::string getAsPropertyLinkSubString(void) const;
 
     friend class SelectionSingleton;
