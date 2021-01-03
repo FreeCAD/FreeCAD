@@ -298,7 +298,7 @@ namespace geoff_geometry {
 		x0 + dx0 * t0 = x1 + dx1 * t1
 		dx0 * t0 - dx1 * t1 + x0 - x1 = 0
 
-		setup 3 x 3 determinent for 
+		setup 3 x 3 determinant for 
 		a0 t0 + b0 t1 + c0 = 0
 		a1 t0 + b1 t1 + c1 = 0
 		a2 t0 + b2 t1 + c2 = 0
