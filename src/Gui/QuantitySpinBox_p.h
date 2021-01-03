@@ -47,14 +47,12 @@ public:
         setCursor(Qt::ArrowCursor);
         /* Icon for f(x) */
         QFontMetrics fm(parent->font());
-        int frameWidth = style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
-        iconHeight = fm.height() - frameWidth;
+        iconHeight = fm.height() + 2;
         setStyleSheet(QString::fromLatin1(
                     "QLabel { border: none;"
                             " padding: 0px;"
-                            " padding-top: %2px;"
                             " width: %1px;"
-                            " height: %1px }").arg(iconHeight).arg(frameWidth/2));
+                            " height: %1px }").arg(iconHeight));
         setState(None);
         parent->installEventFilter(this);
         if (parent->parentWidget()) {
@@ -74,14 +72,20 @@ public:
 
     void setState(State state) {
         _state = state;
-        QPixmap pixmap;
+        QIcon icon;
         QString stylesheet;
         if (_state == Bound) {
-            pixmap = getIcon(":/icons/bound-expression.svg", QSize(iconHeight, iconHeight));
+            static QIcon icn;
+            if (icn.isNull())
+                icn = Gui::BitmapFactory().pixmapFromSvg("bound-expression.svg", QSize(64, 64));
+            icon = icn;
             stylesheet = QString::fromLatin1("QLineEdit { padding-right: %1px } ").arg(getOffset()+1);
             show();
         } else {
-            pixmap = getIcon(":/icons/bound-expression-unset.svg", QSize(iconHeight, iconHeight));
+            static QIcon icn;
+            if (icn.isNull())
+                icn = Gui::BitmapFactory().pixmapFromSvg("bound-expression-unset.svg", QSize(64, 64));
+            icon = icn;
             if (_state == Binding && Gui::ExprParams::AutoHideEditorIcon())
                 show();
             else
@@ -90,23 +94,8 @@ public:
         auto parent = qobject_cast<QLineEdit*>(parentWidget());
         if (parent)
             parent->setStyleSheet(stylesheet);
-        setPixmap(pixmap);
-    }
-
-    QPixmap getIcon(const char* name, const QSize& size) const
-    {
-        QString key = QString::fromLatin1("%1_%2x%3")
-            .arg(QString::fromLatin1(name))
-            .arg(size.width())
-            .arg(size.height());
-        QPixmap icon;
-        if (QPixmapCache::find(key, &icon))
-            return icon;
-
-        icon = Gui::BitmapFactory().pixmapFromSvg(name, size);
-        if (!icon.isNull())
-            QPixmapCache::insert(key, icon);
-        return icon;
+        // Let QIcon.pixmap() to handle cache and HDPI
+        setPixmap(icon.pixmap(iconHeight));
     }
 
 protected:
@@ -131,8 +120,7 @@ protected:
     int getOffset() {
         if (!parentWidget())
             return 0;
-        int frameWidth = parentWidget()->style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
-        return sizeHint().width() + frameWidth;
+        return iconHeight + parentWidget()->style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
     }
 
     bool eventFilter(QObject *o, QEvent *ev) {
