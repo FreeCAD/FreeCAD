@@ -163,7 +163,7 @@ public:
     /// set the value of the quantity
     void setValue(double val){_Value = val;}
     /** get the Value in a special unit given as quantity.
-      * One can use one of the predifeined quantity units in this class
+      * One can use one of the predefined quantity units in this class
       */
     double getValueAs(const Quantity &)const;
 
