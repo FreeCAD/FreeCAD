@@ -296,7 +296,7 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
                 //remember the parameter offset as all downstream geometry must use this offset
                 cm.setParameterOffset(offset_rot, rotation);
                 cm.setParameterOffset(offset, general);
-                //wirte initial values
+                //write initial values
                 cm.initMaps();
             }
             else
