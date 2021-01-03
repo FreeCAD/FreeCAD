@@ -72,7 +72,7 @@ public:
 
     // Fast evaluation of trigonometric and inverse trigonometric functions
     // using polynomial approximations.  The speed ups were measured on an
-    // AMD 2800 (2.08 GHz) processor using Visual Studion .NET 2003 with a
+    // AMD 2800 (2.08 GHz) processor using Visual Studio .NET 2003 with a
     // release build.
 
     // The input must be in [0,pi/2].
