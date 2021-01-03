@@ -52,7 +52,7 @@
  * each scrolling step because that approach leads to position errors due to before-mentioned
  * positioning restrictions.
  *
- * When zommed using scroll, this class emits zoomed() signal.
+ * When zoomed using scroll, this class emits zoomed() signal.
  *
  * Usage:
  *
