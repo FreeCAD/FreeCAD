@@ -60,7 +60,7 @@ public:
       * for certain units (e.g. mi = 1,8km instead of mi=1.6km).
       */
     virtual void setSchemaUnits(void){}
-    /// If you use setSchemaUnits() you also have to impment this method to undo your changes!
+    /// If you use setSchemaUnits() you also have to implement this method to undo your changes!
     virtual void resetSchemaUnits(void){}
 
     /// This method translates the quantity in a string as the user may expect it.
