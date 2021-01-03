@@ -694,7 +694,7 @@ public:
 
     // DH : constructs a transformationmatrix T_link(i-1)_link(i) with
     // the Denavit-Hartenberg convention as described in the original
-    // publictation: Denavit, J. and Hartenberg, R. S., A kinematic
+    // publication: Denavit, J. and Hartenberg, R. S., A kinematic
     // notation for lower-pair mechanisms based on matrices, ASME
     // Journal of Applied Mechanics, 23:215-221, 1955.
 
