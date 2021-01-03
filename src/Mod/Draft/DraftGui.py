@@ -341,10 +341,10 @@ class DraftToolBar:
 
         self.promptlabel = self._label("promptlabel", self.layout, hide=task)
         self.cmdlabel = self._label("cmdlabel", self.layout, hide=task)
-        boldtxt = QtGui.QFont()
-        boldtxt.setWeight(75)
-        boldtxt.setBold(True)
-        self.cmdlabel.setFont(boldtxt)
+        boldtext = QtGui.QFont()
+        boldtext.setWeight(75)
+        boldtext.setBold(True)
+        self.cmdlabel.setFont(boldtext)
 
         # subcommands for draft Edit, OBSOLETE
 
