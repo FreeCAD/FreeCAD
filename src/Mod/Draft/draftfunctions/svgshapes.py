@@ -413,7 +413,7 @@ def get_path(obj, plane,
                     # final svg string already calculated, so just return it
                     return data
 
-                # else the `edata` was properly augmented, so re-assing it
+                # else the `edata` was properly augmented, so reassign it
                 edata = data
             elif DraftGeomUtils.geomType(edge) == "Line":
                 v = get_proj(vertex[-1].Point, plane)
