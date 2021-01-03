@@ -100,7 +100,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         form.LiftDistance.setMaximum(1000)
         form.LiftDistance.setSingleStep(0.1)
         form.LiftDistance.setValue(1.0)
-        form.LiftDistance.setToolTip("How much to lift the tool up during the rapid linking moves over cleared regions.\nIf linking path is not clear tool is raised to clearence height.")
+        form.LiftDistance.setToolTip("How much to lift the tool up during the rapid linking moves over cleared regions.\nIf linking path is not clear tool is raised to clearance height.")
         formLayout.addRow(QtGui.QLabel("Lift Distance"), form.LiftDistance)
 
         # KeepToolDownRatio
@@ -109,7 +109,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         form.KeepToolDownRatio.setMaximum(10)
         form.KeepToolDownRatio.setSingleStep(1)
         form.KeepToolDownRatio.setValue(3.0)
-        form.KeepToolDownRatio.setToolTip("Max length of keep-tool-down linking path compared to direct distance between points.\nIf exceeded link will be done by raising the tool to clearence height.")
+        form.KeepToolDownRatio.setToolTip("Max length of keep-tool-down linking path compared to direct distance between points.\nIf exceeded link will be done by raising the tool to clearance height.")
         formLayout.addRow(QtGui.QLabel("Keep Tool Down Ratio"), form.KeepToolDownRatio)
 
         # stock to leave
