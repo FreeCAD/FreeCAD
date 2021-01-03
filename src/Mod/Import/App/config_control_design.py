@@ -12737,19 +12737,19 @@ def dimensions_for_si_unit(n,):
 ####################
  # FUNCTION assembly_shape_is_defined #
 ####################
-def assembly_shape_is_defined(assy,schma,):
+def assembly_shape_is_defined(assy,schema,):
 	'''
 	:param assy
 	:type assy:next_assembly_usage_occurrence
-	:param schma
-	:type schma:STRING
+	:param schema
+	:type schema:STRING
 	'''
-	pr1_set = bag_to_set(USEDIN(assy.related_product_definition,schma  +  '.PROPERTY_DEFINITION.DEFINITION'))
+	pr1_set = bag_to_set(USEDIN(assy.related_product_definition,schema  +  '.PROPERTY_DEFINITION.DEFINITION'))
 	for  i in range(1,HIINDEX(pr1_set),1):
 		sdr_set = sdr_set  +  None
-	pdrel_set = bag_to_set(USEDIN(assy.related_product_definition,(schma  +  '.PRODUCT_DEFINITION_RELATIONSHIP.')  +  'RELATED_PRODUCT_DEFINITION'))
+	pdrel_set = bag_to_set(USEDIN(assy.related_product_definition,(schema  +  '.PRODUCT_DEFINITION_RELATIONSHIP.')  +  'RELATED_PRODUCT_DEFINITION'))
 	for  j in range(1,HIINDEX(pdrel_set),1):
-		pr2_set = pr2_set  +  USEDIN(pdrel_set[j],schma  +  '.PROPERTY_DEFINITION.DEFINITION')
+		pr2_set = pr2_set  +  USEDIN(pdrel_set[j],schema  +  '.PROPERTY_DEFINITION.DEFINITION')
 	for  i in range(1,HIINDEX(pr2_set),1):
 		sdr_set = sdr_set  +  None
 	if (SIZEOF(sdr_set)  >  0):
