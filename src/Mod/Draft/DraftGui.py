@@ -154,7 +154,7 @@ class DraftToolBar:
     """The Draft Task panel UI
     Draft Toolbar is the main ui of the Draft Module. Once displayed as a 
     toolbar, now it define the ui of the Task Panel.
-    Toolbar become obsolete due to lack of manteinence and was disabled
+    Toolbar become obsolete due to lack of maintenance and was disabled
     by default in February 2020.
     Draft Ui Commands call and get information such as point coordinates,
     subcommands activation, continue mode, etc. from Task Panel Ui
