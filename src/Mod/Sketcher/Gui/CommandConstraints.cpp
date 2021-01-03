@@ -249,7 +249,7 @@ bool SketcherGui::IsPointAlreadyOnCurve(int GeoIdCurve, int GeoIdPoint, Sketcher
     //Simple geometric test seems to be the best, because a point can be
     // constrained to a curve in a number of ways (e.g. it is an endpoint of an
     // arc, or is coincident to endpoint of an arc, or it is an endpoint of an
-    // ellipse's majopr diameter line). Testing all those possibilities is way
+    // ellipse's major diameter line). Testing all those possibilities is way
     // too much trouble, IMO(DeepSOIC).
     Base::Vector3d p = Obj->getPoint(GeoIdPoint, PosIdPoint);
     return Obj->isPointOnCurve(GeoIdCurve, p.x, p.y);
