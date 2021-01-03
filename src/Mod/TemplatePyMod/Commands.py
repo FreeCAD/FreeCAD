@@ -31,7 +31,7 @@ class TemplatePyMod_Cmd1:
         print("TemplatePyMod_Cmd1 activated ;-) ")
 
     def GetResources(self):
-        return {'Pixmap'  : 'Std_Tool1', 'MenuText': 'Example command', 'ToolTip': 'Very unimportand example command'}
+        return {'Pixmap'  : 'Std_Tool1', 'MenuText': 'Example command', 'ToolTip': 'Very unimportant example command'}
 
 
 class TemplatePyMod_Cmd2:
