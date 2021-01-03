@@ -326,7 +326,7 @@ class TestMeshEleTetra10(unittest.TestCase):
         self,
         femmesh_testfile,
         femmesh_outfile,
-        filetyp
+        filetype
     ):
 
         # """
@@ -342,7 +342,7 @@ class TestMeshEleTetra10(unittest.TestCase):
             self.expected_nodes["nodes"],
             "Test reading {} mesh to {} file failed. Nodes are different.\n".format(
                 self.elem,
-                filetyp
+                filetype
             )
         )
         self.assertEqual(
@@ -353,7 +353,7 @@ class TestMeshEleTetra10(unittest.TestCase):
             self.expected_elem["volumes"],
             "Test reading {} mesh to {} file failed. Volumes are different.\n".format(
                 self.elem,
-                filetyp
+                filetype
             )
         )
         # test reading the written mesh
@@ -362,7 +362,7 @@ class TestMeshEleTetra10(unittest.TestCase):
             self.expected_nodes["nodes"],
             "Test reading {} mesh to {} file failed. Nodes are different.\n".format(
                 self.elem,
-                filetyp
+                filetype
             )
         )
         self.assertEqual(
@@ -373,7 +373,7 @@ class TestMeshEleTetra10(unittest.TestCase):
             self.expected_elem["volumes"],
             "Test reading {} mesh to {} file failed. Volumes are different.\n".format(
                 self.elem,
-                filetyp
+                filetype
             )
         )
         # test if both are equal
@@ -382,7 +382,7 @@ class TestMeshEleTetra10(unittest.TestCase):
             femmesh_testfile.Nodes,
             "Test reading {} mesh to {} file failed. Nodes are different.\n".format(
                 self.elem,
-                filetyp
+                filetype
             )
         )
         self.assertEqual(
@@ -390,7 +390,7 @@ class TestMeshEleTetra10(unittest.TestCase):
             femmesh_testfile.Volumes,
             "Test reading {} mesh to {} file failed. Volumes are different.\n".format(
                 self.elem,
-                filetyp
+                filetype
             )
         )
 
