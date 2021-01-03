@@ -772,7 +772,7 @@ class _Wall(ArchComponent.Component):
     def execute(self,obj):
         """Method run when the object is recomputed.
 
-        Extrude the wall from the Base shape if possible. Processe additions
+        Extrude the wall from the Base shape if possible. Process additions
         and subtractions. Assign the resulting shape as the shape of the wall.
 
         Add blocks if the MakeBlocks property is assigned. If the Base shape is
