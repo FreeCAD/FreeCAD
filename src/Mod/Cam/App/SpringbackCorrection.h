@@ -214,12 +214,12 @@ public:
     /** @brief smooths specified mesh-points of the input-mesh 
 
         @param mesh           input-mesh
-        @param indicies       vector of indicies of the mesh-points for
+        @param indices        vector of indices of the mesh-points for
                               smoothing
         @param maxTranslation value which stands for the maximum deviation
                               from the initial-mesh
     */
-    bool SmoothMesh(MeshCore::MeshKernel &mesh, std::vector<int> indicies, double maxTranslation);
+    bool SmoothMesh(MeshCore::MeshKernel &mesh, std::vector<int> indices, double maxTranslation);
     /** @brief computes current angles of all triangles and stores the angle
                degrees in a vector
 
@@ -228,7 +228,7 @@ public:
     */
     //bool GetFaceAng(MeshCore::MeshKernel &mesh, int deg_tol);
     /** @brief computes current angles of all triangles and stores the
-               critical-triangle-indicies in a vector
+               critical-triangle-indices in a vector
 
         @param mesh    input-mesh
         @param deg_tol limiting forming-angle
