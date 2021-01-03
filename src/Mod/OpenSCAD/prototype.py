@@ -502,7 +502,7 @@ class Node:
             try:
                 obj.ViewObject.hide()
             except: raise
-            if True: #never refine the Shape, as it itroduces crashes
+            if True: #never refine the Shape, as it introduces crashes
                 return obj
             else: #refine Shape
                 import Draft
