@@ -1525,7 +1525,7 @@ std::vector<Base::Vector3f> best_fit::Comp_Normals(MeshCore::MeshKernel &M)
         // Iteriere über die Dreiecke zu jedem Punkt
         for (std::set<unsigned long>::const_iterator it = faceSet.begin(); it != faceSet.end(); ++it)
         {
-            // Zweimal derefernzieren, um an das MeshFacet zu kommen und dem Kernel uebergeben, dass er ein MeshGeomFacet liefert
+            // Zweimal dereferenzieren, um an das MeshFacet zu kommen und dem Kernel uebergeben, dass er ein MeshGeomFacet liefert
             t_face = M.GetFacet(*it);
             // Flaecheninhalt aufsummieren
             local_Area = t_face.Area();

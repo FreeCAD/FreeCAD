@@ -3337,7 +3337,7 @@ static PyObject * offset_mesh(PyObject *self, PyObject *args)
             // Iteriere über die Dreiecke zu jedem Punkt
             for (std::set<unsigned long>::const_iterator it = faceSet.begin(); it != faceSet.end(); ++it)
             {
-                // Einmal derefernzieren, um an das MeshFacet zu kommen und dem Kernel uebergeben, dass er ein MeshGeomFacet liefert
+                // Einmal dereferenzieren, um an das MeshFacet zu kommen und dem Kernel uebergeben, dass er ein MeshGeomFacet liefert
                 t_face = mesh.GetFacet(*it);
                 // Flaecheninhalt aufsummieren
                 float local_Area = t_face.Area();
@@ -4093,7 +4093,7 @@ static PyObject * fit_iter(PyObject *self, PyObject *args)
                 // Iteriere über die Dreiecke zu jedem Punkt
                 for (std::set<unsigned long>::const_iterator it = faceSet.begin(); it != faceSet.end(); ++it)
                 {
-                    // Einmal derefernzieren, um an das MeshFacet zu kommen und dem Kernel uebergeben, dass er ein MeshGeomFacet liefert
+                    // Einmal dereferenzieren, um an das MeshFacet zu kommen und dem Kernel uebergeben, dass er ein MeshGeomFacet liefert
                     t_face = mesh.GetFacet(*it);
                     // Flaecheninhalt aufsummieren
                     float local_Area = t_face.Area();
