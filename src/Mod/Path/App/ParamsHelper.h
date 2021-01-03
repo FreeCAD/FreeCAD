@@ -982,7 +982,7 @@
 #define PARAM_PROP_DECLARE(_seq) \
     PARAM_FOREACH(PARAM_PROP_DECLARE_,_seq)
 
-/** Replace FreeCAD #ADD_PROPERTY_TYPE to fix singifying macro */
+/** Replace FreeCAD #ADD_PROPERTY_TYPE to fix signifying macro */
 #define PARAM_ADD_PROPERTY_TYPE(_prop_, _defaultval_, _group_,_type_,_Docu_) \
   do { \
     this->_prop_.setValue _defaultval_;\
