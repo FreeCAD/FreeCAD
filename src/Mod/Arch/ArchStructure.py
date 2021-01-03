@@ -882,7 +882,7 @@ class _Structure(ArchComponent.Component):
 
     def getNodeEdges(self,obj):
 
-        "returns a list of edges from stuctural nodes"
+        "returns a list of edges from structural nodes"
 
         edges = []
         if obj.Nodes:
