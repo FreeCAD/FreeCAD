@@ -62,7 +62,7 @@ public:
 
     App::PropertyEnumeration ProjectionType;
 
-    /// Whether projcetion group view are automatically distributed or not
+    /// Whether projection group view are automatically distributed or not
     App::PropertyBool AutoDistribute;
     /// Default horizontal spacing between adjacent views on Drawing, in mm
     App::PropertyLength spacingX;

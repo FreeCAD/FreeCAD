@@ -558,7 +558,7 @@ class ObjectOp(PathOp.ObjectOp):
         pass # pylint: disable=unnecessary-pass
 
     def areaOpUseProjection(self, obj):
-        '''areaOpUseProcjection(obj) ... return True if the operation can use procjection, defaults to False.
+        '''areaOpUseProjection(obj) ... return True if the operation can use projection, defaults to False.
         Can safely be overwritten by subclasses.'''
         # pylint: disable=unused-argument
         return False
