@@ -301,7 +301,7 @@ class Drawexporter(object):
             elif spine.Shape.ShapeType == 'Wire':
                 path = Part.Wire(spine.Shape)
             else:
-                raise ValueError('Unsuitabel Shape Type')
+                raise ValueError('Unsuitable Shape Type')
             spinename = '%s-0-spine' % ob.Name
             saveShape(self.csg,self.filename, path,spinename,None,\
                     self.cleanshape) # placement with shape
@@ -633,7 +633,7 @@ class Drawexporter(object):
                         elif sh.ShapeType == 'Vertex':
                             pass
                         else:
-                            raise ValueError('Unsuitabel Shape Type')
+                            raise ValueError('Unsuitable Shape Type')
                         sectionname = '%s-%02d-section' % (ob.Name,i)
                         saveShape(self.csg,self.filename, sh,sectionname,None,\
                                 self.cleanshape) # placement with shape
