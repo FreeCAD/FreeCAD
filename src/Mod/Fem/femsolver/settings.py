@@ -169,11 +169,11 @@ class _SolverDlg(object):
         all settings for the specific solver.
 
     :ivar use_default:
-        Param path identifying the "use_default" setting. Only specifie the
+        Param path identifying the "use_default" setting. Only specify the
         last part as the *param_path* is prepended to this value.
 
     :ivar custom_path:
-        Param path identifying the "custom_path" setting. Only specifie the
+        Param path identifying the "custom_path" setting. Only specify the
         last part as the *param_path* is prepended to this value.
     """
 
