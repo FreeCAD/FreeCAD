@@ -972,7 +972,7 @@ Version: V0.1B34 Date: Sun Feb 16 11:55:21 2003 +++++++++++++++++++++++++++++++
   * included VC7 projects (werner)
 
 Version: V0.1B33 Date: Fri Feb 14 19:58:58 2003 +++++++++++++++++++++++++++++++
-  * dynamic cinfiguration dialog (Werner)
+  * dynamic configuration dialog (Werner)
     - first preference dialog for the html view
   * Full path parameter implemented
   * some fixes in config registry
