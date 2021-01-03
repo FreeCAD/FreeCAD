@@ -581,7 +581,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 fCnt += 1
                 saSum = saSum.add(base.Shape.getElement(sub).Surface.Axis)
 
-        # Minimim of three faces required for loop to exist
+        # Minimum of three faces required for loop to exist
         if fCnt < 3:
             go = False
 
