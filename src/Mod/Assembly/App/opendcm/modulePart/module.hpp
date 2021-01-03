@@ -46,7 +46,7 @@ struct ModulePart {
 
         struct Part;
         struct PrepareCluster;
-        struct EvaljuateCluster;
+        struct EvaluateCluster;
         typedef boost::shared_ptr<Part> Partptr;
         typedef mpl::map2< mpl::pair<remove, boost::function<void (Partptr) > >,
                 mpl::pair<recalculated, boost::function<void (Partptr) > > >  PartSignal;
@@ -165,7 +165,7 @@ struct ModulePart {
             Part(const T& geometry, Sys& system, boost::shared_ptr<typename base::Cluster> cluster);
 
             friend struct PrepareCluster;
-            friend struct EvaljuateCluster;
+            friend struct EvaluateCluster;
 
         public:
             //we hold a transform and need therefore a aligned new operator
@@ -262,19 +262,19 @@ struct ModulePart {
             virtual void execute(Sys& sys);
         };
 
-        struct EvaljuateCluster : public Job<Sys> {
+        struct EvaluateCluster : public Job<Sys> {
 
             typedef typename Sys::Cluster Cluster;
             typedef typename Sys::Kernel Kernel;
             typedef typename system_traits<Sys>::template getModule<details::m3d>::type module3d;
 
-            EvaljuateCluster();
+            EvaluateCluster();
             virtual void execute(Sys& sys);
         };
 
         static void system_init(Sys& sys) {
             sys.m_sheduler.addPreprocessJob(new PrepareCluster());
-            sys.m_sheduler.addPostprocessJob(new EvaljuateCluster());
+            sys.m_sheduler.addPostprocessJob(new EvaluateCluster());
         };
         static void system_copy(const Sys& from, Sys& into) {};
     };
@@ -624,13 +624,13 @@ void ModulePart<Typelist, ID>::type<Sys>::PrepareCluster::execute(Sys& sys) {
 
 template<typename Typelist, typename ID>
 template<typename Sys>
-ModulePart<Typelist, ID>::type<Sys>::EvaljuateCluster::EvaljuateCluster() {
+ModulePart<Typelist, ID>::type<Sys>::EvaluateCluster::EvaluateCluster() {
     Job<Sys>::priority = 1000;
 };
 
 template<typename Typelist, typename ID>
 template<typename Sys>
-void ModulePart<Typelist, ID>::type<Sys>::EvaljuateCluster::execute(Sys& sys) {
+void ModulePart<Typelist, ID>::type<Sys>::EvaluateCluster::execute(Sys& sys) {
     //get all parts and set their values to the cluster's
     typedef typename std::vector<Partptr>::iterator iter;
 
