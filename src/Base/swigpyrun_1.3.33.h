@@ -329,7 +329,7 @@ extern "C" {
 typedef void *(*swig_converter_func)(void *);
 typedef struct swig_type_info *(*swig_dycast_func)(void **);
 
-/* Structure to store inforomation on one type */
+/* Structure to store information on one type */
 typedef struct swig_type_info {
   const char             *name;			/* mangled name of this type */
   const char             *str;			/* human readable name of this type */
