@@ -885,7 +885,7 @@ public:
 
             // here we check if there is a preselected point and
             // we set up a transition from the neighbouring segment.
-            // (peviousCurve, previousPosId, dirVec, TransitionMode)
+            // (previousCurve, previousPosId, dirVec, TransitionMode)
             for (unsigned int i=0; i < sugConstr1.size(); i++)
                 if (sugConstr1[i].Type == Sketcher::Coincident) {
                     const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(sugConstr1[i].GeoId);
