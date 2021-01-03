@@ -63,7 +63,7 @@ private:
     void    calcCentre();
 
 public:     // these aren't used by orthoView, but just informational, hence public
-    bool    ortho;          // orthonometric?  or axonometric
+    bool    ortho;          // orthometric?  or axonometric
     bool    auto_scale;     // scale for axonometric has not been manually changed?
     int     rel_x, rel_y;   // relative position of this view
     bool    away, tri;      // binary parameters for axonometric view
