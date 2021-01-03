@@ -44,7 +44,7 @@ using namespace boost::numeric;
  i.e: Integral[i] == Integral(WithRespectTo[i]);
  Also, it is assumed that WithRespectTo are evenly spaced with it's stepWidth
 */
-double Routines::TrapezoidIntergration(const std::vector<double> &WithRespectTo, const std::vector<double> &Integral)
+double Routines::TrapezoidIntegration(const std::vector<double> &WithRespectTo, const std::vector<double> &Integral)
 {
     m_h = 0;
     m_result = 0;

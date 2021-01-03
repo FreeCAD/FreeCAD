@@ -1100,14 +1100,14 @@ void Approximate::eFair2(ublas::compressed_matrix<double> &E_Matrix)
 
 
                     //SehnenTrapezRegel
-                    A = TrapezoidIntergration(U, A_1);
-                    A *= TrapezoidIntergration(U, A_2);
+                    A = TrapezoidIntegration(U, A_1);
+                    A *= TrapezoidIntegration(U, A_2);
 
-                    B = TrapezoidIntergration(U, B_1);
-                    B *= TrapezoidIntergration(U, B_2);
+                    B = TrapezoidIntegration(U, B_1);
+                    B *= TrapezoidIntegration(U, B_2);
 
-                    C = TrapezoidIntergration(U, C_1);
-                    C *= TrapezoidIntergration(U, C_2);
+                    C = TrapezoidIntegration(U, C_1);
+                    C *= TrapezoidIntegration(U, C_2);
 
                     //result = A + 2*B + C;
                     E_Matrix((a*(MainNurb.MaxU+1))+b,(c*(MainNurb.MaxV+1))+d) = A + 2*B + C;

@@ -73,7 +73,7 @@ public:
     // mehrdimensionales Newton-Verfahren mit festem Startwert 0
     static std::vector<double> NewtonStep(std::vector<double> &F,std::vector<std::vector<double> > &DF);
 protected:
-    double TrapezoidIntergration(const std::vector<double> &WithRespectTo, const std::vector<double> &Integral);
+    double TrapezoidIntegration(const std::vector<double> &WithRespectTo, const std::vector<double> &Integral);
     //Matrix and vectors
     void CramerSolve(std::vector< std::vector<double> > &RHS1, std::vector<double>& RHS2, std::vector<double> &LHS);
     double CalcAngle(Base::Vector3f a, Base::Vector3f b, Base::Vector3f c);
