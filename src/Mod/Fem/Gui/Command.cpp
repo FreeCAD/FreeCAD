@@ -1119,7 +1119,7 @@ void setupFilter(Gui::Command* cmd, std::string Name) {
     if (pipeline == nullptr) {
         QMessageBox::warning(Gui::getMainWindow(),
             qApp->translate("setupFilter", "Error: Wrong or no or to many vtk post processing objects."),
-            qApp->translate("setupFilter", "The filter could not set up. Select one vtk post processing pipeline object, or select nothing and make sure there is exact one vtk post processing pipline object in the document."));
+            qApp->translate("setupFilter", "The filter could not set up. Select one vtk post processing pipeline object, or select nothing and make sure there is exact one vtk post processing pipeline object in the document."));
         return;
     }
     else {
