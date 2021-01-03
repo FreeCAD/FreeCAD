@@ -77,7 +77,7 @@ constraint_sequence<seq>::operator &(T& val) {
     //insert this object at the end of the sequence
     *fusion::find<T>(vec) = val;
 
-    //and return our new extendet sequence
+    //and return our new extended sequence
     return vec;
 };
 
@@ -113,7 +113,7 @@ constraint_sequence<seq>::operator &(T& val) {
     fusion::nview<Sequence, position_vector> view(vec);
     fusion::copy(*this, view);
 
-    //and return our new extendet sequence
+    //and return our new extended sequence
     return vec;
 };
 */
@@ -177,7 +177,7 @@ Equation<Derived, Option, id, a>::operator &(T& val) {
     //insert this object into the sequence
     *fusion::find<Derived>(vec) = *static_cast<Derived*>(this);
 
-    //and return our new extendet sequence
+    //and return our new extended sequence
     return vec;
 };
 */
