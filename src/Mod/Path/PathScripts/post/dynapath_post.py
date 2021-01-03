@@ -41,7 +41,7 @@ from PathScripts import PostUtils
 TOOLTIP = '''
 This is a postprocessor file for the Path workbench. It is used to
 take a pseudo-gcode fragment outputted by a Path object, and output
-real GCode suitable for a Tree Journyman 325 3 axis mill with Dynapath 20
+real GCode suitable for a Tree Journeyman 325 3 axis mill with Dynapath 20
 controller in MM. This is a work in progress and very few of the functions
 available on the Dynapath have been implemented at this time.
 This postprocessor, once placed in the appropriate PathScripts folder,
