@@ -220,7 +220,7 @@ sort: whether to topologically sort the return list
       <Documentation>
         <UserDocu>The list of object of this document in topological sorted order</UserDocu>
       </Documentation>
-      <Parameter Name="ToplogicalSortedObjects" Type="List" />
+      <Parameter Name="TopologicalSortedObjects" Type="List" />
     </Attribute>
     <Attribute Name="RootObjects" ReadOnly="true">
       <Documentation>
