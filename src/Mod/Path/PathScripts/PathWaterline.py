@@ -159,7 +159,7 @@ class ObjectWaterline(PathOp.ObjectOp):
             ("App::PropertyDistance", "IgnoreOuterAbove", "Clearing Options",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Ignore outer waterlines above this height.")),
             ("App::PropertyEnumeration", "LayerMode", "Clearing Options",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Complete the operation in a single pass at depth, or mulitiple passes to final depth.")),
+                QtCore.QT_TRANSLATE_NOOP("App::Property", "Complete the operation in a single pass at depth, or multiple passes to final depth.")),
             ("App::PropertyVectorDistance", "PatternCenterCustom", "Clearing Options",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Set the start point for the cut pattern.")),
             ("App::PropertyEnumeration", "PatternCenterAt", "Clearing Options",

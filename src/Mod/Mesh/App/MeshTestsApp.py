@@ -37,7 +37,7 @@ class MeshTopoTestCases(unittest.TestCase):
 			planarMeshObject = Mesh.Mesh(self.planarMesh)
 			planarMeshObject.collapseFacets([i])
 
-	def testCollapseFacetsMultible(self):
+	def testCollapseFacetsMultiple(self):
 		planarMeshObject = Mesh.Mesh(self.planarMesh)
 		planarMeshObject.collapseFacets(range(7))
 

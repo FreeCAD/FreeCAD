@@ -602,7 +602,7 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         opLabel = str(self.form.geometryImportList.currentText())
         ops = FreeCAD.ActiveDocument.getObjectsByLabel(opLabel)
         if ops.__len__() > 1:
-            msg = translate('PathOpGui', 'Mulitiple operations are labeled as')
+            msg = translate('PathOpGui', 'Multiple operations are labeled as')
             msg += " {}\n".format(opLabel)
             FreeCAD.Console.PrintWarning(msg)
         for (base, subList) in ops[0].Base:

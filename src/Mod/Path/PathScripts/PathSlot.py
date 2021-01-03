@@ -122,7 +122,7 @@ class ObjectSlot(PathOp.ObjectOp):
             ("App::PropertyDistance", "ExtendPathEnd", "Slot",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Positive extends the end of the path, negative shortens.")),
             ("App::PropertyEnumeration", "LayerMode", "Slot",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Complete the operation in a single pass at depth, or mulitiple passes to final depth.")),
+                QtCore.QT_TRANSLATE_NOOP("App::Property", "Complete the operation in a single pass at depth, or multiple passes to final depth.")),
             ("App::PropertyEnumeration", "PathOrientation", "Slot",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Choose the path orientation with regard to the feature(s) selected.")),
             ("App::PropertyEnumeration", "Reference1", "Slot",
