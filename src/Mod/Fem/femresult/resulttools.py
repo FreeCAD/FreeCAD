@@ -562,7 +562,7 @@ def add_principal_stress_reinforced(res_obj):
 
     FreeCAD.Console.PrintLog(
         "Added reinforcement principal stresses and max shear values as well as "
-        "reinforcment ratios, Mohr Coloumb values.\n"
+        "reinforcment ratios, Mohr Coulomb values.\n"
     )
     return res_obj
 
