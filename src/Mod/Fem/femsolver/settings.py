@@ -134,7 +134,7 @@ def get_dir_setting():
     """ Return directory setting set by the user.
 
     Return one of the three possible values of the :class:`DirSetting` enum
-    depending on the setting set in FreeCAD parameter system. Result dependes
+    depending on the setting set in FreeCAD parameter system. Result depends
     on the values of :term:`General/UseTempDirectory`,
     :term:`General/UseBesideDirectory` and :term:`General/UseCustomDirectory`.
     """
