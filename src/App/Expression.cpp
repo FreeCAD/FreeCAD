@@ -2492,7 +2492,7 @@ bool VariableExpression::isTouched() const
 }
 
 /**
-  * Find the property this expression referse to.
+  * Find the property this expression refers to.
   *
   * Unqualified names (i.e the name only without any dots) are resolved in the owning DocumentObjects.
   * Qualified names are looked up in the owning Document. It is first looked up by its internal name.
