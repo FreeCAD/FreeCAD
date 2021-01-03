@@ -30,7 +30,7 @@ if (NOT BUILD_QT5)
 
     if(NOT QT_QTWEBKIT_FOUND)
         message("========================================================\n"
-                "Qt Webkit not found, will not build browser integration.\n"
+                "Qt WebKit not found, will not build browser integration.\n"
                 "========================================================\n")
     endif(NOT QT_QTWEBKIT_FOUND)
 
@@ -72,7 +72,7 @@ elseif (BUILD_QT5)
         find_package(Qt5Svg REQUIRED)
         find_package(Qt5UiTools REQUIRED)
         if (BUILD_WEB)
-            if (${FREECAD_USE_QTWEBMODULE} MATCHES "Qt Webkit")
+            if (${FREECAD_USE_QTWEBMODULE} MATCHES "Qt WebKit")
                 find_package(Qt5WebKitWidgets REQUIRED)
             elseif(${FREECAD_USE_QTWEBMODULE} MATCHES "Qt WebEngine")
                 find_package(Qt5WebEngineWidgets REQUIRED)

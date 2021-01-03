@@ -85,10 +85,10 @@ macro(InitializeFreeCADBuildOptions)
       if (FREECAD_USE_QTOPENGL_WIDGET)
           set(HAVE_QT5_OPENGL 1 )
       endif()
-      set(FREECAD_USE_QTWEBMODULE "Automatic"  CACHE STRING  "Qt Webkit or Qt WebEngine")
+      set(FREECAD_USE_QTWEBMODULE "Automatic"  CACHE STRING  "Qt WebKit or Qt WebEngine")
       set_property(CACHE FREECAD_USE_QTWEBMODULE PROPERTY STRINGS
                    "Automatic"
-                   "Qt Webkit"
+                   "Qt WebKit"
                    "Qt WebEngine"
       )
     endif()

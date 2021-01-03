@@ -39,7 +39,7 @@
 **
 ****************************************************************************/
 
-// Changes: Use Webkit engine instead of SVG renderer
+// Changes: Use WebKit engine instead of SVG renderer
 
 #include "qsvgiohandler.h"
 
