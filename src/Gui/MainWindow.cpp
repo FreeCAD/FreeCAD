@@ -861,17 +861,17 @@ bool MainWindow::eventFilter(QObject* o, QEvent* e)
         // special treatment for menus because they directly call QWhatsThis::showText()
         // whereby we must be informed for which action the help should be shown
         if (o->inherits("QMenu") && QWhatsThis::inWhatsThisMode()) {
-            bool whatthis = false;
+            bool whatsthis = false;
             if (e->type() == QEvent::KeyPress) {
                 QKeyEvent* ke = static_cast<QKeyEvent*>(e);
                 if (ke->key() == Qt::Key_Return || ke->key() == Qt::Key_Enter || ke->key() == Qt::Key_F1)
-                    whatthis = true;
+                    whatsthis = true;
             }
             else if (e->type() == QEvent::MouseButtonRelease)
-                whatthis = true;
+                whatsthis = true;
             else if (e->type() == QEvent::EnterWhatsThisMode)
-                whatthis = true;
-            if (whatthis) {
+                whatsthis = true;
+            if (whatsthis) {
                 QAction* cur = static_cast<QMenu*>(o)->activeAction();
                 if (cur) {
                     // get the help text for later usage
