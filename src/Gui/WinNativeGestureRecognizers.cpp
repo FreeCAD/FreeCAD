@@ -229,7 +229,7 @@ void WinNativeGestureRecognizerPinch::reset(QGesture* gesture)
   q->myFingerDistance = 0;
 }
 
-//function prototype for dymanic linking
+//function prototype for dynamic linking
 typedef BOOL ( __stdcall * ptrSetGestureConfig) (
      HWND ,              // window for which configuration is specified
      DWORD ,             // reserved, must be 0
