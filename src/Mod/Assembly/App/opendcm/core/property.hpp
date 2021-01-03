@@ -458,7 +458,7 @@ PropertyOwner<PropertyList>::PropertyOwner() {
 };
 
 /**
- * @brief Convienience specialization to ease interaction with system class
+ * @brief Convenience specialization to ease interaction with system class
  *
  * Normally property lists are retrieved from the system class, however, there are no empty lists. If no
  * property is supplied for a PropertyOwner derived class, a mpl::void_ type will be retrieved. To

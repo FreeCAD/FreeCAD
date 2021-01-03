@@ -643,7 +643,7 @@ public:
     /**
      * @brief Returns the edge between the local vertices
      *
-     * This function is the same as boost::edge(source, target, Graph) and only added for convienience.
+     * This function is the same as boost::edge(source, target, Graph) and only added for convenience.
      *
      * @param source LocalEdge as edge source
      * @param target LocalEdge as edge target
