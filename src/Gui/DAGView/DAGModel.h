@@ -129,7 +129,7 @@ namespace Gui
       float iconToText;                           //!< spacing between last icon and text.
       float rowPadding;                           //!< spaces added to rectangle background width ends.
       std::vector<QBrush> backgroundBrushes;      //!< brushes to paint background rectangles.
-      std::vector<QBrush> forgroundBrushes;       //!< brushes to paint points, connectors, text.
+      std::vector<QBrush> foregroundBrushes;      //!< brushes to paint points, connectors, text.
       void setupViewConstants();
     //@}
       

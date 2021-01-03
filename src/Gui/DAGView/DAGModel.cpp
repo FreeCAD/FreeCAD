@@ -215,7 +215,7 @@ void Model::setupViewConstants()
   iconToText = iconSize / 2.0;
   rowPadding = fontHeight;
   backgroundBrushes = {this->palette().base(), this->palette().alternateBase()};
-  forgroundBrushes = 
+  foregroundBrushes = 
   {
     QBrush(Qt::red),
     QBrush(Qt::darkRed),
@@ -642,7 +642,7 @@ void Model::updateSlot()
     assert(currentColumn < static_cast<int>(ColumnMask().size())); //temp limitation.
     
     maxColumn = std::max(currentColumn, maxColumn);
-    QBrush currentBrush(forgroundBrushes.at(currentColumn % forgroundBrushes.size()));
+    QBrush currentBrush(foregroundBrushes.at(currentColumn % foregroundBrushes.size()));
 
     auto *rectangle = (*theGraph)[currentVertex].rectangle.get();
     rectangle->setRect(-rowPadding, 0.0, rowPadding, rowHeight); //calculate actual length later.
