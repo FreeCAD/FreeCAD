@@ -226,7 +226,7 @@ class AnalysisMember():
 
         constraints_temperature : list of dictionaries
             list of temperatures for the analysis.
-            [{"Object":temerature_obj, "xxxxxxxx":value}, {}, ...]
+            [{"Object":temperature_obj, "xxxxxxxx":value}, {}, ...]
 
         constraints_tie : list of dictionaries
             list of ties for the analysis.
