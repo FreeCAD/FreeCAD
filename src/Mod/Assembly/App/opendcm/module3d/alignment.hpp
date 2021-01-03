@@ -27,7 +27,7 @@
 namespace dcm {
 
 namespace details {
-//we need a custom orientation type to allow coincidents with points. We can't use the ci_orietation
+//we need a custom orientation type to allow coincidents with points. We can't use the ci_orientation
 //as some geometries are supporte by align but not by coincident
 struct al_orientation : public Equation<al_orientation, Direction, 6, rotation> {
 

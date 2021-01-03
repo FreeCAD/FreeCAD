@@ -129,7 +129,7 @@ App::DocumentObjectExecReturn *Edge2TracObject::execute(void)
 
                 }
 
-                // if reverse orintation, switch the points
+                // if reverse orientation, switch the points
                 if ( it2->Orientation() == TopAbs_REVERSED )
                 {
                      //switch the points and orientation

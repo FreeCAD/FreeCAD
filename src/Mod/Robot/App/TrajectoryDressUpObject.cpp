@@ -47,7 +47,7 @@ using namespace App;
 PROPERTY_SOURCE(Robot::TrajectoryDressUpObject, Robot::TrajectoryObject)
 
 const char* TrajectoryDressUpObject::ContTypeEnums[]= {"DontChange","Continues","Discontinues",NULL};
-const char* TrajectoryDressUpObject::AddTypeEnums[] = {"DontChange","UseOrientation","AddPosition","AddOrintation","AddPositionAndOrientation",NULL};
+const char* TrajectoryDressUpObject::AddTypeEnums[] = {"DontChange","UseOrientation","AddPosition","AddOrientation","AddPositionAndOrientation",NULL};
 
 TrajectoryDressUpObject::TrajectoryDressUpObject()
 {
