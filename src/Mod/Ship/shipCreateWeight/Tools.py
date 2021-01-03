@@ -39,7 +39,7 @@ def createWeight(shapes, ship, density):
         volumetric object. Used for blocks or similar.
         * Density as Mass/Area: then the weight will be considered as an area
         element. Used for structural shells.
-        * Density as Mass/Length: then the weight will be cosidered as a linear
+        * Density as Mass/Length: then the weight will be considered as a linear
         element. Used for linear structural reinforcements.
         * Mass: Then a punctual mass will be considered. Used for complex
         weights, like engines or other machines.
