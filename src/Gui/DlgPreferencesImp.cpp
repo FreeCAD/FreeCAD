@@ -183,18 +183,27 @@ void DlgPreferencesImp::changeGroup(QListWidgetItem *current, QListWidgetItem *p
  */
 void DlgPreferencesImp::addPage(const std::string& className, const std::string& group)
 {
+    std::list<TGroupPages>::iterator groupToAddTo = _pages.end();
     for (std::list<TGroupPages>::iterator it = _pages.begin(); it != _pages.end(); ++it) {
         if (it->first == group) {
-            it->second.push_back(className);
-            return;
+            groupToAddTo = it;
+            break;
         }
     }
 
-    std::list<std::string> pages;
-    pages.push_back(className);
-    _pages.push_back(std::make_pair(group, pages));
+    if (groupToAddTo != _pages.end()) {
+        // The group exists: add this page to the end of the list
+        groupToAddTo->second.push_back(className);
+    }
+    else {
+        // This is a new group: create it, with its one page
+        std::list<std::string> pages;
+        pages.push_back(className);
+        _pages.push_back(std::make_pair(group, pages));
+    }
 
     if (DlgPreferencesImp::_activeDialog != nullptr) {
+        // If the dialog is currently showing, tell it to insert the new page
         _activeDialog->reloadPages();
     }
 }
