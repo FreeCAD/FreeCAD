@@ -693,7 +693,7 @@ Version: V0.1B92 Date: Sun Oct 03 17:55:31 2004 +++++++++++++++++++++++++++++++
   * documentation
 
 Version: V0.1B91 Date: Tue Sep 21 15:34:55 2004 +++++++++++++++++++++++++++++++
-  * New organsiation of Build scripts in fcbt (FreeCADBuildTool)
+  * New organisation of Build scripts in fcbt (FreeCADBuildTool)
   * first experiments with namespaces With Console (FCConsole) and Interpreter
   * DocTypePy object for document behavior implemented
 
