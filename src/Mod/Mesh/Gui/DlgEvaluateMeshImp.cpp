@@ -75,7 +75,7 @@ public:
         : meshFeature(0)
         , view(0)
         , enableFoldsCheck(false)
-        , checkNonManfoldPoints(false)
+        , checkNonManifoldPoints(false)
         , strictlyDegenerated(true)
         , epsilonDegenerated(0.0f)
     {
@@ -99,7 +99,7 @@ public:
     QPointer<Gui::View3DInventor> view;
     std::vector<unsigned long> self_intersections;
     bool enableFoldsCheck;
-    bool checkNonManfoldPoints;
+    bool checkNonManifoldPoints;
     bool strictlyDegenerated;
     float epsilonDegenerated;
 };
@@ -136,7 +136,7 @@ DlgEvaluateMeshImp::DlgEvaluateMeshImp(QWidget* parent, Qt::WindowFlags fl)
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
             ("User parameter:BaseApp/Preferences/Mod/Mesh/Evaluation");
-    d->checkNonManfoldPoints = hGrp->GetBool("CheckNonManifoldPoints", false);
+    d->checkNonManifoldPoints = hGrp->GetBool("CheckNonManifoldPoints", false);
     d->enableFoldsCheck = hGrp->GetBool("EnableFoldsCheck", false);
     d->strictlyDegenerated = hGrp->GetBool("StrictlyDegenerated", true);
     if (d->strictlyDegenerated)
@@ -168,7 +168,7 @@ DlgEvaluateMeshImp::~DlgEvaluateMeshImp()
     try {
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
                 ("User parameter:BaseApp/Preferences/Mod/Mesh/Evaluation");
-        hGrp->SetBool("CheckNonManifoldPoints", d->checkNonManfoldPoints);
+        hGrp->SetBool("CheckNonManifoldPoints", d->checkNonManifoldPoints);
         hGrp->SetBool("EnableFoldsCheck", d->enableFoldsCheck);
         hGrp->SetBool("StrictlyDegenerated", d->strictlyDegenerated);
     }
@@ -534,7 +534,7 @@ void DlgEvaluateMeshImp::on_analyzeNonmanifoldsButton_clicked()
         bool ok2 = true;
         std::vector<unsigned long> point_indices;
 
-        if (d->checkNonManfoldPoints) {
+        if (d->checkNonManifoldPoints) {
             MeshEvalPointManifolds p_eval(rMesh);
             ok2 = p_eval.Evaluate();
             if (!ok2)
@@ -589,7 +589,7 @@ void DlgEvaluateMeshImp::on_repairNonmanifoldsButton_clicked()
                     , "App.getDocument(\"%s\").getObject(\"%s\").removeNonManifolds()"
                     , docName, objName);
 
-            if (d->checkNonManfoldPoints) {
+            if (d->checkNonManifoldPoints) {
                 Gui::Command::doCommand(Gui::Command::App
                         , "App.getDocument(\"%s\").getObject(\"%s\").removeNonManifoldPoints()"
                         , docName, objName);
@@ -1206,11 +1206,11 @@ void DlgEvaluateMeshImp::on_buttonBox_clicked(QAbstractButton* button)
     QDialogButtonBox::StandardButton type = d->ui.buttonBox->standardButton(button);
     if (type == QDialogButtonBox::Open) {
         DlgEvaluateSettings dlg(this);
-        dlg.setNonmanifoldPointsChecked(d->checkNonManfoldPoints);
+        dlg.setNonmanifoldPointsChecked(d->checkNonManifoldPoints);
         dlg.setFoldsChecked(d->enableFoldsCheck);
         dlg.setDegeneratedFacetsChecked(d->strictlyDegenerated);
         if (dlg.exec() == QDialog::Accepted) {
-            d->checkNonManfoldPoints = dlg.isNonmanifoldPointsChecked();
+            d->checkNonManifoldPoints = dlg.isNonmanifoldPointsChecked();
             d->enableFoldsCheck = dlg.isFoldsChecked();
             d->showFoldsFunction(d->enableFoldsCheck);
             d->strictlyDegenerated = dlg.isDegeneratedFacetsChecked();
