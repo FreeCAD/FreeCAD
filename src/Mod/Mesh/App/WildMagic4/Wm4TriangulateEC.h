@@ -269,7 +269,7 @@ private:
     bool IsConvex (int i);
     bool IsEar (int i);
     void InsertAfterC (int i);   // insert convex vertex
-    void InsertAfterR (int i);   // insert reflex vertesx
+    void InsertAfterR (int i);   // insert reflex vertex
     void InsertEndE (int i);     // insert ear at end of list
     void InsertAfterE (int i);   // insert ear after efirst
     void InsertBeforeE (int i);  // insert ear before efirst
