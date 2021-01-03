@@ -132,7 +132,7 @@ public:
     /** Current cell as a string */
     inline std::string address() const { return CellAddress(row_curr, col_curr).toString(); }
 
-    /** The raneg as a string */
+    /** The range as a string */
     inline std::string rangeString() const {
         return CellAddress(row_begin, col_begin).toString() + ":" + CellAddress(row_end, col_end).toString();
     }
