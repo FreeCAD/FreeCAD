@@ -79,7 +79,7 @@ public:
     ~Constraint();
 
     //workaround until better analysing class is created
-    // TODO: remove diasable once analyser is available
+    // TODO: remove disable once analyser is available
     void disable() {
         content->disable();
     };
