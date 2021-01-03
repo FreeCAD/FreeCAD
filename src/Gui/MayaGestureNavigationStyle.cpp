@@ -398,7 +398,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                     if(! processed) {
                         //re-synthesize all previously-consumed mouseDowns, if any. They might have been re-synthesized already when threshold was broken.
                         for( int i=0;   i < this->mousedownConsumedCount;   i++ ){
-                            inherited::processSoEvent(& (this->mousedownConsumedEvent[i]));//simulate the previously-comsumed mousedown.
+                            inherited::processSoEvent(& (this->mousedownConsumedEvent[i]));//simulate the previously-consumed mousedown.
                         }
                         this->mousedownConsumedCount = 0;
                         processed = inherited::processSoEvent(ev);//explicitly, just for clarity that we are sending a full click sequence.
@@ -443,7 +443,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                     //no, we are not entering navigation.
                     //re-synthesize all previously-consumed mouseDowns, if any, and propagate this mousemove.
                     for( int i=0;   i < this->mousedownConsumedCount;   i++ ){
-                        inherited::processSoEvent(& (this->mousedownConsumedEvent[i]));//simulate the previously-comsumed mousedown.
+                        inherited::processSoEvent(& (this->mousedownConsumedEvent[i]));//simulate the previously-consumed mousedown.
                     }
                     this->mousedownConsumedCount = 0;
                     processed = inherited::processSoEvent(ev);//explicitly, just for clarity that we are sending a full click sequence.
