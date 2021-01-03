@@ -380,7 +380,7 @@ def get_svg(obj,
             fillspaces=False, override=True):
     """Return a string containing an SVG representation of the object.
 
-    Paramaeters
+    Parameters
     -----------
     scale: float, optional
         It defaults to 1.
