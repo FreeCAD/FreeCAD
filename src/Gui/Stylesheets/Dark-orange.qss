@@ -1972,7 +1972,7 @@ QToolBar > QToolButton:checked:hover {
     background-color: rgba(124,171,249,80); /* transparency for #e3b64d color */
 }
 
-/*The "show more" button  (it can also be stylable with "QToolBarExtension" */
+/*The "show more" button  (it can also be styleable with "QToolBarExtension" */
 QToolBar QToolButton#qt_toolbar_ext_button {
     margin: 0px;
     padding: 0px;
