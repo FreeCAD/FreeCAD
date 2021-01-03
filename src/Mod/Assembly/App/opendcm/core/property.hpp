@@ -151,7 +151,7 @@ struct cluster_property {};
  *@brief Identifier for general object properties
  *
  * Aproperty with this struct as 'kind' type will be added to all existing objects, no matter of individual
- * type. Use this only for general, sharable properties. To add a property to a single object, use it's
+ * type. Use this only for general, shareable properties. To add a property to a single object, use it's
  * type as 'kind'.
  **/
 struct object_property {};
