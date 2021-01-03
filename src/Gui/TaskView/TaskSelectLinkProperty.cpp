@@ -116,7 +116,7 @@ void TaskSelectLinkProperty::activate(void)
 
     // In case of LinkSub property 
     if (LinkSub) {
-        // save the start values for a cnacel operation (reject())
+        // save the start values for a cancel operation (reject())
         StartValueBuffer = LinkSub->getSubValues();
         StartObject      = LinkSub->getValue();
         if(StartObject) {
@@ -132,7 +132,7 @@ void TaskSelectLinkProperty::activate(void)
     }
     // In case of LinkList property 
     else if (LinkList) {
-        // save the start values for a cnacel operation (reject())
+        // save the start values for a cancel operation (reject())
         const std::vector<App::DocumentObject*> &Values = LinkList->getValues();
         for(std::vector<App::DocumentObject*>::const_iterator it = Values.begin();it!=Values.end();++it)
         {
