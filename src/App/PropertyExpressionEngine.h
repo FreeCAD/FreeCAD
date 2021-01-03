@@ -191,7 +191,7 @@ private:
 
     ExpressionMap expressions; /**< Stored expressions */
 
-    ValidatorFunc validator; /**< Valdiator functor */
+    ValidatorFunc validator; /**< Validator functor */
 
     struct RestoredExpression {
         std::string path;
