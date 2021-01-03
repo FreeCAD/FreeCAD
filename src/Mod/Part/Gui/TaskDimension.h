@@ -138,7 +138,7 @@ private:
   virtual ~DimensionLinear();
 };
 
-/*kit for anglular dimensions*/
+/*kit for angular dimensions*/
 class DimensionAngular : public SoSeparatorKit
 {
   SO_KIT_HEADER(DimensionAngular);
