@@ -354,7 +354,7 @@ Base::Reference<ParameterGrp> ParameterGrp::GetGroup(const char* Name)
         cTemp.assign(cName,0,pos);
         // removing the first part from the original
         cName.erase(0,pos+1);
-        //sbsequent call
+        //subsequent call
         return _GetGroup(cTemp.c_str())->GetGroup(cName.c_str());
     }
 }
