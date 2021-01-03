@@ -39,7 +39,7 @@ namespace Fem {
  * @details
  *  @ref Constraint isn't intended to be used directly. Actual Constraints
  *  used to specify a simulation are children of this class. The base class
- *  essentially does two things: Most importantely it has a property @ref
+ *  essentially does two things: Most importantly it has a property @ref
  *  Constraint::References which is a list of all sub objects the constraint
  *  applies to. Defining it in the base class exposes a common interface to code
  *  using different constraints.
