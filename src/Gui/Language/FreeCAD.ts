@@ -6649,7 +6649,7 @@ Please check report view for more...</source>
     <message>
         <source>
 
-Pyhsical path: </source>
+Physical path: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
