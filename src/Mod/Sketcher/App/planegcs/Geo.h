@@ -120,7 +120,7 @@ namespace GCS
 
         //adds curve's parameters to pvec (used by constraints)
         virtual int PushOwnParams(VEC_pD &pvec) = 0;
-        //recunstruct curve's parameters reading them from pvec starting from index cnt.
+        //reconstruct curve's parameters reading them from pvec starting from index cnt.
         //cnt will be incremented by the same value as returned by PushOwnParams()
         virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt) = 0;
         virtual Curve* Copy() = 0; //DeepSOIC: I haven't found a way to simply copy a curve object provided pointer to a curve object.
