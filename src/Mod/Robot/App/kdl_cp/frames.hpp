@@ -342,7 +342,7 @@ public:
      //! The same as R.Inverse()*arg but more efficient.
      inline Twist Inverse(const Twist& arg) const;
 
-     //! Gives back an identity rotaton matrix
+     //! Gives back an identity rotation matrix
      inline static Rotation Identity();
 
 

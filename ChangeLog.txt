@@ -148,7 +148,7 @@ Version: 0.14
   * Boolean Cut Fails with Extruded Shapestring
   * DeprecationWarning: Use 'TypeId' instead
   * Abort on startup
-  * The output of __repr__() of Vector and Rotatio would create Objects with different Values do to inappropriate rounding
+  * The output of __repr__() of Vector and Rotation would create Objects with different Values do to inappropriate rounding
   * Improvements for Brep Inventor nodes
   * Crash on filleting
   * Download manager
