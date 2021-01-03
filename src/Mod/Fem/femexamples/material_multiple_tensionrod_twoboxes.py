@@ -66,12 +66,12 @@ def setup(doc=None, solvertype="ccxtools"):
     # geometry objects
     # two boxes
     boxlower = doc.addObject("Part::Box", "BoxLower")
-    boxupp = doc.addObject("Part::Box", "BoxUpper")
-    boxupp.Placement.Base = (0, 0, 10)
+    boxupper = doc.addObject("Part::Box", "BoxUpper")
+    boxupper.Placement.Base = (0, 0, 10)
 
     # boolean fragment of the two boxes
     bf = SplitFeatures.makeBooleanFragments(name="BooleanFragments")
-    bf.Objects = [boxlower, boxupp]
+    bf.Objects = [boxlower, boxupper]
     bf.Mode = "CompSolid"
     doc.recompute()
     bf.Proxy.execute(bf)
@@ -143,7 +143,7 @@ def setup(doc=None, solvertype="ccxtools"):
     mat["PoissonRatio"] = "0.30"
     mat["Density"] = "7980 kg/m^3"
     material_object_upp.Material = mat
-    material_object_upp.References = [(boxupp, "Solid1")]
+    material_object_upp.References = [(boxupper, "Solid1")]
 
     # fixed_constraint
     fixed_constraint = analysis.addObject(
