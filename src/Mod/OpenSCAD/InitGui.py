@@ -40,7 +40,7 @@ class OpenSCADWorkbench ( Workbench ):
         self.__class__.MenuText = "OpenSCAD"
         self.__class__.ToolTip = (
             "OpenSCAD is an application for creating solid 3D CAD.\n"
-            "FreeCAD utizes OpenSCAD's capability as a script-only based modeller that uses its own description language\n"
+            "FreeCAD utilizes OpenSCAD's capability as a script-only based modeller that uses its own description language\n"
             "Note: the Mesh workbench heavily uses the boolean operations of this workbench because they are quite robust"
         )
 
