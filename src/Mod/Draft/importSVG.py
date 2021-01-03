@@ -1703,8 +1703,8 @@ def getContents(filename, tag, stringmode=False):
     # so that it's easiert to parse; later on the newline character
     # will be restored
     contents = contents.replace('\n', '_linebreak')
-    searchpat = '<' + tag + '.*?</' + tag + '>'
-    tags = re.findall(searchpat, contents)
+    searchpattern = '<' + tag + '.*?</' + tag + '>'
+    tags = re.findall(searchpattern, contents)
     for t in tags:
         tagid = re.findall('id="(.*?)"', t)
         if tagid:
