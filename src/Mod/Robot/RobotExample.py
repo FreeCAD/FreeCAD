@@ -37,7 +37,7 @@ print(rob.Axis2)
 w = Waypoint(Placement(),name="Pt",type="LIN")
 print(w.Name,w.Type,w.Pos,w.Cont,w.Velocity,w.Base,w.Tool)
 
-# generate more. The Trajectory find always outomatically a unique name for the waypoints
+# generate more. The Trajectory find always automatically a unique name for the waypoints
 l = [w]
 for i in range(5):
   l.append(Waypoint(Placement(Vector(0,0,i*100),Vector(1,0,0),0),"LIN","Pt"))
