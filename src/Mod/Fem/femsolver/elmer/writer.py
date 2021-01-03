@@ -268,7 +268,7 @@ class Writer(object):
         """
         permittivity_objs = self._getMember("Fem::ConstantVacuumPermittivity")
         if len(permittivity_objs) == 1:
-            Console.PrintLog("Constand permittivity overwriting.\n")
+            Console.PrintLog("Constant permittivity overwriting.\n")
             self._setConstant("PermittivityOfVacuum", permittivity_objs[0].VacuumPermittivity)
         elif len(permittivity_objs) > 1:
             Console.PrintError(

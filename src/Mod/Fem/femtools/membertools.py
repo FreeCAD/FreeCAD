@@ -239,7 +239,7 @@ class AnalysisMember():
 
         # get member
         # constants
-        self.cota_vacuumpermittivity = self.get_several_member(
+        self.constant_vacuumpermittivity = self.get_several_member(
             "Fem::ConstantVacuumPermittivity"
         )
 
