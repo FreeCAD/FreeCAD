@@ -751,7 +751,7 @@ class ObjectDressup:
         boneId = 1
         self.bones = []
         self.locationBlacklist = set()
-        # boneIserted = False
+        # boneInserted = False
 
         for (i, thisCommand) in enumerate(obj.Base.Path.Commands):
             # if i > 14:
