@@ -78,9 +78,9 @@ DlgSettingsEditorImp::DlgSettingsEditorImp( QWidget* parent )
     d->colormap.push_back(QPair<QString, unsigned int>
         (QString::fromLatin1(QT_TR_NOOP("Bookmark")), lBookmarks));
     col = Qt::red;
-    unsigned int lBreakpnts = (col.red() << 24) | (col.green() << 16) | (col.blue() << 8);
+    unsigned int lBreakpoints = (col.red() << 24) | (col.green() << 16) | (col.blue() << 8);
     d->colormap.push_back(QPair<QString, unsigned int>
-        (QString::fromLatin1(QT_TR_NOOP("Breakpoint")), lBreakpnts));
+        (QString::fromLatin1(QT_TR_NOOP("Breakpoint")), lBreakpoints));
     col = Qt::blue;
     unsigned int lKeywords = (col.red() << 24) | (col.green() << 16) | (col.blue() << 8);
     d->colormap.push_back(QPair<QString, unsigned int>
