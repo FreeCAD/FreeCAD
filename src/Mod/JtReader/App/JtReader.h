@@ -14,7 +14,7 @@ struct SimpleMeshFacet {
 };
 
 /** Reads a JT File an build up the internal data structure
-  * imports all the meshes of all Parts, recursing the Assamblies.
+  * imports all the meshes of all Parts, recursing the Assemblies.
   */
 void readFile(const char* FileName, int iLods = 0);
 
