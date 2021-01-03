@@ -205,7 +205,7 @@ class Nester:
                 if allLines:
                     print("Invalid face found in set. Aborting")
                 else:
-                    print("Face distretizing failed. Aborting")
+                    print("Face discretizing failed. Aborting")
                 return
             nfaces.append([face[0],f])
         faces = nfaces
