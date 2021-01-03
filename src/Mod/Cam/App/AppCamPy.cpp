@@ -3405,7 +3405,7 @@ static PyObject * offset_mesh(PyObject *self, PyObject *args)
 // TopoShapePyOld *pcShape = static_cast<TopoShapePyOld*>(pcObj); //Surface wird übergeben
 //
 // TopExp_Explorer Ex;
-// Ex.Init(pcShape->getShape(),TopAbs_FACE);  // initialisiere cad-geometrie (trimmed surface)
+// Ex.Init(pcShape->getShape(),TopAbs_FACE);  // initialisiere cad-geometry (trimmed surface)
 //
 // Base::Builder3D m_log3d;
 //
@@ -4037,7 +4037,7 @@ static PyObject * fit_iter(PyObject *self, PyObject *args)
     TopoDS_Shape cad = pcShape->getTopoShapePtr()->_Shape;
 
     TopExp_Explorer Ex;
-    Ex.Init(cad,TopAbs_FACE);  // initialisiere cad-geometrie (trimmed surface)
+    Ex.Init(cad,TopAbs_FACE);  // initialisiere cad-geometry (trimmed surface)
 
     pcObject = (MeshPy*)pcObj;
 

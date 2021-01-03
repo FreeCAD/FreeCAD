@@ -253,11 +253,11 @@ void Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::LGZ::operator()
                 //only treat if the gradient really is zero
                 if(Kernel::isSame(val.m_diff_first_rot(i), 0, 1e-7)) {
 
-                    //to get the approximated second derivative we need the slightly moved geometrie
+                    //to get the approximated second derivative we need the slightly moved geometry
                     const typename Kernel::Vector  p_old =  first->m_parameter;
                     first->m_parameter += first->m_diffparam.col(i)*1e-3;
                     first->normalize();
-                    //with this changed geometrie we test if a gradient exist now
+                    //with this changed geometry we test if a gradient exist now
                     typename Kernel::VectorMap block(&first->m_diffparam(0,i),first->m_parameterCount,1, DS(1,1));
                     typename Kernel::number_type res = val.m_eq.calculateGradientFirst(first->m_parameter,
                                                        second->m_parameter, block);
@@ -280,11 +280,11 @@ void Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::LGZ::operator()
                 //only treat if the gradient really is zero
                 if(Kernel::isSame(val.m_diff_second_rot(i), 0, 1e-7)) {
 
-                    //to get the approximated second derivative we need the slightly moved geometrie
+                    //to get the approximated second derivative we need the slightly moved geometry
                     const typename Kernel::Vector  p_old =  second->m_parameter;
                     second->m_parameter += second->m_diffparam.col(i)*1e-3;
                     second->normalize();
-                    //with this changed geometrie we test if a gradient exist now
+                    //with this changed geometry we test if a gradient exist now
                     typename Kernel::VectorMap block(&second->m_diffparam(0,i),second->m_parameterCount,1, DS(1,1));
                     typename Kernel::number_type res = val.m_eq.calculateGradientFirst(first->m_parameter,
                                                        second->m_parameter, block);

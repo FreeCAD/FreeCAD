@@ -447,7 +447,7 @@ class PathGeometryGenerator:
 
 class ProcessSelectedFaces:
     """ProcessSelectedFaces(JOB, obj) class.
-    This class processes the `obj.Base` object for selected geometery.
+    This class processes the `obj.Base` object for selected geometry.
     Calling the preProcessModel(module) method returns
     two compound objects as a tuple: (FACES, VOIDS) or False."""
 

@@ -240,7 +240,7 @@ int SketchObject::solve(bool updateGeoAfterSolving/*=true*/)
     solvedSketch.resetInitMove();
 
     // if updateGeoAfterSolving=false, the solver information is updated, but the Sketch is nothing
-    // updated. It is useful to avoid triggering an OnChange when the goeometry did not change but
+    // updated. It is useful to avoid triggering an OnChange when the geometry did not change but
     // the solver needs to be updated.
 
     // We should have an updated Sketcher (sketchobject) geometry or this solve() should not have happened

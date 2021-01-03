@@ -1572,7 +1572,7 @@ int _isValidEdgeToEdge(Gui::Command* cmd) {
             TechDraw::BaseGeom* geom0 = objFeat0->getGeomByIndex(GeoId0);
             TechDraw::BaseGeom* geom1 = objFeat0->getGeomByIndex(GeoId1);
 
-            if ((!geom0) || (!geom1)) {                                         // missing gometry
+            if ((!geom0) || (!geom1)) {                                         // missing geometry
                 Base::Console().Error("Logic Error: no geometry for GeoId: %d or GeoId: %d\n",GeoId0,GeoId1);
                 return isInvalid;
             }
