@@ -174,7 +174,7 @@ void Origin::unsetupObject () {
     std::set<App::DocumentObject *> objs (objsLnk.begin(), objsLnk.end());
     // Remove all controlled objects
     for (auto obj: objs ) {
-        // Check that previous deletes wasn't inderectly removed one of our objects
+        // Check that previous deletes wasn't indirectly removed one of our objects
         const auto &objsLnk = OriginFeatures.getValues ();
         if ( std::find(objsLnk.begin(), objsLnk.end(), obj) != objsLnk.end()) {
             if ( ! obj->isRemoving() ) {
