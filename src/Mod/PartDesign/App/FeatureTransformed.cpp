@@ -319,7 +319,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                     // above you need:
                     // 1. The original support
                     // 2. Any extra support gained by any previous transformation of any previous feature (multi-feature transform)
-                    // 3. Any extra support gained by any previous transformation of this feature (feature multi-trasform)
+                    // 3. Any extra support gained by any previous transformation of this feature (feature multi-transform)
                     //
                     // Therefore, if the transformation succeeded, then we fuse it with the support now, before checking the intersection
                     // of the next transformation.
