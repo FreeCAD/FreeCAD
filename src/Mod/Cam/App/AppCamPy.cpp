@@ -3117,7 +3117,7 @@ static PyObject * useMesh(PyObject *self, PyObject *args)
 {
     MeshPy   *pcObject;
     PyObject *pcObj;
-    if (!PyArg_ParseTuple(args, "O!; Need exatly one Mesh object", &(MeshPy::Type), &pcObj))     // convert args: Python->C
+    if (!PyArg_ParseTuple(args, "O!; Need exactly one Mesh object", &(MeshPy::Type), &pcObj))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
 
     pcObject = (MeshPy*)pcObj;
@@ -3295,7 +3295,7 @@ static PyObject * offset_mesh(PyObject *self, PyObject *args)
 
     MeshPy   *pcObject;
     PyObject *pcObj;
-    if (!PyArg_ParseTuple(args, "O!d; Need exatly one Mesh object", &(MeshPy::Type), &pcObj, &offset))     // convert args: Python->C
+    if (!PyArg_ParseTuple(args, "O!d; Need exactly one Mesh object", &(MeshPy::Type), &pcObj, &offset))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
 
     pcObject = (MeshPy*)pcObj;
@@ -3398,7 +3398,7 @@ static PyObject * offset_mesh(PyObject *self, PyObject *args)
 //{
 // PyObject *pcObj;
 //
-// if (!PyArg_ParseTuple(args, "O!; Need exatly one CAD object",&(TopoShapePyOld::Type), &pcObj))     // convert args: Python->C
+// if (!PyArg_ParseTuple(args, "O!; Need exactly one CAD object",&(TopoShapePyOld::Type), &pcObj))     // convert args: Python->C
 //  return NULL;                             // NULL triggers exception
 //
 //
@@ -4030,7 +4030,7 @@ static PyObject * fit_iter(PyObject *self, PyObject *args)
     PyObject *pcObj;
     PyObject *pcObj2;
 
-    if (!PyArg_ParseTuple(args, "O!O!; Need exatly one Mesh object", &(MeshPy::Type), &pcObj, &(TopoShapePy::Type), &pcObj2))     // convert args: Python->C
+    if (!PyArg_ParseTuple(args, "O!O!; Need exactly one Mesh object", &(MeshPy::Type), &pcObj, &(TopoShapePy::Type), &pcObj2))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
 
     TopoShapePy *pcShape = static_cast<TopoShapePy*>(pcObj2); //Surface wird übergeben
