@@ -2371,7 +2371,7 @@ void Document::handleChildren3D(ViewProvider* viewProvider, bool deleting)
                 }
             }
 
-            // add the remaining old children back to toplevel invertor node
+            // add the remaining old children back to toplevel inverter node
             for(auto vpd : oldChildren) {
                 auto obj = vpd->getObject();
                 if(!obj || !obj->getNameInDocument())
