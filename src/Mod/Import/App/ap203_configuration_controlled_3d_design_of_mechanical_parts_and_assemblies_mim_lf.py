@@ -1391,8 +1391,8 @@ marker_select = SELECT(
 	'marker_type',
 	'pre_defined_marker',
 	scope = schema_scope)
-# SELECT TYPE camera_model_d3_multi_clipping_interection_select
-camera_model_d3_multi_clipping_interection_select = SELECT(
+# SELECT TYPE camera_model_d3_multi_clipping_interaction_select
+camera_model_d3_multi_clipping_interaction_select = SELECT(
 	'camera_model_d3_multi_clipping_union',
 	'plane',
 	scope = schema_scope)
@@ -7335,7 +7335,7 @@ class camera_model_d3_multi_clipping(camera_model_d3):
 	'''Entity camera_model_d3_multi_clipping definition.
 
 	:param shape_clipping
-	:type shape_clipping:SET(1,None,'camera_model_d3_multi_clipping_interection_select', scope = schema_scope)
+	:type shape_clipping:SET(1,None,'camera_model_d3_multi_clipping_interaction_select', scope = schema_scope)
 	'''
 	def __init__( self , inherited0__name , inherited1__view_reference_system , inherited2__perspective_of_volume , shape_clipping, ):
 		camera_model_d3.__init__(self , inherited0__name , inherited1__view_reference_system , inherited2__perspective_of_volume , )
@@ -7349,7 +7349,7 @@ class camera_model_d3_multi_clipping(camera_model_d3):
 		# Mandatory argument
 			if value==None:
 				raise AssertionError('Argument shape_clipping is mantatory and can not be set to None')
-			if not check_type(value,SET(1,None,'camera_model_d3_multi_clipping_interection_select', scope = schema_scope)):
+			if not check_type(value,SET(1,None,'camera_model_d3_multi_clipping_interaction_select', scope = schema_scope)):
 				self._shape_clipping = SET(value)
 			else:
 				self._shape_clipping = value
@@ -25421,7 +25421,7 @@ class camera_model_d3_multi_clipping_intersection(geometric_representation_item)
 	'''Entity camera_model_d3_multi_clipping_intersection definition.
 
 	:param shape_clipping
-	:type shape_clipping:SET(2,None,'camera_model_d3_multi_clipping_interection_select', scope = schema_scope)
+	:type shape_clipping:SET(2,None,'camera_model_d3_multi_clipping_interaction_select', scope = schema_scope)
 	'''
 	def __init__( self , inherited0__name , shape_clipping, ):
 		geometric_representation_item.__init__(self , inherited0__name , )
@@ -25435,7 +25435,7 @@ class camera_model_d3_multi_clipping_intersection(geometric_representation_item)
 		# Mandatory argument
 			if value==None:
 				raise AssertionError('Argument shape_clipping is mantatory and can not be set to None')
-			if not check_type(value,SET(2,None,'camera_model_d3_multi_clipping_interection_select', scope = schema_scope)):
+			if not check_type(value,SET(2,None,'camera_model_d3_multi_clipping_interaction_select', scope = schema_scope)):
 				self._shape_clipping = SET(value)
 			else:
 				self._shape_clipping = value
