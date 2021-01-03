@@ -5,7 +5,7 @@ It also includes all additional parameters and their values.
 
 Storing a tool as a JSON file sounds great but eliminates the option of an accurate thumbnail. On the other hand,
 storing each tool as a `*.fcstd` file requires more space and does not allow for generating tools. If one has an
-extensive tool aresenal they might want to script the generation of tools which is easily done for a `*.json` file but
+extensive tool arsenal they might want to script the generation of tools which is easily done for a `*.json` file but
 practically impossible for `*.fcstd` files.
 
 When a tool is instantiated in a job the PDN body is created from the template and the constraints are set according
