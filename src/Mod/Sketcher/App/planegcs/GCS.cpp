@@ -272,7 +272,7 @@ void SolverReportingManager::initStream()
 
 void SolverReportingManager::flushStream()
 {
-    // Akwardly in some systems flushing does not force the write to the file, requiring a close
+    // Awkwardly in some systems flushing does not force the write to the file, requiring a close
     #ifdef _DEBUG_TO_FILE
     stream.flush();
     stream.close();
