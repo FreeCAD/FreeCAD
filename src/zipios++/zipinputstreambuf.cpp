@@ -103,7 +103,7 @@ int ZipInputStreambuf::underflow() {
 }
 
 
-// FIXME: We need to check somew
+// FIXME: We need to check some
 //  
 //    // gp_bitfield bit 3 is one, if the length of the zip entry
 //    // is stored in a trailer.
