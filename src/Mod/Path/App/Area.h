@@ -195,7 +195,7 @@ public:
      * found plane to XY0 plane.
      *
      * If no workplane is set using setPlane(), the active workplane is derived from
-     * the added children shapes using the same algorithm empolyed by setPlane().
+     * the added children shapes using the same algorithm employed by setPlane().
      */
     TopoDS_Shape getPlane(gp_Trsf *trsf=0);
 
