@@ -157,7 +157,7 @@ class Octahedron:
 		obj.Proxy = self
  
 	def execute(self, fp):
-		# Define six vetices for the shape
+		# Define six vertices for the shape
 		v1 = FreeCAD.Vector(0,0,0)
 		v2 = FreeCAD.Vector(fp.Length,0,0)
 		v3 = FreeCAD.Vector(0,fp.Width,0)
