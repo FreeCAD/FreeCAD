@@ -658,7 +658,7 @@ public:
      * Add an edge that connects the two vertices and in the local clustergraph and assign the GlobalEdge to it. The
      * LocalVertex parameters should not represent a cluster which would result in the functions failure. If there's
      * already a local edge between the vertices a new global edge will be added and returned. Failure will be
-     * recocnisable by a false value in the returned type sequence.
+     * recognisable by a false value in the returned type sequence.
      *
      * @param source The first vertex the edge should connect
      * @param target The second vertex the edge should connect
