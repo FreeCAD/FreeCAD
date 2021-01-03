@@ -81,7 +81,7 @@ Version: 0.14
   * Tracing over a background image in Sketcher: image is overwritten by first dimensional constraint text
   * Raytracing export produces bad light definition
   * Spreadsheet module
-  * Parametr "tolerance" in "Create Mesh from geometry" work strange.
+  * Parameter "tolerance" in "Create Mesh from geometry" work strange.
   * Order of operations for Matrix is nonintuitive, needs documentation
   * \Raytracing\Templates\ install folder missing - file ProjectStd.pov missing - Povray error StdFinish undefined
   * Tiny Tweak: v0.14 Shows Some Items as 0.13

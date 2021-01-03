@@ -133,7 +133,7 @@ App::DocumentObjectExecReturn *Extend::execute(void)
         }
     }
 
-    Approx_ParametrizationType ParType = Approx_ChordLength;
+    Approx_ParameterizationType ParType = Approx_ChordLength;
     Standard_Integer DegMin = 3;
     Standard_Integer DegMax = 5;
     GeomAbs_Shape Continuity = GeomAbs_C2;

@@ -2739,7 +2739,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 
 		size_t clpPathIndex;
 		size_t clpSegmentIndex;
-		double clpParamter;
+		double clpParameter;
 		double passLength = 0;
 		double noCutDistance=0;
 		clearedBeforePass.SetClearedPaths(cleared.GetCleared());
@@ -2755,7 +2755,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 			AverageDirection(gyro, toolDir);
 			Perf_DistanceToBoundary.Start();
 
-			double distanceToBoundary = sqrt(DistancePointToPathsSqrd(toolBoundPaths, toolPos, clp, clpPathIndex, clpSegmentIndex, clpParamter));
+			double distanceToBoundary = sqrt(DistancePointToPathsSqrd(toolBoundPaths, toolPos, clp, clpPathIndex, clpSegmentIndex, clpParameter));
 			DoublePoint boundaryDir = GetPathDirectionV(toolBoundPaths[clpPathIndex], clpSegmentIndex);
 			double distBoundaryPointToEngage = sqrt(DistanceSqrd(clp, engagePoint));
 
@@ -2988,7 +2988,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 				Paths remaining;
 				for (const auto &p : cleared.GetCleared())
 				{
-					if (!p.empty() && IsPointWithinCutRegion(toolBoundPaths, p.front()) && DistancePointToPathsSqrd(boundPaths, p.front(), clp, clpPathIndex, clpSegmentIndex, clpParamter) > 4 * toolRadiusScaled * toolRadiusScaled)
+					if (!p.empty() && IsPointWithinCutRegion(toolBoundPaths, p.front()) && DistancePointToPathsSqrd(boundPaths, p.front(), clp, clpPathIndex, clpSegmentIndex, clpParameter) > 4 * toolRadiusScaled * toolRadiusScaled)
 					{
 						remaining.push_back(p);
 					}

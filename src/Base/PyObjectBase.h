@@ -359,7 +359,7 @@ private:
  * \code
  * PyObject *PyGetGrp(PyObject *args);
  * static PyObject *sPyGetGrp(PyObject *self, PyObject *args, PyObject *kwd)
- *        {return ((FCPyParametrGrp*)self)->PyGetGrp(args);};
+ *        {return ((FCPyParameterGrp*)self)->PyGetGrp(args);};
  * \endcode
  * first the method is defined which have the functionality then the
  * static wrapper is used to provide a callback for python. The call
@@ -378,7 +378,7 @@ static PyObject * s##DFUNC (PyObject *self, PyObject *args, PyObject * /*kwd*/){
  * Its a pure convenience macro. You can also do
  * it by hand if you want. It looks like that:
  * \code
- * PyObject *FCPyParametrGrp::PyGetGrp(PyObject *args)
+ * PyObject *FCPyParameterGrp::PyGetGrp(PyObject *args)
  * \endcode
  * see PYFUNCDEF_D for details * @param CLASS is the class in which the macro take place.
  * @param DFUNC is the object method get defined and called

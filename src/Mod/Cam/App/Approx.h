@@ -98,7 +98,7 @@ private:
 	/** @brief Parametervalues in y-direction*/
     ublas::vector<double> ParameterY;
 	/** @brief Parametervalues of the boundary-points in x-direction*/
-    ublas::vector<double> BoundariesX;  //Parametrized Boundaries' Coordinate List
+    ublas::vector<double> BoundariesX;  //Parameterized Boundaries' Coordinate List
 	/** @brief Parametervalues of the boundary-points in y-direction*/
     ublas::vector<double> BoundariesY;
 	/** @brief Original Boundaries' Coordinate List in x-direction*/

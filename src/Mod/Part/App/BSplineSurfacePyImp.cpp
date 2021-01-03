@@ -1233,7 +1233,7 @@ PyObject* BSplineSurfacePy::approximate(PyObject *args, PyObject *kwds)
             break;
         }
         
-        Approx_ParametrizationType pt;
+        Approx_ParameterizationType pt;
         std::string pstr = parType;
         Standard_Boolean useParam = Standard_True;
         if (pstr == "Uniform" )

@@ -2034,7 +2034,7 @@ bool path_simulate::MakePathSingle(bool   brob,   // Beschreibt Ausgabeart (Robo
             d = m_v[2]*(t-m_t0);
 			param = m_StartParam[tool] + d; // Kurvenparameter entspricht zurückgelegtem Weg 
 			                                // für den Fall einer Bogenlängenparametrisierung.			
-			                                // Bei beliebiger Parametrisierung: 
+			                                // Bei beliebiger Parameterisierung: 
 			                                // param = FindParamAt(anAdaptorCurve, d, m_StartParam[tool]);
 
 			// Berechnet alles bis zur zweiten Ableitung
@@ -2087,7 +2087,7 @@ bool path_simulate::MakePathSingle(bool   brob,   // Beschreibt Ausgabeart (Robo
 		d = GetDistance(t);
 		param = m_StartParam[tool] + d;     // Kurvenparameter entspricht zurückgelegtem Weg 
 			                                // für den Fall einer Bogenlängenparametrisierung.			
-			                                // Bei beliebiger Parametrisierung: 
+			                                // Bei beliebiger Parameterisierung: 
 			                                // param = FindParamAt(anAdaptorCurve, d, m_StartParam[tool]);
 
 		// Berechnet alles bis zur zweiten Ableitung

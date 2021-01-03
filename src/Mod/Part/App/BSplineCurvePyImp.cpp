@@ -918,7 +918,7 @@ PyObject* BSplineCurvePy::approximate(PyObject *args, PyObject *kwds)
             }
         }
 
-        Approx_ParametrizationType pt;
+        Approx_ParameterizationType pt;
         std::string pstr = parType;
         if (pstr == "Uniform")
             pt = Approx_IsoParametric;
