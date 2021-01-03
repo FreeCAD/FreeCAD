@@ -40,8 +40,8 @@ DlgDecimating::DlgDecimating(QWidget* parent, Qt::WindowFlags fl)
 {
     ui->setupUi(this);
     ui->spinBoxReduction->setMinimumWidth(60);
-    ui->checkAbsolueNumber->setEnabled(false);
-    on_checkAbsolueNumber_toggled(false);
+    ui->checkAbsoluteNumber->setEnabled(false);
+    on_checkAbsoluteNumber_toggled(false);
 }
 
 DlgDecimating::~DlgDecimating()
@@ -50,12 +50,12 @@ DlgDecimating::~DlgDecimating()
 
 bool DlgDecimating::isAbsoluteNumber() const
 {
-    return ui->checkAbsolueNumber->isChecked();
+    return ui->checkAbsoluteNumber->isChecked();
 }
 
 int DlgDecimating::targetNumberOfTriangles() const
 {
-    if (ui->checkAbsolueNumber->isChecked()) {
+    if (ui->checkAbsoluteNumber->isChecked()) {
         return ui->spinBoxReduction->value();
     }
     else {
@@ -66,12 +66,12 @@ int DlgDecimating::targetNumberOfTriangles() const
 void DlgDecimating::setNumberOfTriangles(int num)
 {
     numberOfTriangles = num;
-    ui->checkAbsolueNumber->setEnabled(num > 0);
+    ui->checkAbsoluteNumber->setEnabled(num > 0);
     if (num <= 0)
-        ui->checkAbsolueNumber->setChecked(false);
+        ui->checkAbsoluteNumber->setChecked(false);
 }
 
-void DlgDecimating::on_checkAbsolueNumber_toggled(bool on)
+void DlgDecimating::on_checkAbsoluteNumber_toggled(bool on)
 {
     ui->sliderReduction->setDisabled(on);
     ui->groupBoxTolerance->setDisabled(on);
@@ -82,13 +82,13 @@ void DlgDecimating::on_checkAbsolueNumber_toggled(bool on)
         ui->spinBoxReduction->setRange(1, numberOfTriangles);
         ui->spinBoxReduction->setValue(numberOfTriangles * (1.0 - reduction()));
         ui->spinBoxReduction->setSuffix(QString());
-        ui->checkAbsolueNumber->setText(tr("Absolute number (Maximum: %1)").arg(numberOfTriangles));
+        ui->checkAbsoluteNumber->setText(tr("Absolute number (Maximum: %1)").arg(numberOfTriangles));
     }
     else {
         ui->spinBoxReduction->setRange(0, 100);
         ui->spinBoxReduction->setValue(ui->sliderReduction->value());
         ui->spinBoxReduction->setSuffix(QString::fromLatin1("%"));
-        ui->checkAbsolueNumber->setText(tr("Absolute number"));
+        ui->checkAbsoluteNumber->setText(tr("Absolute number"));
         connect(ui->sliderReduction, SIGNAL(valueChanged(int)), ui->spinBoxReduction, SLOT(setValue(int)));
         connect(ui->spinBoxReduction, SIGNAL(valueChanged(int)), ui->sliderReduction, SLOT(setValue(int)));
     }

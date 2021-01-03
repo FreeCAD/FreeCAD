@@ -140,7 +140,7 @@ FIND_PATH(OpenCV_CVCAM_INCLUDE_DIR
   PATH_SUFFIXES ${OpenCV_INCDIR_SUFFIXES} )
 
 #
-# find sbsolute path to all libraries 
+# find absolute path to all libraries 
 # some are optionally, some may not exist on Linux
 #
 FIND_LIBRARY(OpenCV_CV_LIBRARY   

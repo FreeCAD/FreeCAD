@@ -45,7 +45,7 @@ public:
     int targetNumberOfTriangles() const;
 
 private Q_SLOTS:
-    void on_checkAbsolueNumber_toggled(bool);
+    void on_checkAbsoluteNumber_toggled(bool);
 
 private:
     int numberOfTriangles;
