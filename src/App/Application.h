@@ -137,7 +137,7 @@ public:
     bool isClosingAll() const;
     //@}
 
-    /** @name Application-wide trandaction setting */
+    /** @name Application-wide transaction setting */
     //@{
     /** Setup a pending application-wide active transaction
      *
