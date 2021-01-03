@@ -27,7 +27,7 @@
 				-- four floats (Quaternion) where the quaternion is specified as:
 				   q=xi+yj+zk+w, i.e. the last parameter is the real part
 				-- three vectors that define rotated axes directions + an optional
-				   3-characher string of capital letters 'X', 'Y', 'Z' that sets the
+				   3-character string of capital letters 'X', 'Y', 'Z' that sets the
 				   order of importance of the axes (e.g., 'ZXY' means z direction is
 				   followed strictly, x is used but corrected if necessary, y is ignored).
 			</UserDocu>
