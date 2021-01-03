@@ -72,7 +72,7 @@ ENDIF(Quarter_BUILD_STATIC_LIBRARY)
 # Quarter will be installed into the directory configured by CMAKE_INSTALL_PREFIX. This
 # defaults to /usr/local/ on UNIX and c:/Program Files/Quarter on Windows.
 #
-# On Windows, the namimg convention is as follows (ripped from the "Coin" way of doing stuff):
+# On Windows, the naming convention is as follows (ripped from the "Coin" way of doing stuff):
 # Dynamic Release: Quarter.dll and Quarter.lib
 # Dynamic Debug: Quarterd.dll and Quarterd.lib
 # Static Release: Quarters.lib
