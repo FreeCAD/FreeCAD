@@ -130,7 +130,7 @@ class ObjectSlot(PathOp.ObjectOp):
             ("App::PropertyEnumeration", "Reference2", "Slot",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Choose what point to use on the second selected feature.")),
             ("App::PropertyDistance", "ExtendRadius", "Slot",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "For arcs/circlular edges, offset the radius for the path.")),
+                QtCore.QT_TRANSLATE_NOOP("App::Property", "For arcs/circular edges, offset the radius for the path.")),
             ("App::PropertyBool", "ReverseDirection", "Slot",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable to reverse the cut direction of the slot path.")),
 
