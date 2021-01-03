@@ -75,7 +75,7 @@ def expandplacementsmatrix(obj,matrix):
                     isinstance(obj.Proxy,MatrixTransform):
                 newmatrix = ownmatrix.multiply(obj.Matrix).multiply(\
                             outobj.Base.Placement.toMatrix())
-                if likeprimitive(outobj.Base,True): #child of is like primtitive
+                if likeprimitive(outobj.Base,True): #child of is like primitive
                     outobj.Matrix = newmatrix
                     outobj.Base.Placement=FreeCAD.Placement()
                 else: #remove the MatrixTransformation
