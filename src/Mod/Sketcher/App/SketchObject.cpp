@@ -216,6 +216,9 @@ App::DocumentObjectExecReturn *SketchObject::execute(void)
     else if (err == -1) { // Solver failed
         return new App::DocumentObjectExecReturn("Solving the sketch failed",this);
     }
+    else if (solvedSketch.hasMalformedConstraints()) {
+        return new App::DocumentObjectExecReturn("Sketch has malformed constraints");
+    }
 
     // this is not necessary for sketch representation in edit mode, unless we want to trigger an update of
     // the objects that depend on this sketch (like pads)
