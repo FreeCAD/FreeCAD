@@ -1290,7 +1290,7 @@ bool SpringbackCorrection::Perform(int deg_Tol, bool out)
 
     //logo.saveToFile("c:/normals.iv");
 
-    // übergebe Normalen und CAD-Mesh für Fehlerberechnng
+    // übergebe Normalen und CAD-Mesh für Fehlerberechnung
     best_fit befi;
     befi.m_normals = m_normals;
     befi.m_CadMesh = m_CadMesh;
