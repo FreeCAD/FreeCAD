@@ -20,7 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 /**
-  * AttachExtensionh, .cpp contain a extension class to derive other features from, to make
+  * AttachExtension.h, .cpp contain a extension class to derive other features from, to make
   * them attachable.
   */
 
