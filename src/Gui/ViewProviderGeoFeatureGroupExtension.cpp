@@ -100,7 +100,7 @@ std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensio
 
 void ViewProviderGeoFeatureGroupExtension::extensionFinishRestoring()
 {
-    // setup GeoExlcuded flag for children
+    // setup GeoExcluded flag for children
     extensionClaimChildren();
     ViewProviderGroupExtension::extensionFinishRestoring();
 }
