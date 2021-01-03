@@ -892,7 +892,7 @@ Version: V0.1B52 Date: Thu Apr 10 21:17:20 2003 +++++++++++++++++++++++++++++++
 
 Version: V0.1B51 Date: Sun Apr 06 21:27:35 2003 +++++++++++++++++++++++++++++++
   * Really big patch from Werner
-    - Fix a problem with the paning in MouseModel
+    - Fix a problem with the panning in MouseModel
     - Fixing workbench binding for std. menus
     - switch to QT_VER for easier changing QT Version
     - fix cmd_name bug in CmdBar
