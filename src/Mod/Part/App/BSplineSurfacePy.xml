@@ -670,7 +670,7 @@
 		</Methode>
 		<Methode Name="reparametrize" Const="true">
 			<Documentation>
-				<UserDocu>Returns a reparametrized copy of this surface</UserDocu>
+				<UserDocu>Returns a reparameterized copy of this surface</UserDocu>
 			</Documentation>
 		</Methode>
 		<Methode Name="approximate" Keyword="true">
