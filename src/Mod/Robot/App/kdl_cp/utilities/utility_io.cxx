@@ -130,9 +130,9 @@ void EatEnd( std::istream& is, int delim )
 
 
 
-// For each space in descript, this routine eats whites,tabs, and newlines (at least one)
+// For each space in description, this routine eats whites,tabs, and newlines (at least one)
 // There should be no consecutive spaces in the description.
-// for each letter in descript, its reads the corresponding letter in the output
+// for each letter in description, its reads the corresponding letter in the output
 // the routine is case insensitive.
 
 
@@ -148,7 +148,7 @@ inline char Upper(char ch)
     return toupper(ch);
 }
 
-void Eat(std::istream& is,const char* descript)
+void Eat(std::istream& is,const char* description)
 {
     // eats whites before word
     char ch;
@@ -156,7 +156,7 @@ void Eat(std::istream& is,const char* descript)
     ch=_EatSpace(is);   
     is.putback(ch);
     const char* p;
-    p = descript;
+    p = description;
     while ((*p)!=0) {
         chdescr = (char)Upper(*p);
         if (chdescr==' ') {

@@ -46,12 +46,12 @@ void _check_istream(std::istream& is);
 void Eat(std::istream& is, int delim );
 
 /** 
- * Eats characters of the stream as long as they satisfy the description in descript
+ * Eats characters of the stream as long as they satisfy the description in description
  * @param is a stream
- * @param descript description string. A sequence of spaces, tabs, 
+ * @param description description string. A sequence of spaces, tabs, 
  *           new-lines and comments is regarded as 1 space in the description string.
  */
-void Eat(std::istream& is,const char* descript);
+void Eat(std::istream& is,const char* description);
 
 /**
  * Eats a word of the stream delimited by the letters in delim or space(tabs...)
