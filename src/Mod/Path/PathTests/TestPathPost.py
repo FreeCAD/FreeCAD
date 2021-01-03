@@ -81,7 +81,7 @@ class PathPostTestCases(unittest.TestCase):
 
         # Use if this test fails in order to have a real good look at the changes
         if WriteDebugOutput:
-            with open('testLinuxCNCImplerial.tmp', 'w') as fp:
+            with open('testLinuxCNCImperial.tmp', 'w') as fp:
                 fp.write(gcode)
 
         if gcode != refGCode:
