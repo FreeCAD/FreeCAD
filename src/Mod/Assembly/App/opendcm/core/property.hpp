@@ -286,7 +286,7 @@ struct ensure_properties {
 };
 
 /**
- * @brief Property vector to a fusion sequence of the propety storage types
+ * @brief Property vector to a fusion sequence of the property storage types
  *
  * Properties are passed around as mpl sequences, mostly vectors. To store actual values, they need to
  * be transformed into fusion sequences. However, only the storage type needs to be in the vector, not
@@ -359,7 +359,7 @@ struct is_object_property : boost::is_same<typename T::kind, object_property> {}
  * usage. If, however, the stored information is of use and one wants to store it permanently, this way
  * is not practical. Therefor vertex and edge properties were introduced, they allow to store arbitrary
  * information at their entity. To use this in combination with boost graph algorithms, this class can
- * be used to expose vertex and edge properties as propertie maps to the boost algorithms. All process
+ * be used to expose vertex and edge properties as property maps to the boost algorithms. All process
  * information is then stored permanently at the relevant position.
  **/
 template <typename Property, typename Graph>

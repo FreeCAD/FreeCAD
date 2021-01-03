@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef APP_PROPERTFILE_H
-#define APP_PROPERTFILE_H
+#ifndef APP_PROPERTYFILE_H
+#define APP_PROPERTYFILE_H
 
 // Std. configurations
 
@@ -128,4 +128,4 @@ protected:
 
 } // namespace App
 
-#endif // APP_PROPERTFILE_H
+#endif // APP_PROPERTYFILE_H

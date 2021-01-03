@@ -67,7 +67,7 @@ public:
   App::PropertyIntegerConstraint ConstraintInt;
   App::PropertyFloatConstraint   ConstraintFloat;
 
-  // Standard Properties (PrppertyStandard.h)
+  // Standard Properties (PropertyStandard.h)
   App::PropertyIntegerList IntegerList;
   App::PropertyFloatList   FloatList;
 

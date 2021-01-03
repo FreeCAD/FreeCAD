@@ -398,7 +398,7 @@ Property * Sheet::getProperty(CellAddress key) const
 
 /**
  * @brief Get a dynamic property.
- * @param addr Name of dynamic propeerty.
+ * @param addr Name of dynamic property.
  * @return Pointer to property, or 0 if it does not exist.
  */
 

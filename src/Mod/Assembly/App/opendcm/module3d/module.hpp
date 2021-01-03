@@ -151,7 +151,7 @@ struct Module3D {
         struct Geometry3D : public mpl::if_<boost::is_same<Identifier, No_Identifier>,
                 Geometry3D_base<Geometry3D>, Geometry3D_id<Geometry3D> >::type {
 
-            typedef vertex_prop vertex_propertie;
+            typedef vertex_prop vertex_property;
 
             Geometry3D(Sys& system);
 

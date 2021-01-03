@@ -343,7 +343,7 @@ public:
      *  Derived_Property_Type, App_Property_Type, Group)
      *
      * This helper simply reuses Name as Property_Name, Property_Type as
-     * Derived_Property_type, Prop_None as App_Propert_Type
+     * Derived_Property_type, Prop_None as App_Property_Type
      *
      * Note: Because PropertyView will merge linked object's properties into
      * ours, we set the default group name as ' Link' with a leading space to
