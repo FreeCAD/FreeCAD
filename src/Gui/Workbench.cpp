@@ -192,7 +192,7 @@ using namespace Gui;
  * w=Workbench()                                              # creates a standard workbench (the same as StdWorkbench in C++)
  * w.MenuText = "My Workbench"                                # the text that will appear in the combo box
  * dir(w)                                                     # lists all available function of the object
- * FreeCADGui.addWorkbench(w)                                 # Creates an item for our workbenmch now
+ * FreeCADGui.addWorkbench(w)                                 # Creates an item for our workbench now
  *                                                            # Note: We must first add the workbench to run some initialization code
  *                                                            # Then we are ready to customize the workbench
  * list = ["Std_Test1", "Std_Test2", "Std_Test3"]             # creates a list of new functions
