@@ -795,7 +795,7 @@ class Drawexporter(object):
                     hasplacement,self.cleanshape)
         elif ob.isDerivedFrom('App::Annotation') :
             return False # ignored here
-            #anntotations needs to be drawn after erase/donly
+            #annotations needs to be drawn after erase/donly
         else: # not derived from Part::Feature
             if not toplevel:
                 raise ValueError('Can not export child object')
