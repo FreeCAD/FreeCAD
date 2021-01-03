@@ -575,7 +575,7 @@ bool cutting_tools::arrangecuts_ZLEVEL()
 //    atopo_surface = m_face_bb_it->first;
 //    geom_surface = BRep_Tool::Surface(atopo_surface);
 //    GeomAPI_ProjectPointOnSurf aPPS(currentPoint,geom_surface,0.001);
-//    //Wenn nichts projeziert werden kann, gehts gleich weiter zum nächsten Face bzw. der nächsten BBox
+//    //Wenn nichts projiziert werden kann, gehts gleich weiter zum nächsten Face bzw. der nächsten BBox
 //    if (aPPS.NbPoints() == 0) continue;
 //    //Jetzt muss das aktuelle Face gespeichert werden, da es eventuell das face ist, welches am nächsten ist
 //    double length = aPPS.LowerDistance();
@@ -752,7 +752,7 @@ TopoDS_Wire cutting_tools::ordercutShape(const TopoDS_Shape &aShape)
 //     atopo_surface = m_face_bb_it->first;
 //     geom_surface = BRep_Tool::Surface(atopo_surface);
 //     GeomAPI_ProjectPointOnSurf aPPS(currentPoint,geom_surface,0.001);
-//     //Wenn nichts projeziert werden kann, gehts gleich weiter zum nächsten Face bzw. der nächsten BBox
+//     //Wenn nichts projiziert werden kann, gehts gleich weiter zum nächsten Face bzw. der nächsten BBox
 //     if (aPPS.NbPoints() == 0) continue;
 //     //Jetzt muss das aktuelle Face gespeichert werden, da es eventuell das face ist, welches am nächsten ist
 //     double length = aPPS.LowerDistance();
@@ -766,7 +766,7 @@ TopoDS_Wire cutting_tools::ordercutShape(const TopoDS_Shape &aShape)
 //    }
 //   }
 //   //Für eine saubere Projection auf der aktuellen Ebene wird jetzt der Richtungsvector
-//   //aus dem projezierten Punkt und dem Ursprungspunkt gebildet
+//   //aus dem projizierten Punkt und dem Ursprungspunkt gebildet
 //   //und dieser dann hergenommen um damit nochmal in dessen Richtung zu projizieren
 //   gp_Vec aVec(currentPoint,nearest_Point);
 //   aVec.Normalize();

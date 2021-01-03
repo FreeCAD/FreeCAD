@@ -174,7 +174,7 @@ public:
     std::vector<double> m_weights;                       // gewichtungen für den Least-Square bzgl. allen Netzpunkte
 
     /*! \brief A working-copy of m_weights */
-    std::vector<double> m_weights_loc;                   // gewichtungen für den Least-Square bzgl. den projezierten Netzpunkten
+    std::vector<double> m_weights_loc;                   // gewichtungen für den Least-Square bzgl. den projizierten Netzpunkten
 
     /*! \brief Translation-vector from the function ShapeFit_Coarse() */
     gp_Vec m_cad2orig;                     // Translationsvektor welche die CAD-Geometrie um den Ursprung zentriert
