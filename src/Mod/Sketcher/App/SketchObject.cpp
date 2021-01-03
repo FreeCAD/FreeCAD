@@ -110,6 +110,7 @@ SketchObject::SketchObject()
     ADD_PROPERTY_TYPE(Geometry,        (0)  ,"Sketch",(App::PropertyType)(App::Prop_None),"Sketch geometry");
     ADD_PROPERTY_TYPE(Constraints,     (0)  ,"Sketch",(App::PropertyType)(App::Prop_None),"Sketch constraints");
     ADD_PROPERTY_TYPE(ExternalGeometry,(0,0),"Sketch",(App::PropertyType)(App::Prop_None),"Sketch external geometry");
+    ADD_PROPERTY_TYPE(FullyConstrained, (false),"Sketch",(App::PropertyType)(App::Prop_Output|App::Prop_ReadOnly |App::Prop_Hidden),"Sketch is fully constrained");
 
     Geometry.setOrderRelevant(true);
 
@@ -251,6 +252,7 @@ int SketchObject::solve(bool updateGeoAfterSolving/*=true*/)
     lastDoF = solvedSketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
                                   getExternalGeometryCount());
 
+    FullyConstrained.setValue(lastDoF == 0);
     // At this point we have the solver information about conflicting/redundant/over-constrained, but the sketch is NOT solved.
     // Some examples:
     // Redundant: a vertical line, a horizontal line and an angle constraint of 90 degrees between the two lines

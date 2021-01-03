@@ -67,6 +67,7 @@ public:
     Part    ::PropertyGeometryList   Geometry;
     Sketcher::PropertyConstraintList Constraints;
     App     ::PropertyLinkSubList    ExternalGeometry;
+    App     ::PropertyBool           FullyConstrained;
     /** @name methods override Feature */
     //@{
     short mustExecute() const override;
