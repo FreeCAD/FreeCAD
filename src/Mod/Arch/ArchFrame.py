@@ -208,15 +208,15 @@ class _Frame(ArchComponent.Component):
                 #basepoint = profile.Placement.Base
                 if hasattr(obj,"BasePoint"):
                     edges = Part.__sortEdges__(profile.Edges)
-                    basepointliste = [profile.CenterOfMass]
+                    basepointlist = [profile.CenterOfMass]
                     for edge in edges:
-                        basepointliste.append(DraftGeomUtils.findMidpoint(edge))
-                        basepointliste.append(edge.Vertexes[-1].Point)
+                        basepointlist.append(DraftGeomUtils.findMidpoint(edge))
+                        basepointlist.append(edge.Vertexes[-1].Point)
                     try:
-                        basepoint = basepointliste[obj.BasePoint]
+                        basepoint = basepointlist[obj.BasePoint]
                     except IndexError:
                         FreeCAD.Console.PrintMessage(translate("Arch","Crossing point not found in profile.")+"\n")
-                        basepoint = basepointliste[0]
+                        basepoint = basepointlist[0]
                 else :
                     basepoint = profile.CenterOfMass
                 profile.translate(bpoint.sub(basepoint))
