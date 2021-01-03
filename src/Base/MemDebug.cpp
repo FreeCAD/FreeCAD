@@ -89,7 +89,7 @@ protected:
 
 // the one and only MemDebug instance.
 #ifdef MemDebugOn
-MemDebug cSingelton;
+MemDebug cSingleton;
 #endif
 
 

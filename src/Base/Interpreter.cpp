@@ -660,24 +660,24 @@ void InterpreterSingleton::runStringArg(const char * psCom,...)
 }
 
 
-// Singelton:
+// Singleton:
 
-InterpreterSingleton * InterpreterSingleton::_pcSingelton = 0;
+InterpreterSingleton * InterpreterSingleton::_pcSingleton = 0;
 
 InterpreterSingleton & InterpreterSingleton::Instance(void)
 {
     // not initialized!
-    if (!_pcSingelton)
-        _pcSingelton = new InterpreterSingleton();
-    return *_pcSingelton;
+    if (!_pcSingleton)
+        _pcSingleton = new InterpreterSingleton();
+    return *_pcSingleton;
 }
 
 void InterpreterSingleton::Destruct(void)
 {
     // not initialized or double destruct!
-    assert(_pcSingelton);
-    delete _pcSingelton;
-    _pcSingelton = 0;
+    assert(_pcSingleton);
+    delete _pcSingleton;
+    _pcSingleton = 0;
 }
 
 int InterpreterSingleton::runCommandLine(const char *prompt)
