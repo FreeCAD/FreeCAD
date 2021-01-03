@@ -665,7 +665,7 @@ PyObject*  MeshPy::addFacets(PyObject *args)
                         facet._aclPoints[2] = Base::getVectorFromTuple<float>((*it).ptr());
                     }
                     else if (seq[0].isSequence()) {
-                        // a sequence of sequence of flots
+                        // a sequence of sequence of floats
                         for (int i=0; i<3; i++) {
                             facet._aclPoints[i] = Base::getVectorFromTuple<float>(seq[i].ptr());
                         }
