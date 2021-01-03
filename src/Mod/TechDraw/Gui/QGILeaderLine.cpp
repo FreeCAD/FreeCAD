@@ -198,7 +198,7 @@ void QGILeaderLine::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 
 void QGILeaderLine::onSourceChange(TechDraw::DrawView* newParent)
 {
-//    Base::Console().Message("QGILL::onSoureChange(%s)\n",newParent->getNameInDocument());
+//    Base::Console().Message("QGILL::onSourceChange(%s)\n",newParent->getNameInDocument());
     std::string parentName = newParent->getNameInDocument();
     QGIView* qgiParent = getQGIVByName(parentName);
     if (qgiParent != nullptr) {
