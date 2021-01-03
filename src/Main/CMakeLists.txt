@@ -1,5 +1,5 @@
-#add_defintions(-D_FC_GUI_ENABLED_)
-#add_defintions(-DFREECADMAINPY)
+#add_definitions(-D_FC_GUI_ENABLED_)
+#add_definitions(-DFREECADMAINPY)
 
 configure_file(freecad.rc.cmake ${CMAKE_CURRENT_BINARY_DIR}/freecad.rc)
 configure_file(freecadCmd.rc.cmake ${CMAKE_CURRENT_BINARY_DIR}/freecadCmd.rc)
