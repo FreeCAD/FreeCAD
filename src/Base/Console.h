@@ -256,7 +256,7 @@
  *
  *      // do other stuff
  *
- *      FC_DRUATION_PLUS(timing.d1, t);
+ *      FC_DURATION_PLUS(timing.d1, t);
  * }
  *
  * void operation2(Timing &timing) {
@@ -265,7 +265,7 @@
  *
  *      // do stuff
  *
- *      FC_DRUATION_PLUS(timing.d2, t);
+ *      FC_DURATION_PLUS(timing.d2, t);
  * }
  *
  * void operation() {
