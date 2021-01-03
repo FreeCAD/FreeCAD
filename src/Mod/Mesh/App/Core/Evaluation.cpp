@@ -64,7 +64,7 @@ bool MeshOrientationVisitor::Visit (const MeshFacet &rclFacet, const MeshFacet &
     return true;
 }
 
-bool MeshOrientationVisitor::HasNonUnifomOrientedFacets() const
+bool MeshOrientationVisitor::HasNonUniformOrientedFacets() const
 {
     return _nonuniformOrientation;
 }
