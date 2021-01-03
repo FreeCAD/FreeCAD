@@ -45,7 +45,7 @@ def init_doc(doc=None):
 
 
 def get_information():
-    info = {"name": "CCX cantilever prescibed displacement",
+    info = {"name": "CCX cantilever prescribed displacement",
             "meshtype": "solid",
             "meshelement": "Tet10",
             "constraints": ["fixed", "displacement"],
