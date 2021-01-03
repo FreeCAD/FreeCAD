@@ -52,7 +52,7 @@ namespace KDL
      * Generalized Inverses : Theory and Applications,
      * second edition. Springer, 2003. ISBN 0-387-00293-6.
      *
-     * 2) [Doty 93] K. L. Doty, C. Melchiorri & C. Boniveto.
+     * 2) [Doty 93] K. L. Doty, C. Melchiorri & C. Bonivento.
      * A theory of generalized inverses applied to Robotics.
      * The International Journal of Robotics Research,
      * vol. 12, no. 1, pages 1-19, february 1993.
