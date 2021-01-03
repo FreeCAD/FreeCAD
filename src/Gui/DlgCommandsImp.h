@@ -37,7 +37,7 @@ class Ui_DlgCustomCommands;
 /** Shows an overview of all available commands of all groups and modules.
  * You can customize your workbenches just by drag&dropping any commands
  * onto the toolbars or commandbars. But you cannot modify any standard toolbars or
- * commandbars such as "File, View, ...". It is only poosible to
+ * commandbars such as "File, View, ...". It is only possible to
  * customize your own toolbars or commandbars.
  * \author Werner Mayer
  */
