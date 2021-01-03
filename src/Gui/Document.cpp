@@ -334,7 +334,7 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
             vp = dynamic_cast<ViewProviderDocumentObject*>(
                     Application::Instance->getViewProvider(obj));
             if(!vp || !vp->getDocument()) {
-                FC_ERR("invliad view provider for parent object");
+                FC_ERR("invalid view provider for parent object");
                 return false;
             }
             if(vp->getDocument()!=this)
