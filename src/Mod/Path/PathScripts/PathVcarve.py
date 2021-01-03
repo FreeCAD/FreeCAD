@@ -159,7 +159,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
     '''Proxy class for Vcarve operation.'''
 
     def opFeatures(self, obj):
-        '''opFeatures(obj) ... return all standard features and edges based geomtries'''
+        '''opFeatures(obj) ... return all standard features and edges based geometries'''
         return PathOp.FeatureTool | PathOp.FeatureHeights | PathOp.FeatureBaseFaces | PathOp.FeatureCoolant
 
     def setupAdditionalProperties(self, obj):
