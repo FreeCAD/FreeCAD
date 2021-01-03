@@ -359,7 +359,7 @@ def findHomotheticCenterOfCircles(circle1, circle2):
     cenDir = vec(cen1_cen2)
     cenDir.normalize()
 
-    # Get the perpedicular vector.
+    # Get the perpendicular vector.
     perpCenDir = cenDir.cross(App.Vector(0, 0, 1))
     perpCenDir.normalize()
 
@@ -427,7 +427,7 @@ def findRadicalAxis(circle1, circle2):
     cenDir = cen1.sub(circle2.Curve.Center)
     cenDir.normalize()
 
-    # Get the perpedicular vector.
+    # Get the perpendicular vector.
     perpCenDir = cenDir.cross(App.Vector(0, 0, 1))
     perpCenDir.normalize()
 
