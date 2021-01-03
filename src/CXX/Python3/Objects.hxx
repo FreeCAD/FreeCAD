@@ -1403,7 +1403,7 @@ namespace Py
             return SeqBase<T>( PySequence_Concat( ptr(), *other ), true );
         }
 
-        // more STL compatability
+        // more STL compatibility
         const T front() const
         {
             return getItem( 0 );

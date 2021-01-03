@@ -73,7 +73,7 @@ DocumentObject::DocumentObject(void)
     ADD_PROPERTY(Visibility, (true));
 
     // default set Visibility status to hidden and output (no touch) for
-    // compatibitily reason. We use setStatus instead of PropertyType to 
+    // compatibility reason. We use setStatus instead of PropertyType to 
     // allow user to change its status later
     Visibility.setStatus(Property::Output,true);
     Visibility.setStatus(Property::Hidden,true);
