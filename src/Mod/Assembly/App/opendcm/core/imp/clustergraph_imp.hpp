@@ -559,7 +559,7 @@ ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::addEdge(LocalVertex
     if(!done)
         return fusion::make_vector(LocalEdge(), GlobalEdge(), false);
 
-    //init the bundle corecctly for new edge
+    //init the bundle correctly for new edge
     GlobalEdge global = { fusion::at_c<0> ((*this) [source]), fusion::at_c<0> ((*this) [target]), m_id->generate() };
     edge_bundle_single s;
     fusion::at_c<1> (s) = global;
@@ -599,7 +599,7 @@ ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::addEdge(GlobalVerte
     if(!d3)
         return fusion::make_vector(LocalEdge(), GlobalEdge(), false, false);
 
-    //init the bundle corectly for new edge
+    //init the bundle correctly for new edge
     GlobalEdge global = { source, target, m_id->generate() };
     edge_bundle_single s;
     fusion::at_c<1> (s) = global;
