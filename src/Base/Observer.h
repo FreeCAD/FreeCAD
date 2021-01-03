@@ -167,7 +167,7 @@ public:
   /** Notify all Observers
    * Send a message to all Observers attached to this subject.
    * The Message depends on the implementation of a concrete
-   * Oberserver and Subject.
+   * Observer and Subject.
    * @see Notify
    */
   void Notify(_MessageType rcReason)
