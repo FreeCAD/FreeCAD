@@ -252,7 +252,7 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
             unitString = QString::fromLatin1("kV");
             factor = 1e9;
         }
-        else { // > 1000 kV scientificc notation
+        else { // > 1000 kV scientific notation
             unitString = QString::fromLatin1("V");
             factor = 1e6;
         }
