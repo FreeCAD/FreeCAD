@@ -393,7 +393,7 @@ public:
     /**
      * @brief Copys the Clustergraph into a new one
      *
-     * Copys this cluster and all subclusters into the give one, which is cleared bevore copying. Be
+     * Copys this cluster and all subclusters into the give one, which is cleared before copying. Be
      * aware that all objects and properties are only copied, and as some are shared pointers (namely
      * all objects) you may have to clone them. If needed this can be done with the supplied functor,
      * which receives all copied objects to his function operator which returns the new object.

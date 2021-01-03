@@ -108,7 +108,7 @@ void Module3D<Typelist, ID>::type<Sys>::inheriter_base::removeGeometry3D(Geom g)
     if(c)
         c->template emitSignal<remove>(c);
 
-    //emit remove geometry signal bevore actually deleting it, in case anyone want to access the
+    //emit remove geometry signal before actually deleting it, in case anyone want to access the
     //graph before
     g->template emitSignal<remove>(g);
 
