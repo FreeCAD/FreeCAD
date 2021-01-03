@@ -275,7 +275,7 @@ void ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::copyInto(boost
     //first copy all vertices and edges, but be aware that the objects in the new graph
     //are also copys only and point to the old graph. there is a bug in older boost version
     //(<1.5 i believe) that breaks vertex_all propety map for bundled properties, so we
-    //have to create our own copie functors
+    //have to create our own copy functors
     into->clear();
     vertex_copier<Graph> vc(*this, *into);
     edge_copier<Graph> ec(*this, *into);
