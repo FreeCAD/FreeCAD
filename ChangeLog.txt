@@ -940,7 +940,7 @@ Version: V0.1B41 Date: Sat Mar 08 19:16:05 2003 +++++++++++++++++++++++++++++++
     - implemented some basic tests
 
 Version: V0.1B40 Date: Tue Mar 04 21:53:02 2003 +++++++++++++++++++++++++++++++
-  * Activiti update
+  * Activity update
   * new resource concept in commands
   * Command groups
   * Command belonging to AppModules
