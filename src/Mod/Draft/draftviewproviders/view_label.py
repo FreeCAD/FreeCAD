@@ -395,7 +395,7 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
             self.text3d.spacing = vobj.LineSpacing
 
     def get_text_size(self, vobj):
-        """Return the bunding box of the text element."""
+        """Return the bounding box of the text element."""
         if vobj.DisplayMode == "3D text":
             text = self.text3d
         else:
