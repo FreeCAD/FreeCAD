@@ -239,7 +239,7 @@ class Offset(gui_base_original.Modifier):
                     _cmd += DraftVecUtils.toString(self.npts) + ', '
                     _cmd += 'copy=' + str(copymode)
                     _cmd += ')'
-                    _cmd_list = ['offst = ' + _cmd,
+                    _cmd_list = ['offset = ' + _cmd,
                                  'FreeCAD.ActiveDocument.recompute()']
                     self.commit(translate("draft", "Offset"),
                                 _cmd_list)
@@ -256,7 +256,7 @@ class Offset(gui_base_original.Modifier):
                     _cmd += 'copy=' + str(copymode) + ', '
                     _cmd += 'occ=' + str(occmode)
                     _cmd += ')'
-                    _cmd_list = ['offst = ' + _cmd,
+                    _cmd_list = ['offset = ' + _cmd,
                                  'FreeCAD.ActiveDocument.recompute()']
                     self.commit(translate("draft", "Offset"),
                                 _cmd_list)
@@ -320,7 +320,7 @@ class Offset(gui_base_original.Modifier):
             _cmd += 'copy=' + str(copymode) + ', '
             _cmd += 'occ=' + str(occmode)
             _cmd += ')'
-            _cmd_list = ['offst = ' + _cmd,
+            _cmd_list = ['offset = ' + _cmd,
                          'FreeCAD.ActiveDocument.recompute()']
             self.commit(translate("draft", "Offset"),
                         _cmd_list)

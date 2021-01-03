@@ -220,7 +220,7 @@ class ObjectOp(PathOp.ObjectOp):
             # Calculate operation heights based upon rotation radii
             opHeights = self.opDetermineRotationRadii(obj)
             (self.xRotRad, self.yRotRad, self.zRotRad) = opHeights[0]  # pylint: disable=attribute-defined-outside-init
-            (clrOfset, safOfst) = opHeights[1]
+            (clrOffset, safOfst) = opHeights[1]
             PathLog.debug("Exec. opHeights[0]: " + str(opHeights[0]))
             PathLog.debug("Exec. opHeights[1]: " + str(opHeights[1]))
 
@@ -233,7 +233,7 @@ class ObjectOp(PathOp.ObjectOp):
                 strDep = max(self.xRotRad, self.yRotRad)
             finDep = -1 * strDep
 
-            obj.ClearanceHeight.Value = strDep + clrOfset
+            obj.ClearanceHeight.Value = strDep + clrOffset
             obj.SafeHeight.Value = strDep + safOfst
 
             # Create visual axes when debugging.

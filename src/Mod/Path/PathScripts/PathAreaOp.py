@@ -194,7 +194,7 @@ class ObjectOp(PathOp.ObjectOp):
                 self.initWithRotation = True
                 self.stockBB = PathUtils.findParentJob(obj).Stock.Shape.BoundBox # pylint: disable=attribute-defined-outside-init
                 # Calculate rotational distances/radii
-                opHeights = self.opDetermineRotationRadii(obj)  # return is list with tuples [(xRotRad, yRotRad, zRotRad), (clrOfst, safOfset)]
+                opHeights = self.opDetermineRotationRadii(obj)  # return is list with tuples [(xRotRad, yRotRad, zRotRad), (clrOfst, safOffset)]
                 (xRotRad, yRotRad, zRotRad) = opHeights[0] # pylint: disable=unused-variable
                 PathLog.debug("opHeights[0]: " + str(opHeights[0]))
                 PathLog.debug("opHeights[1]: " + str(opHeights[1]))
@@ -355,7 +355,7 @@ class ObjectOp(PathOp.ObjectOp):
             # Calculate operation heights based upon rotation radii
             opHeights = self.opDetermineRotationRadii(obj)
             (self.xRotRad, self.yRotRad, self.zRotRad) = opHeights[0] # pylint: disable=attribute-defined-outside-init
-            (self.clrOfset, self.safOfst) = opHeights[1] # pylint: disable=attribute-defined-outside-init
+            (self.clrOffset, self.safOfst) = opHeights[1] # pylint: disable=attribute-defined-outside-init
 
             # Set clearance and safe heights based upon rotation radii
             if obj.EnableRotation == 'A(x)':
@@ -370,7 +370,7 @@ class ObjectOp(PathOp.ObjectOp):
             # The next two lines are improper code.
             # The ClearanceHeight and SafeHeight need to be set in opSetDefaultValues() method.
             # They should not be redefined here, so this entire `if...:` statement needs relocated.
-            obj.ClearanceHeight.Value = start_depth + self.clrOfset
+            obj.ClearanceHeight.Value = start_depth + self.clrOffset
             obj.SafeHeight.Value = start_depth + self.safOfst
 
             # Create visual axes when debugging.
