@@ -802,7 +802,7 @@ class MASTER_SCALE(OneFloatValueChunk):
 
 
 #
-# Coloring, Lighting, Atmosphers Stuff
+# Coloring, Lighting, Atmosphere Stuff
 #
 
 class BIT_MAP(ChunkBase):
