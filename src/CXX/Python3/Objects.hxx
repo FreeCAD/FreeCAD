@@ -1075,7 +1075,7 @@ namespace Py
 
     // seqref<T> is what you get if you get elements from a non-const SeqBase<T>.
     // Note: seqref<T> could probably be a nested class in SeqBase<T> but that might stress
-    // some compilers needlessly. Simlarly for mapref later.
+    // some compilers needlessly. Similarly for mapref later.
 
     // While this class is not intended for enduser use, it needs some public
     // constructors for the benefit of the STL.
