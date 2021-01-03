@@ -87,7 +87,7 @@ class TestObjectCreate(unittest.TestCase):
         # solver children: equations --> 6
         # gmsh mesh children: group, region, boundary layer --> 3
         # resule children: mesh result --> 1
-        # post pipeline childeren: region, scalar, cut, wrap --> 4
+        # post pipeline children: region, scalar, cut, wrap --> 4
         # analysis itself is not in analysis group --> 1
         # thus: -14
 

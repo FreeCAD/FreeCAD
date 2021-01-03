@@ -723,9 +723,9 @@ class ViewProviderBuildingPart:
                 if isinstance(txt,unicode):
                     txt = txt.encode("utf8")
                 self.txt.string.setValue(txt)
-        elif prop in ["ChildrenOverride","ChildenLineWidth","ChildrenLineColor","ChildrenShapeColor","ChildrenTransparency"]:
+        elif prop in ["ChildrenOverride","ChildrenLineWidth","ChildrenLineColor","ChildrenShapeColor","ChildrenTransparency"]:
             if hasattr(vobj,"ChildrenOverride") and vobj.ChildrenOverride:
-                props = ["ChildenLineWidth","ChildrenLineColor","ChildrenShapeColor","ChildrenTransparency"]
+                props = ["ChildrenLineWidth","ChildrenLineColor","ChildrenShapeColor","ChildrenTransparency"]
                 for child in vobj.Object.Group:
                     for prop in props:
                         if hasattr(vobj,prop) and hasattr(child.ViewObject,prop[8:]) and not hasattr(child,"ChildrenOverride"):
