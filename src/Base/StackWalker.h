@@ -128,7 +128,7 @@ protected:
     CHAR name[STACKWALK_MAX_NAMELEN];
     CHAR undName[STACKWALK_MAX_NAMELEN];
     CHAR undFullName[STACKWALK_MAX_NAMELEN];
-    DWORD64 offsetFromSmybol;
+    DWORD64 offsetFromSymbol;
     DWORD offsetFromLine;
     DWORD lineNumber;
     CHAR lineFileName[STACKWALK_MAX_NAMELEN];
