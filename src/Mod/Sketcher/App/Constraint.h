@@ -85,7 +85,7 @@ public:
     Constraint();
     // PVS V690: It is perfectly fine to use copy operator only internally
 
-    // Constraints objects explicitly not copiable with standard methods
+    // Constraints objects explicitly not copyable with standard methods
     // Copy constructor is private for internal use only
     Constraint &operator =(const Constraint &a) = delete;
 
