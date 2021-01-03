@@ -162,7 +162,7 @@ private:
 	Array2D<char> m_attr;
 	float m_px, m_py, m_pz;  // stock zero position
 	float m_lx, m_ly, m_lz;  // stock dimensions
-	float m_res;        // resoulution
+	float m_res;        // resolution
 	float m_plane;		// stock plane height
 	int m_x, m_y;            // stock array size
 	std::vector<MeshCore::MeshGeomFacet> facetsOuter;
