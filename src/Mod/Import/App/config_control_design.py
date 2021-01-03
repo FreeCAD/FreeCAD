@@ -486,7 +486,7 @@ class representation_item(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._name = label(value)
 			else:
@@ -552,7 +552,7 @@ class functionally_defined_transformation(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._name = label(value)
 			else:
@@ -566,7 +566,7 @@ class functionally_defined_transformation(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument description is mantatory and can not be set to None')
+				raise AssertionError('Argument description is mandatory and can not be set to None')
 			if not check_type(value,text):
 				self._description = text(value)
 			else:
@@ -637,7 +637,7 @@ class cartesian_transformation_operator(geometric_representation_item,functional
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument local_origin is mantatory and can not be set to None')
+				raise AssertionError('Argument local_origin is mandatory and can not be set to None')
 			if not check_type(value,cartesian_point):
 				self._local_origin = cartesian_point(value)
 			else:
@@ -753,7 +753,7 @@ class versioned_action_request(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument id is mantatory and can not be set to None')
+				raise AssertionError('Argument id is mandatory and can not be set to None')
 			if not check_type(value,identifier):
 				self._id = identifier(value)
 			else:
@@ -767,7 +767,7 @@ class versioned_action_request(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument version is mantatory and can not be set to None')
+				raise AssertionError('Argument version is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._version = label(value)
 			else:
@@ -781,7 +781,7 @@ class versioned_action_request(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument purpose is mantatory and can not be set to None')
+				raise AssertionError('Argument purpose is mandatory and can not be set to None')
 			if not check_type(value,text):
 				self._purpose = text(value)
 			else:
@@ -795,7 +795,7 @@ class versioned_action_request(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument description is mantatory and can not be set to None')
+				raise AssertionError('Argument description is mandatory and can not be set to None')
 			if not check_type(value,text):
 				self._description = text(value)
 			else:
@@ -829,7 +829,7 @@ class representation(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._name = label(value)
 			else:
@@ -843,7 +843,7 @@ class representation(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument items is mantatory and can not be set to None')
+				raise AssertionError('Argument items is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'representation_item', scope = schema_scope)):
 				self._items = SET(value)
 			else:
@@ -857,7 +857,7 @@ class representation(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument context_of_items is mantatory and can not be set to None')
+				raise AssertionError('Argument context_of_items is mandatory and can not be set to None')
 			if not check_type(value,representation_context):
 				self._context_of_items = representation_context(value)
 			else:
@@ -1014,7 +1014,7 @@ class certification(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._name = label(value)
 			else:
@@ -1028,7 +1028,7 @@ class certification(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument purpose is mantatory and can not be set to None')
+				raise AssertionError('Argument purpose is mandatory and can not be set to None')
 			if not check_type(value,text):
 				self._purpose = text(value)
 			else:
@@ -1042,7 +1042,7 @@ class certification(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument kind is mantatory and can not be set to None')
+				raise AssertionError('Argument kind is mandatory and can not be set to None')
 			if not check_type(value,certification_type):
 				self._kind = certification_type(value)
 			else:
@@ -1084,7 +1084,7 @@ class product_definition_relationship(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument id is mantatory and can not be set to None')
+				raise AssertionError('Argument id is mandatory and can not be set to None')
 			if not check_type(value,identifier):
 				self._id = identifier(value)
 			else:
@@ -1098,7 +1098,7 @@ class product_definition_relationship(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._name = label(value)
 			else:
@@ -1112,7 +1112,7 @@ class product_definition_relationship(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument description is mantatory and can not be set to None')
+				raise AssertionError('Argument description is mandatory and can not be set to None')
 			if not check_type(value,text):
 				self._description = text(value)
 			else:
@@ -1126,7 +1126,7 @@ class product_definition_relationship(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relating_product_definition is mantatory and can not be set to None')
+				raise AssertionError('Argument relating_product_definition is mandatory and can not be set to None')
 			if not check_type(value,product_definition):
 				self._relating_product_definition = product_definition(value)
 			else:
@@ -1140,7 +1140,7 @@ class product_definition_relationship(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument related_product_definition is mantatory and can not be set to None')
+				raise AssertionError('Argument related_product_definition is mandatory and can not be set to None')
 			if not check_type(value,product_definition):
 				self._related_product_definition = product_definition(value)
 			else:
@@ -1210,7 +1210,7 @@ class quantified_assembly_component_usage(assembly_component_usage):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument quantity is mantatory and can not be set to None')
+				raise AssertionError('Argument quantity is mandatory and can not be set to None')
 			if not check_type(value,measure_with_unit):
 				self._quantity = measure_with_unit(value)
 			else:
@@ -1246,7 +1246,7 @@ class manifold_solid_brep(solid_model):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument outer is mantatory and can not be set to None')
+				raise AssertionError('Argument outer is mandatory and can not be set to None')
 			if not check_type(value,closed_shell):
 				self._outer = closed_shell(value)
 			else:
@@ -1297,7 +1297,7 @@ class action_directive(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._name = label(value)
 			else:
@@ -1311,7 +1311,7 @@ class action_directive(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument description is mantatory and can not be set to None')
+				raise AssertionError('Argument description is mandatory and can not be set to None')
 			if not check_type(value,text):
 				self._description = text(value)
 			else:
@@ -1325,7 +1325,7 @@ class action_directive(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument analysis is mantatory and can not be set to None')
+				raise AssertionError('Argument analysis is mandatory and can not be set to None')
 			if not check_type(value,text):
 				self._analysis = text(value)
 			else:
@@ -1339,7 +1339,7 @@ class action_directive(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument comment is mantatory and can not be set to None')
+				raise AssertionError('Argument comment is mandatory and can not be set to None')
 			if not check_type(value,text):
 				self._comment = text(value)
 			else:
@@ -1353,7 +1353,7 @@ class action_directive(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument requests is mantatory and can not be set to None')
+				raise AssertionError('Argument requests is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'versioned_action_request', scope = schema_scope)):
 				self._requests = SET(value)
 			else:
@@ -1379,7 +1379,7 @@ class named_unit(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument dimensions is mantatory and can not be set to None')
+				raise AssertionError('Argument dimensions is mandatory and can not be set to None')
 			if not check_type(value,dimensional_exponents):
 				self._dimensions = dimensional_exponents(value)
 			else:
@@ -1425,7 +1425,7 @@ class measure_with_unit(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument value_component is mantatory and can not be set to None')
+				raise AssertionError('Argument value_component is mandatory and can not be set to None')
 			if not check_type(value,measure_value):
 				self._value_component = measure_value(value)
 			else:
@@ -1439,7 +1439,7 @@ class measure_with_unit(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument unit_component is mantatory and can not be set to None')
+				raise AssertionError('Argument unit_component is mandatory and can not be set to None')
 			if not check_type(value,unit):
 				self._unit_component = unit(value)
 			else:
@@ -1488,7 +1488,7 @@ class effectivity(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument id is mantatory and can not be set to None')
+				raise AssertionError('Argument id is mandatory and can not be set to None')
 			if not check_type(value,identifier):
 				self._id = identifier(value)
 			else:
@@ -1519,7 +1519,7 @@ class serial_numbered_effectivity(effectivity):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument effectivity_start_id is mantatory and can not be set to None')
+				raise AssertionError('Argument effectivity_start_id is mandatory and can not be set to None')
 			if not check_type(value,identifier):
 				self._effectivity_start_id = identifier(value)
 			else:
@@ -1577,7 +1577,7 @@ class offset_surface(surface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument basis_surface is mantatory and can not be set to None')
+				raise AssertionError('Argument basis_surface is mandatory and can not be set to None')
 			if not check_type(value,surface):
 				self._basis_surface = surface(value)
 			else:
@@ -1591,7 +1591,7 @@ class offset_surface(surface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument distance is mantatory and can not be set to None')
+				raise AssertionError('Argument distance is mandatory and can not be set to None')
 			if not check_type(value,length_measure):
 				self._distance = length_measure(value)
 			else:
@@ -1605,7 +1605,7 @@ class offset_surface(surface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument self_intersect is mantatory and can not be set to None')
+				raise AssertionError('Argument self_intersect is mandatory and can not be set to None')
 			if not check_type(value,LOGICAL):
 				self._self_intersect = LOGICAL(value)
 			else:
@@ -1632,7 +1632,7 @@ class placement(geometric_representation_item):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument location is mantatory and can not be set to None')
+				raise AssertionError('Argument location is mandatory and can not be set to None')
 			if not check_type(value,cartesian_point):
 				self._location = cartesian_point(value)
 			else:
@@ -1709,7 +1709,7 @@ class product_category(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._name = label(value)
 			else:
@@ -1750,7 +1750,7 @@ class product_related_product_category(product_category):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument products is mantatory and can not be set to None')
+				raise AssertionError('Argument products is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'product', scope = schema_scope)):
 				self._products = SET(value)
 			else:
@@ -1786,7 +1786,7 @@ class conic(curve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument position is mantatory and can not be set to None')
+				raise AssertionError('Argument position is mandatory and can not be set to None')
 			if not check_type(value,axis2_placement):
 				self._position = axis2_placement(value)
 			else:
@@ -1817,7 +1817,7 @@ class hyperbola(conic):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument semi_axis is mantatory and can not be set to None')
+				raise AssertionError('Argument semi_axis is mandatory and can not be set to None')
 			if not check_type(value,positive_length_measure):
 				self._semi_axis = positive_length_measure(value)
 			else:
@@ -1831,7 +1831,7 @@ class hyperbola(conic):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument semi_imag_axis is mantatory and can not be set to None')
+				raise AssertionError('Argument semi_imag_axis is mandatory and can not be set to None')
 			if not check_type(value,positive_length_measure):
 				self._semi_imag_axis = positive_length_measure(value)
 			else:
@@ -2093,7 +2093,7 @@ class organizational_address(address):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument organizations is mantatory and can not be set to None')
+				raise AssertionError('Argument organizations is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'organization', scope = schema_scope)):
 				self._organizations = SET(value)
 			else:
@@ -2107,7 +2107,7 @@ class organizational_address(address):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument description is mantatory and can not be set to None')
+				raise AssertionError('Argument description is mandatory and can not be set to None')
 			if not check_type(value,text):
 				self._description = text(value)
 			else:
@@ -2176,7 +2176,7 @@ class b_spline_surface(bounded_surface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument u_degree is mantatory and can not be set to None')
+				raise AssertionError('Argument u_degree is mandatory and can not be set to None')
 			if not check_type(value,INTEGER):
 				self._u_degree = INTEGER(value)
 			else:
@@ -2190,7 +2190,7 @@ class b_spline_surface(bounded_surface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument v_degree is mantatory and can not be set to None')
+				raise AssertionError('Argument v_degree is mandatory and can not be set to None')
 			if not check_type(value,INTEGER):
 				self._v_degree = INTEGER(value)
 			else:
@@ -2204,7 +2204,7 @@ class b_spline_surface(bounded_surface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument control_points_list is mantatory and can not be set to None')
+				raise AssertionError('Argument control_points_list is mandatory and can not be set to None')
 			if not check_type(value,LIST(2,None,LIST(2,None,'cartesian_point', scope = schema_scope))):
 				self._control_points_list = LIST(value)
 			else:
@@ -2218,7 +2218,7 @@ class b_spline_surface(bounded_surface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument surface_form is mantatory and can not be set to None')
+				raise AssertionError('Argument surface_form is mandatory and can not be set to None')
 			if not check_type(value,b_spline_surface_form):
 				self._surface_form = b_spline_surface_form(value)
 			else:
@@ -2232,7 +2232,7 @@ class b_spline_surface(bounded_surface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument u_closed is mantatory and can not be set to None')
+				raise AssertionError('Argument u_closed is mandatory and can not be set to None')
 			if not check_type(value,LOGICAL):
 				self._u_closed = LOGICAL(value)
 			else:
@@ -2246,7 +2246,7 @@ class b_spline_surface(bounded_surface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument v_closed is mantatory and can not be set to None')
+				raise AssertionError('Argument v_closed is mandatory and can not be set to None')
 			if not check_type(value,LOGICAL):
 				self._v_closed = LOGICAL(value)
 			else:
@@ -2260,7 +2260,7 @@ class b_spline_surface(bounded_surface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument self_intersect is mantatory and can not be set to None')
+				raise AssertionError('Argument self_intersect is mandatory and can not be set to None')
 			if not check_type(value,LOGICAL):
 				self._self_intersect = LOGICAL(value)
 			else:
@@ -2469,7 +2469,7 @@ class b_spline_curve(bounded_curve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument degree is mantatory and can not be set to None')
+				raise AssertionError('Argument degree is mandatory and can not be set to None')
 			if not check_type(value,INTEGER):
 				self._degree = INTEGER(value)
 			else:
@@ -2483,7 +2483,7 @@ class b_spline_curve(bounded_curve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument control_points_list is mantatory and can not be set to None')
+				raise AssertionError('Argument control_points_list is mandatory and can not be set to None')
 			if not check_type(value,LIST(2,None,'cartesian_point', scope = schema_scope)):
 				self._control_points_list = LIST(value)
 			else:
@@ -2497,7 +2497,7 @@ class b_spline_curve(bounded_curve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument curve_form is mantatory and can not be set to None')
+				raise AssertionError('Argument curve_form is mandatory and can not be set to None')
 			if not check_type(value,b_spline_curve_form):
 				self._curve_form = b_spline_curve_form(value)
 			else:
@@ -2511,7 +2511,7 @@ class b_spline_curve(bounded_curve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument closed_curve is mantatory and can not be set to None')
+				raise AssertionError('Argument closed_curve is mandatory and can not be set to None')
 			if not check_type(value,LOGICAL):
 				self._closed_curve = LOGICAL(value)
 			else:
@@ -2525,7 +2525,7 @@ class b_spline_curve(bounded_curve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument self_intersect is mantatory and can not be set to None')
+				raise AssertionError('Argument self_intersect is mandatory and can not be set to None')
 			if not check_type(value,LOGICAL):
 				self._self_intersect = LOGICAL(value)
 			else:
@@ -2582,7 +2582,7 @@ class rational_b_spline_curve(b_spline_curve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument weights_data is mantatory and can not be set to None')
+				raise AssertionError('Argument weights_data is mandatory and can not be set to None')
 			if not check_type(value,LIST(2,None,'REAL', scope = schema_scope)):
 				self._weights_data = LIST(value)
 			else:
@@ -2632,7 +2632,7 @@ class action_request_assignment(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument assigned_action_request is mantatory and can not be set to None')
+				raise AssertionError('Argument assigned_action_request is mandatory and can not be set to None')
 			if not check_type(value,versioned_action_request):
 				self._assigned_action_request = versioned_action_request(value)
 			else:
@@ -2672,7 +2672,7 @@ class face_bound(topological_representation_item):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument bound is mantatory and can not be set to None')
+				raise AssertionError('Argument bound is mandatory and can not be set to None')
 			if not check_type(value,loop):
 				self._bound = loop(value)
 			else:
@@ -2686,7 +2686,7 @@ class face_bound(topological_representation_item):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument orientation is mantatory and can not be set to None')
+				raise AssertionError('Argument orientation is mandatory and can not be set to None')
 			if not check_type(value,BOOLEAN):
 				self._orientation = BOOLEAN(value)
 			else:
@@ -2733,7 +2733,7 @@ class dated_effectivity(effectivity):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument effectivity_start_date is mantatory and can not be set to None')
+				raise AssertionError('Argument effectivity_start_date is mandatory and can not be set to None')
 			if not check_type(value,date_and_time):
 				self._effectivity_start_date = date_and_time(value)
 			else:
@@ -2774,7 +2774,7 @@ class direction(geometric_representation_item):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument direction_ratios is mantatory and can not be set to None')
+				raise AssertionError('Argument direction_ratios is mandatory and can not be set to None')
 			if not check_type(value,LIST(2,3,'REAL', scope = schema_scope)):
 				self._direction_ratios = LIST(value)
 			else:
@@ -2821,7 +2821,7 @@ class edge(topological_representation_item):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument edge_start is mantatory and can not be set to None')
+				raise AssertionError('Argument edge_start is mandatory and can not be set to None')
 			if not check_type(value,vertex):
 				self._edge_start = vertex(value)
 			else:
@@ -2835,7 +2835,7 @@ class edge(topological_representation_item):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument edge_end is mantatory and can not be set to None')
+				raise AssertionError('Argument edge_end is mandatory and can not be set to None')
 			if not check_type(value,vertex):
 				self._edge_end = vertex(value)
 			else:
@@ -2872,7 +2872,7 @@ class oriented_edge(edge):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument edge_element is mantatory and can not be set to None')
+				raise AssertionError('Argument edge_element is mandatory and can not be set to None')
 			if not check_type(value,edge):
 				self._edge_element = edge(value)
 			else:
@@ -2886,7 +2886,7 @@ class oriented_edge(edge):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument orientation is mantatory and can not be set to None')
+				raise AssertionError('Argument orientation is mandatory and can not be set to None')
 			if not check_type(value,BOOLEAN):
 				self._orientation = BOOLEAN(value)
 			else:
@@ -2959,7 +2959,7 @@ class person(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument id is mantatory and can not be set to None')
+				raise AssertionError('Argument id is mandatory and can not be set to None')
 			if not check_type(value,identifier):
 				self._id = identifier(value)
 			else:
@@ -3074,7 +3074,7 @@ class document(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument id is mantatory and can not be set to None')
+				raise AssertionError('Argument id is mandatory and can not be set to None')
 			if not check_type(value,identifier):
 				self._id = identifier(value)
 			else:
@@ -3088,7 +3088,7 @@ class document(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._name = label(value)
 			else:
@@ -3102,7 +3102,7 @@ class document(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument description is mantatory and can not be set to None')
+				raise AssertionError('Argument description is mandatory and can not be set to None')
 			if not check_type(value,text):
 				self._description = text(value)
 			else:
@@ -3116,7 +3116,7 @@ class document(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument kind is mantatory and can not be set to None')
+				raise AssertionError('Argument kind is mandatory and can not be set to None')
 			if not check_type(value,document_type):
 				self._kind = document_type(value)
 			else:
@@ -3143,7 +3143,7 @@ class document_with_class(document):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument class_ is mantatory and can not be set to None')
+				raise AssertionError('Argument class_ is mandatory and can not be set to None')
 			if not check_type(value,identifier):
 				self._class_ = identifier(value)
 			else:
@@ -3174,7 +3174,7 @@ class conversion_based_unit(named_unit):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._name = label(value)
 			else:
@@ -3188,7 +3188,7 @@ class conversion_based_unit(named_unit):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument conversion_factor is mantatory and can not be set to None')
+				raise AssertionError('Argument conversion_factor is mandatory and can not be set to None')
 			if not check_type(value,measure_with_unit):
 				self._conversion_factor = measure_with_unit(value)
 			else:
@@ -3232,7 +3232,7 @@ class point_on_surface(point):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument basis_surface is mantatory and can not be set to None')
+				raise AssertionError('Argument basis_surface is mandatory and can not be set to None')
 			if not check_type(value,surface):
 				self._basis_surface = surface(value)
 			else:
@@ -3246,7 +3246,7 @@ class point_on_surface(point):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument point_parameter_u is mantatory and can not be set to None')
+				raise AssertionError('Argument point_parameter_u is mandatory and can not be set to None')
 			if not check_type(value,parameter_value):
 				self._point_parameter_u = parameter_value(value)
 			else:
@@ -3260,7 +3260,7 @@ class point_on_surface(point):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument point_parameter_v is mantatory and can not be set to None')
+				raise AssertionError('Argument point_parameter_v is mandatory and can not be set to None')
 			if not check_type(value,parameter_value):
 				self._point_parameter_v = parameter_value(value)
 			else:
@@ -3294,7 +3294,7 @@ class product_definition_formation(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument id is mantatory and can not be set to None')
+				raise AssertionError('Argument id is mandatory and can not be set to None')
 			if not check_type(value,identifier):
 				self._id = identifier(value)
 			else:
@@ -3308,7 +3308,7 @@ class product_definition_formation(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument description is mantatory and can not be set to None')
+				raise AssertionError('Argument description is mandatory and can not be set to None')
 			if not check_type(value,text):
 				self._description = text(value)
 			else:
@@ -3322,7 +3322,7 @@ class product_definition_formation(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument of_product is mantatory and can not be set to None')
+				raise AssertionError('Argument of_product is mandatory and can not be set to None')
 			if not check_type(value,product):
 				self._of_product = product(value)
 			else:
@@ -3352,7 +3352,7 @@ class person_and_organization_assignment(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument assigned_person_and_organization is mantatory and can not be set to None')
+				raise AssertionError('Argument assigned_person_and_organization is mandatory and can not be set to None')
 			if not check_type(value,person_and_organization):
 				self._assigned_person_and_organization = person_and_organization(value)
 			else:
@@ -3366,7 +3366,7 @@ class person_and_organization_assignment(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument role is mantatory and can not be set to None')
+				raise AssertionError('Argument role is mandatory and can not be set to None')
 			if not check_type(value,person_and_organization_role):
 				self._role = person_and_organization_role(value)
 			else:
@@ -3393,7 +3393,7 @@ class cc_design_person_and_organization_assignment(person_and_organization_assig
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument items is mantatory and can not be set to None')
+				raise AssertionError('Argument items is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'person_organization_item', scope = schema_scope)):
 				self._items = SET(value)
 			else:
@@ -3439,7 +3439,7 @@ class offset_curve_3d(curve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument basis_curve is mantatory and can not be set to None')
+				raise AssertionError('Argument basis_curve is mandatory and can not be set to None')
 			if not check_type(value,curve):
 				self._basis_curve = curve(value)
 			else:
@@ -3453,7 +3453,7 @@ class offset_curve_3d(curve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument distance is mantatory and can not be set to None')
+				raise AssertionError('Argument distance is mandatory and can not be set to None')
 			if not check_type(value,length_measure):
 				self._distance = length_measure(value)
 			else:
@@ -3467,7 +3467,7 @@ class offset_curve_3d(curve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument self_intersect is mantatory and can not be set to None')
+				raise AssertionError('Argument self_intersect is mandatory and can not be set to None')
 			if not check_type(value,LOGICAL):
 				self._self_intersect = LOGICAL(value)
 			else:
@@ -3481,7 +3481,7 @@ class offset_curve_3d(curve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument ref_direction is mantatory and can not be set to None')
+				raise AssertionError('Argument ref_direction is mandatory and can not be set to None')
 			if not check_type(value,direction):
 				self._ref_direction = direction(value)
 			else:
@@ -3518,7 +3518,7 @@ class approval(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument status is mantatory and can not be set to None')
+				raise AssertionError('Argument status is mandatory and can not be set to None')
 			if not check_type(value,approval_status):
 				self._status = approval_status(value)
 			else:
@@ -3532,7 +3532,7 @@ class approval(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument level is mantatory and can not be set to None')
+				raise AssertionError('Argument level is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._level = label(value)
 			else:
@@ -3569,7 +3569,7 @@ class composite_curve(bounded_curve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument segments is mantatory and can not be set to None')
+				raise AssertionError('Argument segments is mandatory and can not be set to None')
 			if not check_type(value,LIST(1,None,'composite_curve_segment', scope = schema_scope)):
 				self._segments = LIST(value)
 			else:
@@ -3583,7 +3583,7 @@ class composite_curve(bounded_curve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument self_intersect is mantatory and can not be set to None')
+				raise AssertionError('Argument self_intersect is mandatory and can not be set to None')
 			if not check_type(value,LOGICAL):
 				self._self_intersect = LOGICAL(value)
 			else:
@@ -3695,7 +3695,7 @@ class representation_context(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument context_identifier is mantatory and can not be set to None')
+				raise AssertionError('Argument context_identifier is mandatory and can not be set to None')
 			if not check_type(value,identifier):
 				self._context_identifier = identifier(value)
 			else:
@@ -3709,7 +3709,7 @@ class representation_context(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument context_type is mantatory and can not be set to None')
+				raise AssertionError('Argument context_type is mandatory and can not be set to None')
 			if not check_type(value,text):
 				self._context_type = text(value)
 			else:
@@ -3745,7 +3745,7 @@ class geometric_representation_context(representation_context):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument coordinate_space_dimension is mantatory and can not be set to None')
+				raise AssertionError('Argument coordinate_space_dimension is mandatory and can not be set to None')
 			if not check_type(value,dimension_count):
 				self._coordinate_space_dimension = dimension_count(value)
 			else:
@@ -3775,7 +3775,7 @@ class action_status(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument status is mantatory and can not be set to None')
+				raise AssertionError('Argument status is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._status = label(value)
 			else:
@@ -3789,7 +3789,7 @@ class action_status(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument assigned_action is mantatory and can not be set to None')
+				raise AssertionError('Argument assigned_action is mandatory and can not be set to None')
 			if not check_type(value,executed_action):
 				self._assigned_action = executed_action(value)
 			else:
@@ -3818,7 +3818,7 @@ class application_context(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument application is mantatory and can not be set to None')
+				raise AssertionError('Argument application is mandatory and can not be set to None')
 			if not check_type(value,text):
 				self._application = text(value)
 			else:
@@ -3854,7 +3854,7 @@ class change_request(action_request_assignment):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument items is mantatory and can not be set to None')
+				raise AssertionError('Argument items is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'change_request_item', scope = schema_scope)):
 				self._items = SET(value)
 			else:
@@ -3884,7 +3884,7 @@ class date_and_time(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument date_component is mantatory and can not be set to None')
+				raise AssertionError('Argument date_component is mandatory and can not be set to None')
 			if not check_type(value,date):
 				self._date_component = date(value)
 			else:
@@ -3898,7 +3898,7 @@ class date_and_time(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument time_component is mantatory and can not be set to None')
+				raise AssertionError('Argument time_component is mandatory and can not be set to None')
 			if not check_type(value,local_time):
 				self._time_component = local_time(value)
 			else:
@@ -3928,7 +3928,7 @@ class approval_date_time(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument date_time is mantatory and can not be set to None')
+				raise AssertionError('Argument date_time is mandatory and can not be set to None')
 			if not check_type(value,date_time_select):
 				self._date_time = date_time_select(value)
 			else:
@@ -3942,7 +3942,7 @@ class approval_date_time(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument dated_approval is mantatory and can not be set to None')
+				raise AssertionError('Argument dated_approval is mandatory and can not be set to None')
 			if not check_type(value,approval):
 				self._dated_approval = approval(value)
 			else:
@@ -3968,7 +3968,7 @@ class approval_role(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument role is mantatory and can not be set to None')
+				raise AssertionError('Argument role is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._role = label(value)
 			else:
@@ -3998,7 +3998,7 @@ class application_context_element(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._name = label(value)
 			else:
@@ -4012,7 +4012,7 @@ class application_context_element(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument frame_of_reference is mantatory and can not be set to None')
+				raise AssertionError('Argument frame_of_reference is mandatory and can not be set to None')
 			if not check_type(value,application_context):
 				self._frame_of_reference = application_context(value)
 			else:
@@ -4039,7 +4039,7 @@ class product_context(application_context_element):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument discipline_type is mantatory and can not be set to None')
+				raise AssertionError('Argument discipline_type is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._discipline_type = label(value)
 			else:
@@ -4066,7 +4066,7 @@ class elementary_surface(surface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument position is mantatory and can not be set to None')
+				raise AssertionError('Argument position is mandatory and can not be set to None')
 			if not check_type(value,axis2_placement_3d):
 				self._position = axis2_placement_3d(value)
 			else:
@@ -4093,7 +4093,7 @@ class spherical_surface(elementary_surface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument radius is mantatory and can not be set to None')
+				raise AssertionError('Argument radius is mandatory and can not be set to None')
 			if not check_type(value,positive_length_measure):
 				self._radius = positive_length_measure(value)
 			else:
@@ -4131,7 +4131,7 @@ class application_protocol_definition(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument status is mantatory and can not be set to None')
+				raise AssertionError('Argument status is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._status = label(value)
 			else:
@@ -4145,7 +4145,7 @@ class application_protocol_definition(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument application_interpreted_model_schema_name is mantatory and can not be set to None')
+				raise AssertionError('Argument application_interpreted_model_schema_name is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._application_interpreted_model_schema_name = label(value)
 			else:
@@ -4159,7 +4159,7 @@ class application_protocol_definition(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument application_protocol_year is mantatory and can not be set to None')
+				raise AssertionError('Argument application_protocol_year is mandatory and can not be set to None')
 			if not check_type(value,year_number):
 				self._application_protocol_year = year_number(value)
 			else:
@@ -4173,7 +4173,7 @@ class application_protocol_definition(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument application is mantatory and can not be set to None')
+				raise AssertionError('Argument application is mandatory and can not be set to None')
 			if not check_type(value,application_context):
 				self._application = application_context(value)
 			else:
@@ -4204,7 +4204,7 @@ class specified_higher_usage_occurrence(assembly_component_usage):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument upper_usage is mantatory and can not be set to None')
+				raise AssertionError('Argument upper_usage is mandatory and can not be set to None')
 			if not check_type(value,assembly_component_usage):
 				self._upper_usage = assembly_component_usage(value)
 			else:
@@ -4218,7 +4218,7 @@ class specified_higher_usage_occurrence(assembly_component_usage):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument next_usage is mantatory and can not be set to None')
+				raise AssertionError('Argument next_usage is mandatory and can not be set to None')
 			if not check_type(value,next_assembly_usage_occurrence):
 				self._next_usage = next_assembly_usage_occurrence(value)
 			else:
@@ -4280,7 +4280,7 @@ class product_definition_formation_with_specified_source(product_definition_form
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument make_or_buy is mantatory and can not be set to None')
+				raise AssertionError('Argument make_or_buy is mandatory and can not be set to None')
 			if not check_type(value,source):
 				self._make_or_buy = source(value)
 			else:
@@ -4310,7 +4310,7 @@ class action_request_solution(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument method is mantatory and can not be set to None')
+				raise AssertionError('Argument method is mandatory and can not be set to None')
 			if not check_type(value,action_method):
 				self._method = action_method(value)
 			else:
@@ -4324,7 +4324,7 @@ class action_request_solution(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument request is mantatory and can not be set to None')
+				raise AssertionError('Argument request is mandatory and can not be set to None')
 			if not check_type(value,versioned_action_request):
 				self._request = versioned_action_request(value)
 			else:
@@ -4355,7 +4355,7 @@ class uncertainty_measure_with_unit(measure_with_unit):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._name = label(value)
 			else:
@@ -4369,7 +4369,7 @@ class uncertainty_measure_with_unit(measure_with_unit):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument description is mantatory and can not be set to None')
+				raise AssertionError('Argument description is mandatory and can not be set to None')
 			if not check_type(value,text):
 				self._description = text(value)
 			else:
@@ -4403,7 +4403,7 @@ class edge_based_wireframe_model(geometric_representation_item):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument ebwm_boundary is mantatory and can not be set to None')
+				raise AssertionError('Argument ebwm_boundary is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'connected_edge_set', scope = schema_scope)):
 				self._ebwm_boundary = SET(value)
 			else:
@@ -4430,7 +4430,7 @@ class path(topological_representation_item):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument edge_list is mantatory and can not be set to None')
+				raise AssertionError('Argument edge_list is mandatory and can not be set to None')
 			if not check_type(value,LIST(1,None,'oriented_edge', scope = schema_scope)):
 				self._edge_list = LIST(value)
 			else:
@@ -4464,7 +4464,7 @@ class connected_face_set(topological_representation_item):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument cfs_faces is mantatory and can not be set to None')
+				raise AssertionError('Argument cfs_faces is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'face', scope = schema_scope)):
 				self._cfs_faces = SET(value)
 			else:
@@ -4507,7 +4507,7 @@ class oriented_open_shell(open_shell):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument open_shell_element is mantatory and can not be set to None')
+				raise AssertionError('Argument open_shell_element is mandatory and can not be set to None')
 			if not check_type(value,open_shell):
 				self._open_shell_element = open_shell(value)
 			else:
@@ -4521,7 +4521,7 @@ class oriented_open_shell(open_shell):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument orientation is mantatory and can not be set to None')
+				raise AssertionError('Argument orientation is mandatory and can not be set to None')
 			if not check_type(value,BOOLEAN):
 				self._orientation = BOOLEAN(value)
 			else:
@@ -4588,7 +4588,7 @@ class coordinated_universal_time_offset(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument hour_offset is mantatory and can not be set to None')
+				raise AssertionError('Argument hour_offset is mandatory and can not be set to None')
 			if not check_type(value,hour_in_day):
 				self._hour_offset = hour_in_day(value)
 			else:
@@ -4616,7 +4616,7 @@ class coordinated_universal_time_offset(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument sense is mantatory and can not be set to None')
+				raise AssertionError('Argument sense is mandatory and can not be set to None')
 			if not check_type(value,ahead_or_behind):
 				self._sense = ahead_or_behind(value)
 			else:
@@ -4647,7 +4647,7 @@ class curve_replica(curve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument parent_curve is mantatory and can not be set to None')
+				raise AssertionError('Argument parent_curve is mandatory and can not be set to None')
 			if not check_type(value,curve):
 				self._parent_curve = curve(value)
 			else:
@@ -4661,7 +4661,7 @@ class curve_replica(curve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument transformation is mantatory and can not be set to None')
+				raise AssertionError('Argument transformation is mandatory and can not be set to None')
 			if not check_type(value,cartesian_transformation_operator):
 				self._transformation = cartesian_transformation_operator(value)
 			else:
@@ -4722,7 +4722,7 @@ class surface_curve(curve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument curve_3d is mantatory and can not be set to None')
+				raise AssertionError('Argument curve_3d is mandatory and can not be set to None')
 			if not check_type(value,curve):
 				self._curve_3d = curve(value)
 			else:
@@ -4736,7 +4736,7 @@ class surface_curve(curve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument associated_geometry is mantatory and can not be set to None')
+				raise AssertionError('Argument associated_geometry is mandatory and can not be set to None')
 			if not check_type(value,LIST(1,2,'pcurve_or_surface', scope = schema_scope)):
 				self._associated_geometry = LIST(value)
 			else:
@@ -4750,7 +4750,7 @@ class surface_curve(curve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument master_representation is mantatory and can not be set to None')
+				raise AssertionError('Argument master_representation is mandatory and can not be set to None')
 			if not check_type(value,preferred_surface_curve_representation):
 				self._master_representation = preferred_surface_curve_representation(value)
 			else:
@@ -4818,7 +4818,7 @@ class action_request_status(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument status is mantatory and can not be set to None')
+				raise AssertionError('Argument status is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._status = label(value)
 			else:
@@ -4832,7 +4832,7 @@ class action_request_status(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument assigned_request is mantatory and can not be set to None')
+				raise AssertionError('Argument assigned_request is mandatory and can not be set to None')
 			if not check_type(value,versioned_action_request):
 				self._assigned_request = versioned_action_request(value)
 			else:
@@ -4879,7 +4879,7 @@ class composite_curve_segment(founded_item):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument transition is mantatory and can not be set to None')
+				raise AssertionError('Argument transition is mandatory and can not be set to None')
 			if not check_type(value,transition_code):
 				self._transition = transition_code(value)
 			else:
@@ -4893,7 +4893,7 @@ class composite_curve_segment(founded_item):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument same_sense is mantatory and can not be set to None')
+				raise AssertionError('Argument same_sense is mandatory and can not be set to None')
 			if not check_type(value,BOOLEAN):
 				self._same_sense = BOOLEAN(value)
 			else:
@@ -4907,7 +4907,7 @@ class composite_curve_segment(founded_item):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument parent_curve is mantatory and can not be set to None')
+				raise AssertionError('Argument parent_curve is mandatory and can not be set to None')
 			if not check_type(value,curve):
 				self._parent_curve = curve(value)
 			else:
@@ -4950,7 +4950,7 @@ class reparametrised_composite_curve_segment(composite_curve_segment):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument param_length is mantatory and can not be set to None')
+				raise AssertionError('Argument param_length is mandatory and can not be set to None')
 			if not check_type(value,parameter_value):
 				self._param_length = parameter_value(value)
 			else:
@@ -4995,7 +4995,7 @@ class representation_relationship(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._name = label(value)
 			else:
@@ -5009,7 +5009,7 @@ class representation_relationship(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument description is mantatory and can not be set to None')
+				raise AssertionError('Argument description is mandatory and can not be set to None')
 			if not check_type(value,text):
 				self._description = text(value)
 			else:
@@ -5023,7 +5023,7 @@ class representation_relationship(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument rep_1 is mantatory and can not be set to None')
+				raise AssertionError('Argument rep_1 is mandatory and can not be set to None')
 			if not check_type(value,representation):
 				self._rep_1 = representation(value)
 			else:
@@ -5037,7 +5037,7 @@ class representation_relationship(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument rep_2 is mantatory and can not be set to None')
+				raise AssertionError('Argument rep_2 is mandatory and can not be set to None')
 			if not check_type(value,representation):
 				self._rep_2 = representation(value)
 			else:
@@ -5064,7 +5064,7 @@ class representation_relationship_with_transformation(representation_relationshi
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument transformation_operator is mantatory and can not be set to None')
+				raise AssertionError('Argument transformation_operator is mandatory and can not be set to None')
 			if not check_type(value,transformation):
 				self._transformation_operator = transformation(value)
 			else:
@@ -5097,7 +5097,7 @@ class person_and_organization_role(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._name = label(value)
 			else:
@@ -5133,7 +5133,7 @@ class swept_surface(surface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument swept_curve is mantatory and can not be set to None')
+				raise AssertionError('Argument swept_curve is mandatory and can not be set to None')
 			if not check_type(value,curve):
 				self._swept_curve = curve(value)
 			else:
@@ -5167,7 +5167,7 @@ class property_definition(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._name = label(value)
 			else:
@@ -5181,7 +5181,7 @@ class property_definition(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument description is mantatory and can not be set to None')
+				raise AssertionError('Argument description is mandatory and can not be set to None')
 			if not check_type(value,text):
 				self._description = text(value)
 			else:
@@ -5195,7 +5195,7 @@ class property_definition(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument definition is mantatory and can not be set to None')
+				raise AssertionError('Argument definition is mandatory and can not be set to None')
 			if not check_type(value,characterized_definition):
 				self._definition = characterized_definition(value)
 			else:
@@ -5222,7 +5222,7 @@ class global_uncertainty_assigned_context(representation_context):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument uncertainty is mantatory and can not be set to None')
+				raise AssertionError('Argument uncertainty is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'uncertainty_measure_with_unit', scope = schema_scope)):
 				self._uncertainty = SET(value)
 			else:
@@ -5260,7 +5260,7 @@ class organization_relationship(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._name = label(value)
 			else:
@@ -5274,7 +5274,7 @@ class organization_relationship(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument description is mantatory and can not be set to None')
+				raise AssertionError('Argument description is mandatory and can not be set to None')
 			if not check_type(value,text):
 				self._description = text(value)
 			else:
@@ -5288,7 +5288,7 @@ class organization_relationship(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relating_organization is mantatory and can not be set to None')
+				raise AssertionError('Argument relating_organization is mandatory and can not be set to None')
 			if not check_type(value,organization):
 				self._relating_organization = organization(value)
 			else:
@@ -5302,7 +5302,7 @@ class organization_relationship(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument related_organization is mantatory and can not be set to None')
+				raise AssertionError('Argument related_organization is mandatory and can not be set to None')
 			if not check_type(value,organization):
 				self._related_organization = organization(value)
 			else:
@@ -5329,7 +5329,7 @@ class parabola(conic):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument focal_dist is mantatory and can not be set to None')
+				raise AssertionError('Argument focal_dist is mandatory and can not be set to None')
 			if not check_type(value,length_measure):
 				self._focal_dist = length_measure(value)
 			else:
@@ -5369,7 +5369,7 @@ class rectangular_composite_surface(bounded_surface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument segments is mantatory and can not be set to None')
+				raise AssertionError('Argument segments is mandatory and can not be set to None')
 			if not check_type(value,LIST(1,None,LIST(1,None,'surface_patch', scope = schema_scope))):
 				self._segments = LIST(value)
 			else:
@@ -5434,7 +5434,7 @@ class lot_effectivity(effectivity):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument effectivity_lot_id is mantatory and can not be set to None')
+				raise AssertionError('Argument effectivity_lot_id is mandatory and can not be set to None')
 			if not check_type(value,identifier):
 				self._effectivity_lot_id = identifier(value)
 			else:
@@ -5448,7 +5448,7 @@ class lot_effectivity(effectivity):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument effectivity_lot_size is mantatory and can not be set to None')
+				raise AssertionError('Argument effectivity_lot_size is mandatory and can not be set to None')
 			if not check_type(value,measure_with_unit):
 				self._effectivity_lot_size = measure_with_unit(value)
 			else:
@@ -5475,7 +5475,7 @@ class surface_of_linear_extrusion(swept_surface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument extrusion_axis is mantatory and can not be set to None')
+				raise AssertionError('Argument extrusion_axis is mandatory and can not be set to None')
 			if not check_type(value,vector):
 				self._extrusion_axis = vector(value)
 			else:
@@ -5502,7 +5502,7 @@ class shell_based_surface_model(geometric_representation_item):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument sbsm_boundary is mantatory and can not be set to None')
+				raise AssertionError('Argument sbsm_boundary is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'shell', scope = schema_scope)):
 				self._sbsm_boundary = SET(value)
 			else:
@@ -5592,7 +5592,7 @@ class date(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument year_component is mantatory and can not be set to None')
+				raise AssertionError('Argument year_component is mandatory and can not be set to None')
 			if not check_type(value,year_number):
 				self._year_component = year_number(value)
 			else:
@@ -5623,7 +5623,7 @@ class calendar_date(date):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument day_component is mantatory and can not be set to None')
+				raise AssertionError('Argument day_component is mandatory and can not be set to None')
 			if not check_type(value,day_in_month_number):
 				self._day_component = day_in_month_number(value)
 			else:
@@ -5637,7 +5637,7 @@ class calendar_date(date):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument month_component is mantatory and can not be set to None')
+				raise AssertionError('Argument month_component is mandatory and can not be set to None')
 			if not check_type(value,month_in_year_number):
 				self._month_component = month_in_year_number(value)
 			else:
@@ -5675,7 +5675,7 @@ class toroidal_surface(elementary_surface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument major_radius is mantatory and can not be set to None')
+				raise AssertionError('Argument major_radius is mandatory and can not be set to None')
 			if not check_type(value,positive_length_measure):
 				self._major_radius = positive_length_measure(value)
 			else:
@@ -5689,7 +5689,7 @@ class toroidal_surface(elementary_surface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument minor_radius is mantatory and can not be set to None')
+				raise AssertionError('Argument minor_radius is mandatory and can not be set to None')
 			if not check_type(value,positive_length_measure):
 				self._minor_radius = positive_length_measure(value)
 			else:
@@ -5724,7 +5724,7 @@ class approval_assignment(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument assigned_approval is mantatory and can not be set to None')
+				raise AssertionError('Argument assigned_approval is mandatory and can not be set to None')
 			if not check_type(value,approval):
 				self._assigned_approval = approval(value)
 			else:
@@ -5766,7 +5766,7 @@ class configuration_item(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument id is mantatory and can not be set to None')
+				raise AssertionError('Argument id is mandatory and can not be set to None')
 			if not check_type(value,identifier):
 				self._id = identifier(value)
 			else:
@@ -5780,7 +5780,7 @@ class configuration_item(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._name = label(value)
 			else:
@@ -5808,7 +5808,7 @@ class configuration_item(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument item_concept is mantatory and can not be set to None')
+				raise AssertionError('Argument item_concept is mandatory and can not be set to None')
 			if not check_type(value,product_concept):
 				self._item_concept = product_concept(value)
 			else:
@@ -5848,7 +5848,7 @@ class contract_assignment(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument assigned_contract is mantatory and can not be set to None')
+				raise AssertionError('Argument assigned_contract is mandatory and can not be set to None')
 			if not check_type(value,contract):
 				self._assigned_contract = contract(value)
 			else:
@@ -5879,7 +5879,7 @@ class vector(geometric_representation_item):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument orientation is mantatory and can not be set to None')
+				raise AssertionError('Argument orientation is mandatory and can not be set to None')
 			if not check_type(value,direction):
 				self._orientation = direction(value)
 			else:
@@ -5893,7 +5893,7 @@ class vector(geometric_representation_item):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument magnitude is mantatory and can not be set to None')
+				raise AssertionError('Argument magnitude is mandatory and can not be set to None')
 			if not check_type(value,length_measure):
 				self._magnitude = length_measure(value)
 			else:
@@ -5931,7 +5931,7 @@ class pcurve(curve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument basis_surface is mantatory and can not be set to None')
+				raise AssertionError('Argument basis_surface is mandatory and can not be set to None')
 			if not check_type(value,surface):
 				self._basis_surface = surface(value)
 			else:
@@ -5945,7 +5945,7 @@ class pcurve(curve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument reference_to_curve is mantatory and can not be set to None')
+				raise AssertionError('Argument reference_to_curve is mandatory and can not be set to None')
 			if not check_type(value,definitional_representation):
 				self._reference_to_curve = definitional_representation(value)
 			else:
@@ -6049,7 +6049,7 @@ class trimmed_curve(bounded_curve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument basis_curve is mantatory and can not be set to None')
+				raise AssertionError('Argument basis_curve is mandatory and can not be set to None')
 			if not check_type(value,curve):
 				self._basis_curve = curve(value)
 			else:
@@ -6063,7 +6063,7 @@ class trimmed_curve(bounded_curve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument trim_1 is mantatory and can not be set to None')
+				raise AssertionError('Argument trim_1 is mandatory and can not be set to None')
 			if not check_type(value,SET(1,2,'trimming_select', scope = schema_scope)):
 				self._trim_1 = SET(value)
 			else:
@@ -6077,7 +6077,7 @@ class trimmed_curve(bounded_curve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument trim_2 is mantatory and can not be set to None')
+				raise AssertionError('Argument trim_2 is mandatory and can not be set to None')
 			if not check_type(value,SET(1,2,'trimming_select', scope = schema_scope)):
 				self._trim_2 = SET(value)
 			else:
@@ -6091,7 +6091,7 @@ class trimmed_curve(bounded_curve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument sense_agreement is mantatory and can not be set to None')
+				raise AssertionError('Argument sense_agreement is mandatory and can not be set to None')
 			if not check_type(value,BOOLEAN):
 				self._sense_agreement = BOOLEAN(value)
 			else:
@@ -6105,7 +6105,7 @@ class trimmed_curve(bounded_curve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument master_representation is mantatory and can not be set to None')
+				raise AssertionError('Argument master_representation is mandatory and can not be set to None')
 			if not check_type(value,trimming_preference):
 				self._master_representation = trimming_preference(value)
 			else:
@@ -6146,7 +6146,7 @@ class product_definition_context(application_context_element):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument life_cycle_stage is mantatory and can not be set to None')
+				raise AssertionError('Argument life_cycle_stage is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._life_cycle_stage = label(value)
 			else:
@@ -6201,7 +6201,7 @@ class item_defined_transformation(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._name = label(value)
 			else:
@@ -6215,7 +6215,7 @@ class item_defined_transformation(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument description is mantatory and can not be set to None')
+				raise AssertionError('Argument description is mandatory and can not be set to None')
 			if not check_type(value,text):
 				self._description = text(value)
 			else:
@@ -6229,7 +6229,7 @@ class item_defined_transformation(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument transform_item_1 is mantatory and can not be set to None')
+				raise AssertionError('Argument transform_item_1 is mandatory and can not be set to None')
 			if not check_type(value,representation_item):
 				self._transform_item_1 = representation_item(value)
 			else:
@@ -6243,7 +6243,7 @@ class item_defined_transformation(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument transform_item_2 is mantatory and can not be set to None')
+				raise AssertionError('Argument transform_item_2 is mandatory and can not be set to None')
 			if not check_type(value,representation_item):
 				self._transform_item_2 = representation_item(value)
 			else:
@@ -6281,7 +6281,7 @@ class action_method(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._name = label(value)
 			else:
@@ -6295,7 +6295,7 @@ class action_method(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument description is mantatory and can not be set to None')
+				raise AssertionError('Argument description is mandatory and can not be set to None')
 			if not check_type(value,text):
 				self._description = text(value)
 			else:
@@ -6309,7 +6309,7 @@ class action_method(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument consequence is mantatory and can not be set to None')
+				raise AssertionError('Argument consequence is mandatory and can not be set to None')
 			if not check_type(value,text):
 				self._consequence = text(value)
 			else:
@@ -6323,7 +6323,7 @@ class action_method(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument purpose is mantatory and can not be set to None')
+				raise AssertionError('Argument purpose is mandatory and can not be set to None')
 			if not check_type(value,text):
 				self._purpose = text(value)
 			else:
@@ -6361,7 +6361,7 @@ class product_category_relationship(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._name = label(value)
 			else:
@@ -6375,7 +6375,7 @@ class product_category_relationship(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument description is mantatory and can not be set to None')
+				raise AssertionError('Argument description is mandatory and can not be set to None')
 			if not check_type(value,text):
 				self._description = text(value)
 			else:
@@ -6389,7 +6389,7 @@ class product_category_relationship(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument category is mantatory and can not be set to None')
+				raise AssertionError('Argument category is mandatory and can not be set to None')
 			if not check_type(value,product_category):
 				self._category = product_category(value)
 			else:
@@ -6403,7 +6403,7 @@ class product_category_relationship(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument sub_category is mantatory and can not be set to None')
+				raise AssertionError('Argument sub_category is mandatory and can not be set to None')
 			if not check_type(value,product_category):
 				self._sub_category = product_category(value)
 			else:
@@ -6468,7 +6468,7 @@ class representation_map(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument mapping_origin is mantatory and can not be set to None')
+				raise AssertionError('Argument mapping_origin is mandatory and can not be set to None')
 			if not check_type(value,representation_item):
 				self._mapping_origin = representation_item(value)
 			else:
@@ -6482,7 +6482,7 @@ class representation_map(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument mapped_representation is mantatory and can not be set to None')
+				raise AssertionError('Argument mapped_representation is mandatory and can not be set to None')
 			if not check_type(value,representation):
 				self._mapped_representation = representation(value)
 			else:
@@ -6525,7 +6525,7 @@ class product_definition_effectivity(effectivity):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument usage is mantatory and can not be set to None')
+				raise AssertionError('Argument usage is mandatory and can not be set to None')
 			if not check_type(value,product_definition_relationship):
 				self._usage = product_definition_relationship(value)
 			else:
@@ -6552,7 +6552,7 @@ class configuration_effectivity(product_definition_effectivity):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument configuration is mantatory and can not be set to None')
+				raise AssertionError('Argument configuration is mandatory and can not be set to None')
 			if not check_type(value,configuration_design):
 				self._configuration = configuration_design(value)
 			else:
@@ -6590,7 +6590,7 @@ class ellipse(conic):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument semi_axis_1 is mantatory and can not be set to None')
+				raise AssertionError('Argument semi_axis_1 is mandatory and can not be set to None')
 			if not check_type(value,positive_length_measure):
 				self._semi_axis_1 = positive_length_measure(value)
 			else:
@@ -6604,7 +6604,7 @@ class ellipse(conic):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument semi_axis_2 is mantatory and can not be set to None')
+				raise AssertionError('Argument semi_axis_2 is mandatory and can not be set to None')
 			if not check_type(value,positive_length_measure):
 				self._semi_axis_2 = positive_length_measure(value)
 			else:
@@ -6631,7 +6631,7 @@ class context_dependent_unit(named_unit):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._name = label(value)
 			else:
@@ -6673,7 +6673,7 @@ class alternate_product_relationship(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._name = label(value)
 			else:
@@ -6687,7 +6687,7 @@ class alternate_product_relationship(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument definition is mantatory and can not be set to None')
+				raise AssertionError('Argument definition is mandatory and can not be set to None')
 			if not check_type(value,text):
 				self._definition = text(value)
 			else:
@@ -6701,7 +6701,7 @@ class alternate_product_relationship(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument alternate is mantatory and can not be set to None')
+				raise AssertionError('Argument alternate is mandatory and can not be set to None')
 			if not check_type(value,product):
 				self._alternate = product(value)
 			else:
@@ -6715,7 +6715,7 @@ class alternate_product_relationship(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument base is mantatory and can not be set to None')
+				raise AssertionError('Argument base is mandatory and can not be set to None')
 			if not check_type(value,product):
 				self._base = product(value)
 			else:
@@ -6729,7 +6729,7 @@ class alternate_product_relationship(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument basis is mantatory and can not be set to None')
+				raise AssertionError('Argument basis is mandatory and can not be set to None')
 			if not check_type(value,text):
 				self._basis = text(value)
 			else:
@@ -6762,7 +6762,7 @@ class document_type(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument product_data_type is mantatory and can not be set to None')
+				raise AssertionError('Argument product_data_type is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._product_data_type = label(value)
 			else:
@@ -6792,7 +6792,7 @@ class document_reference(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument assigned_document is mantatory and can not be set to None')
+				raise AssertionError('Argument assigned_document is mandatory and can not be set to None')
 			if not check_type(value,document):
 				self._assigned_document = document(value)
 			else:
@@ -6806,7 +6806,7 @@ class document_reference(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument source is mantatory and can not be set to None')
+				raise AssertionError('Argument source is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._source = label(value)
 			else:
@@ -6849,7 +6849,7 @@ class shell_based_wireframe_model(geometric_representation_item):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument sbwm_boundary is mantatory and can not be set to None')
+				raise AssertionError('Argument sbwm_boundary is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'shell', scope = schema_scope)):
 				self._sbwm_boundary = SET(value)
 			else:
@@ -6890,7 +6890,7 @@ class contract(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._name = label(value)
 			else:
@@ -6904,7 +6904,7 @@ class contract(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument purpose is mantatory and can not be set to None')
+				raise AssertionError('Argument purpose is mandatory and can not be set to None')
 			if not check_type(value,text):
 				self._purpose = text(value)
 			else:
@@ -6918,7 +6918,7 @@ class contract(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument kind is mantatory and can not be set to None')
+				raise AssertionError('Argument kind is mandatory and can not be set to None')
 			if not check_type(value,contract_type):
 				self._kind = contract_type(value)
 			else:
@@ -6968,7 +6968,7 @@ class dimensional_exponents(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument length_exponent is mantatory and can not be set to None')
+				raise AssertionError('Argument length_exponent is mandatory and can not be set to None')
 			if not check_type(value,REAL):
 				self._length_exponent = REAL(value)
 			else:
@@ -6982,7 +6982,7 @@ class dimensional_exponents(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument mass_exponent is mantatory and can not be set to None')
+				raise AssertionError('Argument mass_exponent is mandatory and can not be set to None')
 			if not check_type(value,REAL):
 				self._mass_exponent = REAL(value)
 			else:
@@ -6996,7 +6996,7 @@ class dimensional_exponents(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument time_exponent is mantatory and can not be set to None')
+				raise AssertionError('Argument time_exponent is mandatory and can not be set to None')
 			if not check_type(value,REAL):
 				self._time_exponent = REAL(value)
 			else:
@@ -7010,7 +7010,7 @@ class dimensional_exponents(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument electric_current_exponent is mantatory and can not be set to None')
+				raise AssertionError('Argument electric_current_exponent is mandatory and can not be set to None')
 			if not check_type(value,REAL):
 				self._electric_current_exponent = REAL(value)
 			else:
@@ -7024,7 +7024,7 @@ class dimensional_exponents(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument thermodynamic_temperature_exponent is mantatory and can not be set to None')
+				raise AssertionError('Argument thermodynamic_temperature_exponent is mandatory and can not be set to None')
 			if not check_type(value,REAL):
 				self._thermodynamic_temperature_exponent = REAL(value)
 			else:
@@ -7038,7 +7038,7 @@ class dimensional_exponents(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument amount_of_substance_exponent is mantatory and can not be set to None')
+				raise AssertionError('Argument amount_of_substance_exponent is mandatory and can not be set to None')
 			if not check_type(value,REAL):
 				self._amount_of_substance_exponent = REAL(value)
 			else:
@@ -7052,7 +7052,7 @@ class dimensional_exponents(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument luminous_intensity_exponent is mantatory and can not be set to None')
+				raise AssertionError('Argument luminous_intensity_exponent is mandatory and can not be set to None')
 			if not check_type(value,REAL):
 				self._luminous_intensity_exponent = REAL(value)
 			else:
@@ -7079,7 +7079,7 @@ class start_request(action_request_assignment):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument items is mantatory and can not be set to None')
+				raise AssertionError('Argument items is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'start_request_item', scope = schema_scope)):
 				self._items = SET(value)
 			else:
@@ -7106,7 +7106,7 @@ class cc_design_specification_reference(document_reference):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument items is mantatory and can not be set to None')
+				raise AssertionError('Argument items is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'specified_item', scope = schema_scope)):
 				self._items = SET(value)
 			else:
@@ -7145,7 +7145,7 @@ class context_dependent_shape_representation(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument representation_relation is mantatory and can not be set to None')
+				raise AssertionError('Argument representation_relation is mandatory and can not be set to None')
 			if not check_type(value,shape_representation_relationship):
 				self._representation_relation = shape_representation_relationship(value)
 			else:
@@ -7159,7 +7159,7 @@ class context_dependent_shape_representation(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument represented_product_relation is mantatory and can not be set to None')
+				raise AssertionError('Argument represented_product_relation is mandatory and can not be set to None')
 			if not check_type(value,product_definition_shape):
 				self._represented_product_relation = product_definition_shape(value)
 			else:
@@ -7193,7 +7193,7 @@ class degenerate_toroidal_surface(toroidal_surface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument select_outer is mantatory and can not be set to None')
+				raise AssertionError('Argument select_outer is mandatory and can not be set to None')
 			if not check_type(value,BOOLEAN):
 				self._select_outer = BOOLEAN(value)
 			else:
@@ -7227,7 +7227,7 @@ class ordinal_date(date):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument day_component is mantatory and can not be set to None')
+				raise AssertionError('Argument day_component is mandatory and can not be set to None')
 			if not check_type(value,day_in_year_number):
 				self._day_component = day_in_year_number(value)
 			else:
@@ -7286,7 +7286,7 @@ class brep_with_voids(manifold_solid_brep):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument voids is mantatory and can not be set to None')
+				raise AssertionError('Argument voids is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'oriented_closed_shell', scope = schema_scope)):
 				self._voids = SET(value)
 			else:
@@ -7317,7 +7317,7 @@ class week_of_year_and_day_date(date):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument week_component is mantatory and can not be set to None')
+				raise AssertionError('Argument week_component is mandatory and can not be set to None')
 			if not check_type(value,week_in_year_number):
 				self._week_component = week_in_year_number(value)
 			else:
@@ -7362,7 +7362,7 @@ class point_on_curve(point):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument basis_curve is mantatory and can not be set to None')
+				raise AssertionError('Argument basis_curve is mandatory and can not be set to None')
 			if not check_type(value,curve):
 				self._basis_curve = curve(value)
 			else:
@@ -7376,7 +7376,7 @@ class point_on_curve(point):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument point_parameter is mantatory and can not be set to None')
+				raise AssertionError('Argument point_parameter is mandatory and can not be set to None')
 			if not check_type(value,parameter_value):
 				self._point_parameter = parameter_value(value)
 			else:
@@ -7503,7 +7503,7 @@ class face(topological_representation_item):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument bounds is mantatory and can not be set to None')
+				raise AssertionError('Argument bounds is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'face_bound', scope = schema_scope)):
 				self._bounds = SET(value)
 			else:
@@ -7549,7 +7549,7 @@ class face_surface(face,geometric_representation_item):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument face_geometry is mantatory and can not be set to None')
+				raise AssertionError('Argument face_geometry is mandatory and can not be set to None')
 			if not check_type(value,surface):
 				self._face_geometry = surface(value)
 			else:
@@ -7563,7 +7563,7 @@ class face_surface(face,geometric_representation_item):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument same_sense is mantatory and can not be set to None')
+				raise AssertionError('Argument same_sense is mandatory and can not be set to None')
 			if not check_type(value,BOOLEAN):
 				self._same_sense = BOOLEAN(value)
 			else:
@@ -7597,7 +7597,7 @@ class oriented_face(face):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument face_element is mantatory and can not be set to None')
+				raise AssertionError('Argument face_element is mandatory and can not be set to None')
 			if not check_type(value,face):
 				self._face_element = face(value)
 			else:
@@ -7611,7 +7611,7 @@ class oriented_face(face):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument orientation is mantatory and can not be set to None')
+				raise AssertionError('Argument orientation is mandatory and can not be set to None')
 			if not check_type(value,BOOLEAN):
 				self._orientation = BOOLEAN(value)
 			else:
@@ -7658,7 +7658,7 @@ class surface_of_revolution(swept_surface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument axis_position is mantatory and can not be set to None')
+				raise AssertionError('Argument axis_position is mandatory and can not be set to None')
 			if not check_type(value,axis1_placement):
 				self._axis_position = axis1_placement(value)
 			else:
@@ -7751,7 +7751,7 @@ class edge_curve(edge,geometric_representation_item):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument edge_geometry is mantatory and can not be set to None')
+				raise AssertionError('Argument edge_geometry is mandatory and can not be set to None')
 			if not check_type(value,curve):
 				self._edge_geometry = curve(value)
 			else:
@@ -7765,7 +7765,7 @@ class edge_curve(edge,geometric_representation_item):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument same_sense is mantatory and can not be set to None')
+				raise AssertionError('Argument same_sense is mandatory and can not be set to None')
 			if not check_type(value,BOOLEAN):
 				self._same_sense = BOOLEAN(value)
 			else:
@@ -7796,7 +7796,7 @@ class point_replica(point):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument parent_pt is mantatory and can not be set to None')
+				raise AssertionError('Argument parent_pt is mandatory and can not be set to None')
 			if not check_type(value,point):
 				self._parent_pt = point(value)
 			else:
@@ -7810,7 +7810,7 @@ class point_replica(point):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument transformation is mantatory and can not be set to None')
+				raise AssertionError('Argument transformation is mandatory and can not be set to None')
 			if not check_type(value,cartesian_transformation_operator):
 				self._transformation = cartesian_transformation_operator(value)
 			else:
@@ -7862,7 +7862,7 @@ class product(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument id is mantatory and can not be set to None')
+				raise AssertionError('Argument id is mandatory and can not be set to None')
 			if not check_type(value,identifier):
 				self._id = identifier(value)
 			else:
@@ -7876,7 +7876,7 @@ class product(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._name = label(value)
 			else:
@@ -7890,7 +7890,7 @@ class product(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument description is mantatory and can not be set to None')
+				raise AssertionError('Argument description is mandatory and can not be set to None')
 			if not check_type(value,text):
 				self._description = text(value)
 			else:
@@ -7904,7 +7904,7 @@ class product(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument frame_of_reference is mantatory and can not be set to None')
+				raise AssertionError('Argument frame_of_reference is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'product_context', scope = schema_scope)):
 				self._frame_of_reference = SET(value)
 			else:
@@ -7942,7 +7942,7 @@ class shape_aspect_relationship(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._name = label(value)
 			else:
@@ -7956,7 +7956,7 @@ class shape_aspect_relationship(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument description is mantatory and can not be set to None')
+				raise AssertionError('Argument description is mandatory and can not be set to None')
 			if not check_type(value,text):
 				self._description = text(value)
 			else:
@@ -7970,7 +7970,7 @@ class shape_aspect_relationship(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relating_shape_aspect is mantatory and can not be set to None')
+				raise AssertionError('Argument relating_shape_aspect is mandatory and can not be set to None')
 			if not check_type(value,shape_aspect):
 				self._relating_shape_aspect = shape_aspect(value)
 			else:
@@ -7984,7 +7984,7 @@ class shape_aspect_relationship(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument related_shape_aspect is mantatory and can not be set to None')
+				raise AssertionError('Argument related_shape_aspect is mandatory and can not be set to None')
 			if not check_type(value,shape_aspect):
 				self._related_shape_aspect = shape_aspect(value)
 			else:
@@ -8035,7 +8035,7 @@ class rectangular_trimmed_surface(bounded_surface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument basis_surface is mantatory and can not be set to None')
+				raise AssertionError('Argument basis_surface is mandatory and can not be set to None')
 			if not check_type(value,surface):
 				self._basis_surface = surface(value)
 			else:
@@ -8049,7 +8049,7 @@ class rectangular_trimmed_surface(bounded_surface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument u1 is mantatory and can not be set to None')
+				raise AssertionError('Argument u1 is mandatory and can not be set to None')
 			if not check_type(value,parameter_value):
 				self._u1 = parameter_value(value)
 			else:
@@ -8063,7 +8063,7 @@ class rectangular_trimmed_surface(bounded_surface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument u2 is mantatory and can not be set to None')
+				raise AssertionError('Argument u2 is mandatory and can not be set to None')
 			if not check_type(value,parameter_value):
 				self._u2 = parameter_value(value)
 			else:
@@ -8077,7 +8077,7 @@ class rectangular_trimmed_surface(bounded_surface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument v1 is mantatory and can not be set to None')
+				raise AssertionError('Argument v1 is mandatory and can not be set to None')
 			if not check_type(value,parameter_value):
 				self._v1 = parameter_value(value)
 			else:
@@ -8091,7 +8091,7 @@ class rectangular_trimmed_surface(bounded_surface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument v2 is mantatory and can not be set to None')
+				raise AssertionError('Argument v2 is mandatory and can not be set to None')
 			if not check_type(value,parameter_value):
 				self._v2 = parameter_value(value)
 			else:
@@ -8105,7 +8105,7 @@ class rectangular_trimmed_surface(bounded_surface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument usense is mantatory and can not be set to None')
+				raise AssertionError('Argument usense is mandatory and can not be set to None')
 			if not check_type(value,BOOLEAN):
 				self._usense = BOOLEAN(value)
 			else:
@@ -8119,7 +8119,7 @@ class rectangular_trimmed_surface(bounded_surface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument vsense is mantatory and can not be set to None')
+				raise AssertionError('Argument vsense is mandatory and can not be set to None')
 			if not check_type(value,BOOLEAN):
 				self._vsense = BOOLEAN(value)
 			else:
@@ -8182,7 +8182,7 @@ class action_assignment(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument assigned_action is mantatory and can not be set to None')
+				raise AssertionError('Argument assigned_action is mandatory and can not be set to None')
 			if not check_type(value,action):
 				self._assigned_action = action(value)
 			else:
@@ -8209,7 +8209,7 @@ class change(action_assignment):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument items is mantatory and can not be set to None')
+				raise AssertionError('Argument items is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'work_item', scope = schema_scope)):
 				self._items = SET(value)
 			else:
@@ -8236,7 +8236,7 @@ class circle(conic):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument radius is mantatory and can not be set to None')
+				raise AssertionError('Argument radius is mandatory and can not be set to None')
 			if not check_type(value,positive_length_measure):
 				self._radius = positive_length_measure(value)
 			else:
@@ -8267,7 +8267,7 @@ class line(curve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument pnt is mantatory and can not be set to None')
+				raise AssertionError('Argument pnt is mandatory and can not be set to None')
 			if not check_type(value,cartesian_point):
 				self._pnt = cartesian_point(value)
 			else:
@@ -8281,7 +8281,7 @@ class line(curve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument dir is mantatory and can not be set to None')
+				raise AssertionError('Argument dir is mandatory and can not be set to None')
 			if not check_type(value,vector):
 				self._dir = vector(value)
 			else:
@@ -8318,7 +8318,7 @@ class property_definition_representation(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument definition is mantatory and can not be set to None')
+				raise AssertionError('Argument definition is mandatory and can not be set to None')
 			if not check_type(value,property_definition):
 				self._definition = property_definition(value)
 			else:
@@ -8332,7 +8332,7 @@ class property_definition_representation(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument used_representation is mantatory and can not be set to None')
+				raise AssertionError('Argument used_representation is mandatory and can not be set to None')
 			if not check_type(value,representation):
 				self._used_representation = representation(value)
 			else:
@@ -8359,7 +8359,7 @@ class geometric_set(geometric_representation_item):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument elements is mantatory and can not be set to None')
+				raise AssertionError('Argument elements is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'geometric_set_select', scope = schema_scope)):
 				self._elements = SET(value)
 			else:
@@ -8406,7 +8406,7 @@ class personal_address(address):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument people is mantatory and can not be set to None')
+				raise AssertionError('Argument people is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'person', scope = schema_scope)):
 				self._people = SET(value)
 			else:
@@ -8420,7 +8420,7 @@ class personal_address(address):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument description is mantatory and can not be set to None')
+				raise AssertionError('Argument description is mandatory and can not be set to None')
 			if not check_type(value,text):
 				self._description = text(value)
 			else:
@@ -8458,7 +8458,7 @@ class document_relationship(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._name = label(value)
 			else:
@@ -8472,7 +8472,7 @@ class document_relationship(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument description is mantatory and can not be set to None')
+				raise AssertionError('Argument description is mandatory and can not be set to None')
 			if not check_type(value,text):
 				self._description = text(value)
 			else:
@@ -8486,7 +8486,7 @@ class document_relationship(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relating_document is mantatory and can not be set to None')
+				raise AssertionError('Argument relating_document is mandatory and can not be set to None')
 			if not check_type(value,document):
 				self._relating_document = document(value)
 			else:
@@ -8500,7 +8500,7 @@ class document_relationship(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument related_document is mantatory and can not be set to None')
+				raise AssertionError('Argument related_document is mandatory and can not be set to None')
 			if not check_type(value,document):
 				self._related_document = document(value)
 			else:
@@ -8563,7 +8563,7 @@ class assembly_component_usage_substitute(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._name = label(value)
 			else:
@@ -8577,7 +8577,7 @@ class assembly_component_usage_substitute(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument definition is mantatory and can not be set to None')
+				raise AssertionError('Argument definition is mandatory and can not be set to None')
 			if not check_type(value,text):
 				self._definition = text(value)
 			else:
@@ -8591,7 +8591,7 @@ class assembly_component_usage_substitute(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument base is mantatory and can not be set to None')
+				raise AssertionError('Argument base is mandatory and can not be set to None')
 			if not check_type(value,assembly_component_usage):
 				self._base = assembly_component_usage(value)
 			else:
@@ -8605,7 +8605,7 @@ class assembly_component_usage_substitute(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument substitute is mantatory and can not be set to None')
+				raise AssertionError('Argument substitute is mandatory and can not be set to None')
 			if not check_type(value,assembly_component_usage):
 				self._substitute = assembly_component_usage(value)
 			else:
@@ -8650,7 +8650,7 @@ class degenerate_pcurve(point):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument basis_surface is mantatory and can not be set to None')
+				raise AssertionError('Argument basis_surface is mandatory and can not be set to None')
 			if not check_type(value,surface):
 				self._basis_surface = surface(value)
 			else:
@@ -8664,7 +8664,7 @@ class degenerate_pcurve(point):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument reference_to_curve is mantatory and can not be set to None')
+				raise AssertionError('Argument reference_to_curve is mandatory and can not be set to None')
 			if not check_type(value,definitional_representation):
 				self._reference_to_curve = definitional_representation(value)
 			else:
@@ -8712,7 +8712,7 @@ class evaluated_degenerate_pcurve(degenerate_pcurve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument equivalent_point is mantatory and can not be set to None')
+				raise AssertionError('Argument equivalent_point is mandatory and can not be set to None')
 			if not check_type(value,cartesian_point):
 				self._equivalent_point = cartesian_point(value)
 			else:
@@ -8755,7 +8755,7 @@ class connected_edge_set(topological_representation_item):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument ces_edges is mantatory and can not be set to None')
+				raise AssertionError('Argument ces_edges is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'edge', scope = schema_scope)):
 				self._ces_edges = SET(value)
 			else:
@@ -8789,7 +8789,7 @@ class action(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._name = label(value)
 			else:
@@ -8803,7 +8803,7 @@ class action(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument description is mantatory and can not be set to None')
+				raise AssertionError('Argument description is mandatory and can not be set to None')
 			if not check_type(value,text):
 				self._description = text(value)
 			else:
@@ -8817,7 +8817,7 @@ class action(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument chosen_method is mantatory and can not be set to None')
+				raise AssertionError('Argument chosen_method is mandatory and can not be set to None')
 			if not check_type(value,action_method):
 				self._chosen_method = action_method(value)
 			else:
@@ -8853,7 +8853,7 @@ class directed_action(executed_action):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument directive is mantatory and can not be set to None')
+				raise AssertionError('Argument directive is mandatory and can not be set to None')
 			if not check_type(value,action_directive):
 				self._directive = action_directive(value)
 			else:
@@ -8887,7 +8887,7 @@ class organizational_project(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._name = label(value)
 			else:
@@ -8901,7 +8901,7 @@ class organizational_project(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument description is mantatory and can not be set to None')
+				raise AssertionError('Argument description is mandatory and can not be set to None')
 			if not check_type(value,text):
 				self._description = text(value)
 			else:
@@ -8915,7 +8915,7 @@ class organizational_project(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument responsible_organizations is mantatory and can not be set to None')
+				raise AssertionError('Argument responsible_organizations is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'organization', scope = schema_scope)):
 				self._responsible_organizations = SET(value)
 			else:
@@ -8941,7 +8941,7 @@ class date_time_role(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._name = label(value)
 			else:
@@ -8976,7 +8976,7 @@ class curve_bounded_surface(bounded_surface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument basis_surface is mantatory and can not be set to None')
+				raise AssertionError('Argument basis_surface is mandatory and can not be set to None')
 			if not check_type(value,surface):
 				self._basis_surface = surface(value)
 			else:
@@ -8990,7 +8990,7 @@ class curve_bounded_surface(bounded_surface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument boundaries is mantatory and can not be set to None')
+				raise AssertionError('Argument boundaries is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'boundary_curve', scope = schema_scope)):
 				self._boundaries = SET(value)
 			else:
@@ -9004,7 +9004,7 @@ class curve_bounded_surface(bounded_surface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument implicit_outer is mantatory and can not be set to None')
+				raise AssertionError('Argument implicit_outer is mandatory and can not be set to None')
 			if not check_type(value,BOOLEAN):
 				self._implicit_outer = BOOLEAN(value)
 			else:
@@ -9130,7 +9130,7 @@ class si_unit(named_unit):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,si_unit_name):
 				self._name = si_unit_name(value)
 			else:
@@ -9175,7 +9175,7 @@ class certification_assignment(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument assigned_certification is mantatory and can not be set to None')
+				raise AssertionError('Argument assigned_certification is mandatory and can not be set to None')
 			if not check_type(value,certification):
 				self._assigned_certification = certification(value)
 			else:
@@ -9202,7 +9202,7 @@ class start_work(action_assignment):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument items is mantatory and can not be set to None')
+				raise AssertionError('Argument items is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'work_item', scope = schema_scope)):
 				self._items = SET(value)
 			else:
@@ -9228,7 +9228,7 @@ class contract_type(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument description is mantatory and can not be set to None')
+				raise AssertionError('Argument description is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._description = label(value)
 			else:
@@ -9266,7 +9266,7 @@ class b_spline_curve_with_knots(b_spline_curve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument knot_multiplicities is mantatory and can not be set to None')
+				raise AssertionError('Argument knot_multiplicities is mandatory and can not be set to None')
 			if not check_type(value,LIST(2,None,'INTEGER', scope = schema_scope)):
 				self._knot_multiplicities = LIST(value)
 			else:
@@ -9280,7 +9280,7 @@ class b_spline_curve_with_knots(b_spline_curve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument knots is mantatory and can not be set to None')
+				raise AssertionError('Argument knots is mandatory and can not be set to None')
 			if not check_type(value,LIST(2,None,'REAL', scope = schema_scope)):
 				self._knots = LIST(value)
 			else:
@@ -9294,7 +9294,7 @@ class b_spline_curve_with_knots(b_spline_curve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument knot_spec is mantatory and can not be set to None')
+				raise AssertionError('Argument knot_spec is mandatory and can not be set to None')
 			if not check_type(value,knot_type):
 				self._knot_spec = knot_type(value)
 			else:
@@ -9345,7 +9345,7 @@ class cc_design_approval(approval_assignment):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument items is mantatory and can not be set to None')
+				raise AssertionError('Argument items is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'approved_item', scope = schema_scope)):
 				self._items = SET(value)
 			else:
@@ -9513,7 +9513,7 @@ class product_concept(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument id is mantatory and can not be set to None')
+				raise AssertionError('Argument id is mandatory and can not be set to None')
 			if not check_type(value,identifier):
 				self._id = identifier(value)
 			else:
@@ -9527,7 +9527,7 @@ class product_concept(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._name = label(value)
 			else:
@@ -9541,7 +9541,7 @@ class product_concept(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument description is mantatory and can not be set to None')
+				raise AssertionError('Argument description is mandatory and can not be set to None')
 			if not check_type(value,text):
 				self._description = text(value)
 			else:
@@ -9555,7 +9555,7 @@ class product_concept(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument market_context is mantatory and can not be set to None')
+				raise AssertionError('Argument market_context is mandatory and can not be set to None')
 			if not check_type(value,product_concept_context):
 				self._market_context = product_concept_context(value)
 			else:
@@ -9582,7 +9582,7 @@ class cc_design_contract(contract_assignment):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument items is mantatory and can not be set to None')
+				raise AssertionError('Argument items is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'contracted_item', scope = schema_scope)):
 				self._items = SET(value)
 			else:
@@ -9735,7 +9735,7 @@ class rational_b_spline_surface(b_spline_surface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument weights_data is mantatory and can not be set to None')
+				raise AssertionError('Argument weights_data is mandatory and can not be set to None')
 			if not check_type(value,LIST(2,None,LIST(2,None,'REAL', scope = schema_scope))):
 				self._weights_data = LIST(value)
 			else:
@@ -9789,7 +9789,7 @@ class configuration_design(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument configuration is mantatory and can not be set to None')
+				raise AssertionError('Argument configuration is mandatory and can not be set to None')
 			if not check_type(value,configuration_item):
 				self._configuration = configuration_item(value)
 			else:
@@ -9803,7 +9803,7 @@ class configuration_design(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument design is mantatory and can not be set to None')
+				raise AssertionError('Argument design is mandatory and can not be set to None')
 			if not check_type(value,product_definition_formation):
 				self._design = product_definition_formation(value)
 			else:
@@ -9857,7 +9857,7 @@ class product_definition(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument id is mantatory and can not be set to None')
+				raise AssertionError('Argument id is mandatory and can not be set to None')
 			if not check_type(value,identifier):
 				self._id = identifier(value)
 			else:
@@ -9871,7 +9871,7 @@ class product_definition(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument description is mantatory and can not be set to None')
+				raise AssertionError('Argument description is mandatory and can not be set to None')
 			if not check_type(value,text):
 				self._description = text(value)
 			else:
@@ -9885,7 +9885,7 @@ class product_definition(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument formation is mantatory and can not be set to None')
+				raise AssertionError('Argument formation is mandatory and can not be set to None')
 			if not check_type(value,product_definition_formation):
 				self._formation = product_definition_formation(value)
 			else:
@@ -9899,7 +9899,7 @@ class product_definition(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument frame_of_reference is mantatory and can not be set to None')
+				raise AssertionError('Argument frame_of_reference is mandatory and can not be set to None')
 			if not check_type(value,product_definition_context):
 				self._frame_of_reference = product_definition_context(value)
 			else:
@@ -9926,7 +9926,7 @@ class product_definition_with_associated_documents(product_definition):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument documentation_ids is mantatory and can not be set to None')
+				raise AssertionError('Argument documentation_ids is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'document', scope = schema_scope)):
 				self._documentation_ids = SET(value)
 			else:
@@ -9974,7 +9974,7 @@ class organization(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._name = label(value)
 			else:
@@ -9988,7 +9988,7 @@ class organization(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument description is mantatory and can not be set to None')
+				raise AssertionError('Argument description is mandatory and can not be set to None')
 			if not check_type(value,text):
 				self._description = text(value)
 			else:
@@ -10015,7 +10015,7 @@ class cc_design_certification(certification_assignment):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument items is mantatory and can not be set to None')
+				raise AssertionError('Argument items is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'certified_item', scope = schema_scope)):
 				self._items = SET(value)
 			else:
@@ -10064,7 +10064,7 @@ class b_spline_surface_with_knots(b_spline_surface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument u_multiplicities is mantatory and can not be set to None')
+				raise AssertionError('Argument u_multiplicities is mandatory and can not be set to None')
 			if not check_type(value,LIST(2,None,'INTEGER', scope = schema_scope)):
 				self._u_multiplicities = LIST(value)
 			else:
@@ -10078,7 +10078,7 @@ class b_spline_surface_with_knots(b_spline_surface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument v_multiplicities is mantatory and can not be set to None')
+				raise AssertionError('Argument v_multiplicities is mandatory and can not be set to None')
 			if not check_type(value,LIST(2,None,'INTEGER', scope = schema_scope)):
 				self._v_multiplicities = LIST(value)
 			else:
@@ -10092,7 +10092,7 @@ class b_spline_surface_with_knots(b_spline_surface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument u_knots is mantatory and can not be set to None')
+				raise AssertionError('Argument u_knots is mandatory and can not be set to None')
 			if not check_type(value,LIST(2,None,'REAL', scope = schema_scope)):
 				self._u_knots = LIST(value)
 			else:
@@ -10106,7 +10106,7 @@ class b_spline_surface_with_knots(b_spline_surface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument v_knots is mantatory and can not be set to None')
+				raise AssertionError('Argument v_knots is mandatory and can not be set to None')
 			if not check_type(value,LIST(2,None,'REAL', scope = schema_scope)):
 				self._v_knots = LIST(value)
 			else:
@@ -10120,7 +10120,7 @@ class b_spline_surface_with_knots(b_spline_surface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument knot_spec is mantatory and can not be set to None')
+				raise AssertionError('Argument knot_spec is mandatory and can not be set to None')
 			if not check_type(value,knot_type):
 				self._knot_spec = knot_type(value)
 			else:
@@ -10194,7 +10194,7 @@ class certification_type(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument description is mantatory and can not be set to None')
+				raise AssertionError('Argument description is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._description = label(value)
 			else:
@@ -10228,7 +10228,7 @@ class oriented_path(path):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument path_element is mantatory and can not be set to None')
+				raise AssertionError('Argument path_element is mandatory and can not be set to None')
 			if not check_type(value,path):
 				self._path_element = path(value)
 			else:
@@ -10242,7 +10242,7 @@ class oriented_path(path):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument orientation is mantatory and can not be set to None')
+				raise AssertionError('Argument orientation is mandatory and can not be set to None')
 			if not check_type(value,BOOLEAN):
 				self._orientation = BOOLEAN(value)
 			else:
@@ -10293,7 +10293,7 @@ class security_classification(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._name = label(value)
 			else:
@@ -10307,7 +10307,7 @@ class security_classification(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument purpose is mantatory and can not be set to None')
+				raise AssertionError('Argument purpose is mandatory and can not be set to None')
 			if not check_type(value,text):
 				self._purpose = text(value)
 			else:
@@ -10321,7 +10321,7 @@ class security_classification(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument security_level is mantatory and can not be set to None')
+				raise AssertionError('Argument security_level is mandatory and can not be set to None')
 			if not check_type(value,security_classification_level):
 				self._security_level = security_classification_level(value)
 			else:
@@ -10348,7 +10348,7 @@ class vertex_loop(loop):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument loop_vertex is mantatory and can not be set to None')
+				raise AssertionError('Argument loop_vertex is mandatory and can not be set to None')
 			if not check_type(value,vertex):
 				self._loop_vertex = vertex(value)
 			else:
@@ -10374,7 +10374,7 @@ class approval_status(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._name = label(value)
 			else:
@@ -10401,7 +10401,7 @@ class cartesian_point(point):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument coordinates is mantatory and can not be set to None')
+				raise AssertionError('Argument coordinates is mandatory and can not be set to None')
 			if not check_type(value,LIST(1,3,'REAL', scope = schema_scope)):
 				self._coordinates = LIST(value)
 			else:
@@ -10431,7 +10431,7 @@ class date_and_time_assignment(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument assigned_date_and_time is mantatory and can not be set to None')
+				raise AssertionError('Argument assigned_date_and_time is mandatory and can not be set to None')
 			if not check_type(value,date_and_time):
 				self._assigned_date_and_time = date_and_time(value)
 			else:
@@ -10445,7 +10445,7 @@ class date_and_time_assignment(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument role is mantatory and can not be set to None')
+				raise AssertionError('Argument role is mandatory and can not be set to None')
 			if not check_type(value,date_time_role):
 				self._role = date_time_role(value)
 			else:
@@ -10481,7 +10481,7 @@ class product_concept_context(application_context_element):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument market_segment_type is mantatory and can not be set to None')
+				raise AssertionError('Argument market_segment_type is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._market_segment_type = label(value)
 			else:
@@ -10527,7 +10527,7 @@ class surface_patch(founded_item):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument parent_surface is mantatory and can not be set to None')
+				raise AssertionError('Argument parent_surface is mandatory and can not be set to None')
 			if not check_type(value,bounded_surface):
 				self._parent_surface = bounded_surface(value)
 			else:
@@ -10541,7 +10541,7 @@ class surface_patch(founded_item):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument u_transition is mantatory and can not be set to None')
+				raise AssertionError('Argument u_transition is mandatory and can not be set to None')
 			if not check_type(value,transition_code):
 				self._u_transition = transition_code(value)
 			else:
@@ -10555,7 +10555,7 @@ class surface_patch(founded_item):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument v_transition is mantatory and can not be set to None')
+				raise AssertionError('Argument v_transition is mandatory and can not be set to None')
 			if not check_type(value,transition_code):
 				self._v_transition = transition_code(value)
 			else:
@@ -10569,7 +10569,7 @@ class surface_patch(founded_item):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument u_sense is mantatory and can not be set to None')
+				raise AssertionError('Argument u_sense is mandatory and can not be set to None')
 			if not check_type(value,BOOLEAN):
 				self._u_sense = BOOLEAN(value)
 			else:
@@ -10583,7 +10583,7 @@ class surface_patch(founded_item):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument v_sense is mantatory and can not be set to None')
+				raise AssertionError('Argument v_sense is mandatory and can not be set to None')
 			if not check_type(value,BOOLEAN):
 				self._v_sense = BOOLEAN(value)
 			else:
@@ -10653,7 +10653,7 @@ class shape_aspect(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._name = label(value)
 			else:
@@ -10667,7 +10667,7 @@ class shape_aspect(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument description is mantatory and can not be set to None')
+				raise AssertionError('Argument description is mandatory and can not be set to None')
 			if not check_type(value,text):
 				self._description = text(value)
 			else:
@@ -10681,7 +10681,7 @@ class shape_aspect(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument of_shape is mantatory and can not be set to None')
+				raise AssertionError('Argument of_shape is mandatory and can not be set to None')
 			if not check_type(value,product_definition_shape):
 				self._of_shape = product_definition_shape(value)
 			else:
@@ -10695,7 +10695,7 @@ class shape_aspect(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument product_definitional is mantatory and can not be set to None')
+				raise AssertionError('Argument product_definitional is mandatory and can not be set to None')
 			if not check_type(value,LOGICAL):
 				self._product_definitional = LOGICAL(value)
 			else:
@@ -10816,7 +10816,7 @@ class security_classification_level(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._name = label(value)
 			else:
@@ -10854,7 +10854,7 @@ class approval_relationship(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._name = label(value)
 			else:
@@ -10868,7 +10868,7 @@ class approval_relationship(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument description is mantatory and can not be set to None')
+				raise AssertionError('Argument description is mandatory and can not be set to None')
 			if not check_type(value,text):
 				self._description = text(value)
 			else:
@@ -10882,7 +10882,7 @@ class approval_relationship(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relating_approval is mantatory and can not be set to None')
+				raise AssertionError('Argument relating_approval is mandatory and can not be set to None')
 			if not check_type(value,approval):
 				self._relating_approval = approval(value)
 			else:
@@ -10896,7 +10896,7 @@ class approval_relationship(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument related_approval is mantatory and can not be set to None')
+				raise AssertionError('Argument related_approval is mandatory and can not be set to None')
 			if not check_type(value,approval):
 				self._related_approval = approval(value)
 			else:
@@ -10923,7 +10923,7 @@ class polyline(bounded_curve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument points is mantatory and can not be set to None')
+				raise AssertionError('Argument points is mandatory and can not be set to None')
 			if not check_type(value,LIST(2,None,'cartesian_point', scope = schema_scope)):
 				self._points = LIST(value)
 			else:
@@ -10957,7 +10957,7 @@ class approval_person_organization(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument person_organization is mantatory and can not be set to None')
+				raise AssertionError('Argument person_organization is mandatory and can not be set to None')
 			if not check_type(value,person_organization_select):
 				self._person_organization = person_organization_select(value)
 			else:
@@ -10971,7 +10971,7 @@ class approval_person_organization(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument authorized_approval is mantatory and can not be set to None')
+				raise AssertionError('Argument authorized_approval is mandatory and can not be set to None')
 			if not check_type(value,approval):
 				self._authorized_approval = approval(value)
 			else:
@@ -10985,7 +10985,7 @@ class approval_person_organization(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument role is mantatory and can not be set to None')
+				raise AssertionError('Argument role is mandatory and can not be set to None')
 			if not check_type(value,approval_role):
 				self._role = approval_role(value)
 			else:
@@ -11016,7 +11016,7 @@ class surface_replica(surface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument parent_surface is mantatory and can not be set to None')
+				raise AssertionError('Argument parent_surface is mandatory and can not be set to None')
 			if not check_type(value,surface):
 				self._parent_surface = surface(value)
 			else:
@@ -11030,7 +11030,7 @@ class surface_replica(surface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument transformation is mantatory and can not be set to None')
+				raise AssertionError('Argument transformation is mandatory and can not be set to None')
 			if not check_type(value,cartesian_transformation_operator_3d):
 				self._transformation = cartesian_transformation_operator_3d(value)
 			else:
@@ -11063,7 +11063,7 @@ class security_classification_assignment(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument assigned_security_classification is mantatory and can not be set to None')
+				raise AssertionError('Argument assigned_security_classification is mandatory and can not be set to None')
 			if not check_type(value,security_classification):
 				self._assigned_security_classification = security_classification(value)
 			else:
@@ -11090,7 +11090,7 @@ class cc_design_security_classification(security_classification_assignment):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument items is mantatory and can not be set to None')
+				raise AssertionError('Argument items is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'classified_item', scope = schema_scope)):
 				self._items = SET(value)
 			else:
@@ -11182,7 +11182,7 @@ class document_usage_constraint(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument source is mantatory and can not be set to None')
+				raise AssertionError('Argument source is mandatory and can not be set to None')
 			if not check_type(value,document):
 				self._source = document(value)
 			else:
@@ -11196,7 +11196,7 @@ class document_usage_constraint(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument subject_element is mantatory and can not be set to None')
+				raise AssertionError('Argument subject_element is mandatory and can not be set to None')
 			if not check_type(value,label):
 				self._subject_element = label(value)
 			else:
@@ -11210,7 +11210,7 @@ class document_usage_constraint(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument subject_element_value is mantatory and can not be set to None')
+				raise AssertionError('Argument subject_element_value is mandatory and can not be set to None')
 			if not check_type(value,text):
 				self._subject_element_value = text(value)
 			else:
@@ -11238,7 +11238,7 @@ class vertex_point(vertex,geometric_representation_item):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument vertex_geometry is mantatory and can not be set to None')
+				raise AssertionError('Argument vertex_geometry is mandatory and can not be set to None')
 			if not check_type(value,point):
 				self._vertex_geometry = point(value)
 			else:
@@ -11265,7 +11265,7 @@ class cc_design_date_and_time_assignment(date_and_time_assignment):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument items is mantatory and can not be set to None')
+				raise AssertionError('Argument items is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'date_time_item', scope = schema_scope)):
 				self._items = SET(value)
 			else:
@@ -11306,7 +11306,7 @@ class oriented_closed_shell(closed_shell):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument closed_shell_element is mantatory and can not be set to None')
+				raise AssertionError('Argument closed_shell_element is mandatory and can not be set to None')
 			if not check_type(value,closed_shell):
 				self._closed_shell_element = closed_shell(value)
 			else:
@@ -11320,7 +11320,7 @@ class oriented_closed_shell(closed_shell):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument orientation is mantatory and can not be set to None')
+				raise AssertionError('Argument orientation is mandatory and can not be set to None')
 			if not check_type(value,BOOLEAN):
 				self._orientation = BOOLEAN(value)
 			else:
@@ -11367,7 +11367,7 @@ class person_and_organization(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument the_person is mantatory and can not be set to None')
+				raise AssertionError('Argument the_person is mandatory and can not be set to None')
 			if not check_type(value,person):
 				self._the_person = person(value)
 			else:
@@ -11381,7 +11381,7 @@ class person_and_organization(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument the_organization is mantatory and can not be set to None')
+				raise AssertionError('Argument the_organization is mandatory and can not be set to None')
 			if not check_type(value,organization):
 				self._the_organization = organization(value)
 			else:
@@ -11408,7 +11408,7 @@ class cylindrical_surface(elementary_surface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument radius is mantatory and can not be set to None')
+				raise AssertionError('Argument radius is mandatory and can not be set to None')
 			if not check_type(value,positive_length_measure):
 				self._radius = positive_length_measure(value)
 			else:
@@ -11446,7 +11446,7 @@ class local_time(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument hour_component is mantatory and can not be set to None')
+				raise AssertionError('Argument hour_component is mandatory and can not be set to None')
 			if not check_type(value,hour_in_day):
 				self._hour_component = hour_in_day(value)
 			else:
@@ -11488,7 +11488,7 @@ class local_time(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument zone is mantatory and can not be set to None')
+				raise AssertionError('Argument zone is mandatory and can not be set to None')
 			if not check_type(value,coordinated_universal_time_offset):
 				self._zone = coordinated_universal_time_offset(value)
 			else:
@@ -11538,7 +11538,7 @@ class vertex_shell(topological_representation_item):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument vertex_shell_extent is mantatory and can not be set to None')
+				raise AssertionError('Argument vertex_shell_extent is mandatory and can not be set to None')
 			if not check_type(value,vertex_loop):
 				self._vertex_shell_extent = vertex_loop(value)
 			else:
@@ -11566,7 +11566,7 @@ class poly_loop(loop,geometric_representation_item):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument polygon is mantatory and can not be set to None')
+				raise AssertionError('Argument polygon is mandatory and can not be set to None')
 			if not check_type(value,LIST(3,None,'cartesian_point', scope = schema_scope)):
 				self._polygon = LIST(value)
 			else:
@@ -11593,7 +11593,7 @@ class wire_shell(topological_representation_item):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument wire_shell_extent is mantatory and can not be set to None')
+				raise AssertionError('Argument wire_shell_extent is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'loop', scope = schema_scope)):
 				self._wire_shell_extent = SET(value)
 			else:
@@ -11647,7 +11647,7 @@ class mapped_item(representation_item):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument mapping_source is mantatory and can not be set to None')
+				raise AssertionError('Argument mapping_source is mandatory and can not be set to None')
 			if not check_type(value,representation_map):
 				self._mapping_source = representation_map(value)
 			else:
@@ -11661,7 +11661,7 @@ class mapped_item(representation_item):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument mapping_target is mantatory and can not be set to None')
+				raise AssertionError('Argument mapping_target is mandatory and can not be set to None')
 			if not check_type(value,representation_item):
 				self._mapping_target = representation_item(value)
 			else:
@@ -11738,7 +11738,7 @@ class conical_surface(elementary_surface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument radius is mantatory and can not be set to None')
+				raise AssertionError('Argument radius is mandatory and can not be set to None')
 			if not check_type(value,length_measure):
 				self._radius = length_measure(value)
 			else:
@@ -11752,7 +11752,7 @@ class conical_surface(elementary_surface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument semi_angle is mantatory and can not be set to None')
+				raise AssertionError('Argument semi_angle is mandatory and can not be set to None')
 			if not check_type(value,plane_angle_measure):
 				self._semi_angle = plane_angle_measure(value)
 			else:
@@ -11786,7 +11786,7 @@ class global_unit_assigned_context(representation_context):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument units is mantatory and can not be set to None')
+				raise AssertionError('Argument units is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'unit', scope = schema_scope)):
 				self._units = SET(value)
 			else:

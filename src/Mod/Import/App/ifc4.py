@@ -2296,7 +2296,7 @@ class ifcroot(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument globalid is mantatory and can not be set to None')
+				raise AssertionError('Argument globalid is mandatory and can not be set to None')
 			if not check_type(value,ifcgloballyuniqueid):
 				self._globalid = ifcgloballyuniqueid(value)
 			else:
@@ -2399,7 +2399,7 @@ class ifcrelspaceboundary(ifcrelconnects):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingspace is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingspace is mandatory and can not be set to None')
 			if not check_type(value,ifcspaceboundaryselect):
 				self._relatingspace = ifcspaceboundaryselect(value)
 			else:
@@ -2413,7 +2413,7 @@ class ifcrelspaceboundary(ifcrelconnects):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatedbuildingelement is mantatory and can not be set to None')
+				raise AssertionError('Argument relatedbuildingelement is mandatory and can not be set to None')
 			if not check_type(value,ifcelement):
 				self._relatedbuildingelement = ifcelement(value)
 			else:
@@ -2441,7 +2441,7 @@ class ifcrelspaceboundary(ifcrelconnects):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument physicalorvirtualboundary is mantatory and can not be set to None')
+				raise AssertionError('Argument physicalorvirtualboundary is mandatory and can not be set to None')
 			if not check_type(value,ifcphysicalorvirtualenum):
 				self._physicalorvirtualboundary = ifcphysicalorvirtualenum(value)
 			else:
@@ -2455,7 +2455,7 @@ class ifcrelspaceboundary(ifcrelconnects):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument internalorexternalboundary is mantatory and can not be set to None')
+				raise AssertionError('Argument internalorexternalboundary is mandatory and can not be set to None')
 			if not check_type(value,ifcinternalorexternalenum):
 				self._internalorexternalboundary = ifcinternalorexternalenum(value)
 			else:
@@ -2806,7 +2806,7 @@ class ifcstructuralactivity(ifcproduct):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument appliedload is mantatory and can not be set to None')
+				raise AssertionError('Argument appliedload is mandatory and can not be set to None')
 			if not check_type(value,ifcstructuralload):
 				self._appliedload = ifcstructuralload(value)
 			else:
@@ -2820,7 +2820,7 @@ class ifcstructuralactivity(ifcproduct):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument globalorlocal is mantatory and can not be set to None')
+				raise AssertionError('Argument globalorlocal is mandatory and can not be set to None')
 			if not check_type(value,ifcglobalorlocalenum):
 				self._globalorlocal = ifcglobalorlocalenum(value)
 			else:
@@ -2865,7 +2865,7 @@ class ifcstructuralcurvereaction(ifcstructuralreaction):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcstructuralcurveactivitytypeenum):
 				self._predefinedtype = ifcstructuralcurveactivitytypeenum(value)
 			else:
@@ -3087,7 +3087,7 @@ class ifccurvestylefontpattern(ifcpresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument visiblesegmentlength is mantatory and can not be set to None')
+				raise AssertionError('Argument visiblesegmentlength is mandatory and can not be set to None')
 			if not check_type(value,ifclengthmeasure):
 				self._visiblesegmentlength = ifclengthmeasure(value)
 			else:
@@ -3101,7 +3101,7 @@ class ifccurvestylefontpattern(ifcpresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument invisiblesegmentlength is mantatory and can not be set to None')
+				raise AssertionError('Argument invisiblesegmentlength is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._invisiblesegmentlength = ifcpositivelengthmeasure(value)
 			else:
@@ -3139,7 +3139,7 @@ class ifcrelconnectsstructuralactivity(ifcrelconnects):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingelement is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingelement is mandatory and can not be set to None')
 			if not check_type(value,ifcstructuralactivityassignmentselect):
 				self._relatingelement = ifcstructuralactivityassignmentselect(value)
 			else:
@@ -3153,7 +3153,7 @@ class ifcrelconnectsstructuralactivity(ifcrelconnects):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatedstructuralactivity is mantatory and can not be set to None')
+				raise AssertionError('Argument relatedstructuralactivity is mandatory and can not be set to None')
 			if not check_type(value,ifcstructuralactivity):
 				self._relatedstructuralactivity = ifcstructuralactivity(value)
 			else:
@@ -3324,7 +3324,7 @@ class ifcmaterialrelationship(ifcresourcelevelrelationship):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingmaterial is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingmaterial is mandatory and can not be set to None')
 			if not check_type(value,ifcmaterial):
 				self._relatingmaterial = ifcmaterial(value)
 			else:
@@ -3338,7 +3338,7 @@ class ifcmaterialrelationship(ifcresourcelevelrelationship):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatedmaterials is mantatory and can not be set to None')
+				raise AssertionError('Argument relatedmaterials is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcmaterial', scope = schema_scope)):
 				self._relatedmaterials = SET(value)
 			else:
@@ -3548,7 +3548,7 @@ class ifcproperty(ifcpropertyabstraction):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,ifcidentifier):
 				self._name = ifcidentifier(value)
 			else:
@@ -3706,7 +3706,7 @@ class ifcreinforcementbarproperties(ifcpredefinedproperties):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument totalcrosssectionarea is mantatory and can not be set to None')
+				raise AssertionError('Argument totalcrosssectionarea is mandatory and can not be set to None')
 			if not check_type(value,ifcareameasure):
 				self._totalcrosssectionarea = ifcareameasure(value)
 			else:
@@ -3720,7 +3720,7 @@ class ifcreinforcementbarproperties(ifcpredefinedproperties):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument steelgrade is mantatory and can not be set to None')
+				raise AssertionError('Argument steelgrade is mandatory and can not be set to None')
 			if not check_type(value,ifclabel):
 				self._steelgrade = ifclabel(value)
 			else:
@@ -3871,7 +3871,7 @@ class ifcsweptsurface(ifcsurface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument sweptcurve is mantatory and can not be set to None')
+				raise AssertionError('Argument sweptcurve is mandatory and can not be set to None')
 			if not check_type(value,ifcprofiledef):
 				self._sweptcurve = ifcprofiledef(value)
 			else:
@@ -3922,7 +3922,7 @@ class ifcsurfaceofrevolution(ifcsweptsurface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument axisposition is mantatory and can not be set to None')
+				raise AssertionError('Argument axisposition is mandatory and can not be set to None')
 			if not check_type(value,ifcaxis1placement):
 				self._axisposition = ifcaxis1placement(value)
 			else:
@@ -4191,7 +4191,7 @@ class ifccablesegmenttype(ifcflowsegmenttype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifccablesegmenttypeenum):
 				self._predefinedtype = ifccablesegmenttypeenum(value)
 			else:
@@ -4345,7 +4345,7 @@ class ifcconstructionproductresourcetype(ifcconstructionresourcetype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcconstructionproductresourcetypeenum):
 				self._predefinedtype = ifcconstructionproductresourcetypeenum(value)
 			else:
@@ -4484,7 +4484,7 @@ class ifcelementquantity(ifcquantityset):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument quantities is mantatory and can not be set to None')
+				raise AssertionError('Argument quantities is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcphysicalquantity', scope = schema_scope)):
 				self._quantities = SET(value)
 			else:
@@ -4527,7 +4527,7 @@ class ifchumidifiertype(ifcenergyconversiondevicetype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifchumidifiertypeenum):
 				self._predefinedtype = ifchumidifiertypeenum(value)
 			else:
@@ -4743,7 +4743,7 @@ class ifctransportelementtype(ifcelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifctransportelementtypeenum):
 				self._predefinedtype = ifctransportelementtypeenum(value)
 			else:
@@ -4786,7 +4786,7 @@ class ifcprofiledef(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument profiletype is mantatory and can not be set to None')
+				raise AssertionError('Argument profiletype is mandatory and can not be set to None')
 			if not check_type(value,ifcprofiletypeenum):
 				self._profiletype = ifcprofiletypeenum(value)
 			else:
@@ -4884,7 +4884,7 @@ class ifctrapeziumprofiledef(ifcparameterizedprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument bottomxdim is mantatory and can not be set to None')
+				raise AssertionError('Argument bottomxdim is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._bottomxdim = ifcpositivelengthmeasure(value)
 			else:
@@ -4898,7 +4898,7 @@ class ifctrapeziumprofiledef(ifcparameterizedprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument topxdim is mantatory and can not be set to None')
+				raise AssertionError('Argument topxdim is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._topxdim = ifcpositivelengthmeasure(value)
 			else:
@@ -4912,7 +4912,7 @@ class ifctrapeziumprofiledef(ifcparameterizedprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument ydim is mantatory and can not be set to None')
+				raise AssertionError('Argument ydim is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._ydim = ifcpositivelengthmeasure(value)
 			else:
@@ -4926,7 +4926,7 @@ class ifctrapeziumprofiledef(ifcparameterizedprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument topxoffset is mantatory and can not be set to None')
+				raise AssertionError('Argument topxoffset is mandatory and can not be set to None')
 			if not check_type(value,ifclengthmeasure):
 				self._topxoffset = ifclengthmeasure(value)
 			else:
@@ -4973,7 +4973,7 @@ class ifczshapeprofiledef(ifcparameterizedprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument depth is mantatory and can not be set to None')
+				raise AssertionError('Argument depth is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._depth = ifcpositivelengthmeasure(value)
 			else:
@@ -4987,7 +4987,7 @@ class ifczshapeprofiledef(ifcparameterizedprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument flangewidth is mantatory and can not be set to None')
+				raise AssertionError('Argument flangewidth is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._flangewidth = ifcpositivelengthmeasure(value)
 			else:
@@ -5001,7 +5001,7 @@ class ifczshapeprofiledef(ifcparameterizedprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument webthickness is mantatory and can not be set to None')
+				raise AssertionError('Argument webthickness is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._webthickness = ifcpositivelengthmeasure(value)
 			else:
@@ -5015,7 +5015,7 @@ class ifczshapeprofiledef(ifcparameterizedprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument flangethickness is mantatory and can not be set to None')
+				raise AssertionError('Argument flangethickness is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._flangethickness = ifcpositivelengthmeasure(value)
 			else:
@@ -5205,7 +5205,7 @@ class ifclightsource(ifcgeometricrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument lightcolour is mantatory and can not be set to None')
+				raise AssertionError('Argument lightcolour is mandatory and can not be set to None')
 			if not check_type(value,ifccolourrgb):
 				self._lightcolour = ifccolourrgb(value)
 			else:
@@ -5282,7 +5282,7 @@ class ifcmanifoldsolidbrep(ifcsolidmodel):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument outer is mantatory and can not be set to None')
+				raise AssertionError('Argument outer is mandatory and can not be set to None')
 			if not check_type(value,ifcclosedshell):
 				self._outer = ifcclosedshell(value)
 			else:
@@ -5325,7 +5325,7 @@ class ifcadvancedbrepwithvoids(ifcadvancedbrep):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument voids is mantatory and can not be set to None')
+				raise AssertionError('Argument voids is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcclosedshell', scope = schema_scope)):
 				self._voids = SET(value)
 			else:
@@ -5427,7 +5427,7 @@ class ifccartesianpoint(ifcpoint):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument coordinates is mantatory and can not be set to None')
+				raise AssertionError('Argument coordinates is mandatory and can not be set to None')
 			if not check_type(value,LIST(1,3,'REAL', scope = schema_scope)):
 				self._coordinates = LIST(value)
 			else:
@@ -5642,7 +5642,7 @@ class ifcderivedunitelement(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument unit is mantatory and can not be set to None')
+				raise AssertionError('Argument unit is mandatory and can not be set to None')
 			if not check_type(value,ifcnamedunit):
 				self._unit = ifcnamedunit(value)
 			else:
@@ -5656,7 +5656,7 @@ class ifcderivedunitelement(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument exponent is mantatory and can not be set to None')
+				raise AssertionError('Argument exponent is mandatory and can not be set to None')
 			if not check_type(value,INTEGER):
 				self._exponent = INTEGER(value)
 			else:
@@ -5809,7 +5809,7 @@ class ifccurrencyrelationship(ifcresourcelevelrelationship):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingmonetaryunit is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingmonetaryunit is mandatory and can not be set to None')
 			if not check_type(value,ifcmonetaryunit):
 				self._relatingmonetaryunit = ifcmonetaryunit(value)
 			else:
@@ -5823,7 +5823,7 @@ class ifccurrencyrelationship(ifcresourcelevelrelationship):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatedmonetaryunit is mantatory and can not be set to None')
+				raise AssertionError('Argument relatedmonetaryunit is mandatory and can not be set to None')
 			if not check_type(value,ifcmonetaryunit):
 				self._relatedmonetaryunit = ifcmonetaryunit(value)
 			else:
@@ -5837,7 +5837,7 @@ class ifccurrencyrelationship(ifcresourcelevelrelationship):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument exchangerate is mantatory and can not be set to None')
+				raise AssertionError('Argument exchangerate is mandatory and can not be set to None')
 			if not check_type(value,ifcpositiveratiomeasure):
 				self._exchangerate = ifcpositiveratiomeasure(value)
 			else:
@@ -5954,7 +5954,7 @@ class ifcmaterial(ifcmaterialdefinition):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,ifclabel):
 				self._name = ifclabel(value)
 			else:
@@ -6305,7 +6305,7 @@ class ifcannotationfillarea(ifcgeometricrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument outerboundary is mantatory and can not be set to None')
+				raise AssertionError('Argument outerboundary is mandatory and can not be set to None')
 			if not check_type(value,ifccurve):
 				self._outerboundary = ifccurve(value)
 			else:
@@ -6355,7 +6355,7 @@ class ifcbuildingelementparttype(ifcelementcomponenttype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcbuildingelementparttypeenum):
 				self._predefinedtype = ifcbuildingelementparttypeenum(value)
 			else:
@@ -6623,7 +6623,7 @@ class ifcstairtype(ifcbuildingelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcstairtypeenum):
 				self._predefinedtype = ifcstairtypeenum(value)
 			else:
@@ -6696,7 +6696,7 @@ class ifcdoorpanelproperties(ifcpredefinedpropertyset):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument paneloperation is mantatory and can not be set to None')
+				raise AssertionError('Argument paneloperation is mandatory and can not be set to None')
 			if not check_type(value,ifcdoorpaneloperationenum):
 				self._paneloperation = ifcdoorpaneloperationenum(value)
 			else:
@@ -6724,7 +6724,7 @@ class ifcdoorpanelproperties(ifcpredefinedpropertyset):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument panelposition is mantatory and can not be set to None')
+				raise AssertionError('Argument panelposition is mandatory and can not be set to None')
 			if not check_type(value,ifcdoorpanelpositionenum):
 				self._panelposition = ifcdoorpanelpositionenum(value)
 			else:
@@ -6788,7 +6788,7 @@ class ifcpermeablecoveringproperties(ifcpredefinedpropertyset):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument operationtype is mantatory and can not be set to None')
+				raise AssertionError('Argument operationtype is mandatory and can not be set to None')
 			if not check_type(value,ifcpermeablecoveringoperationenum):
 				self._operationtype = ifcpermeablecoveringoperationenum(value)
 			else:
@@ -6802,7 +6802,7 @@ class ifcpermeablecoveringproperties(ifcpredefinedpropertyset):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument panelposition is mantatory and can not be set to None')
+				raise AssertionError('Argument panelposition is mandatory and can not be set to None')
 			if not check_type(value,ifcwindowpanelpositionenum):
 				self._panelposition = ifcwindowpanelpositionenum(value)
 			else:
@@ -6885,7 +6885,7 @@ class ifccompositecurvesegment(ifcgeometricrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument transition is mantatory and can not be set to None')
+				raise AssertionError('Argument transition is mandatory and can not be set to None')
 			if not check_type(value,ifctransitioncode):
 				self._transition = ifctransitioncode(value)
 			else:
@@ -6899,7 +6899,7 @@ class ifccompositecurvesegment(ifcgeometricrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument samesense is mantatory and can not be set to None')
+				raise AssertionError('Argument samesense is mandatory and can not be set to None')
 			if not check_type(value,BOOLEAN):
 				self._samesense = BOOLEAN(value)
 			else:
@@ -6913,7 +6913,7 @@ class ifccompositecurvesegment(ifcgeometricrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument parentcurve is mantatory and can not be set to None')
+				raise AssertionError('Argument parentcurve is mandatory and can not be set to None')
 			if not check_type(value,ifccurve):
 				self._parentcurve = ifccurve(value)
 			else:
@@ -6966,7 +6966,7 @@ class ifcreparametrisedcompositecurvesegment(ifccompositecurvesegment):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument paramlength is mantatory and can not be set to None')
+				raise AssertionError('Argument paramlength is mandatory and can not be set to None')
 			if not check_type(value,ifcparametervalue):
 				self._paramlength = ifcparametervalue(value)
 			else:
@@ -7053,7 +7053,7 @@ class ifcbsplinecurve(ifcboundedcurve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument degree is mantatory and can not be set to None')
+				raise AssertionError('Argument degree is mandatory and can not be set to None')
 			if not check_type(value,INTEGER):
 				self._degree = INTEGER(value)
 			else:
@@ -7067,7 +7067,7 @@ class ifcbsplinecurve(ifcboundedcurve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument controlpointslist is mantatory and can not be set to None')
+				raise AssertionError('Argument controlpointslist is mandatory and can not be set to None')
 			if not check_type(value,LIST(2,None,'ifccartesianpoint', scope = schema_scope)):
 				self._controlpointslist = LIST(value)
 			else:
@@ -7081,7 +7081,7 @@ class ifcbsplinecurve(ifcboundedcurve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument curveform is mantatory and can not be set to None')
+				raise AssertionError('Argument curveform is mandatory and can not be set to None')
 			if not check_type(value,ifcbsplinecurveform):
 				self._curveform = ifcbsplinecurveform(value)
 			else:
@@ -7095,7 +7095,7 @@ class ifcbsplinecurve(ifcboundedcurve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument closedcurve is mantatory and can not be set to None')
+				raise AssertionError('Argument closedcurve is mandatory and can not be set to None')
 			if not check_type(value,LOGICAL):
 				self._closedcurve = LOGICAL(value)
 			else:
@@ -7109,7 +7109,7 @@ class ifcbsplinecurve(ifcboundedcurve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument selfintersect is mantatory and can not be set to None')
+				raise AssertionError('Argument selfintersect is mandatory and can not be set to None')
 			if not check_type(value,LOGICAL):
 				self._selfintersect = LOGICAL(value)
 			else:
@@ -7208,7 +7208,7 @@ class ifcstructuralsurfaceaction(ifcstructuralaction):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcstructuralsurfaceactivitytypeenum):
 				self._predefinedtype = ifcstructuralsurfaceactivitytypeenum(value)
 			else:
@@ -7258,7 +7258,7 @@ class ifcvalvetype(ifcflowcontrollertype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcvalvetypeenum):
 				self._predefinedtype = ifcvalvetypeenum(value)
 			else:
@@ -7296,7 +7296,7 @@ class ifcsweptareasolid(ifcsolidmodel):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument sweptarea is mantatory and can not be set to None')
+				raise AssertionError('Argument sweptarea is mandatory and can not be set to None')
 			if not check_type(value,ifcprofiledef):
 				self._sweptarea = ifcprofiledef(value)
 			else:
@@ -7351,7 +7351,7 @@ class ifcrevolvedareasolid(ifcsweptareasolid):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument axis is mantatory and can not be set to None')
+				raise AssertionError('Argument axis is mandatory and can not be set to None')
 			if not check_type(value,ifcaxis1placement):
 				self._axis = ifcaxis1placement(value)
 			else:
@@ -7365,7 +7365,7 @@ class ifcrevolvedareasolid(ifcsweptareasolid):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument angle is mantatory and can not be set to None')
+				raise AssertionError('Argument angle is mandatory and can not be set to None')
 			if not check_type(value,ifcplaneanglemeasure):
 				self._angle = ifcplaneanglemeasure(value)
 			else:
@@ -7416,7 +7416,7 @@ class ifctexturecoordinate(ifcpresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument maps is mantatory and can not be set to None')
+				raise AssertionError('Argument maps is mandatory and can not be set to None')
 			if not check_type(value,LIST(1,None,'ifcsurfacetexture', scope = schema_scope)):
 				self._maps = LIST(value)
 			else:
@@ -7447,7 +7447,7 @@ class ifctexturemap(ifctexturecoordinate):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument vertices is mantatory and can not be set to None')
+				raise AssertionError('Argument vertices is mandatory and can not be set to None')
 			if not check_type(value,LIST(3,None,'ifctexturevertex', scope = schema_scope)):
 				self._vertices = LIST(value)
 			else:
@@ -7461,7 +7461,7 @@ class ifctexturemap(ifctexturecoordinate):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument mappedto is mantatory and can not be set to None')
+				raise AssertionError('Argument mappedto is mandatory and can not be set to None')
 			if not check_type(value,ifcface):
 				self._mappedto = ifcface(value)
 			else:
@@ -7488,7 +7488,7 @@ class ifcairterminalboxtype(ifcflowcontrollertype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcairterminalboxtypeenum):
 				self._predefinedtype = ifcairterminalboxtypeenum(value)
 			else:
@@ -7548,7 +7548,7 @@ class ifcbuildingelementproxytype(ifcbuildingelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcbuildingelementproxytypeenum):
 				self._predefinedtype = ifcbuildingelementproxytypeenum(value)
 			else:
@@ -7612,7 +7612,7 @@ class ifcfillareastyle(ifcpresentationstyle):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument fillstyles is mantatory and can not be set to None')
+				raise AssertionError('Argument fillstyles is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcfillstyleselect', scope = schema_scope)):
 				self._fillstyles = SET(value)
 			else:
@@ -7674,7 +7674,7 @@ class ifccsgsolid(ifcsolidmodel):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument treerootexpression is mantatory and can not be set to None')
+				raise AssertionError('Argument treerootexpression is mandatory and can not be set to None')
 			if not check_type(value,ifccsgselect):
 				self._treerootexpression = ifccsgselect(value)
 			else:
@@ -7773,7 +7773,7 @@ class ifcsurfacetexture(ifcpresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument repeats is mantatory and can not be set to None')
+				raise AssertionError('Argument repeats is mandatory and can not be set to None')
 			if not check_type(value,BOOLEAN):
 				self._repeats = BOOLEAN(value)
 			else:
@@ -7787,7 +7787,7 @@ class ifcsurfacetexture(ifcpresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument repeatt is mantatory and can not be set to None')
+				raise AssertionError('Argument repeatt is mandatory and can not be set to None')
 			if not check_type(value,BOOLEAN):
 				self._repeatt = BOOLEAN(value)
 			else:
@@ -7886,7 +7886,7 @@ class ifcpixeltexture(ifcsurfacetexture):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument width is mantatory and can not be set to None')
+				raise AssertionError('Argument width is mandatory and can not be set to None')
 			if not check_type(value,ifcinteger):
 				self._width = ifcinteger(value)
 			else:
@@ -7900,7 +7900,7 @@ class ifcpixeltexture(ifcsurfacetexture):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument height is mantatory and can not be set to None')
+				raise AssertionError('Argument height is mandatory and can not be set to None')
 			if not check_type(value,ifcinteger):
 				self._height = ifcinteger(value)
 			else:
@@ -7914,7 +7914,7 @@ class ifcpixeltexture(ifcsurfacetexture):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument colourcomponents is mantatory and can not be set to None')
+				raise AssertionError('Argument colourcomponents is mandatory and can not be set to None')
 			if not check_type(value,ifcinteger):
 				self._colourcomponents = ifcinteger(value)
 			else:
@@ -7928,7 +7928,7 @@ class ifcpixeltexture(ifcsurfacetexture):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument pixel is mantatory and can not be set to None')
+				raise AssertionError('Argument pixel is mandatory and can not be set to None')
 			if not check_type(value,LIST(1,None,'(null)', scope = schema_scope)):
 				self._pixel = LIST(value)
 			else:
@@ -8065,7 +8065,7 @@ class ifcrelassociates(ifcrelationship):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatedobjects is mantatory and can not be set to None')
+				raise AssertionError('Argument relatedobjects is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcdefinitionselect', scope = schema_scope)):
 				self._relatedobjects = SET(value)
 			else:
@@ -8105,7 +8105,7 @@ class ifcrelnests(ifcreldecomposes):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingobject is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingobject is mandatory and can not be set to None')
 			if not check_type(value,ifcobjectdefinition):
 				self._relatingobject = ifcobjectdefinition(value)
 			else:
@@ -8119,7 +8119,7 @@ class ifcrelnests(ifcreldecomposes):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatedobjects is mantatory and can not be set to None')
+				raise AssertionError('Argument relatedobjects is mandatory and can not be set to None')
 			if not check_type(value,LIST(1,None,'ifcobjectdefinition', scope = schema_scope)):
 				self._relatedobjects = LIST(value)
 			else:
@@ -8193,7 +8193,7 @@ class ifcspacetype(ifcspatialstructureelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcspacetypeenum):
 				self._predefinedtype = ifcspacetypeenum(value)
 			else:
@@ -8244,7 +8244,7 @@ class ifcplacement(ifcgeometricrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument location is mantatory and can not be set to None')
+				raise AssertionError('Argument location is mandatory and can not be set to None')
 			if not check_type(value,ifccartesianpoint):
 				self._location = ifccartesianpoint(value)
 			else:
@@ -8385,7 +8385,7 @@ class ifcelectricgeneratortype(ifcenergyconversiondevicetype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcelectricgeneratortypeenum):
 				self._predefinedtype = ifcelectricgeneratortypeenum(value)
 			else:
@@ -8428,7 +8428,7 @@ class ifcpipefittingtype(ifcflowfittingtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcpipefittingtypeenum):
 				self._predefinedtype = ifcpipefittingtypeenum(value)
 			else:
@@ -8474,7 +8474,7 @@ class ifcindexedcolourmap(ifcpresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument mappedto is mantatory and can not be set to None')
+				raise AssertionError('Argument mappedto is mandatory and can not be set to None')
 			if not check_type(value,ifctessellatedfaceset):
 				self._mappedto = ifctessellatedfaceset(value)
 			else:
@@ -8502,7 +8502,7 @@ class ifcindexedcolourmap(ifcpresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument colours is mantatory and can not be set to None')
+				raise AssertionError('Argument colours is mandatory and can not be set to None')
 			if not check_type(value,ifccolourrgblist):
 				self._colours = ifccolourrgblist(value)
 			else:
@@ -8516,7 +8516,7 @@ class ifcindexedcolourmap(ifcpresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument colourindex is mantatory and can not be set to None')
+				raise AssertionError('Argument colourindex is mandatory and can not be set to None')
 			if not check_type(value,LIST(1,None,'INTEGER', scope = schema_scope)):
 				self._colourindex = LIST(value)
 			else:
@@ -8591,7 +8591,7 @@ class ifcwasteterminaltype(ifcflowterminaltype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcwasteterminaltypeenum):
 				self._predefinedtype = ifcwasteterminaltypeenum(value)
 			else:
@@ -8625,7 +8625,7 @@ class ifcfastenertype(ifcelementcomponenttype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcfastenertypeenum):
 				self._predefinedtype = ifcfastenertypeenum(value)
 			else:
@@ -8659,7 +8659,7 @@ class ifclamptype(ifcflowterminaltype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifclamptypeenum):
 				self._predefinedtype = ifclamptypeenum(value)
 			else:
@@ -8693,7 +8693,7 @@ class ifcpredefineditem(ifcpresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,ifclabel):
 				self._name = ifclabel(value)
 			else:
@@ -8736,7 +8736,7 @@ class ifctrimmedcurve(ifcboundedcurve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument basiscurve is mantatory and can not be set to None')
+				raise AssertionError('Argument basiscurve is mandatory and can not be set to None')
 			if not check_type(value,ifccurve):
 				self._basiscurve = ifccurve(value)
 			else:
@@ -8750,7 +8750,7 @@ class ifctrimmedcurve(ifcboundedcurve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument trim1 is mantatory and can not be set to None')
+				raise AssertionError('Argument trim1 is mandatory and can not be set to None')
 			if not check_type(value,SET(1,2,'ifctrimmingselect', scope = schema_scope)):
 				self._trim1 = SET(value)
 			else:
@@ -8764,7 +8764,7 @@ class ifctrimmedcurve(ifcboundedcurve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument trim2 is mantatory and can not be set to None')
+				raise AssertionError('Argument trim2 is mandatory and can not be set to None')
 			if not check_type(value,SET(1,2,'ifctrimmingselect', scope = schema_scope)):
 				self._trim2 = SET(value)
 			else:
@@ -8778,7 +8778,7 @@ class ifctrimmedcurve(ifcboundedcurve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument senseagreement is mantatory and can not be set to None')
+				raise AssertionError('Argument senseagreement is mandatory and can not be set to None')
 			if not check_type(value,BOOLEAN):
 				self._senseagreement = BOOLEAN(value)
 			else:
@@ -8792,7 +8792,7 @@ class ifctrimmedcurve(ifcboundedcurve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument masterrepresentation is mantatory and can not be set to None')
+				raise AssertionError('Argument masterrepresentation is mandatory and can not be set to None')
 			if not check_type(value,ifctrimmingpreference):
 				self._masterrepresentation = ifctrimmingpreference(value)
 			else:
@@ -8984,7 +8984,7 @@ class ifclaborresourcetype(ifcconstructionresourcetype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifclaborresourcetypeenum):
 				self._predefinedtype = ifclaborresourcetypeenum(value)
 			else:
@@ -9031,7 +9031,7 @@ class ifcedge(ifctopologicalrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument edgestart is mantatory and can not be set to None')
+				raise AssertionError('Argument edgestart is mandatory and can not be set to None')
 			if not check_type(value,ifcvertex):
 				self._edgestart = ifcvertex(value)
 			else:
@@ -9045,7 +9045,7 @@ class ifcedge(ifctopologicalrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument edgeend is mantatory and can not be set to None')
+				raise AssertionError('Argument edgeend is mandatory and can not be set to None')
 			if not check_type(value,ifcvertex):
 				self._edgeend = ifcvertex(value)
 			else:
@@ -9072,7 +9072,7 @@ class ifcsubedge(ifcedge):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument parentedge is mantatory and can not be set to None')
+				raise AssertionError('Argument parentedge is mandatory and can not be set to None')
 			if not check_type(value,ifcedge):
 				self._parentedge = ifcedge(value)
 			else:
@@ -9099,7 +9099,7 @@ class ifcairtoairheatrecoverytype(ifcenergyconversiondevicetype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcairtoairheatrecoverytypeenum):
 				self._predefinedtype = ifcairtoairheatrecoverytypeenum(value)
 			else:
@@ -9179,7 +9179,7 @@ class ifccartesiantransformationoperator(ifcgeometricrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument localorigin is mantatory and can not be set to None')
+				raise AssertionError('Argument localorigin is mandatory and can not be set to None')
 			if not check_type(value,ifccartesianpoint):
 				self._localorigin = ifccartesianpoint(value)
 			else:
@@ -9328,7 +9328,7 @@ class ifcplanarextent(ifcgeometricrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument sizeinx is mantatory and can not be set to None')
+				raise AssertionError('Argument sizeinx is mandatory and can not be set to None')
 			if not check_type(value,ifclengthmeasure):
 				self._sizeinx = ifclengthmeasure(value)
 			else:
@@ -9342,7 +9342,7 @@ class ifcplanarextent(ifcgeometricrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument sizeiny is mantatory and can not be set to None')
+				raise AssertionError('Argument sizeiny is mandatory and can not be set to None')
 			if not check_type(value,ifclengthmeasure):
 				self._sizeiny = ifclengthmeasure(value)
 			else:
@@ -9369,7 +9369,7 @@ class ifcplanarbox(ifcplanarextent):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument placement is mantatory and can not be set to None')
+				raise AssertionError('Argument placement is mandatory and can not be set to None')
 			if not check_type(value,ifcaxis2placement):
 				self._placement = ifcaxis2placement(value)
 			else:
@@ -9417,7 +9417,7 @@ class ifctendontype(ifcreinforcingelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifctendontypeenum):
 				self._predefinedtype = ifctendontypeenum(value)
 			else:
@@ -9547,7 +9547,7 @@ class ifcrelaggregates(ifcreldecomposes):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingobject is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingobject is mandatory and can not be set to None')
 			if not check_type(value,ifcobjectdefinition):
 				self._relatingobject = ifcobjectdefinition(value)
 			else:
@@ -9561,7 +9561,7 @@ class ifcrelaggregates(ifcreldecomposes):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatedobjects is mantatory and can not be set to None')
+				raise AssertionError('Argument relatedobjects is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcobjectdefinition', scope = schema_scope)):
 				self._relatedobjects = SET(value)
 			else:
@@ -9635,7 +9635,7 @@ class ifctextstyle(ifcpresentationstyle):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument textfontstyle is mantatory and can not be set to None')
+				raise AssertionError('Argument textfontstyle is mandatory and can not be set to None')
 			if not check_type(value,ifctextfontselect):
 				self._textfontstyle = ifctextfontselect(value)
 			else:
@@ -9726,7 +9726,7 @@ class ifcactuatortype(ifcdistributioncontrolelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcactuatortypeenum):
 				self._predefinedtype = ifcactuatortypeenum(value)
 			else:
@@ -9936,7 +9936,7 @@ class ifctexturevertexlist(ifcpresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument texcoordslist is mantatory and can not be set to None')
+				raise AssertionError('Argument texcoordslist is mandatory and can not be set to None')
 			if not check_type(value,LIST(1,None,LIST(2,2,'REAL', scope = schema_scope))):
 				self._texcoordslist = LIST(value)
 			else:
@@ -9967,7 +9967,7 @@ class ifccomplexproperty(ifcproperty):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument usagename is mantatory and can not be set to None')
+				raise AssertionError('Argument usagename is mandatory and can not be set to None')
 			if not check_type(value,ifcidentifier):
 				self._usagename = ifcidentifier(value)
 			else:
@@ -9981,7 +9981,7 @@ class ifccomplexproperty(ifcproperty):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument hasproperties is mantatory and can not be set to None')
+				raise AssertionError('Argument hasproperties is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcproperty', scope = schema_scope)):
 				self._hasproperties = SET(value)
 			else:
@@ -10089,7 +10089,7 @@ class ifccurveboundedplane(ifcboundedsurface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument basissurface is mantatory and can not be set to None')
+				raise AssertionError('Argument basissurface is mandatory and can not be set to None')
 			if not check_type(value,ifcplane):
 				self._basissurface = ifcplane(value)
 			else:
@@ -10103,7 +10103,7 @@ class ifccurveboundedplane(ifcboundedsurface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument outerboundary is mantatory and can not be set to None')
+				raise AssertionError('Argument outerboundary is mandatory and can not be set to None')
 			if not check_type(value,ifccurve):
 				self._outerboundary = ifccurve(value)
 			else:
@@ -10117,7 +10117,7 @@ class ifccurveboundedplane(ifcboundedsurface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument innerboundaries is mantatory and can not be set to None')
+				raise AssertionError('Argument innerboundaries is mandatory and can not be set to None')
 			if not check_type(value,SET(0,None,'ifccurve', scope = schema_scope)):
 				self._innerboundaries = SET(value)
 			else:
@@ -10147,7 +10147,7 @@ class ifcface(ifctopologicalrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument bounds is mantatory and can not be set to None')
+				raise AssertionError('Argument bounds is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcfacebound', scope = schema_scope)):
 				self._bounds = SET(value)
 			else:
@@ -10194,7 +10194,7 @@ class ifcfacesurface(ifcface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument facesurface is mantatory and can not be set to None')
+				raise AssertionError('Argument facesurface is mandatory and can not be set to None')
 			if not check_type(value,ifcsurface):
 				self._facesurface = ifcsurface(value)
 			else:
@@ -10208,7 +10208,7 @@ class ifcfacesurface(ifcface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument samesense is mantatory and can not be set to None')
+				raise AssertionError('Argument samesense is mandatory and can not be set to None')
 			if not check_type(value,BOOLEAN):
 				self._samesense = BOOLEAN(value)
 			else:
@@ -10251,7 +10251,7 @@ class ifcstructuralanalysismodel(ifcsystem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcanalysismodeltypeenum):
 				self._predefinedtype = ifcanalysismodeltypeenum(value)
 			else:
@@ -10485,7 +10485,7 @@ class ifcaudiovisualappliancetype(ifcflowterminaltype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcaudiovisualappliancetypeenum):
 				self._predefinedtype = ifcaudiovisualappliancetypeenum(value)
 			else:
@@ -10641,7 +10641,7 @@ class ifcmaterialprofilesetusage(ifcmaterialusagedefinition):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument forprofileset is mantatory and can not be set to None')
+				raise AssertionError('Argument forprofileset is mandatory and can not be set to None')
 			if not check_type(value,ifcmaterialprofileset):
 				self._forprofileset = ifcmaterialprofileset(value)
 			else:
@@ -10700,7 +10700,7 @@ class ifcmaterialprofilesetusagetapering(ifcmaterialprofilesetusage):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument forprofileendset is mantatory and can not be set to None')
+				raise AssertionError('Argument forprofileendset is mandatory and can not be set to None')
 			if not check_type(value,ifcmaterialprofileset):
 				self._forprofileendset = ifcmaterialprofileset(value)
 			else:
@@ -10748,7 +10748,7 @@ class ifchalfspacesolid(ifcgeometricrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument basesurface is mantatory and can not be set to None')
+				raise AssertionError('Argument basesurface is mandatory and can not be set to None')
 			if not check_type(value,ifcsurface):
 				self._basesurface = ifcsurface(value)
 			else:
@@ -10762,7 +10762,7 @@ class ifchalfspacesolid(ifcgeometricrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument agreementflag is mantatory and can not be set to None')
+				raise AssertionError('Argument agreementflag is mandatory and can not be set to None')
 			if not check_type(value,BOOLEAN):
 				self._agreementflag = BOOLEAN(value)
 			else:
@@ -10799,7 +10799,7 @@ class ifcboxedhalfspace(ifchalfspacesolid):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument enclosure is mantatory and can not be set to None')
+				raise AssertionError('Argument enclosure is mandatory and can not be set to None')
 			if not check_type(value,ifcboundingbox):
 				self._enclosure = ifcboundingbox(value)
 			else:
@@ -10836,7 +10836,7 @@ class ifccompositecurve(ifcboundedcurve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument segments is mantatory and can not be set to None')
+				raise AssertionError('Argument segments is mandatory and can not be set to None')
 			if not check_type(value,LIST(1,None,'ifccompositecurvesegment', scope = schema_scope)):
 				self._segments = LIST(value)
 			else:
@@ -10850,7 +10850,7 @@ class ifccompositecurve(ifcboundedcurve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument selfintersect is mantatory and can not be set to None')
+				raise AssertionError('Argument selfintersect is mandatory and can not be set to None')
 			if not check_type(value,LOGICAL):
 				self._selfintersect = LOGICAL(value)
 			else:
@@ -10923,7 +10923,7 @@ class ifcdoortype(ifcbuildingelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcdoortypeenum):
 				self._predefinedtype = ifcdoortypeenum(value)
 			else:
@@ -10937,7 +10937,7 @@ class ifcdoortype(ifcbuildingelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument operationtype is mantatory and can not be set to None')
+				raise AssertionError('Argument operationtype is mandatory and can not be set to None')
 			if not check_type(value,ifcdoortypeoperationenum):
 				self._operationtype = ifcdoortypeoperationenum(value)
 			else:
@@ -11123,7 +11123,7 @@ class ifceventtype(ifctypeprocess):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifceventtypeenum):
 				self._predefinedtype = ifceventtypeenum(value)
 			else:
@@ -11137,7 +11137,7 @@ class ifceventtype(ifctypeprocess):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument eventtriggertype is mantatory and can not be set to None')
+				raise AssertionError('Argument eventtriggertype is mandatory and can not be set to None')
 			if not check_type(value,ifceventtriggertypeenum):
 				self._eventtriggertype = ifceventtriggertypeenum(value)
 			else:
@@ -11257,7 +11257,7 @@ class ifcmaterialprofile(ifcmaterialdefinition):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument profile is mantatory and can not be set to None')
+				raise AssertionError('Argument profile is mandatory and can not be set to None')
 			if not check_type(value,ifcprofiledef):
 				self._profile = ifcprofiledef(value)
 			else:
@@ -11321,7 +11321,7 @@ class ifcmaterialprofilewithoffsets(ifcmaterialprofile):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument offsetvalues is mantatory and can not be set to None')
+				raise AssertionError('Argument offsetvalues is mandatory and can not be set to None')
 			if not check_type(value,ARRAY(1,2,'REAL', scope = schema_scope)):
 				self._offsetvalues = ARRAY(value)
 			else:
@@ -11368,7 +11368,7 @@ class ifcrepresentation(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument contextofitems is mantatory and can not be set to None')
+				raise AssertionError('Argument contextofitems is mandatory and can not be set to None')
 			if not check_type(value,ifcrepresentationcontext):
 				self._contextofitems = ifcrepresentationcontext(value)
 			else:
@@ -11410,7 +11410,7 @@ class ifcrepresentation(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument items is mantatory and can not be set to None')
+				raise AssertionError('Argument items is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcrepresentationitem', scope = schema_scope)):
 				self._items = SET(value)
 			else:
@@ -11509,7 +11509,7 @@ class ifcresourceapprovalrelationship(ifcresourcelevelrelationship):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatedresourceobjects is mantatory and can not be set to None')
+				raise AssertionError('Argument relatedresourceobjects is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcresourceobjectselect', scope = schema_scope)):
 				self._relatedresourceobjects = SET(value)
 			else:
@@ -11523,7 +11523,7 @@ class ifcresourceapprovalrelationship(ifcresourcelevelrelationship):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingapproval is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingapproval is mandatory and can not be set to None')
 			if not check_type(value,ifcapproval):
 				self._relatingapproval = ifcapproval(value)
 			else:
@@ -11599,7 +11599,7 @@ class ifcoffsetcurve2d(ifccurve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument basiscurve is mantatory and can not be set to None')
+				raise AssertionError('Argument basiscurve is mandatory and can not be set to None')
 			if not check_type(value,ifccurve):
 				self._basiscurve = ifccurve(value)
 			else:
@@ -11613,7 +11613,7 @@ class ifcoffsetcurve2d(ifccurve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument distance is mantatory and can not be set to None')
+				raise AssertionError('Argument distance is mandatory and can not be set to None')
 			if not check_type(value,ifclengthmeasure):
 				self._distance = ifclengthmeasure(value)
 			else:
@@ -11627,7 +11627,7 @@ class ifcoffsetcurve2d(ifccurve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument selfintersect is mantatory and can not be set to None')
+				raise AssertionError('Argument selfintersect is mandatory and can not be set to None')
 			if not check_type(value,LOGICAL):
 				self._selfintersect = LOGICAL(value)
 			else:
@@ -11665,7 +11665,7 @@ class ifcrelassigns(ifcrelationship):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatedobjects is mantatory and can not be set to None')
+				raise AssertionError('Argument relatedobjects is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcobjectdefinition', scope = schema_scope)):
 				self._relatedobjects = SET(value)
 			else:
@@ -11713,7 +11713,7 @@ class ifcrelassignstogroup(ifcrelassigns):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatinggroup is mantatory and can not be set to None')
+				raise AssertionError('Argument relatinggroup is mandatory and can not be set to None')
 			if not check_type(value,ifcgroup):
 				self._relatinggroup = ifcgroup(value)
 			else:
@@ -11765,7 +11765,7 @@ class ifcreinforcementdefinitionproperties(ifcpredefinedpropertyset):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument reinforcementsectiondefinitions is mantatory and can not be set to None')
+				raise AssertionError('Argument reinforcementsectiondefinitions is mandatory and can not be set to None')
 			if not check_type(value,LIST(1,None,'ifcsectionreinforcementproperties', scope = schema_scope)):
 				self._reinforcementsectiondefinitions = LIST(value)
 			else:
@@ -11792,7 +11792,7 @@ class ifcrelassociatesclassification(ifcrelassociates):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingclassification is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingclassification is mandatory and can not be set to None')
 			if not check_type(value,ifcclassificationselect):
 				self._relatingclassification = ifcclassificationselect(value)
 			else:
@@ -11823,7 +11823,7 @@ class ifcrelvoidselement(ifcreldecomposes):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingbuildingelement is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingbuildingelement is mandatory and can not be set to None')
 			if not check_type(value,ifcelement):
 				self._relatingbuildingelement = ifcelement(value)
 			else:
@@ -11837,7 +11837,7 @@ class ifcrelvoidselement(ifcreldecomposes):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatedopeningelement is mantatory and can not be set to None')
+				raise AssertionError('Argument relatedopeningelement is mandatory and can not be set to None')
 			if not check_type(value,ifcfeatureelementsubtraction):
 				self._relatedopeningelement = ifcfeatureelementsubtraction(value)
 			else:
@@ -11981,7 +11981,7 @@ class ifcenginetype(ifcenergyconversiondevicetype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcenginetypeenum):
 				self._predefinedtype = ifcenginetypeenum(value)
 			else:
@@ -12027,7 +12027,7 @@ class ifcgeometricset(ifcgeometricrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument elements is mantatory and can not be set to None')
+				raise AssertionError('Argument elements is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcgeometricsetselect', scope = schema_scope)):
 				self._elements = SET(value)
 			else:
@@ -12074,7 +12074,7 @@ class ifcmaterialclassificationrelationship(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument materialclassifications is mantatory and can not be set to None')
+				raise AssertionError('Argument materialclassifications is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcclassificationselect', scope = schema_scope)):
 				self._materialclassifications = SET(value)
 			else:
@@ -12088,7 +12088,7 @@ class ifcmaterialclassificationrelationship(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument classifiedmaterial is mantatory and can not be set to None')
+				raise AssertionError('Argument classifiedmaterial is mandatory and can not be set to None')
 			if not check_type(value,ifcmaterial):
 				self._classifiedmaterial = ifcmaterial(value)
 			else:
@@ -12137,7 +12137,7 @@ class ifcrelconnectselements(ifcrelconnects):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingelement is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingelement is mandatory and can not be set to None')
 			if not check_type(value,ifcelement):
 				self._relatingelement = ifcelement(value)
 			else:
@@ -12151,7 +12151,7 @@ class ifcrelconnectselements(ifcrelconnects):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatedelement is mantatory and can not be set to None')
+				raise AssertionError('Argument relatedelement is mandatory and can not be set to None')
 			if not check_type(value,ifcelement):
 				self._relatedelement = ifcelement(value)
 			else:
@@ -12200,7 +12200,7 @@ class ifcshapeaspect(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument shaperepresentations is mantatory and can not be set to None')
+				raise AssertionError('Argument shaperepresentations is mandatory and can not be set to None')
 			if not check_type(value,LIST(1,None,'ifcshapemodel', scope = schema_scope)):
 				self._shaperepresentations = LIST(value)
 			else:
@@ -12242,7 +12242,7 @@ class ifcshapeaspect(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument productdefinitional is mantatory and can not be set to None')
+				raise AssertionError('Argument productdefinitional is mandatory and can not be set to None')
 			if not check_type(value,LOGICAL):
 				self._productdefinitional = LOGICAL(value)
 			else:
@@ -12283,7 +12283,7 @@ class ifcstructuralcurveconnection(ifcstructuralconnection):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument axis is mantatory and can not be set to None')
+				raise AssertionError('Argument axis is mandatory and can not be set to None')
 			if not check_type(value,ifcdirection):
 				self._axis = ifcdirection(value)
 			else:
@@ -12334,7 +12334,7 @@ class ifcushapeprofiledef(ifcparameterizedprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument depth is mantatory and can not be set to None')
+				raise AssertionError('Argument depth is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._depth = ifcpositivelengthmeasure(value)
 			else:
@@ -12348,7 +12348,7 @@ class ifcushapeprofiledef(ifcparameterizedprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument flangewidth is mantatory and can not be set to None')
+				raise AssertionError('Argument flangewidth is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._flangewidth = ifcpositivelengthmeasure(value)
 			else:
@@ -12362,7 +12362,7 @@ class ifcushapeprofiledef(ifcparameterizedprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument webthickness is mantatory and can not be set to None')
+				raise AssertionError('Argument webthickness is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._webthickness = ifcpositivelengthmeasure(value)
 			else:
@@ -12376,7 +12376,7 @@ class ifcushapeprofiledef(ifcparameterizedprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument flangethickness is mantatory and can not be set to None')
+				raise AssertionError('Argument flangethickness is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._flangethickness = ifcpositivelengthmeasure(value)
 			else:
@@ -12559,7 +12559,7 @@ class ifcevaporatortype(ifcenergyconversiondevicetype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcevaporatortypeenum):
 				self._predefinedtype = ifcevaporatortypeenum(value)
 			else:
@@ -12597,7 +12597,7 @@ class ifcrectangleprofiledef(ifcparameterizedprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument xdim is mantatory and can not be set to None')
+				raise AssertionError('Argument xdim is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._xdim = ifcpositivelengthmeasure(value)
 			else:
@@ -12611,7 +12611,7 @@ class ifcrectangleprofiledef(ifcparameterizedprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument ydim is mantatory and can not be set to None')
+				raise AssertionError('Argument ydim is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._ydim = ifcpositivelengthmeasure(value)
 			else:
@@ -12638,7 +12638,7 @@ class ifcroundedrectangleprofiledef(ifcrectangleprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument roundingradius is mantatory and can not be set to None')
+				raise AssertionError('Argument roundingradius is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._roundingradius = ifcpositivelengthmeasure(value)
 			else:
@@ -12704,7 +12704,7 @@ class ifctshapeprofiledef(ifcparameterizedprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument depth is mantatory and can not be set to None')
+				raise AssertionError('Argument depth is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._depth = ifcpositivelengthmeasure(value)
 			else:
@@ -12718,7 +12718,7 @@ class ifctshapeprofiledef(ifcparameterizedprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument flangewidth is mantatory and can not be set to None')
+				raise AssertionError('Argument flangewidth is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._flangewidth = ifcpositivelengthmeasure(value)
 			else:
@@ -12732,7 +12732,7 @@ class ifctshapeprofiledef(ifcparameterizedprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument webthickness is mantatory and can not be set to None')
+				raise AssertionError('Argument webthickness is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._webthickness = ifcpositivelengthmeasure(value)
 			else:
@@ -12746,7 +12746,7 @@ class ifctshapeprofiledef(ifcparameterizedprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument flangethickness is mantatory and can not be set to None')
+				raise AssertionError('Argument flangethickness is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._flangethickness = ifcpositivelengthmeasure(value)
 			else:
@@ -12857,7 +12857,7 @@ class ifcconstructionequipmentresourcetype(ifcconstructionresourcetype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcconstructionequipmentresourcetypeenum):
 				self._predefinedtype = ifcconstructionequipmentresourcetypeenum(value)
 			else:
@@ -12891,7 +12891,7 @@ class ifcelectricappliancetype(ifcflowterminaltype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcelectricappliancetypeenum):
 				self._predefinedtype = ifcelectricappliancetypeenum(value)
 			else:
@@ -13056,7 +13056,7 @@ class ifctextliteral(ifcgeometricrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument literal is mantatory and can not be set to None')
+				raise AssertionError('Argument literal is mandatory and can not be set to None')
 			if not check_type(value,ifcpresentabletext):
 				self._literal = ifcpresentabletext(value)
 			else:
@@ -13070,7 +13070,7 @@ class ifctextliteral(ifcgeometricrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument placement is mantatory and can not be set to None')
+				raise AssertionError('Argument placement is mandatory and can not be set to None')
 			if not check_type(value,ifcaxis2placement):
 				self._placement = ifcaxis2placement(value)
 			else:
@@ -13084,7 +13084,7 @@ class ifctextliteral(ifcgeometricrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument path is mantatory and can not be set to None')
+				raise AssertionError('Argument path is mandatory and can not be set to None')
 			if not check_type(value,ifctextpath):
 				self._path = ifctextpath(value)
 			else:
@@ -13196,7 +13196,7 @@ class ifcdocumentinformation(ifcexternalinformation):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument identification is mantatory and can not be set to None')
+				raise AssertionError('Argument identification is mandatory and can not be set to None')
 			if not check_type(value,ifcidentifier):
 				self._identification = ifcidentifier(value)
 			else:
@@ -13210,7 +13210,7 @@ class ifcdocumentinformation(ifcexternalinformation):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,ifclabel):
 				self._name = ifclabel(value)
 			else:
@@ -13507,7 +13507,7 @@ class ifcreinforcingbartype(ifcreinforcingelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcreinforcingbartypeenum):
 				self._predefinedtype = ifcreinforcingbartypeenum(value)
 			else:
@@ -13661,7 +13661,7 @@ class ifcellipseprofiledef(ifcparameterizedprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument semiaxis1 is mantatory and can not be set to None')
+				raise AssertionError('Argument semiaxis1 is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._semiaxis1 = ifcpositivelengthmeasure(value)
 			else:
@@ -13675,7 +13675,7 @@ class ifcellipseprofiledef(ifcparameterizedprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument semiaxis2 is mantatory and can not be set to None')
+				raise AssertionError('Argument semiaxis2 is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._semiaxis2 = ifcpositivelengthmeasure(value)
 			else:
@@ -13713,7 +13713,7 @@ class ifcsectionedspine(ifcgeometricrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument spinecurve is mantatory and can not be set to None')
+				raise AssertionError('Argument spinecurve is mandatory and can not be set to None')
 			if not check_type(value,ifccompositecurve):
 				self._spinecurve = ifccompositecurve(value)
 			else:
@@ -13727,7 +13727,7 @@ class ifcsectionedspine(ifcgeometricrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument crosssections is mantatory and can not be set to None')
+				raise AssertionError('Argument crosssections is mandatory and can not be set to None')
 			if not check_type(value,LIST(2,None,'ifcprofiledef', scope = schema_scope)):
 				self._crosssections = LIST(value)
 			else:
@@ -13741,7 +13741,7 @@ class ifcsectionedspine(ifcgeometricrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument crosssectionpositions is mantatory and can not be set to None')
+				raise AssertionError('Argument crosssectionpositions is mandatory and can not be set to None')
 			if not check_type(value,LIST(2,None,'ifcaxis2placement3d', scope = schema_scope)):
 				self._crosssectionpositions = LIST(value)
 			else:
@@ -13808,7 +13808,7 @@ class ifcvertexpoint(ifcvertex):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument vertexgeometry is mantatory and can not be set to None')
+				raise AssertionError('Argument vertexgeometry is mandatory and can not be set to None')
 			if not check_type(value,ifcpoint):
 				self._vertexgeometry = ifcpoint(value)
 			else:
@@ -14002,7 +14002,7 @@ class ifccablecarriersegmenttype(ifcflowsegmenttype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifccablecarriersegmenttypeenum):
 				self._predefinedtype = ifccablecarriersegmenttypeenum(value)
 			else:
@@ -14077,7 +14077,7 @@ class ifcductsilencertype(ifcflowtreatmentdevicetype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcductsilencertypeenum):
 				self._predefinedtype = ifcductsilencertypeenum(value)
 			else:
@@ -14155,7 +14155,7 @@ class ifcasymmetricishapeprofiledef(ifcparameterizedprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument bottomflangewidth is mantatory and can not be set to None')
+				raise AssertionError('Argument bottomflangewidth is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._bottomflangewidth = ifcpositivelengthmeasure(value)
 			else:
@@ -14169,7 +14169,7 @@ class ifcasymmetricishapeprofiledef(ifcparameterizedprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument overalldepth is mantatory and can not be set to None')
+				raise AssertionError('Argument overalldepth is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._overalldepth = ifcpositivelengthmeasure(value)
 			else:
@@ -14183,7 +14183,7 @@ class ifcasymmetricishapeprofiledef(ifcparameterizedprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument webthickness is mantatory and can not be set to None')
+				raise AssertionError('Argument webthickness is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._webthickness = ifcpositivelengthmeasure(value)
 			else:
@@ -14197,7 +14197,7 @@ class ifcasymmetricishapeprofiledef(ifcparameterizedprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument bottomflangethickness is mantatory and can not be set to None')
+				raise AssertionError('Argument bottomflangethickness is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._bottomflangethickness = ifcpositivelengthmeasure(value)
 			else:
@@ -14225,7 +14225,7 @@ class ifcasymmetricishapeprofiledef(ifcparameterizedprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument topflangewidth is mantatory and can not be set to None')
+				raise AssertionError('Argument topflangewidth is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._topflangewidth = ifcpositivelengthmeasure(value)
 			else:
@@ -14382,7 +14382,7 @@ class ifcstructuralcurveaction(ifcstructuralaction):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcstructuralcurveactivitytypeenum):
 				self._predefinedtype = ifcstructuralcurveactivitytypeenum(value)
 			else:
@@ -14604,7 +14604,7 @@ class ifcsweptdisksolid(ifcsolidmodel):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument directrix is mantatory and can not be set to None')
+				raise AssertionError('Argument directrix is mandatory and can not be set to None')
 			if not check_type(value,ifccurve):
 				self._directrix = ifccurve(value)
 			else:
@@ -14618,7 +14618,7 @@ class ifcsweptdisksolid(ifcsolidmodel):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument radius is mantatory and can not be set to None')
+				raise AssertionError('Argument radius is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._radius = ifcpositivelengthmeasure(value)
 			else:
@@ -14988,7 +14988,7 @@ class ifccurvestylefontandscaling(ifcpresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument curvefont is mantatory and can not be set to None')
+				raise AssertionError('Argument curvefont is mandatory and can not be set to None')
 			if not check_type(value,ifccurvestylefontselect):
 				self._curvefont = ifccurvestylefontselect(value)
 			else:
@@ -15002,7 +15002,7 @@ class ifccurvestylefontandscaling(ifcpresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument curvefontscaling is mantatory and can not be set to None')
+				raise AssertionError('Argument curvefontscaling is mandatory and can not be set to None')
 			if not check_type(value,ifcpositiveratiomeasure):
 				self._curvefontscaling = ifcpositiveratiomeasure(value)
 			else:
@@ -15147,7 +15147,7 @@ class ifcsurfaceoflinearextrusion(ifcsweptsurface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument extrudeddirection is mantatory and can not be set to None')
+				raise AssertionError('Argument extrudeddirection is mandatory and can not be set to None')
 			if not check_type(value,ifcdirection):
 				self._extrudeddirection = ifcdirection(value)
 			else:
@@ -15161,7 +15161,7 @@ class ifcsurfaceoflinearextrusion(ifcsweptsurface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument depth is mantatory and can not be set to None')
+				raise AssertionError('Argument depth is mandatory and can not be set to None')
 			if not check_type(value,ifclengthmeasure):
 				self._depth = ifclengthmeasure(value)
 			else:
@@ -15205,7 +15205,7 @@ class ifccolumntype(ifcbuildingelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifccolumntypeenum):
 				self._predefinedtype = ifccolumntypeenum(value)
 			else:
@@ -15274,7 +15274,7 @@ class ifcproductrepresentation(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument representations is mantatory and can not be set to None')
+				raise AssertionError('Argument representations is mandatory and can not be set to None')
 			if not check_type(value,LIST(1,None,'ifcrepresentation', scope = schema_scope)):
 				self._representations = LIST(value)
 			else:
@@ -15301,7 +15301,7 @@ class ifcmaterialdefinitionrepresentation(ifcproductrepresentation):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument representedmaterial is mantatory and can not be set to None')
+				raise AssertionError('Argument representedmaterial is mandatory and can not be set to None')
 			if not check_type(value,ifcmaterial):
 				self._representedmaterial = ifcmaterial(value)
 			else:
@@ -15351,7 +15351,7 @@ class ifcmateriallayersetusage(ifcmaterialusagedefinition):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument forlayerset is mantatory and can not be set to None')
+				raise AssertionError('Argument forlayerset is mandatory and can not be set to None')
 			if not check_type(value,ifcmateriallayerset):
 				self._forlayerset = ifcmateriallayerset(value)
 			else:
@@ -15365,7 +15365,7 @@ class ifcmateriallayersetusage(ifcmaterialusagedefinition):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument layersetdirection is mantatory and can not be set to None')
+				raise AssertionError('Argument layersetdirection is mandatory and can not be set to None')
 			if not check_type(value,ifclayersetdirectionenum):
 				self._layersetdirection = ifclayersetdirectionenum(value)
 			else:
@@ -15379,7 +15379,7 @@ class ifcmateriallayersetusage(ifcmaterialusagedefinition):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument directionsense is mantatory and can not be set to None')
+				raise AssertionError('Argument directionsense is mandatory and can not be set to None')
 			if not check_type(value,ifcdirectionsenseenum):
 				self._directionsense = ifcdirectionsenseenum(value)
 			else:
@@ -15393,7 +15393,7 @@ class ifcmateriallayersetusage(ifcmaterialusagedefinition):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument offsetfromreferenceline is mantatory and can not be set to None')
+				raise AssertionError('Argument offsetfromreferenceline is mandatory and can not be set to None')
 			if not check_type(value,ifclengthmeasure):
 				self._offsetfromreferenceline = ifclengthmeasure(value)
 			else:
@@ -15473,7 +15473,7 @@ class ifcmateriallayerset(ifcmaterialdefinition):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument materiallayers is mantatory and can not be set to None')
+				raise AssertionError('Argument materiallayers is mandatory and can not be set to None')
 			if not check_type(value,LIST(1,None,'ifcmateriallayer', scope = schema_scope)):
 				self._materiallayers = LIST(value)
 			else:
@@ -15542,7 +15542,7 @@ class ifcperformancehistory(ifccontrol):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument lifecyclephase is mantatory and can not be set to None')
+				raise AssertionError('Argument lifecyclephase is mandatory and can not be set to None')
 			if not check_type(value,ifclabel):
 				self._lifecyclephase = ifclabel(value)
 			else:
@@ -15583,7 +15583,7 @@ class ifcductsegmenttype(ifcflowsegmenttype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcductsegmenttypeenum):
 				self._predefinedtype = ifcductsegmenttypeenum(value)
 			else:
@@ -15621,7 +15621,7 @@ class ifclagtime(ifcschedulingtime):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument lagvalue is mantatory and can not be set to None')
+				raise AssertionError('Argument lagvalue is mandatory and can not be set to None')
 			if not check_type(value,ifctimeorratioselect):
 				self._lagvalue = ifctimeorratioselect(value)
 			else:
@@ -15635,7 +15635,7 @@ class ifclagtime(ifcschedulingtime):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument durationtype is mantatory and can not be set to None')
+				raise AssertionError('Argument durationtype is mandatory and can not be set to None')
 			if not check_type(value,ifctaskdurationenum):
 				self._durationtype = ifctaskdurationenum(value)
 			else:
@@ -15665,7 +15665,7 @@ class ifcnamedunit(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument dimensions is mantatory and can not be set to None')
+				raise AssertionError('Argument dimensions is mandatory and can not be set to None')
 			if not check_type(value,ifcdimensionalexponents):
 				self._dimensions = ifcdimensionalexponents(value)
 			else:
@@ -15679,7 +15679,7 @@ class ifcnamedunit(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument unittype is mantatory and can not be set to None')
+				raise AssertionError('Argument unittype is mandatory and can not be set to None')
 			if not check_type(value,ifcunitenum):
 				self._unittype = ifcunitenum(value)
 			else:
@@ -15720,7 +15720,7 @@ class ifcconversionbasedunit(ifcnamedunit):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,ifclabel):
 				self._name = ifclabel(value)
 			else:
@@ -15734,7 +15734,7 @@ class ifcconversionbasedunit(ifcnamedunit):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument conversionfactor is mantatory and can not be set to None')
+				raise AssertionError('Argument conversionfactor is mandatory and can not be set to None')
 			if not check_type(value,ifcmeasurewithunit):
 				self._conversionfactor = ifcmeasurewithunit(value)
 			else:
@@ -15770,7 +15770,7 @@ class ifcconversionbasedunitwithoffset(ifcconversionbasedunit):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument conversionoffset is mantatory and can not be set to None')
+				raise AssertionError('Argument conversionoffset is mandatory and can not be set to None')
 			if not check_type(value,ifcreal):
 				self._conversionoffset = ifcreal(value)
 			else:
@@ -15797,7 +15797,7 @@ class ifcdampertype(ifcflowcontrollertype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcdampertypeenum):
 				self._predefinedtype = ifcdampertypeenum(value)
 			else:
@@ -15840,7 +15840,7 @@ class ifcphysicalquantity(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,ifclabel):
 				self._name = ifclabel(value)
 			else:
@@ -16373,7 +16373,7 @@ class ifcorganization(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,ifclabel):
 				self._name = ifclabel(value)
 			else:
@@ -16473,7 +16473,7 @@ class ifcquantitycount(ifcphysicalsimplequantity):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument countvalue is mantatory and can not be set to None')
+				raise AssertionError('Argument countvalue is mandatory and can not be set to None')
 			if not check_type(value,ifccountmeasure):
 				self._countvalue = ifccountmeasure(value)
 			else:
@@ -16586,7 +16586,7 @@ class ifcfacebasedsurfacemodel(ifcgeometricrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument fbsmfaces is mantatory and can not be set to None')
+				raise AssertionError('Argument fbsmfaces is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcconnectedfaceset', scope = schema_scope)):
 				self._fbsmfaces = SET(value)
 			else:
@@ -16631,7 +16631,7 @@ class ifcpropertyenumeration(ifcpropertyabstraction):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,ifclabel):
 				self._name = ifclabel(value)
 			else:
@@ -16645,7 +16645,7 @@ class ifcpropertyenumeration(ifcpropertyabstraction):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument enumerationvalues is mantatory and can not be set to None')
+				raise AssertionError('Argument enumerationvalues is mandatory and can not be set to None')
 			if not check_type(value,LIST(1,None,'ifcvalue', scope = schema_scope)):
 				self._enumerationvalues = LIST(value)
 			else:
@@ -16701,7 +16701,7 @@ class ifcrelconnectsports(ifcrelconnects):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingport is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingport is mandatory and can not be set to None')
 			if not check_type(value,ifcport):
 				self._relatingport = ifcport(value)
 			else:
@@ -16715,7 +16715,7 @@ class ifcrelconnectsports(ifcrelconnects):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatedport is mantatory and can not be set to None')
+				raise AssertionError('Argument relatedport is mandatory and can not be set to None')
 			if not check_type(value,ifcport):
 				self._relatedport = ifcport(value)
 			else:
@@ -16902,7 +16902,7 @@ class ifcrectangulartrimmedsurface(ifcboundedsurface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument basissurface is mantatory and can not be set to None')
+				raise AssertionError('Argument basissurface is mandatory and can not be set to None')
 			if not check_type(value,ifcsurface):
 				self._basissurface = ifcsurface(value)
 			else:
@@ -16916,7 +16916,7 @@ class ifcrectangulartrimmedsurface(ifcboundedsurface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument u1 is mantatory and can not be set to None')
+				raise AssertionError('Argument u1 is mandatory and can not be set to None')
 			if not check_type(value,ifcparametervalue):
 				self._u1 = ifcparametervalue(value)
 			else:
@@ -16930,7 +16930,7 @@ class ifcrectangulartrimmedsurface(ifcboundedsurface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument v1 is mantatory and can not be set to None')
+				raise AssertionError('Argument v1 is mandatory and can not be set to None')
 			if not check_type(value,ifcparametervalue):
 				self._v1 = ifcparametervalue(value)
 			else:
@@ -16944,7 +16944,7 @@ class ifcrectangulartrimmedsurface(ifcboundedsurface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument u2 is mantatory and can not be set to None')
+				raise AssertionError('Argument u2 is mandatory and can not be set to None')
 			if not check_type(value,ifcparametervalue):
 				self._u2 = ifcparametervalue(value)
 			else:
@@ -16958,7 +16958,7 @@ class ifcrectangulartrimmedsurface(ifcboundedsurface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument v2 is mantatory and can not be set to None')
+				raise AssertionError('Argument v2 is mandatory and can not be set to None')
 			if not check_type(value,ifcparametervalue):
 				self._v2 = ifcparametervalue(value)
 			else:
@@ -16972,7 +16972,7 @@ class ifcrectangulartrimmedsurface(ifcboundedsurface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument usense is mantatory and can not be set to None')
+				raise AssertionError('Argument usense is mandatory and can not be set to None')
 			if not check_type(value,BOOLEAN):
 				self._usense = BOOLEAN(value)
 			else:
@@ -16986,7 +16986,7 @@ class ifcrectangulartrimmedsurface(ifcboundedsurface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument vsense is mantatory and can not be set to None')
+				raise AssertionError('Argument vsense is mandatory and can not be set to None')
 			if not check_type(value,BOOLEAN):
 				self._vsense = BOOLEAN(value)
 			else:
@@ -17225,7 +17225,7 @@ class ifcextrudedareasolid(ifcsweptareasolid):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument extrudeddirection is mantatory and can not be set to None')
+				raise AssertionError('Argument extrudeddirection is mandatory and can not be set to None')
 			if not check_type(value,ifcdirection):
 				self._extrudeddirection = ifcdirection(value)
 			else:
@@ -17239,7 +17239,7 @@ class ifcextrudedareasolid(ifcsweptareasolid):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument depth is mantatory and can not be set to None')
+				raise AssertionError('Argument depth is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._depth = ifcpositivelengthmeasure(value)
 			else:
@@ -17319,7 +17319,7 @@ class ifccsgprimitive3d(ifcgeometricrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument position is mantatory and can not be set to None')
+				raise AssertionError('Argument position is mandatory and can not be set to None')
 			if not check_type(value,ifcaxis2placement3d):
 				self._position = ifcaxis2placement3d(value)
 			else:
@@ -17360,7 +17360,7 @@ class ifcrightcircularcylinder(ifccsgprimitive3d):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument height is mantatory and can not be set to None')
+				raise AssertionError('Argument height is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._height = ifcpositivelengthmeasure(value)
 			else:
@@ -17374,7 +17374,7 @@ class ifcrightcircularcylinder(ifccsgprimitive3d):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument radius is mantatory and can not be set to None')
+				raise AssertionError('Argument radius is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._radius = ifcpositivelengthmeasure(value)
 			else:
@@ -17405,7 +17405,7 @@ class ifctextliteralwithextent(ifctextliteral):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument extent is mantatory and can not be set to None')
+				raise AssertionError('Argument extent is mandatory and can not be set to None')
 			if not check_type(value,ifcplanarextent):
 				self._extent = ifcplanarextent(value)
 			else:
@@ -17419,7 +17419,7 @@ class ifctextliteralwithextent(ifctextliteral):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument boxalignment is mantatory and can not be set to None')
+				raise AssertionError('Argument boxalignment is mandatory and can not be set to None')
 			if not check_type(value,ifcboxalignment):
 				self._boxalignment = ifcboxalignment(value)
 			else:
@@ -17482,7 +17482,7 @@ class ifcconstraint(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,ifclabel):
 				self._name = ifclabel(value)
 			else:
@@ -17510,7 +17510,7 @@ class ifcconstraint(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument constraintgrade is mantatory and can not be set to None')
+				raise AssertionError('Argument constraintgrade is mandatory and can not be set to None')
 			if not check_type(value,ifcconstraintenum):
 				self._constraintgrade = ifcconstraintenum(value)
 			else:
@@ -17658,7 +17658,7 @@ class ifcobjective(ifcconstraint):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument objectivequalifier is mantatory and can not be set to None')
+				raise AssertionError('Argument objectivequalifier is mandatory and can not be set to None')
 			if not check_type(value,ifcobjectiveenum):
 				self._objectivequalifier = ifcobjectiveenum(value)
 			else:
@@ -17918,7 +17918,7 @@ class ifctubebundletype(ifcenergyconversiondevicetype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifctubebundletypeenum):
 				self._predefinedtype = ifctubebundletypeenum(value)
 			else:
@@ -18255,7 +18255,7 @@ class ifcstructuralsurfacemember(ifcstructuralmember):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcstructuralsurfacemembertypeenum):
 				self._predefinedtype = ifcstructuralsurfacemembertypeenum(value)
 			else:
@@ -18307,7 +18307,7 @@ class ifcedgecurve(ifcedge):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument edgegeometry is mantatory and can not be set to None')
+				raise AssertionError('Argument edgegeometry is mandatory and can not be set to None')
 			if not check_type(value,ifccurve):
 				self._edgegeometry = ifccurve(value)
 			else:
@@ -18321,7 +18321,7 @@ class ifcedgecurve(ifcedge):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument samesense is mantatory and can not be set to None')
+				raise AssertionError('Argument samesense is mandatory and can not be set to None')
 			if not check_type(value,BOOLEAN):
 				self._samesense = BOOLEAN(value)
 			else:
@@ -18348,7 +18348,7 @@ class ifclightfixturetype(ifcflowterminaltype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifclightfixturetypeenum):
 				self._predefinedtype = ifclightfixturetypeenum(value)
 			else:
@@ -18386,7 +18386,7 @@ class ifcline(ifccurve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument pnt is mantatory and can not be set to None')
+				raise AssertionError('Argument pnt is mandatory and can not be set to None')
 			if not check_type(value,ifccartesianpoint):
 				self._pnt = ifccartesianpoint(value)
 			else:
@@ -18400,7 +18400,7 @@ class ifcline(ifccurve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument dir is mantatory and can not be set to None')
+				raise AssertionError('Argument dir is mandatory and can not be set to None')
 			if not check_type(value,ifcvector):
 				self._dir = ifcvector(value)
 			else:
@@ -18475,7 +18475,7 @@ class ifcconic(ifccurve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument position is mantatory and can not be set to None')
+				raise AssertionError('Argument position is mandatory and can not be set to None')
 			if not check_type(value,ifcaxis2placement):
 				self._position = ifcaxis2placement(value)
 			else:
@@ -18506,7 +18506,7 @@ class ifcrelconnectsporttoelement(ifcrelconnects):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingport is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingport is mandatory and can not be set to None')
 			if not check_type(value,ifcport):
 				self._relatingport = ifcport(value)
 			else:
@@ -18520,7 +18520,7 @@ class ifcrelconnectsporttoelement(ifcrelconnects):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatedelement is mantatory and can not be set to None')
+				raise AssertionError('Argument relatedelement is mandatory and can not be set to None')
 			if not check_type(value,ifcdistributionelement):
 				self._relatedelement = ifcdistributionelement(value)
 			else:
@@ -18547,7 +18547,7 @@ class ifcflowmetertype(ifcflowcontrollertype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcflowmetertypeenum):
 				self._predefinedtype = ifcflowmetertypeenum(value)
 			else:
@@ -18585,7 +18585,7 @@ class ifcquantityarea(ifcphysicalsimplequantity):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument areavalue is mantatory and can not be set to None')
+				raise AssertionError('Argument areavalue is mandatory and can not be set to None')
 			if not check_type(value,ifcareameasure):
 				self._areavalue = ifcareameasure(value)
 			else:
@@ -18640,7 +18640,7 @@ class ifcrelassignstocontrol(ifcrelassigns):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingcontrol is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingcontrol is mandatory and can not be set to None')
 			if not check_type(value,ifccontrol):
 				self._relatingcontrol = ifccontrol(value)
 			else:
@@ -18698,7 +18698,7 @@ class ifcworkcontrol(ifccontrol):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument creationdate is mantatory and can not be set to None')
+				raise AssertionError('Argument creationdate is mandatory and can not be set to None')
 			if not check_type(value,ifcdatetime):
 				self._creationdate = ifcdatetime(value)
 			else:
@@ -18768,7 +18768,7 @@ class ifcworkcontrol(ifccontrol):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument starttime is mantatory and can not be set to None')
+				raise AssertionError('Argument starttime is mandatory and can not be set to None')
 			if not check_type(value,ifcdatetime):
 				self._starttime = ifcdatetime(value)
 			else:
@@ -18851,7 +18851,7 @@ class ifcpropertydependencyrelationship(ifcresourcelevelrelationship):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument dependingproperty is mantatory and can not be set to None')
+				raise AssertionError('Argument dependingproperty is mandatory and can not be set to None')
 			if not check_type(value,ifcproperty):
 				self._dependingproperty = ifcproperty(value)
 			else:
@@ -18865,7 +18865,7 @@ class ifcpropertydependencyrelationship(ifcresourcelevelrelationship):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument dependentproperty is mantatory and can not be set to None')
+				raise AssertionError('Argument dependentproperty is mandatory and can not be set to None')
 			if not check_type(value,ifcproperty):
 				self._dependentproperty = ifcproperty(value)
 			else:
@@ -19170,7 +19170,7 @@ class ifcfillareastylehatching(ifcgeometricrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument hatchlineappearance is mantatory and can not be set to None')
+				raise AssertionError('Argument hatchlineappearance is mandatory and can not be set to None')
 			if not check_type(value,ifccurvestyle):
 				self._hatchlineappearance = ifccurvestyle(value)
 			else:
@@ -19184,7 +19184,7 @@ class ifcfillareastylehatching(ifcgeometricrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument startofnexthatchline is mantatory and can not be set to None')
+				raise AssertionError('Argument startofnexthatchline is mandatory and can not be set to None')
 			if not check_type(value,ifchatchlinedistanceselect):
 				self._startofnexthatchline = ifchatchlinedistanceselect(value)
 			else:
@@ -19226,7 +19226,7 @@ class ifcfillareastylehatching(ifcgeometricrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument hatchlineangle is mantatory and can not be set to None')
+				raise AssertionError('Argument hatchlineangle is mandatory and can not be set to None')
 			if not check_type(value,ifcplaneanglemeasure):
 				self._hatchlineangle = ifcplaneanglemeasure(value)
 			else:
@@ -19267,7 +19267,7 @@ class ifcheatexchangertype(ifcenergyconversiondevicetype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcheatexchangertypeenum):
 				self._predefinedtype = ifcheatexchangertypeenum(value)
 			else:
@@ -19342,7 +19342,7 @@ class ifcmateriallayer(ifcmaterialdefinition):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument layerthickness is mantatory and can not be set to None')
+				raise AssertionError('Argument layerthickness is mandatory and can not be set to None')
 			if not check_type(value,ifcnonnegativelengthmeasure):
 				self._layerthickness = ifcnonnegativelengthmeasure(value)
 			else:
@@ -19452,7 +19452,7 @@ class ifcmateriallayerwithoffsets(ifcmateriallayer):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument offsetdirection is mantatory and can not be set to None')
+				raise AssertionError('Argument offsetdirection is mandatory and can not be set to None')
 			if not check_type(value,ifclayersetdirectionenum):
 				self._offsetdirection = ifclayersetdirectionenum(value)
 			else:
@@ -19466,7 +19466,7 @@ class ifcmateriallayerwithoffsets(ifcmateriallayer):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument offsetvalues is mantatory and can not be set to None')
+				raise AssertionError('Argument offsetvalues is mandatory and can not be set to None')
 			if not check_type(value,ARRAY(1,2,'REAL', scope = schema_scope)):
 				self._offsetvalues = ARRAY(value)
 			else:
@@ -19529,7 +19529,7 @@ class ifcextendedproperties(ifcpropertyabstraction):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument properties is mantatory and can not be set to None')
+				raise AssertionError('Argument properties is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcproperty', scope = schema_scope)):
 				self._properties = SET(value)
 			else:
@@ -19556,7 +19556,7 @@ class ifcmaterialproperties(ifcextendedproperties):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument material is mantatory and can not be set to None')
+				raise AssertionError('Argument material is mandatory and can not be set to None')
 			if not check_type(value,ifcmaterialdefinition):
 				self._material = ifcmaterialdefinition(value)
 			else:
@@ -19587,7 +19587,7 @@ class ifcpolygonalboundedhalfspace(ifchalfspacesolid):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument position is mantatory and can not be set to None')
+				raise AssertionError('Argument position is mandatory and can not be set to None')
 			if not check_type(value,ifcaxis2placement3d):
 				self._position = ifcaxis2placement3d(value)
 			else:
@@ -19601,7 +19601,7 @@ class ifcpolygonalboundedhalfspace(ifchalfspacesolid):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument polygonalboundary is mantatory and can not be set to None')
+				raise AssertionError('Argument polygonalboundary is mandatory and can not be set to None')
 			if not check_type(value,ifcboundedcurve):
 				self._polygonalboundary = ifcboundedcurve(value)
 			else:
@@ -19642,7 +19642,7 @@ class ifcshadingdevicetype(ifcbuildingelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcshadingdevicetypeenum):
 				self._predefinedtype = ifcshadingdevicetypeenum(value)
 			else:
@@ -19767,7 +19767,7 @@ class ifccondensertype(ifcenergyconversiondevicetype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifccondensertypeenum):
 				self._predefinedtype = ifccondensertypeenum(value)
 			else:
@@ -19883,7 +19883,7 @@ class ifcconstructionmaterialresourcetype(ifcconstructionresourcetype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcconstructionmaterialresourcetypeenum):
 				self._predefinedtype = ifcconstructionmaterialresourcetypeenum(value)
 			else:
@@ -19917,7 +19917,7 @@ class ifccoolingtowertype(ifcenergyconversiondevicetype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifccoolingtowertypeenum):
 				self._predefinedtype = ifccoolingtowertypeenum(value)
 			else:
@@ -20023,7 +20023,7 @@ class ifcclassification(ifcexternalinformation):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,ifclabel):
 				self._name = ifclabel(value)
 			else:
@@ -20114,7 +20114,7 @@ class ifcresourceconstraintrelationship(ifcresourcelevelrelationship):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingconstraint is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingconstraint is mandatory and can not be set to None')
 			if not check_type(value,ifcconstraint):
 				self._relatingconstraint = ifcconstraint(value)
 			else:
@@ -20128,7 +20128,7 @@ class ifcresourceconstraintrelationship(ifcresourcelevelrelationship):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatedresourceobjects is mantatory and can not be set to None')
+				raise AssertionError('Argument relatedresourceobjects is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcresourceobjectselect', scope = schema_scope)):
 				self._relatedresourceobjects = SET(value)
 			else:
@@ -20155,7 +20155,7 @@ class ifcfootingtype(ifcbuildingelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcfootingtypeenum):
 				self._predefinedtype = ifcfootingtypeenum(value)
 			else:
@@ -20222,7 +20222,7 @@ class ifcgridaxis(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument axiscurve is mantatory and can not be set to None')
+				raise AssertionError('Argument axiscurve is mandatory and can not be set to None')
 			if not check_type(value,ifccurve):
 				self._axiscurve = ifccurve(value)
 			else:
@@ -20236,7 +20236,7 @@ class ifcgridaxis(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument samesense is mantatory and can not be set to None')
+				raise AssertionError('Argument samesense is mandatory and can not be set to None')
 			if not check_type(value,ifcboolean):
 				self._samesense = ifcboolean(value)
 			else:
@@ -20354,7 +20354,7 @@ class ifcrelassignstogroupbyfactor(ifcrelassignstogroup):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument factor is mantatory and can not be set to None')
+				raise AssertionError('Argument factor is mandatory and can not be set to None')
 			if not check_type(value,ifcratiomeasure):
 				self._factor = ifcratiomeasure(value)
 			else:
@@ -20432,7 +20432,7 @@ class ifcderivedunit(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument elements is mantatory and can not be set to None')
+				raise AssertionError('Argument elements is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcderivedunitelement', scope = schema_scope)):
 				self._elements = SET(value)
 			else:
@@ -20446,7 +20446,7 @@ class ifcderivedunit(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument unittype is mantatory and can not be set to None')
+				raise AssertionError('Argument unittype is mandatory and can not be set to None')
 			if not check_type(value,ifcderivedunitenum):
 				self._unittype = ifcderivedunitenum(value)
 			else:
@@ -20544,7 +20544,7 @@ class ifcbsplinesurface(ifcboundedsurface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument udegree is mantatory and can not be set to None')
+				raise AssertionError('Argument udegree is mandatory and can not be set to None')
 			if not check_type(value,INTEGER):
 				self._udegree = INTEGER(value)
 			else:
@@ -20558,7 +20558,7 @@ class ifcbsplinesurface(ifcboundedsurface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument vdegree is mantatory and can not be set to None')
+				raise AssertionError('Argument vdegree is mandatory and can not be set to None')
 			if not check_type(value,INTEGER):
 				self._vdegree = INTEGER(value)
 			else:
@@ -20572,7 +20572,7 @@ class ifcbsplinesurface(ifcboundedsurface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument controlpointslist is mantatory and can not be set to None')
+				raise AssertionError('Argument controlpointslist is mandatory and can not be set to None')
 			if not check_type(value,LIST(2,None,LIST(2,None,'ifccartesianpoint', scope = schema_scope))):
 				self._controlpointslist = LIST(value)
 			else:
@@ -20586,7 +20586,7 @@ class ifcbsplinesurface(ifcboundedsurface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument surfaceform is mantatory and can not be set to None')
+				raise AssertionError('Argument surfaceform is mandatory and can not be set to None')
 			if not check_type(value,ifcbsplinesurfaceform):
 				self._surfaceform = ifcbsplinesurfaceform(value)
 			else:
@@ -20600,7 +20600,7 @@ class ifcbsplinesurface(ifcboundedsurface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument uclosed is mantatory and can not be set to None')
+				raise AssertionError('Argument uclosed is mandatory and can not be set to None')
 			if not check_type(value,LOGICAL):
 				self._uclosed = LOGICAL(value)
 			else:
@@ -20614,7 +20614,7 @@ class ifcbsplinesurface(ifcboundedsurface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument vclosed is mantatory and can not be set to None')
+				raise AssertionError('Argument vclosed is mandatory and can not be set to None')
 			if not check_type(value,LOGICAL):
 				self._vclosed = LOGICAL(value)
 			else:
@@ -20628,7 +20628,7 @@ class ifcbsplinesurface(ifcboundedsurface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument selfintersect is mantatory and can not be set to None')
+				raise AssertionError('Argument selfintersect is mandatory and can not be set to None')
 			if not check_type(value,LOGICAL):
 				self._selfintersect = LOGICAL(value)
 			else:
@@ -20685,7 +20685,7 @@ class ifccontrollertype(ifcdistributioncontrolelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifccontrollertypeenum):
 				self._predefinedtype = ifccontrollertypeenum(value)
 			else:
@@ -20719,7 +20719,7 @@ class ifcrelassignstoproduct(ifcrelassigns):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingproduct is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingproduct is mandatory and can not be set to None')
 			if not check_type(value,ifcproductselect):
 				self._relatingproduct = ifcproductselect(value)
 			else:
@@ -20824,7 +20824,7 @@ class ifcgeometricrepresentationcontext(ifcrepresentationcontext):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument coordinatespacedimension is mantatory and can not be set to None')
+				raise AssertionError('Argument coordinatespacedimension is mandatory and can not be set to None')
 			if not check_type(value,ifcdimensioncount):
 				self._coordinatespacedimension = ifcdimensioncount(value)
 			else:
@@ -20852,7 +20852,7 @@ class ifcgeometricrepresentationcontext(ifcrepresentationcontext):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument worldcoordinatesystem is mantatory and can not be set to None')
+				raise AssertionError('Argument worldcoordinatesystem is mandatory and can not be set to None')
 			if not check_type(value,ifcaxis2placement):
 				self._worldcoordinatesystem = ifcaxis2placement(value)
 			else:
@@ -21022,7 +21022,7 @@ class ifcpath(ifctopologicalrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument edgelist is mantatory and can not be set to None')
+				raise AssertionError('Argument edgelist is mandatory and can not be set to None')
 			if not check_type(value,LIST(1,None,'ifcorientededge', scope = schema_scope)):
 				self._edgelist = LIST(value)
 			else:
@@ -21104,7 +21104,7 @@ class ifcstructuralsurfacereaction(ifcstructuralreaction):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcstructuralsurfaceactivitytypeenum):
 				self._predefinedtype = ifcstructuralsurfaceactivitytypeenum(value)
 			else:
@@ -21189,7 +21189,7 @@ class ifcactorrole(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument role is mantatory and can not be set to None')
+				raise AssertionError('Argument role is mandatory and can not be set to None')
 			if not check_type(value,ifcroleenum):
 				self._role = ifcroleenum(value)
 			else:
@@ -21260,7 +21260,7 @@ class ifcinterceptortype(ifcflowtreatmentdevicetype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcinterceptortypeenum):
 				self._predefinedtype = ifcinterceptortypeenum(value)
 			else:
@@ -21294,7 +21294,7 @@ class ifcpolyline(ifcboundedcurve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument points is mantatory and can not be set to None')
+				raise AssertionError('Argument points is mandatory and can not be set to None')
 			if not check_type(value,LIST(2,None,'ifccartesianpoint', scope = schema_scope)):
 				self._points = LIST(value)
 			else:
@@ -21504,7 +21504,7 @@ class ifcconnectionsurfacegeometry(ifcconnectiongeometry):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument surfaceonrelatingelement is mantatory and can not be set to None')
+				raise AssertionError('Argument surfaceonrelatingelement is mandatory and can not be set to None')
 			if not check_type(value,ifcsurfaceorfacesurface):
 				self._surfaceonrelatingelement = ifcsurfaceorfacesurface(value)
 			else:
@@ -21545,7 +21545,7 @@ class ifcelectricdistributionboardtype(ifcflowcontrollertype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcelectricdistributionboardtypeenum):
 				self._predefinedtype = ifcelectricdistributionboardtypeenum(value)
 			else:
@@ -21587,7 +21587,7 @@ class ifcderivedprofiledef(ifcprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument parentprofile is mantatory and can not be set to None')
+				raise AssertionError('Argument parentprofile is mandatory and can not be set to None')
 			if not check_type(value,ifcprofiledef):
 				self._parentprofile = ifcprofiledef(value)
 			else:
@@ -21601,7 +21601,7 @@ class ifcderivedprofiledef(ifcprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument operator is mantatory and can not be set to None')
+				raise AssertionError('Argument operator is mandatory and can not be set to None')
 			if not check_type(value,ifccartesiantransformationoperator2d):
 				self._operator = ifccartesiantransformationoperator2d(value)
 			else:
@@ -21658,7 +21658,7 @@ class ifcfantype(ifcflowmovingdevicetype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcfantypeenum):
 				self._predefinedtype = ifcfantypeenum(value)
 			else:
@@ -21729,7 +21729,7 @@ class ifcgridplacement(ifcobjectplacement):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument placementlocation is mantatory and can not be set to None')
+				raise AssertionError('Argument placementlocation is mandatory and can not be set to None')
 			if not check_type(value,ifcvirtualgridintersection):
 				self._placementlocation = ifcvirtualgridintersection(value)
 			else:
@@ -21786,7 +21786,7 @@ class ifctextstylefontmodel(ifcpredefinedtextfont):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument fontfamily is mantatory and can not be set to None')
+				raise AssertionError('Argument fontfamily is mandatory and can not be set to None')
 			if not check_type(value,LIST(1,None,'STRING', scope = schema_scope)):
 				self._fontfamily = LIST(value)
 			else:
@@ -21842,7 +21842,7 @@ class ifctextstylefontmodel(ifcpredefinedtextfont):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument fontsize is mantatory and can not be set to None')
+				raise AssertionError('Argument fontsize is mandatory and can not be set to None')
 			if not check_type(value,ifcsizeselect):
 				self._fontsize = ifcsizeselect(value)
 			else:
@@ -21876,7 +21876,7 @@ class ifcprotectivedevicetype(ifcflowcontrollertype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcprotectivedevicetypeenum):
 				self._predefinedtype = ifcprotectivedevicetypeenum(value)
 			else:
@@ -21951,7 +21951,7 @@ class ifccircleprofiledef(ifcparameterizedprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument radius is mantatory and can not be set to None')
+				raise AssertionError('Argument radius is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._radius = ifcpositivelengthmeasure(value)
 			else:
@@ -21978,7 +21978,7 @@ class ifccolourrgblist(ifcpresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument colourlist is mantatory and can not be set to None')
+				raise AssertionError('Argument colourlist is mandatory and can not be set to None')
 			if not check_type(value,LIST(1,None,LIST(3,3,'REAL', scope = schema_scope))):
 				self._colourlist = LIST(value)
 			else:
@@ -22052,7 +22052,7 @@ class ifcmaterialconstituent(ifcmaterialdefinition):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument material is mantatory and can not be set to None')
+				raise AssertionError('Argument material is mandatory and can not be set to None')
 			if not check_type(value,ifcmaterial):
 				self._material = ifcmaterial(value)
 			else:
@@ -22132,7 +22132,7 @@ class ifcwindowpanelproperties(ifcpredefinedpropertyset):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument operationtype is mantatory and can not be set to None')
+				raise AssertionError('Argument operationtype is mandatory and can not be set to None')
 			if not check_type(value,ifcwindowpaneloperationenum):
 				self._operationtype = ifcwindowpaneloperationenum(value)
 			else:
@@ -22146,7 +22146,7 @@ class ifcwindowpanelproperties(ifcpredefinedpropertyset):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument panelposition is mantatory and can not be set to None')
+				raise AssertionError('Argument panelposition is mandatory and can not be set to None')
 			if not check_type(value,ifcwindowpanelpositionenum):
 				self._panelposition = ifcwindowpanelpositionenum(value)
 			else:
@@ -22286,7 +22286,7 @@ class ifcdimensionalexponents(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument lengthexponent is mantatory and can not be set to None')
+				raise AssertionError('Argument lengthexponent is mandatory and can not be set to None')
 			if not check_type(value,INTEGER):
 				self._lengthexponent = INTEGER(value)
 			else:
@@ -22300,7 +22300,7 @@ class ifcdimensionalexponents(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument massexponent is mantatory and can not be set to None')
+				raise AssertionError('Argument massexponent is mandatory and can not be set to None')
 			if not check_type(value,INTEGER):
 				self._massexponent = INTEGER(value)
 			else:
@@ -22314,7 +22314,7 @@ class ifcdimensionalexponents(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument timeexponent is mantatory and can not be set to None')
+				raise AssertionError('Argument timeexponent is mandatory and can not be set to None')
 			if not check_type(value,INTEGER):
 				self._timeexponent = INTEGER(value)
 			else:
@@ -22328,7 +22328,7 @@ class ifcdimensionalexponents(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument electriccurrentexponent is mantatory and can not be set to None')
+				raise AssertionError('Argument electriccurrentexponent is mandatory and can not be set to None')
 			if not check_type(value,INTEGER):
 				self._electriccurrentexponent = INTEGER(value)
 			else:
@@ -22342,7 +22342,7 @@ class ifcdimensionalexponents(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument thermodynamictemperatureexponent is mantatory and can not be set to None')
+				raise AssertionError('Argument thermodynamictemperatureexponent is mandatory and can not be set to None')
 			if not check_type(value,INTEGER):
 				self._thermodynamictemperatureexponent = INTEGER(value)
 			else:
@@ -22356,7 +22356,7 @@ class ifcdimensionalexponents(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument amountofsubstanceexponent is mantatory and can not be set to None')
+				raise AssertionError('Argument amountofsubstanceexponent is mandatory and can not be set to None')
 			if not check_type(value,INTEGER):
 				self._amountofsubstanceexponent = INTEGER(value)
 			else:
@@ -22370,7 +22370,7 @@ class ifcdimensionalexponents(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument luminousintensityexponent is mantatory and can not be set to None')
+				raise AssertionError('Argument luminousintensityexponent is mandatory and can not be set to None')
 			if not check_type(value,INTEGER):
 				self._luminousintensityexponent = INTEGER(value)
 			else:
@@ -22409,7 +22409,7 @@ class ifcmetric(ifcconstraint):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument benchmark is mantatory and can not be set to None')
+				raise AssertionError('Argument benchmark is mandatory and can not be set to None')
 			if not check_type(value,ifcbenchmarkenum):
 				self._benchmark = ifcbenchmarkenum(value)
 			else:
@@ -22437,7 +22437,7 @@ class ifcmetric(ifcconstraint):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument datavalue is mantatory and can not be set to None')
+				raise AssertionError('Argument datavalue is mandatory and can not be set to None')
 			if not check_type(value,ifcmetricvalueselect):
 				self._datavalue = ifcmetricvalueselect(value)
 			else:
@@ -22478,7 +22478,7 @@ class ifcunitarycontrolelementtype(ifcdistributioncontrolelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcunitarycontrolelementtypeenum):
 				self._predefinedtype = ifcunitarycontrolelementtypeenum(value)
 			else:
@@ -22512,7 +22512,7 @@ class ifccablefittingtype(ifcflowfittingtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifccablefittingtypeenum):
 				self._predefinedtype = ifccablefittingtypeenum(value)
 			else:
@@ -22550,7 +22550,7 @@ class ifcrelconnectswithrealizingelements(ifcrelconnectselements):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument realizingelements is mantatory and can not be set to None')
+				raise AssertionError('Argument realizingelements is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcelement', scope = schema_scope)):
 				self._realizingelements = SET(value)
 			else:
@@ -22720,7 +22720,7 @@ class ifctask(ifcprocess):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument ismilestone is mantatory and can not be set to None')
+				raise AssertionError('Argument ismilestone is mandatory and can not be set to None')
 			if not check_type(value,BOOLEAN):
 				self._ismilestone = BOOLEAN(value)
 			else:
@@ -23059,7 +23059,7 @@ class ifcbooleanresult(ifcgeometricrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument operator is mantatory and can not be set to None')
+				raise AssertionError('Argument operator is mandatory and can not be set to None')
 			if not check_type(value,ifcbooleanoperator):
 				self._operator = ifcbooleanoperator(value)
 			else:
@@ -23073,7 +23073,7 @@ class ifcbooleanresult(ifcgeometricrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument firstoperand is mantatory and can not be set to None')
+				raise AssertionError('Argument firstoperand is mandatory and can not be set to None')
 			if not check_type(value,ifcbooleanoperand):
 				self._firstoperand = ifcbooleanoperand(value)
 			else:
@@ -23087,7 +23087,7 @@ class ifcbooleanresult(ifcgeometricrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument secondoperand is mantatory and can not be set to None')
+				raise AssertionError('Argument secondoperand is mandatory and can not be set to None')
 			if not check_type(value,ifcbooleanoperand):
 				self._secondoperand = ifcbooleanoperand(value)
 			else:
@@ -23131,7 +23131,7 @@ class ifcslabtype(ifcbuildingelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcslabtypeenum):
 				self._predefinedtype = ifcslabtypeenum(value)
 			else:
@@ -23340,7 +23340,7 @@ class ifcunitassignment(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument units is mantatory and can not be set to None')
+				raise AssertionError('Argument units is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcunit', scope = schema_scope)):
 				self._units = SET(value)
 			else:
@@ -23595,7 +23595,7 @@ class ifcevaporativecoolertype(ifcenergyconversiondevicetype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcevaporativecoolertypeenum):
 				self._predefinedtype = ifcevaporativecoolertypeenum(value)
 			else:
@@ -23670,7 +23670,7 @@ class ifcelementarysurface(ifcsurface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument position is mantatory and can not be set to None')
+				raise AssertionError('Argument position is mandatory and can not be set to None')
 			if not check_type(value,ifcaxis2placement3d):
 				self._position = ifcaxis2placement3d(value)
 			else:
@@ -23697,7 +23697,7 @@ class ifcalarmtype(ifcdistributioncontrolelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcalarmtypeenum):
 				self._predefinedtype = ifcalarmtypeenum(value)
 			else:
@@ -23731,7 +23731,7 @@ class ifcmembertype(ifcbuildingelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcmembertypeenum):
 				self._predefinedtype = ifcmembertypeenum(value)
 			else:
@@ -23769,7 +23769,7 @@ class ifcrelflowcontrolelements(ifcrelconnects):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatedcontrolelements is mantatory and can not be set to None')
+				raise AssertionError('Argument relatedcontrolelements is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcdistributioncontrolelement', scope = schema_scope)):
 				self._relatedcontrolelements = SET(value)
 			else:
@@ -23783,7 +23783,7 @@ class ifcrelflowcontrolelements(ifcrelconnects):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingflowelement is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingflowelement is mandatory and can not be set to None')
 			if not check_type(value,ifcdistributionflowelement):
 				self._relatingflowelement = ifcdistributionflowelement(value)
 			else:
@@ -23814,7 +23814,7 @@ class ifcindexedtexturemap(ifctexturecoordinate):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument mappedto is mantatory and can not be set to None')
+				raise AssertionError('Argument mappedto is mandatory and can not be set to None')
 			if not check_type(value,ifctessellatedfaceset):
 				self._mappedto = ifctessellatedfaceset(value)
 			else:
@@ -23828,7 +23828,7 @@ class ifcindexedtexturemap(ifctexturecoordinate):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument texcoords is mantatory and can not be set to None')
+				raise AssertionError('Argument texcoords is mandatory and can not be set to None')
 			if not check_type(value,ifctexturevertexlist):
 				self._texcoords = ifctexturevertexlist(value)
 			else:
@@ -23950,7 +23950,7 @@ class ifcrelinterfereselements(ifcrelconnects):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingelement is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingelement is mandatory and can not be set to None')
 			if not check_type(value,ifcelement):
 				self._relatingelement = ifcelement(value)
 			else:
@@ -23964,7 +23964,7 @@ class ifcrelinterfereselements(ifcrelconnects):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatedelement is mantatory and can not be set to None')
+				raise AssertionError('Argument relatedelement is mandatory and can not be set to None')
 			if not check_type(value,ifcelement):
 				self._relatedelement = ifcelement(value)
 			else:
@@ -24006,7 +24006,7 @@ class ifcrelinterfereselements(ifcrelconnects):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument impliedorder is mantatory and can not be set to None')
+				raise AssertionError('Argument impliedorder is mandatory and can not be set to None')
 			if not check_type(value,LOGICAL):
 				self._impliedorder = LOGICAL(value)
 			else:
@@ -24108,7 +24108,7 @@ class ifctessellatedfaceset(ifctessellateditem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument coordinates is mantatory and can not be set to None')
+				raise AssertionError('Argument coordinates is mandatory and can not be set to None')
 			if not check_type(value,ifccartesianpointlist3d):
 				self._coordinates = ifccartesianpointlist3d(value)
 			else:
@@ -24450,7 +24450,7 @@ class ifcairterminaltype(ifcflowterminaltype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcairterminaltypeenum):
 				self._predefinedtype = ifcairterminaltypeenum(value)
 			else:
@@ -24488,7 +24488,7 @@ class ifcfacebound(ifctopologicalrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument bound is mantatory and can not be set to None')
+				raise AssertionError('Argument bound is mandatory and can not be set to None')
 			if not check_type(value,ifcloop):
 				self._bound = ifcloop(value)
 			else:
@@ -24502,7 +24502,7 @@ class ifcfacebound(ifctopologicalrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument orientation is mantatory and can not be set to None')
+				raise AssertionError('Argument orientation is mandatory and can not be set to None')
 			if not check_type(value,BOOLEAN):
 				self._orientation = BOOLEAN(value)
 			else:
@@ -24623,7 +24623,7 @@ class ifcsurfacestylelighting(ifcpresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument diffusetransmissioncolour is mantatory and can not be set to None')
+				raise AssertionError('Argument diffusetransmissioncolour is mandatory and can not be set to None')
 			if not check_type(value,ifccolourrgb):
 				self._diffusetransmissioncolour = ifccolourrgb(value)
 			else:
@@ -24637,7 +24637,7 @@ class ifcsurfacestylelighting(ifcpresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument diffusereflectioncolour is mantatory and can not be set to None')
+				raise AssertionError('Argument diffusereflectioncolour is mandatory and can not be set to None')
 			if not check_type(value,ifccolourrgb):
 				self._diffusereflectioncolour = ifccolourrgb(value)
 			else:
@@ -24651,7 +24651,7 @@ class ifcsurfacestylelighting(ifcpresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument transmissioncolour is mantatory and can not be set to None')
+				raise AssertionError('Argument transmissioncolour is mandatory and can not be set to None')
 			if not check_type(value,ifccolourrgb):
 				self._transmissioncolour = ifccolourrgb(value)
 			else:
@@ -24665,7 +24665,7 @@ class ifcsurfacestylelighting(ifcpresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument reflectancecolour is mantatory and can not be set to None')
+				raise AssertionError('Argument reflectancecolour is mandatory and can not be set to None')
 			if not check_type(value,ifccolourrgb):
 				self._reflectancecolour = ifccolourrgb(value)
 			else:
@@ -24696,7 +24696,7 @@ class ifctasktype(ifctypeprocess):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifctasktypeenum):
 				self._predefinedtype = ifctasktypeenum(value)
 			else:
@@ -24938,7 +24938,7 @@ class ifcownerhistory(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument owninguser is mantatory and can not be set to None')
+				raise AssertionError('Argument owninguser is mandatory and can not be set to None')
 			if not check_type(value,ifcpersonandorganization):
 				self._owninguser = ifcpersonandorganization(value)
 			else:
@@ -24952,7 +24952,7 @@ class ifcownerhistory(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument owningapplication is mantatory and can not be set to None')
+				raise AssertionError('Argument owningapplication is mandatory and can not be set to None')
 			if not check_type(value,ifcapplication):
 				self._owningapplication = ifcapplication(value)
 			else:
@@ -25036,7 +25036,7 @@ class ifcownerhistory(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument creationdate is mantatory and can not be set to None')
+				raise AssertionError('Argument creationdate is mandatory and can not be set to None')
 			if not check_type(value,ifctimestamp):
 				self._creationdate = ifctimestamp(value)
 			else:
@@ -25070,7 +25070,7 @@ class ifcsurfacestylewithtextures(ifcpresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument textures is mantatory and can not be set to None')
+				raise AssertionError('Argument textures is mandatory and can not be set to None')
 			if not check_type(value,LIST(1,None,'ifcsurfacetexture', scope = schema_scope)):
 				self._textures = LIST(value)
 			else:
@@ -25200,7 +25200,7 @@ class ifcelectricflowstoragedevicetype(ifcflowstoragedevicetype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcelectricflowstoragedevicetypeenum):
 				self._predefinedtype = ifcelectricflowstoragedevicetypeenum(value)
 			else:
@@ -25265,7 +25265,7 @@ class ifcstructuralloadgroup(ifcgroup):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcloadgrouptypeenum):
 				self._predefinedtype = ifcloadgrouptypeenum(value)
 			else:
@@ -25279,7 +25279,7 @@ class ifcstructuralloadgroup(ifcgroup):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument actiontype is mantatory and can not be set to None')
+				raise AssertionError('Argument actiontype is mandatory and can not be set to None')
 			if not check_type(value,ifcactiontypeenum):
 				self._actiontype = ifcactiontypeenum(value)
 			else:
@@ -25293,7 +25293,7 @@ class ifcstructuralloadgroup(ifcgroup):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument actionsource is mantatory and can not be set to None')
+				raise AssertionError('Argument actionsource is mandatory and can not be set to None')
 			if not check_type(value,ifcactionsourcetypeenum):
 				self._actionsource = ifcactionsourcetypeenum(value)
 			else:
@@ -25442,7 +25442,7 @@ class ifccolourrgb(ifccolourspecification):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument red is mantatory and can not be set to None')
+				raise AssertionError('Argument red is mandatory and can not be set to None')
 			if not check_type(value,ifcnormalisedratiomeasure):
 				self._red = ifcnormalisedratiomeasure(value)
 			else:
@@ -25456,7 +25456,7 @@ class ifccolourrgb(ifccolourspecification):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument green is mantatory and can not be set to None')
+				raise AssertionError('Argument green is mandatory and can not be set to None')
 			if not check_type(value,ifcnormalisedratiomeasure):
 				self._green = ifcnormalisedratiomeasure(value)
 			else:
@@ -25470,7 +25470,7 @@ class ifccolourrgb(ifccolourspecification):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument blue is mantatory and can not be set to None')
+				raise AssertionError('Argument blue is mandatory and can not be set to None')
 			if not check_type(value,ifcnormalisedratiomeasure):
 				self._blue = ifcnormalisedratiomeasure(value)
 			else:
@@ -25837,7 +25837,7 @@ class ifcsurfacestyleshading(ifcpresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument surfacecolour is mantatory and can not be set to None')
+				raise AssertionError('Argument surfacecolour is mandatory and can not be set to None')
 			if not check_type(value,ifccolourrgb):
 				self._surfacecolour = ifccolourrgb(value)
 			else:
@@ -25990,7 +25990,7 @@ class ifcsurfacestylerendering(ifcsurfacestyleshading):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument reflectancemethod is mantatory and can not be set to None')
+				raise AssertionError('Argument reflectancemethod is mandatory and can not be set to None')
 			if not check_type(value,ifcreflectancemethodenum):
 				self._reflectancemethod = ifcreflectancemethodenum(value)
 			else:
@@ -26017,7 +26017,7 @@ class ifcelectrictimecontroltype(ifcflowcontrollertype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcelectrictimecontroltypeenum):
 				self._predefinedtype = ifcelectrictimecontroltypeenum(value)
 			else:
@@ -26054,7 +26054,7 @@ class ifccoordinateoperation(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument sourcecrs is mantatory and can not be set to None')
+				raise AssertionError('Argument sourcecrs is mandatory and can not be set to None')
 			if not check_type(value,ifccoordinatereferencesystemselect):
 				self._sourcecrs = ifccoordinatereferencesystemselect(value)
 			else:
@@ -26068,7 +26068,7 @@ class ifccoordinateoperation(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument targetcrs is mantatory and can not be set to None')
+				raise AssertionError('Argument targetcrs is mandatory and can not be set to None')
 			if not check_type(value,ifccoordinatereferencesystem):
 				self._targetcrs = ifccoordinatereferencesystem(value)
 			else:
@@ -26115,7 +26115,7 @@ class ifcmapconversion(ifccoordinateoperation):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument eastings is mantatory and can not be set to None')
+				raise AssertionError('Argument eastings is mandatory and can not be set to None')
 			if not check_type(value,ifclengthmeasure):
 				self._eastings = ifclengthmeasure(value)
 			else:
@@ -26129,7 +26129,7 @@ class ifcmapconversion(ifccoordinateoperation):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument northings is mantatory and can not be set to None')
+				raise AssertionError('Argument northings is mandatory and can not be set to None')
 			if not check_type(value,ifclengthmeasure):
 				self._northings = ifclengthmeasure(value)
 			else:
@@ -26143,7 +26143,7 @@ class ifcmapconversion(ifccoordinateoperation):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument orthogonalheight is mantatory and can not be set to None')
+				raise AssertionError('Argument orthogonalheight is mandatory and can not be set to None')
 			if not check_type(value,ifclengthmeasure):
 				self._orthogonalheight = ifclengthmeasure(value)
 			else:
@@ -26212,7 +26212,7 @@ class ifcstackterminaltype(ifcflowterminaltype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcstackterminaltypeenum):
 				self._predefinedtype = ifcstackterminaltypeenum(value)
 			else:
@@ -26602,7 +26602,7 @@ class ifctasktimerecurring(ifctasktime):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument recurrance is mantatory and can not be set to None')
+				raise AssertionError('Argument recurrance is mandatory and can not be set to None')
 			if not check_type(value,ifcrecurrencepattern):
 				self._recurrance = ifcrecurrencepattern(value)
 			else:
@@ -26715,7 +26715,7 @@ class ifctendonanchortype(ifcreinforcingelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifctendonanchortypeenum):
 				self._predefinedtype = ifctendonanchortypeenum(value)
 			else:
@@ -26790,7 +26790,7 @@ class ifcchillertype(ifcenergyconversiondevicetype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcchillertypeenum):
 				self._predefinedtype = ifcchillertypeenum(value)
 			else:
@@ -26824,7 +26824,7 @@ class ifccooledbeamtype(ifcenergyconversiondevicetype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifccooledbeamtypeenum):
 				self._predefinedtype = ifccooledbeamtypeenum(value)
 			else:
@@ -26865,7 +26865,7 @@ class ifcpersonandorganization(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument theperson is mantatory and can not be set to None')
+				raise AssertionError('Argument theperson is mandatory and can not be set to None')
 			if not check_type(value,ifcperson):
 				self._theperson = ifcperson(value)
 			else:
@@ -26879,7 +26879,7 @@ class ifcpersonandorganization(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument theorganization is mantatory and can not be set to None')
+				raise AssertionError('Argument theorganization is mandatory and can not be set to None')
 			if not check_type(value,ifcorganization):
 				self._theorganization = ifcorganization(value)
 			else:
@@ -27065,7 +27065,7 @@ class ifctimeperiod(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument starttime is mantatory and can not be set to None')
+				raise AssertionError('Argument starttime is mandatory and can not be set to None')
 			if not check_type(value,ifctime):
 				self._starttime = ifctime(value)
 			else:
@@ -27079,7 +27079,7 @@ class ifctimeperiod(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument endtime is mantatory and can not be set to None')
+				raise AssertionError('Argument endtime is mandatory and can not be set to None')
 			if not check_type(value,ifctime):
 				self._endtime = ifctime(value)
 			else:
@@ -27110,7 +27110,7 @@ class ifcmappeditem(ifcrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument mappingsource is mantatory and can not be set to None')
+				raise AssertionError('Argument mappingsource is mandatory and can not be set to None')
 			if not check_type(value,ifcrepresentationmap):
 				self._mappingsource = ifcrepresentationmap(value)
 			else:
@@ -27124,7 +27124,7 @@ class ifcmappeditem(ifcrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument mappingtarget is mantatory and can not be set to None')
+				raise AssertionError('Argument mappingtarget is mandatory and can not be set to None')
 			if not check_type(value,ifccartesiantransformationoperator):
 				self._mappingtarget = ifccartesiantransformationoperator(value)
 			else:
@@ -27151,7 +27151,7 @@ class ifcoutlettype(ifcflowterminaltype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcoutlettypeenum):
 				self._predefinedtype = ifcoutlettypeenum(value)
 			else:
@@ -27208,7 +27208,7 @@ class ifcpointoncurve(ifcpoint):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument basiscurve is mantatory and can not be set to None')
+				raise AssertionError('Argument basiscurve is mandatory and can not be set to None')
 			if not check_type(value,ifccurve):
 				self._basiscurve = ifccurve(value)
 			else:
@@ -27222,7 +27222,7 @@ class ifcpointoncurve(ifcpoint):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument pointparameter is mantatory and can not be set to None')
+				raise AssertionError('Argument pointparameter is mandatory and can not be set to None')
 			if not check_type(value,ifcparametervalue):
 				self._pointparameter = ifcparametervalue(value)
 			else:
@@ -27275,7 +27275,7 @@ class ifcrelsequence(ifcrelconnects):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingprocess is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingprocess is mandatory and can not be set to None')
 			if not check_type(value,ifcprocess):
 				self._relatingprocess = ifcprocess(value)
 			else:
@@ -27289,7 +27289,7 @@ class ifcrelsequence(ifcrelconnects):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatedprocess is mantatory and can not be set to None')
+				raise AssertionError('Argument relatedprocess is mandatory and can not be set to None')
 			if not check_type(value,ifcprocess):
 				self._relatedprocess = ifcprocess(value)
 			else:
@@ -27372,7 +27372,7 @@ class ifcfacetedbrepwithvoids(ifcfacetedbrep):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument voids is mantatory and can not be set to None')
+				raise AssertionError('Argument voids is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcclosedshell', scope = schema_scope)):
 				self._voids = SET(value)
 			else:
@@ -27399,7 +27399,7 @@ class ifccoiltype(ifcenergyconversiondevicetype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifccoiltypeenum):
 				self._predefinedtype = ifccoiltypeenum(value)
 			else:
@@ -27453,7 +27453,7 @@ class ifcrelconnectsstructuralmember(ifcrelconnects):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingstructuralmember is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingstructuralmember is mandatory and can not be set to None')
 			if not check_type(value,ifcstructuralmember):
 				self._relatingstructuralmember = ifcstructuralmember(value)
 			else:
@@ -27467,7 +27467,7 @@ class ifcrelconnectsstructuralmember(ifcrelconnects):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatedstructuralconnection is mantatory and can not be set to None')
+				raise AssertionError('Argument relatedstructuralconnection is mandatory and can not be set to None')
 			if not check_type(value,ifcstructuralconnection):
 				self._relatedstructuralconnection = ifcstructuralconnection(value)
 			else:
@@ -27550,7 +27550,7 @@ class ifcrelconnectswitheccentricity(ifcrelconnectsstructuralmember):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument connectionconstraint is mantatory and can not be set to None')
+				raise AssertionError('Argument connectionconstraint is mandatory and can not be set to None')
 			if not check_type(value,ifcconnectiongeometry):
 				self._connectionconstraint = ifcconnectiongeometry(value)
 			else:
@@ -27581,7 +27581,7 @@ class ifcrelfillselement(ifcrelconnects):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingopeningelement is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingopeningelement is mandatory and can not be set to None')
 			if not check_type(value,ifcopeningelement):
 				self._relatingopeningelement = ifcopeningelement(value)
 			else:
@@ -27595,7 +27595,7 @@ class ifcrelfillselement(ifcrelconnects):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatedbuildingelement is mantatory and can not be set to None')
+				raise AssertionError('Argument relatedbuildingelement is mandatory and can not be set to None')
 			if not check_type(value,ifcelement):
 				self._relatedbuildingelement = ifcelement(value)
 			else:
@@ -27631,7 +27631,7 @@ class ifcrepresentationmap(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument mappingorigin is mantatory and can not be set to None')
+				raise AssertionError('Argument mappingorigin is mandatory and can not be set to None')
 			if not check_type(value,ifcaxis2placement):
 				self._mappingorigin = ifcaxis2placement(value)
 			else:
@@ -27645,7 +27645,7 @@ class ifcrepresentationmap(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument mappedrepresentation is mantatory and can not be set to None')
+				raise AssertionError('Argument mappedrepresentation is mandatory and can not be set to None')
 			if not check_type(value,ifcrepresentation):
 				self._mappedrepresentation = ifcrepresentation(value)
 			else:
@@ -27717,7 +27717,7 @@ class ifcpcurve(ifccurve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument basissurface is mantatory and can not be set to None')
+				raise AssertionError('Argument basissurface is mandatory and can not be set to None')
 			if not check_type(value,ifcsurface):
 				self._basissurface = ifcsurface(value)
 			else:
@@ -27731,7 +27731,7 @@ class ifcpcurve(ifccurve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument referencecurve is mantatory and can not be set to None')
+				raise AssertionError('Argument referencecurve is mandatory and can not be set to None')
 			if not check_type(value,ifccurve):
 				self._referencecurve = ifccurve(value)
 			else:
@@ -27768,7 +27768,7 @@ class ifcvirtualgridintersection(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument intersectingaxes is mantatory and can not be set to None')
+				raise AssertionError('Argument intersectingaxes is mandatory and can not be set to None')
 			if not check_type(value,LIST(2,2,'ifcgridaxis', scope = schema_scope)):
 				self._intersectingaxes = LIST(value)
 			else:
@@ -27782,7 +27782,7 @@ class ifcvirtualgridintersection(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument offsetdistances is mantatory and can not be set to None')
+				raise AssertionError('Argument offsetdistances is mandatory and can not be set to None')
 			if not check_type(value,LIST(2,3,'REAL', scope = schema_scope)):
 				self._offsetdistances = LIST(value)
 			else:
@@ -27848,7 +27848,7 @@ class ifccoordinatereferencesystem(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument geodeticdatum is mantatory and can not be set to None')
+				raise AssertionError('Argument geodeticdatum is mandatory and can not be set to None')
 			if not check_type(value,ifcidentifier):
 				self._geodeticdatum = ifcidentifier(value)
 			else:
@@ -27898,7 +27898,7 @@ class ifcprotectivedevicetrippingunittype(ifcdistributioncontrolelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcprotectivedevicetrippingunittypeenum):
 				self._predefinedtype = ifcprotectivedevicetrippingunittypeenum(value)
 			else:
@@ -27936,7 +27936,7 @@ class ifcrelreferencedinspatialstructure(ifcrelconnects):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatedelements is mantatory and can not be set to None')
+				raise AssertionError('Argument relatedelements is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcproduct', scope = schema_scope)):
 				self._relatedelements = SET(value)
 			else:
@@ -27950,7 +27950,7 @@ class ifcrelreferencedinspatialstructure(ifcrelconnects):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingstructure is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingstructure is mandatory and can not be set to None')
 			if not check_type(value,ifcspatialelement):
 				self._relatingstructure = ifcspatialelement(value)
 			else:
@@ -28045,7 +28045,7 @@ class ifcbsplinecurvewithknots(ifcbsplinecurve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument knotmultiplicities is mantatory and can not be set to None')
+				raise AssertionError('Argument knotmultiplicities is mandatory and can not be set to None')
 			if not check_type(value,LIST(2,None,'INTEGER', scope = schema_scope)):
 				self._knotmultiplicities = LIST(value)
 			else:
@@ -28059,7 +28059,7 @@ class ifcbsplinecurvewithknots(ifcbsplinecurve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument knots is mantatory and can not be set to None')
+				raise AssertionError('Argument knots is mandatory and can not be set to None')
 			if not check_type(value,LIST(2,None,'REAL', scope = schema_scope)):
 				self._knots = LIST(value)
 			else:
@@ -28073,7 +28073,7 @@ class ifcbsplinecurvewithknots(ifcbsplinecurve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument knotspec is mantatory and can not be set to None')
+				raise AssertionError('Argument knotspec is mandatory and can not be set to None')
 			if not check_type(value,ifcknottype):
 				self._knotspec = ifcknottype(value)
 			else:
@@ -28127,7 +28127,7 @@ class ifcreationalbsplinecurvewithknots(ifcbsplinecurvewithknots):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument weightsdata is mantatory and can not be set to None')
+				raise AssertionError('Argument weightsdata is mandatory and can not be set to None')
 			if not check_type(value,LIST(2,None,'REAL', scope = schema_scope)):
 				self._weightsdata = LIST(value)
 			else:
@@ -28178,7 +28178,7 @@ class ifcrooftype(ifcbuildingelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcrooftypeenum):
 				self._predefinedtype = ifcrooftypeenum(value)
 			else:
@@ -28212,7 +28212,7 @@ class ifcimagetexture(ifcsurfacetexture):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument urlreference is mantatory and can not be set to None')
+				raise AssertionError('Argument urlreference is mandatory and can not be set to None')
 			if not check_type(value,ifcurireference):
 				self._urlreference = ifcurireference(value)
 			else:
@@ -28248,7 +28248,7 @@ class ifcvertexloop(ifcloop):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument loopvertex is mantatory and can not be set to None')
+				raise AssertionError('Argument loopvertex is mandatory and can not be set to None')
 			if not check_type(value,ifcvertex):
 				self._loopvertex = ifcvertex(value)
 			else:
@@ -28275,7 +28275,7 @@ class ifcarbitraryclosedprofiledef(ifcprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument outercurve is mantatory and can not be set to None')
+				raise AssertionError('Argument outercurve is mandatory and can not be set to None')
 			if not check_type(value,ifccurve):
 				self._outercurve = ifccurve(value)
 			else:
@@ -28323,7 +28323,7 @@ class ifcarbitraryprofiledefwithvoids(ifcarbitraryclosedprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument innercurves is mantatory and can not be set to None')
+				raise AssertionError('Argument innercurves is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifccurve', scope = schema_scope)):
 				self._innercurves = SET(value)
 			else:
@@ -28371,7 +28371,7 @@ class ifcsanitaryterminaltype(ifcflowterminaltype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcsanitaryterminaltypeenum):
 				self._predefinedtype = ifcsanitaryterminaltypeenum(value)
 			else:
@@ -28405,7 +28405,7 @@ class ifcswitchingdevicetype(ifcflowcontrollertype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcswitchingdevicetypeenum):
 				self._predefinedtype = ifcswitchingdevicetypeenum(value)
 			else:
@@ -28967,7 +28967,7 @@ class ifcmateriallist(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument materials is mantatory and can not be set to None')
+				raise AssertionError('Argument materials is mandatory and can not be set to None')
 			if not check_type(value,LIST(1,None,'ifcmaterial', scope = schema_scope)):
 				self._materials = LIST(value)
 			else:
@@ -28994,7 +28994,7 @@ class ifcplatetype(ifcbuildingelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcplatetypeenum):
 				self._predefinedtype = ifcplatetypeenum(value)
 			else:
@@ -29041,7 +29041,7 @@ class ifcreldefinesbytype(ifcreldefines):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatedobjects is mantatory and can not be set to None')
+				raise AssertionError('Argument relatedobjects is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcobject', scope = schema_scope)):
 				self._relatedobjects = SET(value)
 			else:
@@ -29055,7 +29055,7 @@ class ifcreldefinesbytype(ifcreldefines):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingtype is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingtype is mandatory and can not be set to None')
 			if not check_type(value,ifctypeobject):
 				self._relatingtype = ifctypeobject(value)
 			else:
@@ -29197,7 +29197,7 @@ class ifcrailingtype(ifcbuildingelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcrailingtypeenum):
 				self._predefinedtype = ifcrailingtypeenum(value)
 			else:
@@ -29235,7 +29235,7 @@ class ifcfurnituretype(ifcfurnishingelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument assemblyplace is mantatory and can not be set to None')
+				raise AssertionError('Argument assemblyplace is mandatory and can not be set to None')
 			if not check_type(value,ifcassemblyplaceenum):
 				self._assemblyplace = ifcassemblyplaceenum(value)
 			else:
@@ -29283,7 +29283,7 @@ class ifcfiresuppressionterminaltype(ifcflowterminaltype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcfiresuppressionterminaltypeenum):
 				self._predefinedtype = ifcfiresuppressionterminaltypeenum(value)
 			else:
@@ -29433,7 +29433,7 @@ class ifctexturevertex(ifcpresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument coordinates is mantatory and can not be set to None')
+				raise AssertionError('Argument coordinates is mandatory and can not be set to None')
 			if not check_type(value,LIST(2,2,'REAL', scope = schema_scope)):
 				self._coordinates = LIST(value)
 			else:
@@ -29559,7 +29559,7 @@ class ifcreinforcingmeshtype(ifcreinforcingelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcreinforcingmeshtypeenum):
 				self._predefinedtype = ifcreinforcingmeshtypeenum(value)
 			else:
@@ -29740,7 +29740,7 @@ class ifcrelassociateslibrary(ifcrelassociates):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatinglibrary is mantatory and can not be set to None')
+				raise AssertionError('Argument relatinglibrary is mandatory and can not be set to None')
 			if not check_type(value,ifclibraryselect):
 				self._relatinglibrary = ifclibraryselect(value)
 			else:
@@ -29928,7 +29928,7 @@ class ifcrectanglehollowprofiledef(ifcrectangleprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument wallthickness is mantatory and can not be set to None')
+				raise AssertionError('Argument wallthickness is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._wallthickness = ifcpositivelengthmeasure(value)
 			else:
@@ -30008,7 +30008,7 @@ class ifcproxy(ifcproduct):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument proxytype is mantatory and can not be set to None')
+				raise AssertionError('Argument proxytype is mandatory and can not be set to None')
 			if not check_type(value,ifcobjecttypeenum):
 				self._proxytype = ifcobjecttypeenum(value)
 			else:
@@ -30056,7 +30056,7 @@ class ifcrevolvedareasolidtapered(ifcrevolvedareasolid):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument endsweptarea is mantatory and can not be set to None')
+				raise AssertionError('Argument endsweptarea is mandatory and can not be set to None')
 			if not check_type(value,ifcprofiledef):
 				self._endsweptarea = ifcprofiledef(value)
 			else:
@@ -30229,7 +30229,7 @@ class ifcwindowtype(ifcbuildingelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcwindowtypeenum):
 				self._predefinedtype = ifcwindowtypeenum(value)
 			else:
@@ -30243,7 +30243,7 @@ class ifcwindowtype(ifcbuildingelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument partitioningtype is mantatory and can not be set to None')
+				raise AssertionError('Argument partitioningtype is mandatory and can not be set to None')
 			if not check_type(value,ifcwindowtypepartitioningenum):
 				self._partitioningtype = ifcwindowtypepartitioningenum(value)
 			else:
@@ -30447,7 +30447,7 @@ class ifcpresentationstyleassignment(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument styles is mantatory and can not be set to None')
+				raise AssertionError('Argument styles is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcpresentationstyleselect', scope = schema_scope)):
 				self._styles = SET(value)
 			else:
@@ -30478,7 +30478,7 @@ class ifcexternalreferencerelationship(ifcresourcelevelrelationship):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingreference is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingreference is mandatory and can not be set to None')
 			if not check_type(value,ifcexternalreference):
 				self._relatingreference = ifcexternalreference(value)
 			else:
@@ -30492,7 +30492,7 @@ class ifcexternalreferencerelationship(ifcresourcelevelrelationship):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatedresourceobjects is mantatory and can not be set to None')
+				raise AssertionError('Argument relatedresourceobjects is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcresourceobjectselect', scope = schema_scope)):
 				self._relatedresourceobjects = SET(value)
 			else:
@@ -30640,7 +30640,7 @@ class ifcarbitraryopenprofiledef(ifcprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument curve is mantatory and can not be set to None')
+				raise AssertionError('Argument curve is mandatory and can not be set to None')
 			if not check_type(value,ifcboundedcurve):
 				self._curve = ifcboundedcurve(value)
 			else:
@@ -30726,7 +30726,7 @@ class ifcquantitylength(ifcphysicalsimplequantity):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument lengthvalue is mantatory and can not be set to None')
+				raise AssertionError('Argument lengthvalue is mandatory and can not be set to None')
 			if not check_type(value,ifclengthmeasure):
 				self._lengthvalue = ifclengthmeasure(value)
 			else:
@@ -30845,7 +30845,7 @@ class ifctimeseries(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,ifclabel):
 				self._name = ifclabel(value)
 			else:
@@ -30873,7 +30873,7 @@ class ifctimeseries(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument starttime is mantatory and can not be set to None')
+				raise AssertionError('Argument starttime is mandatory and can not be set to None')
 			if not check_type(value,ifcdatetime):
 				self._starttime = ifcdatetime(value)
 			else:
@@ -30887,7 +30887,7 @@ class ifctimeseries(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument endtime is mantatory and can not be set to None')
+				raise AssertionError('Argument endtime is mandatory and can not be set to None')
 			if not check_type(value,ifcdatetime):
 				self._endtime = ifcdatetime(value)
 			else:
@@ -30901,7 +30901,7 @@ class ifctimeseries(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument timeseriesdatatype is mantatory and can not be set to None')
+				raise AssertionError('Argument timeseriesdatatype is mandatory and can not be set to None')
 			if not check_type(value,ifctimeseriesdatatypeenum):
 				self._timeseriesdatatype = ifctimeseriesdatatypeenum(value)
 			else:
@@ -30915,7 +30915,7 @@ class ifctimeseries(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument dataorigin is mantatory and can not be set to None')
+				raise AssertionError('Argument dataorigin is mandatory and can not be set to None')
 			if not check_type(value,ifcdataoriginenum):
 				self._dataorigin = ifcdataoriginenum(value)
 			else:
@@ -30983,7 +30983,7 @@ class ifcregulartimeseries(ifctimeseries):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument timestep is mantatory and can not be set to None')
+				raise AssertionError('Argument timestep is mandatory and can not be set to None')
 			if not check_type(value,ifctimemeasure):
 				self._timestep = ifctimemeasure(value)
 			else:
@@ -30997,7 +30997,7 @@ class ifcregulartimeseries(ifctimeseries):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument values is mantatory and can not be set to None')
+				raise AssertionError('Argument values is mandatory and can not be set to None')
 			if not check_type(value,LIST(1,None,'ifctimeseriesvalue', scope = schema_scope)):
 				self._values = LIST(value)
 			else:
@@ -31091,7 +31091,7 @@ class ifcreldefinesbytemplate(ifcreldefines):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatedpropertysets is mantatory and can not be set to None')
+				raise AssertionError('Argument relatedpropertysets is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcpropertysetdefinition', scope = schema_scope)):
 				self._relatedpropertysets = SET(value)
 			else:
@@ -31105,7 +31105,7 @@ class ifcreldefinesbytemplate(ifcreldefines):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingtemplate is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingtemplate is mandatory and can not be set to None')
 			if not check_type(value,ifcpropertysettemplate):
 				self._relatingtemplate = ifcpropertysettemplate(value)
 			else:
@@ -31141,7 +31141,7 @@ class ifccartesianpointlist3d(ifccartesianpointlist):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument coordlist is mantatory and can not be set to None')
+				raise AssertionError('Argument coordlist is mandatory and can not be set to None')
 			if not check_type(value,LIST(1,None,LIST(3,3,'REAL', scope = schema_scope))):
 				self._coordlist = LIST(value)
 			else:
@@ -31184,7 +31184,7 @@ class ifclightsourcepositional(ifclightsource):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument position is mantatory and can not be set to None')
+				raise AssertionError('Argument position is mandatory and can not be set to None')
 			if not check_type(value,ifccartesianpoint):
 				self._position = ifccartesianpoint(value)
 			else:
@@ -31198,7 +31198,7 @@ class ifclightsourcepositional(ifclightsource):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument radius is mantatory and can not be set to None')
+				raise AssertionError('Argument radius is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._radius = ifcpositivelengthmeasure(value)
 			else:
@@ -31212,7 +31212,7 @@ class ifclightsourcepositional(ifclightsource):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument constantattenuation is mantatory and can not be set to None')
+				raise AssertionError('Argument constantattenuation is mandatory and can not be set to None')
 			if not check_type(value,ifcreal):
 				self._constantattenuation = ifcreal(value)
 			else:
@@ -31226,7 +31226,7 @@ class ifclightsourcepositional(ifclightsource):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument distanceattenuation is mantatory and can not be set to None')
+				raise AssertionError('Argument distanceattenuation is mandatory and can not be set to None')
 			if not check_type(value,ifcreal):
 				self._distanceattenuation = ifcreal(value)
 			else:
@@ -31240,7 +31240,7 @@ class ifclightsourcepositional(ifclightsource):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument quadricattenuation is mantatory and can not be set to None')
+				raise AssertionError('Argument quadricattenuation is mandatory and can not be set to None')
 			if not check_type(value,ifcreal):
 				self._quadricattenuation = ifcreal(value)
 			else:
@@ -31267,7 +31267,7 @@ class ifcpiletype(ifcbuildingelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcpiletypeenum):
 				self._predefinedtype = ifcpiletypeenum(value)
 			else:
@@ -31346,7 +31346,7 @@ class ifclightsourcedirectional(ifclightsource):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument orientation is mantatory and can not be set to None')
+				raise AssertionError('Argument orientation is mandatory and can not be set to None')
 			if not check_type(value,ifcdirection):
 				self._orientation = ifcdirection(value)
 			else:
@@ -31463,7 +31463,7 @@ class ifcorientededge(ifcedge):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument edgeelement is mantatory and can not be set to None')
+				raise AssertionError('Argument edgeelement is mandatory and can not be set to None')
 			if not check_type(value,ifcedge):
 				self._edgeelement = ifcedge(value)
 			else:
@@ -31477,7 +31477,7 @@ class ifcorientededge(ifcedge):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument orientation is mantatory and can not be set to None')
+				raise AssertionError('Argument orientation is mandatory and can not be set to None')
 			if not check_type(value,BOOLEAN):
 				self._orientation = BOOLEAN(value)
 			else:
@@ -31549,7 +31549,7 @@ class ifcrelassociatesconstraint(ifcrelassociates):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingconstraint is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingconstraint is mandatory and can not be set to None')
 			if not check_type(value,ifcconstraint):
 				self._relatingconstraint = ifcconstraint(value)
 			else:
@@ -31575,7 +31575,7 @@ class ifctimeseriesvalue(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument listvalues is mantatory and can not be set to None')
+				raise AssertionError('Argument listvalues is mandatory and can not be set to None')
 			if not check_type(value,LIST(1,None,'ifcvalue', scope = schema_scope)):
 				self._listvalues = LIST(value)
 			else:
@@ -31754,7 +31754,7 @@ class ifcdiscreteaccessorytype(ifcelementcomponenttype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcdiscreteaccessorytypeenum):
 				self._predefinedtype = ifcdiscreteaccessorytypeenum(value)
 			else:
@@ -31822,7 +31822,7 @@ class ifcconnectedfaceset(ifctopologicalrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument cfsfaces is mantatory and can not be set to None')
+				raise AssertionError('Argument cfsfaces is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcface', scope = schema_scope)):
 				self._cfsfaces = SET(value)
 			else:
@@ -31919,7 +31919,7 @@ class ifcorganizationrelationship(ifcresourcelevelrelationship):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingorganization is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingorganization is mandatory and can not be set to None')
 			if not check_type(value,ifcorganization):
 				self._relatingorganization = ifcorganization(value)
 			else:
@@ -31933,7 +31933,7 @@ class ifcorganizationrelationship(ifcresourcelevelrelationship):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatedorganizations is mantatory and can not be set to None')
+				raise AssertionError('Argument relatedorganizations is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcorganization', scope = schema_scope)):
 				self._relatedorganizations = SET(value)
 			else:
@@ -32111,7 +32111,7 @@ class ifcquantitytime(ifcphysicalsimplequantity):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument timevalue is mantatory and can not be set to None')
+				raise AssertionError('Argument timevalue is mandatory and can not be set to None')
 			if not check_type(value,ifctimemeasure):
 				self._timevalue = ifctimemeasure(value)
 			else:
@@ -32174,7 +32174,7 @@ class ifcdocumentinformationrelationship(ifcresourcelevelrelationship):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingdocument is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingdocument is mandatory and can not be set to None')
 			if not check_type(value,ifcdocumentinformation):
 				self._relatingdocument = ifcdocumentinformation(value)
 			else:
@@ -32188,7 +32188,7 @@ class ifcdocumentinformationrelationship(ifcresourcelevelrelationship):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relateddocuments is mantatory and can not be set to None')
+				raise AssertionError('Argument relateddocuments is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcdocumentinformation', scope = schema_scope)):
 				self._relateddocuments = SET(value)
 			else:
@@ -32253,7 +32253,7 @@ class ifcgeometricrepresentationsubcontext(ifcgeometricrepresentationcontext):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument parentcontext is mantatory and can not be set to None')
+				raise AssertionError('Argument parentcontext is mandatory and can not be set to None')
 			if not check_type(value,ifcgeometricrepresentationcontext):
 				self._parentcontext = ifcgeometricrepresentationcontext(value)
 			else:
@@ -32281,7 +32281,7 @@ class ifcgeometricrepresentationsubcontext(ifcgeometricrepresentationcontext):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument targetview is mantatory and can not be set to None')
+				raise AssertionError('Argument targetview is mandatory and can not be set to None')
 			if not check_type(value,ifcgeometricprojectionenum):
 				self._targetview = ifcgeometricprojectionenum(value)
 			else:
@@ -32376,7 +32376,7 @@ class ifccommunicationsappliancetype(ifcflowterminaltype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifccommunicationsappliancetypeenum):
 				self._predefinedtype = ifccommunicationsappliancetypeenum(value)
 			else:
@@ -32487,7 +32487,7 @@ class ifcconnectioncurvegeometry(ifcconnectiongeometry):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument curveonrelatingelement is mantatory and can not be set to None')
+				raise AssertionError('Argument curveonrelatingelement is mandatory and can not be set to None')
 			if not check_type(value,ifccurveoredgecurve):
 				self._curveonrelatingelement = ifccurveoredgecurve(value)
 			else:
@@ -32848,7 +32848,7 @@ class ifccrewresourcetype(ifcconstructionresourcetype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifccrewresourcetypeenum):
 				self._predefinedtype = ifccrewresourcetypeenum(value)
 			else:
@@ -32902,7 +32902,7 @@ class ifcrelcoversspaces(ifcrelconnects):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingspace is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingspace is mandatory and can not be set to None')
 			if not check_type(value,ifcspace):
 				self._relatingspace = ifcspace(value)
 			else:
@@ -32916,7 +32916,7 @@ class ifcrelcoversspaces(ifcrelconnects):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatedcoverings is mantatory and can not be set to None')
+				raise AssertionError('Argument relatedcoverings is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifccovering', scope = schema_scope)):
 				self._relatedcoverings = SET(value)
 			else:
@@ -32985,7 +32985,7 @@ class ifcmechanicalfastenertype(ifcelementcomponenttype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcmechanicalfastenertypeenum):
 				self._predefinedtype = ifcmechanicalfastenertypeenum(value)
 			else:
@@ -33051,7 +33051,7 @@ class ifcquantityweight(ifcphysicalsimplequantity):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument weightvalue is mantatory and can not be set to None')
+				raise AssertionError('Argument weightvalue is mandatory and can not be set to None')
 			if not check_type(value,ifcmassmeasure):
 				self._weightvalue = ifcmassmeasure(value)
 			else:
@@ -33106,7 +33106,7 @@ class ifcwalltype(ifcbuildingelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcwalltypeenum):
 				self._predefinedtype = ifcwalltypeenum(value)
 			else:
@@ -33178,7 +33178,7 @@ class ifcapprovalrelationship(ifcresourcelevelrelationship):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingapproval is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingapproval is mandatory and can not be set to None')
 			if not check_type(value,ifcapproval):
 				self._relatingapproval = ifcapproval(value)
 			else:
@@ -33192,7 +33192,7 @@ class ifcapprovalrelationship(ifcresourcelevelrelationship):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatedapprovals is mantatory and can not be set to None')
+				raise AssertionError('Argument relatedapprovals is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcapproval', scope = schema_scope)):
 				self._relatedapprovals = SET(value)
 			else:
@@ -33234,7 +33234,7 @@ class ifcboundingbox(ifcgeometricrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument corner is mantatory and can not be set to None')
+				raise AssertionError('Argument corner is mandatory and can not be set to None')
 			if not check_type(value,ifccartesianpoint):
 				self._corner = ifccartesianpoint(value)
 			else:
@@ -33248,7 +33248,7 @@ class ifcboundingbox(ifcgeometricrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument xdim is mantatory and can not be set to None')
+				raise AssertionError('Argument xdim is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._xdim = ifcpositivelengthmeasure(value)
 			else:
@@ -33262,7 +33262,7 @@ class ifcboundingbox(ifcgeometricrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument ydim is mantatory and can not be set to None')
+				raise AssertionError('Argument ydim is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._ydim = ifcpositivelengthmeasure(value)
 			else:
@@ -33276,7 +33276,7 @@ class ifcboundingbox(ifcgeometricrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument zdim is mantatory and can not be set to None')
+				raise AssertionError('Argument zdim is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._zdim = ifcpositivelengthmeasure(value)
 			else:
@@ -33337,7 +33337,7 @@ class ifcishapeprofiledef(ifcparameterizedprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument overallwidth is mantatory and can not be set to None')
+				raise AssertionError('Argument overallwidth is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._overallwidth = ifcpositivelengthmeasure(value)
 			else:
@@ -33351,7 +33351,7 @@ class ifcishapeprofiledef(ifcparameterizedprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument overalldepth is mantatory and can not be set to None')
+				raise AssertionError('Argument overalldepth is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._overalldepth = ifcpositivelengthmeasure(value)
 			else:
@@ -33365,7 +33365,7 @@ class ifcishapeprofiledef(ifcparameterizedprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument webthickness is mantatory and can not be set to None')
+				raise AssertionError('Argument webthickness is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._webthickness = ifcpositivelengthmeasure(value)
 			else:
@@ -33379,7 +33379,7 @@ class ifcishapeprofiledef(ifcparameterizedprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument flangethickness is mantatory and can not be set to None')
+				raise AssertionError('Argument flangethickness is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._flangethickness = ifcpositivelengthmeasure(value)
 			else:
@@ -33473,7 +33473,7 @@ class ifctextstylefordefinedfont(ifcpresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument colour is mantatory and can not be set to None')
+				raise AssertionError('Argument colour is mandatory and can not be set to None')
 			if not check_type(value,ifccolour):
 				self._colour = ifccolour(value)
 			else:
@@ -33547,7 +33547,7 @@ class ifcmonetaryunit(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument currency is mantatory and can not be set to None')
+				raise AssertionError('Argument currency is mandatory and can not be set to None')
 			if not check_type(value,ifclabel):
 				self._currency = ifclabel(value)
 			else:
@@ -33623,7 +33623,7 @@ class ifcrelassignstoprocess(ifcrelassigns):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingprocess is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingprocess is mandatory and can not be set to None')
 			if not check_type(value,ifcprocessselect):
 				self._relatingprocess = ifcprocessselect(value)
 			else:
@@ -33692,7 +33692,7 @@ class ifcsiunit(ifcnamedunit):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,ifcsiunitname):
 				self._name = ifcsiunitname(value)
 			else:
@@ -33729,7 +33729,7 @@ class ifcspaceheatertype(ifcflowterminaltype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcspaceheatertypeenum):
 				self._predefinedtype = ifcspaceheatertypeenum(value)
 			else:
@@ -33763,7 +33763,7 @@ class ifcsubcontractresourcetype(ifcconstructionresourcetype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcsubcontractresourcetypeenum):
 				self._predefinedtype = ifcsubcontractresourcetypeenum(value)
 			else:
@@ -33797,7 +33797,7 @@ class ifcdistributionchamberelementtype(ifcdistributionflowelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcdistributionchamberelementtypeenum):
 				self._predefinedtype = ifcdistributionchamberelementtypeenum(value)
 			else:
@@ -33835,7 +33835,7 @@ class ifcstructuralcurvemember(ifcstructuralmember):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcstructuralcurvemembertypeenum):
 				self._predefinedtype = ifcstructuralcurvemembertypeenum(value)
 			else:
@@ -33849,7 +33849,7 @@ class ifcstructuralcurvemember(ifcstructuralmember):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument axis is mantatory and can not be set to None')
+				raise AssertionError('Argument axis is mandatory and can not be set to None')
 			if not check_type(value,ifcdirection):
 				self._axis = ifcdirection(value)
 			else:
@@ -33883,7 +33883,7 @@ class ifcjunctionboxtype(ifcflowfittingtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcjunctionboxtypeenum):
 				self._predefinedtype = ifcjunctionboxtypeenum(value)
 			else:
@@ -33920,7 +33920,7 @@ class ifccontextdependentunit(ifcnamedunit):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,ifclabel):
 				self._name = ifclabel(value)
 			else:
@@ -33964,7 +33964,7 @@ class ifcsectionproperties(ifcpredefinedproperties):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument sectiontype is mantatory and can not be set to None')
+				raise AssertionError('Argument sectiontype is mandatory and can not be set to None')
 			if not check_type(value,ifcsectiontypeenum):
 				self._sectiontype = ifcsectiontypeenum(value)
 			else:
@@ -33978,7 +33978,7 @@ class ifcsectionproperties(ifcpredefinedproperties):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument startprofile is mantatory and can not be set to None')
+				raise AssertionError('Argument startprofile is mandatory and can not be set to None')
 			if not check_type(value,ifcprofiledef):
 				self._startprofile = ifcprofiledef(value)
 			else:
@@ -34063,7 +34063,7 @@ class ifctriangulatedfaceset(ifctessellatedfaceset):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument coordindex is mantatory and can not be set to None')
+				raise AssertionError('Argument coordindex is mandatory and can not be set to None')
 			if not check_type(value,LIST(1,None,LIST(3,3,'INTEGER', scope = schema_scope))):
 				self._coordindex = LIST(value)
 			else:
@@ -34177,7 +34177,7 @@ class ifcfiltertype(ifcflowtreatmentdevicetype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcfiltertypeenum):
 				self._predefinedtype = ifcfiltertypeenum(value)
 			else:
@@ -34335,7 +34335,7 @@ class ifcpolyloop(ifcloop):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument polygon is mantatory and can not be set to None')
+				raise AssertionError('Argument polygon is mandatory and can not be set to None')
 			if not check_type(value,LIST(3,None,'ifccartesianpoint', scope = schema_scope)):
 				self._polygon = LIST(value)
 			else:
@@ -34369,7 +34369,7 @@ class ifcrelassociatesmaterial(ifcrelassociates):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingmaterial is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingmaterial is mandatory and can not be set to None')
 			if not check_type(value,ifcmaterialselect):
 				self._relatingmaterial = ifcmaterialselect(value)
 			else:
@@ -34410,7 +34410,7 @@ class ifcmedicaldevicetype(ifcflowterminaltype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcmedicaldevicetypeenum):
 				self._predefinedtype = ifcmedicaldevicetypeenum(value)
 			else:
@@ -34444,7 +34444,7 @@ class ifcramptype(ifcbuildingelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcramptypeenum):
 				self._predefinedtype = ifcramptypeenum(value)
 			else:
@@ -34494,7 +34494,7 @@ class ifccshapeprofiledef(ifcparameterizedprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument depth is mantatory and can not be set to None')
+				raise AssertionError('Argument depth is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._depth = ifcpositivelengthmeasure(value)
 			else:
@@ -34508,7 +34508,7 @@ class ifccshapeprofiledef(ifcparameterizedprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument width is mantatory and can not be set to None')
+				raise AssertionError('Argument width is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._width = ifcpositivelengthmeasure(value)
 			else:
@@ -34522,7 +34522,7 @@ class ifccshapeprofiledef(ifcparameterizedprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument wallthickness is mantatory and can not be set to None')
+				raise AssertionError('Argument wallthickness is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._wallthickness = ifcpositivelengthmeasure(value)
 			else:
@@ -34536,7 +34536,7 @@ class ifccshapeprofiledef(ifcparameterizedprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument girth is mantatory and can not be set to None')
+				raise AssertionError('Argument girth is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._girth = ifcpositivelengthmeasure(value)
 			else:
@@ -34926,7 +34926,7 @@ class ifcsectionreinforcementproperties(ifcpredefinedproperties):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument longitudinalstartposition is mantatory and can not be set to None')
+				raise AssertionError('Argument longitudinalstartposition is mandatory and can not be set to None')
 			if not check_type(value,ifclengthmeasure):
 				self._longitudinalstartposition = ifclengthmeasure(value)
 			else:
@@ -34940,7 +34940,7 @@ class ifcsectionreinforcementproperties(ifcpredefinedproperties):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument longitudinalendposition is mantatory and can not be set to None')
+				raise AssertionError('Argument longitudinalendposition is mandatory and can not be set to None')
 			if not check_type(value,ifclengthmeasure):
 				self._longitudinalendposition = ifclengthmeasure(value)
 			else:
@@ -34968,7 +34968,7 @@ class ifcsectionreinforcementproperties(ifcpredefinedproperties):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument reinforcementrole is mantatory and can not be set to None')
+				raise AssertionError('Argument reinforcementrole is mandatory and can not be set to None')
 			if not check_type(value,ifcreinforcingbarroleenum):
 				self._reinforcementrole = ifcreinforcingbarroleenum(value)
 			else:
@@ -34982,7 +34982,7 @@ class ifcsectionreinforcementproperties(ifcpredefinedproperties):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument sectiondefinition is mantatory and can not be set to None')
+				raise AssertionError('Argument sectiondefinition is mandatory and can not be set to None')
 			if not check_type(value,ifcsectionproperties):
 				self._sectiondefinition = ifcsectionproperties(value)
 			else:
@@ -34996,7 +34996,7 @@ class ifcsectionreinforcementproperties(ifcpredefinedproperties):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument crosssectionreinforcementdefinitions is mantatory and can not be set to None')
+				raise AssertionError('Argument crosssectionreinforcementdefinitions is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcreinforcementbarproperties', scope = schema_scope)):
 				self._crosssectionreinforcementdefinitions = SET(value)
 			else:
@@ -35023,7 +35023,7 @@ class ifcrelassignstoresource(ifcrelassigns):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingresource is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingresource is mandatory and can not be set to None')
 			if not check_type(value,ifcresourceselect):
 				self._relatingresource = ifcresourceselect(value)
 			else:
@@ -35097,7 +35097,7 @@ class ifcmaterialprofileset(ifcmaterialdefinition):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument materialprofiles is mantatory and can not be set to None')
+				raise AssertionError('Argument materialprofiles is mandatory and can not be set to None')
 			if not check_type(value,LIST(1,None,'ifcmaterialprofile', scope = schema_scope)):
 				self._materialprofiles = LIST(value)
 			else:
@@ -35401,7 +35401,7 @@ class ifcrelconnectspathelements(ifcrelconnectselements):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingpriorities is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingpriorities is mandatory and can not be set to None')
 			if not check_type(value,LIST(0,None,'(null)', scope = schema_scope)):
 				self._relatingpriorities = LIST(value)
 			else:
@@ -35415,7 +35415,7 @@ class ifcrelconnectspathelements(ifcrelconnectselements):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatedpriorities is mantatory and can not be set to None')
+				raise AssertionError('Argument relatedpriorities is mandatory and can not be set to None')
 			if not check_type(value,LIST(0,None,'(null)', scope = schema_scope)):
 				self._relatedpriorities = LIST(value)
 			else:
@@ -35429,7 +35429,7 @@ class ifcrelconnectspathelements(ifcrelconnectselements):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatedconnectiontype is mantatory and can not be set to None')
+				raise AssertionError('Argument relatedconnectiontype is mandatory and can not be set to None')
 			if not check_type(value,ifcconnectiontypeenum):
 				self._relatedconnectiontype = ifcconnectiontypeenum(value)
 			else:
@@ -35443,7 +35443,7 @@ class ifcrelconnectspathelements(ifcrelconnectselements):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingconnectiontype is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingconnectiontype is mandatory and can not be set to None')
 			if not check_type(value,ifcconnectiontypeenum):
 				self._relatingconnectiontype = ifcconnectiontypeenum(value)
 			else:
@@ -35484,7 +35484,7 @@ class ifccurtainwalltype(ifcbuildingelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifccurtainwalltypeenum):
 				self._predefinedtype = ifccurtainwalltypeenum(value)
 			else:
@@ -35538,7 +35538,7 @@ class ifcrelcoversbldgelements(ifcrelconnects):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingbuildingelement is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingbuildingelement is mandatory and can not be set to None')
 			if not check_type(value,ifcelement):
 				self._relatingbuildingelement = ifcelement(value)
 			else:
@@ -35552,7 +35552,7 @@ class ifcrelcoversbldgelements(ifcrelconnects):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatedcoverings is mantatory and can not be set to None')
+				raise AssertionError('Argument relatedcoverings is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifccovering', scope = schema_scope)):
 				self._relatedcoverings = SET(value)
 			else:
@@ -35591,7 +35591,7 @@ class ifcdoorstyle(ifctypeproduct):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument operationtype is mantatory and can not be set to None')
+				raise AssertionError('Argument operationtype is mandatory and can not be set to None')
 			if not check_type(value,ifcdoorstyleoperationenum):
 				self._operationtype = ifcdoorstyleoperationenum(value)
 			else:
@@ -35605,7 +35605,7 @@ class ifcdoorstyle(ifctypeproduct):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument constructiontype is mantatory and can not be set to None')
+				raise AssertionError('Argument constructiontype is mandatory and can not be set to None')
 			if not check_type(value,ifcdoorstyleconstructionenum):
 				self._constructiontype = ifcdoorstyleconstructionenum(value)
 			else:
@@ -35619,7 +35619,7 @@ class ifcdoorstyle(ifctypeproduct):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument parametertakesprecedence is mantatory and can not be set to None')
+				raise AssertionError('Argument parametertakesprecedence is mandatory and can not be set to None')
 			if not check_type(value,BOOLEAN):
 				self._parametertakesprecedence = BOOLEAN(value)
 			else:
@@ -35633,7 +35633,7 @@ class ifcdoorstyle(ifctypeproduct):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument sizeable is mantatory and can not be set to None')
+				raise AssertionError('Argument sizeable is mandatory and can not be set to None')
 			if not check_type(value,BOOLEAN):
 				self._sizeable = BOOLEAN(value)
 			else:
@@ -35664,7 +35664,7 @@ class ifcellipse(ifcconic):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument semiaxis1 is mantatory and can not be set to None')
+				raise AssertionError('Argument semiaxis1 is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._semiaxis1 = ifcpositivelengthmeasure(value)
 			else:
@@ -35678,7 +35678,7 @@ class ifcellipse(ifcconic):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument semiaxis2 is mantatory and can not be set to None')
+				raise AssertionError('Argument semiaxis2 is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._semiaxis2 = ifcpositivelengthmeasure(value)
 			else:
@@ -35705,7 +35705,7 @@ class ifcstairflighttype(ifcbuildingelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcstairflighttypeenum):
 				self._predefinedtype = ifcstairflighttypeenum(value)
 			else:
@@ -35824,7 +35824,7 @@ class ifcstyleditem(ifcrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument styles is mantatory and can not be set to None')
+				raise AssertionError('Argument styles is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcstyleassignmentselect', scope = schema_scope)):
 				self._styles = SET(value)
 			else:
@@ -35892,7 +35892,7 @@ class ifclshapeprofiledef(ifcparameterizedprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument depth is mantatory and can not be set to None')
+				raise AssertionError('Argument depth is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._depth = ifcpositivelengthmeasure(value)
 			else:
@@ -35920,7 +35920,7 @@ class ifclshapeprofiledef(ifcparameterizedprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument thickness is mantatory and can not be set to None')
+				raise AssertionError('Argument thickness is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._thickness = ifcpositivelengthmeasure(value)
 			else:
@@ -36050,7 +36050,7 @@ class ifcflowinstrumenttype(ifcdistributioncontrolelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcflowinstrumenttypeenum):
 				self._predefinedtype = ifcflowinstrumenttypeenum(value)
 			else:
@@ -36084,7 +36084,7 @@ class ifccircle(ifcconic):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument radius is mantatory and can not be set to None')
+				raise AssertionError('Argument radius is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._radius = ifcpositivelengthmeasure(value)
 			else:
@@ -36152,7 +36152,7 @@ class ifcmotorconnectiontype(ifcenergyconversiondevicetype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcmotorconnectiontypeenum):
 				self._predefinedtype = ifcmotorconnectiontypeenum(value)
 			else:
@@ -36225,7 +36225,7 @@ class ifcpropertysettemplate(ifcpropertytemplatedefinition):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument haspropertytemplates is mantatory and can not be set to None')
+				raise AssertionError('Argument haspropertytemplates is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcpropertytemplate', scope = schema_scope)):
 				self._haspropertytemplates = SET(value)
 			else:
@@ -36278,7 +36278,7 @@ class ifcshellbasedsurfacemodel(ifcgeometricrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument sbsmboundary is mantatory and can not be set to None')
+				raise AssertionError('Argument sbsmboundary is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcshell', scope = schema_scope)):
 				self._sbsmboundary = SET(value)
 			else:
@@ -36378,7 +36378,7 @@ class ifcrampflighttype(ifcbuildingelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcrampflighttypeenum):
 				self._predefinedtype = ifcrampflighttypeenum(value)
 			else:
@@ -36424,7 +36424,7 @@ class ifcsurfacecurvesweptareasolid(ifcsweptareasolid):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument directrix is mantatory and can not be set to None')
+				raise AssertionError('Argument directrix is mandatory and can not be set to None')
 			if not check_type(value,ifccurve):
 				self._directrix = ifccurve(value)
 			else:
@@ -36466,7 +36466,7 @@ class ifcsurfacecurvesweptareasolid(ifcsweptareasolid):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument referencesurface is mantatory and can not be set to None')
+				raise AssertionError('Argument referencesurface is mandatory and can not be set to None')
 			if not check_type(value,ifcsurface):
 				self._referencesurface = ifcsurface(value)
 			else:
@@ -36522,7 +36522,7 @@ class ifcbsplinesurfacewithknots(ifcbsplinesurface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument umultiplicities is mantatory and can not be set to None')
+				raise AssertionError('Argument umultiplicities is mandatory and can not be set to None')
 			if not check_type(value,LIST(2,None,'INTEGER', scope = schema_scope)):
 				self._umultiplicities = LIST(value)
 			else:
@@ -36536,7 +36536,7 @@ class ifcbsplinesurfacewithknots(ifcbsplinesurface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument vmultiplicities is mantatory and can not be set to None')
+				raise AssertionError('Argument vmultiplicities is mandatory and can not be set to None')
 			if not check_type(value,LIST(2,None,'INTEGER', scope = schema_scope)):
 				self._vmultiplicities = LIST(value)
 			else:
@@ -36550,7 +36550,7 @@ class ifcbsplinesurfacewithknots(ifcbsplinesurface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument uknots is mantatory and can not be set to None')
+				raise AssertionError('Argument uknots is mandatory and can not be set to None')
 			if not check_type(value,LIST(2,None,'REAL', scope = schema_scope)):
 				self._uknots = LIST(value)
 			else:
@@ -36564,7 +36564,7 @@ class ifcbsplinesurfacewithknots(ifcbsplinesurface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument vknots is mantatory and can not be set to None')
+				raise AssertionError('Argument vknots is mandatory and can not be set to None')
 			if not check_type(value,LIST(2,None,'REAL', scope = schema_scope)):
 				self._vknots = LIST(value)
 			else:
@@ -36578,7 +36578,7 @@ class ifcbsplinesurfacewithknots(ifcbsplinesurface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument knotspec is mantatory and can not be set to None')
+				raise AssertionError('Argument knotspec is mandatory and can not be set to None')
 			if not check_type(value,ifcknottype):
 				self._knotspec = ifcknottype(value)
 			else:
@@ -36656,7 +36656,7 @@ class ifcreationalbsplinesurfacewithknots(ifcbsplinesurfacewithknots):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument weightsdata is mantatory and can not be set to None')
+				raise AssertionError('Argument weightsdata is mandatory and can not be set to None')
 			if not check_type(value,LIST(2,None,LIST(2,None,'REAL', scope = schema_scope))):
 				self._weightsdata = LIST(value)
 			else:
@@ -36809,7 +36809,7 @@ class ifcspatialzonetype(ifcspatialelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcspatialzonetypeenum):
 				self._predefinedtype = ifcspatialzonetypeenum(value)
 			else:
@@ -36929,7 +36929,7 @@ class ifcpointonsurface(ifcpoint):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument basissurface is mantatory and can not be set to None')
+				raise AssertionError('Argument basissurface is mandatory and can not be set to None')
 			if not check_type(value,ifcsurface):
 				self._basissurface = ifcsurface(value)
 			else:
@@ -36943,7 +36943,7 @@ class ifcpointonsurface(ifcpoint):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument pointparameteru is mantatory and can not be set to None')
+				raise AssertionError('Argument pointparameteru is mandatory and can not be set to None')
 			if not check_type(value,ifcparametervalue):
 				self._pointparameteru = ifcparametervalue(value)
 			else:
@@ -36957,7 +36957,7 @@ class ifcpointonsurface(ifcpoint):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument pointparameterv is mantatory and can not be set to None')
+				raise AssertionError('Argument pointparameterv is mandatory and can not be set to None')
 			if not check_type(value,ifcparametervalue):
 				self._pointparameterv = ifcparametervalue(value)
 			else:
@@ -36994,7 +36994,7 @@ class ifcboilertype(ifcenergyconversiondevicetype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcboilertypeenum):
 				self._predefinedtype = ifcboilertypeenum(value)
 			else:
@@ -37031,7 +37031,7 @@ class ifcactor(ifcobject):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument theactor is mantatory and can not be set to None')
+				raise AssertionError('Argument theactor is mandatory and can not be set to None')
 			if not check_type(value,ifcactorselect):
 				self._theactor = ifcactorselect(value)
 			else:
@@ -37105,7 +37105,7 @@ class ifcrelcontainedinspatialstructure(ifcrelconnects):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatedelements is mantatory and can not be set to None')
+				raise AssertionError('Argument relatedelements is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcproduct', scope = schema_scope)):
 				self._relatedelements = SET(value)
 			else:
@@ -37119,7 +37119,7 @@ class ifcrelcontainedinspatialstructure(ifcrelconnects):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingstructure is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingstructure is mandatory and can not be set to None')
 			if not check_type(value,ifcspatialelement):
 				self._relatingstructure = ifcspatialelement(value)
 			else:
@@ -37269,7 +37269,7 @@ class ifcoffsetcurve3d(ifccurve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument basiscurve is mantatory and can not be set to None')
+				raise AssertionError('Argument basiscurve is mandatory and can not be set to None')
 			if not check_type(value,ifccurve):
 				self._basiscurve = ifccurve(value)
 			else:
@@ -37283,7 +37283,7 @@ class ifcoffsetcurve3d(ifccurve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument distance is mantatory and can not be set to None')
+				raise AssertionError('Argument distance is mandatory and can not be set to None')
 			if not check_type(value,ifclengthmeasure):
 				self._distance = ifclengthmeasure(value)
 			else:
@@ -37297,7 +37297,7 @@ class ifcoffsetcurve3d(ifccurve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument selfintersect is mantatory and can not be set to None')
+				raise AssertionError('Argument selfintersect is mandatory and can not be set to None')
 			if not check_type(value,LOGICAL):
 				self._selfintersect = LOGICAL(value)
 			else:
@@ -37311,7 +37311,7 @@ class ifcoffsetcurve3d(ifccurve):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument refdirection is mantatory and can not be set to None')
+				raise AssertionError('Argument refdirection is mandatory and can not be set to None')
 			if not check_type(value,ifcdirection):
 				self._refdirection = ifcdirection(value)
 			else:
@@ -37345,7 +37345,7 @@ class ifcvibrationisolatortype(ifcelementcomponenttype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcvibrationisolatortypeenum):
 				self._predefinedtype = ifcvibrationisolatortypeenum(value)
 			else:
@@ -37383,7 +37383,7 @@ class ifcconnectionvolumegeometry(ifcconnectiongeometry):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument volumeonrelatingelement is mantatory and can not be set to None')
+				raise AssertionError('Argument volumeonrelatingelement is mandatory and can not be set to None')
 			if not check_type(value,ifcsolidorshell):
 				self._volumeonrelatingelement = ifcsolidorshell(value)
 			else:
@@ -37469,7 +37469,7 @@ class ifcreldefinesbyobject(ifcreldefines):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatedobjects is mantatory and can not be set to None')
+				raise AssertionError('Argument relatedobjects is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcobject', scope = schema_scope)):
 				self._relatedobjects = SET(value)
 			else:
@@ -37483,7 +37483,7 @@ class ifcreldefinesbyobject(ifcreldefines):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingobject is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingobject is mandatory and can not be set to None')
 			if not check_type(value,ifcobject):
 				self._relatingobject = ifcobject(value)
 			else:
@@ -37608,7 +37608,7 @@ class ifctransformertype(ifcenergyconversiondevicetype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifctransformertypeenum):
 				self._predefinedtype = ifctransformertypeenum(value)
 			else:
@@ -37653,7 +37653,7 @@ class ifcapplication(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument applicationdeveloper is mantatory and can not be set to None')
+				raise AssertionError('Argument applicationdeveloper is mandatory and can not be set to None')
 			if not check_type(value,ifcorganization):
 				self._applicationdeveloper = ifcorganization(value)
 			else:
@@ -37667,7 +37667,7 @@ class ifcapplication(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument version is mantatory and can not be set to None')
+				raise AssertionError('Argument version is mandatory and can not be set to None')
 			if not check_type(value,ifclabel):
 				self._version = ifclabel(value)
 			else:
@@ -37681,7 +37681,7 @@ class ifcapplication(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument applicationfullname is mantatory and can not be set to None')
+				raise AssertionError('Argument applicationfullname is mandatory and can not be set to None')
 			if not check_type(value,ifclabel):
 				self._applicationfullname = ifclabel(value)
 			else:
@@ -37695,7 +37695,7 @@ class ifcapplication(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument applicationidentifier is mantatory and can not be set to None')
+				raise AssertionError('Argument applicationidentifier is mandatory and can not be set to None')
 			if not check_type(value,ifcidentifier):
 				self._applicationidentifier = ifcidentifier(value)
 			else:
@@ -37726,7 +37726,7 @@ class ifcreldeclares(ifcrelationship):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingcontext is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingcontext is mandatory and can not be set to None')
 			if not check_type(value,ifccontext):
 				self._relatingcontext = ifccontext(value)
 			else:
@@ -37740,7 +37740,7 @@ class ifcreldeclares(ifcrelationship):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relateddefinitions is mantatory and can not be set to None')
+				raise AssertionError('Argument relateddefinitions is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcdefinitionselect', scope = schema_scope)):
 				self._relateddefinitions = SET(value)
 			else:
@@ -37774,7 +37774,7 @@ class ifccoveringtype(ifcbuildingelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifccoveringtypeenum):
 				self._predefinedtype = ifccoveringtypeenum(value)
 			else:
@@ -37848,7 +37848,7 @@ class ifccirclehollowprofiledef(ifccircleprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument wallthickness is mantatory and can not be set to None')
+				raise AssertionError('Argument wallthickness is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._wallthickness = ifcpositivelengthmeasure(value)
 			else:
@@ -37882,7 +37882,7 @@ class ifcgeographicelementtype(ifcelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcgeographicelementtypeenum):
 				self._predefinedtype = ifcgeographicelementtypeenum(value)
 			else:
@@ -37957,7 +37957,7 @@ class ifccenterlineprofiledef(ifcarbitraryopenprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument thickness is mantatory and can not be set to None')
+				raise AssertionError('Argument thickness is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._thickness = ifcpositivelengthmeasure(value)
 			else:
@@ -38000,7 +38000,7 @@ class ifcvector(ifcgeometricrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument orientation is mantatory and can not be set to None')
+				raise AssertionError('Argument orientation is mandatory and can not be set to None')
 			if not check_type(value,ifcdirection):
 				self._orientation = ifcdirection(value)
 			else:
@@ -38014,7 +38014,7 @@ class ifcvector(ifcgeometricrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument magnitude is mantatory and can not be set to None')
+				raise AssertionError('Argument magnitude is mandatory and can not be set to None')
 			if not check_type(value,ifclengthmeasure):
 				self._magnitude = ifclengthmeasure(value)
 			else:
@@ -38111,7 +38111,7 @@ class ifcmeasurewithunit(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument valuecomponent is mantatory and can not be set to None')
+				raise AssertionError('Argument valuecomponent is mandatory and can not be set to None')
 			if not check_type(value,ifcvalue):
 				self._valuecomponent = ifcvalue(value)
 			else:
@@ -38125,7 +38125,7 @@ class ifcmeasurewithunit(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument unitcomponent is mantatory and can not be set to None')
+				raise AssertionError('Argument unitcomponent is mandatory and can not be set to None')
 			if not check_type(value,ifcunit):
 				self._unitcomponent = ifcunit(value)
 			else:
@@ -38160,7 +38160,7 @@ class ifcrectangularpyramid(ifccsgprimitive3d):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument xlength is mantatory and can not be set to None')
+				raise AssertionError('Argument xlength is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._xlength = ifcpositivelengthmeasure(value)
 			else:
@@ -38174,7 +38174,7 @@ class ifcrectangularpyramid(ifccsgprimitive3d):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument ylength is mantatory and can not be set to None')
+				raise AssertionError('Argument ylength is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._ylength = ifcpositivelengthmeasure(value)
 			else:
@@ -38188,7 +38188,7 @@ class ifcrectangularpyramid(ifccsgprimitive3d):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument height is mantatory and can not be set to None')
+				raise AssertionError('Argument height is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._height = ifcpositivelengthmeasure(value)
 			else:
@@ -38219,7 +38219,7 @@ class ifcsurfacestyle(ifcpresentationstyle):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument side is mantatory and can not be set to None')
+				raise AssertionError('Argument side is mandatory and can not be set to None')
 			if not check_type(value,ifcsurfaceside):
 				self._side = ifcsurfaceside(value)
 			else:
@@ -38233,7 +38233,7 @@ class ifcsurfacestyle(ifcpresentationstyle):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument styles is mantatory and can not be set to None')
+				raise AssertionError('Argument styles is mandatory and can not be set to None')
 			if not check_type(value,SET(1,5,'ifcsurfacestyleelementselect', scope = schema_scope)):
 				self._styles = SET(value)
 			else:
@@ -38295,7 +38295,7 @@ class ifcelectricmotortype(ifcenergyconversiondevicetype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcelectricmotortypeenum):
 				self._predefinedtype = ifcelectricmotortypeenum(value)
 			else:
@@ -38329,7 +38329,7 @@ class ifcproceduretype(ifctypeprocess):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcproceduretypeenum):
 				self._predefinedtype = ifcproceduretypeenum(value)
 			else:
@@ -38366,7 +38366,7 @@ class ifcirregulartimeseriesvalue(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument timestamp is mantatory and can not be set to None')
+				raise AssertionError('Argument timestamp is mandatory and can not be set to None')
 			if not check_type(value,ifcdatetime):
 				self._timestamp = ifcdatetime(value)
 			else:
@@ -38380,7 +38380,7 @@ class ifcirregulartimeseriesvalue(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument listvalues is mantatory and can not be set to None')
+				raise AssertionError('Argument listvalues is mandatory and can not be set to None')
 			if not check_type(value,LIST(1,None,'ifcvalue', scope = schema_scope)):
 				self._listvalues = LIST(value)
 			else:
@@ -38448,7 +38448,7 @@ class ifcsolardevicetype(ifcenergyconversiondevicetype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcsolardevicetypeenum):
 				self._predefinedtype = ifcsolardevicetypeenum(value)
 			else:
@@ -38493,7 +38493,7 @@ class ifcpresentationlayerassignment(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,ifclabel):
 				self._name = ifclabel(value)
 			else:
@@ -38521,7 +38521,7 @@ class ifcpresentationlayerassignment(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument assigneditems is mantatory and can not be set to None')
+				raise AssertionError('Argument assigneditems is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifclayereditem', scope = schema_scope)):
 				self._assigneditems = SET(value)
 			else:
@@ -38596,7 +38596,7 @@ class ifcrelassociatesapproval(ifcrelassociates):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingapproval is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingapproval is mandatory and can not be set to None')
 			if not check_type(value,ifcapproval):
 				self._relatingapproval = ifcapproval(value)
 			else:
@@ -38721,7 +38721,7 @@ class ifcdirection(ifcgeometricrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument directionratios is mantatory and can not be set to None')
+				raise AssertionError('Argument directionratios is mandatory and can not be set to None')
 			if not check_type(value,LIST(2,3,'REAL', scope = schema_scope)):
 				self._directionratios = LIST(value)
 			else:
@@ -38810,7 +38810,7 @@ class ifcstructuralloadconfiguration(ifcstructuralload):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument values is mantatory and can not be set to None')
+				raise AssertionError('Argument values is mandatory and can not be set to None')
 			if not check_type(value,LIST(1,None,'ifcstructuralloadorresult', scope = schema_scope)):
 				self._values = LIST(value)
 			else:
@@ -38882,7 +38882,7 @@ class ifcfillareastyletiles(ifcgeometricrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument tilingpattern is mantatory and can not be set to None')
+				raise AssertionError('Argument tilingpattern is mandatory and can not be set to None')
 			if not check_type(value,LIST(2,2,'ifcvector', scope = schema_scope)):
 				self._tilingpattern = LIST(value)
 			else:
@@ -38896,7 +38896,7 @@ class ifcfillareastyletiles(ifcgeometricrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument tiles is mantatory and can not be set to None')
+				raise AssertionError('Argument tiles is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcstyleditem', scope = schema_scope)):
 				self._tiles = SET(value)
 			else:
@@ -38910,7 +38910,7 @@ class ifcfillareastyletiles(ifcgeometricrepresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument tilingscale is mantatory and can not be set to None')
+				raise AssertionError('Argument tilingscale is mandatory and can not be set to None')
 			if not check_type(value,ifcpositiveratiomeasure):
 				self._tilingscale = ifcpositiveratiomeasure(value)
 			else:
@@ -38937,7 +38937,7 @@ class ifcbeamtype(ifcbuildingelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcbeamtypeenum):
 				self._predefinedtype = ifcbeamtypeenum(value)
 			else:
@@ -38971,7 +38971,7 @@ class ifcextrudedareasolidtapered(ifcextrudedareasolid):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument endsweptarea is mantatory and can not be set to None')
+				raise AssertionError('Argument endsweptarea is mandatory and can not be set to None')
 			if not check_type(value,ifcprofiledef):
 				self._endsweptarea = ifcprofiledef(value)
 			else:
@@ -39025,7 +39025,7 @@ class ifclightsourcegoniometric(ifclightsource):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument position is mantatory and can not be set to None')
+				raise AssertionError('Argument position is mandatory and can not be set to None')
 			if not check_type(value,ifcaxis2placement3d):
 				self._position = ifcaxis2placement3d(value)
 			else:
@@ -39053,7 +39053,7 @@ class ifclightsourcegoniometric(ifclightsource):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument colourtemperature is mantatory and can not be set to None')
+				raise AssertionError('Argument colourtemperature is mandatory and can not be set to None')
 			if not check_type(value,ifcthermodynamictemperaturemeasure):
 				self._colourtemperature = ifcthermodynamictemperaturemeasure(value)
 			else:
@@ -39067,7 +39067,7 @@ class ifclightsourcegoniometric(ifclightsource):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument luminousflux is mantatory and can not be set to None')
+				raise AssertionError('Argument luminousflux is mandatory and can not be set to None')
 			if not check_type(value,ifcluminousfluxmeasure):
 				self._luminousflux = ifcluminousfluxmeasure(value)
 			else:
@@ -39081,7 +39081,7 @@ class ifclightsourcegoniometric(ifclightsource):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument lightemissionsource is mantatory and can not be set to None')
+				raise AssertionError('Argument lightemissionsource is mandatory and can not be set to None')
 			if not check_type(value,ifclightemissionsourceenum):
 				self._lightemissionsource = ifclightemissionsourceenum(value)
 			else:
@@ -39095,7 +39095,7 @@ class ifclightsourcegoniometric(ifclightsource):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument lightdistributiondatasource is mantatory and can not be set to None')
+				raise AssertionError('Argument lightdistributiondatasource is mandatory and can not be set to None')
 			if not check_type(value,ifclightdistributiondatasourceselect):
 				self._lightdistributiondatasource = ifclightdistributiondatasourceselect(value)
 			else:
@@ -39122,7 +39122,7 @@ class ifcsensortype(ifcdistributioncontrolelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcsensortypeenum):
 				self._predefinedtype = ifcsensortypeenum(value)
 			else:
@@ -39160,7 +39160,7 @@ class ifcrelassignstoactor(ifcrelassigns):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingactor is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingactor is mandatory and can not be set to None')
 			if not check_type(value,ifcactor):
 				self._relatingactor = ifcactor(value)
 			else:
@@ -39231,7 +39231,7 @@ class ifccylindricalsurface(ifcelementarysurface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument radius is mantatory and can not be set to None')
+				raise AssertionError('Argument radius is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._radius = ifcpositivelengthmeasure(value)
 			else:
@@ -39373,7 +39373,7 @@ class ifcstructuralresultgroup(ifcgroup):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument theorytype is mantatory and can not be set to None')
+				raise AssertionError('Argument theorytype is mandatory and can not be set to None')
 			if not check_type(value,ifcanalysistheorytypeenum):
 				self._theorytype = ifcanalysistheorytypeenum(value)
 			else:
@@ -39401,7 +39401,7 @@ class ifcstructuralresultgroup(ifcgroup):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument islinear is mantatory and can not be set to None')
+				raise AssertionError('Argument islinear is mandatory and can not be set to None')
 			if not check_type(value,BOOLEAN):
 				self._islinear = BOOLEAN(value)
 			else:
@@ -39482,7 +39482,7 @@ class ifcblock(ifccsgprimitive3d):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument xlength is mantatory and can not be set to None')
+				raise AssertionError('Argument xlength is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._xlength = ifcpositivelengthmeasure(value)
 			else:
@@ -39496,7 +39496,7 @@ class ifcblock(ifccsgprimitive3d):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument ylength is mantatory and can not be set to None')
+				raise AssertionError('Argument ylength is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._ylength = ifcpositivelengthmeasure(value)
 			else:
@@ -39510,7 +39510,7 @@ class ifcblock(ifccsgprimitive3d):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument zlength is mantatory and can not be set to None')
+				raise AssertionError('Argument zlength is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._zlength = ifcpositivelengthmeasure(value)
 			else:
@@ -39541,7 +39541,7 @@ class ifcconnectionpointgeometry(ifcconnectiongeometry):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument pointonrelatingelement is mantatory and can not be set to None')
+				raise AssertionError('Argument pointonrelatingelement is mandatory and can not be set to None')
 			if not check_type(value,ifcpointorvertexpoint):
 				self._pointonrelatingelement = ifcpointorvertexpoint(value)
 			else:
@@ -39657,7 +39657,7 @@ class ifcedgeloop(ifcloop):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument edgelist is mantatory and can not be set to None')
+				raise AssertionError('Argument edgelist is mandatory and can not be set to None')
 			if not check_type(value,LIST(1,None,'ifcorientededge', scope = schema_scope)):
 				self._edgelist = LIST(value)
 			else:
@@ -39712,7 +39712,7 @@ class ifcrelservicesbuildings(ifcrelconnects):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingsystem is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingsystem is mandatory and can not be set to None')
 			if not check_type(value,ifcsystem):
 				self._relatingsystem = ifcsystem(value)
 			else:
@@ -39726,7 +39726,7 @@ class ifcrelservicesbuildings(ifcrelconnects):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatedbuildings is mantatory and can not be set to None')
+				raise AssertionError('Argument relatedbuildings is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcspatialelement', scope = schema_scope)):
 				self._relatedbuildings = SET(value)
 			else:
@@ -39757,7 +39757,7 @@ class ifctexturecoordinategenerator(ifctexturecoordinate):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument mode is mantatory and can not be set to None')
+				raise AssertionError('Argument mode is mandatory and can not be set to None')
 			if not check_type(value,ifclabel):
 				self._mode = ifclabel(value)
 			else:
@@ -39798,7 +39798,7 @@ class ifccablecarrierfittingtype(ifcflowfittingtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifccablecarrierfittingtypeenum):
 				self._predefinedtype = ifccablecarrierfittingtypeenum(value)
 			else:
@@ -39832,7 +39832,7 @@ class ifcelementassemblytype(ifcelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcelementassemblytypeenum):
 				self._predefinedtype = ifcelementassemblytypeenum(value)
 			else:
@@ -39866,7 +39866,7 @@ class ifcductfittingtype(ifcflowfittingtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcductfittingtypeenum):
 				self._predefinedtype = ifcductfittingtypeenum(value)
 			else:
@@ -39918,7 +39918,7 @@ class ifclocalplacement(ifcobjectplacement):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relativeplacement is mantatory and can not be set to None')
+				raise AssertionError('Argument relativeplacement is mandatory and can not be set to None')
 			if not check_type(value,ifcaxis2placement):
 				self._relativeplacement = ifcaxis2placement(value)
 			else:
@@ -39952,7 +39952,7 @@ class ifcpropertyset(ifcpropertysetdefinition):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument hasproperties is mantatory and can not be set to None')
+				raise AssertionError('Argument hasproperties is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcproperty', scope = schema_scope)):
 				self._hasproperties = SET(value)
 			else:
@@ -40002,7 +40002,7 @@ class ifcunitaryequipmenttype(ifcenergyconversiondevicetype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcunitaryequipmenttypeenum):
 				self._predefinedtype = ifcunitaryequipmenttypeenum(value)
 			else:
@@ -40074,7 +40074,7 @@ class ifcrelprojectselement(ifcreldecomposes):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingelement is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingelement is mandatory and can not be set to None')
 			if not check_type(value,ifcelement):
 				self._relatingelement = ifcelement(value)
 			else:
@@ -40088,7 +40088,7 @@ class ifcrelprojectselement(ifcreldecomposes):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatedfeatureelement is mantatory and can not be set to None')
+				raise AssertionError('Argument relatedfeatureelement is mandatory and can not be set to None')
 			if not check_type(value,ifcfeatureelementaddition):
 				self._relatedfeatureelement = ifcfeatureelementaddition(value)
 			else:
@@ -40115,7 +40115,7 @@ class ifcburnertype(ifcenergyconversiondevicetype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcburnertypeenum):
 				self._predefinedtype = ifcburnertypeenum(value)
 			else:
@@ -40238,7 +40238,7 @@ class ifctanktype(ifcflowstoragedevicetype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifctanktypeenum):
 				self._predefinedtype = ifctanktypeenum(value)
 			else:
@@ -40272,7 +40272,7 @@ class ifcchimneytype(ifcbuildingelementtype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcchimneytypeenum):
 				self._predefinedtype = ifcchimneytypeenum(value)
 			else:
@@ -40318,7 +40318,7 @@ class ifcwindowstyle(ifctypeproduct):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument constructiontype is mantatory and can not be set to None')
+				raise AssertionError('Argument constructiontype is mandatory and can not be set to None')
 			if not check_type(value,ifcwindowstyleconstructionenum):
 				self._constructiontype = ifcwindowstyleconstructionenum(value)
 			else:
@@ -40332,7 +40332,7 @@ class ifcwindowstyle(ifctypeproduct):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument operationtype is mantatory and can not be set to None')
+				raise AssertionError('Argument operationtype is mandatory and can not be set to None')
 			if not check_type(value,ifcwindowstyleoperationenum):
 				self._operationtype = ifcwindowstyleoperationenum(value)
 			else:
@@ -40346,7 +40346,7 @@ class ifcwindowstyle(ifctypeproduct):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument parametertakesprecedence is mantatory and can not be set to None')
+				raise AssertionError('Argument parametertakesprecedence is mandatory and can not be set to None')
 			if not check_type(value,BOOLEAN):
 				self._parametertakesprecedence = BOOLEAN(value)
 			else:
@@ -40360,7 +40360,7 @@ class ifcwindowstyle(ifctypeproduct):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument sizeable is mantatory and can not be set to None')
+				raise AssertionError('Argument sizeable is mandatory and can not be set to None')
 			if not check_type(value,BOOLEAN):
 				self._sizeable = BOOLEAN(value)
 			else:
@@ -40515,7 +40515,7 @@ class ifccompositeprofiledef(ifcprofiledef):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument profiles is mantatory and can not be set to None')
+				raise AssertionError('Argument profiles is mandatory and can not be set to None')
 			if not check_type(value,SET(2,None,'ifcprofiledef', scope = schema_scope)):
 				self._profiles = SET(value)
 			else:
@@ -40782,7 +40782,7 @@ class ifcirregulartimeseries(ifctimeseries):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument values is mantatory and can not be set to None')
+				raise AssertionError('Argument values is mandatory and can not be set to None')
 			if not check_type(value,LIST(1,None,'ifcirregulartimeseriesvalue', scope = schema_scope)):
 				self._values = LIST(value)
 			else:
@@ -40813,7 +40813,7 @@ class ifcblobtexture(ifcsurfacetexture):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument rasterformat is mantatory and can not be set to None')
+				raise AssertionError('Argument rasterformat is mandatory and can not be set to None')
 			if not check_type(value,ifcidentifier):
 				self._rasterformat = ifcidentifier(value)
 			else:
@@ -40827,7 +40827,7 @@ class ifcblobtexture(ifcsurfacetexture):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument rastercode is mantatory and can not be set to None')
+				raise AssertionError('Argument rastercode is mandatory and can not be set to None')
 			if not check_type(value,(null)):
 				self._rastercode = (null)(value)
 			else:
@@ -40871,7 +40871,7 @@ class ifclightintensitydistribution(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument lightdistributioncurve is mantatory and can not be set to None')
+				raise AssertionError('Argument lightdistributioncurve is mandatory and can not be set to None')
 			if not check_type(value,ifclightdistributioncurveenum):
 				self._lightdistributioncurve = ifclightdistributioncurveenum(value)
 			else:
@@ -40885,7 +40885,7 @@ class ifclightintensitydistribution(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument distributiondata is mantatory and can not be set to None')
+				raise AssertionError('Argument distributiondata is mandatory and can not be set to None')
 			if not check_type(value,LIST(1,None,'ifclightdistributiondata', scope = schema_scope)):
 				self._distributiondata = LIST(value)
 			else:
@@ -40920,7 +40920,7 @@ class ifccurveboundedsurface(ifcboundedsurface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument basissurface is mantatory and can not be set to None')
+				raise AssertionError('Argument basissurface is mandatory and can not be set to None')
 			if not check_type(value,ifcsurface):
 				self._basissurface = ifcsurface(value)
 			else:
@@ -40934,7 +40934,7 @@ class ifccurveboundedsurface(ifcboundedsurface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument boundaries is mantatory and can not be set to None')
+				raise AssertionError('Argument boundaries is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcboundarycurve', scope = schema_scope)):
 				self._boundaries = SET(value)
 			else:
@@ -40948,7 +40948,7 @@ class ifccurveboundedsurface(ifcboundedsurface):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument implicitouter is mantatory and can not be set to None')
+				raise AssertionError('Argument implicitouter is mandatory and can not be set to None')
 			if not check_type(value,BOOLEAN):
 				self._implicitouter = BOOLEAN(value)
 			else:
@@ -40990,7 +40990,7 @@ class ifcgrid(ifcproduct):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument uaxes is mantatory and can not be set to None')
+				raise AssertionError('Argument uaxes is mandatory and can not be set to None')
 			if not check_type(value,LIST(1,None,'ifcgridaxis', scope = schema_scope)):
 				self._uaxes = LIST(value)
 			else:
@@ -41004,7 +41004,7 @@ class ifcgrid(ifcproduct):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument vaxes is mantatory and can not be set to None')
+				raise AssertionError('Argument vaxes is mandatory and can not be set to None')
 			if not check_type(value,LIST(1,None,'ifcgridaxis', scope = schema_scope)):
 				self._vaxes = LIST(value)
 			else:
@@ -41164,7 +41164,7 @@ class ifcphysicalcomplexquantity(ifcphysicalquantity):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument hasquantities is mantatory and can not be set to None')
+				raise AssertionError('Argument hasquantities is mandatory and can not be set to None')
 			if not check_type(value,SET(1,None,'ifcphysicalquantity', scope = schema_scope)):
 				self._hasquantities = SET(value)
 			else:
@@ -41178,7 +41178,7 @@ class ifcphysicalcomplexquantity(ifcphysicalquantity):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument discrimination is mantatory and can not be set to None')
+				raise AssertionError('Argument discrimination is mandatory and can not be set to None')
 			if not check_type(value,ifclabel):
 				self._discrimination = ifclabel(value)
 			else:
@@ -41259,7 +41259,7 @@ class ifcpresentationlayerwithstyle(ifcpresentationlayerassignment):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument layeron is mantatory and can not be set to None')
+				raise AssertionError('Argument layeron is mandatory and can not be set to None')
 			if not check_type(value,LOGICAL):
 				self._layeron = LOGICAL(value)
 			else:
@@ -41273,7 +41273,7 @@ class ifcpresentationlayerwithstyle(ifcpresentationlayerassignment):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument layerfrozen is mantatory and can not be set to None')
+				raise AssertionError('Argument layerfrozen is mandatory and can not be set to None')
 			if not check_type(value,LOGICAL):
 				self._layerfrozen = LOGICAL(value)
 			else:
@@ -41287,7 +41287,7 @@ class ifcpresentationlayerwithstyle(ifcpresentationlayerassignment):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument layerblocked is mantatory and can not be set to None')
+				raise AssertionError('Argument layerblocked is mandatory and can not be set to None')
 			if not check_type(value,LOGICAL):
 				self._layerblocked = LOGICAL(value)
 			else:
@@ -41301,7 +41301,7 @@ class ifcpresentationlayerwithstyle(ifcpresentationlayerassignment):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument layerstyles is mantatory and can not be set to None')
+				raise AssertionError('Argument layerstyles is mandatory and can not be set to None')
 			if not check_type(value,SET(0,None,'ifcpresentationstyle', scope = schema_scope)):
 				self._layerstyles = SET(value)
 			else:
@@ -41344,7 +41344,7 @@ class ifccompressortype(ifcflowmovingdevicetype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifccompressortypeenum):
 				self._predefinedtype = ifccompressortypeenum(value)
 			else:
@@ -41385,7 +41385,7 @@ class ifclightdistributiondata(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument mainplaneangle is mantatory and can not be set to None')
+				raise AssertionError('Argument mainplaneangle is mandatory and can not be set to None')
 			if not check_type(value,ifcplaneanglemeasure):
 				self._mainplaneangle = ifcplaneanglemeasure(value)
 			else:
@@ -41399,7 +41399,7 @@ class ifclightdistributiondata(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument secondaryplaneangle is mantatory and can not be set to None')
+				raise AssertionError('Argument secondaryplaneangle is mandatory and can not be set to None')
 			if not check_type(value,LIST(1,None,'REAL', scope = schema_scope)):
 				self._secondaryplaneangle = LIST(value)
 			else:
@@ -41413,7 +41413,7 @@ class ifclightdistributiondata(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument luminousintensity is mantatory and can not be set to None')
+				raise AssertionError('Argument luminousintensity is mandatory and can not be set to None')
 			if not check_type(value,LIST(1,None,'REAL', scope = schema_scope)):
 				self._luminousintensity = LIST(value)
 			else:
@@ -41440,7 +41440,7 @@ class ifcpipesegmenttype(ifcflowsegmenttype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcpipesegmenttypeenum):
 				self._predefinedtype = ifcpipesegmenttypeenum(value)
 			else:
@@ -41478,7 +41478,7 @@ class ifcquantityvolume(ifcphysicalsimplequantity):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument volumevalue is mantatory and can not be set to None')
+				raise AssertionError('Argument volumevalue is mandatory and can not be set to None')
 			if not check_type(value,ifcvolumemeasure):
 				self._volumevalue = ifcvolumemeasure(value)
 			else:
@@ -41591,7 +41591,7 @@ class ifcrightcircularcone(ifccsgprimitive3d):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument height is mantatory and can not be set to None')
+				raise AssertionError('Argument height is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._height = ifcpositivelengthmeasure(value)
 			else:
@@ -41605,7 +41605,7 @@ class ifcrightcircularcone(ifccsgprimitive3d):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument bottomradius is mantatory and can not be set to None')
+				raise AssertionError('Argument bottomradius is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._bottomradius = ifcpositivelengthmeasure(value)
 			else:
@@ -41762,7 +41762,7 @@ class ifcreldefinesbyproperties(ifcreldefines):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatedobjects is mantatory and can not be set to None')
+				raise AssertionError('Argument relatedobjects is mandatory and can not be set to None')
 			if not check_type(value,SET(1,1,'ifcobjectdefinition', scope = schema_scope)):
 				self._relatedobjects = SET(value)
 			else:
@@ -41776,7 +41776,7 @@ class ifcreldefinesbyproperties(ifcreldefines):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingpropertydefinition is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingpropertydefinition is mandatory and can not be set to None')
 			if not check_type(value,ifcpropertysetdefinitionselect):
 				self._relatingpropertydefinition = ifcpropertysetdefinitionselect(value)
 			else:
@@ -41829,7 +41829,7 @@ class ifclibraryinformation(ifcexternalinformation):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument name is mantatory and can not be set to None')
+				raise AssertionError('Argument name is mandatory and can not be set to None')
 			if not check_type(value,ifclabel):
 				self._name = ifclabel(value)
 			else:
@@ -41956,7 +41956,7 @@ class ifclightsourcespot(ifclightsourcepositional):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument orientation is mantatory and can not be set to None')
+				raise AssertionError('Argument orientation is mandatory and can not be set to None')
 			if not check_type(value,ifcdirection):
 				self._orientation = ifcdirection(value)
 			else:
@@ -41984,7 +41984,7 @@ class ifclightsourcespot(ifclightsourcepositional):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument spreadangle is mantatory and can not be set to None')
+				raise AssertionError('Argument spreadangle is mandatory and can not be set to None')
 			if not check_type(value,ifcpositiveplaneanglemeasure):
 				self._spreadangle = ifcpositiveplaneanglemeasure(value)
 			else:
@@ -41998,7 +41998,7 @@ class ifclightsourcespot(ifclightsourcepositional):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument beamwidthangle is mantatory and can not be set to None')
+				raise AssertionError('Argument beamwidthangle is mandatory and can not be set to None')
 			if not check_type(value,ifcpositiveplaneanglemeasure):
 				self._beamwidthangle = ifcpositiveplaneanglemeasure(value)
 			else:
@@ -42052,7 +42052,7 @@ class ifcrecurrencepattern(BaseEntityClass):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument recurrencetype is mantatory and can not be set to None')
+				raise AssertionError('Argument recurrencetype is mandatory and can not be set to None')
 			if not check_type(value,ifcrecurrencetypeenum):
 				self._recurrencetype = ifcrecurrencetypeenum(value)
 			else:
@@ -42227,7 +42227,7 @@ class ifcprofileproperties(ifcextendedproperties):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument profiledefinition is mantatory and can not be set to None')
+				raise AssertionError('Argument profiledefinition is mandatory and can not be set to None')
 			if not check_type(value,ifcprofiledef):
 				self._profiledefinition = ifcprofiledef(value)
 			else:
@@ -42254,7 +42254,7 @@ class ifcrelassociatesdocument(ifcrelassociates):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument relatingdocument is mantatory and can not be set to None')
+				raise AssertionError('Argument relatingdocument is mandatory and can not be set to None')
 			if not check_type(value,ifcdocumentselect):
 				self._relatingdocument = ifcdocumentselect(value)
 			else:
@@ -42293,7 +42293,7 @@ class ifcfixedreferencesweptareasolid(ifcsweptareasolid):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument directrix is mantatory and can not be set to None')
+				raise AssertionError('Argument directrix is mandatory and can not be set to None')
 			if not check_type(value,ifccurve):
 				self._directrix = ifccurve(value)
 			else:
@@ -42335,7 +42335,7 @@ class ifcfixedreferencesweptareasolid(ifcsweptareasolid):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument fixedreference is mantatory and can not be set to None')
+				raise AssertionError('Argument fixedreference is mandatory and can not be set to None')
 			if not check_type(value,ifcdirection):
 				self._fixedreference = ifcdirection(value)
 			else:
@@ -42369,7 +42369,7 @@ class ifcpumptype(ifcflowmovingdevicetype):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument predefinedtype is mantatory and can not be set to None')
+				raise AssertionError('Argument predefinedtype is mandatory and can not be set to None')
 			if not check_type(value,ifcpumptypeenum):
 				self._predefinedtype = ifcpumptypeenum(value)
 			else:
@@ -42403,7 +42403,7 @@ class ifcsphere(ifccsgprimitive3d):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument radius is mantatory and can not be set to None')
+				raise AssertionError('Argument radius is mandatory and can not be set to None')
 			if not check_type(value,ifcpositivelengthmeasure):
 				self._radius = ifcpositivelengthmeasure(value)
 			else:
@@ -42448,7 +42448,7 @@ class ifccurvestylefont(ifcpresentationitem):
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument patternlist is mantatory and can not be set to None')
+				raise AssertionError('Argument patternlist is mandatory and can not be set to None')
 			if not check_type(value,LIST(1,None,'ifccurvestylefontpattern', scope = schema_scope)):
 				self._patternlist = LIST(value)
 			else:
