@@ -1889,7 +1889,7 @@ def get_analysis_group_elements(
                 empty_references.append(m)
     if empty_references:
         if len(empty_references) == 1:
-            group_elements = get_anlysis_empty_references_group_elements(
+            group_elements = get_analysis_empty_references_group_elements(
                 group_elements,
                 aAnalysis,
                 aPart.Shape
@@ -1903,7 +1903,7 @@ def get_analysis_group_elements(
             )
             for er in empty_references:
                 FreeCAD.Console.PrintMessage("{}\n".format(er.Name))
-            group_elements = get_anlysis_empty_references_group_elements(
+            group_elements = get_analysis_empty_references_group_elements(
                 group_elements,
                 aAnalysis,
                 aPart.Shape
@@ -2007,7 +2007,7 @@ def get_reference_group_elements(
 
 
 # ************************************************************************************************
-def get_anlysis_empty_references_group_elements(
+def get_analysis_empty_references_group_elements(
     group_elements,
     aAnalysis,
     aShape
@@ -2028,7 +2028,7 @@ def get_anlysis_empty_references_group_elements(
                     empty_reference_material = m.Name
                 else:
                     FreeCAD.Console.PrintError(
-                        "Problem in get_anlysis_empty_references_group_elements, "
+                        "Problem in get_analysis_empty_references_group_elements, "
                         "we seem to have two or more materials with empty references\n"
                     )
                     return {}
@@ -2041,7 +2041,7 @@ def get_anlysis_empty_references_group_elements(
                 elif material_shape_type != group_shape_type:
                     FreeCAD.Console.PrintError(
                         "Problem, material shape type does not match "
-                        "get_anlysis_empty_references_group_elements\n"
+                        "get_analysis_empty_references_group_elements\n"
                     )
                 for ele in group_elements[m.Name]:
                     material_ref_shapes.append(ele)
