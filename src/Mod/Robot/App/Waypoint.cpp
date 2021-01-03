@@ -60,7 +60,7 @@ Waypoint::Waypoint(const char* name,
                    const Base::Placement &endPos,
                    WaypointType type,
                    float velocity,
-                   float accelaration,
+                   float acceleration,
                    bool cont,
                    unsigned int tool,
                    unsigned int base)
@@ -68,7 +68,7 @@ Waypoint::Waypoint(const char* name,
   : Name(name)
   , Type(type)
   , Velocity(velocity)
-  , Accelaration(accelaration)
+  , Acceleration(acceleration)
   , Cont(cont)
   , Tool(tool)
   , Base(base)
@@ -79,7 +79,7 @@ Waypoint::Waypoint(const char* name,
 Waypoint::Waypoint()
   : Type(UNDEF)
   , Velocity(1000.0)
-  , Accelaration(100.0)
+  , Acceleration(100.0)
   , Cont(false)
   , Tool(0)
   , Base(0)
@@ -107,7 +107,7 @@ void Waypoint::Save (Writer &writer) const
                     << "Q2=\""   <<  EndPos.getRotation()[2] << "\" "
                     << "Q3=\""   <<  EndPos.getRotation()[3] << "\" "
                     << "vel=\""  <<  Velocity				 << "\" "
-                    << "acc=\""  <<  Accelaration	         << "\" "
+                    << "acc=\""  <<  Acceleration	         << "\" "
 					<< "cont=\"" <<  int((Cont)?1:0)         << "\" "
 					<< "tool=\"" <<  Tool                    << "\" "
 					<< "base=\"" <<  Base                    << "\" ";
@@ -139,7 +139,7 @@ void Waypoint::Restore(XMLReader &reader)
                                             reader.getAttributeAsFloat("Q3")));
 
     Velocity     = (float) reader.getAttributeAsFloat("vel");
-    Accelaration = (float) reader.getAttributeAsFloat("acc");
+    Acceleration = (float) reader.getAttributeAsFloat("acc");
     Cont         = (reader.getAttributeAsInteger("cont") != 0)?true:false;
     Tool         = reader.getAttributeAsInteger("tool");
     Base         = reader.getAttributeAsInteger("base");

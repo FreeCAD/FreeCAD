@@ -92,7 +92,7 @@ PyMOD_INIT_FUNC(RobotGui)
         // default Cintinuity is off
         Base::Interpreter().runString("_DefCont = False");
         // default Cintinuity is off
-        Base::Interpreter().runString("_DefAccelaration = '1 m/s^2'");
+        Base::Interpreter().runString("_DefAcceleration = '1 m/s^2'");
         // default orientation of a waypoint if no other constraint
         Base::Interpreter().runString("_DefOrientation = FreeCAD.Rotation()");
         // default displacement while e.g. picking

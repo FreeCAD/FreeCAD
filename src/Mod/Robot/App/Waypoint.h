@@ -54,7 +54,7 @@ public:
              const Base::Placement &endPos, 
              WaypointType type=Waypoint::LINE, 
              float velocity=2000.0, 
-             float accelaration=100.0, 
+             float acceleration=100.0, 
              bool cont=false,
              unsigned int tool=0, 
              unsigned int base = 0);
@@ -70,7 +70,7 @@ public:
     std::string Name;
     WaypointType Type;
     float Velocity;
-    float Accelaration;
+    float Acceleration;
     bool Cont;
     unsigned int Tool,Base;
     Base::Placement EndPos;

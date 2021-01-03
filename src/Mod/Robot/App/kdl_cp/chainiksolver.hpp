@@ -114,7 +114,7 @@ namespace KDL {
         virtual int CartToJnt(const JntArray& q_in, const JntArray& qdot_in, const Twist a_in,
                          JntArray& qdotdot_out)=0;
         /**
-         * Calculate inverse position, velocity and acceration
+         * Calculate inverse position, velocity and acceleration
          *kinematics from cartesian coordinates to joint coordinates
          *
          * @param q_init initial guess for joint positions

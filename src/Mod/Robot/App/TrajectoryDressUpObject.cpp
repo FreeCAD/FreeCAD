@@ -85,7 +85,7 @@ App::DocumentObjectExecReturn *TrajectoryDressUpObject::execute(void)
         if(UseSpeed.getValue())
             wpt.Velocity = Speed.getValue();
         if(UseAcceleration.getValue())
-            wpt.Accelaration = Acceleration.getValue();
+            wpt.Acceleration = Acceleration.getValue();
         switch(ContType.getValue()){
             case 0: break;
             case 1: wpt.Cont = true;break;

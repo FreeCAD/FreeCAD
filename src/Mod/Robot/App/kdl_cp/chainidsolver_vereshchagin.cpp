@@ -438,7 +438,7 @@ void ChainIdSolver_Vereshchagin::getJointNullSpaceAcceleration(JntArray& nullspa
 //change type of parameter G
 //this method should return array of G's
 
-void ChainIdSolver_Vereshchagin::getLinkBiasForceAcceleratoinEnergy(Eigen::VectorXd& G)
+void ChainIdSolver_Vereshchagin::getLinkBiasForceAccelerationEnergy(Eigen::VectorXd& G)
 {
     for (int i = 0; i < ns; i++)
     {

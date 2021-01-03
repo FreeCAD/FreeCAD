@@ -81,7 +81,7 @@ TaskTrajectory::TaskTrajectory(Robot::RobotObject *pcRobotObject,Robot::Trajecto
         else
             ui->trajectoryTable->setItem(i, 2, new QTableWidgetItem(QString::fromLatin1("-")));
         ui->trajectoryTable->setItem(i, 3, new QTableWidgetItem(QString::number(pt.Velocity)));
-        ui->trajectoryTable->setItem(i, 4, new QTableWidgetItem(QString::number(pt.Accelaration)));
+        ui->trajectoryTable->setItem(i, 4, new QTableWidgetItem(QString::number(pt.Acceleration)));
 
     }
 

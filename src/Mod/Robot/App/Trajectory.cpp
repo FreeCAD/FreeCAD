@@ -184,7 +184,7 @@ void Trajectory::generateTrajectory(void)
                         pcRoundComp.reset(new KDL::Path_RoundedComposite(3, 3,
                                           new KDL::RotationalInterpolation_SingleAxis()));
                         // the velocity of the first waypoint is used
-                        pcVelPrf.reset(new KDL::VelocityProfile_Trap((*it)->Velocity,(*it)->Accelaration));
+                        pcVelPrf.reset(new KDL::VelocityProfile_Trap((*it)->Velocity,(*it)->Acceleration));
                         pcRoundComp->Add(Last);
                         pcRoundComp->Add(Next);
 
@@ -212,7 +212,7 @@ void Trajectory::generateTrajectory(void)
                                                     true
                                                     );
 
-                        pcVelPrf.reset(new KDL::VelocityProfile_Trap((*it)->Velocity,(*it)->Accelaration));
+                        pcVelPrf.reset(new KDL::VelocityProfile_Trap((*it)->Velocity,(*it)->Acceleration));
                         pcVelPrf->SetProfile(0,pcPath->PathLength());
                         pcTrak.reset(new KDL::Trajectory_Segment(pcPath,pcVelPrf.release()));
                     }

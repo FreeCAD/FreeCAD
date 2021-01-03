@@ -85,7 +85,7 @@ public:
     //Acceleration energy due to unit constraint forces at the end-effector
     void getLinkUnitForceAccelerationEnergy(Eigen::MatrixXd& M);
     //Acceleration energy due to arm configuration: bias force plus input joint torques
-    void getLinkBiasForceAcceleratoinEnergy(Eigen::VectorXd& G);
+    void getLinkBiasForceAccelerationEnergy(Eigen::VectorXd& G);
 
     void getLinkUnitForceMatrix(Matrix6Xd& E_tilde);
 

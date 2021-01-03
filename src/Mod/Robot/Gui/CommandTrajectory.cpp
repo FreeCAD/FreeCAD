@@ -130,7 +130,7 @@ void CmdRobotInsertWaypoint::activated(int)
     std::string TrakName = pcTrajectoryObject->getNameInDocument();
 
     openCommand("Insert waypoint");
-    doCommand(Doc,"App.activeDocument().%s.Trajectory = App.activeDocument().%s.Trajectory.insertWaypoints(Robot.Waypoint(App.activeDocument().%s.Tcp.multiply(App.activeDocument().%s.Tool),type='LIN',name='Pt',vel=_DefSpeed,cont=_DefCont,acc=_DefAccelaration,tool=1))",TrakName.c_str(),TrakName.c_str(),RoboName.c_str(),RoboName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Trajectory = App.activeDocument().%s.Trajectory.insertWaypoints(Robot.Waypoint(App.activeDocument().%s.Tcp.multiply(App.activeDocument().%s.Tool),type='LIN',name='Pt',vel=_DefSpeed,cont=_DefCont,acc=_DefAcceleration,tool=1))",TrakName.c_str(),TrakName.c_str(),RoboName.c_str(),RoboName.c_str());
     updateActive();
     commitCommand();
 
@@ -194,7 +194,7 @@ void CmdRobotInsertWaypointPreselect::activated(int)
     }
 
     openCommand("Insert waypoint");
-    doCommand(Doc,"App.activeDocument().%s.Trajectory = App.activeDocument().%s.Trajectory.insertWaypoints(Robot.Waypoint(FreeCAD.Placement(FreeCAD.Vector(%f,%f,%f)+_DefDisplacement,_DefOrientation),type='LIN',name='Pt',vel=_DefSpeed,cont=_DefCont,acc=_DefAccelaration,tool=1))",TrakName.c_str(),TrakName.c_str(),x,y,z);
+    doCommand(Doc,"App.activeDocument().%s.Trajectory = App.activeDocument().%s.Trajectory.insertWaypoints(Robot.Waypoint(FreeCAD.Placement(FreeCAD.Vector(%f,%f,%f)+_DefDisplacement,_DefOrientation),type='LIN',name='Pt',vel=_DefSpeed,cont=_DefCont,acc=_DefAcceleration,tool=1))",TrakName.c_str(),TrakName.c_str(),x,y,z);
     updateActive();
     commitCommand();
 
@@ -286,7 +286,7 @@ void CmdRobotSetDefaultValues::activated(int)
                                           QObject::tr("acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)"), QLineEdit::Normal,
                                           QString::fromLatin1("1 m/s^2"), &ok);
     if ( ok && !text.isEmpty() ) {
-        doCommand(Doc,"_DefAccelaration = '%s'",text.toLatin1().constData());
+        doCommand(Doc,"_DefAcceleration = '%s'",text.toLatin1().constData());
     }
 
 
