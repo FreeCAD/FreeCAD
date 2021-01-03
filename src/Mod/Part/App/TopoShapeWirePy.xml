@@ -32,7 +32,7 @@ myWire.fixWire( face, tolerance )
 </UserDocu>
             </Documentation>
         </Methode>
-        <Methode Name="makeHomogenousWires" Const="true">
+        <Methode Name="makeHomogeneousWires" Const="true">
         <Documentation>
             <UserDocu>Make this and the given wire homogeneous to have the same number of edges</UserDocu>
         </Documentation>

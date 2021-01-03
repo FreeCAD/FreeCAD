@@ -423,7 +423,7 @@ class _Writer(object):
         dataType = type(next(it))
         for entry in it:
             if not isinstance(entry, dataType):
-                raise ValueError("Collection must be homogenueous")
+                raise ValueError("Collection must be homogeneous")
         return self._getSifDataType(dataType)
 
 

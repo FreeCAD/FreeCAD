@@ -307,7 +307,7 @@ PyObject* TopoShapeWirePy::makePipeShell(PyObject *args)
     return 0;
 }
 
-PyObject* TopoShapeWirePy::makeHomogenousWires(PyObject *args)
+PyObject* TopoShapeWirePy::makeHomogeneousWires(PyObject *args)
 {
     PyObject* wire;
     if (!PyArg_ParseTuple(args, "O!",&(Part::TopoShapeWirePy::Type),&wire))
