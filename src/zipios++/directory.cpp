@@ -33,7 +33,7 @@
 #endif 
 
 // -------------------------------------------------------------------------- 
-// The POSIX version uses the functions opendir(), readdir(), and closdir()
+// The POSIX version uses the functions opendir(), readdir(), and closedir()
 // to find directory entries. In addition, stat() is used to find out
 // about specific file attributes.
 
