@@ -99,7 +99,7 @@
 
 
 
-/* this edge to edge test is based on Franlin Antonio's gem:
+/* this edge to edge test is based on Franklin Antonio's gem:
    "Faster Line Segment Intersection", in Graphics Gems III,
    pp. 199-202 */ 
 #define EDGE_EDGE_TEST(V0,U0,U1)                      \
