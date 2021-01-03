@@ -671,15 +671,15 @@ void PartGui::DlgProjectionOnSurface::highlight_object(Part::Feature* iCurrentOb
   }
 }
 
-void PartGui::DlgProjectionOnSurface::get_all_wire_from_face(SShapeStore& ioCurrentSahpe)
+void PartGui::DlgProjectionOnSurface::get_all_wire_from_face(SShapeStore& ioCurrentShape)
 {
-  auto outerWire = ShapeAnalysis::OuterWire(ioCurrentSahpe.aFace);
-  ioCurrentSahpe.aWireVec.push_back(outerWire);
-  for (TopExp_Explorer aExplorer(ioCurrentSahpe.aFace, TopAbs_WIRE); aExplorer.More(); aExplorer.Next())
+  auto outerWire = ShapeAnalysis::OuterWire(ioCurrentShape.aFace);
+  ioCurrentShape.aWireVec.push_back(outerWire);
+  for (TopExp_Explorer aExplorer(ioCurrentShape.aFace, TopAbs_WIRE); aExplorer.More(); aExplorer.Next())
   {
     auto currentWire = TopoDS::Wire(aExplorer.Current());
     if (currentWire.IsSame(outerWire)) continue;
-    ioCurrentSahpe.aWireVec.push_back(currentWire);
+    ioCurrentShape.aWireVec.push_back(currentWire);
   }
 }
 

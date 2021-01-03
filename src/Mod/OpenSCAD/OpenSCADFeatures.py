@@ -337,7 +337,7 @@ class GetWire:
             import Part
             #fp.Shape=fp.Base.Shape.Wires[0]
             fp.Shape=Part.Wire(fp.Base.Shape.Wires[0]) # works with 0.13 stable
-            #sh = fp.Base.Shape.Wires[0].copy; sh.transformSahpe(fp.Base.Shape.Placement.toMatrix()); fp.Shape = sh #untested
+            #sh = fp.Base.Shape.Wires[0].copy; sh.transformShape(fp.Base.Shape.Placement.toMatrix()); fp.Shape = sh #untested
 
 class Frustum:
     def __init__(self, obj,r1=1,r2=2,n=3,h=4):

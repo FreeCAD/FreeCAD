@@ -327,8 +327,8 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
 
     # empty relation tables
     objects = {}  # { id:object, ... }
-    shapes = {}  # { id:shaoe } only used for merge mode
-    structshapes = {}  # { id:shaoe } only used for merge mode
+    shapes = {}  # { id:shape } only used for merge mode
+    structshapes = {}  # { id:shape } only used for merge mode
     sharedobjects = {}  # { representationmapid:object }
 
     # a list of imported objects whose parametric relationships

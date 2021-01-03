@@ -109,7 +109,7 @@ private:
   void disable_ui_elements(const std::vector<QWidget*>& iObjectVec, QWidget* iExceptThis);
   void enable_ui_elements(const std::vector<QWidget*>& iObjectVec, QWidget* iExceptThis);
   void highlight_object(Part::Feature* iCurrentObject, const std::string& iShapeName, bool iHighlight, const unsigned int iColor);
-  void get_all_wire_from_face(SShapeStore& ioCurrentSahpe);
+  void get_all_wire_from_face(SShapeStore& ioCurrentShape);
   void create_projection_face_from_wire(std::vector<SShapeStore>& iCurrentShape);
   TopoDS_Wire sort_and_heal_wire(const TopoDS_Shape& iShape, const TopoDS_Face& iFaceToProject);
   TopoDS_Wire sort_and_heal_wire(const std::vector<TopoDS_Edge>& iEdgeVec, const TopoDS_Face& iFaceToProject);
