@@ -452,12 +452,12 @@ module="PyObjects._FemMeshResult"
 module="PyObjects._FemResultMechanical"
 module="PyObjects._FemSolverCalculix"
 
-renamed between the second and third big moveings
+renamed between the second and third big movings
 module="PyObjects._FemBeamSection"
 module="PyObjects._FemFluidSection"
 module="PyObjects._FemShellThickness"
 
-second big moveing
+second big moving
 into PyObjects, following the parent commit
 https://github.com/FreeCAD/FreeCAD/tree/7f884e8bff/src/Mod/Fem
 module="_FemBeamSection"
@@ -472,7 +472,7 @@ module="_FemShellThickness"
 module="_FemSolverCalculix"
 module="_FemSolverZ88"
 
-renamed between the first and second big moveings
+renamed between the first and second big movings
 module="_FemMechanicalResult"
 module="FemResult"
 module="_MechanicalMaterial"

@@ -435,12 +435,12 @@ module="PyGui._ViewProviderFemMeshResult"
 module="PyGui._ViewProviderFemResultMechanical"
 module="PyGui._ViewProviderFemSolverCalculix"
 
-renamed between the second and third big moveings
+renamed between the second and third big movings
 module="PyGui._ViewProviderFemBeamSection"
 module="PyGui._ViewProviderFemFluidSection"
 module="PyGui._ViewProviderFemShellThickness"
 
-second big moveing
+second big moving
 into PyObjects, following the parent commit
 https://github.com/FreeCAD/FreeCAD/tree/7f884e8bff/src/Mod/Fem
 module="_ViewProviderFemBeamSection"
@@ -455,7 +455,7 @@ module="_ViewProviderFemShellThickness"
 module="_ViewProviderFemSolverCalculix"
 module="_ViewProviderFemSolverZ88"
 
-renamed between the first and second big moveings
+renamed between the first and second big movings
 module="_ViewProviderFemMechanicalResult"
 module="ViewProviderFemResult"
 module="_ViewProviderMechanicalMaterial"
