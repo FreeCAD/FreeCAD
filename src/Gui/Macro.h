@@ -37,7 +37,7 @@ class PythonConsole;
 class PythonDebugger;
 
 /** Macro recording and play back management
- * The purpos of this class is to handle record function calls from a command and save it in
+ * The purpose of this class is to handle record function calls from a command and save it in
  * a macro file (so far).
  * \author Jürgen Riegel
  */
