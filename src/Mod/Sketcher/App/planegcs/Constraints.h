@@ -586,7 +586,7 @@ namespace GCS
         virtual double grad(double *);
     };
 
-    class ConstraintSnell : public Constraint //snell's law angles constrainer. Point needs to lie on all three curves to be constraied.
+    class ConstraintSnell : public Constraint //snell's law angles constrainer. Point needs to lie on all three curves to be constrained.
     {
     private:
         inline double* n1() { return pvec[0]; };

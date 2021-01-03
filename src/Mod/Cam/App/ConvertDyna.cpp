@@ -230,7 +230,7 @@ void ReadDyna::ReadConstraints(std::ifstream &inputfile)
 
         for (i = 0; i < 10; i++,j++)
             Info[j] = str[i];
-        First = atoi(Info);   //Constainted Point
+        First = atoi(Info);   //Constrained Point
 
         j = 0;
 
