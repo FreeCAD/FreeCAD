@@ -8,7 +8,7 @@ To prevent the database from becoming inefficiently large it is only limited to 
 
 Users can defined new material, either in Fem material card editor, or directly generate textual material file, * .FCMat, see example in this folder.   
 
-To enable new material, go to FreeCAD menu "Edit->Preference..." Cfd preference page (select on the left panel) and switch to materiai tab on the right. 
+To enable new material, go to FreeCAD menu "Edit->Preference..." Cfd preference page (select on the left panel) and switch to material tab on the right. 
 
 Browse to your material folder, and save/apply this preference, new material will be Material with same name as FreeCAD material has higher priority,
 

@@ -327,6 +327,6 @@ MaterialNonlinearity, ThermoMechSteadyState might be moved
 to the appropriate equation.
 
 Furthermore the material Category should not be used in writer.
-See common materila object for more information. The equation
+See common material object for more information. The equation
 should used instead to get this information needed in writer.
 """
