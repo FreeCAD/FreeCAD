@@ -214,7 +214,7 @@ class PartDesignTransformed(unittest.TestCase):
         self.BoxObj.Width=10.0
         self.BoxObj.Height=10.0
         App.ActiveDocument.recompute()
-        #not adding box to the body to imitate undertermined workflow
+        #not adding box to the body to imitate undetermined workflow
         tempDir = tempfile.gettempdir()
         self.TempDoc = os.path.join(tempDir, 'PartDesignTransformed.FCStd')
         App.ActiveDocument.saveAs(self.TempDoc)
