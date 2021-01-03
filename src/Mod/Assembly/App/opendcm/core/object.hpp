@@ -71,7 +71,7 @@ namespace dcm {
  *
  **/
 
-//few standart signal names
+//few standard signal names
 struct remove {};
 
 typedef int Connection;

@@ -1149,7 +1149,7 @@ class TaskPanel(object):
             FreeCAD.ActiveDocument.recompute()
 
     def modifyStandardButtons(self, buttonBox):
-        '''modifyStandarButtons(buttonBox) ... callback in case the task panel buttons need to be modified.'''
+        '''modifyStandardButtons(buttonBox) ... callback in case the task panel buttons need to be modified.'''
         self.buttonBox = buttonBox
         for page in self.featurePages:
             page.modifyStandardButtons(buttonBox)

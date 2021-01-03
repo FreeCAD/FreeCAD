@@ -1259,7 +1259,7 @@ PyObject* BSplineSurfacePy::approximate(PyObject *args, PyObject *kwds)
             surInterpolation.Init(interpolationPoints, weight1, weight2, weight3, degMax, c, tol3d);
         }
         else {
-            // fallback to strandard method
+            // fallback to standard method
             surInterpolation.Init(interpolationPoints, degMin, degMax, c, tol3d);
         }
         Handle(Geom_BSplineSurface) sur(surInterpolation.Surface());

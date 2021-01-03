@@ -290,7 +290,7 @@ struct Coincidence : public dcm::constraint_sequence< fusion::vector2< details::
     };
 };
 
-//no standart equation, create our own object
+//no standard equation, create our own object
 static Coincidence coincidence;
 
 }//dcm

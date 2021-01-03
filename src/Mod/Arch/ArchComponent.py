@@ -1044,7 +1044,7 @@ class Component(ArchIFC.IfcProduct):
         Rotated objects, or objects with Additions or Subtractions are not
         standard cases.
 
-        All objects whose IfcType is suffixed with the string " Sandard Case"
+        All objects whose IfcType is suffixed with the string " Standard Case"
         are automatically a standard case.
 
         Parameters
