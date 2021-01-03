@@ -419,7 +419,7 @@ def offsetWire(wire, dvec, bind=False, occ=False,
                     #else: # elif curAlign == 'Center': #pass # no need to add basewireOffset
                 nedge = offset(curredge, delta, trim=True)
 
-            # TODO arc always in counter-clockwise directinon
+            # TODO arc always in counter-clockwise direction
             # ... ( not necessarily 'reversed')
             if curOrientation == "Reversed":
                 # need to test against Part.Circle, not Part.ArcOfCircle

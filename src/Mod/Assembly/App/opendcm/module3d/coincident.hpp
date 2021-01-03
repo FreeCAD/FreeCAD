@@ -139,7 +139,7 @@ struct ci_orientation::type< Kernel, tag::point3D, tag::cylinder3D > : public ci
 
 template< typename Kernel >
 struct ci_orientation::type< Kernel, tag::line3D, tag::line3D > : public dcm::Orientation::type< Kernel, tag::line3D, tag::line3D > {
-    //we missuse the scale method to prevent a unallowed direcion: perpendicular (ad distance is not defined for it)
+    //we missuse the scale method to prevent a unallowed direction: perpendicular (ad distance is not defined for it)
     void setScale(typename Kernel::number_type scale) {
         if(fusion::at_key<Direction>(dcm::Orientation::type< Kernel, tag::line3D, tag::line3D >::values).second == perpendicular)
             fusion::at_key<Direction>(dcm::Orientation::type< Kernel, tag::line3D, tag::line3D >::values).second = parallel;
@@ -156,7 +156,7 @@ struct ci_orientation::type< Kernel, tag::line3D, tag::plane3D > : public dcm::O
 
 template< typename Kernel >
 struct ci_orientation::type< Kernel, tag::line3D, tag::cylinder3D > : public dcm::Orientation::type< Kernel, tag::line3D, tag::cylinder3D > {
-    //we missuse the scale method to prevent a unallowed direcion: perpendicular (ad distance is not defined for it)
+    //we missuse the scale method to prevent a unallowed direction: perpendicular (ad distance is not defined for it)
     void setScale(typename Kernel::number_type scale) {
         if(fusion::at_key<Direction>(dcm::Orientation::type< Kernel, tag::line3D, tag::cylinder3D >::values).second == perpendicular)
             fusion::at_key<Direction>(dcm::Orientation::type< Kernel, tag::line3D, tag::cylinder3D >::values).second = parallel;
@@ -165,7 +165,7 @@ struct ci_orientation::type< Kernel, tag::line3D, tag::cylinder3D > : public dcm
 
 template< typename Kernel >
 struct ci_orientation::type< Kernel, tag::plane3D, tag::plane3D > : public dcm::Orientation::type< Kernel, tag::plane3D, tag::plane3D > {
-//we missuse the scale method to prevent a unallowed direcion: perpendicular (ad distance is not defined for it)
+//we missuse the scale method to prevent a unallowed direction: perpendicular (ad distance is not defined for it)
     void setScale(typename Kernel::number_type scale) {
         if(fusion::at_key<Direction>(dcm::Orientation::type< Kernel, tag::plane3D, tag::plane3D >::values).second == perpendicular)
             fusion::at_key<Direction>(dcm::Orientation::type< Kernel, tag::plane3D, tag::plane3D >::values).second = parallel;
@@ -174,7 +174,7 @@ struct ci_orientation::type< Kernel, tag::plane3D, tag::plane3D > : public dcm::
 
 template< typename Kernel >
 struct ci_orientation::type< Kernel, tag::cylinder3D, tag::cylinder3D > : public dcm::Orientation::type< Kernel, tag::cylinder3D, tag::cylinder3D > {
-    //we missuse the scale method to prevent a unallowed direcion: perpendicular (ad distance is not defined for it)
+    //we missuse the scale method to prevent a unallowed direction: perpendicular (ad distance is not defined for it)
     void setScale(typename Kernel::number_type scale) {
         if(fusion::at_key<Direction>(dcm::Orientation::type< Kernel, tag::cylinder3D, tag::cylinder3D >::values).second == perpendicular)
             fusion::at_key<Direction>(dcm::Orientation::type< Kernel, tag::cylinder3D, tag::cylinder3D >::values).second = parallel;
