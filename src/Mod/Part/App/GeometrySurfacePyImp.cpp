@@ -359,7 +359,7 @@ PyObject* GeometrySurfacePy::projectPoint(PyObject *args, PyObject* kwds)
     }
 }
 
-PyObject* GeometrySurfacePy::isUmbillic(PyObject *args)
+PyObject* GeometrySurfacePy::isUmbilic(PyObject *args)
 {
     try {
         GeomSurface* s = getGeomSurfacePtr();
@@ -368,7 +368,7 @@ PyObject* GeometrySurfacePy::isUmbillic(PyObject *args)
             if (!PyArg_ParseTuple(args, "dd", &u,&v))
                 return 0;
 
-            bool val = s->isUmbillic(u,v);
+            bool val = s->isUmbilic(u,v);
             return PyBool_FromLong(val ? 1 : 0);
         }
     }

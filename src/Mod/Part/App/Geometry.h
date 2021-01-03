@@ -785,7 +785,7 @@ public:
 
     /** @name Curvature information */
     //@{
-    bool isUmbillic(double u, double v) const;
+    bool isUmbilic(double u, double v) const;
     double curvature(double u, double v, Curvature) const;
     void curvatureDirections(double u, double v, gp_Dir& maxD, gp_Dir& minD) const;
     //@}

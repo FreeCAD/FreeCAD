@@ -4115,7 +4115,7 @@ bool GeomSurface::normal(double u, double v, gp_Dir& dir) const
     return false;
 }
 
-bool GeomSurface::isUmbillic(double u, double v) const
+bool GeomSurface::isUmbilic(double u, double v) const
 {
     Handle(Geom_Surface) s = Handle(Geom_Surface)::DownCast(handle());
     GeomLProp_SLProps prop(s,u,v,2,Precision::Confusion());

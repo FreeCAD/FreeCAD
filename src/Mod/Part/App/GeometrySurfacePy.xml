@@ -65,10 +65,10 @@ projectPoint(Vector,\"Point\") -> list of points
 </UserDocu>
             </Documentation>
         </Methode>
-        <Methode Name="isUmbillic" Const="true">
+        <Methode Name="isUmbilic" Const="true">
             <Documentation>
-                <UserDocu>isUmbillic(u,v) -> bool
-Check if the geometry on parameter is an umbillic point,
+                <UserDocu>isUmbilic(u,v) -> bool
+Check if the geometry on parameter is an umbilic point,
 i.e. maximum and minimum curvature are equal.</UserDocu>
             </Documentation>
         </Methode>
