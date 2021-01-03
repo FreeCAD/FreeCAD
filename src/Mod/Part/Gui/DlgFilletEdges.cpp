@@ -733,7 +733,7 @@ void DlgFilletEdges::on_shapeObject_activated(int itemPos)
             if (los.Extent() == 2) {
                 // set the index value as user data to use it in accept()
                 const TopoDS_Shape& edge = edge2Face.FindKey(i);
-                // Now check also the continuity to only allow C0-continious
+                // Now check also the continuity to only allow C0-continuous
                 // faces
                 const TopoDS_Shape& face1 = los.First();
                 const TopoDS_Shape& face2 = los.Last();

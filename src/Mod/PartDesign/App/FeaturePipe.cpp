@@ -397,7 +397,7 @@ void Pipe::setupAlgorithm(BRepOffsetAPI_MakePipeShell& mkPipeShell, TopoDS_Shape
 }
 
 
-void Pipe::getContiniusEdges(Part::TopoShape /*TopShape*/, std::vector< std::string >& /*SubNames*/) {
+void Pipe::getContinuousEdges(Part::TopoShape /*TopShape*/, std::vector< std::string >& /*SubNames*/) {
 
     /*
     TopTools_IndexedMapOfShape mapOfEdges;
@@ -454,7 +454,7 @@ void Pipe::buildPipePath(const Part::TopoShape& shape, const std::vector< std::s
         try {
             if (!subedge.empty()) {
                 //if(SpineTangent.getValue())
-                    //getContiniusEdges(shape, subedge);
+                    //getContinuousEdges(shape, subedge);
 
                 BRepBuilderAPI_MakeWire mkWire;
                 for (std::vector<std::string>::const_iterator it = subedge.begin(); it != subedge.end(); ++it) {

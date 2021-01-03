@@ -74,7 +74,7 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
         return new App::DocumentObjectExecReturn(e.what());
     }
     std::vector<std::string> SubNames = std::vector<std::string>(Base.getSubValues());
-    getContiniusEdges(TopShape, SubNames);
+    getContinuousEdges(TopShape, SubNames);
 
     if (SubNames.size() == 0)
         return new App::DocumentObjectExecReturn("Fillet not possible on selected shapes");

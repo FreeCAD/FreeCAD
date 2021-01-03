@@ -231,7 +231,7 @@ const char* BRepBuilderAPI_FaceErrorText(BRepBuilderAPI_FaceError et)
         return "Parameters out of range";
 #if OCC_VERSION_HEX < 0x060500
     case BRepBuilderAPI_SurfaceNotC2:
-        return "Surface not C2-continous";
+        return "Surface not C2-continuous";
 #endif
     default:
         return "Unknown creation error";

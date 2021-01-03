@@ -115,7 +115,7 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
     }
 
     std::vector<std::string> SubNames = std::vector<std::string>(Base.getSubValues());
-    getContiniusEdges(TopShape, SubNames);
+    getContinuousEdges(TopShape, SubNames);
 
     if (SubNames.size() == 0)
         return new App::DocumentObjectExecReturn("No edges specified");
