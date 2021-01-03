@@ -60,7 +60,7 @@ public:
     inline const std::vector<std::string> &getSubNames(void) const { return SubNames; }
     /// are there any SubNames selected
     bool hasSubNames(void)const { return SubNames.size() != 0; }
-    /// get the name of the Document of this SelctionObject
+    /// get the name of the Document of this SelectionObject
     inline const char* getDocName(void) const { return DocName.c_str(); }
     /// get the name of the Document Object of this SelectionObject
     inline const char* getFeatName(void) const { return FeatName.c_str(); }
