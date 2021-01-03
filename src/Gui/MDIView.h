@@ -100,7 +100,7 @@ public:
     /// MDI view mode enum
     enum ViewMode {
         Child,      /**< Child viewing, view is docked inside the MDI application window */
-        TopLevel,   /**< The view becomes a top level window and can be moved outsinde the application window */
+        TopLevel,   /**< The view becomes a top level window and can be moved outside the application window */
         FullScreen  /**< The view goes to full screen viewing */
     };
     /**
