@@ -923,5 +923,5 @@ a second class only uses the collected parameter,
 writes the input file runs gmsh reads back the unv and returns a FemMesh
 gmsh binary will be collected in the second class
 with this we could mesh without document objects
-create a shape and run meshinging class, get the FemMesh :-)
+create a shape and run meshing class, get the FemMesh :-)
 """
