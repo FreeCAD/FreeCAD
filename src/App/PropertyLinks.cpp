@@ -2724,7 +2724,7 @@ public:
         }
 
         // time stamp changed, touch the linking document. Unfortunately, there
-        // is no way to setModfied() for an App::Document. We don't want to touch
+        // is no way to setModified() for an App::Document. We don't want to touch
         // all PropertyXLink for a document, because the linked object is
         // potentially unchanged. So we just touch at most one.
         std::set<Document*> docs;
