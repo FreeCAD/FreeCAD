@@ -225,7 +225,7 @@ def get_param(param, default=None):
     int, or str, or float, or bool
         Depending on `param` and its type, by returning `ParameterGrp.GetInt`,
         `ParameterGrp.GetString`, `ParameterGrp.GetFloat`,
-        `ParameterGrp.GetBool`, or `ParameterGrp.GetUnsinged`.
+        `ParameterGrp.GetBool`, or `ParameterGrp.GetUnsigned`.
     """
     draft_params = "User parameter:BaseApp/Preferences/Mod/Draft"
     view_params = "User parameter:BaseApp/Preferences/View"
@@ -288,7 +288,7 @@ def set_param(param, value):
         Depending on `param` and its type, determined with `get_param_type`,
         it sets the appropriate value by calling `ParameterGrp.SetInt`,
         `ParameterGrp.SetString`, `ParameterGrp.SetFloat`,
-        `ParameterGrp.SetBool`, or `ParameterGrp.SetUnsinged`.
+        `ParameterGrp.SetBool`, or `ParameterGrp.SetUnsigned`.
     """
     draft_params = "User parameter:BaseApp/Preferences/Mod/Draft"
     view_params = "User parameter:BaseApp/Preferences/View"
