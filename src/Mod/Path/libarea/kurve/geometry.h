@@ -787,7 +787,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		bool		m_isReversed;					// true if get spans reversed
 
 	public:
-		// for comparing kurves
+		// for comparing Kurves
 		struct spanCompare {
 			int dir;			// LINEAR, CW or ACW
 			double length;		// length of the span
@@ -884,7 +884,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		int	Break(double atParam, const Kurve *secInput, Kurve *refOut, Kurve *secOut);// break kurve perimeter parameterisation with synchronised Kurve (wire)
 		void	Part(double fromParam, double toParam, const Kurve *secInput, Kurve *refOut, Kurve *secOut);// part kurve perimeter parameterisation with synchronised Kurve (wire)
 		Kurve	Part(double fromParam, double toParam);											// part kurve perimeter parameterisation
-		void AddSections(const Kurve* k, bool endOfSection);		// special add kurves for rollingball
+		void AddSections(const Kurve* k, bool endOfSection);		// special add Kurves for rollingball
 		void	AddEllipse(int dir, const Point& pStart, const Point& pEnd, const Point& pCentre, const Vector2d& majorAxis, double majorRadius, double minorRadius, double tolerance);
 //		void Kurve::AddEllipse(int dir, Plane *plEllipse, Vector3d *cylAxis, Point3d *cylCentre, double cylradius, Point3d *pStart, Point3d *pEnd, double tolerance);		/// elliptical curve - biarc in tolerance
 
@@ -898,7 +898,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		PK_BODY_t ToPKsheet(			);									// Convert to PK Sheet Body
 		PK_BODY_t ToPKextrudedBody(PK_VECTOR1_t path, bool solidbody = true);
 		// Convert to PK Body (open kurve >> sheet)
-		PK_BODY_t ToPKlofted_sheet_body(Kurve &sec);						// Convert 2 kurves to lofted sheet body
+		PK_BODY_t ToPKlofted_sheet_body(Kurve &sec);						// Convert 2 Kurves to lofted sheet body
 		PK_BODY_t ToPKlofted_thickened_body(Kurve &sec, double thickness);
 #endif
 	};

@@ -159,7 +159,7 @@ void CArea::GetBox(CBox2D &box)
 void CArea::Reorder()
 {
 	// curves may have been added with wrong directions
-	// test all kurves to see which one are outsides and which are insides and 
+	// test all Kurves to see which one are outsides and which are insides and 
 	// make sure outsides are anti-clockwise and insides are clockwise
 
 	// returns 0, if the curves are OK

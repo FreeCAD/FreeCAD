@@ -1014,7 +1014,7 @@ return;
 
 
 	void Kurve::ChangeEnd(const Point *pNewEnd, int endSpanno) {
-		// changes the end position of the Kurve, doesn't keep closed kurves closed
+		// changes the end position of the Kurve, doesn't keep closed Kurves closed
 		if(endSpanno == 1) {
 			Span spFirst;
 			this->Get(1, spFirst, false, true);

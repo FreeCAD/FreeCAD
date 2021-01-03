@@ -143,7 +143,7 @@ namespace geoff_geometry {
 		kOffset = eliminateLoops(kOffset, *this, offset, ret);
 
 		if(ret == 0 && bClosed) {
-			// check for inverted offsets of closed kurves
+			// check for inverted offsets of closed Kurves
 			if(kOffset.Closed()) {
 				double a = Area();
 				int dir = (a < 0);

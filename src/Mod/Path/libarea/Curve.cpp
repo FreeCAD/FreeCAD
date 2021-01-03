@@ -660,7 +660,7 @@ void CCurve::RemoveTinySpans() {
 }
 
 void CCurve::ChangeEnd(const Point &p) {
-	// changes the end position of the Kurve, doesn't keep closed kurves closed
+	// changes the end position of the Kurve, doesn't keep closed Kurves closed
 	CCurve new_curve;
 
 	const Point *prev_p = NULL;
