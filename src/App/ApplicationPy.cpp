@@ -132,7 +132,7 @@ PyMethodDef Application::Methods[] = {
      "activeDocument() -> object or None\n\n"
      "Return the active document or None if there is no one."},
     {"setActiveDocument",(PyCFunction) Application::sSetActiveDocument, METH_VARARGS,
-     "setActiveDocement(string) -> None\n\n"
+     "setActiveDocument(string) -> None\n\n"
      "Set the active document by its name."},
     {"getDocument",    (PyCFunction) Application::sGetDocument, METH_VARARGS,
      "getDocument(string) -> object\n\n"

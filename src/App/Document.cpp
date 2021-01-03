@@ -2890,7 +2890,7 @@ bool Document::isSaved() const
  * @ note More than one document can have the same label name.
  * @ note The internal is always guaranteed to be unique because @ref Application::newDocument() checks
  * for a document with the same name and makes it unique if needed. Hence you cannot rely on that the
- * internal name matches with the name you passed to Application::newDoument(). You should use the
+ * internal name matches with the name you passed to Application::newDocument(). You should use the
  * method getName() instead.
  */
 const char* Document::getName() const

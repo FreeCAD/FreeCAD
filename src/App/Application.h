@@ -82,7 +82,7 @@ public:
      * name. It has to be like an identifier in a programming language, with no
      * spaces and not starting with a number. This name gets also forced to be unique
      * in this Application. You can avoid the renaming by using getUniqueDocumentName()
-     * to get a unique name before calling newDoucument().
+     * to get a unique name before calling newDocument().
      * The second name is a UTF8 name of any kind. It's that name normally shown to
      * the user and stored in the App::Document::Name property.
      */

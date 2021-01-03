@@ -61,7 +61,7 @@ class DressupPathBoundary(object):
     def __setstate__(self, state):
         return None
 
-    def onDcoumentRestored(self, obj):
+    def onDocumentRestored(self, obj):
         self.obj = obj
 
     def onDelete(self, obj, args):
