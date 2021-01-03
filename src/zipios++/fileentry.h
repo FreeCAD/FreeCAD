@@ -104,7 +104,7 @@ public:
   /** Any method or operator that initializes a FileEntry may set a
       flag, that specifies whether the read entry is valid or not. If
       it isn't this method returns false.  
-      @return true if the FileEntry has been parsed succesfully.
+      @return true if the FileEntry has been parsed successfully.
    */
   virtual bool isValid() const = 0 ;
   //     virtual int hashCode() const = 0 ;
