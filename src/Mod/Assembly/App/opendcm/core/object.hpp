@@ -86,7 +86,7 @@ struct SignalOwner {
     *
     * Slots are boost::functions which get called when the signal is emitted. Any valid boost::function
     * which ressembles the signal tyes signature can be registert. It is important that the signal type
-    * was registerd to this object on creation by the appropriate template parameter.
+    * was registered to this object on creation by the appropriate template parameter.
     *
     * @tparam S the signal which should be intercepted
     * @param function boost::function which resembles the signal type's signature

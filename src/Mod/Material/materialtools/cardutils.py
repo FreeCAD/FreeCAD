@@ -348,15 +348,15 @@ def get_known_material_quantity_parameter():
 def get_and_output_all_carddata(cards):
     print('\n\n\nSTART--get_and_output_all_carddata\n--------------------')
     # get all registered material property keys
-    registed_cardkeys = []
+    registered_cardkeys = []
     template_data = get_material_template()
     # print(template_data)
     for group in template_data:
         gg = list(group.keys())[0]  # group dict has only one key
         for key in group[gg]:
-            registed_cardkeys.append(key)
-    registed_cardkeys = sorted(registed_cardkeys)
-    # print(registed_cardkeys)
+            registered_cardkeys.append(key)
+    registered_cardkeys = sorted(registered_cardkeys)
+    # print(registered_cardkeys)
 
     # get all data from all known cards
     all_cards_and_data = {}  # {cardfilename: ['path', materialdict]}
@@ -378,11 +378,11 @@ def get_and_output_all_carddata(cards):
     registered_and_not_used_cardkeys = []
     for card in all_cards_and_data:
         for k in all_cards_and_data[card][1]:
-            if k in registed_cardkeys:
+            if k in registered_cardkeys:
                 used_and_registered_cardkeys.append(k)
             else:
                 used_and_not_registered_cardkeys.append(k)
-    for k in registed_cardkeys:
+    for k in registered_cardkeys:
         if (k not in used_and_registered_cardkeys) and (k not in used_and_not_registered_cardkeys):
             registered_and_not_used_cardkeys.append(k)
 
