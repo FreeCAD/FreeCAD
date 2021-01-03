@@ -37,7 +37,7 @@
 // Include file for our new class.
 #include "SoNavigationDragger.h"
 
-// Include file the binaray of SoNavigationDraggerLayout.iv, the layout of the dragger.
+// Include file the binary of SoNavigationDraggerLayout.iv, the layout of the dragger.
 #include "SoNavigationDraggerLayout.h"
 
 // This file contains RotTransDragger::geomBuffer, which
