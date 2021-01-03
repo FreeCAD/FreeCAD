@@ -230,7 +230,7 @@ getBoundingBox(subname=None, transform=True, view=None): obtain the bounding box
     </Attribute>
     <Attribute Name="DropPrefix" ReadOnly="true" >
       <Documentation>
-          <UserDocu>Subname referecing the sub-object for holding dropped object</UserDocu>
+          <UserDocu>Subname referencing the sub-object for holding dropped object</UserDocu>
       </Documentation>
       <Parameter Name="DropPrefix" Type="String" />
     </Attribute>
