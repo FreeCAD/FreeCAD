@@ -61,7 +61,7 @@ class REAL(float,NUMBER):
     Syntax:
     265 real_type = REAL [ '(' precision_spec ')' ] .
     255 precision_spec = numeric_expression .
-    Rational and irrational numbers have infnite resolution and are exact. Scientific numbers rep-
+    Rational and irrational numbers have infinite resolution and are exact. Scientific numbers rep-
     resent quantities which are known only to a specified precision. The precision_spec is stated
     in terms of significant digits.
     A real number literal is represented by a mantissa and optional exponent. The number of digits
