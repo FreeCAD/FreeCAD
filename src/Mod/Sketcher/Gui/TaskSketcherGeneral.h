@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskSketcherGerneral_H
-#define GUI_TASKVIEW_TaskSketcherGerneral_H
+#ifndef GUI_TASKVIEW_TaskSketcherGeneral_H
+#define GUI_TASKVIEW_TaskSketcherGeneral_H
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
@@ -111,4 +111,4 @@ private:
 
 } //namespace SketcherGui
 
-#endif // GUI_TASKVIEW_TaskSketcherGerneral_H
+#endif // GUI_TASKVIEW_TaskSketcherGeneral_H
