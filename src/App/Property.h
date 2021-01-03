@@ -290,7 +290,7 @@ private:
  * as the a second argument to the constructor, and manually call
  * AtomicPropertyChange::aboutToChange() before actual change, this enables you
  * to prevent unnecessary property copy for undo/redo where there is actual
- * changes. AtomicPropertyChange will guaranetee calling hasSetValue() when the
+ * changes. AtomicPropertyChange will guarantee calling hasSetValue() when the
  * last instance in the current call stack is destroyed.
  *
  * One thing to take note is that, because C++ does not allow throwing
