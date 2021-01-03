@@ -36105,21 +36105,21 @@ def ifcvectordifference(arg1,arg2,):
 ####################
  # FUNCTION ifccorrectlocalplacement #
 ####################
-def ifccorrectlocalplacement(axisplacement,relplacement,):
+def ifccorrectlocalplacement(axisplacement,replacement,):
 	'''
 	:param axisplacement
 	:type axisplacement:ifcaxis2placement
-	:param relplacement
-	:type relplacement:ifcobjectplacement
+	:param replacement
+	:type replacement:ifcobjectplacement
 	'''
-	if (EXISTS(relplacement)):
-		if ('IFC2X3.IFCGRIDPLACEMENT'  ==  TYPEOF(relplacement)):
+	if (EXISTS(replacement)):
+		if ('IFC2X3.IFCGRIDPLACEMENT'  ==  TYPEOF(replacement)):
 			return  None 
-		if ('IFC2X3.IFCLOCALPLACEMENT'  ==  TYPEOF(relplacement)):
+		if ('IFC2X3.IFCLOCALPLACEMENT'  ==  TYPEOF(replacement)):
 			if ('IFC2X3.IFCAXIS2PLACEMENT2D'  ==  TYPEOF(axisplacement)):
 				return TRUE
 			if ('IFC2X3.IFCAXIS2PLACEMENT3D'  ==  TYPEOF(axisplacement)):
-				if (relplacement.relativeplacement.dim  ==  3):
+				if (replacement.relativeplacement.dim  ==  3):
 					return TRUE
 				else:
 					return FALSE
