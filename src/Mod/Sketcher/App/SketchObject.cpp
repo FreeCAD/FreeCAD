@@ -5099,12 +5099,12 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
                                 s=true;
                             }
 
-                            if (f && s) { // the equality constraint is not interpole
+                            if (f && s) { // the equality constraint is not interpole ?
                                 break;
                             }
                         }
 
-                        if (f != s) { // the equality constraint constraints a pole but it is not interpole
+                        if (f != s) { // the equality constraint constraints a pole but it is not interpole ?
                             (*ita)++;
                         }
 
