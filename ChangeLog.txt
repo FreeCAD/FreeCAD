@@ -837,7 +837,7 @@ Version: V0.1B62 Date: Sat May 31 11:53:56 2003 +++++++++++++++++++++++++++++++
   * removing ViewContainer
   * adding the OnHasMsg methods
   * switching some stdCommands to message stile to allow views with own document
-  * moving scintila to a passive view model
+  * moving scintilla to a passive view model
   * updated to new version of Scintilla (1.53)
 
 Version: V0.1B61 Date: Sat May 24 17:35:52 2003 +++++++++++++++++++++++++++++++
