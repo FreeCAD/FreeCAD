@@ -1451,7 +1451,7 @@ double Adaptive2d::CalcCutArea(Clipper &clip, const IntPoint &c1, const IntPoint
 					interPath->push_back(IntPoint(*p2));
 				}
 				else
-				{ // prev point inside, current point outside, find instersection
+				{ // prev point inside, current point outside, find intersection
 					if (Line2CircleIntersect(c2, toolRadiusScaled, *p1, *p2, inters))
 					{
 						if (inters.size() > 1)

@@ -43,7 +43,7 @@ def myCustomFusionRoutine(list_of_shapes):
         # stores the data returned by generalFuse, supplied to class constructor
         self.gfa_return = None 
 
-        # pieces that resulted from intersetion routine. List of shapes (non-decorated).
+        # pieces that resulted from intersection routine. List of shapes (non-decorated).
         self.pieces = None
         # key = decorated shape. Value = index (int) into self.pieces
         self._piece_to_index = {}

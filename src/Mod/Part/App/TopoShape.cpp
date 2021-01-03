@@ -2755,7 +2755,7 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
     // OUTLINE OF MAKEOFFSET2D
     // * Prepare shapes to process
     // ** if _Shape is a compound, recursively call this routine for all subcompounds
-    // ** if intrsection, dump all non-compound children into shapes to process; otherwise call this routine recursively for all children
+    // ** if intersection, dump all non-compound children into shapes to process; otherwise call this routine recursively for all children
     // ** if _shape isn't a compound, dump it straight to shapes to process
     // * Test for shape types, and convert them all to wires
     // * find plane

@@ -542,7 +542,7 @@ namespace geoff_geometry {
 
 	int Intof(const Circle& c0, const Circle& c1, Point& pLeft, Point& pRight)	{
 		// inters of 2 circles
-		// returns the number of intersctions
+		// returns the number of intersections
 		Vector2d v(c0.pc, c1.pc);
 		double d = 	v.normalise();
 		if(d < TOLERANCE)	return 0;									// co-incident circles

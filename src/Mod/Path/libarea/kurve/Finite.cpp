@@ -44,7 +44,7 @@ namespace geoff_geometry {
 	int LineLineIntof(const Span& sp0 , const Span& sp1, Point& p, double t[2]) {
 		// intersection between 2 Line2d
 		// returns 0 for no intersection in range of either span
-		// returns 1 for intersction in range of both spans
+		// returns 1 for intersection in range of both spans
 		// t[0] is parameter on sp0,
 		// t[1] is parameter on sp1
 		Vector2d v0(sp0.p0, sp0.p1);

@@ -1037,7 +1037,7 @@ Base::Vector3d Generic::apparentInter(Generic* g)
     Base::Vector3d dir0 = asVector();
     Base::Vector3d dir1 = g->asVector();
 
-    // Line Intersetion (taken from ViewProviderSketch.cpp)
+    // Line Intersection (taken from ViewProviderSketch.cpp)
     double det = dir0.x*dir1.y - dir0.y*dir1.x;
     if ((det > 0 ? det : -det) < 1e-10)
         throw Base::ValueError("Invalid selection - Det = 0");
