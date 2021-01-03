@@ -502,7 +502,7 @@ void  BRepAdaptor_CompCurve2::InvPrepare(const Standard_Integer index,
   Reverse = (Forward && (Or == TopAbs_REVERSED)) ||
             (!Forward && (Or != TopAbs_REVERSED));
 
-  // Calcul des parametres de reparametrisation
+  // Calcul des parametres de reparameterization
   // tel que : T = Ti + (t-First)*Delta
   Standard_Real f, l;
   BRep_Tool::Range(E, f, l);

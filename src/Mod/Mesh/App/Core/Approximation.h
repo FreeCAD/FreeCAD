@@ -329,7 +329,7 @@ protected:
 
 /**
  * This is an 2.5D approach which first determines the bestfit plane of the point set (P_i = (x,y,z), i=1,...,n)
- * to get a parametrisation of the points afterwards. The coordinates of the points with respect to the local
+ * to get a parameterization of the points afterwards. The coordinates of the points with respect to the local
  * coordinate system of the plane are determined and then a quadratic polynomial function of the form:
  *      w = f(u,v) = a*u^2 + b*v^2 + c*u*v + d*u + e*v + f
  * is determined.
