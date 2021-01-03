@@ -98,7 +98,7 @@ BRepAdaptor_CompCurve2::BRepAdaptor_CompCurve2(const TopoDS_Wire& W,
     }
   }
 
-  Forward = Standard_True; // Defaut ; Les Edge Reverse seront parcourue
+  Forward = Standard_True; // Default ; Les Edge Reverse seront parcourue
                            // a rebourt.
   if((NbEdge > 2) || ((NbEdge==2) && (!myWire.Closed())) ) {
     TopAbs_Orientation Or = myCurves->Value(1).Edge().Orientation();

@@ -74,7 +74,7 @@ namespace dcm {
  * A property of kind @ref vertex_property will added to vertices, a property of kind @ref object_property to all
  * objects and so on.
  *
- * If the property type is a standart c++ type like int or bool, the defualt value can't be set by using its
+ * If the property type is a standart c++ type like int or bool, the default value can't be set by using its
  * constructor. Therefore a interface for setting default values is added to the property. If you want
  * to assign a default value you just need to add a struct default_value which returns the wanted default
  * value with the operator(). If you don't want a default value, just don't add the struct. The implementation

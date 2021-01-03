@@ -314,7 +314,7 @@ class ObjectSlot(PathOp.ObjectOp):
             obj.OpStartDepth.Value = 10
 
         PathLog.debug('Default OpFinalDepth: {}'.format(obj.OpFinalDepth.Value))
-        PathLog.debug('Defualt OpStartDepth: {}'.format(obj.OpStartDepth.Value))
+        PathLog.debug('Default OpStartDepth: {}'.format(obj.OpStartDepth.Value))
 
     def opApplyPropertyLimits(self, obj):
         '''opApplyPropertyLimits(obj) ... Apply necessary limits to user input property values before performing main operation.'''
