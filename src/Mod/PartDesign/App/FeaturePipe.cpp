@@ -184,7 +184,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         //see if we shall use multiple sections
         if(Transformation.getValue() == 1) {
 
-            //TODO: we need to order the sections to prevent occ from crahsing, as makepieshell connects
+            //TODO: we need to order the sections to prevent occ from crashing, as makepieshell connects
             //the sections in the order of adding
 
             for(App::DocumentObject* obj : multisections) {
