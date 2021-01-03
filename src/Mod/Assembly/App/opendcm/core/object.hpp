@@ -85,7 +85,7 @@ struct SignalOwner {
     * @brief Connects a slot to a specified signal.
     *
     * Slots are boost::functions which get called when the signal is emitted. Any valid boost::function
-    * which ressembles the signal tyes signature can be registert. It is important that the signal type
+    * which resembles the signal tyes signature can be registert. It is important that the signal type
     * was registered to this object on creation by the appropriate template parameter.
     *
     * @tparam S the signal which should be intercepted
