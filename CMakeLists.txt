@@ -1,4 +1,4 @@
-# april 2020, the oldest we have to support : Ununtu 16.04 LTS (Xenial)
+# april 2020, the oldest we have to support : Ubuntu 16.04 LTS (Xenial)
 cmake_minimum_required(VERSION 3.5.1 FATAL_ERROR)
 
 # policy CMP0072 was introduced with CMake 3.11
