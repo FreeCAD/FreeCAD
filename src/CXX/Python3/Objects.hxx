@@ -479,7 +479,7 @@ namespace Py
         return Object( Py::_True() );
     }
 
-    // TMM: 31May'01 - Added the #ifndef so I can exlude iostreams.
+    // TMM: 31May'01 - Added the #ifndef so I can exclude iostreams.
 #ifndef CXX_NO_IOSTREAMS
     PYCXX_EXPORT std::ostream &operator<<( std::ostream &os, const Object &ob );
 #endif
