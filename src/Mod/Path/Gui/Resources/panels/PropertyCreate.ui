@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>484</width>
-    <height>362</height>
+    <width>480</width>
+    <height>468</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -77,14 +77,24 @@
      </property>
     </widget>
    </item>
-   <item row="5" column="0">
+   <item row="3" column="0">
+    <widget class="QLabel" name="enumLabel">
+     <property name="text">
+      <string>Enums</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QLineEdit" name="enumValues"/>
+   </item>
+   <item row="4" column="0">
     <widget class="QLabel" name="label_3">
      <property name="text">
       <string>ToolTip</string>
      </property>
     </widget>
    </item>
-   <item row="5" column="1">
+   <item row="4" column="1">
     <widget class="QTextEdit" name="propertyInfo">
      <property name="toolTip">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ToolTip to be displayed when user hovers mouse over property.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -94,8 +104,14 @@
      </property>
     </widget>
    </item>
-   <item row="6" column="1">
+   <item row="5" column="1">
     <widget class="QWidget" name="widget_2" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <property name="leftMargin">
        <number>0</number>
@@ -130,26 +146,6 @@
        </widget>
       </item>
      </layout>
-    </widget>
-   </item>
-   <item row="4" column="0">
-    <widget class="QLabel" name="enumLabel">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="text">
-      <string>Values</string>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="1">
-    <widget class="QLineEdit" name="enumValues">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Comma separated list of enumeration values.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
     </widget>
    </item>
   </layout>

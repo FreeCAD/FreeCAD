@@ -151,8 +151,6 @@ class PropertyCreate(object):
         self.form.propertyType.currentIndexChanged.connect(self.updateUI)
         self.form.enumValues.textChanged.connect(self.updateUI)
 
-        self.updateUI()
-
     def updateUI(self):
         typeSet = True
         if self.propertyIsEnumeration():
@@ -187,52 +185,76 @@ class PropertyCreate(object):
     def propertyIsEnumeration(self):
         return self.propertyType() == 'App::PropertyEnumeration'
 
-    def exec_(self):
-        self.form.propertyName.setText('')
-        self.form.propertyInfo.setText('')
-        self.form.enumValues.setText('')
-        #self.form.propertyName.setFocus()
+    def exec_(self, name):
+        if name:
+            # property exists - this is an edit operation
+            self.form.propertyName.setText(name)
+            if self.propertyIsEnumeration():
+                self.form.enumValues.setText(','.join(self.obj.getEnumerationsOfProperty(name)))
+            self.form.propertyInfo.setText(self.obj.getDocumentationOfProperty(name))
+
+            self.form.propertyName.setEnabled(False)
+            self.form.propertyType.setEnabled(False)
+            self.form.createAnother.setEnabled(False)
+
+        else:
+            self.form.propertyName.setText('')
+            self.form.propertyInfo.setText('')
+            self.form.enumValues.setText('')
+            #self.form.propertyName.setFocus()
+
+        self.updateUI()
+
         return self.form.exec_()
+
+Panel = []
 
 class TaskPanel(object):
     ColumnName = 0
+    #ColumnType = 1
     ColumnVal  = 1
-    ColumnDesc = 2
+    #TableHeaders = ['Property', 'Type', 'Value']
+    TableHeaders = ['Property', 'Value']
 
     def __init__(self, vobj):
-        self.obj = vobj.Object
+        self.obj   = vobj.Object
         self.props = sorted(self.obj.Proxy.getCustomProperties())
-        self.form = FreeCADGui.PySideUic.loadUi(":panels/PropertyBag.ui")
+        self.form  = FreeCADGui.PySideUic.loadUi(":panels/PropertyBag.ui")
 
         # initialized later
+        self.model    = None
         self.delegate = None
-        self.model = None
         FreeCAD.ActiveDocument.openTransaction(translate("PathPropertyBag", "Edit PropertyBag"))
+        Panel.append(self)
 
     def updateData(self, topLeft, bottomRight):
-        if topLeft.column() == self.ColumnDesc:
-            obj  = topLeft.data(Delegate.RoleObject)
-            prop = topLeft.data(Delegate.RoleProperty)
+        pass
 
 
     def _setupProperty(self, i, name):
-        info  = self.obj.getDocumentationOfProperty(name)
-        value = self.obj.getPropertyByName(name)
+        typ = PathPropertyBag.getPropertyTypeName(self.obj.getTypeIdOfProperty(name))
+        val  = PathUtil.getPropertyValueString(self.obj, name)
+        info = self.obj.getDocumentationOfProperty(name)
 
-        self.model.setData(self.model.index(i, self.ColumnName), name,        QtCore.Qt.EditRole)
-        self.model.setData(self.model.index(i, self.ColumnVal),  self.obj,    Delegate.RoleObject)
-        self.model.setData(self.model.index(i, self.ColumnVal),  name,        Delegate.RoleProperty)
-        self.model.setData(self.model.index(i, self.ColumnVal),  str(value),  QtCore.Qt.DisplayRole)
-        self.model.setData(self.model.index(i, self.ColumnDesc), info,        QtCore.Qt.EditRole)
+        self.model.setData(self.model.index(i, self.ColumnName), name,      QtCore.Qt.EditRole)
+        #self.model.setData(self.model.index(i, self.ColumnType), typ,       QtCore.Qt.EditRole)
+        self.model.setData(self.model.index(i, self.ColumnVal),  self.obj,  Delegate.RoleObject)
+        self.model.setData(self.model.index(i, self.ColumnVal),  name,      Delegate.RoleProperty)
+        self.model.setData(self.model.index(i, self.ColumnVal),  val,       QtCore.Qt.DisplayRole)
+
+        self.model.setData(self.model.index(i, self.ColumnName), typ,       QtCore.Qt.ToolTipRole)
+        #self.model.setData(self.model.index(i, self.ColumnType), info,      QtCore.Qt.ToolTipRole)
+        self.model.setData(self.model.index(i, self.ColumnVal),  info,      QtCore.Qt.ToolTipRole)
 
         self.model.item(i, self.ColumnName).setEditable(False)
+        #self.model.item(i, self.ColumnType).setEditable(False)
 
     def setupUi(self):
         PathLog.track()
 
         self.delegate = Delegate(self.form)
-        self.model = QtGui.QStandardItemModel(len(self.props), 3, self.form)
-        self.model.setHorizontalHeaderLabels(['Property', 'Value', 'Description'])
+        self.model = QtGui.QStandardItemModel(len(self.props), len(self.TableHeaders), self.form)
+        self.model.setHorizontalHeaderLabels(self.TableHeaders)
 
         for i,name in enumerate(self.props):
             self._setupProperty(i, name)
@@ -245,6 +267,7 @@ class TaskPanel(object):
         self.form.table.selectionModel().selectionChanged.connect(self.propertySelected)
         self.form.add.clicked.connect(self.propertyAdd)
         self.form.remove.clicked.connect(self.propertyRemove)
+        self.form.modify.clicked.connect(self.propertyModify)
         self.propertySelected([])
 
     def accept(self):
@@ -261,9 +284,21 @@ class TaskPanel(object):
     def propertySelected(self, selection):
         PathLog.track()
         if selection:
+            self.form.modify.setEnabled(True)
             self.form.remove.setEnabled(True)
         else:
+            self.form.modify.setEnabled(False)
             self.form.remove.setEnabled(False)
+
+    def addCustomProperty(self, obj, dialog):
+        name = dialog.propertyName()
+        typ  = dialog.propertyType()
+        grp  = dialog.propertyGroup()
+        info = dialog.propertyInfo()
+        self.obj.Proxy.addCustomProperty(typ, name, grp, info)
+        if dialog.propertyIsEnumeration():
+            setattr(self.obj, name, dialog.propertyEnumerations())
+        return (name, info)
 
     def propertyAdd(self):
         PathLog.track()
@@ -272,16 +307,10 @@ class TaskPanel(object):
         typ = None
         while True:
             dialog = PropertyCreate(self.obj, grp, typ, more)
-            if dialog.exec_():
+            if dialog.exec_(None):
                 # if we block signals the view doesn't get updated, surprise, surprise
                 #self.model.blockSignals(True)
-                name = dialog.propertyName()
-                typ  = dialog.propertyType()
-                grp  = dialog.propertyGroup()
-                info = dialog.propertyInfo()
-                self.obj.Proxy.addCustomProperty(typ, name, grp, info)
-                if dialog.propertyIsEnumeration():
-                    setattr(self.obj, name, dialog.propertyEnumerations())
+                name, info = self.addCustomProperty(self.obj, dialog)
                 index = 0
                 for i in range(self.model.rowCount()):
                     index = i
@@ -296,6 +325,37 @@ class TaskPanel(object):
                 more = False
             if not more:
                 break
+
+    def propertyModify(self):
+        PathLog.track()
+        rows = []
+        for index in self.form.table.selectionModel().selectedIndexes():
+            row = index.row()
+            if row in rows:
+                continue
+            rows.append(row)
+
+            obj = self.model.item(row, self.ColumnVal).data(Delegate.RoleObject)
+            nam = self.model.item(row, self.ColumnVal).data(Delegate.RoleProperty)
+            grp = obj.getGroupOfProperty(nam)
+            typ = obj.getTypeIdOfProperty(nam)
+
+            dialog = PropertyCreate(self.obj, grp, typ, False)
+            if dialog.exec_(nam):
+                val = getattr(obj, nam)
+                obj.removeProperty(nam)
+                name, info = self.addCustomProperty(self.obj, dialog)
+                try:
+                    setattr(obj, nam, val)
+                except:
+                    # this can happen if the old enumeration value doesn't exist anymore
+                    pass
+                newVal = PathUtil.getPropertyValueString(obj, nam)
+                self.model.setData(self.model.index(row, self.ColumnVal), newVal, QtCore.Qt.DisplayRole)
+
+                #self.model.setData(self.model.index(row, self.ColumnType), info, QtCore.Qt.ToolTipRole)
+                self.model.setData(self.model.index(row, self.ColumnVal),  info, QtCore.Qt.ToolTipRole)
+
 
     def propertyRemove(self):
         PathLog.track()

@@ -45,17 +45,11 @@ SupportedPropertyType = {
         'String'        : 'App::PropertyString',
         }
 
-def getPropertyType(o):
-    if type(o) == str:
-        return SupportedPropertyType['String']
-    if type(o) == bool:
-        return SupportedPropertyType['Bool']
-    if type(o) == int:
-        return SupportedPropertyType['Integer']
-    if type(o) == float:
-        return SupportedPropertyType['Float']
-    if type(o) == FreeCAD.Units.Quantity:
-        return SupportedPropertyType[o.Unit.Type]
+def getPropertyTypeName(o):
+    for typ in SupportedPropertyType:
+        if SupportedPropertyType[typ] == o:
+            return typ
+    raise IndexError()
 
 class PropertyBag(object):
     '''Property container object.'''
