@@ -6273,7 +6273,7 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
         const Part::Geometry *geo = Obj->getGeometry(GeoId);
 
         if(geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
-            // unsupported as they are generally hereogeneus shapes
+            // unsupported as they are generally heterogeneous shapes
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                                  QObject::tr("Equality for B-spline edge currently unsupported."));
             return;
