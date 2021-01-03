@@ -1297,7 +1297,7 @@ def drawSolid(solid):
     return None
 
 
-def drawSplineIterpolation(verts, closed=False, forceShape=False,
+def drawSplineInterpolation(verts, closed=False, forceShape=False,
                            alwaysDiscretize=False):
     """Return a wire or spline, opened or closed.
 
@@ -1366,7 +1366,7 @@ def drawSplineOld(spline, forceShape=False):
     It takes the vertices from the spline data,
     considers the value from code 70 to know if the spline
     is closed or not, and then calls
-    `drawSplineIterpolation(verts, closed, forceShape)`.
+    `drawSplineInterpolation(verts, closed, forceShape)`.
 
     Parameters
     ----------
@@ -1382,13 +1382,13 @@ def drawSplineOld(spline, forceShape=False):
     -------
     Part::Part2DObject or Part::TopoShape ('Edge', 'Face')
         The returned object is normally a `Draft Wire` or `Draft BSpline`
-        as returned from `drawSplineIterpolation()`.
+        as returned from `drawSplineInterpolation()`.
 
         It returns `None` if it fails producing a shape.
 
     See also
     --------
-    drawSplineIterpolation
+    drawSplineInterpolation
     """
     flag = rawValue(spline, 70)
     if flag == 1:
@@ -1413,7 +1413,7 @@ def drawSplineOld(spline, forceShape=False):
         elif dline[0] == 40:
             knots.append(dline[1])
     try:
-        return drawSplineIterpolation(verts, closed, forceShape)
+        return drawSplineInterpolation(verts, closed, forceShape)
     except Part.OCCError:
         warn(spline)
     return None
@@ -1449,11 +1449,11 @@ def drawSpline(spline, forceShape=False):
 
         If it's impossible to create the BSpline in this way,
         it will try to create an interpolated BSpline with
-        `drawSplineIterpolation(controlpoints)`.
+        `drawSplineInterpolation(controlpoints)`.
 
         If fit points exist and control points do not,
         it will try to create an interpolated BSpline with
-        `drawSplineIterpolation(fitpoints)`.
+        `drawSplineInterpolation(fitpoints)`.
 
         In other cases it will try to create a `Part.Shape`
         from a BSpline, using the available control points,
@@ -1471,7 +1471,7 @@ def drawSpline(spline, forceShape=False):
 
     See also
     --------
-    drawBlock, Draft.makeBezCurve, Part.BezierCurve, drawSplineIterpolation,
+    drawBlock, Draft.makeBezCurve, Part.BezierCurve, drawSplineInterpolation,
     Part.BSplineCurve.buildFromPolesMultsKnots
 
     To do
@@ -1580,11 +1580,11 @@ def drawSpline(spline, forceShape=False):
                 return Part.Wire(edges)
         else:
             warn('polygon fallback on %s' % spline)
-            return drawSplineIterpolation(controlpoints, closed=closed,
+            return drawSplineInterpolation(controlpoints, closed=closed,
                                           forceShape=forceShape,
                                           alwaysDiscretize=True)
     if fitpoints and not controlpoints:
-        return drawSplineIterpolation(fitpoints, closed=closed,
+        return drawSplineInterpolation(fitpoints, closed=closed,
                                       forceShape=forceShape)
     try:
         bspline = Part.BSplineCurve()
