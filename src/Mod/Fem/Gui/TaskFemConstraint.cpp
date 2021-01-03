@@ -151,7 +151,7 @@ void TaskFemConstraint::setSelection(QListWidgetItem* item) {
     ItemName.erase(0, pos + delimiter.length());
     // clear existing selection
     Gui::Selection().clearSelection();
-    // highligh the selected item
+    // highlight the selected item
     Gui::Selection().addSelection(docName.c_str(), objName.c_str(), ItemName.c_str(), 0, 0, 0);
 }
 

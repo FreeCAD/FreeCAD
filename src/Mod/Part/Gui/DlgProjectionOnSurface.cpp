@@ -178,7 +178,7 @@ DlgProjectionOnSurface::~DlgProjectionOnSurface()
   delete ui;
   for ( auto it : m_projectionSurfaceVec)
   {
-    higlight_object(it.partFeature, it.partName, false, 0);
+    highlight_object(it.partFeature, it.partName, false, 0);
     PartGui::ViewProviderPartExt* vp = dynamic_cast<PartGui::ViewProviderPartExt*>(Gui::Application::Instance->getViewProvider(it.partFeature));
     if (vp)
     {
@@ -188,7 +188,7 @@ DlgProjectionOnSurface::~DlgProjectionOnSurface()
   }
   for (auto it : m_shapeVec)
   {
-    higlight_object(it.partFeature, it.partName, false, 0);
+    highlight_object(it.partFeature, it.partName, false, 0);
   }
   Gui::Selection().rmvSelectionGate();
 }
@@ -372,7 +372,7 @@ void PartGui::DlgProjectionOnSurface::store_current_selected_parts(std::vector<S
             currentShapeStore.inputShape = currentShape;
             currentShapeStore.partName = *itName;
             auto store = store_part_in_vector(currentShapeStore, iStoreVec);
-            higlight_object(aPart, *itName, store, iColor);
+            highlight_object(aPart, *itName, store, iColor);
             store_wire_in_vector(currentShapeStore, parentShape, iStoreVec, iColor);
           }
         }
@@ -380,7 +380,7 @@ void PartGui::DlgProjectionOnSurface::store_current_selected_parts(std::vector<S
         {
           transform_shape_to_global_position(currentShapeStore.inputShape,currentShapeStore.partFeature);
           auto store = store_part_in_vector(currentShapeStore, iStoreVec);
-          higlight_object(aPart, aPart->Shape.getName(), store, iColor);
+          highlight_object(aPart, aPart->Shape.getName(), store, iColor);
         }
         Gui::Selection().clearSelection(m_partDocument->getName());
         Gui::Selection().rmvPreselect();
@@ -612,7 +612,7 @@ void PartGui::DlgProjectionOnSurface::enable_ui_elements(const std::vector<QWidg
   }
 }
 
-void PartGui::DlgProjectionOnSurface::higlight_object(Part::Feature* iCurrentObject, const std::string& iShapeName, bool iHighlight, const unsigned int iColor)
+void PartGui::DlgProjectionOnSurface::highlight_object(Part::Feature* iCurrentObject, const std::string& iShapeName, bool iHighlight, const unsigned int iColor)
 {
   if (!iCurrentObject) return;
   auto partenShape = iCurrentObject->Shape.getShape().getShape();
@@ -892,7 +892,7 @@ void PartGui::DlgProjectionOnSurface::store_wire_in_vector(const SShapeStore& iC
     newEdgeObject.partName = "Edge" + std::to_string(index);
 
     auto store = store_part_in_vector(newEdgeObject, iStoreVec);
-    higlight_object(newEdgeObject.partFeature, newEdgeObject.partName, store, iColor);
+    highlight_object(newEdgeObject.partFeature, newEdgeObject.partName, store, iColor);
   }
 }
 
