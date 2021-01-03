@@ -54,7 +54,7 @@ macro(SetupPython)
 
             # Find python in the package management systems, using names in that
             # list in decreasing priority.  Note that a manually specified
-            # PYTHON_EXECUTABLE still has prescedence over this.
+            # PYTHON_EXECUTABLE still has precedence over this.
             find_program(PYTHON_EXECUTABLE
                          NAMES ${_PYTHON_NAMES}
                          PATHS ${MACPORTS_PREFIX} ${HOMEBREW_PREFIX}
