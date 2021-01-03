@@ -670,7 +670,7 @@ public:
     /**
      * @brief Add a edge between two vertices, defined by global descriptors.
      *
-     * Adds an edge between vertices which are not nesseccarily in this local cluster and have therefore to be
+     * Adds an edge between vertices which are not necessarily in this local cluster and have therefore to be
      * identified with global descriptors. The only condition for source and target vertex is that both must be
      * in the local cluster or any of its subclusters. If thats not the case, the function will fail. On success
      * a new GlobalEdge will be created, but not necessarily a local one. If the vertices are in different cluster
