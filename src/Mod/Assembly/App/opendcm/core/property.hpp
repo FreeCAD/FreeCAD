@@ -513,7 +513,7 @@ struct empty_prop {
 /**
  * @brief Add a type to clusters
  *
- * Allows to specify special types to ClusterGraphs and make a it possibe to distuingish between
+ * Allows to specify special types to ClusterGraphs and make a it possibe to distinguish between
  * different purposes. The cluster types need to be int.
  **/
 struct type_prop {
