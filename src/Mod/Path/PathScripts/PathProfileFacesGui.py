@@ -35,7 +35,7 @@ __doc__ = "Profile Faces operation page controller and command implementation (d
 
 
 class TaskPanelOpPage(PathProfileGui.TaskPanelOpPage):
-    '''Psuedo page controller class for Profile operation,
+    '''Pseudo page controller class for Profile operation,
     allowing for backward compatibility with pre-existing "Profile Faces" operations.'''
     pass
 # Eclass

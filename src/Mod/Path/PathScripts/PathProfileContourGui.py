@@ -35,7 +35,7 @@ __doc__ = "Contour operation page controller and command implementation (depreci
 
 
 class TaskPanelOpPage(PathProfileGui.TaskPanelOpPage):
-    '''Psuedo page controller class for Profile operation,
+    '''Pseudo page controller class for Profile operation,
     allowing for backward compatibility with pre-existing "Contour" operations.'''
     pass
 # Eclass

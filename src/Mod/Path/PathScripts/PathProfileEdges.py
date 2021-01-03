@@ -33,7 +33,7 @@ __contributors__ = "russ4262 (Russell Johnson)"
 
 
 class ObjectProfile(PathProfile.ObjectProfile):
-    '''Psuedo class for Profile operation,
+    '''Pseudo class for Profile operation,
     allowing for backward compatibility with pre-existing "Profile Edges" operations.'''
     pass
 # Eclass
