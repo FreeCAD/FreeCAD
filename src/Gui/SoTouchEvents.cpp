@@ -117,11 +117,11 @@ double SoGesturePinchEvent::unbranchAngle(double ang)
 
 SO_EVENT_SOURCE(SoGestureSwipeEvent);
 
-SoGestureSwipeEvent::SoGestureSwipeEvent(QSwipeGesture *qwsipe, QWidget *widget)
+SoGestureSwipeEvent::SoGestureSwipeEvent(QSwipeGesture *qswipe, QWidget *widget)
 {
     Q_UNUSED(widget);
-    angle = qwsipe->swipeAngle();
-    switch (qwsipe->verticalDirection()){
+    angle = qswipe->swipeAngle();
+    switch (qswipe->verticalDirection()){
     case QSwipeGesture::Up :
         vertDir = +1;
         break;
@@ -132,7 +132,7 @@ SoGestureSwipeEvent::SoGestureSwipeEvent(QSwipeGesture *qwsipe, QWidget *widget)
         vertDir = 0;
         break;
     }
-    switch (qwsipe->horizontalDirection()){
+    switch (qswipe->horizontalDirection()){
     case QSwipeGesture::Right :
         horzDir = +1;
         break;
@@ -144,7 +144,7 @@ SoGestureSwipeEvent::SoGestureSwipeEvent(QSwipeGesture *qwsipe, QWidget *widget)
         break;
     }
 
-    state = SbGestureState(qwsipe->state());
+    state = SbGestureState(qswipe->state());
 
     Qt::KeyboardModifiers mods = QApplication::keyboardModifiers();
     this->setAltDown(mods.testFlag(Qt::AltModifier));

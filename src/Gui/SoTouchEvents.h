@@ -103,7 +103,7 @@ public:
     SoGestureSwipeEvent() : angle(0), vertDir(0), horzDir(0)
     {
     }
-    SoGestureSwipeEvent(QSwipeGesture* qwsipe, QWidget *widget);
+    SoGestureSwipeEvent(QSwipeGesture* qswipe, QWidget *widget);
     ~SoGestureSwipeEvent(){}
     SbBool isSoGestureSwipeEvent(const SoEvent* ev) const;
 
