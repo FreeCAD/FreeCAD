@@ -30,7 +30,7 @@ namespace PartDesignGui {
 
 class ReferenceSelection : public Gui::SelectionFilterGate
 {
-    // TODO Replace this set of bools with bitwice enum (2015-09-04, Fat-Zer)
+    // TODO Replace this set of bools with bitwise enum (2015-09-04, Fat-Zer)
     const App::DocumentObject* support;
     // If set to true, allow picking edges or planes or both
     bool edge, plane;
