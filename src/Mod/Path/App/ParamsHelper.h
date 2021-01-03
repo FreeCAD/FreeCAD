@@ -132,7 +132,7 @@
  *   not as easy as sequence. Other type of parameter do not need to have this
  *   field
  *
- * - \c info is used to provide the supplimentery information for \c enum2 type
+ * - \c info is used to provide the supplementary information for \c enum2 type
  *   of parameter, which can be converted to a user defined enum type by
  *   #PARAM_ENUM_CONVERT. \c info must be a tuple, with the user defined enum
  *   type as the first element, and a prefix as the second element. For \c enum2
