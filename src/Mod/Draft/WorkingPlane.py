@@ -1219,7 +1219,7 @@ def getPlacementFromPoints(points):
 
         If the fourth point exists, it is used to define the plane's `axis`
         as originating from the first point.
-        If no fourth point is provided, the cross product bewtween
+        If no fourth point is provided, the cross product between
         the previously defined `u` and `v` is used as `axis`.
 
     Return

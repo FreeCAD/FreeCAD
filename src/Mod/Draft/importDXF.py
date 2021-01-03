@@ -413,7 +413,7 @@ def calcBulge(v1, bulge, v2):
     Returns
     -------
     Base::Vector3
-        The new point betwwen `v1` and `v2`.
+        The new point between `v1` and `v2`.
     """
     chord = v2.sub(v1)
     sagitta = (bulge * chord.Length)/2

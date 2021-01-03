@@ -197,7 +197,7 @@ def make_linear_dimension(p1, p2, dim_line=None):
         positioned from the measured segment that goes from `p1` to `p2`.
 
         If it is `None`, this point will be calculated from the intermediate
-        distance betwwen `p1` and `p2`.
+        distance between `p1` and `p2`.
 
     Returns
     -------
@@ -290,7 +290,7 @@ def make_linear_dimension_obj(edge_object, i1=1, i2=2, dim_line=None):
         positioned from the measured segment in `edge_object`.
 
         If it is `None`, this point will be calculated from the intermediate
-        distance betwwen the vertices defined by `i1` and `i2`.
+        distance between the vertices defined by `i1` and `i2`.
 
     Returns
     -------
