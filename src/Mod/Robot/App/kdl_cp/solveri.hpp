@@ -36,7 +36,7 @@ namespace KDL {
  * class MySolver : public SolverI
  * {
  * public:
- *    static const int E_CHILDFAILD = xxx;
+ *    static const int E_CHILDFAILED = xxx;
  *
  *    MySolver(SomeOtherSolver& other);
  *    virtual ~MySolver();
