@@ -238,7 +238,7 @@ std::string unquote(const std::string & input)
 
 ////////////////////////////////////////////////////////////////////////////////////
 //
-// ExpressionVistor
+// ExpressionVisitor
 //
 void ExpressionVisitor::getDeps(Expression &e, ExpressionDeps &deps) {
     e._getDeps(deps);
