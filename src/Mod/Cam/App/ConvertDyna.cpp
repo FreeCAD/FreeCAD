@@ -236,13 +236,13 @@ void ReadDyna::ReadConstraints(std::ifstream &inputfile)
 
         for (i = 10; i < 20; i++,j++)
             Info[j] = str[i];
-        Second = atoi(Info);  //Constrainer 1
+        Second = atoi(Info);  //Constrainter 1
 
         j = 0;
 
         for (i = 20; i < 30; i++,j++)
             Info[j] = str[i];
-        Third = atoi(Info);  //Constrainer 2
+        Third = atoi(Info);  //Constrainter 2
 
         j = 0;
 
