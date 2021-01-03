@@ -33,7 +33,7 @@ namespace App {
 namespace PartDesignGui {
 
 /**
- * Defines allowded tool set provided by the workbench
+ * Defines alloweded tool set provided by the workbench
  * Legacy mode provides a free PartDesign features but forbids bodies and parts
  */
 enum class Workflow {

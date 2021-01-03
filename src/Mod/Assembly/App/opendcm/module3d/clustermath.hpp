@@ -27,8 +27,8 @@
 #include <opendcm/core/kernel.hpp>
 #include "defines.hpp"
 
-#define MAXFAKTOR 1.2   //the maximal distance allowd by a point normed to the cluster size
-#define MINFAKTOR 0.8   //the minimal distance allowd by a point normed to the cluster size
+#define MAXFAKTOR 1.2   //the maximal distance allowed by a point normed to the cluster size
+#define MINFAKTOR 0.8   //the minimal distance allowed by a point normed to the cluster size
 #define SKALEFAKTOR 1.  //the faktor by which the biggest size is multiplied to get the scale value
 #define NQFAKTOR 0.5    //the faktor by which the norm quaternion is multiplied with to get the RealScalar
 //norm quaternion to generate the unit quaternion
