@@ -56,7 +56,7 @@ void Eat(std::istream& is,const char* descript);
 /**
  * Eats a word of the stream delimited by the letters in delim or space(tabs...)
  * @param is a stream
- * @param delim a string containing the delimmiting characters
+ * @param delim a string containing the delimiting characters
  * @param storage for returning the word
  * @param maxsize a word can be maximally maxsize-1 long.
  */
