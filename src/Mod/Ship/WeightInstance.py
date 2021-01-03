@@ -51,7 +51,7 @@ class Weight:
                         "IsWeight",
                         "Weight",
                         tooltip).IsWeight = True
-        # Add the mass property for puntual weights
+        # Add the mass property for punctual weights
         tooltip = unicode(QtGui.QApplication.translate(
             "ship_weight",
             "Mass [kg]",
@@ -110,8 +110,8 @@ class Weight:
         """
         pass
 
-    def _getPuntualMass(self, fp, shape):
-        """Compute the mass of a puntual element.
+    def _getPunctualMass(self, fp, shape):
+        """Compute the mass of a punctual element.
 
         Position arguments:
         fp -- Part::FeaturePython object affected.
@@ -170,17 +170,17 @@ class Weight:
         for e in fp.Shape.Edges:
             m += self._getLinearMass(fp, e)
         for v in fp.Shape.Vertexes:
-            m += self._getPuntualMass(fp, v)
+            m += self._getPunctualMass(fp, v)
         return m
 
-    def _getPuntualMoment(self, fp, shape):
-        """Compute the moment of a puntual element (respect to 0, 0, 0).
+    def _getPunctualMoment(self, fp, shape):
+        """Compute the moment of a punctual element (respect to 0, 0, 0).
 
         Position arguments:
         fp -- Part::FeaturePython object affected.
         shape -- Vertex shape object.
         """
-        m = self._getPuntualMass(fp, shape)
+        m = self._getPunctualMass(fp, shape)
         x = Units.Quantity(shape.X, Units.Length)
         y = Units.Quantity(shape.Y, Units.Length)
         z = Units.Quantity(shape.Z, Units.Length)
@@ -254,7 +254,7 @@ class Weight:
             for i in range(len(m)):
                 m[i] = m[i] + mom[i]
         for v in fp.Shape.Vertexes:
-            mom = self._getPuntualMoment(fp, v)
+            mom = self._getPunctualMoment(fp, v)
             for i in range(len(m)):
                 m[i] = m[i] + mom[i]
         return m
