@@ -880,7 +880,7 @@ Version: V0.1B55 Date: Fri Apr 18 23:08:12 2003 +++++++++++++++++++++++++++++++
   * add macro manager
 
 Version: V0.1B54 Date: Thu Apr 17 12:19:12 2003 +++++++++++++++++++++++++++++++
-  * commitin the patch from WErner
+  * commiting the patch from WErner
 - still problems with the TreeBar
 
 Version: V0.1B53 Date: Sun Apr 13 15:33:23 2003 +++++++++++++++++++++++++++++++
