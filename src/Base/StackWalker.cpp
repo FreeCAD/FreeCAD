@@ -305,7 +305,7 @@ public:
       if (GetFileAttributes(szTemp) == INVALID_FILE_ATTRIBUTES)
       {
         // ".local" file does not exist, so we can try to load the dbghelp.dll from the "Debugging Tools for Windows"
-        // Ok, first try the new path according to the archtitecture:
+        // Ok, first try the new path according to the architecture:
 #ifdef _M_IX86
         if ( (m_hDbhHelp == NULL) && (GetEnvironmentVariable(_T("ProgramFiles"), szTemp, 4096) > 0) )
         {
