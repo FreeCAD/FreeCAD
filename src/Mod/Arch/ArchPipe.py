@@ -48,7 +48,7 @@ __url__    = "https://www.freecadweb.org"
 
 def makePipe(baseobj=None,diameter=0,length=0,placement=None,name="Pipe"):
 
-    "makePipe([baseobj,diamerter,length,placement,name]): creates an pipe object from the given base object"
+    "makePipe([baseobj,diameter,length,placement,name]): creates an pipe object from the given base object"
 
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
