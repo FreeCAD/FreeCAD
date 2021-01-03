@@ -56,7 +56,7 @@ public:
 class BaseExport Factory
 {
 public:
-    /// Adds a new prducer instance
+    /// Adds a new producer instance
     void AddProducer (const char* sClassName, AbstractProducer *pcProducer);
     /// returns true if there is a producer for this class registered
     bool CanProduce(const char* sClassName) const;
