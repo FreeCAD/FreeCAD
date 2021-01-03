@@ -68,7 +68,7 @@ draft_scales_eng_imperial =  ["1in=10ft", "1in=20ft", "1in=30ft",
 
 def get_scales(unit_system = 0):
     """
-    returns the list of preset scales accordin to unit system.
+    returns the list of preset scales according to unit system.
     
     Parameters:
     unit_system =   0 : default from user preferences
