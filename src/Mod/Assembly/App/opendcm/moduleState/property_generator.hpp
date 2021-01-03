@@ -80,7 +80,7 @@ struct prop_gen : karma::grammar<Iterator, typename details::pts<PropertyList>::
     prop_gen();
 };
 
-//special prop classes for better externalisaton, therefore the outside constructor to avoid auto inline
+//special prop classes for better externalisation, therefore the outside constructor to avoid auto inline
 template<typename Sys>
 struct cluster_prop_gen : public prop_gen<Sys, typename Sys::Cluster::cluster_properties> {
     cluster_prop_gen();

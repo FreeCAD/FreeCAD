@@ -79,7 +79,7 @@ struct prop_par : qi::grammar<IIterator, typename details::pts<PropertyList>::ty
     prop_par();
 };
 
-//special prop classes for better externalisaton, therefore the outside constructor to avoid auto inline
+//special prop classes for better externalisation, therefore the outside constructor to avoid auto inline
 template<typename Sys>
 struct cluster_prop_par : public prop_par<Sys, typename Sys::Cluster::cluster_properties> {
     cluster_prop_par();
