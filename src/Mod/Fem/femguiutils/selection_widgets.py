@@ -290,7 +290,7 @@ class GeometryElementsSelection(QtGui.QWidget):
         self.rb_solid = QtGui.QRadioButton(self.tr("Solid"))
         self.rb_standard.setChecked(True)
         self.rb_solid.setChecked(False)
-        # radio butoon layout
+        # radio button layout
         rbtnLayout = QtGui.QHBoxLayout()
         rbtnLayout.addWidget(self.lb_selmod)
         rbtnLayout.addWidget(self.rb_standard)
