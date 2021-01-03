@@ -500,7 +500,7 @@ void InventorBuilder::endPoints()
 }
 
 /**
- * Adds an SoPointSet node after creating an SoCordinate3 node with
+ * Adds an SoPointSet node after creating an SoCoordinate3 node with
  * beginPoints() and endPoints().
  * @see startPoints()
  * @see beginPoints()
@@ -512,7 +512,7 @@ void InventorBuilder::addPointSet()
 }
 
 /**
- * Adds a SoLineSet node after creating a SoCordinate3 node with
+ * Adds a SoLineSet node after creating a SoCoordinate3 node with
  * beginPoints() and endPoints().
  * @see startPoints()
  * @see beginPoints()

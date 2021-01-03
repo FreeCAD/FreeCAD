@@ -34,7 +34,7 @@ namespace App
 {
 
 /**
- * @brief The base class for placeable group of DocumentObjects. It represents a local coordnate system
+ * @brief The base class for placeable group of DocumentObjects. It represents a local coordinate system
  * 
  * This class is the FreeCAD way of representing local coordinate systems. It groups its children beneath 
  * it and transforms them all with the GeoFeatureGroup placement. A few important properties:
