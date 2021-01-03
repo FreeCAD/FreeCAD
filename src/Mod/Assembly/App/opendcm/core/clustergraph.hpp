@@ -88,7 +88,7 @@ typedef boost::adjacency_list_traits<boost::listS, boost::listS, boost::undirect
  *
  * Vertices and edges need to be identified in a stable(safe/load), unique(over multiple clusters) and
  * comparable manner. The bgl vertex and edge descriptors don't fulfill this need as they have a direct
- * relation to the graphs storage. Therefore they change value on moving entitiys to different clusters or
+ * relation to the graphs storage. Therefore they change value on moving entities to different clusters or
  * clone actions. This class is used to overcome this problem.
  **/
 typedef int universalID;
