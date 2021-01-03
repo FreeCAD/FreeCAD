@@ -46,7 +46,7 @@ class GearDialog(qt.QDialog):
         l = qt.QVBoxLayout(self)
         l.addWidget(self.gc)
         l.addWidget(buttonBox)
-        self.setWindowTitle('Gear cration dialog')
+        self.setWindowTitle('Gear creation dialog')
 
     def accept(self):
         if FreeCAD.ActiveDocument is None:

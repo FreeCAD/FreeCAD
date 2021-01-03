@@ -5645,10 +5645,10 @@ class ifcbeziercurve(ifcbsplinecurve):
 		ifcbsplinecurve.__init__(self , inherited0__degree , inherited1__controlpointslist , inherited2__curveform , inherited3__closedcurve , inherited4__selfintersect , )
 
 ####################
- # ENTITY ifcrationalbeziercurve #
+ # ENTITY ifcreationalbeziercurve #
 ####################
-class ifcrationalbeziercurve(ifcbeziercurve):
-	'''Entity ifcrationalbeziercurve definition.
+class ifcreationalbeziercurve(ifcbeziercurve):
+	'''Entity ifcreationalbeziercurve definition.
 
 	:param weightsdata
 	:type weightsdata:LIST(2,None,'REAL', scope = schema_scope)
@@ -36925,7 +36925,7 @@ def ifcvalidcalendardate(date,):
 def ifccurveweightspositive(b,):
 	'''
 	:param b
-	:type b:ifcrationalbeziercurve
+	:type b:ifcreationalbeziercurve
 	'''
 	for  i in range(0,b.upperindexoncontrolpoints,1):
 		if (b.weights[i]  <=  0):

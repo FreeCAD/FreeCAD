@@ -28105,10 +28105,10 @@ class ifcbsplinecurvewithknots(ifcbsplinecurve):
 
 
 ####################
- # ENTITY ifcrationalbsplinecurvewithknots #
+ # ENTITY ifcreationalbsplinecurvewithknots #
 ####################
-class ifcrationalbsplinecurvewithknots(ifcbsplinecurvewithknots):
-	'''Entity ifcrationalbsplinecurvewithknots definition.
+class ifcreationalbsplinecurvewithknots(ifcbsplinecurvewithknots):
+	'''Entity ifcreationalbsplinecurvewithknots definition.
 
 	:param weightsdata
 	:type weightsdata:LIST(2,None,'REAL', scope = schema_scope)
@@ -36634,10 +36634,10 @@ class ifcbsplinesurfacewithknots(ifcbsplinesurface):
 
 
 ####################
- # ENTITY ifcrationalbsplinesurfacewithknots #
+ # ENTITY ifcreationalbsplinesurfacewithknots #
 ####################
-class ifcrationalbsplinesurfacewithknots(ifcbsplinesurfacewithknots):
-	'''Entity ifcrationalbsplinesurfacewithknots definition.
+class ifcreationalbsplinesurfacewithknots(ifcbsplinesurfacewithknots):
+	'''Entity ifcreationalbsplinesurfacewithknots definition.
 
 	:param weightsdata
 	:type weightsdata:LIST(2,None,LIST(2,None,'REAL', scope = schema_scope))
@@ -43742,7 +43742,7 @@ def ifccorrectobjectassignment(constraint,objects,):
 def ifccurveweightspositive(b,):
 	'''
 	:param b
-	:type b:ifcrationalbsplinecurvewithknots
+	:type b:ifcreationalbsplinecurvewithknots
 	'''
 	for  i in range(0,b.upperindexoncontrolpoints,1):
 		if (b.weights[i]  <=  0):
@@ -43845,7 +43845,7 @@ def ifccrossproduct(arg1,arg2,):
 def ifcsurfaceweightspositive(b,):
 	'''
 	:param b
-	:type b:ifcrationalbsplinesurfacewithknots
+	:type b:ifcreationalbsplinesurfacewithknots
 	'''
 	for  i in range(0,b.ifcbsplinesurface.uupper,1):
 		for  j in range(0,b.ifcbsplinesurface.vupper,1):
