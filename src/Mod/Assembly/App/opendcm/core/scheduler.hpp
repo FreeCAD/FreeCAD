@@ -17,8 +17,8 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef GCM_SHEDULER_H
-#define GCM_SHEDULER_H
+#ifndef GCM_SCHEDULER_H
+#define GCM_SCHEDULER_H
 
 #include <set>
 #include <algorithm>
@@ -97,4 +97,4 @@ protected:
 
 }
 
-#endif //GCM_SHEDULER_H
+#endif //GCM_SCHEDULER_H

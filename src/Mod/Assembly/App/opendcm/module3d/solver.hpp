@@ -21,7 +21,7 @@
 #define GCM_SOLVER_3D_H
 
 #include "defines.hpp"
-#include "opendcm/core/sheduler.hpp"
+#include "opendcm/core/scheduler.hpp"
 
 #include <boost/graph/depth_first_search.hpp>
 

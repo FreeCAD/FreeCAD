@@ -34,7 +34,7 @@
 
 #include "property.hpp"
 #include "clustergraph.hpp"
-#include "sheduler.hpp"
+#include "scheduler.hpp"
 #include "logging.hpp"
 #include "traits.hpp"
 #include "object.hpp"
@@ -280,7 +280,7 @@ public:
 
     boost::shared_ptr<Cluster> m_cluster;
     boost::shared_ptr<Storage> m_storage;
-    Schedule m_sheduler;
+    Schedule m_scheduler;
     Kernel  m_kernel;
     std::vector<boost::shared_ptr<System> > m_subsystems;
 

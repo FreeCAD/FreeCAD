@@ -273,8 +273,8 @@ struct ModulePart {
         };
 
         static void system_init(Sys& sys) {
-            sys.m_sheduler.addPreprocessJob(new PrepareCluster());
-            sys.m_sheduler.addPostprocessJob(new EvaluateCluster());
+            sys.m_scheduler.addPreprocessJob(new PrepareCluster());
+            sys.m_scheduler.addPostprocessJob(new EvaluateCluster());
         };
         static void system_copy(const Sys& from, Sys& into) {};
     };
