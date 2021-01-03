@@ -469,7 +469,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         # Sort faces by directional component of vector
         sortList = sorted(vectList, key=getDrctn)
 
-        # remove magnitute and direction values
+        # remove magnitude and direction values
         for (sub, face, mag, drctn) in sortList:
             newList.append((sub, face))
 
