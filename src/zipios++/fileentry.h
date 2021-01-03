@@ -52,7 +52,7 @@ typedef vector< EntryPointer > ConstEntries ;
 class BaseExport FileEntry {
 public:
 
-  /* Default construcotr, copy constructor and copy assignment
+  /* Default constructor, copy constructor and copy assignment
      operator are sufficient. */
 
   /** Returns the comment of the entry, if it has one. Otherwise it
