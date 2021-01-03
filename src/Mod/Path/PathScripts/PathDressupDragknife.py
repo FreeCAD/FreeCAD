@@ -166,7 +166,7 @@ class ObjectDressup:
 
     def arcTwist(self, obj, queue, lastXY, twistCW=False):
         '''returns gcode to do an arc move toward an arc to perform
-        a corner action twist. Includes lifting and plungeing the knife'''
+        a corner action twist. Includes lifting and plunging the knife'''
 
         global currLocation  # pylint: disable=global-statement
         pivotheight = obj.pivotheight
@@ -260,7 +260,7 @@ class ObjectDressup:
 
     def lineTwist(self, obj, queue, lastXY, twistCW=False):
         '''returns gcode to do an arc move toward a line to perform
-        a corner action twist. Includes lifting and plungeing the knife'''
+        a corner action twist. Includes lifting and plunging the knife'''
         global currLocation  # pylint: disable=global-statement
         pivotheight = obj.pivotheight
         offset = obj.offset
