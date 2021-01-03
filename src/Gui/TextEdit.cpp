@@ -56,7 +56,7 @@ TextEdit::~TextEdit()
 }
 
 /**
- * Set the approproriate item of the completion box or hide it, if needed.
+ * Set the appropropriate item of the completion box or hide it, if needed.
  */
 void TextEdit::keyPressEvent(QKeyEvent* e)
 {
