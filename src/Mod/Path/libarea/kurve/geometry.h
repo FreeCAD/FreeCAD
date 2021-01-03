@@ -723,7 +723,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		spVertex(int t, const Point& point, const Point& centre): type(t), spanid(0), p(point), pc(centre){};
 
 		bool operator==(spVertex &spv){
-			// vertex == spvertex (vertex check - doesn't check spannid!)
+			// vertex == spvertex (vertex check - doesn't check spanid!)
 			if(this->type != spv.type) return false;
 			if(this->p != spv.p) return false;
 			if(this->type != LINEAR) {
