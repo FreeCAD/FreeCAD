@@ -1025,9 +1025,9 @@ void PartGui::DlgProjectionOnSurface::on_doubleSpinBoxSolidDepth_valueChanged(do
   Base::Vector3d vectorToMove(valX, valY, valZ);
   vectorToMove *= valueToMove;
 
-  auto placment = m_projectionObject->Placement.getValue();
-  placment.move(vectorToMove);
-  m_projectionObject->Placement.setValue(placment);
+  auto placement = m_projectionObject->Placement.getValue();
+  placement.move(vectorToMove);
+  m_projectionObject->Placement.setValue(placement);
 
   m_lastDepthVal = ui->doubleSpinBoxSolidDepth->value();
 }

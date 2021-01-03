@@ -44,7 +44,7 @@ Applies the rotation or placement on this coordinate system
     </Methode>
     <Methode Name="setPlacement">
       <Documentation>
-        <UserDocu>setPlacment(Placement)
+        <UserDocu>setPlacement(Placement)
 Set placement to the coordinate system.
         </UserDocu>
       </Documentation>

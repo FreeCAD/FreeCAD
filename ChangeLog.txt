@@ -32,7 +32,7 @@ Version: 0.14
   * Boolean operation fails for a mesh
   * parse keyword args in Part::TopoShapePy::makeOffsetShape
   * add shape contents in part check geometry task view
-  * entering Transform mode degrades the Placemens rotation to single precision
+  * entering Transform mode degrades the Placement rotation to single precision
   * DLL load failed
   * Expose BRepExtrema_DistShapeShape to python
   * Allow user to input simple mathematical expressions when setting values to constraints.

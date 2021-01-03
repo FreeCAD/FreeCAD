@@ -714,7 +714,7 @@ void TopoShape::setPlacement(const Base::Placement& rclTrf)
     _Shape.Location(loc);
 }
 
-Base::Placement TopoShape::getPlacemet(void) const
+Base::Placement TopoShape::getPlacement(void) const
 {
     TopLoc_Location loc = _Shape.Location();
     gp_Trsf trsf = loc.Transformation();

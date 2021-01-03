@@ -293,8 +293,8 @@ def process_emp(doc,filename,placement,board_thickness):
        if place_item[6]=='BOTTOM':
           rotateY=pi
           z_pos=-board_thickness
-       placmnt=Base.Placement(Base.Vector(place_item[3],place_item[4],z_pos),toQuaternion(rotateY,place_item[5]*pi/180,0))
-       doc_comp.Placement=placmnt
+       placement=Base.Placement(Base.Vector(place_item[3],place_item[4],z_pos),toQuaternion(rotateY,place_item[5]*pi/180,0))
+       doc_comp.Placement=placement
        grp.addObject(doc_comp)
    return 1
 
@@ -377,8 +377,8 @@ def place_steps(doc,placement,board_thickness):
         if place_item[6]=='BOTTOM':
            rotateY=pi
            z_pos=-board_thickness
-        placmnt=Base.Placement(Base.Vector(place_item[3],place_item[4],z_pos),toQuaternion(rotateY,place_item[5]*pi/180,0))
-        step_model.Placement=placmnt
+        placement=Base.Placement(Base.Vector(place_item[3],place_item[4],z_pos),toQuaternion(rotateY,place_item[5]*pi/180,0))
+        step_model.Placement=placement
         grp.addObject(step_model)
       else: 
         if IDF_diag==1:
