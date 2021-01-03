@@ -157,7 +157,7 @@ public:
     template< typename ConstraintVector, typename tag1, typename tag2>
     struct holder : public placeholder  {
 
-        //transform the constraints into eqautions with the now known types
+        //transform the constraints into equations with the now known types
         typedef typename mpl::fold< ConstraintVector, mpl::vector<>,
                 mpl::push_back<mpl::_1, equation<mpl::_2, tag1, tag2> > >::type EquationVector;
 
@@ -170,7 +170,7 @@ public:
 
         template<typename T>
         struct has_option {
-            //we get the index of the eqaution in the eqaution vector, and as it is the same
+            //we get the index of the equation in the equation vector, and as it is the same
             //as the index of the constraint in the constraint vector we can extract the
             //option type and check if it is no_option
             typedef typename mpl::find<EquationVector, T>::type iterator;

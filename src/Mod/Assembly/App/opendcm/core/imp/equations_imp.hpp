@@ -137,7 +137,7 @@ Derived& Equation<Derived, Option, id, a>::assign(const Derived& eq) {
     option_copy<options> oc(values);
     fusion::for_each(eq.values, oc);
 
-    //the assigned eqution can be set back to default for convenience in further usage
+    //the assigned equation can be set back to default for convenience in further usage
     const_cast<Derived*>(&eq)->setDefault();
 
     return *static_cast<Derived*>(this);
