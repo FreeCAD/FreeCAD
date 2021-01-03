@@ -61,7 +61,7 @@ class ProgressBar;
  * void function1()
  * {
  *   unsigned long steps = ...
- *   Base::SequencerLauncger seq("Starting progress bar", 0);
+ *   Base::SequencerLauncher seq("Starting progress bar", 0);
  *
  *   for (unsigned long i=0; i<steps;i++)
  *   {
