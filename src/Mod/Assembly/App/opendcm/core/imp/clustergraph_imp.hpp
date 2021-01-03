@@ -670,7 +670,7 @@ void ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::downstreamRemo
 
     std::pair<LocalVertex, bool> res = getContainingVertex(v);
 
-    //we don't throw, as this function gets invoked recursivly and it may happen that the
+    //we don't throw, as this function gets invoked recursively and it may happen that the
     //vertex to remove is only in the top layers, not the button ones
     if(!res.second)
         return;

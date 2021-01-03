@@ -3040,7 +3040,7 @@ std::vector<App::DocumentObject*> Document::getInList(const DocumentObject* me) 
 
 // This function unifies the old _rebuildDependencyList() and
 // getDependencyList().  The algorithm basically obtains the object dependency
-// by recrusivly visiting the OutList of each object in the given object array.
+// by recursively visiting the OutList of each object in the given object array.
 // It makes sure to call getOutList() of each object once and only once, which
 // makes it much more efficient than calling getRecursiveOutList() on each
 // individual object.
