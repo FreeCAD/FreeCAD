@@ -114,7 +114,7 @@ private:
   class EdgeInfo
   {
     public:
-      int               fcounter[2];           // counter of facets attacted to the edge
+      int               fcounter[2];           // counter of facets attached to the edge
       MeshGeomFacet     facets[2][2];          // Geom-Facets attached to the edge
       unsigned long     facet[2];              // underlying Facet-Index
 
