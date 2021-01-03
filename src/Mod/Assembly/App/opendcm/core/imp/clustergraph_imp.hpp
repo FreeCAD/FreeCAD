@@ -1188,7 +1188,7 @@ ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::apply_to_bundle(Glo
     fusion::vector<LocalVertex, boost::shared_ptr<ClusterGraph>, bool> res = getContainingVertexGraph(k);
 
     if(!fusion::at_c<2> (res)) {
-        //TODO: Throw (propeties return reference, but can't init a reference temporarily)
+        //TODO: Throw (properties return reference, but can't init a reference temporarily)
     }
 
     return fusion::at_c<1> (res)->template apply_to_bundle<functor> (k, f);

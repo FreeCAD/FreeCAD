@@ -48,7 +48,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageOpHelixEdit.ui")
 
     def getFields(self, obj):
-        '''getFields(obj) ... transfers values from UI to obj's proprties'''
+        '''getFields(obj) ... transfers values from UI to obj's properties'''
         PathLog.track()
         if obj.Direction != str(self.form.direction.currentText()):
             obj.Direction = str(self.form.direction.currentText())

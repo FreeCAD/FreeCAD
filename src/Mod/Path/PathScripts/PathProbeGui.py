@@ -47,7 +47,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageOpProbeEdit.ui")
 
     def getFields(self, obj):
-        '''getFields(obj) ... transfers values from UI to obj's proprties'''
+        '''getFields(obj) ... transfers values from UI to obj's properties'''
         self.updateToolController(obj, self.form.toolController)
         PathGui.updateInputField(obj, 'Xoffset', self.form.Xoffset)
         PathGui.updateInputField(obj, 'Yoffset', self.form.Yoffset)
