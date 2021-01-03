@@ -923,7 +923,7 @@ void Command::adjustCameraPosition()
         SbBox3f box = action.getBoundingBox();
         if (box.isEmpty()) return;
 
-        // get cirumscribing sphere and check if camera is inside
+        // get circumscribing sphere and check if camera is inside
         SbVec3f cam_pos = camera->position.getValue();
         SbVec3f box_cnt = box.getCenter();
         SbSphere bs;
