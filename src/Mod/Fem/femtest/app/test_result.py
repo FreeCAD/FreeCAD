@@ -290,7 +290,7 @@ class TestResult(unittest.TestCase):
     def get_stress_values(
         self
     ):
-        # node 5 von calculix cantilver 3D example
+        # node 5 von calculix cantilever 3D example
         # doc = FreeCAD.open(
         #     FreeCAD.ConfigGet("AppHomePath") + "data/examples/FemCalculixCantilever3D.FCStd"
         # )
@@ -450,7 +450,7 @@ class TestResult(unittest.TestCase):
         self
     ):
         expected_dispabs = 87.302986
-        # x, y, z in node 4 of CalculiX cantilver face load
+        # x, y, z in node 4 of CalculiX cantilever face load
         disp_xyz = [FreeCAD.Vector(8.12900E+00, 3.38889E-02, -8.69237E+01)]
         from femresult.resulttools import calculate_disp_abs as dp
         disp_abs = round(dp(disp_xyz)[0], 6)
