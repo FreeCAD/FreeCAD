@@ -252,7 +252,7 @@ void CmdRobotAddToolShape::activated(int)
 
 bool CmdRobotAddToolShape::isActive(void)
 {
-    //return false; // not yet implemetned thus not active
+    //return false; // not yet implemented thus not active
     return hasActiveDocument();
 }
 

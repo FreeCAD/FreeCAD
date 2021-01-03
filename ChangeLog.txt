@@ -695,7 +695,7 @@ Version: V0.1B92 Date: Sun Oct 03 17:55:31 2004 +++++++++++++++++++++++++++++++
 Version: V0.1B91 Date: Tue Sep 21 15:34:55 2004 +++++++++++++++++++++++++++++++
   * New organsiation of Build scripts in fcbt (FreeCADBuildTool)
   * first experiments with namespaces With Console (FCConsole) and Interpreter
-  * DocTypePy object for document behavior implented
+  * DocTypePy object for document behavior implemented
 
 Version: V0.1B90 Date: Tue Sep 07 19:25:03 2004 +++++++++++++++++++++++++++++++
   * Clean up path finding
