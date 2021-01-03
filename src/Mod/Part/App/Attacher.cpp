@@ -1597,11 +1597,11 @@ double AttachEngine3D::calculateFoldAngle(gp_Vec axA, gp_Vec axB, gp_Vec edA, gp
     double b = edB.Dot(axB);
     double costheta = axB.Dot(axA);
     double sintheta = axA.Crossed(axB).Dot(norm);
-    double singama = -costheta;
-    double cosgama = sintheta;
-    double k = b*cosgama;
-    double l = a + b*singama;
-    double xa = k + l*singama/cosgama;
+    double singamma = -costheta;
+    double cosgamma = sintheta;
+    double k = b*cosgamma;
+    double l = a + b*singamma;
+    double xa = k + l*singamma/cosgamma;
     double cos_unfold = -xa/ra;
     if (fabs(cos_unfold)>0.999)
         throw AttachEngineException("calculateFoldAngle: cosine of folding angle is too close to or above 1.");
