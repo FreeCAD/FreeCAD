@@ -187,7 +187,7 @@ public:
                         }
                         decOccurred = true;
                     }
-                    // Reset decOcurred if non-numeric character found
+                    // Reset decOccurred if non-numeric character found
                     else if (!(copy.at(i) == locale.groupSeparator() || copy.at(i).isDigit())) {
                         decOccurred = false;
                     }
