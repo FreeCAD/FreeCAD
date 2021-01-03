@@ -156,7 +156,7 @@ private:
         Matrix6Xd E_tilde;
         Eigen::MatrixXd M; //acceleration energy already generated at link i
         Eigen::VectorXd G; //magnitude of the constraint forces already generated at link i
-        Eigen::VectorXd EZ; //K[i] = Etiltde'*Z
+        Eigen::VectorXd EZ; //K[i] = Entitled'*Z
         double nullspaceAccComp; //Azamat: contribution of joint space u[i] forces to joint space acceleration
         double constAccComp; //Azamat: contribution of joint space constraint forces to joint space acceleration
         double biasAccComp; //Azamat: contribution of joint space bias forces to joint space acceleration
