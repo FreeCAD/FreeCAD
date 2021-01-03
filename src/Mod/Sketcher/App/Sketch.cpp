@@ -2494,7 +2494,7 @@ int Sketch::addSnellsLawConstraint(int geoIdRay1, PointPos posRay1,
     GCS::Point &p1 = Points[pointId1];
 
     // add the parameters (refractive indexes)
-    // n1 uses the place hold by n2divn1, so that is retrivable in updateNonDrivingConstraints
+    // n1 uses the place hold by n2divn1, so that is retrievable in updateNonDrivingConstraints
     double *n1 = value;
     double *n2 = secondvalue;
 
