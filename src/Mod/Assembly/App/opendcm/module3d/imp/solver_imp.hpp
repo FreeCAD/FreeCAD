@@ -369,7 +369,7 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
 
             if(!has_cycle) {
 #ifdef USE_LOGGING
-		BOOST_LOG_SEV(log, solving)<< "non-cyclic system dedected: solve rotation only";
+		BOOST_LOG_SEV(log, solving)<< "non-cyclic system detected: solve rotation only";
 #endif
 		//cool, lets do uncylic. first all rotational constraints with rotational parameters
 		mes.setAccess(rotation);

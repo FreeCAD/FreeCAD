@@ -98,14 +98,14 @@ struct SystemSolver : public Job<Sys> {
 
     struct cycle_dedector:public boost::default_dfs_visitor {
 
-        bool& m_dedected;
-        cycle_dedector(bool& ed) : m_dedected(ed) {
-            m_dedected = false;
+        bool& m_detected;
+        cycle_dedector(bool& ed) : m_detected(ed) {
+            m_detected = false;
         };
 
         template <class Edge, class Graph>
         void back_edge(Edge u, const Graph& g) {
-            m_dedected = true;
+            m_detected = true;
         }
     };
 
