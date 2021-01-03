@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2015 Przemo Fiszt <przemo@firszt.eu>                    *
+# *   Copyright (c) 2015 Przemo Firszt <przemo@firszt.eu>                   *
 # *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
