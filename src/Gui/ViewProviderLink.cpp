@@ -747,7 +747,7 @@ void ViewProviderLinkObserver::extensionUpdateData(const App::Property *prop) {
 
 void ViewProviderLinkObserver::extensionFinishRestoring() {
     if(linkInfo) {
-        FC_TRACE("linked finish restoing");
+        FC_TRACE("linked finish restoring");
         linkInfo->update();
     }
 }
