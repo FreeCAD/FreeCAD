@@ -73,7 +73,7 @@ def isCubic(shape):
 def getCubicDimensions(shape):
     """Return a list containing the placement, and dimensions of the shape.
 
-    The dimensios are length, width and height of a the parallelepiped,
+    The dimensions are length, width and height of a the parallelepiped,
     rounded to the value indicated by `precision`.
     The placement point is the lowest corner of the shape.
 
