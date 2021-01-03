@@ -686,7 +686,7 @@ public:
     }
     virtual ~GestureState(){
         auto &ns = this->outermost_context().ns;
-        //a workaround for Qt not always sending release evends during touchecreen gestures on Windows
+        //a workaround for Qt not always sending release evends during touchscreen gestures on Windows
         ns.button1down = false;
         ns.button2down = false;
     }
@@ -896,7 +896,7 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent* const ev)
         //a button release event cane, but we didn't see the corresponding down
         //event. Discard it. This discarding is relied upon in some hacks to
         //overcome buggy synthetic mouse input coming from Qt when doing
-        //touchecteen gestures.
+        //touchscreen gestures.
         return true;
     }
 
