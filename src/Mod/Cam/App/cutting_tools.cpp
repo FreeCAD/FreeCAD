@@ -3492,7 +3492,7 @@ bool cutting_tools::classifyShape()
         int cutnumber = fabs((maxlevel-minlevel)/m_pitch);//Cast um die Nachkommastellen wegzuschneiden
         m_pitch = fabs(maxlevel-minlevel)/cutnumber;//m_pitch leicht korrigieren um wirklich auf die letzte Ebene zu kommen
 
-  //Aktuell wird die letzte Ebene bei selbst approxmierten Flächen nicht als Bahnkurve betrachtet
+  //Aktuell wird die letzte Ebene bei selbst approximieren Flächen nicht als Bahnkurve betrachtet
   //Auch die erste Ebene fällt komplett weg, da unwichtig. Lediglich für die untere Maschine ist die Bahn sinnvoll falls überhaupt noch flache Bereiche vorhanden sind
         for (int i=0;i<cutnumber;++i)
   {
