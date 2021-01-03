@@ -118,16 +118,16 @@ public:
     Standard_EXPORT BRepAdaptor_CompCurve2();
 
 
-    Standard_EXPORT BRepAdaptor_CompCurve2(const TopoDS_Wire& W,const Standard_Boolean KnotByCurvilinearAbcissa = Standard_False);
+    Standard_EXPORT BRepAdaptor_CompCurve2(const TopoDS_Wire& W,const Standard_Boolean KnotByCurvilinearAbscissa = Standard_False);
 
 //! Creates a Curve to access to the geometry of edge \p W.
-    Standard_EXPORT BRepAdaptor_CompCurve2(const TopoDS_Wire& W,const Standard_Boolean KnotByCurvilinearAbcissa,const Standard_Real First,const Standard_Real Last,const Standard_Real Tol);
+    Standard_EXPORT BRepAdaptor_CompCurve2(const TopoDS_Wire& W,const Standard_Boolean KnotByCurvilinearAbscissa,const Standard_Real First,const Standard_Real Last,const Standard_Real Tol);
 
 //! Sets the wire \p W.
-    Standard_EXPORT   void Initialize(const TopoDS_Wire& W,const Standard_Boolean KnotByCurvilinearAbcissa) ;
+    Standard_EXPORT   void Initialize(const TopoDS_Wire& W,const Standard_Boolean KnotByCurvilinearAbscissa) ;
 
 //! Sets wire \p W and trimmed parameter.
-    Standard_EXPORT   void Initialize(const TopoDS_Wire& W,const Standard_Boolean KnotByCurvilinearAbcissa,const Standard_Real First,const Standard_Real Last,const Standard_Real Tol) ;
+    Standard_EXPORT   void Initialize(const TopoDS_Wire& W,const Standard_Boolean KnotByCurvilinearAbscissa,const Standard_Real First,const Standard_Real Last,const Standard_Real Tol) ;
 
 //! Set the flag Periodic. <br>
 //! Warning: This method has no effect if the wire is not closed.
