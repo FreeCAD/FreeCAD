@@ -542,7 +542,7 @@ void TaskAssemblyConstraints::setPossibleConstraints()
     //        if(!g1 || !g2)
     //            return;
 
-    //        //check all valid combinaions
+    //        //check all valid combinations
     //        if(isCombination(g1,g2, dcm::geometry::point, dcm::geometry::point)) {
     //            ui->distance->setEnabled(true);
     //            ui->coincident->setEnabled(true);
