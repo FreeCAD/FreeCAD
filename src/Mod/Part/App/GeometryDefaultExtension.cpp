@@ -91,7 +91,7 @@ std::unique_ptr<Part::GeometryExtension> GeometryDefaultExtension<T>::copy(void)
     // Don't std::move(cpy); RVO optimization Item 25, if the compiler fails to elide, would have to move it anyway
     // move constructor is executed if available (it is). Unique_ptr does not have copy constructor.
     //
-    // That would work perfectly with GCC 7.3.0. However, GCC 4.8.4 misserably fails:
+    // That would work perfectly with GCC 7.3.0. However, GCC 4.8.4 miserably fails:
     //
     // /home/travis/build/FreeCAD/FreeCAD/src/Mod/Part/App/GeometryDefaultExtension.cpp: In instantiation of
     // ‘std::unique_ptr<Part::GeometryExtension> Part::GeometryDefaultExtension<T>::copy() const [with T = long int]’:
