@@ -322,10 +322,10 @@ void PartGui::DlgProjectionOnSurface::get_camera_direction(void)
 
   auto mdiObject = dynamic_cast<Gui::View3DInventor*>(mainWindow->activeWindow());
   if (!mdiObject) return;
-  auto camerRotation = mdiObject->getViewer()->getCameraOrientation();
+  auto cameraRotation = mdiObject->getViewer()->getCameraOrientation();
 
   SbVec3f lookAt(0, 0, -1);
-  camerRotation.multVec(lookAt, lookAt);
+  cameraRotation.multVec(lookAt, lookAt);
 
   float valX, valY, valZ;
   lookAt.getValue(valX, valY, valZ);
