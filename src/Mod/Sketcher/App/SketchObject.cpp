@@ -6345,7 +6345,7 @@ void SketchObject::rebuildExternalGeometry(void)
                         double t_min = t_max + 0.5 * M_PI;
 
                         // ON_max = OM(t_max) gives the point, which projected on the sketch plane,
-                        //     becomes the apoapse of the pojected ellipse.
+                        //     becomes the apoapses of the pojected ellipse.
                         gp_Vec ON_max = origAxisMajor * cos(t_max) + origAxisMinor * sin(t_max);
                         gp_Vec ON_min = origAxisMajor * cos(t_min) + origAxisMinor * sin(t_min);
                         gp_Vec destAxisMajor = ProjVecOnPlane_UVN(ON_max, sketchPlane);
