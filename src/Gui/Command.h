@@ -837,7 +837,7 @@ public:
     std::vector <Command*> getModuleCommands(const char *sModName) const;
 
     /** Returns all commands registered in the manager
-     *  delivers a vector of all commands. If you intereted in commands of
+     *  delivers a vector of all commands. If you interested in commands of
      *  of a special app module use GetModuleCommands()
      *  @see Command
      */

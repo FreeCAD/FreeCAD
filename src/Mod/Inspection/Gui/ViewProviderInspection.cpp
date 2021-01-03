@@ -487,7 +487,7 @@ void ViewProviderInspection::inspectCallback(void * ud, SoEventCallback * n)
 
             n->setHandled();
 
-            // check if we have picked one a node of the view provider we are insterested in
+            // check if we have picked one a node of the view provider we are interested in
             Gui::ViewProvider* vp = view->getDocument()->getViewProviderByPathFromTail(point->getPath());
             if (vp && vp->getTypeId().isDerivedFrom(ViewProviderInspection::getClassTypeId())) {
                 ViewProviderInspection* that = static_cast<ViewProviderInspection*>(vp);
