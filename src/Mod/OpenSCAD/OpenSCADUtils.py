@@ -414,7 +414,7 @@ def findbestmatchingrotation(r1):
 def roundrotation(rot,maxangulardistance=1e-5):
     '''guess the rotation axis and angle for a rotation
     recreated from rounded floating point values
-    (from a quaterion or transformation matrix)'''
+    (from a quaternion or transformation matrix)'''
     def teststandardrot(r1,maxangulardistance=1e-5):
         '''test a few common rotations beforehand'''
         import FreeCAD,itertools
