@@ -791,7 +791,7 @@ void ModuleShape3D<Typelist, ID>::type<Sys>::inheritor_base::removeShape3D(boost
     //recursion
     g->disconnectAll();
 
-    //remove all constraints is unnessecary as they get removed together with the geometries
+    //remove all constraints is unnecessary as they get removed together with the geometries
     //remove all geometries
     typedef typename Shape3D::geometry3d_iterator git;
 
