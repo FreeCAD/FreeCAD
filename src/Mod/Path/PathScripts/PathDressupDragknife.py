@@ -383,7 +383,7 @@ class ObjectDressup:
                     # Corner possibly needed
                     if changedXYFlag and (len(queue) == 3):
 
-                        # check if the inciden angle incident exceeds the filter
+                        # check if the incident angle incident exceeds the filter
                         incident_angle = self.getIncidentAngle(queue)
 
                         if abs(incident_angle) >= obj.filterAngle:
