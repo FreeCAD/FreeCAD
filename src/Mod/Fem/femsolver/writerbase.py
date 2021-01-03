@@ -413,7 +413,7 @@ class FemInputWriter():
         )
 
     def get_element_rotation1D_elements(self):
-        # get for each geometry edge direction the element ids and rotation norma
+        # get for each geometry edge direction the element ids and rotation normal
         FreeCAD.Console.PrintMessage("Beam rotations\n")
         if not self.femelement_edges_table:
             self.femelement_edges_table = meshtools.get_femelement_edges_table(

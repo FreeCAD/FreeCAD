@@ -647,7 +647,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 	CLine	Tanto(int AT, const Circle& c,  double angle, const CLine& s0 = HORIZ_CLINE);//// cline tanto circle at angle to optional cline
 	CLine	Tanto(int AT, const Circle& c, const Point& p);								// cline tanto circle thro' a point
 	CLine	Tanto(int AT0, const Circle& c0, int AT1, const Circle& c1);					// cline tanto 2 circles
-	CLine	Normal(const CLine& s);													// noirmal to cline
+	CLine	Normal(const CLine& s);													// normal to cline
 	CLine	Normal(const CLine& s, const Point& p);										// normal to cline thro' p
 	CLine	Parallel(int LR, const CLine& s, double distance);						// parallel to cline by distance
 	CLine	Parallel(const CLine& cl, const Point& p);										// parallel to cline thro' a point
