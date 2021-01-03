@@ -490,8 +490,8 @@ def HEIDEN_End(ActualJob): #use Label for program name
         program_id = "NEW"
     return "END PGM " + program_id + " " + UNITS
 
-#def HEIDEN_ToolDef(tool_id, tool_lenght, tool_radius): # old machines don't have tool table, need tooldef list
-#    return "TOOL DEF  " + tool_id + " R" + "{:.3f}".format(tool_lenght) + " L" + "{:.3f}".format(tool_radius)
+#def HEIDEN_ToolDef(tool_id, tool_length, tool_radius): # old machines don't have tool table, need tooldef list
+#    return "TOOL DEF  " + tool_id + " R" + "{:.3f}".format(tool_length) + " L" + "{:.3f}".format(tool_radius)
 
 def HEIDEN_ToolCall(tool_Params):
     global MACHINE_SPINDLE_DIRECTION
@@ -1002,7 +1002,7 @@ def HEIDEN_LBL_Replace():
     global STORED_LBL
     global FIRST_LBL
 
-    Gcode_Lenght = len(POSTGCODE)
+    Gcode_Length = len(POSTGCODE)
 
     # this function look inside strings to find and replace it with LBL
     # the array is bi-dimensional every "Z" step down create a column
@@ -1038,7 +1038,7 @@ def HEIDEN_LBL_Replace():
                         POSTGCODE.pop(j)
                     # add the LBL calls
                     POSTGCODE.insert(CellStop + 1, "CALL LBL " + str(FIRST_LBL - LBL_Shift))
-        if Gcode_Lenght != len(POSTGCODE):
+        if Gcode_Length != len(POSTGCODE):
             LBL_Shift = 0
             Rows = len(STORED_LBL[0]) - 1
             for Row in range(Rows, -1, -1):

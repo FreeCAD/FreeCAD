@@ -320,33 +320,33 @@ void MeshGrid::CalculateGridLength (int iCtGridPerAxis)
   // bzw. max Grids sollten 10000 nicht ueberschreiten
   Base::BoundBox3f clBBMesh = _pclMesh->GetBoundBox();
 
-  float fLenghtX = clBBMesh.LengthX();
-  float fLenghtY = clBBMesh.LengthY();
-  float fLenghtZ = clBBMesh.LengthZ();
+  float fLengthX = clBBMesh.LengthX();
+  float fLengthY = clBBMesh.LengthY();
+  float fLengthZ = clBBMesh.LengthZ();
 
-  float fLenghtD = clBBMesh.CalcDiagonalLength();
+  float fLengthD = clBBMesh.CalcDiagonalLength();
 
-  float fLengthTol = 0.05f * fLenghtD;
+  float fLengthTol = 0.05f * fLengthD;
 
-  bool bLenghtXisZero = (fLenghtX <= fLengthTol);
-  bool bLenghtYisZero = (fLenghtY <= fLengthTol);
-  bool bLenghtZisZero = (fLenghtZ <= fLengthTol);
+  bool bLengthXisZero = (fLengthX <= fLengthTol);
+  bool bLengthYisZero = (fLengthY <= fLengthTol);
+  bool bLengthZisZero = (fLengthZ <= fLengthTol);
 
   int iFlag  = 0;
 
   int iMaxGrids = 1;
 
-  if (bLenghtXisZero)  
+  if (bLengthXisZero)  
     iFlag += 1; 
   else
     iMaxGrids *= iCtGridPerAxis;
 
-  if (bLenghtYisZero) 
+  if (bLengthYisZero) 
     iFlag += 2;
   else
     iMaxGrids *= iCtGridPerAxis;
 
-  if (bLenghtZisZero)
+  if (bLengthZisZero)
     iFlag += 4; 
   else
     iMaxGrids *= iCtGridPerAxis;
@@ -360,7 +360,7 @@ void MeshGrid::CalculateGridLength (int iCtGridPerAxis)
   {
   case 0:
     {
-      float fVolumen = fLenghtX * fLenghtY * fLenghtZ;
+      float fVolumen = fLengthX * fLengthY * fLengthZ;
 
       float fVolumenGrid = (fVolumen * ulGridsFacets) / (fFactorVolumen * _ulCtElements);
 
@@ -369,16 +369,16 @@ void MeshGrid::CalculateGridLength (int iCtGridPerAxis)
 
       float fLengthGrid = pow(fVolumenGrid, 1.0f / 3.0f);
 
-      _ulCtGridsX = std::max<unsigned long>(static_cast<unsigned long>(fLenghtX / fLengthGrid), 1);
-      _ulCtGridsY = std::max<unsigned long>(static_cast<unsigned long>(fLenghtY / fLengthGrid), 1);
-      _ulCtGridsZ = std::max<unsigned long>(static_cast<unsigned long>(fLenghtZ / fLengthGrid), 1);
+      _ulCtGridsX = std::max<unsigned long>(static_cast<unsigned long>(fLengthX / fLengthGrid), 1);
+      _ulCtGridsY = std::max<unsigned long>(static_cast<unsigned long>(fLengthY / fLengthGrid), 1);
+      _ulCtGridsZ = std::max<unsigned long>(static_cast<unsigned long>(fLengthZ / fLengthGrid), 1);
       
     } break;
   case 1:
     {
-      _ulCtGridsX = 1; // bLenghtXisZero
+      _ulCtGridsX = 1; // bLengthXisZero
       
-      float fArea = fLenghtY * fLenghtZ;
+      float fArea = fLengthY * fLengthZ;
 
       float fAreaGrid = (fArea * ulGridsFacets) / (fFactorArea * _ulCtElements);
 
@@ -387,14 +387,14 @@ void MeshGrid::CalculateGridLength (int iCtGridPerAxis)
 
       float fLengthGrid = float(sqrt(fAreaGrid));
 
-      _ulCtGridsY = std::max<unsigned long>(static_cast<unsigned long>(fLenghtY / fLengthGrid), 1);
-      _ulCtGridsZ = std::max<unsigned long>(static_cast<unsigned long>(fLenghtZ / fLengthGrid), 1);
+      _ulCtGridsY = std::max<unsigned long>(static_cast<unsigned long>(fLengthY / fLengthGrid), 1);
+      _ulCtGridsZ = std::max<unsigned long>(static_cast<unsigned long>(fLengthZ / fLengthGrid), 1);
     } break;
   case 2:
     {
-      _ulCtGridsY = 1; // bLenghtYisZero
+      _ulCtGridsY = 1; // bLengthYisZero
   
-      float fArea = fLenghtX * fLenghtZ;
+      float fArea = fLengthX * fLengthZ;
 
       float fAreaGrid = (fArea * ulGridsFacets) / (fFactorArea * _ulCtElements);
 
@@ -403,20 +403,20 @@ void MeshGrid::CalculateGridLength (int iCtGridPerAxis)
 
       float fLengthGrid = float(sqrt(fAreaGrid));
 
-      _ulCtGridsX = std::max<unsigned long>(static_cast<unsigned long>(fLenghtX / fLengthGrid), 1);
-      _ulCtGridsZ = std::max<unsigned long>(static_cast<unsigned long>(fLenghtZ / fLengthGrid), 1);
+      _ulCtGridsX = std::max<unsigned long>(static_cast<unsigned long>(fLengthX / fLengthGrid), 1);
+      _ulCtGridsZ = std::max<unsigned long>(static_cast<unsigned long>(fLengthZ / fLengthGrid), 1);
     } break;
   case 3:
     {
-      _ulCtGridsX = 1; // bLenghtXisZero
-      _ulCtGridsY = 1; // bLenghtYisZero
-      _ulCtGridsZ = static_cast<unsigned long>(iMaxGrids); // bLenghtYisZero
+      _ulCtGridsX = 1; // bLengthXisZero
+      _ulCtGridsY = 1; // bLengthYisZero
+      _ulCtGridsZ = static_cast<unsigned long>(iMaxGrids); // bLengthYisZero
     } break;
   case 4:
     {
-      _ulCtGridsZ = 1; // bLenghtZisZero
+      _ulCtGridsZ = 1; // bLengthZisZero
       
-      float fArea = fLenghtX * fLenghtY;
+      float fArea = fLengthX * fLengthY;
 
       float fAreaGrid = (fArea * ulGridsFacets) / (fFactorArea * _ulCtElements);
 
@@ -425,26 +425,26 @@ void MeshGrid::CalculateGridLength (int iCtGridPerAxis)
 
       float fLengthGrid = float(sqrt(fAreaGrid));
 
-      _ulCtGridsX = std::max<unsigned long>(static_cast<unsigned long>(fLenghtX / fLengthGrid), 1);
-      _ulCtGridsY = std::max<unsigned long>(static_cast<unsigned long>(fLenghtY / fLengthGrid), 1);
+      _ulCtGridsX = std::max<unsigned long>(static_cast<unsigned long>(fLengthX / fLengthGrid), 1);
+      _ulCtGridsY = std::max<unsigned long>(static_cast<unsigned long>(fLengthY / fLengthGrid), 1);
     } break;
   case 5:
     {
-      _ulCtGridsX = 1; // bLenghtXisZero
-      _ulCtGridsZ = 1; // bLenghtZisZero
-      _ulCtGridsY = static_cast<unsigned long>(iMaxGrids); // bLenghtYisZero
+      _ulCtGridsX = 1; // bLengthXisZero
+      _ulCtGridsZ = 1; // bLengthZisZero
+      _ulCtGridsY = static_cast<unsigned long>(iMaxGrids); // bLengthYisZero
     } break;
   case 6:
     {
-      _ulCtGridsY = 1; // bLenghtYisZero
-      _ulCtGridsZ = 1; // bLenghtZisZero
-      _ulCtGridsX = static_cast<unsigned long>(iMaxGrids); // bLenghtYisZero
+      _ulCtGridsY = 1; // bLengthYisZero
+      _ulCtGridsZ = 1; // bLengthZisZero
+      _ulCtGridsX = static_cast<unsigned long>(iMaxGrids); // bLengthYisZero
     } break;
   case 7:
     {
-      _ulCtGridsX = static_cast<unsigned long>(iMaxGrids); // bLenghtXisZero
-      _ulCtGridsY = static_cast<unsigned long>(iMaxGrids); // bLenghtYisZero
-      _ulCtGridsZ = static_cast<unsigned long>(iMaxGrids); // bLenghtZisZero
+      _ulCtGridsX = static_cast<unsigned long>(iMaxGrids); // bLengthXisZero
+      _ulCtGridsY = static_cast<unsigned long>(iMaxGrids); // bLengthYisZero
+      _ulCtGridsZ = static_cast<unsigned long>(iMaxGrids); // bLengthZisZero
     } break;
   }
 }
