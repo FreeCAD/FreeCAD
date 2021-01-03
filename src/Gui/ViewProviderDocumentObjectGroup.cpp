@@ -80,7 +80,7 @@ bool ViewProviderDocumentObjectGroup::isShow(void) const
 
 QIcon ViewProviderDocumentObjectGroup::getIcon(void) const
 {
-    return mergeOverlayIcons (Gui::BitmapFactory().iconFromTheme(sPixmap));
+    return mergeGreyableOverlayIcons (Gui::BitmapFactory().iconFromTheme(sPixmap));
 }
 
 /**
