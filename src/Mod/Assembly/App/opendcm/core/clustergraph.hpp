@@ -379,7 +379,7 @@ public:
      *
      * This constructor creates a new cluster, but uses the given cluster as parent. It will therefore
      * create a tree-like relationship. Be aware, that the new cluster is not added to the parents
-     * subcluster list, that has to be done manualy. The new cluster shares the parents ID generator.
+     * subcluster list, that has to be done manually. The new cluster shares the parents ID generator.
      *
      * @param g the parent cluster graph
      **/
