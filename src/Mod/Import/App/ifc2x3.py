@@ -16086,8 +16086,8 @@ class ifcpropertydependencyrelationship(BaseEntityClass):
 	:param dependingproperty
 	:type dependingproperty:ifcproperty
 
-	:param dependantproperty
-	:type dependantproperty:ifcproperty
+	:param dependentproperty
+	:type dependentproperty:ifcproperty
 
 	:param name
 	:type name:ifclabel
@@ -16098,9 +16098,9 @@ class ifcpropertydependencyrelationship(BaseEntityClass):
 	:param expression
 	:type expression:ifctext
 	'''
-	def __init__( self , dependingproperty,dependantproperty,name,description,expression, ):
+	def __init__( self , dependingproperty,dependentproperty,name,description,expression, ):
 		self.dependingproperty = dependingproperty
-		self.dependantproperty = dependantproperty
+		self.dependentproperty = dependentproperty
 		self.name = name
 		self.description = description
 		self.expression = expression
@@ -16120,17 +16120,17 @@ class ifcpropertydependencyrelationship(BaseEntityClass):
 		return property(**locals())
 
 	@apply
-	def dependantproperty():
+	def dependentproperty():
 		def fget( self ):
-			return self._dependantproperty
+			return self._dependentproperty
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument dependantproperty is mantatory and can not be set to None')
+				raise AssertionError('Argument dependentproperty is mantatory and can not be set to None')
 			if not check_type(value,ifcproperty):
-				self._dependantproperty = ifcproperty(value)
+				self._dependentproperty = ifcproperty(value)
 			else:
-				self._dependantproperty = value
+				self._dependentproperty = value
 		return property(**locals())
 
 	@apply
@@ -16175,7 +16175,7 @@ class ifcpropertydependencyrelationship(BaseEntityClass):
 				self._expression = value
 		return property(**locals())
 	def wr1(self):
-		eval_wr1_wr = (self.dependingproperty  !=  self.dependantproperty)
+		eval_wr1_wr = (self.dependingproperty  !=  self.dependentproperty)
 		if not eval_wr1_wr:
 			raise AssertionError('Rule wr1 violated')
 		else:

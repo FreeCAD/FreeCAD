@@ -18832,16 +18832,16 @@ class ifcpropertydependencyrelationship(ifcresourcelevelrelationship):
 	:param dependingproperty
 	:type dependingproperty:ifcproperty
 
-	:param dependantproperty
-	:type dependantproperty:ifcproperty
+	:param dependentproperty
+	:type dependentproperty:ifcproperty
 
 	:param expression
 	:type expression:ifctext
 	'''
-	def __init__( self , inherited0__name , inherited1__description , dependingproperty,dependantproperty,expression, ):
+	def __init__( self , inherited0__name , inherited1__description , dependingproperty,dependentproperty,expression, ):
 		ifcresourcelevelrelationship.__init__(self , inherited0__name , inherited1__description , )
 		self.dependingproperty = dependingproperty
-		self.dependantproperty = dependantproperty
+		self.dependentproperty = dependentproperty
 		self.expression = expression
 
 	@apply
@@ -18859,17 +18859,17 @@ class ifcpropertydependencyrelationship(ifcresourcelevelrelationship):
 		return property(**locals())
 
 	@apply
-	def dependantproperty():
+	def dependentproperty():
 		def fget( self ):
-			return self._dependantproperty
+			return self._dependentproperty
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument dependantproperty is mantatory and can not be set to None')
+				raise AssertionError('Argument dependentproperty is mantatory and can not be set to None')
 			if not check_type(value,ifcproperty):
-				self._dependantproperty = ifcproperty(value)
+				self._dependentproperty = ifcproperty(value)
 			else:
-				self._dependantproperty = value
+				self._dependentproperty = value
 		return property(**locals())
 
 	@apply
@@ -18886,7 +18886,7 @@ class ifcpropertydependencyrelationship(ifcresourcelevelrelationship):
 				self._expression = value
 		return property(**locals())
 	def noselfreference(self):
-		eval_noselfreference_wr = (self.dependingproperty  !=  self.dependantproperty)
+		eval_noselfreference_wr = (self.dependingproperty  !=  self.dependentproperty)
 		if not eval_noselfreference_wr:
 			raise AssertionError('Rule noselfreference violated')
 		else:
