@@ -23,7 +23,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides functions to create LinearDimension or AngularDinemsion objects.
+"""Provides functions to create LinearDimension or AngularDimension objects.
 
 This includes linear dimensions, radial dimensions, and angular dimensions.
 """
