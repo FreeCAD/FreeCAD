@@ -1381,7 +1381,7 @@ double Adaptive2d::CalcCutArea(Clipper &clip, const IntPoint &c1, const IntPoint
 		for (const auto &pt : path)
 			pathBB.AddPoint(pt);
 		if (!c2BB.CollidesWith(c2))
-			continue; // this path cannot colide with tool
+			continue; // this path cannot collide with tool
 		//** end of BB check
 
 		size_t curPtIndex = 0;
