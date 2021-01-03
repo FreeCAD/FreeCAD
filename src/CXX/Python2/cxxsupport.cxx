@@ -75,7 +75,7 @@ Char::operator String() const
     return String(ptr());
 }
 
-// TMM: non-member operaters for iterators - see above
+// TMM: non-member operators for iterators - see above
 // I've also made a bug fix in respect to the cxx code
 // (dereffed the left.seq and right.seq comparison)
 bool operator==(const Sequence::iterator& left, const Sequence::iterator& right)
