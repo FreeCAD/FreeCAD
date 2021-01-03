@@ -109,7 +109,7 @@ ColMat<double, 3> interpolateFlatFacePy(FaceUnwrapper& instance, py::object* fac
 
 PYBIND11_MODULE(flatmesh, m)
 {
-    m.doc() = "functions to unwrapp faces/ meshes";
+    m.doc() = "functions to unwrap faces/ meshes";
     
     py::class_<lscmrelax::LscmRelax>(m, "LscmRelax")
         .def(py::init<ColMat<double, 3>, ColMat<long, 3>, std::vector<long>>())
