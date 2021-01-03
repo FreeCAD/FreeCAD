@@ -184,7 +184,7 @@ def check_analysismember(analysis, solver, mesh, member):
                     )
             else:
                 message += (
-                    "No CompressiveStrength defined for the matrinx "
+                    "No CompressiveStrength defined for the matrix "
                     "of at least one reinforced material.\n"
                 )
             mat_map_r = mat_obj.Reinforcement
