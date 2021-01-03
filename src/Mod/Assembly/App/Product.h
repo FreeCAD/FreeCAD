@@ -44,7 +44,7 @@ public:
     App::PropertyLinkList   Items;
 
    /** @name base properties of all Assembly Items 
-     * This properties corospond mostly to the meta information
+     * This properties correspond mostly to the meta information
      * in the App::Document class
      */
     //@{
