@@ -95,7 +95,7 @@ def run_fem_solver(solver, working_dir=None):
 
     :note:
         There is some legacy code to execute the old Calculix solver
-        (pre-framework) which behaives differently because it doesn't use a
+        (pre-framework) which behaves differently because it doesn't use a
         :class:`Machine`.
     """
 
