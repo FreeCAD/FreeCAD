@@ -470,7 +470,7 @@ class ObjectOp(object):
             self.vertFeed     ... vertical feed rate of assigned tool
             self.vertRapid    ... vertical rapid rate of assigned tool
             self.horizFeed    ... horizontal feed rate of assigned tool
-            self.horizRapid   ... norizontal rapid rate of assigned tool
+            self.horizRapid   ... horizontal rapid rate of assigned tool
             self.tool         ... the actual tool being used
             self.radius       ... the main radius of the tool being used
             self.commandlist  ... a list for collecting all commands produced by the operation
