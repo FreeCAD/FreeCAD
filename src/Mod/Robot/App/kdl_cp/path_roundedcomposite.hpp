@@ -88,7 +88,7 @@ class Path_RoundedComposite : public Path
 		Path_RoundedComposite(double radius,double eqradius,RotationalInterpolation* orient, bool aggregate=true);
 
 		/**
-		 * Adds a point to this rounded composite, between to adjecent points
+		 * Adds a point to this rounded composite, between to adjacent points
 		 * a Path_Line will be created, between two lines there will be
 		 * rounding with the given radius with a Path_Circle
 		 *
