@@ -186,7 +186,7 @@ FunctionEnd
  # this macro saves the "C:\Documents and Settings\" substring into the variable "AppPre"
  # and the "Application Data" substring into the variable "AppSuff"
   
-  SetShellVarContext current # switch temoprarily to local user
+  SetShellVarContext current # switch temporarily to local user
   StrCpy $String "$APPDATA"
   StrCpy $APPDATemp "$APPDATA"
   ${if} $MultiUser.Privileges == "Admin"

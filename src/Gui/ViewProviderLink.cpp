@@ -546,7 +546,7 @@ public:
                     return false;
             }
             // this is possible in case of editing, where the switch node
-            // of the linked view object is temparaly removed from its root
+            // of the linked view object is temporarily removed from its root
             return true;
         }
         int len = 0;
