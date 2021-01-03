@@ -126,6 +126,7 @@ QTabWidget* DlgPreferencesImp::createTabForGroup(const std::string &groupName)
     QListWidgetItem* item = new QListWidgetItem(ui->listBox);
     item->setData(GroupNameRole, QVariant(groupNameQString));
     item->setText(QObject::tr(groupNameQString.toLatin1()));
+    item->setToolTip(QObject::tr(groupNameQString.toLatin1()));
     std::string fileName = groupName;
     for (auto & ch : fileName) {
         if (ch == ' ') ch = '_';
