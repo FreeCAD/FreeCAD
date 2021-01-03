@@ -1520,7 +1520,7 @@ void  ParameterManager::SaveDocument(XMLFormatTarget* pFormatTarget) const
 
 void  ParameterManager::CreateDocument(void)
 {
-    // creating a document from screatch
+    // creating a document from scratch
     DOMImplementation* impl =  DOMImplementationRegistry::getDOMImplementation(XStr("Core").unicodeForm());
     delete _pDocument;
     _pDocument = impl->createDocument(
