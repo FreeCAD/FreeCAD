@@ -182,12 +182,12 @@ void View3DInventorPy::init_type()
     add_varargs_method("hasAxisCross",&View3DInventorPy::hasAxisCross,"check if the big axis-cross is on or off()");
     add_varargs_method("addDraggerCallback",&View3DInventorPy::addDraggerCallback,
         "addDraggerCallback(SoDragger, String CallbackType, function)\n"
-        "Add a DraggerCalback function to the coin node\n"
+        "Add a DraggerCallback function to the coin node\n"
         "Possibles types :\n"
         "'addFinishCallback','addStartCallback','addMotionCallback','addValueChangedCallback'\n");
     add_varargs_method("removeDraggerCallback",&View3DInventorPy::removeDraggerCallback,
         "removeDraggerCallback(SoDragger, String CallbackType, function)\n"
-        "Remove the DraggerCalback function from the coin node\n"
+        "Remove the DraggerCallback function from the coin node\n"
         "Possibles types :\n"
         "'addFinishCallback','addStartCallback','addMotionCallback','addValueChangedCallback'\n");
     add_varargs_method("setActiveObject", &View3DInventorPy::setActiveObject, "setActiveObject(name,object,subname=None)\nadd or set a new active object");
