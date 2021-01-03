@@ -976,7 +976,7 @@ void View3DInventor::setCurrentViewMode(ViewMode newmode)
         QList<QAction*> acts = getMainWindow()->findChildren<QAction*>();
         this->addActions(acts);
         _viewer->getGLWidget()->setFocusProxy(this);
-        // To be notfified for new actions
+        // To be notified for new actions
         qApp->installEventFilter(this);
     }
     else if (newmode == Child) {
