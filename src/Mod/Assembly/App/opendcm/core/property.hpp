@@ -104,7 +104,7 @@ namespace dcm {
  * @endcode
  *
  *
- * If you want to use properties in your class you should derive from PropertyOwner class, as it doas all the
+ * If you want to use properties in your class you should derive from PropertyOwner class, as it does all the
  * hanling needed and gives you get and set functions which work with the designed identifiers.
  *
  * @{ */

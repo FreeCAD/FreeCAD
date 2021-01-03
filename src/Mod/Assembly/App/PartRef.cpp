@@ -102,7 +102,7 @@ bool PartRef::holdsObject(App::DocumentObject* obj) const {
 
 void PartRef::setCalculatedPlacement(boost::shared_ptr< Part3D > part) {
 
-    //part is the same as m_part, so it doasn't matter which one we use
+    //part is the same as m_part, so it doesn't matter which one we use
     Base::Placement p = dcm::get<Base::Placement>(part);
     
     Product* ass = getParentAssembly();
