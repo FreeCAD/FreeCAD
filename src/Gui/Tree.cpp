@@ -4488,7 +4488,7 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon &icon1, QIcon &icon2
             visible = parent->isElementVisible(pObject->getNameInDocument());
         else {
             // We are dealing with a plain group. It has special handling when
-            // linked, which allows it to have indpenedent visibility control.
+            // linked, which allows it to have independent visibility control.
             // We need to go up the hierarchy and see if there is any link to
             // it.
             for(auto pp=parentItem->getParentItem();pp;pp=pp->getParentItem()) {
