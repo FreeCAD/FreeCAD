@@ -1430,7 +1430,7 @@ class DocumentObserverCases(unittest.TestCase):
       self.parameter.append(doc);
 
     def slotRelabelDocument(self, doc):
-      self.signal.append('DocRelabled');
+      self.signal.append('DocRelabeled');
       self.parameter.append(doc);
 
     def slotActivateDocument(self, doc):
@@ -1545,7 +1545,7 @@ class DocumentObserverCases(unittest.TestCase):
       self.parameter.append(doc);
 
     def slotRelabelDocument(self, doc):
-      self.signal.append('DocRelabled');
+      self.signal.append('DocRelabeled');
       self.parameter.append(doc);
 
     def slotRenameDocument(self, doc):
@@ -1623,7 +1623,7 @@ class DocumentObserverCases(unittest.TestCase):
     self.assertEqual(self.Obs.signal.pop(0), 'DocChanged')
     self.assertTrue(self.Obs.parameter.pop(0) is self.Doc1)
     self.assertEqual(self.Obs.parameter2.pop(0), 'Label')
-    self.assertEqual(self.Obs.signal.pop(0), 'DocRelabled')
+    self.assertEqual(self.Obs.signal.pop(0), 'DocRelabeled')
     self.assertTrue(self.Obs.parameter.pop(0) is self.Doc1)
     self.assertTrue(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
 
@@ -1639,7 +1639,7 @@ class DocumentObserverCases(unittest.TestCase):
     self.assertEqual(self.Obs.signal.pop(0), 'DocChanged')
     self.assertTrue(self.Obs.parameter.pop(0) is self.Doc2)
     self.assertEqual(self.Obs.parameter2.pop(0), 'Label')
-    self.assertEqual(self.Obs.signal.pop(0), 'DocRelabled')
+    self.assertEqual(self.Obs.signal.pop(0), 'DocRelabeled')
     self.assertTrue(self.Obs.parameter.pop(0) is self.Doc2)
     self.assertTrue(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
 
@@ -1859,18 +1859,18 @@ class DocumentObserverCases(unittest.TestCase):
     self.failUnless(self.GuiObs.parameter.pop(0) is self.GuiDoc1)
     self.failUnless(self.GuiObs.signal.pop(0) == 'DocActivated')
     self.failUnless(self.GuiObs.parameter.pop(0) is self.GuiDoc1)
-    self.failUnless(self.GuiObs.signal.pop(0) == 'DocRelabled')
+    self.failUnless(self.GuiObs.signal.pop(0) == 'DocRelabeled')
     self.failUnless(self.GuiObs.parameter.pop(0) is self.GuiDoc1)
     self.failUnless(not self.GuiObs.signal and not self.GuiObs.parameter and not self.GuiObs.parameter2)
 
     self.Doc1.Label = "test"
-    self.failUnless(self.Obs.signal.pop() == 'DocRelabled')
+    self.failUnless(self.Obs.signal.pop() == 'DocRelabeled')
     self.failUnless(self.Obs.parameter.pop() is self.Doc1)
     #not interested in the change signals
     self.Obs.signal = []
     self.Obs.parameter = []
     self.Obs.parameter2 = []
-    self.failUnless(self.GuiObs.signal.pop(0) == 'DocRelabled')
+    self.failUnless(self.GuiObs.signal.pop(0) == 'DocRelabeled')
     self.failUnless(self.GuiObs.parameter.pop(0) is self.GuiDoc1)
     self.failUnless(not self.GuiObs.signal and not self.GuiObs.parameter and not self.GuiObs.parameter2)
 
