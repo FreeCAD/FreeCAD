@@ -456,8 +456,8 @@ class _TaskPanel:
                 self.material["KinematicViscosity"] = "0 m^2/s"
             if "VolumetricThermalExpansionCoefficient" in self.material:
                 # unit type VolumetricThermalExpansionCoefficient is ThermalExpansionCoefficient
-                vol_ther_ex_co = self.material["VolumetricThermalExpansionCoefficient"]
-                if "VolumetricThermalExpansionCoefficient" not in str(Units.Unit(vol_ther_ex_co)):
+                vol_thermal_ex_co = self.material["VolumetricThermalExpansionCoefficient"]
+                if "VolumetricThermalExpansionCoefficient" not in str(Units.Unit(vol_thermal_ex_co)):
                     FreeCAD.Console.PrintMessage(
                         "VolumetricThermalExpansionCoefficient in material data "
                         "seems to have no unit or a wrong unit (reset the value): {}\n"
