@@ -179,7 +179,7 @@ void LinkBaseExtension::setProperty(int idx, Property *prop) {
 }
 
 App::DocumentObjectExecReturn *LinkBaseExtension::extensionExecute(void) {
-    // The actual value of LinkRecompouted is not important, just to notify view
+    // The actual value of LinkRecomputed (obsolete) is not important, just to notify view
     // provider that the link (in fact, its dependents, i.e. linked ones) have
     // recomputed.
     _LinkTouched.touch();
