@@ -56,7 +56,7 @@ public:
 private Q_SLOTS:
     void onProfileButton(bool);
     void onRefButtonAdd(bool);
-    void onRefButtonRemvove(bool);
+    void onRefButtonRemove(bool);
     void onClosed(bool);
     void onRuled(bool);
     void onDeleteSection();
