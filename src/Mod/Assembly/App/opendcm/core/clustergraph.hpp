@@ -134,7 +134,7 @@ struct IDgen {
     /**
      * @brief Set the current value for incremental creation
      *
-     * ID's are created incrementaly and if a specific startingpoint is wished it can be set here by
+     * ID's are created incrementally and if a specific startingpoint is wished it can be set here by
      * supplying the last created ID or the amount of totaly created ID's
      *
      * @param id The last created ID
