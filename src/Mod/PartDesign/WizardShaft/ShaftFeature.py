@@ -123,7 +123,7 @@ class ShaftFeature:
     def updateSegment(self, segment, oldLength, length, diameter, innerdiameter):
         constrRadius = 4 + segment * 6
         constrLength = 7 + segment * 6
-        constrInnerRadius = 1 # Currently we don't allow multiple different innner diameters
+        constrInnerRadius = 1 # Currently we don't allow multiple different inner diameters
         # update total length
         self.totalLength = self.totalLength - oldLength + length
         # Adjust length of centerline
