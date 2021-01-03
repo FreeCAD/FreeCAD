@@ -64,7 +64,7 @@ Assembly::ConstraintGroup* getConstraintGroup(Assembly::Product* Asm)
     return ConstGrp;
 }
 
-bool getConstraintPrerequisits(Assembly::Product** Asm, Assembly::ConstraintGroup** ConstGrp)
+bool getConstraintPrerequisites(Assembly::Product** Asm, Assembly::ConstraintGroup** ConstGrp)
 {
     if(!ActiveAsmObject || !ActiveAsmObject->getTypeId().isDerivedFrom(Assembly::ProductRef::getClassTypeId())) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active Assembly"),
@@ -130,7 +130,7 @@ void CmdAssemblyConstraint::activated(int iMsg)
     //Assembly::ConstraintGroup* ConstGrp = 0;
 
     //// retrieve the standard objects needed
-    //if(getConstraintPrerequisits(&Asm, &ConstGrp))
+    //if(getConstraintPrerequisites(&Asm, &ConstGrp))
     //    return;
 
     //std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx();
@@ -214,7 +214,7 @@ void CmdAssemblyConstraintDistance::activated(int iMsg)
     //Assembly::ConstraintGroup* ConstGrp = 0;
 
     //// retrieve the standard objects needed
-    //if(getConstraintPrerequisits(&Asm, &ConstGrp))
+    //if(getConstraintPrerequisites(&Asm, &ConstGrp))
     //    return;
 
     //std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx();
@@ -281,7 +281,7 @@ void CmdAssemblyConstraintFix::activated(int iMsg)
     //Assembly::ConstraintGroup* ConstGrp = 0;
 
     //// retrieve the standard objects needed
-    //if(getConstraintPrerequisits(&Asm, &ConstGrp))
+    //if(getConstraintPrerequisites(&Asm, &ConstGrp))
     //    return;
 
     //std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx();
@@ -346,7 +346,7 @@ void CmdAssemblyConstraintAngle::activated(int iMsg)
     //Assembly::ConstraintGroup* ConstGrp = 0;
 
     //// retrieve the standard objects needed
-    //if(getConstraintPrerequisits(&Asm, &ConstGrp))
+    //if(getConstraintPrerequisites(&Asm, &ConstGrp))
     //    return;
 
     //std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx();
@@ -415,7 +415,7 @@ void CmdAssemblyConstraintOrientation::activated(int iMsg)
     //Assembly::ConstraintGroup* ConstGrp = 0;
 
     //// retrieve the standard objects needed
-    //if(getConstraintPrerequisits(&Asm, &ConstGrp))
+    //if(getConstraintPrerequisites(&Asm, &ConstGrp))
     //    return;
 
     //std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx();
@@ -483,7 +483,7 @@ void CmdAssemblyConstraintCoincidence::activated(int iMsg)
     //Assembly::ConstraintGroup* ConstGrp = 0;
 
     //// retrieve the standard objects needed
-    //if(getConstraintPrerequisits(&Asm, &ConstGrp))
+    //if(getConstraintPrerequisites(&Asm, &ConstGrp))
     //    return;
 
     //std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx();
@@ -551,7 +551,7 @@ void CmdAssemblyConstraintAlignment::activated(int iMsg)
     //Assembly::ConstraintGroup* ConstGrp = 0;
 
     //// retrieve the standard objects needed
-    //if(getConstraintPrerequisits(&Asm, &ConstGrp))
+    //if(getConstraintPrerequisites(&Asm, &ConstGrp))
     //    return;
 
     //std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx();

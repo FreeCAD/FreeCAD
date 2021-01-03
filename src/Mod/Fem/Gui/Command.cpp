@@ -72,7 +72,7 @@ using namespace std;
 //================================================================================================
 //================================================================================================
 // helpers
-bool getConstraintPrerequisits(Fem::FemAnalysis **Analysis)
+bool getConstraintPrerequisites(Fem::FemAnalysis **Analysis)
 {
     Fem::FemAnalysis* ActiveAnalysis = FemGui::ActiveAnalysisObserver::instance()->getActiveObject();
     if (!ActiveAnalysis || !ActiveAnalysis->getTypeId().isDerivedFrom(Fem::FemAnalysis::getClassTypeId())){
@@ -262,7 +262,7 @@ void CmdFemCreateSolver::activated(int)
 
     Fem::FemAnalysis        *Analysis;
 
-    if(getConstraintPrerequisits(&Analysis))
+    if(getConstraintPrerequisites(&Analysis))
         return;
 
     std::string FeatName = getUniqueObjectName("Solver");
@@ -304,7 +304,7 @@ void CmdFemConstraintBearing::activated(int)
 {
     Fem::FemAnalysis        *Analysis;
 
-    if(getConstraintPrerequisits(&Analysis))
+    if(getConstraintPrerequisites(&Analysis))
         return;
 
     std::string FeatName = getUniqueObjectName("ConstraintBearing");
@@ -345,7 +345,7 @@ void CmdFemConstraintContact::activated(int)
 {
     Fem::FemAnalysis        *Analysis;
 
-    if(getConstraintPrerequisits(&Analysis))
+    if(getConstraintPrerequisites(&Analysis))
         return;
 
     std::string FeatName = getUniqueObjectName("ConstraintContact");
@@ -390,7 +390,7 @@ void CmdFemConstraintDisplacement::activated(int)
 {
     Fem::FemAnalysis        *Analysis;
 
-    if(getConstraintPrerequisits(&Analysis))
+    if(getConstraintPrerequisites(&Analysis))
         return;
 
     std::string FeatName = getUniqueObjectName("ConstraintDisplacement");
@@ -433,7 +433,7 @@ void CmdFemConstraintFixed::activated(int)
 {
     Fem::FemAnalysis        *Analysis;
 
-    if(getConstraintPrerequisits(&Analysis))
+    if(getConstraintPrerequisites(&Analysis))
         return;
 
     std::string FeatName = getUniqueObjectName("ConstraintFixed");
@@ -475,7 +475,7 @@ void CmdFemConstraintFluidBoundary::activated(int)
 {
     Fem::FemAnalysis        *Analysis;
 
-    if(getConstraintPrerequisits(&Analysis))
+    if(getConstraintPrerequisites(&Analysis))
         return;
 
     std::string FeatName = getUniqueObjectName("ConstraintFluidBoundary");
@@ -518,7 +518,7 @@ void CmdFemConstraintForce::activated(int)
 {
     Fem::FemAnalysis        *Analysis;
 
-    if(getConstraintPrerequisits(&Analysis))
+    if(getConstraintPrerequisites(&Analysis))
         return;
 
     std::string FeatName = getUniqueObjectName("ConstraintForce");
@@ -562,7 +562,7 @@ void CmdFemConstraintGear::activated(int)
 {
     Fem::FemAnalysis        *Analysis;
 
-    if(getConstraintPrerequisits(&Analysis))
+    if(getConstraintPrerequisites(&Analysis))
         return;
     std::string FeatName = getUniqueObjectName("ConstraintGear");
 
@@ -603,7 +603,7 @@ void CmdFemConstraintHeatflux::activated(int)
 {
     Fem::FemAnalysis        *Analysis;
 
-    if(getConstraintPrerequisits(&Analysis))
+    if(getConstraintPrerequisites(&Analysis))
         return;
 
     std::string FeatName = getUniqueObjectName("ConstraintHeatflux");
@@ -648,7 +648,7 @@ void CmdFemConstraintInitialTemperature::activated(int)
 {
     Fem::FemAnalysis        *Analysis;
 
-    if(getConstraintPrerequisits(&Analysis))
+    if(getConstraintPrerequisites(&Analysis))
         return;
 
     std::string FeatName = getUniqueObjectName("ConstraintInitialTemperature");
@@ -691,7 +691,7 @@ void CmdFemConstraintPlaneRotation::activated(int)
 {
     Fem::FemAnalysis        *Analysis;
 
-    if(getConstraintPrerequisits(&Analysis))
+    if(getConstraintPrerequisites(&Analysis))
         return;
 
     std::string FeatName = getUniqueObjectName("ConstraintPlaneRotation");
@@ -733,7 +733,7 @@ void CmdFemConstraintPressure::activated(int)
 {
     Fem::FemAnalysis        *Analysis;
 
-    if(getConstraintPrerequisits(&Analysis))
+    if(getConstraintPrerequisites(&Analysis))
         return;
 
     std::string FeatName = getUniqueObjectName("ConstraintPressure");
@@ -778,7 +778,7 @@ void CmdFemConstraintPulley::activated(int)
 {
     Fem::FemAnalysis        *Analysis;
 
-    if(getConstraintPrerequisits(&Analysis))
+    if(getConstraintPrerequisites(&Analysis))
         return;
 
     std::string FeatName = getUniqueObjectName("ConstraintPulley");
@@ -824,7 +824,7 @@ void CmdFemConstraintTemperature::activated(int)
 {
     Fem::FemAnalysis        *Analysis;
 
-    if(getConstraintPrerequisits(&Analysis))
+    if(getConstraintPrerequisites(&Analysis))
         return;
 
     std::string FeatName = getUniqueObjectName("ConstraintTemperature");
@@ -867,7 +867,7 @@ void CmdFemConstraintTransform::activated(int)
 {
     Fem::FemAnalysis        *Analysis;
 
-    if(getConstraintPrerequisits(&Analysis))
+    if(getConstraintPrerequisites(&Analysis))
         return;
 
     std::string FeatName = getUniqueObjectName("ConstraintTransform");
@@ -905,7 +905,7 @@ void DefineNodesCallback(void * ud, SoEventCallback * n)
 {
     Fem::FemAnalysis        *Analysis;
 
-    if(getConstraintPrerequisits(&Analysis))
+    if(getConstraintPrerequisites(&Analysis))
         return;
 
     // show the wait cursor because this could take quite some time
