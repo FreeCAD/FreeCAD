@@ -212,7 +212,7 @@ float SphereFit::Fit()
 	{
 		++_numIter;
 
-		// Set up the quasi parameteric normal equations
+		// Set up the quasi parametric normal equations
 		setupNormalEquationMatrices(residuals, atpa, atpl);
 		
 		// Solve the equations for the unknown corrections
@@ -276,7 +276,7 @@ void SphereFit::setupNormalEquationMatrices(const std::vector< Base::Vector3d > 
 	setLowerPart(atpa);
 }
 
-// Sets up contributions of given observation to the quasi parameteric 
+// Sets up contributions of given observation to the quasi parametric 
 // normal equation matrices. Assumes uncorrelated coordinates.
 // point ... point
 // residual ... residual for this point computed from previous iteration (zero for first iteration)

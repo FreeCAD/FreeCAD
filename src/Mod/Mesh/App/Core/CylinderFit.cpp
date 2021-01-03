@@ -293,7 +293,7 @@ float CylinderFit::Fit()
     {
         ++_numIter;
 
-        // Set up the quasi parameteric normal equations
+        // Set up the quasi parametric normal equations
         setupNormalEquationMatrices(solDir, residuals, atpa, atpl);
 
         // Solve the equations for the unknown corrections
@@ -450,7 +450,7 @@ void CylinderFit::setupNormalEquationMatrices(SolutionD solDir, const std::vecto
 	setLowerPart(atpa);
 }
 
-// Sets up contributions of given observation to the quasi parameteric 
+// Sets up contributions of given observation to the quasi parametric 
 // normal equation matrices. Assumes uncorrelated coordinates.
 // point ... point
 // residual ... residual for this point computed from previous iteration (zero for first iteration)
