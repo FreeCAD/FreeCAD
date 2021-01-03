@@ -1283,7 +1283,7 @@ bool path_simulate::CompPath(bool tool) // tool = 0  -> Master
 		lParam = curve.LastParameter();
 		period = lParam - fParam;
 
-		// übergibt Starparameter der aktuellen Kurve
+		// übergibt Startparameter der aktuellen Kurve
 		m_StartParam[tool] = fParam;
 		start = m_StartParam[tool];
 		
