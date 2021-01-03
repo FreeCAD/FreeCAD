@@ -1316,7 +1316,7 @@ bool path_simulate::CompPath(bool tool) // tool = 0  -> Master
 		m_vmid = std::min(m_vmax,sqrt(m_amax/m_curMax)); // Legt Geschwindigkeit fest mit der allen kritischen Bereiche     
 		                                            // abgefahren werden
 
-Newtry: // Falls die generierten Weglängen nicht ausreichen, dann wird ein neuer Versuch mit halbem <m_vmid> gestartet
+NewTry: // Falls die generierten Weglängen nicht ausreichen, dann wird ein neuer Versuch mit halbem <m_vmid> gestartet
 		
 		v[0] = 0.0;  // starte jede Kurve mit v = 0
 		int m = 0;
@@ -1375,7 +1375,7 @@ Newtry: // Falls die generierten Weglängen nicht ausreichen, dann wird ein neue
 
 				m_StartParam[tool] = start; // setze Startparameter zurück
 			    m_vmid = m_vmid/2;          // halbiere kritische Durchlaufgeschwindigkeit
-				goto Newtry;
+				goto NewTry;
 			}
 
 			while(len < len_1)
@@ -1458,7 +1458,7 @@ Newtry: // Falls die generierten Weglängen nicht ausreichen, dann wird ein neue
 
 			m_StartParam[tool] = start; // setze Startparameter zurück
 			m_vmid = m_vmid/2;          // halbiere kritische Durchlaufgeschwindigkeit und versuchs erneut
-			goto Newtry;
+			goto NewTry;
 		}
 
 		while(len < len_1)
