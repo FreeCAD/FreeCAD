@@ -54,7 +54,7 @@ static const char* OutletSubtypes[] = {"unspecific","totalPressure","staticPress
 static const char* InterfaceSubtypes[] = {"unspecific","symmetry","wedge","cyclic","empty", NULL};
 static const char* FreestreamSubtypes[] = {"unspecific", "freestream",NULL};
 
-// see Ansys fluet manual: Turbulence Specification method, if not specified, solver will guess a value based e.g. 0.05 for inlet length geometry",
+// see Ansys fluent manual: Turbulence Specification method, if not specified, solver will guess a value based e.g. 0.05 for inlet length geometry",
 static const char* TurbulenceSpecifications[] = {"intensity&DissipationRate", "intensity&LengthScale","intensity&ViscosityRatio","intensity&HydraulicDiameter",NULL};
 /* only used in TaskFemConstraintFluidBoundary.cpp */
 

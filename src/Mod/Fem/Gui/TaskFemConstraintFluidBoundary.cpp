@@ -96,7 +96,7 @@ static const char* InterfaceSubtypeHelpTexts[] = {
     "exchange boundary vale with external program, need extra manual setup like file name", NULL};
 
 // defined in file FemConstraintFluidBoundary:
-// see Ansys fluet manual: Turbulence Specification method
+// see Ansys fluent manual: Turbulence Specification method
 //static const char* TurbulenceSpecifications[] = {"intensity&DissipationRate", "intensity&LengthScale","intensity&ViscosityRatio", "intensity&HydraulicDiameter",NULL};
 //activate the heat transfer and radiation model in Solver object explorer
 static const char* TurbulenceSpecificationHelpTexts[] = {
