@@ -170,7 +170,7 @@ void Origin::setupObject () {
 
 void Origin::unsetupObject () {
     const auto &objsLnk = OriginFeatures.getValues ();
-    // Copy to set to assert we won't call methode more then one time for each object
+    // Copy to set to assert we won't call method more then one time for each object
     std::set<App::DocumentObject *> objs (objsLnk.begin(), objsLnk.end());
     // Remove all controlled objects
     for (auto obj: objs ) {

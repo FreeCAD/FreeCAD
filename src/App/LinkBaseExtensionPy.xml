@@ -19,10 +19,10 @@
 configLinkProperty(key=val,...): property configuration
 configLinkProperty(key,...): property configuration with default name
 
-This methode is here to implement what I called Property Design
+This method is here to implement what I called Property Design
 Pattern. The extension operates on a predefined set of properties,
 but it relies on the extended object to supply the actual property by
-calling this methode. You can choose a sub set of functionality of
+calling this method. You can choose a sub set of functionality of
 this extension by supplying only some of the supported properties. 
 
 The 'key' are names used to refer to properties supported by this

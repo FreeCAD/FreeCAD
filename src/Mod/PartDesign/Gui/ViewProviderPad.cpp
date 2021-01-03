@@ -47,7 +47,7 @@ ViewProviderPad::~ViewProviderPad()
 
 void ViewProviderPad::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    // Note: This methode couldn't be unified with others because menu entry string
+    // Note: This method couldn't be unified with others because menu entry string
     //       should present united in sources for proper translation and shouldn't be 
     //       constructed on runtime.
     QAction* act;

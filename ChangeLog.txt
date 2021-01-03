@@ -963,12 +963,12 @@ Version: V0.1B36 Date: Sat Feb 22 18:12:19 2003 +++++++++++++++++++++++++++++++
 Version: V0.1B35 Date: Wed Feb 19 19:41:39 2003 +++++++++++++++++++++++++++++++
   * new Linux patch (Vaclav)
   * sequencer break windows only (werner)
-  * run methode in CommandLine (werner)
+  * run method in CommandLine (werner)
 
 Version: V0.1B34 Date: Sun Feb 16 11:55:21 2003 +++++++++++++++++++++++++++++++
   * finish the Html-view prefernces dialog (werner)
   * making unique defines for operating system in Config.h
-  * GetActiveWorkbench methode
+  * GetActiveWorkbench method
   * included VC7 projects (werner)
 
 Version: V0.1B33 Date: Fri Feb 14 19:58:58 2003 +++++++++++++++++++++++++++++++
