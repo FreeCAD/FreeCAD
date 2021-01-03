@@ -386,10 +386,10 @@ public:
             "By default pnt=Vector(0,0,0) and dir=Vector(0,0,1)"
         );
         add_varargs_method("makeLine",&Module::makeLine,
-            "makeLine(startpnt,endpoint) -- Make a line between two points\n"
+            "makeLine(startpoint,endpoint) -- Make a line between two points\n"
             "\n"
             "Args:\n"
-            "    startpnt (Vector or tuple): Vector or 3 element tuple \n"
+            "    startpoint (Vector or tuple): Vector or 3 element tuple \n"
             "        containing the x,y and z coordinates of the start point,\n"
             "        i.e. (x1,y1,z1).\n"
             "    endpoint (Vector or tuple): Vector or 3 element tuple \n"
