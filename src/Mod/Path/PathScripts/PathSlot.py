@@ -1491,7 +1491,7 @@ class ObjectSlot(PathOp.ObjectOp):
 
     def _lineCollisionCheck(self, obj, p1, p2):
         """Make simple circle with diameter of tool, at start point.
-        Extrude it latterally along path.
+        Extrude it laterally along path.
         Extrude it vertically.
         Check for collision with model."""
         # Make path travel of tool as 3D solid.
