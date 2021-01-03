@@ -65,7 +65,7 @@ Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::OptionSetter::operat
 
 template<typename Sys, int Dim>
 template<typename ConstraintVector, typename tag1, typename tag2>
-Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::Calculater::Calculater(geom_ptr f, geom_ptr s, Scalar sc, AccessType a)
+Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::Calculator::Calculator(geom_ptr f, geom_ptr s, Scalar sc, AccessType a)
     : first(f), second(s), scale(sc), access(a) {
 
 };
@@ -73,7 +73,7 @@ Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::Calculater::Calculat
 template<typename Sys, int Dim>
 template<typename ConstraintVector, typename tag1, typename tag2>
 template< typename T >
-void Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::Calculater::operator()(T& val) const {
+void Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::Calculator::operator()(T& val) const {
 
     //if the equation is disabled we don't have anything mapped so avoid accessing it
     if(!val.enabled)
@@ -355,7 +355,7 @@ template<typename Sys, int Dim>
 template<typename ConstraintVector, typename tag1, typename tag2>
 void Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::calculate(geom_ptr first, geom_ptr second,
         Scalar scale, AccessType access) {
-    fusion::for_each(m_sets, Calculater(first, second, scale, access));
+    fusion::for_each(m_sets, Calculator(first, second, scale, access));
 };
 
 template<typename Sys, int Dim>
