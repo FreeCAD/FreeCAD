@@ -208,7 +208,7 @@ struct Distance : public Equation<Distance, mpl::vector2<double, SolutionSpace>,
         setDefault();
     };
 
-    //override needed ass assignmend operator is always created by the compiler
+    //override needed as assignment operator is always created by the compiler
     //and we need to ensure that our custom one is used
     Distance& operator=(const Distance& d) {
         return Equation::assign(d);
@@ -279,7 +279,7 @@ struct Orientation : public Equation<Orientation, Direction, 2, rotation> {
         setDefault();
     };
 
-    //override needed ass assignmend operator is always created by the compiler
+    //override needed as assignment operator is always created by the compiler
     //and we need to ensure that our custom one is used
     Orientation& operator=(const Orientation& d) {
         return Equation::assign(d);
@@ -345,7 +345,7 @@ struct Angle : public Equation<Angle, mpl::vector2<double, SolutionSpace>, 3, ro
         setDefault();
     };
 
-    //override needed ass assignmend operator is always created by the compiler
+    //override needed as assignment operator is always created by the compiler
     //and we need to ensure that our custom one is used
     Angle& operator=(const Angle& d) {
         return Equation::assign(d);
