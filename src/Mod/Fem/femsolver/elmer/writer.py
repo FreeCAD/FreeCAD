@@ -80,7 +80,7 @@ class Writer(object):
         return self._handledObjects
 
     def write(self):
-        self._handleRedifinedConstants()
+        self._handleRedefinedConstants()
         self._handleSimulation()
         self._handleHeat()
         self._handleElasticity()
@@ -262,7 +262,7 @@ class Writer(object):
         os.remove(geoPath)
         os.remove(unvGmshPath)
 
-    def _handleRedifinedConstants(self):
+    def _handleRedefinedConstants(self):
         """
         redefine constants in self.constsdef according constant redefine objects
         """
