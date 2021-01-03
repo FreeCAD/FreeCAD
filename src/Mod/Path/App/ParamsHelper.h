@@ -280,7 +280,7 @@
 /** Type depended macro construction
  *
  * Convert macro \a _op to \a _op##\<type\>. Note that it only converts the
- * macro name, not contsucts a macro call. To expand to a macro call, simply
+ * macro name, it does not construct a macro call. To expand to a macro call, simply
  * \code
  *      PARAM_TYPED(_op,_param)(_param)
  * \endcode
