@@ -41,7 +41,7 @@
  *  2008-11-27   v8      Debugging Tools for Windows are now stored in a different directory
  *                       Thanks to Luiz Salamon which reported this "bug"...
  *                       http://www.codeproject.com/KB/threads/StackWalker.aspx?msg=2822736#xx2822736xx
- *  2009-04-10   v9      License slihtly corrected (<ORGANIZATION> replaced)
+ *  2009-04-10   v9      License slightly corrected (<ORGANIZATION> replaced)
  *  2009-11-01   v10     Moved to http://stackwalker.codeplex.com/
  *  2009-11-02   v11     Now try to use IMAGEHLP_MODULE64_V3 if available
  *  2010-04-15   v12     Added support for VS2010 RTM
