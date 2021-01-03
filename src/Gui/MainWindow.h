@@ -99,7 +99,7 @@ public:
      */
     void removeWindow(MDIView* view, bool close=true);
     /**
-     * Returns a list of all MDI windows in the worpspace.
+     * Returns a list of all MDI windows in the workspace.
      */
     QList<QWidget*> windows(QMdiArea::WindowOrder order = QMdiArea::CreationOrder) const;
     /**
