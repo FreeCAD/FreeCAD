@@ -101,7 +101,7 @@ namespace Py
     }
     */
 
-    // Alernate version for the constructor to allow for construction from owned pointers:
+    // Alternate version for the constructor to allow for construction from owned pointers:
     /*
     explicit MyType( PyObject *pyob ): Object( pyob )
     {
