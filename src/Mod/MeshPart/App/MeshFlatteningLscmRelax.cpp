@@ -470,7 +470,7 @@ void LscmRelax::lscm()
         rhs_pos[this->new_order[index] * 2 + 1] = this->flat_vertices(1, index);
     }
 
-    // 4. fill a sparse matrix and calculdate the rhs
+    // 4. fill a sparse matrix and calculate the rhs
     Eigen::VectorXd rhs(this->triangles.cols() * 2); // maybe use a sparse vector
     spMat B(this->triangles.cols() * 2, this->vertices.cols() * 2);
     B.setFromTriplets(rhs_triplets.begin(), rhs_triplets.end());
