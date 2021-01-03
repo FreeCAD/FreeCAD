@@ -1485,7 +1485,7 @@ bool MeshAlgorithm::ConnectLines (std::list<std::pair<Base::Vector3f, Base::Vect
     typedef std::list<std::pair<Base::Vector3f, Base::Vector3f> >::iterator  TCIter;
 
     // square search radius
-    // const float fMinEps = 1.0e-2f; // := 10 mirometer distance
+    // const float fMinEps = 1.0e-2f; // := 10 micrometer distance
     fMinEps = fMinEps * fMinEps;
 
     // remove all lines whose distance is smaller than epsilon
