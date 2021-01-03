@@ -93,7 +93,7 @@
 	  </Methode>
 	  <Methode Name="toggleTreeItem">
 		  <Documentation>
-			  <UserDocu>toggleTreeItem(DocObject,int=0) - change TreeItem of a document object 0:Toggle,1:Collaps,2:Expand</UserDocu>
+			  <UserDocu>toggleTreeItem(DocObject,int=0) - change TreeItem of a document object 0:Toggle,1:Collapse,2:Expand</UserDocu>
 		  </Documentation>
 	  </Methode>
       <Methode Name="scrollToTreeItem">
