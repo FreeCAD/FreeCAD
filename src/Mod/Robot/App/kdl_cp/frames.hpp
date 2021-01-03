@@ -28,7 +28,7 @@
 /**
  * \file
  * \warning
- *       Efficienty can be improved by writing p2 = A*(B*(C*p1))) instead of
+ *       Efficiency can be improved by writing p2 = A*(B*(C*p1))) instead of
  *          p2=A*B*C*p1
  *
  * \par PROPOSED NAMING CONVENTION FOR FRAME-like OBJECTS
