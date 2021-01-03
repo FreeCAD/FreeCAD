@@ -260,7 +260,7 @@ public:
     /**
      * @brief The property bundle for GlobalEdges
      *
-     * A local edge in a cluster can hold multiple gloabal ones. Therefor we need an extra bundle for
+     * A local edge in a cluster can hold multiple global ones. Therefor we need an extra bundle for
      * the GlobalEdges. This bundle holds the objects which are added to that global edge and it's identifier.
      * Note that global edges don't have properties, these are only for local ones.
      **/
