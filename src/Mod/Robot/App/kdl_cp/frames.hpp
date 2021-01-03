@@ -1162,7 +1162,7 @@ IMETHOD Vector diff(const Vector& p_w_a,const Vector& p_w_b,double dt=1);
  * \param dt [optional][obsolete] time interval over which the numerical differentiation takes place. By default this is set to 1.0.
  * \return rotation axis to rotate from b1 to b2, scaled by the rotation angle, expressed in frame a.
  * \warning - The result is not a rotational vector, i.e. it is not a mathematical vector.
- *          (no communitative addition). 
+ *          (no commutative addition). 
  *
  * \warning - When used in the context of numerical differentiation, with the frames b1 and b2 very
  *           close to each other, the semantics correspond to the twist, scaled by the time. 
