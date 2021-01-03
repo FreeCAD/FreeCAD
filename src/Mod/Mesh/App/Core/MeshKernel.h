@@ -103,7 +103,7 @@ public:
     void RecalcBoundBox (void);
 
     /** Returns the point at the given index. This method is rather slow and should be
-     * called occasionally only. For fast access the MeshPointIterator interfsce should
+     * called occasionally only. For fast access the MeshPointIterator interface should
      * be used.
      */
     inline MeshPoint GetPoint (unsigned long ulIndex) const;
