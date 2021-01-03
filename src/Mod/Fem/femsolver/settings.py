@@ -98,7 +98,7 @@ def get_binary(name):
     else:
         FreeCAD.Console.PrintError(
             'Settings solver name: {} not found in '
-            'solver settings modules _SOLVER_PARAM dirctionary.\n'
+            'solver settings modules _SOLVER_PARAM dictionary.\n'
             .format(name)
         )
         return None
@@ -118,7 +118,7 @@ def get_write_comments(name):
     else:
         FreeCAD.Console.PrintError(
             'Settings solver name: {} not found in '
-            'solver settings modules _SOLVER_PARAM dirctionary.\n'
+            'solver settings modules _SOLVER_PARAM dictionary.\n'
             .format(name)
         )
         return None

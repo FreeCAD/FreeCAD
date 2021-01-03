@@ -115,7 +115,7 @@ class Overlappingfaces():
 
     #@staticmethod
     #def subtreedict(rootface,parantdict):
-    #    '''build a subtree dictinary'''
+    #    '''build a subtree dictionary'''
     #    newdict = parantdict.copy()
     #    del newdict[rootface]
     #    return newdict
