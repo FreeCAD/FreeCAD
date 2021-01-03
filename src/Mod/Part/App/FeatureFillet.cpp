@@ -88,7 +88,7 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
         ShapeHistory history = buildHistory(mkFillet, TopAbs_FACE, shape, baseShape);
         this->Shape.setValue(shape);
 
-        // make sure the 'PropertyShapeHistory' is not safed in undo/redo (#0001889)
+        // make sure the 'PropertyShapeHistory' is not saved in undo/redo (#0001889)
         PropertyShapeHistory prop;
         prop.setValue(history);
         prop.setContainer(this);
