@@ -6226,7 +6226,7 @@ void ViewProviderSketch::unsetEdit(int ModNum)
     // when pressing ESC make sure to close the dialog
     Gui::Control().closeDialog();
 
-    //visibility autoation
+    //visibility automation
     try{
         QString cmdstr = QString::fromLatin1(
                     "ActiveSketch = App.getDocument('%1').getObject('%2')\n"
