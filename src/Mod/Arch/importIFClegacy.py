@@ -1234,7 +1234,7 @@ def getIfcExtrusionData(obj,scale=1,nosubs=False):
     
     if hasattr(obj,"Additions"):
         if obj.Additions:
-            # TODO provisorily treat objs with additions as breps
+            # TODO provisionally treat objs with additions as breps
             return None
     if hasattr(obj,"Subtractions") and not nosubs:
         if obj.Subtractions:
