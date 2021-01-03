@@ -74,7 +74,7 @@ public:
 	ColMat<long, 1> fixed_nodes; // input
 	ColMat<double, 3> xyz_nodes; // compute from uv_mesh (xyz = A * poles)
 	ColMat<double, 2> uv_nodes;  // input
-	ColMat<double, 2> ze_nodes;  // copute
+	ColMat<double, 2> ze_nodes;  // compute
 
 	// nurbs
 	ColMat<double, 2> ze_poles;   // compute
