@@ -241,7 +241,7 @@ public:
      *
      * The edge properties supplied as template argument to the ClusterGraph are extended with graph
      * specific properties, for example a edge_index_prop. These extra properties are intended to be
-     * used with boost graph algorithms as property maps. They need to be in specefied by the ClusterGraph
+     * used with boost graph algorithms as property maps. They need to be in specified by the ClusterGraph
      * as they are used within it's implementation. If the graph specific properties are already a part
      * of the given property sequence, nothing happens, they are not added twice.
      **/
@@ -251,7 +251,7 @@ public:
      *
      * The vertex properties supplied as template argument to the ClusterGraph are extended with graph
      * specific properties as vertex_index_prop. These extra properties are intended to be
-     * used with boost graph algorithms as property maps. They need to be in specefied by the ClusterGraph
+     * used with boost graph algorithms as property maps. They need to be in specified by the ClusterGraph
      * as they are used within it's implementation.If the graph specific properties are already a part
      * of the given property sequence, nothing happens, they are not added twice.
      **/
