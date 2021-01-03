@@ -61,7 +61,7 @@ public:
      * Asserts the workflow of the document to be determined and prompt user to migrate if it is not modern.
      *
      * If workflow was already chosen return it.
-     * If the guesed workflow is Workflow::Legacy or Workflow::Mixed the user will be prompted to migrate.
+     * If the guessed workflow is Workflow::Legacy or Workflow::Mixed the user will be prompted to migrate.
      * If the user agrees the file will be migrated and the workflow will be set as modern.
      * If the user refuses to migrate use the old workflow.
      */
