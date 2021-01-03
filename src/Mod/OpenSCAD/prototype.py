@@ -447,7 +447,7 @@ class Node:
                     obj.Edges = [(i,r,r) for i in [1,3,5,7]]
                 if cube.arguments['center']:
                     center(cubeobj,x+2*r,y+2*r,z+2*r*issphere)
-                else: #htandle a rotated cylinder
+                else: #handle a rotated cylinder
                     #OffsetShape
                     raise(NotImplementedError)
             elif childrennames.count('sphere')==1:

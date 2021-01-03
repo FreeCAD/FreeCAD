@@ -121,15 +121,15 @@ public:
      *  instead using a overwritten new operator in the
      *  HandledType class! But is not easy to enforce!
      */
-    PyHandle(HandledType *ToHandel=0L)
-            :_pHandels(ToHandel) {
+    PyHandle(HandledType *ToHandle=0L)
+            :_pHandels(ToHandle) {
         if (_pHandels)
             _pHandels->IncRef();
     }
 
     /// Copy constructor
-    PyHandle(const PyHandle <HandledType> &ToHandel)
-            :_pHandels(ToHandel._pHandels) {
+    PyHandle(const PyHandle <HandledType> &ToHandle)
+            :_pHandels(ToHandle._pHandels) {
         if (_pHandels)
             _pHandels->IncRef();
     }
