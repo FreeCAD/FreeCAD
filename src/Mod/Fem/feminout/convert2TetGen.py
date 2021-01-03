@@ -198,7 +198,7 @@ def createMesh():
     DepletionBoxName = "Depletion"
     SurfDepletionBoxName = "SurfDepletion"
     OxideBoxName = "Oxide"
-    AdsorbtionBoxName = "Adsorbtion"
+    AdsorptionBoxName = "Adsorption"
     pnMeshName = "pnMesh"
 
     # Init objects
@@ -212,7 +212,7 @@ def createMesh():
     DepletionBox = AppPyDoc.addObject("Part::Box", DepletionBoxName)
     SurfDepletionBox = AppPyDoc.addObject("Part::Box", SurfDepletionBoxName)
     OxideBox = AppPyDoc.addObject("Part::Box", OxideBoxName)
-    AdsorbtionBox = AppPyDoc.addObject("Part::Box", AdsorbtionBoxName)
+    AdsorptionBox = AppPyDoc.addObject("Part::Box", AdsorptionBoxName)
     pnMesh = AppPyDoc.addObject("Mesh::Feature", pnMeshName)
 
     BoxList = [
@@ -220,7 +220,7 @@ def createMesh():
         DepletionBox,
         PSideBox,
         OxideBox,
-        AdsorbtionBox,
+        AdsorptionBox,
         SurfDepletionBox
     ]
     NSideBoxMesh = Mesh.Mesh()
@@ -228,13 +228,13 @@ def createMesh():
     DepletionBoxMesh = Mesh.Mesh()
     SurfDepletionBoxMesh = Mesh.Mesh()
     OxideBoxMesh = Mesh.Mesh()
-    AdsorbtionBoxMesh = Mesh.Mesh()
+    AdsorptionBoxMesh = Mesh.Mesh()
     BoxMeshList = [
         NSideBoxMesh,
         DepletionBoxMesh,
         PSideBoxMesh,
         OxideBoxMesh,
-        AdsorbtionBoxMesh,
+        AdsorptionBoxMesh,
         SurfDepletionBoxMesh
     ]
     if beVerbose == 1:
@@ -252,7 +252,7 @@ def createMesh():
     BulkLength = 300
     DepletionSize = 50
     OxideThickness = 5
-    AdsorbtionThickness = 10
+    AdsorptionThickness = 10
 
     # Big volumes of n and p material
     NSideBox.Height = BulkHeight  # Z-direction
@@ -273,10 +273,10 @@ def createMesh():
     OxideBox.Height = OxideThickness
     OxideBox.Width = ModelWidth
     OxideBox.Length = BulkLength * 2 + DepletionSize * 2
-    # Adsorbtion layer
-    AdsorbtionBox.Height = AdsorbtionThickness
-    AdsorbtionBox.Width = ModelWidth
-    AdsorbtionBox.Length = BulkLength * 2 + DepletionSize * 2
+    # Adsorption layer
+    AdsorptionBox.Height = AdsorptionThickness
+    AdsorptionBox.Width = ModelWidth
+    AdsorptionBox.Length = BulkLength * 2 + DepletionSize * 2
 
     # Object placement
     Rot = App.Rotation(0, 0, 0, 1)
@@ -300,7 +300,7 @@ def createMesh():
         App.Vector(0, 0, DepletionSize),
         Rot
     )
-    AdsorbtionBox.Placement = App.Placement(
+    AdsorptionBox.Placement = App.Placement(
         App.Vector(0, 0, DepletionSize + OxideThickness),
         Rot
     )
