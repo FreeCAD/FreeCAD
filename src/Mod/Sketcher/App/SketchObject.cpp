@@ -7153,7 +7153,7 @@ void SketchObject::constraintsRemoved(const std::set<App::ObjectIdentifier> &rem
 }
 
 //Tests if the provided point lies exactly in a curve (satisfies
-// point-on-object constraint). It is used to decide whether it is nesessary to
+// point-on-object constraint). It is used to decide whether it is necessary to
 // constrain a point onto curves when 3-element selection tangent-via-point-like
 // constraints are applied.
 bool SketchObject::isPointOnCurve(int geoIdCurve, double px, double py)

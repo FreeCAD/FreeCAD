@@ -62,7 +62,7 @@ namespace dcm {
  * The connection of data type and identifier is achieved through the property structs, which all follow
  * the same concept: Identifier is the struct type, the stored data is exposed as 'type' typedef. The data
  * type can be every c++ type (including classes and structs) which is default constructable. They don't need
- * to be assignable or copyable by default, thats only nesseccary if you want to change the hole stored
+ * to be assignable or copyable by default, thats only necessary if you want to change the hole stored
  * object by assigning. If not, the data object can be uncopyable and it should be used by
  * retrieving it's reference with get-methods.
  *

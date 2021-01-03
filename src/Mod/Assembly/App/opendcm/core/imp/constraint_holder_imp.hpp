@@ -242,7 +242,7 @@ void Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::LGZ::operator()
         return;
 
     //to treat local gradient zeros we calculate a approximate second derivative of the equations
-    //only do that if neseccary: residual is not zero
+    //only do that if necessary: residual is not zero
     if(!Kernel::isSame(val.m_residual(0),0, 1e-7)) { //TODO: use exact precission and scale value
 
         //rotations exist only in cluster
