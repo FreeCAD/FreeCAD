@@ -88,7 +88,7 @@ Function .onInit
    ${endif}
   ${endif}
   ${if} $0 != ""
-   # check if the uninstaller was acidentally deleted
+   # check if the uninstaller was accidentally deleted
    # if so don't bother the user if he really wants to install a new FreeCAD over an existing one
    # because he won't have a chance to deny this
    StrCpy $4 $0 -16 # remove '\bin\FreeCAD.exe'
