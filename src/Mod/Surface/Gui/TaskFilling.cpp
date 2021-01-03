@@ -553,7 +553,7 @@ void FillingPanel::on_listBoundary_itemDoubleClicked(QListWidgetItem* item)
                         ui->comboBoxFaces->addItem(text, text.toLatin1());
                     }
 
-                    // activste face and continuity
+                    // activate face and continuity
                     if (data.size() == 5) {
                         int index = ui->comboBoxFaces->findData(data[3]);
                         ui->comboBoxFaces->setCurrentIndex(index);
