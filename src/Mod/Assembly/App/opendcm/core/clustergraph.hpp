@@ -663,7 +663,7 @@ public:
      * @param source The first vertex the edge should connect
      * @param target The second vertex the edge should connect
      * @return fusion::vector<LocalEdge, GlobalEdge, success> with the local and global descriptors of the edge and an bool
-     * value indicationg the successful creation.
+     * value indicating the successful creation.
      **/
     fusion::vector<LocalEdge, GlobalEdge, bool> addEdge(LocalVertex source, LocalVertex target);
 
