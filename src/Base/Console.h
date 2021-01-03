@@ -539,7 +539,7 @@ namespace Base {
             void AttachObserver(ILogger *pcObserver);
             /// Detaches an Observer from FCConsole
             void DetachObserver(ILogger *pcObserver);
-            /// enumaration for the console modes
+            /// enumeration for the console modes
             enum ConsoleMode{
                 Verbose = 1,	// suppress Log messages
             };
