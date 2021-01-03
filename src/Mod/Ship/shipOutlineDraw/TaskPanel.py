@@ -414,7 +414,7 @@ class TaskPanel:
         form.sectionType = self.widget(QtGui.QComboBox, "SectionType")
         form.nSections = self.widget(QtGui.QSpinBox, "NSections")
 
-        # Recolect data
+        # Recollect data
         nSections = form.nSections.value()
         SectionList = []
         L = 0.0
