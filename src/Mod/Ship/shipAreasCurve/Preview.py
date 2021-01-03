@@ -35,7 +35,7 @@ class Preview(object):
         self.reinit()
 
     def reinit(self):
-        """ Reinitializate the drawer. """
+        """ Reinitialize the drawer. """
         self.obj = None
         self.clean()
 

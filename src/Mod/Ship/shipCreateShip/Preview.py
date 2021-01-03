@@ -38,7 +38,7 @@ class Preview(object):
         self.reinit()
 
     def reinit(self):
-        """Reinitializate drawer, removing all the previous annotations"""
+        """Reinitialize drawer, removing all the previous annotations"""
         self.clean()
 
     def update(self, L, B, T):
