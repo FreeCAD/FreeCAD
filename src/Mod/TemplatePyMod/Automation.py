@@ -34,7 +34,7 @@ def makeSnapshotWithGui():
 	# switch off animation so that the camera is moved to the final position immediately
 	view = FreeCADGui.getDocument(doc.Name).activeView()
 	view.setAnimationEnabled(False)
-	view.viewAxometric()
+	view.viewAxonometric()
 	view.fitAll()
 	view.saveImage('crystal.png',800,600,'Current')
 	FreeCAD.closeDocument(doc.Name)
