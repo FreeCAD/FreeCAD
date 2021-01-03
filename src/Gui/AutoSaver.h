@@ -78,7 +78,7 @@ public:
      */
     void setTimeout(int ms);
     /*!
-     Enables or disables to create compreesed recovery files.
+     Enables or disables to create compressed recovery files.
      */
     void setCompressed(bool on);
 
