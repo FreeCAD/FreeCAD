@@ -566,7 +566,7 @@ bool cutting_tools::arrangecuts_ZLEVEL()
 //  //Aktuellen Punkt holen
 //  gp_Pnt currentPoint = aProp.Value(i);
 //  projectPointContainer aTempContainer;
-//  //checken auf welches Face wir projezieren könnnen
+//  //checken auf welches Face wir projizieren könnnen
 //  for(m_face_bb_it = m_face_bboxes.begin();m_face_bb_it!=m_face_bboxes.end();++m_face_bb_it)
 //  {
 //   //Wenn der aktuelle Punkt in der BBox enthalten ist, dann machen wir mit der Projection weiter
@@ -743,7 +743,7 @@ TopoDS_Wire cutting_tools::ordercutShape(const TopoDS_Shape &aShape)
 //   //Aktuellen Punkt holen
 //   gp_Pnt currentPoint(avector_it->x,avector_it->y,avector_it->z);
 //   gp_Pnt nearest_Point;
-//   //checken auf welches Face wir projezieren könnnen
+//   //checken auf welches Face wir projizieren könnnen
 //   for(m_face_bb_it = m_face_bboxes.begin();m_face_bb_it!=m_face_bboxes.end();++m_face_bb_it)
 //   {
 //    //Wenn der aktuelle Punkt in der BBox enthalten ist, dann machen wir mit der Projection weiter
@@ -767,7 +767,7 @@ TopoDS_Wire cutting_tools::ordercutShape(const TopoDS_Shape &aShape)
 //   }
 //   //Für eine saubere Projection auf der aktuellen Ebene wird jetzt der Richtungsvector
 //   //aus dem projezierten Punkt und dem Ursprungspunkt gebildet
-//   //und dieser dann hergenommen um damit nochmal in dessen Richtung zu projezieren
+//   //und dieser dann hergenommen um damit nochmal in dessen Richtung zu projizieren
 //   gp_Vec aVec(currentPoint,nearest_Point);
 //   aVec.Normalize();
 //   aVec.SetZ(0.0);
