@@ -1055,7 +1055,7 @@ void SoFCSeparator::finish()
 // ---------------------------------------------------------------------------------
 // Thread local data for bounding box rendering
 //
-// The code is inspred by Coin SoLevelOfDetails.cpp.
+// The code is inspired by Coin SoLevelOfDetails.cpp.
 typedef struct {
     SoGetBoundingBoxAction * bboxaction;
     SoCube *cube;
