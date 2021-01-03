@@ -111,13 +111,13 @@ void QGISVGTemplate::load(const QString &fileName)
     }
 
     //convert from pixels or mm or inches in svg file to mm page size
-    TechDraw::DrawSVGTemplate *tmplte = getSVGTemplate();
+    TechDraw::DrawSVGTemplate *template = getSVGTemplate();
     double xaspect, yaspect;
-    xaspect = tmplte->getWidth() / (double) size.width();
-    yaspect = tmplte->getHeight() / (double) size.height();
+    xaspect = template->getWidth() / (double) size.width();
+    yaspect = template->getHeight() / (double) size.height();
 
     QTransform qtrans;
-    qtrans.translate(0.f, Rez::guiX(-tmplte->getHeight()));
+    qtrans.translate(0.f, Rez::guiX(-template->getHeight()));
     qtrans.scale(Rez::guiX(xaspect) , Rez::guiX(yaspect));
     m_svgItem->setTransform(qtrans);
 }
@@ -132,10 +132,10 @@ TechDraw::DrawSVGTemplate * QGISVGTemplate::getSVGTemplate()
 
 void QGISVGTemplate::draw()
 {
-    TechDraw::DrawSVGTemplate *tmplte = getSVGTemplate();
-    if(!tmplte)
+    TechDraw::DrawSVGTemplate *template = getSVGTemplate();
+    if(!template)
         throw Base::RuntimeError("Template Feature not set for QGISVGTemplate");
-    load(QString::fromUtf8(tmplte->PageResult.getValue()));
+    load(QString::fromUtf8(template->PageResult.getValue()));
 }
 
 void QGISVGTemplate::updateView(bool update)

@@ -36,7 +36,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="comboBoxTrmplate"/>
+      <widget class="QComboBox" name="comboBoxTemplate"/>
      </item>
     </layout>
    </item>
@@ -361,7 +361,7 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <tabstops>
-  <tabstop>comboBoxTrmplate</tabstop>
+  <tabstop>comboBoxTemplate</tabstop>
   <tabstop>radioButtonIgnore</tabstop>
   <tabstop>radioButtonNbrOfPoints</tabstop>
   <tabstop>lineEditClusterStart</tabstop>

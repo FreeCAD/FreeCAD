@@ -38,7 +38,7 @@ class TechDrawGuiExport TemplateTextField : public QGraphicsRectItem
 {
     public:
         TemplateTextField(QGraphicsItem *parent,
-                          TechDraw::DrawTemplate *myTmplte,
+                          TechDraw::DrawTemplate *myTemplate,
                           const std::string &myFieldName);
 
         virtual ~TemplateTextField() = default;
@@ -50,7 +50,7 @@ class TechDrawGuiExport TemplateTextField : public QGraphicsRectItem
         std::string fieldName() const { return fieldNameStr; }
 
     protected:
-        TechDraw::DrawTemplate *tmplte;
+        TechDraw::DrawTemplate *template;
         std::string fieldNameStr;
 
         /// Need this to properly handle mouse release

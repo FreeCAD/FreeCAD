@@ -37,10 +37,10 @@
 using namespace TechDrawGui;
 
 TemplateTextField::TemplateTextField(QGraphicsItem *parent,
-                                     TechDraw::DrawTemplate *myTmplte,
+                                     TechDraw::DrawTemplate *myTemplate,
                                      const std::string &myFieldName)
     : QGraphicsRectItem(parent),
-      tmplte(myTmplte),
+      template(myTemplate),
       fieldNameStr(myFieldName)
 {
     setToolTip(QObject::tr("Click to update text"));
@@ -48,7 +48,7 @@ TemplateTextField::TemplateTextField(QGraphicsItem *parent,
 
 void TemplateTextField::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    if ( tmplte && rect().contains(event->pos()) ) {
+    if ( template && rect().contains(event->pos()) ) {
         event->accept();
     } else {
         QGraphicsRectItem::mousePressEvent(event);
@@ -57,13 +57,13 @@ void TemplateTextField::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void TemplateTextField::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    if ( tmplte && rect().contains(event->pos()) ) {
+    if ( template && rect().contains(event->pos()) ) {
         event->accept();
 
         DlgTemplateField ui;
 
         ui.setFieldName(fieldNameStr);
-        ui.setFieldContent(tmplte->EditableTexts[fieldNameStr]);
+        ui.setFieldContent(template->EditableTexts[fieldNameStr]);
 
         if (ui.exec() == QDialog::Accepted) {
         //WF: why is this escaped?
@@ -76,7 +76,7 @@ void TemplateTextField::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 //#endif
             QString qsClean = ui.getFieldContent();
             std::string utf8Content = qsClean.toUtf8().constData();
-            tmplte->EditableTexts.setValue(fieldNameStr, utf8Content);
+            template->EditableTexts.setValue(fieldNameStr, utf8Content);
         }
 
     } else {

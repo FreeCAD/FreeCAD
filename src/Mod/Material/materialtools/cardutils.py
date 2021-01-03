@@ -404,7 +404,7 @@ def get_and_output_all_carddata(cards):
 
     # still there might be lots of properties in the template
     # which are not used in other materials
-    # but the tmplate is handled here like a material
+    # but the template is handled here like a material
     print('--------------------\nget_and_output_all_carddata--END\n\n\n')
 
 

@@ -88,8 +88,8 @@ TechDraw::DrawParametricTemplate * QGIDrawingTemplate::getParametricTemplate()
 void QGIDrawingTemplate::draw()
 {
 
-    TechDraw::DrawParametricTemplate *tmplte = getParametricTemplate();
-    if(!tmplte) {
+    TechDraw::DrawParametricTemplate *template = getParametricTemplate();
+    if(!template) {
         throw Base::RuntimeError("Template Feature not set for QGIDrawingTemplate");
     }
 
@@ -97,7 +97,7 @@ void QGIDrawingTemplate::draw()
     // Clear the previous geometry stored
 
     // Get a list of geometry and iterate
-    const std::vector<TechDraw::BaseGeom *> &geoms =  tmplte->getGeometry();
+    const std::vector<TechDraw::BaseGeom *> &geoms =  template->getGeometry();
 
     std::vector<TechDraw::BaseGeom *>::const_iterator it = geoms.begin();
 
