@@ -442,7 +442,7 @@ struct ModuleShape3D {
 
         struct inheriter_id : public inheriter_base {
             //we don't have a createshape3d method with identifier, as identifiers can be used to
-            //specifie creation geometries or shapes. Therefore a call would always be ambigious.
+            //specifie creation geometries or shapes. Therefore a call would always be ambiguous.
 
             void removeShape3D(ID id);
             bool hasShape3D(ID id);
