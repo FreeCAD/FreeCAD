@@ -51,7 +51,7 @@ ImageView::ImageView(QWidget* parent)
     // i.e. this ImageView the QPlatformWindow is also null.
     // As said above it works the very first time because at construction time
     // of GLImageBox it doesn't set the ImageView as parent but the parent of
-    // the ImageView, i.e. the main window. This mafic happens inside the
+    // the ImageView, i.e. the main window. This magic happens inside the
     // function QWidgetPrivate::setParent_sys at this line:
     //        QWidget *parentWithWindow =
     //            newparent ? (newparent->windowHandle() ? newparent : newparent->nativeParentWidget()) : 0;
