@@ -581,7 +581,7 @@ const char *TreeWidget::getTreeName() const {
     return myName.c_str();
 }
 
-// reimpelement to select only objects in the active document
+// reimplement to select only objects in the active document
 void TreeWidget::selectAll() {
     auto gdoc = Application::Instance->getDocument(
             App::GetApplication().getActiveDocument());
