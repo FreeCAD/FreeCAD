@@ -169,7 +169,7 @@ struct SuggestResult{
     /**
       * @brief allApplicableModes. Vector array that will receive the list of
       * all modes that are applicable to current set of references. It doesn't
-      * guarantee that all modes will work, it only checks that subelemnts are
+      * guarantee that all modes will work, it only checks that subelements are
       * of right type.
       */
     std::vector<eMapMode> allApplicableModes;
