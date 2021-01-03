@@ -56,11 +56,13 @@ private Q_SLOTS:
     void onTextChanged();
     void onColorChanged();
     void onFontsizeChanged();
-    void onShapeChanged();
+    void onBubbleShapeChanged();
     void onShapeScaleChanged();
-    void onEndTypeChanged();
+    void onEndSymbolChanged();
+    void onEndSymbolScaleChanged();
+    void onLineVisibleChanged();
     void onLineWidthChanged();
-    void onBalloonKinkChanged();  
+    void onKinkLengthChanged();
 
 private:
     Ui_TaskBalloon *ui;
