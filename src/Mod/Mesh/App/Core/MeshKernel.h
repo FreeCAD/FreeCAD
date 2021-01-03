@@ -219,7 +219,7 @@ public:
     unsigned long VisitNeighbourFacets (MeshFacetVisitor &rclFVisitor, unsigned long ulStartFacet) const;
     /**
      * Does basically the same as the method above unless the facets that share just a common point
-     * are regared as neighbours.
+     * are regarded as neighbours.
      */
     unsigned long VisitNeighbourFacetsOverCorners (MeshFacetVisitor &rclFVisitor, unsigned long ulStartFacet) const;
     //@}
