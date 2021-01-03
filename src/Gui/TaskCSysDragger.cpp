@@ -49,13 +49,13 @@ static double radiansToDegrees(const double &radiansIn)
   return radiansIn * (180.0 / M_PI);
 }
 
-static double degreesToRadains(const double &degreesIn)
+static double degreesToRadians(const double &degreesIn)
 {
   return degreesIn * (M_PI / 180.0);
 }
 
 static double lastTranslationIncrement = 1.0;
-static double lastRotationIncrement = degreesToRadains(15.0);
+static double lastRotationIncrement = degreesToRadians(15.0);
 
 TaskCSysDragger::TaskCSysDragger(Gui::ViewProviderDocumentObject* vpObjectIn, Gui::SoFCCSysDragger* draggerIn) :
   dragger(draggerIn)
@@ -119,7 +119,7 @@ void TaskCSysDragger::onTIncrementSlot(double freshValue)
 
 void TaskCSysDragger::onRIncrementSlot(double freshValue)
 {
-  dragger->rotationIncrement.setValue(degreesToRadains(freshValue));
+  dragger->rotationIncrement.setValue(degreesToRadians(freshValue));
 }
 
 void TaskCSysDragger::open()
