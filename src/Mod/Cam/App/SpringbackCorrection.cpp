@@ -1276,7 +1276,7 @@ bool SpringbackCorrection::Perform(int deg_Tol, bool out)
 
     log.saveToFile("c:/Facenormals.iv");*/
 
-    // speichere normalen seperat
+    // speichere normalen separat
     m_normals.clear();
     m_normals.resize(m_MeshStruct.size());
 

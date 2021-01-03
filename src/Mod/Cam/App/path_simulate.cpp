@@ -421,7 +421,7 @@ bool path_simulate::CheckConnect(bool tool)
     // ab dem 2. lauf
     if (m_it1 != m_BSplineTop.begin() || m_it2 != m_BSplineBottom.begin())
     {
-        if (m_Feat == true)  // Für den Feature-Basierten Fall werden die Zustellungen von Master und Slave seperat behandelt	
+        if (m_Feat == true)  // Für den Feature-Basierten Fall werden die Zustellungen von Master und Slave separat behandelt	
 		{
 			 if (!tool)
 			 {
@@ -2360,7 +2360,7 @@ bool path_simulate::MakePathSimulate_Feat(const std::vector<float> &flatAreas, b
 		if (m_single == false) 
 			m_StartParam[1] = ((*m_it2)->FirstParameter());
  
-		// die erste Zustellung vor dem Kontakt mit dem Blech wird hier seperat gehandelt
+		// die erste Zustellung vor dem Kontakt mit dem Blech wird hier separat gehandelt
         if (i==0)
         {
             /*------ ZUSTELLUNG 1 ------*/
@@ -2496,7 +2496,7 @@ bool path_simulate::MakePathRobot_Feat(const std::vector<float> &flatAreas)
         m_StartParam[0] = ((*m_it1)->FirstParameter());
         if (m_single == false) m_StartParam[1] = ((*m_it2)->FirstParameter());
 
-        // Erste Zustellung wird seperat gehandelt
+        // Erste Zustellung wird separat gehandelt
         if (i==0)
         {
             ConnectPaths_xy(1); /* 1. ZUSTELLUNG */
