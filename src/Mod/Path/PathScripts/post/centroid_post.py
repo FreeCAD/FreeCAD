@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2015 Dan Falck <ddfalck@gmail.com>                      *
+# *   Copyright (c) 2020 Schildkroet                                        *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -93,7 +94,8 @@ PREAMBLE = '''G53 G00 G17
 POSTAMBLE = '''M99
 '''
 
-TOOLRETURN = '''M5 M25
+TOOLRETURN = '''M5
+M25
 G49 H0
 '''  # spindle off,height offset canceled,spindle retracted (M25 is a centroid command to retract spindle)
 
