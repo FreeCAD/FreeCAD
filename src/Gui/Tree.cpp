@@ -2064,7 +2064,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 }else if(info.parent.size()) {
                     auto parentDoc = App::GetApplication().getDocument(info.parentDoc.c_str());
                     if(!parentDoc) {
-                        FC_WARN("Canont find document " << info.parentDoc);
+                        FC_WARN("Cannot find document " << info.parentDoc);
                         continue;
                     }
                     auto parent = parentDoc->getObject(info.parent.c_str());
