@@ -339,7 +339,7 @@ public:
     friend class CommandManager;
     /// Override this method if your Cmd is not always active
     virtual bool isActive(void){return true;}
-    /// Get somtile called to check the state of the command
+    /// Get somtile (sic) called to check the state of the command
     void testActive(void);
     /// Enables or disables the command
     void setEnabled(bool);
