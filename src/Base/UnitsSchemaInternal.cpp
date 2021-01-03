@@ -308,7 +308,7 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
     }
     else if (unit == Unit::HeatFlux) {
         unitString = QString::fromLatin1("W/m^2");
-        factor = 1;  //  unit signiture (0,1,-3,0,0) is length independent
+        factor = 1;  //  unit signature (0,1,-3,0,0) is length independent
     }
     else if (unit == Unit::ElectricCharge) {
         unitString = QString::fromLatin1("C");
