@@ -188,13 +188,13 @@ def read_z88_mesh(
         return {}
     nodes_first_line = 2  # first line is mesh_info
     nodes_last_line = nodes_count + 1
-    elemts_first_line = nodes_last_line + 1
-    elements_last_line = elemts_first_line - 1 + elements_count * 2
+    elements_first_line = nodes_last_line + 1
+    elements_last_line = elements_first_line - 1 + elements_count * 2
 
     Console.PrintLog("{}\n".format(nodes_count))
     Console.PrintLog("{}\n".format(elements_count))
     Console.PrintLog("{}\n".format(nodes_last_line))
-    Console.PrintLog("{}\n".format(elemts_first_line))
+    Console.PrintLog("{}\n".format(elements_first_line))
     Console.PrintLog("{}\n".format(elements_last_line))
 
     z88_mesh_file.seek(0)  # go back to the beginning of the file
@@ -213,7 +213,7 @@ def read_z88_mesh(
                 node_z = float(linecolumns[4])
             nodes[node_no] = FreeCAD.Vector(node_x, node_y, node_z)
 
-        if lno >= elemts_first_line and lno <= elements_last_line:
+        if lno >= elements_first_line and lno <= elements_last_line:
             # first element line
             if not input_continues:
                 elem_no = int(linecolumns[0])
