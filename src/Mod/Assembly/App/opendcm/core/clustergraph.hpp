@@ -675,7 +675,7 @@ public:
      * in the local cluster or any of its subclusters. If thats not the case, the function will fail. On success
      * a new GlobalEdge will be created, but not necessarily a local one. If the vertices are in different cluster
      * which are already connected the global edge will be added to this connecting local edge. Thats the one returned
-     * in the seqence. Note that it's possible that the local edge belongs to another subcluster and therefore can't be
+     * in the sequence. Note that it's possible that the local edge belongs to another subcluster and therefore can't be
      * used in the local cluster. This case is indicated by the scope return value.
      *
      * @param source The first vertex the edge should connect

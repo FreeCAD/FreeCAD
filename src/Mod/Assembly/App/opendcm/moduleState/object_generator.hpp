@@ -50,7 +50,7 @@ namespace details {
         typedef typename mpl::push_back<init_rules_vector, empty_grammar >::type rules_vector;
 
         //create the fusion sequence of our rules
-        typedef typename fusion::result_of::as_vector<rules_vector>::type rules_sequnce;
+        typedef typename fusion::result_of::as_vector<rules_vector>::type rules_sequence;
 
         //this struct returns the right accessvalue for the sequences. If we access a value bigger than the property vector size
         //we use the last rule, as we made sure this is an empty one
@@ -61,7 +61,7 @@ namespace details {
         template<int I>
         struct valid : public mpl::less< mpl::int_<I>, mpl::size<ObjectList> > {};
 
-        rules_sequnce rules;
+        rules_sequence rules;
         karma::rule<Iterator, typename details::sps<ObjectList>::type()> obj;
 
         obj_gen();
