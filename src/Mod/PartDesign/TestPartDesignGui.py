@@ -141,7 +141,7 @@ class PartDesignGuiTestCases(unittest.TestCase):
         cobj = CallableCheckWarning(self)
         QtCore.QTimer.singleShot(500, cobj)
         Gui.runCommand('PartDesign_MoveFeature')
-        #assert depenedencies of the Sketch
+        #assert dependencies of the Sketch
         self.assertEqual(len(self.BodySource.Group), 3, "Source body feature count is wrong")
         self.assertEqual(len(self.BodyTarget.Group), 0, "Target body feature count is wrong")
 
@@ -194,7 +194,7 @@ class PartDesignGuiTestCases(unittest.TestCase):
         cobj = CallableComboBox(self)
         QtCore.QTimer.singleShot(500, cobj)
         Gui.runCommand('PartDesign_MoveFeature')
-        #assert depenedencies of the Sketch
+        #assert dependencies of the Sketch
         self.Doc.recompute()      
         
         self.assertFalse(self.Sketch.Support[0][0] in self.BodySource.Origin.OriginFeatures)
