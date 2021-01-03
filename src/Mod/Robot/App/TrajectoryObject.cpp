@@ -39,7 +39,7 @@ PROPERTY_SOURCE(Robot::TrajectoryObject, App::GeoFeature)
 TrajectoryObject::TrajectoryObject()
 {
 
-    ADD_PROPERTY_TYPE( Base,      (Base::Placement())  , "Trajectory",Prop_None,"Actuall base frame of the trajectory");
+    ADD_PROPERTY_TYPE( Base,      (Base::Placement())  , "Trajectory",Prop_None,"Actual base frame of the trajectory");
     ADD_PROPERTY_TYPE( Trajectory,(Robot::Trajectory()), "Trajectory",Prop_None,"Trajectory object");
 
 }
