@@ -298,13 +298,13 @@ public:
      * XY0 plane.
      * \arg \c deflection: for defecting non circular curves
      * \arg \c plane: a shape for testing coplanar
-     * \arg \c force_coplaner: if true, discard non-coplanar shapes.
+     * \arg \c force_coplanar: if true, discard non-coplanar shapes.
      * \arg \c areaOpen: for collecting open curves. If not supplied, open
      * curves are added to \c area
      * \arg \c to_edges: separate open wires to individual edges
      * \arg \c reorient: reorient closed wires for wire only shape
      *
-     * \return Returns the number of non coplaner. Planar testing only happens
+     * \return Returns the number of non coplanar. Planar testing only happens
      * if \c plane is supplied
      * */
     static int addShape(CArea &area, const TopoDS_Shape &shape, const gp_Trsf *trsf=NULL,

@@ -56,7 +56,7 @@
     ((enum,fill,Fill,2,"Fill the output wires to make a face. \n"\
         "Auto means make a face if any of the children has a face.",(None)(Face)(Auto)))\
     ((enum,coplanar,Coplanar,2,\
-        "Specifies the way to check coplanar. 'Force' will discard non coplaner shapes,\n"\
+        "Specifies the way to check coplanar. 'Force' will discard non coplanar shapes,\n"\
         "but 'Check' only gives warning.",(None)(Check)(Force)))\
     ((bool,reorient,Reorient,true,\
         "Re-orient closed wires in wire only shapes so that inner wires become holes."))\
