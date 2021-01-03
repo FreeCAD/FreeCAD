@@ -103,7 +103,7 @@ std::string TimeInfo::diffTime(const TimeInfo &timeStart,const TimeInfo &timeEnd
 float TimeInfo::diffTimeF(const TimeInfo &timeStart,const TimeInfo &timeEnd )
 {
     int64_t ds = int64_t(timeEnd.getSeconds() - timeStart.getSeconds());
-    int dms = int(timeEnd.getMiliseconds()) - int(timeStart.getMiliseconds());
+    int dms = int(timeEnd.getMilliseconds()) - int(timeStart.getMilliseconds());
 
     return float(ds) + float(dms) * 0.001;
 }

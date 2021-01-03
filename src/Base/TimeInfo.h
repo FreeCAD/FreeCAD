@@ -64,7 +64,7 @@ public:
     void setTime_t (uint64_t seconds);
 
     uint64_t getSeconds(void) const;
-    unsigned short  getMiliseconds(void) const;
+    unsigned short  getMilliseconds(void) const;
 
     //void operator =  (const TimeInfo &time);
     bool operator == (const TimeInfo &time) const;
@@ -95,7 +95,7 @@ protected:
      return timebuffer.time;
  }
 
- inline unsigned short  TimeInfo::getMiliseconds(void) const
+ inline unsigned short  TimeInfo::getMilliseconds(void) const
  {
      return timebuffer.millitm;
  }
