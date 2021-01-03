@@ -96,7 +96,7 @@ void Segmentation::accept()
     MeshCore::MeshCurvature meshCurv(kernel);
     meshCurv.ComputePerVertex();
 
-    // First create segments by curavture to get the surface type
+    // First create segments by curvature to get the surface type
     std::vector<MeshCore::MeshSurfaceSegmentPtr> segm;
     if (ui->groupBoxPln->isChecked()) {
         segm.emplace_back(std::make_shared<MeshCore::MeshCurvaturePlanarSegment>
