@@ -662,17 +662,17 @@ class TestObjectType(unittest.TestCase):
         ))
 
         # ConstraintElectrostaticPotential
-        constraint_electorstatic_potential = ObjectsFem.makeConstraintElectrostaticPotential(doc)
+        constraint_electrostatic_potential = ObjectsFem.makeConstraintElectrostaticPotential(doc)
         self.assertTrue(is_derived_from(
-            constraint_electorstatic_potential,
+            constraint_electrostatic_potential,
             "App::DocumentObject"
         ))
         self.assertTrue(is_derived_from(
-            constraint_electorstatic_potential,
+            constraint_electrostatic_potential,
             "Fem::ConstraintPython"
         ))
         self.assertTrue(is_derived_from(
-            constraint_electorstatic_potential,
+            constraint_electrostatic_potential,
             "Fem::ConstraintElectrostaticPotential"
         ))
 
