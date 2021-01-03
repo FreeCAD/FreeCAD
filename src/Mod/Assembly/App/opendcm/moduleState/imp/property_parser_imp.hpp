@@ -51,13 +51,13 @@ typename boost::disable_if<mpl::less< dist, mpl::size<srs> >, void >::type recur
 
 template<typename ParentRuleSequence, typename Rule>
 typename boost::disable_if<typename fusion::result_of::empty<ParentRuleSequence>::type, void>::type
-initalizeLastRule(ParentRuleSequence& pr, Rule& r) {
+initializeLastRule(ParentRuleSequence& pr, Rule& r) {
     r = *(fusion::back(pr)(&qi::_val));
 };
 
 template<typename ParentRuleSequence, typename Rule>
 typename boost::enable_if<typename fusion::result_of::empty<ParentRuleSequence>::type, void>::type
-initalizeLastRule(ParentRuleSequence& pr, Rule& r) {};
+initializeLastRule(ParentRuleSequence& pr, Rule& r) {};
 
 
 template<typename PropList, typename Prop, typename Par>
@@ -77,7 +77,7 @@ prop_par<Sys, PropertyList>::prop_par() : prop_par<Sys, PropertyList>::base_type
                    mpl::int_<0> >(sub_rules, parent_rules);
 
     //we need to specialy treat empty sequences
-    initalizeLastRule(parent_rules, prop);
+    initializeLastRule(parent_rules, prop);
 };
 
 template<typename Sys>

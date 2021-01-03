@@ -62,13 +62,13 @@ void obj_parser<Sys, ObjList, Object, Par>::setProperties(boost::shared_ptr<Obje
 
 template<typename ParentRuleSequence, typename Rule>
 typename boost::disable_if<typename fusion::result_of::empty<ParentRuleSequence>::type, void>::type
-initalizeLastObjRule(ParentRuleSequence& pr, Rule& r) {
+initializeLastObjRule(ParentRuleSequence& pr, Rule& r) {
     r = *(fusion::back(pr)(&qi::_val, qi::_r1));
 };
 
 template<typename ParentRuleSequence, typename Rule>
 typename boost::enable_if<typename fusion::result_of::empty<ParentRuleSequence>::type, void>::type
-initalizeLastObjRule(ParentRuleSequence& pr, Rule& r) {};
+initializeLastObjRule(ParentRuleSequence& pr, Rule& r) {};
 
 
 template<typename Sys>
@@ -78,7 +78,7 @@ obj_par<Sys>::obj_par(): obj_par<Sys>::base_type(obj) {
                        typename fusion::result_of::as_vector<parent_rules_sequence>::type,
                        mpl::int_<0> >(sub_rules, parent_rules);
 
-    initalizeLastObjRule(parent_rules, obj);
+    initializeLastObjRule(parent_rules, obj);
 };
 
 }//details

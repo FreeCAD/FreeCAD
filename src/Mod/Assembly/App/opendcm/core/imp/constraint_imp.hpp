@@ -93,7 +93,7 @@ void Constraint<Sys, Dim>::initializeSecondGeometry(ConstraintVector& cv, boost:
 #ifdef BOOST_PP_LOCAL_ITERATE
 #define BOOST_PP_LOCAL_MACRO(n) \
       case (WhichType::value + n): \
-        return intitalizeFinalize<FirstType, \
+        return initializeFinalize<FirstType, \
 		typename mpl::at<geometries, typename in_range_value<geometries, WhichType::value + n>::type >::type,\
 				  ConstraintVector>(cv, typename boost::mpl::less<boost::mpl::int_<WhichType::value + n>, boost::mpl::size<geometries> >::type()); \
         break;
@@ -112,14 +112,14 @@ void Constraint<Sys, Dim>::initializeSecondGeometry(ConstraintVector& cv, boost:
 
 template<typename Sys, int Dim>
 template<typename FirstType, typename SecondType, typename ConstraintVector>
-inline void Constraint<Sys, Dim>::intitalizeFinalize(ConstraintVector& cv, boost::mpl::true_ /*is_unrolled_t*/) {
+inline void Constraint<Sys, Dim>::initializeFinalize(ConstraintVector& cv, boost::mpl::true_ /*is_unrolled_t*/) {
 
     initializeFromTags<FirstType, SecondType>(cv);
 };
 
 template<typename Sys, int Dim>
 template<typename FirstType, typename SecondType, typename ConstraintVector>
-inline void Constraint<Sys, Dim>::intitalizeFinalize(ConstraintVector& cv, boost::mpl::false_ /*is_unrolled_t*/) {
+inline void Constraint<Sys, Dim>::initializeFinalize(ConstraintVector& cv, boost::mpl::false_ /*is_unrolled_t*/) {
     //Should never be here at runtime; only required to block code generation that deref's the sequence out of bounds
     BOOST_ASSERT(false);
 }

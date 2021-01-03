@@ -105,9 +105,9 @@ protected:
     template<typename WhichType, typename FirstType, typename ConstraintVector>
     void initializeSecondGeometry(ConstraintVector& cv, boost::mpl::true_);
     template<typename FirstType, typename SecondType, typename ConstraintVector>
-    inline void intitalizeFinalize(ConstraintVector& cv, boost::mpl::false_);
+    inline void initializeFinalize(ConstraintVector& cv, boost::mpl::false_);
     template<typename FirstType, typename SecondType, typename ConstraintVector>
-    inline void intitalizeFinalize(ConstraintVector& cv, boost::mpl::true_);
+    inline void initializeFinalize(ConstraintVector& cv, boost::mpl::true_);
 
 
     int  equationCount();
