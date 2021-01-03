@@ -2190,7 +2190,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                                 except Part.OCCError:
                                     continue # this is a very wrong face, it probably shouldn't be here...
                                 if DraftVecUtils.angle(v2,v1,n) >= 0:
-                                    verts.reverse() # inverting verts order if the direction is couterclockwise
+                                    verts.reverse() # inverting verts order if the direction is counterclockwise
                                 pts =   [ifcbin.createIfcCartesianPoint(tuple(v)) for v in verts]
                                 loop =  ifcbin.createIfcPolyLoop(pts)
                                 bound = ifcfile.createIfcFaceOuterBound(loop,True)

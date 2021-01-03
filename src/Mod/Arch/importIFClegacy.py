@@ -1206,7 +1206,7 @@ def getTuples(data,scale=1,placement=None,normal=None,close=True):
                 v1 = verts[0].Point.sub(c)
                 v2 = verts[1].Point.sub(c)
                 if DraftVecUtils.angle(v2,v1,normal) >= 0:
-                    # inverting verts order if the direction is couterclockwise
+                    # inverting verts order if the direction is counterclockwise
                     verts.reverse()
             except:
                 pass
