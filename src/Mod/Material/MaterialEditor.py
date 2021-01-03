@@ -514,7 +514,7 @@ class MaterialEditor:
         print(index)
 
         # check if card_path is in known path, means it is in combo box already
-        # if not print message, and give some feedbach that the card parameter are loaded
+        # if not print message, and give some feedback that the card parameter are loaded
         if os.path.isfile(self.card_path):
             if index == -1:
                 FreeCAD.Console.PrintMessage(
