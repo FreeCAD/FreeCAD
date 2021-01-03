@@ -864,7 +864,7 @@ def p_multmatrix_action(p):
         if gui:
             part.ViewObject.hide()
     if False :  
-#   Does not fix problemfile or beltTighener although later is closer       
+#   Does not fix problemfile or beltTightener although later is closer       
         newobj=doc.addObject("Part::FeaturePython",'RefineMultMatrix')
         RefineShape(newobj,new_part)
         if gui:
@@ -992,7 +992,7 @@ def p_cylinder_action(p):
     if tocenter=='true' :
        center(mycyl,0,0,h)
     if False :  
-#   Does not fix problemfile or beltTighener although later is closer       
+#   Does not fix problemfile or beltTightener although later is closer       
         newobj=doc.addObject("Part::FeaturePython",'RefineCylinder')
         RefineShape(newobj,mycyl)
         if gui:
