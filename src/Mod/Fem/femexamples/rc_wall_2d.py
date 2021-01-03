@@ -62,7 +62,7 @@ def get_information():
 
 
 def setup(doc=None, solvertype="ccxtools"):
-    # setup reinfoced wall in 2D
+    # setup reinforced wall in 2D
 
     if doc is None:
         doc = init_doc()

@@ -165,7 +165,7 @@ def importFrd(
                         if femutils.is_of_type(obj, "Fem::MaterialReinforced"):
                             has_reinforced_mat = True
                             Console.PrintLog(
-                                "Reinfoced material object detected, "
+                                "Reinforced material object detected, "
                                 "reinforced principal stresses and standard principal "
                                 " stresses will be added.\n"
                             )
