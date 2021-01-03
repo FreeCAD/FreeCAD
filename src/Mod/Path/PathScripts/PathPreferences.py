@@ -56,7 +56,7 @@ OpenLastLibrary           = "OpenLastLibrary"
 
 # Linear tolerance to use when generating Paths, eg when tessellating geometry
 GeometryTolerance         = "GeometryTolerance"
-LibAreaCurveAccuracy      = "LibAreaCurveAccuarcy"
+LibAreaCurveAccuracy      = "LibAreaCurveAccuracy"
 
 EnableExperimentalFeatures = "EnableExperimentalFeatures"
 
