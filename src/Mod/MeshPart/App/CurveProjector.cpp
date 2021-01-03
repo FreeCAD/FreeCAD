@@ -332,7 +332,7 @@ void CurveProjectorSimple::projectCurve( const TopoDS_Edge& aEdge,
   str.precision(4);
   str.setf(std::ios::fixed | std::ios::showpoint);
 
-  std::map<unsigned long,std::vector<Base::Vector3f> > FaceProjctMap;
+  std::map<unsigned long,std::vector<Base::Vector3f> > FaceProjectMap;
  
   for (unsigned long i = 0; i <= ulNbOfPoints; i++)
   {
@@ -346,7 +346,7 @@ void CurveProjectorSimple::projectCurve( const TopoDS_Edge& aEdge,
       if (It->IntersectWithLine (Base::Vector3f((float)gpPt.X(),(float)gpPt.Y(),(float)gpPt.Z()), 
           It->GetNormal(), TempResultPoint))
       {
-        FaceProjctMap[It.Position()].push_back(TempResultPoint);
+        FaceProjectMap[It.Position()].push_back(TempResultPoint);
         str << TempResultPoint.x << " " 
             << TempResultPoint.y << " " 
             << TempResultPoint.z << std::endl;
@@ -362,18 +362,18 @@ void CurveProjectorSimple::projectCurve( const TopoDS_Edge& aEdge,
   }
 
   str.close();
-  Base::Console().Log("Projection map [%d facets with %d points]\n",FaceProjctMap.size(),PointCount);
+  Base::Console().Log("Projection map [%d facets with %d points]\n",FaceProjectMap.size(),PointCount);
 
   // estimate the first face
 //  gp_Pnt gpPt = hCurve->Value(fBegin);
 //  if( !findStartPoint(MeshK,Base::Vector3f(gpPt.X(),gpPt.Y(),gpPt.Z()),cResultPoint,uCurFacetIdx) )
-//    uCurFacetIdx = FaceProjctMap.begin()->first;
+//    uCurFacetIdx = FaceProjectMap.begin()->first;
 
 /*
   do{
-    Base::Console().Log("Grow on %d %d left\n",uCurFacetIdx,FaceProjctMap.size());
+    Base::Console().Log("Grow on %d %d left\n",uCurFacetIdx,FaceProjectMap.size());
 
-    if(FaceProjctMap[uCurFacetIdx].size() == 1)
+    if(FaceProjectMap[uCurFacetIdx].size() == 1)
     {
       Base::Console().Log("Single hit\n");
     }else{
@@ -381,7 +381,7 @@ void CurveProjectorSimple::projectCurve( const TopoDS_Edge& aEdge,
 
     }
   
-    FaceProjctMap.erase(uCurFacetIdx);
+    FaceProjectMap.erase(uCurFacetIdx);
 
     // estimate next facet
     MeshGeomFacet cCurFacet= MeshK.GetFacet(uCurFacetIdx);
@@ -392,9 +392,9 @@ void CurveProjectorSimple::projectCurve( const TopoDS_Edge& aEdge,
 
     for(int i=0; i<3; i++)
     {
-      N1 = FaceProjctMap.find(auNeighboursIdx[i]);
+      N1 = FaceProjectMap.find(auNeighboursIdx[i]);
       // if the i'th neighbour is valid
-      if ( N1 != FaceProjctMap.end() )
+      if ( N1 != FaceProjectMap.end() )
       {
         unsigned long temp = N1->second.size();
         if(temp >= PointCount){
@@ -621,7 +621,7 @@ void CurveProjectorWithToolMesh::makeToolMesh( const TopoDS_Edge& aEdge,std::vec
 
   Base::SequencerLauncher seq("Building up tool mesh...", ulNbOfPoints+1);  
 
-  std::map<unsigned long,std::vector<Base::Vector3f> > FaceProjctMap;
+  std::map<unsigned long,std::vector<Base::Vector3f> > FaceProjectMap;
  
   for (unsigned long i = 0; i < ulNbOfPoints; i++)
   {
@@ -652,7 +652,7 @@ void CurveProjectorWithToolMesh::makeToolMesh( const TopoDS_Edge& aEdge,std::vec
     LineSegs.push_back(s);
   }
 
-  Base::Console().Log("Projection map [%d facets with %d points]\n",FaceProjctMap.size(),PointCount);
+  Base::Console().Log("Projection map [%d facets with %d points]\n",FaceProjectMap.size(),PointCount);
 
 
   // build up the new mesh
