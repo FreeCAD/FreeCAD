@@ -93,7 +93,7 @@ private:
     std::string partName;
     bool is_selectable;
     long transparency;
-    float exrudeValue;
+    float extrudeValue;
   };
 
   //from Gui::SelectionObserver
