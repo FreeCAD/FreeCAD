@@ -223,7 +223,7 @@ public:
     /**
      * Berechnet das Integral des Produkts zweier B-Splines bzw. deren Ableitungen.
      * Der Integrationsbereich erstreckt sich ueber den ganzen Definitionsbereich.
-     * Berechnet wird das Integral mittels der Gauss'schen Quadraturformeln.
+     * Berechnet wird das Integral mittels der Gauss's Chen Quadraturformeln.
      */
     virtual double GetIntegralOfProductOfBSplines(int i, int j, int r, int s);
 
