@@ -465,7 +465,7 @@ CmdFemConstraintFluidBoundary::CmdFemConstraintFluidBoundary()
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Fluid boundary condition");
-    sToolTipText    = QT_TR_NOOP("Create fluid boundary condition on face entity for Computional Fluid Dynamics");
+    sToolTipText    = QT_TR_NOOP("Create fluid boundary condition on face entity for Computational Fluid Dynamics");
     sWhatsThis      = "FEM_ConstraintFluidBoundary";
     sStatusTip      = sToolTipText;
     sPixmap         = "FEM_ConstraintFluidBoundary";
