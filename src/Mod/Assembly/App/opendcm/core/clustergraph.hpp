@@ -96,7 +96,7 @@ typedef int universalID;
 /**
  * @brief Generator for unique identifiers
  *
- * The universalID used to identify vertices and edges globaly need to be unique and therefore can't be
+ * The universalID used to identify vertices and edges globally need to be unique and therefore can't be
  * created at good will. This generator creates universalID's in a incremental manner and is intended to
  * to be shared between all graphs of a system, so that all created ID's are unique.
  **/
