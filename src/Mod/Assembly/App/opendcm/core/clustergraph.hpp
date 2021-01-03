@@ -87,7 +87,7 @@ typedef boost::adjacency_list_traits<boost::listS, boost::listS, boost::undirect
  * @brief A type to be used as identifier for vertices and edges
  *
  * Vertices and edges need to be identified in a stable(safe/load), unique(over multiple clusters) and
- * comparable manner. The bgl vertex and edge discriptors don't fulfill this need as they have a direct
+ * comparable manner. The bgl vertex and edge descriptors don't fulfill this need as they have a direct
  * relation to the graphs storage. Therefore they change value on moving entitiys to different clusters or
  * clone actions. This class is used to overcome this problem.
  **/
@@ -187,7 +187,7 @@ typedef details::universalID 				GlobalVertex;
 /**
  * @brief Identifier for global edge
  *
- * To overcome the locality of the bgl edge discriptors a global alternative is introduced. This descriptor
+ * To overcome the locality of the bgl edge descriptors a global alternative is introduced. This descriptor
  * is unique over clusters and stable on moves and clones. It holds it's source and target also as global
  * descriptors of type GlobalVertex and has a unique ID in form of a universalID assigned.
  **/
@@ -546,7 +546,7 @@ public:
     bool isCluster(const dcm::LocalVertex v) const;
 
     /**
-     * @brief Get the cluster corresponding the discriptor
+     * @brief Get the cluster corresponding the descriptor
      *
      * A subcluster is added as normal vertex to the parent cluster. There is no way to access
      * the clusters object with global or local descriptors only. Therefore this
@@ -559,7 +559,7 @@ public:
     boost::shared_ptr<ClusterGraph> getVertexCluster(LocalVertex v);
 
     /**
-     * @brief Get the vertex descrptor which describes the clusters position in the graph
+     * @brief Get the vertex descriptor which describes the clusters position in the graph
      *
      * This function is the inverse to \ref getVertexCluster
      *

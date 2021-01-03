@@ -1,5 +1,5 @@
 /* The following code declares classes to read from and write to
- * file descriptore or file handles.
+ * file descriptor or file handles.
  *
  * See
  *      http://www.josuttis.com/cppcode
