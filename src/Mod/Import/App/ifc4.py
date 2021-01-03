@@ -26588,25 +26588,25 @@ class ifctasktime(ifcschedulingtime):
 class ifctasktimerecurring(ifctasktime):
 	'''Entity ifctasktimerecurring definition.
 
-	:param recurrance
-	:type recurrance:ifcrecurrencepattern
+	:param recurrence
+	:type recurrence:ifcrecurrencepattern
 	'''
-	def __init__( self , inherited0__name , inherited1__dataorigin , inherited2__userdefineddataorigin , inherited3__durationtype , inherited4__scheduleduration , inherited5__schedulestart , inherited6__schedulefinish , inherited7__earlystart , inherited8__earlyfinish , inherited9__latestart , inherited10__latefinish , inherited11__freefloat , inherited12__totalfloat , inherited13__iscritical , inherited14__statustime , inherited15__actualduration , inherited16__actualstart , inherited17__actualfinish , inherited18__remainingtime , inherited19__completion , recurrance, ):
+	def __init__( self , inherited0__name , inherited1__dataorigin , inherited2__userdefineddataorigin , inherited3__durationtype , inherited4__scheduleduration , inherited5__schedulestart , inherited6__schedulefinish , inherited7__earlystart , inherited8__earlyfinish , inherited9__latestart , inherited10__latefinish , inherited11__freefloat , inherited12__totalfloat , inherited13__iscritical , inherited14__statustime , inherited15__actualduration , inherited16__actualstart , inherited17__actualfinish , inherited18__remainingtime , inherited19__completion , recurrence, ):
 		ifctasktime.__init__(self , inherited0__name , inherited1__dataorigin , inherited2__userdefineddataorigin , inherited3__durationtype , inherited4__scheduleduration , inherited5__schedulestart , inherited6__schedulefinish , inherited7__earlystart , inherited8__earlyfinish , inherited9__latestart , inherited10__latefinish , inherited11__freefloat , inherited12__totalfloat , inherited13__iscritical , inherited14__statustime , inherited15__actualduration , inherited16__actualstart , inherited17__actualfinish , inherited18__remainingtime , inherited19__completion , )
-		self.recurrance = recurrance
+		self.recurrence = recurrence
 
 	@apply
-	def recurrance():
+	def recurrence():
 		def fget( self ):
-			return self._recurrance
+			return self._recurrence
 		def fset( self, value ):
 		# Mandatory argument
 			if value==None:
-				raise AssertionError('Argument recurrance is mandatory and can not be set to None')
+				raise AssertionError('Argument recurrence is mandatory and can not be set to None')
 			if not check_type(value,ifcrecurrencepattern):
-				self._recurrance = ifcrecurrencepattern(value)
+				self._recurrence = ifcrecurrencepattern(value)
 			else:
-				self._recurrance = value
+				self._recurrence = value
 		return property(**locals())
 
 ####################
