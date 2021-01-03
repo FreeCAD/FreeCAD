@@ -27,7 +27,7 @@
 #include "WidgetFactory.h"
 #include "Workbench.h"
 
-// INCLUDE YOUR PREFERENCFE PAGES HERE
+// INCLUDE YOUR PREFERENCE PAGES HERE
 //
 #include "DlgPreferencesImp.h"
 #include "DlgSettings3DViewImp.h"
