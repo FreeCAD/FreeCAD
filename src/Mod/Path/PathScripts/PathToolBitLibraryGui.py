@@ -24,23 +24,25 @@
 
 import FreeCAD
 import FreeCADGui
+import PathGui as PGui # ensure Path/Gui/Resources are loaded
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathToolBit as PathToolBit
-import PathScripts.PathToolBitGui as PathToolBitGui
 import PathScripts.PathToolBitEdit as PathToolBitEdit
+import PathScripts.PathToolBitGui as PathToolBitGui
 import PathScripts.PathToolControllerGui as PathToolControllerGui
 import PathScripts.PathUtilsGui as PathUtilsGui
-from PySide import QtCore, QtGui
 import PySide
+import glob
 import json
 import os
-import glob
-import uuid as UUID
-from functools import partial
 import shutil
+import uuid as UUID
 
-# PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+from functools import partial
+
+
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 # PathLog.trackModule(PathLog.thisModule())
 
 _UuidRole = PySide.QtCore.Qt.UserRole + 1
@@ -208,10 +210,10 @@ class ModelFactory(object):
             for libFile in libFiles:
                 loc, fnlong = os.path.split(libFile)
                 fn, ext = os.path.splitext(fnlong)
-                libItem = QtGui.QStandardItem(fn)
+                libItem = PySide.QtGui.QStandardItem(fn)
                 libItem.setToolTip(loc)
                 libItem.setData(libFile, _PathRole)
-                libItem.setIcon(QtGui.QPixmap(':/icons/Path_ToolTable.svg'))
+                libItem.setIcon(PySide.QtGui.QPixmap(':/icons/Path_ToolTable.svg'))
                 model.appendRow(libItem)
 
         PathLog.debug('model rows: {}'.format(model.rowCount()))
@@ -340,7 +342,7 @@ class ToolBitSelector(object):
 
     def open(self, path=None):
         ''' load library stored in path and bring up ui'''
-        docs = FreeCADGui.getMainWindow().findChildren(QtGui.QDockWidget)
+        docs = FreeCADGui.getMainWindow().findChildren(PySide.QtGui.QDockWidget)
         for doc in docs:
             if doc.objectName() == "ToolSelector":
                 if doc.isVisible():
@@ -351,7 +353,7 @@ class ToolBitSelector(object):
                     return
 
         mw = FreeCADGui.getMainWindow()
-        mw.addDockWidget(QtCore.Qt.RightDockWidgetArea, self.form,
+        mw.addDockWidget(PySide.QtCore.Qt.RightDockWidgetArea, self.form,
                          PySide.QtCore.Qt.Orientation.Vertical)
 
 
@@ -557,8 +559,8 @@ class ToolBitLibrary(object):
             self.temptool = PathToolBit.ToolBitFactory().CreateFrom(tbpath, 'temptool')
             self.editor = PathToolBitEdit.ToolBitEditor(self.temptool, self.form.toolTableGroup, loadBitBody=False)
 
-            QBtn = QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel
-            buttonBox = QtGui.QDialogButtonBox(QBtn)
+            QBtn = PySide.QtGui.QDialogButtonBox.Ok | PySide.QtGui.QDialogButtonBox.Cancel
+            buttonBox = PySide.QtGui.QDialogButtonBox(QBtn)
             buttonBox.accepted.connect(self.accept)
             buttonBox.rejected.connect(self.reject)
 
@@ -652,7 +654,7 @@ class ToolBitLibrary(object):
 
         if curIndex:
             sm = self.form.TableList.selectionModel()
-            sm.select(curIndex, QtCore.QItemSelectionModel.Select)
+            sm.select(curIndex, PySide.QtCore.QItemSelectionModel.Select)
 
         self.toolTableView.setUpdatesEnabled(True)
         self.form.TableList.setUpdatesEnabled(True)
