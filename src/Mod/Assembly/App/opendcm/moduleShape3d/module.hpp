@@ -456,7 +456,7 @@ struct ModuleShape3D {
 
         struct inheritor : public mpl::if_<boost::is_same<ID, No_Identifier>, inheritor_base, inheritor_id>::type {};
 
-        //add properties to geometry and constraint to evaluate their shape partipance
+        //add properties to geometry and constraint to evaluate their shape participance
         struct shape_purpose_prop {
             typedef purpose type;
             typedef typename system_traits<Sys>::template getModule<details::m3d>::type::Geometry3D kind;
