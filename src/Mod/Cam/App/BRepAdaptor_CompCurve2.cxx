@@ -450,7 +450,7 @@ const TopoDS_Wire& BRepAdaptor_CompCurve2::Wire() const
     W = Wtest-Eps;
   }
 
-  // Recheche de le index
+  // Recherche de le index
   Standard_Boolean Trouve = Standard_False;
   if (myKnots->Value(CurIndex) > Wtest) {
     for (ii=CurIndex-1; ii>0 && !Trouve; ii--)
