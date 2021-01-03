@@ -87,7 +87,7 @@ struct Distance::type< Kernel, tag::point3D, tag::segment3D > {
                                   const E::MatrixBase<DerivedB>& segment,
                                   const E::MatrixBase<DerivedC>& dpoint) {
 
-        const Vector3 d_point = dpoint; //eigen only acceppts vector3 for cross product
+        const Vector3 d_point = dpoint; //eigen only accepts vector3 for cross product
         const Vector3 d_cross = d_point.cross(v02) + v01.cross(d_point);
         const Scalar res = cross.dot(d_cross)/(cross_n*v12_n);
 #ifdef USE_LOGGING
