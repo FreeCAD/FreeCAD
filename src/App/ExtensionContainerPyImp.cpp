@@ -30,7 +30,7 @@
 #include "Application.h"
 #include "DocumentObject.h"
 
-// inclution of the generated files (generated out of PropertyContainerPy.xml)
+// inclusion of the generated files (generated out of PropertyContainerPy.xml)
 #include <App/ExtensionContainerPy.h>
 #include <App/ExtensionContainerPy.cpp>
 
