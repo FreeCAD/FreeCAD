@@ -916,7 +916,7 @@ void Document::slotRecomputed(const App::Document& doc)
 // This function is called when some asks to recompute a document that is marked
 // as 'SkipRecompute'. We'll check if we are the current document, and if either
 // not given an explicit recomputing object list, or the given single object is
-// the eidting object or the active object. If the conditions are met, we'll
+// the editing object or the active object. If the conditions are met, we'll
 // force recompute only that object and all its dependent objects.
 void Document::slotSkipRecompute(const App::Document& doc, const std::vector<App::DocumentObject*> &objs)
 {
