@@ -617,7 +617,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
 
     SoMaterialBundle mb(action);
     // It is important to send material before shouldGLRender(), otherwise
-    // material override with transparncy won't work.
+    // material override with transparency won't work.
     mb.sendFirst(); 
 
     // When setting transparency shouldGLRender() handles the rendering and returns false.

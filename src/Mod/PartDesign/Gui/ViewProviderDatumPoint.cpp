@@ -74,7 +74,7 @@ void ViewProviderDatumPoint::attach ( App::DocumentObject *obj ) {
 }
 
 void ViewProviderDatumPoint::onChanged (const App::Property* prop) {
-    // Forbid to set trancparency
+    // Forbid to set transparency
     if (prop == &Transparency && Transparency.getValue() != 0) {
         Transparency.setValue (0);
     }
