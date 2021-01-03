@@ -473,7 +473,7 @@ public:
     /**
      * @brief Returns the parent cluster
      *
-     * In the stacked cluster hirarchy most clusters have a parent which can be accessed with this function.
+     * In the stacked cluster hierarchy most clusters have a parent which can be accessed with this function.
      * However, the toplevel cluster dos nothave a parent and a empty shared_ptr is returned.
      *
      * @return :shared_ptr< ClusterGraph > the parent cluster or empty pointer
@@ -729,7 +729,7 @@ public:
      * @brief Get the local edge which holds the specified global one and the subcluster in which it is valid.
      *
      * The function only fails when the global edge is hold by a local one upstream in the cluster
-     * herarchy.
+     * hierarchy.
      *
      * @param e GlobalEdge for which the containing local one is wanted
      * @return fusion::vector<LocalEdge, ClusterGraph*, bool> with the containing LocalEdge, the cluster which holds it and a bool indicator if function was successful.
@@ -759,7 +759,7 @@ public:
      * @brief Get the local vertex which holds the specified global one and the subcluster in which it is valid.
      *
      * The function only fails when the global vertex is hold by a local one upstream in the cluster
-     * herarchy.
+     * hierarchy.
      *
      * @param v GlobalVertex for which the containing local one is wanted
      * @return fusion::vector<LocalVertex, ClusterGraph*, bool> with the containing LocalVertex, the cluster which holds it and a bool indicator if function was successful.
