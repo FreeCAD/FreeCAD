@@ -70,7 +70,7 @@ namespace dcm {
  * of all data-holding entities with new data types, propertys store their own purpose. Thats
  * done by extending the property struct with a second typedef which is named kind and which specifies of which
  * kind the property is. That means, that this typedef defines when the property shall be used and for which
- * context it is designed for. Dependend on the propertys kind, it will be added to different places inside the dcm.
+ * context it is designed for. Dependent on the propertys kind, it will be added to different places inside the dcm.
  * A property of kind @ref vertex_property will added to vertices, a property of kind @ref object_property to all
  * objects and so on.
  *
@@ -200,7 +200,7 @@ struct edge_selector {
  * @brief Select property information trait depending on property type
  *
  * Allows generic access to property information like descriptor or property sequence by exposing
- * a specific selector type ( @ref vertex_selector or @ref edge_selector ) dependend on the supplied
+ * a specific selector type ( @ref vertex_selector or @ref edge_selector ) dependent on the supplied
  * property.
  **/
 template< typename Kind, typename Graph>

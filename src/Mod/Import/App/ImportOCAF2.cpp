@@ -1048,7 +1048,7 @@ void ExportOCAF2::setupObject(TDF_Label label, App::DocumentObject *obj,
                 // model styling and organization" version 1.2
                 // (https://www.cax-if.org/documents/rec_prac_styling_org_v12.pdf).
                 // The SHUO described in section 5.3 does not mention the
-                // capability of overriding context-depdendent element color,
+                // capability of overriding context-dependent element color,
                 // only whole shape color. Newer version of the same document
                 // (https://www.cax-if.org/documents/rec_prac_styling_org_v15.pdf)
                 // does support this, in section 5.1. 

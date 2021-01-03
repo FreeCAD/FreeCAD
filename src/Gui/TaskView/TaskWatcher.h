@@ -64,7 +64,7 @@ protected:
 
 // --------------------------------------------------------------------------
 
-/// Special watcher class for showing commands dependene on the selection
+/// Special watcher class for showing commands dependent on the selection
 class GuiExport TaskWatcherCommands : public TaskWatcher
 {
     Q_OBJECT

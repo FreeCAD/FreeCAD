@@ -330,7 +330,7 @@ public:
             return m_toplocal.template segment<Dim>(0);
     };
 
-    //use m_value or parametermap as new value, dependend on the solving mode
+    //use m_value or parametermap as new value, dependent on the solving mode
     void finishCalculation();
 
     template<typename VectorType>
