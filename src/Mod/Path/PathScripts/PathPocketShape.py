@@ -354,7 +354,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
                 for sub in subsList:
                     if 'Face' in sub:
-                        if not self.clasifySub(subBase, sub):
+                        if not self.classifySub(subBase, sub):
                             PathLog.error(translate('PathPocket', 'Pocket does not support shape %s.%s') % (subBase.Label, sub))
                             if obj.EnableRotation != 'Off':
                                 PathLog.warning(translate('PathPocket', 'Face might not be within rotation accessibility limits.'))
@@ -725,8 +725,8 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
         return (planar, useFace)
 
-    def clasifySub(self, bs, sub):
-        '''clasifySub(bs, sub)...
+    def classifySub(self, bs, sub):
+        '''classifySub(bs, sub)...
         Given a base and a sub-feature name, returns True
         if the sub-feature is a horizontally oriented flat face.
         '''
