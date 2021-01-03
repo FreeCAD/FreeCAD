@@ -1933,7 +1933,7 @@ bool Adaptive2d::FindEntryPoint(TPaths &progressPaths, const Paths &toolBoundPat
 		}
 		// check if the start point is in any of the holes
 		// this may happen in case when toolBoundPaths are symmetric (boundary + holes)
-		// we need to break simetry and try again
+		// we need to break symmetry and try again
 		for (size_t j = 0; j < checkPaths.size(); j++)
 		{
 			int pip = PointInPolygon(entryPoint, checkPaths[j]);
@@ -1971,7 +1971,7 @@ bool Adaptive2d::FindEntryPoint(TPaths &progressPaths, const Paths &toolBoundPat
 		}
 
 		if (!found)
-		{ // break simetry and try again
+		{ // break symmetry and try again
 			clip.Clear();
 			clip.AddPaths(checkPaths, PolyType::ptSubject, true);
 			auto bounds = clip.GetBounds();

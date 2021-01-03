@@ -1352,7 +1352,7 @@ QTimeEdit::down-arrow,
 QDateEdit::down-arrow,
 QDateTimeEdit::down-arrow {
     image: url(qss:images_dark-light/down_arrow_light.svg);
-    bottom: 0px; /* fix simetry between up and down images */
+    bottom: 0px; /* fix symmetry between up and down images */
 }
 
 QAbstractSpinBox::down-arrow:focus,
