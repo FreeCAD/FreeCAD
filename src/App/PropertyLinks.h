@@ -224,7 +224,7 @@ public:
      * imported new object name
      *
      * @return Returns a copy of the property with the updated link reference if
-     * affected. The copy will later be assgiend to this property by calling its
+     * affected. The copy will later be assigned to this property by calling its
      * Paste().
      */
     virtual Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const {
@@ -239,7 +239,7 @@ public:
      * @param newLabel: the future new label
      *
      * @return Returns a copy of the property if its link reference is affected.
-     * The copy will later be assgiend to this property by calling its Paste().
+     * The copy will later be assigned to this property by calling its Paste().
      */
     virtual Property *CopyOnLabelChange(App::DocumentObject *obj,
                         const std::string &ref, const char *newLabel) const
