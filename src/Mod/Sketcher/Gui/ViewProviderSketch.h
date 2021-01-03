@@ -25,6 +25,7 @@
 #define SKETCHERGUI_VIEWPROVIDERSKETCH_H
 
 #include <Mod/Part/Gui/ViewProvider2DObject.h>
+#include <Mod/Part/Gui/ViewProviderAttachExtension.h>
 #include <Mod/Part/App/BodyBase.h>
 #include <Inventor/SbImage.h>
 #include <Inventor/SbColor.h>
@@ -84,7 +85,8 @@ class DrawSketchHandler;
   * of new geometry while editing.
   */
 class SketcherGuiExport ViewProviderSketch : public PartGui::ViewProvider2DObjectGrid
-                                           , public Gui::SelectionObserver
+                                            , public PartGui::ViewProviderAttachExtension
+                                            , public Gui::SelectionObserver
 {
     Q_DECLARE_TR_FUNCTIONS(SketcherGui::ViewProviderSketch)
     /// generates a warning message about constraint conflicts and appends it to the given message
