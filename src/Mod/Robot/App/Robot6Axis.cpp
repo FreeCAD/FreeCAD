@@ -184,7 +184,7 @@ void Robot6Axis::Save (Writer &writer) const
                         << "maxAngle=\""    <<  Max(i)*(180.0/M_PI)  << "\" "
                         << "minAngle=\""    <<  Min(i)*(180.0/M_PI)  << "\" "
                         << "AxisVelocity=\""<<  Velocity[i]          << "\" "
-                        << "Pos=\""         <<  Actual(i)           << "\"/>"
+                        << "Pos=\""         <<  Actual(i)            << "\"/>"
                         << std::endl;
     }
 }
