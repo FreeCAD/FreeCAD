@@ -29,7 +29,7 @@ if open.__module__ == '__builtin__':
         pythonopen = open
 
 # unsupported primitives
-# Part:: Wedge, Helix, Spiral, Elipsoid
+# Part:: Wedge, Helix, Spiral, Ellipsoid
 # Draft: Rectangle, BSpline, BezCurve
 
 def quaternionToString(rot):
