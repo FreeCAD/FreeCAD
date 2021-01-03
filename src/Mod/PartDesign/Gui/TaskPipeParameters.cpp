@@ -461,8 +461,8 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView, bool /*newO
             this, SLOT(onClearButton()));
     connect(ui->stackedWidget, SIGNAL(currentChanged(int)),
             this, SLOT(updateUI(int)));
-    connect(ui->curvelinear, SIGNAL(toggled(bool)),
-            this, SLOT(onCurvelinearChanged(bool)));
+    connect(ui->curvilinear, SIGNAL(toggled(bool)),
+            this, SLOT(onCurvilinearChanged(bool)));
     connect(ui->doubleSpinBoxX, SIGNAL(valueChanged(double)),
             this, SLOT(onBinormalChanged(double)));
     connect(ui->doubleSpinBoxY, SIGNAL(valueChanged(double)),
@@ -508,7 +508,7 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView, bool /*newO
     }
 
     ui->comboBoxMode->setCurrentIndex(pipe->Mode.getValue());
-    ui->curvelinear->setChecked(pipe->AuxiliaryCurvelinear.getValue());
+    ui->curvilinear->setChecked(pipe->AuxiliaryCurvilinear.getValue());
 
     // should be called after panel has become visible
     QMetaObject::invokeMethod(this, "updateUI", Qt::QueuedConnection,
@@ -608,9 +608,9 @@ void TaskPipeOrientation::onClearButton()
     static_cast<PartDesign::Pipe*>(vp->getObject())->AuxiliarySpine.setValue(nullptr);
 }
 
-void TaskPipeOrientation::onCurvelinearChanged(bool checked)
+void TaskPipeOrientation::onCurvilinearChanged(bool checked)
 {
-    static_cast<PartDesign::Pipe*>(vp->getObject())->AuxiliaryCurvelinear.setValue(checked);
+    static_cast<PartDesign::Pipe*>(vp->getObject())->AuxiliaryCurvilinear.setValue(checked);
     recomputeFeature();
 }
 

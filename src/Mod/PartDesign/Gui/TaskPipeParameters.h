@@ -103,7 +103,7 @@ private Q_SLOTS:
     void updateUI(int idx);
     void onBaseButton(bool checked);
     void onClearButton();
-    void onCurvelinearChanged(bool checked);
+    void onCurvilinearChanged(bool checked);
     void onBinormalChanged(double);
     void onDeleteItem();
   
