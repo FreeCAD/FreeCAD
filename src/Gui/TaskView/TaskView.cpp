@@ -265,7 +265,7 @@ void TaskBox::hideGroupBox()
 
         m_tempHeight = m_fullHeight = h;
         // For the very first time the group gets shown
-        // we cannot do the animation because the layouting
+        // we cannot do the animation because the layout
         // is not yet fully done
         m_foldDelta = 0;
     }
