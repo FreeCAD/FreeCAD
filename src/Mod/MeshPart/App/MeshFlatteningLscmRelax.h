@@ -31,7 +31,7 @@
 // 2: least square conformal map -> flat_vertices_0
 // 3: local coordinates of mapped mesh q_l_1
 // 4: diff in local coordinates -> forces R.B^T.B.(x1-x0)
-// 5: stiffnes mat K
+// 5: stiffness mat K
 // 6: K.u=forces ->u
 // 7: x1, y1 += w * u
 
