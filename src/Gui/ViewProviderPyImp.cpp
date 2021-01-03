@@ -166,7 +166,7 @@ PyObject*  ViewProviderPy::canDragObject(PyObject *args)
         if(obj == Py_None)
             ret = getViewProviderPtr()->canDragObjects();
         else if(!PyObject_TypeCheck(obj,&App::DocumentObjectPy::Type)) {
-            PyErr_SetString(PyExc_TypeError, "exepcting a type of DocumentObject");
+            PyErr_SetString(PyExc_TypeError, "expecting a type of DocumentObject");
             return 0;
         }else
             ret = getViewProviderPtr()->canDragObject(
@@ -188,14 +188,14 @@ PyObject*  ViewProviderPy::canDropObject(PyObject *args)
         if(obj == Py_None)
             ret = getViewProviderPtr()->canDropObjects();
         else if(!PyObject_TypeCheck(obj,&App::DocumentObjectPy::Type)) {
-            PyErr_SetString(PyExc_TypeError, "exepcting 'obj' to be of type DocumentObject");
+            PyErr_SetString(PyExc_TypeError, "expecting 'obj' to be of type DocumentObject");
             return 0;
         }
         auto pcObject = static_cast<App::DocumentObjectPy*>(obj)->getDocumentObjectPtr();
         App::DocumentObject *pcOwner = 0;
         if(owner!=Py_None) {
             if(!PyObject_TypeCheck(owner,&App::DocumentObjectPy::Type)) {
-                PyErr_SetString(PyExc_TypeError, "exepcting 'owner' to be of type DocumentObject");
+                PyErr_SetString(PyExc_TypeError, "expecting 'owner' to be of type DocumentObject");
                 return NULL;
             }
             pcOwner = static_cast<App::DocumentObjectPy*>(owner)->getDocumentObjectPtr();
@@ -205,7 +205,7 @@ PyObject*  ViewProviderPy::canDropObject(PyObject *args)
             try {
                 elements.setPyObject(pyElements);
             }catch(...) {
-                PyErr_SetString(PyExc_TypeError, "exepcting the forth argument to be of type sequence of strings");
+                PyErr_SetString(PyExc_TypeError, "expecting the forth argument to be of type sequence of strings");
                 return 0;
             }
         }
@@ -238,7 +238,7 @@ PyObject*  ViewProviderPy::dropObject(PyObject *args)
         App::DocumentObject *pcOwner = 0;
         if(owner!=Py_None) {
             if(!PyObject_TypeCheck(owner,&App::DocumentObjectPy::Type)) {
-                PyErr_SetString(PyExc_TypeError, "exepcting 'owner' to be of type DocumentObject");
+                PyErr_SetString(PyExc_TypeError, "expecting 'owner' to be of type DocumentObject");
                 return NULL;
             }
             pcOwner = static_cast<App::DocumentObjectPy*>(owner)->getDocumentObjectPtr();
@@ -248,7 +248,7 @@ PyObject*  ViewProviderPy::dropObject(PyObject *args)
             try {
                 elements.setPyObject(pyElements);
             }catch(...) {
-                PyErr_SetString(PyExc_TypeError, "exepcting the forth argument to be of type sequence of strings");
+                PyErr_SetString(PyExc_TypeError, "expecting the forth argument to be of type sequence of strings");
                 return 0;
             }
         }

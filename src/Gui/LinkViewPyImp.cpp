@@ -93,7 +93,7 @@ PyObject* LinkViewPy::setMaterial(PyObject *args) {
                 if(value == Py_None)
                     materials[(int)idx] = 0;
                 else if(!PyObject_TypeCheck(value,&App::MaterialPy::Type)) {
-                    PyErr_SetString(PyExc_TypeError, "exepcting a type of material");
+                    PyErr_SetString(PyExc_TypeError, "expecting a type of material");
                     return 0;
                 }else
                     materials[(int)idx] = static_cast<App::MaterialPy*>(value)->getMaterialPtr();
@@ -110,7 +110,7 @@ PyObject* LinkViewPy::setMaterial(PyObject *args) {
                 PyObject* item = seq[i].ptr();
                 if(item == Py_None) continue;
                 if(!PyObject_TypeCheck(item,&App::MaterialPy::Type)) {
-                    PyErr_SetString(PyExc_TypeError, "exepcting a type of material");
+                    PyErr_SetString(PyExc_TypeError, "expecting a type of material");
                     return 0;
                 }
                 materials[i] = static_cast<App::MaterialPy*>(item)->getMaterialPtr();
@@ -120,7 +120,7 @@ PyObject* LinkViewPy::setMaterial(PyObject *args) {
             Py_Return;
         }
 
-        PyErr_SetString(PyExc_TypeError, "exepcting a type of Material, [Material,...] or {Int:Material,}");
+        PyErr_SetString(PyExc_TypeError, "expecting a type of Material, [Material,...] or {Int:Material,}");
         return 0;
     } PY_CATCH;
 }
@@ -143,7 +143,7 @@ PyObject* LinkViewPy::setTransform(PyObject *args) {
             while(PyDict_Next(pyObj, &pos, &key, &value)) {
                 Py::Int idx(key);
                 if(!PyObject_TypeCheck(value,&Base::MatrixPy::Type)) {
-                    PyErr_SetString(PyExc_TypeError, "exepcting a type of Matrix");
+                    PyErr_SetString(PyExc_TypeError, "expecting a type of Matrix");
                     return 0;
                 }else
                     mat[(int)idx] = static_cast<Base::MatrixPy*>(value)->getMatrixPtr();
@@ -159,7 +159,7 @@ PyObject* LinkViewPy::setTransform(PyObject *args) {
             for(Py_ssize_t i=0;i<seq.size();++i) {
                 PyObject* item = seq[i].ptr();
                 if(!PyObject_TypeCheck(item,&Base::MatrixPy::Type)) {
-                    PyErr_SetString(PyExc_TypeError, "exepcting a type of Matrix");
+                    PyErr_SetString(PyExc_TypeError, "expecting a type of Matrix");
                     return 0;
                 }
                 mat[i] = static_cast<Base::MatrixPy*>(item)->getMatrixPtr();
@@ -169,7 +169,7 @@ PyObject* LinkViewPy::setTransform(PyObject *args) {
             Py_Return;
         }
 
-        PyErr_SetString(PyExc_TypeError, "exepcting a type of Matrix, [Matrix,...] or {Int:Matrix,...}");
+        PyErr_SetString(PyExc_TypeError, "expecting a type of Matrix, [Matrix,...] or {Int:Matrix,...}");
         return 0;
     } PY_CATCH;
 }
@@ -222,7 +222,7 @@ PyObject*  LinkViewPy::setLink(PyObject *args)
                 vpd = static_cast<ViewProviderDocumentObjectPy*>(pyObj)->getViewProviderDocumentObjectPtr();
             else {
                 PyErr_SetString(PyExc_TypeError,
-                        "exepcting a type of DocumentObject or ViewProviderDocumentObject");
+                        "expecting a type of DocumentObject or ViewProviderDocumentObject");
                 return 0;
             }
         }
@@ -250,7 +250,7 @@ void LinkViewPy::setOwner(Py::Object owner) {
     ViewProviderDocumentObject *vp = 0;
     if(!owner.isNone()) {
         if(!PyObject_TypeCheck(owner.ptr(),&ViewProviderDocumentObjectPy::Type))
-            throw Py::TypeError("exepcting the owner to be of ViewProviderDocumentObject");
+            throw Py::TypeError("expecting the owner to be of ViewProviderDocumentObject");
         vp = static_cast<ViewProviderDocumentObjectPy*>(
                 owner.ptr())->getViewProviderDocumentObjectPtr();
     }
@@ -320,7 +320,7 @@ PyObject* LinkViewPy::getBoundBox(PyObject* args) {
     ViewProviderDocumentObject *vpd = 0;
     if(vobj!=Py_None) {
         if(!PyObject_TypeCheck(vobj,&ViewProviderDocumentObjectPy::Type)) {
-            PyErr_SetString(PyExc_TypeError, "exepcting a type of ViewProviderDocumentObject");
+            PyErr_SetString(PyExc_TypeError, "expecting a type of ViewProviderDocumentObject");
             return 0;
         }
         vpd = static_cast<ViewProviderDocumentObjectPy*>(vobj)->getViewProviderDocumentObjectPtr();
