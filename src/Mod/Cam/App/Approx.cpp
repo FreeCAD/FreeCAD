@@ -334,7 +334,7 @@ void Approximate::ParameterBoundary()
     v_pnts.clear();
     v_pnts = pnts_tmp;
 
-    std::cout << "Parametirizing..." << std::endl;
+    std::cout << "Parameterizing..." << std::endl;
     //Parameter the boundaries
 
     //Parameter the _ Boundaries
@@ -363,7 +363,7 @@ void Approximate::ParameterBoundary()
     g++;
     for (unsigned int i = 0; i < Pointdistance.size() - 1;i++)
     {
-        //Parametirizing
+        //Parameterizing
         //0 < X < 1, Y = 0.0, Z = don't care lalalala
         pnts_tmp[g][0] = (Pointdistance[i]/totaldistance)+pnts_tmp[g-1][0], pnts_tmp[g][1] = 0.0f;
         BoundariesX[g] = pnts_tmp[g][0], BoundariesY[g] = pnts_tmp[g][1];
@@ -395,7 +395,7 @@ void Approximate::ParameterBoundary()
     g++;
     for (unsigned int i = 0; i < Pointdistance.size() - 1;i++)
     {
-        //Parametirizing
+        //Parameterizing
         //X = 1, 0 < Y < 1, Z = don't care lalalala
         pnts_tmp[g][0] = 1.0f, pnts_tmp[g][1] = (Pointdistance[i]/totaldistance)+pnts_tmp[g-1][1];
         BoundariesX[g] = pnts_tmp[g][0], BoundariesY[g] = pnts_tmp[g][1];
@@ -428,7 +428,7 @@ void Approximate::ParameterBoundary()
     g++;
     for (unsigned int i = 0; i < Pointdistance.size() - 1;i++)
     {
-        //Parametirizing
+        //Parameterizing
         //0 < X < 1,Y = 1, Z = don't care lalalala
         pnts_tmp[g][0] = (Pointdistance[i]/totaldistance)+prev, pnts_tmp[g][1] = 1.0f;
         prev = pnts_tmp[g][0];
@@ -471,7 +471,7 @@ void Approximate::ParameterBoundary()
     g++;
     for (unsigned int i = 0; i < Pointdistance.size() - 1;i++)
     {
-        //Parametirizing
+        //Parameterizing
         //0 < X < 1, Y = 0, Z = don't care lalalala
         pnts_tmp[g][0] = 0.0, pnts_tmp[g][1] = (Pointdistance[i]/totaldistance)+prev;
         prev = pnts_tmp[g][1];
