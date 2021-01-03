@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>480</width>
-    <height>468</height>
+    <height>452</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,7 +15,7 @@
   </property>
   <layout class="QFormLayout" name="formLayout">
    <item row="0" column="0">
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="labelName">
      <property name="text">
       <string>Name</string>
      </property>
@@ -28,45 +28,20 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="0">
-    <widget class="QLabel" name="label_4">
-     <property name="text">
-      <string>Group</string>
+   <item row="1" column="1">
+    <widget class="QComboBox" name="propertyGroup">
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The category group the property belongs to.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="editable">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
-   <item row="1" column="1">
-    <widget class="QWidget" name="widget" native="true">
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
-      <item>
-       <widget class="QComboBox" name="propertyGroup">
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The category group the property belongs to.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="editable">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="label_2">
+   <item row="1" column="0">
+    <widget class="QLabel" name="labelGroup">
      <property name="text">
-      <string>Type</string>
+      <string>Group</string>
      </property>
     </widget>
    </item>
@@ -77,20 +52,17 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="enumLabel">
+   <item row="2" column="0">
+    <widget class="QLabel" name="labelType">
      <property name="text">
-      <string>Enums</string>
+      <string>Type</string>
      </property>
     </widget>
    </item>
    <item row="3" column="1">
-    <widget class="QLineEdit" name="enumValues"/>
-   </item>
-   <item row="4" column="0">
-    <widget class="QLabel" name="label_3">
-     <property name="text">
-      <string>ToolTip</string>
+    <widget class="QLineEdit" name="propertyEnum">
+     <property name="placeholderText">
+      <string>val1,val2,val3,...</string>
      </property>
     </widget>
    </item>
@@ -101,6 +73,20 @@
      </property>
      <property name="tabChangesFocus">
       <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="labelEnum">
+     <property name="text">
+      <string>Enums</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="labelInfo">
+     <property name="text">
+      <string>ToolTip</string>
      </property>
     </widget>
    </item>
@@ -154,7 +140,7 @@
   <tabstop>propertyName</tabstop>
   <tabstop>propertyGroup</tabstop>
   <tabstop>propertyType</tabstop>
-  <tabstop>enumValues</tabstop>
+  <tabstop>propertyEnum</tabstop>
   <tabstop>propertyInfo</tabstop>
   <tabstop>createAnother</tabstop>
  </tabstops>

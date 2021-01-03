@@ -149,19 +149,19 @@ class PropertyCreate(object):
         self.form.propertyGroup.currentIndexChanged.connect(self.updateUI)
         self.form.propertyName.textChanged.connect(self.updateUI)
         self.form.propertyType.currentIndexChanged.connect(self.updateUI)
-        self.form.enumValues.textChanged.connect(self.updateUI)
+        self.form.propertyEnum.textChanged.connect(self.updateUI)
 
     def updateUI(self):
         typeSet = True
         if self.propertyIsEnumeration():
-            self.form.enumLabel.setEnabled(True)
-            self.form.enumValues.setEnabled(True)
-            typeSet = self.form.enumValues.text().strip() != ''
+            self.form.labelEnum.setEnabled(True)
+            self.form.propertyEnum.setEnabled(True)
+            typeSet = self.form.propertyEnum.text().strip() != ''
         else:
-            self.form.enumLabel.setEnabled(False)
-            self.form.enumValues.setEnabled(False)
-            if self.form.enumValues.text().strip():
-                self.form.enumValues.setText('')
+            self.form.labelEnum.setEnabled(False)
+            self.form.propertyEnum.setEnabled(False)
+            if self.form.propertyEnum.text().strip():
+                self.form.propertyEnum.setText('')
 
         ok = self.form.buttonBox.button(QtGui.QDialogButtonBox.Ok)
 
@@ -181,7 +181,7 @@ class PropertyCreate(object):
     def createAnother(self):
         return self.form.createAnother.isChecked()
     def propertyEnumerations(self):
-        return [s.strip() for s in self.form.enumValues.text().strip().split(',')]
+        return [s.strip() for s in self.form.propertyEnum.text().strip().split(',')]
     def propertyIsEnumeration(self):
         return self.propertyType() == 'App::PropertyEnumeration'
 
@@ -190,17 +190,19 @@ class PropertyCreate(object):
             # property exists - this is an edit operation
             self.form.propertyName.setText(name)
             if self.propertyIsEnumeration():
-                self.form.enumValues.setText(','.join(self.obj.getEnumerationsOfProperty(name)))
+                self.form.propertyEnum.setText(','.join(self.obj.getEnumerationsOfProperty(name)))
             self.form.propertyInfo.setText(self.obj.getDocumentationOfProperty(name))
 
+            self.form.labelName.setEnabled(False)
             self.form.propertyName.setEnabled(False)
+            self.form.labelType.setEnabled(False)
             self.form.propertyType.setEnabled(False)
             self.form.createAnother.setEnabled(False)
 
         else:
             self.form.propertyName.setText('')
             self.form.propertyInfo.setText('')
-            self.form.enumValues.setText('')
+            self.form.propertyEnum.setText('')
             #self.form.propertyName.setFocus()
 
         self.updateUI()
