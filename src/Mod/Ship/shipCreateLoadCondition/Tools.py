@@ -51,7 +51,7 @@ def createLoadCondition(ship):
 
     The label of the tank can be extracted from the column C, for instance:
     lc.get("C6")
-    Such information can be used to get the tank object (the followinbg code
+    Such information can be used to get the tank object (the following code
     may fail if either the tank has been removed, or several objects with the
     same label already exist):
     tank = App.ActiveDocument.getObjectsByLabel(lc.get("C6"))[0]
