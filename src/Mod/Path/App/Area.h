@@ -336,7 +336,7 @@ public:
     /** Group shapes by their plane, and return a list of sorted wires
      *
      * The output wires is ordered by its occupied plane, and sorted to
-     * minimize traval distance
+     * minimize travel distance
      *
      * \arg \c shapes: input list of shapes.
      * \arg \c has_start: if false or pstart is 0, then a start point will be
