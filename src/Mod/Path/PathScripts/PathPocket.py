@@ -631,23 +631,23 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         loops = 1
 
         def updateAttachments(grps):
-            atchmnts = []
+            attachments = []
             lenGrps = len(grps)
             if lenGrps > 0:
                 lenG0 = len(grps[0])
                 if lenG0 < 2:
-                    atchmnts.append((0, 0))
+                    attachments.append((0, 0))
                 else:
-                    atchmnts.append((0, 0))
-                    atchmnts.append((0, lenG0 - 1))
+                    attachments.append((0, 0))
+                    attachments.append((0, lenG0 - 1))
             if lenGrps == 2:
                 lenG1 = len(grps[1])
                 if lenG1 < 2:
-                    atchmnts.append((1, 0))
+                    attachments.append((1, 0))
                 else:
-                    atchmnts.append((1, 0))
-                    atchmnts.append((1, lenG1 - 1))
-            return atchmnts
+                    attachments.append((1, 0))
+                    attachments.append((1, lenG1 - 1))
+            return attachments
 
         def isSameVertex(o, t):
             if o.X == t.X:
