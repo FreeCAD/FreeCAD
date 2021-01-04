@@ -538,6 +538,59 @@ bool CmdSketcherSelectRedundantConstraints::isActive(void)
     return isSketcherAcceleratorActive(getActiveGuiDocument(), false);
 }
 
+DEF_STD_CMD_A(CmdSketcherSelectMalformedConstraints)
+
+CmdSketcherSelectMalformedConstraints::CmdSketcherSelectMalformedConstraints()
+    :Command("Sketcher_SelectMalformedConstraints")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Select malformed constraints");
+    sToolTipText    = QT_TR_NOOP("Select malformed constraints");
+    sWhatsThis      = "Sketcher_SelectMalformedConstraints";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_SelectMalformedConstraints";
+    sAccel          = "CTRL+SHIFT+R";
+    eType           = ForEdit;
+}
+
+void CmdSketcherSelectMalformedConstraints::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    Gui::Document * doc= getActiveGuiDocument();
+    ReleaseHandler(doc);
+    SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+    Sketcher::SketchObject* Obj= vp->getSketchObject();
+
+    std::string doc_name = Obj->getDocument()->getName();
+    std::string obj_name = Obj->getNameInDocument();
+
+    // get the needed lists and objects
+    const std::vector< int > &solvermalformed = vp->getSketchObject()->getLastMalformedConstraints();
+    const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
+
+    getSelection().clearSelection();
+
+    // push the constraints
+    int i = 0;
+    for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();it != vals.end(); ++it,++i) {
+        for(std::vector< int >::const_iterator itc= solvermalformed.begin();itc != solvermalformed.end(); ++itc) {
+            if ((*itc) - 1 == i) {
+                Gui::Selection().addSelection(doc_name.c_str(),
+                                              obj_name.c_str(),
+                                              Sketcher::PropertyConstraintList::getConstraintName(i).c_str());
+                break;
+            }
+        }
+    }
+}
+
+bool CmdSketcherSelectMalformedConstraints::isActive(void)
+{
+    return isSketcherAcceleratorActive(getActiveGuiDocument(), false);
+}
+
+
 DEF_STD_CMD_A(CmdSketcherSelectConflictingConstraints)
 
 CmdSketcherSelectConflictingConstraints::CmdSketcherSelectConflictingConstraints()
@@ -2053,6 +2106,7 @@ void CreateSketcherCommandsConstraintAccel(void)
     rcCmdMgr.addCommand(new CmdSketcherSelectHorizontalAxis());
     rcCmdMgr.addCommand(new CmdSketcherSelectRedundantConstraints());
     rcCmdMgr.addCommand(new CmdSketcherSelectConflictingConstraints());
+    rcCmdMgr.addCommand(new CmdSketcherSelectMalformedConstraints());
     rcCmdMgr.addCommand(new CmdSketcherSelectElementsAssociatedWithConstraints());
     rcCmdMgr.addCommand(new CmdSketcherSelectElementsWithDoFs());
     rcCmdMgr.addCommand(new CmdSketcherRestoreInternalAlignmentGeometry());
