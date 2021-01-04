@@ -133,6 +133,7 @@ SketchObject::SketchObject()
     lastDoF=0;
     lastHasConflict=false;
     lastHasRedundancies=false;
+    lastHasMalformedConstraints=false;
     lastSolverStatus=0;
     lastSolveTime=0;
 
@@ -213,11 +214,13 @@ App::DocumentObjectExecReturn *SketchObject::execute(void)
         appendRedundantMsg(lastRedundant, msg);
         return new App::DocumentObjectExecReturn(msg.c_str(),this);
     }
+    else if (err == -5) {
+        std::string msg="Sketch with malformed constraints\n";
+        appendMalformedConstraintsMsg(lastMalformedConstraints, msg);
+        return new App::DocumentObjectExecReturn(msg.c_str(),this);
+    }
     else if (err == -1) { // Solver failed
         return new App::DocumentObjectExecReturn("Solving the sketch failed",this);
-    }
-    else if (solvedSketch.hasMalformedConstraints()) {
-        return new App::DocumentObjectExecReturn("Sketch has malformed constraints");
     }
 
     // this is not necessary for sketch representation in edit mode, unless we want to trigger an update of
@@ -235,6 +238,16 @@ int SketchObject::hasConflicts(void) const
         return -1;
 
     return 0;
+}
+
+void SketchObject::retrieveSolverDiagnostics()
+{
+    lastHasConflict = solvedSketch.hasConflicts();
+    lastHasRedundancies = solvedSketch.hasRedundancies();
+    lastHasMalformedConstraints = solvedSketch.hasMalformedConstraints();
+    lastConflicting=solvedSketch.getConflicting();
+    lastRedundant=solvedSketch.getRedundant();
+    lastMalformedConstraints=solvedSketch.getMalformedConstraints();
 }
 
 int SketchObject::solve(bool updateGeoAfterSolving/*=true*/)
@@ -264,10 +277,8 @@ int SketchObject::solve(bool updateGeoAfterSolving/*=true*/)
 
     solverNeedsUpdate=false;
 
-    lastHasConflict = solvedSketch.hasConflicts();
-    lastHasRedundancies = solvedSketch.hasRedundancies();
-    lastConflicting=solvedSketch.getConflicting();
-    lastRedundant=solvedSketch.getRedundant();
+    retrieveSolverDiagnostics();
+
     lastSolveTime=0.0;
 
     lastSolverStatus=GCS::Failed; // Failure is default for notifying the user unless otherwise proven
@@ -288,6 +299,9 @@ int SketchObject::solve(bool updateGeoAfterSolving/*=true*/)
         // The situation is exactly the same as in the over-constrained situation.
         err = -3;
     }
+    else if (lastHasMalformedConstraints) {
+        err = -5;
+    }
     else {
         lastSolverStatus=solvedSketch.solve();
         if (lastSolverStatus != 0){ // solving
@@ -295,7 +309,7 @@ int SketchObject::solve(bool updateGeoAfterSolving/*=true*/)
         }
     }
 
-    if(solvedSketch.hasMalformedConstraints()) {
+    if(lastHasMalformedConstraints) {
         Base::Console().Error("Sketch %s has malformed constraints!\n",this->getNameInDocument());
     }
 
@@ -680,12 +694,9 @@ int SketchObject::setUpSketch()
     lastDoF = solvedSketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
                                        getExternalGeometryCount());
 
-    lastHasConflict = solvedSketch.hasConflicts();
-    lastHasRedundancies = solvedSketch.hasRedundancies();
-    lastConflicting=solvedSketch.getConflicting();
-    lastRedundant=solvedSketch.getRedundant();
+    retrieveSolverDiagnostics();
 
-    if(lastHasRedundancies || lastDoF < 0 || lastHasConflict)
+    if(lastHasRedundancies || lastDoF < 0 || lastHasConflict || lastHasMalformedConstraints)
         Constraints.touch();
 
     return lastDoF;
@@ -708,10 +719,7 @@ int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toP
         lastDoF = solvedSketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
                                     getExternalGeometryCount());
 
-        lastHasConflict = solvedSketch.hasConflicts();
-        lastHasRedundancies = solvedSketch.hasRedundancies();
-        lastConflicting=solvedSketch.getConflicting();
-        lastRedundant=solvedSketch.getRedundant();
+        retrieveSolverDiagnostics();
 
         solverNeedsUpdate=false;
     }
@@ -7098,39 +7106,49 @@ bool SketchObject::arePointsCoincident(int GeoId1, PointPos PosId1,
 
 void SketchObject::appendConflictMsg(const std::vector<int> &conflicting, std::string &msg)
 {
+    appendConstraintsMsg(conflicting,
+                         "Please remove the following conflicting constraint:\n",
+                         "Please remove at least one of the following conflicting constraints:\n",
+                         msg);
+}
+
+void SketchObject::appendRedundantMsg(const std::vector<int> &redundant, std::string &msg)
+{
+    appendConstraintsMsg(redundant,
+                         "Please remove the following redundant constraint:",
+                         "Please remove the following redundant constraints:",
+                         msg);
+}
+
+void SketchObject::appendMalformedConstraintsMsg(const std::vector<int> &malformed, std::string &msg)
+{
+    appendConstraintsMsg(malformed,
+                         "Please remove the following malformed constraint:",
+                         "Please remove the following malformed constraints:",
+                         msg);
+}
+
+void SketchObject::appendConstraintsMsg(const std::vector<int> &vector,
+                                        const std::string &singularmsg,
+                                        const std::string &pluralmsg,
+                                        std::string &msg)
+{
     std::stringstream ss;
     if (msg.length() > 0)
         ss << msg;
-    if (conflicting.size() > 0) {
-        if (conflicting.size() == 1)
-            ss << "Please remove the following constraint:\n";
+    if (vector.size() > 0) {
+        if (vector.size() == 1)
+            ss << singularmsg << std::endl;
         else
-            ss << "Please remove at least one of the following constraints:\n";
-        ss << conflicting[0];
-        for (unsigned int i=1; i < conflicting.size(); i++)
-            ss << ", " << conflicting[i];
+            ss << pluralmsg;
+        ss << vector[0] << std::endl;
+        for (unsigned int i=1; i < vector.size(); i++)
+            ss << ", " << vector[i];
         ss << "\n";
     }
     msg = ss.str();
 }
 
-void SketchObject::appendRedundantMsg(const std::vector<int> &redundant, std::string &msg)
-{
-    std::stringstream ss;
-    if (msg.length() > 0)
-        ss << msg;
-    if (redundant.size() > 0) {
-        if (redundant.size() == 1)
-            ss << "Please remove the following redundant constraint:\n";
-        else
-            ss << "Please remove the following redundant constraints:\n";
-        ss << redundant[0];
-        for (unsigned int i=1; i < redundant.size(); i++)
-            ss << ", " << redundant[i];
-        ss << "\n";
-    }
-    msg = ss.str();
-}
 
 void SketchObject::getGeometryWithDependentParameters(std::vector<std::pair<int,PointPos>>& geometrymap)
 {
