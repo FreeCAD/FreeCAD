@@ -1234,6 +1234,10 @@ bool Document::save(void)
                 auto gdoc = Application::Instance->getDocument(doc);
                 if(gdoc) gdoc->setModified(false);
             }
+
+            // empty file name signals the intention to rebuild recent file
+            // list without changing the list content.
+            getMainWindow()->appendRecentFile(QString());
         }
         catch (const Base::Exception& e) {
             QMessageBox::critical(getMainWindow(), QObject::tr("Saving document failed"),
@@ -1345,6 +1349,9 @@ void Document::saveAll()
             break;
         }
     }
+    // empty file name signals the intention to rebuild recent file
+    // list without changing the list content.
+    getMainWindow()->appendRecentFile(QString());
 }
 
 /// Save a copy of the document under a new file name

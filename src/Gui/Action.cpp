@@ -711,6 +711,13 @@ RecentFilesAction::~RecentFilesAction()
 /** Adds the new item to the recent files. */
 void RecentFilesAction::appendFile(const QString& filename)
 {
+    // empty file name signals the intention to rebuild recent file
+    // list without changing the list content.
+    if (filename.isEmpty()) {
+        save();
+        return;
+    }
+
     // restore the list of recent files
     QStringList files = this->files();
 

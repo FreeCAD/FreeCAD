@@ -222,10 +222,7 @@ def getInfo(filename):
                 doc = str(zfile.read(files[0]))
                 doc = doc.replace("\n"," ")
             if  imagePath in files:
-                if filename in iconbank:
-                    image = iconbank[filename]
-                else:
-                    image = saveIcon(filename,zfile.read(imagePath),'png')
+                image = saveIcon(filename,zfile.read(imagePath),'png')
         elif docfile:
             with open(docfile) as f:
                 doc = f.read().replace('\n',' ')
