@@ -6270,35 +6270,40 @@ bool ViewProviderSketch::setEdit(int ModNum)
 
 QString ViewProviderSketch::appendConflictMsg(const std::vector<int> &conflicting)
 {
-    QString msg;
-    QTextStream ss(&msg);
-    if (conflicting.size() > 0) {
-        if (conflicting.size() == 1)
-            ss << tr("Please remove the following constraint:");
-        else
-            ss << tr("Please remove at least one of the following constraints:");
-        ss << "\n";
-        ss << conflicting[0];
-        for (unsigned int i=1; i < conflicting.size(); i++)
-            ss << ", " << conflicting[i];
-        ss << "\n";
-    }
-    return msg;
+    return appendConstraintMsg(tr("Please remove the following constraint:"),
+                        tr("Please remove at least one of the following constraints:"),
+                        conflicting);
 }
 
 QString ViewProviderSketch::appendRedundantMsg(const std::vector<int> &redundant)
 {
+    return appendConstraintMsg(tr("Please remove the following redundant constraint:"),
+                        tr("Please remove the following redundant constraints:"),
+                        redundant);
+}
+
+QString ViewProviderSketch::appendMalformedMsg(const std::vector<int> &malformed)
+{
+    return appendConstraintMsg(tr("Please remove the following malformed constraint:"),
+                        tr("Please remove the following malformed constraints:"),
+                        malformed);
+}
+
+QString ViewProviderSketch::appendConstraintMsg(const QString & singularmsg,
+                            const QString & pluralmsg,
+                            const std::vector<int> &vector)
+{
     QString msg;
     QTextStream ss(&msg);
-    if (redundant.size() > 0) {
-        if (redundant.size() == 1)
-            ss << tr("Please remove the following redundant constraint:");
+    if (vector.size() > 0) {
+        if (vector.size() == 1)
+            ss << singularmsg;
         else
-            ss << tr("Please remove the following redundant constraints:");
+            ss << pluralmsg;
         ss << "\n";
-        ss << redundant[0];
-        for (unsigned int i=1; i < redundant.size(); i++)
-            ss << ", " << redundant[i];
+        ss << vector[0];
+        for (unsigned int i=1; i < vector.size(); i++)
+            ss << ", " << vector[i];
 
         ss << "\n";
     }
@@ -6311,6 +6316,7 @@ void ViewProviderSketch::UpdateSolverInformation()
     int dofs = getSketchObject()->getLastDoF();
     bool hasConflicts = getSketchObject()->getLastHasConflicts();
     bool hasRedundancies = getSketchObject()->getLastHasRedundancies();
+    bool hasMalformed    = getSketchObject()->getLastHasMalformedConstraints();
 
     if (getSketchObject()->Geometry.getSize() == 0) {
         signalSetUp(tr("Empty sketch"));
@@ -6323,6 +6329,13 @@ void ViewProviderSketch::UpdateSolverInformation()
                     .arg(tr("Over-constrained sketch "))
                     .arg(tr("(click to select)"))
                     .arg(QString::fromStdString(msg)));
+        signalSolved(QString());
+    }
+    else if (hasMalformed) { // malformed constraints
+        signalSetUp(QString::fromLatin1("<font color='red'>%1<a href=\"#malformed\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">%2</span></a><br/>%3</font><br/>")
+                    .arg(tr("Sketch contains malformed constraints "))
+                    .arg(tr("(click to select)"))
+                    .arg(appendMalformedMsg(getSketchObject()->getLastMalformedConstraints())));
         signalSolved(QString());
     }
     else if (hasConflicts) { // conflicting constraints
