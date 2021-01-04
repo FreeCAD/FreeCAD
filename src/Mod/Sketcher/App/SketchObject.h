@@ -108,6 +108,8 @@ public:
      \retval int - 0 if successful
      */
     int delGeometry(int GeoId, bool deleteinternalgeo = true);
+    /// Deletes just the GeoIds indicated, it does not look for internal geometry
+    int delGeometriesExclusiveList(const std::vector<int>& GeoIds);
     /// Does the same as \a delGeometry but allows to delete several geometries in one step
     int delGeometries(const std::vector<int>& GeoIds);
     /// deletes all the elements/constraints of the sketch except for external geometry
