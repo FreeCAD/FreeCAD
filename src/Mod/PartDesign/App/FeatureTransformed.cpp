@@ -228,12 +228,11 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
 
         int startIndex = body && body->isSibling(this, obj) ? 1 : 0;
 
-        if (!SubTransform.getValue() 
-                || !obj->isDerivedFrom(PartDesign::FeatureAddSub::getClassTypeId())) 
+        if (SubTransform.getValue() 
+                && obj->isDerivedFrom(PartDesign::FeatureAddSub::getClassTypeId())) 
         {
             if(obj->Suppress.getValue())
                 continue;
-        } else {
             PartDesign::FeatureAddSub* feature = static_cast<PartDesign::FeatureAddSub*>(obj);
             Part::TopoShape fuseShape, cutShape;
             feature->getAddSubShape(fuseShape, cutShape);
