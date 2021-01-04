@@ -1033,9 +1033,34 @@ int SketchObject::delGeometry(int GeoId, bool deleteinternalgeo)
     return 0;
 }
 
+
 int SketchObject::delGeometries(const std::vector<int>& GeoIds)
 {
     std::vector<int> sGeoIds(GeoIds);
+
+    // if a GeoId has internal geometry, it must delete internal geometries too
+    for(auto c : Constraints.getValues())  {
+        if( c->Type == InternalAlignment ) {
+            auto pos = std::find(sGeoIds.begin(), sGeoIds.end(), c->Second);
+
+            if(pos != sGeoIds.end()) {
+                sGeoIds.push_back(c->First);
+            }
+        }
+    }
+
+    std::sort(sGeoIds.begin(), sGeoIds.end());
+    // eliminate duplicates
+    auto newend = std::unique(sGeoIds.begin(), sGeoIds.end());
+    sGeoIds.resize(std::distance(sGeoIds.begin(), newend));
+
+    return delGeometriesExclusiveList(sGeoIds);
+}
+
+int SketchObject::delGeometriesExclusiveList(const std::vector<int>& GeoIds)
+{
+    std::vector<int> sGeoIds(GeoIds);
+
     std::sort(sGeoIds.begin(), sGeoIds.end());
     if (sGeoIds.empty())
         return 0;
@@ -5392,7 +5417,7 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
         if(delgeoid)
             delgeometries.push_back(GeoId);
 
-        int ndeleted = delGeometries(delgeometries);
+        int ndeleted = delGeometriesExclusiveList(delgeometries);
 
         return ndeleted; //number of deleted elements
     }
@@ -5732,7 +5757,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
     // Trigger update now
     // Update geometry indices and rebuild vertexindex now via onChanged, so that ViewProvider::UpdateData is triggered.
     if (!delGeoId.empty()) {
-        delGeometries(delGeoId);
+        delGeometriesExclusiveList(delGeoId);
     }
     else {
         Geometry.touch();
