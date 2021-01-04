@@ -7030,8 +7030,8 @@ QIcon ViewProviderSketch::mergeColorfulOverlayIcons (const QIcon & orig) const
         static const char * const sketcher_notfullyconstrained_xpm[]={
             "9 9 3 1",
             ". c None",
-            "# c #ff4500",
-            "a c #ffffff",
+            "# c #dbaf00",
+            "a c #ffcc00",
             "##.....##",
             "#a#...#a#",
             "#aa#.#aa#",
