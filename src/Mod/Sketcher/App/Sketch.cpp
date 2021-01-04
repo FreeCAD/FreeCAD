@@ -76,7 +76,6 @@ Sketch::Sketch()
   , RecalculateInitialSolutionWhileMovingPoint(false)
   , GCSsys(), ConstraintsCounter(0)
   , isInitMove(false), isFine(true), moveStep(0)
-  , malformedConstraints(false)
   , defaultSolver(GCS::DogLeg)
   , defaultSolverRedundant(GCS::DogLeg)
   , debugMode(GCS::Minimal)
@@ -127,7 +126,8 @@ void Sketch::clear(void)
     isInitMove = false;
     ConstraintsCounter = 0;
     Conflicting.clear();
-    malformedConstraints = false;
+    Redundant.clear();
+    MalformedConstraints.clear();
 }
 
 bool Sketch::analyseBlockedGeometry( const std::vector<Part::Geometry *> &internalGeoList,
@@ -1913,8 +1913,9 @@ int Sketch::addConstraints(const std::vector<Constraint *> &ConstraintList)
         rtn = addConstraint (*it);
 
         if(rtn == -1) {
-            Base::Console().Error("Sketcher constraint number %d is malformed!\n",cid);
-            malformedConstraints = true;
+            int humanconstraintid = cid + 1;
+            Base::Console().Error("Sketcher constraint number %d is malformed!\n",humanconstraintid);
+            MalformedConstraints.push_back(humanconstraintid);
         }
     }
 
@@ -1932,8 +1933,9 @@ int Sketch::addConstraints(const std::vector<Constraint *> &ConstraintList,
             rtn = addConstraint (*it);
 
             if(rtn == -1) {
-                Base::Console().Error("Sketcher constraint number %d is malformed!\n",cid);
-                malformedConstraints = true;
+                int humanconstraintid = cid + 1;
+                Base::Console().Error("Sketcher constraint number %d is malformed!\n",humanconstraintid);
+                MalformedConstraints.push_back(humanconstraintid);
             }
         }
         else {

@@ -106,7 +106,8 @@ public:
 
     inline float getSolveTime() const { return SolveTime; }
 
-    inline bool hasMalformedConstraints(void) const { return malformedConstraints; }
+    inline bool hasMalformedConstraints(void) const { return !MalformedConstraints.empty(); }
+    inline const std::vector<int> &getMalformedConstraints(void) const { return MalformedConstraints; }
 public:
     std::set < std::pair< int, Sketcher::PointPos>> getDependencyGroup(int geoId, PointPos pos) const;
 
@@ -425,6 +426,7 @@ protected:
     int ConstraintsCounter;
     std::vector<int> Conflicting;
     std::vector<int> Redundant;
+    std::vector<int> MalformedConstraints;
 
     std::vector<double *> pDependentParametersList;
 
@@ -452,8 +454,6 @@ protected:
     bool isFine;
     Base::Vector3d initToPoint;
     double moveStep;
-
-    bool malformedConstraints;
 
 public:
     GCS::Algorithm defaultSolver;
