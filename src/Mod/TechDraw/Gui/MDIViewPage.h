@@ -159,7 +159,11 @@ private:
     QTimer *m_timer;
 
     QString m_currentPath;
+#if QT_VERSION >= 0x050300
+    QPageLayout::Orientation m_orientation;
+#else
     QPrinter::Orientation m_orientation;
+#endif
     QPrinter::PaperSize m_paperSize;
     ViewProviderPage *m_vpPage;
 

@@ -258,8 +258,11 @@ DrawingView::DrawingView(Gui::Document* doc, QWidget* parent)
 
     setCentralWidget(m_view);
     //setWindowTitle(tr("SVG Viewer"));
-
+#if QT_VERSION >= 0x050300
+    m_orientation = QPageLayout::Landscape;
+#else
     m_orientation = QPrinter::Landscape;
+#endif
     m_pageSize = QPrinter::A4;
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
@@ -302,10 +305,18 @@ void DrawingView::load (const QString & fileName)
 void DrawingView::findPrinterSettings(const QString& fileName)
 {
     if (fileName.indexOf(QLatin1String("Portrait"), Qt::CaseInsensitive) >= 0) {
+#if QT_VERSION >= 0x050300
+        m_orientation = QPageLayout::Portrait;
+#else
         m_orientation = QPrinter::Portrait;
+#endif
     }
     else {
+#if QT_VERSION >= 0x050300
+        m_orientation = QPageLayout::Landscape;
+#else
         m_orientation = QPrinter::Landscape;
+#endif
     }
 
     QMap<QPrinter::PageSize, QString> pageSizes;
@@ -517,7 +528,11 @@ void DrawingView::printPdf()
         printer.setFullPage(true);
         printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setOutputFileName(filename);
+#if QT_VERSION >= 0x050300
+        printer.setPageOrientation(m_orientation);
+#else
         printer.setOrientation(m_orientation);
+#endif
         QList<QListWidgetItem*> items = listWidget->selectedItems();
         if (items.size() == 1) {
             int AX = items.front()->data(Qt::UserRole).toInt();
@@ -533,7 +548,11 @@ void DrawingView::print()
     QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage(true);
     printer.setPageSize(m_pageSize);
+#if QT_VERSION >= 0x050300
+    printer.setPageOrientation(m_orientation);
+#else
     printer.setOrientation(m_orientation);
+#endif
 
     QPrintDialog dlg(&printer, this);
     if (dlg.exec() == QDialog::Accepted) {
@@ -546,7 +565,11 @@ void DrawingView::printPreview()
     QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage(true);
     printer.setPageSize(m_pageSize);
+#if QT_VERSION >= 0x050300
+    printer.setPageOrientation(m_orientation);
+#else
     printer.setOrientation(m_orientation);
+#endif
 
     QPrintPreviewDialog dlg(&printer, this);
     connect(&dlg, SIGNAL(paintRequested (QPrinter *)),
@@ -578,7 +601,11 @@ void DrawingView::print(QPrinter* printer)
         // care if it uses wrong printer settings
         bool doPrint = paintType != QPaintEngine::Picture;
 
+#if QT_VERSION >= 0x050300
+        if (doPrint && printer->pageLayout().orientation() != this->m_orientation) {
+#else
         if (doPrint && printer->orientation() != this->m_orientation) {
+#endif
             int ret = QMessageBox::warning(this, tr("Different orientation"),
                 tr("The printer uses a different orientation than the drawing.\n"
                    "Do you want to continue?"),
