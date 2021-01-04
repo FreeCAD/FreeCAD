@@ -73,17 +73,14 @@ class Upgrade(gui_base_original.Modifier):
             if not Gui.Selection.getSelection():
                 self.ui.selectUi()
                 _msg(translate("draft", "Select an object to upgrade"))
-                self.call = \
-                    self.view.addEventCallback("SoEvent",
-                                               gui_tool_utils.selectObject)
+                self.call = self.view.addEventCallback(
+                    "SoEvent",
+                    gui_tool_utils.selectObject)
             else:
                 self.proceed()
 
     def proceed(self):
         """Proceed with execution of the command after selection."""
-        if self.call:
-            self.view.removeEventCallback("SoEvent", self.call)
-
         if Gui.Selection.getSelection():
             Gui.addModule("Draft")
             _cmd = 'Draft.upgrade'
