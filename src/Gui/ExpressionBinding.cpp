@@ -91,9 +91,14 @@ void Gui::ExpressionBinding::setExpression(boost::shared_ptr<Expression> expr)
         if(transaction)
             App::GetApplication().closeActiveTransaction();
 
-        if (expr)
-            iconLabel->setToolTip(Base::Tools::fromStdString(expr->toString()));
-        else 
+        if (expr) {
+            std::string txt = expr->toString();
+            if (txt.size() > 1024) {
+                txt.resize(1024);
+                txt += "\n\n...";
+            }
+            iconLabel->setToolTip(Base::Tools::fromStdString(txt));
+        } else 
             iconLabel->setToolTip(QString());
         auto label = qobject_cast<ExpressionLabel*>(iconLabel);
         if (label)
