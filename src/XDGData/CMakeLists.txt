@@ -1,3 +1,5 @@
+set(APPDATA_RELEASE_VERSION "${PACKAGE_VERSION_MAJOR}.${PACKAGE_VERSION_MINOR}.${FREECAD_VERSION_PATCH}${PACKAGE_VERSION_SUFFIX}")
+
 if(NOT DEFINED APPDATA_RELEASE_DATE)
     if(EXISTS "${CMAKE_SOURCE_DIR}/.git")
         execute_process(COMMAND git log -1 --pretty=%cd --date=short
@@ -29,11 +31,6 @@ install(
 )
 
 install(
-    FILES org.freecadweb.FreeCAD.svg
-    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/scalable/apps
-)
-
-install(
     FILES org.freecadweb.FreeCAD.xml
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/mime/packages
 )
@@ -41,4 +38,52 @@ install(
 install(
     FILES FreeCAD.thumbnailer
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/thumbnailers
+)
+
+install(
+    FILES ../Gui/Icons/freecad-icon-16.png
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/16x16/apps
+    RENAME org.freecadweb.FreeCAD.png
+)
+
+install(
+    FILES ../Gui/Icons/freecad-icon-32.png
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/32x32/apps
+    RENAME org.freecadweb.FreeCAD.png
+)
+
+install(
+    FILES ../Gui/Icons/freecad-icon-48.png
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/48x48/apps
+    RENAME org.freecadweb.FreeCAD.png
+)
+
+install(
+    FILES ../Gui/Icons/freecad-icon-64.png
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/64x64/apps
+    RENAME org.freecadweb.FreeCAD.png
+)
+
+install(
+    FILES ../Gui/Icons/freecad.svg
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/scalable/apps
+    RENAME org.freecadweb.FreeCAD.svg
+)
+
+install(
+    FILES ../Gui/Icons/freecad.xpm
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/pixmaps
+    RENAME org.freecadweb.FreeCAD.xpm
+)
+
+install(
+    FILES ../Gui/Icons/freecad-doc.svg
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/scalable/mimetypes
+    RENAME org.freecadweb.FreeCAD-mimetype.svg
+)
+
+install(
+    FILES ../Gui/Icons/freecad-doc-64.png
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/64x64/mimetypes
+    RENAME org.freecadweb.FreeCAD-mimetype.png
 )

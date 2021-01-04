@@ -58,6 +58,6 @@
   <update_contact>yorik_AT_uncreated.net</update_contact>
   <content_rating type="oars-1.1"/>
   <releases>
-    <release version="@PACKAGE_VERSION@" date="@APPDATA_RELEASE_DATE@"/>
+    <release version="@APPDATA_RELEASE_VERSION@" date="@APPDATA_RELEASE_DATE@"/>
   </releases>
 </component>

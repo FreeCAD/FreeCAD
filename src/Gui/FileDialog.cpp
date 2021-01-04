@@ -633,10 +633,10 @@ QIcon FileIconProvider::icon(const QFileInfo & info) const
 {
     if (info.suffix().toLower() == QLatin1String("fcstd")) {
         // return QApplication::windowIcon();
-        return QIcon(QString::fromLatin1(":/icons/freecad-doc.png"));
+        return QIcon(QString::fromLatin1(":/icons/freecad-doc-64.png"));
     }
     else if (info.suffix().toLower().startsWith(QLatin1String("fcstd"))) {
-        QIcon icon(QString::fromLatin1(":/icons/freecad-doc.png"));
+        QIcon icon(QString::fromLatin1(":/icons/freecad-doc-64.png"));
         QIcon darkIcon;
         int w = QApplication::style()->pixelMetric(QStyle::PM_ListViewIconSize);
         darkIcon.addPixmap(icon.pixmap(w, w, QIcon::Disabled, QIcon::Off), QIcon::Normal, QIcon::Off);
