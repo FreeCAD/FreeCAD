@@ -216,6 +216,44 @@ PyObject* SketchObjectPy::delGeometry(PyObject *args)
     Py_Return;
 }
 
+PyObject* SketchObjectPy::delGeometries(PyObject *args)
+{
+    PyObject *pcObj;
+
+    if (!PyArg_ParseTuple(args, "O", &pcObj))
+    return 0;
+
+    if (PyObject_TypeCheck(pcObj, &(PyList_Type)) ||
+        PyObject_TypeCheck(pcObj, &(PyTuple_Type)) ) {
+
+        std::vector<int> geoIdList;
+        Py::Sequence list(pcObj);
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+#if PY_MAJOR_VERSION >= 3
+            if (PyLong_Check((*it).ptr()))
+                geoIdList.push_back(PyLong_AsLong((*it).ptr()));
+#else
+            if (PyInt_Check((*it).ptr()))
+                geoIdList.push_back(PyInt_AsLong((*it).ptr()));
+#endif
+        }
+
+        if(this->getSketchObjectPtr()->delGeometries(geoIdList)) {
+            std::stringstream str;
+            str << "Not able to delete geometries";
+            PyErr_SetString(PyExc_ValueError, str.str().c_str());
+            return 0;
+        }
+
+        Py_Return;
+
+    }
+
+    std::string error = std::string("type must be list of GeoIds, not ");
+    error += pcObj->ob_type->tp_name;
+    throw Py::TypeError(error);
+}
+
 PyObject* SketchObjectPy::deleteAllGeometry(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
