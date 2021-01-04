@@ -229,24 +229,24 @@ public:
 
     /** @name base class implementer */
     //@{
-    virtual void attach(App::DocumentObject *);
-    virtual void updateData(const App::Property *);
+    virtual void attach(App::DocumentObject *) override;
+    virtual void updateData(const App::Property *) override;
 
-    virtual void setupContextMenu(QMenu *menu, QObject *receiver, const char *member);
+    virtual void setupContextMenu(QMenu *menu, QObject *receiver, const char *member) override;
     /// is called when the Provider is in edit and a deletion request occurs
-    virtual bool onDelete(const std::vector<std::string> &);
+    virtual bool onDelete(const std::vector<std::string> &) override;
     /// Is called by the tree if the user double clicks on the object. It returns the string
     /// for the transaction that will be shown in the undo/redo dialog.
     /// If null is returned then no transaction will be opened.
-    virtual const char* getTransactionText() const { return nullptr; }
+    virtual const char* getTransactionText() const override { return nullptr; }
     /// is called by the tree if the user double clicks on the object
-    virtual bool doubleClicked(void);
+    virtual bool doubleClicked(void) override;
     /// is called when the Provider is in edit and the mouse is moved
-    virtual bool mouseMove(const SbVec2s &pos, Gui::View3DInventorViewer *viewer);
+    virtual bool mouseMove(const SbVec2s &pos, Gui::View3DInventorViewer *viewer) override;
     /// is called when the Provider is in edit and a key event ocours. Only ESC ends edit.
-    virtual bool keyPressed(bool pressed, int key);
+    virtual bool keyPressed(bool pressed, int key) override;
     /// is called when the Provider is in edit and the mouse is clicked
-    virtual bool mouseButtonPressed(int Button, bool pressed, const SbVec2s& cursorPos, const Gui::View3DInventorViewer* viewer);
+    virtual bool mouseButtonPressed(int Button, bool pressed, const SbVec2s& cursorPos, const Gui::View3DInventorViewer* viewer) override;
     //@}
 
     void deleteSelected();
@@ -274,17 +274,17 @@ public:
 protected:
     Base::Placement getEditingPlacement() const;
 
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
-    virtual void setEditViewer(Gui::View3DInventorViewer*, int ModNum);
-    virtual void unsetEditViewer(Gui::View3DInventorViewer*);
+    virtual bool setEdit(int ModNum) override;
+    virtual void unsetEdit(int ModNum) override;
+    virtual void setEditViewer(Gui::View3DInventorViewer*, int ModNum) override;
+    virtual void unsetEditViewer(Gui::View3DInventorViewer*) override;
     void deactivateHandler();
     /// update solver information based on last solving at SketchObject
     void UpdateSolverInformation(void);
     /// helper to detect whether the picked point lies on the sketch
     bool isPointOnSketch(const SoPickedPoint *pp) const;
     /// get called by the container whenever a property has been changed
-    virtual void onChanged(const App::Property *prop);
+    virtual void onChanged(const App::Property *prop) override;
 
     /// get called if a subelement is double clicked while editing
     void editDoubleClicked(void);
