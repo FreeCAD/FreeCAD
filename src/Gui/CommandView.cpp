@@ -563,6 +563,7 @@ StdCmdToggleClipPlane::StdCmdToggleClipPlane()
     sToolTipText  = QT_TR_NOOP("Toggles clipping plane for active view");
     sWhatsThis    = "Std_ToggleClipPlane";
     sStatusTip    = QT_TR_NOOP("Toggles clipping plane for active view");
+    sPixmap       = "Std_ToggleClipPlane";
     eType         = Alter3DView;
 }
 
@@ -1188,7 +1189,7 @@ StdCmdViewHome::StdCmdViewHome()
     sToolTipText  = QT_TR_NOOP("Set to default home view");
     sWhatsThis    = "Std_ViewHome";
     sStatusTip    = QT_TR_NOOP("Set to default home view");
-    //sPixmap       = "view-home";
+    sPixmap       = "Std_ViewHome";
     sAccel        = "Home";
     eType         = Alter3DView;
 }
@@ -1384,6 +1385,7 @@ StdCmdViewDimetric::StdCmdViewDimetric()
     sToolTipText= QT_TR_NOOP("Set to dimetric view");
     sWhatsThis  = "Std_ViewDimetric";
     sStatusTip  = QT_TR_NOOP("Set to dimetric view");
+    sPixmap       = "Std_ViewDimetric";
     eType         = Alter3DView;
 }
 
@@ -1406,6 +1408,7 @@ StdCmdViewTrimetric::StdCmdViewTrimetric()
     sToolTipText= QT_TR_NOOP("Set to trimetric view");
     sWhatsThis  = "Std_ViewTrimetric";
     sStatusTip  = QT_TR_NOOP("Set to trimetric view");
+    sPixmap       = "Std_ViewTrimetric";
     eType         = Alter3DView;
 }
 
@@ -2025,6 +2028,7 @@ StdCmdToggleNavigation::StdCmdToggleNavigation()
     sWhatsThis    = "Std_ToggleNavigation";
   //iAccel        = Qt::SHIFT+Qt::Key_Space;
     sAccel        = "Esc";
+    sPixmap       = "Std_ToggleNavigation";
     eType         = Alter3DView;
 }
 
@@ -2072,6 +2076,7 @@ public:
         sToolTipText  = QT_TR_NOOP("Toggle axis cross");
         sStatusTip    = QT_TR_NOOP("Toggle axis cross");
         sWhatsThis    = "Std_AxisCross";
+        sPixmap       = "Std_AxisCross";
     }
     ~StdCmdAxisCross()
     {
@@ -3099,6 +3104,7 @@ StdCmdTextureMapping::StdCmdTextureMapping()
     sToolTipText  = QT_TR_NOOP("Texture mapping");
     sWhatsThis    = "Std_TextureMapping";
     sStatusTip    = QT_TR_NOOP("Texture mapping");
+    sPixmap       = "Std_TextureMapping";
     eType         = Alter3DView;
 }
 
