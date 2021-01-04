@@ -6887,8 +6887,9 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
         for (std::vector<std::string>::const_iterator it=SubNames.begin(); it != SubNames.end(); ++it) {
             if (it->size() > 4 && it->substr(0,4) == "Edge") {
                 int GeoId = std::atoi(it->substr(4,4000).c_str()) - 1;
-                if( GeoId >= 0 )
+                if( GeoId >= 0 ) {
                     delInternalGeometries.insert(GeoId);
+                }
                 else
                     delExternalGeometries.insert(Sketcher::GeoEnum::RefExt - GeoId);
             } else if (it->size() > 12 && it->substr(0,12) == "ExternalEdge") {
@@ -6957,13 +6958,26 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
             }
         }
 
-        for (rit = delInternalGeometries.rbegin(); rit != delInternalGeometries.rend(); ++rit) {
+        if(!delInternalGeometries.empty()) {
+            std::stringstream stream;
+
+            // NOTE: SketchObject delGeometries will sort the array, so filling it here with a reverse iterator would
+            // lead to the worst case scenario for sorting.
+            auto endit = std::prev(delInternalGeometries.end());
+            for (auto it = delInternalGeometries.begin(); it != endit; ++it) {
+                stream << *it << ",";
+            }
+
+            stream << *endit;
+
             try {
-                Gui::cmdAppObjectArgs(getObject(), "delGeometry(%i)", *rit);
+                Gui::cmdAppObjectArgs(getObject(), "delGeometries([%s])", stream.str().c_str());
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
             }
+
+            stream.str(std::string());
         }
 
         for (rit = delExternalGeometries.rbegin(); rit != delExternalGeometries.rend(); ++rit) {
