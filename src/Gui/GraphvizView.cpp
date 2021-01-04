@@ -461,7 +461,11 @@ void GraphvizView::print()
 {
     QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage(true);
+#if QT_VERSION >= 0x050300
+    printer.setPageOrientation(QPageLayout::Landscape);
+#else
     printer.setOrientation(QPrinter::Landscape);
+#endif
     QPrintDialog dlg(&printer, this);
     if (dlg.exec() == QDialog::Accepted) {
         print(&printer);
@@ -491,7 +495,11 @@ void GraphvizView::printPreview()
 {
     QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage(true);
+#if QT_VERSION >= 0x050300
+    printer.setPageOrientation(QPageLayout::Landscape);
+#else
     printer.setOrientation(QPrinter::Landscape);
+#endif
 
     QPrintPreviewDialog dlg(&printer, this);
     connect(&dlg, SIGNAL(paintRequested (QPrinter *)),
