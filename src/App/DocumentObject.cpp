@@ -1108,9 +1108,18 @@ DocumentObject *DocumentObject::resolve(const char *subname,
     if(parent) *parent = 0;
     if(subElement) *subElement = 0;
 
+    if (!App::GetApplication().checkLinkDepth(depth)) {
+        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+            FC_ERR("recursive object path " << getFullName() << "." << (subname?subname:""));
+        return nullptr;
+    }
+
     auto obj = getSubObject(subname,pyObj,pmat,transform,depth);
-    if(!obj || !subname || *subname==0)
-        return self;
+    if(!obj)
+        return nullptr;
+
+    if (!subname || *subname==0)
+        return obj;
 
     if(!parent && !subElement)
         return obj;
