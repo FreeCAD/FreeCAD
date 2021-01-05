@@ -479,7 +479,8 @@ class ObjectSlot(PathOp.ObjectOp):
         return False
 
     def _finishArc(self, obj, pnts, featureCnt):
-        """This method finishes an Arc Slot operation."""
+        """This method finishes an Arc Slot operation.
+        It returns the gcode for the slot operation."""
         PathLog.debug('arc center: {}'.format(self.arcCenter))
         self._addDebugObject(Part.makeLine(self.arcCenter, self.arcMidPnt), 'CentToMidPnt')
 
@@ -494,7 +495,6 @@ class ObjectSlot(PathOp.ObjectOp):
                 FreeCAD.Console.PrintError(msg + '\n')
                 return False
             else:
-                print ("_finishArc")
                 print (pnts)
                 (p1, p2) = pnts
                 pnts = self._makeOffsetArc(p1, p2, self.arcCenter, newRadius)
@@ -547,7 +547,7 @@ class ObjectSlot(PathOp.ObjectOp):
         return cmds
 
     def _makeArcGCode(self, obj, p1, p2):
-        """This method is the last in the overall slot creation process.
+        """This method is the last step in the overall arc slot creation process.
         It accepts the operation object and two end points for the path.
         It returns the gcode for the slot operation."""
         CMDS = list()
@@ -602,7 +602,8 @@ class ObjectSlot(PathOp.ObjectOp):
         return CMDS
 
     def _finishLine(self, obj, pnts, featureCnt):
-        """This method finishes a Line Slot operation."""
+        """This method finishes a Line Slot operation.
+        It returns the gcode for the line slot operation."""
         # Apply perpendicular rotation if requested
         perpZero = True
         if obj.PathOrientation == 'Perpendicular':
@@ -673,7 +674,7 @@ class ObjectSlot(PathOp.ObjectOp):
         return cmds
 
     def _makeLineGCode(self, obj, p1, p2):
-        """This method is the last in the overall slot creation process.
+        """This method is the last in the overall line slot creation process.
         It accepts the operation object and two end points for the path.
         It returns the slot gcode for the operation."""
         CMDS = list()
@@ -949,7 +950,7 @@ class ObjectSlot(PathOp.ObjectOp):
             # Circle radius (not used)
             # r = vP1P2.Length * vP2P3.Length * vP3P1.Length / 2 / l
             if round(L, 8) == 0.0:
-                PathLog.error("The three points are colinear, arc is straight.")
+                PathLog.error("The three points are colinear, arc is a straight.")
                 return False
 
             # Sphere center.
@@ -1231,25 +1232,22 @@ class ObjectSlot(PathOp.ObjectOp):
 
         # Create a chord of the right length, starting on x axis 
         def makeChord(rads):
-            print ("makeChord", rads)
             x = self.newRadius * math.cos(rads)
             y = self.newRadius * math.sin(rads)
             a = FreeCAD.Vector(self.newRadius, 0.0, 0.0)
             b = FreeCAD.Vector(x, y, 0.0)
-            print(a,b)
             return Part.makeLine(a, b)
 
 
-        # Convert extension to radians, make a generic chord ( line ) from the x axis, with this angle
+        # Convert extension to radians; make a generic chord ( line ) from the x axis, with this angle
         # rotate and shift into place so it has same vertices as the required arc extention
-        # adjust rotation angle to provide +ve or -ve extention as needed
+        # adjust rotation angle to provide +ve or -ve extention needed at its endpoint
         origin = FreeCAD.Vector(0.0, 0.0, 0.0)
         if begExt:
             ExtRadians = abs(begExt / self.newRadius)
             chord = makeChord(ExtRadians)
 
             beginRadians = self._getVectorAngle(p1.sub(self.arcCenter))
-            print("begExt,beginRadians = ",begExt,beginRadians)
             if begExt < 0:
                 beginRadians += 0  # negative Ext shortens slot so chord endpoint is slot start point 
             else :
@@ -1263,14 +1261,12 @@ class ObjectSlot(PathOp.ObjectOp):
             
             v1 = chord.Vertexes[1]
             n1 = FreeCAD.Vector(v1.X, v1.Y, 0.0)
-            print("n1=",n1)
-
+            
         if endExt:
             ExtRadians = abs(endExt / self.newRadius)
             chord = makeChord(ExtRadians)
 
             endRadians = self._getVectorAngle(p2.sub(self.arcCenter))
-            print("endExt,endRadians = ",endExt,endRadians)
             if endExt > 0:
                 endRadians += 0  # positive Ext lengthens slot so chord endpoint is good
             else :
@@ -1284,7 +1280,6 @@ class ObjectSlot(PathOp.ObjectOp):
                
             v1 = chord.Vertexes[1]
             n2 = FreeCAD.Vector(v1.X, v1.Y, 0.0)
-            print("n2=",n2)
 
         return (n1, n2)
 
@@ -1293,13 +1288,9 @@ class ObjectSlot(PathOp.ObjectOp):
         This function offsets an arc defined by endpoints, p1 and p2, and the center.
         New end points are returned at the radius passed by newRadius.
         The angle of the original arc is maintained."""
-        n1 = p1.sub(center).normalize()
-        n2 = p2.sub(center).normalize()
-        n1.multiply(newRadius)
-        n2.multiply(newRadius)
-        p1 = n1.add(center)
-        p2 = n2.add(center)
-        return (p1, p2)
+        n1 = p1.sub(center).normalize()*newRadius
+        n2 = p2.sub(center).normalize()*newRadius
+        return (n1.add(center), n2.add(center))
 
     def _extendLineSlot(self, p1, p2, begExt, endExt):
         """_extendLineSlot(p1, p2, begExt, endExt)...
@@ -1307,19 +1298,15 @@ class ObjectSlot(PathOp.ObjectOp):
         The beginning is extended by begExt value and the end by endExt value."""
         if begExt:
             beg = p1.sub(p2)
-            beg.normalize()
-            beg.multiply(begExt)
-            n1 = p1.add(beg)
+            n1 = p1.add(beg.normalize()*begExt)
         else:
             n1 = p1
         if endExt:
-            end = p2.sub(p1)
-            end.normalize()
-            end.multiply(endExt)
-            n2 = p2.add(end)
+          end = p2.sub(p1)
+          n2 = p2.add(end.normalize()*endExt)
         else:
             n2 = p2
-        return (n1, n2)
+        return (n1, n2) 
 
     def _getOppMidPoints(self, same):
         """_getOppMidPoints(same)...
@@ -1332,12 +1319,13 @@ class ObjectSlot(PathOp.ObjectOp):
 
     def _isParallel(self, dYdX1, dYdX2):
         """Determine if two orientation vectors are parallel."""
-        if dYdX1.add(dYdX2).Length == 0:
-            return True
-        if ((dYdX1.x + dYdX2.x) / 2.0 == dYdX1.x and
-                (dYdX1.y + dYdX2.y) / 2.0 == dYdX1.y):
-            return True
-        return False
+        return (dYdX1.cross(dYdX2) == FreeCAD.Vector(0,0,0) )
+ #       if dYdX1.add(dYdX2).Length == 0:
+ #           return True
+ #       if ((dYdX1.x + dYdX2.x) / 2.0 == dYdX1.x and
+ #               (dYdX1.y + dYdX2.y) / 2.0 == dYdX1.y):
+ #           return True
+ #       return False
 
     def _makePerpendicular(self, p1, p2, length):
         """_makePerpendicular(p1, p2, length)...
@@ -1745,7 +1733,7 @@ class ObjectSlot(PathOp.ObjectOp):
             if cmn.Volume > 0.000001:
                 return True
         except Exception:
-            PathLog.debug('Failed to complete path collision check.')
+            PathLog.debug('Failed to complete path collision check.',cmn.Volume)
 
         return False
 
