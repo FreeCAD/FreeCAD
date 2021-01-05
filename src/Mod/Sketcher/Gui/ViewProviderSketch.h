@@ -113,9 +113,6 @@ public:
     App::PropertyBool RestoreCamera;
     App::PropertyString EditingWorkbench;
 
-    /// set icon & font sizes
-    void InitItemsSizes();
-
     /// Draw all constraint icons
     /*! Except maybe the radius and lock ones? */
     void drawConstraintIcons();
@@ -305,6 +302,9 @@ protected:
 protected:
     boost::signals2::connection connectUndoDocument;
     boost::signals2::connection connectRedoDocument;
+
+    /// set icon & font sizes
+    void initItemsSizes();
 
     void forceUpdateData();
 

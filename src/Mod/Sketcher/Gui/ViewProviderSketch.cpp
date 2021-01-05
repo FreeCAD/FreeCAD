@@ -373,7 +373,7 @@ ViewProviderSketch::ViewProviderSketch()
 
     //rubberband selection
     rubberband = new Gui::Rubberband();
-    InitItemsSizes();
+    initItemsSizes();
 }
 
 ViewProviderSketch::~ViewProviderSketch()
@@ -3191,11 +3191,14 @@ QString ViewProviderSketch::getPresentationString(const Constraint *constraint)
             }
         }
     }
+
     if (constraint->Type == Sketcher::Diameter){
         userStr.insert(0, QChar(8960)); // Diameter sign
-    }else if (constraint->Type == Sketcher::Radius){
+    }
+    else if (constraint->Type == Sketcher::Radius){
         userStr.insert(0, QChar(82)); // Capital letter R
     }
+
     return userStr;
 }
 
@@ -3754,23 +3757,31 @@ float ViewProviderSketch::getScaleFactor()
     }
 }
 
-void ViewProviderSketch::InitItemsSizes()
+void ViewProviderSketch::initItemsSizes()
 {
     //Add scaling to Constraint icons
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     double viewScalingFactor = hGrp->GetFloat("ViewScalingFactor", 1.25);
     viewScalingFactor = Base::clamp<double>(viewScalingFactor, 0.5, 5.0);
 
-    int defaultFontSize = QApplication::fontMetrics().height();
-    int ldpi = QApplication::desktop()->logicalDpiX();
-    float virtualdpi = 96.;
-    float QtPixelRatio = virtualdpi/ldpi;
-    float coinFontPixelRatio = QtPixelRatio; // this is not absolute exactly, but the ratio is correct
+    auto pixelsToPoints = [](int pixels, int dpi) -> int {
+        return pixels*72/dpi; // definition of point, 72 points = 1 inch
+    };
 
-    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    coinFontSize = hGrp->GetInt("EditSketcherFontSize", defaultFontSize * QtPixelRatio * coinFontPixelRatio * viewScalingFactor);
-    constraintIconSize = coinFontSize / coinFontPixelRatio;
-    return;
+    auto pointsToPixels = [](int points, int dpi) -> int {
+        return points/72.0*dpi; // definition of point, 72 points = 1 inch
+    };
+
+    // coin takes the font size in points, not pixels
+    // the coin FontSize in points from the system font, taking into account the application scaling factor is:
+    // -> pixelsToPoints(defaultFontSizePixels * viewScalingFactor, dpi)
+
+    int dpi = QApplication::desktop()->logicalDpiX();
+    int defaultFontSizePixels = QApplication::fontMetrics().height(); // returns height in pixels, not points
+
+    coinFontSize = pixelsToPoints(defaultFontSizePixels * viewScalingFactor, dpi);
+
+    constraintIconSize = pointsToPixels(coinFontSize, dpi);
 }
 
 void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer /*=true*/)
@@ -6094,6 +6105,9 @@ bool ViewProviderSketch::setEdit(int ModNum)
         }
         return false;
     }
+
+    // Init icon and font sizes in case they have changed
+    initItemsSizes();
 
     // clear the selection (convenience)
     Gui::Selection().clearSelection();
