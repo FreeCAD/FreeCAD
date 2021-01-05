@@ -119,10 +119,11 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
   : Gui::MDIView(doc, parent),
 #if QT_VERSION >= 0x050300
     m_orientation(QPageLayout::Landscape),
+    m_paperSize(QPageSize::A4),
 #else
     m_orientation(QPrinter::Landscape),
-#endif
     m_paperSize(QPrinter::A4),
+#endif
     m_vpPage(pageVp)
 {
 
@@ -675,10 +676,12 @@ void MDIViewPage::printPdf(std::string file)
     QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage(true);
     printer.setOutputFileName(filename);
-    if (m_paperSize == QPrinter::Ledger)  {
+
 #if QT_VERSION >= 0x050300
+    if (m_paperSize == QPageSize::Ledger)  {
         printer.setPageOrientation((QPageLayout::Orientation) (1 - m_orientation));  //reverse 0/1
 #else
+    if (m_paperSize == QPrinter::Ledger)  {
         printer.setOrientation((QPrinter::Orientation) (1 - m_orientation));  //reverse 0/1
 #endif
     } else {
@@ -688,7 +691,11 @@ void MDIViewPage::printPdf(std::string file)
         printer.setOrientation(m_orientation);
 #endif
     }
+#if QT_VERSION >= 0x050300
+    printer.setPageSize(QPageSize(m_paperSize));
+#else
     printer.setPaperSize(m_paperSize);
+#endif
     print(&printer);
 }
 
@@ -696,10 +703,11 @@ void MDIViewPage::print()
 {
     QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage(true);
-    printer.setPaperSize(m_paperSize);
 #if QT_VERSION >= 0x050300
+    printer.setPageSize(QPageSize(m_paperSize));
     printer.setPageOrientation(m_orientation);
 #else
+    printer.setPaperSize(m_paperSize);
     printer.setOrientation(m_orientation);
 #endif
     QPrintDialog dlg(&printer, this);
@@ -712,10 +720,11 @@ void MDIViewPage::printPreview()
 {
     QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage(true);
-    printer.setPaperSize(m_paperSize);
 #if QT_VERSION >= 0x050300
+    printer.setPageSize(QPageSize(m_paperSize));
     printer.setPageOrientation(m_orientation);
 #else
+    printer.setPaperSize(m_paperSize);
     printer.setOrientation(m_orientation);
 #endif
 
@@ -743,8 +752,13 @@ void MDIViewPage::print(QPrinter* printer)
     if (printer->outputFormat() == QPrinter::NativeFormat) {
         int w = printer->widthMM();
         int h = printer->heightMM();
+#if QT_VERSION >= 0x050300
+        QPageSize::PageSizeId psPrtCalcd = getPaperSize(w, h);
+        QPageSize::PageSizeId psPrtSetting = printer->pageLayout().pageSize().id();
+#else
         QPrinter::PaperSize psPrtCalcd = getPaperSize(w, h);
         QPrinter::PaperSize psPrtSetting = printer->paperSize();
+#endif
 
         // for the preview a 'Picture' paint engine is used which we don't
         // care if it uses wrong printer settings
@@ -836,8 +850,11 @@ void MDIViewPage::print(QPrinter* printer)
     static_cast<void> (blockConnection(false));
 }
 
-
+#if QT_VERSION >= 0x050300
+QPageSize::PageSizeId MDIViewPage::getPaperSize(int w, int h) const
+#else
 QPrinter::PaperSize MDIViewPage::getPaperSize(int w, int h) const
+#endif
 {
     static const float paperSizes[][2] = {
         {210, 297}, // A4
@@ -872,25 +889,46 @@ QPrinter::PaperSize MDIViewPage::getPaperSize(int w, int h) const
         {279.4f, 431.8f} // Tabloid (29)   causes trouble with orientation on PDF export
     };
 
+#if QT_VERSION >= 0x050300
+    QPageSize::PageSizeId ps = QPageSize::Custom;
+#else
     QPrinter::PaperSize ps = QPrinter::Custom;
+#endif
     for (int i=0; i<30; i++) {
         if (std::abs(paperSizes[i][0]-w) <= 1 &&
             std::abs(paperSizes[i][1]-h) <= 1) {
+#if QT_VERSION >= 0x050300
+            ps = static_cast<QPageSize::PageSizeId>(i);
+#else
             ps = static_cast<QPrinter::PaperSize>(i);
+#endif
             break;
         }
         else                                          //handle landscape & portrait w/h
         if (std::abs(paperSizes[i][0]-h) <= 1 &&
             std::abs(paperSizes[i][1]-w) <= 1) {
+#if QT_VERSION >= 0x050300
+            ps = static_cast<QPageSize::PageSizeId>(i);
+#else
             ps = static_cast<QPrinter::PaperSize>(i);
+#endif
             break;
         }
     }
+#if QT_VERSION >= 0x050300
+    if (ps == QPageSize::Ledger)  {                    //check if really Tabloid
+        if (w < 431) {
+            ps = QPageSize::Tabloid;
+        }
+    }
+#else
     if (ps == QPrinter::Ledger)  {                    //check if really Tabloid
         if (w < 431) {
             ps = QPrinter::Tabloid;
         }
     }
+#endif
+
 
     return ps;
 }
