@@ -863,6 +863,7 @@ StdCmdToggleVisibility::StdCmdToggleVisibility()
     sToolTipText  = QT_TR_NOOP("Toggles visibility");
     sStatusTip    = QT_TR_NOOP("Toggles visibility");
     sWhatsThis    = "Std_ToggleVisibility";
+    sPixmap       = "Std_ToggleVisibility";
     sAccel        = "Space";
     eType         = Alter3DView;
 }
@@ -939,6 +940,7 @@ StdCmdShowSelection::StdCmdShowSelection()
     sToolTipText  = QT_TR_NOOP("Show all selected objects");
     sStatusTip    = QT_TR_NOOP("Show all selected objects");
     sWhatsThis    = "Std_ShowSelection";
+    sPixmap       = "Std_ShowSelection";
     eType         = Alter3DView;
 }
 
@@ -966,6 +968,7 @@ StdCmdHideSelection::StdCmdHideSelection()
     sToolTipText  = QT_TR_NOOP("Hide all selected objects");
     sStatusTip    = QT_TR_NOOP("Hide all selected objects");
     sWhatsThis    = "Std_HideSelection";
+    sPixmap       = "Std_HideSelection";
     eType         = Alter3DView;
 }
 
@@ -993,6 +996,7 @@ StdCmdSelectVisibleObjects::StdCmdSelectVisibleObjects()
     sToolTipText  = QT_TR_NOOP("Select visible objects in the active document");
     sStatusTip    = QT_TR_NOOP("Select visible objects in the active document");
     sWhatsThis    = "Std_SelectVisibleObjects";
+    sPixmap       = "Std_SelectVisibleObjects";
     eType         = Alter3DView;
 }
 
@@ -1034,6 +1038,7 @@ StdCmdToggleObjects::StdCmdToggleObjects()
     sToolTipText  = QT_TR_NOOP("Toggles visibility of all objects in the active document");
     sStatusTip    = QT_TR_NOOP("Toggles visibility of all objects in the active document");
     sWhatsThis    = "Std_ToggleObjects";
+    sPixmap       = "Std_ToggleObjects";
     eType         = Alter3DView;
 }
 
@@ -1074,6 +1079,7 @@ StdCmdShowObjects::StdCmdShowObjects()
     sToolTipText  = QT_TR_NOOP("Show all objects in the document");
     sStatusTip    = QT_TR_NOOP("Show all objects in the document");
     sWhatsThis    = "Std_ShowObjects";
+    sPixmap       = "Std_ShowObjects";
     eType         = Alter3DView;
 }
 
@@ -1110,6 +1116,7 @@ StdCmdHideObjects::StdCmdHideObjects()
     sToolTipText  = QT_TR_NOOP("Hide all objects in the document");
     sStatusTip    = QT_TR_NOOP("Hide all objects in the document");
     sWhatsThis    = "Std_HideObjects";
+    sPixmap       = "Std_HideObjects";
     eType         = Alter3DView;
 }
 
@@ -2436,7 +2443,7 @@ StdCmdViewIvIssueCamPos::StdCmdViewIvIssueCamPos()
     sToolTipText  = QT_TR_NOOP("Issue the camera position to the console and to a macro, to easily recall this position");
     sWhatsThis    = "Std_ViewIvIssueCamPos";
     sStatusTip    = QT_TR_NOOP("Issue the camera position to the console and to a macro, to easily recall this position");
-    sPixmap       = "Std_Tool8";
+    sPixmap       = "Std_ViewIvIssueCamPos";
     eType         = Alter3DView;
 }
 
