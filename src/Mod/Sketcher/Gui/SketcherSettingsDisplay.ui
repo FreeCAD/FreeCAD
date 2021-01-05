@@ -114,7 +114,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
          </size>
         </property>
         <property name="text">
-         <string>Font size</string>
+         <string>View scale ratio</string>
         </property>
        </widget>
       </item>
@@ -266,24 +266,30 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="Gui::PrefSpinBox" name="EditSketcherFontSize">
+       <widget class="Gui::PrefDoubleSpinBox" name="viewScalingFactor">
         <property name="toolTip">
-         <string>Font size used for labels and constraints</string>
+         <string>Icons and fonts used in the 3D view are scaled based on this factor</string>
         </property>
-        <property name="suffix">
-         <string>px</string>
+        <property name="inputMethodHints">
+         <set>Qt::ImhPreferNumbers</set>
+        </property>
+        <property name="decimals">
+         <number>2</number>
         </property>
         <property name="minimum">
-         <number>1</number>
+         <double>0.500000000000000</double>
         </property>
         <property name="maximum">
-         <number>100</number>
+         <double>5.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.050000000000000</double>
         </property>
         <property name="value">
-         <number>17</number>
+         <double>1.250000000000000</double>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>EditSketcherFontSize</cstring>
+         <cstring>ViewScalingFactor</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>View</cstring>
@@ -351,9 +357,14 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
    <extends>QCheckBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
+  <customwidget>
+   <class>Gui::PrefDoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>EditSketcherFontSize</tabstop>
+  <tabstop>viewScalingFactor</tabstop>
   <tabstop>comboBox</tabstop>
   <tabstop>dialogOnDistanceConstraint</tabstop>
   <tabstop>continueMode</tabstop>
