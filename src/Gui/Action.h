@@ -215,6 +215,10 @@ private:
 private:
     int visibleItems; /**< Number of visible items */
     int maximumItems; /**< Number of maximum items */ 
+
+    class Private;
+    friend class Private;
+    std::unique_ptr<Private> _pimpl;
 };
 
 // --------------------------------------------------------------------

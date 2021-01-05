@@ -696,11 +696,41 @@ void WorkbenchGroup::slotRemoveWorkbench(const char* name)
 
 // --------------------------------------------------------------------
 
+class RecentFilesAction::Private: public ParameterGrp::ObserverType
+{
+public:
+    Private(RecentFilesAction *master, const char *path):master(master)
+    {
+        handle = App::GetApplication().GetParameterGroupByPath(path);
+        handle->Attach(this);
+    }
+
+    virtual ~Private() {
+        handle->Detach(this);
+    }
+
+    void OnChange(Base::Subject<const char*> &, const char *reason)
+    {
+        if (!updating && reason && strcmp(reason, "RecentFiles")==0) {
+            Base::StateLocker guard(updating);
+            master->restore();
+        }
+    }
+
+public:
+    RecentFilesAction *master;
+    ParameterGrp::handle handle;
+    bool updating = false;
+};
+
+// --------------------------------------------------------------------
+
 /* TRANSLATOR Gui::RecentFilesAction */
 
 RecentFilesAction::RecentFilesAction ( Command* pcCmd, QObject * parent )
   : ActionGroup( pcCmd, parent ), visibleItems(4), maximumItems(20)
 {
+    _pimpl.reset(new Private(this, "User parameter:BaseApp/Preferences/RecentFiles"));
     restore();
 }
 
@@ -817,13 +847,10 @@ void RecentFilesAction::resizeList(int size)
 /** Loads all recent files from the preferences. */
 void RecentFilesAction::restore()
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences");
-    if (hGrp->HasGroup("RecentFiles")) {
-        hGrp = hGrp->GetGroup("RecentFiles");
-        // we want at least 20 items but we do only show the number of files
-        // that is defined in user parameters
-        this->visibleItems = hGrp->GetInt("RecentFiles", this->visibleItems);
-    }
+    ParameterGrp::handle hGrp = _pimpl->handle;
+    // we want at least 20 items but we do only show the number of files
+    // that is defined in user parameters
+    this->visibleItems = hGrp->GetInt("RecentFiles", this->visibleItems);
 
     int count = std::max<int>(this->maximumItems, this->visibleItems);
     for (int i=0; i<count; i++)
@@ -838,8 +865,7 @@ void RecentFilesAction::restore()
 /** Saves all recent files to the preferences. */
 void RecentFilesAction::save()
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
-                                ->GetGroup("Preferences")->GetGroup("RecentFiles");
+    ParameterGrp::handle hGrp = _pimpl->handle;
     int count = hGrp->GetInt("RecentFiles", this->visibleItems); // save number of files
     hGrp->Clear();
 
@@ -854,6 +880,7 @@ void RecentFilesAction::save()
         hGrp->SetASCII(key.toLatin1(), value.toUtf8());
     }
 
+    Base::StateLocker guard(_pimpl->updating);
     hGrp->SetInt("RecentFiles", count); // restore
 }
 
@@ -1013,7 +1040,7 @@ void RecentMacrosAction::restore()
     }
 
     int count = std::max<int>(this->maximumItems, this->visibleItems);
-    for (int i=0; i<count; i++)
+    for (int i=_group->actions().size(); i<count; i++)
         _group->addAction(QLatin1String(""))->setVisible(false);
     std::vector<std::string> MRU = hGrp->GetASCIIs("MRU");
     QStringList files;
