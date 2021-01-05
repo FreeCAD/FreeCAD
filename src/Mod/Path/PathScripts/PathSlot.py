@@ -469,7 +469,6 @@ class ObjectSlot(PathOp.ObjectOp):
         if self.isArc:
             print ("_makeOperation: ",pnts)
             cmds = self._finishArc(obj, pnts, featureCount)
-            print(cmds)
         else:
             cmds = self._finishLine(obj, pnts, featureCount)
 
@@ -519,7 +518,8 @@ class ObjectSlot(PathOp.ObjectOp):
             (p1, p2) = pnts
             begExt = obj.ExtendPathStart.Value
             endExt = obj.ExtendPathEnd.Value
-            pnts = self._extendArcSlot(p1, p2, self.arcCenter, begExt, endExt)
+            # invert endExt, begExt args to get correct extentions, since XY geom is postitive CCW
+            pnts = self._extendArcSlot(p1, p2, self.arcCenter, endExt, begExt)
             print (pnts)
 
         if not pnts:
@@ -552,30 +552,29 @@ class ObjectSlot(PathOp.ObjectOp):
         It returns the gcode for the slot operation."""
         CMDS = list()
         PATHS = [(p2, p1, 'G2'), (p1, p2, 'G3')]
-        path_index = 0
+        if obj.ReverseDirection :
+            path_index = 1 
+        else : 
+            path_index = 0
 
         def arcPass(POINTS, depth):
             cmds = list()
-            (p1, p2, arcCmd) = POINTS
+            (st_pt, end_pt, arcCmd) = POINTS
             # cmds.append(Path.Command('N (Tool type: {})'.format(toolType), {}))
-            cmds.append(Path.Command('G0', {'X': p1.x, 'Y': p1.y, 'F': self.horizRapid}))
+            cmds.append(Path.Command('G0', {'X': st_pt.x, 'Y': st_pt.y, 'F': self.horizRapid}))
             cmds.append(Path.Command('G1', {'Z': depth, 'F': self.vertFeed}))
-            vtc = self.arcCenter.sub(p1)  # vector to center
+            vtc = self.arcCenter.sub(st_pt)  # vector to center
             cmds.append(
                 Path.Command(arcCmd,
-                    {'X': p2.x, 'Y': p2.y, 'I': vtc.x,
+                    {'X': end_pt.x, 'Y': end_pt.y, 'I': vtc.x,
                         'J': vtc.y, 'F': self.horizFeed
                      }))
             return cmds
 
         if obj.LayerMode == 'Single-pass':
-            if obj.ReverseDirection:
-                path_index = 1
             CMDS.extend(arcPass(PATHS[path_index], obj.FinalDepth.Value))
         else:
             if obj.CutPattern == 'Line':
-                if obj.ReverseDirection:
-                    path_index = 1
                 for depth in self.depthParams:
                     CMDS.extend(arcPass(PATHS[path_index], depth))
                     CMDS.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
@@ -676,7 +675,7 @@ class ObjectSlot(PathOp.ObjectOp):
     def _makeLineGCode(self, obj, p1, p2):
         """This method is the last in the overall line slot creation process.
         It accepts the operation object and two end points for the path.
-        It returns the slot gcode for the operation."""
+        It returns the gcode for the slot operation."""
         CMDS = list()
 
         def linePass(p1, p2, depth):
@@ -916,7 +915,7 @@ class ObjectSlot(PathOp.ObjectOp):
         return (p1, p2)
 
     def _processSingleEdge(self, obj, edge):
-        """Determine slot path endpoints from a single horizontally oriented face."""
+        """Determine slot path endpoints from a single horizontally oriented edge."""
         PathLog.debug('_processSingleEdge()')
         tolrnc = 0.0000001
         lineTypes = ['Part::GeomLine']
@@ -998,7 +997,7 @@ class ObjectSlot(PathOp.ObjectOp):
                 if not isHorizontal(V1.Z, V2.Z, midPnt.z):
                     return False
                     
-                midPnt.z =0.0
+                midPnt.z = 0.0
                 circleCenter = circumCircleFrom3Points(p1, p2, midPnt)
                 if not circleCenter:
                     return False
@@ -1230,7 +1229,7 @@ class ObjectSlot(PathOp.ObjectOp):
         n1 = p1
         n2 = p2
 
-        # Create a chord of the right length, starting on x axis 
+        # Create a chord of the right length, on XY plane, starting on x axis 
         def makeChord(rads):
             x = self.newRadius * math.cos(rads)
             y = self.newRadius * math.sin(rads)
@@ -1239,9 +1238,9 @@ class ObjectSlot(PathOp.ObjectOp):
             return Part.makeLine(a, b)
 
 
-        # Convert extension to radians; make a generic chord ( line ) from the x axis, with this angle
+        # Convert extension to radians; make a generic chord ( line ) on XY plane from the x axis
         # rotate and shift into place so it has same vertices as the required arc extention
-        # adjust rotation angle to provide +ve or -ve extention needed at its endpoint
+        # adjust rotation angle to provide +ve or -ve extention as needed 
         origin = FreeCAD.Vector(0.0, 0.0, 0.0)
         if begExt:
             ExtRadians = abs(begExt / self.newRadius)
