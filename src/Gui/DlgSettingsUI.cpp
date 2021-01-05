@@ -67,7 +67,8 @@ public:
 
 #define FC_OVERLAY_PARAMS \
     FC_UI_CHECKBOX(ViewParams, DockOverlayHideTabBar,"Hide tab bar") \
-    FC_UI_CHECKBOX(ViewParams, DockOverlayHideScrollBar,"Hide scroll bar") \
+    FC_UI_CHECKBOX(ViewParams, DockOverlayHidePropertyViewScrollBar,"Hide property view scroll bar") \
+    FC_UI_CHECKBOX(ViewParams, DockOverlayHideScrollBar,"Hide tree view scroll bar") \
     FC_UI_CHECKBOX(ViewParams, DockOverlayHideHeaderView,"Hide tree view header") \
     FC_UI_CHECKBOX(ViewParams, DockOverlayAutoView, "Auto hide in non 3D view") \
     FC_UI_CHECKBOX(ViewParams, DockOverlayMouseThrough, "Enable ALT + Mouse pass through") \
