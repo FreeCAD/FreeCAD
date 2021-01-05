@@ -467,7 +467,6 @@ class ObjectSlot(PathOp.ObjectOp):
             return False
 
         if self.isArc:
-            print ("_makeOperation: ",pnts)
             cmds = self._finishArc(obj, pnts, featureCount)
         else:
             cmds = self._finishLine(obj, pnts, featureCount)
@@ -494,11 +493,9 @@ class ObjectSlot(PathOp.ObjectOp):
                 FreeCAD.Console.PrintError(msg + '\n')
                 return False
             else:
-                print (pnts)
                 (p1, p2) = pnts
                 pnts = self._makeOffsetArc(p1, p2, self.arcCenter, newRadius)
                 self.newRadius = newRadius
-                print (pnts)
         else:
             PathLog.debug('arc radius: {}'.format(self.arcRadius))
             self.newRadius = self.arcRadius
@@ -518,9 +515,9 @@ class ObjectSlot(PathOp.ObjectOp):
             (p1, p2) = pnts
             begExt = obj.ExtendPathStart.Value
             endExt = obj.ExtendPathEnd.Value
-            # invert endExt, begExt args to get correct extentions, since XY geom is postitive CCW
+            # invert endExt, begExt args to apply extentions to correct ends
+            # XY geom is postitive CCW; Gcode postitive CW
             pnts = self._extendArcSlot(p1, p2, self.arcCenter, endExt, begExt)
-            print (pnts)
 
         if not pnts:
             return False
@@ -581,16 +578,10 @@ class ObjectSlot(PathOp.ObjectOp):
             elif obj.CutPattern == 'ZigZag':
                 i = 0
                 for depth in self.depthParams:
-                    if obj.ReverseDirection:
-                        if i % 2.0 == 0:  # even
-                            CMDS.extend(arcPass(PATHS[0], depth))
-                        else:  # odd
-                            CMDS.extend(arcPass(PATHS[1], depth))
-                    else:
-                        if i % 2.0 == 0:  # even
-                            CMDS.extend(arcPass(PATHS[1], depth))
-                        else:  # odd
-                            CMDS.extend(arcPass(PATHS[0], depth))
+                    if i % 2.0 == 0:  # even
+                        CMDS.extend(arcPass(PATHS[path_index], depth))
+                    else:  # odd
+                        CMDS.extend(arcPass(PATHS[not path_index], depth))
                     i += 1
         # Raise to SafeHeight when finished
         CMDS.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
