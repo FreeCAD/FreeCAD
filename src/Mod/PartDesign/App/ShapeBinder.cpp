@@ -416,7 +416,9 @@ App::DocumentObject *SubShapeBinder::getSubObject(const char *subname, PyObject 
     if(!dot)
         return nullptr;
 
-    App::GetApplication().checkLinkDepth(depth);
+    if (!App::GetApplication().checkLinkDepth(depth))
+        return nullptr;
+
     std::string name(subname,dot-subname);
     for(auto &l : Support.getSubListValues()) {
         auto obj = l.getValue();
@@ -1140,8 +1142,6 @@ App::DocumentObject *SubShapeBinder::_getLinkedObject(
         return self;
     if (!recurse || sobj == link.getValue())
         return sobj;
-
-    App::GetApplication().checkLinkDepth(depth);
 
     // set transform to false, because the above getSubObject() already include
     // the transform of sobj
