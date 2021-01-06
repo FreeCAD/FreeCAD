@@ -55,6 +55,7 @@
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureGroove.h>
 #include <Mod/PartDesign/App/FeatureRevolution.h>
+
 #include <Mod/PartDesign/App/FeatureTransformed.h>
 #include <Mod/PartDesign/App/FeatureMultiTransform.h>
 #include <Mod/PartDesign/App/DatumPoint.h>
@@ -384,7 +385,7 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
         }
         values = std::move(links);
     }
-        
+
     PartDesign::SubShapeBinder *binder = 0;
     try {
         openCommand(QT_TRANSLATE_NOOP("Command", "Create SubShapeBinder"));
@@ -403,7 +404,7 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
         commitCommand();
     } catch (Base::Exception &e) {
         e.ReportException();
-        QMessageBox::critical(Gui::getMainWindow(), 
+        QMessageBox::critical(Gui::getMainWindow(),
                 QObject::tr("Sub-Shape Binder"), QString::fromUtf8(e.what()));
         abortCommand();
     }
@@ -994,7 +995,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
 
         FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::" << which << "','" << FeatName << "')");
         auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
-        
+
         auto objCmd = Gui::Command::getObjectCmd(feature);
         if (feature->isDerivedFrom(Part::Part2DObject::getClassTypeId()) || subs.empty()) {
             FCMD_OBJ_CMD(Feat,"Profile = " << objCmd);
@@ -1003,7 +1004,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
             std::ostringstream ss;
             for (auto &s : subs)
                 ss << "'" << s << "',";
-            FCMD_OBJ_CMD(Feat,"Profile = (" << objCmd << ", [" << ss.str() << "])");   
+            FCMD_OBJ_CMD(Feat,"Profile = (" << objCmd << ", [" << ss.str() << "])");
         }
 
         //for additive and subtractive lofts allow the user to preselect the sections
@@ -1418,7 +1419,7 @@ void CmdPartDesignGroove::activated(int iMsg)
         else {
             FCMD_OBJ_CMD(Feat,"ReferenceAxis = ("<<getObjectCmd(pcActiveBody->getOrigin()->getY())<<",[''])");
         }
-        
+
         FCMD_OBJ_CMD(Feat,"Angle = 360.0");
 
         try {
@@ -1642,6 +1643,64 @@ bool CmdPartDesignSubtractiveLoft::isActive(void)
 {
     return hasActiveDocument();
 }
+
+//===========================================================================
+// PartDesign_Text
+//===========================================================================
+DEF_STD_CMD_A(CmdPartDesignText)
+
+CmdPartDesignText::CmdPartDesignText()
+  : Command("PartDesign_Text")
+{
+    sAppModule    = "PartDesign";
+    sGroup        = QT_TR_NOOP("PartDesign");
+    sMenuText     = QT_TR_NOOP("Text");
+    sToolTipText  = QT_TR_NOOP("Additive or Subtractive text on planar faces");
+    sWhatsThis    = "PartDesign_Text";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "PartDesign_Text";
+}
+
+void CmdPartDesignText::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    App::Document *doc = getDocument();
+    if (!PartDesignGui::assureModernWorkflow(doc))
+        return;
+
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
+
+    if (!pcActiveBody)
+        return;
+
+    Gui::Command* cmd = this;
+    auto worker = [cmd, &pcActiveBody](Part::Feature* sketch, App::DocumentObject *Feat) {
+
+        if (!Feat) return;
+
+        // specific parameters for helix
+        Gui::Command::updateActive();
+
+        if (sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+            FCMD_OBJ_CMD(Feat,"ReferenceAxis = (" << getObjectCmd(sketch) << ",['H_Axis'])");
+        }
+        else {
+            FCMD_OBJ_CMD(Feat,"ReferenceAxis = (" << getObjectCmd(pcActiveBody->getOrigin()->getX()) << ",[''])");
+        }
+
+        finishProfileBased(cmd, sketch, Feat);
+        cmd->adjustCameraPosition();
+    };
+
+    prepareProfileBased(pcActiveBody, this, "Text", worker);
+}
+
+bool CmdPartDesignText::isActive(void)
+{
+    return hasActiveDocument();
+}
+
+
 
 //===========================================================================
 // Common utility functions for Dressup features
@@ -2176,7 +2235,7 @@ void CmdPartDesignPolarPattern::activated(int iMsg)
         }
         if (!direction) {
             auto body = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(features.front()));
-            if (body) {                
+            if (body) {
                 FCMD_OBJ_CMD(Feat,"Axis = ("<<Gui::Command::getObjectCmd(body->getOrigin()->getZ())<<",[''])");
             }
         }
@@ -2397,7 +2456,7 @@ void CmdPartDesignBoolean::activated(int iMsg)
     std::string FeatName = getUniqueObjectName("Boolean",pcActiveBody);
     FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::Boolean','"<<FeatName<<"')");
     auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
-    
+
     // If we don't add an object to the boolean group then don't update the body
     // as otherwise this will fail and it will be marked as invalid
     bool updateDocument = false;
@@ -2457,10 +2516,12 @@ void CreatePartDesignCommands(void)
     rcCmdMgr.addCommand(new CmdPartDesignAdditiveLoft);
     rcCmdMgr.addCommand(new CmdPartDesignSubtractiveLoft);
 
+
     rcCmdMgr.addCommand(new CmdPartDesignFillet());
     rcCmdMgr.addCommand(new CmdPartDesignDraft());
     rcCmdMgr.addCommand(new CmdPartDesignChamfer());
     rcCmdMgr.addCommand(new CmdPartDesignThickness());
+    rcCmdMgr.addCommand(new CmdPartDesignText);
 
     rcCmdMgr.addCommand(new CmdPartDesignMirrored());
     rcCmdMgr.addCommand(new CmdPartDesignLinearPattern());

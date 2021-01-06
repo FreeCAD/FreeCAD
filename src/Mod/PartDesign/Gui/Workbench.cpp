@@ -409,6 +409,7 @@ void Workbench::activated()
         "PartDesign_SubtractivePipe",
         "PartDesign_AdditiveLoft",
         "PartDesign_SubtractiveLoft",
+        "PartDesign_Text",
         0};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT Sketcher::SketchObject COUNT 1",
@@ -516,7 +517,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* dressups = new Gui::MenuItem;
     dressups->setCommand("Apply a dress-up feature");
     *dressups << "PartDesign_Fillet" << "PartDesign_Chamfer"
-        << "PartDesign_Draft" << "PartDesign_Thickness";
+        << "PartDesign_Draft" << "PartDesign_Thickness" << "PartDesign_Text";
 
     *part << "PartDesign_Body"
           << "Separator"
@@ -617,6 +618,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "PartDesign_Chamfer"
           << "PartDesign_Draft"
           << "PartDesign_Thickness"
+          << "PartDesign_Text"
           << "Separator"
           << "PartDesign_Boolean";
 

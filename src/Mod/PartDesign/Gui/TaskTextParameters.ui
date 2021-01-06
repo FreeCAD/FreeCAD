@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PartDesignGui::TaskTextParameters</class>
+ <widget class="QWidget" name="PartDesignGui::TaskTextParameters">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>278</width>
+    <height>193</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+
+    <item>
+    <layout class="QHBoxLayout" name="horizontalLayoutStatus">
+     <item>
+      <widget class="QLabel" name="labelStatus">
+       <property name="text">
+        <string>Status:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="labelMessage">
+       <property name="text">
+        <string>Valid</string>
+       </property>
+      </widget>
+     </item>
+     </layout>
+   </item>
+
+    <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="label0">
+       <property name="text">
+        <string>Axis:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="axis">
+       <item>
+        <property name="text">
+         <string>Horizontal sketch axis</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Vertical sketch axis</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+
+    <item>
+    <layout class="QHBoxLayout" name="horizontalLayoutTurns">
+     <item>
+      <widget class="QLabel" name="labelText">
+       <property name="text">
+        <string>Text:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="text"/>
+     </item>
+    </layout>
+   </item>
+
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayoutFont">
+     <item>
+      <widget class="QLabel" name="labelFont">
+       <property name="text">
+        <string>Font:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFontComboBox" name="font"/>
+     </item>
+    </layout>
+   </item>
+
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayoutSize">
+     <item>
+      <widget class="QLabel" name="labelSize">
+       <property name="text">
+        <string>Font size:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::QuantitySpinBox" name="size">
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true">mm</string>
+       </property>
+       <property name="minimum">
+        <double>0.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>1.000000000000000</double>
+       </property>
+       <property name="value">
+        <double>10.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+
+    <item>
+    <layout class="QHBoxLayout" name="horizontalLayoutHeight">
+     <item>
+      <widget class="QLabel" name="labelHeight">
+       <property name="text">
+        <string>Text offset (+/-):</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::QuantitySpinBox" name="height">
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true">mm</string>
+       </property>
+       <property name="minimum">
+        <double>0.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>1.000000000000000</double>
+       </property>
+       <property name="value">
+        <double>30.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+
+   <item>
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+
+   <item>
+    <widget class="QCheckBox" name="checkBoxUpdateView">
+     <property name="text">
+      <string>Update view</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+
+
+
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
