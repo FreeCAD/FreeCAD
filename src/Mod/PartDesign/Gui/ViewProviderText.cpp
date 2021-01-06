@@ -62,6 +62,6 @@ TaskDlgFeatureParameters *ViewProviderText::getEditDialog()
 
 QIcon ViewProviderText::getIcon(void) const {
     QString str = QString::fromLatin1("PartDesign_Text.svg");
-    return PartDesignGui::ViewProvider::mergeOverlayIcons(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
+    return PartDesignGui::ViewProvider::mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
 }
 
