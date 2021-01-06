@@ -235,8 +235,7 @@ void ViewProviderGeoFeatureGroupExtension::buildExport() const {
 
     // search for objects handled (claimed) by the features
     for (auto obj: model) {
-        //stuff in another geofeaturegroup is not in the model anyway
-        if (!obj || obj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) { continue; }
+        if (!obj || !shouldCheckExport(obj)) { continue; }
 
         Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider ( obj );
         if (!vp || vp == getExtendedViewProvider()) { continue; }
@@ -257,6 +256,13 @@ void ViewProviderGeoFeatureGroupExtension::buildExport() const {
 
     if(group->_ExportChildren.getValues()!=model)
         group->_ExportChildren.setValues(std::move(model));
+}
+
+bool ViewProviderGeoFeatureGroupExtension::shouldCheckExport(App::DocumentObject *obj) const
+{
+    //By default, do not check geofeaturegroup children for export exclusion,
+    //because stuff in another geofeaturegroup is normally not in the model
+    return !obj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId());
 }
 
 int ViewProviderGeoFeatureGroupExtension::extensionCanReplaceObject(

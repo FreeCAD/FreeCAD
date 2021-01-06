@@ -956,3 +956,8 @@ void ViewProviderBody::groupSiblings(PartDesign::Feature *feat, bool collapse, b
     if (!checkSiblings())
         buildExport();
 }
+
+bool ViewProviderBody::shouldCheckExport(App::DocumentObject *) const
+{
+    return true;
+}

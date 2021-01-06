@@ -73,6 +73,7 @@ public:
 protected:
     void buildExport() const;
     virtual void buildChildren3D();
+    virtual bool shouldCheckExport(App::DocumentObject *) const;
 
 protected:
     SoGroup *pcGroupChildren;
