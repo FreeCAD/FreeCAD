@@ -550,10 +550,10 @@ private:
      * which is a top triangular matrix.This, together with the permutation matrix, allow to know groups of dependent parameters
      * (cols between rank and full size). Each group refers to a new parameter not affected by the rank in combination with other free
      * parameters intervening in the rank (because of the triangular shape of the R matrix). This results in that each the first column
-     * between the rank and the full size, may only depend on a number of parameters, while the last full size colum may dependent on
+     * between the rank and the full size, may only depend on a number of parameters, while the last full size column may be dependent on
      * any amount of previously introduced parameters.
      *
-     * Thus the rationale is start from the last group (having **potentially** the larger amount of parameters) and selecting as blocking
+     * Thus the rationale is: start from the last group (having **potentially** the larger amount of parameters) and selecting as blocking
      * for that group the latest blockable parameter. Because previous groups do not have access to the last parameter, this can never
      * interfere with previous groups. However, because the last parameter may not be a blockable one, there is a risk of selecting a parameter
      * common with other group, albeit the probability is reduced and probably (I have not demonstrated it though and I am not sure), it leads
