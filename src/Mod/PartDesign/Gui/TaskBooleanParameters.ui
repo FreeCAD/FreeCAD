@@ -69,6 +69,11 @@
        <string>Common</string>
       </property>
      </item>
+     <item>
+      <property name="text">
+       <string>Compound</string>
+      </property>
+     </item>
     </widget>
    </item>
   </layout>
