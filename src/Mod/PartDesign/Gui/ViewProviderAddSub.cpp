@@ -170,12 +170,13 @@ void ViewProviderAddSub::updateData(const App::Property* p) {
         if (p == &feat->AddSubShape)
             updateAddSubShapeIndicator();
         else if (p == &feat->BaseFeature) {
-            if (!feat->BaseFeature.getValue()) {
-                auto base = baseFeature.getObject();
-                if (base) {
+            auto base = feat->getBaseObject(true);
+            if (!base) {
+                auto baseObj = baseFeature.getObject();
+                if (baseObj) {
                     setPreviewDisplayMode(false);
                     baseFeature = App::DocumentObjectT();
-                    base->Visibility.setValue(false);
+                    baseObj->Visibility.setValue(false);
                     setPreviewDisplayMode(true);
                     getObject()->Visibility.setValue(true);
                 }
@@ -188,7 +189,7 @@ void ViewProviderAddSub::updateData(const App::Property* p) {
         if (p == &feat->BaseFeature || p == &feat->Placement) {
             Base::Matrix4D matrix;
             auto base = Base::freecad_dynamic_cast<Part::Feature>(
-                    feat->BaseFeature.getValue());
+                    feat->getBaseObject(true));
             if (base)
                 matrix = base->Placement.getValue().inverse().toMatrix()
                          * feat->Placement.getValue().toMatrix();
@@ -216,8 +217,8 @@ void ViewProviderAddSub::setPreviewDisplayMode(bool onoff) {
         checkAddSubColor();
 
         auto feat = Base::freecad_dynamic_cast<PartDesign::FeatureAddSub>(getObject());
-        if (feat && feat->BaseFeature.getValue()) {
-            auto base = feat->BaseFeature.getValue();
+        auto base = feat ? feat->getBaseObject(true) : nullptr;
+        if (base) {
             baseFeature = App::DocumentObjectT(base);
 
             // If there is a base feature, we shall inject the preview group
@@ -228,6 +229,7 @@ void ViewProviderAddSub::setPreviewDisplayMode(bool onoff) {
             if (baseVp && baseVp->getModeSwitch()
                        && baseVp->getModeSwitch()->isOfType(Gui::SoFCSwitch::getClassTypeId()))
             {
+                feat->Visibility.setValue(false);
                 base->Visibility.setValue(true);
                 auto baseSwitch = static_cast<Gui::SoFCSwitch*>(baseVp->getModeSwitch());
                 baseSwitch->addChild(previewGroup);

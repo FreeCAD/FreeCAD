@@ -191,8 +191,15 @@ TopoShape Feature::getBaseShape(bool silent, bool force) const {
         return result;
 
     if(BaseObject != BaseFeature.getValue()) {
-        if (BaseObject->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId()) ||
-            BaseObject->isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId()))
+        auto body = getFeatureBody();
+        if (!body) {
+            if(silent)
+                return result;
+            throw Base::RuntimeError("Missing container body");
+        }
+        if (body->BaseFeature.getValue() != BaseObject
+                && (BaseObject->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId())
+                    || BaseObject->isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId())))
         {
             if(silent)
                 return result;
