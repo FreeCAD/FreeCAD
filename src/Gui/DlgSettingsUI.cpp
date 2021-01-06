@@ -60,9 +60,9 @@ public:
     FC_UI_SPINBOX(ViewParams, PieMenuTriggerRadius, "Trigger radius", 10, 500, 10) \
     FC_UI_SPINBOX(ViewParams, PieMenuCenterRadius, "Center radius", 0, 250, 1) \
     FC_UI_SPINBOX(ViewParams, PieMenuFontSize, "Font size", 0, 32, 1) \
-    FC_UI_SPINBOX(ViewParams, PieMenuTriggerDelay, "Trigger delay (ViewParams, ms)", 0, 10000, 100) \
+    FC_UI_SPINBOX(ViewParams, PieMenuTriggerDelay, "Trigger delay (ms)", 0, 10000, 100) \
     FC_UI_CHECKBOX(ViewParams, PieMenuTriggerAction, "Trigger action") \
-    FC_UI_SPINBOX(ViewParams, PieMenuAnimationDuration, "Animation duration (ViewParams, ms)", 0, 5000, 100) \
+    FC_UI_SPINBOX(ViewParams, PieMenuAnimationDuration, "Animation duration (ms)", 0, 5000, 100) \
     FC_UI_COMBOBOX(ViewParams, PieMenuAnimationCurve, "Animation curve type") \
 
 #define FC_OVERLAY_PARAMS \
@@ -78,10 +78,10 @@ public:
     FC_UI_SPINBOX(ViewParams, DockOverlayHintTriggerSize, "Hint trigger size", 1, 100, 1) \
     FC_UI_SPINBOX(ViewParams, DockOverlayHintSize, "Hint width", 1, 100, 1) \
     FC_UI_CHECKBOX(ViewParams, DockOverlayHintTabBar, "Hint show tab bar") \
-    FC_UI_SPINBOX(ViewParams, DockOverlayHintDelay, "Hint delay (ViewParams, ms)", 0, 1000, 100) \
+    FC_UI_SPINBOX(ViewParams, DockOverlayHintDelay, "Hint delay (ms)", 0, 1000, 100) \
     FC_UI_CHECKBOX(ViewParams, DockOverlayActivateOnHover,"Activate on hover") \
-    FC_UI_SPINBOX(ViewParams, DockOverlayDelay, "Layout delay (ViewParams, ms)", 0, 5000, 100) \
-    FC_UI_SPINBOX(ViewParams, DockOverlayAnimationDuration, "Animation duration (ViewParams, ms)", 0, 5000, 100) \
+    FC_UI_SPINBOX(ViewParams, DockOverlayDelay, "Layout delay (ms)", 0, 5000, 100) \
+    FC_UI_SPINBOX(ViewParams, DockOverlayAnimationDuration, "Animation duration (ms)", 0, 5000, 100) \
     FC_UI_COMBOBOX(ViewParams, DockOverlayAnimationCurve, "Animation curve type") \
 
 #define FC_UI_PARAMS \
