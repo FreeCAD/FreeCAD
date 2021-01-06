@@ -188,6 +188,8 @@ struct EditData {
     PreselectCurve(-1),
     PreselectCross(-1),
     MarkerSize(7),
+    coinFontSize(11), // default of 11 points (not pixels)
+    constraintIconSize(15), // 11 points @ 96 ppi where 72 points = 1 inch
     blockedPreselection(false),
     FullyConstrained(false),
     //ActSketch(0), // if you are wondering, it went to SketchObject, accessible via getSolvedSketch() and via SketchObject interface as appropriate
@@ -208,7 +210,13 @@ struct EditData {
     textPos(0),
     constrGroup(0),
     infoGroup(0),
-    pickStyleAxes(0)
+    pickStyleAxes(0),
+    PointsDrawStyle(0),
+    CurvesDrawStyle(0),
+    RootCrossDrawStyle(0),
+    EditCurvesDrawStyle(0),
+    ConstraintDrawStyle(0),
+    InformationDrawStyle(0)
     {}
 
     // pointer to the active handler for new sketch objects
@@ -228,6 +236,9 @@ struct EditData {
     int PreselectCurve;
     int PreselectCross;
     int MarkerSize;
+    int coinFontSize;
+    int constraintIconSize;
+    double pixelScalingFactor;
     std::set<int> PreselectConstraintSet;
     bool blockedPreselection;
     bool FullyConstrained;
@@ -273,6 +284,13 @@ struct EditData {
     SmSwitchboard *constrGroup;
     SoGroup       *infoGroup;
     SoPickStyle   *pickStyleAxes;
+
+    SoDrawStyle * PointsDrawStyle;
+    SoDrawStyle * CurvesDrawStyle;
+    SoDrawStyle * RootCrossDrawStyle;
+    SoDrawStyle * EditCurvesDrawStyle;
+    SoDrawStyle * ConstraintDrawStyle;
+    SoDrawStyle * InformationDrawStyle;
 };
 
 
@@ -373,7 +391,8 @@ ViewProviderSketch::ViewProviderSketch()
 
     //rubberband selection
     rubberband = new Gui::Rubberband();
-    initItemsSizes();
+
+    subscribeToParameters();
 }
 
 ViewProviderSketch::~ViewProviderSketch()
@@ -3655,10 +3674,10 @@ QImage ViewProviderSketch::renderConstrIcon(const QString &type,
     // Constants to help create constraint icons
     QString joinStr = QString::fromLatin1(", ");
 
-    QImage icon = Gui::BitmapFactory().pixmapFromSvg(type.toLatin1().data(),QSizeF(constraintIconSize,constraintIconSize)).toImage();
+    QImage icon = Gui::BitmapFactory().pixmapFromSvg(type.toLatin1().data(),QSizeF(edit->constraintIconSize,edit->constraintIconSize)).toImage();
 
     QFont font = QApplication::font();
-    font.setPixelSize(static_cast<int>(0.8 * constraintIconSize));
+    font.setPixelSize(static_cast<int>(0.8 * edit->constraintIconSize));
     font.setBold(true);
     QFontMetrics qfm = QFontMetrics(font);
 
@@ -3757,19 +3776,48 @@ float ViewProviderSketch::getScaleFactor()
     }
 }
 
+void ViewProviderSketch::OnChange(Base::Subject<const char*> &rCaller, const char * sReason)
+{
+    (void) rCaller;
+    //ParameterGrp& rclGrp = ((ParameterGrp&)rCaller);
+    if (strcmp(sReason, "ViewScalingFactor") == 0 || strcmp(sReason, "MarkerSize") == 0) {
+        if(edit) { // only if in edit mode, if not it gets updated when entering edit mode
+            initItemsSizes();
+            updateInventorNodeSizes();
+            rebuildConstraintsVisual();
+            draw();
+        }
+    }
+}
+
+void ViewProviderSketch::subscribeToParameters()
+{
+     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+     hGrp->Attach(this);
+}
+
+void ViewProviderSketch::updateInventorNodeSizes()
+{
+    assert(edit);
+    edit->PointsDrawStyle->pointSize = std::lround(8 * edit->pixelScalingFactor);
+    edit->PointSet->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex("CIRCLE_FILLED", edit->MarkerSize);
+    edit->CurvesDrawStyle->lineWidth = std::lround(3 * edit->pixelScalingFactor);
+    edit->RootCrossDrawStyle->lineWidth = std::lround(2 * edit->pixelScalingFactor);
+    edit->EditCurvesDrawStyle->lineWidth = std::lround(3 * edit->pixelScalingFactor);
+    edit->ConstraintDrawStyle->lineWidth = std::lround(1 * edit->pixelScalingFactor);
+    edit->InformationDrawStyle->lineWidth = std::lround(1 * edit->pixelScalingFactor);
+}
+
 void ViewProviderSketch::initItemsSizes()
 {
     //Add scaling to Constraint icons
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     double viewScalingFactor = hGrp->GetFloat("ViewScalingFactor", 1.25);
     viewScalingFactor = Base::clamp<double>(viewScalingFactor, 0.5, 5.0);
+    int markersize = hGrp->GetInt("MarkerSize", 7);
 
-    auto pixelsToPoints = [](int pixels, int dpi) -> int {
+    auto pixelsToPoints = [](int pixels, int dpi) {
         return pixels*72/dpi; // definition of point, 72 points = 1 inch
-    };
-
-    auto pointsToPixels = [](int points, int dpi) -> int {
-        return points/72.0*dpi; // definition of point, 72 points = 1 inch
     };
 
     // coin takes the font size in points, not pixels
@@ -3779,9 +3827,43 @@ void ViewProviderSketch::initItemsSizes()
     int dpi = QApplication::desktop()->logicalDpiX();
     int defaultFontSizePixels = QApplication::fontMetrics().height(); // returns height in pixels, not points
 
-    coinFontSize = pixelsToPoints(defaultFontSizePixels * viewScalingFactor, dpi);
+    if(edit) {
+        // simple scaling factor for hardcoded pixel values in the Sketcher
+        edit->pixelScalingFactor = viewScalingFactor * dpi / 96; // 96 ppi is the standard pixel density for which pixel quantities were calculated
 
-    constraintIconSize = pointsToPixels(coinFontSize, dpi);
+        double view3dFontPixels = defaultFontSizePixels * viewScalingFactor;
+        edit->coinFontSize = pixelsToPoints(view3dFontPixels, dpi);
+        edit->constraintIconSize = view3dFontPixels;
+
+        // The global default is used.
+        //
+        // Rationale:
+        // -> Other WBs use the default value as is
+        // -> If a user has a HDPI, he will eventually change the value for the other WBs
+        // -> If we correct the value here in addition, we would get two times a resize
+
+        edit->MarkerSize = markersize;
+
+        // This commented code would find a the closest supported marker value to a provided value.
+        // It may be useful if a different global marker size implementation is provided.
+        //
+        // Here marker size is used as a ratio to the default of 7 px (as a second scaling factor)
+        // the default marker size is 30% of the view3dFontPixels
+        // NOTE: Not all marker sizes are supported, grab the closest supported one.
+        /*
+        std::vector<int> supportedsizes {5, 7, 9, 11, 13, 15};
+        int calculatedmarker = std::lround(0.3*view3dFontPixels*markersize/7.0);
+
+        auto pos = std::upper_bound(supportedsizes.begin(), supportedsizes.end(), calculatedmarker);
+
+        if(pos == supportedsizes.end())
+            edit->MarkerSize = *std::prev(supportedsizes.end());
+        else if(pos == supportedsizes.begin())
+            edit->MarkerSize = *supportedsizes.begin();
+        else
+            edit->MarkerSize = (*pos - calculatedmarker > calculatedmarker - *std::prev(pos))?*std::prev(pos):*pos;
+        */
+    }
 }
 
 void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer /*=true*/)
@@ -4262,7 +4344,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
             SoFont *font = new SoFont;
             font->name.setValue("Helvetica");
-            font->size.setValue(coinFontSize);
+            font->size.setValue(edit->coinFontSize);
 
             SoText2 *degreetext = new SoText2;
             degreetext->string = SbString(spline->getDegree());
@@ -4541,7 +4623,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
                 SoFont *font = new SoFont;
                 font->name.setValue("Helvetica");
-                font->size.setValue(coinFontSize);
+                font->size.setValue(edit->coinFontSize);
 
                 SoText2 *degreetext = new SoText2;
                 degreetext->string = SbString("(") + SbString(*itm) + SbString(")");
@@ -4608,7 +4690,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
                 SoFont* font = new SoFont;
                 font->name.setValue("Helvetica");
-                font->size.setValue(coinFontSize);
+                font->size.setValue(edit->coinFontSize);
 
                 translate->translation.setValue(poleposition.x, poleposition.y, zInfo);
 
@@ -5826,7 +5908,8 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
                                             ConstrDimColor
                                             :NonDrivingConstrDimColor)
                                         :DeactivatedConstrDimColor;
-                text->size.setValue(coinFontSize);
+                text->size.setValue(edit->coinFontSize);
+                text->lineWidth = std::lround(2 * edit->pixelScalingFactor);
                 text->useAntialiasing = false;
                 SoAnnotation *anno = new SoAnnotation();
                 anno->renderCaching = SoSeparator::OFF;
@@ -5929,6 +6012,7 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
                 arrows->norm.setValue(norm);
                 arrows->string = "";
                 arrows->textColor = ConstrDimColor;
+                arrows->lineWidth = std::lround(2 * edit->pixelScalingFactor);
 
                 // #define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
                 sep->addChild(arrows);
@@ -6106,9 +6190,6 @@ bool ViewProviderSketch::setEdit(int ModNum)
         return false;
     }
 
-    // Init icon and font sizes in case they have changed
-    initItemsSizes();
-
     // clear the selection (convenience)
     Gui::Selection().clearSelection();
     Gui::Selection().rmvPreselect();
@@ -6119,8 +6200,8 @@ bool ViewProviderSketch::setEdit(int ModNum)
     assert(!edit);
     edit = new EditData();
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    edit->MarkerSize = hGrp->GetInt("MarkerSize", 7);
+    // Init icon, font and marker sizes
+    initItemsSizes();
 
     ParameterGrp::handle hSketch = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
     edit->handleEscapeButton = !hSketch->GetBool("LeaveSketchWithEscape", true);
@@ -6175,6 +6256,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
 
     float transparency;
 
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     // set the point color
     unsigned long color = (unsigned long)(VertexColor.getPackedValue());
     color = hGrp->GetUnsigned("EditedVertexColor", color);
@@ -6438,10 +6520,10 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->PointsCoordinate->setName("PointsCoordinate");
     pointsRoot->addChild(edit->PointsCoordinate);
 
-    SoDrawStyle *drawStyle = new SoDrawStyle;
-    drawStyle->setName("PointsDrawStyle");
-    drawStyle->pointSize = 8;
-    pointsRoot->addChild(drawStyle);
+    edit->PointsDrawStyle = new SoDrawStyle;
+    edit->PointsDrawStyle->setName("PointsDrawStyle");
+    edit->PointsDrawStyle->pointSize = std::lround(8 * edit->pixelScalingFactor);
+    pointsRoot->addChild(edit->PointsDrawStyle);
 
     edit->PointSet = new SoMarkerSet;
     edit->PointSet->setName("PointSet");
@@ -6464,10 +6546,10 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->CurvesCoordinate->setName("CurvesCoordinate");
     curvesRoot->addChild(edit->CurvesCoordinate);
 
-    drawStyle = new SoDrawStyle;
-    drawStyle->setName("CurvesDrawStyle");
-    drawStyle->lineWidth = 3;
-    curvesRoot->addChild(drawStyle);
+    edit->CurvesDrawStyle = new SoDrawStyle;
+    edit->CurvesDrawStyle->setName("CurvesDrawStyle");
+    edit->CurvesDrawStyle->lineWidth = std::lround(3 * edit->pixelScalingFactor);
+    curvesRoot->addChild(edit->CurvesDrawStyle);
 
     edit->CurveSet = new SoLineSet;
     edit->CurveSet->setName("CurvesLineSet");
@@ -6484,10 +6566,10 @@ void ViewProviderSketch::createEditInventorNodes(void)
     MtlBind->value = SoMaterialBinding::PER_FACE;
     crossRoot->addChild(MtlBind);
 
-    drawStyle = new SoDrawStyle;
-    drawStyle->setName("RootCrossDrawStyle");
-    drawStyle->lineWidth = 2;
-    crossRoot->addChild(drawStyle);
+    edit->RootCrossDrawStyle = new SoDrawStyle;
+    edit->RootCrossDrawStyle->setName("RootCrossDrawStyle");
+    edit->RootCrossDrawStyle->lineWidth = std::lround(2 * edit->pixelScalingFactor);
+    crossRoot->addChild(edit->RootCrossDrawStyle);
 
     edit->RootCrossMaterials = new SoMaterial;
     edit->RootCrossMaterials->setName("RootCrossMaterials");
@@ -6514,10 +6596,10 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->EditCurvesCoordinate->setName("EditCurvesCoordinate");
     editCurvesRoot->addChild(edit->EditCurvesCoordinate);
 
-    drawStyle = new SoDrawStyle;
-    drawStyle->setName("EditCurvesDrawStyle");
-    drawStyle->lineWidth = 3;
-    editCurvesRoot->addChild(drawStyle);
+    edit->EditCurvesDrawStyle = new SoDrawStyle;
+    edit->EditCurvesDrawStyle->setName("EditCurvesDrawStyle");
+    edit->EditCurvesDrawStyle->lineWidth = std::lround(3 * edit->pixelScalingFactor);
+    editCurvesRoot->addChild(edit->EditCurvesDrawStyle);
 
     edit->EditCurveSet = new SoLineSet;
     edit->EditCurveSet->setName("EditCurveLineSet");
@@ -6543,7 +6625,7 @@ void ViewProviderSketch::createEditInventorNodes(void)
     Coordsep->addChild(CoordTextMaterials);
 
     SoFont *font = new SoFont();
-    font->size.setValue(coinFontSize);
+    font->size.setValue(edit->coinFontSize);
 
     Coordsep->addChild(font);
 
@@ -6563,10 +6645,10 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->EditRoot->addChild(MtlBind);
 
     // use small line width for the Constraints
-    drawStyle = new SoDrawStyle;
-    drawStyle->setName("ConstraintDrawStyle");
-    drawStyle->lineWidth = 1;
-    edit->EditRoot->addChild(drawStyle);
+    edit->ConstraintDrawStyle = new SoDrawStyle;
+    edit->ConstraintDrawStyle->setName("ConstraintDrawStyle");
+    edit->ConstraintDrawStyle->lineWidth = std::lround(1 * edit->pixelScalingFactor);
+    edit->EditRoot->addChild(edit->ConstraintDrawStyle);
 
     // add the group where all the constraints has its SoSeparator
     edit->constrGroup = new SmSwitchboard();
@@ -6580,10 +6662,10 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->EditRoot->addChild(MtlBind);
 
     // use small line width for the information visual
-    drawStyle = new SoDrawStyle;
-    drawStyle->setName("InformationDrawStyle");
-    drawStyle->lineWidth = 1;
-    edit->EditRoot->addChild(drawStyle);
+    edit->InformationDrawStyle = new SoDrawStyle;
+    edit->InformationDrawStyle->setName("InformationDrawStyle");
+    edit->InformationDrawStyle->lineWidth = std::lround(1 * edit->pixelScalingFactor);
+    edit->EditRoot->addChild(edit->InformationDrawStyle);
 
     // add the group where all the information entity has its SoSeparator
     edit->infoGroup = new SoGroup();

@@ -87,6 +87,7 @@ class DrawSketchHandler;
 class SketcherGuiExport ViewProviderSketch : public PartGui::ViewProvider2DObjectGrid
                                             , public PartGui::ViewProviderAttachExtension
                                             , public Gui::SelectionObserver
+                                            , public ParameterGrp::ObserverType
 {
     Q_DECLARE_TR_FUNCTIONS(SketcherGui::ViewProviderSketch)
     /// generates a warning message about constraint conflicts and appends it to the given message
@@ -271,6 +272,9 @@ public:
     /// signals if the elements list has changed
     boost::signals2::signal<void ()> signalElementsChanged;
 
+    /** Observer for parameter group. */
+    void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override;
+
 protected:
     Base::Placement getEditingPlacement() const;
 
@@ -305,6 +309,10 @@ protected:
 
     /// set icon & font sizes
     void initItemsSizes();
+    /// subscribe to parameter groups as an observer
+    void subscribeToParameters();
+    /// updates the sizes of the edit mode inventor node
+    void updateInventorNodeSizes();
 
     void forceUpdateData();
 
@@ -471,9 +479,6 @@ protected:
     bool isShownVirtualSpace; // indicates whether the present virtual space view is the Real Space or the Virtual Space (virtual space 1 or 2)
 
     ShortcutListener* listener;
-
-    int coinFontSize;
-    int constraintIconSize;
 };
 
 } // namespace PartGui
