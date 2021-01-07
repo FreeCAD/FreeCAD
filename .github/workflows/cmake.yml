@@ -103,7 +103,8 @@ jobs:
       uses: actions/checkout@v2
     - name: Configure
       run: |
-        mkdir build && cd build && cmake -Wno-dev -G"${GENERATOR}" ${{matrix.config.cmake_flags}} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ../
+        mkdir build && cd build 
+        CC=${{matrix.config.cc}} CXX=${{matrix.config.cxx}} cmake -Wno-dev -G"${GENERATOR}" ${{matrix.config.cmake_flags}} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ../
 
     - name: Install and Test (Linux)
       if: runner.os == 'Linux'
