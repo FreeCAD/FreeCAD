@@ -50,9 +50,9 @@ using namespace Mesh;
 using namespace MeshCore;
 
 static std::vector<std::string>
-expandSubObjects(const App::DocumentObject *obj,
-                 std::map<const App::DocumentObject*, std::vector<std::string> > &cache,
-                 int depth)
+expandSubObjectNames(const App::DocumentObject *obj,
+                     std::map<const App::DocumentObject*, std::vector<std::string> > &subObjectNameCache,
+                     int depth)
 {
     if (!App::GetApplication().checkLinkDepth(depth))
         return {};
@@ -72,9 +72,10 @@ expandSubObjects(const App::DocumentObject *obj,
         if (!sobj || (vis < 0 && !sobj->Visibility.getValue()))
             continue;
         auto linked = sobj->getLinkedObject(true);
-        auto it = cache.find(linked);
-        if (it == cache.end())
-            it = cache.emplace(linked, expandSubObjects(linked, cache, depth+1)).first;
+        auto it = subObjectNameCache.find(linked);
+        if (it == subObjectNameCache.end())
+            it = subObjectNameCache.emplace(
+                    linked, expandSubObjectNames(linked, subObjectNameCache, depth+1)).first;
         for (auto & ssub : it->second)
             res.push_back(sub + ssub);
     }
@@ -99,7 +100,7 @@ std::string Exporter::xmlEscape(const std::string &input)
 int Exporter::addObject(App::DocumentObject *obj, float tol)
 {
     int count = 0;
-    for (std::string & sub : expandSubObjects(obj, cache, 0)) {
+    for (std::string & sub : expandSubObjectNames(obj, subObjectNameCache, 0)) {
         Base::Matrix4D matrix;
         auto sobj = obj->getSubObject(sub.c_str(), nullptr, &matrix);
         auto linked = sobj->getLinkedObject(true, &matrix, false);
