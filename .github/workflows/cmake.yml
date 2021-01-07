@@ -30,6 +30,12 @@ jobs:
           }
 
     steps:
+
+    - name: Change Apt Cache permissions
+      if: runner.os == 'Linux'
+      run: |
+        sudo chown -R $(whoami):$(id -ng) /var/cache/apt/archives
+
     - name: Cache Apt (Linux)
       uses: actions/cache@v2
       with:
