@@ -87,9 +87,8 @@ jobs:
         # https://github.com/FreeCAD/FreeCAD/pull/3485
         wget http://mirrors.kernel.org/ubuntu/pool/universe/e/eigen3/libeigen3-dev_3.3.7-2_all.deb
         sudo dpkg -i libeigen3-dev_3.3.7-2_all.deb
-        sudo apt-get install xvfb -y
-        export DISPLAY=:99.0
-        sh -e /etc/init.d/xvfb start
+        #export DISPLAY=:99.0
+        #sh -e /etc/init.d/xvfb start
 
         export INSTALLED_APP_PATH="/usr/local/bin/FreeCAD"
         export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/netgen/:$LD_LIRBARY_PATH
@@ -107,7 +106,7 @@ jobs:
         if [ "${TRAVIS_OS_NAME}" == "linux" ]; then sudo timeout -k 175m 170m make -j2 install || true; fi
         sudo make -j2 install
         #ccache -s
-        ${INSTALLED_APP_PATH} --console --run-test 0 || travis_terminate 1
+        xvfb-run --auto-servernum ${INSTALLED_APP_PATH} --console --run-test 0 || travis_terminate 1
         ${INSTALLED_APP_PATH} --log-file /tmp/FreeCAD_installed.log &
         sleep 10 && pkill FreeCAD
         cat /tmp/FreeCAD_installed.log
