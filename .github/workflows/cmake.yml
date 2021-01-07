@@ -87,14 +87,13 @@ jobs:
         # https://github.com/FreeCAD/FreeCAD/pull/3485
         wget http://mirrors.kernel.org/ubuntu/pool/universe/e/eigen3/libeigen3-dev_3.3.7-2_all.deb
         sudo dpkg -i libeigen3-dev_3.3.7-2_all.deb
-
+        sudo apt-get install xvfb -y
         #export DISPLAY=:99.0
         #sh -e /etc/init.d/xvfb start
 
         export INSTALLED_APP_PATH="/usr/local/bin/FreeCAD"
         export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/netgen/:$LD_LIRBARY_PATH
     - name: Install and Test (Linux)
-      uses: GabrielBB/xvfb-action@v1
       if: runner.os == 'Linux'
       run: |
         # Stop compiling (GCC) after 2 hrs 50 min (3 hrs limit).
