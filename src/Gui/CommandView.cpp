@@ -2170,6 +2170,7 @@ StdCmdAxisCross::StdCmdAxisCross()
         sToolTipText  = QT_TR_NOOP("Toggle axis cross");
         sStatusTip    = QT_TR_NOOP("Toggle axis cross");
         sWhatsThis    = "Std_AxisCross";
+        sPixmap       = "Std_AxisCross";
         sAccel        = "A,C";
 }
 
