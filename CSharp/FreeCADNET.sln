@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FreeCADNET", "CSharp\FreeCADNET.csproj", "{6871512B-AEB5-43B4-88A1-7B3CEF414EAC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6871512B-AEB5-43B4-88A1-7B3CEF414EAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6871512B-AEB5-43B4-88A1-7B3CEF414EAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6871512B-AEB5-43B4-88A1-7B3CEF414EAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6871512B-AEB5-43B4-88A1-7B3CEF414EAC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {49DC1059-CDDA-4A1D-8013-C3D916827289}
+	EndGlobalSection
+EndGlobal

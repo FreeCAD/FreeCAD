@@ -1,0 +1,13 @@
+C:\Users\Dell\Documents\Git\FreeCAD\CSharp\CSharp\bin\Debug\netcoreapp3.1\FreeCADNET.exe
+C:\Users\Dell\Documents\Git\FreeCAD\CSharp\CSharp\bin\Debug\netcoreapp3.1\FreeCADNET.deps.json
+C:\Users\Dell\Documents\Git\FreeCAD\CSharp\CSharp\bin\Debug\netcoreapp3.1\FreeCADNET.runtimeconfig.json
+C:\Users\Dell\Documents\Git\FreeCAD\CSharp\CSharp\bin\Debug\netcoreapp3.1\FreeCADNET.runtimeconfig.dev.json
+C:\Users\Dell\Documents\Git\FreeCAD\CSharp\CSharp\bin\Debug\netcoreapp3.1\FreeCADNET.dll
+C:\Users\Dell\Documents\Git\FreeCAD\CSharp\CSharp\bin\Debug\netcoreapp3.1\FreeCADNET.pdb
+C:\Users\Dell\Documents\Git\FreeCAD\CSharp\CSharp\obj\Debug\netcoreapp3.1\FreeCADNET.csprojAssemblyReference.cache
+C:\Users\Dell\Documents\Git\FreeCAD\CSharp\CSharp\obj\Debug\netcoreapp3.1\FreeCADNET.AssemblyInfoInputs.cache
+C:\Users\Dell\Documents\Git\FreeCAD\CSharp\CSharp\obj\Debug\netcoreapp3.1\FreeCADNET.AssemblyInfo.cs
+C:\Users\Dell\Documents\Git\FreeCAD\CSharp\CSharp\obj\Debug\netcoreapp3.1\FreeCADNET.csproj.CoreCompileInputs.cache
+C:\Users\Dell\Documents\Git\FreeCAD\CSharp\CSharp\obj\Debug\netcoreapp3.1\FreeCADNET.dll
+C:\Users\Dell\Documents\Git\FreeCAD\CSharp\CSharp\obj\Debug\netcoreapp3.1\FreeCADNET.pdb
+C:\Users\Dell\Documents\Git\FreeCAD\CSharp\CSharp\obj\Debug\netcoreapp3.1\FreeCADNET.genruntimeconfig.cache
