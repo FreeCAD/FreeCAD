@@ -662,6 +662,29 @@ MenuItem* StdWorkbench::setupMenuBar() const
         << "Std_UserInterface"
         << "Std_MainFullscreen";
 
+    // Simulation
+    MenuItem* Simulation = new MenuItem(menuBar);
+    Simulation->setCommand("&Simulation");
+    *Simulation
+        //<< "Std_DlgParameter"
+        << "Std_DefineMaterials"
+        << "Std_DefineSection"
+        << "Std_DefineBoundaryConditions"
+        << "Std_DefineLoads"
+        << "Separator"
+        << "Std_RunAnalysis"
+        << "Seperator"
+        << "Std_SectionProperties"
+        << "Seperator"
+        << "Std_PlotResults"
+        << "Std_ListResults"
+        << "Std_ResultTools";
+
+#ifdef BUILD_ADDONMGR
+    * tool << "Std_AddonMgr";
+#endif
+
+
     // Tools
     MenuItem* tool = new MenuItem(menuBar);
     tool->setCommand("&Tools");
@@ -747,6 +770,22 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     macro->setCommand("Macro");
     *macro << "Std_DlgMacroRecord" << "Std_MacroStopRecord" << "Std_DlgMacroExecute"
         << "Std_DlgMacroExecuteDirect";
+
+    // Simulation
+    ToolBarItem* simulation = new ToolBarItem(root);
+    simulation->setCommand("Simulation");
+    *simulation << "Std_DefineMaterials"
+        << "Std_DefineSection"
+        << "Std_DefineBoundaryConditions"
+        << "Std_DefineLoads"
+        << "Separator"
+        << "Std_RunAnalysis"
+        << "Seperator"
+        << "Std_SectionProperties"
+        << "Seperator"
+        << "Std_PlotResults"
+        << "Std_ListResults"
+        << "Std_ResultTools";
 
     // View
     ToolBarItem* view = new ToolBarItem(root);

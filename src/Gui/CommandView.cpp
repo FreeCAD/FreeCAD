@@ -1998,8 +1998,251 @@ bool StdCmdRotate::isActive(void)
 }
 
 //===========================================================================
-// Std_Pan
+// Std_DefineMaterials
 //===========================================================================
+DEF_STD_CMD_A(StdCmdDefineMaterials)
+StdCmdDefineMaterials::StdCmdDefineMaterials()
+    : Command("Std_DefineMaterials")
+{
+    sGroup = QT_TR_NOOP("&Simulation");
+    sMenuText = QT_TR_NOOP("DefineMaterials");
+    sToolTipText = QT_TR_NOOP("Idk what this finna do -Luke");
+    sWhatsThis = "Std_DefineMaterials";
+    sStatusTip = QT_TR_NOOP("Idk what this finna do -Luke");
+    sPixmap = "window-new";
+    eType = Alter3DView;
+}
+void StdCmdDefineMaterials::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+}
+bool StdCmdDefineMaterials::isActive(void)
+
+{
+    return false;
+}
+//===========================================================================
+// Std_DefineSection
+//===========================================================================
+DEF_STD_CMD_A(StdCmdDefineSection)
+StdCmdDefineSection::StdCmdDefineSection()
+    : Command("Std_DefineSection")
+{
+    sGroup = QT_TR_NOOP("&Simulation");
+    sMenuText = QT_TR_NOOP("DefineSection");
+    sToolTipText = QT_TR_NOOP("Idk what this finna do -Luke");
+    sWhatsThis = "Std_DefineSection";
+    sStatusTip = QT_TR_NOOP("Idk what this finna do -Luke");
+    sPixmap = "window-new";
+    eType = Alter3DView;
+}
+void StdCmdDefineSection::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+}
+bool StdCmdDefineSection::isActive(void)
+
+{
+    return false;
+}
+//===========================================================================
+// Std_DefineBoundaryConditions
+//===========================================================================
+DEF_STD_CMD_A(StdCmdDefineBoundaryConditions)
+StdCmdDefineBoundaryConditions::StdCmdDefineBoundaryConditions()
+    : Command("Std_DefineBoundaryConditions")
+{
+    sGroup = QT_TR_NOOP("&Simulation");
+    sMenuText = QT_TR_NOOP("DefineBoundaryConditions");
+    sToolTipText = QT_TR_NOOP("Idk what this finna do -Luke");
+    sWhatsThis = "Std_DefineBoundaryConditions";
+    sStatusTip = QT_TR_NOOP("Idk what this finna do -Luke");
+    sPixmap = "window-new";
+    eType = Alter3DView;
+}
+void StdCmdDefineBoundaryConditions::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+}
+bool StdCmdDefineBoundaryConditions::isActive(void)
+
+{
+    return false;
+}
+
+
+//===========================================================================
+// Std_DefineLoads
+//===========================================================================
+
+DEF_STD_CMD_A(StdCmdDefineLoads)
+StdCmdDefineLoads::StdCmdDefineLoads()
+    : Command("Std_DefineLoads")
+{
+    sGroup = QT_TR_NOOP("&Simulation");
+    sMenuText = QT_TR_NOOP("DefineLoads");
+    sToolTipText = QT_TR_NOOP("Idk what this finna do -Luke");
+    sWhatsThis = "Std_DefineLoads";
+    sStatusTip = QT_TR_NOOP("Idk what this finna do -Luke");
+    sPixmap = "window-new";
+    eType = Alter3DView;
+}
+void StdCmdDefineLoads::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+}
+bool StdCmdDefineLoads::isActive(void)
+
+{
+    return false;
+}
+
+//===========================================================================
+// Std_RunAnalysis
+//===========================================================================
+
+
+DEF_STD_CMD_A(StdCmdRunAnalysis)
+StdCmdRunAnalysis::StdCmdRunAnalysis()
+    : Command("Std_RunAnalysis")
+{
+    sGroup = QT_TR_NOOP("&Simulation");
+    sMenuText = QT_TR_NOOP("RunAnalysis");
+    sToolTipText = QT_TR_NOOP("Idk what this finna do -Luke");
+    sWhatsThis = "Std_RunAnalysis";
+    sStatusTip = QT_TR_NOOP("Idk what this finna do -Luke");
+    sPixmap = "window-new";
+    eType = Alter3DView;
+}
+void StdCmdRunAnalysis::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+}
+bool StdCmdRunAnalysis::isActive(void)
+
+{
+    return false;
+}
+
+//===========================================================================
+// Std_SectionProperties
+//===========================================================================
+
+DEF_STD_CMD_A(StdCmdSectionProperties)
+StdCmdSectionProperties::StdCmdSectionProperties()
+    : Command("Std_SectionProperties")
+{
+    sGroup = QT_TR_NOOP("&Simulation");
+    sMenuText = QT_TR_NOOP("SectionProperties");
+    sToolTipText = QT_TR_NOOP("Idk what this finna do -Luke");
+    sWhatsThis = "Std_SectionProperties";
+    sStatusTip = QT_TR_NOOP("Idk what this finna do -Luke");
+    sPixmap = "window-new";
+    eType = Alter3DView;
+}
+void StdCmdSectionProperties::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+}
+bool StdCmdSectionProperties::isActive(void)
+
+{
+    return false;
+}
+
+//===========================================================================
+// Std_PlotResults
+//===========================================================================
+
+DEF_STD_CMD_A(StdCmdPlotResults)
+StdCmdPlotResults::StdCmdPlotResults()
+    : Command("Std_PlotResults")
+{
+    sGroup = QT_TR_NOOP("&Simulation");
+    sMenuText = QT_TR_NOOP("PlotResults");
+    sToolTipText = QT_TR_NOOP("Idk what this finna do -Luke");
+    sWhatsThis = "Std_DefineMaterials";
+    sStatusTip = QT_TR_NOOP("Idk what this finna do -Luke");
+    sPixmap = "window-new";
+    eType = Alter3DView;
+}
+void StdCmdPlotResults::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+}
+bool StdCmdPlotResults::isActive(void)
+
+{
+    return false;
+}
+
+//===========================================================================
+// Std_ListResults
+//===========================================================================
+
+
+DEF_STD_CMD_A(StdCmdListResults)
+StdCmdListResults::StdCmdListResults()
+    : Command("Std_ListResults")
+{
+    sGroup = QT_TR_NOOP("&Simulation");
+    sMenuText = QT_TR_NOOP("ListResults");
+    sToolTipText = QT_TR_NOOP("Idk what this finna do -Luke");
+    sWhatsThis = "Std_ListResults";
+    sStatusTip = QT_TR_NOOP("Idk what this finna do -Luke");
+    sPixmap = "window-new";
+    eType = Alter3DView;
+}
+void StdCmdListResults::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+}
+bool StdCmdListResults::isActive(void)
+
+{
+    return false;
+}
+
+//===========================================================================
+// Std_ResultTools
+//===========================================================================
+
+DEF_STD_CMD_A(StdCmdResultTools)
+StdCmdResultTools::StdCmdResultTools()
+    : Command("Std_ResultTools")
+{
+    sGroup = QT_TR_NOOP("&Simulation");
+    sMenuText = QT_TR_NOOP("ResultTools");
+    sToolTipText = QT_TR_NOOP("Idk what this finna do -Luke");
+    sWhatsThis = "Std_DefineMaterials";
+    sStatusTip = QT_TR_NOOP("Idk what this finna do -Luke");
+    sPixmap = "window-new";
+    eType = Alter3DView;
+}
+void StdCmdResultTools::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+}
+bool StdCmdResultTools::isActive(void)
+
+{
+    return false;
+}
+
+
+//===========================================================================
+// Std_Rotate
+//===========================================================================
+
 DEF_STD_CMD_A(StdCmdPan)
 
 StdCmdPan::StdCmdPan()
@@ -2052,7 +2295,6 @@ bool StdCmdUserinterface::isActive(void)
 {
     return false;
 }
-
 
 //===========================================================================
 // Std_ViewCreate
@@ -3612,7 +3854,7 @@ void StdCmdSelBoundingBox::activated(int iMsg)
         ViewParams::instance()->setShowSelectionBoundingBox(checked);
         if(_pcAction)
             _pcAction->setChecked(checked,true);
-    }
+    }                   
 }
 
 bool StdCmdSelBoundingBox::isActive(void)
@@ -3716,7 +3958,15 @@ void CreateViewStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdSelBack());
     rcCmdMgr.addCommand(new StdCmdSelForward());
     rcCmdMgr.addCommand(new StdCmdTreeViewActions());
-
+    rcCmdMgr.addCommand(new StdCmdDefineMaterials());
+    rcCmdMgr.addCommand(new StdCmdDefineSection());
+    rcCmdMgr.addCommand(new StdCmdDefineBoundaryConditions());
+    rcCmdMgr.addCommand(new StdCmdDefineLoads());
+    rcCmdMgr.addCommand(new StdCmdRunAnalysis());
+    rcCmdMgr.addCommand(new StdCmdSectionProperties());
+    rcCmdMgr.addCommand(new StdCmdPlotResults());
+    rcCmdMgr.addCommand(new StdCmdListResults());
+    rcCmdMgr.addCommand(new StdCmdResultTools());
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     if(hGrp->GetASCII("GestureRollFwdCommand").empty())
