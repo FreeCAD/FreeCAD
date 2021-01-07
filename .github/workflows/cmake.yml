@@ -5,6 +5,8 @@ on: [push, pull_request]
 env:
   GENERATOR: "Unix Makefiles"
   CMAKE_BUILD_TYPE: "${CMAKE_BUILD_TYPE:-Release}"
+  CCACHE_COMPRESS: 1
+  CCACHE_DIR=: $HOME/.ccache
 
 jobs:
   build:
@@ -28,11 +30,20 @@ jobs:
           }
 
     steps:
-    - uses: actions/cache@v2
+    - name: Cache Apt (Linux)
+      uses: actions/cache@v2
       id: cache-id
       with:
         path: /var/cache/apt/archives
         key: ${{ matrix.config.os }}-cache-apt
+      if: runner.os == 'Linux' 
+    - name: Cache Ccache (Linux)
+      uses: actions/cache@v2
+      id: cache-id
+      with:
+        path: ~/.ccache
+        key: ${{ matrix.config.os }}-${{matrix.config.cc}}-cache-ccache
+
       if: runner.os == 'Linux' 
 
     - name: Install Clang 10
@@ -121,13 +132,13 @@ jobs:
         # Preserves created ccache for the next build job.
         # if [ "${TRAVIS_OS_NAME}" == "linux" ]; then sudo timeout -k 175m 170m make -j2 install || true; fi
         # if [ "${TRAVIS_OS_NAME}" == "osx" ]; then sudo gtimeout -s KILL  make -j2 install; fi
-        #cat $HOME/.ccache/ccache.conf
-        #ccache -z -s
+        cat $HOME/.ccache/ccache.conf
+        ccache -z -s
         df -h
         if [ "${TRAVIS_OS_NAME}" == "osx" ]; then export PATH="/usr/local/opt/ccacche/libexec:$PATH"; sudo gtimeout -s KILL 7200 make -j2; [ $? == 124 ] && { ccache -s; return 0; }  fi 
         if [ "${TRAVIS_OS_NAME}" == "linux" ]; then sudo timeout -k 175m 170m make -j2 install || true; fi
         sudo make -j${N} install
-        #ccache -s
+        ccache -s
         xvfb-run --auto-servernum ${INSTALLED_APP_PATH} --console --run-test 0 || travis_terminate 1
         ${INSTALLED_APP_PATH} --log-file /tmp/FreeCAD_installed.log &
         sleep 10 && pkill FreeCAD
