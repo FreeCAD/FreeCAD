@@ -95,7 +95,7 @@ jobs:
     - name: Install and Test (Linux)
     - uses: actions/checkout@v2
       if: runner.os == 'Linux'
-      run: |
+        run: |
         echo ${{matrix.config.cmake_flags}}
         mkdir ${{github.workspace}}/build && cd ${{github.workspace}}/build && cmake -Wno-dev -G"${GENERATOR}" ${{matrix.config.cmake_flags}} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ../
 
