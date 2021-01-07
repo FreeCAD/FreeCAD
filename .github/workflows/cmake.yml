@@ -93,11 +93,10 @@ jobs:
         export INSTALLED_APP_PATH="/usr/local/bin/FreeCAD"
         export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/netgen/:$LD_LIRBARY_PATH
     - name: Install and Test (Linux)
-    - uses: actions/checkout@v2
       if: runner.os == 'Linux'
       run: |
         echo ${matrix.config.cmake_flags}
-        mkdir ${{github.workspace}}/build && cd ${{github.workspace}}/build && cmake -Wno-dev -G"${GENERATOR}" ${matrix.config.cmake_flags} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ../
+        mkdir build && cd build && cmake -Wno-dev -G"${GENERATOR}" ${matrix.config.cmake_flags} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ../
 
         # Stop compiling (GCC) after 2 hrs 50 min (3 hrs limit).
         # Preserves created ccache for the next build job.
