@@ -32,14 +32,13 @@ jobs:
     steps:
     - name: Cache Apt (Linux)
       uses: actions/cache@v2
-      id: cache-id
       with:
         path: /var/cache/apt/archives
         key: ${{ matrix.config.os }}-cache-apt
       if: runner.os == 'Linux' 
+
     - name: Cache Ccache (Linux)
       uses: actions/cache@v2
-      id: cache-id
       with:
         path: ~/.ccache
         key: ${{ matrix.config.os }}-${{matrix.config.cc}}-cache-ccache
