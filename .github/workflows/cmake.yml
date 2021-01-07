@@ -92,6 +92,9 @@ jobs:
 
         export INSTALLED_APP_PATH="/usr/local/bin/FreeCAD"
         export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/netgen/:$LD_LIRBARY_PATH
+
+
+      uses: actions/checkout@v2
     - name: Install and Test (Linux)
       if: runner.os == 'Linux'
       run: |
