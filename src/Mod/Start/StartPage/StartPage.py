@@ -102,16 +102,20 @@ def getInfo(filename):
 
     def getFreeDesktopThumbnail(filename):
         "if we have gnome libs available, try to find a system-generated thumbnail"
+        path = os.path.abspath(filename)
+        thumb = None
         try:
             import gnome.ui
             import gnomevfs
         except:
-            return None
-
-        path = os.path.abspath(filename)
-        uri = gnomevfs.get_uri_from_local_path(path)
-        thumb = gnome.ui.thumbnail_path_for_uri(uri, "normal")
-        if os.path.exists(thumb):
+            # alternative method
+            import hashlib
+            fhash = hashlib.md5(("file://"+path).encode("utf8")).hexdigest()
+            thumb = os.path.join(os.path.expanduser("~"),".thumbnails","normal",fhash+".png")
+        else:
+            uri = gnomevfs.get_uri_from_local_path(path)
+            thumb = gnome.ui.thumbnail_path_for_uri(uri, "normal")
+        if thumb and os.path.exists(thumb):
             return thumb
         return None
 
