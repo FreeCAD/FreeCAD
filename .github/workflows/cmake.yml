@@ -102,7 +102,8 @@ jobs:
                                netgen                           \
                                netgen-headers                   \
                                libmetis-dev                     \
-                               libspnav-dev
+                               libspnav-dev                     \
+                               ccache
         # Runtime deps
         sudo apt-get install -y --no-install-recommends freecad-daily-python3 python-pivy python3-pivy python-ply python3-ply
 
