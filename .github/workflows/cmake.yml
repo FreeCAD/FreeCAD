@@ -33,7 +33,7 @@ jobs:
     - name: Cache Apt (Linux)
       uses: actions/cache@v2
       with:
-        path: /var/cache/apt/archives/*
+        path: /var/cache/apt/archives/*.deb
         key: ${{ matrix.config.os }}-cache-apt
       if: runner.os == 'Linux' 
 
