@@ -311,6 +311,8 @@ protected:
     void initItemsSizes();
     /// subscribe to parameter groups as an observer
     void subscribeToParameters();
+    /// unsubscribe to parameter groups as an observer
+    void unsubscribeToParameters();
     /// updates the sizes of the edit mode inventor node
     void updateInventorNodeSizes();
 

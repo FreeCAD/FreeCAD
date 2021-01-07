@@ -398,6 +398,7 @@ ViewProviderSketch::ViewProviderSketch()
 ViewProviderSketch::~ViewProviderSketch()
 {
     delete rubberband;
+    unsubscribeToParameters();
 }
 
 void ViewProviderSketch::slotUndoDocument(const Gui::Document& /*doc*/)
@@ -3796,6 +3797,12 @@ void ViewProviderSketch::subscribeToParameters()
 {
      ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
      hGrp->Attach(this);
+}
+
+void ViewProviderSketch::unsubscribeToParameters()
+{
+     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+     hGrp->Detach(this);
 }
 
 void ViewProviderSketch::updateInventorNodeSizes()
