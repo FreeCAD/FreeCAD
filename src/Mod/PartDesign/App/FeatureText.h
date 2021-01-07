@@ -27,13 +27,6 @@
 #include <App/PropertyUnits.h>
 #include "FeatureSketchBased.h"
 
-namespace Part
-{
-// I declare this here for now, as there is no AppPartPy.h
-// better solution is probably to create an AppPartPy.h. Why does it not exist?
-Py::Object makeWireString(const Py::Tuple& args);
-}
-
 namespace PartDesign
 {
 

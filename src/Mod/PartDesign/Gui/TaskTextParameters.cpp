@@ -400,7 +400,7 @@ void TaskTextParameters::apply()
 void TaskTextParameters::getFontPaths(void)
 {
     QStringList font_paths = QStandardPaths::standardLocations(QStandardPaths::FontsLocation);
-    QFontDatabase* db = new QFontDatabase();
+    QFontDatabase db;
     QStringListIterator fpathIterator(font_paths);
     while (fpathIterator.hasNext()) {
         QString fpath = fpathIterator.next();
@@ -411,9 +411,9 @@ void TaskTextParameters::getFontPaths(void)
             if (!filename.endsWith(QString::fromUtf8(".ttf")))
                 continue;
             QString path = QDir(fpath).filePath(filename);
-            int idx = db->addApplicationFont(path);  // add font path
+            int idx = db.addApplicationFont(path);  // add font path
             if (idx >= 0) { // success
-                QStringList names = db->applicationFontFamilies(idx);  // load back font family name
+                QStringList names = db.applicationFontFamilies(idx);  // load back font family name
                 QStringListIterator namesIterator(names);
                 while (namesIterator.hasNext()) {
                     QString name = namesIterator.next();

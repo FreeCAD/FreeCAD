@@ -49,7 +49,6 @@
 # include <ShapeAnalysis.hxx>
 # include <gp_Ax1.hxx>
 # include <gp_Ax3.hxx>
-
 #endif
 
 # include <string>
@@ -59,8 +58,10 @@
 # include <Base/Exception.h>
 # include <Base/Placement.h>
 # include <Base/Tools.h>
-#include "boost/filesystem.hpp"
+# include <App/Application.h>
 
+
+// needed for textToShape
 # include <Mod/Part/App/TopoShape.h>
 # include <Mod/Part/App/TopoShapePy.h>
 # include <Mod/Part/App/FaceMakerCheese.h>
@@ -76,11 +77,14 @@ PROPERTY_SOURCE(PartDesign::Text, PartDesign::ProfileBased)
 Text::Text()
 {
 
+    std::string fontDir = App::Application::getResourceDir() + "Mod/TechDraw/Resources/fonts/";
+    std::string fontFile = fontDir + "osifont-lgpl3fe.ttf";
+
     ADD_PROPERTY_TYPE(ReferenceAxis,(0),"Helix", App::Prop_None, "Reference axis of revolution");
     ADD_PROPERTY_TYPE(Base,(Base::Vector3d(0.0,0.0,0.0)),"Text", App::Prop_ReadOnly, "Base");
     ADD_PROPERTY_TYPE(Axis,(Base::Vector3d(0.0,1.0,0.0)),"Text", App::Prop_ReadOnly, "Axis");
     ADD_PROPERTY_TYPE(TextString,("FreeCAD rocks!"),"Text", App::Prop_None, "Text");
-    ADD_PROPERTY_TYPE(Font,("/usr/share/fonts/truetype/ttf-bitstream-vera/VeraMono.ttf"),"Text", App::Prop_None, "Font");
+    ADD_PROPERTY_TYPE(Font,(fontFile.c_str()),"Text", App::Prop_None, "Font");
     ADD_PROPERTY_TYPE(Size,(20.0),"Text", App::Prop_None, "Size");
     ADD_PROPERTY_TYPE(Height,(30.0),"Text", App::Prop_None, "Height");
     ADD_PROPERTY_TYPE(Offset, (0.0), "Text", App::Prop_None, "Offset from face in which text will end");
@@ -286,7 +290,6 @@ void Text::updateAxis(void)
 TopoDS_Shape Text::textToShape(const std::string& text, const std::string& fontpath, double height, double track = 0.0)
 {
     Base::Console().Warning("textToShape was called\n");
-
     Py::Module mod(PyImport_ImportModule("Part"), true);
     if (mod.isNull())
         throw Py::Exception();
@@ -321,7 +324,6 @@ TopoDS_Shape Text::textToShape(const std::string& text, const std::string& fontp
         }
     }
 
-
     // make faces from the wires (simplified from getVerifiedFace)
     const char* err = nullptr;
     TopoShape shape;
@@ -346,7 +348,7 @@ TopoDS_Shape Text::textToShape(const std::string& text, const std::string& fontp
     } catch (Standard_Failure &e) {
         throw Base::RuntimeError (err);;
     }
-    Base::Console().Warning("textToShape if about to return\n");
+    Base::Console().Warning("textToShape is about to return\n");
     return shape.getShape();
 
 }
