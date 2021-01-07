@@ -1162,8 +1162,7 @@ int SketchObject::setConstruction(int GeoId, bool on)
     // in the accumulative of actions it is judged that it is worth to trigger an update here.
 
     std::unique_ptr<Part::Geometry> geo(vals[GeoId]->clone());
-    auto gft = GeometryFacade::getFacade(geo.get());
-    gft->setConstruction(!gft->getConstruction());
+    GeometryFacade::setConstruction(geo.get(), on);
     this->Geometry.set1Value(GeoId, std::move(geo));
 
     solverNeedsUpdate=true;
@@ -5692,6 +5691,9 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
     const std::vector< Part::Geometry * > &svals = psObj->getInternalGeometry();
 
     const std::vector< Sketcher::Constraint * > &scvals = psObj->Constraints.getValues();
+
+    newVals.reserve(vals.size()+svals.size());
+    newcVals.reserve(cvals.size()+scvals.size());
 
     if(psObj->ExternalGeometry.getSize()>0) {
         std::vector<DocumentObject*> Objects     = ExternalGeometry.getValues();
