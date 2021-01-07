@@ -105,10 +105,10 @@ jobs:
       run: |
         mkdir build && cd build 
         CC=${{matrix.config.cc}} CXX=${{matrix.config.cxx}} cmake -Wno-dev -G"${GENERATOR}" ${{matrix.config.cmake_flags}} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ../
-
     - name: Install and Test (Linux)
       if: runner.os == 'Linux'
       run: |
+        export N=$(($(grep -c ^processor /proc/cpuinfo) - 1))
         cd build
         # Stop compiling (GCC) after 2 hrs 50 min (3 hrs limit).
         # Preserves created ccache for the next build job.
