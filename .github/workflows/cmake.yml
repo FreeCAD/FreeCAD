@@ -34,7 +34,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: /var/cache/apt/archives
-        key: ${{ matrix.config.os }}-cache-apt
+        key: ${{ matrix.config.os }}-cache-apt-${{ hashFiles('**/lock') }}
       if: runner.os == 'Linux' 
 
     - name: Cache Ccache (Linux)
