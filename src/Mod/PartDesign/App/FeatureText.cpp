@@ -147,13 +147,11 @@ App::DocumentObjectExecReturn *Text::execute(void)
 
 
     Part::Feature* obj = 0;
-    TopoDS_Shape sketchshape, textshape;
+    TopoDS_Shape textshape;
 
 
     try {
         obj = getVerifiedObject();
-        sketchshape = getVerifiedFace();
-        // (const std::string& text, const std::string& fontpath, double height, double track)
         textshape = textToShape(text, fontpath, size, 0.0);
 
     } catch (const Base::Exception& e) {
@@ -289,12 +287,10 @@ void Text::updateAxis(void)
 
 TopoDS_Shape Text::textToShape(const std::string& text, const std::string& fontpath, double height, double track = 0.0)
 {
-    Base::Console().Warning("textToShape was called\n");
+    Base::PyGILStateLocker lock;
     Py::Module mod(PyImport_ImportModule("Part"), true);
     if (mod.isNull())
         throw Py::Exception();
-
-    Base::Console().Warning("PyImport_ImportModule was succsessfull\n");
 
     Py::Callable method(mod.getAttr(std::string("makeWireString")));
 
@@ -348,7 +344,6 @@ TopoDS_Shape Text::textToShape(const std::string& text, const std::string& fontp
     } catch (Standard_Failure &e) {
         throw Base::RuntimeError (err);;
     }
-    Base::Console().Warning("textToShape is about to return\n");
     return shape.getShape();
 
 }
