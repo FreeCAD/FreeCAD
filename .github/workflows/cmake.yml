@@ -32,7 +32,7 @@ jobs:
       id: cache-id
       with:
         path: /var/cache/apt/archives
-        key: ${{ runner.os }}-cache-apt
+        key: ${{ matrix.config.os }}-cache-apt
       if: runner.os == 'Linux' 
     - name: Install Dependencies (Linux)
       if: runner.os == 'Linux'
