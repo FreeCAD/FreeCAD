@@ -95,12 +95,13 @@ jobs:
 
     - name: Checkout 
       uses: actions/checkout@v2
+    - name: Configure
+      run: |
+        mkdir build && cd build && cmake -Wno-dev -G"${GENERATOR}" ${{matrix.config.cmake_flags}} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ../
+
     - name: Install and Test (Linux)
       if: runner.os == 'Linux'
       run: |
-        echo ${matrix.config.cmake_flags}
-        mkdir build && cd build && cmake -Wno-dev -G"${GENERATOR}" ${matrix.config.cmake_flags} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ../
-
         # Stop compiling (GCC) after 2 hrs 50 min (3 hrs limit).
         # Preserves created ccache for the next build job.
         # if [ "${TRAVIS_OS_NAME}" == "linux" ]; then sudo timeout -k 175m 170m make -j2 install || true; fi
