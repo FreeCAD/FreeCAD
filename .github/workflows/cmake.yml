@@ -34,6 +34,13 @@ jobs:
         path: /var/cache/apt/archives
         key: ${{ matrix.config.os }}-cache-apt
       if: runner.os == 'Linux' 
+
+      -name: Install Clang 10
+      if: runner.os == 'Linux' && matrix.config.cc == 'clang-10'
+      run: |
+        sudo apt-get update -qq
+        sudo apt-get install clang-10
+
     - name: Install Dependencies (Linux)
       if: runner.os == 'Linux'
       run: |
