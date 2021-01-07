@@ -28,6 +28,12 @@ jobs:
           }
 
     steps:
+    - uses: actions/cache@v2
+        id: cache-id
+        with:
+          path: /var/cache/apt/archives
+          key: ${{ runner.os }}-cache-apt
+      if: runner.os == 'Linux' 
     - name: Install Dependencies (Linux)
       if: runner.os == 'Linux'
       run: |
