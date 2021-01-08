@@ -19,7 +19,7 @@ jobs:
         - {
             name: "Ubuntu Latest GCC 10", artifact: "Linux.7z",
             os: ubuntu-latest,
-            cc: "gcc-10", cxx: "g++-10",
+            cc: "ccache gcc-10", cxx: "ccag++-10",
             cmake_flags: "-DPYTHON_EXECUTABLE=/usr/bin/python3 -DBUILD_FEM_NETGEN=ON -DBUILD_QT5=ON"
           }
         - {
@@ -128,7 +128,7 @@ jobs:
     - name: Configure
       run: |
         mkdir build && cd build 
-        CC=${{matrix.config.cc}} CXX=${{matrix.config.cxx}} cmake -Wno-dev -G"${GENERATOR}" ${{matrix.config.cmake_flags}} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ../
+        CC=${{matrix.config.cc}} CXX=${{matrix.config.cxx}} cmake -Wno-dev -G"${GENERATOR}" ${{matrix.config.cmake_flags}} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ../ --trace
     - name: Install and Test (Linux)
       if: runner.os == 'Linux'
       run: |
