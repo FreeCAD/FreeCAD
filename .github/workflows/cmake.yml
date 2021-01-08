@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 env:
   GENERATOR: "Unix Makefiles"
-  CMAKE_BUILD_TYPE: "${CMAKE_BUILD_TYPE:-Release}"
+  CMAKE_BUILD_TYPE: "Release"
   CCACHE_COMPRESS: 1
   #CCACHE_DIR=: $HOME/.ccache
 
