@@ -19,7 +19,7 @@ jobs:
         - {
             name: "Ubuntu Latest GCC 10", artifact: "Linux.7z",
             os: ubuntu-latest,
-            cc: "ccache gcc-10", cxx: "ccag++-10",
+            cc: "ccache gcc-10", cxx: "g++-10",
             cmake_flags: "-DPYTHON_EXECUTABLE=/usr/bin/python3 -DBUILD_FEM_NETGEN=ON -DBUILD_QT5=ON"
           }
         - {
@@ -144,7 +144,8 @@ jobs:
         #if [ "${TRAVIS_OS_NAME}" == "osx" ]; then export PATH="/usr/local/opt/ccacche/libexec:$PATH"; sudo gtimeout -s KILL 7200 make -j2; [ $? == 124 ] && { ccache -s; return 0; }  fi 
         #if [ "${TRAVIS_OS_NAME}" == "linux" ]; then sudo timeout -k 175m 170m make -j2 install || true; fi
         #sudo make -j${N} install
-        make -j${N} FreeCADBase
+        #make -j${N} FreeCADBase
+        cmake --build ./ --target FreeCADBase  -j ${N}
         ccache -s
         #xvfb-run --auto-servernum ${INSTALLED_APP_PATH} --console --run-test 0 || travis_terminate 1
         #${INSTALLED_APP_PATH} --log-file /tmp/FreeCAD_installed.log &
