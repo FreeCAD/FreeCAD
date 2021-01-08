@@ -155,7 +155,7 @@ jobs:
         #if [ "${TRAVIS_OS_NAME}" == "linux" ]; then sudo timeout -k 175m 170m make -j2 install || true; fi
         #sudo make -j${N} install
         #make -j${N} Part
-        cmake --build ./  -j ${N}
+        cmake --build ./ --target install -j ${N}
         ccache -s
         #make clean
         #cmake --build ./ --target FreeCADBase  -j ${N}
