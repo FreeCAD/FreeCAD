@@ -2133,7 +2133,8 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
             updateDataPrivate(ext,ext->getPlacementListProperty());
             applyMaterial();
             applyColors();
-        }
+        } else if (!ext->_getElementCountValue() && ext->_getElementListValue().empty())
+            linkView->setSize(0);
     }else if(prop == ext->_getShowElementProperty()) {
         if(!ext->_getShowElementValue()) {
 
