@@ -147,6 +147,7 @@ jobs:
         #make -j${N} FreeCADBase
         cmake --build ./ --target FreeCADBase  -j ${N}
         ccache -s
+        make clean
         cmake --build ./ --target FreeCADBase  -j ${N}
         ccache -s
         #xvfb-run --auto-servernum ${INSTALLED_APP_PATH} --console --run-test 0 || travis_terminate 1
