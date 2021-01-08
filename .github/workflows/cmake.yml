@@ -30,7 +30,7 @@ jobs:
           }
 
     steps:
-    - name: Get Date timestamp
+    - name: Get Date
       id: get-date
       run: |
         echo "::set-output name=date::$(/bin/date -u "+%Y%m%d")"
@@ -44,14 +44,16 @@ jobs:
       uses: actions/cache@v2
       with:
         path: /var/cache/apt/archives/*.deb
-        key: ${{ matrix.config.os }}-cache-apt
+        key: ${{ matrix.config.os }}-cache-apt-${{ steps.get-date.outputs.date }}
+        restore-keys: |
+          ${{ matrix.config.os }}-cache-apt-
       if: runner.os == 'Linux' 
 
     - name: Cache Ccache (Linux)
       uses: actions/cache@v2
       if: runner.os == 'Linux' 
       with:
-        path: /home/runner/.ccache
+        path: .ccache
         key: ${{ matrix.config.os }}-${{matrix.config.cc}}-cache-ccache-${{ steps.get-date.outputs.date }}
         restore-keys: |
           ${{ matrix.config.os }}-${{matrix.config.cc}}-cache-ccache-
