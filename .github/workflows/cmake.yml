@@ -46,7 +46,7 @@ jobs:
     - name: Cache Ccache (Linux)
       uses: actions/cache@v2
       with:
-        path: ~/.ccache
+        path: .ccache
         key: ${{ matrix.config.os }}-${{matrix.config.cc}}-cache-ccache
 
       if: runner.os == 'Linux' 
