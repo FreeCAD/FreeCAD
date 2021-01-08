@@ -20,13 +20,13 @@ jobs:
             name: "Ubuntu Latest GCC 10", artifact: "Linux.7z",
             os: ubuntu-latest,
             cc: "gcc-10", cxx: "g++-10",
-            cmake_flags: "-DPYTHON_EXECUTABLE=/usr/bin/python3 -DBUILD_FEM_NETGEN=ON -DBUILD_QT5=ON -DCMAKE_CXX_COMPILER_LAUNCHER=ccache"
+            cmake_flags: "-DPYTHON_EXECUTABLE=/usr/bin/python3 -DBUILD_FEM_NETGEN=ON -DBUILD_QT5=ON"
           }
         - {
             name: "Ubuntu Latest CLANG 10", artifact: "Linux.7z",
             os: ubuntu-latest,
             cc: "clang-10", cxx: "clang++-10",
-            cmake_flags: "-DPYTHON_EXECUTABLE=/usr/bin/python3 -DBUILD_FEM_NETGEN=ON -DBUILD_QT5=ON -DCMAKE_CXX_COMPILER_LAUNCHER=ccache"
+            cmake_flags: "-DPYTHON_EXECUTABLE=/usr/bin/python3 -DBUILD_FEM_NETGEN=ON -DBUILD_QT5=ON"
           }
 
     steps:
