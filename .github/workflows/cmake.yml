@@ -35,19 +35,20 @@ jobs:
       run: |
         echo "::set-output name=date::$(/bin/date -u "+%Y%m%d")"
       shell: bash
+
     - name: Change Apt Cache permissions
       if: runner.os == 'Linux'
       run: |
         sudo chown -R $(whoami):$(id -ng) /var/cache/apt/archives
 
     - name: Cache Apt (Linux)
+      if: runner.os == 'Linux'
       uses: pat-s/always-upload-cache@v2.1.3
       with:
         path: /var/cache/apt/archives/*.deb
         key: ${{ matrix.config.os }}-cache-apt-${{ steps.get-date.outputs.date }}
         restore-keys: |
           ${{ matrix.config.os }}-cache-apt-
-      if: runner.os == 'Linux' 
 
     - name: Cache ccache (Linux)
       uses: pat-s/always-upload-cache@v2.1.3
@@ -58,7 +59,7 @@ jobs:
         restore-keys: |
           ${{ matrix.config.os }}-${{matrix.config.cc}}-cache-ccache-
 
-    - name: Install clang 10
+    - name: Install clang 10 (Linux)
       if: runner.os == 'Linux' && matrix.config.cc == 'clang-10'
       run: |
         sudo apt-get update -qq
@@ -139,7 +140,7 @@ jobs:
     - name: Install and Test (Linux)
       if: runner.os == 'Linux'
       run: |
-        export N=$(($(grep -c ^processor /proc/cpuinfo) - 1))
+        export N=$(($(grep -c ^processor /proc/cpuinfo) + 1))
         cd build
         # Stop compiling (GCC) after 2 hrs 50 min (3 hrs limit).
         # Preserves created ccache for the next build job.
@@ -152,11 +153,11 @@ jobs:
         #if [ "${TRAVIS_OS_NAME}" == "linux" ]; then sudo timeout -k 175m 170m make -j2 install || true; fi
         #sudo make -j${N} install
         #make -j${N} FreeCADBase
-        cmake --build ./ --target FreeCADBase  -j ${N}
+        cmake --build ./  -j ${N}
         ccache -s
-        make clean
-        cmake --build ./ --target FreeCADBase  -j ${N}
-        ccache -s
+        #make clean
+        #cmake --build ./ --target FreeCADBase  -j ${N}
+        #ccache -s
         #xvfb-run --auto-servernum ${INSTALLED_APP_PATH} --console --run-test 0 || travis_terminate 1
         #${INSTALLED_APP_PATH} --log-file /tmp/FreeCAD_installed.log &
         #sleep 10 && pkill FreeCAD
