@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2018 Kresimir Tusek <kresimir.tusek@gmail.com>          *
+# *   Copyright (c) 2019-2021 Schildkroet                                   *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -20,12 +21,6 @@
 # *   Suite 330, Boston, MA  02111-1307, USA                                *
 # *                                                                         *
 # ***************************************************************************
-# *                                                                         *
-# *   Additional modifications and contributions beginning 2019             *
-# *   by Schildkroet.       (https://github.com/Schildkroet)                *
-# *                                                                         *
-# ***************************************************************************
-
 
 import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
@@ -88,6 +83,22 @@ def discretize(edge, flipDirection = False):
 
     return pts
 
+def CalculateCone(radius, alpha):
+    #beta = -alpha + 90
+    b = radius * (math.cos(math.radians(alpha)) / math.sin(math.radians(alpha)))
+    #c = radius / math.sin(ath.radians(alpha))
+    #p = (radius*radius) / c
+    #q = c - p
+
+    print("B:{}".format(b))
+
+def CalcHelixConePoint(height, cur_z, radius, angle):
+    x = ((height - cur_z) / height) * radius * math.cos(math.radians(angle)*cur_z)
+    y = ((height - cur_z) / height) * radius * math.sin(math.radians(angle)*cur_z)
+    z = cur_z
+
+    return {'X': x, 'Y': y, 'Z': z}
+
 def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
     # pylint: disable=unused-argument
     if len(adaptiveResults) == 0 or len(adaptiveResults[0]["AdaptivePaths"]) == 0:
@@ -112,6 +123,9 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
 
     if float(obj.HelixAngle) < 1:
         obj.HelixAngle = 1
+    
+    if float(obj.HelixConeAngle) < 0:
+        obj.HelixConeAngle = 0
 
     helixAngleRad = math.pi * float(obj.HelixAngle) / 180.0
     depthPerOneCircle = length * math.tan(helixAngleRad)
@@ -120,7 +134,6 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
     stepUp = obj.LiftDistance.Value
     if stepUp < 0:
         stepUp = 0
-
 
     finish_step = obj.FinishDepth.Value if hasattr(obj, "FinishDepth") else 0.0
     if finish_step > stepDown:
@@ -134,7 +147,6 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
             z_finish_step=finish_step,
             final_depth=obj.FinalDepth.Value,
             user_depths=None)
-
 
 
     # ml: this is dangerous because it'll hide all unused variables hence forward
@@ -183,25 +195,60 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
                     # move to start depth
                     op.commandlist.append(Path.Command("G1", {"X": helixStart[0], "Y": helixStart[1], "Z": passStartDepth, "F": op.vertFeed}))
 
-                    while fi < maxfi:
-                        x = region["HelixCenterPoint"][0] + r * math.cos(fi+offsetFi)
-                        y = region["HelixCenterPoint"][1] + r * math.sin(fi+offsetFi)
-                        z = passStartDepth - fi / maxfi * (passStartDepth - passEndDepth)
-                        op.commandlist.append(Path.Command("G1", { "X": x, "Y":y, "Z":z, "F": op.vertFeed}))
-                        lx = x
-                        ly = y
-                        fi=fi+math.pi/16
+                    if obj.HelixConeAngle == 0:
+                        while fi < maxfi:
+                            x = region["HelixCenterPoint"][0] + r * math.cos(fi+offsetFi)
+                            y = region["HelixCenterPoint"][1] + r * math.sin(fi+offsetFi)
+                            z = passStartDepth - fi / maxfi * (passStartDepth - passEndDepth)
+                            op.commandlist.append(Path.Command("G1", { "X": x, "Y":y, "Z":z, "F": op.vertFeed}))
+                            lx = x
+                            ly = y
+                            fi=fi+math.pi/16
 
-                    # one more circle at target depth to make sure center is cleared
-                    maxfi = maxfi + 2*math.pi
-                    while fi < maxfi:
-                        x = region["HelixCenterPoint"][0] + r * math.cos(fi+offsetFi)
-                        y = region["HelixCenterPoint"][1] + r * math.sin(fi+offsetFi)
-                        z = passEndDepth
-                        op.commandlist.append(Path.Command("G1", { "X": x, "Y":y, "Z":z, "F": op.horizFeed}))
-                        lx = x
-                        ly = y
-                        fi = fi + math.pi/16
+                        # one more circle at target depth to make sure center is cleared
+                        maxfi = maxfi + 2*math.pi
+                        while fi < maxfi:
+                            x = region["HelixCenterPoint"][0] + r * math.cos(fi+offsetFi)
+                            y = region["HelixCenterPoint"][1] + r * math.sin(fi+offsetFi)
+                            z = passEndDepth
+                            op.commandlist.append(Path.Command("G1", { "X": x, "Y":y, "Z":z, "F": op.horizFeed}))
+                            lx = x
+                            ly = y
+                            fi = fi + math.pi/16
+                    
+                    else:
+                        # Cone
+                        # Calculate everything
+                        helix_height = passStartDepth - passEndDepth
+                        r_extra = helix_height * math.tan(math.radians(obj.HelixConeAngle))
+                        HelixTopRadius = helixRadius + r_extra
+                        helix_full_height = HelixTopRadius * (math.cos(math.radians(obj.HelixConeAngle)) / math.sin(math.radians(obj.HelixConeAngle)))
+
+                        # rapid move to start point
+                        op.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
+                        op.commandlist.append(Path.Command("G0", {"X": helixStart[0], "Y": helixStart[1], "Z": obj.ClearanceHeight.Value}))
+
+                        # rapid move to safe height
+                        op.commandlist.append(Path.Command("G0", {"X": helixStart[0], "Y": helixStart[1], "Z": obj.SafeHeight.Value}))
+
+                        # move to start depth
+                        op.commandlist.append(Path.Command("G1", {"X": helixStart[0], "Y": helixStart[1], "Z": passStartDepth, "F": op.vertFeed}))
+
+                        z = passStartDepth
+                        i = 0
+                        z_step = 0.05
+                        if obj.HelixAngle > 180:
+                            z_step = 0.025
+                        
+                        while(z >= passEndDepth):
+                            if z < passEndDepth:
+                                z = passEndDepth
+                            
+                            p = CalcHelixConePoint(helix_full_height, i, HelixTopRadius, obj.HelixAngle)
+                            op.commandlist.append(Path.Command("G1", { "X": p['X'] + region["HelixCenterPoint"][0], "Y": p['Y'] + region["HelixCenterPoint"][1], "Z": z, "F": op.vertFeed}))
+                            z = z - 0.1
+                            i = i + z_step
+
                 else:
                     helixStart = [region["HelixCenterPoint"][0] + r, region["HelixCenterPoint"][1]]
 
@@ -512,6 +559,7 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.setEditorMode('AdaptiveInputState', 2) #hide this property
         obj.setEditorMode('AdaptiveOutputState', 2) #hide this property
         obj.addProperty("App::PropertyAngle", "HelixAngle", "Adaptive",  "Helix ramp entry angle (degrees)")
+        obj.addProperty("App::PropertyAngle", "HelixConeAngle", "Adaptive",  "Helix cone angle (degrees)")
         obj.addProperty("App::PropertyLength", "HelixDiameterLimit", "Adaptive", "Limit helix entry diameter, if limit larger than tool diameter or 0, tool diameter is used")
 
 
@@ -527,6 +575,7 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.Stopped = False
         obj.StopProcessing = False
         obj.HelixAngle = 5
+        obj.HelixConeAngle = 0
         obj.HelixDiameterLimit = 0.0
         obj.AdaptiveInputState =""
         obj.AdaptiveOutputState = ""
