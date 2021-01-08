@@ -78,10 +78,10 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         # helix angle
         form.HelixAngle = QtGui.QDoubleSpinBox()
-        form.HelixAngle.setMinimum(0.5)
+        form.HelixAngle.setMinimum(1)
         form.HelixAngle.setMaximum(359)
         form.HelixAngle.setSingleStep(1)
-        form.HelixAngle.setValue(180)
+        form.HelixAngle.setValue(250)
         form.HelixAngle.setToolTip("Angle of the helix ramp entry")
         formLayout.addRow(QtGui.QLabel("Helix Ramp Angle"), form.HelixAngle)
 

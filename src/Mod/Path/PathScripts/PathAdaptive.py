@@ -83,15 +83,6 @@ def discretize(edge, flipDirection = False):
 
     return pts
 
-def CalculateCone(radius, alpha):
-    #beta = -alpha + 90
-    b = radius * (math.cos(math.radians(alpha)) / math.sin(math.radians(alpha)))
-    #c = radius / math.sin(ath.radians(alpha))
-    #p = (radius*radius) / c
-    #q = c - p
-
-    print("B:{}".format(b))
-
 def CalcHelixConePoint(height, cur_z, radius, angle):
     x = ((height - cur_z) / height) * radius * math.cos(math.radians(angle)*cur_z)
     y = ((height - cur_z) / height) * radius * math.sin(math.radians(angle)*cur_z)
@@ -174,8 +165,8 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
             p2 = region["StartPoint"]
             helixRadius = math.sqrt((p1[0]-p2[0]) * (p1[0]-p2[0]) +  (p1[1]-p2[1]) * (p1[1]-p2[1]))
 
-            # helix ramp
-            if helixRadius > 0.001:
+            # Helix ramp
+            if helixRadius > 0.01:
                 r = helixRadius - 0.01
 
                 maxfi =  passDepth / depthPerOneCircle * 2 * math.pi
@@ -229,8 +220,10 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
                         # Start height
                         z = passStartDepth
                         i = 0
+
                         # Default step down
                         z_step = 0.05
+
                         # Bigger angle, smaller step down
                         if obj.HelixAngle > 120:
                             z_step = 0.025
@@ -248,6 +241,7 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
                             z = z - z_step
                             i = i + z_step
                         
+                        # Calculate some stuff for arcs at bottom
                         p['X'] = p['X']  + region["HelixCenterPoint"][0]
                         p['Y'] = p['Y']  + region["HelixCenterPoint"][1]
                         x_m = region["HelixCenterPoint"][0] - p['X']  + region["HelixCenterPoint"][0]
@@ -585,7 +579,7 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.FinishingProfile = True
         obj.Stopped = False
         obj.StopProcessing = False
-        obj.HelixAngle = 5
+        obj.HelixAngle = 250
         obj.HelixConeAngle = 0
         obj.HelixDiameterLimit = 0.0
         obj.AdaptiveInputState =""
