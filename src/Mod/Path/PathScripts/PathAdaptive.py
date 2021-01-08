@@ -123,11 +123,13 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
 
     if float(obj.HelixAngle) < 1:
         obj.HelixAngle = 1
+    if float(obj.HelixAngle) > 359:
+        obj.HelixAngle = 359
     
     if float(obj.HelixConeAngle) < 0:
         obj.HelixConeAngle = 0
 
-    helixAngleRad = math.pi * float(obj.HelixAngle) / 180.0
+    helixAngleRad = math.pi * ((360 - float(obj.HelixAngle)) / 4) / 180.0
     depthPerOneCircle = length * math.tan(helixAngleRad)
     #print("Helix circle depth: {}".format(depthPerOneCircle))
 
@@ -224,32 +226,41 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
                         HelixTopRadius = helixRadius + r_extra
                         helix_full_height = HelixTopRadius * (math.cos(math.radians(obj.HelixConeAngle)) / math.sin(math.radians(obj.HelixConeAngle)))
 
-                        # rapid move to start point
-                        op.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
-                        op.commandlist.append(Path.Command("G0", {"X": helixStart[0], "Y": helixStart[1], "Z": obj.ClearanceHeight.Value}))
-
-                        # rapid move to safe height
-                        op.commandlist.append(Path.Command("G0", {"X": helixStart[0], "Y": helixStart[1], "Z": obj.SafeHeight.Value}))
-
-                        # move to start depth
-                        op.commandlist.append(Path.Command("G1", {"X": helixStart[0], "Y": helixStart[1], "Z": passStartDepth, "F": op.vertFeed}))
-
+                        # Start height
                         z = passStartDepth
                         i = 0
+                        # Default step down
                         z_step = 0.05
-                        if obj.HelixAngle > 180:
+                        # Bigger angle, smaller step down
+                        if obj.HelixAngle > 120:
                             z_step = 0.025
+                        if obj.HelixAngle > 240:
+                            z_step = 0.015
                         
+                        p = None
+                        # Calculate conical helix
                         while(z >= passEndDepth):
                             if z < passEndDepth:
                                 z = passEndDepth
                             
                             p = CalcHelixConePoint(helix_full_height, i, HelixTopRadius, obj.HelixAngle)
                             op.commandlist.append(Path.Command("G1", { "X": p['X'] + region["HelixCenterPoint"][0], "Y": p['Y'] + region["HelixCenterPoint"][1], "Z": z, "F": op.vertFeed}))
-                            z = z - 0.1
+                            z = z - z_step
                             i = i + z_step
+                        
+                        p['X'] = p['X']  + region["HelixCenterPoint"][0]
+                        p['Y'] = p['Y']  + region["HelixCenterPoint"][1]
+                        x_m = region["HelixCenterPoint"][0] - p['X']  + region["HelixCenterPoint"][0]
+                        y_m = region["HelixCenterPoint"][1] - p['Y']  + region["HelixCenterPoint"][1]
+                        i_off = (x_m - p['X']) / 2
+                        j_off = (y_m - p['Y']) / 2
+
+                        # one more circle at target depth to make sure center is cleared
+                        op.commandlist.append(Path.Command("G3", { "X": x_m, "Y": y_m, "Z": passEndDepth, "I": i_off, "J": j_off, "F": op.horizFeed}))
+                        op.commandlist.append(Path.Command("G3", { "X": p['X'], "Y": p['Y'], "Z": passEndDepth, "I": -i_off, "J": -j_off, "F": op.horizFeed}))
 
                 else:
+                    # Use arcs for helix - no conical shape support
                     helixStart = [region["HelixCenterPoint"][0] + r, region["HelixCenterPoint"][1]]
 
                     # rapid move to start point
@@ -267,16 +278,16 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
 
                     curDep = passStartDepth
                     while curDep > (passEndDepth + depthPerOneCircle):
-                        op.commandlist.append(Path.Command("G2", { "X": x - (2*r), "Y": y, "Z": curDep - (depthPerOneCircle/2), "I": -r, "F": op.horizFeed}))
-                        op.commandlist.append(Path.Command("G2", { "X": x, "Y": y, "Z": curDep - depthPerOneCircle, "I": r, "F": op.horizFeed}))
+                        op.commandlist.append(Path.Command("G2", { "X": x - (2*r), "Y": y, "Z": curDep - (depthPerOneCircle/2), "I": -r, "F": op.vertFeed}))
+                        op.commandlist.append(Path.Command("G2", { "X": x, "Y": y, "Z": curDep - depthPerOneCircle, "I": r, "F": op.vertFeed}))
                         curDep = curDep - depthPerOneCircle
 
                     lastStep = curDep - passEndDepth
                     if lastStep > (depthPerOneCircle/2):
-                        op.commandlist.append(Path.Command("G2", { "X": x - (2*r), "Y": y, "Z": curDep - (lastStep/2), "I": -r, "F": op.horizFeed}))
-                        op.commandlist.append(Path.Command("G2", { "X": x, "Y": y, "Z": passEndDepth, "I": r, "F": op.horizFeed}))
+                        op.commandlist.append(Path.Command("G2", { "X": x - (2*r), "Y": y, "Z": curDep - (lastStep/2), "I": -r, "F": op.vertFeed}))
+                        op.commandlist.append(Path.Command("G2", { "X": x, "Y": y, "Z": passEndDepth, "I": r, "F": op.vertFeed}))
                     else:
-                        op.commandlist.append(Path.Command("G2", { "X": x - (2*r), "Y": y, "Z": passEndDepth, "I": -r, "F": op.horizFeed}))
+                        op.commandlist.append(Path.Command("G2", { "X": x - (2*r), "Y": y, "Z": passEndDepth, "I": -r, "F": op.vertFeed}))
                         op.commandlist.append(Path.Command("G1", {"X": x, "Y": y, "Z": passEndDepth, "F": op.vertFeed}))
 
                     # one more circle at target depth to make sure center is cleared
