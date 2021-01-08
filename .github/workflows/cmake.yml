@@ -6,7 +6,7 @@ env:
   GENERATOR: "Unix Makefiles"
   CMAKE_BUILD_TYPE: "${CMAKE_BUILD_TYPE:-Release}"
   CCACHE_COMPRESS: 1
-  CCACHE_DIR=: $HOME/.ccache
+  #CCACHE_DIR=: $HOME/.ccache
 
 jobs:
   build:
