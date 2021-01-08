@@ -41,7 +41,7 @@ jobs:
         sudo chown -R $(whoami):$(id -ng) /var/cache/apt/archives
 
     - name: Cache Apt (Linux)
-      uses: actions/cache@v2
+      uses: pat-s/always-upload-cache@v2.1.3
       with:
         path: /var/cache/apt/archives/*.deb
         key: ${{ matrix.config.os }}-cache-apt-${{ steps.get-date.outputs.date }}
@@ -50,7 +50,7 @@ jobs:
       if: runner.os == 'Linux' 
 
     - name: Cache ccache (Linux)
-      uses: actions/cache@v2
+      uses: pat-s/always-upload-cache@v2.1.3
       if: runner.os == 'Linux' 
       with:
         path: ~/.ccache
