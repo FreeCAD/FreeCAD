@@ -4121,8 +4121,11 @@ TopoShape Sketch::toShape(void) const
         auto gf = GeometryFacade::getFacade(it->geo);
         if (!it->external && !gf->getConstruction()) {
 
-            if (it->type != Point)
-                edge_list.push_back(TopoDS::Edge(it->geo->toShape()));
+            if (it->type != Point) {
+                auto shape =it->geo->toShape();
+                if(!shape.IsNull())
+                    edge_list.push_back(TopoDS::Edge(shape));
+            }
             else
                 vertex_list.push_back(TopoDS::Vertex(it->geo->toShape()));
         }
