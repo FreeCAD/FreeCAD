@@ -130,8 +130,11 @@ jobs:
         #export DISPLAY=:99.0
         #sh -e /etc/init.d/xvfb start
 
-        export INSTALLED_APP_PATH="/usr/local/bin/FreeCAD"
-        export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/netgen/:$LD_LIRBARY_PATH
+        #export INSTALLED_APP_PATH="/usr/local/bin/FreeCAD"
+        echo "INSTALLED_APP_PATH=/usr/local/bin/FreeCAD" >> $GITHUB_ENV
+
+        #export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/netgen/:$LD_LIRBARY_PATH
+        echo "LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/netgen/:$LD_LIRBARY_PATH" >> $GITHUB_ENV
 
     - name: Checkout 
       uses: actions/checkout@v2
