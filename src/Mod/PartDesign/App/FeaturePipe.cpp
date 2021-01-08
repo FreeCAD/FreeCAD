@@ -303,6 +303,9 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         AddSubShape.setValue(result);
 
         if(base.IsNull()) {
+            if (getAddSubType() == FeatureAddSub::Subtractive)
+                return new App::DocumentObjectExecReturn("Pipe: There is nothing to subtract from\n");
+
             result = refineShapeIfActive(result);
             Shape.setValue(getSolid(result));
             return App::DocumentObject::StdReturn;
