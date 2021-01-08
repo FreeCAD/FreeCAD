@@ -127,9 +127,9 @@ public:
     void drawEdit(const std::vector<Base::Vector2d> &EditCurve);
 
     /// Is the view provider selectable
-    bool isSelectable(void) const;
+    bool isSelectable(void) const override;
     /// Observer message from the Selection
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+    virtual void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
     /// Show/Hide nodes from information layer
     void showRestoreInformationLayer();
