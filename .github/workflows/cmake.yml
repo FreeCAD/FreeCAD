@@ -47,8 +47,9 @@ jobs:
       uses: actions/cache@v2
       with:
         path: .ccache
-        key: ${{ matrix.config.os }}-${{matrix.config.cc}}-cache-ccache
-
+        key: ${{ matrix.config.os }}-${{matrix.config.cc}}-cache-ccache-${{ hashFiles('.ccache') }}
+        restore-keys: |
+          ${{ matrix.config.os }}-${{matrix.config.cc}}-cache-ccache-
       if: runner.os == 'Linux' 
 
     - name: Install Clang 10
