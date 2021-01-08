@@ -30,7 +30,11 @@ jobs:
           }
 
     steps:
-
+    - name: Get Date timestamp
+      id: get-date
+      run: |
+        echo "::set-output name=date::$(/bin/date -u "+%Y%m%d")"
+      shell: bash
     - name: Change Apt Cache permissions
       if: runner.os == 'Linux'
       run: |
@@ -45,12 +49,12 @@ jobs:
 
     - name: Cache Ccache (Linux)
       uses: actions/cache@v2
+      if: runner.os == 'Linux' 
       with:
         path: /home/runner/.ccache
-        key: ${{ matrix.config.os }}-${{matrix.config.cc}}-cache-ccache-${{ hashFiles('.ccache') }}
+        key: ${{ matrix.config.os }}-${{matrix.config.cc}}-cache-ccache-${{ steps.get-date.outputs.date }}
         restore-keys: |
           ${{ matrix.config.os }}-${{matrix.config.cc}}-cache-ccache-
-      if: runner.os == 'Linux' 
 
     - name: Install Clang 10
       if: runner.os == 'Linux' && matrix.config.cc == 'clang-10'
