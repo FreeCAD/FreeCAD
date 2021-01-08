@@ -147,6 +147,8 @@ jobs:
         #make -j${N} FreeCADBase
         cmake --build ./ --target FreeCADBase  -j ${N}
         ccache -s
+        cmake --build ./ --target FreeCADBase  -j ${N}
+        ccache -s
         #xvfb-run --auto-servernum ${INSTALLED_APP_PATH} --console --run-test 0 || travis_terminate 1
         #${INSTALLED_APP_PATH} --log-file /tmp/FreeCAD_installed.log &
         #sleep 10 && pkill FreeCAD
