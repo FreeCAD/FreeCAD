@@ -53,7 +53,7 @@ jobs:
       uses: actions/cache@v2
       if: runner.os == 'Linux' 
       with:
-        path: ${HOME}/.ccache
+        path: $HOME/.ccache
         key: ${{ matrix.config.os }}-${{matrix.config.cc}}-cache-ccache-${{ steps.get-date.outputs.date }}
         restore-keys: |
           ${{ matrix.config.os }}-${{matrix.config.cc}}-cache-ccache-
