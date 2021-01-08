@@ -41,13 +41,14 @@ namespace Part {
         inline void setValue(const T& val) {value = val;};
         inline const T &getValue() const {return value;};
 
-        // Persistence implementer ---------------------
-        virtual void Save(Base::Writer &/*writer*/) const override;
-        virtual void Restore(Base::XMLReader &/*reader*/) override;
-
         virtual std::unique_ptr<Part::GeometryExtension> copy(void) const override;
 
         virtual PyObject *getPyObject(void) override;
+
+    protected:
+        virtual void copyAttributes(Part::GeometryExtension * cpy) const override;
+        virtual void restoreAttributes(Base::XMLReader &reader) override;
+        virtual void saveAttributes(Base::Writer &writer) const override;
 
     private:
         GeometryDefaultExtension(const GeometryDefaultExtension<T>&) = default;
