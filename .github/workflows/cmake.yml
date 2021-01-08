@@ -158,13 +158,19 @@ jobs:
         #if [ "${TRAVIS_OS_NAME}" == "linux" ]; then sudo timeout -k 175m 170m make -j2 install || true; fi
         #sudo make -j${N} install
         #make -j${N} Part
+        echo "::group::Run cmake"
         sudo cmake --build ./ --target install -j ${N}
+        echo "::endgroup::"
+        echo "::group::ccache statistics"
         ccache -s
+        echo "::endgroup::"
         #make clean
         #cmake --build ./ --target FreeCADBase  -j ${N}
         #ccache -s
-        echo "FreeCAD installed bin:" ${INSTALLED_APP_PATH} 
+        echo "FreeCAD installed bin:" ${INSTALLED_APP_PATH}
+        echo "::group::Run tests"
         xvfb-run --auto-servernum ${INSTALLED_APP_PATH} --console --run-test 0
+        echo "::endgroup::"
         #${INSTALLED_APP_PATH} --log-file /tmp/FreeCAD_installed.log &
         #sleep 10 && pkill FreeCAD
         #cat /tmp/FreeCAD_installed.log
