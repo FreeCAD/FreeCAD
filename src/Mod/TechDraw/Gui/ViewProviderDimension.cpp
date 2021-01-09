@@ -65,7 +65,7 @@ ViewProviderDimension::ViewProviderDimension()
 {
     sPixmap = "TechDraw_Dimension";
 
-    static const char *group = "Dim Format";
+    static const char *group = "Dimension Format";
 
     ADD_PROPERTY_TYPE(Font, (Preferences::labelFont().c_str()),
                                               group, App::Prop_None, "The name of the font to use");
