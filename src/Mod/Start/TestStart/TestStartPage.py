@@ -34,3 +34,39 @@ class TestStartPage(unittest.TestCase):
 
     def setUp(self):
         pass
+
+    def test_all_css_placeholders_removed(self):
+        """Check to see if all of the CSS placeholders have been replaced."""
+        placeholders = ["BACKGROUND","BGTCOLOR","FONTFAMILY","FONTSIZE","LINKCOLOR",
+                        "TEXTCOLOR","BOXCOLOR","BASECOLOR","SHADOW"]
+        
+        page = StartPage.handle()
+        for placeholder in placeholders:
+            self.assertNotIn (placeholder, page, "{} was not removed from the CSS".format(placeholder))
+
+    def test_all_js_placeholders_removed(self):
+        """Check to see if all of the JavaScript placeholders have been replaced."""
+        placeholders = ["IMAGE_SRC_INSTALLED"]
+        page = StartPage.handle()
+        for placeholder in placeholders:
+            self.assertNotIn (placeholder, page, "{} was not removed from the JS".format(placeholder))
+
+    def test_all_html_placeholders_removed(self):
+        """Check to see if all of the HTML placeholders have been replaced."""
+        placeholders = ["T_TITLE","VERSIONSTRING","T_DOCUMENTS","T_HELP","T_ACTIVITY",
+                        "SECTION_RECENTFILES","T_TIP","T_ADJUSTRECENT","SECTION_EXAMPLES",
+                        "SECTION_CUSTOM","T_CUSTOM","T_NOTES","T_GENERALDOCUMENTATION",
+                        "IMAGE_SRC_USERHUB", "T_USERHUB", "T_DESCR_USERHUB",
+                        "IMAGE_SRC_POWERHUB","T_POWERHUB","T_DESCR_POWERHUB",
+                        "IMAGE_SRC_DEVHUB",  "T_DEVHUB",  "T_DESCR_DEVHUB",
+                        "IMAGE_SRC_MANUAL",  "T_MANUAL",  "T_DESCR_MANUAL",
+                        "T_WBHELP","T_DESCR_WBHELP","UL_WORKBENCHES",
+                        "T_COMMUNITYHELP","T_DESCR_COMMUNITYHELP1","T_DESCR_COMMUNITYHELP2",
+                        "T_DESCR_COMMUNITYHELP3","T_ADDONS","T_DESCR_ADDONS",
+                        "T_OFFLINEPLACEHOLDER","T_OFFLINEHELP","T_EXTERNALLINKS",
+                        "T_RECENTCOMMITS","T_DESCR_RECENTCOMMITS","T_EXTERNALLINKS",
+                        "T_SEEONGITHUB","T_FORUM","T_DESCR_FORUM"]
+        page = StartPage.handle()
+        for placeholder in placeholders:
+            self.assertNotIn (placeholder, page, "{} was not removed from the HTML".format(placeholder))
+    
