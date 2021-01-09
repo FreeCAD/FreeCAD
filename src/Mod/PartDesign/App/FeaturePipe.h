@@ -88,4 +88,4 @@ public:
 } //namespace PartDesign
 
 
-#endif // PART_Pipe_H
+#endif // PARTDESIGN_Pipe_H
