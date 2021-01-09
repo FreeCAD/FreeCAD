@@ -362,7 +362,7 @@ int SketchObject::setDatum(int ConstrId, double Datum)
     int err = solve();
 
     if (err)
-        newVals[ConstrId]->setValue(oldDatum);
+        this->Constraints.getValues()[ConstrId]->setValue(oldDatum); // newVals is a shell now
 
     return err;
 }
