@@ -478,6 +478,7 @@ QGIView * QGVPage::addViewDimension(TechDraw::DrawViewDimension *dim)
     ourScene->addItem(dimGroup);
 
     dimGroup->setViewPartFeature(dim);
+    dimGroup->dvDimension = dim;
 
     // Find if it belongs to a parent
     QGIView *parent = 0;

@@ -95,6 +95,7 @@ public:
 
     double getTolAdjust(void);
 /*    bool hasHover;*/
+    QGIViewDimension* parent;
 
     bool isFramed(void) { return m_isFramed; }
     void setFramed(bool framed) { m_isFramed = framed; }
@@ -115,6 +116,7 @@ protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
+    virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) override;
 //    virtual void mouseReleaseEvent( QGraphicsSceneMouseEvent * event) override;
 
     QGCustomText* m_dimText;
@@ -153,6 +155,7 @@ public:
                         const QStyleOptionGraphicsItem * option,
                         QWidget * widget = 0 ) override;
 
+    TechDraw::DrawViewDimension *dvDimension;
     virtual void drawBorder() override;
     virtual void updateView(bool update = false) override;
     virtual QColor prefNormalColor(void);
