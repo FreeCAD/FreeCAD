@@ -24,7 +24,7 @@
 #ifndef APP_APPLICATION_H
 #define APP_APPLICATION_H
 
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 
 #include <vector>
 #include <deque>

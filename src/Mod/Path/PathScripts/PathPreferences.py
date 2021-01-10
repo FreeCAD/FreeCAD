@@ -29,35 +29,39 @@ import PathScripts.PathLog as PathLog
 # PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 # PathLog.trackModule()
 
-DefaultFilePath           = "DefaultFilePath"
-DefaultJobTemplate        = "DefaultJobTemplate"
-DefaultStockTemplate      = "DefaultStockTemplate"
-DefaultTaskPanelLayout    = "DefaultTaskPanelLayout"
+DefaultFilePath                 = "DefaultFilePath"
+DefaultJobTemplate              = "DefaultJobTemplate"
+DefaultStockTemplate            = "DefaultStockTemplate"
+DefaultTaskPanelLayout          = "DefaultTaskPanelLayout"
 
-PostProcessorDefault      = "PostProcessorDefault"
-PostProcessorDefaultArgs  = "PostProcessorDefaultArgs"
-PostProcessorBlacklist    = "PostProcessorBlacklist"
-PostProcessorOutputFile   = "PostProcessorOutputFile"
-PostProcessorOutputPolicy = "PostProcessorOutputPolicy"
+PostProcessorDefault            = "PostProcessorDefault"
+PostProcessorDefaultArgs        = "PostProcessorDefaultArgs"
+PostProcessorBlacklist          = "PostProcessorBlacklist"
+PostProcessorOutputFile         = "PostProcessorOutputFile"
+PostProcessorOutputPolicy       = "PostProcessorOutputPolicy"
 
-LastPathToolBit           = "LastPathToolBit"
-LastPathToolLibrary       = "LastPathToolLibrary"
-LastPathToolShape         = "LastPathToolShape"
-LastPathToolTable         = "LastPathToolTable"
+LastPathToolBit                 = "LastPathToolBit"
+LastPathToolLibrary             = "LastPathToolLibrary"
+LastPathToolShape               = "LastPathToolShape"
+LastPathToolTable               = "LastPathToolTable"
 
-LastFileToolBit           = "LastFileToolBit"
-LastFileToolLibrary       = "LastFileToolLibrary"
-LastFileToolShape         = "LastFileToolShape"
+LastFileToolBit                 = "LastFileToolBit"
+LastFileToolLibrary             = "LastFileToolLibrary"
+LastFileToolShape               = "LastFileToolShape"
 
-UseLegacyTools            = "UseLegacyTools"
-UseAbsoluteToolPaths      = "UseAbsoluteToolPaths"
-OpenLastLibrary           = "OpenLastLibrary"
+UseLegacyTools                  = "UseLegacyTools"
+UseAbsoluteToolPaths            = "UseAbsoluteToolPaths"
+OpenLastLibrary                 = "OpenLastLibrary"
 
 # Linear tolerance to use when generating Paths, eg when tessellating geometry
-GeometryTolerance         = "GeometryTolerance"
-LibAreaCurveAccuracy      = "LibAreaCurveAccuarcy"
+GeometryTolerance               = "GeometryTolerance"
+LibAreaCurveAccuracy            = "LibAreaCurveAccuarcy"
 
-EnableExperimentalFeatures = "EnableExperimentalFeatures"
+WarningSuppressRapidSpeeds      = "WarningSuppressRapidSpeeds"
+WarningSuppressAllSpeeds        = "WarningSuppressAllSpeeds"
+WarningSuppressSelectionMode    = "WarningSuppressSelectionMode"
+WarningSuppressOpenCamLib       = "WarningSuppressOpenCamLib"
+EnableExperimentalFeatures      = "EnableExperimentalFeatures"
 
 
 def preferences():
@@ -258,6 +262,18 @@ def setDefaultTaskPanelLayout(style):
 
 def experimentalFeaturesEnabled():
     return preferences().GetBool(EnableExperimentalFeatures, False)
+
+def suppressAllSpeedsWarning():
+    return preferences().GetBool(WarningSuppressAllSpeeds, True)
+
+def suppressRapidSpeedsWarning():
+    return suppressAllSpeedsWarning() or preferences().GetBool(WarningSuppressRapidSpeeds, True)
+
+def suppressSelectionModeWarning():
+    return preferences().GetBool(WarningSuppressSelectionMode, True)
+
+def suppressOpenCamLibWarning():
+    return preferences().GetBool(WarningSuppressOpenCamLib, True)
 
 
 def lastFileToolLibrary():

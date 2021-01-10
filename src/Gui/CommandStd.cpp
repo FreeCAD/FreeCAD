@@ -377,6 +377,7 @@ Action * StdCmdDlgPreferences::createAction(void)
 {
     Action *pcAction = Command::createAction();
     pcAction->setMenuRole(QAction::PreferencesRole);
+
     return pcAction;
 }
 
@@ -510,6 +511,33 @@ void StdCmdOnlineHelpWebsite::activated(int iMsg)
     ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Websites");
     std::string url = hURLGrp->GetASCII("OnlineHelp", defaulturl.c_str());
     hURLGrp->SetASCII("OnlineHelp", url.c_str());
+    OpenURLInBrowser(url.c_str());
+}
+
+//===========================================================================
+// Std_FreeCADDonation
+//===========================================================================
+
+DEF_STD_CMD(StdCmdFreeCADDonation)
+
+StdCmdFreeCADDonation::StdCmdFreeCADDonation()
+  :Command("Std_FreeCADDonation")
+{
+    sGroup        = QT_TR_NOOP("Help");
+    sMenuText     = QT_TR_NOOP("Donate");
+    sToolTipText  = QT_TR_NOOP("Donate to FreeCAD development");
+    sWhatsThis    = "Std_FreeCADDonation";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "internet-web-browser";
+    eType         = 0;
+}
+
+void StdCmdFreeCADDonation::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Websites");
+    std::string url = hURLGrp->GetASCII("DonatePage", "https://wiki.freecadweb.org/Donate");
+    hURLGrp->SetASCII("DonatePage", url.c_str());
     OpenURLInBrowser(url.c_str());
 }
 
@@ -813,6 +841,7 @@ void CreateStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdOnlineHelp());
     rcCmdMgr.addCommand(new StdCmdOnlineHelpWebsite());
     rcCmdMgr.addCommand(new StdCmdFreeCADWebsite());
+    rcCmdMgr.addCommand(new StdCmdFreeCADDonation());
     rcCmdMgr.addCommand(new StdCmdFreeCADUserHub());
     rcCmdMgr.addCommand(new StdCmdFreeCADPowerUserHub());
     rcCmdMgr.addCommand(new StdCmdFreeCADForum());

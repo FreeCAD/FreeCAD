@@ -1859,7 +1859,7 @@ private:
         double height;
         double track = 0;
 
-        Py_UNICODE *unichars;
+        Py_UNICODE *unichars = NULL;
         Py_ssize_t pysize;
 
         PyObject *CharList;
@@ -1900,7 +1900,11 @@ private:
 #else
             pysize = PyUnicode_GetSize(p);
 #endif
+#if PY_VERSION_HEX < 0x03090000
             unichars = PyUnicode_AS_UNICODE(p);
+#else
+            unichars = (Py_UNICODE *)PyUnicode_AsUCS4Copy(p);
+#endif
         }
         else if (PyUnicode_Check(intext)) {
 #if PY_VERSION_HEX >= 0x03030000
@@ -1908,7 +1912,11 @@ private:
 #else
             pysize = PyUnicode_GetSize(intext);
 #endif
+#if PY_VERSION_HEX < 0x03090000
             unichars = PyUnicode_AS_UNICODE(intext);
+#else
+            unichars = (Py_UNICODE *)PyUnicode_AsUCS4Copy(intext);
+#endif
         }
         else {
             throw Py::TypeError("** makeWireString bad text parameter");
@@ -1933,6 +1941,11 @@ private:
             else {
                 CharList = FT2FC(unichars,pysize,dir,fontfile,height,track);
             }
+#if PY_VERSION_HEX >= 0x03090000
+            if (unichars) {
+                PyMem_Free(unichars);
+            }
+#endif
         }
         catch (Standard_DomainError&) {                                      // Standard_DomainError is OCC error.
             throw Py::Exception(PartExceptionOCCDomainError, "makeWireString failed - Standard_DomainError");

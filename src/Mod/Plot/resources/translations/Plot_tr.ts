@@ -271,7 +271,7 @@
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="151"/>
       <source>Y label</source>
-      <translation>Y etiket</translation>
+      <translation>Y etiketi</translation>
     </message>
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="155"/>

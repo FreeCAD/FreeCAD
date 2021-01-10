@@ -3161,7 +3161,7 @@ Buna karşın, daha sonra istediğiniz an 'ParçaTasarımı-&gt;Geçiş...' ('Pa
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="399"/>
       <source> Custom thread length</source>
-      <translation> Özel iplik uzunluğu</translation>
+      <translation> Özel diş uzunluğu</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="423"/>

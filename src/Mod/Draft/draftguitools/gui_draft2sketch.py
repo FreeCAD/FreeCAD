@@ -24,7 +24,7 @@
 # ***************************************************************************
 """Provides GUI tools to convert Draft objects to Sketches and back.
 
-Many Draft objects will be converted to a single non-contrainted Sketch.
+Many Draft objects will be converted to a single non-constrained Sketch.
 
 However, a single sketch with disconnected traces will be converted
 into several individual Draft objects.
@@ -71,17 +71,14 @@ class Draft2Sketch(gui_base_original.Modifier):
             if self.ui:
                 self.ui.selectUi()
                 _msg(translate("draft", "Select an object to convert."))
-                self.call = \
-                    self.view.addEventCallback("SoEvent",
-                                               gui_tool_utils.selectObject)
+                self.call = self.view.addEventCallback(
+                    "SoEvent",
+                    gui_tool_utils.selectObject)
         else:
             self.proceed()
 
     def proceed(self):
         """Proceed with the command if one object was selected."""
-        if self.call:
-            self.view.removeEventCallback("SoEvent", self.call)
-
         sel = Gui.Selection.getSelection()
         allSketches = True
         allDraft = True

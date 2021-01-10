@@ -570,4 +570,4 @@ def drill_translate(outstring, cmd, params):
   return trBuff
 
 
-print(__name__ + ": GCode postprocessor loaded.")
+# print(__name__ + ": GCode postprocessor loaded.")

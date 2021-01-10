@@ -77,7 +77,7 @@ public:
     void setDimString(QString t);
     void setDimString(QString t, qreal maxWidth);
     void setUnitString(QString t);
-    void setTolString();
+    void setToleranceString();
     void setPrettySel(void);
     void setPrettyPre(void);
     void setPrettyNormal(void);

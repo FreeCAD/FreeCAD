@@ -91,7 +91,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="70"/>
       <source>Middle mouse button or H key.</source>
-      <translation type="unfinished">Middle mouse button or H key.</translation>
+      <translation>الزر الأوسط للفأره أو الزر H.</translation>
     </message>
   </context>
 </TS>

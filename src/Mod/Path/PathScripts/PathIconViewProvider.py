@@ -78,7 +78,7 @@ class ViewProvider(object):
         # pylint: disable=unused-argument
         if 0 == mode:
             self._onEditCallback(True)
-        return True
+        return False
 
     def unsetEdit(self, arg1, arg2):
         # pylint: disable=unused-argument

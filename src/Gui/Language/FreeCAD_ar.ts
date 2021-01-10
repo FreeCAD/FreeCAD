@@ -126,6 +126,74 @@
       <source>Edit</source>
       <translation>تعديل</translation>
     </message>
+    <message>
+      <source>Import</source>
+      <translation>استيراد</translation>
+    </message>
+    <message>
+      <source>Delete</source>
+      <translation>حذف</translation>
+    </message>
+    <message>
+      <source>Paste expressions</source>
+      <translation type="unfinished">Paste expressions</translation>
+    </message>
+    <message>
+      <source>Make link group</source>
+      <translation type="unfinished">Make link group</translation>
+    </message>
+    <message>
+      <source>Make link</source>
+      <translation type="unfinished">Make link</translation>
+    </message>
+    <message>
+      <source>Make sub-link</source>
+      <translation type="unfinished">Make sub-link</translation>
+    </message>
+    <message>
+      <source>Import links</source>
+      <translation type="unfinished">Import links</translation>
+    </message>
+    <message>
+      <source>Import all links</source>
+      <translation type="unfinished">Import all links</translation>
+    </message>
+    <message>
+      <source>Insert measurement</source>
+      <translation type="unfinished">Insert measurement</translation>
+    </message>
+    <message>
+      <source>Insert text document</source>
+      <translation type="unfinished">Insert text document</translation>
+    </message>
+    <message>
+      <source>Add a part</source>
+      <translation type="unfinished">Add a part</translation>
+    </message>
+    <message>
+      <source>Add a group</source>
+      <translation type="unfinished">Add a group</translation>
+    </message>
+    <message>
+      <source>Align</source>
+      <translation type="unfinished">Align</translation>
+    </message>
+    <message>
+      <source>Placement</source>
+      <translation>الموضع</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation type="unfinished">Transform</translation>
+    </message>
+    <message>
+      <source>Link Transform</source>
+      <translation type="unfinished">Link Transform</translation>
+    </message>
+    <message>
+      <source>Measure distance</source>
+      <translation>قياس المسافة</translation>
+    </message>
   </context>
   <context>
     <name>DlgCustomizeSpNavSettings</name>
@@ -2555,6 +2623,18 @@ Larger value eases to pick things, but can make small features impossible to sel
 Larger value eases to pick things, but can make small features impossible to select.
                </translation>
     </message>
+    <message>
+      <source>This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</source>
+      <translation type="unfinished">This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</translation>
+    </message>
+    <message>
+      <source>Use software OpenGL</source>
+      <translation type="unfinished">Use software OpenGL</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
@@ -3418,16 +3498,12 @@ Mouse tilting is not disabled by this setting.</translation>
       <translation type="unfinished">Rotations in 3D will use current cursor position as center for rotation</translation>
     </message>
     <message>
-      <source>Rotate at cursor</source>
-      <translation type="unfinished">Rotate at cursor</translation>
-    </message>
-    <message>
       <source>Isometric</source>
-      <translation type="unfinished">Isometric</translation>
+      <translation>متساوي القياس</translation>
     </message>
     <message>
       <source>Dimetric</source>
-      <translation type="unfinished">Dimetric</translation>
+      <translation>ثنائي الأبعاد</translation>
     </message>
     <message>
       <source>Trimetric</source>
@@ -3468,6 +3544,22 @@ Mouse tilting is not disabled by this setting.</translation>
     <message>
       <source>Default camera orientation when creating a new document or selecting the home view</source>
       <translation type="unfinished">Default camera orientation when creating a new document or selecting the home view</translation>
+    </message>
+    <message>
+      <source>Rotation mode</source>
+      <translation type="unfinished">Rotation mode</translation>
+    </message>
+    <message>
+      <source>Window center</source>
+      <translation type="unfinished">Window center</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation type="unfinished">Drag at cursor</translation>
+    </message>
+    <message>
+      <source>Object center</source>
+      <translation type="unfinished">Object center</translation>
     </message>
   </context>
   <context>
@@ -8580,7 +8672,7 @@ Document: </translation>
     </message>
     <message>
       <source>Dimetric</source>
-      <translation type="unfinished">Dimetric</translation>
+      <translation>ثنائي الأبعاد</translation>
     </message>
     <message>
       <source>Set to dimetric view</source>
@@ -8700,7 +8792,7 @@ Document: </translation>
     </message>
     <message>
       <source>Isometric</source>
-      <translation type="unfinished">Isometric</translation>
+      <translation>متساوي القياس</translation>
     </message>
     <message>
       <source>Set to isometric view</source>
@@ -8828,6 +8920,21 @@ Document: </translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewRestoreCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation type="unfinished">Standard-View</translation>
+    </message>
+    <message>
+      <source>Restore saved camera</source>
+      <translation type="unfinished">Restore saved camera</translation>
+    </message>
+    <message>
+      <source>Restore saved camera settings</source>
+      <translation type="unfinished">Restore saved camera settings</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewRight</name>
     <message>
       <source>Standard-View</source>
@@ -8870,6 +8977,21 @@ Document: </translation>
     <message>
       <source>Rotate the view by 90° clockwise</source>
       <translation type="unfinished">Rotate the view by 90° clockwise</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewSaveCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation type="unfinished">Standard-View</translation>
+    </message>
+    <message>
+      <source>Save current camera</source>
+      <translation type="unfinished">Save current camera</translation>
+    </message>
+    <message>
+      <source>Save current camera settings</source>
+      <translation type="unfinished">Save current camera settings</translation>
     </message>
   </context>
   <context>
@@ -9415,7 +9537,7 @@ Do you still want to proceed?</translation>
     <name>ViewIsometricCmd</name>
     <message>
       <source>Isometric</source>
-      <translation type="unfinished">Isometric</translation>
+      <translation>متساوي القياس</translation>
     </message>
     <message>
       <source>Set NaviCube to Isometric mode</source>

@@ -32,6 +32,8 @@
 
 namespace Part {
 
+class Geometry;
+
 class PartExport GeometryExtension: public Base::BaseClass
 {
     TYPESYSTEM_HEADER();
@@ -46,10 +48,16 @@ public:
     inline void setName(const std::string& str) {name = str;}
     inline const std::string &getName () const {return name;}
 
+    // Default method to notify an extension that it has been attached
+    // to a given geometry
+    virtual void notifyAttachment(Part::Geometry *) {}
+
 protected:
     GeometryExtension();
     GeometryExtension(const GeometryExtension &obj) = default;
     GeometryExtension& operator= (const GeometryExtension &obj) = default;
+
+    virtual void copyAttributes(Part::GeometryExtension * cpy) const;
 
 private:
     std::string name;
@@ -64,11 +72,13 @@ public:
     virtual ~GeometryPersistenceExtension() = default;
 
     // Own Persistence implementer - Not Base::Persistence - managed by Part::Geometry
-    virtual void Save(Base::Writer &/*writer*/) const = 0;
-    virtual void Restore(Base::XMLReader &/*reader*/) = 0;
+    void Save(Base::Writer &/*writer*/) const;
+    void Restore(Base::XMLReader &/*reader*/);
 
 protected:
-    void restoreNameAttribute(Base::XMLReader &/*reader*/);
+    virtual void restoreAttributes(Base::XMLReader &/*reader*/);
+    virtual void saveAttributes(Base::Writer &writer) const;
+
 };
 
 }

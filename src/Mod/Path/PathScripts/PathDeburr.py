@@ -23,6 +23,7 @@
 
 import FreeCAD
 import PathScripts.PathEngraveBase as PathEngraveBase
+import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathOpTools as PathOpTools
@@ -48,35 +49,44 @@ def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
-def toolDepthAndOffset(width, extraDepth, tool):
+def toolDepthAndOffset(width, extraDepth, tool, printInfo):
     '''toolDepthAndOffset(width, extraDepth, tool) ... return tuple for given\n
        parameters.'''
 
     if not hasattr(tool, 'Diameter'):
         raise ValueError('Deburr requires tool with diameter\n')
 
-    if not hasattr(tool, 'CuttingEdgeAngle'):
-        angle = 180
-        FreeCAD.Console.PrintMessage('The selected tool has No CuttingEdgeAngle property. Assuming Endmill\n')
-    else:
+    suppressInfo = False
+    if hasattr(tool, 'CuttingEdgeAngle'):
         angle = float(tool.CuttingEdgeAngle)
-
-    if not hasattr(tool, 'FlatRadius'):
-        toolOffset = float(tool.Diameter / 2)
-        FreeCAD.Console.PrintMessage('The selected tool has no FlatRadius property. Using Diameter\n')
+        if PathGeom.isRoughly(angle, 180) or PathGeom.isRoughly(angle, 0):
+            angle = 180
+            toolOffset = float(tool.Diameter) / 2
+        else:
+            if hasattr(tool, 'TipDiameter'):
+                toolOffset = float(tool.TipDiameter) / 2
+            elif hasattr(tool, 'FlatRadius'):
+                toolOffset = float(tool.FlatRadius)
+            else:
+                toolOffset = 0.0
+                if printInfo and not suppressInfo:
+                    FreeCAD.Console.PrintMessage(translate('PathDeburr', "The selected tool has no FlatRadius and no TipDiameter property. Assuming {}\n").format("Endmill" if angle == 180 else "V-Bit"))
+                suppressInfo = True
     else:
-        toolOffset = float(tool.FlatRadius)
-
-    if angle == 0:
         angle = 180
+        toolOffset = float(tool.Diameter) / 2
+        if printInfo:
+            FreeCAD.Console.PrintMessage(translate('PathDeburr', 'The selected tool has no CuttingEdgeAngle property. Assuming Endmill\n'))
+        suppressInfo = True
+
     tan = math.tan(math.radians(angle / 2))
 
-    toolDepth = 0 if 0 == tan else width / tan
+    toolDepth = 0 if PathGeom.isRoughly(tan, 0) else width / tan
     depth = toolDepth + extraDepth
-    extraOffset = float(tool.Diameter) / 2 - width if angle == 180 else extraDepth / tan
+    extraOffset = -width if angle == 180 else (extraDepth / tan)
     offset = toolOffset + extraOffset
 
-    return (depth, offset)
+    return (depth, offset, suppressInfo)
 
 
 class ObjectDeburr(PathEngraveBase.ObjectOp):
@@ -110,8 +120,11 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
 
     def opExecute(self, obj):
         PathLog.track(obj.Label)
+        if not hasattr(self, 'printInfo'):
+            self.printInfo = True
         try:
-            (depth, offset) = toolDepthAndOffset(obj.Width.Value, obj.ExtraDepth.Value, self.tool)
+            (depth, offset, suppressInfo) = toolDepthAndOffset(obj.Width.Value, obj.ExtraDepth.Value, self.tool, self.printInfo)
+            self.printInfo = not suppressInfo
         except ValueError as e:
             msg = "{} \n No path will be generated".format(e)
             raise ValueError(msg)

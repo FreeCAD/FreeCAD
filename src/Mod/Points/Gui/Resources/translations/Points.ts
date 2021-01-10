@@ -61,18 +61,18 @@
 <context>
     <name>CmdPointsMerge</name>
     <message>
-        <location filename="../../Command.cpp" line="319"/>
+        <location filename="../../Command.cpp" line="320"/>
         <source>Points</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="320"/>
+        <location filename="../../Command.cpp" line="321"/>
         <source>Merge point clouds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="321"/>
-        <location filename="../../Command.cpp" line="323"/>
+        <location filename="../../Command.cpp" line="322"/>
+        <location filename="../../Command.cpp" line="324"/>
         <source>Merge several point clouds into one</source>
         <translation type="unfinished"></translation>
     </message>
@@ -80,18 +80,18 @@
 <context>
     <name>CmdPointsPolyCut</name>
     <message>
-        <location filename="../../Command.cpp" line="274"/>
+        <location filename="../../Command.cpp" line="275"/>
         <source>Points</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="275"/>
+        <location filename="../../Command.cpp" line="276"/>
         <source>Cut point cloud</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="276"/>
-        <location filename="../../Command.cpp" line="278"/>
+        <location filename="../../Command.cpp" line="277"/>
+        <location filename="../../Command.cpp" line="279"/>
         <source>Cuts a point cloud with a picked polygon</source>
         <translation type="unfinished"></translation>
     </message>
@@ -99,18 +99,18 @@
 <context>
     <name>CmdPointsStructure</name>
     <message>
-        <location filename="../../Command.cpp" line="361"/>
+        <location filename="../../Command.cpp" line="363"/>
         <source>Points</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="362"/>
+        <location filename="../../Command.cpp" line="364"/>
         <source>Structured point cloud</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="363"/>
         <location filename="../../Command.cpp" line="365"/>
+        <location filename="../../Command.cpp" line="367"/>
         <source>Convert points to structured point cloud</source>
         <translation type="unfinished"></translation>
     </message>
@@ -131,6 +131,30 @@
         <location filename="../../Command.cpp" line="154"/>
         <location filename="../../Command.cpp" line="156"/>
         <source>Test to transform a point cloud</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Command</name>
+    <message>
+        <location filename="../../Command.cpp" line="88"/>
+        <source>Import points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Command.cpp" line="168"/>
+        <source>Transform points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Command.cpp" line="208"/>
+        <source>Convert to points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../ViewProvider.cpp" line="468"/>
+        <location filename="../../ViewProvider.cpp" line="627"/>
+        <source>Cut points</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -294,12 +318,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="201"/>
+        <location filename="../../Command.cpp" line="202"/>
         <source>Distance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="202"/>
+        <location filename="../../Command.cpp" line="203"/>
         <source>Enter maximum distance:</source>
         <translation type="unfinished"></translation>
     </message>

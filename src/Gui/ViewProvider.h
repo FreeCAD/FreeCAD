@@ -29,7 +29,7 @@
 #include <string>
 #include <bitset>
 #include <QIcon>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 #include <boost/intrusive_ptr.hpp>
 
 #include <App/TransactionalObject.h>
@@ -237,11 +237,19 @@ public:
     /** @name Methods used by the Tree
       * If you want to take control over the
       * appearance of your object in the tree you
-      * can reimplemnt these methods.
+      * can reimplement these methods.
      */
     //@{
     /// deliver the icon shown in the tree view
     virtual QIcon getIcon(void) const;
+
+     /** @name Methods used by the Tree
+     * If you want to take control over the
+     * viewprovider specific overlay icons that will be drawn with color
+     * regardless of whether the icon is greyed out or not, such as status, you
+     * can reimplement this method.
+     */
+    virtual QIcon mergeColorfulOverlayIcons (const QIcon & orig) const;
 
     /** deliver the children belonging to this object
       * this method is used to deliver the objects to
@@ -530,13 +538,12 @@ protected:
     /// Reimplemented from subclass
     void onChanged(const App::Property* prop);
 
-
     /** @name Methods used by the Tree
      * If you want to take control over the
-     * viewprovider specific overlay icons, such as status, you
-     * can reimplement this method.
+     * viewprovider specific overlay icons, that will be grayed out together
+     * with the base icon, you can reimplement this method.
      */
-    virtual QIcon mergeOverlayIcons (const QIcon & orig) const;
+    virtual QIcon mergeGreyableOverlayIcons (const QIcon & orig) const;
 
     /// Turn on mode switch
     virtual void setModeSwitch();

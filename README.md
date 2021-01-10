@@ -87,6 +87,24 @@ The pages below contain up-to-date build instructions:
 - [Cygwin](https://wiki.freecadweb.org/Compile_on_Cygwin)
 - [MinGW](https://wiki.freecadweb.org/Compile_on_MinGW)
 
+
+Reporting Issues
+---------
+
+To report an issue please:
+- First post to forum to verify the issue; 
+- Link forum thread to bug tracker ticket and vice-a-versa; 
+- Use the most updated stable or development versions of FreeCAD; 
+- Post version info from eg. `Help > About FreeCAD > Copy to clipboard`; 
+- Post a Step-By-Step explanation on how to recreate the issue; 
+- Upload an example file to demonstrate problem. 
+
+For more detail see:
+- [Wiki Page about the Bug Tracker](https://wiki.freecadweb.org/Tracker)
+- [Bug Tracker](https://tracker.freecadweb.org)
+- [Help Forum](http://forum.freecadweb.org/viewforum.php?f=3)
+
+
 Usage & Getting help
 --------------------
 

@@ -119,6 +119,7 @@ void EditDatumDialog::exec(bool atCursor)
             dlg.setWindowTitle(tr("Refractive index ratio", "Constraint_SnellsLaw"));
             ui_ins_datum->label->setText(tr("Ratio n2/n1:", "Constraint_SnellsLaw"));
             ui_ins_datum->labelEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/SketcherRefrIndexRatio"));
+            ui_ins_datum->labelEdit->setSingleStep(0.05);
         }
         else {
             dlg.setWindowTitle(tr("Insert length"));

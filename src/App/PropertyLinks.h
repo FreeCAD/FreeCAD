@@ -25,7 +25,7 @@
 #define APP_PROPERTYLINKS_H
 
 // Std. configurations
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 
 #include <vector>
 #include <map>

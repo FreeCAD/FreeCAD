@@ -995,6 +995,7 @@ Command *GroupCommand::addCommand(const char *name) {
 
 Action * GroupCommand::createAction(void) {
     ActionGroup* pcAction = new ActionGroup(this, getMainWindow());
+    pcAction->setMenuRole(QAction::NoRole);
     pcAction->setDropDownMenu(true);
     pcAction->setExclusive(false);
     pcAction->setCheckable(true);

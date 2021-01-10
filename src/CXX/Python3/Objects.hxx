@@ -1975,7 +1975,7 @@ namespace Py
         }
 
         Char( const unicodestring &v )
-        : Object( PyUnicode_FromUnicode( const_cast<Py_UNICODE*>( v.data() ),1 ), true )
+        : Object( PyUnicode_FromKindAndData( PyUnicode_4BYTE_KIND, const_cast<Py_UNICODE*>( v.data() ),1 ), true )
         {
             validate();
         }
@@ -1995,20 +1995,20 @@ namespace Py
 
         Char &operator=( const unicodestring &v )
         {
-            set( PyUnicode_FromUnicode( const_cast<Py_UNICODE*>( v.data() ), 1 ), true );
+            set( PyUnicode_FromKindAndData( PyUnicode_4BYTE_KIND, const_cast<Py_UNICODE*>( v.data() ), 1 ), true );
             return *this;
         }
 
         Char &operator=( int v_ )
         {
             Py_UNICODE v( v_ );
-            set( PyUnicode_FromUnicode( &v, 1 ), true );
+            set( PyUnicode_FromKindAndData( PyUnicode_4BYTE_KIND, &v, 1 ), true );
             return *this;
         }
 
         Char &operator=( Py_UNICODE v )
         {
-            set( PyUnicode_FromUnicode( &v, 1 ), true );
+            set( PyUnicode_FromKindAndData( PyUnicode_4BYTE_KIND, &v, 1 ), true );
             return *this;
         }
 
@@ -2102,7 +2102,7 @@ namespace Py
         }
 
         String( const Py_UNICODE *s, int length )
-        : SeqBase<Char>( PyUnicode_FromUnicode( s, length ), true )
+        : SeqBase<Char>( PyUnicode_FromKindAndData( PyUnicode_4BYTE_KIND, s, length ), true )
         {
             validate();
         }
@@ -2122,7 +2122,7 @@ namespace Py
 
         String &operator=( const unicodestring &v )
         {
-            set( PyUnicode_FromUnicode( const_cast<Py_UNICODE *>( v.data() ), v.length() ), true );
+            set( PyUnicode_FromKindAndData( PyUnicode_4BYTE_KIND, const_cast<Py_UNICODE *>( v.data() ), v.length() ), true );
             return *this;
         }
 
@@ -2135,13 +2135,20 @@ namespace Py
         // Queries
         virtual size_type size() const
         {
-            return PyUnicode_GET_SIZE( ptr() );
+            return PyUnicode_GetLength( ptr() );
+        }
+
+#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION < 9
+        const Py_UNICODE *unicode_data() const
+        {
+            return PyUnicode_AS_UNICODE( ptr() );
         }
 
         unicodestring as_unicodestring() const
         {
-            return unicodestring( PyUnicode_AS_UNICODE( ptr() ), PyUnicode_GET_SIZE( ptr() ) );
+            return unicodestring( unicode_data(), PyUnicode_GetLength( ptr() ) );
         }
+#endif
 
         operator std::string() const
         {
@@ -2153,11 +2160,6 @@ namespace Py
         {
             Bytes b( encode( encoding, error ) );
             return b.as_std_string();
-        }
-
-        const Py_UNICODE *unicode_data() const
-        {
-            return PyUnicode_AS_UNICODE( ptr() );
         }
     };
 

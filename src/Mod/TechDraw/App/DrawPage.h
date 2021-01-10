@@ -24,7 +24,7 @@
 #ifndef _DrawPage_h_
 #define _DrawPage_h_
 
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>

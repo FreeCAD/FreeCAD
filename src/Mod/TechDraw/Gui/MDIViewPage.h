@@ -128,7 +128,12 @@ protected:
 
     void contextMenuEvent(QContextMenuEvent *event);
     void closeEvent(QCloseEvent*);
+#if QT_VERSION >= 0x050300
+    QPageSize::PageSizeId getPaperSize(int w, int h) const;
+#else
     QPrinter::PaperSize getPaperSize(int w, int h) const;
+#endif
+
     void setDimensionGroups(void);
     void setBalloonGroups(void);
     void setLeaderGroups(void);
@@ -159,8 +164,13 @@ private:
     QTimer *m_timer;
 
     QString m_currentPath;
+#if QT_VERSION >= 0x050300
+    QPageLayout::Orientation m_orientation;
+    QPageSize::PageSizeId m_paperSize;
+#else
     QPrinter::Orientation m_orientation;
     QPrinter::PaperSize m_paperSize;
+#endif
     ViewProviderPage *m_vpPage;
 
     QList<QGraphicsItem*> m_qgSceneSelected;        //items in selection order

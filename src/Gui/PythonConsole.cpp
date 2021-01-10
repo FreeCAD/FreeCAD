@@ -963,6 +963,27 @@ void PythonConsole::changeEvent(QEvent *e)
 
 void PythonConsole::mouseReleaseEvent( QMouseEvent *e )
 {
+  if (e->button() == Qt::MidButton && e->spontaneous())
+  {
+    // on Linux-like systems the middle mouse button is typically connected to a paste operation
+    // which will insert some text at the mouse position
+    QTextCursor cursor = this->textCursor();
+    if (cursor < this->inputBegin())
+    {
+      cursor.movePosition( QTextCursor::End );
+      this->setTextCursor( cursor );
+    }
+    // the text will be pasted at the cursor position (as for Ctrl-V operation)
+    QRect newPos = this->cursorRect();
+
+    // Now we must amend the received event and pass forward. As e->setLocalPos() is only
+    // available in Qt>=5.8, let's stop the original event propagation and generate a fake event
+    // with corrected pointer position (inside the prompt line of the widget)
+    QMouseEvent newEv(e->type(), QPoint(newPos.x(),newPos.y()), e->button(), e->buttons(), e->modifiers());
+    e->accept();
+    QCoreApplication::sendEvent(this->viewport(), &newEv);
+    return;
+  }
   TextEdit::mouseReleaseEvent( e );
   if (e->button() == Qt::LeftButton)
   {

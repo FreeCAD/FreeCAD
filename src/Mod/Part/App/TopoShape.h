@@ -198,6 +198,8 @@ public:
     bool isClosed() const;
     bool isCoplanar(const TopoShape &other, double tol=-1) const;
     bool findPlane(gp_Pln &pln, double tol=-1) const;
+    /// Returns true if the expansion of the shape is infinite, false otherwise
+    bool isInfinite() const;
     //@}
 
     /** @name Boolean operation*/

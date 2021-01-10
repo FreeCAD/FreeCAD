@@ -70,7 +70,7 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 
 #include <boost/algorithm/string.hpp>
 
-#include <boost/graph/adjacency_list.hpp>
+#include <boost_graph_adjacency_list.hpp>
 #include <boost/graph/subgraph.hpp>
 #include <boost/graph/graphviz.hpp>
 #include <boost/graph/strong_components.hpp>

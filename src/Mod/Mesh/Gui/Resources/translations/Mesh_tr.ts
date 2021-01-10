@@ -87,14 +87,14 @@
     <message>
       <location filename="../../Command.cpp" line="1464"/>
       <source>Decimation...</source>
-      <translation type="unfinished">Decimation...</translation>
+      <translation>Seyreltme...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1465"/>
       <location filename="../../Command.cpp" line="1466"/>
       <location filename="../../Command.cpp" line="1467"/>
       <source>Decimates a mesh</source>
-      <translation type="unfinished">Decimates a mesh</translation>
+      <translation>Bir ağı seyreltir</translation>
     </message>
   </context>
   <context>
@@ -290,7 +290,7 @@
     <message>
       <location filename="../../Command.cpp" line="625"/>
       <source>Tessellate shape</source>
-      <translation>Şekili mozaik döşe</translation>
+      <translation>Şekilden Örgü oluştur</translation>
     </message>
   </context>
   <context>
@@ -467,13 +467,13 @@
     <message>
       <location filename="../../Command.cpp" line="1286"/>
       <source>Refinement...</source>
-      <translation type="unfinished">Refinement...</translation>
+      <translation>İnceltme...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1287"/>
       <location filename="../../Command.cpp" line="1288"/>
       <source>Refine existing mesh</source>
-      <translation type="unfinished">Refine existing mesh</translation>
+      <translation>Mevcut ağ yapısını incelt</translation>
     </message>
   </context>
   <context>
@@ -517,17 +517,17 @@
   <context>
     <name>CmdMeshScale</name>
     <message>
-      <location filename="../../Command.cpp" line="1830"/>
+      <location filename="../../Command.cpp" line="1876"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1831"/>
+      <location filename="../../Command.cpp" line="1877"/>
       <source>Scale...</source>
       <translation>Ölçeklendir...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1832"/>
+      <location filename="../../Command.cpp" line="1878"/>
       <source>Scale selected meshes</source>
       <translation>Seçilen kafesleri ölçeklendir</translation>
     </message>
@@ -606,6 +606,24 @@
       <location filename="../../Command.cpp" line="1404"/>
       <source>Smooth the selected meshes</source>
       <translation>Seçili örgüler pürüzsüz</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMeshSplitComponents</name>
+    <message>
+      <location filename="../../Command.cpp" line="1830"/>
+      <source>Mesh</source>
+      <translation type="unfinished">Mesh</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1831"/>
+      <source>Split by components</source>
+      <translation type="unfinished">Split by components</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1832"/>
+      <source>Split selected mesh into its components</source>
+      <translation type="unfinished">Split selected mesh into its components</translation>
     </message>
   </context>
   <context>
@@ -688,7 +706,7 @@
     <message>
       <location filename="../../Command.cpp" line="650"/>
       <source>Curvature plot</source>
-      <translation>Eğrilik şekli</translation>
+      <translation>Eğrilik grafiği</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="651"/>
@@ -717,16 +735,178 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../Command.cpp" line="110"/>
+      <location filename="../../Command.cpp" line="149"/>
+      <source>Mesh Mesh Create</source>
+      <translation type="unfinished">Mesh Mesh Create</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="188"/>
+      <source>Segment by tool mesh</source>
+      <translation>Alet örgüsünden parça</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="243"/>
+      <source>Mesh union</source>
+      <translation type="unfinished">Mesh union</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="312"/>
+      <source>Mesh difference</source>
+      <translation type="unfinished">Mesh difference</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="383"/>
+      <source>Mesh intersection</source>
+      <translation type="unfinished">Mesh intersection</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="469"/>
+      <source>Import Mesh</source>
+      <translation type="unfinished">Import Mesh</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="665"/>
+      <source>Mesh VertexCurvature</source>
+      <translation type="unfinished">Mesh VertexCurvature</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1414"/>
+      <location filename="../../DlgSmoothing.cpp" line="178"/>
+      <source>Mesh Smoothing</source>
+      <translation type="unfinished">Mesh Smoothing</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1505"/>
+      <source>Harmonize mesh normals</source>
+      <translation type="unfinished">Harmonize mesh normals</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1539"/>
+      <source>Flip mesh normals</source>
+      <translation type="unfinished">Flip mesh normals</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1650"/>
+      <source>Fill up holes</source>
+      <translation type="unfinished">Fill up holes</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1801"/>
+      <source>Mesh merge</source>
+      <translation type="unfinished">Mesh merge</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1844"/>
+      <source>Mesh split</source>
+      <translation type="unfinished">Mesh split</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1896"/>
+      <source>Mesh scale</source>
+      <translation type="unfinished">Mesh scale</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDecimating.cpp" line="147"/>
+      <source>Mesh Decimating</source>
+      <translation type="unfinished">Mesh Decimating</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="483"/>
+      <source>Harmonize normals</source>
+      <translation>Normları uyumlu hale getirin</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="586"/>
+      <source>Remove non-manifolds</source>
+      <translation type="unfinished">Remove non-manifolds</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="685"/>
+      <source>Fix indices</source>
+      <translation type="unfinished">Fix indices</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="751"/>
+      <source>Remove degenerated faces</source>
+      <translation type="unfinished">Remove degenerated faces</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="818"/>
+      <source>Remove duplicated faces</source>
+      <translation type="unfinished">Remove duplicated faces</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="883"/>
+      <source>Remove duplicated points</source>
+      <translation type="unfinished">Remove duplicated points</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="967"/>
+      <source>Fix self-intersections</source>
+      <translation type="unfinished">Fix self-intersections</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1054"/>
+      <source>Remove folds</source>
+      <translation type="unfinished">Remove folds</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1094"/>
+      <source>Repair mesh</source>
+      <translation type="unfinished">Repair mesh</translation>
+    </message>
+    <message>
+      <location filename="../../RemoveComponents.cpp" line="130"/>
+      <source>Delete selection</source>
+      <translation type="unfinished">Delete selection</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="874"/>
+      <location filename="../../ViewProvider.cpp" line="929"/>
+      <source>Cut</source>
+      <translation>Kes</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="883"/>
+      <location filename="../../ViewProvider.cpp" line="990"/>
+      <source>Trim</source>
+      <translation>Kırp</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="1067"/>
+      <source>Split</source>
+      <translation>Ayır</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="1131"/>
+      <source>Segment</source>
+      <translation type="unfinished">Segment</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="1726"/>
+      <source>Delete</source>
+      <translation>Sil</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="1833"/>
+      <source>Fill hole</source>
+      <translation type="unfinished">Fill hole</translation>
+    </message>
+  </context>
+  <context>
     <name>MeshGui::DlgDecimating</name>
     <message>
       <location filename="../../DlgDecimating.ui" line="14"/>
       <source>Decimating</source>
-      <translation type="unfinished">Decimating</translation>
+      <translation>Seyreltiliyor</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="20"/>
       <source>Reduction</source>
-      <translation type="unfinished">Reduction</translation>
+      <translation>Azaltma</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="28"/>
@@ -736,13 +916,13 @@
     <message>
       <location filename="../../DlgDecimating.ui" line="57"/>
       <source>Full</source>
-      <translation type="unfinished">Full</translation>
+      <translation>Tam</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="66"/>
       <location filename="../../DlgDecimating.cpp" line="91"/>
       <source>Absolute number</source>
-      <translation type="unfinished">Absolute number</translation>
+      <translation>Tam sayı</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="102"/>
@@ -752,7 +932,7 @@
     <message>
       <location filename="../../DlgDecimating.cpp" line="85"/>
       <source>Absolute number (Maximum: %1)</source>
-      <translation type="unfinished">Absolute number (Maximum: %1)</translation>
+      <translation>Tam sayı (En fazla:: %1)</translation>
     </message>
   </context>
   <context>
@@ -1239,12 +1419,12 @@ Please run the command to repair folds first</source>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="28"/>
       <source>Maximal deviation between mesh and object</source>
-      <translation type="unfinished">Maximal deviation between mesh and object</translation>
+      <translation>Ağ ve nesne arasındaki en yüksek sapma</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="50"/>
       <source>Deviation of tessellation to the actual surface</source>
-      <translation type="unfinished">Deviation of tessellation to the actual surface</translation>
+      <translation>Boşluksuz dizilimin mevcut yüzeye olan sapması</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="53"/>
@@ -1259,7 +1439,7 @@ Please run the command to repair folds first</source>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="63"/>
       <source>ZIP compression is used when writing a mesh file in AMF format</source>
-      <translation type="unfinished">ZIP compression is used when writing a mesh file in AMF format</translation>
+      <translation>Bir ağ dosyası AMF biçiminde yazılırken kullanılan ZIP sıkıştırması</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="66"/>
@@ -1308,7 +1488,7 @@ is used when writing a file in AMF format</source>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="76"/>
       <source>Default color for new meshes</source>
-      <translation type="unfinished">Default color for new meshes</translation>
+      <translation>Yeni ağ örgüleri için varsayılan renk</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="96"/>
@@ -1342,10 +1522,8 @@ is used when writing a file in AMF format</source>
 If not checked, it depends on the option "Enable backlight color"
 (preferences section Display -&gt; 3D View). Either the backlight color
 will be used or black.</source>
-      <translation type="unfinished">The bottom side of surface will be rendered the same way than top side.
-If not checked, it depends on the option "Enable backlight color"
-(preferences section Display -&gt; 3D View). Either the backlight color
-will be used or black.</translation>
+      <translation>Yüzeyin alt tarafı, üst tarafla aynı yolla görsel işlemeye tabi tutulacak.
+Eğer işaretlenmezse, "Arka aydınlatma rengini etkinleştir" seçeneğine bağlı kalacak (tercihler bölümü Görünüm -&gt; 3B Görünüm). Arka aydınlatma rengi veya siyah kullanılacak.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="213"/>
@@ -1386,12 +1564,9 @@ With flat shading the surface normals are not defined per vertex that leads
 to a unreal appearance for curved surfaces while using Phong shading leads
 to a smoother appearance.
 </source>
-      <translation type="unfinished">If this option is set Phong shading is used, otherwise flat shading.
-Shading defines the appearance of surfaces.
+      <translation>Bu seçenek ayarlıysa Phong gölgeleme tekniği, yoksa düzlem gölgeleme kullanılır. Gölgeleme, yüzeylerin dış görünüşünü tanımlar.
 
-With flat shading the surface normals are not defined per vertex that leads
-to a unreal appearance for curved surfaces while using Phong shading leads
-to a smoother appearance.
+Phong gölgeleme tekniği daha yumuşak bir dış görünüşe yol açarken, zemin gölgelemede yüzey normalleri her köşede tanımlanmaz ve kavisli yüzeyler için gerçek dışı bir dış görünüşe yol açar.
 </translation>
     </message>
     <message>
@@ -1405,10 +1580,10 @@ to a smoother appearance.
 
  If face angle ≥ crease angle, facet shading is used
  If face angle &lt; crease angle, smooth shading is used</source>
-      <translation type="unfinished">Crease angle is a threshold angle between two faces.
+      <translation>Kıvrım açısı, iki yüz arasındaki sınır açıdır.
 
- If face angle ≥ crease angle, facet shading is used
- If face angle &lt; crease angle, smooth shading is used</translation>
+Yüz açısı ≥ kıvrım açısı ise, yüzey gölgeleme kullanıllır
+Yüz açısı &lt; kıvrım açısı ise, pürüzsüz gölgeleme kullanılır</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="346"/>
@@ -1484,17 +1659,17 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="101"/>
       <source>Frontal</source>
-      <translation type="unfinished">Frontal</translation>
+      <translation>Cephe</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="103"/>
       <source>Frontal Quad</source>
-      <translation type="unfinished">Frontal Quad</translation>
+      <translation>Ön Dörtlü</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="104"/>
       <source>Parallelograms</source>
-      <translation type="unfinished">Parallelograms</translation>
+      <translation>Paralelkenarlar</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="175"/>
@@ -1505,12 +1680,12 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="220"/>
       <source>Running gmsh...</source>
-      <translation type="unfinished">Running gmsh...</translation>
+      <translation>Gmsh çalışıyor...</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="242"/>
       <source>Failed to start</source>
-      <translation type="unfinished">Failed to start</translation>
+      <translation>Başlatma başarısız</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="249"/>
@@ -1602,27 +1777,27 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="14"/>
       <source>Remesh by gmsh</source>
-      <translation type="unfinished">Remesh by gmsh</translation>
+      <translation>Gmsh ile tekrar ağ ör</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="26"/>
       <source>Remeshing Parameter</source>
-      <translation type="unfinished">Remeshing Parameter</translation>
+      <translation>Tekrar Ağ Örme Değişkeni</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="32"/>
       <source>Meshing:</source>
-      <translation type="unfinished">Meshing:</translation>
+      <translation>Ağ örme:</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="42"/>
       <source>Max element size (0.0 = Auto):</source>
-      <translation type="unfinished">Max element size (0.0 = Auto):</translation>
+      <translation>En fazla eleman boyutu (0.0 = Oto):</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="68"/>
       <source>Min element size (0.0 = Auto):</source>
-      <translation type="unfinished">Min element size (0.0 = Auto):</translation>
+      <translation>En az eleman boyutu (0.0 = Oto):</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="94"/>
@@ -1632,7 +1807,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="126"/>
       <source>Gmsh</source>
-      <translation type="unfinished">Gmsh</translation>
+      <translation>Gmsh</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="134"/>
@@ -1642,7 +1817,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="154"/>
       <source>Kill</source>
-      <translation type="unfinished">Kill</translation>
+      <translation>Bitir</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="181"/>
@@ -2134,12 +2309,12 @@ Yüklemek için lütfen http://www.openscad.org/index.html adresini ziyaret edin
       <translation>Delikleri maksimum sayıda kenarla doldurun:</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1845"/>
+      <location filename="../../Command.cpp" line="1891"/>
       <source>Scaling</source>
       <translation>Ölçekleme</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1846"/>
+      <location filename="../../Command.cpp" line="1892"/>
       <source>Enter scaling factor:</source>
       <translation>Ölçeklendirme faktörünü girin:</translation>
     </message>
@@ -2156,7 +2331,7 @@ Yüklemek için lütfen http://www.openscad.org/index.html adresini ziyaret edin
     <message>
       <location filename="../../ViewProvider.cpp" line="746"/>
       <source>Display segments</source>
-      <translation type="unfinished">Display segments</translation>
+      <translation>Parçaları görüntüle</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1577"/>

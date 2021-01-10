@@ -138,6 +138,12 @@ bool GeometryFacade::isInternalType(const Part::Geometry * geometry, InternalTyp
     return gf->getInternalType() == type;
 }
 
+bool GeometryFacade::getBlocked(const Part::Geometry * geometry)
+{
+    auto gf = GeometryFacade::getFacade(geometry);
+    return gf->getBlocked();
+}
+
 PyObject * GeometryFacade::getPyObject(void)
 {
     return new GeometryFacadePy(new GeometryFacade(this->Geo));

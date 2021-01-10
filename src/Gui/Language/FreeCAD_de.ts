@@ -95,7 +95,7 @@
     </message>
     <message>
       <source>Test console output</source>
-      <translation>Testen der Konsolenausgabe</translation>
+      <translation>Konsolenausgabe testen</translation>
     </message>
   </context>
   <context>
@@ -125,6 +125,74 @@
     <message>
       <source>Edit</source>
       <translation>Bearbeiten</translation>
+    </message>
+    <message>
+      <source>Import</source>
+      <translation>Importieren</translation>
+    </message>
+    <message>
+      <source>Delete</source>
+      <translation>Löschen</translation>
+    </message>
+    <message>
+      <source>Paste expressions</source>
+      <translation type="unfinished">Paste expressions</translation>
+    </message>
+    <message>
+      <source>Make link group</source>
+      <translation>Verknüpfungsgruppe erstellen</translation>
+    </message>
+    <message>
+      <source>Make link</source>
+      <translation>Verknüpfung erstellen</translation>
+    </message>
+    <message>
+      <source>Make sub-link</source>
+      <translation>Unterverknüpfung erstellen</translation>
+    </message>
+    <message>
+      <source>Import links</source>
+      <translation>Verknüpfungen importieren</translation>
+    </message>
+    <message>
+      <source>Import all links</source>
+      <translation>Alle Verknüpfungen importieren</translation>
+    </message>
+    <message>
+      <source>Insert measurement</source>
+      <translation type="unfinished">Insert measurement</translation>
+    </message>
+    <message>
+      <source>Insert text document</source>
+      <translation type="unfinished">Insert text document</translation>
+    </message>
+    <message>
+      <source>Add a part</source>
+      <translation type="unfinished">Add a part</translation>
+    </message>
+    <message>
+      <source>Add a group</source>
+      <translation type="unfinished">Add a group</translation>
+    </message>
+    <message>
+      <source>Align</source>
+      <translation>Ausrichtung</translation>
+    </message>
+    <message>
+      <source>Placement</source>
+      <translation>Placement</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Transformieren</translation>
+    </message>
+    <message>
+      <source>Link Transform</source>
+      <translation type="unfinished">Link Transform</translation>
+    </message>
+    <message>
+      <source>Measure distance</source>
+      <translation>Abstand messen</translation>
     </message>
   </context>
   <context>
@@ -1312,7 +1380,7 @@ Wenn dies nicht ausgewählt ist, muss die Eigenschaft eindeutig benannt sein und
     </message>
     <message>
       <source>Pressing &lt;Tab&gt; will insert a tabulator with defined tab size</source>
-      <translation>&lt;Tab&gt; -Taste fügt den definierten Tabellenabstand ein</translation>
+      <translation>Durch Drücken von &lt;Tab&gt; wird ein Tabulator eingefügt, dessen Breite unter Tabulator-Breite definiert ist</translation>
     </message>
     <message>
       <source>Display items</source>
@@ -1438,8 +1506,7 @@ display the splash screen</source>
     <message>
       <source>Choose which workbench will be activated and shown
 after FreeCAD launches</source>
-      <translation>Auswahl welche Werkbank aktiviert und angezeigt wird
-nach dem FreeCAD Start</translation>
+      <translation>Auswahl des Arbeitsbereichs, der nach dem FreeCAD Start aktiviert und angezeigt werden soll</translation>
     </message>
     <message>
       <source>Words will be wrapped when they exceed available
@@ -2202,7 +2269,7 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     <message>
       <source>When an error has occurred, the Report View dialog becomes visible
 on-screen while displaying the error</source>
-      <translation>Bei Fehlfunktion wird der Fehler-Bericht angezeigt</translation>
+      <translation>Wenn ein Fehler auftritt, wird der Berichts-Dialog mit dem Fehler angezeigt</translation>
     </message>
     <message>
       <source>Show report view on error</source>
@@ -2237,7 +2304,7 @@ on-screen while displaying the log message</source>
     </message>
     <message>
       <source>Font color for normal messages in Report view panel</source>
-      <translation>Schriftfarbe für normale Nachrichten in der Berichtsansicht</translation>
+      <translation>Schriftfarbe für Protokoll Nachrichten in der Berichtsansicht</translation>
     </message>
     <message>
       <source>Font color for log messages in Report view panel</source>
@@ -2537,6 +2604,18 @@ Larger value eases to pick things, but can make small features impossible to sel
                </source>
       <translation>Bereich für das Auswählen von Elementen in der 3D-Ansicht.
 Größere Werte erleichtern das Selektieren von Dingen, können aber die Auswahl kleiner Merkmale unmöglich machen.               </translation>
+    </message>
+    <message>
+      <source>This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</source>
+      <translation type="unfinished">This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</translation>
+    </message>
+    <message>
+      <source>Use software OpenGL</source>
+      <translation type="unfinished">Use software OpenGL</translation>
     </message>
   </context>
   <context>
@@ -3401,10 +3480,6 @@ Das Neigen der Maus wird durch diese Einstellung nicht deaktiviert.</translation
       <translation>Drehen in 3D wird die aktuelle Cursorposition als Drehmittelpunkt verwenden</translation>
     </message>
     <message>
-      <source>Rotate at cursor</source>
-      <translation>Drehen am Cursor</translation>
-    </message>
-    <message>
       <source>Isometric</source>
       <translation>Isometrisch</translation>
     </message>
@@ -3451,6 +3526,22 @@ Das Neigen der Maus wird durch diese Einstellung nicht deaktiviert.</translation
     <message>
       <source>Default camera orientation when creating a new document or selecting the home view</source>
       <translation>Standard-Kameraorientierung für neue Dokumente oder bei Auswahl der Home-Ansicht</translation>
+    </message>
+    <message>
+      <source>Rotation mode</source>
+      <translation type="unfinished">Rotation mode</translation>
+    </message>
+    <message>
+      <source>Window center</source>
+      <translation type="unfinished">Window center</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation type="unfinished">Drag at cursor</translation>
+    </message>
+    <message>
+      <source>Object center</source>
+      <translation type="unfinished">Object center</translation>
     </message>
   </context>
   <context>
@@ -8808,6 +8899,21 @@ Dokument: </translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewRestoreCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standardansicht</translation>
+    </message>
+    <message>
+      <source>Restore saved camera</source>
+      <translation type="unfinished">Restore saved camera</translation>
+    </message>
+    <message>
+      <source>Restore saved camera settings</source>
+      <translation type="unfinished">Restore saved camera settings</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewRight</name>
     <message>
       <source>Standard-View</source>
@@ -8850,6 +8956,21 @@ Dokument: </translation>
     <message>
       <source>Rotate the view by 90° clockwise</source>
       <translation>Ansicht um 90° im Uhrzeigersinn drehen</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewSaveCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standardansicht</translation>
+    </message>
+    <message>
+      <source>Save current camera</source>
+      <translation type="unfinished">Save current camera</translation>
+    </message>
+    <message>
+      <source>Save current camera settings</source>
+      <translation type="unfinished">Save current camera settings</translation>
     </message>
   </context>
   <context>

@@ -636,6 +636,7 @@ void QGIViewBalloon::draw()
     } else if (strcmp(balloonType, "Rectangle") == 0) {
         //Add some room
         textHeight = (textHeight * scale) + Rez::guiX(1.0);
+        // we add some textWidth later because we first need to handle the text separators 
         if (balloonLabel->verticalSep) {
             for (std::vector<int>::iterator it = balloonLabel->seps.begin() ; it != balloonLabel->seps.end(); ++it) {
                 balloonPath.moveTo(lblCenter.x - (textWidth / 2.0) + *it, lblCenter.y - (textHeight / 2.0));
@@ -643,8 +644,7 @@ void QGIViewBalloon::draw()
             }
         }
         textWidth = (textWidth * scale) + Rez::guiX(2.0);
-        textHeight = (textHeight * scale) + Rez::guiX(2.0);
-        balloonPath.addRect(lblCenter.x -(textWidth / 2.0), lblCenter.y - (textHeight / 2.0), textWidth, textHeight);
+        balloonPath.addRect(lblCenter.x - (textWidth / 2.0), lblCenter.y - (textHeight / 2.0), textWidth, textHeight);
         offsetLR     = (textWidth / 2.0);
     } else if (strcmp(balloonType, "Triangle") == 0) {
         double radius = sqrt(pow((textHeight / 2.0), 2) + pow((textWidth / 2.0), 2));

@@ -129,7 +129,8 @@ class PathWorkbench (Workbench):
                 threedcmdgroup = ['Path_3dTools']
                 FreeCADGui.addCommand('Path_3dTools', PathCommandGroup(threedopcmdlist, QtCore.QT_TRANSLATE_NOOP("Path", '3D Operations')))
             except ImportError:
-                FreeCAD.Console.PrintError("OpenCamLib is not working!\n")
+                if not PathPreferences.suppressOpenCamLibWarning():
+                    FreeCAD.Console.PrintError("OpenCamLib is not working!\n")
 
         self.appendToolbar(QtCore.QT_TRANSLATE_NOOP("Path", "Project Setup"), projcmdlist)
         self.appendToolbar(QtCore.QT_TRANSLATE_NOOP("Path", "Tool Commands"), toolcmdlist)
@@ -167,10 +168,11 @@ class PathWorkbench (Workbench):
     def Activated(self):
         # update the translation engine
         FreeCADGui.updateLocale()
-        Msg("Path workbench activated\n")
+        # Msg("Path workbench activated\n")
 
     def Deactivated(self):
-        Msg("Path workbench deactivated\n")
+        # Msg("Path workbench deactivated\n")
+        pass
 
     def ContextMenu(self, recipient):
         import PathScripts

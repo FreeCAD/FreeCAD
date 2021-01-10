@@ -27,6 +27,7 @@ from PySide import QtCore
 import Path
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
+import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 from PathScripts.PathUtils import waiting_effects
@@ -547,11 +548,11 @@ class ObjectOp(object):
         hRapidrate = tc.HorizRapid.Value
         vRapidrate = tc.VertRapid.Value
 
-        if hFeedrate == 0 or vFeedrate == 0:
+        if (hFeedrate == 0 or vFeedrate == 0) and not PathPreferences.suppressAllSpeedsWarning():
             PathLog.warning(translate("Path", "Tool Controller feedrates required to calculate the cycle time."))
             return translate('Path', 'Feedrate Error')
 
-        if hRapidrate == 0 or vRapidrate == 0:
+        if (hRapidrate == 0 or vRapidrate == 0) and not PathPreferences.suppressRapidSpeedsWarning():
             PathLog.warning(translate("Path", "Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times."))
 
         # Get the cycle time in seconds

@@ -303,6 +303,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         AddSubShape.setValue(result);
 
         if(base.IsNull()) {
+            result = refineShapeIfActive(result);
             Shape.setValue(getSolid(result));
             return App::DocumentObject::StdReturn;
         }

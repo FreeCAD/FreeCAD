@@ -228,6 +228,7 @@ void CmdSketcherNewSketch::activated(int iMsg)
         // ask user for orientation
         SketchOrientationDialog Dlg;
 
+        Dlg.adjustSize();
         if (Dlg.exec() != QDialog::Accepted)
             return; // canceled
         Base::Vector3d p = Dlg.Pos.getPosition();

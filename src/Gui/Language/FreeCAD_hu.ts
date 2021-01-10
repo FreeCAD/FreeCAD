@@ -126,6 +126,74 @@
       <source>Edit</source>
       <translation>Szerkesztés</translation>
     </message>
+    <message>
+      <source>Import</source>
+      <translation>Importálás</translation>
+    </message>
+    <message>
+      <source>Delete</source>
+      <translation>Törlés</translation>
+    </message>
+    <message>
+      <source>Paste expressions</source>
+      <translation type="unfinished">Paste expressions</translation>
+    </message>
+    <message>
+      <source>Make link group</source>
+      <translation type="unfinished">Make link group</translation>
+    </message>
+    <message>
+      <source>Make link</source>
+      <translation type="unfinished">Make link</translation>
+    </message>
+    <message>
+      <source>Make sub-link</source>
+      <translation type="unfinished">Make sub-link</translation>
+    </message>
+    <message>
+      <source>Import links</source>
+      <translation type="unfinished">Import links</translation>
+    </message>
+    <message>
+      <source>Import all links</source>
+      <translation type="unfinished">Import all links</translation>
+    </message>
+    <message>
+      <source>Insert measurement</source>
+      <translation type="unfinished">Insert measurement</translation>
+    </message>
+    <message>
+      <source>Insert text document</source>
+      <translation type="unfinished">Insert text document</translation>
+    </message>
+    <message>
+      <source>Add a part</source>
+      <translation type="unfinished">Add a part</translation>
+    </message>
+    <message>
+      <source>Add a group</source>
+      <translation type="unfinished">Add a group</translation>
+    </message>
+    <message>
+      <source>Align</source>
+      <translation>Igazítás</translation>
+    </message>
+    <message>
+      <source>Placement</source>
+      <translation>Elhelyezés</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Átalakítás</translation>
+    </message>
+    <message>
+      <source>Link Transform</source>
+      <translation type="unfinished">Link Transform</translation>
+    </message>
+    <message>
+      <source>Measure distance</source>
+      <translation>Távolság mérés</translation>
+    </message>
   </context>
   <context>
     <name>DlgCustomizeSpNavSettings</name>
@@ -2463,15 +2531,15 @@ Ennek elérésére 3 lehetőség áll rendelkezésre:
     </message>
     <message>
       <source>Centralized</source>
-      <translation type="unfinished">Centralized</translation>
+      <translation>Központosított</translation>
     </message>
     <message>
       <source>What kind of multisample anti-aliasing is used </source>
-      <translation type="unfinished">What kind of multisample anti-aliasing is used </translation>
+      <translation>Milyen több mintavételes élsimítást használ </translation>
     </message>
     <message>
       <source>Transparent objects:</source>
-      <translation type="unfinished">Transparent objects:</translation>
+      <translation>Átlátszó tárgyak:</translation>
     </message>
     <message>
       <source>Render types of transparent objects</source>
@@ -2479,31 +2547,31 @@ Ennek elérésére 3 lehetőség áll rendelkezésre:
     </message>
     <message>
       <source>One pass</source>
-      <translation type="unfinished">One pass</translation>
+      <translation>Egy áthaladás</translation>
     </message>
     <message>
       <source>Backface pass</source>
-      <translation type="unfinished">Backface pass</translation>
+      <translation>Hátsó lap áthaladás</translation>
     </message>
     <message>
       <source>Size of vertices in the Sketcher workbench</source>
-      <translation type="unfinished">Size of vertices in the Sketcher workbench</translation>
+      <translation>Csúcspontok mérete a vázlatkészítő munkafelületen</translation>
     </message>
     <message>
       <source>Eye to eye distance for stereo modes</source>
-      <translation type="unfinished">Eye to eye distance for stereo modes</translation>
+      <translation>Szemtől szembeni távolság a sztereó módban</translation>
     </message>
     <message>
       <source>Eye-to-eye distance used for stereo projections.
 The specified value is a factor that will be multiplied with the
 bounding box size of the 3D object that is currently displayed. </source>
-      <translation type="unfinished">Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed. </translation>
+      <translation>Szemtől-szembeni távolság sztereó kivetítésekhez.
+A megadott érték olyan tényező, amelyet megszoroz
+az aktuálisan megjelenített 3D objektum határolókeret mérettel. </translation>
     </message>
     <message>
       <source>Backlight is enabled with the defined color</source>
-      <translation type="unfinished">Backlight is enabled with the defined color</translation>
+      <translation>Háttérvilágítás engedélyezve van a meghatározott színnel</translation>
     </message>
     <message>
       <source>Backlight color</source>
@@ -2519,21 +2587,21 @@ bounding box size of the 3D object that is currently displayed. </translation>
     </message>
     <message>
       <source>Objects will be projected in orthographic projection</source>
-      <translation type="unfinished">Objects will be projected in orthographic projection</translation>
+      <translation>Az objektumok függőleges vetületi vetítésben jelennek meg</translation>
     </message>
     <message>
       <source>Objects will appear in a perspective projection</source>
-      <translation type="unfinished">Objects will appear in a perspective projection</translation>
+      <translation>Az objektumok távoli nézet vetítésben jelennek meg</translation>
     </message>
     <message>
       <source>Axis cross will be shown by default at file
 opening or creation</source>
-      <translation type="unfinished">Axis cross will be shown by default at file
-opening or creation</translation>
+      <translation>A tengelykereszteződés alapértelmezés szerint megjelenik a fájl
+megnyitásakor vagy létrehozásakor</translation>
     </message>
     <message>
       <source>Show axis cross by default</source>
-      <translation type="unfinished">Show axis cross by default</translation>
+      <translation>Tengely kereszteződés mutatása alapértelmezetten</translation>
     </message>
     <message>
       <source>Pick radius (px):</source>
@@ -2543,9 +2611,21 @@ opening or creation</translation>
       <source>Area for picking elements in 3D view.
 Larger value eases to pick things, but can make small features impossible to select.
                </source>
-      <translation type="unfinished">Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.
+      <translation>Elemek kiválasztásának területe 3D nézetben.
+Nagyobb érték megkönnyíti a kiválasztást, de lehetetlenné teheti a kis tulajdonságok kiválasztását.
                </translation>
+    </message>
+    <message>
+      <source>This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</source>
+      <translation type="unfinished">This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</translation>
+    </message>
+    <message>
+      <source>Use software OpenGL</source>
+      <translation type="unfinished">Use software OpenGL</translation>
     </message>
   </context>
   <context>
@@ -2799,25 +2879,25 @@ Larger value eases to pick things, but can make small features impossible to sel
     </message>
     <message>
       <source>The application will create a new document when started</source>
-      <translation type="unfinished">The application will create a new document when started</translation>
+      <translation>Az alkalmazás új dokumentumot hoz létre, amikor elindul</translation>
     </message>
     <message>
       <source>Compression level for FCStd files</source>
-      <translation type="unfinished">Compression level for FCStd files</translation>
+      <translation>Az FCStd-fájlok tömörítési szintje</translation>
     </message>
     <message>
       <source>All changes in documents are stored so that they can be undone/redone</source>
-      <translation type="unfinished">All changes in documents are stored so that they can be undone/redone</translation>
+      <translation>A dokumentumok minden változása tárolva van, hogy visszalehessen vonni/ismételni lehessen</translation>
     </message>
     <message>
       <source>How many Undo/Redo steps should be recorded</source>
-      <translation type="unfinished">How many Undo/Redo steps should be recorded</translation>
+      <translation>Hány visszavonási/ismétlési lépést rögzítsen</translation>
     </message>
     <message>
       <source>Allow user aborting document recomputation by pressing ESC.
 This feature may slightly increase recomputation time.</source>
-      <translation type="unfinished">Allow user aborting document recomputation by pressing ESC.
-This feature may slightly increase recomputation time.</translation>
+      <translation>Engedélyezze a dokumentum újbóli számításának megszakítását az ESC billentyű lenyomásával.
+Ez a funkció némileg növelheti az újraszámítás idejét.</translation>
     </message>
     <message>
       <source>Allow aborting recomputation</source>
@@ -2826,16 +2906,16 @@ This feature may slightly increase recomputation time.</translation>
     <message>
       <source>If there is a recovery file available the application will
 automatically run a file recovery when it is started.</source>
-      <translation type="unfinished">If there is a recovery file available the application will
-automatically run a file recovery when it is started.</translation>
+      <translation>Ha van rendelkezésre álló helyreállítási fájl, az alkalmazás
+automatikusan futtatja a fájlhelyreállítást az indításkor.</translation>
     </message>
     <message>
       <source>How often a recovery file is written</source>
-      <translation type="unfinished">How often a recovery file is written</translation>
+      <translation>A helyreállítási fájl megírásának gyakorisága</translation>
     </message>
     <message>
       <source>A thumbnail will be stored when document is saved</source>
-      <translation type="unfinished">A thumbnail will be stored when document is saved</translation>
+      <translation>A dokumentum mentésekor a rendszer a miniatűrt tárolja</translation>
     </message>
     <message>
       <source>Size</source>
@@ -2844,34 +2924,34 @@ automatically run a file recovery when it is started.</translation>
     <message>
       <source>Sets the size of the thumbnail that is stored in the document.
 Common sizes are 128, 256 and 512</source>
-      <translation type="unfinished">Sets the size of the thumbnail that is stored in the document.
-Common sizes are 128, 256 and 512</translation>
+      <translation>A dokumentumban tárolt bélyegkép méretét adja meg.
+Gyakori méretek: 128, 256 és 512</translation>
     </message>
     <message>
       <source>The program logo will be added to the thumbnail</source>
-      <translation type="unfinished">The program logo will be added to the thumbnail</translation>
+      <translation>A program embléma hozzáadódik a miniatűrhöz</translation>
     </message>
     <message>
       <source>How many backup files will be kept when saving document</source>
-      <translation type="unfinished">How many backup files will be kept when saving document</translation>
+      <translation>Hány biztonsági másolat lesz megőrizve a dokumentum mentésekor</translation>
     </message>
     <message>
       <source>Backup files will get extension '.FCbak' and file names
 get date suffix according to the specified format</source>
-      <translation type="unfinished">Backup files will get extension '.FCbak' and file names
-get date suffix according to the specified format</translation>
+      <translation>Biztonsági fájl másolatok a '. FCbak' kiterjesztést kapják és fájlnevek
+dátumutótagot a megadott formátumnak megfelelően</translation>
     </message>
     <message>
       <source>Use date and FCBak extension</source>
-      <translation type="unfinished">Use date and FCBak extension</translation>
+      <translation>Dátum és FCBak kiterjesztés használata</translation>
     </message>
     <message>
       <source>Date format</source>
-      <translation type="unfinished">Date format</translation>
+      <translation>Dátum formátum</translation>
     </message>
     <message>
       <source>Allow objects to have same label/name</source>
-      <translation type="unfinished">Allow objects to have same label/name</translation>
+      <translation>Objektumok azonos címkéjének/nevének engedélyezése</translation>
     </message>
     <message>
       <source>Enable partial loading of external linked documents.
@@ -2879,11 +2959,11 @@ Then only referenced objects and their dependencies will be loaded
 when a linked document is auto-opened together with the main document.
 A partially loaded document cannot be edited. Double click the document
 icon in the tree view to fully reload it.</source>
-      <translation type="unfinished">Enable partial loading of external linked documents.
-Then only referenced objects and their dependencies will be loaded
-when a linked document is auto-opened together with the main document.
-A partially loaded document cannot be edited. Double click the document
-icon in the tree view to fully reload it.</translation>
+      <translation>Külső kapcsolt dokumentumok részleges betöltését engedélyezi. 
+Csak a hivatkozott dokumentum és annak függőségei lesznek betöltve, 
+ha a kapcsolt dokumentum automatikusan a fő dokumentummal együtt nyílik meg.
+Egy részlegesen betöltött dokumentum nem szerkeszthető. Teljes betöltéséhez 
+kattintson a fa nézetben a dokumentum ikonra.</translation>
     </message>
     <message>
       <source>Disable partial loading of external linked objects</source>
@@ -3147,23 +3227,23 @@ Használhatja az űrlapot is: Gipsz Jakab &lt;gipsz@jakab.hu&gt;</translation>
     <name>Gui::Dialog::DlgSettingsImageImp</name>
     <message>
       <source>Offscreen (New)</source>
-      <translation type="unfinished">Offscreen (New)</translation>
+      <translation>Képernyőn kívül (Új)</translation>
     </message>
     <message>
       <source>Offscreen (Old)</source>
-      <translation type="unfinished">Offscreen (Old)</translation>
+      <translation>Képernyőn kívül (Régi)</translation>
     </message>
     <message>
       <source>Framebuffer (custom)</source>
-      <translation type="unfinished">Framebuffer (custom)</translation>
+      <translation>Keretpuffer (egyéni)</translation>
     </message>
     <message>
       <source>Framebuffer (as is)</source>
-      <translation type="unfinished">Framebuffer (as is)</translation>
+      <translation>Keretpuffer (ahogy van)</translation>
     </message>
     <message>
       <source>Pixel buffer</source>
-      <translation type="unfinished">Pixel buffer</translation>
+      <translation>Pixelpuffer</translation>
     </message>
   </context>
   <context>
@@ -3238,27 +3318,27 @@ Használhatja az űrlapot is: Gipsz Jakab &lt;gipsz@jakab.hu&gt;</translation>
     </message>
     <message>
       <source>Recent macros menu</source>
-      <translation type="unfinished">Recent macros menu</translation>
+      <translation>Legutóbbi makrók menü</translation>
     </message>
     <message>
       <source>Size of recent macro list</source>
-      <translation type="unfinished">Size of recent macro list</translation>
+      <translation>Legutóbbi makrók listájának mérete</translation>
     </message>
     <message>
       <source>How many macros should be listed in recent macros list</source>
-      <translation type="unfinished">How many macros should be listed in recent macros list</translation>
+      <translation>A legutóbbi makrók listájában szereplő makrók száma</translation>
     </message>
     <message>
       <source>Shortcut count</source>
-      <translation type="unfinished">Shortcut count</translation>
+      <translation>Billentyűparancs számláló</translation>
     </message>
     <message>
       <source>How many recent macros should have shortcuts</source>
-      <translation type="unfinished">How many recent macros should have shortcuts</translation>
+      <translation>Hány legutóbbi makrónak kell billentyűparancs</translation>
     </message>
     <message>
       <source>Keyboard Modifiers</source>
-      <translation type="unfinished">Keyboard Modifiers</translation>
+      <translation>Billentyűzet módosítók</translation>
     </message>
     <message>
       <source>Keyboard modifiers, default = Ctrl+Shift+</source>
@@ -3410,10 +3490,6 @@ Mouse tilting is not disabled by this setting.</translation>
       <translation type="unfinished">Rotations in 3D will use current cursor position as center for rotation</translation>
     </message>
     <message>
-      <source>Rotate at cursor</source>
-      <translation type="unfinished">Rotate at cursor</translation>
-    </message>
-    <message>
       <source>Isometric</source>
       <translation>Izometrikus</translation>
     </message>
@@ -3460,6 +3536,22 @@ Mouse tilting is not disabled by this setting.</translation>
     <message>
       <source>Default camera orientation when creating a new document or selecting the home view</source>
       <translation type="unfinished">Default camera orientation when creating a new document or selecting the home view</translation>
+    </message>
+    <message>
+      <source>Rotation mode</source>
+      <translation type="unfinished">Rotation mode</translation>
+    </message>
+    <message>
+      <source>Window center</source>
+      <translation type="unfinished">Window center</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation type="unfinished">Drag at cursor</translation>
+    </message>
+    <message>
+      <source>Object center</source>
+      <translation type="unfinished">Object center</translation>
     </message>
   </context>
   <context>
@@ -8819,6 +8911,21 @@ Document: </translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewRestoreCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standard-nézet</translation>
+    </message>
+    <message>
+      <source>Restore saved camera</source>
+      <translation type="unfinished">Restore saved camera</translation>
+    </message>
+    <message>
+      <source>Restore saved camera settings</source>
+      <translation type="unfinished">Restore saved camera settings</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewRight</name>
     <message>
       <source>Standard-View</source>
@@ -8861,6 +8968,21 @@ Document: </translation>
     <message>
       <source>Rotate the view by 90° clockwise</source>
       <translation type="unfinished">Rotate the view by 90° clockwise</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewSaveCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standard-nézet</translation>
+    </message>
+    <message>
+      <source>Save current camera</source>
+      <translation type="unfinished">Save current camera</translation>
+    </message>
+    <message>
+      <source>Save current camera settings</source>
+      <translation type="unfinished">Save current camera settings</translation>
     </message>
   </context>
   <context>

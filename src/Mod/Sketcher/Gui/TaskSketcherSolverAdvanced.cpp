@@ -132,9 +132,12 @@ void TaskSketcherSolverAdvanced::updateDefaultMethodParameters(void)
             ui->lineEditSolverParam1->setText(QString::number(eps).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));
             ui->lineEditSolverParam2->setText(QString::number(eps1).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));
             ui->lineEditSolverParam3->setText(QString::number(tau).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));
-            sketchView->getSketchObject()->getSolvedSketch().setLM_eps(eps);
-            sketchView->getSketchObject()->getSolvedSketch().setLM_eps1(eps1);
-            sketchView->getSketchObject()->getSolvedSketch().setLM_tau(tau);
+            // SketchObject has encapsulated write-access. The current use of const_cast just for configuration is
+            // deemed acceptable. Eventually this dialog should be rewritten to include only useful information and the configuration
+            // centralised in an individual configuration object, possibly compatible with several solvers (e.g. DeepSOIC's ConstraintSolver)
+            const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setLM_eps(eps);
+            const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setLM_eps1(eps1);
+            const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setLM_tau(tau);
             break;
         }
         case 2: // DogLeg
@@ -151,9 +154,9 @@ void TaskSketcherSolverAdvanced::updateDefaultMethodParameters(void)
             ui->lineEditSolverParam1->setText(QString::number(tolg).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));
             ui->lineEditSolverParam2->setText(QString::number(tolx).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));
             ui->lineEditSolverParam3->setText(QString::number(tolf).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));
-            sketchView->getSketchObject()->getSolvedSketch().setDL_tolg(tolg);
-            sketchView->getSketchObject()->getSolvedSketch().setDL_tolf(tolf);
-            sketchView->getSketchObject()->getSolvedSketch().setDL_tolx(tolx);
+            const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setDL_tolg(tolg);
+            const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setDL_tolf(tolf);
+            const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setDL_tolx(tolx);
             break;
         }
     }
@@ -198,9 +201,9 @@ void TaskSketcherSolverAdvanced::updateRedundantMethodParameters(void)
             ui->lineEditRedundantSolverParam1->setText(QString::number(eps).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));
             ui->lineEditRedundantSolverParam2->setText(QString::number(eps1).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));
             ui->lineEditRedundantSolverParam3->setText(QString::number(tau).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));
-            sketchView->getSketchObject()->getSolvedSketch().setLM_epsRedundant(eps);
-            sketchView->getSketchObject()->getSolvedSketch().setLM_eps1Redundant(eps1);
-            sketchView->getSketchObject()->getSolvedSketch().setLM_tauRedundant(eps1);
+            const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setLM_epsRedundant(eps);
+            const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setLM_eps1Redundant(eps1);
+            const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setLM_tauRedundant(eps1);
             break;
         }
         case 2: // DogLeg
@@ -217,9 +220,9 @@ void TaskSketcherSolverAdvanced::updateRedundantMethodParameters(void)
             ui->lineEditRedundantSolverParam1->setText(QString::number(tolg).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));
             ui->lineEditRedundantSolverParam2->setText(QString::number(tolx).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));
             ui->lineEditRedundantSolverParam3->setText(QString::number(tolf).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));
-            sketchView->getSketchObject()->getSolvedSketch().setDL_tolgRedundant(tolg);
-            sketchView->getSketchObject()->getSolvedSketch().setDL_tolfRedundant(tolf);
-            sketchView->getSketchObject()->getSolvedSketch().setDL_tolxRedundant(tolx);
+            const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setDL_tolgRedundant(tolg);
+            const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setDL_tolfRedundant(tolf);
+            const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setDL_tolxRedundant(tolx);
             break;
         }
     }
@@ -238,14 +241,14 @@ void TaskSketcherSolverAdvanced::on_lineEditSolverParam1_editingFinished()
     {
         case 1: // LM
         {
-            sketchView->getSketchObject()->getSolvedSketch().setLM_eps(val);
+            const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setLM_eps(val);
             ui->lineEditSolverParam1->setEntryName("LM_eps");
             ui->lineEditSolverParam1->onSave();
             break;
         }
         case 2: // DogLeg
         {
-            sketchView->getSketchObject()->getSolvedSketch().setDL_tolg(val);
+            const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setDL_tolg(val);
             ui->lineEditSolverParam1->setEntryName("DL_tolg");
             ui->lineEditSolverParam1->onSave();
             break;
@@ -266,14 +269,14 @@ void TaskSketcherSolverAdvanced::on_lineEditRedundantSolverParam1_editingFinishe
     {
         case 1: // LM
         {
-            sketchView->getSketchObject()->getSolvedSketch().setLM_epsRedundant(val);
+            const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setLM_epsRedundant(val);
             ui->lineEditRedundantSolverParam1->setEntryName("Redundant_LM_eps");
             ui->lineEditRedundantSolverParam1->onSave();
             break;
         }
         case 2: // DogLeg
         {
-            sketchView->getSketchObject()->getSolvedSketch().setDL_tolgRedundant(val);
+            const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setDL_tolgRedundant(val);
             ui->lineEditRedundantSolverParam1->setEntryName("Redundant_DL_tolg");
             ui->lineEditRedundantSolverParam1->onSave();
             break;
@@ -294,14 +297,14 @@ void TaskSketcherSolverAdvanced::on_lineEditSolverParam2_editingFinished()
     {
         case 1: // LM
         {
-            sketchView->getSketchObject()->getSolvedSketch().setLM_eps1(val);
+            const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setLM_eps1(val);
             ui->lineEditSolverParam2->setEntryName("LM_eps1");
             ui->lineEditSolverParam2->onSave();
             break;
         }
         case 2: // DogLeg
         {
-            sketchView->getSketchObject()->getSolvedSketch().setDL_tolx(val);
+            const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setDL_tolx(val);
             ui->lineEditSolverParam2->setEntryName("DL_tolx");
             ui->lineEditSolverParam2->onSave();
             break;
@@ -322,14 +325,14 @@ void TaskSketcherSolverAdvanced::on_lineEditRedundantSolverParam2_editingFinishe
     {
         case 1: // LM
         {
-            sketchView->getSketchObject()->getSolvedSketch().setLM_eps1Redundant(val);
+            const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setLM_eps1Redundant(val);
             ui->lineEditRedundantSolverParam2->setEntryName("Redundant_LM_eps1");
             ui->lineEditRedundantSolverParam2->onSave();
             break;
         }
         case 2: // DogLeg
         {
-            sketchView->getSketchObject()->getSolvedSketch().setDL_tolxRedundant(val);
+            const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setDL_tolxRedundant(val);
             ui->lineEditRedundantSolverParam2->setEntryName("Redundant_DL_tolx");
             ui->lineEditRedundantSolverParam2->onSave();
             break;
@@ -350,14 +353,14 @@ void TaskSketcherSolverAdvanced::on_lineEditSolverParam3_editingFinished()
     {
         case 1: // LM
         {
-            sketchView->getSketchObject()->getSolvedSketch().setLM_tau(val);
+            const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setLM_tau(val);
             ui->lineEditSolverParam3->setEntryName("LM_tau");
             ui->lineEditSolverParam3->onSave();
             break;
         }
         case 2: // DogLeg
         {
-            sketchView->getSketchObject()->getSolvedSketch().setDL_tolf(val);
+            const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setDL_tolf(val);
             ui->lineEditSolverParam3->setEntryName("DL_tolf");
             ui->lineEditSolverParam3->onSave();
             break;
@@ -378,14 +381,14 @@ void TaskSketcherSolverAdvanced::on_lineEditRedundantSolverParam3_editingFinishe
     {
         case 1: // LM
         {
-            sketchView->getSketchObject()->getSolvedSketch().setLM_tauRedundant(val);
+            const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setLM_tauRedundant(val);
             ui->lineEditRedundantSolverParam3->setEntryName("Redundant_LM_tau");
             ui->lineEditRedundantSolverParam3->onSave();
             break;
         }
         case 2: // DogLeg
         {
-            sketchView->getSketchObject()->getSolvedSketch().setDL_tolfRedundant(val);
+            const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setDL_tolfRedundant(val);
             ui->lineEditRedundantSolverParam3->setEntryName("Redundant_DL_tolf");
             ui->lineEditRedundantSolverParam3->onSave();
             break;
@@ -396,32 +399,32 @@ void TaskSketcherSolverAdvanced::on_lineEditRedundantSolverParam3_editingFinishe
 void TaskSketcherSolverAdvanced::on_comboBoxDefaultSolver_currentIndexChanged(int index)
 {
     ui->comboBoxDefaultSolver->onSave();
-    sketchView->getSketchObject()->getSolvedSketch().defaultSolver=(GCS::Algorithm) index;
+    const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).defaultSolver=(GCS::Algorithm) index;
     updateDefaultMethodParameters();
 }
 
 void TaskSketcherSolverAdvanced::on_comboBoxDogLegGaussStep_currentIndexChanged(int index)
 {
     ui->comboBoxDogLegGaussStep->onSave();
-    sketchView->getSketchObject()->getSolvedSketch().setDogLegGaussStep((GCS::DogLegGaussStep) index);
+    const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setDogLegGaussStep((GCS::DogLegGaussStep) index);
     updateDefaultMethodParameters();
 }
 
 void TaskSketcherSolverAdvanced::on_spinBoxMaxIter_valueChanged(int i)
 {
     ui->spinBoxMaxIter->onSave();
-    sketchView->getSketchObject()->getSolvedSketch().setMaxIter(i);
+    const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setMaxIter(i);
 }
 
 void TaskSketcherSolverAdvanced::on_checkBoxSketchSizeMultiplier_stateChanged(int state)
 {
     if(state==Qt::Checked) {
         ui->checkBoxSketchSizeMultiplier->onSave();
-        sketchView->getSketchObject()->getSolvedSketch().setSketchSizeMultiplier(true);
+        const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setSketchSizeMultiplier(true);
     }
     else if (state==Qt::Unchecked) {
         ui->checkBoxSketchSizeMultiplier->onSave();
-        sketchView->getSketchObject()->getSolvedSketch().setSketchSizeMultiplier(false);
+        const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setSketchSizeMultiplier(false);
     }
 }
 
@@ -436,7 +439,7 @@ void TaskSketcherSolverAdvanced::on_lineEditQRPivotThreshold_editingFinished()
 
     ui->lineEditQRPivotThreshold->onSave();
 
-    sketchView->getSketchObject()->getSolvedSketch().setQRPivotThreshold(val);
+    const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setQRPivotThreshold(val);
 }
 
 void TaskSketcherSolverAdvanced::on_lineEditConvergence_editingFinished()
@@ -450,7 +453,7 @@ void TaskSketcherSolverAdvanced::on_lineEditConvergence_editingFinished()
 
     ui->lineEditConvergence->onSave();
 
-    sketchView->getSketchObject()->getSolvedSketch().setConvergence(val);
+    const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setConvergence(val);
 }
 
 void TaskSketcherSolverAdvanced::on_lineEditRedundantConvergence_editingFinished()
@@ -464,44 +467,44 @@ void TaskSketcherSolverAdvanced::on_lineEditRedundantConvergence_editingFinished
 
     ui->lineEditRedundantConvergence->onSave();
 
-    sketchView->getSketchObject()->getSolvedSketch().setConvergenceRedundant(val);
+    const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setConvergenceRedundant(val);
 }
 
 void TaskSketcherSolverAdvanced::on_comboBoxQRMethod_currentIndexChanged(int index)
 {
-    sketchView->getSketchObject()->getSolvedSketch().setQRAlgorithm((GCS::QRAlgorithm) index);
+    const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setQRAlgorithm((GCS::QRAlgorithm) index);
     ui->comboBoxQRMethod->onSave();
 }
 
 void TaskSketcherSolverAdvanced::on_comboBoxRedundantDefaultSolver_currentIndexChanged(int index)
 {
     ui->comboBoxRedundantDefaultSolver->onSave();
-    sketchView->getSketchObject()->getSolvedSketch().defaultSolverRedundant=(GCS::Algorithm) index;
+    const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).defaultSolverRedundant=(GCS::Algorithm) index;
     updateRedundantMethodParameters();
 }
 
 void TaskSketcherSolverAdvanced::on_spinBoxRedundantSolverMaxIterations_valueChanged(int i)
 {
     ui->spinBoxRedundantSolverMaxIterations->onSave();
-    sketchView->getSketchObject()->getSolvedSketch().setMaxIterRedundant(i);
+    const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setMaxIterRedundant(i);
 }
 
 void TaskSketcherSolverAdvanced::on_checkBoxRedundantSketchSizeMultiplier_stateChanged(int state)
 {
     if(state==Qt::Checked) {
         ui->checkBoxRedundantSketchSizeMultiplier->onSave();
-        sketchView->getSketchObject()->getSolvedSketch().setSketchSizeMultiplierRedundant(true);
+        const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setSketchSizeMultiplierRedundant(true);
     }
     else if (state==Qt::Unchecked) {
         ui->checkBoxRedundantSketchSizeMultiplier->onSave();
-        sketchView->getSketchObject()->getSolvedSketch().setSketchSizeMultiplierRedundant(true);
+        const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setSketchSizeMultiplierRedundant(true);
     }
 }
 
 void TaskSketcherSolverAdvanced::on_comboBoxDebugMode_currentIndexChanged(int index)
 {
     ui->comboBoxDebugMode->onSave();
-    sketchView->getSketchObject()->getSolvedSketch().setDebugMode((GCS::DebugMode) index);
+    const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setDebugMode((GCS::DebugMode) index);
 }
 
 void TaskSketcherSolverAdvanced::on_pushButtonSolve_clicked(bool checked/* = false*/)
@@ -560,18 +563,18 @@ void TaskSketcherSolverAdvanced::on_pushButtonDefaults_clicked(bool checked/* = 
 
 void TaskSketcherSolverAdvanced::updateSketchObject(void)
 {
-    sketchView->getSketchObject()->getSolvedSketch().setDebugMode((GCS::DebugMode) ui->comboBoxDebugMode->currentIndex());
-    sketchView->getSketchObject()->getSolvedSketch().setSketchSizeMultiplierRedundant(ui->checkBoxRedundantSketchSizeMultiplier->isChecked());
-    sketchView->getSketchObject()->getSolvedSketch().setMaxIterRedundant(ui->spinBoxRedundantSolverMaxIterations->value());
-    sketchView->getSketchObject()->getSolvedSketch().defaultSolverRedundant=(GCS::Algorithm) ui->comboBoxRedundantDefaultSolver->currentIndex();
-    sketchView->getSketchObject()->getSolvedSketch().setQRAlgorithm((GCS::QRAlgorithm) ui->comboBoxQRMethod->currentIndex());
-    sketchView->getSketchObject()->getSolvedSketch().setQRPivotThreshold(ui->lineEditQRPivotThreshold->text().toDouble());
-    sketchView->getSketchObject()->getSolvedSketch().setConvergenceRedundant(ui->lineEditRedundantConvergence->text().toDouble());
-    sketchView->getSketchObject()->getSolvedSketch().setConvergence(ui->lineEditConvergence->text().toDouble());
-    sketchView->getSketchObject()->getSolvedSketch().setSketchSizeMultiplier(ui->checkBoxSketchSizeMultiplier->isChecked());
-    sketchView->getSketchObject()->getSolvedSketch().setMaxIter(ui->spinBoxMaxIter->value());
-    sketchView->getSketchObject()->getSolvedSketch().defaultSolver=(GCS::Algorithm) ui->comboBoxDefaultSolver->currentIndex();
-    sketchView->getSketchObject()->getSolvedSketch().setDogLegGaussStep((GCS::DogLegGaussStep) ui->comboBoxDogLegGaussStep->currentIndex());
+    const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setDebugMode((GCS::DebugMode) ui->comboBoxDebugMode->currentIndex());
+    const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setSketchSizeMultiplierRedundant(ui->checkBoxRedundantSketchSizeMultiplier->isChecked());
+    const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setMaxIterRedundant(ui->spinBoxRedundantSolverMaxIterations->value());
+    const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).defaultSolverRedundant=(GCS::Algorithm) ui->comboBoxRedundantDefaultSolver->currentIndex();
+    const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setQRAlgorithm((GCS::QRAlgorithm) ui->comboBoxQRMethod->currentIndex());
+    const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setQRPivotThreshold(ui->lineEditQRPivotThreshold->text().toDouble());
+    const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setConvergenceRedundant(ui->lineEditRedundantConvergence->text().toDouble());
+    const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setConvergence(ui->lineEditConvergence->text().toDouble());
+    const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setSketchSizeMultiplier(ui->checkBoxSketchSizeMultiplier->isChecked());
+    const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setMaxIter(ui->spinBoxMaxIter->value());
+    const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).defaultSolver=(GCS::Algorithm) ui->comboBoxDefaultSolver->currentIndex();
+    const_cast<Sketcher::Sketch &>(sketchView->getSketchObject()->getSolvedSketch()).setDogLegGaussStep((GCS::DogLegGaussStep) ui->comboBoxDogLegGaussStep->currentIndex());
 
     updateDefaultMethodParameters();
     updateRedundantMethodParameters();

@@ -2286,7 +2286,7 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="134"/>
       <source>Belt tension force</source>
-      <translation>Kemer gerginlik kuvveti</translation>
+      <translation>Kemer gerilim kuvveti</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="156"/>

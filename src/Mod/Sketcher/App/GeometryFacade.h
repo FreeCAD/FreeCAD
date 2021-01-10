@@ -83,7 +83,7 @@ class GeometryFacadePy;
 //  }
 //
 //
-// Note: The standard GeometryFacade stores Part::Geometry derived clases as a Part::Geometry *, while
+// Note: The standard GeometryFacade stores Part::Geometry derived classes as a Part::Geometry *, while
 // it has the ability to return a dynamic_cast-ed version to a provided type as follows:
 //
 // HLine->getGeometry<Part::GeomLineSegment>();
@@ -115,6 +115,7 @@ public: // Utility methods
     static bool getConstruction(const Part::Geometry * geometry);
     static void setConstruction(Part::Geometry * geometry, bool construction);
     static bool isInternalType(const Part::Geometry * geometry, InternalType::InternalType type);
+    static bool getBlocked(const Part::Geometry * geometry);
 
 public:
     void setGeometry(Part::Geometry *geometry);

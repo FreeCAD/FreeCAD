@@ -26,7 +26,7 @@
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 #include <QListWidget>
 #include <QIcon>
 

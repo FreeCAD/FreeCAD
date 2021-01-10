@@ -1847,7 +1847,7 @@ void CmdMeshSplitComponents::activated(int)
         const MeshObject& mesh = static_cast<Mesh::Feature*>(*it)->Mesh.getValue();
         std::vector<std::vector<unsigned long> > comps = mesh.getComponents();
 
-        for (const auto comp : comps ) {
+        for (const auto& comp : comps) {
             std::unique_ptr<MeshObject> kernel(mesh.meshFromSegment(comp));
             kernel->setTransform(mesh.getTransform());
 

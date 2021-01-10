@@ -865,7 +865,7 @@ void TopoShape::importBrep(const char *FileName)
         BRepTools::Read(aShape,encodeFilename(FileName).c_str(),aBuilder,pi);
         pi->EndScope();
 #else
-        BRepTools::Read(aShape,(const Standard_CString)FileName,aBuilder);
+        BRepTools::Read(aShape,(Standard_CString)FileName,aBuilder);
 #endif
         this->_Shape = aShape;
     }
@@ -1339,6 +1339,9 @@ unsigned int TopoShape::getMemSize (void) const
         TopExp::MapShapes(_Shape, M);
         for (int i=0; i<M.Extent(); i++) {
             const TopoDS_Shape& shape = M(i+1);
+            if (shape.IsNull())
+                continue;
+
             // add the size of the underlying geomtric data
             Handle(TopoDS_TShape) tshape = shape.TShape();
             memsize += tshape->DynamicType()->Size();
@@ -1350,7 +1353,15 @@ unsigned int TopoShape::getMemSize (void) const
                     // first, last, tolerance
                     memsize += 5*sizeof(Standard_Real);
                     const TopoDS_Face& face = TopoDS::Face(shape);
-                    BRepAdaptor_Surface surface(face);
+                    // if no geometry is attached to a face an exception is raised
+                    BRepAdaptor_Surface surface;
+                    try {
+                        surface.Initialize(face);
+                    }
+                    catch (const Standard_Failure&) {
+                        continue;
+                    }
+
                     switch (surface.GetType())
                     {
                     case GeomAbs_Plane:
@@ -1398,7 +1409,15 @@ unsigned int TopoShape::getMemSize (void) const
                     // first, last, tolerance
                     memsize += 3*sizeof(Standard_Real);
                     const TopoDS_Edge& edge = TopoDS::Edge(shape);
-                    BRepAdaptor_Curve curve(edge);
+                    // if no geometry is attached to an edge an exception is raised
+                    BRepAdaptor_Curve curve;
+                    try {
+                        curve.Initialize(edge);
+                    }
+                    catch (const Standard_Failure&) {
+                        continue;
+                    }
+
                     switch (curve.GetType())
                     {
                     case GeomAbs_Line:
@@ -4132,7 +4151,7 @@ TopoShape &TopoShape::makEFace(const std::vector<TopoShape> &shapes, const char 
     for(auto &s : shapes) {
         if (s.getShape().ShapeType() == TopAbs_COMPOUND)
             mkFace->useCompound(TopoDS::Compound(s.getShape()));
-        else
+        else if (s.getShape().ShapeType() != TopAbs_VERTEX)
             mkFace->addShape(s.getShape());
     }
     mkFace->Build();
@@ -4202,6 +4221,33 @@ bool TopoShape::findPlane(gp_Pln &pln, double tol) const {
         // BRepAdaptor_Curve::No geometry. However, without the above
         // copy, circular edges often have the wrong transformation!
         FC_LOG("failed to find surface: " << e.GetMessageString());
+        return false;
+    }
+}
+
+bool TopoShape::isInfinite() const
+{
+    if (_Shape.IsNull())
+        return false;
+
+    try {
+        // If the shape is empty an exception may be thrown
+        Bnd_Box bounds;
+        BRepBndLib::Add(_Shape, bounds);
+        bounds.SetGap(0.0);
+        Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
+        bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
+
+        if (Precision::IsInfinite(xMax - xMin))
+            return true;
+        if (Precision::IsInfinite(yMax - yMin))
+            return true;
+        if (Precision::IsInfinite(zMax - zMin))
+            return true;
+
+        return false;
+    }
+    catch (Standard_Failure&) {
         return false;
     }
 }

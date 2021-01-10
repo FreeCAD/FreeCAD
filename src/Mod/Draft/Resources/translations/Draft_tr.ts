@@ -11,222 +11,252 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="20"/>
       <source>Style name</source>
-      <translation>Stil Adı</translation>
+      <translation>Stil adı</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="38"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="50"/>
       <source>Add new...</source>
       <translation>Yeni ekle...</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="61"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="79"/>
       <source>Renames the selected style</source>
       <translation>Seçili öğeyi yeniden adlandırır</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="64"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="82"/>
       <source>Rename</source>
       <translation>Yeniden Adlandır</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="86"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="110"/>
       <source>Deletes the selected style</source>
       <translation>Seçili ögeyi siler</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="89"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="113"/>
       <source>Delete</source>
       <translation>Sil</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="120"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="144"/>
       <source>Text</source>
       <translation>Metin</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="129"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="153"/>
       <source>Font size</source>
       <translation>Yazı Boyutu</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="139"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="163"/>
       <source>Line spacing</source>
       <translation>Satır aralığı</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="149"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="173"/>
       <source>Font name</source>
       <translation>Yazı tipi ismi</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="156"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="192"/>
       <source>The font to use for texts and dimensions</source>
       <translation>Metinler ve boyutlar için kullanılacak yazı tipi</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="183"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="219"/>
       <source>Units</source>
       <translation>Birimler</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="192"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="228"/>
       <source>Scale multiplier</source>
       <translation>Ölçek çarpanı</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="202"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="238"/>
       <source>Decimals</source>
       <translation>Ondalıklar</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="212"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="248"/>
       <source>Unit override</source>
       <translation>Birim geçersiz kılma</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="222"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="258"/>
       <source>Show unit</source>
-      <translation>Birimleri göster</translation>
+      <translation>Birimi göster</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="275"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="311"/>
       <source>Line and arrows</source>
       <translation>Çizgi ve Oklar</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="284"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="320"/>
       <source>Line width</source>
       <translation>Çizgi Kalınlığı</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="294"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="330"/>
       <source>Extension overshoot</source>
       <translation>Uzatma çizgisi aşımı</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="304"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="340"/>
       <source>Arrow size</source>
       <translation>Ok boyu</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="314"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="350"/>
       <source>Show lines</source>
       <translation>Çizgileri göster</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="324"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="360"/>
       <source>Dimension overshoot</source>
       <translation>Ölçülendirme çizgisi aşımı</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="334"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="370"/>
       <source>Extension lines</source>
       <translation>Uzatma çizgileri</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="344"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="380"/>
       <source>Arrow type</source>
       <translation>Ok tipi</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="354"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="390"/>
       <source>Line / text color</source>
       <translation>Çizgi / metin rengi</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="377"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="413"/>
       <source>The width of the dimension lines</source>
       <translation>Ölçülendirme çizgisinin kalınlığı</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="380"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="416"/>
       <source>px</source>
       <translation>px</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="390"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="426"/>
       <source>The color of dimension lines, arrows and texts</source>
       <translation>Ölçülendirme çizgilerinin, okların ve metinlerin rengi</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="408"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="456"/>
       <source>Dot</source>
-      <translation>Noktalı</translation>
+      <translation>Nokta</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="413"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="466"/>
       <source>Arrow</source>
       <translation>Ok İşareti</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="418"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="471"/>
       <source>Tick</source>
       <translation>işaretleme</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="26"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="38"/>
       <source>The name of your style. Existing style names can be edited.</source>
       <translation>Tekniğinizi isimlendirin. Haricen teknik isimler düzenlenebilir.</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="163"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="199"/>
       <source>Font size in the system units</source>
       <translation>Birim sistemlerindeki yazı tipi boyutu</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="136"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="160"/>
       <source>Line spacing in system units</source>
-      <translation>Sistem birimlerinde çizgi boşluğu</translation>
+      <translation>Sistem birimlerinde satır aralığı</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="229"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="265"/>
       <source>A multiplier factor that affects the size of texts and markers</source>
       <translation>Metinlerin ve işaretleyicilerin boyutuna izin veren bir çoklayıcı etkeni</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="249"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="285"/>
       <source>The number of decimals to show for dimension values</source>
       <translation>Ölçü değerlerini hassas göstermek için ondalıkların sayısı</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="242"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="278"/>
       <source>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</source>
       <translation>Bu birimin ölçü değerini göstermeye zorlamak için mm, m, in, ft gibi geçerli bir uzunluğu seçin</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="259"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="295"/>
       <source>If it is checked it will show the unit next to the dimension value</source>
       <translation>O seçilmişse birim değerini ölçü değerinin yanında gösterir</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="456"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="514"/>
       <source>The distance that the extension lines are additionally extended beyond the dimension line</source>
       <translation>Mesafeyi ifade eden uzama çizgileri ölçülendirme çizgisinin ötesine eklenerek uzatılır</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="426"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="484"/>
       <source>The size of the dimension arrows or markers in system units</source>
       <translation>Birim sistemlerindeki büyüklük oklarının veya işaretleyicilerin boyutu</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="361"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="397"/>
       <source>If it is checked it will display the dimension line</source>
       <translation>O seçildiyse ölçülendirme çizgisini gösterir</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="436"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="494"/>
       <source>The distance that the dimension line is additionally extended</source>
       <translation>Mesafeyi ifade eden ölçülendirme çizgisi ek olarak uzatılır</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="446"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="504"/>
       <source>The length of the extension lines</source>
       <translation>Uzatma çizgilerinin uzunluğu</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="404"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="452"/>
       <source>The type of arrows or markers to use at the end of dimension lines</source>
       <translation>Ölçülendirme çizgilerinin sonunda kullanmak için okların veya işaretleyicilerin tipi</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="461"/>
+      <source>Circle</source>
+      <translation>Daire</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="476"/>
+      <source>Tick-2</source>
+      <translation>Tik-2</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="529"/>
+      <source>Import styles from json file</source>
+      <translation type="unfinished">Import styles from json file</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="532"/>
+      <source>Import...</source>
+      <translation>İçe aktar...</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="539"/>
+      <source>Export styles to json file</source>
+      <translation type="unfinished">Export styles to json file</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="542"/>
+      <source>Export...</source>
+      <translation type="unfinished">Export...</translation>
     </message>
   </context>
   <context>
@@ -273,7 +303,7 @@ menüden Araçlar -&gt; Eklenti Yöneticisi</translation>
     <message>
       <location filename="../../InitGui.py" line="112"/>
       <source>&amp;Modification</source>
-      <translation>Değişiklik</translation>
+      <translation>&amp;Değiştir</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="113"/>
@@ -797,18 +827,18 @@ of the buttons above</translation>
       <source>Or select a single vertex to move the current
 working plane without changing its orientation.
 Then, press the button below</source>
-      <translation type="unfinished">Or select a single vertex to move the current
-working plane without changing its orientation.
-Then, press the button below</translation>
+      <translation>Veya geçerli çalışma düzlemini, yönelimini 
+değiştirmeden taşımak için tek bir köşe seçin.
+Sonra aşağıdaki düğmeye basın</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="147"/>
       <source>Moves the working plane without changing its
 orientation. If no point is selected, the plane
 will be moved to the center of the view</source>
-      <translation type="unfinished">Moves the working plane without changing its
-orientation. If no point is selected, the plane
-will be moved to the center of the view</translation>
+      <translation>Çalışma düzlemini, yönelimini değiştirmeden taşır.
+Eğer bir nokta seçilmezse düzlem, görünüm 
+merkezine taşınacaktır</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="152"/>
@@ -833,16 +863,16 @@ will be moved to the center of the view</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="184"/>
       <source>Main line every</source>
-      <translation>Ana çizgiler her</translation>
+      <translation>Ana çizgilerin tümü</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="207"/>
       <source>The distance at which a point can be snapped to
 when approaching the mouse. You can also change this
 value by using the [ and ] keys while drawing</source>
-      <translation type="unfinished">The distance at which a point can be snapped to
-when approaching the mouse. You can also change this
-value by using the [ and ] keys while drawing</translation>
+      <translation>Fare yaklaştırıldığında yakalanabilecek bir noktanın 
+mesafesi. Bu değeri [ ve ] tuşlarını kullanarak çizim 
+sırasında değiştirebilirsiniz</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="212"/>
@@ -852,17 +882,17 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="241"/>
       <source>Centers the view on the current working plane</source>
-      <translation type="unfinished">Centers the view on the current working plane</translation>
+      <translation>Mevcut çalışma düzlemindeki görünümü merkeze alır</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="244"/>
       <source>Center view</source>
-      <translation>Merkezi görünüm</translation>
+      <translation>Merkezî görünüm</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="251"/>
       <source>Resets the working plane to its previous position</source>
-      <translation type="unfinished">Resets the working plane to its previous position</translation>
+      <translation>Çalışma düzlemini önceki konumuna sıfırlar</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="254"/>
@@ -882,212 +912,222 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="14"/>
       <source>Style settings</source>
-      <translation type="unfinished">Style settings</translation>
+      <translation>Biçim Ayarları</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="22"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="207"/>
       <source>Text color</source>
-      <translation type="unfinished">Text color</translation>
+      <translation>Metin rengi</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="29"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="132"/>
       <source>Shape color</source>
-      <translation type="unfinished">Shape color</translation>
+      <translation>Şekil rengi</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="36"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="50"/>
       <source>Line width</source>
       <translation>Çizgi Kalınlığı</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="43"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="29"/>
       <source>The color of faces</source>
-      <translation type="unfinished">The color of faces</translation>
+      <translation>Yüzey renkleri</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="50"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="168"/>
       <source>The type of dimension arrows</source>
-      <translation type="unfinished">The type of dimension arrows</translation>
+      <translation>Ölçü okları türü</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="54"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="172"/>
       <source>Dot</source>
-      <translation>Noktalı</translation>
+      <translation>Nokta</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="59"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="177"/>
       <source>Circle</source>
-      <translation>Çember</translation>
+      <translation>Daire</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="64"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="182"/>
       <source>Arrow</source>
       <translation>Ok İşareti</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="69"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="187"/>
       <source>Tick</source>
       <translation>işaretleme</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="74"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="192"/>
       <source>Tick-2</source>
       <translation>Tik-2</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="82"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="234"/>
       <source>The color of texts and dimension texts</source>
-      <translation type="unfinished">The color of texts and dimension texts</translation>
+      <translation>Metin ve ölçü metinleri rengi</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="89"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="241"/>
       <source>The size of texts and dimension texts</source>
-      <translation type="unfinished">The size of texts and dimension texts</translation>
+      <translation>Metin ve ölçü metinleri boyutu</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="99"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="281"/>
       <source>Show unit</source>
-      <translation>Birimleri göster</translation>
+      <translation>Birimi göster</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="106"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="43"/>
       <source>Line color</source>
       <translation>Çizgi rengi</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="113"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="271"/>
       <source>The size of dimension arrows</source>
-      <translation type="unfinished">The size of dimension arrows</translation>
+      <translation>Ölçü okları boyutu</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="129"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="220"/>
       <source>The font to use for texts and dimensions</source>
       <translation>Metinler ve boyutlar için kullanılacak yazı tipi</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="136"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="64"/>
       <source>The line style</source>
-      <translation type="unfinished">The line style</translation>
+      <translation>Çizgi biçimi</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="140"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="68"/>
       <source>Solid</source>
       <translation>Katı</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="145"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="73"/>
       <source>Dashed</source>
       <translation>Kesik çizgili</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="150"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="78"/>
       <source>Dotted</source>
       <translation>Noktalı</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="155"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="83"/>
       <source>DashDot</source>
       <translation>Çizgi nokta</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="163"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="227"/>
       <source>Text size</source>
-      <translation type="unfinished">Text size</translation>
+      <translation>Metin boyutu</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="170"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="295"/>
       <source>Unit override</source>
       <translation>Birim geçersiz kılma</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="177"/>
-      <source>If the unit siffix is shown on dimension texts or not</source>
-      <translation type="unfinished">If the unit siffix is shown on dimension texts or not</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="190"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="302"/>
       <source>The unit to use for dimensions. Leave blank to use current FreeCAD unit</source>
-      <translation type="unfinished">The unit to use for dimensions. Leave blank to use current FreeCAD unit</translation>
+      <translation>Ölçülendirme için kullanılacak ölçü birimi. Mevcut FreeCAD ölçü birimini kullanmak için boş bırakın</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="197"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="146"/>
       <source>The transparency of faces</source>
-      <translation type="unfinished">The transparency of faces</translation>
+      <translation>Yüzlerin şeffaflığı</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="200"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="149"/>
       <source> %</source>
       <translation> %</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="210"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="139"/>
       <source>Transparency</source>
       <translation>Şeffaflık</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="217"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="98"/>
       <source>Display mode</source>
       <translation>Ekran kipi</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="224"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="200"/>
       <source>Text font</source>
-      <translation type="unfinished">Text font</translation>
+      <translation>Metin Yazı Tipi</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="231"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="288"/>
       <source>Arrow size</source>
       <translation>Ok boyu</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="238"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="105"/>
       <source>The display mode for faces</source>
-      <translation type="unfinished">The display mode for faces</translation>
+      <translation>Yüzler için görüntüleme modu</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="242"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="109"/>
       <source>Flat Lines</source>
-      <translation type="unfinished">Flat Lines</translation>
+      <translation>Düz çizgiler</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="247"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="114"/>
       <source>Wireframe</source>
       <translation>Tel Kafes görünümü</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="252"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="119"/>
       <source>Shaded</source>
       <translation>Gölgeli</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="257"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="124"/>
       <source>Points</source>
       <translation>Noktalar</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="265"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="36"/>
       <source>Draw style</source>
       <translation>Çizim biçimi</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="272"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="57"/>
       <source>The color of lines</source>
-      <translation type="unfinished">The color of lines</translation>
+      <translation>Çizgi rengi</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="279"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="251"/>
       <source>Arrow style</source>
-      <translation type="unfinished">Arrow style</translation>
+      <translation>Ok biçimi</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="286"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="91"/>
       <source> px</source>
       <translation> piksel</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="295"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="312"/>
       <source>Apply to selected objects</source>
       <translation>Seçili nesnelere uygulayın</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="20"/>
+      <source>Lines and faces</source>
+      <translation type="unfinished">Lines and faces</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="162"/>
+      <source>Annotations</source>
+      <translation>Açıklamalar</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="258"/>
+      <source>If the unit suffix is shown on dimension texts or not</source>
+      <translation type="unfinished">If the unit suffix is shown on dimension texts or not</translation>
     </message>
   </context>
   <context>
@@ -1145,12 +1185,12 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/preferences-draft.ui" line="82"/>
       <source>YZ (Side)</source>
-      <translation>YZ (tarafı)</translation>
+      <translation>YZ (yan)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="89"/>
       <source>Default height for texts and dimensions</source>
-      <translation>Yazılar ve boyutlar için varsayılan yükseklik</translation>
+      <translation>Metinler ve boyutlar için kullanılacak yazı tipi</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="47"/>
@@ -1272,22 +1312,22 @@ Bu değer, "Arial", varsayılan stiller "sans", "serif" veya "mono", veya aile a
       <translation>Izgara kullan</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="383"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="402"/>
       <source>Grid spacing</source>
       <translation>Izgara aralığı</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="406"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="425"/>
       <source>The spacing between each grid line</source>
       <translation>Her bir kılavuz çizgisi arasındaki mesafe</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="334"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="353"/>
       <source>Main lines every</source>
-      <translation>Ana çizgiler her</translation>
+      <translation>Ana çizgilerin tümü</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="357"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="376"/>
       <source>Mainlines will be drawn thicker. Specify here how many squares between mainlines.</source>
       <translation>Ana çizgiler daha kalın çizilecektir. Şimdi burada ana çizgiler arasında kaç kare olacağını belirleyiniz.</translation>
     </message>
@@ -1489,12 +1529,12 @@ Bu değer, "Arial", varsayılan stiller "sans", "serif" veya "mono", veya aile a
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="323"/>
       <source>Dot</source>
-      <translation>Noktalı</translation>
+      <translation>Nokta</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="328"/>
       <source>Circle</source>
-      <translation>Çember</translation>
+      <translation>Daire</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="333"/>
@@ -1577,12 +1617,12 @@ Bu değer, "Arial", varsayılan stiller "sans", "serif" veya "mono", veya aile a
       <translation>mm</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="438"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="457"/>
       <source>Grid size</source>
       <translation>Izgara boyutu</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="464"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="483"/>
       <source> lines</source>
       <translation> çizgiler</translation>
     </message>
@@ -1802,14 +1842,9 @@ Bu değer, "Arial", varsayılan stiller "sans", "serif" veya "mono", veya aile a
       <translation>Alt değiştirici tuşu</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="458"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="477"/>
       <source>The number of horizontal or vertical lines of the grid</source>
       <translation>Yatay ve dikey kılavuz çizgisi sayısı</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="507"/>
-      <source>The default color for new objects</source>
-      <translation>Yeni şekiller için varsayılan renk</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="87"/>
@@ -2124,19 +2159,14 @@ Bu değerin altında farklılık gösteren değerler aynı şekilde ele alınaca
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="487"/>
-      <source>Grid color</source>
-      <translation>Izgara rengi</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-draft.ui" line="194"/>
       <source>If this option is checked, the layers drop-down list will also show groups, allowing you to automatically add objects to groups too.</source>
-      <translation type="unfinished">If this option is checked, the layers drop-down list will also show groups, allowing you to automatically add objects to groups too.</translation>
+      <translation>Bu seçenek işaretlenirse; açılır katman listesi, grupları da gösterecek ayrıca gruplara otomatik olarak nesne eklemenize de izin verecektir.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="197"/>
       <source>Show groups in layers list drop-down button</source>
-      <translation type="unfinished">Show groups in layers list drop-down button</translation>
+      <translation>Açılır katman listesi düğmesinde grupları göster</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="216"/>
@@ -2147,32 +2177,32 @@ Bu değerin altında farklılık gösteren değerler aynı şekilde ele alınaca
       <location filename="../ui/preferences-draft.ui" line="230"/>
       <source>When drawing lines, set focus on Length instead of X coordinate.
 This allows to point the direction and type the distance.</source>
-      <translation type="unfinished">When drawing lines, set focus on Length instead of X coordinate.
-This allows to point the direction and type the distance.</translation>
+      <translation>Çizgiler çizerken odağı, X koordinatı yerine Uzunluğa ayarla.
+Bu, yönü çevirmenize ve mesafeyi girmenize izin verir.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="234"/>
       <source>Set focus on Length instead of X coordinate</source>
-      <translation type="unfinished">Set focus on Length instead of X coordinate</translation>
+      <translation>Odağı X koordinatı yerine Uzunluğa ayarla</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="250"/>
       <source>Set the Support property when possible</source>
-      <translation type="unfinished">Set the Support property when possible</translation>
+      <translation>Mümkün olduğunda Destek özelliğini ayarla</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="263"/>
       <source>If this is checked, objects will appear as filled by default.
 Otherwise, they will appear as wireframe</source>
-      <translation type="unfinished">If this is checked, objects will appear as filled by default.
-Otherwise, they will appear as wireframe</translation>
+      <translation>Bu işaretlenirse, nesneler varsayılan olarak içi dolu görünecektir. 
+Aksi takdirde, tel kafes olarak görünecektir</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="283"/>
       <source>Normally, after copying objects, the copies get selected.
 If this option is checked, the base objects will be selected instead.</source>
-      <translation type="unfinished">Normally, after copying objects, the copies get selected.
-If this option is checked, the base objects will be selected instead.</translation>
+      <translation>Normalde, nesneleri kopyaladıktan sonra kopyalar seçili kalır. 
+Bu seçenek işaretli ise, onun yerine temel nesneler seçili olacaktır.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="300"/>
@@ -2224,104 +2254,102 @@ Note that this is not fully supported, and many object will be not editable with
       <translation type="unfinished">Annotation scale widget</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="532"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="567"/>
       <source>Draft Edit preferences</source>
-      <translation type="unfinished">Draft Edit preferences</translation>
+      <translation>Taslak Düzenleme tercihleri</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="535"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="570"/>
       <source>Edit</source>
       <translation>Düzenle</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="549"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="584"/>
       <source>Maximum number of contemporary edited objects</source>
-      <translation type="unfinished">Maximum number of contemporary edited objects</translation>
+      <translation>En fazla eş zamanlı düzenlenmiş nesne sayısı</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="572"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="607"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the maximum number of objects Draft Edit&lt;/p&gt;&lt;p&gt;can process at the same time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the maximum number of objects Draft Edit&lt;/p&gt;&lt;p&gt;can process at the same time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Taslak Düzenleme'nin aynı anda işleyebileceği &lt;/p&gt;&lt;p&gt;en fazla nesne sayısını ayarlar&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="610"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="645"/>
       <source>Draft edit pick radius</source>
-      <translation type="unfinished">Draft edit pick radius</translation>
+      <translation>Taslak düzenleme seçim yarıçapı</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="633"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="668"/>
       <source>Controls pick radius of edit nodes</source>
       <translation>Düzenleme düğümlerinin yarıçapını kontrol eder</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="34"/>
       <source>Path to ODA file converter</source>
-      <translation type="unfinished">Path to ODA file converter</translation>
+      <translation>ODA dosyası çevirici yolu</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="26"/>
       <source>This preferences dialog will be shown when importing/ exporting DXF files</source>
-      <translation type="unfinished">This preferences dialog will be shown when importing/ exporting DXF files</translation>
+      <translation>Bu tercihler iletisi, DXF dosyalarının içe/dışa aktarılması sırasında gösterilecek</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="42"/>
       <source>Python importer is used, otherwise the newer C++ is used.
 Note: C++ importer is faster, but is not as featureful yet</source>
-      <translation type="unfinished">Python importer is used, otherwise the newer C++ is used.
-Note: C++ importer is faster, but is not as featureful yet</translation>
+      <translation>Python içe aktarıcı kullanılır, aksi takdirde daha yeni C ++ kullanılır.
+Not: C ++ içe aktarıcı daha hızlıdır, ancak henüz o kadar özellikli değildir</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="62"/>
       <source>Python exporter is used, otherwise the newer C++ is used.
 Note: C++ importer is faster, but is not as featureful yet
       </source>
-      <translation type="unfinished">Python exporter is used, otherwise the newer C++ is used.
-Note: C++ importer is faster, but is not as featureful yet
-      </translation>
+      <translation>Python dışa aktarıcı kullanılır, aksi takdirde daha yeni C ++ kullanılır.
+Not: C ++ içe aktarıcı daha hızlıdır, ancak henüz o kadar özellikli değildir      </translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="88"/>
       <source>Allow FreeCAD to download the Python converter for DXF import and export.
 You can also do this manually by installing the "dxf_library" workbench
 from the Addon Manager.</source>
-      <translation type="unfinished">Allow FreeCAD to download the Python converter for DXF import and export.
-You can also do this manually by installing the "dxf_library" workbench
-from the Addon Manager.</translation>
+      <translation>DXF içe ve dışa aktarma için FreeCAD' in Python dönüştürücüyü indirmesine izin ver.
+Bu işlemi Eklenti Yöneticisi' nden "dxf_library" tezgahını yükleyerek elle de yapabilirsiniz.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="139"/>
       <source>If unchecked, texts and mtexts won't be imported</source>
-      <translation type="unfinished">If unchecked, texts and mtexts won't be imported</translation>
+      <translation>İşaretli değilse, metinler ve çoklu metinler içe aktarılmayacaktır</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="155"/>
       <source>If unchecked, points won't be imported</source>
-      <translation type="unfinished">If unchecked, points won't be imported</translation>
+      <translation>İşaretli değilse noktalar içe aktarılmayacak</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="171"/>
       <source>If checked, paper space objects will be imported too</source>
-      <translation type="unfinished">If checked, paper space objects will be imported too</translation>
+      <translation>Bu işaretlenirse, kağıt alanı nesneleri de içe aktarılacaktır</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="187"/>
       <source>If you want the non-named blocks (beginning with a *) to be imported too</source>
-      <translation type="unfinished">If you want the non-named blocks (beginning with a *) to be imported too</translation>
+      <translation>Adsız blokların (* ile başlayan) da içe aktarılmasını istiyorsanız</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="214"/>
       <source>Only standard Part objects will be created (fastest)</source>
-      <translation type="unfinished">Only standard Part objects will be created (fastest)</translation>
+      <translation>Sadece standart Parça nesneleri oluşturulacak (en hızlısı)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="233"/>
       <source>Parametric Draft objects will be created whenever possible</source>
-      <translation type="unfinished">Parametric Draft objects will be created whenever possible</translation>
+      <translation>Parametrik Taslak nesneleri mümkün olduğunda oluşturulacaktır</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="249"/>
       <source>Sketches will be created whenever possible</source>
-      <translation type="unfinished">Sketches will be created whenever possible</translation>
+      <translation>Mümkün olduğunca eskizler oluşturulacak</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="292"/>
@@ -2329,43 +2357,43 @@ from the Addon Manager.</translation>
 The factor is the conversion between the unit of your DXF file and millimeters.
 Example: for files in millimeters: 1, in centimeters: 10,
                              in meters: 1000, in inches: 25.4, in feet: 304.8</source>
-      <translation type="unfinished">Scale factor to apply to DXF files on import.
-The factor is the conversion between the unit of your DXF file and millimeters.
-Example: for files in millimeters: 1, in centimeters: 10,
-                             in meters: 1000, in inches: 25.4, in feet: 304.8</translation>
+      <translation>İçe aktarma sırasında ölçek etmenini DXF dosyalarına uygular.
+Bu etmen, DXF dosyanızın uzunluk birimi ile milimetre arasındaki dönüşümdür.
+Örneğin; milimetreli dosyalar için: 1, santimetre için: 10,
+metre için: 1000, inç için: 25.4, feet için: 304.8</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="321"/>
       <source>Colors will be retrieved from the DXF objects whenever possible.
 Otherwise default colors will be applied. </source>
-      <translation type="unfinished">Colors will be retrieved from the DXF objects whenever possible.
-Otherwise default colors will be applied. </translation>
+      <translation>Renkler, mümkün olduğunda DXF nesnelerinden alınacaktır.
+Aksi halde varsayılan renkler uygulanacaktır. </translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="342"/>
       <source>FreeCAD will try to join coincident objects into wires.
 Note that this can take a while!</source>
-      <translation type="unfinished">FreeCAD will try to join coincident objects into wires.
-Note that this can take a while!</translation>
+      <translation>FreeCAD, çakışan nesneleri tel halinde birleştirmeye çalışacaktır.
+Bunun biraz zaman alabileceğini unutmayın!</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="363"/>
       <source>Objects from the same layers will be joined into Draft Blocks,
 turning the display faster, but making them less easily editable </source>
-      <translation type="unfinished">Objects from the same layers will be joined into Draft Blocks,
-turning the display faster, but making them less easily editable </translation>
+      <translation>Aynı katmanlardaki nesneler Draft Blocks'ta birleştirilerek ekranı daha hızlı hale getirecek,
+ancak onları daha kolay düzenlenemez hale getirecek </translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="384"/>
       <source>Imported texts will get the standard Draft Text size,
 instead of the size they have in the DXF document</source>
-      <translation type="unfinished">Imported texts will get the standard Draft Text size,
-instead of the size they have in the DXF document</translation>
+      <translation>İçe aktarılan metinler, DXF belgesinde sahip oldukları boyut yerine 
+standart Taslak Metin boyutunu alır</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="405"/>
       <source>If this is checked, DXF layers will be imported as Draft Layers</source>
-      <translation type="unfinished">If this is checked, DXF layers will be imported as Draft Layers</translation>
+      <translation>Bu işaretlenirse, DXF katmanları Taslak Katmanlar olarak içe aktarılacaktır</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="408"/>
@@ -2381,8 +2409,8 @@ instead of the size they have in the DXF document</translation>
       <location filename="../ui/preferences-dxf.ui" line="448"/>
       <source>If polylines have a width defined, they will be rendered
 as closed wires with correct width</source>
-      <translation type="unfinished">If polylines have a width defined, they will be rendered
-as closed wires with correct width</translation>
+      <translation>Çoklu çizgilerin kalınlığı tanımlanmışsa, 
+bunlar doğru kalınlığa sahip kapalı teller olarak işlenecektir</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="511"/>
@@ -2394,7 +2422,7 @@ If it is set to '0' the whole spline is treated as a straight segment.</translat
     <message>
       <location filename="../ui/preferences-dxf.ui" line="550"/>
       <source>All objects containing faces will be exported as 3D polyfaces</source>
-      <translation type="unfinished">All objects containing faces will be exported as 3D polyfaces</translation>
+      <translation>Yüzler içeren tüm nesneler 3B çokluyüzler olarak dışa aktarılacak</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="570"/>
@@ -2411,19 +2439,19 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-svg.ui" line="47"/>
       <source>Method chosen for importing SVG object color to FreeCAD</source>
-      <translation type="unfinished">Method chosen for importing SVG object color to FreeCAD</translation>
+      <translation>SVG nesne rengini FreeCAD' e aktarmak için seçilen yöntem</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="82"/>
       <source>If checked, no units conversion will occur.
 One unit in the SVG file will translate as one millimeter. </source>
-      <translation type="unfinished">If checked, no units conversion will occur.
-One unit in the SVG file will translate as one millimeter. </translation>
+      <translation>İşaretlenirse, birim dönüşümü gerçekleşmez.
+SVG dosyasındaki bir birim, bir milimetre olarak çevrilir. </translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="128"/>
       <source>Style of SVG file to write when exporting a sketch</source>
-      <translation type="unfinished">Style of SVG file to write when exporting a sketch</translation>
+      <translation>Bir çizimi dışa aktarırken yazılacak SVG dosyasının biçimi</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="158"/>
@@ -2442,7 +2470,7 @@ This value is the maximum segment length. </translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="310"/>
       <source>If checked, an additional border is displayed around the grid, showing the main square size in the bottom left border</source>
-      <translation type="unfinished">If checked, an additional border is displayed around the grid, showing the main square size in the bottom left border</translation>
+      <translation>İşaretlenirse, ızgaranın etrafında, sol alt sınırda ana kare boyutunu gösteren ek bir kenarlık görüntülenir</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="313"/>
@@ -2457,7 +2485,7 @@ This value is the maximum segment length. </translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="495"/>
       <source>By leaving this field blank, the dimension measurements will be shown in the current unit defined in FreeCAD. By indicating a unit here such as m or cm, you can force new dimensions to be shown in that unit.</source>
-      <translation type="unfinished">By leaving this field blank, the dimension measurements will be shown in the current unit defined in FreeCAD. By indicating a unit here such as m or cm, you can force new dimensions to be shown in that unit.</translation>
+      <translation>Bu alanın boş bırakılmasıyla, boyut ölçümleri FreeCAD' teki mevcut tanımlı birimde gösterilecek. Buraya m veya cm olarak bir birim girilmesiyle, yeni boyutların o birimde gösterilmesini zorlayabilirsiniz.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="257"/>
@@ -2473,6 +2501,31 @@ This value is the maximum segment length. </translation>
       <location filename="../ui/preferences-draftvisual.ui" line="300"/>
       <source>The default size of hatch patterns</source>
       <translation>Tarama desenlerinin varsayılan boyutu</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="329"/>
+      <source>If set, the grid will have its two main axes colored in red, green or blue when they match global axes</source>
+      <translation type="unfinished">If set, the grid will have its two main axes colored in red, green or blue when they match global axes</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="332"/>
+      <source>Use colored axes</source>
+      <translation type="unfinished">Use colored axes</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="506"/>
+      <source>Grid color and transparency</source>
+      <translation type="unfinished">Grid color and transparency</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="526"/>
+      <source>The color of the grid</source>
+      <translation type="unfinished">The color of the grid</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="546"/>
+      <source>The overall transparency of the grid</source>
+      <translation type="unfinished">The overall transparency of the grid</translation>
     </message>
   </context>
   <context>
@@ -2514,7 +2567,7 @@ This value is the maximum segment length. </translation>
       <translation>İnşa Modunu Değiştir</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1887"/>
+      <location filename="../../DraftGui.py" line="1894"/>
       <source>Autogroup off</source>
       <translation>Autogroup kapalı</translation>
     </message>
@@ -2691,7 +2744,7 @@ This value is the maximum segment length. </translation>
     <message>
       <location filename="../../DraftGui.py" line="845"/>
       <source>Circle</source>
-      <translation>Çember</translation>
+      <translation>Daire</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="861"/>
@@ -2734,82 +2787,82 @@ This value is the maximum segment length. </translation>
       <translation>Düzenle</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1123"/>
+      <location filename="../../DraftGui.py" line="1124"/>
       <source>Global X</source>
       <translation>Evrensel X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1124"/>
+      <location filename="../../DraftGui.py" line="1125"/>
       <source>Global Y</source>
       <translation>Evrensel Y</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1125"/>
+      <location filename="../../DraftGui.py" line="1126"/>
       <source>Global Z</source>
       <translation>Evrensel Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1128"/>
+      <location filename="../../DraftGui.py" line="1129"/>
       <source>Local X</source>
       <translation>Yerel X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1129"/>
+      <location filename="../../DraftGui.py" line="1130"/>
       <source>Local Y</source>
       <translation>Yerel Y</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1130"/>
+      <location filename="../../DraftGui.py" line="1131"/>
       <source>Local Z</source>
       <translation>Yerel Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1359"/>
+      <location filename="../../DraftGui.py" line="1360"/>
       <source>Invalid Size value. Using 200.0.</source>
       <translation>Geçersiz boyut değeri. 200.0 kullanarak.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1367"/>
+      <location filename="../../DraftGui.py" line="1368"/>
       <source>Invalid Tracking value. Using 0.</source>
       <translation>Geçersiz izleme değeri. 0 kullanarak.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1381"/>
+      <location filename="../../DraftGui.py" line="1382"/>
       <source>Please enter a text string.</source>
       <translation>Lütfen geçerli bir Url dizesi girin.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1389"/>
+      <location filename="../../DraftGui.py" line="1390"/>
       <source>Select a Font file</source>
       <translation>Font dosyası seç</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1420"/>
+      <location filename="../../DraftGui.py" line="1421"/>
       <source>Please enter a font file.</source>
       <translation>Lütfen geçerli bir başlık giriniz.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1880"/>
+      <location filename="../../DraftGui.py" line="1887"/>
       <source>Autogroup: </source>
       <translation>Autogroup: </translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2181"/>
+      <location filename="../../DraftGui.py" line="2188"/>
       <source>Faces</source>
       <translation>Yüzler</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2182"/>
+      <location filename="../../DraftGui.py" line="2189"/>
       <source>Remove</source>
       <translation>Kaldır</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2183"/>
+      <location filename="../../DraftGui.py" line="2190"/>
       <source>Add</source>
       <translation>Ekle</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2184"/>
+      <location filename="../../DraftGui.py" line="2191"/>
       <source>Facebinder elements</source>
       <translation>Yüzey bağlama elemanları</translation>
     </message>
@@ -3095,7 +3148,7 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
     <message>
       <location filename="../../DraftGui.py" line="697"/>
       <source>Change default style for new objects</source>
-      <translation type="unfinished">Change default style for new objects</translation>
+      <translation>Yeni nesneler için varsayılan biçimi değiştir</translation>
     </message>
   </context>
   <context>
@@ -3113,7 +3166,7 @@ Bu kütüphaneleri indirmek için FreeCAD'i etkinleştirmek için Evet cevabın�
     <message>
       <location filename="../../importOCA.py" line="490"/>
       <source>successfully exported </source>
-      <translation type="unfinished">successfully exported </translation>
+      <translation>başarıyla dışa aktarıldı </translation>
     </message>
   </context>
 </TS>

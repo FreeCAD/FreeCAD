@@ -563,6 +563,7 @@ StdCmdToggleClipPlane::StdCmdToggleClipPlane()
     sToolTipText  = QT_TR_NOOP("Toggles clipping plane for active view");
     sWhatsThis    = "Std_ToggleClipPlane";
     sStatusTip    = QT_TR_NOOP("Toggles clipping plane for active view");
+    sPixmap       = "Std_ToggleClipPlane";
     eType         = Alter3DView;
 }
 
@@ -862,6 +863,7 @@ StdCmdToggleVisibility::StdCmdToggleVisibility()
     sToolTipText  = QT_TR_NOOP("Toggles visibility");
     sStatusTip    = QT_TR_NOOP("Toggles visibility");
     sWhatsThis    = "Std_ToggleVisibility";
+    sPixmap       = "Std_ToggleVisibility";
     sAccel        = "Space";
     eType         = Alter3DView;
 }
@@ -938,6 +940,7 @@ StdCmdShowSelection::StdCmdShowSelection()
     sToolTipText  = QT_TR_NOOP("Show all selected objects");
     sStatusTip    = QT_TR_NOOP("Show all selected objects");
     sWhatsThis    = "Std_ShowSelection";
+    sPixmap       = "Std_ShowSelection";
     eType         = Alter3DView;
 }
 
@@ -965,6 +968,7 @@ StdCmdHideSelection::StdCmdHideSelection()
     sToolTipText  = QT_TR_NOOP("Hide all selected objects");
     sStatusTip    = QT_TR_NOOP("Hide all selected objects");
     sWhatsThis    = "Std_HideSelection";
+    sPixmap       = "Std_HideSelection";
     eType         = Alter3DView;
 }
 
@@ -992,6 +996,7 @@ StdCmdSelectVisibleObjects::StdCmdSelectVisibleObjects()
     sToolTipText  = QT_TR_NOOP("Select visible objects in the active document");
     sStatusTip    = QT_TR_NOOP("Select visible objects in the active document");
     sWhatsThis    = "Std_SelectVisibleObjects";
+    sPixmap       = "Std_SelectVisibleObjects";
     eType         = Alter3DView;
 }
 
@@ -1033,6 +1038,7 @@ StdCmdToggleObjects::StdCmdToggleObjects()
     sToolTipText  = QT_TR_NOOP("Toggles visibility of all objects in the active document");
     sStatusTip    = QT_TR_NOOP("Toggles visibility of all objects in the active document");
     sWhatsThis    = "Std_ToggleObjects";
+    sPixmap       = "Std_ToggleObjects";
     eType         = Alter3DView;
 }
 
@@ -1073,6 +1079,7 @@ StdCmdShowObjects::StdCmdShowObjects()
     sToolTipText  = QT_TR_NOOP("Show all objects in the document");
     sStatusTip    = QT_TR_NOOP("Show all objects in the document");
     sWhatsThis    = "Std_ShowObjects";
+    sPixmap       = "Std_ShowObjects";
     eType         = Alter3DView;
 }
 
@@ -1109,6 +1116,7 @@ StdCmdHideObjects::StdCmdHideObjects()
     sToolTipText  = QT_TR_NOOP("Hide all objects in the document");
     sStatusTip    = QT_TR_NOOP("Hide all objects in the document");
     sWhatsThis    = "Std_HideObjects";
+    sPixmap       = "Std_HideObjects";
     eType         = Alter3DView;
 }
 
@@ -1145,7 +1153,7 @@ StdCmdSetAppearance::StdCmdSetAppearance()
     sToolTipText  = QT_TR_NOOP("Sets the display properties of the selected object");
     sWhatsThis    = "Std_SetAppearance";
     sStatusTip    = QT_TR_NOOP("Sets the display properties of the selected object");
-    sPixmap       = "Std_Tool1";
+    sPixmap       = "Std_SetAppearance";
     sAccel        = "Ctrl+D";
     eType         = Alter3DView;
 }
@@ -1188,7 +1196,7 @@ StdCmdViewHome::StdCmdViewHome()
     sToolTipText  = QT_TR_NOOP("Set to default home view");
     sWhatsThis    = "Std_ViewHome";
     sStatusTip    = QT_TR_NOOP("Set to default home view");
-    //sPixmap       = "view-home";
+    sPixmap       = "Std_ViewHome";
     sAccel        = "Home";
     eType         = Alter3DView;
 }
@@ -1384,6 +1392,7 @@ StdCmdViewDimetric::StdCmdViewDimetric()
     sToolTipText= QT_TR_NOOP("Set to dimetric view");
     sWhatsThis  = "Std_ViewDimetric";
     sStatusTip  = QT_TR_NOOP("Set to dimetric view");
+    sPixmap       = "Std_ViewDimetric";
     eType         = Alter3DView;
 }
 
@@ -1406,6 +1415,7 @@ StdCmdViewTrimetric::StdCmdViewTrimetric()
     sToolTipText= QT_TR_NOOP("Set to trimetric view");
     sWhatsThis  = "Std_ViewTrimetric";
     sStatusTip  = QT_TR_NOOP("Set to trimetric view");
+    sPixmap       = "Std_ViewTrimetric";
     eType         = Alter3DView;
 }
 
@@ -2025,6 +2035,7 @@ StdCmdToggleNavigation::StdCmdToggleNavigation()
     sWhatsThis    = "Std_ToggleNavigation";
   //iAccel        = Qt::SHIFT+Qt::Key_Space;
     sAccel        = "Esc";
+    sPixmap       = "Std_ToggleNavigation";
     eType         = Alter3DView;
 }
 
@@ -2072,6 +2083,7 @@ public:
         sToolTipText  = QT_TR_NOOP("Toggle axis cross");
         sStatusTip    = QT_TR_NOOP("Toggle axis cross");
         sWhatsThis    = "Std_AxisCross";
+        sPixmap       = "Std_AxisCross";
     }
     ~StdCmdAxisCross()
     {
@@ -2158,6 +2170,7 @@ StdCmdAxisCross::StdCmdAxisCross()
         sToolTipText  = QT_TR_NOOP("Toggle axis cross");
         sStatusTip    = QT_TR_NOOP("Toggle axis cross");
         sWhatsThis    = "Std_AxisCross";
+        sPixmap       = "Std_AxisCross";
         sAccel        = "A,C";
 }
 
@@ -2289,7 +2302,7 @@ StdCmdViewIvStereoOff::StdCmdViewIvStereoOff()
     sToolTipText  = QT_TR_NOOP("Switch stereo viewing off");
     sWhatsThis    = "Std_ViewIvStereoOff";
     sStatusTip    = QT_TR_NOOP("Switch stereo viewing off");
-    sPixmap       = "Std_Tool6";
+    sPixmap       = "Std_ViewIvStereoOff";
     eType         = Alter3DView;
 }
 
@@ -2318,7 +2331,7 @@ StdCmdViewIvStereoRedGreen::StdCmdViewIvStereoRedGreen()
     sToolTipText  = QT_TR_NOOP("Switch stereo viewing to red/cyan");
     sWhatsThis    = "Std_ViewIvStereoRedGreen";
     sStatusTip    = QT_TR_NOOP("Switch stereo viewing to red/cyan");
-    sPixmap       = "Std_Tool7";
+    sPixmap       = "Std_ViewIvStereoRedGreen";
     eType         = Alter3DView;
 }
 
@@ -2346,7 +2359,7 @@ StdCmdViewIvStereoQuadBuff::StdCmdViewIvStereoQuadBuff()
     sToolTipText  = QT_TR_NOOP("Switch stereo viewing to quad buffer");
     sWhatsThis    = "Std_ViewIvStereoQuadBuff";
     sStatusTip    = QT_TR_NOOP("Switch stereo viewing to quad buffer");
-    sPixmap       = "Std_Tool7";
+    sPixmap       = "Std_ViewIvStereoQuadBuff";
     eType         = Alter3DView;
 }
 
@@ -2374,7 +2387,7 @@ StdCmdViewIvStereoInterleavedRows::StdCmdViewIvStereoInterleavedRows()
     sToolTipText  = QT_TR_NOOP("Switch stereo viewing to Interleaved Rows");
     sWhatsThis    = "Std_ViewIvStereoInterleavedRows";
     sStatusTip    = QT_TR_NOOP("Switch stereo viewing to Interleaved Rows");
-    sPixmap       = "Std_Tool7";
+    sPixmap       = "Std_ViewIvStereoInterleavedRows";
     eType         = Alter3DView;
 }
 
@@ -2402,7 +2415,7 @@ StdCmdViewIvStereoInterleavedColumns::StdCmdViewIvStereoInterleavedColumns()
     sToolTipText  = QT_TR_NOOP("Switch stereo viewing to Interleaved Columns");
     sWhatsThis    = "Std_ViewIvStereoInterleavedColumns";
     sStatusTip    = QT_TR_NOOP("Switch stereo viewing to Interleaved Columns");
-    sPixmap       = "Std_Tool7";
+    sPixmap       = "Std_ViewIvStereoInterleavedColumns";
     eType         = Alter3DView;
 }
 
@@ -2431,7 +2444,7 @@ StdCmdViewIvIssueCamPos::StdCmdViewIvIssueCamPos()
     sToolTipText  = QT_TR_NOOP("Issue the camera position to the console and to a macro, to easily recall this position");
     sWhatsThis    = "Std_ViewIvIssueCamPos";
     sStatusTip    = QT_TR_NOOP("Issue the camera position to the console and to a macro, to easily recall this position");
-    sPixmap       = "Std_Tool8";
+    sPixmap       = "Std_ViewIvIssueCamPos";
     eType         = Alter3DView;
 }
 
@@ -3099,6 +3112,7 @@ StdCmdTextureMapping::StdCmdTextureMapping()
     sToolTipText  = QT_TR_NOOP("Texture mapping");
     sWhatsThis    = "Std_TextureMapping";
     sStatusTip    = QT_TR_NOOP("Texture mapping");
+    sPixmap       = "Std_TextureMapping";
     eType         = Alter3DView;
 }
 

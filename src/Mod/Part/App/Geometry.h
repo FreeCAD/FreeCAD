@@ -296,6 +296,7 @@ public:
     int getMultiplicity(int index) const;
     int getDegree() const;
     bool isPeriodic() const;
+    bool isRational() const;
     bool join(const Handle(Geom_BSplineCurve)&);
     void makeC1Continuous(double, double);
     std::list<Geometry*> toBiArcs(double tolerance) const;
