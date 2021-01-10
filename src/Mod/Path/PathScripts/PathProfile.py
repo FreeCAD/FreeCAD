@@ -269,12 +269,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         params['Coplanar'] = 0
         params['PocketMode'] = 1
         params['SectionCount'] = -1
-        # params['Angle'] = obj.ZigZagAngle
-        # params['FromCenter'] = (obj.StartAt == "Center")
         params['PocketStepover'] = self.tool.Diameter.Value * (float(obj.ExpandProfileStepOver) / 100.0)
         extraOffset = obj.OffsetExtra.Value
-        if False:  # self.pocketInvertExtraOffset():  # Method simply returns False
-            extraOffset = 0.0 - extraOffset
         params['PocketExtraOffset'] = extraOffset
         params['ToolRadius'] = self.radius
 
