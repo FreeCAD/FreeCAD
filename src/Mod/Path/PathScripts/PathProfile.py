@@ -271,7 +271,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         params['SectionCount'] = -1
         # params['Angle'] = obj.ZigZagAngle
         # params['FromCenter'] = (obj.StartAt == "Center")
-        params['PocketStepover'] = self.tool.Diameter * (float(obj.ExpandProfileStepOver) / 100.0)
+        params['PocketStepover'] = self.tool.Diameter.Value * (float(obj.ExpandProfileStepOver) / 100.0)
         extraOffset = obj.OffsetExtra.Value
         if False:  # self.pocketInvertExtraOffset():  # Method simply returns False
             extraOffset = 0.0 - extraOffset
@@ -638,7 +638,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         def calculateOffsetValue(obj, isHole):
             offset = obj.ExpandProfile.Value + obj.OffsetExtra.Value  # 0.0
             if obj.UseComp:
-                offset = obj.OffsetExtra.Value + self.tool.Diameter
+                offset = obj.OffsetExtra.Value + self.tool.Diameter.Value
                 offset += obj.ExpandProfile.Value
             if isHole:
                 if obj.Side == 'Outside':
@@ -711,7 +711,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         basewires = list()
         delPairs = list()
         ezMin = None
-        self.cutOut = self.tool.Diameter * (float(obj.ExpandProfileStepOver) / 100.0)
+        self.cutOut = self.tool.Diameter.Value * (float(obj.ExpandProfileStepOver) / 100.0)
 
         for p in range(0, len(obj.Base)):
             (base, subsList) = obj.Base[p]
