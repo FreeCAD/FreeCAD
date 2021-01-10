@@ -3808,13 +3808,13 @@ void ViewProviderSketch::unsubscribeToParameters()
 void ViewProviderSketch::updateInventorNodeSizes()
 {
     assert(edit);
-    edit->PointsDrawStyle->pointSize = std::lround(8 * edit->pixelScalingFactor);
+    edit->PointsDrawStyle->pointSize = 8 * edit->pixelScalingFactor;
     edit->PointSet->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex("CIRCLE_FILLED", edit->MarkerSize);
-    edit->CurvesDrawStyle->lineWidth = std::lround(3 * edit->pixelScalingFactor);
-    edit->RootCrossDrawStyle->lineWidth = std::lround(2 * edit->pixelScalingFactor);
-    edit->EditCurvesDrawStyle->lineWidth = std::lround(3 * edit->pixelScalingFactor);
-    edit->ConstraintDrawStyle->lineWidth = std::lround(1 * edit->pixelScalingFactor);
-    edit->InformationDrawStyle->lineWidth = std::lround(1 * edit->pixelScalingFactor);
+    edit->CurvesDrawStyle->lineWidth = 3 * edit->pixelScalingFactor;
+    edit->RootCrossDrawStyle->lineWidth = 2 * edit->pixelScalingFactor;
+    edit->EditCurvesDrawStyle->lineWidth = 3 * edit->pixelScalingFactor;
+    edit->ConstraintDrawStyle->lineWidth = 1 * edit->pixelScalingFactor;
+    edit->InformationDrawStyle->lineWidth = 1 * edit->pixelScalingFactor;
 }
 
 void ViewProviderSketch::initItemsSizes()
@@ -3845,34 +3845,13 @@ void ViewProviderSketch::initItemsSizes()
         edit->coinFontSize = pixelsToPoints(sketcherfontSize, dpi);
         edit->constraintIconSize = std::lround(0.8 * sketcherfontSize);
 
-        // The global default is used.
+        // For marker size the global default is used.
         //
         // Rationale:
         // -> Other WBs use the default value as is
         // -> If a user has a HDPI, he will eventually change the value for the other WBs
         // -> If we correct the value here in addition, we would get two times a resize
-
         edit->MarkerSize = markersize;
-
-        // This commented code would find a the closest supported marker value to a provided value.
-        // It may be useful if a different global marker size implementation is provided.
-        //
-        // Here marker size is used as a ratio to the default of 7 px (as a second scaling factor)
-        // the default marker size is 30% of the view3dFontPixels
-        // NOTE: Not all marker sizes are supported, grab the closest supported one.
-        /*
-        std::vector<int> supportedsizes {5, 7, 9, 11, 13, 15};
-        int calculatedmarker = std::lround(0.3*view3dFontPixels*markersize/7.0);
-
-        auto pos = std::upper_bound(supportedsizes.begin(), supportedsizes.end(), calculatedmarker);
-
-        if(pos == supportedsizes.end())
-            edit->MarkerSize = *std::prev(supportedsizes.end());
-        else if(pos == supportedsizes.begin())
-            edit->MarkerSize = *supportedsizes.begin();
-        else
-            edit->MarkerSize = (*pos - calculatedmarker > calculatedmarker - *std::prev(pos))?*std::prev(pos):*pos;
-        */
     }
 }
 
@@ -5919,7 +5898,7 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
                                             :NonDrivingConstrDimColor)
                                         :DeactivatedConstrDimColor;
                 text->size.setValue(edit->coinFontSize);
-                text->lineWidth = std::lround(2 * edit->pixelScalingFactor);
+                text->lineWidth = 2 * edit->pixelScalingFactor;
                 text->useAntialiasing = false;
                 SoAnnotation *anno = new SoAnnotation();
                 anno->renderCaching = SoSeparator::OFF;
@@ -6022,7 +6001,7 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
                 arrows->norm.setValue(norm);
                 arrows->string = "";
                 arrows->textColor = ConstrDimColor;
-                arrows->lineWidth = std::lround(2 * edit->pixelScalingFactor);
+                arrows->lineWidth = 2 * edit->pixelScalingFactor;
 
                 // #define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
                 sep->addChild(arrows);
@@ -6532,7 +6511,7 @@ void ViewProviderSketch::createEditInventorNodes(void)
 
     edit->PointsDrawStyle = new SoDrawStyle;
     edit->PointsDrawStyle->setName("PointsDrawStyle");
-    edit->PointsDrawStyle->pointSize = std::lround(8 * edit->pixelScalingFactor);
+    edit->PointsDrawStyle->pointSize = 8 * edit->pixelScalingFactor;
     pointsRoot->addChild(edit->PointsDrawStyle);
 
     edit->PointSet = new SoMarkerSet;
@@ -6558,7 +6537,7 @@ void ViewProviderSketch::createEditInventorNodes(void)
 
     edit->CurvesDrawStyle = new SoDrawStyle;
     edit->CurvesDrawStyle->setName("CurvesDrawStyle");
-    edit->CurvesDrawStyle->lineWidth = std::lround(3 * edit->pixelScalingFactor);
+    edit->CurvesDrawStyle->lineWidth = 3 * edit->pixelScalingFactor;
     curvesRoot->addChild(edit->CurvesDrawStyle);
 
     edit->CurveSet = new SoLineSet;
@@ -6578,7 +6557,7 @@ void ViewProviderSketch::createEditInventorNodes(void)
 
     edit->RootCrossDrawStyle = new SoDrawStyle;
     edit->RootCrossDrawStyle->setName("RootCrossDrawStyle");
-    edit->RootCrossDrawStyle->lineWidth = std::lround(2 * edit->pixelScalingFactor);
+    edit->RootCrossDrawStyle->lineWidth = 2 * edit->pixelScalingFactor;
     crossRoot->addChild(edit->RootCrossDrawStyle);
 
     edit->RootCrossMaterials = new SoMaterial;
@@ -6608,7 +6587,7 @@ void ViewProviderSketch::createEditInventorNodes(void)
 
     edit->EditCurvesDrawStyle = new SoDrawStyle;
     edit->EditCurvesDrawStyle->setName("EditCurvesDrawStyle");
-    edit->EditCurvesDrawStyle->lineWidth = std::lround(3 * edit->pixelScalingFactor);
+    edit->EditCurvesDrawStyle->lineWidth = 3 * edit->pixelScalingFactor;
     editCurvesRoot->addChild(edit->EditCurvesDrawStyle);
 
     edit->EditCurveSet = new SoLineSet;
@@ -6657,7 +6636,7 @@ void ViewProviderSketch::createEditInventorNodes(void)
     // use small line width for the Constraints
     edit->ConstraintDrawStyle = new SoDrawStyle;
     edit->ConstraintDrawStyle->setName("ConstraintDrawStyle");
-    edit->ConstraintDrawStyle->lineWidth = std::lround(1 * edit->pixelScalingFactor);
+    edit->ConstraintDrawStyle->lineWidth = 1 * edit->pixelScalingFactor;
     edit->EditRoot->addChild(edit->ConstraintDrawStyle);
 
     // add the group where all the constraints has its SoSeparator
@@ -6674,7 +6653,7 @@ void ViewProviderSketch::createEditInventorNodes(void)
     // use small line width for the information visual
     edit->InformationDrawStyle = new SoDrawStyle;
     edit->InformationDrawStyle->setName("InformationDrawStyle");
-    edit->InformationDrawStyle->lineWidth = std::lround(1 * edit->pixelScalingFactor);
+    edit->InformationDrawStyle->lineWidth = 1 * edit->pixelScalingFactor;
     edit->EditRoot->addChild(edit->InformationDrawStyle);
 
     // add the group where all the information entity has its SoSeparator
