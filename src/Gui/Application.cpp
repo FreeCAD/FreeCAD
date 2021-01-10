@@ -716,9 +716,10 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
             }
 
             // the original file name is required
-            QString filename = QString::fromUtf8(File.filePath().c_str()); 
-            bool addToRecent = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
-                GetBool("RecentIncludesImported", true);
+            QString filename = QString::fromUtf8(File.filePath().c_str());
+            auto parameterGroup = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
+            bool addToRecent = parameterGroup->GetBool("RecentIncludesImported", true);
+            parameterGroup->SetBool("RecentIncludesImported", addToRecent); // Make sure it gets added to the parameter list
             if (addToRecent) {
                 getMainWindow()->appendRecentFile(filename);
             }
@@ -775,8 +776,10 @@ void Application::exportTo(const char* FileName, const char* DocName, const char
             // search for a module that is able to open the exported file because otherwise
             // it doesn't need to be added to the recent files list (#0002047)
             std::map<std::string, std::string> importMap = App::GetApplication().getImportFilters(te.c_str());
-            bool addToRecent = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
-                GetBool("RecentIncludesExported", false);
+
+            auto parameterGroup = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
+            bool addToRecent = parameterGroup->GetBool("RecentIncludesExported", false);
+            parameterGroup->SetBool("RecentIncludesExported", addToRecent); // Make sure it gets added to the parameter list
             if (addToRecent) {
                 // search for a module that is able to open the exported file because otherwise
                 // it doesn't need to be added to the recent files list (#0002047)
