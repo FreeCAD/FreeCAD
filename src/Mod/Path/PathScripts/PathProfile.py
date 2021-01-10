@@ -37,6 +37,8 @@ from PySide import QtCore
 from lazy_loader.lazy_loader import LazyLoader
 ArchPanel = LazyLoader('ArchPanel', globals(), 'ArchPanel')
 Part = LazyLoader('Part', globals(), 'Part')
+DraftGeomUtils = LazyLoader('DraftGeomUtils', globals(), 'DraftGeomUtils')
+PathSurfaceSupport = LazyLoader('PathScripts.PathSurfaceSupport', globals(), 'PathScripts.PathSurfaceSupport')
 
 
 __title__ = "Path Profile Operation"
@@ -339,8 +341,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         self.JOB = PathUtils.findParentJob(obj)
 
         if obj.ExpandProfile.Value != 0.0:
-            import PathScripts.PathSurfaceSupport as PathSurfaceSupport
-            self.PathSurfaceSupport = PathSurfaceSupport
             self.expandProfile = True
 
         if obj.UseComp:
@@ -638,9 +638,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     offset = 0 - offset
             return offset
 
-        faceEnv = self.PathSurfaceSupport.getShapeEnvelope(faceShape)
-        # newFace = self.PathSurfaceSupport.getSliceFromEnvelope(faceEnv)
-        newFace = self.PathSurfaceSupport.getShapeSlice(faceEnv)
+        faceEnv = PathSurfaceSupport.getShapeEnvelope(faceShape)
+        newFace = PathSurfaceSupport.getShapeSlice(faceEnv)
         # Compute necessary offset
         offsetVal = calculateOffsetValue(obj, isHole)
         expandedFace = PathUtils.getOffsetArea(newFace, offsetVal, newFace)
@@ -683,7 +682,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             if hasattr(base, 'Shape'):
                 env = PathUtils.getEnvelope(partshape=base.Shape, subshape=None, depthparams=self.depthparams)
                 if self.expandProfile:
-                    eSlice = self.PathSurfaceSupport.getCrossSection(env)  # getSliceFromEnvelope(env)
+                    eSlice = PathSurfaceSupport.getCrossSection(env)  # getSliceFromEnvelope(env)
                     eSlice.translate(FreeCAD.Vector(0.0, 0.0, base.Shape.BoundBox.ZMin - env.BoundBox.ZMin))
                     self._addDebugObject('ModelSlice', eSlice)
                     shapeEnv = self._getExpandedProfileEnvelope(obj, eSlice, False, obj.StartDepth.Value, obj.FinalDepth.Value)
@@ -696,7 +695,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
     # Edges pre-processing
     def _processEdges(self, obj):
-        import DraftGeomUtils
         shapes = list()
         basewires = list()
         delPairs = list()
