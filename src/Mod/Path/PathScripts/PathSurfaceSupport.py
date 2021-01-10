@@ -1056,30 +1056,6 @@ def getShapeSlice(shape):
     return False
 
 
-def getProjectedFace(tempGroup, wire):
-    import Draft
-    PathLog.debug('getProjectedFace()')
-    F = FreeCAD.ActiveDocument.addObject('Part::Feature', 'tmpProjectionWire')
-    F.Shape = wire
-    F.purgeTouched()
-    tempGroup.addObject(F)
-    try:
-        prj = Draft.makeShape2DView(F, FreeCAD.Vector(0, 0, 1))
-        prj.recompute()
-        prj.purgeTouched()
-        tempGroup.addObject(prj)
-    except Exception as ee:
-        PathLog.error(str(ee))
-        return False
-    else:
-        pWire = Part.Wire(prj.Shape.Edges)
-        if pWire.isClosed() is False:
-            return False
-        slc = Part.Face(pWire)
-        slc.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - slc.BoundBox.ZMin))
-        return slc
-
-
 def getCrossSection(shape):
     PathLog.debug('getCrossSection()')
     wires = list()
@@ -1105,6 +1081,7 @@ def getCrossSection(shape):
     return False
 
 
+# This function used in PathProfile for expanded profile feature
 def getShapeEnvelope(shape):
     PathLog.debug('getShapeEnvelope()')
 
@@ -1143,7 +1120,7 @@ def getSliceFromEnvelope(env):
 
 
 
-
+# Funtions for preparing STLs
 def _prepareModelSTLs(self, JOB, obj, m, ocl):
     """Tessellate model shapes or copy existing meshes into ocl.STLSurf
     objects"""
