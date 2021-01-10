@@ -122,6 +122,7 @@ DlgSettingsDrawStyles::DlgSettingsDrawStyles(QWidget* parent)
     FC_DRAW_STYLE_PARAM(HiddenLineOverrideBackground, isChecked, setChecked)\
     FC_DRAW_STYLE_PARAM(TransparencyOnTop, value, setValue)\
     FC_DRAW_STYLE_PARAM(SelectionLineThicken, value, setValue)\
+    FC_DRAW_STYLE_PARAM(SelectionLineMaxWidth, value, setValue)\
     FC_DRAW_STYLE_PARAM(SelectionHiddenLineWidth, value, setValue)\
     FC_DRAW_STYLE_PARAM(ShadowSpotLight, isChecked, setChecked)\
     FC_DRAW_STYLE_PARAM(ShadowShowGround, isChecked, setChecked)\

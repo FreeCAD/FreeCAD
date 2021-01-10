@@ -251,9 +251,15 @@ void SoBrepEdgeSet::glRender(SoGLRenderAction *action, bool inpath)
             if(width < 1.0)
                 width = 1.0;
             if (Gui::SoFCDisplayModeElement::showHiddenLines(state))
-                width = std::max(width, (float)Gui::ViewParams::instance()->getSelectionHiddenLineWidth());
-            else if(Gui::ViewParams::instance()->getSelectionLineThicken()>1.0)
-                width *= Gui::ViewParams::instance()->getSelectionLineThicken();
+                width = std::max(width, (float)Gui::ViewParams::getSelectionHiddenLineWidth());
+            else if(Gui::ViewParams::getSelectionLineThicken()>1.0) {
+                float w = width * Gui::ViewParams::getSelectionLineThicken();
+                if (Gui::ViewParams::getSelectionLineMaxWidth() > 1.0) {
+                    w = std::min<float>(w, 
+                            std::max<float>(width, Gui::ViewParams::getSelectionLineMaxWidth()));
+                }
+                width = w;
+            }
             pass = 2;
         }
 

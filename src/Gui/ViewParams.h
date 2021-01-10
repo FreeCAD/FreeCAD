@@ -91,8 +91,10 @@ public:
        QT_TRANSLATE_NOOP("ViewParams","Enable hidden line/point selection when SelectionOnTop is active."))\
     FC_VIEW_PARAM(PartialHighlightOnFullSelect,bool,Bool,false, \
        QT_TRANSLATE_NOOP("ViewParams","Enable partial highlight on full selection for object that supports it."))\
-    FC_VIEW_PARAM(SelectionLineThicken,double,Float,1.0, \
+    FC_VIEW_PARAM(SelectionLineThicken,double,Float,1.5, \
        QT_TRANSLATE_NOOP("ViewParams","Muplication factor to increase the width the selected line."))\
+    FC_VIEW_PARAM(SelectionLineMaxWidth,double,Float, 4, \
+       QT_TRANSLATE_NOOP("ViewParams","Limit the selection line width when applying line thickening."))\
     FC_VIEW_PARAM(PickRadius,double,Float,5.0, "") \
     FC_VIEW_PARAM(SelectionTransparency,double,Float,0.5, "") \
     FC_VIEW_PARAM(SelectionLinePattern,int,Int,0, "") \

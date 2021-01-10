@@ -2132,8 +2132,14 @@ void SoFCSelectionRoot::setupSelectionLineRendering(
     if(width < 1.0)
         width = 1.0;
 
-    if(Gui::ViewParams::instance()->getSelectionLineThicken()>1.0)
-        width *= Gui::ViewParams::instance()->getSelectionLineThicken();
+    if(Gui::ViewParams::getSelectionLineThicken()>1.0) {
+        float w = width * Gui::ViewParams::getSelectionLineThicken();
+        if (Gui::ViewParams::getSelectionLineMaxWidth() > 1.0) {
+            w = std::min<float>(w, 
+                    std::max<float>(width, Gui::ViewParams::getSelectionLineMaxWidth()));
+        }
+        width = w;
+    }
 
     SoShadowStyleElement::set(state, SoShadowStyleElement::NO_SHADOWING);
 
