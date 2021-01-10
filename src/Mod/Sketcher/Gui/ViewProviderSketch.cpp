@@ -150,7 +150,7 @@ SbColor ViewProviderSketch::CurveColor                              (1.0f,1.0f,1
 SbColor ViewProviderSketch::CurveDraftColor                         (0.0f,0.0f,0.86f);    // #0000DC -> (  0,  0,220)
 SbColor ViewProviderSketch::CurveExternalColor                      (0.8f,0.2f,0.6f);     // #CC3399 -> (204, 51,153)
 SbColor ViewProviderSketch::CrossColorH                             (0.8f,0.4f,0.4f);     // #CC6666 -> (204,102,102)
-SbColor ViewProviderSketch::CrossColorV                             (0.4f,0.8f,0.4f);     // #66CC66 -> (102,204,102)
+SbColor ViewProviderSketch::CrossColorV                             (0.47f,1.0f,0.51f);   // #83FF83 -> (120,255,131)
 SbColor ViewProviderSketch::FullyConstrainedColor                   (0.0f,1.0f,0.0f);     // #00FF00 -> (  0,255,  0)
 SbColor ViewProviderSketch::ConstrDimColor                          (1.0f,0.149f,0.0f);   // #FF2600 -> (255, 38,  0)
 SbColor ViewProviderSketch::ConstrIcoColor                          (1.0f,0.149f,0.0f);   // #FF2600 -> (255, 38,  0)
