@@ -177,7 +177,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     if isinstance(val, int) or isinstance(val, float):
                         setVal = True
                 if setVal:
-                    propVal = getattr(prop, 'Value')
+                    # propVal = getattr(prop, 'Value')
                     setattr(prop, 'Value', val)
                 else:
                     setattr(obj, n, val)
@@ -322,7 +322,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         shapes = []
         baseSubsTuples = list()
         allTuples = list()
-        edgeFaces = list()
         subCount = 0
         self.isDebug = True if PathLog.getLevel(PathLog.thisModule()) == 4 else False
         self.inaccessibleMsg = translate('PathProfile', 'The selected edge(s) are inaccessible. If multiple, re-ordering selection might work.')
@@ -390,7 +389,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             # Eif
 
             # for base in obj.Base:
-            finish_step = obj.FinishDepth.Value if hasattr(obj, "FinishDepth") else 0.0
             for (base, subsList, angle, axis, stock) in baseSubsTuples:
                 holes = []
                 faces = []
@@ -407,10 +405,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
                         # Add face depth to list
                         faceDepths.append(shape.BoundBox.ZMin)
-                    else:
-                        ignoreSub = base.Name + '.' + sub
-                        msg = translate('PathProfile', "Found a selected object which is not a face. Ignoring:")
-                        # FreeCAD.Console.PrintWarning(msg + " {}\n".format(ignoreSub))
 
                 # Identify initial Start and Final Depths
                 finDep = obj.FinalDepth.Value
@@ -831,14 +825,12 @@ class ObjectProfile(PathAreaOp.ObjectOp):
     # Open-edges methods
     def _getCutAreaCrossSection(self, obj, base, origWire, flatWire):
         PathLog.debug('_getCutAreaCrossSection()')
-        FCAD = FreeCAD.ActiveDocument
         tolerance = self.JOB.GeometryTolerance.Value
         toolDiam = 2 * self.radius  # self.radius defined in PathAreaOp or PathProfileBase modules
         minBfr = toolDiam * 1.25
         bbBfr = (self.ofstRadius * 2) * 1.25
         if bbBfr < minBfr:
             bbBfr = minBfr
-        fwBB = flatWire.BoundBox
         wBB = origWire.BoundBox
         minArea = (self.ofstRadius - tolerance)**2 * math.pi
 
@@ -868,9 +860,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
         # Identify endpoints connecting circle center and diameter
         vectDist = pe.sub(pb)
-        diam = vectDist.Length
-        cntr = vectDist.multiply(0.5).add(pb)
-        R = diam / 2
 
         # Obtain beginning point perpendicular points
         if blen > 0.1:
@@ -1065,8 +1054,11 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         # CHECK for ZERO area of offset shape
         try:
             osArea = ofstShp.Area
+            if osArea == 0.0:
+                PathLog.error(translate("PathProfile", 'No area to offset shape returned.'))
+                return False
         except Exception as ee:
-            PathLog.error('No area to offset shape returned.\n{}'.format(ee))
+            PathLog.error(translate("PathProfile", 'No area to offset shape returned.') + "\n" + str(ee))
             return False
 
         self._addDebugObject('OffsetShape', ofstShp)
@@ -1423,7 +1415,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                         tagCnt += nt
                         intTags.append(intTObj)
                         extTags.append(extTObj)
-        tagArea = math.pi * tagRad**2 * tagCnt
         iTAG = Part.makeCompound(intTags)
         eTAG = Part.makeCompound(extTags)
 
@@ -1460,13 +1451,11 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
     def _makeStop(self, sType, pA, pB, lbl):
         # PathLog.debug('_makeStop()')
-        rad = self.radius
         ofstRad = self.ofstRadius
         extra = self.radius / 10
 
         E = FreeCAD.Vector(pB.x, pB.y, 0)  # endpoint
         C = FreeCAD.Vector(pA.x, pA.y, 0)  # checkpoint
-        lenEC = E.sub(C).Length
 
         if self.useComp is True or (self.useComp is False and self.offsetExtra != 0):
             # 'L' stop shape and edge map
