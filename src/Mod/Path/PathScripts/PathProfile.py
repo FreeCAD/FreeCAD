@@ -643,7 +643,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         newFace = self.PathSurfaceSupport.getShapeSlice(faceEnv)
         # Compute necessary offset
         offsetVal = calculateOffsetValue(obj, isHole)
-        expandedFace = self.PathSurfaceSupport.extractFaceOffset(newFace, offsetVal, newFace)
+        expandedFace = PathUtils.getOffsetArea(newFace, offsetVal, newFace)
         if expandedFace:
             if shapeZ != 0.0:
                 expandedFace.translate(FreeCAD.Vector(0.0, 0.0, shapeZ))
