@@ -112,19 +112,21 @@ public:
     (Scale, double, App::PropertyFloat, 1.0, "Scale factor", ##__VA_ARGS__)
 
 #define LINK_PARAM_SCALE_VECTOR(...) \
-    (ScaleVector, Base::Vector3d, App::PropertyVector, Base::Vector3d(1,1,1), "Scale factors", ##__VA_ARGS__)
+    (ScaleVector, Base::Vector3d, App::PropertyVector, Base::Vector3d(1,1,1), \
+     "Scale vector for non-uniform scaling. Please be aware that the underlying\n" \
+     "geometry may be transformed into BSpline surface due to non-uniform scale.", ##__VA_ARGS__)
 
 #define LINK_PARAM_PLACEMENTS(...) \
     (PlacementList, std::vector<Base::Placement>, App::PropertyPlacementList, std::vector<Base::Placement>(),\
-      "The placement for each link element", ##__VA_ARGS__)
+      "The placement for each element in a link array", ##__VA_ARGS__)
 
 #define LINK_PARAM_SCALES(...) \
     (ScaleList, std::vector<Base::Vector3d>, App::PropertyVectorList, std::vector<Base::Vector3d>(),\
-      "The scale factors for each link element", ##__VA_ARGS__)
+      "The scale factors for each element in a link array", ##__VA_ARGS__)
 
 #define LINK_PARAM_VISIBILITIES(...) \
     (VisibilityList, boost::dynamic_bitset<>, App::PropertyBoolList, boost::dynamic_bitset<>(),\
-      "The visibility state of each link element", ##__VA_ARGS__)
+      "The visibility state of element in a link arrayement", ##__VA_ARGS__)
 
 #define LINK_PARAM_COUNT(...) \
     (ElementCount, int, App::PropertyInteger, 0, "Link element count", ##__VA_ARGS__)
@@ -453,7 +455,7 @@ public:
 #define LINK_PARAMS_EXT \
     LINK_PARAM_EXT(SCALE)\
     LINK_PARAM_EXT(SCALE_VECTOR)\
-    LINK_PARAM_EXT(SCALES)\
+    LINK_PARAM_EXT_ATYPE(SCALES, App::Prop_Hidden)\
     LINK_PARAM_EXT(VISIBILITIES)\
     LINK_PARAM_EXT(PLACEMENTS)\
     LINK_PARAM_EXT(ELEMENTS)
