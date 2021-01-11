@@ -29,8 +29,6 @@
 
 #include <Mod/TechDraw/Gui/ui_TaskBalloon.h>
 
-#include <Mod/TechDraw/App/DrawViewPart.h>
-
 #include "QGIViewBalloon.h"
 #include "ViewProviderBalloon.h"
 
