@@ -71,8 +71,8 @@ Gui::GuiNativeEvent* Gui::GuiNativeEvent::gMouseInput = 0;
 #define _TRACE_RI_TYPE 0
 #define _TRACE_RIDI_DEVICENAME 0
 #define _TRACE_RIDI_DEVICEINFO 0
-#define _TRACE_RI_RAWDATA 0
-#define _TRACE_3DINPUT_PERIOD 0
+#define _TRACE_RI_RAWDATA 1
+#define _TRACE_3DINPUT_PERIOD 1
 
 #ifdef _WIN64
 typedef unsigned __int64 QWORD;
@@ -1055,6 +1055,10 @@ bool Gui::GuiNativeEvent::TranslateSpaceMouseOldGeneric(UINT nInputCode, PRAWINP
     pButtonCaps    = NULL;
     pValueCaps     = NULL;
     hHeap          = GetProcessHeap();
+
+#ifdef _TRACE_RI_RAWDATA
+    qDebug("pRawInput->data.hid.bRawData[0] = 0x%x", pRawInput->data.hid.bRawData[0]);
+#endif
 
     //
     // Get the preparsed data block
