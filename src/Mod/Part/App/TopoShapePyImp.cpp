@@ -2972,8 +2972,13 @@ void TopoShapePy::setOrientation(Py::String arg)
 Py::List TopoShapePy::getSubShapes(void) const
 {
     Py::List ret;
-    for(TopoDS_Iterator it(getTopoShapePtr()->getShape());it.More();it.Next())
-        ret.append(shape2pyshape(it.Value()));
+    const TopoDS_Shape& shape = getTopoShapePtr()->getShape();
+
+    if (!shape.IsNull()) {
+        for(TopoDS_Iterator it(shape);it.More();it.Next())
+            ret.append(shape2pyshape(it.Value()));
+    }
+
     return ret;
 }
 
