@@ -2901,6 +2901,10 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     Selection().addSelection(objT);
                 Selection().selStackPush();
             }
+
+            if(touched && TreeParams::Instance()->RecomputeOnDrop())
+                thisDoc->recompute();
+
         } catch (const Base::Exception& e) {
             e.ReportException();
             errMsg = e.what();
@@ -3088,6 +3092,9 @@ void TreeWidget::dropEvent(QDropEvent *event)
             SelectionNoTopParentCheck guard;
             Selection().setSelection(thisDoc->getName(),droppedObjs);
 
+            if(touched && TreeParams::Instance()->RecomputeOnDrop())
+                thisDoc->recompute();
+
         } catch (const Base::Exception& e) {
             e.ReportException();
             errMsg = e.what();
@@ -3105,9 +3112,6 @@ void TreeWidget::dropEvent(QDropEvent *event)
             return;
         }
     }
-
-    if(touched && TreeParams::Instance()->RecomputeOnDrop())
-        thisDoc->recompute();
 
     if(touched && TreeParams::Instance()->SyncView()) {
         auto gdoc = Application::Instance->getDocument(thisDoc);
