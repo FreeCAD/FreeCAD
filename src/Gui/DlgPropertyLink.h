@@ -34,6 +34,7 @@
 #include <QPointer>
 
 #include <App/DocumentObserver.h>
+#include "Selection.h"
 
 class QTreeWidget;
 
