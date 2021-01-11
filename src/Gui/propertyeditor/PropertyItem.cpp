@@ -1491,7 +1491,7 @@ VectorListButton::~VectorListButton()
 
 void VectorListButton::browse()
 {
-    VectorListEditor dlg(decimals, Gui::getMainWindow());
+    VectorListEditor dlg(decimals, this);
     dlg.setValues(value().value<QList<Base::Vector3d>>());
     QPoint p(0, 0);
     p = this->mapToGlobal(p);
