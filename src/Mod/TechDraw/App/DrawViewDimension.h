@@ -94,20 +94,20 @@ public:
     DrawViewDimension();
     virtual ~DrawViewDimension();
 
-    App::PropertyEnumeration       MeasureType;                        //True/Projected
-    App::PropertyLinkSubList       References2D;                       //Points to Projection SubFeatures
-    App::PropertyLinkSubList       References3D;                       //Points to 3D Geometry SubFeatures
-    App::PropertyEnumeration       Type;                               //DistanceX,DistanceY,Diameter, etc
+    App::PropertyEnumeration        MeasureType;           //True/Projected
+    App::PropertyLinkSubList        References2D;          //Points to Projection SubFeatures
+    App::PropertyLinkSubList        References3D;          //Points to 3D Geometry SubFeatures
+    App::PropertyEnumeration        Type;                  //DistanceX, DistanceY, Diameter, etc.
 
-    App::PropertyBool              TheoreticalExact;
-    App::PropertyBool              Inverted;
-    App::PropertyString            FormatSpec;
-    App::PropertyString            FormatSpecTolerance;
-    App::PropertyBool              Arbitrary;
-    App::PropertyBool              ArbitraryTolerances;
-    App::PropertyBool              EqualTolerance;
-    App::PropertyQuantity          OverTolerance;
-    App::PropertyQuantity          UnderTolerance;
+    App::PropertyBool               TheoreticalExact;
+    App::PropertyBool               Inverted;
+    App::PropertyString             FormatSpec;
+    App::PropertyString             FormatSpecTolerance;
+    App::PropertyBool               Arbitrary;
+    App::PropertyBool               ArbitraryTolerances;
+    App::PropertyBool               EqualTolerance;
+    App::PropertyQuantityConstraint OverTolerance;
+    App::PropertyQuantityConstraint UnderTolerance;
 
     enum RefType{
             invalidRef,

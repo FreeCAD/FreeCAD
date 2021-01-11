@@ -116,10 +116,15 @@ DrawViewDimension::DrawViewDimension(void)
     ADD_PROPERTY(MeasureType, ((long)1));                             //Projected (or True) measurement
     ADD_PROPERTY_TYPE(TheoreticalExact,(false), "", App::Prop_Output, "Set for theoretical exact (basic) dimension");
     ADD_PROPERTY_TYPE(EqualTolerance, (true), "", App::Prop_Output, "If over- and undertolerance are equal");
+
+    // constraint to set the step size to 0.1
+    static const App::PropertyQuantityConstraint::Constraints ToleranceConstraint = { -DBL_MAX, DBL_MAX, 0.1 };
     ADD_PROPERTY_TYPE(OverTolerance, (0.0), "", App::Prop_Output, "Overtolerance value\nIf 'Equal Tolerance' is true this is also the value for 'Under Tolerance'");
     OverTolerance.setUnit(Base::Unit::Length);
+    OverTolerance.setConstraints(&ToleranceConstraint);
     ADD_PROPERTY_TYPE(UnderTolerance, (0.0), "", App::Prop_Output, "Undertolerance value\nIf 'Equal Tolerance' it will be replaced by negative value of 'Over Tolerance'");
     UnderTolerance.setUnit(Base::Unit::Length);
+    UnderTolerance.setConstraints(&ToleranceConstraint);
     ADD_PROPERTY_TYPE(Inverted, (false), "", App::Prop_Output, "The dimensional value is displayed inverted");
 
     //hide the DrawView properties that don't apply to Dimensions
@@ -130,6 +135,7 @@ DrawViewDimension::DrawViewDimension(void)
     Rotation.setStatus(App::Property::ReadOnly, true);
     Rotation.setStatus(App::Property::Hidden, true);
     Caption.setStatus(App::Property::Hidden, true);
+    LockPosition.setStatus(App::Property::Hidden, true);
 
     // by default EqualTolerance is true, thus make UnderTolerance read-only
     UnderTolerance.setStatus(App::Property::ReadOnly, true);
@@ -265,6 +271,20 @@ void DrawViewDimension::handleChangedPropertyType(Base::XMLReader &reader, const
     }
     else {
         TechDraw::DrawView::handleChangedPropertyType(reader, TypeName, prop);
+    }
+
+    // Over/Undertolerance were further changed from App::PropertyQuantity to App::PropertyQuantityConstraint
+    if ((prop == &OverTolerance) && (strcmp(TypeName, "App::PropertyQuantity") == 0)) {
+        App::PropertyQuantity OverToleranceProperty;
+        // restore the PropertyQuantity to be able to set its value
+        OverToleranceProperty.Restore(reader);
+        OverTolerance.setValue(OverToleranceProperty.getValue());
+    }
+    else if ((prop == &UnderTolerance) && (strcmp(TypeName, "App::PropertyQuantity") == 0)) {
+        App::PropertyQuantity UnderToleranceProperty;
+        // restore the PropertyQuantity to be able to set its value
+        UnderToleranceProperty.Restore(reader);
+        UnderTolerance.setValue(UnderToleranceProperty.getValue());
     }
 }
 
