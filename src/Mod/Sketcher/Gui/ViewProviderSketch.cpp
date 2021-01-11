@@ -3379,6 +3379,7 @@ void ViewProviderSketch::drawConstraintIcons()
 
         // Find the Constraint Icon SoImage Node
         SoSeparator *sep = static_cast<SoSeparator *>(edit->constrGroup->getChild(constrId));
+        int numChildren = sep->getNumChildren();
 
         SbVec3f absPos;
         // Somewhat hacky - we use SoZoomTranslations for most types of icon,
@@ -3442,14 +3443,16 @@ void ViewProviderSketch::drawConstraintIcons()
             // So, to get the position of the second icon, we add the two translations together
             //
             // See note ~30 lines up.
-            translationPtr = static_cast<SoTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION));
-            if(dynamic_cast<SoZoomTranslation *>(translationPtr))
-                thisIcon.position += static_cast<SoZoomTranslation *>(translationPtr)->abPos.getValue();
-            else
-                thisIcon.position += translationPtr->translation.getValue();
+            if (numChildren > CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID) {
+                translationPtr = static_cast<SoTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION));
+                if(dynamic_cast<SoZoomTranslation *>(translationPtr))
+                    thisIcon.position += static_cast<SoZoomTranslation *>(translationPtr)->abPos.getValue();
+                else
+                    thisIcon.position += translationPtr->translation.getValue();
 
-            thisIcon.destination = dynamic_cast<SoImage *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_ICON));
-            thisIcon.infoPtr = static_cast<SoInfo *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID));
+                thisIcon.destination = dynamic_cast<SoImage *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_ICON));
+                thisIcon.infoPtr = static_cast<SoInfo *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID));
+            }
         }
         else {
             if ((*it)->Name.empty())
