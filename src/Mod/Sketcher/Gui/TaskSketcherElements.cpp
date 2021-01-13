@@ -40,6 +40,8 @@
 #include "ViewProviderSketch.h"
 
 #include <Mod/Sketcher/App/SketchObject.h>
+#include <Mod/Sketcher/App/GeometryFacade.h>
+#include <Mod/Sketcher/App/ExternalGeometryFacade.h>
 
 #include <Base/Tools.h>
 #include <App/Application.h>
@@ -55,6 +57,7 @@
 #include <Gui/Command.h>
 #include <Gui/MenuManager.h>
 
+using namespace Sketcher;
 using namespace SketcherGui;
 using namespace Gui::TaskView;
 
@@ -70,7 +73,7 @@ enum ColumnIndex {
 class ElementItem : public QTreeWidgetItem
 {
 public:
-    ElementItem(QTreeWidget *parent, Sketcher::SketchObject *sketch, 
+    ElementItem(QTreeWidget *parent, Sketcher::SketchObject *sketch,
             int elementnr, Part::Geometry *geo)
         : QTreeWidgetItem(parent)
         , ElementNbr(elementnr)
@@ -83,9 +86,7 @@ public:
         MidVertex = sketch->getVertexIndexGeoPos(elementnr,Sketcher::mid),
         EndVertex = sketch->getVertexIndexGeoPos(elementnr,Sketcher::end),
         GeometryType = geo->getTypeId();
-        isMissing = geo->testFlag(Part::Geometry::Missing);
-        isConstruction = geo->getConstruction();
-        isExternal = !geo->Ref.empty();
+        isConstruction = GeometryFacade::getConstruction(geo);
 
         static std::map<Base::Type,QString> typeMap;
         if(typeMap.empty()) {
@@ -101,18 +102,24 @@ public:
         }
         auto it = typeMap.find(GeometryType);
         if(it == typeMap.end())
-            setText(ColType, QObject::tr("Other") + 
+            setText(ColType, QObject::tr("Other") +
                     QLatin1Char('-') + QString::fromLatin1(GeometryType.getName()));
         else
             setText(ColType, it->second);
         if(ElementNbr>=0) {
-            if(geo->getConstruction())
+            if(GeometryFacade::getConstruction(geo))
                 setText(ColFlags,QObject::tr("Construction"));
+            isMissing = false;
+            isExternal = false;
         }else{
+            auto egf = ExternalGeometryFacade::getFacade(geo);
+            isMissing = egf->testFlag(ExternalGeometryExtension::Missing);
+            isExternal = !egf->getRef().empty();
+
             QString text;
-            if(geo->testFlag(Part::Geometry::Defining))
+            if(egf->testFlag(ExternalGeometryExtension::Defining))
                 text = QObject::tr("Defining");
-            if(geo->testFlag(Part::Geometry::Frozen)) {
+            if(egf->testFlag(ExternalGeometryExtension::Frozen)) {
                 if(text.size())
                     text += QLatin1Char('-');
                 text += QObject::tr("Frozen");
@@ -133,88 +140,88 @@ public:
         if(iconMap.empty()) {
             none = QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_SelectionTypeInvalid"));
 
-            iconMap[std::make_pair(Part::GeomPoint::getClassTypeId(),0)] =  
+            iconMap[std::make_pair(Part::GeomPoint::getClassTypeId(),0)] =
                 QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Point_StartingPoint"));
 
-            iconMap[std::make_pair(Part::GeomPoint::getClassTypeId(),1)] =  
+            iconMap[std::make_pair(Part::GeomPoint::getClassTypeId(),1)] =
                 QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Point_StartingPoint"));
 
-            iconMap[std::make_pair(Part::GeomLineSegment::getClassTypeId(),0)] =  
+            iconMap[std::make_pair(Part::GeomLineSegment::getClassTypeId(),0)] =
                 QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Line_Edge"));
 
-            iconMap[std::make_pair(Part::GeomLineSegment::getClassTypeId(),1)] =  
+            iconMap[std::make_pair(Part::GeomLineSegment::getClassTypeId(),1)] =
                 QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Line_StartingPoint"));
 
-            iconMap[std::make_pair(Part::GeomLineSegment::getClassTypeId(),2)] =  
+            iconMap[std::make_pair(Part::GeomLineSegment::getClassTypeId(),2)] =
                 QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Line_EndPoint"));
 
-            iconMap[std::make_pair(Part::GeomArcOfCircle::getClassTypeId(),0)] =  
+            iconMap[std::make_pair(Part::GeomArcOfCircle::getClassTypeId(),0)] =
                 QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Arc_Edge"));
 
-            iconMap[std::make_pair(Part::GeomArcOfCircle::getClassTypeId(),1)] =  
+            iconMap[std::make_pair(Part::GeomArcOfCircle::getClassTypeId(),1)] =
                 QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Arc_StartingPoint"));
 
-            iconMap[std::make_pair(Part::GeomArcOfCircle::getClassTypeId(),2)] =  
+            iconMap[std::make_pair(Part::GeomArcOfCircle::getClassTypeId(),2)] =
                 QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Arc_EndPoint"));
 
-            iconMap[std::make_pair(Part::GeomArcOfCircle::getClassTypeId(),3)] =  
+            iconMap[std::make_pair(Part::GeomArcOfCircle::getClassTypeId(),3)] =
                 QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Arc_MidPoint"));
 
-            iconMap[std::make_pair(Part::GeomCircle::getClassTypeId(),0)] =  
+            iconMap[std::make_pair(Part::GeomCircle::getClassTypeId(),0)] =
                 QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Circle_Edge"));
 
-            iconMap[std::make_pair(Part::GeomCircle::getClassTypeId(),3)] =  
+            iconMap[std::make_pair(Part::GeomCircle::getClassTypeId(),3)] =
                 QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Circle_MidPoint"));
 
-            iconMap[std::make_pair(Part::GeomEllipse::getClassTypeId(),0)] =  
+            iconMap[std::make_pair(Part::GeomEllipse::getClassTypeId(),0)] =
                 QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Ellipse_Edge_2"));
 
-            iconMap[std::make_pair(Part::GeomEllipse::getClassTypeId(),3)] =  
+            iconMap[std::make_pair(Part::GeomEllipse::getClassTypeId(),3)] =
                 QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Ellipse_CentrePoint"));
 
-            iconMap[std::make_pair(Part::GeomArcOfEllipse::getClassTypeId(),0)] =  
+            iconMap[std::make_pair(Part::GeomArcOfEllipse::getClassTypeId(),0)] =
                 QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Elliptical_Arc_Edge"));
 
-            iconMap[std::make_pair(Part::GeomArcOfEllipse::getClassTypeId(),1)] =  
+            iconMap[std::make_pair(Part::GeomArcOfEllipse::getClassTypeId(),1)] =
                 QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Elliptical_Arc_Start_Point"));
 
-            iconMap[std::make_pair(Part::GeomArcOfEllipse::getClassTypeId(),2)] =  
+            iconMap[std::make_pair(Part::GeomArcOfEllipse::getClassTypeId(),2)] =
                 QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Elliptical_Arc_End_Point"));
 
-            iconMap[std::make_pair(Part::GeomArcOfEllipse::getClassTypeId(),3)] =  
+            iconMap[std::make_pair(Part::GeomArcOfEllipse::getClassTypeId(),3)] =
                 QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Elliptical_Arc_Centre_Point"));
 
-            iconMap[std::make_pair(Part::GeomArcOfHyperbola::getClassTypeId(),0)] =  
+            iconMap[std::make_pair(Part::GeomArcOfHyperbola::getClassTypeId(),0)] =
                 QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Hyperbolic_Arc_Edge"));
 
-            iconMap[std::make_pair(Part::GeomArcOfHyperbola::getClassTypeId(),1)] =  
+            iconMap[std::make_pair(Part::GeomArcOfHyperbola::getClassTypeId(),1)] =
                 QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Hyperbolic_Arc_Start_Point"));
 
-            iconMap[std::make_pair(Part::GeomArcOfHyperbola::getClassTypeId(),2)] =  
+            iconMap[std::make_pair(Part::GeomArcOfHyperbola::getClassTypeId(),2)] =
                 QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Hyperbolic_Arc_End_Point"));
 
-            iconMap[std::make_pair(Part::GeomArcOfHyperbola::getClassTypeId(),3)] =  
+            iconMap[std::make_pair(Part::GeomArcOfHyperbola::getClassTypeId(),3)] =
                 QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Hyperbolic_Arc_Centre_Point"));
 
-            iconMap[std::make_pair(Part::GeomArcOfParabola::getClassTypeId(),0)] =  
+            iconMap[std::make_pair(Part::GeomArcOfParabola::getClassTypeId(),0)] =
                 QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Parabolic_Arc_Edge"));
 
-            iconMap[std::make_pair(Part::GeomArcOfParabola::getClassTypeId(),1)] =  
+            iconMap[std::make_pair(Part::GeomArcOfParabola::getClassTypeId(),1)] =
                 QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Parabolic_Arc_Start_Point"));
 
-            iconMap[std::make_pair(Part::GeomArcOfParabola::getClassTypeId(),2)] =  
+            iconMap[std::make_pair(Part::GeomArcOfParabola::getClassTypeId(),2)] =
                 QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Parabolic_Arc_End_Point"));
 
-            iconMap[std::make_pair(Part::GeomArcOfParabola::getClassTypeId(),3)] =  
+            iconMap[std::make_pair(Part::GeomArcOfParabola::getClassTypeId(),3)] =
                 QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Parabolic_Arc_Centre_Point"));
 
-            iconMap[std::make_pair(Part::GeomBSplineCurve::getClassTypeId(),0)] =  
+            iconMap[std::make_pair(Part::GeomBSplineCurve::getClassTypeId(),0)] =
                 QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_BSpline_Edge"));
 
-            iconMap[std::make_pair(Part::GeomBSplineCurve::getClassTypeId(),1)] =  
+            iconMap[std::make_pair(Part::GeomBSplineCurve::getClassTypeId(),1)] =
                 QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_BSpline_StartPoint"));
 
-            iconMap[std::make_pair(Part::GeomBSplineCurve::getClassTypeId(),2)] =  
+            iconMap[std::make_pair(Part::GeomBSplineCurve::getClassTypeId(),2)] =
                 QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_BSpline_EndPoint"));
         }
         QIcon icon;
@@ -273,7 +280,7 @@ void ElementView::contextMenuEvent (QContextMenuEvent* event)
            << "Sketcher_ConstrainVertical"
            << "Sketcher_ConstrainHorizontal"
            << "Sketcher_ConstrainParallel"
-           << "Sketcher_ConstrainPerpendicular" 
+           << "Sketcher_ConstrainPerpendicular"
            << "Sketcher_ConstrainTangent"
            << "Sketcher_ConstrainEqual"
            << "Sketcher_ConstrainSymmetric"
@@ -287,12 +294,12 @@ void ElementView::contextMenuEvent (QContextMenuEvent* event)
            << "Sketcher_ConstrainAngle"
 
            << "Separator"
-    
+
            << "Sketcher_ToggleConstruction"
            << "Sketcher_ExternalCmds"
 
            << "Separator"
-       
+
            << "Sketcher_CloseShape"
            << "Sketcher_ConnectLines"
            << "Sketcher_SelectConstraints"
@@ -353,7 +360,7 @@ TaskSketcherElements::TaskSketcherElements(ViewProviderSketch *sketchView)
     , ui(new Ui_TaskSketcherElements())
     , focusItemIndex(-1)
     , previouslySelectedItemIndex(-1)
-    , isautoSwitchBoxChecked(false) 
+    , isautoSwitchBoxChecked(false)
     , inhibitSelectionUpdate(false)
 {
     // we need a separate container widget to add all controls to
@@ -523,7 +530,7 @@ void TaskSketcherElements::on_elementsWidget_itemSelectionChanged(void)
     int element=ui->comboBoxElementFilter->currentIndex();
 
     ElementItem * itf;
- 
+
     if(focusItemIndex>-1 && focusItemIndex<ui->elementsWidget->topLevelItemCount())
       itf=static_cast<ElementItem*>(ui->elementsWidget->topLevelItem(focusItemIndex));
     else
@@ -676,9 +683,9 @@ void TaskSketcherElements::on_elementsWidget_itemEntered(QTreeWidgetItem *item)
     Gui::Selection().rmvPreselect();
 
     ui->elementsWidget->setFocus();
-    
+
     int tempitemindex=ui->elementsWidget->indexOfTopLevelItem(item);
-    
+
     std::string doc_name = sketchView->getSketchObject()->getDocument()->getName();
     std::string obj_name = sketchView->getSketchObject()->getNameInDocument();
 
@@ -743,13 +750,13 @@ void TaskSketcherElements::slotElementsChanged(void)
     assert(sketchView);
     // Build up ListView with the elements
     const std::vector< Part::Geometry * > &vals = sketchView->getSketchObject()->Geometry.getValues();
-    
+
     ui->elementsWidget->blockSignals(true);
     ui->elementsWidget->clear();
     itemMap.clear();
 
     int element = ui->comboBoxElementFilter->currentIndex();
- 
+
     auto sketch = sketchView->getSketchObject();
     for(int i=0;i<(int)vals.size();++i) {
         auto item = new ElementItem(ui->elementsWidget,sketch, i, vals[i]);
@@ -780,7 +787,7 @@ void TaskSketcherElements::on_elementsWidget_filterShortcutPressed()
     // This is the aka fast-forward functionality
     if(focusItemIndex>-1 && focusItemIndex<ui->elementsWidget->topLevelItemCount()){
 
-      ElementItem * itf=static_cast<ElementItem*>(ui->elementsWidget->topLevelItem(focusItemIndex)); 
+      ElementItem * itf=static_cast<ElementItem*>(ui->elementsWidget->topLevelItem(focusItemIndex));
 
       Base::Type type = itf->GeometryType;
 

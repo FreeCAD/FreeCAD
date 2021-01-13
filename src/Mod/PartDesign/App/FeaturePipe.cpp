@@ -120,7 +120,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
     } catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
-    
+
     TopoShape sketchshape = getVerifiedFace();
     if (sketchshape.isNull())
         return new App::DocumentObjectExecReturn("Pipe: No valid sketch or face as first section");
@@ -149,7 +149,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         auto invTrsf = invObjLoc.Transformation();
         if(!base.isNull())
             base.move(invObjLoc);
-        
+
         //build the paths
         auto path = buildPipePath(Spine,invTrsf);
         if(path.isNull())
@@ -211,7 +211,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         std::vector<TopoShape> shells;
         std::vector<TopoShape> frontwires, backwires;
         for(auto& wires : wiresections) {
-            
+
             BRepOffsetAPI_MakePipeShell mkPS(TopoDS::Wire(path.getShape()));
             setupAlgorithm(mkPS, auxpath);
 
@@ -234,7 +234,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
             TopoShape shell(0,getDocument()->getStringHasher());
             shell.makEShape(mkPS,wires);
             shells.push_back(shell);
-            
+
             if (!mkPS.Shape().Closed()) {
                 // shell is not closed - use simulate to get the end wires
                 TopTools_ListOfShape sim;
@@ -252,7 +252,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
                     back.setShape(sim.Last(),false);
                 }else
                     back.Tag = -wires.back().Tag;
-                    
+
                 frontwires.push_back(front);
                 backwires.push_back(back);
             }
@@ -294,6 +294,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         result.Tag = -getID();
 
         if(base.isNull()) {
+            result = refineShapeIfActive(result);
             Shape.setValue(getSolid(result));
             return App::DocumentObject::StdReturn;
         }
@@ -446,7 +447,7 @@ TopoShape Pipe::buildPipePath(const App::PropertyLinkSub &link, const gp_Trsf &t
     }else{
         for(auto &sub : link.getSubValues(true)) {
             shapes.push_back(getTopoShape(obj,sub.c_str(),true));
-            if(shapes.back().isNull()) 
+            if(shapes.back().isNull())
                 return result;
         }
     }

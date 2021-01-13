@@ -22,9 +22,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM solver CalculiX writer"
+__title__  = "FreeCAD FEM solver CalculiX writer"
 __author__ = "Przemo Firszt, Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## \addtogroup FEM
 #  @{
@@ -56,7 +56,7 @@ units_information = """*********************************************************
 **  Golden rule: The user must make sure that the numbers he provides have consistent units.
 **  The user is the FreeCAD calculix writer module ;-)
 **
-**  The unit system which is used at Guido Dhodts company: mm, N, s, K
+**  The unit system which is used at Guido Dhondt's company: mm, N, s, K
 **  Since Length and Mass are connected by Force, if Length is mm the Mass is in t to get N
 **  The following units are used to write to inp file:
 **
@@ -68,10 +68,10 @@ units_information = """*********************************************************
 **  This leads to:
 **  Force: N
 **  Pressure: N/mm^2
-**  Density: t/mm^2
+**  Density: t/mm^3
 **  Gravity: mm/s^2
-**  Thermal conductivity: t*mm/K*s^3
-**  Specific Heat: kJ/t/K = mm^2/s^2/K
+**  Thermal conductivity: t*mm/K/s^3 (same as W/m/K)
+**  Specific Heat: mm^2/s^2/K (same as J/kg/K)
 """
 
 

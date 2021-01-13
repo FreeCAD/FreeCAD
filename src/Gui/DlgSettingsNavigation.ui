@@ -232,13 +232,57 @@ Turntable: the part will be rotated around the z-axis.</string>
          </widget>
         </item>
         <item row="2" column="0">
+         <widget class="QLabel" name="labelRotationMode">
+          <property name="text">
+           <string>Rotation mode</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="3">
+         <widget class="QComboBox" name="comboRotationMode">
+          <property name="minimumSize">
+           <size>
+            <width>120</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Rotations in 3D will use current cursor position as center for rotation</string>
+          </property>
+          <property name="currentIndex">
+           <number>1</number>
+          </property>
+          <item>
+           <property name="text">
+            <string>Window center</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Drag at cursor</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Object center</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="3" column="0">
          <widget class="QLabel" name="newDocViewLabel">
           <property name="text">
            <string>Default camera orientation</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="3">
+        <item row="3" column="3">
          <widget class="QComboBox" name="comboNewDocView">
           <property name="minimumSize">
            <size>
@@ -257,14 +301,14 @@ Turntable: the part will be rotated around the z-axis.</string>
           </property>
          </widget>
         </item>
-        <item row="3" column="0">
+        <item row="4" column="0">
          <widget class="QLabel" name="label_2">
           <property name="text">
            <string>New document scale</string>
           </property>
          </widget>
         </item>
-        <item row="3" column="3">
+        <item row="4" column="3">
          <widget class="PrefUnitSpinBox" name="qspinNewDocScale" native="true">
           <property name="minimumSize">
            <size>
@@ -302,7 +346,7 @@ The value is the diameter of the sphere to fit on the screen.</string>
           </property>
          </widget>
         </item>
-        <item row="4" column="0">
+        <item row="5" column="0">
          <widget class="Gui::PrefCheckBox" name="CheckBox_UseAutoRotation">
           <property name="enabled">
            <bool>true</bool>
@@ -324,7 +368,7 @@ The value is the diameter of the sphere to fit on the screen.</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="0">
+        <item row="6" column="0">
          <widget class="Gui::PrefCheckBox" name="checkBoxZoomAtCursor">
           <property name="toolTip">
            <string>Zoom operations will be performed at position of mouse pointer</string>
@@ -343,7 +387,7 @@ The value is the diameter of the sphere to fit on the screen.</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="3">
+        <item row="6" column="3">
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
            <widget class="QLabel" name="label">
@@ -411,7 +455,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step. </string>
           </item>
          </layout>
         </item>
-        <item row="6" column="0">
+        <item row="7" column="0">
          <widget class="Gui::PrefCheckBox" name="checkBoxInvertZoom">
           <property name="toolTip">
            <string>Direction of zoom operations will be inverted</string>
@@ -430,7 +474,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step. </string>
           </property>
          </widget>
         </item>
-        <item row="7" column="0">
+        <item row="8" column="0">
          <widget class="Gui::PrefCheckBox" name="checkBoxDisableTilt">
           <property name="toolTip">
            <string>Prevents view tilting when pinch-zooming.
@@ -445,25 +489,6 @@ Mouse tilting is not disabled by this setting.</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>DisableTouchTilt</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="8" column="0">
-         <widget class="Gui::PrefCheckBox" name="checkBoxDragAtCursor">
-          <property name="toolTip">
-           <string>Rotations in 3D will use current cursor position as center for rotation</string>
-          </property>
-          <property name="text">
-           <string>Rotate at cursor</string>
-          </property>
-          <property name="checked">
-           <bool>false</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>DragAtCursor</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>View</cstring>

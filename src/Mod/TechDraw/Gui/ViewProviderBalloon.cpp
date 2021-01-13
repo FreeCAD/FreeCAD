@@ -47,7 +47,6 @@
 #include <Gui/ViewProviderDocumentObject.h>
 
 #include <Mod/TechDraw/App/LineGroup.h>
-//#include <Mod/TechDraw/App/Preferences.h>
 
 #include "PreferencesGui.h"
 #include "TaskBalloon.h"
@@ -67,17 +66,16 @@ ViewProviderBalloon::ViewProviderBalloon()
 
     static const char *group = "Balloon Format";
 
-    ADD_PROPERTY_TYPE(Font,(Preferences::labelFont().c_str()),group,App::Prop_None, "The name of the font to use");
-    ADD_PROPERTY_TYPE(Fontsize,(Preferences::dimFontSizeMM()),
-                                group,(App::PropertyType)(App::Prop_None),"Balloon text size in units");
-    std::string lgName = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
+    ADD_PROPERTY_TYPE(Font, (Preferences::labelFont().c_str()), group, App::Prop_None, "The name of the font to use");
+    ADD_PROPERTY_TYPE(Fontsize, (Preferences::dimFontSizeMM()),
+                                group, (App::PropertyType)(App::Prop_None), "Balloon text size in units");
+    int lgNumber = Preferences::lineGroup();
+    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
     double weight = lg->getWeight("Thin");
     delete lg;                                   //Coverity CID 174670
-    ADD_PROPERTY_TYPE(LineWidth,(weight),group,(App::PropertyType)(App::Prop_None),"Leader line width");
-
-    ADD_PROPERTY_TYPE(Color,(PreferencesGui::dimColor()),
-                                              group,App::Prop_None,"Color of the balloon");
+    ADD_PROPERTY_TYPE(LineWidth, (weight), group, (App::PropertyType)(App::Prop_None), "Leader line width");
+    ADD_PROPERTY_TYPE(LineVisible, (true), group, (App::PropertyType)(App::Prop_None), "Balloon line visible or hidden");
+    ADD_PROPERTY_TYPE(Color, (PreferencesGui::dimColor()), group, App::Prop_None, "Color of the balloon");
 }
 
 ViewProviderBalloon::~ViewProviderBalloon()
@@ -148,7 +146,8 @@ void ViewProviderBalloon::onChanged(const App::Property* p)
     if ((p == &Font)  ||
         (p == &Fontsize) ||
         (p == &Color) ||
-        (p == &LineWidth)) {
+        (p == &LineWidth) ||
+        (p == &LineVisible)) {
         QGIView* qgiv = getQView();
         if (qgiv) {
             qgiv->updateView(true);

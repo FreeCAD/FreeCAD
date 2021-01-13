@@ -37,6 +37,7 @@
 #include "FeatureFillet.h"
 #include <Base/Exception.h>
 
+#include <Precision.hxx>
 
 using namespace Part;
 

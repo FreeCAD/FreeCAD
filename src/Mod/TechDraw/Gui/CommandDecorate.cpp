@@ -247,7 +247,7 @@ void CmdTechDrawHatch::activated(int iMsg)
         }
     }
 
-    openCommand("Create Hatch");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create Hatch"));
     if (removeOld) {
         std::vector<std::pair< int, TechDraw::DrawHatch*> > toRemove;
         for (auto& h: hatchObjs) {             //all the hatch objects for selected DVP
@@ -347,7 +347,7 @@ void CmdTechDrawGeometricHatch::activated(int iMsg)
     std::stringstream featLabel;
     featLabel << FeatName << "FX" << TechDraw::DrawUtil::getIndexFromName(subNames.at(0));
 
-    openCommand("Create GeomHatch");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create GeomHatch"));
     FCMD_OBJ_DOC_CMD(page,"addObject('TechDraw::DrawGeomHatch','" << FeatName << "')");
 
     auto geomhatch( static_cast<TechDraw::DrawGeomHatch *>(getDocument()->getObject(FeatName.c_str())) );
@@ -412,7 +412,7 @@ void CmdTechDrawImage::activated(int iMsg)
     {
         std::string FeatName = getUniqueObjectName("Image",page);
         fileName = Base::Tools::escapeEncodeFilename(fileName);
-        openCommand("Create Image");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Create Image"));
         Gui::cmdAppDocument(page, std::ostringstream() << "addObject('TechDraw::DrawViewImage','" << FeatName << "')");
         auto feat = page->getDocument()->getObject(FeatName.c_str());
         Gui::cmdAppObjectArgs(feat, "ImageFile = '%s'", fileName.toUtf8().constData());

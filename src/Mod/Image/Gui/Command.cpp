@@ -152,7 +152,7 @@ void CmdCreateImagePlane::activated(int iMsg)
 
         QString pyfile = Base::Tools::escapeEncodeFilename(s);
 
-        openCommand("Create ImagePlane");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Create ImagePlane"));
         doCommand(Doc,"App.activeDocument().addObject('Image::ImagePlane','%s\')",FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.ImageFile = '%s'",FeatName.c_str(),(const char*)pyfile.toUtf8());
         doCommand(Doc,"App.activeDocument().%s.XSize = %d",FeatName.c_str(),nWidth);

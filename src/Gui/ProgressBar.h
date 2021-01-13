@@ -52,7 +52,7 @@ class ProgressBar;
  *   seq.next();
  *   // do one step of your algorithm
  * }
- * 
+ *
  * \endcode
  *
  * The example below shows how to use two nested progresses.
@@ -70,7 +70,7 @@ class ProgressBar;
  *   }
  *
  * }
- * 
+ *
  * void function2()
  * {
  *   unsigned long steps = ...
@@ -95,9 +95,9 @@ class GuiExport SequencerBar : public Base::SequencerBase
 public:
     /** Returns the sequencer object. */
     static SequencerBar* instance();
-    /** This restores the last overridden cursor and release the keyboard while the progress bar 
+    /** This restores the last overridden cursor and release the keyboard while the progress bar
     * is running. This is useful e.g. if a modal dialog appears while a long operation is performed
-    * to indicate that the user can click on the dialog. Every pause() must eventually be followed 
+    * to indicate that the user can click on the dialog. Every pause() must eventually be followed
     * by a corresponding @ref resume().
     */
     void pause() override;

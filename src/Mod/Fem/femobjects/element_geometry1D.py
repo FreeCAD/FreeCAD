@@ -21,9 +21,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM element geometry 1D document object"
+__title__  = "FreeCAD FEM element geometry 1D document object"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## @package element_geometry1D
 #  \ingroup FEM

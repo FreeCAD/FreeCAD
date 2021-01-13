@@ -121,14 +121,14 @@ void UnifiedDatumCommand(Gui::Command &cmd, Base::Type type, std::string name)
             cmd.openCommand(tmp.c_str());
             PartDesignGui::setEdit(support.getValue(),pcActiveBody);
             return;
-        } 
+        }
 
         App::DocumentObject *pcActiveContainer;
         if(pcActiveBody)
             pcActiveContainer = pcActiveBody;
         else
             pcActiveContainer = PartDesignGui::getActivePart();
-        
+
         std::string FeatName;
         App::Document *doc = 0;
 
@@ -324,7 +324,7 @@ void CmdPartDesignShapeBinder::activated(int iMsg)
     }
 
     if (bEditSelected) {
-        openCommand("Edit ShapeBinder");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Edit ShapeBinder"));
         PartDesignGui::setEdit(support.getValue());
     } else {
         PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
@@ -333,7 +333,7 @@ void CmdPartDesignShapeBinder::activated(int iMsg)
 
         std::string FeatName = getUniqueObjectName("ShapeBinder",pcActiveBody);
 
-        openCommand("Create ShapeBinder");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Create ShapeBinder"));
         Gui::cmdAppObject(pcActiveBody, std::ostringstream()
                 << "newObject('PartDesign::ShapeBinder', '" << FeatName << "')");
 
@@ -421,10 +421,10 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
         }
         values = std::move(links);
     }
-        
+
     PartDesign::SubShapeBinder *binder = 0;
     try {
-        openCommand("Create SubShapeBinder");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Create SubShapeBinder"));
         if (pcActiveBody) {
             Gui::cmdAppObject(pcActiveBody, std::ostringstream()
                     << "newObject('PartDesign::SubShapeBinder', '" << FeatName << "')");
@@ -459,7 +459,7 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
         Gui::Selection().selStackPush();
     }catch(Base::Exception &e) {
         e.ReportException();
-        QMessageBox::critical(Gui::getMainWindow(), 
+        QMessageBox::critical(Gui::getMainWindow(),
                 QObject::tr("Sub-Shape Binder"), QString::fromUtf8(e.what()));
         abortCommand();
     }
@@ -497,7 +497,7 @@ void CmdPartDesignClone::activated(int iMsg)
         // put the clone into its own new body.
         // This also fixes bug #3447 because the clone is a PD feature and thus
         // requires a body where it is part of.
-        openCommand("Create Clone");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Create Clone"));
         auto obj = objs[0];
         std::string FeatName = getUniqueObjectName("Clone",obj);
         std::string BodyName = getUniqueObjectName("Body",obj);
@@ -694,7 +694,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
                 if (result == QDialog::DialogCode::Rejected)
                     return;
                 else if (!dlg.radioXRef->isChecked()) {
-                    openCommand("Make copy");
+                    openCommand(QT_TRANSLATE_NOOP("Command", "Make copy"));
                     std::string sub;
                     if (FaceFilter.match())
                         sub = FaceFilter.Result[0][0].getSubNames()[0];
@@ -718,7 +718,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         // create Sketch on Face or Plane
         std::string FeatName = getUniqueObjectName("Sketch",pcActiveBody);
 
-        openCommand("Create a Sketch on Face");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Create a Sketch on Face"));
         Gui::cmdAppObject(pcActiveBody, std::ostringstream()
                 << "newObjectAt('Sketcher::SketchObject', '" << FeatName << "', "
                             <<  "FreeCADGui.Selection.getSelection())");
@@ -741,7 +741,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         std::vector<PartDesignGui::TaskFeaturePick::featureStatus> status;
 
         // Start command early, so undo will undo any Body creation
-        Gui::Command::openCommand("Create a new Sketch");
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create a new Sketch"));
         if (shouldMakeBody) {
             pcActiveBody = PartDesignGui::makeBody(doc);
             if ( !pcActiveBody ) {
@@ -1061,7 +1061,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
                 << "newObjectAt('PartDesign::" << which << "','" << FeatName << "', "
                             <<  "FreeCADGui.Selection.getSelection())");
         auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
-        
+
         auto objCmd = Gui::Command::getObjectCmd(feature);
         if (subs.empty()
                 || (!needSubElement
@@ -1073,7 +1073,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
             std::ostringstream ss;
             for (auto &s : subs)
                 ss << "'" << s << "',";
-            Gui::cmdAppObject(Feat, std::ostringstream() <<"Profile = (" << objCmd << ", [" << ss.str() << "])");   
+            Gui::cmdAppObject(Feat, std::ostringstream() <<"Profile = (" << objCmd << ", [" << ss.str() << "])");
         }
 
         //for additive and subtractive lofts allow the user to preselect the sections
@@ -1200,7 +1200,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
             return;
 
         if (!dlg.radioXRef->isChecked()) {
-            Gui::Command::openCommand("Make copy");
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Make copy"));
             auto copy = PartDesignGui::TaskFeaturePick::makeCopy(sketches[0], "", dlg.radioIndependent->isChecked());
             auto oBody = PartDesignGui::getBodyFor(sketches[0], false);
             if (oBody)
@@ -1560,7 +1560,7 @@ void CmdPartDesignGroove::activated(int iMsg)
         else {
             Gui::cmdAppObject(Feat, std::ostringstream() <<"ReferenceAxis = ("<<getObjectCmd(pcActiveBody->getOrigin()->getY())<<",[''])");
         }
-        
+
         Gui::cmdAppObject(Feat, std::ostringstream() <<"Angle = 360.0");
 
         try {
@@ -2471,7 +2471,7 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
 
         // Create a MultiTransform feature and move the Transformed feature inside it
         std::string FeatName = getUniqueObjectName("MultiTransform",pcActiveBody);
-        std::string baseFeature = getObjectCmd(trFeat->BaseFeature.getValue()); 
+        std::string baseFeature = getObjectCmd(trFeat->BaseFeature.getValue());
         Gui::cmdAppObject(pcActiveBody, std::ostringstream()
                 << "newObjectAt('PartDesign::MultiTransform','"
                 << FeatName << "', " << baseFeature  << ")");
@@ -2540,7 +2540,7 @@ CmdPartDesignBoolean::CmdPartDesignBoolean()
 
     Gui::Application::Instance->commandManager().registerCallback(
             boost::bind(&commandOverride, this, 1, _1, _2), "Part_Cut");
-                    
+
     Gui::Application::Instance->commandManager().registerCallback(
             boost::bind(&commandOverride, this, 2, _1, _2), "Part_Common");
 }
@@ -2606,7 +2606,7 @@ void CmdPartDesignBoolean::activated(int iMsg)
         }
     }
 
-    openCommand("Create Boolean");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create Boolean"));
     std::string FeatName = getUniqueObjectName("Boolean",pcActiveBody);
     Gui::cmdAppObject(pcActiveBody, std::ostringstream()
             << "newObjectAt('PartDesign::Boolean','" << FeatName << "', "
@@ -2645,7 +2645,7 @@ void CmdPartDesignBoolean::activated(int iMsg)
         binder->setLinks(std::move(links));
         objs.push_back(binder);
     }
-    
+
     // If we don't add an object to the boolean group then don't update the body
     // as otherwise this will fail and it will be marked as invalid
     bool updateDocument = false;
@@ -2689,7 +2689,7 @@ CmdPartDesignSplit::CmdPartDesignSplit()
 
     Gui::Application::Instance->commandManager().registerCallback(
             boost::bind(&commandOverride, this, 0, _1, _2), "Part_Slice");
-                    
+
     Gui::Application::Instance->commandManager().registerCallback(
             boost::bind(&commandOverride, this, 0, _1, _2), "Part_SliceApart");
 

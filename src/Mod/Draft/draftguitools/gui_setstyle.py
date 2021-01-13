@@ -125,18 +125,25 @@ class Draft_SetStyle_TaskPanel:
                 if "DrawStyle" in vobj.PropertiesList:
                     vobj.DrawStyle = ["Solid","Dashed","Dotted","Dashdot"][self.form.DrawStyle.currentIndex()]
                 if "DisplayMode" in vobj.PropertiesList:
-                    try:
-                        vobj.DisplayMode = ["Flat Lines","Wireframe","Shaded","points"][self.form.DisplayMode.currentIndex()]
-                    except:
-                        pass
+                    dmodes = ["Flat Lines","Wireframe","Shaded","Points"]
+                    dm = dmodes[self.form.DisplayMode.currentIndex()]
+                    if hasattr(vobj,"Proxy") and hasattr(vobj.Proxy,"getDisplayModes"):
+                        dmodes = vobj.Proxy.getDisplayModes(vobj)
+                    if dm in dmodes:
+                        try:
+                            vobj.DisplayMode = dm
+                        except:
+                            pass
                 if "ShapeColor" in vobj.PropertiesList:
                     vobj.ShapeColor = self.form.ShapeColor.property("color").rgb()<<8
                 if "Transparency" in vobj.PropertiesList:
                     vobj.Transparency = self.form.Transparency.value()
                 if "FontName" in vobj.PropertiesList:
-                    vobj.TextFont = self.form.TextFont.currentFont().family()
+                    vobj.FontName = self.form.TextFont.currentFont().family()
                 if "TextSize" in vobj.PropertiesList:
                     vobj.TextSize = FreeCAD.Units.Quantity(self.form.TextSize.text()).Value
+                if "FontSize" in vobj.PropertiesList:
+                    vobj.FontSize = FreeCAD.Units.Quantity(self.form.TextSize.text()).Value
                 if "TextColor" in vobj.PropertiesList:
                     vobj.TextColor = self.form.TextColor.property("color").rgb()<<8
                 if "ArrowType" in vobj.PropertiesList:

@@ -32,33 +32,53 @@
 
 namespace Part {
 
-class PartExport GeometryExtension: public Base::Persistence
+class Geometry;
+
+class PartExport GeometryExtension: public Base::BaseClass
 {
     TYPESYSTEM_HEADER();
 public:
     virtual ~GeometryExtension() = default;
 
-    // Persistence implementer ---------------------
-    virtual unsigned int getMemSize(void) const = 0;
-    virtual void Save(Base::Writer &/*writer*/) const = 0;
-    virtual void Restore(Base::XMLReader &/*reader*/) = 0;
-
     virtual std::unique_ptr<GeometryExtension> copy(void) const = 0;
 
     virtual PyObject *getPyObject(void) = 0;
+    PyObject* copyPyObject() const;
 
     inline void setName(const std::string& str) {name = str;}
     inline const std::string &getName () const {return name;}
+
+    // Default method to notify an extension that it has been attached
+    // to a given geometry
+    virtual void notifyAttachment(Part::Geometry *) {}
 
 protected:
     GeometryExtension();
     GeometryExtension(const GeometryExtension &obj) = default;
     GeometryExtension& operator= (const GeometryExtension &obj) = default;
 
-    void restoreNameAttribute(Base::XMLReader &/*reader*/);
+    virtual void copyAttributes(Part::GeometryExtension * cpy) const;
 
 private:
     std::string name;
+};
+
+
+
+class PartExport GeometryPersistenceExtension : public Part::GeometryExtension
+{
+    TYPESYSTEM_HEADER();
+public:
+    virtual ~GeometryPersistenceExtension() = default;
+
+    // Own Persistence implementer - Not Base::Persistence - managed by Part::Geometry
+    void Save(Base::Writer &/*writer*/) const;
+    void Restore(Base::XMLReader &/*reader*/);
+
+protected:
+    virtual void restoreAttributes(Base::XMLReader &/*reader*/);
+    virtual void saveAttributes(Base::Writer &writer) const;
+
 };
 
 }

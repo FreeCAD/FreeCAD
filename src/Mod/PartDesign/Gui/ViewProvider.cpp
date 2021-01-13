@@ -226,9 +226,9 @@ bool ViewProvider::setEdit(int ModNum)
         App::AutoTransaction committer(ss.str().c_str());
         try {
             if(feat->Suppress.getValue())
-                Gui::cmdAppObject(feat, "Suppress = False"); 
+                Gui::cmdAppObject(feat, "Suppress = False");
             else
-                Gui::cmdAppObject(feat, "Suppress = True"); 
+                Gui::cmdAppObject(feat, "Suppress = True");
             Gui::cmdAppDocument(App::GetApplication().getActiveDocument(), "recompute()");
         } catch (Base::Exception &e) {
             e.ReportException();
@@ -244,7 +244,7 @@ bool ViewProvider::setEdit(int ModNum)
                 Gui::Application::Instance->getViewProvider(
                     PartDesign::Body::findBodyOf(getObject())));
         if (bodyVp)
-            bodyVp->groupSiblings(feat, 
+            bodyVp->groupSiblings(feat,
                     ModNum == EditCollapseSiblings || ModNum == EditCollapseAll,
                     ModNum == EditCollapseAll || ModNum == EditExpandAll);
         return false;
@@ -262,7 +262,7 @@ bool ViewProvider::setEdit(int ModNum)
             ViewProviderDocumentObject *vpParent = 0;
             std::string subname;
             auto doc = Gui::Application::Instance->editDocument();
-            if(!doc) 
+            if(!doc)
                 return false;
             doc->getInEdit(&vpParent,&subname);
             if (!vpParent)
@@ -321,10 +321,10 @@ void ViewProvider::updateData(const App::Property* prop)
                 pSuppressedView.reset(new PartGui::ViewProviderPart);
                 pSuppressedView->setShapePropertyName("SuppressedShape");
                 pSuppressedView->forceUpdate();
-                pSuppressedView->MapFaceColor.setValue(false);    
-                pSuppressedView->MapLineColor.setValue(false);    
-                pSuppressedView->MapPointColor.setValue(false);    
-                pSuppressedView->MapTransparency.setValue(false);    
+                pSuppressedView->MapFaceColor.setValue(false);
+                pSuppressedView->MapLineColor.setValue(false);
+                pSuppressedView->MapPointColor.setValue(false);
+                pSuppressedView->MapTransparency.setValue(false);
                 pSuppressedView->ForceMapColors.setValue(false);
                 pSuppressedView->ShapeColor.setValue(App::Color(1.0f));
                 pSuppressedView->LineColor.setValue(App::Color(1.0f));
@@ -570,7 +570,7 @@ void ViewProvider::setBodyMode(bool bodymode) {
     auto vp = getBodyViewProvider();
     if(!vp)
         return;
-    
+
 #if 1
     // Realthunder: I want to test element color mapping in PartDesign.
     // If it works well, then there is no reason to hide all the properties.

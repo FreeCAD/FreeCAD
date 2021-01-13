@@ -21,9 +21,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM constraint section print document object"
+__title__  = "FreeCAD FEM constraint section print document object"
 __author__ = "Bernd Hahnebach"
-__url__ = "https://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## @package constraint_sectionprint
 #  \ingroup FEM

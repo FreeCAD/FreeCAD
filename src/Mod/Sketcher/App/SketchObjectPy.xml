@@ -28,6 +28,11 @@
         <UserDocu>delete a geometric object from the sketch</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="delGeometries">
+      <Documentation>
+        <UserDocu>delete a list of geometric objects from the sketch, including any internal alignment geometry thereof</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="deleteAllGeometry">
         <Documentation>
             <UserDocu>delete all the geometry objects and constraints from the sketch except external geometry</UserDocu>
@@ -46,6 +51,11 @@
     <Methode Name="setConstruction">
       <Documentation>
         <UserDocu>set construction mode of a geometry on or off</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getConstruction">
+      <Documentation>
+        <UserDocu>returns the construction mode of a geometry</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="addConstraint">

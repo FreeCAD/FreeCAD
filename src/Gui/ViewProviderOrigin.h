@@ -71,7 +71,7 @@ public:
     /// Reset the visibility
     void resetTemporaryVisibility ();
     ///@}
-    
+
     virtual bool canDragObjects() const {
         return false;
     }

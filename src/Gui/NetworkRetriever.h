@@ -37,7 +37,7 @@ namespace Gui {
  * file structure from a server.
  * \author Werner Mayer
  */
-class NetworkRetriever : public QObject  
+class NetworkRetriever : public QObject
 {
     Q_OBJECT
 

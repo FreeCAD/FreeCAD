@@ -324,7 +324,7 @@ void CmdTechDrawRadiusDimension::activated(int iMsg)
         return;
     }
 
-    openCommand("Create Dimension");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
     FCMD_OBJ_DOC_CMD(page,"addObject('TechDraw::DrawViewDimension','" << FeatName << "')");
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
@@ -440,7 +440,7 @@ void CmdTechDrawDiameterDimension::activated(int iMsg)
         return;
     }
 
-    openCommand("Create Dimension");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
     FCMD_OBJ_DOC_CMD(page,"addObject('TechDraw::DrawViewDimension','" << FeatName << "')");
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
@@ -530,7 +530,7 @@ void CmdTechDrawLengthDimension::activated(int iMsg)
         return;
     }
 
-    openCommand("Create Dimension");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
 
     FCMD_OBJ_DOC_CMD(page,"addObject('TechDraw::DrawViewDimension','" << FeatName << "')");
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
@@ -625,7 +625,7 @@ void CmdTechDrawHorizontalDimension::activated(int iMsg)
         return;
     }
 
-    openCommand("Create Dimension");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
     FCMD_OBJ_DOC_CMD(page,"addObject('TechDraw::DrawViewDimension','" << FeatName << "')");
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
@@ -721,7 +721,7 @@ void CmdTechDrawVerticalDimension::activated(int iMsg)
         return;
     }
 
-    openCommand("Create Dimension");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
     FCMD_OBJ_DOC_CMD(page,"addObject('TechDraw::DrawViewDimension','" << FeatName << "')");
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
@@ -807,7 +807,7 @@ void CmdTechDrawAngleDimension::activated(int iMsg)
         return;
     }
 
-    openCommand("Create Dimension");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
     FCMD_OBJ_DOC_CMD(page,"addObject('TechDraw::DrawViewDimension','" << FeatName << "')");
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
@@ -890,7 +890,7 @@ void CmdTechDraw3PtAngleDimension::activated(int iMsg)
         return;
     }
 
-    openCommand("Create Dimension");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
     FCMD_OBJ_DOC_CMD(page,"addObject('TechDraw::DrawViewDimension','" << FeatName << "')");
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
@@ -1312,7 +1312,7 @@ void CmdTechDrawLandmarkDimension::activated(int iMsg)
     TechDraw::LandmarkDimension *dim = 0;
     std::string FeatName = getUniqueObjectName("LandmarkDim");
 
-    openCommand("Create Dimension");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::LandmarkDimension','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
     if (objects.size() == 2) {

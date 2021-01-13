@@ -57,7 +57,7 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(Gui::ViewProviderPart, Gui::ViewProviderGeometry
  * Creates the view provider for an object group.
  */
 ViewProviderPart::ViewProviderPart()
-{ 
+{
     initExtension(this);
 
     ADD_PROPERTY_TYPE(OverrideMaterial, (false), 0, App::Prop_None, "Override part material");
@@ -124,7 +124,7 @@ bool ViewProviderPart::doubleClicked(void)
     if(!activeDoc)
         activeDoc = getDocument();
     auto activeView = activeDoc->setActiveView(this);
-    if(!activeView) 
+    if(!activeView)
         return false;
 
     activePart = activeView->getActiveObject<App::DocumentObject*> (PARTKEY);

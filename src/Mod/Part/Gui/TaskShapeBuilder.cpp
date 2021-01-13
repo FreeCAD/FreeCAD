@@ -237,7 +237,7 @@ void ShapeBuilderWidget::createEdgeFromVertex()
     ).arg(elements[0]).arg(elements[1]);
 
     try {
-        Gui::Application::Instance->activeDocument()->openCommand("Edge");
+        Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Edge"));
         Gui::Command::runCommand(Gui::Command::App, cmd.toLatin1());
         Gui::Application::Instance->activeDocument()->commitCommand();
     }
@@ -278,7 +278,7 @@ void ShapeBuilderWidget::createWireFromEdge()
         "del _\n"
     ).arg(list);
     try {
-        Gui::Application::Instance->activeDocument()->openCommand("Wire");
+        Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Wire"));
         Gui::Command::runCommand(Gui::Command::App, cmd.toLatin1());
         Gui::Application::Instance->activeDocument()->commitCommand();
     }
@@ -330,7 +330,7 @@ void ShapeBuilderWidget::createFaceFromVertex()
     }
 
     try {
-        Gui::Application::Instance->activeDocument()->openCommand("Face");
+        Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Face"));
         Gui::Command::runCommand(Gui::Command::App, cmd.toLatin1());
         Gui::Application::Instance->activeDocument()->commitCommand();
     }
@@ -382,7 +382,7 @@ void ShapeBuilderWidget::createFaceFromEdge()
     }
 
     try {
-        Gui::Application::Instance->activeDocument()->openCommand("Face");
+        Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Face"));
         Gui::Command::runCommand(Gui::Command::App, cmd.toLatin1());
         Gui::Application::Instance->activeDocument()->commitCommand();
     }
@@ -445,7 +445,7 @@ void ShapeBuilderWidget::createShellFromFace()
     }
 
     try {
-        Gui::Application::Instance->activeDocument()->openCommand("Shell");
+        Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Shell"));
         Gui::Command::runCommand(Gui::Command::App, cmd.toLatin1());
         Gui::Application::Instance->activeDocument()->commitCommand();
     }
@@ -497,7 +497,7 @@ void ShapeBuilderWidget::createSolidFromShell()
     }
 
     try {
-        Gui::Application::Instance->activeDocument()->openCommand("Solid");
+        Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Solid"));
         Gui::Command::runCommand(Gui::Command::App, cmd.toLatin1());
         Gui::Application::Instance->activeDocument()->commitCommand();
     }

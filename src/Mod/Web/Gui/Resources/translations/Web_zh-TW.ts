@@ -48,7 +48,7 @@
       <location filename="../../Command.cpp" line="135"/>
       <location filename="../../Command.cpp" line="136"/>
       <source>Refresh web page</source>
-      <translation>更新網頁</translation>
+      <translation>刷新網頁</translation>
     </message>
   </context>
   <context>

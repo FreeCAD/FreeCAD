@@ -21,9 +21,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM element rotation 1D task panel for the document object"
+__title__  = "FreeCAD FEM element rotation 1D task panel for the document object"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## @package task_element_rotation1D
 #  \ingroup FEM

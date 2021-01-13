@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2020 Zheng, Lei (realthunder)<realthunder.dev@gmail.com>*
+ *   Copyright (c) 2020 Zheng Lei (realthunder)<realthunder.dev@gmail.com> *
  *   Copyright (c) 2010 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *

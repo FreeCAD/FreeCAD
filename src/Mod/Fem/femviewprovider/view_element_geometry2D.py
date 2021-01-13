@@ -21,9 +21,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM element geometry 2D ViewProvider for the document object"
+__title__  = "FreeCAD FEM element geometry 2D ViewProvider for the document object"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## @package view_element_geometry2D
 #  \ingroup FEM

@@ -212,8 +212,11 @@ class TaskPanelPage(object):
         self.parent = None
         self.panelTitle = 'Operation'
 
-        if hasattr(self.form, 'toolController'):
+        if self._installTCUpdate():
             PathJob.Notification.updateTC.connect(self.resetToolController)
+
+    def _installTCUpdate(self):
+        return hasattr(self.form, 'toolController')
 
     def setParent(self, parent):
         '''setParent() ... used to transfer parent object link to child class.
@@ -250,6 +253,8 @@ class TaskPanelPage(object):
     def pageCleanup(self):
         '''pageCleanup() ... internal callback.
         Do not overwrite, implement cleanupPage(obj) instead.'''
+        if self._installTCUpdate():
+            PathJob.Notification.updateTC.disconnect(self.resetToolController)
         self.cleanupPage(self.obj)
 
     def pageRegisterSignalHandlers(self):

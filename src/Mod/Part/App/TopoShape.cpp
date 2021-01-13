@@ -78,6 +78,7 @@
 # include <BRepOffsetAPI_ThruSections.hxx>
 # include <BRepPrimAPI_MakePrism.hxx>
 # include <BRepPrimAPI_MakeRevol.hxx>
+# include <BRepPrimAPI_MakeTorus.hxx>
 # include <BRepTools.hxx>
 # include <BRepTools_ReShape.hxx>
 # include <BRepTools_ShapeSet.hxx>
@@ -144,6 +145,7 @@
 # include <Standard_Failure.hxx>
 # include <StlAPI_Writer.hxx>
 # include <Standard_Failure.hxx>
+# include <gp_Circ.hxx>
 # include <gp_GTrsf.hxx>
 # include <gp_Pln.hxx>
 # include <ShapeAnalysis_Shell.hxx>
@@ -169,6 +171,8 @@
 # include <APIHeaderSection_MakeHeader.hxx>
 # include <ShapeAnalysis_FreeBoundsProperties.hxx>
 # include <ShapeAnalysis_FreeBoundData.hxx>
+# include <BRepLProp_SLProps.hxx>
+# include <BRepGProp_Face.hxx>
 
 #if OCC_VERSION_HEX < 0x070300
 # include <BRepAlgo_Fuse.hxx>
@@ -437,7 +441,7 @@ const std::string &TopoShape::shapeName(bool silent) const {
 PyObject * TopoShape::getPySubShape(const char* Type,bool silent) const
 {
     TopoShape s;
-    if(!silent) 
+    if(!silent)
         s = getSubTopoShape(Type);
     else{
         auto idx = shapeTypeAndIndex(Type);
@@ -771,7 +775,7 @@ void TopoShape::importBrep(const char *FileName)
         BRepTools::Read(aShape,encodeFilename(FileName).c_str(),aBuilder,pi);
         pi->EndScope();
 #else
-        BRepTools::Read(aShape,(const Standard_CString)FileName,aBuilder);
+        BRepTools::Read(aShape,(Standard_CString)FileName,aBuilder);
 #endif
         this->_Shape = aShape;
         _ElementMap.reset();
@@ -902,7 +906,8 @@ void TopoShape::exportStep(const char *filename) const
             throw Base::FileException("Error in transferring STEP");
 
         APIHeaderSection_MakeHeader makeHeader(aWriter.Model());
-        makeHeader.SetName(new TCollection_HAsciiString((Standard_CString)(encodeFilename(filename).c_str())));
+        // https://forum.freecadweb.org/viewtopic.php?f=8&t=52967
+        //makeHeader.SetName(new TCollection_HAsciiString((Standard_CString)(encodeFilename(filename).c_str())));
         makeHeader.SetAuthorValue (1, new TCollection_HAsciiString("FreeCAD"));
         makeHeader.SetOrganizationValue (1, new TCollection_HAsciiString("FreeCAD"));
         makeHeader.SetOriginatingSystem(new TCollection_HAsciiString("FreeCAD"));
@@ -2068,6 +2073,48 @@ TopoDS_Shape TopoShape::makeSweep(const TopoDS_Shape& profile, double tol, int f
     return mkBuilder.Face();
 }
 
+TopoDS_Shape TopoShape::makeTorus(Standard_Real radius1, Standard_Real radius2,
+                                  Standard_Real angle1, Standard_Real angle2,
+                                  Standard_Real angle3, Standard_Boolean isSolid) const
+{
+    // https://forum.freecadweb.org/viewtopic.php?f=3&t=1445
+    // https://forum.freecadweb.org/viewtopic.php?f=3&t=52719
+#if 1
+    // Build a torus
+    gp_Circ circle;
+    circle.SetRadius(radius2);
+    gp_Pnt pos(radius1,0,0);
+    gp_Dir dir(0,1,0);
+    circle.SetAxis(gp_Ax1(pos, dir));
+
+    BRepBuilderAPI_MakeEdge mkEdge(circle, Base::toRadians<double>(angle1),
+                                           Base::toRadians<double>(angle2));
+    BRepBuilderAPI_MakeWire mkWire;
+    mkWire.Add(mkEdge.Edge());
+
+    if ((angle1 > -180.0 || angle2 < 180.0) && isSolid) {
+        BRepBuilderAPI_MakeVertex mkVertex(pos);
+        BRepBuilderAPI_MakeEdge mkEdge1(mkVertex.Vertex(), mkEdge.Vertex1());
+        BRepBuilderAPI_MakeEdge mkEdge2(mkVertex.Vertex(), mkEdge.Vertex2());
+        mkWire.Add(mkEdge1.Edge());
+        mkWire.Add(mkEdge2.Edge());
+    }
+
+    BRepBuilderAPI_MakeFace mkFace(mkWire.Wire());
+    BRepPrimAPI_MakeRevol mkRevol(mkFace.Face(), gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)),
+        Base::toRadians<double>(angle3), Standard_True);
+    return mkRevol.Shape();
+#else
+    (void)isSolid;
+    BRepPrimAPI_MakeTorus mkTorus(radius1,
+                                  radius2,
+                                  Base::toRadians<double>(angle1),
+                                  Base::toRadians<double>(angle2),
+                                  Base::toRadians<double>(angle3));
+    return mkTorus.Solid();
+#endif
+}
+
 TopoDS_Shape TopoShape::makeHelix(Standard_Real pitch, Standard_Real height,
                                   Standard_Real radius, Standard_Real angle,
                                   Standard_Boolean leftHanded,
@@ -3118,7 +3165,7 @@ void TopoShape::getDomains(std::vector<Domain>& domains) const
         TopLoc_Location loc;
         Handle(Poly_Triangulation) theTriangulation = BRep_Tool::Triangulation(face, loc);
         if (theTriangulation.IsNull()) {
-            if (!meshed) { 
+            if (!meshed) {
                 // Retry to make sure the shape is meshed
                 meshed = true;
                 meshShape(this->_Shape);
@@ -3761,3 +3808,31 @@ TopoDS_Shape TopoShape::makeShell(const TopoDS_Shape& input) const
         return input;
     }
 }
+
+bool TopoShape::isInfinite() const
+{
+    if (_Shape.IsNull())
+        return false;
+
+    try {
+        // If the shape is empty an exception may be thrown
+        Bnd_Box bounds;
+        BRepBndLib::Add(_Shape, bounds);
+        bounds.SetGap(0.0);
+        Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
+        bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
+
+        if (Precision::IsInfinite(xMax - xMin))
+            return true;
+        if (Precision::IsInfinite(yMax - yMin))
+            return true;
+        if (Precision::IsInfinite(zMax - zMin))
+            return true;
+
+        return false;
+    }
+    catch (Standard_Failure&) {
+        return false;
+    }
+}
+

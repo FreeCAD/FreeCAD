@@ -150,7 +150,7 @@ void CmdFemAddPart::activated(int)
     std::string AnalysisName = getUniqueObjectName("FemAnalysis");
     std::string MeshName = getUniqueObjectName((std::string(base->getNameInDocument()) +"_Mesh").c_str());
 
-    openCommand("Create FEM analysis");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create FEM analysis"));
     doCommand(Doc,"App.activeDocument().addObject('Fem::FemAnalysis','%s')",AnalysisName.c_str());
     doCommand(Doc,"App.activeDocument().addObject('Fem::FemMeshShapeNetgenObject','%s')",MeshName.c_str());
     doCommand(Doc,"App.activeDocument().ActiveObject.Shape = App.activeDocument().%s",base->getNameInDocument());
@@ -217,7 +217,7 @@ void CmdFemCreateAnalysis::activated(int)
     std::string MeshName = getUniqueObjectName((std::string(base->getNameInDocument()) +"_Mesh").c_str());
 
 
-    openCommand("Create FEM analysis");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create FEM analysis"));
     doCommand(Doc,"App.activeDocument().addObject('Fem::FemAnalysis','%s')",AnalysisName.c_str());
     doCommand(Doc,"App.activeDocument().addObject('Fem::FemMeshShapeNetgenObject','%s')",MeshName.c_str());
     doCommand(Doc,"App.activeDocument().ActiveObject.Shape = App.activeDocument().%s",base->getNameInDocument());
@@ -267,7 +267,7 @@ void CmdFemCreateSolver::activated(int)
 
     std::string FeatName = getUniqueObjectName("Solver");
 
-    openCommand("Create solver for FEM or CFD analysis");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create solver for FEM or CFD analysis"));
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::FemSolverObject\",\"%s\")",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",Analysis->getNameInDocument(),FeatName.c_str());
     updateActive();
@@ -309,7 +309,7 @@ void CmdFemConstraintBearing::activated(int)
 
     std::string FeatName = getUniqueObjectName("ConstraintBearing");
 
-    openCommand("Make FEM constraint for bearing");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Make FEM constraint for bearing"));
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintBearing\",\"%s\")",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",Analysis->getNameInDocument(),FeatName.c_str());
 
@@ -350,7 +350,7 @@ void CmdFemConstraintContact::activated(int)
 
     std::string FeatName = getUniqueObjectName("ConstraintContact");
 
-    openCommand("Make FEM constraint contact on face");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Make FEM constraint contact on face"));
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintContact\",\"%s\")",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Slope = 1000000.00",FeatName.c_str()); //OvG: set default not equal to 0
     doCommand(Doc,"App.activeDocument().%s.Friction = 0.0",FeatName.c_str()); //OvG: set default not equal to 0
@@ -395,7 +395,7 @@ void CmdFemConstraintDisplacement::activated(int)
 
     std::string FeatName = getUniqueObjectName("ConstraintDisplacement");
 
-    openCommand("Make FEM constraint displacement on face");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Make FEM constraint displacement on face"));
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintDisplacement\",\"%s\")",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Scale = 1",FeatName.c_str()); //OvG: set initial scale to 1
     doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",
@@ -438,7 +438,7 @@ void CmdFemConstraintFixed::activated(int)
 
     std::string FeatName = getUniqueObjectName("ConstraintFixed");
 
-    openCommand("Make FEM constraint fixed geometry");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Make FEM constraint fixed geometry"));
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintFixed\",\"%s\")",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Scale = 1",FeatName.c_str()); //OvG: set initial scale to 1
     doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",Analysis->getNameInDocument(),FeatName.c_str());
@@ -480,7 +480,7 @@ void CmdFemConstraintFluidBoundary::activated(int)
 
     std::string FeatName = getUniqueObjectName("ConstraintFluidBoundary");
 
-    openCommand("Create fluid boundary condition");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create fluid boundary condition"));
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintFluidBoundary\",\"%s\")",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Scale = 1",FeatName.c_str()); //OvG: set initial scale to 1
     //BoundaryValue is already the default value, zero is acceptable
@@ -523,7 +523,7 @@ void CmdFemConstraintForce::activated(int)
 
     std::string FeatName = getUniqueObjectName("ConstraintForce");
 
-    openCommand("Make FEM constraint force on geometry");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Make FEM constraint force on geometry"));
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintForce\",\"%s\")",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Force = 1.0",FeatName.c_str()); //OvG: set default not equal to 0
     doCommand(Doc,"App.activeDocument().%s.Reversed = False",FeatName.c_str()); //OvG: set default to False
@@ -566,7 +566,7 @@ void CmdFemConstraintGear::activated(int)
         return;
     std::string FeatName = getUniqueObjectName("ConstraintGear");
 
-    openCommand("Make FEM constraint for gear");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Make FEM constraint for gear"));
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintGear\",\"%s\")",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Diameter = 100.0",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",Analysis->getNameInDocument(),FeatName.c_str());
@@ -608,7 +608,7 @@ void CmdFemConstraintHeatflux::activated(int)
 
     std::string FeatName = getUniqueObjectName("ConstraintHeatflux");
 
-    openCommand("Make FEM constraint heatflux on face");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Make FEM constraint heatflux on face"));
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintHeatflux\",\"%s\")",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.AmbientTemp = 300.0",FeatName.c_str()); //OvG: set default not equal to 0
     doCommand(Doc,"App.activeDocument().%s.FilmCoef = 10.0",FeatName.c_str()); //OvG: set default not equal to 0
@@ -653,7 +653,7 @@ void CmdFemConstraintInitialTemperature::activated(int)
 
     std::string FeatName = getUniqueObjectName("ConstraintInitialTemperature");
 
-    openCommand("Make FEM constraint initial temperature on body");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Make FEM constraint initial temperature on body"));
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintInitialTemperature\",\"%s\")",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Scale = 1",FeatName.c_str()); //OvG: set initial scale to 1
     doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",
@@ -696,7 +696,7 @@ void CmdFemConstraintPlaneRotation::activated(int)
 
     std::string FeatName = getUniqueObjectName("ConstraintPlaneRotation");
 
-    openCommand("Make FEM constraint Plane Rotation face");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Make FEM constraint Plane Rotation face"));
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintPlaneRotation\",\"%s\")",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Scale = 1",FeatName.c_str()); //OvG: set initial scale to 1
     doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",Analysis->getNameInDocument(),FeatName.c_str());
@@ -738,7 +738,7 @@ void CmdFemConstraintPressure::activated(int)
 
     std::string FeatName = getUniqueObjectName("ConstraintPressure");
 
-    openCommand("Make FEM constraint pressure on face");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Make FEM constraint pressure on face"));
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintPressure\",\"%s\")",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Pressure = 1000.0",FeatName.c_str()); //OvG: set default not equal to 0
     doCommand(Doc,"App.activeDocument().%s.Reversed = False",FeatName.c_str()); //OvG: set default to False
@@ -783,7 +783,7 @@ void CmdFemConstraintPulley::activated(int)
 
     std::string FeatName = getUniqueObjectName("ConstraintPulley");
 
-    openCommand("Make FEM constraint for pulley");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Make FEM constraint for pulley"));
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintPulley\",\"%s\")",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Diameter = 300.0",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.OtherDiameter = 100.0",FeatName.c_str());
@@ -829,7 +829,7 @@ void CmdFemConstraintTemperature::activated(int)
 
     std::string FeatName = getUniqueObjectName("ConstraintTemperature");
 
-    openCommand("Make FEM constraint temperature on face");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Make FEM constraint temperature on face"));
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintTemperature\",\"%s\")",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Scale = 1",FeatName.c_str()); //OvG: set initial scale to 1
     doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",
@@ -872,7 +872,7 @@ void CmdFemConstraintTransform::activated(int)
 
     std::string FeatName = getUniqueObjectName("ConstraintTransform");
 
-    openCommand("Make FEM constraint transform on face");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Make FEM constraint transform on face"));
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintTransform\",\"%s\")",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.X_rot = 0.0",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Y_rot = 0.0",FeatName.c_str());
@@ -961,7 +961,7 @@ void DefineNodesCallback(void * ud, SoEventCallback * n)
     set << "]";
 
 
-    Gui::Command::openCommand("Place robot");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Place robot"));
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.addObject('Fem::FemSetNodesObject','NodeSet')");
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.ActiveObject.Nodes = %s",set.str().c_str());
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.addObject(App.activeDocument().NodeSet)",Analysis->getNameInDocument());
@@ -970,7 +970,7 @@ void DefineNodesCallback(void * ud, SoEventCallback * n)
 
     //std::vector<Gui::ViewProvider*> views = view->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
     //if (!views.empty()) {
-    //    Gui::Application::Instance->activeDocument()->openCommand("Cut");
+    //    Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Cut"));
     //    for (std::vector<Gui::ViewProvider*>::iterator it = views.begin(); it != views.end(); ++it) {
     //        ViewProviderMesh* that = static_cast<ViewProviderMesh*>(*it);
     //        if (that->getEditingMode() > -1) {
@@ -1062,7 +1062,7 @@ void CmdFemCreateNodesSet::activated(int)
 
     if (ObjectFilter.match()) {
         Fem::FemSetNodesObject *NodesObj = static_cast<Fem::FemSetNodesObject*>(ObjectFilter.Result[0][0].getObject());
-        openCommand("Edit nodes set");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Edit nodes set"));
         doCommand(Gui,"Gui.activeDocument().setEdit('%s')",NodesObj->getNameInDocument());
     }
     else if (FemMeshFilter.match()) {
@@ -1070,7 +1070,7 @@ void CmdFemCreateNodesSet::activated(int)
 
         std::string FeatName = getUniqueObjectName("NodesSet");
 
-        openCommand("Create nodes set");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Create nodes set"));
         doCommand(Doc,"App.activeDocument().addObject('Fem::FemSetNodesObject','%s')",FeatName.c_str());
         doCommand(Gui,"App.activeDocument().%s.FemMesh = App.activeDocument().%s",FeatName.c_str(),MeshObj->getNameInDocument());
         doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
@@ -1125,7 +1125,7 @@ void setupFilter(Gui::Command* cmd, std::string Name) {
     else {
         std::string FeatName = cmd->getUniqueObjectName(Name.c_str());
 
-        cmd->openCommand("Create filter");
+        cmd->openCommand(QT_TRANSLATE_NOOP("Command", "Create filter"));
         cmd->doCommand(Gui::Command::Doc,"App.activeDocument().addObject('Fem::FemPost%sFilter','%s')", Name.c_str(), FeatName.c_str());
         cmd->doCommand(Gui::Command::Doc,"__list__ = App.ActiveDocument.%s.Filter", pipeline->getNameInDocument());
         cmd->doCommand(Gui::Command::Doc,"__list__.append(App.ActiveDocument.%s)", FeatName.c_str());
@@ -1442,7 +1442,7 @@ void CmdFemPostFunctions::activated(int iMsg)
     if (!pipelines.empty()) {
         Fem::FemPostPipeline *pipeline = pipelines.front();
 
-        openCommand("Create function");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Create function"));
 
         //check if the pipeline has a filter provider and add one if needed
         Fem::FemPostFunctionProvider* provider;
@@ -1637,7 +1637,7 @@ void CmdFemPostPipelineFromResult::activated(int)
     std::vector<Fem::FemResultObject*> results = getSelection().getObjectsOfType<Fem::FemResultObject>();
     if (results.size() == 1) {
         std::string FeatName = getUniqueObjectName("ResultPipeline");
-        openCommand("Create pipeline from result");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Create pipeline from result"));
         doCommand(Doc,"App.activeDocument().addObject('Fem::FemPostPipeline','%s')",FeatName.c_str());
         doCommand(Doc,"App.activeDocument().ActiveObject.load("
                       "App.activeDocument().getObject(\"%s\"))", results[0]->getNameInDocument());

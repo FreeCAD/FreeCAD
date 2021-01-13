@@ -21,9 +21,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM solver calculix ccx tools document object"
+__title__  = "FreeCAD FEM solver calculix ccx tools document object"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## @package solver_ccxtools
 #  \ingroup FEM

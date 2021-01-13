@@ -237,7 +237,7 @@ int UIntSpinBox::valueFromText (const QString & text) const
     return d->mapToInt(newVal);
 }
 
-void UIntSpinBox::updateValidator() 
+void UIntSpinBox::updateValidator()
 {
     d->mValidator->setRange(this->minimum(), this->maximum());
 }
@@ -263,7 +263,7 @@ void UIntSpinBox::setExpression(boost::shared_ptr<Expression> expr)
 }
 
 void UIntSpinBox::onChange() {
-    
+
     if (hasExpression()) {
         std::unique_ptr<Expression> result(getExpression()->eval());
         NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
@@ -403,7 +403,7 @@ IntSpinBox::~IntSpinBox() {
 
 
 bool IntSpinBox::apply(const std::string& propName) {
-    
+
     if (!ExpressionBinding::apply(propName)) {
         Gui::Command::doCommand(Gui::Command::Doc, "%s = %d", propName.c_str(), value());
         return true;
@@ -413,7 +413,7 @@ bool IntSpinBox::apply(const std::string& propName) {
 }
 
 void IntSpinBox::bind(const ObjectIdentifier& _path) {
-    
+
     ExpressionBinding::bind(_path);
 }
 
@@ -433,7 +433,7 @@ void IntSpinBox::setExpression(boost::shared_ptr<Expression> expr)
 }
 
 void IntSpinBox::onChange() {
-    
+
     if (hasExpression()) {
         std::unique_ptr<Expression> result(getExpression()->eval());
         NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
@@ -558,7 +558,7 @@ DoubleSpinBox::~DoubleSpinBox() {
 
 
 bool DoubleSpinBox::apply(const std::string& propName) {
-    
+
     if (!ExpressionBinding::apply(propName)) {
         Gui::Command::doCommand(Gui::Command::Doc, "%s = %f", propName.c_str(), value());
         return true;
@@ -568,7 +568,7 @@ bool DoubleSpinBox::apply(const std::string& propName) {
 }
 
 void DoubleSpinBox::bind(const ObjectIdentifier& _path) {
-    
+
     ExpressionBinding::bind(_path);
 }
 
@@ -588,7 +588,7 @@ void DoubleSpinBox::setExpression(boost::shared_ptr<Expression> expr)
 }
 
 void DoubleSpinBox::onChange() {
-    
+
     if (hasExpression()) {
         std::unique_ptr<Expression> result(getExpression()->eval());
         NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());

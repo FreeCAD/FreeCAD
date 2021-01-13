@@ -57,6 +57,7 @@ enum ConstraintType {
     SnellsLaw = 16,
     Block = 17,
     Diameter = 18,
+    Weight = 19,
     NumConstraintTypes // must be the last item!
 };
 
@@ -117,7 +118,7 @@ public:
 
     inline bool isDimensional() const {
         return Type == Distance || Type == DistanceX || Type == DistanceY ||
-               Type == Radius || Type == Diameter || Type == Angle || Type == SnellsLaw;
+               Type == Radius || Type == Diameter || Type == Angle || Type == SnellsLaw || Type == Weight;
     }
 
     friend class PropertyConstraintList;

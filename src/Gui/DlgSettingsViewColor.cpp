@@ -37,8 +37,8 @@ using namespace Gui::Dialog;
 /* TRANSLATOR Gui::Dialog::DlgSettingsViewColor */
 
 /**
- *  Constructs a DlgSettingsViewColor which is a child of 'parent', with the 
- *  name 'name' and widget flags set to 'f' 
+ *  Constructs a DlgSettingsViewColor which is a child of 'parent', with the
+ *  name 'name' and widget flags set to 'f'
  */
 DlgSettingsViewColor::DlgSettingsViewColor(QWidget* parent)
     : PreferencePage(parent)
@@ -55,7 +55,7 @@ DlgSettingsViewColor::DlgSettingsViewColor(QWidget* parent)
                 (uint32_t)ViewParams::instance()->getHighlightColor()).asValue<QColor>());
 }
 
-/** 
+/**
  *  Destroys the object and frees any allocated resources
  */
 DlgSettingsViewColor::~DlgSettingsViewColor()

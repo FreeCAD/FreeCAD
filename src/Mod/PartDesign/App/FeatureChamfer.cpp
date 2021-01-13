@@ -161,7 +161,7 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
                 return new App::DocumentObjectExecReturn("Resulting shape is invalid");
             }
         }
-
+        shape = refineShapeIfActive(shape);
         this->Shape.setValue(getSolid(shape));
         return App::DocumentObject::StdReturn;
     }

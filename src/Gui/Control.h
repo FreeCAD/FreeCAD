@@ -61,7 +61,7 @@ public:
     static ControlSingleton& instance(void);
     static void destruct (void);
 
-    /** @name dialog handling 
+    /** @name dialog handling
      *  These methods are used to control the TaskDialog stuff.
      */
     //@{
@@ -71,7 +71,7 @@ public:
     //void closeDialog();
     //@}
 
-    /** @name task view handling 
+    /** @name task view handling
      */
     //@{
     Gui::TaskView::TaskView* taskPanel() const;
@@ -104,7 +104,7 @@ public Q_SLOTS:
     void accept();
     void reject();
     void closeDialog();
-    /// raises the task view panel 
+    /// raises the task view panel
     void showTaskView();
 
 private Q_SLOTS:
@@ -122,7 +122,7 @@ private:
     std::stack<status> StatusStack;
 
     Gui::TaskView::TaskDialog *ActiveDialog;
- 
+
 private:
     /// Construction
     ControlSingleton();

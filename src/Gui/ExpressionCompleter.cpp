@@ -1,3 +1,26 @@
+/***************************************************************************
+ *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
+ *   Copyright (c) 2020 Zheng Lei <realthunder.dev@gmail.com>              *
+ *                                                                         *
+ *   This file is part of the FreeCAD CAx development system.              *
+ *                                                                         *
+ *   This library is free software; you can redistribute it and/or         *
+ *   modify it under the terms of the GNU Library General Public           *
+ *   License as published by the Free Software Foundation; either          *
+ *   version 2 of the License, or (at your option) any later version.      *
+ *                                                                         *
+ *   This library  is distributed in the hope that it will be useful,      *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU Library General Public License for more details.                  *
+ *                                                                         *
+ *   You should have received a copy of the GNU Library General Public     *
+ *   License along with this library; see the file COPYING.LIB. If not,    *
+ *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
+ *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *                                                                         *
+ ***************************************************************************/
+
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -42,7 +65,7 @@ public:
     // QModelIndex::internalPointer() does not directly points to any memory
     // location, but rather contains indices for locating the parent node.
     // QModelIndex::row() is the child index of this node. column() is not used.
-    // 
+    //
     // Abstract struct ModelData below is for extracting data from each node.
     // For memory efficiency, the model is designed to be incrementally built
     // on demand while the user is typing. Not all type of node data needs a
@@ -58,7 +81,7 @@ public:
     // without saving.  The content of the root data is arranged in the
     // following order,
     //
-    //      document 1 internal name 
+    //      document 1 internal name
     //      document 1 label (label string are quoted using <<...>>)
     //      document 2 internal name
     //      document 2 label
@@ -116,7 +139,7 @@ public:
     //
     // For property data, Level1Data will generate and save the model data using
     // struct PropertyData. Note that, once PropertyData is generated, the next
-    // time it (or its children) is accessed, it will be through the cached 
+    // time it (or its children) is accessed, it will be through the cached
     // PropertyData (through ModelIndex lookup of dataMap), instead of Level1Data.
     //
     // The subsequent hierarchy is handled by Level2Data, whose Info::idx1 having
@@ -530,7 +553,7 @@ public:
                 if(!local && propName.startsWith(QLatin1Char('.')))
                     return propName.mid(1);
                 return propName;
-            case Qt::DecorationRole: 
+            case Qt::DecorationRole:
                 if (prop->getName()) {
                     static QIcon icon(BitmapFactory().pixmap("ClassBrowser/alias.svg"));
                     if(propName.startsWith(QLatin1Char('.'))) {
@@ -862,7 +885,7 @@ public:
             if(prop)
                 return propData(prop, propName, row, role);
 
-            if(sobj) 
+            if(sobj)
                 return sobjData(obj, sobj, row, role);
 
             return objData(obj, row, role, false, false);
@@ -941,7 +964,7 @@ public:
             if(!RootData::_childData(info.d.idx1, doc, obj, sobj, prop, propName))
                 return QVariant();
 
-            if(prop) 
+            if(prop)
                 return QVariant();
 
             if(!Level1Data::_childData(mindex.row(), doc, obj, sobj, prop, propName, element, eindex))
@@ -961,11 +984,10 @@ public:
 
             if(_childObjData(row, obj, sobj, prop, propName, element, eindex) < 0)
                 return QVariant();
-            
             if(element)
                 return elementData(role, element, eindex);
 
-            if(sobj) 
+            if(sobj)
                 return sobjData(obj, sobj, row, role);
 
             return propData(prop, propName, row, role);
@@ -984,7 +1006,7 @@ public:
             if(!RootData::_childData(info.d.idx1, doc, obj, sobj, prop, propName))
                 return QModelIndex();
 
-            if(prop) 
+            if(prop)
                 return QModelIndex();
 
             if(!Level1Data::_childData(mindex.row(), doc, obj, sobj, prop, propName, element, eindex))
@@ -1019,7 +1041,7 @@ public:
             if(!RootData::_childData(info.d.idx1, doc, obj, sobj, prop, propName))
                 return 0;
 
-            if(prop) 
+            if(prop)
                 return 0;
 
             if(!Level1Data::_childData(mindex.row(), doc, obj, sobj, prop, propName, element, eindex))
@@ -1063,13 +1085,13 @@ public:
             if(!RootData::_childData(info.d.idx1, doc, obj, sobj, prop, propName))
                 return nullptr;
 
-            if(prop) 
+            if(prop)
                 return nullptr;
 
             if(!Level1Data::_childData(info.d.idx2, doc, obj, sobj, prop, propName, element, eindex))
                 return nullptr;
 
-            if(prop || element) 
+            if(prop || element)
                 return nullptr;
 
             if(_childObjData(mindex.row(), obj, sobj, prop, propName, element, eindex) < 0)
@@ -1123,7 +1145,7 @@ public:
         {
             App::DocumentObject *obj = nullptr;
             auto sobj = objInfo.getSubObject(row, &obj);
-            if(sobj) 
+            if(sobj)
                 return sobjData(obj, sobj, row, role);
             int eindex = 0;
             const char *element = objInfo.getElement(row, eindex);
@@ -1333,7 +1355,7 @@ public:
             if(!mdata)
                 return QModelIndex();
 
-            if(mdata->name.isEmpty()) 
+            if(mdata->name.isEmpty())
                 mdata->name = tipArray[row].name;
             return mdata->mindex;
         }
@@ -1457,7 +1479,7 @@ public:
                 return false;
 
             int offset = (int)paths.size();
-            if(row >= offset) 
+            if(row >= offset)
                 return PythonData::initChild(child);
 
             const auto &path = paths[row].path;
@@ -1492,7 +1514,7 @@ public:
             if(row < 0)
                 return QVariant();
 
-            if(row >= (int)paths.size()) 
+            if(row >= (int)paths.size())
                 return PythonData::childData(row-(int)paths.size(), role);
 
             const auto &pathInfo = paths[row];
@@ -1520,7 +1542,7 @@ public:
                 return QModelIndex();
 
             int offset = (int)paths.size();
-            if(row >= offset) 
+            if(row >= offset)
                 return _childIndex(row-offset, offset);
 
             PythonData *mdata = getModel()->getPythonData(mindex, row);
@@ -1562,8 +1584,8 @@ public:
         if(!pathIndex.isValid())
             return nullptr;
         auto it = dataMap.find(pathIndex);
-        if(it == dataMap.end() 
-                || it->second<0 
+        if(it == dataMap.end()
+                || it->second<0
                 || it->second>=(int)modelData.size())
             return nullptr;
         return dynamic_cast<PythonData*>(modelData[it->second].get());
@@ -1989,7 +2011,7 @@ public:
  * @param currentDocObj Current document object to generate model from.
  * @param parent Parent object owning the completer.
  */
-ExpressionCompleter::ExpressionCompleter(const App::DocumentObject * currentDocObj, 
+ExpressionCompleter::ExpressionCompleter(const App::DocumentObject * currentDocObj,
         QObject *parent, bool noProperty, bool checkInList)
     : QCompleter(parent), currentObj(currentDocObj)
     , noProperty(noProperty), checkInList(checkInList), searchUnit(false)
@@ -2084,7 +2106,7 @@ QStringList ExpressionCompleter::splitPath ( const QString & input ) const
     } else if (boost::ends_with(path, "#<<")) {
         l << input.mid(0,input.size()-2);
         l << QLatin1String("<<");
-        FC_TRACE("split path " << path 
+        FC_TRACE("split path " << path
                 << " -> " << l.join(QLatin1String("/")).toUtf8().constData());
         return l;
     }
@@ -2115,8 +2137,7 @@ QStringList ExpressionCompleter::splitPath ( const QString & input ) const
             if(retry && sl.size()) {
                 sl.pop_back();
                 vexpr->popComponents();
-            } 
-            
+            }
             if (ending.isEmpty())
                 vexpr->popComponents();
 
@@ -2135,11 +2156,11 @@ QStringList ExpressionCompleter::splitPath ( const QString & input ) const
 
             auto m = dynamic_cast<ExpressionCompleterModel*>(model());
             if(m && m->setPath(l, vexpr)) {
-                FC_TRACE("adjust path " << path 
+                FC_TRACE("adjust path " << path
                         << " -> " << l.join(QLatin1String("/")).toUtf8().constData());
             }
 
-            FC_TRACE("split path " << path 
+            FC_TRACE("split path " << path
                     << " -> " << l.join(QLatin1String("/")).toUtf8().constData());
             return l;
         }
@@ -2176,7 +2197,7 @@ QStringList ExpressionCompleter::splitPath ( const QString & input ) const
         l << ending;
     } else
         l << input;
-    FC_TRACE("split path bail out -> " 
+    FC_TRACE("split path bail out -> "
             << l.join(QLatin1String("/")).toUtf8().constData());
     return l;
 }
@@ -2262,7 +2283,7 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
     }
 
     bool stringing = false;
-    if(insideString) 
+    if(insideString)
         stringing = true;
     else {
         // Check if we have unclosed string starting from the end. If the
@@ -2353,7 +2374,7 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
             return;
         }
 
-        if (token != '.' && token != '#' && 
+        if (token != '.' && token != '#' &&
             tok != ExpressionParser::FC_TOK_IDENTIFIER &&
             tok != ExpressionParser::FC_TOK_STRING)
             break;
@@ -2411,7 +2432,7 @@ void ExpressionCompleter::showPopup(bool show) {
                     rect.setLeft(pos.x());
                 rect.setWidth(popup()->width());
             }
-            rect.setRight(width); 
+            rect.setRight(width);
             if(rect.width() < 300)
                 rect.setRight(rect.left() + 300);
             rect.moveTo(editor->viewport()->mapTo(editor, rect.topLeft()));

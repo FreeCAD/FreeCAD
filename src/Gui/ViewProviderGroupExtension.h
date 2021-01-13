@@ -40,13 +40,13 @@ public:
     virtual ~ViewProviderGroupExtension();
 
     virtual void extensionClaimChildren(std::vector<App::DocumentObject*> &)const override;
-    virtual bool extensionCanDragObjects() const override; 
+    virtual bool extensionCanDragObjects() const override;
     virtual bool extensionCanDragObject(App::DocumentObject*) const override;
     virtual void extensionDragObject(App::DocumentObject*) override;
     virtual bool extensionCanDropObjects() const override;
     virtual bool extensionCanDropObject(App::DocumentObject*) const override;
-    virtual void extensionDropObject(App::DocumentObject*) override;   
- 
+    virtual void extensionDropObject(App::DocumentObject*) override;
+
     virtual bool extensionOnDelete(const std::vector<std::string> &) override;
 
     virtual void extensionAttach(App::DocumentObject* pcObject) override;

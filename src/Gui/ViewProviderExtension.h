@@ -64,14 +64,14 @@ public:
     virtual bool extensionCanDropObject(App::DocumentObject*) const { return true; }
     virtual bool extensionCanDragAndDropObject(App::DocumentObject*) const { return true; }
     virtual void extensionDropObject(App::DocumentObject*) { }
-    virtual bool extensionCanDropObjectEx(App::DocumentObject *, App::DocumentObject *, 
+    virtual bool extensionCanDropObjectEx(App::DocumentObject *, App::DocumentObject *,
             const char *, const std::vector<std::string> &) const
         { return false; }
-    virtual std::string extensionDropObjectEx(App::DocumentObject *obj, App::DocumentObject *, 
-            const char *, const std::vector<std::string> &) 
+    virtual std::string extensionDropObjectEx(App::DocumentObject *obj, App::DocumentObject *,
+            const char *, const std::vector<std::string> &)
         { extensionDropObject(obj); return std::string(); }
 
-    virtual int extensionReplaceObject(App::DocumentObject* /*oldValue*/, App::DocumentObject* /*newValue*/) 
+    virtual int extensionReplaceObject(App::DocumentObject* /*oldValue*/, App::DocumentObject* /*newValue*/)
         { return -1; }
 
     virtual int extensionCanReplaceObject(App::DocumentObject* /*oldValue*/, App::DocumentObject* /*newValue*/) 
@@ -106,13 +106,15 @@ public:
     bool ignoreOverlayIcon() const {
         return m_ignoreOverlayIcon;
     }
+    virtual QIcon extensionMergeGreyableOverlayIcons(const QIcon & orig) const {return orig;}
+    virtual QIcon extensionMergeColorfullOverlayIcons(const QIcon & orig) const {return orig;}
 
     virtual void extensionStartRestoring() {}
     virtual void extensionFinishRestoring() {}
 
     virtual bool extensionGetElementPicked(const SoPickedPoint *, std::string &) const {return false;}
     virtual bool extensionGetDetailPath(const char *, SoFullPath *, SoDetail *&) const {return false;}
-    
+
 private:
     bool m_ignoreOverlayIcon = false;
   //Gui::ViewProviderDocumentObject* m_viewBase = nullptr;

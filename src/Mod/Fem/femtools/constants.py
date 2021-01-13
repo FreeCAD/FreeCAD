@@ -27,9 +27,9 @@ All constants are in SI units.
 """
 
 
-__title__ = "Constants"
+__title__  = "FEM collection of natural constants"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 
 def gravity():

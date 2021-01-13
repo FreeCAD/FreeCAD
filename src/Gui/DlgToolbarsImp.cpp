@@ -142,7 +142,7 @@ DlgCustomToolbars::DlgCustomToolbars(DlgCustomToolbars::Type t, QWidget* parent)
         }
     }
 
-    QStringList labels; 
+    QStringList labels;
     labels << tr("Icon") << tr("Command");
     ui->commandTreeWidget->setHeaderLabels(labels);
     ui->commandTreeWidget->header()->hide();
@@ -683,7 +683,7 @@ void DlgCustomToolbars::on_renameButton_clicked()
         bool ok;
         QString old_text = item->text(0);
         QString text = QInputDialog::getText(this, tr("Rename toolbar"), tr("Toolbar name:"),
-            QLineEdit::Normal, old_text, &ok);
+            QLineEdit::Normal, old_text, &ok, Qt::MSWindowsFixedSizeDialogHint);
         if (ok && text != old_text) {
             // Check for duplicated name
             for (int i=0; i<ui->toolbarTreeWidget->topLevelItemCount(); i++) {

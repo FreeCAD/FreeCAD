@@ -98,7 +98,7 @@ class GuiExport View3DInventorViewer : public Quarter::SoQTQuarterAdaptor, publi
 {
     typedef Quarter::SoQTQuarterAdaptor inherited;
     Q_OBJECT
-    
+
 public:
     /// Pick modes for picking points in the scene
     enum SelectionMode {
@@ -122,7 +122,7 @@ public:
         DisallowZooming=32,/**< switch off the zooming. */
     };
     //@}
-    
+
     /** @name Anti-Aliasing modes of the rendered 3D scene
       * Specifies Anti-Aliasing (AA) method
       * - Smoothing enables OpenGL line and vertex smoothing (basically deprecated)
@@ -151,7 +151,7 @@ public:
     View3DInventorViewer (QWidget *parent, const QtGLWidget* sharewidget = 0);
     View3DInventorViewer (const QtGLFormat& format, QWidget *parent, const QtGLWidget* sharewidget = 0);
     virtual ~View3DInventorViewer();
-    
+
     void init();
 
     /// Observer message from the Selection
@@ -255,7 +255,7 @@ public:
     void saveGraphic(int pagesize, const QColor&, SoVectorizeAction* va) const;
     //@}
     /**
-     * Writes the current scenegraph to an Inventor file, either in ascii or binary. 
+     * Writes the current scenegraph to an Inventor file, either in ascii or binary.
      */
     bool dumpToFile(SoNode* node, const char* filename, bool binary) const;
 
@@ -272,7 +272,7 @@ public:
     void setSelectionEnabled(const SbBool enable);
     SbBool isSelectionEnabled(void) const;
     //@}
-    
+
     /// Returns the screen coordinates of the origin of the path's tail object
     /*! Return value is in floating-point pixels, origin at bottom-left. */
     SbVec2f screenCoordsOfPath(SoPath *path) const;
@@ -304,8 +304,8 @@ public:
                                                bool singlePick = false,
                                                bool mapCoords = false) const;
 
-    std::vector<App::SubObjectT> getPickedList(const std::vector<SbVec2f> &points, 
-                                               bool center = false, 
+    std::vector<App::SubObjectT> getPickedList(const std::vector<SbVec2f> &points,
+                                               bool center = false,
                                                bool pickElement = true,
                                                bool backfaceCull = true,
                                                bool currentSelection = false,
@@ -314,8 +314,8 @@ public:
     //@}
 
     /**
-     * Set up a callback function \a cb which will be invoked for the given eventtype. 
-     * \a userdata will be given as the first argument to the callback function. 
+     * Set up a callback function \a cb which will be invoked for the given eventtype.
+     * \a userdata will be given as the first argument to the callback function.
      */
     void addEventCallback(SoType eventtype, SoEventCallbackCB * cb, void* userdata = 0);
     /**
@@ -334,7 +334,7 @@ public:
     /** Returns the up direction */
     SbVec3f getUpDirection() const;
     /** Returns the orientation of the camera. */
-    SbRotation getCameraOrientation() const; 
+    SbRotation getCameraOrientation() const;
     /** Returns the 3d point on the focal plane to the given 2d point. */
     SbVec3f getPointOnScreen(const SbVec2s&) const;
     /** Returns the near plane represented by its normal and base point. */
@@ -342,7 +342,7 @@ public:
     /** Returns the far plane represented by its normal and base point. */
     void getFarPlane(SbVec3f& rcPt, SbVec3f& rcNormal) const;
     /** Adds or remove a manipulator to/from the scenegraph. */
-    void toggleClippingPlane(int toggle=-1, bool beforeEditing=false, 
+    void toggleClippingPlane(int toggle=-1, bool beforeEditing=false,
             bool noManip=false, const Base::Placement &pla = Base::Placement());
     /** Checks whether a clipping plane is set or not. */
     bool hasClippingPlane() const;
@@ -351,7 +351,7 @@ public:
     /** Project the given normalized 2d point onto the far plane */
     SbVec3f projectOnFarPlane(const SbVec2f&) const;
     //@}
-    
+
     /** @name Dimension controls
      * the "turn*" functions are wired up to parameter groups through view3dinventor.
      * don't call them directly. instead set the parameter groups.
@@ -377,8 +377,8 @@ public:
     void setCameraOrientation(const SbRotation& rot, SbBool moveTocenter=false);
     void setCameraType(SoType t);
     void moveCameraTo(const SbRotation& rot, const SbVec3f& pos, int steps, int ms);
-    /** 
-     * Zooms the viewport to the size of the bounding box. 
+    /**
+     * Zooms the viewport to the size of the bounding box.
      */
     void boxZoom(const SbBox2s&);
     /**
@@ -392,7 +392,7 @@ public:
     void viewVR(void);
 
     /**
-     * Reposition the current camera so we can see all selected objects 
+     * Reposition the current camera so we can see all selected objects
      * of the scene. Therefore we search for all SOFCSelection nodes, if
      * none of them is selected nothing happens.
      */
@@ -409,7 +409,7 @@ public:
 
     void setAxisCross(bool b);
     bool hasAxisCross(void);
-    
+
     void setEnabledFPSCounter(bool b);
     void setEnabledNaviCube(bool b);
     bool isEnabledNaviCube(void) const;
@@ -550,7 +550,7 @@ private:
     // big one in the middle
     SoShapeScale* axisCross;
     SoGroup* axisGroup;
-    
+
     //stuff needed to draw the fps counter
     bool fpsEnabled;
     bool vboEnabled;
@@ -566,7 +566,7 @@ private:
     Gui::Document* guiDocument = nullptr;
 
     ViewerEventFilter* viewerEventFilter;
-    
+
     PyObject *_viewerPy;
 
     bool _applyingOverride = false;

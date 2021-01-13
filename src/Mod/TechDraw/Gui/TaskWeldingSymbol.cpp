@@ -650,7 +650,7 @@ bool TaskWeldingSymbol::accept()
 {
 //    Base::Console().Message("TWS::accept()\n");
     if (m_createMode) {
-        Gui::Command::openCommand("Create WeldSymbol");
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create WeldSymbol"));
         m_weldFeat = createWeldingSymbol();
         updateTiles();
         Gui::Command::updateActive();
@@ -658,7 +658,7 @@ bool TaskWeldingSymbol::accept()
         m_weldFeat->recomputeFeature();
     //    m_weldFeat->requestPaint();    //not a dv!
     } else {
-        Gui::Command::openCommand("Edit WeldSymbol");
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit WeldSymbol"));
         try {
             updateWeldingSymbol();
             updateTiles();

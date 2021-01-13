@@ -27,6 +27,7 @@
         <file>icons/GDT_workbench_icon.svg</file>
         <file>icons/FCGear_workbench_icon.svg</file>
         <file>icons/Geomatics_workbench_icon.svg</file>
+        <file>icons/ImportNURBS_workbench_icon.svg</file>
         <file>icons/InventorLoader_workbench_icon.svg</file>
         <file>icons/kicadStepUpMod_workbench_icon.svg</file>
         <file>icons/lattice2_workbench_icon.svg</file>
@@ -36,8 +37,10 @@
         <file>icons/MeshRemodel_workbench_icon.svg</file>
         <file>icons/ModernUI_workbench_icon.svg</file>
         <file>icons/MOOC_workbench_icon.svg</file>
+        <file>icons/OSE3dPrinter_workbench_icon.svg</file>
         <file>icons/Part-o-magic_workbench_icon.svg</file>
         <file>icons/Plot_workbench_icon.svg</file>
+        <file>icons/POV-Ray-Rendering_workbench_icon.svg</file>
         <file>icons/pyrate_workbench_icon.svg</file>
         <file>icons/Reinforcement_workbench_icon.svg</file>
         <file>icons/Reporting_workbench_icon.svg</file>
@@ -51,8 +54,6 @@
         <file>icons/WebTools_workbench_icon.svg</file>
         <file>icons/workfeature_workbench_icon.svg</file>
         <file>icons/yaml-workspace_workbench_icon.svg</file>
-        <file>icons/OSE3dPrinter_workbench_icon.svg</file>
-        <file>icons/ImportNURBS_workbench_icon.svg</file>
         <file>translations/AddonManager_af.qm</file>
         <file>translations/AddonManager_ar.qm</file>
         <file>translations/AddonManager_ca.qm</file>

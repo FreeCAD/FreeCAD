@@ -129,7 +129,7 @@ void CmdTechDrawPageDefault::activated(int iMsg)
     QFileInfo tfi(templateFileName);
     if (tfi.isReadable()) {
         Gui::WaitCursor wc;
-        openCommand("Drawing create page");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Drawing create page"));
         doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawPage','%s')",PageName.c_str());
         doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawSVGTemplate','%s')",TemplateName.c_str());
 
@@ -199,7 +199,7 @@ void CmdTechDrawPageTemplate::activated(int iMsg)
     QFileInfo tfi(templateFileName);
     if (tfi.isReadable()) {
         Gui::WaitCursor wc;
-        openCommand("Drawing create page");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Drawing create page"));
         doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawPage','%s')",PageName.c_str());
 
         // Create the Template Object to attach to the page
@@ -324,7 +324,7 @@ void CmdTechDrawView::activated(int iMsg)
             xShapes.push_back(obj);
             continue;
         }
-        //not an external object and not null.  assume to be drawable.  Undrawables will be 
+        //not an external object and not null.  assume to be drawable.  Undrawables will be
         // skipped later.
         shapes.push_back(obj);
         if(partObj != nullptr) {
@@ -351,7 +351,7 @@ void CmdTechDrawView::activated(int iMsg)
     Base::Vector3d projDir;
 
     Gui::WaitCursor wc;
-    openCommand("Create view");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create view"));
     std::string FeatName = getUniqueObjectName("View",page);
     Gui::cmdAppDocument(page,std::ostringstream() << "addObject('TechDraw::DrawViewPart','" << FeatName << "')");
     App::DocumentObject *docObj = getDocument()->getObject(FeatName.c_str());
@@ -566,7 +566,7 @@ void CmdTechDrawProjectionGroup::activated(int iMsg)
             xShapes.push_back(obj);
             continue;
         }
-        //not an external object and not null.  assume to be drawable.  Undrawables will be 
+        //not an external object and not null.  assume to be drawable.  Undrawables will be
         // skipped later.
         shapes.push_back(obj);
         if(partObj != nullptr) {
@@ -590,7 +590,7 @@ void CmdTechDrawProjectionGroup::activated(int iMsg)
     Base::Vector3d projDir;
     Gui::WaitCursor wc;
 
-    openCommand("Create Projection Group");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create Projection Group"));
     std::string multiViewName = getUniqueObjectName("ProjGroup",page);
     Gui::cmdAppDocument(page, std::ostringstream() << "addObject('TechDraw::DrawProjGroup','" << multiViewName << "')");
 
@@ -670,7 +670,7 @@ bool CmdTechDrawProjectionGroup::isActive(void)
 
 //    Gui::WaitCursor wc;
 
-//    openCommand("Create view");
+//    openCommand(QT_TRANSLATE_NOOP("Command", "Create view"));
 //    std::string FeatName = getUniqueObjectName("MultiView");
 //    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewMulti','%s')",FeatName.c_str());
 //    App::DocumentObject *docObj = getDocument()->getObject(FeatName.c_str());
@@ -800,7 +800,7 @@ void CmdTechDrawClipGroup::activated(int iMsg)
     std::string PageName = page->getNameInDocument();
 
     std::string FeatName = getUniqueObjectName("Clip",page);
-    openCommand("Create Clip");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create Clip"));
     Gui::cmdAppObject(page, std::ostringstream() << "addObject('TechDraw::DrawViewClip','" << FeatName << "')");
     Gui::cmdAppObjectArgs(page, "addView(App.getDocument('%s').getObject('%s'))",
             page->getDocument()->getName(),FeatName.c_str());
@@ -870,7 +870,7 @@ void CmdTechDrawClipGroupAdd::activated(int iMsg)
         return;
     }
 
-    openCommand("ClipGroupAdd");
+    openCommand(QT_TRANSLATE_NOOP("Command", "ClipGroupAdd"));
     Gui::cmdAppObjectHide(view);
     Gui::cmdAppObject(pageClip, std::ostringstream() << "addView(" << getObjectCmd(view) << ")");
     Gui::cmdAppObjectShow(view);
@@ -991,7 +991,7 @@ void CmdTechDrawSymbol::activated(int iMsg)
     std::string PageName = page->getNameInDocument();
 
     // Reading an image
-    QString filename = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), 
+    QString filename = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
         QObject::tr("Choose an SVG file to open"), QString::null,
         QString::fromLatin1("%1 (*.svg *.svgz);;%2 (*.*)").
         arg(QObject::tr("Scalable Vector Graphic")).
@@ -1001,7 +1001,7 @@ void CmdTechDrawSymbol::activated(int iMsg)
     {
         std::string FeatName = getUniqueObjectName("Symbol",page);
         filename = Base::Tools::escapeEncodeFilename(filename);
-        openCommand("Create Symbol");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Create Symbol"));
 #if PY_MAJOR_VERSION < 3
         doCommand(Doc,"f = open(unicode(\"%s\",'utf-8'),'r')",(const char*)filename.toUtf8());
 #else
@@ -1058,7 +1058,7 @@ void CmdTechDrawDraftView::activated(int iMsg)
         return;
     }
 
-    openCommand("Create DraftView");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create DraftView"));
 
     std::pair<Base::Vector3d,Base::Vector3d> dirs = DrawGuiUtil::get3DDirAndRot();
 
@@ -1079,7 +1079,7 @@ void CmdTechDrawDraftView::activated(int iMsg)
     updateActive();
     commitCommand();
 
-    if (draftItemsFound == 0) { 
+    if (draftItemsFound == 0) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("There were no DraftWB objects in the selection."));
     }
@@ -1138,7 +1138,7 @@ void CmdTechDrawArchView::activated(int iMsg)
     }
 
     std::string FeatName = getUniqueObjectName("ArchView");
-    openCommand("Create ArchView");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create ArchView"));
     Gui::cmdAppDocument(page, std::ostringstream() << "addObject('TechDraw::DrawViewArch','" << FeatName << "')");
     auto feat = page->getDocument()->getObject(FeatName.c_str());
     Gui::cmdAppObject(feat, std::ostringstream() << "Source = " << getObjectCmd(archObject));
@@ -1185,7 +1185,7 @@ void CmdTechDrawSpreadsheetView::activated(int iMsg)
         return;
     }
 
-    openCommand("Create spreadsheet view");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create spreadsheet view"));
     std::string FeatName = getUniqueObjectName("Sheet",page);
     Gui::cmdAppDocument(page, std::ostringstream() << "addObject('TechDraw::DrawViewSpreadsheet','" << FeatName << "')");
     auto feat = page->getDocument()->getObject(FeatName.c_str());
@@ -1273,7 +1273,7 @@ CmdTechDrawExportPageDXF::CmdTechDrawExportPageDXF()
 static inline QString _getDefaultName(const App::DocumentObject *obj) {
     if(!obj)
         return QString();
-    if(obj->getDocument() 
+    if(obj->getDocument()
            && obj->getDocument()->FileName.getStrValue().size())
     {
         QDir dir = QFileInfo(QString::fromUtf8(
@@ -1316,10 +1316,10 @@ void CmdTechDrawExportPageDXF::activated(int iMsg)
         return;
     }
 
-    openCommand("Save page to dxf");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Save page to dxf"));
     doCommand(Doc,"import TechDraw");
     fileName = Base::Tools::escapeEncodeFilename(fileName);
-    doCommand(Doc,"TechDraw.writeDXFPage(%s,u'%s')", 
+    doCommand(Doc,"TechDraw.writeDXFPage(%s,u'%s')",
             getObjectCmd(page).c_str(), fileName.toUtf8().constData());
     commitCommand();
 }

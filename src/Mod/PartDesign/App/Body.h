@@ -32,6 +32,8 @@
 #include <App/PropertyStandard.h>
 #include <Mod/Part/App/BodyBase.h>
 
+#include <boost_signals2.hpp>
+
 namespace App {
     class Origin;
 }
@@ -141,7 +143,7 @@ public:
     PyObject *getPyObject(void) override;
 
     virtual std::vector<std::string> getSubObjects(int reason=0) const override;
-    virtual App::DocumentObject *getSubObject(const char *subname, 
+    virtual App::DocumentObject *getSubObject(const char *subname,
         PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const override;
 
     void setShowTip(bool enable) {

@@ -32,7 +32,7 @@
 #include <App/Property.h>
 #include <Mod/Part/App/Geometry.h>
 #include "Constraint.h"
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 #include <boost/unordered/unordered_map.hpp>
 
 namespace Base {

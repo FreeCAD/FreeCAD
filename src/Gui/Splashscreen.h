@@ -87,8 +87,8 @@ private:
     QTextBrowser* browser;
 };
 
-/** This widget provides the "About dialog" of an application. 
- * This shows the current version, the build number and date. 
+/** This widget provides the "About dialog" of an application.
+ * This shows the current version, the build number and date.
  * \author Werner Mayer
  */
 class GuiExport AboutDialog : public QDialog

@@ -35,6 +35,8 @@
 #include <App/Document.h>
 #include <Mod/Sketcher/App/SketchAnalysis.h>
 
+#include "GeometryFacade.h"
+
 #include "Analyse.h"
 
 #include "Sketch.h"
@@ -68,6 +70,7 @@ public:
     App     ::PropertyLinkSubList    ExternalGeometry;
     App     ::PropertyLinkListHidden Exports;
     Part    ::PropertyGeometryList   ExternalGeo;
+    App     ::PropertyBool           FullyConstrained;
     /** @name methods override Feature */
     //@{
     short mustExecute() const override;
@@ -108,6 +111,8 @@ public:
      \retval int - 0 if successful
      */
     int delGeometry(int GeoId, bool deleteinternalgeo = true);
+    /// Deletes just the GeoIds indicated, it does not look for internal geometry
+    int delGeometriesExclusiveList(const std::vector<int>& GeoIds);
     /// Does the same as \a delGeometry but allows to delete several geometries in one step
     int delGeometries(const std::vector<int>& GeoIds);
     /// deletes all the elements/constraints of the sketch except for external geometry
@@ -141,7 +146,7 @@ public:
     /// attach a link reference to an external geometry
     int attachExternal(const std::vector<int> &geoIds, App::DocumentObject *Obj, const char* SubName);
     int detachExternal(const std::vector<int> &geoIds);
-    
+
     /** deletes all external geometry */
     int delAllExternal();
 
@@ -157,6 +162,9 @@ public:
     std::vector<int> getRelatedGeometry(int GeoId) const;
     /// Sync frozen external geometries
     int syncGeometry(const std::vector<int> &geoIds);
+
+    std::unique_ptr<const GeometryFacade> getGeometryFacade(int GeoId) const;
+
     /// returns a list of all internal geometries
     const std::vector<Part::Geometry *> &getInternalGeometry(void) const { return Geometry.getValues(); }
     /// returns a list of projected external geometries
@@ -317,6 +325,8 @@ public:
     static void appendConflictMsg(const std::vector<int> &conflicting, std::string &msg);
     /// generates a warning message about redundant constraints and appends it to the given message
     static void appendRedundantMsg(const std::vector<int> &redundant, std::string &msg);
+    /// generates a warning message about malformed constraints and appends it to the given message
+    static void appendMalformedConstraintsMsg(const std::vector<int> &malformed, std::string &msg);
 
     double calculateAngleViaPoint(int geoId1, int geoId2, double px, double py);
     bool isPointOnCurve(int geoIdCurve, double px, double py);
@@ -349,13 +359,15 @@ public:
     void validateConstraints();
     /// Checks if support is valid
     bool evaluateSupport(void);
-    
+
     /// gets DoF of last solver execution
     inline int getLastDoF() const {return lastDoF;}
     /// gets HasConflicts status of last solver execution
     inline bool getLastHasConflicts() const {return lastHasConflict;}
     /// gets HasRedundancies status of last solver execution
     inline bool getLastHasRedundancies() const {return lastHasRedundancies;}
+    /// gets HasMalformedConstraints status of last solver execution
+    inline bool getLastHasMalformedConstraints() const {return lastHasMalformedConstraints;}
     /// gets solver status of last solver execution
     inline int getLastSolverStatus() const {return lastSolverStatus;}
     /// gets solver SolveTime of last solver execution
@@ -364,10 +376,26 @@ public:
     inline const std::vector<int> &getLastConflicting(void) const { return lastConflicting; }
     /// gets the redundant constraints of last solver execution
     inline const std::vector<int> &getLastRedundant(void) const { return lastRedundant; }
-    /// gets the solved sketch as a reference
-    inline Sketch &getSolvedSketch(void) {return solvedSketch;}
-    inline const Sketch &getSolvedSketch(void) const {return solvedSketch;}
+    /// gets the redundant constraints of last solver execution
+    inline const std::vector<int> &getLastMalformedConstraints(void) const { return lastMalformedConstraints; }
 
+public: /* Solver exposed interface */
+    /// gets the solved sketch as a reference
+    inline const Sketch &getSolvedSketch(void) const {return solvedSketch;}
+    /// enables/disables solver initial solution recalculation when moving point mode (useful for dragging)
+    inline void setRecalculateInitialSolutionWhileMovingPoint(bool recalculateInitialSolutionWhileMovingPoint)
+        {solvedSketch.setRecalculateInitialSolutionWhileMovingPoint(recalculateInitialSolutionWhileMovingPoint);}
+    /// Forwards a request for a temporary initMove to the solver using the current sketch state as a reference (enables dragging)
+    inline int initTemporaryMove(int geoId, PointPos pos, bool fine=true);
+    /** Forwards a request for point or curve temporary movement to the solver using the current state as a reference (enables dragging).
+     *  NOTE: A temporary move operation must always be preceded by a initTemporaryMove() operation.
+     */
+    inline int moveTemporaryPoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative=false);
+    /// forwards a request to update an extension of a geometry of the solver to the solver.
+    inline void updateSolverExtension(int geoId, std::unique_ptr<Part::GeometryExtension> && ext)
+        { return solvedSketch.updateExtension(geoId, std::move(ext));}
+
+public:
     /// returns the geometric elements/vertex which the solver detects as having dependent parameters.
     /// these parameters relate to not fully constraint edges/vertices.
     void getGeometryWithDependentParameters(std::vector<std::pair<int,PointPos>>& geometrymap);
@@ -406,7 +434,7 @@ public:
 
     bool isCarbonCopyAllowed(App::Document *pDoc, App::DocumentObject *pObj, bool & xinv, bool & yinv, eReasonList* rsn = 0) const;
 
-    virtual DocumentObject *getSubObject(const char *subname, PyObject **pyObj=0, 
+    virtual DocumentObject *getSubObject(const char *subname, PyObject **pyObj=0,
             Base::Matrix4D *mat=0, bool transform=true, int depth=0) const override;
 
     virtual const std::vector<const char *>& getElementTypes(bool all=true) const override;
@@ -427,7 +455,7 @@ public:
     std::string getGeometryReference(int GeoId) const;
 
     std::string convertSubName(const char *, bool postfix=true) const;
-    std::string convertSubName(const std::string &subname, bool postfix=true) const 
+    std::string convertSubName(const std::string &subname, bool postfix=true) const
         { return convertSubName(subname.c_str(),postfix); }
 
     std::string shapeTypeFromGeoId(int GeoId, PointPos pos=Sketcher::none ) const;
@@ -467,6 +495,8 @@ public:
     // helper
     /// returns the number of redundant constraints detected
     int autoRemoveRedundants(bool updategeo = true);
+
+    int renameConstraint(int GeoId, std::string name);
 
     // Validation routines
     std::vector<Base::Vector3d> getOpenVertices(void) const;
@@ -513,6 +543,17 @@ protected:
 
     virtual void onUndoRedoFinished() override;
 
+    // migration functions
+    void migrateSketch(void);
+
+    static void appendConstraintsMsg(const std::vector<int> &vector,
+                                     const std::string & singularmsg,
+                                     const std::string & pluralmsg,
+                                     std::string &msg);
+
+    // retrieves redundant, conflicting and malformed constraint information from the solver
+    void retrieveSolverDiagnostics();
+
 private:
     /// Flag to allow external geometry from other bodies than the one this sketch belongs to
     bool allowOtherBody;
@@ -523,7 +564,7 @@ private:
     std::vector<int> VertexId2GeoId;
     std::vector<PointPos> VertexId2PosId;
     std::map<std::pair<int,PointPos>,size_t> GeoPos2VertexId;
-    
+
     Sketch solvedSketch;
 
     /** this internal flag indicate that an operation modifying the geometry, but not the DoF of the sketch took place (e.g. toggle construction),
@@ -534,16 +575,39 @@ private:
     int lastDoF;
     bool lastHasConflict;
     bool lastHasRedundancies;
+    bool lastHasMalformedConstraints;
     int lastSolverStatus;
     float lastSolveTime;
 
     std::vector<int> lastConflicting;
     std::vector<int> lastRedundant;
+    std::vector<int> lastMalformedConstraints;
 
     boost::signals2::scoped_connection constraintsRenamedConn;
     boost::signals2::scoped_connection constraintsRemovedConn;
 
     bool AutoLockTangencyAndPerpty(Constraint* cstr, bool bForce = false, bool bLock = true);
+
+    // Geometry Extensions is used to store on geometry a state that is enforced by pre-existing constraints
+    // Like Block constraint and InternalAlignment constraint. This enables (more) convenient handling in ViewProviderSketch
+    // and solver.
+    //
+    // These functions are responsible for updating the Geometry State, currently Geometry Mode (Blocked) and
+    // Geometry InternalType (BSplineKnot, BSplinePole).
+    //
+    // The data life model for handling this state is as follows:
+    // 1. Upon restore, any migration is handled to set the status for legacy files (backwards compatibility)
+    // 2. Functionality adding constraints (of the relevant type) calls addGeometryState to set the status
+    // 3. Functionality removing constraints (of the relevant type) calls removeGeometryState to remove the status
+    // 4. Save mechanism will ensure persistence.
+    void addGeometryState(const Constraint* cstr) const;
+    void removeGeometryState(const Constraint* cstr) const;
+
+    SketchAnalysis * analyser;
+
+    bool internaltransaction;
+
+    bool managedoperation; // indicates whether changes to properties are the deed of SketchObject or not (for input validation)
 
     // mapping from ExternalGeometry[*] to ExternalGeo[*].Id
     // Some external geometry may generate more than one projection
@@ -553,7 +617,7 @@ private:
     // backup of ExternalGeometry in case of element reference change
     std::vector<std::string> externalGeoRef;
 
-    // mapping from ExternalGeo[*].Id to index of ExternalGeo 
+    // mapping from ExternalGeo[*].Id to index of ExternalGeo
     std::map<long,int> externalGeoMap;
 
     // mapping from Geometry[*].Id to index of Geometry
@@ -565,13 +629,23 @@ private:
 
     class GeoHistory;
     std::unique_ptr<GeoHistory> geoHistory;
-
-    SketchAnalysis * analyser;
-
-    bool internaltransaction;
-
-    bool managedoperation; // indicates whether changes to properties are the deed of SketchObject or not (for input validation)
 };
+
+inline int SketchObject::initTemporaryMove(int geoId, PointPos pos, bool fine/*=true*/)
+{
+    // if a previous operation did not update the geometry (including geometry extensions)
+    // or constraints (including any deleted pointer, as in renameConstraint) of the solver,
+    // here we update them before starting a temporary operation.
+    if(solverNeedsUpdate)
+        solve();
+
+    return solvedSketch.initMove(geoId,pos,fine);
+}
+
+inline int SketchObject::moveTemporaryPoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative/*=false*/)
+{
+    return solvedSketch.movePoint(geoId, pos, toPoint, relative);
+}
 
 typedef App::FeaturePythonT<SketchObject> SketchObjectPython;
 

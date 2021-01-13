@@ -67,7 +67,7 @@ bool ViewProviderGroupExtension::extensionCanDragObject(App::DocumentObject*) co
 
 void ViewProviderGroupExtension::extensionAttach(App::DocumentObject* pcObject)
 {
-    if(App::GeoFeatureGroupExtension::isNonGeoGroup(pcObject)) 
+    if(App::GeoFeatureGroupExtension::isNonGeoGroup(pcObject))
         getExtendedViewProvider()->SelectionStyle.setValue(1);
 }
 
@@ -75,7 +75,7 @@ void ViewProviderGroupExtension::extensionDragObject(App::DocumentObject* obj) {
 
     Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument(\"%s\").getObject(\"%s\").removeObject("
             "App.getDocument(\"%s\").getObject(\"%s\"))",
-            getExtendedViewProvider()->getObject()->getDocument()->getName(), getExtendedViewProvider()->getObject()->getNameInDocument(), 
+            getExtendedViewProvider()->getObject()->getDocument()->getName(), getExtendedViewProvider()->getObject()->getNameInDocument(),
             obj->getDocument()->getName(), obj->getNameInDocument() );
 }
 
@@ -89,7 +89,7 @@ bool ViewProviderGroupExtension::extensionCanDropObject(App::DocumentObject* obj
 
     //we cannot drop thing of this group into it again
     if (group->hasObject(obj))
-        return false;  
+        return false;
 
     if (group->allowObject(obj))
         return true;
@@ -115,7 +115,7 @@ void ViewProviderGroupExtension::extensionDropObject(App::DocumentObject* obj) {
 
 void ViewProviderGroupExtension::extensionClaimChildren(std::vector<App::DocumentObject*> &children) const {
 
-    auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();    
+    auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
     const auto &objs = group->Group.getValues();
     children.insert(children.end(),objs.begin(),objs.end());
 }
@@ -125,10 +125,10 @@ bool ViewProviderGroupExtension::extensionOnDelete(const std::vector< std::strin
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
     // If the group is nonempty ask the user if he wants to delete its content
     if (group->Group.getSize() > 0) {
-        QMessageBox::StandardButton choice = 
+        QMessageBox::StandardButton choice =
             QMessageBox::question(getMainWindow(), QObject::tr ( "Delete group content?" ),
                 QObject::tr ( "The %1 is not empty, delete its content as well?")
-                    .arg ( QString::fromUtf8 ( getExtendedViewProvider()->getObject()->Label.getValue () ) ), 
+                    .arg ( QString::fromUtf8 ( getExtendedViewProvider()->getObject()->Label.getValue () ) ),
                 QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes );
 
         if (choice == QMessageBox::Yes) {

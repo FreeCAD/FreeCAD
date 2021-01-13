@@ -104,7 +104,7 @@ PyMethodDef Application::Methods[] = {
      "loadFile(string=filename,[string=module]) -> None\n\n"
      "Loads an arbitrary file by delegating to the given Python module:\n"
      "* If no module is given it will be determined by the file extension.\n"
-     "* If more than one module can load a file the first one one will be taken.\n"
+     "* If more than one module can load a file the first one will be taken.\n"
      "* If no module exists to load the file an exception will be raised."},
     {"open",   reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) (void)>( Application::sOpenDocument )), METH_VARARGS|METH_KEYWORDS,
      "See openDocument(string)"},
@@ -889,7 +889,7 @@ PyObject *Application::sGetDependentObjects(PyObject * /*self*/, PyObject *args)
     std::vector<App::DocumentObject*> objs;
     if(PySequence_Check(obj)) {
         Py::Sequence seq(obj);
-        for(size_t i=0;i<seq.size();++i) {
+        for(Py_ssize_t i=0;i<seq.size();++i) {
             if(!PyObject_TypeCheck(seq[i].ptr(),&DocumentObjectPy::Type)) {
                 PyErr_SetString(PyExc_TypeError, "Expect element in sequence to be of type document object");
                 return 0;

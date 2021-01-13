@@ -446,7 +446,7 @@ void ViewProvider::hide(void)
         pcModeSwitch->whichChild = -1;
 
     foreachExtension<ViewProviderExtension>([&](ViewProviderExtension *ext) {
-        if(which >= 0) 
+        if(which >= 0)
             ext->extensionModeSwitchChange();
         ext->extensionHide();
         return false;
@@ -494,7 +494,7 @@ void ViewProvider::setOverrideMode(const std::string &mode)
     }
     if (pcModeSwitch->whichChild.getValue() != -1)
         setModeSwitch();
-    else 
+    else
         callExtension(&ViewProviderExtension::extensionModeSwitchChange);
 }
 
@@ -741,7 +741,7 @@ void ViewProvider::dropObject(App::DocumentObject* obj) {
         throw Base::RuntimeError("Cannot drop object.");
 }
 
-bool ViewProvider::canDropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner, 
+bool ViewProvider::canDropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner,
         const char *subname, const std::vector<std::string> &elements) const
 {
     if(queryExtension(&ViewProviderExtension::extensionCanDropObjectEx,obj,owner,subname,elements))
@@ -749,8 +749,8 @@ bool ViewProvider::canDropObjectEx(App::DocumentObject* obj, App::DocumentObject
     return canDropObject(obj);
 }
 
-std::string ViewProvider::dropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner, 
-        const char *subname, const std::vector<std::string> &elements) 
+std::string ViewProvider::dropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner,
+        const char *subname, const std::vector<std::string> &elements)
 {
     std::string name;
     bool res = false;
@@ -788,7 +788,7 @@ bool ViewProvider::canReplaceObject(App::DocumentObject* oldValue, App::Document
         res = ext->extensionCanReplaceObject(oldValue, newValue);
         return res>=0;
     });
-    
+
     if(res < 0) {
         // no one implements this function, fallback to canDropObject
         return canDropObject(newValue);
@@ -909,7 +909,7 @@ int ViewProvider::partialRender(const std::vector<std::string> &elements, bool c
     action.setSecondary(true);
     for(auto element : elements) {
         bool hidden = hasHiddenMarker(element.c_str());
-        if(hidden) 
+        if(hidden)
             element.resize(element.size()-hiddenMarker().size());
         path->truncate(0);
         SoDetail *det = 0;
@@ -919,7 +919,7 @@ int ViewProvider::partialRender(const std::vector<std::string> &elements, bool c
                 continue;
             }
             FC_LOG("partial render (" << path->getLength() << "): " << element);
-            if(!hidden) 
+            if(!hidden)
                 action.setType(clear?SoSelectionElementAction::Remove:SoSelectionElementAction::Append);
             else
                 action.setType(clear?SoSelectionElementAction::Show:SoSelectionElementAction::Hide);
@@ -980,7 +980,7 @@ struct BBoxKey {
 };
 
 // copied from boost::hash_combine, because boost changes hearder location in
-// different version. 
+// different version.
 template <class T>
 inline void hash_combine(std::size_t& seed, const T& v)
 {
@@ -995,23 +995,23 @@ static std::hash<double> DoubleHasher;
 struct BBoxKeyHasher {
     std::size_t operator()(const BBoxKey &key) const {
         std::size_t seed = StringHasher(key.subname);
-        hash_combine(seed,BoolHasher(key.transform)); 
-        hash_combine(seed,DoubleHasher(key.mat[0][0])); 
-        hash_combine(seed,DoubleHasher(key.mat[0][1])); 
-        hash_combine(seed,DoubleHasher(key.mat[0][2])); 
-        hash_combine(seed,DoubleHasher(key.mat[0][3])); 
-        hash_combine(seed,DoubleHasher(key.mat[1][0])); 
-        hash_combine(seed,DoubleHasher(key.mat[1][1])); 
-        hash_combine(seed,DoubleHasher(key.mat[1][2])); 
-        hash_combine(seed,DoubleHasher(key.mat[1][3])); 
-        hash_combine(seed,DoubleHasher(key.mat[2][0])); 
-        hash_combine(seed,DoubleHasher(key.mat[2][1])); 
-        hash_combine(seed,DoubleHasher(key.mat[2][2])); 
-        hash_combine(seed,DoubleHasher(key.mat[2][3])); 
-        hash_combine(seed,DoubleHasher(key.mat[3][0])); 
-        hash_combine(seed,DoubleHasher(key.mat[3][1])); 
-        hash_combine(seed,DoubleHasher(key.mat[3][2])); 
-        hash_combine(seed,DoubleHasher(key.mat[3][3])); 
+        hash_combine(seed,BoolHasher(key.transform));
+        hash_combine(seed,DoubleHasher(key.mat[0][0]));
+        hash_combine(seed,DoubleHasher(key.mat[0][1]));
+        hash_combine(seed,DoubleHasher(key.mat[0][2]));
+        hash_combine(seed,DoubleHasher(key.mat[0][3]));
+        hash_combine(seed,DoubleHasher(key.mat[1][0]));
+        hash_combine(seed,DoubleHasher(key.mat[1][1]));
+        hash_combine(seed,DoubleHasher(key.mat[1][2]));
+        hash_combine(seed,DoubleHasher(key.mat[1][3]));
+        hash_combine(seed,DoubleHasher(key.mat[2][0]));
+        hash_combine(seed,DoubleHasher(key.mat[2][1]));
+        hash_combine(seed,DoubleHasher(key.mat[2][2]));
+        hash_combine(seed,DoubleHasher(key.mat[2][3]));
+        hash_combine(seed,DoubleHasher(key.mat[3][0]));
+        hash_combine(seed,DoubleHasher(key.mat[3][1]));
+        hash_combine(seed,DoubleHasher(key.mat[3][2]));
+        hash_combine(seed,DoubleHasher(key.mat[3][3]));
         return seed;
     }
 };
@@ -1028,7 +1028,7 @@ void ViewProvider::clearBoundingBoxCache() {
 
 Base::BoundBox3d ViewProvider::getBoundingBox(
         const char *subname, const Base::Matrix4D *mat,
-        bool transform, const View3DInventorViewer *viewer, int depth) const 
+        bool transform, const View3DInventorViewer *viewer, int depth) const
 {
     if(!bboxCache)
         bboxCache.reset(new BoundingBoxCache);
@@ -1056,7 +1056,7 @@ Base::BoundBox3d ViewProvider::getBoundingBox(
 
 Base::BoundBox3d ViewProvider::_getBoundingBox(
         const char *subname, const Base::Matrix4D *mat,
-        bool transform, const View3DInventorViewer *viewer, int) const 
+        bool transform, const View3DInventorViewer *viewer, int) const
 {
     if(!pcRoot || !pcModeSwitch || pcRoot->findChild(pcModeSwitch)<0)
         return Base::BoundBox3d();
@@ -1112,7 +1112,7 @@ Base::BoundBox3d ViewProvider::_getBoundingBox(
     path.unrefNoDelete();
 
     auto xbbox = bboxAction.getXfBoundingBox();
-    if(mat) 
+    if(mat)
         xbbox.transform(convert(*mat));
     auto bbox = xbbox.project();
     float minX,minY,minZ,maxX,maxY,maxZ;

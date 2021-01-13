@@ -410,7 +410,7 @@ void CmdSketcherConvertToNURB::activated(int iMsg)
 
     bool nurbsized = false;
 
-    openCommand("Convert to NURBS");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Convert to NURBS"));
 
     for (size_t i=0; i < SubNames.size(); i++) {
         // only handle edges
@@ -476,7 +476,7 @@ void CmdSketcherIncreaseDegree::activated(int iMsg)
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    openCommand("Increase spline degree");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Increase spline degree"));
 
     bool ignored = false;
 
@@ -551,7 +551,7 @@ void CmdSketcherDecreaseDegree::activated(int iMsg)
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    openCommand("Decrease spline degree");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Decrease spline degree"));
 
     bool ignored = false;
 
@@ -644,7 +644,7 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
 
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    openCommand("Increase knot multiplicity");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Increase knot multiplicity"));
 
     bool applied = false;
     bool notaknot = true;
@@ -798,7 +798,7 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
 
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    openCommand("Decrease knot multiplicity");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Decrease knot multiplicity"));
 
     bool applied = false;
     bool notaknot = true;

@@ -390,7 +390,7 @@ void Polyline::setCloseStippled(bool c)
 
 void Polyline::setLineWidth(float l)
 {
-    line = l; 
+    line = l;
 }
 
 void Polyline::addNode(const QPoint& p)

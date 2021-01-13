@@ -116,7 +116,7 @@ void CmdPartDesignBody::activated(int iMsg)
     bool viewAll;
     bool addtogroup = false;
 
-    openCommand("Add a Body");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Add a Body"));
 
     std::string support;
     std::string supportNames;
@@ -125,7 +125,7 @@ void CmdPartDesignBody::activated(int iMsg)
         auto & sel = *it;
         auto sobj = sel.getSubObject();
         if (!sobj) {
-            FC_WARN("failed to get sub object " 
+            FC_WARN("failed to get sub object "
                     << sel.getDocumentName() << '#' << sel.getObjectName()
                     << '.' << sel.getSubName());
             it = sels.erase(it);
@@ -139,7 +139,7 @@ void CmdPartDesignBody::activated(int iMsg)
         auto shape = Part::Feature::getTopoShape(
                 sel.getObject(), sel.getSubName().c_str(), true,0,&owner,false);
         if(!owner || !shape.hasSubShape(TopAbs_SOLID)) {
-            FC_WARN("Ignore selection with no solid shape: " 
+            FC_WARN("Ignore selection with no solid shape: "
                     << sel.getDocumentName() << '#' << sel.getObjectName()
                     << '.' << sel.getSubName());
             it = sels.erase(it);
@@ -482,7 +482,7 @@ void CmdPartDesignMigrate::activated(int iMsg)
     }
 
     // do the actual migration
-    Gui::Command::openCommand("Migrate legacy part design features to Bodies");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Migrate legacy part design features to Bodies"));
 
     for ( auto chainIt = featureChains.begin(); !featureChains.empty();
             featureChains.erase (chainIt), chainIt = featureChains.begin () ) {
@@ -627,7 +627,7 @@ void CmdPartDesignMoveTip::activated(int iMsg)
         return;
     }
 
-    openCommand("Move tip to selected feature");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Move tip to selected feature"));
 
     if (selFeature == body) {
         FCMD_OBJ_CMD(body,"Tip = None");
@@ -672,7 +672,7 @@ void CmdPartDesignDuplicateSelection::activated(int iMsg)
 
     std::vector<App::DocumentObject*> beforeFeatures = getDocument()->getObjects();
 
-    openCommand("Duplicate a PartDesign object");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Duplicate a PartDesign object"));
     doCommand(Doc,"FreeCADGui.runCommand('Std_DuplicateSelection')");
 
     if (pcActiveBody) {
@@ -783,14 +783,14 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
     QString text = QInputDialog::getItem(Gui::getMainWindow(),
         qApp->translate("PartDesign_MoveFeature", "Select body"),
         qApp->translate("PartDesign_MoveFeature", "Select a body from the list"),
-        items, 0, false, &ok);
+        items, 0, false, &ok, Qt::MSWindowsFixedSizeDialogHint);
     if (!ok) return;
     int index = items.indexOf(text);
     if (index < 0) return;
 
     PartDesign::Body* target = static_cast<PartDesign::Body*>(target_bodies[index]);
 
-    openCommand("Move an object");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Move an object"));
 
     std::stringstream stream;
     stream << "features_ = [" << getObjectCmd(features.back());
@@ -933,13 +933,13 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
     QString text = QInputDialog::getItem(Gui::getMainWindow(),
         qApp->translate("PartDesign_MoveFeatureInTree", "Select feature"),
         qApp->translate("PartDesign_MoveFeatureInTree", "Select a feature from the list"),
-        items, 0, false, &ok);
+        items, 0, false, &ok, Qt::MSWindowsFixedSizeDialogHint);
     if (!ok) return;
     int index = items.indexOf(text);
     // first object is the beginning of the body
     App::DocumentObject* target = index != 0 ? model[index-1] : nullptr;
 
-    openCommand("Move an object inside tree");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Move an object inside tree"));
 
     App::DocumentObject* lastObject = nullptr;
     for ( auto feat: features ) {
@@ -976,8 +976,8 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
             for(auto dep : App::Document::getDependencyList({obj})) {
                 auto it = orders.find(dep);
                 if(it != orders.end() && it->second > i) {
-                    ss << feat->Label.getValue() << ", " << 
-                        obj->Label.getValue() << " -> " << 
+                    ss << feat->Label.getValue() << ", " <<
+                        obj->Label.getValue() << " -> " <<
                         it->first->Label.getValue();
                     if(!failed)
                         failed = true;
@@ -989,7 +989,7 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
     }
     if(failed) {
         QMessageBox::critical (0, QObject::tr( "Dependency violation" ),
-                QObject::tr( "Early feature must not depend on later feature.\n\n") 
+                QObject::tr( "Early feature must not depend on later feature.\n\n")
                     + QString::fromUtf8(ss.str().c_str()));
         abortCommand();
         return;

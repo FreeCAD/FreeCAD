@@ -32,7 +32,7 @@
 # include <QTextBlock>
 # include <iostream>
 # include <boost_bind_bind.hpp>
-# include <boost/signals2.hpp>
+# include <boost_signals2.hpp>
 #endif
 
 
@@ -258,6 +258,7 @@ bool TextDocumentEditorView::canClose()
             discardBtn->setShortcut(QKeySequence::mnemonic(text));
         }
 
+        box.adjustSize();
         switch (box.exec())
         {
         case QMessageBox::Save:

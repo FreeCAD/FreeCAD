@@ -65,7 +65,8 @@ if(DOXYGEN_FOUND)
                            ${CMAKE_SOURCE_DIR}/src/Mod
                            ${CMAKE_BINARY_DIR}/src/Mod
                            #${CMAKE_SOURCE_DIR}/src/Main #nothing to document there ATM...
-                           ${CMAKE_SOURCE_DIR}/src/Doc 
+                           ${CMAKE_SOURCE_DIR}/src/Doc
+                           ${CMAKE_BINARY_DIR}/src/Doc 
     )
     STRING(REGEX REPLACE ";" " " DOXYGEN_INPUT_LIST "${DOXYGEN_SOURCE_DIR}")
 

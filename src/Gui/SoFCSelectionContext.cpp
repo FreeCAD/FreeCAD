@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (c) 2018 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
+ *   Copyright (c) 2018 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -40,7 +40,7 @@ bool SoFCSelectionContext::checkGlobal(SoFCSelectionContextPtr ctx) {
     bool sel = false;
     bool hl = false;
     SoFCSelectionRoot::checkSelection(sel,selectionColor,hl,highlightColor);
-    if(sel) 
+    if(sel)
         selectionIndex.emplace(-1,0);
     else if(ctx && hl) {
         selectionColor = ctx->selectionColor;
@@ -70,7 +70,7 @@ bool SoFCSelectionContext::addIndex(int index) {
     return ++selectionIndex[index] == 1;
 }
 
-int SoFCSelectionContext::merge(int status, SoFCSelectionContextBasePtr &output, 
+int SoFCSelectionContext::merge(int status, SoFCSelectionContextBasePtr &output,
         SoFCSelectionContextBasePtr input, SoFCSelectionRoot *)
 {
     auto ctx = std::dynamic_pointer_cast<SoFCSelectionContext>(input);
@@ -176,7 +176,7 @@ bool SoFCSelectionContextEx::isSingleColor(uint32_t &color, bool &hasTransparenc
     return false;
 }
 
-int SoFCSelectionContextEx::merge(int status, SoFCSelectionContextBasePtr &output, 
+int SoFCSelectionContextEx::merge(int status, SoFCSelectionContextBasePtr &output,
         SoFCSelectionContextBasePtr input, SoFCSelectionRoot *node)
 {
     auto ctx = std::dynamic_pointer_cast<SoFCSelectionContextEx>(input);
@@ -258,7 +258,7 @@ bool SoFCSelectionCounter::checkCache(SoState *state, bool secondary) {
         }
         return true;
     }
-    if(*counter || 
+    if(*counter ||
        (hasSelection && Selection().hasSelection()) ||
        (hasPreselection && Selection().hasPreselection()))
     {

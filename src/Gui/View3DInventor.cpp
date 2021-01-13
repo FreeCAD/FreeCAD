@@ -223,7 +223,7 @@ View3DInventor::~View3DInventor()
 {
     if(_pcDocument) {
         SoCamera * Cam = _viewer->getSoRenderManager()->getCamera();
-        if (Cam) 
+        if (Cam)
             _pcDocument->saveCameraSettings(SoFCDB::writeNodesToString(Cam).c_str());
     }
     hGrp->Detach(this);
@@ -374,9 +374,19 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         float val = rGrp.GetFloat("ZoomStep", 0.0f);
         _viewer->navigationStyle()->setZoomStep(val);
     }
-    else if (strcmp(Reason,"DragAtCursor") == 0) {
-        bool on = rGrp.GetBool("DragAtCursor", false);
-        _viewer->navigationStyle()->setDragAtCursor(on);
+    else if (strcmp(Reason,"RotationMode") == 0) {
+        long mode = rGrp.GetInt("RotationMode", 1);
+        if (mode == 0) {
+            _viewer->navigationStyle()->setRotationCenterMode(NavigationStyle::RotationCenterMode::WindowCenter);
+        }
+        else if (mode == 1) {
+            _viewer->navigationStyle()->setRotationCenterMode(NavigationStyle::RotationCenterMode::ScenePointAtCursor |
+                                                              NavigationStyle::RotationCenterMode::FocalPointAtCursor);
+        }
+        else if (mode == 2) {
+            _viewer->navigationStyle()->setRotationCenterMode(NavigationStyle::RotationCenterMode::ScenePointAtCursor |
+                                                              NavigationStyle::RotationCenterMode::BoundingBoxCenter);
+        }
     }
     else if (strcmp(Reason,"EyeDistance") == 0) {
         _viewer->getSoRenderManager()->setStereoOffset(rGrp.GetFloat("EyeDistance",5.0));
@@ -524,10 +534,13 @@ void View3DInventor::printPreview()
 {
     QPrinter printer(QPrinter::ScreenResolution);
     printer.setFullPage(true);
-#if (QT_VERSION > QT_VERSION_CHECK(5, 9, 0))
+#if QT_VERSION >= 0x050300
+    printer.setPageSize(QPageSize(QPageSize::A4));
+    printer.setPageOrientation(QPageLayout::Landscape);
+#else
     printer.setPageSize(QPrinter::A4);
-#endif
     printer.setOrientation(QPrinter::Landscape);
+#endif
 
     QPrintPreviewDialog dlg(&printer, this);
     connect(&dlg, SIGNAL(paintRequested (QPrinter *)),
@@ -547,7 +560,11 @@ void View3DInventor::print(QPrinter* printer)
         return;
     }
 
+#if QT_VERSION >= 0x050300
+    QRect rect = printer->pageLayout().paintRectPixels(printer->resolution());
+#else
     QRect rect = printer->pageRect();
+#endif
     QImage img;
     _viewer->imageFromFramebuffer(rect.width(), rect.height(), 8, QColor(255,255,255), img);
     p.drawImage(0,0,img);

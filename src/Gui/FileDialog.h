@@ -48,13 +48,13 @@ class GuiExport FileDialog : public QFileDialog
     Q_OBJECT
 
 public:
-    static QString getOpenFileName( QWidget * parent = 0, const QString & caption = QString(), const QString & dir = QString(), 
+    static QString getOpenFileName( QWidget * parent = 0, const QString & caption = QString(), const QString & dir = QString(),
                                     QString filter = QString(), QString * selectedFilter = 0, Options options = Options(),
                                     FileMode fileMode = ExistingFile);
-    static QString getSaveFileName( QWidget * parent = 0, const QString & caption = QString(), const QString & dir = QString(), 
+    static QString getSaveFileName( QWidget * parent = 0, const QString & caption = QString(), const QString & dir = QString(),
                                     QString filter = QString(), QString * selectedFilter = 0, Options options = Options(),
                                     FileMode fileMode = AnyFile);
-    static QString getExistingDirectory( QWidget * parent = 0, const QString & caption = QString(), const QString & dir = QString(), 
+    static QString getExistingDirectory( QWidget * parent = 0, const QString & caption = QString(), const QString & dir = QString(),
                                          Options options = ShowDirsOnly );
     static QStringList getOpenFileNames( QWidget * parent = 0, const QString & caption = QString(), const QString & dir = QString(),
                                          QString filter = QString(), QString * selectedFilter = 0, Options options = Options(),
@@ -85,7 +85,7 @@ private:
 // ----------------------------------------------------------------------
 
 /**
- * The FileOptionsDialog class provides an extensible file dialog with an additional widget either at the right 
+ * The FileOptionsDialog class provides an extensible file dialog with an additional widget either at the right
  * or at the bottom, that can be shown or hidden with the 'Extended' button.
  * @author Werner Mayer
  */
@@ -160,12 +160,12 @@ public:
     FileChooser ( QWidget * parent = 0 );
     virtual ~FileChooser();
 
-    /** 
+    /**
     * Returns the set filter.
     */
     QString filter() const;
 
-    /** 
+    /**
     * Returns the filename.
     */
     QString fileName() const;
@@ -239,7 +239,7 @@ public:
     virtual ~SelectModule();
     QString getModule() const;
 
-    /** @name Import/Export handler 
+    /** @name Import/Export handler
      * These methods accepts a file name or a list of file names and return
      * a map of file names with the associated Python module that should open
      * the file.

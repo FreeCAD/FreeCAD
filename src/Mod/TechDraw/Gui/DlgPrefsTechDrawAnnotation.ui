@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>460</width>
+    <width>440</width>
     <height>447</height>
    </rect>
   </property>
@@ -578,7 +578,7 @@
          </widget>
         </item>
         <item row="3" column="2">
-         <widget class="Gui::PrefLineEdit" name="leLineGroup">
+         <widget class="Gui::PrefComboBox" name="pcbLineGroup">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -591,20 +591,14 @@
             <height>0</height>
            </size>
           </property>
-          <property name="toolTip">
-           <string>Default name in LineGroup CSV file</string>
-          </property>
-          <property name="text">
-           <string notr="true">FC 0.70mm</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
           <property name="prefEntry" stdset="0">
            <cstring>LineGroup</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>/Mod/TechDraw/Decorations</cstring>
+          </property>
+          <property name="text" stdset="0">
+           <string/>
           </property>
          </widget>
         </item>
@@ -698,8 +692,11 @@
             <italic>true</italic>
            </font>
           </property>
+          <property name="toolTip">
+           <string>Line group used to set line widths</string>
+          </property>
           <property name="text">
-           <string>Line Group Name</string>
+           <string>Line Width Group</string>
           </property>
          </widget>
         </item>
@@ -881,11 +878,6 @@
   <customwidget>
    <class>Gui::PrefComboBox</class>
    <extends>QComboBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefLineEdit</class>
-   <extends>QLineEdit</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>

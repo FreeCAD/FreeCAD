@@ -79,11 +79,11 @@ ViewProviderDocumentObject::ViewProviderDocumentObject()
 {
     static const char *dogroup = "Display Options";
     static const char *sgroup = "Selection";
-    
+
     ADD_PROPERTY_TYPE(DisplayMode, ((long)0), dogroup, App::Prop_None, "Set the display mode");
     ADD_PROPERTY_TYPE(Visibility, (true), dogroup, App::Prop_None, "Show the object in the 3d view");
     ADD_PROPERTY_TYPE(ShowInTree, (true), dogroup, App::Prop_None, "Show the object in the tree view");
-    
+
     ADD_PROPERTY_TYPE(SelectionStyle, ((long)0), sgroup, App::Prop_None, "Set the object selection style");
     static const char *SelectionStyleEnum[] = {"Shape","BoundBox",0};
     SelectionStyle.setEnums(SelectionStyleEnum);
@@ -220,7 +220,7 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
         }
         if (!Visibility.testStatus(App::Property::User1)
                 && !testStatus(SecondaryView)
-                && getObject() 
+                && getObject()
                 && getObject()->Visibility.getValue()!=Visibility.getValue())
         {
             // Changing the visibility of a document object will automatically set
@@ -265,7 +265,7 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
 void ViewProviderDocumentObject::hide(void)
 {
     auto obj = getObject();
-    if(obj && obj->getDocument() && obj->getNameInDocument() 
+    if(obj && obj->getDocument() && obj->getNameInDocument()
            && !SelectionNoTopParentCheck::enabled())
     {
         Gui::Selection().updateSelection(
@@ -522,7 +522,7 @@ PyObject* ViewProviderDocumentObject::getPyObject()
     return pyViewObject;
 }
 
-bool ViewProviderDocumentObject::canDropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner, 
+bool ViewProviderDocumentObject::canDropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner,
         const char *subname, const std::vector<std::string> &elements) const
 {
     if(queryExtension(&ViewProviderExtension::extensionCanDropObjectEx,obj,owner,subname,elements))
@@ -540,7 +540,7 @@ int ViewProviderDocumentObject::replaceObject(
     {
         FC_THROWM(Base::RuntimeError,"Invalid object");
     }
-    
+
     auto obj = getObject();
     if(!obj || !obj->getNameInDocument())
         FC_THROWM(Base::RuntimeError,"View provider not attached");
@@ -606,7 +606,7 @@ bool ViewProviderDocumentObject::getElementPicked(const SoPickedPoint *pp, std::
     auto childRoot = getChildRoot();
     if(!childRoot && ViewParams::instance()->getMapChildrenPlacement())
         childRoot = getChildrenGroup();
-    if(childRoot) 
+    if(childRoot)
         idx = path->findNode(childRoot);
     if(idx < 0) {
         subname = getElement(pp?pp->getDetail():0);
@@ -700,7 +700,7 @@ bool ViewProviderDocumentObject::getDetailPath(
 }
 
 void ViewProviderDocumentObject::onPropertyStatusChanged(
-        const App::Property &prop, unsigned long oldStatus) 
+        const App::Property &prop, unsigned long oldStatus)
 {
     (void)oldStatus;
     if(!App::Document::isAnyRestoring() && pcObject && pcObject->getDocument())
@@ -766,7 +766,7 @@ void ViewProviderDocumentObject::setSelectable(bool selectable)
 
 Base::BoundBox3d ViewProviderDocumentObject::_getBoundingBox(
         const char *subname, const Base::Matrix4D *mat, bool transform,
-        const View3DInventorViewer *viewer, int depth) const 
+        const View3DInventorViewer *viewer, int depth) const
 {
     if(!viewer) {
         viewer = getActiveViewer();
@@ -877,7 +877,7 @@ void ViewProviderDocumentObject::updateChildren(bool propagate) {
             continue;
         if(!childSet.erase(child)) {
             // this means new child detected
-            if(vpd->parentSet.insert(obj).second 
+            if(vpd->parentSet.insert(obj).second
                     && child->getDocument() == obj->getDocument())
             {
                 // Trigger visibility check
@@ -912,12 +912,12 @@ void ViewProviderDocumentObject::updateChildren(bool propagate) {
         for(auto link : App::GetApplication().getLinksTo(obj,App::GetLinkRecursive)) {
             auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
                     Application::Instance->getViewProvider(link));
-            if(vpd) 
+            if(vpd)
                 vpd->updateChildren(false);
         }
     }
 
-    //if the item is in a GeoFeatureGroup we may need to update that too, as the claim children 
+    //if the item is in a GeoFeatureGroup we may need to update that too, as the claim children
     //of the geofeaturegroup depends on what the childs claim
     auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(obj);
     if(grp) {
@@ -955,13 +955,13 @@ bool ViewProviderDocumentObject::isShowable(bool refresh) {
         return _Showable;
 
     auto obj = getObject();
-    if(!obj || _Busy) 
+    if(!obj || _Busy)
         return _Showable;
 
     // guard against cyclic dependency
     Base::StateLocker locker(_Busy);
     bool showable = true;
-    for(auto parent : parentSet) {  
+    for(auto parent : parentSet) {
         // Calling getViewProvider() also servers as a safety measure, to make
         // sure the object exists.
         auto parentVp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
@@ -973,7 +973,7 @@ bool ViewProviderDocumentObject::isShowable(bool refresh) {
                 showable = true;
                 break;
             }
-        } else if(!parent->hasChildElement() 
+        } else if(!parent->hasChildElement()
                     && parent->getLinkedObject(false)==parent)
         {
             showable = true;
@@ -999,7 +999,7 @@ bool ViewProviderDocumentObject::isShowable(bool refresh) {
             callExtension(&ViewProviderExtension::extensionModeSwitchChange);
         }
     }
-    
+
     // Plain group is special, as its view provider does not claim any of its
     // child nodes, and its mode switch node may not have any children, so its
     // whichChild may always be -1.  Therefore, we have to manually propagate

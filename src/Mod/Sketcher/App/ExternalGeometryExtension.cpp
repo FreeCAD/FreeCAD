@@ -35,43 +35,52 @@ using namespace Sketcher;
 
 constexpr std::array<const char *, ExternalGeometryExtension::NumFlags> ExternalGeometryExtension::flag2str;
 
-TYPESYSTEM_SOURCE(Sketcher::ExternalGeometryExtension,Part::GeometryExtension)
+TYPESYSTEM_SOURCE(Sketcher::ExternalGeometryExtension,Part::GeometryMigrationPersistenceExtension)
 
-// Persistence implementer
-unsigned int ExternalGeometryExtension::getMemSize (void) const
+void ExternalGeometryExtension::copyAttributes(Part::GeometryExtension * cpy) const
 {
-    return sizeof(long int);
+    Part::GeometryPersistenceExtension::copyAttributes(cpy);
+
+    static_cast<ExternalGeometryExtension *>(cpy)->Ref = this->Ref;
+    static_cast<ExternalGeometryExtension *>(cpy)->RefIndex = this->RefIndex;
+    static_cast<ExternalGeometryExtension *>(cpy)->Flags = this->Flags;
 }
 
-void ExternalGeometryExtension::Save(Base::Writer &writer) const
+void ExternalGeometryExtension::restoreAttributes(Base::XMLReader &reader)
 {
-    writer.Stream() << writer.ind() << "<GeoExtension type=\"" << this->getTypeId().getName();
+    Part::GeometryPersistenceExtension::restoreAttributes(reader);
 
-    const std::string name = getName();
-
-    if(name.size() > 0)
-        writer.Stream() << "\" name=\"" << name;
-
-    writer.Stream() << "\" Ref=\"" << Ref << "\" Flags=\"" << Flags.to_string() << "\"/>" << std::endl;
+    Ref = reader.getAttribute("Ref", "");
+    RefIndex = reader.getAttributeAsInteger("RefIndex", "0");
+    Flags = FlagType(reader.getAttributeAsUnsigned("Flags", "0"));
 }
 
-void ExternalGeometryExtension::Restore(Base::XMLReader &reader)
+void ExternalGeometryExtension::saveAttributes(Base::Writer &writer) const
 {
-    restoreNameAttribute(reader);
+    Part::GeometryPersistenceExtension::saveAttributes(writer);
+    if (Ref.size())
+        writer.Stream() << "\" Ref=\"" << Base::Persistence::encodeAttribute(Ref);
+    if (RefIndex >= 0)
+        writer.Stream() << "\" RefIndex=\"" << RefIndex;
+    if (Flags.any())
+        writer.Stream() << "\" Flags=\"" << Flags.to_ulong();
+}
 
-    Ref = reader.getAttribute("Ref");
-    Flags = FlagType(reader.getAttribute("Flags"));
-
+void ExternalGeometryExtension::preSave(Base::Writer &writer) const
+{
+    if (Ref.size())
+        writer.Stream() << " ref=\"" << Base::Persistence::encodeAttribute(Ref)  << "\"";
+    if (RefIndex >= 0)
+        writer.Stream() << " refIndex=\"" << RefIndex << "\"";
+    if (Flags.any())
+        writer.Stream() << " flags=\"" << Flags.to_ulong() << "\"";
 }
 
 std::unique_ptr<Part::GeometryExtension> ExternalGeometryExtension::copy(void) const
 {
     auto cpy = std::make_unique<ExternalGeometryExtension>();
 
-    cpy->Ref = this->Ref;
-    cpy->Flags = this->Flags;
-
-    cpy->setName(this->getName()); // Base Class
+    copyAttributes(cpy.get());
 
 #if defined (__GNUC__) && (__GNUC__ <=4)
     return std::move(cpy);
@@ -85,3 +94,20 @@ PyObject * ExternalGeometryExtension::getPyObject(void)
     return new ExternalGeometryExtensionPy(new ExternalGeometryExtension(*this));
 }
 
+bool ExternalGeometryExtension::getFlagsFromName(std::string str, ExternalGeometryExtension::Flag &flag)
+{
+    auto pos = std::find_if(    ExternalGeometryExtension::flag2str.begin(),
+                                ExternalGeometryExtension::flag2str.end(),
+                                [str](const char * val) {
+                                    return strcmp(val,str.c_str())==0;}
+                                );
+
+    if( pos != ExternalGeometryExtension::flag2str.end()) {
+            int index = std::distance( ExternalGeometryExtension::flag2str.begin(), pos );
+
+            flag = static_cast<ExternalGeometryExtension::Flag>(index);
+            return true;
+    }
+
+    return false;
+}

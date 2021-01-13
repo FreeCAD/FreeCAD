@@ -36,7 +36,7 @@
 
 using namespace Sketcher;
 
-TYPESYSTEM_SOURCE(Sketcher::ExternalGeometryFacade,Part::GeometryExtension)
+TYPESYSTEM_SOURCE(Sketcher::ExternalGeometryFacade,Base::BaseClass)
 
 ExternalGeometryFacade::ExternalGeometryFacade(): Geo(nullptr), SketchGeoExtension(nullptr), ExternalGeoExtension(nullptr)
 {
@@ -54,14 +54,18 @@ ExternalGeometryFacade::ExternalGeometryFacade(const Part::Geometry * geometry)
 
 std::unique_ptr<ExternalGeometryFacade> ExternalGeometryFacade::getFacade(Part::Geometry * geometry)
 {
-    return std::unique_ptr<ExternalGeometryFacade>(new ExternalGeometryFacade(geometry));
-    //return std::make_unique<ExternalGeometryFacade>(geometry); // make_unique has no access to private constructor
+     if(geometry != nullptr)
+        return std::unique_ptr<ExternalGeometryFacade>(new ExternalGeometryFacade(geometry));
+     else
+        return std::unique_ptr<ExternalGeometryFacade>(nullptr);
 }
 
 std::unique_ptr<const ExternalGeometryFacade> ExternalGeometryFacade::getFacade(const Part::Geometry * geometry)
 {
-    return std::unique_ptr<const ExternalGeometryFacade>(new ExternalGeometryFacade(geometry));
-    //return std::make_unique<const ExternalGeometryFacade>(geometry); // make_unique has no access to private constructor
+     if(geometry != nullptr)
+        return std::unique_ptr<const ExternalGeometryFacade>(new ExternalGeometryFacade(geometry));
+     else
+        return std::unique_ptr<const ExternalGeometryFacade>(nullptr);
 }
 
 void ExternalGeometryFacade::setGeometry(Part::Geometry *geometry)
@@ -134,6 +138,13 @@ void ExternalGeometryFacade::copyId(const Part::Geometry * src, Part::Geometry *
     auto gfsrc = ExternalGeometryFacade::getFacade(src);
     auto gfdst = ExternalGeometryFacade::getFacade(dst);
     gfdst->setId(gfsrc->getId());
+}
+
+void ExternalGeometryFacade::copyFlags(const Part::Geometry * src, Part::Geometry * dst)
+{
+    auto gfsrc = ExternalGeometryFacade::getFacade(src);
+    auto gfdst = ExternalGeometryFacade::getFacade(dst);
+    gfdst->setFlags(gfsrc->getFlags());
 }
 
 PyObject * ExternalGeometryFacade::getPyObject(void)

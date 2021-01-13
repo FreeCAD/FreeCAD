@@ -77,7 +77,7 @@ AutoSaver* AutoSaver::instance()
 
 void AutoSaver::renameFile(QString dirName, QString file, QString tmpFile)
 {
-    FC_LOG("auto saver rename " << tmpFile.toUtf8().constData() 
+    FC_LOG("auto saver rename " << tmpFile.toUtf8().constData()
             << " -> " << file.toUtf8().constData());
     QDir dir(dirName);
     dir.remove(file);
@@ -135,8 +135,8 @@ void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
 {
     Gui::WaitCursor wc;
     App::Document* doc = App::GetApplication().getDocument(name.c_str());
-    if (doc && !doc->testStatus(App::Document::PartialDoc) 
-            && !doc->testStatus(App::Document::TempDoc)) 
+    if (doc && !doc->testStatus(App::Document::PartialDoc)
+            && !doc->testStatus(App::Document::TempDoc))
     {
         // Set the document's current transient directory
         std::string dirName = doc->TransientDir.getValue();
@@ -175,7 +175,7 @@ void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
             if (!this->compressed) {
                 RecoveryWriter writer(saver);
 
-                // We will be using thread pool if not compressed. 
+                // We will be using thread pool if not compressed.
                 // So, always force binary format because ASCII
                 // is not reentrant. See PropertyPartShape::SaveDocFile
                 writer.setMode("BinaryBrep");
@@ -347,8 +347,8 @@ public:
         // still chance of crash when we deleted the original and before rename
         // the new file. So we ask the main thread to do it. There is still
         // possibility of crash caused by thread other than the main, but
-        // that's the best we can do for now. 
-        QMetaObject::invokeMethod(AutoSaver::instance(), "renameFile", 
+        // that's the best we can do for now.
+        QMetaObject::invokeMethod(AutoSaver::instance(), "renameFile",
                 Qt::QueuedConnection, Q_ARG(QString,dirName)
                 ,Q_ARG(QString,fileName),Q_ARG(QString,tmpName));
     }

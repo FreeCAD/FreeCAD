@@ -108,7 +108,7 @@ private Q_SLOTS:
 protected:
     virtual QString textFromValue ( int v ) const;
     virtual int valueFromText ( const QString & text ) const;
-    virtual void onChange();        
+    virtual void onChange();
 
 private:
     void updateValidator();
@@ -143,7 +143,7 @@ private Q_SLOTS:
 };
 
 /**
- * The DoubleSpinBox class does exactly the same as Qt's QDoubleSpinBox but has expression 
+ * The DoubleSpinBox class does exactly the same as Qt's QDoubleSpinBox but has expression
  * support
  * @author Stefan Tröger
  */

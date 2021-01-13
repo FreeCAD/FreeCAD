@@ -3947,7 +3947,7 @@ void PropertyXLink::setPyObject(PyObject *value) {
         } else if (pySub.isSequence()) {
             Py::Sequence seq(pySub);
             subs.reserve(seq.size());
-            for(size_t i=0;i<seq.size();++i) {
+            for(Py_ssize_t i=0;i<seq.size();++i) {
                 Py::Object sub(seq[i]);
                 if(!sub.isString())
                     throw Base::TypeError("Expect only string inside second argument");
@@ -4361,7 +4361,7 @@ void PropertyXLinkSubList::setPyObject(PyObject *value)
     Py::Sequence seq(value);
     std::map<DocumentObject*, std::vector<std::string> > values;
     try {
-        for(size_t i=0;i<seq.size();++i) {
+        for(Py_ssize_t i=0;i<seq.size();++i) {
             PropertyLinkSub link;
             link.setAllowExternal(true);
             link.setPyObject(seq[i].ptr());

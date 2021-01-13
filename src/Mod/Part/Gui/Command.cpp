@@ -145,7 +145,7 @@ CmdPartBox2::CmdPartBox2()
 void CmdPartBox2::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    openCommand("Part Box Create");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Part Box Create"));
     doCommand(Doc,"from FreeCAD import Base");
     doCommand(Doc,"import Part");
     doCommand(Doc,"__fb__ = App.ActiveDocument.addObject(\"Part::Box\",\"PartBox\")");
@@ -186,7 +186,7 @@ CmdPartBox3::CmdPartBox3()
 void CmdPartBox3::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    openCommand("Part Box Create");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Part Box Create"));
     doCommand(Doc,"from FreeCAD import Base");
     doCommand(Doc,"import Part");
     doCommand(Doc,"__fb__ = App.ActiveDocument.addObject(\"Part::Box\",\"PartBox\")");
@@ -298,7 +298,7 @@ CmdPartCut::CmdPartCut()
 void CmdPartCut::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    std::vector<Gui::SelectionObject> Sel = 
+    std::vector<Gui::SelectionObject> Sel =
         getSelection().getSelectionEx(0, App::DocumentObject::getClassTypeId(),3);
     if (Sel.size() != 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -324,7 +324,7 @@ void CmdPartCut::activated(int iMsg)
     auto obj2 = Sel[1].getObject();
     std::string FeatName = getUniqueObjectName("Cut", obj1);
 
-    openCommand("Part Cut");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Part Cut"));
     cmdAppDocument(obj1, std::ostringstream() << "addObject(\"Part::Cut\",\"" << FeatName << "\")");
     auto feat = obj1->getDocument()->getObject(FeatName.c_str());
     cmdAppObjectArgs(feat, "Base = %s", obj1->getFullName(true));
@@ -364,7 +364,7 @@ CmdPartCommon::CmdPartCommon()
 void CmdPartCommon::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    std::vector<Gui::SelectionObject> Sel = 
+    std::vector<Gui::SelectionObject> Sel =
         getSelection().getSelectionEx(0, App::DocumentObject::getClassTypeId(), 3);
 
     //test if selected object is a compound, and if it is, look how many children it has...
@@ -409,7 +409,7 @@ void CmdPartCommon::activated(int iMsg)
     }
     str << "]";
 
-    openCommand("Common");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Common"));
     auto sel = Sel[0].getObject();
     cmdAppDocument(sel, std::ostringstream() << "addObject(\"Part::MultiCommon\",\"" << FeatName << "\")");
     auto feat = sel->getDocument()->getObject(FeatName.c_str());
@@ -449,7 +449,7 @@ CmdPartFuse::CmdPartFuse()
 void CmdPartFuse::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    std::vector<Gui::SelectionObject> Sel = 
+    std::vector<Gui::SelectionObject> Sel =
         getSelection().getSelectionEx(0, App::DocumentObject::getClassTypeId(),3);
 
     //test if selected object is a compound, and if it is, look how many children it has...
@@ -494,7 +494,7 @@ void CmdPartFuse::activated(int iMsg)
     }
     str << "]";
 
-    openCommand("Fusion");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Fusion"));
     auto sel = Sel[0].getObject();
     cmdAppDocument(sel, std::ostringstream() << "addObject(\"Part::MultiFuse\",\"" << FeatName << "\")");
     auto feat = sel->getDocument()->getObject(FeatName.c_str());
@@ -888,7 +888,7 @@ void CmdPartCompound::activated(int iMsg)
         str << s.getObject()->getFullName(true) << ", ";
     str << "]";
 
-    openCommand("Compound");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Compound"));
     cmdAppDocument(sel, std::ostringstream() << "addObject(\"Part::Compound\",\"" << FeatName << "\")");
     auto feat = sel->getDocument()->getObject(FeatName.c_str());
     finishFeature(feat, sels);
@@ -933,7 +933,7 @@ void CmdPartSection::activated(int iMsg)
     auto tool = Sel[1].getObject();
     std::string FeatName = getUniqueObjectName("Section", base);
 
-    openCommand("Section");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Section"));
     cmdAppDocument(base, std::ostringstream() << "addObject(\"Part::Section\",\"" << FeatName << "\")");
     auto feat = base->getDocument()->getObject(FeatName.c_str());
     cmdAppObjectArgs(feat, "Base = %s", base->getFullName(true));
@@ -987,7 +987,7 @@ void CmdPartImport::activated(int iMsg)
         if (!pDoc) return; // no document
 
         fn = Base::Tools::escapeEncodeFilename(fn);
-        openCommand("Import Part");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Import Part"));
         if (select == filter[1] ||
             select == filter[3]) {
             doCommand(Doc, "import ImportGui");
@@ -1093,7 +1093,7 @@ void CmdPartImportCurveNet::activated(int iMsg)
     QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), filter.join(QLatin1String(";;")));
     if (!fn.isEmpty()) {
         QFileInfo fi; fi.setFile(fn);
-        openCommand("Part Import Curve Net");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Part Import Curve Net"));
         doCommand(Doc,"f = App.activeDocument().addObject(\"Part::CurveNet\",\"%s\")", (const char*)fi.baseName().toLatin1());
         doCommand(Doc,"f.FileName = \"%s\"",(const char*)fn.toLatin1());
         commitCommand();
@@ -1209,7 +1209,7 @@ void CmdPartReverseShape::activated(int iMsg)
     Q_UNUSED(iMsg);
     std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType
         (Part::Feature::getClassTypeId());
-    openCommand("Reverse");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Reverse"));
     for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it != objs.end(); ++it) {
         const TopoDS_Shape& shape = Part::Feature::getShape(*it);
         if (!shape.IsNull()) {
@@ -1331,7 +1331,7 @@ void CmdPartMakeFace::activated(int iMsg)
     auto sketches = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId(),0,3);
     if(sketches.empty())
         return;
-    openCommand("Make face");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Make face"));
 
     try {
         App::DocumentT doc(sketches.front()->getDocument());
@@ -1625,7 +1625,7 @@ void CmdPartOffset::activated(int iMsg)
     App::DocumentObject* shape = shapes.front().getObject();;
     std::string offset = getUniqueObjectName("Offset", shape);
 
-    openCommand("Make Offset");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Make Offset"));
     cmdAppDocument(shape, std::ostringstream() << "addObject(\"Part::Offset\",\"" << offset << "\")");
     auto feat = shape->getDocument()->getObject(offset.c_str());
     cmdAppObjectArgs(feat, "Source = %s", shape->getFullName(true));
@@ -1678,7 +1678,7 @@ void CmdPartOffset2D::activated(int iMsg)
     App::DocumentObject* shape = shapes.front().getObject();
     std::string offset = getUniqueObjectName("Offset2D", shape);
 
-    openCommand("Make 2D Offset");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Make 2D Offset"));
     cmdAppDocument(shape, std::ostringstream() << "addObject(\"Part::Offset2D\",\"" << offset << "\")");
     auto feat = shape->getDocument()->getObject(offset.c_str());
     cmdAppObjectArgs(feat, "Source = %s", shape->getFullName(true));
@@ -1847,7 +1847,7 @@ void CmdPartThickness::activated(int iMsg)
 
     std::string thick = getUniqueObjectName("Thickness", shape);
 
-    openCommand("Make Thickness");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Make Thickness"));
     cmdAppDocument(shape, std::ostringstream() << "addObject(\"Part::Thickness\",\"" << thick << "\")");
     auto feat = shape->getDocument()->getObject(thick.c_str());
     cmdAppObjectArgs(feat, "Faces = %s" , selection.c_str());
@@ -2069,7 +2069,7 @@ void CmdPartRuledSurface::activated(int iMsg)
         return;
     }
 
-    openCommand("Create ruled surface");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create ruled surface"));
     std::string FeatName = getUniqueObjectName("RuledSurface", obj1.getObject());
     cmdAppDocument(obj1.getDocument(), std::ostringstream() << "addObject('Part::RuledSurface', '" << FeatName << "')");
     auto feat = obj1.getDocument()->getObject(FeatName.c_str());

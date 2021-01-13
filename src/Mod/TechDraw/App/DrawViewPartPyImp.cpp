@@ -77,32 +77,32 @@ PyObject* DrawViewPartPy::getVisibleEdges(PyObject *args)
 {
     (void) args;
     DrawViewPart* dvp = getDrawViewPartPtr();
-    PyObject* pEdgeList = PyList_New(0);
+    Py::List pEdgeList;
     std::vector<TechDraw::BaseGeom*> geoms = dvp->getEdgeGeometry();
     for (auto& g: geoms) {
         if (g->hlrVisible) {
             PyObject* pEdge = new Part::TopoShapeEdgePy(new Part::TopoShape(g->occEdge));
-            PyList_Append(pEdgeList, pEdge);
+            pEdgeList.append(Py::asObject(pEdge));
         }
     }
 
-    return pEdgeList;
+    return Py::new_reference_to(pEdgeList);
 }
 
 PyObject* DrawViewPartPy::getHiddenEdges(PyObject *args)
 {
     (void) args;
     DrawViewPart* dvp = getDrawViewPartPtr();
-    PyObject* pEdgeList = PyList_New(0);
+    Py::List pEdgeList;
     std::vector<TechDraw::BaseGeom*> geoms = dvp->getEdgeGeometry();
     for (auto& g: geoms) {
         if (!g->hlrVisible) {
             PyObject* pEdge = new Part::TopoShapeEdgePy(new Part::TopoShape(g->occEdge));
-            PyList_Append(pEdgeList, pEdge);
+            pEdgeList.append(Py::asObject(pEdge));
         }
     }
 
-    return pEdgeList;
+    return Py::new_reference_to(pEdgeList);
 }
 
 PyObject* DrawViewPartPy::requestPaint(PyObject *args)

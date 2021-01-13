@@ -25,7 +25,7 @@
 
 #include <QObject>
 #include <Mod/Mesh/Gui/ViewProvider.h>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 
 class SoCoordinate3;
 class SoFaceSet;

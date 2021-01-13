@@ -24,6 +24,7 @@
 #define SKETCHER_EXTERNALGEOMETRYEXTENSION_H
 
 #include <Mod/Part/App/Geometry.h>
+#include <Mod/Part/App/GeometryMigrationExtension.h>
 #include <array>
 #include <bitset>
 
@@ -37,6 +38,8 @@ public:
     // START_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder) <realthunder.dev@gmail.com>
     virtual bool testFlag(int flag) const = 0;
     virtual void setFlag(int flag, bool v=true) = 0;
+    virtual unsigned long getFlags() const = 0;
+    virtual void setFlags(unsigned long flags) = 0;
     // END_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder) <realthunder.dev@gmail.com>
 
     virtual bool isClear() const = 0;
@@ -44,9 +47,12 @@ public:
 
     virtual const std::string& getRef() const = 0;
     virtual void setRef(const std::string & ref) = 0;
+
+    virtual int getRefIndex() const = 0;
+    virtual void setRefIndex(int index) = 0;
 };
 
-class SketcherExport ExternalGeometryExtension : public Part::GeometryExtension, private ISketchExternalGeometryExtension
+class SketcherExport ExternalGeometryExtension : public Part::GeometryMigrationPersistenceExtension, private ISketchExternalGeometryExtension
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
@@ -67,11 +73,6 @@ public:
     ExternalGeometryExtension() = default;
     virtual ~ExternalGeometryExtension() override = default;
 
-    // Persistence implementer ---------------------
-    virtual unsigned int getMemSize(void) const override;
-    virtual void Save(Base::Writer &/*writer*/) const override;
-    virtual void Restore(Base::XMLReader &/*reader*/) override;
-
     virtual std::unique_ptr<Part::GeometryExtension> copy(void) const override;
 
     virtual PyObject *getPyObject(void) override;
@@ -79,6 +80,8 @@ public:
     // START_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder) <realthunder.dev@gmail.com>
     virtual bool testFlag(int flag) const override { return Flags.test((size_t)(flag)); }
     virtual void setFlag(int flag, bool v=true) override { Flags.set((size_t)(flag),v); }
+    virtual unsigned long getFlags() const override { return Flags.to_ulong(); }
+    virtual void setFlags(unsigned long flags) override { Flags = flags; }
     // END_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder) <realthunder.dev@gmail.com>
 
     virtual bool isClear() const override {return Flags.none();}
@@ -87,6 +90,17 @@ public:
     virtual const std::string& getRef() const override {return Ref;}
     virtual void setRef(const std::string & ref) override {Ref = ref;}
 
+    virtual int getRefIndex() const override {return RefIndex;}
+    virtual void setRefIndex(int index) override {RefIndex = index;}
+
+    static bool getFlagsFromName(std::string str, ExternalGeometryExtension::Flag &flag);
+
+protected:
+    virtual void copyAttributes(Part::GeometryExtension * cpy) const override;
+    virtual void restoreAttributes(Base::XMLReader &reader) override;
+    virtual void saveAttributes(Base::Writer &writer) const override;
+    virtual void preSave(Base::Writer &writer) const override;
+
 private:
     ExternalGeometryExtension(const ExternalGeometryExtension&) = default;
 
@@ -94,6 +108,7 @@ private:
     using FlagType = std::bitset<32>;
     // START_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder) <realthunder.dev@gmail.com>
     std::string Ref;
+    int RefIndex = -1;
     FlagType Flags;
     // END_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder) <realthunder.dev@gmail.com>
 

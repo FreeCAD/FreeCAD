@@ -333,8 +333,8 @@ void TaskRichAnno::onEditorExit(void)
 
 double TaskRichAnno::prefWeight() const
 {
-    std::string lgName = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
+    int lgNumber = Preferences::lineGroup();
+    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
     double weight = lg->getWeight("Graphic");
     delete lg;                                   //Coverity CID 174670
     return weight;
@@ -355,7 +355,7 @@ void TaskRichAnno::createAnnoFeature()
 
     std::string PageName = m_basePage->getNameInDocument();
 
-    Gui::Command::openCommand("Create Anno");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Anno"));
     Gui::cmdAppDocument(m_basePage, std::ostringstream() << "addObject('" << annoType << "','" << annoName << "')");
 
     App::DocumentObject* obj = m_basePage->getDocument()->getObject(annoName.c_str());
@@ -412,7 +412,7 @@ void TaskRichAnno::createAnnoFeature()
 void TaskRichAnno::updateAnnoFeature()
 {
 //    Base::Console().Message("TRA::updateAnnoFeature()\n");
-    Gui::Command::openCommand("Edit Anno");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit Anno"));
     commonFeatureUpdate();
     App::Color ac;
     ac.setValue<QColor>(ui->cpFrameColor->color());

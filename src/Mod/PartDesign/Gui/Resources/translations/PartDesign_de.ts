@@ -515,12 +515,12 @@
     <message>
       <location filename="../../Command.cpp" line="275"/>
       <source>Create a shape binder</source>
-      <translation>Bezugsobjekt erstellen</translation>
+      <translation>Formbinder erstellen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="276"/>
       <source>Create a new shape binder</source>
-      <translation>Erstelle ein neues Bezugsobjekt</translation>
+      <translation>Neuen Formbinder erstellen</translation>
     </message>
   </context>
   <context>
@@ -3012,7 +3012,7 @@ Dieses Objekt ist beschädigt und kann nicht bearbeitet werden.</translation>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="184"/>
       <source>Edit shape binder</source>
-      <translation>Bezugsobjekt bearbeiten</translation>
+      <translation>Formbinder bearbeiten</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="152"/>

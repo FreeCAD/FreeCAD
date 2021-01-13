@@ -25,7 +25,7 @@
 
 #ifndef _PreComp_
 # include "InventorAll.h"
-# include <boost/signals2.hpp>
+# include <boost_signals2.hpp>
 # include <boost_bind_bind.hpp>
 # include <sstream>
 # include <stdexcept>
@@ -714,7 +714,7 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
                 if (doc) {
                     pendingCommand = doc->hasPendingCommand();
                     if (!pendingCommand)
-                        doc->openCommand("Import");
+                        doc->openCommand(QT_TRANSLATE_NOOP("Command", "Import"));
                 }
 
                 if (DocName) {
@@ -1145,7 +1145,7 @@ Gui::MDIView* Application::editViewOfNode(SoNode *node) const
 void Application::setEditDocument(Gui::Document *doc) {
     if(doc == d->editDocument)
         return;
-    if(!doc) 
+    if(!doc)
         d->editDocument = 0;
     for(auto &v : d->documents)
         v.second->_resetEdit();
@@ -2036,14 +2036,36 @@ void Application::runApplication(void)
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 12, 0))
     QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
 #endif
+
+    // Automatic scaling for legacy apps (disable once all parts of GUI are aware of HiDpi)
 #if QT_VERSION >= 0x050600
-    //Enable automatic scaling based on pixel density of display (added in Qt 5.6)
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    ParameterGrp::handle hDPI = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/HighDPI");
+    bool disableDpiScaling = hDPI->GetBool("DisableDpiScaling", false);
+    if (disableDpiScaling) {
+#ifdef FC_OS_WIN32
+        SetProcessDPIAware(); // call before the main event loop
 #endif
+        QApplication::setAttribute(Qt::AA_DisableHighDpiScaling);
+    }
+    else {
+        // Enable automatic scaling based on pixel density of display (added in Qt 5.6)
+        QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    }
+#endif // QT_VERSION >= 0x050600
+
 #if QT_VERSION >= 0x050100
     //Enable support for highres images (added in Qt 5.1, but off by default)
     QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 #endif
+
+    // Use software rendering for OpenGL
+#if QT_VERSION >= 0x050400
+    ParameterGrp::handle hOpenGL = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/OpenGL");
+    bool useSoftwareOpenGL = hOpenGL->GetBool("UseSoftwareOpenGL", false);
+    if (useSoftwareOpenGL) {
+        QApplication::setAttribute(Qt::AA_UseSoftwareOpenGL);
+    }
+#endif // QT_VERSION >= 0x050400
 
     // A new QApplication
     Base::Console().Log("Init: Creating Gui::Application and QApplication\n");
@@ -2661,7 +2683,7 @@ App::Document *Application::reopen(App::Document *doc) {
     WaitCursor wc;
     wc.setIgnoreEvents(WaitCursor::NoEvents);
 
-    if(doc->testStatus(App::Document::PartialDoc) 
+    if(doc->testStatus(App::Document::PartialDoc)
             || doc->testStatus(App::Document::PartialRestore))
     {
         App::GetApplication().openDocument(name.c_str());

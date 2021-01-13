@@ -79,9 +79,9 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
     auto edges = getContiniusEdges(baseShape);
     if (edges.size() == 0)
         return new App::DocumentObjectExecReturn("Fillet not possible on selected shapes");
-    
+
     double radius = Radius.getValue();
-    
+
     if(radius <= 0)
         return new App::DocumentObjectExecReturn("Fillet radius must be greater than zero");
 
@@ -106,6 +106,7 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
             }
         }
 
+        shape = refineShapeIfActive(shape);
         this->Shape.setValue(getSolid(shape));
         return App::DocumentObject::StdReturn;
     }
@@ -115,10 +116,10 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
 }
 
 void Fillet::handleChangedPropertyType(
-        Base::XMLReader &reader, const char * TypeName, App::Property * prop) 
+        Base::XMLReader &reader, const char * TypeName, App::Property * prop)
 {
     if (prop && strcmp(TypeName,"App::PropertyFloatConstraint") == 0 &&
-            strcmp(prop->getTypeId().getName(), "App::PropertyQuantityConstraint") == 0) 
+            strcmp(prop->getTypeId().getName(), "App::PropertyQuantityConstraint") == 0)
     {
         App::PropertyFloatConstraint p;
         p.Restore(reader);

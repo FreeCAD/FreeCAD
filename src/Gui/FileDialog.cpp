@@ -154,8 +154,8 @@ void FileDialog::accept()
         // #0001928: do not add a suffix if a file with suffix is entered
         // #0002209: make sure that the entered suffix is part of one of the filters
         if (fi.fileName()!=QLatin1String("Document.xml")
-                && !ext.isEmpty() 
-                && (suffix.isEmpty() || !hasSuffix(suffix))) 
+                && !ext.isEmpty()
+                && (suffix.isEmpty() || !hasSuffix(suffix)))
         {
             file = QString::fromLatin1("%1.%2").arg(file, ext);
             // That's the built-in line edit
@@ -205,7 +205,7 @@ void FileDialog::accept()
 /**
  * This is a convenience static function that will return a file name selected by the user. The file does not have to exist.
  */
-QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, const QString & dir, 
+QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, const QString & dir,
                                      QString filter, QString * selectedFilter, Options options, FileMode fileMode)
 {
 #if QT_VERSION < 0x040800 && defined(FC_OS_MACOSX)
@@ -247,7 +247,7 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
         windowTitle = FileDialog::tr("Save as");
 
     // NOTE: We must not change the specified file name afterwards as we may return the name of an already
-    // existing file. Hence we must extract the first matching suffix from the filter list and append it 
+    // existing file. Hence we must extract the first matching suffix from the filter list and append it
     // before showing the file dialog.
     QString file;
     if (noNativeDialog) {
@@ -333,11 +333,11 @@ QString FileDialog::getExistingDirectory( QWidget * parent, const QString & capt
     return path;
 }
 
-/** 
- * This is a convenience static function that returns an existing file selected by the user. 
+/**
+ * This is a convenience static function that returns an existing file selected by the user.
  * If the user pressed Cancel, it returns a null string.
  */
-QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, const QString & dir, 
+QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, const QString & dir,
                                     QString filter, QString * selectedFilter, Options options, FileMode fileMode)
 {
     checkFilter(filter);
@@ -690,7 +690,7 @@ void FileOptionsDialog::setOptionsWidget(FileOptionsDialog::ExtensionPosition po
 
     // Instead of resizing the dialog we can fix the layout size.
     // This however, doesn't work nicely when the extension widget
-    // is higher/wider than the dialog. 
+    // is higher/wider than the dialog.
     //grid->setSizeConstraint(QLayout::SetFixedSize);
 
     oldSize = size();
@@ -820,7 +820,7 @@ void FileChooser::editingFinished()
     fileNameSelected(le_converted);
 }
 
-/** 
+/**
  * Sets the file name \a s.
  */
 void FileChooser::setFileName( const QString& s )
@@ -888,7 +888,7 @@ void FileChooser::setMode( FileChooser::Mode m )
 /**
  * \property FileChooser::filter
  *
- * This property holds the set filter to choose a file. This property is used only if 
+ * This property holds the set filter to choose a file. This property is used only if
  * FileChooser::Mode is set to File.
  *
  * \sa chooseFile(), filter(), setFilter().
@@ -899,7 +899,7 @@ QString FileChooser::filter() const
 }
 
 /**
- * Sets the filter for choosing a file.  
+ * Sets the filter for choosing a file.
  */
 void FileChooser::setFilter ( const QString& filter )
 {
@@ -1059,7 +1059,7 @@ SelectModule::Dict SelectModule::exportHandler(const QStringList& fileNames, con
         QFileInfo fi(*it);
         QString ext = fi.completeSuffix().toLower();
         std::map<std::string, std::string> filters = App::GetApplication().getExportFilters(ext.toLatin1());
-        
+
         if (filters.empty()) {
             ext = fi.suffix().toLower();
             filters = App::GetApplication().getExportFilters(ext.toLatin1());
@@ -1073,7 +1073,7 @@ SelectModule::Dict SelectModule::exportHandler(const QStringList& fileNames, con
             dict[*it] = QString::fromLatin1(filters.begin()->second.c_str());
     }
 
-    for (QMap<QString, SelectModule::Dict>::const_iterator it = filetypeHandler.begin(); 
+    for (QMap<QString, SelectModule::Dict>::const_iterator it = filetypeHandler.begin();
         it != filetypeHandler.end(); ++it) {
         if (it.value().size() > 1) {
             SelectModule dlg(it.key(),it.value(), getMainWindow());
@@ -1114,7 +1114,7 @@ SelectModule::Dict SelectModule::importHandler(const QStringList& fileNames, con
     }
 
     bool checkDirectory = filter.isEmpty()
-                        || filter.contains(QLatin1String("FCStd")) 
+                        || filter.contains(QLatin1String("FCStd"))
                         || filter.contains(QLatin1String("*.*"));
 
     // the global filter (or no filter) was selected. We now try to sort filetypes that are
@@ -1126,8 +1126,8 @@ SelectModule::Dict SelectModule::importHandler(const QStringList& fileNames, con
         QFileInfo fi(fileName);
 
         QString ext;
-        if(checkDirectory 
-                && (fi.isDir() 
+        if(checkDirectory
+                && (fi.isDir()
                     || fi.fileName() == QLatin1String("Document.xml")))
         {
             ext = QLatin1String("fcstd");
@@ -1137,7 +1137,7 @@ SelectModule::Dict SelectModule::importHandler(const QStringList& fileNames, con
             ext = fi.completeSuffix().toLower();
 
         std::map<std::string, std::string> filters = App::GetApplication().getImportFilters(ext.toLatin1());
-        
+
         if (filters.empty()) {
             ext = fi.suffix().toLower();
             filters = App::GetApplication().getImportFilters(ext.toLatin1());
@@ -1151,7 +1151,7 @@ SelectModule::Dict SelectModule::importHandler(const QStringList& fileNames, con
             dict[fileName] = QString::fromLatin1(filters.begin()->second.c_str());
     }
 
-    for (QMap<QString, SelectModule::Dict>::const_iterator it = filetypeHandler.begin(); 
+    for (QMap<QString, SelectModule::Dict>::const_iterator it = filetypeHandler.begin();
         it != filetypeHandler.end(); ++it) {
         if (it.value().size() > 1) {
             SelectModule dlg(it.key(),it.value(), getMainWindow());

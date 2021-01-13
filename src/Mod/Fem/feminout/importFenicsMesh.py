@@ -21,9 +21,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "Mesh import and export for Fenics mesh file format"
+__title__  = "Mesh import and export for Fenics mesh file format"
 __author__ = "Johannes Hartung"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## @package importFenicsMesh
 #  \ingroup FEM

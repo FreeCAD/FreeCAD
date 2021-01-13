@@ -136,7 +136,7 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
         }
 
         // undo command open
-        openCommand("Toggle draft from/to draft");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Toggle draft from/to draft"));
 
         // go through the selected subelements
         for (auto &sub : SubNames){
@@ -145,6 +145,21 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
                 // issue the actual commands to toggle
                 Gui::cmdAppObjectArgs(selection[0].getObject(),"toggleConstruction('%s')", sub);
             }
+            if (boost::starts_with(sub, "Vertex")) {
+                int vertexId = std::atoi(sub.c_str()+6) - 1;
+
+                int geoId;
+                PointPos pos;
+                Obj->getGeoVertexIndex(vertexId,geoId, pos);
+
+                auto geo = Obj->getGeometry(geoId);
+
+                if(geo && geo->getTypeId() == Part::GeomPoint::getClassTypeId()) {
+                    // issue the actual commands to toggle
+                    Gui::cmdAppObjectArgs(selection[0].getObject(), "toggleConstruction(%d) ", geoId);
+                }
+            }
+
         }
         // finish the transaction and update
         commitCommand();

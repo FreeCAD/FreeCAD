@@ -32,9 +32,9 @@ mainly implemented by the :mod:`femsolver.task` and :mod:`femsolver.signal`
 modules.
 """
 
-__title__ = "FreeCAD FEM solver run"
+__title__  = "FreeCAD FEM solver run"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 import os
 import os.path

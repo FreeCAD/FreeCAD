@@ -48,6 +48,7 @@ public:
     App::PropertyFont   Font;
     App::PropertyLength Fontsize;
     App::PropertyLength LineWidth;
+    App::PropertyBool   LineVisible;
     App::PropertyColor  Color;
 
     virtual void attach(App::DocumentObject *);

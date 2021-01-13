@@ -55,7 +55,7 @@ ComboView::ComboView(bool showModel, Gui::Document* pcDocument, QWidget *parent)
     hGrp = App::GetApplication().GetParameterGroupByPath(
                 "User parameter:BaseApp/Preferences/DockWindows/ComboView");
 
-    QGridLayout* pLayout = new QGridLayout(this); 
+    QGridLayout* pLayout = new QGridLayout(this);
     pLayout->setSpacing( 0 );
     pLayout->setMargin ( 0 );
 

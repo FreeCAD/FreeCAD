@@ -98,14 +98,14 @@ public:
     static void setupResizableColumn(TreeWidget *tree=0);
     static void scrollItemToTop();
     static void selectAllInstances(const ViewProviderDocumentObject &vpd);
-    static void selectLinkedObject(App::DocumentObject *linked); 
-    static void selectAllLinks(App::DocumentObject *obj); 
-    static void populateSelUpMenu(QMenu *menu, const App::SubObjectT *objT=nullptr); 
+    static void selectLinkedObject(App::DocumentObject *linked);
+    static void selectAllLinks(App::DocumentObject *obj);
+    static void populateSelUpMenu(QMenu *menu, const App::SubObjectT *objT=nullptr);
     static void execSelUpMenu(SelUpMenu *menu, const QPoint &pt);
     static QTreeWidgetItem *selectUp(QAction *action=nullptr,
                                      QMenu *parentMenu=nullptr,
                                      bool select=true);
-    static QTreeWidgetItem *selectUp(const App::SubObjectT &objT, 
+    static QTreeWidgetItem *selectUp(const App::SubObjectT &objT,
                                      QMenu *parentMenu=nullptr,
                                      bool select=true);
     static void expandSelectedItems(TreeItemMode mode);
@@ -165,8 +165,8 @@ public:
 
 protected:
     void _selectAllInstances(const ViewProviderDocumentObject &vpd);
-    void _selectLinkedObject(App::DocumentObject *linked); 
-    void _selectAllLinks(App::DocumentObject *obj); 
+    void _selectLinkedObject(App::DocumentObject *linked);
+    void _selectAllLinks(App::DocumentObject *obj);
     void _expandSelectedItems(TreeItemMode mode);
     bool _setupObjectMenu(DocumentObjectItem *item, QMenu &menu);
     void _setupDocumentMenu(DocumentItem *item, QMenu &menu);

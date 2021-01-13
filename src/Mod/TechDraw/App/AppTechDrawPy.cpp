@@ -197,7 +197,8 @@ private:
         } else {
             biggie = false;
         }
-        PyObject* result = PyList_New(0);
+
+        Py::List result;
 
         try {
             EdgeWalker ew;
@@ -207,16 +208,18 @@ private:
                 std::vector<TopoDS_Wire> rw = ew.getResultNoDups();
                 std::vector<TopoDS_Wire> sortedWires = ew.sortStrip(rw,biggie);   //false==>do not include biggest wires
                 for (auto& w:sortedWires) {
-                    PyList_Append(result,new TopoShapeWirePy(new TopoShape(w)));
+                    PyObject* wire = new TopoShapeWirePy(new TopoShape(w));
+                    result.append(Py::asObject(wire));
                 }
-            } else {
+            }
+            else {
                 Base::Console().Warning("edgeWalker: input is not planar graph. Wire detection not done\n");
             }
         }
         catch (Base::Exception &e) {
             throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
         }
-        return Py::asObject(result);
+        return result;
     }
 
     Py::Object findOuterWire(const Py::Tuple& args)
@@ -639,7 +642,7 @@ private:
                         double parentX = dvp->X.getValue() + grandParentX;
                         double parentY = dvp->Y.getValue() + grandParentY;
                         Base::Vector3d parentPos(parentX,parentY,0.0);
-                        std::string sDimText = dvd->getFormatedValue();
+                        std::string sDimText = dvd->getFormattedDimensionValue();
                         char* dimText = &sDimText[0u];                  //hack for const-ness
                         float gap = 5.0;                                //hack. don't know font size here.
                         layerName = dvd->getNameInDocument();

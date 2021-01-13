@@ -126,6 +126,11 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         form.ForceInsideOut.setChecked(True)
         formLayout.addRow(QtGui.QLabel("Force Clearing Inside-Out"), form.ForceInsideOut)
 
+        # Finishing profile
+        form.FinishingProfile = QtGui.QCheckBox()
+        form.FinishingProfile.setChecked(True)
+        formLayout.addRow(QtGui.QLabel("Finishing Profile"), form.FinishingProfile)
+
         layout.addLayout(formLayout)
 
         # stop button
@@ -154,6 +159,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         # signals.append(self.form.ProcessHoles.stateChanged)
         signals.append(self.form.ForceInsideOut.stateChanged)
+        signals.append(self.form.FinishingProfile.stateChanged)
         signals.append(self.form.StopButton.toggled)
         return signals
 
@@ -173,6 +179,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         # self.form.ProcessHoles.setChecked(obj.ProcessHoles)
         self.form.ForceInsideOut.setChecked(obj.ForceInsideOut)
+        self.form.FinishingProfile.setChecked(obj.FinishingProfile)
         self.setupToolController(obj, self.form.ToolController)
         self.setupCoolant(obj, self.form.coolantController)
         self.form.StopButton.setChecked(obj.Stopped)
@@ -201,6 +208,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             obj.StockToLeave = self.form.StockToLeave.value()
 
         obj.ForceInsideOut = self.form.ForceInsideOut.isChecked()
+        obj.FinishingProfile = self.form.FinishingProfile.isChecked()
         obj.Stopped = self.form.StopButton.isChecked()
         if(obj.Stopped):
             self.form.StopButton.setChecked(False)  # reset the button

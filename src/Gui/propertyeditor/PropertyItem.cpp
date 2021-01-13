@@ -359,7 +359,7 @@ QVariant PropertyItem::toString(const QVariant& prop) const
     Base::PyGILStateLocker lock;
     try {
         Py::Object pyobj(propertyItems[0]->getPyObject(),true);
-        if(pyobj.isNone()) 
+        if(pyobj.isNone())
             ss << "<None>";
         else if(pyobj.isSequence()) {
             ss << '[';
@@ -518,7 +518,7 @@ void PropertyItem::setPropertyName(const App::Property &prop) {
             setPropertyName(QString::fromLatin1(name+groupLen+1),QString::fromLatin1(name));
             return;
         } else if(nameLen>groupLen+1
-                    && name[0] == '_' 
+                    && name[0] == '_'
                     && name[groupLen+1] == '_'
                     && boost::starts_with(name+1,group))
         {
@@ -549,12 +549,12 @@ void PropertyItem::setPropertyValue(const QString& value)
         } else if (parent->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
             App::DocumentObject* obj = static_cast<App::DocumentObject*>(parent);
             App::Document* doc = obj->getDocument();
-            ss << "FreeCAD.getDocument('" << doc->getName() << "').getObject('" 
+            ss << "FreeCAD.getDocument('" << doc->getName() << "').getObject('"
                << obj->getNameInDocument() << "').";
         } else if (parent->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
             App::DocumentObject* obj = static_cast<ViewProviderDocumentObject*>(parent)->getObject();
             App::Document* doc = obj->getDocument();
-            ss << "FreeCADGui.getDocument('" << doc->getName() << "').getObject('" 
+            ss << "FreeCADGui.getDocument('" << doc->getName() << "').getObject('"
                << obj->getNameInDocument() << "').";
         } else
             continue;
@@ -595,7 +595,7 @@ QVariant PropertyItem::data(int column, int role) const
                 && !propertyItems.front()->testStatus(App::Property::LockDynamic))
             {
                 return role==Qt::BackgroundRole
-                    ? QVariant::fromValue(QColor(0xFF,0xFF,0x99)) 
+                    ? QVariant::fromValue(QColor(0xFF,0xFF,0x99))
                     : QVariant::fromValue(QColor(0,0,0));
             }
             return QVariant();
@@ -631,7 +631,7 @@ QVariant PropertyItem::data(int column, int role) const
             else if (role == Qt::DisplayRole || role == Qt::ToolTipRole) {
                 QVariant val = parent->property(qPrintable(objectName()));
                 return toString(val);
-            } 
+            }
             else if( role == Qt::TextColorRole) {
                 if(hasExpression(false))
                     return QVariant::fromValue(QApplication::palette().color(QPalette::Link));
@@ -757,7 +757,7 @@ QWidget* PropertyStringItem::createEditor(QWidget* parent, const QObject* receiv
         le->bind(getPath());
         le->setAutoApply(autoApply());
     }
-        
+
     return le;
 }
 
@@ -829,9 +829,9 @@ PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertySeparatorItem)
 
 QWidget* PropertySeparatorItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
 {
-    Q_UNUSED(parent); 
-    Q_UNUSED(receiver); 
-    Q_UNUSED(method); 
+    Q_UNUSED(parent);
+    Q_UNUSED(receiver);
+    Q_UNUSED(method);
     return 0;
 }
 
@@ -1088,7 +1088,7 @@ void PropertyUnitItem::setValue(const QVariant& value)
             return;
         const Base::Quantity& val = value.value<Base::Quantity>();
 
-        QString unit = QString::fromLatin1("'%1 %2'").arg(val.getValue()).arg(val.getUnit().getString()); 
+        QString unit = QString::fromLatin1("'%1 %2'").arg(val.getValue()).arg(val.getUnit().getString());
         setPropertyValue(unit);
     }
 }
@@ -1099,14 +1099,14 @@ QWidget* PropertyUnitItem::createEditor(QWidget* parent, const QObject* receiver
     infield->setFrame(false);
     infield->setMinimumHeight(0);
     infield->setReadOnly(isReadOnly());
-    
+
     //if we are bound to an expression we need to bind it to the input field
     if (isBound()) {
         infield->bind(getPath());
         infield->setAutoApply(autoApply());
     }
 
-    
+
     QObject::connect(infield, SIGNAL(valueChanged(double)), receiver, method);
     return infield;
 }
@@ -1283,7 +1283,7 @@ PropertyBoolItem::PropertyBoolItem()
 QVariant PropertyBoolItem::value(const App::Property* prop) const
 {
     assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyBool::getClassTypeId()));
-    
+
     bool value = ((App::PropertyBool*)prop)->getValue();
     return QVariant(value);
 }
@@ -1616,7 +1616,7 @@ PropertyVectorDistanceItem::PropertyVectorDistanceItem()
 QVariant PropertyVectorDistanceItem::toString(const QVariant& prop) const
 {
     const Base::Vector3d& value = prop.value<Base::Vector3d>();
-    QString data = QString::fromLatin1("[") + 
+    QString data = QString::fromLatin1("[") +
            Base::Quantity(value.x, Base::Unit::Length).getUserString() + QString::fromLatin1("  ") +
            Base::Quantity(value.y, Base::Unit::Length).getUserString() + QString::fromLatin1("  ") +
            Base::Quantity(value.z, Base::Unit::Length).getUserString() + QString::fromLatin1("]");
@@ -2406,10 +2406,10 @@ void PropertyPlacementItem::propertyBound()
     if (isBound()) {
         m_a->bind(App::ObjectIdentifier(getPath())<<App::ObjectIdentifier::String("Rotation")
                                                   <<App::ObjectIdentifier::String("Angle"));
-   
+
         m_d->bind(App::ObjectIdentifier(getPath())<<App::ObjectIdentifier::String("Rotation")
                                                   <<App::ObjectIdentifier::String("Axis"));
-        
+
         m_p->bind(App::ObjectIdentifier(getPath())<<App::ObjectIdentifier::String("Base"));
     }
 }
@@ -2432,7 +2432,7 @@ PropertyEnumItem::PropertyEnumItem()
 
 void PropertyEnumItem::propertyBound()
 {
-    if (m_enum && isBound()) 
+    if (m_enum && isBound())
         m_enum->bind(App::ObjectIdentifier(getPath())<<App::ObjectIdentifier::String("Enum"));
 }
 
@@ -3828,7 +3828,7 @@ void LinkSelection::select()
 
 LinkLabel::LinkLabel (QWidget * parent, const App::Property *prop)
     : QWidget(parent), objProp(prop), dlg(nullptr)
-{   
+{
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->setMargin(0);
     layout->setSpacing(1);
@@ -3849,9 +3849,9 @@ LinkLabel::LinkLabel (QWidget * parent, const App::Property *prop)
 
     this->setFocusPolicy(Qt::StrongFocus);
     this->setFocusProxy(label);
-    
+
     // setLayout(layout);
-    
+
     connect(label, SIGNAL(linkActivated(const QString&)),
             this, SLOT(onLinkActivated(const QString&)));
     connect(editButton, SIGNAL(clicked()),
@@ -3979,7 +3979,7 @@ QVariant PropertyLinkItem::toString(const QVariant& prop) const
 }
 
 QVariant PropertyLinkItem::data(int column, int role) const {
-    if(propertyItems.size() && column == 1 
+    if(propertyItems.size() && column == 1
             && (role == Qt::TextColorRole || role == Qt::ToolTipRole))
     {
         auto propLink = Base::freecad_dynamic_cast<const App::PropertyLinkBase>(propertyItems[0]);

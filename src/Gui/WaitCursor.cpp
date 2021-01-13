@@ -127,7 +127,7 @@ bool WaitCursorP::isModalDialog(QObject* o) const
 
 bool WaitCursorP::eventFilter(QObject* o, QEvent* e)
 {
-    // Note: This might cause problems when we want to open a modal dialog at the lifetime 
+    // Note: This might cause problems when we want to open a modal dialog at the lifetime
     // of a WaitCursor instance because the incoming events are still filtered.
     if (e->type() == QEvent::KeyPress ||
         e->type() == QEvent::KeyRelease) {
@@ -150,8 +150,8 @@ bool WaitCursorP::eventFilter(QObject* o, QEvent* e)
 int WaitCursor::instances = 0;
 
 /**
- * Constructs this object and shows the wait cursor immediately. If you need to open a dialog as 
- * long as an instance of WaitCursor exists you must call restoreCursor() before and setWaitCursor() 
+ * Constructs this object and shows the wait cursor immediately. If you need to open a dialog as
+ * long as an instance of WaitCursor exists you must call restoreCursor() before and setWaitCursor()
  * afterwards because all key events and mouse button events are filtered, otherwise you will run
  * into strange behaviour.
  */

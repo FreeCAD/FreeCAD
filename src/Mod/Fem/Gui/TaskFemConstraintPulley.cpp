@@ -206,7 +206,7 @@ bool TaskDlgFemConstraintPulley::accept()
     const TaskFemConstraintPulley* parameterPulley = static_cast<const TaskFemConstraintPulley*>(parameter);
 
     try {
-        //Gui::Command::openCommand("FEM pulley constraint changed");
+        //Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "FEM pulley constraint changed"));
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.OtherDiameter = %f",name.c_str(), parameterPulley->getOtherDiameter());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.CenterDistance = %f",name.c_str(), parameterPulley->getCenterDistance());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.IsDriven = %s",name.c_str(), parameterPulley->getIsDriven() ? "True" : "False");

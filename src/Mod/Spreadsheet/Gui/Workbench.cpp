@@ -125,7 +125,7 @@ void WorkbenchHelper::setForegroundColor(const QColor & color)
             if (ranges.size() > 0) {
                 std::vector<Range>::const_iterator i = ranges.begin();
 
-                Gui::Command::openCommand("Set foreground color");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Set foreground color"));
                 for (; i != ranges.end(); ++i)
                         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setForeground('%s', (%f,%f,%f))", sheet->getNameInDocument(),
                                                 i->rangeString().c_str(), color.redF(), color.greenF(), color.blueF());
@@ -152,7 +152,7 @@ void WorkbenchHelper::setBackgroundColor(const QColor & color)
             if (ranges.size() > 0) {
                 std::vector<Range>::const_iterator i = ranges.begin();
 
-                Gui::Command::openCommand("Set background color");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Set background color"));
                 for (; i != ranges.end(); ++i)
                         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setBackground('%s', (%f,%f,%f))", sheet->getNameInDocument(),
                                                 i->rangeString().c_str(), color.redF(), color.greenF(), color.blueF());

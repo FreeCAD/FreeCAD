@@ -65,7 +65,7 @@ public:
     }
 protected:
     // See App::MergeDocument::XMLMergeReader for comments, with one additional
-    // benefits, we can save repetitive coding here. 
+    // benefits, we can save repetitive coding here.
 #if 0
     void startElement(const XMLCh* const uri, const XMLCh* const localname,
                       const XMLCh* const qname,

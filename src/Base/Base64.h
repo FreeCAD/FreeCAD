@@ -24,7 +24,7 @@
    René Nyffenegger rene.nyffenegger@adp-gmbh.ch
 
 
-   Copyright (C) 2019 Zheng, Lei (realthunder.dev@gmail.com)
+   Copyright (C) 2019 Zheng Lei (realthunder.dev@gmail.com)
 
    * Added support of in-line transformation using boost iostream for memory
      efficiency

@@ -121,7 +121,7 @@ using namespace Gui;
  *     return root;
  *   }
  * };
- * 
+ *
  * \endcode
  *
  * \subsection customizeWorkbench Customizing the workbench
@@ -552,7 +552,7 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
 
         if (Gui::Selection().hasSelection()) {
             *item << "Separator" << "Std_SetAppearance" << "Std_ToggleVisibility" << "Std_ToggleShowOnTop"
-                  << "Std_ToggleSelectability" << "Std_TreeSelection" 
+                  << "Std_ToggleSelectability" << "Std_TreeSelection"
                   << "Std_RandomColor" << "Separator" << "Std_Delete"
                   << "Std_SendToPythonConsole";
         }
@@ -565,9 +565,9 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
             *visu << "Std_ToggleVisibility" << "Std_ToggleGroupVisibility" << "Std_ToggleShowOnTop"
                   << "Std_ShowSelection" << "Std_HideSelection";
             *item << visu
-                  << "Std_ToggleSelectability" << "Std_TreeSelectAllInstances" << "Separator" 
-                  << "Std_SetAppearance" << "Std_RandomColor" << "Separator" 
-                  << "Std_Cut" << "Std_Copy" << "Std_Paste" << "Std_Delete" 
+                  << "Std_ToggleSelectability" << "Std_TreeSelectAllInstances" << "Separator"
+                  << "Std_SetAppearance" << "Std_RandomColor" << "Separator"
+                  << "Std_Cut" << "Std_Copy" << "Std_Paste" << "Std_Delete"
                   << "Std_SendToPythonConsole" << "Separator";
         }
     }
@@ -588,8 +588,8 @@ MenuItem* StdWorkbench::setupMenuBar() const
     file->setCommand("&File");
     *file << "Std_New" << "Std_Open" << "Std_OpenDirectory" << "Separator" << "Std_CloseActiveWindow"
           << "Std_CloseAllWindows" << "Separator" << "Std_Save" << "Std_SaveAs" << "Std_SaveAsDirectory"
-          << "Std_SaveCopy" << "Std_SaveAll" << "Std_Revert" << "Separator" << "Std_Import" 
-          << "Std_Export" << "Std_MergeProjects" << "Std_ProjectInfo" 
+          << "Std_SaveCopy" << "Std_SaveAll" << "Std_Revert" << "Separator" << "Std_Import"
+          << "Std_Export" << "Std_MergeProjects" << "Std_ProjectInfo"
           << "Separator" << "Std_Print" << "Std_PrintPreview" << "Std_PrintPdf"
           << "Separator" << "Std_RecentFiles" << "Separator" << "Std_Quit";
 
@@ -621,7 +621,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
     // stereo
     MenuItem* view3d = new MenuItem;
     view3d->setCommand("&Stereo");
-    *view3d << "Std_ViewIvStereoRedGreen" << "Std_ViewIvStereoQuadBuff" 
+    *view3d << "Std_ViewIvStereoRedGreen" << "Std_ViewIvStereoQuadBuff"
             << "Std_ViewIvStereoInterleavedRows" << "Std_ViewIvStereoInterleavedColumns"
             << "Std_ViewIvStereoOff" << "Separator" << "Std_ViewIvIssueCamPos";
 
@@ -633,9 +633,9 @@ MenuItem* StdWorkbench::setupMenuBar() const
     // Visibility
     MenuItem* visu = new MenuItem;
     visu->setCommand("Visibility");
-    *visu << "Std_ToggleVisibility" << "Std_ToggleShowOnTop" << "Std_ShowSelection" << "Std_HideSelection" 
+    *visu << "Std_ToggleVisibility" << "Std_ToggleShowOnTop" << "Std_ShowSelection" << "Std_HideSelection"
           << "Std_SelectVisibleObjects"
-          << "Separator" << "Std_ToggleObjects" << "Std_ShowObjects" << "Std_HideObjects" 
+          << "Separator" << "Std_ToggleObjects" << "Std_ShowObjects" << "Std_HideObjects"
           << "Separator" << "Std_ToggleSelectability"
           << "Separator" << "View_Measure_Toggle_All" << "View_Measure_Clear_All";
 
@@ -646,18 +646,18 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << stdviews << "Std_FreezeViews" << "Std_DrawStyle" << "Std_SelOptions"
           << "Separator" << view3d << zoom
           << "Std_ViewDockUndockFullscreen" << "Std_AxisCross" << "Std_ToggleClipPlane"
-          << "Std_TextureMapping" 
+          << "Std_TextureMapping"
 #ifdef BUILD_VR
           << "Std_ViewVR"
-#endif 
+#endif
           << "Separator" << visu
           << "Std_ToggleNavigation"
-          << "Std_SetAppearance" << "Std_RandomColor" << "Separator" 
+          << "Std_SetAppearance" << "Std_RandomColor" << "Separator"
           << "Std_Workbench" << "Std_ToolBarMenu" << "Std_DockViewMenu";
     if(Application::Instance->commandManager().getCommandByName("Std_DockOverlay"))
         *view << "Std_DockOverlay";
     *view << "Std_ViewStatusBar" << "Separator" << "Std_TreeViewActions";
-    
+
 
     // Tools
     MenuItem* tool = new MenuItem( menuBar );
@@ -792,7 +792,7 @@ DockWindowItems* StdWorkbench::setupDockWindows() const
     root->addDockWidget("Std_ComboView", Qt::LeftDockWidgetArea, false, false);
     root->addDockWidget("Std_ReportView", Qt::BottomDockWidgetArea, true, true);
     root->addDockWidget("Std_PythonView", Qt::BottomDockWidgetArea, true, true);
-    
+
     //Dagview through parameter.
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
           GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DockWindows")->GetGroup("DAGView");
@@ -800,7 +800,7 @@ DockWindowItems* StdWorkbench::setupDockWindows() const
     bool enabled = group->GetBool("Enabled", false);
     if (enabled)
       root->addDockWidget("Std_DAGView", Qt::RightDockWidgetArea, false, false);
-    
+
     return root;
 }
 

@@ -33,7 +33,7 @@
 # include <QTextStream>
 # include <qmessagebox.h>
 # include <qstatusbar.h>
-# include <boost/signals2.hpp>
+# include <boost_signals2.hpp>
 # include <boost_bind_bind.hpp>
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/nodes/SoSeparator.h>
@@ -225,7 +225,7 @@ Document::Document(App::Document* pcDocument,Application * app)
         (boost::bind(&Gui::Document::importObjects, this, bp::_1, bp::_2, bp::_3));
     d->connectFinishImportObjects = pcDocument->signalFinishImportObjects.connect
         (boost::bind(&Gui::Document::slotFinishImportObjects, this, bp::_1));
-        
+
     d->connectUndoDocument = pcDocument->signalUndo.connect
         (boost::bind(&Gui::Document::slotUndoDocument, this, bp::_1));
     d->connectRedoDocument = pcDocument->signalRedo.connect
@@ -398,7 +398,7 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
         // ViewProvider::setEditViewer(), which transfer all child node of the view
         // provider into an editing node inside the viewer of this document. And
         // that's may actually be the case, as the subname referenced sub object
-        // is allowed to be in other documents. 
+        // is allowed to be in other documents.
         //
         // We just disabling editing external parent object here, for bug
         // tracking purpose. Because, bringing an unrelated external object to
@@ -430,7 +430,7 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
     // }
     auto sobj = obj->getSubObject(subname,0,&d->_editingTransform);
     if(!sobj || !sobj->getNameInDocument()) {
-        FC_ERR("Invalid sub object '" << obj->getFullName() 
+        FC_ERR("Invalid sub object '" << obj->getFullName()
                 << '.' << (subname?subname:"") << "'");
         return false;
     }
@@ -446,7 +446,7 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
 
     View3DInventor *view3d = dynamic_cast<View3DInventor *>(getActiveView());
     // if the currently active view is not the 3d view search for it and activate it
-    if (view3d) 
+    if (view3d)
         getMainWindow()->setActiveWindow(view3d);
     else
         view3d = dynamic_cast<View3DInventor *>(setActiveView(vp));
@@ -508,7 +508,7 @@ void Document::setEditingTransform(const Base::Matrix4D &mat) {
     d->_editObjs.clear();
     d->_editingTransform = mat;
     View3DInventor *activeView = dynamic_cast<View3DInventor *>(getActiveView());
-    if (activeView) 
+    if (activeView)
         activeView->getViewer()->setEditingTransform(mat);
 }
 
@@ -566,7 +566,7 @@ void Document::_resetEdit(void)
         Application::Instance->setEditDocument(0);
 }
 
-ViewProvider *Document::getInEdit(ViewProviderDocumentObject **parentVp, 
+ViewProvider *Document::getInEdit(ViewProviderDocumentObject **parentVp,
         std::string *subname, int *mode, std::string *subelement) const
 {
     if(parentVp) *parentVp = d->_editViewProviderParent;
@@ -600,7 +600,7 @@ void Document::setAnnotationViewProvider(const char* name, ViewProvider *pcProvi
     if (it != d->_ViewProviderMapAnnotation.end())
         removeAnnotationViewProvider(name);
 
-    // add 
+    // add
     d->_ViewProviderMapAnnotation[name] = pcProvider;
 
     // cycling to all views of the document
@@ -630,7 +630,7 @@ void Document::removeAnnotationViewProvider(const char* name)
     }
 
     delete it->second;
-    d->_ViewProviderMapAnnotation.erase(it); 
+    d->_ViewProviderMapAnnotation.erase(it);
 }
 
 
@@ -644,7 +644,7 @@ ViewProvider* Document::getViewProvider(const App::DocumentObject* Feat) const
 std::vector<ViewProvider*> Document::getViewProvidersOfType(const Base::Type& typeId) const
 {
     std::vector<ViewProvider*> Objects;
-    for (std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::const_iterator it = 
+    for (std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::const_iterator it =
          d->_ViewProviderMap.begin(); it != d->_ViewProviderMap.end(); ++it ) {
         if (it->second->getTypeId().isDerivedFrom(typeId))
             Objects.push_back(it->second);
@@ -799,7 +799,7 @@ void Document::slotDeletedObject(const App::DocumentObject& Obj)
     std::list<Gui::BaseView*>::iterator vIt;
     setModified(true);
     //Base::Console().Log("Document::slotDeleteObject() called\n");
-  
+
     // cycling to all views of the document
     ViewProvider* viewProvider = getViewProvider(&Obj);
     if(!viewProvider) return;
@@ -839,7 +839,7 @@ void Document::beforeDelete() {
     if(editDoc) {
         auto vp = dynamic_cast<ViewProviderDocumentObject*>(editDoc->d->_editViewProvider);
         auto vpp = dynamic_cast<ViewProviderDocumentObject*>(editDoc->d->_editViewProviderParent);
-        if(editDoc == this || 
+        if(editDoc == this ||
            (vp && vp->getDocument()==this) ||
            (vpp && vpp->getDocument()==this))
         {
@@ -858,13 +858,13 @@ void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Prop
         ViewProvider::clearBoundingBoxCache();
         try {
             viewProvider->update(&Prop);
-            if(d->_editingViewer 
+            if(d->_editingViewer
                     && d->_editingObject
-                    && d->_editViewProviderParent 
+                    && d->_editViewProviderParent
                     && (Prop.isDerivedFrom(App::PropertyPlacement::getClassTypeId())
                         // Issue ID 0004230 : getName() can return null in which case strstr() crashes
                         || (Prop.getName() && strstr(Prop.getName(),"Scale")))
-                    && d->_editObjs.count(&Obj)) 
+                    && d->_editObjs.count(&Obj))
             {
                 Base::Matrix4D mat;
                 auto sobj = d->_editViewProviderParent->getObject()->getSubObject(
@@ -952,8 +952,8 @@ void Document::slotUndoDocument(const App::Document& doc)
 {
     if (d->_pcDocument != &doc)
         return;
-    
-    signalUndoDocument(*this);  
+
+    signalUndoDocument(*this);
     getMainWindow()->updateActions();
 }
 
@@ -961,8 +961,8 @@ void Document::slotRedoDocument(const App::Document& doc)
 {
     if (d->_pcDocument != &doc)
         return;
-    
-    signalRedoDocument(*this);   
+
+    signalRedoDocument(*this);
     getMainWindow()->updateActions();
 }
 
@@ -992,8 +992,8 @@ void Document::slotSkipRecompute(const App::Document& doc, const std::vector<App
 {
     if (d->_pcDocument != &doc)
         return;
-    if(objs.size()>1 || 
-       App::GetApplication().getActiveDocument()!=&doc || 
+    if(objs.size()>1 ||
+       App::GetApplication().getActiveDocument()!=&doc ||
        !doc.testStatus(App::Document::AllowPartialRecompute))
         return;
     App::DocumentObject *obj = 0;
@@ -1042,7 +1042,7 @@ void Document::setModified(bool b)
     if(d->_isModified == b)
         return;
     d->_isModified = b;
-    
+
     std::list<MDIView*> mdis = getMDIViews();
     for (std::list<MDIView*>::iterator it = mdis.begin(); it != mdis.end(); ++it) {
         (*it)->setWindowModified(b);
@@ -1256,8 +1256,8 @@ bool Document::saveAs(void)
     getMainWindow()->showMessage(QObject::tr("Save document under new filename..."));
 
     QString exe = qApp->applicationName();
-    QString fn = FileDialog::getSaveFileName(getMainWindow(), QObject::tr("Save %1 Document").arg(exe), 
-        QString::fromUtf8(getDocument()->FileName.getValue()), 
+    QString fn = FileDialog::getSaveFileName(getMainWindow(), QObject::tr("Save %1 Document").arg(exe),
+        QString::fromUtf8(getDocument()->FileName.getValue()),
         QString::fromLatin1("%1 %2 (*.FCStd)").arg(exe).arg(QObject::tr("Document")));
     if (!fn.isEmpty()) {
         QFileInfo fi;
@@ -1272,6 +1272,8 @@ bool Document::saveAs(void)
             escapedstr = Base::Tools::escapeEncodeFilename(escapedstr);
             Command::doCommand(Command::Doc,"App.getDocument(\"%s\").saveAs(u\"%s\")"
                                            , DocName, escapedstr.c_str());
+            // App::Document::saveAs() may modify the passed file name
+            fi.setFile(QString::fromUtf8(d->_pcDocument->FileName.getValue()));
             setModified(false);
 
             // Some (Linux) system file dialog do not append default extension
@@ -1342,9 +1344,9 @@ void Document::saveAll()
             gdoc->setModified(false);
         }
         catch (const Base::Exception& e) {
-            QMessageBox::critical(getMainWindow(), 
-                    QObject::tr("Failed to save document") + 
-                        QString::fromLatin1(": %1").arg(QString::fromUtf8(doc->getName())), 
+            QMessageBox::critical(getMainWindow(),
+                    QObject::tr("Failed to save document") +
+                        QString::fromLatin1(": %1").arg(QString::fromUtf8(doc->getName())),
                     QString::fromLatin1(e.what()));
             break;
         }
@@ -1360,8 +1362,8 @@ bool Document::saveCopy(void)
     getMainWindow()->showMessage(QObject::tr("Save a copy of the document under new filename..."));
 
     QString exe = qApp->applicationName();
-    QString fn = FileDialog::getSaveFileName(getMainWindow(), QObject::tr("Save %1 Document").arg(exe), 
-                                             QString::fromUtf8(getDocument()->FileName.getValue()), 
+    QString fn = FileDialog::getSaveFileName(getMainWindow(), QObject::tr("Save %1 Document").arg(exe),
+                                             QString::fromUtf8(getDocument()->FileName.getValue()),
                                              QObject::tr("%1 document (*.FCStd)").arg(exe));
     if (!fn.isEmpty()) {
         const char * DocName = App::GetApplication().getDocumentName(getDocument());
@@ -1391,7 +1393,7 @@ unsigned int Document::getMemSize (void) const
     return size;
 }
 
-/** 
+/**
  * Adds a separate XML file to the projects file that contains information about the view providers.
  */
 void Document::Save (Base::Writer &writer) const
@@ -1416,7 +1418,7 @@ void Document::Save (Base::Writer &writer) const
     }
 }
 
-/** 
+/**
  * Loads a separate XML file from the projects file with information about the view providers.
  */
 void Document::Restore(Base::XMLReader &reader)
@@ -1670,7 +1672,7 @@ void Document::SaveDocFile (Base::Writer &writer) const
         std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::const_iterator it;
 
         // writing the view provider names itself
-        writer.Stream() << writer.ind() << "<ViewProviderData Count=\"" 
+        writer.Stream() << writer.ind() << "<ViewProviderData Count=\""
                         << d->_ViewProviderMap.size() <<"\">\n";
 
         writer.incInd(); // indentation for 'ViewProvider name'
@@ -1753,7 +1755,7 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj, Base:
 
     // writing the view provider names itself
     writer.incInd(); // indentation for 'ViewProviderData Count'
-    writer.Stream() << writer.ind() << "<ViewProviderData Count=\"" 
+    writer.Stream() << writer.ind() << "<ViewProviderData Count=\""
                     << views.size() <<"\">\n";
 
     writer.incInd(); // indentation for 'ViewProvider name'
@@ -1809,7 +1811,7 @@ void Document::importObjects(const std::vector<App::DocumentObject*>& obj, Base:
                 auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(pObj);
                 if(vpd) vpd->startRestoring();
                 pObj->Restore(xmlReader);
-                if (expanded && vpd) 
+                if (expanded && vpd)
                     this->signalExpandObject(*vpd, TreeItemMode::ExpandItem,0,0);
             }
             xmlReader.readEndElement("ViewProvider");
@@ -2091,7 +2093,7 @@ bool Document::isLastView(void)
     return false;
 }
 
-/** 
+/**
  *  This method checks if the document can be closed. It checks on
  *  the save state of the document and is able to abort the closing.
  */
@@ -2227,7 +2229,7 @@ bool Document::sendMsgToFirstView(const Base::Type& typeId, const char* pMsg, co
 /// Getter for the active view
 MDIView* Document::getActiveView(void) const
 {
-    // get the main window's active view 
+    // get the main window's active view
     MDIView* active = getMainWindow()->activeWindow();
 
     // get all MDI views of the document
@@ -2242,7 +2244,7 @@ MDIView* Document::getActiveView(void) const
         }
     }
 
-    if (ok) 
+    if (ok)
         return active;
 
     // the active view is not part of this document, just use the last view
@@ -2376,13 +2378,13 @@ Gui::MDIView* Document::getEditingView() const
 }
 
 //--------------------------------------------------------------------------
-// UNDO REDO transaction handling  
+// UNDO REDO transaction handling
 //--------------------------------------------------------------------------
 /** Open a new Undo transaction on the active document
  *  This method opens a new UNDO transaction on the active document. This transaction
- *  will later appear in the UNDO/REDO dialog with the name of the command. If the user 
- *  recall the transaction everything changed on the document between OpenCommand() and 
- *  CommitCommand will be undone (or redone). You can use an alternative name for the 
+ *  will later appear in the UNDO/REDO dialog with the name of the command. If the user
+ *  recall the transaction everything changed on the document between OpenCommand() and
+ *  CommitCommand will be undone (or redone). You can use an alternative name for the
  *  operation default is the command name.
  *  @see CommitCommand(),AbortCommand()
  */
@@ -2453,7 +2455,7 @@ bool Document::checkTransactionID(bool undo, int iSteps) {
             }
             str << "    " << doc->getName() << "\n";
         }
-        int ret = QMessageBox::warning(getMainWindow(), 
+        int ret = QMessageBox::warning(getMainWindow(),
                     undo?QObject::tr("Undo"):QObject::tr("Redo"),
                     QString::fromLatin1("%1,\n%2%3")
                         .arg(QObject::tr(

@@ -1,5 +1,4 @@
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2020 Carlo Pavan <carlopav@gmail.com>                   *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
@@ -45,31 +44,31 @@ from draftutils.init_tools import get_draft_snap_commands
 # SCALE WIDGET FUNCTIONS
 #----------------------------------------------------------------------------
 
-draft_scales_metrics =  ["1:1000", "1:500", "1:250", "1:200", "1:100", 
+draft_scales_metrics =  ["1:1000", "1:500", "1:250", "1:200", "1:100",
                          "1:50", "1:25","1:20", "1:10", "1:5","1:2",
                          "1:1",
-                         "2:1", "5:1", "10:1", "20:1",                 
-                         QT_TRANSLATE_NOOP("draft","custom"),                 
+                         "2:1", "5:1", "10:1", "20:1",
+                         QT_TRANSLATE_NOOP("draft","custom"),
                         ]
 
 draft_scales_arch_imperial =  ["1/16in=1ft", "3/32in=1ft", "1/8in=1ft",
-                               "3/16in=1ft", "1/4in=1ft","3/8in=1ft", 
-                               "1/2in=1ft", "3/4in=1ft", "1in=1ft", 
-                               "1.5in=1ft", "3in=1ft",    
+                               "3/16in=1ft", "1/4in=1ft","3/8in=1ft",
+                               "1/2in=1ft", "3/4in=1ft", "1in=1ft",
+                               "1.5in=1ft", "3in=1ft",
                                QT_TRANSLATE_NOOP("draft","custom"),
                               ]
 
 draft_scales_eng_imperial =  ["1in=10ft", "1in=20ft", "1in=30ft",
-                              "1in=40ft", "1in=50ft", "1in=60ft", 
-                              "1in=70ft", "1in=80ft", "1in=90ft", 
-                              "1in=100ft",    
+                              "1in=40ft", "1in=50ft", "1in=60ft",
+                              "1in=70ft", "1in=80ft", "1in=90ft",
+                              "1in=100ft",
                               QT_TRANSLATE_NOOP("draft","custom"),
                              ]
 
 def get_scales(unit_system = 0):
     """
     returns the list of preset scales accordin to unit system.
-    
+
     Parameters:
     unit_system =   0 : default from user preferences
                     1 : metrics
@@ -106,7 +105,7 @@ def scale_to_label(scale):
         return label
     else:
         return str(scale)
-    
+
 def label_to_scale(label):
     """
     transform a scale string into scale factor as float
@@ -140,7 +139,7 @@ def _set_scale(action):
     """
     # set the label of the scale button
     param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-    
+
     mw = Gui.getMainWindow()
     sb = mw.statusBar()
     scale_widget = sb.findChild(QtGui.QToolBar,"draft_status_scale_widget")
@@ -179,12 +178,12 @@ def init_draft_statusbar_scale():
         sb = mw.statusBar()
         if sb is None:
             return
-    else: 
+    else:
         return
 
     scale_widget = QtGui.QToolBar()
     scale_widget.setObjectName("draft_status_scale_widget")
-    
+
     # get scales list according to system units
     draft_scales = get_scales()
 
@@ -210,7 +209,7 @@ def init_draft_statusbar_scale():
     scaleLabel.setToolTip(QT_TRANSLATE_NOOP("draft",tooltip))
     scale_widget.addWidget(scaleLabel)
     scale_widget.scaleLabel = scaleLabel
-    
+
     # add scale widget to the statusbar
     sb.insertPermanentWidget(3, scale_widget)
     scale_widget.show()
@@ -227,15 +226,15 @@ def init_draft_statusbar_snap():
         sb = mw.statusBar()
         if sb is None:
             return
-    else: 
+    else:
         return
-    
+
     # SNAP WIDGET - init ----------------------------------------------------
-    
+
     snap_widget = QtGui.QToolBar()
     snap_widget.setObjectName("draft_snap_widget")
     snap_widget.setIconSize(QtCore.QSize(16,16))
-    
+
     # GRID BUTTON - init
     gridbutton = QtGui.QPushButton(snap_widget)
     gridbutton.setIcon(QtGui.QIcon.fromTheme("Draft",
@@ -247,7 +246,7 @@ def init_draft_statusbar_snap():
     gridbutton.setWhatsThis("Draft_ToggleGrid")
     gridbutton.setFlat(True)
     QtCore.QObject.connect(gridbutton,QtCore.SIGNAL("clicked()"),
-                           lambda f=Gui.doCommand, 
+                           lambda f=Gui.doCommand,
                            arg='Gui.runCommand("Draft_ToggleGrid")':f(arg))
     snap_widget.addWidget(gridbutton)
 
@@ -267,7 +266,7 @@ def init_draft_statusbar_snap():
 
     snaps_menu = QtGui.QMenu(snapbutton)
     snaps_menu.setObjectName("draft_statusbar_snap_toolbar")
-    
+
     snap_gui_commands = get_draft_snap_commands()
     if 'Draft_Snap_Ortho' in snap_gui_commands:
         snap_gui_commands.remove('Draft_Snap_Ortho')
@@ -299,7 +298,7 @@ def init_draft_statusbar_snap():
     dimbutton.setCheckable(True)
     dimbutton.setChecked(bool(int(dimpref)))
     QtCore.QObject.connect(dimbutton,QtCore.SIGNAL("clicked()"),
-                           lambda f=Gui.doCommand, 
+                           lambda f=Gui.doCommand,
                            arg='Gui.runCommand("Draft_Snap_Dimensions")':f(arg))
     snap_widget.addWidget(dimbutton)
 
@@ -317,7 +316,7 @@ def init_draft_statusbar_snap():
     orthobutton.setCheckable(True)
     orthobutton.setChecked(bool(int(ortopref)))
     QtCore.QObject.connect(orthobutton,QtCore.SIGNAL("clicked()"),
-                           lambda f=Gui.doCommand, 
+                           lambda f=Gui.doCommand,
                            arg='Gui.runCommand("Draft_Snap_Ortho")':f(arg))
     snap_widget.addWidget(orthobutton)
 
@@ -335,7 +334,7 @@ def init_draft_statusbar_snap():
     wpbutton.setCheckable(True)
     wpbutton.setChecked(bool(int(wppref)))
     QtCore.QObject.connect(wpbutton,QtCore.SIGNAL("clicked()"),
-                           lambda f=Gui.doCommand, 
+                           lambda f=Gui.doCommand,
                            arg='Gui.runCommand("Draft_Snap_WorkingPlane")':f(arg))
     snap_widget.addWidget(wpbutton)
 
@@ -343,7 +342,7 @@ def init_draft_statusbar_snap():
     sb.insertPermanentWidget(2, snap_widget)
     snap_widget.show()
 
-   
+
 def show_draft_statusbar():
     """
     shows draft statusbar if present or initializes it
@@ -371,7 +370,7 @@ def show_draft_statusbar():
             elif params.GetBool("DisplayStatusbarScaleWidget", True):
                 t = QtCore.QTimer()
                 t.singleShot(500, init_draft_statusbar_scale)
-            
+
         snap_widget = sb.findChild(QtGui.QToolBar,"draft_snap_widget")
         if snap_widget:
             snap_widget.show()
@@ -393,7 +392,7 @@ def hide_draft_statusbar():
     if not mw:
         return
     sb = mw.statusBar()
-    
+
     # hide scale widget
     scale_widget = sb.findChild(QtGui.QToolBar,
                                 "draft_status_scale_widget")
@@ -406,7 +405,7 @@ def hide_draft_statusbar():
                                     "draft_status_scale_widget")
         if scale_widget:
             scale_widget.hide()
-            
+
     # hide snap widget
     snap_widget = sb.findChild(QtGui.QToolBar,"draft_snap_widget")
     if snap_widget:

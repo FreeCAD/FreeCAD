@@ -282,7 +282,7 @@
     <message>
       <location filename="../../AddonManager.ui" line="37"/>
       <source>Workbenches</source>
-      <translation>Pracovní stoly</translation>
+      <translation>Pracovní prostředí</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="47"/>

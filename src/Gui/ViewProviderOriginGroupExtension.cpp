@@ -64,7 +64,7 @@ void ViewProviderOriginGroupExtension::constructChildren (
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::OriginGroupExtension>();
     if(!group)
         return;
-    
+
     App::DocumentObject *originObj = group->Origin.getValue();
 
     // Origin must be first
@@ -99,12 +99,12 @@ void ViewProviderOriginGroupExtension::extensionUpdateData( const App::Property*
 
 void ViewProviderOriginGroupExtension::updateOriginSize () {
     auto owner = getExtendedViewProvider()->getObject();
-    
+
     if(!owner->getNameInDocument() ||
        owner->isRemoving() ||
        owner->getDocument()->testStatus(App::Document::Restoring))
         return;
-    
+
     auto* group = owner->getExtensionByType<App::OriginGroupExtension>();
     if(!group)
         return;
@@ -137,7 +137,7 @@ void ViewProviderOriginGroupExtension::updateOriginSize () {
         }
         bbox.Add ( vp->getBoundingBox() );
     };
-    
+
     Base::Vector3d size(std::max(std::abs(bbox.MinX),std::abs(bbox.MaxX)),
                         std::max(std::abs(bbox.MinY),std::abs(bbox.MaxY)),
                         std::max(std::abs(bbox.MinZ),std::abs(bbox.MaxZ)));

@@ -54,7 +54,7 @@ Bu komut yalnızca bir 'ağ' nesnesiyle çalışır.</translation>
     <message>
       <location filename="../../Command.cpp" line="61"/>
       <source>Tessellate shape</source>
-      <translation>Şekili mozaik döşe</translation>
+      <translation>Şekilden Örgü oluştur</translation>
     </message>
   </context>
   <context>
@@ -72,7 +72,7 @@ Bu komut yalnızca bir 'ağ' nesnesiyle çalışır.</translation>
     <message>
       <location filename="../../Command.cpp" line="194"/>
       <source>Section</source>
-      <translation>Bölüm</translation>
+      <translation>Kesişim</translation>
     </message>
   </context>
   <context>
@@ -92,6 +92,19 @@ Bu komut yalnızca bir 'ağ' nesnesiyle çalışır.</translation>
       <location filename="../../Command.cpp" line="87"/>
       <source>Trims a mesh with a plane</source>
       <translation>Bir düzlemle örgü kesme</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../Command.cpp" line="129"/>
+      <source>Trim with plane</source>
+      <translation type="unfinished">Trim with plane</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="215"/>
+      <source>Section with plane</source>
+      <translation type="unfinished">Section with plane</translation>
     </message>
   </context>
   <context>
@@ -129,7 +142,7 @@ Bu komut yalnızca bir 'ağ' nesnesiyle çalışır.</translation>
     <message>
       <location filename="../../CrossSections.ui" line="71"/>
       <source>Sections</source>
-      <translation>Bölümler</translation>
+      <translation>Kesişimler</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="83"/>

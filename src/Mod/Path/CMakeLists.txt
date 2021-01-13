@@ -140,6 +140,7 @@ SET(PathScripts_post_SRCS
     PathScripts/post/centroid_post.py
     PathScripts/post/comparams_post.py
     PathScripts/post/dynapath_post.py
+    PathScripts/post/dxf_post.py
     PathScripts/post/example_pre.py
     PathScripts/post/gcode_pre.py
     PathScripts/post/grbl_post.py
@@ -204,6 +205,7 @@ SET(PathTests_SRCS
     PathTests/TestPathToolController.py
     PathTests/TestPathTooltable.py
     PathTests/TestPathUtil.py
+    PathTests/TestPathVcarve.py
     PathTests/TestPathVoronoi.py
     PathTests/boxtest.fcstd
     PathTests/test_centroid_00.ngc

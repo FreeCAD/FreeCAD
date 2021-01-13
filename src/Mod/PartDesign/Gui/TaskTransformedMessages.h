@@ -25,7 +25,7 @@
 #define GUI_TASKVIEW_TaskTransformedMessages_H
 
 #include <Gui/TaskView/TaskView.h>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 
 class QCheckBox;
 class Ui_TaskTransformedMessages;

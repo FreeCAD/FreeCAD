@@ -126,6 +126,74 @@
       <source>Edit</source>
       <translation>Uredi</translation>
     </message>
+    <message>
+      <source>Import</source>
+      <translation>Uvoz</translation>
+    </message>
+    <message>
+      <source>Delete</source>
+      <translation>Izbriši</translation>
+    </message>
+    <message>
+      <source>Paste expressions</source>
+      <translation type="unfinished">Paste expressions</translation>
+    </message>
+    <message>
+      <source>Make link group</source>
+      <translation>Napravite grupu poveznice</translation>
+    </message>
+    <message>
+      <source>Make link</source>
+      <translation>Napravi poveznicu</translation>
+    </message>
+    <message>
+      <source>Make sub-link</source>
+      <translation>Napravite pod-vezu</translation>
+    </message>
+    <message>
+      <source>Import links</source>
+      <translation>Uvoz poveznica</translation>
+    </message>
+    <message>
+      <source>Import all links</source>
+      <translation>Uvoz svih poveznica</translation>
+    </message>
+    <message>
+      <source>Insert measurement</source>
+      <translation type="unfinished">Insert measurement</translation>
+    </message>
+    <message>
+      <source>Insert text document</source>
+      <translation type="unfinished">Insert text document</translation>
+    </message>
+    <message>
+      <source>Add a part</source>
+      <translation type="unfinished">Add a part</translation>
+    </message>
+    <message>
+      <source>Add a group</source>
+      <translation type="unfinished">Add a group</translation>
+    </message>
+    <message>
+      <source>Align</source>
+      <translation>Poravnati</translation>
+    </message>
+    <message>
+      <source>Placement</source>
+      <translation>Položaj</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Transformiraj</translation>
+    </message>
+    <message>
+      <source>Link Transform</source>
+      <translation type="unfinished">Link Transform</translation>
+    </message>
+    <message>
+      <source>Measure distance</source>
+      <translation>Mjerenje udaljenosti</translation>
+    </message>
   </context>
   <context>
     <name>DlgCustomizeSpNavSettings</name>
@@ -440,11 +508,11 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source> "</source>
-      <translation type="unfinished"> "</translation>
+      <translation> "</translation>
     </message>
     <message>
       <source>"</source>
-      <translation type="unfinished">"</translation>
+      <translation>"</translation>
     </message>
   </context>
   <context>
@@ -1347,7 +1415,7 @@ Ako se to ne označi, osobina mora biti jedinstveno imenovana i njoj se pristupa
     </message>
     <message>
       <source>Enable splash screen at start up</source>
-      <translation>Omogući štrcanje zaslon na start up</translation>
+      <translation>Omogući pozdravni zaslon pri pokretanju programa</translation>
     </message>
     <message>
       <source>Auto load module after start up:</source>
@@ -2132,7 +2200,9 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
-      <translation type="unfinished">If enabled, then 3D view selection will be synchronized with full object hierarchy.</translation>
+      <translation>Ako je omogućeno, tada će se odabir 3D prikaza sinkronizirati s punom hijerarhijom objekta.
+
+</translation>
     </message>
   </context>
   <context>
@@ -2183,7 +2253,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Redirect internal Python errors to report view</source>
-      <translation>Preusmjeravanje unutarnjih Python grešaka u prikaz pogrešaka</translation>
+      <translation>Preusmjeravanje unutarnjih Python grešaka u prikazu pogrešaka</translation>
     </message>
     <message>
       <source>Redirect internal Python output to report view</source>
@@ -2558,9 +2628,7 @@ otvaranja ili stvaranja datoteke
     </message>
     <message>
       <source>Show axis cross by default</source>
-      <translation>Prikaz križa osi kao zadana postavka
-
-</translation>
+      <translation>Prikaz križa osi kao zadana postavka</translation>
     </message>
     <message>
       <source>Pick radius (px):</source>
@@ -2570,9 +2638,22 @@ otvaranja ili stvaranja datoteke
       <source>Area for picking elements in 3D view.
 Larger value eases to pick things, but can make small features impossible to select.
                </source>
-      <translation type="unfinished">Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.
-               </translation>
+      <translation>Prostor za odabir elemenata u 3D prikazu.
+Veća vrijednost olakšava odabir stvari, ali male značajke može učiniti nemogućim za odabir.
+
+</translation>
+    </message>
+    <message>
+      <source>This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</source>
+      <translation type="unfinished">This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</translation>
+    </message>
+    <message>
+      <source>Use software OpenGL</source>
+      <translation type="unfinished">Use software OpenGL</translation>
     </message>
   </context>
   <context>
@@ -3270,31 +3351,37 @@ Možete koristiti i obrazac: John Doe &lt;john@doe.com&gt;
     </message>
     <message>
       <source>Recent macros menu</source>
-      <translation type="unfinished">Recent macros menu</translation>
+      <translation>Izbornik nedavnih makronaredbi
+
+</translation>
     </message>
     <message>
       <source>Size of recent macro list</source>
-      <translation type="unfinished">Size of recent macro list</translation>
+      <translation>Veličina nedavnog makro popisa</translation>
     </message>
     <message>
       <source>How many macros should be listed in recent macros list</source>
-      <translation type="unfinished">How many macros should be listed in recent macros list</translation>
+      <translation>Koliko makronaredbi treba biti navedeno na nedavnom popisu makronaredbi</translation>
     </message>
     <message>
       <source>Shortcut count</source>
-      <translation type="unfinished">Shortcut count</translation>
+      <translation>Broj prečaca
+
+</translation>
     </message>
     <message>
       <source>How many recent macros should have shortcuts</source>
-      <translation type="unfinished">How many recent macros should have shortcuts</translation>
+      <translation>Koliko nedavnih makronaredbi treba imati prečace</translation>
     </message>
     <message>
       <source>Keyboard Modifiers</source>
-      <translation type="unfinished">Keyboard Modifiers</translation>
+      <translation>Modifikatori tipkovnice</translation>
     </message>
     <message>
       <source>Keyboard modifiers, default = Ctrl+Shift+</source>
-      <translation type="unfinished">Keyboard modifiers, default = Ctrl+Shift+</translation>
+      <translation>Modifikatori tipkovnice, zadani = Ctrl + Shift +
+
+</translation>
     </message>
   </context>
   <context>
@@ -3446,10 +3533,6 @@ Naginjanje miša nije onemogućeno ovom postavkom.</translation>
       <translation>Rotacije u 3D upotrebljavat će trenutni položaj pokazivača kao središte rotacije</translation>
     </message>
     <message>
-      <source>Rotate at cursor</source>
-      <translation>Rotacija kod pokazivača</translation>
-    </message>
-    <message>
       <source>Isometric</source>
       <translation>Izometrički</translation>
     </message>
@@ -3498,6 +3581,22 @@ Naginjanje miša nije onemogućeno ovom postavkom.</translation>
     <message>
       <source>Default camera orientation when creating a new document or selecting the home view</source>
       <translation>Zadana orijentacija kamere prilikom izrade novog dokumenta ili odabira zadanog početnog prikaza</translation>
+    </message>
+    <message>
+      <source>Rotation mode</source>
+      <translation type="unfinished">Rotation mode</translation>
+    </message>
+    <message>
+      <source>Window center</source>
+      <translation type="unfinished">Window center</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation type="unfinished">Drag at cursor</translation>
+    </message>
+    <message>
+      <source>Object center</source>
+      <translation type="unfinished">Object center</translation>
     </message>
   </context>
   <context>
@@ -3604,7 +3703,7 @@ Naginjanje miša nije onemogućeno ovom postavkom.</translation>
     </message>
     <message>
       <source>FEM (mm, N, sec)</source>
-      <translation type="unfinished">FEM (mm, N, sec)</translation>
+      <translation>FEM (mm, N, sec)</translation>
     </message>
   </context>
   <context>
@@ -3830,7 +3929,7 @@ Sustav preferencija je onaj skup postavki  koji se nalazi u općim preferencijam
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Move the selected workbench to enabled workbenches.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Postavi odabranu radnu površinu u omogućene radne površine&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Pomakni odabranu radnu površinu u omogućene radne površine&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Sort enabled workbenches</source>
@@ -4680,7 +4779,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Selection View</source>
-      <translation>Prikaz odabira</translation>
+      <translation>Pogled odabira</translation>
     </message>
     <message>
       <source>The number of selected items</source>
@@ -4769,14 +4868,14 @@ Do you want to save your changes?</source>
     <name>Gui::ExpressionLineEdit</name>
     <message>
       <source>Exact match</source>
-      <translation type="unfinished">Exact match</translation>
+      <translation>Točno podudaranje</translation>
     </message>
   </context>
   <context>
     <name>Gui::ExpressionTextEdit</name>
     <message>
       <source>Exact match</source>
-      <translation type="unfinished">Exact match</translation>
+      <translation>Točno podudaranje</translation>
     </message>
   </context>
   <context>
@@ -4851,7 +4950,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation>Pinch (stavi dva prsta na ekran i razdvoji /približi ih) ili pomjeraj točkić miša ili pritisni na PgUp/PgDown na tipkovnici.</translation>
+      <translation>Pinch (stavi dva prsta na ekran i razdvoji /približi ih) ili pomakni točkić miša ili pritisni na PgUp/PgDown na tipkovnici.</translation>
     </message>
   </context>
   <context>
@@ -5418,7 +5517,9 @@ Do you want to exit without saving your data?</source>
     <name>Gui::RecentMacrosAction</name>
     <message>
       <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
-      <translation type="unfinished">Run macro %1 (Shift+click to edit) shortcut: %2</translation>
+      <translation>Pokreni prečac makronaredbe %1 (Shift + klik za uređivanje): %2
+
+</translation>
     </message>
     <message>
       <source>File not found</source>
@@ -5558,7 +5659,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Translation Increment:</source>
-      <translation>Korak pomjeranja:</translation>
+      <translation>Korak pomicanja:</translation>
     </message>
     <message>
       <source>Rotation Increment:</source>
@@ -6767,7 +6868,7 @@ Odaberite "Prekini" za prekid
       <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
 
 </source>
-      <translation type="unfinished">Identical physical path detected. It may cause unwanted overwrite of existing document!
+      <translation>Otkriven je identičan fizički put. To može prouzročiti neželjeno prepisivanje postojećeg dokumenta!
 
 </translation>
     </message>
@@ -6779,33 +6880,29 @@ Odaberite "Prekini" za prekid
       <source>
 
 Please check report view for more...</source>
-      <translation type="unfinished">
-
-Please check report view for more...</translation>
+      <translation>Molimo provjerite prikaz izvješća za više ...</translation>
     </message>
     <message>
       <source>
 
 Pyhsical path: </source>
-      <translation type="unfinished">
-
-Pyhsical path: </translation>
+      <translation>Fizički put:</translation>
     </message>
     <message>
       <source>
 Document: </source>
-      <translation type="unfinished">
-Document: </translation>
+      <translation>Dokument: </translation>
     </message>
     <message>
       <source>
   Path: </source>
-      <translation type="unfinished">
-  Path: </translation>
+      <translation>Put:</translation>
     </message>
     <message>
       <source>Identical physical path</source>
-      <translation type="unfinished">Identical physical path</translation>
+      <translation>Identičan fizički put
+
+</translation>
     </message>
   </context>
   <context>
@@ -7381,7 +7478,7 @@ Document: </translation>
     </message>
     <message>
       <source>Freezes the current view position</source>
-      <translation>Zamrznii trenutni prikaz položaja</translation>
+      <translation>Zamrzni trenutni položaj Pogleda</translation>
     </message>
   </context>
   <context>
@@ -7535,7 +7632,7 @@ Document: </translation>
     </message>
     <message>
       <source>Create a sub-object or sub-element link</source>
-      <translation>Stvorite pod-objekt ili pod-element  poveznicu</translation>
+      <translation>Stvorite pod-objekt ili pod-element poveznicu</translation>
     </message>
   </context>
   <context>
@@ -8026,11 +8123,15 @@ Document: </translation>
     </message>
     <message>
       <source>Recent macros</source>
-      <translation type="unfinished">Recent macros</translation>
+      <translation>Nedavne makronaredbe
+
+</translation>
     </message>
     <message>
       <source>Recent macro list</source>
-      <translation type="unfinished">Recent macro list</translation>
+      <translation>Popis nedavnih makronaredbi
+
+</translation>
     </message>
   </context>
   <context>
@@ -8180,7 +8281,7 @@ Document: </translation>
     </message>
     <message>
       <source>Show selection bounding box</source>
-      <translation>Prikaži izbor Graničnog okvira</translation>
+      <translation>Prikaži odabir Graničnog okvira</translation>
     </message>
   </context>
   <context>
@@ -8281,7 +8382,7 @@ Document: </translation>
     </message>
     <message>
       <source>Show selection</source>
-      <translation>Prikaži izbor</translation>
+      <translation>Prikaži odabir</translation>
     </message>
     <message>
       <source>Show all selected objects</source>
@@ -8341,7 +8442,7 @@ Document: </translation>
     </message>
     <message>
       <source>&amp;Tile</source>
-      <translation>&amp;Naslov</translation>
+      <translation>&amp;Rasporedi</translation>
     </message>
     <message>
       <source>Tile the windows</source>
@@ -8367,7 +8468,7 @@ Document: </translation>
     </message>
     <message>
       <source>Clipping plane</source>
-      <translation> ravni isječak</translation>
+      <translation>Ravni isječak</translation>
     </message>
     <message>
       <source>Toggles clipping plane for active view</source>
@@ -8872,6 +8973,21 @@ Document: </translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewRestoreCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standardni pogled</translation>
+    </message>
+    <message>
+      <source>Restore saved camera</source>
+      <translation type="unfinished">Restore saved camera</translation>
+    </message>
+    <message>
+      <source>Restore saved camera settings</source>
+      <translation type="unfinished">Restore saved camera settings</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewRight</name>
     <message>
       <source>Standard-View</source>
@@ -8914,6 +9030,21 @@ Document: </translation>
     <message>
       <source>Rotate the view by 90° clockwise</source>
       <translation>Zakrenite pogled za 90 ° u smjeru od kazaljke na satu</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewSaveCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standardni pogled</translation>
+    </message>
+    <message>
+      <source>Save current camera</source>
+      <translation type="unfinished">Save current camera</translation>
+    </message>
+    <message>
+      <source>Save current camera settings</source>
+      <translation type="unfinished">Save current camera settings</translation>
     </message>
   </context>
   <context>

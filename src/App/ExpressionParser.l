@@ -2,7 +2,7 @@
 /***************************************************************************
  *   Copyright (c) 2010 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
- *   Copyright (c) 2018 Zheng, Lei <realthunder.dev@gmail.com>             *
+ *   Copyright (c) 2018 Zheng Lei <realthunder.dev@gmail.com>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *

@@ -1194,7 +1194,7 @@ void QGVPage::mouseReleaseEvent(QMouseEvent *event)
 
         auto page = getDrawPage();
         std::string FeatName = page->getDocument()->getUniqueObjectName("Balloon");
-        Gui::Command::openCommand("Create Balloon");
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Balloon"));
         TechDraw::DrawViewBalloon *balloon = 0;
 
         Gui::Command::openCommand("Create Balloon");

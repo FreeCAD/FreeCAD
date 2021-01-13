@@ -1,5 +1,4 @@
 /***************************************************************************
- * 
  *   Copyright (c) 2005 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
@@ -191,11 +190,11 @@ void SoFCHighlightAction::callDoAction(SoAction *action,SoNode *node)
 SO_ACTION_SOURCE(SoFCSelectionAction)
 
 /**
- * The order of the defined SO_ACTION_ADD_METHOD statements is very important. First the base 
- * classes and afterwards subclasses of them must be listed, otherwise the registered methods 
- * of subclasses will be overridden. For more details see the thread in the Coin3d forum 
+ * The order of the defined SO_ACTION_ADD_METHOD statements is very important. First the base
+ * classes and afterwards subclasses of them must be listed, otherwise the registered methods
+ * of subclasses will be overridden. For more details see the thread in the Coin3d forum
  * https://www.coin3d.org/pipermail/coin-discuss/2004-May/004346.html.
- * This means that \c SoSwitch must be listed after \c SoGroup and \c SoFCSelection after 
+ * This means that \c SoSwitch must be listed after \c SoGroup and \c SoFCSelection after
  * \c SoSeparator because both classes inherits the others.
  */
 void SoFCSelectionAction::initClass()
@@ -261,7 +260,7 @@ SoFCSelectionAction::~SoFCSelectionAction()
 {
 }
 
- 
+
 void SoFCSelectionAction::beginTraversal(SoNode *node)
 {
   traverse(node);
@@ -277,11 +276,11 @@ void SoFCSelectionAction::callDoAction(SoAction *action,SoNode *node)
 SO_ACTION_SOURCE(SoFCEnableSelectionAction)
 
 /**
- * The order of the defined SO_ACTION_ADD_METHOD statements is very important. First the base 
- * classes and afterwards subclasses of them must be listed, otherwise the registered methods 
- * of subclasses will be overridden. For more details see the thread in the Coin3d forum 
+ * The order of the defined SO_ACTION_ADD_METHOD statements is very important. First the base
+ * classes and afterwards subclasses of them must be listed, otherwise the registered methods
+ * of subclasses will be overridden. For more details see the thread in the Coin3d forum
  * https://www.coin3d.org/pipermail/coin-discuss/2004-May/004346.html.
- * This means that \c SoSwitch must be listed after \c SoGroup and \c SoFCSelection after 
+ * This means that \c SoSwitch must be listed after \c SoGroup and \c SoFCSelection after
  * \c SoSeparator because both classes inherits the others.
  */
 void SoFCEnableSelectionAction::initClass()
@@ -343,7 +342,7 @@ SoFCEnableSelectionAction::~SoFCEnableSelectionAction()
 {
 }
 
- 
+
 void SoFCEnableSelectionAction::beginTraversal(SoNode *node)
 {
   traverse(node);
@@ -359,11 +358,11 @@ void SoFCEnableSelectionAction::callDoAction(SoAction *action,SoNode *node)
 SO_ACTION_SOURCE(SoFCEnableHighlightAction)
 
 /**
- * The order of the defined SO_ACTION_ADD_METHOD statements is very important. First the base 
- * classes and afterwards subclasses of them must be listed, otherwise the registered methods 
- * of subclasses will be overridden. For more details see the thread in the Coin3d forum 
+ * The order of the defined SO_ACTION_ADD_METHOD statements is very important. First the base
+ * classes and afterwards subclasses of them must be listed, otherwise the registered methods
+ * of subclasses will be overridden. For more details see the thread in the Coin3d forum
  * https://www.coin3d.org/pipermail/coin-discuss/2004-May/004346.html.
- * This means that \c SoSwitch must be listed after \c SoGroup and \c SoFCSelection after 
+ * This means that \c SoSwitch must be listed after \c SoGroup and \c SoFCSelection after
  * \c SoSeparator because both classes inherits the others.
  */
 void SoFCEnableHighlightAction::initClass()
@@ -425,7 +424,7 @@ SoFCEnableHighlightAction::~SoFCEnableHighlightAction()
 {
 }
 
- 
+
 void SoFCEnableHighlightAction::beginTraversal(SoNode *node)
 {
   traverse(node);
@@ -441,11 +440,11 @@ void SoFCEnableHighlightAction::callDoAction(SoAction *action,SoNode *node)
 SO_ACTION_SOURCE(SoFCSelectionColorAction)
 
 /**
- * The order of the defined SO_ACTION_ADD_METHOD statements is very important. First the base 
- * classes and afterwards subclasses of them must be listed, otherwise the registered methods 
- * of subclasses will be overridden. For more details see the thread in the Coin3d forum 
+ * The order of the defined SO_ACTION_ADD_METHOD statements is very important. First the base
+ * classes and afterwards subclasses of them must be listed, otherwise the registered methods
+ * of subclasses will be overridden. For more details see the thread in the Coin3d forum
  * https://www.coin3d.org/pipermail/coin-discuss/2004-May/004346.html.
- * This means that \c SoSwitch must be listed after \c SoGroup and \c SoFCSelection after 
+ * This means that \c SoSwitch must be listed after \c SoGroup and \c SoFCSelection after
  * \c SoSeparator because both classes inherits the others.
  */
 void SoFCSelectionColorAction::initClass()
@@ -507,7 +506,7 @@ SoFCSelectionColorAction::~SoFCSelectionColorAction()
 {
 }
 
- 
+
 void SoFCSelectionColorAction::beginTraversal(SoNode *node)
 {
   traverse(node);
@@ -523,11 +522,11 @@ void SoFCSelectionColorAction::callDoAction(SoAction *action,SoNode *node)
 SO_ACTION_SOURCE(SoFCHighlightColorAction)
 
 /**
- * The order of the defined SO_ACTION_ADD_METHOD statements is very important. First the base 
- * classes and afterwards subclasses of them must be listed, otherwise the registered methods 
- * of subclasses will be overridden. For more details see the thread in the Coin3d forum 
+ * The order of the defined SO_ACTION_ADD_METHOD statements is very important. First the base
+ * classes and afterwards subclasses of them must be listed, otherwise the registered methods
+ * of subclasses will be overridden. For more details see the thread in the Coin3d forum
  * https://www.coin3d.org/pipermail/coin-discuss/2004-May/004346.html.
- * This means that \c SoSwitch must be listed after \c SoGroup and \c SoFCSelection after 
+ * This means that \c SoSwitch must be listed after \c SoGroup and \c SoFCSelection after
  * \c SoSeparator because both classes inherits the others.
  */
 void SoFCHighlightColorAction::initClass()
@@ -589,7 +588,7 @@ SoFCHighlightColorAction::~SoFCHighlightColorAction()
 {
 }
 
- 
+
 void SoFCHighlightColorAction::beginTraversal(SoNode *node)
 {
   traverse(node);
@@ -605,11 +604,11 @@ void SoFCHighlightColorAction::callDoAction(SoAction *action,SoNode *node)
 SO_ACTION_SOURCE(SoFCDocumentAction)
 
 /**
- * The order of the defined SO_ACTION_ADD_METHOD statements is very important. First the base 
- * classes and afterwards subclasses of them must be listed, otherwise the registered methods 
- * of subclasses will be overridden. For more details see the thread in the Coin3d forum 
+ * The order of the defined SO_ACTION_ADD_METHOD statements is very important. First the base
+ * classes and afterwards subclasses of them must be listed, otherwise the registered methods
+ * of subclasses will be overridden. For more details see the thread in the Coin3d forum
  * https://www.coin3d.org/pipermail/coin-discuss/2004-May/004346.html.
- * This means that \c SoSwitch must be listed after \c SoGroup and \c SoFCSelection after 
+ * This means that \c SoSwitch must be listed after \c SoGroup and \c SoFCSelection after
  * \c SoSeparator because both classes inherits the others.
  */
 void SoFCDocumentAction::initClass()
@@ -671,7 +670,7 @@ SoFCDocumentAction::~SoFCDocumentAction()
 {
 }
 
- 
+
 void SoFCDocumentAction::beginTraversal(SoNode *node)
 {
   traverse(node);
@@ -688,11 +687,11 @@ void SoFCDocumentAction::callDoAction(SoAction *action,SoNode *node)
 SO_ACTION_SOURCE(SoFCDocumentObjectAction)
 
 /**
- * The order of the defined SO_ACTION_ADD_METHOD statements is very important. First the base 
- * classes and afterwards subclasses of them must be listed, otherwise the registered methods 
- * of subclasses will be overridden. For more details see the thread in the Coin3d forum 
+ * The order of the defined SO_ACTION_ADD_METHOD statements is very important. First the base
+ * classes and afterwards subclasses of them must be listed, otherwise the registered methods
+ * of subclasses will be overridden. For more details see the thread in the Coin3d forum
  * https://www.coin3d.org/pipermail/coin-discuss/2004-May/004346.html.
- * This means that \c SoSwitch must be listed after \c SoGroup and \c SoFCSelection after 
+ * This means that \c SoSwitch must be listed after \c SoGroup and \c SoFCSelection after
  * \c SoSeparator because both classes inherits the others.
  */
 void SoFCDocumentObjectAction::initClass()
@@ -773,11 +772,11 @@ SbBool SoFCDocumentObjectAction::isHandled() const
 SO_ACTION_SOURCE(SoGLSelectAction)
 
 /**
- * The order of the defined SO_ACTION_ADD_METHOD statements is very important. First the base 
- * classes and afterwards subclasses of them must be listed, otherwise the registered methods 
- * of subclasses will be overridden. For more details see the thread in the Coin3d forum 
+ * The order of the defined SO_ACTION_ADD_METHOD statements is very important. First the base
+ * classes and afterwards subclasses of them must be listed, otherwise the registered methods
+ * of subclasses will be overridden. For more details see the thread in the Coin3d forum
  * https://www.coin3d.org/pipermail/coin-discuss/2004-May/004346.html.
- * This means that \c SoSwitch must be listed after \c SoGroup and \c SoFCSelection after 
+ * This means that \c SoSwitch must be listed after \c SoGroup and \c SoFCSelection after
  * \c SoSeparator because both classes inherits the others.
  */
 void SoGLSelectAction::initClass()
@@ -849,11 +848,11 @@ SbBool SoGLSelectAction::isHandled() const
 SO_ACTION_SOURCE(SoVisibleFaceAction)
 
 /**
- * The order of the defined SO_ACTION_ADD_METHOD statements is very important. First the base 
- * classes and afterwards subclasses of them must be listed, otherwise the registered methods 
- * of subclasses will be overridden. For more details see the thread in the Coin3d forum 
+ * The order of the defined SO_ACTION_ADD_METHOD statements is very important. First the base
+ * classes and afterwards subclasses of them must be listed, otherwise the registered methods
+ * of subclasses will be overridden. For more details see the thread in the Coin3d forum
  * https://www.coin3d.org/pipermail/coin-discuss/2004-May/004346.html.
- * This means that \c SoSwitch must be listed after \c SoGroup and \c SoFCSelection after 
+ * This means that \c SoSwitch must be listed after \c SoGroup and \c SoFCSelection after
  * \c SoSeparator because both classes inherits the others.
  */
 void SoVisibleFaceAction::initClass()
@@ -983,7 +982,7 @@ void SoUpdateVBOAction::callDoAction(SoAction *action,SoNode *node)
 namespace Gui {
 class SoBoxSelectionRenderActionP {
 public:
-    SoBoxSelectionRenderActionP(SoBoxSelectionRenderAction * master) 
+    SoBoxSelectionRenderActionP(SoBoxSelectionRenderAction * master)
       : master(master)
       , searchaction(0)
       , selectsearch(0)
@@ -1029,7 +1028,7 @@ public:
 
 // used to initialize the internal storage class with variables
 void
-SoBoxSelectionRenderActionP::initBoxGraph() 
+SoBoxSelectionRenderActionP::initBoxGraph()
 {
     this->localRoot = new SoSeparator;
     this->localRoot->ref();
@@ -1061,8 +1060,8 @@ SoBoxSelectionRenderActionP::initBoxGraph()
 }
 
 
-// used to render shape and non-shape nodes (usually SoGroup or SoSeparator). 
-void 
+// used to render shape and non-shape nodes (usually SoGroup or SoSeparator).
+void
 SoBoxSelectionRenderActionP::updateBbox(const SoPath * path)
 {
     if (this->camerasearch == NULL) {
@@ -1074,22 +1073,22 @@ SoBoxSelectionRenderActionP::updateBbox(const SoPath * path)
     this->camerasearch->setInterest(SoSearchAction::LAST);
     this->camerasearch->setType(SoCamera::getClassTypeId());
     this->camerasearch->apply((SoPath*) path);
-  
+
     if (!this->camerasearch->getPath()) {
         // if there is no camera there is no point rendering the bbox
         return;
     }
     this->localRoot->insertChild(this->camerasearch->getPath()->getTail(), 0);
     this->camerasearch->reset();
-  
+
     if (this->bboxaction == NULL) {
         this->bboxaction = new SoGetBoundingBoxAction(SbViewportRegion(100, 100));
     }
     this->bboxaction->setViewportRegion(PUBLIC(this)->getViewportRegion());
     this->bboxaction->apply((SoPath*) path);
-  
+
     SbXfBox3f & box = this->bboxaction->getXfBoundingBox();
-  
+
     if (!box.isEmpty()) {
         // set cube size
         float x, y, z;
@@ -1097,20 +1096,20 @@ SoBoxSelectionRenderActionP::updateBbox(const SoPath * path)
         this->cube->width  = x;
         this->cube->height  = y;
         this->cube->depth = z;
-    
+
         SbMatrix transform = box.getTransform();
-    
+
         // get center (in the local bbox coordinate system)
         SbVec3f center = box.SbBox3f::getCenter();
-    
+
         // if center != (0,0,0), move the cube
         if (center != SbVec3f(0.0f, 0.0f, 0.0f)) {
             SbMatrix t;
             t.setTranslate(center);
             transform.multLeft(t);
         }
-        this->xform->matrix = transform; 
-    
+        this->xform->matrix = transform;
+
         PUBLIC(this)->SoGLRenderAction::apply(this->localRoot);
     }
     // remove camera
@@ -1372,7 +1371,7 @@ SoBoxSelectionRenderAction::drawBoxes(SoPath * pathtothis, const SoPathList * pa
     int thispos = ((SoFullPath *)pathtothis)->getLength()-1;
     assert(thispos >= 0);
     PRIVATE(this)->postprocpath->truncate(0); // reset
-  
+
     for (i = 0; i < thispos; i++)
         PRIVATE(this)->postprocpath->append(pathtothis->getNode(i));
 

@@ -110,17 +110,17 @@ public:
     ValueT dropObject(App::DocumentObject*);
     /** Return false to force drop only operation for a give object*/
     ValueT canDragAndDropObject(App::DocumentObject*) const;
-    /** Query object dropping with full quanlified name */
-    ValueT canDropObjectEx(App::DocumentObject *obj, App::DocumentObject *, 
+    /** Query object dropping with full qualified name */
+    ValueT canDropObjectEx(App::DocumentObject *obj, App::DocumentObject *,
             const char *,const std::vector<std::string> &elements) const;
-    /** Add an object with full quanlified name to the view provider by drag and drop */
+    /** Add an object with full qualified name to the view provider by drag and drop */
     bool dropObjectEx(App::DocumentObject *obj, App::DocumentObject *,
             const char *, const std::vector<std::string> &elements, std::string &ret);
     ValueT replaceObject(App::DocumentObject *, App::DocumentObject *);
     ValueT canReplaceObject(App::DocumentObject *, App::DocumentObject *);
     //@}
 
-    bool getLinkedViewProvider(ViewProviderDocumentObject *&res, 
+    bool getLinkedViewProvider(ViewProviderDocumentObject *&res,
             std::string *subname, bool recursive) const;
 
     ValueT canAddToSceneGraph() const;
@@ -416,7 +416,7 @@ public:
             return ViewProviderT::canDragAndDropObject(obj);
         }
     }
-    virtual bool canDropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, 
+    virtual bool canDropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner,
             const char *subname, const std::vector<std::string> &elements) const override
     {
         switch (imp->canDropObjectEx(obj,owner,subname,elements)) {
@@ -428,8 +428,8 @@ public:
             return ViewProviderT::canDropObjectEx(obj,owner,subname,elements);
         }
     }
-    /** Add an object with full quanlified name to the view provider by drag and drop */
-    virtual std::string dropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, 
+    /** Add an object with full qualified name to the view provider by drag and drop */
+    virtual std::string dropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner,
             const char *subname, const std::vector<std::string> &elements) override
     {
         App::AutoTransaction committer;

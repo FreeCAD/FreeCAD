@@ -41,7 +41,7 @@
  * @param _doc: pointer to a document
  * @param _cmd: command string, streamable
  *
- * Example: 
+ * Example:
  * @code{.cpp}
  *      _FCMD_DOC_CMD(Gui,doc,"getObject('" << objName << "')");
  * @endcode
@@ -97,7 +97,7 @@
  * @param _obj: pointer to a DocumentObject
  * @param _cmd: command string, streamable
  *
- * Example: 
+ * Example:
  * @code{.cpp}
  *      _FCMD_OBJ_CMD(Gui,obj,"Visibility = " << (visible?"True":"False"));
  * @endcode
@@ -136,7 +136,7 @@
  * @param _cmd: command string, supporting printf like formatter
  * @param _obj: pointer to a DocumentObject
  *
- * Example: 
+ * Example:
  * @code{.cpp}
  *      FCMD_OBJ_CMD2("Visibility = %s", obj, visible?"True":"False");
  * @endcode
@@ -253,7 +253,7 @@ protected:
     virtual Action * createAction(void);
 
 public:
-    /// Reassigns QAction stuff after the language has changed. 
+    /// Reassigns QAction stuff after the language has changed.
     virtual void languageChange() = 0;
     /// Updates the QAction with respect to the passed mode.
     virtual void updateAction(int mode) = 0;
@@ -341,7 +341,7 @@ public:
     /// CommandManager is a friend
     friend class CommandManager;
     /// Override this method if your Cmd is not always active
-    virtual bool isActive(void){return true;} 
+    virtual bool isActive(void){return true;}
     /// Get somtile called to check the state of the command
     void testActive(void);
     /// Enables or disables the command
@@ -364,7 +364,7 @@ public:
      *               checkable state.
      * @param trigger: indicate the command triggering source, see TriggerSource.
      */
-    void invoke (int index, TriggerSource trigger=TriggerNone); 
+    void invoke (int index, TriggerSource trigger=TriggerNone);
     /// adds this command to arbitrary widgets
     void addTo(QWidget *);
     void addToGroup(ActionGroup *, bool checkable);
@@ -375,8 +375,8 @@ public:
     /** @name Helper methods to get important classes */
     //@{
     /// Get pointer to the Application Window
-    static Application*  getGuiApplication(void);   
-    /// Get a reference to the selection 
+    static Application*  getGuiApplication(void);
+    /// Get a reference to the selection
     static Gui::SelectionSingleton&  getSelection(void);
     /// Get pointer to the active gui document
     Gui::Document*  getActiveGuiDocument(void) const;
@@ -391,12 +391,12 @@ public:
     /// returns the named feature or the active one from the active document or NULL
     App::DocumentObject*  getObject(const char* Name) const;
     /// returns a python command string to retrieve an object from a document
-    static std::string getObjectCmd(const char *Name, const App::Document *doc=0, 
+    static std::string getObjectCmd(const char *Name, const App::Document *doc=0,
             const char *prefix=0, const char *postfix=0, bool gui=false);
     /// returns a python command string to retrieve the given object
-    static std::string getObjectCmd(const App::DocumentObject *obj, 
+    static std::string getObjectCmd(const App::DocumentObject *obj,
             const char *prefix=0, const char *postfix=0, bool gui=false);
-    /** Get unique Feature name from the active document 
+    /** Get unique Feature name from the active document
      *
      *  @param BaseName: the base name
      *  @param obj: if not zero, then request the unique name in the document of
@@ -478,7 +478,7 @@ public:
 #define runCommand(_type,_cmd) _runCommand(__FILE__,__LINE__,_type,_cmd)
 
     /** Run a command
-     * 
+     *
      * @param file: the calling file path (for debugging purpose)
      * @param line: the calling line number (for debugging purpose)
      * @param eType: command type, See DoCmd_Type
@@ -489,7 +489,7 @@ public:
     static void _runCommand(const char *file, int line, DoCmd_Type eType,const char* sCmd);
 
     /** Run a command
-     * 
+     *
      * @param file: the calling file path (for debugging purpose)
      * @param line: the calling line number (for debugging purpose)
      * @param eType: command type, See DoCmd_Type
@@ -499,7 +499,7 @@ public:
      */
     static void _runCommand(const char *file, int line, DoCmd_Type eType,const QByteArray& sCmd);
 
-    /// import an external (or own) module only once 
+    /// import an external (or own) module only once
     static void addModule(DoCmd_Type eType,const char* sModuleName);
 
     /** Convenience macro to assure the switch to a certain workbench
@@ -520,7 +520,7 @@ public:
      */
     static std::string _assureWorkbench(const char *file, int line, const char * sName);
     //@}
-    
+
     /** @name Methods for copying visiual properties */
     //@{
     /// Convenience macro to copy visual properties
@@ -531,7 +531,7 @@ public:
     static void _copyVisual(const char *file, int line, const App::DocumentObject *to, const char *attr_to, const App::DocumentObject *from, const char *attr_from);
     //@}
 
-    /// Get Python tuple from object and sub-elements 
+    /// Get Python tuple from object and sub-elements
     static std::string getPythonTuple(const std::string& name, const std::vector<std::string>& subnames);
     /// translate a string to a python string literal (needed e.g. in file names for windows...)
     const std::string strToPython(const char* Str);
@@ -572,8 +572,8 @@ public:
      */
     int getType() const { return eType; }
     //@}
-    
-    
+
+
     /** @name arbitrary helper methods */
     //@{
     void adjustCameraPosition();
@@ -602,9 +602,9 @@ public:
     };
 
 protected:
-    /** @name Attributes 
-     *  Set by the inherited constructor to set up the most important properties 
-     *  of the command. In the Command constructor are set default values! 
+    /** @name Attributes
+     *  Set by the inherited constructor to set up the most important properties
+     *  of the command. In the Command constructor are set default values!
      *  The real values should be set in the constructor of the inhereting class.
      */
     //@{
@@ -660,9 +660,9 @@ protected:
 };
 
 /** The Python command class
- * This is a special type of command class. It's used to bind a Python command class into the 
+ * This is a special type of command class. It's used to bind a Python command class into the
  * FreeCAD command framework.
- * An object of this class gets a reference to the Python command object and manages all the 
+ * An object of this class gets a reference to the Python command object and manages all the
  * passing between the C++ and the Python world. This includes everything like setting resources such as
  * bitmaps, activation or bindings to the user interface.
  * @see CommandManager
@@ -690,7 +690,7 @@ protected:
 public:
     /** @name Methods to get the properties of the command */
     //@{
-    /// Reassigns QAction stuff after the language has changed. 
+    /// Reassigns QAction stuff after the language has changed.
     void languageChange();
     const char* className() const
     { return "PythonCommand"; }
@@ -741,7 +741,7 @@ protected:
 public:
     /** @name Methods to get the properties of the command */
     //@{
-    /// Reassigns QAction stuff after the language has changed. 
+    /// Reassigns QAction stuff after the language has changed.
     void languageChange();
     const char* className() const
     { return "PythonGroupCommand"; }
@@ -766,7 +766,7 @@ protected:
 
 
 /** The script command class
- * This is a special type of command class. Its used to bind a macro or Python script to the 
+ * This is a special type of command class. Its used to bind a macro or Python script to the
  * FreeCAD command framework.
  * An object of this class gets a string to the place where the script is in the file system.
  * Unlike the other commands the resources can be set by several methods.
@@ -792,11 +792,11 @@ protected:
 public:
     /// Returns the script name
     const char* getScriptName () const { return sScriptName; }
-    /// Ignore when language has changed. 
+    /// Ignore when language has changed.
     void languageChange() {}
     const char* className() const
     { return "Gui::MacroCommand"; }
- 
+
     /** @name Methods to set the properties of the Script Command */
     //@{
     /// Sets the script name
@@ -817,10 +817,10 @@ protected:
 };
 
 /** The CommandManager class
- *  This class manage all available commands in FreeCAD. All 
+ *  This class manage all available commands in FreeCAD. All
  *  Commands will registered here, also commands from Application
  *  modules. Also activation / deactivation, Icons Tooltips and so
- *  on are handles here. Further the Building of Toolbars and (Context) 
+ *  on are handles here. Further the Building of Toolbars and (Context)
  *  menus (connecting to a QAction) is done here.
  *  @see Command
  *  @author Jürgen Riegel
@@ -841,7 +841,7 @@ public:
     bool addTo(const char* Name, QWidget* pcWidget);
 
     /** Returns all commands of a special App Module
-     *  delivers a vector of all commands in the given application module. When no 
+     *  delivers a vector of all commands in the given application module. When no
      *  name is given the standard commands (build in ) are returned.
      *  @see Command
      */

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Eivind Kvedalen (eivind@kvedalen.name) 2015             *
+ *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -342,7 +342,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
             Color color;
             const Base::Unit & computedUnit = floatProp->getUnit();
             DisplayUnit displayUnit;
-            if (cell->getDisplayUnit(displayUnit) && 
+            if (cell->getDisplayUnit(displayUnit) &&
                     !computedUnit.isEmpty() && computedUnit != displayUnit.unit) {
                 return QVariant::fromValue(QColor(255.0, 0, 0));
             }
@@ -401,8 +401,8 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
             return QVariant();
         }
     }
-    else if (prop->isDerivedFrom(App::PropertyFloat::getClassTypeId()) 
-                || prop->isDerivedFrom(App::PropertyInteger::getClassTypeId())) 
+    else if (prop->isDerivedFrom(App::PropertyFloat::getClassTypeId())
+                || prop->isDerivedFrom(App::PropertyInteger::getClassTypeId()))
     {
         /* Number */
         double d;
@@ -453,7 +453,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
             else if (!isInteger) {
                 v = QLocale::system().toString(d,'f',Base::UnitsApi::getDecimals());
                 //v = QString::number(d);
-            } else 
+            } else
                 v = QString::number(l);
             return QVariant(v);
         }
@@ -470,7 +470,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
 
             if (cell->getForeground(color))
                 return QVariant::fromValue(QColor(255.0 * color.r, 255.0 * color.g, 255.0 * color.b, 255.0 * color.a));
-            else 
+            else
                 return QVariant(QColor(textFgColor));
         }
         case Qt::TextAlignmentRole: {

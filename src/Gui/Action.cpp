@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <boost/signals2.hpp>
+# include <boost_signals2.hpp>
 # include <boost_bind_bind.hpp>
 # include <QAbstractItemView>
 # include <QActionEvent>
@@ -122,7 +122,7 @@ void Action::addTo(QWidget *w)
 /**
  * Activates the command.
  */
-void Action::onActivated () 
+void Action::onActivated ()
 {
     _pcCmd->invoke(0,Command::TriggerAction);
 }
@@ -133,7 +133,7 @@ void Action::onActivated ()
 void Action::onToggled(bool b)
 {
     _pcCmd->invoke( b ? 1 : 0 , Command::TriggerAction);
-} 
+}
 
 void Action::setCheckable(bool b)
 {
@@ -153,7 +153,7 @@ void Action::setCheckable(bool b)
 void Action::setChecked(bool b, bool no_signal)
 {
     bool blocked;
-    if(no_signal) 
+    if(no_signal)
         blocked = _action->blockSignals(true);
     _action->setChecked(b);
     if(no_signal)
@@ -168,12 +168,12 @@ bool Action::isChecked() const
 /**
  * Sets whether the action is enabled.
  */
-void Action::setEnabled(bool b) 
+void Action::setEnabled(bool b)
 {
     _action->setEnabled(b);
 }
 
-void Action::setVisible(bool b) 
+void Action::setVisible(bool b)
 {
     _action->setVisible(b);
 }
@@ -222,7 +222,7 @@ void Action::setToolTip(const QString & s)
 {
     _action->setToolTip(s);
 }
-  
+
 QString Action::toolTip() const
 {
     return _action->toolTip();
@@ -240,7 +240,7 @@ QString Action::whatsThis() const
 
 void Action::setMenuRole(QAction::MenuRole menuRole)
 {
-    _action->setMenuRole(menuRole); 
+    _action->setMenuRole(menuRole);
 }
 
 // --------------------------------------------------------------------
@@ -268,7 +268,7 @@ ActionGroup::~ActionGroup()
 void ActionGroup::addTo(QWidget *w)
 {
     // When adding an action that has defined a menu then shortcuts
-    // of the menu actions don't work. To make this working we must 
+    // of the menu actions don't work. To make this working we must
     // set the menu explicitly. This means calling QAction::setMenu()
     // and adding this action to the widget doesn't work.
     if (_dropDown) {
@@ -291,7 +291,7 @@ void ActionGroup::addTo(QWidget *w)
             //tb->addActions(_group->actions());
         }
         else {
-            w->addActions(_group->actions()); // no drop-down 
+            w->addActions(_group->actions()); // no drop-down
         }
     }
     else {
@@ -366,7 +366,7 @@ void ActionGroup::setCheckedAction(int i)
 /**
  * Activates the command.
  */
-void ActionGroup::onActivated () 
+void ActionGroup::onActivated ()
 {
     _pcCmd->invoke(this->property("defaultAction").toInt(), Command::TriggerAction);
 }
@@ -375,12 +375,12 @@ void ActionGroup::onToggled(bool checked)
 {
     (void)checked;
     onActivated();
-} 
+}
 
 /**
  * Activates the command.
  */
-void ActionGroup::onActivated (QAction* a) 
+void ActionGroup::onActivated (QAction* a)
 {
     int index = _group->actions().indexOf(a);
 
@@ -412,7 +412,7 @@ void ActionGroup::onActivated (QAction* a)
     _pcCmd->invoke(index, Command::TriggerChildAction);
 }
 
-void ActionGroup::onHovered (QAction *a) 
+void ActionGroup::onHovered (QAction *a)
 {
     Gui::ToolTip::showText(QCursor::pos(), a->toolTip());
 }
@@ -445,7 +445,7 @@ private:
 WorkbenchComboBox::WorkbenchComboBox(WorkbenchGroup* wb, QWidget* parent) : QComboBox(parent), group(wb)
 {
     connect(this, SIGNAL(activated(int)), this, SLOT(onActivated(int)));
-    connect(getMainWindow(), SIGNAL(workbenchActivated(const QString&)), 
+    connect(getMainWindow(), SIGNAL(workbenchActivated(const QString&)),
             this, SLOT(onWorkbenchActivated(const QString&)));
 }
 
@@ -768,7 +768,7 @@ void RecentFilesAction::appendFile(const QString& filename)
 
 /**
  * Set the list of recent files. For each item an action object is
- * created and added to this action group. 
+ * created and added to this action group.
  */
 void RecentFilesAction::setFiles(const QStringList& files)
 {
@@ -1198,7 +1198,7 @@ void DockWidgetAction::addTo ( QWidget * w )
       _action->setMenu(_menu);
       connect(_menu, SIGNAL(aboutToShow()), getMainWindow(), SLOT(onDockWindowMenuAboutToShow()));
     }
-    
+
     w->addAction(_action);
 }
 
@@ -1221,7 +1221,7 @@ void ToolBarAction::addTo ( QWidget * w )
       _action->setMenu(_menu);
       connect(_menu, SIGNAL(aboutToShow()), getMainWindow(), SLOT(onToolBarMenuAboutToShow()));
     }
-    
+
     w->addAction(_action);
 }
 

@@ -781,7 +781,7 @@ void View3DInventorViewer::init()
     }
 
     //create the cursors
-    
+
     // QBitmap cursor = QBitmap::fromData(QSize(ROTATE_WIDTH, ROTATE_HEIGHT), rotate_bitmap);
     // QBitmap mask = QBitmap::fromData(QSize(ROTATE_WIDTH, ROTATE_HEIGHT), rotate_mask_bitmap);
     // spinCursor = QCursor(cursor, mask, ROTATE_HOT_X, ROTATE_HOT_Y);
@@ -1171,7 +1171,7 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason, bool 
 
         if(preselect) {
             auto it2 = objectsOnTopSel.find(key);
-            if(it2!=objectsOnTopSel.end() 
+            if(it2!=objectsOnTopSel.end()
                     && it2->second.elements.empty()
                     && !it2->second.alt)
             {
@@ -1409,7 +1409,7 @@ void View3DInventorViewer::onSelectionChanged(const SelectionChanges &_Reason)
 
     SelectionChanges Reason(_Reason);
 
-    if(Reason.pDocName && *Reason.pDocName && 
+    if(Reason.pDocName && *Reason.pDocName &&
        strcmp(getDocument()->getDocument()->getName(),Reason.pDocName)!=0)
         return;
 
@@ -1421,7 +1421,7 @@ void View3DInventorViewer::onSelectionChanged(const SelectionChanges &_Reason)
     case SelectionChanges::SetPreselect:
     case SelectionChanges::RmvPreselect:
     case SelectionChanges::SetSelection:
-    case SelectionChanges::AddSelection:     
+    case SelectionChanges::AddSelection:
     case SelectionChanges::RmvSelection:
     case SelectionChanges::ClrSelection:
         checkGroupOnTop(Reason);
@@ -1559,7 +1559,7 @@ void View3DInventorViewer::setEditingTransform(const Base::Matrix4D &mat) {
 }
 
 void View3DInventorViewer::setupEditingRoot(SoNode *node, const Base::Matrix4D *mat) {
-    if(!editViewProvider) 
+    if(!editViewProvider)
         return;
     resetEditingRoot(false);
 
@@ -1602,7 +1602,7 @@ void View3DInventorViewer::resetEditingRoot(bool updateLinks)
     }
     restoreEditingRoot = false;
     auto root = editViewProvider->getRoot();
-    if(root->getNumChildren()) 
+    if(root->getNumChildren())
         FC_ERR("WARNING!!! Editing view provider root node is tampered");
     root->addChild(editViewProvider->getTransformNode());
     for(int i=1,count=pcEditingRoot->getNumChildren();i<count;++i)
@@ -1679,8 +1679,8 @@ SoPickedPoint* View3DInventorViewer::Private::getPointOnRay(const SbVec2s& pos, 
     gm.apply(path);
 
     pickTransform->setMatrix(gm.getMatrix());
-    
-    // build a temporary scenegraph only keeping this viewproviders nodes and the accumulated 
+
+    // build a temporary scenegraph only keeping this viewproviders nodes and the accumulated
     // transformation
     pickRoot->replaceChild(2, path->getTail());
     pickPath->truncate(0);
@@ -1702,7 +1702,7 @@ SoPickedPoint* View3DInventorViewer::getPointOnRay(const SbVec3f& pos,const SbVe
 {
     // Note: There seems to be a  bug with setRay() which causes SoRayPickAction
     // to fail to get intersections between the ray and a line
-    
+
     SoPath *path;
     if(vp == editViewProvider && pcEditingRoot->getNumChildren()>1) {
         path = new SoPath(1);
@@ -1721,19 +1721,19 @@ SoPickedPoint* View3DInventorViewer::getPointOnRay(const SbVec3f& pos,const SbVe
     }
     SoGetMatrixAction gm(getSoRenderManager()->getViewportRegion());
     gm.apply(path);
-    
-    // build a temporary scenegraph only keeping this viewproviders nodes and the accumulated 
+
+    // build a temporary scenegraph only keeping this viewproviders nodes and the accumulated
     // transformation
     SoTransform* trans = new SoTransform;
     trans->ref();
     trans->setMatrix(gm.getMatrix());
-    
+
     SoSeparator* root = new SoSeparator;
     root->ref();
     root->addChild(getSoRenderManager()->getCamera());
     root->addChild(trans);
     root->addChild(path->getTail());
-    
+
     //get the picked point
     SoRayPickAction rp(getSoRenderManager()->getViewportRegion());
     rp.setRay(pos,dir);
@@ -1878,7 +1878,7 @@ void View3DInventorViewer::Private::activate()
     }
     owner->getSoRenderManager()->setRenderMode(SoRenderManager::AS_IS);
 
-    bool spotlight = _shadowParam<App::PropertyBool>(doc, "SpotLight", 
+    bool spotlight = _shadowParam<App::PropertyBool>(doc, "SpotLight",
             ViewParams::docShadowSpotLight(), ViewParams::getShadowSpotLight());
 
     if(pcShadowGroup) {
@@ -2061,7 +2061,7 @@ void View3DInventorViewer::Private::activate()
         light = pcShadowDirectionalLight;
         if(light->isOfType(SoShadowDirectionalLight::getClassTypeId())) {
             static const App::PropertyFloatConstraint::Constraints _dist_cstr(-1.0,DBL_MAX,10.0);
-            static_cast<SoShadowDirectionalLight*>(light)->maxShadowDistance = 
+            static_cast<SoShadowDirectionalLight*>(light)->maxShadowDistance =
                 _shadowParam<App::PropertyFloatConstraint>(doc, "MaxDistance",
                     ViewParams::docShadowMaxDistance(), ViewParams::getShadowMaxDistance(),
                     [](App::PropertyFloatConstraint &prop) {
@@ -2120,7 +2120,7 @@ void View3DInventorViewer::Private::activate()
 
     pcShadowGroundTexture->filename = _shadowParam<App::PropertyFileIncluded>(doc, "GroundTexture",
             ViewParams::docShadowGroundTexture(), ViewParams::getShadowGroundTexture().c_str());
-    
+
     const char *bumpmap = _shadowParam<App::PropertyFileIncluded>(doc, "GroundBumpMap",
             ViewParams::docShadowGroundBumpMap(), ViewParams::getShadowGroundBumpMap().c_str());
     if(bumpmap && bumpmap[0]) {
@@ -3333,7 +3333,7 @@ void View3DInventorViewer::renderScene(void)
     // Immediately reschedule to get continuous spin animation.
     if (this->isAnimating()) {
         this->getSoRenderManager()->scheduleRedraw();
-    } else 
+    } else
         _pimpl->onRender();
 
 #if 0 // this breaks highlighting of edges
@@ -3471,7 +3471,7 @@ bool View3DInventorViewer::processSoEvent(const SoEvent* ev)
         default:
             break;
         }
-    } else if (ev->isOfType(SoMouseButtonEvent::getClassTypeId()) 
+    } else if (ev->isOfType(SoMouseButtonEvent::getClassTypeId())
                 && ev->wasShiftDown()
                 && ev->wasCtrlDown())
     {
@@ -3667,7 +3667,7 @@ void View3DInventorViewer::toggleClippingPlane(int toggle, bool beforeEditing,
     pcClipPlane->ref();
     if(beforeEditing)
         pcViewProviderRoot->insertChild(pcClipPlane,0);
-    else 
+    else
         pcViewProviderRoot->insertChild(pcClipPlane,pcViewProviderRoot->findChild(pcEditingRoot)+1);
 }
 
@@ -3718,7 +3718,7 @@ SoPickedPoint* View3DInventorViewer::pickPoint(const SbVec2s& pos) const
 
 SoPickedPoint* View3DInventorViewer::getPickedPoint(SoEventCallback* n) const
 {
-    if (selectionRoot) 
+    if (selectionRoot)
         return selectionRoot->getPickedPoint(n->getAction());
     auto pp = n->getPickedPoint();
     return pp?pp->copy():0;
@@ -4176,7 +4176,7 @@ checkElementIntersection(ViewProviderDocumentObject *vp, const char *subname,
         App::DocumentObject *parent = 0;
         std::string childName;
         auto sobj = obj->resolve(subname,&parent,&childName,0,0,&mat,transform,depth+1);
-        if(!sobj) 
+        if(!sobj)
             return 0;
         if(!ViewParams::getShowSelectionOnTop()) {
             int vis;
@@ -4199,7 +4199,7 @@ checkElementIntersection(ViewProviderDocumentObject *vp, const char *subname,
         return 0;
 
     auto bbox = bbox3.ProjectBox(&proj);
-    if(!bbox.Intersect(polygon)) 
+    if(!bbox.Intersect(polygon))
         return 0;
 
     const auto &subs = obj->getSubObjects(App::DocumentObject::GS_SELECT);
@@ -4315,7 +4315,7 @@ void View3DInventorViewer::viewSelection(bool extend)
             // sub-element intersection test.
 #if 0
             SbVec3f center = box.getCenter();
-            SbVec3f size = box.getSize() 
+            SbVec3f size = box.getSize()
                 * 0.5f * ViewParams::instance()->getViewSelectionExtendFactor();
 
             // scale the box by the configured factor, so that we don't have to
@@ -5133,15 +5133,15 @@ static std::vector<std::string> getBoxSelection(const Base::Vector3d *dir,
 
     // check if both two boundary points are inside polygon, only
     // valid since we know the given polygon is a box.
-    if(!pickElement 
+    if(!pickElement
             && polygon.Contains(Base::Vector2d(bbox.MinX,bbox.MinY))
-            && polygon.Contains(Base::Vector2d(bbox.MaxX,bbox.MaxY))) 
+            && polygon.Contains(Base::Vector2d(bbox.MaxX,bbox.MaxY)))
     {
         ret.emplace_back("");
         return ret;
     }
 
-    if(!bbox.Intersect(polygon)) 
+    if(!bbox.Intersect(polygon))
         return ret;
 
     const auto &subs = obj->getSubObjects(App::DocumentObject::GS_SELECT);
@@ -5224,7 +5224,7 @@ static std::vector<std::string> getBoxSelection(const Base::Vector3d *dir,
         std::string childName;
         Base::Matrix4D smat(mat);
         auto sobj = obj->resolve(sub.c_str(),&parent,&childName,0,0,&smat,transform,depth+1);
-        if(!sobj) 
+        if(!sobj)
             continue;
         int vis;
         if(!parent || (vis=parent->isElementVisibleEx(childName.c_str(),App::DocumentObject::GS_SELECT))<0)
@@ -5253,7 +5253,7 @@ static std::vector<std::string> getBoxSelection(const Base::Vector3d *dir,
 
 std::vector<App::SubObjectT>
 View3DInventorViewer::getPickedList(const std::vector<SbVec2f> &pts,
-                                    bool center, 
+                                    bool center,
                                     bool pickElement,
                                     bool backfaceCull,
                                     bool currentSelection,
@@ -5303,8 +5303,8 @@ View3DInventorViewer::getPickedList(const std::vector<SbVec2f> &pts,
     SbViewVolume vv = cam->getViewVolume();
     Gui::ViewVolumeProjection proj(vv);
 
-    std::set<App::SubObjectT> sels; 
-    std::map<App::SubObjectT, std::vector<const App::SubObjectT*> > selObjs; 
+    std::set<App::SubObjectT> sels;
+    std::map<App::SubObjectT, std::vector<const App::SubObjectT*> > selObjs;
     if(currentSelection || unselect) {
         for (auto &sel : Gui::Selection().getSelectionT(doc->getName(),0)) {
             auto r = sels.insert(sel);

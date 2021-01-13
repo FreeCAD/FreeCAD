@@ -310,12 +310,11 @@ void SoFCUnifiedSelection::getPickedInfo(std::vector<PickedInfo> &ret,
         if(!info.vpd->getElementPicked(info.pp,info.subname))
             continue;
 
-        if(singlePick) 
+        if(singlePick)
             last_vp = vp;
         else {
             if(!filter.emplace(info.vpd,info.subname).second)
                 continue;
-            
             App::GeoFeature *geo = nullptr;
             std::pair<std::string, std::string> elementName;
             App::GeoFeature::resolveElement(info.vpd->getObject(),
@@ -324,7 +323,6 @@ void SoFCUnifiedSelection::getPickedInfo(std::vector<PickedInfo> &ret,
             if(geo && !elementName.second.empty())
                 info.elements = geo->getHigherElements(elementName.second.c_str(), true);
         }
-        
         if(copy) info.copy();
         ret.push_back(std::move(info));
     }
@@ -353,12 +351,12 @@ void SoFCUnifiedSelection::getPickedInfoOnTop(std::vector<PickedInfo> &ret,
     path->truncate(pathLength);
 }
 
-std::vector<SoFCUnifiedSelection::PickedInfo> 
+std::vector<SoFCUnifiedSelection::PickedInfo>
 SoFCUnifiedSelection::getPickedList(SoHandleEventAction* action, bool singlePick) const {
     return getPickedList(action->getEvent()->getPosition(),action->getViewportRegion(), singlePick);
 }
 
-std::vector<SoFCUnifiedSelection::PickedInfo> 
+std::vector<SoFCUnifiedSelection::PickedInfo>
 SoFCUnifiedSelection::getPickedList(const SbVec2s &pos, const SbViewportRegion &viewport, bool singlePick) const
 {
     std::vector<PickedInfo> ret;
@@ -380,14 +378,14 @@ SoFCUnifiedSelection::getPickedList(const SbVec2s &pos, const SbViewportRegion &
     SoFCDisplayModeElement::set(pcRayPick->getState(),0,SbName::empty(),false);
 
     if (ViewParams::getHiddenLineSelectionOnTop())
-        pcRayPick->setPickBackFace(singlePick ? (pickBackFace ? pickBackFace : -1) : 0); 
+        pcRayPick->setPickBackFace(singlePick ? (pickBackFace ? pickBackFace : -1) : 0);
     else
-        pcRayPick->setPickBackFace(singlePick ? pickBackFace : 0); 
+        pcRayPick->setPickBackFace(singlePick ? pickBackFace : 0);
 
     pcRayPick->cleanup();
     getPickedInfoOnTop(ret, singlePick, filter);
 
-    pcRayPick->setPickBackFace(singlePick ? pickBackFace : 0); 
+    pcRayPick->setPickBackFace(singlePick ? pickBackFace : 0);
     if(ret.empty() || !singlePick) {
         SoFCDisplayModeElement::set(pcRayPick->getState(),0,
                 overrideMode.getValue(), showHiddenLines.getValue());
@@ -435,7 +433,7 @@ void SoFCUnifiedSelection::postProcessPickedList(std::vector<PickedInfo> &ret, b
     if(ret.size()<=1)
         return;
 
-    // To identify the picking of lines in a concave area we have to 
+    // To identify the picking of lines in a concave area we have to
     // get all intersection points. If we have two or more intersection
     // points where the first is of a face and the second of a line with
     // almost similar coordinates we use the second point, instead.
@@ -446,7 +444,7 @@ void SoFCUnifiedSelection::postProcessPickedList(std::vector<PickedInfo> &ret, b
     auto itPicked = ret.begin();
     for(auto it=ret.begin()+1;it!=ret.end();++it) {
         auto &info = *it;
-        if(last_vpd != info.vpd) 
+        if(last_vpd != info.vpd)
             break;
 
         int cur_prio = getPriority(info.pp);
@@ -553,7 +551,7 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
                 hlaction.apply(currentHighlight);
                 currentHighlight->truncate(0);
             }
-        } else if (highlightMode.getValue() != OFF 
+        } else if (highlightMode.getValue() != OFF
                     && !setPreSelection
                     && hilaction->SelChange.Type == SelectionChanges::SetPreselect)
         {
@@ -567,13 +565,13 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
             App::DocumentObject* obj = doc->getObject(hilaction->SelChange.pObjectName);
             ViewProvider*vp = Application::Instance->getViewProvider(obj);
             if (vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()) &&
-                (useNewSelection.getValue()||vp->useNewSelectionModel()) && vp->isSelectable()) 
+                (useNewSelection.getValue()||vp->useNewSelectionModel()) && vp->isSelectable())
             {
                 detailPath->truncate(0);
                 SoDetail *det = 0;
                 if(vp->getDetailPath(hilaction->SelChange.pSubName,detailPath,true,det)) {
                     setHighlight(detailPath,det,static_cast<ViewProviderDocumentObject*>(vp),
-                            hilaction->SelChange.pSubName, 
+                            hilaction->SelChange.pSubName,
                             hilaction->SelChange.x,
                             hilaction->SelChange.y,
                             hilaction->SelChange.z);
@@ -588,8 +586,8 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
 
     if (action->getTypeId() == SoFCSelectionAction::getClassTypeId()) {
         SoFCSelectionAction *selaction = static_cast<SoFCSelectionAction*>(action);
-        if(selectionMode.getValue() == ON 
-            && (selaction->SelChange.Type == SelectionChanges::AddSelection 
+        if(selectionMode.getValue() == ON
+            && (selaction->SelChange.Type == SelectionChanges::AddSelection
                 || selaction->SelChange.Type == SelectionChanges::RmvSelection))
         {
             // selection changes inside the 3d view are handled in handleEvent()
@@ -690,18 +688,18 @@ bool SoFCUnifiedSelection::setHighlight(const PickedInfo &info) {
     const SoDetail *det = info.pp->getDetail();
     if(det && !Data::ComplexGeoData::hasElementName(info.subname.c_str()))
         det = nullptr;
-    return setHighlight(static_cast<SoFullPath*>(info.pp->getPath()), 
+    return setHighlight(static_cast<SoFullPath*>(info.pp->getPath()),
             det, info.vpd, info.subname.c_str(), pt[0],pt[1],pt[2]);
 }
 
-bool SoFCUnifiedSelection::setHighlight(SoFullPath *path, const SoDetail *det, 
-        ViewProviderDocumentObject *vpd, const char *subname, float x, float y, float z) 
+bool SoFCUnifiedSelection::setHighlight(SoFullPath *path, const SoDetail *det,
+        ViewProviderDocumentObject *vpd, const char *subname, float x, float y, float z)
 {
     Base::FlagToggler<SbBool> flag(setPreSelection);
 
     bool highlighted = false;
-    if(path && path->getLength() && 
-       vpd && vpd->getObject() && vpd->getObject()->getNameInDocument()) 
+    if(path && path->getLength() &&
+       vpd && vpd->getObject() && vpd->getObject()->getNameInDocument())
     {
         const char *docname = vpd->getObject()->getDocument()->getName();
         const char *objname = vpd->getObject()->getNameInDocument();
@@ -742,8 +740,8 @@ bool SoFCUnifiedSelection::setHighlight(SoFullPath *path, const SoDetail *det,
     return highlighted;
 }
 
-bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, 
-        bool ctrlDown, bool shiftDown, bool altDown) 
+bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos,
+        bool ctrlDown, bool shiftDown, bool altDown)
 {
     if(infos.empty() || !infos[0].vpd) return false;
 
@@ -826,7 +824,7 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos,
     // Hierarchy ascending
     //
     // If the clicked subelement is already selected, check if there is an
-    // upper hierarchy, and select that hierarchy instead. 
+    // upper hierarchy, and select that hierarchy instead.
     //
     // For example, let's suppose PickedInfo above reports
     // 'link.link2.box.Face1', and below Selection().getSelectedElement returns
@@ -841,7 +839,7 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos,
     const char *subSelected = Gui::Selection().getSelectedElement(
                                 vpd->getObject(),subName.c_str());
 
-    FC_TRACE("select " << (subSelected?subSelected:"'null'") << ", " << 
+    FC_TRACE("select " << (subSelected?subSelected:"'null'") << ", " <<
             objectName << ", " << subName);
     std::string newElement;
     if(subSelected
@@ -872,8 +870,8 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos,
             hasNext = true;
             subName = nextsub;
             detailPath->truncate(0);
-            if(vpd->getDetailPath(subName.c_str(),detailPath,true,detNext) && 
-               detailPath->getLength()) 
+            if(vpd->getDetailPath(subName.c_str(),detailPath,true,detNext) &&
+               detailPath->getLength())
             {
                 pPath = detailPath;
                 det = detNext;
@@ -884,7 +882,7 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos,
 
 #if 0 // ViewProviderDocumentObject now has default implementation of getElementPicked
 
-    // If no next hierarchy is found, do another try on view provider hierarchies, 
+    // If no next hierarchy is found, do another try on view provider hierarchies,
     // which is used by geo feature group.
     if(!hasNext) {
         bool found = false;
@@ -912,7 +910,7 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos,
     Gui::Selection().clearSelection();
     FC_TRACE("add selection");
     SelectionNoTopParentCheck guard;
-    bool ok = Gui::Selection().addSelection(docname, objectName.c_str() ,subName.c_str(), 
+    bool ok = Gui::Selection().addSelection(docname, objectName.c_str() ,subName.c_str(),
             pt[0] ,pt[1] ,pt[2], &sels);
     if (ok)
         type = hasNext?SoSelectionElementAction::All:SoSelectionElementAction::Append;
@@ -1315,16 +1313,16 @@ void SoVRMLAction::callDoAction(SoAction *action, SoNode *node)
 // ---------------------------------------------------------------------------------
 
 bool SoFCSelectionRoot::StackComp::operator()(const Stack &a, const Stack &b) const {
-    if(a.size()-a.offset < b.size()-b.offset) 
+    if(a.size()-a.offset < b.size()-b.offset)
         return true;
-    if(a.size()-a.offset > b.size()-b.offset) 
+    if(a.size()-a.offset > b.size()-b.offset)
         return false;
-    auto it1=a.rbegin(), end1=a.rend()-a.offset; 
+    auto it1=a.rbegin(), end1=a.rend()-a.offset;
     auto it2=b.rbegin();
     for(;it1!=end1;++it1,++it2) {
-        if(*it1 < *it2) 
+        if(*it1 < *it2)
             return true;
-        if(*it1 > *it2) 
+        if(*it1 > *it2)
             return false;
     }
     return false;
@@ -1360,7 +1358,7 @@ void SoFCDisplayMode::doAction(SoAction * action)
         SoFCDisplayModeElement::set(state, this,
                 this->displayMode.getValue(), this->showHiddenLines.getValue());
     }
-    if (!this->faceColor.isIgnored() 
+    if (!this->faceColor.isIgnored()
             || !this->lineColor.isIgnored()
             || !this->transparency.isIgnored())
     {
@@ -1675,7 +1673,7 @@ void SoFCSwitch::doAction(SoAction *action) {
     {
         const SbName &name = SoFCDisplayModeElement::get(state);
 
-        if(this->whichChild.getValue()>=0 
+        if(this->whichChild.getValue()>=0
                 && this->allowNamedOverride.getValue()
                 && name!=SbName::empty())
         {
@@ -1703,7 +1701,7 @@ void SoFCSwitch::doAction(SoAction *action) {
         if(info.path->getNode(info.idx) == this) {
             // We are traversing inside a path from some parent SoFCPathAnnotation.
             // We shall override the switch index according to the path inside
-            if(info.idx+1<info.path->getLength()) 
+            if(info.idx+1<info.path->getLength())
                 idx = info.path->getIndex(info.idx+1);
 
             int nodeIdx = info.idx;
@@ -1765,7 +1763,7 @@ void SoFCSwitch::doAction(SoAction *action) {
 
     if(whichChild.getValue() == SO_SWITCH_NONE)
         tstate.set(TraverseInvisible);
-    else if(whichChild.getValue()!=idx) 
+    else if(whichChild.getValue()!=idx)
         tstate.set(TraverseAlternative);
 
     if(!_SwitchTraverseStack.size() || _SwitchTraverseStack.back()!=tstate)
@@ -1811,7 +1809,7 @@ void SoFCSwitch::notify(SoNotList * nl)
         if(which!=SO_SWITCH_ALL) {
             int fromchild = this->findChild((SoNode*) rec->getBase());
             if (fromchild >= 0
-                    && fromchild!=which 
+                    && fromchild!=which
                     && childNotify.getValue()<=0)
             {
                 ignoreit = TRUE;
@@ -2015,13 +2013,13 @@ void SoFCSelectionRoot::setViewProvider(ViewProvider *vp) {
 }
 
 SoFCSelectionRoot *SoFCSelectionRoot::getCurrentRoot(bool front, SoFCSelectionRoot *def) {
-    if(SelStack.size()) 
+    if(SelStack.size())
         return static_cast<SoFCSelectionRoot*>(front?SelStack.front():SelStack.back());
     return def;
 }
 
 SoFCSelectionRoot *SoFCSelectionRoot::getCurrentActionRoot(
-        SoAction *action, bool front, SoFCSelectionRoot *def) 
+        SoAction *action, bool front, SoFCSelectionRoot *def)
 {
     auto it = ActionStacks.find(action);
     if(it == ActionStacks.end() || it->second.empty())
@@ -2048,13 +2046,13 @@ SoFCSelectionContextBasePtr SoFCSelectionRoot::getNodeContext(
 
     auto it = front->contextMap.find(stack);
     stack.front() = front;
-    if(it!=front->contextMap.end()) 
+    if(it!=front->contextMap.end())
         return it->second;
     return SoFCSelectionContextBasePtr();
 }
 
-SoFCSelectionContextBasePtr 
-SoFCSelectionRoot::getNodeContext2(Stack &stack, SoNode *node, SoFCSelectionContextBase::MergeFunc *merge) 
+SoFCSelectionContextBasePtr
+SoFCSelectionRoot::getNodeContext2(Stack &stack, SoNode *node, SoFCSelectionContextBase::MergeFunc *merge)
 {
     SoFCSelectionContextBasePtr ret;
     if(stack.empty() || stack.back()->contextMap2.empty())
@@ -2090,7 +2088,7 @@ std::pair<bool,SoFCSelectionContextBasePtr*> SoFCSelectionRoot::findActionContex
         return res;
 
     auto &stack = it->second;
-    
+
     auto node = static_cast<SoFCSelectionRoot*>(_node);
 
     if(res.first) {
@@ -2110,7 +2108,7 @@ std::pair<bool,SoFCSelectionContextBasePtr*> SoFCSelectionRoot::findActionContex
     }else{
         auto front = stack.front();
         stack.front() = node;
-        if(create) 
+        if(create)
             res.second = &front->contextMap[stack];
         else {
             auto it = front->contextMap.find(stack);
@@ -2135,7 +2133,7 @@ void SoFCSelectionRoot::setupSelectionLineRendering(
     if(Gui::ViewParams::getSelectionLineThicken()>1.0) {
         float w = width * Gui::ViewParams::getSelectionLineThicken();
         if (Gui::ViewParams::getSelectionLineMaxWidth() > 1.0) {
-            w = std::min<float>(w, 
+            w = std::min<float>(w,
                     std::max<float>(width, Gui::ViewParams::getSelectionLineMaxWidth()));
         }
         width = w;
@@ -2192,7 +2190,7 @@ bool SoFCSelectionRoot::renderBBox(SoGLRenderAction *action, SoNode *node,
         data->bboxaction->setResetPath(0);
         resetPath.unrefNoDelete();
     }
-    
+
     SbXfBox3f xbbox = data->bboxaction->getXfBoundingBox();
     if(xbbox.isEmpty())
         return false;
@@ -2203,8 +2201,8 @@ bool SoFCSelectionRoot::renderBBox(SoGLRenderAction *action, SoNode *node,
     return true;
 }
 
-bool SoFCSelectionRoot::renderBBox(SoGLRenderAction *action, SoNode *node, 
-        const SbBox3f &bbox, SbColor color, const SbMatrix *mat) 
+bool SoFCSelectionRoot::renderBBox(SoGLRenderAction *action, SoNode *node,
+        const SbBox3f &bbox, SbColor color, const SbMatrix *mat)
 {
     auto data = (SoFCBBoxRenderInfo*) so_bbox_storage->get();
     if (data->cube == NULL) {
@@ -2336,7 +2334,7 @@ bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction * action, bool inPath, b
 
     int style = selectionStyle.getValue();
     if((style==SoFCSelectionRoot::Box || SoFCUnifiedSelection::getShowSelectionBoundingBox())
-       && ctx && !ctx->hideAll && (ctx->selAll || ctx->hlAll)) 
+       && ctx && !ctx->hideAll && (ctx->selAll || ctx->hlAll))
     {
         if (style==SoFCSelectionRoot::PassThrough) {
             style = SoFCSelectionRoot::Box;
@@ -2375,7 +2373,7 @@ bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction * action, bool inPath, b
     // honour the secondary color override.
 
     bool colorPushed = false;
-    if(!ShapeColorNode && overrideColor && 
+    if(!ShapeColorNode && overrideColor &&
         !SoOverrideElement::getDiffuseColorOverride(state) &&
         (style==SoFCSelectionRoot::Box || !ctx || (!ctx->selAll && !ctx->hideAll)))
     {
@@ -2408,12 +2406,12 @@ bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction * action, bool inPath, b
     } else {
         bool selPushed;
         bool hlPushed;
-        if((hlPushed = ctx->hlAll)) 
+        if((hlPushed = ctx->hlAll))
             HlColorStack.push_back(ctx->hlColor);
         if((selPushed = ctx->selAll))
             SelColorStack.push_back(ctx->selColor);
 
-        if(!ViewParams::instance()->getShowSelectionOnTop() 
+        if(!ViewParams::instance()->getShowSelectionOnTop()
                 && selPushed
                 && style != SoFCSelectionRoot::Box)
         {
@@ -2439,13 +2437,13 @@ bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction * action, bool inPath, b
         else
             inherited::GLRenderBelowPath(action);
 
-        if(selPushed) 
+        if(selPushed)
             SelColorStack.pop_back();
         if(hlPushed)
             HlColorStack.pop_back();
     }
 
-    if(colorPushed) 
+    if(colorPushed)
         ShapeColorNode = 0;
 
     return false;
@@ -2623,8 +2621,8 @@ bool SoFCSelectionRoot::doActionPrivate(Stack &stack, SoAction *action) {
     if(action->getCurPathCode()==SoAction::IN_PATH) {
         auto path = action->getPathAppliedTo();
         if(path) {
-            isTail = path->getTail()==this || 
-                     (path->getLength()>1 
+            isTail = path->getTail()==this ||
+                     (path->getLength()>1
                       && path->getNodeFromTail(1)==this
                       && path->getTail()->isOfType(SoSwitch::getClassTypeId()));
         }
@@ -2647,7 +2645,7 @@ bool SoFCSelectionRoot::doActionPrivate(Stack &stack, SoAction *action) {
 
         if(selAction->isSecondary()) {
             if(selAction->getType() == SoSelectionElementAction::Show ||
-               (selAction->getType() == SoSelectionElementAction::Color && 
+               (selAction->getType() == SoSelectionElementAction::Color &&
                 selAction->getColors().empty() &&
                 action->getWhatAppliedTo()==SoAction::NODE))
             {
@@ -2676,8 +2674,8 @@ bool SoFCSelectionRoot::doActionPrivate(Stack &stack, SoAction *action) {
                 }
             }
             return true;
-        } 
-        
+        }
+
         if(selAction->getType() == SoSelectionElementAction::None) {
             if(action->getWhatAppliedTo() == SoAction::NODE) {
                 // Here the 'select none' action is applied to a node, and we
@@ -2751,7 +2749,7 @@ bool SoFCSelectionRoot::doActionPrivate(Stack &stack, SoAction *action) {
     return true;
 }
 
-int SoFCSelectionRoot::SelContext::merge(int status, SoFCSelectionContextBasePtr &output, 
+int SoFCSelectionRoot::SelContext::merge(int status, SoFCSelectionContextBasePtr &output,
         SoFCSelectionContextBasePtr input, SoFCSelectionRoot *)
 {
     auto ctx = std::dynamic_pointer_cast<SelContext>(input);
@@ -2764,7 +2762,7 @@ int SoFCSelectionRoot::SelContext::merge(int status, SoFCSelectionContextBasePtr
 
 bool SoFCSelectionRoot::handleSelectionAction(SoAction *action,
                                               SoNode *node,
-                                              SoFCDetail::Type detailType, 
+                                              SoFCDetail::Type detailType,
                                               SoFCSelectionContextExPtr selContext,
                                               SoFCSelectionCounter &selCounter)
 {
@@ -2997,7 +2995,7 @@ void FCDepthFunc::restore() {
         glDisable(GL_DEPTH_TEST);
     }
 }
-    
+
 void FCDepthFunc::set(int32_t f) {
     int32_t oldFunc;
     glGetIntegerv(GL_DEPTH_FUNC, &oldFunc);
@@ -3032,7 +3030,7 @@ SoFCPathAnnotation::~SoFCPathAnnotation()
     setPath(0);
 }
 
-void SoFCPathAnnotation::finish() 
+void SoFCPathAnnotation::finish()
 {
     atexit_cleanup();
 }
@@ -3128,7 +3126,7 @@ void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction * action)
                     auto state = action->getState();
 
                     if(ViewParams::instance()->getRenderProjectedBBox()) {
-                        if(!ViewParams::instance()->getUseTightBoundingBox()) 
+                        if(!ViewParams::instance()->getUseTightBoundingBox())
                             SoFCSelectionRoot::renderBBox(action,this,hl?hlColor:selColor);
                         else {
                             Base::Matrix4D mat = ViewProvider::convert(SoModelMatrixElement::get(state));

@@ -337,8 +337,20 @@ TaskDialogPython::~TaskDialogPython()
     std::vector< QPointer<QWidget> > guarded;
     guarded.insert(guarded.begin(), Content.begin(), Content.end());
     Content.clear();
+
     Base::PyGILStateLocker lock;
+
+    // The widgets stored in the 'form' attribute will be deleted.
+    // Thus, set this attribute to None to make sure that when using
+    // the same dialog instance for a task panel won't segfault.
+    if (this->dlg.hasAttr(std::string("form"))) {
+        this->dlg.setAttr(std::string("form"), Py::None());
+    }
     this->dlg = Py::None();
+
+    // Assigning None to 'dlg' may destroy some of the stored widgets.
+    // By guarding them with QPointer their pointers will be set to null
+    // so that the destructor of the base class can reliably call 'delete'.
     Content.insert(Content.begin(), guarded.begin(), guarded.end());
 }
 

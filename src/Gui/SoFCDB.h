@@ -56,7 +56,7 @@ public:
     static bool writeToFile(SoNode* node, const char* filename, bool binary);
     /*! container for app lifetime storage. See SoFCCSysDragger for details
      * on why this is needed.
-     */ 
+     */
     static SoGroup* getStorage();
 
 private:

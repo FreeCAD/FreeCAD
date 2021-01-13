@@ -67,6 +67,9 @@ void DlgSettingsPathColor::saveSettings()
     ui->DefaultBBoxNormalColor->onSave();
     ui->DefaultSelectionStyle->onSave();
     ui->DefaultTaskPanelLayout->onSave();
+    ui->WarningSuppressAllSpeeds->onSave();
+    ui->WarningSuppressRapidSpeeds->onSave();
+    ui->WarningSuppressSelectionMode->onSave();
 }
 
 void DlgSettingsPathColor::loadSettings()
@@ -83,6 +86,9 @@ void DlgSettingsPathColor::loadSettings()
     ui->DefaultBBoxNormalColor->onRestore();
     ui->DefaultSelectionStyle->onRestore();
     ui->DefaultTaskPanelLayout->onRestore();
+    ui->WarningSuppressAllSpeeds->onRestore();
+    ui->WarningSuppressRapidSpeeds->onRestore();
+    ui->WarningSuppressSelectionMode->onRestore();
 }
 
 /**

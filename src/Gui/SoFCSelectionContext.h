@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (c) 2018 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
+ *   Copyright (c) 2018 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -40,7 +40,7 @@ struct GuiExport SoFCSelectionContextBase {
     std::shared_ptr<int> counter;
 
     virtual ~SoFCSelectionContextBase() {}
-    typedef int MergeFunc(int status, SoFCSelectionContextBasePtr &output, 
+    typedef int MergeFunc(int status, SoFCSelectionContextBasePtr &output,
             SoFCSelectionContextBasePtr input, SoFCSelectionRoot *node);
 
     virtual bool isCounted() const = 0;

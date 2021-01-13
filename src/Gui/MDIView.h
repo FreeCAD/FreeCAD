@@ -32,7 +32,7 @@ QT_BEGIN_NAMESPACE
 class QPrinter;
 QT_END_NAMESPACE
 
-namespace Gui 
+namespace Gui
 {
 class Document;
 class ViewProvider;
@@ -99,8 +99,8 @@ public:
 
     /// MDI view mode enum
     enum ViewMode {
-        Child,      /**< Child viewing, view is docked inside the MDI application window */  
-        TopLevel,   /**< The view becomes a top level window and can be moved outsinde the application window */  
+        Child,      /**< Child viewing, view is docked inside the MDI application window */
+        TopLevel,   /**< The view becomes a top level window and can be moved outsinde the application window */
         FullScreen  /**< The view goes to full screen viewing */
     };
     /**
@@ -175,4 +175,4 @@ private:
 
 } // namespace Gui
 
-#endif // GUI_MDIVIEW_H 
+#endif // GUI_MDIVIEW_H

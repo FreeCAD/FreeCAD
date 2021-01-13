@@ -1,7 +1,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
-# *   Copyright (c) 2013 Wandererfan <wandererfan@gmail.com>                *
+# *   Copyright (c) 2013 WandererFan <wandererfan@gmail.com>                *
 # *   Copyright (c) 2019 Zheng, Lei (realthunder)<realthunder.dev@gmail.com>*
 # *   Copyright (c) 2020 Carlo Pavan <carlopav@gmail.com>                   *
 # *   Copyright (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
@@ -103,9 +103,6 @@ class PathArray(gui_base_original.Modifier):
 
     def proceed(self):
         """Proceed with the command if one object was selected."""
-        if self.call:
-            self.view.removeEventCallback("SoEvent", self.call)
-
         sel = Gui.Selection.getSelectionEx()
         if len(sel) != 2:
             _err(_tr("Please select exactly two objects, "

@@ -204,7 +204,7 @@ StdCmdImport::StdCmdImport()
     sToolTipText  = QT_TR_NOOP("Import a file in the active document");
     sWhatsThis    = "Std_Import";
     sStatusTip    = QT_TR_NOOP("Import a file in the active document");
-    //sPixmap       = "Open";
+    sPixmap       = "Std_Import";
     sAccel        = "Ctrl+I";
 }
 
@@ -292,6 +292,7 @@ StdCmdExport::StdCmdExport()
     sStatusTip    = QT_TR_NOOP("Export an object in the active document");
     //sPixmap       = "Open";
     sAccel        = "Ctrl+E";
+    sPixmap       = "Std_Export";
     eType         = 0;
 }
 
@@ -356,6 +357,7 @@ StdCmdMergeProjects::StdCmdMergeProjects()
     sToolTipText  = QT_TR_NOOP("Merge project");
     sWhatsThis    = "Std_MergeProjects";
     sStatusTip    = QT_TR_NOOP("Merge project");
+    sPixmap       = "Std_MergeProjects";
 }
 
 void StdCmdMergeProjects::activated(int iMsg)
@@ -624,7 +626,7 @@ StdCmdSaveCopy::StdCmdSaveCopy()
   sToolTipText  = QT_TR_NOOP("Save a copy of the active document under a new file name");
   sWhatsThis    = "Std_SaveCopy";
   sStatusTip    = QT_TR_NOOP("Save a copy of the active document under a new file name");
-  //sPixmap       = "document-save-as";
+  sPixmap       = "Std_SaveCopy";
 }
 
 void StdCmdSaveCopy::activated(int iMsg)
@@ -657,11 +659,12 @@ StdCmdSaveAll::StdCmdSaveAll()
   sToolTipText  = QT_TR_NOOP("Save all opened document");
   sWhatsThis    = "Std_SaveAll";
   sStatusTip    = QT_TR_NOOP("Save all opened document");
+  sPixmap       = "Std_SaveAll";
 }
 
 void StdCmdSaveAll::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     Gui::Document::saveAll();
 }
 
@@ -684,7 +687,7 @@ StdCmdRevert::StdCmdRevert()
     sToolTipText  = QT_TR_NOOP("Reverts to the saved version of this file");
     sWhatsThis    = "Std_Revert";
     sStatusTip    = QT_TR_NOOP("Reverts to the saved version of this file");
-  //sPixmap       = "document-revert";
+    sPixmap       = "Std_Revert";
     eType         = NoTransaction;
 }
 
@@ -845,6 +848,7 @@ StdCmdPrintPdf::StdCmdPrintPdf()
     sToolTipText  = QT_TR_NOOP("Export the document as PDF");
     sWhatsThis    = "Std_PrintPdf";
     sStatusTip    = QT_TR_NOOP("Export the document as PDF");
+    sPixmap       = "Std_PrintPdf";
     eType         = 0;
 }
 
@@ -1146,7 +1150,7 @@ void StdCmdDuplicateSelection::activated(int iMsg)
                 "To link to external objects, the document must be saved at least once.\n"
                 "Do you want to save the document now?"),
                 QMessageBox::Yes,QMessageBox::No);
-            if(ret == QMessageBox::Yes) 
+            if(ret == QMessageBox::Yes)
                 proceed = Application::Instance->getDocument(doc)->saveAs();
         }
         if(proceed) {
@@ -1227,7 +1231,7 @@ void StdCmdDelete::activated(int iMsg)
 
     std::set<App::Document*> docs;
     try {
-        openCommand("Delete");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Delete"));
         if (getGuiApplication()->sendHasMsgToFocusView(getName())) {
             commitCommand();
             return;
@@ -1316,8 +1320,8 @@ void StdCmdDelete::activated(int iMsg)
                         bodyMessageStream << "\n";
                     }
                     std::string thisDoc = pGuiDoc->getDocument()->getName();
-                    bodyMessageStream << qApp->translate("Std_Delete", 
-                                            "These items are selected for deletion, but are not in the active document."); 
+                    bodyMessageStream << qApp->translate("Std_Delete",
+                                            "These items are selected for deletion, but are not in the active document.");
                     for (const auto &currentLabel : inactiveLabels)
                         bodyMessageStream << currentLabel << " / " << Base::Tools::fromStdString(thisDoc) << '\n';
                 }
@@ -1399,7 +1403,7 @@ StdCmdRefresh::StdCmdRefresh()
     // undoing the last transaction the manual recompute will clear the redo stack.
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/Document");
-    bool create = hGrp->GetBool("TransactionOnRecompute", true);
+    bool create = hGrp->GetBool("TransactionOnRecompute", false);
     if (!create)
         eType = eType | NoTransaction;
 }

@@ -316,7 +316,7 @@ public:
             resetPositionText();
 
             try {
-                Gui::Command::openCommand("Add sketch line");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch line"));
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)),%s)",
                           EditCurve[0].x,EditCurve[0].y,EditCurve[1].x,EditCurve[1].y,
                           geometryCreationMode==Construction?"True":"False");
@@ -490,7 +490,7 @@ public:
             int firstCurve = getHighestCurveIndex() + 1;
 
             try {
-                Gui::Command::openCommand("Add sketch box");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch box"));
                 Gui::Command::doCommand(Gui::Command::Doc,
                     "geoList = []\n"
                     "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
@@ -978,7 +978,7 @@ public:
                 // issue the geometry
                 try {
                     // open the transaction
-                    Gui::Command::openCommand("Add line to sketch wire");
+                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add line to sketch wire"));
                     Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)),%s)",
                         EditCurve[0].x,EditCurve[0].y,EditCurve[1].x,EditCurve[1].y,
                         geometryCreationMode==Construction?"True":"False");
@@ -998,7 +998,7 @@ public:
                 }
 
                 try {
-                    Gui::Command::openCommand("Add arc to sketch wire");
+                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add arc to sketch wire"));
                     Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.ArcOfCircle"
                         "(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%f,%f),%s)",
                         CenterPoint.x, CenterPoint.y, std::abs(arcRadius),
@@ -1441,7 +1441,7 @@ public:
             resetPositionText();
 
             try {
-                Gui::Command::openCommand("Add sketch arc");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc"));
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.ArcOfCircle"
                     "(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%f,%f),%s)",
                           CenterPoint.x, CenterPoint.y, sqrt(rx*rx + ry*ry),
@@ -1710,7 +1710,7 @@ public:
             resetPositionText();
 
             try {
-                Gui::Command::openCommand("Add sketch arc");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc"));
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.ArcOfCircle"
                     "(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%f,%f),%s)",
                           CenterPoint.x, CenterPoint.y, radius,
@@ -1979,7 +1979,7 @@ public:
             resetPositionText();
 
             try {
-                Gui::Command::openCommand("Add sketch circle");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch circle"));
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.Circle"
                     "(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%s)",
                           EditCurve[0].x, EditCurve[0].y,
@@ -2738,7 +2738,7 @@ private:
         int currentgeoid = getHighestCurveIndex(); // index of the ellipse we just created
 
         try {
-            Gui::Command::openCommand("Add sketch ellipse");
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch ellipse"));
             Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.Ellipse"
                                     "(App.Vector(%f,%f,0),App.Vector(%f,%f,0),App.Vector(%f,%f,0)),%s)",
                                     periapsis.x, periapsis.y,
@@ -3107,7 +3107,7 @@ public:
             int currentgeoid = getHighestCurveIndex();
 
             try {
-                Gui::Command::openCommand("Add sketch arc of ellipse");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc of ellipse"));
 
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.ArcOfEllipse"
                     "(Part.Ellipse(App.Vector(%f,%f,0),App.Vector(%f,%f,0),App.Vector(%f,%f,0)),%f,%f),%s)",
@@ -3445,7 +3445,7 @@ public:
 
             try {
 
-                Gui::Command::openCommand("Add sketch arc of hyperbola");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc of hyperbola"));
 
                 //Add arc of hyperbola, point and constrain point as focus2. We add focus2 for it to balance
                 //the intrinsic focus1, in order to balance out the intrinsic invisible focus1 when AOE is
@@ -3747,7 +3747,7 @@ public:
             int currentgeoid = getHighestCurveIndex();
 
             try {
-                Gui::Command::openCommand("Add sketch arc of Parabola");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc of Parabola"));
 
                 //Add arc of parabola
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.ArcOfParabola"
@@ -4070,7 +4070,7 @@ public:
             // insert circle point for pole, defer internal alignment constraining.
             try {
 
-                Gui::Command::openCommand("Add Pole circle");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Pole circle"));
 
                 //Add pole
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),10),True)",
@@ -4131,36 +4131,15 @@ public:
             // insert circle point for pole, defer internal alignment constraining.
             try {
 
-                //Gui::Command::openCommand("Add Pole circle");
+                //Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Pole circle"));
 
                 //Add pole
-                double guess = (EditCurve[1]-EditCurve[0]).Length()/6;
-
-                auto normalize = [](double guess) {
-                    double units=1.0;
-
-                    while (guess >= 10.0) {
-                        guess /= 10.0;
-                        units*=10.0;
-                    }
-
-                    while (guess < 1.0) {
-                        guess *= 10.0;
-                        units/=10.0;
-                    }
-
-                    return round(guess)*units;
-
-                };
-
-                guess = normalize(guess);
-
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),10),True)",
                                       EditCurve[EditCurve.size()-1].x,EditCurve[EditCurve.size()-1].y);
 
                 if(EditCurve.size() == 2) {
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
-                                          FirstPoleGeoId, guess );
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Weight',%d,%f)) ",
+                                          FirstPoleGeoId, 1.0 ); // First pole defaults to 1.0 weight
                 }
 
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Equal',%d,%d)) ",
@@ -4223,7 +4202,7 @@ public:
 
             try {
 
-                //Gui::Command::openCommand("Add B-spline curve");
+                //Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add B-spline curve"));
 
                 /*Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.BSplineCurve"
                     "(%s,%s),"
@@ -4686,7 +4665,7 @@ public:
             resetPositionText();
 
             try {
-                Gui::Command::openCommand("Add sketch circle");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch circle"));
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.Circle"
                     "(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%s)",
                           CenterPoint.x, CenterPoint.y,
@@ -4913,7 +4892,7 @@ public:
             resetPositionText();
 
             try {
-                Gui::Command::openCommand("Add sketch point");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch point"));
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.Point(App.Vector(%f,%f,0)))",
                           EditPoint.x,EditPoint.y);
 
@@ -5133,7 +5112,7 @@ public:
                 if (GeoIdList.size() == 2 && GeoIdList[0] >= 0  && GeoIdList[1] >= 0) {
                     const Part::Geometry *geom1 = sketchgui->getSketchObject()->getGeometry(GeoIdList[0]);
                     const Part::Geometry *geom2 = sketchgui->getSketchObject()->getGeometry(GeoIdList[1]);
-                    construction=geom1->getConstruction() && geom2->getConstruction();
+                    construction=Sketcher::GeometryFacade::getConstruction(geom1) && Sketcher::GeometryFacade::getConstruction(geom2);
                     if (geom1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
                         geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                         const Part::GeomLineSegment *lineSeg1 = static_cast<const Part::GeomLineSegment *>(geom1);
@@ -5156,7 +5135,7 @@ public:
                 int currentgeoid= getHighestCurveIndex();
                 // create fillet at point
                 try {
-                    Gui::Command::openCommand("Create fillet");
+                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create fillet"));
                     Gui::cmdAppObjectArgs(sketchgui->getObject(), "fillet(%d,%d,%f)", GeoId, PosId, radius);
 
                     if (construction) {
@@ -5216,7 +5195,7 @@ public:
                         if (radius < 0)
                             return false;
 
-                        construction=lineSeg1->getConstruction() && lineSeg2->getConstruction();
+                        construction=Sketcher::GeometryFacade::getConstruction(lineSeg1) && Sketcher::GeometryFacade::getConstruction(lineSeg2);
                     }
                     else { // other supported curves
                         const Part::Geometry *geo1 = static_cast<const Part::Geometry *>
@@ -5224,7 +5203,7 @@ public:
                         const Part::Geometry *geo2 = static_cast<const Part::Geometry *>
                                                                 (sketchgui->getSketchObject()->getGeometry(secondCurve));
 
-                        construction=geo1->getConstruction() && geo2->getConstruction();
+                        construction=Sketcher::GeometryFacade::getConstruction(geo1) && Sketcher::GeometryFacade::getConstruction(geo2);
                     }
 
 
@@ -5232,7 +5211,7 @@ public:
 
                     // create fillet between lines
                     try {
-                        Gui::Command::openCommand("Create fillet");
+                        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create fillet"));
                         Gui::cmdAppObjectArgs(sketchgui->getObject(), "fillet(%d,%d,App.Vector(%f,%f,0),App.Vector(%f,%f,0),%f)",
                                   firstCurve, secondCurve,
                                   firstPos.x, firstPos.y,
@@ -5384,7 +5363,7 @@ public:
                 geom->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
                 geom->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
                 try {
-                    Gui::Command::openCommand("Trim edge");
+                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Trim edge"));
                     Gui::cmdAppObjectArgs(sketchgui->getObject(), "trim(%d,App.Vector(%f,%f,0))",
                               GeoId, onSketchPos.x, onSketchPos.y);
                     Gui::Command::commitCommand();
@@ -5655,7 +5634,7 @@ public:
             }
         } else if (Mode == STATUS_SEEK_Second) {
             try {
-                Gui::Command::openCommand("Extend edge");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Extend edge"));
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "extend(%d, %f, %d)\n", // GeoId, increment, PointPos
                     BaseGeoId, Increment, ExtendFromStart ? Sketcher::start : Sketcher::end);
                 Gui::Command::commitCommand();
@@ -5855,11 +5834,11 @@ public:
     bool defining;
 
     DrawSketchHandlerExternal(bool defining=false)
-        :attaching(0),defining(defining) 
+        :attaching(0),defining(defining)
     {}
 
     DrawSketchHandlerExternal(std::vector<int> &&geoIds)
-        :attaching(std::move(geoIds)),defining(false) 
+        :attaching(std::move(geoIds)),defining(false)
     {}
 
     virtual ~DrawSketchHandlerExternal()
@@ -5945,13 +5924,13 @@ public:
                         for(int geoId : attaching)
                             ss << geoId << ',';
                         ss << ']';
-                        Gui::Command::openCommand("Attach external geometry");
+                        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Attach external geometry"));
                         Gui::cmdAppObjectArgs(sketchgui->getObject(),
                                 "attachExternal(%s,\"%s\",\"%s\")",
                                 ss.str(), msg.pObjectName, msg.pSubName);
                         Gui::Command::commitCommand();
                     } else {
-                        Gui::Command::openCommand("Add external geometry");
+                        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add external geometry"));
                         Gui::cmdAppObjectArgs(sketchgui->getObject(),
                                 "addExternal(\"%s\",\"%s\",%s)",
                                 msg.pObjectName, msg.pSubName, defining?"True":"False");
@@ -6034,8 +6013,8 @@ static Sketcher::SketchObject *getExternalSelection(std::vector<int> *sels=0, bo
     auto sketch = static_cast<Sketcher::SketchObject*>(sketchgui->getObject());
     for(auto &sel : Gui::Selection().getCompleteSelection()) {
         int geoId;
-        if(sel.pObject != sketch 
-                || !sketch->geoIdFromShapeType(sel.SubName,geoId) 
+        if(sel.pObject != sketch
+                || !sketch->geoIdFromShapeType(sel.SubName,geoId)
                 || geoId>Sketcher::GeoEnum::RefExt)
             continue;
         if(!sels)
@@ -6050,7 +6029,7 @@ static Sketcher::SketchObject *getExternalSelection(std::vector<int> *sels=0, bo
 void CmdSketcherDefining::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    
+
     std::vector<int> sels;
     auto sketch = getExternalSelection(&sels);
     if(!sketch)
@@ -6237,7 +6216,7 @@ void CmdSketcherFixExternal::activated(int iMsg)
     auto sketch = getExternalSelection(&sels,true);
     if(!sketch)
         return;
-    
+
     openCommand("Fix external geometry");
     try {
         sketch->fixExternalGeometry(sels);
@@ -6323,7 +6302,7 @@ protected:
     {
         auto* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
         int idx = 0;
-        if(pcAction) 
+        if(pcAction)
             idx = pcAction->property("defaultAction").toInt();
         if(idx >=0 && idx < (int)cmds.size() && cmds[idx].first) {
             if(prevActive != cmds[idx].first->isActive()) {
@@ -6331,7 +6310,7 @@ protected:
                 QIcon icon(cmds[idx].first->getAction()->icon());
                 if(prevActive)
                     pcAction->setIcon(icon);
-                else 
+                else
                     pcAction->setIcon(QIcon(icon.pixmap(64,QIcon::Disabled)));
             }
         }
@@ -6472,7 +6451,7 @@ namespace SketcherGui {
                 if (obj->getTypeId() == Sketcher::SketchObject::getClassTypeId()) {
 
                     try {
-                        Gui::Command::openCommand("Add carbon copy");
+                        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add carbon copy"));
                         Gui::cmdAppObjectArgs(sketchgui->getObject(), "carbonCopy(\"%s\",%s)",
                                               msg.pObjectName, geometryCreationMode==Construction?"True":"False");
 
@@ -6653,7 +6632,7 @@ public:
             }
 
             try {
-                Gui::Command::openCommand("Add slot");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add slot"));
                 Gui::Command::doCommand(Gui::Command::Doc,
                     "geoList = []\n"
                     "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%f,%f))\n"
@@ -6866,7 +6845,7 @@ public:
         if (Mode==STATUS_End){
             unsetCursor();
             resetPositionText();
-            Gui::Command::openCommand("Add hexagon");
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add hexagon"));
 
             try {
                 Gui::Command::doCommand(Gui::Command::Doc,

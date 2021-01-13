@@ -35,7 +35,7 @@ using namespace Gui;
 
 EXTENSION_PROPERTY_SOURCE(Gui::ViewProviderExtension, App::Extension)
 
-ViewProviderExtension::ViewProviderExtension() 
+ViewProviderExtension::ViewProviderExtension()
 {
     initExtensionType(Gui::ViewProviderExtension::getExtensionClassTypeId());
 }
@@ -47,13 +47,13 @@ ViewProviderExtension::~ViewProviderExtension()
 
 const ViewProviderDocumentObject* ViewProviderExtension::getExtendedViewProvider() const{
 
-    assert(getExtendedContainer()->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())); 
+    assert(getExtendedContainer()->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()));
     return static_cast<const ViewProviderDocumentObject*>(getExtendedContainer());
 }
 
 ViewProviderDocumentObject* ViewProviderExtension::getExtendedViewProvider() {
 
-    assert(getExtendedContainer()->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())); 
+    assert(getExtendedContainer()->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()));
     return static_cast<ViewProviderDocumentObject*>(getExtendedContainer());
 }
 

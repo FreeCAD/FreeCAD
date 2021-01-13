@@ -153,7 +153,7 @@ public:
      * @param subname: dot separated string reference to the sub element
      * @param pPath: output coin path leading to the returned element detail
      * @param append: If true, pPath will be first appended with the root node and
-     * the mode switch node of this view provider. 
+     * the mode switch node of this view provider.
      *
      * @return the coint detail of the subelement
      *
@@ -195,7 +195,7 @@ public:
      * This method shall work regardless whether the current view object is
      * visible or not.
      */
-    Base::BoundBox3d getBoundingBox(const char *subname=0, 
+    Base::BoundBox3d getBoundingBox(const char *subname=0,
             const Base::Matrix4D *mat=0, bool transform=true,
             const View3DInventorViewer *view=0, int depth=0) const;
 
@@ -229,7 +229,7 @@ public:
     /** @name Methods used by the Tree
       * If you want to take control over the
       * appearance of your object in the tree you
-      * can reimplemnt these methods.
+      * can reimplement these methods.
      */
     //@{
     /// deliver the icon shown in the tree view
@@ -271,7 +271,7 @@ public:
     virtual bool canDragAndDropObject(App::DocumentObject*) const;
     /** Add an object to the view provider by drag and drop */
     virtual void dropObject(App::DocumentObject*);
-    /** Query object dropping with full quanlified name 
+    /** Query object dropping with full qualified name
      *
      * Tree view now calls this function instead of canDropObject(), and may
      * query for objects from other document. The default implementation
@@ -293,13 +293,13 @@ public:
      *
      * @return Return whether the dropping action is allowed.
      * */
-    virtual bool canDropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, 
+    virtual bool canDropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner,
             const char *subname, const std::vector<std::string> &elements) const;
 
     /// return a subname referencing the sub-object holding the dropped objects
     virtual std::string getDropPrefix() const { return std::string(); }
 
-    /** Add an object with full quanlified name to the view provider by drag and drop
+    /** Add an object with full qualified name to the view provider by drag and drop
      *
      * @param obj: the object being dropped
      *
@@ -317,7 +317,7 @@ public:
      * object, which may or may not be the actual dropped object, e.g. it may be
      * a link.
      */
-    virtual std::string dropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, 
+    virtual std::string dropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner,
             const char *subname, const std::vector<std::string> &elements);
     /** Replace an object to the view provider by drag and drop
      *
@@ -395,7 +395,7 @@ public:
     const std::string getOverrideMode();
     //@}
 
-    /** @name Color management methods 
+    /** @name Color management methods
      */
     //@{
     virtual std::map<std::string, App::Color> getElementColors(const char *element=0) const {
@@ -516,7 +516,7 @@ public:
     void setDefaultMode(int);
     int getDefaultMode(bool noOverride=false) const;
     //@}
-    
+
     virtual void setRenderCacheMode(int);
 
     /// Internal use to invalidate all bounding box cache
@@ -542,7 +542,6 @@ protected:
     /// Reimplemented from subclass
     void onChanged(const App::Property* prop);
 
-
     /** @name Methods used by the Tree
      * If you want to take control over the
      * viewprovider specific overlay icons, such as status, you
@@ -554,7 +553,7 @@ protected:
     virtual void setModeSwitch();
 
     /// Internal use to customize bounding box retrieval
-    virtual Base::BoundBox3d _getBoundingBox(const char *subname=0, 
+    virtual Base::BoundBox3d _getBoundingBox(const char *subname=0,
             const Base::Matrix4D *mat=0, bool transform=true,
             const View3DInventorViewer *view=0, int depth=0) const;
 

@@ -100,12 +100,18 @@ Py::String SelectionObjectPy::getDocumentName(void) const
 
 Py::Object SelectionObjectPy::getDocument(void) const
 {
-    return Py::Object(getSelectionObjectPtr()->getObject()->getDocument()->getPyObject(), true);
+    App::DocumentObject *obj = getSelectionObjectPtr()->getObject();
+    if (!obj)
+        throw Py::RuntimeError("Cannot get document of deleted object");
+    return Py::Object(obj->getDocument()->getPyObject(), true);
 }
 
 Py::Object SelectionObjectPy::getObject(void) const
 {
-    return Py::Object(getSelectionObjectPtr()->getObject()->getPyObject(), true);
+    App::DocumentObject *obj = getSelectionObjectPtr()->getObject();
+    if (!obj)
+        throw Py::RuntimeError("Object already deleted");
+    return Py::Object(obj->getPyObject(), true);
 }
 
 Py::Tuple SelectionObjectPy::getSubObjects(void) const
@@ -151,5 +157,5 @@ PyObject *SelectionObjectPy::getCustomAttributes(const char* /*attr*/) const
 
 int SelectionObjectPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

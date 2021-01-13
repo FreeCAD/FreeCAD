@@ -364,4 +364,4 @@ def linenumber():
     return ""
 
 
-print(__name__ + " gcode postprocessor loaded.")
+# print(__name__ + " gcode postprocessor loaded.")

@@ -236,7 +236,7 @@ DlgInspector::DlgInspector(QWidget* parent, Qt::WindowFlags fl)
     ui->treeView->setRootIsDecorated(true);
 }
 
-/*  
+/*
  *  Destroys the object and frees any allocated resources
  */
 DlgInspector::~DlgInspector()
@@ -263,7 +263,7 @@ void DlgInspector::setNode(SoNode* node)
 {
     SceneModel* model = static_cast<SceneModel*>(ui->treeView->model());
     model->setNode(node);
-    
+
     QHeaderView* header = ui->treeView->header();
 #if QT_VERSION >= 0x050000
     header->setSectionResizeMode(0, QHeaderView::ResizeToContents);

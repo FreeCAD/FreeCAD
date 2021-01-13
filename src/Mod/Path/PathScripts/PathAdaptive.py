@@ -174,6 +174,7 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
 
                 if obj.UseHelixArcs == False:
                     # rapid move to start point
+                    op.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
                     op.commandlist.append(Path.Command("G0", {"X": helixStart[0], "Y": helixStart[1], "Z": obj.ClearanceHeight.Value}))
 
                     # rapid move to safe height
@@ -205,6 +206,7 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
                     helixStart = [region["HelixCenterPoint"][0] + r, region["HelixCenterPoint"][1]]
 
                     # rapid move to start point
+                    op.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
                     op.commandlist.append(Path.Command("G0", {"X": helixStart[0], "Y": helixStart[1], "Z": obj.ClearanceHeight.Value}))
 
                     # rapid move to safe height
@@ -238,6 +240,7 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
 
             else: # no helix entry
                 # rapid move to clearance height
+                op.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
                 op.commandlist.append(Path.Command("G0", {"X": region["StartPoint"][0], "Y": region["StartPoint"][1], "Z": obj.ClearanceHeight.Value}))
                 # straight plunge to target depth
                 op.commandlist.append(Path.Command("G1", {"X":region["StartPoint"][0], "Y": region["StartPoint"][1], "Z": passEndDepth,"F": op.vertFeed}))
@@ -395,6 +398,7 @@ def Execute(op,obj):
             "operationType": obj.OperationType,
             "side": obj.Side,
             "forceInsideOut" : obj.ForceInsideOut,
+            "finishingProfile" : obj.FinishingProfile,
             "keepToolDownRatio": keepToolDownRatio,
             "stockToLeave": float(obj.StockToLeave)
         }
@@ -433,6 +437,7 @@ def Execute(op,obj):
             a2d.stockToLeave =float(obj.StockToLeave)
             a2d.tolerance = float(obj.Tolerance)
             a2d.forceInsideOut = obj.ForceInsideOut
+            a2d.finishingProfile = obj.FinishingProfile
             a2d.opType = opType
 
             # EXECUTE
@@ -489,6 +494,7 @@ class PathAdaptive(PathOp.ObjectOp):
         # obj.addProperty("App::PropertyBool", "ProcessHoles", "Adaptive","Process holes as well as the face outline")
 
         obj.addProperty("App::PropertyBool", "ForceInsideOut", "Adaptive","Force plunging into material inside and clearing towards the edges")
+        obj.addProperty("App::PropertyBool", "FinishingProfile", "Adaptive","To take a finishing profile path at the end")
         obj.addProperty("App::PropertyBool", "Stopped",
                         "Adaptive", "Stop processing")
         obj.setEditorMode('Stopped', 2) #hide this property
@@ -517,6 +523,7 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.LiftDistance=0
         # obj.ProcessHoles = True
         obj.ForceInsideOut = False
+        obj.FinishingProfile = True
         obj.Stopped = False
         obj.StopProcessing = False
         obj.HelixAngle = 5

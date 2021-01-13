@@ -615,6 +615,8 @@ class Component(ArchIFC.IfcProduct):
 
         # Get the object's normal.
         n = DraftGeomUtils.getNormal(shape[0])
+        if (not n) or (not n.Length):
+            n = FreeCAD.Vector(0, 0, 1)
 
         # Reverse the normal if the hint vector and the normal vector have more
         # than a 90 degree angle between them.
@@ -1203,7 +1205,7 @@ class ViewProviderComponent:
                 if hasattr(obj,"Material"):
                     if obj.Material:
                         mat = obj.Material
-                if not mat:
+                if (not mat) and hasattr(obj.CloneOf.ViewObject,"DiffuseColor"):
                     if obj.ViewObject.DiffuseColor != obj.CloneOf.ViewObject.DiffuseColor:
                         if len(obj.CloneOf.ViewObject.DiffuseColor) > 1:
                             obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
@@ -1257,7 +1259,7 @@ class ViewProviderComponent:
             # this would now hide all previous windows... Not the desired behaviour anymore.
         if prop == "DiffuseColor":
             if hasattr(vobj.Object,"CloneOf"):
-                if vobj.Object.CloneOf:
+                if vobj.Object.CloneOf and hasattr(vobj.Object.CloneOf,"DiffuseColor"):
                     if len(vobj.Object.CloneOf.ViewObject.DiffuseColor) > 1:
                         if vobj.DiffuseColor != vobj.Object.CloneOf.ViewObject.DiffuseColor:
                             vobj.DiffuseColor = vobj.Object.CloneOf.ViewObject.DiffuseColor

@@ -133,7 +133,7 @@ bool WorkbenchManager::activate(const std::string& name, const std::string& clas
         wb->activate();
         return true;
     }
-  
+
     return false;
 }
 

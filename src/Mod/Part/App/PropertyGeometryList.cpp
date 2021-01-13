@@ -36,6 +36,7 @@
 
 #include "Geometry.h"
 #include "GeometryPy.h"
+#include "GeometryMigrationExtension.h"
 
 #include "PropertyGeometryList.h"
 #include "Part2DObject.h"
@@ -179,14 +180,24 @@ void PropertyGeometryList::Save(Writer &writer) const
     writer.Stream() << writer.ind() << "<GeometryList count=\"" << getSize() <<"\">\n";
     writer.incInd();
     for (int i = 0; i < getSize(); i++) {
-        writer.Stream() << writer.ind() << "<Geometry  type=\"" 
-                        << _lValueList[i]->getTypeId().getName() 
-                        << "\" id=\"" << _lValueList[i]->Id 
-                        << "\" ref=\"" << encodeAttribute(_lValueList[i]->Ref) 
-                        << "\" refIndex=\"" << _lValueList[i]->RefIndex 
-                        << "\" flags=\"" << _lValueList[i]->Flags.to_ulong() << "\">\n";
+        writer.Stream() << writer.ind() << "<Geometry type=\"" 
+                                        << _lValueList[i]->getTypeId().getName() << "\"";
+        for( auto &e : _lValueList[i]->getExtensions() ) {
+            auto ext = e.lock();
+            auto gpe = freecad_dynamic_cast<GeometryMigrationPersistenceExtension>(ext.get());
+            if (gpe)
+                gpe->preSave(writer);
+        }
+        writer.Stream() << " migrated=\"1\">\n";
+
         writer.incInd();
         _lValueList[i]->Save(writer);
+        for( auto &e : _lValueList[i]->getExtensions() ) {
+            auto ext = e.lock();
+            auto gpe = freecad_dynamic_cast<GeometryMigrationPersistenceExtension>(ext.get());
+            if (gpe)
+                gpe->postSave(writer);
+        }
         writer.decInd();
         writer.Stream() << writer.ind() << "</Geometry>\n";
     }
@@ -207,16 +218,17 @@ void PropertyGeometryList::Restore(Base::XMLReader &reader)
         reader.readElement("Geometry");
         const char* TypeName = reader.getAttribute("type");
         Geometry *newG = (Geometry *)Base::Type::fromName(TypeName).createInstance();
-        if(reader.hasAttribute("id"))
-            newG->Id = reader.getAttributeAsInteger("id");
-        if(reader.hasAttribute("ref"))
-            newG->Ref = reader.getAttribute("ref");
-        if(reader.hasAttribute("refIndex"))
-            newG->RefIndex = reader.getAttributeAsInteger("refIndex");
-        if(reader.hasAttribute("flags")) {
-            newG->Flags = (unsigned long)reader.getAttributeAsUnsigned("flags");
-            newG->setFlag(Part::Geometry::Sync,false);
-            newG->setFlag(Part::Geometry::Detached,false);
+        
+        if (!reader.getAttribute("migrated","0") && reader.hasAttribute("id")) {
+            auto ext = std::make_unique<GeometryMigrationExtension>();
+            ext->setId(reader.getAttributeAsInteger("id"));
+            if(reader.hasAttribute("ref")) {
+                const char *ref = reader.getAttribute("ref");
+                int index = reader.getAttributeAsInteger("refIndex", "-1");
+                unsigned long flags = (unsigned long)reader.getAttributeAsUnsigned("flags", "0");
+                ext->setReference(ref, index, flags);
+            }
+            newG->setExtension(std::move(ext));
         }
         newG->Restore(reader);
 

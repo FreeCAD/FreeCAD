@@ -67,7 +67,7 @@ struct PythonEditorP
 
 /**
  *  Constructs a PythonEditor which is a child of 'parent' and does the
- *  syntax highlighting for the Python language. 
+ *  syntax highlighting for the Python language.
  */
 PythonEditor::PythonEditor(QWidget* parent)
   : TextEditor(parent)
@@ -82,9 +82,9 @@ PythonEditor::PythonEditor(QWidget* parent)
     QShortcut* uncomment = new QShortcut(this);
     uncomment->setKey(Qt::ALT + Qt::Key_U);
 
-    connect(comment, SIGNAL(activated()), 
+    connect(comment, SIGNAL(activated()),
             this, SLOT(onComment()));
-    connect(uncomment, SIGNAL(activated()), 
+    connect(uncomment, SIGNAL(activated()),
             this, SLOT(onUncomment()));
 }
 
@@ -277,7 +277,7 @@ void PythonSyntaxHighlighter::highlightBlock (const QString & text)
   const int DefineName    = 8;     // Text after the keyword def
 
   int endStateOfLastPara = previousBlockState();
-  if (endStateOfLastPara < 0 || endStateOfLastPara > maximumUserState()) 
+  if (endStateOfLastPara < 0 || endStateOfLastPara > maximumUserState())
     endStateOfLastPara = Standard;
 
   while ( i < text.length() )
@@ -314,7 +314,7 @@ void PythonSyntaxHighlighter::highlightBlock (const QString & text)
         case '\'':
           {
             // Begin either string literal or block comment
-            if ((i>=2) && text.at(i-1) == QLatin1Char('\'') && 
+            if ((i>=2) && text.at(i-1) == QLatin1Char('\'') &&
                 text.at(i-2) == QLatin1Char('\''))
             {
               setFormat( i-2, 3, this->colorByType(SyntaxHighlighter::BlockComment));
@@ -331,9 +331,9 @@ void PythonSyntaxHighlighter::highlightBlock (const QString & text)
           {
             // ignore whitespaces
           } break;
-        case '(': case ')': case '[': case ']': 
-        case '+': case '-': case '*': case '/': 
-        case ':': case '%': case '^': case '~': 
+        case '(': case ')': case '[': case ']':
+        case '+': case '-': case '*': case '/':
+        case ':': case '%': case '^': case '~':
         case '!': case '=': case '<': case '>': // possibly two characters
           {
             setFormat(i, 1, this->colorByType(SyntaxHighlighter::Operator));
@@ -465,10 +465,10 @@ void PythonSyntaxHighlighter::highlightBlock (const QString & text)
   }
 
   // only block comments can have several lines
-  if ( endStateOfLastPara != Blockcomment1 && endStateOfLastPara != Blockcomment2 ) 
+  if ( endStateOfLastPara != Blockcomment1 && endStateOfLastPara != Blockcomment2 )
   {
     endStateOfLastPara = Standard ;
-  } 
+  }
 
   setCurrentBlockState(endStateOfLastPara);
 }

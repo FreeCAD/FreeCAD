@@ -23,9 +23,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM element fluid 1D ViewProvider for the document object"
+__title__  = "FreeCAD FEM element fluid 1D ViewProvider for the document object"
 __author__ = "Ofentse Kgoa, Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## @package view_element_fluid1D
 #  \ingroup FEM

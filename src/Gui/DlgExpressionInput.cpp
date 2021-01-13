@@ -63,7 +63,7 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
     // Connect signal(s)
     connect(ui->expression, SIGNAL(textChanged()), this, SLOT(textChanged()));
     connect(ui->discardBtn, SIGNAL(clicked()), this, SLOT(setDiscarded()));
-    
+
     if (expression) {
         ui->expression->setPlainText(Base::Tools::fromStdString(expression->toString()));
     }

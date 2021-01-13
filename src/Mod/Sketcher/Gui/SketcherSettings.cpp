@@ -147,6 +147,7 @@ SketcherSettingsDisplay::~SketcherSettingsDisplay()
 void SketcherSettingsDisplay::saveSettings()
 {
     ui->EditSketcherFontSize->onSave();
+    ui->viewScalingFactor->onSave();
     ui->SegmentsPerGeometry->onSave();
     ui->dialogOnDistanceConstraint->onSave();
     ui->continueMode->onSave();
@@ -166,6 +167,7 @@ void SketcherSettingsDisplay::saveSettings()
 void SketcherSettingsDisplay::loadSettings()
 {
     ui->EditSketcherFontSize->onRestore();
+    ui->viewScalingFactor->onRestore();
     ui->SegmentsPerGeometry->onRestore();
     ui->dialogOnDistanceConstraint->onRestore();
     ui->continueMode->onRestore();
@@ -231,14 +233,6 @@ SketcherSettingsColors::SketcherSettingsColors(QWidget* parent)
     : PreferencePage(parent), ui(new Ui_SketcherSettingsColors)
 {
     ui->setupUi(this);
-
-    // Don't need them at the moment
-    ui->label_16->hide();
-    ui->SketcherDatumWidth->hide();
-    ui->label_12->hide();
-    ui->DefaultSketcherVertexWidth->hide();
-    ui->label_13->hide();
-    ui->DefaultSketcherLineWidth->hide();
 }
 
 /**
@@ -260,16 +254,17 @@ void SketcherSettingsColors::saveSettings()
     ui->ConstructionColor->onSave();
     ui->ExternalColor->onSave();
     ui->FullyConstrainedColor->onSave();
+    ui->InternalAlignedGeoColor->onSave();
+    ui->FullyConstraintElementColor->onSave();
+    ui->FullyConstraintConstructionElementColor->onSave();
+    ui->FullyConstraintInternalAlignmentColor->onSave();
+    ui->FullyConstraintConstructionPointColor->onSave();
 
     ui->ConstrainedColor->onSave();
     ui->NonDrivingConstraintColor->onSave();
     ui->DatumColor->onSave();
     ui->ExprBasedConstrDimColor->onSave();
     ui->DeactivatedConstrDimColor->onSave();
-
-    ui->SketcherDatumWidth->onSave();
-    ui->DefaultSketcherVertexWidth->onSave();
-    ui->DefaultSketcherLineWidth->onSave();
 
     ui->CursorTextColor->onSave();
     ui->CursorCrosshairColor->onSave();
@@ -286,16 +281,17 @@ void SketcherSettingsColors::loadSettings()
     ui->ConstructionColor->onRestore();
     ui->ExternalColor->onRestore();
     ui->FullyConstrainedColor->onRestore();
+    ui->InternalAlignedGeoColor->onRestore();
+    ui->FullyConstraintElementColor->onRestore();
+    ui->FullyConstraintConstructionElementColor->onRestore();
+    ui->FullyConstraintInternalAlignmentColor->onRestore();
+    ui->FullyConstraintConstructionPointColor->onRestore();
 
     ui->ConstrainedColor->onRestore();
     ui->NonDrivingConstraintColor->onRestore();
     ui->DatumColor->onRestore();
     ui->ExprBasedConstrDimColor->onRestore();
     ui->DeactivatedConstrDimColor->onRestore();
-
-    ui->SketcherDatumWidth->onRestore();
-    ui->DefaultSketcherVertexWidth->onRestore();
-    ui->DefaultSketcherLineWidth->onRestore();
 
     ui->CursorTextColor->onRestore();
     ui->CursorCrosshairColor->onRestore();

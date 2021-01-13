@@ -102,48 +102,11 @@ Test if two geometries are the same.
             </UserDocu>
         </Documentation>
     </Methode>
-    <Attribute Name="Construction" ReadOnly="false">
-      <Documentation>
-        <UserDocu>Defines this geometry as a construction one which
-means that it is not part of a later built shape.</UserDocu>
-      </Documentation>
-      <Parameter Name="Construction" Type="Boolean"/>
-    </Attribute>
     <Attribute Name="Tag" ReadOnly="true">
       <Documentation>
         <UserDocu>Gives the tag of the geometry as string.</UserDocu>
       </Documentation>
       <Parameter Name="Tag" Type="String"/>
-    </Attribute>
-    <Attribute Name="ID">
-      <Documentation>
-        <UserDocu>Gives the internal integer ID of this geometry.</UserDocu>
-      </Documentation>
-      <Parameter Name="ID" Type="Int"/>
-    </Attribute>
-    <Attribute Name="Ref">
-      <Documentation>
-        <UserDocu>Gives the internal geometry reference of this geometry.</UserDocu>
-      </Documentation>
-      <Parameter Name="Ref" Type="String"/>
-    </Attribute>
-    <Attribute Name="Detached">
-      <Documentation>
-          <UserDocu>Get/set the detached flag of an external geometry</UserDocu>
-      </Documentation>
-      <Parameter Name="Detached" Type="Boolean"/>
-    </Attribute>
-    <Attribute Name="Defining">
-      <Documentation>
-          <UserDocu>Get/set the defining flag of an external geometry</UserDocu>
-      </Documentation>
-      <Parameter Name="Defining" Type="Boolean"/>
-    </Attribute>
-    <Attribute Name="Frozen">
-      <Documentation>
-          <UserDocu>Get/set the frozen flag of an external geometry</UserDocu>
-      </Documentation>
-      <Parameter Name="Frozen" Type="Boolean"/>
     </Attribute>
   </PythonExport>
 </GenerateModel>

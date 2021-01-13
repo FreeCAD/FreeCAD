@@ -31,13 +31,13 @@
 using namespace Gui::Dialog;
 
 /** Construction */
-PropertyPage::PropertyPage(QWidget* parent) : QWidget(parent) 
+PropertyPage::PropertyPage(QWidget* parent) : QWidget(parent)
 {
   bChanged = false;
 }
 
 /** Destruction */
-PropertyPage::~PropertyPage() 
+PropertyPage::~PropertyPage()
 {
 }
 
@@ -96,12 +96,12 @@ void PropertyPage::onReset()
 // ----------------------------------------------------------------
 
 /** Construction */
-PreferencePage::PreferencePage(QWidget* parent) : QWidget(parent) 
+PreferencePage::PreferencePage(QWidget* parent) : QWidget(parent)
 {
 }
 
 /** Destruction */
-PreferencePage::~PreferencePage() 
+PreferencePage::~PreferencePage()
 {
 }
 
@@ -202,12 +202,12 @@ void PreferenceUiForm::saveSettings()
 // ----------------------------------------------------------------
 
 /** Construction */
-CustomizeActionPage::CustomizeActionPage(QWidget* parent) : QWidget(parent) 
+CustomizeActionPage::CustomizeActionPage(QWidget* parent) : QWidget(parent)
 {
 }
 
 /** Destruction */
-CustomizeActionPage::~CustomizeActionPage() 
+CustomizeActionPage::~CustomizeActionPage()
 {
 }
 

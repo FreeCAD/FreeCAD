@@ -45,8 +45,12 @@ public:
 
     virtual void extensionAttach(App::DocumentObject *pcObject) override;
     virtual void extensionUpdateData(const App::Property* prop) override;
-    
+
     virtual void updateOriginSize();
+
+protected:
+    void slotChangedObjectApp ( const App::DocumentObject& obj );
+    void slotChangedObjectGui ( const Gui::ViewProviderDocumentObject& obj );
 
 private:
     void constructChildren ( std::vector<App::DocumentObject*> &children ) const;

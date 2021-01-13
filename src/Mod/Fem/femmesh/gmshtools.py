@@ -20,9 +20,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "Tools for the work with Gmsh mesher"
+__title__  = "Tools for the work with Gmsh mesher"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## \addtogroup FEM
 #  @{

@@ -6,7 +6,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="536"/>
       <source>Installed location</source>
-      <translation type="unfinished">Installed location</translation>
+      <translation>安裝位置</translation>
     </message>
   </context>
   <context>
@@ -14,7 +14,7 @@
     <message>
       <location filename="../../addonmanager_macro.py" line="157"/>
       <source>Unable to fetch the code of this macro.</source>
-      <translation type="unfinished">Unable to fetch the code of this macro.</translation>
+      <translation>無法取得這個巨集的程式碼.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_macro.py" line="163"/>
@@ -29,7 +29,7 @@
     <message>
       <location filename="../../AddonManager.py" line="200"/>
       <source>Addon manager</source>
-      <translation type="unfinished">Addon manager</translation>
+      <translation>附加元件管理器</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="202"/>
@@ -39,7 +39,7 @@
     <message>
       <location filename="../../AddonManager.py" line="244"/>
       <source>Checking for updates...</source>
-      <translation type="unfinished">Checking for updates...</translation>
+      <translation>檢查更新...</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="262"/>
@@ -49,12 +49,12 @@
     <message>
       <location filename="../../AddonManager.py" line="262"/>
       <source>update(s)</source>
-      <translation type="unfinished">update(s)</translation>
+      <translation>更新</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="267"/>
       <source>No update available</source>
-      <translation type="unfinished">No update available</translation>
+      <translation>沒有可用的更新</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="432"/>
@@ -64,7 +64,7 @@
     <message>
       <location filename="../../AddonManager.py" line="436"/>
       <source>Unable to install</source>
-      <translation type="unfinished">Unable to install</translation>
+      <translation>無法安裝</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="494"/>
@@ -74,22 +74,22 @@
     <message>
       <location filename="../../AddonManager.py" line="497"/>
       <source>Unable to remove this addon</source>
-      <translation type="unfinished">Unable to remove this addon</translation>
+      <translation>無法移附這個附件</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="503"/>
       <source>Macro successfully removed.</source>
-      <translation type="unfinished">Macro successfully removed.</translation>
+      <translation>巨集成功的移除</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="505"/>
       <source>Macro could not be removed.</source>
-      <translation type="unfinished">Macro could not be removed.</translation>
+      <translation>巨集無法被移除</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="172"/>
       <source>Unable to download addon list.</source>
-      <translation type="unfinished">Unable to download addon list.</translation>
+      <translation>無法下載附加元件清單</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="177"/>
@@ -154,7 +154,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="832"/>
       <source>Missing workbench</source>
-      <translation type="unfinished">Missing workbench</translation>
+      <translation>遺失的工作台</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="841"/>
@@ -179,12 +179,12 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="877"/>
       <source>Error: Unable to download</source>
-      <translation type="unfinished">Error: Unable to download</translation>
+      <translation>錯誤: 無法下載</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="890"/>
       <source>Successfully installed</source>
-      <translation type="unfinished">Successfully installed</translation>
+      <translation>安裝成功</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="310"/>
@@ -194,17 +194,17 @@
     <message>
       <location filename="../../AddonManager.py" line="565"/>
       <source>Installed</source>
-      <translation type="unfinished">Installed</translation>
+      <translation>己安裝</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="587"/>
       <source>Update available</source>
-      <translation type="unfinished">Update available</translation>
+      <translation>有更新可用</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="543"/>
       <source>Restart required</source>
-      <translation type="unfinished">Restart required</translation>
+      <translation>必須重啟</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="660"/>
@@ -219,7 +219,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="548"/>
       <source>This addon is marked as obsolete</source>
-      <translation type="unfinished">This addon is marked as obsolete</translation>
+      <translation>這個附件己被標記為丟棄</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="549"/>
@@ -229,7 +229,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="870"/>
       <source>Error: Unable to locate zip from</source>
-      <translation type="unfinished">Error: Unable to locate zip from</translation>
+      <translation>錯誤: 無法取得本地的郵遞區號</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="318"/>
@@ -239,7 +239,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="560"/>
       <source>This addon is marked as Python 2 Only</source>
-      <translation type="unfinished">This addon is marked as Python 2 Only</translation>
+      <translation>這個附件元件標記只能用在Python2</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="561"/>

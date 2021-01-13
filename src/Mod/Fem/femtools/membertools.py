@@ -28,9 +28,9 @@ types of objects it contains, helper for executing a simulation.
 """
 
 
-__title__ = "FEM analysis tools"
+__title__  = "FEM analysis tools"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 
 from . import femutils

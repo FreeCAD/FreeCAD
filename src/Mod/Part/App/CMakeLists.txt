@@ -406,6 +406,8 @@ SET(Part_SRCS
     GeometryExtension.h
     GeometryDefaultExtension.cpp
     GeometryDefaultExtension.h
+    GeometryMigrationExtension.h
+    GeometryMigrationExtension.cpp
     Geometry.cpp
     Geometry.h
     Geometry2d.cpp

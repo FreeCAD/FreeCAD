@@ -20,7 +20,7 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__="FreeCAD Draft Workbench - GUI part"
+__title__  = "FreeCAD Draft Workbench - GUI part"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
 __url__ = "https://www.freecadweb.org"
 
@@ -152,7 +152,7 @@ class DraftTaskPanel:
 
 class DraftToolBar:
     """The Draft Task panel UI
-    Draft Toolbar is the main ui of the Draft Module. Once displayed as a 
+    Draft Toolbar is the main ui of the Draft Module. Once displayed as a
     toolbar, now it define the ui of the Task Panel.
     Toolbar become obsolete due to lack of manteinence and was disabled
     by default in February 2020.
@@ -167,14 +167,14 @@ class DraftToolBar:
         self.taskmode = 1  # Draft.getParam("UiMode",1)
         # taskmode = 0 was used by draft toolbar that is now obsolete.
         # print("taskmode: ",str(self.taskmode))
-        
+
         # OBSOLETE BUT STILL USED BY SOME ADDONS AND MACROS
         self.paramcolor = Draft.getParam("color",255)>>8
         self.color = QtGui.QColor(self.paramcolor)
         self.facecolor = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetUnsigned("DefaultShapeColor",4294967295)>>8
         self.linewidth = Draft.getParam("linewidth",2)
         self.fontsize = Draft.getParam("textheight",0.20)
-        
+
         self.paramconstr = Draft.getParam("constructioncolor",746455039)>>8
         self.constrMode = False
         self.continueMode = False
@@ -636,7 +636,7 @@ class DraftToolBar:
         self.continueCmd.setText(translate("draft", "Continue")+" ("+inCommandShortcuts["Continue"][0]+")")
         self.occOffset.setToolTip(translate("draft", "If checked, an OCC-style offset will be performed instead of the classic offset"))
         self.occOffset.setText(translate("draft", "&OCC-style offset"))
-        
+
         # OBSOLETE
         # self.addButton.setToolTip(translate("draft", "Add points to the current object"))
         # self.delButton.setToolTip(translate("draft", "Remove points from the current object"))
@@ -644,7 +644,7 @@ class DraftToolBar:
         # self.tangentButton.setToolTip(translate("draft", "Make Bezier node tangent"))
         # self.symmetricButton.setToolTip(translate("draft", "Make Bezier node symmetric"))
         # self.arc3PtButton.setToolTip(translate("draft", "Toggle radius and angles arc editing"))
-        
+
         self.undoButton.setText(translate("draft", "&Undo (CTRL+Z)"))
         self.undoButton.setToolTip(translate("draft", "Undo the last segment"))
         self.closeButton.setText(translate("draft", "Close")+" ("+inCommandShortcuts["Close"][0]+")")
@@ -697,14 +697,14 @@ class DraftToolBar:
         self.styleButton.setToolTip(translate("draft", "Change default style for new objects"))
         self.constrButton.setToolTip(translate("draft", "Toggle construction mode"))
         self.autoGroupButton.setToolTip(translate("draft", "Autogroup off"))
-        
+
         # OBSOLETE - replaced by style button
         #self.colorButton.setToolTip(translate("draft", "Current line color"))
         #self.facecolorButton.setToolTip(translate("draft", "Current face color"))
         #self.widthButton.setToolTip(translate("draft", "Current line width"))
         #self.fontsizeButton.setToolTip(translate("draft", "Current font size"))
         #self.applyButton.setToolTip(translate("draft", "Apply to selected objects"))
-        
+
 
 #---------------------------------------------------------------------------
 # Interface modes
@@ -934,7 +934,7 @@ class DraftToolBar:
             self.isRelative.hide()
             self.hasFill.hide()
             self.finishButton.hide()
-            
+
             # OBSOLETE
             # self.addButton.hide()
             # self.delButton.hide()
@@ -942,7 +942,7 @@ class DraftToolBar:
             # self.tangentButton.hide()
             # self.symmetricButton.hide()
             # self.arc3PtButton.hide()
-            
+
             self.undoButton.hide()
             self.closeButton.hide()
             self.wipeButton.hide()
@@ -1107,6 +1107,7 @@ class DraftToolBar:
         self.continueCmd.show()
 
     def modUi(self):
+        self.undoButton.hide()
         self.isCopy.show()
         self.isSubelementMode.show()
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
@@ -1767,7 +1768,7 @@ class DraftToolBar:
 
     def setstyle(self):
         FreeCADGui.runCommand("Draft_SetStyle")
-    
+
     def setStyleButton(self):
         "sets icon and text on the style button"
         linecolor = QtGui.QColor(Draft.getParam("color",255)>>8)
@@ -2054,7 +2055,7 @@ class DraftToolBar:
             self.setWatchers()
             if hasattr(self,"tray"):
                 self.tray.show()
-        else: # self.taskmode == 0  Draft toolbar is obsolete and has been disabled (February 2020)            
+        else: # self.taskmode == 0  Draft toolbar is obsolete and has been disabled (February 2020)
             self.draftWidget.setVisible(True)
             self.draftWidget.toggleViewAction().setVisible(True)
 

@@ -147,7 +147,10 @@
 #include <Base/Reader.h>
 #include <Base/Tools.h>
 
+#include "GeometryMigrationExtension.h"
+
 #include "Geometry.h"
+
 
 using namespace Part;
 
@@ -193,10 +196,7 @@ const char* gce_ErrorStatusText(gce_ErrorType et)
 
 TYPESYSTEM_SOURCE_ABSTRACT(Part::Geometry,Base::Persistence)
 
-static std::atomic<long> _GeometryID;
-
 Geometry::Geometry()
-  : Id(++_GeometryID), RefIndex(-1), Construction(false) 
 {
     createNewTag();
 }
@@ -249,29 +249,35 @@ std::unique_ptr<Geometry> Geometry::fromShape(const TopoDS_Shape &s, bool silent
 
 void Geometry::Save(Base::Writer &writer) const
 {
-    if( extensions.size()>0 ) {
+    // We always store an extension array even if empty, so that restoring is consistent.
 
-        writer.incInd();
-
-        writer.Stream() << writer.ind() << "<GeoExtensions count=\"" << extensions.size() << "\">\n";
-
-        for(auto att:extensions) {
-            att->Save(writer);
-        }
-
-        writer.decInd();
-        writer.Stream() << writer.ind() << "</GeoExtensions>\n";
+    // Get the number of persistent extensions
+    int counter = 0;
+    for(auto att:extensions) {
+        if(att->isDerivedFrom(Part::GeometryPersistenceExtension::getClassTypeId()))
+            counter++;
     }
 
-    const char c = Construction?'1':'0';
-    writer.Stream() << writer.ind() << "<Construction value=\"" <<  c << "\"/>\n";
+    writer.Stream() << writer.ind() << "<GeoExtensions count=\"" << counter << "\">\n";
+
+    writer.incInd();
+
+    for(auto att:extensions) {
+        if(att->isDerivedFrom(Part::GeometryPersistenceExtension::getClassTypeId()))
+            std::static_pointer_cast<Part::GeometryPersistenceExtension>(att)->Save(writer);
+    }
+
+    writer.decInd();
+    writer.Stream() << writer.ind() << "</GeoExtensions>" << std::endl;
 }
 
 void Geometry::Restore(Base::XMLReader &reader)
 {
+    // In legacy file format, there are no extensions and there is a construction XML tag
+    // In the new format, this is migrated into extensions, and we get an array with extensions
     reader.readElement();
 
-    if(strcmp(reader.localName(),"GeoExtensions") == 0) {
+    if(strcmp(reader.localName(),"GeoExtensions") == 0) { // new format
 
         int count = reader.getAttributeAsInteger("count");
 
@@ -279,7 +285,7 @@ void Geometry::Restore(Base::XMLReader &reader)
             reader.readElement("GeoExtension");
             const char* TypeName = reader.getAttribute("type");
             Base::Type type = Base::Type::fromName(TypeName);
-            GeometryExtension *newE = (GeometryExtension *)type.createInstance();
+            GeometryPersistenceExtension *newE = (GeometryPersistenceExtension *)type.createInstance();
             newE->Restore(reader);
 
             extensions.push_back(std::shared_ptr<GeometryExtension>(newE));
@@ -289,7 +295,15 @@ void Geometry::Restore(Base::XMLReader &reader)
     }
     else if(strcmp(reader.localName(),"Construction") == 0) { // legacy
 
-        Construction = (int)reader.getAttributeAsInteger("value")==0?false:true;
+        bool construction = (int)reader.getAttributeAsInteger("value")==0?false:true;
+
+        // prepare migration
+        if(!this->hasExtension(GeometryMigrationExtension::getClassTypeId()))
+            this->setExtension(std::make_unique<GeometryMigrationExtension>());
+
+        auto ext = std::static_pointer_cast<GeometryMigrationExtension>(this->getExtension(GeometryMigrationExtension::getClassTypeId()).lock());
+
+        ext->setConstruction(construction);
     }
 
 }
@@ -329,7 +343,7 @@ bool Geometry::hasExtension(std::string name) const
     return false;
 }
 
-std::weak_ptr<const GeometryExtension> Geometry::getExtension(Base::Type type) const
+std::weak_ptr<GeometryExtension> Geometry::getExtension(Base::Type type)
 {
     for( auto ext : extensions) {
         if(ext->getTypeId() == type)
@@ -339,7 +353,7 @@ std::weak_ptr<const GeometryExtension> Geometry::getExtension(Base::Type type) c
     throw Base::ValueError("No geometry extension of the requested type.");
 }
 
-std::weak_ptr<const GeometryExtension> Geometry::getExtension(std::string name) const
+std::weak_ptr<GeometryExtension> Geometry::getExtension(std::string name)
 {
     for( auto ext : extensions) {
         if(ext->getName() == name)
@@ -349,22 +363,36 @@ std::weak_ptr<const GeometryExtension> Geometry::getExtension(std::string name) 
     throw Base::ValueError("No geometry extension with the requested name.");
 }
 
-void Geometry::setExtension(std::unique_ptr<GeometryExtension> && geo)
+std::weak_ptr<const GeometryExtension> Geometry::getExtension(Base::Type type) const
+{
+    return const_cast<Geometry*>(this)->getExtension(type).lock();
+}
+
+std::weak_ptr<const GeometryExtension> Geometry::getExtension(std::string name) const
+{
+    return const_cast<Geometry*>(this)->getExtension(name).lock();
+}
+
+
+void Geometry::setExtension(std::unique_ptr<GeometryExtension> && geoext )
 {
     bool hasext=false;
 
     for( auto & ext : extensions) {
         // if same type and name, this modifies the existing extension.
-        if( ext->getTypeId() == geo->getTypeId() &&
-            ext->getName() == geo->getName()){
-            ext = std::move(geo);
+        if( ext->getTypeId() == geoext->getTypeId() &&
+            ext->getName() == geoext->getName()){
+            ext = std::move( geoext );
+            ext->notifyAttachment(this);
             hasext = true;
             break;
         }
     }
 
-    if(!hasext) // new type-name unique id, so add.
-        extensions.push_back(std::move(geo));
+    if(!hasext) { // new type-name unique id, so add.
+        extensions.push_back(std::move( geoext ));
+        extensions.back()->notifyAttachment(this);
+    }
 }
 
 void Geometry::deleteExtension(Base::Type type)
@@ -413,17 +441,20 @@ void Geometry::assignTag(const Part::Geometry * geo)
         throw Base::TypeError("Geometry tag can not be assigned as geometry types do not match.");
 }
 
+void Geometry::copyNonTag(const Part::Geometry * src)
+{
+    for(auto & ext: src->extensions) {
+        this->extensions.push_back(ext->copy());
+        extensions.back()->notifyAttachment(this);
+    }
+}
+
 Geometry *Geometry::clone(void) const
 {
     Geometry* cpy = this->copy();
     cpy->tag = this->tag;
-    cpy->Id = this->Id;
-    cpy->Ref = this->Ref;
-    cpy->RefIndex = this->RefIndex;
-    cpy->Flags = this->Flags;
 
-    for(auto & ext: extensions)
-        cpy->extensions.push_back(ext->copy());
+    // class copy is responsible for copying extensions
 
     return cpy;
 }
@@ -517,7 +548,7 @@ void GeomPoint::setHandle(const Handle(Geom_CartesianPoint)& p)
 Geometry *GeomPoint::copy(void) const
 {
     GeomPoint *newPoint = new GeomPoint(myPoint);
-    newPoint->Construction = this->Construction;
+    newPoint->copyNonTag(this);
     return newPoint;
 }
 
@@ -980,7 +1011,7 @@ const Handle(Geom_Geometry)& GeomBezierCurve::handle() const
 Geometry *GeomBezierCurve::copy(void) const
 {
     GeomBezierCurve *newCurve = new GeomBezierCurve(myCurve);
-    newCurve->Construction = this->Construction;
+    newCurve->copyNonTag(this);
     return newCurve;
 }
 
@@ -1189,7 +1220,7 @@ Geometry *GeomBSplineCurve::copy(void) const
 {
     try {
         GeomBSplineCurve *newCurve = new GeomBSplineCurve(myCurve);
-        newCurve->Construction = this->Construction;
+        newCurve->copyNonTag(this);
         return newCurve;
     }
     catch (Standard_Failure& e) {
@@ -1367,6 +1398,11 @@ int GeomBSplineCurve::getDegree() const
 bool GeomBSplineCurve::isPeriodic() const
 {
     return myCurve->IsPeriodic()==Standard_True;
+}
+
+bool GeomBSplineCurve::isRational() const
+{
+    return myCurve->IsRational()==Standard_True;
 }
 
 bool GeomBSplineCurve::join(const Handle(Geom_BSplineCurve)& spline)
@@ -1861,7 +1897,7 @@ const Handle(Geom_Geometry)& GeomTrimmedCurve::handle() const
 Geometry *GeomTrimmedCurve::copy(void) const
 {
     GeomTrimmedCurve *newCurve =  new GeomTrimmedCurve(myCurve);
-    newCurve->Construction = this->Construction;
+    newCurve->copyNonTag(this);
     return newCurve;
 }
 
@@ -2178,7 +2214,7 @@ void GeomCircle::setHandle(const Handle(Geom_Circle)& c)
 Geometry *GeomCircle::copy(void) const
 {
     GeomCircle *newCirc = new GeomCircle(myCurve);
-    newCirc->Construction = this->Construction;
+    newCirc->copyNonTag(this);
     return newCirc;
 }
 
@@ -2380,7 +2416,7 @@ Geometry *GeomArcOfCircle::copy(void) const
 {
     GeomArcOfCircle* copy = new GeomArcOfCircle();
     copy->setHandle(this->myCurve);
-    copy->Construction = this->Construction;
+    copy->copyNonTag(this);
     return copy;
 }
 
@@ -2609,7 +2645,7 @@ void GeomEllipse::setHandle(const Handle(Geom_Ellipse) &e)
 Geometry *GeomEllipse::copy(void) const
 {
     GeomEllipse *newEllipse = new GeomEllipse(myCurve);
-    newEllipse->Construction = this->Construction;
+    newEllipse->copyNonTag(this);
     return newEllipse;
 }
 
@@ -2877,7 +2913,7 @@ Geometry *GeomArcOfEllipse::copy(void) const
 {
     GeomArcOfEllipse* copy = new GeomArcOfEllipse();
     copy->setHandle(this->myCurve);
-    copy->Construction = this->Construction;
+    copy->copyNonTag(this);
     return copy;
 }
 
@@ -3146,7 +3182,7 @@ void GeomHyperbola::setHandle(const Handle(Geom_Hyperbola)& c)
 Geometry *GeomHyperbola::copy(void) const
 {
     GeomHyperbola *newHyp = new GeomHyperbola(myCurve);
-    newHyp->Construction = this->Construction;
+    newHyp->copyNonTag(this);
     return newHyp;
 }
 
@@ -3328,7 +3364,7 @@ Geometry *GeomArcOfHyperbola::copy(void) const
 {
     GeomArcOfHyperbola* copy = new GeomArcOfHyperbola();
     copy->setHandle(this->myCurve);
-    copy->Construction = this->Construction;
+    copy->copyNonTag(this);
     return copy;
 }
 
@@ -3587,7 +3623,7 @@ void GeomParabola::setHandle(const Handle(Geom_Parabola)& c)
 Geometry *GeomParabola::copy(void) const
 {
     GeomParabola *newPar = new GeomParabola(myCurve);
-    newPar->Construction = this->Construction;
+    newPar->copyNonTag(this);
     return newPar;
 }
 
@@ -3746,7 +3782,7 @@ Geometry *GeomArcOfParabola::copy(void) const
 {
     GeomArcOfParabola* copy = new GeomArcOfParabola();
     copy->setHandle(this->myCurve);
-    copy->Construction = this->Construction;
+    copy->copyNonTag(this);
     return copy;
 }
 
@@ -3974,7 +4010,7 @@ void GeomLine::setHandle(const Handle(Geom_Line)& l)
 Geometry *GeomLine::copy(void) const
 {
     GeomLine *newLine = new GeomLine(myCurve);
-    newLine->Construction = this->Construction;
+    newLine->copyNonTag(this);
     return newLine;
 }
 
@@ -4082,7 +4118,7 @@ Geometry *GeomLineSegment::copy(void)const
 {
     GeomLineSegment *tempCurve = new GeomLineSegment();
     tempCurve->myCurve = Handle(Geom_TrimmedCurve)::DownCast(myCurve->Copy());
-    tempCurve->Construction = this->Construction;
+    tempCurve->copyNonTag(this);
     return tempCurve;
 }
 
@@ -4228,7 +4264,7 @@ GeomOffsetCurve::~GeomOffsetCurve()
 Geometry *GeomOffsetCurve::copy(void) const
 {
     GeomOffsetCurve *newCurve = new GeomOffsetCurve(myCurve);
-    newCurve->Construction = this->Construction;
+    newCurve->copyNonTag(this);
     return newCurve;
 }
 
@@ -4438,7 +4474,7 @@ void GeomBezierSurface::setHandle(const Handle(Geom_BezierSurface)& b)
 Geometry *GeomBezierSurface::copy(void) const
 {
     GeomBezierSurface *newSurf =  new GeomBezierSurface(mySurface);
-    newSurf->Construction = this->Construction;
+    newSurf->copyNonTag(this);
     return newSurf;
 }
 
@@ -4531,7 +4567,7 @@ const Handle(Geom_Geometry)& GeomBSplineSurface::handle() const
 Geometry *GeomBSplineSurface::copy(void) const
 {
     GeomBSplineSurface *newSurf =  new GeomBSplineSurface(mySurface);
-    newSurf->Construction = this->Construction;
+    newSurf->copyNonTag(this);
     return newSurf;
 }
 
@@ -4686,7 +4722,7 @@ Geometry *GeomCylinder::copy(void) const
 {
     GeomCylinder *tempCurve = new GeomCylinder();
     tempCurve->mySurface = Handle(Geom_CylindricalSurface)::DownCast(mySurface->Copy());
-    tempCurve->Construction = this->Construction;
+    tempCurve->copyNonTag(this);
     return tempCurve;
 }
 
@@ -4758,7 +4794,7 @@ Geometry *GeomCone::copy(void) const
 {
     GeomCone *tempCurve = new GeomCone();
     tempCurve->mySurface = Handle(Geom_ConicalSurface)::DownCast(mySurface->Copy());
-    tempCurve->Construction = this->Construction;
+    tempCurve->copyNonTag(this);
     return tempCurve;
 }
 
@@ -4827,7 +4863,7 @@ Geometry *GeomToroid::copy(void) const
 {
     GeomToroid *tempCurve = new GeomToroid();
     tempCurve->mySurface = Handle(Geom_ToroidalSurface)::DownCast(mySurface->Copy());
-    tempCurve->Construction = this->Construction;
+    tempCurve->copyNonTag(this);
     return tempCurve;
 }
 
@@ -4897,7 +4933,7 @@ Geometry *GeomSphere::copy(void) const
 {
     GeomSphere *tempCurve = new GeomSphere();
     tempCurve->mySurface = Handle(Geom_SphericalSurface)::DownCast(mySurface->Copy());
-    tempCurve->Construction = this->Construction;
+    tempCurve->copyNonTag(this);
     return tempCurve;
 }
 
@@ -4961,7 +4997,7 @@ Geometry *GeomPlane::copy(void) const
 {
     GeomPlane *tempCurve = new GeomPlane();
     tempCurve->mySurface = Handle(Geom_Plane)::DownCast(mySurface->Copy());
-    tempCurve->Construction = this->Construction;
+    tempCurve->copyNonTag(this);
     return tempCurve;
 }
 
@@ -5019,7 +5055,7 @@ const Handle(Geom_Geometry)& GeomOffsetSurface::handle() const
 Geometry *GeomOffsetSurface::copy(void) const
 {
     GeomOffsetSurface *newSurf = new GeomOffsetSurface(mySurface);
-    newSurf->Construction = this->Construction;
+    newSurf->copyNonTag(this);
     return newSurf;
 }
 
@@ -5098,7 +5134,7 @@ const Handle(Geom_Geometry)& GeomPlateSurface::handle() const
 Geometry *GeomPlateSurface::copy(void) const
 {
     GeomPlateSurface *newSurf = new GeomPlateSurface(mySurface);
-    newSurf->Construction = this->Construction;
+    newSurf->copyNonTag(this);
     return newSurf;
 }
 
@@ -5159,7 +5195,7 @@ const Handle(Geom_Geometry)& GeomTrimmedSurface::handle() const
 Geometry *GeomTrimmedSurface::copy(void) const
 {
     GeomTrimmedSurface *newSurf = new GeomTrimmedSurface(mySurface);
-    newSurf->Construction = this->Construction;
+    newSurf->copyNonTag(this);
     return newSurf;
 }
 
@@ -5272,7 +5308,7 @@ const Handle(Geom_Geometry)& GeomSurfaceOfRevolution::handle() const
 Geometry *GeomSurfaceOfRevolution::copy(void) const
 {
     GeomSurfaceOfRevolution *newSurf = new GeomSurfaceOfRevolution(mySurface);
-    newSurf->Construction = this->Construction;
+    newSurf->copyNonTag(this);
     return newSurf;
 }
 
@@ -5321,7 +5357,7 @@ const Handle(Geom_Geometry)& GeomSurfaceOfExtrusion::handle() const
 Geometry *GeomSurfaceOfExtrusion::copy(void) const
 {
     GeomSurfaceOfExtrusion *newSurf = new GeomSurfaceOfExtrusion(mySurface);
-    newSurf->Construction = this->Construction;
+    newSurf->copyNonTag(this);
     return newSurf;
 }
 
@@ -5752,7 +5788,7 @@ std::unique_ptr<GeomCurve> makeFromTrimmedCurve(const Handle(Geom_Curve)& c, dou
 
     if (c->IsKind(STANDARD_TYPE(Geom_Circle))) {
         Handle(Geom_Circle) circ = Handle(Geom_Circle)::DownCast(c);
-        std::unique_ptr<GeomArcOfCircle> arc(new GeomArcOfCircle());
+        std::unique_ptr<GeomCurve> arc(new GeomArcOfCircle());
         Handle(Geom_TrimmedCurve) this_arc = Handle(Geom_TrimmedCurve)::DownCast
             (arc->handle());
         Handle(Geom_Circle) this_circ = Handle(Geom_Circle)::DownCast
@@ -5763,7 +5799,7 @@ std::unique_ptr<GeomCurve> makeFromTrimmedCurve(const Handle(Geom_Curve)& c, dou
     }
     else if (c->IsKind(STANDARD_TYPE(Geom_Ellipse))) {
         Handle(Geom_Ellipse) ellp = Handle(Geom_Ellipse)::DownCast(c);
-        std::unique_ptr<GeomArcOfEllipse> arc(new GeomArcOfEllipse());
+        std::unique_ptr<GeomCurve> arc(new GeomArcOfEllipse());
         Handle(Geom_TrimmedCurve) this_arc = Handle(Geom_TrimmedCurve)::DownCast
             (arc->handle());
         Handle(Geom_Ellipse) this_ellp = Handle(Geom_Ellipse)::DownCast
@@ -5774,7 +5810,7 @@ std::unique_ptr<GeomCurve> makeFromTrimmedCurve(const Handle(Geom_Curve)& c, dou
     }
     else if (c->IsKind(STANDARD_TYPE(Geom_Hyperbola))) {
         Handle(Geom_Hyperbola) hypr = Handle(Geom_Hyperbola)::DownCast(c);
-        std::unique_ptr<GeomArcOfHyperbola> arc(new GeomArcOfHyperbola());
+        std::unique_ptr<GeomCurve> arc(new GeomArcOfHyperbola());
         Handle(Geom_TrimmedCurve) this_arc = Handle(Geom_TrimmedCurve)::DownCast
             (arc->handle());
         Handle(Geom_Hyperbola) this_hypr = Handle(Geom_Hyperbola)::DownCast
@@ -5785,7 +5821,7 @@ std::unique_ptr<GeomCurve> makeFromTrimmedCurve(const Handle(Geom_Curve)& c, dou
     }
     else if (c->IsKind(STANDARD_TYPE(Geom_Line))) {
         Handle(Geom_Line) line = Handle(Geom_Line)::DownCast(c);
-        std::unique_ptr<GeomLineSegment> segm(new GeomLineSegment());
+        std::unique_ptr<GeomCurve> segm(new GeomLineSegment());
         Handle(Geom_TrimmedCurve) this_segm = Handle(Geom_TrimmedCurve)::DownCast
             (segm->handle());
         Handle(Geom_Line) this_line = Handle(Geom_Line)::DownCast
@@ -5796,7 +5832,7 @@ std::unique_ptr<GeomCurve> makeFromTrimmedCurve(const Handle(Geom_Curve)& c, dou
     }
     else if (c->IsKind(STANDARD_TYPE(Geom_Parabola))) {
         Handle(Geom_Parabola) para = Handle(Geom_Parabola)::DownCast(c);
-        std::unique_ptr<GeomArcOfParabola> arc(new GeomArcOfParabola());
+        std::unique_ptr<GeomCurve> arc(new GeomArcOfParabola());
         Handle(Geom_TrimmedCurve) this_arc = Handle(Geom_TrimmedCurve)::DownCast
             (arc->handle());
         Handle(Geom_Parabola) this_para = Handle(Geom_Parabola)::DownCast
@@ -5808,19 +5844,19 @@ std::unique_ptr<GeomCurve> makeFromTrimmedCurve(const Handle(Geom_Curve)& c, dou
     else if (c->IsKind(STANDARD_TYPE(Geom_BezierCurve))) {
         Handle(Geom_BezierCurve) bezier = Handle(Geom_BezierCurve)::DownCast(c->Copy());
         bezier->Segment(f, l);
-        return std::unique_ptr<GeomBezierCurve>(new GeomBezierCurve(bezier));
+        return std::unique_ptr<GeomCurve>(new GeomBezierCurve(bezier));
     }
     else if (c->IsKind(STANDARD_TYPE(Geom_BSplineCurve))) {
         Handle(Geom_BSplineCurve) bspline = Handle(Geom_BSplineCurve)::DownCast(c->Copy());
         bspline->Segment(f, l);
-        return std::unique_ptr<GeomBSplineCurve>(new GeomBSplineCurve(bspline));
+        return std::unique_ptr<GeomCurve>(new GeomBSplineCurve(bspline));
     }
     else if (c->IsKind(STANDARD_TYPE(Geom_OffsetCurve))) {
         Handle(Geom_OffsetCurve) oc = Handle(Geom_OffsetCurve)::DownCast(c);
         double v = oc->Offset();
         gp_Dir dir = oc->Direction();
         std::unique_ptr<GeomCurve> bc(makeFromTrimmedCurve(oc->BasisCurve(), f, l));
-        return std::unique_ptr<GeomOffsetCurve>(new GeomOffsetCurve(Handle(Geom_Curve)::DownCast(bc->handle()), v, dir));
+        return std::unique_ptr<GeomCurve>(new GeomOffsetCurve(Handle(Geom_Curve)::DownCast(bc->handle()), v, dir));
     }
     else if (c->IsKind(STANDARD_TYPE(Geom_TrimmedCurve))) {
         Handle(Geom_TrimmedCurve) trc = Handle(Geom_TrimmedCurve)::DownCast(c);

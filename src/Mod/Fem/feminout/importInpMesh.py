@@ -22,10 +22,10 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "Mesh import for Abacus/CalculiX inp file format"
+__title__  = "Mesh import for Abacus/CalculiX inp file format"
 __author__ = "Frantisek Loeffelmann, Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
-__date__ = "04/08/2016"
+__url__    = "https://www.freecadweb.org"
+__date__   = "04/08/2016"
 
 ## @package importInpMesh
 #  \ingroup FEM

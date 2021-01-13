@@ -23,9 +23,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "Result import for Calculix frd file format"
+__title__  = "Result import for Calculix frd file format"
 __author__ = "Juergen Riegel , Michael Hindley, Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## @package importCcxFrdResults
 #  \ingroup FEM

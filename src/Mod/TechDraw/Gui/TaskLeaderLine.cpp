@@ -396,7 +396,7 @@ void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> converted)
     m_leaderName = m_basePage->getDocument()->getUniqueObjectName("LeaderLine");
     m_leaderType = "TechDraw::DrawLeaderLine";
 
-    Gui::Command::openCommand("Create Leader");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Leader"));
     FCMD_OBJ_DOC_CMD(m_basePage,"addObject('" << m_leaderType << "','" << m_leaderName << "')");
     App::DocumentObject* obj = m_basePage->getDocument()->getObject(m_leaderName.c_str());
     if (obj == nullptr) {
@@ -447,7 +447,7 @@ void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> converted)
 void TaskLeaderLine::updateLeaderFeature(void)
 {
 //    Base::Console().Message("TTL::updateLeaderFeature()\n");
-    Gui::Command::openCommand("Edit Leader");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit Leader"));
     //waypoints & x,y are updated by QGILeaderLine (for edits only!)
     commonFeatureUpdate();
     App::Color ac;
@@ -782,8 +782,8 @@ int TaskLeaderLine::getPrefArrowStyle()
 
 double TaskLeaderLine::prefWeight() const
 {
-    std::string lgName = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
+    int lgNumber = Preferences::lineGroup();
+    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
     double weight = lg->getWeight("Thin");
     delete lg;                                   //Coverity CID 174670
     return weight;

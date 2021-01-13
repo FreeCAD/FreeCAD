@@ -478,7 +478,12 @@ def get_svg(obj,
         else:
             stroke = utils.get_rgb(color)
     elif App.GuiUp:
-        if hasattr(obj, "ViewObject"):
+        # find print color
+        pc = get_print_color(obj)
+        if pc:
+            stroke = utils.get_rgb(pc)
+        # get line color
+        elif hasattr(obj, "ViewObject"):
             if hasattr(obj.ViewObject, "LineColor"):
                 stroke = utils.get_rgb(obj.ViewObject.LineColor)
             elif hasattr(obj.ViewObject, "TextColor"):
@@ -916,6 +921,17 @@ def get_svg(obj,
         svg = '<g transform ="scale(1,-1)">\n    ' + svg + '</g>\n'
 
     return svg
+
+
+def get_print_color(obj):
+    """returns the print color of the parent layer, if available"""
+    for parent in obj.InListRecursive:
+        if (hasattr(parent,"ViewObject")
+                and hasattr(parent.ViewObject,"UsePrintColor")
+                and parent.ViewObject.UsePrintColor):
+            if hasattr(parent.ViewObject,"LinePrintColor"):
+                return parent.ViewObject.LinePrintColor
+    return None
 
 
 def getSVG(obj,

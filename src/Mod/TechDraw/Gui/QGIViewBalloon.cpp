@@ -484,7 +484,7 @@ void QGIViewBalloon::balloonLabelDragged(bool ctrl)
     //set feature position (x,y) from graphic position
     double x = Rez::appX(balloonLabel->X() / scale),
            y = Rez::appX(balloonLabel->Y() / scale);
-    Gui::Command::openCommand("Drag Balloon");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Drag Balloon"));
     Gui::cmdAppObjectArgs(dvb,"X = %f", x);
     Gui::cmdAppObjectArgs(dvb,"Y = %f", -y);
     //if origin is also moving, calc new origin and update feature
@@ -634,6 +634,7 @@ void QGIViewBalloon::draw()
     } else if (strcmp(balloonType, "Rectangle") == 0) {
         //Add some room
         textHeight = (textHeight * scale) + Rez::guiX(1.0);
+        // we add some textWidth later because we first need to handle the text separators 
         if (balloonLabel->verticalSep) {
             for (std::vector<int>::iterator it = balloonLabel->seps.begin() ; it != balloonLabel->seps.end(); ++it) {
                 balloonPath.moveTo(lblCenter.x - (textWidth / 2.0) + *it, lblCenter.y - (textHeight / 2.0));
@@ -641,8 +642,7 @@ void QGIViewBalloon::draw()
             }
         }
         textWidth = (textWidth * scale) + Rez::guiX(2.0);
-        textHeight = (textHeight * scale) + Rez::guiX(2.0);
-        balloonPath.addRect(lblCenter.x -(textWidth / 2.0), lblCenter.y - (textHeight / 2.0), textWidth, textHeight);
+        balloonPath.addRect(lblCenter.x - (textWidth / 2.0), lblCenter.y - (textHeight / 2.0), textWidth, textHeight);
         offsetLR     = (textWidth / 2.0);
     } else if (strcmp(balloonType, "Triangle") == 0) {
         double radius = sqrt(pow((textHeight / 2.0), 2) + pow((textWidth / 2.0), 2));
@@ -715,14 +715,14 @@ void QGIViewBalloon::draw()
     double yAdj = 0.0;
     int endType = balloon->EndType.getValue();
     double arrowAdj = QGIArrow::getOverlapAdjust(endType,
-                                                 QGIArrow::getPrefArrowSize());
+                                                 balloon->EndTypeScale.getValue()*QGIArrow::getPrefArrowSize());
 
     if (endType == ArrowType::NONE) {
         arrow->hide();
     } else {
         arrow->setStyle(endType);
 
-        arrow->setSize(QGIArrow::getPrefArrowSize());
+        arrow->setSize(balloon->EndTypeScale.getValue()*QGIArrow::getPrefArrowSize());
         arrow->draw();
 
         Base::Vector3d arrowTipPos(arrowTipX, arrowTipY, 0.0);
@@ -736,7 +736,7 @@ void QGIViewBalloon::draw()
         float arAngle = atan2(dirballoonLinesLine.y, dirballoonLinesLine.x) * 180 / M_PI;
 
         arrow->setPos(arrowTipX, arrowTipY);
-        if ( (endType == ArrowType::FILLED_TRIANGLE) && 
+        if ( (endType == ArrowType::FILLED_TRIANGLE) &&
              (prefOrthoPyramid()) ) {
             if (arAngle < 0.0) {
                 arAngle += 360.0;
@@ -762,6 +762,12 @@ void QGIViewBalloon::draw()
     }
     dLinePath.lineTo(arrowTipX - xAdj, arrowTipY - yAdj);
     balloonLines->setPath(dLinePath);
+
+    // This overwrites the previously created QPainterPath with empty one, in case it should be hidden.  Should be refactored.
+    if (!vp->LineVisible.getValue()) {
+        arrow->hide();
+        balloonLines->setPath(QPainterPath());
+    }
 
     // redraw the Balloon and the parent View
     if (hasHover && !isSelected()) {

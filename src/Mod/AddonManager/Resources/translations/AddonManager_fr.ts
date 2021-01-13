@@ -234,32 +234,32 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="318"/>
       <source>Something went wrong with the Git Macro Retrieval, possibly the Git executable is not in the path</source>
-      <translation type="unfinished">Something went wrong with the Git Macro Retrieval, possibly the Git executable is not in the path</translation>
+      <translation>Une erreur s'est produite lors de la Récupération de Macro Git, peut-être que l'exécutable Git n'est pas dans le chemin d'accès</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="560"/>
       <source>This addon is marked as Python 2 Only</source>
-      <translation type="unfinished">This addon is marked as Python 2 Only</translation>
+      <translation>Cet addon est indiqué pour Python 2 uniquement</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="561"/>
       <source>This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.</source>
-      <translation type="unfinished">This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.</translation>
+      <translation>Cet atelier peut ne plus être maintenu et l'installer sur un système Python 3 entraînera très probablement des erreurs au démarrage ou en cours d'utilisation.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="721"/>
       <source>User requested updating a Python 2 workbench on a system running Python 3 - </source>
-      <translation type="unfinished">User requested updating a Python 2 workbench on a system running Python 3 - </translation>
+      <translation>L'utilisateur a demandé la mise à jour d'un atelier Python 2 sur un système Python 3 - </translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="757"/>
       <source>Workbench successfully updated. Please restart FreeCAD to apply the changes.</source>
-      <translation type="unfinished">Workbench successfully updated. Please restart FreeCAD to apply the changes.</translation>
+      <translation>Atelier mis à jour avec succès. Veuillez redémarrer FreeCAD pour appliquer les modifications.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="765"/>
       <source>User requested installing a Python 2 workbench on a system running Python 3 - </source>
-      <translation type="unfinished">User requested installing a Python 2 workbench on a system running Python 3 - </translation>
+      <translation>L'utilisateur a demandé l'installation d'un atelier Python 2 sur un système exécutant Python 3 - </translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="342"/>
@@ -269,7 +269,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="433"/>
       <source>Raw markdown displayed</source>
-      <translation>Affichage du Markdown source</translation>
+      <translation>Affichage du Markdown brut</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="435"/>
@@ -396,19 +396,18 @@ les mises à jour disponibles des greffons installés seront vérifiées
     <message>
       <location filename="../../AddonManager.ui" line="14"/>
       <source>Addon Manager</source>
-      <translation type="unfinished">Addon Manager</translation>
+      <translation>Gestionnaire d'extensions</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="157"/>
       <source>Close the Addon Manager</source>
-      <translation type="unfinished">Close the Addon Manager</translation>
+      <translation>Fermer le Gestionnaire d'Addon</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="42"/>
       <source>You can use this window to specify additional addon repositories
 to be scanned for available addons</source>
-      <translation type="unfinished">You can use this window to specify additional addon repositories
-to be scanned for available addons</translation>
+      <translation>Vous pouvez utiliser cette fenêtre pour spécifier des répertoires d'addon complémentaires à analyser pour les addons disponibles</translation>
     </message>
   </context>
   <context>

@@ -1,40 +1,40 @@
 <RCC>
-    <qresource> 
-        <file>icons/mesh_boundary.svg</file>
-        <file>icons/mesh_cut.svg</file>
-        <file>icons/mesh_pipette.svg</file>
-        <file>icons/Tree_Mesh.svg</file>
+    <qresource>
+        <file>icons/Mesh_Add_Facet.svg</file>
+        <file>icons/Mesh_Boundary.svg</file>
+        <file>icons/Mesh_Bounding_Box.svg</file>
+        <file>icons/Mesh_Cross_Sections.svg</file>
+        <file>icons/Mesh_Curvature_Info.svg</file>
         <file>icons/Mesh_Curvature_Plot.svg</file>
+        <file>icons/Mesh_Cut.svg</file>
+        <file>icons/Mesh_Decimating.svg</file>
+        <file>icons/Mesh_Difference.svg</file>
+        <file>icons/Mesh_Evaluate_Solid.svg</file>
+        <file>icons/Mesh_Evaluation.svg</file>
         <file>icons/Mesh_Export_Mesh.svg</file>
-        <file>icons/Mesh_Import_Mesh.svg</file>
-        <file>icons/Mesh_Mesh_from_Shape.svg</file>
         <file>icons/Mesh_Flip_Normals.svg</file>
         <file>icons/Mesh_Harmonize_Normals.svg</file>
+        <file>icons/Mesh_Import_Mesh.svg</file>
+        <file>icons/Mesh_Intersection.svg</file>
+        <file>icons/Mesh_Merge.svg</file>
+        <file>icons/Mesh_Mesh_from_Shape.svg</file>
+        <file>icons/Mesh_Pipette.svg</file>
+        <file>icons/Mesh_Poly_Trim.svg</file>
         <file>icons/Mesh_Regular_Solid.svg</file>
+        <file>icons/Mesh_Remesh_Gmsh.svg</file>
+        <file>icons/Mesh_Remove_Comp_by_Hand.svg</file>
         <file>icons/Mesh_Remove_Components.svg</file>
-        <file>icons/Mesh_Tree_Curvature_Plot.svg</file>
-        <file>icons/MeshWorkbench.svg</file>
+        <file>icons/Mesh_Scale.svg</file>
+        <file>icons/Mesh_Section_by_Plane.svg</file>
         <file>icons/Mesh_Fill_up_Holes.svg</file>
-        <file>icons/Mesh_Union.svg</file>
-        <file>icons/Mesh_Smoothing.svg</file>
         <file>icons/Mesh_Segmentation_Best_Fit.svg</file>
         <file>icons/Mesh_Segmentation.svg</file>
-        <file>icons/Mesh_Section_by_Plane.svg</file>
-        <file>icons/Mesh_Scale.svg</file>
-        <file>icons/Mesh_Remove_Comp_by_Hand.svg</file>
-        <file>icons/Mesh_Remesh_Gmsh.svg</file>
-        <file>icons/Mesh_Poly_Trim.svg</file>
-        <file>icons/Mesh_Merge.svg</file>
-        <file>icons/Mesh_Intersection.svg</file>
-        <file>icons/Mesh_Evaluation.svg</file>
-        <file>icons/Mesh_Evaluate_Solid.svg</file>
-        <file>icons/Mesh_Difference.svg</file>
-        <file>icons/Mesh_Decimating.svg</file>
-        <file>icons/Mesh_Curvature_Info.svg</file>
-        <file>icons/Mesh_Cross_Sections.svg</file>
-        <file>icons/Mesh_Bounding_Box.svg</file>
-        <file>icons/Mesh_Add_Facet.svg</file>
+        <file>icons/Mesh_Smoothing.svg</file>
+        <file>icons/Mesh_Tree.svg</file>
+        <file>icons/Mesh_Tree_Curvature_Plot.svg</file>
         <file>icons/Mesh_Trim_by_Plane.svg</file>
+        <file>icons/Mesh_Union.svg</file>
+        <file>icons/MeshWorkbench.svg</file>
         <file>icons/RegularSolids/Mesh_Cone.svg</file>
         <file>icons/RegularSolids/Mesh_Cube.svg</file>
         <file>icons/RegularSolids/Mesh_Cylinder.svg</file>

@@ -86,7 +86,7 @@ bool GUIApplication::notify (QObject * receiver, QEvent * event)
         return false;
     }
     try {
-        if (event->type() == Spaceball::ButtonEvent::ButtonEventType || 
+        if (event->type() == Spaceball::ButtonEvent::ButtonEventType ||
             event->type() == Spaceball::MotionEvent::MotionEventType)
             return processSpaceballEvent(receiver, event);
         else
