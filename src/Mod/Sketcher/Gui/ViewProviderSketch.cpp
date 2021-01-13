@@ -6295,6 +6295,8 @@ void ViewProviderSketch::updateData(const App::Property *prop)
 {
     ViewProvider2DObjectGrid::updateData(prop);
 
+    auto sketch = getSketchObject();
+
     // In the case of an undo/redo transaction, updateData is triggered by SketchObject::onUndoRedoFinished() in the solve()
     //
     // (Amendment: class App::TransactionGuard makes sure to only notify
@@ -6305,15 +6307,15 @@ void ViewProviderSketch::updateData(const App::Property *prop)
     // objects and causing an inconsistent undo/redo state, which is why
     // recomputation is now forbidden during undo/redo by the core.)
 #if 0
-    if (edit && !getSketchObject()->getDocument()->isPerformingTransaction()
-             && !getSketchObject()->isPerformingInternalTransaction()
+    if (edit && !sketch->getDocument()->isPerformingTransaction()
+             && !sketch->isPerformingInternalTransaction()
 #else
     // In the case of an internal transaction, touching the geometry results in a call to updateData.
-    if (edit && !getSketchObject()->isPerformingInternalTransaction()
+    if (edit && !sketch->isPerformingInternalTransaction()
 #endif
-             && (prop == &(getSketchObject()->Geometry) ||
-                 prop == &(getSketchObject()->ExternalGeo) ||
-                 prop == &(getSketchObject()->Constraints))) {
+             && (prop == &(sketch->Geometry) ||
+                 prop == &(sketch->ExternalGeo) ||
+                 prop == &(sketch->Constraints))) {
 
         edit->FullyConstrained = false;
         // At this point, we do not need to solve the Sketch
@@ -6326,7 +6328,7 @@ void ViewProviderSketch::updateData(const App::Property *prop)
         // this failed solving info is presented to the user
         UpdateSolverInformation(); // just update the solver window with the last SketchObject solving information
 
-        if(getSketchObject()->getExternalGeometryCount()+getSketchObject()->getHighestCurveIndex() + 1 ==
+        if(sketch->getExternalGeometryCount()+sketch->getHighestCurveIndex() + 1 ==
             getSolvedSketch().getGeometrySize()) {
             Gui::MDIView *mdi = Gui::Application::Instance->editDocument()->getActiveView();
             if (mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId()))
@@ -6335,8 +6337,20 @@ void ViewProviderSketch::updateData(const App::Property *prop)
             signalConstraintsChanged();
         }
 
-        if(prop != &getSketchObject()->Constraints)
+        if(prop != &sketch->Constraints)
             signalElementsChanged();
+    }
+
+    if (prop == &sketch->FullyConstrained || prop == &sketch->Geometry) {
+        const char *pixmap;
+        if (sketch->Geometry.getSize() && sketch->FullyConstrained.getValue())
+            pixmap = "Sketcher_SketchConstrained";
+        else
+            pixmap = "Sketcher_Sketch";
+        if (pixmap != sPixmap) {
+            sPixmap = pixmap;
+            signalChangeIcon();
+        }
     }
 }
 
@@ -7431,36 +7445,6 @@ void ViewProviderSketch::selectElement(const char *element, bool preselect) cons
         Gui::Selection().setPreselect(SEL_PARAMS);
     else
         Gui::Selection().addSelection2(SEL_PARAMS);
-}
-
-QIcon ViewProviderSketch::mergeOverlayIcons (const QIcon & orig) const
-{
-    QIcon mergedicon = orig;
-
-    if(!getSketchObject()->FullyConstrained.getValue()) {
-        QPixmap px;
-
-        static const char * const sketcher_notfullyconstrained_xpm[]={
-            "9 9 3 1",
-            ". c None",
-            "# c #dbaf00",
-            "a c #ffcc00",
-            "##.....##",
-            "#a#...#a#",
-            "#aa#.#aa#",
-            ".#a#.#a#.",
-            ".#a#.#a#.",
-            ".#a#.#a#.",
-            "#aa#.#aa#",
-            "#a#...#a#",
-            "##.....##"};
-        px = QPixmap( sketcher_notfullyconstrained_xpm );
-
-        mergedicon = Gui::BitmapFactoryInst::mergePixmap(mergedicon, px, Gui::BitmapFactoryInst::BottomRight);
-
-    }
-
-    return Gui::ViewProvider::mergeOverlayIcons (mergedicon);
 }
 
 // ---------------------------------------------------------

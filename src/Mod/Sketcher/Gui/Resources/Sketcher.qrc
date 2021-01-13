@@ -1,6 +1,7 @@
 <RCC>
     <qresource>
         <file>icons/Sketcher_Sketch.svg</file>
+        <file>icons/Sketcher_SketchConstrained.svg</file>
         <file>icons/SketcherWorkbench.svg</file>
         <file alias="icons/preferences-sketcher.svg">icons/SketcherWorkbench.svg</file>
         <file>icons/Sketcher_Defining.svg</file>
