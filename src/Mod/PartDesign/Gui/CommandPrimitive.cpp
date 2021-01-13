@@ -30,6 +30,8 @@
 # include <QMessageBox>
 #endif
 
+#include <boost_bind_bind.hpp>
+
 #include <App/Document.h>
 #include <Gui/Command.h>
 #include <Gui/Action.h>
@@ -43,6 +45,7 @@
 #include "WorkflowManager.h"
 
 using namespace std;
+namespace bp = boost::placeholders;
 
 DEF_STD_CMD_ACL(CmdPrimtiveCompAdditive)
 
@@ -85,15 +88,15 @@ CmdPrimtiveCompAdditive::CmdPrimtiveCompAdditive()
     eType           = ForEdit;
 
     Gui::Application::Instance->commandManager().registerCallback(
-            boost::bind(&commandOverride, this, 0, false, _1, _2), "Part_Box");
+            boost::bind(&commandOverride, this, 0, false, bp::_1, bp::_2), "Part_Box");
     Gui::Application::Instance->commandManager().registerCallback(
-            boost::bind(&commandOverride, this, 1, false, _1, _2), "Part_Cylinder");
+            boost::bind(&commandOverride, this, 1, false, bp::_1, bp::_2), "Part_Cylinder");
     Gui::Application::Instance->commandManager().registerCallback(
-            boost::bind(&commandOverride, this, 2, false, _1, _2), "Part_Sphere");
+            boost::bind(&commandOverride, this, 2, false, bp::_1, bp::_2), "Part_Sphere");
     Gui::Application::Instance->commandManager().registerCallback(
-            boost::bind(&commandOverride, this, 3, false, _1, _2), "Part_Cone");
+            boost::bind(&commandOverride, this, 3, false, bp::_1, bp::_2), "Part_Cone");
     Gui::Application::Instance->commandManager().registerCallback(
-            boost::bind(&commandOverride, this, 5, false, _1, _2), "Part_Torus");
+            boost::bind(&commandOverride, this, 5, false, bp::_1, bp::_2), "Part_Torus");
 }
 
 void CmdPrimtiveCompAdditive::activated(int iMsg)
@@ -267,15 +270,15 @@ CmdPrimtiveCompSubtractive::CmdPrimtiveCompSubtractive()
     eType           = ForEdit;
 
     Gui::Application::Instance->commandManager().registerCallback(
-            boost::bind(&commandOverride, this, 0, true, _1, _2), "Part_Box");
+            boost::bind(&commandOverride, this, 0, true, bp::_1, bp::_2), "Part_Box");
     Gui::Application::Instance->commandManager().registerCallback(
-            boost::bind(&commandOverride, this, 1, true, _1, _2), "Part_Cylinder");
+            boost::bind(&commandOverride, this, 1, true, bp::_1, bp::_2), "Part_Cylinder");
     Gui::Application::Instance->commandManager().registerCallback(
-            boost::bind(&commandOverride, this, 2, true, _1, _2), "Part_Sphere");
+            boost::bind(&commandOverride, this, 2, true, bp::_1, bp::_2), "Part_Sphere");
     Gui::Application::Instance->commandManager().registerCallback(
-            boost::bind(&commandOverride, this, 3, true, _1, _2), "Part_Cone");
+            boost::bind(&commandOverride, this, 3, true, bp::_1, bp::_2), "Part_Cone");
     Gui::Application::Instance->commandManager().registerCallback(
-            boost::bind(&commandOverride, this, 5, true, _1, _2), "Part_Torus");
+            boost::bind(&commandOverride, this, 5, true, bp::_1, bp::_2), "Part_Torus");
 }
 
 void CmdPrimtiveCompSubtractive::activated(int iMsg)

@@ -38,6 +38,7 @@
 #endif
 
 #include <boost/algorithm/string/predicate.hpp>
+#include <boost_bind_bind.hpp>
 
 #include <App/DocumentObjectGroup.h>
 #include <App/Origin.h>
@@ -79,6 +80,7 @@ FC_LOG_LEVEL_INIT("PartDesign",true,true)
 
 using namespace std;
 using namespace Attacher;
+namespace bp = boost::placeholders;
 
 static bool commandOverride(Gui::Command *cmd, int idx, const char *, int)
 {
@@ -377,7 +379,7 @@ CmdPartDesignSubShapeBinder::CmdPartDesignSubShapeBinder()
     sPixmap         = "PartDesign_SubShapeBinder";
 
     Gui::Application::Instance->commandManager().registerCallback(
-            boost::bind(&commandOverride, this, 0, _1, _2), "Part_MakeFace");
+            boost::bind(&commandOverride, this, 0, bp::_1, bp::_2), "Part_MakeFace");
 }
 
 void CmdPartDesignSubShapeBinder::activated(int iMsg)
@@ -1278,7 +1280,7 @@ CmdPartDesignPad::CmdPartDesignPad()
     sPixmap       = "PartDesign_Pad";
 
     Gui::Application::Instance->commandManager().registerCallback(
-            boost::bind(&commandOverride, this, 0, _1, _2), "Part_Extrude");
+            boost::bind(&commandOverride, this, 0, bp::_1, bp::_2), "Part_Extrude");
 }
 
 void CmdPartDesignPad::activated(int iMsg)
@@ -1476,7 +1478,7 @@ CmdPartDesignRevolution::CmdPartDesignRevolution()
     sPixmap       = "PartDesign_Revolution";
 
     Gui::Application::Instance->commandManager().registerCallback(
-            boost::bind(&commandOverride, this, 0, _1, _2), "Part_MakeRevolve");
+            boost::bind(&commandOverride, this, 0, bp::_1, bp::_2), "Part_MakeRevolve");
 }
 
 void CmdPartDesignRevolution::activated(int iMsg)
@@ -1603,7 +1605,7 @@ CmdPartDesignAdditivePipe::CmdPartDesignAdditivePipe()
     sPixmap       = "PartDesign_Additive_Pipe";
 
     Gui::Application::Instance->commandManager().registerCallback(
-            boost::bind(&commandOverride, this, 0, _1, _2), "Part_Sweep");
+            boost::bind(&commandOverride, this, 0, bp::_1, bp::_2), "Part_Sweep");
 }
 
 void CmdPartDesignAdditivePipe::activated(int iMsg)
@@ -1706,7 +1708,7 @@ CmdPartDesignAdditiveLoft::CmdPartDesignAdditiveLoft()
     sPixmap       = "PartDesign_Additive_Loft";
 
     Gui::Application::Instance->commandManager().registerCallback(
-            boost::bind(&commandOverride, this, 0, _1, _2), "Part_Loft");
+            boost::bind(&commandOverride, this, 0, bp::_1, bp::_2), "Part_Loft");
 }
 
 void CmdPartDesignAdditiveLoft::activated(int iMsg)
@@ -1907,7 +1909,7 @@ CmdPartDesignFillet::CmdPartDesignFillet()
     sPixmap       = "PartDesign_Fillet";
 
     Gui::Application::Instance->commandManager().registerCallback(
-            boost::bind(&commandOverride, this, 0, _1, _2), "Part_Fillet");
+            boost::bind(&commandOverride, this, 0, bp::_1, bp::_2), "Part_Fillet");
 }
 
 void CmdPartDesignFillet::activated(int iMsg)
@@ -1938,7 +1940,7 @@ CmdPartDesignChamfer::CmdPartDesignChamfer()
     sPixmap       = "PartDesign_Chamfer";
 
     Gui::Application::Instance->commandManager().registerCallback(
-            boost::bind(&commandOverride, this, 0, _1, _2), "Part_Chamfer");
+            boost::bind(&commandOverride, this, 0, bp::_1, bp::_2), "Part_Chamfer");
 }
 
 void CmdPartDesignChamfer::activated(int iMsg)
@@ -2027,7 +2029,7 @@ CmdPartDesignThickness::CmdPartDesignThickness()
     sPixmap       = "PartDesign_Thickness";
 
     Gui::Application::Instance->commandManager().registerCallback(
-            boost::bind(&commandOverride, this, 0, _1, _2), "Part_Thickness");
+            boost::bind(&commandOverride, this, 0, bp::_1, bp::_2), "Part_Thickness");
 }
 
 void CmdPartDesignThickness::activated(int iMsg)
@@ -2144,7 +2146,7 @@ CmdPartDesignMirrored::CmdPartDesignMirrored()
     sPixmap       = "PartDesign_Mirrored";
 
     Gui::Application::Instance->commandManager().registerCallback(
-            boost::bind(&commandOverride, this, 0, _1, _2), "Part_Mirror");
+            boost::bind(&commandOverride, this, 0, bp::_1, bp::_2), "Part_Mirror");
 }
 
 void CmdPartDesignMirrored::activated(int iMsg)
@@ -2536,13 +2538,13 @@ CmdPartDesignBoolean::CmdPartDesignBoolean()
     sPixmap         = "PartDesign_Boolean";
 
     Gui::Application::Instance->commandManager().registerCallback(
-            boost::bind(&commandOverride, this, 0, _1, _2), "Part_Boolean");
+            boost::bind(&commandOverride, this, 0, bp::_1, bp::_2), "Part_Boolean");
 
     Gui::Application::Instance->commandManager().registerCallback(
-            boost::bind(&commandOverride, this, 1, _1, _2), "Part_Cut");
+            boost::bind(&commandOverride, this, 1, bp::_1, bp::_2), "Part_Cut");
 
     Gui::Application::Instance->commandManager().registerCallback(
-            boost::bind(&commandOverride, this, 2, _1, _2), "Part_Common");
+            boost::bind(&commandOverride, this, 2, bp::_1, bp::_2), "Part_Common");
 }
 
 
@@ -2685,16 +2687,16 @@ CmdPartDesignSplit::CmdPartDesignSplit()
     sPixmap         = "PartDesign_Split";
 
     Gui::Application::Instance->commandManager().registerCallback(
-            boost::bind(&commandOverride, this, 1, _1, _2), "Part_BooleanFragments");
+            boost::bind(&commandOverride, this, 1, bp::_1, bp::_2), "Part_BooleanFragments");
 
     Gui::Application::Instance->commandManager().registerCallback(
-            boost::bind(&commandOverride, this, 0, _1, _2), "Part_Slice");
+            boost::bind(&commandOverride, this, 0, bp::_1, bp::_2), "Part_Slice");
 
     Gui::Application::Instance->commandManager().registerCallback(
-            boost::bind(&commandOverride, this, 0, _1, _2), "Part_SliceApart");
+            boost::bind(&commandOverride, this, 0, bp::_1, bp::_2), "Part_SliceApart");
 
     Gui::Application::Instance->commandManager().registerCallback(
-            boost::bind(&commandOverride, this, 0, _1, _2), "Part_ExplodeCompound");
+            boost::bind(&commandOverride, this, 0, bp::_1, bp::_2), "Part_ExplodeCompound");
 }
 
 void CmdPartDesignSplit::activated(int iMsg)
