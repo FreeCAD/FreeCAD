@@ -792,7 +792,12 @@ bool Gui::GuiNativeEvent::TranslateRawInputData(UINT nInputCode, PRAWINPUT pRawI
 		if (sRidDeviceInfo.hid.dwVendorId == LOGITECH_VENDOR_ID  || sRidDeviceInfo.hid.dwVendorId == CONNEXION_VENDOR_ID) {
 			switch (sRidDeviceInfo.hid.dwProductId) {
 			case eSpaceMousePlusXT:
-				return TranslateSpaceMouseOldGeneric(nInputCode, pRawInput, sRidDeviceInfo.hid.dwProductId);
+				if (pRawInput->data.hid.bRawData[0] != 0x00) {
+					return TranslateSpaceMouseNewGeneric(nInputCode, pRawInput, sRidDeviceInfo.hid.dwProductId);
+				}
+				else {
+					return TranslateSpaceMouseOldGeneric(nInputCode, pRawInput, sRidDeviceInfo.hid.dwProductId);
+				}
 			case eSpaceMouseEnterprise:
 				return TranslateSpaceMouseEnterprise(nInputCode, pRawInput, sRidDeviceInfo.hid.dwProductId);
 			case eSpacePilot:
