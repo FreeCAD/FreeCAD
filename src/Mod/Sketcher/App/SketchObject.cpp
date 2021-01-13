@@ -383,9 +383,10 @@ int SketchObject::solve(bool updateGeoAfterSolving/*=true*/)
     if (err == 0 && updateGeoAfterSolving) {
         // set the newly solved geometry
         std::vector<Part::Geometry *> geomlist = solvedSketch.extractGeometry();
-        Geometry.setValues(geomlist);
-        for (std::vector<Part::Geometry *>::iterator it = geomlist.begin(); it != geomlist.end(); ++it)
-            if (*it) delete *it;
+        Part::PropertyGeometryList tmp;
+        tmp.setValues(std::move(geomlist));
+        if (!Geometry.isSame(tmp))
+            Geometry.moveValues(std::move(tmp));
     }
     else if(err <0) {
         // if solver failed, invalid constraints were likely added before solving

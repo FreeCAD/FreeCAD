@@ -282,6 +282,11 @@ bool PropertyGeometryList::isSame(const Property &_other) const
     return isSameContent(_other);
 }
 
+void PropertyGeometryList::moveValues(PropertyGeometryList &&other)
+{
+    setValues(std::move(other._lValueList));
+}
+
 App::Property *PropertyGeometryList::copyBeforeChange() const
 {
     // This effectively disabled change detection in hasSetValue(). To enable
