@@ -114,13 +114,13 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
 
     if float(obj.HelixAngle) < 1:
         obj.HelixAngle = 1
-    if float(obj.HelixAngle) > 359:
-        obj.HelixAngle = 359
+    if float(obj.HelixAngle) > 89:
+        obj.HelixAngle = 89
     
     if float(obj.HelixConeAngle) < 0:
         obj.HelixConeAngle = 0
 
-    helixAngleRad = math.pi * ((360 - float(obj.HelixAngle)) / 4) / 180.0
+    helixAngleRad = math.pi * float(obj.HelixAngle) / 180.0
     depthPerOneCircle = length * math.tan(helixAngleRad)
     #print("Helix circle depth: {}".format(depthPerOneCircle))
 
@@ -211,6 +211,7 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
                     
                     else:
                         # Cone
+                        _HelixAngle = 360 - (float(obj.HelixAngle) * 4)
                         # Calculate everything
                         helix_height = passStartDepth - passEndDepth
                         r_extra = helix_height * math.tan(math.radians(obj.HelixConeAngle))
@@ -225,9 +226,9 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
                         z_step = 0.05
 
                         # Bigger angle, smaller step down
-                        if obj.HelixAngle > 120:
+                        if _HelixAngle > 120:
                             z_step = 0.025
-                        if obj.HelixAngle > 240:
+                        if _HelixAngle > 240:
                             z_step = 0.015
                         
                         p = None
@@ -236,7 +237,7 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
                             if z < passEndDepth:
                                 z = passEndDepth
                             
-                            p = CalcHelixConePoint(helix_full_height, i, HelixTopRadius, obj.HelixAngle)
+                            p = CalcHelixConePoint(helix_full_height, i, HelixTopRadius, _HelixAngle)
                             op.commandlist.append(Path.Command("G1", { "X": p['X'] + region["HelixCenterPoint"][0], "Y": p['Y'] + region["HelixCenterPoint"][1], "Z": z, "F": op.vertFeed}))
                             z = z - z_step
                             i = i + z_step
@@ -579,7 +580,7 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.FinishingProfile = True
         obj.Stopped = False
         obj.StopProcessing = False
-        obj.HelixAngle = 250
+        obj.HelixAngle = 5
         obj.HelixConeAngle = 0
         obj.HelixDiameterLimit = 0.0
         obj.AdaptiveInputState =""
