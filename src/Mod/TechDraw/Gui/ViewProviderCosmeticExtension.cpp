@@ -47,11 +47,6 @@ ViewProviderCosmeticExtension::ViewProviderCosmeticExtension()
     initExtensionType(ViewProviderCosmeticExtension::getExtensionClassTypeId());
 }
 
-QIcon ViewProviderCosmeticExtension::extensionMergeGreyableOverlayIcons(const QIcon & orig) const
-{
-    (void)orig;
-}
-
 void ViewProviderCosmeticExtension::extensionUpdateData(const App::Property* prop)
 {
     Gui::ViewProviderExtension::extensionUpdateData(prop);
