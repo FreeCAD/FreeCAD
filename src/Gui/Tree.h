@@ -220,6 +220,7 @@ protected Q_SLOTS:
     void onShowTempDoc();
     void onHideInTree();
     void onSearchObjects();
+    void onToolTipTimer();
 
 private Q_SLOTS:
     void onItemSelectionChanged(void);
@@ -279,6 +280,7 @@ private:
     QTimer* statusTimer;
     QTimer* selectTimer;
     QTimer* preselectTimer;
+    QTimer* toolTipTimer;
     QTime preselectTime;
     QPixmap documentPixmap;
     QPixmap documentPartialPixmap;

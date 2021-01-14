@@ -311,7 +311,7 @@ QIcon ViewProvider::getIcon(void) const
     return mergeOverlayIcons (Gui::BitmapFactory().pixmap(sPixmap));
 }
 
-void ViewProvider::getExtraIcons(std::vector<QPixmap> &icons) const
+void ViewProvider::getExtraIcons(std::vector<std::pair<QByteArray,QPixmap> > &icons) const
 {
     callExtension(&ViewProviderExtension::extensionGetExtraIcons,icons);
 }
@@ -1132,4 +1132,22 @@ void ViewProvider::setLinkVisible(bool visible) {
     auto ext = getExtensionByType<ViewProviderLinkObserver>(true);
     if(ext)
         ext->setLinkVisible(visible);
+}
+
+QString ViewProvider::getToolTip(const QByteArray &tag) const
+{
+    QString tooltip;
+    foreachExtension<ViewProviderExtension>([&](ViewProviderExtension *ext) {
+        return ext->extensionGetToolTip(tag, tooltip);
+    });
+    return tooltip;
+}
+
+bool ViewProvider::iconClicked(const QByteArray &tag)
+{
+    bool res = false;
+    foreachExtension<ViewProviderExtension>([&](ViewProviderExtension *ext) {
+        return (res = ext->extensionIconClicked(tag));
+    });
+    return false;
 }

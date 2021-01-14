@@ -54,7 +54,7 @@ public:
 
     // Returns the icon
     QIcon getIcon() const;
-    void getExtraIcons(std::vector<QPixmap> &) const;
+    void getExtraIcons(std::vector<std::pair<QByteArray, QPixmap> > &icons) const;
     bool claimChildren(std::vector<App::DocumentObject*>&) const;
     ValueT useNewSelectionModel() const;
     ValueT getElementPicked(const SoPickedPoint *pp, std::string &subname) const;
@@ -67,6 +67,8 @@ public:
     ValueT setEditViewer(View3DInventorViewer*, int ModNum);
     ValueT unsetEditViewer(View3DInventorViewer*);
     ValueT doubleClicked(void);
+    ValueT iconClicked(const QByteArray &);
+    bool getToolTip(const QByteArray &, QString &) const;
     bool setupContextMenu(QMenu* menu);
 
     /** @name Update data methods*/
@@ -135,6 +137,7 @@ private:
 #define FC_PY_VIEW_OBJECT \
     FC_PY_ELEMENT(getIcon) \
     FC_PY_ELEMENT(getExtraIcons) \
+    FC_PY_ELEMENT(getToolTip) \
     FC_PY_ELEMENT(claimChildren) \
     FC_PY_ELEMENT(useNewSelectionModel) \
     FC_PY_ELEMENT(getElementPicked) \
@@ -147,6 +150,7 @@ private:
     FC_PY_ELEMENT(setEditViewer) \
     FC_PY_ELEMENT(unsetEditViewer) \
     FC_PY_ELEMENT(doubleClicked) \
+    FC_PY_ELEMENT(iconClicked) \
     FC_PY_ELEMENT(setupContextMenu) \
     FC_PY_ELEMENT(attach) \
     FC_PY_ELEMENT(updateData) \
@@ -220,9 +224,16 @@ public:
         return icon;
     }
 
-    void getExtraIcons(std::vector<QPixmap> &icons) const override {
-        ViewProviderT::getExtraIcons(icons);
+    void getExtraIcons(std::vector<std::pair<QByteArray, QPixmap> > &icons) const override {
         imp->getExtraIcons(icons);
+        ViewProviderT::getExtraIcons(icons);
+    }
+
+    QString getToolTip(const QByteArray &tag) const override {
+        QString tooltip;
+        if(!imp->getToolTip(tag, tooltip))
+            tooltip = ViewProviderT::getToolTip(tag);
+        return tooltip;
     }
 
     std::vector<App::DocumentObject*> claimChildren() const override {
@@ -606,7 +617,6 @@ public:
 protected:
     virtual bool doubleClicked(void) override
     {
-        App::AutoTransaction committer;
         switch (imp->doubleClicked()) {
         case ViewProviderPythonFeatureImp::Accepted:
             return true;
@@ -614,6 +624,17 @@ protected:
             return false;
         default:
             return ViewProviderT::doubleClicked();
+        }
+    }
+    virtual bool iconClicked(const QByteArray &tag) override
+    {
+        switch (imp->iconClicked(tag)) {
+        case ViewProviderPythonFeatureImp::Accepted:
+            return true;
+        case ViewProviderPythonFeatureImp::Rejected:
+            return false;
+        default:
+            return ViewProviderT::iconClicked(tag);
         }
     }
     virtual void setOverrideMode(const std::string &mode) override

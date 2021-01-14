@@ -50,7 +50,10 @@ ViewProviderAttachExtension::ViewProviderAttachExtension()
     initExtensionType(ViewProviderAttachExtension::getExtensionClassTypeId());
 }
 
-void ViewProviderAttachExtension::extensionGetExtraIcons(std::vector<QPixmap> &icons) const
+static QByteArray _IconTag("Attacher::Detached");
+
+void ViewProviderAttachExtension::extensionGetExtraIcons(
+        std::vector<std::pair<QByteArray, QPixmap> > &icons) const
 {
     if (!ignoreOverlayIcon()
             && getExtendedViewProvider()->getObject()->hasExtension(Part::AttachExtension::getExtensionClassTypeId())) {
@@ -58,11 +61,29 @@ void ViewProviderAttachExtension::extensionGetExtraIcons(std::vector<QPixmap> &i
         auto* attach = getExtendedViewProvider()->getObject()->getExtensionByType<Part::AttachExtension>();
 
         if (attach) {
-
             if(!attach->isAttacherActive())
-                icons.push_back(Gui::BitmapFactory().pixmap("Part_Attachment_Detached.svg"));
+                icons.emplace_back(_IconTag, Gui::BitmapFactory().pixmap("Part_Attachment_Detached.svg"));
         }
     }
+}
+
+bool ViewProviderAttachExtension::extensionIconClicked(const QByteArray &tag)
+{
+    if (tag == _IconTag) {
+        showAttachmentEditor();
+        return true;
+    }
+    return false;
+}
+
+bool ViewProviderAttachExtension::extensionGetToolTip(
+        const QByteArray &tag, QString &tooltip) const
+{
+    if (tag == _IconTag) {
+        tooltip = QObject::tr("Feature attachment is inactive");
+        return true;
+    }
+    return false;
 }
 
 void ViewProviderAttachExtension::extensionUpdateData(const App::Property* prop)

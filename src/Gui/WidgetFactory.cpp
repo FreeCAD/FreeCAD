@@ -466,6 +466,26 @@ QPixmap *PythonWrapper::toQPixmap(PyObject *pyobj)
     return 0;
 }
 
+Py::Object PythonWrapper::fromQPixmap(const QPixmap* pixmap)
+{
+#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+    const char* typeName = typeid(*const_cast<QPixmap*>(pixmap)).name();
+    PyObject* pyobj = Shiboken::Object::newObject(reinterpret_cast<SbkObjectType*>(getPyTypeObjectForTypeName<QPixmap>()),
+                              const_cast<QPixmap*>(pixmap), true, false, typeName);
+    if (pyobj)
+        return Py::asObject(pyobj);
+#elif QT_VERSION >= 0x050000
+    // Access shiboken2/PySide2 via Python
+    //
+    return qt_wrapInstance<const QPixmap*>(pixmap, "QPixmap", "shiboken2", "PySide2.QtGui", "wrapInstance");
+#else
+    // Access shiboken/PySide via Python
+    //
+    return qt_wrapInstance<const QPixmap*>(pixmap, "QPixmap", "shiboken", "PySide.QtGui", "wrapInstance");
+#endif
+    throw Py::RuntimeError("Failed to wrap pixmap");
+}
+
 Py::Object PythonWrapper::fromQObject(QObject* object, const char* className)
 {
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)

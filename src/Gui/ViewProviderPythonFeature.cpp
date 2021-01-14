@@ -351,7 +351,6 @@ static QPixmap getPixmapFromPython(Py::Object pyobj)
     } else {
         PythonWrapper wrap;
         wrap.loadGuiModule();
-        wrap.loadWidgetsModule();
         QPixmap *px = wrap.toQPixmap(pyobj.ptr());
         if(px)
             return *px;
@@ -395,29 +394,60 @@ QIcon ViewProviderPythonFeatureImp::getIcon() const
     return QIcon();
 }
 
-void ViewProviderPythonFeatureImp::getExtraIcons(std::vector<QPixmap> &icons) const
+void ViewProviderPythonFeatureImp::getExtraIcons(
+        std::vector<std::pair<QByteArray, QPixmap> > &icons) const
 {
     _FC_PY_CALL_CHECK(getExtraIcons,return);
 
     Base::PyGILStateLocker lock;
     try {
-        Py::Object ret(Base::pyCall(py_getExtraIcons.ptr()));
-        if(ret.isNone())
+        Py::List list;
+        PythonWrapper wrap;
+        wrap.loadGuiModule();
+        for (auto &v : icons)
+            list.append(Py::TupleN(Py::String(v.first.constData()),
+                                   wrap.fromQPixmap(&v.second)));
+        Py::TupleN args(list);
+        Py::Object ret(Base::pyCall(py_getExtraIcons.ptr(), args.ptr()));
+        if (ret.isNone())
             return;
 
+        std::vector<std::pair<QByteArray, QPixmap> >res;
         if (ret.isSequence() && !ret.isString()) {
             Py::Sequence seq(ret);
+            if (seq.size() == 2) {
+                Py::Object first(seq[0].ptr());
+                if (first.isString()) {
+                    QPixmap px = getPixmapFromPython(Py::Object(seq[1].ptr()));
+                    if (!px.isNull())
+                        res.emplace_back(first.as_string().c_str(), px);
+                    return;
+                }
+            }
             for (int i=0, c=seq.size(); i<c; ++i) {
-                QPixmap px = getPixmapFromPython(Py::Object(seq[i]));
+                std::string tag;
+                QPixmap px;
+                if (PySequence_Check(seq[i].ptr())) {
+                    Py::Sequence s(seq[i].ptr());
+                    if (s.size() == 2) {
+                        Py::Object first(s[0].ptr());
+                        if (first.isString()) {
+                            tag = first.as_string();
+                            px = getPixmapFromPython(Py::Object(s[1]));
+                        }
+                    }
+                } else
+                    px = getPixmapFromPython(Py::Object(seq[i]));
                 if (!px.isNull())
-                    icons.push_back(px);
+                    res.emplace_back(tag.c_str(), px);
             }
         }
         else {
             QPixmap px = getPixmapFromPython(ret);
             if (!px.isNull())
-                icons.push_back(px);
+                res.emplace_back(QByteArray(), px);
         }
+        icons = std::move(res);
     }
     catch (Py::Exception&) {
         if (PyErr_ExceptionMatches(PyExc_NotImplementedError))
@@ -786,6 +816,59 @@ ViewProviderPythonFeatureImp::doubleClicked(void)
     }
 
     return Rejected;
+}
+
+ViewProviderPythonFeatureImp::ValueT
+ViewProviderPythonFeatureImp::iconClicked(const QByteArray &tag)
+{
+    FC_PY_CALL_CHECK(iconClicked)
+
+    // Run the onChanged method of the proxy object.
+    Base::PyGILStateLocker lock;
+    try {
+        Py::Tuple args(1);
+        args.setItem(0, Py::String(tag.constData()));
+        Py::Boolean ok(Base::pyCall(py_iconClicked.ptr(),args.ptr()));
+        bool value = (bool)ok;
+        return value ? Accepted : Rejected;
+    }
+    catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return NotImplemented;
+        }
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+
+    return Rejected;
+}
+
+bool ViewProviderPythonFeatureImp::getToolTip(const QByteArray &tag, QString &tooltip) const
+{
+    FC_PY_CALL_CHECK(getToolTip)
+
+    // Run the onChanged method of the proxy object.
+    Base::PyGILStateLocker lock;
+    try {
+        Py::Tuple args(1);
+        args.setItem(0, Py::String(tag.constData()));
+        Py::Object res(Base::pyCall(py_getToolTip.ptr(),args.ptr()));
+        if (!res.isString())
+            return false;
+        tooltip = QString::fromUtf8(res.as_string().c_str());
+        return true;
+    }
+    catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return false;
+        }
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+
+    return false;
 }
 
 bool ViewProviderPythonFeatureImp::setupContextMenu(QMenu* menu)

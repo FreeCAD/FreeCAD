@@ -39,7 +39,9 @@ public:
     ViewProviderAttachExtension(void);
     virtual ~ViewProviderAttachExtension() = default;
 
-    virtual void extensionGetExtraIcons(std::vector<QPixmap> &) const override;
+    virtual void extensionGetExtraIcons(std::vector<std::pair<QByteArray, QPixmap> > &) const override;
+    virtual bool extensionGetToolTip(const QByteArray &tag, QString &tooltip) const override;
+    virtual bool extensionIconClicked(const QByteArray &) override;
 
     virtual void extensionUpdateData(const App::Property*) override;
     virtual void extensionSetupContextMenu(QMenu*, QObject*, const char*) override;

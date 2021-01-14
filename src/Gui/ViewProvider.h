@@ -53,6 +53,7 @@ class SoPickedPoint;
 class SoDetail;
 class SoFullPath;
 class QString;
+class QByteArray;
 class QMenu;
 class QObject;
 
@@ -235,8 +236,15 @@ public:
     /// deliver the icon shown in the tree view
     virtual QIcon getIcon(void) const;
 
-    /// deliver extra icons shown in the tree view
-    virtual void getExtraIcons(std::vector<QPixmap> &) const;
+    /** Deliver extra icons shown in the tree view
+     *
+     * @param icons: return the new icons together with optional string tag.
+     *               The tag can be used in getTooltip() and iconClicked().
+     */
+    virtual void getExtraIcons(std::vector<std::pair<QByteArray, QPixmap> > &icons) const;
+
+    /// Return the tooltip of a give icon tag.
+    virtual QString getToolTip(const QByteArray &iconTag) const;
 
     /** deliver the children belonging to this object
       * this method is used to deliver the objects to
@@ -345,10 +353,6 @@ public:
     //@{
     /// signal on icon change
     boost::signals2::signal<void ()> signalChangeIcon;
-    /// signal on tooltip change
-    boost::signals2::signal<void (const QString&)> signalChangeToolTip;
-    /// signal on status tip change
-    boost::signals2::signal<void (const QString&)> signalChangeStatusTip;
     //@}
 
     /** update the content of the ViewProvider
@@ -461,6 +465,11 @@ public:
     virtual const char* getTransactionText() const { return nullptr; }
     /// is called by the tree if the user double clicks on the object
     virtual bool doubleClicked(void) { return false; }
+    /** Called by tree when clicking a specific icon
+     * @param iconTag: tag returned from getExtraIcons()
+     * @return Return whether the click even is handled
+     */
+    virtual bool iconClicked(const QByteArray &iconTag);
     /// is called when the provider is in edit and the mouse is moved
     virtual bool mouseMove(const SbVec2s &cursorPos, View3DInventorViewer* viewer);
     /// is called when the Provider is in edit and the mouse is clicked

@@ -99,15 +99,20 @@ public:
 
     virtual void extensionMergeOverlayIcons(QIcon &) const {}
 
-    virtual void extensionGetExtraIcons(std::vector<QPixmap> &) const {}
+    virtual void extensionGetExtraIcons(std::vector<std::pair<QByteArray, QPixmap> > &) const {}
+    virtual bool extensionGetToolTip(const QByteArray &tag, QString &tooltip) const {
+        (void)tag;
+        (void)tooltip;
+        return false;
+    }
+    virtual bool extensionIconClicked(const QByteArray &) {return false;}
+
     void setIgnoreOverlayIcon(bool on) {
         m_ignoreOverlayIcon = on;
     }
     bool ignoreOverlayIcon() const {
         return m_ignoreOverlayIcon;
     }
-    virtual QIcon extensionMergeGreyableOverlayIcons(const QIcon & orig) const {return orig;}
-    virtual QIcon extensionMergeColorfullOverlayIcons(const QIcon & orig) const {return orig;}
 
     virtual void extensionStartRestoring() {}
     virtual void extensionFinishRestoring() {}

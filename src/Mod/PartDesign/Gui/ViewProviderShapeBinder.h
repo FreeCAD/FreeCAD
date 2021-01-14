@@ -77,7 +77,7 @@ public:
     virtual bool setEdit(int ModNum) override;
     virtual void attach(App::DocumentObject *obj) override;
     virtual void onChanged(const App::Property *prop) override;
-    virtual void getExtraIcons(std::vector<QPixmap> &) const override;
+    virtual void getExtraIcons(std::vector<std::pair<QByteArray, QPixmap> > &) const override;
     virtual void updateData(const App::Property*) override;
     virtual Gui::ViewProviderDocumentObject *getLinkedViewProvider(
             std::string *subname=0, bool recursive=false) const override;

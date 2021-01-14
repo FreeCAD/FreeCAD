@@ -114,7 +114,7 @@ public:
     };
     void selectItems(SelectionReason reason=SR_SELECT);
 
-    void testStatus(void);
+    void testItemStatus(void);
     void setData(int column, int role, const QVariant & value) override;
     void populateItem(DocumentObjectItem *item, bool refresh=false, bool delayUpdate=true);
     void forcePopulateItem(QTreeWidgetItem *item);
@@ -217,9 +217,7 @@ public:
     ~DocumentObjectItem();
 
     Gui::ViewProviderDocumentObject* object() const;
-    void testStatus(bool resetStatus, QIcon &icon1, QIcon &icon2);
-    void testStatus(bool resetStatus);
-    void displayStatusInfo();
+    void testItemStatus(bool resetStatus = false);
     void setExpandedStatus(bool);
     void setData(int column, int role, const QVariant & value);
     bool isChildOfItem(DocumentObjectItem*);
@@ -471,6 +469,8 @@ public:
         }
     }
 
+    DocumentObjectItem *itemHitTest(QPoint pos, QByteArray *tag);
+
     TreeWidget *master;
 
     bool disableSyncView = false;
@@ -672,6 +672,10 @@ public:
     bool itemHidden;
     QString label;
     QString label2;
+    QIcon icon1;
+    QIcon icon2;
+    std::vector<std::pair<QByteArray, int> > iconInfo;
+    int iconStatus;
 
     typedef boost::signals2::scoped_connection Connection;
 
@@ -685,10 +689,6 @@ public:
         // Setup connections
         connectIcon = viewObject->signalChangeIcon.connect(
                 boost::bind(&DocumentObjectData::slotChangeIcon, this));
-        connectTool = viewObject->signalChangeToolTip.connect(
-                boost::bind(&DocumentObjectData::slotChangeToolTip, this, bp::_1));
-        connectStat = viewObject->signalChangeStatusTip.connect(
-                boost::bind(&DocumentObjectData::slotChangeStatusTip, this, bp::_1));
 
         removeChildrenFromRoot = viewObject->canRemoveChildrenFromRoot();
         itemHidden = !viewObject->showInTree();
@@ -698,24 +698,12 @@ public:
         return docItem->getTreeName();
     }
 
-    void testStatus(bool resetStatus = false) {
-        QIcon icon,icon2;
-        for(auto item : items)
-            item->testStatus(resetStatus,icon,icon2);
-    }
-
     void slotChangeIcon() {
-        testStatus(true);
-    }
-
-    void slotChangeToolTip(const QString& tip) {
+        icon1 = QIcon();
+        icon2 = QIcon();
+        iconInfo.clear();
         for(auto item : items)
-            item->setToolTip(0, tip);
-    }
-
-    void slotChangeStatusTip(const QString& tip) {
-        for(auto item : items)
-            item->setStatusTip(0, tip);
+            item->testItemStatus(true);
     }
 };
 
@@ -961,6 +949,9 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
     this->preselectTimer = new QTimer(this);
     this->preselectTimer->setSingleShot(true);
 
+    this->toolTipTimer = new QTimer(this);
+    this->toolTipTimer->setSingleShot(true);
+
     this->statusTimer = new QTimer(this);
     this->statusTimer->setSingleShot(false);
 
@@ -982,6 +973,8 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
     connect(this->selectTimer, SIGNAL(timeout()),
             this, SLOT(onSelectTimer()));
     connect(this, SIGNAL(pressed(const QModelIndex &)), SLOT(onItemPressed()));
+    connect(this->toolTipTimer, SIGNAL(timeout()),
+            this, SLOT(onToolTipTimer()));
     preselectTime.start();
 
     setupText();
@@ -2092,21 +2085,92 @@ void TreeWidget::mouseMoveEvent(QMouseEvent *event) {
         pimpl->setOverrideCursor(cursor, replace);
         return;
     }
+
+    toolTipTimer->start(300);
     QTreeWidget::mouseMoveEvent(event);
 }
+
+void TreeWidget::onToolTipTimer()
+{
+    QByteArray tag;
+    auto item = pimpl->itemHitTest(
+            viewport()->mapFromGlobal(QCursor::pos()), &tag);
+    if (!item)
+        return;
+
+    App::DocumentObject* Obj = item->object()->getObject();
+    std::ostringstream ss;
+    App::DocumentObject *parent = 0;
+    item->getSubName(ss,parent);
+    if(!parent)
+        parent = Obj;
+    else if(!Obj->redirectSubName(ss,parent,0))
+        ss << Obj->getNameInDocument() << '.';
+
+    QString status = Selection().format(parent, ss.str().c_str(), 0.f, 0.f, 0.f, false);
+
+    if ( (Obj->isTouched() || Obj->mustExecute() == 1) && !Obj->isError())
+        status = QObject::tr("Touched, ") + status;
+    getMainWindow()->showMessage(status);
+
+    QString info;
+    if (!Obj->isError()) {
+        info = item->object()->getToolTip(tag);
+    } else {
+#if (QT_VERSION >= 0x050000)
+        info = QApplication::translate(Obj->getTypeId().getName(), Obj->getStatusString());
+#else
+        info = QApplication::translate(Obj->getTypeId().getName(), Obj->getStatusString(), 0, QApplication::UnicodeUTF8);
+#endif
+    }
+    if (info.isEmpty())
+        ToolTip::hideText();
+    else {
+        QPoint pos = this->visualItemRect(item).topLeft();
+
+        // Add some margin so that the newly showup tooltop widget won't
+        // immediate trigger another itemEntered() event.
+        pos.setY(pos.y()+10);
+        ToolTip::showText(this->viewport()->mapToGlobal(pos), info, this);
+    }
+}
+
+DocumentObjectItem *TreeWidget::Private::itemHitTest(QPoint pos, QByteArray *tag)
+{
+    auto item = master->itemAt(pos);
+    if (!item || item->type() != ObjectType)
+        return nullptr;
+    auto objitem = static_cast<DocumentObjectItem*>(item);
+    if (!tag)
+        return objitem;
+
+    QRect rect = master->visualItemRect(item);
+    if (!rect.contains(pos))
+        return objitem;
+    float scale = iconSize()/64.0f;
+    int offset = 0;
+    for (auto &v : objitem->myData->iconInfo) {
+        int ofs = rect.left() + offset*scale;
+        if (pos.x() > ofs && pos.x() < ofs + v.second*scale) {
+            *tag = v.first;
+            break;
+        }
+        offset += v.second;
+    }
+    return objitem;
+}
+
+static QByteArray _TreeVisTag("tree:vis");
+static QByteArray _TreeIconTag("tree:icon");
 
 void TreeWidget::mousePressEvent(QMouseEvent *event) {
     if (_DraggingActive)
         return;
-    auto item = itemAt(event->pos());
-    if (item && item->type() == ObjectType) {
-        QRect rect = this->visualItemRect(item);
-        QPoint pos = this->viewport()->mapFromGlobal(event->globalPos());
-        rect.setWidth(this->iconSize());
-        auto oitem = static_cast<DocumentObjectItem*>(item);
-        const char *objName = oitem->object()->getObject()->getNameInDocument();
-        if (objName && rect.contains(pos)) {
-
+    QByteArray tag;
+    auto oitem = pimpl->itemHitTest(event->pos(), &tag);
+    if (oitem) {
+        if (tag == _TreeVisTag) {
+            const char *objName = oitem->object()->getObject()->getNameInDocument();
             auto setVisible = [oitem](App::DocumentObject *obj, const char *sobjName, bool vis) {
                 App::DocumentObject *topParent = 0;
                 std::ostringstream ss;
@@ -2166,6 +2230,16 @@ void TreeWidget::mousePressEvent(QMouseEvent *event) {
             setVisible(oitem->object()->getObject(), nullptr,
                        !oitem->object()->Visibility.getValue());
             return;
+        } else if (tag.size() && tag != _TreeIconTag) {
+            ViewProviderDocumentObject* vp = oitem->object();
+            auto editDoc = Application::Instance->editDocument();
+            App::AutoTransaction committer("Icon clicked", true);
+            if (vp->iconClicked(tag)) {
+                // If the double click starts an editing, let the transaction persist
+                if (!editDoc && Application::Instance->editDocument())
+                    committer.setEnable(false);
+                return;
+            }
         }
     }
     QTreeWidget::mousePressEvent(event);
@@ -3204,7 +3278,7 @@ void TreeWidget::slotChangedViewObject(const Gui::ViewProvider& vp, const App::P
                         for(auto item : data->items) {
                             if (!docShowHidden)
                                 item->setHidden(itemHidden);
-                            static_cast<DocumentObjectItem*>(item)->testStatus(false);
+                            static_cast<DocumentObjectItem*>(item)->testItemStatus();
                         }
                     }
                 }
@@ -3392,7 +3466,7 @@ void TreeWidget::onUpdateStatus(void)
     FC_LOG("update item status");
     TimingInit();
     for (auto pos = DocumentMap.begin();pos!=DocumentMap.end();++pos) {
-        pos->second->testStatus();
+        pos->second->testItemStatus();
     }
     TimingPrint();
 
@@ -3499,9 +3573,6 @@ void TreeWidget::onItemEntered(QTreeWidgetItem * item)
     }
 
     if (item && item->type() == TreeWidget::ObjectType) {
-        DocumentObjectItem* objItem = static_cast<DocumentObjectItem*>(item);
-        objItem->displayStatusInfo();
-
         if(TreeParams::Instance()->PreSelection()) {
             int timeout = TreeParams::Instance()->PreSelectionMinDelay();
             if(timeout > 0 && preselectTime.elapsed() < timeout ) {
@@ -4090,7 +4161,9 @@ enum ItemStatus {
     ItemStatusExternal = 32,
 };
 
-static QIcon getItemIcon(int currentStatus, const ViewProviderDocumentObject *vp);
+static QIcon getItemIcon(int currentStatus,
+                         const ViewProviderDocumentObject *vp,
+                         std::vector<std::pair<QByteArray, int> > *iconInfo = nullptr);
 
 static QIcon getItemIcon(App::Document *doc, const ViewProviderDocumentObject *vp)
 {
@@ -4728,7 +4801,7 @@ bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
         item->setText(1, data->label2);
     if(!obj.showInTree() && !showHidden())
         item->setHidden(true);
-    item->testStatus(true);
+    item->testItemStatus(true);
 
     populateItem(item);
     return true;
@@ -5375,10 +5448,12 @@ Gui::Document* DocumentItem::document() const
 //    }
 //}
 
-void DocumentItem::testStatus(void)
+void DocumentItem::testItemStatus(void)
 {
-    for(const auto &v : ObjectMap)
-        v.second->testStatus();
+    for(const auto &v : ObjectMap) {
+        for(auto item : v.second->items)
+            item->testItemStatus();
+    }
 }
 
 void DocumentItem::setData (int column, int role, const QVariant & value)
@@ -5918,15 +5993,11 @@ Gui::ViewProviderDocumentObject* DocumentObjectItem::object() const
     return myData->viewObject;
 }
 
-void DocumentObjectItem::testStatus(bool resetStatus)
-{
-    QIcon icon,icon2;
-    testStatus(resetStatus,icon,icon2);
-}
-
-void DocumentObjectItem::testStatus(bool resetStatus, QIcon &icon1, QIcon &icon2)
+void DocumentObjectItem::testItemStatus(bool resetStatus)
 {
     App::DocumentObject* pObject = object()->getObject();
+    QIcon &icon1 = myData->icon1;
+    QIcon &icon2 = myData->icon2;
 
     int visible = -1;
     auto parentItem = getParentItem();
@@ -5988,26 +6059,35 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon &icon1, QIcon &icon2
 
     QIcon &icon = visible ?  icon1 : icon2;
 
-    if(icon.isNull()) {
+    int iconStatus = currentStatus & ~(ItemStatusVisible | ItemStatusInvisible);
+    if(icon.isNull() || myData->iconStatus != iconStatus) {
         Timing(getIcon);
-        icon = getItemIcon(currentStatus, object());
+        myData->iconStatus = iconStatus;
+        icon = getItemIcon(currentStatus, object(),
+                myData->iconInfo.empty() ? &myData->iconInfo : nullptr);
     }
     _Timing(2,setIcon);
     this->setIcon(0, icon);
 }
 
-static QPixmap mergePixmaps(const std::vector<QPixmap> &icons)
+static QPixmap mergePixmaps(const std::vector<std::pair<QByteArray, QPixmap> > &icons,
+                            std::vector<std::pair<QByteArray, int> > *iconInfo)
 {
     if (icons.empty())
         return QPixmap();
 
     int w = 64;
     int width = 0;
-    for (auto &px : icons) {
+    for (auto &v : icons) {
+        auto &px = v.second;
+        int iw;
         if(px.height() > w)
-            width += px.width() * w / px.height();
+            iw = px.width() * w / px.height();
         else
-            width += px.width();
+            iw = px.width();
+        if (iconInfo)
+            iconInfo->emplace_back(v.first, iw);
+        width += iw;
     }
 
     QPixmap px(width, w);
@@ -6017,23 +6097,26 @@ static QPixmap mergePixmaps(const std::vector<QPixmap> &icons)
     pt.begin(&px);
     pt.setPen(Qt::NoPen);
     int x = 0;
-    for (auto &p : icons) {
-        if (p.height() > w) {
-            QPixmap scaled = p.scaled(p.width()*w/p.height(),w,
+    for (auto &v : icons) {
+        auto &px = v.second;
+        if (px.height() > w) {
+            QPixmap scaled = px.scaled(px.width()*w/px.height(),w,
                     Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
             pt.drawPixmap(x, 0, scaled);
             x += scaled.width();
         }
         else {
-            pt.drawPixmap(x, (w-p.height())/2, p);
-            x += p.width();
+            pt.drawPixmap(x, (w-px.height())/2, px);
+            x += px.width();
         }
     }
     pt.end();
     return px;
 }
 
-static QIcon getItemIcon(int currentStatus, const ViewProviderDocumentObject *vp)
+static QIcon getItemIcon(int currentStatus,
+                         const ViewProviderDocumentObject *vp,
+                         std::vector<std::pair<QByteArray, int> > *iconInfo)
 {
     QIcon icon;
     QPixmap px;
@@ -6054,18 +6137,20 @@ static QIcon getItemIcon(int currentStatus, const ViewProviderDocumentObject *vp
     QIcon icon_orig = vp->getIcon();
     // We load the overlay icons as size 32x32. So to keep the correct relative
     // size, we force the actual icon pixmap of size 64x64.
+    pxOn = icon_orig.pixmap(64, QIcon::Normal, QIcon::On);
     pxOff = icon_orig.pixmap(64, QIcon::Normal, QIcon::Off);
-    if (pxOff.height() && pxOff.height() < 64)
+    bool hasPxOff = pxOff.cacheKey() != pxOn.cacheKey();
+    if (!hasPxOff && pxOff.height() && pxOff.height() < 64)
         pxOff = pxOff.scaled(pxOff.width()*64/pxOff.height(), 64,
                              Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-    pxOn = icon_orig.pixmap(64, QIcon::Normal, QIcon::On);
     if (pxOn.height() && pxOn.height() < 64)
         pxOn = pxOn.scaled(pxOn.width()*64/pxOn.height(), 64,
                             Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 
     // if needed show small pixmap inside
     if (!px.isNull()) {
-        pxOff = BitmapFactory().merge(pxOff, px, BitmapFactoryInst::TopRight);
+        if (hasPxOff)
+            pxOff = BitmapFactory().merge(pxOff, px, BitmapFactoryInst::TopRight);
         pxOn = BitmapFactory().merge(pxOn, px,BitmapFactoryInst::TopRight);
     }
 
@@ -6073,7 +6158,9 @@ static QIcon getItemIcon(int currentStatus, const ViewProviderDocumentObject *vp
         static QPixmap pxHidden;
         if(pxHidden.isNull())
             pxHidden = BitmapFactory().pixmapFromSvg("TreeHidden", QSizeF(32,32));
-        pxOff = BitmapFactory().merge(pxOff, pxHidden, BitmapFactoryInst::TopLeft);
+        if (hasPxOff)
+            pxOff = BitmapFactory().merge(pxOff, pxHidden, BitmapFactoryInst::TopLeft);
+            pxOff = BitmapFactory().merge(pxOff, px, BitmapFactoryInst::TopRight);
         pxOn = BitmapFactory().merge(pxOn, pxHidden, BitmapFactoryInst::TopLeft);
     }
 
@@ -6081,7 +6168,8 @@ static QIcon getItemIcon(int currentStatus, const ViewProviderDocumentObject *vp
         static QPixmap pxExternal;
         if(pxExternal.isNull())
             pxExternal = BitmapFactory().pixmapFromSvg("TreeExternal", QSizeF(32,32));
-        pxOff = BitmapFactory().merge(pxOff, pxExternal, BitmapFactoryInst::BottomRight);
+        if (hasPxOff)
+            pxOff = BitmapFactory().merge(pxOff, pxExternal, BitmapFactoryInst::BottomRight);
         pxOn = BitmapFactory().merge(pxOn, pxExternal, BitmapFactoryInst::BottomRight);
     }
 
@@ -6092,57 +6180,23 @@ static QIcon getItemIcon(int currentStatus, const ViewProviderDocumentObject *vp
         if (pxVisible.isNull())
             pxVisible = BitmapFactory().pixmap("TreeItemVisible.svg");
 
-        std::vector<QPixmap> icons;
-        icons.push_back((currentStatus & ItemStatusVisible) ? pxVisible : pxInvisible);
-        icons.push_back(pxOn);
+        std::vector<std::pair<QByteArray, QPixmap> > icons;
+        icons.emplace_back(_TreeVisTag,
+                (currentStatus & ItemStatusVisible) ? pxVisible : pxInvisible);
+        icons.emplace_back(_TreeIconTag, pxOn);
         vp->getExtraIcons(icons);
 
-        pxOn = mergePixmaps(icons);
-        icons[1] = pxOff;
-        pxOff = mergePixmaps(icons);
+        pxOn = mergePixmaps(icons, iconInfo);
+        if (hasPxOff) {
+            icons[1].second = pxOff;
+            pxOff = mergePixmaps(icons, nullptr);
+        }
     }
 
     icon.addPixmap(pxOn, QIcon::Normal, QIcon::On);
-    icon.addPixmap(pxOff, QIcon::Normal, QIcon::Off);
+    if (hasPxOff)
+        icon.addPixmap(pxOff, QIcon::Normal, QIcon::Off);
     return icon;
-}
-
-void DocumentObjectItem::displayStatusInfo()
-{
-    App::DocumentObject* Obj = object()->getObject();
-
-    std::ostringstream ss;
-    App::DocumentObject *parent = 0;
-    this->getSubName(ss,parent);
-    if(!parent)
-        parent = Obj;
-    else if(!Obj->redirectSubName(ss,parent,0))
-        ss << Obj->getNameInDocument() << '.';
-
-    QString status = Selection().format(parent, ss.str().c_str(), 0.f, 0.f, 0.f, false);
-
-    if ( (Obj->isTouched() || Obj->mustExecute() == 1) && !Obj->isError())
-        status = QObject::tr("Touched, ") + status;
-    getMainWindow()->showMessage(status);
-
-    if (!Obj->isError()) {
-        ToolTip::hideText();
-    } else {
-        // getMainWindow()->showStatus(MainWindow::Err,status);
-        QTreeWidget* tree = this->treeWidget();
-        QPoint pos = tree->visualItemRect(this).topLeft();
-
-        // Add some margin so that the newly showup tooltop widget won't
-        // immediate trigger another itemEntered() event.
-        pos.setY(pos.y()+10);
-
-#if (QT_VERSION >= 0x050000)
-        QString info = QApplication::translate(Obj->getTypeId().getName(), Obj->getStatusString());
-#else
-        QString info = QApplication::translate(Obj->getTypeId().getName(), Obj->getStatusString(), 0, QApplication::UnicodeUTF8);
-#endif
-        ToolTip::showText(tree->viewport()->mapToGlobal(pos), info, getTree());
-    }
 }
 
 void DocumentObjectItem::setExpandedStatus(bool on)

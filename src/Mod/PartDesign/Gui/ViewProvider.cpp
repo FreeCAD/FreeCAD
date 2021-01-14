@@ -508,7 +508,10 @@ QPixmap ViewProvider::getTagIcon() const
     return pxTipIcon;
 }
 
-void ViewProvider::getExtraIcons(std::vector<QPixmap> &icons) const
+static QByteArray _IconTag("PartDesign::Tag");
+static QByteArray _SuppressedTag("PartDesign::Suppressed");
+
+void ViewProvider::getExtraIcons(std::vector<std::pair<QByteArray, QPixmap> > &icons) const
 {
     auto feat = Base::freecad_dynamic_cast<PartDesign::Feature>(getObject());
     if (!feat) {
@@ -518,12 +521,40 @@ void ViewProvider::getExtraIcons(std::vector<QPixmap> &icons) const
 
     QPixmap px = getTagIcon();
     if (!px.isNull())
-        icons.push_back(px);
+        icons.emplace_back(_IconTag,px);
 
     if(feat->Suppress.getValue())
-        icons.push_back(Gui::BitmapFactory().pixmap("PartDesign_Suppressed.svg"));
+        icons.emplace_back(_SuppressedTag, Gui::BitmapFactory().pixmap("PartDesign_Suppressed.svg"));
 
     inherited::getExtraIcons(icons);
+}
+
+bool ViewProvider::iconClicked(const QByteArray &tag)
+{
+    auto feat = Base::freecad_dynamic_cast<PartDesign::Feature>(getObject());
+    if (!feat)
+        return false;
+    if (tag == _SuppressedTag) {
+        App::AutoTransaction committer("Unsuppress");
+        try {
+            if(feat->Suppress.getValue())
+                Gui::cmdAppObject(feat, "Suppress = False");
+            else
+                Gui::cmdAppObject(feat, "Suppress = True");
+            Gui::cmdAppDocument(App::GetApplication().getActiveDocument(), "recompute()");
+        } catch (Base::Exception &e) {
+            e.ReportException();
+        }
+        return true;
+    }
+    return inherited::iconClicked(tag);
+}
+
+QString ViewProvider::getToolTip(const QByteArray &tag) const
+{
+    if (tag == _SuppressedTag)
+        return QObject::tr("Feature suppressed");
+    return inherited::getToolTip(tag);
 }
 
 bool ViewProvider::onDelete(const std::vector<std::string> &)

@@ -551,7 +551,8 @@ Gui::ViewProviderDocumentObject *ViewProviderSubShapeBinder::getLinkedViewProvid
     return res;
 }
 
-void ViewProviderSubShapeBinder::getExtraIcons(std::vector<QPixmap> &icons) const
+void ViewProviderSubShapeBinder::getExtraIcons(
+        std::vector<std::pair<QByteArray, QPixmap> > &icons) const
 {
     auto binder = Base::freecad_dynamic_cast<PartDesign::SubShapeBinder>(getObject());
     if (!binder) {
@@ -605,9 +606,9 @@ void ViewProviderSubShapeBinder::getExtraIcons(std::vector<QPixmap> &icons) cons
                     if (tag)
                         pxTag = featVp->getTagIcon().scaled(40, 40,
                             Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-                    icons.push_back(px);
+                    icons.emplace_back(QByteArray(), px);
                 }
-                pxInfo.generateIcon(icons[pxInfo.index], pxTag);
+                pxInfo.generateIcon(icons[pxInfo.index].second, pxTag);
             }
         }
         if (icons.size() >= count)
