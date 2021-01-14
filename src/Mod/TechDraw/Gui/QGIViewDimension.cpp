@@ -325,6 +325,14 @@ void QGIDatumLabel::setToleranceString()
         m_tolTextOver->hide();
         m_tolTextUnder->hide();
         return;
+    } else if (dim->TheoreticalExact.getValue()) {
+        m_tolTextOver->hide();
+        m_tolTextUnder->hide();
+        // we must explicitly empy the text other wise the frame drawn for
+        // TheoreticalExact would be as wide as necessary for the text
+        m_tolTextOver->setPlainText(QString());
+        m_tolTextUnder->setPlainText(QString());
+        return;
     }
     m_tolTextOver->show();
     m_tolTextUnder->show();
@@ -586,11 +594,10 @@ void QGIViewDimension::updateView(bool update)
         float y = Rez::guiX(dim->Y.getValue());
         datumLabel->setPosFromCenter(x,-y);
         updateDim();
-     }
-     else if(vp->Fontsize.isTouched() ||
-               vp->Font.isTouched()) {
-         updateDim();
-    } else if (vp->LineWidth.isTouched()) {           //never happens!!
+    } else if(vp->Fontsize.isTouched() ||
+        vp->Font.isTouched()) {
+        updateDim();
+    } else if (vp->LineWidth.isTouched()) {
         m_lineWidth = vp->LineWidth.getValue();
         updateDim();
     } else {

@@ -98,6 +98,11 @@ const char* DrawViewDimension::MeasureTypeEnums[]= {"True",
                                                     "Projected",
                                                     NULL};
 
+// constraint to set the step size to 0.1
+static const App::PropertyQuantityConstraint::Constraints ToleranceConstraint = { -DBL_MAX, DBL_MAX, 0.1 };
+// constraint to force positive values
+static const App::PropertyQuantityConstraint::Constraints PositiveConstraint = { DBL_MIN, DBL_MAX, 0.1 };
+
 DrawViewDimension::DrawViewDimension(void)
 {
     ADD_PROPERTY_TYPE(References2D, (0,0), "", (App::Prop_None), "Projected Geometry References");
@@ -117,8 +122,6 @@ DrawViewDimension::DrawViewDimension(void)
     ADD_PROPERTY_TYPE(TheoreticalExact,(false), "", App::Prop_Output, "Set for theoretical exact (basic) dimension");
     ADD_PROPERTY_TYPE(EqualTolerance, (true), "", App::Prop_Output, "If over- and undertolerance are equal");
 
-    // constraint to set the step size to 0.1
-    static const App::PropertyQuantityConstraint::Constraints ToleranceConstraint = { -DBL_MAX, DBL_MAX, 0.1 };
     ADD_PROPERTY_TYPE(OverTolerance, (0.0), "", App::Prop_Output, "Overtolerance value\nIf 'Equal Tolerance' is true this is also the value for 'Under Tolerance'");
     OverTolerance.setUnit(Base::Unit::Length);
     OverTolerance.setConstraints(&ToleranceConstraint);
@@ -202,15 +205,38 @@ void DrawViewDimension::onChanged(const App::Property* prop)
                 UnderTolerance.setUnit(Base::Unit::Length);
             }
         }
+        else if (prop == &TheoreticalExact) {
+            // if TheoreticalExact disable tolerances and set them to zero
+            if (TheoreticalExact.getValue()) {
+                OverTolerance.setValue(0.0);
+                UnderTolerance.setValue(0.0);
+                OverTolerance.setReadOnly(true);
+                UnderTolerance.setReadOnly(true);
+            }
+            else {
+                OverTolerance.setReadOnly(false);
+                if (!EqualTolerance.getValue())
+                    UnderTolerance.setReadOnly(false);
+            }
+            requestPaint();
+        }
         else if (prop == &EqualTolerance) {
             // if EqualTolerance set negated overtolerance for untertolerance
+            // then also the OverTolerance must be positive
             if (EqualTolerance.getValue()) {
+                // if OverTolerance is negative or zero, first set it to smallest positive value
+                if (OverTolerance.getValue() <= 0) {
+                    OverTolerance.setValue(DBL_MIN);
+                }
+                OverTolerance.setConstraints(&PositiveConstraint);
                 UnderTolerance.setValue(-1.0 * OverTolerance.getValue());
                 UnderTolerance.setUnit(OverTolerance.getUnit());
                 UnderTolerance.setReadOnly(true);
             }
             else {
-                UnderTolerance.setReadOnly(false);
+                OverTolerance.setConstraints(&ToleranceConstraint);
+                if (!TheoreticalExact.getValue())
+                    UnderTolerance.setReadOnly(false);
             }
             requestPaint();
         } 
@@ -225,7 +251,6 @@ void DrawViewDimension::onChanged(const App::Property* prop)
         else if ( (prop == &FormatSpec) ||
              (prop == &Arbitrary) ||
              (prop == &MeasureType) ||
-             (prop == &TheoreticalExact) ||
              (prop == &UnderTolerance) ||
              (prop == &Inverted) ) {
             requestPaint();
