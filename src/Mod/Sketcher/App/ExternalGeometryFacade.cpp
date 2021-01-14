@@ -84,14 +84,14 @@ void ExternalGeometryFacade::initExtensions()
 
         getGeo()->setExtension(std::make_unique<SketchGeometryExtension>()); // Create getExtension
 
-        Base::Console().Warning("%s\nSketcher External Geometry without Geometry Extension: %s \n", boost::uuids::to_string(Geo->getTag()).c_str());
+        // Base::Console().Warning("%s\nSketcher External Geometry without Geometry Extension: %s \n", boost::uuids::to_string(Geo->getTag()).c_str());
     }
 
     if(!Geo->hasExtension(ExternalGeometryExtension::getClassTypeId())) {
 
         getGeo()->setExtension(std::make_unique<ExternalGeometryExtension>()); // Create getExtension
 
-        Base::Console().Warning("%s\nSketcher External Geometry without ExternalGeometryExtension: %s \n", boost::uuids::to_string(Geo->getTag()).c_str());
+        // Base::Console().Warning("%s\nSketcher External Geometry without ExternalGeometryExtension: %s \n", boost::uuids::to_string(Geo->getTag()).c_str());
     }
 
     SketchGeoExtension =
