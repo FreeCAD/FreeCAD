@@ -7574,7 +7574,14 @@ void SketchObject::migrateSketch(void)
 
                 if(ext->testMigrationType(Part::GeometryMigrationExtension::Construction))
                 {
-                    GeometryFacade::setConstruction(g, ext->getConstruction());
+                    auto gf = GeometryFacade::getFacade(g); // at this point IA geometry is already migrated
+
+                    bool oldconstr =  ext->getConstruction();
+
+                    if( g->getTypeId() == Part::GeomPoint::getClassTypeId() && !gf->isInternalAligned())
+                        oldconstr = true;
+
+                    GeometryFacade::setConstruction(g,oldconstr);
                 }
 
                 g->deleteExtension(Part::GeometryMigrationExtension::getClassTypeId());
