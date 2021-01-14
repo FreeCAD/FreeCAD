@@ -76,10 +76,6 @@
 # include <boost/scoped_ptr.hpp>
 #endif
 
-
-
-
-
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Converter.h>
 #include <Base/Tools.h>
@@ -188,8 +184,8 @@ struct EditData {
     PreselectCurve(-1),
     PreselectCross(-1),
     MarkerSize(7),
-    coinFontSize(11), // default of 11 points (not pixels)
-    constraintIconSize(15), // 11 points @ 96 ppi where 72 points = 1 inch
+    coinFontSize(17), // this value is in pixels, 17 pixels
+    constraintIconSize(15),
     blockedPreselection(false),
     FullyConstrained(false),
     //ActSketch(0), // if you are wondering, it went to SketchObject, accessible via getSolvedSketch() and via SketchObject interface as appropriate
@@ -3831,21 +3827,13 @@ void ViewProviderSketch::initItemsSizes()
     int defaultFontSizePixels = QApplication::fontMetrics().height(); // returns height in pixels, not points
     int sketcherfontSize = hGrp->GetInt("EditSketcherFontSize", defaultFontSizePixels);
 
-    auto pixelsToPoints = [](int pixels, int dpi) {
-        return pixels*72/dpi; // definition of point, 72 points = 1 inch
-    };
-
-    // coin takes the font size in points, not pixels
-    // the coin FontSize in points from the system font, taking into account the application scaling factor is:
-    // -> pixelsToPoints(defaultFontSizePixels * viewScalingFactor, dpi)
-
     int dpi = QApplication::desktop()->logicalDpiX();
 
     if(edit) {
         // simple scaling factor for hardcoded pixel values in the Sketcher
         edit->pixelScalingFactor = viewScalingFactor * dpi / 96; // 96 ppi is the standard pixel density for which pixel quantities were calculated
 
-        edit->coinFontSize = pixelsToPoints(sketcherfontSize, dpi);
+        edit->coinFontSize = sketcherfontSize;
         edit->constraintIconSize = std::lround(0.8 * sketcherfontSize);
 
         // For marker size the global default is used.
