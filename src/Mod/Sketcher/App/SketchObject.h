@@ -501,6 +501,9 @@ public:
     // Validation routines
     std::vector<Base::Vector3d> getOpenVertices(void) const;
 
+    // Signaled when solver has done update
+    boost::signals2::signal<void ()> signalSolverUpdate;
+
 public: // geometry extension functionalities for single element sketch object user convenience
     int setGeometryId(int GeoId, long id);
     int getGeometryId(int GeoId, long &id) const;

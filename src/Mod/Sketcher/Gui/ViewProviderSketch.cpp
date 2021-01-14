@@ -6314,31 +6314,8 @@ void ViewProviderSketch::updateData(const App::Property *prop)
     if (edit && !sketch->isPerformingInternalTransaction()
 #endif
              && (prop == &(sketch->Geometry) ||
-                 prop == &(sketch->ExternalGeo) ||
-                 prop == &(sketch->Constraints))) {
-
-        edit->FullyConstrained = false;
-        // At this point, we do not need to solve the Sketch
-        // If we are adding geometry an update can be triggered before the sketch is actually solved.
-        // Because a solve is mandatory to any addition (at least to update the DoF of the solver),
-        // only when the solver geometry is the same in number than the sketch geometry an update
-        // should trigger a redraw. This reduces even more the number of redraws per insertion of geometry
-
-        // solver information is also updated when no matching geometry, so that if a solving fails
-        // this failed solving info is presented to the user
-        UpdateSolverInformation(); // just update the solver window with the last SketchObject solving information
-
-        if(sketch->getExternalGeometryCount()+sketch->getHighestCurveIndex() + 1 ==
-            getSolvedSketch().getGeometrySize()) {
-            Gui::MDIView *mdi = Gui::Application::Instance->editDocument()->getActiveView();
-            if (mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId()))
-                draw(false,true);
-
-            signalConstraintsChanged();
-        }
-
-        if(prop != &sketch->Constraints)
-            signalElementsChanged();
+                 prop == &(sketch->ExternalGeo))) {
+        signalElementsChanged();
     }
 
     if (prop == &sketch->FullyConstrained || prop == &sketch->Geometry) {
@@ -6351,6 +6328,33 @@ void ViewProviderSketch::updateData(const App::Property *prop)
             sPixmap = pixmap;
             signalChangeIcon();
         }
+    }
+}
+
+void ViewProviderSketch::slotSolverUpdate()
+{
+    if (!edit)
+        return;
+
+    edit->FullyConstrained = false;
+    // At this point, we do not need to solve the Sketch
+    // If we are adding geometry an update can be triggered before the sketch is actually solved.
+    // Because a solve is mandatory to any addition (at least to update the DoF of the solver),
+    // only when the solver geometry is the same in number than the sketch geometry an update
+    // should trigger a redraw. This reduces even more the number of redraws per insertion of geometry
+
+    // solver information is also updated when no matching geometry, so that if a solving fails
+    // this failed solving info is presented to the user
+    UpdateSolverInformation(); // just update the solver window with the last SketchObject solving information
+
+    auto sketch = getSketchObject();
+    if(sketch->getExternalGeometryCount()+sketch->getHighestCurveIndex() + 1 ==
+        getSolvedSketch().getGeometrySize()) {
+        Gui::MDIView *mdi = Gui::Application::Instance->editDocument()->getActiveView();
+        if (mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId()))
+            draw(false,true);
+
+        signalConstraintsChanged();
     }
 }
 
@@ -6580,27 +6584,12 @@ bool ViewProviderSketch::setEdit(int ModNum)
     else
         Gui::Control().showDialog(new TaskDlgEditSketch(this));
 
-    // This call to the solver is needed to initialize the DoF and solve time controls
-    // The false parameter indicates that the geometry of the SketchObject shall not be updateData
-    // so as not to trigger an onChanged that would set the document as modified and trigger a recompute
-    // if we just close the sketch without touching anything.
-
-    // There are geometry extensions introduced by the solver and geometry extensions introduced by the viewprovider.
-    // 1. It is important that the solver has geometry with updated extensions.
-    // 2. It is important that the viewprovider has up-to-date solver information
-    //
-    // The decision is to maintain the "first solve then draw" order, which is consistent with the rest of the Sketcher
-    // for example in geometry creation. Then, the ViewProvider is responsible for updating the solver geometry when
-    // appropriate, as it is the ViewProvider that is introducing its geometry extensions.
-    //
-    // In order to have updated solver information, solve must take "true", this cause the Geometry property to be updated
-    // with the solver information, including solver extensions, and triggers a draw(true) via ViewProvider::UpdateData.
-    getSketchObject()->solve(true);
-
     connectUndoDocument = getDocument()
         ->signalUndoDocument.connect(boost::bind(&ViewProviderSketch::slotUndoDocument, this, bp::_1));
     connectRedoDocument = getDocument()
         ->signalRedoDocument.connect(boost::bind(&ViewProviderSketch::slotRedoDocument, this, bp::_1));
+    connectSolverUpdate = getSketchObject()
+        ->signalSolverUpdate.connect(boost::bind(&ViewProviderSketch::slotSolverUpdate, this));
 
     // Enable solver initial solution update while dragging.
     ParameterGrp::handle hGrp2 = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
@@ -6977,6 +6966,7 @@ void ViewProviderSketch::unsetEdit(int ModNum)
 
     connectUndoDocument.disconnect();
     connectRedoDocument.disconnect();
+    connectSolverUpdate.disconnect();
 
     // when pressing ESC make sure to close the dialog
     Gui::Control().closeDialog();
@@ -7079,7 +7069,18 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
 
     viewer->setupEditingRoot();
     edit->viewer = viewer;
-    draw(false,true);
+
+    // There are geometry extensions introduced by the solver and geometry extensions introduced by the viewprovider.
+    // 1. It is important that the solver has geometry with updated extensions.
+    // 2. It is important that the viewprovider has up-to-date solver information
+    //
+    // The decision is to maintain the "first solve then draw" order, which is consistent with the rest of the Sketcher
+    // for example in geometry creation. Then, the ViewProvider is responsible for updating the solver geometry when
+    // appropriate, as it is the ViewProvider that is introducing its geometry extensions.
+    //
+    // In order to have updated solver information, solve must take "true", this cause the Geometry property to be updated
+    // with the solver information, including solver extensions, and triggers a draw(true) via ViewProvider::UpdateData.
+    getSketchObject()->solve(true);
 
     ViewProvider2DObjectGrid::setEditViewer(viewer, ModNum);
 }
@@ -7388,17 +7389,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
             }
         }
 
-        int ret=getSketchObject()->solve();
-
-        if(ret!=0){
-            // if the sketched could not be solved, we first redraw to update the UI geometry as
-            // onChanged did not update it.
-            UpdateSolverInformation();
-            draw(false,true);
-
-            signalConstraintsChanged();
-            signalElementsChanged();
-        }
+        getSketchObject()->solve();
 
         // Notes on solving and recomputing:
         //

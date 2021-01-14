@@ -385,14 +385,19 @@ int SketchObject::solve(bool updateGeoAfterSolving/*=true*/)
         std::vector<Part::Geometry *> geomlist = solvedSketch.extractGeometry();
         Part::PropertyGeometryList tmp;
         tmp.setValues(std::move(geomlist));
+        // Only set values if there is actual changes
         if (!Geometry.isSame(tmp))
             Geometry.moveValues(std::move(tmp));
     }
     else if(err <0) {
         // if solver failed, invalid constraints were likely added before solving
         // (see solve in addConstraint), so solver information is definitely invalid.
-        this->Constraints.touch();
+        //
+        // Update: ViewProviderSketch shall now rely on the signalSolverUpdate below for update
+        // this->Constraints.touch();
     }
+
+    signalSolverUpdate();
 
     return err;
 }
