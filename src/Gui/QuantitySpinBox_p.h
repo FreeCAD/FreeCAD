@@ -86,7 +86,7 @@ public:
             if (icn.isNull())
                 icn = Gui::BitmapFactory().pixmapFromSvg("bound-expression-unset.svg", QSize(64, 64));
             icon = icn;
-            if (_state == Binding && Gui::ExprParams::AutoHideEditorIcon())
+            if (_state == Binding && !Gui::ExprParams::AutoHideEditorIcon())
                 show();
             else
                 hide();
