@@ -44,6 +44,7 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 #include <Base/Tools.h>
+#include "ViewParams.h"
 
 using namespace Gui::Dialog;
 
@@ -102,6 +103,7 @@ void DlgSettings3DViewImp::saveSettings()
     ui->radioPerspective->onSave();
     ui->radioOrthographic->onSave();
     ui->spinPreselectionDelay->onSave();
+    ViewParams::setSortWBList(ui->CheckBox_SortWbList->isChecked());
 }
 
 void DlgSettings3DViewImp::loadSettings()
@@ -120,6 +122,7 @@ void DlgSettings3DViewImp::loadSettings()
     ui->radioPerspective->onRestore();
     ui->radioOrthographic->onRestore();
     ui->spinPreselectionDelay->onRestore();
+    ui->CheckBox_SortWbList->setChecked(ViewParams::getSortWBList());
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View");

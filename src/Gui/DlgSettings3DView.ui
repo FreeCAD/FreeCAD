@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>563</width>
-    <height>538</height>
+    <height>627</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -93,6 +93,19 @@ will be shown at the lower left corner in opened files</string>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="CheckBox_SortWbList">
+        <property name="toolTip">
+         <string>If checked, workbench entries in the combo box will be sorted by their names</string>
+        </property>
+        <property name="text">
+         <string>Sort workbench list</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
         </property>
        </widget>
       </item>

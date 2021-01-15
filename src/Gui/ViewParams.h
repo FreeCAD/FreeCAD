@@ -274,6 +274,8 @@ public:
         QT_TRANSLATE_NOOP("ViewParams","Show object on top will editing its color."))\
     FC_VIEW_PARAM(ColorRecompute, bool, Bool, true, \
         QT_TRANSLATE_NOOP("ViewParams","Recompute affected object(s) after editing color."))\
+    FC_VIEW_PARAM(SortWBList, bool, Bool, true, \
+        QT_TRANSLATE_NOOP("ViewParams","Sort workbench entires by their names in the combo box."))\
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def,_doc) \

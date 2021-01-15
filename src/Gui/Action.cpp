@@ -466,51 +466,30 @@ void WorkbenchComboBox::showPopup()
         view()->setMinimumHeight(qMin(height * rows, maxHeight/2));
     }
 
+    populate();
     QComboBox::showPopup();
 }
 
-void WorkbenchComboBox::actionEvent ( QActionEvent* e )
+void WorkbenchComboBox::populate()
 {
-    QAction *action = e->action();
-    switch (e->type()) {
-    case QEvent::ActionAdded:
-        {
-            if (action->isVisible()) {
-                QIcon icon = action->icon();
-                if (icon.isNull())
-                    this->addItem(action->text(), action->data());
-                else
-                    this->addItem(icon, action->text(), action->data());
-                if (action->isChecked())
-                    this->setCurrentIndex(action->data().toInt());
-            }
-            break;
-        }
-    case QEvent::ActionChanged:
-        {
-            QVariant data = action->data();
-            int index = this->findData(data);
-            // added a workbench
-            if (index < 0 && action->isVisible()) {
-                QIcon icon = action->icon();
-                if (icon.isNull())
-                    this->addItem(action->text(), data);
-                else
-                    this->addItem(icon, action->text(), data);
-            }
-            // removed a workbench
-            else if (index >=0 && !action->isVisible()) {
-                this->removeItem(index);
-            }
-            break;
-        }
-    case QEvent::ActionRemoved:
-        {
-            //Nothing needs to be done
-            break;
-        }
-    default:
-        break;
+    clear();
+    auto actions = group->actions();
+    if (ViewParams::getSortWBList()) {
+        std::sort(actions.begin(), actions.end(),
+            [](const QAction *a, const QAction *b) {
+                return a->text().compare(b->text(), Qt::CaseInsensitive) < 0;
+            });
+    }
+    for (auto action : actions) {
+        if (!action->isVisible())
+            continue;
+        QIcon icon = action->icon();
+        if (icon.isNull())
+            this->addItem(action->text(), action->data());
+        else
+            this->addItem(icon, action->text(), action->data());
+        if (action->isChecked())
+            this->setCurrentIndex(this->count()-1);
     }
 }
 
@@ -518,7 +497,7 @@ void WorkbenchComboBox::onActivated(int i)
 {
     // Send the event to the workbench group to delay the destruction of the emitting widget.
     int index = itemData(i).toInt();
-    WorkbenchActionEvent* ev = new WorkbenchActionEvent(this->actions()[index]);
+    WorkbenchActionEvent* ev = new WorkbenchActionEvent(this->group->actions()[index]);
     QApplication::postEvent(this->group, ev);
     // TODO: Test if we can use this instead
     //QTimer::singleShot(20, this->actions()[i], SLOT(trigger()));
@@ -529,7 +508,10 @@ void WorkbenchComboBox::onActivated(QAction* action)
     // set the according item to the action
     QVariant data = action->data();
     int index = this->findData(data);
-    setCurrentIndex(index);
+    if (index >= 0)
+        setCurrentIndex(index);
+    else
+        populate();
 }
 
 void WorkbenchComboBox::onWorkbenchActivated(const QString& name)
@@ -544,7 +526,7 @@ void WorkbenchComboBox::onWorkbenchActivated(const QString& name)
     // activateWorkbench the method refreshWorkbenchList() shouldn't set the
     // checked item.
     //QVariant item = itemData(currentIndex());
-    QList<QAction*> a = actions();
+    QList<QAction*> a = group->actions();
     for (QList<QAction*>::Iterator it = a.begin(); it != a.end(); ++it) {
         if ((*it)->objectName() == name) {
             if (/*(*it)->data() != item*/!(*it)->isChecked())
@@ -572,6 +554,7 @@ WorkbenchGroup::WorkbenchGroup (  Command* pcCmd, QObject * parent )
 
 WorkbenchGroup::~WorkbenchGroup()
 {
+    delete _menu;
 }
 
 void WorkbenchGroup::addTo(QWidget *w)
@@ -579,20 +562,36 @@ void WorkbenchGroup::addTo(QWidget *w)
     refreshWorkbenchList();
     if (w->inherits("QToolBar")) {
         QToolBar* bar = qobject_cast<QToolBar*>(w);
-        QComboBox* box = new WorkbenchComboBox(this, w);
+        auto box = new WorkbenchComboBox(this, w);
         box->setIconSize(QSize(16, 16));
         box->setToolTip(_action->toolTip());
         box->setStatusTip(_action->statusTip());
         box->setWhatsThis(_action->whatsThis());
-        box->addActions(_group->actions());
         connect(_group, SIGNAL(triggered(QAction*)), box, SLOT(onActivated (QAction*)));
+        box->populate();
         bar->addWidget(box);
     }
     else if (w->inherits("QMenu")) {
         QMenu* menu = qobject_cast<QMenu*>(w);
-        menu = menu->addMenu(_action->text());
-        menu->addActions(_group->actions());
+        if (!_menu) {
+            _menu = new QMenu(_action->text());
+            connect(_menu, SIGNAL(aboutToShow()), this, SLOT(onShowMenu()));
+        }
+        menu->addMenu(_menu);
     }
+}
+
+void WorkbenchGroup::onShowMenu()
+{
+    _menu->clear();
+    auto actions = _group->actions();
+    if (ViewParams::getSortWBList()) {
+        std::sort(actions.begin(), actions.end(),
+            [](const QAction *a, const QAction *b) {
+                return a->text().compare(b->text(), Qt::CaseInsensitive) < 0;
+            });
+    }
+    _menu->addActions(actions);
 }
 
 void WorkbenchGroup::setWorkbenchData(int i, const QString& wb)

@@ -145,6 +145,7 @@ public:
     WorkbenchComboBox(WorkbenchGroup* wb, QWidget* parent=0);
     virtual ~WorkbenchComboBox();
     void showPopup();
+    void populate();
 
 public Q_SLOTS:
     void onActivated(int);
@@ -152,9 +153,6 @@ public Q_SLOTS:
 
 protected Q_SLOTS:
     void onWorkbenchActivated(const QString&);
-
-protected:
-    void actionEvent (QActionEvent*);
 
 private:
     WorkbenchGroup* group;
@@ -186,8 +184,14 @@ public:
 protected:
     void customEvent(QEvent* e);
 
+protected Q_SLOTS:
+    void onShowMenu();
+
 private:
     void setWorkbenchData(int i, const QString& wb);
+
+private:
+    QMenu* _menu = nullptr;
 };
 
 // --------------------------------------------------------------------
