@@ -1015,6 +1015,11 @@ QMainWindow::separator:vertical {
     margin: 2px 4px 2px 4px;
 }
 
+QSizeGrip {
+    image: url(qss:images_dark-light/sizegrip_light.svg);
+    width: 16px;
+    height: 16px;
+}
 
 /*==================================================================================================
 Text/Python editor (macros, etc...)
