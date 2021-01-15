@@ -992,3 +992,67 @@ def RtoIJ(startpoint, command):
     newcommand.Parameters = params
 
     return newcommand
+
+# All access extension code
+def _get_all_access_face(obj, base_shape, face, extension, discretize_factor=1.0):
+    """_get_all_access_face(obj, base_shape, face, extension, discretize_factor=1.0) ...
+    Creates an extended face for the pocket, taking into consideration lateral
+    collision with the greater base shape.
+    Arguments are:
+        path object, base shape of face, target face,
+        extension magnitude, discretize factor
+    Return is an all access face extending the specified extension value from the source face.
+    """
+    ofst_tolernc=1e-4
+
+    # Discretize outer wire and convert to face to reduce number of edges in temp face
+    # pnts = face.Wires[0].discretize(QuasiDeflection=discretize_factor)
+    pnts = face.Wires[0].discretize(Deflection=discretize_factor)
+    pnts.append(FreeCAD.Vector(pnts[1].x, pnts[1].y, pnts[1].z))
+    pnt_cnt = len(pnts)
+    segs = [Part.makeLine(pnts[i], pnts[i + 1]) for i in range(1, pnt_cnt - 1)]
+    temp_face = Part.Face(Part.Wire(segs))
+
+    # Make offset face per user-specified extension distance so as to allow full clearing of face where possible.
+    offset_face = getOffsetArea(temp_face,
+                                extension,
+                                removeHoles=False,
+                                plane=temp_face,
+                                tolerance=ofst_tolernc)
+
+    # Apply collision detection by limiting extended face using base shape
+    offset_ext = offset_face.extrude(FreeCAD.Vector(0.0, 0.0, 1.0))
+    face_del = offset_face.extrude(FreeCAD.Vector(0.0, 0.0, -1.0))
+    clear = base_shape.cut(face_del)
+    available = offset_ext.cut(clear)
+    available.removeSplitter()
+
+    # Identify bottom outer wire of available volume
+    bottom_wire = None
+    zmin = face.BoundBox.ZMin
+    for w in available.Wires:
+        if abs(w.BoundBox.ZMax - zmin) < 1e-6:
+            if w.isClosed():
+                bottom_wire = w
+                break
+    if bottom_wire:
+        top_face = Part.Face(bottom_wire)
+    else:
+        return False
+
+    # Respect holes in face if requested, restoring to all access face
+    avoid_holes = True
+    if hasattr(obj, "UseOutline"):
+        avoid_holes = not obj.UseOutline
+    wire_cnt = len(face.Wires)
+    if avoid_holes and wire_cnt > 1:
+        for i in range(1, wire_cnt):
+            hole_face = Part.Face(face.Wires[i])
+            cut = top_face.cut(hole_face)
+            top_face = cut
+
+    # Drop travel face to same height as source face
+    diff = face.BoundBox.ZMax - top_face.BoundBox.ZMax
+    top_face.translate(FreeCAD.Vector(0.0, 0.0, diff))
+
+    return top_face
