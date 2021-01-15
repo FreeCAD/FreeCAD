@@ -290,6 +290,10 @@ class ObjectJob:
             obj.addProperty("App::PropertyString", "CycleTime", "Path", QtCore.QT_TRANSLATE_NOOP("PathOp", "Operations Cycle Time Estimation"))
             obj.setEditorMode('CycleTime', 1)  # read-only
 
+        if not hasattr(obj, 'GenerateSetupReport'):
+            obj.addProperty("App::PropertyBool", "GenerateSetupReport", "Output", QtCore.QT_TRANSLATE_NOOP("PathJob", "Generate a setup report also"))
+
+
     def onChanged(self, obj, prop):
         if prop == "PostProcessor" and obj.PostProcessor:
             processor = PostProcessor.load(obj.PostProcessor)
