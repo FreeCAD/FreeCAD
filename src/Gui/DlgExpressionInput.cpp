@@ -234,7 +234,7 @@ void DlgExpressionInput::onTimer()
     }
     catch (App::ExpressionFunctionDisabledException &) {
         ui->msg->setStyleSheet(QString::fromLatin1("*{%1;%2}").arg(background,colorWarning));
-        ui->msg->setPlainText(tr("Function evaluation and attribute writting are disabled. "
+        ui->msg->setPlainText(tr("Function evaluation and attribute writting are disabled while editing. "
                                  "You can enable it by checking 'Evaluate function' here. "
                                  "Be aware that invoking function may cause unexpected change "
                                  "to various objects."));
