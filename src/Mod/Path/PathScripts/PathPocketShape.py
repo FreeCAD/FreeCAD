@@ -276,6 +276,11 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         if not hasattr(obj, 'ExtensionCorners'):
             obj.addProperty('App::PropertyBool', 'ExtensionCorners', 'Extension', QtCore.QT_TRANSLATE_NOOP('PathPocketShape', 'When enabled connected extension edges are combined to wires.'))
             obj.ExtensionCorners = True
+        if not hasattr(obj, "AllAccessExtension"):
+            obj.addProperty("App::PropertyLength",
+                            "AllAccessExtension",
+                            "Extension",
+                            QtCore.QT_TRANSLATE_NOOP('PathPocketShape','Extends the face by this value where physically possible, enabling all physical access available to clear the face. A zero value disables and the suggested max value is tool diameter.'))
 
         obj.setEditorMode('ExtensionFeature', 2)
         self.initRotationOp(obj)
@@ -453,6 +458,18 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                                 PathLog.debug('LimitDepthToFace adj_final_dep: {}'.format(adj_final_dep))
                     # Eif
 
+                    # Apply All Access Extension feature when enabled
+                    aa_value = obj.AllAccessExtension.Value
+                    if aa_value > 0.0:
+                        aa_face = PathUtils._get_all_access_face(obj, 
+                                                                 subBase.Shape,
+                                                                 face,
+                                                                 aa_value,
+                                                                 discretize_factor=0.5)
+                        if aa_face:
+                            face = aa_face
+                    # Eif All Access Extension
+
                     face.translate(FreeCAD.Vector(0.0, 0.0, adj_final_dep - faceZMin - clrnc))
                     zExtVal = start_dep - adj_final_dep + (2 * clrnc)
                     extShp = face.removeSplitter().extrude(FreeCAD.Vector(0, 0, zExtVal))
@@ -496,6 +513,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         obj.AttemptInverseAngle = True
         obj.LimitDepthToFace = True
         obj.setExpression('ExtensionLengthDefault', 'OpToolDiameter / 2')
+        obj.AllAccessExtension.Value = 0.0  # Zero value disables feature
 
     def createExtension(self, obj, extObj, extFeature, extSub):
         return Extension(extObj, extFeature, extSub, obj.ExtensionLengthDefault, Extension.DirectionNormal)
@@ -987,6 +1005,7 @@ def SetupProperties():
     setup.append("InverseAngle")
     setup.append("AttemptInverseAngle")
     setup.append("LimitDepthToFace")
+    setup.append('AllAccessExtension')
     return setup
 
 
