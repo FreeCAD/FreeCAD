@@ -23,10 +23,13 @@
 #ifndef GUI_DIALOG_DLGEXPRESSIONINPUT_H
 #define GUI_DIALOG_DLGEXPRESSIONINPUT_H
 
+#include <boost/shared_ptr.hpp>
+
+#include <QTimer>
 #include <QDialog>
 #include <Base/Unit.h>
 #include <App/ObjectIdentifier.h>
-#include <boost/shared_ptr.hpp>
+#include <App/ExpressionParser.h>
 
 namespace Ui {
 class DlgExpressionInput;
@@ -58,7 +61,7 @@ public:
 
     bool discardedFormula() const { return discarded; }
 
-    void   setExpressionInputSize(int width, int height);
+    void setExpressionInputSize(int width, int height);
 
     bool eventFilter(QObject *obj, QEvent *event);
 
@@ -67,27 +70,41 @@ public Q_SLOTS:
 
 protected:
     void showEvent(QShowEvent*);
+    void hideEvent(QHideEvent*);
+    void closeEvent(QCloseEvent*);
     void mouseReleaseEvent(QMouseEvent*);
     void mousePressEvent(QMouseEvent*);
 
     void adjustPosition();
+    void adjustExpressionSize();
 
 private Q_SLOTS:
     void textChanged();
     void setDiscarded();
     void wantReturnChecked(bool);
+    void evalFuncChecked(bool);
+    void onTimer();
 
 private:
+    QTimer timer;
     ::Ui::DlgExpressionInput *ui;
     boost::shared_ptr<App::Expression> expression;
     App::ObjectIdentifier path;
     bool discarded;
     const Base::Unit impliedUnit;
 
+    QString background;
+    QString colorLog;
+    QString colorError;
+    QString colorWarning;
+
     int minimumWidth;
     bool adjustingPosition = false;
     bool noBackground;
     bool leftAligned = true;
+    bool adjustingExpressionSize = false;
+
+    App::ExpressionFunctionCallDisabler exprFuncDisabler;
 };
 
 }

@@ -30,6 +30,7 @@
 # pragma clang diagnostic ignored "-Wdelete-non-virtual-dtor"
 #endif
 
+#include <atomic>
 #include <boost/algorithm/string.hpp>
 #include <boost/io/ios_state.hpp>
 #include <boost/intrusive/list.hpp>
@@ -296,6 +297,40 @@ static inline T &&cast(App::any &&value) {
 enum ExpressionInternalOption {
     ExpOpInternal = 64,
 };
+
+
+////////////////////////////////////////////////////////////////////////////////////
+
+static std::atomic<int> _DisableFunctionCall;
+
+ExpressionFunctionCallDisabler::ExpressionFunctionCallDisabler(bool active)
+    :active(active)
+{
+    if (active)
+        ++_DisableFunctionCall;
+}
+
+ExpressionFunctionCallDisabler::~ExpressionFunctionCallDisabler()
+{
+    if (active)
+        --_DisableFunctionCall;
+}
+
+void ExpressionFunctionCallDisabler::setActive(bool active)
+{
+    if (active == this->active)
+        return;
+    this->active = active;
+    if (active)
+        ++_DisableFunctionCall;
+    else
+        --_DisableFunctionCall;
+}
+
+bool ExpressionFunctionCallDisabler::isFunctionCallDisabled()
+{
+    return _DisableFunctionCall > 0;
+}
 
 ////////////////////////////////////////////////////////////////////////////////////
 //
@@ -4272,13 +4307,15 @@ void CallableExpression::securityCheck(PyObject *pyobj) const
         PyObjectNode::initDone();
     }
 
+    if (PyObject_TypeCheck(pyobj, &ExpressionPy::Type))
+        return;
+
+    if (ExpressionFunctionCallDisabler::isFunctionCallDisabled())
+        __EXPR_THROW(ExpressionFunctionDisabledException, "Function call disabled", this);
+
     PyObjectNode & node = _Cache[std::make_pair(pyobj, pyobj->ob_type)];
-    if (!node.isCached()) {
-        if (PyObject_TypeCheck(pyobj, &ExpressionPy::Type))
-            node.init(pyobj, nullptr);
-        else
-            ImportModules::instance()->checkCallable(node, pyobj);
-    }
+    if (!node.isCached())
+        ImportModules::instance()->checkCallable(node, pyobj);
     if (node.msg)
         EXPR_THROW(node.msg << node.info);
 }
@@ -6590,6 +6627,8 @@ Py::Object TryStatement::_getPyValue(int *jumpCode) const {
     try {
         res = body->getPyValue(0,jumpCode);
     } catch (Base::AbortException &) {
+        throw;
+    } catch (ExpressionFunctionDisabledException &) {
         throw;
     } catch (Base::Exception &e) {
         PyObject *type = e.getPyExceptionType();

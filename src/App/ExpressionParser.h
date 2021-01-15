@@ -106,6 +106,31 @@ struct AppExport VarInfo {
     }
 };
 
+/////////////////////////////////////////////////////////////////////////////////////
+
+/// Helper class to disable calling into Python functions and writing Python attributes
+class ExpressionFunctionCallDisabler
+{
+public:
+    ExpressionFunctionCallDisabler(bool active = true);
+    ~ExpressionFunctionCallDisabler();
+
+    void setActive(bool active = true);
+    bool isActive() const { return active; }
+    static bool isFunctionCallDisabled();
+
+private:
+    bool active;
+};
+
+class ExpressionFunctionDisabledException : Base::ExpressionError
+{
+public:
+    using Base::ExpressionError::ExpressionError;
+};
+
+/////////////////////////////////////////////////////////////////////////////////////
+
 #define EXPR_TYPESYSTEM_HEADER() \
     TYPESYSTEM_HEADER();\
 public:\

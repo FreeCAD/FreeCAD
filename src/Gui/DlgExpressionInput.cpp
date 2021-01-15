@@ -54,6 +54,7 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
   , discarded(false)
   , impliedUnit(_impliedUnit)
   , minimumWidth(10)
+  , exprFuncDisabler(false)
 {
     assert(path.getDocumentObject() != 0);
 
@@ -78,6 +79,9 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
         }
     }
 
+    timer.setSingleShot(true);
+    connect(&timer, SIGNAL(timeout()), this, SLOT(onTimer()));
+
     // Set document object on line edit to create auto completer
     DocumentObject * docObj = path.getDocumentObject();
     ui->expression->setDocumentObject(docObj);
@@ -87,31 +91,66 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
     // set to false. Then a normal non-modal dialog will be shown instead (#0002440).
     this->noBackground = ExprParams::NoSystemBackground();
 
-    ui->expression->setStyleSheet(QLatin1String("margin:0px"));
-
     if (this->noBackground) {
+        ui->expression->setStyleSheet(QLatin1String("margin:0px"));
+
         setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint);
         setAttribute(Qt::WA_NoSystemBackground, true);
         setAttribute(Qt::WA_TranslucentBackground, true);
+        layout()->setContentsMargins(0,0,0,0);
 
         auto hGrp = App::GetApplication().GetParameterGroupByPath(
                 "User parameter:BaseApp/Preferences/MainWindow");
         QString mainstyle = QString::fromLatin1(hGrp->GetASCII("StyleSheet").c_str());
-        if (!mainstyle.isEmpty()) {
-            if(mainstyle.indexOf(QLatin1String("dark"),0,Qt::CaseInsensitive) < 0)
-                ui->scrollArea->setStyleSheet(QLatin1String("QScrollArea{background:#f5f5f5;border:1 solid #6e6e6e;}"));
-            else
-                ui->scrollArea->setStyleSheet(QLatin1String("QScrollArea{background:#6e6e6e;border:1 solid #505050;}"));
+        uint checkboxColor;
+        if (mainstyle.indexOf(QLatin1String("dark"),0,Qt::CaseInsensitive) >= 0) {
+            this->background = QString::fromLatin1("background:#6e6e6e");
+            checkboxColor = 0x505050;
+        } else {
+            this->background = QString::fromLatin1("background:#f5f5f5");
+            checkboxColor = 0xc3c3c3;
         }
-    }
+        QString checkboxStyle = QString::fromLatin1(
+                "%1;border:1px solid #%2;border-radius:3px")
+            .arg(background).arg(checkboxColor,6,16,QLatin1Char('0'));
+        ui->checkBoxWantReturn->setStyleSheet(checkboxStyle);
+        ui->checkBoxEvalFunc->setStyleSheet(checkboxStyle);
+    } else
+        this->background = QString::fromLatin1("background:transparent");
+
+    ui->msg->setStyleSheet(this->background);
+
+    auto hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/OutputWindow");
+    uint color = hGrp->GetUnsigned("colorLogging", 0xffff);
+    color >>= 8;
+    colorLog = QString::fromLatin1("color:#%1").arg(color, 6, 16, QLatin1Char('0'));
+
+    color = hGrp->GetUnsigned("colorWarning", 0xffaa00ff);
+    color >>= 8;
+    colorWarning = QString::fromLatin1("color:#%1").arg(color, 6, 16, QLatin1Char('0'));
+
+    color = hGrp->GetUnsigned("colorError", 0xff0000ff);
+    color >>= 8;
+    colorError = QString::fromLatin1("color:#%1").arg(color, 6, 16, QLatin1Char('0'));
+
     qApp->installEventFilter(this);
-    this->setMinimumHeight(120);
-    this->textChanged();
+    this->onTimer();
     ui->expression->setFocus();
 
-    ui->checkBox->setChecked(ExprParams::AllowReturn()
-            || ui->expression->document()->blockCount()>1);
-    connect(ui->checkBox, SIGNAL(toggled(bool)), this, SLOT(wantReturnChecked(bool)));
+    ui->splitter->setStretchFactor(0, 0);
+    ui->splitter->setStretchFactor(1, 2);
+
+    bool wantreturn = ExprParams::AllowReturn() || ui->expression->document()->blockCount()>1;
+    ui->checkBoxWantReturn->setChecked(wantreturn);
+    if (wantreturn) {
+        adjustingExpressionSize = true;
+        timer.start(100);
+    } else
+        adjustExpressionSize();
+
+    connect(ui->checkBoxWantReturn, SIGNAL(toggled(bool)), this, SLOT(wantReturnChecked(bool)));
+    connect(ui->checkBoxEvalFunc, SIGNAL(toggled(bool)), this, SLOT(evalFuncChecked(bool)));
 
     if (parent) {
         MainWindow *mw = getMainWindow();
@@ -139,36 +178,20 @@ DlgExpressionInput::~DlgExpressionInput()
 
 void DlgExpressionInput::textChanged()
 {
+    timer.start(300);
+}
+
+void DlgExpressionInput::onTimer()
+{
+    if (adjustingExpressionSize) {
+        adjustingExpressionSize = false;
+        adjustExpressionSize();
+    }
+
     try {
         const QString &text = ui->expression->toPlainText();
-
-        auto textdoc = ui->expression->document();
-        int linecount = textdoc->blockCount();
-        if (linecount == 0)
-            linecount = 1;
-        else if (linecount > 5)
-            linecount = 5;
-
-        QFontMetrics fm (textdoc->defaultFont());
-        QMargins margins = ui->expression->contentsMargins();
-        int height = fm.lineSpacing () * linecount
-            + (textdoc->documentMargin() + ui->expression->frameWidth ()) * 2
-            + margins.top () + margins.bottom ();
-        ui->expression->setFixedHeight(height);
-
-        //resize the input field according to text size
-        // QFontMetrics fm(ui->expression->font());
-        // int width = QtTools::horizontalAdvance(fm, text) + 15;
-        // if (width < minimumWidth)
-        //     ui->expression->setMinimumWidth(minimumWidth);
-        // else
-        //     ui->expression->setMinimumWidth(width);
-        //
-        // if(this->width() < ui->expression->minimumWidth())
-        //     setMinimumWidth(ui->expression->minimumWidth());
-
-        //now handle expression
-        boost::shared_ptr<Expression> expr(Expression::parse(path.getDocumentObject(), text.toUtf8().constData()));
+        boost::shared_ptr<Expression> expr(
+                Expression::parse(path.getDocumentObject(), text.toUtf8().constData()));
 
         if (expr) {
             std::string error = path.getDocumentObject()->ExpressionEngine.validateExpression(path, expr);
@@ -180,9 +203,8 @@ void DlgExpressionInput::textChanged()
 
             expression = expr;
             ui->okBtn->setEnabled(true);
-            ui->msg->clear();
-
-            ui->msg->setStyleSheet(QString::fromLatin1("*{color: blue}"));
+            ui->msg->setPlainText(QString());
+            ui->msg->setStyleSheet(QString::fromLatin1("*{%1;%2}").arg(background,colorLog));
 
             NumberExpression * n = Base::freecad_dynamic_cast<NumberExpression>(result.get());
             if (n) {
@@ -201,21 +223,28 @@ void DlgExpressionInput::textChanged()
                 }
                 else if (!value.getUnit().isEmpty()) {
                     msg += QString::fromUtf8(" (Warning: unit discarded)");
-                    ui->msg->setStyleSheet(QString::fromLatin1("*{color: red}"));
+                    ui->msg->setStyleSheet(QString::fromLatin1("*{%1;%2}").arg(background,colorWarning));
                 }
 
-                ui->msg->setText(msg);
+                ui->msg->setPlainText(msg);
             }
             else
-                ui->msg->setText(Base::Tools::fromStdString(result->toString()));
+                ui->msg->setPlainText(Base::Tools::fromStdString(result->toString()));
         }
     }
+    catch (App::ExpressionFunctionDisabledException &) {
+        ui->msg->setStyleSheet(QString::fromLatin1("*{%1;%2}").arg(background,colorWarning));
+        ui->msg->setPlainText(tr("Function evaluation and attribute writting are disabled. "
+                                 "You can enable it by checking 'Evaluate function' here. "
+                                 "Be aware that invoking function may cause unexpected change "
+                                 "to various objects."));
+        ui->okBtn->setDisabled(false);
+    }
     catch (Base::Exception & e) {
-        ui->msg->setText(QString::fromUtf8(e.what()));
-        ui->msg->setStyleSheet(QString::fromLatin1("*{color: red}"));
+        ui->msg->setStyleSheet(QString::fromLatin1("*{%1;%2}").arg(background,colorError));
+        ui->msg->setPlainText(QString::fromUtf8(e.what()));
         ui->okBtn->setDisabled(true);
     }
-    this->adjustSize();
 }
 
 void DlgExpressionInput::setDiscarded()
@@ -297,9 +326,22 @@ void DlgExpressionInput::show()
     ui->expression->selectAll();
 }
 
+void DlgExpressionInput::closeEvent(QCloseEvent* ev)
+{
+    QDialog::closeEvent(ev);
+    this->exprFuncDisabler.setActive(false);
+}
+
+void DlgExpressionInput::hideEvent(QHideEvent* ev)
+{
+    QDialog::hideEvent(ev);
+    this->exprFuncDisabler.setActive(false);
+}
+
 void DlgExpressionInput::showEvent(QShowEvent* ev)
 {
     QDialog::showEvent(ev);
+    this->exprFuncDisabler.setActive(!ExprParams::EvalFuncOnEdit());
 
 #if 0//defined(Q_OS_WIN)
     // This way we can fetch click events outside modal dialogs
@@ -313,6 +355,14 @@ void DlgExpressionInput::showEvent(QShowEvent* ev)
 #endif
 
     adjustPosition();
+}
+
+void DlgExpressionInput::evalFuncChecked(bool checked)
+{
+    ExprParams::setEvalFuncOnEdit(checked);
+    this->exprFuncDisabler.setActive(!checked);
+    if (checked)
+        timer.start(300);
 }
 
 bool DlgExpressionInput::eventFilter(QObject *obj, QEvent *ev)
@@ -384,6 +434,42 @@ void DlgExpressionInput::adjustPosition()
 void DlgExpressionInput::wantReturnChecked(bool checked)
 {
     ExprParams::setAllowReturn(checked);
+    if (checked)
+        adjustExpressionSize();
+}
+
+void DlgExpressionInput::adjustExpressionSize()
+{
+    int height;
+    if (!ui->checkBoxWantReturn->isChecked())
+        height = 30;
+    else {
+        const QString &text = ui->expression->toPlainText();
+        auto textdoc = ui->expression->document();
+        int linecount = textdoc->blockCount();
+        if (linecount < 3)
+            linecount = 3;
+        else if (linecount > 6)
+            linecount = 6;
+
+        QFontMetrics fm (textdoc->defaultFont());
+        QMargins margins = ui->expression->contentsMargins();
+        height = fm.lineSpacing () * linecount
+            + (textdoc->documentMargin() + ui->expression->frameWidth ()) * 2
+            + margins.top () + margins.bottom ();
+        if (height < ui->expression->height())
+            return;
+    }
+
+    int offset = height - ui->expression->height();
+    auto sizes = ui->splitter->sizes();
+    sizes[0] += offset;
+    if (offset > 0) {
+        QSize s = this->size();
+        s.setHeight(s.height() + offset);
+        resize(s);
+    }
+    ui->splitter->setSizes(sizes);
 }
 
 #include "moc_DlgExpressionInput.cpp"

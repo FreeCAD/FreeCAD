@@ -725,6 +725,9 @@ Py::Object ObjectIdentifier::Component::get(const Py::Object &pyobj) const {
 }
 
 void ObjectIdentifier::Component::set(Py::Object &pyobj, const Py::Object &value) const {
+    if (ExpressionFunctionCallDisabler::isFunctionCallDisabled())
+        FC_THROWM(Base::RuntimeError, "Attribute writing is disabled");
+
     if(isSimple()) {
         if (getName() == "__module__" || getName() == "__self__")
             FC_THROWM(Base::RuntimeError, "Cannot modify attribute " << getName());

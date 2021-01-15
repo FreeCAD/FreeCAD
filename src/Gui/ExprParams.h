@@ -64,6 +64,8 @@ public:
        QT_TRANSLATE_NOOP("ExprParams","Only show editor icon on mouse over")) \
     FC_EXPR_PARAM(AllowReturn,bool,Bool,false,\
        QT_TRANSLATE_NOOP("ExprParams","Allow return key in expression edit box")) \
+    FC_EXPR_PARAM(EvalFuncOnEdit,bool,Bool,false,\
+       QT_TRANSLATE_NOOP("ExprParams","Auto evaluate function call when editing expression")) \
 
 #undef FC_EXPR_PARAM
 #define FC_EXPR_PARAM(_name,_ctype,_type,_def,_doc) \
