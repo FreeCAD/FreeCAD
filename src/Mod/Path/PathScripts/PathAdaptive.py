@@ -39,6 +39,10 @@ import math
 import area
 from pivy import coin
 
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+Part = LazyLoader('Part', globals(), 'Part')
+
 __doc__ = "Class and implementation of the Adaptive path operation."
 
 def convertTo2d(pathArray):
@@ -343,7 +347,23 @@ def Execute(op,obj):
         pathArray = []
         for base, subs in obj.Base:
             for sub in subs:
-                shape = base.Shape.getElement(sub)
+                if obj.UseOutline:
+                    face = base.Shape.getElement(sub)
+                    shape = Part.Face(face.Wires[0])
+                else:
+                    shape = base.Shape.getElement(sub)
+
+                # Apply All Access Extension feature when enabled
+                aa_value = obj.AllAccessExtension.Value
+                if aa_value > 0.0:
+                    aa_face = PathUtils._get_all_access_face(obj, 
+                                                             base.Shape,
+                                                             shape,
+                                                             aa_value,
+                                                             discretize_factor=0.5)
+                    if aa_face:
+                        shape = aa_face
+                # Eif All Access Extension
                 for edge in shape.Edges:
                     pathArray.append([discretize(edge)])
 
@@ -491,7 +511,6 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.addProperty("App::PropertyDistance", "LiftDistance", "Adaptive", "Lift distance for rapid moves")
         obj.addProperty("App::PropertyDistance", "KeepToolDownRatio", "Adaptive", "Max length of keep tool down path compared to direct distance between points")
         obj.addProperty("App::PropertyDistance", "StockToLeave", "Adaptive", "How much stock to leave (i.e. for finishing operation)")
-        # obj.addProperty("App::PropertyBool", "ProcessHoles", "Adaptive","Process holes as well as the face outline")
 
         obj.addProperty("App::PropertyBool", "ForceInsideOut", "Adaptive","Force plunging into material inside and clearing towards the edges")
         obj.addProperty("App::PropertyBool", "FinishingProfile", "Adaptive","To take a finishing profile path at the end")
@@ -514,6 +533,16 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.addProperty("App::PropertyAngle", "HelixAngle", "Adaptive",  "Helix ramp entry angle (degrees)")
         obj.addProperty("App::PropertyLength", "HelixDiameterLimit", "Adaptive", "Limit helix entry diameter, if limit larger than tool diameter or 0, tool diameter is used")
 
+        if not hasattr(obj, "AllAccessExtension"):
+            obj.addProperty("App::PropertyLength",
+                            "AllAccessExtension",
+                            "Extension",
+                            "Extends the face by this value where physically possible, enabling all physical access available to clear the face. A zero value disables and the suggested max value is tool diameter.")
+        if not hasattr(obj, "UseOutline"):
+            obj.addProperty("App::PropertyBool",
+                            "UseOutline",
+                            "Adaptive",
+                            "Uses the outline of the base geometry.")
 
     def opSetDefaultValues(self, obj, job):
         obj.Side="Inside"
@@ -521,7 +550,6 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.Tolerance = 0.1
         obj.StepOver = 20
         obj.LiftDistance=0
-        # obj.ProcessHoles = True
         obj.ForceInsideOut = False
         obj.FinishingProfile = True
         obj.Stopped = False
@@ -533,13 +561,14 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.StockToLeave = 0
         obj.KeepToolDownRatio = 3.0
         obj.UseHelixArcs = False
+        obj.AllAccessExtension.Value = 0.0  # Zero value disables feature
+        obj.UseOutline = False
 
     def opExecute(self, obj):
         '''opExecute(obj) ... called whenever the receiver needs to be recalculated.
         See documentation of execute() for a list of base functionality provided.
         Should be overwritten by subclasses.'''
         Execute(self,obj)
-
 
 
 def Create(name, obj = None):
