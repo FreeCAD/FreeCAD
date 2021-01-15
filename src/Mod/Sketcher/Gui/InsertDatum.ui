@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>287</width>
-    <height>140</height>
+    <height>144</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -33,7 +33,7 @@
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="Gui::PrefQuantitySpinBox" name="labelEdit">
+      <widget class="Gui::PrefQuantitySpinBox" name="labelEdit" native="true">
        <property name="sizePolicy">
         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -43,7 +43,7 @@
        <property name="minimumSize">
         <size>
          <width>150</width>
-         <height>0</height>
+         <height>30</height>
         </size>
        </property>
       </widget>
