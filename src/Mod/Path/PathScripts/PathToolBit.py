@@ -54,56 +54,56 @@ PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 def translate(context, text, disambig=None):
     return PySide.QtCore.QCoreApplication.translate(context, text, disambig)
 
-def _findTool(path, typ, dbg=_DebugFindTool):
-    PathLog.track(path)
-    if os.path.exists(path):  # absolute reference
+def _findToolFile(name, containerFile, typ, dbg=_DebugFindTool):
+    PathLog.track(name)
+    if os.path.exists(name):  # absolute reference
         if dbg:
-            PathLog.debug("Found {} at {}".format(typ, path))
-        return path
+            PathLog.debug("Found {} at {}".format(typ, name))
+        return name
 
-    def searchFor(pname, fname):
-        # PathLog.debug("pname: {} fname: {}".format(pname, fname))
-        if dbg:
-            PathLog.debug("Looking for {} in {}".format(pname, fname))
-        if fname:
-            for p in PathPreferences.searchPathsTool(typ):
-                PathLog.track(p)
-                f = os.path.join(p, fname)
-                if dbg:
-                    PathLog.debug("  Checking {}".format(f))
-                if os.path.exists(f):
-                    if dbg:
-                        PathLog.debug("  Found {} at {}".format(typ, f))
-                    return f
-        if pname and os.path.sep != pname:
-            PathLog.track(pname)
-            ppname, pfname = os.path.split(pname)
-            ffname = os.path.join(pfname, fname) if fname else pfname
-            return searchFor(ppname, ffname)
-        return None
+    if containerFile:
+        rootPath = os.path.dirname(os.path.dirname(containerFile))
+        paths = [os.path.join(rootPath, typ)]
+    else:
+        paths = []
+    paths.extend(PathPreferences.searchPathsTool(typ))
 
-    return searchFor(path, '')
+    def _findFile(path, name):
+        PathLog.track(path, name)
+        fullPath = os.path.join(path, name)
+        if os.path.exists(fullPath):
+            return (True, fullPath)
+        for root, ds, fs in os.walk(path):
+            for d in ds:
+                found, fullPath = _findFile(d, name)
+                if found:
+                    return (True, fullPath)
+        return (False, None)
 
 
-def findShape(path):
-    '''
-    findShape(path) ... search for path, full and partially
-    in all known shape directories.
-    '''
-    return _findTool(path, 'Shape')
+    for p in paths:
+        found, path = _findFile(p, name)
+        if found:
+            return path
+    return None
 
 
-def findBit(path):
-    PathLog.track(path)
-    if path.endswith('.fctb'):
-        return _findTool(path, 'Bit')
-    return _findTool("{}.fctb".format(path), 'Bit')
+def _findShape(name, path=None):
+    '''_findShape(name, path) ... search for name, full and partially starting with path in known shape directories'''
+    return _findToolFile(name, path, 'Shape')
 
 
-def findLibrary(path, dbg=False):
-    if path.endswith('.fctl'):
-        return _findTool(path, 'Library', dbg)
-    return _findTool("{}.fctl".format(path), 'Library', dbg)
+def findBit(name, path=None):
+    PathLog.track(name)
+    if name.endswith('.fctb'):
+        return _findToolFile(name, path, 'Bit')
+    return _findToolFile("{}.fctb".format(name), path, 'Bit')
+
+
+def findLibrary(name, path=None, dbg=False):
+    if name.endswith('.fctl'):
+        return _findToolFile(name, path, 'Library', dbg)
+    return _findToolFile("{}.fctl".format(name), path, 'Library', dbg)
 
 
 def _findRelativePath(path, typ):
@@ -222,7 +222,7 @@ class ToolBit(object):
                 doc = FreeCAD.getDocument(d)
                 break
         if doc is None:
-            p = findShape(p)
+            p = _findShape(p)
             if not path and p != obj.BitShape:
                 obj.BitShape = p
             PathLog.debug("ToolBit {} using shape file: {}".format(obj.Label, p))
@@ -330,7 +330,7 @@ class ToolBit(object):
 
     def getBitThumbnail(self, obj):
         if obj.BitShape:
-            path = findShape(obj.BitShape)
+            path = _findShape(obj.BitShape)
             if path:
                 with open(path, 'rb') as fd:
                     try:

@@ -151,26 +151,9 @@ def searchPathsPost():
     return paths
 
 
-def searchPathsTool(sub='Bit'):
+def searchPathsTool(sub):
     paths = []
-    def appendPath(p, sub):
-        if p:
-            paths.append(os.path.join(p, 'Tools', sub))
-            paths.append(os.path.join(p, sub))
-            paths.append(p)
-    appendPath(defaultFilePath(), sub)
-    appendPath(macroFilePath(), sub)
-    appendPath(os.path.join(FreeCAD.getHomePath(), "Mod/Path/"), sub)
-
-    if 'Bit' == sub:
-        paths.append("{}/Bit".format(os.path.dirname(lastPathToolLibrary())))
-        paths.append(lastPathToolBit())
-
-    if 'Library' == sub:
-        paths.append(lastPathToolLibrary())
-    if 'Shape' == sub:
-        paths.append(lastPathToolShape())
-
+    paths.append(os.path.join(FreeCAD.getHomePath(), 'Mod', 'Path', 'Tools', sub))
     return paths
 
 
