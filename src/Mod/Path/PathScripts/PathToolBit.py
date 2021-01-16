@@ -54,11 +54,9 @@ PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 def translate(context, text, disambig=None):
     return PySide.QtCore.QCoreApplication.translate(context, text, disambig)
 
-def _findToolFile(name, containerFile, typ, dbg=_DebugFindTool):
+def _findToolFile(name, containerFile, typ):
     PathLog.track(name)
     if os.path.exists(name):  # absolute reference
-        if dbg:
-            PathLog.debug("Found {} at {}".format(typ, name))
         return name
 
     if containerFile:
@@ -88,22 +86,24 @@ def _findToolFile(name, containerFile, typ, dbg=_DebugFindTool):
     return None
 
 
-def _findShape(name, path=None):
-    '''_findShape(name, path) ... search for name, full and partially starting with path in known shape directories'''
+def findToolShape(name, path=None):
+    '''findToolShape(name, path) ... search for name, if relative path look in path'''
     return _findToolFile(name, path, 'Shape')
 
 
-def findBit(name, path=None):
+def findToolBit(name, path=None):
+    '''findToolBit(name, path) ... search for name, if relative path look in path'''
     PathLog.track(name)
     if name.endswith('.fctb'):
         return _findToolFile(name, path, 'Bit')
     return _findToolFile("{}.fctb".format(name), path, 'Bit')
 
 
-def findLibrary(name, path=None, dbg=False):
+def findToolLibrary(name, path=None):
+    '''findToolLibrary(name, path) ... search for name, if relative path look in path'''
     if name.endswith('.fctl'):
-        return _findToolFile(name, path, 'Library', dbg)
-    return _findToolFile("{}.fctl".format(name), path, 'Library', dbg)
+        return _findToolFile(name, path, 'Library')
+    return _findToolFile("{}.fctl".format(name), path, 'Library')
 
 
 def _findRelativePath(path, typ):
@@ -222,7 +222,7 @@ class ToolBit(object):
                 doc = FreeCAD.getDocument(d)
                 break
         if doc is None:
-            p = _findShape(p)
+            p = findToolShape(p, path if path else obj.File)
             if not path and p != obj.BitShape:
                 obj.BitShape = p
             PathLog.debug("ToolBit {} using shape file: {}".format(obj.Label, p))
@@ -330,7 +330,7 @@ class ToolBit(object):
 
     def getBitThumbnail(self, obj):
         if obj.BitShape:
-            path = _findShape(obj.BitShape)
+            path = findToolShape(obj.BitShape)
             if path:
                 with open(path, 'rb') as fd:
                     try:

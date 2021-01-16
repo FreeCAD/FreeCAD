@@ -143,7 +143,7 @@ class ModelFactory(object):
         for toolBit in library['tools']:
             try:
                 nr = toolBit['nr']
-                bit = PathToolBit.findBit(toolBit['path'])
+                bit = PathToolBit.findToolBit(toolBit['path'], path)
                 if bit:
                     PathLog.track(bit)
                     tool = PathToolBit.Declaration(bit)
