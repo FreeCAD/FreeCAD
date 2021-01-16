@@ -64,6 +64,32 @@ using namespace Gui;
 using namespace Attacher;
 namespace bp = boost::placeholders;
 
+class Filter : public Gui::SelectionFilterGate
+{
+    std::set<App::DocumentObject *> inList;
+
+public:
+    Filter(const App::DocumentObject* support_)
+        : Gui::SelectionFilterGate((Gui::SelectionFilter*)0)
+    {
+        if(support_) {
+            inList = support_->getInListEx(true);
+            inList.insert(const_cast<App::DocumentObject*>(support_));
+        }
+    }
+    bool allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName) override {
+        (void)pDoc;
+        (void)sSubName;
+        if(!inList.count(pObj)) {
+            return true;
+        }
+        else {
+            this->notAllowedReason = QT_TR_NOOP("Selecting this will cause circular dependency.");
+            return false;
+        }
+    }
+};
+
 /* TRANSLATOR PartDesignGui::TaskAttacher */
 
 // Create reference name from PropertyLinkSub values in a translatable fashion
@@ -217,6 +243,8 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidge
     selectMapMode(eMapMode(pcAttach->MapMode.getValue()));
     updatePreview();
 
+    Gui::Selection().addSelectionGate(new Filter(ViewProvider->getObject()));
+
     // connect object deletion with slot
     auto bnd1 = boost::bind(&TaskAttacher::objectDeleted, this, bp::_1);
     auto bnd2 = boost::bind(&TaskAttacher::documentDeleted, this, bp::_1);
@@ -227,6 +255,7 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidge
 
 TaskAttacher::~TaskAttacher()
 {
+    Gui::Selection().rmvSelectionGate();
     try {
         visibilityAutomation(false);
     }
