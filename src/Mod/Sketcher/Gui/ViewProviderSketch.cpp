@@ -3833,7 +3833,24 @@ void ViewProviderSketch::initItemsSizes()
         // simple scaling factor for hardcoded pixel values in the Sketcher
         edit->pixelScalingFactor = viewScalingFactor * dpi / 96; // 96 ppi is the standard pixel density for which pixel quantities were calculated
 
-        edit->coinFontSize = sketcherfontSize;
+        // Coin documentation indicates the size of a font is:
+        // SoSFFloat SoFont::size        Size of font. Defaults to 10.0.
+        //
+        // For 2D rendered bitmap fonts (like for SoText2), this value is the height of a character in screen pixels. For 3D text, this value is the world-space coordinates height of a character in the current units setting (see documentation for SoUnits node).
+        //
+        // However, with hdpi monitors, the coin font labels do not respect the size passed in pixels:
+        // https://forum.freecadweb.org/viewtopic.php?f=3&t=54347&p=467610#p467610
+        // https://forum.freecadweb.org/viewtopic.php?f=10&t=49972&start=40#p467471
+        //
+        // Because I (abdullah) have  96 dpi logical, 82 dpi physical, and I see a 35px font setting for a "1" in a datum label as 34px,
+        // and I see kilsore and Elyas screenshots showing 41px and 61px in higher resolution monitors for the same configuration, I think
+        // that coin pixel size has to be corrected by the logical dpi of the monitor. The rationale is that: a) it obviously needs dpi
+        // correction, b) with physical dpi, the ratio of representation between kilsore and me is too far away.
+        //
+        // This means that the following correction does not have a documented basis, but appears necessary so that the Sketcher is usable in
+        // HDPI monitors.
+
+        edit->coinFontSize = std::lround(sketcherfontSize * 96.0f / dpi);
         edit->constraintIconSize = std::lround(0.8 * sketcherfontSize);
 
         // For marker size the global default is used.
