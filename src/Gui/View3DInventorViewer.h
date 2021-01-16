@@ -392,11 +392,23 @@ public:
     void viewVR(void);
 
     /**
-     * Reposition the current camera so we can see all selected objects
-     * of the scene. Therefore we search for all SOFCSelection nodes, if
-     * none of them is selected nothing happens.
+     * Reposition the current camera so we can see all selected objects.
+     *
+     * @param extend: Whether to extend the current view (zoom out if
+     * necessary) to include the selection, or zoom in the camera to view only
+     * the selection.
      */
     void viewSelection(bool extend = false);
+
+    /** Reposition the current camera so we can see the given objects
+     *
+     * @param objs: viewing objects
+     *
+     * @param extend: Whether to extend the current view (zoom out if
+     * necessary) to include the objects, or zoom in the camera to view only
+     * the given objects.
+     */
+    void viewObjects(const std::vector<App::SubObjectT> &objs, bool extend = false);
 
     void setGradientBackground(bool b);
     bool hasGradientBackground() const;

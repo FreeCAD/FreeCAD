@@ -73,6 +73,8 @@
 #include "WorkflowManager.h"
 #include "ViewProviderBody.h"
 
+#include <Mod/Part/Gui/PartParams.h>
+
 // TODO Remove this header after fixing code so it won;t be needed here (2015-10-20, Fat-Zer)
 #include "ui_DlgReference.h"
 
@@ -1132,6 +1134,8 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
         }
         if (validSelection) {
             base_worker(selection.front().getObject(), selection.front().getSubNames());
+            if (PartGui::PartParams::AdjustCameraForNewFeature())
+                cmd->adjustCameraPosition();
             return;
         }
     }
@@ -1306,7 +1310,6 @@ void CmdPartDesignPad::activated(int iMsg)
 
         Part::Part2DObject* sketch = dynamic_cast<Part::Part2DObject*>(profile);
         finishProfileBased(cmd, sketch, Feat);
-        cmd->adjustCameraPosition();
     };
 
     prepareProfileBased(pcActiveBody, this, "Pad", worker);
@@ -1357,7 +1360,6 @@ void CmdPartDesignExtrusion::activated(int iMsg)
 
         (void)profile;
         finishFeature(cmd, Feat, nullptr, false, false);
-        cmd->adjustCameraPosition();
     };
 
     prepareProfileBased(pcActiveBody, this, "Extrusion", worker, true);
@@ -1404,7 +1406,6 @@ void CmdPartDesignPocket::activated(int iMsg)
 
         Gui::cmdAppObject(Feat, std::ostringstream() <<"Length = 5.0");
         finishProfileBased(cmd, sketch, Feat);
-        cmd->adjustCameraPosition();
     };
 
     prepareProfileBased(pcActiveBody, this, "Pocket", worker);
@@ -1450,7 +1451,6 @@ void CmdPartDesignHole::activated(int iMsg)
         if (!Feat) return;
 
         finishProfileBased(cmd, sketch, Feat);
-        cmd->adjustCameraPosition();
     };
 
     prepareProfileBased(pcActiveBody, this, "Hole", worker);
@@ -1511,7 +1511,6 @@ void CmdPartDesignRevolution::activated(int iMsg)
             Gui::cmdAppObject(Feat, std::ostringstream() <<"Reversed = 1");
 
         finishProfileBased(cmd, sketch, Feat);
-        cmd->adjustCameraPosition();
     };
 
     prepareProfileBased(pcActiveBody, this, "Revolution", worker);
@@ -1577,7 +1576,6 @@ void CmdPartDesignGroove::activated(int iMsg)
         }
 
         finishProfileBased(cmd, sketch, Feat);
-        cmd->adjustCameraPosition();
     };
 
     prepareProfileBased(pcActiveBody, this, "Groove", worker);
@@ -1629,7 +1627,6 @@ void CmdPartDesignAdditivePipe::activated(int iMsg)
         Gui::Command::updateActive();
 
         finishProfileBased(cmd, sketch, Feat);
-        cmd->adjustCameraPosition();
     };
 
     prepareProfileBased(pcActiveBody, this, "AdditivePipe", worker);
@@ -1679,7 +1676,6 @@ void CmdPartDesignSubtractivePipe::activated(int iMsg)
         Gui::Command::updateActive();
 
         finishProfileBased(cmd, sketch, Feat);
-        cmd->adjustCameraPosition();
     };
 
     prepareProfileBased(pcActiveBody, this, "SubtractivePipe", worker);
@@ -1732,7 +1728,6 @@ void CmdPartDesignAdditiveLoft::activated(int iMsg)
         Gui::Command::updateActive();
 
         finishProfileBased(cmd, sketch, Feat);
-        cmd->adjustCameraPosition();
     };
 
     prepareProfileBased(pcActiveBody, this, "AdditiveLoft", worker);
@@ -1782,7 +1777,6 @@ void CmdPartDesignSubtractiveLoft::activated(int iMsg)
         Gui::Command::updateActive();
 
         finishProfileBased(cmd, sketch, Feat);
-        cmd->adjustCameraPosition();
     };
 
     prepareProfileBased(pcActiveBody, this, "SubtractiveLoft", worker);

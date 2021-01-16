@@ -4265,24 +4265,29 @@ checkElementIntersection(ViewProviderDocumentObject *vp, const char *subname,
 
 void View3DInventorViewer::viewSelection(bool extend)
 {
-    if(!guiDocument)
-        return;
-
     // Disable extended view selection if there is an editing view provider, so
     // that we don't mess up the current editing view.
     if (extend && editViewProvider)
+        return;
+
+    viewObjects(Gui::Selection().getSelectionT(guiDocument->getDocument()->getName(),0), extend);
+}
+
+void View3DInventorViewer::viewObjects(const std::vector<App::SubObjectT> &objs, bool extend)
+{
+    if(!guiDocument)
         return;
 
     SoCamera* cam = this->getSoRenderManager()->getCamera();
     if(!cam)
         return;
 
-    // When calling viewSelection(extend = true), we are supposed to make sure
-    // the current view volume includes at least include some geometry
-    // sub-element of all current selection. The volume does not have to include
-    // the entire selection. The implementation below uses the screen dimension
-    // as a rectangle selection and recursively test intersection. The algorithm
-    // used is similar to Command Std_BoxElementSelection.
+    // When calling with extend = true, we are supposed to make sure the
+    // current view volume at least include some geometry sub-element of all
+    // given objects. The volume does not have to include the whole object. The
+    // implementation below uses the screen dimension as a rectangle selection
+    // and recursively test intersection. The algorithm used is similar to
+    // Command Std_BoxElementSelection.
     SbViewVolume vv = cam->getViewVolume();
     ViewVolumeProjection proj(vv);
     Base::Polygon2d polygon;
@@ -4295,19 +4300,23 @@ void View3DInventorViewer::viewSelection(bool extend)
     polygon.Add(Base::Vector2d(pos[1][0], pos[1][1]));
 
     Base::BoundBox3d bbox;
-    for(auto &sel : Selection().getSelection(guiDocument->getDocument()->getName(),0)) {
+    for(auto &objT : objs) {
         auto vp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
-                guiDocument->getViewProvider(sel.pObject));
+                guiDocument->getViewProvider(objT.getObject()));
         if(!vp)
             continue;
 
-        if(!extend || !checkElementIntersection(vp, sel.SubName, proj, polygon, Base::Matrix4D()))
-            bbox.Add(vp->getBoundingBox(sel.SubName));
+        if(!extend
+            || !checkElementIntersection(
+                    vp, objT.getSubName().c_str(), proj, polygon, Base::Matrix4D()))
+        {
+            bbox.Add(vp->getBoundingBox(objT.getSubName().c_str()));
+        }
     }
 
     if (bbox.IsValid()) {
         SbBox3f box(bbox.MinX,bbox.MinY,bbox.MinZ,bbox.MaxX,bbox.MaxY,bbox.MaxZ);
-        if(extend) { // whether to extend the current view volume to include the selection
+        if(extend) { // whether to extend the current view volume to include the objects
 
             // Replace the following bounding box intersection test with finer
             // sub-element intersection test.
@@ -4328,7 +4337,8 @@ void View3DInventorViewer::viewSelection(bool extend)
 #endif
 
             float vx,vy,vz;
-            SbVec3f vcenter = vv.getProjectionPoint()+vv.getProjectionDirection()*(vv.getDepth()*0.5+vv.getNearDist());
+            SbVec3f vcenter = vv.getProjectionPoint()
+                + vv.getProjectionDirection()*(vv.getDepth()*0.5+vv.getNearDist());
             vcenter.getValue(vx,vy,vz);
 
             float radius = std::max(vv.getWidth(),vv.getHeight())*0.5f;

@@ -74,6 +74,7 @@
 #include "TaskDimension.h"
 #include "TaskCheckGeometry.h"
 #include "BoxSelection.h"
+#include "PartParams.h"
 
 using namespace Gui;
 
@@ -1636,7 +1637,8 @@ void CmdPartOffset::activated(int iMsg)
     cmdSetEdit(feat);
 
     //commitCommand();
-    adjustCameraPosition();
+    if (PartGui::PartParams::AdjustCameraForNewFeature())
+        adjustCameraPosition();
 
     copyVisual(feat, "ShapeColor", shape);
     copyVisual(feat, "LineColor" , shape);
@@ -1689,7 +1691,8 @@ void CmdPartOffset2D::activated(int iMsg)
     cmdSetEdit(feat);
 
     //commitCommand();
-    adjustCameraPosition();
+    if (PartGui::PartParams::AdjustCameraForNewFeature())
+        adjustCameraPosition();
 
     copyVisual(feat, "ShapeColor", shape);
     copyVisual(feat, "LineColor" , shape);
@@ -1858,7 +1861,8 @@ void CmdPartThickness::activated(int iMsg)
     cmdSetEdit(feat);
 
     //commitCommand();
-    adjustCameraPosition();
+    if (PartGui::PartParams::AdjustCameraForNewFeature())
+        adjustCameraPosition();
 
     copyVisual(feat, "ShapeColor", shape);
     copyVisual(feat, "LineColor" , shape);
