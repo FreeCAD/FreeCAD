@@ -80,7 +80,8 @@ bool ViewProviderAttachExtension::extensionGetToolTip(
         const QByteArray &tag, QString &tooltip) const
 {
     if (tag == _IconTag) {
-        tooltip = QObject::tr("Feature attachment is inactive");
+        tooltip = QObject::tr("Feature attachment is inactive.\n"
+                              "CTRL + click this icon to edit the attachment.");
         return true;
     }
     return false;

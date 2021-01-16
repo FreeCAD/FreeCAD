@@ -2230,7 +2230,8 @@ void TreeWidget::mousePressEvent(QMouseEvent *event) {
             setVisible(oitem->object()->getObject(), nullptr,
                        !oitem->object()->Visibility.getValue());
             return;
-        } else if (tag.size() && tag != _TreeIconTag) {
+        } else if (tag.size() && tag != _TreeIconTag
+                && event->modifiers() == Qt::ControlModifier) {
             ViewProviderDocumentObject* vp = oitem->object();
             auto editDoc = Application::Instance->editDocument();
             App::AutoTransaction committer("Icon clicked", true);
