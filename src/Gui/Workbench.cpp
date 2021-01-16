@@ -547,7 +547,7 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
         measure->setCommand("Measure");
         *measure << "View_Measure_Toggle_All" << "View_Measure_Clear_All";
 
-        *item << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_DrawStyle" << StdViews << measure
+        *item << "Std_ViewFitAll" << "Std_ViewSelection" << "Std_DrawStyle" << StdViews << measure
               << "Separator" << "Std_ViewDockUndockFullscreen";
 
         if (Gui::Selection().hasSelection()) {
@@ -612,7 +612,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
     // Standard views
     MenuItem* stdviews = new MenuItem;
     stdviews->setCommand("Standard views");
-    *stdviews << "Std_ViewFitAll" << "Std_ViewFitSelection" << axoviews
+    *stdviews << "Std_ViewFitAll" << "Std_ViewSelection" << axoviews
               << "Separator" << "Std_ViewHome" << "Std_ViewFront" << "Std_ViewTop"
               << "Std_ViewRight" << "Separator" << "Std_ViewRear"
               << "Std_ViewBottom" << "Std_ViewLeft"
@@ -748,7 +748,7 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     // View
     ToolBarItem* view = new ToolBarItem( root );
     view->setCommand("View");
-    *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_DrawStyle" << "Std_SelOptions"
+    *view << "Std_ViewFitAll" << "Std_ViewSelection" << "Std_DrawStyle" << "Std_SelOptions"
           << "Separator" << "Std_SelBack" << "Std_SelForward" << "Std_SelUp" << "Std_LinkSelectActions"
           << "Separator" << "Std_TreeViewActions" << "Std_ViewIsometric" << "Separator" << "Std_ViewFront"
           << "Std_ViewTop" << "Std_ViewRight" << "Separator" << "Std_ViewRear" << "Std_ViewBottom"
@@ -769,7 +769,7 @@ ToolBarItem* StdWorkbench::setupCommandBars() const
     // View
     ToolBarItem* view = new ToolBarItem( root );
     view->setCommand("Standard views");
-    *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_ViewIsometric" << "Separator"
+    *view << "Std_ViewFitAll" << "Std_ViewSelection" << "Std_ViewIsometric" << "Separator"
           << "Std_ViewFront" << "Std_ViewRight" << "Std_ViewTop" << "Separator"
           << "Std_ViewRear" << "Std_ViewLeft" << "Std_ViewBottom";
     // Special Ops

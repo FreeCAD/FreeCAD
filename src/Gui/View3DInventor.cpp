@@ -774,6 +774,8 @@ bool View3DInventor::onHasMsg(const char* pMsg) const
 #endif
     else if(strcmp("ViewSelection",pMsg) == 0)
         return true;
+    else if (strcmp("ViewSelectionExtend", pMsg) == 0)
+        return true;
     else if(strcmp("ViewBottom",pMsg) == 0)
         return true;
     else if(strcmp("ViewFront",pMsg) == 0)

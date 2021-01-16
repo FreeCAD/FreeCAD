@@ -133,6 +133,7 @@
         <file>zoom-in.svg</file>
         <file>zoom-out.svg</file>
         <file>zoom-selection.svg</file>
+        <file>view-selection-extend.svg</file>
         <file>view-rotate-left.svg</file>
         <file>view-rotate-right.svg</file>
         <file>view-measurement.svg</file>

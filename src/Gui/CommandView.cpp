@@ -1590,6 +1590,62 @@ bool StdCmdViewFitSelection::isActive(void)
 }
 
 //===========================================================================
+// Std_ViewSelectionExtend
+//===========================================================================
+DEF_STD_CMD_A(StdCmdViewSelectionExtend)
+
+StdCmdViewSelectionExtend::StdCmdViewSelectionExtend()
+  : Command("Std_ViewSelectionExtend")
+{
+    sGroup        = QT_TR_NOOP("Standard-View");
+    sMenuText     = QT_TR_NOOP("View selection");
+    sToolTipText  = QT_TR_NOOP("Adjust the camera view to include the selected contents on the screen.");
+    sWhatsThis    = "Std_ViewSelectionExtend";
+    sStatusTip    = sToolTipText;
+    sAccel        = "V, E";
+    sPixmap       = "view-selection-extend";
+    eType         = Alter3DView;
+}
+
+void StdCmdViewSelectionExtend::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    doCommand(Command::Gui,"Gui.SendMsgToActiveView(\"ViewSelectionExtend\")");
+}
+
+bool StdCmdViewSelectionExtend::isActive(void)
+{
+  return getGuiApplication()->sendHasMsgToActiveView("ViewSelectionExtend");
+}
+
+
+//===========================================================================
+// Std_ViewSelection
+//===========================================================================
+
+class StdCmdViewSelection : public GroupCommand
+{
+public:
+    StdCmdViewSelection()
+        :GroupCommand("Std_ViewSelection")
+    {
+        sGroup        = QT_TR_NOOP("View");
+        sMenuText     = QT_TR_NOOP("View selection");
+        sToolTipText  = QT_TR_NOOP("Adjust camera to view selected contents on screen");
+        sWhatsThis    = "Std_ViewSelection";
+        sStatusTip    = sToolTipText;
+        eType         = 0;
+        bCanLog       = false;
+
+        addCommand(new StdCmdViewFitSelection());
+        addCommand(new StdCmdViewSelectionExtend());
+
+        addCommand();
+    };
+    virtual const char* className() const {return "StdCmdViewSelection";}
+};
+
+//===========================================================================
 // Std_ViewDock
 //===========================================================================
 DEF_STD_CMD_A(StdViewDock)
@@ -4239,7 +4295,7 @@ void CreateViewStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdViewTrimetric());
     rcCmdMgr.addCommand(new StdCmdViewFitAll());
     rcCmdMgr.addCommand(new StdCmdViewVR());
-    rcCmdMgr.addCommand(new StdCmdViewFitSelection());
+    rcCmdMgr.addCommand(new StdCmdViewSelection());
     rcCmdMgr.addCommand(new StdCmdViewRotateLeft());
     rcCmdMgr.addCommand(new StdCmdViewRotateRight());
 
