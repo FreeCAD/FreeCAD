@@ -5745,6 +5745,7 @@ void DocumentItem::selectItems(SelectionReason reason) {
 
     DocumentObjectItem *newSelect = 0;
     DocumentObjectItem *oldSelect = 0;
+    DocumentObjectItem *newCurrent = 0;
 
     FOREACH_ITEM_ALL(item)
         if(item->selected == 1) {
@@ -5774,6 +5775,7 @@ void DocumentItem::selectItems(SelectionReason reason) {
             }
             item->selected = 1;
             item->setSelected(true);
+            newCurrent = item;
         }
     END_FOREACH_ITEM;
 
@@ -5787,8 +5789,11 @@ void DocumentItem::selectItems(SelectionReason reason) {
                 getTree()->pimpl->syncView(newSelect);
             }
             getTree()->scrollToItem(newSelect);
+            newCurrent = newSelect;
         }
     }
+    if (newCurrent)
+        getTree()->setCurrentItem(newCurrent, 0, QItemSelectionModel::NoUpdate);
 }
 
 void DocumentItem::populateParents(const ViewProviderDocumentObject *vp) {
