@@ -3817,7 +3817,7 @@ void View3DInventorViewer::moveCameraTo(const SbRotation& rot, const SbVec3f& po
     if (cam == 0) return;
 
     CameraAnimation anim(cam, rot, pos);
-    anim.setDuration(Base::clamp<int>(ms,0,5000));
+    anim.setDuration(Base::clamp<int>(ms,0,ViewParams::getMaxCameraAnimatePeriod()));
     anim.setStartValue(static_cast<int>(0));
     anim.setEndValue(steps);
 
@@ -3964,7 +3964,7 @@ void View3DInventorViewer::animatedViewAll(const SbBox3f &box, int steps, int ms
 
         SbVec3f curpos = campos * (1.0f-s) + pos * s;
         cam->position.setValue(curpos);
-        timer.start(Base::clamp<int>(ms,0,5000));
+        timer.start(Base::clamp<int>(ms,0,ViewParams::getMaxCameraAnimatePeriod()));
         loop.exec(QEventLoop::ExcludeUserInputEvents);
     }
     _pimpl->onRender();
@@ -4008,9 +4008,6 @@ void View3DInventorViewer::viewAll()
 
     if (cam && cam->getTypeId().isDerivedFrom(SoPerspectiveCamera::getClassTypeId()))
         static_cast<SoPerspectiveCamera*>(cam)->heightAngle = (float)(M_PI / 4.0);
-
-    if (isAnimationEnabled())
-        animatedViewAll(box, 10, 20);
 
     viewBoundBox(box);
 }
@@ -4370,6 +4367,9 @@ void View3DInventorViewer::viewSelection(bool extend)
 }
 
 void View3DInventorViewer::viewBoundBox(const SbBox3f &box) {
+    if (isAnimationEnabled())
+        animatedViewAll(box, 10, 20);
+
     SoCamera* cam = getSoRenderManager()->getCamera();
     if(!cam)
         return;
