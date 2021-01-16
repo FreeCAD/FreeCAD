@@ -4251,6 +4251,7 @@ checkElementIntersection(ViewProviderDocumentObject *vp, const char *subname,
 
             Base::Polygon2d loop;
             for(auto &facet : faces) {
+                loop.DeleteAll();
                 auto v = proj(points[facet.I1]);
                 loop.Add(Base::Vector2d(v.x, v.y));
                 v = proj(points[facet.I2]);
