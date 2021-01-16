@@ -469,14 +469,23 @@ SubObjectT SubObjectT::getChild(const App::DocumentObject *child) const
 
 std::string SubObjectT::getObjectFullName() const
 {
-    return getDocumentName() + "#" + getObjectName();
+    std::ostringstream ss;
+    ss << getDocumentName() << "#" << getObjectName();
+    if (getObjectLabel().size() && getObjectLabel() != getObjectName())
+        ss << " (" << getObjectLabel() << ")";
+    return ss.str();
 }
 
 std::string SubObjectT::getSubObjectFullName() const
 {
     if (subname.empty())
         return getObjectFullName();
-    return getObjectFullName() + "." + subname;
+    std::ostringstream ss;
+    ss << getDocumentName() << "#" << getObjectName() << "." << subname;
+    auto sobj = getSubObject();
+    if (sobj && sobj->Label.getStrValue() != sobj->getNameInDocument())
+        ss << " (" << sobj->Label.getValue() << ")";
+    return ss.str();
 }
 // -----------------------------------------------------------------------------
 

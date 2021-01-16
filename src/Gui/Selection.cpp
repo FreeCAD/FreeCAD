@@ -849,17 +849,16 @@ int SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectNa
             } else {
                 msg = QCoreApplication::translate("SelectionFilter","Not allowed:");
             }
-            msg.append(QString::fromLatin1(" %1.%2.%3 ")
-                  .arg(QString::fromLatin1(pDocName),
-                       QString::fromLatin1(pObjectName),
-                       QString::fromLatin1(pSubName)));
+            auto sobjT = App::SubObjectT(pDocName, pObjectName, pSubName);
+            msg.append(QString::fromLatin1(" %1").arg(
+                        QString::fromUtf8(sobjT.getSubObjectFullName().c_str())));
 
             if (getMainWindow()) {
                 getMainWindow()->showMessage(msg);
                 Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
                 mdi->setOverrideCursor(QCursor(Qt::ForbiddenCursor));
             }
-            return 0;
+            return -2;
         }
         Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
         mdi->restoreOverrideCursor();

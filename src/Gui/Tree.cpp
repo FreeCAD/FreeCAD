@@ -320,7 +320,7 @@ public:
         :master(master)
     {}
 
-    void setOverrideCursor(Qt::CursorShape shape, bool replace=true)
+    void setDragCursor(Qt::CursorShape shape, bool replace=true)
     {
         int cursorSize = 32;
         int iconSize = 24;
@@ -469,6 +469,19 @@ public:
         }
     }
 
+    void setForbidCursor()
+    {
+        master->setCursor(Qt::ForbiddenCursor);
+        restorePreselCursor = true;
+    }
+
+    void restoreCursor() {
+        if (restorePreselCursor) {
+            restorePreselCursor = false;
+            master->unsetCursor();
+        }
+    }
+
     DocumentObjectItem *itemHitTest(QPoint pos, QByteArray *tag);
 
     TreeWidget *master;
@@ -483,6 +496,8 @@ public:
     QPixmap pixmapCopy;
     QPixmap pixmapLink;
     QPixmap pixmapReplace;
+
+    bool restorePreselCursor = false;
 };
 
 
@@ -1903,7 +1918,7 @@ bool TreeWidget::eventFilter(QObject *o, QEvent *ev) {
                         && pos.y() < tree->height())
                     return false;
             }
-            pimpl->setOverrideCursor(Qt::ForbiddenCursor);
+            pimpl->setDragCursor(Qt::ForbiddenCursor);
             return true;
         }
         break;
@@ -2082,7 +2097,7 @@ void TreeWidget::mouseMoveEvent(QMouseEvent *event) {
                 break;
             }
         }
-        pimpl->setOverrideCursor(cursor, replace);
+        pimpl->setDragCursor(cursor, replace);
         return;
     }
 
@@ -2254,7 +2269,7 @@ void TreeWidget::startDragging() {
 #if 1
     _DropActions = model()->supportedDragActions();
     qApp->installEventFilter(this);
-    pimpl->setOverrideCursor(Qt::DragMoveCursor);
+    pimpl->setDragCursor(Qt::DragMoveCursor);
     _DraggingActive = true;
     for (auto tree : TreeWidget::Instances)
         tree->setAutoScroll(true);
@@ -2275,7 +2290,7 @@ void TreeWidget::startDrag(Qt::DropActions supportedActions)
 
     _DropActions = supportedActions;
     qApp->installEventFilter(this);
-    pimpl->setOverrideCursor(Qt::DragMoveCursor);
+    pimpl->setDragCursor(Qt::DragMoveCursor);
     _DraggingActive = true;
     for (auto tree : TreeWidget::Instances)
         tree->setAutoScroll(true);
@@ -3599,6 +3614,7 @@ void TreeWidget::onItemEntered(QTreeWidgetItem * item)
 }
 
 void TreeWidget::leaveEvent(QEvent *) {
+    pimpl->restoreCursor();
     if(!updateBlocked && TreeParams::Instance()->PreSelection()) {
         preselectTimer->stop();
         Selection().rmvPreselect();
@@ -3610,8 +3626,10 @@ void TreeWidget::onPreSelectTimer() {
     if(!TreeParams::Instance()->PreSelection())
         return;
     auto item = itemAt(viewport()->mapFromGlobal(QCursor::pos()));
-    if(!item || item->type()!=TreeWidget::ObjectType)
+    if(!item || item->type()!=TreeWidget::ObjectType) {
+        pimpl->restoreCursor();
         return;
+    }
 
     preselectTime.restart();
     DocumentObjectItem* objItem = static_cast<DocumentObjectItem*>(item);
@@ -3624,8 +3642,17 @@ void TreeWidget::onPreSelectTimer() {
         parent = obj;
     else if(!obj->redirectSubName(ss,parent,0))
         ss << obj->getNameInDocument() << '.';
-    Selection().setPreselect(parent->getDocument()->getName(),parent->getNameInDocument(),
+
+    int res = Selection().setPreselect(
+            parent->getDocument()->getName(),
+            parent->getNameInDocument(),
             ss.str().c_str(),0,0,0,2);
+    if (!_DraggingActive) {
+        if (res == -2)
+            pimpl->setForbidCursor();
+        else
+            pimpl->restoreCursor();
+    }
 }
 
 void TreeWidget::onItemCollapsed(QTreeWidgetItem * item)
