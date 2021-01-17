@@ -198,8 +198,7 @@ PyObject* ExtensionContainerPy::hasExtension(PyObject *args) {
 PyObject* ExtensionContainerPy::addExtension(PyObject *args) {
 
     char *typeId;
-    PyObject* proxy;
-    if (!PyArg_ParseTuple(args, "sO", &typeId, &proxy))
+    if (!PyArg_ParseTuple(args, "s", &typeId))
         return NULL;
 
     //get the extension type asked for
@@ -223,16 +222,7 @@ PyObject* ExtensionContainerPy::addExtension(PyObject *args) {
     GetApplication().signalBeforeAddingDynamicExtension(*getExtensionContainerPtr(), typeId);
     ext->initExtension(getExtensionContainerPtr());
 
-    //set the proxy to allow python overrides
-    App::Property* pp = ext->extensionGetPropertyByName("ExtensionProxy");
-    if (!pp) {
-        std::stringstream str;
-        str << "Accessing the proxy property failed!" << std::ends;
-        throw Py::Exception(Base::BaseExceptionFreeCADError,str.str());
-    }
-    static_cast<PropertyPythonObject*>(pp)->setPyObject(proxy);
-
-    // The PyTypeObject is shared by all instances of this type and therefore
+      // The PyTypeObject is shared by all instances of this type and therefore
     // we have to add new methods only once.
     PyObject* obj = ext->getExtensionPyObject();
     PyMethodDef* meth = reinterpret_cast<PyMethodDef*>(obj->ob_type->tp_methods);

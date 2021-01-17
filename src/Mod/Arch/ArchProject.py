@@ -158,7 +158,7 @@ class _Project(ArchIFC.IfcContext):
         ArchIFC.IfcContext.setProperties(self, obj)
         pl = obj.PropertiesList
         if not hasattr(obj,"Group"):
-            obj.addExtension("App::GroupExtensionPython", self)
+            obj.addExtension("App::GroupExtensionPython")
         self.Type = "Project"
 
     def onDocumentRestored(self, obj):
@@ -185,7 +185,7 @@ class _ViewProviderProject(ArchIFCView.IfcContextView):
 
     def __init__(self,vobj):
         vobj.Proxy = self
-        vobj.addExtension("Gui::ViewProviderGroupExtensionPython", self)
+        vobj.addExtension("Gui::ViewProviderGroupExtensionPython")
 
     def getIcon(self):
         """Return the path to the appropriate icon.
