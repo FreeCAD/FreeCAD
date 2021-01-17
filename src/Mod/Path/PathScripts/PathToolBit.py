@@ -166,6 +166,23 @@ class ToolBit(object):
         obj.setEditorMode('BitBody', 2)
         obj.setEditorMode('File', 1)
         obj.setEditorMode('Shape', 2)
+        if not hasattr(obj, 'BitPropertyNames'):
+            obj.addProperty('App::PropertyStringList', 'BitPropertyNames', 'Base', translate('PathToolBit', 'List of all properties inherited from the bit'))
+            propNames = []
+            for prop in obj.PropertiesList:
+                if obj.getGroupOfProperty(prop) == 'Bit':
+                    val = obj.getPropertyByName(prop)
+                    typ = obj.getTypeIdOfProperty(prop)
+                    dsc = obj.getDocumentationOfProperty(prop)
+
+                    obj.removeProperty(prop)
+                    obj.addProperty(typ, prop, PropertyGroupShape, dsc)
+
+                    PathUtil.setProperty(obj, prop, val)
+                    propNames.append(prop)
+                elif obj.getGroupOfProperty(prop) == 'Attribute':
+                    propNames.append(prop)
+            obj.BitPropertyNames = propNames
         obj.setEditorMode('BitPropertyNames', 2)
 
         for prop in obj.BitPropertyNames:
