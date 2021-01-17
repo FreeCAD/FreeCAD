@@ -57,6 +57,7 @@ public:
     App::PropertyLength         Diameter;
     App::PropertyEnumeration    ThreadDirection;
     App::PropertyEnumeration    HoleCutType;
+    App::PropertyBool           HoleCutCustomValues;
     App::PropertyLength         HoleCutDiameter;
     App::PropertyLength         HoleCutDepth;
     App::PropertyAngle          HoleCutCountersinkAngle;
@@ -90,6 +91,14 @@ public:
 
     static const double metricHoleDiameters[36][4];
 
+    typedef struct {
+        const char* designation;
+        double close;
+        double normal;
+        double loose;
+    } UTSClearanceDefinition;
+    static const UTSClearanceDefinition UTSHoleDiameters[22];
+
     virtual void Restore(Base::XMLReader & reader);
 
     virtual void updateProps();
@@ -99,7 +108,8 @@ protected:
 private:
     static const char* DepthTypeEnums[];
     static const char* ThreadTypeEnums[];
-    static const char* ThreadFitEnums[];
+    static const char* ThreadFitMetricEnums[];
+    static const char* ThreadFitUTSEnums[];
     static const char* DrillPointEnums[];
     static const char* ThreadDirectionEnums[];
 

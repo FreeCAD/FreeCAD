@@ -71,7 +71,8 @@ namespace PartDesign {
 
 const char* Hole::DepthTypeEnums[]                   = { "Dimension", "ThroughAll", /*, "UpToFirst", */ NULL };
 const char* Hole::ThreadTypeEnums[]                  = { "None", "ISOMetricProfile", "ISOMetricFineProfile", "UNC", "UNF", "UNEF", NULL};
-const char* Hole::ThreadFitEnums[]                   = { "Standard", "Close", "Wide", NULL};
+const char* Hole::ThreadFitMetricEnums[]             = { "Standard", "Close", "Wide", NULL};
+const char* Hole::ThreadFitUTSEnums[]                = { "Normal", "Close", "Loose", NULL };
 const char* Hole::DrillPointEnums[]                  = { "Flat", "Angled", NULL};
 
 /* "None" profile */
@@ -447,6 +448,39 @@ const double Hole::metricHoleDiameters[36][4] =
         { 68.0,     70.0,  	77.0,   78.0}
 };
 
+const Hole::UTSClearanceDefinition Hole::UTSHoleDiameters[22] =
+{
+    /* UTS clearance hole diameters according to ASME B18.2.8 */
+    // for information: the norm defines a drill bit number (that is in turn standardized in another ASME norm).
+    // as result the norm defines a minimal clearance which is the diameter of that drill bit.
+    // we use here this minimal clearance as the theoretical exact hole diameter as this is also done in the ISO norm.
+    // {screw class, close, normal, loose}
+        { "#0",     1.7,  1.9,  2.4 },
+        { "#1",     2.1,  2.3,  2.6 },
+        { "#2",     2.4,  2.6,  2.9 },
+        { "#3",     2.7,  2.9,  3.3 },
+        { "#4",     3.0,  3.3,  3.7 },
+        { "#5",     3.6,  4.0,  4.4 },
+        { "#6",     3.9,  4.3,  4.7 },
+        { "#8",     4.6,  5.0,  5.4 },
+        { "#10",    5.2,  5.6,  6.0 },
+        // "#12" not defined
+        { "1/4",    6.8,  7.1,  7.5 },
+        { "5/16",   8.3,  8.7,  9.1 },
+        { "3/8",    9.9, 10.3, 10.7 },
+        { "7/16",  11.5, 11.9, 12.3 },
+        { "1/2",   13.5, 14.3, 15.5 },
+        // "9/16" not defined
+        { "5/8",   16.7, 17.5, 18.6 },
+        { "3/4",   19.8, 20.6, 23.0 },
+        { "7/8",   23.0, 23.8, 26.2 },
+        { "1",     26.2, 27.8, 29.4 },
+        { "1 1/8", 29.4, 31.0, 33.3 },
+        { "1 1/4", 32.5, 34.1, 36.5 },
+        { "1 3/8", 36.5, 38.1, 40.9 },
+        { "1 1/2", 39.7, 41.3, 44.0 }
+};
+
 /* ISO coarse metric enums */
 std::vector<std::string> Hole::HoleCutType_ISOmetric_Enums  = { "None", "Counterbore", "Countersink", "Cheesehead (deprecated)", "Countersink socket screw (deprecated)", "Cap screw (deprecated)" };
 const char* Hole::ThreadSize_ISOmetric_Enums[]   = { "M1",   "M1.1", "M1.2", "M1.4", "M1.6",
@@ -565,7 +599,7 @@ Hole::Hole()
     ThreadClass.setEnums(ThreadClass_None_Enums);
 
     ADD_PROPERTY_TYPE(ThreadFit, (0L), "Hole", App::Prop_None, "Thread fit");
-    ThreadFit.setEnums(ThreadFitEnums);
+    ThreadFit.setEnums(ThreadFitMetricEnums);
 
     ADD_PROPERTY_TYPE(Diameter, (6.0), "Hole", App::Prop_None, "Diameter");
 
@@ -575,6 +609,8 @@ Hole::Hole()
 
     ADD_PROPERTY_TYPE(HoleCutType, (0L), "Hole", App::Prop_None, "Head cut type");
     HoleCutType.setEnums(HoleCutType_None_Enums);
+
+    ADD_PROPERTY_TYPE(HoleCutCustomValues, (false), "Hole", App::Prop_None, "Custom cut values");
 
     ADD_PROPERTY_TYPE(HoleCutDiameter, (0.0), "Hole", App::Prop_None, "Head cut diameter");
 
@@ -636,6 +672,7 @@ void Hole::updateHoleCutParams()
             }
             if (HoleCutDepth.getValue() == 0.0)
                 HoleCutDepth.setValue(dimen.depth);
+            HoleCutCountersinkAngle.setReadOnly(true);
         }
         else if (holeCutType == "Countersink") {
             // read ISO 10642 values
@@ -648,6 +685,7 @@ void Hole::updateHoleCutParams()
             if (HoleCutCountersinkAngle.getValue() == 0.0) {
                 HoleCutCountersinkAngle.setValue(counter.angle);
             }
+            HoleCutCountersinkAngle.setReadOnly(false);
         }
 
         // cut definition
@@ -664,8 +702,11 @@ void Hole::updateHoleCutParams()
                     HoleCutDiameter.setValue(Diameter.getValue() + 0.1);
                     HoleCutDepth.setValue(0.1);
                 } else {
-                    HoleCutDiameter.setValue(dimen.diameter);
-                    HoleCutDepth.setValue(dimen.depth);
+                    // set normed values
+                    if (!HoleCutCustomValues.getValue()) {
+                        HoleCutDiameter.setValue(dimen.diameter);
+                        HoleCutDepth.setValue(dimen.depth);
+                    }
                 }
             } else if (counter.cut_type == CutDimensionSet::Countersink) {
                 const CounterSinkDimension &dimen = counter.get_sink(threadSize);
@@ -677,8 +718,14 @@ void Hole::updateHoleCutParams()
                         HoleCutCountersinkAngle.setValue(counter.angle);
                     }
                 } else {
-                    HoleCutDiameter.setValue(dimen.diameter);
-                    HoleCutCountersinkAngle.setValue(counter.angle);
+                    // set normed values
+                    if (!HoleCutCustomValues.getValue()) {
+                        HoleCutDiameter.setValue(dimen.diameter);
+                        HoleCutCountersinkAngle.setValue(counter.angle);
+                        HoleCutCountersinkAngle.setReadOnly(true);
+                    }
+                    else
+                        HoleCutCountersinkAngle.setReadOnly(false);
                 }
             }
         }
@@ -792,52 +839,128 @@ void Hole::updateDiameterParam()
     }
     else { // we have a clearance hole
         bool found = false;
-        int MatrixRowSize = sizeof(metricHoleDiameters) / sizeof(metricHoleDiameters[0]);
-        switch ( ThreadFit.getValue() ) {
-        case 0: /* standard fit */
-            // read diameter out of matrix
-            for (int i = 0; i < MatrixRowSize; i++) {
-                if (metricHoleDiameters[i][0] == diameter) {
-                    diameter = metricHoleDiameters[i][2];
-                    found = true;
-                    break;
+        std::string threadType = ThreadType.getValueAsString();
+        // UTS and metric have a different clearance hole set
+        if (threadType == "ISOMetricProfile" || threadType == "ISOMetricFineProfile") {
+            int MatrixRowSizeMetric = sizeof(metricHoleDiameters) / sizeof(metricHoleDiameters[0]);
+            switch (ThreadFit.getValue()) {
+            case 0: /* standard fit */
+                // read diameter out of matrix
+                for (int i = 0; i < MatrixRowSizeMetric; i++) {
+                    if (metricHoleDiameters[i][0] == diameter) {
+                        diameter = metricHoleDiameters[i][2];
+                        found = true;
+                        break;
+                    }
                 }
-            }
-            // if nothing was found (e.g. if not metric), we must calculate
-            if (!found) {
-                diameter = (5 * ((int)((diameter * 110) / 5))) / 100.0;
-            }
-            break;
-        case 1: /* close fit */
-            // read diameter out of matrix
-            for (int i = 0; i < MatrixRowSize; i++) {
-                if (metricHoleDiameters[i][0] == diameter) {
-                    diameter = metricHoleDiameters[i][1];
-                    found = true;
-                    break;
+                // if nothing was found (e.g. if not metric), we must calculate
+                if (!found) {
+                    diameter = diameter * 1.1;
                 }
-            }
-            // if nothing was found, we must calculate
-            if (!found) {
-                diameter = (5 * ((int)((diameter * 105) / 5))) / 100.0;
-            }
-            break;
-        case 2: /* wide fit */
-            // read diameter out of matrix
-            for (int i = 0; i < MatrixRowSize; i++) {
-                if (metricHoleDiameters[i][0] == diameter) {
-                    diameter = metricHoleDiameters[i][3];
-                    found = true;
-                    break;
+                break;
+            case 1: /* close fit */
+                // read diameter out of matrix
+                for (int i = 0; i < MatrixRowSizeMetric; i++) {
+                    if (metricHoleDiameters[i][0] == diameter) {
+                        diameter = metricHoleDiameters[i][1];
+                        found = true;
+                        break;
+                    }
                 }
+                // if nothing was found, we must calculate
+                if (!found) {
+                    diameter = diameter * 1.05;
+                }
+                break;
+            case 2: /* wide fit */
+                // read diameter out of matrix
+                for (int i = 0; i < MatrixRowSizeMetric; i++) {
+                    if (metricHoleDiameters[i][0] == diameter) {
+                        diameter = metricHoleDiameters[i][3];
+                        found = true;
+                        break;
+                    }
+                }
+                // if nothing was found, we must calculate
+                if (!found) {
+                    diameter = diameter * 1.15;
+                }
+                break;
+            default:
+                throw Base::IndexError("Thread fit out of range");
             }
-            // if nothing was found, we must calculate
-            if (!found) {
-                diameter = (5 * ((int)((diameter * 115) / 5))) / 100.0;
+        }
+        else if (threadType == "UNC" || threadType == "UNF" || threadType == "UNEF") {
+            const char* ThreadSizeChar = ThreadSize.getValueAsString();
+            int MatrixRowSizeUTS = sizeof(UTSHoleDiameters) / sizeof(UTSHoleDiameters[0]);
+            switch (ThreadFit.getValue()) {
+            case 0: /* normal fit */
+                // read diameter out of matrix
+                for (int i = 0; i < MatrixRowSizeUTS; i++) {
+                    if (UTSHoleDiameters[i].designation == ThreadSizeChar) {
+                        diameter = UTSHoleDiameters[i].normal;
+                        found = true;
+                        break;
+                    }
+                }
+                // if nothing was found (e.g. if not metric), we must calculate
+                if (!found) {
+                    diameter = diameter * 1.1;
+                }
+                break;
+            case 1: /* close fit */
+                // read diameter out of matrix
+                for (int i = 0; i < MatrixRowSizeUTS; i++) {
+                    if (UTSHoleDiameters[i].designation == ThreadSizeChar) {
+                        diameter = UTSHoleDiameters[i].close;
+                        found = true;
+                        break;
+                    }
+                }
+                // if nothing was found, we must calculate
+                if (!found) {
+                    diameter = diameter * 1.05;
+                }
+                break;
+            case 2: /* loose fit */
+                // read diameter out of matrix
+                for (int i = 0; i < MatrixRowSizeUTS; i++) {
+                    if (UTSHoleDiameters[i].designation == ThreadSizeChar) {
+                        diameter = UTSHoleDiameters[i].loose;
+                        found = true;
+                        break;
+                    }
+                }
+                // if nothing was found, we must calculate
+                if (!found) {
+                    diameter = diameter * 1.15;
+                }
+                break;
+            default:
+                throw Base::IndexError("Thread fit out of range");
             }
-            break;
-        default:
-            assert( 0 );
+        }
+        else {
+            switch (ThreadFit.getValue()) {
+            case 0: /* normal fit */
+                // we must calculate
+                if (!found) {
+                    diameter = diameter * 1.1;
+                }
+                break;
+            case 1: /* close fit */
+                if (!found) {
+                    diameter = diameter * 1.05;
+                }
+                break;
+            case 2: /* loose fit */
+                if (!found) {
+                    diameter = diameter * 1.15;
+                }
+                break;
+            default:
+                throw Base::IndexError("Thread fit out of range");
+            }
         }
     }
     Diameter.setValue(diameter);
@@ -867,6 +990,7 @@ void Hole::onChanged(const App::Property *prop)
             ThreadSize.setEnums(ThreadSize_ISOmetric_Enums);
             ThreadClass.setEnums(ThreadClass_ISOmetric_Enums);
             HoleCutType.setEnums(HoleCutType_ISOmetric_Enums);
+            ThreadFit.setEnums(ThreadFitMetricEnums);
             Threaded.setReadOnly(false);
             ThreadSize.setReadOnly(false);
             // thread class and direction are only sensible if threaded
@@ -879,6 +1003,7 @@ void Hole::onChanged(const App::Property *prop)
             ThreadSize.setEnums(ThreadSize_ISOmetricfine_Enums);
             ThreadClass.setEnums(ThreadClass_ISOmetricfine_Enums);
             HoleCutType.setEnums(HoleCutType_ISOmetricfine_Enums);
+            ThreadFit.setEnums(ThreadFitMetricEnums);
             Threaded.setReadOnly(false);
             ThreadSize.setReadOnly(false);
             // thread class and direction are only sensible if threaded
@@ -891,6 +1016,7 @@ void Hole::onChanged(const App::Property *prop)
             ThreadSize.setEnums(ThreadSize_UNC_Enums);
             ThreadClass.setEnums(ThreadClass_UNC_Enums);
             HoleCutType.setEnums(HoleCutType_UNC_Enums);
+            ThreadFit.setEnums(ThreadFitUTSEnums);
             Threaded.setReadOnly(false);
             ThreadSize.setReadOnly(false);
             // thread class and direction are only sensible if threaded
@@ -903,6 +1029,7 @@ void Hole::onChanged(const App::Property *prop)
             ThreadSize.setEnums(ThreadSize_UNF_Enums);
             ThreadClass.setEnums(ThreadClass_UNF_Enums);
             HoleCutType.setEnums(HoleCutType_UNF_Enums);
+            ThreadFit.setEnums(ThreadFitUTSEnums);
             Threaded.setReadOnly(false);
             ThreadSize.setReadOnly(false);
             // thread class and direction are only sensible if threaded
@@ -915,6 +1042,7 @@ void Hole::onChanged(const App::Property *prop)
             ThreadSize.setEnums(ThreadSize_UNEF_Enums);
             ThreadClass.setEnums(ThreadClass_UNEF_Enums);
             HoleCutType.setEnums(HoleCutType_UNEF_Enums);
+            ThreadFit.setEnums(ThreadFitUTSEnums);
             Threaded.setReadOnly(false);
             ThreadSize.setReadOnly(false);
             // thread class and direction are only sensible if threaded
@@ -925,24 +1053,37 @@ void Hole::onChanged(const App::Property *prop)
         }
 
         if (holeCutType == "None") {
+            HoleCutCustomValues.setReadOnly(true);
             HoleCutDiameter.setReadOnly(true);
             HoleCutDepth.setReadOnly(true);
             HoleCutCountersinkAngle.setReadOnly(true);
         }
         else if (holeCutType == "Counterbore") {
+            HoleCutCustomValues.setReadOnly(true);
             HoleCutDiameter.setReadOnly(false);
             HoleCutDepth.setReadOnly(false);
             HoleCutCountersinkAngle.setReadOnly(true);
         }
         else if (holeCutType == "Countersink") {
+            HoleCutCustomValues.setReadOnly(true);
             HoleCutDiameter.setReadOnly(false);
             HoleCutDepth.setReadOnly(false);
             HoleCutCountersinkAngle.setReadOnly(false);
         }
         else { // screw definition
-            HoleCutDiameter.setReadOnly(false);
-            HoleCutDepth.setReadOnly(false);
-            HoleCutCountersinkAngle.setReadOnly(false);
+            HoleCutCustomValues.setReadOnly(false);
+            if (HoleCutCustomValues.getValue()) {
+                HoleCutDiameter.setReadOnly(false);
+                HoleCutDepth.setReadOnly(false);
+                // we must not set HoleCutCountersinkAngle here because the info if this can
+                // be enabled is first available in updateHoleCutParams and thus handled there
+                updateHoleCutParams();
+            }
+            else {
+                HoleCutDiameter.setReadOnly(true);
+                HoleCutDepth.setReadOnly(true);
+                HoleCutCountersinkAngle.setReadOnly(true);
+            }
         }
 
         // Signal changes to these
@@ -1019,28 +1160,57 @@ void Hole::onChanged(const App::Property *prop)
         if (HoleCutType.isValid())
             holeCutType = HoleCutType.getValueAsString();
         if (holeCutType == "None") {
+            HoleCutCustomValues.setReadOnly(true);
             HoleCutDiameter.setReadOnly(true);
             HoleCutDepth.setReadOnly(true);
             HoleCutCountersinkAngle.setReadOnly(true);
         }
         else if (holeCutType == "Counterbore") {
+            HoleCutCustomValues.setReadOnly(true);
             HoleCutDiameter.setReadOnly(false);
             HoleCutDepth.setReadOnly(false);
             HoleCutCountersinkAngle.setReadOnly(true);
         }
         else if (holeCutType == "Countersink") {
+            HoleCutCustomValues.setReadOnly(true);
             HoleCutDiameter.setReadOnly(false);
             HoleCutDepth.setReadOnly(false);
             HoleCutCountersinkAngle.setReadOnly(false);
         }
         else { // screw definition
-            HoleCutDiameter.setReadOnly(false);
-            HoleCutDepth.setReadOnly(false);
-            HoleCutCountersinkAngle.setReadOnly(false);
+            HoleCutCustomValues.setReadOnly(false);
+            if (HoleCutCustomValues.getValue()) {
+                HoleCutDiameter.setReadOnly(false);
+                HoleCutDepth.setReadOnly(false);
+                // don't set HoleCutCountersinkAngle because the knowledge is first
+                // available in updateHoleCutParams() and thus set there
+            }
+            else {
+                HoleCutDiameter.setReadOnly(true);
+                HoleCutDepth.setReadOnly(true);
+                HoleCutCountersinkAngle.setReadOnly(true);
+            }
         }
+
         ProfileBased::onChanged(&HoleCutDiameter);
         ProfileBased::onChanged(&HoleCutDepth);
         ProfileBased::onChanged(&HoleCutCountersinkAngle);
+        updateHoleCutParams();
+    }
+    else if (prop == &HoleCutCustomValues) {
+        if (HoleCutCustomValues.getValue()) {
+            HoleCutDiameter.setReadOnly(false);
+            HoleCutDepth.setReadOnly(false);
+            // don't set HoleCutCountersinkAngle because the knowledge is first
+            // available in updateHoleCutParams() and thus set there
+        }
+        else {
+            HoleCutDiameter.setReadOnly(true);
+            HoleCutDepth.setReadOnly(true);
+            HoleCutCountersinkAngle.setReadOnly(true);    
+        }
+        // when going back to standardized values, we must recalculate
+        // also to find out if HoleCutCountersinkAngle can be ReadOnly
         updateHoleCutParams();
     }
     else if (prop == &DepthType) {
