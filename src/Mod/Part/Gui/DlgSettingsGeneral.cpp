@@ -62,7 +62,7 @@ void DlgSettingsGeneral::saveSettings()
     ui->checkBooleanRefine->onSave();
     ui->checkSketchBaseRefine->onSave();
     ui->checkSingleSolid->onSave();
-    ui->checkObjectNaming->onSave();
+    Part::PartParams::set_UseBaseObjectName(ui->checkObjectNaming->isChecked());
     Part::PartParams::set_CommandOverride(ui->comboBoxCommandOverride->currentIndex());
     Part::PartParams::set_EnableWrapFeature(ui->comboBoxWrapFeature->currentIndex());
 }
@@ -73,7 +73,7 @@ void DlgSettingsGeneral::loadSettings()
     ui->checkBooleanRefine->onRestore();
     ui->checkSketchBaseRefine->onRestore();
     ui->checkSingleSolid->onRestore();
-    ui->checkObjectNaming->onRestore();
+    ui->checkObjectNaming->setChecked(Part::PartParams::UseBaseObjectName());
     ui->comboBoxCommandOverride->setCurrentIndex(Part::PartParams::CommandOverride());
     ui->comboBoxWrapFeature->setCurrentIndex(Part::PartParams::EnableWrapFeature());
 }

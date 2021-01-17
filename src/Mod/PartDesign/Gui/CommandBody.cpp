@@ -49,6 +49,8 @@
 #include <Mod/PartDesign/App/Feature.h>
 #include <Mod/PartDesign/App/FeatureBase.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
+#include <Mod/Part/Gui/PartParams.h>
+#include <Mod/Part/App/PartParams.h>
 
 #include "Utils.h"
 #include "TaskFeaturePick.h"
@@ -118,9 +120,12 @@ void CmdPartDesignBody::activated(int iMsg)
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Add a Body"));
 
+    App::DocumentObjectT labelSource;
+
     std::string support;
     std::string supportNames;
     auto sels = Gui::Selection().getSelectionT("*",0);
+    int count = 0;
     for(auto it=sels.begin(); it!=sels.end();) {
         auto & sel = *it;
         auto sobj = sel.getSubObject();
@@ -145,6 +150,11 @@ void CmdPartDesignBody::activated(int iMsg)
             it = sels.erase(it);
             continue;
         }
+        if (!count && Part::PartParams::UseBaseObjectName())
+            labelSource = sobj;
+        else
+            labelSource = App::DocumentObjectT();
+        ++count;
         ++it;
     }
 
@@ -176,6 +186,7 @@ void CmdPartDesignBody::activated(int iMsg)
                 // Then we may use it directly as base feature
                 baseFeature = owner;
             }
+
             ++count;
             int cnt = shape.countSubShapes(TopAbs_SOLID);
             if(cnt)
@@ -223,8 +234,10 @@ void CmdPartDesignBody::activated(int iMsg)
                 QMessageBox::Yes|QMessageBox::No|QMessageBox::Abort,QMessageBox::No);
         if(res == QMessageBox::Abort)
             return;
-        if(res == QMessageBox::No)
+        if(res == QMessageBox::No) {
             support.clear();
+            labelSource = App::DocumentObjectT();
+        }
     }
 
     std::string bodyName = getUniqueObjectName("Body", actPart);
@@ -233,6 +246,8 @@ void CmdPartDesignBody::activated(int iMsg)
     // add the Body feature itself, and make it active
     Gui::cmdAppDocument(doc, std::ostringstream() << "addObject('PartDesign::Body','" << bodyName << "')");
     auto body = Base::freecad_dynamic_cast<PartDesign::Body>(doc->getObject(bodyName.c_str()));
+    if (labelSource.getObjectName().size())
+        Gui::cmdAppObjectArgs(body, "Label = %s.Label", labelSource.getObjectPython());
     if (baseFeature) {
         if (baseFeature->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
             Gui::cmdAppObjectArgs(body, "Group = [%s]", getObjectCmd(baseFeature));
@@ -339,11 +354,11 @@ void CmdPartDesignBody::activated(int iMsg)
     }
 
     // if no part feature was there then auto-adjust the camera
-    if (viewAll) {
+    if (viewAll && PartGui::PartParams::AdjustCameraForNewFeature()) {
         Gui::Document* doc = Gui::Application::Instance->getDocument(getDocument());
         Gui::View3DInventor* view = doc ? qobject_cast<Gui::View3DInventor*>(doc->getActiveView()) : nullptr;
         if (view) {
-            view->getViewer()->viewSelection();
+            view->getViewer()->viewSelection(true);
         }
     }
 
