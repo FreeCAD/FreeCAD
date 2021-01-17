@@ -71,7 +71,7 @@ def getPropertyValueString(obj, prop):
 def setProperty(obj, prop, value):
     '''setProperty(obj, prop, value) ... set the property value of obj's property defined by its canonical name.'''
     o, attr, name = _getProperty(obj, prop) # pylint: disable=unused-variable
-    if attr and type(value) == str:
+    if not attr is None and type(value) == str:
         if type(attr) == int:
             value = int(value, 0)
         elif type(attr) == bool:
