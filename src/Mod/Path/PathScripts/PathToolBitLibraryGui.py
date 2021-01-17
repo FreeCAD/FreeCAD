@@ -252,20 +252,20 @@ class ToolBitSelector(object):
     def columnNames(self):
         return ['#', 'Tool']
 
-    def curLib(self):
+    def currentLibrary(self, shortNameOnly):
         libfile = PathPreferences.lastFileToolLibrary()
         if libfile is None or libfile == "":
             return ""
-        else:
-            libfile = os.path.split(PathPreferences.lastFileToolLibrary())[1]
-            libfile = os.path.splitext(libfile)[0]
+        elif shortNameOnly:
+            return os.path.splitext(os.path.basename(libfile))[0]
         return libfile
 
     def loadData(self):
         PathLog.track()
         self.toolModel.clear()
         self.toolModel.setHorizontalHeaderLabels(self.columnNames())
-        self.form.lblLibrary.setText(self.curLib())
+        self.form.lblLibrary.setText(self.currentLibrary(True))
+        self.form.lblLibrary.setToolTip(self.currentLibrary(False))
         self.factory.libraryOpen(self.toolModel)
         self.toolModel.takeColumn(3)
         self.toolModel.takeColumn(2)
