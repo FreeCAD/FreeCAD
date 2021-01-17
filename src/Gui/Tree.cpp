@@ -2178,6 +2178,16 @@ DocumentObjectItem *TreeWidget::Private::itemHitTest(QPoint pos, QByteArray *tag
 static QByteArray _TreeVisTag("tree:vis");
 static QByteArray _TreeIconTag("tree:icon");
 
+const QByteArray &TreeWidget::getVisibilityIconTag()
+{
+    return _TreeVisTag;
+}
+
+const QByteArray &TreeWidget::getMainIconTag()
+{
+    return _TreeIconTag;
+}
+
 void TreeWidget::mousePressEvent(QMouseEvent *event) {
     if (_DraggingActive)
         return;
@@ -2245,8 +2255,7 @@ void TreeWidget::mousePressEvent(QMouseEvent *event) {
             setVisible(oitem->object()->getObject(), nullptr,
                        !oitem->object()->Visibility.getValue());
             return;
-        } else if (tag.size() && tag != _TreeIconTag
-                && event->modifiers() == Qt::ControlModifier) {
+        } else if (tag.size() && (event->modifiers() & Qt::AltModifier)) {
             ViewProviderDocumentObject* vp = oitem->object();
             auto editDoc = Application::Instance->editDocument();
             App::AutoTransaction committer("Icon clicked", true);
@@ -3588,6 +3597,7 @@ void TreeWidget::onItemEntered(QTreeWidgetItem * item)
         hiddenItem = nullptr;
     }
 
+    ToolTip::hideText();
     if (item && item->type() == TreeWidget::ObjectType) {
         if(TreeParams::Instance()->PreSelection()) {
             int timeout = TreeParams::Instance()->PreSelectionMinDelay();

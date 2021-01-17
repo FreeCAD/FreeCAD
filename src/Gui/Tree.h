@@ -95,6 +95,9 @@ public:
     TreeWidget(const char *name, QWidget* parent=0);
     ~TreeWidget();
 
+    static const QByteArray &getVisibilityIconTag();
+    static const QByteArray &getMainIconTag();
+
     static void setupResizableColumn(TreeWidget *tree=0);
     static void scrollItemToTop();
     static void selectAllInstances(const ViewProviderDocumentObject &vpd);

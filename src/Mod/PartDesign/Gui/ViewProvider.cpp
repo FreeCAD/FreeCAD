@@ -553,7 +553,7 @@ bool ViewProvider::iconClicked(const QByteArray &tag)
 QString ViewProvider::getToolTip(const QByteArray &tag) const
 {
     if (tag == _SuppressedTag)
-        return QObject::tr("Feature suppressed. CTRL + click this icon to unspress.");
+        return QObject::tr("Feature suppressed. ALT + click this icon to unspress.");
     else if (isSetTipIcon && tag == _IconTag)
         return QObject::tr("This is the tip of the body. New feature will be inserted after it.");
     return inherited::getToolTip(tag);
