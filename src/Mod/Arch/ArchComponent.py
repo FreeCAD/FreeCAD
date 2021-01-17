@@ -757,8 +757,8 @@ class Component(ArchIFC.IfcProduct):
         subs = obj.Subtractions
         for link in obj.InListRecursive:
             if hasattr(link,"Hosts"):
-                for host in link.Hosts:
-                    if host == obj:
+                if link.Hosts:
+                    if obj in link.Hosts:
                         subs.append(link)
             elif hasattr(link,"Host") and Draft.getType(link) != "Rebar":
                 if link.Host == obj:
@@ -1120,14 +1120,15 @@ class Component(ArchIFC.IfcProduct):
         """
 
         hosts = []
+
         for link in obj.InListRecursive:
             if hasattr(link,"Host"):
                 if link.Host:
                     if link.Host == obj:
                         hosts.append(link)
             elif hasattr(link,"Hosts"):
-                for host in link.Hosts:
-                    if host == obj:
+                if link.Hosts:
+                    if obj in link.Hosts:
                         hosts.append(link)
         return hosts
 
