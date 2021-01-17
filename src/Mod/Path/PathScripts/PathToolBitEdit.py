@@ -115,6 +115,7 @@ class ToolBitEditor(object):
         # for all properties either assign them to existing labels and editors
         # or create additional ones for them if not enough have already been
         # created.
+        usedRows = 0
         for nr, name in enumerate(tool.Proxy.toolShapeProperties(tool)):
             if nr < len(self.widgets):
                 PathLog.debug("re-use row: {} [{}]".format(nr, name))
@@ -134,9 +135,11 @@ class ToolBitEditor(object):
 
             if nr >= layout.rowCount():
                 layout.addRow(label, qsb)
+            usedRows = usedRows + 1
 
         # hide all rows which aren't being used
-        for i in range(len(tool.BitPropertyNames), len(self.widgets)):
+        PathLog.track(usedRows, len(self.widgets))
+        for i in range(usedRows, len(self.widgets)):
             label, qsb, editor = self.widgets[i]
             label.hide()
             qsb.hide()
@@ -152,9 +155,14 @@ class ToolBitEditor(object):
     def setupAttributes(self, tool):
         PathLog.track()
 
-        self.delegate = _Delegate(self.form.attrTree)
-        self.model = QtGui.QStandardItemModel(self.form.attrTree)
-        self.model.setHorizontalHeaderLabels(['Property', 'Value'])
+        setup = True
+        if not hasattr(self, 'delegate'):
+            self.delegate = _Delegate(self.form.attrTree)
+            self.model = QtGui.QStandardItemModel(self.form.attrTree)
+            self.model.setHorizontalHeaderLabels(['Property', 'Value'])
+        else:
+            self.model.removeRows(0, self.model.rowCount())
+            setup = False
 
         attributes = tool.Proxy.toolGroupsAndProperties(tool, False)
         for name in attributes:
@@ -175,8 +183,9 @@ class ToolBitEditor(object):
             self.model.appendRow(group)
 
 
-        self.form.attrTree.setModel(self.model)
-        self.form.attrTree.setItemDelegateForColumn(1, self.delegate)
+        if setup:
+            self.form.attrTree.setModel(self.model)
+            self.form.attrTree.setItemDelegateForColumn(1, self.delegate)
         self.form.attrTree.expandAll()
         self.form.attrTree.resizeColumnToContents(0)
         self.form.attrTree.resizeColumnToContents(1)
@@ -199,15 +208,29 @@ class ToolBitEditor(object):
         for lbl, qsb, editor in self.widgets:
             editor.updateSpinBox()
 
+    def _updateBitShape(self, shapePath):
+        # Only need to go through this exercise if the shape actually changed.
+        if self.tool.BitShape != shapePath:
+            # Before setting a new  bitshape we need to make sure that none of
+            # editors fires an event and tries to access its old property, which
+            # might not exist anymore.
+            for lbl, qsb, editor in self.widgets:
+                editor.attachTo(self.tool, 'File')
+            self.tool.BitShape = shapePath
+            self.setupTool(self.tool)
+            self.form.toolName.setText(self.tool.Label)
+            if self.tool.BitBody and self.tool.BitBody.ViewObject:
+                if not self.tool.BitBody.ViewObject.Visibility:
+                    self.tool.BitBody.ViewObject.Visibility = True
+            self.setupAttributes(self.tool)
+            return True
+        return False
+
     def updateShape(self):
         PathLog.track()
         shapePath = str(self.form.shapePath.text())
         # Only need to go through this exercise if the shape actually changed.
-        if self.tool.BitShape != shapePath:
-            self.tool.BitShape = shapePath
-            self.setupTool(self.tool)
-            self.form.toolName.setText(self.tool.Label)
-
+        if self._updateBitShape(shapePath):
             for lbl, qsb, editor in self.widgets:
                 editor.updateSpinBox()
 
@@ -218,8 +241,7 @@ class ToolBitEditor(object):
         shape = str(self.form.shapePath.text())
         if self.tool.Label != label:
             self.tool.Label = label
-        if self.tool.BitShape != shape:
-            self.tool.BitShape = shape
+        self._updateBitShape(shape)
 
         for lbl, qsb, editor in self.widgets:
             editor.updateProperty()
@@ -238,10 +260,7 @@ class ToolBitEditor(object):
         path = self.tool.BitShape
         if not path:
             path = PathPreferences.lastPathToolShape()
-        foo = QtGui.QFileDialog.getOpenFileName(self.form,
-                                                "Path - Tool Shape",
-                                                path,
-                                                "*.fcstd")
+        foo = QtGui.QFileDialog.getOpenFileName(self.form, "Path - Tool Shape", path, "*.fcstd")
         if foo and foo[0]:
             PathPreferences.setLastPathToolShape(os.path.dirname(foo[0]))
             self.form.shapePath.setText(foo[0])
