@@ -17,8 +17,7 @@
     </Documentation>
     <Methode Name="addExtension">
       <Documentation>
-        <UserDocu>Adds an extension to the object. Requires the string identifier as well as the python object 
-                  used to check for overridden functions (most likely self)</UserDocu>
+        <UserDocu>Adds an extension to the object. Requires the string identifier for the python extension as argument</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="hasExtension" Const="true">

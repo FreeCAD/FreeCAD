@@ -245,7 +245,7 @@ class DocumentBasicCases(unittest.TestCase):
     #we should have all methods we need to handle extensions
     try:
       self.failUnless(not grp.hasExtension("App::GroupExtensionPython"))
-      grp.addExtension("App::GroupExtensionPython", self)
+      grp.addExtension("App::GroupExtensionPython")
       self.failUnless(grp.hasExtension("App::GroupExtension"))
       self.failUnless(grp.hasExtension("App::GroupExtensionPython"))
       grp.addObject(obj)
@@ -260,8 +260,9 @@ class DocumentBasicCases(unittest.TestCase):
             return False;
 
     callback = SpecialGroup()
-    grp2 = self.Doc.addObject("App::DocumentObject", "Extension_3")
-    grp2.addExtension("App::GroupExtensionPython", callback)
+    grp2 = self.Doc.addObject("App::FeaturePython", "Extension_3")
+    grp2.addExtension("App::GroupExtensionPython")
+    grp2.Proxy = callback
 
     try:
       self.failUnless(grp2.hasExtension("App::GroupExtension"))
@@ -281,7 +282,7 @@ class DocumentBasicCases(unittest.TestCase):
 
         class MyExtension():
             def __init__(self, obj):
-                obj.addExtension("App::GroupExtensionPython", self)
+                obj.addExtension("App::GroupExtensionPython")
 
         obj = self.Doc.addObject("App::DocumentObject", "myObj")
         MyExtension(obj)
@@ -293,7 +294,7 @@ class DocumentBasicCases(unittest.TestCase):
   def testExtensionGroup(self):
     obj = self.Doc.addObject("App::DocumentObject", "Obj")
     grp = self.Doc.addObject("App::FeaturePython", "Extension_2")
-    grp.addExtension("App::GroupExtensionPython", None)
+    grp.addExtension("App::GroupExtensionPython")
     grp.Group = [obj]
     self.assertTrue(obj in grp.Group)
 
@@ -301,11 +302,11 @@ class DocumentBasicCases(unittest.TestCase):
 
     class Layer():
       def __init__(self, obj):
-        obj.addExtension("App::GroupExtensionPython", self)
+        obj.addExtension("App::GroupExtensionPython")
 
     class LayerViewProvider():
       def __init__(self, obj):
-        obj.addExtension("Gui::ViewProviderGroupExtensionPython", self)
+        obj.addExtension("Gui::ViewProviderGroupExtensionPython")
         obj.Proxy = self
 
     obj = self.Doc.addObject("App::FeaturePython","Layer")
@@ -385,7 +386,7 @@ class DocumentBasicCases(unittest.TestCase):
 # class must be defined in global scope to allow it to be reloaded on document open
 class SaveRestoreSpecialGroup():
     def __init__(self, obj):
-        obj.addExtension("App::GroupExtensionPython", self)
+        obj.addExtension("App::GroupExtensionPython")
         obj.Proxy = self
 
     def allowObject(self, obj):
@@ -394,7 +395,7 @@ class SaveRestoreSpecialGroup():
 # class must be defined in global scope to allow it to be reloaded on document open
 class SaveRestoreSpecialGroupViewProvider():
     def __init__(self, obj):
-        obj.addExtension("Gui::ViewProviderGroupExtensionPython", self)
+        obj.addExtension("Gui::ViewProviderGroupExtensionPython")
         obj.Proxy = self
 
     def testFunction(self):
@@ -468,7 +469,7 @@ class DocumentSaveRestoreCases(unittest.TestCase):
     grp1 = Doc.addObject("App::DocumentObject", "Extension_1")
     grp2 = Doc.addObject("App::FeaturePython", "Extension_2")
 
-    grp1.addExtension("App::GroupExtensionPython", None)
+    grp1.addExtension("App::GroupExtensionPython")
     SaveRestoreSpecialGroup(grp2)
     if FreeCAD.GuiUp:
         SaveRestoreSpecialGroupViewProvider(grp2.ViewObject)
@@ -480,16 +481,12 @@ class DocumentSaveRestoreCases(unittest.TestCase):
 
     self.failUnless(Doc.Extension_1.hasExtension("App::GroupExtension"))
     self.failUnless(Doc.Extension_2.hasExtension("App::GroupExtension"))
-    self.failUnless(Doc.Extension_1.ExtensionProxy is None)
-    self.failUnless(Doc.Extension_2.ExtensionProxy is not None)
     self.failUnless(Doc.Extension_2.Group[0] is Doc.Obj)
     self.failUnless(hasattr(Doc.Extension_2.Proxy, 'allowObject'))
-    self.failUnless(hasattr(Doc.Extension_2.ExtensionProxy, 'allowObject'))
 
     if FreeCAD.GuiUp:
       self.failUnless(Doc.Extension_2.ViewObject.hasExtension("Gui::ViewProviderGroupExtensionPython"))
       self.failUnless(hasattr(Doc.Extension_2.ViewObject.Proxy, 'testFunction'))
-      self.failUnless(hasattr(Doc.Extension_2.ViewObject.ExtensionProxy, 'testFunction'))
 
     FreeCAD.closeDocument("SaveRestoreExtensions")
 
@@ -1803,7 +1800,7 @@ class DocumentObserverCases(unittest.TestCase):
     self.failUnless(self.Obs.parameter2.pop() == 'Prop')
     self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
 
-    pyobj.addExtension("App::GroupExtensionPython", None)
+    pyobj.addExtension("App::GroupExtensionPython")
     self.failUnless(self.Obs.signal.pop() == 'ObjDynExt')
     self.failUnless(self.Obs.parameter.pop() is pyobj)
     self.failUnless(self.Obs.parameter2.pop() == 'App::GroupExtensionPython')
@@ -1945,7 +1942,7 @@ class DocumentObserverCases(unittest.TestCase):
     self.failUnless(self.GuiObs.parameter.pop(0) is obj.ViewObject)
     self.failUnless(not self.GuiObs.signal and not self.GuiObs.parameter and not self.GuiObs.parameter2)
 
-    obj.ViewObject.addExtension("Gui::ViewProviderGroupExtensionPython", None)
+    obj.ViewObject.addExtension("Gui::ViewProviderGroupExtensionPython")
     self.failUnless(self.Obs.signal.pop() == 'ObjDynExt')
     self.failUnless(self.Obs.parameter.pop() is obj.ViewObject)
     self.failUnless(self.Obs.parameter2.pop() == 'Gui::ViewProviderGroupExtensionPython')
