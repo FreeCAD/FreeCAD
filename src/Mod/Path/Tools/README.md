@@ -75,8 +75,8 @@ solid is updated to the correct representation.
    * this creates a PropertyBag object inside the Body (assuming it was selected)
    * add properties to which define the tool bit's shape and put those into the group 'Shape'
    * add any other properties to the bag which might be useful for the tool bit
-1. Construct the body of the tool bit and assign experssions referencing properties from the PropertyBag (in the Shape
-   Group) for all constraints.
+1. Construct the body of the tool bit and assign experssions referencing properties from the PropertyBag (in the
+   `Shape` Group) for all constraints.
    * Position the tip of the tool bit on the origin (0,0)
 1. Save the document as a new file in the Shape directory
    * Before saving the document make sure you have _Save Thumbnail_ selected, and _Add program logo_ deselected in
