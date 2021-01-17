@@ -467,21 +467,25 @@ SubObjectT SubObjectT::getChild(const App::DocumentObject *child) const
     return res;
 }
 
-std::string SubObjectT::getObjectFullName() const
+std::string SubObjectT::getObjectFullName(const char *docName) const
 {
     std::ostringstream ss;
-    ss << getDocumentName() << "#" << getObjectName();
+    if (!docName || getDocumentName() != docName)
+        ss << getDocumentName() << "#";
+    ss << getObjectName();
     if (getObjectLabel().size() && getObjectLabel() != getObjectName())
         ss << " (" << getObjectLabel() << ")";
     return ss.str();
 }
 
-std::string SubObjectT::getSubObjectFullName() const
+std::string SubObjectT::getSubObjectFullName(const char *docName) const
 {
     if (subname.empty())
-        return getObjectFullName();
+        return getObjectFullName(docName);
     std::ostringstream ss;
-    ss << getDocumentName() << "#" << getObjectName() << "." << subname;
+    if (!docName || getDocumentName() != docName)
+        ss << getDocumentName() << "#";
+    ss << getObjectName() << "." << subname;
     auto sobj = getSubObject();
     if (sobj && sobj->Label.getStrValue() != sobj->getNameInDocument())
         ss << " (" << sobj->Label.getValue() << ")";

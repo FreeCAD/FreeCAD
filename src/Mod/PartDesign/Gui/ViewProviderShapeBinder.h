@@ -78,14 +78,22 @@ public:
     virtual void attach(App::DocumentObject *obj) override;
     virtual void onChanged(const App::Property *prop) override;
     virtual void getExtraIcons(std::vector<std::pair<QByteArray, QPixmap> > &) const override;
+    virtual QString getToolTip(const QByteArray &tag) const override;
+    virtual bool iconClicked(const QByteArray &tag) override;
     virtual void updateData(const App::Property*) override;
     virtual Gui::ViewProviderDocumentObject *getLinkedViewProvider(
             std::string *subname=0, bool recursive=false) const override;
 
 private:
     void updatePlacement(bool transaction);
+    void generateIcons() const;
 
 private:
+    struct IconInfo {
+        std::vector<App::SubObjectT> objs;
+        QPixmap pixmap;
+    };
+    mutable std::map<QByteArray, IconInfo> iconMap;
     std::vector<boost::signals2::scoped_connection> iconChangeConns;
     int _dropID = 0;
 };

@@ -204,11 +204,17 @@ public:
     /// Return the subname path
     const std::string &getSubName() const;
 
-    /// Return docname#objname
-    std::string getObjectFullName() const;
+    /** Return docname#objname (label)
+     * @param docName: optional document name. The document prefix will only be printed
+     * if it is different then the given 'doc'.
+     */
+    std::string getObjectFullName(const char *docName=nullptr) const;
 
-    /// Return docname#objname.subname.
-    std::string getSubObjectFullName() const;
+    /** Return docname#objname.subname (label)
+     * @param doc: optional document name. The document prefix will only be printed
+     * if it is different then the given 'doc'.
+     */
+    std::string getSubObjectFullName(const char *docName=nullptr) const;
 
     /// Return the subname path without sub-element
     std::string getSubNameNoElement() const;

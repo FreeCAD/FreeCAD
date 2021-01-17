@@ -314,14 +314,12 @@ void ViewProviderSubShapeBinder::updateData(const App::Property *prop)
                         continue;
                     auto vp = Gui::Application::Instance->getViewProvider(res.first->getSubObject());
                     if (vp) {
-                        iconChangeConns.push_back(vp->signalChangeIcon.connect(this->signalChangeIcon));
-                        if (iconChangeConns.size() >= 3)
-                            break;
+                        iconChangeConns.push_back(vp->signalChangeIcon.connect(
+                            [this]() { this->iconMap.clear(); this->signalChangeIcon(); }));
                     }
                 }
-                if (iconChangeConns.size() >= 3)
-                    break;
             }
+            this->iconMap.clear();
             signalChangeIcon();
         }
     }
@@ -363,7 +361,6 @@ std::string ViewProviderSubShapeBinder::dropObjectEx(App::DocumentObject *obj, A
         updatePlacement(false);
     return std::string(".");
 }
-
 
 bool ViewProviderSubShapeBinder::doubleClicked() {
     updatePlacement(true);
@@ -489,7 +486,7 @@ std::vector<App::DocumentObject*> ViewProviderSubShapeBinder::claimChildren(void
 
 struct PixmapInfo {
     int count = 0;
-    std::size_t index;
+    QByteArray tag;
 
     void generateIcon(QPixmap &px, const QPixmap &pxTag)
     {
@@ -554,11 +551,95 @@ Gui::ViewProviderDocumentObject *ViewProviderSubShapeBinder::getLinkedViewProvid
 void ViewProviderSubShapeBinder::getExtraIcons(
         std::vector<std::pair<QByteArray, QPixmap> > &icons) const
 {
-    auto binder = Base::freecad_dynamic_cast<PartDesign::SubShapeBinder>(getObject());
-    if (!binder) {
-        inherited::getExtraIcons(icons);
-        return;
+    generateIcons();
+    for (auto &v : iconMap)
+        icons.emplace_back(v.first, v.second.pixmap);
+}
+
+QString ViewProviderSubShapeBinder::getToolTip(const QByteArray &tag) const
+{
+    generateIcons();
+
+    std::ostringstream ss;
+    auto doc = getObject()->getDocument()->getName();
+
+    if (tag == Gui::TreeWidget::getMainIconTag()) {
+        auto self = dynamic_cast<PartDesign::SubShapeBinder*>(getObject());
+        if (!self)
+            return QString();
+        for(auto &link : self->Support.getSubListValues()) {
+            auto obj = link.getValue();
+            if(!obj || !obj->getNameInDocument())
+                continue;
+            const auto &subs = link.getSubValues();
+            if(subs.size()) {
+                for (auto &sub : subs)
+                    ss << "\n" << App::SubObjectT(obj, sub.c_str()).getSubObjectFullName(doc);
+            } else
+                ss << "\n" << App::SubObjectT(obj, "").getObjectFullName(doc);
+        }
+    } else {
+        auto it = iconMap.find(tag);
+        if (it == iconMap.end())
+            return inherited::getToolTip(tag);
+        for (auto &objT : it->second.objs)
+            ss << "\n" << objT.getSubObjectFullName(doc);
     }
+
+    if (!ss.tellp())
+        return QString();
+    return QString::fromLatin1("%1%2").arg(
+            QObject::tr("Bound objects. ALT + click this icon to select.\n"),
+            QString::fromUtf8(ss.str().c_str()));
+}
+
+bool ViewProviderSubShapeBinder::iconClicked(const QByteArray &tag)
+{
+    auto self = dynamic_cast<PartDesign::SubShapeBinder*>(getObject());
+    if (!self)
+        return false;
+    const std::vector<App::SubObjectT> *objs = nullptr;
+    std::vector<App::SubObjectT> _objs;
+    if (tag == Gui::TreeWidget::getMainIconTag()) {
+        for(auto &link : self->Support.getSubListValues()) {
+            auto obj = link.getValue();
+            if(!obj || !obj->getNameInDocument())
+                continue;
+            const auto &subs = link.getSubValues();
+            if(subs.size()) {
+                for (auto &sub : subs)
+                    _objs.emplace_back(obj, sub.c_str());
+            } else
+                _objs.emplace_back(obj, "");
+        }
+        objs = &_objs;
+    } else {
+        auto it = iconMap.find(tag);
+        if (it == iconMap.end())
+            return inherited::iconClicked(tag);
+        objs = &it->second.objs;
+    }
+    if (!objs || objs->empty())
+        return false;
+
+    if (!(QApplication::queryKeyboardModifiers() & Qt::ControlModifier)) {
+        Gui::Selection().selStackPush();
+        Gui::Selection().clearSelection();
+    }
+    for (auto &objT : *objs)
+        Gui::Selection().addSelection(objT);
+    Gui::Selection().selStackPush(true, true);
+    return true;
+}
+
+void ViewProviderSubShapeBinder::generateIcons() const
+{
+    if (iconMap.size())
+        return;
+
+    auto binder = Base::freecad_dynamic_cast<PartDesign::SubShapeBinder>(getObject());
+    if (!binder)
+        return;
 
     static QPixmap myPixmap;
     if (myPixmap.isNull())
@@ -567,7 +648,6 @@ void ViewProviderSubShapeBinder::getExtraIcons(
 
     std::set<App::SubObjectT> objs;
     std::unordered_map<qint64, PixmapInfo> cacheKeys;
-    std::size_t count = std::max(icons.size() + 3, (std::size_t)5);
     for(auto &l : binder->Support.getSubListValues()) {
         for (auto & sub : l.getSubValues()) {
             App::SubObjectT sobjT(l.getValue(), sub.c_str());
@@ -597,25 +677,29 @@ void ViewProviderSubShapeBinder::getExtraIcons(
 
                 auto & pxInfo = cacheKeys[(binder?myPixmap.cacheKey():0) ^ px.cacheKey() ^ tag];
                 QPixmap pxTag;
+                auto it = iconMap.begin();
                 if (pxInfo.count == 0) {
-                    if (icons.size() >= count)
+                    if (iconMap.size() >= 3)
                         break;
-                    pxInfo.index = icons.size();
                     if (binder)
                         px = Gui::BitmapFactory().merge(px, myPixmap, Gui::BitmapFactoryInst::TopLeft);
                     if (tag)
                         pxTag = featVp->getTagIcon().scaled(40, 40,
                             Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-                    icons.emplace_back(QByteArray(), px);
+                    pxInfo.tag = QByteArray("Binder:") + QByteArray::number((int)iconMap.size());
+                    it = iconMap.emplace(pxInfo.tag, IconInfo()).first;
+                    it->second.pixmap = px;
+                } else {
+                    it = iconMap.find(pxInfo.tag);
+                    assert(it != iconMap.end());
                 }
-                pxInfo.generateIcon(icons[pxInfo.index].second, pxTag);
+                pxInfo.generateIcon(it->second.pixmap, pxTag);
+                it->second.objs.push_back(std::move(sobjT));
             }
         }
-        if (icons.size() >= count)
+        if (iconMap.size() >= 3)
             break;
     }
-
-    inherited::getExtraIcons(icons);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
