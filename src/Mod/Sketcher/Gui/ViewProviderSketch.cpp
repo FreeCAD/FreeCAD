@@ -3677,7 +3677,7 @@ QImage ViewProviderSketch::renderConstrIcon(const QString &type,
     QImage icon = Gui::BitmapFactory().pixmapFromSvg(type.toLatin1().data(),QSizeF(edit->constraintIconSize,edit->constraintIconSize)).toImage();
 
     QFont font = QApplication::font();
-    font.setPixelSize(static_cast<int>(0.8 * edit->constraintIconSize));
+    font.setPixelSize(static_cast<int>(1.0 * edit->constraintIconSize));
     font.setBold(true);
     QFontMetrics qfm = QFontMetrics(font);
 
