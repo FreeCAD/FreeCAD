@@ -128,9 +128,7 @@ protected:
 
     void contextMenuEvent(QContextMenuEvent *event);
     void closeEvent(QCloseEvent*);
-#if QT_VERSION >= 0x050300
-    QPageSize::PageSizeId getPaperSize(int w, int h) const;
-#else
+#if QT_VERSION < 0x050300
     QPrinter::PaperSize getPaperSize(int w, int h) const;
 #endif
 
