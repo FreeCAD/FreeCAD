@@ -69,7 +69,8 @@ public:
         Closable = 2,
         Restoring = 3,
         Recomputing = 4,
-        PartialRestore = 5
+        PartialRestore = 5,
+        RestoreError = 10
     };
 
     /** @name Properties */
