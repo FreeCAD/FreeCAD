@@ -498,6 +498,7 @@ public:
     QPixmap pixmapReplace;
 
     bool restorePreselCursor = false;
+    bool skipMouseRelease = false;
 };
 
 
@@ -2194,6 +2195,7 @@ void TreeWidget::mousePressEvent(QMouseEvent *event) {
     QByteArray tag;
     auto oitem = pimpl->itemHitTest(event->pos(), &tag);
     if (oitem) {
+        setCurrentItem(oitem, 0, QItemSelectionModel::NoUpdate);
         if (tag == _TreeVisTag) {
             const char *objName = oitem->object()->getObject()->getNameInDocument();
             auto setVisible = [oitem](App::DocumentObject *obj, const char *sobjName, bool vis) {
@@ -2242,6 +2244,7 @@ void TreeWidget::mousePressEvent(QMouseEvent *event) {
                             int vis = obj->isElementVisible(objName);
                             if(vis>=0) {
                                 setVisible(obj, objName, !vis);
+                                pimpl->skipMouseRelease = true;
                                 return;
                             }
                         }
@@ -2249,11 +2252,13 @@ void TreeWidget::mousePressEvent(QMouseEvent *event) {
                 }
                 if (visible >= 0) {
                     setVisible(parent, objName, !visible);
+                    pimpl->skipMouseRelease = true;
                     return;
                 }
             }
             setVisible(oitem->object()->getObject(), nullptr,
                        !oitem->object()->Visibility.getValue());
+            pimpl->skipMouseRelease = true;
             return;
         } else if (tag.size() && (event->modifiers() & Qt::AltModifier)) {
             ViewProviderDocumentObject* vp = oitem->object();
@@ -2263,11 +2268,20 @@ void TreeWidget::mousePressEvent(QMouseEvent *event) {
                 // If the double click starts an editing, let the transaction persist
                 if (!editDoc && Application::Instance->editDocument())
                     committer.setEnable(false);
+                pimpl->skipMouseRelease = true;
                 return;
             }
         }
     }
     QTreeWidget::mousePressEvent(event);
+}
+
+void TreeWidget::mouseReleaseEvent(QMouseEvent *ev)
+{
+    if (pimpl->skipMouseRelease)
+        pimpl->skipMouseRelease = false;
+    else
+        QTreeWidget::mouseReleaseEvent(ev);
 }
 
 void TreeWidget::startDragging() {
@@ -6203,7 +6217,6 @@ static QIcon getItemIcon(int currentStatus,
             pxHidden = BitmapFactory().pixmapFromSvg("TreeHidden", QSizeF(32,32));
         if (hasPxOff)
             pxOff = BitmapFactory().merge(pxOff, pxHidden, BitmapFactoryInst::TopLeft);
-            pxOff = BitmapFactory().merge(pxOff, px, BitmapFactoryInst::TopRight);
         pxOn = BitmapFactory().merge(pxOn, pxHidden, BitmapFactoryInst::TopLeft);
     }
 

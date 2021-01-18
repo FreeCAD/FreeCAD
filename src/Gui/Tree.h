@@ -196,6 +196,7 @@ protected:
     void mouseDoubleClickEvent(QMouseEvent * event) override;
     void mouseMoveEvent(QMouseEvent *) override;
     void mousePressEvent(QMouseEvent *) override;
+    void mouseReleaseEvent(QMouseEvent *) override;
 
 protected:
     void showEvent(QShowEvent *) override;
