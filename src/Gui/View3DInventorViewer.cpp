@@ -77,6 +77,7 @@
 # include <Inventor/VRMLnodes/SoVRMLGroup.h>
 # include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/nodes/SoTransparencyType.h>
+# include <QApplication>
 # include <QEventLoop>
 # include <QKeyEvent>
 # include <QWheelEvent>
@@ -599,16 +600,31 @@ void View3DInventorViewer::init()
     }
 
     //create the cursors
+#if defined(Q_OS_WIN32)
+    qreal dpr = qApp->devicePixelRatio();
+#endif
     QBitmap cursor = QBitmap::fromData(QSize(ROTATE_WIDTH, ROTATE_HEIGHT), rotate_bitmap);
     QBitmap mask = QBitmap::fromData(QSize(ROTATE_WIDTH, ROTATE_HEIGHT), rotate_mask_bitmap);
+#if defined(Q_OS_WIN32)
+    cursor.setDevicePixelRatio(dpr);
+    mask.setDevicePixelRatio(dpr);
+#endif
     spinCursor = QCursor(cursor, mask, ROTATE_HOT_X, ROTATE_HOT_Y);
 
     cursor = QBitmap::fromData(QSize(ZOOM_WIDTH, ZOOM_HEIGHT), zoom_bitmap);
     mask = QBitmap::fromData(QSize(ZOOM_WIDTH, ZOOM_HEIGHT), zoom_mask_bitmap);
+#if defined(Q_OS_WIN32)
+    cursor.setDevicePixelRatio(dpr);
+    mask.setDevicePixelRatio(dpr);
+#endif
     zoomCursor = QCursor(cursor, mask, ZOOM_HOT_X, ZOOM_HOT_Y);
 
     cursor = QBitmap::fromData(QSize(PAN_WIDTH, PAN_HEIGHT), pan_bitmap);
     mask = QBitmap::fromData(QSize(PAN_WIDTH, PAN_HEIGHT), pan_mask_bitmap);
+#if defined(Q_OS_WIN32)
+    cursor.setDevicePixelRatio(dpr);
+    mask.setDevicePixelRatio(dpr);
+#endif
     panCursor = QCursor(cursor, mask, PAN_HOT_X, PAN_HOT_Y);
     naviCube = new NaviCube(this);
     naviCubeEnabled = true;
