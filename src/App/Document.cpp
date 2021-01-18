@@ -2745,6 +2745,7 @@ void Document::restore (const char *filename,
     }
     catch (const Base::Exception& e) {
         Base::Console().Error("Invalid Document.xml: %s\n", e.what());
+        setStatus(Document::RestoreError, true);
     }
 
     d->partialLoadObjects.clear();
