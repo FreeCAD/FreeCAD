@@ -45,6 +45,7 @@
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
 #include <App/ExpressionParser.h>
+#include <App/Material.h>
 
 #include "Command.h"
 #include "Widgets.h"
@@ -653,6 +654,30 @@ QColor ColorButton::color() const
     return d->col;
 }
 
+/**
+ * Sets the packed color \a c to the button.
+ */
+void ColorButton::setPackedColor(uint32_t c)
+{
+    App::Color color;
+    color.setPackedValue(c);
+    d->col.setRedF(color.r);
+    d->col.setGreenF(color.g);
+    d->col.setBlueF(color.b);
+    d->col.setAlphaF(color.a);
+    d->dirty = true;
+    update();
+}
+
+/**
+ * Returns the current packed color of the button.
+ */
+uint32_t ColorButton::packedColor() const
+{
+    App::Color color(d->col.redF(), d->col.greenF(), d->col.blueF(), d->col.alphaF());
+    return color.getPackedValue();
+}
+
 void ColorButton::setAllowChangeColor(bool ok)
 {
     d->allowChange = ok;
@@ -841,6 +866,14 @@ void ColorButton::onRejected()
 {
     setColor(d->old);
     changed();
+}
+
+// ------------------------------------------------------------------------------
+
+TransparentColorButton::TransparentColorButton(QWidget *parent)
+    :ColorButton(parent)
+{
+    setAllowChangeAlpha(true);
 }
 
 // ------------------------------------------------------------------------------

@@ -286,6 +286,7 @@ private:
 /////////////////////////////////////////////////////////////////////////////////
 
 std::set<TreeWidget *> TreeWidget::Instances;
+static QBrush _TreeItemBackground;
 static TreeWidget *_LastSelectedTreeWidget;
 const int TreeWidget::DocumentType = 1000;
 const int TreeWidget::ObjectType = 1001;
@@ -574,7 +575,38 @@ void TreeParams::onItemSpacingChanged()
         tree->update();
 }
 
-TreeParams *TreeParams::Instance() {
+void TreeParams::onItemBackgroundChanged()
+{
+    if (ItemBackground()) {
+        App::Color color;
+        color.setPackedValue(ItemBackground());
+        QColor col;
+        col.setRedF(color.r);
+        col.setGreenF(color.g);
+        col.setBlueF(color.b);
+        col.setAlphaF(color.a);
+        _TreeItemBackground = QBrush(col);
+    } else
+        _TreeItemBackground = QBrush();
+    for(auto tree : TreeWidget::Instances)
+        tree->update();
+}
+
+void TreeParams::onItemBackgroundPaddingChanged()
+{
+    if (ItemBackground()) {
+        for(auto tree : TreeWidget::Instances)
+            tree->update();
+    }
+}
+
+void TreeParams::onHideColumnChanged()
+{
+    for(auto tree : TreeWidget::Instances)
+        tree->setColumnHidden(1, TreeParams::HideColumn());
+}
+
+TreeParams *TreeParams::instance() {
     static TreeParams *instance;
     if(!instance)
         instance = new TreeParams;
@@ -750,6 +782,8 @@ public:
     virtual QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
     virtual void initStyleOption(QStyleOptionViewItem *option, const QModelIndex &index) const;
+
+    virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 };
 
 } // namespace Gui
@@ -757,6 +791,32 @@ public:
 TreeWidgetItemDelegate::TreeWidgetItemDelegate(QObject* parent)
     : QStyledItemDelegate(parent)
 {
+}
+
+void TreeWidgetItemDelegate::paint(QPainter *painter,
+                const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+#if QT_VERSION < 0x050000
+    return QStyledItemDelegate::paint(painter, option, index);
+#else
+    QStyleOptionViewItem opt = option;
+    initStyleOption(&opt, index);
+
+    TreeWidget * tree = static_cast<TreeWidget*>(parent());
+    if (index.column() == 0
+            && tree->testAttribute(Qt::WA_NoSystemBackground)
+            && opt.backgroundBrush.style() == Qt::NoBrush
+            && _TreeItemBackground.style() != Qt::NoBrush)
+    {
+        QRect rect = opt.rect;
+        int width = opt.fontMetrics.boundingRect(opt.text).width()
+            + opt.decorationSize.width() + TreeParams::ItemBackgroundPadding();
+        if (width < rect.width())
+            rect.setWidth(width);
+        painter->fillRect(rect, _TreeItemBackground);
+    }
+    tree->style()->drawControl(QStyle::CE_ItemViewItem, &opt, painter, tree);
+#endif
 }
 
 void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem *option,
@@ -827,6 +887,17 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
     , editingItem(0), hiddenItem(0)
     , myName(name)
 {
+    if (TreeParams::ItemBackground() && _TreeItemBackground.style() == Qt::NoBrush) {
+        App::Color color;
+        color.setPackedValue(TreeParams::ItemBackground());
+        QColor col;
+        col.setRedF(color.r);
+        col.setGreenF(color.g);
+        col.setBlueF(color.b);
+        col.setAlphaF(color.a);
+        _TreeItemBackground = QBrush(col);
+    }
+
     pimpl.reset(new Private(this));
 
     Instances.insert(this);
@@ -1011,6 +1082,8 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
                 v.second->slotNewObject(*vobj);
         }
     }
+
+    setColumnHidden(1, TreeParams::HideColumn());
 }
 
 TreeWidget::~TreeWidget()
@@ -5968,6 +6041,7 @@ DocumentObjectItem::~DocumentObjectItem()
 
 void DocumentObjectItem::restoreBackground() {
     this->setBackground(0,this->bgBrush);
+    this->bgBrush = QBrush();
 }
 
 void DocumentObjectItem::setHighlight(bool set, Gui::HighlightMode high) {

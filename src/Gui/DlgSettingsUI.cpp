@@ -40,6 +40,7 @@
 #include "DlgSettingsUI.h"
 #include "ViewParams.h"
 #include "ExprParams.h"
+#include "TreeParams.h"
 #include "Widgets.h"
 
 using namespace Gui::Dialog;
@@ -49,6 +50,13 @@ using namespace Gui::Dialog;
 class DlgSettingsUI::Private
 {
 public:
+#define FC_TREEVIEW_PARAMS \
+    FC_UI_BRUSH(TreeParams, ItemBackground, "Item background color") \
+    FC_UI_SPINBOX(TreeParams, ItemBackgroundPadding, "Item background padding", 0, 100, 1) \
+    FC_UI_CHECKBOX(TreeParams, HideColumn, "Hide extra column") \
+    FC_UI_CHECKBOX(TreeParams, HideScrollBar,"Hide scroll bar") \
+    FC_UI_CHECKBOX(TreeParams, HideHeaderView,"Hide header") \
+
 #define FC_EXPRESSION_PARAMS \
     FC_UI_CHECKBOX(ExprParams, AutoHideEditorIcon, "Auto hide editor icon") \
     FC_UI_LINEEDIT(ExprParams, EditorTrigger, "Editor trigger shortcut") \
@@ -68,8 +76,6 @@ public:
 #define FC_OVERLAY_PARAMS \
     FC_UI_CHECKBOX(ViewParams, DockOverlayHideTabBar,"Hide tab bar") \
     FC_UI_CHECKBOX(ViewParams, DockOverlayHidePropertyViewScrollBar,"Hide property view scroll bar") \
-    FC_UI_CHECKBOX(ViewParams, DockOverlayHideScrollBar,"Hide tree view scroll bar") \
-    FC_UI_CHECKBOX(ViewParams, DockOverlayHideHeaderView,"Hide tree view header") \
     FC_UI_CHECKBOX(ViewParams, DockOverlayAutoView, "Auto hide in non 3D view") \
     FC_UI_CHECKBOX(ViewParams, DockOverlayMouseThrough, "Enable ALT + Mouse pass through") \
     FC_UI_CHECKBOX(ViewParams, DockOverlayAutoMouseThrough, "Auto mouse pass through") \
@@ -85,12 +91,16 @@ public:
     FC_UI_COMBOBOX(ViewParams, DockOverlayAnimationCurve, "Animation curve type") \
 
 #define FC_UI_PARAMS \
+    FC_TREEVIEW_PARAMS \
     FC_EXPRESSION_PARAMS \
     FC_PIEMENU_PARAMS \
     FC_OVERLAY_PARAMS
 
 #define FC_UI_CHECKBOX(_params, _name, _label) \
     FC_UI_PARAM(_params, _name, _label, QCheckBox, isChecked, setChecked)
+
+#define FC_UI_BRUSH(_params, _name, _label) \
+    FC_UI_PARAM(_params, _name, _label, Gui::TransparentColorButton, packedColor, setPackedColor)
 
 #define FC_UI_LINEEDIT(_params, _name, _label) \
     FC_UI_PARAM(_params, _name, _label, Gui::AccelLineEdit, latinText, setLatinText)
@@ -152,6 +162,7 @@ DlgSettingsUI::DlgSettingsUI(QWidget* parent)
 #define FC_UI_PARAM(_params, _name, _label, _type, _getter, _setter) do {\
         ui->_name = new _type(parent);\
         ui->label##_name = new QLabel(parent);\
+        ui->label##_name->setMinimumHeight(25);\
         ui->label##_name->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);\
         layout->addWidget(ui->label##_name, row, 0);\
         layout->addWidget(ui->_name, row, 1);\
@@ -169,6 +180,14 @@ DlgSettingsUI::DlgSettingsUI(QWidget* parent)
     int row;
     QGroupBox *group;
     QGridLayout *layout;
+
+    group = new QGroupBox(tr("Tree view"), this);
+    vlayout->addWidget(group);
+    layout = new QGridLayout();
+    group->setLayout(layout);
+    row = 0;
+    FC_TREEVIEW_PARAMS;
+    layout->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Fixed), row-1, 2);
 
     group = new QGroupBox(tr("Expression editor"), this);
     vlayout->addWidget(group);

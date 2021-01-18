@@ -65,6 +65,7 @@
 #include "TaskView/TaskView.h"
 #include "ComboView.h"
 #include "Tree.h"
+#include "TreeParams.h"
 #include <App/Application.h>
 #include "propertyeditor/PropertyEditor.h"
 #include "OverlayWidgets.h"
@@ -1236,7 +1237,7 @@ void OverlayTabWidget::_setOverlayMode(QWidget *widget, int enable)
             if (treeView) {
                 auto scrollArea = static_cast<QAbstractScrollArea*>(parent);
                 if (scrollArea->verticalScrollBar() == widget) {
-                    if (!ViewParams::getDockOverlayHideScrollBar() || enable==0)
+                    if (!TreeParams::HideScrollBar() || enable==0)
                         widget->setStyleSheet(QString());
                     else {
                         static QString _style = QLatin1String("*{width:0}");
@@ -1247,7 +1248,7 @@ void OverlayTabWidget::_setOverlayMode(QWidget *widget, int enable)
 
             if (treeView) {
                 auto header = treeView->header();
-                if (!ViewParams::getDockOverlayHideHeaderView() || enable==0)
+                if (!TreeParams::HideHeaderView() || enable==0)
                     header->setStyleSheet(QString());
                 else {
                     static QString _style = QLatin1String(

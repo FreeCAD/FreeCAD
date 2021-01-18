@@ -223,6 +223,9 @@ public:
     void setColor(const QColor&);
     QColor color() const;
 
+    void setPackedColor(uint32_t);
+    uint32_t packedColor() const;
+
     void setAllowChangeColor(bool);
     bool allowChangeColor() const;
 
@@ -254,6 +257,12 @@ protected:
 
 private:
     struct ColorButtonP *d;
+};
+
+class GuiExport TransparentColorButton : public ColorButton
+{
+public:
+    TransparentColorButton(QWidget* parent = 0);
 };
 
 // ------------------------------------------------------------------------------
