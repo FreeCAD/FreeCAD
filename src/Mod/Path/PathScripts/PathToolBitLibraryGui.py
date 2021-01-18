@@ -363,9 +363,7 @@ class ToolBitLibrary(object):
 
     def __init__(self):
         PathLog.track()
-        if not self.checkWorkingDir():
-            return
-
+        self.checkWorkingDir()
         self.factory = ModelFactory()
         self.temptool = None
         self.toolModel = PySide.QtGui.QStandardItemModel(0, len(self.columnNames()))
@@ -413,15 +411,16 @@ class ToolBitLibrary(object):
 
                 if ret == qm.Yes:
                     os.mkdir(subdir, mode)
-                    qm = PySide.QtGui.QMessageBox
-                    ret = qm.question(None,'', "Copy example files to new {} directory?".format(dir), qm.Yes | qm.No)
-                    if ret == qm.Yes:
-                        src="{}/{}".format(defaultdir, dir)
-                        src_files = os.listdir(src)
-                        for file_name in src_files:
-                            full_file_name = os.path.join(src, file_name)
-                            if os.path.isfile(full_file_name):
-                                shutil.copy(full_file_name, subdir)
+                    if dir != 'Shape':
+                        qm = PySide.QtGui.QMessageBox
+                        ret = qm.question(None,'', "Copy example files to new {} directory?".format(dir), qm.Yes | qm.No)
+                        if ret == qm.Yes:
+                            src="{}/{}".format(defaultdir, dir)
+                            src_files = os.listdir(src)
+                            for file_name in src_files:
+                                full_file_name = os.path.join(src, file_name)
+                                if os.path.isfile(full_file_name):
+                                    shutil.copy(full_file_name, subdir)
 
         return True
 
