@@ -67,6 +67,7 @@ public:
 
 public Q_SLOTS:
     void show();
+    void applyStylesheet();
 
 protected:
     void showEvent(QShowEvent*);
@@ -93,6 +94,7 @@ private:
     bool discarded;
     const Base::Unit impliedUnit;
 
+    QString stylesheet;
     QString background;
     QString colorLog;
     QString colorError;

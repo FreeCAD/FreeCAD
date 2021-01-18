@@ -91,6 +91,10 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
     // set to false. Then a normal non-modal dialog will be shown instead (#0002440).
     this->noBackground = ExprParams::NoSystemBackground();
 
+    auto hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/MainWindow");
+    QString mainstyle = QString::fromLatin1(hGrp->GetASCII("StyleSheet").c_str());
+    bool darkstyle = mainstyle.indexOf(QLatin1String("dark"),0,Qt::CaseInsensitive) >= 0;
     if (this->noBackground) {
         ui->expression->setStyleSheet(QLatin1String("margin:0px"));
 
@@ -99,11 +103,8 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
         setAttribute(Qt::WA_TranslucentBackground, true);
         layout()->setContentsMargins(0,0,0,0);
 
-        auto hGrp = App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/MainWindow");
-        QString mainstyle = QString::fromLatin1(hGrp->GetASCII("StyleSheet").c_str());
         uint checkboxColor;
-        if (mainstyle.indexOf(QLatin1String("dark"),0,Qt::CaseInsensitive) >= 0) {
+        if (darkstyle) {
             this->background = QString::fromLatin1("background:#6e6e6e");
             checkboxColor = 0x505050;
         } else {
@@ -118,9 +119,16 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
     } else
         this->background = QString::fromLatin1("background:transparent");
 
+    if (darkstyle)
+        this->stylesheet = QLatin1String("*{color:palette(bright-text)}");
+    else
+        this->stylesheet = QLatin1String("*{color:palette(text)}");
+    /// Some qt version seems having trouble apply the stylesheet on creation
+    QTimer::singleShot(300, this, SLOT(applyStylesheet()));
+
     ui->msg->setStyleSheet(this->background);
 
-    auto hGrp = App::GetApplication().GetParameterGroupByPath(
+    hGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/OutputWindow");
     uint color = hGrp->GetUnsigned("colorLogging", 0xffff);
     color >>= 8;
@@ -146,7 +154,7 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
     if (wantreturn) {
         adjustingExpressionSize = true;
         timer.start(100);
-    } else
+    } else 
         adjustExpressionSize();
 
     connect(ui->checkBoxWantReturn, SIGNAL(toggled(bool)), this, SLOT(wantReturnChecked(bool)));
@@ -258,6 +266,11 @@ void DlgExpressionInput::setExpressionInputSize(int width, int height)
     (void)height;
     minimumWidth = width;
     adjustPosition();
+}
+
+void DlgExpressionInput::applyStylesheet()
+{
+    this->setStyleSheet(stylesheet);
 }
 
 void DlgExpressionInput::mouseReleaseEvent(QMouseEvent* ev)
@@ -441,16 +454,18 @@ void DlgExpressionInput::wantReturnChecked(bool checked)
 void DlgExpressionInput::adjustExpressionSize()
 {
     int height;
-    if (!ui->checkBoxWantReturn->isChecked())
-        height = 30;
-    else {
+    if (!ui->checkBoxWantReturn->isChecked()) {
+        // leave space for scroll bar
+        ui->expression->setMinimumHeight(40);
+        height = 40;
+    } else {
         const QString &text = ui->expression->toPlainText();
         auto textdoc = ui->expression->document();
         int linecount = textdoc->blockCount();
-        if (linecount < 3)
-            linecount = 3;
-        else if (linecount > 6)
-            linecount = 6;
+        if (linecount < 4)
+            linecount = 4;
+        else if (linecount > 8)
+            linecount = 8;
 
         QFontMetrics fm (textdoc->defaultFont());
         QMargins margins = ui->expression->contentsMargins();
