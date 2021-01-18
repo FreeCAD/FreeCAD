@@ -70,6 +70,7 @@ public:
         Restoring = 3,
         Recomputing = 4,
         PartialRestore = 5
+        RestoreError = 10
     };
 
     /** @name Properties */

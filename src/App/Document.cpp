@@ -1861,6 +1861,7 @@ void Document::restore (void)
     }
     catch (const Base::Exception& e) {
         Base::Console().Error("Invalid Document.xml: %s\n", e.what());
+        setStatus(Document::RestoreError, true);
     }
 
     // Special handling for Gui document, the view representations must already
