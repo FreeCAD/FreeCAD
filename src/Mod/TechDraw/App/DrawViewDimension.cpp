@@ -101,7 +101,7 @@ const char* DrawViewDimension::MeasureTypeEnums[]= {"True",
 // constraint to set the step size to 0.1
 static const App::PropertyQuantityConstraint::Constraints ToleranceConstraint = { -DBL_MAX, DBL_MAX, 0.1 };
 // constraint to force positive values
-static const App::PropertyQuantityConstraint::Constraints PositiveConstraint = { DBL_MIN, DBL_MAX, 0.1 };
+static const App::PropertyQuantityConstraint::Constraints PositiveConstraint = { 0.0, DBL_MAX, 0.1 };
 
 DrawViewDimension::DrawViewDimension(void)
 {
@@ -119,18 +119,18 @@ DrawViewDimension::DrawViewDimension(void)
     ADD_PROPERTY(Type, ((long)0));
     MeasureType.setEnums(MeasureTypeEnums);
     ADD_PROPERTY(MeasureType, ((long)1));                             //Projected (or True) measurement
-    ADD_PROPERTY_TYPE(TheoreticalExact,(false), "", App::Prop_Output, "Set for theoretical exact (basic) dimension");
+    ADD_PROPERTY_TYPE(TheoreticalExact,(false), "", App::Prop_Output, "If theoretical exact (basic) dimension");
     ADD_PROPERTY_TYPE(EqualTolerance, (true), "", App::Prop_Output, "If over- and undertolerance are equal");
 
-    ADD_PROPERTY_TYPE(OverTolerance, (0.0), "", App::Prop_Output, "Overtolerance value\nIf 'Equal Tolerance' is true this is also the value for 'Under Tolerance'");
+    ADD_PROPERTY_TYPE(OverTolerance, (0.0), "", App::Prop_Output, "Overtolerance value\nIf 'Equal Tolerance' is true this is also\nthe negated value for 'Under Tolerance'");
     OverTolerance.setUnit(Base::Unit::Length);
     OverTolerance.setConstraints(&ToleranceConstraint);
-    ADD_PROPERTY_TYPE(UnderTolerance, (0.0), "", App::Prop_Output, "Undertolerance value\nIf 'Equal Tolerance' it will be replaced by negative value of 'Over Tolerance'");
+    ADD_PROPERTY_TYPE(UnderTolerance, (0.0), "", App::Prop_Output, "Undertolerance value\nIf 'Equal Tolerance' is true it will be replaced\nby negative value of 'Over Tolerance'");
     UnderTolerance.setUnit(Base::Unit::Length);
     UnderTolerance.setConstraints(&ToleranceConstraint);
     ADD_PROPERTY_TYPE(Inverted, (false), "", App::Prop_Output, "The dimensional value is displayed inverted");
 
-    //hide the DrawView properties that don't apply to Dimensions
+    // hide the DrawView properties that don't apply to Dimensions
     ScaleType.setStatus(App::Property::ReadOnly, true);
     ScaleType.setStatus(App::Property::Hidden, true);
     Scale.setStatus(App::Property::ReadOnly, true);
@@ -183,7 +183,7 @@ void DrawViewDimension::onChanged(const App::Property* prop)
         }
         else if (prop == &References3D) {   //have to rebuild the Measurement object
 //            Base::Console().Message("DVD::onChanged - References3D\n");
-            clear3DMeasurements();                                                             //Measurement object
+            clear3DMeasurements();                             //Measurement object
             if (!(References3D.getValues()).empty()) {
                 setAll3DMeasurement();
             } else {
@@ -224,9 +224,9 @@ void DrawViewDimension::onChanged(const App::Property* prop)
             // if EqualTolerance set negated overtolerance for untertolerance
             // then also the OverTolerance must be positive
             if (EqualTolerance.getValue()) {
-                // if OverTolerance is negative or zero, first set it to smallest positive value
-                if (OverTolerance.getValue() <= 0) {
-                    OverTolerance.setValue(DBL_MIN);
+                // if OverTolerance is negative or zero, first set it to zero
+                if (OverTolerance.getValue() < 0) {
+                    OverTolerance.setValue(0.0);
                 }
                 OverTolerance.setConstraints(&PositiveConstraint);
                 UnderTolerance.setValue(-1.0 * OverTolerance.getValue());
