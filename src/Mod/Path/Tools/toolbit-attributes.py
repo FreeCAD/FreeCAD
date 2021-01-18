@@ -100,7 +100,7 @@ if args.set:
 
 for i, fname in enumerate(args.path):
     #print(fname)
-    doc = FreeCAD.openDocument(fname, True)
+    doc = FreeCAD.openDocument(fname, False)
     print("{}:".format(doc.Name))
     for o in doc.Objects:
         if PathPropertyBag.IsPropertyBag(o):
