@@ -375,6 +375,7 @@ set(Gui_MOC_HDRS
     ToolBox.h
     Transform.h
     Tree.h
+    TreeParams.h
     TreeView.h
     ProjectView.h
     View3DInventor.h

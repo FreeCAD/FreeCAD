@@ -51,6 +51,7 @@
 #include "ViewProviderDocumentObject.h"
 #include "MetaTypes.h"
 #include "ui_DlgPropertyLink.h"
+#include "TreeParams.h"
 
 using namespace Gui::Dialog;
 
@@ -578,11 +579,11 @@ void DlgPropertyLink::attachObserver(Gui::SelectionObserver *observer) {
 }
 
 void DlgPropertyLink::onItemEntered(QTreeWidgetItem *) {
-    if(!timer->isActive() && enterTime.elapsed() < Gui::TreeParams::Instance()->PreSelectionDelay()) {
+    if(!timer->isActive() && enterTime.elapsed() < Gui::TreeParams::PreSelectionDelay()) {
         onTimer();
         return;
     }
-    int timeout = Gui::TreeParams::Instance()->PreSelectionDelay()/2;
+    int timeout = Gui::TreeParams::PreSelectionDelay()/2;
     if(timeout < 0)
         timeout = 1;
     timer->start(timeout);
@@ -630,7 +631,7 @@ void DlgPropertyLink::onCurrentItemChanged(QTreeWidgetItem *item, QTreeWidgetIte
 
     bool focus = false;
     // Do auto view switch if tree view does not do it
-    if(!TreeParams::Instance()->SyncView() && selContext.getObjectName().empty()) {
+    if(!TreeParams::SyncView() && selContext.getObjectName().empty()) {
         focus = ui->treeWidget->hasFocus();
         auto doc = Gui::Application::Instance->getDocument(sobjs.front().getDocumentName().c_str());
         if(doc) {

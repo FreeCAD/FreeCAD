@@ -37,7 +37,7 @@
 #include "MainWindow.h"
 #include "PrefWidgets.h"
 #include "PythonConsole.h"
-#include "Tree.h"
+#include "TreeParams.h"
 #include "ViewParams.h"
 #include "Language/Translator.h"
 
