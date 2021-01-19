@@ -127,6 +127,7 @@ void Sketch::clear(void)
     ConstraintsCounter = 0;
     Conflicting.clear();
     Redundant.clear();
+    PartiallyRedundant.clear();
     MalformedConstraints.clear();
 }
 
@@ -329,6 +330,7 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
     // Now we set the Sketch status with the latest solver information
     GCSsys.getConflicting(Conflicting);
     GCSsys.getRedundant(Redundant);
+    GCSsys.getPartiallyRedundant (PartiallyRedundant);
     GCSsys.getDependentParams(pDependentParametersList);
 
     calculateDependentParametersElements();
@@ -362,6 +364,7 @@ void Sketch::fixParametersAndDiagnose(std::vector<double *> &params_to_block)
         GCSsys.initSolution(defaultSolverRedundant);
         /*GCSsys.getConflicting(Conflicting);
         GCSsys.getRedundant(Redundant);
+        GCSsys.getPartlyRedundant(PartiallyRedundant);
         GCSsys.getDependentParams(pDependentParametersList);
 
         calculateDependentParametersElements();*/
@@ -571,6 +574,7 @@ int Sketch::resetSolver()
     GCSsys.initSolution(defaultSolverRedundant);
     GCSsys.getConflicting(Conflicting);
     GCSsys.getRedundant(Redundant);
+    GCSsys.getPartiallyRedundant (PartiallyRedundant);
     GCSsys.getDependentParams(pDependentParametersList);
 
     calculateDependentParametersElements();
