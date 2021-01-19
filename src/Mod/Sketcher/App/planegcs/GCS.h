@@ -297,7 +297,7 @@ namespace GCS
         int addConstraintArcRadius(Arc &a, double *radius, int tagId=0, bool driving = true);
         int addConstraintCircleDiameter(Circle &c, double *radius, int tagId=0, bool driving = true);
         int addConstraintArcDiameter(Arc &a, double *radius, int tagId=0, bool driving = true);
-        int addConstraintEqualLength(Line &l1, Line &l2, double *length, int tagId=0, bool driving = true);
+        int addConstraintEqualLength(Line &l1, Line &l2, int tagId=0, bool driving = true);
         int addConstraintEqualRadius(Circle &c1, Circle &c2, int tagId=0, bool driving = true);
         int addConstraintEqualRadii(Ellipse &e1, Ellipse &e2, int tagId=0, bool driving = true);
         int addConstraintEqualRadii(ArcOfHyperbola &a1, ArcOfHyperbola &a2, int tagId=0, bool driving = true);
