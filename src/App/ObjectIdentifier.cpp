@@ -725,13 +725,10 @@ Py::Object ObjectIdentifier::Component::get(const Py::Object &pyobj) const {
 }
 
 void ObjectIdentifier::Component::set(Py::Object &pyobj, const Py::Object &value) const {
-    if (ExpressionFunctionCallDisabler::isFunctionCallDisabled())
-        FC_THROWM(Base::RuntimeError, "Attribute writing is disabled");
-
     if(isSimple()) {
         if (getName() == "__module__" || getName() == "__self__")
             FC_THROWM(Base::RuntimeError, "Cannot modify attribute " << getName());
-        if(PyObject_SetAttrString(*pyobj, getName().c_str(), *value ) == -1)
+        if(PyObject_SetAttrString(*pyobj, getName().c_str(), *value) == -1)
             Base::PyException::ThrowException();
     } else if(isArray()) {
         if(pyobj.isMapping())
@@ -2277,7 +2274,7 @@ void ObjectIdentifier::setValue(const App::any &value) const
 void ObjectIdentifier::setPyValue(Py::Object value) const
 {
     ResolveResults rs(*this);
-    if(rs.propertyType)
+    if(rs.propertyType && rs.propertyIndex+1 == (int)components.size())
         FC_THROWM(Base::RuntimeError,"Cannot set pseudo property " << toString());
     if(!rs.resolvedProperty)
         FC_THROWM(Base::RuntimeError,"Property not found " << toString());

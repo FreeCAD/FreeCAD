@@ -28,6 +28,7 @@
 #include <Base/Interpreter.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
 #include <App/PropertyStandard.h>
+#include <App/ExpressionParser.h>
 #include "Utils.h"
 #include <App/Range.h>
 
@@ -214,6 +215,7 @@ PyObject* SheetPy::importFile(PyObject *args)
 
 PyObject* SheetPy::exportFile(PyObject *args)
 {
+    App::ExpressionBlocker::check();
     const char * filename;
     const char * delimiter = "\t";
     const char * quoteChar = "\"";

@@ -82,6 +82,7 @@
 #include <App/PropertyStandard.h>
 #include <CXX/Extensions.hxx>
 #include <App/StringHasherPy.h>
+#include <App/ExpressionParser.h>
 
 #include "TopoShape.h"
 #include "TopoShapeOpCode.h"
@@ -426,6 +427,7 @@ PyObject* TopoShapePy::writeInventor(PyObject * args, PyObject * keywds)
 
 PyObject*  TopoShapePy::exportIges(PyObject *args)
 {
+    App::ExpressionBlocker::check();
     char* Name;
     if (!PyArg_ParseTuple(args, "et","utf-8",&Name))
         return NULL;
@@ -442,6 +444,7 @@ PyObject*  TopoShapePy::exportIges(PyObject *args)
 
 PyObject*  TopoShapePy::exportStep(PyObject *args)
 {
+    App::ExpressionBlocker::check();
     char* Name;
     if (!PyArg_ParseTuple(args, "et","utf-8",&Name))
         return NULL;
@@ -458,6 +461,7 @@ PyObject*  TopoShapePy::exportStep(PyObject *args)
 
 PyObject*  TopoShapePy::exportBrep(PyObject *args)
 {
+    App::ExpressionBlocker::check();
     char* Name;
     if (PyArg_ParseTuple(args, "et","utf-8",&Name)) {
         std::string EncodedName = std::string(Name);
@@ -492,6 +496,7 @@ PyObject*  TopoShapePy::exportBrep(PyObject *args)
 
 PyObject*  TopoShapePy::exportBinary(PyObject *args)
 {
+    App::ExpressionBlocker::check();
     char* input;
     if (!PyArg_ParseTuple(args, "s", &input))
         return NULL;

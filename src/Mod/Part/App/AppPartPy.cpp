@@ -106,6 +106,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
+#include <App/ExpressionParser.h>
 
 #include "OCCError.h"
 #include "TopoShape.h"
@@ -750,6 +751,7 @@ private:
     }
     Py::Object exporter(const Py::Tuple& args)
     {
+        App::ExpressionBlocker::check();
         PyObject* object;
         char* Name;
         if (!PyArg_ParseTuple(args.ptr(), "Oet",&object,"utf-8",&Name))

@@ -65,6 +65,7 @@
 #include <App/DocumentObjectPy.h>
 #include <App/DocumentPy.h>
 #include <App/PropertyFile.h>
+#include <App/ExpressionParser.h>
 #include <Base/Interpreter.h>
 #include <Base/Console.h>
 #include <CXX/Objects.hxx>
@@ -1413,6 +1414,8 @@ PyObject* Application::sRunCommand(PyObject * /*self*/, PyObject *args)
 
 PyObject* Application::sDoCommand(PyObject * /*self*/, PyObject *args)
 {
+    App::ExpressionBlocker::check();
+
     char *sCmd=0;
     if (!PyArg_ParseTuple(args, "s", &sCmd))
         return NULL;
@@ -1438,6 +1441,8 @@ PyObject* Application::sDoCommand(PyObject * /*self*/, PyObject *args)
 
 PyObject* Application::sDoCommandGui(PyObject * /*self*/, PyObject *args)
 {
+    App::ExpressionBlocker::check();
+
     char *sCmd=0;
     if (!PyArg_ParseTuple(args, "s", &sCmd))
         return NULL;

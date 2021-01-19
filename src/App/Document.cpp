@@ -132,6 +132,7 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 #include "Link.h"
 #include "DocumentObserver.h"
 #include "GeoFeature.h"
+#include "ExpressionParser.h"
 
 FC_LOG_LEVEL_INIT("App", true, true, true)
 
@@ -315,6 +316,8 @@ void Document::writeDependencyGraphViz(std::ostream &out)
 
 void Document::exportGraphviz(std::ostream& out) const
 {
+    ExpressionBlocker::check();
+
     /* Typedefs for a graph with graphviz attributes */
     typedef std::map<std::string, std::string> GraphvizAttributes;
     typedef boost::subgraph< adjacency_list<vecS, vecS, directedS,
@@ -1484,6 +1487,8 @@ void Document::onBeforeChange(const Property* prop)
         if (d->activeUndoTransaction)
             d->activeUndoTransaction->addObjectChange(nullptr, prop);
     }
+    if(prop == &FileName)
+        ExpressionBlocker::check();
     if(prop == &Label)
         oldLabel = Label.getValue();
     signalBeforeChange(*this, *prop);
@@ -2774,6 +2779,8 @@ private:
 
 bool Document::saveToFile(const char* filename) const
 {
+    ExpressionBlocker::check();
+
     signalStartSave(*this, filename);
 
     int compression = DocumentParams::CompressionLevel();

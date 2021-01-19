@@ -332,6 +332,26 @@ bool ExpressionFunctionCallDisabler::isFunctionCallDisabled()
     return _DisableFunctionCall > 0;
 }
 
+
+// No need locking assuming Python GIL
+static std::vector<const Expression*> _ExpressionBlockerStack;
+
+ExpressionBlocker::ExpressionBlocker(const Expression *expr)
+{
+    _ExpressionBlockerStack.push_back(expr);
+}
+
+ExpressionBlocker::~ExpressionBlocker()
+{
+    _ExpressionBlockerStack.pop_back();
+}
+
+void ExpressionBlocker::check()
+{
+    if (_ExpressionBlockerStack.size())
+        _EXPR_THROW("Access denied", _ExpressionBlockerStack.back());
+}
+
 ////////////////////////////////////////////////////////////////////////////////////
 //
 // ExpressionVistor
@@ -922,6 +942,8 @@ Py::Object Expression::Component::get(const Expression *owner, const Py::Object 
 
 void Expression::Component::set(const Expression *owner, Py::Object &pyobj, const Py::Object &value) const 
 {
+    ExpressionBlocker::check();
+
     if(!e1 && !e2 && !e3)
         return comp.set(pyobj,value);
     try {
@@ -2431,6 +2453,8 @@ public:
 #endif
             "FreeCAD",
             "FreeCADGui",
+            "App",
+            "Gui",
             "Base",
             "__FreeCADConsole__",
             "Units",
@@ -2536,7 +2560,9 @@ public:
                 pyfunc = PyObject_GetAttrString(pymod, "getmodule");
             }
             if (!pyfunc) {
-                PyErr_Clear();
+                Base::PyException e;
+                if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_TRACE))
+                    e.ReportException();
                 node.init(pyobj, "Failed to inspect module of callable");
                 return false;
             }
@@ -2544,29 +2570,47 @@ public:
         }
 
         const char *name = nullptr;
-        Py::Object pymod;
-        PyObject * module = PyObject_CallFunction(this->inspect.ptr(), "O", pyobj);
-        if (module) {
-            pymod = Py::asObject(module);
-            name = PyModule_GetName(module);
+        std::string _name;
+
+        if (PyObject_TypeCheck(pyobj, &BaseClassPy::Type)) {
+            auto pybase = static_cast<BaseClassPy*>(pyobj);
+            _name = pybase->getModule();
+            name = _name.c_str();
         }
+
         if (!name || !name[0]) {
-            name = nullptr;
-            module = nullptr;
-            PyErr_Clear();
-            PyObject * self = PyObject_GetAttrString(pyobj, "__self__");
-            if (self) {
-                module = PyObject_CallFunction(this->inspect.ptr(), "O", self->ob_type);
-                if (module) {
-                    pymod = Py::asObject(module);
-                    name = PyModule_GetName(module);
+            Py::Object pymod;
+            PyObject * module = PyObject_CallFunction(this->inspect.ptr(), "O", pyobj);
+            if (module) {
+                pymod = Py::asObject(module);
+                name = PyModule_GetName(module);
+            }
+            if (!name || !name[0]) {
+                name = nullptr;
+                module = nullptr;
+                Base::PyException e;
+                if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_TRACE))
+                    e.ReportException();
+                PyObject * self = PyObject_GetAttrString(pyobj, "__self__");
+                if (self && PyObject_TypeCheck(self, &BaseClassPy::Type)) {
+                    auto pybase = static_cast<BaseClassPy*>(self);
+                    _name = pybase->getModule();
+                    name = _name.c_str();
+                } else if (self) {
+                    module = PyObject_CallFunction(this->inspect.ptr(), "O", self->ob_type);
+                    if (module) {
+                        pymod = Py::asObject(module);
+                        name = PyModule_GetName(module);
+                    }
+                    Py_DECREF(self);
                 }
-                Py_DECREF(self);
             }
         }
         if (!name || !name[0]) {
-            PyErr_Clear();
-            node.init(pyobj, "Unknown module of callable");
+            Base::PyException e;
+            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_TRACE))
+                e.ReportException();
+            node.init(pyobj, "Access denied of callable in unknown module");
         } else {
             auto it = modules.lower_bound(name);
             if (it != modules.end()
@@ -3495,6 +3539,9 @@ private:
 };
 
 void AssignmentExpression::assign(const Expression *owner, const Expression *left, PyObject *right) {
+    if (ExpressionFunctionCallDisabler::isFunctionCallDisabled())
+        throw App::ExpressionFunctionDisabledException("Attribute writing is disabled");
+
     auto &frame = *_EvalStack.back();
     auto list = freecad_dynamic_cast<ListExpression>(left);
     if(list) {
@@ -3511,9 +3558,14 @@ void AssignmentExpression::assign(const Expression *owner, const Expression *lef
         AssignmentExpression::apply(owner,catchAll,list->items,r.get());
     }else if(left->isDerivedFrom(VariableExpression::getClassTypeId())) {
         auto e = static_cast<const VariableExpression*>(left);
-        VarInfo info(e->push(owner,false));
-        info.rhs = right;
-        frame.setVar(owner,info);
+        const ObjectIdentifier &path = e->getPath();
+        if (path.isLocalProperty() || path.hasDocumentObjectName(true))
+            e->assign(Py::Object(right));
+        else {
+            VarInfo info(e->push(owner,false));
+            info.rhs = right;
+            frame.setVar(owner,info);
+        }
     }else if(left->isDerivedFrom(CallableExpression::getClassTypeId())) {
         auto e = static_cast<const CallableExpression*>(left);
         VarInfo info = e->getVarInfo(false);
@@ -3526,6 +3578,7 @@ void AssignmentExpression::assign(const Expression *owner, const Expression *lef
 Py::Object AssignmentExpression::apply(const Expression *owner, int _catchAll, 
         const ExpressionList &left, const Expression *right, int op)
 {
+    ExpressionBlocker blocker(owner);
     CHECK_STACK(AssignmentExpression, owner);
 
     auto &frame = *_EvalStack.back();
@@ -3533,6 +3586,18 @@ Py::Object AssignmentExpression::apply(const Expression *owner, int _catchAll,
         VarInfo info;
         if(left[0]->isDerivedFrom(VariableExpression::getClassTypeId())) {
             auto e = static_cast<VariableExpression*>(left[0].get());
+            const ObjectIdentifier &path = e->getPath();
+            if (path.isLocalProperty() || path.hasDocumentObjectName(true)) {
+                Py::Object pyvalue;
+                if (!op)
+                    pyvalue = right->getPyValue();
+                else {
+                    pyvalue = e->getPyValue();
+                    pyvalue = calc(owner, op, pyvalue, right, true);
+                }
+                e->assign(pyvalue);
+                return pyvalue;
+            } 
             info = e->push(owner,!!op);
         }else if(left[0]->isDerivedFrom(CallableExpression::getClassTypeId())) {
             auto e = static_cast<CallableExpression*>(left[0].get());
@@ -4271,27 +4336,7 @@ Py::Object CallableExpression::evaluate(PyObject *pyargs, PyObject *pykwds) {
 void CallableExpression::securityCheck(PyObject *pyobj) const
 {
     if(_Cache.empty()) {
-        std::ostringstream ss;
-        const char *tmpvar = "__blockobj";
-        const char *cmds[] = {
-            "Gui.doCommand",
-            "Gui.doCommandGui",
-        };
-        const char * msg = "Callable blocked: ";
-        for(auto cmd : cmds) {
-            try {
-                ss.str("");
-                ss << tmpvar << " = " << cmd;
-                PyObject * pyvalue = Base::Interpreter().getValue(ss.str().c_str(), tmpvar);
-                PyObjectNode::initAdd(pyvalue, msg, cmd);
-                Py::_XDECREF(pyvalue);
-            } catch(Base::Exception &e) {
-                FC_LOG("Exception on blocking " << cmd << ": " << e.what());
-            }
-        }
-        Base::Interpreter().removeVariable(tmpvar);
-
-        msg = "Python built-in blocked";
+        const char *msg = "Python built-in blocked";
         PyObjectNode::initAdd(EvalFrame::getBuiltin("eval"), msg);
         PyObjectNode::initAdd(EvalFrame::getBuiltin("execfile"), msg);
         PyObjectNode::initAdd(EvalFrame::getBuiltin("exec"), msg);
@@ -4300,8 +4345,9 @@ void CallableExpression::securityCheck(PyObject *pyobj) const
         PyObjectNode::initAdd(EvalFrame::getBuiltin("open"), msg);
         PyObjectNode::initAdd(EvalFrame::getBuiltin("input"), msg);
         // setattr() is blocked to avoid changing special attribute like
-        // '__module__' or '__self__'. Normal assignment operation is handled by
-        // ObjectIdentifier::set() which checks for those attributes.
+        // '__module__' or '__self__'. Normal attribute assignment operation is
+        // handled by ObjectIdentifier::Component::set() which checks for those
+        // attributes.
         PyObjectNode::initAdd(EvalFrame::getBuiltin("setattr"), msg);
 
         PyObjectNode::initDone();
@@ -4489,9 +4535,10 @@ Py::Object CallableExpression::_getPyValue(int *) const {
             dict.setItem(name, arg->getPyValue());
     }
     try {
+        ExpressionBlocker blocker(this);
         ImportParamLock lock;
         return Py::Callable(pyobj).apply(tuple,dict);
-    }catch (Py::Exception&) {
+    } catch (Py::Exception&) {
         EXPR_PY_THROW(this);
     }
     return Py::Object();
@@ -7004,7 +7051,7 @@ std::string Context::getErrorContext(const std::string &msg) {
     const char *buf = input;
     if(start!=buf && *start=='\n')
         --start;
-    for(;start!=buf;--start) {
+    for(;start>buf;--start) {
         if(*start == '\n') {
             ++start;
             break;

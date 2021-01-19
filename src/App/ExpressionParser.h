@@ -109,7 +109,7 @@ struct AppExport VarInfo {
 /////////////////////////////////////////////////////////////////////////////////////
 
 /// Helper class to disable calling into Python functions and writing Python attributes
-class ExpressionFunctionCallDisabler
+class AppExport ExpressionFunctionCallDisabler
 {
 public:
     ExpressionFunctionCallDisabler(bool active = true);
@@ -120,13 +120,33 @@ public:
     static bool isFunctionCallDisabled();
 
 private:
+    /// Private new operator to prevent heap allocation
+    void* operator new(size_t size);
+
+private:
     bool active;
+
 };
 
-class ExpressionFunctionDisabledException : Base::ExpressionError
+/// Exception thrown when invoking callable while it is disabled
+class AppExport ExpressionFunctionDisabledException : Base::ExpressionError
 {
 public:
     using Base::ExpressionError::ExpressionError;
+};
+
+/// Helper class to block access of from expression
+class AppExport ExpressionBlocker
+{
+public:
+    ExpressionBlocker(const Expression *expr);
+    ~ExpressionBlocker();
+    /// Throw exception if expression is blocked
+    static void check();
+
+private:
+    /// Private new operator to prevent heap allocation
+    void* operator new(size_t size);
 };
 
 /////////////////////////////////////////////////////////////////////////////////////
