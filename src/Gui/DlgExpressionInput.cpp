@@ -455,10 +455,12 @@ void DlgExpressionInput::adjustExpressionSize()
 {
     int height;
     if (!ui->checkBoxWantReturn->isChecked()) {
-        // leave space for scroll bar
+        // leave space for longer line
+        ui->expression->setLineWrapMode(QPlainTextEdit::WidgetWidth);
         ui->expression->setMinimumHeight(40);
         height = 40;
     } else {
+        ui->expression->setLineWrapMode(QPlainTextEdit::NoWrap);
         const QString &text = ui->expression->toPlainText();
         auto textdoc = ui->expression->document();
         int linecount = textdoc->blockCount();
