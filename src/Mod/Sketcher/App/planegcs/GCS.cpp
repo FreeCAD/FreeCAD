@@ -1045,10 +1045,12 @@ int System::addConstraintArcDiameter(Arc &a, double *radius, int tagId, bool dri
     return addConstraintProportional(a.rad, radius, 0.5, tagId, driving);
 }
 
-int System::addConstraintEqualLength(Line &l1, Line &l2, double *length, int tagId, bool driving)
+int System::addConstraintEqualLength(Line &l1, Line &l2, int tagId, bool driving)
 {
-    addConstraintP2PDistance(l1.p1, l1.p2, length, tagId, driving);
-    return addConstraintP2PDistance(l2.p1, l2.p2, length, tagId, driving);
+    Constraint *constr = new ConstraintEqualLineLength(l1, l2);
+    constr->setTag(tagId);
+    constr->setDriving(driving);
+    return addConstraint(constr);
 }
 
 int System::addConstraintEqualRadius(Circle &c1, Circle &c2, int tagId, bool driving)
@@ -4051,7 +4053,7 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
             // identifyDependentParametersSparseQR(J, jacobianconstraintmap, pdiagnoselist, true)
             //
             // Debug:
-            // auto fut = std::async(std::launch::deferred,&System::identifyDependentParametersSparseQR,this,J,jacobianconstraintmap, pdiagnoselist, false);
+            //auto fut = std::async(std::launch::deferred,&System::identifyDependentParametersSparseQR,this,J,jacobianconstraintmap, pdiagnoselist, false);
             auto fut = std::async(&System::identifyDependentParametersSparseQR,this,J,jacobianconstraintmap, pdiagnoselist, /*silent=*/true);
 
             makeSparseQRDecomposition( J, jacobianconstraintmap, SqrJT, rank, R, /*transposed=*/true, /*silent=*/false);
