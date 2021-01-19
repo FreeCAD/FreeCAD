@@ -115,7 +115,6 @@ TaskCosVertex::TaskCosVertex(TechDraw::DrawViewPart* baseFeat,
 
 TaskCosVertex::~TaskCosVertex()
 {
-    delete ui;
 }
 
 void TaskCosVertex::updateTask()
