@@ -6395,6 +6395,13 @@ QString ViewProviderSketch::appendRedundantMsg(const std::vector<int> &redundant
                         redundant);
 }
 
+QString ViewProviderSketch::appendPartiallyRedundantMsg(const std::vector<int> &partiallyredundant)
+{
+    return appendConstraintMsg(tr("The following constraint is partially redundant:"),
+                        tr("The following constraints are partially redundant:"),
+                        partiallyredundant);
+}
+
 QString ViewProviderSketch::appendMalformedMsg(const std::vector<int> &malformed)
 {
     return appendConstraintMsg(tr("Please remove the following malformed constraint:"),
@@ -6429,6 +6436,7 @@ void ViewProviderSketch::UpdateSolverInformation()
     int dofs = getSketchObject()->getLastDoF();
     bool hasConflicts = getSketchObject()->getLastHasConflicts();
     bool hasRedundancies = getSketchObject()->getLastHasRedundancies();
+    bool hasPartiallyRedundant = getSketchObject()->getLastHasPartialRedundancies();
     bool hasMalformed    = getSketchObject()->getLastHasMalformedConstraints();
 
     if (getSketchObject()->Geometry.getSize() == 0) {
@@ -6476,10 +6484,27 @@ void ViewProviderSketch::UpdateSolverInformation()
                 }
             }
             else if (!hasRedundancies) {
+                QString infoString;
+
                 if (dofs == 1)
-                    signalSetUp(tr("Under-constrained sketch with <a href=\"#dofs\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">1 degree</span></a> of freedom"));
+                    infoString = tr("Under-constrained sketch with <a href=\"#dofs\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">1 degree</span></a> of freedom. %1")
+                        .arg(hasPartiallyRedundant?
+                            QString::fromLatin1("<br/><font color='orangered'>%1<a href=\"#partiallyredundant\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">%2</span></a><br/>%3</font><br/>")
+                                .arg(tr("Sketch contains partially redundant constraints "))
+                                .arg(tr("(click to select)"))
+                                .arg(appendPartiallyRedundantMsg(getSketchObject()->getLastPartiallyRedundant()))
+                            : QString());
                 else
-                    signalSetUp(tr("Under-constrained sketch with <a href=\"#dofs\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">%1 degrees</span></a> of freedom").arg(dofs));
+                    infoString = tr("Under-constrained sketch with <a href=\"#dofs\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">%1 degrees</span></a> of freedom. %2")
+                        .arg(dofs)
+                        .arg(hasPartiallyRedundant?
+                            QString::fromLatin1("<br/><font color='orangered'>%1<a href=\"#partiallyredundant\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">%2</span></a><br/>%3</font><br/>")
+                                .arg(tr("Sketch contains partially redundant constraints "))
+                                .arg(tr("(click to select)"))
+                                .arg(appendPartiallyRedundantMsg(getSketchObject()->getLastPartiallyRedundant()))
+                            : QString());
+
+                signalSetUp(infoString);
             }
 
             signalSolved(QString::fromLatin1("<font color='green'><span style=\"color:#008000; background-color: #ececec;\">%1</font></span>").arg(tr("Solved in %1 sec").arg(getSketchObject()->getLastSolveTime())));
