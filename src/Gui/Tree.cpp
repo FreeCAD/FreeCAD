@@ -5906,8 +5906,13 @@ void DocumentItem::selectItems(SelectionReason reason) {
             newCurrent = newSelect;
         }
     }
-    if (newCurrent)
+    if (newCurrent) {
+        // QTreeWidget selection model will auto expand the current item to
+        // make it visible. In order to support object with NoAutoExpand status
+        // bit (e.g. Origin), we block the signal here.
+        QSignalBlocker blocker(getTree()->selectionModel());
         getTree()->setCurrentItem(newCurrent, 0, QItemSelectionModel::NoUpdate);
+    }
 }
 
 void DocumentItem::populateParents(const ViewProviderDocumentObject *vp) {
