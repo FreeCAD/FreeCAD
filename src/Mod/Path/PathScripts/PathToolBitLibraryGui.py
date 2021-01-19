@@ -383,6 +383,8 @@ class ToolBitLibrary(object):
         workingdir = os.path.dirname(PathPreferences.lastPathToolLibrary())
         defaultdir = os.path.dirname(PathPreferences.pathDefaultToolsPath())
 
+        PathLog.debug('workingdir: {} defaultdir: {}'.format(workingdir, defaultdir))
+
         dirOK = lambda : workingdir != defaultdir and (os.access(workingdir, os.W_OK))
 
         if dirOK():
@@ -400,6 +402,7 @@ class ToolBitLibrary(object):
                     PathPreferences.filePath())
 
         PathPreferences.setLastPathToolLibrary("{}/Library".format(workingdir))
+        PathLog.debug('setting workingdir to: {}'.format(workingdir))
 
         subdirlist = ['Bit', 'Library', 'Shape']
         mode = 0o777
@@ -605,8 +608,9 @@ class ToolBitLibrary(object):
             else:
                 tools.append({'nr': toolNr, 'path': PathToolBit.findRelativePathTool(toolPath)})
 
-        with open(self.path, 'w') as fp:
-            json.dump(library, fp, sort_keys=True, indent=2)
+        if self.path is not None:
+            with open(self.path, 'w') as fp:
+                json.dump(library, fp, sort_keys=True, indent=2)
 
     def libraryOk(self):
         self.librarySave()

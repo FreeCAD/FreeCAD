@@ -299,7 +299,8 @@ def lastPathToolLibrary():
 def setLastPathToolLibrary(path):
     PathLog.track(path)
     curLib = lastFileToolLibrary()
-    if os.path.split(curLib)[0] != path:
+    PathLog.debug('curLib: {}'.format(curLib))
+    if curLib and os.path.split(curLib)[0] != path:
         setLastFileToolLibrary('')  # a path is known but not specific file
     return preferences().SetString(LastPathToolLibrary, path)
 
