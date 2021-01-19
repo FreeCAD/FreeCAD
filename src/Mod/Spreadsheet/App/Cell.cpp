@@ -38,6 +38,7 @@
 #include <Base/UnitsApi.h>
 #include <Base/Writer.h>
 #include <Base/Console.h>
+#include <Base/StdStlTools.h>
 #include <App/ExpressionParser.h>
 #include "Sheet.h"
 #include <iomanip>
@@ -280,10 +281,10 @@ void Cell::afterRestore() {
 void Cell::setContent(const char * value)
 {
     PropertySheet::AtomicPropertyChange signaller(*owner);
-    App::Expression * expr = nullptr;
+    ExpressionPtr newExpr;
 
     clearException();
-    if (value != nullptr) {
+    if (value) {
         if (owner->sheet()->isRestoring()) {
             expression.reset(new App::StringExpression(owner->sheet(), value));
             setUsed(EXPRESSION_SET, true);
@@ -291,15 +292,15 @@ void Cell::setContent(const char * value)
         }
         if (*value == '=') {
             try {
-                expr = App::ExpressionParser::parse(owner->sheet(), value + 1);
+                newExpr = ExpressionPtr(App::ExpressionParser::parse(owner->sheet(), value + 1));
             }
             catch (Base::Exception & e) {
-                expr = new App::StringExpression(owner->sheet(), value);
+                newExpr = std::make_unique<App::StringExpression>(owner->sheet(), value);
                 setParseException(e.what());
             }
         }
         else if (*value == '\'') {
-            expr = new App::StringExpression(owner->sheet(), value + 1);
+            newExpr = std::make_unique<App::StringExpression>(owner->sheet(), value + 1);
         }
         else if (*value != '\0') {
             // check if value is just a number
@@ -309,22 +310,22 @@ void Cell::setContent(const char * value)
             if (errno == 0) {
                 const bool isEndEmpty = *end == '\0' || strspn(end, " \t\n\r") == strlen(end);
                 if (isEndEmpty) {
-                    expr = new App::NumberExpression(owner->sheet(), Quantity(float_value));
+                    newExpr = std::make_unique<App::NumberExpression>(owner->sheet(), Quantity(float_value));
                 }
             }
 
             // if not a float, check if it is a quantity or compatible fraction
             const bool isStartingWithNumber = value != end;
-            if (expr == nullptr && isStartingWithNumber) {
+            if (!newExpr && isStartingWithNumber) {
                 try {
-                    auto parsedExpr = App::ExpressionParser::parse(owner->sheet(), value);
+                    ExpressionPtr parsedExpr(App::ExpressionParser::parse(owner->sheet(), value));
 
-                    if (const auto fraction = freecad_dynamic_cast<OperatorExpression>(parsedExpr)) {
+                    if (const auto fraction = freecad_dynamic_cast<OperatorExpression>(parsedExpr.get())) {
                         if (fraction->getOperator() == OperatorExpression::UNIT) {
                             const auto left = freecad_dynamic_cast<NumberExpression>(fraction->getLeft());
                             const auto right = freecad_dynamic_cast<UnitExpression>(fraction->getRight());
                             if (left && right) {
-                                expr = parsedExpr;
+                                newExpr = std::move(parsedExpr);
                             }
                         }
                         else if (fraction->getOperator() == OperatorExpression::DIV) {
@@ -348,33 +349,29 @@ void Cell::setContent(const char * value)
                             const bool isNomValid = isNumberNom || isQuantityNom;
                             const bool isDenomValid = isNumberDenom || isQuantityDenom || isUnitDenom;
                             if (isNomValid && isDenomValid) {
-                                expr = parsedExpr;
+                                newExpr = std::move(parsedExpr);
                             }
                         }
                     }
-                    else if (const auto number = freecad_dynamic_cast<NumberExpression>(parsedExpr)) {
+                    else if (const auto number = freecad_dynamic_cast<NumberExpression>(parsedExpr.get())) {
                         // NumbersExpressions can accept more than can be parsed with strtod.
                         //   Example: 12.34 and 12,34 are both valid NumberExpressions
-                        expr = parsedExpr;
-                    }
-
-                    if (expr == nullptr) {
-                        delete parsedExpr;
+                        newExpr = std::move(parsedExpr);
                     }
                 }
                 catch (...) {}
             }
         }
 
-        if (expr == nullptr && *value != '\0') {
-            expr = new App::StringExpression(owner->sheet(), value);
+        if (!newExpr && *value != '\0') {
+            newExpr = std::make_unique<App::StringExpression>(owner->sheet(), value);
         }
 
-        // trying to add an empty string will make expr = nullptr
+        // trying to add an empty string will make newExpr = nullptr
     }
 
     // set expression, or delete the current expression by setting nullptr if empty string was entered
-    setExpression(App::ExpressionPtr(expr));
+    setExpression(std::move(newExpr));
     signaller.tryInvoke();
 }
 
