@@ -112,7 +112,7 @@ protected:
     void restoreInvisibleCenters(void);
 
 private:
-    Ui_TaskRestoreLines* ui;
+    std::unique_ptr<Ui_TaskRestoreLines> ui;
     TechDraw::DrawViewPart* m_partFeat;
     TaskLineDecor* m_parent;
 };

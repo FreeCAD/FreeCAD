@@ -156,7 +156,6 @@ TaskCenterLine::TaskCenterLine(TechDraw::DrawViewPart* partFeat,
 
 TaskCenterLine::~TaskCenterLine()
 {
-    delete ui;
 }
 
 void TaskCenterLine::updateTask()

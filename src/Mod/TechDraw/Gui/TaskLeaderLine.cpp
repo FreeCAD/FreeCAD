@@ -233,7 +233,6 @@ TaskLeaderLine::TaskLeaderLine(TechDraw::DrawView* baseFeat,
 
 TaskLeaderLine::~TaskLeaderLine()
 {
-    delete ui;
 }
 
 void TaskLeaderLine::saveState()

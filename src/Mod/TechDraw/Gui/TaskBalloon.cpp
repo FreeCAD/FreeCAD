@@ -111,7 +111,6 @@ TaskBalloon::TaskBalloon(QGIViewBalloon *parent, ViewProviderBalloon *balloonVP)
 
 TaskBalloon::~TaskBalloon()
 {
-    delete ui;
 }
 
 bool TaskBalloon::accept()

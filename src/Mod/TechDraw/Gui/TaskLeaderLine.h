@@ -130,7 +130,7 @@ private Q_SLOTS:
     void onLineStyleChanged();
 
 private:
-    Ui_TaskLeaderLine * ui;
+    std::unique_ptr<Ui_TaskLeaderLine> ui;
     bool blockUpdate;
 
     QGTracker* m_tracker;
