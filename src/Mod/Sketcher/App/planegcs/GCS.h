@@ -125,7 +125,7 @@ namespace GCS
 
         int dofs;
         std::set<Constraint *> redundant;
-        VEC_I conflictingTags, redundantTags;
+        VEC_I conflictingTags, redundantTags, partiallyRedundantTags;
 
         bool hasUnknowns;  // if plist is filled with the unknown parameters
         bool hasDiagnosis; // if dofs, conflictingTags, redundantTags are up to date
@@ -361,6 +361,8 @@ namespace GCS
           { conflictingOut = hasDiagnosis ? conflictingTags : VEC_I(0); }
         void getRedundant(VEC_I &redundantOut) const
           { redundantOut = hasDiagnosis ? redundantTags : VEC_I(0); }
+        void getPartiallyRedundant (VEC_I &partiallyredundantOut) const
+          { partiallyredundantOut = hasDiagnosis ? partiallyRedundantTags : VEC_I(0); }
         void getDependentParams(VEC_pD &pdependentparameterlist) const
           { pdependentparameterlist = pDependentParameters;}
         void getDependentParamsGroups(std::vector<std::vector<double *>> &pdependentparametergroups) const
