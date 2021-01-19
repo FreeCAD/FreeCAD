@@ -8,6 +8,7 @@ set(Sketcher_Scripts
     Init.py
     SketcherExample.py
     TestSketcherApp.py
+    TestSketchFillet.py
     Profiles.py
 )
 

@@ -75,7 +75,10 @@ enum InternalAlignmentType {
     BSplineKnotPoint        = 10,
 };
 
-/// define if you want to use the end or start point
+/*! Where a vertex lives on a line.  SketchObject likes to use this plus an index into the geometry list to refer to
+ sketch geometry, manage constraints, etc.  In that case, bare vertices use start as their PointPos.  Constraints
+ to lines (as opposed to their endpoints) use none. Circle centers use mid.
+ */
 enum PointPos { none, start, end, mid };
 
 class SketcherExport Constraint : public Base::Persistence

@@ -63,6 +63,11 @@ public:
     SketchObject();
     ~SketchObject();
 
+    // Many of the methods here use geoId and posId to point to sketch elements.  geoIds are
+    // indexes into the list returned by getInternalGeometry(), while posIds are PointPos values
+    // that indicate whether you're talking about a line, the start or endpoint of a line, a bare
+    // vertex, etc.  (See PointPos definition for more on how PointPos is used).
+
     /// Property
     Part    ::PropertyGeometryList   Geometry;
     Sketcher::PropertyConstraintList Constraints;
@@ -97,9 +102,19 @@ public:
      \retval bool - true if the geometry is supported
      */
     bool isSupportedGeometry(const Part::Geometry *geo) const;
-    /// add unspecified geometry
+    /*!
+     \brief Add geometry to a sketch
+     \param geo - geometry to add
+     \param construction - true for construction lines
+     \retval int - GeoId of added element
+     */
     int addGeometry(const Part::Geometry *geo, bool construction=false);
-    /// add unspecified geometry
+    /*!
+     \brief Add multiple geometry elements to a sketch
+     \param geoList - geometry to add
+     \param construction - true for construction lines
+     \retval int - GeoId of last added element
+     */
     int addGeometry(const std::vector<Part::Geometry *> &geoList, bool construction=false);
     /*!
      \brief Deletes indicated geometry (by geoid).
@@ -218,8 +233,23 @@ public:
     int toggleConstruction(int GeoId);
     int setConstruction(int GeoId, bool on);
 
-    /// create a fillet
+    /*!
+     \brief Create a sketch fillet from the point at the intersection of two lines
+     \param geoId, pos - one of the (exactly) two coincident endpoints
+     \param radius - fillet radius
+     \param trim - if false, leaves the original lines untouched
+     \retval - 0 on success, -1 on failure 
+     */
     int fillet(int geoId, PointPos pos, double radius, bool trim=true);
+    // TODO: Why do refPnt1 and refPnt2 need to be passed in?  Don't the geoIds give us enough to compute that?
+    /*!
+     \brief More general form of fillet
+     \param geoId1, geoId2 - geoId for two lines (which don't necessarily have to coincide)
+     \param refPnt1, refPnt2 - line midpoints
+     \param radius - fillet radius
+     \param trim - if false, leaves the original lines untouched
+     \retval - 0 on success, -1 on failure 
+     */
     int fillet(int geoId1, int geoId2,
                const Base::Vector3d& refPnt1, const Base::Vector3d& refPnt2,
                double radius, bool trim=true);
@@ -474,6 +504,12 @@ protected:
      */
     std::vector<Part::Geometry *> supportedGeometry(const std::vector<Part::Geometry *> &geoList) const;
 
+
+    /*!
+     \brief Do reasonable things with constraints on lines that have just been filleted
+     \param geoId1, podId1, geoId2, posId2 - The two lines that have just been filleted
+     */
+    void manageFilletConstraints(int geoId1, PointPos posId1, int geoId2, PointPos posId2);
 
     // refactoring functions
     // check whether constraint may be changed driving status
