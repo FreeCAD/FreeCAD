@@ -312,23 +312,23 @@ void MDIViewPage::closeEvent(QCloseEvent* ev)
 void MDIViewPage::attachTemplate(TechDraw::DrawTemplate *obj)
 {
     m_view->setPageTemplate(obj);
-    double width  =  obj->Width.getValue();
-    double height =  obj->Height.getValue();
-
-    if (width > height) {
+    pagewidth  =  obj->Width.getValue();
+    pageheight =  obj->Height.getValue();
 #if QT_VERSION >= 0x050300
-        m_paperSize = QPageSize::id(QSizeF(height, width), QPageSize::Millimeter);
+    m_paperSize = QPageSize::id(QSizeF(pagewidth, pageheight), QPageSize::Millimeter, QPageSize::FuzzyOrientationMatch);
+#else
+    m_paperSize = getPaperSize(int(round(pagewidth)), int(round(pageheight)));
+#endif
+    if (pagewidth > pageheight) {
+#if QT_VERSION >= 0x050300
         m_orientation = QPageLayout::Landscape;
 #else
-        m_paperSize = getPaperSize(int(round(width)), int(round(height)));
         m_orientation = QPrinter::Landscape;
 #endif
     } else {
 #if QT_VERSION >= 0x050300
-        m_paperSize = QPageSize::id(QSizeF(width, height), QPageSize::Millimeter);
         m_orientation = QPageLayout::Portrait;
 #else
-        m_paperSize = getPaperSize(int(round(width)), int(round(height)));
         m_orientation = QPrinter::Portrait;
 #endif
     }
@@ -686,7 +686,11 @@ void MDIViewPage::printPdf(std::string file)
 #endif
     }
 #if QT_VERSION >= 0x050300
-    printer.setPageSize(QPageSize(m_paperSize));
+    if (m_paperSize == QPageSize::Custom) {
+        printer.setPageSize(QPageSize(QSizeF(pagewidth, pageheight), QPageSize::Millimeter));
+    } else {
+        printer.setPageSize(QPageSize(m_paperSize));
+    }
 #else
     printer.setPaperSize(m_paperSize);
 #endif
@@ -698,7 +702,11 @@ void MDIViewPage::print()
     QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage(true);
 #if QT_VERSION >= 0x050300
-    printer.setPageSize(QPageSize(m_paperSize));
+    if (m_paperSize == QPageSize::Custom) {
+        printer.setPageSize(QPageSize(QSizeF(pagewidth, pageheight), QPageSize::Millimeter));
+    } else {
+        printer.setPageSize(QPageSize(m_paperSize));
+    }
     printer.setPageOrientation(m_orientation);
 #else
     printer.setPaperSize(m_paperSize);
@@ -715,7 +723,11 @@ void MDIViewPage::printPreview()
     QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage(true);
 #if QT_VERSION >= 0x050300
-    printer.setPageSize(QPageSize(m_paperSize));
+    if (m_paperSize == QPageSize::Custom) {
+        printer.setPageSize(QPageSize(QSizeF(pagewidth, pageheight), QPageSize::Millimeter));
+    } else {
+        printer.setPageSize(QPageSize(m_paperSize));
+    }
     printer.setPageOrientation(m_orientation);
 #else
     printer.setPaperSize(m_paperSize);

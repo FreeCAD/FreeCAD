@@ -169,6 +169,7 @@ private:
     QPrinter::Orientation m_orientation;
     QPrinter::PaperSize m_paperSize;
 #endif
+    qreal pagewidth, pageheight;
     ViewProviderPage *m_vpPage;
 
     QList<QGraphicsItem*> m_qgSceneSelected;        //items in selection order
