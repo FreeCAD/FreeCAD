@@ -53,6 +53,7 @@ public:
     QGraphicsItem* toQGraphicsItem(PyObject* ptr);
     Py::Object fromQObject(QObject*, const char* className=0);
     Py::Object fromQWidget(QWidget*, const char* className=0);
+    Py::Object fromQEvent(QEvent*, const char* className=0);
     const char* getWrapperName(QObject*) const;
     /*!
       Create a Python wrapper for the icon. The icon must be created on the heap

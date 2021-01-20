@@ -30,6 +30,7 @@
 # endif //_MSC_VER
 # include <QAction>
 # include <QMenu>
+# include <QMouseEvent>
 #endif
 
 #include "ViewProviderAttachExtension.h"
@@ -67,11 +68,13 @@ void ViewProviderAttachExtension::extensionGetExtraIcons(
     }
 }
 
-bool ViewProviderAttachExtension::extensionIconClicked(const QByteArray &tag)
+bool ViewProviderAttachExtension::extensionIconMouseEvent(QMouseEvent *ev, const QByteArray &tag)
 {
-    if (tag == _IconTag) {
-        showAttachmentEditor();
-        return true;
+    if (ev->type() == QEvent::MouseButtonPress) {
+        if (tag == _IconTag) {
+            showAttachmentEditor();
+            return true;
+        }
     }
     return false;
 }

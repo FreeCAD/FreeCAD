@@ -76,7 +76,7 @@ public:
     virtual PyObject* getPyObject(void) override;
 
     virtual void getExtraIcons(std::vector<std::pair<QByteArray, QPixmap> > &) const override;
-    virtual bool iconClicked(const QByteArray &tag) override;
+    virtual bool iconMouseEvent(QMouseEvent *, const QByteArray &tag) override;
     virtual QString getToolTip(const QByteArray &tag) const override;
 
     QPixmap getTagIcon() const;

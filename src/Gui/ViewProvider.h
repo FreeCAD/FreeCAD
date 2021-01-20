@@ -39,6 +39,7 @@
 #include <Base/BoundBox.h>
 #include "InventorBase.h"
 
+class QMouseEvent;
 class SbVec2s;
 class SbVec3f;
 class SoNode;
@@ -465,11 +466,6 @@ public:
     virtual const char* getTransactionText() const { return nullptr; }
     /// is called by the tree if the user double clicks on the object
     virtual bool doubleClicked(void) { return false; }
-    /** Called by tree when clicking a specific icon
-     * @param iconTag: tag returned from getExtraIcons()
-     * @return Return whether the click even is handled
-     */
-    virtual bool iconClicked(const QByteArray &iconTag);
     /// is called when the provider is in edit and the mouse is moved
     virtual bool mouseMove(const SbVec2s &cursorPos, View3DInventorViewer* viewer);
     /// is called when the Provider is in edit and the mouse is clicked
@@ -477,6 +473,11 @@ public:
                                     const View3DInventorViewer* viewer);
     /// set up the context-menu with the supported edit modes
     virtual void setupContextMenu(QMenu*, QObject*, const char*);
+    /** Called by tree on mouse event in a specific icon
+     * @param iconTag: tag returned from getExtraIcons()
+     * @return Return whether the mouse even is handled
+     */
+    virtual bool iconMouseEvent(QMouseEvent *ev, const QByteArray &iconTag);
 
     /** @name direct handling methods
      *  This group of methods is to direct influence the

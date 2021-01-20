@@ -105,7 +105,7 @@ public:
         (void)tooltip;
         return false;
     }
-    virtual bool extensionIconClicked(const QByteArray &) {return false;}
+    virtual bool extensionIconMouseEvent(QMouseEvent *, const QByteArray &) {return false;}
 
     void setIgnoreOverlayIcon(bool on) {
         m_ignoreOverlayIcon = on;

@@ -67,7 +67,7 @@ public:
     ValueT setEditViewer(View3DInventorViewer*, int ModNum);
     ValueT unsetEditViewer(View3DInventorViewer*);
     ValueT doubleClicked(void);
-    ValueT iconClicked(const QByteArray &);
+    ValueT iconMouseEvent(QMouseEvent *ev, const QByteArray &);
     bool getToolTip(const QByteArray &, QString &) const;
     bool setupContextMenu(QMenu* menu);
 
@@ -150,7 +150,7 @@ private:
     FC_PY_ELEMENT(setEditViewer) \
     FC_PY_ELEMENT(unsetEditViewer) \
     FC_PY_ELEMENT(doubleClicked) \
-    FC_PY_ELEMENT(iconClicked) \
+    FC_PY_ELEMENT(iconMouseEvent) \
     FC_PY_ELEMENT(setupContextMenu) \
     FC_PY_ELEMENT(attach) \
     FC_PY_ELEMENT(updateData) \
@@ -626,15 +626,15 @@ protected:
             return ViewProviderT::doubleClicked();
         }
     }
-    virtual bool iconClicked(const QByteArray &tag) override
+    virtual bool iconMouseEvent(QMouseEvent *ev, const QByteArray &tag) override
     {
-        switch (imp->iconClicked(tag)) {
+        switch (imp->iconMouseEvent(ev, tag)) {
         case ViewProviderPythonFeatureImp::Accepted:
             return true;
         case ViewProviderPythonFeatureImp::Rejected:
             return false;
         default:
-            return ViewProviderT::iconClicked(tag);
+            return ViewProviderT::iconMouseEvent(ev, tag);
         }
     }
     virtual void setOverrideMode(const std::string &mode) override

@@ -28,6 +28,7 @@
 # include <QAction>
 # include <QApplication>
 # include <QMenu>
+# include <QMouseEvent>
 # include <Inventor/nodes/SoSwitch.h>
 # include <Inventor/details/SoFaceDetail.h>
 #endif
@@ -529,25 +530,27 @@ void ViewProvider::getExtraIcons(std::vector<std::pair<QByteArray, QPixmap> > &i
     inherited::getExtraIcons(icons);
 }
 
-bool ViewProvider::iconClicked(const QByteArray &tag)
+bool ViewProvider::iconMouseEvent(QMouseEvent *ev, const QByteArray &tag)
 {
     auto feat = Base::freecad_dynamic_cast<PartDesign::Feature>(getObject());
     if (!feat)
         return false;
-    if (tag == _SuppressedTag) {
-        App::AutoTransaction committer("Unsuppress");
-        try {
-            if(feat->Suppress.getValue())
-                Gui::cmdAppObject(feat, "Suppress = False");
-            else
-                Gui::cmdAppObject(feat, "Suppress = True");
-            Gui::cmdAppDocument(App::GetApplication().getActiveDocument(), "recompute()");
-        } catch (Base::Exception &e) {
-            e.ReportException();
+    if (ev->type() == QEvent::MouseButtonPress) {
+        if (tag == _SuppressedTag) {
+            App::AutoTransaction committer("Unsuppress");
+            try {
+                if(feat->Suppress.getValue())
+                    Gui::cmdAppObject(feat, "Suppress = False");
+                else
+                    Gui::cmdAppObject(feat, "Suppress = True");
+                Gui::cmdAppDocument(App::GetApplication().getActiveDocument(), "recompute()");
+            } catch (Base::Exception &e) {
+                e.ReportException();
+            }
+            return true;
         }
-        return true;
     }
-    return inherited::iconClicked(tag);
+    return inherited::iconMouseEvent(ev, tag);
 }
 
 QString ViewProvider::getToolTip(const QByteArray &tag) const

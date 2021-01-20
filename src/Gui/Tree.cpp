@@ -2165,7 +2165,16 @@ void TreeWidget::mouseMoveEvent(QMouseEvent *event) {
         return;
     }
 
-    toolTipTimer->start(300);
+    QByteArray tag;
+    auto oitem = pimpl->itemHitTest(event->pos(), &tag);
+    if (oitem && tag.size()) {
+        ViewProviderDocumentObject* vp = oitem->object();
+        auto editDoc = Application::Instance->editDocument();
+        vp->iconMouseEvent(event, tag);
+        toolTipTimer->start(300);
+    } else 
+        ToolTip::hideText();
+
     QTreeWidget::mouseMoveEvent(event);
 }
 
@@ -2327,8 +2336,8 @@ void TreeWidget::mousePressEvent(QMouseEvent *event) {
             ViewProviderDocumentObject* vp = oitem->object();
             auto editDoc = Application::Instance->editDocument();
             App::AutoTransaction committer("Icon clicked", true);
-            if (vp->iconClicked(tag)) {
-                // If the double click starts an editing, let the transaction persist
+            if (vp->iconMouseEvent(event, tag)) {
+                // If the icon click starts an editing, let the transaction persist
                 if (!editDoc && Application::Instance->editDocument())
                     committer.setEnable(false);
                 pimpl->skipMouseRelease = true;
@@ -2341,6 +2350,24 @@ void TreeWidget::mousePressEvent(QMouseEvent *event) {
 
 void TreeWidget::mouseReleaseEvent(QMouseEvent *ev)
 {
+    if (ev->modifiers() & Qt::AltModifier) {
+        QByteArray tag;
+        auto oitem = pimpl->itemHitTest(ev->pos(), &tag);
+        if (oitem && tag.size()) {
+            ViewProviderDocumentObject* vp = oitem->object();
+            auto editDoc = Application::Instance->editDocument();
+            App::AutoTransaction committer("Icon released", true);
+            if (vp->iconMouseEvent(ev, tag)) {
+                pimpl->skipMouseRelease = false;
+                // If the icon release starts an editing, let the transaction persist
+                if (!editDoc && Application::Instance->editDocument())
+                    committer.setEnable(false);
+                pimpl->skipMouseRelease = true;
+                return;
+            }
+        }
+    }
+
     if (pimpl->skipMouseRelease)
         pimpl->skipMouseRelease = false;
     else

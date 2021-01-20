@@ -30,6 +30,7 @@
 # include <QFileInfo>
 # include <QMenu>
 # include <QPixmap>
+# include <QMouseEvent>
 # include <boost_bind_bind.hpp>
 # include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/nodes/SoMaterial.h>
@@ -819,16 +820,19 @@ ViewProviderPythonFeatureImp::doubleClicked(void)
 }
 
 ViewProviderPythonFeatureImp::ValueT
-ViewProviderPythonFeatureImp::iconClicked(const QByteArray &tag)
+ViewProviderPythonFeatureImp::iconMouseEvent(QMouseEvent *ev, const QByteArray &tag)
 {
-    FC_PY_CALL_CHECK(iconClicked)
+    FC_PY_CALL_CHECK(iconMouseEvent)
 
     // Run the onChanged method of the proxy object.
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(1);
-        args.setItem(0, Py::String(tag.constData()));
-        Py::Boolean ok(Base::pyCall(py_iconClicked.ptr(),args.ptr()));
+        PythonWrapper wrap;
+        wrap.loadCoreModule();
+        args.setItem(0, wrap.fromQEvent(ev, "QMouseEvent"));
+        args.setItem(1, Py::String(tag.constData()));
+        Py::Boolean ok(Base::pyCall(py_iconMouseEvent.ptr(),args.ptr()));
         bool value = (bool)ok;
         return value ? Accepted : Rejected;
     }

@@ -587,6 +587,218 @@ const char* PythonWrapper::getWrapperName(QObject* obj) const
     return "QObject";
 }
 
+Py::Object PythonWrapper::fromQEvent(QEvent* event, const char* className)
+{
+    if (!className) {
+        switch(event->type()) {
+        case QEvent::ActionAdded:
+        case QEvent::ActionChanged:
+        case QEvent::ActionRemoved:
+            className = "QActionEvent";
+            break;
+        case QEvent::ChildAdded:
+        case QEvent::ChildPolished:
+        case QEvent::ChildRemoved:
+            className = "QChildEvent";
+            break;
+        case QEvent::Close:
+            className = "QCloseEvent";
+            break;
+        case QEvent::ContextMenu:
+            className = "QContextMenuEvent";
+            break;
+        case QEvent::DeferredDelete:
+            className = "QDeferredDeleteEvent";
+            break;
+        case QEvent::DragEnter:
+            className = "QDragEnterEvent";
+            break;
+        case QEvent::DragMove:
+            className = "QDragMoveEvent";
+            break;
+        case QEvent::DragLeave:
+            className = "QDragLeaveEvent";
+            break;
+        case QEvent::Drop:
+            className = "QDropEvent";
+            break;
+        case QEvent::DynamicPropertyChange:
+            className = "QDynamicPropertyChangedEvent";
+            break;
+        case QEvent::Enter:
+            className = "QEnterEvent";
+            break;
+        case QEvent::FileOpen:
+            className = "QFileOpenEvent";
+            break;
+        case QEvent::FocusIn:
+        case QEvent::FocusOut:
+#if QT_VERSION >= 0x050000
+        case QEvent::FocusAboutToChange:
+#endif
+            className = "QFocusEvent";
+            break;
+        case QEvent::GraphicsSceneContextMenu:
+            className = "QGraphicsSceneContextMenuEvent";
+            break;
+        case QEvent::GraphicsSceneDragEnter:
+        case QEvent::GraphicsSceneDragLeave:
+        case QEvent::GraphicsSceneDragMove:
+        case QEvent::GraphicsSceneDrop:
+            className = "QGraphicsSceneDragDropEvent";
+            break;
+        case QEvent::GraphicsSceneHelp:
+        case QEvent::QueryWhatsThis:
+        case QEvent::ToolTip:
+        case QEvent::WhatsThis:
+            className = "QHelpEvent";
+            break;
+        case QEvent::GraphicsSceneHoverEnter:
+        case QEvent::GraphicsSceneHoverLeave:
+        case QEvent::GraphicsSceneHoverMove:
+            className = "QGraphicsSceneHoverEvent";
+            break;
+        case QEvent::GraphicsSceneMouseDoubleClick:
+        case QEvent::GraphicsSceneMouseMove:
+        case QEvent::GraphicsSceneMousePress:
+        case QEvent::GraphicsSceneMouseRelease:
+            className = "QGraphicsSceneMouseEvent";
+            break;
+        case QEvent::GraphicsSceneMove:
+            className = "QGraphicsSceneMoveEvent";
+            break;
+        case QEvent::GraphicsSceneResize:
+            className = "QGraphicsSceneResizeEvent";
+            break;
+        case QEvent::GraphicsSceneWheel:
+            className = "QGraphicsSceneWheelEvent";
+            break;
+        case QEvent::Gesture:
+        case QEvent::GestureOverride:
+            className = "QGuestureEvent";
+            break;
+        case QEvent::Hide:
+            className = "QHideEvent";
+            break;
+        case QEvent::HoverEnter:
+        case QEvent::HoverLeave:
+        case QEvent::HoverMove:
+            className = "QHoverEvent";
+            break;
+        case QEvent::IconDrag:
+            className = "QIconDragEvent";
+            break;
+        case QEvent::InputMethod:
+            className = "QInputMethodEvent";
+            break;
+#if QT_VERSION >= 0x050000
+        case QEvent::InputMethodQuery:
+            className = "QInputMethodQueryEvent";
+            break;
+#endif
+        case QEvent::KeyPress:
+        case QEvent::KeyRelease:
+            className = "QKeyEvent";
+            break;
+        case QEvent::NonClientAreaMouseButtonDblClick:
+        case QEvent::NonClientAreaMouseButtonPress:
+        case QEvent::NonClientAreaMouseButtonRelease:
+        case QEvent::NonClientAreaMouseMove:
+        case QEvent::MouseButtonDblClick:
+        case QEvent::MouseButtonPress:
+        case QEvent::MouseButtonRelease:
+        case QEvent::MouseMove:
+            className = "QMouseEvent";
+            break;
+        case QEvent::Move:
+            className = "QMoveEvent";
+            break;
+        case QEvent::NativeGesture:
+            className = "QNativeGuestureEvent";
+            break;
+        case QEvent::Paint:
+            className = "QPaintEvent";
+            break;
+        case QEvent::Resize:
+            className = "QResizeEvent";
+            break;
+#if QT_VERSION >= 0x050000
+        case QEvent::ScrollPrepare:
+            className = "QScrollPrepareEvent";
+            break;
+        case QEvent::Scroll:
+            className = "QScrollEvent";
+            break;
+#endif
+        case QEvent::Shortcut:
+            className = "QShortcutEvent";
+            break;
+        case QEvent::ShortcutOverride:
+            className = "QKeyEvent";
+            break;
+        case QEvent::Show:
+            className = "QShowEvent";
+            break;
+        case QEvent::StateMachineSignal:
+            className = "QStateMachine.SignalEvent";
+            break;
+        case QEvent::StateMachineWrapped:
+            className = "QStateMachine.WrappedEvent";
+            break;
+        case QEvent::StatusTip:
+            className = "QtatusTipEvent";
+            break;
+        case QEvent::TabletMove:
+        case QEvent::TabletPress:
+        case QEvent::TabletRelease:
+        case QEvent::TabletEnterProximity:
+        case QEvent::TabletLeaveProximity:
+            className = "QTabletEvent";
+            break;
+        case QEvent::Timer:
+            className = "QTimerEvent";
+            break;
+        case QEvent::TouchBegin:
+        case QEvent::TouchEnd:
+        case QEvent::TouchUpdate:
+#if QT_VERSION >= 0x050000
+        case QEvent::TouchCancel:
+#endif
+            className = "QTouchEvent";
+            break;
+        case QEvent::Wheel:
+            className = "QWheelEvent";
+            break;
+        case QEvent::WindowStateChange:
+            className = "QWindowStateChangeEvent";
+            break;
+        default:
+            className = "QEvent";
+            break;
+        }
+    }
+#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+    // Access shiboken/PySide via C++
+    //
+    PyTypeObject * type = getPyTypeObjectForTypeName<QObject>();
+    if (type) {
+        SbkObjectType* sbk_type = reinterpret_cast<SbkObjectType*>(type);
+        PyObject* pyobj = Shiboken::Object::newObject(sbk_type, event, false, false, className);
+        return Py::asObject(pyobj);
+    }
+    throw Py::RuntimeError("Failed to wrap event");
+
+#elif QT_VERSION >= 0x050000
+    // Access shiboken2/PySide2 via Python
+    //
+    return qt_wrapInstance<QEvent*>(object, className, "shiboken2", "PySide2.QtCore", "wrapInstance");
+#else
+    // Access shiboken/PySide via Python
+    //
+    return qt_wrapInstance<QEvent*>(object, className, "shiboken", "PySide.QtCore", "wrapInstance");
+#endif
+}
+
 bool PythonWrapper::loadCoreModule()
 {
 #if defined (HAVE_SHIBOKEN2) && (HAVE_PYSIDE2)

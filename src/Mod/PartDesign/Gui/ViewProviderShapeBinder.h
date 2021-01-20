@@ -79,7 +79,7 @@ public:
     virtual void onChanged(const App::Property *prop) override;
     virtual void getExtraIcons(std::vector<std::pair<QByteArray, QPixmap> > &) const override;
     virtual QString getToolTip(const QByteArray &tag) const override;
-    virtual bool iconClicked(const QByteArray &tag) override;
+    virtual bool iconMouseEvent(QMouseEvent *, const QByteArray &tag) override;
     virtual void updateData(const App::Property*) override;
     virtual Gui::ViewProviderDocumentObject *getLinkedViewProvider(
             std::string *subname=0, bool recursive=false) const override;

@@ -1143,11 +1143,11 @@ QString ViewProvider::getToolTip(const QByteArray &tag) const
     return tooltip;
 }
 
-bool ViewProvider::iconClicked(const QByteArray &tag)
+bool ViewProvider::iconMouseEvent(QMouseEvent *ev, const QByteArray &tag)
 {
     bool res = false;
     foreachExtension<ViewProviderExtension>([&](ViewProviderExtension *ext) {
-        return (res = ext->extensionIconClicked(tag));
+        return (res = ext->extensionIconMouseEvent(ev, tag));
     });
     return false;
 }

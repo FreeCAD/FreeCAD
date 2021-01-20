@@ -28,6 +28,7 @@
 # include <QMessageBox>
 # include <QMenu>
 # include <QPainter>
+# include <QMouseEvent>
 # include <Inventor/nodes/SoSeparator.h>
 # include <TopExp.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
@@ -593,43 +594,49 @@ QString ViewProviderSubShapeBinder::getToolTip(const QByteArray &tag) const
             QString::fromUtf8(ss.str().c_str()));
 }
 
-bool ViewProviderSubShapeBinder::iconClicked(const QByteArray &tag)
+bool ViewProviderSubShapeBinder::iconMouseEvent(QMouseEvent *ev, const QByteArray &tag)
 {
     auto self = dynamic_cast<PartDesign::SubShapeBinder*>(getObject());
     if (!self)
         return false;
-    const std::vector<App::SubObjectT> *objs = nullptr;
-    std::vector<App::SubObjectT> _objs;
-    if (tag == Gui::TreeWidget::getMainIconTag()) {
-        for(auto &link : self->Support.getSubListValues()) {
-            auto obj = link.getValue();
-            if(!obj || !obj->getNameInDocument())
-                continue;
-            const auto &subs = link.getSubValues();
-            if(subs.size()) {
-                for (auto &sub : subs)
-                    _objs.emplace_back(obj, sub.c_str());
-            } else
-                _objs.emplace_back(obj, "");
+    if (ev->type() == QEvent::MouseButtonPress) {
+        const std::vector<App::SubObjectT> *objs = nullptr;
+        std::vector<App::SubObjectT> _objs;
+        if (tag == Gui::TreeWidget::getMainIconTag()) {
+            for(auto &link : self->Support.getSubListValues()) {
+                auto obj = link.getValue();
+                if(!obj || !obj->getNameInDocument())
+                    continue;
+                const auto &subs = link.getSubValues(false);
+                if(subs.size()) {
+                    for (auto &sub : subs)
+                        _objs.emplace_back(obj, sub.c_str());
+                } else
+                    _objs.emplace_back(obj, "");
+            }
+            objs = &_objs;
+        } else {
+            auto it = iconMap.find(tag);
+            if (it == iconMap.end())
+                return inherited::iconMouseEvent(ev, tag);
+            objs = &it->second.objs;
         }
-        objs = &_objs;
-    } else {
-        auto it = iconMap.find(tag);
-        if (it == iconMap.end())
-            return inherited::iconClicked(tag);
-        objs = &it->second.objs;
-    }
-    if (!objs || objs->empty())
-        return false;
+        if (!objs || objs->empty())
+            return false;
 
-    if (!(QApplication::queryKeyboardModifiers() & Qt::ControlModifier)) {
-        Gui::Selection().selStackPush();
-        Gui::Selection().clearSelection();
+        bool singleSelect = !(ev->modifiers() & Qt::ControlModifier);
+        if (singleSelect) {
+            Gui::Selection().selStackPush();
+            Gui::Selection().clearSelection();
+        }
+        for (auto &objT : *objs)
+            Gui::Selection().addSelection(objT);
+        if (singleSelect)
+            Gui::Selection().selStackPush();
+        return true;
     }
-    for (auto &objT : *objs)
-        Gui::Selection().addSelection(objT);
-    Gui::Selection().selStackPush(true, true);
-    return true;
+
+    return inherited::iconMouseEvent(ev, tag);
 }
 
 void ViewProviderSubShapeBinder::generateIcons() const
