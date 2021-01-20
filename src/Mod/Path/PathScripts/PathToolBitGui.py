@@ -170,13 +170,13 @@ class TaskPanel:
 
 class ToolBitGuiFactory(PathToolBit.ToolBitFactory):
 
-    def Create(self, name='ToolBit', shapeFile=None):
+    def Create(self, name='ToolBit', shapeFile=None, path=None):
         '''Create(name = 'ToolBit') ... creates a new tool bit.
         It is assumed the tool will be edited immediately so the internal bit body is still attached.'''
 
-        PathLog.track(name, shapeFile)
+        PathLog.track(name, shapeFile, path)
         FreeCAD.ActiveDocument.openTransaction(translate('PathToolBit', 'Create ToolBit'))
-        tool = PathToolBit.ToolBitFactory.Create(self, name, shapeFile)
+        tool = PathToolBit.ToolBitFactory.Create(self, name, shapeFile, path)
         PathIconViewProvider.Attach(tool.ViewObject, name)
         FreeCAD.ActiveDocument.commitTransaction()
         return tool

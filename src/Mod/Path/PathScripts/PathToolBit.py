@@ -88,12 +88,13 @@ def _findToolFile(name, containerFile, typ):
 
 def findToolShape(name, path=None):
     '''findToolShape(name, path) ... search for name, if relative path look in path'''
+    PathLog.track(name, path)
     return _findToolFile(name, path, 'Shape')
 
 
 def findToolBit(name, path=None):
     '''findToolBit(name, path) ... search for name, if relative path look in path'''
-    PathLog.track(name)
+    PathLog.track(name, path)
     if name.endswith('.fctb'):
         return _findToolFile(name, path, 'Bit')
     return _findToolFile("{}.fctb".format(name), path, 'Bit')
@@ -101,12 +102,14 @@ def findToolBit(name, path=None):
 
 def findToolLibrary(name, path=None):
     '''findToolLibrary(name, path) ... search for name, if relative path look in path'''
+    PathLog.track(name, path)
     if name.endswith('.fctl'):
         return _findToolFile(name, path, 'Library')
     return _findToolFile("{}.fctl".format(name), path, 'Library')
 
 
 def _findRelativePath(path, typ):
+    PathLog.track(path, typ)
     relative = path
     for p in PathPreferences.searchPathsTool(typ):
         if path.startswith(p):
@@ -131,8 +134,8 @@ def findRelativePathLibrary(path):
 
 class ToolBit(object):
 
-    def __init__(self, obj, shapeFile):
-        PathLog.track(obj.Label, shapeFile)
+    def __init__(self, obj, shapeFile, path=None):
+        PathLog.track(obj.Label, shapeFile, path)
         self.obj = obj
         obj.addProperty('App::PropertyFile', 'BitShape', 'Base', translate('PathToolBit', 'Shape for bit shape'))
         obj.addProperty('App::PropertyLink', 'BitBody', 'Base', translate('PathToolBit', 'The parametrized body representing the tool bit'))
@@ -140,6 +143,8 @@ class ToolBit(object):
         obj.addProperty('App::PropertyString', 'ShapeName', 'Base', translate('PathToolBit', 'The name of the shape file'))
         obj.addProperty('App::PropertyStringList', 'BitPropertyNames', 'Base', translate('PathToolBit', 'List of all properties inherited from the bit'))
 
+        if path:
+            obj.File = path
         if shapeFile is None:
             obj.BitShape = 'endmill.fcstd'
             self._setupBitShape(obj)
@@ -397,9 +402,9 @@ def Declaration(path):
 
 class ToolBitFactory(object):
 
-    def CreateFromAttrs(self, attrs, name='ToolBit'):
-        PathLog.debug(attrs)
-        obj = Factory.Create(name, attrs['shape'])
+    def CreateFromAttrs(self, attrs, name='ToolBit', path=None):
+        PathLog.track(attrs, path)
+        obj = Factory.Create(name, attrs['shape'], path)
         obj.Label = attrs['name']
         params = attrs['parameter']
         for prop in params:
@@ -412,17 +417,16 @@ class ToolBitFactory(object):
         PathLog.track(name, path)
         try:
             data = Declaration(path)
-            bit = Factory.CreateFromAttrs(data, name)
-            bit.File = path
+            bit = Factory.CreateFromAttrs(data, name, path)
             return bit
         except (OSError, IOError) as e:
             PathLog.error("%s not a valid tool file (%s)" % (path, e))
             raise
 
-    def Create(self, name='ToolBit', shapeFile=None):
-        PathLog.track(name, shapeFile)
+    def Create(self, name='ToolBit', shapeFile=None, path=None):
+        PathLog.track(name, shapeFile, path)
         obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', name)
-        obj.Proxy = ToolBit(obj, shapeFile)
+        obj.Proxy = ToolBit(obj, shapeFile, path)
         return obj
 
 
