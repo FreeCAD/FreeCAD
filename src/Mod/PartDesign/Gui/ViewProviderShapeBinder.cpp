@@ -646,16 +646,12 @@ void ViewProviderSubShapeBinder::generateIcons() const
        myPixmap = Gui::BitmapFactory().pixmap(this->sPixmap).scaled(
                32, 32, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 
-    std::set<App::SubObjectT> objs;
     std::unordered_map<qint64, PixmapInfo> cacheKeys;
     for(auto &l : binder->Support.getSubListValues()) {
-        for (auto & sub : l.getSubValues()) {
+        for (auto & sub : l.getSubValues(false)) {
             App::SubObjectT sobjT(l.getValue(), sub.c_str());
             auto sobj = sobjT.getSubObject();
             if (!sobj)
-                continue;
-            sobjT.setSubName(sobjT.getSubNameNoElement().c_str());
-            if (!objs.insert(sobjT).second)
                 continue;
 
             auto binder = Base::freecad_dynamic_cast<PartDesign::SubShapeBinder>(sobj);
