@@ -1,4 +1,4 @@
-#   (c) Juergen Riegel (FreeCAD@juergen-riegel.net) 2011      LGPL        *
+#   (c) Emmanuel O'Brien 2021  LGPL                                       *
 #                                                                         *
 #   This file is part of the FreeCAD CAx development system.              *
 #                                                                         *
@@ -188,6 +188,40 @@ class TestSketchFillet(unittest.TestCase):
     self.Doc.recompute()
     # Make sure the circle center is still at the old corner
     self.assertAlmostEqual(App.Vector(2,2,0).distanceToPoint(SketchFeature.getPoint(4,3)), 0.0)
+
+  # Point-to-point horizontal and vertical constraints should also move to the old corner
+  def testHorizontalVertical(self):
+    SketchFeature = self.Doc.addObject('Sketcher::SketchObject', 'HorizontalVertical')
+    # Inverted V
+    SketchFeature.addGeometry(Part.LineSegment(App.Vector(0,0,0),App.Vector(1,1,0)))
+    SketchFeature.addConstraint(Sketcher.Constraint('Coincident',0,1,-1,1))
+    SketchFeature.addConstraint(Sketcher.Constraint('DistanceX',0,1,0,2,1))
+    SketchFeature.addConstraint(Sketcher.Constraint('DistanceY',0,1,0,2,1))
+    SketchFeature.addGeometry(Part.LineSegment(App.Vector(1,1,0),App.Vector(2,0,0)))
+    SketchFeature.addConstraint(Sketcher.Constraint('Coincident',1,1,0,2))
+    SketchFeature.addConstraint(Sketcher.Constraint('DistanceX',1,1,1,2,1))
+    SketchFeature.addConstraint(Sketcher.Constraint('DistanceY',1,1,1,2,-1))
+
+    SketchFeature.addGeometry(Part.Point(App.Vector(2,1)))
+    SketchFeature.addConstraint(Sketcher.Constraint('Horizontal',0,2, 2,1))
+    SketchFeature.addGeometry(Part.Point(App.Vector(1,2)))
+    SketchFeature.addConstraint(Sketcher.Constraint('Vertical',1,1, 3,1))
+
+    SketchFeature.fillet(0, 2, 0.25)
+
+    # Verify the constraint moved to the original corner
+    found_horizontal = False
+    found_vertical = False
+    for c in SketchFeature.Constraints:
+      if c.Type == 'Horizontal' and c.First == 5 and c.FirstPos == 1 and \
+          c.Second == 2 and c.SecondPos == 1:
+           found_horizontal = True
+      elif c.Type == 'Vertical' and c.First == 5 and c.FirstPos == 1 and \
+         c.Second == 3 and c.SecondPos == 1:
+           found_vertical = True
+
+    self.assertTrue(found_horizontal)
+    self.assertTrue(found_vertical)
 
   # Distance constraints to the old corner point should be preserved
   def testDistance(self):

@@ -1599,16 +1599,9 @@ void SketchObject::manageFilletConstraints(int geoId1, PointPos posId1, int geoI
 
     Base::StateLocker lock(managedoperation, true);
 
-    //Base::Console().Log("\nLooking for %d %d and %d %d\n", geoId1, posId1, geoId2, posId2);
-
     // Loop through all the constraints and try to do reasonable things with the affected ones
-    const std::vector<Constraint *> &constraints = this->Constraints.getValues();
     std::vector<Constraint *> newConstraints;
-    for (int i=0; i< int(constraints.size()); i++) {
-        Constraint *c = constraints[i];
-
-        //Base::Console().Log("Constraint from %d %d to %d %d type:%d\n", c->First, c->FirstPos, c->Second, c->SecondPos, c->Type);
-
+    for (auto c : this->Constraints.getValues()) {
         // Keep track of whether the affected lines and endpoints appear in this constraint
         bool point1First = c->First == geoId1 && c->FirstPos == posId1;
         bool point2First = c->First == geoId2 && c->FirstPos == posId2;
@@ -1627,15 +1620,23 @@ void SketchObject::manageFilletConstraints(int geoId1, PointPos posId1, int geoI
                 // goes away because the edges will touch the fillet instead.
                 continue;
             }
-
             if (point1First || point2First) {
                 // Move the coincident constraint to the new corner point
                 c->First = originalCornerId;
                 c->FirstPos = start;
             }
-
             if (point1Second || point2Second) {
                 // Move the coincident constraint to the new corner point
+                c->Second = originalCornerId;
+                c->SecondPos = start;
+            }
+        } else if (c->Type == Sketcher::Horizontal || c->Type == Sketcher::Vertical) {
+            // Point-to-point horizontal or vertical constraint, move to new corner point
+            if (point1First || point2First) {
+                c->First = originalCornerId;
+                c->FirstPos = start;
+            }
+            if (point1Second || point2Second) {
                 c->Second = originalCornerId;
                 c->SecondPos = start;
             }
@@ -1690,9 +1691,12 @@ void SketchObject::manageFilletConstraints(int geoId1, PointPos posId1, int geoI
           // Can't imagine any cases where you'd fillet a vertex going through a lens, so let's
           // delete to be safe.
           continue;
+        } else if (point1First || point2First || point1Second || point2Second || point1Third || point2Third) {
+          // Delete any other point-based constraints on the relevant points
+          continue;
         }
 
-        // Default: copy this constraint to the new list
+        // Default: keep all other constraints
         newConstraints.push_back(c->clone());
     }
     this->Constraints.setValues(std::move(newConstraints));
@@ -1802,13 +1806,11 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
 
     // If either of the two input lines are locked, don't try to trim since it won't work anyway
     if (trim) {
-        const std::vector<Constraint *> &constraints = this->Constraints.getValues();
-        for (int i=0; i< int(constraints.size()); i++) {
-            Constraint *c = constraints[i];
+        for (auto c : this->Constraints.getValues()) {
             if (c->Type == Sketcher::Block && 
                 (c->First == GeoId1 || c->First == GeoId2)) {
-              trim = false;
-              break;
+                trim = false;
+                break;
             }
         }
     }
