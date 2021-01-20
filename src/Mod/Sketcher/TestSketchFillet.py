@@ -159,6 +159,9 @@ class TestSketchFillet(unittest.TestCase):
     SketchFeature.addConstraint(Sketcher.Constraint('DistanceY',0,1,0,2,1))
     arc = Part.ArcOfCircle(Part.Circle(App.Vector(3,1,0),App.Vector(0,0,1), 1.75), -3.14, -2.17)
     SketchFeature.addGeometry(arc)
+    SketchFeature.addConstraint(Sketcher.Constraint('DistanceX',1,3, -1,1, -3.0))
+    SketchFeature.addConstraint(Sketcher.Constraint('DistanceY',1,3, -1,1, -1.0))
+    SketchFeature.addConstraint(Sketcher.Constraint('Distance',0,2, 1,1, 0.25))
     self.Doc.recompute()
 
     SketchFeature.fillet(0,1, App.Vector(0.75,0.75,0), App.Vector(1.22,0.66,0), 0.25)
