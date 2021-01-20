@@ -247,7 +247,8 @@ def GetToolShapeFile(parent=None):
                                               location, '*.fcstd')
     if fname and fname[0]:
         if fname != location:
-            PathPreferences.setLastPathToolShape(location)
+            newloc = os.path.dirname(fname[0])
+            PathPreferences.setLastPathToolShape(newloc)
         return fname[0]
     else:
         return None

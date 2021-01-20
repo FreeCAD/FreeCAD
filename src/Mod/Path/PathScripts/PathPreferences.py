@@ -246,14 +246,18 @@ def setDefaultTaskPanelLayout(style):
 def experimentalFeaturesEnabled():
     return preferences().GetBool(EnableExperimentalFeatures, False)
 
+
 def suppressAllSpeedsWarning():
     return preferences().GetBool(WarningSuppressAllSpeeds, True)
+
 
 def suppressRapidSpeedsWarning():
     return suppressAllSpeedsWarning() or preferences().GetBool(WarningSuppressRapidSpeeds, True)
 
+
 def suppressSelectionModeWarning():
     return preferences().GetBool(WarningSuppressSelectionMode, True)
+
 
 def suppressOpenCamLibWarning():
     return preferences().GetBool(WarningSuppressOpenCamLib, True)

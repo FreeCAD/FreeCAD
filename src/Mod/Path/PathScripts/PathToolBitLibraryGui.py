@@ -82,6 +82,7 @@ def checkWorkingDir():
         workingdir = workingdir[:-8]  # trim off trailing /Library if user chose it
 
     PathPreferences.setLastPathToolLibrary("{}{}Library".format(workingdir, os.path.sep))
+    PathPreferences.setLastPathToolBit("{}{}Bit".format(workingdir, os.path.sep))
     PathLog.debug('setting workingdir to: {}'.format(workingdir))
 
     subdirlist = ['Bit', 'Library', 'Shape']
