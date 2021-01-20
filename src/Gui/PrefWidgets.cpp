@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <QContextMenuEvent>
 # include <QMenu>
+# include <QMessageBox>
 #endif
 
 #include <Base/Console.h>
@@ -554,8 +555,22 @@ void PrefQuantitySpinBox::contextMenuEvent(QContextMenuEvent *event)
     // add the history menu part...
     QStringList history = getHistory();
 
+#if QT_VERSION >= 0x050100
+    menu->setToolTipsVisible(true);
+#endif
+
     for (QStringList::const_iterator it = history.begin();it!= history.end();++it) {
-        actions.push_back(menu->addAction(*it));
+        QAction *action;
+        if (it->size() > 50) {
+            action = menu->addAction(QString::fromLatin1("%1...%2").arg(it->left(22), it->right(22)));
+            if (it->size() < 1024)
+                action->setToolTip(*it);
+            else
+                action->setToolTip(QString::fromLatin1("%1\n\n...\n\n%2").arg(
+                            it->left(500), it->right(500)));
+        } else
+            action = menu->addAction(*it);
+        actions.push_back(action);
         values.push_back(*it);
     }
 
@@ -570,7 +585,7 @@ void PrefQuantitySpinBox::contextMenuEvent(QContextMenuEvent *event)
 
     // look what the user has chosen
     if (userAction == saveValueAction) {
-        pushToHistory(this->text());
+        pushToHistory();
     }
     else if (userAction == clearListAction) {
         d->handle->Clear();
@@ -579,8 +594,19 @@ void PrefQuantitySpinBox::contextMenuEvent(QContextMenuEvent *event)
         int i=0;
         for (std::vector<QAction *>::const_iterator it = actions.begin();it!=actions.end();++it,i++) {
             if (*it == userAction) {
-                lineEdit()->setText(values[i]);
-                break;
+                if (values[i].startsWith(QLatin1Char('='))) {
+                    QString msg;
+                    try {
+                        setExpressionString(values[i].toUtf8().constData()+1);
+                    } catch (Base::Exception &e) {
+                        msg = QString::fromUtf8(e.what());
+                    } catch (...) {
+                        msg = tr("Failed to apply expression");
+                    }
+                    if (msg.size())
+                        QMessageBox::critical(this, tr("Expression"), msg);
+                } else
+                    lineEdit()->setText(values[i]); break;
             }
         }
     }
@@ -598,32 +624,38 @@ void PrefQuantitySpinBox::onRestore()
     setToLastUsedValue();
 }
 
-void PrefQuantitySpinBox::pushToHistory(const QString &valueq)
+void PrefQuantitySpinBox::pushToHistory()
 {
     Q_D(PrefQuantitySpinBox);
 
     QString val;
-    if (valueq.isEmpty())
-        val = this->text();
+    if (hasExpression(false))
+        val = QString::fromLatin1("=%1").arg(QString::fromUtf8(getExpressionString().c_str()));
     else
-        val = valueq;
+        val = this->text();
 
-    std::string value(val.toUtf8());
+    if (val.isEmpty())
+        return;
+
+    std::string value(val.toUtf8().constData());
     if (d->handle.isValid()) {
         try {
-            // do nothing if the given value is on top of the history
+            // Search the history for the same value and move to the top if found.
             std::string tHist = d->handle->GetASCII("Hist0");
-            if (tHist != val.toUtf8().constData()) {
-                for (int i = d->historySize -1 ; i>=0 ;i--) {
-                    QByteArray hist1 = "Hist";
-                    QByteArray hist0 = "Hist";
-                    hist1.append(QByteArray::number(i+1));
-                    hist0.append(QByteArray::number(i));
-                    std::string tHist = d->handle->GetASCII(hist0);
-                    if (!tHist.empty())
-                        d->handle->SetASCII(hist1,tHist.c_str());
+            if (tHist != value) {
+                int offset = 0;
+                QByteArray hist("Hist");
+                tHist = value;
+                for (int i = 0 ; i < d->historySize ;++i) {
+                    std::string tNext;
+                    for (; i + offset < d->historySize; ++offset) {
+                        tNext = d->handle->GetASCII(hist+QByteArray::number(i+offset));
+                        if (tNext != value)
+                            break;
+                    }
+                    d->handle->SetASCII(hist+QByteArray::number(i), tHist);
+                    tHist = std::move(tNext);
                 }
-                d->handle->SetASCII("Hist0",value.c_str());
             }
         }
         catch (const Base::Exception& e) {

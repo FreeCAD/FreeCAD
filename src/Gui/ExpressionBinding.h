@@ -63,6 +63,7 @@ protected:
     std::string getExpressionString(bool no_throw=true) const;
     std::string getEscapedExpressionString() const;
     virtual void setExpression(boost::shared_ptr<App::Expression> expr);
+    bool setExpressionString(const char *str, bool no_throw=false);
 
     //gets called when the bound expression is changed, either by this binding or any external action
     virtual void onChange() {};

@@ -64,6 +64,8 @@ bool ExpressionBinding::isBound() const
 void Gui::ExpressionBinding::setExpression(boost::shared_ptr<Expression> expr)
 {
     DocumentObject * docObj = path.getDocumentObject();
+    if (!docObj)
+        return;
 
     try {
         if (expr) {
@@ -204,52 +206,10 @@ QPixmap ExpressionBinding::getIcon(const char* name, const QSize& size) const
 bool ExpressionBinding::apply(const std::string & propName)
 {
     Q_UNUSED(propName);
-    if (hasExpression(false)) {
-        DocumentObject * docObj = path.getDocumentObject();
-
-        if (!docObj)
-            throw Base::RuntimeError("Document object not found.");
-
-        bool transaction = !App::GetApplication().getActiveTransaction();
-        if(transaction) {
-            std::ostringstream ss;
-            ss << "Set expression " << docObj->Label.getValue();
-            App::GetApplication().setActiveTransaction(ss.str().c_str());
-        }
-        Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument('%s').%s.setExpression('%s', u'%s')",
-                                docObj->getDocument()->getName(),
-                                docObj->getNameInDocument(),
-                                path.toEscapedString().c_str(),
-                                getEscapedExpressionString().c_str());
-        if(transaction)
-            App::GetApplication().closeActiveTransaction();
-        return true;
-    }
-    else {
-        if (isBound()) {
-            DocumentObject * docObj = path.getDocumentObject();
-
-            if (!docObj)
-                throw Base::RuntimeError("Document object not found.");
-
-            if (lastExpression) {
-                bool transaction = !App::GetApplication().getActiveTransaction();
-                if(transaction) {
-                    std::ostringstream ss;
-                    ss << "Discard expression " << docObj->Label.getValue();
-                    App::GetApplication().setActiveTransaction(ss.str().c_str());
-                }
-                Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument('%s').%s.setExpression('%s', None)",
-                                        docObj->getDocument()->getName(),
-                                        docObj->getNameInDocument(),
-                                        path.toEscapedString().c_str());
-                if(transaction)
-                    App::GetApplication().closeActiveTransaction();
-            }
-        }
-
-        return false;
-    }
+    // Expression is set/cleared immediately upon calling of setExpression()
+    // (done by various widgets that are derived from ExpressionBinding, e.g.
+    // Gui::IntSpinBox), so no need to do anything else.
+    return hasExpression(false);
 }
 
 bool ExpressionBinding::apply()
@@ -279,4 +239,29 @@ void ExpressionBinding::expressionChange(const ObjectIdentifier& id) {
 
     if(id==path)
         onChange();
+}
+
+bool ExpressionBinding::setExpressionString(const char *str, bool no_throw)
+{
+    auto obj = path.getDocumentObject();
+    if (!obj) {
+        if (!no_throw)
+            throw Base::RuntimeError("Object not bound");
+        return false;
+    }
+    try {
+        boost::shared_ptr<Expression> expr;
+        if (str && str[0])
+            expr = Expression::parse(obj, str);
+        setExpression(expr);
+    } catch (Base::Exception &e) {
+        if (no_throw)
+            return false;
+        throw;
+    } catch (...) {
+        if (no_throw)
+            return false;
+        throw;
+    }
+    return true;
 }

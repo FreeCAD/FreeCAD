@@ -338,7 +338,7 @@ public:
     /// set the param group path where the widget writes and reads the default values
     void  setParamGrpPath(const QByteArray& name);
     /// push a new value to the history, if no string given the actual text of the input field is used.
-    void pushToHistory(const QString& value = QString());
+    void pushToHistory();
     /// get the history of the field, newest first
     QStringList getHistory() const;
     //@}
