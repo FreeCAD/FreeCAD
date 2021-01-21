@@ -629,19 +629,64 @@ std::set<long> FemMesh::getSurfaceNodes(long /*ElemId*/, short /*FaceId*/, float
  */
 std::list<std::pair<int, int> > FemMesh::getVolumesByFace(const TopoDS_Face &face) const
 {
-    //TODO: This function is broken with SMESH7 as it is impossible to iterate volume faces
     std::list<std::pair<int, int> > result;
     std::set<int> nodes_on_face = getNodesByFace(face);
 
+#if SMESH_VERSION_MAJOR >= 7
+    // SMDS_MeshVolume::facesIterator() is broken with SMESH7 as it is impossible to iterate volume faces
+    // In SMESH9 this function has been removed
+    //
+    std::map< int, std::set<int> > face_nodes;
+
+    // get faces that contribute to 'nodes_on_face' with all of its nodes
+    SMDS_FaceIteratorPtr face_iter = myMesh->GetMeshDS()->facesIterator();
+    while (face_iter && face_iter->more()) {
+        const SMDS_MeshFace* face = face_iter->next();
+        SMDS_NodeIteratorPtr node_iter = face->nodeIterator();
+
+        // all nodes of the current face must be part of 'nodes_on_face'
+        std::set<int> node_ids;
+        while (node_iter && node_iter->more()) {
+            const SMDS_MeshNode* node = node_iter->next();
+            node_ids.insert(node->GetID());
+        }
+
+        std::vector<int> element_face_nodes;
+        std::set_intersection(nodes_on_face.begin(), nodes_on_face.end(), node_ids.begin(), node_ids.end(),
+            std::back_insert_iterator<std::vector<int> >(element_face_nodes));
+
+        if (element_face_nodes.size() == node_ids.size()) {
+            face_nodes[face->GetID()] = node_ids;
+        }
+    }
+
+    // get all nodes of a volume and check which faces contribute to it with all of its nodes
     SMDS_VolumeIteratorPtr vol_iter = myMesh->GetMeshDS()->volumesIterator();
     while (vol_iter->more()) {
         const SMDS_MeshVolume* vol = vol_iter->next();
-#if SMESH_VERSION_MAJOR >= 9
-        throw Base::NotImplementedError("Port FemMesh::getVolumesByFace to smesh >= 9.x");
-        SMDS_ElemIteratorPtr face_iter = nullptr; //TODO:
+        SMDS_NodeIteratorPtr node_iter = vol->nodeIterator();
+        std::set<int> node_ids;
+        while (node_iter && node_iter->more()) {
+            const SMDS_MeshNode* node = node_iter->next();
+            node_ids.insert(node->GetID());
+        }
+
+        for (const auto& it : face_nodes) {
+            std::vector<int> element_face_nodes;
+            std::set_intersection(node_ids.begin(), node_ids.end(), it.second.begin(), it.second.end(),
+                std::back_insert_iterator<std::vector<int> >(element_face_nodes));
+
+            // For curved faces it is possible that a volume contributes more than one face
+            if (element_face_nodes.size() == it.second.size()) {
+                result.emplace_back(vol->GetID(), it.first);
+            }
+        }
+    }
 #else
+    SMDS_VolumeIteratorPtr vol_iter = myMesh->GetMeshDS()->volumesIterator();
+    while (vol_iter->more()) {
+        const SMDS_MeshVolume* vol = vol_iter->next();
         SMDS_ElemIteratorPtr face_iter = vol->facesIterator();
-#endif
 
         while (face_iter && face_iter->more()) {
             const SMDS_MeshFace* face = static_cast<const SMDS_MeshFace*>(face_iter->next());
@@ -662,6 +707,7 @@ std::list<std::pair<int, int> > FemMesh::getVolumesByFace(const TopoDS_Face &fac
             }
         }
     }
+#endif
 
     result.sort();
     return result;
