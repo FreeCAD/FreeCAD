@@ -128,9 +128,7 @@ protected:
 
     void contextMenuEvent(QContextMenuEvent *event);
     void closeEvent(QCloseEvent*);
-#if QT_VERSION >= 0x050300
-    QPageSize::PageSizeId getPaperSize(int w, int h) const;
-#else
+#if QT_VERSION < 0x050300
     QPrinter::PaperSize getPaperSize(int w, int h) const;
 #endif
 
@@ -171,6 +169,7 @@ private:
     QPrinter::Orientation m_orientation;
     QPrinter::PaperSize m_paperSize;
 #endif
+    qreal pagewidth, pageheight;
     ViewProviderPage *m_vpPage;
 
     QList<QGraphicsItem*> m_qgSceneSelected;        //items in selection order
