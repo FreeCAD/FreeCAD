@@ -1102,6 +1102,20 @@ class SpreadsheetCases(unittest.TestCase):
         sheet.removeColumns('B', 1)
         sheet.setAlias('C3','test')
 
+    def testUndoAliasCreationReuseName(self):
+        """ Test deleted aliases by undo remains in database"""
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+
+        self.doc.UndoMode = 1
+        self.doc.openTransaction("create alias")
+        sheet.setAlias('B2', 'test')
+        self.doc.commitTransaction()
+        self.doc.recompute()
+
+        self.doc.undo()
+        self.doc.recompute()
+        sheet.setAlias('C3','test')
+
     def tearDown(self):
         #closing doc
         FreeCAD.closeDocument(self.doc.Name)
