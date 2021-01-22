@@ -26,7 +26,6 @@ import PathScripts.PathGui as PathGui
 import PathScripts.PathIconViewProvider as PathIconViewProvider
 import PathScripts.PathLog as PathLog
 import PathScripts.PathSetupSheet as PathSetupSheet
-# import PathScripts.PathSetupSheetOpPrototype as PathSetupSheetOpPrototype
 import PathScripts.PathSetupSheetOpPrototypeGui as PathSetupSheetOpPrototypeGui
 import PathScripts.PathUtil as PathUtil
 
@@ -37,17 +36,21 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "Task panel editor for a SetupSheet"
 
+
 # Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
+
 LOGLEVEL = False
+
 
 if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+
 
 class ViewProvider:
     '''ViewProvider for a SetupSheet.
@@ -100,13 +103,10 @@ class ViewProvider:
     def doubleClicked(self, vobj):
         self.setEdit(vobj)
 
+
 class Delegate(QtGui.QStyledItemDelegate):
     PropertyRole = QtCore.Qt.UserRole + 1
     EditorRole   = QtCore.Qt.UserRole + 2
-
-
-    #def paint(self, painter, option, index):
-    #    #PathLog.track(index.column(), type(option))
 
     def createEditor(self, parent, option, index):
         # pylint: disable=unused-argument
@@ -129,6 +129,7 @@ class Delegate(QtGui.QStyledItemDelegate):
     def updateEditorGeometry(self, widget, option, index):
         # pylint: disable=unused-argument
         widget.setGeometry(option.rect)
+
 
 class OpTaskPanel:
     '''Editor for an operation's property default values.
@@ -168,16 +169,16 @@ class OpTaskPanel:
         self.model = QtGui.QStandardItemModel(len(self.props), 3, self.form)
         self.model.setHorizontalHeaderLabels(['Set', 'Property', 'Value'])
 
-        for i,name in enumerate(self.props):
+        for i, name in enumerate(self.props):
             prop = self.prototype.getProperty(name)
             isset = hasattr(self.obj, self.propertyName(name))
             if isset:
                 prop.setValue(getattr(self.obj, self.propertyName(name)))
 
             self.model.setData(self.model.index(i, 0), isset, QtCore.Qt.EditRole)
-            self.model.setData(self.model.index(i, 1), name,  QtCore.Qt.EditRole)
-            self.model.setData(self.model.index(i, 2), prop,  Delegate.PropertyRole)
-            self.model.setData(self.model.index(i, 2), prop.displayString(),  QtCore.Qt.DisplayRole)
+            self.model.setData(self.model.index(i, 1), name, QtCore.Qt.EditRole)
+            self.model.setData(self.model.index(i, 2), prop, Delegate.PropertyRole)
+            self.model.setData(self.model.index(i, 2), prop.displayString(), QtCore.Qt.DisplayRole)
 
             self.model.item(i, 0).setCheckable(True)
             self.model.item(i, 0).setText('')
@@ -206,7 +207,7 @@ class OpTaskPanel:
 
     def accept(self):
         propertiesCreatedRemoved = False
-        for i,name in enumerate(self.props):
+        for i, name in enumerate(self.props):
             prop = self.prototype.getProperty(name)
             propName = self.propertyName(name)
             enabled = self.model.item(i, 0).checkState() == QtCore.Qt.Checked
@@ -229,7 +230,7 @@ class OpsDefaultEditor:
     def __init__(self, obj, form):
         self.form = form
         self.obj = obj
-        self.ops = sorted([OpTaskPanel(self.obj, name, op) for name, op in PathUtil.keyValueIter(PathSetupSheet._RegisteredOps)], key = lambda op: op.name) # pylint: disable=protected-access
+        self.ops = sorted([OpTaskPanel(self.obj, name, op) for name, op in PathUtil.keyValueIter(PathSetupSheet._RegisteredOps)], key=lambda op: op.name)
         if form:
             parent = form.tabOpDefaults
             for op in self.ops:
@@ -245,10 +246,6 @@ class OpsDefaultEditor:
     def accept(self):
         if any([op.accept() for op in self.ops]):
             PathLog.track()
-            #sel = FreeCADGui.Selection.getSelection()
-            #FreeCADGui.Selection.clearSelection()
-            #for o in sel:
-            #    FreeCADGui.Selection.addSelection(o)
 
     def getFields(self):
         pass
@@ -264,7 +261,7 @@ class OpsDefaultEditor:
             self.currentOp = self.form.opDefaultOp.itemData(current)
             self.currentOp.form.show()
 
-    def updateModel(self, recomp = True):
+    def updateModel(self, recomp=True):
         PathLog.track()
         self.getFields()
         self.updateUI()
@@ -281,6 +278,7 @@ class OpsDefaultEditor:
         if self.form:
             self.form.opDefaultOp.currentIndexChanged.connect(self.updateUI)
 
+
 class GlobalEditor(object):
     '''Editor for the global properties which affect almost every operation.'''
 
@@ -293,7 +291,6 @@ class GlobalEditor(object):
         self.safeHeightOffs = None
         self.rapidHorizontal = None
         self.rapidVertical = None
-        #self.coolantMode = None
 
     def reject(self):
         pass
@@ -308,16 +305,15 @@ class GlobalEditor(object):
             if val != value:
                 PathUtil.setProperty(self.obj, name, value)
 
-        updateExpression('StartDepthExpression',        self.form.setupStartDepthExpr)
-        updateExpression('FinalDepthExpression',        self.form.setupFinalDepthExpr)
-        updateExpression('StepDownExpression',          self.form.setupStepDownExpr)
-        updateExpression('ClearanceHeightExpression',   self.form.setupClearanceHeightExpr)
-        updateExpression('SafeHeightExpression',        self.form.setupSafeHeightExpr)
+        updateExpression('StartDepthExpression', self.form.setupStartDepthExpr)
+        updateExpression('FinalDepthExpression', self.form.setupFinalDepthExpr)
+        updateExpression('StepDownExpression', self.form.setupStepDownExpr)
+        updateExpression('ClearanceHeightExpression', self.form.setupClearanceHeightExpr)
+        updateExpression('SafeHeightExpression', self.form.setupSafeHeightExpr)
         self.clearanceHeightOffs.updateProperty()
         self.safeHeightOffs.updateProperty()
         self.rapidVertical.updateProperty()
         self.rapidHorizontal.updateProperty()
-        #self.coolantMode.updateProperty()
         self.obj.CoolantMode = self.form.setupCoolantMode.currentText()
 
     def selectInComboBox(self, name, combo):
@@ -330,18 +326,18 @@ class GlobalEditor(object):
 
     def updateUI(self):
         PathLog.track()
-        self.form.setupStartDepthExpr.setText(       self.obj.StartDepthExpression)
-        self.form.setupFinalDepthExpr.setText(       self.obj.FinalDepthExpression)
-        self.form.setupStepDownExpr.setText(         self.obj.StepDownExpression)
-        self.form.setupClearanceHeightExpr.setText(  self.obj.ClearanceHeightExpression)
-        self.form.setupSafeHeightExpr.setText(       self.obj.SafeHeightExpression)
+        self.form.setupStartDepthExpr.setText(self.obj.StartDepthExpression)
+        self.form.setupFinalDepthExpr.setText(self.obj.FinalDepthExpression)
+        self.form.setupStepDownExpr.setText(self.obj.StepDownExpression)
+        self.form.setupClearanceHeightExpr.setText(self.obj.ClearanceHeightExpression)
+        self.form.setupSafeHeightExpr.setText(self.obj.SafeHeightExpression)
         self.clearanceHeightOffs.updateSpinBox()
         self.safeHeightOffs.updateSpinBox()
         self.rapidVertical.updateSpinBox()
         self.rapidHorizontal.updateSpinBox()
         self.selectInComboBox(self.obj.CoolantMode, self.form.setupCoolantMode)
 
-    def updateModel(self, recomp = True):
+    def updateModel(self, recomp=True):
         PathLog.track()
         self.getFields()
         self.updateUI()
@@ -358,6 +354,7 @@ class GlobalEditor(object):
         self.rapidVertical = PathGui.QuantitySpinBox(self.form.setupRapidVertical, self.obj, 'VertRapid')
         self.form.setupCoolantMode.addItems(self.obj.CoolantModes)
         self.setFields()
+
 
 class TaskPanel:
     '''TaskPanel for the SetupSheet - if it is being edited directly.'''
@@ -387,8 +384,6 @@ class TaskPanel:
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.recompute()
-        #FreeCADGui.Selection.removeObserver(self.s)
-        #FreeCAD.ActiveDocument.recompute()
 
     def getFields(self):
         self.globalEditor.getFields()
@@ -411,11 +406,13 @@ class TaskPanel:
         self.globalEditor.setupUi()
         self.opsEditor.setupUi()
 
-def Create(name = 'SetupSheet'):
-    '''Create(name = 'SetupSheet') ... creates a new setup sheet'''
+
+def Create(name='SetupSheet'):
+    '''Create(name='SetupSheet') ... creates a new setup sheet'''
     FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Create Job"))
     ssheet = PathSetupSheet.Create(name)
     PathIconViewProvider.Attach(ssheet, name)
     return ssheet
+
 
 PathIconViewProvider.RegisterViewProvider('SetupSheet', ViewProvider)

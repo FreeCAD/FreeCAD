@@ -50,6 +50,12 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
     find_package(ZLIB REQUIRED)
     find_package(PyCXX REQUIRED)
     SetupOpenCasCade()
+    if(BUILD_GUI)
+        # Do this before the check for SMESH because it depends on vtk
+        # that may have its own OpenGL check but possibly fails and leaves
+        # OPENGL_gl_LIBRARY empty that results into linker errors
+        SetupOpenGL()
+    endif(BUILD_GUI)
     SetupSalomeSMESH()
     if (BUILD_FEM_NETGEN)
         find_package(NETGEN)
@@ -64,7 +70,6 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
     SetupFreetype()
 
     if(BUILD_GUI)
-        SetupOpenGL()
         SetupCoin3D()
         SetupSpaceball()
         SetupShibokenAndPyside()
