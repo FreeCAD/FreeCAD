@@ -368,6 +368,11 @@ namespace GCS
         void getDependentParamsGroups(std::vector<std::vector<double *>> &pdependentparametergroups) const
           { pdependentparametergroups = pDependentParametersGroups;}
         bool isEmptyDiagnoseMatrix() const {return emptyDiagnoseMatrix;}
+
+        bool hasConflicting() const {return !(hasDiagnosis && conflictingTags.empty());}
+        bool hasRedundant() const {return !(hasDiagnosis && redundantTags.empty());}
+        bool hasPartiallyRedundant() const {return !(hasDiagnosis && partiallyRedundantTags.empty());}
+
         void invalidatedDiagnosis();
     };
 
