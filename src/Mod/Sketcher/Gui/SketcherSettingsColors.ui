@@ -241,11 +241,38 @@
         <item row="8" column="0">
          <widget class="QLabel" name="label_4">
           <property name="text">
-           <string>Fully constrained geometry</string>
+           <string>Invalid Sketch</string>
           </property>
          </widget>
         </item>
         <item row="8" column="1">
+         <widget class="Gui::PrefColorButton" name="InvalidSketchColor">
+          <property name="toolTip">
+           <string>Color of geometry indicating an invalid sketch</string>
+          </property>
+          <property name="color">
+           <color>
+            <red>255</red>
+            <green>109</green>
+            <blue>0</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>InvalidSketchColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="0">
+         <widget class="QLabel" name="label_45">
+          <property name="text">
+           <string>Fully constrained geometry</string>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="1">
          <widget class="Gui::PrefColorButton" name="FullyConstrainedColor">
           <property name="toolTip">
            <string>Color of fully constrained geometry in edit mode</string>
@@ -265,14 +292,14 @@
           </property>
          </widget>
         </item>
-        <item row="9" column="0">
+        <item row="10" column="0">
          <widget class="QLabel" name="label_41">
           <property name="text">
            <string>Fully constrained edit edge color</string>
           </property>
          </widget>
         </item>
-        <item row="9" column="1">
+        <item row="10" column="1">
          <widget class="Gui::PrefColorButton" name="FullyConstraintElementColor">
           <property name="toolTip">
            <string>Color of fully constrained edge color in edit mode</string>
@@ -292,14 +319,14 @@
           </property>
          </widget>
         </item>
-        <item row="10" column="0">
+        <item row="11" column="0">
          <widget class="QLabel" name="label_42">
           <property name="text">
            <string>Fully constrained edit construction edge color</string>
           </property>
          </widget>
         </item>
-        <item row="10" column="1">
+        <item row="11" column="1">
          <widget class="Gui::PrefColorButton" name="FullyConstraintConstructionElementColor">
           <property name="toolTip">
            <string>Color of fully constrained construction edge color in edit mode</string>
@@ -319,14 +346,14 @@
           </property>
          </widget>
         </item>
-        <item row="11" column="0">
+        <item row="12" column="0">
          <widget class="QLabel" name="label_43">
           <property name="text">
            <string>Fully constrained edit internal alignment edge color</string>
           </property>
          </widget>
         </item>
-        <item row="11" column="1">
+        <item row="12" column="1">
          <widget class="Gui::PrefColorButton" name="FullyConstraintInternalAlignmentColor">
           <property name="toolTip">
            <string>Color of fully constrained internal alignment edge color in edit mode</string>
@@ -346,14 +373,14 @@
           </property>
          </widget>
         </item>
-        <item row="12" column="0">
+        <item row="13" column="0">
          <widget class="QLabel" name="label_44">
           <property name="text">
            <string>Fully constrained edit vertex color</string>
           </property>
          </widget>
         </item>
-        <item row="12" column="1">
+        <item row="13" column="1">
          <widget class="Gui::PrefColorButton" name="FullyConstraintConstructionPointColor">
           <property name="toolTip">
            <string>Color of fully constrained vertex color in edit mode</string>
@@ -373,14 +400,14 @@
           </property>
          </widget>
         </item>
-        <item row="13" column="0">
+        <item row="14" column="0">
          <widget class="QLabel" name="label_14">
           <property name="text">
            <string>Constraint color</string>
           </property>
          </widget>
         </item>
-        <item row="13" column="1">
+        <item row="14" column="1">
          <widget class="Gui::PrefColorButton" name="ConstrainedColor">
           <property name="toolTip">
            <string>Color of driving constraints in edit mode</string>
@@ -400,14 +427,14 @@
           </property>
          </widget>
         </item>
-        <item row="14" column="0">
+        <item row="15" column="0">
          <widget class="QLabel" name="label_8">
           <property name="text">
            <string>Reference constraint color</string>
           </property>
          </widget>
         </item>
-        <item row="14" column="1">
+        <item row="15" column="1">
          <widget class="Gui::PrefColorButton" name="NonDrivingConstraintColor">
           <property name="toolTip">
            <string>Color of reference constraints in edit mode</string>
@@ -427,14 +454,14 @@
           </property>
          </widget>
         </item>
-        <item row="15" column="0">
+        <item row="16" column="0">
          <widget class="QLabel" name="labelexpr">
           <property name="text">
            <string>Expression dependent constraint color</string>
           </property>
          </widget>
         </item>
-        <item row="15" column="1">
+        <item row="16" column="1">
          <widget class="Gui::PrefColorButton" name="ExprBasedConstrDimColor">
           <property name="toolTip">
            <string>Color of expression dependent constraints in edit mode</string>
@@ -454,14 +481,14 @@
           </property>
          </widget>
         </item>
-        <item row="16" column="0">
+        <item row="17" column="0">
          <widget class="QLabel" name="labeldeact">
           <property name="text">
            <string>Deactivated constraint color</string>
           </property>
          </widget>
         </item>
-        <item row="16" column="1">
+        <item row="17" column="1">
          <widget class="Gui::PrefColorButton" name="DeactivatedConstrDimColor">
           <property name="toolTip">
            <string>Color of deactivated constraints in edit mode</string>
@@ -481,14 +508,14 @@
           </property>
          </widget>
         </item>
-        <item row="17" column="0">
+        <item row="18" column="0">
          <widget class="QLabel" name="label_15">
           <property name="text">
            <string>Dimensional constraint color</string>
           </property>
          </widget>
         </item>
-        <item row="17" column="1">
+        <item row="18" column="1">
          <widget class="Gui::PrefColorButton" name="DatumColor">
           <property name="toolTip">
            <string>Color of dimensional driving constraints</string>
@@ -508,14 +535,14 @@
           </property>
          </widget>
         </item>
-        <item row="18" column="0">
+        <item row="19" column="0">
          <widget class="QLabel" name="label_5">
           <property name="text">
            <string>Coordinate text color</string>
           </property>
          </widget>
         </item>
-        <item row="18" column="1">
+        <item row="19" column="1">
          <widget class="Gui::PrefColorButton" name="CursorTextColor">
           <property name="toolTip">
            <string>Text color of the coordinates</string>
@@ -535,14 +562,14 @@
           </property>
          </widget>
         </item>
-        <item row="19" column="0">
+        <item row="20" column="0">
          <widget class="QLabel" name="label_19">
           <property name="text">
            <string>Cursor crosshair color</string>
           </property>
          </widget>
         </item>
-        <item row="19" column="1">
+        <item row="20" column="1">
          <widget class="Gui::PrefColorButton" name="CursorCrosshairColor">
           <property name="toolTip">
            <string>Color of crosshair cursor.

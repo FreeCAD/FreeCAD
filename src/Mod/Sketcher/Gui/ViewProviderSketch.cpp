@@ -6313,6 +6313,10 @@ bool ViewProviderSketch::setEdit(int ModNum)
     // set the cross lines color
     //CrossColorV.setPackedValue((uint32_t)color, transparency);
     //CrossColorH.setPackedValue((uint32_t)color, transparency);
+    // set invalid sketch color
+    color = (unsigned long)(InvalidSketchColor.getPackedValue());
+    color = hGrp->GetUnsigned("InvalidSketchColor", color);
+    InvalidSketchColor.setPackedValue((uint32_t)color, transparency);
     // set the fully constrained color
     color = (unsigned long)(FullyConstrainedColor.getPackedValue());
     color = hGrp->GetUnsigned("FullyConstrainedColor", color);

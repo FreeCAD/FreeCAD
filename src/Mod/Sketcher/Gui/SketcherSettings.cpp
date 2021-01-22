@@ -253,6 +253,7 @@ void SketcherSettingsColors::saveSettings()
     ui->EditedVertexColor->onSave();
     ui->ConstructionColor->onSave();
     ui->ExternalColor->onSave();
+    ui->InvalidSketchColor->onSave();
     ui->FullyConstrainedColor->onSave();
     ui->InternalAlignedGeoColor->onSave();
     ui->FullyConstraintElementColor->onSave();
@@ -280,6 +281,7 @@ void SketcherSettingsColors::loadSettings()
     ui->EditedVertexColor->onRestore();
     ui->ConstructionColor->onRestore();
     ui->ExternalColor->onRestore();
+    ui->InvalidSketchColor->onRestore();
     ui->FullyConstrainedColor->onRestore();
     ui->InternalAlignedGeoColor->onRestore();
     ui->FullyConstraintElementColor->onRestore();
