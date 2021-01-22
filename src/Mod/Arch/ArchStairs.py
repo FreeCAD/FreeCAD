@@ -1240,7 +1240,7 @@ class _Stairs(ArchComponent.Component):
                     resLength2 = th / math.tan(a)
                     lProfile.append(lProfile[-1].add(DraftVecUtils.scaleTo(vLength,-resLength)).add(Vector(0,0,-resHeight2)))
                     lProfile.append(lProfile[-1].add(DraftVecUtils.scaleTo(vLength,-resLength2)))
-                else
+                else:
                     lProfile.append(lProfile[-1].add(Vector(h.x,h.y,-resHeight2)))
 
                 lProfile.append(vBase)
