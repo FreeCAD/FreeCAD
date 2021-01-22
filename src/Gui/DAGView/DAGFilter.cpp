@@ -25,6 +25,7 @@
 #endif
 
 #include <Base/Type.h>
+#include <App/DocumentObject.h>
 #include <Gui/ViewProviderDocumentObject.h>
 
 

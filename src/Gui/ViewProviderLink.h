@@ -26,7 +26,6 @@
 
 #include <boost/preprocessor/seq/for_each.hpp>
 #include <App/PropertyGeo.h>
-#include <App/Link.h>
 #include "SoFCUnifiedSelection.h"
 #include "ViewProviderPythonFeature.h"
 #include "ViewProviderDocumentObject.h"
@@ -36,9 +35,14 @@ class SoBase;
 class SoDragger;
 class SoMaterialBinding;
 
+namespace App {
+class LinkBaseExtension;
+}
+
 namespace Gui {
 
 class LinkInfo;
+
 typedef boost::intrusive_ptr<LinkInfo> LinkInfoPtr;
 
 class GuiExport ViewProviderLinkObserver: public ViewProviderExtension {

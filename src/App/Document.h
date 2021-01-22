@@ -24,8 +24,6 @@
 #define APP_DOCUMENT_H
 
 #include <CXX/Objects.hxx>
-#include <Base/Observer.h>
-#include <Base/Persistence.h>
 #include <Base/Type.h>
 
 #include "PropertyContainer.h"
@@ -34,8 +32,6 @@
 
 #include <map>
 #include <vector>
-#include <stack>
-#include <functional>
 
 #include <boost_signals2.hpp>
 
@@ -47,8 +43,6 @@ namespace App
 {
     class TransactionalObject;
     class DocumentObject;
-    class DocumentObjectExecReturn;
-    class Document;
     class DocumentPy; // the python document class
     class Application;
     class Transaction;

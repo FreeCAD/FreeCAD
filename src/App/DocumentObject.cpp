@@ -25,6 +25,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <stack>
 #endif
 
 #include <Base/Writer.h>

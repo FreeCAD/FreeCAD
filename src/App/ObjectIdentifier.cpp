@@ -45,6 +45,8 @@
 #include <Base/QuantityPy.h>
 #include <App/Link.h>
 #include <Base/Console.h>
+#include <Base/Reader.h>
+#include <Base/Writer.h>
 
 FC_LOG_LEVEL_INIT("Expression",true,true)
 

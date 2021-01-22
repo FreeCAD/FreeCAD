@@ -31,7 +31,6 @@
 #include <string>
 
 #include <Base/Persistence.h>
-#include <App/Document.h>
 
 #include "Tree.h"
 
@@ -44,6 +43,7 @@ class Matrix4D;
 
 namespace App {
 class DocumentObjectGroup;
+class Document;
 }
 
 namespace Gui {

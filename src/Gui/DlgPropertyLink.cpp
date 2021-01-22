@@ -33,11 +33,13 @@
 #include <QStyledItemDelegate>
 
 #include <Base/Tools.h>
+#include <Base/Interpreter.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/GeoFeature.h>
 #include <App/DocumentObserver.h>
+#include <App/PropertyPythonObject.h>
 
 #include "Document.h"
 #include "View3DInventor.h"

@@ -60,6 +60,7 @@
 #include "WorkbenchManager.h"
 
 #include <Base/Exception.h>
+#include <Base/Interpreter.h>
 #include <App/Application.h>
 
 using namespace Gui;

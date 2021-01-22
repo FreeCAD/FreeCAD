@@ -33,6 +33,7 @@
 #include <Base/MatrixPy.h>
 #include <Base/Tools.h>
 #include <App/DocumentObjectPy.h>
+#include <App/GeoFeature.h>
 #include "FeaturePython.h"
 #include "FeaturePythonPyImp.h"
 

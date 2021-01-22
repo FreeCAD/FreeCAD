@@ -32,6 +32,8 @@
 #include "DocumentObject.h"
 #include "Base/Exception.h"
 #include <Base/Console.h>
+#include <Base/Reader.h>
+#include <Base/Writer.h>
 
 using namespace App;
 

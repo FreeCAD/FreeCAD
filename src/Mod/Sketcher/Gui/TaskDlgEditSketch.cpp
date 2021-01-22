@@ -30,6 +30,7 @@
 #include "TaskDlgEditSketch.h"
 #include "ViewProviderSketch.h"
 #include <Gui/Command.h>
+#include <App/Application.h>
 
 using namespace SketcherGui;
 

@@ -24,6 +24,7 @@
 #ifndef GUI_COMMAND_T_H
 #define GUI_COMMAND_T_H
 
+#include <Base/Console.h>
 #include <Base/Exception.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>

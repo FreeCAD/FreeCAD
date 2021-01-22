@@ -44,6 +44,8 @@
 #include <Base/Console.h>
 #include <Base/Sequencer.h>
 #include <Base/Tools.h>
+#include <Base/Reader.h>
+#include <Base/Writer.h>
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
