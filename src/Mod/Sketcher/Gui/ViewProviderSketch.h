@@ -444,6 +444,7 @@ protected:
     static SbColor FullyConstraintConstructionElementColor;
     static SbColor FullyConstraintInternalAlignmentColor;
     static SbColor FullyConstraintConstructionPointColor;
+    static SbColor InvalidSketchColor;
 
     static SbTime prvClickTime;
     static SbVec2s prvClickPos; //used by double-click-detector
