@@ -122,9 +122,13 @@ class Line(gui_base_original.Creator):
                 if not self.isWire and len(self.node) == 2:
                     self.finish(False, cont=True)
                 if len(self.node) > 2:
+                    # The wire is closed
                     if (self.point - self.node[0]).Length < utils.tolerance():
                         self.undolast()
-                        self.finish(True, cont=True)
+                        if len(self.node) > 2:
+                            self.finish(True, cont=True)
+                        else:
+                            self.finish(False, cont=True)
 
     def finish(self, closed=False, cont=False):
         """Terminate the operation and close the polyline if asked.
