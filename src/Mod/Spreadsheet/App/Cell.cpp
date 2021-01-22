@@ -503,15 +503,22 @@ void Cell::setAlias(const std::string &n)
 
         owner->revAliasProp.erase(alias);
 
-        alias = n;
-
         // Update owner
-        if (alias != "") {
+        if (!n.empty()) {
             owner->aliasProp[address] = n;
             owner->revAliasProp[n] = address;
         }
-        else
+        else {
             owner->aliasProp.erase(address);
+        }
+
+        if (!alias.empty()) {
+            // The property may have been added in Sheet::updateAlias
+            auto * docObj = static_cast<App::DocumentObject*>(owner->getContainer());
+            docObj->removeDynamicProperty(alias.c_str());
+        }
+
+        alias = n;
 
         setUsed(ALIAS_SET, !alias.empty());
         setDirty();
