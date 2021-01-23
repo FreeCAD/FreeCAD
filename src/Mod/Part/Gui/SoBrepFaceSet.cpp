@@ -1959,7 +1959,11 @@ bool SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
             // This test is for robustness upon buggy data sets
             if (v1 < 0 || v2 < 0 || v3 < 0 ||
                     v1 >= numverts || v2 >= numverts || v3 >= numverts) {
-                break;
+                SoDebugError::postWarning("SoBrepFaceSet::VBO::render",
+                        "invalid vertex index, %d, %d, %d", v1, v2, v3);
+                // Fake the vertex index so that buf.vertex_array_size matches
+                // against partIndex
+                v1 = v2 = v3 = 0;
             }
             v4 = viptr < viendptr ? *viptr++ : -1;
             if (v4 != -1) {
@@ -2098,6 +2102,11 @@ bool SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
                 }
                 trinr = 0;
             }
+        }
+        if (num_partindices && buf.vertex_array_size != indexoffsets[num_partindices]*3) {
+            SoDebugError::postWarning("SoBrepFaceSet::VBO::render", "vertex index count mismatch.");
+            buf.vertex_array_size = -1;
+            return false;
         }
 
         glGenBuffersARB(1, &buf.myvbo);
