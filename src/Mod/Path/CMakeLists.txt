@@ -212,9 +212,6 @@ SET(PathTests_SRCS
     PathTests/TestPathUtil.py
     PathTests/TestPathVcarve.py
     PathTests/TestPathVoronoi.py
-    PathTests/Tools/Bit/test-path-tool-bit-bit-00.fctb
-    PathTests/Tools/Library/test-path-tool-bit-library-00.fctl
-    PathTests/Tools/Shape/test-path-tool-bit-shape-00.fcstd
     PathTests/boxtest.fcstd
     PathTests/test_centroid_00.ngc
     PathTests/test_geomop.fcstd
@@ -285,6 +282,14 @@ INSTALL(
     DESTINATION
         Mod/Path/PathTests
 )
+
+INSTALL(
+  DIRECTORY
+      PathTests/Tools
+  DESTINATION
+        Mod/Path/PathTests
+)
+      
 
 INSTALL(
     FILES
