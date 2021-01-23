@@ -1446,11 +1446,15 @@ QPushButton {
     border-radius: 4px;
 }
 
-QPushButton:hover,
-QPushButton:focus {
+QPushButton:hover {
     color: #dadfc5;
     border-color: #566214;
     background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #74831d, stop:1 #566214);
+}
+
+QToolButton:focus
+QPushButton:focus {
+    border: 1px solid #566214;
 }
 
 QPushButton:disabled,
