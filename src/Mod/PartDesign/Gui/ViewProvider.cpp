@@ -251,6 +251,7 @@ bool ViewProvider::setEdit(int ModNum)
         return false;
     }
     case EditSetTip: {
+        App::AutoTransaction committer("Set body tip");
         auto body = PartDesign::Body::findBodyOf(feat);
         body->Tip.setValue(feat);
         feat->Visibility.setValue(true);
@@ -535,7 +536,7 @@ bool ViewProvider::iconMouseEvent(QMouseEvent *ev, const QByteArray &tag)
     auto feat = Base::freecad_dynamic_cast<PartDesign::Feature>(getObject());
     if (!feat)
         return false;
-    if (ev->type() == QEvent::MouseButtonPress) {
+    if (ev->type() == QEvent::MouseButtonPress && ev->button() == Qt::LeftButton) {
         if (tag == _SuppressedTag) {
             App::AutoTransaction committer("Unsuppress");
             try {
@@ -548,6 +549,9 @@ bool ViewProvider::iconMouseEvent(QMouseEvent *ev, const QByteArray &tag)
                 e.ReportException();
             }
             return true;
+        } else if (tag == _IconTag && !isSetTipIcon) {
+            setEdit(EditSetTip);
+            return true;
         }
     }
     return inherited::iconMouseEvent(ev, tag);
@@ -556,9 +560,14 @@ bool ViewProvider::iconMouseEvent(QMouseEvent *ev, const QByteArray &tag)
 QString ViewProvider::getToolTip(const QByteArray &tag) const
 {
     if (tag == _SuppressedTag)
-        return QObject::tr("Feature suppressed. ALT + click this icon to unspress.");
-    else if (isSetTipIcon && tag == _IconTag)
-        return QObject::tr("This is the tip of the body. New feature will be inserted after it.");
+        return QObject::tr("Feature suppressed. ALT + click this icon to unsppress.");
+    else if (tag == _IconTag) {
+        if (isSetTipIcon)
+            return QObject::tr("This is the tip of the body. New feature will be inserted after it.");
+        else
+            return QObject::tr("Alt + click this icon to set this feature as the tip of the body.\n"
+                               "New feature will be inserted after it.");
+    }
     return inherited::getToolTip(tag);
 }
 

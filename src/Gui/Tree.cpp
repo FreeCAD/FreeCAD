@@ -484,6 +484,9 @@ public:
         }
     }
 
+    void toggleItemVisibility(DocumentObjectItem *oitem);
+    void toggleItemShowOnTop(DocumentObjectItem *oitem);
+
     DocumentObjectItem *itemHitTest(QPoint pos, QByteArray *tag);
 
     TreeWidget *master;
@@ -1348,6 +1351,11 @@ void TreeWidget::_setupDocumentMenu(DocumentItem *docitem, QMenu &menu)
 
 void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
 {
+    if (e->modifiers() & Qt::AltModifier) {
+        e->setAccepted(false);
+        return;
+    }
+
     // ask workbenches and view provider, ...
     MenuItem view;
     view << "Std_TreeViewActions";
@@ -1447,6 +1455,8 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
 
     if (contextMenu.actions().count() > 0) {
         try {
+            toolTipTimer->stop();
+            ToolTip::hideText();
             contextMenu.exec(QCursor::pos());
         } catch (Base::Exception &e) {
             e.ReportException();
@@ -2167,9 +2177,8 @@ void TreeWidget::mouseMoveEvent(QMouseEvent *event) {
 
     QByteArray tag;
     auto oitem = pimpl->itemHitTest(event->pos(), &tag);
-    if (oitem && tag.size()) {
+    if (oitem) {
         ViewProviderDocumentObject* vp = oitem->object();
-        auto editDoc = Application::Instance->editDocument();
         vp->iconMouseEvent(event, tag);
         toolTipTimer->start(300);
     } else 
@@ -2203,7 +2212,10 @@ void TreeWidget::onToolTipTimer()
 
     QString info;
     if (!Obj->isError()) {
-        info = item->object()->getToolTip(tag);
+        if (tag == getVisibilityIconTag())
+            info = QObject::tr("Click to toggle visiblity.\nAlt + click to toggle show on top.");
+        else
+            info = item->object()->getToolTip(tag);
     } else {
 #if (QT_VERSION >= 0x050000)
         info = QApplication::translate(Obj->getTypeId().getName(), Obj->getStatusString());
@@ -2233,8 +2245,11 @@ DocumentObjectItem *TreeWidget::Private::itemHitTest(QPoint pos, QByteArray *tag
         return objitem;
 
     QRect rect = master->visualItemRect(item);
-    if (!rect.contains(pos))
+    if (!rect.contains(pos)) {
+        if (tag)
+            *tag = getNoIconTag();
         return objitem;
+    }
     float scale = iconSize()/64.0f;
     int offset = 0;
     for (auto &v : objitem->myData->iconInfo) {
@@ -2248,17 +2263,109 @@ DocumentObjectItem *TreeWidget::Private::itemHitTest(QPoint pos, QByteArray *tag
     return objitem;
 }
 
-static QByteArray _TreeVisTag("tree:vis");
-static QByteArray _TreeIconTag("tree:icon");
-
 const QByteArray &TreeWidget::getVisibilityIconTag()
 {
-    return _TreeVisTag;
+    static QByteArray _tag("tree:vis");
+    return _tag;
 }
 
 const QByteArray &TreeWidget::getMainIconTag()
 {
-    return _TreeIconTag;
+    static QByteArray _tag("tree:icon");
+    return _tag;
+}
+
+const QByteArray &TreeWidget::getNoIconTag()
+{
+    static QByteArray _tag("tree:item");
+    return _tag;
+}
+
+void TreeWidget::Private::toggleItemShowOnTop(DocumentObjectItem *oitem)
+{
+    Gui::Document *gdoc = oitem->getOwnerDocument()->document();
+    auto view = Base::freecad_dynamic_cast<View3DInventor>(
+            gdoc->getActiveView());
+    if (!view)
+        return;
+    App::DocumentObject *topParent = 0;
+    std::ostringstream ss;
+    oitem->getSubName(ss,topParent);
+    if(!topParent)
+        topParent = oitem->object()->getObject();
+    else
+        ss << oitem->object()->getObject()->getNameInDocument() << '.';
+    std::string subname = ss.str();
+    bool ontop = view->getViewer()->isInGroupOnTop(
+            topParent->getNameInDocument(), subname.c_str());
+    view->getViewer()->checkGroupOnTop(SelectionChanges(
+                ontop ? SelectionChanges::RmvSelection : SelectionChanges::AddSelection,
+                topParent->getDocument()->getName(),
+                topParent->getNameInDocument(),
+                subname.c_str()), true);
+}
+
+void TreeWidget::Private::toggleItemVisibility(DocumentObjectItem *oitem)
+{
+    const char *objName = oitem->object()->getObject()->getNameInDocument();
+    auto setVisible = [oitem](App::DocumentObject *obj, const char *sobjName, bool vis) {
+        App::DocumentObject *topParent = 0;
+        std::ostringstream ss;
+        if (oitem->isSelected()) {
+            oitem->getSubName(ss,topParent);
+            if(!topParent)
+                topParent = oitem->object()->getObject();
+            else
+                ss << oitem->object()->getObject()->getNameInDocument() << '.';
+        }
+        Selection().rmvPreselect();
+        if(topParent && !vis) {
+            Gui::Selection().updateSelection(false,
+                                             topParent->getDocument()->getName(),
+                                             topParent->getNameInDocument(),
+                                             ss.str().c_str());
+        }
+
+        if (sobjName)
+            obj->setElementVisible(sobjName, vis);
+        else
+            obj->Visibility.setValue(vis);
+
+        if(topParent && vis) {
+            Gui::Selection().updateSelection(true,
+                                             topParent->getDocument()->getName(),
+                                             topParent->getNameInDocument(),
+                                             ss.str().c_str());
+        }
+    };
+
+    DocumentObjectItem *parentItem = oitem->getParentItem();
+    if(parentItem) {
+        auto parent = parentItem->object()->getObject();
+        int visible = parent->isElementVisible(objName);
+        if(App::GeoFeatureGroupExtension::isNonGeoGroup(parent)) {
+            // We are dealing with a plain group. It has special handling when
+            // linked, which allows it to have indpenedent visibility control.
+            // We need to go up the hierarchy and see if there is any link to
+            // it.
+            for(auto pp=parentItem->getParentItem();pp;pp=pp->getParentItem()) {
+                auto obj = pp->object()->getObject();
+                if(!App::GeoFeatureGroupExtension::isNonGeoGroup(obj)) {
+                    int vis = obj->isElementVisible(objName);
+                    if(vis>=0) {
+                        setVisible(obj, objName, !vis);
+                        return;
+                    }
+                }
+            }
+        }
+        if (visible >= 0) {
+            setVisible(parent, objName, !visible);
+            return;
+        }
+    }
+    setVisible(oitem->object()->getObject(), nullptr,
+                !oitem->object()->Visibility.getValue());
 }
 
 void TreeWidget::mousePressEvent(QMouseEvent *event) {
@@ -2268,80 +2375,32 @@ void TreeWidget::mousePressEvent(QMouseEvent *event) {
     auto oitem = pimpl->itemHitTest(event->pos(), &tag);
     if (oitem) {
         setCurrentItem(oitem, 0, QItemSelectionModel::NoUpdate);
-        if (tag == _TreeVisTag) {
-            const char *objName = oitem->object()->getObject()->getNameInDocument();
-            auto setVisible = [oitem](App::DocumentObject *obj, const char *sobjName, bool vis) {
-                App::DocumentObject *topParent = 0;
-                std::ostringstream ss;
-                if (oitem->isSelected()) {
-                    oitem->getSubName(ss,topParent);
-                    if(!topParent)
-                        topParent = oitem->object()->getObject();
-                    else
-                        ss << oitem->object()->getObject()->getNameInDocument() << '.';
-                }
-                Selection().rmvPreselect();
-                if(topParent && !vis) {
-                    Gui::Selection().updateSelection(false,
-                                                     topParent->getDocument()->getName(),
-                                                     topParent->getNameInDocument(),
-                                                     ss.str().c_str());
-                }
-
-                if (sobjName)
-                    obj->setElementVisible(sobjName, vis);
+        if (tag == getVisibilityIconTag()) {
+            if (event->button() == Qt::LeftButton) {
+                if (event->modifiers() & Qt::AltModifier)
+                    pimpl->toggleItemShowOnTop(oitem);
                 else
-                    obj->Visibility.setValue(vis);
-
-                if(topParent && vis) {
-                    Gui::Selection().updateSelection(true,
-                                                        topParent->getDocument()->getName(),
-                                                        topParent->getNameInDocument(),
-                                                        ss.str().c_str());
-                }
-            };
-
-            DocumentObjectItem *parentItem = oitem->getParentItem();
-            if(parentItem) {
-                auto parent = parentItem->object()->getObject();
-                int visible = parent->isElementVisible(objName);
-                if(App::GeoFeatureGroupExtension::isNonGeoGroup(parent)) {
-                    // We are dealing with a plain group. It has special handling when
-                    // linked, which allows it to have indpenedent visibility control.
-                    // We need to go up the hierarchy and see if there is any link to
-                    // it.
-                    for(auto pp=parentItem->getParentItem();pp;pp=pp->getParentItem()) {
-                        auto obj = pp->object()->getObject();
-                        if(!App::GeoFeatureGroupExtension::isNonGeoGroup(obj)) {
-                            int vis = obj->isElementVisible(objName);
-                            if(vis>=0) {
-                                setVisible(obj, objName, !vis);
-                                pimpl->skipMouseRelease = true;
-                                return;
-                            }
-                        }
-                    }
-                }
-                if (visible >= 0) {
-                    setVisible(parent, objName, !visible);
-                    pimpl->skipMouseRelease = true;
-                    return;
-                }
-            }
-            setVisible(oitem->object()->getObject(), nullptr,
-                       !oitem->object()->Visibility.getValue());
-            pimpl->skipMouseRelease = true;
-            return;
-        } else if (tag.size() && (event->modifiers() & Qt::AltModifier)) {
-            ViewProviderDocumentObject* vp = oitem->object();
-            auto editDoc = Application::Instance->editDocument();
-            App::AutoTransaction committer("Icon clicked", true);
-            if (vp->iconMouseEvent(event, tag)) {
-                // If the icon click starts an editing, let the transaction persist
-                if (!editDoc && Application::Instance->editDocument())
-                    committer.setEnable(false);
+                    pimpl->toggleItemVisibility(oitem);
                 pimpl->skipMouseRelease = true;
                 return;
+            }
+        } else if (event->modifiers() & Qt::AltModifier) {
+            ViewProviderDocumentObject* vp = oitem->object();
+            auto editDoc = Application::Instance->editDocument();
+            App::AutoTransaction committer("Item clicked", true);
+            try {
+                if(vp->iconMouseEvent(event, tag)) {
+                    // If the icon click starts an editing, let the transaction persist
+                    if (!editDoc && Application::Instance->editDocument())
+                        committer.setEnable(false);
+                    pimpl->skipMouseRelease = true;
+                }
+            } catch (Base::Exception &e) {
+                e.ReportException();
+            } catch (std::exception &e) {
+                FC_ERR("C++ exception: " << e.what());
+            } catch (...) {
+                FC_ERR("Unknown exception");
             }
         }
     }
@@ -2353,16 +2412,39 @@ void TreeWidget::mouseReleaseEvent(QMouseEvent *ev)
     if (ev->modifiers() & Qt::AltModifier) {
         QByteArray tag;
         auto oitem = pimpl->itemHitTest(ev->pos(), &tag);
-        if (oitem && tag.size()) {
+        if (oitem) {
             ViewProviderDocumentObject* vp = oitem->object();
             auto editDoc = Application::Instance->editDocument();
-            App::AutoTransaction committer("Icon released", true);
-            if (vp->iconMouseEvent(ev, tag)) {
+            App::AutoTransaction committer("Item right clicked", true);
+            bool handled = false;
+            try {
+                handled = vp->iconMouseEvent(ev, tag);
+                if (!handled
+                        && !pimpl->skipMouseRelease
+                        && ev->button() == Qt::RightButton) {
+                    QMenu menu;
+#if QT_VERSION >= 0x050100
+                    menu.setToolTipsVisible(true);
+#endif
+                    if (_setupObjectMenu(oitem, menu)) {
+                        handled = true;
+                        toolTipTimer->stop();
+                        ToolTip::hideText();
+                        menu.exec(QCursor::pos());
+                    }
+                }
+            } catch (Base::Exception &e) {
+                e.ReportException();
+            } catch (std::exception &e) {
+                FC_ERR("C++ exception: " << e.what());
+            } catch (...) {
+                FC_ERR("Unknown exception");
+            }
+            if (handled) {
                 pimpl->skipMouseRelease = false;
                 // If the icon release starts an editing, let the transaction persist
                 if (!editDoc && Application::Instance->editDocument())
                     committer.setEnable(false);
-                pimpl->skipMouseRelease = true;
                 return;
             }
         }
@@ -6333,9 +6415,9 @@ static QIcon getItemIcon(int currentStatus,
             pxVisible = BitmapFactory().pixmap("TreeItemVisible.svg");
 
         std::vector<std::pair<QByteArray, QPixmap> > icons;
-        icons.emplace_back(_TreeVisTag,
+        icons.emplace_back(TreeWidget::getVisibilityIconTag(),
                 (currentStatus & ItemStatusVisible) ? pxVisible : pxInvisible);
-        icons.emplace_back(_TreeIconTag, pxOn);
+        icons.emplace_back(TreeWidget::getMainIconTag(), pxOn);
         vp->getExtraIcons(icons);
 
         pxOn = mergePixmaps(icons, iconInfo);

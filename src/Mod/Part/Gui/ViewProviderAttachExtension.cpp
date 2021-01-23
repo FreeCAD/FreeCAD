@@ -70,7 +70,7 @@ void ViewProviderAttachExtension::extensionGetExtraIcons(
 
 bool ViewProviderAttachExtension::extensionIconMouseEvent(QMouseEvent *ev, const QByteArray &tag)
 {
-    if (ev->type() == QEvent::MouseButtonPress) {
+    if (ev->type() == QEvent::MouseButtonPress && ev->button() == Qt::LeftButton) {
         if (tag == _IconTag) {
             showAttachmentEditor();
             return true;

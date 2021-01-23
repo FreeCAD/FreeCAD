@@ -97,6 +97,7 @@ public:
 
     static const QByteArray &getVisibilityIconTag();
     static const QByteArray &getMainIconTag();
+    static const QByteArray &getNoIconTag();
 
     static void setupResizableColumn(TreeWidget *tree=0);
     static void scrollItemToTop();
