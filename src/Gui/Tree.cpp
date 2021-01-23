@@ -6298,6 +6298,8 @@ void DocumentObjectItem::testItemStatus(bool resetStatus)
     if(icon.isNull() || myData->iconStatus != iconStatus) {
         Timing(getIcon);
         myData->iconStatus = iconStatus;
+        myData->icon1 = QIcon();
+        myData->icon2 = QIcon();
         icon = getItemIcon(currentStatus, object(),
                 myData->iconInfo.empty() ? &myData->iconInfo : nullptr);
     }
