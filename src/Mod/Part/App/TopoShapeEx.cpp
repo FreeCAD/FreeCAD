@@ -3061,7 +3061,8 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                     if((name_type==1 && other_info.index<0)
                             || (name_type==2 && other_info.index>0))
                     {
-                        FC_WARN("element is both generated and modified");
+                        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+                            FC_WARN("element is both generated and modified");
                         name_type = 0;
                     }
                     sids.insert(sids.end(),other_info.sids.begin(),other_info.sids.end());
