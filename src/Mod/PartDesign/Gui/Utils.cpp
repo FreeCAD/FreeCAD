@@ -23,13 +23,15 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <QPointer>
-#include <QMessageBox>
-#include <QCheckBox>
+# include <QPointer>
+# include <QMessageBox>
+# include <QCheckBox>
+# include <QListWidget>
 # include <Precision.hxx>
 # include <gp_Pln.hxx>
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
 #include <boost_bind_bind.hpp>
 
 #include <Base/Console.h>
@@ -46,6 +48,7 @@
 #include <Gui/ViewProviderPart.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Gui/ViewParams.h>
 
 #include <Mod/Sketcher/App/SketchObject.h>
 
@@ -830,19 +833,22 @@ public:
         }
     }
 
-    void showEditOnTop(bool enable, const std::deque<App::DocumentObject *> &siblings = {})
+    Gui::View3DInventor *findEditView()
     {
-        bool viewFound = false;
         auto doc = Gui::Application::Instance->getDocument(editDoc.getDocument());
         if (doc && editView) {
             for (auto view : doc->getViews()) {
-                if (view == editView) {
-                    viewFound = true;
-                    break;
-                }
+                if (view == editView) 
+                    return editView;
             }
         }
-        if (!viewFound)
+        return nullptr;
+    }
+
+    void showEditOnTop(bool enable, const std::deque<App::DocumentObject *> &siblings = {})
+    {
+        auto view = findEditView();
+        if (!view)
             return;
 
         App::SubObjectT objT;
@@ -864,14 +870,14 @@ public:
             return;
 
         if (editOnTopT.getObjectName().size()) {
-            editView->getViewer()->checkGroupOnTop(
+            view->getViewer()->checkGroupOnTop(
                     Gui::SelectionChanges(
                         Gui::SelectionChanges::RmvSelection,
                         editOnTopT.getDocumentName().c_str(),
                         editOnTopT.getObjectName().c_str(),
                         editOnTopT.getSubName().c_str()), true);
         }
-        editView->getViewer()->checkGroupOnTop(
+        view->getViewer()->checkGroupOnTop(
                 Gui::SelectionChanges(
                     Gui::SelectionChanges::AddSelection,
                     objT.getDocumentName().c_str(),
@@ -897,6 +903,27 @@ public:
                     break;
                 }
             }
+        }
+        if (onTopUserObjs.size()) {
+            auto view = findEditView();
+            if (view) {
+                for (auto &v : onTopUserObjs) {
+                    const App::SubObjectT &objT = v.first;
+                    bool ontop = view->getViewer()->isInGroupOnTop(
+                                objT.getObjectName().c_str(),
+                                objT.getSubName().c_str());
+                    if (v.second == ontop)
+                        continue;
+                    view->getViewer()->checkGroupOnTop(
+                        Gui::SelectionChanges(
+                            v.second ? Gui::SelectionChanges::AddSelection
+                                     : Gui::SelectionChanges::RmvSelection,
+                            objT.getDocumentName().c_str(),
+                            objT.getObjectName().c_str(),
+                            objT.getSubName().c_str()), true);
+                }
+            }
+            onTopUserObjs.clear();
         }
         visibleFeatures.clear();
         showEditOnTop(false);
@@ -1044,6 +1071,183 @@ public:
         editingObj->Visibility.setValue(true);
     }
 
+    enum ShowOnTopMode
+    {
+        OnTopHide,
+        OnTopShow,
+        OnTopHighlight,
+        OnTopSelect,
+        OnTopAddSelect,
+        OnTopRemoveSelect,
+    };
+    void showObjectOnTop(App::SubObjectT objT, ShowOnTopMode mode)
+    {
+        auto view = findEditView();
+        if (!view)
+            return;
+        auto obj = objT.getObject();
+        if (!obj)
+            return;
+        auto sobj = objT.getSubObject();
+        if (!sobj || obj == editOnTopT.getSubObject())
+            return;
+        if (obj == sobj) {
+            App::SubObjectT sobjT(editBodyT.getObject(),
+                    (editBodyT.getSubNameNoElement() 
+                     + objT.getObjectName() + "." + objT.getSubName()).c_str());
+            if (sobjT.getSubObject() == obj)
+                objT = std::move(sobjT);
+        }
+        switch(mode) {
+        case OnTopSelect:
+            Gui::Selection().selStackPush();
+            Gui::Selection().clearSelection();
+            // fall through
+        case OnTopAddSelect: {
+            bool ontop = Gui::ViewParams::getShowSelectionOnTop();
+            if (!ontop)
+                Gui::ViewParams::setShowSelectionOnTop(true);
+            Gui::Selection().addSelection(objT);
+            if (!ontop)
+                Gui::ViewParams::setShowSelectionOnTop(false);
+            if (mode == OnTopSelect)
+                Gui::Selection().selStackPush();
+            return;
+        }
+        case OnTopRemoveSelect:
+            Gui::Selection().rmvSelection(objT);
+            return;
+        case OnTopHighlight:
+            Gui::Selection().setPreselect(
+                    objT.getDocumentName().c_str(),
+                    objT.getObjectName().c_str(),
+                    objT.getSubName().c_str(),
+                    0,0,0,2);
+            return;
+        default:
+            break;
+        }
+
+        bool ontop = view->getViewer()->isInGroupOnTop(
+                objT.getObjectName().c_str(), objT.getSubName().c_str());
+        onTopUserObjs.emplace(objT, ontop);
+        bool enable = mode == OnTopShow;
+        if (ontop != enable) {
+            view->getViewer()->checkGroupOnTop(
+                Gui::SelectionChanges(
+                    enable ? Gui::SelectionChanges::AddSelection
+                           : Gui::SelectionChanges::RmvSelection,
+                    objT.getDocumentName().c_str(),
+                    objT.getObjectName().c_str(),
+                    objT.getSubName().c_str()), true);
+        }
+    }
+
+    App::SubObjectT importExternalObject(const App::SubObjectT &feature, bool report) {
+        App::DocumentObject *topParent;
+        std::string subname;
+
+        PartDesign::Body *body = Base::freecad_dynamic_cast<PartDesign::Body>(
+                editBodyT.getSubObject());
+        if (body) {
+            topParent = editBodyT.getObject();
+            subname = editBodyT.getSubName();
+        } else {
+            body = Base::freecad_dynamic_cast<PartDesign::Body>(
+                    activeBodyT.getSubObject());
+            if (!body) {
+                if (!report)
+                    FC_THROWM(Base::RuntimeError, "No active body found");
+                QMessageBox::critical(Gui::getMainWindow(),
+                        QObject::tr("Failed to import external object"),
+                        QObject::tr("No active body found"));
+                return App::SubObjectT();
+            }
+            topParent = activeBodyT.getObject();
+            subname = activeBodyT.getSubName();
+        }
+        auto sobj = feature.getSubObject();
+        if (!sobj) {
+            if (!report)
+                FC_THROWM(Base::RuntimeError,
+                        "Sub object not found: " << feature.getSubObjectFullName());
+            QMessageBox::critical(Gui::getMainWindow(),
+                    QObject::tr("Failed to import external object"),
+                    QString::fromLatin1("%1: %2").arg(
+                        QObject::tr("Sub object not found"),
+                        QString::fromUtf8(feature.getSubObjectFullName().c_str())));
+            return App::SubObjectT();
+        }
+
+        if (PartDesign::Body::findBodyOf(sobj) == body) 
+            return App::SubObjectT(sobj, feature.getElementName());
+
+        if (body->getInListEx(true).count(sobj)) {
+            if (!report)
+                FC_THROWM(Base::RuntimeError,
+                        "Cyclic reference to: " << feature.getSubObjectFullName());
+            QMessageBox::critical(Gui::getMainWindow(),
+                    QObject::tr("Failed to import external object"),
+                    QString::fromLatin1("%1: %2").arg(
+                        QObject::tr("Cyclic reference to"),
+                        QString::fromUtf8(feature.getSubObjectFullName().c_str())));
+            return App::SubObjectT();
+        }
+
+        try {
+            auto link = feature.getObject();
+            std::string linkSub = feature.getSubName();
+            topParent->resolveRelativeLink(subname, link, linkSub);
+
+            App::SubObjectT resolved(link, linkSub.c_str());
+            if (PartDesign::Body::findBodyOf(link) == body)
+                return resolved;
+
+            std::string resolvedSub = resolved.getSubNameNoElement() + resolved.getOldElementName();
+
+            // Try to find an unused import of the same object
+            for (auto o : body->Group.getValues()) {
+                auto binder = Base::freecad_dynamic_cast<PartDesign::SubShapeBinder>(o);
+                if (!binder || !boost::starts_with(o->getNameInDocument(), "Import"))
+                    continue;
+                if (binder->Support.getSize() != 1 || binder->getInList().size() != 1)
+                    continue;
+                const auto &subs = binder->Support.getSubListValues().front().getSubValues(false);
+                if ((resolvedSub.empty() && subs.size())
+                        || subs.size() > 1
+                        || (resolvedSub.size() && subs.empty())
+                        || (!subs.empty() && resolvedSub != subs[0]))
+                    continue;
+                return binder;
+            }
+
+            auto binder = static_cast<PartDesign::SubShapeBinder*>(
+                    body->getDocument()->addObject("PartDesign::SubShapeBinder", "Import"));
+            body->addObject(binder);
+            std::map<App::DocumentObject*, std::vector<std::string> > support;
+            auto &supportSubs = support[link];
+            if (linkSub.size())
+                supportSubs.push_back(std::move(linkSub));
+            binder->setLinks(std::move(support));
+            return binder;
+        }
+        catch (Base::Exception &e) {
+            if (!report)
+                throw;
+            QMessageBox::critical(Gui::getMainWindow(),
+                    QObject::tr("Failed to import external object"),
+                    QString::fromUtf8(e.what()));
+        }
+        catch (...) {
+            if (!report)
+                throw;
+            QMessageBox::critical(Gui::getMainWindow(),
+                    QObject::tr("Failed to import external object"),
+                    QObject::tr("Unknown exception"));
+        }
+        return App::SubObjectT();
+    }
+
 public:
     boost::signals2::scoped_connection connChangedObject;
     boost::signals2::scoped_connection connDeletedObject;
@@ -1056,6 +1260,7 @@ public:
     App::SubObjectT editBodyT;
     App::DocumentT editDoc;
     App::SubObjectT editOnTopT;
+    std::map<App::SubObjectT, bool> onTopUserObjs;
     
     Gui::View3DInventor *editView = nullptr;
     QPointer<QWidget> taskWidget;
@@ -1151,6 +1356,101 @@ void addTaskCheckBox(QWidget * widget, int index)
     initMonitor();
     _MonitorInstance->hasEditCheckBox = true;
     _MonitorInstance->proxy.addCheckBox(widget, index);
+}
+
+void showObjectOnTop(const App::SubObjectT &objT)
+{
+    initMonitor();
+    _MonitorInstance->showObjectOnTop(objT, Monitor::OnTopShow);
+}
+
+void hideObjectOnTop(const App::SubObjectT &objT)
+{
+    initMonitor();
+    _MonitorInstance->showObjectOnTop(objT, Monitor::OnTopHide);
+}
+
+void highlightObjectOnTop(const App::SubObjectT &objT)
+{
+    initMonitor();
+    _MonitorInstance->showObjectOnTop(objT, Monitor::OnTopHighlight);
+}
+
+void selectObjectOnTop(const App::SubObjectT &objT, bool multiselect)
+{
+    initMonitor();
+    _MonitorInstance->showObjectOnTop(objT,
+            multiselect ? Monitor::OnTopSelect : Monitor::OnTopAddSelect);
+}
+
+void unselectObjectOnTop(const App::SubObjectT &objT)
+{
+    initMonitor();
+    _MonitorInstance->showObjectOnTop(objT,Monitor::OnTopRemoveSelect);
+}
+
+App::SubObjectT importExternalObject(const App::SubObjectT &feature, bool report)
+{
+    initMonitor();
+    return _MonitorInstance->importExternalObject(feature, report);
+}
+
+bool populateGeometryReferences(QListWidget *listWidget, App::PropertyLinkSub &prop, bool refresh)
+{
+    listWidget->clear();
+    auto base = prop.getValue();
+    const auto &baseShape = Part::Feature::getTopoShape(base);
+    if (baseShape.isNull())
+        return false;
+    const auto &subs = prop.getShadowSubs();
+    std::set<std::string> subSet;
+    for(auto &sub : subs) 
+        subSet.insert(sub.first.empty()?sub.second:sub.first);
+    bool touched = false;
+    std::vector<std::string> refs;
+    for(auto &sub : subs) {
+        refs.push_back(sub.second);
+        if(refresh || sub.first.empty() || baseShape.isNull()) {
+            listWidget->addItem(QString::fromStdString(sub.second));
+            continue;
+        }
+        const auto &ref = sub.first;
+        Part::TopoShape element;
+        try {
+            element = baseShape.getSubShape(ref.c_str());
+        }catch(...) {}
+        if(!element.isNull())  {
+            listWidget->addItem(QString::fromStdString(sub.second));
+            continue;
+        }
+        FC_WARN("missing element reference in " << prop.getFullName() << ": " << ref);
+        bool popped = false;
+        for(auto &name : Part::Feature::getRelatedElements(base,ref.c_str())) {
+            if(!subSet.insert(name.second).second || !subSet.insert(name.first).second)
+                continue;
+            FC_WARN("guess element reference in " << prop.getFullName() << ": " << ref << " -> " << name.first);
+            listWidget->addItem(QString::fromStdString(name.second));
+            if(!popped) {
+                refs.pop_back();
+                touched = true;
+                popped = true;
+            }
+            refs.push_back(name.second);
+        }
+        if(!popped) {
+            std::string missingSub = refs.back();
+            if(!boost::starts_with(missingSub,Data::ComplexGeoData::missingPrefix()))
+                missingSub = Data::ComplexGeoData::missingPrefix()+missingSub;
+            auto item = new QListWidgetItem(listWidget);
+            item->setText(QString::fromStdString(missingSub));
+            item->setForeground(Qt::red);
+            refs.back() = ref; // use new style name for future guessing
+        }
+    }
+
+    if(touched)
+        prop.setValue(base, refs);
+    return touched;
 }
 
 } /* PartDesignGui */

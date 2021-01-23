@@ -185,66 +185,14 @@ bool TaskDressUpParameters::populate(bool refresh)
     if(!listWidget || !DressUpView)
         return false;
 
-    QSignalBlocker blocker(listWidget);
-    listWidget->clear();
-
     auto* pcDressUp = static_cast<PartDesign::DressUp*>(DressUpView->getObject());
     if(!pcDressUp || !pcDressUp->Base.getValue())
         return false;
 
-    auto base = pcDressUp->Base.getValue();
-    const auto &subs = pcDressUp->Base.getShadowSubs();
-    const auto &baseShape = pcDressUp->getTopoShape(base);
-    std::set<std::string> subSet;
-    for(auto &sub : subs) 
-        subSet.insert(sub.first.empty()?sub.second:sub.first);
-    bool touched = false;
-    std::vector<std::string> refs;
-    for(auto &sub : subs) {
-        refs.push_back(sub.second);
-        if(refresh || sub.first.empty() || baseShape.isNull()) {
-            listWidget->addItem(QString::fromStdString(sub.second));
-            continue;
-        }
-        const auto &ref = sub.first;
-        Part::TopoShape element;
-        try {
-            element = baseShape.getSubShape(ref.c_str());
-        }catch(...) {}
-        if(!element.isNull())  {
-            listWidget->addItem(QString::fromStdString(sub.second));
-            continue;
-        }
-        FC_WARN("missing element reference: " << pcDressUp->getFullName() << "." << ref);
-        bool popped = false;
-        for(auto &name : Part::Feature::getRelatedElements(base,ref.c_str())) {
-            if(!subSet.insert(name.second).second || !subSet.insert(name.first).second)
-                continue;
-            FC_WARN("guess element reference: " << ref << " -> " << name.first);
-            listWidget->addItem(QString::fromStdString(name.second));
-            if(!popped) {
-                refs.pop_back();
-                touched = true;
-                popped = true;
-            }
-            refs.push_back(name.second);
-        }
-        if(!popped) {
-            std::string missingSub = refs.back();
-            if(!boost::starts_with(missingSub,Data::ComplexGeoData::missingPrefix()))
-                missingSub = Data::ComplexGeoData::missingPrefix()+missingSub;
-            auto item = new QListWidgetItem(listWidget);
-            item->setText(QString::fromStdString(missingSub));
-            item->setForeground(Qt::red);
-            refs.back() = ref; // use new style name for future guessing
-        }
-    }
-
-    if(touched) {
+    QSignalBlocker blocker(listWidget);
+    if (!refresh)
         setupTransaction();
-        pcDressUp->Base.setValue(base,refs);
-    }
-    return touched;
+    return PartDesignGui::populateGeometryReferences(listWidget, pcDressUp->Base, refresh);
 }
 
 bool TaskDressUpParameters::showOnTop(bool enable,

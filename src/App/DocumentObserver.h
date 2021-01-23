@@ -174,6 +174,9 @@ public:
     SubObjectT(const DocumentObject*, const char *subname);
 
     /*! Constructor */
+    SubObjectT(const DocumentObject*);
+
+    /*! Constructor */
     SubObjectT(const char *docName, const char *objName, const char *subname);
 
     /*! Constructor */
@@ -189,6 +192,12 @@ public:
 
     /*! Assignment operator */
     SubObjectT &operator=(SubObjectT &&);
+
+    /*! Assignment operator */
+    SubObjectT &operator=(const DocumentObjectT&);
+
+    /*! Assignment operator */
+    SubObjectT &operator=(const App::DocumentObject*);
 
     /*! Equality operator */
     bool operator==(const SubObjectT&) const;

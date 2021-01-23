@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>305</width>
-    <height>420</height>
+    <width>316</width>
+    <height>329</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -79,6 +79,18 @@
        </item>
        <item>
         <widget class="QGroupBox" name="groupBox">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>230</height>
+          </size>
+         </property>
          <property name="title">
           <string>Profile</string>
          </property>
@@ -86,7 +98,13 @@
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_2">
             <item>
-             <widget class="QToolButton" name="buttonProfileBase">
+             <widget class="QPushButton" name="buttonProfileBase">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="text">
                <string>Object</string>
               </property>
@@ -96,7 +114,11 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="profileBaseEdit"/>
+             <widget class="QLineEdit" name="profileBaseEdit">
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+             </widget>
             </item>
             <item>
              <widget class="QToolButton" name="buttonProfileClear">
@@ -111,7 +133,7 @@
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_4">
             <item>
-             <widget class="QToolButton" name="buttonRefAdd">
+             <widget class="QPushButton" name="buttonRefAdd">
               <property name="enabled">
                <bool>true</bool>
               </property>
@@ -132,26 +154,32 @@
               </property>
              </widget>
             </item>
-            <item>
-             <widget class="QToolButton" name="buttonRefRemove">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text">
-               <string>Remove Edge</string>
-              </property>
-              <property name="checkable">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
            </layout>
           </item>
           <item>
-           <widget class="QListWidget" name="listWidgetReferences"/>
+           <widget class="QListWidget" name="listWidgetReferences">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>90</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string>Right click or press 'Del' to delete the selected items.</string>
+            </property>
+            <property name="alternatingRowColors">
+             <bool>false</bool>
+            </property>
+            <property name="selectionMode">
+             <enum>QAbstractItemView::ExtendedSelection</enum>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -255,22 +283,5 @@
  <resources>
   <include location="../../../Gui/Icons/resource.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>comboBoxMode</sender>
-   <signal>currentIndexChanged(int)</signal>
-   <receiver>stackedWidget</receiver>
-   <slot>setCurrentIndex(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>241</x>
-     <y>24</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>176</x>
-     <y>231</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

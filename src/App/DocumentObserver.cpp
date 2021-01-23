@@ -284,6 +284,11 @@ SubObjectT::SubObjectT(const DocumentObject *obj, const char *s)
 {
 }
 
+SubObjectT::SubObjectT(const DocumentObject *obj)
+    :DocumentObjectT(obj)
+{
+}
+
 SubObjectT::SubObjectT(const DocumentObjectT& obj, const char *s)
     :DocumentObjectT(obj),subname(s?s:"")
 {
@@ -363,6 +368,22 @@ SubObjectT &SubObjectT::operator=(SubObjectT &&other)
         return *this;
     static_cast<DocumentObjectT&>(*this) = std::move(other);
     subname = std::move(other.subname);
+    return *this;
+}
+
+SubObjectT &SubObjectT::operator=(const DocumentObjectT &other)
+{
+    if (this == &other)
+        return *this;
+    static_cast<DocumentObjectT&>(*this) = other;
+    subname.clear();
+    return *this;
+}
+
+SubObjectT &SubObjectT::operator=(const DocumentObject *other)
+{
+    static_cast<DocumentObjectT&>(*this) = other;
+    subname.clear();
     return *this;
 }
 

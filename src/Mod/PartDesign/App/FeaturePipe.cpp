@@ -63,7 +63,6 @@
 #include <Base/Console.h>
 #include <Base/Reader.h>
 #include <App/Document.h>
-#include <Mod/Part/App/FaceMakerCheese.h>
 
 FC_LOG_LEVEL_INIT("PartDesign",true,true);
 
@@ -114,13 +113,6 @@ short Pipe::mustExecute() const
 
 App::DocumentObjectExecReturn *Pipe::execute(void)
 {
-    std::vector<TopoShape> wires;
-    try {
-        wires = getProfileWires();
-    } catch (const Base::Exception& e) {
-        return new App::DocumentObjectExecReturn(e.what());
-    }
-
     TopoShape sketchshape = getVerifiedFace();
     if (sketchshape.isNull())
         return new App::DocumentObjectExecReturn("Pipe: No valid sketch or face as first section");
@@ -129,11 +121,11 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         //not use the current simulate approach and build the start and end face from the wires. As the shell
         //begins always at the spine and not the profile, the sketchshape cannot be used directly as front face.
         //We would need a method to translate the front shape to match the shell starting position somehow...
-        TopoDS_Face face = TopoDS::Face(sketchshape.getShape());
-        BRepAdaptor_Surface adapt(face);
-        if(adapt.GetType() != GeomAbs_Plane)
+        gp_Pln pln;
+        if (!sketchshape.findPlane(pln))
             return new App::DocumentObjectExecReturn("Pipe: Only planar faces supported");
     }
+    auto wires = sketchshape.getSubTopoShapes(TopAbs_WIRE);
 
     // if the Base property has a valid shape, fuse the pipe into it
     TopoShape base;
@@ -181,7 +173,25 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
             for(App::DocumentObject* obj : multisections) {
                 auto shape = getTopoShape(obj);
                 if(shape.countSubShapes(TopAbs_WIRE) != wiresections.size())
-                    return new App::DocumentObjectExecReturn("Multisections need to have the same amount of inner wires as the base section");
+                    return new App::DocumentObjectExecReturn(
+                            "Multisections need to have the same amount of inner wires as the base section");
+
+                if (std::abs(Fit.getValue()) > Precision::Confusion()
+                        || std::abs(InnerFit.getValue()) > Precision::Confusion()) {
+                    try {
+                        auto face = shape.makEFace();
+                        shape = face.makEOffsetFace(Fit.getValue(),
+                                                    InnerFit.getValue(),
+                                                    static_cast<short>(FitJoin.getValue()),
+                                                    static_cast<short>(InnerFitJoin.getValue()));
+                    } catch (Standard_Failure &e) {
+                        FC_ERR("Failed to fit wires of section "
+                                << obj->getFullName() << ": " << e.GetMessageString());
+                        std::ostringstream ss;
+                        ss << "Failed to fit wires of section: " << obj->Label.getValue();
+                        return new App::DocumentObjectExecReturn(ss.str().c_str());
+                    }
+                }
                 int i=0;
                 for(auto &wire : shape.getSubTopoShapes(TopAbs_WIRE))
                     wiresections[i++].push_back(wire);
@@ -262,8 +272,13 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
 
         if (!frontwires.empty()) {
             // build the end faces, sew the shell and build the final solid
-            auto front = TopoShape().makEFace(frontwires,0,"Part::FaceMakerCheese");
-            auto back = TopoShape().makEFace(backwires,0,"Part::FaceMakerCheese");
+            //
+            // auto front = TopoShape().makEFace(frontwires,0,"Part::FaceMakerCheese");
+            // auto back = TopoShape().makEFace(backwires,0,"Part::FaceMakerCheese");
+            // 
+            // Use default Part::FaceMakerBullseye instead
+            auto front = TopoShape().makEFace(frontwires);
+            auto back = TopoShape().makEFace(backwires);
 
             BRepBuilderAPI_Sewing sewer;
             sewer.SetTolerance(Precision::Confusion());

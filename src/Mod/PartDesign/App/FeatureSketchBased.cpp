@@ -425,8 +425,8 @@ TopoShape ProfileBased::getSupportFace() const {
                     throw Base::ValueError("Null face in SketchBased::getSupportFace()!");
                 shape = shape.getSubTopoShape(TopAbs_FACE, 1);
             }
-            BRepAdaptor_Surface adapt(TopoDS::Face(shape.getShape()));
-            if (adapt.GetType() != GeomAbs_Plane)
+            gp_Pln pln;
+            if (!shape.findPlane(pln))
                 throw Base::TypeError("No planar face in SketchBased::getSupportFace()!");
 
             return shape;

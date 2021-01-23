@@ -50,20 +50,11 @@ public:
     std::vector<App::DocumentObject*> claimChildren(void)const;
     void setupContextMenu(QMenu*, QObject*, const char*);
 
-    virtual bool onDelete(const std::vector<std::string> &);
-    void highlightReferences(Reference mode, bool on);
-    
 protected:
     virtual QIcon getIcon(void) const;
     
     /// Returns a newly created TaskDlgPipeParameters
     virtual TaskDlgFeatureParameters *getEditDialog();
-
-private:
-    void highlightReferences(Part::Feature*, const std::vector<std::string>&, bool);
-
-private:
-    std::map<long, std::vector<App::Color>> originalLineColors;
 };
 
 

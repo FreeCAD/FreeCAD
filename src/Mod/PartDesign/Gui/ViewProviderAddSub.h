@@ -66,7 +66,7 @@ private:
     int                         defaultChild;
     std::string                 displayMode;
     App::DocumentObjectT        baseFeature;
-    int                         baseTail;
+    int                         baseChild = -1;
     std::unique_ptr<PartGui::ViewProviderPart> pAddSubView;
 };
 

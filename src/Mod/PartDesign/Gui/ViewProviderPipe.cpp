@@ -45,7 +45,7 @@
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderPipe,PartDesignGui::ViewProvider)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderPipe,PartDesignGui::ViewProviderAddSub)
 
 ViewProviderPipe::ViewProviderPipe()
 {
@@ -96,102 +96,14 @@ TaskDlgFeatureParameters* ViewProviderPipe::getEditDialog() {
     return new TaskDlgPipeParameters(this, false);
 }
 
-bool ViewProviderPipe::onDelete(const std::vector<std::string> &s)
-{/*
-    PartDesign::Pipe* pcPipe = static_cast<PartDesign::Pipe*>(getObject());
-
-    // get the Sketch
-    Sketcher::SketchObject *pcSketch = 0;
-    if (pcPipe->Sketch.getValue())
-        pcSketch = static_cast<Sketcher::SketchObject*>(pcPipe->Sketch.getValue());
-
-    // if abort command deleted the object the sketch is visible again
-    if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
-        Gui::Application::Instance->getViewProvider(pcSketch)->show();
-*/
-    return ViewProvider::onDelete(s);
-}
-
-
-
-void ViewProviderPipe::highlightReferences(ViewProviderPipe::Reference mode, bool on)
-{
-    PartDesign::Pipe* pcPipe = static_cast<PartDesign::Pipe*>(getObject());
-
-    switch (mode) {
-    case Spine:
-        highlightReferences(dynamic_cast<Part::Feature*>(pcPipe->Spine.getValue()),
-                            pcPipe->Spine.getSubValuesStartsWith("Edge"), on);
-        break;
-    case AuxiliarySpine:
-        highlightReferences(dynamic_cast<Part::Feature*>(pcPipe->AuxillerySpine.getValue()),
-                            pcPipe->AuxillerySpine.getSubValuesStartsWith("Edge"), on);
-        break;
-    case Profile:
-        highlightReferences(dynamic_cast<Part::Feature*>(pcPipe->Profile.getValue()),
-                            pcPipe->Profile.getSubValuesStartsWith("Edge"), on);
-        break;
-    case Section:
-        {
-            std::vector<App::DocumentObject*> sections = pcPipe->Sections.getValues();
-            for (auto it : sections) {
-                highlightReferences(dynamic_cast<Part::Feature*>(it),
-                                    std::vector<std::string>(), on);
-            }
-        }
-        break;
-    default:
-        break;
-    }
-}
-
-void ViewProviderPipe::highlightReferences(Part::Feature* base, const std::vector<std::string>& edges, bool on) {
-
-    PartGui::ViewProviderPart* svp = dynamic_cast<PartGui::ViewProviderPart*>(
-                Gui::Application::Instance->getViewProvider(base));
-    if (svp == nullptr)
-        return;
-
-    std::vector<App::Color>& edgeColors = originalLineColors[base->getID()];
-
-    if (on) {
-         if (edgeColors.empty()) {
-            TopTools_IndexedMapOfShape eMap;
-            TopExp::MapShapes(base->Shape.getValue(), TopAbs_EDGE, eMap);
-            edgeColors = svp->LineColorArray.getValues();
-            std::vector<App::Color> colors = edgeColors;
-            colors.resize(eMap.Extent(), svp->LineColor.getValue());
-
-            if (!edges.empty()) {
-                for (std::string e : edges) {
-                    int idx = std::stoi(e.substr(4)) - 1;
-                    assert ( idx >= 0 );
-                    if ( idx < (ssize_t) colors.size() )
-                        colors[idx] = App::Color(1.0f,0.0f,1.0f); // magenta
-                }
-            }
-            else {
-                std::fill(colors.begin(), colors.end(), App::Color(0.6f,0.0f,1.0f)); // purple
-            }
-            svp->LineColorArray.setValues(colors);
-        }
-    } else {
-        if (!edgeColors.empty()) {
-            svp->LineColorArray.setValues(edgeColors);
-            edgeColors.clear();
-        }
-    }
-}
-
 QIcon ViewProviderPipe::getIcon(void) const {
-    QString str = QString::fromLatin1("PartDesign_");
-    auto* prim = static_cast<PartDesign::Pipe*>(getObject());
-    if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)
-        str += QString::fromLatin1("Additive_");
-    else
-        str += QString::fromLatin1("Subtractive_");
-
-    str += QString::fromLatin1("Pipe.svg");
-    return PartDesignGui::ViewProvider::mergeOverlayIcons(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
+    auto prim = Base::freecad_dynamic_cast<PartDesign::Pipe>(getObject());
+    if (prim) {
+        if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)
+            const_cast<ViewProviderPipe*>(this)->sPixmap = "PartDesign_Additive_Pipe";
+        else
+            const_cast<ViewProviderPipe*>(this)->sPixmap = "PartDesign_Subtractive_Pipe";
+    }
+    return ViewProvider::getIcon();
 }
 

@@ -222,9 +222,16 @@ void ViewProviderAddSub::setPreviewDisplayMode(bool onoff) {
             baseFeature = App::DocumentObjectT(base);
 
             // If there is a base feature, we shall inject the preview group
-            // into the base feature view provider using SoFCSwitch::tailChild
+            // into the base feature view provider using SoFCSwitch::headChild
             // functionality, which will be shown as long as SoFCSwitch is
             // visible. See SoFCSwitch documentation for more details.
+            //
+            // Note that it would be better to use SoFCSwitch::tailChild
+            // instead of headChild, because it would then sure the preview on
+            // top regardless of whether the base object itself is on top or
+            // not. However, if using tailChild, the selection highlight will
+            // be obscured by preview. It would difficult to fix this problem
+            // now, but would be easy for the upcoming new renderer.
             auto baseVp = Gui::Application::Instance->getViewProvider(base);
             if (baseVp && baseVp->getModeSwitch()
                        && baseVp->getModeSwitch()->isOfType(Gui::SoFCSwitch::getClassTypeId()))
@@ -233,8 +240,8 @@ void ViewProviderAddSub::setPreviewDisplayMode(bool onoff) {
                 base->Visibility.setValue(true);
                 auto baseSwitch = static_cast<Gui::SoFCSwitch*>(baseVp->getModeSwitch());
                 baseSwitch->addChild(previewGroup);
-                baseTail = baseSwitch->tailChild.getValue();
-                baseSwitch->tailChild = baseSwitch->getNumChildren()-1;
+                baseChild = baseSwitch->headChild.getValue();
+                baseSwitch->headChild = baseSwitch->getNumChildren()-1;
                 return;
             }
         }
@@ -251,7 +258,8 @@ void ViewProviderAddSub::setPreviewDisplayMode(bool onoff) {
                 int idx = baseSwitch->findChild(previewGroup);
                 if (idx >= 0)
                     baseSwitch->removeChild(idx);
-                baseSwitch->tailChild = baseTail;
+                baseSwitch->headChild = baseChild;
+                baseChild = -1;
                 return;
             }
         }

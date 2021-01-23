@@ -1016,9 +1016,9 @@ void SelectionSingleton::addSelectionGate(Gui::SelectionGate *gate, int resolve)
 void SelectionSingleton::rmvSelectionGate(void)
 {
     if (ActiveGate) {
-        delete ActiveGate;
+        // Delay deletion to avoid recursion
+        std::unique_ptr<Gui::SelectionGate> guard(ActiveGate);
         ActiveGate = nullptr;
-
         Gui::Document* doc = Gui::Application::Instance->activeDocument();
         if (doc) {
             // if a document is about to be closed it has no MDI view any more

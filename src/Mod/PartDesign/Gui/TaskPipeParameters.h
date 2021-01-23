@@ -24,6 +24,8 @@
 #ifndef GUI_TASKVIEW_TaskPipeParameters_H
 #define GUI_TASKVIEW_TaskPipeParameters_H
 
+#include <boost_signals2.hpp>
+
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
@@ -57,36 +59,37 @@ public:
     TaskPipeParameters(ViewProviderPipe *PipeView,bool newObj=false,QWidget *parent = 0);
     ~TaskPipeParameters();
 
- 
 private Q_SLOTS:
     void onTangentChanged(bool checked);
     void onTransitionChanged(int);
     void onButtonRefAdd(bool checked);
-    void onButtonRefRemove(bool checked);
     void onBaseButton(bool checked);
     void onProfileButton(bool checked);
     void onDeleteEdge();
-  
+    void onItemEntered(QListWidgetItem *);
+    void onItemSelectionChanged();
+
 protected:
-    enum selectionModes { none, refAdd, refRemove, refObjAdd, refProfile };
+    enum selectionModes { none, refAdd, refObjAdd, refProfile };
     selectionModes selectionMode = none;
     
-    void removeFromListWidget(QListWidget*w, QString name);
-    bool referenceSelected(const Gui::SelectionChanges& msg) const;
-
     void refresh();
+    bool eventFilter(QObject *o, QEvent *e);
 
 private:
     void onSelectionChanged(const Gui::SelectionChanges& msg);
-    void updateUI();
-    void clearButtons();
+
+public:
     void exitSelectionMode();
 
-    bool spineShow = false;
-    
 private:
     QWidget* proxy;
     Ui_TaskPipeParameters* ui;
+    bool initing = false;
+    App::SubObjectT lastProfile;
+    App::SubObjectT lastSpine;
+    boost::signals2::scoped_connection connProfile;
+    boost::signals2::scoped_connection connSpine;
 };
 
 class TaskPipeOrientation : public TaskSketchBasedParameters
@@ -97,35 +100,37 @@ public:
     TaskPipeOrientation(ViewProviderPipe *PipeView,bool newObj=false,QWidget *parent = 0);
     virtual ~TaskPipeOrientation();
 
- 
 private Q_SLOTS:
     void onOrientationChanged(int);
     void onButtonRefAdd(bool checked);
-    void onButtonRefRemove(bool checked);
     void updateUI(int idx);
     void onBaseButton(bool checked);
     void onClearButton();
     void onCurvelinearChanged(bool checked);
     void onBinormalChanged(double);
     void onDeleteItem();
+    void onItemEntered(QListWidgetItem *);
+    void onItemSelectionChanged();
   
 protected:
-    enum selectionModes { none, refAdd, refRemove, refObjAdd };
+    enum selectionModes { none, refAdd, refObjAdd };
     selectionModes selectionMode = none;
     
-    void removeFromListWidget(QListWidget*w, QString name);
-    bool referenceSelected(const Gui::SelectionChanges& msg) const;
+    void refresh();
+    bool eventFilter(QObject *o, QEvent *e);
 
 private:
     void onSelectionChanged(const Gui::SelectionChanges& msg);
-    void clearButtons();
+
+public:
     void exitSelectionMode();
     
-    bool auxSpineShow = false;
-
 private:
     QWidget* proxy;
     Ui_TaskPipeOrientation* ui;
+    bool initing = false;
+    App::SubObjectT lastAuxSpine;
+    boost::signals2::scoped_connection connAuxSpine;
 };
 
 
@@ -141,25 +146,33 @@ public:
 private Q_SLOTS:
     void onScalingChanged(int);
     void onButtonRefAdd(bool checked);
-    void onButtonRefRemove(bool checked);
     void updateUI(int idx);
     void onDeleteSection();
+    void onItemEntered(QListWidgetItem *);
+    void onItemSelectionChanged();
   
 protected:
-    enum selectionModes { none, refAdd, refRemove };
+    enum selectionModes { none, refAdd };
     selectionModes selectionMode = none;
     
     void removeFromListWidget(QListWidget*w, QString name);
-    bool referenceSelected(const Gui::SelectionChanges& msg) const;
+    bool referenceSelected(const Gui::SelectionChanges& msg);
+
+    bool eventFilter(QObject *o, QEvent *e);
+    void refresh();
 
 private:
     void onSelectionChanged(const Gui::SelectionChanges& msg);
-    void clearButtons();
+    void addItem(App::DocumentObject *obj);
+
+public:
     void exitSelectionMode();
 
 private:
     QWidget* proxy;
     Ui_TaskPipeScaling* ui;
+    std::vector<App::SubObjectT> lastSections;
+    boost::signals2::scoped_connection connSections;
 };
 
 

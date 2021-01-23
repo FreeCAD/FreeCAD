@@ -25,6 +25,8 @@
 
 #include <Gui/ActiveObjectList.h>
 
+class QListWidget;
+
 /** \file PartDesign/Gui/Utils.h
  *  This file contains some utility function used over PartDesignGui module
  */
@@ -37,6 +39,7 @@ namespace App {
     class Document;
     class DocumentObject;
     class Part;
+    class PropertyLinkSub;
 }
 
 namespace Sketcher {
@@ -50,6 +53,18 @@ bool setEdit(App::DocumentObject *obj, App::DocumentObject *container=0, const c
 
 /// Call before editing object to setup visibilities
 void beforeEdit(App::DocumentObject *editingObj);
+
+/// Show the given object on top
+void showObjectOnTop(const App::SubObjectT &objT);
+void hideObjectOnTop(const App::SubObjectT &objT);
+void highlightObjectOnTop(const App::SubObjectT &objT);
+void selectObjectOnTop(const App::SubObjectT &objT, bool multiselect=false);
+void unselectObjectOnTop(const App::SubObjectT &objT);
+
+bool populateGeometryReferences(QListWidget *listWidget, App::PropertyLinkSub &prop, bool refresh);
+
+/// Import an external feature into the body of the host feature using SubShapeBinder
+App::SubObjectT importExternalObject(const App::SubObjectT &feature, bool report=true);
 
 /// Return active body or show a warning message
 PartDesign::Body *getBody(bool messageIfNot, bool autoActivate=true, bool assertModern=true,
