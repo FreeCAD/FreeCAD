@@ -372,6 +372,7 @@ StringWriter::StringWriter() {
     setForceXML(9999);
     setSplitXML(false);
     setPreferBinary(false);
+    this->StrStream << std::setprecision(std::numeric_limits<double>::digits10 + 1);
 }
 
 void StringWriter::writeFiles() {
