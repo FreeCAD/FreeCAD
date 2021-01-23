@@ -274,6 +274,8 @@ public:
         QT_TRANSLATE_NOOP("ViewParams","Sort workbench entires by their names in the combo box."))\
     FC_VIEW_PARAM(MaxCameraAnimatePeriod, int, Int, 3000, \
         QT_TRANSLATE_NOOP("ViewParams","Maximum camera move animation duration in milliseconds."))\
+    FC_VIEW_PARAM(TaskNoWheelFocus, bool, Bool, true, \
+        QT_TRANSLATE_NOOP("ViewParams","Do not accept wheel focus on input fields in task panels."))\
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def,_doc) \

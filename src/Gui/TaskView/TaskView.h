@@ -211,6 +211,7 @@ protected Q_SLOTS:
 protected:
     virtual void keyPressEvent(QKeyEvent*);
     virtual bool event(QEvent*);
+    virtual bool eventFilter(QObject *, QEvent*);
 
     void addTaskWatcher(void);
     void removeTaskWatcher(void);

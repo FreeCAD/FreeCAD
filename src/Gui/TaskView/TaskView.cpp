@@ -33,6 +33,7 @@
 # include <QPointer>
 # include <QPushButton>
 # include <QTimer>
+# include <QComboBox>
 #endif
 
 #include "TaskView.h"
@@ -635,6 +636,25 @@ void TaskView::showDialog(TaskDialog *dlg)
             this,SLOT(clicked(QAbstractButton *)));
 
     this->contents = dlg->getDialogContent();
+
+    if (ViewParams::getTaskNoWheelFocus()) {
+        // Since task dialog contains mlutiple panels which often require
+        // scrolling up and down to access. Using wheel focus in any input
+        // field may cause accidental change of value while scrolling.
+        for (auto widget : this->contents) {
+            for(auto child : widget->findChildren<QWidget*>()) {
+                if (child->focusPolicy() == Qt::WheelFocus
+                        && !qobject_cast<QAbstractItemView*>(child))
+                    child->setFocusPolicy(Qt::StrongFocus);
+                // It's not enough for some widget. We must use a eventFilter
+                // to actively filter out wheel event if not in focus.
+                if (qobject_cast<QComboBox*>(child)
+                        || qobject_cast<QAbstractSpinBox*>(child))
+                    child->installEventFilter(this);
+            }
+        }
+    }
+
     Control().signalShowDialog(this, this->contents);
 
     // give to task dialog to customize the button box
@@ -674,6 +694,30 @@ void TaskView::showDialog(TaskDialog *dlg)
     getMainWindow()->updateActions();
 
     Q_EMIT taskUpdate();
+}
+
+bool TaskView::eventFilter(QObject *o, QEvent *ev)
+{
+    if (o->isWidgetType()) {
+        auto widget = static_cast<QWidget*>(o);
+        switch(ev->type()) {
+        case QEvent::Wheel:
+            if (!widget->hasFocus()) {
+                ev->setAccepted(false);
+                return true;
+            }
+            break;
+        case QEvent::FocusIn:
+            widget->setFocusPolicy(Qt::WheelFocus);
+            break;
+        case QEvent::FocusOut:
+            widget->setFocusPolicy(Qt::StrongFocus);
+            break;
+        default:
+            break;
+        }
+    }
+    return QWidget::eventFilter(o, ev);
 }
 
 void TaskView::removeDialog(void)
