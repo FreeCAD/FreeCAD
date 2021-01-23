@@ -22,6 +22,7 @@
 
 import PathScripts.PathToolBit as PathToolBit
 import PathTests.PathTestUtils as PathTestUtils
+import glob
 import os
 
 TestToolDir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'Tools')
@@ -40,7 +41,24 @@ def testToolBit(path = TestToolDir, name = TestToolBitName):
 def testToolLibrary(path = TestToolDir, name = TestToolLibraryName):
     return os.path.join(path, 'Library', name)
 
+def printTree(path, indent):
+    print("{} {}".format(indent, os.path.basename(path)))
+    if os.path.isdir(path):
+        if os.path.basename(path).startswith('__'):
+            print("{}   ...".format(indent))
+        else:
+            for foo in sorted(glob.glob(os.path.join(path, '*'))):
+                printTree(foo, "{}  ".format(indent))
+
 class TestPathToolBit(PathTestUtils.PathTestBase):
+
+    def test(self):
+        '''Log test setup'''
+        print()
+        print("realpath : {}".format(os.path.realpath(__file__)))
+        print("   Tools : {}".format(TestToolDir))
+        print("     dir : {}".format(os.path.dirname(os.path.realpath(__file__))))
+        printTree(os.path.dirname(os.path.realpath(__file__)), "         :")
 
     def test00(self):
         '''Find a tool shape from file name'''
