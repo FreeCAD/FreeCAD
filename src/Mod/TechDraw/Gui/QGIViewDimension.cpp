@@ -646,17 +646,6 @@ void QGIViewDimension::updateDim()
             labelText = QString::fromUtf8(dim->getFormattedDimensionValue(1).c_str()); //just the number pref/spec/suf
             unitText  = QString::fromUtf8(dim->getFormattedDimensionValue(2).c_str()); //just the unit
         }
-        // if there is an equal over-/undertolerance and not theoretically exact, add the tolerance to dimension
-        if (dim->EqualTolerance.getValue() && !DrawUtil::fpCompare(dim->OverTolerance.getValue(), 0.0)
-            && !dim->TheoreticalExact.getValue()) {
-            std::pair<std::string, std::string> ToleranceText, ToleranceUnit;
-            QString tolerance = QString::fromStdString(dim->getFormattedToleranceValue(1).c_str());
-            // tolerance might start with a plus sign that we don't want, so cut it off
-            if (tolerance.at(0) == QChar::fromLatin1('+'))
-                tolerance.remove(0, 1);
-            // add the tolerance to the dimension using the ± sign
-            labelText = labelText + QString::fromUtf8(" \xC2\xB1 ") + tolerance;
-        }
     }
     QFont font = datumLabel->getFont();
     font.setFamily(QString::fromUtf8(vp->Font.getValue()));
