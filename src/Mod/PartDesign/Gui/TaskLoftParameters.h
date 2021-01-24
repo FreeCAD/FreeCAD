@@ -24,6 +24,8 @@
 #ifndef GUI_TASKVIEW_TaskLoftParameters_H
 #define GUI_TASKVIEW_TaskLoftParameters_H
 
+#include <boost_signals2.hpp>
+
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
@@ -33,6 +35,7 @@
 
 class Ui_TaskLoftParameters;
 class QListWidget;
+class QListWidgetItem;
 
 namespace App {
 class Property;
@@ -53,33 +56,40 @@ public:
     TaskLoftParameters(ViewProviderLoft *LoftView,bool newObj=false,QWidget *parent = 0);
     ~TaskLoftParameters();
 
+    void exitSelectionMode();
+
 private Q_SLOTS:
     void onProfileButton(bool);
     void onRefButtonAdd(bool);
-    void onRefButtonRemvove(bool);
     void onClosed(bool);
     void onRuled(bool);
     void onDeleteSection();
     void indexesMoved();
+    void onItemEntered(QListWidgetItem *);
+    void onItemSelectionChanged();
+    void updateUI();
 
 protected:
     void changeEvent(QEvent *e);
+    bool eventFilter(QObject *o, QEvent *e);
     void refresh();
 
 private:
     void onSelectionChanged(const Gui::SelectionChanges& msg);
-    void updateUI(int index);
-    bool referenceSelected(const Gui::SelectionChanges& msg) const;
-    void removeFromListWidget(QListWidget*w, QString name);
     void clearButtons();
-    void exitSelectionMode();
+    void addItem(App::DocumentObject *obj, bool select=false);
 
 private:
     QWidget* proxy;
     Ui_TaskLoftParameters* ui;
 
-    enum selectionModes { none, refAdd, refRemove, refProfile };
+    enum selectionModes { none, refAdd, refProfile };
     selectionModes selectionMode = none;
+
+    App::SubObjectT lastProfile;
+    boost::signals2::scoped_connection connProfile;
+    std::vector<App::SubObjectT> lastSections;
+    boost::signals2::scoped_connection connSections;
 };
 
 /// simulation dialog for the TaskView

@@ -1453,6 +1453,54 @@ bool populateGeometryReferences(QListWidget *listWidget, App::PropertyLinkSub &p
     return touched;
 }
 
+void toggleShowOnTop(Gui::ViewProviderDocumentObject *vp,
+                     App::SubObjectT &last,
+                     const char *prop,
+                     bool init)
+{
+    if (!init && last.getObjectName().empty())
+        return;
+    PartDesignGui::hideObjectOnTop(last);
+    last = App::SubObjectT();
+    if (!vp)
+        return;
+    auto obj = vp->getObject();
+    if (!obj)
+        return;
+    auto propLink = Base::freecad_dynamic_cast<App::PropertyLinkBase>(obj->getPropertyByName(prop));
+    if (!propLink)
+        return;
+    auto links = propLink->linkedObjects();
+    if (links.size()) {
+        last = App::SubObjectT(links[0],"");
+        showObjectOnTop(last);
+    }
+}
+
+void toggleShowOnTop(Gui::ViewProviderDocumentObject *vp,
+                     std::vector<App::SubObjectT> &last,
+                     const char *prop,
+                     bool init)
+{
+    if (!init && last.empty())
+        return;
+    for (auto &obj : last)
+        PartDesignGui::hideObjectOnTop(obj);
+    last.clear();
+    if (!vp || !prop)
+        return;
+    auto obj = vp->getObject();
+    if (!obj)
+        return;
+    auto propLink = Base::freecad_dynamic_cast<App::PropertyLinkBase>(obj->getPropertyByName(prop));
+    if (!propLink)
+        return;
+    for (auto link : propLink->linkedObjects()) {
+        last.emplace_back(link, "");
+        showObjectOnTop(last.back());
+    }
+}
+
 } /* PartDesignGui */
 
 #include "moc_Utils.cpp"

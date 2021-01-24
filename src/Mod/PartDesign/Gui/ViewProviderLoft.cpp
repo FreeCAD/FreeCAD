@@ -45,7 +45,7 @@
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderLoft,PartDesignGui::ViewProvider)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderLoft,PartDesignGui::ViewProviderAddSub)
 
 ViewProviderLoft::ViewProviderLoft()
 {

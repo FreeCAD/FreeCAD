@@ -68,6 +68,7 @@ private Q_SLOTS:
     void onDeleteEdge();
     void onItemEntered(QListWidgetItem *);
     void onItemSelectionChanged();
+    void updateUI();
 
 protected:
     enum selectionModes { none, refAdd, refObjAdd, refProfile };
@@ -155,15 +156,12 @@ protected:
     enum selectionModes { none, refAdd };
     selectionModes selectionMode = none;
     
-    void removeFromListWidget(QListWidget*w, QString name);
-    bool referenceSelected(const Gui::SelectionChanges& msg);
-
     bool eventFilter(QObject *o, QEvent *e);
     void refresh();
 
 private:
     void onSelectionChanged(const Gui::SelectionChanges& msg);
-    void addItem(App::DocumentObject *obj);
+    void addItem(App::DocumentObject *obj, bool select=false);
 
 public:
     void exitSelectionMode();

@@ -71,54 +71,6 @@ using namespace Gui;
 
 static bool _Busy;
 
-static inline void toggleShowOnTop(Gui::ViewProviderDocumentObject *vp,
-                                   App::SubObjectT &last,
-                                   const char *prop,
-                                   bool init = false)
-{
-    if (!init && last.getObjectName().empty())
-        return;
-    PartDesignGui::hideObjectOnTop(last);
-    last = App::SubObjectT();
-    if (!vp)
-        return;
-    auto obj = vp->getObject();
-    if (!obj)
-        return;
-    auto propLink = Base::freecad_dynamic_cast<App::PropertyLinkBase>(obj->getPropertyByName(prop));
-    if (!propLink)
-        return;
-    auto links = propLink->linkedObjects();
-    if (links.size()) {
-        last = App::SubObjectT(links[0],"");
-        PartDesignGui::showObjectOnTop(last);
-    }
-}
-
-static inline void toggleShowOnTop(Gui::ViewProviderDocumentObject *vp,
-                                   std::vector<App::SubObjectT> &last,
-                                   const char *prop,
-                                   bool init = false)
-{
-    if (!init && last.empty())
-        return;
-    for (auto &obj : last)
-        PartDesignGui::hideObjectOnTop(obj);
-    last.clear();
-    if (!vp || !prop)
-        return;
-    auto obj = vp->getObject();
-    if (!obj)
-        return;
-    auto propLink = Base::freecad_dynamic_cast<App::PropertyLinkBase>(obj->getPropertyByName(prop));
-    if (!propLink)
-        return;
-    for (auto link : propLink->linkedObjects()) {
-        last.emplace_back(link, "");
-        PartDesignGui::showObjectOnTop(last.back());
-    }
-}
-
 class SpineSelectionGate : public Gui::SelectionGate
 {
 public:
@@ -148,8 +100,10 @@ public:
             return;
         objT = App::DocumentObjectT(vp->getObject());
         auto prop = getProperty();
-        if (prop && !prop->getValue())
+        if (prop && !prop->getValue()) {
             inList = vp->getObject()->getInListEx(true);
+            inList.insert(vp->getObject());
+        }
     }
 
     App::PropertyLinkSub *getProperty()
@@ -192,43 +146,21 @@ private:
     TaskPipeOrientation *orientation = nullptr;
 };
 
-class RemoveSpineSelectionGate : public SpineSelectionGate
+class PipeProfileSelectionGate : public Gui::SelectionGate
 {
 public:
-    using SpineSelectionGate::SpineSelectionGate;
-
-    bool allow(App::Document*, App::DocumentObject* pObj, const char*)
-    {
-        auto prop = getProperty();
-        if (!prop) {
-            this->notAllowedReason = QT_TR_NOOP("Pipe feature not found.");
-            return false;
-        }
-        if (prop->getValue() && pObj != prop->getValue()) {
-            this->notAllowedReason = QT_TR_NOOP("Not from pipe spine object.");
-            return false;
-        }
-        return true;
-    }
-};
-
-class ProfileSelectionGate : public Gui::SelectionGate
-{
-public:
-    ProfileSelectionGate(TaskPipeParameters *master,
+    PipeProfileSelectionGate(TaskPipeParameters *master,
                          const Gui::ViewProviderDocumentObject *vp)
         :master(master)
     {
         if (!vp)
             return;
-        auto pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
-        if (!pipe)
-            return;
-        objT = App::DocumentObjectT(pipe);
-        inList = pipe->getInListEx(true);
+        objT = App::DocumentObjectT(vp->getObject());
+        inList = vp->getObject()->getInListEx(true);
+        inList.insert(vp->getObject());
     }
 
-    ~ProfileSelectionGate()
+    ~PipeProfileSelectionGate()
     {
         master->exitSelectionMode();
     }
@@ -257,20 +189,21 @@ private:
     TaskPipeParameters *master;
 };
 
-class SectionSelectionGate : public Gui::SelectionGate
+class PipeSectionSelectionGate : public Gui::SelectionGate
 {
 public:
-    SectionSelectionGate(TaskPipeScaling *master,
+    PipeSectionSelectionGate(TaskPipeScaling *master,
                          const Gui::ViewProviderDocumentObject *vp)
         :master(master)
     {
         if (vp) {
             objT = App::DocumentObjectT(vp->getObject());
             inList = vp->getObject()->getInListEx(true);
+            inList.insert(vp->getObject());
         }
     }
 
-    ~SectionSelectionGate()
+    ~PipeSectionSelectionGate()
     {
         master->exitSelectionMode();
     }
@@ -290,6 +223,19 @@ public:
             this->notAllowedReason = QT_TR_NOOP("Profile object cannot be used as section.");
             return false;
         }
+        if (pipe->Sections.getSize()) {
+            if (!wireCount) {
+                wireCount = Part::Feature::getTopoShape(
+                        pipe->Sections.getValues()[0]).countSubShapes(TopAbs_WIRE);
+            }
+            if (wireCount>0 && Part::Feature::getTopoShape(
+                                    pObj).countSubShapes(TopAbs_WIRE) != wireCount)
+            {
+                this->notAllowedReason = QT_TR_NOOP("Section must have the same number of wires.");
+                return false;
+            }
+        } else
+            wireCount = 0;
         return true;
     }
 
@@ -297,41 +243,7 @@ private:
     App::DocumentObjectT objT;
     std::set<App::DocumentObject*> inList;
     TaskPipeScaling *master;
-};
-
-class RemoveSectionsSelectionGate : public Gui::SelectionGate
-{
-public:
-    RemoveSectionsSelectionGate(TaskPipeScaling *master,
-                                const Gui::ViewProviderDocumentObject *vp)
-        :master(master)
-    {
-        if (!vp)
-            objT = vp->getObject();
-    }
-
-    ~RemoveSectionsSelectionGate()
-    {
-        master->exitSelectionMode();
-    }
-
-    bool allow(App::Document*, App::DocumentObject* pObj, const char*)
-    {
-        auto pipe = static_cast<PartDesign::Pipe*>(objT.getObject());
-        if (!pipe) {
-            this->notAllowedReason = QT_TR_NOOP("Pipe feature not found.");
-            return false;
-        }
-        if (pipe->Sections.find(pObj->getNameInDocument()) != pObj) {
-            this->notAllowedReason = QT_TR_NOOP("Not found in sections.");
-            return false;
-        }
-        return true;
-    }
-
-private:
-    App::DocumentObjectT objT;
-    TaskPipeScaling *master;
+    unsigned wireCount = 0;
 };
 
 /* TRANSLATOR PartDesignGui::TaskPipeParameters */
@@ -390,14 +302,22 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe *PipeView, bool /*newObj
 
     PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
     connProfile = pipe->Profile.signalChanged.connect(
-        [this](const App::Property &) {toggleShowOnTop(vp, lastProfile, "Profile");});
+        [this](const App::Property &) {toggleShowOnTop(vp, lastProfile, "Profile", true);});
     connSpine = pipe->Spine.signalChanged.connect(
         [this](const App::Property &) {toggleShowOnTop(vp, lastSpine, "Spine");});
+
+    QMetaObject::invokeMethod(this, "updateUI", Qt::QueuedConnection);
 }
 
 TaskPipeParameters::~TaskPipeParameters()
 {
+    exitSelectionMode();
     delete ui;
+}
+
+void TaskPipeParameters::updateUI()
+{
+    toggleShowOnTop(vp, lastProfile, "Profile", true);
 }
 
 void TaskPipeParameters::onItemEntered(QListWidgetItem *item)
@@ -573,7 +493,6 @@ void TaskPipeParameters::onButtonRefAdd(bool checked) {
         Gui::Selection().clearSelection();
         Gui::Selection().addSelectionGate(new SpineSelectionGate(this, vp));
         selectionMode = refAdd;
-        toggleShowOnTop(vp, lastSpine, "Spine", true);
     } else {
         exitSelectionMode();
     }
@@ -597,9 +516,8 @@ void TaskPipeParameters::onProfileButton(bool checked)
 {
     if (checked) {
         Gui::Selection().clearSelection();
-        Gui::Selection().addSelectionGate(new ProfileSelectionGate(this, vp));
+        Gui::Selection().addSelectionGate(new PipeProfileSelectionGate(this, vp));
         selectionMode = refProfile;
-        toggleShowOnTop(vp, lastProfile, nullptr);
     }
     else {
         exitSelectionMode();
@@ -643,7 +561,6 @@ void TaskPipeParameters::exitSelectionMode() {
     Gui::Selection().clearSelection();
     Gui::Selection().rmvSelectionGate();
     toggleShowOnTop(vp, lastSpine, nullptr);
-    toggleShowOnTop(vp, lastProfile, nullptr);
 }
 
 
@@ -717,6 +634,8 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView, bool /*newO
 
 TaskPipeOrientation::~TaskPipeOrientation()
 {
+    exitSelectionMode();
+    delete ui;
 }
 
 void TaskPipeOrientation::onItemSelectionChanged()
@@ -1026,13 +945,16 @@ TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QW
     QMetaObject::invokeMethod(this, "updateUI", Qt::QueuedConnection,
         QGenericReturnArgument(), Q_ARG(int,pipe->Transformation.getValue()));
 
-    connSections = pipe->Sections.signalChanged.connect(
-        [this](const App::Property &) {toggleShowOnTop(vp, lastSections, "Sections");});
     refresh();
+
+    connSections = pipe->Sections.signalChanged.connect(
+        [this](const App::Property &) {toggleShowOnTop(vp, lastSections, "Sections", true);});
 }
 
-TaskPipeScaling::~TaskPipeScaling() {
-
+TaskPipeScaling::~TaskPipeScaling()
+{
+    exitSelectionMode();
+    delete ui;
 }
 
 void TaskPipeScaling::refresh()
@@ -1073,7 +995,7 @@ void TaskPipeScaling::onButtonRefAdd(bool checked) {
 
     if (checked) {
         Gui::Selection().clearSelection();
-        Gui::Selection().addSelectionGate(new SectionSelectionGate(this, vp));
+        Gui::Selection().addSelectionGate(new PipeSectionSelectionGate(this, vp));
         selectionMode = refAdd;
     }
     else {
@@ -1095,7 +1017,7 @@ void TaskPipeScaling::onScalingChanged(int idx) {
         exitSelectionMode();
 }
 
-void TaskPipeScaling::addItem(App::DocumentObject *obj)
+void TaskPipeScaling::addItem(App::DocumentObject *obj, bool select)
 {
     QString label = QString::fromUtf8(obj->Label.getValue());
     QListWidgetItem* item = new QListWidgetItem();
@@ -1105,6 +1027,11 @@ void TaskPipeScaling::addItem(App::DocumentObject *obj)
     item->setText(label);
     item->setData(Qt::UserRole, QVariant::fromValue(App::SubObjectT(obj)));
     ui->listWidgetReferences->addItem(item);
+    if (select) {
+        QSignalBlocker blocker(ui->listWidgetReferences);
+        item->setSelected(true);
+        ui->listWidgetReferences->scrollToItem(item);
+    }
 }
 
 void TaskPipeScaling::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -1136,7 +1063,7 @@ void TaskPipeScaling::onSelectionChanged(const Gui::SelectionChanges& msg)
         if (refObj) {
             auto sections = pipe->Sections.getValues();
             sections.push_back(refObj);
-            addItem(refObj);
+            addItem(refObj, true);
             setupTransaction();
             pipe->Sections.setValues(sections);
             recomputeFeature();
@@ -1177,6 +1104,8 @@ void TaskPipeScaling::updateUI(int idx) {
 
     if (idx < ui->stackedWidget->count())
         ui->stackedWidget->widget(idx)->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    toggleShowOnTop(vp, lastSections, "Sections", true);
 }
 
 void TaskPipeScaling::onItemEntered(QListWidgetItem *item)
@@ -1187,17 +1116,9 @@ void TaskPipeScaling::onItemEntered(QListWidgetItem *item)
     PartDesignGui::highlightObjectOnTop(objT);
 }
 
-bool TaskPipeScaling::eventFilter(QObject *o, QEvent *ev)
+bool TaskPipeScaling::eventFilter(QObject *, QEvent *ev)
 {
     switch(ev->type()) {
-    case QEvent::FocusIn:
-        if (o == ui->listWidgetReferences)
-            toggleShowOnTop(vp, lastSections, "Sections", true);
-        break;
-    case QEvent::FocusOut:
-        if (o == ui->listWidgetReferences)
-            toggleShowOnTop(vp, lastSections, nullptr);
-        break;
     case QEvent::Leave:
         Gui::Selection().rmvPreselect();
         break;
@@ -1256,6 +1177,7 @@ bool TaskDlgPipeParameters::accept()
 {
     PartDesign::Pipe* pcPipe = static_cast<PartDesign::Pipe*>(getPipeView()->getObject());
     try {
+        parameter->setupTransaction();
         Gui::cmdAppDocument(pcPipe, "recompute()");
         if (!vp->getObject()->isValid())
             throw Base::RuntimeError(vp->getObject()->getStatusString());

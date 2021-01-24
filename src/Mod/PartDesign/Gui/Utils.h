@@ -60,6 +60,14 @@ void hideObjectOnTop(const App::SubObjectT &objT);
 void highlightObjectOnTop(const App::SubObjectT &objT);
 void selectObjectOnTop(const App::SubObjectT &objT, bool multiselect=false);
 void unselectObjectOnTop(const App::SubObjectT &objT);
+void toggleShowOnTop(Gui::ViewProviderDocumentObject *vp,
+                     App::SubObjectT &last,
+                     const char *prop,
+                     bool init = false);
+void toggleShowOnTop(Gui::ViewProviderDocumentObject *vp,
+                     std::vector<App::SubObjectT> &last,
+                     const char *prop,
+                     bool init = false);
 
 bool populateGeometryReferences(QListWidget *listWidget, App::PropertyLinkSub &prop, bool refresh);
 
