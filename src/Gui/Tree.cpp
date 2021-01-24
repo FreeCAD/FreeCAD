@@ -39,6 +39,7 @@
 # include <QToolTip>
 # include <QHeaderView>
 # include <qmessagebox.h>
+# include <QStack>
 #endif
 
 #include <Base/Console.h>
@@ -2063,17 +2064,50 @@ void TreeWidget::keyPressEvent(QKeyEvent *event)
         event->accept();
         onSearchObjects();
         return;
-    }else if(event->key() == Qt::Key_Left) {
-        auto index = currentIndex();
-        if(index.column()==1) {
+    }
+
+    auto index = currentIndex();
+    int key = event->key();
+    switch(key) {
+    case Qt::Key_Left:
+        if (!isColumnHidden(1) && index.column()==1) {
             setCurrentIndex(model()->index(index.row(), 0, index.parent()));
             event->accept();
             return;
-        }
-    }else if(event->key() == Qt::Key_Right) {
-        auto index = currentIndex();
-        if(index.column()==0) {
+        } else
+            key = Qt::Key_Minus;
+        break;
+    case Qt::Key_Right:
+        if (!isColumnHidden(1) && index.column()==0) {
             setCurrentIndex(model()->index(index.row(), 1, index.parent()));
+            event->accept();
+            return;
+        } else
+            key = Qt::Key_Plus;
+        break;
+    }
+
+    if (key == Qt::Key_Plus || key == Qt::Key_Minus) {
+        bool doExpand = key==Qt::Key_Plus;
+        index = index.sibling(index.row(),0);
+        // Recursive expand/collapse the current item if it is already expanded/collapsed
+        if (isExpanded(index) == doExpand) {
+            QStack<QModelIndex> parents;
+            parents.push(index);
+            auto m = this->model();
+            while (!parents.isEmpty()) {
+                QModelIndex parent = parents.pop();
+                for (int row = 0; row < m->rowCount(parent); ++row) {
+                    QModelIndex child = m->index(row, 0, parent);
+                    if (!child.isValid())
+                        break;
+                    parents.push(child);
+                    if (doExpand)
+                        expand(child);
+                    else
+                        collapse(child);
+                }
+            }
             event->accept();
             return;
         }
