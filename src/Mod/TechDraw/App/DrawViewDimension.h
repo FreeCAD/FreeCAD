@@ -102,7 +102,8 @@ public:
     App::PropertyBool               TheoreticalExact;
     App::PropertyBool               Inverted;
     App::PropertyString             FormatSpec;
-    App::PropertyString             FormatSpecTolerance;
+    App::PropertyString             FormatSpecUnderTolerance;
+    App::PropertyString             FormatSpecOverTolerance;
     App::PropertyBool               Arbitrary;
     App::PropertyBool               ArbitraryTolerances;
     App::PropertyBool               EqualTolerance;

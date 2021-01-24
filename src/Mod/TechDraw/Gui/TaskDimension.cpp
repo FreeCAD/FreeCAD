@@ -98,7 +98,7 @@ TaskDimension::TaskDimension(QGIViewDimension *parent, ViewProviderDimension *di
     connect(ui->leFormatSpecifier, SIGNAL(textChanged(QString)), this, SLOT(onFormatSpecifierChanged()));
     ui->cbArbitrary->setChecked(parent->dvDimension->Arbitrary.getValue());
     connect(ui->cbArbitrary, SIGNAL(stateChanged(int)), this, SLOT(onArbitraryChanged()));
-    StringValue = parent->dvDimension->FormatSpecTolerance.getValue();
+    StringValue = parent->dvDimension->FormatSpecOverTolerance.getValue();
     qs = QString::fromUtf8(StringValue.data(), StringValue.size());
     ui->leToleranceFormatSpecifier->setText(qs);
     connect(ui->leToleranceFormatSpecifier, SIGNAL(textChanged(QString)), this, SLOT(onToleranceFormatSpecifierChanged()));
@@ -133,7 +133,7 @@ bool TaskDimension::accept()
 
     m_parent->dvDimension->FormatSpec.setValue(ui->leFormatSpecifier->text().toUtf8().constData());
     m_parent->dvDimension->Arbitrary.setValue(ui->cbArbitrary->isChecked());
-    m_parent->dvDimension->FormatSpecTolerance.setValue(ui->leToleranceFormatSpecifier->text().toUtf8().constData());
+    m_parent->dvDimension->FormatSpecOverTolerance.setValue(ui->leToleranceFormatSpecifier->text().toUtf8().constData());
     m_parent->dvDimension->ArbitraryTolerances.setValue(ui->cbArbitraryTolerances->isChecked());
 
     m_dimensionVP->FlipArrowheads.setValue(ui->cbArrowheads->isChecked());
@@ -234,7 +234,7 @@ void TaskDimension::onArbitraryChanged()
 
 void TaskDimension::onToleranceFormatSpecifierChanged()
 {
-    m_parent->dvDimension->FormatSpecTolerance.setValue(ui->leToleranceFormatSpecifier->text().toUtf8().constData());
+    m_parent->dvDimension->FormatSpecOverTolerance.setValue(ui->leToleranceFormatSpecifier->text().toUtf8().constData());
     recomputeFeature();
 }
 
