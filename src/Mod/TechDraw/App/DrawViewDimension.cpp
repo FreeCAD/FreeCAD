@@ -111,7 +111,8 @@ DrawViewDimension::DrawViewDimension(void)
     References3D.setScope(App::LinkScope::Global);
 
     ADD_PROPERTY_TYPE(FormatSpec, (getDefaultFormatSpec()), "Format", App::Prop_Output,"Dimension Format");
-    ADD_PROPERTY_TYPE(FormatSpecTolerance, (getDefaultFormatSpec(true)), "Format", App::Prop_Output, "Dimension tolerance format");
+    ADD_PROPERTY_TYPE(FormatSpecUnderTolerance, (getDefaultFormatSpec(true)), "Format", App::Prop_Output, "Dimension tolerance format");
+    ADD_PROPERTY_TYPE(FormatSpecOverTolerance, (getDefaultFormatSpec(true)), "Format", App::Prop_Output, "Dimension tolerance format");
     ADD_PROPERTY_TYPE(Arbitrary,(false), "Format", App::Prop_Output, "Value overridden by user");
     ADD_PROPERTY_TYPE(ArbitraryTolerances, (false), "Format", App::Prop_Output, "Tolerance values overridden by user");
 
@@ -846,11 +847,12 @@ std::string DrawViewDimension::formatValue(qreal value, QString qFormatSpec, int
     }
 
     return result;
+
 }
 
 std::string DrawViewDimension::getFormattedToleranceValue(int partial)
 {
-    QString FormatSpec = QString::fromUtf8(FormatSpecTolerance.getStrValue().data());
+    QString FormatSpec = QString::fromUtf8(FormatSpecOverTolerance.getStrValue().data());
     QString ToleranceString;
 
     if (ArbitraryTolerances.getValue())
@@ -863,25 +865,26 @@ std::string DrawViewDimension::getFormattedToleranceValue(int partial)
 
 std::pair<std::string, std::string> DrawViewDimension::getFormattedToleranceValues(int partial)
 {
-    QString FormatSpec = QString::fromUtf8(FormatSpecTolerance.getStrValue().data());
+    QString underFormatSpec = QString::fromUtf8(FormatSpecUnderTolerance.getStrValue().data());
+    QString overFormatSpec = QString::fromUtf8(FormatSpecOverTolerance.getStrValue().data());
     std::pair<std::string, std::string> tolerances;
     QString underTolerance, overTolerance;
 
     if (ArbitraryTolerances.getValue()) {
-        underTolerance = FormatSpec;
-        overTolerance = FormatSpec;
+        underTolerance = underFormatSpec;
+        overTolerance = overFormatSpec;
     } else {
         if (DrawUtil::fpCompare(UnderTolerance.getValue(), 0.0)) {
             underTolerance = QString::fromUtf8(formatValue(UnderTolerance.getValue(), QString::fromUtf8("%.0f"), partial).c_str());
         }
         else {
-            underTolerance = QString::fromUtf8(formatValue(UnderTolerance.getValue(), FormatSpec, partial).c_str());
+            underTolerance = QString::fromUtf8(formatValue(UnderTolerance.getValue(), underFormatSpec, partial).c_str());
         }
         if (DrawUtil::fpCompare(OverTolerance.getValue(), 0.0)) {
             overTolerance = QString::fromUtf8(formatValue(OverTolerance.getValue(), QString::fromUtf8("%.0f"), partial).c_str());
         }
         else {
-            overTolerance = QString::fromUtf8(formatValue(OverTolerance.getValue(), FormatSpec, partial).c_str());
+            overTolerance = QString::fromUtf8(formatValue(OverTolerance.getValue(), overFormatSpec, partial).c_str());
         }
     }
 
