@@ -2418,6 +2418,7 @@ void TreeWidget::mousePressEvent(QMouseEvent *event) {
                 else
                     pimpl->toggleItemVisibility(oitem);
                 pimpl->skipMouseRelease = true;
+                event->setAccepted(true);
                 return;
             }
         } else if (event->modifiers() & Qt::AltModifier) {
@@ -2430,6 +2431,8 @@ void TreeWidget::mousePressEvent(QMouseEvent *event) {
                     if (!editDoc && Application::Instance->editDocument())
                         committer.setEnable(false);
                     pimpl->skipMouseRelease = true;
+                    event->setAccepted(true);
+                    return;
                 }
             } catch (Base::Exception &e) {
                 e.ReportException();
@@ -2481,6 +2484,7 @@ void TreeWidget::mouseReleaseEvent(QMouseEvent *ev)
                 // If the icon release starts an editing, let the transaction persist
                 if (!editDoc && Application::Instance->editDocument())
                     committer.setEnable(false);
+                ev->setAccepted(true);
                 return;
             }
         }
