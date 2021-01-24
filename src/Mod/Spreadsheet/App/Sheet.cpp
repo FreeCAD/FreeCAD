@@ -689,10 +689,10 @@ void Sheet::updateProperty(CellAddress key)
         /* Eval returns either NumberExpression or StringExpression, or
          * PyObjectExpression objects */
         auto number = freecad_dynamic_cast<NumberExpression>(output.get());
-        if(number) {
+        if (number) {
             long l;
             auto constant = freecad_dynamic_cast<ConstantExpression>(output.get());
-            if(constant && !constant->isNumber()) {
+            if (constant && !constant->isNumber()) {
                 Base::PyGILStateLocker lock;
                 setObjectProperty(key, constant->getPyValue());
             } else if (!number->getUnit().isEmpty())
@@ -701,14 +701,14 @@ void Sheet::updateProperty(CellAddress key)
                 setIntegerProperty(key,l);
             else
                 setFloatProperty(key, number->getValue());
-        }else{
+        } else {
             auto str_expr = freecad_dynamic_cast<StringExpression>(output.get());
-            if(str_expr) 
+            if (str_expr) 
                 setStringProperty(key, str_expr->getText().c_str());
             else {
                 Base::PyGILStateLocker lock;
                 auto py_expr = freecad_dynamic_cast<PyObjectExpression>(output.get());
-                if(py_expr) 
+                if (py_expr) 
                     setObjectProperty(key, py_expr->getPyValue());
                 else
                     setObjectProperty(key, Py::Object());
@@ -852,24 +852,24 @@ DocumentObjectExecReturn *Sheet::execute(void)
         boost::topological_sort(graph, std::front_inserter(make_order));
         // Recompute cells
         FC_LOG("recomputing " << getFullName());
-        for(auto &pos : make_order) {
+        for (auto &pos : make_order) {
             const auto &addr = VertexIndexList[pos];
             FC_LOG(addr.toString());
             recomputeCell(addr);
         }
     } catch (std::exception &) {
-        for(auto &v : VertexList) {
+        for (auto &v : VertexList) {
             Cell * cell = cells.getValue(v.first);
             // Mark as erroneous
             if(cell)  {
                 cellErrors.insert(v.first);
-                cell->setException("Pending computation due to cyclic dependency",true);
+                cell->setException("Pending computation due to cyclic dependency", true);
                 cellUpdated(v.first);
             }
         }
 
         // Try to be more user friendly by finding individual loops
-        while(dirtyCells.size()) {
+        while (dirtyCells.size()) {
 
             std::deque<CellAddress> workQueue;
             DependencyList graph;
@@ -921,10 +921,10 @@ DocumentObjectExecReturn *Sheet::execute(void)
                     ss << v.first.toString();
                 }
                 std::string msg = ss.str();
-                for(auto &v : VertexList) {
+                for (auto &v : VertexList) {
                     Cell * cell = cells.getValue(v.first);
                     if (cell) {
-                        cell->setException(msg.c_str(),true);
+                        cell->setException(msg.c_str(), true);
                         cellUpdated(v.first);
                     }
                 }

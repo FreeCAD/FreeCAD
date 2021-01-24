@@ -113,7 +113,10 @@ const Cell * PropertySheet::getValueFromAlias(const std::string &alias) const
 
 bool PropertySheet::isValidAlias(const std::string &candidate)
 {
-    static const boost::regex gen("^[A-Za-z][_A-Za-z0-9]*$");
+    // the following characters and spaces are invalid for expressions and thus aliases:
+    // +-*/^_°<>(){}[].,=#!?§$%&:;\|~´`'" 
+    // we will not check this using a regexp but by parsing
+
     boost::cmatch cm;
 
     /* Check if it is used before */
@@ -124,22 +127,34 @@ bool PropertySheet::isValidAlias(const std::string &candidate)
     if (ExpressionParser::isTokenAUnit(candidate))
         return false;
 
-    /* Check to make sure it doesn't match a cell reference */
-    if (boost::regex_match(candidate.c_str(), cm, gen)) {
-        static const boost::regex e("\\${0,1}([A-Z]{1,2})\\${0,1}([0-9]{1,5})");
+    App::Expression* ExpressionResult = 0;
 
-        if (boost::regex_match(candidate.c_str(), cm, e)) {
-            const boost::sub_match<const char *> colstr = cm[1];
-            const boost::sub_match<const char *> rowstr = cm[2];
-
-            // A valid cell address?
-            if (App::validRow(rowstr.str()) >= 0 && App::validColumn(colstr.str()) >= 0)
-                return false;
-        }
-        return true;
+    // check if the alias is a valid expression by parsing it
+    try {
+        ExpressionResult = App::ExpressionParser::parse(owner, candidate.c_str());
     }
-    else
+    catch (Base::Exception& exception) {
+        ExpressionResult = new App::StringExpression(owner, candidate.c_str());
+        //new App::DocumentObjectExecReturn(exception.what());
+        std::ostringstream ss;
+        ss << "Failed to adjust link for " << owner->getFullName() << " in expression "
+            << ExpressionResult->toString() << ": " << exception.what();
+        throw Base::RuntimeError(ss.str());
         return false;
+    }
+
+    // it could be parsed now check it doesn't match a cell reference
+    static const boost::regex regExpression("\\${0,1}([A-Z]{1,2})\\${0,1}([0-9]{1,5})");
+    if (boost::regex_match(candidate.c_str(), cm, regExpression)) {
+        const boost::sub_match<const char*> colstr = cm[1];
+        const boost::sub_match<const char*> rowstr = cm[2];
+
+        // A valid cell address?
+        if (App::validRow(rowstr.str()) >= 0 && App::validColumn(colstr.str()) >= 0)
+            return false;
+    }
+
+    return true;
 }
 
 std::set<CellAddress> PropertySheet::getUsedCells() const
@@ -171,7 +186,7 @@ void PropertySheet::setDirty()
     for(auto &address : getUsedCells()) {
         auto cell = cellAt(address);
         std::string content;
-        if(cell && cell->getStringContent(content,false)) {
+        if(cell && cell->getStringContent(content, false)) {
             cell->setContent(content.c_str());
         }
     }

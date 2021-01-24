@@ -186,7 +186,7 @@ void Cell::setExpression(App::ExpressionPtr &&expr)
     owner->removeDependencies(address);
 
     if(expr && expr->comment.size()) {
-        if(!boost::starts_with(expr->comment,"<Cell "))
+        if (!boost::starts_with(expr->comment, "<Cell "))
             FC_WARN("Unknown style of cell "
                 << owner->sheet()->getFullName() << '.' << address.toString());
         else {
@@ -194,8 +194,8 @@ void Cell::setExpression(App::ExpressionPtr &&expr)
                 std::istringstream in(expr->comment);
                 ReaderPrivate reader("<memory>", in);
                 reader.read();
-                restore(reader,true);
-            }catch(Base::Exception &e) {
+                restore(reader, true);
+            } catch (Base::Exception &e) {
                 e.ReportException();
                 FC_ERR("Failed to restore style of cell "
                     << owner->sheet()->getFullName() << '.' 
@@ -221,8 +221,8 @@ void Cell::setExpression(App::ExpressionPtr &&expr)
 
 const App::Expression *Cell::getExpression(bool withFormat) const
 {
-    if(withFormat && expression) {
-        if((used & (ALIGNMENT_SET
+    if (withFormat && expression) {
+        if ((used & (ALIGNMENT_SET
                                 | STYLE_SET
                                 | FOREGROUND_COLOR_SET
                                 | BACKGROUND_COLOR_SET
@@ -231,7 +231,7 @@ const App::Expression *Cell::getExpression(bool withFormat) const
                                 | SPANS_SET)))
         {
             std::ostringstream ss;
-            save(ss,"",true);
+            save(ss, "", true);
             expression->comment = ss.str();
         }
     }
@@ -283,14 +283,14 @@ void Cell::setContent(const char * value)
 
     clearException();
     if (value != 0) {
-        if(owner->sheet()->isRestoring()) {
-            expression.reset(new App::StringExpression(owner->sheet(),value));
+        if (owner->sheet()->isRestoring()) {
+            expression.reset(new App::StringExpression(owner->sheet(), value));
             setUsed(EXPRESSION_SET, true);
             return;
         }
-        if (*value == '=') {
+        if (*value == '=') { // if content starts with '='
             try {
-                expr = App::ExpressionParser::parse(owner->sheet(), value + 1);
+                expr = App::ExpressionParser::parse(owner->sheet(), value + 1); // check content except of the '='
             }
             catch (Base::Exception & e) {
                 expr = new App::StringExpression(owner->sheet(), value);
