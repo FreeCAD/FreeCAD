@@ -2193,7 +2193,11 @@ int FemMesh::addGroup(const std::string TypeString, const std::string Name, cons
     SMESH_Group* group = this->getSMesh()->AddGroup(mapping[TypeString], Name.c_str(), aId);
     if (!group)
         throw std::runtime_error("AddGroup: Failed to create new group.");
+#if SMESH_VERSION_MAJOR >= 9
+    return group->GetID();
+#else
     return aId;
+#endif
 }
 
 void FemMesh::addGroupElements(int GroupId, const std::set<int>& ElementIds)

@@ -103,6 +103,8 @@ public:
     inline const std::vector<int> &getConflicting(void) const { return Conflicting; }
     inline bool hasRedundancies(void) const { return !Redundant.empty(); }
     inline const std::vector<int> &getRedundant(void) const { return Redundant; }
+    inline bool hasPartialRedundancies(void) const { return !PartiallyRedundant.empty(); }
+    inline const std::vector<int> &getPartiallyRedundant(void) const { return PartiallyRedundant; }
 
     inline float getSolveTime() const { return SolveTime; }
 
@@ -426,6 +428,7 @@ protected:
     int ConstraintsCounter;
     std::vector<int> Conflicting;
     std::vector<int> Redundant;
+    std::vector<int> PartiallyRedundant;
     std::vector<int> MalformedConstraints;
 
     std::vector<double *> pDependentParametersList;

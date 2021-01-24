@@ -350,6 +350,8 @@ public:
     inline bool getLastHasConflicts() const {return lastHasConflict;}
     /// gets HasRedundancies status of last solver execution
     inline bool getLastHasRedundancies() const {return lastHasRedundancies;}
+    /// gets HasRedundancies status of last solver execution
+    inline bool getLastHasPartialRedundancies() const {return lastHasPartialRedundancies;}
     /// gets HasMalformedConstraints status of last solver execution
     inline bool getLastHasMalformedConstraints() const {return lastHasMalformedConstraints;}
     /// gets solver status of last solver execution
@@ -360,6 +362,8 @@ public:
     inline const std::vector<int> &getLastConflicting(void) const { return lastConflicting; }
     /// gets the redundant constraints of last solver execution
     inline const std::vector<int> &getLastRedundant(void) const { return lastRedundant; }
+    /// gets the redundant constraints of last solver execution
+    inline const std::vector<int> &getLastPartiallyRedundant(void) const { return lastPartiallyRedundant; }
     /// gets the redundant constraints of last solver execution
     inline const std::vector<int> &getLastMalformedConstraints(void) const { return lastMalformedConstraints; }
 
@@ -514,12 +518,14 @@ private:
     int lastDoF;
     bool lastHasConflict;
     bool lastHasRedundancies;
+    bool lastHasPartialRedundancies;
     bool lastHasMalformedConstraints;
     int lastSolverStatus;
     float lastSolveTime;
 
     std::vector<int> lastConflicting;
     std::vector<int> lastRedundant;
+    std::vector<int> lastPartiallyRedundant;
     std::vector<int> lastMalformedConstraints;
 
     boost::signals2::scoped_connection constraintsRenamedConn;

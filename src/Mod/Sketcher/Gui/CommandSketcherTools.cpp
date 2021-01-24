@@ -590,6 +590,58 @@ bool CmdSketcherSelectMalformedConstraints::isActive(void)
     return isSketcherAcceleratorActive(getActiveGuiDocument(), false);
 }
 
+DEF_STD_CMD_A(CmdSketcherSelectPartiallyRedundantConstraints)
+
+CmdSketcherSelectPartiallyRedundantConstraints::CmdSketcherSelectPartiallyRedundantConstraints()
+    :Command("Sketcher_SelectPartiallyRedundantConstraints")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Select partially redundant constraints");
+    sToolTipText    = QT_TR_NOOP("Select partially redundant constraints");
+    sWhatsThis      = "Sketcher_SelectPartiallyRedundantConstraints";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_SelectPartiallyRedundantConstraints";
+    sAccel          = "CTRL+SHIFT+R";
+    eType           = ForEdit;
+}
+
+void CmdSketcherSelectPartiallyRedundantConstraints::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    Gui::Document * doc= getActiveGuiDocument();
+    ReleaseHandler(doc);
+    SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+    Sketcher::SketchObject* Obj= vp->getSketchObject();
+
+    std::string doc_name = Obj->getDocument()->getName();
+    std::string obj_name = Obj->getNameInDocument();
+
+    // get the needed lists and objects
+    const std::vector< int > &solverpartiallyredundant = vp->getSketchObject()->getLastPartiallyRedundant();
+    const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
+
+    getSelection().clearSelection();
+
+    // push the constraints
+    int i = 0;
+    for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();it != vals.end(); ++it,++i) {
+        for(std::vector< int >::const_iterator itc= solverpartiallyredundant.begin();itc != solverpartiallyredundant.end(); ++itc) {
+            if ((*itc) - 1 == i) {
+                Gui::Selection().addSelection(doc_name.c_str(),
+                                              obj_name.c_str(),
+                                              Sketcher::PropertyConstraintList::getConstraintName(i).c_str());
+                break;
+            }
+        }
+    }
+}
+
+bool CmdSketcherSelectPartiallyRedundantConstraints::isActive(void)
+{
+    return isSketcherAcceleratorActive(getActiveGuiDocument(), false);
+}
+
 
 DEF_STD_CMD_A(CmdSketcherSelectConflictingConstraints)
 
@@ -2107,6 +2159,7 @@ void CreateSketcherCommandsConstraintAccel(void)
     rcCmdMgr.addCommand(new CmdSketcherSelectRedundantConstraints());
     rcCmdMgr.addCommand(new CmdSketcherSelectConflictingConstraints());
     rcCmdMgr.addCommand(new CmdSketcherSelectMalformedConstraints());
+    rcCmdMgr.addCommand(new CmdSketcherSelectPartiallyRedundantConstraints());
     rcCmdMgr.addCommand(new CmdSketcherSelectElementsAssociatedWithConstraints());
     rcCmdMgr.addCommand(new CmdSketcherSelectElementsWithDoFs());
     rcCmdMgr.addCommand(new CmdSketcherRestoreInternalAlignmentGeometry());
