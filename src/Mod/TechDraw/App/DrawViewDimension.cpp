@@ -902,6 +902,29 @@ std::string DrawViewDimension::getFormattedDimensionValue(int partial)
         return FormatSpec.getStrValue();
     }
 
+    // if there is an equal over-/undertolerance and not theoretically exact, add the tolerance to dimension
+    if (EqualTolerance.getValue() && !DrawUtil::fpCompare(OverTolerance.getValue(), 0.0)
+            && !TheoreticalExact.getValue()) {
+        QString labelText = QString::fromUtf8(formatValue(getDimValue(), qFormatSpec, 1).c_str()); //just the number pref/spec/suf
+        QString unitText = QString::fromUtf8(formatValue(getDimValue(), qFormatSpec, 2).c_str()); //just the unit
+        QString tolerance = QString::fromStdString(getFormattedToleranceValue(1).c_str());
+        QString result;
+        // tolerance might start with a plus sign that we don't want, so cut it off
+        if (tolerance.at(0) == QChar::fromLatin1('+'))
+            tolerance.remove(0, 1);
+        if ((Type.isValue("Angle")) || (Type.isValue("Angle3Pt"))) {
+            result = labelText + unitText + QString::fromUtf8(" \xC2\xB1 ") + tolerance;
+        } else {
+            // add the tolerance to the dimension using the ± sign
+            result = labelText + QString::fromUtf8(" \xC2\xB1 ") + tolerance;
+        }
+        if (partial == 2) {
+            result = unitText;
+        }
+
+        return result.toStdString();
+    }
+
     return formatValue(getDimValue(), qFormatSpec, partial);
 }
 
