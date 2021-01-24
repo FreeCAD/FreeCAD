@@ -223,10 +223,10 @@ public:
             this->notAllowedReason = QT_TR_NOOP("Profile object cannot be used as section.");
             return false;
         }
-        if (pipe->Sections.getSize()) {
+        if (pipe->Profile.getValue()) {
             if (!wireCount) {
                 wireCount = Part::Feature::getTopoShape(
-                        pipe->Sections.getValues()[0]).countSubShapes(TopAbs_WIRE);
+                        pipe->Profile.getValue()).countSubShapes(TopAbs_WIRE);
             }
             if (wireCount>0 && Part::Feature::getTopoShape(
                                     pObj).countSubShapes(TopAbs_WIRE) != wireCount)
