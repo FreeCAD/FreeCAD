@@ -53,6 +53,7 @@ public:
     //App::PropertyBool IsActive;
 
     App::PropertyBool SingleSolid;
+    App::PropertyBool AutoGroupSolids;
 
     Body();
 
@@ -184,8 +185,8 @@ public:
      * @param all: set to true to return all siblings including the given object,
      *             or false to return only siblings before the given object
      *             in history order
-     * @param reverse: set true to return the sibling in their history order,
-     *                 or false to reverse the order
+     * @param reverse: set false to return the sibling in their history order,
+     *                 or true to reverse the order
      */
     std::deque<App::DocumentObject*> getSiblings(App::DocumentObject * obj,
                                                  bool all=true,

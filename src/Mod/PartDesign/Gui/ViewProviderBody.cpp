@@ -140,17 +140,40 @@ void ViewProviderBody::setupContextMenu(QMenu* menu, QObject* receiver, const ch
 {
     Q_UNUSED(receiver);
     Q_UNUSED(member);
+
+    auto body = Base::freecad_dynamic_cast<PartDesign::Body>(getObject());
+    if (!body)
+        return;
+
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);
     QAction* act = menu->addAction(tr("Toggle active body"));
     func->trigger(act, boost::bind(&ViewProviderBody::doubleClicked, this));
 
-    act = menu->addAction(tr("Toggle auto group"));
+    act = menu->addAction(body->AutoGroupSolids.getValue() ? 
+                          tr("Disable auto solid group") : tr("Enable auto solid group"));
     func->trigger(act,
         [this]() {
             auto body = Base::freecad_dynamic_cast<PartDesign::Body>(getObject());
             if (!body)
                 return;
-            App::AutoTransaction committer("Toggle group");
+            App::AutoTransaction committer("Toggle solid group");
+            try {
+                body->AutoGroupSolids.setValue(!body->AutoGroupSolids.getValue());
+            } catch (Base::Exception &e) {
+                e.ReportException();
+                QMessageBox::critical(Gui::getMainWindow(), tr("Auto group"),
+                        tr("Toggle auto group failed. Please check report view for more details."));
+                committer.close(true);
+            }
+        });
+
+    act = menu->addAction(tr("Toggle auto auxiliary group"));
+    func->trigger(act,
+        [this]() {
+            auto body = Base::freecad_dynamic_cast<PartDesign::Body>(getObject());
+            if (!body)
+                return;
+            App::AutoTransaction committer("Toggle aux group");
             try {
                 std::vector<App::DocumentObjectT> groups;
                 for (auto obj : body->Group.getValues()) {
@@ -361,54 +384,93 @@ bool ViewProviderBody::checkSiblings()
     // This function is to make sure the sibling self grouping only contain
     // previous siblings that are not already grouped.
     //
-    // In addition, it makes sure any non solid feature do not mix with with
-    // grouping siblingings.
+    // In addition, it makes sure any non solid feature do not mix with grouped
+    // siblings.
 
-    if (checkingSiblings)
-        return false;
+    if (checkingSiblings || App::GetApplication().isRestoring())
+        return true;
+
+    auto body = Base::freecad_dynamic_cast<PartDesign::Body>(getObject());
+    if (!body)
+        return true;
 
     Base::StateLocker guard(checkingSiblings);
 
     bool touched = false;
     std::set<App::DocumentObject *> grouped;
     std::vector<App::DocumentObject *> children;
-    auto body = Base::freecad_dynamic_cast<PartDesign::Body>(getObject());
     bool groupTouched = false;
     auto group = body->Group.getValues();
-    for (auto obj : body->Group.getValues()) {
-        auto feat = Base::freecad_dynamic_cast<PartDesign::Feature>(obj);
-        if (!feat || !feat->_Siblings.getSize() || grouped.count(feat))
-            continue;
 
-        auto siblings = body->getSiblings(feat, false);
-        children.clear();
-        children.reserve(siblings.size());
-        for (auto sibling : siblings) {
-            if (grouped.insert(sibling).second) {
-                auto other = Base::freecad_dynamic_cast<PartDesign::Feature>(sibling);
-                if (other && other->_Siblings.getSize() == 0)
-                    children.insert(children.begin(), sibling);
+    auto checkOrder = [&]() {
+        if (children.size() <= 1)
+            return;
+        int i = -1, j = -1;
+        body->Group.find(children.front()->getNameInDocument(), &j);
+        body->Group.find(children.back()->getNameInDocument(), &i);
+        for (int k=i; k<j; ++k) {
+            auto obj = group[k];
+            if (!obj->isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
+                group.erase(group.begin() + k);
+                group.insert(group.begin() + i, obj);
+                ++i;
+                groupTouched = true;
             }
         }
-        if (children.size() != siblings.size()) {
-            touched = true;
-            feat->_Siblings.setValues(children);
-        }
-        if (children.size() > 1) {
-            int i = -1, j = -1;
-            body->Group.find(children.front()->getNameInDocument(), &j);
-            body->Group.find(children.back()->getNameInDocument(), &i);
-            for (int k=i; k<j; ++k) {
-                auto obj = group[k];
-                if (!obj->isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
-                    group.erase(group.begin() + k);
-                    group.insert(group.begin() + i, obj);
-                    ++i;
-                    groupTouched = true;
+    };
+
+    if (body->AutoGroupSolids.getValue()) {
+        for (auto obj : body->Group.getValues()) {
+            auto feat = Base::freecad_dynamic_cast<PartDesign::Feature>(obj);
+            if (!feat || grouped.count(feat))
+                continue;
+            auto siblings = body->getSiblings(feat, true, true);
+            if (siblings.size() <= 1)
+                continue;
+            grouped.insert(siblings.begin(), siblings.end());
+            auto lastFeat = Base::freecad_dynamic_cast<PartDesign::Feature>(siblings.front());
+            if (!lastFeat)
+                continue;
+            siblings.pop_front();
+            children.clear();
+            for (auto sibling : siblings) {
+                auto other = Base::freecad_dynamic_cast<PartDesign::Feature>(sibling);
+                if (other) {
+                    if (other->_Siblings.getSize()) {
+                        touched = true;
+                        other->_Siblings.setValues();
+                    }
+                    children.push_back(sibling);
                 }
             }
+            touched = touched || children != lastFeat->_Siblings.getValues();
+            lastFeat->_Siblings.setValues(children);
+            checkOrder();
+        }
+    } else {
+        for (auto obj : body->Group.getValues()) {
+            auto feat = Base::freecad_dynamic_cast<PartDesign::Feature>(obj);
+            if (!feat || !feat->_Siblings.getSize() || grouped.count(feat))
+                continue;
+
+            auto siblings = body->getSiblings(feat, false);
+            children.clear();
+            children.reserve(siblings.size());
+            for (auto sibling : siblings) {
+                if (grouped.insert(sibling).second) {
+                    auto other = Base::freecad_dynamic_cast<PartDesign::Feature>(sibling);
+                    if (other && other->_Siblings.getSize() == 0)
+                        children.insert(children.begin(), sibling);
+                }
+            }
+            if (children.size() != siblings.size()) {
+                touched = true;
+                feat->_Siblings.setValues(children);
+            }
+            checkOrder();
         }
     }
+
     if (groupTouched) {
         body->Group.setValues(group);
         return true;
@@ -421,7 +483,7 @@ bool ViewProviderBody::checkSiblings()
 void ViewProviderBody::updateData(const App::Property* prop)
 {
     PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
-
+ 
     if (prop == &body->Group) {
         setVisualBodyMode(true);
         checkSiblings();
@@ -440,7 +502,8 @@ void ViewProviderBody::updateData(const App::Property* prop)
                 static_cast<PartDesignGui::ViewProvider*>(vp)->setTipIcon(feature == tip);
             }
         }
-    }
+    } else if (prop == &body->AutoGroupSolids)
+        checkSiblings();
 
     PartGui::ViewProviderPart::updateData(prop);
 }
@@ -521,8 +584,8 @@ void ViewProviderBody::updateOriginSize () {
 
 void ViewProviderBody::onChanged(const App::Property* prop) {
 
-    if(prop == &DisplayModeBody) {
-        auto body = dynamic_cast<PartDesign::Body*>(getObject());
+    if (prop == &DisplayModeBody) {
+        auto body = Base::freecad_dynamic_cast<PartDesign::Body>(getObject());
 
         if(pcModeSwitch->isOfType(Gui::SoFCSwitch::getClassTypeId())) {
             static_cast<Gui::SoFCSwitch*>(pcModeSwitch)->allowNamedOverride =
@@ -884,11 +947,8 @@ void ViewProviderBody::groupSiblings(PartDesign::Feature *feat, bool collapse, b
     if (!body)
         return;
 
-    std::string cmd(collapse ? "Body collapse " : "expand ");
-    if (all)
-        cmd += "all";
-    else
-        cmd += "siblings";
+    std::string cmd(collapse ? "Collapse" : "Expand");
+    cmd += " body solid";
     App::AutoTransaction committer(cmd.c_str());
     if (all) {
         auto siblings = body->getSiblings(feat, true, true);

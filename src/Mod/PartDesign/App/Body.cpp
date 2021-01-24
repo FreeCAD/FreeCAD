@@ -56,6 +56,7 @@
 #include "Body.h"
 #include "FeatureBase.h"
 #include "BodyPy.h"
+#include <Mod/Part/App/PartParams.h>
 
 namespace bp = boost::placeholders;
 
@@ -67,10 +68,14 @@ using namespace PartDesign;
 PROPERTY_SOURCE(PartDesign::Body, Part::BodyBase)
 
 Body::Body() {
-    ADD_PROPERTY_TYPE(SingleSolid,(true),"Base",(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(SingleSolid,(Part::PartParams::SingleSolid()),
+            "Base",(App::PropertyType)(App::Prop_None),
             "Enforce single solid on each feature");
     _GroupTouched.setStatus(App::Property::Output,true);
     BaseFeature.setScope(App::LinkScope::Global);
+
+    ADD_PROPERTY_TYPE(AutoGroupSolids,(false),"Base",(App::PropertyType)(App::Prop_Output),
+            "Auto group features of a solid under the latest feature");
 }
 
 /*
@@ -587,9 +592,7 @@ void Body::onChanged (const App::Property* prop) {
 
 void Body::setupObject () {
     Part::BodyBase::setupObject ();
-    auto hGrp = App::GetApplication().GetParameterGroupByPath (
-                "User parameter:BaseApp/Preferences/Mod/PartDesign");
-    SingleSolid.setValue(hGrp->GetBool("SingleSolid",false));
+    AutoGroupSolids.setValue(Part::PartParams::AutoGroupSolids());
 
     // make sure the origins are created
     getOrigin()->getX();

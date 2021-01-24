@@ -65,6 +65,8 @@ public:
     FC_APP_PART_PARAM(CopySubShape, bool, Bool, false) \
     FC_APP_PART_PARAM(UseBrepToolsOuterWire, bool, Bool, true) \
     FC_APP_PART_PARAM(UseBaseObjectName,bool,Bool,false) \
+    FC_APP_PART_PARAM(AutoGroupSolids,bool,Bool,false) \
+    FC_APP_PART_PARAM(SingleSolid,bool,Bool,false) \
 
 #undef FC_APP_PART_PARAM
 #define FC_APP_PART_PARAM(_name,_ctype,_type,_def) \

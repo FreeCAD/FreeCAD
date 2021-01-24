@@ -134,37 +134,56 @@ enum PartDesignEditMode {
 void ViewProvider::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     auto feat = Base::freecad_dynamic_cast<PartDesign::Feature>(getObject());
-    if(feat) {
-        QAction* act = menu->addAction(QObject::tr(feat->Suppress.getValue()?"Unsuppress":"Suppress"),
-                receiver, member);
+    bool isSolid = PartDesign::Body::isSolidFeature(feat);
+    auto body = PartDesign::Body::findBodyOf(feat);
+    if(body && isSolid) {
+        QAction* act;
+        act = menu->addAction(QObject::tr(
+                    feat->Suppress.getValue()?"Unsuppress":"Suppress"),
+                    receiver, member);
         act->setData(QVariant((int)EditToggleSupress));
 
-        if (feat->_Siblings.getSize()) {
-            act = menu->addAction(QObject::tr("Expand siblings"), receiver, member);
+        if (!body->AutoGroupSolids.getValue() && feat->_Siblings.getSize()) {
+            act = menu->addAction(QObject::tr("Ungroup solid feature"), receiver, member);
             act->setData(QVariant((int)EditExpandSiblings));
-            act = menu->addAction(QObject::tr("Expand all"), receiver, member);
-            act->setData(QVariant((int)EditExpandAll));
         }
 
-        if (PartDesign::Body::isSolidFeature(feat)) {
-            auto body = PartDesign::Body::findBodyOf(feat);
-            if (body) {
-                auto siblings = body->getSiblings(feat);
-                if (siblings.size() > 1) {
-                    if (siblings.front() != feat) {
-                        act = menu->addAction(QObject::tr("Collapse siblings"), receiver, member);
+        auto siblings = body->getSiblings(feat);
+        if ( siblings.size() > 1) {
+            if (!body->AutoGroupSolids.getValue()) {
+                auto it = std::find(siblings.begin(), siblings.end(), feat);
+                if (it != siblings.end()) {
+                    int pos = it - siblings.begin();
+                    if (pos != feat->_Siblings.getSize()) {
+                        act = menu->addAction(QObject::tr("Group solid feature"), receiver, member);
                         act->setData(QVariant((int)EditCollapseSiblings));
                     }
-                    act = menu->addAction(QObject::tr("Collapse all"), receiver, member);
-                    act->setData(QVariant((int)EditCollapseAll));
-                }
-                if (body->Tip.getValue() != feat) {
-                    act = menu->addAction(QObject::tr("Set body tip"), receiver, member);
-                    act->setData(QVariant((int)EditSetTip));
+                    int grouped = 0;
+                    int groupCount = 0;
+                    for (auto o : siblings) {
+                        auto sibling = Base::freecad_dynamic_cast<PartDesign::Feature>(o);
+                        if (sibling && sibling->_Siblings.getSize()) {
+                            grouped += 1 + sibling->_Siblings.getSize();
+                            ++groupCount;
+                        }
+                    }
+                    if (groupCount > 1 || grouped != (int)siblings.size()) {
+                        act = menu->addAction(QObject::tr("Group all"), receiver, member);
+                        act->setData(QVariant((int)EditCollapseAll));
+                    }
+                    if (groupCount && grouped != 1 + feat->_Siblings.getSize()) {
+                        act = menu->addAction(QObject::tr("Ungroup all"), receiver, member);
+                        act->setData(QVariant((int)EditExpandAll));
+                    }
                 }
             }
-            act = menu->addAction(QObject::tr("Select siblings"), receiver, member);
+            act = menu->addAction(QObject::tr("Select solid features"), receiver, member);
             act->setData(QVariant((int)EditSelectSiblings));
+        }
+
+        if (body->Tip.getValue() != feat) {
+            act = menu->addAction(QObject::tr("Set body tip"), receiver, member);
+            act->setData(QVariant((int)EditSetTip));
         }
     }
     QAction* act = menu->addAction(QObject::tr("Set colors..."), receiver, member);
@@ -412,6 +431,8 @@ void ViewProvider::updateData(const App::Property* prop)
                 }
             }
         }
+        if (bodyVp && body->AutoGroupSolids.getValue())
+            bodyVp->checkSiblings();
     }
 
     inherited::updateData(prop);
