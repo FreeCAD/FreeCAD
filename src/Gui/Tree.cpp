@@ -2238,11 +2238,13 @@ void TreeWidget::onToolTipTimer()
     else if(!Obj->redirectSubName(ss,parent,0))
         ss << Obj->getNameInDocument() << '.';
 
-    QString status = Selection().format(parent, ss.str().c_str(), 0.f, 0.f, 0.f, false);
+    if (!pimpl->restorePreselCursor) {
+        QString status = Selection().format(parent, ss.str().c_str(), 0.f, 0.f, 0.f, false);
 
-    if ( (Obj->isTouched() || Obj->mustExecute() == 1) && !Obj->isError())
-        status = QObject::tr("Touched, ") + status;
-    getMainWindow()->showMessage(status);
+        if ( (Obj->isTouched() || Obj->mustExecute() == 1) && !Obj->isError())
+            status = QObject::tr("Touched, ") + status;
+        getMainWindow()->showMessage(status);
+    }
 
     QString info;
     if (!Obj->isError()) {
