@@ -53,7 +53,10 @@ def printTree(path, indent):
 class TestPathToolBit(PathTestUtils.PathTestBase):
 
     def test(self):
-        '''Log test setup'''
+        '''Log test setup directory structure'''
+        # Enable this test if there are errors showing up in the build system with the
+        # paths that work OK locally. It'll print out the directory tree, and if it
+        # doesn't look right you know where to look for it
         print()
         print("realpath : {}".format(os.path.realpath(__file__)))
         print("   Tools : {}".format(TestToolDir))
