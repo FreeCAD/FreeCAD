@@ -8461,16 +8461,18 @@ void SketchObject::restoreFinished()
 
 void SketchObject::migrateSketch(void)
 {
-    bool noextensions = false;
+    bool migrate = false;
 
     for( const auto & g : getInternalGeometry() ) {
-        if(!g->hasExtension(SketchGeometryExtension::getClassTypeId())) {// no extension - legacy file
-            noextensions = true;
+        if(g->hasExtension(Part::GeometryMigrationExtension::getClassTypeId())
+            || !g->hasExtension(SketchGeometryExtension::getClassTypeId()))
+        {
+            migrate = true;
             break;
         }
     }
 
-    if(noextensions) {
+    if(migrate) {
         for( auto c : Constraints.getValues()) {
 
             addGeometryState(c);
