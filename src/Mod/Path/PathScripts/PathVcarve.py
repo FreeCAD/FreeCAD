@@ -210,11 +210,6 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                             QtCore.QT_TRANSLATE_NOOP("PathVcarve",
                                 "Additional base objects to be engraved"))
         obj.setEditorMode('BaseShapes', 2)  # hide
-        if not hasattr(obj, 'BaseObject'):
-            obj.addProperty("App::PropertyLink", "BaseObject", "Path",
-                            QtCore.QT_TRANSLATE_NOOP("PathVcarve",
-                            "Additional base objects to be engraved"))
-        obj.setEditorMode('BaseObject', 2)  # hide
 
     def initOperation(self, obj):
         '''initOperation(obj) ... create vcarve specific properties.'''
