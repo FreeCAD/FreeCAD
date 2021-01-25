@@ -39,8 +39,9 @@
 # include <QToolTip>
 # include <QHeaderView>
 # include <qmessagebox.h>
-# include <QStack>
 #endif
+
+#include <QStack>
 
 #include <Base/Console.h>
 #include <Base/Sequencer.h>
@@ -2051,6 +2052,31 @@ int isTreeViewDropping()
     return _Dropping ? _DropID : 0;
 }
 
+const QByteArray &treeVisibilityIconTag()
+{
+    static QByteArray _tag("tree:vis");
+    return _tag;
+}
+
+const QByteArray &treeMainIconTag()
+{
+    static QByteArray _tag("tree:icon");
+    return _tag;
+}
+
+const QByteArray &treeNoIconTag()
+{
+    static QByteArray _tag("tree:item");
+    return _tag;
+}
+
+void setTreeViewFocus()
+{
+    auto tree = Gui::TreeWidget::instance();
+    if (tree)
+        tree->setFocus();
+}
+
 }
 
 void TreeWidget::keyPressEvent(QKeyEvent *event)
@@ -2248,7 +2274,7 @@ void TreeWidget::onToolTipTimer()
 
     QString info;
     if (!Obj->isError()) {
-        if (tag == getVisibilityIconTag())
+        if (tag == Gui::treeVisibilityIconTag())
             info = QObject::tr("Click to toggle visiblity.\nAlt + click to toggle show on top.");
         else
             info = item->object()->getToolTip(tag);
@@ -2283,7 +2309,7 @@ DocumentObjectItem *TreeWidget::Private::itemHitTest(QPoint pos, QByteArray *tag
     QRect rect = master->visualItemRect(item);
     if (!rect.contains(pos)) {
         if (tag)
-            *tag = getNoIconTag();
+            *tag = Gui::treeNoIconTag();
         return objitem;
     }
     float scale = iconSize()/64.0f;
@@ -2297,24 +2323,6 @@ DocumentObjectItem *TreeWidget::Private::itemHitTest(QPoint pos, QByteArray *tag
         offset += v.second;
     }
     return objitem;
-}
-
-const QByteArray &TreeWidget::getVisibilityIconTag()
-{
-    static QByteArray _tag("tree:vis");
-    return _tag;
-}
-
-const QByteArray &TreeWidget::getMainIconTag()
-{
-    static QByteArray _tag("tree:icon");
-    return _tag;
-}
-
-const QByteArray &TreeWidget::getNoIconTag()
-{
-    static QByteArray _tag("tree:item");
-    return _tag;
 }
 
 void TreeWidget::Private::toggleItemShowOnTop(DocumentObjectItem *oitem)
@@ -2411,7 +2419,7 @@ void TreeWidget::mousePressEvent(QMouseEvent *event) {
     auto oitem = pimpl->itemHitTest(event->pos(), &tag);
     if (oitem) {
         setCurrentItem(oitem, 0, QItemSelectionModel::NoUpdate);
-        if (tag == getVisibilityIconTag()) {
+        if (tag == Gui::treeVisibilityIconTag()) {
             if (event->button() == Qt::LeftButton) {
                 if (event->modifiers() & Qt::AltModifier)
                     pimpl->toggleItemShowOnTop(oitem);
@@ -6457,9 +6465,9 @@ static QIcon getItemIcon(int currentStatus,
             pxVisible = BitmapFactory().pixmap("TreeItemVisible.svg");
 
         std::vector<std::pair<QByteArray, QPixmap> > icons;
-        icons.emplace_back(TreeWidget::getVisibilityIconTag(),
+        icons.emplace_back(Gui::treeVisibilityIconTag(),
                 (currentStatus & ItemStatusVisible) ? pxVisible : pxInvisible);
-        icons.emplace_back(TreeWidget::getMainIconTag(), pxOn);
+        icons.emplace_back(Gui::treeMainIconTag(), pxOn);
         vp->getExtraIcons(icons);
 
         pxOn = mergePixmaps(icons, iconInfo);

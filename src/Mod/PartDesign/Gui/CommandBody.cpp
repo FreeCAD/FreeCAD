@@ -364,11 +364,8 @@ void CmdPartDesignBody::activated(int iMsg)
 
     updateActive();
 
-    if (triggerSource() == TriggerAction) {
-        auto tree = Gui::TreeWidget::instance();
-        if (tree)
-            tree->setFocus();
-    }
+    if (triggerSource() == TriggerAction)
+        Gui::setTreeViewFocus();
 }
 
 bool CmdPartDesignBody::isActive(void)

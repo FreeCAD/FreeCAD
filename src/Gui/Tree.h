@@ -79,7 +79,10 @@ enum class TreeItemMode {
 GuiExport int treeViewIconSize();
 GuiExport bool isTreeViewDragging();
 GuiExport int isTreeViewDropping();
-
+GuiExport void setTreeViewFocus();
+GuiExport const QByteArray &treeVisibilityIconTag();
+GuiExport const QByteArray &treeMainIconTag();
+GuiExport const QByteArray &treeNoIconTag();
 
 /** Tree view that allows drag & drop of document objects.
  * @author Werner Mayer
@@ -94,10 +97,6 @@ class TreeWidget : public QTreeWidget, public SelectionObserver
 public:
     TreeWidget(const char *name, QWidget* parent=0);
     ~TreeWidget();
-
-    static const QByteArray &getVisibilityIconTag();
-    static const QByteArray &getMainIconTag();
-    static const QByteArray &getNoIconTag();
 
     static void setupResizableColumn(TreeWidget *tree=0);
     static void scrollItemToTop();

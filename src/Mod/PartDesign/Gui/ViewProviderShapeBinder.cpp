@@ -564,7 +564,7 @@ QString ViewProviderSubShapeBinder::getToolTip(const QByteArray &tag) const
     std::ostringstream ss;
     auto doc = getObject()->getDocument()->getName();
 
-    if (tag == Gui::TreeWidget::getMainIconTag()) {
+    if (tag == Gui::treeMainIconTag()) {
         auto self = dynamic_cast<PartDesign::SubShapeBinder*>(getObject());
         if (!self)
             return QString();
@@ -602,7 +602,7 @@ bool ViewProviderSubShapeBinder::iconMouseEvent(QMouseEvent *ev, const QByteArra
     if (ev->type() == QEvent::MouseButtonPress) {
         const std::vector<App::SubObjectT> *objs = nullptr;
         std::vector<App::SubObjectT> _objs;
-        if (tag == Gui::TreeWidget::getMainIconTag()) {
+        if (tag == Gui::treeMainIconTag()) {
             for(auto &link : self->Support.getSubListValues()) {
                 auto obj = link.getValue();
                 if(!obj || !obj->getNameInDocument())
