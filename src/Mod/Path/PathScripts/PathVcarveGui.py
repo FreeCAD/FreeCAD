@@ -53,6 +53,7 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
         return super(TaskPanelBaseGeometryPage, self)
 
     def addBaseGeometry(self, selection):
+        PathLog.track(selection)
         added = False
         shapes = self.obj.BaseShapes
         for sel in selection:
@@ -78,10 +79,12 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
                     shapes.append(base)
                     self.obj.BaseShapes = shapes
                 added = True
-            else:
-                # user wants us to engrave an edge of face of a base model
-                base = self.super().addBaseGeometry(selection)
-                added = added or base
+
+        if not added:
+            # user wants us to engrave an edge of face of a base model
+            PathLog.info("  call default")
+            base = self.super().addBaseGeometry(selection)
+            added = added or base
 
         return added
 
