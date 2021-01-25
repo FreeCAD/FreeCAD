@@ -242,7 +242,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             edges.append(_getPartEdge(e, geom))
         return edges
 
-    def buildPathMedial(self, obj, Faces):
+    def buildPathMedial(self, obj, faces):
         '''constructs a medial axis path using openvoronoi'''
 
         def insert_many_wires(vd, wires):
@@ -271,7 +271,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
 
         VD.clear()
         voronoiWires = []
-        for f in Faces:
+        for f in faces:
             vd = Path.Voronoi()
             insert_many_wires(vd, f.Wires)
 
@@ -321,31 +321,30 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                     "Engraver Cutting Edge Angle must be < 180 degrees.") + "\n")
             return
         try:
+            faces = []
             if obj.Base:
                 PathLog.track()
                 for base in obj.Base:
-                    faces = []
                     for sub in base[1]:
                         shape = getattr(base[0].Shape, sub)
                         if isinstance(shape, Part.Face):
                             faces.append(shape)
 
-                modelshape = Part.makeCompound(faces)
+            else:
+                for model in self.model:
+                    if model.isDerivedFrom('Sketcher::SketchObject') or model.isDerivedFrom('Part::Part2DObject'):
+                        faces.extend(model.Shape.Faces)
 
-            elif len(self.model) == 1 and self.model[0].isDerivedFrom('Sketcher::SketchObject') or \
-                    self.model[0].isDerivedFrom('Part::Part2DObject'):
-                PathLog.track()
-
-                modelshape = self.model[0].Shape
-            self.buildPathMedial(obj, modelshape.Faces)
+            if faces:
+                self.buildPathMedial(obj, faces)
+            else:
+                PathLog.error(translate('PathVcarve', 'The Job Base Object has no engraveable element. Engraving operation will produce no output.'))
 
         except Exception as e:
-            PathLog.error(e)
-            traceback.print_exc()
-            PathLog.error(translate('PathVcarve', 'The Job Base Object has \
-no engraveable element. Engraving \
-operation will produce no output.'))
-            raise e
+            #PathLog.error(e)
+            #traceback.print_exc()
+            PathLog.error(translate('PathVcarve', 'Error processing Base object. Engraving operation will produce no output.'))
+            #raise e
 
     def opUpdateDepths(self, obj, ignoreErrors=False):
         '''updateDepths(obj) ... engraving is always done at the top most z-value'''
