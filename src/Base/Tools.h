@@ -36,6 +36,7 @@
 class QObject;
 
 #if (QT_VERSION < 0x050300)
+#include <QObject>
 class QSignalBlocker
 {
 public:
