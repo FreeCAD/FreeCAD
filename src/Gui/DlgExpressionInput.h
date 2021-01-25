@@ -78,6 +78,7 @@ protected:
 
     void adjustPosition();
     void adjustExpressionSize();
+    void onClose();
 
 private Q_SLOTS:
     void textChanged();

@@ -66,6 +66,9 @@ public:
        QT_TRANSLATE_NOOP("ExprParams","Allow return key in expression edit box")) \
     FC_EXPR_PARAM(EvalFuncOnEdit,bool,Bool,false,\
        QT_TRANSLATE_NOOP("ExprParams","Auto evaluate function call when editing expression")) \
+    FC_EXPR_PARAM(EditDialogWidth,int,Int,0,"")\
+    FC_EXPR_PARAM(EditDialogHeight,int,Int,0,"")\
+    FC_EXPR_PARAM(EditDialogTextHeight,int,Int,0,"")\
 
 #undef FC_EXPR_PARAM
 #define FC_EXPR_PARAM(_name,_ctype,_type,_def,_doc) \

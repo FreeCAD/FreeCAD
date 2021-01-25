@@ -29,7 +29,7 @@ using namespace Gui;
 
 ExprParams::ExprParams() {
     handle = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/View");
+            "User parameter:BaseApp/Preferences/Expression");
     handle->Attach(this);
 #undef FC_EXPR_PARAM
 #define FC_EXPR_PARAM(_name,_ctype,_type,_def,_doc) \

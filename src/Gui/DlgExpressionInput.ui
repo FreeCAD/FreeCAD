@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>300</width>
-    <height>225</height>
+    <height>214</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -89,7 +89,7 @@
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>40</height>
+           <height>35</height>
           </size>
          </property>
          <property name="baseSize">
@@ -115,10 +115,11 @@
          <item>
           <widget class="QCheckBox" name="checkBoxWantReturn">
            <property name="toolTip">
-            <string>Allow 'Return' key in edit box to create multi-line expressions.</string>
+            <string>Disable line wrapping in edit box, and allow 'Return' key
+to create multi-line expressions.</string>
            </property>
            <property name="text">
-            <string>Multi-line</string>
+            <string>No wrap</string>
            </property>
           </widget>
          </item>

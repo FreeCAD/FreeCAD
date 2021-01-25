@@ -151,11 +151,8 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
 
     bool wantreturn = ExprParams::AllowReturn() || ui->expression->document()->blockCount()>1;
     ui->checkBoxWantReturn->setChecked(wantreturn);
-    if (wantreturn) {
-        adjustingExpressionSize = true;
-        timer.start(100);
-    } else 
-        adjustExpressionSize();
+    adjustingExpressionSize = true;
+    timer.start(100);
 
     connect(ui->checkBoxWantReturn, SIGNAL(toggled(bool)), this, SLOT(wantReturnChecked(bool)));
     connect(ui->checkBoxEvalFunc, SIGNAL(toggled(bool)), this, SLOT(evalFuncChecked(bool)));
@@ -339,16 +336,24 @@ void DlgExpressionInput::show()
     ui->expression->selectAll();
 }
 
+void DlgExpressionInput::onClose()
+{
+    this->exprFuncDisabler.setActive(false);
+    ExprParams::setEditDialogWidth(this->width());
+    ExprParams::setEditDialogHeight(this->height());
+    ExprParams::setEditDialogTextHeight(this->ui->expression->height());
+}
+
 void DlgExpressionInput::closeEvent(QCloseEvent* ev)
 {
     QDialog::closeEvent(ev);
-    this->exprFuncDisabler.setActive(false);
+    onClose();
 }
 
 void DlgExpressionInput::hideEvent(QHideEvent* ev)
 {
     QDialog::hideEvent(ev);
-    this->exprFuncDisabler.setActive(false);
+    onClose();
 }
 
 void DlgExpressionInput::showEvent(QShowEvent* ev)
@@ -366,8 +371,6 @@ void DlgExpressionInput::showEvent(QShowEvent* ev)
         }
     }
 #endif
-
-    adjustPosition();
 }
 
 void DlgExpressionInput::evalFuncChecked(bool checked)
@@ -457,8 +460,8 @@ void DlgExpressionInput::adjustExpressionSize()
     if (!ui->checkBoxWantReturn->isChecked()) {
         // leave space for longer line
         ui->expression->setLineWrapMode(QPlainTextEdit::WidgetWidth);
-        ui->expression->setMinimumHeight(40);
-        height = 40;
+        ui->expression->setMinimumHeight(35);
+        height = 35;
     } else {
         ui->expression->setLineWrapMode(QPlainTextEdit::NoWrap);
         const QString &text = ui->expression->toPlainText();
@@ -474,19 +477,38 @@ void DlgExpressionInput::adjustExpressionSize()
         height = fm.lineSpacing () * linecount
             + (textdoc->documentMargin() + ui->expression->frameWidth ()) * 2
             + margins.top () + margins.bottom ();
-        if (height < ui->expression->height())
-            return;
     }
 
-    int offset = height - ui->expression->height();
+    if (height < ExprParams::EditDialogTextHeight())
+        height = ExprParams::EditDialogTextHeight();
+    if (height < ui->expression->minimumHeight())
+        height = ui->expression->minimumHeight();
+
+    bool doResize = false;
+    QSize s = this->size();
     auto sizes = ui->splitter->sizes();
-    sizes[0] += offset;
-    if (offset > 0) {
-        QSize s = this->size();
-        s.setHeight(s.height() + offset);
-        resize(s);
+    int offset = height - ui->expression->height();
+    if (offset != 0) {
+        sizes[0] += offset;
+        if (offset > 0) {
+            s.setHeight(s.height() + offset);
+            doResize = true;
+        }
     }
-    ui->splitter->setSizes(sizes);
+    if (s.height() < ExprParams::EditDialogHeight()) {
+        s.setHeight(ExprParams::EditDialogHeight());
+        doResize = true;
+    }
+    if (s.width() < ExprParams::EditDialogWidth()) {
+        s.setWidth(ExprParams::EditDialogWidth());
+        doResize = true;
+    }
+    if (doResize)
+        resize(s);
+    if (offset != 0) {
+        ui->splitter->setSizes(sizes);
+        adjustPosition();
+    }
 }
 
 #include "moc_DlgExpressionInput.cpp"
