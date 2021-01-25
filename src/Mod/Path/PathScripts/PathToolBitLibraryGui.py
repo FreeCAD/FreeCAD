@@ -89,11 +89,19 @@ def checkWorkingDir():
     mode = 0o777
     for dir in subdirlist:
         subdir = "{}{}{}".format(workingdir, os.path.sep, dir)
-        if not os.path.exists(subdir):
-            qm = PySide.QtGui.QMessageBox
-            ret = qm.question(None,'', "Toolbit Working directory {} should contain a '{}' subdirectory. Create it?".format(workingdir, dir), qm.Yes | qm.No)
+        if os.path.exists(subdir):
+            subdirlist.remove(dir)
 
-            if ret == qm.Yes:
+    if len(subdirlist) >= 1:
+        needed = ', '.join([str(d) for d in subdirlist])
+        qm = PySide.QtGui.QMessageBox
+        ret = qm.question(None,'', "Toolbit Working directory {} needs these sudirectories:\n {} \n Create them?".format(workingdir, needed), qm.Yes | qm.No)
+
+        if ret == qm.No:
+            return False
+        else:
+            for dir in subdirlist:
+                subdir = "{}{}{}".format(workingdir, os.path.sep, dir)
                 os.mkdir(subdir, mode)
                 if dir != 'Shape':
                     qm = PySide.QtGui.QMessageBox
