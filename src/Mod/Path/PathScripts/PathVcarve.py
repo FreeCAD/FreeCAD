@@ -311,26 +311,25 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         PathLog.track()
 
         if not hasattr(obj.ToolController.Tool, "CuttingEdgeAngle"):
-            FreeCAD.Console.PrintError(
-                translate("Path_Vcarve", "VCarve requires an engraving \
-                           cutter with CuttingEdgeAngle") + "\n")
+            PathLog.error(translate("Path_Vcarve", "VCarve requires an engraving cutter with CuttingEdgeAngle"))
 
         if obj.ToolController.Tool.CuttingEdgeAngle >= 180.0:
-            FreeCAD.Console.PrintError(
-                translate("Path_Vcarve",
-                    "Engraver Cutting Edge Angle must be < 180 degrees.") + "\n")
+            PathLog.error(translate("Path_Vcarve", "Engraver Cutting Edge Angle must be < 180 degrees."))
             return
+
         try:
             faces = []
-            if obj.Base:
-                PathLog.track()
-                for base in obj.Base:
-                    for sub in base[1]:
-                        shape = getattr(base[0].Shape, sub)
-                        if isinstance(shape, Part.Face):
-                            faces.append(shape)
 
-            else:
+            for base in obj.BaseShapes:
+                faces.extend(base.Shape.Faces)
+
+            for base in obj.Base:
+                for sub in base[1]:
+                    shape = getattr(base[0].Shape, sub)
+                    if isinstance(shape, Part.Face):
+                        faces.append(shape)
+
+            if not faces:
                 for model in self.model:
                     if model.isDerivedFrom('Sketcher::SketchObject') or model.isDerivedFrom('Part::Part2DObject'):
                         faces.extend(model.Shape.Faces)
