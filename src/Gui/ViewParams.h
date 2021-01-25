@@ -132,8 +132,6 @@ public:
     FC_VIEW_PARAM(DockOverlayActivateOnHover,bool,Bool,true, \
         QT_TRANSLATE_NOOP("ViewParams", "Show auto hidden dock overlay on mouse over.\n"\
                                         "If disabled, then show on mouse click."))\
-    FC_VIEW_PARAM(DockOverlayMouseThrough,bool,Bool,false, \
-        QT_TRANSLATE_NOOP("ViewParams", "Enable mouse pass through dock overlay when holding 'ALT' key."))\
     FC_VIEW_PARAM(DockOverlayAutoMouseThrough,bool,Bool,true, \
         QT_TRANSLATE_NOOP("ViewParams", "Auto mouse click through transparent part of dock overlay."))\
     FC_VIEW_PARAM(DockOverlayAlphaRadius,int,Int,2, \

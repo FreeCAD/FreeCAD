@@ -77,7 +77,6 @@ public:
     FC_UI_CHECKBOX(ViewParams, DockOverlayHideTabBar,"Hide tab bar") \
     FC_UI_CHECKBOX(ViewParams, DockOverlayHidePropertyViewScrollBar,"Hide property view scroll bar") \
     FC_UI_CHECKBOX(ViewParams, DockOverlayAutoView, "Auto hide in non 3D view") \
-    FC_UI_CHECKBOX(ViewParams, DockOverlayMouseThrough, "Enable ALT + Mouse pass through") \
     FC_UI_CHECKBOX(ViewParams, DockOverlayAutoMouseThrough, "Auto mouse pass through") \
     FC_UI_SPINBOX(ViewParams, DockOverlayAlphaRadius, "Alpha test radius", 1, 100, 1) \
     FC_UI_CHECKBOX(ViewParams, DockOverlayCheckNaviCube, "Check Navigation Cube") \

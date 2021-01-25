@@ -1294,10 +1294,7 @@ void OverlayTabWidget::setOverlayMode(QWidget *widget, int enable)
         return;
 
     if(widget != tabBar()) {
-        if((ViewParams::getDockOverlayMouseThrough()
-                    || ViewParams::getDockOverlayAutoMouseThrough())
-                && enable == -1)
-        {
+        if(ViewParams::getDockOverlayAutoMouseThrough() && enable == -1) {
             widget->setMouseTracking(true);
         }
     }
@@ -3888,11 +3885,9 @@ bool OverlayManager::eventFilter(QObject *o, QEvent *ev)
 
         int hit = 0;
         QPoint pos = QCursor::pos();
-        if ((ViewParams::getDockOverlayAutoMouseThrough()
+        if (ViewParams::getDockOverlayAutoMouseThrough()
                     && ev->type() != QEvent::Wheel
                     && pos == d->_lastPos)
-                || (ViewParams::getDockOverlayMouseThrough()
-                    && (QApplication::queryKeyboardModifiers() & Qt::AltModifier)))
         {
             hit = 1;
         } else if (ev->type() != QEvent::Wheel) {
