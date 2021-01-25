@@ -50,6 +50,9 @@ public:
     virtual double getRepresentationFactor() const {return RepresentationFactor;}
     virtual void setRepresentationFactor(double representationFactor) {RepresentationFactor = representationFactor;}
 
+protected:
+    virtual void copyAttributes(Part::GeometryExtension * cpy) const override;
+
 private:
     ViewProviderSketchGeometryExtension(const ViewProviderSketchGeometryExtension&) = default;
 

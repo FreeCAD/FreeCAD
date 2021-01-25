@@ -125,7 +125,7 @@ namespace GCS
 
         int dofs;
         std::set<Constraint *> redundant;
-        VEC_I conflictingTags, redundantTags;
+        VEC_I conflictingTags, redundantTags, partiallyRedundantTags;
 
         bool hasUnknowns;  // if plist is filled with the unknown parameters
         bool hasDiagnosis; // if dofs, conflictingTags, redundantTags are up to date
@@ -297,7 +297,7 @@ namespace GCS
         int addConstraintArcRadius(Arc &a, double *radius, int tagId=0, bool driving = true);
         int addConstraintCircleDiameter(Circle &c, double *radius, int tagId=0, bool driving = true);
         int addConstraintArcDiameter(Arc &a, double *radius, int tagId=0, bool driving = true);
-        int addConstraintEqualLength(Line &l1, Line &l2, double *length, int tagId=0, bool driving = true);
+        int addConstraintEqualLength(Line &l1, Line &l2, int tagId=0, bool driving = true);
         int addConstraintEqualRadius(Circle &c1, Circle &c2, int tagId=0, bool driving = true);
         int addConstraintEqualRadii(Ellipse &e1, Ellipse &e2, int tagId=0, bool driving = true);
         int addConstraintEqualRadii(ArcOfHyperbola &a1, ArcOfHyperbola &a2, int tagId=0, bool driving = true);
@@ -361,11 +361,18 @@ namespace GCS
           { conflictingOut = hasDiagnosis ? conflictingTags : VEC_I(0); }
         void getRedundant(VEC_I &redundantOut) const
           { redundantOut = hasDiagnosis ? redundantTags : VEC_I(0); }
+        void getPartiallyRedundant (VEC_I &partiallyredundantOut) const
+          { partiallyredundantOut = hasDiagnosis ? partiallyRedundantTags : VEC_I(0); }
         void getDependentParams(VEC_pD &pdependentparameterlist) const
           { pdependentparameterlist = pDependentParameters;}
         void getDependentParamsGroups(std::vector<std::vector<double *>> &pdependentparametergroups) const
           { pdependentparametergroups = pDependentParametersGroups;}
         bool isEmptyDiagnoseMatrix() const {return emptyDiagnoseMatrix;}
+
+        bool hasConflicting() const {return !(hasDiagnosis && conflictingTags.empty());}
+        bool hasRedundant() const {return !(hasDiagnosis && redundantTags.empty());}
+        bool hasPartiallyRedundant() const {return !(hasDiagnosis && partiallyRedundantTags.empty());}
+
         void invalidatedDiagnosis();
     };
 

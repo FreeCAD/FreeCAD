@@ -174,6 +174,7 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
 
                 if obj.UseHelixArcs == False:
                     # rapid move to start point
+                    op.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
                     op.commandlist.append(Path.Command("G0", {"X": helixStart[0], "Y": helixStart[1], "Z": obj.ClearanceHeight.Value}))
 
                     # rapid move to safe height
@@ -205,6 +206,7 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
                     helixStart = [region["HelixCenterPoint"][0] + r, region["HelixCenterPoint"][1]]
 
                     # rapid move to start point
+                    op.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
                     op.commandlist.append(Path.Command("G0", {"X": helixStart[0], "Y": helixStart[1], "Z": obj.ClearanceHeight.Value}))
 
                     # rapid move to safe height
@@ -238,6 +240,7 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
 
             else: # no helix entry
                 # rapid move to clearance height
+                op.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
                 op.commandlist.append(Path.Command("G0", {"X": region["StartPoint"][0], "Y": region["StartPoint"][1], "Z": obj.ClearanceHeight.Value}))
                 # straight plunge to target depth
                 op.commandlist.append(Path.Command("G1", {"X":region["StartPoint"][0], "Y": region["StartPoint"][1], "Z": passEndDepth,"F": op.vertFeed}))

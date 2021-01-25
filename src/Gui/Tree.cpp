@@ -4670,6 +4670,8 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon &icon1, QIcon &icon2
 
         icon.addPixmap(pxOn, QIcon::Normal, QIcon::On);
         icon.addPixmap(pxOff, QIcon::Normal, QIcon::Off);
+
+        icon = object()->mergeColorfulOverlayIcons(icon);
     }
 
 

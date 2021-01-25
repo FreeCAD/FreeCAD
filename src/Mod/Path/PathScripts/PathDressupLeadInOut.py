@@ -24,6 +24,7 @@
 from __future__ import print_function
 
 import FreeCAD
+import FreeCADGui
 import Path
 import PathScripts.PathDressup as PathDressup
 import PathScripts.PathGeom as PathGeom
@@ -32,7 +33,7 @@ import PathScripts.PathUtils as PathUtils
 import math
 import copy
 
-from PySide import QtCore
+from PySide import QtCore, QtGui
 
 __doc__ = """LeadInOut Dressup MASHIN-CRC USE ROLL-ON ROLL-OFF to profile"""
 
@@ -463,13 +464,124 @@ class ObjectDressup:
         commands = newpath
         return Path.Path(commands)
 
-class ViewProviderDressup:
 
+class TaskPanel:
+    def __init__(self, obj, view):
+        self.obj = obj
+        self.viewProvider = view
+        self.form = FreeCADGui.PySideUic.loadUi(":/panels/DressUpLeadInOutEdit.ui")
+        self.setupUi()
+
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_DressupLeadInOut", "Edit LeadInOut Dress-up"))
+    
+    def getStandardButtons(self):
+        return int(QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Cancel)
+
+    def modifyStandardButtons(self, buttonBox):
+        self.buttonBox = buttonBox
+
+    def setDirty(self):
+        self.isDirty = True
+        self.buttonBox.button(QtGui.QDialogButtonBox.Apply).setEnabled(True)
+
+    def setClean(self):
+        self.isDirty = False
+        self.buttonBox.button(QtGui.QDialogButtonBox.Apply).setEnabled(False)
+
+    def clicked(self, button):
+        # callback for standard buttons
+        if button == QtGui.QDialogButtonBox.Apply:
+            self.updateModel()
+            FreeCAD.ActiveDocument.recompute()
+        if button == QtGui.QDialogButtonBox.Cancel:
+            self.abort()
+    
+    def abort(self):
+        FreeCAD.ActiveDocument.abortTransaction()
+        self.cleanup(True)
+
+    def reject(self):
+        FreeCAD.ActiveDocument.abortTransaction()
+        FreeCADGui.Control.closeDialog()
+        FreeCAD.ActiveDocument.recompute()
+
+    def accept(self):
+        self.getFields()
+        FreeCAD.ActiveDocument.commitTransaction()
+        FreeCADGui.ActiveDocument.resetEdit()
+        FreeCADGui.Control.closeDialog()
+        FreeCAD.ActiveDocument.recompute()
+    
+    def cleanup(self, gui):
+        self.viewProvider.clearTaskPanel()
+        if gui:
+            #FreeCADGui.ActiveDocument.resetEdit()
+            FreeCADGui.Control.closeDialog()
+            FreeCAD.ActiveDocument.recompute()
+
+    def getFields(self):
+        self.obj.LeadIn = self.form.chkLeadIn.isChecked()
+        self.obj.LeadOut = self.form.chkLeadOut.isChecked()
+        self.obj.Length = self.form.dsbLen.value()
+        self.obj.ExtendLeadIn = self.form.dsbExtendIn.value()
+        self.obj.ExtendLeadOut = self.form.dsbExtendOut.value()
+        self.obj.StyleOn = str(self.form.cboStyleIn.currentText())
+        self.obj.StyleOff = str(self.form.cboStyleOut.currentText())
+        self.obj.RadiusCenter = str(self.form.cboRadius.currentText())
+        self.obj.RapidPlunge = self.form.chkRapidPlunge.isChecked()
+        self.obj.IncludeLayers = self.form.chkLayers.isChecked()
+        self.obj.KeepToolDown = self.form.chkKeepToolDown.isChecked()
+        self.obj.UseMachineCRC = self.form.chkUseCRC.isChecked()
+
+        self.updateUI()
+        self.obj.Proxy.execute(self.obj)
+
+    def updateUI(self):
+        self.form.chkLeadIn.setChecked(self.obj.LeadIn)
+        self.form.chkLeadOut.setChecked(self.obj.LeadOut)
+        self.form.chkRapidPlunge.setChecked(self.obj.RapidPlunge)
+        self.form.chkLayers.setChecked(self.obj.IncludeLayers)
+        self.form.chkKeepToolDown.setChecked(self.obj.KeepToolDown)
+        self.form.chkUseCRC.setChecked(self.obj.UseMachineCRC)
+
+        self.form.dsbLen.setValue(self.obj.Length)
+
+        self.form.dsbExtendIn.setValue(self.obj.ExtendLeadIn)
+        #self.form.dsbExtendIn.setEnabled(self.obj.LeadIn)
+
+        self.form.dsbExtendOut.setValue(self.obj.ExtendLeadOut)
+        #self.form.dsbExtendOut.setEnabled(self.obj.LeadOut)
+
+        self.form.cboStyleIn.setCurrentIndex(self.form.cboStyleIn.findText(self.obj.StyleOn))
+        #self.form.cboStyleIn.setEnabled(self.obj.LeadIn)
+        
+        self.form.cboStyleOut.setCurrentIndex(self.form.cboStyleIn.findText(self.obj.StyleOff))
+        #self.form.cboStyleOut.setEnabled(self.obj.LeadOut)
+
+        self.form.cboRadius.setCurrentIndex(self.form.cboRadius.findText(self.obj.RadiusCenter))
+
+    def updateModel(self):
+        self.getFields()
+        FreeCAD.ActiveDocument.recompute()
+
+    def setFields(self):
+        self.updateUI()
+
+    def open(self):
+        pass
+
+    def setupUi(self):
+        self.setFields()
+
+
+class ViewProviderDressup:
     def __init__(self, vobj):
         self.obj = vobj.Object
+        self.setEdit(vobj)
 
     def attach(self, vobj):
         self.obj = vobj.Object
+        self.panel = None
 
     def claimChildren(self):
         if hasattr(self.obj.Base, "InList"):
@@ -483,6 +595,18 @@ class ViewProviderDressup:
                     print(i.Group)
         # FreeCADGui.ActiveDocument.getObject(obj.Base.Name).Visibility = False
         return [self.obj.Base]
+
+    def setEdit(self, vobj, mode=0):
+        # pylint: disable=unused-argument
+        FreeCADGui.Control.closeDialog()
+        panel = TaskPanel(vobj.Object, self)
+        FreeCADGui.Control.showDialog(panel)
+        panel.setupUi()
+        return True
+    
+    def unsetEdit(self, vobj, mode=0):
+        if self.panel:
+            self.panel.abort()
 
     def onDelete(self, arg1=None, arg2=None):
         '''this makes sure that the base operation is added back to the project and visible'''
@@ -502,6 +626,9 @@ class ViewProviderDressup:
     def __setstate__(self, state):
         # pylint: disable=unused-argument
         return None
+    
+    def clearTaskPanel(self):
+        self.panel = None
 
 
 class CommandPathDressupLeadInOut:
@@ -519,7 +646,6 @@ class CommandPathDressupLeadInOut:
         return False
 
     def Activated(self):
-
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
@@ -543,9 +669,9 @@ class CommandPathDressupLeadInOut:
         FreeCADGui.doCommand('job = PathScripts.PathUtils.findParentJob(base)')
         FreeCADGui.doCommand('obj.Base = base')
         FreeCADGui.doCommand('job.Proxy.addOperation(obj, base)')
+        FreeCADGui.doCommand('dbo.setup(obj)')
         FreeCADGui.doCommand('obj.ViewObject.Proxy = PathScripts.PathDressupLeadInOut.ViewProviderDressup(obj.ViewObject)')
         FreeCADGui.doCommand('Gui.ActiveDocument.getObject(base.Name).Visibility = False')
-        FreeCADGui.doCommand('dbo.setup(obj)')
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 

@@ -25,6 +25,7 @@
 #define SKETCHERGUI_VIEWPROVIDERSKETCH_H
 
 #include <Mod/Part/Gui/ViewProvider2DObject.h>
+#include <Mod/Part/Gui/ViewProviderAttachExtension.h>
 #include <Mod/Part/App/BodyBase.h>
 #include <Inventor/SbImage.h>
 #include <Inventor/SbColor.h>
@@ -84,15 +85,21 @@ class DrawSketchHandler;
   * of new geometry while editing.
   */
 class SketcherGuiExport ViewProviderSketch : public PartGui::ViewProvider2DObjectGrid
-                                           , public Gui::SelectionObserver
+                                            , public PartGui::ViewProviderAttachExtension
+                                            , public Gui::SelectionObserver
+                                            , public ParameterGrp::ObserverType
 {
     Q_DECLARE_TR_FUNCTIONS(SketcherGui::ViewProviderSketch)
     /// generates a warning message about constraint conflicts and appends it to the given message
     static QString appendConflictMsg(const std::vector<int> &conflicting);
     /// generates a warning message about redundant constraints and appends it to the given message
     static QString appendRedundantMsg(const std::vector<int> &redundant);
+    /// generates a warning message about partially redundant constraints and appends it to the given message
+    static QString appendPartiallyRedundantMsg(const std::vector<int> &partiallyredundant);
+    /// generates a warning message about redundant constraints and appends it to the given message
+    static QString appendMalformedMsg(const std::vector<int> &redundant);
 
-    PROPERTY_HEADER(SketcherGui::ViewProviderSketch);
+    PROPERTY_HEADER_WITH_OVERRIDE(SketcherGui::ViewProviderSketch);
 
 public:
     /// constructor
@@ -122,9 +129,9 @@ public:
     void drawEdit(const std::vector<Base::Vector2d> &EditCurve);
 
     /// Is the view provider selectable
-    bool isSelectable(void) const;
+    bool isSelectable(void) const override;
     /// Observer message from the Selection
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+    virtual void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
     /// Show/Hide nodes from information layer
     void showRestoreInformationLayer();
@@ -225,24 +232,24 @@ public:
 
     /** @name base class implementer */
     //@{
-    virtual void attach(App::DocumentObject *);
-    virtual void updateData(const App::Property *);
+    virtual void attach(App::DocumentObject *) override;
+    virtual void updateData(const App::Property *) override;
 
-    virtual void setupContextMenu(QMenu *menu, QObject *receiver, const char *member);
+    virtual void setupContextMenu(QMenu *menu, QObject *receiver, const char *member) override;
     /// is called when the Provider is in edit and a deletion request occurs
-    virtual bool onDelete(const std::vector<std::string> &);
+    virtual bool onDelete(const std::vector<std::string> &) override;
     /// Is called by the tree if the user double clicks on the object. It returns the string
     /// for the transaction that will be shown in the undo/redo dialog.
     /// If null is returned then no transaction will be opened.
-    virtual const char* getTransactionText() const { return nullptr; }
+    virtual const char* getTransactionText() const override { return nullptr; }
     /// is called by the tree if the user double clicks on the object
-    virtual bool doubleClicked(void);
+    virtual bool doubleClicked(void) override;
     /// is called when the Provider is in edit and the mouse is moved
-    virtual bool mouseMove(const SbVec2s &pos, Gui::View3DInventorViewer *viewer);
+    virtual bool mouseMove(const SbVec2s &pos, Gui::View3DInventorViewer *viewer) override;
     /// is called when the Provider is in edit and a key event ocours. Only ESC ends edit.
-    virtual bool keyPressed(bool pressed, int key);
+    virtual bool keyPressed(bool pressed, int key) override;
     /// is called when the Provider is in edit and the mouse is clicked
-    virtual bool mouseButtonPressed(int Button, bool pressed, const SbVec2s& cursorPos, const Gui::View3DInventorViewer* viewer);
+    virtual bool mouseButtonPressed(int Button, bool pressed, const SbVec2s& cursorPos, const Gui::View3DInventorViewer* viewer) override;
     //@}
 
     void deleteSelected();
@@ -251,6 +258,9 @@ public:
     void updateVirtualSpace(void);
     void setIsShownVirtualSpace(bool isshownvirtualspace);
     bool getIsShownVirtualSpace(void) const;
+
+    /// Icons and Icon overlays
+    virtual QIcon mergeColorfulOverlayIcons (const QIcon & orig) const override;
 
     friend class DrawSketchHandler;
     friend struct ::EditData;
@@ -264,20 +274,23 @@ public:
     /// signals if the elements list has changed
     boost::signals2::signal<void ()> signalElementsChanged;
 
+    /** Observer for parameter group. */
+    void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override;
+
 protected:
     Base::Placement getEditingPlacement() const;
 
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
-    virtual void setEditViewer(Gui::View3DInventorViewer*, int ModNum);
-    virtual void unsetEditViewer(Gui::View3DInventorViewer*);
+    virtual bool setEdit(int ModNum) override;
+    virtual void unsetEdit(int ModNum) override;
+    virtual void setEditViewer(Gui::View3DInventorViewer*, int ModNum) override;
+    virtual void unsetEditViewer(Gui::View3DInventorViewer*) override;
     void deactivateHandler();
     /// update solver information based on last solving at SketchObject
     void UpdateSolverInformation(void);
     /// helper to detect whether the picked point lies on the sketch
     bool isPointOnSketch(const SoPickedPoint *pp) const;
     /// get called by the container whenever a property has been changed
-    virtual void onChanged(const App::Property *prop);
+    virtual void onChanged(const App::Property *prop) override;
 
     /// get called if a subelement is double clicked while editing
     void editDoubleClicked(void);
@@ -296,7 +309,21 @@ protected:
     boost::signals2::connection connectUndoDocument;
     boost::signals2::connection connectRedoDocument;
 
+    /// set icon & font sizes
+    void initItemsSizes();
+    /// subscribe to parameter groups as an observer
+    void subscribeToParameters();
+    /// unsubscribe to parameter groups as an observer
+    void unsubscribeToParameters();
+    /// updates the sizes of the edit mode inventor node
+    void updateInventorNodeSizes();
+
     void forceUpdateData();
+
+    /// Auxiliary function to generate messages about conflicting, redundant and malformed constraints
+    static QString appendConstraintMsg( const QString & singularmsg,
+                                        const QString & pluralmsg,
+                                        const std::vector<int> &vector);
 
     /// Return display string for constraint including hiding units if
     //requested.
@@ -417,6 +444,7 @@ protected:
     static SbColor FullyConstraintConstructionElementColor;
     static SbColor FullyConstraintInternalAlignmentColor;
     static SbColor FullyConstraintConstructionPointColor;
+    static SbColor InvalidSketchColor;
 
     static SbTime prvClickTime;
     static SbVec2s prvClickPos; //used by double-click-detector

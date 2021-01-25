@@ -51,25 +51,18 @@ SketchGeometryExtension::SketchGeometryExtension(long cid):Id(cid),InternalGeome
 
 }
 
-// Persistence implementer
-void SketchGeometryExtension::Save(Base::Writer &writer) const
+void SketchGeometryExtension::copyAttributes(Part::GeometryExtension * cpy) const
 {
-    writer.Stream() << writer.ind() << "<GeoExtension type=\"" << this->getTypeId().getName();
+    Part::GeometryPersistenceExtension::copyAttributes(cpy);
 
-    const std::string name = getName();
-
-    if(name.size() > 0)
-        writer.Stream() << "\" name=\"" << name;
-
-    writer.Stream() // << "\" id=\"" << Id // This is removed as the stored Id is not used and it may interfere with RT's future implementation
-                    << "\" internalGeometryType=\"" << (int) InternalGeometryType
-                    << "\" geometryModeFlags=\""    << GeometryModeFlags.to_string()
-                    << "\"/>" << std::endl;
+    static_cast<SketchGeometryExtension *>(cpy)->Id = this->Id;
+    static_cast<SketchGeometryExtension *>(cpy)->InternalGeometryType = this->InternalGeometryType;
+    static_cast<SketchGeometryExtension *>(cpy)->GeometryModeFlags  = this->GeometryModeFlags;
 }
 
-void SketchGeometryExtension::Restore(Base::XMLReader &reader)
+void SketchGeometryExtension::restoreAttributes(Base::XMLReader &reader)
 {
-    restoreNameAttribute(reader);
+    Part::GeometryPersistenceExtension::restoreAttributes(reader);
 
     if(reader.hasAttribute("id"))
         Id = reader.getAttributeAsInteger("id");
@@ -79,15 +72,20 @@ void SketchGeometryExtension::Restore(Base::XMLReader &reader)
     GeometryModeFlags = GeometryModeFlagType(reader.getAttribute("geometryModeFlags"));
 }
 
+void SketchGeometryExtension::saveAttributes(Base::Writer &writer) const
+{
+    Part::GeometryPersistenceExtension::saveAttributes(writer);
+
+    writer.Stream() // << "\" id=\"" << Id // This is removed as the stored Id is not used and it may interfere with RT's future implementation
+                    << "\" internalGeometryType=\"" << (int) InternalGeometryType
+                    << "\" geometryModeFlags=\""    << GeometryModeFlags.to_string();
+}
+
 std::unique_ptr<Part::GeometryExtension> SketchGeometryExtension::copy(void) const
 {
     auto cpy = std::make_unique<SketchGeometryExtension>();
 
-    cpy->Id = this->Id;
-    cpy->InternalGeometryType = this->InternalGeometryType;
-    cpy->GeometryModeFlags  = this->GeometryModeFlags;
-
-    cpy->setName(this->getName()); // Base Class
+    copyAttributes(cpy.get());
 
 #if defined (__GNUC__) && (__GNUC__ <=4)
     return std::move(cpy);

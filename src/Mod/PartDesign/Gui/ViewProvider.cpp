@@ -221,7 +221,7 @@ void ViewProvider::setTipIcon(bool onoff) {
     signalChangeIcon();
 }
 
-QIcon ViewProvider::mergeOverlayIcons (const QIcon & orig) const
+QIcon ViewProvider::mergeColorfulOverlayIcons (const QIcon & orig) const
 {
     QIcon mergedicon = orig;
 
@@ -248,7 +248,7 @@ QIcon ViewProvider::mergeOverlayIcons (const QIcon & orig) const
 
     }
 
-    return Gui::ViewProvider::mergeOverlayIcons(mergedicon);
+    return Gui::ViewProvider::mergeColorfulOverlayIcons (mergedicon);
 }
 
 bool ViewProvider::onDelete(const std::vector<std::string> &)

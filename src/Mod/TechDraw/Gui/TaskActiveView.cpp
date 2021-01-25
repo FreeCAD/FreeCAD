@@ -89,7 +89,6 @@ TaskActiveView::TaskActiveView(TechDraw::DrawPage* pageFeat) :
 
 TaskActiveView::~TaskActiveView()
 {
-    delete ui;
 }
 
 void TaskActiveView::updateTask()

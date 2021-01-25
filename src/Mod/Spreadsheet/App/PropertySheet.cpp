@@ -741,6 +741,18 @@ bool PropertySheet::rowSortFunc(const CellAddress & a, const CellAddress & b) {
         return false;
 }
 
+std::vector<CellAddress> PropertySheet::getRows(int row, int count) const
+{
+    std::vector<CellAddress> keys;
+
+    for (const auto &i : data) {
+        auto key = i.first;
+        if (key.row() >= row && key.row() < row + count)
+            keys.push_back(key);
+    }
+    return keys;
+}
+
 void PropertySheet::removeRows(int row, int count)
 {
     std::vector<CellAddress> keys;
@@ -847,6 +859,18 @@ bool PropertySheet::colSortFunc(const CellAddress & a, const CellAddress & b) {
         return true;
     else
         return false;
+}
+
+std::vector<CellAddress> PropertySheet::getColumns(int column, int count) const
+{
+    std::vector<CellAddress> keys;
+
+    for (const auto &i : data) {
+        auto key = i.first;
+        if (key.col() >= column && key.col() < column + count)
+            keys.push_back(key);
+    }
+    return keys;
 }
 
 void PropertySheet::removeColumns(int col, int count)

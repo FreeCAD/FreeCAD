@@ -65,6 +65,8 @@ public:
     virtual bool testMigrationType(int flag) const { return GeometryMigrationFlags.test((size_t)(flag)); };
     virtual void setMigrationType(int flag, bool v=true) { GeometryMigrationFlags.set((size_t)(flag), v); };
 
+protected:
+    virtual void copyAttributes(Part::GeometryExtension * cpy) const override;
 
 private:
     GeometryMigrationExtension(const GeometryMigrationExtension&) = default;

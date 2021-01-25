@@ -107,12 +107,18 @@ void TaskSketcherMessages::on_labelConstrainStatus_linkActivated(const QString &
 {
     if( str == QString::fromLatin1("#conflicting"))
         Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectConflictingConstraints");
-
+    else
     if( str == QString::fromLatin1("#redundant"))
         Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectRedundantConstraints");
-
+    else
     if( str == QString::fromLatin1("#dofs"))
         Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectElementsWithDoFs");
+    else
+    if( str == QString::fromLatin1("#malformed"))
+        Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectMalformedConstraints");
+        else
+    if( str == QString::fromLatin1("#partiallyredundant"))
+        Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectPartiallyRedundantConstraints");
 
 }
 

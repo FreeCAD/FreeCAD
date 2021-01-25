@@ -111,6 +111,11 @@
             <height>0</height>
            </size>
           </property>
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
           <property name="text">
            <string>Standard and Style</string>
           </property>

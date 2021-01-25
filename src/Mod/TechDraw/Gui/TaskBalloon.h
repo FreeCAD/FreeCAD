@@ -29,8 +29,6 @@
 
 #include <Mod/TechDraw/Gui/ui_TaskBalloon.h>
 
-#include <Mod/TechDraw/App/DrawViewPart.h>
-
 #include "QGIViewBalloon.h"
 #include "ViewProviderBalloon.h"
 
@@ -65,7 +63,7 @@ private Q_SLOTS:
     void onKinkLengthChanged();
 
 private:
-    Ui_TaskBalloon *ui;
+    std::unique_ptr<Ui_TaskBalloon> ui;
     QGIViewBalloon *m_parent;
     ViewProviderBalloon* m_balloonVP;
 };
