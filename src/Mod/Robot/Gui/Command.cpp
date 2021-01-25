@@ -31,7 +31,7 @@
 #include <Gui/MainWindow.h>
 #include <Gui/Command.h>
 #include <Gui/FileDialog.h>
-#include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/SelectionFilter.h>
 #include <Gui/Document.h>
 #include <Gui/Control.h>

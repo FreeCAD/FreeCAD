@@ -67,6 +67,7 @@
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 #include <App/Application.h>
+#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
 

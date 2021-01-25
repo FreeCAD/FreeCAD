@@ -36,8 +36,8 @@
 #include <CXX/Objects.hxx>
 
 #include "Selection.h"
+#include "SelectionObject.h"
 #include "SelectionFilter.h"
-//#include "SelectionFilterPy.h"
 #include "Application.h"
 
 using namespace Gui;

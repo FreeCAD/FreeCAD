@@ -24,7 +24,6 @@
 #ifndef GUI_DOCUMENT_H
 #define GUI_DOCUMENT_H
 
-#include "MDIView.h"
 
 #include <list>
 #include <map>
@@ -44,10 +43,12 @@ class Matrix4D;
 namespace App {
 class DocumentObjectGroup;
 class Document;
+class Transaction;
 }
 
 namespace Gui {
 
+class MDIView;
 class ViewProvider;
 class ViewProviderDocumentObject;
 class Application;

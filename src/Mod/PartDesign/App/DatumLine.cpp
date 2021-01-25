@@ -31,6 +31,7 @@
 #endif
 
 #include "DatumLine.h"
+#include <Mod/Part/App/Attacher.h>
 
 using namespace PartDesign;
 using namespace Attacher;

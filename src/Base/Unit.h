@@ -30,7 +30,8 @@
 #  include <stdint.h>
 #endif
 #include <string>
-#include <QString>
+
+class QString;
 
 namespace Base {
 

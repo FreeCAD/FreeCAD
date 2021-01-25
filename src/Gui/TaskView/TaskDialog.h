@@ -30,8 +30,6 @@
 
 #include <QDialogButtonBox>
 
-#include <Gui/Selection.h>
-
 namespace App {
 
 }

@@ -24,8 +24,6 @@
 #ifndef MESH_FACET_H
 #define MESH_FACET_H
 
-#include <Base/Matrix.h>
-#include <Base/Vector3D.h>
 #include <Base/Handle.h>
 
 #include "Core/Elements.h"

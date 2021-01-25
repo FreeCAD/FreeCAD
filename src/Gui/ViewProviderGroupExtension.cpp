@@ -26,9 +26,8 @@
 #ifndef _PreComp_
 #endif
 
-//#include "ViewProviderGroupExtensionPy.h"
 #include "ViewProviderGroupExtension.h"
-
+#include "ViewProviderDocumentObject.h"
 #include "Command.h"
 #include "Application.h"
 #include "Document.h"

@@ -47,8 +47,8 @@
 #include "View3DInventorViewer.h"
 #include "ViewParams.h"
 
+#include <App/Document.h>
 #include <App/PropertyGeo.h>
-#include <App/PropertyStandard.h>
 #include <App/MeasureDistance.h>
 #include <Base/Console.h>
 #include <Base/Quantity.h>

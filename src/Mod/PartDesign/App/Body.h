@@ -24,13 +24,13 @@
 #ifndef PARTDESIGN_Body_H
 #define PARTDESIGN_Body_H
 
-#include <App/PropertyStandard.h>
 #include <Mod/Part/App/BodyBase.h>
 
 #include <boost_signals2.hpp>
 
 namespace App {
     class Origin;
+    class Property;
 }
 
 namespace PartDesign

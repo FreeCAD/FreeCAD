@@ -41,6 +41,7 @@
 #include "DocumentPy.cpp"
 #include <App/DocumentObjectPy.h>
 #include "Tree.h"
+#include "MDIView.h"
 #include "ViewProviderDocumentObject.h"
 #include "ViewProviderDocumentObjectPy.h"
 #include "ViewProviderPy.h"

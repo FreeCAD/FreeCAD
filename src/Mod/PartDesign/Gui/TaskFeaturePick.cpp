@@ -55,6 +55,7 @@
 #include <Mod/PartDesign/App/DatumPlane.h>
 #include <Mod/PartDesign/App/FeaturePrimitive.h>
 #include <Mod/Part/App/DatumFeature.h>
+#include <Mod/Part/App/Attacher.h>
 
 using namespace PartDesignGui;
 using namespace Attacher;

@@ -28,10 +28,12 @@
 #ifndef PARTATTACHER_H
 #define PARTATTACHER_H
 
+#include <vector>
+
 #include <App/PropertyStandard.h>
 #include <App/PropertyLinks.h>
+#include <App/PropertyGeo.h>
 #include <App/GeoFeature.h>
-#include <Base/Vector3D.h>
 #include <Base/Placement.h>
 #include <Base/Exception.h>
 

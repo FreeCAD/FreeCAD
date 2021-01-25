@@ -32,6 +32,7 @@
 #include <Base/Console.h>
 #include <Base/Tools.h>
 
+#include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -42,6 +43,7 @@
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 
+#include <Mod/TechDraw/App/LineGroup.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawView.h>

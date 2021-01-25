@@ -25,7 +25,6 @@
 #define GUI_VIEWPROVIDER_LINK_H
 
 #include <boost/preprocessor/seq/for_each.hpp>
-#include <App/PropertyGeo.h>
 #include "SoFCUnifiedSelection.h"
 #include "ViewProviderPythonFeature.h"
 #include "ViewProviderDocumentObject.h"

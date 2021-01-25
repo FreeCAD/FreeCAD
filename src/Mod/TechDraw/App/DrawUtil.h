@@ -47,10 +47,6 @@
 #include <Base/Vector3D.h>
 #include <Base/Matrix.h>
 
-#include <Mod/Part/App/PartFeature.h>
-
-#include "LineGroup.h"
-
 
 #ifndef M_2PI
     #define M_2PI ((M_PI)*2.0)

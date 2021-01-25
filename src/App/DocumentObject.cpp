@@ -42,6 +42,7 @@
 #include "PropertyExpressionEngine.h"
 #include "DocumentObjectExtension.h"
 #include "GeoFeatureGroupExtension.h"
+#include <App/ComplexGeoData.h>
 #include <App/DocumentObjectPy.h>
 #include <boost/bind/bind.hpp>
 

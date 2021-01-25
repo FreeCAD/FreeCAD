@@ -34,7 +34,7 @@
 #include <App/Application.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
-#include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/SelectionFilter.h>
 #include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>

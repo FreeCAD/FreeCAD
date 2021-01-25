@@ -26,10 +26,10 @@
 
 #include <QFileDialog>
 #include <QFileIconProvider>
-#include <QFileSystemModel>
-#include <QCompleter>
 #include <QPointer>
 
+class QCompleter;
+class QFileSystemModel;
 class QButtonGroup;
 class QGridLayout;
 class QGroupBox;

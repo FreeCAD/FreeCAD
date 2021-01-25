@@ -27,6 +27,7 @@
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 #include <TopExp.hxx>
 #include <TopoDS.hxx>
+#include <BRep_Builder.hxx>
 #include <BRep_Tool.hxx>
 #include <TopoDS_Edge.hxx>
 #endif

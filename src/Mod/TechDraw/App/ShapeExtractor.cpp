@@ -25,7 +25,7 @@
 #ifndef _PreComp_
 # include <sstream>
 #endif
-
+#include <BRep_Builder.hxx>
 #include <BRepAlgoAPI_Fuse.hxx>
 #include <BRepTools.hxx>
 #include <BRepBuilderAPI_Copy.hxx>

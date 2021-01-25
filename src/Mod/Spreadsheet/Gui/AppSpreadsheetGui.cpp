@@ -36,6 +36,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
+#include <App/Document.h>
 #include <App/Application.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Document.h>

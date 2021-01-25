@@ -30,16 +30,17 @@
 #include <App/PropertyLinks.h>
 #include <App/ObjectIdentifier.h>
 #include <Base/BaseClass.h>
-#include <Base/Quantity.h>
 #include <set>
-#include <deque>
 #include <App/Range.h>
 
 #if defined(__clang__)
 # pragma clang diagnostic push
 # pragma clang diagnostic ignored "-Woverloaded-virtual"
 #endif
-
+namespace Base
+{
+class Quantity;
+}
 namespace App  {
 
 class DocumentObject;

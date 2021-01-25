@@ -26,11 +26,11 @@
 
 
 #include <string>
-#include <QString>
-#include <Base/Quantity.h>
 
+class QString;
 
 namespace Base {
+class Quantity;
 
 /** Units systems */
 enum class UnitSystem {

@@ -27,20 +27,20 @@
 #ifndef PARTATTACHABLEOBJECT_H
 #define PARTATTACHABLEOBJECT_H
 
+#include <string>
+
 #include <App/PropertyStandard.h>
 #include <App/PropertyLinks.h>
-#include <App/GeoFeature.h>
+#include <App/PropertyGeo.h>
 #include <App/DocumentObjectExtension.h>
-#include <Base/Vector3D.h>
-#include <Base/Placement.h>
 #include <Base/Exception.h>
 
-#include "PartFeature.h"
-#include "Attacher.h"
-
-#include <QString>
-
 #include <gp_Vec.hxx>
+
+namespace Attacher
+{
+class AttachEngine;
+}
 
 namespace Part
 {

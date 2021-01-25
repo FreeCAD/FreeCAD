@@ -35,6 +35,7 @@
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
 #include <Base/Tools.h>
+#include <App/Document.h>
 #include <App/Application.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>

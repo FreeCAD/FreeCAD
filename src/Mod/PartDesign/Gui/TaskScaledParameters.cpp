@@ -40,7 +40,7 @@
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 #include <Base/Console.h>
-#include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/Command.h>
 #include <Mod/PartDesign/App/FeatureScaled.h>
 #include <Mod/Sketcher/App/SketchObject.h>

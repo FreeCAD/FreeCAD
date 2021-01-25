@@ -25,10 +25,15 @@
 #define PART_GEOMETRYEXTENSION_H
 
 #include <Base/StdStlTools.h>
-#include <Base/Persistence.h>
+#include <Base/BaseClass.h>
 #include <memory>
 #include <string>
 
+namespace Base
+{
+class Writer;
+class XMLReader;
+}
 
 namespace Part {
 

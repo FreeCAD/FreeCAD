@@ -56,6 +56,7 @@
 
 #include <Mod/TechDraw/Gui/ui_TaskCenterLine.h>
 
+#include <Mod/TechDraw/App/LineGroup.h>
 #include "DrawGuiStd.h"
 #include "PreferencesGui.h"
 #include "QGVPage.h"

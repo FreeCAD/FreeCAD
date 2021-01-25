@@ -31,6 +31,8 @@
 #include <Inventor/nodes/SoSwitch.h>
 #endif
 
+#include <App/Document.h>
+
 #include <Gui/Command.h>
 #include <Gui/MDIView.h>
 #include <Gui/Control.h>

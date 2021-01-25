@@ -57,6 +57,7 @@
 #include "DlgDisplayPropertiesImp.h"
 #include "DlgSettingsImageImp.h"
 #include "Selection.h"
+#include "SelectionObject.h"
 #include "SoFCOffscreenRenderer.h"
 #include "SoFCBoundingBox.h"
 #include "SoFCUnifiedSelection.h"

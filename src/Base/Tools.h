@@ -32,7 +32,8 @@
 #include <string>
 #include <boost_signals2.hpp>
 #include <QString>
-#include <QObject>
+
+class QObject;
 
 #if (QT_VERSION < 0x050300)
 class QSignalBlocker

@@ -34,7 +34,6 @@
 
 #include "Property.h"
 #include "PropertyLinks.h"
-#include "ComplexGeoData.h"
 
 namespace Base {
 class Writer;

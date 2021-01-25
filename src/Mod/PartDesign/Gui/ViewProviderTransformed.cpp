@@ -49,6 +49,7 @@
 
 #include "ViewProviderTransformed.h"
 #include "TaskTransformedParameters.h"
+#include <App/Document.h>
 #include <Base/Console.h>
 #include <Gui/Control.h>
 #include <Gui/Command.h>

@@ -136,6 +136,9 @@
 #include <Mod/Part/App/ToroidPy.h>
 
 #include <Base/Exception.h>
+#include <Base/Rotation.h>
+#include <Base/Matrix.h>
+#include <Base/Placement.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>
 #include <Base/Tools.h>

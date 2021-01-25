@@ -29,6 +29,7 @@
 #endif
 
 #include "ViewProviderGeoFeatureGroupExtension.h"
+#include "ViewProviderDocumentObject.h"
 #include "Command.h"
 #include "Application.h"
 #include "Document.h"

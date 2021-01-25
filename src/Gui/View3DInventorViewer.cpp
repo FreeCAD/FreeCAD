@@ -74,7 +74,6 @@
 # include <Inventor/projectors/SbSphereSheetProjector.h>
 # include <Inventor/SoOffscreenRenderer.h>
 # include <Inventor/SoPickedPoint.h>
-# include <Inventor/VRMLnodes/SoVRMLGroup.h>
 # include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/nodes/SoTransparencyType.h>
 # include <QApplication>
@@ -100,11 +99,13 @@
 
 #include <sstream>
 #include <Base/Console.h>
+#include <Base/Quantity.h>
 #include <Base/Stream.h>
 #include <Base/FileInfo.h>
 #include <Base/Sequencer.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
+#include <App/Document.h>
 #include <App/GeoFeatureGroupExtension.h>
 
 #include "View3DInventorViewer.h"

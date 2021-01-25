@@ -31,6 +31,7 @@
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 #include <TopTools_ListIteratorOfListOfShape.hxx>
 
+#include <App/Document.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>

@@ -25,10 +25,10 @@
 #endif
 
 #include "AttachExtension.h"
+#include "Attacher.h"
 
 #include <Base/Console.h>
 #include <App/Application.h>
-
 #include <App/FeaturePythonPyImp.h>
 #include "AttachExtensionPy.h"
 

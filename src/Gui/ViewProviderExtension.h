@@ -26,10 +26,9 @@
 
 #include "App/Extension.h"
 #include "ViewProvider.h"
-#include "ViewProviderDocumentObject.h"
 
 namespace Gui {
-
+class ViewProviderDocumentObject;
 /**
  * @brief Extension with special viewprovider calls
  *

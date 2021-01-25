@@ -35,6 +35,7 @@
 #include "ui_TaskPrimitiveParameters.h"
 #include "ViewProviderDatumCS.h"
 
+#include <App/Document.h>
 #include <App/Origin.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>

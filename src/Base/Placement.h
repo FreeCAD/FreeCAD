@@ -25,7 +25,6 @@
 
 #include "Vector3D.h"
 #include "Rotation.h"
-#include "Matrix.h"
 
 
 namespace Base {

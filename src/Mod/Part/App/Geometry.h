@@ -60,15 +60,18 @@
 #include <vector>
 #include <Base/Persistence.h>
 #include <Base/Vector3D.h>
-#include <Base/Matrix.h>
-#include <Base/Placement.h>
 
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
 
-#include "GeometryExtension.h"
+namespace Base
+{
+class Placement;
+class Matrix4D;
+}
 
 namespace Part {
+class GeometryExtension;
 
 class PartExport Geometry: public Base::Persistence
 {

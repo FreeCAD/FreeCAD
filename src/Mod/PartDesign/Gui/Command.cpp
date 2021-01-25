@@ -37,14 +37,14 @@
 # include <algorithm>
 #endif
 
-#include <App/DocumentObjectGroup.h>
+#include <App/Document.h>
 #include <App/Origin.h>
 #include <App/OriginFeature.h>
 #include <App/Part.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
-#include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Document.h>
 #include <Gui/View3DInventor.h>
@@ -61,6 +61,7 @@
 #include <Mod/PartDesign/App/DatumLine.h>
 #include <Mod/PartDesign/App/DatumPlane.h>
 #include <Mod/PartDesign/App/ShapeBinder.h>
+#include <Mod/Part/App/Attacher.h>
 
 #include "TaskFeaturePick.h"
 #include "ReferenceSelection.h"

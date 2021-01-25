@@ -32,6 +32,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <App/Document.h>
 #include <App/Part.h>
 #include <App/Origin.h>
 #include <Gui/ActionFunction.h>

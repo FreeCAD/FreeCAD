@@ -32,7 +32,7 @@
 #include <Gui/Command.h>
 #include <Gui/MainWindow.h>
 #include <Gui/FileDialog.h>
-#include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/Document.h>
 #include <Gui/Placement.h>
 #include <Gui/Control.h>

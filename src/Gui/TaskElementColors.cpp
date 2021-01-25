@@ -37,6 +37,7 @@
 
 #include <Base/Console.h>
 #include <App/ComplexGeoData.h>
+#include <Gui/SelectionObject.h>
 
 #include "Application.h"
 #include "Control.h"

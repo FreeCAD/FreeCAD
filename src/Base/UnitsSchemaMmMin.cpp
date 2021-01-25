@@ -27,6 +27,7 @@
 #endif
 
 #include <QString>
+#include "Quantity.h"
 #include "Exception.h"
 #include "UnitsApi.h"
 #include "UnitsSchemaMmMin.h"

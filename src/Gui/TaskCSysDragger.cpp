@@ -30,6 +30,7 @@
 #include <QGridLayout>
 #include <QFontMetrics>
 
+#include <App/Document.h>
 #include <Gui/TaskView/TaskView.h>
 #include "QuantitySpinBox.h"
 #include <Gui/Application.h>

@@ -48,6 +48,7 @@
 #include <Base/Writer.h>
 #include <Base/Tools.h>
 
+#include <App/ComplexGeoData.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>

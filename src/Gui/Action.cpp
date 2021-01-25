@@ -42,6 +42,7 @@
 #endif
 
 #include <Base/Tools.h>
+#include <App/Document.h>
 #include "Action.h"
 #include "Application.h"
 #include "BitmapFactory.h"

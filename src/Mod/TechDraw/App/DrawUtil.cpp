@@ -76,6 +76,7 @@
 #include "Preferences.h"
 #include "GeometryObject.h"
 #include "DrawUtil.h"
+#include "LineGroup.h"
 
 using namespace TechDraw;
 

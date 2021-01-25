@@ -54,7 +54,7 @@
 #include <Gui/FileDialog.h>
 #include <Gui/View.h>
 #include <Gui/ViewProvider.h>
-#include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/FileDialog.h>
 #include <Gui/MainWindow.h>
 

@@ -26,7 +26,6 @@
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
-#include "FemSetObject.h"
 
 namespace Fem
 {

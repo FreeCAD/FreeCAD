@@ -64,6 +64,7 @@
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/Control.h>
 #include <App/PropertyUnits.h>
+#include <App/Document.h>
 
 #include "ui_PlaneWidget.h"
 #include "ui_SphereWidget.h"

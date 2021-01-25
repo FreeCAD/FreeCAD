@@ -39,10 +39,9 @@
 #include "BitmapFactory.h"
 #include "ViewProviderDocumentObject.h"
 
-#include <Base/Console.h>
 #include <Base/Exception.h>
-#include <Base/Parameter.h>
 #include <App/Application.h>
+#include <App/ComplexGeoData.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObserver.h>

@@ -71,6 +71,7 @@
 #include "ViewProvider.h"
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Gui/SelectionObject.h>
 #include "MergeDocuments.h"
 #include "NavigationStyle.h"
 #include "GraphvizView.h"

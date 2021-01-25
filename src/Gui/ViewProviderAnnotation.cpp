@@ -47,6 +47,7 @@
 # include <Inventor/draggers/SoTranslate2Dragger.h>
 
 #include "ViewProviderAnnotation.h"
+#include <App/Document.h>
 #include <App/Annotation.h>
 #include <App/PropertyGeo.h>
 #include <App/Application.h>

@@ -26,9 +26,7 @@
 
 #include "FeaturePython.h"
 #include "DocumentObject.h"
-#include "PropertyLinks.h"
 #include "GroupExtension.h"
-#include <vector>
 
 
 namespace App

@@ -33,6 +33,7 @@
 #include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
 #include <Base/UnitsApi.h>
+#include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>

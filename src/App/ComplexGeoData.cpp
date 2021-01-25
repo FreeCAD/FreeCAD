@@ -30,7 +30,7 @@
 #include <boost/algorithm/string/predicate.hpp>
 
 #include <Base/Exception.h>
-#include <Base/Console.h>
+#include <Base/Placement.h>
 #include "ComplexGeoData.h"
 
 using namespace Data;

@@ -32,6 +32,8 @@
 # include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
+#include <App/Document.h>
+
 #include <Base/Console.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>

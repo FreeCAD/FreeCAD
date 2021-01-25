@@ -68,7 +68,7 @@
 #include <Gui/Command.h>
 #include <Gui/QuantitySpinBox.h>
 #include <Gui/WaitCursor.h>
-#include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/SelectionFilter.h>
 #include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/ViewProvider.h>

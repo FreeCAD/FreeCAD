@@ -26,7 +26,6 @@
 
 #include <App/PropertyStandard.h>
 #include "PartFeature.h"
-#include <Base/Matrix.h>
 
 namespace Part
 {

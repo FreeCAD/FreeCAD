@@ -56,6 +56,7 @@
 
 #include <App/DocumentObjectGroup.h>
 #include <App/GeoFeatureGroupExtension.h>
+#include <App/Document.h>
 #include <Gui/Control.h>
 #include <Gui/Command.h>
 #include <Gui/Application.h>

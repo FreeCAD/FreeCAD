@@ -66,6 +66,7 @@
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
 
+#include <App/Document.h>
 #include <App/DocumentObject.h>
 
 #include "View3DInventor.h"

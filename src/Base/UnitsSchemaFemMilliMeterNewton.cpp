@@ -28,7 +28,7 @@
 #endif
 
 #include <QString>
-#include "Exception.h"
+#include "Quantity.h"
 #include "UnitsApi.h"
 #include "UnitsSchemaFemMilliMeterNewton.h"
 #include <cmath>
