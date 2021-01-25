@@ -397,42 +397,72 @@ void ViewProvider::updateData(const App::Property* prop)
                 Gui::Application::Instance->getViewProvider(body));
         if (!getObject()->getDocument()->isPerformingTransaction()
                 && !getObject()->getDocument()->testStatus(App::Document::Restoring)
-                && bodyVp
-                && IconColor.getValue().getPackedValue())
+                && bodyVp)
         {
             unsigned long color = 0;
-            if (!PartDesign::Body::isSolidFeature(getObject()))
-                this->IconColor.setValue(0);
-            else {
-                if (!feature->BaseFeature.getValue())
-                    color = bodyVp->generateIconColor();
+            if (IconColor.getValue().getPackedValue()) {
+                if (!PartDesign::Body::isSolidFeature(getObject()))
+                    this->IconColor.setValue(0);
+                else {
+                    if (!feature->BaseFeature.getValue())
+                        color = bodyVp->generateIconColor();
 
-                bool first = true;
-                for (auto obj : body->getSiblings(feature)) {
-                    auto vp = Base::freecad_dynamic_cast<ViewProvider>(
-                            Gui::Application::Instance->getViewProvider(obj));
-                    if (!vp)
-                        continue;
-                    if (first) {
-                        first = false;
-                        if (!color) {
-                            color = vp->IconColor.getValue().getPackedValue();
+                    bool first = true;
+                    for (auto obj : body->getSiblings(feature)) {
+                        auto vp = Base::freecad_dynamic_cast<ViewProvider>(
+                                Gui::Application::Instance->getViewProvider(obj));
+                        if (!vp)
+                            continue;
+                        if (first) {
+                            first = false;
                             if (!color) {
-                                color = IconColor.getValue().getPackedValue();
+                                color = vp->IconColor.getValue().getPackedValue();
                                 if (!color) {
-                                    color = bodyVp->generateIconColor();
-                                    if (!color)
-                                        break;
+                                    color = IconColor.getValue().getPackedValue();
+                                    if (!color) {
+                                        color = bodyVp->generateIconColor();
+                                        if (!color)
+                                            break;
+                                    }
                                 }
                             }
                         }
+                        vp->IconColor.setValue(color);
                     }
-                    vp->IconColor.setValue(color);
                 }
             }
-        }
-        if (bodyVp && body->AutoGroupSolids.getValue())
+
+            if (!feature->BaseFeature.getValue()) {
+                // Assign tag icon color (if none) of the initial solid that we are forked from
+                std::set<App::DocumentObject*> checked;
+                for (auto obj : body->Group.getValue()) {
+                    if (!PartDesign::Body::isSolidFeature(obj))
+                        continue;
+                    if (checked.count(obj))
+                        continue;
+                    auto vp = Base::freecad_dynamic_cast<ViewProvider>(
+                            Gui::Application::Instance->getViewProvider(obj));
+                    if (!vp || vp->IconColor.getValue().getPackedValue())
+                        continue;
+                    uint32_t color = 0;
+                    auto siblings = body->getSiblings(obj, true, true);
+                    for (auto sibling : siblings) {
+                        auto vp = Base::freecad_dynamic_cast<ViewProvider>(
+                                Gui::Application::Instance->getViewProvider(sibling));
+                        if (!vp)
+                            continue;
+                        if (vp->IconColor.getValue().getPackedValue())
+                            color = vp->IconColor.getValue().getPackedValue();
+                        else {
+                            if (!color)
+                                color = bodyVp->generateIconColor();
+                            vp->IconColor.setValue(color);
+                        }
+                    }
+                }
+            }
             bodyVp->checkSiblings();
+        }
     }
 
     inherited::updateData(prop);
