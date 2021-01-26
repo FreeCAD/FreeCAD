@@ -773,8 +773,10 @@ bool View3DInventor::setCamera(const char* pCamera)
 
     SoNode * Cam;
     SoDB::read(&in,Cam);
+    Cam->ref();
 
     if (!Cam){
+        Cam->unref();
         throw Base::RuntimeError("Camera settings failed to read");
     }
 
@@ -802,6 +804,7 @@ bool View3DInventor::setCamera(const char* pCamera)
             CamViewerP->farDistance   = ((SoPerspectiveCamera *)Cam)->farDistance;
             CamViewerP->focalDistance = ((SoPerspectiveCamera *)Cam)->focalDistance;
         } else {
+            Cam->unref();
             throw Base::TypeError("Camera type mismatch");
         }
     } else if (Cam->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
@@ -815,10 +818,11 @@ bool View3DInventor::setCamera(const char* pCamera)
             CamViewerO->aspectRatio      = ((SoOrthographicCamera *)Cam)->aspectRatio ;
             CamViewerO->height           = ((SoOrthographicCamera *)Cam)->height;
         } else {
+            Cam->unref();
             throw Base::TypeError("Camera type mismatch");
         }
     }
-
+    Cam->unref();
     return true;
 }
 
