@@ -273,7 +273,7 @@ public:
                 propNameList.reserve(props.size());
                 for(auto &v : props) {
                     propList.emplace_back(v.first);
-                    propNameList.push_back(QString::fromLatin1(v.first));
+                    propNameList.push_back(QString::fromUtf8(v.first));
                 }
 
                 if(obj->isDerivedFrom(GeoFeature::getClassTypeId())) {

@@ -345,10 +345,10 @@ void SheetView::editingFinished()
 
     App::AutoTransaction guard("Edit cell");
     try {
-        QString str = ui->cellAlias->text();
+        std::string str = ui->cellAlias->text().toUtf8().constData();
         bool aliasOkay = true;
 
-        if (str.length()!= 0 && !sheet->isValidAlias(Base::Tools::toStdString(str))){
+        if (!str.empty() && !sheet->isValidAlias(str.c_str())){
             aliasOkay = false;
         }
 
@@ -362,13 +362,13 @@ void SheetView::editingFinished()
                 //do not show error message if failure to set new alias is because it is already the same string
                 std::string current_alias;
                 cell->getAlias(current_alias);
-                if (str != QString::fromUtf8(current_alias.c_str())){
-                    Base::Console().Error("Unable to set alias: %s\n", Base::Tools::toStdString(str).c_str());
+                if (str != current_alias){
+                    Base::Console().Error("Unable to set alias: %s\n", str.c_str());
                 }
             } else {
                 std::string address = CellAddress(i.row(), i.column()).toString();
-                Gui::cmdAppObjectArgs(sheet, "setAlias('%s', '%s')",
-                                      address, str.toStdString());
+                Gui::cmdAppObjectArgs(sheet, "setAlias('%s', u'%s')",
+                                      address, Base::Tools::escapedUnicodeFromUtf8(str.c_str()));
                 Gui::cmdAppDocument(sheet->getDocument(), "recompute()");
             }
         }
