@@ -28,13 +28,15 @@
 #include <string>
 #include <Base/BaseClass.h>
 #include <Base/Parameter.h>
-#include <Gui/TaskView/TaskWatcher.h>
 
 namespace Base {
 class PyObjectBase;
 }
 
 namespace Gui {
+namespace TaskView {
+class TaskWatcher;
+}
 
 class MenuItem;
 class ToolBarItem;

@@ -33,6 +33,7 @@
 # include <ShapeAnalysis_FreeBounds.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
+# include <TopoDS_Wire.hxx>
 # include <TopoDS_Iterator.hxx>
 # include <TopTools_HSequenceOfShape.hxx>
 #endif

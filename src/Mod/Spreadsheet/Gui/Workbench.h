@@ -25,6 +25,7 @@
 #ifndef SPREADSHEET_WORKBENCH_H
 #define SPREADSHEET_WORKBENCH_H
 
+#include <memory>
 #include <Gui/Workbench.h>
 
 class QtColorPicker;

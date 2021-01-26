@@ -24,6 +24,7 @@
 #ifndef GUI_DOCKWINDOWMANAGER_H
 #define GUI_DOCKWINDOWMANAGER_H
 
+#include <QObject>
 #include <QStringList>
 
 class QDockWidget;

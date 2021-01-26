@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <BRepBuilderAPI_MakePolygon.hxx>
 # include <TopoDS.hxx>
+# include <TopoDS_Wire.hxx>
 #endif
 
 #include <CXX/Extensions.hxx>
