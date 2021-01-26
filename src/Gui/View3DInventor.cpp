@@ -774,9 +774,12 @@ bool View3DInventor::setCamera(const char* pCamera)
     SoNode * Cam;
     SoDB::read(&in,Cam);
 
-    if (!Cam){
+    if (!Cam || !Cam->isOfType(SoCamera::getClassTypeId())) {
         throw Base::RuntimeError("Camera settings failed to read");
     }
+
+    // this is to make sure to reliably delete the node
+    CoinPtr<SoNode> camPtr(Cam, true);
 
     // toggle between perspective and orthographic camera
     if (Cam->getTypeId() != CamViewer->getTypeId())
