@@ -61,6 +61,9 @@ DlgSettingsColorGradientImp::DlgSettingsColorGradientImp( QWidget* parent, Qt::W
 DlgSettingsColorGradientImp::~DlgSettingsColorGradientImp()
 {
     // no need to delete child widgets, Qt does it all for us
+    // Validators are not owned by the widgets
+    delete fMaxVal;
+    delete fMinVal;
 }
 
 void DlgSettingsColorGradientImp::setColorModel( App::ColorGradient::TColorModel tModel)
