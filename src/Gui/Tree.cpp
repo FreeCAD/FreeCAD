@@ -6027,9 +6027,15 @@ void DocumentItem::selectItems(SelectionReason reason) {
             item->setSelected(false);
         }else if(item->selected) {
             if(sync) {
-                if(item->selected==2 && showItem(item,false,reason==SR_FORCE_EXPAND)) {
+                if (reason == SR_FORCE_EXPAND) {
+                    showItem(item,false,true);
+                    if (item->selected==2 && !newSelect)
+                        newSelect = item;
+                } else if(item->selected==2
+                        && showItem(item,false,reason==SR_FORCE_EXPAND))
+                {
                     // This means newly selected and can auto expand
-                    if(!newSelect)
+                    if(item->selected == 2 && !newSelect)
                         newSelect = item;
                 }
                 if(!newSelect && !oldSelect && !item->isHidden()) {
