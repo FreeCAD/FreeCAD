@@ -6493,6 +6493,16 @@ void ViewProviderSketch::UpdateSolverInformation()
                         .arg(tr("(click to select)"))
                         .arg(appendRedundantMsg(getSketchObject()->getLastRedundant())));
         }
+
+        QString partiallyRedundantString;
+
+        if(hasPartiallyRedundant) {
+            partiallyRedundantString = QString::fromLatin1("<br/><font color='orangered'>%1<a href=\"#partiallyredundant\"><span style=\" text-decoration:  underline; color:#0000ff; background-color: #F8F8FF;\">%2</span></a><br/>%3</font><br/>")
+                                .arg(tr("Sketch contains partially redundant constraints "))
+                                .arg(tr("(click to select)"))
+                                .arg(appendPartiallyRedundantMsg(getSketchObject()->getLastPartiallyRedundant()));
+        }
+
         if (getSketchObject()->getLastSolverStatus() == 0) {
             if (dofs == 0) {
                 // color the sketch as fully constrained if it has geometry (other than the axes)
@@ -6500,31 +6510,19 @@ void ViewProviderSketch::UpdateSolverInformation()
                     edit->FullyConstrained = true;
 
                 if (!hasRedundancies) {
-                    signalSetUp(QString::fromLatin1("<font color='green'><span style=\"color:#008000; background-color: #ececec;\">%1</font></span>").arg(tr("Fully constrained sketch")));
+                    signalSetUp(QString::fromLatin1("<font color='green'><span style=\"color:#008000; background-color: #ececec;\">%1</font></span> %2").arg(tr("Fully constrained sketch")).arg(partiallyRedundantString));
                 }
             }
             else if (!hasRedundancies) {
                 QString infoString;
 
                 if (dofs == 1)
-                    infoString = tr("Under-constrained sketch with <a href=\"#dofs\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">1 degree</span></a> of freedom. %1")
-                        .arg(hasPartiallyRedundant?
-                            QString::fromLatin1("<br/><font color='orangered'>%1<a href=\"#partiallyredundant\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">%2</span></a><br/>%3</font><br/>")
-                                .arg(tr("Sketch contains partially redundant constraints "))
-                                .arg(tr("(click to select)"))
-                                .arg(appendPartiallyRedundantMsg(getSketchObject()->getLastPartiallyRedundant()))
-                            : QString());
+                    signalSetUp(tr("Under-constrained sketch with <a href=\"#dofs\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">1 degree</span></a> of freedom. %1")
+                        .arg(partiallyRedundantString));
                 else
-                    infoString = tr("Under-constrained sketch with <a href=\"#dofs\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">%1 degrees</span></a> of freedom. %2")
+                    signalSetUp(tr("Under-constrained sketch with <a href=\"#dofs\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">%1 degrees</span></a> of freedom. %2")
                         .arg(dofs)
-                        .arg(hasPartiallyRedundant?
-                            QString::fromLatin1("<br/><font color='orangered'>%1<a href=\"#partiallyredundant\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">%2</span></a><br/>%3</font><br/>")
-                                .arg(tr("Sketch contains partially redundant constraints "))
-                                .arg(tr("(click to select)"))
-                                .arg(appendPartiallyRedundantMsg(getSketchObject()->getLastPartiallyRedundant()))
-                            : QString());
-
-                signalSetUp(infoString);
+                        .arg(partiallyRedundantString));
             }
 
             signalSolved(QString::fromLatin1("<font color='green'><span style=\"color:#008000; background-color: #ececec;\">%1</font></span>").arg(tr("Solved in %1 sec").arg(getSketchObject()->getLastSolveTime())));
