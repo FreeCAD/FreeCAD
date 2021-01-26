@@ -49,6 +49,8 @@ namespace Gui {
 
 namespace Dialog {
 
+class ProxyWidget;
+
 class GuiExport DlgExpressionInput : public QDialog
 {
     Q_OBJECT
@@ -75,10 +77,13 @@ protected:
     void closeEvent(QCloseEvent*);
     void mouseReleaseEvent(QMouseEvent*);
     void mousePressEvent(QMouseEvent*);
+    void mouseMoveEvent(QMouseEvent*);
+    void resizeEvent(QResizeEvent *);
 
     void adjustPosition();
     void adjustExpressionSize();
     void onClose();
+    int hitTest(const QPoint &point);
 
 private Q_SLOTS:
     void textChanged();
@@ -101,13 +106,49 @@ private:
     QString colorError;
     QString colorWarning;
 
-    int minimumWidth;
     bool adjustingPosition = false;
     bool noBackground;
     bool leftAligned = true;
     bool adjustingExpressionSize = false;
+    int dragging = 0;
+    QPoint lastPos;
+    QSize minSize;
+    ProxyWidget *proxy = nullptr;
+    friend class ProxyWidget;
 
     App::ExpressionFunctionCallDisabler exprFuncDisabler;
+};
+
+class ProxyWidget : public QWidget
+{
+public:
+    ProxyWidget(DlgExpressionInput *parent)
+        :QWidget(parent), master(parent)
+    {
+        setAttribute(Qt::WA_NoSystemBackground, true);
+        setAttribute(Qt::WA_TranslucentBackground, true);
+        setMouseTracking(true);
+    }
+
+    void paintEvent(QPaintEvent *);
+
+    void mousePressEvent(QMouseEvent* ev)
+    {
+        master->mousePressEvent(ev);
+    }
+
+    void mouseReleaseEvent(QMouseEvent *ev)
+    {
+        master->mouseReleaseEvent(ev);
+    }
+
+    void mouseMoveEvent(QMouseEvent *ev)
+    {
+        master->mouseMoveEvent(ev);
+    }
+
+private:
+    DlgExpressionInput *master;
 };
 
 }

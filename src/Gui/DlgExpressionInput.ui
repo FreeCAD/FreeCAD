@@ -25,10 +25,13 @@
   <property name="windowTitle">
    <string>Formula editor</string>
   </property>
-  <property name="sizeGripEnabled">
-   <bool>true</bool>
-  </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
+   <property name="spacing">
+    <number>2</number>
+   </property>
+   <property name="margin">
+    <number>2</number>
+   </property>
    <item>
     <widget class="QSplitter" name="splitter">
      <property name="orientation">

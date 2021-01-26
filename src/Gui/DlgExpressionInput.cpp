@@ -53,7 +53,6 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
   , path(_path)
   , discarded(false)
   , impliedUnit(_impliedUnit)
-  , minimumWidth(10)
   , exprFuncDisabler(false)
 {
     assert(path.getDocumentObject() != 0);
@@ -65,16 +64,19 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
     connect(ui->expression, SIGNAL(textChanged()), this, SLOT(textChanged()));
     connect(ui->discardBtn, SIGNAL(clicked()), this, SLOT(setDiscarded()));
 
+    setMouseTracking(true);
+
     if (expression) {
         ui->expression->setPlainText(Base::Tools::fromStdString(expression->toString()));
     }
     else {
         QVariant text = parent->property("text");
 #if QT_VERSION >= 0x050000
-        if (text.canConvert(QMetaType::QString)) {
+        if (text.canConvert(QMetaType::QString))
 #else
-        if (text.canConvert(QVariant::String)) {
+        if (text.canConvert(QVariant::String))
 #endif
+        {
             ui->expression->setPlainText(text.toString());
         }
     }
@@ -95,13 +97,25 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
             "User parameter:BaseApp/Preferences/MainWindow");
     QString mainstyle = QString::fromLatin1(hGrp->GetASCII("StyleSheet").c_str());
     bool darkstyle = mainstyle.indexOf(QLatin1String("dark"),0,Qt::CaseInsensitive) >= 0;
+    if (darkstyle)
+        this->stylesheet = QLatin1String("*{color:palette(bright-text)}");
+    else
+        this->stylesheet = QLatin1String("*{color:palette(text)}");
     if (this->noBackground) {
+        // Both OSX and Windows will pass through mouse event on complete
+        // transparent top level widgets. So we use an almost transparent child
+        // proxy widget to force the OS to capture mouse event.
+        proxy = new ProxyWidget(this);
+        proxy->show();
+        proxy->lower();
+        proxy->resize(this->rect().size());
+
         ui->expression->setStyleSheet(QLatin1String("margin:0px"));
 
         setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint);
         setAttribute(Qt::WA_NoSystemBackground, true);
         setAttribute(Qt::WA_TranslucentBackground, true);
-        layout()->setContentsMargins(0,0,0,0);
+        layout()->setContentsMargins(4,4,4,4);
 
         uint checkboxColor;
         if (darkstyle) {
@@ -119,10 +133,6 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
     } else
         this->background = QString::fromLatin1("background:transparent");
 
-    if (darkstyle)
-        this->stylesheet = QLatin1String("*{color:palette(bright-text)}");
-    else
-        this->stylesheet = QLatin1String("*{color:palette(text)}");
     /// Some qt version seems having trouble apply the stylesheet on creation
     QTimer::singleShot(300, this, SLOT(applyStylesheet()));
 
@@ -181,6 +191,13 @@ DlgExpressionInput::~DlgExpressionInput()
     delete ui;
 }
 
+void DlgExpressionInput::resizeEvent(QResizeEvent *ev)
+{
+    if (proxy)
+        proxy->resize(this->rect().size());
+    QDialog::resizeEvent(ev);
+}
+
 void DlgExpressionInput::textChanged()
 {
     timer.start(300);
@@ -191,6 +208,9 @@ void DlgExpressionInput::onTimer()
     if (adjustingExpressionSize) {
         adjustingExpressionSize = false;
         adjustExpressionSize();
+        minSize = minimumSize();
+        if (this->noBackground)
+            setFixedSize(width(), height());
     }
 
     try {
@@ -261,7 +281,7 @@ void DlgExpressionInput::setDiscarded()
 void DlgExpressionInput::setExpressionInputSize(int width, int height)
 {
     (void)height;
-    minimumWidth = width;
+    (void)width;
     adjustPosition();
 }
 
@@ -270,63 +290,118 @@ void DlgExpressionInput::applyStylesheet()
     this->setStyleSheet(stylesheet);
 }
 
+enum HitPos {
+    HitNone,
+    HitTop = 1,
+    HitBottom = 2,
+    HitLeft = 4,
+    HitRight = 8,
+};
+
+int DlgExpressionInput::hitTest(const QPoint &point)
+{
+    if (!this->noBackground)
+        return 0;
+
+    int margin = layout()->contentsRect().left()+1;
+    int res = 0;
+    if (point.x() < margin) {
+        res |= HitLeft;
+        if (point.y() < margin) {
+            res |= HitTop;
+            setCursor(Qt::SizeFDiagCursor);
+        } else if (point.y() > height() - margin) {
+            res |= HitBottom;
+            setCursor(Qt::SizeBDiagCursor);
+        } else
+            setCursor(Qt::SizeHorCursor);
+    } else if (point.x() > width() - margin) {
+        res |= HitRight;
+        if (point.y() < margin) {
+            res |= HitTop;
+            setCursor(Qt::SizeBDiagCursor);
+        } else if (point.y() > height() - margin) {
+            res |= HitBottom;
+            setCursor(Qt::SizeFDiagCursor);
+        } else
+            setCursor(Qt::SizeHorCursor);
+    } else if (point.y() < margin) {
+        res = HitTop;
+        setCursor(Qt::SizeAllCursor);
+    } else if (point.y() > height() - margin) {
+        res = HitBottom;
+        setCursor(Qt::SizeVerCursor);
+    } else
+        unsetCursor();
+    return res;
+}
+
 void DlgExpressionInput::mouseReleaseEvent(QMouseEvent* ev)
 {
-#if 0//defined(Q_OS_WIN)
-    if (QWidget::mouseGrabber() == this) {
-        QList<QWidget*> childs = this->findChildren<QWidget*>();
-        for (QList<QWidget*>::iterator it = childs.begin(); it != childs.end(); ++it) {
-            QPoint pos = (*it)->mapFromGlobal(ev->globalPos());
-            if ((*it)->rect().contains(pos)) {
-                // Create new mouse event with the correct local position
-                QMouseEvent me(ev->type(), pos, ev->globalPos(), ev->button(), ev->buttons(), ev->modifiers());
-                QObject* obj = *it;
-                obj->event(&me);
-                if (me.isAccepted()) {
-                    break;
-                }
-            }
-        }
+    if (dragging && ev->button() == Qt::LeftButton) {
+        unsetCursor();
+        dragging = 0;
+        minSize = minimumSize();
+        setFixedSize(width(), height());
     }
-#else
-    Q_UNUSED(ev);
-#endif
 }
 
 void DlgExpressionInput::mousePressEvent(QMouseEvent* ev)
 {
-#if 0//defined(Q_OS_WIN)
-    bool handled = false;
-    if (QWidget::mouseGrabber() == this) {
-        QList<QWidget*> childs = this->findChildren<QWidget*>();
-        for (QList<QWidget*>::iterator it = childs.begin(); it != childs.end(); ++it) {
-            QPoint pos = (*it)->mapFromGlobal(ev->globalPos());
-            if ((*it)->rect().contains(pos)) {
-                // Create new mouse event with the correct local position
-                QMouseEvent me(ev->type(), pos, ev->globalPos(), ev->button(), ev->buttons(), ev->modifiers());
-                QObject* obj = *it;
-                obj->event(&me);
-                if (me.isAccepted()) {
-                    handled = true;
-                    break;
-                }
-            }
+    if (ev->buttons() != Qt::LeftButton)
+        return;
+    if ((dragging = hitTest(ev->pos()))) {
+        lastPos = ev->globalPos();
+        setMinimumSize(minSize);
+        setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
+    }
+}
+
+void DlgExpressionInput::mouseMoveEvent(QMouseEvent *ev)
+{
+    if (!dragging) {
+        hitTest(ev->pos());
+        return;
+    }
+    QPoint offset = ev->globalPos() - lastPos;
+    if (dragging == HitTop) {
+        lastPos += offset;
+        move(this->pos() + offset);
+        return;
+    }
+    QRect rect = this->geometry();
+    QSize maxSize = getMainWindow()->size();
+    if (dragging & HitTop) {
+        if (rect.height() - offset.y() >= minimumHeight()
+            && rect.height() - offset.y() <= maxSize.height())
+        {
+            lastPos.setY(lastPos.y() + offset.y());
+            rect.setTop(rect.top() + offset.y());
+        }
+    } else if (dragging & HitBottom) {
+        if (rect.height() + offset.y() >= minimumHeight()
+            && rect.height() + offset.y() <= maxSize.height())
+        {
+            lastPos.setY(lastPos.y() + offset.y());
+            rect.setBottom(rect.bottom() + offset.y());
         }
     }
-
-    if (handled)
-        return;
-#else
-    Q_UNUSED(ev);
-#endif
-    // The 'FramelessWindowHint' is also set when the background is transparent.
-    if (windowFlags() & Qt::FramelessWindowHint) {
-        //we need to reject the dialog when clicked on the background. As the background is transparent
-        //this is the expected behaviour for the user
-        bool on = ui->expression->completerActive();
-        if (!on)
-            this->reject();
+    if (dragging & HitLeft) {
+        if (rect.width() - offset.x() >= minimumWidth()
+            && rect.width() - offset.x() <= maxSize.width())
+        {
+            lastPos.setX(lastPos.x() + offset.x());
+            rect.setLeft(rect.left() + offset.x());
+        }
+    } else if (dragging & HitRight) {
+        if (rect.width() + offset.x() >= minimumWidth()
+            && rect.width() + offset.x() <= maxSize.width())
+        {
+            lastPos.setX(lastPos.x() + offset.x());
+            rect.setRight(rect.right() + offset.x());
+        }
     }
+    setGeometry(rect);
 }
 
 void DlgExpressionInput::show()
@@ -383,6 +458,9 @@ void DlgExpressionInput::evalFuncChecked(bool checked)
 
 bool DlgExpressionInput::eventFilter(QObject *obj, QEvent *ev)
 {
+    if (ev->type() == QEvent::MouseMove && obj != this)
+        unsetCursor();
+
     // if the user clicks on a widget different to this
     if (ev->type() == QEvent::MouseButtonPress && obj != this) {
         // Since the widget has a transparent background we cannot rely
@@ -509,6 +587,14 @@ void DlgExpressionInput::adjustExpressionSize()
         ui->splitter->setSizes(sizes);
         adjustPosition();
     }
+}
+
+void ProxyWidget::paintEvent(QPaintEvent*)
+{
+    QColor backgroundColor(0,0,0);
+    backgroundColor.setAlpha(ExprParams::EditDialogBGAlpha());
+    QPainter painter(this);
+    painter.fillRect(rect(),backgroundColor);
 }
 
 #include "moc_DlgExpressionInput.cpp"

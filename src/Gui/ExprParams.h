@@ -69,6 +69,7 @@ public:
     FC_EXPR_PARAM(EditDialogWidth,int,Int,0,"")\
     FC_EXPR_PARAM(EditDialogHeight,int,Int,0,"")\
     FC_EXPR_PARAM(EditDialogTextHeight,int,Int,0,"")\
+    FC_EXPR_PARAM(EditDialogBGAlpha,int,Int,1,"")\
 
 #undef FC_EXPR_PARAM
 #define FC_EXPR_PARAM(_name,_ctype,_type,_def,_doc) \
