@@ -24,6 +24,7 @@
 import PathScripts.PathOpGui as PathOpGui
 from PySide import QtCore, QtGui
 import PathScripts.PathAdaptive as PathAdaptive
+import PathScripts.features.PathFeatureExtensionsGui as PathFeatureExtensionsGui
 
 
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
@@ -131,6 +132,11 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         form.FinishingProfile.setChecked(True)
         formLayout.addRow(QtGui.QLabel("Finishing Profile"), form.FinishingProfile)
 
+        # Use outline checkbox
+        form.useOutline = QtGui.QCheckBox()
+        form.useOutline.setChecked(False)
+        formLayout.addRow(QtGui.QLabel("Use outline"), form.useOutline)
+
         layout.addLayout(formLayout)
 
         # stop button
@@ -160,6 +166,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         # signals.append(self.form.ProcessHoles.stateChanged)
         signals.append(self.form.ForceInsideOut.stateChanged)
         signals.append(self.form.FinishingProfile.stateChanged)
+        signals.append(self.form.useOutline.stateChanged)
         signals.append(self.form.StopButton.toggled)
         return signals
 
@@ -180,6 +187,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         # self.form.ProcessHoles.setChecked(obj.ProcessHoles)
         self.form.ForceInsideOut.setChecked(obj.ForceInsideOut)
         self.form.FinishingProfile.setChecked(obj.FinishingProfile)
+        self.form.useOutline.setChecked(obj.UseOutline)
         self.setupToolController(obj, self.form.ToolController)
         self.setupCoolant(obj, self.form.coolantController)
         self.form.StopButton.setChecked(obj.Stopped)
@@ -209,6 +217,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         obj.ForceInsideOut = self.form.ForceInsideOut.isChecked()
         obj.FinishingProfile = self.form.FinishingProfile.isChecked()
+        obj.UseOutline = self.form.useOutline.isChecked()
         obj.Stopped = self.form.StopButton.isChecked()
         if(obj.Stopped):
             self.form.StopButton.setChecked(False)  # reset the button
@@ -220,6 +229,11 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         obj.setEditorMode('AdaptiveOutputState', 2)  # hide this property
         obj.setEditorMode('StopProcessing', 2)  # hide this property
         obj.setEditorMode('Stopped', 2)  # hide this property
+
+    def taskPanelBaseLocationPage(self, obj, features):
+        if not hasattr(self, 'extensionsPanel'):
+            self.extensionsPanel = PathFeatureExtensionsGui.TaskPanelExtensionPage(obj, features) # pylint: disable=attribute-defined-outside-init
+        return self.extensionsPanel
 
 
 Command = PathOpGui.SetupOperation('Adaptive',
