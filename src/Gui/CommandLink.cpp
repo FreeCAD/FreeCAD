@@ -277,7 +277,7 @@ StdCmdLinkMakeRelative::StdCmdLinkMakeRelative()
 }
 
 bool StdCmdLinkMakeRelative::isActive() {
-    return Selection().hasSubSelection(0,true);
+    return Selection().hasSelection();
 }
 
 void StdCmdLinkMakeRelative::activated(int) {
