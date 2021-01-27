@@ -357,21 +357,18 @@ void SheetView::editingFinished()
         sheet->setCell(addr, ui->cellContent->text().toUtf8().constData());
 
         Cell * cell = sheet->getCell(addr);
-        if (cell){
-            if (!aliasOkay){
-                //do not show error message if failure to set new alias is because it is already the same string
-                std::string current_alias;
-                cell->getAlias(current_alias);
-                if (str != current_alias){
-                    Base::Console().Error("Unable to set alias: %s\n", str.c_str());
-                }
-            } else {
-                std::string address = CellAddress(i.row(), i.column()).toString();
-                Gui::cmdAppObjectArgs(sheet, "setAlias('%s', u'%s')",
-                                      address, Base::Tools::escapedUnicodeFromUtf8(str.c_str()));
-                Gui::cmdAppDocument(sheet->getDocument(), "recompute()");
+        if (cell && !aliasOkay){
+            //do not show error message if failure to set new alias is because it is already the same string
+            std::string current_alias;
+            cell->getAlias(current_alias);
+            if (str != current_alias){
+                Base::Console().Error("Unable to set alias: %s\n", str.c_str());
             }
         }
+        std::string address = CellAddress(i.row(), i.column()).toString();
+        Gui::cmdAppObjectArgs(sheet, "setAlias('%s', u'%s')",
+                              address, Base::Tools::escapedUnicodeFromUtf8(str.c_str()));
+        Gui::cmdAppDocument(sheet->getDocument(), "recompute()");
         ui->cells->setCurrentIndex(ui->cellContent->next());
         ui->cells->setFocus();
     } catch (Base::Exception & e) {
