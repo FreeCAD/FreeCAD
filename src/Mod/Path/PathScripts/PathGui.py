@@ -48,6 +48,7 @@ def updateInputField(obj, prop, widget, onBeforeChange=None):
     If onBeforeChange is specified it is called before a new value is assigned to the property.
     Returns True if a new value was assigned, False otherwise (new value is the same as the current).
     '''
+    PathLog.track()
     value = widget.property('rawValue')
     attr = PathUtil.getProperty(obj, prop)
     attrValue = attr.Value if hasattr(attr, 'Value') else attr
@@ -98,10 +99,12 @@ class QuantitySpinBox:
         PathLog.track(widget)
         self.widget = widget
         self.onBeforeChange = onBeforeChange
+        self.prop = None
         self.attachTo(obj, prop)
 
     def attachTo(self, obj, prop = None):
         '''attachTo(obj, prop=None) ... use an existing editor for the given object and property'''
+        PathLog.track(self.prop, prop)
         self.obj = obj
         self.prop = prop
         if obj and prop:
@@ -119,12 +122,14 @@ class QuantitySpinBox:
 
     def expression(self):
         '''expression() ... returns the expression if one is bound to the property'''
+        PathLog.track(self.prop, self.valid)
         if self.valid:
             return self.widget.property('expression')
         return ''
 
     def setMinimum(self, quantity):
         '''setMinimum(quantity) ... set the minimum'''
+        PathLog.track(self.prop, self.valid)
         if self.valid:
             value = quantity.Value if hasattr(quantity, 'Value') else quantity
             self.widget.setProperty('setMinimum', value)
@@ -133,6 +138,7 @@ class QuantitySpinBox:
         '''updateSpinBox(quantity=None) ... update the display value of the spin box.
         If no value is provided the value of the bound property is used.
         quantity can be of type Quantity or Float.'''
+        PathLog.track(self.prop, self.valid)
         if self.valid:
             if quantity is None:
                 quantity = PathUtil.getProperty(self.obj, self.prop)
@@ -141,6 +147,7 @@ class QuantitySpinBox:
 
     def updateProperty(self):
         '''updateProperty() ... update the bound property with the value from the spin box'''
+        PathLog.track(self.prop, self.valid)
         if self.valid:
             return updateInputField(self.obj, self.prop, self.widget, self.onBeforeChange)
         return None
