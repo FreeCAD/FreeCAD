@@ -26,6 +26,7 @@
 # include <QApplication>
 # include <QMessageBox>
 # include <QInputDialog>
+# include <QCheckBox>
 # include <Inventor/C/basic.h>
 # include <TopExp_Explorer.hxx>
 #endif
@@ -150,10 +151,8 @@ void CmdPartDesignBody::activated(int iMsg)
             it = sels.erase(it);
             continue;
         }
-        if (!count && Part::PartParams::UseBaseObjectName())
+        if (labelSource.getObjectName().empty())
             labelSource = sobj;
-        else
-            labelSource = App::DocumentObjectT();
         ++count;
         ++it;
     }
@@ -226,19 +225,33 @@ void CmdPartDesignBody::activated(int iMsg)
     }
 
     if(supportNames.size()) {
-        auto res = QMessageBox::question(Gui::getMainWindow(), QObject::tr("Base feature"),
-                QObject::tr("You are about to use the following feature as base for the new body. "
-                            "Select 'Yes' to continue, 'No' to create the body without base feature, "
-                            "or 'Abort' to exit.\n")
-                    + QString::fromUtf8(supportNames.c_str()),
-                QMessageBox::Yes|QMessageBox::No|QMessageBox::Abort,QMessageBox::No);
+        QMessageBox box(Gui::getMainWindow());
+        box.setIcon(QMessageBox::Question);
+        box.setWindowTitle(QObject::tr("Base feature"));
+        box. setText(QString::fromLatin1("%1\n%2\n\n%3").arg(
+                    QObject::tr("You are about to use the following feature as base for the new body."),
+                    QString::fromUtf8(supportNames.c_str()),
+                    QObject::tr("Select 'Yes' to continue, 'No' to create the body without base "
+                                "feature, or 'Abort' to exit.")));
+        box.setStandardButtons(QMessageBox::Yes | QMessageBox::No | QMessageBox::Abort);
+        box.setDefaultButton(QMessageBox::No);
+        box.setEscapeButton(QMessageBox::Abort);
+
+        QCheckBox checkBox(QObject::tr("Name body after the selection"));
+        checkBox.setToolTip(QObject::tr("Name the new body after the selected object"));
+        checkBox.setChecked(Part::PartParams::UseBaseObjectName());
+        checkBox.blockSignals(true);
+        box.addButton(&checkBox, QMessageBox::ResetRole);
+
+        auto res = box.exec();
         if(res == QMessageBox::Abort)
             return;
-        if(res == QMessageBox::No) {
+        if (checkBox.isChecked() != Part::PartParams::UseBaseObjectName())
+            Part::PartParams::set_UseBaseObjectName(checkBox.isChecked());
+        if(res == QMessageBox::No)
             support.clear();
-            labelSource = App::DocumentObjectT();
-        }
-    }
+    } else
+        labelSource = App::DocumentObjectT();
 
     std::string bodyName = getUniqueObjectName("Body", actPart);
     App::Document *doc = actPart ? actPart->getDocument() : App::GetApplication().getActiveDocument();
@@ -246,7 +259,7 @@ void CmdPartDesignBody::activated(int iMsg)
     // add the Body feature itself, and make it active
     Gui::cmdAppDocument(doc, std::ostringstream() << "addObject('PartDesign::Body','" << bodyName << "')");
     auto body = Base::freecad_dynamic_cast<PartDesign::Body>(doc->getObject(bodyName.c_str()));
-    if (labelSource.getObjectName().size())
+    if (Part::PartParams::UseBaseObjectName() && labelSource.getObjectName().size())
         Gui::cmdAppObjectArgs(body, "Label = %s.Label", labelSource.getObjectPython());
     if (baseFeature) {
         if (baseFeature->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
