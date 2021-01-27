@@ -1148,15 +1148,16 @@ void LinkView::setLinkViewObject(ViewProviderDocumentObject *vpd,
     subInfo.clear();
     for(const auto &sub : subs) {
         if(sub.empty()) continue;
-        const char *subelement = Data::ComplexGeoData::findElementName(sub.c_str());
-        std::string subname = sub.substr(0,subelement-sub.c_str());
+        std::string subname = Data::ComplexGeoData::noElementName(sub.c_str());
+        std::string element = Data::ComplexGeoData::oldElementName(
+                Data::ComplexGeoData::findElementName(sub.c_str()));
         auto it = subInfo.find(subname);
         if(it == subInfo.end()) {
             it = subInfo.insert(std::make_pair(subname,std::unique_ptr<SubInfo>())).first;
             it->second.reset(new SubInfo(*this));
         }
-        if(subelement[0])
-            it->second->subElements.insert(subelement);
+        if(!element.empty())
+            it->second->subElements.insert(std::move(element));
     }
     updateLink();
 }
@@ -1613,12 +1614,13 @@ bool LinkView::linkGetElementPicked(const SoPickedPoint *pp, std::string &subnam
             return false;
         const std::string &element = ss2.str();
         if(sub.subElements.size()) {
-            if(sub.subElements.find(element)==sub.subElements.end()) {
-                auto pos = element.find('.');
-                if(pos==std::string::npos ||
-                   sub.subElements.find(element.c_str()+pos+1)==sub.subElements.end())
-                    return false;
-            }
+            auto pos = element.find('.');
+            if (pos == std::string::npos)
+                pos = 0;
+            else
+                pos += 1;
+            if(sub.subElements.find(element.c_str()+pos)==sub.subElements.end())
+                return false;
         }
         if(!autoSubLink || subInfo.size()>1)
             ss << v.first;
@@ -1747,9 +1749,11 @@ bool LinkView::linkGetDetailPath(const char *subname, SoFullPath *path, SoDetail
                         continue;
                     ++nextsub;
                 }
-                if(*nextsub && sub.subElements.size() &&
-                   sub.subElements.find(nextsub)==sub.subElements.end())
-                    break;
+                if(*nextsub && sub.subElements.size()) {
+                    auto element = Data::ComplexGeoData::oldElementName(nextsub);
+                    if (sub.subElements.find(element)==sub.subElements.end())
+                       break;
+                }
                 appendPath(path,sub.pcNode);
                 len = path->getLength();
                 if(sub.linkInfo->getDetail(false,SnapshotTransform,nextsub,det,path))
