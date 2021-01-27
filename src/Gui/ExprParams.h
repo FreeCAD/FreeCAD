@@ -51,6 +51,17 @@ public:
         return handle;
     }
 
+#ifdef FC_OS_MACOSX
+    // Both MacOSX and Windows will pass through mouse event for the
+    // transparent part of a top level dialog, and we need the mouse event to
+    // handle resizing of expression editor. Windows will capture the mouse
+    // event as long as there is any non transparency, hence setting alpha to 1
+    // works. But OSX seems to require a higher transparency.
+#   define FC_EXPR_PARAM_EDIT_BG_ALPHA 16
+#else
+#   define FC_EXPR_PARAM_EDIT_BG_ALPHA 1
+#endif
+
 #define FC_EXPR_PARAMS \
     FC_EXPR_PARAM(CompleterCaseSensitive,bool,Bool,false,\
        QT_TRANSLATE_NOOP("ExprParams","Expression completer with case sensistive")) \
@@ -69,7 +80,7 @@ public:
     FC_EXPR_PARAM(EditDialogWidth,int,Int,0,"")\
     FC_EXPR_PARAM(EditDialogHeight,int,Int,0,"")\
     FC_EXPR_PARAM(EditDialogTextHeight,int,Int,0,"")\
-    FC_EXPR_PARAM(EditDialogBGAlpha,int,Int,1,"")\
+    FC_EXPR_PARAM(EditDialogBGAlpha,int,Int,FC_EXPR_PARAM_EDIT_BG_ALPHA,"")\
 
 #undef FC_EXPR_PARAM
 #define FC_EXPR_PARAM(_name,_ctype,_type,_def,_doc) \
