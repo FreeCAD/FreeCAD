@@ -173,6 +173,12 @@
         <property name="frameShape">
          <enum>QFrame::Box</enum>
         </property>
+        <property name="editTriggers">
+         <set>QAbstractItemView::NoEditTriggers</set>
+        </property>
+        <property name="showDropIndicator" stdset="0">
+         <bool>false</bool>
+        </property>
        </widget>
       </item>
       <item>
