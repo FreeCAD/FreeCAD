@@ -87,7 +87,7 @@ def checkWorkingDir():
 
     subdirlist = ['Bit', 'Library', 'Shape']
     mode = 0o777
-    for dir in subdirlist:
+    for dir in subdirlist.copy():
         subdir = "{}{}{}".format(workingdir, os.path.sep, dir)
         if os.path.exists(subdir):
             subdirlist.remove(dir)
