@@ -67,6 +67,7 @@ parser.add_argument('--delete', metavar='prop', help='Delete the given attribute
 parser.add_argument('--set', metavar='prop=value', help='Set property value')
 parser.add_argument('--print', action='store_true', help='If set attributes are printed as discovered')
 parser.add_argument('--print-all', action='store_true', help='If set Shape attributes are also printed')
+parser.add_argument('--print-groups', action='store_true', help='If set all custom property groups are printed')
 parser.add_argument('--save-changes', action='store_true', help='Unless specified the file is not saved')
 parser.add_argument('--freecad', help='Directory FreeCAD binaries (libFreeCAD.so) if not installed')
 args = parser.parse_args()
@@ -104,7 +105,10 @@ for i, fname in enumerate(args.path):
     print("{}:".format(doc.Name))
     for o in doc.Objects:
         if PathPropertyBag.IsPropertyBag(o):
-            print("  {}:".format(o.Label))
+            if args.print_groups:
+                print("  {}:  {}".format(o.Label, sorted(o.CustomPropertyGroups)))
+            else:
+                print("  {}:".format(o.Label))
             for p in o.Proxy.getCustomProperties():
                 grp = o.getGroupOfProperty(p)
                 typ = o.getTypeIdOfProperty(p)
@@ -139,6 +143,7 @@ for i, fname in enumerate(args.path):
                     continue
                 if args.print or args.print_all:
                     print("    {:10} {:20} {:20} {:10} {}".format(grp, p, ttp, str(val), enm))
+            o.Proxy.refreshCustomPropertyGroups()
     if args.save_changes:
         doc.recompute()
         doc.save()
