@@ -28,7 +28,7 @@
 #endif
 
 #include <boost/algorithm/string/predicate.hpp>
-#include "Command.h"
+#include "CommandT.h"
 #include "Action.h"
 #include "Application.h"
 #include "MainWindow.h"
@@ -42,11 +42,13 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Parameter.h>
+#include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObserver.h>
 #include <App/Link.h>
+#include <App/AutoTransaction.h>
 
 FC_LOG_LEVEL_INIT("CommandLink",true,true)
 
@@ -224,41 +226,88 @@ void StdCmdLinkMake::activated(int) {
         return;
     }
 
-    std::set<App::DocumentObject*> objs;
-    for(auto &sel : Selection().getCompleteSelection()) {
-        if(sel.pObject && sel.pObject->getNameInDocument())
-           objs.insert(sel.pObject);
-    }
+    auto sels = Selection().getSelectionT("*", 0);
 
     Selection().selStackPush();
     Selection().clearCompleteSelection();
 
-    Command::openCommand(QT_TRANSLATE_NOOP("Command", "Make link"));
+    App::AutoTransaction committer(QT_TRANSLATE_NOOP("Command", "Make link in place"));
     try {
-        if(objs.empty()) {
+        if (sels.empty()) {
             std::string name = doc->getUniqueObjectName("Link");
-            Command::doCommand(Command::Doc, "App.getDocument('%s').addObject('App::Link','%s')",
-                doc->getName(),name.c_str());
+            cmdAppDocument(doc, std::ostringstream() << "addObject('App::Link','" << name << "')"),
             Selection().addSelection(doc->getName(),name.c_str());
-        }else{
-            for(auto obj : objs) {
-                std::string name = doc->getUniqueObjectName("Link");
-                Command::doCommand(Command::Doc,
-                    "App.getDocument('%s').addObject('App::Link','%s').setLink(App.getDocument('%s').%s)",
-                    doc->getName(),name.c_str(),obj->getDocument()->getName(),obj->getNameInDocument());
-                setLinkLabel(obj,doc->getName(),name.c_str());
-                Selection().addSelection(doc->getName(),name.c_str());
+            return;
+        }
+
+        std::ostringstream ss;
+        ss << std::setprecision(std::numeric_limits<double>::digits10 + 1);
+        for(auto &sel : sels) {
+            auto sobj = sel.getSubObject();
+            if (!sobj) {
+                FC_ERR("Failed to get sub-object " << sel.getSubObjectFullName());
+                continue;
             }
+            std::string name = doc->getUniqueObjectName("Link");
+            ss.str("");
+            cmdAppDocument(doc, ss << "addObject('App::Link', '" << name << "').setLink("
+                                   << sobj->getFullName(true) << ")");
+            setLinkLabel(sobj,doc->getName(),name.c_str());
+            auto link = doc->getObject(name.c_str());
+            if (link && App::LinkParams::CreateInPlace()) {
+                ss.str("");
+                ss << "_t,_r,_s,_ = "
+                        << sel.getObjectPython() << ".getSubObject(u'"
+                                << sel.getSubNameNoElement() << "', retType=4).getTransform()\n"
+                   << "if not _t.isEqual(App.Vector(),1e-7) or not _r.isSame(App.Rotation(),1e-10):\n"
+                   << "    " << link->getFullName(true) << ".Placement = App.Placement(_t, _r)\n"
+                   << "if not _s.isEqual(App.Vector(1,1,1),1e-7):\n"
+                   << "    " << link->getFullName(true) << ".ScaleVector = _s\n"
+                   << "del _t, _r, _s\n";
+                Command::runCommand(Command::Doc, ss.str().c_str());
+            }
+            Selection().addSelection(doc->getName(),name.c_str());
         }
         Selection().selStackPush();
-        Command::commitCommand();
     } catch (const Base::Exception& e) {
-        Command::abortCommand();
+        committer.close(true);
         QMessageBox::critical(getMainWindow(), QObject::tr("Create link failed"),
             QString::fromLatin1(e.what()));
         e.ReportException();
     }
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
+class StdCmdLinkMakeInPlace: public CheckableCommand
+{
+public:
+    StdCmdLinkMakeInPlace()
+        : CheckableCommand("Std_LinkMakeInPlace")
+    {
+        sGroup        = QT_TR_NOOP("Link");
+        sMenuText     = QT_TR_NOOP("Make link in place");
+        sToolTipText  = QT_TR_NOOP("Enable this option to create a link with the same placement of the linked object");
+        sWhatsThis    = "Std_LinkMakeInPlace";
+        sStatusTip    = sToolTipText;
+        eType         = NoDefaultAction | NoTransaction;
+    }
+
+    virtual bool getOption() const
+    {
+        return App::LinkParams::CreateInPlace();
+    }
+
+    virtual void setOption(bool checked)
+    {
+        App::LinkParams::set_CreateInPlace(checked);
+    }
+
+    virtual const char *className() const
+    {
+        return "StdCmdLinkMakeInPlace";
+    }
+};
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -884,6 +933,8 @@ public:
         addCommand(new StdCmdLinkUnlink());
         addCommand(new StdCmdLinkImport());
         addCommand(new StdCmdLinkImportAll());
+        addCommand();
+        addCommand(new StdCmdLinkMakeInPlace());
     }
 
     virtual const char* className() const {return "StdCmdLinkActions";}
