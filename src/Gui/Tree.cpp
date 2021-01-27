@@ -5950,7 +5950,10 @@ DocumentObjectItem *DocumentItem::findItem(
     if(select)
         item->mySubs.clear();
 
-    if(!item->populated && sync) {
+    // In order to not select the wrong item, we do populate regardless of 'sync'
+    //
+    // if(!item->populated && sync) {
+    if(!item->populated) {
         //force populate the item
         item->populated = true;
         populateItem(item,true);
