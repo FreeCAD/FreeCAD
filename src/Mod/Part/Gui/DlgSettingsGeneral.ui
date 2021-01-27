@@ -36,7 +36,7 @@
       <item row="1" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBooleanRefine">
         <property name="text">
-         <string>Automatically refine model after boolean operation</string>
+         <string>Automatically refine model shape of features in Part workbench</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>RefineModel</cstring>
@@ -62,7 +62,7 @@
       <item row="2" column="0">
        <widget class="Gui::PrefCheckBox" name="checkSketchBaseRefine">
         <property name="text">
-         <string>Automatically refine model after sketch-based operation</string>
+         <string>Automatically refine model shape of features in PartDesign workbench</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>RefineModel</cstring>
