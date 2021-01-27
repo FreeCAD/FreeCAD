@@ -6497,7 +6497,7 @@ void ViewProviderSketch::UpdateSolverInformation()
         QString partiallyRedundantString;
 
         if(hasPartiallyRedundant) {
-            partiallyRedundantString = QString::fromLatin1("<br/><font color='orangered'>%1<a href=\"#partiallyredundant\"><span style=\" text-decoration:  underline; color:#0000ff; background-color: #F8F8FF;\">%2</span></a><br/>%3</font><br/>")
+            partiallyRedundantString = QString::fromLatin1("<br/><font color='royalblue'><span style=\"background-color: #ececec;\">%1<a href=\"#partiallyredundant\"><span style=\" text-decoration:  underline; color:#0000ff; background-color: #F8F8FF;\">%2</span></a><br/>%3</span></font><br/>")
                                 .arg(tr("Sketch contains partially redundant constraints "))
                                 .arg(tr("(click to select)"))
                                 .arg(appendPartiallyRedundantMsg(getSketchObject()->getLastPartiallyRedundant()));
