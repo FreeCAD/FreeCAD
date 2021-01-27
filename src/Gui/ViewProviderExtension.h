@@ -101,7 +101,8 @@ public:
     bool ignoreOverlayIcon() const {
         return m_ignoreOverlayIcon;
     }
-    virtual QIcon extensionMergeOverlayIcons(const QIcon & orig) const {return orig;}
+    virtual QIcon extensionMergeGreyableOverlayIcons(const QIcon & orig) const {return orig;}
+    virtual QIcon extensionMergeColorfullOverlayIcons(const QIcon & orig) const {return orig;}
 
     virtual void extensionStartRestoring() {}
     virtual void extensionFinishRestoring() {}

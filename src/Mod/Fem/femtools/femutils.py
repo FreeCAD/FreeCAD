@@ -269,16 +269,26 @@ def getBoundBoxOfAllDocumentShapes(doc):
      no objects at all return ``None``.
     """
     overalboundbox = None
+    # netgen mesh obj has an attribute Shape which is an Document obj, which has no BB
+    # a FemMesh without a Shape could be clipped too
+    # https://forum.freecadweb.org/viewtopic.php?f=18&t=52920
     for o in doc.Objects:
-        # netgen mesh obj has an attribute Shape which is an Document obj, which has no BB
+
+        bb = None
         if hasattr(o, "Shape") and hasattr(o.Shape, "BoundBox"):
             try:
                 bb = o.Shape.BoundBox
             except Exception:
-                bb = None
-            if bb.isValid():
-                if not overalboundbox:
-                    overalboundbox = bb
+                pass
+        elif hasattr(o, "FemMesh") and hasattr(o.FemMesh, "BoundBox"):
+            try:
+                bb = o.FemMesh.BoundBox
+            except Exception:
+                pass
+        if bb.isValid():
+            if not overalboundbox:
+                overalboundbox = bb
+            else:
                 overalboundbox.add(bb)
     return overalboundbox
 

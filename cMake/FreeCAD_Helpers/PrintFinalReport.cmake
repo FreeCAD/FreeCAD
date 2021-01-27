@@ -27,7 +27,7 @@ macro(PrintFinalReport)
         message(STATUS "pybind11:            not enabled")
     endif(DEFINED pybind11_FOUND)
 
-    message(STATUS "Boost:               ${Boost_VERSION}")
+    message(STATUS "Boost:               ${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}.${Boost_SUBMINOR_VERSION} (${Boost_VERSION})")
 
     message(STATUS "XercesC:             [${XercesC_LIBRARIES}] [${XercesC_INCLUDE_DIRS}]")
 
@@ -163,6 +163,7 @@ macro(PrintFinalReport)
         message(STATUS "Freetype:            disabled")
     endif(FREECAD_USE_FREETYPE)
 
+    message(STATUS "OpenGL:              ${OPENGL_gl_LIBRARY}")
     message(STATUS "OpenGLU:             ${OPENGL_glu_LIBRARY} [${OPENGL_glu_LIBRARY}][${OPENGL_INCLUDE_DIR}]")
 
     message(STATUS "Coin3D:              [${COIN3D_LIBRARIES}] [${COIN3D_INCLUDE_DIRS}]")

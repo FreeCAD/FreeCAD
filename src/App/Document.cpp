@@ -70,7 +70,7 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 
 #include <boost/algorithm/string.hpp>
 
-#include <boost/graph/adjacency_list.hpp>
+#include <boost_graph_adjacency_list.hpp>
 #include <boost/graph/subgraph.hpp>
 #include <boost/graph/graphviz.hpp>
 #include <boost/graph/strong_components.hpp>
@@ -2745,6 +2745,7 @@ void Document::restore (const char *filename,
     }
     catch (const Base::Exception& e) {
         Base::Console().Error("Invalid Document.xml: %s\n", e.what());
+        setStatus(Document::RestoreError, true);
     }
 
     d->partialLoadObjects.clear();

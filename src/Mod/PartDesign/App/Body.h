@@ -27,7 +27,7 @@
 #include <App/PropertyStandard.h>
 #include <Mod/Part/App/BodyBase.h>
 
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 
 namespace App {
     class Origin;

@@ -98,7 +98,7 @@
 #include <FCConfig.h>
 #include <Base/Console.h>
 
-#include <boost/graph/adjacency_list.hpp>
+#include <boost_graph_adjacency_list.hpp>
 #include <boost/graph/connected_components.hpp>
 
 typedef Eigen::FullPivHouseholderQR<Eigen::MatrixXd>::IntDiagSizeVectorType MatrixIndexType;
@@ -226,9 +226,11 @@ public:
     void LogQRSystemInformation(const System &system, int paramsNum = 0, int constrNum = 0, int rank = 0);
 
     void LogGroupOfConstraints(const std::string & str, std::vector< std::vector<Constraint *> > constraintgroups);
+    void LogSetOfConstraints(const std::string & str,  std::set<Constraint *> constraintset);
+    void LogGroupOfParameters(const std::string & str, std::vector< std::vector<double *> > parametergroups);
 
     void LogMatrix(const std::string str, Eigen::MatrixXd matrix);
-    void LogMatrix(const std::string str, MatrixIndexType matrix );
+    void LogMatrix(const std::string str, MatrixIndexType matrix);
 
 private:
     SolverReportingManager();
@@ -361,34 +363,65 @@ void SolverReportingManager::LogGroupOfConstraints(const std::string & str, std:
         for(auto c :group)
             tempstream << c->getTag() << " ";
 
-        tempstream << "]" << '\n';;
+        tempstream << "]" << '\n';
     }
 
     LogString(tempstream.str());
 }
 
+void SolverReportingManager::LogSetOfConstraints(const std::string & str,  std::set<Constraint *> constraintset)
+{
+    std::stringstream tempstream;
+
+    tempstream << str << ": [";
+
+    for(auto c : constraintset)
+        tempstream << c->getTag() << " ";
+
+    tempstream << "]" << '\n';
+
+    LogString(tempstream.str());
+}
+
+void SolverReportingManager::LogGroupOfParameters(const std::string & str, std::vector< std::vector<double *> > parametergroups)
+{
+    std::stringstream tempstream;
+
+    tempstream << str << ":" << '\n';
+
+    for(size_t i = 0; i < parametergroups.size(); i++)  {
+        tempstream << "[";
+
+        for(auto p : parametergroups[i])
+            tempstream << std::hex << p << " ";
+
+        tempstream << "]" << '\n';
+    }
+
+    LogString(tempstream.str());
+}
 
 #ifdef _GCS_DEBUG
-void SolverReportingManager::LogMatrix(const std::string str, Eigen::MatrixXd matrix )
+void SolverReportingManager::LogMatrix(const std::string str, Eigen::MatrixXd matrix)
 {
     std::stringstream tempstream;
 
     tempstream << '\n' << " " << str << " =" << '\n';
     tempstream << "[" << '\n';
-    tempstream << matrix << '\n' ;
+    tempstream << matrix << '\n';
     tempstream << "]" << '\n';
 
     LogString(tempstream.str());
 
 }
 
-void SolverReportingManager::LogMatrix(const std::string str, MatrixIndexType matrix )
+void SolverReportingManager::LogMatrix(const std::string str, MatrixIndexType matrix)
 {
     std::stringstream tempstream;
 
     stream << '\n' << " " << str << " =" << '\n';
     stream << "[" << '\n';
-    stream << matrix << '\n' ;
+    stream << matrix << '\n';
     stream << "]" << '\n';
 
     LogString(tempstream.str());
@@ -540,6 +573,7 @@ void System::clear()
     redundant.clear();
     conflictingTags.clear();
     redundantTags.clear();
+    partiallyRedundantTags.clear();
 
     reference.clear();
     clearSubSystems();
@@ -1011,10 +1045,12 @@ int System::addConstraintArcDiameter(Arc &a, double *radius, int tagId, bool dri
     return addConstraintProportional(a.rad, radius, 0.5, tagId, driving);
 }
 
-int System::addConstraintEqualLength(Line &l1, Line &l2, double *length, int tagId, bool driving)
+int System::addConstraintEqualLength(Line &l1, Line &l2, int tagId, bool driving)
 {
-    addConstraintP2PDistance(l1.p1, l1.p2, length, tagId, driving);
-    return addConstraintP2PDistance(l2.p1, l2.p2, length, tagId, driving);
+    Constraint *constr = new ConstraintEqualLineLength(l1, l2);
+    constr->setTag(tagId);
+    constr->setDriving(driving);
+    return addConstraint(constr);
 }
 
 int System::addConstraintEqualRadius(Circle &c1, Circle &c2, int tagId, bool driving)
@@ -3866,6 +3902,7 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
     redundant.clear();
     conflictingTags.clear();
     redundantTags.clear();
+    partiallyRedundantTags.clear();
 
     // This QR diagnosis uses a reduced Jacobian matrix to calculate the rank of the system and identify
     // conflicting and redundant constraints.
@@ -3955,7 +3992,7 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
             // nows if it can run the task in parallel or is oversubscribed and should deferred it.
             // Care to wait() for the future before any prospective detection of conflicting/redundant, because the redundant solve
             // modifies pdiagnoselist and it would NOT be thread-safe. Care to call the thread with silent=true, unless the present thread
-            // does not use Base::Console, or the lauch policy is set to std::lauch::deferred policy,, as it is not thread-safe to use them
+            // does not use Base::Console, or the launch policy is set to std::launch::deferred policy, as it is not thread-safe to use them
             // in both at the same time.
             //
             // identifyDependentParametersDenseQR(J, jacobianconstraintmap, pdiagnoselist, true)
@@ -4010,16 +4047,16 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
             // nows if it can run the task in parallel or is oversubscribed and should deferred it.
             // Care to wait() for the future before any prospective detection of conflicting/redundant, because the redundant solve
             // modifies pdiagnoselist and it would NOT be thread-safe. Care to call the thread with silent=true, unless the present thread
-            // does not use Base::Console, or the lauch policy is set to std::lauch::deferred policy,, as it is not thread-safe to use them
+            // does not use Base::Console, or the launch policy is set to std::launch::deferred policy, as it is not thread-safe to use them
             // in both at the same time.
             //
             // identifyDependentParametersSparseQR(J, jacobianconstraintmap, pdiagnoselist, true)
             //
             // Debug:
-            // auto fut = std::async(std::launch::deferred,&System::identifyDependentParametersSparseQR,this,J,jacobianconstraintmap, pdiagnoselist, false);
-            auto fut = std::async(&System::identifyDependentParametersSparseQR,this,J,jacobianconstraintmap, pdiagnoselist, false);
+            //auto fut = std::async(std::launch::deferred,&System::identifyDependentParametersSparseQR,this,J,jacobianconstraintmap, pdiagnoselist, false);
+            auto fut = std::async(&System::identifyDependentParametersSparseQR,this,J,jacobianconstraintmap, pdiagnoselist, /*silent=*/true);
 
-            makeSparseQRDecomposition( J, jacobianconstraintmap, SqrJT, rank, R);
+            makeSparseQRDecomposition( J, jacobianconstraintmap, SqrJT, rank, R, /*transposed=*/true, /*silent=*/false);
 
             int paramsNum = SqrJT.rows();
             int constrNum = SqrJT.cols();
@@ -4260,21 +4297,31 @@ void System::identifyDependentParameters(   T & qrJ,
     if(!silent)
         SolverReportingManager::Manager().LogMatrix("Rparams_nonzeros_over_pilot", Rparams);
 #endif
+
     pDependentParametersGroups.resize(qrJ.cols()-rank);
     for (int j=rank; j < qrJ.cols(); j++) {
         for (int row=0; row < rank; row++) {
             if (fabs(Rparams(row,j)) > 1e-10) {
                 int origCol = qrJ.colsPermutation().indices()[row];
 
-                pDependentParametersGroups[j-rank].insert(pdiagnoselist[origCol]);
+                pDependentParametersGroups[j-rank].push_back(pdiagnoselist[origCol]);
                 pDependentParameters.push_back(pdiagnoselist[origCol]);
             }
         }
         int origCol = qrJ.colsPermutation().indices()[j];
 
-        pDependentParametersGroups[j-rank].insert(pdiagnoselist[origCol]);
+        pDependentParametersGroups[j-rank].push_back(pdiagnoselist[origCol]);
         pDependentParameters.push_back(pdiagnoselist[origCol]);
     }
+
+#ifdef _GCS_DEBUG
+    if(!silent) {
+        SolverReportingManager::Manager().LogMatrix("PermMatrix", (Eigen::MatrixXd)qrJ.colsPermutation());
+
+        SolverReportingManager::Manager().LogGroupOfParameters("ParameterGroups",pDependentParametersGroups);
+    }
+
+#endif
 }
 
 void System::identifyDependentGeometryParametersInTransposedJacobianDenseQRDecomposition(
@@ -4454,6 +4501,11 @@ void System::identifyConflictingRedundantConstraints(   Algorithm alg,
         }
     }
 
+    // Augment information regarding the choice made by popularity contest
+    if(debugMode==IterationLevel) {
+        SolverReportingManager::Manager().LogSetOfConstraints("Chosen redundants", skipped);
+    }
+
     std::vector<Constraint *> clistTmp;
     clistTmp.reserve(clist.size());
     for (std::vector<Constraint *>::iterator constr=clist.begin();
@@ -4532,19 +4584,27 @@ void System::identifyConflictingRedundantConstraints(   Algorithm alg,
                 conflictingTags.begin());
 
     // output of redundant tags
-    SET_I redundantTagsSet;
-    for (std::set<Constraint *>::iterator constr=redundant.begin();
-            constr != redundant.end(); ++constr)
+    SET_I redundantTagsSet, partiallyRedundantTagsSet;
+    for (std::set<Constraint *>::iterator constr=redundant.begin(); constr != redundant.end(); ++constr) {
         redundantTagsSet.insert((*constr)->getTag());
+        partiallyRedundantTagsSet.insert((*constr)->getTag());
+    }
+
     // remove tags represented at least in one non-redundant constraint
-    for (std::vector<Constraint *>::iterator constr=clist.begin();
-        constr != clist.end(); ++constr) {
+    for (std::vector<Constraint *>::iterator constr=clist.begin(); constr != clist.end(); ++constr)
         if (redundant.count(*constr) == 0)
             redundantTagsSet.erase((*constr)->getTag());
-    }
+
     redundantTags.resize(redundantTagsSet.size());
     std::copy(redundantTagsSet.begin(), redundantTagsSet.end(),
                 redundantTags.begin());
+
+    for(auto r : redundantTagsSet)
+        partiallyRedundantTagsSet.erase(r);
+
+    partiallyRedundantTags.resize(partiallyRedundantTagsSet.size());
+    std::copy(partiallyRedundantTagsSet.begin(), partiallyRedundantTagsSet.end(),
+                partiallyRedundantTags.begin());
 
     nonredundantconstrNum = constrNum;
 }

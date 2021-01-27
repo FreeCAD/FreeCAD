@@ -33,7 +33,7 @@
 # include <QTextStream>
 # include <qmessagebox.h>
 # include <qstatusbar.h>
-# include <boost/signals2.hpp>
+# include <boost_signals2.hpp>
 # include <boost_bind_bind.hpp>
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/nodes/SoSeparator.h>
@@ -477,8 +477,10 @@ void Document::_resetEdit(void)
         // the editing object gets deleted inside the above call to
         // 'finishEditing()', which will trigger our slotDeletedObject(), which
         // nullifies _editViewProvider.
-        if (d->_editViewProvider && d->_editViewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))
-            signalResetEdit(*(static_cast<ViewProviderDocumentObject*>(d->_editViewProvider)));
+        if (d->_editViewProvider && d->_editViewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+            auto vpd = static_cast<ViewProviderDocumentObject*>(d->_editViewProvider);
+            vpd->getDocument()->signalResetEdit(*vpd);
+        }
         d->_editViewProvider = 0;
 
         // The logic below is not necessary anymore, because this method is

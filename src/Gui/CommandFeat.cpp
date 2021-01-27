@@ -75,6 +75,7 @@ StdCmdRandomColor::StdCmdRandomColor()
     sToolTipText  = QT_TR_NOOP("Random color");
     sWhatsThis    = "Std_RandomColor";
     sStatusTip    = QT_TR_NOOP("Random color");
+    sPixmap       = "Std_RandomColor";
 }
 
 void StdCmdRandomColor::activated(int iMsg)

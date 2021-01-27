@@ -80,6 +80,9 @@ class DocumentObject(object):
     def getDocumentationOfProperty(self,attr):
         "returns the documentation string of a given property"
         return self.__object__.getDocumentationOfProperty(attr)
+    def getEnumerationsOfProperty(self,attr):
+        "returns the documentation string of a given property"
+        return self.__object__.getEnumerationsOfProperty(attr)
     def touch(self):
         "marks this object to be recomputed"
         return self.__object__.touch()

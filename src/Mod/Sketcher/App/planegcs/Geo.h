@@ -220,7 +220,7 @@ namespace GCS
         virtual double getRadMaj(const DeriVector2 &center, const DeriVector2 &f1, double b, double db, double &ret_dRadMaj) const override;
         virtual double getRadMaj(double* derivparam, double &ret_dRadMaj) const override;
         virtual double getRadMaj() const override;
-        DeriVector2 CalculateNormal(const Point &p, const double* derivparam = 0) const override;;
+        DeriVector2 CalculateNormal(const Point &p, const double* derivparam = 0) const override;
         virtual DeriVector2 Value(double u, double du, const double* derivparam = 0) const override;
         virtual int PushOwnParams(VEC_pD &pvec) override;
         virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt) override;
@@ -293,7 +293,7 @@ namespace GCS
         bool periodic;
         VEC_I knotpointGeoids; // geoids of knotpoints as to index Geom array
         // interface helpers
-        DeriVector2 CalculateNormal(const Point &p, const double* derivparam = 0) const override;;
+        DeriVector2 CalculateNormal(const Point &p, const double* derivparam = 0) const override;
         virtual DeriVector2 Value(double u, double du, const double* derivparam = 0) const override;
         virtual int PushOwnParams(VEC_pD &pvec) override;
         virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt) override;

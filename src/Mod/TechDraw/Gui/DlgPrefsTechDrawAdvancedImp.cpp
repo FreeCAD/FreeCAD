@@ -45,32 +45,36 @@ DlgPrefsTechDrawAdvancedImp::~DlgPrefsTechDrawAdvancedImp()
 
 void DlgPrefsTechDrawAdvancedImp::saveSettings()
 {
-    ui->cbEndCap->onSave();
-    ui->cbCrazyEdges->onSave();
-    ui->cbDebugSection->onSave();
-    ui->cbDetectFaces->onSave();
-    ui->cbDebugDetail->onSave();
+    ui->cbDetectFaces->onSave(); 
     ui->cbShowSectionEdges->onSave();
+    ui->cbDebugSection->onSave();
+    ui->cbDebugDetail->onSave();
+    ui->cbCrazyEdges->onSave();
     ui->cbFuseBeforeSection->onSave();
+    ui->cbShowLoose->onSave();
+    ui->pdsbEdgeFuzz->onSave();
+    ui->pdsbMarkFuzz->onSave();
+    ui->leFormatSpec->onSave();
+    ui->cbEndCap->onSave();
     ui->sbMaxTiles->onSave();
     ui->sbMaxPat->onSave();
-    ui->cbShowLoose->onSave();
-    ui->leFormatSpec->onSave();
 }
 
 void DlgPrefsTechDrawAdvancedImp::loadSettings()
 {
-    ui->cbEndCap->onRestore();
-    ui->cbCrazyEdges->onRestore();
-    ui->cbDebugSection->onRestore();
     ui->cbDetectFaces->onRestore();
-    ui->cbDebugDetail->onRestore();
     ui->cbShowSectionEdges->onRestore();
+    ui->cbDebugSection->onRestore();
+    ui->cbDebugDetail->onRestore();
+    ui->cbCrazyEdges->onRestore();
     ui->cbFuseBeforeSection->onRestore();
+    ui->cbShowLoose->onRestore();
+    ui->pdsbEdgeFuzz->onRestore();
+    ui->pdsbMarkFuzz->onRestore();
+    ui->leFormatSpec->onRestore();
+    ui->cbEndCap->onRestore();
     ui->sbMaxTiles->onRestore();
     ui->sbMaxPat->onRestore();
-    ui->cbShowLoose->onRestore();
-    ui->leFormatSpec->onRestore();
 }
 
 /**

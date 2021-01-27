@@ -141,6 +141,12 @@ SOURCE_GROUP("Module" FILES ${Mod_SRCS})
 add_library(Path SHARED ${Path_SRCS})
 target_link_libraries(Path ${Path_LIBS})
 
+# Boost >= 1.75.0
+if(NOT ${Boost_VERSION} LESS 107500)
+    set_target_properties(Path PROPERTIES CXX_STANDARD_REQUIRED ON)
+    set_target_properties(Path PROPERTIES CXX_STANDARD 14)
+endif()
+
 if(FREECAD_USE_PCH)
     add_definitions(-D_PreComp_)
     GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" Path_CPP_SRCS ${Path_SRCS})

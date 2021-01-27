@@ -37,14 +37,18 @@ GeometryMigrationExtension::GeometryMigrationExtension():ConstructionState(false
 
 }
 
+void GeometryMigrationExtension::copyAttributes(Part::GeometryExtension * cpy) const
+{
+    Part::GeometryExtension::copyAttributes(cpy);
+    static_cast<GeometryMigrationExtension *>(cpy)->ConstructionState = this->ConstructionState;
+    static_cast<GeometryMigrationExtension *>(cpy)->GeometryMigrationFlags  = this->GeometryMigrationFlags;
+}
+
 std::unique_ptr<Part::GeometryExtension> GeometryMigrationExtension::copy(void) const
 {
     auto cpy = std::make_unique<GeometryMigrationExtension>();
 
-    cpy->ConstructionState = this->ConstructionState;
-    cpy->GeometryMigrationFlags  = this->GeometryMigrationFlags;
-
-    cpy->setName(this->getName()); // Base Class
+    copyAttributes(cpy.get());
 
 #if defined (__GNUC__) && (__GNUC__ <=4)
     return std::move(cpy);

@@ -73,7 +73,7 @@ private Q_SLOTS:
     void onColorChanged();
 
 private:
-    Ui_TaskHatch * ui;
+    std::unique_ptr<Ui_TaskHatch> ui;
     TechDraw::DrawHatch* m_hatch;
     TechDrawGui::ViewProviderHatch* m_Vp;
     App::DocumentObject* m_source;

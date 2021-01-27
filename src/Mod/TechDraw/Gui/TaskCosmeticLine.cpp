@@ -126,7 +126,6 @@ TaskCosmeticLine::TaskCosmeticLine(TechDraw::DrawViewPart* partFeat,
 
 TaskCosmeticLine::~TaskCosmeticLine()
 {
-    delete ui;
     if (m_saveCE != nullptr) {
         delete m_saveCE;
     }

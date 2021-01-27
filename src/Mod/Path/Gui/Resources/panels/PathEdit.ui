@@ -31,8 +31,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>549</width>
-         <height>628</height>
+         <width>146</width>
+         <height>378</height>
         </rect>
        </property>
        <attribute name="label">
@@ -112,8 +112,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>98</width>
-         <height>28</height>
+         <width>96</width>
+         <height>26</height>
         </rect>
        </property>
        <attribute name="label">
@@ -281,7 +281,7 @@
            <string>G54</string>
           </property>
           <property name="checkState">
-           <enum>Checked</enum>
+           <enum>Unchecked</enum>
           </property>
          </item>
          <item>
@@ -431,8 +431,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>536</width>
-         <height>1291</height>
+         <width>545</width>
+         <height>896</height>
         </rect>
        </property>
        <attribute name="label">
@@ -1002,8 +1002,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>419</width>
-         <height>548</height>
+         <width>213</width>
+         <height>321</height>
         </rect>
        </property>
        <attribute name="label">
@@ -1096,7 +1096,7 @@
             </widget>
            </item>
            <item row="1" column="3">
-            <widget class="Gui::QuantitySpinBox" name="setupClearanceHeightOffs" native="true">
+            <widget class="Gui::QuantitySpinBox" name="setupClearanceHeightOffs">
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ClearanceHeightOffset - can be used by expressions to set the default ClearanceHeight for new operations.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: &amp;quot;3 mm&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
@@ -1123,7 +1123,7 @@
             </widget>
            </item>
            <item row="3" column="3">
-            <widget class="Gui::QuantitySpinBox" name="setupSafeHeightOffs" native="true">
+            <widget class="Gui::QuantitySpinBox" name="setupSafeHeightOffs">
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;SafeHeightOffset can be for expressions to set the SafeHeight for new operations.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: &amp;quot;5 mm&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
@@ -1185,8 +1185,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>549</width>
-         <height>628</height>
+         <width>317</width>
+         <height>173</height>
         </rect>
        </property>
        <attribute name="label">
@@ -1285,8 +1285,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>208</width>
-         <height>160</height>
+         <width>138</width>
+         <height>112</height>
         </rect>
        </property>
        <attribute name="label">
@@ -1310,7 +1310,7 @@
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="Gui::QuantitySpinBox" name="setupRapidHorizontal" native="true">
+            <widget class="Gui::QuantitySpinBox" name="setupRapidHorizontal">
              <property name="sizePolicy">
               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -1330,7 +1330,7 @@
             </widget>
            </item>
            <item row="1" column="1">
-            <widget class="Gui::QuantitySpinBox" name="setupRapidVertical" native="true">
+            <widget class="Gui::QuantitySpinBox" name="setupRapidVertical">
              <property name="sizePolicy">
               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
                <horstretch>0</horstretch>

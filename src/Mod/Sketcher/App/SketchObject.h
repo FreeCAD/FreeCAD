@@ -67,6 +67,7 @@ public:
     Part    ::PropertyGeometryList   Geometry;
     Sketcher::PropertyConstraintList Constraints;
     App     ::PropertyLinkSubList    ExternalGeometry;
+    App     ::PropertyBool           FullyConstrained;
     /** @name methods override Feature */
     //@{
     short mustExecute() const override;
@@ -107,6 +108,8 @@ public:
      \retval int - 0 if successful
      */
     int delGeometry(int GeoId, bool deleteinternalgeo = true);
+    /// Deletes just the GeoIds indicated, it does not look for internal geometry
+    int delGeometriesExclusiveList(const std::vector<int>& GeoIds);
     /// Does the same as \a delGeometry but allows to delete several geometries in one step
     int delGeometries(const std::vector<int>& GeoIds);
     /// deletes all the elements/constraints of the sketch except for external geometry
@@ -305,6 +308,8 @@ public:
     static void appendConflictMsg(const std::vector<int> &conflicting, std::string &msg);
     /// generates a warning message about redundant constraints and appends it to the given message
     static void appendRedundantMsg(const std::vector<int> &redundant, std::string &msg);
+    /// generates a warning message about malformed constraints and appends it to the given message
+    static void appendMalformedConstraintsMsg(const std::vector<int> &malformed, std::string &msg);
 
     double calculateAngleViaPoint(int geoId1, int geoId2, double px, double py);
     bool isPointOnCurve(int geoIdCurve, double px, double py);
@@ -345,6 +350,10 @@ public:
     inline bool getLastHasConflicts() const {return lastHasConflict;}
     /// gets HasRedundancies status of last solver execution
     inline bool getLastHasRedundancies() const {return lastHasRedundancies;}
+    /// gets HasRedundancies status of last solver execution
+    inline bool getLastHasPartialRedundancies() const {return lastHasPartialRedundancies;}
+    /// gets HasMalformedConstraints status of last solver execution
+    inline bool getLastHasMalformedConstraints() const {return lastHasMalformedConstraints;}
     /// gets solver status of last solver execution
     inline int getLastSolverStatus() const {return lastSolverStatus;}
     /// gets solver SolveTime of last solver execution
@@ -353,6 +362,10 @@ public:
     inline const std::vector<int> &getLastConflicting(void) const { return lastConflicting; }
     /// gets the redundant constraints of last solver execution
     inline const std::vector<int> &getLastRedundant(void) const { return lastRedundant; }
+    /// gets the redundant constraints of last solver execution
+    inline const std::vector<int> &getLastPartiallyRedundant(void) const { return lastPartiallyRedundant; }
+    /// gets the redundant constraints of last solver execution
+    inline const std::vector<int> &getLastMalformedConstraints(void) const { return lastMalformedConstraints; }
 
 public: /* Solver exposed interface */
     /// gets the solved sketch as a reference
@@ -475,6 +488,14 @@ protected:
     // migration functions
     void migrateSketch(void);
 
+    static void appendConstraintsMsg(const std::vector<int> &vector,
+                                     const std::string & singularmsg,
+                                     const std::string & pluralmsg,
+                                     std::string &msg);
+
+    // retrieves redundant, conflicting and malformed constraint information from the solver
+    void retrieveSolverDiagnostics();
+
 private:
     /// Flag to allow external geometry from other bodies than the one this sketch belongs to
     bool allowOtherBody;
@@ -497,11 +518,15 @@ private:
     int lastDoF;
     bool lastHasConflict;
     bool lastHasRedundancies;
+    bool lastHasPartialRedundancies;
+    bool lastHasMalformedConstraints;
     int lastSolverStatus;
     float lastSolveTime;
 
     std::vector<int> lastConflicting;
     std::vector<int> lastRedundant;
+    std::vector<int> lastPartiallyRedundant;
+    std::vector<int> lastMalformedConstraints;
 
     boost::signals2::scoped_connection constraintsRenamedConn;
     boost::signals2::scoped_connection constraintsRemovedConn;

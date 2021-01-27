@@ -53,7 +53,7 @@ namespace SMESH{
     class SMESHCONTROLS_EXPORT Functor
     {
     public:
-      ~Functor(){}
+      virtual ~Functor(){}
       virtual void SetMesh( const SMDS_Mesh* theMesh ) = 0;
       virtual SMDSAbs_ElementType GetType() const = 0;
     };

@@ -151,26 +151,9 @@ def searchPathsPost():
     return paths
 
 
-def searchPathsTool(sub='Bit'):
+def searchPathsTool(sub):
     paths = []
-
-    if 'Bit' == sub:
-        paths.append("{}/Bit".format(os.path.dirname(lastPathToolLibrary())))
-        paths.append(lastPathToolBit())
-
-    if 'Library' == sub:
-        paths.append(lastPathToolLibrary())
-    if 'Shape' == sub:
-        paths.append(lastPathToolShape())
-
-    def appendPath(p, sub):
-        if p:
-            paths.append(os.path.join(p, 'Tools', sub))
-            paths.append(os.path.join(p, sub))
-            paths.append(p)
-    appendPath(defaultFilePath(), sub)
-    appendPath(macroFilePath(), sub)
-    appendPath(os.path.join(FreeCAD.getHomePath(), "Mod/Path/"), sub)
+    paths.append(os.path.join(FreeCAD.getHomePath(), 'Mod', 'Path', 'Tools', sub))
     return paths
 
 
@@ -263,14 +246,18 @@ def setDefaultTaskPanelLayout(style):
 def experimentalFeaturesEnabled():
     return preferences().GetBool(EnableExperimentalFeatures, False)
 
+
 def suppressAllSpeedsWarning():
     return preferences().GetBool(WarningSuppressAllSpeeds, True)
+
 
 def suppressRapidSpeedsWarning():
     return suppressAllSpeedsWarning() or preferences().GetBool(WarningSuppressRapidSpeeds, True)
 
+
 def suppressSelectionModeWarning():
     return preferences().GetBool(WarningSuppressSelectionMode, True)
+
 
 def suppressOpenCamLibWarning():
     return preferences().GetBool(WarningSuppressOpenCamLib, True)
@@ -316,7 +303,8 @@ def lastPathToolLibrary():
 def setLastPathToolLibrary(path):
     PathLog.track(path)
     curLib = lastFileToolLibrary()
-    if os.path.split(curLib)[0] != path:
+    PathLog.debug('curLib: {}'.format(curLib))
+    if curLib and os.path.split(curLib)[0] != path:
         setLastFileToolLibrary('')  # a path is known but not specific file
     return preferences().SetString(LastPathToolLibrary, path)
 

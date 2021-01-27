@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>441</width>
+    <width>440</width>
     <height>307</height>
    </rect>
   </property>
@@ -49,6 +49,41 @@
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <layout class="QGridLayout" name="gridLayout_6">
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_17">
+          <property name="text">
+           <string>Visible</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="2">
+         <widget class="Gui::PrefSpinBox" name="psbIsoCount">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>140</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Number of ISO lines per face edge</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight</set>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>IsoCount</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/HLR</cstring>
+          </property>
+         </widget>
+        </item>
         <item row="4" column="0">
          <widget class="Gui::PrefCheckBox" name="pcbSeamViz">
           <property name="sizePolicy">
@@ -109,6 +144,88 @@
           </property>
          </widget>
         </item>
+        <item row="0" column="0">
+         <widget class="Gui::PrefCheckBox" name="pcbPolygon">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>Use an approximation to find hidden lines.
+Fast, but result is a collection of short straight lines.</string>
+          </property>
+          <property name="text">
+           <string>Use Polygon Approximation</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>UsePolygon</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/HLR</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="2">
+         <widget class="Gui::PrefCheckBox" name="pcbSmoothHid">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>Show hidden smooth edges</string>
+          </property>
+          <property name="text">
+           <string>Show Smooth Lines</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>SmoothHid</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/HLR</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="Gui::PrefCheckBox" name="pcbHardHid">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>Show hidden hard and outline edges</string>
+          </property>
+          <property name="text">
+           <string>Show Hard Lines</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>HardHid</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/HLR</cstring>
+          </property>
+         </widget>
+        </item>
         <item row="2" column="0">
          <widget class="Gui::PrefCheckBox" name="pcbHardViz">
           <property name="enabled">
@@ -148,8 +265,8 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="0">
-         <widget class="Gui::PrefCheckBox" name="pcbPolygon">
+        <item row="4" column="2">
+         <widget class="Gui::PrefCheckBox" name="pcbSeamHid">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -162,17 +279,68 @@
            </font>
           </property>
           <property name="toolTip">
-           <string>Use an approximation to find hidden lines.
-Fast, but result is a collection of short straight lines.</string>
+           <string>Show hidden seam lines</string>
           </property>
           <property name="text">
-           <string>Use Polygon Approximation</string>
+           <string>Show Seam Lines</string>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>UsePolygon</cstring>
+           <cstring>SeamHid</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/TechDraw/HLR</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="2">
+         <widget class="Gui::PrefCheckBox" name="pcbIsoHid">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>Show hidden equal parameterization lines</string>
+          </property>
+          <property name="text">
+           <string>Show UV ISO Lines</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>IsoHid</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/HLR</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QLabel" name="label_18">
+          <property name="text">
+           <string>Hidden</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="label_19">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>ISO Count</string>
           </property>
          </widget>
         </item>
@@ -203,173 +371,31 @@ Fast, but result is a collection of short straight lines.</string>
           </property>
          </widget>
         </item>
-        <item row="3" column="1">
-         <widget class="Gui::PrefCheckBox" name="pcbSmoothHid">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
+        <item row="1" column="3">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
           </property>
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
           </property>
-          <property name="toolTip">
-           <string>Show hidden smooth edges</string>
-          </property>
-          <property name="text">
-           <string>Show Smooth Lines</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>SmoothHid</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/HLR</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="1">
-         <widget class="Gui::PrefCheckBox" name="pcbSeamHid">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
-          </property>
-          <property name="toolTip">
-           <string>Show hidden seam lines</string>
-          </property>
-          <property name="text">
-           <string>Show Seam Lines</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>SeamHid</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/HLR</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="1">
-         <widget class="Gui::PrefCheckBox" name="pcbIsoHid">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
-          </property>
-          <property name="toolTip">
-           <string>Show hidden equal parameterization lines</string>
-          </property>
-          <property name="text">
-           <string>Show UV ISO Lines</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>IsoHid</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/HLR</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_17">
-          <property name="text">
-           <string>Visible</string>
-          </property>
-         </widget>
+         </spacer>
         </item>
         <item row="1" column="1">
-         <widget class="QLabel" name="label_18">
-          <property name="text">
-           <string>Hidden</string>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
           </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="Gui::PrefCheckBox" name="pcbHardHid">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
-          </property>
-          <property name="toolTip">
-           <string>Show hidden hard and outline edges</string>
-          </property>
-          <property name="text">
-           <string>Show Hard Lines</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>HardHid</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/HLR</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="0">
-         <widget class="QLabel" name="label_19">
-          <property name="minimumSize">
+          <property name="sizeHint" stdset="0">
            <size>
-            <width>0</width>
-            <height>0</height>
+            <width>40</width>
+            <height>20</height>
            </size>
           </property>
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
-          </property>
-          <property name="text">
-           <string>ISO Count</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="1">
-         <widget class="Gui::PrefSpinBox" name="psbIsoCount">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>140</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Number of ISO lines per face edge</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight</set>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>IsoCount</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/HLR</cstring>
-          </property>
-         </widget>
+         </spacer>
         </item>
        </layout>
       </item>

@@ -41,16 +41,20 @@ SolverGeometryExtension::SolverGeometryExtension():
 
 }
 
+void SolverGeometryExtension::copyAttributes(Part::GeometryExtension * cpy) const
+{
+    Part::GeometryExtension::copyAttributes(cpy);
+    static_cast<SolverGeometryExtension *>(cpy)->Edge = this->Edge;
+    static_cast<SolverGeometryExtension *>(cpy)->Start = this->Start;
+    static_cast<SolverGeometryExtension *>(cpy)->End  = this->End;
+    static_cast<SolverGeometryExtension *>(cpy)->Mid = this->Mid;
+}
+
 std::unique_ptr<Part::GeometryExtension> SolverGeometryExtension::copy(void) const
 {
     auto cpy = std::make_unique<SolverGeometryExtension>();
 
-    cpy->Edge = this->Edge;
-    cpy->Start = this->Start;
-    cpy->End  = this->End;
-    cpy->Mid = this->Mid;
-
-    cpy->setName(this->getName()); // Base Class
+    copyAttributes(cpy.get());
 
 #if defined (__GNUC__) && (__GNUC__ <=4)
     return std::move(cpy);

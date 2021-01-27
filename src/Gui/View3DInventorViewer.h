@@ -426,6 +426,7 @@ private:
     static void drawArrow(void);
     void setCursorRepresentation(int mode);
     void aboutToDestroyGLContext();
+    void createStandardCursors(double);
 
 private:
     NaviCube* naviCube;

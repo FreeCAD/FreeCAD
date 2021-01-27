@@ -28,7 +28,10 @@
         <file>icons/PartDesign_InvoluteGear.svg</file>
         <file>icons/PartDesign_Line.svg</file>
         <file>icons/PartDesign_LinearPattern.svg</file>
+        <file>icons/PartDesign_Migrate.svg</file>
         <file>icons/PartDesign_Mirrored.svg</file>
+        <file>icons/PartDesign_MoveFeature.svg</file>
+        <file>icons/PartDesign_MoveFeatureInTree.svg</file>
         <file>icons/PartDesign_MoveTip.svg</file>
         <file>icons/PartDesign_MultiTransform.svg</file>
         <file>icons/PartDesign_Pad.svg</file>

@@ -316,6 +316,7 @@ CmdPartDesignMigrate::CmdPartDesignMigrate()
     sToolTipText  = QT_TR_NOOP("Migrate document to the modern PartDesign workflow");
     sWhatsThis    = "PartDesign_Migrate";
     sStatusTip    = sToolTipText;
+    sPixmap       = "PartDesign_Migrate";
 }
 
 void CmdPartDesignMigrate::activated(int iMsg)
@@ -665,7 +666,7 @@ CmdPartDesignMoveFeature::CmdPartDesignMoveFeature()
     sToolTipText    = QT_TR_NOOP("Moves the selected object to another body");
     sWhatsThis      = "PartDesign_MoveFeature";
     sStatusTip      = sToolTipText;
-    sPixmap         = "";
+    sPixmap         = "PartDesign_MoveFeature";
 }
 
 void CmdPartDesignMoveFeature::activated(int iMsg)
@@ -827,7 +828,7 @@ CmdPartDesignMoveFeatureInTree::CmdPartDesignMoveFeatureInTree()
     sToolTipText    = QT_TR_NOOP("Moves the selected object and insert it after another object");
     sWhatsThis      = "PartDesign_MoveFeatureInTree";
     sStatusTip      = sToolTipText;
-    sPixmap         = "";
+    sPixmap         = "PartDesign_MoveFeatureInTree";
 }
 
 void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
