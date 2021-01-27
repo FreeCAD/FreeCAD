@@ -163,6 +163,7 @@ macro(PrintFinalReport)
         message(STATUS "Freetype:            disabled")
     endif(FREECAD_USE_FREETYPE)
 
+    message(STATUS "OpenGL:              ${OPENGL_gl_LIBRARY}")
     message(STATUS "OpenGLU:             ${OPENGL_glu_LIBRARY} [${OPENGL_glu_LIBRARY}][${OPENGL_INCLUDE_DIR}]")
 
     message(STATUS "Coin3D:              [${COIN3D_LIBRARIES}] [${COIN3D_INCLUDE_DIRS}]")

@@ -226,6 +226,7 @@ public:
     void LogQRSystemInformation(const System &system, int paramsNum = 0, int constrNum = 0, int rank = 0);
 
     void LogGroupOfConstraints(const std::string & str, std::vector< std::vector<Constraint *> > constraintgroups);
+    void LogSetOfConstraints(const std::string & str,  std::set<Constraint *> constraintset);
     void LogGroupOfParameters(const std::string & str, std::vector< std::vector<double *> > parametergroups);
 
     void LogMatrix(const std::string str, Eigen::MatrixXd matrix);
@@ -364,6 +365,20 @@ void SolverReportingManager::LogGroupOfConstraints(const std::string & str, std:
 
         tempstream << "]" << '\n';
     }
+
+    LogString(tempstream.str());
+}
+
+void SolverReportingManager::LogSetOfConstraints(const std::string & str,  std::set<Constraint *> constraintset)
+{
+    std::stringstream tempstream;
+
+    tempstream << str << ": [";
+
+    for(auto c : constraintset)
+        tempstream << c->getTag() << " ";
+
+    tempstream << "]" << '\n';
 
     LogString(tempstream.str());
 }
@@ -558,6 +573,7 @@ void System::clear()
     redundant.clear();
     conflictingTags.clear();
     redundantTags.clear();
+    partiallyRedundantTags.clear();
 
     reference.clear();
     clearSubSystems();
@@ -1029,10 +1045,12 @@ int System::addConstraintArcDiameter(Arc &a, double *radius, int tagId, bool dri
     return addConstraintProportional(a.rad, radius, 0.5, tagId, driving);
 }
 
-int System::addConstraintEqualLength(Line &l1, Line &l2, double *length, int tagId, bool driving)
+int System::addConstraintEqualLength(Line &l1, Line &l2, int tagId, bool driving)
 {
-    addConstraintP2PDistance(l1.p1, l1.p2, length, tagId, driving);
-    return addConstraintP2PDistance(l2.p1, l2.p2, length, tagId, driving);
+    Constraint *constr = new ConstraintEqualLineLength(l1, l2);
+    constr->setTag(tagId);
+    constr->setDriving(driving);
+    return addConstraint(constr);
 }
 
 int System::addConstraintEqualRadius(Circle &c1, Circle &c2, int tagId, bool driving)
@@ -3884,6 +3902,7 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
     redundant.clear();
     conflictingTags.clear();
     redundantTags.clear();
+    partiallyRedundantTags.clear();
 
     // This QR diagnosis uses a reduced Jacobian matrix to calculate the rank of the system and identify
     // conflicting and redundant constraints.
@@ -4034,7 +4053,7 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
             // identifyDependentParametersSparseQR(J, jacobianconstraintmap, pdiagnoselist, true)
             //
             // Debug:
-            // auto fut = std::async(std::launch::deferred,&System::identifyDependentParametersSparseQR,this,J,jacobianconstraintmap, pdiagnoselist, false);
+            //auto fut = std::async(std::launch::deferred,&System::identifyDependentParametersSparseQR,this,J,jacobianconstraintmap, pdiagnoselist, false);
             auto fut = std::async(&System::identifyDependentParametersSparseQR,this,J,jacobianconstraintmap, pdiagnoselist, /*silent=*/true);
 
             makeSparseQRDecomposition( J, jacobianconstraintmap, SqrJT, rank, R, /*transposed=*/true, /*silent=*/false);
@@ -4482,6 +4501,11 @@ void System::identifyConflictingRedundantConstraints(   Algorithm alg,
         }
     }
 
+    // Augment information regarding the choice made by popularity contest
+    if(debugMode==IterationLevel) {
+        SolverReportingManager::Manager().LogSetOfConstraints("Chosen redundants", skipped);
+    }
+
     std::vector<Constraint *> clistTmp;
     clistTmp.reserve(clist.size());
     for (std::vector<Constraint *>::iterator constr=clist.begin();
@@ -4560,19 +4584,27 @@ void System::identifyConflictingRedundantConstraints(   Algorithm alg,
                 conflictingTags.begin());
 
     // output of redundant tags
-    SET_I redundantTagsSet;
-    for (std::set<Constraint *>::iterator constr=redundant.begin();
-            constr != redundant.end(); ++constr)
+    SET_I redundantTagsSet, partiallyRedundantTagsSet;
+    for (std::set<Constraint *>::iterator constr=redundant.begin(); constr != redundant.end(); ++constr) {
         redundantTagsSet.insert((*constr)->getTag());
+        partiallyRedundantTagsSet.insert((*constr)->getTag());
+    }
+
     // remove tags represented at least in one non-redundant constraint
-    for (std::vector<Constraint *>::iterator constr=clist.begin();
-        constr != clist.end(); ++constr) {
+    for (std::vector<Constraint *>::iterator constr=clist.begin(); constr != clist.end(); ++constr)
         if (redundant.count(*constr) == 0)
             redundantTagsSet.erase((*constr)->getTag());
-    }
+
     redundantTags.resize(redundantTagsSet.size());
     std::copy(redundantTagsSet.begin(), redundantTagsSet.end(),
                 redundantTags.begin());
+
+    for(auto r : redundantTagsSet)
+        partiallyRedundantTagsSet.erase(r);
+
+    partiallyRedundantTags.resize(partiallyRedundantTagsSet.size());
+    std::copy(partiallyRedundantTagsSet.begin(), partiallyRedundantTagsSet.end(),
+                partiallyRedundantTags.begin());
 
     nonredundantconstrNum = constrNum;
 }

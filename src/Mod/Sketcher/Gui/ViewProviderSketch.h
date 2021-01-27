@@ -94,6 +94,8 @@ class SketcherGuiExport ViewProviderSketch : public PartGui::ViewProvider2DObjec
     static QString appendConflictMsg(const std::vector<int> &conflicting);
     /// generates a warning message about redundant constraints and appends it to the given message
     static QString appendRedundantMsg(const std::vector<int> &redundant);
+    /// generates a warning message about partially redundant constraints and appends it to the given message
+    static QString appendPartiallyRedundantMsg(const std::vector<int> &partiallyredundant);
     /// generates a warning message about redundant constraints and appends it to the given message
     static QString appendMalformedMsg(const std::vector<int> &redundant);
 
@@ -442,6 +444,7 @@ protected:
     static SbColor FullyConstraintConstructionElementColor;
     static SbColor FullyConstraintInternalAlignmentColor;
     static SbColor FullyConstraintConstructionPointColor;
+    static SbColor InvalidSketchColor;
 
     static SbTime prvClickTime;
     static SbVec2s prvClickPos; //used by double-click-detector

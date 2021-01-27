@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TechDrawGui::TaskDimension</class>
+ <widget class="QWidget" name="TechDrawGui::TaskDimension">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>330</width>
+    <height>417</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dimension</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_4">
+   <item>
+    <widget class="QGroupBox" name="gbTolerancing">
+     <property name="title">
+      <string>Tolerancing</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0">
+         <widget class="QCheckBox" name="cbTheoreticallyExact">
+          <property name="toolTip">
+           <string>If theoretical exact (basic) dimension</string>
+          </property>
+          <property name="text">
+           <string>Theoretically Exact</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QCheckBox" name="cbEqualTolerance">
+          <property name="toolTip">
+           <string>Reverses usual direction of dimension line terminators</string>
+          </property>
+          <property name="text">
+           <string>Equal Tolerance</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Overtolerance:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="Gui::QuantitySpinBox" name="qsbOvertolerance">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Overtolerance value
+If 'Equal Tolerance' is checked this is also
+the negated value for 'Under Tolerance'.</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+          <property name="value">
+           <double>0.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_8">
+          <property name="text">
+           <string>Undertolerance:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="Gui::QuantitySpinBox" name="qsbUndertolerance">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Undertolerance value
+If 'Equal Tolerance' is checked it will be replaced
+by negative value of 'Over Tolerance'.</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+          <property name="value">
+           <double>0.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="gbFormatting">
+     <property name="title">
+      <string>Formatting</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_11">
+          <property name="text">
+           <string>Format Specifier:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="leFormatSpecifier">
+          <property name="toolTip">
+           <string>Text to be displayed</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QCheckBox" name="cbArbitrary">
+          <property name="toolTip">
+           <string>If checked the content of 'Format Spec' will
+be used instead if the dimension value</string>
+          </property>
+          <property name="text">
+           <string>Arbitrary Text</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Tolerance Format Specifier:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLineEdit" name="leToleranceFormatSpecifier">
+          <property name="toolTip">
+           <string>Text to be displayed</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QCheckBox" name="cbArbitraryTolerances">
+          <property name="toolTip">
+           <string>If checked the content of 'Format Spec' will
+be used instead if the dimension value</string>
+          </property>
+          <property name="text">
+           <string>Arbitrary Tolerance Text</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="gbDisplayStyle">
+     <property name="title">
+      <string>Display Style</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="0" column="0">
+         <widget class="QCheckBox" name="cbArrowheads">
+          <property name="toolTip">
+           <string>Reverses usual direction of dimension line terminators</string>
+          </property>
+          <property name="text">
+           <string>Flip Arrowheads</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Color:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="Gui::ColorButton" name="dimensionColor">
+          <property name="toolTip">
+           <string>Color of the dimension</string>
+          </property>
+          <property name="color">
+           <color>
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_7">
+          <property name="text">
+           <string>Font Size:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="Gui::QuantitySpinBox" name="qsbFontSize">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Fontsize for 'Text'</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="value">
+           <double>4.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>FontSize</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Dimensions</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>Drawing Style:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QComboBox" name="comboDrawingStyle">
+          <property name="toolTip">
+           <string>Standard and style according to which dimension is drawn</string>
+          </property>
+          <item>
+           <property name="text">
+            <string>ISO Oriented</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>ISO Referencing</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>ASME Inlined</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>ASME Referencing</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::ColorButton</class>
+   <extends>QPushButton</extends>
+   <header>Gui/Widgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="Resources/TechDraw.qrc"/>
+ </resources>
+ <connections/>
+</ui>

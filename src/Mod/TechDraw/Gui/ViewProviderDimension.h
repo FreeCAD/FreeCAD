@@ -72,6 +72,9 @@ public:
     virtual std::vector<std::string> getDisplayModes(void) const;
     virtual void updateData(const App::Property*);
     virtual void onChanged(const App::Property* p);
+    virtual bool setEdit(int ModNum);
+    virtual void unsetEdit(int ModNum);
+    virtual bool doubleClicked(void);
 
     virtual TechDraw::DrawViewDimension* getViewObject() const;
 

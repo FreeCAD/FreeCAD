@@ -88,8 +88,9 @@ public:
      * Returns the part which contains this object.
      * In case this object does not belong to any Part, 0 is returned.
      * @param obj       the object to search for
+     * @param recursive: whether to recursively find any grand parent Part container
      */
-    static App::Part* getPartOfObject (const DocumentObject* obj);
+    static App::Part* getPartOfObject (const DocumentObject* obj, bool recursive=true);
 
     virtual PyObject *getPyObject(void) override;
 };

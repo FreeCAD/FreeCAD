@@ -334,7 +334,11 @@ Mesh::MeshObject* Mesher::createMesh() const
         Mesher::_mesh_gen = new SMESH_Gen();
     SMESH_Gen* meshgen = Mesher::_mesh_gen;
 
+#if SMESH_VERSION_MAJOR >= 9
+    SMESH_Mesh* mesh = meshgen->CreateMesh(true);
+#else
     SMESH_Mesh* mesh = meshgen->CreateMesh(0, true);
+#endif
 
 
     int hyp=0;
@@ -342,7 +346,11 @@ Mesh::MeshObject* Mesher::createMesh() const
     switch (method) {
 #if defined (HAVE_NETGEN)
     case Netgen: {
+#if SMESH_VERSION_MAJOR >= 9
+        NETGENPlugin_Hypothesis_2D* hyp2d = new NETGENPlugin_Hypothesis_2D(hyp++,meshgen);
+#else
         NETGENPlugin_Hypothesis_2D* hyp2d = new NETGENPlugin_Hypothesis_2D(hyp++,0,meshgen);
+#endif
 
         if (fineness >=0 && fineness < 5) {
             hyp2d->SetFineness(NETGENPlugin_Hypothesis_2D::Fineness(fineness));
@@ -367,58 +375,98 @@ Mesh::MeshObject* Mesher::createMesh() const
         hyp2d->SetSecondOrder(secondOrder); // apply bisecting to create four triangles out of one
         hypoth.push_back(hyp2d);
 
+#if SMESH_VERSION_MAJOR >= 9
+        NETGENPlugin_NETGEN_2D* alg2d = new NETGENPlugin_NETGEN_2D(hyp++,meshgen);
+#else
         NETGENPlugin_NETGEN_2D* alg2d = new NETGENPlugin_NETGEN_2D(hyp++,0,meshgen);
+#endif
         hypoth.push_back(alg2d);
     } break;
 #endif
 #if defined (HAVE_MEFISTO)
     case Mefisto: {
         if (maxLength > 0) {
+#if SMESH_VERSION_MAJOR >= 9
+            StdMeshers_MaxLength* hyp1d = new StdMeshers_MaxLength(hyp++, meshgen);
+#else
             StdMeshers_MaxLength* hyp1d = new StdMeshers_MaxLength(hyp++, 0, meshgen);
+#endif
             hyp1d->SetLength(maxLength);
             hypoth.push_back(hyp1d);
         }
         else if (localLength > 0) {
+#if SMESH_VERSION_MAJOR >= 9
+            StdMeshers_LocalLength* hyp1d = new StdMeshers_LocalLength(hyp++,meshgen);
+#else
             StdMeshers_LocalLength* hyp1d = new StdMeshers_LocalLength(hyp++,0,meshgen);
+#endif
             hyp1d->SetLength(localLength);
             hypoth.push_back(hyp1d);
         }
         else if (maxArea > 0) {
+#if SMESH_VERSION_MAJOR >= 9
+            StdMeshers_MaxElementArea* hyp2d = new StdMeshers_MaxElementArea(hyp++,meshgen);
+#else
             StdMeshers_MaxElementArea* hyp2d = new StdMeshers_MaxElementArea(hyp++,0,meshgen);
+#endif
             hyp2d->SetMaxArea(maxArea);
             hypoth.push_back(hyp2d);
         }
         else if (deflection > 0) {
+#if SMESH_VERSION_MAJOR >= 9
+            StdMeshers_Deflection1D* hyp1d = new StdMeshers_Deflection1D(hyp++,meshgen);
+#else
             StdMeshers_Deflection1D* hyp1d = new StdMeshers_Deflection1D(hyp++,0,meshgen);
+#endif
             hyp1d->SetDeflection(deflection);
             hypoth.push_back(hyp1d);
         }
         else if (minLen > 0 && maxLen > 0) {
+#if SMESH_VERSION_MAJOR >= 9
+            StdMeshers_Arithmetic1D* hyp1d = new StdMeshers_Arithmetic1D(hyp++,meshgen);
+#else
             StdMeshers_Arithmetic1D* hyp1d = new StdMeshers_Arithmetic1D(hyp++,0,meshgen);
+#endif
             hyp1d->SetLength(minLen, false);
             hyp1d->SetLength(maxLen, true);
             hypoth.push_back(hyp1d);
         }
         else {
+#if SMESH_VERSION_MAJOR >= 9
+            StdMeshers_AutomaticLength* hyp1d = new StdMeshers_AutomaticLength(hyp++,meshgen);
+#else
             StdMeshers_AutomaticLength* hyp1d = new StdMeshers_AutomaticLength(hyp++,0,meshgen);
+#endif
             hypoth.push_back(hyp1d);
         }
 
         {
+#if SMESH_VERSION_MAJOR >= 9
+            StdMeshers_NumberOfSegments* hyp1d = new StdMeshers_NumberOfSegments(hyp++,meshgen);
+#else
             StdMeshers_NumberOfSegments* hyp1d = new StdMeshers_NumberOfSegments(hyp++,0,meshgen);
+#endif
             hyp1d->SetNumberOfSegments(1);
             hypoth.push_back(hyp1d);
         }
 
         if (regular) {
+#if SMESH_VERSION_MAJOR >= 9
+            StdMeshers_Regular_1D* hyp1d = new StdMeshers_Regular_1D(hyp++,meshgen);
+#else
             StdMeshers_Regular_1D* hyp1d = new StdMeshers_Regular_1D(hyp++,0,meshgen);
+#endif
             hypoth.push_back(hyp1d);
         }
 #if SMESH_VERSION_MAJOR < 7
         StdMeshers_TrianglePreference* hyp2d_1 = new StdMeshers_TrianglePreference(hyp++,0,meshgen);
         hypoth.push_back(hyp2d_1);
 #endif
+#if SMESH_VERSION_MAJOR >= 9
+        StdMeshers_MEFISTO_2D* alg2d = new StdMeshers_MEFISTO_2D(hyp++,meshgen);
+#else
         StdMeshers_MEFISTO_2D* alg2d = new StdMeshers_MEFISTO_2D(hyp++,0,meshgen);
+#endif
         hypoth.push_back(alg2d);
     } break;
 #endif

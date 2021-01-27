@@ -358,6 +358,33 @@ PyObject*  PropertyContainerPy::getDocumentationOfProperty(PyObject *args)
         return Py::new_reference_to(Py::String(""));
 }
 
+PyObject*  PropertyContainerPy::getEnumerationsOfProperty(PyObject *args)
+{
+    char *pstr;
+    if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
+        return NULL;                             // NULL triggers exception
+
+    Property* prop = getPropertyContainerPtr()->getPropertyByName(pstr);
+    if (!prop) {
+        PyErr_Format(PyExc_AttributeError, "Property container has no property '%s'", pstr);
+        return 0;
+    }
+
+    PropertyEnumeration *enumProp = dynamic_cast<PropertyEnumeration*>(prop);
+    if (!enumProp) {
+        Py_INCREF(Py_None);
+        return Py_None;
+    }
+
+    std::vector<std::string> enumerations = enumProp->getEnumVector();
+
+    Py::List ret;
+    for (std::vector<std::string>::const_iterator it = enumerations.begin(); it != enumerations.end(); ++it) {
+        ret.append(Py::String(*it));
+    }
+    return Py::new_reference_to(ret);
+}
+
 Py::List PropertyContainerPy::getPropertiesList(void) const
 {
     Py::List ret;

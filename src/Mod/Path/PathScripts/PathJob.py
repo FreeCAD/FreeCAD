@@ -56,6 +56,9 @@ class JobTemplate:
     PostProcessor = 'Post'
     PostProcessorArgs = 'PostArgs'
     PostProcessorOutputFile = 'Output'
+    Fixtures = 'Fixtures'
+    OrderOutputBy = 'OrderOutputBy'
+    SplitOutput = 'SplitOutput'
     SetupSheet = 'SetupSheet'
     Stock = 'Stock'
     # TCs are grouped under Tools in a job, the template refers to them directly though
@@ -121,7 +124,6 @@ class ObjectJob:
 
         obj.addProperty("App::PropertyLink", "Stock", "Base", QtCore.QT_TRANSLATE_NOOP("PathJob", "Solid object to be used as stock."))
         obj.addProperty("App::PropertyLink", "Operations", "Base", QtCore.QT_TRANSLATE_NOOP("PathJob", "Compound path of all operations in the order they are processed."))
-        #obj.addProperty("App::PropertyLinkList", "ToolController", "Base", QtCore.QT_TRANSLATE_NOOP("PathJob", "Collection of tool controllers available for this job."))
 
         obj.addProperty("App::PropertyBool", "SplitOutput", "Output", QtCore.QT_TRANSLATE_NOOP("PathJob", "Split output into multiple gcode files"))
         obj.addProperty("App::PropertyEnumeration", "OrderOutputBy", "WCS", QtCore.QT_TRANSLATE_NOOP("PathJob", "If multiple WCS, order the output this way"))
@@ -350,6 +352,15 @@ class ObjectJob:
                 if attrs.get(JobTemplate.Stock):
                     obj.Stock = PathStock.CreateFromTemplate(obj, attrs.get(JobTemplate.Stock))
 
+                if attrs.get(JobTemplate.Fixtures):
+                    obj.Fixtures = [x for y in attrs.get(JobTemplate.Fixtures) for x in y]
+
+                if attrs.get(JobTemplate.OrderOutputBy):
+                    obj.OrderOutputBy = attrs.get(JobTemplate.OrderOutputBy)
+
+                if attrs.get(JobTemplate.SplitOutput):
+                    obj.SplitOutput = attrs.get(JobTemplate.SplitOutput)
+
                 PathLog.debug("setting tool controllers (%d)" % len(tcs))
                 obj.Tools.Group = tcs
             else:
@@ -364,6 +375,9 @@ class ObjectJob:
         if obj.PostProcessor:
             attrs[JobTemplate.PostProcessor] = obj.PostProcessor
             attrs[JobTemplate.PostProcessorArgs] = obj.PostProcessorArgs
+            attrs[JobTemplate.Fixtures] = [{f: True} for f in obj.Fixtures]
+            attrs[JobTemplate.OrderOutputBy] = obj.OrderOutputBy
+            attrs[JobTemplate.SplitOutput] = obj.SplitOutput
         if obj.PostProcessorOutputFile:
             attrs[JobTemplate.PostProcessorOutputFile] = obj.PostProcessorOutputFile
         attrs[JobTemplate.GeometryTolerance] = str(obj.GeometryTolerance.Value)

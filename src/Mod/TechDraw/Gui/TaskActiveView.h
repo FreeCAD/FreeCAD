@@ -80,7 +80,7 @@ protected:
     TechDraw::DrawViewSymbol* createActiveView(void);
 
 private:
-    Ui_TaskActiveView* ui;
+    std::unique_ptr<Ui_TaskActiveView> ui;
 
     TechDraw::DrawPage*       m_pageFeat;
     TechDraw::DrawViewSymbol* m_symbolFeat;

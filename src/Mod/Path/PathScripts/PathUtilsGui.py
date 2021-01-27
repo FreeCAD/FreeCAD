@@ -21,6 +21,7 @@
 # ***************************************************************************
 
 import FreeCADGui
+import PathGui as PGui # ensure Path/Gui/Resources are loaded
 import PathScripts
 import PathScripts.PathJobCmd as PathJobCmd
 import PathScripts.PathUtils as PathUtils

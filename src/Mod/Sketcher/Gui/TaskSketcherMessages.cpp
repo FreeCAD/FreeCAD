@@ -116,6 +116,10 @@ void TaskSketcherMessages::on_labelConstrainStatus_linkActivated(const QString &
     else
     if( str == QString::fromLatin1("#malformed"))
         Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectMalformedConstraints");
+        else
+    if( str == QString::fromLatin1("#partiallyredundant"))
+        Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectPartiallyRedundantConstraints");
+
 }
 
 void TaskSketcherMessages::on_autoUpdate_stateChanged(int state)

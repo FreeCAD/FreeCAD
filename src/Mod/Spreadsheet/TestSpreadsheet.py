@@ -1073,6 +1073,14 @@ class SpreadsheetCases(unittest.TestCase):
         self.doc.recompute()
         self.assertEqual(sheet.A3, 3)
 
+    def testRemoveRowsAliasReuseName(self):
+        """ Regression test for issue 4492; deleted aliases remains in database"""
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+        sheet.setAlias('B2', 'test')
+        self.doc.recompute()
+        sheet.removeRows('2', 1)
+        sheet.setAlias('B3','test')
+
     def testRemoveColumnsAlias(self):
         """ Regression test for issue 4429; remove columns from sheet with aliases"""
         sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
@@ -1085,6 +1093,14 @@ class SpreadsheetCases(unittest.TestCase):
         sheet.removeColumns('A', 1)
         self.doc.recompute()
         self.assertEqual(sheet.C1, 3)
+
+    def testRemoveColumnsAliasReuseName(self):
+        """ Regression test for issue 4492; deleted aliases remains in database"""
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+        sheet.setAlias('B2', 'test')
+        self.doc.recompute()
+        sheet.removeColumns('B', 1)
+        sheet.setAlias('C3','test')
 
     def tearDown(self):
         #closing doc

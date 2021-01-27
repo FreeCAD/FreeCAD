@@ -22,13 +22,13 @@
 
 
 #include "PreCompiled.h"
+#include <SMESH_Version.h>
 
 #ifndef _PreComp_
 # include <Python.h>
 # include <SMESH_Gen.hxx>
 # include <SMESHDS_Mesh.hxx>
 # include <SMESH_Mesh.hxx>
-# include <SMDS_PolyhedralVolumeOfNodes.hxx>
 # include <SMDS_VolumeTool.hxx>
 
 # include <BRepBuilderAPI_Copy.hxx>
@@ -83,7 +83,11 @@ App::DocumentObjectExecReturn *FemMeshShapeNetgenObject::execute(void)
     TopoDS_Shape shape = feat->Shape.getValue();
 
     NETGENPlugin_Mesher myNetGenMesher(newMesh.getSMesh(),shape,true);
+#if SMESH_VERSION_MAJOR >= 9
+    NETGENPlugin_Hypothesis* tet= new NETGENPlugin_Hypothesis(0,newMesh.getGenerator());
+#else
     NETGENPlugin_Hypothesis* tet= new NETGENPlugin_Hypothesis(0,1,newMesh.getGenerator());
+#endif
     tet->SetMaxSize(MaxSize.getValue());
     tet->SetSecondOrder(SecondOrder.getValue());
     tet->SetOptimize(Optimize.getValue());

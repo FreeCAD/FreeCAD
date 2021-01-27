@@ -160,6 +160,14 @@ void StdCmdOpen::activated(int iMsg)
     else {
         for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
             getGuiApplication()->open(it.key().toUtf8(), it.value().toLatin1());
+
+            App::Document *doc = App::GetApplication().getActiveDocument();
+
+            if(doc && doc->testStatus(App::Document::PartialRestore))
+                QMessageBox::critical(getMainWindow(), QObject::tr("Error"), QObject::tr("There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved."));
+
+            if(doc && doc->testStatus(App::Document::RestoreError))
+                QMessageBox::critical(getMainWindow(), QObject::tr("Error"), QObject::tr("There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data."));
         }
     }
 }

@@ -245,9 +245,11 @@ void SketchObject::retrieveSolverDiagnostics()
 {
     lastHasConflict = solvedSketch.hasConflicts();
     lastHasRedundancies = solvedSketch.hasRedundancies();
+    lastHasPartialRedundancies = solvedSketch.hasPartialRedundancies();
     lastHasMalformedConstraints = solvedSketch.hasMalformedConstraints();
     lastConflicting=solvedSketch.getConflicting();
     lastRedundant=solvedSketch.getRedundant();
+    lastPartiallyRedundant=solvedSketch.getPartiallyRedundant();
     lastMalformedConstraints=solvedSketch.getMalformedConstraints();
 }
 
@@ -312,6 +314,10 @@ int SketchObject::solve(bool updateGeoAfterSolving/*=true*/)
 
     if(lastHasMalformedConstraints) {
         Base::Console().Error("Sketch %s has malformed constraints!\n",this->getNameInDocument());
+    }
+
+    if(lastHasPartialRedundancies) {
+        Base::Console().Warning("Sketch %s has partially redundant constraints!\n",this->getNameInDocument());
     }
 
     lastSolveTime=solvedSketch.getSolveTime();
@@ -656,7 +662,7 @@ int SketchObject::setUpSketch()
 
     retrieveSolverDiagnostics();
 
-    if(lastHasRedundancies || lastDoF < 0 || lastHasConflict || lastHasMalformedConstraints)
+    if(lastHasRedundancies || lastDoF < 0 || lastHasConflict || lastHasMalformedConstraints || lastHasPartialRedundancies)
         Constraints.touch();
 
     return lastDoF;
@@ -7574,7 +7580,14 @@ void SketchObject::migrateSketch(void)
 
                 if(ext->testMigrationType(Part::GeometryMigrationExtension::Construction))
                 {
-                    GeometryFacade::setConstruction(g, ext->getConstruction());
+                    auto gf = GeometryFacade::getFacade(g); // at this point IA geometry is already migrated
+
+                    bool oldconstr =  ext->getConstruction();
+
+                    if( g->getTypeId() == Part::GeomPoint::getClassTypeId() && !gf->isInternalAligned())
+                        oldconstr = true;
+
+                    GeometryFacade::setConstruction(g,oldconstr);
                 }
 
                 g->deleteExtension(Part::GeometryMigrationExtension::getClassTypeId());

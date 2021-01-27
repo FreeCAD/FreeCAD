@@ -554,6 +554,9 @@ void BrowserView::onLinkClicked (const QUrl & url)
                 App::Document *doc = BaseView::getAppDocument();
                 if(doc && doc->testStatus(App::Document::PartialRestore))
                     QMessageBox::critical(this, tr("Error"), tr("There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved."));
+
+                if(doc && doc->testStatus(App::Document::RestoreError))
+                    QMessageBox::critical(this, tr("Error"), tr("There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data."));
             }
         }
         else {
