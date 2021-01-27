@@ -1099,6 +1099,39 @@ void GroupCommand::setup(Action *pcAction) {
 }
 
 //===========================================================================
+// CheckableCommand
+//===========================================================================
+
+CheckableCommand::CheckableCommand(const char *name)
+    :Command(name)
+{}
+
+void CheckableCommand::activated(int iMsg)
+{
+    auto checked = !!iMsg;
+    setOption(checked);
+    if(_pcAction) _pcAction->setChecked(checked,true);
+}
+
+bool CheckableCommand::isActive(void)
+{
+    bool checked = getOption();
+    if(_pcAction && _pcAction->isChecked()!=checked)
+        _pcAction->setChecked(checked,true);
+    return true;
+}
+
+Gui::Action * CheckableCommand::createAction(void)
+{
+    Action *pcAction = Command::createAction();
+    pcAction->setCheckable(true);
+    pcAction->setIcon(QIcon());
+    _pcAction = pcAction;
+    isActive();
+    return pcAction;
+}
+
+//===========================================================================
 // MacroCommand
 //===========================================================================
 

@@ -659,6 +659,25 @@ protected:
     std::vector<std::pair<Command*,size_t> > cmds;
 };
 
+/** Abstract class to help implement a checkable command
+ */
+class CheckableCommand : public Gui::Command
+{
+public:
+    CheckableCommand(const char *name);
+
+protected: 
+    virtual void activated(int iMsg);
+    virtual bool isActive(void);
+    virtual Gui::Action * createAction(void);
+
+    /// Called to determine if this command/option is checked
+    virtual bool getOption() const = 0;
+    /// Called to set checked state of this command/option
+    virtual void setOption(bool checked) = 0;
+};
+
+
 /** The Python command class
  * This is a special type of command class. It's used to bind a Python command class into the
  * FreeCAD command framework.

@@ -3493,43 +3493,7 @@ StdTreeCollapseDocument::StdTreeCollapseDocument()
     eType        = 0;
 }
 
-//===========================================================================
-// StdCmdCheckableOption
-//===========================================================================
-
-class StdCmdCheckableOption : public Gui::Command
-{
-public:
-    StdCmdCheckableOption(const char *name)
-        :Command(name)
-    {}
-
-protected: 
-    virtual void activated(int iMsg) {
-        auto checked = !!iMsg;
-        setOption(checked);
-        if(_pcAction) _pcAction->setChecked(checked,true);
-    }
-
-    virtual bool isActive(void) {
-        bool checked = getOption();
-        if(_pcAction && _pcAction->isChecked()!=checked)
-            _pcAction->setChecked(checked,true);
-        return true;
-    }
-
-    virtual Gui::Action * createAction(void) {
-        Action *pcAction = Command::createAction();
-        pcAction->setCheckable(true);
-        pcAction->setIcon(QIcon());
-        _pcAction = pcAction;
-        isActive();
-        return pcAction;
-    }
-
-    virtual bool getOption() const = 0;
-    virtual void setOption(bool checked) = 0;
-};
+typedef Gui::CheckableCommand StdCmdCheckableOption;
 
 #define TREEVIEW_CMD_DEF(_name) \
 class StdTree##_name : public StdCmdCheckableOption \
