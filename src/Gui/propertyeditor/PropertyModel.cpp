@@ -280,11 +280,14 @@ PropertyModel::GroupInfo &PropertyModel::getGroupInfo(App::Property *prop)
             ++it;
         }
         groupInfo.groupItem->_row = row;
+        int revision = _revision;
         beginInsertRows(QModelIndex(), row, row);
-        rootItem->insertChild(row, groupInfo.groupItem);
-        // update row index for all group items behind
-        for (++it; it!=groupItems.end(); ++it)
-            ++it->second.groupItem->_row;
+        if (revision == _revision) {
+            rootItem->insertChild(row, groupInfo.groupItem);
+            // update row index for all group items behind
+            for (++it; it!=groupItems.end(); ++it)
+                ++it->second.groupItem->_row;
+        }
         endInsertRows();
     }
 
@@ -293,16 +296,20 @@ PropertyModel::GroupInfo &PropertyModel::getGroupInfo(App::Property *prop)
 
 void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
 {
+    int revision = ++_revision;
+
     // If props empty, then simply reset all property items, but keep the group
     // items.
     if (props.empty()) {
         beginResetModel();
-        for(auto &v : groupItems) {
-            auto &groupInfo = v.second;
-            groupInfo.groupItem->reset();
-            groupInfo.children.clear();
+        if (revision == _revision) {
+            for(auto &v : groupItems) {
+                auto &groupInfo = v.second;
+                groupInfo.groupItem->reset();
+                groupInfo.children.clear();
+            }
+            itemMap.clear();
         }
-        itemMap.clear();
         endResetModel();
         return;
     }
@@ -362,12 +369,17 @@ void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
 
         auto flushInserts = [&]() {
             if (beginInsert < 0)
-                return;
+                return true;
             beginInsertRows(midx, beginInsert, endInsert);
+            if (revision != _revision) {
+                endInsertRows();
+                return false;
+            }
             for (int i=beginInsert; i<=endInsert; ++i)
                 groupInfo.groupItem->insertChild(i, groupInfo.children[i]);
             endInsertRows();
             beginInsert = -1;
+            return true;
         };
 
         auto flushChanges = [&]() {
@@ -391,7 +403,8 @@ void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
                     beginInsert = row;
                 endInsert = row;
             } else {
-                flushInserts();
+                if (!flushInserts())
+                    return;
                 int oldRow = item->row();
                 // Dynamic property can rename group, so must check
                 auto groupItem = item->parent();
@@ -404,6 +417,10 @@ void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
                     flushChanges();
                     beginMoveRows(createIndex(groupItem->row(),0,groupItem),
                             oldRow, oldRow, midx, row);
+                    if (revision != _revision) {
+                        endMoveRows();
+                        return;
+                    }
                     if (groupItem == groupInfo.groupItem)
                         groupInfo.groupItem->moveChild(oldRow, row);
                     else {
@@ -416,7 +433,8 @@ void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
             }
         }
         flushChanges();
-        flushInserts();
+        if (!flushInserts())
+            return;
     }
 
     // Final step, signal item removal. This is separated from the above because
@@ -428,6 +446,10 @@ void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
         if (last > first) {
             QModelIndex midx = this->index(groupInfo.groupItem->_row,0,QModelIndex());
             beginRemoveRows(midx, first, last-1);
+            if (revision != _revision) {
+                endRemoveRows();
+                return;
+            }
             groupInfo.groupItem->removeChildren(first, last-1);
             endRemoveRows();
         } else {
@@ -476,10 +498,13 @@ void PropertyModel::appendProperty(const App::Property& _prop)
     }
 
     QModelIndex midx = this->index(groupInfo.groupItem->_row,0,QModelIndex());
+    int revision = ++_revision;
     beginInsertRows(midx, row, row);
-    groupInfo.groupItem->insertChild(row, item);
-    setPropertyItemName(item, prop->getName(), groupInfo.groupItem->propertyName());
-    item->setPropertyData({prop});
+    if (revision == _revision) {
+        groupInfo.groupItem->insertChild(row, item);
+        setPropertyItemName(item, prop->getName(), groupInfo.groupItem->propertyName());
+        item->setPropertyData({prop});
+    }
     endInsertRows();
 }
 
@@ -494,8 +519,10 @@ void PropertyModel::removeProperty(const App::Property& _prop)
     if (item->removeProperty(prop)) {
         PropertyItem *parent = item->parent();
         int row = item->row();
+        int revision = ++_revision;
         beginRemoveRows(this->index(parent->row(), 0, QModelIndex()), row, row);
-        parent->removeChildren(row,row);
+        if (revision == _revision)
+            parent->removeChildren(row,row);
         endRemoveRows();
     }
 }
@@ -529,8 +556,10 @@ bool PropertyModel::removeRows(int row, int count, const QModelIndex& parent)
 
     int start = row;
     int end = row+count-1;
+    int revision = ++_revision;
     beginRemoveRows(parent, start, end);
-    item->removeChildren(start, end);
+    if (revision == _revision)
+        item->removeChildren(start, end);
     endRemoveRows();
     return true;
 }

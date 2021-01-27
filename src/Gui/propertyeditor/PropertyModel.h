@@ -83,6 +83,8 @@ private:
     std::unordered_map<App::Property*, QPointer<PropertyItem> > itemMap;
 
     std::map<QString, GroupInfo> groupItems;
+
+    int _revision = 0; // for handling recursive buildUp()
 };
 
 } //namespace PropertyEditor
