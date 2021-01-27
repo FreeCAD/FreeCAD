@@ -595,7 +595,7 @@ public:
 typedef App::FeaturePythonT<LinkGroup> LinkGroupPython;
 
 
-class LinkParams: public ParameterGrp::ObserverType {
+class AppExport LinkParams: public ParameterGrp::ObserverType {
 public:
 #define FC_LINK_PARAMS \
     FC_LINK_PARAM(HideScaleVector, bool, Bool, true) \
