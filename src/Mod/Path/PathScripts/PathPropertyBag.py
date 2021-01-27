@@ -72,7 +72,7 @@ class PropertyBag(object):
         obj.setEditorMode(self.CustomPropertyGroups, 2)  # hide
 
     def getCustomProperties(self):
-        '''Return a list of all custom properties created in this container.'''
+        '''getCustomProperties() ... Return a list of all custom properties created in this container.'''
         return [p for p in self.obj.PropertiesList if self.obj.getGroupOfProperty(p) in self.obj.CustomPropertyGroups]
 
     def addCustomProperty(self, propertyType, name, group=None, desc=None):
@@ -86,6 +86,16 @@ class PropertyBag(object):
             groups.append(group)
             self.obj.CustomPropertyGroups = groups
         self.obj.addProperty(propertyType, name, group, desc)
+
+    def refreshCustomPropertyGroups(self):
+        '''refreshCustomPropertyGroups() ... removes empty property groups, should be called after deleting properties.'''
+        customGroups = []
+        for p in self.obj.PropertiesList:
+            group = self.obj.getGroupOfProperty(p)
+            if group in self.obj.CustomPropertyGroups and not group in customGroups:
+                customGroups.append(group)
+        self.obj.CustomPropertyGroups = customGroups
+
 
 def Create(name = 'PropertyBag'):
     obj = FreeCAD.ActiveDocument.addObject('App::FeaturePython', name)

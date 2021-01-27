@@ -130,6 +130,7 @@ class PropertyCreate(object):
         self.obj = obj
         self.form = FreeCADGui.PySideUic.loadUi(":panels/PropertyCreate.ui")
 
+        obj.Proxy.refreshCustomPropertyGroups()
         for g in sorted(obj.CustomPropertyGroups):
             self.form.propertyGroup.addItem(g)
         if grp:
