@@ -82,10 +82,6 @@ public:
     SketchGeometryExtension(long cid);
     virtual ~SketchGeometryExtension() override = default;
 
-    // Persistence implementer ---------------------
-    virtual void Save(Base::Writer &/*writer*/) const override;
-    virtual void Restore(Base::XMLReader &/*reader*/) override;
-
     virtual std::unique_ptr<Part::GeometryExtension> copy(void) const override;
 
     virtual PyObject *getPyObject(void) override;
@@ -106,6 +102,11 @@ public:
     static bool getInternalTypeFromName(std::string str, InternalType::InternalType &type);
 
     static bool getGeometryModeFromName(std::string str, GeometryMode::GeometryMode &type);
+
+protected:
+    virtual void copyAttributes(Part::GeometryExtension * cpy) const override;
+    virtual void restoreAttributes(Base::XMLReader &reader) override;
+    virtual void saveAttributes(Base::Writer &writer) const override;
 
 private:
     SketchGeometryExtension(const SketchGeometryExtension&) = default;

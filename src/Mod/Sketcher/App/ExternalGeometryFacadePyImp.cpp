@@ -316,7 +316,7 @@ PyObject* ExternalGeometryFacadePy::getExtensionOfType(PyObject *args)
                 PyErr_SetString(Part::PartExceptionOCCError, "Geometry extension does not exist anymore.");
                 return 0;
             }
-            catch(Base::NotImplementedError) {
+            catch(Base::NotImplementedError&) {
                 PyErr_SetString(Part::PartExceptionOCCError, "Geometry extension does not implement a Python counterpart.");
                 return 0;
             }
@@ -353,7 +353,7 @@ PyObject* ExternalGeometryFacadePy::getExtensionOfName(PyObject *args)
             PyErr_SetString(Part::PartExceptionOCCError, "Geometry extension does not exist anymore.");
             return 0;
         }
-        catch(Base::NotImplementedError) {
+        catch(Base::NotImplementedError&) {
             PyErr_SetString(Part::PartExceptionOCCError, "Geometry extension does not implement a Python counterpart.");
             return 0;
         }
@@ -480,7 +480,7 @@ PyObject* ExternalGeometryFacadePy::getExtensions(PyObject *args)
                 try {
                     list.append(Py::asObject(p->copyPyObject()));
                 }
-                catch(Base::NotImplementedError) {
+                catch(Base::NotImplementedError&) {
                     // silently ignoring extensions not having a Python object
                 }
             }

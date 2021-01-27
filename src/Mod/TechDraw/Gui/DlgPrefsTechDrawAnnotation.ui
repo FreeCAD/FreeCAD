@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>415</width>
+    <width>440</width>
     <height>447</height>
    </rect>
   </property>
@@ -568,6 +568,9 @@
           </property>
           <property name="text">
            <string>Show Center Marks</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>ShowCenterMarks</cstring>

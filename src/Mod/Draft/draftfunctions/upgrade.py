@@ -504,18 +504,10 @@ def upgrade(objects, delete=False, force=None):
                     if result:
                         _msg(_tr("Found closed wires: creating faces"))
             # wires or edges: we try to join them
-            elif len(wires) > 1 or len(loneedges) > 1:
+            elif len(objects) > 1 and len(edges) > 1:
                 result = makeWires(objects)
                 if result:
                     _msg(_tr("Found several wires or edges: wiring them"))
-            # TODO: improve draftify function
-            # only one object: if not parametric, we "draftify" it
-            # elif (len(objects) == 1
-            #       and not objects[0].isDerivedFrom("Part::Part2DObjectPython")):
-            #     result = ext_draftify.draftify(objects[0])
-            #     if result:
-            #         _msg(_tr("Found 1 non-parametric objects: "
-            #                  "draftifying it"))
             # special case, we have only one open wire. We close it,
             # unless it has only 1 edge!
             elif len(objects) == 1 and len(openwires) == 1:
@@ -524,14 +516,23 @@ def upgrade(objects, delete=False, force=None):
                 if result:
                     _msg(_tr("Found 1 open wire: closing it"))
             # we have only one object that contains one edge
-            # TODO: this case should be considered in draftify
-            elif len(objects) == 1 and len(edges) == 1:
-                # turn to Draft Line
+            # TODO: improve draftify function
+            # only one object: if not parametric, we "draftify" it
+            # elif (len(objects) == 1
+            #       and not objects[0].isDerivedFrom("Part::Part2DObjectPython")):
+            #     result = ext_draftify.draftify(objects[0])
+            #     if result:
+            #         _msg(_tr("Found 1 non-parametric objects: "
+            #                  "draftifying it"))
+            elif (len(objects) == 1 and len(edges) == 1
+                  and not objects[0].isDerivedFrom("Part::Part2DObjectPython")):
                 e = objects[0].Shape.Edges[0]
-                if isinstance(e.Curve, (Part.LineSegment, Part.Line)):
-                    result = turnToLine(objects[0])
+                edge_type = DraftGeomUtils.geomType(e)
+                # currently only support Line and Circle
+                if edge_type in ("Line", "Circle"):
+                    result = ext_draftify.draftify(objects[0])
                     if result:
-                        _msg(_tr("Found 1 linear object: converting to line"))
+                        _msg(_tr("Found 1 object: draftifying it"))
             # only points, no edges
             elif not edges and len(objects) > 1:
                 result = makeCompound(objects)

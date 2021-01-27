@@ -431,7 +431,7 @@ void PartGui::DimensionLinear::setupDimension()
 
   //dimension arrows
   float dimLength = (point2.getValue()-point1.getValue()).length();
-  float coneHeight = dimLength * 0.05;
+  float coneHeight = dimLength * 0.06;
   float coneRadius = coneHeight * 0.5;
 
   SoCone *cone = new SoCone();
@@ -1165,38 +1165,20 @@ void PartGui::DimensionAngular::setupDimension()
   material->ref();
   material->diffuseColor.connectFrom(&dColor);
 
-  //dimension arrows
-  float coneHeight = radius.getValue() * 0.1;
-  float coneRadius = coneHeight * 0.5;
-
-  SoCone *cone = new SoCone();
-  cone->bottomRadius.setValue(coneRadius);
-  cone->height.setValue(coneHeight);
-
-  char str1[100];
-  char str2[100];
-  snprintf(str1, sizeof(str1), "translation 0.0 %.6f 0.0", coneHeight * 0.5);
-  snprintf(str2, sizeof(str2), "translation 0.0 -%.6f 0.0", coneHeight * 0.5);
-
-  setPart("arrow1.shape", cone);
-  set("arrow1.localTransform", "rotation 0.0 0.0 1.0 3.1415927");
-  set("arrow1.localTransform", str1);
-  setPart("arrow2.shape", cone);
-  set("arrow2.transform", "rotation 0.0 0.0 1.0 0.0");
-  set("arrow2.localTransform", str2);
-
-  //I was getting errors if I didn't manually allocate for these transforms. Not sure why.
+  // calculate arrow positions
   SoTransform *arrow1Transform = new SoTransform();
   SoComposeVec3f *arrow1Compose = new SoComposeVec3f();
   arrow1Compose->x.connectFrom(&radius);
-  arrow1Compose->y.setValue(0.0);
-  arrow1Compose->y.setValue(0.0);
+  arrow1Compose->y.setValue(0.0f);
+  arrow1Compose->z.setValue(0.0f);
+  const float* constFloat = arrow1Compose->x.getValues(0);
+  auto PositionX1 = *constFloat;
   arrow1Transform->translation.connectFrom(&arrow1Compose->vector);
   setPart("arrow1.transform", arrow1Transform);
 
   SoComposeRotation *arrow2Rotation = new SoComposeRotation();
   arrow2Rotation->angle.connectFrom(&angle);
-  arrow2Rotation->axis.setValue(0.0, 0.0, 1.0);
+  arrow2Rotation->axis.setValue(0.0f, 0.0f, 1.0f);
   SoTransform *arrow2Transform = new SoTransform();
   arrow2Transform->rotation.connectFrom(&arrow2Rotation->rotation);
   SoCalculator *arrow2LocationCalc = new SoCalculator();
@@ -1209,8 +1191,42 @@ void PartGui::DimensionAngular::setupDimension()
   arrow2Compose->y.connectFrom(&arrow2LocationCalc->ob);
   arrow2Compose->z.setValue(0.0f);
   arrow2Transform->translation.connectFrom(&arrow2Compose->vector);
+
+  // calculate distance between the 2 arrows
+  constFloat = arrow2Compose->x.getValues(0);
+  auto PositionX2 = *constFloat;
+  constFloat = arrow2Compose->y.getValues(0);
+  auto PositionY2 = *constFloat;
+  float distance = sqrt((PositionX2 - PositionX1) * (PositionX2 - PositionX1) + PositionY2 * PositionY2);
+
+  // dimension arrows
+  // the cone size must be scaled with the distance
+  // we use the same factors as for linear dimensions
+  float coneHeight = distance * 0.06;
+  float coneRadius = coneHeight * 0.5;
+
+  SoCone* cone = new SoCone();
+  cone->bottomRadius.setValue(coneRadius);
+  cone->height.setValue(coneHeight);
+
+  // set arrows, their precision and rotation
+  char str1[100];
+  char str2[100];
+  snprintf(str1, sizeof(str1), "translation 0.0 %.6f 0.0", coneHeight * 0.5);
+  snprintf(str2, sizeof(str2), "translation 0.0 -%.6f 0.0", coneHeight * 0.5);
+
+  setPart("arrow1.shape", cone);
+  set("arrow1.localTransform", "rotation 0.0 0.0 1.0 3.1415927");
+  set("arrow1.localTransform", str1);
+  setPart("arrow2.shape", cone);
+  set("arrow2.transform", "rotation 0.0 0.0 1.0 0.0");
+  set("arrow2.localTransform", str2);
+
+  // now the position
+  setPart("arrow1.transform", arrow1Transform);
   setPart("arrow2.transform", arrow2Transform);
 
+  // finally the material
   setPart("arrow1.material", material);
   setPart("arrow2.material", material);
 

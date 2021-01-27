@@ -26,7 +26,7 @@
 
 
 #include <string>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 
 #include "DocumentObject.h"
 #include "PropertyStandard.h"

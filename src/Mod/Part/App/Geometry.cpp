@@ -334,22 +334,25 @@ std::weak_ptr<const GeometryExtension> Geometry::getExtension(std::string name) 
 }
 
 
-void Geometry::setExtension(std::unique_ptr<GeometryExtension> && geo)
+void Geometry::setExtension(std::unique_ptr<GeometryExtension> && geoext )
 {
     bool hasext=false;
 
     for( auto & ext : extensions) {
         // if same type and name, this modifies the existing extension.
-        if( ext->getTypeId() == geo->getTypeId() &&
-            ext->getName() == geo->getName()){
-            ext = std::move(geo);
+        if( ext->getTypeId() == geoext->getTypeId() &&
+            ext->getName() == geoext->getName()){
+            ext = std::move( geoext );
+            ext->notifyAttachment(this);
             hasext = true;
             break;
         }
     }
 
-    if(!hasext) // new type-name unique id, so add.
-        extensions.push_back(std::move(geo));
+    if(!hasext) { // new type-name unique id, so add.
+        extensions.push_back(std::move( geoext ));
+        extensions.back()->notifyAttachment(this);
+    }
 }
 
 void Geometry::deleteExtension(Base::Type type)
@@ -400,8 +403,10 @@ void Geometry::assignTag(const Part::Geometry * geo)
 
 void Geometry::copyNonTag(const Part::Geometry * src)
 {
-    for(auto & ext: src->extensions)
+    for(auto & ext: src->extensions) {
         this->extensions.push_back(ext->copy());
+        extensions.back()->notifyAttachment(this);
+    }
 }
 
 Geometry *Geometry::clone(void) const

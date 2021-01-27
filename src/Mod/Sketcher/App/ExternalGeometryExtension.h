@@ -67,10 +67,6 @@ public:
     ExternalGeometryExtension() = default;
     virtual ~ExternalGeometryExtension() override = default;
 
-    // Persistence implementer ---------------------
-    virtual void Save(Base::Writer &/*writer*/) const override;
-    virtual void Restore(Base::XMLReader &/*reader*/) override;
-
     virtual std::unique_ptr<Part::GeometryExtension> copy(void) const override;
 
     virtual PyObject *getPyObject(void) override;
@@ -87,6 +83,11 @@ public:
     virtual void setRef(const std::string & ref) override {Ref = ref;}
 
     static bool getFlagsFromName(std::string str, ExternalGeometryExtension::Flag &flag);
+
+protected:
+    virtual void copyAttributes(Part::GeometryExtension * cpy) const override;
+    virtual void restoreAttributes(Base::XMLReader &reader) override;
+    virtual void saveAttributes(Base::Writer &writer) const override;
 
 private:
     ExternalGeometryExtension(const ExternalGeometryExtension&) = default;

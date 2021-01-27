@@ -212,7 +212,7 @@ public:
         if (icon.isNull())
             icon = ViewProviderT::getIcon();
         else
-            icon = ViewProviderT::mergeOverlayIcons(icon);
+            icon = ViewProviderT::mergeGreyableOverlayIcons(icon);
         return icon;
     }
 

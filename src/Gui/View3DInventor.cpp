@@ -513,10 +513,13 @@ void View3DInventor::printPreview()
 {
     QPrinter printer(QPrinter::ScreenResolution);
     printer.setFullPage(true);
-#if (QT_VERSION > QT_VERSION_CHECK(5, 9, 0))
+#if QT_VERSION >= 0x050300
+    printer.setPageSize(QPageSize(QPageSize::A4));
+    printer.setPageOrientation(QPageLayout::Landscape);
+#else
     printer.setPageSize(QPrinter::A4);
-#endif
     printer.setOrientation(QPrinter::Landscape);
+#endif
 
     QPrintPreviewDialog dlg(&printer, this);
     connect(&dlg, SIGNAL(paintRequested (QPrinter *)),
@@ -536,7 +539,11 @@ void View3DInventor::print(QPrinter* printer)
         return;
     }
 
+#if QT_VERSION >= 0x050300
+    QRect rect = printer->pageLayout().paintRectPixels(printer->resolution());
+#else
     QRect rect = printer->pageRect();
+#endif
     QImage img;
     _viewer->imageFromFramebuffer(rect.width(), rect.height(), 8, QColor(255,255,255), img);
     p.drawImage(0,0,img);

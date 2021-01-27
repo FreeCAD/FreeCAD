@@ -184,7 +184,6 @@ TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawWeldSymbol* weld) :
 
 TaskWeldingSymbol::~TaskWeldingSymbol()
 {
-    delete ui;
 }
 
 void TaskWeldingSymbol::updateTask()

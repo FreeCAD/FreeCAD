@@ -50,7 +50,7 @@
 # include <SMESHDS_GroupBase.hxx>
 # include <SMESHDS_Group.hxx>
 # include <SMESHDS_Mesh.hxx>
-# include <SMDS_PolyhedralVolumeOfNodes.hxx>
+//# include <SMDS_PolyhedralVolumeOfNodes.hxx>
 # include <SMDS_VolumeTool.hxx>
 # include <StdMeshers_MaxLength.hxx>
 # include <StdMeshers_LocalLength.hxx>
@@ -93,7 +93,9 @@ using namespace Fem;
 using namespace Base;
 using namespace boost;
 
+#if SMESH_VERSION_MAJOR < 9
 static int StatCount = 0;
+#endif
 
 SMESH_Gen* FemMesh::_mesh_gen = 0;
 
@@ -103,12 +105,20 @@ FemMesh::FemMesh()
 {
     //Base::Console().Log("FemMesh::FemMesh():%p (id=%i)\n",this,StatCount);
     // create a mesh always with new StudyId to avoid overlapping destruction
+#if SMESH_VERSION_MAJOR >= 9
+    myMesh = getGenerator()->CreateMesh(false);
+#else
     myMesh = getGenerator()->CreateMesh(StatCount++,false);
+#endif
 }
 
 FemMesh::FemMesh(const FemMesh& mesh)
 {
+#if SMESH_VERSION_MAJOR >= 9
+    myMesh = getGenerator()->CreateMesh(false);
+#else
     myMesh = getGenerator()->CreateMesh(StatCount++,false);
+#endif
     copyMeshData(mesh);
 }
 
@@ -130,7 +140,11 @@ FemMesh::~FemMesh()
 FemMesh &FemMesh::operator=(const FemMesh& mesh)
 {
     if (this != &mesh) {
+#if SMESH_VERSION_MAJOR >= 9
+        myMesh = getGenerator()->CreateMesh(true);
+#else
         myMesh = getGenerator()->CreateMesh(0,true);
+#endif
         copyMeshData(mesh);
     }
     return *this;
@@ -176,10 +190,17 @@ void FemMesh::copyMeshData(const FemMesh& mesh)
             int ID = elem->GetID();
             switch (elem->GetEntityType()) {
             case SMDSEntity_Polyhedra:
+#if SMESH_VERSION_MAJOR >= 9
+                editor.GetMeshDS()->
+                    AddPolyhedralVolumeWithID(nodes,
+                                              static_cast<const SMDS_MeshVolume*>(elem)->GetQuantities(),
+                                              ID);
+#else
                 editor.GetMeshDS()->
                     AddPolyhedralVolumeWithID(nodes,
                                               static_cast<const SMDS_VtkVolume*>(elem)->GetQuantities(),
                                               ID);
+#endif
                 break;
             case SMDSEntity_Ball:
             {
@@ -239,7 +260,7 @@ void FemMesh::copyMeshData(const FemMesh& mesh)
 
         // Make a new group
         if (!groupElems.empty()) {
-            int aId;
+            int aId = -1;
             SMESH_Group* newGroupObj = this->myMesh->AddGroup(groupType, group->GetName(), aId);
             SMESHDS_Group* newGroupDS = dynamic_cast<SMESHDS_Group*>(newGroupObj->GetGroupDS());
             if (newGroupDS) {
@@ -512,6 +533,41 @@ void FemMesh::setStandardHypotheses()
 {
     if (!hypoth.empty())
         return;
+#if SMESH_VERSION_MAJOR >= 9
+    int hyp=0;
+    SMESH_HypothesisPtr len(new StdMeshers_MaxLength(hyp++, getGenerator()));
+    static_cast<StdMeshers_MaxLength*>(len.get())->SetLength(1.0);
+    hypoth.push_back(len);
+
+    SMESH_HypothesisPtr loc(new StdMeshers_LocalLength(hyp++, getGenerator()));
+    static_cast<StdMeshers_LocalLength*>(loc.get())->SetLength(1.0);
+    hypoth.push_back(loc);
+
+    SMESH_HypothesisPtr area(new StdMeshers_MaxElementArea(hyp++, getGenerator()));
+    static_cast<StdMeshers_MaxElementArea*>(area.get())->SetMaxArea(1.0);
+    hypoth.push_back(area);
+
+    SMESH_HypothesisPtr segm(new StdMeshers_NumberOfSegments(hyp++, getGenerator()));
+    static_cast<StdMeshers_NumberOfSegments*>(segm.get())->SetNumberOfSegments(1);
+    hypoth.push_back(segm);
+
+    SMESH_HypothesisPtr defl(new StdMeshers_Deflection1D(hyp++, getGenerator()));
+    static_cast<StdMeshers_Deflection1D*>(defl.get())->SetDeflection(0.01);
+    hypoth.push_back(defl);
+
+    SMESH_HypothesisPtr reg(new StdMeshers_Regular_1D(hyp++, getGenerator()));
+    hypoth.push_back(reg);
+
+    //SMESH_HypothesisPtr sel(new StdMeshers_StartEndLength(hyp++, getGenerator()));
+    //static_cast<StdMeshers_StartEndLength*>(sel.get())->SetLength(1.0, true);
+    //hypoth.push_back(sel);
+
+    SMESH_HypothesisPtr qdp(new StdMeshers_QuadranglePreference(hyp++,getGenerator()));
+    hypoth.push_back(qdp);
+
+    SMESH_HypothesisPtr q2d(new StdMeshers_Quadrangle_2D(hyp++,getGenerator()));
+    hypoth.push_back(q2d);
+#else
     int hyp=0;
     SMESH_HypothesisPtr len(new StdMeshers_MaxLength(hyp++, 1, getGenerator()));
     static_cast<StdMeshers_MaxLength*>(len.get())->SetLength(1.0);
@@ -545,6 +601,7 @@ void FemMesh::setStandardHypotheses()
 
     SMESH_HypothesisPtr q2d(new StdMeshers_Quadrangle_2D(hyp++,1,getGenerator()));
     hypoth.push_back(q2d);
+#endif
 
     // Apply hypothesis
     for (int i=0; i<hyp;i++)
@@ -572,10 +629,60 @@ std::set<long> FemMesh::getSurfaceNodes(long /*ElemId*/, short /*FaceId*/, float
  */
 std::list<std::pair<int, int> > FemMesh::getVolumesByFace(const TopoDS_Face &face) const
 {
-    //TODO: This function is broken with SMESH7 as it is impossible to iterate volume faces
     std::list<std::pair<int, int> > result;
     std::set<int> nodes_on_face = getNodesByFace(face);
 
+#if SMESH_VERSION_MAJOR >= 7
+    // SMDS_MeshVolume::facesIterator() is broken with SMESH7 as it is impossible to iterate volume faces
+    // In SMESH9 this function has been removed
+    //
+    std::map< int, std::set<int> > face_nodes;
+
+    // get faces that contribute to 'nodes_on_face' with all of its nodes
+    SMDS_FaceIteratorPtr face_iter = myMesh->GetMeshDS()->facesIterator();
+    while (face_iter && face_iter->more()) {
+        const SMDS_MeshFace* face = face_iter->next();
+        SMDS_NodeIteratorPtr node_iter = face->nodeIterator();
+
+        // all nodes of the current face must be part of 'nodes_on_face'
+        std::set<int> node_ids;
+        while (node_iter && node_iter->more()) {
+            const SMDS_MeshNode* node = node_iter->next();
+            node_ids.insert(node->GetID());
+        }
+
+        std::vector<int> element_face_nodes;
+        std::set_intersection(nodes_on_face.begin(), nodes_on_face.end(), node_ids.begin(), node_ids.end(),
+            std::back_insert_iterator<std::vector<int> >(element_face_nodes));
+
+        if (element_face_nodes.size() == node_ids.size()) {
+            face_nodes[face->GetID()] = node_ids;
+        }
+    }
+
+    // get all nodes of a volume and check which faces contribute to it with all of its nodes
+    SMDS_VolumeIteratorPtr vol_iter = myMesh->GetMeshDS()->volumesIterator();
+    while (vol_iter->more()) {
+        const SMDS_MeshVolume* vol = vol_iter->next();
+        SMDS_NodeIteratorPtr node_iter = vol->nodeIterator();
+        std::set<int> node_ids;
+        while (node_iter && node_iter->more()) {
+            const SMDS_MeshNode* node = node_iter->next();
+            node_ids.insert(node->GetID());
+        }
+
+        for (const auto& it : face_nodes) {
+            std::vector<int> element_face_nodes;
+            std::set_intersection(node_ids.begin(), node_ids.end(), it.second.begin(), it.second.end(),
+                std::back_insert_iterator<std::vector<int> >(element_face_nodes));
+
+            // For curved faces it is possible that a volume contributes more than one face
+            if (element_face_nodes.size() == it.second.size()) {
+                result.emplace_back(vol->GetID(), it.first);
+            }
+        }
+    }
+#else
     SMDS_VolumeIteratorPtr vol_iter = myMesh->GetMeshDS()->volumesIterator();
     while (vol_iter->more()) {
         const SMDS_MeshVolume* vol = vol_iter->next();
@@ -600,6 +707,7 @@ std::list<std::pair<int, int> > FemMesh::getVolumesByFace(const TopoDS_Face &fac
             }
         }
     }
+#endif
 
     result.sort();
     return result;
@@ -2085,7 +2193,11 @@ int FemMesh::addGroup(const std::string TypeString, const std::string Name, cons
     SMESH_Group* group = this->getSMesh()->AddGroup(mapping[TypeString], Name.c_str(), aId);
     if (!group)
         throw std::runtime_error("AddGroup: Failed to create new group.");
+#if SMESH_VERSION_MAJOR >= 9
+    return group->GetID();
+#else
     return aId;
+#endif
 }
 
 void FemMesh::addGroupElements(int GroupId, const std::set<int>& ElementIds)

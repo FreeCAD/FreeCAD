@@ -68,7 +68,6 @@ TaskHatch::TaskHatch(TechDraw::DrawHatch* inHatch, TechDrawGui::ViewProviderHatc
 
 TaskHatch::~TaskHatch()
 {
-    delete ui;
 }
 
 void TaskHatch::initUi()

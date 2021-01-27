@@ -29,8 +29,6 @@
 
 #include <Mod/TechDraw/Gui/ui_TaskBalloon.h>
 
-#include <Mod/TechDraw/App/DrawViewPart.h>
-
 #include "QGIViewBalloon.h"
 #include "ViewProviderBalloon.h"
 
@@ -56,14 +54,16 @@ private Q_SLOTS:
     void onTextChanged();
     void onColorChanged();
     void onFontsizeChanged();
-    void onShapeChanged();
+    void onBubbleShapeChanged();
     void onShapeScaleChanged();
-    void onEndTypeChanged();
+    void onEndSymbolChanged();
+    void onEndSymbolScaleChanged();
+    void onLineVisibleChanged();
     void onLineWidthChanged();
-    void onBalloonKinkChanged();  
+    void onKinkLengthChanged();
 
 private:
-    Ui_TaskBalloon *ui;
+    std::unique_ptr<Ui_TaskBalloon> ui;
     QGIViewBalloon *m_parent;
     ViewProviderBalloon* m_balloonVP;
 };

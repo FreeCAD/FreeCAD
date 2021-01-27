@@ -70,14 +70,11 @@
 # include <QPainter>
 # include <QTextStream>
 # include <QKeyEvent>
+# include <QDesktopWidget>
 
 # include <boost_bind_bind.hpp>
 # include <boost/scoped_ptr.hpp>
 #endif
-
-
-
-
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Converter.h>
@@ -149,12 +146,12 @@ SbColor ViewProviderSketch::CurveColor                              (1.0f,1.0f,1
 SbColor ViewProviderSketch::CurveDraftColor                         (0.0f,0.0f,0.86f);    // #0000DC -> (  0,  0,220)
 SbColor ViewProviderSketch::CurveExternalColor                      (0.8f,0.2f,0.6f);     // #CC3399 -> (204, 51,153)
 SbColor ViewProviderSketch::CrossColorH                             (0.8f,0.4f,0.4f);     // #CC6666 -> (204,102,102)
-SbColor ViewProviderSketch::CrossColorV                             (0.4f,0.8f,0.4f);     // #66CC66 -> (102,204,102)
+SbColor ViewProviderSketch::CrossColorV                             (0.47f,1.0f,0.51f);   // #83FF83 -> (120,255,131)
 SbColor ViewProviderSketch::FullyConstrainedColor                   (0.0f,1.0f,0.0f);     // #00FF00 -> (  0,255,  0)
 SbColor ViewProviderSketch::ConstrDimColor                          (1.0f,0.149f,0.0f);   // #FF2600 -> (255, 38,  0)
 SbColor ViewProviderSketch::ConstrIcoColor                          (1.0f,0.149f,0.0f);   // #FF2600 -> (255, 38,  0)
 SbColor ViewProviderSketch::NonDrivingConstrDimColor                (0.0f,0.149f,1.0f);   // #0026FF -> (  0, 38,255)
-SbColor ViewProviderSketch::ExprBasedConstrDimColor                 (1.0f,0.5f,0.149f);   // #FF7F26 -> (255, 127,  38)
+SbColor ViewProviderSketch::ExprBasedConstrDimColor                 (1.0f,0.5f,0.149f);   // #FF7F26 -> (255, 127,38)
 SbColor ViewProviderSketch::InformationColor                        (0.0f,1.0f,0.0f);     // #00FF00 -> (  0,255,  0)
 SbColor ViewProviderSketch::PreselectColor                          (0.88f,0.88f,0.0f);   // #E1E100 -> (225,225,  0)
 SbColor ViewProviderSketch::SelectColor                             (0.11f,0.68f,0.11f);  // #1CAD1C -> ( 28,173, 28)
@@ -166,6 +163,7 @@ SbColor ViewProviderSketch::FullyConstraintElementColor             (0.50f,0.81f
 SbColor ViewProviderSketch::FullyConstraintConstructionElementColor (0.56f,0.66f,0.99f);  // #8FA9FD -> (143,169,253)
 SbColor ViewProviderSketch::FullyConstraintInternalAlignmentColor   (0.87f,0.87f,0.78f);  // #DEDEC8 -> (222,222,200)
 SbColor ViewProviderSketch::FullyConstraintConstructionPointColor   (1.0f,0.58f,0.50f);   // #FF9580 -> (255,149,128)
+SbColor ViewProviderSketch::InvalidSketchColor                      (1.0f,0.42f,0.0f);    // #FF6D00 -> (255,109,  0)
 // Variables for holding previous click
 SbTime  ViewProviderSketch::prvClickTime;
 SbVec2s ViewProviderSketch::prvClickPos;
@@ -187,6 +185,8 @@ struct EditData {
     PreselectCurve(-1),
     PreselectCross(-1),
     MarkerSize(7),
+    coinFontSize(17), // this value is in pixels, 17 pixels
+    constraintIconSize(15),
     blockedPreselection(false),
     FullyConstrained(false),
     //ActSketch(0), // if you are wondering, it went to SketchObject, accessible via getSolvedSketch() and via SketchObject interface as appropriate
@@ -207,7 +207,13 @@ struct EditData {
     textPos(0),
     constrGroup(0),
     infoGroup(0),
-    pickStyleAxes(0)
+    pickStyleAxes(0),
+    PointsDrawStyle(0),
+    CurvesDrawStyle(0),
+    RootCrossDrawStyle(0),
+    EditCurvesDrawStyle(0),
+    ConstraintDrawStyle(0),
+    InformationDrawStyle(0)
     {}
 
     // pointer to the active handler for new sketch objects
@@ -227,6 +233,9 @@ struct EditData {
     int PreselectCurve;
     int PreselectCross;
     int MarkerSize;
+    int coinFontSize;
+    int constraintIconSize;
+    double pixelScalingFactor;
     std::set<int> PreselectConstraintSet;
     bool blockedPreselection;
     bool FullyConstrained;
@@ -272,6 +281,13 @@ struct EditData {
     SmSwitchboard *constrGroup;
     SoGroup       *infoGroup;
     SoPickStyle   *pickStyleAxes;
+
+    SoDrawStyle * PointsDrawStyle;
+    SoDrawStyle * CurvesDrawStyle;
+    SoDrawStyle * RootCrossDrawStyle;
+    SoDrawStyle * EditCurvesDrawStyle;
+    SoDrawStyle * ConstraintDrawStyle;
+    SoDrawStyle * InformationDrawStyle;
 };
 
 
@@ -289,7 +305,7 @@ const Part::Geometry* GeoById(const std::vector<Part::Geometry*> GeoList, int Id
 
 /* TRANSLATOR SketcherGui::ViewProviderSketch */
 
-PROPERTY_SOURCE(SketcherGui::ViewProviderSketch, PartGui::ViewProvider2DObjectGrid)
+PROPERTY_SOURCE_WITH_EXTENSIONS(SketcherGui::ViewProviderSketch, PartGui::ViewProvider2DObjectGrid)
 
 
 ViewProviderSketch::ViewProviderSketch()
@@ -301,6 +317,8 @@ ViewProviderSketch::ViewProviderSketch()
     isShownVirtualSpace(false),
     listener(0)
 {
+    PartGui::ViewProviderAttachExtension::initExtension(this);
+
     ADD_PROPERTY_TYPE(Autoconstraints,(true),"Auto Constraints",(App::PropertyType)(App::Prop_None),"Create auto constraints");
     ADD_PROPERTY_TYPE(AvoidRedundant,(true),"Auto Constraints",(App::PropertyType)(App::Prop_None),"Avoid redundant autoconstraint");
     ADD_PROPERTY_TYPE(TempoVis,(Py::None()),"Visibility automation",(App::PropertyType)(App::Prop_None),"Object that handles hiding and showing other objects when entering/leaving sketch.");
@@ -370,11 +388,14 @@ ViewProviderSketch::ViewProviderSketch()
 
     //rubberband selection
     rubberband = new Gui::Rubberband();
+
+    subscribeToParameters();
 }
 
 ViewProviderSketch::~ViewProviderSketch()
 {
     delete rubberband;
+    unsubscribeToParameters();
 }
 
 void ViewProviderSketch::slotUndoDocument(const Gui::Document& /*doc*/)
@@ -2825,8 +2846,16 @@ void ViewProviderSketch::updateColor(void)
         return false;
     };
 
+    bool invalidSketch =    getSketchObject()->getLastHasRedundancies()           ||
+                            getSketchObject()->getLastHasConflicts()              ||
+                            getSketchObject()->getLastHasMalformedConstraints();
+
     // colors of the point set
-    if (edit->FullyConstrained) {
+    if( invalidSketch ) {
+        for (int  i=0; i < PtNum; i++)
+            pcolor[i] = InvalidSketchColor;
+    }
+    else if (edit->FullyConstrained) {
         for (int  i=0; i < PtNum; i++)
             pcolor[i] = FullyConstrainedColor;
     }
@@ -2936,6 +2965,13 @@ void ViewProviderSketch::updateColor(void)
             for (int k=j; j<k+indexes; j++) {
                 verts[j].getValue(x,y,z);
                 verts[j] = SbVec3f(x,y,zExtLine);
+            }
+        }
+        else if ( invalidSketch ) {
+            color[i] = InvalidSketchColor;
+            for (int k=j; j<k+indexes; j++) {
+                verts[j].getValue(x,y,z);
+                verts[j] = SbVec3f(x,y,zNormLine);
             }
         }
         else if (isConstructionGeom(getSketchObject(), GeoId)) {
@@ -3188,6 +3224,13 @@ QString ViewProviderSketch::getPresentationString(const Constraint *constraint)
         }
     }
 
+    if (constraint->Type == Sketcher::Diameter){
+        userStr.insert(0, QChar(8960)); // Diameter sign
+    }
+    else if (constraint->Type == Sketcher::Radius){
+        userStr.insert(0, QChar(82)); // Capital letter R
+    }
+
     return userStr;
 }
 
@@ -3196,25 +3239,25 @@ QString ViewProviderSketch::iconTypeFromConstraint(Constraint *constraint)
     /*! TODO: Consider pushing this functionality up into Constraint */
     switch(constraint->Type) {
     case Horizontal:
-        return QString::fromLatin1("small/Constraint_Horizontal_sm");
+        return QString::fromLatin1("Constraint_Horizontal");
     case Vertical:
-        return QString::fromLatin1("small/Constraint_Vertical_sm");
+        return QString::fromLatin1("Constraint_Vertical");
     case PointOnObject:
-        return QString::fromLatin1("small/Constraint_PointOnObject_sm");
+        return QString::fromLatin1("Constraint_PointOnObject");
     case Tangent:
-        return QString::fromLatin1("small/Constraint_Tangent_sm");
+        return QString::fromLatin1("Constraint_Tangent");
     case Parallel:
-        return QString::fromLatin1("small/Constraint_Parallel_sm");
+        return QString::fromLatin1("Constraint_Parallel");
     case Perpendicular:
-        return QString::fromLatin1("small/Constraint_Perpendicular_sm");
+        return QString::fromLatin1("Constraint_Perpendicular");
     case Equal:
-        return QString::fromLatin1("small/Constraint_EqualLength_sm");
+        return QString::fromLatin1("Constraint_EqualLength");
     case Symmetric:
-        return QString::fromLatin1("small/Constraint_Symmetric_sm");
+        return QString::fromLatin1("Constraint_Symmetric");
     case SnellsLaw:
-        return QString::fromLatin1("small/Constraint_SnellsLaw_sm");
+        return QString::fromLatin1("Constraint_SnellsLaw");
     case Block:
-        return QString::fromLatin1("small/Constraint_Block_sm");
+        return QString::fromLatin1("Constraint_Block");
     default:
         return QString();
     }
@@ -3348,6 +3391,7 @@ void ViewProviderSketch::drawConstraintIcons()
 
         // Find the Constraint Icon SoImage Node
         SoSeparator *sep = static_cast<SoSeparator *>(edit->constrGroup->getChild(constrId));
+        int numChildren = sep->getNumChildren();
 
         SbVec3f absPos;
         // Somewhat hacky - we use SoZoomTranslations for most types of icon,
@@ -3411,14 +3455,16 @@ void ViewProviderSketch::drawConstraintIcons()
             // So, to get the position of the second icon, we add the two translations together
             //
             // See note ~30 lines up.
-            translationPtr = static_cast<SoTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION));
-            if(dynamic_cast<SoZoomTranslation *>(translationPtr))
-                thisIcon.position += static_cast<SoZoomTranslation *>(translationPtr)->abPos.getValue();
-            else
-                thisIcon.position += translationPtr->translation.getValue();
+            if (numChildren > CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID) {
+                translationPtr = static_cast<SoTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION));
+                if(dynamic_cast<SoZoomTranslation *>(translationPtr))
+                    thisIcon.position += static_cast<SoZoomTranslation *>(translationPtr)->abPos.getValue();
+                else
+                    thisIcon.position += translationPtr->translation.getValue();
 
-            thisIcon.destination = dynamic_cast<SoImage *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_ICON));
-            thisIcon.infoPtr = static_cast<SoInfo *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID));
+                thisIcon.destination = dynamic_cast<SoImage *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_ICON));
+                thisIcon.infoPtr = static_cast<SoInfo *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID));
+            }
         }
         else {
             if ((*it)->Name.empty())
@@ -3449,7 +3495,7 @@ void ViewProviderSketch::combineConstraintIcons(IconQueue iconQueue)
         iconQueue.pop_back();
 
         // we group only icons not being Symmetry icons, because we want those on the line
-        if(init.type != QString::fromLatin1("small/Constraint_Symmetric_sm")){
+        if(init.type != QString::fromLatin1("Constraint_Symmetric")){
 
             IconQueue::iterator i = iconQueue.begin();
             while(i != iconQueue.end()) {
@@ -3458,7 +3504,7 @@ void ViewProviderSketch::combineConstraintIcons(IconQueue iconQueue)
                 for(IconQueue::iterator j = thisGroup.begin();
                     j != thisGroup.end(); ++j) {
                     float distSquared = pow(i->position[0]-j->position[0],2) + pow(i->position[1]-j->position[1],2);
-                    if(distSquared <= maxDistSquared && (*i).type != QString::fromLatin1("small/Constraint_Symmetric_sm")) {
+                    if(distSquared <= maxDistSquared && (*i).type != QString::fromLatin1("Constraint_Symmetric")) {
                         // Found an icon in iconQueue that's close enough to
                         // a member of thisGroup, so move it into thisGroup
                         thisGroup.push_back(*i);
@@ -3644,10 +3690,10 @@ QImage ViewProviderSketch::renderConstrIcon(const QString &type,
     // Constants to help create constraint icons
     QString joinStr = QString::fromLatin1(", ");
 
-    QImage icon = Gui::BitmapFactory().pixmap(type.toLatin1()).toImage();
+    QImage icon = Gui::BitmapFactory().pixmapFromSvg(type.toLatin1().data(),QSizeF(edit->constraintIconSize,edit->constraintIconSize)).toImage();
 
     QFont font = QApplication::font();
-    font.setPixelSize(11);
+    font.setPixelSize(static_cast<int>(1.0 * edit->constraintIconSize));
     font.setBold(true);
     QFontMetrics qfm = QFontMetrics(font);
 
@@ -3746,6 +3792,93 @@ float ViewProviderSketch::getScaleFactor()
     }
 }
 
+void ViewProviderSketch::OnChange(Base::Subject<const char*> &rCaller, const char * sReason)
+{
+    (void) rCaller;
+    //ParameterGrp& rclGrp = ((ParameterGrp&)rCaller);
+    if (strcmp(sReason, "ViewScalingFactor") == 0   ||
+        strcmp(sReason, "MarkerSize") == 0          ||
+        strcmp(sReason, "EditSketcherFontSize") == 0 ) {
+        if(edit) { // only if in edit mode, if not it gets updated when entering edit mode
+            initItemsSizes();
+            updateInventorNodeSizes();
+            rebuildConstraintsVisual();
+            draw();
+        }
+    }
+}
+
+void ViewProviderSketch::subscribeToParameters()
+{
+     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+     hGrp->Attach(this);
+}
+
+void ViewProviderSketch::unsubscribeToParameters()
+{
+     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+     hGrp->Detach(this);
+}
+
+void ViewProviderSketch::updateInventorNodeSizes()
+{
+    assert(edit);
+    edit->PointsDrawStyle->pointSize = 8 * edit->pixelScalingFactor;
+    edit->PointSet->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex("CIRCLE_FILLED", edit->MarkerSize);
+    edit->CurvesDrawStyle->lineWidth = 3 * edit->pixelScalingFactor;
+    edit->RootCrossDrawStyle->lineWidth = 2 * edit->pixelScalingFactor;
+    edit->EditCurvesDrawStyle->lineWidth = 3 * edit->pixelScalingFactor;
+    edit->ConstraintDrawStyle->lineWidth = 1 * edit->pixelScalingFactor;
+    edit->InformationDrawStyle->lineWidth = 1 * edit->pixelScalingFactor;
+}
+
+void ViewProviderSketch::initItemsSizes()
+{
+    //Add scaling to Constraint icons
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    double viewScalingFactor = hGrp->GetFloat("ViewScalingFactor", 1.0);
+    viewScalingFactor = Base::clamp<double>(viewScalingFactor, 0.5, 5.0);
+    int markersize = hGrp->GetInt("MarkerSize", 7);
+
+    int defaultFontSizePixels = QApplication::fontMetrics().height(); // returns height in pixels, not points
+    int sketcherfontSize = hGrp->GetInt("EditSketcherFontSize", defaultFontSizePixels);
+
+    int dpi = QApplication::desktop()->logicalDpiX();
+
+    if(edit) {
+        // simple scaling factor for hardcoded pixel values in the Sketcher
+        edit->pixelScalingFactor = viewScalingFactor * dpi / 96; // 96 ppi is the standard pixel density for which pixel quantities were calculated
+
+        // Coin documentation indicates the size of a font is:
+        // SoSFFloat SoFont::size        Size of font. Defaults to 10.0.
+        //
+        // For 2D rendered bitmap fonts (like for SoText2), this value is the height of a character in screen pixels. For 3D text, this value is the world-space coordinates height of a character in the current units setting (see documentation for SoUnits node).
+        //
+        // However, with hdpi monitors, the coin font labels do not respect the size passed in pixels:
+        // https://forum.freecadweb.org/viewtopic.php?f=3&t=54347&p=467610#p467610
+        // https://forum.freecadweb.org/viewtopic.php?f=10&t=49972&start=40#p467471
+        //
+        // Because I (abdullah) have  96 dpi logical, 82 dpi physical, and I see a 35px font setting for a "1" in a datum label as 34px,
+        // and I see kilsore and Elyas screenshots showing 41px and 61px in higher resolution monitors for the same configuration, I think
+        // that coin pixel size has to be corrected by the logical dpi of the monitor. The rationale is that: a) it obviously needs dpi
+        // correction, b) with physical dpi, the ratio of representation between kilsore and me is too far away.
+        //
+        // This means that the following correction does not have a documented basis, but appears necessary so that the Sketcher is usable in
+        // HDPI monitors.
+
+        edit->coinFontSize = std::lround(sketcherfontSize * 96.0f / dpi);
+        edit->constraintIconSize = std::lround(0.8 * sketcherfontSize);
+
+        // For marker size the global default is used.
+        //
+        // Rationale:
+        // -> Other WBs use the default value as is
+        // -> If a user has a HDPI, he will eventually change the value for the other WBs
+        // -> If we correct the value here in addition, we would get two times a resize
+        edit->MarkerSize = markersize;
+    }
+}
+
 void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer /*=true*/)
 {
     assert(edit);
@@ -3781,9 +3914,6 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
         Gui::coinRemoveAllChildren(edit->infoGroup);
     }
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    int fontSize = hGrp->GetInt("EditSketcherFontSize", 17);
-
     int currentInfoNode = 0;
 
     ParameterGrp::handle hGrpsk = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
@@ -3796,6 +3926,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
     int GeoId = 0;
 
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     int stdcountsegments = hGrp->GetInt("SegmentsPerGeometry", 50);
     // value cannot be smaller than 3
     if (stdcountsegments < 3)
@@ -4226,7 +4357,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
             SoFont *font = new SoFont;
             font->name.setValue("Helvetica");
-            font->size.setValue(fontSize);
+            font->size.setValue(edit->coinFontSize);
 
             SoText2 *degreetext = new SoText2;
             degreetext->string = SbString(spline->getDegree());
@@ -4505,7 +4636,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
                 SoFont *font = new SoFont;
                 font->name.setValue("Helvetica");
-                font->size.setValue(fontSize);
+                font->size.setValue(edit->coinFontSize);
 
                 SoText2 *degreetext = new SoText2;
                 degreetext->string = SbString("(") + SbString(*itm) + SbString(")");
@@ -4572,7 +4703,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
                 SoFont* font = new SoFont;
                 font->name.setValue("Helvetica");
-                font->size.setValue(fontSize);
+                font->size.setValue(edit->coinFontSize);
 
                 translate->translation.setValue(poleposition.x, poleposition.y, zInfo);
 
@@ -4896,11 +5027,11 @@ Restart:
                             norm1 = Base::Vector3d(-dir1.y,dir1.x,0.);
                             norm2 = norm1;
 
-                            Base::Vector3d relpos1 = seekConstraintPosition(midpos1, norm1, dir1, 2.5, edit->constrGroup->getChild(i));
+                            Base::Vector3d relpos1 = seekConstraintPosition(midpos1, norm1, dir1, 4.0, edit->constrGroup->getChild(i));
                             static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->abPos = SbVec3f(midpos1.x, midpos1.y, zConstr);
                             static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->translation = SbVec3f(relpos1.x, relpos1.y, 0);
 
-                            Base::Vector3d relpos2 = seekConstraintPosition(midpos2, norm2, dir2, 2.5, edit->constrGroup->getChild(i));
+                            Base::Vector3d relpos2 = seekConstraintPosition(midpos2, norm2, dir2, 4.0, edit->constrGroup->getChild(i));
 
                             Base::Vector3d secondPos = midpos2 - midpos1;
                             static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION))->abPos = SbVec3f(secondPos.x, secondPos.y, zConstr);
@@ -4993,12 +5124,12 @@ Restart:
                             twoIcons = true;
                         }
 
-                        Base::Vector3d relpos1 = seekConstraintPosition(midpos1, norm1, dir1, 2.5, edit->constrGroup->getChild(i));
+                        Base::Vector3d relpos1 = seekConstraintPosition(midpos1, norm1, dir1, 4.0, edit->constrGroup->getChild(i));
                         static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->abPos = SbVec3f(midpos1.x, midpos1.y, zConstr);
                         static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->translation = SbVec3f(relpos1.x, relpos1.y, 0);
 
                         if (twoIcons) {
-                            Base::Vector3d relpos2 = seekConstraintPosition(midpos2, norm2, dir2, 2.5, edit->constrGroup->getChild(i));
+                            Base::Vector3d relpos2 = seekConstraintPosition(midpos2, norm2, dir2, 4.0, edit->constrGroup->getChild(i));
 
                             Base::Vector3d secondPos = midpos2 - midpos1;
                             static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION))->abPos = SbVec3f(secondPos.x, secondPos.y, zConstr);
@@ -5182,8 +5313,8 @@ Restart:
                             norm2 = Base::Vector3d(-dir2.y,dir2.x,0.);
                         }
 
-                        Base::Vector3d relpos1 = seekConstraintPosition(midpos1, norm1, dir1, 2.5, edit->constrGroup->getChild(i));
-                        Base::Vector3d relpos2 = seekConstraintPosition(midpos2, norm2, dir2, 2.5, edit->constrGroup->getChild(i));
+                        Base::Vector3d relpos1 = seekConstraintPosition(midpos1, norm1, dir1, 4.0, edit->constrGroup->getChild(i));
+                        Base::Vector3d relpos2 = seekConstraintPosition(midpos2, norm2, dir2, 4.0, edit->constrGroup->getChild(i));
 
                         static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->abPos = SbVec3f(midpos1.x, midpos1.y, zConstr); //Absolute Reference
 
@@ -5329,8 +5460,8 @@ Restart:
                                 Base::Vector3d norm1 = Base::Vector3d(-dir1.y,dir1.x,0.f);
                                 Base::Vector3d norm2 = Base::Vector3d(-dir2.y,dir2.x,0.f);
 
-                                Base::Vector3d relpos1 = seekConstraintPosition(midpos1, norm1, dir1, 2.5, edit->constrGroup->getChild(i));
-                                Base::Vector3d relpos2 = seekConstraintPosition(midpos2, norm2, dir2, 2.5, edit->constrGroup->getChild(i));
+                                Base::Vector3d relpos1 = seekConstraintPosition(midpos1, norm1, dir1, 4.0, edit->constrGroup->getChild(i));
+                                Base::Vector3d relpos2 = seekConstraintPosition(midpos2, norm2, dir2, 4.0, edit->constrGroup->getChild(i));
 
                                 static_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->abPos = SbVec3f(midpos1.x, midpos1.y, zConstr); //Absolute Reference
 
@@ -5746,9 +5877,6 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
     Gui::coinRemoveAllChildren(edit->constrGroup);
     edit->vConstrType.clear();
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    int fontSize = hGrp->GetInt("EditSketcherFontSize", 17);
-
     for (std::vector<Sketcher::Constraint *>::const_iterator it=constrlist.begin(); it != constrlist.end(); ++it) {
         // root separator for one constraint
         SoSeparator *sep = new SoSeparator();
@@ -5793,7 +5921,8 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
                                             ConstrDimColor
                                             :NonDrivingConstrDimColor)
                                         :DeactivatedConstrDimColor;
-                text->size.setValue(fontSize);
+                text->size.setValue(edit->coinFontSize);
+                text->lineWidth = 2 * edit->pixelScalingFactor;
                 text->useAntialiasing = false;
                 SoAnnotation *anno = new SoAnnotation();
                 anno->renderCaching = SoSeparator::OFF;
@@ -5896,6 +6025,7 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
                 arrows->norm.setValue(norm);
                 arrows->string = "";
                 arrows->textColor = ConstrDimColor;
+                arrows->lineWidth = 2 * edit->pixelScalingFactor;
 
                 // #define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
                 sep->addChild(arrows);
@@ -6083,8 +6213,8 @@ bool ViewProviderSketch::setEdit(int ModNum)
     assert(!edit);
     edit = new EditData();
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    edit->MarkerSize = hGrp->GetInt("MarkerSize", 7);
+    // Init icon, font and marker sizes
+    initItemsSizes();
 
     ParameterGrp::handle hSketch = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
     edit->handleEscapeButton = !hSketch->GetBool("LeaveSketchWithEscape", true);
@@ -6139,6 +6269,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
 
     float transparency;
 
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     // set the point color
     unsigned long color = (unsigned long)(VertexColor.getPackedValue());
     color = hGrp->GetUnsigned("EditedVertexColor", color);
@@ -6182,6 +6313,10 @@ bool ViewProviderSketch::setEdit(int ModNum)
     // set the cross lines color
     //CrossColorV.setPackedValue((uint32_t)color, transparency);
     //CrossColorH.setPackedValue((uint32_t)color, transparency);
+    // set invalid sketch color
+    color = (unsigned long)(InvalidSketchColor.getPackedValue());
+    color = hGrp->GetUnsigned("InvalidSketchColor", color);
+    InvalidSketchColor.setPackedValue((uint32_t)color, transparency);
     // set the fully constrained color
     color = (unsigned long)(FullyConstrainedColor.getPackedValue());
     color = hGrp->GetUnsigned("FullyConstrainedColor", color);
@@ -6268,35 +6403,47 @@ bool ViewProviderSketch::setEdit(int ModNum)
 
 QString ViewProviderSketch::appendConflictMsg(const std::vector<int> &conflicting)
 {
-    QString msg;
-    QTextStream ss(&msg);
-    if (conflicting.size() > 0) {
-        if (conflicting.size() == 1)
-            ss << tr("Please remove the following constraint:");
-        else
-            ss << tr("Please remove at least one of the following constraints:");
-        ss << "\n";
-        ss << conflicting[0];
-        for (unsigned int i=1; i < conflicting.size(); i++)
-            ss << ", " << conflicting[i];
-        ss << "\n";
-    }
-    return msg;
+    return appendConstraintMsg(tr("Please remove the following constraint:"),
+                        tr("Please remove at least one of the following constraints:"),
+                        conflicting);
 }
 
 QString ViewProviderSketch::appendRedundantMsg(const std::vector<int> &redundant)
 {
+    return appendConstraintMsg(tr("Please remove the following redundant constraint:"),
+                        tr("Please remove the following redundant constraints:"),
+                        redundant);
+}
+
+QString ViewProviderSketch::appendPartiallyRedundantMsg(const std::vector<int> &partiallyredundant)
+{
+    return appendConstraintMsg(tr("The following constraint is partially redundant:"),
+                        tr("The following constraints are partially redundant:"),
+                        partiallyredundant);
+}
+
+QString ViewProviderSketch::appendMalformedMsg(const std::vector<int> &malformed)
+{
+    return appendConstraintMsg(tr("Please remove the following malformed constraint:"),
+                        tr("Please remove the following malformed constraints:"),
+                        malformed);
+}
+
+QString ViewProviderSketch::appendConstraintMsg(const QString & singularmsg,
+                            const QString & pluralmsg,
+                            const std::vector<int> &vector)
+{
     QString msg;
     QTextStream ss(&msg);
-    if (redundant.size() > 0) {
-        if (redundant.size() == 1)
-            ss << tr("Please remove the following redundant constraint:");
+    if (vector.size() > 0) {
+        if (vector.size() == 1)
+            ss << singularmsg;
         else
-            ss << tr("Please remove the following redundant constraints:");
+            ss << pluralmsg;
         ss << "\n";
-        ss << redundant[0];
-        for (unsigned int i=1; i < redundant.size(); i++)
-            ss << ", " << redundant[i];
+        ss << vector[0];
+        for (unsigned int i=1; i < vector.size(); i++)
+            ss << ", " << vector[i];
 
         ss << "\n";
     }
@@ -6309,6 +6456,8 @@ void ViewProviderSketch::UpdateSolverInformation()
     int dofs = getSketchObject()->getLastDoF();
     bool hasConflicts = getSketchObject()->getLastHasConflicts();
     bool hasRedundancies = getSketchObject()->getLastHasRedundancies();
+    bool hasPartiallyRedundant = getSketchObject()->getLastHasPartialRedundancies();
+    bool hasMalformed    = getSketchObject()->getLastHasMalformedConstraints();
 
     if (getSketchObject()->Geometry.getSize() == 0) {
         signalSetUp(tr("Empty sketch"));
@@ -6321,6 +6470,13 @@ void ViewProviderSketch::UpdateSolverInformation()
                     .arg(tr("Over-constrained sketch "))
                     .arg(tr("(click to select)"))
                     .arg(QString::fromStdString(msg)));
+        signalSolved(QString());
+    }
+    else if (hasMalformed) { // malformed constraints
+        signalSetUp(QString::fromLatin1("<font color='red'>%1<a href=\"#malformed\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">%2</span></a><br/>%3</font><br/>")
+                    .arg(tr("Sketch contains malformed constraints "))
+                    .arg(tr("(click to select)"))
+                    .arg(appendMalformedMsg(getSketchObject()->getLastMalformedConstraints())));
         signalSolved(QString());
     }
     else if (hasConflicts) { // conflicting constraints
@@ -6337,6 +6493,16 @@ void ViewProviderSketch::UpdateSolverInformation()
                         .arg(tr("(click to select)"))
                         .arg(appendRedundantMsg(getSketchObject()->getLastRedundant())));
         }
+
+        QString partiallyRedundantString;
+
+        if(hasPartiallyRedundant) {
+            partiallyRedundantString = QString::fromLatin1("<br/><font color='royalblue'><span style=\"background-color: #ececec;\">%1<a href=\"#partiallyredundant\"><span style=\" text-decoration:  underline; color:#0000ff; background-color: #F8F8FF;\">%2</span></a><br/>%3</span></font><br/>")
+                                .arg(tr("Sketch contains partially redundant constraints "))
+                                .arg(tr("(click to select)"))
+                                .arg(appendPartiallyRedundantMsg(getSketchObject()->getLastPartiallyRedundant()));
+        }
+
         if (getSketchObject()->getLastSolverStatus() == 0) {
             if (dofs == 0) {
                 // color the sketch as fully constrained if it has geometry (other than the axes)
@@ -6344,14 +6510,19 @@ void ViewProviderSketch::UpdateSolverInformation()
                     edit->FullyConstrained = true;
 
                 if (!hasRedundancies) {
-                    signalSetUp(QString::fromLatin1("<font color='green'><span style=\"color:#008000; background-color: #ececec;\">%1</font></span>").arg(tr("Fully constrained sketch")));
+                    signalSetUp(QString::fromLatin1("<font color='green'><span style=\"color:#008000; background-color: #ececec;\">%1</font></span> %2").arg(tr("Fully constrained sketch")).arg(partiallyRedundantString));
                 }
             }
             else if (!hasRedundancies) {
+                QString infoString;
+
                 if (dofs == 1)
-                    signalSetUp(tr("Under-constrained sketch with <a href=\"#dofs\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">1 degree</span></a> of freedom"));
+                    signalSetUp(tr("Under-constrained sketch with <a href=\"#dofs\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">1 degree</span></a> of freedom. %1")
+                        .arg(partiallyRedundantString));
                 else
-                    signalSetUp(tr("Under-constrained sketch with <a href=\"#dofs\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">%1 degrees</span></a> of freedom").arg(dofs));
+                    signalSetUp(tr("Under-constrained sketch with <a href=\"#dofs\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">%1 degrees</span></a> of freedom. %2")
+                        .arg(dofs)
+                        .arg(partiallyRedundantString));
             }
 
             signalSolved(QString::fromLatin1("<font color='green'><span style=\"color:#008000; background-color: #ececec;\">%1</font></span>").arg(tr("Solved in %1 sec").arg(getSketchObject()->getLastSolveTime())));
@@ -6389,10 +6560,10 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->PointsCoordinate->setName("PointsCoordinate");
     pointsRoot->addChild(edit->PointsCoordinate);
 
-    SoDrawStyle *drawStyle = new SoDrawStyle;
-    drawStyle->setName("PointsDrawStyle");
-    drawStyle->pointSize = 8;
-    pointsRoot->addChild(drawStyle);
+    edit->PointsDrawStyle = new SoDrawStyle;
+    edit->PointsDrawStyle->setName("PointsDrawStyle");
+    edit->PointsDrawStyle->pointSize = 8 * edit->pixelScalingFactor;
+    pointsRoot->addChild(edit->PointsDrawStyle);
 
     edit->PointSet = new SoMarkerSet;
     edit->PointSet->setName("PointSet");
@@ -6415,10 +6586,10 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->CurvesCoordinate->setName("CurvesCoordinate");
     curvesRoot->addChild(edit->CurvesCoordinate);
 
-    drawStyle = new SoDrawStyle;
-    drawStyle->setName("CurvesDrawStyle");
-    drawStyle->lineWidth = 3;
-    curvesRoot->addChild(drawStyle);
+    edit->CurvesDrawStyle = new SoDrawStyle;
+    edit->CurvesDrawStyle->setName("CurvesDrawStyle");
+    edit->CurvesDrawStyle->lineWidth = 3 * edit->pixelScalingFactor;
+    curvesRoot->addChild(edit->CurvesDrawStyle);
 
     edit->CurveSet = new SoLineSet;
     edit->CurveSet->setName("CurvesLineSet");
@@ -6435,10 +6606,10 @@ void ViewProviderSketch::createEditInventorNodes(void)
     MtlBind->value = SoMaterialBinding::PER_FACE;
     crossRoot->addChild(MtlBind);
 
-    drawStyle = new SoDrawStyle;
-    drawStyle->setName("RootCrossDrawStyle");
-    drawStyle->lineWidth = 2;
-    crossRoot->addChild(drawStyle);
+    edit->RootCrossDrawStyle = new SoDrawStyle;
+    edit->RootCrossDrawStyle->setName("RootCrossDrawStyle");
+    edit->RootCrossDrawStyle->lineWidth = 2 * edit->pixelScalingFactor;
+    crossRoot->addChild(edit->RootCrossDrawStyle);
 
     edit->RootCrossMaterials = new SoMaterial;
     edit->RootCrossMaterials->setName("RootCrossMaterials");
@@ -6465,10 +6636,10 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->EditCurvesCoordinate->setName("EditCurvesCoordinate");
     editCurvesRoot->addChild(edit->EditCurvesCoordinate);
 
-    drawStyle = new SoDrawStyle;
-    drawStyle->setName("EditCurvesDrawStyle");
-    drawStyle->lineWidth = 3;
-    editCurvesRoot->addChild(drawStyle);
+    edit->EditCurvesDrawStyle = new SoDrawStyle;
+    edit->EditCurvesDrawStyle->setName("EditCurvesDrawStyle");
+    edit->EditCurvesDrawStyle->lineWidth = 3 * edit->pixelScalingFactor;
+    editCurvesRoot->addChild(edit->EditCurvesDrawStyle);
 
     edit->EditCurveSet = new SoLineSet;
     edit->EditCurveSet->setName("EditCurveLineSet");
@@ -6493,10 +6664,9 @@ void ViewProviderSketch::createEditInventorNodes(void)
     CoordTextMaterials->diffuseColor = cursorTextColor;
     Coordsep->addChild(CoordTextMaterials);
 
-    int fontSize = hGrp->GetInt("EditSketcherFontSize", 17);
-
     SoFont *font = new SoFont();
-    font->size.setValue(fontSize);
+    font->size.setValue(edit->coinFontSize);
+
     Coordsep->addChild(font);
 
     edit->textPos = new SoTranslation();
@@ -6515,10 +6685,10 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->EditRoot->addChild(MtlBind);
 
     // use small line width for the Constraints
-    drawStyle = new SoDrawStyle;
-    drawStyle->setName("ConstraintDrawStyle");
-    drawStyle->lineWidth = 1;
-    edit->EditRoot->addChild(drawStyle);
+    edit->ConstraintDrawStyle = new SoDrawStyle;
+    edit->ConstraintDrawStyle->setName("ConstraintDrawStyle");
+    edit->ConstraintDrawStyle->lineWidth = 1 * edit->pixelScalingFactor;
+    edit->EditRoot->addChild(edit->ConstraintDrawStyle);
 
     // add the group where all the constraints has its SoSeparator
     edit->constrGroup = new SmSwitchboard();
@@ -6532,10 +6702,10 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->EditRoot->addChild(MtlBind);
 
     // use small line width for the information visual
-    drawStyle = new SoDrawStyle;
-    drawStyle->setName("InformationDrawStyle");
-    drawStyle->lineWidth = 1;
-    edit->EditRoot->addChild(drawStyle);
+    edit->InformationDrawStyle = new SoDrawStyle;
+    edit->InformationDrawStyle->setName("InformationDrawStyle");
+    edit->InformationDrawStyle->lineWidth = 1 * edit->pixelScalingFactor;
+    edit->EditRoot->addChild(edit->InformationDrawStyle);
 
     // add the group where all the information entity has its SoSeparator
     edit->infoGroup = new SoGroup();
@@ -6872,8 +7042,9 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
         for (std::vector<std::string>::const_iterator it=SubNames.begin(); it != SubNames.end(); ++it) {
             if (it->size() > 4 && it->substr(0,4) == "Edge") {
                 int GeoId = std::atoi(it->substr(4,4000).c_str()) - 1;
-                if( GeoId >= 0 )
+                if( GeoId >= 0 ) {
                     delInternalGeometries.insert(GeoId);
+                }
                 else
                     delExternalGeometries.insert(Sketcher::GeoEnum::RefExt - GeoId);
             } else if (it->size() > 12 && it->substr(0,12) == "ExternalEdge") {
@@ -6942,13 +7113,26 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
             }
         }
 
-        for (rit = delInternalGeometries.rbegin(); rit != delInternalGeometries.rend(); ++rit) {
+        if(!delInternalGeometries.empty()) {
+            std::stringstream stream;
+
+            // NOTE: SketchObject delGeometries will sort the array, so filling it here with a reverse iterator would
+            // lead to the worst case scenario for sorting.
+            auto endit = std::prev(delInternalGeometries.end());
+            for (auto it = delInternalGeometries.begin(); it != endit; ++it) {
+                stream << *it << ",";
+            }
+
+            stream << *endit;
+
             try {
-                Gui::cmdAppObjectArgs(getObject(), "delGeometry(%i)", *rit);
+                Gui::cmdAppObjectArgs(getObject(), "delGeometries([%s])", stream.str().c_str());
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
             }
+
+            stream.str(std::string());
         }
 
         for (rit = delExternalGeometries.rbegin(); rit != delExternalGeometries.rend(); ++rit) {
@@ -7003,4 +7187,34 @@ void ViewProviderSketch::showRestoreInformationLayer() {
 
     visibleInformationChanged = true ;
     draw(false,false);
+}
+
+QIcon ViewProviderSketch::mergeColorfulOverlayIcons (const QIcon & orig) const
+{
+    QIcon mergedicon = orig;
+
+    if(!getSketchObject()->FullyConstrained.getValue()) {
+        QPixmap px;
+
+        static const char * const sketcher_notfullyconstrained_xpm[]={
+            "9 9 3 1",
+            ". c None",
+            "# c #dbaf00",
+            "a c #ffcc00",
+            "##.....##",
+            "#a#...#a#",
+            "#aa#.#aa#",
+            ".#a#.#a#.",
+            ".#a#.#a#.",
+            ".#a#.#a#.",
+            "#aa#.#aa#",
+            "#a#...#a#",
+            "##.....##"};
+        px = QPixmap( sketcher_notfullyconstrained_xpm );
+
+        mergedicon = Gui::BitmapFactoryInst::mergePixmap(mergedicon, px, Gui::BitmapFactoryInst::BottomRight);
+
+    }
+
+    return Gui::ViewProvider::mergeColorfulOverlayIcons (mergedicon);
 }

@@ -258,9 +258,13 @@ DrawingView::DrawingView(Gui::Document* doc, QWidget* parent)
 
     setCentralWidget(m_view);
     //setWindowTitle(tr("SVG Viewer"));
-
+#if QT_VERSION >= 0x050300
+    m_orientation = QPageLayout::Landscape;
+    m_pageSize = QPageSize::A4;
+#else
     m_orientation = QPrinter::Landscape;
     m_pageSize = QPrinter::A4;
+#endif
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
             ("User parameter:BaseApp/Preferences/View");
@@ -302,12 +306,43 @@ void DrawingView::load (const QString & fileName)
 void DrawingView::findPrinterSettings(const QString& fileName)
 {
     if (fileName.indexOf(QLatin1String("Portrait"), Qt::CaseInsensitive) >= 0) {
+#if QT_VERSION >= 0x050300
+        m_orientation = QPageLayout::Portrait;
+#else
         m_orientation = QPrinter::Portrait;
+#endif
     }
     else {
+#if QT_VERSION >= 0x050300
+        m_orientation = QPageLayout::Landscape;
+#else
         m_orientation = QPrinter::Landscape;
+#endif
     }
 
+#if QT_VERSION >= 0x050300
+    QMap<QPageSize::PageSizeId, QString> pageSizes;
+    pageSizes[QPageSize::A0] = QString::fromLatin1("A0");
+    pageSizes[QPageSize::A1] = QString::fromLatin1("A1");
+    pageSizes[QPageSize::A2] = QString::fromLatin1("A2");
+    pageSizes[QPageSize::A3] = QString::fromLatin1("A3");
+    pageSizes[QPageSize::A4] = QString::fromLatin1("A4");
+    pageSizes[QPageSize::A5] = QString::fromLatin1("A5");
+    pageSizes[QPageSize::A6] = QString::fromLatin1("A6");
+    pageSizes[QPageSize::A7] = QString::fromLatin1("A7");
+    pageSizes[QPageSize::A8] = QString::fromLatin1("A8");
+    pageSizes[QPageSize::A9] = QString::fromLatin1("A9");
+    pageSizes[QPageSize::B0] = QString::fromLatin1("B0");
+    pageSizes[QPageSize::B1] = QString::fromLatin1("B1");
+    pageSizes[QPageSize::B2] = QString::fromLatin1("B2");
+    pageSizes[QPageSize::B3] = QString::fromLatin1("B3");
+    pageSizes[QPageSize::B4] = QString::fromLatin1("B4");
+    pageSizes[QPageSize::B5] = QString::fromLatin1("B5");
+    pageSizes[QPageSize::B6] = QString::fromLatin1("B6");
+    pageSizes[QPageSize::B7] = QString::fromLatin1("B7");
+    pageSizes[QPageSize::B8] = QString::fromLatin1("B8");
+    pageSizes[QPageSize::B9] = QString::fromLatin1("B9");
+#else
     QMap<QPrinter::PageSize, QString> pageSizes;
     pageSizes[QPrinter::A0] = QString::fromLatin1("A0");
     pageSizes[QPrinter::A1] = QString::fromLatin1("A1");
@@ -329,7 +364,12 @@ void DrawingView::findPrinterSettings(const QString& fileName)
     pageSizes[QPrinter::B7] = QString::fromLatin1("B7");
     pageSizes[QPrinter::B8] = QString::fromLatin1("B8");
     pageSizes[QPrinter::B9] = QString::fromLatin1("B9");
+#endif
+#if QT_VERSION >= 0x050300
+    for (QMap<QPageSize::PageSizeId, QString>::iterator it = pageSizes.begin(); it != pageSizes.end(); ++it) {
+#else
     for (QMap<QPrinter::PageSize, QString>::iterator it = pageSizes.begin(); it != pageSizes.end(); ++it) {
+#endif
         if (fileName.startsWith(it.value(), Qt::CaseInsensitive)) {
             m_pageSize = it.key();
             break;
@@ -488,6 +528,20 @@ void DrawingView::printPdf()
     formLayout->addWidget(groupBox, 0, 0, 1, 1);
 
     groupBox->setTitle(tr("Page sizes"));
+#if QT_VERSION >= 0x050300
+    item = new QListWidgetItem(tr("A0"), listWidget);
+    item->setData(Qt::UserRole, QVariant(QPageSize::A0));
+    item = new QListWidgetItem(tr("A1"), listWidget);
+    item->setData(Qt::UserRole, QVariant(QPageSize::A1));
+    item = new QListWidgetItem(tr("A2"), listWidget);
+    item->setData(Qt::UserRole, QVariant(QPageSize::A2));
+    item = new QListWidgetItem(tr("A3"), listWidget);
+    item->setData(Qt::UserRole, QVariant(QPageSize::A3));
+    item = new QListWidgetItem(tr("A4"), listWidget);
+    item->setData(Qt::UserRole, QVariant(QPageSize::A4));
+    item = new QListWidgetItem(tr("A5"), listWidget);
+    item->setData(Qt::UserRole, QVariant(QPageSize::A5));
+#else
     item = new QListWidgetItem(tr("A0"), listWidget);
     item->setData(Qt::UserRole, QVariant(QPrinter::A0));
     item = new QListWidgetItem(tr("A1"), listWidget);
@@ -500,6 +554,7 @@ void DrawingView::printPdf()
     item->setData(Qt::UserRole, QVariant(QPrinter::A4));
     item = new QListWidgetItem(tr("A5"), listWidget);
     item->setData(Qt::UserRole, QVariant(QPrinter::A5));
+#endif
     int index = 4; // by default A4
     for (int i=0; i<listWidget->count(); i++) {
         if (listWidget->item(i)->data(Qt::UserRole).toInt() == m_pageSize) {
@@ -517,11 +572,19 @@ void DrawingView::printPdf()
         printer.setFullPage(true);
         printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setOutputFileName(filename);
+#if QT_VERSION >= 0x050300
+        printer.setPageOrientation(m_orientation);
+#else
         printer.setOrientation(m_orientation);
+#endif
         QList<QListWidgetItem*> items = listWidget->selectedItems();
         if (items.size() == 1) {
             int AX = items.front()->data(Qt::UserRole).toInt();
+#if QT_VERSION >= 0x050300
+            printer.setPageSize(QPageSize(QPageSize::PageSizeId(AX)));
+#else
             printer.setPaperSize(QPrinter::PageSize(AX));
+#endif
         }
 
         print(&printer);
@@ -532,8 +595,14 @@ void DrawingView::print()
 {
     QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage(true);
+
+#if QT_VERSION >= 0x050300
+    printer.setPageSize(QPageSize(m_pageSize));
+    printer.setPageOrientation(m_orientation);
+#else
     printer.setPageSize(m_pageSize);
     printer.setOrientation(m_orientation);
+#endif
 
     QPrintDialog dlg(&printer, this);
     if (dlg.exec() == QDialog::Accepted) {
@@ -545,8 +614,14 @@ void DrawingView::printPreview()
 {
     QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage(true);
+
+#if QT_VERSION >= 0x050300
+    printer.setPageSize(QPageSize(m_pageSize));
+    printer.setPageOrientation(m_orientation);
+#else
     printer.setPageSize(m_pageSize);
     printer.setOrientation(m_orientation);
+#endif
 
     QPrintPreviewDialog dlg(&printer, this);
     connect(&dlg, SIGNAL(paintRequested (QPrinter *)),
@@ -571,14 +646,23 @@ void DrawingView::print(QPrinter* printer)
     if (printer->outputFormat() == QPrinter::NativeFormat) {
         int w = printer->widthMM();
         int h = printer->heightMM();
+#if QT_VERSION >= 0x050300
+        QPageSize::PageSizeId realPaperSize = getPageSize(w, h);
+        QPageSize::PageSizeId curPaperSize = printer->pageLayout().pageSize().id();
+#else
         QPrinter::PaperSize realPaperSize = getPageSize(w, h);
         QPrinter::PaperSize curPaperSize = printer->paperSize();
+#endif
 
         // for the preview a 'Picture' paint engine is used which we don't
         // care if it uses wrong printer settings
         bool doPrint = paintType != QPaintEngine::Picture;
 
+#if QT_VERSION >= 0x050300
+        if (doPrint && printer->pageLayout().orientation() != this->m_orientation) {
+#else
         if (doPrint && printer->orientation() != this->m_orientation) {
+#endif
             int ret = QMessageBox::warning(this, tr("Different orientation"),
                 tr("The printer uses a different orientation than the drawing.\n"
                    "Do you want to continue?"),
@@ -612,18 +696,30 @@ void DrawingView::print(QPrinter* printer)
         qApp->restoreOverrideCursor();
         return;
     }
+#if QT_VERSION >= 0x050300
+    QRect rect = printer->pageLayout().fullRectPixels(printer->resolution());
+#else
     QRect rect = printer->paperRect();
+#endif
 #ifdef Q_OS_WIN32
     // On Windows the preview looks broken when using paperRect as render area.
     // Although the picture is scaled when using pageRect, it looks just fine.
     if (paintType == QPaintEngine::Picture)
-        rect = printer->pageRect();
+#if QT_VERSION >= 0x050300
+        QRect rect = printer->pageLayout().paintRectPixels(printer->resolution());
+#else
+        QRect rect = printer->pageRect();
+#endif
 #endif
     this->m_view->scene()->render(&p, rect);
     p.end();
 }
 
+#if QT_VERSION >= 0x050300
+QPageSize::PageSizeId DrawingView::getPageSize(int w, int h) const
+#else
 QPrinter::PageSize DrawingView::getPageSize(int w, int h) const
+#endif
 {
     static const float paperSizes[][2] = {
         {210, 297}, // A4
@@ -658,17 +754,29 @@ QPrinter::PageSize DrawingView::getPageSize(int w, int h) const
         {279.4f, 431.8f} // Tabloid
     };
 
+#if QT_VERSION >= 0x050300
+    QPageSize::PageSizeId ps = QPageSize::Custom;
+#else
     QPrinter::PageSize ps = QPrinter::Custom;
+#endif
     for (int i=0; i<30; i++) {
         if (std::abs(paperSizes[i][0]-w) <= 1 &&
             std::abs(paperSizes[i][1]-h) <= 1) {
+#if QT_VERSION >= 0x050300
+            ps = static_cast<QPageSize::PageSizeId>(i);
+#else
             ps = static_cast<QPrinter::PageSize>(i);
+#endif
             break;
         }
         else
         if (std::abs(paperSizes[i][0]-h) <= 1 &&
             std::abs(paperSizes[i][1]-w) <= 1) {
+#if QT_VERSION >= 0x050300
+            ps = static_cast<QPageSize::PageSizeId>(i);
+#else
             ps = static_cast<QPrinter::PageSize>(i);
+#endif
             break;
         }
     }

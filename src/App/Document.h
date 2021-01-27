@@ -37,7 +37,7 @@
 #include <stack>
 #include <functional>
 
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 
 namespace Base {
     class Writer;
@@ -74,6 +74,7 @@ public:
         PartialDoc = 7,
         AllowPartialRecompute = 8, // allow recomputing editing object if SkipRecompute is set
         TempDoc = 9, // Mark as temporary document without prompt for save
+        RestoreError = 10
     };
 
     /** @name Properties */

@@ -26,7 +26,7 @@
 
 #include <CXX/Objects.hxx>
 
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 #include <boost/bind/bind.hpp>
 #include <string>
 
