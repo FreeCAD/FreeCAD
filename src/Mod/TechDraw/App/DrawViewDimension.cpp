@@ -110,9 +110,9 @@ DrawViewDimension::DrawViewDimension(void)
     ADD_PROPERTY_TYPE(References3D, (0,0), "", (App::Prop_None), "3D Geometry References");
     References3D.setScope(App::LinkScope::Global);
 
-    ADD_PROPERTY_TYPE(FormatSpec, (getDefaultFormatSpec()), "Format", App::Prop_Output,"Dimension Format");
-    ADD_PROPERTY_TYPE(FormatSpecUnderTolerance, (getDefaultFormatSpec(true)), "Format", App::Prop_Output, "Dimension tolerance format");
-    ADD_PROPERTY_TYPE(FormatSpecOverTolerance, (getDefaultFormatSpec(true)), "Format", App::Prop_Output, "Dimension tolerance format");
+    ADD_PROPERTY_TYPE(FormatSpec, (getDefaultFormatSpec()), "Format", App::Prop_Output,"Dimension format");
+    ADD_PROPERTY_TYPE(FormatSpecOverTolerance, (getDefaultFormatSpec(true)), "Format", App::Prop_Output, "Dimension overtolerance format");
+    ADD_PROPERTY_TYPE(FormatSpecUnderTolerance, (getDefaultFormatSpec(true)), "Format", App::Prop_Output, "Dimension undertolerance format");
     ADD_PROPERTY_TYPE(Arbitrary,(false), "Format", App::Prop_Output, "Value overridden by user");
     ADD_PROPERTY_TYPE(ArbitraryTolerances, (false), "Format", App::Prop_Output, "Tolerance values overridden by user");
 
@@ -143,6 +143,7 @@ DrawViewDimension::DrawViewDimension(void)
 
     // by default EqualTolerance is true, thus make UnderTolerance read-only
     UnderTolerance.setStatus(App::Property::ReadOnly, true);
+    FormatSpecUnderTolerance.setStatus(App::Property::ReadOnly, true);
 
     measurement = new Measure::Measurement();
     //TODO: should have better initial datumLabel position than (0,0) in the DVP?? something closer to the object being measured?
@@ -213,11 +214,16 @@ void DrawViewDimension::onChanged(const App::Property* prop)
                 UnderTolerance.setValue(0.0);
                 OverTolerance.setReadOnly(true);
                 UnderTolerance.setReadOnly(true);
+                FormatSpecOverTolerance.setReadOnly(true);
+                FormatSpecUnderTolerance.setReadOnly(true);
             }
             else {
                 OverTolerance.setReadOnly(false);
-                if (!EqualTolerance.getValue())
+                FormatSpecOverTolerance.setReadOnly(false);
+                if (!EqualTolerance.getValue()) {
                     UnderTolerance.setReadOnly(false);
+                    FormatSpecUnderTolerance.setReadOnly(false);
+                }
             }
             requestPaint();
         }
@@ -233,11 +239,15 @@ void DrawViewDimension::onChanged(const App::Property* prop)
                 UnderTolerance.setValue(-1.0 * OverTolerance.getValue());
                 UnderTolerance.setUnit(OverTolerance.getUnit());
                 UnderTolerance.setReadOnly(true);
+                FormatSpecUnderTolerance.setValue(FormatSpecOverTolerance.getValue());
+                FormatSpecUnderTolerance.setReadOnly(true);
             }
             else {
                 OverTolerance.setConstraints(&ToleranceConstraint);
-                if (!TheoreticalExact.getValue())
+                if (!TheoreticalExact.getValue()) {
                     UnderTolerance.setReadOnly(false);
+                    FormatSpecUnderTolerance.setReadOnly(false);
+                }
             }
             requestPaint();
         } 
@@ -249,8 +259,21 @@ void DrawViewDimension::onChanged(const App::Property* prop)
             }
             requestPaint();
         }
+        else if (prop == &FormatSpecOverTolerance) {
+            if (!ArbitraryTolerances.getValue()) {
+                FormatSpecUnderTolerance.setValue(FormatSpecOverTolerance.getValue());
+            }
+            requestPaint();
+        }
+        else if (prop == &FormatSpecUnderTolerance) {
+            if (!ArbitraryTolerances.getValue()) {
+                FormatSpecOverTolerance.setValue(FormatSpecUnderTolerance.getValue());
+            }
+            requestPaint();
+        }
         else if ( (prop == &FormatSpec) ||
              (prop == &Arbitrary) ||
+             (prop == &ArbitraryTolerances) ||
              (prop == &MeasureType) ||
              (prop == &UnderTolerance) ||
              (prop == &Inverted) ) {
@@ -323,6 +346,9 @@ short DrawViewDimension::mustExecute() const
                   Type.isTouched() ||
                   FormatSpec.isTouched() ||
                   Arbitrary.isTouched() ||
+                  FormatSpecOverTolerance.isTouched() ||
+                  FormatSpecUnderTolerance.isTouched() ||
+                  ArbitraryTolerances.isTouched() ||
                   MeasureType.isTouched() ||
                   TheoreticalExact.isTouched() ||
                   EqualTolerance.isTouched() ||
@@ -847,7 +873,6 @@ std::string DrawViewDimension::formatValue(qreal value, QString qFormatSpec, int
     }
 
     return result;
-
 }
 
 std::string DrawViewDimension::getFormattedToleranceValue(int partial)
@@ -1373,8 +1398,9 @@ bool DrawViewDimension::has3DReferences(void) const
 bool DrawViewDimension::hasOverUnderTolerance(void) const
 {
     bool result = false;
-    if (!DrawUtil::fpCompare(OverTolerance.getValue(), 0.0) ||
-        !DrawUtil::fpCompare(UnderTolerance.getValue(), 0.0) ) {
+    if (ArbitraryTolerances.getValue() ||
+            !DrawUtil::fpCompare(OverTolerance.getValue(), 0.0) ||
+            !DrawUtil::fpCompare(UnderTolerance.getValue(), 0.0)) {
         result = true;
     }
     return result;
