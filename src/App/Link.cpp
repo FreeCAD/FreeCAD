@@ -50,64 +50,46 @@ using namespace App;
 using namespace Base;
 namespace bp = boost::placeholders;
 
-class LinkParams: public ParameterGrp::ObserverType {
-public:
-#define FC_LINK_PARAMS \
-    FC_LINK_PARAM(HideScaleVector, bool, Bool, true) \
-
+////////////////////////////////////////////////////////////////////////
+LinkParams::LinkParams() {
+    handle = GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Link");
 #undef FC_LINK_PARAM
 #define FC_LINK_PARAM(_name,_ctype,_type,_def) \
-    static const _ctype & _name() { return instance()->_##_name; }\
-    static void set_##_name(_ctype _v) { instance()->handle->Set##_type(#_name,_v); instance()->_##_name=_v; }\
-    static void update##_name(LinkParams *self) { self->_##_name = self->handle->Get##_type(#_name,_def); }\
+    _##_name = handle->Get##_type(#_name,_def);\
+    handle->Set##_type(#_name,_##_name);\
+    funcs[#_name] = &LinkParams::update##_name;
 
     FC_LINK_PARAMS
 
-    LinkParams() {
-        handle = GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/Link");
-#undef FC_LINK_PARAM
-#define FC_LINK_PARAM(_name,_ctype,_type,_def) \
-        _##_name = handle->Get##_type(#_name,_def);\
-        handle->Set##_type(#_name,_##_name);\
-        funcs[#_name] = &LinkParams::update##_name;
+    handle->Attach(this);
+}
 
-        FC_LINK_PARAMS
+LinkParams::~LinkParams()
+{
+}
 
-        handle->Attach(this);
-    }
+void LinkParams::OnChange(Base::Subject<const char*> &, const char* sReason) {
+    if(!sReason)
+        return;
+    auto it = funcs.find(sReason);
+    if(it == funcs.end())
+        return;
+    it->second(this);
+}
 
-    virtual ~LinkParams() {}
+LinkParams *LinkParams::instance() {
+    static LinkParams *inst;
+    if(!inst)
+        inst = new LinkParams;
+    return inst;
+}
 
-    void OnChange(Base::Subject<const char*> &, const char* sReason) {
-        if(!sReason)
-            return;
-        auto it = funcs.find(sReason);
-        if(it == funcs.end())
-            return;
-        it->second(this);
-    }
+ParameterGrp::handle LinkParams::getHandle() {
+    return handle;
+}
 
-    static LinkParams *instance() {
-        static LinkParams *inst;
-        if(!inst)
-            inst = new LinkParams;
-        return inst;
-    }
-
-    ParameterGrp::handle getHandle() {
-        return handle;
-    }
-
-private:
-#undef FC_LINK_PARAM
-#define FC_LINK_PARAM(_name,_ctype,_type,_def) \
-    _ctype _##_name;
-
-    FC_LINK_PARAMS
-    ParameterGrp::handle handle;
-    std::unordered_map<const char *,void(*)(LinkParams*),App::CStringHasher,App::CStringHasher> funcs;
-};
+///////////////////////////////////////////////////////////////////////////////
 
 EXTENSION_PROPERTY_SOURCE(App::LinkBaseExtension, App::DocumentObjectExtension)
 

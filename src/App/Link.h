@@ -32,6 +32,7 @@
 #include <boost/preprocessor/seq/cat.hpp>
 #include <boost/preprocessor/tuple/elem.hpp>
 #include <boost/preprocessor/tuple/enum.hpp>
+#include <Base/Parameter.h>
 #include "DocumentObject.h"
 #include "FeaturePython.h"
 #include "PropertyLinks.h"
@@ -592,6 +593,40 @@ public:
 };
 
 typedef App::FeaturePythonT<LinkGroup> LinkGroupPython;
+
+
+class LinkParams: public ParameterGrp::ObserverType {
+public:
+#define FC_LINK_PARAMS \
+    FC_LINK_PARAM(HideScaleVector, bool, Bool, true) \
+    FC_LINK_PARAM(CreateInPlace, bool, Bool, true) \
+
+#undef FC_LINK_PARAM
+#define FC_LINK_PARAM(_name,_ctype,_type,_def) \
+    static const _ctype & _name() { return instance()->_##_name; }\
+    static void set_##_name(_ctype _v) { instance()->handle->Set##_type(#_name,_v); instance()->_##_name=_v; }\
+    static void update##_name(LinkParams *self) { self->_##_name = self->handle->Get##_type(#_name,_def); }\
+
+    FC_LINK_PARAMS
+
+    LinkParams();
+    virtual ~LinkParams();
+
+    void OnChange(Base::Subject<const char*> &, const char* sReason);
+    static LinkParams *instance();
+    ParameterGrp::handle getHandle();
+
+private:
+#undef FC_LINK_PARAM
+#define FC_LINK_PARAM(_name,_ctype,_type,_def) \
+    _ctype _##_name;
+
+    FC_LINK_PARAMS
+    ParameterGrp::handle handle;
+    std::unordered_map<const char *,void(*)(LinkParams*),App::CStringHasher,App::CStringHasher> funcs;
+
+#undef FC_LINK_PARAM
+};
 
 } //namespace App
 
