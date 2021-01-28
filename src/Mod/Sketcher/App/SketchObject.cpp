@@ -7349,12 +7349,13 @@ void SketchObject::rebuildExternalGeometry(bool defining)
         // In case a projection reduces output geometries, delete them
         std::set<long> geoIds;
         geoIds.insert(refs.begin()+geos.size(),refs.end());
-        delExternalPrivate(geoIds,false);
 
         // Sync id and ref of the new geometries
         int i = 0;
         for(auto &geo : geos)
             GeometryFacade::setId(geo.get(), refs[i++]);
+
+        delExternalPrivate(geoIds,false);
     }
 
     auto geoms = ExternalGeo.getValues();
@@ -8354,7 +8355,7 @@ void SketchObject::updateGeometryRefs() {
                 }
                 continue;
             }
-            if(egf->getRefIndex() < (int)externalGeoRef.size()
+            else if(egf->getRefIndex() < (int)externalGeoRef.size()
                     && egf->getRef() != externalGeoRef[egf->getRefIndex()])
             {
                 touched = true;

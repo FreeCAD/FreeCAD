@@ -51,7 +51,7 @@ void ExternalGeometryExtension::restoreAttributes(Base::XMLReader &reader)
     Part::GeometryPersistenceExtension::restoreAttributes(reader);
 
     Ref = reader.getAttribute("Ref", "");
-    RefIndex = reader.getAttributeAsInteger("RefIndex", "0");
+    RefIndex = reader.getAttributeAsInteger("RefIndex", "-1");
     Flags = FlagType(reader.getAttributeAsUnsigned("Flags", "0"));
 }
 
