@@ -403,7 +403,13 @@ public:
      * need special transformation. For example, sub objects of an array type
      * of object.
      */
-    virtual std::vector<std::string> getSubObjects(int reason=0) const;
+    virtual std::vector<std::string> getSubObjects(int reason=GS_DEFAULT) const;
+
+    /** Recursively expand the sub object names using getSubObjects()
+     */
+    std::vector<std::string> expandSubObjectNames(const char *subname=nullptr,
+                                                  int reason=GS_DEFAULT,
+                                                  bool checkVisibility=true) const;
 
     ///Obtain top parents and subnames of this object using its InList
     std::vector<std::pair<App::DocumentObject*,std::string> > getParents(int depth=0) const;

@@ -124,6 +124,15 @@ Return a list of objects referenced by a given subname including this object
                 <UserDocu>getSubObjects(reason=0): Return subname reference of all sub-objects</UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="expandSubObjectNames" Keyword="true">
+            <Documentation>
+                <UserDocu>
+expandSubObjectNames(subname='', reason=0, checkVisibility=True) -- list(string)
+
+Recursively calling getSubObjects() to expand the full path of all sub-objects
+                </UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="getLinkedObject" Keyword="true">
             <Documentation>
                 <UserDocu>

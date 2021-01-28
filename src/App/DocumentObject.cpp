@@ -905,6 +905,69 @@ std::vector<std::string> DocumentObject::getSubObjects(int reason) const {
     return ret;
 }
 
+static std::vector<std::string>
+_expandSubObjectNames(const App::DocumentObject *obj,
+                      int reason,
+                      std::map<const App::DocumentObject*, std::vector<std::string> > &cache,
+                      int depth)
+{
+    if (!App::GetApplication().checkLinkDepth(depth))
+        return {};
+
+    auto subs = obj->getSubObjects(reason);
+    if (subs.empty()) {
+        subs.emplace_back("");
+        return subs;
+    }
+
+    std::vector<std::string> res;
+    for (auto & sub : subs) {
+        auto sobj = obj->getSubObject(sub.c_str());
+        auto linked = sobj->getLinkedObject(true);
+        auto it = cache.find(linked);
+        if (it == cache.end())
+            it = cache.emplace(linked, _expandSubObjectNames(linked, reason, cache, depth+1)).first;
+        for (auto & ssub : it->second)
+            res.push_back(sub + ssub);
+    }
+    return res;
+}
+
+std::vector<std::string>
+DocumentObject::expandSubObjectNames(const char *subname, int reason, bool checkVisibility) const
+{
+    auto sobj = getSubObject(subname);
+    if (!sobj)
+        return {};
+    std::map<const App::DocumentObject*, std::vector<std::string> > cache;
+    auto res = _expandSubObjectNames(sobj, reason, cache, 0);
+    if (subname && subname[0]) {
+        for (auto &sub : res)
+            sub = std::string(subname) + sub;
+    }
+    std::string tmp;
+    if (checkVisibility) {
+        for (auto it=res.begin(); it!=res.end();) {
+            std::string &sub = *it;
+            int vis = isElementVisibleEx(sub.c_str(), reason);
+            if (vis < 0 && Data::ComplexGeoData::findElementName(sub.c_str()) != sub.c_str()) {
+                auto dot = sub.find('.');
+                if (dot != std::string::npos) {
+                    tmp.assign(sub.begin(), sub.begin()+dot+1);
+                    auto sobj = getSubObject(tmp.c_str());
+                    if (sobj)
+                        vis = sobj->Visibility.getValue() ? 1 : 0;
+                }
+            }
+            if (vis > 0)
+                ++it;
+            else
+                it = res.erase(it);
+        }
+    }
+    return res;
+}
+
 std::vector<std::pair<App::DocumentObject *,std::string> > DocumentObject::getParents(int depth) const {
     std::vector<std::pair<App::DocumentObject *,std::string> > ret;
     if(!getNameInDocument() || !GetApplication().checkLinkDepth(depth))

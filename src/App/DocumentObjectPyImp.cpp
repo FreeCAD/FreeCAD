@@ -598,6 +598,27 @@ PyObject*  DocumentObjectPy::getSubObjects(PyObject *args) {
     }PY_CATCH;
 }
 
+PyObject*  DocumentObjectPy::expandSubObjectNames(PyObject *args, PyObject *keywds)
+{
+    const char *subname = nullptr;
+    int reason = 0;
+    PyObject *checkVisibility = Py_True;
+    static char *kwlist[] = {"subname","reason","checkVisibility", NULL};
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "|siO", kwlist,
+                &subname,&reason,&checkVisibility))
+        return 0;
+
+    PY_TRY {
+        Py::List list;
+        for (auto &sub : getDocumentObjectPtr()->expandSubObjectNames(
+                    subname, reason, PyObject_IsTrue(checkVisibility)))
+        {
+            list.append(Py::String(sub));
+        }
+        return Py::new_reference_to(list);
+    }PY_CATCH;
+}
+
 PyObject*  DocumentObjectPy::getLinkedObject(PyObject *args, PyObject *keywds)
 {
     PyObject *recursive = Py_True;
