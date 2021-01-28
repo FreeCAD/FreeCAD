@@ -4167,25 +4167,25 @@ checkElementIntersection(ViewProviderDocumentObject *vp, const char *subname,
 {
     auto obj = vp->getObject();
     if(!obj || !obj->getNameInDocument())
-        return 0;
+        return -1;
 
     if (subname && subname[0]) {
         App::DocumentObject *parent = 0;
         std::string childName;
         auto sobj = obj->resolve(subname,&parent,&childName,0,0,&mat,transform,depth+1);
         if(!sobj)
-            return 0;
+            return -1;
         if(!ViewParams::getShowSelectionOnTop()) {
             int vis;
             if(!parent || (vis=parent->isElementVisibleEx(childName.c_str(),App::DocumentObject::GS_SELECT))<0)
                 vis = sobj->Visibility.getValue()?1:0;
             if(!vis)
-                return 0;
+                return -1;
         }
         auto svp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
                 Application::Instance->getViewProvider(sobj));
         if(!svp)
-            return 0;
+            return -1;
         vp = svp;
         obj = sobj;
         transform = false;
@@ -4193,7 +4193,7 @@ checkElementIntersection(ViewProviderDocumentObject *vp, const char *subname,
 
     auto bbox3 = vp->getBoundingBox(0,&mat,transform);
     if(!bbox3.IsValid())
-        return 0;
+        return -1;
 
     auto bbox = bbox3.ProjectBox(&proj);
     if(!bbox.Intersect(polygon))
@@ -4201,15 +4201,15 @@ checkElementIntersection(ViewProviderDocumentObject *vp, const char *subname,
 
     const auto &subs = obj->getSubObjects(App::DocumentObject::GS_SELECT);
     if(subs.size()) {
-        int res = 0;
+        int res = -1;
         for(auto &sub : subs) {
             int r = checkElementIntersection(vp, sub.c_str(), proj, polygon, mat, false, depth+1);
-            if (r > 0)
-                return 1;
+            if (r == 0)
+                return 0;
             // Return < 0 means either the object does not have shape, or the shape
             // type does not implement sub-element intersection check.
-            if (r < 0)
-                res = -1;
+            if (r > 0)
+                res = 1;
         }
         return res;
     }
