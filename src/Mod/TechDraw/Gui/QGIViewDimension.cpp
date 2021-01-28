@@ -337,14 +337,10 @@ void QGIDatumLabel::setToleranceString()
     if( dim == nullptr ) {
         return;
         // don't show if both are zero or if EqualTolerance is true
-    } else if (!dim->hasOverUnderTolerance() || dim->EqualTolerance.getValue()) {
+    } else if (!dim->hasOverUnderTolerance() || dim->EqualTolerance.getValue() || dim->TheoreticalExact.getValue()) {
         m_tolTextOver->hide();
         m_tolTextUnder->hide();
-        return;
-    } else if (dim->TheoreticalExact.getValue()) {
-        m_tolTextOver->hide();
-        m_tolTextUnder->hide();
-        // we must explicitly empy the text other wise the frame drawn for
+        // we must explicitly empty the text otherwise the frame drawn for
         // TheoreticalExact would be as wide as necessary for the text
         m_tolTextOver->setPlainText(QString());
         m_tolTextUnder->setPlainText(QString());
@@ -352,11 +348,6 @@ void QGIDatumLabel::setToleranceString()
     }
     m_tolTextOver->show();
     m_tolTextUnder->show();
-
-    QString tolSuffix;
-    if ((dim->Type.isValue("Angle")) || (dim->Type.isValue("Angle3Pt"))) {
-        tolSuffix = QString::fromUtf8(dim->getFormattedDimensionValue(2).c_str()); //just the unit
-    }
 
     std::pair<std::string, std::string> labelTexts, unitTexts;
 
@@ -637,14 +628,22 @@ void QGIViewDimension::updateDim()
  
     QString labelText;
     QString unitText;
-    if (dim->Arbitrary.getValue()) {
+    if (dim->Arbitrary.getValue() && !dim->EqualTolerance.getValue()) {
         labelText = QString::fromUtf8(dim->getFormattedDimensionValue(1).c_str()); //just the number pref/spec/suf
     } else {
         if (dim->isMultiValueSchema()) {
             labelText = QString::fromUtf8(dim->getFormattedDimensionValue(0).c_str()); //don't format multis
         } else {
             labelText = QString::fromUtf8(dim->getFormattedDimensionValue(1).c_str()); //just the number pref/spec/suf
-            unitText  = QString::fromUtf8(dim->getFormattedDimensionValue(2).c_str()); //just the unit
+            if (dim->EqualTolerance.getValue()) {
+                if (dim->ArbitraryTolerances.getValue()) {
+                    unitText = QString();
+                } else {
+                    unitText = QString::fromUtf8(dim->getFormattedToleranceValue(2).c_str()); //just the unit
+                }
+            } else {
+                unitText = QString::fromUtf8(dim->getFormattedDimensionValue(2).c_str()); //just the unit
+            }
         }
     }
     QFont font = datumLabel->getFont();

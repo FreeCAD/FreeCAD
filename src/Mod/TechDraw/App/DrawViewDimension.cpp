@@ -923,17 +923,21 @@ std::string DrawViewDimension::getFormattedDimensionValue(int partial)
 {
     QString qFormatSpec = QString::fromUtf8(FormatSpec.getStrValue().data());
 
-    if (Arbitrary.getValue()) {
+    if (Arbitrary.getValue() && !EqualTolerance.getValue()) {
         return FormatSpec.getStrValue();
     }
 
     // if there is an equal over-/undertolerance and not theoretically exact, add the tolerance to dimension
-    if (EqualTolerance.getValue() && !DrawUtil::fpCompare(OverTolerance.getValue(), 0.0)
-            && !TheoreticalExact.getValue()) {
+    if (EqualTolerance.getValue() && !TheoreticalExact.getValue() &&
+            (!DrawUtil::fpCompare(OverTolerance.getValue(), 0.0) || ArbitraryTolerances.getValue())) {
         QString labelText = QString::fromUtf8(formatValue(getDimValue(), qFormatSpec, 1).c_str()); //just the number pref/spec/suf
         QString unitText = QString::fromUtf8(formatValue(getDimValue(), qFormatSpec, 2).c_str()); //just the unit
         QString tolerance = QString::fromStdString(getFormattedToleranceValue(1).c_str());
         QString result;
+        if (Arbitrary.getValue()) {
+            labelText = QString::fromStdString(FormatSpec.getStrValue());
+            unitText = QString();
+        }
         // tolerance might start with a plus sign that we don't want, so cut it off
         if (tolerance.at(0) == QChar::fromLatin1('+'))
             tolerance.remove(0, 1);
