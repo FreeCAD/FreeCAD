@@ -21,13 +21,12 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_DATUMSHAPE_H
-#define PARTDESIGN_DATUMSHAPE_H
+#ifndef PARTDESIGN_SHAPEBINDER_H
+#define PARTDESIGN_SHAPEBINDER_H
 
-#include <QString>
 #include <boost_signals2.hpp>
 #include <App/PropertyLinks.h>
-#include <Mod/Part/App/DatumFeature.h>
+#include <Mod/Part/App/PartFeature.h>
 
 namespace PartDesign
 {
@@ -131,4 +130,4 @@ protected:
 } //namespace PartDesign
 
 
-#endif // PARTDESIGN_DATUMSHAPE_H
+#endif // PARTDESIGN_SHAPEBINDER_H

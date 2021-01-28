@@ -30,7 +30,6 @@
 # include <boost_bind_bind.hpp>
 # include <QApplication>
 # include <QString>
-# include <QStatusBar>
 #endif
 
 #include <boost/algorithm/string/predicate.hpp>
@@ -42,6 +41,7 @@
 #include "SelectionFilter.h"
 #include "View3DInventor.h"
 #include <Base/Exception.h>
+#include <Base/Quantity.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
 #include <Base/Interpreter.h>

@@ -33,6 +33,7 @@
 # include <ShapeAnalysis_FreeBounds.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
+# include <TopoDS_Wire.hxx>
 # include <TopoDS_Iterator.hxx>
 # include <TopTools_HSequenceOfShape.hxx>
 #endif
@@ -44,7 +45,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
-#include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/SelectionFilter.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>

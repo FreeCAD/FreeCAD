@@ -73,6 +73,7 @@
 
 #include <App/Application.h>
 #include <Base/Console.h>
+#include <Base/Interpreter.h>
 #include "View3DInventorViewer.h"
 #include "Application.h"
 #include "SoTouchEvents.h"

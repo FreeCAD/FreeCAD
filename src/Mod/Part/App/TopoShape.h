@@ -25,8 +25,7 @@
 #define PART_TOPOSHAPE_H
 
 #include <iosfwd>
-#include <TopoDS_Compound.hxx>
-#include <TopoDS_Wire.hxx>
+#include <TopoDS_Shape.hxx>
 #include <TopTools_ListOfShape.hxx>
 #include <App/ComplexGeoData.h>
 #include <Base/Exception.h>
@@ -35,6 +34,9 @@ class gp_Ax1;
 class gp_Ax2;
 class gp_Pln;
 class gp_Vec;
+
+class TopoDS_Wire;
+class TopoDS_Compound;
 
 namespace App {
 class Color;

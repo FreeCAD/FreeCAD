@@ -29,6 +29,7 @@
 #endif
 
 #include "ViewProviderExtension.h"
+#include "ViewProviderDocumentObject.h"
 #include "ViewProviderExtensionPy.h"
 
 using namespace Gui;

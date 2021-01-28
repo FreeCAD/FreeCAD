@@ -31,12 +31,16 @@
 #include <App/PropertyExpressionEngine.h>
 
 #include <Base/TimeInfo.h>
-#include <Base/Matrix.h>
 #include <CXX/Objects.hxx>
 
 #include <unordered_map>
 #include <bitset>
 #include <boost_signals2.hpp>
+
+namespace Base
+{
+class Matrix4D;
+}
 
 namespace App
 {

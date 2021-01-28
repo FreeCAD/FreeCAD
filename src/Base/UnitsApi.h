@@ -27,12 +27,14 @@
 #include <CXX/WrapPython.h>
 #include <memory>
 #include <string>
-#include <QString>
 #include "UnitsSchema.h"
-#include "Quantity.h"
+#include "Unit.h"
+#include <QString>
 
 
-namespace Base {
+namespace Base
+{
+class Quantity;
 typedef std::unique_ptr<UnitsSchema> UnitsSchemaPtr;
 
 /**

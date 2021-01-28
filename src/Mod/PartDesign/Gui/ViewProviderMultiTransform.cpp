@@ -30,6 +30,7 @@
 #include "TaskMultiTransformParameters.h"
 #include <Mod/PartDesign/App/FeatureMultiTransform.h>
 #include <Gui/Command.h>
+#include <App/Document.h>
 
 using namespace PartDesignGui;
 

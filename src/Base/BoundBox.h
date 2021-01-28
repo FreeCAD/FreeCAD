@@ -25,14 +25,14 @@
 #define BASE_BOUNDBOX_H
 
 #include "Vector3D.h"
-#include "Matrix.h"
-#include "ViewProj.h"
 #include "Tools2D.h"
 #include <limits>
+#include <iostream>
 
 namespace Base {
 
 class ViewProjMethod;
+class Matrix4D;
 
 /** The 3D bounding box class. */
 template <class _Precision>

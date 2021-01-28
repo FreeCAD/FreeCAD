@@ -39,6 +39,7 @@
 
 #include <boost/algorithm/string/predicate.hpp>
 
+#include <Base/UnitsApi.h>
 #include <Base/Tools.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>

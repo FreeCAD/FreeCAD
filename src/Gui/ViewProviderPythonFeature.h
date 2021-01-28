@@ -24,12 +24,10 @@
 #ifndef GUI_VIEWPROVIDERPYTHONFEATURE_H
 #define GUI_VIEWPROVIDERPYTHONFEATURE_H
 
-#include <App/Application.h>
 #include <App/AutoTransaction.h>
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/Document.h>
 #include <App/PropertyPythonObject.h>
-#include <App/DynamicProperty.h>
 #include <App/FeaturePython.h>
 
 class SoSensor;

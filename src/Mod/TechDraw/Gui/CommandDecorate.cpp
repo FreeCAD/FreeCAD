@@ -33,6 +33,7 @@
 #include <QGraphicsView>
 
 # include <Base/Tools.h>
+# include <App/Document.h>
 # include <App/DocumentObject.h>
 # include <Gui/Action.h>
 # include <Gui/Application.h>
@@ -40,7 +41,7 @@
 # include <Gui/Command.h>
 # include <Gui/Control.h>
 # include <Gui/Document.h>
-# include <Gui/Selection.h>
+# include <Gui/SelectionObject.h>
 # include <Gui/MainWindow.h>
 # include <Gui/FileDialog.h>
 # include <Gui/ViewProvider.h>

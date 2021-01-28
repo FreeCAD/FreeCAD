@@ -26,9 +26,7 @@
 
 #include "PropertyContainer.h"
 #include "PropertyPythonObject.h"
-#include "ExtensionContainer.h"
 #include "Base/Interpreter.h"
-#include <CXX/Objects.hxx>
 
 namespace App {
 

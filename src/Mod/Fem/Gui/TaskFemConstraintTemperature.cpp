@@ -47,10 +47,11 @@
 #include "Mod/Fem/App/FemConstraintTemperature.h"
 #include "TaskFemConstraintTemperature.h"
 #include "ui_TaskFemConstraintTemperature.h"
+#include <App/Document.h>
 #include <App/Application.h>
 #include <Base/Tools.h>
 #include <Gui/Command.h>
-#include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/SelectionFilter.h>
 #include <Mod/Part/App/PartFeature.h>
 

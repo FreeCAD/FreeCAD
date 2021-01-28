@@ -28,8 +28,6 @@
 // Std. configurations
 
 #include <string>
-#include <map>
-#include <typeinfo>
 
 class QAtomicInt;
 

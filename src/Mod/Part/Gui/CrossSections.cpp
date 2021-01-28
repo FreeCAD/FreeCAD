@@ -48,6 +48,7 @@
 
 #include "ui_CrossSections.h"
 #include "CrossSections.h"
+#include <App/Document.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/CrossSection.h>
 #include <Gui/BitmapFactory.h>

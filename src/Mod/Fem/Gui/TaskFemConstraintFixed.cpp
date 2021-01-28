@@ -24,11 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepAdaptor_Surface.hxx>
 # include <Geom_Line.hxx>
-# include <Geom_Plane.hxx>
-# include <Precision.hxx>
 
 # include <QAction>
 # include <QKeyEvent>
@@ -43,13 +39,15 @@
 # include <sstream>
 #endif
 
+
 #include "Mod/Fem/App/FemConstraintFixed.h"
 #include "TaskFemConstraintFixed.h"
 #include "ui_TaskFemConstraintFixed.h"
+#include <App/Document.h>
 #include <App/Application.h>
 #include <Base/Tools.h>
 #include <Gui/Command.h>
-#include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/SelectionFilter.h>
 #include <Mod/Part/App/PartFeature.h>
 

@@ -32,9 +32,9 @@
 
 #include <Base/BoundBox.h>
 #include <Base/Vector3D.h>
-#include <Base/Matrix.h>
 
 namespace Base{
+  class Matrix4D;
   class Polygon2d;
   class ViewProjMethod;
 }

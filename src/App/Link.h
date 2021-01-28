@@ -36,8 +36,6 @@
 #include "FeaturePython.h"
 #include "PropertyLinks.h"
 #include "DocumentObjectExtension.h"
-#include "FeaturePython.h"
-#include "GroupExtension.h"
 
 //FIXME: ISO C++11 requires at least one argument for the "..." in a variadic macro
 #if defined(__clang__)
@@ -53,6 +51,7 @@
 
 namespace App
 {
+class GroupExtension;
 
 class AppExport LinkBaseExtension : public App::DocumentObjectExtension
 {

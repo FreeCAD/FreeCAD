@@ -46,7 +46,6 @@
 # include <BRepAlgoAPI_Fuse.hxx>
 # include <BRepAlgoAPI_Section.hxx>
 # include <BRepBndLib.hxx>
-# include <BRepBuilderAPI_FindPlane.hxx>
 # include <BRepLib_FindSurface.hxx>
 # include <BRepBuilderAPI_GTransform.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
@@ -101,7 +100,6 @@
 # include <GProp_GProps.hxx>
 # include <Law_BSpFunc.hxx>
 # include <Law_BSpline.hxx>
-# include <Law_BSpFunc.hxx>
 # include <Law_Constant.hxx>
 # include <Law_Linear.hxx>
 # include <Law_S.hxx>
@@ -114,7 +112,6 @@
 # include <IGESData_IGESModel.hxx>
 # include <STEPControl_Writer.hxx>
 # include <STEPControl_Reader.hxx>
-# include <TopTools_MapOfShape.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Compound.hxx>
 # include <TopoDS_Iterator.hxx>
@@ -193,6 +190,7 @@
 #include <Base/Builder3D.h>
 #include <Base/FileInfo.h>
 #include <Base/Exception.h>
+#include <Base/Placement.h>
 #include <Base/Tools.h>
 #include <Base/Console.h>
 #include <App/Material.h>

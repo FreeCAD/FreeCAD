@@ -57,6 +57,7 @@
 #include <QUrl>
 
 #include "GLGraphicsView.h"
+#include <App/Application.h>
 #include <Gui/Document.h>
 #include <Gui/ViewProvider.h>
 

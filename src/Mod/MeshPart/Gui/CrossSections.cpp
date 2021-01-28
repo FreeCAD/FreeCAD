@@ -53,6 +53,7 @@
 #include <Mod/Mesh/App/MeshFeature.h>
 #include <Mod/Mesh/App/Core/Algorithm.h>
 #include <Mod/Mesh/App/Core/Grid.h>
+#include <App/Document.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/Application.h>

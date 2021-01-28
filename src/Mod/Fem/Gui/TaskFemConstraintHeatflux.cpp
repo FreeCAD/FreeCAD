@@ -51,6 +51,7 @@
 #include <App/Application.h>
 #include <Base/Tools.h>
 #include <Gui/Command.h>
+#include <Gui/SelectionObject.h>
 #include <Mod/Part/App/PartFeature.h>
 
 using namespace FemGui;

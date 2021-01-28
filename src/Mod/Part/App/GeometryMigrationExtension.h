@@ -24,6 +24,7 @@
 #define PART_GEOMETRYMIGRATIONEXTENSION_H
 
 #include <Mod/Part/App/Geometry.h>
+#include <Mod/Part/App/GeometryExtension.h>
 #include <bitset>
 
 namespace Part

@@ -43,6 +43,7 @@
 
 #include "PropertyView.h"
 #include "Application.h"
+#include "SelectionObject.h"
 #include "MainWindow.h"
 #include "Document.h"
 #include "BitmapFactory.h"

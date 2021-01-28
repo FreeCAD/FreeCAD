@@ -29,6 +29,7 @@
 
 #include "ImageView.h"
 #include "../App/ImageBase.h"
+#include <App/Application.h>
 #include "XpmImages.h"
 
 using namespace ImageGui;

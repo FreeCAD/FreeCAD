@@ -26,7 +26,6 @@
 
 
 #include <Base/Parameter.h>
-#include "View.h"
 
 namespace Gui {
 

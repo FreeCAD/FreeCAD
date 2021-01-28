@@ -53,6 +53,7 @@
 #include "Part2DObject.h"
 #include "Geometry.h"
 #include "DatumFeature.h"
+#include "Attacher.h"
 
 #include <App/FeaturePythonPyImp.h>
 #include <Mod/Part/App/Part2DObjectPy.h>

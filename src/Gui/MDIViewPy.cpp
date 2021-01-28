@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #include "MDIViewPy.h"
+#include "MDIView.h"
 #include "Application.h"
 #include "Document.h"
 

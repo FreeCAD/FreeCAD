@@ -29,6 +29,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <App/Document.h>
 #include "ActiveObjectList.h"
 #include <Gui/Application.h>
 #include <Gui/Document.h>

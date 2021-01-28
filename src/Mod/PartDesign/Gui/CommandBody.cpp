@@ -31,6 +31,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <App/Document.h>
 #include <App/Origin.h>
 #include <App/Part.h>
 #include <Gui/Command.h>
@@ -46,6 +47,7 @@
 #include <Mod/PartDesign/App/Feature.h>
 #include <Mod/PartDesign/App/FeatureBase.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
+#include <Mod/Part/App/Attacher.h>
 
 #include "Utils.h"
 #include "TaskFeaturePick.h"

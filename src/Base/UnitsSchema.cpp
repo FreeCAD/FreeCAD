@@ -29,7 +29,7 @@
 #include <QString>
 #include <QLocale>
 
-#include "Exception.h"
+#include "Quantity.h"
 #include "UnitsApi.h"
 #include "UnitsSchema.h"
 

@@ -25,6 +25,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <stack>
 #endif
 
 #include <Base/Writer.h>
@@ -41,6 +42,7 @@
 #include "PropertyExpressionEngine.h"
 #include "DocumentObjectExtension.h"
 #include "GeoFeatureGroupExtension.h"
+#include <App/ComplexGeoData.h>
 #include <App/DocumentObjectPy.h>
 #include <boost/bind/bind.hpp>
 

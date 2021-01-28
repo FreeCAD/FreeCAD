@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <QApplication>
 # include <QButtonGroup>
+# include <QFileSystemModel>
 # include <QCompleter>
 # include <QComboBox>
 # include <QDesktopServices>

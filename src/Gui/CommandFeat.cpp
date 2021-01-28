@@ -28,6 +28,7 @@
 #include "Application.h"
 #include "CommandT.h"
 #include "Document.h"
+#include "SelectionObject.h"
 #include "Selection.h"
 #include "ViewProvider.h"
 #include "ViewProviderDocumentObject.h"

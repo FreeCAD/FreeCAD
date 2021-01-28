@@ -90,7 +90,7 @@
 #include <Gui/Document.h>
 #include <Gui/CommandT.h>
 #include <Gui/Control.h>
-#include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/Tools.h>
 #include <Gui/Utilities.h>
 #include <Gui/MainWindow.h>

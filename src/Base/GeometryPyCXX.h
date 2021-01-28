@@ -27,7 +27,6 @@
 #include <CXX/Objects.hxx>
 #include <CXX/Extensions.hxx>
 #include <Base/Vector3D.h>
-#include <Base/Matrix.h>
 #include <Base/MatrixPy.h>
 #include <Base/Rotation.h>
 #include <Base/RotationPy.h>
@@ -37,6 +36,8 @@
 #include <Base/Tools2D.h>
 
 namespace Base {
+class Matrix4D;
+
 template <typename T>
 inline Vector3<T> getVectorFromTuple(PyObject* o)
 {

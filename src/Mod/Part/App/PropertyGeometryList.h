@@ -26,11 +26,10 @@
 
 // Std. configurations
 
-
+#include <memory>
 #include <vector>
 #include <string>
 #include <App/Property.h>
-#include "Geometry.h"
 
 namespace Base {
 class Writer;

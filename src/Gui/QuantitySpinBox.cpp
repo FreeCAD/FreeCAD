@@ -46,6 +46,7 @@
 #include "Tools.h"
 #include "Command.h"
 #include <Base/Tools.h>
+#include <Base/UnitsApi.h>
 #include <Base/Exception.h>
 #include <App/Application.h>
 #include <App/Document.h>

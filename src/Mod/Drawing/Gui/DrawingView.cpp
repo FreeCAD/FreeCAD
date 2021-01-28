@@ -58,6 +58,7 @@
 #include <Base/gzstream.h>
 #include <Base/PyObjectBase.h>
 #include <App/Document.h>
+#include <App/Application.h>
 #include <Gui/Document.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/FileDialog.h>

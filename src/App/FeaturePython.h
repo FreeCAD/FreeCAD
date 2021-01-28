@@ -27,16 +27,21 @@
 
 
 #include <Base/Exception.h>
-#include <Base/Writer.h>
-#include <App/GeoFeature.h>
-#include <App/DynamicProperty.h>
+#include <App/DocumentObject.h>
+#include <App/PropertyContainer.h>
 #include <App/PropertyPythonObject.h>
 #include <App/PropertyGeo.h>
+
+namespace Base
+{
+ class Matrix4D;
+}
 
 namespace App
 {
 
 class Property;
+class GeoFeature;
 
 // Helper class to hide implementation details
 class AppExport FeaturePythonImp

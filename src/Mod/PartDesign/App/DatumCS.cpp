@@ -30,6 +30,7 @@
 
 #include <Mod/Part/App/PartPyCXX.h>
 #include <Mod/Part/App/OCCError.h>
+#include <Mod/Part/App/Attacher.h>
 #include "DatumCS.h"
 
 using namespace PartDesign;

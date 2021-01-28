@@ -29,6 +29,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <App/Document.h>
 #include <App/Part.h>
 #include <App/Origin.h>
 #include <App/OriginFeature.h>
@@ -41,6 +42,7 @@
 
 #include <Mod/Sketcher/App/SketchObject.h>
 
+#include <Mod/Part/App/Attacher.h>
 #include <Mod/PartDesign/App/Feature.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeaturePrimitive.h>

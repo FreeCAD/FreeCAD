@@ -67,6 +67,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include "Mod/Part/App/PrimitiveFeature.h"
+#include <Mod/Part/App/Attacher.h>
 
 #ifndef M_PI
 #define M_PI       3.14159265358979323846

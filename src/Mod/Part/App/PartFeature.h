@@ -31,7 +31,6 @@
 #include <App/PropertyGeo.h>
 // includes for findAllFacesCutBy()
 #include <TopoDS_Face.hxx>
-#include <BRep_Builder.hxx>
 #include <TopoDS_Compound.hxx>
 class gp_Dir;
 

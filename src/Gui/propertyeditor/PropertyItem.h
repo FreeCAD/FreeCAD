@@ -34,7 +34,6 @@
 #include <Base/Matrix.h>
 #include <Base/Placement.h>
 #include <Base/Quantity.h>
-#include <Base/UnitsApi.h>
 #include <App/DocumentObserver.h>
 #include <App/PropertyStandard.h>
 #include <Gui/Widgets.h>

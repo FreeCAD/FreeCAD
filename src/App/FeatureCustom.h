@@ -26,9 +26,6 @@
 #define APP_FEATURECUSTOM_H
 
 
-#include <Base/Writer.h>
-#include <App/DocumentObject.h>
-
 namespace App
 {
 

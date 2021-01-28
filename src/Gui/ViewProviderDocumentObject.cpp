@@ -44,6 +44,7 @@
 #include <Base/Tools.h>
 #include <Base/BoundBox.h>
 #include <App/Material.h>
+#include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/DocumentObserver.h>
 #include <App/Origin.h>

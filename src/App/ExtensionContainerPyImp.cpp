@@ -27,6 +27,7 @@
 # include <sstream>
 #endif
 
+#include "Extension.h"
 #include "Application.h"
 #include "DocumentObject.h"
 

@@ -53,8 +53,11 @@
 #include <Base/MatrixPy.h>
 #include <Base/BoundBoxPy.h>
 #include <Base/Tools.h>
+#include <App/Document.h>
+#include <App/GroupExtension.h>
 #include <App/ComplexGeoData.h>
 #include <App/GeoFeature.h>
+#include <App/Link.h>
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Document.h"

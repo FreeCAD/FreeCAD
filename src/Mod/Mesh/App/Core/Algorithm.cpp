@@ -34,6 +34,7 @@
 #include "Grid.h"
 #include "Triangulation.h"
 
+#include <Base/ViewProj.h>
 #include <Base/Console.h>
 #include <Base/Sequencer.h>
 

@@ -24,21 +24,9 @@
 #ifndef _AppPlacement_h_
 #define _AppPlacement_h_
 
-#include <Base/Placement.h>
-
 #include "FeaturePython.h"
 #include "GeoFeature.h"
-#include "PropertyGeo.h"
-
-
-namespace Base
-{
-//  class Vector3D;
-  //class Matrix4D;
-}
-
-//using Base::Vector3D;
-//using Base::Matrix4D;
+#include "PropertyContainer.h"
 
 namespace App
 {

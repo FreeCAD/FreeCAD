@@ -25,8 +25,12 @@
 #ifndef EXPRESSION_PARSER_H
 #define EXPRESSION_PARSER_H
 
-#include <Base/Interpreter.h>
 #include "Expression.h"
+#include <deque>
+#include <CXX/Objects.hxx>
+#include <Base/BaseClass.h>
+#include <Base/Quantity.h>
+#include "ObjectIdentifier.h"
 
 namespace App {
 

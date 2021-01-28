@@ -38,7 +38,6 @@
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#include <Base/Matrix.h>
 
 class TopoDS_Shape;
 class TopoDS_Face;
@@ -50,7 +49,10 @@ class BRepExtrema_DistShapeShape;
 class QPushButton;
 class QPixmap;
 class QLabel;
-
+namespace Base
+{
+class Matrix4D;
+}
 namespace Gui{class View3dInventorViewer;}
 
 namespace PartGui

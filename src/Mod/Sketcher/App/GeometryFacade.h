@@ -26,7 +26,8 @@
 
 #include <Base/BaseClass.h>
 
-#include <Base/Console.h> // Only for Debug - To be removed
+#include <Base/Placement.h>
+#include <Base/Matrix.h>
 #include <boost/uuid/uuid_io.hpp>
 
 #include <Mod/Part/App/Geometry.h>

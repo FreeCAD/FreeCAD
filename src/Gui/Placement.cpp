@@ -37,9 +37,10 @@
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
-#include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/Window.h>
+#include <App/ComplexGeoData.h>
 #include <App/Document.h>
 #include <App/GeoFeature.h>
 #include <App/PropertyGeo.h>

@@ -42,6 +42,7 @@
 #endif
 
 #include <Base/Tools.h>
+#include <App/Document.h>
 #include "Action.h"
 #include "Application.h"
 #include "BitmapFactory.h"
@@ -60,6 +61,7 @@
 #include "WorkbenchManager.h"
 
 #include <Base/Exception.h>
+#include <Base/Interpreter.h>
 #include <App/Application.h>
 
 using namespace Gui;

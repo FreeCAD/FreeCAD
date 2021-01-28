@@ -27,10 +27,10 @@
 #include <string>
 #include <QMap>
 #include <QVector>
-#include <QString>
 #include <QDomDocument>
 
 class QIODevice;
+class QString;
 
 namespace App {
 

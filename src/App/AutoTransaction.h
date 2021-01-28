@@ -23,6 +23,8 @@
 #ifndef APP_AUTOTRANSACTION_H
 #define APP_AUTOTRANSACTION_H
 
+#include <stdlib.h>
+
 namespace App {
 
 class Application;

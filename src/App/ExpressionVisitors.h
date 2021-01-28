@@ -24,10 +24,9 @@
 #define RENAMEOBJECTIDENTIFIEREXPRESSIONVISITOR_H
 
 #include <Base/BaseClass.h>
-#include "Expression.h"
 
 namespace App {
-
+class Expression;
 /**
  * @brief The RenameObjectIdentifierExpressionVisitor class is a functor used to visit each node of an expression, and
  * possibly rename VariableExpression nodes.

@@ -51,10 +51,11 @@
 #include "DlgProjectionOnSurface.h"
 #include "ui_DlgProjectionOnSurface.h"
 
+#include <App/Document.h>
 #include <Gui/BitmapFactory.h>
-
 #include "Gui/MainWindow.h"
 #include "Gui/MDIView.h"
+#include <Gui/SelectionObject.h>
 #include "Gui/View3DInventor.h"
 #include "Gui/View3DInventorViewer.h"
 #include "Inventor/SbVec3d.h"

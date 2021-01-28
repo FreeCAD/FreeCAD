@@ -24,7 +24,6 @@
 #define GUI_PLACEMENT_H
 
 #include <Gui/InputVector.h>
-#include <Gui/SelectionObject.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Base/Placement.h>
@@ -35,6 +34,7 @@ class QSignalMapper;
 
 namespace Gui {
 class Document;
+class SelectionObject;
 
 namespace Dialog {
 

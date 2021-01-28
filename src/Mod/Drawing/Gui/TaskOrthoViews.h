@@ -31,6 +31,7 @@
 #include <vector>
 #include <boost_signals2.hpp>
 
+#include <App/Document.h>
 #include <Mod/Drawing/App/FeatureViewPart.h>
 
 

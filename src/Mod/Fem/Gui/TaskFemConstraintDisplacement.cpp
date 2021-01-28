@@ -51,7 +51,7 @@
 #include <App/Application.h>
 #include <Base/Tools.h>
 #include <Gui/Command.h>
-#include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/SelectionFilter.h>
 #include <Mod/Part/App/PartFeature.h>
 

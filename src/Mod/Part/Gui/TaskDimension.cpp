@@ -56,7 +56,6 @@
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoCone.h>
 # include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoNurbsCurve.h>
 # include <Inventor/engines/SoComposeVec3f.h>
 # include <Inventor/engines/SoCalculator.h>
 # include <Inventor/nodes/SoResetTransform.h>
@@ -67,7 +66,8 @@
 #endif
 
 #include <Base/Console.h>
-#include <Base/UnitsApi.h>
+#include <Base/Quantity.h>
+#include <App/Document.h>
 #include "../App/PartFeature.h"
 #include <Gui/Application.h>
 #include <Gui/Selection.h>

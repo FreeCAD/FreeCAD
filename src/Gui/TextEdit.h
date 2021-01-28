@@ -28,7 +28,6 @@
 
 #include <QListWidget>
 #include <QPlainTextEdit>
-#include "View.h"
 #include "Window.h"
 
 namespace Gui {

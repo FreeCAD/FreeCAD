@@ -29,6 +29,7 @@
 
 #include "AxisOriginPy.h"
 #include "AxisOriginPy.cpp"
+#include <Base/Interpreter.h>
 
 using namespace Gui;
 

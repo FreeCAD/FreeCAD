@@ -79,6 +79,7 @@
 #include <QRegExp>
 #include "BrowserView.h"
 #include "CookieJar.h"
+#include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>
 #include <Gui/ProgressBar.h>

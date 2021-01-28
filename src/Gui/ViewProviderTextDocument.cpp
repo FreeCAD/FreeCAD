@@ -30,6 +30,7 @@
 #endif
 
 #include <Base/Type.h>
+#include <App/Application.h>
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Gui/TextDocumentEditorView.h>
 #include <Gui/MainWindow.h>
