@@ -1337,7 +1337,10 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         # PathLog.debug('_makeStop()')
         rad = self.radius
         ofstRad = self.ofstRadius
-        extra = self.radius / 10
+        extra = self.radius / 5.0
+        lng = 0.05
+        med = lng / 2.0
+        shrt = lng / 5.0
 
         E = FreeCAD.Vector(pB.x, pB.y, 0)  # endpoint
         C = FreeCAD.Vector(pA.x, pA.y, 0)  # checkpoint
@@ -1355,16 +1358,16 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             # positive dist in _makePerp2DVector() is CCW rotation
             p1 = E
             if sType == 'BEG':
-                p2 = self._makePerp2DVector(C, E, -0.25)  # E1
-                p3 = self._makePerp2DVector(p1, p2, ofstRad + 1.0 + extra)  # E2
-                p4 = self._makePerp2DVector(p2, p3, 0.25 + ofstRad + extra)  # E3
-                p5 = self._makePerp2DVector(p3, p4, 1.0 + extra)  # E4
+                p2 = self._makePerp2DVector(C, E, -1 * shrt)  # E1
+                p3 = self._makePerp2DVector(p1, p2, ofstRad + lng + extra)  # E2
+                p4 = self._makePerp2DVector(p2, p3, shrt + ofstRad + extra)  # E3
+                p5 = self._makePerp2DVector(p3, p4, lng + extra)  # E4
                 p6 = self._makePerp2DVector(p4, p5, ofstRad + extra)  # E5
             elif sType == 'END':
-                p2 = self._makePerp2DVector(C, E, 0.25)  # E1
-                p3 = self._makePerp2DVector(p1, p2, -1 * (ofstRad + 1.0 + extra))  # E2
-                p4 = self._makePerp2DVector(p2, p3, -1 * (0.25 + ofstRad + extra))  # E3
-                p5 = self._makePerp2DVector(p3, p4, -1 * (1.0 + extra))  # E4
+                p2 = self._makePerp2DVector(C, E, shrt)  # E1
+                p3 = self._makePerp2DVector(p1, p2, -1 * (ofstRad + lng + extra))  # E2
+                p4 = self._makePerp2DVector(p2, p3, -1 * (shrt + ofstRad + extra))  # E3
+                p5 = self._makePerp2DVector(p3, p4, -1 * (lng + extra))  # E4
                 p6 = self._makePerp2DVector(p4, p5, -1 * (ofstRad + extra))  # E5
             p7 = E  # E6
             L1 = Part.makeLine(p1, p2)
@@ -1383,15 +1386,15 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             # positive dist in _makePerp2DVector() is CCW rotation
             p1 = E
             if sType == 'BEG':
-                p2 = self._makePerp2DVector(C, E, -1 * (0.25 + abs(self.offsetExtra)))  # left, 0.25
-                p3 = self._makePerp2DVector(p1, p2, 0.25 + abs(self.offsetExtra))
-                p4 = self._makePerp2DVector(p2, p3, (0.5 + abs(self.offsetExtra)))  #      FIRST POINT
-                p5 = self._makePerp2DVector(p3, p4, 0.25 + abs(self.offsetExtra))  # E1                SECOND
+                p2 = self._makePerp2DVector(C, E, -1 * (shrt + abs(self.offsetExtra)))  # left, shrt
+                p3 = self._makePerp2DVector(p1, p2, shrt + abs(self.offsetExtra))
+                p4 = self._makePerp2DVector(p2, p3, (med + abs(self.offsetExtra)))  #      FIRST POINT
+                p5 = self._makePerp2DVector(p3, p4, shrt + abs(self.offsetExtra))  # E1                SECOND
             elif sType == 'END':
-                p2 = self._makePerp2DVector(C, E, (0.25 + abs(self.offsetExtra)))  # left, 0.25
-                p3 = self._makePerp2DVector(p1, p2, -1 * (0.25 + abs(self.offsetExtra)))
-                p4 = self._makePerp2DVector(p2, p3, -1 * (0.5 + abs(self.offsetExtra)))  #      FIRST POINT
-                p5 = self._makePerp2DVector(p3, p4, -1 * (0.25 + abs(self.offsetExtra)))  # E1                SECOND
+                p2 = self._makePerp2DVector(C, E, (shrt + abs(self.offsetExtra)))  # left, shrt
+                p3 = self._makePerp2DVector(p1, p2, -1 * (shrt + abs(self.offsetExtra)))
+                p4 = self._makePerp2DVector(p2, p3, -1 * (med + abs(self.offsetExtra)))  #      FIRST POINT
+                p5 = self._makePerp2DVector(p3, p4, -1 * (shrt + abs(self.offsetExtra)))  # E1                SECOND
             p6 = p1  # E4
             L1 = Part.makeLine(p1, p2)
             L2 = Part.makeLine(p2, p3)
