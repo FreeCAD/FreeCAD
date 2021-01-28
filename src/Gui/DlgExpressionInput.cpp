@@ -97,10 +97,13 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
             "User parameter:BaseApp/Preferences/MainWindow");
     QString mainstyle = QString::fromLatin1(hGrp->GetASCII("StyleSheet").c_str());
     bool darkstyle = mainstyle.indexOf(QLatin1String("dark"),0,Qt::CaseInsensitive) >= 0;
-    if (darkstyle)
+    if (darkstyle) {
         this->stylesheet = QLatin1String("*{color:palette(bright-text)}");
-    else
+        ui->expression->setStyleSheet(QLatin1String("margin:0px; color:black"));
+    } else {
         this->stylesheet = QLatin1String("*{color:palette(text)}");
+        ui->expression->setStyleSheet(QLatin1String("margin:0px"));
+    }
     if (this->noBackground) {
         // Both OSX and Windows will pass through mouse event on complete
         // transparent top level widgets. So we use an almost transparent child
@@ -109,8 +112,6 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
         proxy->show();
         proxy->lower();
         proxy->resize(this->rect().size());
-
-        ui->expression->setStyleSheet(QLatin1String("margin:0px"));
 
         setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint);
         setAttribute(Qt::WA_NoSystemBackground, true);
