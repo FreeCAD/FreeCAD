@@ -522,11 +522,19 @@ PyObject *PropertyContainerPy::getCustomAttributes(const char* attr) const
         PyObject *dict = PyDict_New();
         if (dict) {
             for ( std::map<std::string,App::Property*>::iterator it = Map.begin(); it != Map.end(); ++it )
+            {
 #if PY_MAJOR_VERSION >= 3
-                PyDict_SetItem(dict, PyUnicode_FromString(it->first.c_str()), PyUnicode_FromString(""));
+                PyObject * key = PyUnicode_FromString(it->first.c_str());
+                PyObject * emptyStr = PyUnicode_FromString("");
+                PyDict_SetItem(dict, key, emptyStr);
 #else
-                PyDict_SetItem(dict, PyString_FromString(it->first.c_str()), PyString_FromString(""));
+                PyObject * key = PyString_FromString(it->first.c_str());
+                PyObject * emptyStr = PyString_FromString("");
+                PyDict_SetItem(dict, key, emptyStr);
 #endif
+                Py_DECREF(key);
+                Py_DECREF(emptyStr);
+            }
             if (PyErr_Occurred()) {
                 Py_DECREF(dict);
                 dict = NULL;

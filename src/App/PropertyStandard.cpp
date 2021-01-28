@@ -1921,6 +1921,7 @@ PyObject *PropertyMap::getPyObject(void)
             throw Base::UnicodeError("UTF8 conversion failure at PropertyMap::getPyObject()");
         }
         PyDict_SetItemString(dict,it->first.c_str(),item);
+        Py_DECREF(item);
     }
 
     return dict;
