@@ -1687,7 +1687,71 @@ std::string Expression::toString(bool persistent, bool checkPriority, int indent
     return ss.str();
 }
 
+FC_STATIC std::vector<ExpressionNode*> _ExpressionNodeStack;
+
+class ExpressionASTGenerator {
+public:
+    ExpressionASTGenerator(std::ostream &ss, const Expression *expr)
+        :ss(ss)
+    {
+        if (_ExpressionNodeStack.empty() && expr)
+            return;
+        _ExpressionNodeStack.emplace_back(new ExpressionNode);
+        auto node = _ExpressionNodeStack.back();
+        node->expr = expr;
+        node->start = ss.tellp();
+        if (expr) {
+            GetIdentifiersExpressionVisitor visitor(node->deps);
+            visitor.visit(const_cast<Expression&>(*expr));
+        }
+    };
+
+    ~ExpressionASTGenerator()
+    {
+        if (_ExpressionNodeStack.empty())
+            return;
+        auto node = _ExpressionNodeStack.back();
+        node->end = ss.tellp();
+        _ExpressionNodeStack.pop_back();
+        if(!_ExpressionNodeStack.empty())
+            _ExpressionNodeStack.back()->children.emplace_back(node);
+    }
+
+    std::ostream &ss;
+};
+
+void *ExpressionNode::operator new(std::size_t)
+{
+    return ExpressionFastAlloc(ExpressionNode)().allocate(1);
+}
+
+void ExpressionNode::operator delete(void *p)
+{
+    if(p) ExpressionFastAlloc(ExpressionNode)().deallocate(
+            reinterpret_cast<ExpressionNode*>(p),1);
+}
+
+namespace App {
+ExpressionNodePtr getExpressionAST(std::ostringstream &ss, const Expression *expr)
+{
+    std::map<App::ObjectIdentifier,bool> deps;
+    GetIdentifiersExpressionVisitor visitor(deps);
+    ExpressionNodePtr res;
+    if (!expr)
+        return res;
+    else {
+        ExpressionASTGenerator gen(ss, nullptr);
+        res.reset(_ExpressionNodeStack.back());
+        expr->toString(ss);
+    }
+    assert(res->children.size() == 1);
+    return std::move(res->children[0]);
+}
+}
+
 void Expression::toString(std::ostream &ss, bool persistent, bool checkPriority, int indent) const {
+    ExpressionASTGenerator gen(ss, this);
+
     if(components.empty()) {
         bool needsParens = checkPriority && priority()<20;
         if(needsParens)
@@ -1727,13 +1791,6 @@ UnitExpression::UnitExpression(const DocumentObject *_owner, const Base::Quantit
 {
 }
 
-UnitExpression::UnitExpression(const DocumentObject *_owner, const Base::Quantity & _quantity)
-    : Expression(_owner)
-    , quantity(_quantity)
-    , unitStr(0)
-{
-}
-
 UnitExpression::~UnitExpression() {
     if(cache) {
         Base::PyGILStateLocker lock;
@@ -1751,6 +1808,10 @@ ExpressionPtr UnitExpression::create(const App::DocumentObject *owner, const cha
     return EXPR_NEW(UnitExpression, owner, info->quantity, unit);
 }
 
+ExpressionPtr UnitExpression::create(const App::DocumentObject *owner, const Quantity &q)
+{
+    return EXPR_NEW(UnitExpression, owner, q);
+}
 
 void UnitExpression::setQuantity(const Quantity &_quantity)
 {
@@ -7135,7 +7196,7 @@ ExpressionPtr parse(const App::DocumentObject *owner,
 ExpressionPtr parseUnit(const App::DocumentObject *owner, const char* buffer)
 {
     Quantity q = Quantity::parse(buffer);
-    return ExpressionPtr(new UnitExpression(owner, q));
+    return UnitExpression::create(owner, q);
 }
 
 bool isTokenAnIndentifier(const std::string & str)

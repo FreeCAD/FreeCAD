@@ -55,6 +55,29 @@
                 <UserDocu>Register an expression for a property</UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="getExpression">
+            <Documentation>
+                <UserDocu>
+getExpression(name, ast=False) : Return the expression of a property with the given name
+
+If name is '*', then return a list(tuple(property_name, expression)) for all bound properties.
+
+If name starts with '=', then assuming the name contains an expression.
+
+If ast is True, then instead of returning the expression string, return a tuple(expression, node),
+where the node is the root syntax tree node of the corresponding expression. Each node is a
+
+tuple(typename, start, end, children, refs, hiddenRefs) with the following elements,
+  typename: expression type name,
+  start: start position of this expression in the returned expression text,
+  end: end position of this expression in the returned expression text,
+  children: a list of child nodes, or None if no children.
+  refs: list of tuple(obj, list(property_name)) for the referenced objects and their
+        properties of the corresponding child expression, or None if no reference.
+  hiddenRefs: same as refs but for hidden references.
+                </UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="evalExpression">
             <Documentation>
                 <UserDocu>Evaluate an expression</UserDocu>

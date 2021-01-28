@@ -382,6 +382,120 @@ PyObject*  DocumentObjectPy::evalExpression(PyObject * args)
     } PY_CATCH
 }
 
+static Py::Object _getExpressionASTPy(const App::ExpressionNodePtr &node)
+{
+    Py::Tuple tuple(6);
+    const char *name = node->expr->getTypeId().getName();
+    // skip App::
+    tuple.setItem(0, Py::String(name+5));
+    tuple.setItem(1, Py::Int(node->start));
+    tuple.setItem(2, Py::Int(node->end));
+    if (node->children.empty())
+        tuple.setItem(3, Py::Object());
+    else {
+        Py::List list;
+        for (auto &child : node->children)
+            list.append(_getExpressionASTPy(child));
+        tuple.setItem(3, list);
+    }
+
+    App::ObjectIdentifier::Dependencies deps[2];
+    for (auto &dep : node->deps)
+        dep.first.getDep(dep.second ? deps[1] : deps[0], true);
+
+    for (int k=0; k<2; ++k) {
+        if (deps[k].empty()) {
+            tuple.setItem(4+k, Py::Object());
+            continue;
+        }
+        int j = 0;
+        Py::List list(deps[k].size());
+        for (auto &v : deps[k]) {
+            Py::Tuple t(2);
+            t.setItem(0, Py::asObject(v.first->getPyObject()));
+            Py::List l(v.second.size());
+            int i=0;
+            for (auto &name : v.second)
+                l.setItem(i++, Py::String(name));
+            t.setItem(1, l);
+            list.setItem(j++, t);
+        }
+        tuple.setItem(4+k, list);
+    }
+    return tuple;
+}
+
+static Py::Object _getExpression(std::ostringstream &ss,
+                                 const App::ObjectIdentifier *path,
+                                 const App::Expression *expr,
+                                 bool ast)
+{
+    ss.str("");
+    if (!path && !ast) {
+        if (!expr)
+            return Py::Object();
+        expr->toString(ss);
+        return Py::String(ss.str());
+    }
+    Py::Tuple res(path && ast ? 3 : 2); 
+    int i = 0;
+    if (path)
+        res.setItem(i++, Py::String(path->toString()));
+    if (!expr) {
+        res.setItem(i++, Py::Object());
+        if (ast)
+            res.setItem(i++, Py::Object());
+        return res;
+    }
+    if (!ast) {
+        expr->toString(ss);
+        res.setItem(i++, Py::String(ss.str()));
+    } else {
+        auto node = App::getExpressionAST(ss, expr);
+        res.setItem(i++, Py::String(ss.str()));
+        res.setItem(i++, _getExpressionASTPy(node));
+    }
+    return res;
+}
+
+PyObject*  DocumentObjectPy::getExpression(PyObject * args)
+{
+    char * path;
+    PyObject * pyAst = Py_False;
+    if (!PyArg_ParseTuple(args, "s|O", &path, &pyAst))
+        return NULL;
+
+    bool ast = PyObject_IsTrue(pyAst);
+
+    PY_TRY {
+        std::ostringstream ss;
+        if (strcmp(path, "*") == 0) {
+            std::vector<App::Property*> props;
+            getDocumentObjectPtr()->getPropertyList(props);
+            Py::List list;
+            for(auto prop : props) {
+                auto p = Base::freecad_dynamic_cast<App::PropertyExpressionContainer>(prop);
+                if (!p)
+                    continue;
+                for(auto &v : p->getExpressions())
+                    list.append(_getExpression(ss, &v.first, v.second, ast));
+            }
+            return Py::new_reference_to(list);
+        }
+        else if (path[0] == '=') {
+            auto expr = Expression::parse(getDocumentObjectPtr(), path+1);
+            return Py::new_reference_to(_getExpression(ss, nullptr, expr.get(), ast));
+        }
+        else {
+            App::ObjectIdentifier p(ObjectIdentifier::parse(getDocumentObjectPtr(), path));
+            auto info = getDocumentObjectPtr()->getExpression(p);
+            if (info.expression)
+                return Py::new_reference_to(_getExpression(ss, &p, info.expression.get(), ast));
+        }
+        Py_Return;
+    } PY_CATCH;
+}
+
 PyObject*  DocumentObjectPy::recompute(PyObject *args)
 {
     PyObject *recursive=Py_False;

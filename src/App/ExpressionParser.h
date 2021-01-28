@@ -47,6 +47,23 @@ AppExport bool isPyMapping(const Py::Object &pyobj);
 
 ////////////////////////////////////////////////////////////////////////////////////
 
+struct ExpressionNode;
+typedef std::unique_ptr<ExpressionNode> ExpressionNodePtr;
+struct ExpressionNode {
+    const Expression *expr;
+    int start;
+    int end;
+    std::vector<ExpressionNodePtr, ExpressionAllocator(ExpressionNodePtr)> children;
+    std::map<App::ObjectIdentifier, bool> deps;
+
+    void operator delete(void *p);
+    static void* operator new(std::size_t sz);
+};
+
+AppExport ExpressionNodePtr getExpressionAST(std::ostringstream &ss, const Expression *expr);
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
 struct AppExport Expression::Component {
     ObjectIdentifier::Component comp;
     ExpressionPtr e1;
@@ -164,11 +181,10 @@ public:\
 class  AppExport UnitExpression : public Expression {
     EXPR_TYPESYSTEM_HEADER();
 public:
-
-    UnitExpression(const App::DocumentObject *_owner = 0, const Base::Quantity & _quantity = Base::Quantity());
     ~UnitExpression();
 
     static ExpressionPtr create(const App::DocumentObject *owner, const char *unitStr);
+    static ExpressionPtr create(const App::DocumentObject *owner, const Base::Quantity &q);
 
     virtual ExpressionPtr simplify() const;
 
@@ -185,7 +201,7 @@ public:
     double getScaler() const { return quantity.getValue(); }
 
 protected:
-    UnitExpression(const App::DocumentObject *_owner, const Base::Quantity & _quantity, const char *unit);
+    UnitExpression(const App::DocumentObject *_owner, const Base::Quantity & _quantity, const char *unit=nullptr);
 
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
