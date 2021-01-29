@@ -82,7 +82,7 @@ public:
     virtual size_t flagSize() const override {return getExternalGeoExt()->flagSize();}
 
     virtual const std::string& getRef() const override {return getExternalGeoExt()->getRef();}
-    virtual void setRef(const std::string & ref) override {getExternalGeoExt()->setRef(ref);}
+    virtual void setRef(const std::string & ref) override;
 
     virtual int getRefIndex() const override {return getExternalGeoExt()->getRefIndex();}
     virtual void setRefIndex(int index) override {getExternalGeoExt()->setRefIndex(index);}

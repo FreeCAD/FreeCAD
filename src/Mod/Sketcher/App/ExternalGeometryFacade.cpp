@@ -34,6 +34,8 @@
 
 #include "ExternalGeometryFacadePy.h"
 
+FC_LOG_LEVEL_INIT("Sketch", true, true);
+
 using namespace Sketcher;
 
 TYPESYSTEM_SOURCE(Sketcher::ExternalGeometryFacade,Base::BaseClass)
@@ -145,6 +147,14 @@ void ExternalGeometryFacade::copyFlags(const Part::Geometry * src, Part::Geometr
     auto gfsrc = ExternalGeometryFacade::getFacade(src);
     auto gfdst = ExternalGeometryFacade::getFacade(dst);
     gfdst->setFlags(gfsrc->getFlags());
+}
+
+void ExternalGeometryFacade::setRef(const std::string &ref)
+{
+    if (ref.size() && getId() < 0)
+        FC_ERR("Cannot set reference on root geometries");
+    else
+        getExternalGeoExt()->setRef(ref);
 }
 
 PyObject * ExternalGeometryFacade::getPyObject(void)

@@ -8345,6 +8345,17 @@ void SketchObject::updateGeometryRefs() {
         for(auto geo : geos) {
             auto egf = ExternalGeometryFacade::getFacade(geo);
             if(egf->getRefIndex()<0) {
+                if (egf->getId() < 0 && egf->getRef().size()) {
+                    FC_ERR("External geometry reference corrupted in " << getFullName()
+                            << " Please check.");
+                    // This could happen if someone saved the sketch containing
+                    // external geometries using some rouge releases during the
+                    // migration period. As a remedy, We re-initiate the
+                    // external geometry here to trigger rebuild later, with
+                    // call to rebuildExternalGeometry()
+                    initExternalGeo();
+                    return;
+                }
                 auto it = legacyMap.find(egf->getRef());
                 if (it != legacyMap.end()) {
                     // FIXME: this is a bug. Find out when and why does this happen
@@ -8413,6 +8424,8 @@ void SketchObject::restoreFinished()
 
         updateGeometryRefs();
         if(ExternalGeo.getSize()<=2) {
+            if (ExternalGeo.getSize() < 2)
+                initExternalGeo();
             for(auto &key : externalGeoRef) {
                 long id = getDocument()->Hasher->getID(key.c_str())->value();
                 if(geoLastId < id)
