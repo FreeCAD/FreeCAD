@@ -2220,7 +2220,7 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
                     drawstyle = "Dashdot"
                 locateLayer(name, color, drawstyle)
     else:
-        locateLayer("0", [0.0, 0.0, 0.0], "Solid")
+        locateLayer("0", (0.0, 0.0, 0.0), "Solid")
 
      # Draw lines
     lines = drawing.entities.get_type("line")
