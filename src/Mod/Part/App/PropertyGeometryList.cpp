@@ -97,21 +97,36 @@ void PropertyGeometryList::setValue(const Geometry* lValue)
 void PropertyGeometryList::setValues(const std::vector<Geometry*>& lValue)
 {
     auto copy = lValue;
-    for(auto &geo : copy) // copy of the individual geometry pointers
-        geo = geo->clone();
-
-    setValues(std::move(copy));
+    aboutToSetValue();
+    std::sort(_lValueList.begin(), _lValueList.end());
+    for (auto &v : copy) {
+        auto range = std::equal_range(_lValueList.begin(), _lValueList.end(), v);
+        // clone if the new entry does not exist in the original value list, or
+        // else, simply reuse it (i.e. erase it so that it won't get deleted below).
+        if (range.first == range.second)
+            v = v->clone();
+        else
+            _lValueList.erase(range.first, range.second);
+    }
+    for (auto v : _lValueList)
+        delete v;
+    _lValueList = std::move(copy);
+    hasSetValue();
 }
 
 void PropertyGeometryList::setValues(std::vector<Geometry*> &&lValue)
 {
+    // Unlike above, the moved version of setValues() indicates the caller want
+    // us to manager the memory of the passed in values. So no need clone.
     aboutToSetValue();
-    std::set<Geometry*> valueSet(_lValueList.begin(),_lValueList.end());
-    for(auto v : lValue)
-        valueSet.erase(v);
-    _lValueList = std::move(lValue);
-    for(auto v : valueSet)
+    std::sort(_lValueList.begin(), _lValueList.end());
+    for (auto v : lValue) {
+        auto range = std::equal_range(_lValueList.begin(), _lValueList.end(), v);
+        _lValueList.erase(range.first, range.second);
+    }
+    for (auto v : _lValueList)
         delete v;
+    _lValueList = std::move(lValue);
     hasSetValue();
 }
 
