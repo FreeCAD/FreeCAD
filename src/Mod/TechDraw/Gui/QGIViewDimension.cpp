@@ -628,7 +628,8 @@ void QGIViewDimension::updateDim()
  
     QString labelText;
     QString unitText;
-    if (dim->Arbitrary.getValue() && !dim->EqualTolerance.getValue()) {
+    if ( (dim->Arbitrary.getValue() && !dim->EqualTolerance.getValue())
+        || (dim->Arbitrary.getValue() && dim->TheoreticalExact.getValue()) ) {
         labelText = QString::fromUtf8(dim->getFormattedDimensionValue(1).c_str()); //just the number pref/spec/suf
     } else {
         if (dim->isMultiValueSchema()) {
