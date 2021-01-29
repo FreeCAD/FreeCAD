@@ -126,7 +126,7 @@ Cell * PropertySheet::getValueFromAlias(const std::string &alias)
 
 bool PropertySheet::isValidAlias(const std::string &candidate)
 {
-    static const boost::regex gen("^[^[:digit:][:space:][:punct:]][^[:space:][:punct:]]*$");
+    static const boost::regex gen("^[^[:digit:][:space:][:punct:]](_|[^[:space:][:punct:]])*$");
     boost::cmatch cm;
 
     /* Check if it is used before */
