@@ -216,10 +216,13 @@ void DrawViewDimension::onChanged(const App::Property* prop)
                 UnderTolerance.setReadOnly(true);
                 FormatSpecOverTolerance.setReadOnly(true);
                 FormatSpecUnderTolerance.setReadOnly(true);
+                ArbitraryTolerances.setValue(false);
+                ArbitraryTolerances.setReadOnly(true);
             }
             else {
                 OverTolerance.setReadOnly(false);
                 FormatSpecOverTolerance.setReadOnly(false);
+                ArbitraryTolerances.setReadOnly(false);
                 if (!EqualTolerance.getValue()) {
                     UnderTolerance.setReadOnly(false);
                     FormatSpecUnderTolerance.setReadOnly(false);
@@ -923,7 +926,8 @@ std::string DrawViewDimension::getFormattedDimensionValue(int partial)
 {
     QString qFormatSpec = QString::fromUtf8(FormatSpec.getStrValue().data());
 
-    if (Arbitrary.getValue() && !EqualTolerance.getValue()) {
+    if ( (Arbitrary.getValue() && !EqualTolerance.getValue())
+        || (Arbitrary.getValue() && TheoreticalExact.getValue()) ) {
         return FormatSpec.getStrValue();
     }
 

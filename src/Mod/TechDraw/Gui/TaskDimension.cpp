@@ -180,11 +180,14 @@ void TaskDimension::onTheoreticallyExactChanged()
         ui->qsbUndertolerance->setDisabled(true);
         ui->leFormatSpecifierOverTolerance->setDisabled(true);
         ui->leFormatSpecifierUnderTolerance->setDisabled(true);
+        ui->cbArbitraryTolerances->setDisabled(true);
+        ui->cbArbitraryTolerances->setChecked(false);
     }
     else {
         ui->cbEqualTolerance->setDisabled(false);
         ui->qsbOvertolerance->setDisabled(false);
         ui->leFormatSpecifierOverTolerance->setDisabled(false);
+        ui->cbArbitraryTolerances->setDisabled(false);
         if (!ui->cbEqualTolerance->isChecked()) {
             ui->qsbUndertolerance->setDisabled(false);
             ui->leFormatSpecifierUnderTolerance->setDisabled(false);
