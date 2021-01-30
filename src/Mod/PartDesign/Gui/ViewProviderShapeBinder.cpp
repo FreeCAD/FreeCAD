@@ -589,8 +589,15 @@ QString ViewProviderSubShapeBinder::getToolTip(const QByteArray &tag) const
 
     if (!ss.tellp())
         return QString();
-    return QString::fromLatin1("%1%2").arg(
-            QObject::tr("Bound objects. ALT + click this icon to select.\n"),
+
+    if (Gui::isTreeViewDragging()) {
+        return QString::fromLatin1("%1\n%2\n%3").arg(
+                QObject::tr("Drop to add more binding, or hold CTRL to clear before assign new bindings."),
+                QObject::tr("Current bound objects:"),
+                QString::fromUtf8(ss.str().c_str()));
+    }
+    return QString::fromLatin1("%1\n%2").arg(
+            QObject::tr("Bound objects. ALT + click this icon to select."),
             QString::fromUtf8(ss.str().c_str()));
 }
 
