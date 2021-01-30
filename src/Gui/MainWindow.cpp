@@ -57,6 +57,8 @@
 # include <QScreen>
 #endif
 
+#include <QWidgetAction>
+
 // FreeCAD Base header
 #include <Base/Parameter.h>
 #include <Base/Exception.h>
@@ -616,9 +618,53 @@ MainWindow* MainWindow::getInstance()
     return instance;
 }
 
+static void populateMenu(QMenu *menu, bool toolbarMenu)
+{
+    auto mw = getMainWindow();
+    QMap<QString, QAction*> actions;
+    QString tooltip = toolbarMenu ? QObject::tr("Toggles this toolbar")
+                                  : QObject::tr("Toggles this dockable window");
+    if (toolbarMenu) {
+        for (auto toolbar : mw->findChildren<QToolBar*>()) {
+            if (toolbar->parentWidget() == mw) {
+                auto action = toolbar->toggleViewAction();
+                actions[action->text()] = action;
+            }
+        }
+    } else {
+        for(auto dock : mw->findChildren<QDockWidget*>()) {
+            auto action = dock->toggleViewAction();
+            actions[action->text()] = action;
+        }
+    }
+    for(auto it=actions.begin(); it!=actions.end(); ++it) {
+        auto action = *it;
+        QCheckBox *checkbox = new QCheckBox(menu);
+        QWidgetAction *wa = new QWidgetAction(menu);
+        wa->setDefaultWidget(checkbox);
+        wa->setToolTip(tooltip);
+        wa->setStatusTip(tooltip);
+        wa->setWhatsThis(tooltip);
+        wa->setVisible(true);
+        wa->setText(action->text());
+        checkbox->setText(action->text());
+        checkbox->setChecked(action->isChecked());
+        QObject::connect(checkbox, SIGNAL(toggled(bool)), action, SIGNAL(triggered(bool)));
+        wa->setCheckable(true);
+        wa->setChecked(action->isChecked());
+        QObject::connect(wa, SIGNAL(triggered(bool)), action, SIGNAL(triggered(bool)));
+        menu->addAction(wa);
+    }
+}
+
 QMenu* MainWindow::createPopupMenu ()
 {
-    QMenu* menu = QMainWindow::createPopupMenu();
+    QMenu *menu = new QMenu(this);
+    populateMenu(menu, false);
+    menu->addSeparator();
+    populateMenu(menu, true);
+    menu->addSeparator();
+
     Workbench* wb = WorkbenchManager::instance()->active();
     if (wb) {
         MenuItem item;
@@ -1188,35 +1234,14 @@ void MainWindow::onToolBarMenuAboutToShow()
 {
     QMenu* menu = static_cast<QMenu*>(sender());
     menu->clear();
-    QList<QToolBar*> dock = this->findChildren<QToolBar*>();
-    for (QList<QToolBar*>::Iterator it = dock.begin(); it != dock.end(); ++it) {
-        if ((*it)->parentWidget() == this) {
-            QAction* action = (*it)->toggleViewAction();
-            action->setToolTip(tr("Toggles this toolbar"));
-            action->setStatusTip(tr("Toggles this toolbar"));
-            action->setWhatsThis(tr("Toggles this toolbar"));
-            action->setVisible(true);
-            menu->addAction(action);
-        }
-    }
+    populateMenu(menu, true);
 }
 
 void MainWindow::onDockWindowMenuAboutToShow()
 {
     QMenu* menu = static_cast<QMenu*>(sender());
     menu->clear();
-    QMap<QString, QAction*> actions;
-    for(auto dock : this->findChildren<QDockWidget*>()) {
-        auto action = dock->toggleViewAction();
-        actions[action->text()] = action;
-    }
-    for(auto it=actions.begin(); it!=actions.end(); ++it) {
-        QAction* action = it.value();
-        action->setToolTip(tr("Toggles this dockable window"));
-        action->setStatusTip(tr("Toggles this dockable window"));
-        action->setWhatsThis(tr("Toggles this dockable window"));
-        menu->addAction(action);
-    }
+    populateMenu(menu, false);
 }
 
 QList<QWidget*> MainWindow::windows(QMdiArea::WindowOrder order) const
