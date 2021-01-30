@@ -65,8 +65,8 @@ public:
     virtual void setConstruction(bool construction)
         {ConstructionState = construction; setMigrationType(Construction);}
 
-    bool getId() const {return Id;}
-    void setId(int id) {Id = id; setMigrationType(GeometryId);}
+    long getId() const {return Id;}
+    void setId(long id) {Id = id; setMigrationType(GeometryId);}
 
     const std::string &getRef() const {return Ref;}
     int getRefIndex() const {return RefIndex;}
@@ -91,7 +91,7 @@ private:
     using MigrationTypeFlagType = std::bitset<32>;
     MigrationTypeFlagType           GeometryMigrationFlags;
     bool                            ConstructionState;
-    int                             Id = 0;
+    long                            Id = 0;
     int                             RefIndex = -1;
     unsigned long                   Flags = 0;
     std::string                     Ref;

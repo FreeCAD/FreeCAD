@@ -8169,9 +8169,33 @@ void SketchObject::handleChangedPropertyType(Base::XMLReader &reader,
     }
 }
 
+static inline bool checkMigration(Part::PropertyGeometryList &prop)
+{
+    for (auto g : prop.getValues()) {
+        if(g->hasExtension(Part::GeometryMigrationExtension::getClassTypeId())
+            || !g->hasExtension(SketchGeometryExtension::getClassTypeId()))
+            return true;
+    }
+    return false;
+}
+
 void SketchObject::onChanged(const App::Property* prop)
 {
     if (prop == &Geometry) {
+        if (isRestoring() && checkMigration(Geometry)) {
+            // Construction migration to extension
+            for( auto g : Geometry.getValues()) {
+                if(g->hasExtension(Part::GeometryMigrationExtension::getClassTypeId())) {
+                    auto ext = std::static_pointer_cast<Part::GeometryMigrationExtension>(
+                                    g->getExtension(Part::GeometryMigrationExtension::getClassTypeId()).lock());
+
+                    if(ext->testMigrationType(Part::GeometryMigrationExtension::Construction))
+                        GeometryFacade::setConstruction(g, ext->getConstruction());
+                    if(ext->testMigrationType(Part::GeometryMigrationExtension::GeometryId))
+                        GeometryFacade::setId(g, ext->getId());
+                }
+            }
+        }
         geoMap.clear();
         const auto &vals = getInternalGeometry();
         for(long i=0;i<(long)vals.size();++i) {
@@ -8243,6 +8267,27 @@ void SketchObject::onChanged(const App::Property* prop)
         }
 
     } else if ( prop == &ExternalGeo) {
+        if (isRestoring() && checkMigration(ExternalGeo)) {
+            for( auto g : ExternalGeo.getValues()) {
+                if(g->hasExtension(Part::GeometryMigrationExtension::getClassTypeId())) {
+                    auto ext = std::static_pointer_cast<Part::GeometryMigrationExtension>(
+                                    g->getExtension(Part::GeometryMigrationExtension::getClassTypeId()).lock());
+                    std::unique_ptr<ExternalGeometryFacade> egf;
+                    if(ext->testMigrationType(Part::GeometryMigrationExtension::GeometryId)) {
+                        egf = ExternalGeometryFacade::getFacade(g);
+                        egf->setId(ext->getId());
+                    }
+
+                    if(ext->testMigrationType(Part::GeometryMigrationExtension::ExternalReference)) {
+                        if (!egf)
+                            egf = ExternalGeometryFacade::getFacade(g);
+                        egf->setRef(ext->getRef());
+                        egf->setRefIndex(ext->getRefIndex());
+                        egf->setFlags(ext->getFlags());
+                    }
+                }
+            }
+        }
         externalGeoRefMap.clear();
         externalGeoMap.clear();
         std::set<std::string> detached;
@@ -8475,85 +8520,41 @@ void SketchObject::restoreFinished()
 
 void SketchObject::migrateSketch(void)
 {
-    bool migrate = false;
+    if (!checkMigration(Geometry))
+        return;
 
-    for( const auto & g : getInternalGeometry() ) {
-        if(g->hasExtension(Part::GeometryMigrationExtension::getClassTypeId())
-            || !g->hasExtension(SketchGeometryExtension::getClassTypeId()))
-        {
-            migrate = true;
-            break;
-        }
-    }
+    for( auto c : Constraints.getValues()) {
 
-    if(migrate) {
-        for( auto c : Constraints.getValues()) {
+        addGeometryState(c);
 
-            addGeometryState(c);
+        // Convert B-Spline controlpoints radius/diameter constraints to Weight constraints
+        if(c->Type == InternalAlignment && c->AlignmentType == BSplineControlPoint) {
+            int circlegeoid = c->First;
+            int bsplinegeoid = c->Second;
 
-            // Convert B-Spline controlpoints radius/diameter constraints to Weight constraints
-            if(c->Type == InternalAlignment && c->AlignmentType == BSplineControlPoint) {
-                int circlegeoid = c->First;
-                int bsplinegeoid = c->Second;
+            auto bsp = static_cast<const Part::GeomBSplineCurve*>(getGeometry(bsplinegeoid));
 
-                auto bsp = static_cast<const Part::GeomBSplineCurve*>(getGeometry(bsplinegeoid));
+            std::vector<double> weights = bsp->getWeights();
 
-                std::vector<double> weights = bsp->getWeights();
+            for( auto ccp : Constraints.getValues()) {
 
-                for( auto ccp : Constraints.getValues()) {
+                if( (ccp->Type == Radius || ccp->Type == Diameter ) &&
+                    ccp->First == circlegeoid ) {
 
-                    if( (ccp->Type == Radius || ccp->Type == Diameter ) &&
-                        ccp->First == circlegeoid ) {
+                    if(c->InternalAlignmentIndex < int(weights.size())) {
+                        ccp->Type = Weight;
+                        ccp->setValue(weights[c->InternalAlignmentIndex]);
 
-                        if(c->InternalAlignmentIndex < int(weights.size())) {
-                            ccp->Type = Weight;
-                            ccp->setValue(weights[c->InternalAlignmentIndex]);
-
-                        }
                     }
                 }
             }
         }
-
-        // Construction migration to extension
-        for( auto g : Geometry.getValues()) {
-
-            if(g->hasExtension(Part::GeometryMigrationExtension::getClassTypeId()))
-            {
-                auto ext = std::static_pointer_cast<Part::GeometryMigrationExtension>(
-                                g->getExtension(Part::GeometryMigrationExtension::getClassTypeId()).lock());
-
-                if(ext->testMigrationType(Part::GeometryMigrationExtension::Construction))
-                {
-                    GeometryFacade::setConstruction(g, ext->getConstruction());
-                }
-                if(ext->testMigrationType(Part::GeometryMigrationExtension::GeometryId))
-                {
-                    GeometryFacade::setId(g, ext->getId());
-                }
-
-                g->deleteExtension(Part::GeometryMigrationExtension::getClassTypeId());
-            }
-
-        }
-
-        for( auto g : ExternalGeo.getValues()) {
-            if(g->hasExtension(Part::GeometryMigrationExtension::getClassTypeId())) {
-                auto ext = std::static_pointer_cast<Part::GeometryMigrationExtension>(
-                                g->getExtension(Part::GeometryMigrationExtension::getClassTypeId()).lock());
-
-                if(ext->testMigrationType(Part::GeometryMigrationExtension::ExternalReference)) {
-                    auto egf = ExternalGeometryFacade::getFacade(g);
-                    egf->setId(ext->getId());
-                    egf->setRef(ext->getRef());
-                    egf->setRefIndex(ext->getRefIndex());
-                    egf->setFlags(ext->getFlags());
-                }
-
-                g->deleteExtension(Part::GeometryMigrationExtension::getClassTypeId());
-            }
-        }
     }
+
+    for (auto g : Geometry.getValues())
+        g->deleteExtension(Part::GeometryMigrationExtension::getClassTypeId());
+    for (auto g : ExternalGeo.getValues())
+        g->deleteExtension(Part::GeometryMigrationExtension::getClassTypeId());
 }
 
 void SketchObject::getGeoVertexIndex(int VertexId, int &GeoId, PointPos &PosId) const

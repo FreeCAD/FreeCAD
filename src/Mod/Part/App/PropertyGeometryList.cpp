@@ -234,7 +234,7 @@ void PropertyGeometryList::Restore(Base::XMLReader &reader)
         const char* TypeName = reader.getAttribute("type");
         Geometry *newG = (Geometry *)Base::Type::fromName(TypeName).createInstance();
         
-        if (!reader.getAttribute("migrated","0") && reader.hasAttribute("id")) {
+        if (!reader.getAttributeAsInteger("migrated","0") && reader.hasAttribute("id")) {
             auto ext = std::make_unique<GeometryMigrationExtension>();
             ext->setId(reader.getAttributeAsInteger("id"));
             if(reader.hasAttribute("ref")) {
