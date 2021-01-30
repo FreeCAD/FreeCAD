@@ -92,7 +92,7 @@ public:
     static const double metricHoleDiameters[36][4];
 
     typedef struct {
-        const char* designation;
+        std::string designation;
         double close;
         double normal;
         double loose;
