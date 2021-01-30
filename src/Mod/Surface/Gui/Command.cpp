@@ -171,7 +171,7 @@ CmdSurfaceGeomFillSurface::CmdSurfaceGeomFillSurface()
     sToolTipText  = QT_TR_NOOP("Creates a surface from two, three or four boundary edges.");
     sWhatsThis    = "Surface_GeomFillSurface";
     sStatusTip    = sToolTipText;
-    sPixmap       = "Surface_BSplineSurface";
+    sPixmap       = "Surface_GeomFillSurface";
 }
 
 bool CmdSurfaceGeomFillSurface::isActive(void)
@@ -237,7 +237,7 @@ CmdSurfaceExtendFace::CmdSurfaceExtendFace()
                                "with its local U and V parameters.");
     sWhatsThis    = "Surface_ExtendFace";
     sStatusTip    = sToolTipText;
-    sPixmap       = "Surface_Extend";
+    sPixmap       = "Surface_ExtendFace";
 }
 
 void CmdSurfaceExtendFace::activated(int)

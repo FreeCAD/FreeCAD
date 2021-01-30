@@ -25,7 +25,7 @@
 # the html code of the start page. It is built only once per FreeCAD session for now...
 
 import six
-import sys,os,FreeCAD,FreeCADGui,tempfile,time,zipfile,urllib,re
+import sys,os,FreeCAD,FreeCADGui,tempfile,time,zipfile,re
 from . import TranslationTexts
 from PySide import QtCore,QtGui
 
@@ -107,7 +107,7 @@ def getInfo(filename):
         try:
             import gnome.ui
             import gnomevfs
-        except:
+        except Exception:
             # alternative method
             import hashlib
             fhash = hashlib.md5(("file://"+path).encode("utf8")).hexdigest()
@@ -140,7 +140,7 @@ def getInfo(filename):
         if filename.lower().endswith(".fcstd"):
             try:
                 zfile=zipfile.ZipFile(filename)
-            except:
+            except Exception:
                 print("Cannot read file: ",filename)
                 return None
             files=zfile.namelist()
@@ -366,7 +366,6 @@ def handle():
 
     # build SECTION_RECENTFILES
 
-    SECTION_RECENTFILES = encode("")
     rf = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/RecentFiles")
     rfcount = rf.GetInt("RecentFiles",0)
     SECTION_RECENTFILES = encode("<h2>"+TranslationTexts.T_RECENTFILES+"</h2>")
@@ -493,7 +492,7 @@ def handle():
                     img = os.path.join(resources_dir,"images/freecad.png")
             iconbank[wb] = img
         UL_WORKBENCHES += '<li>'
-        UL_WORKBENCHES += '<img src="file:///'+iconbank[wb]+'">&nbsp;'
+        UL_WORKBENCHES += '<img src="file:///'+img+'">&nbsp;'
         UL_WORKBENCHES += '<a href="https://www.freecadweb.org/wiki/'+wn+'_Workbench">'+wn.replace("ReverseEngineering","ReverseEng")+'</a>'
         UL_WORKBENCHES += '</li>'
     UL_WORKBENCHES += '</ul>'
@@ -503,19 +502,19 @@ def handle():
 
     try:
         import dxfLibrary
-    except:
+    except Exception:
         pass
     else:
         wblist.append("dxf-library")
     try:
         import RebarTools
-    except:
+    except Exception:
         pass
     else:
         wblist.append("reinforcement")
     try:
         import CADExchangerIO
-    except:
+    except Exception:
         pass
     else:
         wblist.append("cadexchanger")

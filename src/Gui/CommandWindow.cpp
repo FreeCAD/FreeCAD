@@ -257,7 +257,7 @@ StdCmdWindows::StdCmdWindows()
     sToolTipText  = QT_TR_NOOP("Windows list");
     sWhatsThis    = "Std_Windows";
     sStatusTip    = QT_TR_NOOP("Windows list");
-    //sPixmap     = "";
+    sPixmap       = "Std_Windows";
     eType         = 0;
 }
 

@@ -647,11 +647,11 @@ bool DrawViewDimension::isMultiValueSchema(void) const
     }
 
     Base::UnitSystem uniSys = Base::UnitsApi::getSchema();
-    if ( (uniSys == Base::UnitSystem::ImperialBuilding) &&
-          !angularMeasure ) {
+    if ((uniSys == Base::UnitSystem::ImperialBuilding) &&
+            !angularMeasure) {
         result = true;
     } else if ((uniSys == Base::UnitSystem::ImperialCivil) &&
-         angularMeasure) {
+               !angularMeasure) {
         result = true;
     }
     return result;
@@ -736,6 +736,13 @@ std::string DrawViewDimension::formatValue(qreal value, QString qFormatSpec, int
             qMultiValueStr = formatPrefix + qGenPrefix + displaySub + formatSuffix;
         }
         formattedValue = qMultiValueStr;
+    } else if (isMultiValueSchema()) {
+        qMultiValueStr = qUserString;
+        if (!genPrefix.empty()) {
+            //qUserString from Quantity includes units - prefix + R + nnn ft + suffix
+            qMultiValueStr = formatPrefix + qUserString + formatSuffix;
+        }
+        return qMultiValueStr.toStdString();
     } else {
         if (formatSpecifier.isEmpty()) {
             Base::Console().Warning("Warning - no numeric format in Format Spec %s - %s\n",
@@ -808,16 +815,6 @@ std::string DrawViewDimension::formatValue(qreal value, QString qFormatSpec, int
         if (loc.decimalPoint() != dp) {
             formattedValue.replace(dp, loc.decimalPoint());
         }
-    }
-
-    if ((unitSystem == Base::UnitSystem::ImperialBuilding) &&
-        !angularMeasure) {
-        qMultiValueStr = formattedValue;
-        if (!genPrefix.empty()) {
-            //qUserString from Quantity includes units - prefix + R + nnn ft + suffix
-            qMultiValueStr = formatPrefix + qGenPrefix + qUserString + formatSuffix;
-        }
-        formattedValue = qMultiValueStr;
     }
 
     result = formattedValue.toStdString();

@@ -28,8 +28,6 @@
 #include <Gui/Selection.h>
 #include <boost_signals2.hpp>
 
-class Ui_TaskSketcherGeneral;
-
 namespace App {
 class Property;
 }
@@ -40,6 +38,7 @@ class ViewProvider;
 
 namespace SketcherGui {
 
+class Ui_TaskSketcherGeneral;
 class ViewProviderSketch;
 
 class SketcherGeneralWidget : public QWidget

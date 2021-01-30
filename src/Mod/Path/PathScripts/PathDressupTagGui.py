@@ -22,6 +22,7 @@
 
 import FreeCAD
 import FreeCADGui
+import PathGui as PGui # ensure Path/Gui/Resources are loaded
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathGetPoint as PathGetPoint
 import PathScripts.PathDressupHoldingTags as PathDressupTag
@@ -418,7 +419,7 @@ class PathDressupTagViewProvider:
         '''this makes sure that the base operation is added back to the job and visible'''
         # pylint: disable=unused-argument
         PathLog.track()
-        if self.obj.Base.ViewObject:
+        if self.obj.Base and self.obj.Base.ViewObject:
             self.obj.Base.ViewObject.Visibility = True
         job = PathUtils.findParentJob(self.obj)
         if arg1.Object and arg1.Object.Base and job:

@@ -127,6 +127,7 @@ void Sketch::clear(void)
     ConstraintsCounter = 0;
     Conflicting.clear();
     Redundant.clear();
+    PartiallyRedundant.clear();
     MalformedConstraints.clear();
 }
 
@@ -329,6 +330,7 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
     // Now we set the Sketch status with the latest solver information
     GCSsys.getConflicting(Conflicting);
     GCSsys.getRedundant(Redundant);
+    GCSsys.getPartiallyRedundant (PartiallyRedundant);
     GCSsys.getDependentParams(pDependentParametersList);
 
     calculateDependentParametersElements();
@@ -362,6 +364,7 @@ void Sketch::fixParametersAndDiagnose(std::vector<double *> &params_to_block)
         GCSsys.initSolution(defaultSolverRedundant);
         /*GCSsys.getConflicting(Conflicting);
         GCSsys.getRedundant(Redundant);
+        GCSsys.getPartlyRedundant(PartiallyRedundant);
         GCSsys.getDependentParams(pDependentParametersList);
 
         calculateDependentParametersElements();*/
@@ -571,6 +574,7 @@ int Sketch::resetSolver()
     GCSsys.initSolution(defaultSolverRedundant);
     GCSsys.getConflicting(Conflicting);
     GCSsys.getRedundant(Redundant);
+    GCSsys.getPartiallyRedundant (PartiallyRedundant);
     GCSsys.getDependentParams(pDependentParametersList);
 
     calculateDependentParametersElements();
@@ -2671,16 +2675,9 @@ int Sketch::addEqualConstraint(int geoId1, int geoId2)
         Geoms[geoId2].type == Line) {
         GCS::Line &l1 = Lines[Geoms[geoId1].index];
         GCS::Line &l2 = Lines[Geoms[geoId2].index];
-        double dx1 = (*l1.p2.x - *l1.p1.x);
-        double dy1 = (*l1.p2.y - *l1.p1.y);
-        double dx2 = (*l2.p2.x - *l2.p1.x);
-        double dy2 = (*l2.p2.y - *l2.p1.y);
-        double value = (sqrt(dx1*dx1+dy1*dy1)+sqrt(dx2*dx2+dy2*dy2))/2;
-        // add the parameter for the common length (this is added to Parameters, not FixParameters)
-        Parameters.push_back(new double(value));
-        double *length = Parameters[Parameters.size()-1];
+
         int tag = ++ConstraintsCounter;
-        GCSsys.addConstraintEqualLength(l1, l2, length, tag);
+        GCSsys.addConstraintEqualLength(l1, l2, tag);
         return ConstraintsCounter;
     }
 

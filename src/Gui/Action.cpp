@@ -531,6 +531,7 @@ void WorkbenchComboBox::onWorkbenchActivated(const QString& name)
 WorkbenchGroup::WorkbenchGroup (  Command* pcCmd, QObject * parent )
   : ActionGroup( pcCmd, parent )
 {
+    // Start a list with 50 elements but extend it when requested
     for (int i=0; i<50; i++) {
         QAction* action = _group->addAction(QLatin1String(""));
         action->setVisible(false);
@@ -590,7 +591,7 @@ void WorkbenchGroup::refreshWorkbenchList()
     QStringList items = Application::Instance->workbenches();
     QStringList enabled_wbs_list = DlgWorkbenchesImp::load_enabled_workbenches();
     QStringList disabled_wbs_list = DlgWorkbenchesImp::load_disabled_workbenches();
-    int i=0;
+    QStringList enable_wbs;
 
     // Go through the list of enabled workbenches and verify that they really exist because
     // it might be possible that a workbench has been removed after setting up the list of
@@ -598,7 +599,7 @@ void WorkbenchGroup::refreshWorkbenchList()
     for (QStringList::Iterator it = enabled_wbs_list.begin(); it != enabled_wbs_list.end(); ++it) {
         int index = items.indexOf(*it);
         if (index >= 0) {
-            setWorkbenchData(i++, *it);
+            enable_wbs << *it;
             items.removeAt(index);
         }
     }
@@ -613,8 +614,22 @@ void WorkbenchGroup::refreshWorkbenchList()
 
     // Now add the remaining workbenches of 'items'. They have been added to the application
     // after setting up the list of enabled workbenches.
-    for (QStringList::Iterator it = items.begin(); it != items.end(); ++it) {
-        setWorkbenchData(i++, *it);
+    enable_wbs.append(items);
+    QList<QAction*> workbenches = _group->actions();
+    int numActions = workbenches.size();
+    int extend = enable_wbs.size() - numActions;
+    if (extend > 0) {
+        for (int i=0; i<extend; i++) {
+            QAction* action = _group->addAction(QLatin1String(""));
+            action->setCheckable(true);
+            action->setData(QVariant(numActions++)); // set the index
+        }
+    }
+
+    // Show all enabled wb
+    int index = 0;
+    for (QStringList::Iterator it = enable_wbs.begin(); it != enable_wbs.end(); ++it) {
+        setWorkbenchData(index++, *it);
     }
 }
 
@@ -633,21 +648,31 @@ void WorkbenchGroup::slotActivateWorkbench(const char* /*name*/)
 void WorkbenchGroup::slotAddWorkbench(const char* name)
 {
     QList<QAction*> workbenches = _group->actions();
+    QAction* action = nullptr;
     for (QList<QAction*>::Iterator it = workbenches.begin(); it != workbenches.end(); ++it) {
         if (!(*it)->isVisible()) {
-            QString wb = QString::fromLatin1(name);
-            QPixmap px = Application::Instance->workbenchIcon(wb);
-            QString text = Application::Instance->workbenchMenuText(wb);
-            QString tip = Application::Instance->workbenchToolTip(wb);
-            (*it)->setIcon(px);
-            (*it)->setObjectName(wb);
-            (*it)->setText(text);
-            (*it)->setToolTip(tip);
-            (*it)->setStatusTip(tr("Select the '%1' workbench").arg(wb));
-            (*it)->setVisible(true); // do this at last
+            action = *it;
             break;
         }
     }
+
+    if (!action) {
+        int index = workbenches.size();
+        action = _group->addAction(QLatin1String(""));
+        action->setCheckable(true);
+        action->setData(QVariant(index)); // set the index
+    }
+
+    QString wb = QString::fromLatin1(name);
+    QPixmap px = Application::Instance->workbenchIcon(wb);
+    QString text = Application::Instance->workbenchMenuText(wb);
+    QString tip = Application::Instance->workbenchToolTip(wb);
+    action->setIcon(px);
+    action->setObjectName(wb);
+    action->setText(text);
+    action->setToolTip(tip);
+    action->setStatusTip(tr("Select the '%1' workbench").arg(wb));
+    action->setVisible(true); // do this at last
 }
 
 void WorkbenchGroup::slotRemoveWorkbench(const char* name)

@@ -312,10 +312,14 @@ void MDIViewPage::closeEvent(QCloseEvent* ev)
 void MDIViewPage::attachTemplate(TechDraw::DrawTemplate *obj)
 {
     m_view->setPageTemplate(obj);
-    double width  =  obj->Width.getValue();
-    double height =  obj->Height.getValue();
-    m_paperSize = getPaperSize(int(round(width)),int(round(height)));
-    if (width > height) {
+    pagewidth  =  obj->Width.getValue();
+    pageheight =  obj->Height.getValue();
+#if QT_VERSION >= 0x050300
+    m_paperSize = QPageSize::id(QSizeF(pagewidth, pageheight), QPageSize::Millimeter, QPageSize::FuzzyOrientationMatch);
+#else
+    m_paperSize = getPaperSize(int(round(pagewidth)), int(round(pageheight)));
+#endif
+    if (pagewidth > pageheight) {
 #if QT_VERSION >= 0x050300
         m_orientation = QPageLayout::Landscape;
 #else
@@ -496,17 +500,6 @@ void MDIViewPage::fixOrphans(bool force)
             }
         }
     }
-
-    // Update all the QGIVxxxx
-    // WF: why do we do this?  views should be keeping themselves up to date.
-//    const std::vector<QGIView *> &upviews = m_view->getViews();
-//    for(std::vector<QGIView *>::const_iterator it = upviews.begin(); it != upviews.end(); ++it) {
-//        Base::Console().Message("TRACE - MDIVP::fixOrphans - updating a QGIVxxxx\n");
-//        if((*it)->getViewObject()->isTouched() ||
-//           forceUpdate) {
-//            (*it)->updateView(forceUpdate);
-//        }
-//    }
 }
 
 //NOTE: this doesn't add missing views.  see fixOrphans()
@@ -530,6 +523,7 @@ void MDIViewPage::redraw1View(TechDraw::DrawView* dv)
         }
     }
 }
+
 void MDIViewPage::findMissingViews(const std::vector<App::DocumentObject*> &list, std::vector<App::DocumentObject*> &missing)
 {
     for(std::vector<App::DocumentObject*>::const_iterator it = list.begin(); it != list.end(); ++it) {
@@ -692,7 +686,11 @@ void MDIViewPage::printPdf(std::string file)
 #endif
     }
 #if QT_VERSION >= 0x050300
-    printer.setPageSize(QPageSize(m_paperSize));
+    if (m_paperSize == QPageSize::Custom) {
+        printer.setPageSize(QPageSize(QSizeF(pagewidth, pageheight), QPageSize::Millimeter));
+    } else {
+        printer.setPageSize(QPageSize(m_paperSize));
+    }
 #else
     printer.setPaperSize(m_paperSize);
 #endif
@@ -704,7 +702,11 @@ void MDIViewPage::print()
     QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage(true);
 #if QT_VERSION >= 0x050300
-    printer.setPageSize(QPageSize(m_paperSize));
+    if (m_paperSize == QPageSize::Custom) {
+        printer.setPageSize(QPageSize(QSizeF(pagewidth, pageheight), QPageSize::Millimeter));
+    } else {
+        printer.setPageSize(QPageSize(m_paperSize));
+    }
     printer.setPageOrientation(m_orientation);
 #else
     printer.setPaperSize(m_paperSize);
@@ -721,7 +723,11 @@ void MDIViewPage::printPreview()
     QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage(true);
 #if QT_VERSION >= 0x050300
-    printer.setPageSize(QPageSize(m_paperSize));
+    if (m_paperSize == QPageSize::Custom) {
+        printer.setPageSize(QPageSize(QSizeF(pagewidth, pageheight), QPageSize::Millimeter));
+    } else {
+        printer.setPageSize(QPageSize(m_paperSize));
+    }
     printer.setPageOrientation(m_orientation);
 #else
     printer.setPaperSize(m_paperSize);
@@ -750,13 +756,9 @@ void MDIViewPage::print(QPrinter* printer)
     // a certain scaling effect can be observed and the content becomes smaller.
     QPaintEngine::Type paintType = printer->paintEngine()->type();
     if (printer->outputFormat() == QPrinter::NativeFormat) {
-        int w = printer->widthMM();
-        int h = printer->heightMM();
 #if QT_VERSION >= 0x050300
-        QPageSize::PageSizeId psPrtCalcd = getPaperSize(w, h);
         QPageSize::PageSizeId psPrtSetting = printer->pageLayout().pageSize().id();
 #else
-        QPrinter::PaperSize psPrtCalcd = getPaperSize(w, h);
         QPrinter::PaperSize psPrtSetting = printer->paperSize();
 #endif
 
@@ -776,15 +778,7 @@ void MDIViewPage::print(QPrinter* printer)
             if (ret != QMessageBox::Yes)
                 return;
         }
-        else if (doPrint && psPrtCalcd != m_paperSize) {
-            int ret = QMessageBox::warning(this, tr("Different paper size"),
-                tr("The printer uses a different paper size than the drawing.\n"
-                   "Do you want to continue?"),
-                   QMessageBox::Yes | QMessageBox::No);
-            if (ret != QMessageBox::Yes)
-                return;
-        }
-        else if (doPrint && psPrtSetting != m_paperSize) {
+        if (doPrint && psPrtSetting != m_paperSize) {
             int ret = QMessageBox::warning(this, tr("Different paper size"),
                 tr("The printer uses a different paper size than the drawing.\n"
                    "Do you want to continue?"),
@@ -850,11 +844,8 @@ void MDIViewPage::print(QPrinter* printer)
     static_cast<void> (blockConnection(false));
 }
 
-#if QT_VERSION >= 0x050300
-QPageSize::PageSizeId MDIViewPage::getPaperSize(int w, int h) const
-#else
+#if QT_VERSION < 0x050300
 QPrinter::PaperSize MDIViewPage::getPaperSize(int w, int h) const
-#endif
 {
     static const float paperSizes[][2] = {
         {210, 297}, // A4
@@ -889,49 +880,29 @@ QPrinter::PaperSize MDIViewPage::getPaperSize(int w, int h) const
         {279.4f, 431.8f} // Tabloid (29)   causes trouble with orientation on PDF export
     };
 
-#if QT_VERSION >= 0x050300
-    QPageSize::PageSizeId ps = QPageSize::Custom;
-#else
     QPrinter::PaperSize ps = QPrinter::Custom;
-#endif
     for (int i=0; i<30; i++) {
         if (std::abs(paperSizes[i][0]-w) <= 1 &&
             std::abs(paperSizes[i][1]-h) <= 1) {
-#if QT_VERSION >= 0x050300
-            ps = static_cast<QPageSize::PageSizeId>(i);
-#else
             ps = static_cast<QPrinter::PaperSize>(i);
-#endif
             break;
         }
         else                                          //handle landscape & portrait w/h
         if (std::abs(paperSizes[i][0]-h) <= 1 &&
             std::abs(paperSizes[i][1]-w) <= 1) {
-#if QT_VERSION >= 0x050300
-            ps = static_cast<QPageSize::PageSizeId>(i);
-#else
             ps = static_cast<QPrinter::PaperSize>(i);
-#endif
             break;
         }
     }
-#if QT_VERSION >= 0x050300
-    if (ps == QPageSize::Ledger)  {                    //check if really Tabloid
-        if (w < 431) {
-            ps = QPageSize::Tabloid;
-        }
-    }
-#else
     if (ps == QPrinter::Ledger)  {                    //check if really Tabloid
         if (w < 431) {
             ps = QPrinter::Tabloid;
         }
     }
-#endif
-
 
     return ps;
 }
+#endif
 
 PyObject* MDIViewPage::getPyObject()
 {

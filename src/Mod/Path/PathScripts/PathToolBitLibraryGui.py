@@ -24,23 +24,25 @@
 
 import FreeCAD
 import FreeCADGui
+import PathGui as PGui # ensure Path/Gui/Resources are loaded
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathToolBit as PathToolBit
-import PathScripts.PathToolBitGui as PathToolBitGui
 import PathScripts.PathToolBitEdit as PathToolBitEdit
+import PathScripts.PathToolBitGui as PathToolBitGui
 import PathScripts.PathToolControllerGui as PathToolControllerGui
 import PathScripts.PathUtilsGui as PathUtilsGui
-from PySide import QtCore, QtGui
 import PySide
+import glob
 import json
 import os
-import glob
-import uuid as UUID
-from functools import partial
 import shutil
+import uuid as UUID
 
-# PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+from functools import partial
+
+
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 # PathLog.trackModule(PathLog.thisModule())
 
 _UuidRole = PySide.QtCore.Qt.UserRole + 1
@@ -50,6 +52,75 @@ _PathRole = PySide.QtCore.Qt.UserRole + 2
 def translate(context, text, disambig=None):
     return PySide.QtCore.QCoreApplication.translate(context, text, disambig)
 
+def checkWorkingDir():
+    # users shouldn't use the example toolbits and libraries.
+    # working directory should be writable
+    PathLog.track()
+
+    workingdir = os.path.dirname(PathPreferences.lastPathToolLibrary())
+    defaultdir = os.path.dirname(PathPreferences.pathDefaultToolsPath())
+
+    PathLog.debug('workingdir: {} defaultdir: {}'.format(workingdir, defaultdir))
+
+    dirOK = lambda : workingdir != defaultdir and (os.access(workingdir, os.W_OK))
+
+    if dirOK():
+        return True
+
+    qm = PySide.QtGui.QMessageBox
+    ret = qm.question(None,'', "Toolbit working directory not set up. Do that now?", qm.Yes | qm.No)
+
+    if ret == qm.No:
+        return False
+
+    msg = translate("Path", "Choose a writable location for your toolbits", None)
+    while not dirOK():
+        workingdir = PySide.QtGui.QFileDialog.getExistingDirectory(None, msg,
+                PathPreferences.filePath())
+
+    if workingdir[-8:] == os.path.sep + 'Library':
+        workingdir = workingdir[:-8]  # trim off trailing /Library if user chose it
+
+    PathPreferences.setLastPathToolLibrary("{}{}Library".format(workingdir, os.path.sep))
+    PathPreferences.setLastPathToolBit("{}{}Bit".format(workingdir, os.path.sep))
+    PathLog.debug('setting workingdir to: {}'.format(workingdir))
+
+    subdirlist = ['Bit', 'Library', 'Shape']
+    mode = 0o777
+    for dir in subdirlist.copy():
+        subdir = "{}{}{}".format(workingdir, os.path.sep, dir)
+        if os.path.exists(subdir):
+            subdirlist.remove(dir)
+
+    if len(subdirlist) >= 1:
+        needed = ', '.join([str(d) for d in subdirlist])
+        qm = PySide.QtGui.QMessageBox
+        ret = qm.question(None,'', "Toolbit Working directory {} needs these sudirectories:\n {} \n Create them?".format(workingdir, needed), qm.Yes | qm.No)
+
+        if ret == qm.No:
+            return False
+        else:
+            for dir in subdirlist:
+                subdir = "{}{}{}".format(workingdir, os.path.sep, dir)
+                os.mkdir(subdir, mode)
+                if dir != 'Shape':
+                    qm = PySide.QtGui.QMessageBox
+                    ret = qm.question(None,'', "Copy example files to new {} directory?".format(dir), qm.Yes | qm.No)
+                    if ret == qm.Yes:
+                        src="{}{}{}".format(defaultdir, os.path.sep, dir)
+                        src_files = os.listdir(src)
+                        for file_name in src_files:
+                            full_file_name = os.path.join(src, file_name)
+                            if os.path.isfile(full_file_name):
+                                shutil.copy(full_file_name, subdir)
+
+
+    # if no library is set, choose the first one in the Library directory
+    if PathPreferences.lastFileToolLibrary() is None:
+        libFiles = [f for f in glob.glob(PathPreferences.lastPathToolLibrary() + os.path.sep + '*.fctl')]
+        PathPreferences.setLastFileToolLibrary(libFiles[0])
+
+    return True
 
 class _TableView(PySide.QtGui.QTableView):
     '''Subclass of QTableView to support rearrange and copying of ToolBits'''
@@ -141,7 +212,7 @@ class ModelFactory(object):
         for toolBit in library['tools']:
             try:
                 nr = toolBit['nr']
-                bit = PathToolBit.findBit(toolBit['path'])
+                bit = PathToolBit.findToolBit(toolBit['path'], path)
                 if bit:
                     PathLog.track(bit)
                     tool = PathToolBit.Declaration(bit)
@@ -203,15 +274,15 @@ class ModelFactory(object):
         path = PathPreferences.lastPathToolLibrary()
 
         if os.path.isdir(path):  # opening all tables in a directory
-            libFiles = [f for f in glob.glob(path + '/*.fctl')]
+            libFiles = [f for f in glob.glob(path + os.path.sep + '*.fctl')]
             libFiles.sort()
             for libFile in libFiles:
                 loc, fnlong = os.path.split(libFile)
                 fn, ext = os.path.splitext(fnlong)
-                libItem = QtGui.QStandardItem(fn)
+                libItem = PySide.QtGui.QStandardItem(fn)
                 libItem.setToolTip(loc)
                 libItem.setData(libFile, _PathRole)
-                libItem.setIcon(QtGui.QPixmap(':/icons/Path_ToolTable.svg'))
+                libItem.setIcon(PySide.QtGui.QPixmap(':/icons/Path_ToolTable.svg'))
                 model.appendRow(libItem)
 
         PathLog.debug('model rows: {}'.format(model.rowCount()))
@@ -241,6 +312,7 @@ class ToolBitSelector(object):
     '''Controller for displaying a library and creating ToolControllers'''
 
     def __init__(self):
+        checkWorkingDir()
         self.form = FreeCADGui.PySideUic.loadUi(':/panels/ToolBitSelector.ui')
         self.factory = ModelFactory()
         self.toolModel = PySide.QtGui.QStandardItemModel(0, len(self.columnNames()))
@@ -250,20 +322,20 @@ class ToolBitSelector(object):
     def columnNames(self):
         return ['#', 'Tool']
 
-    def curLib(self):
+    def currentLibrary(self, shortNameOnly):
         libfile = PathPreferences.lastFileToolLibrary()
         if libfile is None or libfile == "":
             return ""
-        else:
-            libfile = os.path.split(PathPreferences.lastFileToolLibrary())[1]
-            libfile = os.path.splitext(libfile)[0]
+        elif shortNameOnly:
+            return os.path.splitext(os.path.basename(libfile))[0]
         return libfile
 
     def loadData(self):
         PathLog.track()
         self.toolModel.clear()
         self.toolModel.setHorizontalHeaderLabels(self.columnNames())
-        self.form.lblLibrary.setText(self.curLib())
+        self.form.lblLibrary.setText(self.currentLibrary(True))
+        self.form.lblLibrary.setToolTip(self.currentLibrary(False))
         self.factory.libraryOpen(self.toolModel)
         self.toolModel.takeColumn(3)
         self.toolModel.takeColumn(2)
@@ -271,7 +343,6 @@ class ToolBitSelector(object):
     def setupUI(self):
         PathLog.track()
         self.loadData()
-
         self.form.tools.setModel(self.toolModel)
         self.form.tools.selectionModel().selectionChanged.connect(self.enableButtons)
         self.form.tools.doubleClicked.connect(partial(self.selectedOrAllToolControllers))
@@ -340,7 +411,7 @@ class ToolBitSelector(object):
 
     def open(self, path=None):
         ''' load library stored in path and bring up ui'''
-        docs = FreeCADGui.getMainWindow().findChildren(QtGui.QDockWidget)
+        docs = FreeCADGui.getMainWindow().findChildren(PySide.QtGui.QDockWidget)
         for doc in docs:
             if doc.objectName() == "ToolSelector":
                 if doc.isVisible():
@@ -351,7 +422,7 @@ class ToolBitSelector(object):
                     return
 
         mw = FreeCADGui.getMainWindow()
-        mw.addDockWidget(QtCore.Qt.RightDockWidgetArea, self.form,
+        mw.addDockWidget(PySide.QtCore.Qt.RightDockWidgetArea, self.form,
                          PySide.QtCore.Qt.Orientation.Vertical)
 
 
@@ -361,9 +432,7 @@ class ToolBitLibrary(object):
 
     def __init__(self):
         PathLog.track()
-        if not self.checkWorkingDir():
-            return
-
+        checkWorkingDir()
         self.factory = ModelFactory()
         self.temptool = None
         self.toolModel = PySide.QtGui.QStandardItemModel(0, len(self.columnNames()))
@@ -374,55 +443,6 @@ class ToolBitLibrary(object):
         self.form.toolTable.hide()
         self.setupUI()
         self.title = self.form.windowTitle()
-
-    def checkWorkingDir(self):
-        # users shouldn't use the example toolbits and libraries.
-        # working directory should be writable
-        PathLog.track()
-
-        workingdir = os.path.dirname(PathPreferences.lastPathToolLibrary())
-        defaultdir = os.path.dirname(PathPreferences.pathDefaultToolsPath())
-
-        dirOK = lambda : workingdir != defaultdir and (os.access(workingdir, os.W_OK))
-
-        if dirOK():
-            return True
-
-        qm = PySide.QtGui.QMessageBox
-        ret = qm.question(None,'', "Toolbit working directory not set up. Do that now?", qm.Yes | qm.No)
-
-        if ret == qm.No:
-            return False
-
-        msg = translate("Path", "Choose a writable location for your toolbits", None)
-        while not dirOK():
-            workingdir = PySide.QtGui.QFileDialog.getExistingDirectory(None, msg,
-                    PathPreferences.filePath())
-
-        PathPreferences.setLastPathToolLibrary("{}/Library".format(workingdir))
-
-        subdirlist = ['Bit', 'Library', 'Shape']
-        mode = 0o777
-        for dir in subdirlist:
-            subdir = "{}/{}".format(workingdir, dir)
-            if not os.path.exists(subdir):
-                qm = PySide.QtGui.QMessageBox
-                ret = qm.question(None,'', "Toolbit Working directory {} should contain a '{}' subdirectory. Create it?".format(workingdir, dir), qm.Yes | qm.No)
-
-                if ret == qm.Yes:
-                    os.mkdir(subdir, mode)
-                    qm = PySide.QtGui.QMessageBox
-                    ret = qm.question(None,'', "Copy example files to new {} directory?".format(dir), qm.Yes | qm.No)
-                    if ret == qm.Yes:
-                        src="{}/{}".format(defaultdir, dir)
-                        src_files = os.listdir(src)
-                        for file_name in src_files:
-                            full_file_name = os.path.join(src, file_name)
-                            if os.path.isfile(full_file_name):
-                                shutil.copy(full_file_name, subdir)
-
-        return True
-
 
     def toolBitNew(self):
         PathLog.track()
@@ -439,7 +459,7 @@ class ToolBitLibrary(object):
         # Parse out the name of the file and write the structure
         loc, fil = os.path.split(filename)
         fname = os.path.splitext(fil)[0]
-        fullpath = "{}/{}.fctb".format(loc, fname)
+        fullpath = "{}{}{}.fctb".format(loc, os.path.sep, fname)
         PathLog.debug(fullpath)
 
         self.temptool = PathToolBit.ToolBitFactory().Create(name=fname)
@@ -464,7 +484,7 @@ class ToolBitLibrary(object):
 
             loc, fil = os.path.split(f)
             fname = os.path.splitext(fil)[0]
-            fullpath = "{}/{}.fctb".format(loc, fname)
+            fullpath = "{}{}{}.fctb".format(loc, os.path.sep, fname)
 
             self.factory.newTool(self.toolModel, fullpath)
 
@@ -557,8 +577,8 @@ class ToolBitLibrary(object):
             self.temptool = PathToolBit.ToolBitFactory().CreateFrom(tbpath, 'temptool')
             self.editor = PathToolBitEdit.ToolBitEditor(self.temptool, self.form.toolTableGroup, loadBitBody=False)
 
-            QBtn = QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel
-            buttonBox = QtGui.QDialogButtonBox(QBtn)
+            QBtn = PySide.QtGui.QDialogButtonBox.Ok | PySide.QtGui.QDialogButtonBox.Cancel
+            buttonBox = PySide.QtGui.QDialogButtonBox(QBtn)
             buttonBox.accepted.connect(self.accept)
             buttonBox.rejected.connect(self.reject)
 
@@ -604,8 +624,9 @@ class ToolBitLibrary(object):
             else:
                 tools.append({'nr': toolNr, 'path': PathToolBit.findRelativePathTool(toolPath)})
 
-        with open(self.path, 'w') as fp:
-            json.dump(library, fp, sort_keys=True, indent=2)
+        if self.path is not None:
+            with open(self.path, 'w') as fp:
+                json.dump(library, fp, sort_keys=True, indent=2)
 
     def libraryOk(self):
         self.librarySave()
@@ -652,7 +673,7 @@ class ToolBitLibrary(object):
 
         if curIndex:
             sm = self.form.TableList.selectionModel()
-            sm.select(curIndex, QtCore.QItemSelectionModel.Select)
+            sm.select(curIndex, PySide.QtCore.QItemSelectionModel.Select)
 
         self.toolTableView.setUpdatesEnabled(True)
         self.form.TableList.setUpdatesEnabled(True)
