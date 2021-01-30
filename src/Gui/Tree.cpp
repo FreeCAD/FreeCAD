@@ -506,6 +506,8 @@ public:
 
     bool restorePreselCursor = false;
     bool skipMouseRelease = false;
+
+    QTreeWidgetItem *tooltipItem = nullptr;
 };
 
 
@@ -1458,6 +1460,7 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
     if (contextMenu.actions().count() > 0) {
         try {
             toolTipTimer->stop();
+            pimpl->tooltipItem = nullptr;
             ToolTip::hideText();
             contextMenu.exec(QCursor::pos());
         } catch (Base::Exception &e) {
@@ -2232,6 +2235,7 @@ void TreeWidget::mouseMoveEvent(QMouseEvent *event) {
             }
         }
         pimpl->setDragCursor(cursor, replace);
+        toolTipTimer->start(300);
         return;
     }
 
@@ -2241,8 +2245,10 @@ void TreeWidget::mouseMoveEvent(QMouseEvent *event) {
         ViewProviderDocumentObject* vp = oitem->object();
         vp->iconMouseEvent(event, tag);
         toolTipTimer->start(300);
-    } else 
+    } else {
+        pimpl->tooltipItem = nullptr;
         ToolTip::hideText();
+    }
 
     QTreeWidget::mouseMoveEvent(event);
 }
@@ -2252,8 +2258,11 @@ void TreeWidget::onToolTipTimer()
     QByteArray tag;
     auto item = pimpl->itemHitTest(
             viewport()->mapFromGlobal(QCursor::pos()), &tag);
-    if (!item)
+    if (!item) {
+        pimpl->tooltipItem = nullptr;
+        ToolTip::hideText();
         return;
+    }
 
     App::DocumentObject* Obj = item->object()->getObject();
     std::ostringstream ss;
@@ -2285,15 +2294,17 @@ void TreeWidget::onToolTipTimer()
         info = QApplication::translate(Obj->getTypeId().getName(), Obj->getStatusString(), 0, QApplication::UnicodeUTF8);
 #endif
     }
-    if (info.isEmpty())
+    if (info.isEmpty()) {
+        pimpl->tooltipItem = nullptr;
         ToolTip::hideText();
-    else {
+    } else {
         QPoint pos = this->visualItemRect(item).topLeft();
 
         // Add some margin so that the newly showup tooltop widget won't
         // immediate trigger another itemEntered() event.
         pos.setY(pos.y()+10);
         ToolTip::showText(this->viewport()->mapToGlobal(pos), info, this);
+        pimpl->tooltipItem = item;
     }
 }
 
@@ -2456,6 +2467,8 @@ void TreeWidget::mousePressEvent(QMouseEvent *event) {
 
 void TreeWidget::mouseReleaseEvent(QMouseEvent *ev)
 {
+    pimpl->tooltipItem = nullptr;
+    ToolTip::hideText();
     if (ev->modifiers() & Qt::AltModifier) {
         QByteArray tag;
         auto oitem = pimpl->itemHitTest(ev->pos(), &tag);
@@ -2475,8 +2488,6 @@ void TreeWidget::mouseReleaseEvent(QMouseEvent *ev)
 #endif
                     if (_setupObjectMenu(oitem, menu)) {
                         handled = true;
-                        toolTipTimer->stop();
-                        ToolTip::hideText();
                         menu.exec(QCursor::pos());
                     }
                 }
@@ -3831,7 +3842,11 @@ void TreeWidget::onItemEntered(QTreeWidgetItem * item)
         hiddenItem = nullptr;
     }
 
-    ToolTip::hideText();
+    if (item != pimpl->tooltipItem) {
+        pimpl->tooltipItem = nullptr;
+        ToolTip::hideText();
+    }
+
     if (item && item->type() == TreeWidget::ObjectType) {
         if(TreeParams::PreSelection()) {
             int timeout = TreeParams::PreSelectionMinDelay();
