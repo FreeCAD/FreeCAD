@@ -203,7 +203,8 @@ PyObject* ExtensionContainerPy::addExtension(PyObject *args) {
         return NULL;
 
     if (proxy) {
-        PyErr_SetString(PyExc_DeprecationWarning, "A proxy object as seconbd argument is not needed any more. Please adjust your code");
+        PyErr_SetString(PyExc_DeprecationWarning, "Second argument is deprecated. It is ignored and will be removed in future versions. "
+                                                  "The default Python feature proxy is used for extension method overrides.");
         PyErr_Print();
     }
 
