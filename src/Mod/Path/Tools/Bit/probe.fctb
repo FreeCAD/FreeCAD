@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "name": "Probe004",
+  "name": "Probe",
   "shape": "probe.fcstd",
   "parameter": {
     "Diameter": "6.0000 mm",

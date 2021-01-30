@@ -20,6 +20,6 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui
+import FreeCAD
 rf=FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start")
 rf.SetBool("AllowDownload",True)

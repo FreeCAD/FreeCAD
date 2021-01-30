@@ -422,7 +422,10 @@ class ObjectOp(object):
                 zmax = max(zmax, bb.ZMax)
                 for sub in sublist:
                     try:
-                        fbb = base.Shape.getElement(sub).BoundBox
+                        if sub:
+                            fbb = base.Shape.getElement(sub).BoundBox
+                        else:
+                            fbb = base.Shape.BoundBox
                         zmin = max(zmin, faceZmin(bb, fbb))
                         zmax = max(zmax, fbb.ZMax)
                     except Part.OCCError as e:

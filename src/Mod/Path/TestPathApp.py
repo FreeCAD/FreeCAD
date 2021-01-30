@@ -24,6 +24,7 @@ import TestApp
 
 from PathTests.TestPathLog   import TestPathLog
 from PathTests.TestPathPreferences  import TestPathPreferences
+from PathTests.TestPathPropertyBag  import TestPathPropertyBag
 from PathTests.TestPathCore  import TestPathCore
 #from PathTests.TestPathPost  import PathPostTestCases
 from PathTests.TestPathGeom  import TestPathGeom
@@ -66,4 +67,5 @@ False if TestPathToolBit.__name__ else True
 False if TestPathVoronoi.__name__ else True
 False if TestPathThreadMilling.__name__ else True
 False if TestPathVcarve.__name__ else True
+False if TestPathPropertyBag.__name__ else True
 

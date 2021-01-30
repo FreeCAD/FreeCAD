@@ -774,47 +774,53 @@ bool View3DInventor::setCamera(const char* pCamera)
     SoNode * Cam;
     SoDB::read(&in,Cam);
 
-    if (!Cam){
+    if (!Cam || !Cam->isOfType(SoCamera::getClassTypeId())) {
         throw Base::RuntimeError("Camera settings failed to read");
     }
 
+    // this is to make sure to reliably delete the node
+    CoinPtr<SoNode> camPtr(Cam, true);
+
     // toggle between perspective and orthographic camera
-    if (Cam->getTypeId() != CamViewer->getTypeId())
-    {
+    if (Cam->getTypeId() != CamViewer->getTypeId()) {
         _viewer->setCameraType(Cam->getTypeId());
         CamViewer = _viewer->getSoRenderManager()->getCamera();
     }
 
-    SoPerspectiveCamera  * CamViewerP = 0;
-    SoOrthographicCamera * CamViewerO = 0;
+    SoPerspectiveCamera  * CamViewerP = nullptr;
+    SoOrthographicCamera * CamViewerO = nullptr;
 
     if (CamViewer->getTypeId() == SoPerspectiveCamera::getClassTypeId()) {
-        CamViewerP = (SoPerspectiveCamera *)CamViewer;  // safe downward cast, knows the type
-    } else if (CamViewer->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
-        CamViewerO = (SoOrthographicCamera *)CamViewer;  // safe downward cast, knows the type
+        CamViewerP = static_cast<SoPerspectiveCamera *>(CamViewer);  // safe downward cast, knows the type
+    }
+    else if (CamViewer->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
+        CamViewerO = static_cast<SoOrthographicCamera *>(CamViewer);  // safe downward cast, knows the type
     }
 
     if (Cam->getTypeId() == SoPerspectiveCamera::getClassTypeId()) {
         if (CamViewerP){
-            CamViewerP->position      = ((SoPerspectiveCamera *)Cam)->position;
-            CamViewerP->orientation   = ((SoPerspectiveCamera *)Cam)->orientation;
-            CamViewerP->nearDistance  = ((SoPerspectiveCamera *)Cam)->nearDistance;
-            CamViewerP->farDistance   = ((SoPerspectiveCamera *)Cam)->farDistance;
-            CamViewerP->focalDistance = ((SoPerspectiveCamera *)Cam)->focalDistance;
-        } else {
+            CamViewerP->position      = static_cast<SoPerspectiveCamera *>(Cam)->position;
+            CamViewerP->orientation   = static_cast<SoPerspectiveCamera *>(Cam)->orientation;
+            CamViewerP->nearDistance  = static_cast<SoPerspectiveCamera *>(Cam)->nearDistance;
+            CamViewerP->farDistance   = static_cast<SoPerspectiveCamera *>(Cam)->farDistance;
+            CamViewerP->focalDistance = static_cast<SoPerspectiveCamera *>(Cam)->focalDistance;
+        }
+        else {
             throw Base::TypeError("Camera type mismatch");
         }
-    } else if (Cam->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
+    }
+    else if (Cam->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
         if (CamViewerO){
-            CamViewerO->viewportMapping  = ((SoOrthographicCamera *)Cam)->viewportMapping;
-            CamViewerO->position         = ((SoOrthographicCamera *)Cam)->position;
-            CamViewerO->orientation      = ((SoOrthographicCamera *)Cam)->orientation;
-            CamViewerO->nearDistance     = ((SoOrthographicCamera *)Cam)->nearDistance;
-            CamViewerO->farDistance      = ((SoOrthographicCamera *)Cam)->farDistance;
-            CamViewerO->focalDistance    = ((SoOrthographicCamera *)Cam)->focalDistance;
-            CamViewerO->aspectRatio      = ((SoOrthographicCamera *)Cam)->aspectRatio ;
-            CamViewerO->height           = ((SoOrthographicCamera *)Cam)->height;
-        } else {
+            CamViewerO->viewportMapping  = static_cast<SoOrthographicCamera *>(Cam)->viewportMapping;
+            CamViewerO->position         = static_cast<SoOrthographicCamera *>(Cam)->position;
+            CamViewerO->orientation      = static_cast<SoOrthographicCamera *>(Cam)->orientation;
+            CamViewerO->nearDistance     = static_cast<SoOrthographicCamera *>(Cam)->nearDistance;
+            CamViewerO->farDistance      = static_cast<SoOrthographicCamera *>(Cam)->farDistance;
+            CamViewerO->focalDistance    = static_cast<SoOrthographicCamera *>(Cam)->focalDistance;
+            CamViewerO->aspectRatio      = static_cast<SoOrthographicCamera *>(Cam)->aspectRatio ;
+            CamViewerO->height           = static_cast<SoOrthographicCamera *>(Cam)->height;
+        }
+        else {
             throw Base::TypeError("Camera type mismatch");
         }
     }
