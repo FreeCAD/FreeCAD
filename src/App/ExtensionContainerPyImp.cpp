@@ -198,8 +198,14 @@ PyObject* ExtensionContainerPy::hasExtension(PyObject *args) {
 PyObject* ExtensionContainerPy::addExtension(PyObject *args) {
 
     char *typeId;
-    if (!PyArg_ParseTuple(args, "s", &typeId))
+    PyObject* proxy = nullptr;
+    if (!PyArg_ParseTuple(args, "s|O", &typeId, &proxy))
         return NULL;
+
+    if (proxy) {
+        PyErr_SetString(PyExc_DeprecationWarning, "A proxy object as seconbd argument is not needed any more. Please adjust your code");
+        PyErr_Print();
+    }
 
     //get the extension type asked for
     Base::Type extension =  Base::Type::fromName(typeId);
