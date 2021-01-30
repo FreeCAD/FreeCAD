@@ -1043,16 +1043,16 @@ PyObject* SketchObjectPy::getAxis(PyObject *args)
 PyObject* SketchObjectPy::fillet(PyObject *args)
 {
     PyObject *pcObj1, *pcObj2;
-    int geoId1, geoId2, posId1, trim=1;
+    int geoId1, geoId2, posId1, trim=1, createCorner=0;
     double radius;
 
     // Two Lines, radius
-    if (PyArg_ParseTuple(args, "iiO!O!d|i", &geoId1, &geoId2, &(Base::VectorPy::Type), &pcObj1, &(Base::VectorPy::Type), &pcObj2, &radius, &trim)) {
+    if (PyArg_ParseTuple(args, "iiO!O!d|ii", &geoId1, &geoId2, &(Base::VectorPy::Type), &pcObj1, &(Base::VectorPy::Type), &pcObj2, &radius, &trim, &createCorner)) {
 
         Base::Vector3d v1 = static_cast<Base::VectorPy*>(pcObj1)->value();
         Base::Vector3d v2 = static_cast<Base::VectorPy*>(pcObj2)->value();
 
-        if (this->getSketchObjectPtr()->fillet(geoId1, geoId2, v1, v2, radius, trim?true:false)) {
+        if (this->getSketchObjectPtr()->fillet(geoId1, geoId2, v1, v2, radius, trim?true:false, createCorner?true:false)) {
             std::stringstream str;
             str << "Not able to fillet curves with ids : (" << geoId1 << ", " << geoId2 << ") and points (" << v1.x << ", " << v1.y << ", " << v1.z << ") & "
             << "(" << v2.x << ", " << v2.y << ", " << v2.z << ")";
@@ -1064,8 +1064,8 @@ PyObject* SketchObjectPy::fillet(PyObject *args)
 
     PyErr_Clear();
     // Point, radius
-    if (PyArg_ParseTuple(args, "iid|i", &geoId1, &posId1, &radius, &trim)) {
-        if (this->getSketchObjectPtr()->fillet(geoId1, (Sketcher::PointPos) posId1, radius, trim?true:false)) {
+    if (PyArg_ParseTuple(args, "iid|ii", &geoId1, &posId1, &radius, &trim, &createCorner)) {
+        if (this->getSketchObjectPtr()->fillet(geoId1, (Sketcher::PointPos) posId1, radius, trim?true:false, createCorner?true:false)) {
             std::stringstream str;
             str << "Not able to fillet point with ( geoId: " << geoId1 << ", PointPos: " << posId1 << " )";
             PyErr_SetString(PyExc_ValueError, str.str().c_str());
@@ -1075,8 +1075,8 @@ PyObject* SketchObjectPy::fillet(PyObject *args)
     }
 
     PyErr_SetString(PyExc_TypeError, "fillet() method accepts:\n"
-    "-- int,int,Vector,Vector,float,[int]\n"
-    "-- int,int,float,[int]\n");
+    "-- int,int,Vector,Vector,float,[int],[int]\n"
+    "-- int,int,float,[int],[int]\n");
     return 0;
 }
 
