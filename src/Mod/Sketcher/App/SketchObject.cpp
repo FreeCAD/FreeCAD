@@ -1536,9 +1536,9 @@ int SketchObject::delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoinc
     return -1; // no such constraint
 }
 
-void SketchObject::manageFilletConstraints(int geoId1, PointPos posId1, int geoId2, PointPos posId2) {
+void SketchObject::transferFilletConstraints(int geoId1, PointPos posId1, int geoId2, PointPos posId2) {
     // If the lines don't intersect, there's no original corner to work with so
-    // don't try to manage the constraints. But we should delete line length and equal
+    // don't try to transfer the constraints. But we should delete line length and equal
     // constraints and constraints on the affected endpoints because they're about
     // to move unpredictably.
     if (!arePointsCoincident(geoId1, posId1, geoId2, posId2)) {
@@ -1563,7 +1563,7 @@ void SketchObject::manageFilletConstraints(int geoId1, PointPos posId1, int geoI
         return;
     }
 
-    // If the lines aren't straight, don't try to manage the constraints.
+    // If the lines aren't straight, don't try to transfer the constraints.
     // TODO: Add support for curved lines.
     const Part::Geometry *geo1 = getGeometry(geoId1);
     const Part::Geometry *geo2 = getGeometry(geoId2);
@@ -1768,7 +1768,7 @@ int SketchObject::transferConstraints(int fromGeoId, PointPos fromPosId, int toG
     return 0;
 }
 
-int SketchObject::fillet(int GeoId, PointPos PosId, double radius, bool trim)
+int SketchObject::fillet(int GeoId, PointPos PosId, double radius, bool trim, bool createCorner)
 {
     if (GeoId < 0 || GeoId > getHighestCurveIndex())
         return -1;
@@ -1789,7 +1789,7 @@ int SketchObject::fillet(int GeoId, PointPos PosId, double radius, bool trim)
 
             Base::Vector3d midPnt1 = (lineSeg1->getStartPoint() + lineSeg1->getEndPoint()) / 2 ;
             Base::Vector3d midPnt2 = (lineSeg2->getStartPoint() + lineSeg2->getEndPoint()) / 2 ;
-            return fillet(GeoIdList[0], GeoIdList[1], midPnt1, midPnt2, radius, trim);
+            return fillet(GeoIdList[0], GeoIdList[1], midPnt1, midPnt2, radius, trim, createCorner);
         }
     }
 
@@ -1798,25 +1798,19 @@ int SketchObject::fillet(int GeoId, PointPos PosId, double radius, bool trim)
 
 int SketchObject::fillet(int GeoId1, int GeoId2,
                          const Base::Vector3d& refPnt1, const Base::Vector3d& refPnt2,
-                         double radius, bool trim)
+                         double radius, bool trim, bool createCorner)
 {
     if (GeoId1 < 0 || GeoId1 > getHighestCurveIndex() ||
         GeoId2 < 0 || GeoId2 > getHighestCurveIndex())
         return -1;
 
     // If either of the two input lines are locked, don't try to trim since it won't work anyway
-    if (trim) {
-        for (auto c : this->Constraints.getValues()) {
-            if (c->Type == Sketcher::Block && 
-                (c->First == GeoId1 || c->First == GeoId2)) {
-                trim = false;
-                break;
-            }
-        }
-    }
-
     const Part::Geometry *geo1 = getGeometry(GeoId1);
     const Part::Geometry *geo2 = getGeometry(GeoId2);
+    if (trim && (GeometryFacade::getBlocked(geo1) || GeometryFacade::getBlocked(geo2))) {
+        trim = false;
+    }
+
     if (geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
         geo2->getTypeId() == Part::GeomLineSegment::getClassTypeId() ) {
         const Part::GeomLineSegment *lineSeg1 = static_cast<const Part::GeomLineSegment*>(geo1);
@@ -1833,63 +1827,59 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
 
         // create arc from known parameters and lines
         int filletId;
-        Part::GeomArcOfCircle *arc = Part::createFilletGeometry(lineSeg1, lineSeg2, filletCenter, radius);
+        std::unique_ptr<Part::GeomArcOfCircle> arc(
+            Part::createFilletGeometry(lineSeg1, lineSeg2, filletCenter, radius));
         if (!arc) return -1;
 
         // calculate intersection and distances before we invalidate lineSeg1 and lineSeg2
         if (!find2DLinesIntersection(lineSeg1, lineSeg2, intersection)) {
-            delete arc;
             return -1;
         }
 
         dist1.ProjectToLine(arc->getStartPoint(/*emulateCCW=*/true)-intersection, dir1);
         dist2.ProjectToLine(arc->getStartPoint(/*emulateCCW=*/true)-intersection, dir2);
-        Part::Geometry *newgeo = arc;
+        Part::Geometry *newgeo = arc.get();
         filletId = addGeometry(newgeo);
-        if (filletId < 0) { // XXX how would this ever be negative?
-            delete arc;
-            return -1;
-        }
-
 
         if (trim) {
             PointPos PosId1 = (filletCenter-intersection)*dir1 > 0 ? start : end;
             PointPos PosId2 = (filletCenter-intersection)*dir2 > 0 ? start : end;
 
-            manageFilletConstraints(GeoId1, PosId1, GeoId2, PosId2);
+            if (createCorner) {
+                transferFilletConstraints(GeoId1, PosId1, GeoId2, PosId2);
+            } else {
+                delConstraintOnPoint(GeoId1, PosId1, false);
+                delConstraintOnPoint(GeoId2, PosId2, false);
+            }
 
-            Sketcher::Constraint *tangent1 = new Sketcher::Constraint();
-            Sketcher::Constraint *tangent2 = new Sketcher::Constraint();
+            Sketcher::Constraint tangent1, tangent2;
 
-            tangent1->Type = Sketcher::Tangent;
-            tangent1->First = GeoId1;
-            tangent1->FirstPos = PosId1;
-            tangent1->Second = filletId;
+            tangent1.Type = Sketcher::Tangent;
+            tangent1.First = GeoId1;
+            tangent1.FirstPos = PosId1;
+            tangent1.Second = filletId;
 
-            tangent2->Type = Sketcher::Tangent;
-            tangent2->First = GeoId2;
-            tangent2->FirstPos = PosId2;
-            tangent2->Second = filletId;
+            tangent2.Type = Sketcher::Tangent;
+            tangent2.First = GeoId2;
+            tangent2.FirstPos = PosId2;
+            tangent2.Second = filletId;
 
             if (dist1.Length() < dist2.Length()) {
-                tangent1->SecondPos = start;
-                tangent2->SecondPos = end;
+                tangent1.SecondPos = start;
+                tangent2.SecondPos = end;
                 movePoint(GeoId1, PosId1, arc->getStartPoint(/*emulateCCW=*/true),false,true);
                 movePoint(GeoId2, PosId2, arc->getEndPoint(/*emulateCCW=*/true),false,true);
             }
             else {
-                tangent1->SecondPos = end;
-                tangent2->SecondPos = start;
+                tangent1.SecondPos = end;
+                tangent2.SecondPos = start;
                 movePoint(GeoId1, PosId1, arc->getEndPoint(/*emulateCCW=*/true),false,true);
                 movePoint(GeoId2, PosId2, arc->getStartPoint(/*emulateCCW=*/true),false,true);
             }
 
-            addConstraint(tangent1);
-            addConstraint(tangent2);
-            delete tangent1;
-            delete tangent2;
+            addConstraint(&tangent1);
+            addConstraint(&tangent2);
         }
-        delete arc;
 
         if (noRecomputes) // if we do not have a recompute after the geometry creation, the sketch must be solved to update the DoF of the solver
             solve();
@@ -2889,7 +2879,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                     newConstr->First = GeoId;
                     newConstr->FirstPos = Sketcher::end;
                     newConstr->Second = GeoId1;
-                    newConstr->SecondPos = Sketcher::none; // XXX deleteme?
+                    newConstr->SecondPos = Sketcher::none;
                     newConstr->SecondPos = secondPos1;
 
                     addConstraint(newConstr);

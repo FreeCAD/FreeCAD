@@ -63,12 +63,15 @@ public:
     SketchObject();
     ~SketchObject();
 
-    // Many of the methods here use geoId and posId to point to sketch elements.  geoIds are
-    // indexes into the list returned by getInternalGeometry(), while posIds are PointPos values
-    // that indicate whether you're talking about a line, the start or endpoint of a line, a bare
-    // vertex, etc.  (See PointPos definition for more on how PointPos is used).
-
     /// Property
+    /**
+     The Geometry list contains the non-external Part::Geometry objects in the sketch.  The list 
+     may be accessed directly, or indirectly via getInternalGeometry(). 
+
+     Many of the methods in this class take geoId and posId parameters.  A GeoId is a unique identifier for
+     geometry in the Sketch. geoId >= 0 means an index in the Geometry list. geoId < 0 refers to sketch
+     axes and external geometry.  posId is a PointPos enum, documented in Constraint.h.
+    */
     Part    ::PropertyGeometryList   Geometry;
     Sketcher::PropertyConstraintList Constraints;
     App     ::PropertyLinkSubList    ExternalGeometry;
@@ -238,21 +241,23 @@ public:
      \param geoId, pos - one of the (exactly) two coincident endpoints
      \param radius - fillet radius
      \param trim - if false, leaves the original lines untouched
+     \param createCorner - keep geoId/pos as a Point and keep as many constraints as possible
      \retval - 0 on success, -1 on failure 
      */
-    int fillet(int geoId, PointPos pos, double radius, bool trim=true);
-    // TODO: Why do refPnt1 and refPnt2 need to be passed in?  Don't the geoIds give us enough to compute that?
+    int fillet(int geoId, PointPos pos, double radius, bool trim=true, bool preserveCorner=false);
     /*!
      \brief More general form of fillet
      \param geoId1, geoId2 - geoId for two lines (which don't necessarily have to coincide)
-     \param refPnt1, refPnt2 - line midpoints
+     \param refPnt1, refPnt2 - reference points on the input geometry, used to influence the free fillet variables
      \param radius - fillet radius
      \param trim - if false, leaves the original lines untouched
+     \param preserveCorner - if the lines are coincident, place a Point where they meet and keep as many
+     of the existing constraints as possible
      \retval - 0 on success, -1 on failure 
      */
     int fillet(int geoId1, int geoId2,
                const Base::Vector3d& refPnt1, const Base::Vector3d& refPnt2,
-               double radius, bool trim=true);
+               double radius, bool trim=true, bool createCorner=false);
 
     /// trim a curve
     int trim(int geoId, const Base::Vector3d& point);
@@ -506,10 +511,17 @@ protected:
 
 
     /*!
-     \brief Do reasonable things with constraints on lines that have just been filleted
+     \brief Transfer constraints on lines being filleted.
+
+     Since filleting moves the endpoints of the input geometry, existing constraints may no longer be
+     sensible. If fillet() was called with preserveCorner=false, the constraints are simply deleted.
+     But if the lines are coincident and preserveCorner=true, we can preserve most constraints on the
+     old end points by moving them to the preserved corner, or transforming distance constraints on
+     straight lines into point-to-point distance constraints.
+
      \param geoId1, podId1, geoId2, posId2 - The two lines that have just been filleted
      */
-    void manageFilletConstraints(int geoId1, PointPos posId1, int geoId2, PointPos posId2);
+    void transferFilletConstraints(int geoId1, PointPos posId1, int geoId2, PointPos posId2);
 
     // refactoring functions
     // check whether constraint may be changed driving status
