@@ -64,6 +64,7 @@ public:
     App::PropertyLength         Depth;
     App::PropertyEnumeration    DrillPoint;
     App::PropertyAngle          DrillPointAngle;
+    App::PropertyBool           DrillForDepth;
     App::PropertyBool           Tapered;
     App::PropertyAngle          TaperedAngle;
 
