@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 # include <QListIterator>
 # include <QTimer>
+# include <QListWidgetItem>
 #endif
 
 #include <Gui/Application.h>
@@ -96,6 +97,8 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
     connect(ui->radioDependent, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
     connect(ui->radioXRef, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
     connect(ui->listWidget, SIGNAL(itemSelectionChanged()), this, SLOT(onItemSelectionChanged()));
+    connect(ui->listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem *)), this, SLOT(onDoubleClick(QListWidgetItem *)));
+
 
     enum { axisBit=0, planeBit = 1};
 
@@ -471,6 +474,18 @@ void TaskFeaturePick::onItemSelectionChanged()
     doSelection = false;
 }
 
+void TaskFeaturePick::onDoubleClick(QListWidgetItem *item)
+{
+    if (doSelection)
+        return;
+    doSelection = true;
+    QString t = item->data(Qt::UserRole).toString();
+    Gui::Selection().addSelection(documentName.c_str(), t.toLatin1());
+    doSelection = false;
+
+    QMetaObject::invokeMethod(qobject_cast<Gui::ControlSingleton*>(&Gui::Control()), "accept", Qt::QueuedConnection);
+}
+
 void TaskFeaturePick::slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj)
 {
     std::vector<Gui::ViewProviderOrigin*>::iterator it;
@@ -570,6 +585,7 @@ void TaskDlgFeaturePick::showExternal(bool val)
 {
     pick->showExternal(val);
 }
+
 
 
 #include "moc_TaskFeaturePick.cpp"
