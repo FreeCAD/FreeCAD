@@ -90,6 +90,14 @@ public:
 
     static const double metricHoleDiameters[36][4];
 
+    typedef struct {
+        std::string designation;
+        double close;
+        double normal;
+        double loose;
+    } UTSClearanceDefinition;
+    static const UTSClearanceDefinition UTSHoleDiameters[22];
+
     virtual void Restore(Base::XMLReader & reader);
 
     virtual void updateProps();
@@ -99,7 +107,8 @@ protected:
 private:
     static const char* DepthTypeEnums[];
     static const char* ThreadTypeEnums[];
-    static const char* ThreadFitEnums[];
+    static const char* ClearanceMetricEnums[];
+    static const char* ClearanceUTSEnums[];
     static const char* DrillPointEnums[];
     static const char* ThreadDirectionEnums[];
 

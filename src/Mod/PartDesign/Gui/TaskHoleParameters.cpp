@@ -440,31 +440,37 @@ void TaskHoleParameters::threadTypeChanged(int index)
     // now set the new type, this will reset the comboboxes to item 0
     pcHole->ThreadType.setValue(index);
 
-    // Size
-    // the size for ISO type has either the form "M3x0.35" or just "M3"
-    // so we need to check if the size contains a 'x'. If yes, check if the string
-    // up to the 'x' is exists in the new list
+    // size and clearance
     if (TypeClass == QByteArray("ISO")) {
+        // the size for ISO type has either the form "M3x0.35" or just "M3"
+        // so we need to check if the size contains a 'x'. If yes, check if the string
+        // up to the 'x' is exists in the new list 
         if (ThreadSizeString.indexOf(QString::fromLatin1("x")) > -1) {
             // we have an ISO fine size
             // cut of the part behind the 'x'
             ThreadSizeString = ThreadSizeString.left(ThreadSizeString.indexOf(QString::fromLatin1("x")));
         }
-
         // search if the string exists in the combobox
         int threadSizeIndex = ui->ThreadSize->findText(ThreadSizeString, Qt::MatchContains);
         if (threadSizeIndex > -1) {
             // we can set it
             ui->ThreadSize->setCurrentIndex(threadSizeIndex);
         }
-    }
-
-    // for the UTS types the entries are the same
-    if (TypeClass == QByteArray("UTS")) {
+        // the names of the clearance types are different in ISO and UTS
+        ui->ThreadFit->setItemText(0, QCoreApplication::translate("TaskHoleParameters", "Standard", nullptr));
+        ui->ThreadFit->setItemText(1, QCoreApplication::translate("TaskHoleParameters", "Close", nullptr));
+        ui->ThreadFit->setItemText(2, QCoreApplication::translate("TaskHoleParameters", "Wide", nullptr));
+    } 
+    else if (TypeClass == QByteArray("UTS")) {
+        // for all UTS types the size entries are the same
         int threadSizeIndex = ui->ThreadSize->findText(ThreadSizeString, Qt::MatchContains);
         if (threadSizeIndex > -1) {
             ui->ThreadSize->setCurrentIndex(threadSizeIndex);
         }
+        // the names of the clearance types are different in ISO and UTS
+        ui->ThreadFit->setItemText(0, QCoreApplication::translate("TaskHoleParameters", "Normal", nullptr));
+        ui->ThreadFit->setItemText(1, QCoreApplication::translate("TaskHoleParameters", "Close", nullptr));
+        ui->ThreadFit->setItemText(2, QCoreApplication::translate("TaskHoleParameters", "Loose", nullptr));
     }
 
     // Class and cut type
@@ -475,6 +481,8 @@ void TaskHoleParameters::threadTypeChanged(int index)
     int holeCutIndex = ui->HoleCutType->findText(CutTypeString, Qt::MatchContains);
     if (holeCutIndex > -1)
         ui->HoleCutType->setCurrentIndex(holeCutIndex);
+
+    recomputeFeature();
 }
 
 void TaskHoleParameters::threadSizeChanged(int index)
