@@ -26,11 +26,14 @@
 
 #include <string>
 #include <QStringList>
+#include <Base/Parameter.h>
 
 class QAction;
 class QToolBar;
 
 namespace Gui {
+
+class Workbench;
 
 class GuiExport ToolBarItem
 {
@@ -72,8 +75,9 @@ private:
  * @see MenuManager
  * @author Werner Mayer
  */
-class GuiExport ToolBarManager
+class GuiExport ToolBarManager: public QObject
 {
+    Q_OBJECT
 public:
     /// The one and only instance.
     static ToolBarManager* getInstance();
@@ -83,6 +87,9 @@ public:
     void saveState() const;
     void restoreState() const;
     void retranslate() const;
+
+protected Q_SLOTS:
+    void onToggleToolBar(bool);
 
 protected:
     void setup(ToolBarItem*, QToolBar*) const;
@@ -96,6 +103,8 @@ protected:
 private:
     QStringList toolbarNames;
     static ToolBarManager* _instance;
+    ParameterGrp::handle hPref;
+    mutable bool restored = false;
 };
 
 } // namespace Gui

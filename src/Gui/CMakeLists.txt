@@ -333,6 +333,7 @@ set(Gui_MOC_HDRS
     DlgUndoRedo.h
     DockWindow.h
     DockWindowManager.h
+    ToolBarManager.h
     OverlayWidgets.h
     DocumentRecovery.h
     EditorView.h
