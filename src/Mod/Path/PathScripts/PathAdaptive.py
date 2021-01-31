@@ -212,6 +212,12 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
                     else:
                         # Cone
                         _HelixAngle = 360 - (float(obj.HelixAngle) * 4)
+
+                        if obj.HelixConeAngle > 6:
+                            obj.HelixConeAngle = 6
+                        
+                        helixRadius *= 0.9
+
                         # Calculate everything
                         helix_height = passStartDepth - passEndDepth
                         r_extra = helix_height * math.tan(math.radians(obj.HelixConeAngle))
@@ -250,7 +256,7 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
                         i_off = (x_m - p['X']) / 2
                         j_off = (y_m - p['Y']) / 2
 
-                        # one more circle at target depth to make sure center is cleared
+                        # One more circle at target depth to make sure center is cleared
                         op.commandlist.append(Path.Command("G3", { "X": x_m, "Y": y_m, "Z": passEndDepth, "I": i_off, "J": j_off, "F": op.horizFeed}))
                         op.commandlist.append(Path.Command("G3", { "X": p['X'], "Y": p['Y'], "Z": passEndDepth, "I": -i_off, "J": -j_off, "F": op.horizFeed}))
 

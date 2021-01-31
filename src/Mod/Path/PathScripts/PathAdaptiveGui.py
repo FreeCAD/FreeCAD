@@ -79,19 +79,19 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         # helix angle
         form.HelixAngle = QtGui.QDoubleSpinBox()
         form.HelixAngle.setMinimum(1)
-        form.HelixAngle.setMaximum(359)
+        form.HelixAngle.setMaximum(89)
         form.HelixAngle.setSingleStep(1)
-        form.HelixAngle.setValue(250)
+        form.HelixAngle.setValue(5)
         form.HelixAngle.setToolTip("Angle of the helix ramp entry")
         formLayout.addRow(QtGui.QLabel("Helix Ramp Angle"), form.HelixAngle)
 
         # helix cone angle
         form.HelixConeAngle = QtGui.QDoubleSpinBox()
         form.HelixConeAngle.setMinimum(0)
-        form.HelixConeAngle.setMaximum(45)
+        form.HelixConeAngle.setMaximum(6)
         form.HelixConeAngle.setSingleStep(1)
         form.HelixConeAngle.setValue(0)
-        form.HelixConeAngle.setToolTip("Angle of the helix cone")
+        form.HelixConeAngle.setToolTip("Angle of the helix entry cone")
         formLayout.addRow(QtGui.QLabel("Helix Cone Angle"), form.HelixConeAngle)
 
         # helix diam. limit
