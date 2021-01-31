@@ -468,6 +468,8 @@ def get_svg(obj,
                 plane.alignToPointAndAxis_SVG(App.Vector(0, 0, 0),
                                               direction.negative().negative(),
                                               0)
+            else:
+                raise ValueError("'direction' cannot be: Vector(0, 0, 0)")
         elif isinstance(direction, WorkingPlane.plane):
             plane = direction
 
