@@ -424,7 +424,9 @@ const double Hole::metricHoleDiameters[36][4] =
         { 6.0,      6.4,    6.6,    7.0},
         { 7.0,      7.4,    7.6,    8.0},
         { 8.0,      8.4,    9.0,    10.0},
+        // 9.0 undefined
         { 10.0,     10.5,   11.0,   12.0},
+        // 11.0 undefined
         { 12.0,     13.0,   13.5,   14.5},
         { 14.0,     15.0,   15.5,   16.5},
         { 16.0,     17.0,  	17.5,   18.5},
@@ -612,6 +614,10 @@ void Hole::updateHoleCutParams()
         return;
     }
 
+    // get diameter and size
+    double diameterVal = Diameter.getValue();
+
+    // handle thread types
     std::string threadType = ThreadType.getValueAsString();
     if (threadType == "ISOMetricProfile" || threadType == "ISOMetricFineProfile") {
         if (ThreadSize.getValue() < 0) {
@@ -619,35 +625,50 @@ void Hole::updateHoleCutParams()
             return;
         }
 
-        // get diameter and size
-        double diameter = threadDescription[ThreadType.getValue()][ThreadSize.getValue()].diameter;
         std::string threadSize{ ThreadSize.getValueAsString() };
 
         // we don't update for these settings but we need to set a value for new holes
+        // furthermore we must assure the hole cut diameter is not <= the hole diameter
         // if we have a cut but the values are zero, we assume it is a new hole
         // we take in this case the values from the norm ISO 4762 or ISO 10642
         if (holeCutType == "Counterbore") {
             // read ISO 4762 values
             const CutDimensionSet& counter = find_cutDimensionSet(threadType, "ISO 4762");
             const CounterBoreDimension& dimen = counter.get_bore(threadSize);
-            if (HoleCutDiameter.getValue() == 0.0) {
-                HoleCutDiameter.setValue(dimen.diameter);
-                HoleCutDepth.setValue(dimen.depth);
+            if (HoleCutDiameter.getValue() == 0.0 || HoleCutDiameter.getValue() <= diameterVal) {
+                // there is no norm defining counterbores for all sizes, thus we need to use the
+                // same fallback as for the case HoleCutTypeMap.count(key)
+                if (dimen.diameter != 0.0) {
+                    HoleCutDiameter.setValue(dimen.diameter);
+                    HoleCutDepth.setValue(dimen.depth);
+                }
+                else {
+                    // valid values for visual feedback
+                    HoleCutDiameter.setValue(Diameter.getValue() + 0.1);
+                    HoleCutDepth.setValue(0.1);
+                }
             }
             if (HoleCutDepth.getValue() == 0.0)
                 HoleCutDepth.setValue(dimen.depth);
+            HoleCutCountersinkAngle.setReadOnly(true);
         }
         else if (holeCutType == "Countersink") {
             // read ISO 10642 values
             const CutDimensionSet& counter = find_cutDimensionSet(threadType, "ISO 10642");
-            if (HoleCutDiameter.getValue() == 0.0) {
+            if (HoleCutDiameter.getValue() == 0.0 || HoleCutDiameter.getValue() <= diameterVal) {
                 const CounterSinkDimension& dimen = counter.get_sink(threadSize);
-                HoleCutDiameter.setValue(dimen.diameter);
+                if (dimen.diameter != 0.0) {
+                    HoleCutDiameter.setValue(dimen.diameter);
+                } 
+                else {
+                    HoleCutDiameter.setValue(Diameter.getValue() + 0.1);
+                }
                 HoleCutCountersinkAngle.setValue(counter.angle);
             }
             if (HoleCutCountersinkAngle.getValue() == 0.0) {
                 HoleCutCountersinkAngle.setValue(counter.angle);
             }
+            HoleCutCountersinkAngle.setReadOnly(false);
         }
 
         // cut definition
@@ -688,39 +709,38 @@ void Hole::updateHoleCutParams()
         // handle legacy types but don’t change user settings for
         // user defined None, Counterbore and Countersink
         else if (holeCutType == "Cheesehead (deprecated)") {
-            HoleCutDiameter.setValue(diameter * 1.6);
-            HoleCutDepth.setValue(diameter * 0.6);
+            HoleCutDiameter.setValue(diameterVal * 1.6);
+            HoleCutDepth.setValue(diameterVal * 0.6);
         }
         else if (holeCutType == "Countersink socket screw (deprecated)") {
-            HoleCutDiameter.setValue(diameter * 2.0);
-            HoleCutDepth.setValue(diameter * 0.0);
+            HoleCutDiameter.setValue(diameterVal * 2.0);
+            HoleCutDepth.setValue(diameterVal * 0.0);
             if (HoleCutCountersinkAngle.getValue() == 0.0) {
                 HoleCutCountersinkAngle.setValue(90.0);
             }
         }
         else if (holeCutType == "Cap screw (deprecated)") {
-            HoleCutDiameter.setValue(diameter * 1.5);
-            HoleCutDepth.setValue(diameter * 1.25);
+            HoleCutDiameter.setValue(diameterVal * 1.5);
+            HoleCutDepth.setValue(diameterVal * 1.25);
         }
     }
     else { // we have an UTS profile or none
-        // get diameter
-        double diameter = threadDescription[ThreadType.getValue()][ThreadSize.getValue()].diameter;
 
         // we don't update for these settings but we need to set a value for new holes
+        // furthermore we must assure the hole cut diameter is not <= the hole diameter
         // if we have a cut but the values are zero, we assume it is a new hole
         // we use rules of thumbs as proposal
         if (holeCutType == "Counterbore") {
-            if (HoleCutDiameter.getValue() == 0.0) {
-                HoleCutDiameter.setValue(diameter * 1.6);
-                HoleCutDepth.setValue(diameter * 0.9);
+            if (HoleCutDiameter.getValue() == 0.0 || HoleCutDiameter.getValue() <= diameterVal) {
+                HoleCutDiameter.setValue(diameterVal * 1.6);
+                HoleCutDepth.setValue(diameterVal * 0.9);
             }
             if (HoleCutDepth.getValue() == 0.0)
-                HoleCutDepth.setValue(diameter * 0.9);
+                HoleCutDepth.setValue(diameterVal * 0.9);
         }
         else if (holeCutType == "Countersink") {
-            if (HoleCutDiameter.getValue() == 0.0) {
-                HoleCutDiameter.setValue(diameter * 1.7);
+            if (HoleCutDiameter.getValue() == 0.0 || HoleCutDiameter.getValue() <= diameterVal) {
+                HoleCutDiameter.setValue(diameterVal * 1.7);
                 // 82 degrees for UTS, 90 otherwise
                 if (threadType != "None")       
                     HoleCutCountersinkAngle.setValue(82.0);
@@ -996,10 +1016,14 @@ void Hole::onChanged(const App::Property *prop)
         ThreadCutOffOuter.setReadOnly(v);
     }
     else if (prop == &DrillPoint) {
-        if (DrillPoint.getValue() == 1)
+        if (DrillPoint.getValue() == 1) {
             DrillPointAngle.setReadOnly(false);
-        else
+            DrillForDepth.setReadOnly(false);
+        }
+        else {
             DrillPointAngle.setReadOnly(true);
+            DrillForDepth.setReadOnly(true);
+        }
     }
     else if (prop == &Tapered) {
         if (Tapered.getValue())
@@ -1009,10 +1033,15 @@ void Hole::onChanged(const App::Property *prop)
     }
     else if (prop == &ThreadSize) {
         updateDiameterParam();
-        updateHoleCutParams();
+        // updateHoleCutParams() will later automatically be called because updateDiameterParam() changes &Diameter
     }
     else if (prop == &ThreadFit) {
         updateDiameterParam();
+    }
+    else if (prop == &Diameter) {
+        // a changed diameter means we also need to check the hole cut
+        // because the hole cut diameter must not be <= than the diameter
+        updateHoleCutParams();
     }
     else if (prop == &HoleCutType) {
         std::string holeCutType;
@@ -1045,6 +1074,8 @@ void Hole::onChanged(const App::Property *prop)
     }
     else if (prop == &DepthType) {
         Depth.setReadOnly((std::string(DepthType.getValueAsString()) != "Dimension"));
+        DrillPoint.setReadOnly((std::string(DepthType.getValueAsString()) != "Dimension"));
+        DrillPointAngle.setReadOnly((std::string(DepthType.getValueAsString()) != "Dimension"));
         DrillForDepth.setReadOnly((std::string(DepthType.getValueAsString()) != "Dimension"));
     }
     ProfileBased::onChanged(prop);
