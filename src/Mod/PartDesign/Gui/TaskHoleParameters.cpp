@@ -152,11 +152,28 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *pare
         ui->drillPointAngled->setChecked(true);
     ui->DrillPointAngle->setValue(pcHole->DrillPointAngle.getValue());
     ui->DrillForDepth->setChecked(pcHole->DrillForDepth.getValue());
-    // DrillForDepth is only enabled (sensible) if type is 'Dimension'
-    if (std::string(pcHole->DepthType.getValueAsString()) == "Dimension")
+    // drill point settings are only enabled (sensible) if type is 'Dimension'
+    if (std::string(pcHole->DepthType.getValueAsString()) == "Dimension") {
+        ui->drillPointFlat->setEnabled(true);
+        ui->drillPointAngled->setEnabled(true);
+        ui->DrillPointAngle->setEnabled(true);
         ui->DrillForDepth->setEnabled(true);
-    else
+    }
+    else {
+        ui->drillPointFlat->setEnabled(false);
+        ui->drillPointAngled->setEnabled(false);
+        ui->DrillPointAngle->setEnabled(false);
         ui->DrillForDepth->setEnabled(false);
+    }
+    // drill point is sensible but flat, disable angle and option
+    if (!ui->drillPointFlat->isChecked()) {
+        ui->DrillPointAngle->setEnabled(true);
+        ui->DrillForDepth->setEnabled(true);
+    }
+    else {
+        ui->DrillPointAngle->setEnabled(false);
+        ui->DrillForDepth->setEnabled(false);
+    }
     ui->Tapered->setChecked(pcHole->Tapered.getValue());
     // Angle is only enabled (sensible) if tapered
     ui->TaperedAngle->setEnabled(pcHole->Tapered.getValue());
@@ -171,7 +188,7 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *pare
     connect(ui->Diameter, SIGNAL(valueChanged(double)), this, SLOT(threadDiameterChanged(double)));
     connect(ui->directionRightHand, SIGNAL(clicked(bool)), this, SLOT(threadDirectionChanged()));
     connect(ui->directionLeftHand, SIGNAL(clicked(bool)), this, SLOT(threadDirectionChanged()));
-    connect(ui->HoleCutType, SIGNAL(currentIndexChanged(int)), this, SLOT(holeCutChanged(int)));
+    connect(ui->HoleCutType, SIGNAL(currentIndexChanged(int)), this, SLOT(holeCutTypeChanged(int)));
     connect(ui->HoleCutDiameter, SIGNAL(valueChanged(double)), this, SLOT(holeCutDiameterChanged(double)));
     connect(ui->HoleCutDepth, SIGNAL(valueChanged(double)), this, SLOT(holeCutDepthChanged(double)));
     connect(ui->HoleCutCountersinkAngle, SIGNAL(valueChanged(double)), this, SLOT(holeCutCountersinkAngleChanged(double)));
@@ -254,7 +271,7 @@ void TaskHoleParameters::threadCutOffOuterChanged(double value)
     recomputeFeature();
 }
 
-void TaskHoleParameters::holeCutChanged(int index)
+void TaskHoleParameters::holeCutTypeChanged(int index)
 {
     if (index < 0)
         return;
@@ -306,7 +323,7 @@ void TaskHoleParameters::holeCutCountersinkAngleChanged(double value)
 {
     PartDesign::Hole* pcHole = static_cast<PartDesign::Hole*>(vp->getObject());
 
-    pcHole->HoleCutCountersinkAngle.setValue((double)value);
+    pcHole->HoleCutCountersinkAngle.setValue(value);
     recomputeFeature();
 }
 
@@ -316,11 +333,19 @@ void TaskHoleParameters::depthChanged(int index)
 
     pcHole->DepthType.setValue(index);
 
-    // disable DrillforDepth if not 'Dimension'
-    if (std::string(pcHole->DepthType.getValueAsString()) == "Dimension")
+    // disable drill point widgets if not 'Dimension'
+    if (std::string(pcHole->DepthType.getValueAsString()) == "Dimension") {
+        ui->drillPointFlat->setEnabled(true);
+        ui->drillPointAngled->setEnabled(true);
+        ui->DrillPointAngle->setEnabled(true);
         ui->DrillForDepth->setEnabled(true);
-    else
+    }
+    else {
+        ui->drillPointFlat->setEnabled(false);
+        ui->drillPointAngled->setEnabled(false);
+        ui->DrillPointAngle->setEnabled(false);
         ui->DrillForDepth->setEnabled(false);
+    }
     recomputeFeature();
 }
 
