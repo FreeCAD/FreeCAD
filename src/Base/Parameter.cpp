@@ -1452,7 +1452,8 @@ void  ParameterManager::SaveDocument(XMLFormatTarget* pFormatTarget) const
             //
             myFilter = new DOMPrintFilter(DOMNodeFilter::SHOW_ELEMENT   |
                                           DOMNodeFilter::SHOW_ATTRIBUTE |
-                                          DOMNodeFilter::SHOW_DOCUMENT_TYPE
+                                          DOMNodeFilter::SHOW_DOCUMENT_TYPE |
+                                          DOMNodeFilter::SHOW_TEXT
                                          );
             theSerializer->setFilter(myFilter);
         }
@@ -1518,7 +1519,8 @@ void  ParameterManager::SaveDocument(XMLFormatTarget* pFormatTarget) const
             if (gUseFilter) {
                 myFilter.reset(new DOMPrintFilter(DOMNodeFilter::SHOW_ELEMENT   |
                                                   DOMNodeFilter::SHOW_ATTRIBUTE |
-                                                  DOMNodeFilter::SHOW_DOCUMENT_TYPE
+                                                  DOMNodeFilter::SHOW_DOCUMENT_TYPE |
+                                                  DOMNodeFilter::SHOW_TEXT
                                                   ));
                 theSerializer->setFilter(myFilter.get());
             }
@@ -1715,6 +1717,11 @@ short DOMPrintFilter::acceptNode(const DOMNode* node) const
         break;
     }
     case DOMNode::TEXT_NODE: {
+        auto parent = node->getParentNode();
+        if (parent && XMLString::compareString(
+                    parent->getNodeName(), XStr("FCParamGroup").unicodeForm()) == 0)
+            return DOMNodeFilter::FILTER_REJECT;
+
         // the WhatToShow will make this no effect
         //return DOMNodeFilter::FILTER_REJECT;
         return DOMNodeFilter::FILTER_ACCEPT;
@@ -1774,6 +1781,10 @@ DOMPrintFilter::FilterAction DOMPrintFilter::acceptNode(const DOMNode* node) con
         break;
     }
     case DOMNode::TEXT_NODE: {
+        auto parent = node->getParentNode();
+        if (parent && XMLString::compareString(
+                    parent->getNodeName(), XStr("FCParamGroup").unicodeForm()) == 0)
+            return DOMNodeFilter::FILTER_REJECT;
         return DOMNodeFilter::FILTER_ACCEPT;
         break;
     }
