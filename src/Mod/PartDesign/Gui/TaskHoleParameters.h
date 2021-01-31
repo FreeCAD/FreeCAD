@@ -93,7 +93,7 @@ private Q_SLOTS:
     void threadAngleChanged(double value);    
     void threadDiameterChanged(double value);
     void threadDirectionChanged();
-    void holeCutChanged(int index);
+    void holeCutTypeChanged(int index);
     void holeCutDiameterChanged(double value);
     void holeCutDepthChanged(double value);
     void holeCutCountersinkAngleChanged(double value);
