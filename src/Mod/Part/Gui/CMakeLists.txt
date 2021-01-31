@@ -235,6 +235,8 @@ SET(PartGui_SRCS
     ViewProviderRuledSurface.h
     ViewProviderPrimitive.cpp
     ViewProviderPrimitive.h
+    ViewProviderClone.cpp
+    ViewProviderClone.h
     Workbench.cpp
     Workbench.h
     TaskFaceColors.cpp

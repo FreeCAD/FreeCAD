@@ -56,6 +56,7 @@
 #include "FeaturePartSpline.h"
 #include "FeatureGeometrySet.h"
 #include "FeatureChamfer.h"
+#include "FeatureClone.h"
 #include "FeatureCompound.h"
 #include "FeatureFace.h"
 #include "FeatureExtrusion.h"
@@ -403,6 +404,7 @@ PyMOD_INIT_FUNC(Part)
     Part::Thickness             ::init();
     Part::Refine                ::init();
     Part::Reverse               ::init();
+    Part::Clone                 ::init();
 
     // Geometry types
     Part::GeometryExtension       	::init();

@@ -45,6 +45,7 @@
 #include "ViewProviderExtrusion.h"
 #include "ViewProvider2DObject.h"
 #include "ViewProviderMirror.h"
+#include "ViewProviderClone.h"
 #include "ViewProviderBoolean.h"
 #include "ViewProviderCompound.h"
 #include "ViewProviderCircleParametric.h"
@@ -204,6 +205,7 @@ PyMOD_INIT_FUNC(PartGui)
     PartGui::ViewProviderTorusParametric            ::init();
     PartGui::ViewProviderRuledSurface               ::init();
     PartGui::ViewProviderFace                       ::init();
+    PartGui::ViewProviderClone                      ::init();
     PartGui::DimensionLinear                        ::initClass();
     PartGui::DimensionAngular                       ::initClass();
     PartGui::ArcEngine                              ::initClass();

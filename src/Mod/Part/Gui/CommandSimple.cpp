@@ -30,6 +30,7 @@
 # include <Standard_math.hxx>
 #endif
 
+#include <Base/Console.h>
 #include <Base/Exception.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -42,6 +43,7 @@
 
 #include "../App/PartFeature.h"
 #include "../App/TopoShape.h"
+#include "../App/FeatureClone.h"
 #include "DlgPartCylinderImp.h"
 
 
@@ -317,6 +319,92 @@ bool CmdPartTransformedCopy::isActive(void)
 }
 
 //===========================================================================
+// Part_Clone
+//===========================================================================
+
+DEF_STD_CMD_A(CmdPartClone)
+
+CmdPartClone::CmdPartClone()
+  : Command("Part_Clone")
+{
+    sAppModule    = "Part";
+    sGroup        = QT_TR_NOOP("Part");
+    sMenuText     = QT_TR_NOOP("Clone");
+    sToolTipText  = QT_TR_NOOP("Creates a clone of the selected objects.\n"
+                               "The resulting clone can be scaled in each "
+                               "of its three directions.");
+    sStatusTip    = sToolTipText;
+    sWhatsThis    = "Part_Clone";
+    sPixmap       = "Part_Clone";
+}
+
+void CmdPartClone::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    Gui::WaitCursor wc;
+
+    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
+    if (selection.size() == 0) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Nothing selected"),
+                             QObject::tr("Please select first an object to clone."));
+        return;
+    }
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Clone"));
+
+    std::vector<App::DocumentObject *> cloned;
+    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end(); ++it) {
+        App::DocumentObject *master = it->getObject();
+
+        if (master->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId())
+            && std::find(cloned.begin(), cloned.end(), master) == cloned.end()) {
+
+            std::string featName = getUniqueObjectName("Clone");
+
+            doCommand(Doc, "App.activeDocument().addObject('Part::Clone','%s')", featName.c_str());
+            App::DocumentObject *clone = App::GetApplication().getActiveDocument()->getObject(featName.c_str());
+            cloned.push_back(master);
+
+            doCommand(Doc, "App.activeDocument().%s.Label='%s'", featName.c_str(), master->Label.getValue());
+            if (master->getTypeId().isDerivedFrom(Part::Clone::getClassTypeId())) {
+                doCommand(Doc, "App.activeDocument().%s.Objects=App.activeDocument().%s.Objects", featName.c_str(), master->getNameInDocument());
+            }
+            else {
+                doCommand(Doc, "App.activeDocument().%s.Objects=[App.activeDocument().%s]", featName.c_str(), master->getNameInDocument());
+            }
+
+            copyVisual(clone, "ShapeColor", master);
+            copyVisual(clone, "LineColor", master);
+            copyVisual(clone, "PointColor", master);
+            copyVisual(clone, "Transparency", master);
+        }
+    }
+
+    if (cloned.size() > 0) {
+        commitCommand();
+
+        App::Document *activeDoc =  Gui::Application::Instance->activeDocument()->getDocument();
+        Gui::Selection().clearSelection();
+
+        for (int i = cloned.size(); i > 0; --i) {
+            Gui::Selection().addSelection(Gui::SelectionObject(activeDoc->getObjects()[activeDoc->getObjects().size() - i]));
+        }
+    }
+    else {
+        Base::Console().Warning("No selected object is an App::GeoFeature\n");
+        abortCommand();
+    }
+
+    updateActive();
+}
+
+bool CmdPartClone::isActive(void)
+{
+    return getSelection().countObjectsOfType(App::GeoFeature::getClassTypeId(), 0, 3) > 0;
+}
+
+//===========================================================================
 // Part_ElementCopy
 //===========================================================================
 DEF_STD_CMD_A(CmdPartElementCopy)
@@ -504,6 +592,7 @@ void CreateSimplePartCommands(void)
     rcCmdMgr.addCommand(new CmdPartSimpleCopy());
     rcCmdMgr.addCommand(new CmdPartElementCopy());
     rcCmdMgr.addCommand(new CmdPartTransformedCopy());
+    rcCmdMgr.addCommand(new CmdPartClone());
     rcCmdMgr.addCommand(new CmdPartRefineShape());
     rcCmdMgr.addCommand(new CmdPartDefeaturing());
 }

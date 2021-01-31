@@ -76,6 +76,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     copy->setCommand("Create a copy");
     *copy << "Part_SimpleCopy"
           << "Part_TransformedCopy"
+          << "Part_Clone"
           << "Part_ElementCopy"
           << "Part_RefineShape";
 
@@ -196,6 +197,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "Part_Sweep"
           << "Part_CompOffset"
           << "Part_Thickness"
+          << "Part_Clone"
           << "Part_ProjectionOnSurface"
           << "Part_ColorPerFace";  // See issues #0477 and #1954 in the tracker
 

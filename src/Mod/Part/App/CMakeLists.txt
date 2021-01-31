@@ -132,6 +132,8 @@ SET(Features_SRCS
     FeaturePartBox.h
     FeaturePartCircle.cpp
     FeaturePartCircle.h
+    FeatureClone.cpp
+    FeatureClone.h
     FeaturePartCommon.cpp
     FeaturePartCommon.h
     FeaturePartCurveNet.cpp
