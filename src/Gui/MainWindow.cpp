@@ -618,23 +618,35 @@ MainWindow* MainWindow::getInstance()
     return instance;
 }
 
-static void populateMenu(QMenu *menu, bool toolbarMenu)
+enum MenuType {
+    ToolBarMenu,
+    DockWindowMenu,
+};
+
+static void populateMenu(QMenu *menu, MenuType type)
 {
     auto mw = getMainWindow();
     QMap<QString, QAction*> actions;
-    QString tooltip = toolbarMenu ? QObject::tr("Toggles this toolbar")
-                                  : QObject::tr("Toggles this dockable window");
-    if (toolbarMenu) {
+    QString tooltip;
+    QMenu *hiddenMenu = nullptr;
+    switch(type) {
+    case ToolBarMenu:
+        tooltip = QObject::tr("Toggles this toolbar");
         for (auto toolbar : mw->findChildren<QToolBar*>()) {
             if (toolbar->parentWidget() == mw) {
                 auto action = toolbar->toggleViewAction();
-                actions[action->text()] = action;
+                if (action->isVisible())
+                    actions[action->text()] = action;
             }
         }
-    } else {
+        break;
+    case DockWindowMenu:
+        tooltip = QObject::tr("Toggles this dockable window");
         for(auto dock : mw->findChildren<QDockWidget*>()) {
             auto action = dock->toggleViewAction();
             actions[action->text()] = action;
+            if (!hiddenMenu && !action->isVisible())
+                hiddenMenu = new QMenu(QObject::tr("Other dockables"), menu);
         }
     }
     for(auto it=actions.begin(); it!=actions.end(); ++it) {
@@ -653,16 +665,21 @@ static void populateMenu(QMenu *menu, bool toolbarMenu)
         wa->setCheckable(true);
         wa->setChecked(action->isChecked());
         QObject::connect(wa, SIGNAL(triggered(bool)), action, SIGNAL(triggered(bool)));
-        menu->addAction(wa);
+        if (hiddenMenu && !action->isVisible())
+            hiddenMenu->addAction(wa);
+        else
+            menu->addAction(wa);
     }
+    if (hiddenMenu)
+        menu->addMenu(hiddenMenu);
 }
 
 QMenu* MainWindow::createPopupMenu ()
 {
     QMenu *menu = new QMenu(this);
-    populateMenu(menu, false);
+    populateMenu(menu, DockWindowMenu);
     menu->addSeparator();
-    populateMenu(menu, true);
+    populateMenu(menu, ToolBarMenu);
     menu->addSeparator();
 
     Workbench* wb = WorkbenchManager::instance()->active();
@@ -1234,14 +1251,14 @@ void MainWindow::onToolBarMenuAboutToShow()
 {
     QMenu* menu = static_cast<QMenu*>(sender());
     menu->clear();
-    populateMenu(menu, true);
+    populateMenu(menu, ToolBarMenu);
 }
 
 void MainWindow::onDockWindowMenuAboutToShow()
 {
     QMenu* menu = static_cast<QMenu*>(sender());
     menu->clear();
-    populateMenu(menu, false);
+    populateMenu(menu, DockWindowMenu);
 }
 
 QList<QWidget*> MainWindow::windows(QMdiArea::WindowOrder order) const
