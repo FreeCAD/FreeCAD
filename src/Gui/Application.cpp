@@ -1342,9 +1342,9 @@ void Application::tryClose(QCloseEvent * e)
 
 bool Application::initializeWorkbench(const char *name)
 {
-    Workbench* oldWb = WorkbenchManager::instance()->active();
-    if (oldWb && oldWb->name() == name)
-        return false; // already active
+    Workbench* wb = WorkbenchManager::instance()->getWorkbench(name);
+    if (wb)
+        return true; // already initialized
 
     Base::PyGILStateLocker lock;
     PyObject* pcWorkbench = 0;
