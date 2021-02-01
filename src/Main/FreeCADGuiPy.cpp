@@ -87,6 +87,12 @@ FilterProc(int nCode, WPARAM wParam, LPARAM lParam) {
 }
 #endif
 
+namespace Gui {
+void preAppSetup();
+void postAppSetup();
+void postMainWindowSetup(MainWindow &mw);
+}
+
 static PyObject *
 FreeCADGui_showMainWindow(PyObject * /*self*/, PyObject *args)
 {
@@ -104,11 +110,9 @@ FreeCADGui_showMainWindow(PyObject * /*self*/, PyObject *args)
         if (PyObject_IsTrue(inThread) && !thr) {
             thr = true;
             std::thread t([]() {
+                Gui::preAppSetup();
                 static int argc = 0;
                 static char **argv = {0};
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 9, 0))
-                QApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
-#endif
                 // This only works well if the QApplication is the very first created instance
                 // of a QObject. Otherwise the application lives in a different thread than the
                 // main thread which will cause hazardous behaviour.
@@ -120,6 +124,7 @@ FreeCADGui_showMainWindow(PyObject * /*self*/, PyObject *args)
             t.detach();
         }
         else {
+            Gui::preAppSetup();
             // In order to get Jupiter notebook integration working we must create a direct instance
             // of QApplication. Not even a sub-class can be used because otherwise PySide2 wraps it
             // with a QtCore.QCoreApplication which will raise an exception in ipykernel
@@ -274,6 +279,7 @@ QWidget* setupMainWindow()
 {
     if (!Gui::Application::Instance) {
         static Gui::Application *app = new Gui::Application(true);
+        Gui::postAppSetup();
         Q_UNUSED(app);
     }
 
@@ -290,65 +296,8 @@ QWidget* setupMainWindow()
         Gui::MainWindow *mw = new Gui::MainWindow();
         hasMainWindow = true;
 
-        QIcon icon = qApp->windowIcon();
-        if (icon.isNull())
-            qApp->setWindowIcon(Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str()));
-        mw->setWindowIcon(qApp->windowIcon());
-        QString appName = qApp->applicationName();
-        if (!appName.isEmpty())
-            mw->setWindowTitle(appName);
-        else
-            mw->setWindowTitle(QString::fromLatin1(App::Application::Config()["ExeName"].c_str()));
+        Gui::postMainWindowSetup(*mw);
 
-        if (!SoDB::isInitialized()) {
-            // init the Inventor subsystem
-            SoDB::init();
-            SIM::Coin3D::Quarter::Quarter::init();
-            Gui::SoFCDB::init();
-        }
-
-        static bool init = false;
-        if (!init) {
-            try {
-                Base::Console().Log("Run Gui init script\n");
-                Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADGuiInit"));
-            }
-            catch (const Base::Exception& e) {
-                PyErr_Format(Base::BaseExceptionFreeCADError, "Error in FreeCADGuiInit.py: %s\n", e.what());
-                return 0;
-            }
-            init = true;
-        }
-
-        qApp->setActiveWindow(mw);
-
-        // Activate the correct workbench
-        std::string start = App::Application::Config()["StartWorkbench"];
-        Base::Console().Log("Init: Activating default workbench %s\n", start.c_str());
-        std::string autoload = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
-                               GetASCII("AutoloadModule", start.c_str());
-        if ("$LastModule" == autoload) {
-            start = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
-                                   GetASCII("LastModule", start.c_str());
-        } else {
-            start = autoload;
-        }
-        // if the auto workbench is not visible then force to use the default workbech
-        // and replace the wrong entry in the parameters
-        QStringList wb = Gui::Application::Instance->workbenches();
-        if (!wb.contains(QString::fromLatin1(start.c_str()))) {
-            start = App::Application::Config()["StartWorkbench"];
-            if ("$LastModule" == autoload) {
-                App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
-                                      SetASCII("LastModule", start.c_str());
-            } else {
-                App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
-                                      SetASCII("AutoloadModule", start.c_str());
-            }
-        }
-
-        Gui::Application::Instance->activateWorkbench(start.c_str());
-        mw->loadWindowSettings();
         PySys_SetObject("stdin", input);
     }
     else {
