@@ -700,6 +700,7 @@ Py::Object ObjectIdentifier::Component::get(const Py::Object &pyobj) const {
         if(!pyobj.hasAttr(getName()))
             FC_THROWM(Base::AttributeError, "No attribute named '" << getName() << "'");
         res = pyobj.getAttr(getName());
+        CallableExpression::securityCheck(pyobj.ptr(), res.ptr());
     } else if(isArray()) {
         if(pyobj.isMapping())
             res = Py::Mapping(pyobj).getItem(Py::Int(begin));
@@ -728,6 +729,8 @@ void ObjectIdentifier::Component::set(Py::Object &pyobj, const Py::Object &value
     if(isSimple()) {
         if (getName() == "__module__" || getName() == "__self__")
             FC_THROWM(Base::RuntimeError, "Cannot modify attribute " << getName());
+        if (PyModule_Check(pyobj.ptr()))
+            FC_THROWM(Base::RuntimeError, "Cannot modify module attribute " << getName());
         if(PyObject_SetAttrString(*pyobj, getName().c_str(), *value) == -1)
             Base::PyException::ThrowException();
     } else if(isArray()) {

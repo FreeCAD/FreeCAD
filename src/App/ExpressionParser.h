@@ -668,6 +668,8 @@ public:
     std::string getDocString() const;
     const std::string &getName() const {return name;}
 
+    static void securityCheck(PyObject *pyobj, PyObject *attr);
+
 protected:
     CallableExpression(const App::DocumentObject *_owner):FunctionExpression(_owner) {}
 
@@ -677,7 +679,7 @@ protected:
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
 
-    void securityCheck(PyObject *pyobj) const;
+    static void securityCheck(PyObject *pyobj=nullptr, const Expression *expr=nullptr);
 
 protected:
     ExpressionPtr expr;

@@ -2443,6 +2443,7 @@ public:
 static std::unordered_map<PyObjectNode::Key,
                           PyObjectNode,
                           boost::hash<PyObjectNode::Key> > _Cache;
+PyObjectNode *_LastCache;
 
 static bi::list<PyObjectNode> _CacheList;
 static auto _CacheListBegin = _CacheList.end();
@@ -2469,6 +2470,7 @@ void PyObjectNode::clearCache()
         it = _CacheList.erase(it);
         _Cache.erase(node.key());
     }
+    _LastCache = nullptr;
 }
 
 void PyObjectNode::init(PyObject *_pyobj, const char *_msg, const char *_info)
@@ -2633,40 +2635,45 @@ public:
         const char *name = nullptr;
         std::string _name;
 
-        if (PyObject_TypeCheck(pyobj, &BaseClassPy::Type)) {
-            auto pybase = static_cast<BaseClassPy*>(pyobj);
-            _name = pybase->getModule();
-            name = _name.c_str();
-        }
-
-        if (!name || !name[0]) {
-            Py::Object pymod;
-            PyObject * module = PyObject_CallFunction(this->inspect.ptr(), "O", pyobj);
-            if (module) {
-                pymod = Py::asObject(module);
-                name = PyModule_GetName(module);
+        if (PyModule_Check(pyobj)) {
+            name = PyModule_GetName(pyobj);
+        } else {
+            if (PyObject_TypeCheck(pyobj, &BaseClassPy::Type)) {
+                auto pybase = static_cast<BaseClassPy*>(pyobj);
+                _name = pybase->getModule();
+                name = _name.c_str();
             }
+
             if (!name || !name[0]) {
-                name = nullptr;
-                module = nullptr;
-                Base::PyException e;
-                if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_TRACE))
-                    e.ReportException();
-                PyObject * self = PyObject_GetAttrString(pyobj, "__self__");
-                if (self && PyObject_TypeCheck(self, &BaseClassPy::Type)) {
-                    auto pybase = static_cast<BaseClassPy*>(self);
-                    _name = pybase->getModule();
-                    name = _name.c_str();
-                } else if (self) {
-                    module = PyObject_CallFunction(this->inspect.ptr(), "O", self->ob_type);
-                    if (module) {
-                        pymod = Py::asObject(module);
-                        name = PyModule_GetName(module);
+                Py::Object pymod;
+                PyObject * module = PyObject_CallFunction(this->inspect.ptr(), "O", pyobj);
+                if (module) {
+                    pymod = Py::asObject(module);
+                    name = PyModule_GetName(module);
+                }
+                if (!name || !name[0]) {
+                    name = nullptr;
+                    module = nullptr;
+                    Base::PyException e;
+                    if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_TRACE))
+                        e.ReportException();
+                    PyObject * self = PyObject_GetAttrString(pyobj, "__self__");
+                    if (self && PyObject_TypeCheck(self, &BaseClassPy::Type)) {
+                        auto pybase = static_cast<BaseClassPy*>(self);
+                        _name = pybase->getModule();
+                        name = _name.c_str();
+                    } else if (self) {
+                        module = PyObject_CallFunction(this->inspect.ptr(), "O", self->ob_type);
+                        if (module) {
+                            pymod = Py::asObject(module);
+                            name = PyModule_GetName(module);
+                        }
+                        Py_DECREF(self);
                     }
-                    Py_DECREF(self);
                 }
             }
         }
+
         if (!name || !name[0]) {
             Base::PyException e;
             if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_TRACE))
@@ -4394,7 +4401,7 @@ Py::Object CallableExpression::evaluate(PyObject *pyargs, PyObject *pykwds) {
     return res;
 }
 
-void CallableExpression::securityCheck(PyObject *pyobj) const
+void CallableExpression::securityCheck(PyObject *pyobj, const Expression *expr)
 {
     if(_Cache.empty()) {
         const char *msg = "Python built-in blocked";
@@ -4414,17 +4421,34 @@ void CallableExpression::securityCheck(PyObject *pyobj) const
         PyObjectNode::initDone();
     }
 
-    if (PyObject_TypeCheck(pyobj, &ExpressionPy::Type))
+    if (_LastCache && _LastCache->pyobj == pyobj) {
+        if (_LastCache->msg)
+            _EXPR_THROW(_LastCache->msg << _LastCache->info, expr);
+        return;
+    }
+
+    if (!pyobj || PyObject_TypeCheck(pyobj, &ExpressionPy::Type))
         return;
 
     if (ExpressionFunctionCallDisabler::isFunctionCallDisabled())
-        __EXPR_THROW(ExpressionFunctionDisabledException, "Function call disabled", this);
+        __EXPR_THROW(ExpressionFunctionDisabledException, "Function call disabled", expr);
 
     PyObjectNode & node = _Cache[std::make_pair(pyobj, pyobj->ob_type)];
     if (!node.isCached())
         ImportModules::instance()->checkCallable(node, pyobj);
     if (node.msg)
-        EXPR_THROW(node.msg << node.info);
+        _EXPR_THROW(node.msg << node.info, expr);
+}
+
+void CallableExpression::securityCheck(PyObject *pyobj, PyObject *pyattr)
+{
+    if (!pyobj || !pyattr || !PyCallable_Check(pyattr) || !PyModule_Check(pyobj))
+        return;
+    securityCheck(); // to init _Cache
+    PyObjectNode & node = _Cache[std::make_pair(pyattr, pyattr->ob_type)];
+    if (!node.isCached())
+        ImportModules::instance()->checkCallable(node, pyobj); // actually we are checking the module
+    _LastCache = &node;
 }
 
 Py::Object CallableExpression::_getPyValue(int *) const {
@@ -4553,7 +4577,7 @@ Py::Object CallableExpression::_getPyValue(int *) const {
            EXPR_THROW("Expects Python callable.");
     }
 
-    securityCheck(pyobj.ptr());
+    securityCheck(pyobj.ptr(), this);
 
     int count=0;
     std::vector<Py::Sequence,ExpressionAllocator(Py::Sequence) > seqs;
