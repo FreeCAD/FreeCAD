@@ -99,7 +99,7 @@ class Move(gui_base_original.Modifier):
                                       spaces=True,
                                       noarchchild=True)
         self.selected_subelements = Gui.Selection.getSelectionEx()
-        self.ui.lineUi(self.name)
+        self.ui.lineUi(self.name, icon="Draft_Move")
         self.ui.modUi()
         if self.copymode:
             self.ui.isCopy.setChecked(True)

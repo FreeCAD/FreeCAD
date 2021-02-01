@@ -86,7 +86,7 @@ class Mirror(gui_base_original.Modifier):
             self.view.removeEventCallback("SoEvent", self.call)
 
         self.sel = Gui.Selection.getSelection()
-        self.ui.pointUi(self.name)
+        self.ui.pointUi(title=self.name, icon="Draft_Mirror")
         self.ui.modUi()
         self.ui.xValue.setFocus()
         self.ui.xValue.selectAll()

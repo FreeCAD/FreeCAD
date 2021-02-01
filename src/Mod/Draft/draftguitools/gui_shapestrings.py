@@ -96,7 +96,7 @@ class ShapeString(gui_base_original.Creator):
                 self.dialog = None
                 self.text = ''
                 self.ui.sourceCmd = self
-                self.ui.pointUi(name)
+                self.ui.pointUi(title=name, icon="Draft_ShapeString")
                 self.active = True
                 self.call = self.view.addEventCallback("SoEvent", self.action)
                 self.ssBase = None

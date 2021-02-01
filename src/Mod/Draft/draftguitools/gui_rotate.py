@@ -101,7 +101,6 @@ class Rotate(gui_base_original.Modifier):
         self.center = None
         self.ui.rotateSetCenterUi()
         self.ui.modUi()
-        self.ui.setTitle(translate("draft", "Rotate"))
         self.arctrack = trackers.arcTracker()
         self.call = self.view.addEventCallback("SoEvent", self.action)
         _msg(translate("draft", "Pick rotation center"))

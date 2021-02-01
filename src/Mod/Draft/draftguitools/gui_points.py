@@ -75,7 +75,7 @@ class Point(gui_base_original.Creator):
                                     upv)
         self.point = None
         if self.ui:
-            self.ui.pointUi()
+            self.ui.pointUi(icon="Draft_Point")
             self.ui.continueCmd.show()
         # adding 2 callback functions
         self.callbackClick = self.view.addEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), self.click)
