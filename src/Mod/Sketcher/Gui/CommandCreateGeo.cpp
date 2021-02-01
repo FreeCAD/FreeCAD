@@ -5063,11 +5063,17 @@ namespace SketcherGui {
 class DrawSketchHandlerFillet: public DrawSketchHandler
 {
 public:
-    DrawSketchHandlerFillet(int filletType) : filletType(filletType), Mode(STATUS_SEEK_First), firstCurve(0) {}
+    enum FILLET_TYPE {
+        FILLET_TYPE_Original,
+        FILLET_TYPE_Point
+    };
+
+    DrawSketchHandlerFillet(FILLET_TYPE filletType) : filletType(filletType), Mode(STATUS_SEEK_First), firstCurve(0) {}
     virtual ~DrawSketchHandlerFillet()
     {
         Gui::Selection().rmvSelectionGate();
     }
+
     enum SelectMode{
         STATUS_SEEK_First,
         STATUS_SEEK_Second
@@ -5283,7 +5289,7 @@ CmdSketcherCreateFillet::CmdSketcherCreateFillet()
 void CmdSketcherCreateFillet::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFillet(0));
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFillet(DrawSketchHandlerFillet::FILLET_TYPE_Original));
 }
 
 bool CmdSketcherCreateFillet::isActive(void)
@@ -5312,7 +5318,7 @@ CmdSketcherCreatePointFillet::CmdSketcherCreatePointFillet()
 void CmdSketcherCreatePointFillet::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFillet(1));
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFillet(DrawSketchHandlerFillet::FILLET_TYPE_Point));
 }
 
 bool CmdSketcherCreatePointFillet::isActive(void)
@@ -5332,7 +5338,7 @@ CmdSketcherCompCreateFillets::CmdSketcherCompCreateFillets()
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Fillets");
-    sToolTipText    = QT_TR_NOOP("Joins lines with a smooth arc");
+    sToolTipText    = QT_TR_NOOP("Create a fillet between two lines");
     sWhatsThis      = "Sketcher_CompCreateFillets";
     sStatusTip      = sToolTipText;
     eType           = ForEdit;
@@ -5345,9 +5351,9 @@ CmdSketcherCompCreateFillets::CmdSketcherCompCreateFillets()
 void CmdSketcherCompCreateFillets::activated(int iMsg)
 {
     if (iMsg == 0) {
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFillet(0));
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFillet(DrawSketchHandlerFillet::FILLET_TYPE_Original));
     } else if (iMsg == 1) {
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFillet(1));
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFillet(DrawSketchHandlerFillet::FILLET_TYPE_Point));
     } else {
         return;
     }
@@ -5371,7 +5377,7 @@ Gui::Action * CmdSketcherCompCreateFillets::createAction(void)
     oldFillet->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateFillet"));
 
     QAction* pointFillet = pcAction->addAction(QString());
-    pointFillet->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateFillet"));
+    pointFillet->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreatePointFillet"));
 
     _pcAction = pcAction;
     languageChange();
@@ -5383,7 +5389,7 @@ Gui::Action * CmdSketcherCompCreateFillets::createAction(void)
     return pcAction;
 }
 
-void CmdSketcherCompCreateFillets::updateAction(int mode)
+void CmdSketcherCompCreateFillets::updateAction(int __attribute__((unused))mode)
 {
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
     if (!pcAction)
@@ -5391,14 +5397,9 @@ void CmdSketcherCompCreateFillets::updateAction(int mode)
 
     QList<QAction*> a = pcAction->actions();
     int index = pcAction->property("defaultAction").toInt();
-    switch (mode) {
-    case Normal:
-    case Construction: // In case we ever decide we need construction-themed fillet icons
-        a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateFillet"));
-        a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateFillet"));
-        getAction()->setIcon(a[index]->icon());
-        break;
-    }
+    a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateFillet"));
+    a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreatePointFillet"));
+    getAction()->setIcon(a[index]->icon());
 }
 
 void CmdSketcherCompCreateFillets::languageChange()
