@@ -69,6 +69,7 @@ public:
     Base::Quantity getDiameter() const;
     long   getThreadDirection() const;
     long   getHoleCutType() const;
+    bool   getHoleCutCustomValues() const;
     Base::Quantity getHoleCutDiameter() const;
     Base::Quantity getHoleCutDepth() const;
     Base::Quantity getHoleCutCountersinkAngle() const;
@@ -94,6 +95,7 @@ private Q_SLOTS:
     void threadDiameterChanged(double value);
     void threadDirectionChanged();
     void holeCutTypeChanged(int index);
+    void holeCutCustomValuesChanged();
     void holeCutDiameterChanged(double value);
     void holeCutDepthChanged(double value);
     void holeCutCountersinkAngleChanged(double value);
