@@ -773,9 +773,6 @@ void Application::exportTo(const char* FileName, const char* DocName, const char
             std::string code = str.str();
             // the original file name is required
             Gui::Command::runCommand(Gui::Command::App, code.c_str());
-            // search for a module that is able to open the exported file because otherwise
-            // it doesn't need to be added to the recent files list (#0002047)
-            std::map<std::string, std::string> importMap = App::GetApplication().getImportFilters(te.c_str());
 
             auto parameterGroup = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
             bool addToRecent = parameterGroup->GetBool("RecentIncludesExported", false);
