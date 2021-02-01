@@ -128,6 +128,7 @@
         <file>icons/geometry/Sketcher_CreateElliptical_Arc.svg</file>
         <file>icons/geometry/Sketcher_CreateElliptical_Arc_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateFillet.svg</file>
+        <file>icons/geometry/Sketcher_CreatePointFillet.svg</file>
         <file>icons/geometry/Sketcher_CreateHeptagon.svg</file>
         <file>icons/geometry/Sketcher_CreateHeptagon_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateHexagon.svg</file>
