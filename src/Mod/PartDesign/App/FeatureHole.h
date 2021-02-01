@@ -57,6 +57,7 @@ public:
     App::PropertyLength         Diameter;
     App::PropertyEnumeration    ThreadDirection;
     App::PropertyEnumeration    HoleCutType;
+    App::PropertyBool           HoleCutCustomValues;
     App::PropertyLength         HoleCutDiameter;
     App::PropertyLength         HoleCutDepth;
     App::PropertyAngle          HoleCutCountersinkAngle;

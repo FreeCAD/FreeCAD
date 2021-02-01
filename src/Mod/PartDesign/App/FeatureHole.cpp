@@ -612,6 +612,8 @@ Hole::Hole()
     ADD_PROPERTY_TYPE(HoleCutType, (0L), "Hole", App::Prop_None, "Head cut type");
     HoleCutType.setEnums(HoleCutType_None_Enums);
 
+    ADD_PROPERTY_TYPE(HoleCutCustomValues, (false), "Hole", App::Prop_None, "Custom cut values");
+
     ADD_PROPERTY_TYPE(HoleCutDiameter, (0.0), "Hole", App::Prop_None, "Head cut diameter");
 
     ADD_PROPERTY_TYPE(HoleCutDepth, (0.0), "Hole", App::Prop_None, "Head cut deth");
@@ -684,6 +686,8 @@ void Hole::updateHoleCutParams()
             }
             if (HoleCutDepth.getValue() == 0.0)
                 HoleCutDepth.setValue(dimen.depth);
+            HoleCutDiameter.setReadOnly(false);
+            HoleCutDepth.setReadOnly(false);
             HoleCutCountersinkAngle.setReadOnly(true);
         }
         else if (holeCutType == "Countersink") {
@@ -702,6 +706,8 @@ void Hole::updateHoleCutParams()
             if (HoleCutCountersinkAngle.getValue() == 0.0) {
                 HoleCutCountersinkAngle.setValue(counter.angle);
             }
+            HoleCutDiameter.setReadOnly(false);
+            HoleCutDepth.setReadOnly(false);
             HoleCutCountersinkAngle.setReadOnly(false);
         }
 
@@ -718,9 +724,31 @@ void Hole::updateHoleCutParams()
                     // valid values for visual feedback
                     HoleCutDiameter.setValue(Diameter.getValue() + 0.1);
                     HoleCutDepth.setValue(0.1);
+                    // we force custom values since there are no normed ones
+                    HoleCutCustomValues.setReadOnly(true);
+                    // important to set only if not already true, to avoid loop call of updateHoleCutParams()
+                    if (!HoleCutCustomValues.getValue()) {
+                        HoleCutCustomValues.setValue(true);
+                        HoleCutDiameter.setReadOnly(false);
+                        HoleCutDepth.setReadOnly(false);
+                    }
                 } else {
-                    HoleCutDiameter.setValue(dimen.diameter);
-                    HoleCutDepth.setValue(dimen.depth);
+                    // set normed values if not overwritten or if previously there
+                    // were no normed values available and thus HoleCutCustomValues is checked and read-only
+                    if (!HoleCutCustomValues.getValue()
+                        || (HoleCutCustomValues.getValue() && HoleCutCustomValues.isReadOnly())) {
+                        HoleCutDiameter.setValue(dimen.diameter);
+                        HoleCutDepth.setValue(dimen.depth);
+                        HoleCutDiameter.setReadOnly(true);
+                        HoleCutDepth.setReadOnly(true);
+                        if (HoleCutCustomValues.getValue() && HoleCutCustomValues.isReadOnly())
+                            HoleCutCustomValues.setValue(false);
+                    }
+                    else {
+                        HoleCutDiameter.setReadOnly(false);
+                        HoleCutDepth.setReadOnly(false);
+                    }
+                    HoleCutCustomValues.setReadOnly(false);
                 }
             } else if (counter.cut_type == CutDimensionSet::Countersink) {
                 const CounterSinkDimension &dimen = counter.get_sink(threadSize);
@@ -728,12 +756,37 @@ void Hole::updateHoleCutParams()
                     // valid values for visual feedback
                     HoleCutDiameter.setValue(Diameter.getValue() + 0.1);
                     // there might be an angle of zero (if no norm exists for the size)
-                     if (HoleCutCountersinkAngle.getValue() == 0.0) {
+                    if (HoleCutCountersinkAngle.getValue() == 0.0) {
                         HoleCutCountersinkAngle.setValue(counter.angle);
                     }
+                    // we force custom values since there are no normed ones
+                    HoleCutCustomValues.setReadOnly(true);
+                    // important to set only if not already true, to avoid loop call of updateHoleCutParams()
+                    if (!HoleCutCustomValues.getValue()) {
+                        HoleCutCustomValues.setValue(true);
+                        HoleCutDiameter.setReadOnly(false);
+                        HoleCutDepth.setReadOnly(false);
+                        HoleCutCountersinkAngle.setReadOnly(false);
+                    }
                 } else {
-                    HoleCutDiameter.setValue(dimen.diameter);
-                    HoleCutCountersinkAngle.setValue(counter.angle);
+                    // set normed values if not overwritten or if previously there
+                    // were no normed values available and thus HoleCutCustomValues is checked and read-only
+                    if (!HoleCutCustomValues.getValue()
+                        || (HoleCutCustomValues.getValue() && HoleCutCustomValues.isReadOnly())) {
+                        HoleCutDiameter.setValue(dimen.diameter);
+                        HoleCutDiameter.setReadOnly(true);
+                        HoleCutDepth.setReadOnly(true);
+                        HoleCutCountersinkAngle.setValue(counter.angle);
+                        HoleCutCountersinkAngle.setReadOnly(true);
+                        if (HoleCutCustomValues.getValue() && HoleCutCustomValues.isReadOnly())
+                            HoleCutCustomValues.setValue(false);
+                    }
+                    else {
+                        HoleCutDiameter.setReadOnly(false);
+                        HoleCutDepth.setReadOnly(false);
+                        HoleCutCountersinkAngle.setReadOnly(false);
+                    }
+                    HoleCutCustomValues.setReadOnly(false);
                 }
             }
         }
@@ -745,6 +798,8 @@ void Hole::updateHoleCutParams()
         else if (holeCutType == "Cheesehead (deprecated)") {
             HoleCutDiameter.setValue(diameterVal * 1.6);
             HoleCutDepth.setValue(diameterVal * 0.6);
+            HoleCutDiameter.setReadOnly(false);
+            HoleCutDepth.setReadOnly(false);
         }
         else if (holeCutType == "Countersink socket screw (deprecated)") {
             HoleCutDiameter.setValue(diameterVal * 2.0);
@@ -752,10 +807,15 @@ void Hole::updateHoleCutParams()
             if (HoleCutCountersinkAngle.getValue() == 0.0) {
                 HoleCutCountersinkAngle.setValue(90.0);
             }
+            HoleCutDiameter.setReadOnly(false);
+            HoleCutDepth.setReadOnly(false);
+            HoleCutCountersinkAngle.setReadOnly(false);
         }
         else if (holeCutType == "Cap screw (deprecated)") {
             HoleCutDiameter.setValue(diameterVal * 1.5);
             HoleCutDepth.setValue(diameterVal * 1.25);
+            HoleCutDiameter.setReadOnly(false);
+            HoleCutDepth.setReadOnly(false);
         }
     }
     else { // we have an UTS profile or none
@@ -771,6 +831,8 @@ void Hole::updateHoleCutParams()
             }
             if (HoleCutDepth.getValue() == 0.0)
                 HoleCutDepth.setValue(diameterVal * 0.9);
+            HoleCutDiameter.setReadOnly(false);
+            HoleCutDepth.setReadOnly(false);
         }
         else if (holeCutType == "Countersink") {
             if (HoleCutDiameter.getValue() == 0.0 || HoleCutDiameter.getValue() <= diameterVal) {
@@ -787,6 +849,9 @@ void Hole::updateHoleCutParams()
                 else
                     HoleCutCountersinkAngle.setValue(90.0);
             }
+            HoleCutDiameter.setReadOnly(false);
+            HoleCutDepth.setReadOnly(false);
+            HoleCutCountersinkAngle.setReadOnly(false);
         }
     }
 }
@@ -1062,24 +1127,37 @@ void Hole::onChanged(const App::Property *prop)
         }
 
         if (holeCutType == "None") {
+            HoleCutCustomValues.setReadOnly(true);
             HoleCutDiameter.setReadOnly(true);
             HoleCutDepth.setReadOnly(true);
             HoleCutCountersinkAngle.setReadOnly(true);
         }
         else if (holeCutType == "Counterbore") {
+            HoleCutCustomValues.setReadOnly(true);
             HoleCutDiameter.setReadOnly(false);
             HoleCutDepth.setReadOnly(false);
             HoleCutCountersinkAngle.setReadOnly(true);
         }
         else if (holeCutType == "Countersink") {
+            HoleCutCustomValues.setReadOnly(true);
             HoleCutDiameter.setReadOnly(false);
             HoleCutDepth.setReadOnly(false);
             HoleCutCountersinkAngle.setReadOnly(false);
         }
         else { // screw definition
-            HoleCutDiameter.setReadOnly(false);
-            HoleCutDepth.setReadOnly(false);
-            HoleCutCountersinkAngle.setReadOnly(false);
+            HoleCutCustomValues.setReadOnly(false);
+            if (HoleCutCustomValues.getValue()) {
+                HoleCutDiameter.setReadOnly(false);
+                HoleCutDepth.setReadOnly(false);
+                // we must not set HoleCutCountersinkAngle here because the info if this can
+                // be enabled is first available in updateHoleCutParams and thus handled there
+                updateHoleCutParams();
+            }
+            else {
+                HoleCutDiameter.setReadOnly(true);
+                HoleCutDepth.setReadOnly(true);
+                HoleCutCountersinkAngle.setReadOnly(true);
+            }
         }
 
         // Signal changes to these
@@ -1161,32 +1239,17 @@ void Hole::onChanged(const App::Property *prop)
         updateHoleCutParams();
     }
     else if (prop == &HoleCutType) {
-        std::string holeCutType;
-        if (HoleCutType.isValid())
-            holeCutType = HoleCutType.getValueAsString();
-        if (holeCutType == "None") {
-            HoleCutDiameter.setReadOnly(true);
-            HoleCutDepth.setReadOnly(true);
-            HoleCutCountersinkAngle.setReadOnly(true);
-        }
-        else if (holeCutType == "Counterbore") {
-            HoleCutDiameter.setReadOnly(false);
-            HoleCutDepth.setReadOnly(false);
-            HoleCutCountersinkAngle.setReadOnly(true);
-        }
-        else if (holeCutType == "Countersink") {
-            HoleCutDiameter.setReadOnly(false);
-            HoleCutDepth.setReadOnly(false);
-            HoleCutCountersinkAngle.setReadOnly(false);
-        }
-        else { // screw definition
-            HoleCutDiameter.setReadOnly(false);
-            HoleCutDepth.setReadOnly(false);
-            HoleCutCountersinkAngle.setReadOnly(false);
-        }
         ProfileBased::onChanged(&HoleCutDiameter);
         ProfileBased::onChanged(&HoleCutDepth);
         ProfileBased::onChanged(&HoleCutCountersinkAngle);
+
+        // the read-only states are set in updateHoleCutParams()
+        updateHoleCutParams();
+    }
+    else if (prop == &HoleCutCustomValues) {
+        // when going back to standardized values, we must recalculate
+        // also to find out if HoleCutCountersinkAngle can be ReadOnly
+        // both an also the read-only states is done in updateHoleCutParams()
         updateHoleCutParams();
     }
     else if (prop == &DepthType) {

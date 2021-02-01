@@ -115,34 +115,16 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *pare
         ++cursor;
     }
     ui->HoleCutType->setCurrentIndex(pcHole->HoleCutType.getValue());
+    ui->HoleCutCustomValues->setChecked(pcHole->HoleCutCustomValues.getValue());
+    ui->HoleCutCustomValues->setDisabled(pcHole->HoleCutCustomValues.isReadOnly());
+    // HoleCutDiameter must not be smaller or equal than the Diameter
+    ui->HoleCutDiameter->setMinimum(pcHole->Diameter.getValue() + 0.1);
     ui->HoleCutDiameter->setValue(pcHole->HoleCutDiameter.getValue());
+    ui->HoleCutDiameter->setDisabled(pcHole->HoleCutDiameter.isReadOnly());
     ui->HoleCutDepth->setValue(pcHole->HoleCutDepth.getValue());
+    ui->HoleCutDepth->setDisabled(pcHole->HoleCutDepth.isReadOnly());
     ui->HoleCutCountersinkAngle->setValue(pcHole->HoleCutCountersinkAngle.getValue());
-
-    std::string holeCutType;
-    if (pcHole->HoleCutType.isValid())
-        holeCutType = pcHole->HoleCutType.getValueAsString();
-
-    if (holeCutType == "None") {
-        ui->HoleCutDiameter->setEnabled(false);
-        ui->HoleCutDepth->setEnabled(false);
-        ui->HoleCutCountersinkAngle->setEnabled(false);
-    }
-    else if (holeCutType == "Counterbore") {
-        ui->HoleCutDiameter->setEnabled(true);
-        ui->HoleCutDepth->setEnabled(true);
-        ui->HoleCutCountersinkAngle->setEnabled(false);
-    }
-    else if (holeCutType == "Countersink") {
-        ui->HoleCutDiameter->setEnabled(true);
-        ui->HoleCutDepth->setEnabled(true);
-        ui->HoleCutCountersinkAngle->setEnabled(true);
-    }
-    else { // screw definition
-        ui->HoleCutDiameter->setEnabled(true);
-        ui->HoleCutDepth->setEnabled(true);
-        ui->HoleCutCountersinkAngle->setEnabled(true);
-    }
+    ui->HoleCutCountersinkAngle->setDisabled(pcHole->HoleCutCountersinkAngle.isReadOnly());
 
     ui->DepthType->setCurrentIndex(pcHole->DepthType.getValue());
     ui->Depth->setValue(pcHole->Depth.getValue());
@@ -189,6 +171,7 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *pare
     connect(ui->directionRightHand, SIGNAL(clicked(bool)), this, SLOT(threadDirectionChanged()));
     connect(ui->directionLeftHand, SIGNAL(clicked(bool)), this, SLOT(threadDirectionChanged()));
     connect(ui->HoleCutType, SIGNAL(currentIndexChanged(int)), this, SLOT(holeCutTypeChanged(int)));
+    connect(ui->HoleCutCustomValues, SIGNAL(clicked(bool)), this, SLOT(holeCutCustomValuesChanged()));
     connect(ui->HoleCutDiameter, SIGNAL(valueChanged(double)), this, SLOT(holeCutDiameterChanged(double)));
     connect(ui->HoleCutDepth, SIGNAL(valueChanged(double)), this, SLOT(holeCutDepthChanged(double)));
     connect(ui->HoleCutCountersinkAngle, SIGNAL(valueChanged(double)), this, SLOT(holeCutCountersinkAngleChanged(double)));
@@ -282,8 +265,65 @@ void TaskHoleParameters::holeCutTypeChanged(int index)
     // therefore reset it, it will be reset to sensible values by setting the new HoleCutType 
     pcHole->HoleCutDepth.setValue(0.0);
 
+    // when holeCutType was changed, reset HoleCutCustomValues to false because it should
+    // be a purpose decision to overwrite the normed values
+    // we will handle the case that there is no normed value later in this routine
+    ui->HoleCutCustomValues->setChecked(false);
+    pcHole->HoleCutCustomValues.setValue(false);
+
     pcHole->HoleCutType.setValue(index);
+
+    // recompute to get the info about the HoleCutType properties
     recomputeFeature();
+
+    // apply the result to the widgets
+    ui->HoleCutCustomValues->setDisabled(pcHole->HoleCutCustomValues.isReadOnly());
+    ui->HoleCutCustomValues->setChecked(pcHole->HoleCutCustomValues.getValue());
+
+    // HoleCutCustomValues is only enabled for screw definitions
+    // we must do this after recomputeFeature() because this gives us the info if 
+    // the type is a countersink and thus if HoleCutCountersinkAngle can be enabled
+    std::string HoleCutTypeString = pcHole->HoleCutType.getValueAsString();
+    if (HoleCutTypeString == "None" || HoleCutTypeString == "Counterbore"
+        || HoleCutTypeString == "Countersink") {
+        ui->HoleCutCustomValues->setEnabled(false);
+    }
+    else { // screw definition
+        // we can have the case that we have no normed values
+        // in this case HoleCutCustomValues is read-only AND true
+        if (ui->HoleCutCustomValues->isChecked()) {
+            ui->HoleCutDiameter->setEnabled(true);
+            ui->HoleCutDepth->setEnabled(true);
+            if (!pcHole->HoleCutCountersinkAngle.isReadOnly())
+                ui->HoleCutCountersinkAngle->setEnabled(true);
+        }
+        else {
+            ui->HoleCutDiameter->setEnabled(false);
+            ui->HoleCutDepth->setEnabled(false);
+            ui->HoleCutCountersinkAngle->setEnabled(false);
+        }
+    }
+}
+
+void TaskHoleParameters::holeCutCustomValuesChanged()
+{
+    PartDesign::Hole* pcHole = static_cast<PartDesign::Hole*>(vp->getObject());
+
+    pcHole->HoleCutCustomValues.setValue(ui->HoleCutCustomValues->isChecked());
+
+    if (ui->HoleCutCustomValues->isChecked()) {
+        ui->HoleCutDiameter->setEnabled(true);
+        ui->HoleCutDepth->setEnabled(true);
+        if (!pcHole->HoleCutCountersinkAngle.isReadOnly())
+            ui->HoleCutCountersinkAngle->setEnabled(true);
+    }
+    else {
+        ui->HoleCutDiameter->setEnabled(false);
+        ui->HoleCutDepth->setEnabled(false);
+        ui->HoleCutCountersinkAngle->setEnabled(false);
+    }
+
+    recomputeFeature();   
 }
 
 void TaskHoleParameters::holeCutDiameterChanged(double value)
@@ -482,6 +522,9 @@ void TaskHoleParameters::threadTypeChanged(int index)
     if (holeCutIndex > -1)
         ui->HoleCutType->setCurrentIndex(holeCutIndex);
 
+    // we must set the read-only state according to the new HoleCutType
+    holeCutTypeChanged(ui->HoleCutType->currentIndex());
+
     recomputeFeature();
 }
 
@@ -512,6 +555,10 @@ void TaskHoleParameters::threadDiameterChanged(double value)
     PartDesign::Hole* pcHole = static_cast<PartDesign::Hole*>(vp->getObject());
 
     pcHole->Diameter.setValue(value);
+
+    // HoleCutDiameter must not be smaller or equal than the Diameter
+    ui->HoleCutDiameter->setMinimum(value + 0.1);
+
     recomputeFeature();
 }
 
@@ -824,6 +871,11 @@ long TaskHoleParameters::getHoleCutType() const
         return ui->HoleCutType->currentIndex();
 }
 
+bool TaskHoleParameters::getHoleCutCustomValues() const
+{
+    return ui->HoleCutCustomValues->isChecked();
+}
+
 Base::Quantity TaskHoleParameters::getHoleCutDiameter() const
 {
     return ui->HoleCutDiameter->value();
@@ -910,6 +962,8 @@ void TaskHoleParameters::apply()
         FCMD_OBJ_CMD(obj,"ThreadDirection = " << getThreadDirection());
     if (!pcHole->HoleCutType.isReadOnly())
         FCMD_OBJ_CMD(obj,"HoleCutType = " << getHoleCutType());
+    if (!pcHole->HoleCutCustomValues.isReadOnly())
+        FCMD_OBJ_CMD(obj, "HoleCutCustomValues = " << (getHoleCutCustomValues() ? 1 : 0));
     if (!pcHole->DepthType.isReadOnly())
         FCMD_OBJ_CMD(obj,"DepthType = " << getDepthType());
     if (!pcHole->DrillPoint.isReadOnly())
