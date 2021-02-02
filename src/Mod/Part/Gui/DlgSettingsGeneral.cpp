@@ -197,9 +197,16 @@ DlgImportExportStep::DlgImportExportStep(QWidget* parent)
 {
     ui = new Ui_DlgImportExportStep();
     ui->setupUi(this);
+
+    ui->comboBoxSchema->setItemData(0, QByteArray("AP203"));
+    ui->comboBoxSchema->setItemData(1, QByteArray("AP214CD"));
+    ui->comboBoxSchema->setItemData(2, QByteArray("AP214DIS"));
+    ui->comboBoxSchema->setItemData(3, QByteArray("AP214IS"));
+    ui->comboBoxSchema->setItemData(4, QByteArray("AP242DIS"));
+
     ui->lineEditProduct->setReadOnly(true);
-    ui->radioButtonAP203->setToolTip(tr("Configuration controlled 3D designs of mechanical parts and assemblies"));
-    ui->radioButtonAP214->setToolTip(tr("Core data for automotive mechanical design processes"));
+    //ui->radioButtonAP203->setToolTip(tr("Configuration controlled 3D designs of mechanical parts and assemblies"));
+    //ui->radioButtonAP214->setToolTip(tr("Core data for automotive mechanical design processes"));
 
     // https://tracker.dev.opencascade.org/view.php?id=25654
     ui->checkBoxPcurves->setToolTip(tr("This parameter indicates whether parametric curves (curves in parametric space of surface)\n"
@@ -253,15 +260,10 @@ void DlgImportExportStep::saveSettings()
     }
 
     // scheme
-    if (ui->radioButtonAP203->isChecked()) {
-        Interface_Static::SetCVal("write.step.schema","AP203");
-        hStepGrp->SetASCII("Scheme", "AP203");
-    }
-    else {
-        // possible values: AP214CD (1996), AP214DIS (1998), AP214IS (2002)
-        Interface_Static::SetCVal("write.step.schema","AP214IS");
-        hStepGrp->SetASCII("Scheme", "AP214IS");
-    }
+    // possible values: AP214CD (1996), AP214DIS (1998), AP214IS (2002), AP242DIS
+    QByteArray schema = ui->comboBoxSchema->itemData(ui->comboBoxSchema->currentIndex()).toByteArray();
+    Interface_Static::SetCVal("write.step.schema",schema);
+    hStepGrp->SetASCII("Scheme", schema);
 
     // header info
     hStepGrp->SetASCII("Company", ui->lineEditCompany->text().toLatin1());
@@ -299,12 +301,10 @@ void DlgImportExportStep::loadSettings()
     ui->comboBoxUnits->setCurrentIndex(unit);
 
     // scheme
-    QString ap = QString::fromStdString(hStepGrp->GetASCII("Scheme",
-        Interface_Static::CVal("write.step.schema")));
-    if (ap.startsWith(QLatin1String("AP203")))
-        ui->radioButtonAP203->setChecked(true);
-    else
-        ui->radioButtonAP214->setChecked(true);
+    QByteArray ap(hStepGrp->GetASCII("Scheme", Interface_Static::CVal("write.step.schema")).c_str());
+    int index = ui->comboBoxSchema->findData(QVariant(ap));
+    if (index >= 0)
+        ui->comboBoxSchema->setCurrentIndex(index);
 
     // header info
     ui->lineEditCompany->setText(QString::fromStdString(hStepGrp->GetASCII("Company")));
