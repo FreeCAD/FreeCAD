@@ -1150,7 +1150,7 @@ void Hole::onChanged(const App::Property *prop)
     }
     else if (prop == &ThreadSize) {
         updateDiameterParam();
-        // updateHoleCutParams() will automatcially be called because updateDiameterParam() changes &Diameter
+        // updateHoleCutParams() will later automatically be called because updateDiameterParam() changes &Diameter
     }
     else if (prop == &ThreadFit) {
         updateDiameterParam();
