@@ -119,7 +119,6 @@ bool ViewProviderPart::doubleClicked(void)
     //make the part the active one
 
     //first, check if the part is already active.
-    App::DocumentObject* activePart = nullptr;
     auto activeDoc = Gui::Application::Instance->activeDocument();
     if(!activeDoc)
         activeDoc = getDocument();
@@ -127,9 +126,12 @@ bool ViewProviderPart::doubleClicked(void)
     if(!activeView)
         return false;
 
-    activePart = activeView->getActiveObject<App::DocumentObject*> (PARTKEY);
+    App::SubObjectT sel(getObject(), "");
+    auto sels = Selection().getSelectionT("*",0,true);
+    if (sels.size() == 1 && sels[0].getSubObject() == getObject())
+        sel = sels[0];
 
-    if (activePart == this->getObject()){
+    if (activeView->isActiveObject(sel.getObject(),PARTKEY,sel.getSubName().c_str())) {
         //active part double-clicked. Deactivate.
         Gui::Command::doCommand(Gui::Command::Gui,
                 "Gui.ActiveDocument.ActiveView.setActiveObject('%s', None)",
@@ -137,10 +139,8 @@ bool ViewProviderPart::doubleClicked(void)
     } else {
         //set new active part
         Gui::Command::doCommand(Gui::Command::Gui,
-                "Gui.ActiveDocument.ActiveView.setActiveObject('%s', App.getDocument('%s').getObject('%s'))",
-                PARTKEY,
-                this->getObject()->getDocument()->getName(),
-                this->getObject()->getNameInDocument());
+                "Gui.ActiveDocument.ActiveView.setActiveObject('%s', %s, u'%s')",
+                PARTKEY, sel.getObjectPython().c_str(), sel.getSubName().c_str());
     }
 
     return true;

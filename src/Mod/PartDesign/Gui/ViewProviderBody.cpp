@@ -49,6 +49,7 @@
 #include <Gui/ViewProviderOriginFeature.h>
 #include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/MainWindow.h>
+#include <Gui/Selection.h>
 
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
@@ -251,27 +252,36 @@ bool ViewProviderBody::doubleClicked(void)
     if(!activeView) 
         return false;
 
-    if (activeView->isActiveObject(getObject(),PDBODYKEY)) {
+    App::SubObjectT sel(getObject(),"");
+    auto sels = Gui::Selection().getSelectionT("*",0,true);
+    if (sels.size() == 1 && sels[0].getSubObject() == getObject())
+        sel = sels[0];
+
+    if (activeView->isActiveObject(sel.getObject(),PDBODYKEY,sel.getSubName().c_str())) {
         //active body double-clicked. Deactivate.
         Gui::Command::doCommand(Gui::Command::Gui,
                 "Gui.ActiveDocument.ActiveView.setActiveObject('%s', None)", PDBODYKEY);
     } else {
-
         // assure the PartDesign workbench
         if(App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign")->GetBool("SwitchToWB", true))
             Gui::Command::assureWorkbench("PartDesignWorkbench");
 
-        // and set correct active objects
-        auto* part = App::Part::getPartOfObject ( getObject() );
-        if ( part && part != activeView->getActiveObject<App::Part*> ( PARTKEY ) ) {
-            Gui::Command::doCommand(Gui::Command::Gui,
-                    "Gui.ActiveDocument.ActiveView.setActiveObject('%s',%s)",
-                    PARTKEY, Gui::Command::getObjectCmd(part).c_str());
-        }
-
         Gui::Command::doCommand(Gui::Command::Gui,
-                "Gui.ActiveDocument.ActiveView.setActiveObject('%s',%s)",
-                PDBODYKEY, Gui::Command::getObjectCmd(getObject()).c_str());
+                "Gui.ActiveDocument.ActiveView.setActiveObject('%s',%s, u'%s')",
+                PDBODYKEY, sel.getObjectPython().c_str(), sel.getSubName().c_str());
+
+        auto objs = sel.getSubObjectList();
+        if (objs.size() > 1) {
+            auto parent = objs[objs.size()-2]->getLinkedObject(true);
+            if (parent->isDerivedFrom(App::Part::getClassTypeId())) {
+                objs.pop_back();
+                App::SubObjectT part(objs);
+                if (!activeView->isActiveObject(part.getObject(),PARTKEY,part.getSubName().c_str()))
+                    Gui::Command::doCommand(Gui::Command::Gui,
+                            "Gui.ActiveDocument.ActiveView.setActiveObject('%s',%s, u'%s')",
+                            PARTKEY, part.getObjectPython().c_str(), part.getSubName().c_str());
+            }
+        }
     }
 
     return true;
