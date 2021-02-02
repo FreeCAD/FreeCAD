@@ -24,7 +24,7 @@ import unittest
 import FreeCAD
 import Start
 from StartPage import StartPage
-from html.parser import HTMLParser
+import re
 
 class TestStartPage(unittest.TestCase):
     """Basic validation of the generated Start page."""
@@ -35,6 +35,7 @@ class TestStartPage(unittest.TestCase):
     def setUp(self):
         pass
 
+
     def test_all_css_placeholders_removed(self):
         """Check to see if all of the CSS placeholders have been replaced."""
         placeholders = ["BACKGROUND","BGTCOLOR","FONTFAMILY","FONTSIZE","LINKCOLOR",
@@ -44,12 +45,14 @@ class TestStartPage(unittest.TestCase):
         for placeholder in placeholders:
             self.assertNotIn (placeholder, page, "{} was not removed from the CSS".format(placeholder))
 
+
     def test_all_js_placeholders_removed(self):
         """Check to see if all of the JavaScript placeholders have been replaced."""
         placeholders = ["IMAGE_SRC_INSTALLED"]
         page = StartPage.handle()
         for placeholder in placeholders:
             self.assertNotIn (placeholder, page, "{} was not removed from the JS".format(placeholder))
+
 
     def test_all_html_placeholders_removed(self):
         """Check to see if all of the HTML placeholders have been replaced."""
@@ -69,4 +72,97 @@ class TestStartPage(unittest.TestCase):
         page = StartPage.handle()
         for placeholder in placeholders:
             self.assertNotIn (placeholder, page, "{} was not removed from the HTML".format(placeholder))
+
+
+    def test_files_do_not_contain_backslashes(self):
+        # This would be caught by the W3C validator if we didn't sanitize the filenames before sending them.
+        page = StartPage.handle()
+        fileRE = re.compile(r'"file:///(.*?)"')
+        results = fileRE.findall(string=page)
+
+        badFilenames = []
+        for result in results:
+            if result.find("\\") != -1:
+                badFilenames.append(result)
+
+        if len(badFilenames) > 0:
+            self.fail("The following filenames contain backslashes, which is prohibited in HTML: {}".format(badFilenames))
     
+
+    def test_html_validates(self):
+        # Send the generated html to the W3C validator for analysis (removing potentially-sensitive data first)
+        import urllib.request
+        import os
+        import json
+        page = self.sanitize(StartPage.handle()) # Remove potentially sensitive data
+
+        # For debugging, if you want to ensure that the sanitization worked correctly:
+        # from pathlib import Path
+        # home = str(Path.home())
+        # f=open(home+"/test.html", "w")
+        # f.write(page)
+        # f.close()
+
+        validation_url = "https://validator.w3.org/nu/?out=json"
+        data = page.encode('utf-8') # data should be bytes
+        req = urllib.request.Request(validation_url, data)
+        req.add_header("Content-type","text/html; charset=utf-8")
+        errorCount = 0
+        warningCount = 0
+        infoCount = 0
+        validationResultString = ""
+        try:
+            with urllib.request.urlopen (req) as response:
+                text = response.read()
+
+                responseJSON = json.loads(text)
+
+                for message in responseJSON["messages"]:
+                    if "type" in message:
+                        if message["type"] == "info":
+                            if "subtype" in message:
+                                if message["subtype"] == "warning":
+                                    warningCount += 1
+                                    validationResultString += "WARNING: {}\n".format(ascii(message["message"]))
+                            else:
+                                infoCount += 1
+                                validationResultString += "INFO: {}\n".format(ascii(message["message"]))
+                        elif message["type"] == "error":
+                            errorCount += 1
+                            validationResultString += "ERROR: {}\n".format(ascii(message["message"]))
+                        elif message["type"] == "non-document-error":
+                            FreeCAD.Console.PrintWarning("W3C validator returned a non-document error:\n {}".format(message))
+                            return
+
+        except urllib.error.HTTPError as e:
+            FreeCAD.Console.PrintWarning("W3C validator returned response code {}".format(e.code))
+
+        except urllib.error.URLError:
+            FreeCAD.Console.PrintWarning("Could not communicate with W3C validator")
+    
+        if errorCount > 0 or warningCount > 0:
+            StartPage.exportTestFile()
+            FreeCAD.Console.PrintWarning("HTML validation failed: Start page source written to your home directory for analysis.")
+            self.fail("W3C Validator analysis shows the Start page has {} errors and {} warnings:\n\n{}".format(errorCount, warningCount, validationResultString))
+        elif infoCount > 0:
+            FreeCAD.Console.PrintWarning("The Start page is valid HTML, but the W3C sent back {} informative messages:\n{}.".format(infoCount,validationResultString))
+
+    def sanitize (self, html):
+
+        # Anonymize all local filenames
+        fileRE = re.compile(r'"file:///.*?"')
+        html = fileRE.sub(repl=r'"file:///A/B/C"', string=html)
+
+        # Anonymize titles, which are used for mouseover text and might contain document information
+        titleRE = re.compile(r'title="[\s\S]*?"') # Some titles have newlines in them
+        html = titleRE.sub(repl=r'title="Y"', string=html)
+        
+        # Anonymize the document names, which we display in <h4> tags
+        h4RE = re.compile(r'<h4>.*?</h4>')
+        html = h4RE.sub(repl=r'<h4>Z</h4>', string=html)
+
+        # Remove any simple single-line paragraphs, which might contain document author information, file size information, etc.
+        pRE = re.compile(r'<p>[^<]*?</p>')
+        html = pRE.sub(repl=r'<p>X</p>', string=html)
+
+        return html

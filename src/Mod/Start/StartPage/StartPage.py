@@ -148,19 +148,19 @@ def getInfo(filename):
             if files[0] == "Document.xml":
                 doc = str(zfile.read(files[0]))
                 doc = doc.replace("\n"," ")
-                r = re.findall("Property name=\"CreatedBy.*?String value=\"(.*?)\"\/>",doc)
+                r = re.findall("Property name=\"CreatedBy.*?String value=\"(.*?)\"/>",doc)
                 if r:
                     author = r[0]
                     # remove email if present in author field
                     if "&lt;" in author:
                         author = author.split("&lt;")[0].strip()
-                r = re.findall("Property name=\"Company.*?String value=\"(.*?)\"\/>",doc)
+                r = re.findall("Property name=\"Company.*?String value=\"(.*?)\"/>",doc)
                 if r:
                     company = r[0]
-                r = re.findall("Property name=\"License.*?String value=\"(.*?)\"\/>",doc)
+                r = re.findall("Property name=\"License.*?String value=\"(.*?)\"/>",doc)
                 if r:
                     lic = r[0]
-                r = re.findall("Property name=\"Comment.*?String value=\"(.*?)\"\/>",doc)
+                r = re.findall("Property name=\"Comment.*?String value=\"(.*?)\"/>",doc)
                 if r:
                     descr = r[0]
                 if "thumbnails/Thumbnail.png" in files:
@@ -247,16 +247,16 @@ def buildCard(filename,method,arg=None):
             if finfo[5]:
                 infostring += "\n\n" + encode(finfo[5])
             if size:
-                result += '<a href="'+method+arg+'" title="'+infostring+'">'
                 result += '<li class="icon">'
-                result += '<img src="file:///'+image+'">'
+                result += '<a href="'+method+arg+'" title="'+infostring+'">'
+                result += '<img src="file:///'+image.replace('\\','/')+'" alt="'+encode(basename)+'">'
                 result += '<div class="caption">'
                 result += '<h4>'+encode(basename)+'</h4>'
                 result += '<p>'+encode(author)+'</p>'
                 result += '<p>'+size+'</p>'
                 result += '</div>'
-                result += '</li>'
                 result += '</a>'
+                result += '</li>'
     return result
 
 
@@ -297,6 +297,10 @@ def handle():
     HTML = HTML.replace("JS",JS)
     HTML = HTML.replace("CSS",CSS)
     HTML = encode(HTML)
+
+    # set the language
+
+    HTML = HTML.replace("BCP47_LANGUAGE",QtCore.QLocale().bcp47Name())
 
     # get the stylesheet if we are using one
 
@@ -370,17 +374,17 @@ def handle():
     rfcount = rf.GetInt("RecentFiles",0)
     SECTION_RECENTFILES = encode("<h2>"+TranslationTexts.T_RECENTFILES+"</h2>")
     SECTION_RECENTFILES += "<ul>"
-    SECTION_RECENTFILES += '<a href="LoadNew.py" title="'+encode(TranslationTexts.T_CREATENEW)+'">'
     SECTION_RECENTFILES += '<li class="icon">'
+    SECTION_RECENTFILES += '<a href="LoadNew.py" title="'+encode(TranslationTexts.T_CREATENEW)+'">'
     if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetBool("NewFileGradient",False):
-        SECTION_RECENTFILES += '<img src="file:///'+encode(iconbank["createimg"])+'">'
+        SECTION_RECENTFILES += '<img src="file:///'+encode(iconbank["createimg"]).replace('\\','/')+'" alt="'+encode(TranslationTexts.T_CREATENEW)+'">'
     else:
-        SECTION_RECENTFILES += '<img src="file:///'+os.path.join(resources_dir, "images/new_file_thumbnail.svg")+'">'
+        SECTION_RECENTFILES += '<img src="file:///'+os.path.join(resources_dir, "images/new_file_thumbnail.svg").replace('\\','/')+'" alt="'+encode(TranslationTexts.T_CREATENEW)+'">'
     SECTION_RECENTFILES += '<div class="caption">'
     SECTION_RECENTFILES += '<h4>'+encode(TranslationTexts.T_CREATENEW)+'</h4>'
     SECTION_RECENTFILES += '</div>'
-    SECTION_RECENTFILES += '</li>'
     SECTION_RECENTFILES += '</a>'
+    SECTION_RECENTFILES += '</li>'
     for i in range(rfcount):
         filename = rf.GetString("MRU%d" % (i))
         SECTION_RECENTFILES += encode(buildCard(filename,method="LoadMRU.py?MRU=",arg=str(i)))
@@ -424,14 +428,12 @@ def handle():
 
     # build IMAGE_SRC paths
 
-    HTML = HTML.replace("IMAGE_SRC_USERHUB",'file:///'+os.path.join(resources_dir, 'images/userhub.png'))
-    HTML = HTML.replace("IMAGE_SRC_POWERHUB",'file:///'+os.path.join(resources_dir, 'images/poweruserhub.png'))
-    HTML = HTML.replace("IMAGE_SRC_DEVHUB",'file:///'+os.path.join(resources_dir, 'images/developerhub.png'))
-    HTML = HTML.replace("IMAGE_SRC_MANUAL",'file:///'+os.path.join(resources_dir, 'images/manual.png'))
-    HTML = HTML.replace("IMAGE_SRC_SETTINGS",'file:///'+os.path.join(resources_dir, 'images/settings.png'))
-    imagepath= 'file:///'+os.path.join(resources_dir, 'images/installed.png')
-    imagepath = imagepath.replace('\\','/')  # replace Windows backslash with slash to make the path javascript compatible
-    HTML = HTML.replace("IMAGE_SRC_INSTALLED",imagepath)
+    HTML = HTML.replace("IMAGE_SRC_USERHUB",'file:///'+os.path.join(resources_dir, 'images/userhub.png').replace('\\','/'))
+    HTML = HTML.replace("IMAGE_SRC_POWERHUB",'file:///'+os.path.join(resources_dir, 'images/poweruserhub.png').replace('\\','/'))
+    HTML = HTML.replace("IMAGE_SRC_DEVHUB",'file:///'+os.path.join(resources_dir, 'images/developerhub.png').replace('\\','/'))
+    HTML = HTML.replace("IMAGE_SRC_MANUAL",'file:///'+os.path.join(resources_dir, 'images/manual.png').replace('\\','/'))
+    HTML = HTML.replace("IMAGE_SRC_SETTINGS",'file:///'+os.path.join(resources_dir, 'images/settings.png').replace('\\','/'))
+    HTML = HTML.replace("IMAGE_SRC_INSTALLED",'file:///'+os.path.join(resources_dir, 'images/installed.png').replace('\\','/'))
 
     # build UL_WORKBENCHES
 
@@ -481,7 +483,7 @@ def handle():
                     xpm = w.Icon
                     if "XPM" in xpm:
                         xpm = xpm.replace("\n        ","\n") # some XPMs have some indent that QT doesn't like
-                        r = [s[:-1].strip('"') for s in re.findall("(?s)\{(.*?)\};",xpm)[0].split("\n")[1:]]
+                        r = [s[:-1].strip('"') for s in re.findall("(?s){(.*?)};",xpm)[0].split("\n")[1:]]
                         p = QtGui.QPixmap(r)
                         p = p.scaled(24,24)
                         img = tempfile.mkstemp(dir=tempfolder,suffix='.png')[1]
@@ -492,7 +494,7 @@ def handle():
                     img = os.path.join(resources_dir,"images/freecad.png")
             iconbank[wb] = img
         UL_WORKBENCHES += '<li>'
-        UL_WORKBENCHES += '<img src="file:///'+img+'">&nbsp;'
+        UL_WORKBENCHES += '<img src="file:///'+img.replace('\\','/')+'" alt="'+wn+'">&nbsp;'
         UL_WORKBENCHES += '<a href="https://www.freecadweb.org/wiki/'+wn+'_Workbench">'+wn.replace("ReverseEngineering","ReverseEng")+'</a>'
         UL_WORKBENCHES += '</li>'
     UL_WORKBENCHES += '</ul>'
