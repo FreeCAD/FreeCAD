@@ -1044,16 +1044,20 @@ PyObject* SketchObjectPy::fillet(PyObject *args)
 {
     PyObject *pcObj1, *pcObj2;
     int geoId1, geoId2, posId1;
-    int trim=true, createCorner=false; // PyArg_ParseTuple wants its bool pointers to actually be ints
+    int trim=true;
+    PyObject* createCorner = Py_False;
     double radius;
 
     // Two Lines, radius
-    if (PyArg_ParseTuple(args, "iiO!O!d|pp", &geoId1, &geoId2, &(Base::VectorPy::Type), &pcObj1, &(Base::VectorPy::Type), &pcObj2, &radius, &trim, &createCorner)) {
+    if (PyArg_ParseTuple(args, "iiO!O!d|iO!", &geoId1, &geoId2, &(Base::VectorPy::Type), &pcObj1, &(Base::VectorPy::Type), &pcObj2,
+          &radius, &trim, &PyBool_Type, &createCorner)) {
+        // The i for &trim should probably have been a bool like &createCorner, but we'll leave it an int for backward
+        // compatibility (and because python will accept a bool there anyway)
 
         Base::Vector3d v1 = static_cast<Base::VectorPy*>(pcObj1)->value();
         Base::Vector3d v2 = static_cast<Base::VectorPy*>(pcObj2)->value();
 
-        if (this->getSketchObjectPtr()->fillet(geoId1, geoId2, v1, v2, radius, trim, createCorner)) {
+        if (this->getSketchObjectPtr()->fillet(geoId1, geoId2, v1, v2, radius, trim, PyObject_IsTrue(createCorner))) {
             std::stringstream str;
             str << "Not able to fillet curves with ids : (" << geoId1 << ", " << geoId2 << ") and points (" << v1.x << ", " << v1.y << ", " << v1.z << ") & "
             << "(" << v2.x << ", " << v2.y << ", " << v2.z << ")";
@@ -1065,8 +1069,9 @@ PyObject* SketchObjectPy::fillet(PyObject *args)
 
     PyErr_Clear();
     // Point, radius
-    if (PyArg_ParseTuple(args, "iid|pp", &geoId1, &posId1, &radius, &trim, &createCorner)) {
-        if (this->getSketchObjectPtr()->fillet(geoId1, (Sketcher::PointPos) posId1, radius, trim, createCorner)) {
+    if (PyArg_ParseTuple(args, "iid|iO!", &geoId1, &posId1, &radius, &trim, &PyBool_Type, &createCorner)) {
+        if (this->getSketchObjectPtr()->fillet(geoId1, (Sketcher::PointPos) posId1, radius, trim,
+              PyObject_IsTrue(createCorner))) {
             std::stringstream str;
             str << "Not able to fillet point with ( geoId: " << geoId1 << ", PointPos: " << posId1 << " )";
             PyErr_SetString(PyExc_ValueError, str.str().c_str());
