@@ -272,6 +272,7 @@ FillingPanel::FillingPanel(ViewProviderFilling* vp, Surface::Filling* obj)
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
     action->setShortcut(QString::fromLatin1("Del"));
+    action->setShortcutContext(Qt::WidgetShortcut);
     ui->listBoundary->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onDeleteEdge()));
     ui->listBoundary->setContextMenuPolicy(Qt::ActionsContextMenu);
