@@ -72,7 +72,91 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="0">
+   <item row="3" column="1">
+    <widget class="QCheckBox" name="ModelThread">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="toolTip">
+      <string>Whether the hole gets a modelled thread</string>
+     </property>
+     <property name="text">
+      <string>Model Thread</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="3" colspan="2">
+    <widget class="QCheckBox" name="UpdateView">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="toolTip">
+      <string>Live update of changes to the thread
+Note that the calculation can take some time</string>
+     </property>
+     <property name="text">
+      <string>Update view</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="QCheckBox" name="UseCustomThreadClearance">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="toolTip">
+      <string>Customize thread clearance</string>
+     </property>
+     <property name="text">
+      <string>Custom Thread Clearance</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="2" colspan="2">
+    <widget class="QLabel" name="labelThreadClearance">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>Clearance</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="4">
+    <widget class="Gui::PrefQuantitySpinBox" name="CustomThreadClearance">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string>Custom Thread clearance value</string>
+     </property>
+     <property name="unit" stdset="0">
+      <string notr="true">mm</string>
+     </property>
+     <property name="singleStep">
+      <double>0.100000000000000</double>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0">
     <widget class="QLabel" name="label_8">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
@@ -88,7 +172,7 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="1">
+   <item row="5" column="1">
     <widget class="QRadioButton" name="directionRightHand">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -107,7 +191,7 @@
      </attribute>
     </widget>
    </item>
-   <item row="5" column="1">
+   <item row="7" column="1">
     <widget class="QRadioButton" name="directionLeftHand">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -123,7 +207,7 @@
      </attribute>
     </widget>
    </item>
-   <item row="6" column="0">
+   <item row="8" column="0">
     <widget class="QLabel" name="label_4">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
@@ -136,7 +220,7 @@
      </property>
     </widget>
    </item>
-   <item row="6" column="1">
+   <item row="8" column="1">
     <widget class="QComboBox" name="ThreadSize">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -152,7 +236,7 @@
      </property>
     </widget>
    </item>
-   <item row="6" column="2">
+   <item row="8" column="2">
     <widget class="QLabel" name="label_3">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
@@ -165,7 +249,7 @@
      </property>
     </widget>
    </item>
-   <item row="6" column="4">
+   <item row="8" column="4">
     <widget class="QComboBox" name="ThreadFit">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -200,7 +284,7 @@ Only available for holes without thread</string>
      </item>
     </widget>
    </item>
-   <item row="7" column="0">
+   <item row="9" column="0">
     <widget class="QLabel" name="label_5">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
@@ -213,7 +297,7 @@ Only available for holes without thread</string>
      </property>
     </widget>
    </item>
-   <item row="7" column="1">
+   <item row="9" column="1">
     <widget class="QComboBox" name="ThreadClass">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -232,7 +316,7 @@ Only available for holes without thread</string>
      </property>
     </widget>
    </item>
-   <item row="7" column="2" colspan="2">
+   <item row="9" column="2" colspan="2">
     <widget class="QLabel" name="label_7">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
@@ -245,7 +329,7 @@ Only available for holes without thread</string>
      </property>
     </widget>
    </item>
-   <item row="7" column="4">
+   <item row="9" column="4">
     <widget class="Gui::PrefQuantitySpinBox" name="Diameter">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -270,7 +354,7 @@ Only available for holes without thread</string>
      </property>
     </widget>
    </item>
-   <item row="8" column="0">
+   <item row="10" column="0">
     <widget class="QLabel" name="label_6">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
@@ -283,7 +367,7 @@ Only available for holes without thread</string>
      </property>
     </widget>
    </item>
-   <item row="8" column="1">
+   <item row="10" column="1">
     <widget class="QComboBox" name="DepthType">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -309,7 +393,7 @@ Only available for holes without thread</string>
      </item>
     </widget>
    </item>
-   <item row="8" column="2" colspan="3">
+   <item row="10" column="2" colspan="3">
     <widget class="Gui::PrefQuantitySpinBox" name="Depth">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -322,14 +406,66 @@ Only available for holes without thread</string>
      </property>
     </widget>
    </item>
-   <item row="9" column="0">
+   <item row="11" column="0">
+    <widget class="QLabel" name="labelThreadDepth">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>Thread Depth</string>
+     </property>
+    </widget>
+   </item>
+   <item row="11" column="1">
+    <widget class="QComboBox" name="ThreadDepthType">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <item>
+      <property name="text">
+       <string>Automatic</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Dimension</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="11" column="2" colspan="3">
+    <widget class="Gui::PrefQuantitySpinBox" name="ThreadDepth">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="unit" stdset="0">
+      <string notr="true">mm</string>
+     </property>
+    </widget>
+   </item>
+   <item row="12" column="0">
     <widget class="QLabel" name="label_14">
      <property name="text">
       <string>&lt;b&gt;Hole cut&lt;/b&gt;</string>
      </property>
     </widget>
    </item>
-   <item row="10" column="0">
+   <item row="13" column="0">
     <widget class="QLabel" name="label">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
@@ -342,7 +478,7 @@ Only available for holes without thread</string>
      </property>
     </widget>
    </item>
-   <item row="10" column="1" colspan="4">
+   <item row="13" column="1" colspan="4">
     <widget class="QComboBox" name="HoleCutType">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -361,7 +497,7 @@ Only available for holes without thread</string>
      </property>
     </widget>
    </item>
-   <item row="11" column="1">
+   <item row="14" column="1">
     <widget class="QCheckBox" name="HoleCutCustomValues">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -377,7 +513,7 @@ Only available for holes without thread</string>
      </property>
     </widget>
    </item>
-   <item row="12" column="1">
+   <item row="15" column="1">
     <widget class="QLabel" name="label_11">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
@@ -390,7 +526,7 @@ Only available for holes without thread</string>
      </property>
     </widget>
    </item>
-   <item row="12" column="2" colspan="3">
+   <item row="15" column="2" colspan="3">
     <widget class="Gui::PrefQuantitySpinBox" name="HoleCutDiameter">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -418,7 +554,7 @@ Only available for holes without thread</string>
      </property>
     </widget>
    </item>
-   <item row="13" column="1">
+   <item row="16" column="1">
     <widget class="QLabel" name="label_12">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
@@ -431,7 +567,7 @@ Only available for holes without thread</string>
      </property>
     </widget>
    </item>
-   <item row="13" column="2" colspan="3">
+   <item row="16" column="2" colspan="3">
     <widget class="Gui::PrefQuantitySpinBox" name="HoleCutDepth">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -456,7 +592,7 @@ Only available for holes without thread</string>
      </property>
     </widget>
    </item>
-   <item row="14" column="1">
+   <item row="17" column="1">
     <widget class="QLabel" name="label_10">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
@@ -469,7 +605,7 @@ Only available for holes without thread</string>
      </property>
     </widget>
    </item>
-   <item row="14" column="2" colspan="3">
+   <item row="17" column="2" colspan="3">
     <widget class="Gui::PrefQuantitySpinBox" name="HoleCutCountersinkAngle">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -491,7 +627,7 @@ Only available for holes without thread</string>
      </property>
     </widget>
    </item>
-   <item row="15" column="0">
+   <item row="18" column="0">
     <widget class="QLabel" name="label_9">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
@@ -507,7 +643,7 @@ Only available for holes without thread</string>
      </property>
     </widget>
    </item>
-   <item row="16" column="0">
+   <item row="19" column="0">
     <widget class="QLabel" name="label_15">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
@@ -523,7 +659,7 @@ Only available for holes without thread</string>
      </property>
     </widget>
    </item>
-   <item row="16" column="1">
+   <item row="19" column="1">
     <widget class="QRadioButton" name="drillPointFlat">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -539,7 +675,7 @@ Only available for holes without thread</string>
      </attribute>
     </widget>
    </item>
-   <item row="19" column="1">
+   <item row="22" column="1">
     <widget class="QRadioButton" name="drillPointAngled">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -555,7 +691,7 @@ Only available for holes without thread</string>
      </attribute>
     </widget>
    </item>
-   <item row="19" column="2" colspan="3">
+   <item row="22" column="2" colspan="3">
     <widget class="Gui::PrefQuantitySpinBox" name="DrillPointAngle">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -571,7 +707,7 @@ Only available for holes without thread</string>
      </property>
     </widget>
    </item>
-   <item row="20" column="2" colspan="3">
+   <item row="23" column="2" colspan="3">
     <widget class="QCheckBox" name="DrillForDepth">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -588,14 +724,14 @@ account for the depth of blind holes</string>
      </property>
     </widget>
    </item>
-   <item row="21" column="0">
+   <item row="24" column="0">
     <widget class="QLabel" name="label_16">
      <property name="text">
       <string>&lt;b&gt;Misc&lt;/b&gt;</string>
      </property>
     </widget>
    </item>
-   <item row="22" column="0">
+   <item row="25" column="0">
     <widget class="QCheckBox" name="Tapered">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -608,7 +744,7 @@ account for the depth of blind holes</string>
      </property>
     </widget>
    </item>
-   <item row="22" column="1">
+   <item row="25" column="1">
     <widget class="Gui::PrefQuantitySpinBox" name="TaperedAngle">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -630,7 +766,7 @@ over 90: larger hole radius at the bottom</string>
      </property>
     </widget>
    </item>
-   <item row="22" column="3" colspan="2">
+   <item row="25" column="3" colspan="2">
     <widget class="QCheckBox" name="Reversed">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
