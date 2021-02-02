@@ -2024,6 +2024,10 @@ void Application::runInitGuiScript(void)
 
 namespace Gui {
 
+GuiExport void preAppSetup();
+GuiExport void postAppSetup();
+GuiExport void postMainWindowSetup(MainWindow &mw);
+
 void preAppSetup()
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 9, 0))

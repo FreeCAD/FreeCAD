@@ -88,9 +88,9 @@ FilterProc(int nCode, WPARAM wParam, LPARAM lParam) {
 #endif
 
 namespace Gui {
-void preAppSetup();
-void postAppSetup();
-void postMainWindowSetup(MainWindow &mw);
+GuiExport void preAppSetup();
+GuiExport void postAppSetup();
+GuiExport void postMainWindowSetup(MainWindow &mw);
 }
 
 static PyObject *
