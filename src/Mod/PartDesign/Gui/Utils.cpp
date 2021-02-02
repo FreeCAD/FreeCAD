@@ -41,6 +41,7 @@
 #include <App/DocumentObjectGroup.h>
 #include <App/MappedElement.h>
 #include <App/Link.h>
+#include <App/MappedElement.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
 #include <Gui/CommandT.h>

@@ -255,7 +255,7 @@ void SoBrepEdgeSet::glRender(SoGLRenderAction *action, bool inpath)
             width = oldWidth = SoLineWidthElement::get(state);
             if(width < 1.0)
                 width = 1.0;
-            if (Gui::SoFCDisplayModeElement::showHiddenLines(state))
+            if (SoFCDisplayModeElement::showHiddenLines(state))
                 width = std::max(width, (float)Gui::ViewParams::getSelectionHiddenLineWidth());
             else if(Gui::ViewParams::getSelectionLineThicken()>1.0) {
                 float w = width * Gui::ViewParams::getSelectionLineThicken();
@@ -309,8 +309,8 @@ void SoBrepEdgeSet::glRender(SoGLRenderAction *action, bool inpath)
                 inherited::GLRender(action);
             } else {
                 state->push();
-                if (pass == 0 && !Gui::SoFCDisplayModeElement::showHiddenLines(state)) {
-                    trans = Gui::SoFCDisplayModeElement::getTransparency(state);
+                if (pass == 0 && !SoFCDisplayModeElement::showHiddenLines(state)) {
+                    trans = SoFCDisplayModeElement::getTransparency(state);
                 } else
                     trans = 0.0f;
                 SoLazyElement::setTransparency(state,this,1,&trans,&packer);

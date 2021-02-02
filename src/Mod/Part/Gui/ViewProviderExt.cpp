@@ -768,12 +768,12 @@ SoDetail* ViewProviderPartExt::getDetail(const char* subelement) const
             detail = new SoFaceDetail();
             static_cast<SoFaceDetail*>(detail)->setPartIndex(res.second - 1);
         } else {
-            detail = new Gui::SoFCDetail;
-            static_cast<Gui::SoFCDetail*>(detail)->addIndex(Gui::SoFCDetail::Face, res.second-1);
+            detail = new SoFCDetail;
+            static_cast<SoFCDetail*>(detail)->addIndex(SoFCDetail::Face, res.second-1);
             for(auto &s : subshape.getSubShapes(TopAbs_EDGE)) {
                 int idx = shape.findShape(s);
                 if(idx>0)
-                    static_cast<Gui::SoFCDetail*>(detail)->addIndex(Gui::SoFCDetail::Edge, idx-1);
+                    static_cast<SoFCDetail*>(detail)->addIndex(SoFCDetail::Edge, idx-1);
             }
         }
         break;

@@ -7564,7 +7564,7 @@ void SketchObject::fixExternalGeometry(const std::vector<int> &geoIds) {
                 || !egf->testFlag(ExternalGeometryExtension::Missing)
                 || (idSet.size() && !idSet.count(GeoId)))
             continue;
-        const std::string &ref = egf->getRef();
+        std::string ref = egf->getRef();
         auto pos = ref.find('.');
         if(pos == std::string::npos) {
             FC_ERR("Invalid geometry reference " << ref);
@@ -7586,9 +7586,9 @@ void SketchObject::fixExternalGeometry(const std::vector<int> &geoIds) {
         geo = geo->clone();
         egf->setGeometry(geo);
         egf->setFlag(ExternalGeometryExtension::Missing,false);
-        std::string newRef = objName + "." + Data::ComplexGeoData::elementMapPrefix();
-        elements.front().name.toString(newRef);
-        egf->setRef(newRef);
+        ref = objName + "." + Data::ComplexGeoData::elementMapPrefix();
+        elements.front().name.toString(ref);
+        egf->setRef(ref);
         objs.push_back(obj);
         subs.emplace_back();
         elements.front().index.toString(subs.back());
