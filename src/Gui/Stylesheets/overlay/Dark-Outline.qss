@@ -84,6 +84,7 @@ Gui--OverlayTabWidget::pane {
   background-color: transparent;
 }
 
+QHeaderView { background:transparent }
 QHeaderView::section {
   color: rgb(200,200,200);
   background-color: rgba(50,50,50,10);

@@ -82,6 +82,7 @@ Gui--OverlayTabWidget::tab-bar:right {
     alignment: top;
 }
 
+QHeaderView { background:transparent }
 QHeaderView::section {
   color: rgb(80, 80, 80);
   background-color: rgba(250,250,250,50);
