@@ -537,6 +537,10 @@ void TaskHoleParameters::threadSizeChanged(int index)
 
     pcHole->ThreadSize.setValue(index);
     recomputeFeature();
+
+    // apply the recompute result to the widgets
+    ui->HoleCutCustomValues->setDisabled(pcHole->HoleCutCustomValues.isReadOnly());
+    ui->HoleCutCustomValues->setChecked(pcHole->HoleCutCustomValues.getValue());
 }
 
 void TaskHoleParameters::threadClassChanged(int index)

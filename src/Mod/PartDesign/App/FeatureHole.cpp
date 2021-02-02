@@ -639,10 +639,10 @@ Hole::Hole()
 
 void Hole::updateHoleCutParams()
 {
-    std::string holeCutType = HoleCutType.getValueAsString();
+    std::string holeCutTypeStr = HoleCutType.getValueAsString();
 
     // there is no cut, thus return
-    if (holeCutType == "None")
+    if (holeCutTypeStr == "None")
         return;
 
     if (ThreadType.getValue() < 0) {
@@ -654,23 +654,23 @@ void Hole::updateHoleCutParams()
     double diameterVal = Diameter.getValue();
 
     // handle thread types
-    std::string threadType = ThreadType.getValueAsString();
-    if (threadType == "ISOMetricProfile" || threadType == "ISOMetricFineProfile") {
+    std::string threadTypeStr = ThreadType.getValueAsString();
+    if (threadTypeStr == "ISOMetricProfile" || threadTypeStr == "ISOMetricFineProfile") {
         if (ThreadSize.getValue() < 0) {
             throw Base::IndexError("Thread size out of range");
             return;
         }
 
-        std::string threadSize{ ThreadSize.getValueAsString() };
+        std::string threadSizeStr = ThreadSize.getValueAsString();
 
         // we don't update for these settings but we need to set a value for new holes
         // furthermore we must assure the hole cut diameter is not <= the hole diameter
         // if we have a cut but the values are zero, we assume it is a new hole
         // we take in this case the values from the norm ISO 4762 or ISO 10642
-        if (holeCutType == "Counterbore") {
+        if (holeCutTypeStr == "Counterbore") {
             // read ISO 4762 values
-            const CutDimensionSet& counter = find_cutDimensionSet(threadType, "ISO 4762");
-            const CounterBoreDimension& dimen = counter.get_bore(threadSize);
+            const CutDimensionSet& counter = find_cutDimensionSet(threadTypeStr, "ISO 4762");
+            const CounterBoreDimension& dimen = counter.get_bore(threadSizeStr);
             if (HoleCutDiameter.getValue() == 0.0 || HoleCutDiameter.getValue() <= diameterVal) {
                 // there is no norm defining counterbores for all sizes, thus we need to use the
                 // same fallback as for the case HoleCutTypeMap.count(key)
@@ -690,11 +690,11 @@ void Hole::updateHoleCutParams()
             HoleCutDepth.setReadOnly(false);
             HoleCutCountersinkAngle.setReadOnly(true);
         }
-        else if (holeCutType == "Countersink") {
+        else if (holeCutTypeStr == "Countersink") {
             // read ISO 10642 values
-            const CutDimensionSet& counter = find_cutDimensionSet(threadType, "ISO 10642");
+            const CutDimensionSet& counter = find_cutDimensionSet(threadTypeStr, "ISO 10642");
             if (HoleCutDiameter.getValue() == 0.0 || HoleCutDiameter.getValue() <= diameterVal) {
-                const CounterSinkDimension& dimen = counter.get_sink(threadSize);
+                const CounterSinkDimension& dimen = counter.get_sink(threadSizeStr);
                 if (dimen.diameter != 0.0) {
                     HoleCutDiameter.setValue(dimen.diameter);
                 } 
@@ -712,14 +712,14 @@ void Hole::updateHoleCutParams()
         }
 
         // cut definition
-        CutDimensionKey key { threadType, holeCutType };
+        CutDimensionKey key { threadTypeStr, holeCutTypeStr };
         if (HoleCutTypeMap.count(key)) {
             const CutDimensionSet &counter = find_cutDimensionSet(key);
             if (counter.cut_type == CutDimensionSet::Counterbore) {
                 // disable HoleCutCountersinkAngle and reset it to ISO's default
                 HoleCutCountersinkAngle.setValue(90.0);
                 HoleCutCountersinkAngle.setReadOnly(true);
-                const CounterBoreDimension &dimen = counter.get_bore(threadSize);
+                const CounterBoreDimension &dimen = counter.get_bore(threadSizeStr);
                 if (dimen.thread == "None") {
                     // valid values for visual feedback
                     HoleCutDiameter.setValue(Diameter.getValue() + 0.1);
@@ -751,7 +751,7 @@ void Hole::updateHoleCutParams()
                     HoleCutCustomValues.setReadOnly(false);
                 }
             } else if (counter.cut_type == CutDimensionSet::Countersink) {
-                const CounterSinkDimension &dimen = counter.get_sink(threadSize);
+                const CounterSinkDimension &dimen = counter.get_sink(threadSizeStr);
                 if (dimen.thread == "None") {
                     // valid values for visual feedback
                     HoleCutDiameter.setValue(Diameter.getValue() + 0.1);
@@ -795,13 +795,13 @@ void Hole::updateHoleCutParams()
         // user defined None, Counterbore and Countersink
         // handle legacy types but don’t change user settings for
         // user defined None, Counterbore and Countersink
-        else if (holeCutType == "Cheesehead (deprecated)") {
+        else if (holeCutTypeStr == "Cheesehead (deprecated)") {
             HoleCutDiameter.setValue(diameterVal * 1.6);
             HoleCutDepth.setValue(diameterVal * 0.6);
             HoleCutDiameter.setReadOnly(false);
             HoleCutDepth.setReadOnly(false);
         }
-        else if (holeCutType == "Countersink socket screw (deprecated)") {
+        else if (holeCutTypeStr == "Countersink socket screw (deprecated)") {
             HoleCutDiameter.setValue(diameterVal * 2.0);
             HoleCutDepth.setValue(diameterVal * 0.0);
             if (HoleCutCountersinkAngle.getValue() == 0.0) {
@@ -811,7 +811,7 @@ void Hole::updateHoleCutParams()
             HoleCutDepth.setReadOnly(false);
             HoleCutCountersinkAngle.setReadOnly(false);
         }
-        else if (holeCutType == "Cap screw (deprecated)") {
+        else if (holeCutTypeStr == "Cap screw (deprecated)") {
             HoleCutDiameter.setValue(diameterVal * 1.5);
             HoleCutDepth.setValue(diameterVal * 1.25);
             HoleCutDiameter.setReadOnly(false);
@@ -824,7 +824,7 @@ void Hole::updateHoleCutParams()
         // furthermore we must assure the hole cut diameter is not <= the hole diameter
         // if we have a cut but the values are zero, we assume it is a new hole
         // we use rules of thumbs as proposal
-        if (holeCutType == "Counterbore") {
+        if (holeCutTypeStr == "Counterbore") {
             if (HoleCutDiameter.getValue() == 0.0 || HoleCutDiameter.getValue() <= diameterVal) {
                 HoleCutDiameter.setValue(diameterVal * 1.6);
                 HoleCutDepth.setValue(diameterVal * 0.9);
@@ -834,17 +834,17 @@ void Hole::updateHoleCutParams()
             HoleCutDiameter.setReadOnly(false);
             HoleCutDepth.setReadOnly(false);
         }
-        else if (holeCutType == "Countersink") {
+        else if (holeCutTypeStr == "Countersink") {
             if (HoleCutDiameter.getValue() == 0.0 || HoleCutDiameter.getValue() <= diameterVal) {
                 HoleCutDiameter.setValue(diameterVal * 1.7);
                 // 82 degrees for UTS, 90 otherwise
-                if (threadType != "None")       
+                if (threadTypeStr != "None")       
                     HoleCutCountersinkAngle.setValue(82.0);
                 else
                     HoleCutCountersinkAngle.setValue(90.0);
             }
             if (HoleCutCountersinkAngle.getValue() == 0.0) {
-                if (threadType != "None")
+                if (threadTypeStr != "None")
                     HoleCutCountersinkAngle.setValue(82.0);
                 else
                     HoleCutCountersinkAngle.setValue(90.0);
@@ -1043,11 +1043,11 @@ void Hole::updateDiameterParam()
 void Hole::onChanged(const App::Property *prop)
 {
     if (prop == &ThreadType) {
-        std::string type, holeCutType;
+        std::string type, holeCutTypeStr;
         if (ThreadType.isValid())
             type = ThreadType.getValueAsString();
         if (HoleCutType.isValid())
-            holeCutType = HoleCutType.getValueAsString();
+            holeCutTypeStr = HoleCutType.getValueAsString();
 
         if (type == "None" ) {
             ThreadSize.setEnums(ThreadSize_None_Enums);
@@ -1126,19 +1126,19 @@ void Hole::onChanged(const App::Property *prop)
             Diameter.setReadOnly(true);
         }
 
-        if (holeCutType == "None") {
+        if (holeCutTypeStr == "None") {
             HoleCutCustomValues.setReadOnly(true);
             HoleCutDiameter.setReadOnly(true);
             HoleCutDepth.setReadOnly(true);
             HoleCutCountersinkAngle.setReadOnly(true);
         }
-        else if (holeCutType == "Counterbore") {
+        else if (holeCutTypeStr == "Counterbore") {
             HoleCutCustomValues.setReadOnly(true);
             HoleCutDiameter.setReadOnly(false);
             HoleCutDepth.setReadOnly(false);
             HoleCutCountersinkAngle.setReadOnly(true);
         }
-        else if (holeCutType == "Countersink") {
+        else if (holeCutTypeStr == "Countersink") {
             HoleCutCustomValues.setReadOnly(true);
             HoleCutDiameter.setReadOnly(false);
             HoleCutDepth.setReadOnly(false);
