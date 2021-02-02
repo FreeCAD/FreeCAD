@@ -254,7 +254,7 @@ public:
     // subname in selection
     int getSubName(std::ostringstream &str, App::DocumentObject *&topParent) const;
 
-    void setHighlight(bool set, HighlightMode mode = HighlightMode::LightBlue);
+    void setHighlight(bool set, HighlightMode mode = HighlightMode::UserDefined);
 
     const char *getName() const;
     const char *getTreeName() const;
@@ -5350,6 +5350,7 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh, bool del
         if (ci->type() == TreeWidget::ObjectType) {
             DocumentObjectItem* childItem = static_cast<DocumentObjectItem*>(ci);
             if(childItem->requiredAtRoot()) {
+                childItem->setHighlight(false);
                 item->removeChild(childItem);
                 auto index = findRootIndex(childItem->object()->getObject());
                 childItem->selected = 0;
