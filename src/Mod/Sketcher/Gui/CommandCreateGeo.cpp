@@ -5063,12 +5063,12 @@ namespace SketcherGui {
 class DrawSketchHandlerFillet: public DrawSketchHandler
 {
 public:
-    enum FILLET_TYPE {
-        FILLET_TYPE_Original,
-        FILLET_TYPE_Point
+    enum FilletType {
+        SimpleFillet,
+        ConstraintPreservingFillet
     };
 
-    DrawSketchHandlerFillet(FILLET_TYPE filletType) : filletType(filletType), Mode(STATUS_SEEK_First), firstCurve(0) {}
+    DrawSketchHandlerFillet(FilletType filletType) : filletType(filletType), Mode(STATUS_SEEK_First), firstCurve(0) {}
     virtual ~DrawSketchHandlerFillet()
     {
         Gui::Selection().rmvSelectionGate();
@@ -5142,7 +5142,8 @@ public:
                 try {
                     bool pointFillet = (filletType == 1);
                     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create fillet"));
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "fillet(%d,%d,%f,%d,%d)", GeoId, PosId, radius, true, pointFillet);
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "fillet(%d,%d,%f,%s,%s)", GeoId, PosId, radius, "True",
+                        pointFillet ? "True":"False");
 
                     if (construction) {
                         Gui::cmdAppObjectArgs(sketchgui->getObject(), "toggleConstruction(%d) ", currentgeoid+1);
@@ -5219,11 +5220,11 @@ public:
                     try {
                         bool pointFillet = (filletType == 1);
                         Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create fillet"));
-                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "fillet(%d,%d,App.Vector(%f,%f,0),App.Vector(%f,%f,0),%f,%d,%d)",
+                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "fillet(%d,%d,App.Vector(%f,%f,0),App.Vector(%f,%f,0),%f,%s,%s)",
                                   firstCurve, secondCurve,
                                   firstPos.x, firstPos.y,
                                   secondPos.x, secondPos.y, radius,
-                                  true, pointFillet);
+                                  "True", pointFillet ? "True":"False");
                         Gui::Command::commitCommand();
                     }
                     catch (const Base::CADKernelError& e) {
@@ -5289,7 +5290,7 @@ CmdSketcherCreateFillet::CmdSketcherCreateFillet()
 void CmdSketcherCreateFillet::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFillet(DrawSketchHandlerFillet::FILLET_TYPE_Original));
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFillet(DrawSketchHandlerFillet::SimpleFillet));
 }
 
 bool CmdSketcherCreateFillet::isActive(void)
@@ -5318,7 +5319,7 @@ CmdSketcherCreatePointFillet::CmdSketcherCreatePointFillet()
 void CmdSketcherCreatePointFillet::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFillet(DrawSketchHandlerFillet::FILLET_TYPE_Point));
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFillet(DrawSketchHandlerFillet::ConstraintPreservingFillet));
 }
 
 bool CmdSketcherCreatePointFillet::isActive(void)
@@ -5351,9 +5352,9 @@ CmdSketcherCompCreateFillets::CmdSketcherCompCreateFillets()
 void CmdSketcherCompCreateFillets::activated(int iMsg)
 {
     if (iMsg == 0) {
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFillet(DrawSketchHandlerFillet::FILLET_TYPE_Original));
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFillet(DrawSketchHandlerFillet::SimpleFillet));
     } else if (iMsg == 1) {
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFillet(DrawSketchHandlerFillet::FILLET_TYPE_Point));
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFillet(DrawSketchHandlerFillet::ConstraintPreservingFillet));
     } else {
         return;
     }
@@ -5389,8 +5390,9 @@ Gui::Action * CmdSketcherCompCreateFillets::createAction(void)
     return pcAction;
 }
 
-void CmdSketcherCompCreateFillets::updateAction(int __attribute__((unused))mode)
+void CmdSketcherCompCreateFillets::updateAction(int mode)
 {
+    Q_UNUSED(mode);
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
     if (!pcAction)
         return;
