@@ -80,7 +80,7 @@ enum InternalAlignmentType {
  * sketcher::end denote the endpoints of lines or bounded curves.  sketcher::mid denotes
  * geometries with geometrical centers (eg., circle, ellipse). Bare points use 'start'.  More
  * complex geometries like parabola focus or b-spline knots use InternalAlignment constraints
- * instead of PointPos.
+ * in addition to PointPos.
  */
 enum PointPos { none, start, end, mid };
 
