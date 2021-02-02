@@ -34,6 +34,7 @@
 #include "OriginFeature.h"
 #include "Origin.h"
 #include "OriginGroupExtension.h"
+#include "DocumentParams.h"
 #include <Base/Console.h>
 #include <Base/Tools.h>
 //#include "GeoFeatureGroupPy.h"
@@ -305,13 +306,19 @@ void GeoFeatureGroupExtension::extensionOnChanged(const Property* p) {
                     for(auto link : getCSRelevantLinks(obj)) {
                         auto iter = objMap.find(link);
                         if(iter == objMap.end() || !iter->second) {
-                            FC_WARN("Remove " << obj->getFullName() <<  " from " 
-                                    << owner->getFullName() << " because of cross coordinate link " 
+                            const char *action;
+                            if (!DocumentParams::GeoGroupAllowCrossLink())
+                                action = "Invalid child ";
+                            else {
+                                action = "Remove ";
+                                children.erase(it);
+                                valid = false;
+                                retry = true;
+                                error = true;
+                            }
+                            FC_WARN(action << obj->getFullName() <<  " in " 
+                                    << owner->getFullName() << " because of cross coordinate link to " 
                                     << link->getFullName());
-                            children.erase(it);
-                            valid = false;
-                            retry = true;
-                            error = true;
                             break;
                         }
                     }
