@@ -355,7 +355,7 @@ void Workbench::createLinkMenu(MenuItem *item) {
 
     auto &rMgr = Application::Instance->commandManager();
     const char *cmds[] = {"Std_LinkMakeRelative",0,"Std_LinkUnlink","Std_LinkReplace",
-        "Std_LinkImport","Std_LinkImportAll",0,"Std_LinkMakeInPlace",0,
+        "Std_LinkImport","Std_LinkImportAll",0,"Std_LinkCreateInPlace","Std_LinkCreateInContainer",0,
         "Std_LinkSelectLinked", "Std_LinkSelectLinkedFinal","Std_LinkSelectAllLinks"};
     bool separator = true;
     for(size_t i=0;i<sizeof(cmds)/sizeof(cmds[0]);++i) {

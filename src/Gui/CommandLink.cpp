@@ -49,6 +49,8 @@
 #include <App/DocumentObserver.h>
 #include <App/Link.h>
 #include <App/AutoTransaction.h>
+#include <App/Part.h>
+#include <Gui/ActiveObjectList.h>
 
 FC_LOG_LEVEL_INIT("CommandLink",true,true)
 
@@ -57,6 +59,49 @@ using namespace Gui;
 static void setLinkLabel(App::DocumentObject *obj, const char *doc, const char *name) {
     const char *label = obj->Label.getValue();
     Command::doCommand(Command::Doc,"App.getDocument('%s').getObject('%s').Label='%s'",doc,name,label);
+}
+
+static void setLinkPlacement(std::ostringstream &ss,
+                             App::DocumentObject *link,
+                             const App::SubObjectT *sobj,
+                             const App::SubObjectT *parentT = nullptr)
+{
+    if (!link || !App::LinkParams::CreateInPlace())
+        return;
+    ss.str("");
+    ss << "_t,_r,_s,_ = (";
+    if (parentT)  {
+        ss << parentT->getObjectPython() << ".getSubObject(u'"
+            << parentT->getSubNameNoElement() << "', retType=4).inverse()";
+        if (sobj)
+            ss << " * ";
+    }
+    if (sobj) 
+        ss << sobj->getObjectPython() << ".getSubObject(u'"
+            << sobj->getSubNameNoElement() << "', retType=4)";
+    ss << ").getTransform()\n"
+       << "if not _t.isEqual(App.Vector(),1e-7) or not _r.isSame(App.Rotation(),1e-12):\n"
+       << "    " << link->getFullName(true) << ".Placement = App.Placement(_t, _r)\n"
+       << "if not _s.isEqual(App.Vector(1,1,1),1e-7):\n"
+       << "    " << link->getFullName(true) << ".ScaleVector = _s\n"
+       << "del _t, _r, _s\n";
+
+    Command::runCommand(Command::Doc, ss.str().c_str());
+}
+
+static App::DocumentObject *getActiveContainer(
+        App::DocumentObject **topParent=nullptr, std::string *subname=nullptr)
+{
+    if (!App::LinkParams::CreateInContainer())
+        return nullptr;
+    Gui::MDIView *activeView = Gui::Application::Instance->activeView();
+    if ( activeView ) {
+        const auto &key = App::LinkParams::ActiveContainerKey();
+        return activeView->getActiveObject<App::DocumentObject*> (
+                key.size() ? key.c_str() : PARTKEY, topParent, subname);
+    } else {
+        return 0;
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -124,64 +169,104 @@ void StdCmdLinkMakeGroup::languageChange()
 
 void StdCmdLinkMakeGroup::activated(int option) {
 
-    std::vector<App::DocumentObject*> objs;
-    std::set<App::DocumentObject*> objset;
-
     auto doc = App::GetApplication().getActiveDocument();
     if(!doc) {
         FC_ERR("no active document");
         return;
     }
 
-    for(auto &sel : Selection().getCompleteSelection()) {
-        if(sel.pObject && sel.pObject->getNameInDocument() &&
-           objset.insert(sel.pObject).second)
-            objs.push_back(sel.pObject);
+    std::set<App::DocumentObject*> inList;
+    App::DocumentObject *topParent=nullptr;
+    std::string parentSub;
+    auto container = getActiveContainer(&topParent, &parentSub);
+    if (container) {
+        inList = container->getInListEx(true);
+        inList.insert(container);
     }
+
+    auto objs = Gui::Selection().getSelectionT("*",0);
+
+    std::set<App::DocumentObject*> objset;
+    for (auto it=objs.begin(); it!=objs.end(); ) {
+        auto sobj = it->getSubObject();
+        if (!sobj)
+            continue;
+        if (option == 0) {
+            if (!objset.insert(sobj).second) {
+                it = objs.erase(it);
+                continue;
+            } else
+                ++it;
+        } else
+            ++it;
+        if (inList.count(sobj)) {
+            inList.clear();
+            container = nullptr;
+        }
+    }
+
+    if (container)
+        doc = container->getDocument();
 
     Selection().selStackPush();
     Selection().clearCompleteSelection();
 
-    Command::openCommand(QT_TRANSLATE_NOOP("Command", "Make link group"));
+    App::AutoTransaction committer(QT_TRANSLATE_NOOP("Command", "Make link group"));
     try {
+        std::ostringstream ss;
+        ss << std::setprecision(std::numeric_limits<double>::digits10 + 1);
         std::string groupName = doc->getUniqueObjectName("LinkGroup");
-        Command::doCommand(Command::Doc,
-            "App.getDocument('%s').addObject('App::LinkGroup','%s')",doc->getName(),groupName.c_str());
+        cmdAppDocument(doc, ss << "addObject('App::LinkGroup','" << groupName << "')");
+        auto group = doc->getObject(groupName.c_str());
+        if (group && container)
+            cmdAppObjectArgs(container, "addObject(%s)", group->getFullName(true));
+            
         if(objs.empty()) {
             Selection().addSelection(doc->getName(),groupName.c_str());
             Selection().selStackPush();
         }else{
             Command::doCommand(Command::Doc,"__objs__ = []");
-            for(auto obj : objs) {
+            std::vector<std::string> newNames;
+            for(auto &objT : objs) {
+                auto obj = objT.getSubObject();
                 std::string name;
                 if(option!=0 || doc!=obj->getDocument()) {
                     name = doc->getUniqueObjectName("Link");
-                    Command::doCommand(Command::Doc,
-                        "App.getDocument('%s').addObject('App::Link','%s').setLink("
-                            "App.getDocument('%s').getObject('%s'))",
-                        doc->getName(),name.c_str(),obj->getDocument()->getName(),obj->getNameInDocument());
+                    ss.str("");
+                    cmdAppDocument(doc, ss << "addObject('App::Link','" << name
+                            << "').setLink(" << obj->getFullName(true) << ")");
                     setLinkLabel(obj,doc->getName(),name.c_str());
+                    auto link = doc->getObject(name.c_str());
                     if(option==2)
-                        Command::doCommand(Command::Doc,
-                            "App.getDocument('%s').getObject('%s').LinkTransform = True",
-                            doc->getName(),name.c_str());
-                    else if(obj->getPropertyByName("Placement"))
-                        Command::doCommand(Command::Doc,
-                            "App.getDocument('%s').getObject('%s').Placement = "
-                                "App.getDocument('%s').getObject('%s').Placement",
-                            doc->getName(),name.c_str(),obj->getDocument()->getName(),obj->getNameInDocument());
-                }else
+                        cmdAppObject(link, "LinkTransform = True");
+                    if (container) {
+                        App::SubObjectT parent(topParent, parentSub.c_str());
+                        setLinkPlacement(ss, link, option==2 ? nullptr : &objT, &parent);
+                    } else if (option != 2)
+                        setLinkPlacement(ss, link, &objT);
+                } else
                     name = obj->getNameInDocument();
+
                 Command::doCommand(Command::Doc,"__objs__.append(App.getDocument('%s').getObject('%s'))",
                         doc->getName(),name.c_str());
+                name += ".";
+                newNames.push_back(std::move(name));
             }
-            Command::doCommand(Command::Doc,"App.getDocument('%s').getObject('%s').setLink(__objs__)",
-                    doc->getName(),groupName.c_str());
+
+            cmdAppObject(group, "setLink(__objs__)");
             Command::doCommand(Command::Doc,"del __objs__");
 
-            for(size_t i=0;i<objs.size();++i) {
-                auto name = std::to_string(i)+".";
-                Selection().addSelection(doc->getName(),groupName.c_str(),name.c_str());
+            App::SubObjectT sel;
+            if (container)
+                sel = topParent;
+            else
+                sel = group;
+            for (auto &name : newNames) {
+                if (container)
+                    sel.setSubName(parentSub + groupName + "." + name);
+                else
+                    sel.setSubName(name);
+                Selection().addSelection(sel);
             }
             Selection().selStackPush();
         }
@@ -190,8 +275,9 @@ void StdCmdLinkMakeGroup::activated(int option) {
                     "App.getDocument('%s').getObject('%s').LinkMode = 'Auto Delete'",
                     doc->getName(),groupName.c_str());
         }
-        Command::commitCommand();
+        updateActive();
     } catch (const Base::Exception& e) {
+        committer.close(true);
         QMessageBox::critical(getMainWindow(), QObject::tr("Create link group failed"),
             QString::fromLatin1(e.what()));
         Command::abortCommand();
@@ -220,10 +306,14 @@ bool StdCmdLinkMake::isActive() {
 }
 
 void StdCmdLinkMake::activated(int) {
-    auto doc = App::GetApplication().getActiveDocument();
-    if(!doc) {
-        FC_ERR("no active document");
-        return;
+
+    std::set<App::DocumentObject*> inList;
+    App::DocumentObject *topParent=nullptr;
+    std::string parentSub;
+    auto container = getActiveContainer(&topParent, &parentSub);
+    if (container) {
+        inList = container->getInListEx(true);
+        inList.insert(container);
     }
 
     auto sels = Selection().getSelectionT("*", 0);
@@ -231,12 +321,24 @@ void StdCmdLinkMake::activated(int) {
     Selection().selStackPush();
     Selection().clearCompleteSelection();
 
-    App::AutoTransaction committer(QT_TRANSLATE_NOOP("Command", "Make link in place"));
+    App::AutoTransaction committer(QT_TRANSLATE_NOOP("Command", "Make link"));
     try {
         if (sels.empty()) {
+            auto doc = App::GetApplication().getActiveDocument();
+            if(!doc) {
+                FC_ERR("no active document");
+                return;
+            }
             std::string name = doc->getUniqueObjectName("Link");
-            cmdAppDocument(doc, std::ostringstream() << "addObject('App::Link','" << name << "')"),
-            Selection().addSelection(doc->getName(),name.c_str());
+            cmdAppDocument(doc, std::ostringstream() << "addObject('App::Link','" << name << "')");
+            auto link = doc->getObject(name.c_str());
+            if (container && link) {
+                cmdAppObjectArgs(container, "addObject(%s)", link->getFullName(true));
+                Selection().addSelection(App::SubObjectT(
+                            topParent, (parentSub + name + ".").c_str()));
+            } else
+                Selection().addSelection(doc->getName(),name.c_str());
+            Selection().selStackPush();
             return;
         }
 
@@ -248,27 +350,39 @@ void StdCmdLinkMake::activated(int) {
                 FC_ERR("Failed to get sub-object " << sel.getSubObjectFullName());
                 continue;
             }
+
+            auto doc = App::GetApplication().getActiveDocument();
+            if(!doc) {
+                FC_ERR("no active document");
+                return;
+            }
+
+            bool addToContainer = false;
+            if (container && !inList.count(sobj)) {
+                addToContainer = true;
+                doc = container->getDocument();
+            }
+
             std::string name = doc->getUniqueObjectName("Link");
             ss.str("");
             cmdAppDocument(doc, ss << "addObject('App::Link', '" << name << "').setLink("
                                    << sobj->getFullName(true) << ")");
             setLinkLabel(sobj,doc->getName(),name.c_str());
             auto link = doc->getObject(name.c_str());
-            if (link && App::LinkParams::CreateInPlace()) {
-                ss.str("");
-                ss << "_t,_r,_s,_ = "
-                        << sel.getObjectPython() << ".getSubObject(u'"
-                                << sel.getSubNameNoElement() << "', retType=4).getTransform()\n"
-                   << "if not _t.isEqual(App.Vector(),1e-7) or not _r.isSame(App.Rotation(),1e-10):\n"
-                   << "    " << link->getFullName(true) << ".Placement = App.Placement(_t, _r)\n"
-                   << "if not _s.isEqual(App.Vector(1,1,1),1e-7):\n"
-                   << "    " << link->getFullName(true) << ".ScaleVector = _s\n"
-                   << "del _t, _r, _s\n";
-                Command::runCommand(Command::Doc, ss.str().c_str());
+
+            if (link && addToContainer) {
+                App::SubObjectT objT(topParent, parentSub.c_str());
+                cmdAppObjectArgs(container, "addObject(%s)", link->getFullName(true));
+                setLinkPlacement(ss, link, &sel, &objT);
+                objT.setSubName(parentSub + name + ".");
+                Selection().addSelection(objT);
+            } else {
+                setLinkPlacement(ss, link, &sel);
+                Selection().addSelection(doc->getName(),name.c_str());
             }
-            Selection().addSelection(doc->getName(),name.c_str());
         }
         Selection().selStackPush();
+        updateActive();
     } catch (const Base::Exception& e) {
         committer.close(true);
         QMessageBox::critical(getMainWindow(), QObject::tr("Create link failed"),
@@ -279,35 +393,43 @@ void StdCmdLinkMake::activated(int) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-class StdCmdLinkMakeInPlace: public CheckableCommand
+#define LINK_CMD_DEF(_name) \
+class StdCmdLink##_name : public CheckableCommand \
+{\
+public:\
+    StdCmdLink##_name();\
+    virtual const char* className() const\
+    { return "StdCmdLink" #_name; }\
+protected: \
+    virtual void setOption(bool checked) {\
+        App::LinkParams::set_##_name(checked);\
+    }\
+    virtual bool getOption(void) const {\
+        return App::LinkParams::_name();\
+    }\
+};\
+StdCmdLink##_name::StdCmdLink##_name():CheckableCommand("Std_Link" #_name)
+
+LINK_CMD_DEF(CreateInPlace)
 {
-public:
-    StdCmdLinkMakeInPlace()
-        : CheckableCommand("Std_LinkMakeInPlace")
-    {
-        sGroup        = QT_TR_NOOP("Link");
-        sMenuText     = QT_TR_NOOP("Make link in place");
-        sToolTipText  = QT_TR_NOOP("Enable this option to create a link with the same placement of the linked object");
-        sWhatsThis    = "Std_LinkMakeInPlace";
-        sStatusTip    = sToolTipText;
-        eType         = NoDefaultAction | NoTransaction;
-    }
+    sGroup        = QT_TR_NOOP("Link");
+    sMenuText     = QT_TR_NOOP("Make link in place");
+    sToolTipText  = QT_TR_NOOP("Enable this option to create a link with the same placement of the linked object");
+    sWhatsThis    = "Std_LinkCreateInPlace";
+    sStatusTip    = sToolTipText;
+    eType         = NoDefaultAction | NoTransaction;
+}
 
-    virtual bool getOption() const
-    {
-        return App::LinkParams::CreateInPlace();
-    }
 
-    virtual void setOption(bool checked)
-    {
-        App::LinkParams::set_CreateInPlace(checked);
-    }
-
-    virtual const char *className() const
-    {
-        return "StdCmdLinkMakeInPlace";
-    }
-};
+LINK_CMD_DEF(CreateInContainer)
+{
+    sGroup        = QT_TR_NOOP("Link");
+    sMenuText     = QT_TR_NOOP("Make link in container");
+    sToolTipText  = QT_TR_NOOP("Enable this option to create a link inside the active container");
+    sWhatsThis    = "Std_LinkCreateInContainer";
+    sStatusTip    = sToolTipText;
+    eType         = NoDefaultAction | NoTransaction;
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -329,55 +451,99 @@ bool StdCmdLinkMakeRelative::isActive() {
     return Selection().hasSelection();
 }
 
-void StdCmdLinkMakeRelative::activated(int) {
-    auto doc = App::GetApplication().getActiveDocument();
-    if(!doc) {
-        FC_ERR("no active document");
-        return;
+struct PrintElements {
+    PrintElements(const std::vector<std::string> &elements)
+        :elements(elements)
+    {}
+
+    friend std::ostream &operator << (std::ostream &os, const PrintElements &self) {
+        os << "[";
+        for (auto &e : self.elements)
+            os << "'" << e << "',";
+        os << "]";
+        return os;
     }
-    Command::openCommand(QT_TRANSLATE_NOOP("Command", "Make sub-link"));
+
+    const std::vector<std::string> &elements;
+};
+
+void StdCmdLinkMakeRelative::activated(int) {
+    std::set<App::DocumentObject*> inList;
+    App::DocumentObject *topParent=nullptr;
+    std::string parentSub;
+    auto container = getActiveContainer(&topParent, &parentSub);
+    if (container) {
+        inList = container->getInListEx(true);
+        inList.insert(container);
+    }
+
+    App::AutoTransaction committer(QT_TRANSLATE_NOOP("Command", "Make sub-link"));
     try {
-        std::map<std::pair<App::DocumentObject*,std::string>,
-                 std::pair<App::DocumentObject*, std::vector<std::string> > > linkInfo;
-        for(auto &sel : Selection().getCompleteSelection(0)) {
-            if(!sel.pObject || !sel.pObject->getNameInDocument())
+        std::map<App::SubObjectT, std::vector<std::string> > linkInfo;
+        for(auto &sel : Selection().getSelectionT("*", 0)) {
+            auto element = sel.getElementName();
+            if (!element || !element[0]) {
+                linkInfo[sel];
                 continue;
-            auto key = std::make_pair(sel.pObject,
-                    Data::ComplexGeoData::noElementName(sel.SubName));
-            auto element = Data::ComplexGeoData::findElementName(sel.SubName);
-            auto &info = linkInfo[key];
-            info.first = sel.pResolvedObject;
-            if(element && element[0])
-                info.second.emplace_back(element);
+            }
+            auto objT = sel;
+            objT.setSubName(sel.getSubNameNoElement());
+            linkInfo[objT].push_back(element);
         }
 
         Selection().selStackPush();
         Selection().clearCompleteSelection();
 
+        std::ostringstream ss;
+        ss << std::setprecision(std::numeric_limits<double>::digits10 + 1);
+
         for(auto &v : linkInfo) {
-            auto &key = v.first;
-            auto &info = v.second;
+            auto &sel = v.first;
+            auto &elements = v.second;
+
+            auto doc = App::GetApplication().getActiveDocument();
+            if(!doc) {
+                FC_ERR("no active document");
+                return;
+            }
+
+            bool addToContainer = false;
+            auto linkSub = sel.getSubName();
+            auto sobj = sel.getSubObject();
+            if (!sobj) {
+                FC_ERR("Failed to get sub-object " << sel.getSubObjectFullName());
+                continue;
+            }
+            auto linkTarget = sel.getObject();
+            if (container && !inList.count(sobj)) {
+                auto sub = parentSub;
+                addToContainer = topParent->resolveRelativeLink(sub, linkTarget, linkSub);
+                if (addToContainer)
+                    doc = container->getDocument();
+            }
 
             std::string name = doc->getUniqueObjectName("Link");
 
-            std::ostringstream ss;
-            ss << '[';
-            for(auto &s : info.second)
-                ss << "'" << s << "',";
-            ss << ']';
-            FCMD_DOC_CMD(doc,"addObject('App::Link','" << name << "').setLink("
-                    << getObjectCmd(key.first) << ",'" << key.second
-                    << "'," << ss.str() << ")");
+            ss.str("");
+            cmdAppDocument(doc, ss << "addObject('App::Link','" << name << "').setLink("
+                    << linkTarget->getFullName(true) << ", u'" << linkSub << "', "
+                    << PrintElements(elements) << ")");
             auto link = doc->getObject(name.c_str());
-            FCMD_OBJ_CMD(link,"LinkTransform = True");
-            setLinkLabel(info.first,doc->getName(),name.c_str());
-
-            Selection().addSelection(doc->getName(),name.c_str());
+            cmdAppObject(link, "LinkTransform = True");
+            setLinkLabel(sobj,doc->getName(),name.c_str());
+            if (addToContainer && link) {
+                cmdAppObjectArgs(container, "addObject(%s)", link->getFullName(true));
+                App::SubObjectT objT(topParent, parentSub.c_str());
+                setLinkPlacement(ss, link, nullptr, &objT); 
+                objT.setSubName(parentSub + name + ".");
+                Selection().addSelection(objT);
+            } else
+                Selection().addSelection(doc->getName(),name.c_str());
         }
         Selection().selStackPush();
-        Command::commitCommand();
+        updateActive();
     } catch (const Base::Exception& e) {
-        Command::abortCommand();
+        committer.close(true);
         QMessageBox::critical(getMainWindow(), QObject::tr("Failed to create relative link"),
             QString::fromLatin1(e.what()));
         e.ReportException();
@@ -437,7 +603,7 @@ static void linkConvert(bool unlink) {
 
     // now, do actual operation
     const char *transactionName = unlink?"Unlink":"Replace with link";
-    Command::openCommand(transactionName);
+    App::AutoTransaction committer(QT_TRANSLATE_NOOP("Command", transactionName));
     try {
         std::unordered_map<App::DocumentObject*,App::DocumentObjectT> recomputeSet;
         for(auto &v : infos) {
@@ -493,19 +659,10 @@ static void linkConvert(bool unlink) {
                         "Failed to change link for " << parent->getFullName());
         }
 
-        std::vector<App::DocumentObject *> recomputes;
-        for(auto &v : recomputeSet) {
-            auto obj = v.second.getObject();
-            if(obj)
-                recomputes.push_back(obj);
-        }
-        if(recomputes.size())
-            recomputes.front()->getDocument()->recompute(recomputes);
-
-        Command::commitCommand();
+        Command::updateActive();
 
     } catch (const Base::Exception& e) {
-        Command::abortCommand();
+        committer.close(true);
         auto title = unlink?QObject::tr("Unlink failed"):QObject::tr("Replace link failed");
         QMessageBox::critical(getMainWindow(), title, QString::fromLatin1(e.what()));
         e.ReportException();
@@ -622,7 +779,7 @@ bool StdCmdLinkImport::isActive() {
 }
 
 void StdCmdLinkImport::activated(int) {
-    Command::openCommand(QT_TRANSLATE_NOOP("Command", "Import links"));
+    App::AutoTransaction committer(QT_TRANSLATE_NOOP("Command", "Import links"));
     try {
         WaitCursor wc;
         wc.setIgnoreEvents(WaitCursor::NoEvents);
@@ -632,9 +789,11 @@ void StdCmdLinkImport::activated(int) {
             for(auto obj : doc->importLinks(v.second))
                 obj->Visibility.setValue(false);
         }
-        Command::commitCommand();
+
+        updateActive();
+
     }catch (const Base::Exception& e) {
-        Command::abortCommand();
+        committer.close(true);
         QMessageBox::critical(getMainWindow(), QObject::tr("Failed to import links"),
             QString::fromLatin1(e.what()));
         e.ReportException();
@@ -663,7 +822,7 @@ bool StdCmdLinkImportAll::isActive() {
 }
 
 void StdCmdLinkImportAll::activated(int) {
-    Command::openCommand(QT_TRANSLATE_NOOP("Command", "Import all links"));
+    App::AutoTransaction committer(QT_TRANSLATE_NOOP("Command", "Import all links"));
     try {
         WaitCursor wc;
         wc.setIgnoreEvents(WaitCursor::NoEvents);
@@ -672,8 +831,9 @@ void StdCmdLinkImportAll::activated(int) {
             for(auto obj : doc->importLinks())
                 obj->Visibility.setValue(false);
         }
-        Command::commitCommand();
+        updateActive();
     } catch (const Base::Exception& e) {
+        committer.close(true);
         QMessageBox::critical(getMainWindow(), QObject::tr("Failed to import all links"),
             QString::fromLatin1(e.what()));
         Command::abortCommand();
@@ -934,7 +1094,8 @@ public:
         addCommand(new StdCmdLinkImport());
         addCommand(new StdCmdLinkImportAll());
         addCommand();
-        addCommand(new StdCmdLinkMakeInPlace());
+        addCommand(new StdCmdLinkCreateInPlace());
+        addCommand(new StdCmdLinkCreateInContainer());
     }
 
     virtual const char* className() const {return "StdCmdLinkActions";}

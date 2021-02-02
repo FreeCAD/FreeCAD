@@ -600,6 +600,8 @@ public:
 #define FC_LINK_PARAMS \
     FC_LINK_PARAM(HideScaleVector, bool, Bool, true) \
     FC_LINK_PARAM(CreateInPlace, bool, Bool, true) \
+    FC_LINK_PARAM(CreateInContainer, bool, Bool, false) \
+    FC_LINK_PARAM(ActiveContainerKey, std::string, ASCII, "") \
 
 #undef FC_LINK_PARAM
 #define FC_LINK_PARAM(_name,_ctype,_type,_def) \
