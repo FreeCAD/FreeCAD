@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>500</width>
-    <height>363</height>
+    <width>550</width>
+    <height>430</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -275,14 +275,14 @@ Turntable: the part will be rotated around the z-axis.</string>
           </item>
          </widget>
         </item>
-        <item row="3" column="0">
+        <item row="4" column="0">
          <widget class="QLabel" name="newDocViewLabel">
           <property name="text">
            <string>Default camera orientation</string>
           </property>
          </widget>
         </item>
-        <item row="3" column="3">
+        <item row="4" column="3">
          <widget class="QComboBox" name="comboNewDocView">
           <property name="minimumSize">
            <size>
@@ -301,14 +301,14 @@ Turntable: the part will be rotated around the z-axis.</string>
           </property>
          </widget>
         </item>
-        <item row="4" column="0">
+        <item row="5" column="0">
          <widget class="QLabel" name="label_2">
           <property name="text">
            <string>New document scale</string>
           </property>
          </widget>
         </item>
-        <item row="4" column="3">
+        <item row="5" column="3">
          <widget class="PrefUnitSpinBox" name="qspinNewDocScale" native="true">
           <property name="minimumSize">
            <size>
@@ -346,7 +346,7 @@ The value is the diameter of the sphere to fit on the screen.</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="0">
+        <item row="6" column="0">
          <widget class="Gui::PrefCheckBox" name="CheckBox_UseAutoRotation">
           <property name="enabled">
            <bool>true</bool>
@@ -368,7 +368,7 @@ The value is the diameter of the sphere to fit on the screen.</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="0">
+        <item row="7" column="0">
          <widget class="Gui::PrefCheckBox" name="checkBoxZoomAtCursor">
           <property name="toolTip">
            <string>Zoom operations will be performed at position of mouse pointer</string>
@@ -387,7 +387,7 @@ The value is the diameter of the sphere to fit on the screen.</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="3">
+        <item row="7" column="3">
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
            <widget class="QLabel" name="label">
@@ -455,7 +455,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step. </string>
           </item>
          </layout>
         </item>
-        <item row="7" column="0">
+        <item row="8" column="0">
          <widget class="Gui::PrefCheckBox" name="checkBoxInvertZoom">
           <property name="toolTip">
            <string>Direction of zoom operations will be inverted</string>
@@ -474,7 +474,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step. </string>
           </property>
          </widget>
         </item>
-        <item row="8" column="0">
+        <item row="9" column="0">
          <widget class="Gui::PrefCheckBox" name="checkBoxDisableTilt">
           <property name="toolTip">
            <string>Prevents view tilting when pinch-zooming.
@@ -492,6 +492,23 @@ Mouse tilting is not disabled by this setting.</string>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QCheckBox" name="checkBoxRotationCenter">
+          <property name="toolTip">
+           <string>Only applicable in gesture navigation mode.
+
+If enabled, then long press and then release either the touch screen
+or any mouse button to set the rotation center. 
+
+If disabled, then long press and then release to bring up the context menu.
+
+If ALT key is down, then does the oppsite of the above long press action.</string>
+          </property>
+          <property name="text">
+           <string>Set rotation center on long press</string>
           </property>
          </widget>
         </item>

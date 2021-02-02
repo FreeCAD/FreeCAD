@@ -274,21 +274,24 @@ public:
         QT_TRANSLATE_NOOP("ViewParams","Maximum camera move animation duration in milliseconds."))\
     FC_VIEW_PARAM(TaskNoWheelFocus, bool, Bool, true, \
         QT_TRANSLATE_NOOP("ViewParams","Do not accept wheel focus on input fields in task panels."))\
+    FC_VIEW_PARAM(GestureLongPressRotationCenter, bool, Bool, false, \
+        QT_TRANSLATE_NOOP("ViewParams","Set rotation center on press in gesture navigation mode."))\
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def,_doc) \
-    static const _ctype &get##_name() { return instance()->_name; }\
-    static void set##_name(const _ctype &_v) { instance()->handle->Set##_type(#_name,_v); instance()->_name=_v; }\
-    static void update##_name(ViewParams *self) { self->_name = self->handle->Get##_type(#_name,_def); }\
+    static const _ctype &get##_name() { return instance()->_##_name; }\
+    static const _ctype &_name() { return instance()->_##_name; }\
+    static void set##_name(const _ctype &_v) { instance()->handle->Set##_type(#_name,_v); instance()->_##_name=_v; }\
+    static void update##_name(ViewParams *self) { self->_##_name = self->handle->Get##_type(#_name,_def); }\
     static const char *doc##_name(); \
 
 #undef FC_VIEW_PARAM2
 #define FC_VIEW_PARAM2(_name,_ctype,_type,_def,_doc) \
-    static const _ctype &get##_name() { return instance()->_name; }\
-    static void set##_name(const _ctype &_v) { instance()->handle->Set##_type(#_name,_v); instance()->_name=_v; }\
+    static const _ctype &get##_name() { return instance()->_##_name; }\
+    static void set##_name(const _ctype &_v) { instance()->handle->Set##_type(#_name,_v); instance()->_##_name=_v; }\
     void on##_name##Changed();\
     static void update##_name(ViewParams *self) { \
-        self->_name = self->handle->Get##_type(#_name,_def); \
+        self->_##_name = self->handle->Get##_type(#_name,_def); \
         self->on##_name##Changed();\
     }\
     static const char *doc##_name(); \
@@ -302,7 +305,7 @@ public:
 private:
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def,_doc) \
-    _ctype _name;
+    _ctype _##_name;
 
 #undef FC_VIEW_PARAM2
 #define FC_VIEW_PARAM2 FC_VIEW_PARAM

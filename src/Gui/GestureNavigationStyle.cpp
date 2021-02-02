@@ -76,6 +76,7 @@
 #include "View3DInventorViewer.h"
 #include "Application.h"
 #include "SoTouchEvents.h"
+#include "ViewParams.h"
 
 #include <QTapAndHoldGesture>
 
@@ -419,7 +420,11 @@ public:
             //all buttons released
             if (long_click){
                 //emulate RMB-click
-                ns.openPopupMenu(ev.inventor_event->getPosition());
+                bool alt = ev.modifiers & NS::Event::ALTDOWN;
+                if (ViewParams::getGestureLongPressRotationCenter() != alt)
+                    ns.onSetRotationCenter(ev.inventor_event->getPosition());
+                else
+                    ns.openPopupMenu(ev.inventor_event->getPosition());
                 return transit<NS::IdleState>();
             } else {
                 //refire all events && return to idle state

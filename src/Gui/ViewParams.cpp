@@ -35,7 +35,7 @@ ViewParams::ViewParams() {
     handle->Attach(this);
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def,_doc) \
-    _name = handle->Get##_type(#_name,_def);\
+    _##_name = handle->Get##_type(#_name,_def);\
     funcs[#_name] = &ViewParams::update##_name;
 
 #undef FC_VIEW_PARAM2

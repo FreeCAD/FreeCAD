@@ -44,6 +44,7 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 #include <Base/Tools.h>
+#include "ViewParams.h"
 
 using namespace Gui::Dialog;
 
@@ -87,6 +88,7 @@ void DlgSettingsNavigation::saveSettings()
     index = ui->comboRotationMode->currentIndex();
     hGrp->SetInt("RotationMode", index);
 
+    ViewParams::setGestureLongPressRotationCenter(ui->checkBoxRotationCenter->isChecked());
     ui->checkBoxZoomAtCursor->onSave();
     ui->checkBoxInvertZoom->onSave();
     ui->checkBoxDisableTilt->onSave();
@@ -111,6 +113,7 @@ void DlgSettingsNavigation::saveSettings()
 
 void DlgSettingsNavigation::loadSettings()
 {
+    ui->checkBoxRotationCenter->setChecked(ViewParams::getGestureLongPressRotationCenter());
     ui->checkBoxZoomAtCursor->onRestore();
     ui->checkBoxInvertZoom->onRestore();
     ui->checkBoxDisableTilt->onRestore();
