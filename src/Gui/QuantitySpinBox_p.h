@@ -30,6 +30,14 @@ class ExpressionLabel : public QLabel
     Q_OBJECT
 public:
     ExpressionLabel(QWidget * parent) : QLabel(parent) { }
+
+    void setExpressionText(const QString& text) {
+        if (text.isEmpty()) 
+            this->setToolTip(genericFormulaEditorTooltip);
+        else 
+            this->setToolTip(formulaEditorTooltipPrefix + text);
+    }
+
 protected:
     void mouseReleaseEvent(QMouseEvent * event) {
         if (rect().contains(event->pos()))
@@ -38,6 +46,11 @@ protected:
 
 Q_SIGNALS:
     void clicked();
+
+private:
+
+    const QString genericFormulaEditorTooltip = tr("Enter an expression...");
+    const QString formulaEditorTooltipPrefix = tr("Expression: ");
 };
 
 #endif // QUANTITYSPINBOX_P_H

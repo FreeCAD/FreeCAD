@@ -1366,6 +1366,7 @@ ExpLineEdit::ExpLineEdit(QWidget* parent, bool expressionOnly)
     iconLabel->setPixmap(pixmap);
     iconLabel->setStyleSheet(QString::fromLatin1("QLabel { border: none; padding: 0px; padding-top: %2px; width: %1px; height: %1px }").arg(iconHeight).arg(frameWidth/2));
     iconLabel->hide();
+    static_cast<ExpressionLabel*>(iconLabel)->setExpressionText(QString());
     setStyleSheet(QString::fromLatin1("QLineEdit { padding-right: %1px } ").arg(iconHeight+frameWidth));
 
     QObject::connect(iconLabel, SIGNAL(clicked()), this, SLOT(openFormulaDialog()));
@@ -1427,7 +1428,7 @@ void ExpLineEdit::onChange() {
         QPalette p(palette());
         p.setColor(QPalette::Text, Qt::lightGray);
         setPalette(p);
-        iconLabel->setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
+        static_cast<ExpressionLabel*>(iconLabel)->setExpressionText(Base::Tools::fromStdString(getExpression()->toString()));
     }
     else {
         setReadOnly(false);
@@ -1435,7 +1436,7 @@ void ExpLineEdit::onChange() {
         QPalette p(palette());
         p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
         setPalette(p);
-        iconLabel->setToolTip(QString());
+        static_cast<ExpressionLabel*>(iconLabel)->setExpressionText(QString());
     }
 }
 
@@ -1457,7 +1458,7 @@ void ExpLineEdit::resizeEvent(QResizeEvent * event)
             QPalette p(palette());
             p.setColor(QPalette::Text, Qt::lightGray);
             setPalette(p);
-            iconLabel->setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
+            static_cast<ExpressionLabel*>(iconLabel)->setExpressionText(Base::Tools::fromStdString(getExpression()->toString()));
         }
         else {
             setReadOnly(false);
@@ -1467,7 +1468,7 @@ void ExpLineEdit::resizeEvent(QResizeEvent * event)
             QPalette p(palette());
             p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
             setPalette(p);
-            iconLabel->setToolTip(QString());
+            static_cast<ExpressionLabel*>(iconLabel)->setExpressionText(QString());
         }
     }
     catch (const Base::Exception & e) {
