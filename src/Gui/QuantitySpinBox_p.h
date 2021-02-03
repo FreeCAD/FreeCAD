@@ -133,7 +133,7 @@ protected:
                 break;
             case QEvent::Leave:
                 if (_state != Bound
-                        || (_state == Binding && Gui::ExprParams::AutoHideEditorIcon()))
+                        && (_state == Binding && Gui::ExprParams::AutoHideEditorIcon()))
                     hide();
                 break;
             case QEvent::Resize:
