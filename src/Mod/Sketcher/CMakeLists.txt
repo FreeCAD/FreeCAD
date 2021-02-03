@@ -8,14 +8,15 @@ set(Sketcher_Scripts
     Init.py
     SketcherExample.py
     TestSketcherApp.py
-    TestSketchFillet.py
+    SketcherTests/TestSketchFillet.py
+    SketcherTests/TestSketcherSolver.py
     Profiles.py
 )
 
 if(BUILD_GUI)
     list (APPEND Sketcher_Scripts
           InitGui.py
-          TestSketcherGui.py
+          SketcherTests/TestSketcherGui.py
     )
 endif(BUILD_GUI)
 
