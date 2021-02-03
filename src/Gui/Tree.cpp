@@ -2250,7 +2250,14 @@ void TreeWidget::mouseMoveEvent(QMouseEvent *event) {
         ToolTip::hideText();
     }
 
-    QTreeWidget::mouseMoveEvent(event);
+    // QAbstractionItemView has this weird DragSeletingState, where the mouse
+    // move with left button pressed will trigger selection if the previous
+    // mouse press event does not register a valid pressed item. Since we are
+    // reimplement mousePressEvent() and may skip calling parent, this condition
+    // can often be met unintentionally. So we shall skip calling parent's
+    // mouseMoveEvent() if the condition is met to avoid unwanted selection.
+    if (event->buttons()!=Qt::LeftButton || !pimpl->skipMouseRelease)
+        QTreeWidget::mouseMoveEvent(event);
 }
 
 void TreeWidget::onToolTipTimer()
