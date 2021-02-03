@@ -1649,7 +1649,7 @@ Property *ObjectIdentifier::resolveProperty(const App::DocumentObject *obj,
             std::string _subname;
             const char *s = subname.c_str();
 
-            // If no middle dot found, try interprete it as label
+            // If no middle dot found, try interpreting it as label
             if(ptype!=PseudoShape && subname[0]!='$' && subname.find('.') == std::string::npos) {
                 _subname = "$";
                 _subname += subname;

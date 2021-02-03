@@ -226,7 +226,7 @@ void SoBrepPointSet::glRender(SoGLRenderAction *action, bool inpath)
 
         state->push();
 
-        // SoFCDisplayModeElement::getTransparency() specifices face only
+        // SoFCDisplayModeElement::getTransparency() specifies face only
         // transparency. When there is a face only transparency, we'll make
         // edge/point rendering to be opque. Maybe we'll add support for
         // edge/point transparency in SoFCDisplayModeElement later.

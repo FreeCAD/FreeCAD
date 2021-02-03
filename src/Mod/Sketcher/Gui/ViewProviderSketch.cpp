@@ -4015,7 +4015,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
     assert(edit);
 
     // delay drawing until setEditViewer() where edit->viewer is set.
-    // Because of possible external editing, we can only know the editting
+    // Because of possible external editing, we can only know the editing
     // viewer in setEditViewer().
     if (!edit->viewer)
         return;

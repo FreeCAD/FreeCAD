@@ -4173,11 +4173,11 @@ TopoShape TopoShape::splitWires(std::vector<TopoShape> *inner,
     }
 
     auto doReorient = [](TopoShape &s, TopAbs_Orientation orient) {
-        // Speical case of single edge wire. Make sure the edge is in the
+        // Special case of single edge wire. Make sure the edge is in the
         // required orientation. This is necessary because BRepFill_OffsetWire
-        // has special handling of cicular edge offset, which seem to only
+        // has special handling of circular edge offset, which seem to only
         // respect the edge orientation and disregard the wire orientation. The
-        // orientation is used to determin whether to shrink or expand.
+        // orientation is used to determine whether to shrink or expand.
         if (s.countSubShapes(TopAbs_EDGE) == 1) {
             TopoDS_Shape e = s.getSubShape(TopAbs_EDGE, 1);
             if (e.Orientation() == orient) {

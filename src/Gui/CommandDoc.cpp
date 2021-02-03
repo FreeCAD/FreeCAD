@@ -553,7 +553,7 @@ StdCmdSaveAsDirectory::StdCmdSaveAsDirectory()
 {
   sGroup        = QT_TR_NOOP("File");
   sMenuText     = QT_TR_NOOP("Save as &Directory...");
-  sToolTipText  = QT_TR_NOOP("Save the active document in a direcotry without compression");
+  sToolTipText  = QT_TR_NOOP("Save the active document in a directory without compression");
   sWhatsThis    = "Std_SaveAsDirectory";
   sStatusTip    = sToolTipText;
   eType         = 0;
