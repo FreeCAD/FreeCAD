@@ -472,6 +472,12 @@ struct View3DInventorViewer::Private
             box.extendBy(action.getBoundingBox());
         }
     }
+
+    int checkElementIntersection(ViewProviderDocumentObject *vp,
+                                 const char *subname,
+                                 const Base::ViewProjMethod &proj,
+                                 const Base::Polygon2d &polygon,
+                                 App::DocumentObject *prevObj = nullptr);
 };
 
 /** \defgroup View3D 3D Viewer
@@ -4160,38 +4166,41 @@ void View3DInventorViewer::viewAll(float factor)
 }
 
 // Recursively check if any sub-element intersects with a given projected 2D polygon
-static int
-checkElementIntersection(ViewProviderDocumentObject *vp, const char *subname,
-                         const Base::ViewProjMethod &proj, const Base::Polygon2d &polygon,
-                         Base::Matrix4D mat, bool transform=true, int depth=0)
+int
+View3DInventorViewer::Private::checkElementIntersection(ViewProviderDocumentObject *vp,
+                                                        const char *subname,
+                                                        const Base::ViewProjMethod &proj,
+                                                        const Base::Polygon2d &polygon,
+                                                        App::DocumentObject *prevObj)
 {
     auto obj = vp->getObject();
     if(!obj || !obj->getNameInDocument())
         return -1;
 
+    App::DocumentObject *sobj = obj;
     if (subname && subname[0]) {
         App::DocumentObject *parent = 0;
         std::string childName;
-        auto sobj = obj->resolve(subname,&parent,&childName,0,0,&mat,transform,depth+1);
+        sobj = obj->resolve(subname,&parent,&childName);
         if(!sobj)
             return -1;
-        if(!ViewParams::getShowSelectionOnTop()) {
+        if(!owner->isInGroupOnTop(obj->getNameInDocument(), subname)
+                && !sobj->testStatus(App::ObjEditing)) {
             int vis;
-            if(!parent || (vis=parent->isElementVisibleEx(childName.c_str(),App::DocumentObject::GS_SELECT))<0)
+            if(!parent || (vis=parent->isElementVisibleEx(
+                            childName.c_str(),App::DocumentObject::GS_SELECT))<0)
                 vis = sobj->Visibility.getValue()?1:0;
             if(!vis)
                 return -1;
         }
-        auto svp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
-                Application::Instance->getViewProvider(sobj));
-        if(!svp)
-            return -1;
-        vp = svp;
-        obj = sobj;
-        transform = false;
+    } else if (!owner->isInGroupOnTop(obj->getNameInDocument(), "")
+            && !obj->testStatus(App::ObjEditing)
+            && !obj->Visibility.getValue())
+    {
+        return -1;
     }
 
-    auto bbox3 = vp->getBoundingBox(0,&mat,transform);
+    auto bbox3 = vp->getBoundingBox(subname);
     if(!bbox3.IsValid())
         return -1;
 
@@ -4199,24 +4208,30 @@ checkElementIntersection(ViewProviderDocumentObject *vp, const char *subname,
     if(!bbox.Intersect(polygon))
         return 0;
 
-    const auto &subs = obj->getSubObjects(App::DocumentObject::GS_SELECT);
+    std::vector<std::string> subs;
+    if (sobj != prevObj)
+        subs = sobj->getSubObjects(App::DocumentObject::GS_SELECT);
     if(subs.size()) {
         int res = -1;
         for(auto &sub : subs) {
-            int r = checkElementIntersection(vp, sub.c_str(), proj, polygon, mat, false, depth+1);
+            if (subname && subname[0])
+                sub.insert(sub.begin(), subname, subname + strlen(subname));
+            int r = checkElementIntersection(vp, sub.c_str(), proj, polygon, sobj);
             if (r == 0)
-                return 0;
-            // Return < 0 means either the object does not have shape, or the shape
-            // type does not implement sub-element intersection check.
+                res = 0;
             if (r > 0)
-                res = 1;
+                return 1;
+            // Return < 0 means either the object does not have shape, or the shape
+            // type does not implement sub-element intersection check. So Just
+            // ignore it and continue
         }
         return res;
     }
 
     Base::PyGILStateLocker lock;
     PyObject *pyobj = 0;
-    obj->getSubObject(0,&pyobj,&mat,transform,depth);
+    Base::Matrix4D mat;
+    obj->getSubObject(subname,&pyobj,&mat);
     if(!pyobj)
         return -1;
     Py::Object pyobject(pyobj,true);
@@ -4307,8 +4322,7 @@ void View3DInventorViewer::viewObjects(const std::vector<App::SubObjectT> &objs,
             continue;
 
         if(!extend
-            || !checkElementIntersection(
-                    vp, objT.getSubName().c_str(), proj, polygon, Base::Matrix4D()))
+            || !_pimpl->checkElementIntersection(vp, objT.getSubName().c_str(), proj, polygon))
         {
             bbox.Add(vp->getBoundingBox(objT.getSubName().c_str()));
         }
