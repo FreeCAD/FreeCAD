@@ -362,6 +362,7 @@ void FillingPanel::hideEvent(QHideEvent* event)
     // If the dialog was hidden by ESC being pressed in the 3D view, we need to remove the highlights
     // and selection gate, which is all that reject() does.
     reject();
+    QWidget::hideEvent(event);
 }
 
 
