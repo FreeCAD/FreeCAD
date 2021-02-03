@@ -704,7 +704,10 @@ Base::Matrix4D TopoShape::getTransform(void) const
     return mtrx;
 }
 
-void TopoShape::setPlacement(const Base::Placement& rclTrf)
+/*!
+ * \obsolete
+ */
+void TopoShape::setShapePlacement(const Base::Placement& rclTrf)
 {
     const Base::Vector3d& pos = rclTrf.getPosition();
     Base::Vector3d axis;
@@ -718,7 +721,10 @@ void TopoShape::setPlacement(const Base::Placement& rclTrf)
     _Shape.Location(loc);
 }
 
-Base::Placement TopoShape::getPlacemet(void) const
+/*!
+ * \obsolete
+ */
+Base::Placement TopoShape::getShapePlacement(void) const
 {
     TopLoc_Location loc = _Shape.Location();
     gp_Trsf trsf = loc.Transformation();
