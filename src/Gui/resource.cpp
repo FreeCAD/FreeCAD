@@ -32,6 +32,7 @@
 #include "DlgPreferencesImp.h"
 #include "DlgSettings3DViewImp.h"
 #include "DlgSettingsNavigation.h"
+#include "DlgSettingsSelection.h"
 #include "DlgSettingsViewColor.h"
 #include "DlgGeneralImp.h"
 #include "DlgEditorImp.h"
@@ -66,6 +67,7 @@ WidgetFactorySupplier::WidgetFactorySupplier()
     new PrefPageProducer<DlgGeneralImp>         ( QT_TRANSLATE_NOOP("QObject","General") );
   //new PrefPageProducer<DlgOnlineHelpImp>      ( QT_TRANSLATE_NOOP("QObject","General") );
     new PrefPageProducer<DlgSettingsDocumentImp>( QT_TRANSLATE_NOOP("QObject","General") );
+    new PrefPageProducer<DlgSettingsSelection>  ( QT_TRANSLATE_NOOP("QObject","General") );
     new PrefPageProducer<DlgSettingsEditorImp>  ( QT_TRANSLATE_NOOP("QObject","General") );
     new PrefPageProducer<DlgReportViewImp>      ( QT_TRANSLATE_NOOP("QObject","General") );
     new PrefPageProducer<DlgSettingsMacroImp>   ( QT_TRANSLATE_NOOP("QObject","General") );
