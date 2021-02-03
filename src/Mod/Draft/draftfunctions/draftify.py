@@ -70,7 +70,7 @@ def draftify(objectslist, makeblock=False, delete=True):
             for cluster in Part.sortEdges(obj.Shape.Edges):
                 w = Part.Wire(cluster)
                 nobj = draftify_shape(w)
-                if nobj == None:
+                if nobj is None:
                     nobj = App.ActiveDocument.addObject("Part::Feature", obj.Name)
                     nobj.Shape = w
                 newobjlist.append(nobj)
