@@ -51,6 +51,7 @@
 # include <QUrlQuery>
 #endif
 # include <QWhatsThis>
+# include <QHBoxLayout>
 #endif
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
@@ -651,9 +652,14 @@ static void populateMenu(QMenu *menu, MenuType type)
     }
     for(auto it=actions.begin(); it!=actions.end(); ++it) {
         auto action = *it;
-        QCheckBox *checkbox = new QCheckBox(menu);
+        QWidget *widget = new QWidget(menu);
+        QHBoxLayout *layout = new QHBoxLayout(widget);
+        widget->setLayout(layout);
+        QCheckBox *checkbox = new QCheckBox(widget);
+        layout->addWidget(checkbox);
+        layout->setContentsMargins(4,0,4,0);
         QWidgetAction *wa = new QWidgetAction(menu);
-        wa->setDefaultWidget(checkbox);
+        wa->setDefaultWidget(widget);
         wa->setToolTip(tooltip);
         wa->setStatusTip(tooltip);
         wa->setWhatsThis(tooltip);
