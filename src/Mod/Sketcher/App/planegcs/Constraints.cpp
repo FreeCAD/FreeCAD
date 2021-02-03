@@ -2085,7 +2085,7 @@ void ConstraintEqualLineLength::errorgrad(double *err, double *grad, double *par
         //
         // So here we maintain the very small derivative of 1e-10 when the gradient is under such value, such
         // that the diagnose function with pivot threshold of 1e-13 treats the value as non-zero and correctly
-        // detects and can tell appart when a parameter is fully constrained or just locked into a maximum/minimum
+        // detects and can tell apart when a parameter is fully constrained or just locked into a maximum/minimum
         if(fabs(*grad)  < 1e-10) {
             double surrogate = 1e-10;
             if( param == l1.p1.x )
