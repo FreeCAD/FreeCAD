@@ -127,7 +127,7 @@ def CreateSlotPlateInnerSet(SketchFeature):
 #---------------------------------------------------------------------------
 
 
-class SketcherSolverTestCases(unittest.TestCase):
+class TestSketcherSolver(unittest.TestCase):
 	def setUp(self):
 		self.Doc = FreeCAD.newDocument("SketchSolverTest")
 
