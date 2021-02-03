@@ -642,9 +642,9 @@ bool SketcherGui::checkConstraint(const std::vector< Sketcher::Constraint * > &v
     return false;
 }
 
-
-void SketcherGui::doEndpointTangency(Sketcher::SketchObject* Obj, Gui::SelectionObject &selection,
-                                     int GeoId1, int GeoId2, PointPos PosId1, PointPos PosId2){
+void SketcherGui::doEndpointTangency(Sketcher::SketchObject* Obj,
+                                     int GeoId1, int GeoId2, PointPos PosId1, PointPos PosId2)
+{
     // This code supports simple B-spline endpoint tangency to any other geometric curve
     const Part::Geometry *geom1 = Obj->getGeometry(GeoId1);
     const Part::Geometry *geom2 = Obj->getGeometry(GeoId2);
@@ -660,8 +660,14 @@ void SketcherGui::doEndpointTangency(Sketcher::SketchObject* Obj, Gui::Selection
         // GeoId1 is the B-spline now
         } // end of code supports simple B-spline endpoint tangency
 
-        Gui::cmdAppObjectArgs(selection.getObject(), "addConstraint(Sketcher.Constraint('Tangent',%d,%d,%d,%d)) ",
+        Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Tangent',%d,%d,%d,%d)) ",
                 GeoId1,PosId1,GeoId2,PosId2);
+}
+
+void SketcherGui::doEndpointToEdgeTangency( Sketcher::SketchObject* Obj, int GeoId1, PointPos PosId1, int GeoId2)
+{
+    Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Tangent',%d,%d,%d)) ",
+                GeoId1,PosId1,GeoId2);
 }
 
 void SketcherGui::notifyConstraintSubstitutions(const QString & message)
@@ -2066,6 +2072,10 @@ public:
 protected:
     virtual void activated(int iMsg);
     virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+    // returns true if a substitution took place
+    bool substituteConstraintCombinations(SketchObject * Obj,
+                                          int GeoId1, PointPos PosId1,
+                                          int GeoId2, PointPos PosId2);
 };
 
 CmdSketcherConstrainCoincident::CmdSketcherConstrainCoincident()
@@ -2082,6 +2092,48 @@ CmdSketcherConstrainCoincident::CmdSketcherConstrainCoincident()
     eType           = ForEdit;
 
     allowedSelSequences = {{SelVertex, SelVertexOrRoot}, {SelRoot, SelVertex}};
+}
+
+bool CmdSketcherConstrainCoincident::substituteConstraintCombinations(SketchObject * Obj,
+                                                                      int GeoId1, PointPos PosId1,
+                                                                      int GeoId2, PointPos PosId2)
+{
+    // checks for direct and indirect coincidence constraints
+    bool constraintExists = Obj->arePointsCoincident(GeoId1,PosId1,GeoId2,PosId2);
+
+    const std::vector< Constraint * > &cvals = Obj->Constraints.getValues();
+
+    int j=0;
+    for (std::vector<Constraint *>::const_iterator it = cvals.begin(); it != cvals.end(); ++it,++j) {
+        if( (*it)->Type == Sketcher::Tangent &&
+            (*it)->FirstPos == Sketcher::none && (*it)->SecondPos == Sketcher::none &&
+            (*it)->Third == Constraint::GeoUndef &&
+            (((*it)->First == GeoId1 && (*it)->Second == GeoId2) ||
+            ((*it)->Second == GeoId1 && (*it)->First == GeoId2)) ) {
+
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Swap edge tangency with ptp tangency"));
+
+            if( constraintExists ) {
+                // try to remove any pre-existing direct coincident constraints
+                Gui::cmdAppObjectArgs(Obj, "delConstraintOnPoint(%i,%i)", GeoId1, PosId1);
+            }
+
+            Gui::cmdAppObjectArgs(Obj, "delConstraint(%i)", j);
+
+            doEndpointTangency(Obj, GeoId1, GeoId2, PosId1, PosId2);
+
+            commitCommand();
+            Obj->solve(); // The substitution requires a solve() so that the autoremove redundants works when Autorecompute not active.
+            tryAutoRecomputeIfNotSolve(Obj);
+
+            notifyConstraintSubstitutions(QObject::tr("Endpoint to endpoint tangency was applied instead."));
+
+            getSelection().clearSelection();
+            return true;
+        }
+    }
+
+    return false;
 }
 
 void CmdSketcherConstrainCoincident::activated(int iMsg)
@@ -2145,41 +2197,15 @@ void CmdSketcherConstrainCoincident::activated(int iMsg)
             return;
         }
 
+        // check if as a consequence of this command undesirable combinations of constraints would
+        // arise and substitute them with more appropriate counterparts, examples:
+        // - coincidence + tangency on edge
+        // - point on object + tangency on edge
+        if(substituteConstraintCombinations(Obj, GeoId1, PosId1,GeoId2, PosId2))
+            return;
+
         // check if this coincidence is already enforced (even indirectly)
         bool constraintExists=Obj->arePointsCoincident(GeoId1,PosId1,GeoId2,PosId2);
-
-        // check for a preexisting edge-to-edge tangency
-        const std::vector< Constraint * > &cvals = Obj->Constraints.getValues();
-
-        int j=0;
-        for (std::vector<Constraint *>::const_iterator it = cvals.begin(); it != cvals.end(); ++it,++j) {
-            if( (*it)->Type == Sketcher::Tangent &&
-                (*it)->FirstPos == Sketcher::none && (*it)->SecondPos == Sketcher::none &&
-                (*it)->Third == Constraint::GeoUndef &&
-                (((*it)->First == GeoId1 && (*it)->Second == GeoId2) ||
-                ((*it)->Second == GeoId1 && (*it)->First == GeoId2)) ) {
-
-                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Swap edge tangency with ptp tangency"));
-
-                if(constraintExists) {
-                    // try to remove any pre-existing direct coincident constraints
-                    Gui::cmdAppObjectArgs(Obj, "delConstraintOnPoint(%i,%i)", GeoId1, PosId1);
-                }
-
-                Gui::cmdAppObjectArgs(Obj, "delConstraint(%i)", j);
-
-                doEndpointTangency(Obj, selection[0], GeoId1, GeoId2, PosId1, PosId2);
-
-                commitCommand();
-                Obj->solve(); // The substitution requires a solve() so that the autoremove redundants works when Autorecompute not active.
-                tryAutoRecomputeIfNotSolve(Obj);
-
-                notifyConstraintSubstitutions(QObject::tr("Endpoint to endpoint tangency was applied instead."));
-
-                getSelection().clearSelection();
-                return;
-                }
-        }
 
         if (!constraintExists) {
             constraintsAdded = true;
@@ -2217,6 +2243,13 @@ void CmdSketcherConstrainCoincident::applyConstraint(std::vector<SelIdPair> &sel
             showNoConstraintBetweenFixedGeometry();
             return;
         }
+
+        // check if as a consequence of this command undesirable combinations of constraints would
+        // arise and substitute them with more appropriate counterparts, examples:
+        // - coincidence + tangency on edge
+        // - point on object + tangency on edge
+        if(substituteConstraintCombinations(Obj, GeoId1, PosId1,GeoId2, PosId2))
+            return;
 
         // undo command open
         Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add coincident constraint"));
@@ -2595,9 +2628,10 @@ public:
 protected:
     virtual void activated(int iMsg);
     virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+    // returns true if a substitution took place
+    bool substituteConstraintCombinations(SketchObject * Obj,
+                                          int GeoId1, PointPos PosId1, int GeoId2);
 };
-
-//DEF_STD_CMD_A(CmdSketcherConstrainPointOnObject);
 
 CmdSketcherConstrainPointOnObject::CmdSketcherConstrainPointOnObject()
     :CmdSketcherConstraint("Sketcher_ConstrainPointOnObject")
@@ -2617,6 +2651,36 @@ CmdSketcherConstrainPointOnObject::CmdSketcherConstrainPointOnObject()
                            {SelEdge, SelVertexOrRoot}, {SelEdgeOrAxis, SelVertex},
                            {SelExternalEdge, SelVertex}};
 
+}
+
+bool CmdSketcherConstrainPointOnObject::substituteConstraintCombinations(   SketchObject * Obj,
+                                                                            int GeoId1, PointPos PosId1, int GeoId2)
+{
+    const std::vector< Constraint * > &cvals = Obj->Constraints.getValues();
+
+    int cid = 0;
+    for (std::vector<Constraint *>::const_iterator it = cvals.begin(); it != cvals.end(); ++it, ++cid) {
+        if( (*it)->Type == Sketcher::Tangent &&
+            (*it)->FirstPos == Sketcher::none && (*it)->SecondPos == Sketcher::none &&
+            (*it)->Third == Constraint::GeoUndef &&
+            (((*it)->First == GeoId1 && (*it)->Second == GeoId2) ||
+            ((*it)->Second == GeoId1 && (*it)->First == GeoId2)) ) {
+
+            // NOTE: This function does not either open or commit a command as it is used for group addition
+            // it relies on such infrastructure being provided by the caller.
+
+            Gui::cmdAppObjectArgs(Obj, "delConstraint(%i)", cid);
+
+            doEndpointToEdgeTangency(Obj, GeoId1, PosId1, GeoId2);
+
+            notifyConstraintSubstitutions(QObject::tr("Endpoint to edge tangency was applied instead."));
+
+            getSelection().clearSelection();
+            return true;
+        }
+    }
+
+    return false;
 }
 
 void CmdSketcherConstrainPointOnObject::activated(int iMsg)
@@ -2686,6 +2750,11 @@ void CmdSketcherConstrainPointOnObject::activated(int iMsg)
                                         QObject::tr("Select an edge that is not a B-spline weight"));
                     abortCommand();
 
+                    continue;
+                }
+
+                if(substituteConstraintCombinations(Obj, points[iPnt].GeoId, points[iPnt].PosId, curves[iCrv].GeoId)) {
+                    cnt++;
                     continue;
                 }
 
@@ -2770,6 +2839,12 @@ void CmdSketcherConstrainPointOnObject::applyConstraint(std::vector<SelIdPair> &
                              QObject::tr("Select an edge that is not a B-spline weight"));
         abortCommand();
 
+        return;
+    }
+
+    if(substituteConstraintCombinations(Obj, GeoIdVt, PosIdVt, GeoIdCrv)) {
+        commitCommand();
+        tryAutoRecompute(Obj);
         return;
     }
 
@@ -4090,6 +4165,8 @@ public:
 protected:
     virtual void activated(int iMsg);
     virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+    // returns true if a substitution took place
+    bool substituteConstraintCombinations(SketchObject * Obj, int GeoId1, int GeoId2);
 };
 
 CmdSketcherConstrainTangent::CmdSketcherConstrainTangent()
@@ -4116,6 +4193,62 @@ CmdSketcherConstrainTangent::CmdSketcherConstrainTangent()
                            {SelEdge, SelVertexOrRoot, SelExternalEdge},
                            {SelExternalEdge, SelVertexOrRoot, SelEdge}, /* Two Curves and a Point */
                            {SelVertexOrRoot, SelVertex} /*Two Endpoints*/ /*No Place for One Endpoint and One Curve*/};
+}
+
+bool CmdSketcherConstrainTangent::substituteConstraintCombinations(SketchObject * Obj, int GeoId1, int GeoId2)
+{
+    const std::vector< Constraint * > &cvals = Obj->Constraints.getValues();
+
+    int cid = 0;
+    for (std::vector<Constraint *>::const_iterator it = cvals.begin(); it != cvals.end(); ++it, ++cid) {
+        if( (*it)->Type == Sketcher::Coincident &&
+            (((*it)->First == GeoId1 && (*it)->Second == GeoId2) ||
+            ((*it)->Second == GeoId1 && (*it)->First == GeoId2)) ) {
+
+            // save values because 'doEndpointTangency' changes the
+            // constraint property and thus invalidates this iterator
+            int first = (*it)->First;
+            int firstpos = static_cast<int>((*it)->FirstPos);
+
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Swap coincident+tangency with ptp tangency"));
+
+            doEndpointTangency(Obj, (*it)->First, (*it)->Second, (*it)->FirstPos, (*it)->SecondPos);
+
+            Gui::cmdAppObjectArgs(Obj, "delConstraintOnPoint(%i,%i)", first, firstpos);
+
+            commitCommand();
+            Obj->solve(); // The substitution requires a solve() so that the autoremove redundants works when Autorecompute not active.
+            tryAutoRecomputeIfNotSolve(Obj);
+
+            notifyConstraintSubstitutions(QObject::tr("Endpoint to endpoint tangency was applied. The coincident constraint was deleted."));
+
+            getSelection().clearSelection();
+            return true;
+        }
+        else if( (*it)->Type == Sketcher::PointOnObject &&
+            (((*it)->First == GeoId1 && (*it)->Second == GeoId2) ||
+            ((*it)->Second == GeoId1 && (*it)->First == GeoId2)) ) {
+
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Swap PointOnObject+tangency with point to curve tangency"));
+
+            doEndpointToEdgeTangency(Obj, (*it)->First, (*it)->FirstPos, (*it)->Second);
+
+            Gui::cmdAppObjectArgs(Obj, "delConstraint(%i)", cid); // remove the preexisting point on object constraint.
+
+            commitCommand();
+
+            // A substitution requires a solve() so that the autoremove redundants works when Autorecompute not active. However,
+            // delConstraint includes such solve() internally. So at this point it is already solved.
+            tryAutoRecomputeIfNotSolve(Obj);
+
+            notifyConstraintSubstitutions(QObject::tr("Endpoint to edge tangency was applied. The point on object constraint was deleted."));
+
+            getSelection().clearSelection();
+            return true;
+        }
+    }
+
+    return false;
 }
 
 void CmdSketcherConstrainTangent::activated(int iMsg)
@@ -4244,7 +4377,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
             }
 
             openCommand(QT_TRANSLATE_NOOP("Command", "Add tangent constraint"));
-            doEndpointTangency(Obj, selection[0], GeoId1, GeoId2, PosId1, PosId2);
+            doEndpointTangency(Obj, GeoId1, GeoId2, PosId1, PosId2);
             commitCommand();
             tryAutoRecompute(Obj);
 
@@ -4308,35 +4441,13 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                              QObject::tr("Select an edge that is not a B-spline weight"));
                 return;
             }
-            // check if there is a coincidence constraint on GeoId1, GeoId2
-            const std::vector< Constraint * > &cvals = Obj->Constraints.getValues();
 
-            for (std::vector<Constraint *>::const_iterator it = cvals.begin(); it != cvals.end(); ++it) {
-                if( (*it)->Type == Sketcher::Coincident &&
-                    (((*it)->First == GeoId1 && (*it)->Second == GeoId2) ||
-                    ((*it)->Second == GeoId1 && (*it)->First == GeoId2)) ) {
-
-                    // save values because 'doEndpointTangency' changes the
-                    // constraint property and thus invalidates this iterator
-                    int first = (*it)->First;
-                    int firstpos = static_cast<int>((*it)->FirstPos);
-
-                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Swap coincident+tangency with ptp tangency"));
-
-                    doEndpointTangency(Obj, selection[0], (*it)->First, (*it)->Second, (*it)->FirstPos, (*it)->SecondPos);
-
-                    Gui::cmdAppObjectArgs(Obj, "delConstraintOnPoint(%i,%i)", first, firstpos);
-
-                    commitCommand();
-                    Obj->solve(); // The substitution requires a solve() so that the autoremove redundants works when Autorecompute not active.
-                    tryAutoRecomputeIfNotSolve(Obj);
-
-                    notifyConstraintSubstitutions(QObject::tr("Endpoint to endpoint tangency was applied instead."));
-
-                    getSelection().clearSelection();
-                    return;
-                }
-            }
+            // check if as a consequence of this command undesirable combinations of constraints would
+            // arise and substitute them with more appropriate counterparts, examples:
+            // - coincidence + tangency on edge
+            // - point on object + tangency on edge
+            if(substituteConstraintCombinations(Obj, GeoId1, GeoId2))
+                return;
 
             if( geom1 && geom2 &&
                 ( geom1->getTypeId() == Part::GeomEllipse::getClassTypeId() ||
@@ -4529,6 +4640,12 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair> &selSeq
                 return;
         }
 
+        // check if as a consequence of this command undesirable combinations of constraints would
+        // arise and substitute them with more appropriate counterparts, examples:
+        // - coincidence + tangency on edge
+        // - point on object + tangency on edge
+        if(substituteConstraintCombinations(Obj, GeoId1, GeoId2))
+            return;
 
         if( geom1 && geom2 &&
             ( geom1->getTypeId() == Part::GeomEllipse::getClassTypeId() ||
