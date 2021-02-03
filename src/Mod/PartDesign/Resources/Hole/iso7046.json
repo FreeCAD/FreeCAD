@@ -4,7 +4,7 @@
     "thread_type": "metric",
     "angle": 90,
     "data": [
-    { "thread": "M1.6", "diameter":  3.6 }
+    { "thread": "M1.6", "diameter":  3.6 },
     { "thread": "M2",   "diameter":  4.4 },
     { "thread": "M2.5", "diameter":  5.5 },
 	{ "thread": "M3",   "diameter":  6.3 },
