@@ -2285,8 +2285,11 @@ void TreeWidget::onToolTipTimer()
     if (!Obj->isError()) {
         if (tag == Gui::treeVisibilityIconTag())
             info = QObject::tr("Click to toggle visiblity.\nAlt + click to toggle show on top.");
-        else
+        else {
             info = item->object()->getToolTip(tag);
+            if (info.isEmpty() && !Obj->Label2.getStrValue().empty())
+                info = QString::fromUtf8(Obj->Label2.getValue());
+        }
     } else {
 #if (QT_VERSION >= 0x050000)
         info = QApplication::translate(Obj->getTypeId().getName(), Obj->getStatusString());
