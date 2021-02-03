@@ -21,40 +21,8 @@
 
 
 import FreeCAD, math, os, sys, unittest, Part, Sketcher
+from .TestSketcherSolver import CreateRectangleSketch
 App = FreeCAD
-
-def CreateRectangle(SketchFeature, corner, lengths):
-    hmin, hmax = corner[0], corner[0] + lengths[0]
-    vmin, vmax = corner[1], corner[1] + lengths[1]
-
-    # add the geometry and grab the count offset
-    i = int(SketchFeature.GeometryCount)
-    SketchFeature.addGeometry(Part.LineSegment(FreeCAD.Vector(hmin,vmax),FreeCAD.Vector(hmax,vmax,0)))
-    SketchFeature.addGeometry(Part.LineSegment(FreeCAD.Vector(hmax,vmax,0),FreeCAD.Vector(hmax,vmin,0)))
-    SketchFeature.addGeometry(Part.LineSegment(FreeCAD.Vector(hmax,vmin,0),FreeCAD.Vector(hmin,vmin,0)))
-    SketchFeature.addGeometry(Part.LineSegment(FreeCAD.Vector(hmin,vmin,0),FreeCAD.Vector(hmin,vmax,0)))
-
-    # add the rectangular constraints
-    SketchFeature.addConstraint(Sketcher.Constraint('Coincident',i+0,2,i+1,1)) 
-    SketchFeature.addConstraint(Sketcher.Constraint('Coincident',i+1,2,i+2,1)) 
-    SketchFeature.addConstraint(Sketcher.Constraint('Coincident',i+2,2,i+3,1)) 
-    SketchFeature.addConstraint(Sketcher.Constraint('Coincident',i+3,2,i+0,1)) 
-    SketchFeature.addConstraint(Sketcher.Constraint('Horizontal',i+0)) 
-    SketchFeature.addConstraint(Sketcher.Constraint('Horizontal',i+2)) 
-    SketchFeature.addConstraint(Sketcher.Constraint('Vertical',i+1)) 
-    SketchFeature.addConstraint(Sketcher.Constraint('Vertical',i+3)) 
-
-    # Fix the bottom left corner of the rectangle
-    SketchFeature.addConstraint(Sketcher.Constraint('DistanceX',i+2,2,corner[0])) 
-    SketchFeature.addConstraint(Sketcher.Constraint('DistanceY',i+2,2,corner[1])) 
-
-    # add dimensions
-    if lengths[0] == lengths[1]:
-        SketchFeature.addConstraint(Sketcher.Constraint('Equal',i+2,i+3)) 
-        SketchFeature.addConstraint(Sketcher.Constraint('Distance',i+0,hmax-hmin)) 
-    else:
-        SketchFeature.addConstraint(Sketcher.Constraint('Distance',i+1,vmax-vmin)) 
-        SketchFeature.addConstraint(Sketcher.Constraint('Distance',i+0,hmax-hmin)) 
 
 def VShape(SketchFeature):
   # Simple inverted V shape
@@ -72,7 +40,7 @@ def BoxCircle(SketchFeature):
   # Square with a circle centered at the upper right corner
   top_edge = int(SketchFeature.GeometryCount)
   right_edge = top_edge + 1
-  CreateRectangle(SketchFeature, [0, 0], [2, 2])
+  CreateRectangleSketch(SketchFeature, [0, 0], [2, 2])
   top_midpoint = App.Vector(1, 2, 0)
   right_midpoint = App.Vector(2, 1, 0)
   circle = int(SketchFeature.GeometryCount)
@@ -88,7 +56,7 @@ def PointOnObject(SketchFeature):
   # Square with the upper right corner touching the edge of a circle
   top_edge = int(SketchFeature.GeometryCount)
   right_edge = top_edge + 1
-  CreateRectangle(SketchFeature, [0, 0], [2, 2])
+  CreateRectangleSketch(SketchFeature, [0, 0], [2, 2])
   circle = int(SketchFeature.GeometryCount)
   SketchFeature.addGeometry(Part.Circle(App.Vector(12,3,0), App.Vector(0,0,1), 1),False)
   SketchFeature.addConstraint(Sketcher.Constraint('Radius',circle,1)) 
@@ -101,7 +69,7 @@ class TestSketchFillet(unittest.TestCase):
 
   def testBasicFillet(self):
     SketchFeature = self.Doc.addObject('Sketcher::SketchObject', 'BasicFillet')
-    CreateRectangle(SketchFeature, [0, 0], [2, 2])
+    CreateRectangleSketch(SketchFeature, [0, 0], [2, 2])
     SketchFeature.fillet(0,2, 0.25, True, True)
     self.assertAlmostEqual(SketchFeature.Geometry[4].Radius, 0.25)
 
@@ -226,10 +194,10 @@ class TestSketchFillet(unittest.TestCase):
   def testDistance(self):
     SketchFeature = self.Doc.addObject('Sketcher::SketchObject', 'Distance')
     # We'll end up implicitly testing line length constraints as well since that's
-    # what CreateRectangle uses to enforce side length.  If the side length doesn't
+    # what CreateRectangleSketch uses to enforce side length.  If the side length doesn't
     # switch to a point-to-point distance constraint with the original corner as expected,
     # the point won't end up at its expected destination.
-    CreateRectangle(SketchFeature, [0, 0], [2, 2])
+    CreateRectangleSketch(SketchFeature, [0, 0], [2, 2])
 
     point = int(SketchFeature.GeometryCount)
     SketchFeature.addGeometry(Part.Point(App.Vector(3,2,0)))
