@@ -14,6 +14,13 @@
    <string>Selection</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QCheckBox" name="checkBoxAutoSwitch">
+     <property name="text">
+      <string>Auto switch to the 3D view containing the selected item</string>
+     </property>
+    </widget>
+   </item>
    <item row="1" column="0">
     <widget class="QCheckBox" name="checkBoxAutoExpand">
      <property name="text">
@@ -35,6 +42,13 @@
      </property>
     </widget>
    </item>
+   <item row="4" column="0">
+    <widget class="QCheckBox" name="checkBoxSelectionCheckBoxes">
+     <property name="text">
+      <string>Add checkboxes for selection in document tree</string>
+     </property>
+    </widget>
+   </item>
    <item row="5" column="0">
     <spacer name="verticalSpacer">
      <property name="orientation">
@@ -47,20 +61,6 @@
       </size>
      </property>
     </spacer>
-   </item>
-   <item row="0" column="0">
-    <widget class="QCheckBox" name="checkBoxAutoSwitch">
-     <property name="text">
-      <string>Auto switch to the 3D view containing the selected item</string>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="0">
-    <widget class="QCheckBox" name="checkBoxSelectionCheckBoxes">
-     <property name="text">
-      <string>Add checkboxes for selection in document tree</string>
-     </property>
-    </widget>
    </item>
   </layout>
  </widget>
