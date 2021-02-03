@@ -75,7 +75,13 @@ enum InternalAlignmentType {
     BSplineKnotPoint        = 10,
 };
 
-/// define if you want to use the end or start point
+/*! PointPos lets us refer to different aspects of a piece of geometry.  sketcher::none refers
+ * to an edge itself (eg., for a Perpendicular constraint on two lines). sketcher::start and
+ * sketcher::end denote the endpoints of lines or bounded curves.  sketcher::mid denotes
+ * geometries with geometrical centers (eg., circle, ellipse). Bare points use 'start'.  More
+ * complex geometries like parabola focus or b-spline knots use InternalAlignment constraints
+ * in addition to PointPos.
+ */
 enum PointPos { none, start, end, mid };
 
 class SketcherExport Constraint : public Base::Persistence
