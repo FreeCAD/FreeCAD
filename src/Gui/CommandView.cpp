@@ -3589,19 +3589,6 @@ TREEVIEW_CMD_DEF(RecordSelection)
 }
 
 //===========================================================================
-// Std_TreeResizableColumn
-//===========================================================================
-TREEVIEW_CMD_DEF(ResizableColumn)
-{
-    sGroup       = QT_TR_NOOP("TreeView");
-    sMenuText    = QT_TR_NOOP("Resizable column");
-    sToolTipText = QT_TR_NOOP("Make treeview column resizable");
-    sStatusTip   = sToolTipText;
-    sWhatsThis   = "Std_TreeResizableColumn";
-    eType        = NoDefaultAction;
-}
-
-//===========================================================================
 // Std_TreeDrag
 //===========================================================================
 DEF_STD_CMD(StdTreeDrag)
@@ -3654,10 +3641,6 @@ public:
         addCommand(new StdTreeSyncPlacement());
         addCommand("Std_TreePreSelection");
         addCommand(new StdTreeRecordSelection());
-
-        addCommand();
-
-        addCommand(new StdTreeResizableColumn());
 
         addCommand();
 

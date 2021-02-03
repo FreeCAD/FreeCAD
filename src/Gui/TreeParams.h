@@ -88,8 +88,6 @@ public:
        QT_TRANSLATE_NOOP("TreeParams", ""))\
     FC_TREE_PARAM(Indentation,int,Int,0, \
        QT_TRANSLATE_NOOP("TreeParams", ""))\
-    FC_TREE_PARAM2(ResizableColumn,bool,Bool,false, \
-       QT_TRANSLATE_NOOP("TreeParams", ""))\
     FC_TREE_PARAM(LabelExpression,bool,Bool,false, \
        QT_TRANSLATE_NOOP("TreeParams", ""))\
     FC_TREE_PARAM2(IconSize,int,Int,0, \
@@ -108,6 +106,8 @@ public:
         QT_TRANSLATE_NOOP("TreeParams", "Hide tree view scroll bar in dock overlay"))\
     FC_TREE_PARAM(HideHeaderView,bool,Bool,true, \
         QT_TRANSLATE_NOOP("TreeParams", "Hide tree view header view in dock overlay"))\
+    FC_TREE_PARAM2(ResizableColumn,bool,Bool,false, \
+       QT_TRANSLATE_NOOP("TreeParams", "Allow tree view columns to be manually resized"))\
 
 #undef FC_TREE_PARAM
 #define FC_TREE_PARAM(_name,_ctype,_type,_def,_doc) \
