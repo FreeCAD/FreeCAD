@@ -89,17 +89,6 @@ bool ViewProviderFilling::setEdit(int ModNum)
     }
 }
 
-void ViewProviderFilling::unsetEdit(int ModNum)
-{
-    if (ModNum == ViewProvider::Default) {
-        // when pressing ESC make sure to close the dialog
-        QTimer::singleShot(0, &Gui::Control(), SLOT(closeDialog()));
-    }
-    else {
-        PartGui::ViewProviderSpline::unsetEdit(ModNum);
-    }
-}
-
 QIcon ViewProviderFilling::getIcon(void) const
 {
     return Gui::BitmapFactory().pixmap("Surface_Filling");
@@ -367,6 +356,14 @@ void FillingPanel::changeEvent(QEvent *e)
         QWidget::changeEvent(e);
     }
 }
+
+void FillingPanel::hideEvent(QHideEvent* event)
+{
+    // If the dialog was hidden by ESC being pressed in the 3D view, we need to remove the highlights
+    // and selection gate, which is all that reject() does.
+    reject();
+}
+
 
 void FillingPanel::open()
 {

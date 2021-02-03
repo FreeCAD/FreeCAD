@@ -49,7 +49,6 @@ public:
     enum ShapeType {Vertex, Edge, Face};
     virtual void setupContextMenu(QMenu*, QObject*, const char*);
     virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
     QIcon getIcon(void) const;
     void highlightReferences(ShapeType type, const References& refs, bool on);
 };
@@ -83,6 +82,7 @@ public:
 
 protected:
     void changeEvent(QEvent *e);
+    virtual void hideEvent(QHideEvent* event);
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
     /** Notifies on undo */
     virtual void slotUndoDocument(const Gui::Document& Doc);
