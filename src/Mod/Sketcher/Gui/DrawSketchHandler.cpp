@@ -29,7 +29,9 @@
 # include <Inventor/nodes/SoText2.h>
 # include <Inventor/nodes/SoFont.h>
 # include <QPainter>
+# if QT_VERSION >= 0x050000
 # include <QGuiApplication>
+# endif
 # include <cmath>
 #endif  // #ifndef _PreComp_
 
@@ -116,11 +118,13 @@ void DrawSketchHandler::setSvgCursor(const QString & cursorName, int x, int y, c
     qreal defaultCursorSize = isRatioOne ? 64 : 32;
     qreal hotX = x;
     qreal hotY = y;
+#if QT_VERSION >= 0x050000
 #if !defined(Q_OS_WIN32) && !defined(Q_OS_MAC)
     if (qGuiApp->platformName() == QLatin1String("xcb")) {
         hotX *= pRatio;
         hotY *= pRatio;
     }
+#endif
 #endif
     qreal cursorSize = defaultCursorSize * pRatio;
 
@@ -159,11 +163,13 @@ void DrawSketchHandler::setCursor(const QPixmap &p,int x,int y, bool autoScale)
 #endif
             qreal hotX = x;
             qreal hotY = y;
+#if QT_VERSION >= 0x050000
 #if !defined(Q_OS_WIN32) && !defined(Q_OS_MAC)
             if (qGuiApp->platformName() == QLatin1String("xcb")) {
                 hotX *= pRatio;
                 hotY *= pRatio;
             }
+#endif
 #endif
             cursor = QCursor(p1, hotX, hotY);
         } else {
