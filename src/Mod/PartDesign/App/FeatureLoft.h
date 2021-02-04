@@ -42,7 +42,12 @@ public:
 
     App::PropertyLinkList Sections;
     App::PropertyBool     Ruled;
-    App::PropertyBool     Closed;    
+    App::PropertyBool     Closed;
+    App::PropertyStringList WireOrders;
+
+    const std::vector<std::vector<int> > getWireOrders(); //reads the property
+    void setWireOrders(const std::vector<std::vector<int>> wireorders); //sets the property
+
 
     /** @name methods override feature */
     //@{
@@ -57,6 +62,11 @@ public:
 private:
     //static const char* TypeEnums[];
     //static const char* SideEnums[];
+    void onChanged(const App::Property* prop);
+    void setDefaultWireOrders(std::vector<std::vector<TopoDS_Wire> > wiresections); //sets property to defaults
+    const std::vector<std::vector<int>> getDefaultWireOrders(std::vector<std::vector<TopoDS_Wire> > wiresections);
+    std::vector<std::vector<int> > wireOrders;
+
 };
 
 class PartDesignExport AdditiveLoft : public Loft {

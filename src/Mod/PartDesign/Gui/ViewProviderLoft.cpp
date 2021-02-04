@@ -28,6 +28,9 @@
 # include <QMenu>
 # include <TopExp.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Edge.hxx>
 #endif
 
 #include "Utils.h"
@@ -42,7 +45,6 @@
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 
-
 using namespace PartDesignGui;
 
 PROPERTY_SOURCE(PartDesignGui::ViewProviderLoft,PartDesignGui::ViewProvider)
@@ -53,6 +55,15 @@ ViewProviderLoft::ViewProviderLoft()
 
 ViewProviderLoft::~ViewProviderLoft()
 {
+
+}
+
+void ViewProviderLoft::cleanup()
+{
+    for (std::pair<Part::Feature*, int> undo : undoQueue){
+        highlightWire(false, undo.first, undo.second);
+    }
+    undoQueue.clear();
 }
 
 std::vector<App::DocumentObject*> ViewProviderLoft::claimChildren(void)const
@@ -123,8 +134,8 @@ bool ViewProviderLoft::onDelete(const std::vector<std::string> & /*s*/)
 }
 
 void ViewProviderLoft::highlightReferences(const bool /*on*/, bool /*auxiliary*/)
-{/*
-    PartDesign::Loft* pcLoft = static_cast<PartDesign::Loft*>(getObject());
+{
+  /*  PartDesign::Loft* pcLoft = static_cast<PartDesign::Loft*>(getObject());
     Part::Feature* base;
     if(!auxiliary)
         base = static_cast<Part::Feature*>(pcLoft->Spine.getValue());
@@ -163,6 +174,77 @@ void ViewProviderLoft::highlightReferences(const bool /*on*/, bool /*auxiliary*/
             originalLineColors.clear();
         }
     }*/
+}
+/** highlights a wire in the sketch object by setting its edges to which_color if on=true
+ *  else sets that wire back to original line colors
+ */
+
+void ViewProviderLoft::highlightWire(const bool on, Part::Feature* sketch, int which_wire, App::Color which_color)
+{
+    if (sketch == NULL)
+        return;
+    if (!sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+        return;
+
+    PartGui::ViewProviderPart* svp = dynamic_cast<PartGui::ViewProviderPart*>(
+                Gui::Application::Instance->getViewProvider(sketch));
+    if (svp == NULL)
+        return;
+
+    TopoDS_Wire wire; //find the wire in the sketch
+    TopExp_Explorer exp_wire;
+    size_t i = 0;
+    for (exp_wire.Init(sketch->Shape.getValue(), TopAbs_WIRE); exp_wire.More(); exp_wire.Next(), ++i) {
+        if (which_wire == (int)i){
+            wire = TopoDS::Wire(exp_wire.Current());
+            break;
+        }
+    }
+
+    TopExp_Explorer exp_edge; //find the edges in this wire
+    std::vector<TopoDS_Edge> edges;
+    for (exp_edge.Init(wire, TopAbs_EDGE); exp_edge.More(); exp_edge.Next()) {
+        edges.push_back(TopoDS::Edge(exp_edge.Current()));
+    }
+
+    TopExp_Explorer exp_shape; //name the edges in the wire
+    std::vector<std::string> edgeNames;
+    int ii=1;
+    for (exp_shape.Init(sketch->Shape.getValue(), TopAbs_EDGE); exp_shape.More(); exp_shape.Next()){
+        for (auto edge : edges){
+            if (edge == TopoDS::Edge(exp_shape.Current())){
+                std::ostringstream strm;
+                strm << "Edge" << ii;
+                edgeNames.push_back(strm.str());
+            }
+        }
+        ii++;
+    }
+
+    if (on) {
+        if (!edgeNames.empty()) {
+           TopTools_IndexedMapOfShape eMap;
+           TopExp::MapShapes(sketch->Shape.getValue(), TopAbs_EDGE, eMap);
+           if (originalLineColors[sketch].empty()){
+               originalLineColors[sketch] = svp->LineColorArray.getValues();
+           }
+           std::vector<App::Color> colors = svp->LineColorArray.getValues();
+           colors.resize(eMap.Extent(), svp->LineColor.getValue());
+
+           for (std::string e : edgeNames) {
+               int idx = atoi(e.substr(4).c_str()) - 1;
+               if (idx < (int) colors.size())
+                   colors[idx] = which_color;
+           }
+           svp->LineColorArray.setValues(colors);
+           undoQueue.push_back(std::pair<Part::Feature*, int>(sketch, which_wire)); //undo when closing dialog
+       }
+   } else {
+       if (!edgeNames.empty() && !originalLineColors[sketch].empty()) {
+           svp->LineColorArray.setValues(originalLineColors[sketch]);
+           originalLineColors[sketch].clear();
+       }
+    }
 }
 
 QIcon ViewProviderLoft::getIcon(void) const {
