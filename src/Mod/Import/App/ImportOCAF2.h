@@ -119,7 +119,7 @@ private:
             const boost::dynamic_bitset<> &visibilities, bool canReduce=false);
     bool getColor(const TopoDS_Shape &shape, Info &info, bool check=false, bool noDefault=false);
     void getSHUOColors(TDF_Label label, std::map<std::string,App::Color> &colors, bool appendFirst);
-    void setObjectName(Info &info, TDF_Label label);
+    void setObjectName(Info &info, TDF_Label label, bool checkExistingName=false);
     std::string getLabelName(TDF_Label label);
     Part::Feature *expandShape(App::Document *doc, TDF_Label label, 
             const TopoDS_Shape &shape, ColorInfo &colorInfo);

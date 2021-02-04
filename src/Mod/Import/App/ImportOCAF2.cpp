@@ -209,9 +209,12 @@ std::string ImportOCAF2::getLabelName(TDF_Label label) {
     return name;
 }
 
-void ImportOCAF2::setObjectName(Info &info, TDF_Label label) {
+void ImportOCAF2::setObjectName(Info &info, TDF_Label label, bool checkExistingName) {
     if(!info.obj)
         return;
+    std::string name = getLabelName(label);
+    if (!checkExistingName || info.baseName.size() < name.size())
+        info.baseName = std::move(name);
     info.baseName = getLabelName(label);
     if(info.baseName.size())
         info.obj->Label.setValue(info.baseName.c_str());
@@ -772,19 +775,21 @@ App::DocumentObject *ImportOCAF2::loadShape(App::Document *doc,
     if(baseOnly)
         return it->second.obj;
 
-    std::map<std::string,App::Color> shuoColors;
-    // if(!useLinkGroup)
-    //     getSHUOColors(label,shuoColors,false);
-
     auto info = it->second;
     getColor(shape,info,true);
 
-    if(shuoColors.empty() && info.free && doc==info.obj->getDocument()) {
+    if(info.free && doc==info.obj->getDocument()) {
         it->second.free = false;
-        auto name = getLabelName(label);
-        if(info.faceColor!=it->second.faceColor ||
-           info.edgeColor!=it->second.edgeColor ||
-           (name.size() && info.baseName.size() && name!=info.baseName)) 
+
+        // It is probably not a good idea to create compound solely because of
+        // name difference
+        //
+        // auto name = getLabelName(label);
+        // if(info.faceColor!=it->second.faceColor ||
+        //    info.edgeColor!=it->second.edgeColor ||
+        //    (name.size() && info.baseName.size() && name!=info.baseName))
+        if (info.faceColor!=it->second.faceColor ||
+            info.edgeColor!=it->second.edgeColor)
         {
             auto compound = static_cast<Part::Compound2*>(doc->addObject("Part::Compound2","Compound"));
             compound->Links.setValue(info.obj);
@@ -795,7 +800,7 @@ App::DocumentObject *ImportOCAF2::loadShape(App::Document *doc,
             if(info.edgeColor!=it->second.edgeColor)
                 applyEdgeColors(compound,{info.edgeColor});
             info.obj = compound;
-            setObjectName(info,label);
+            setObjectName(info, label, true);
         }
         setPlacement(info.propPlacement,shape);
         myNames.emplace(label,info.obj->getNameInDocument());
@@ -812,8 +817,6 @@ App::DocumentObject *ImportOCAF2::loadShape(App::Document *doc,
         applyLinkColor(link,-1,info.faceColor);
 
     myNames.emplace(label,link->getNameInDocument());
-    if(shuoColors.size())
-        applyElementColors(link,shuoColors);
     return link;
 }
 
