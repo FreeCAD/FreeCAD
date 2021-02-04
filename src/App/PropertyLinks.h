@@ -1228,10 +1228,10 @@ class AppExport PropertyXLinkSubList: public PropertyLinkBase
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
+public:
     typedef typename AtomicPropertyChangeInterface<PropertyXLinkSubList>::AtomicPropertyChange atomic_change;
     friend atomic_change;
 
-public:
     PropertyXLinkSubList();
     virtual ~PropertyXLinkSubList();
 
