@@ -342,7 +342,6 @@ TaskSketcherElements::~TaskSketcherElements()
     }
 
     connectionElementsChanged.disconnect();
-    delete ui;
 }
 
 void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)

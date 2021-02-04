@@ -69,7 +69,6 @@ SketcherGeneralWidget::SketcherGeneralWidget(QWidget *parent)
 
 SketcherGeneralWidget::~SketcherGeneralWidget()
 {
-    delete ui;
 }
 
 bool SketcherGeneralWidget::eventFilter(QObject *object, QEvent *event)
