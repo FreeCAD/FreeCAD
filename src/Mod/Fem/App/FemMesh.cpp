@@ -1290,7 +1290,7 @@ void FemMesh::readNastran95(const std::string &Filename)
     std::ifstream inputfile;
     inputfile.open(Filename.c_str());
     inputfile.seekg(std::ifstream::beg);
-    std::string line1,line2,temp,tcard;
+    std::string line1,line2,tcard;
     float cx, cy, cz;
     std::vector<string> token_results;
     token_results.clear();
@@ -1300,7 +1300,7 @@ void FemMesh::readNastran95(const std::string &Filename)
     std::vector<unsigned int> nodal_id;
 
     nodal_id.clear();
-    
+
     std::vector<unsigned int> bar_element;
     std::vector<unsigned int> tri_element;
     std::vector<unsigned int> quad_element;
@@ -1309,7 +1309,7 @@ void FemMesh::readNastran95(const std::string &Filename)
     std::vector<unsigned int> hexa_element;
 
     std::vector<std::vector<unsigned int> > all_elements;
-    
+
     std::vector<unsigned int> element_id;
     std::vector<unsigned int> element_type;
 
@@ -1480,7 +1480,6 @@ void FemMesh::readNastran95(const std::string &Filename)
             std::getline(inputfile,line2);
             unsigned int id = atoi(line1.substr(8,16).c_str());
             element_type.push_back(381);
-            int offset = 0;
 
             element_id.push_back(id);
             hexa_element.push_back(atoi(line1.substr(24,32).c_str()));
@@ -1504,7 +1503,6 @@ void FemMesh::readNastran95(const std::string &Filename)
             std::getline(inputfile,line2);
             unsigned int id = atoi(line1.substr(8,16).c_str());
             element_type.push_back(382);
-            int offset = 0;
 
             element_id.push_back(id);
             hexa_element.push_back(atoi(line1.substr(24,32).c_str()));
@@ -1581,7 +1579,7 @@ void FemMesh::readNastran95(const std::string &Filename)
     }
 
 
-    for(unsigned int i=0;i<all_elements.size();i++)
+    for(size_t i=0;i<all_elements.size();i++)
     {
         if (element_type[i]==10)
         {
@@ -1601,8 +1599,9 @@ void FemMesh::readNastran95(const std::string &Filename)
                 element_id[i]
             );
             
+        }
         //1D element
-        } else if (element_type[i] == 100)
+        else if (element_type[i] == 100)
         {
             //Base::Console().Log("eid = %d %d %d %d\n", element_id[i], all_elements[i][0], all_elements[i][1], all_elements[i][2]);
             //cbar
@@ -1611,8 +1610,9 @@ void FemMesh::readNastran95(const std::string &Filename)
                 all_elements[i][1],
                 element_id[i]
             );
+        }
         //2d element
-        } else if (element_type[i] == 230)
+        else if (element_type[i] == 230)
         {
             //Base::Console().Log("eid = %d %d %d %d\n", element_id[i], all_elements[i][0], all_elements[i][1], all_elements[i][2]);
             //ctramem
@@ -1622,7 +1622,8 @@ void FemMesh::readNastran95(const std::string &Filename)
                 all_elements[i][2],
                 element_id[i]
             );
-        } else if (element_type[i] == 231)
+        }
+        else if (element_type[i] == 231)
         {
             //ctria1
             meshds->AddFaceWithID(
@@ -1701,7 +1702,6 @@ void FemMesh::readNastran95(const std::string &Filename)
         }
     }
     Base::Console().Log("    %f: Done \n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
-
 }
 
 void FemMesh::readAbaqus(const std::string &FileName)
@@ -1794,8 +1794,12 @@ void FemMesh::read(const char *FileName)
     }
     else if (File.hasExtension("inp") ) {
         // read Abaqus inp mesh file
-        // readAbaqus(File.filePath());
-        readNastran95(File.filePath());
+        readAbaqus(File.filePath());
+
+        // if the file doesn't contain supported geometries try Nastran95
+        SMESHDS_Mesh* meshds = this->myMesh->GetMeshDS();
+        if (meshds->NbNodes() == 0)
+            readNastran95(File.filePath());
     }
     else if (File.hasExtension("stl") ) {
         // read brep-file
