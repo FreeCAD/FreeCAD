@@ -791,11 +791,11 @@ Py::Object PythonWrapper::fromQEvent(QEvent* event, const char* className)
 #elif QT_VERSION >= 0x050000
     // Access shiboken2/PySide2 via Python
     //
-    return qt_wrapInstance<QEvent*>(object, className, "shiboken2", "PySide2.QtCore", "wrapInstance");
+    return qt_wrapInstance<QEvent*>(event, className, "shiboken2", "PySide2.QtCore", "wrapInstance");
 #else
     // Access shiboken/PySide via Python
     //
-    return qt_wrapInstance<QEvent*>(object, className, "shiboken", "PySide.QtCore", "wrapInstance");
+    return qt_wrapInstance<QEvent*>(event, className, "shiboken", "PySide.QtCore", "wrapInstance");
 #endif
 }
 
