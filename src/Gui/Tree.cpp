@@ -2073,6 +2073,12 @@ const QByteArray &treeNoIconTag()
     return _tag;
 }
 
+const QByteArray &treeBranchTag()
+{
+    static QByteArray _tag("tree:branch");
+    return _tag;
+}
+
 void setTreeViewFocus()
 {
     auto tree = Gui::TreeWidget::instance();
@@ -2289,7 +2295,9 @@ void TreeWidget::onToolTipTimer()
     }
 
     QString info;
-    if (!Obj->isError()) {
+    if (!Obj->Label2.getStrValue().empty() && tag == Gui::treeBranchTag())
+        info = QString::fromUtf8(Obj->Label2.getValue());
+    else if (!Obj->isError()) {
         if (tag == Gui::treeVisibilityIconTag())
             info = QObject::tr("Click to toggle visiblity.\nAlt + click to toggle show on top.");
         else {
@@ -2329,8 +2337,12 @@ DocumentObjectItem *TreeWidget::Private::itemHitTest(QPoint pos, QByteArray *tag
 
     QRect rect = master->visualItemRect(item);
     if (!rect.contains(pos)) {
-        if (tag)
-            *tag = Gui::treeNoIconTag();
+        if (tag) {
+            if (pos.x() < rect.left())
+                *tag = Gui::treeBranchTag();
+            else
+                *tag = Gui::treeNoIconTag();
+        }
         return objitem;
     }
     float scale = iconSize()/64.0f;
