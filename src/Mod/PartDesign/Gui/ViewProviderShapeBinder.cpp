@@ -597,7 +597,7 @@ QString ViewProviderSubShapeBinder::getToolTip(const QByteArray &tag) const
                 QString::fromUtf8(ss.str().c_str()));
     }
     return QString::fromLatin1("%1\n%2").arg(
-            QObject::tr("Bound objects. ALT + click this icon to select."),
+            QObject::tr("Bound objects (ALT + click this icon to select)."),
             QString::fromUtf8(ss.str().c_str()));
 }
 

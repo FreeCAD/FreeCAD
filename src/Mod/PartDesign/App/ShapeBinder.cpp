@@ -57,6 +57,7 @@ typedef boost::iterator_range<const char*> CharRange;
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/TopoShapeOpCode.h>
 #include <Mod/Part/App/FaceMakerBullseye.h>
+#include "Feature.h"
 
 FC_LOG_LEVEL_INIT("PartDesign",true,true)
 
@@ -345,7 +346,7 @@ SubShapeBinder::~SubShapeBinder() {
 }
 
 void SubShapeBinder::setupObject() {
-    _Version.setValue(5);
+    _Version.setValue(6);
     checkPropertyStatus();
 }
 
@@ -949,10 +950,91 @@ void SubShapeBinder::onDocumentRestored() {
             }
         }
     }
+    if (_Version.getValue() < 6)
+        collapsePartDesignFeatures();
     inherited::onDocumentRestored();
 }
 
+void SubShapeBinder::collapsePartDesignFeatures()
+{
+    // PartDesign features may group some tool features under itself. However, a
+    // PartDesign feature does not function as a container. The purpose of this
+    // function is to remove any intermediate PartDesign features in the object
+    // path to avoid unncessary dependencies.
+    if (Support.testStatus(App::Property::User3))
+        return;
+
+    Base::ObjectStatusLocker<App::Property::Status, App::Property>
+        guard(App::Property::User3, &Support);
+    App::PropertyXLinkSubList::atomic_change guard2(Support, false);
+
+    std::vector<App::DocumentObject*> removes;
+    std::map<App::DocumentObject*, std::vector<std::string> > newVals;
+    for(auto &l : Support.getSubListValues()) {
+        auto obj = l.getValue();
+        if(!obj || !obj->getNameInDocument())
+            continue;
+        auto subvals = l.getSubValues();
+        if (subvals.empty())
+            continue;
+        bool touched = false;
+        for (auto itSub=subvals.begin(); itSub!=subvals.end();) {
+            auto &sub = *itSub;
+            bool changed = false;
+            auto objs = obj->getSubObjectList(sub.c_str());
+            for (auto it=objs.begin(); it+1!=objs.end();) {
+                if (!(*it)->isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
+                    ++it;
+                    continue;
+                }
+                if (it==objs.begin()) {
+                    changed = true;
+                    it = objs.erase(it);
+                    continue;
+                }
+                auto next = *(it+1);
+                auto prev = *(it-1);
+                std::string subname(next->getNameInDocument());
+                subname += ".";
+                if (prev->getSubObject(subname.c_str()) == next) {
+                    it = objs.erase(it);
+                    changed = true;
+                } else
+                    ++it;
+            }
+            if  (changed) {
+                touched = true;
+                const char *element = Data::ComplexGeoData::findElementName(sub.c_str());
+                App::SubObjectT sobjT(objs, element);
+                sub = sobjT.getSubName();
+                if (objs.front() != obj) {
+                    newVals[objs.front()].push_back(std::move(sub));
+                    itSub = subvals.erase(itSub);
+                    continue;
+                }
+            }
+            ++itSub;
+        }
+        if (touched)
+            removes.push_back(obj);
+        if (!subvals.empty() && touched) {
+            auto &newSubs = newVals[obj];
+            if (newSubs.empty())
+                newSubs = std::move(subvals);
+            else
+                newSubs.insert(newSubs.end(),
+                                std::make_move_iterator(subvals.begin()),
+                                std::make_move_iterator(subvals.end()));
+        }
+    }
+    for (auto obj : removes)
+        Support.removeValue(obj);
+    if (newVals.size())
+        setLinks(std::move(newVals));
+}
+
 void SubShapeBinder::onChanged(const App::Property *prop) {
+
     if(prop == &Context || prop == &Relative) {
         if(!Context.getValue() || !Relative.getValue()) {
             connRecomputedObj.disconnect();
@@ -965,12 +1047,12 @@ void SubShapeBinder::onChanged(const App::Property *prop) {
         }
     }else if(!isRestoring() && !getDocument()->isPerformingTransaction()) {
         if(prop == &Support) {
-            clearCopiedObjects();
-            setupCopyOnChange();
-            if(Support.getSubListValues().size()) {
-                update(); 
-                if(BindMode.getValue() == 2)
-                    Support.setValue(0);
+            if (!Support.testStatus(App::Property::User3)) {
+                collapsePartDesignFeatures();
+                clearCopiedObjects();
+                setupCopyOnChange();
+                if(Support.getSubListValues().size())
+                    update(); 
             }
         }else if(prop == &BindCopyOnChange) {
             setupCopyOnChange();
@@ -985,13 +1067,11 @@ void SubShapeBinder::onChanged(const App::Property *prop) {
         }
 
         if(prop == &BindMode || prop == &Support) {
-            if(BindMode.getValue()==2 && Support.getSubListValues().size()) {
-                Base::ObjectStatusLocker<App::Property::Status, App::Property>
-                    guard(App::Property::User3, &Support);
+            if(BindMode.getValue()==2 && Support.getSubListValues().size())
                 Support.setValue(0);
-            }
         }
     }
+
     inherited::onChanged(prop);
 }
 
@@ -1024,9 +1104,6 @@ void SubShapeBinder::setLinks(std::map<App::DocumentObject *,
                               std::vector<std::string> >&&values,
                               bool reset)
 {
-    Base::ObjectStatusLocker<App::Property::Status, App::Property>
-        guard(App::Property::User3, &Support);
-
     if(values.empty()) {
         if(reset) {
             Shape.setValue(Part::TopoShape());
