@@ -8344,7 +8344,25 @@ void SketchObject::onChanged(const App::Property* prop)
             // fully restored
             updateGeometryRefs();
         }
+    } else if (prop == &ExpressionEngine) {
+        auto doc = getDocument();
+        if(!isRestoring() && doc && !doc->isPerformingTransaction() && noRecomputes) {
+            // if we do not have a recompute, the sketch must be solved to
+            // update the DoF of the solver, constraints and UI
+            try {
+                auto res = ExpressionEngine.execute();
+                if(res) {
+                    FC_ERR("Failed to recompute " << ExpressionEngine.getFullName() << ": " << res->Why);
+                    delete res;
+                }
+            } catch (Base::Exception &e) {
+                e.ReportException();
+                FC_ERR("Failed to recompute " << ExpressionEngine.getFullName() << ": " << e.what());
+            }
+            solve();
+        }
     }
+
     Part::Part2DObject::onChanged(prop);
 }
 
@@ -8772,25 +8790,6 @@ bool SketchObject::AutoLockTangencyAndPerpty(Constraint *cstr, bool bForce, bool
         return false;
     }
     return true;
-}
-
-void SketchObject::setExpression(const App::ObjectIdentifier &path, boost::shared_ptr<App::Expression> expr)
-{
-    DocumentObject::setExpression(path, expr);
-
-    if(noRecomputes) {// if we do not have a recompute, the sketch must be solved to update the DoF of the solver, constraints and UI
-        try {
-            auto res = ExpressionEngine.execute();
-            if(res) {
-                FC_ERR("Failed to recompute " << ExpressionEngine.getFullName() << ": " << res->Why);
-                delete res;
-            }
-        } catch (Base::Exception &e) {
-            e.ReportException();
-            FC_ERR("Failed to recompute " << ExpressionEngine.getFullName() << ": " << e.what());
-        }
-        solve();
-    }
 }
 
 App::DocumentObject *SketchObject::getSubObject(
