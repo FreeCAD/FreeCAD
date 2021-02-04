@@ -75,7 +75,7 @@ protected:
     void changeEvent(QEvent *e);
 
 private:
-    Ui_TaskSketcherGeneral* ui;
+    std::unique_ptr<Ui_TaskSketcherGeneral> ui;
 };
 
 class TaskSketcherGeneral : public Gui::TaskView::TaskBox,
