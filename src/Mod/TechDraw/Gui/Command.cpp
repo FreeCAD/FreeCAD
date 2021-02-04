@@ -318,6 +318,7 @@ void CmdTechDrawView::activated(int iMsg)
                                                    resolve,
                                                    single);
     for (auto& sel: selection) {
+        bool is_linked = false;
         auto obj = sel.getObject();
         if (obj->isDerivedFrom(TechDraw::DrawPage::getClassTypeId()) ) {
             continue;
@@ -325,6 +326,27 @@ void CmdTechDrawView::activated(int iMsg)
         if ( obj->isDerivedFrom(App::LinkElement::getClassTypeId()) ||
              obj->isDerivedFrom(App::LinkGroup::getClassTypeId())   ||
              obj->isDerivedFrom(App::Link::getClassTypeId()) ) {
+            is_linked = true;
+        }
+        // If parent of the obj is a link to another document, we possibly need to treat non-link obj as linked, too
+        // 1st, is obj in another document?
+        if (obj->getDocument() != this->getDocument()) {
+            std::set<App::DocumentObject *> parents = obj->getInListEx(true);
+            for (auto &parent: parents) {
+                // Only consider parents in the current document, i.e. possible links in this View's document
+                if (parent->getDocument() != this->getDocument()) {
+                    continue;
+                }
+                // 2nd, do we really have a link to obj?
+                if (parent->isDerivedFrom(App::LinkElement::getClassTypeId()) ||
+                        parent->isDerivedFrom(App::LinkGroup::getClassTypeId()) ||
+                        parent->isDerivedFrom(App::Link::getClassTypeId())) {
+                    // We have a link chain from this document to obj, and obj is in another document -> it's an XLink target
+                    is_linked = true;
+                }
+            }
+        }
+        if (is_linked) {
             xShapes.push_back(obj);
             continue;
         }
@@ -574,6 +596,7 @@ void CmdTechDrawProjectionGroup::activated(int iMsg)
                                                    resolve,
                                                    single);
     for (auto& sel: selection) {
+        bool is_linked = false;
         auto obj = sel.getObject();
         if (obj->isDerivedFrom(TechDraw::DrawPage::getClassTypeId()) ) {
             continue;
@@ -581,6 +604,27 @@ void CmdTechDrawProjectionGroup::activated(int iMsg)
         if ( obj->isDerivedFrom(App::LinkElement::getClassTypeId()) ||
              obj->isDerivedFrom(App::LinkGroup::getClassTypeId())   ||
              obj->isDerivedFrom(App::Link::getClassTypeId()) ) {
+            is_linked = true;
+        }
+        // If parent of the obj is a link to another document, we possibly need to treat non-link obj as linked, too
+        // 1st, is obj in another document?
+        if (obj->getDocument() != this->getDocument()) {
+            std::set<App::DocumentObject *> parents = obj->getInListEx(true);
+            for (auto &parent: parents) {
+                // Only consider parents in the current document, i.e. possible links in this View's document
+                if (parent->getDocument() != this->getDocument()) {
+                    continue;
+                }
+                // 2nd, do we really have a link to obj?
+                if (parent->isDerivedFrom(App::LinkElement::getClassTypeId()) ||
+                        parent->isDerivedFrom(App::LinkGroup::getClassTypeId()) ||
+                        parent->isDerivedFrom(App::Link::getClassTypeId())) {
+                    // We have a link chain from this document to obj, and obj is in another document -> it's an XLink target
+                    is_linked = true;
+                }
+            }
+        }
+        if (is_linked) {
             xShapes.push_back(obj);
             continue;
         }
