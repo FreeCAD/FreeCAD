@@ -288,6 +288,7 @@ before_install:
        7z x FreeCADLibs.7z -oFreeCADLibs > /dev/null
        rm -f FreeCADLibs.7z
        export FREECAD_LIBPACK_DIR="$TRAVIS_BUILD_DIR\FreeCADLibs\FreeCADLibs_12.4.3_x64_VC17"
+       export FREECAD_LIBPACK_BIN=$FREECAD_LIBPACK_DIR/bin
 
        export CMAKE_ARGS="${CMAKE_OPTS} -DFREECAD_LIBPACK_DIR=$TRAVIS_BUILD_DIR\FreeCADLibs\FreeCADLibs_12.4.3_x64_VC17 -DPYTHON_EXECUTABLE=$TRAVIS_BUILD_DIR\FreeCADLibs\FreeCADLibs_12.4.3_x64_VC17\bin\python.exe \
        -DBUILD_QT5=TRUE"
