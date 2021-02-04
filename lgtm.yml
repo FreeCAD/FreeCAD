@@ -6,7 +6,7 @@ path_classifiers:
   - "src/Mod/Import/App/ifc2x3.py"
   - "src/Mod/Import/App/ifc4.py"
 queries: 
-  - exclude:  "src/zipios++/**""
+  - exclude:  "src/zipios++/**"
   - exclude:  "src/Mod/Robot/App/kdl_cp/**"
 extraction:
   javascript:
