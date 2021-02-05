@@ -77,6 +77,9 @@ protected:
     // project shape on plane. Used for detecting self intersection.
     TopoDS_Shape projectShape(const TopoDS_Shape& input, const gp_Ax2& plane);
 
+    // center of profile bounding box
+    Base::Vector3d getProfileCenterPoint();
+
 private:
     static const char* ModeEnums[];
 };
