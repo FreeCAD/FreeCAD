@@ -651,6 +651,7 @@ void TaskView::removeDialog(void)
     addTaskWatcher();
     
     if (remove) {
+        remove->closed();
         remove->emitDestructionSignal();
         delete remove;
     }

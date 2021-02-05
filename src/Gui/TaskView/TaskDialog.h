@@ -103,6 +103,8 @@ public:
 public:
     /// is called by the framework when the dialog is opened
     virtual void open();
+    /// is called by the framework when the dialog is closed
+    virtual void closed();
     /// is called by the framework if a button is clicked which has no accept or reject role
     virtual void clicked(int);
     /// is called by the framework if the dialog is accepted (Ok)
