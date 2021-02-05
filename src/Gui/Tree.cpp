@@ -236,7 +236,7 @@ public:
     // check if a new item is required at root
     bool requiredAtRoot(bool excludeSelf=true, bool delay=false) const;
 
-    // return the owner, and full quanlified subname
+    // return the owner, and fully qualified subname
     App::DocumentObject *getFullSubName(std::ostringstream &str,
             DocumentObjectItem *parent = 0) const;
 
@@ -2299,7 +2299,7 @@ void TreeWidget::onToolTipTimer()
         info = QString::fromUtf8(Obj->Label2.getValue());
     else if (!Obj->isError()) {
         if (tag == Gui::treeVisibilityIconTag())
-            info = QObject::tr("Click to toggle visiblity.\nAlt + click to toggle show on top.");
+            info = QObject::tr("Click to toggle visibility.\nAlt + click to toggle show on top.");
         else {
             info = item->object()->getToolTip(tag);
             if (info.isEmpty() && !Obj->Label2.getStrValue().empty())

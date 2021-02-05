@@ -26,7 +26,7 @@
 /* Represents the many different ways we can access our data */
 
 /* NOTE: this parser requires a patched version of bison 3.0.4. You can find
- * the patch file under this directroy named ExpressionParser.bison-3.0.4.patch.
+ * the patch file under this directory named ExpressionParser.bison-3.0.4.patch.
  * The original patch is published at
  *
  * http://lists.gnu.org/archive/html/bug-bison/2018-03/msg00002.html

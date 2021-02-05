@@ -131,7 +131,7 @@ public:
     /// get the name of this property in the belonging container
     const char* getName(void) const;
 
-    /** Return a full quanlified property name that include its own's name
+    /** Return a fully qualified property name that include its own's name
      * @param python: if true, then return an expression for accessing this property in Python
      */
     virtual std::string getFullName(bool python=false) const;
@@ -269,7 +269,7 @@ public:
      * internal counter. The intention of the ID is to be used as a key for
      * mapping, instead of using the raw pointer. Because, it is possible for
      * the runtime memory allocator to reuse just deleted memory, which will
-     * cause hard to debug problem if use pointer as key. 
+     * cause hard to debug problem if use pointer as key.
      */
     long getID() const {return _id;}
 

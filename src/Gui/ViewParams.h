@@ -269,7 +269,7 @@ public:
     FC_VIEW_PARAM(ColorRecompute, bool, Bool, true, \
         QT_TRANSLATE_NOOP("ViewParams","Recompute affected object(s) after editing color."))\
     FC_VIEW_PARAM(SortWBList, bool, Bool, true, \
-        QT_TRANSLATE_NOOP("ViewParams","Sort workbench entires by their names in the combo box."))\
+        QT_TRANSLATE_NOOP("ViewParams","Sort workbench entries by their names in the combo box."))\
     FC_VIEW_PARAM(MaxCameraAnimatePeriod, int, Int, 3000, \
         QT_TRANSLATE_NOOP("ViewParams","Maximum camera move animation duration in milliseconds."))\
     FC_VIEW_PARAM(TaskNoWheelFocus, bool, Bool, true, \

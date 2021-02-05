@@ -64,7 +64,7 @@ public:
 
 #define FC_EXPR_PARAMS \
     FC_EXPR_PARAM(CompleterCaseSensitive,bool,Bool,false,\
-       QT_TRANSLATE_NOOP("ExprParams","Expression completer with case sensistive")) \
+       QT_TRANSLATE_NOOP("ExprParams","Expression completer with case sensitive")) \
     FC_EXPR_PARAM(CompleterMatchExact,bool,Bool,false,\
        QT_TRANSLATE_NOOP("ExprParams","Expression completer match exact")) \
     FC_EXPR_PARAM(NoSystemBackground,bool,Bool,true,\
