@@ -4523,8 +4523,6 @@ bool PropertyXLinkSubList::isTouched() const {
 
 void PropertyXLinkSubList::purgeTouched() {
     PropertyLinkBase::purgeTouched();
-    if(_pcScope == LinkScope::Hidden)
-        return;
     for(auto &l : _Links)
         l.purgeTouched();
 }
