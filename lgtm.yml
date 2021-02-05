@@ -5,9 +5,19 @@ path_classifiers:
   - "src/Mod/Import/App/config_control_design.py"
   - "src/Mod/Import/App/ifc2x3.py"
   - "src/Mod/Import/App/ifc4.py"
-queries: 
-  - exclude:  "src/zipios++/**"
-  - exclude:  "src/Mod/Robot/App/kdl_cp/**"
+  library:
+  - "src/zipios++/"
+  - "src/3rdParty/"
+  - "src/Mod/Import/App/SCL"
+  template:
+  - "src/Tools/examplePy2wiki.py"
+  unmaintained:
+  - "src/Mod/Robot/"
+  - "src/Mod/Ship/"
+  legacy:
+  - "src/Mod/Assembly/"
+  - "src/Mod/Drawing/"
+
 extraction:
   javascript:
     index:
