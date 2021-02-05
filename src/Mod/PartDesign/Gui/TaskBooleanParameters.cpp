@@ -53,13 +53,14 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskBooleanParameters */
 
 TaskBooleanParameters::TaskBooleanParameters(ViewProviderBoolean *BooleanView,QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap("PartDesign_Boolean"),tr("Boolean parameters"),true, parent),BooleanView(BooleanView)
+    : TaskBox(Gui::BitmapFactory().pixmap("PartDesign_Boolean"), tr("Boolean parameters"), true, parent)
+    , ui(new Ui_TaskBooleanParameters)
+    , BooleanView(BooleanView)
 {
     selectionMode = none;
 
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskBooleanParameters();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
@@ -289,7 +290,6 @@ void TaskBooleanParameters::onBodyDeleted(void)
 
 TaskBooleanParameters::~TaskBooleanParameters()
 {
-    delete ui;
 }
 
 void TaskBooleanParameters::changeEvent(QEvent *e)

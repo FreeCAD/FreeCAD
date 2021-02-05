@@ -100,7 +100,7 @@ private:
     void finishAdd(std::string &newFeatName);
 
 private:
-    Ui_TaskMultiTransformParameters* ui;
+    std::unique_ptr<Ui_TaskMultiTransformParameters> ui;
     /// The subTask and subFeature currently active in the UI
     TaskTransformedParameters* subTask;
     PartDesign::Transformed* subFeature;

@@ -61,11 +61,13 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskMultiTransformParameters */
 
 TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransformed *TransformedView,QWidget *parent)
-    : TaskTransformedParameters(TransformedView, parent), subTask(nullptr), subFeature(nullptr)
+    : TaskTransformedParameters(TransformedView, parent)
+    , ui(new Ui_TaskMultiTransformParameters)
+    , subTask(nullptr)
+    , subFeature(nullptr)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskMultiTransformParameters();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
     this->groupLayout()->addWidget(proxy);
@@ -484,7 +486,6 @@ void TaskMultiTransformParameters::apply()
 TaskMultiTransformParameters::~TaskMultiTransformParameters()
 {
     closeSubTask();
-    delete ui;
     if (proxy)
         delete proxy;
 }

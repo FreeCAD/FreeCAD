@@ -61,7 +61,7 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskHelixParameters */
 
 TaskHelixParameters::TaskHelixParameters(PartDesignGui::ViewProviderHelix *HelixView, QWidget *parent)
-    : TaskSketchBasedParameters(HelixView, parent, "PartDesign_Additive_Helix",tr("Helix parameters")),
+    : TaskSketchBasedParameters(HelixView, parent, "PartDesign_Additive_Helix", tr("Helix parameters")),
     ui (new Ui_TaskHelixParameters)
 {
     // we need a separate container widget to add all controls to

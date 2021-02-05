@@ -84,7 +84,7 @@ protected:
     virtual void slotDeleteDocument(const Gui::Document& Doc);
 
 private:
-    Ui_TaskFeaturePick* ui;
+    std::unique_ptr<Ui_TaskFeaturePick> ui;
     QWidget* proxy;
     std::vector<Gui::ViewProviderOrigin*> origins;
     bool doSelection;

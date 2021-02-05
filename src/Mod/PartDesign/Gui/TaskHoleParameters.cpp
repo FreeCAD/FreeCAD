@@ -57,13 +57,13 @@ namespace bp = boost::placeholders;
 #endif
 
 TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *parent)
-    : TaskSketchBasedParameters(HoleView, parent, "PartDesign_Hole",tr("Hole parameters"))
+    : TaskSketchBasedParameters(HoleView, parent, "PartDesign_Hole", tr("Hole parameters"))
     , observer(new Observer(this, static_cast<PartDesign::Hole*>(vp->getObject())))
     , isApplying(false)
+    , ui(new Ui_TaskHoleParameters)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskHoleParameters();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
@@ -203,7 +203,6 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *pare
 
 TaskHoleParameters::~TaskHoleParameters()
 {
-    delete ui;
 }
 
 void TaskHoleParameters::threadedChanged()

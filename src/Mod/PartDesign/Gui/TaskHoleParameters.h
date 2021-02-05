@@ -130,9 +130,9 @@ private:
     Connection connectPropChanged;
 
     std::unique_ptr<Observer> observer;
-    QWidget* proxy;
-    Ui_TaskHoleParameters* ui;
     bool isApplying;
+    QWidget* proxy;
+    std::unique_ptr<Ui_TaskHoleParameters> ui;
 };
 
 /// simulation dialog for the TaskView

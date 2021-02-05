@@ -57,10 +57,10 @@ using namespace Gui;
 
 TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp *DressUpView, QWidget *parent)
     : TaskDressUpParameters(DressUpView, true, true, parent)
+    , ui(new Ui_TaskChamferParameters)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskChamferParameters();
     ui->setupUi(proxy);
     this->groupLayout()->addWidget(proxy);
 
@@ -311,8 +311,6 @@ TaskChamferParameters::~TaskChamferParameters()
 {
     Gui::Selection().clearSelection();
     Gui::Selection().rmvSelectionGate();
-
-    delete ui;
 }
 
 bool TaskChamferParameters::event(QEvent *e)
