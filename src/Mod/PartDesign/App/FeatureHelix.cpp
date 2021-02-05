@@ -397,6 +397,14 @@ TopoDS_Shape Helix::generateHelixPath(void)
     double radius = std::fabs(axisOffset);
     bool turned = axisOffset < 0;
 
+    if (radius <  Precision::Confusion()) {
+        // in this case ensure that axis is not in the sketch plane
+        if (v*normal < Precision::Confusion())
+            throw Base::ValueError("Error: Result is self intersecting");
+        radius = 1.0; //fallback to radius 1
+        startOffset = 0.0;
+    }
+
     //build the helix path
     TopoShape helix = TopoShape().makeLongHelix(pitch, height, radius, angle, leftHanded);
     TopoDS_Shape path = helix.getShape();
