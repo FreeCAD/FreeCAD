@@ -101,7 +101,9 @@ public:
 };
 
 DlgRevolution::DlgRevolution(QWidget* parent, Qt::WindowFlags fl)
-  : QDialog(parent, fl), filter(0), ui(new Ui_DlgRevolution)
+  : QDialog(parent, fl)
+  , ui(new Ui_DlgRevolution)
+  , filter(0)
 {
     ui->setupUi(this);
 

@@ -124,7 +124,9 @@ private:
 }
 
 CrossSections::CrossSections(const Base::BoundBox3d& bb, QWidget* parent, Qt::WindowFlags fl)
-  : QDialog(parent, fl), bbox(bb), ui(new Ui_CrossSections)
+  : QDialog(parent, fl)
+  , ui(new Ui_CrossSections)
+  , bbox(bb)
 {
     ui->setupUi(this);
     ui->position->setRange(-DBL_MAX, DBL_MAX);
