@@ -693,16 +693,6 @@ static inline int linkRevision(DocumentObject *obj)
     return obj?obj->getRevision():0;
 }
 
-static inline int linkRevision(DocumentObject *obj, const std::string &subname)
-{
-    int rev = 0;
-    if(obj) {
-        for(auto o : obj->getSubObjectList(subname.c_str()))
-            rev += o->getRevision();
-    }
-    return rev;
-}
-
 bool PropertyLink::isTouched() const {
     if(PropertyLinkBase::isTouched())
         return true;
@@ -1583,17 +1573,118 @@ std::string PropertyLinkBase::tryImportSubName(const App::DocumentObject *obj, c
     return std::string();
 }
 
+struct CharSaver {
+    CharSaver(char &c)
+        :c(c), v(c)
+    {
+        if(c)
+            c = 0;
+    }
+    ~CharSaver()
+    {
+        if (v)
+            c = v;
+    }
+    char &c;
+    char v;
+};
+
+static bool _checkRevisions(App::DocumentObject *obj,
+                            std::string &sub,
+                            std::vector<int>::const_iterator &it,
+                            const std::vector<int>::const_iterator &itEnd)
+{
+    for(auto pos=sub.find('.'); pos!=std::string::npos; pos=sub.find('.',pos+1)) {
+        if (it == itEnd)
+            return true;
+        CharSaver guard(sub[pos+1]);
+        auto sobj = obj->getSubObject(sub.c_str());
+        if(!sobj || !sobj->getNameInDocument())
+            return true;
+        if (sobj->getRevision() != *it++)
+            return true;
+    }
+    return false;
+}
+
+static inline bool _checkRevisions(App::DocumentObject *obj,
+                                   std::string &subbuf,
+                                   const std::string &sub,
+                                   std::vector<int>::const_iterator &it,
+                                   const std::vector<int>::const_iterator &itEnd)
+{
+    auto element = Data::ComplexGeoData::findElementName(sub.c_str());
+    if (!element || element == sub.c_str())
+        return false;
+    subbuf.assign(sub.c_str(), element);
+    return _checkRevisions(obj, subbuf, it, itEnd);
+}
+
+static inline bool _checkRevisions(App::DocumentObject *obj,
+                                   std::string &subbuf,
+                                   const std::vector<std::string> &subs,
+                                   std::vector<int>::const_iterator &it,
+                                   const std::vector<int>::const_iterator &itEnd)
+{
+    if (!obj)
+        return false;
+    for (auto &sub : subs) {
+        if (_checkRevisions(obj, subbuf, sub, it, itEnd))
+            return true;
+    }
+    return false;
+}
+
+static inline bool _checkRevisions(App::DocumentObject *obj,
+                                   const std::vector<std::string> &subs,
+                                   const std::vector<int> &revisions)
+{
+    std::string buf;
+    auto it = revisions.begin();
+    return _checkRevisions(obj, buf, subs, it, revisions.end());
+}
+
+static void _updateRevisions(App::DocumentObject *obj,
+                             std::string &sub,
+                             std::vector<int> &revisions)
+{
+    auto element = Data::ComplexGeoData::findElementName(sub.c_str());
+    if (element == sub.c_str())
+        return;
+    CharSaver guard(const_cast<char&>(*element)); // strip out non-sub-object element reference
+    for(auto pos=sub.find('.'); pos!=std::string::npos; pos=sub.find('.',pos+1)) {
+        CharSaver guard(sub[pos+1]); // strip at the end of the current sub object
+        auto sobj = obj->getSubObject(sub.c_str());
+        if(!sobj || !sobj->getNameInDocument())
+            break;
+        revisions.push_back(sobj->getRevision());
+    }
+}
+
+static inline void _updateRevisions(App::DocumentObject *obj,
+                                    std::vector<std::string> &subs,
+                                    std::vector<int> &revisions)
+{
+    if (!obj)
+        return;
+    for (auto &sub : subs)
+        _updateRevisions(obj, sub, revisions);
+}
+
 bool PropertyLinkSub::isTouched() const {
     if(PropertyLinkBase::isTouched())
         return true;
     if(_pcScope == LinkScope::Hidden)
         return false;
-    return _revision != linkRevision(_pcLinkSub);
+    return _revision != linkRevision(_pcLinkSub)
+        || _checkRevisions(_pcLinkSub, _cSubList, _revisions);
 }
 
 void PropertyLinkSub::purgeTouched() {
     PropertyLinkBase::purgeTouched();
     _revision = linkRevision(_pcLinkSub);
+    _revisions.clear();
+    _updateRevisions(_pcLinkSub, _cSubList, _revisions);
 }
 
 #define ATTR_SHADOWED "shadowed"
@@ -2392,13 +2483,16 @@ bool PropertyLinkSubList::isTouched() const {
         return true;
     if(_pcScope == LinkScope::Hidden)
         return false;
-    if(_revisions.size() != _lSubList.size()
-            || _revisions.size() != _lValueList.size())
-        return true;
     int i = 0;
-    for(auto &sub : _lSubList) {
-        if(_revisions[i] != linkRevision(_lValueList[i], sub))
-            return true;
+    auto it = _revisions.begin();
+    auto itEnd = _revisions.end();
+    std::string subbuf;
+    for(const auto &sub : _lSubList) {
+        if (_lValueList[i]) {
+            if(*it++ != linkRevision(_lValueList[i])
+                    || _checkRevisions(_lValueList[i], subbuf, sub, it, itEnd))
+                return true;
+        }
         ++i;
     }
     return false;
@@ -2408,15 +2502,16 @@ void PropertyLinkSubList::purgeTouched() {
     PropertyLinkBase::purgeTouched();
     if(_pcScope == LinkScope::Hidden)
         return;
-    if(_lValueList.size() != _lSubList.size()) {
-        _revisions.clear();
-        return;
-    }
-    _revisions.resize(_lSubList.size());
-    int i = 0;
-    for(auto &sub : _lSubList) {
-        _revisions[i] = linkRevision(_lValueList[i], sub);
-        ++i;
+    _revisions.clear();
+    if(_lValueList.size() == _lSubList.size()) {
+        int i=0;
+        for(auto &sub : _lSubList) {
+            if (_lValueList[i]) {
+                _revisions.push_back(linkRevision(_lValueList[i]));
+                _updateRevisions(_lValueList[i], sub, _revisions);
+            }
+            ++i;
+        }
     }
 }
 
@@ -3217,6 +3312,20 @@ PropertyXLink::PropertyXLink(bool _allowPartial, PropertyLinkBase *parent)
 
 PropertyXLink::~PropertyXLink() {
     unlink();
+}
+
+bool PropertyXLink::isTouched() const {
+    if(inherited::isTouched())
+        return true;
+    if(_pcScope == LinkScope::Hidden)
+        return false;
+    return _checkRevisions(_pcLink, _SubList, _revisions);
+}
+
+void PropertyXLink::purgeTouched() {
+    inherited::purgeTouched();
+    _revisions.clear();
+    _updateRevisions(_pcLink, _SubList, _revisions);
 }
 
 void PropertyXLink::setSyncSubObject(bool enable)

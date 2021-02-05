@@ -893,6 +893,7 @@ protected:
     std::vector<ShadowSub> _ShadowSubList;
     std::vector<int> _mapped;
     int _revision = 0;
+    std::vector<int> _revisions;
 };
 
 /** The general Link Property with Child scope
@@ -1167,6 +1168,9 @@ public:
     virtual void touch() override;
     virtual std::string getFullName(bool python=false) const override;
 
+    virtual bool isTouched() const override;
+    virtual void purgeTouched() override;
+
     const char *getFilePath() const {
         return filePath.c_str();
     }
@@ -1198,6 +1202,7 @@ protected:
     std::vector<std::string> _SubList;
     std::vector<ShadowSub> _ShadowSubList;
     std::vector<int> _mapped;
+    std::vector<int> _revisions;
     PropertyLinkBase *parentProp;
 };
 
