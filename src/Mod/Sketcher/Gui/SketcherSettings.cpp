@@ -62,7 +62,6 @@ SketcherSettings::SketcherSettings(QWidget* parent)
 SketcherSettings::~SketcherSettings()
 {
     // no need to delete child widgets, Qt does it all for us
-    delete ui;
 }
 
 void SketcherSettings::saveSettings()
@@ -141,7 +140,6 @@ SketcherSettingsDisplay::SketcherSettingsDisplay(QWidget* parent)
 SketcherSettingsDisplay::~SketcherSettingsDisplay()
 {
     // no need to delete child widgets, Qt does it all for us
-    delete ui;
 }
 
 void SketcherSettingsDisplay::saveSettings()
@@ -241,7 +239,6 @@ SketcherSettingsColors::SketcherSettingsColors(QWidget* parent)
 SketcherSettingsColors::~SketcherSettingsColors()
 {
     // no need to delete child widgets, Qt does it all for us
-    delete ui;
 }
 
 void SketcherSettingsColors::saveSettings()
