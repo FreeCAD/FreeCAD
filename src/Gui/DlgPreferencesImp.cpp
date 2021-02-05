@@ -70,7 +70,7 @@ DlgPreferencesImp::DlgPreferencesImp(QWidget* parent, Qt::WindowFlags fl)
 {
     ui->setupUi(this);
     ui->listBox->setFixedWidth(108);
-    ui->listBox->setGridSize(QSize(90, 75));
+    ui->listBox->setGridSize(QSize(108, 75));
 
     connect(ui->buttonBox,  SIGNAL (helpRequested()),
             getMainWindow(), SLOT (whatsThis()));
@@ -140,7 +140,7 @@ QTabWidget* DlgPreferencesImp::createTabForGroup(const std::string &groupName)
             qWarning() << "No group icon found for " << fileName.c_str();
         }
         else if (icon.size() != QSize(48, 48)) {
-            icon = Gui::BitmapFactory().resize(48, 48, icon, Qt::TransparentMode);
+            icon = icon.scaled(48, 48, Qt::KeepAspectRatio, Qt::SmoothTransformation);
             qWarning() << "Group icon for " << fileName.c_str() << " is not of size 48x48, so it was scaled";
         }
     }

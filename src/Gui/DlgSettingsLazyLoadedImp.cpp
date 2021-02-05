@@ -100,6 +100,7 @@ void DlgSettingsLazyLoadedImp::buildUnloadedWorkbenchList()
             ui->workbenchList->addItem(wbRow); // Transfers ownership to the QListWidget
         }
     }
+    ui->workbenchList->sortItems();
 }
 
 /**
