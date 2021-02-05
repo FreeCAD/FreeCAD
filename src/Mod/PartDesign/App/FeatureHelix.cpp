@@ -390,48 +390,12 @@ TopoDS_Shape Helix::generateHelixPath(void)
     Base::Vector3d start = v.Cross(normal);  // pointing towards the desired helix start point.
     gp_Dir dir_start(start.x, start.y, start.z);
 
-    // Determine radius as the minimum distance between sketchshape and axis.
-    // also find out in what quadrant relative to the axis the profile is located.
-    double radius = 1e99;
-    bool turned = false;
-    double startOffset = 1e99;
-    TopoDS_Shape sketchshape = getVerifiedFace();
-    BRepBuilderAPI_MakeEdge axisEdge(gp_Lin(pnt, dir));
-    BRepBuilderAPI_MakeEdge startEdge(gp_Lin(pnt, dir_start));
-    for (TopExp_Explorer xp(sketchshape, TopAbs_FACE); xp.More(); xp.Next()) {
-        const TopoDS_Face face =  TopoDS::Face(xp.Current());
-        TopoDS_Wire wire = ShapeAnalysis::OuterWire(face);
-        BRepExtrema_DistShapeShape distR(wire, axisEdge.Shape(), Precision::Confusion());
-        if (distR.IsDone()) {
-            if (distR.Value() < radius) {
-                radius = distR.Value();
-                const gp_Pnt p1 = distR.PointOnShape1(1);
-                const gp_Pnt p2 = distR.PointOnShape2(1);
-                double offsetProfile = p1.X()*dir_start.X() + p1.Y()*dir_start.Y() + p1.Z()*dir_start.Z();
-                double offsetAxis = p2.X()*dir_start.X() + p2.Y()*dir_start.Y() + p2.Z()*dir_start.Z();
-                turned = (offsetProfile < offsetAxis);
-            }
-        }
-        BRepExtrema_DistShapeShape distStart(wire, startEdge.Shape(), Precision::Confusion());
-        if (distStart.IsDone()) {
-            if (distStart.Value() < abs(startOffset)) {
-                const gp_Pnt p1 = distStart.PointOnShape1(1);
-                const gp_Pnt p2 = distStart.PointOnShape2(1);
-                double offsetProfile = p1.X()*dir.X() + p1.Y()*dir.Y() + p1.Z()*dir.Z();
-                double offsetAxis = p2.X()*dir.X() + p2.Y()*dir.Y() + p2.Z()*dir.Z();
-                startOffset = offsetProfile - offsetAxis;
-            }
-        }
-
-    }
-
-    if (radius <  Precision::Confusion()) {
-        // in this case ensure that axis is not in the sketch plane
-        if (v*normal < Precision::Confusion())
-            throw Base::ValueError("Error: Result is self intersecting");
-        radius = 1.0; //fallback to radius 1
-        startOffset = 0.0;
-    }
+    // Find out in what quadrant relative to the axis the profile is located, and the exact position.
+    Base::Vector3d profileCenter = getProfileCenterPoint();
+    double axisOffset = profileCenter*start - b*start;
+    double startOffset = profileCenter*v - b*v;
+    double radius = std::fabs(axisOffset);
+    bool turned = axisOffset < 0;
 
     //build the helix path
     TopoShape helix = TopoShape().makeLongHelix(pitch, height, radius, angle, leftHanded);
@@ -443,7 +407,6 @@ TopoDS_Shape Helix::generateHelixPath(void)
      * We want to move it so that the axis becomes aligned with "dir" and "pnt", we also want (radius,0,0) to
      * map to the sketch plane.
      */
-
 
     gp_Pnt origo(0.0, 0.0, 0.0);
     gp_Dir dir_axis1(0.0, 0.0, 1.0);  // pointing along the helix axis, as created.
@@ -539,6 +502,18 @@ void Helix::proposeParameters(bool force)
         Height.setValue(pitch*3.0);
         HasBeenEdited.setValue(1);
     }
+}
+
+Base::Vector3d Helix::getProfileCenterPoint()
+{
+    TopoDS_Shape profileshape;
+    profileshape = getVerifiedFace();
+    Bnd_Box box;
+    BRepBndLib::Add(profileshape, box);
+    box.SetGap(0.0);
+    double xmin, ymin, zmin, xmax, ymax, zmax;
+    box.Get(xmin, ymin, zmin, xmax, ymax, zmax);
+    return Base::Vector3d(0.5*(xmin+xmax), 0.5*(ymin+ymax), 0.5*(zmin+zmax));
 }
 
 
