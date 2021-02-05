@@ -6,7 +6,7 @@
         <file>icons/PartDesign_Additive_Ellipsoid.svg</file>
         <file>icons/PartDesign_Additive_Loft.svg</file>
         <file>icons/PartDesign_Additive_Pipe.svg</file>
-        <file>icons/PartDesign_Additive_Helix.svg</file>
+        <file>icons/PartDesign_AdditiveHelix.svg</file>
         <file>icons/PartDesign_Additive_Prism.svg</file>
         <file>icons/PartDesign_Additive_Sphere.svg</file>
         <file>icons/PartDesign_Additive_Torus.svg</file>
@@ -51,7 +51,7 @@
         <file>icons/PartDesign_Subtractive_Ellipsoid.svg</file>
         <file>icons/PartDesign_Subtractive_Loft.svg</file>
         <file>icons/PartDesign_Subtractive_Pipe.svg</file>
-        <file>icons/PartDesign_Subtractive_Helix.svg</file>
+        <file>icons/PartDesign_SubtractiveHelix.svg</file>
         <file>icons/PartDesign_Subtractive_Prism.svg</file>
         <file>icons/PartDesign_Subtractive_Sphere.svg</file>
         <file>icons/PartDesign_Subtractive_Torus.svg</file>
