@@ -91,13 +91,7 @@ bool ViewProviderFilling::setEdit(int ModNum)
 
 void ViewProviderFilling::unsetEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default) {
-        // when pressing ESC make sure to close the dialog
-        QTimer::singleShot(0, &Gui::Control(), SLOT(closeDialog()));
-    }
-    else {
-        PartGui::ViewProviderSpline::unsetEdit(ModNum);
-    }
+    PartGui::ViewProviderSpline::unsetEdit(ModNum);
 }
 
 QIcon ViewProviderFilling::getIcon(void) const
@@ -900,6 +894,11 @@ void TaskFilling::open()
     widget1->open();
     widget2->open();
     widget3->open();
+}
+
+void TaskFilling::closed()
+{
+    widget1->reject();
 }
 
 bool TaskFilling::accept()
