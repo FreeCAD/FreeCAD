@@ -101,7 +101,7 @@ private:
 
 private:
     QWidget* proxy;
-    Ui_TaskHelixParameters* ui;
+    std::unique_ptr<Ui_TaskHelixParameters> ui;
 
     /**
      * @brief axesInList is the list of links corresponding to axis combo; must

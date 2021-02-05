@@ -131,7 +131,7 @@ private:
 
     std::unique_ptr<Observer> observer;
     QWidget* proxy;
-    Ui_TaskHoleParameters* ui;
+    std::unique_ptr<Ui_TaskHoleParameters> ui;
     bool isApplying;
 };
 

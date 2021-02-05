@@ -55,11 +55,10 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskDraftParameters */
 
 TaskDraftParameters::TaskDraftParameters(ViewProviderDressUp *DressUpView, QWidget *parent)
-    : TaskDressUpParameters(DressUpView, false, true, parent)
+    : TaskDressUpParameters(DressUpView, false, true, parent), ui(new Ui_TaskDraftParameters)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskDraftParameters();
     ui->setupUi(proxy);
 
     this->groupLayout()->addWidget(proxy);
@@ -319,8 +318,6 @@ TaskDraftParameters::~TaskDraftParameters()
 {
     Gui::Selection().clearSelection();
     Gui::Selection().rmvSelectionGate();
-
-    delete ui;
 }
 
 bool TaskDraftParameters::event(QEvent *e)

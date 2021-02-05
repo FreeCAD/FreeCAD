@@ -60,11 +60,10 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskMirroredParameters */
 
 TaskMirroredParameters::TaskMirroredParameters(ViewProviderTransformed *TransformedView, QWidget *parent)
-        : TaskTransformedParameters(TransformedView, parent)
+        : TaskTransformedParameters(TransformedView, parent), ui(new Ui_TaskMirroredParameters)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskMirroredParameters();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
@@ -80,10 +79,9 @@ TaskMirroredParameters::TaskMirroredParameters(ViewProviderTransformed *Transfor
 }
 
 TaskMirroredParameters::TaskMirroredParameters(TaskMultiTransformParameters *parentTask, QLayout *layout)
-        : TaskTransformedParameters(parentTask)
+        : TaskTransformedParameters(parentTask), ui(new Ui_TaskMirroredParameters)
 {
     proxy = new QWidget(parentTask);
-    ui = new Ui_TaskMirroredParameters();
     ui->setupUi(proxy);
     connect(ui->buttonOK, SIGNAL(pressed()),
             parentTask, SLOT(onSubTaskButtonOK()));
@@ -318,7 +316,6 @@ TaskMirroredParameters::~TaskMirroredParameters()
         Base::Console().Error ("%s\n", ex.what () );
     }
 
-    delete ui;
     if (proxy)
         delete proxy;
 }
