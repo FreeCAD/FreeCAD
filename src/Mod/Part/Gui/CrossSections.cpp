@@ -124,9 +124,8 @@ private:
 }
 
 CrossSections::CrossSections(const Base::BoundBox3d& bb, QWidget* parent, Qt::WindowFlags fl)
-  : QDialog(parent, fl), bbox(bb)
+  : QDialog(parent, fl), bbox(bb), ui(new Ui_CrossSections)
 {
-    ui = new Ui_CrossSections();
     ui->setupUi(this);
     ui->position->setRange(-DBL_MAX, DBL_MAX);
     ui->position->setUnit(Base::Unit::Length);
@@ -151,7 +150,6 @@ CrossSections::CrossSections(const Base::BoundBox3d& bb, QWidget* parent, Qt::Wi
 CrossSections::~CrossSections()
 {
     // no need to delete child widgets, Qt does it all for us
-    delete ui;
     if (view) {
         view->getViewer()->removeViewProvider(vp);
     }

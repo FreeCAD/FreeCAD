@@ -91,7 +91,7 @@ private:
     void autoSolid();
 
 private:
-    Ui_DlgExtrusion* ui;
+    std::unique_ptr<Ui_DlgExtrusion> ui;
     std::string document, label;
     class EdgeSelection;
     EdgeSelection* filter;

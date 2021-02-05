@@ -40,9 +40,8 @@
 using namespace PartGui;
 
 DlgSettingsGeneral::DlgSettingsGeneral(QWidget* parent)
-  : PreferencePage(parent)
+  : PreferencePage(parent), ui(new Ui_DlgSettingsGeneral)
 {
-    ui = new Ui_DlgSettingsGeneral();
     ui->setupUi(this);
 }
 
@@ -52,7 +51,6 @@ DlgSettingsGeneral::DlgSettingsGeneral(QWidget* parent)
 DlgSettingsGeneral::~DlgSettingsGeneral()
 {
     // no need to delete child widgets, Qt does it all for us
-    delete ui;
 }
 
 void DlgSettingsGeneral::saveSettings()
@@ -87,9 +85,8 @@ void DlgSettingsGeneral::changeEvent(QEvent *e)
 // ----------------------------------------------------------------------------
 
 DlgImportExportIges::DlgImportExportIges(QWidget* parent)
-  : PreferencePage(parent)
+  : PreferencePage(parent), ui(new Ui_DlgImportExportIges)
 {
-    ui = new Ui_DlgImportExportIges();
     ui->setupUi(this);
     ui->lineEditProduct->setReadOnly(true);
 
@@ -113,7 +110,6 @@ DlgImportExportIges::DlgImportExportIges(QWidget* parent)
 DlgImportExportIges::~DlgImportExportIges()
 {
     // no need to delete child widgets, Qt does it all for us
-    delete ui;
 }
 
 void DlgImportExportIges::saveSettings()
@@ -193,9 +189,8 @@ void DlgImportExportIges::changeEvent(QEvent *e)
 // ----------------------------------------------------------------------------
 
 DlgImportExportStep::DlgImportExportStep(QWidget* parent)
-  : PreferencePage(parent)
+  : PreferencePage(parent), ui(new Ui_DlgImportExportStep)
 {
-    ui = new Ui_DlgImportExportStep();
     ui->setupUi(this);
 
     ui->comboBoxSchema->setItemData(0, QByteArray("AP203"));
@@ -229,7 +224,6 @@ DlgImportExportStep::DlgImportExportStep(QWidget* parent)
 DlgImportExportStep::~DlgImportExportStep()
 {
     // no need to delete child widgets, Qt does it all for us
-    delete ui;
 }
 
 void DlgImportExportStep::saveSettings()
