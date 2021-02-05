@@ -52,7 +52,7 @@ private:
 
 private:
     QString document;
-    Ui_Mirroring* ui;
+    std::unique_ptr<Ui_Mirroring> ui;
 };
 
 class TaskMirroring : public Gui::TaskView::TaskDialog
