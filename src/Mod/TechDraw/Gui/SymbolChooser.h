@@ -54,7 +54,7 @@ protected:
     void loadSymbolNames(QString pathToSymbols);
 
 private:
-    Ui_SymbolChooser* ui;
+    std::unique_ptr<Ui_SymbolChooser> ui;
     QString m_symbolDir;
     QString m_symbolPath;
     QString m_source;
