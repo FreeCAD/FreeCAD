@@ -79,7 +79,6 @@ TaskLineDecor::TaskLineDecor(TechDraw::DrawViewPart* partFeat,
 
 TaskLineDecor::~TaskLineDecor()
 {
-    delete ui;
 }
 
 void TaskLineDecor::initUi()

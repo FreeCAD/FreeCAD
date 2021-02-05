@@ -897,7 +897,7 @@ QTreeWidgetItem *DlgPropertyLink::createItem(
     if(allowSubObject) {
         item->setChildIndicatorPolicy(obj->getLinkedObject(true)->getOutList().size()?
                 QTreeWidgetItem::ShowIndicator:QTreeWidgetItem::DontShowIndicator);
-        item->setFlags(item->flags() | Qt::ItemIsEditable);
+        item->setFlags(item->flags() | Qt::ItemIsEditable | Qt::ItemIsUserCheckable);
     }
 
     const char *typeName = obj->getTypeId().getName();

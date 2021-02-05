@@ -70,13 +70,11 @@ void ViewProviderPlane::attach ( App::DocumentObject *obj ) {
     sep->addChild ( pCoords );
 
     SoIndexedLineSet *pLines  = new SoIndexedLineSet ();
-    pLines->ref();
     pLines->coordIndex.setNum(6);
     pLines->coordIndex.setValues(0, 6, lines);
     sep->addChild ( pLines );
 
     SoTranslation *textTranslation = new SoTranslation ();
-    textTranslation->ref ();
     textTranslation->translation.setValue ( SbVec3f ( -size * 49. / 50., size * 9./10., 0 ) );
     sep->addChild ( textTranslation );
 

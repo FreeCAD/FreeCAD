@@ -58,11 +58,11 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskRevolutionParameters */
 
 TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* RevolutionView, QWidget *parent)
-    : TaskSketchBasedParameters(RevolutionView, parent, "PartDesign_Revolution",tr("Revolution parameters"))
+    : TaskSketchBasedParameters(RevolutionView, parent, "PartDesign_Revolution", tr("Revolution parameters"))
+    , ui(new Ui_TaskRevolutionParameters)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskRevolutionParameters();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
@@ -378,8 +378,6 @@ TaskRevolutionParameters::~TaskRevolutionParameters()
     } catch (const Base::Exception &ex) {
         ex.ReportException();
     }
-
-    delete ui;
 
     for (size_t i = 0; i < axesInList.size(); i++) {
         delete axesInList[i];

@@ -154,6 +154,10 @@ class PathWorkbench (Workbench):
         if extracmdlist:
             self.appendMenu([QtCore.QT_TRANSLATE_NOOP("Path", "&Path")], extracmdlist)
 
+        self.appendMenu([QtCore.QT_TRANSLATE_NOOP("Path", "&Path")], ["Separator"])
+        self.appendMenu([QtCore.QT_TRANSLATE_NOOP("Path", "&Path"), QtCore.QT_TRANSLATE_NOOP("Path", "Utils")],
+            ["Path_PropertyBag"])
+
         self.dressupcmds = dressupcmdlist
 
         curveAccuracy = PathPreferences.defaultLibAreaCurveAccuracy()

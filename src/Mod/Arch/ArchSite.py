@@ -631,7 +631,7 @@ class _Site(ArchIFC.IfcProduct):
         if not "OriginOffset" in pl:
             obj.addProperty("App::PropertyVector","OriginOffset","Site",QT_TRANSLATE_NOOP("App::Property","An optional offset between the model (0,0,0) origin and the point indicated by the geocoordinates"))
         if not hasattr(obj,"Group"):
-            obj.addExtension("App::GroupExtensionPython", self)
+            obj.addExtension("App::GroupExtensionPython")
         if not "IfcType" in pl:
             obj.addProperty("App::PropertyEnumeration","IfcType","IFC",QT_TRANSLATE_NOOP("App::Property","The type of this object"))
             obj.IfcType = ArchIFC.IfcTypes
@@ -819,7 +819,7 @@ class _ViewProviderSite:
 
     def __init__(self,vobj):
         vobj.Proxy = self
-        vobj.addExtension("Gui::ViewProviderGroupExtensionPython", self)
+        vobj.addExtension("Gui::ViewProviderGroupExtensionPython")
         self.setProperties(vobj)
 
     def setProperties(self,vobj):

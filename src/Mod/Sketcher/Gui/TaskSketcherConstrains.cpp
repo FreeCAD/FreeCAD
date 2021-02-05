@@ -634,13 +634,13 @@ void ConstraintView::swapNamedOfSelectedItems()
 
 // ----------------------------------------------------------------------------
 
-TaskSketcherConstrains::TaskSketcherConstrains(ViewProviderSketch *sketchView)
-    : TaskBox(Gui::BitmapFactory().pixmap("document-new"),tr("Constraints"),true, 0)
-    , sketchView(sketchView), inEditMode(false)
+TaskSketcherConstrains::TaskSketcherConstrains(ViewProviderSketch *sketchView) :
+    TaskBox(Gui::BitmapFactory().pixmap("document-new"), tr("Constraints"), true, 0),
+    sketchView(sketchView), inEditMode(false),
+    ui(new Ui_TaskSketcherConstrains)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskSketcherConstrains();
     ui->setupUi(proxy);
     ui->listWidgetConstraints->setSelectionMode(QAbstractItemView::ExtendedSelection);
     ui->listWidgetConstraints->setEditTriggers(QListWidget::EditKeyPressed);
@@ -700,7 +700,6 @@ TaskSketcherConstrains::~TaskSketcherConstrains()
     this->ui->filterInternalAlignment->onSave();
     this->ui->extendedInformation->onSave();
     connectionConstraintsChanged.disconnect();
-    delete ui;
 }
 
 void TaskSketcherConstrains::onSelectionChanged(const Gui::SelectionChanges& msg)

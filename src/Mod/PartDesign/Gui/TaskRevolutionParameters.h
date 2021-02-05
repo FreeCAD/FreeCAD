@@ -92,7 +92,7 @@ private:
 
 private:
     QWidget* proxy;
-    Ui_TaskRevolutionParameters* ui;    
+    std::unique_ptr<Ui_TaskRevolutionParameters> ui;
 
     /**
      * @brief axesInList is the list of links corresponding to axis combo; must

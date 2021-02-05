@@ -23,5 +23,5 @@
 
 /** \defgroup GeomPrimers Geometry primers
  *  \ingroup BASE
-    \brief Basic structures used by geomoetric objects
+    \brief Basic structures used by geometric objects
 */

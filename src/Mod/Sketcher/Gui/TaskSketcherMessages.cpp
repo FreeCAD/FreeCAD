@@ -47,13 +47,13 @@ using namespace SketcherGui;
 using namespace Gui::TaskView;
 namespace bp = boost::placeholders;
 
-TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch *sketchView)
-    : TaskBox(Gui::BitmapFactory().pixmap("document-new"),tr("Solver messages"),true, 0)
-    , sketchView(sketchView)
+TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch *sketchView) :
+    TaskBox(Gui::BitmapFactory().pixmap("document-new"), tr("Solver messages"), true, 0),
+    sketchView(sketchView),
+    ui(new Ui_TaskSketcherMessages)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskSketcherMessages();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
@@ -90,7 +90,6 @@ TaskSketcherMessages::~TaskSketcherMessages()
 {
     connectionSetUp.disconnect();
     connectionSolved.disconnect();
-    delete ui;
 }
 
 void TaskSketcherMessages::slotSetUp(QString msg)

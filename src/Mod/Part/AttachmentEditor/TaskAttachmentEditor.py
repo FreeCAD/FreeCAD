@@ -224,7 +224,7 @@ class AttachmentEditorTaskPanel(FrozenClass):
 
         import os
         self.form=uic.loadUi(os.path.dirname(__file__) + os.path.sep + 'TaskAttachmentEditor.ui')
-        self.form.setWindowIcon(QtGui.QIcon(':/icons/Part_Attachment.svg'))
+        self.form.setWindowIcon(QtGui.QIcon(':/icons/tools/Part_Attachment.svg'))
         self.form.setWindowTitle(_translate('AttachmentEditor',"Attachment",None))
 
         self.form.attachmentOffsetX.setProperty("unit", "mm")

@@ -54,11 +54,11 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskPadParameters */
 
 TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, bool newObj)
-    : TaskSketchBasedParameters(PadView, parent, "PartDesign_Pad",tr("Pad parameters"))
+    : TaskSketchBasedParameters(PadView, parent, "PartDesign_Pad", tr("Pad parameters"))
+    , ui(new Ui_TaskPadParameters)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskPadParameters();
     ui->setupUi(proxy);
 #if QT_VERSION >= 0x040700
     ui->lineFaceName->setPlaceholderText(tr("No face selected"));
@@ -487,7 +487,6 @@ QString TaskPadParameters::getFaceName(void) const
 
 TaskPadParameters::~TaskPadParameters()
 {
-    delete ui;
 }
 
 void TaskPadParameters::changeEvent(QEvent *e)

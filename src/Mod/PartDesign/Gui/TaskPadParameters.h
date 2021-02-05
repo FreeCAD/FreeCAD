@@ -90,7 +90,7 @@ private:
 
 private:
     QWidget* proxy;
-    Ui_TaskPadParameters* ui;
+    std::unique_ptr<Ui_TaskPadParameters> ui;
 };
 
 /// simulation dialog for the TaskView

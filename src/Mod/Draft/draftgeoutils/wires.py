@@ -160,7 +160,7 @@ def flattenWire(wire):
     """Force a wire to get completely flat along its normal."""
     n = get_normal(wire)
     # for backward compatibility with previous getNormal implementation
-    if n == None:
+    if n is None:
         n = App.Vector(0, 0, 1)
 
     o = wire.Vertexes[0].Point

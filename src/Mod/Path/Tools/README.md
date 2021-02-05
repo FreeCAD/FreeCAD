@@ -1,6 +1,6 @@
 # Tools
 
-Each tool is stored as a JSON file which has the template's path and values for all named constraints of the template.
+Each tool is stored as a JSON file which has the shape's path and values for all attributes of the shape.
 It also includes all additional parameters and their values.
 
 Storing a tool as a JSON file sounds great but eliminates the option of an accurate thumbnail. On the other hand,
@@ -8,10 +8,10 @@ storing each tool as a `*.fcstd` file requires more space and does not allow for
 extensive tool aresenal they might want to script the generation of tools which is easily done for a `*.json` file but
 practically impossible for `*.fcstd` files.
 
-When a tool is instantiated in a job the PDN body is created from the template and the constraints are set according
-to the values from the JSON file. All additional parameters are created as properties on the object. This provides the
-the correct shape and dimensions which can be used to generate a point cloud or mesh for advanced algorithms (and
-potentially simulation).
+When a tool is instantiated in a job the PDN body is created from the shape and the attributes and constraints are set
+according to the values from the JSON file. All additional parameters are created as properties on the object. This
+provides the the correct shape and dimensions which can be used to generate a point cloud or mesh for advanced
+algorithms (and potentially simulation).
 
 # Tool Libraries
 
@@ -55,33 +55,34 @@ TechDraw's templates.
 ## How to create a new tool
 
 1. Set the tool's Label, this will show up in the object tree
-1. Select a tool shape from the existing templates. If your tool doesn't exist, you'll have to create a new template,
+1. Select a tool shape from the existing shape files. If your tool doesn't exist, you'll have to create a new shape,
    see below for details.
-1. Each template has its own set of parameters, fill them with the tool's values.
+1. Each tool bit shape has its own set of parameters, fill them with the tool's values.
 1. Select additional parameters
 1. Save the tool under path/file that makes sense to you
 
 
 ## How to create a new tool bit Shape
 
-A tool bit template represents the physical shape of a tool. It does not completely describe the bit - for that some
-additional parameters are needed which will be added when an actual bit is parametrized from the template.
+The shape file for a tool bit is expected to contain a PD body which represents the tool as a 3d solid. The PD body
+should be parametric based on a a PropertyBag object so that, when the properties of the PropertyBag are changed the
+solid is updated to the correct representation.
 
 1. Create a new FreeCAD document
 1. Open the `PartDesign` workbench, create a body and give the body a label you want to show up in the bit selection.
-1. Create a sketch in the XZ plane and draw half the profile of the bit.
-   * Put the top center of the bit on the origin (0,0)
-1. For any constraint serving as a parameter for the tool (like overall Length) create a named constraint
-   * The name is the label of the input field
-   * Names are split at CamelCase boundaries into words in the edit dialog
-   * Use a `;` in the name to add help text which will show up as the entry fields tool tip
-   * If the tool is used by legacy ops it should at least have one constraint called `Diameter`
-   * Use construction lines for constraints that are not directly accessible, like `Diameter` and `Angle`
-1. Any unnamed constraint will not be editable for a specific tool
-1. Once the sketch is fully constrained, close the sketch
-1. Rotate the sketch around the z-axis
+1. Open the Path workbench and (with the PD body selected) create a PropertyBag,
+   menu 'Path' -> 'Utils' -> 'Property Bag'
+   * this creates a PropertyBag object inside the Body (assuming it was selected)
+   * add properties to which define the tool bit's shape and put those into the group 'Shape'
+   * add any other properties to the bag which might be useful for the tool bit
+1. Construct the body of the tool bit and assign expressions referencing properties from the PropertyBag (in the
+   `Shape` Group) for all constraints.
+   * Position the tip of the tool bit on the origin (0,0)
 1. Save the document as a new file in the Shape directory
    * Before saving the document make sure you have _Save Thumbnail_ selected, and _Add program logo_ deselected in
      FreeCAD's preferences.
    * Also make sure to switch to _Front View_ and _Fit content to screen_
-   * Whatever you see when saving the document will end up being the visual representation of the template
+   * Whatever you see when saving the document will end up being the visual representation of tool bits with this shape
+
+Not that 'Shape' is the only property group which has special meaning for tool bits. All other property groups are
+copied verbatim to the ToolBit object when one is created.
