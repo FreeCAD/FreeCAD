@@ -368,7 +368,7 @@ Mesh::MeshObject* Mesher::createMesh() const
         if (maxLen > 0)
             hyp2d->SetMaxSize(maxLen);
         if (minLen > 0)
-            hyp2d->SetMinSize(maxLen);
+            hyp2d->SetMinSize(minLen);
 
         hyp2d->SetQuadAllowed(allowquad);
         hyp2d->SetOptimize(optimize);

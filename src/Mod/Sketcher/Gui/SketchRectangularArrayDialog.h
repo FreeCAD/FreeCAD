@@ -48,7 +48,7 @@ public:
 protected:
     void updateValues(void);
 private:
-    Ui_SketchRectangularArrayDialog* ui;
+    std::unique_ptr<Ui_SketchRectangularArrayDialog> ui;
 };
 
 }

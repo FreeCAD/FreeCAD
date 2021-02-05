@@ -54,7 +54,6 @@ using namespace TechDrawGui;
 TaskDimension::TaskDimension(QGIViewDimension *parent, ViewProviderDimension *dimensionVP) :
     ui(new Ui_TaskDimension)
 {
-    int i = 0;
     m_parent = parent;
     m_dimensionVP = dimensionVP;
 
@@ -68,6 +67,8 @@ TaskDimension::TaskDimension(QGIViewDimension *parent, ViewProviderDimension *di
         ui->cbEqualTolerance->setDisabled(true);
         ui->qsbOvertolerance->setDisabled(true);
         ui->qsbUndertolerance->setDisabled(true);
+        ui->leFormatSpecifierOverTolerance->setDisabled(true);
+        ui->leFormatSpecifierUnderTolerance->setDisabled(true);
     }
     ui->cbEqualTolerance->setChecked(parent->dvDimension->EqualTolerance.getValue());
     connect(ui->cbEqualTolerance, SIGNAL(stateChanged(int)), this, SLOT(onEqualToleranceChanged()));
@@ -88,8 +89,10 @@ TaskDimension::TaskDimension(QGIViewDimension *parent, ViewProviderDimension *di
     connect(ui->qsbOvertolerance, SIGNAL(valueChanged(double)), this, SLOT(onOvertoleranceChanged()));
     connect(ui->qsbUndertolerance, SIGNAL(valueChanged(double)), this, SLOT(onUndertoleranceChanged()));
     // undertolerance is disabled when EqualTolerance is true
-    if (ui->cbEqualTolerance->isChecked())
+    if (ui->cbEqualTolerance->isChecked()) {
         ui->qsbUndertolerance->setDisabled(true);
+        ui->leFormatSpecifierUnderTolerance->setDisabled(true);
+    }
 
     // Formatting
     std::string StringValue = parent->dvDimension->FormatSpec.getValue();
@@ -98,10 +101,14 @@ TaskDimension::TaskDimension(QGIViewDimension *parent, ViewProviderDimension *di
     connect(ui->leFormatSpecifier, SIGNAL(textChanged(QString)), this, SLOT(onFormatSpecifierChanged()));
     ui->cbArbitrary->setChecked(parent->dvDimension->Arbitrary.getValue());
     connect(ui->cbArbitrary, SIGNAL(stateChanged(int)), this, SLOT(onArbitraryChanged()));
-    StringValue = parent->dvDimension->FormatSpecTolerance.getValue();
+    StringValue = parent->dvDimension->FormatSpecOverTolerance.getValue();
     qs = QString::fromUtf8(StringValue.data(), StringValue.size());
-    ui->leToleranceFormatSpecifier->setText(qs);
-    connect(ui->leToleranceFormatSpecifier, SIGNAL(textChanged(QString)), this, SLOT(onToleranceFormatSpecifierChanged()));
+    ui->leFormatSpecifierOverTolerance->setText(qs);
+    StringValue = parent->dvDimension->FormatSpecUnderTolerance.getValue();
+    qs = QString::fromUtf8(StringValue.data(), StringValue.size());
+    ui->leFormatSpecifierUnderTolerance->setText(qs);
+    connect(ui->leFormatSpecifierOverTolerance, SIGNAL(textChanged(QString)), this, SLOT(onFormatSpecifierOverToleranceChanged()));
+    connect(ui->leFormatSpecifierUnderTolerance, SIGNAL(textChanged(QString)), this, SLOT(onFormatSpecifierUnderToleranceChanged()));
     ui->cbArbitraryTolerances->setChecked(parent->dvDimension->ArbitraryTolerances.getValue());
     connect(ui->cbArbitraryTolerances, SIGNAL(stateChanged(int)), this, SLOT(onArbitraryTolerancesChanged()));
 
@@ -133,7 +140,8 @@ bool TaskDimension::accept()
 
     m_parent->dvDimension->FormatSpec.setValue(ui->leFormatSpecifier->text().toUtf8().constData());
     m_parent->dvDimension->Arbitrary.setValue(ui->cbArbitrary->isChecked());
-    m_parent->dvDimension->FormatSpecTolerance.setValue(ui->leToleranceFormatSpecifier->text().toUtf8().constData());
+    m_parent->dvDimension->FormatSpecOverTolerance.setValue(ui->leFormatSpecifierOverTolerance->text().toUtf8().constData());
+    m_parent->dvDimension->FormatSpecUnderTolerance.setValue(ui->leFormatSpecifierUnderTolerance->text().toUtf8().constData());
     m_parent->dvDimension->ArbitraryTolerances.setValue(ui->cbArbitraryTolerances->isChecked());
 
     m_dimensionVP->FlipArrowheads.setValue(ui->cbArrowheads->isChecked());
@@ -170,12 +178,20 @@ void TaskDimension::onTheoreticallyExactChanged()
         ui->cbEqualTolerance->setDisabled(true);
         ui->qsbOvertolerance->setDisabled(true);
         ui->qsbUndertolerance->setDisabled(true);
+        ui->leFormatSpecifierOverTolerance->setDisabled(true);
+        ui->leFormatSpecifierUnderTolerance->setDisabled(true);
+        ui->cbArbitraryTolerances->setDisabled(true);
+        ui->cbArbitraryTolerances->setChecked(false);
     }
     else {
         ui->cbEqualTolerance->setDisabled(false);
         ui->qsbOvertolerance->setDisabled(false);
-        if (!ui->cbEqualTolerance->isChecked())
+        ui->leFormatSpecifierOverTolerance->setDisabled(false);
+        ui->cbArbitraryTolerances->setDisabled(false);
+        if (!ui->cbEqualTolerance->isChecked()) {
             ui->qsbUndertolerance->setDisabled(false);
+            ui->leFormatSpecifierUnderTolerance->setDisabled(false);
+        }
     }
     recomputeFeature();
 }
@@ -193,13 +209,15 @@ void TaskDimension::onEqualToleranceChanged()
         ui->qsbUndertolerance->setValue(-1.0 * ui->qsbOvertolerance->value().getValue());
         ui->qsbUndertolerance->setUnit(ui->qsbOvertolerance->value().getUnit());
         ui->qsbUndertolerance->setDisabled(true);
+        ui->leFormatSpecifierUnderTolerance->setDisabled(true);
     }
     else {
         ui->qsbOvertolerance->setMinimum(-DBL_MAX);
-        if (!ui->cbTheoreticallyExact->isChecked())
+        if (!ui->cbTheoreticallyExact->isChecked()) {
             ui->qsbUndertolerance->setDisabled(false);
+            ui->leFormatSpecifierUnderTolerance->setDisabled(false);
+        }
     }
-    ui->qsbUndertolerance->setDisabled(ui->cbEqualTolerance->isChecked());
     recomputeFeature();
 }
 
@@ -232,9 +250,23 @@ void TaskDimension::onArbitraryChanged()
     recomputeFeature();
 }
 
-void TaskDimension::onToleranceFormatSpecifierChanged()
+void TaskDimension::onFormatSpecifierOverToleranceChanged()
 {
-    m_parent->dvDimension->FormatSpecTolerance.setValue(ui->leToleranceFormatSpecifier->text().toUtf8().constData());
+    m_parent->dvDimension->FormatSpecOverTolerance.setValue(ui->leFormatSpecifierOverTolerance->text().toUtf8().constData());
+    if (!ui->cbArbitraryTolerances->isChecked()) {
+        ui->leFormatSpecifierUnderTolerance->setText(ui->leFormatSpecifierOverTolerance->text());
+        m_parent->dvDimension->FormatSpecUnderTolerance.setValue(ui->leFormatSpecifierUnderTolerance->text().toUtf8().constData());
+    }
+    recomputeFeature();
+}
+
+void TaskDimension::onFormatSpecifierUnderToleranceChanged()
+{
+    m_parent->dvDimension->FormatSpecUnderTolerance.setValue(ui->leFormatSpecifierUnderTolerance->text().toUtf8().constData());
+    if (!ui->cbArbitraryTolerances->isChecked()) {
+        ui->leFormatSpecifierOverTolerance->setText(ui->leFormatSpecifierUnderTolerance->text());
+        m_parent->dvDimension->FormatSpecOverTolerance.setValue(ui->leFormatSpecifierOverTolerance->text().toUtf8().constData());
+    }
     recomputeFeature();
 }
 

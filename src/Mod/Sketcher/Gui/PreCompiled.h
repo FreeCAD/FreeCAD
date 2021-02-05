@@ -95,6 +95,7 @@
 # include <Gui/Qt4All.h>
 #endif
 
+# include <QGuiApplication>
 # include <QMessageBox>
 #include <qdebug.h>
 #include <QString>

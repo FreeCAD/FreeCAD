@@ -642,11 +642,10 @@ private:
             Base::FileInfo file(Utf8Name.c_str());
             if (file.hasExtension("stp") || file.hasExtension("step")) {
                 ParameterGrp::handle hGrp_stp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part/STEP");
-                std::string scheme = hGrp_stp->GetASCII("Scheme", "AP214IS");
-                if (scheme == "AP203")
-                    Interface_Static::SetCVal("write.step.schema", "AP203");
-                else if (scheme == "AP214IS")
-                    Interface_Static::SetCVal("write.step.schema", "AP214IS");
+                std::string scheme = hGrp_stp->GetASCII("Scheme", Interface_Static::CVal("write.step.schema"));
+                std::list<std::string> supported = Part::supportedSTEPSchemes();
+                if (std::find(supported.begin(), supported.end(), scheme) != supported.end())
+                    Interface_Static::SetCVal("write.step.schema", scheme.c_str());
 
                 STEPCAFControl_Writer writer;
                 Interface_Static::SetIVal("write.step.assembly",1);

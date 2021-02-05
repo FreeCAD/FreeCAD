@@ -56,7 +56,8 @@ private Q_SLOTS:
     void onUndertoleranceChanged();
     void onFormatSpecifierChanged();
     void onArbitraryChanged();
-    void onToleranceFormatSpecifierChanged();
+    void onFormatSpecifierOverToleranceChanged();
+    void onFormatSpecifierUnderToleranceChanged();
     void onArbitraryTolerancesChanged();
     void onFlipArrowheadsChanged();
     void onColorChanged();

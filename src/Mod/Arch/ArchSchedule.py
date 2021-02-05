@@ -220,7 +220,7 @@ class _ArchSchedule:
                                 prop = args[0].upper()
                             fval = args[1].upper()
                             if prop == "TYPE":
-                                prop == "IFCTYPE"
+                                prop = "IFCTYPE"
                             if inv:
                                 if prop in props:
                                     csprop = o.PropertiesList[props.index(prop)]

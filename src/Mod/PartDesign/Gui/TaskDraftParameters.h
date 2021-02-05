@@ -60,7 +60,7 @@ protected:
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
 
 private:
-    Ui_TaskDraftParameters* ui;
+    std::unique_ptr<Ui_TaskDraftParameters> ui;
 };
 
 /// simulation dialog for the TaskView

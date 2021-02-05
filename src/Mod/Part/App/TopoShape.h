@@ -110,11 +110,11 @@ public:
     /// set the transformation of the CasCade Shape
     void setTransform(const Base::Matrix4D& rclTrf);
     /// set the transformation of the CasCade Shape
-    void setPlacement(const Base::Placement& rclTrf);
+    void setShapePlacement(const Base::Placement& rclTrf);
+    /// get the transformation of the CasCade Shape
+    Base::Placement getShapePlacement(void) const;
     /// get the transformation of the CasCade Shape
     Base::Matrix4D getTransform(void) const;
-    /// get the transformation of the CasCade Shape
-    Base::Placement getPlacemet(void) const;
     /// Bound box from the CasCade shape
     Base::BoundBox3d getBoundBox(void)const;
     virtual bool getCenterOfGravity(Base::Vector3d& center) const;

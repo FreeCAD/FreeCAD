@@ -22,6 +22,7 @@
 
 import FreeCAD
 import FreeCADGui
+import PathGui as PGui # ensure Path/Gui/Resources are loaded
 import PathScripts.PathProbe as PathProbe
 import PathScripts.PathOpGui as PathOpGui
 import PathScripts.PathGui as PathGui

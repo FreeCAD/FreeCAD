@@ -704,7 +704,10 @@ Base::Matrix4D TopoShape::getTransform(void) const
     return mtrx;
 }
 
-void TopoShape::setPlacement(const Base::Placement& rclTrf)
+/*!
+ * \obsolete
+ */
+void TopoShape::setShapePlacement(const Base::Placement& rclTrf)
 {
     const Base::Vector3d& pos = rclTrf.getPosition();
     Base::Vector3d axis;
@@ -718,7 +721,10 @@ void TopoShape::setPlacement(const Base::Placement& rclTrf)
     _Shape.Location(loc);
 }
 
-Base::Placement TopoShape::getPlacemet(void) const
+/*!
+ * \obsolete
+ */
+Base::Placement TopoShape::getShapePlacement(void) const
 {
     TopLoc_Location loc = _Shape.Location();
     gp_Trsf trsf = loc.Transformation();
@@ -2431,7 +2437,7 @@ TopoDS_Shape TopoShape::makeLongHelix(Standard_Real pitch, Standard_Real height,
     Handle(Geom_Surface) surf;
     Standard_Boolean isCylinder;
 
-    if (angle < Precision::Confusion()) {                                      // Cylindrical helix
+    if (std::fabs(angle) < Precision::Confusion()) {                           // Cylindrical helix
         if (radius < Precision::Confusion())
             Standard_Failure::Raise("Radius of helix too small");
         surf= new Geom_CylindricalSurface(cylAx2, radius);
@@ -2439,8 +2445,6 @@ TopoDS_Shape TopoShape::makeLongHelix(Standard_Real pitch, Standard_Real height,
     }
     else {                                                                     // Conical helix
         angle = Base::toRadians(angle);
-        if (angle < Precision::Confusion())
-            Standard_Failure::Raise("Angle of helix too small");
         surf = new Geom_ConicalSurface(gp_Ax3(cylAx2), angle, radius);
         isCylinder = false;
     }

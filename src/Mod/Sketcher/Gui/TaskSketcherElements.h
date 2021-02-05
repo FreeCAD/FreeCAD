@@ -139,7 +139,7 @@ protected:
 
 private:
     QWidget* proxy;
-    Ui_TaskSketcherElements* ui;
+    std::unique_ptr<Ui_TaskSketcherElements> ui;
     int focusItemIndex;
     int previouslySelectedItemIndex;
 

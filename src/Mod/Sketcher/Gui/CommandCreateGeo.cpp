@@ -5016,7 +5016,6 @@ bool CmdSketcherCreateDraftLine::isActive(void)
     return false;
 }
 
-
 // ======================================================================================
 
 namespace SketcherGui {
@@ -5064,11 +5063,17 @@ namespace SketcherGui {
 class DrawSketchHandlerFillet: public DrawSketchHandler
 {
 public:
-    DrawSketchHandlerFillet() : Mode(STATUS_SEEK_First), firstCurve(0) {}
+    enum FilletType {
+        SimpleFillet,
+        ConstraintPreservingFillet
+    };
+
+    DrawSketchHandlerFillet(FilletType filletType) : filletType(filletType), Mode(STATUS_SEEK_First), firstCurve(0) {}
     virtual ~DrawSketchHandlerFillet()
     {
         Gui::Selection().rmvSelectionGate();
     }
+
     enum SelectMode{
         STATUS_SEEK_First,
         STATUS_SEEK_Second
@@ -5135,8 +5140,10 @@ public:
                 int currentgeoid= getHighestCurveIndex();
                 // create fillet at point
                 try {
+                    bool pointFillet = (filletType == 1);
                     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create fillet"));
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "fillet(%d,%d,%f)", GeoId, PosId, radius);
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "fillet(%d,%d,%f,%s,%s)", GeoId, PosId, radius, "True",
+                        pointFillet ? "True":"False");
 
                     if (construction) {
                         Gui::cmdAppObjectArgs(sketchgui->getObject(), "toggleConstruction(%d) ", currentgeoid+1);
@@ -5211,11 +5218,13 @@ public:
 
                     // create fillet between lines
                     try {
+                        bool pointFillet = (filletType == 1);
                         Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create fillet"));
-                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "fillet(%d,%d,App.Vector(%f,%f,0),App.Vector(%f,%f,0),%f)",
+                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "fillet(%d,%d,App.Vector(%f,%f,0),App.Vector(%f,%f,0),%f,%s,%s)",
                                   firstCurve, secondCurve,
                                   firstPos.x, firstPos.y,
-                                  secondPos.x, secondPos.y, radius);
+                                  secondPos.x, secondPos.y, radius,
+                                  "True", pointFillet ? "True":"False");
                         Gui::Command::commitCommand();
                     }
                     catch (const Base::CADKernelError& e) {
@@ -5256,6 +5265,7 @@ public:
     }
 
 protected:
+    int filletType;
     SelectMode Mode;
     int firstCurve;
     Base::Vector2d firstPos;
@@ -5280,7 +5290,7 @@ CmdSketcherCreateFillet::CmdSketcherCreateFillet()
 void CmdSketcherCreateFillet::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFillet());
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFillet(DrawSketchHandlerFillet::SimpleFillet));
 }
 
 bool CmdSketcherCreateFillet::isActive(void)
@@ -5288,6 +5298,135 @@ bool CmdSketcherCreateFillet::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
+// ======================================================================================
+
+DEF_STD_CMD_A(CmdSketcherCreatePointFillet)
+
+CmdSketcherCreatePointFillet::CmdSketcherCreatePointFillet()
+  : Command("Sketcher_CreatePointFillet")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Create corner-preserving fillet");
+    sToolTipText    = QT_TR_NOOP("Fillet that preserves intersection point and most constraints");
+    sWhatsThis      = "Sketcher_CreatePointFillet";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_CreateFillet";
+    sAccel          = "";
+    eType           = ForEdit;
+}
+
+void CmdSketcherCreatePointFillet::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFillet(DrawSketchHandlerFillet::ConstraintPreservingFillet));
+}
+
+bool CmdSketcherCreatePointFillet::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
+
+/// @brief Macro that declares a new sketcher command class 'CmdSketcherCompCreateFillets'
+DEF_STD_CMD_ACLU(CmdSketcherCompCreateFillets)
+
+/**
+ * @brief ctor
+ */
+CmdSketcherCompCreateFillets::CmdSketcherCompCreateFillets()
+  : Command("Sketcher_CompCreateFillets")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Fillets");
+    sToolTipText    = QT_TR_NOOP("Create a fillet between two lines");
+    sWhatsThis      = "Sketcher_CompCreateFillets";
+    sStatusTip      = sToolTipText;
+    eType           = ForEdit;
+}
+
+/**
+ * @brief Instantiates the fillet handler when the fillet command activated
+ * @param int iMsg
+ */
+void CmdSketcherCompCreateFillets::activated(int iMsg)
+{
+    if (iMsg == 0) {
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFillet(DrawSketchHandlerFillet::SimpleFillet));
+    } else if (iMsg == 1) {
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFillet(DrawSketchHandlerFillet::ConstraintPreservingFillet));
+    } else {
+        return;
+    }
+
+    // Since the default icon is reset when enabling/disabling the command we have
+    // to explicitly set the icon of the used command.
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    assert(iMsg < a.size());
+    pcAction->setIcon(a[iMsg]->icon());
+}
+
+Gui::Action * CmdSketcherCompCreateFillets::createAction(void)
+{
+    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    pcAction->setDropDownMenu(true);
+    applyCommandData(this->className(), pcAction);
+
+    QAction* oldFillet = pcAction->addAction(QString());
+    oldFillet->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateFillet"));
+
+    QAction* pointFillet = pcAction->addAction(QString());
+    pointFillet->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreatePointFillet"));
+
+    _pcAction = pcAction;
+    languageChange();
+
+    pcAction->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateFillet"));
+    int defaultId = 0;
+    pcAction->setProperty("defaultAction", QVariant(defaultId));
+
+    return pcAction;
+}
+
+void CmdSketcherCompCreateFillets::updateAction(int mode)
+{
+    Q_UNUSED(mode);
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
+    if (!pcAction)
+        return;
+
+    QList<QAction*> a = pcAction->actions();
+    int index = pcAction->property("defaultAction").toInt();
+    a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateFillet"));
+    a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreatePointFillet"));
+    getAction()->setIcon(a[index]->icon());
+}
+
+void CmdSketcherCompCreateFillets::languageChange()
+{
+    Command::languageChange();
+
+    if (!_pcAction)
+        return;
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    QAction* oldFillet = a[0];
+    oldFillet->setText(QApplication::translate("CmdSketcherCompCreateFillets","Sketch fillet"));
+    oldFillet->setToolTip(QApplication::translate("Sketcher_CreateFillet","Creates a radius between two lines"));
+    oldFillet->setStatusTip(QApplication::translate("Sketcher_CreateFillet","Creates a radius between two lines"));
+    QAction* pointFillet = a[1];
+    pointFillet->setText(QApplication::translate("CmdSketcherCompCreateFillets","Constraint-preserving sketch fillet"));
+    pointFillet->setToolTip(QApplication::translate("Sketcher_CreatePointFillet","Fillet that preserves constraints and intersection point"));
+    pointFillet->setStatusTip(QApplication::translate("Sketcher_CreatePointFillet","Fillet that preserves constraints and intersection point"));
+}
+
+bool CmdSketcherCompCreateFillets::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
 
 // ======================================================================================
 
@@ -6874,7 +7013,9 @@ void CreateSketcherCommandsCreateGeo(void)
     rcCmdMgr.addCommand(new CmdSketcherCreateOctagon());
     rcCmdMgr.addCommand(new CmdSketcherCreateRegularPolygon());
     rcCmdMgr.addCommand(new CmdSketcherCreateSlot());
+    rcCmdMgr.addCommand(new CmdSketcherCompCreateFillets());
     rcCmdMgr.addCommand(new CmdSketcherCreateFillet());
+    rcCmdMgr.addCommand(new CmdSketcherCreatePointFillet());
     //rcCmdMgr.addCommand(new CmdSketcherCreateText());
     //rcCmdMgr.addCommand(new CmdSketcherCreateDraftLine());
     rcCmdMgr.addCommand(new CmdSketcherTrimming());

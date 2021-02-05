@@ -48,7 +48,7 @@ class Proxy(object):
 
     def __init__(self, obj):
         obj.Proxy = self
-        obj.addExtension("App::GroupExtensionPython", self)
+        obj.addExtension("App::GroupExtensionPython")
 
     def createMachine(self, obj, directory, testmode):
         raise NotImplementedError()
@@ -78,7 +78,7 @@ class ViewProxy(object):
 
     def __init__(self, vobj):
         vobj.Proxy = self
-        vobj.addExtension("Gui::ViewProviderGroupExtensionPython", self)
+        vobj.addExtension("Gui::ViewProviderGroupExtensionPython")
 
     def setEdit(self, vobj, mode=0):
         try:

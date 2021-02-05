@@ -45,7 +45,7 @@ protected:
     void changeEvent(QEvent *e);
 
 private:
-    Ui_DlgSettingsGeneral* ui;
+    std::unique_ptr<Ui_DlgSettingsGeneral> ui;
 };
 
 class Ui_DlgImportExportIges;
@@ -63,7 +63,7 @@ protected:
     void changeEvent(QEvent *e);
 
 private:
-    Ui_DlgImportExportIges* ui;
+    std::unique_ptr<Ui_DlgImportExportIges> ui;
     QButtonGroup* bg;
 };
 
@@ -82,7 +82,7 @@ protected:
     void changeEvent(QEvent *e);
 
 private:
-    Ui_DlgImportExportStep* ui;
+    std::unique_ptr<Ui_DlgImportExportStep> ui;
 };
 
 } // namespace Gui

@@ -67,8 +67,7 @@ class CommandPathSimpleCopy:
 
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.addModule("PathScripts.PathCustom")
-        FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","' + selection[0].Name + '_SimpleCopy")')
-        FreeCADGui.doCommand('PathScripts.PathCustom.ObjectCustom(obj)')
+        FreeCADGui.doCommand('obj = PathScripts.PathCustom.Create("' + selection[0].Name + '_SimpleCopy")')
         FreeCADGui.doCommand('obj.ViewObject.Proxy = 0')
         FreeCADGui.doCommand('obj.Gcode = [c.toGCode() for c in srcpath.Commands]')
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')

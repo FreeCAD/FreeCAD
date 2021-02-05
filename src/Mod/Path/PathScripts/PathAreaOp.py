@@ -231,8 +231,6 @@ class ObjectOp(PathOp.ObjectOp):
         area.add(baseobject)
 
         areaParams = self.areaOpAreaParams(obj, isHole) # pylint: disable=assignment-from-no-return
-        if hasattr(obj, 'ExpandProfile') and obj.ExpandProfile != 0:
-            areaParams = self.areaOpAreaParamsExpandProfile(obj, isHole) # pylint: disable=assignment-from-no-return
 
         heights = [i for i in self.depthparams]
         PathLog.debug('depths: {}'.format(heights))
