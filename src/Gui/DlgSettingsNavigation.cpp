@@ -88,6 +88,7 @@ void DlgSettingsNavigation::saveSettings()
     index = ui->comboRotationMode->currentIndex();
     hGrp->SetInt("RotationMode", index);
 
+    ViewParams::setNaviWidgetSize(ui->naviCubeSize->value());
     ViewParams::setGestureLongPressRotationCenter(ui->checkBoxRotationCenter->isChecked());
     ui->checkBoxZoomAtCursor->onSave();
     ui->checkBoxInvertZoom->onSave();
@@ -113,6 +114,7 @@ void DlgSettingsNavigation::saveSettings()
 
 void DlgSettingsNavigation::loadSettings()
 {
+    ui->naviCubeSize->setValue(ViewParams::getNaviWidgetSize());
     ui->checkBoxRotationCenter->setChecked(ViewParams::getGestureLongPressRotationCenter());
     ui->checkBoxZoomAtCursor->onRestore();
     ui->checkBoxInvertZoom->onRestore();
