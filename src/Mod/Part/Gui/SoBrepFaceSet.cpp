@@ -1683,7 +1683,7 @@ void SoBrepFaceSet::renderHighlight(SoGLRenderAction *action, SelContextPtr ctx)
             return;
     }
 
-    _renderSelection(action, color, true);
+    _renderSelection(action, color, action->isRenderingDelayedPaths() ? 2 : 1);
 }
 
 void SoBrepFaceSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx, bool push)
@@ -1721,16 +1721,26 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx,
     } else
         push = false;
 
-    _renderSelection(action, color, push);
+    _renderSelection(action, color, push ? 1 : 0);
 }
 
-void SoBrepFaceSet::_renderSelection(SoGLRenderAction *action, SbColor color, bool push)
+void SoBrepFaceSet::_renderSelection(SoGLRenderAction *action, SbColor color, int push)
 {
     bool resetMatIndices = false;
     SoState * state = action->getState();
 
+    Gui::FCDepthFunc guard;
     if(push) {
         state->push();
+
+        if (push > 1) {
+            guard.set(GL_ALWAYS);
+            highlightTransparency = Gui::ViewParams::getSelectionTransparency();
+            SoLazyElement::setTransparency(state,this,1,&highlightTransparency,&packer);
+            SoOverrideElement::setTransparencyOverride(state, this, true);
+            SoLazyElement::setTwosideLighting(state, TRUE);
+            action->handleTransparency(true);
+        }
 
         auto mb = SoMaterialBindingElement::get(state);
         if(RenderIndices.empty())
