@@ -34,6 +34,11 @@ import math
 import area
 from pivy import coin
 
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+Part = LazyLoader('Part', globals(), 'Part')
+TechDraw = LazyLoader('TechDraw', globals(), 'TechDraw')
+
 __doc__ = "Class and implementation of the Adaptive path operation."
 
 def convertTo2d(pathArray):
