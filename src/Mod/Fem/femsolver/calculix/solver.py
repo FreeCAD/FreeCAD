@@ -41,7 +41,7 @@ from femtools import femutils
 if FreeCAD.GuiUp:
     import FemGui
 
-ANALYSIS_TYPES = ["static", "frequency", "thermomech", "check"]
+ANALYSIS_TYPES = ["static", "frequency", "thermomech", "check", "buckling"]
 
 
 def create(doc, name="SolverCalculiX"):
@@ -164,6 +164,15 @@ def add_attributes(obj, ccx_prefs):
     )
     niter = ccx_prefs.GetInt("AnalysisMaxIterations", 200)
     obj.IterationsThermoMechMaximum = niter
+
+    obj.addProperty(
+        "App::PropertyIntegerConstraint",
+        "BucklingFactors",
+        "Fem",
+        "Calculates the lowest buckling modes to the corresponding buckling factors"
+    )
+    bckl = ccx_prefs.GetInt("BucklingFactors", 1)
+    obj.BucklingFactors = bckl
 
     obj.addProperty(
         "App::PropertyFloatConstraint",
