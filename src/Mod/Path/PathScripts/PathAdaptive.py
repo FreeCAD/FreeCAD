@@ -603,6 +603,11 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.addProperty("App::PropertyAngle", "HelixConeAngle", "Adaptive",  "Helix cone angle (degrees)")
         obj.addProperty("App::PropertyLength", "HelixDiameterLimit", "Adaptive", "Limit helix entry diameter, if limit larger than tool diameter or 0, tool diameter is used")
 
+        if not hasattr(obj, "UseOutline"):
+            obj.addProperty("App::PropertyBool",
+                            "UseOutline",
+                            "Adaptive",
+                            "Uses the outline of the base geometry.")
 
     def opSetDefaultValues(self, obj, job):
         obj.Side="Inside"
@@ -623,6 +628,7 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.StockToLeave = 0
         obj.KeepToolDownRatio = 3.0
         obj.UseHelixArcs = False
+        obj.UseOutline = False
 
     def opExecute(self, obj):
         '''opExecute(obj) ... called whenever the receiver needs to be recalculated.
