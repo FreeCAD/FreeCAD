@@ -97,6 +97,7 @@
 
 FC_LOG_LEVEL_INIT("SoBrepFaceSet",true,true);
 
+using namespace Gui;
 using namespace PartGui;
 
 SO_NODE_SOURCE(SoBrepFaceSet)
@@ -628,7 +629,11 @@ void SoBrepFaceSet::glRender(SoGLRenderAction *action, bool inpath)
 
         if (!action->isRenderingDelayedPaths()
                 && ctx && (ctx->isSelected() || ctx->isHighlighted())) {
-            action->addDelayedPath(action->getCurPath()->copy());
+            if (action->isOfType(SoBoxSelectionRenderAction::getClassTypeId()))
+                static_cast<SoBoxSelectionRenderAction*>(action)->addLateDelayedPath(
+                        action->getCurPath(), true);
+            else
+                action->addDelayedPath(action->getCurPath()->copy());
             if (isHighlightAll(ctx) || isSelectAll(ctx))
                 return;
         }

@@ -183,7 +183,8 @@ void ViewProviderOriginFeature::attach(App::DocumentObject* pcObject)
     highlight->addChild ( pOriginFeatureRoot );
 
     // Hidden features
-    auto *hidden = new SoAnnotation;
+    auto *hidden = new SoFCPathAnnotation;
+    hidden->priority = -1;
     hidden->renderCaching = SoSeparator::OFF;
 
     // Style for hidden lines

@@ -65,8 +65,10 @@ ViewProviderAddSub::ViewProviderAddSub()
     ADD_PROPERTY(AddSubColor,((long)0));
 
     previewTransform = new SoTransform;
-    previewGroup = new SoAnnotation;
-    previewGroup->addChild(previewTransform);
+    auto group = new Gui::SoFCPathAnnotation;
+    group->priority = -2;
+    group->addChild(previewTransform);
+    previewGroup = group;
 }
 
 ViewProviderAddSub::~ViewProviderAddSub()

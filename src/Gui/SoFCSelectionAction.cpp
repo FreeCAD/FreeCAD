@@ -997,8 +997,16 @@ public:
       , drawstyle(0)
       , root(0)
     {
-
+        dummypath = new SoPath;
+        dummypath->ref();
     }
+
+    ~SoBoxSelectionRenderActionP()
+    {
+        dummypath->unref();
+    }
+
+    void apply(SoBoxSelectionRenderAction *action, const SoPathList &plist, SbBool obeysrules);
 
     SoBoxSelectionRenderAction * master;
     SoSearchAction * searchaction;
@@ -1014,6 +1022,10 @@ public:
     SoDrawStyle * drawstyle;
     SoColorPacker colorpacker;
     SoNode *root;
+    std::map<int, SoPathList> latedelayedpaths;
+    unsigned delayedpathcount = 0;
+    int currentdelayedpath = 0;
+    SoPath *dummypath;
 
     void initBoxGraph();
     void updateBbox(const SoPath * path);
@@ -1300,17 +1312,18 @@ SoBoxSelectionRenderAction::checkRootNode(SoNode *node)
 }
 
 void
-SoBoxSelectionRenderAction::apply(const SoPathList & pathlist,
-                                  SbBool obeysrules)
+SoBoxSelectionRenderActionP::apply(SoBoxSelectionRenderAction *action, 
+                                   const SoPathList &pathlist,
+                                   SbBool obeysrules)
 {
     // For working around Coin3D bug when rendering SoShadowGroup. If there is
     // any SoAnnoation inside the shadow group, the delayed path is some how
     // messed up. More sepecifically, the head of the path is the child node of
     // the shadow group, instead of the root scene node.
-    if(obeysrules && PRIVATE(this)->root && pathlist.getLength()) {
+    if(obeysrules && this->root && pathlist.getLength()) {
         int count = 0;
         for(int i=0, c=pathlist.getLength(); i<c ;++i) {
-            if(((SoFullPath*)pathlist[i])->getHead() == PRIVATE(this)->root)
+            if(((SoFullPath*)pathlist[i])->getHead() == this->root)
                 ++count;
         }
         if(count != pathlist.getLength()) {
@@ -1318,14 +1331,32 @@ SoBoxSelectionRenderAction::apply(const SoPathList & pathlist,
                 return;
             SoPathList plist(count);
             for(int i=0, c=pathlist.getLength(); i<c ;++i) {
-                if(((SoFullPath*)pathlist[i])->getHead() == PRIVATE(this)->root)
+                if(((SoFullPath*)pathlist[i])->getHead() == this->root)
                     plist.append(pathlist[i]);
             }
-            SoGLRenderAction::apply(plist, TRUE);
+            action->SoGLRenderAction::apply(plist, TRUE);
             return;
         }
     }
-    SoGLRenderAction::apply(pathlist, obeysrules);
+    action->SoGLRenderAction::apply(pathlist, obeysrules);
+}
+
+void
+SoBoxSelectionRenderAction::apply(const SoPathList & pathlist,
+                                  SbBool obeysrules)
+{
+    PRIVATE(this)->apply(this, pathlist, obeysrules);
+    if (isRenderingDelayedPaths() && PRIVATE(this)->delayedpathcount) {
+        for (auto &v : PRIVATE(this)->latedelayedpaths) {
+            PRIVATE(this)->currentdelayedpath = v.first;
+            if (v.second.getLength()) {
+                PRIVATE(this)->apply(this, v.second, obeysrules);
+                v.second.truncate(0);
+            }
+        }
+        PRIVATE(this)->currentdelayedpath = 0;
+        PRIVATE(this)->delayedpathcount = 0;
+    }
 }
 
 void
@@ -1414,6 +1445,24 @@ SoBoxSelectionRenderAction::drawBoxes(SoPath * pathtothis, const SoPathList * pa
     thestate->pop();
 }
 
+bool SoBoxSelectionRenderAction::addLateDelayedPath(const SoPath *path, bool copy, int priority)
+{
+    int current = PRIVATE(this)->currentdelayedpath;
+    if (current && priority <= current)
+        return false;
+    SoState * thestate = this->getState();
+    SoCacheElement::invalidate(thestate);
+    if (PRIVATE(this)->delayedpathcount++ == 0 && !isRenderingDelayedPaths()) {
+        // add a dummy delayed path to make sure SoGLRenderAction calls our apply(SoPathList)
+        this->addDelayedPath(PRIVATE(this)->dummypath);
+    }
+    auto &pathlist = PRIVATE(this)->latedelayedpaths[priority];
+    if (copy)
+        pathlist.append(path->copy());
+    else
+        pathlist.append(const_cast<SoPath*>(path));
+    return true;
+}
 
 #undef PRIVATE
 #undef PUBLIC

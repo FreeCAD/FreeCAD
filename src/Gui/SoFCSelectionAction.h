@@ -341,6 +341,9 @@ public:
 
     void checkRootNode(SoNode *);
 
+    bool addLateDelayedPath(const SoPath *path, bool copy, int priority=1);
+    int currentLateDelayedPath() const;
+
 protected:
     SbBool hlVisible;
 

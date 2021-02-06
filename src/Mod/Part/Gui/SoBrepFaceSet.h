@@ -150,7 +150,7 @@ private:
 
     void renderHighlight(SoGLRenderAction *action, SelContextPtr);
     void renderSelection(SoGLRenderAction *action, SelContextPtr, bool push=true);
-    void _renderSelection(SoGLRenderAction *action, SbColor color, bool push);
+    void _renderSelection(SoGLRenderAction *action, SbColor color, int push);
 
     int overrideMaterialBinding(SoGLRenderAction *action,
             int selected, SelContextPtr ctx, SelContextPtr ctx2);
@@ -176,6 +176,7 @@ private:
     uint32_t packedColor;
 
     float overrideTransparency;
+    float highlightTransparency;
     SbColor hiddenLineColor;
     SoColorPacker packer;
 

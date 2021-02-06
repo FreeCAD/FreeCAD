@@ -3019,6 +3019,8 @@ SoFCPathAnnotation::SoFCPathAnnotation(ViewProvider *vp, const char *sub, View3D
     :viewProvider(vp), subname(sub?sub:""), viewer(viewer)
 {
     SO_NODE_CONSTRUCTOR(SoFCPathAnnotation);
+    SO_NODE_ADD_FIELD(priority, (0));
+
     path = 0;
     det = false;
     this->renderCaching = SoSeparator::OFF;
@@ -3057,7 +3059,26 @@ void SoFCPathAnnotation::GLRender(SoGLRenderAction * action)
 
 void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction * action)
 {
-    if(!path || !path->getLength() || !tmpPath.getLength())
+    if (!path) {
+        if (action->isRenderingDelayedPaths()) {
+            SbBool zbenabled = glIsEnabled(GL_DEPTH_TEST);
+            if (zbenabled) glDisable(GL_DEPTH_TEST);
+            inherited::GLRenderBelowPath(action);
+            if (zbenabled) glEnable(GL_DEPTH_TEST);
+        }
+        else {
+            SoCacheElement::invalidate(action->getState());
+            auto p =this->priority.getValue();
+            if (p && action->isOfType(SoBoxSelectionRenderAction::getClassTypeId()))
+                static_cast<SoBoxSelectionRenderAction*>(action)->addLateDelayedPath(
+                        action->getCurPath(), true, p);
+            else
+                action->addDelayedPath(action->getCurPath()->copy());
+        }
+        return;
+    }
+
+    if(!path->getLength() || !tmpPath.getLength())
         return;
 
     if(path->getLength() != tmpPath.getLength()) {
@@ -3168,13 +3189,35 @@ void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction * action)
         SoPath *newPath = new SoPath(curPath->getLength()+path->getLength());
         newPath->append(curPath);
         newPath->append(path);
-        action->addDelayedPath(newPath);
+        auto p =this->priority.getValue();
+        if (p && action->isOfType(SoBoxSelectionRenderAction::getClassTypeId()))
+            static_cast<SoBoxSelectionRenderAction*>(action)->addLateDelayedPath(newPath,false,p);
+        else
+            action->addDelayedPath(newPath);
     }
 }
 
 void SoFCPathAnnotation::GLRenderInPath(SoGLRenderAction * action)
 {
-    GLRenderBelowPath(action);
+    if(path) {
+        GLRenderBelowPath(action);
+        return;
+    }
+    if (action->isRenderingDelayedPaths()) {
+        SbBool zbenabled = glIsEnabled(GL_DEPTH_TEST);
+        if (zbenabled) glDisable(GL_DEPTH_TEST);
+        inherited::GLRenderInPath(action);
+        if (zbenabled) glEnable(GL_DEPTH_TEST);
+    }
+    else {
+        SoCacheElement::invalidate(action->getState());
+        auto p =this->priority.getValue();
+        if (p && action->isOfType(SoBoxSelectionRenderAction::getClassTypeId()))
+            static_cast<SoBoxSelectionRenderAction*>(action)->addLateDelayedPath(
+                    action->getCurPath(), true, p);
+        else
+            action->addDelayedPath(action->getCurPath()->copy());
+    }
 }
 
 void SoFCPathAnnotation::setDetail(bool d) {
@@ -3229,7 +3272,8 @@ void SoFCPathAnnotation::getBoundingBox(SoGetBoundingBoxAction * action)
         if(!bbox.isEmpty())
             action->extendBy(bbox);
         _SwitchStack.pop_back();
-    }
+    } else
+        inherited::getBoundingBox(action);
 }
 
 void SoFCPathAnnotation::doPick(SoPath *curPath, SoRayPickAction *action) {
@@ -3243,6 +3287,7 @@ void SoFCPathAnnotation::doPick(SoPath *curPath, SoRayPickAction *action) {
         _SwitchStack.pop_back();
     }
 }
+
 void SoFCPathAnnotation::doAction(SoAction *action) {
     if(path)
         _SwitchStack.emplace_back(path);

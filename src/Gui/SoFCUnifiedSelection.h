@@ -228,6 +228,8 @@ class GuiExport SoFCPathAnnotation : public SoSeparator {
 
     SO_NODE_HEADER(Gui::SoFCPathAnnotation);
 public:
+    SoSFInt32 priority;
+
     static void initClass(void);
     static void finish(void);
     SoFCPathAnnotation(ViewProvider *vp=0, const char *subname=0, View3DInventorViewer *viewer=0);

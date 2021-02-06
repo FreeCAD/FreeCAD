@@ -72,6 +72,7 @@
 #include <Gui/SoFCSelectionAction.h>
 #include <Gui/ViewParams.h>
 
+using namespace Gui;
 using namespace PartGui;
 
 SO_NODE_SOURCE(SoBrepEdgeSet)
@@ -173,9 +174,11 @@ void SoBrepEdgeSet::glRender(SoGLRenderAction *action, bool inpath)
     if(!inpath && !delayrendering) {
         if (ctx && ((!Gui::ViewParams::getShowSelectionOnTop() && ctx->isSelected())
                     || ctx->isHighlighted())) {
-            action->addDelayedPath(action->getCurPath()->copy());
-            if (ctx->isHighlightAll() || ctx->isSelectAll())
+            if (ctx->isHighlightAll() || ctx->isSelectAll()) {
+                action->addDelayedPath(action->getCurPath()->copy());
                 return;
+            } else if (!action->isOfType(SoBoxSelectionRenderAction::getClassTypeId()))
+                action->addDelayedPath(action->getCurPath()->copy());
         }
         depthGuard.set(GL_LEQUAL);
     } else if (inpath && delayrendering)
@@ -417,6 +420,12 @@ void SoBrepEdgeSet::renderHighlight(SoGLRenderAction *action, SelContextPtr ctx)
     if(!ctx || !ctx->isHighlighted())
         return;
 
+    if (!ctx->isHighlightAll()
+            && action->isOfType(SoBoxSelectionRenderAction::getClassTypeId())
+            && static_cast<SoBoxSelectionRenderAction*>(
+                action)->addLateDelayedPath(action->getCurPath(), true))
+        return;
+
     Gui::FCDepthFunc depthGuard;
     if (action->isRenderingDelayedPaths())
         depthGuard.set(GL_ALWAYS);
@@ -444,6 +453,17 @@ void SoBrepEdgeSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx,
 {
     if(!ctx || !ctx->isSelected())
         return;
+
+    if (!ctx->isSelectAll()
+            && action->isOfType(SoBoxSelectionRenderAction::getClassTypeId())
+            && static_cast<SoBoxSelectionRenderAction*>(
+                action)->addLateDelayedPath(action->getCurPath(), true))
+        return;
+
+    Gui::FCDepthFunc depthGuard;
+    if (action->isRenderingDelayedPaths())
+        depthGuard.set(GL_ALWAYS);
+
     bool checkColor = true;
     SbColor color = ctx->selectionColor;
     RenderIndices.clear();

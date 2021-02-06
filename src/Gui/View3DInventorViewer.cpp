@@ -709,10 +709,9 @@ void View3DInventorViewer::init()
     pcEditingTransform->setName("EditingTransform");
     restoreEditingRoot = false;
     pcEditingRoot->addChild(pcEditingTransform);
-    // pcViewProviderRoot->addChild(pcEditingRoot);
-    static_cast<SoGroup*>(sceneNode)->addChild(pcEditingRoot);
 
     static_cast<SoGroup*>(sceneNode)->addChild(pcGroupOnTop);
+    static_cast<SoGroup*>(sceneNode)->addChild(pcEditingRoot);
 
     pcGroupOnTopPath = path->copy();
     pcGroupOnTopPath->ref();
@@ -1128,7 +1127,7 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason, bool 
         if(Reason.SubType!=2) {
             // 2 means it is triggered from tree view. If not from tree view
             // and not belong to on top object, do not handle it.
-            if(!objectsOnTopSel.count(key))
+            // if(!objectsOnTopSel.count(key))
                 return;
         }
         break;
@@ -1309,6 +1308,7 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason, bool 
         auto &info = objs[key];
         if(!info.node) {
             info.node = new SoFCPathAnnotation(vp,subname,this);
+            info.node->priority.setValue(preselect?1:0);
             info.node->ref();
             info.node->setPath(&path);
             pcGroup->addChild(info.node);
