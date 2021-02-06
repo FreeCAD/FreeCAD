@@ -399,14 +399,9 @@ def Execute(op,obj):
         if obj.Tolerance < 0.001:
             obj.Tolerance = 0.001
 
-        pathArray = []
-        for base, subs in obj.Base:
-            for sub in subs:
-                shape = base.Shape.getElement(sub)
-                for edge in shape.Edges:
-                    pathArray.append([discretize(edge)])
+        # Get list of working edges for adaptive algorithm
+        pathArray = _get_working_edges(op, obj)
 
-        #pathArray=connectEdges(edges)
         path2d = convertTo2d(pathArray)
 
         stockPaths = []
@@ -527,6 +522,35 @@ def Execute(op,obj):
         obj.ViewObject.Visibility = oldObjVisibility
         job.ViewObject.Visibility = oldJobVisibility
         sceneClean()
+
+
+def _get_working_edges(op, obj):
+    """_get_working_edges(op, obj)...
+    Compile all working edges from the Base Geometry selection (obj.Base)
+    for the current operation.
+    Additional modifications to selected region(face), such as extensions,
+    should be placed within this function.
+    """
+    pathArray = list()
+
+    for base, subs in obj.Base:
+        for sub in subs:
+            if obj.UseOutline:
+                face = base.Shape.getElement(sub)
+                zmin = face.BoundBox.ZMin
+                # get face outline with same method in PocketShape
+                wire = TechDraw.findShapeOutline(face, 1, FreeCAD.Vector(0.0, 0.0, 1.0))
+                shape = Part.Face(wire)
+                # translate to face height if necessary
+                if shape.BoundBox.ZMin != zmin:
+                    shape.translate(FreeCAD.Vector(0.0, 0.0, zmin - shape.BoundBox.ZMin))
+            else:
+                shape = base.Shape.getElement(sub)
+
+            for edge in shape.Edges:
+                pathArray.append([discretize(edge)])
+
+    return pathArray
 
 
 class PathAdaptive(PathOp.ObjectOp):
