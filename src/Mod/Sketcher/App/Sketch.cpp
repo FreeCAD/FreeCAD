@@ -3506,7 +3506,30 @@ bool Sketch::updateNonDrivingConstraints()
             }
             else if((*it).constr->Type==Diameter && (*it).constr->First>=0 ) {
 
-                (*it).constr->setValue(2.0**((*it).value));
+                // two cases, the geometry parameter is fixed or it is not
+                // NOTE: This is different from being blocked, as new block constraint may fix
+                // the parameter or not depending on whether other driving constraints are present
+                int geoId = (*it).constr->First;
+
+                geoId = checkGeoId( geoId );
+
+                double * rad = nullptr;
+
+                if (Geoms[geoId].type == Circle) {
+                    GCS::Circle &c = Circles[Geoms[geoId].index];
+                    rad = c.rad;
+                }
+                else if (Geoms[geoId].type == Arc) {
+                    GCS::Arc &a = Arcs[Geoms[geoId].index];
+                    rad = a.rad;
+                }
+
+                auto pos = std::find(FixParameters.begin(), FixParameters.end(), rad);
+
+                if (pos != FixParameters.end())
+                    (*it).constr->setValue(*((*it).value));
+                else
+                    (*it).constr->setValue(2.0**((*it).value));
             }
             else {
                 (*it).constr->setValue(*((*it).value));

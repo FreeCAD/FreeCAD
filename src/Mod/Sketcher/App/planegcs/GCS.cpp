@@ -1035,14 +1035,14 @@ int System::addConstraintArcRadius(Arc &a, double *radius, int tagId, bool drivi
     return addConstraintEqual(a.rad, radius, tagId, driving);
 }
 
-int System::addConstraintCircleDiameter(Circle &c, double *radius, int tagId, bool driving)
+int System::addConstraintCircleDiameter(Circle &c, double *diameter, int tagId, bool driving)
 {
-    return addConstraintProportional(c.rad, radius, 0.5, tagId, driving);
+    return addConstraintProportional(c.rad, diameter, 0.5, tagId, driving);
 }
 
-int System::addConstraintArcDiameter(Arc &a, double *radius, int tagId, bool driving)
+int System::addConstraintArcDiameter(Arc &a, double *diameter, int tagId, bool driving)
 {
-    return addConstraintProportional(a.rad, radius, 0.5, tagId, driving);
+    return addConstraintProportional(a.rad, diameter, 0.5, tagId, driving);
 }
 
 int System::addConstraintEqualLength(Line &l1, Line &l2, int tagId, bool driving)
