@@ -108,7 +108,20 @@ App::DocumentObjectExecReturn *DocumentObject::recompute(void)
 
     // set/unset the execution bit
     Base::ObjectStatusLocker<ObjectStatus, DocumentObject> exe(App::Recompute, this);
-    return this->execute();
+
+    // mark the object to recompute its extensions
+    this->setStatus(App::RecomputeExtension, true);
+
+    auto ret = this->execute();
+    if (ret == StdReturn) {
+        // most feature classes don't call the execute() method of its base class
+        // so execute the extensions now
+        if (this->testStatus(App::RecomputeExtension)) {
+            ret = executeExtensions();
+        }
+    }
+
+    return ret;
 }
 
 DocumentObjectExecReturn *DocumentObject::execute(void)
@@ -119,6 +132,7 @@ DocumentObjectExecReturn *DocumentObject::execute(void)
 App::DocumentObjectExecReturn* DocumentObject::executeExtensions()
 {
     //execute extensions but stop on error
+    this->setStatus(App::RecomputeExtension, false); // reset the flag
     auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
     for(auto ext : vector) {
         auto ret = ext->extensionExecute();
