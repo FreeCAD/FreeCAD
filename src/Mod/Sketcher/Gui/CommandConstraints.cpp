@@ -2977,7 +2977,7 @@ void CmdSketcherConstrainDistanceX::applyConstraint(std::vector<SelIdPair> &selS
         break;
     }
     case 2: // {SelEdge}
-    case 4: // {SelExternalEdge}
+    case 3: // {SelExternalEdge}
     {
         GeoId1 = GeoId2 = selSeq.at(0).GeoId;
         PosId1 = Sketcher::start; PosId2 = Sketcher::end;

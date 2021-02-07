@@ -87,7 +87,7 @@ public:
      *               Default is false.
      */
     Part::Part2DObject* getVerifiedSketch(bool silent=false) const;
-    
+
     /**
      * Verifies the linked Profile and returns it if it is a valid object
      * @param silent if profile property is malformed and the parameter is true
@@ -95,7 +95,7 @@ public:
      *               Default is false.
      */
     Part::Feature* getVerifiedObject(bool silent=false) const;
-    
+
     /**
      * Verifies the linked Object and returns the shape used as profile
      * @param silent if profirle property is malformed and the parameter is true
@@ -117,10 +117,10 @@ public:
     Base::Vector3d getProfileNormal(const TopoShape &profileShape = TopoShape()) const;
 
     /// retrieves the number of axes in the linked sketch (defined as construction lines)
-    int getSketchAxisCount(void) const;    
+    int getSketchAxisCount(void) const;
 
     virtual Part::Feature* getBaseObject(bool silent=false) const;
-    
+
     //backwards compatibility: profile property was renamed and has different type now
     virtual void handleChangedPropertyName(
         Base::XMLReader &reader, const char * TypeName, const char *PropName);
@@ -181,8 +181,8 @@ protected:
     double getReversedAngle(const Base::Vector3d& b, const Base::Vector3d& v);
     /// get Axis from ReferenceAxis
     void getAxis(const App::DocumentObject* pcReferenceAxis, const std::vector<std::string>& subReferenceAxis,
-                 Base::Vector3d& base, Base::Vector3d& dir);
-        
+                 Base::Vector3d& base, Base::Vector3d& dir, bool checkPerpendicular=true);
+
     void onChanged(const App::Property* prop);
 private:
     bool isParallelPlane(const TopoDS_Shape&, const TopoDS_Shape&) const;

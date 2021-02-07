@@ -171,6 +171,7 @@ public:
 private:
     void copyMeshData(const FemMesh&);
     void readNastran(const std::string &Filename);
+    void readNastran95(const std::string &Filename);
     void readZ88(const std::string &Filename);
     void readAbaqus(const std::string &Filename);
     void save(std::ostream &) const;

@@ -70,7 +70,7 @@ protected:
     void saveHistory();
 
     void initUI(QWidget *);
-    void refresh();
+    void _refresh();
 
 protected Q_SLOTS:
     void onFitChanged(double);

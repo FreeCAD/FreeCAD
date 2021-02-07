@@ -52,10 +52,10 @@ using namespace Gui;
 
 TaskThicknessParameters::TaskThicknessParameters(ViewProviderDressUp *DressUpView,QWidget *parent)
     : TaskDressUpParameters(DressUpView, false, true, parent)
+    , ui(new Ui_TaskThicknessParameters)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskThicknessParameters();
     ui->setupUi(proxy);
     this->groupLayout()->addWidget(proxy);
 
@@ -203,7 +203,6 @@ int TaskThicknessParameters::getMode(void) const {
 TaskThicknessParameters::~TaskThicknessParameters()
 {
     Gui::Selection().rmvSelectionGate();
-    delete ui;
 }
 
 void TaskThicknessParameters::changeEvent(QEvent *e)

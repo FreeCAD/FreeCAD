@@ -87,7 +87,7 @@ private:
 
 private:
     QWidget* proxy;
-    Ui_TaskPocketParameters* ui;
+    std::unique_ptr<Ui_TaskPocketParameters> ui;
     double oldLength;
 };
 

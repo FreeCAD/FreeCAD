@@ -50,7 +50,7 @@ protected:
     virtual void refresh();
 
 private:
-    Ui_TaskFilletParameters* ui;
+    std::unique_ptr<Ui_TaskFilletParameters> ui;
 };
 
 /// simulation dialog for the TaskView

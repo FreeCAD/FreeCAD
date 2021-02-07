@@ -98,6 +98,11 @@ const char* DrawViewDimension::MeasureTypeEnums[]= {"True",
                                                     "Projected",
                                                     NULL};
 
+// constraint to set the step size to 0.1
+static const App::PropertyQuantityConstraint::Constraints ToleranceConstraint = { -DBL_MAX, DBL_MAX, 0.1 };
+// constraint to force positive values
+static const App::PropertyQuantityConstraint::Constraints PositiveConstraint = { 0.0, DBL_MAX, 0.1 };
+
 DrawViewDimension::DrawViewDimension(void)
 {
     ADD_PROPERTY_TYPE(References2D, (0,0), "", (App::Prop_None), "Projected Geometry References");
@@ -105,8 +110,9 @@ DrawViewDimension::DrawViewDimension(void)
     ADD_PROPERTY_TYPE(References3D, (0,0), "", (App::Prop_None), "3D Geometry References");
     References3D.setScope(App::LinkScope::Global);
 
-    ADD_PROPERTY_TYPE(FormatSpec, (getDefaultFormatSpec()), "Format", App::Prop_Output,"Dimension Format");
-    ADD_PROPERTY_TYPE(FormatSpecTolerance, (getDefaultFormatSpec(true)), "Format", App::Prop_Output, "Dimension tolerance format");
+    ADD_PROPERTY_TYPE(FormatSpec, (getDefaultFormatSpec()), "Format", App::Prop_Output,"Dimension format");
+    ADD_PROPERTY_TYPE(FormatSpecOverTolerance, (getDefaultFormatSpec(true)), "Format", App::Prop_Output, "Dimension overtolerance format");
+    ADD_PROPERTY_TYPE(FormatSpecUnderTolerance, (getDefaultFormatSpec(true)), "Format", App::Prop_Output, "Dimension undertolerance format");
     ADD_PROPERTY_TYPE(Arbitrary,(false), "Format", App::Prop_Output, "Value overridden by user");
     ADD_PROPERTY_TYPE(ArbitraryTolerances, (false), "Format", App::Prop_Output, "Tolerance values overridden by user");
 
@@ -114,15 +120,18 @@ DrawViewDimension::DrawViewDimension(void)
     ADD_PROPERTY(Type, ((long)0));
     MeasureType.setEnums(MeasureTypeEnums);
     ADD_PROPERTY(MeasureType, ((long)1));                             //Projected (or True) measurement
-    ADD_PROPERTY_TYPE(TheoreticalExact,(false), "", App::Prop_Output, "Set for theoretical exact (basic) dimension");
+    ADD_PROPERTY_TYPE(TheoreticalExact,(false), "", App::Prop_Output, "If theoretical exact (basic) dimension");
     ADD_PROPERTY_TYPE(EqualTolerance, (true), "", App::Prop_Output, "If over- and undertolerance are equal");
-    ADD_PROPERTY_TYPE(OverTolerance, (0.0), "", App::Prop_Output, "Overtolerance value\nIf 'Equal Tolerance' is true this is also the value for 'Under Tolerance'");
+
+    ADD_PROPERTY_TYPE(OverTolerance, (0.0), "", App::Prop_Output, "Overtolerance value\nIf 'Equal Tolerance' is true this is also\nthe negated value for 'Under Tolerance'");
     OverTolerance.setUnit(Base::Unit::Length);
-    ADD_PROPERTY_TYPE(UnderTolerance, (0.0), "", App::Prop_Output, "Undertolerance value\nIf 'Equal Tolerance' it will be replaced by negative value of 'Over Tolerance'");
+    OverTolerance.setConstraints(&ToleranceConstraint);
+    ADD_PROPERTY_TYPE(UnderTolerance, (0.0), "", App::Prop_Output, "Undertolerance value\nIf 'Equal Tolerance' is true it will be replaced\nby negative value of 'Over Tolerance'");
     UnderTolerance.setUnit(Base::Unit::Length);
+    UnderTolerance.setConstraints(&ToleranceConstraint);
     ADD_PROPERTY_TYPE(Inverted, (false), "", App::Prop_Output, "The dimensional value is displayed inverted");
 
-    //hide the DrawView properties that don't apply to Dimensions
+    // hide the DrawView properties that don't apply to Dimensions
     ScaleType.setStatus(App::Property::ReadOnly, true);
     ScaleType.setStatus(App::Property::Hidden, true);
     Scale.setStatus(App::Property::ReadOnly, true);
@@ -130,9 +139,11 @@ DrawViewDimension::DrawViewDimension(void)
     Rotation.setStatus(App::Property::ReadOnly, true);
     Rotation.setStatus(App::Property::Hidden, true);
     Caption.setStatus(App::Property::Hidden, true);
+    LockPosition.setStatus(App::Property::Hidden, true);
 
     // by default EqualTolerance is true, thus make UnderTolerance read-only
     UnderTolerance.setStatus(App::Property::ReadOnly, true);
+    FormatSpecUnderTolerance.setStatus(App::Property::ReadOnly, true);
 
     measurement = new Measure::Measurement();
     //TODO: should have better initial datumLabel position than (0,0) in the DVP?? something closer to the object being measured?
@@ -174,7 +185,7 @@ void DrawViewDimension::onChanged(const App::Property* prop)
         }
         else if (prop == &References3D) {   //have to rebuild the Measurement object
 //            Base::Console().Message("DVD::onChanged - References3D\n");
-            clear3DMeasurements();                                                             //Measurement object
+            clear3DMeasurements();                             //Measurement object
             if (!(References3D.getValues()).empty()) {
                 setAll3DMeasurement();
             } else {
@@ -196,15 +207,50 @@ void DrawViewDimension::onChanged(const App::Property* prop)
                 UnderTolerance.setUnit(Base::Unit::Length);
             }
         }
+        else if (prop == &TheoreticalExact) {
+            // if TheoreticalExact disable tolerances and set them to zero
+            if (TheoreticalExact.getValue()) {
+                OverTolerance.setValue(0.0);
+                UnderTolerance.setValue(0.0);
+                OverTolerance.setReadOnly(true);
+                UnderTolerance.setReadOnly(true);
+                FormatSpecOverTolerance.setReadOnly(true);
+                FormatSpecUnderTolerance.setReadOnly(true);
+                ArbitraryTolerances.setValue(false);
+                ArbitraryTolerances.setReadOnly(true);
+            }
+            else {
+                OverTolerance.setReadOnly(false);
+                FormatSpecOverTolerance.setReadOnly(false);
+                ArbitraryTolerances.setReadOnly(false);
+                if (!EqualTolerance.getValue()) {
+                    UnderTolerance.setReadOnly(false);
+                    FormatSpecUnderTolerance.setReadOnly(false);
+                }
+            }
+            requestPaint();
+        }
         else if (prop == &EqualTolerance) {
             // if EqualTolerance set negated overtolerance for untertolerance
+            // then also the OverTolerance must be positive
             if (EqualTolerance.getValue()) {
+                // if OverTolerance is negative or zero, first set it to zero
+                if (OverTolerance.getValue() < 0) {
+                    OverTolerance.setValue(0.0);
+                }
+                OverTolerance.setConstraints(&PositiveConstraint);
                 UnderTolerance.setValue(-1.0 * OverTolerance.getValue());
                 UnderTolerance.setUnit(OverTolerance.getUnit());
                 UnderTolerance.setReadOnly(true);
+                FormatSpecUnderTolerance.setValue(FormatSpecOverTolerance.getValue());
+                FormatSpecUnderTolerance.setReadOnly(true);
             }
             else {
-                UnderTolerance.setReadOnly(false);
+                OverTolerance.setConstraints(&ToleranceConstraint);
+                if (!TheoreticalExact.getValue()) {
+                    UnderTolerance.setReadOnly(false);
+                    FormatSpecUnderTolerance.setReadOnly(false);
+                }
             }
             requestPaint();
         } 
@@ -216,10 +262,22 @@ void DrawViewDimension::onChanged(const App::Property* prop)
             }
             requestPaint();
         }
+        else if (prop == &FormatSpecOverTolerance) {
+            if (!ArbitraryTolerances.getValue()) {
+                FormatSpecUnderTolerance.setValue(FormatSpecOverTolerance.getValue());
+            }
+            requestPaint();
+        }
+        else if (prop == &FormatSpecUnderTolerance) {
+            if (!ArbitraryTolerances.getValue()) {
+                FormatSpecOverTolerance.setValue(FormatSpecUnderTolerance.getValue());
+            }
+            requestPaint();
+        }
         else if ( (prop == &FormatSpec) ||
              (prop == &Arbitrary) ||
+             (prop == &ArbitraryTolerances) ||
              (prop == &MeasureType) ||
-             (prop == &TheoreticalExact) ||
              (prop == &UnderTolerance) ||
              (prop == &Inverted) ) {
             requestPaint();
@@ -266,6 +324,20 @@ void DrawViewDimension::handleChangedPropertyType(Base::XMLReader &reader, const
     else {
         TechDraw::DrawView::handleChangedPropertyType(reader, TypeName, prop);
     }
+
+    // Over/Undertolerance were further changed from App::PropertyQuantity to App::PropertyQuantityConstraint
+    if ((prop == &OverTolerance) && (strcmp(TypeName, "App::PropertyQuantity") == 0)) {
+        App::PropertyQuantity OverToleranceProperty;
+        // restore the PropertyQuantity to be able to set its value
+        OverToleranceProperty.Restore(reader);
+        OverTolerance.setValue(OverToleranceProperty.getValue());
+    }
+    else if ((prop == &UnderTolerance) && (strcmp(TypeName, "App::PropertyQuantity") == 0)) {
+        App::PropertyQuantity UnderToleranceProperty;
+        // restore the PropertyQuantity to be able to set its value
+        UnderToleranceProperty.Restore(reader);
+        UnderTolerance.setValue(UnderToleranceProperty.getValue());
+    }
 }
 
 
@@ -277,6 +349,9 @@ short DrawViewDimension::mustExecute() const
                   Type.isTouched() ||
                   FormatSpec.isTouched() ||
                   Arbitrary.isTouched() ||
+                  FormatSpecOverTolerance.isTouched() ||
+                  FormatSpecUnderTolerance.isTouched() ||
+                  ArbitraryTolerances.isTouched() ||
                   MeasureType.isTouched() ||
                   TheoreticalExact.isTouched() ||
                   EqualTolerance.isTouched() ||
@@ -602,11 +677,11 @@ bool DrawViewDimension::isMultiValueSchema(void) const
     }
 
     Base::UnitSystem uniSys = Base::UnitsApi::getSchema();
-    if ( (uniSys == Base::UnitSystem::ImperialBuilding) &&
-          !angularMeasure ) {
+    if ((uniSys == Base::UnitSystem::ImperialBuilding) &&
+            !angularMeasure) {
         result = true;
     } else if ((uniSys == Base::UnitSystem::ImperialCivil) &&
-         angularMeasure) {
+               !angularMeasure) {
         result = true;
     }
     return result;
@@ -691,6 +766,13 @@ std::string DrawViewDimension::formatValue(qreal value, QString qFormatSpec, int
             qMultiValueStr = formatPrefix + qGenPrefix + displaySub + formatSuffix;
         }
         formattedValue = qMultiValueStr;
+    } else if (isMultiValueSchema()) {
+        qMultiValueStr = qUserString;
+        if (!genPrefix.empty()) {
+            //qUserString from Quantity includes units - prefix + R + nnn ft + suffix
+            qMultiValueStr = formatPrefix + qUserString + formatSuffix;
+        }
+        return qMultiValueStr.toStdString();
     } else {
         if (formatSpecifier.isEmpty()) {
             Base::Console().Warning("Warning - no numeric format in Format Spec %s - %s\n",
@@ -765,16 +847,6 @@ std::string DrawViewDimension::formatValue(qreal value, QString qFormatSpec, int
         }
     }
 
-    if ((unitSystem == Base::UnitSystem::ImperialBuilding) &&
-        !angularMeasure) {
-        qMultiValueStr = formattedValue;
-        if (!genPrefix.empty()) {
-            //qUserString from Quantity includes units - prefix + R + nnn ft + suffix
-            qMultiValueStr = formatPrefix + qGenPrefix + qUserString + formatSuffix;
-        }
-        formattedValue = qMultiValueStr;
-    }
-
     result = formattedValue.toStdString();
 
     if (partial == 0) {
@@ -808,7 +880,7 @@ std::string DrawViewDimension::formatValue(qreal value, QString qFormatSpec, int
 
 std::string DrawViewDimension::getFormattedToleranceValue(int partial)
 {
-    QString FormatSpec = QString::fromUtf8(FormatSpecTolerance.getStrValue().data());
+    QString FormatSpec = QString::fromUtf8(FormatSpecOverTolerance.getStrValue().data());
     QString ToleranceString;
 
     if (ArbitraryTolerances.getValue())
@@ -821,25 +893,26 @@ std::string DrawViewDimension::getFormattedToleranceValue(int partial)
 
 std::pair<std::string, std::string> DrawViewDimension::getFormattedToleranceValues(int partial)
 {
-    QString FormatSpec = QString::fromUtf8(FormatSpecTolerance.getStrValue().data());
+    QString underFormatSpec = QString::fromUtf8(FormatSpecUnderTolerance.getStrValue().data());
+    QString overFormatSpec = QString::fromUtf8(FormatSpecOverTolerance.getStrValue().data());
     std::pair<std::string, std::string> tolerances;
     QString underTolerance, overTolerance;
 
     if (ArbitraryTolerances.getValue()) {
-        underTolerance = FormatSpec;
-        overTolerance = FormatSpec;
+        underTolerance = underFormatSpec;
+        overTolerance = overFormatSpec;
     } else {
         if (DrawUtil::fpCompare(UnderTolerance.getValue(), 0.0)) {
             underTolerance = QString::fromUtf8(formatValue(UnderTolerance.getValue(), QString::fromUtf8("%.0f"), partial).c_str());
         }
         else {
-            underTolerance = QString::fromUtf8(formatValue(UnderTolerance.getValue(), FormatSpec, partial).c_str());
+            underTolerance = QString::fromUtf8(formatValue(UnderTolerance.getValue(), underFormatSpec, partial).c_str());
         }
         if (DrawUtil::fpCompare(OverTolerance.getValue(), 0.0)) {
             overTolerance = QString::fromUtf8(formatValue(OverTolerance.getValue(), QString::fromUtf8("%.0f"), partial).c_str());
         }
         else {
-            overTolerance = QString::fromUtf8(formatValue(OverTolerance.getValue(), FormatSpec, partial).c_str());
+            overTolerance = QString::fromUtf8(formatValue(OverTolerance.getValue(), overFormatSpec, partial).c_str());
         }
     }
 
@@ -853,8 +926,36 @@ std::string DrawViewDimension::getFormattedDimensionValue(int partial)
 {
     QString qFormatSpec = QString::fromUtf8(FormatSpec.getStrValue().data());
 
-    if (Arbitrary.getValue()) {
+    if ( (Arbitrary.getValue() && !EqualTolerance.getValue())
+        || (Arbitrary.getValue() && TheoreticalExact.getValue()) ) {
         return FormatSpec.getStrValue();
+    }
+
+    // if there is an equal over-/undertolerance and not theoretically exact, add the tolerance to dimension
+    if (EqualTolerance.getValue() && !TheoreticalExact.getValue() &&
+            (!DrawUtil::fpCompare(OverTolerance.getValue(), 0.0) || ArbitraryTolerances.getValue())) {
+        QString labelText = QString::fromUtf8(formatValue(getDimValue(), qFormatSpec, 1).c_str()); //just the number pref/spec/suf
+        QString unitText = QString::fromUtf8(formatValue(getDimValue(), qFormatSpec, 2).c_str()); //just the unit
+        QString tolerance = QString::fromStdString(getFormattedToleranceValue(1).c_str());
+        QString result;
+        if (Arbitrary.getValue()) {
+            labelText = QString::fromStdString(FormatSpec.getStrValue());
+            unitText = QString();
+        }
+        // tolerance might start with a plus sign that we don't want, so cut it off
+        if (tolerance.at(0) == QChar::fromLatin1('+'))
+            tolerance.remove(0, 1);
+        if ((Type.isValue("Angle")) || (Type.isValue("Angle3Pt"))) {
+            result = labelText + unitText + QString::fromUtf8(" \xC2\xB1 ") + tolerance;
+        } else {
+            // add the tolerance to the dimension using the ± sign
+            result = labelText + QString::fromUtf8(" \xC2\xB1 ") + tolerance;
+        }
+        if (partial == 2) {
+            result = unitText;
+        }
+
+        return result.toStdString();
     }
 
     return formatValue(getDimValue(), qFormatSpec, partial);
@@ -1305,8 +1406,9 @@ bool DrawViewDimension::has3DReferences(void) const
 bool DrawViewDimension::hasOverUnderTolerance(void) const
 {
     bool result = false;
-    if (!DrawUtil::fpCompare(OverTolerance.getValue(), 0.0) ||
-        !DrawUtil::fpCompare(UnderTolerance.getValue(), 0.0) ) {
+    if (ArbitraryTolerances.getValue() ||
+            !DrawUtil::fpCompare(OverTolerance.getValue(), 0.0) ||
+            !DrawUtil::fpCompare(UnderTolerance.getValue(), 0.0)) {
         result = true;
     }
     return result;

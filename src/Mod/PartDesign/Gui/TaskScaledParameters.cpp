@@ -52,11 +52,11 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskScaledParameters */
 
 TaskScaledParameters::TaskScaledParameters(ViewProviderTransformed *TransformedView,QWidget *parent)
-        : TaskTransformedParameters(TransformedView, parent)
+    : TaskTransformedParameters(TransformedView, parent)
+    , ui(new Ui_TaskScaledParameters)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskScaledParameters();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
@@ -70,10 +70,9 @@ TaskScaledParameters::TaskScaledParameters(ViewProviderTransformed *TransformedV
 }
 
 TaskScaledParameters::TaskScaledParameters(TaskMultiTransformParameters *parentTask, QLayout *layout)
-        : TaskTransformedParameters(parentTask)
+        : TaskTransformedParameters(parentTask), ui(new Ui_TaskScaledParameters)
 {
     proxy = new QWidget(parentTask);
-    ui = new Ui_TaskScaledParameters();
     ui->setupUi(proxy);
     connect(ui->buttonOK, SIGNAL(clicked(bool)),
             parentTask, SLOT(onSubTaskButtonOK()));
@@ -169,7 +168,6 @@ unsigned TaskScaledParameters::getOccurrences(void) const
 
 TaskScaledParameters::~TaskScaledParameters()
 {
-    delete ui;
     if (proxy)
         delete proxy;
 }

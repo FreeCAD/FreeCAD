@@ -75,7 +75,7 @@ private:
     ComboLinks planeLinks;
 
 private:
-    Ui_TaskMirroredParameters* ui;
+    std::unique_ptr<Ui_TaskMirroredParameters> ui;
 };
 
 

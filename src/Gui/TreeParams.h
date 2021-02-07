@@ -60,6 +60,8 @@ public:
 #define FC_TREE_PARAMS \
     FC_TREE_PARAM2(SyncSelection,bool,Bool,true, \
        QT_TRANSLATE_NOOP("TreeParams", ""))\
+    FC_TREE_PARAM2(CheckBoxesSelection,bool,Bool,false, \
+       QT_TRANSLATE_NOOP("TreeParams", "Show checkbox for each item in the tree view"))\
     FC_TREE_PARAM(SyncView,bool,Bool,true, \
        QT_TRANSLATE_NOOP("TreeParams", ""))\
     FC_TREE_PARAM(PreSelection,bool,Bool,true, \

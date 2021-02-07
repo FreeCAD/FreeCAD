@@ -62,11 +62,11 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskPolarPatternParameters */
 
 TaskPolarPatternParameters::TaskPolarPatternParameters(ViewProviderTransformed *TransformedView,QWidget *parent)
-        : TaskTransformedParameters(TransformedView, parent)
+    : TaskTransformedParameters(TransformedView, parent)
+    , ui(new Ui_TaskPolarPatternParameters)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskPolarPatternParameters();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
@@ -82,10 +82,9 @@ TaskPolarPatternParameters::TaskPolarPatternParameters(ViewProviderTransformed *
 }
 
 TaskPolarPatternParameters::TaskPolarPatternParameters(TaskMultiTransformParameters *parentTask, QLayout *layout)
-        : TaskTransformedParameters(parentTask)
+        : TaskTransformedParameters(parentTask), ui(new Ui_TaskPolarPatternParameters)
 {
     proxy = new QWidget(parentTask);
-    ui = new Ui_TaskPolarPatternParameters();
     ui->setupUi(proxy);
     connect(ui->buttonOK, SIGNAL(clicked(bool)),
             parentTask, SLOT(onSubTaskButtonOK()));
@@ -313,7 +312,6 @@ TaskPolarPatternParameters::~TaskPolarPatternParameters()
         Base::Console().Error ("%s\n", ex.what () );
     }
 
-    delete ui;
     if (proxy)
         delete proxy;
 }

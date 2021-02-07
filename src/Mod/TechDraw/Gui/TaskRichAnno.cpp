@@ -202,7 +202,6 @@ TaskRichAnno::TaskRichAnno(TechDraw::DrawView* baseFeat,
 
 TaskRichAnno::~TaskRichAnno()
 {
-    delete ui;
 }
 
 void TaskRichAnno::updateTask()

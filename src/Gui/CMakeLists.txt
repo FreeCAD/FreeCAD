@@ -317,12 +317,14 @@ set(Gui_MOC_HDRS
     DlgReportViewImp.h
     DlgSettings3DViewImp.h
     DlgSettingsNavigation.h
+    DlgSettingsSelection.h
     DlgSettingsViewColor.h
     DlgSettingsDrawStyles.h
     DlgSettingsUI.h
     DlgSettingsColorGradientImp.h
     DlgSettingsDocumentImp.h
     DlgSettingsImageImp.h
+    DlgSettingsLazyLoadedImp.h
     DlgSettingsMacroImp.h
     DlgSettingsUnitsImp.h
     DlgCheckableMessageBox.h
@@ -450,12 +452,14 @@ SET(Gui_UIC_SRCS
     DlgReportView.ui
     DlgSettings3DView.ui
     DlgSettingsNavigation.ui
+    DlgSettingsSelection.ui
     DlgSettingsUnits.ui
     DlgSettingsViewColor.ui
     DlgSettingsDrawStyles.ui
     DlgSettingsColorGradient.ui
     DlgSettingsDocument.ui
     DlgSettingsImage.ui
+    DlgSettingsLazyLoaded.ui
     DlgSettingsMacro.ui
     DlgCheckableMessageBox.ui
     DlgToolbars.ui
@@ -681,6 +685,7 @@ SET(Dialog_Settings_CPP_SRCS
     DlgReportViewImp.cpp
     DlgSettings3DViewImp.cpp
     DlgSettingsNavigation.cpp
+    DlgSettingsSelection.cpp
     DlgSettingsUnitsImp.cpp
     DlgSettingsViewColor.cpp
     DlgSettingsDrawStyles.cpp
@@ -688,6 +693,7 @@ SET(Dialog_Settings_CPP_SRCS
     DlgSettingsColorGradientImp.cpp
     DlgSettingsDocumentImp.cpp
     DlgSettingsImageImp.cpp
+    DlgSettingsLazyLoadedImp.cpp
     DlgSettingsMacroImp.cpp
 )
 SET(Dialog_Settings_HPP_SRCS
@@ -698,6 +704,7 @@ SET(Dialog_Settings_HPP_SRCS
     DlgReportViewImp.h
     DlgSettings3DViewImp.h
     DlgSettingsNavigation.h
+    DlgSettingsSelection.h
     DlgSettingsUnitsImp.h
     DlgSettingsViewColor.h
     DlgSettingsDrawStyles.h
@@ -705,6 +712,7 @@ SET(Dialog_Settings_HPP_SRCS
     DlgSettingsColorGradientImp.h
     DlgSettingsDocumentImp.h
     DlgSettingsImageImp.h
+    DlgSettingsLazyLoadedImp.h
     DlgSettingsMacroImp.h
 )
 SET(Dialog_Settings_SRCS
@@ -717,12 +725,14 @@ SET(Dialog_Settings_SRCS
     DlgReportView.ui
     DlgSettings3DView.ui
     DlgSettingsNavigation.ui
+    DlgSettingsSelection.ui
     DlgSettingsUnits.ui
     DlgSettingsViewColor.ui
     DlgSettingsDrawStyles.ui
     DlgSettingsColorGradient.ui
     DlgSettingsDocument.ui
     DlgSettingsImage.ui
+    DlgSettingsLazyLoaded.ui
     DlgSettingsMacro.ui
 )
 SOURCE_GROUP("Dialog\\Settings" FILES ${Dialog_Settings_SRCS})

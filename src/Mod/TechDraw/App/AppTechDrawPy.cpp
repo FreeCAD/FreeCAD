@@ -29,8 +29,10 @@
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Wire.hxx>
+#include <TopoDS_Compound.hxx>
 #include <gp_Trsf.hxx>
 #include <gp_Vec.hxx>
+#include <BRep_Builder.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
 
 #endif
@@ -51,7 +53,9 @@
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/TopoShapePy.h>
 #include <Mod/Part/App/TopoShapeEdgePy.h>
+#include <Mod/Part/App/TopoShapeFacePy.h>
 #include <Mod/Part/App/TopoShapeWirePy.h>
+#include <Mod/Part/App/TopoShapeCompoundPy.h>
 #include <Mod/Part/App/OCCError.h>
 
 #include <Mod/Drawing/App/DrawingExport.h>
@@ -71,6 +75,8 @@
 #include "DrawProjGroup.h"
 #include "DrawProjGroupItem.h"
 #include "DrawDimHelper.h"
+#include "HatchLine.h"
+#include "DrawGeomHatch.h"
 
 namespace TechDraw {
 //module level static C++ functions go here
@@ -79,7 +85,9 @@ namespace TechDraw {
 using Part::TopoShape;
 using Part::TopoShapePy;
 using Part::TopoShapeEdgePy;
+using Part::TopoShapeFacePy;
 using Part::TopoShapeWirePy;
+using Part::TopoShapeCompoundPy;
 using Import::ImpExpDxfWrite;
 
 namespace TechDraw {
@@ -122,7 +130,9 @@ public:
         add_varargs_method("makeDistanceDim3d",&Module::makeDistanceDim3d,
             "makeDistanceDim(DrawViewPart, dimType, 3dFromPoint, 3dToPoint) -- draw a Length dimension between fromPoint to toPoint.  FromPoint and toPoint are unscaled 3d model points. dimType is one of ['Distance', 'DistanceX', 'DistanceY'."
         );
-
+        add_varargs_method("makeGeomHatch",&Module::makeGeomHatch,
+            "makeGeomHatch(face, [patScale], [patName], [patFile]) -- draw a geom hatch on a given face, using optionally the given scale (default 1) and a given pattern name (ex. Diamond) and .pat file (the default pattern name and/or .pat files set in preferences are used if none are given). Returns a Part compound shape."
+        );
         initialize("This is a module for making drawings"); // register with Python
     }
     virtual ~Module() {}
@@ -797,8 +807,8 @@ private:
 
     Py::Object makeDistanceDim(const Py::Tuple& args)
     {
-    //points come in unscaled,but makeDistDim unscales them so we need to prescale here. 
-    //makeDistDim was built for extent dims which work from scaled geometry 
+    //points come in unscaled,but makeDistDim unscales them so we need to prescale here.
+    //makeDistDim was built for extent dims which work from scaled geometry
         PyObject* pDvp;
         PyObject* pDimType;
         PyObject* pFrom;
@@ -835,7 +845,7 @@ private:
         if (PyObject_TypeCheck(pTo, &(Base::VectorPy::Type))) {
             to = static_cast<Base::VectorPy*>(pTo)->value();
         }
-        DrawViewDimension* dvd = 
+        DrawViewDimension* dvd =
         DrawDimHelper::makeDistDim(dvp,
                                    dimType,
                                    DrawUtil::invertY(from),
@@ -885,7 +895,7 @@ private:
         //3d points are not scaled
         from = DrawUtil::invertY(dvp->projectPoint(from));
         to   = DrawUtil::invertY(dvp->projectPoint(to));
-        //DrawViewDimension* = 
+        //DrawViewDimension* =
         DrawDimHelper::makeDistDim(dvp,
                                    dimType,
                                    from,
@@ -893,6 +903,88 @@ private:
 
         return Py::None();
     }
+
+
+    Py::Object makeGeomHatch(const Py::Tuple& args)
+    {
+        PyObject* pFace;
+        double scale = 1.0;
+        char* pPatName = "";
+        char* pPatFile = "";
+        TechDraw::DrawViewPart* source = nullptr;
+        TopoDS_Face face;
+
+        if (!PyArg_ParseTuple(args.ptr(), "O|detet", &pFace, &scale, "utf-8", &pPatName, "utf-8", &pPatFile)) {
+            throw Py::TypeError("expected (face, [scale], [patName], [patFile])");
+        }
+        std::string patName = std::string(pPatName);
+        std::string patFile = std::string(pPatFile);
+        if (PyObject_TypeCheck(pFace, &(TopoShapeFacePy::Type))) {
+            const TopoDS_Shape& sh = static_cast<TopoShapePy*>(pFace)->getTopoShapePtr()->getShape();
+            face = TopoDS::Face(sh);
+        }
+        else {
+            throw Py::TypeError("first argument must be a Part.Face instance");
+        }
+        if (patName.empty()) {
+            patName = TechDraw::DrawGeomHatch::prefGeomHatchName();
+        }
+        if (patFile.empty()) {
+            patFile = TechDraw::DrawGeomHatch::prefGeomHatchFile();
+        }
+        Base::FileInfo fi(patFile);
+        if (!fi.isReadable()) {
+            Base::Console().Error(".pat File: %s is not readable\n",patFile.c_str());
+            return Py::None();
+        }
+        std::vector<TechDraw::PATLineSpec> specs = TechDraw::DrawGeomHatch::getDecodedSpecsFromFile(patFile, patName);
+        std::vector<LineSet> lineSets;
+        for (auto& hl: specs) {
+            TechDraw::LineSet ls;
+            ls.setPATLineSpec(hl);
+            lineSets.push_back(ls);
+        }
+        std::vector<LineSet> lsresult = TechDraw::DrawGeomHatch::getTrimmedLines(source, lineSets, face, scale);
+        if (!lsresult.empty()) {
+            /* below code returns a list of edges, but probably slower to handle
+            Py::List result;
+            try {
+                for (auto& lsr:lsresult) {
+                    std::vector<TopoDS_Edge> edgeList = lsr.getEdges();
+                    for (auto& edge:edgeList) {
+                        PyObject* pyedge = new TopoShapeEdgePy(new TopoShape(edge));
+                        result.append(Py::asObject(pyedge));
+                    }
+                }
+            }
+            catch (Base::Exception &e) {
+                throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
+            }
+            return result;
+            */
+            BRep_Builder builder;
+            TopoDS_Compound comp;
+            builder.MakeCompound(comp);
+            try {
+                for (auto& lsr:lsresult) {
+                    std::vector<TopoDS_Edge> edgeList = lsr.getEdges();
+                    for (auto& edge:edgeList) {
+                        if (!edge.IsNull()) {
+                            builder.Add(comp, edge);
+                        }
+                    }
+                }
+            }
+            catch (Base::Exception &e) {
+                throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
+            }
+            PyObject* pycomp = new TopoShapeCompoundPy(new TopoShape(comp));
+            return Py::asObject(pycomp);
+        }
+        return Py::None();
+    }
+
+
  };
 
  PyObject* initModule()

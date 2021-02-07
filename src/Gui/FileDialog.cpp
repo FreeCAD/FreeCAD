@@ -217,7 +217,7 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
     checkFilter(filter);
 
     QString dirName = dir;
-    QString fileName;
+    bool hasFilename = false;
     if (dirName.isEmpty()) {
         dirName = getWorkingDirectory();
     } else {
@@ -225,20 +225,29 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
         if (fi.isRelative()) {
             dirName = getWorkingDirectory();
             dirName += QLatin1String("/");
-            dirName += fi.dir().path();
+            dirName += fi.fileName();
         }
-        fileName = fi.fileName();
-        if(fileName.size() && !noNativeDialog && fileName.indexOf(QLatin1Char('.'))<0) {
-            // get the suffix for the filter
-            QRegExp rx;
-            rx.setPattern(QLatin1String("\\s(\\(\\*\\.\\w{1,})\\W"));
-            int index = rx.indexIn(filter);
-            if (index != -1) {
-                // get the suffix with the leading dot
-                QString suffix = filter.mid(index+3, rx.matchedLength()-4);
-                if (fi.suffix().isEmpty())
-                    fileName += suffix;
-            }
+        if (!fi.fileName().isEmpty()) {
+            hasFilename = true;
+        }
+
+        // get the suffix for the filter: use the selected filter if there is one,
+        // otherwise find the first valid suffix in the complete list of filters
+        const QString *filterToSearch;
+        if (selectedFilter != nullptr) {
+            filterToSearch = selectedFilter;
+        }
+        else {
+            filterToSearch = &filter;
+        }
+        QRegExp rx;
+        rx.setPattern(QLatin1String("\\s(\\(\\*\\.\\w{1,})\\W"));
+        int index = rx.indexIn(*filterToSearch);
+        if (index != -1) {
+            // get the suffix with the leading dot
+            QString suffix = filterToSearch->mid(index+3, rx.matchedLength()-4);
+            if (fi.suffix().isEmpty())
+                dirName += suffix;
         }
     }
 
@@ -280,6 +289,8 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
         dlg.setFileMode(fileMode);
         dlg.setAcceptMode(QFileDialog::AcceptSave);
         dlg.setDirectory(dirName);
+        if (hasFilename)
+            dlg.selectFile(dirName);
         dlg.setOptions(options);
         dlg.setNameFilters(filter.split(QLatin1String(";;")));
         if (selectedFilter && !selectedFilter->isEmpty())
@@ -287,7 +298,6 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
         dlg.onSelectedFilter(dlg.selectedNameFilter());
         dlg.setOption(QFileDialog::HideNameFilterDetails, false);
         dlg.setOption(QFileDialog::DontConfirmOverwrite, false);
-        dlg.selectFile(fileName);
         if (dlg.exec() == QDialog::Accepted) {
             if (selectedFilter)
                 *selectedFilter = dlg.selectedNameFilter();

@@ -191,12 +191,12 @@ MeshCore::MeshKernel* MeshAlgos::boolean(MeshCore::MeshKernel* pMesh1,
   if (!gts_surface_is_orientable (s1)) {
     gts_object_destroy (GTS_OBJECT (s1));
     gts_object_destroy (GTS_OBJECT (s2));
-    throw "surface 1 is not an orientable manifold\n";
+    throw std::runtime_error("surface 1 is not an orientable manifold\n");
   }
   if (!gts_surface_is_orientable (s2)) {
     gts_object_destroy (GTS_OBJECT (s1));
     gts_object_destroy (GTS_OBJECT (s2));
-    throw "surface 2 is not an orientable manifold\n";
+    throw std::runtime_error("surface 2 is not an orientable manifold\n");
   }
 
   /* check that the surfaces are not self-intersecting */
@@ -211,7 +211,7 @@ MeshCore::MeshKernel* MeshAlgos::boolean(MeshCore::MeshKernel* pMesh1,
       gts_object_destroy (GTS_OBJECT (self_intersects));
       gts_object_destroy (GTS_OBJECT (s1));
       gts_object_destroy (GTS_OBJECT (s2));
-      throw "surface is self-intersecting\n";
+      throw std::runtime_error("surface is self-intersecting\n");
     }
     self_intersects = gts_surface_is_self_intersecting (s2);
     if (self_intersects != NULL) {
@@ -221,7 +221,7 @@ MeshCore::MeshKernel* MeshAlgos::boolean(MeshCore::MeshKernel* pMesh1,
       gts_object_destroy (GTS_OBJECT (self_intersects));
       gts_object_destroy (GTS_OBJECT (s1));
       gts_object_destroy (GTS_OBJECT (s2));
-      throw "surface is self-intersecting\n";
+      throw std::runtime_error("surface is self-intersecting\n");
     }
   }
 
@@ -285,7 +285,7 @@ MeshCore::MeshKernel* MeshAlgos::boolean(MeshCore::MeshKernel* pMesh1,
       gts_object_destroy (GTS_OBJECT (si));
       gts_bb_tree_destroy (tree1, true);
       gts_bb_tree_destroy (tree2, true);
-      throw "the resulting surface is self-intersecting\n";
+      throw std::runtime_error("the resulting surface is self-intersecting\n");
     }
   }
   // display summary information about the resulting surface 

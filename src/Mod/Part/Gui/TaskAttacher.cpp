@@ -137,10 +137,11 @@ void TaskAttacher::makeRefStrings(std::vector<QString>& refstrings, std::vector<
 
 TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidget *parent,
                            QString picture, QString text, TaskAttacher::VisibilityFunction visFunc)
-    : TaskBox(Gui::BitmapFactory().pixmap(picture.toLatin1()), text, true, parent),
-      SelectionObserver(ViewProvider),
-      ViewProvider(ViewProvider),
-      visibilityFunc(visFunc)
+    : TaskBox(Gui::BitmapFactory().pixmap(picture.toLatin1()), text, true, parent)
+    , SelectionObserver(ViewProvider)
+    , ViewProvider(ViewProvider)
+    , ui(new Ui_TaskAttacher)
+    , visibilityFunc(visFunc)
 {
     //check if we are attachable
     if (!ViewProvider->getObject()->hasExtension(Part::AttachExtension::getExtensionClassTypeId()))
@@ -148,7 +149,6 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidge
 
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskAttacher();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
@@ -264,7 +264,6 @@ TaskAttacher::~TaskAttacher()
 
     connectDelObject.disconnect();
     connectDelDocument.disconnect();
-    delete ui;
 }
 
 void TaskAttacher::objectDeleted(const Gui::ViewProviderDocumentObject& view)

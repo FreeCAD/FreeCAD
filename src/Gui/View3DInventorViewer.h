@@ -496,6 +496,7 @@ private:
     static void drawArrow(void);
     void setCursorRepresentation(int mode);
     void aboutToDestroyGLContext();
+    void createStandardCursors(double);
 
 private Q_SLOTS:
     void redrawShadow();

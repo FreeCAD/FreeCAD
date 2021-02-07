@@ -1124,6 +1124,7 @@ CmdPartMakeSolid::CmdPartMakeSolid()
     sToolTipText  = QT_TR_NOOP("Create solid from a shell or compound");
     sWhatsThis    = "Part_MakeSolid";
     sStatusTip    = sToolTipText;
+    sPixmap       = "Part_MakeSolid";
 }
 
 void CmdPartMakeSolid::activated(int iMsg)
@@ -1324,6 +1325,7 @@ CmdPartMakeFace::CmdPartMakeFace()
     sToolTipText  = QT_TR_NOOP("Make face from set of wires (e.g. from a sketch)");
     sWhatsThis    = "Part_MakeFace";
     sStatusTip    = sToolTipText;
+    sPixmap       = "Part_MakeFace";
 }
 
 void CmdPartMakeFace::activated(int iMsg)

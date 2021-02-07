@@ -40,12 +40,12 @@ using namespace Gui::TaskView;
 namespace bp = boost::placeholders;
 
 TaskTransformedMessages::TaskTransformedMessages(ViewProviderTransformed *transformedView_)
-    : TaskBox(Gui::BitmapFactory().pixmap("document-new"),tr("Transformed feature messages"),true, 0),
-      transformedView(transformedView_)
+    : TaskBox(Gui::BitmapFactory().pixmap("document-new"), tr("Transformed feature messages"), true, 0)
+    , transformedView(transformedView_)
+    , ui(new Ui_TaskTransformedMessages)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskTransformedMessages();
     ui->setupUi(proxy);
     // set a minimum height to avoid a sudden resize and to
     // lose focus of the currently used spin boxes
@@ -61,7 +61,6 @@ TaskTransformedMessages::TaskTransformedMessages(ViewProviderTransformed *transf
 TaskTransformedMessages::~TaskTransformedMessages()
 {
     connectionDiagnosis.disconnect();
-    delete ui;
 }
 
 void TaskTransformedMessages::slotDiagnosis(QString msg)

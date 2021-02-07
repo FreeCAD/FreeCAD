@@ -85,7 +85,7 @@ protected:
 
 private:
     QWidget* proxy;
-    Ui_TaskBooleanParameters* ui;
+    std::unique_ptr<Ui_TaskBooleanParameters> ui;
     ViewProviderBoolean *BooleanView;
     boost::signals2::scoped_connection undoConn;
     boost::signals2::scoped_connection redoConn;

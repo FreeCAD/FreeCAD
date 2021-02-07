@@ -255,11 +255,11 @@ private:
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskPipeParameters::TaskPipeParameters(ViewProviderPipe *PipeView, bool /*newObj*/, QWidget *parent)
-    : TaskSketchBasedParameters(PipeView, parent, "PartDesign_Additive_Pipe",tr("Pipe parameters"))
+    : TaskSketchBasedParameters(PipeView, parent, "PartDesign_Additive_Pipe", tr("Pipe parameters"))
+    , ui(new Ui_TaskPipeParameters)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskPipeParameters();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
@@ -312,7 +312,6 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe *PipeView, bool /*newObj
 TaskPipeParameters::~TaskPipeParameters()
 {
     exitSelectionMode();
-    delete ui;
 }
 
 void TaskPipeParameters::updateUI()
@@ -570,11 +569,11 @@ void TaskPipeParameters::exitSelectionMode() {
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView, bool /*newObj*/, QWidget* parent)
-    : TaskSketchBasedParameters(PipeView, parent, "PartDesign_Additive_Pipe", tr("Section orientation")) {
-
+    : TaskSketchBasedParameters(PipeView, parent, "PartDesign_Additive_Pipe", tr("Section orientation")),
+    ui(new Ui_TaskPipeOrientation)
+{
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskPipeOrientation();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
@@ -635,7 +634,6 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView, bool /*newO
 TaskPipeOrientation::~TaskPipeOrientation()
 {
     exitSelectionMode();
-    delete ui;
 }
 
 void TaskPipeOrientation::onItemSelectionChanged()
@@ -904,11 +902,11 @@ void TaskPipeOrientation::updateUI(int idx) {
 // Task Scaling
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QWidget* parent)
-    : TaskSketchBasedParameters(PipeView, parent, "PartDesign_Additive_Pipe", tr("Section transformation"))
+    : TaskSketchBasedParameters(PipeView, parent, "PartDesign_Additive_Pipe", tr("Section transformation")),
+    ui(new Ui_TaskPipeScaling)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskPipeScaling();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
@@ -954,7 +952,6 @@ TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QW
 TaskPipeScaling::~TaskPipeScaling()
 {
     exitSelectionMode();
-    delete ui;
 }
 
 void TaskPipeScaling::refresh()

@@ -139,7 +139,7 @@ void TaskSketchBasedParameters::initUI(QWidget *widget) {
     addUpdateViewCheckBox(widget);
 }
 
-void TaskSketchBasedParameters::refresh()
+void TaskSketchBasedParameters::_refresh()
 {
     if (!vp || !vp->getObject())
         return;
@@ -164,7 +164,7 @@ void TaskSketchBasedParameters::refresh()
         QSignalBlocker guard(innerFitJoinType);
         innerFitJoinType->setCurrentIndex(pcSketchBased->InnerFitJoin.getValue());
     }
-    TaskFeatureParameters::refresh();
+    TaskFeatureParameters::_refresh();
 }
 
 void TaskSketchBasedParameters::saveHistory(void)

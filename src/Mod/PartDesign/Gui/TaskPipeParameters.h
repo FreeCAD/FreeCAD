@@ -85,12 +85,12 @@ public:
 
 private:
     QWidget* proxy;
-    Ui_TaskPipeParameters* ui;
     bool initing = false;
     App::SubObjectT lastProfile;
     App::SubObjectT lastSpine;
     boost::signals2::scoped_connection connProfile;
     boost::signals2::scoped_connection connSpine;
+    std::unique_ptr<Ui_TaskPipeParameters> ui;
 };
 
 class TaskPipeOrientation : public TaskSketchBasedParameters
@@ -128,10 +128,10 @@ public:
     
 private:
     QWidget* proxy;
-    Ui_TaskPipeOrientation* ui;
     bool initing = false;
     App::SubObjectT lastAuxSpine;
     boost::signals2::scoped_connection connAuxSpine;
+    std::unique_ptr<Ui_TaskPipeOrientation> ui;
 };
 
 
@@ -168,9 +168,9 @@ public:
 
 private:
     QWidget* proxy;
-    Ui_TaskPipeScaling* ui;
     std::vector<App::SubObjectT> lastSections;
     boost::signals2::scoped_connection connSections;
+    std::unique_ptr<Ui_TaskPipeScaling> ui;
 };
 
 

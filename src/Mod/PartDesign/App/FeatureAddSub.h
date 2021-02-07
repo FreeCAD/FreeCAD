@@ -51,13 +51,13 @@ public:
 
     virtual void getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShape);
 
+    TopoShape refineShapeIfActive(const TopoShape&) const;
+
     Part::PropertyPartShape   AddSubShape;
     App::PropertyBool Refine;
 
 protected:
     Type addSubType;
-
-    TopoShape refineShapeIfActive(const TopoShape&) const;
 };
 
 typedef App::FeaturePythonT<FeatureAddSub> FeatureAddSubPython;

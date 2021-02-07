@@ -65,6 +65,14 @@ public:
     ~SketchObject();
 
     /// Property
+    /**
+     The Geometry list contains the non-external Part::Geometry objects in the sketch.  The list 
+     may be accessed directly, or indirectly via getInternalGeometry(). 
+
+     Many of the methods in this class take geoId and posId parameters.  A GeoId is a unique identifier for
+     geometry in the Sketch. geoId >= 0 means an index in the Geometry list. geoId < 0 refers to sketch
+     axes and external geometry.  posId is a PointPos enum, documented in Constraint.h.
+    */
     Part    ::PropertyGeometryList   Geometry;
     Sketcher::PropertyConstraintList Constraints;
     App     ::PropertyLinkSubList    ExternalGeometry;
@@ -100,9 +108,19 @@ public:
      \retval bool - true if the geometry is supported
      */
     bool isSupportedGeometry(const Part::Geometry *geo) const;
-    /// add unspecified geometry
+    /*!
+     \brief Add geometry to a sketch
+     \param geo - geometry to add
+     \param construction - true for construction lines
+     \retval int - GeoId of added element
+     */
     int addGeometry(const Part::Geometry *geo, bool construction=false);
-    /// add unspecified geometry
+    /*!
+     \brief Add multiple geometry elements to a sketch
+     \param geoList - geometry to add
+     \param construction - true for construction lines
+     \retval int - GeoId of last added element
+     */
     int addGeometry(const std::vector<Part::Geometry *> &geoList, bool construction=false);
     /*!
      \brief Deletes indicated geometry (by geoid).
@@ -235,11 +253,28 @@ public:
 
     int toggleFreeze(const std::vector<int> &);
 
-    /// create a fillet
-    int fillet(int geoId, PointPos pos, double radius, bool trim=true);
+    /*!
+     \brief Create a sketch fillet from the point at the intersection of two lines
+     \param geoId, pos - one of the (exactly) two coincident endpoints
+     \param radius - fillet radius
+     \param trim - if false, leaves the original lines untouched
+     \param createCorner - keep geoId/pos as a Point and keep as many constraints as possible
+     \retval - 0 on success, -1 on failure 
+     */
+    int fillet(int geoId, PointPos pos, double radius, bool trim=true, bool preserveCorner=false);
+    /*!
+     \brief More general form of fillet
+     \param geoId1, geoId2 - geoId for two lines (which don't necessarily have to coincide)
+     \param refPnt1, refPnt2 - reference points on the input geometry, used to influence the free fillet variables
+     \param radius - fillet radius
+     \param trim - if false, leaves the original lines untouched
+     \param preserveCorner - if the lines are coincident, place a Point where they meet and keep as many
+     of the existing constraints as possible
+     \retval - 0 on success, -1 on failure 
+     */
     int fillet(int geoId1, int geoId2,
                const Base::Vector3d& refPnt1, const Base::Vector3d& refPnt2,
-               double radius, bool trim=true);
+               double radius, bool trim=true, bool createCorner=false);
 
     /// trim a curve
     int trim(int geoId, const Base::Vector3d& point);
@@ -366,6 +401,8 @@ public:
     inline bool getLastHasConflicts() const {return lastHasConflict;}
     /// gets HasRedundancies status of last solver execution
     inline bool getLastHasRedundancies() const {return lastHasRedundancies;}
+    /// gets HasRedundancies status of last solver execution
+    inline bool getLastHasPartialRedundancies() const {return lastHasPartialRedundancies;}
     /// gets HasMalformedConstraints status of last solver execution
     inline bool getLastHasMalformedConstraints() const {return lastHasMalformedConstraints;}
     /// gets solver status of last solver execution
@@ -376,6 +413,8 @@ public:
     inline const std::vector<int> &getLastConflicting(void) const { return lastConflicting; }
     /// gets the redundant constraints of last solver execution
     inline const std::vector<int> &getLastRedundant(void) const { return lastRedundant; }
+    /// gets the redundant constraints of last solver execution
+    inline const std::vector<int> &getLastPartiallyRedundant(void) const { return lastPartiallyRedundant; }
     /// gets the redundant constraints of last solver execution
     inline const std::vector<int> &getLastMalformedConstraints(void) const { return lastMalformedConstraints; }
 
@@ -530,6 +569,19 @@ protected:
     void updateGeoHistory();
     void generateId(Part::Geometry *geo);
 
+    /*!
+     \brief Transfer constraints on lines being filleted.
+
+     Since filleting moves the endpoints of the input geometry, existing constraints may no longer be
+     sensible. If fillet() was called with preserveCorner=false, the constraints are simply deleted.
+     But if the lines are coincident and preserveCorner=true, we can preserve most constraints on the
+     old end points by moving them to the preserved corner, or transforming distance constraints on
+     straight lines into point-to-point distance constraints.
+
+     \param geoId1, podId1, geoId2, posId2 - The two lines that have just been filleted
+     */
+    void transferFilletConstraints(int geoId1, PointPos posId1, int geoId2, PointPos posId2);
+
     // refactoring functions
     // check whether constraint may be changed driving status
     int testDrivingChange(int ConstrId, bool isdriving);
@@ -576,12 +628,14 @@ private:
     int lastDoF;
     bool lastHasConflict;
     bool lastHasRedundancies;
+    bool lastHasPartialRedundancies;
     bool lastHasMalformedConstraints;
     int lastSolverStatus;
     float lastSolveTime;
 
     std::vector<int> lastConflicting;
     std::vector<int> lastRedundant;
+    std::vector<int> lastPartiallyRedundant;
     std::vector<int> lastMalformedConstraints;
 
     boost::signals2::scoped_connection constraintsRenamedConn;

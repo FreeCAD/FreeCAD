@@ -79,6 +79,11 @@ void TaskDialog::open()
 
 }
 
+void TaskDialog::closed()
+{
+
+}
+
 void TaskDialog::clicked(int)
 {
 

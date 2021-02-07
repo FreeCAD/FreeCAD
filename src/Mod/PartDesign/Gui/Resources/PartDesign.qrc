@@ -6,6 +6,7 @@
         <file>icons/PartDesign_Additive_Ellipsoid.svg</file>
         <file>icons/PartDesign_Additive_Loft.svg</file>
         <file>icons/PartDesign_Additive_Pipe.svg</file>
+        <file>icons/PartDesign_Additive_Helix.svg</file>
         <file>icons/PartDesign_Additive_Prism.svg</file>
         <file>icons/PartDesign_Additive_Sphere.svg</file>
         <file>icons/PartDesign_Additive_Torus.svg</file>
@@ -29,7 +30,10 @@
         <file>icons/PartDesign_Line.svg</file>
         <file>icons/PartDesign_LinearPattern.svg</file>
         <file>icons/PartDesign_GenericPattern.svg</file>
+        <file>icons/PartDesign_Migrate.svg</file>
         <file>icons/PartDesign_Mirrored.svg</file>
+        <file>icons/PartDesign_MoveFeature.svg</file>
+        <file>icons/PartDesign_MoveFeatureInTree.svg</file>
         <file>icons/PartDesign_MoveTip.svg</file>
         <file>icons/PartDesign_MultiTransform.svg</file>
         <file>icons/PartDesign_Pad.svg</file>
@@ -52,6 +56,7 @@
         <file>icons/PartDesign_Subtractive_Ellipsoid.svg</file>
         <file>icons/PartDesign_Subtractive_Loft.svg</file>
         <file>icons/PartDesign_Subtractive_Pipe.svg</file>
+        <file>icons/PartDesign_Subtractive_Helix.svg</file>
         <file>icons/PartDesign_Subtractive_Prism.svg</file>
         <file>icons/PartDesign_Subtractive_Sphere.svg</file>
         <file>icons/PartDesign_Subtractive_Torus.svg</file>

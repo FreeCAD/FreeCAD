@@ -71,7 +71,7 @@ private:
     Plane plane() const;
 
 private:
-    Ui_CrossSections* ui;
+    std::unique_ptr<Ui_CrossSections> ui;
     Base::BoundBox3d bbox;
     ViewProviderCrossSections* vp;
     QPointer<Gui::View3DInventor> view;

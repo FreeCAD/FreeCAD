@@ -446,7 +446,7 @@ def placements_on_path(shapeRotation, pathwire, count, xlate, align,
     closedpath = DraftGeomUtils.isReallyClosed(pathwire)
     normal = DraftGeomUtils.get_normal(pathwire)
     # for backward compatibility with previous getNormal implementation
-    if normal == None:
+    if normal is None:
         normal = App.Vector(0, 0, 1)
 
     if forceNormal and normalOverride:

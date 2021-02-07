@@ -152,7 +152,6 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewSection* section) :
 
 TaskSectionView::~TaskSectionView()
 {
-    delete ui;
 }
 
 void TaskSectionView::setUiPrimary()

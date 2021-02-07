@@ -36,7 +36,7 @@ class ViewProviderTube:
     def __init__(self, obj):
         ''' Set this object to the proxy object of the actual view provider '''
         obj.Proxy = self
-        obj.addExtension("PartGui::ViewProviderAttachExtensionPython", self)
+        obj.addExtension("PartGui::ViewProviderAttachExtensionPython")
         obj.setIgnoreOverlayIcon(True, "PartGui::ViewProviderAttachExtensionPython")
 
     def attach(self, obj):

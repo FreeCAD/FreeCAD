@@ -752,6 +752,7 @@ void TaskView::removeDialog(void)
     addTaskWatcher();
     
     if (remove) {
+        remove->closed();
         remove->emitDestructionSignal();
         delete remove;
     }
@@ -887,6 +888,11 @@ void TaskView::removeTaskWatcher(void)
 
 void TaskView::accept()
 {
+    if (!ActiveDialog) { // Protect against segfaults due to out-of-order deletions
+        Base::Console().Warning("ActiveDialog was null in call to TaskView::accept()\n");
+        return;
+    }
+
     // Make sure that if 'accept' calls 'closeDialog' the deletion is postponed until
     // the dialog leaves the 'accept' method
     ActiveDialog->setProperty("taskview_accept_or_reject", true);
@@ -898,6 +904,11 @@ void TaskView::accept()
 
 void TaskView::reject()
 {
+    if (!ActiveDialog) { // Protect against segfaults due to out-of-order deletions
+        Base::Console().Warning("ActiveDialog was null in call to TaskView::reject()\n");
+        return;
+    }
+
     // Make sure that if 'reject' calls 'closeDialog' the deletion is postponed until
     // the dialog leaves the 'reject' method
     ActiveDialog->setProperty("taskview_accept_or_reject", true);

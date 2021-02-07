@@ -33,12 +33,12 @@ namespace PartDesign
 
 class PartDesignExport Pipe : public ProfileBased
 {
-    PROPERTY_HEADER(PartDesign::Pad);
+    PROPERTY_HEADER(PartDesign::Pipe);
 
 public:
     Pipe();
 
-    
+
     App::PropertyLinkSub     Spine;
     App::PropertyBool        SpineTangent;
     App::PropertyLinkSub     AuxillerySpine;
@@ -57,12 +57,26 @@ public:
         return "PartDesignGui::ViewProviderPipe";
     }
     //@}
-    
+
+    static App::DocumentObjectExecReturn *_execute(ProfileBased *feat,
+                                                   const TopoShape &path,
+                                                   int transition = 0,
+                                                   const TopoShape &auxpath = TopoShape(),
+                                                   bool auxCurveLinear = true,
+                                                   int mode = 2,
+                                                   const Base::Vector3d &binormalVector = Base::Vector3d(),
+                                                   int transformation = 0,
+                                                   const std::vector<App::DocumentObject*> &multisections = {});
 protected:
     ///get the given edges and all their tangent ones
     void getContiniusEdges(Part::TopoShape TopShape, std::vector< std::string >& SubNames);
     TopoShape buildPipePath(const App::PropertyLinkSub &link, const gp_Trsf &trsf);
-    void setupAlgorithm(BRepOffsetAPI_MakePipeShell& mkPipeShell, TopoShape& auxshape);
+    static void setupAlgorithm(BRepOffsetAPI_MakePipeShell& mkPipeShell,
+                               int mode,
+                               const Base::Vector3d &binormalVector,
+                               int transition,
+                               const TopoShape& auxshape,
+                               bool auxCurveLinear);
 
 private:
     static const char* TypeEnums[];
@@ -72,14 +86,14 @@ private:
 };
 
 class PartDesignExport AdditivePipe : public Pipe {
-    
+
     PROPERTY_HEADER(PartDesign::AdditivePipe);
 public:
     AdditivePipe();
 };
 
 class PartDesignExport SubtractivePipe : public Pipe {
-    
+
     PROPERTY_HEADER(PartDesign::SubtractivePipe);
 public:
     SubtractivePipe();
@@ -88,4 +102,4 @@ public:
 } //namespace PartDesign
 
 
-#endif // PART_Pad_H
+#endif // PARTDESIGN_Pipe_H

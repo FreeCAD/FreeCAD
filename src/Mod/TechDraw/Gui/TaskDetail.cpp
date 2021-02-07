@@ -238,7 +238,6 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
 TaskDetail::~TaskDetail()
 {
     m_ghost->deleteLater();  //this might not exist if scene is destroyed before TaskDetail is deleted?
-    delete ui;
 }
 
 void TaskDetail::updateTask()

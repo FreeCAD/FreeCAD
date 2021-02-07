@@ -78,8 +78,9 @@ public:
         PartialDoc = 7,
         AllowPartialRecompute = 8, // allow recomputing editing object if SkipRecompute is set
         TempDoc = 9, // Mark as temporary document without prompt for save
-        RecomputeOnRestore = 10, // Mark pending recompute on restore for migration purpose
-        LinkStampChanged = 11, // Indicates during restore time if any linked document's time stamp has changed
+        RestoreError = 10,
+        RecomputeOnRestore = 11, // Mark pending recompute on restore for migration purpose
+        LinkStampChanged = 12, // Indicates during restore time if any linked document's time stamp has changed
     };
 
     /** @name Properties */

@@ -44,6 +44,7 @@ public:
     std::vector<App::DocumentObject*> claimChildren(void)const;
 
     virtual bool onDelete(const std::vector<std::string> &);
+
 };
 
 } /* PartDesignGui  */

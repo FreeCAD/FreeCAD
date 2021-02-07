@@ -23,6 +23,7 @@
 #ifndef RENAMEOBJECTIDENTIFIEREXPRESSIONVISITOR_H
 #define RENAMEOBJECTIDENTIFIEREXPRESSIONVISITOR_H
 
+#include <functional>
 #include <Base/BaseClass.h>
 #include "Expression.h"
 
@@ -119,6 +120,21 @@ public:
 private:
     int rowOffset;
     int colOffset;
+};
+
+class GenericExpressionVisitor : public ExpressionVisitor {
+public:
+    typedef std::function<void(ExpressionVisitor*, Expression &)> FuncType;
+    GenericExpressionVisitor(FuncType f)
+        :func(f)
+    {}
+
+    void visit(Expression &node) {
+        func(this, node);
+    }
+
+private:
+    FuncType func;
 };
 
 }

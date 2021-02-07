@@ -65,6 +65,7 @@
 #include "ViewProviderThickness.h"
 #include "ViewProviderPipe.h"
 #include "ViewProviderLoft.h"
+#include "ViewProviderHelix.h"
 #include "ViewProviderShapeBinder.h"
 #include "ViewProviderBase.h"
 #include "ViewProviderWrap.h"
@@ -167,6 +168,7 @@ PyMOD_INIT_FUNC(PartDesignGui)
     PartDesignGui::ViewProviderPrimitive     ::init();
     PartDesignGui::ViewProviderPipe          ::init();
     PartDesignGui::ViewProviderLoft          ::init();
+    PartDesignGui::ViewProviderHelix         ::init();
     PartDesignGui::ViewProviderBase          ::init();
     PartDesignGui::ViewProviderWrap          ::init();
     PartDesignGui::ViewProviderAuxGroup      ::init();

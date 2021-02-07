@@ -195,9 +195,10 @@ QXmlName QDomNodeModel::name ( const QXmlNodeModelIndex & ni ) const
     return QXmlName(m_Pool, n.nodeName(), QString(), QString());
 }
 
-QVector<QXmlName> QDomNodeModel::namespaceBindings(const QXmlNodeModelIndex & ni ) const
+QVector<QXmlName> QDomNodeModel::namespaceBindings(const QXmlNodeModelIndex & ni) const
 {
     QDomNode n = toDomNode(ni);
+    bool xmlNamespaceWasDefined = false;
 
     QVector<QXmlName> res;
     while (!n.isNull())
@@ -219,12 +220,25 @@ QVector<QXmlName> QDomNodeModel::namespaceBindings(const QXmlNodeModelIndex & ni
                 for (x = 0; x < res.size(); ++x)
                     if (res.at(x).prefix(m_Pool) == p) break;
 
-                if (x >= res.size())
+                if (x >= res.size()) {
                     res.append(QXmlName(m_Pool, QString::fromUtf8("xmlns"), attrs.item(i).nodeValue(), p));
-             }
+                    if (p == QString::fromLatin1("xml"))
+                        xmlNamespaceWasDefined = true;
+                }
+            }
         }
 
         n = n.parentNode();
+    }
+
+    // Per the XML standard:
+    // "The prefix xml is by definition bound to the namespace name http://www.w3.org/XML/1998/namespace. It MAY, but 
+    // need not, be declared, and MUST NOT be bound to any other namespace name. Other prefixes MUST NOT be bound to 
+    // this namespace name, and it MUST NOT be declared as the default namespace."
+    //
+    // If the document does not specifically include this namespace, add it now:
+    if (!xmlNamespaceWasDefined) {
+        res.append(QXmlName(m_Pool, QString::fromUtf8("xmlns"), QString::fromLatin1("http://www.w3.org/XML/1998/namespace"), QString::fromLatin1("xml")));
     }
 
     return res;

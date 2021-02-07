@@ -79,7 +79,7 @@ class DraftLink(DraftObject):
     def attach(self, obj):
         """Set up the properties when the object is attached."""
         if self.use_link:
-            obj.addExtension('App::LinkExtensionPython', None)
+            obj.addExtension('App::LinkExtensionPython')
             self.linkSetup(obj)
 
     def canLinkProperties(self, _obj):

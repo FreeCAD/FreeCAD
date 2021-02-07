@@ -92,13 +92,13 @@ public:
         return text;
     }
 
-    bool validate(QString& input, Base::Quantity& result) const
+    bool validate(App::DocumentObject *owner, QString& input, Base::Quantity& result) const
     {
         bool success = false;
         QString tmp = input;
         int pos = 0;
         QValidator::State state;
-        Base::Quantity res = validateAndInterpret(tmp, pos, state);
+        Base::Quantity res = validateAndInterpret(owner, tmp, pos, state);
         res.setFormat(quantity.getFormat());
         if (state == QValidator::Acceptable) {
             success = true;
@@ -109,7 +109,7 @@ public:
             tmp = tmp.trimmed();
             tmp += QLatin1Char(' ');
             tmp += unitStr;
-            Base::Quantity res2 = validateAndInterpret(tmp, pos, state);
+            Base::Quantity res2 = validateAndInterpret(owner, tmp, pos, state);
             res2.setFormat(quantity.getFormat());
             if (state == QValidator::Acceptable) {
                 success = true;
@@ -120,7 +120,7 @@ public:
 
         return success;
     }
-    Base::Quantity validateAndInterpret(QString& input, int& pos, QValidator::State& state) const
+    Base::Quantity validateAndInterpret(App::DocumentObject *owner, QString& input, int& pos, QValidator::State& state) const
     {
         Base::Quantity res;
         const double max = this->maximum;
@@ -207,15 +207,26 @@ public:
             if (locale.positiveSign() != QLatin1Char('+'))
                 copy.replace(locale.positiveSign(), QLatin1Char('+'));
 
-            try {
-                QString copy2 = copy;
-                copy2.remove(locale.groupSeparator());
+            QString copy2 = copy;
+            copy2.remove(locale.groupSeparator());
 
+            try {
                 res = Base::Quantity::parse(copy2);
                 value = res.getValue();
                 ok = true;
             }
             catch (Base::Exception&) {
+            }
+            if (!ok && owner) {
+                try {
+                    auto expr = App::ExpressionParser::parse(owner, copy2.toUtf8().constData());
+                    if (App::isSimpleExpression(expr.get())) {
+                        res = anyToQuantity(expr->getValueAsAny());
+                        value = res.getValue();
+                        ok = true;
+                    }
+                } catch (Base::Exception&) {
+                }
             }
 
             if (!ok) {
@@ -584,7 +595,7 @@ void QuantitySpinBox::userInput(const QString & text)
 
     QString tmp = text;
     Base::Quantity res;
-    if (d->validate(tmp, res)) {
+    if (d->validate(getPath().getOwner(), tmp, res)) {
         d->validStr = tmp;
         d->validInput = true;
     }
@@ -999,7 +1010,7 @@ void QuantitySpinBox::focusOutEvent(QFocusEvent * event)
     int pos = 0;
     QString text = lineEdit()->text();
     QValidator::State state;
-    d->validateAndInterpret(text, pos, state);
+    d->validateAndInterpret(getPath().getOwner(), text, pos, state);
     if (state != QValidator::Acceptable) {
         lineEdit()->setText(d->validStr);
     }
@@ -1058,10 +1069,10 @@ Base::Quantity QuantitySpinBox::valueFromText(const QString &text) const
     QString copy = text;
     int pos = lineEdit()->cursorPosition();
     QValidator::State state = QValidator::Acceptable;
-    Base::Quantity quant = d->validateAndInterpret(copy, pos, state);
+    Base::Quantity quant = d->validateAndInterpret(getPath().getOwner(), copy, pos, state);
     if (state != QValidator::Acceptable) {
         fixup(copy);
-        quant = d->validateAndInterpret(copy, pos, state);
+        quant = d->validateAndInterpret(getPath().getOwner(), copy, pos, state);
     }
 
     return quant;

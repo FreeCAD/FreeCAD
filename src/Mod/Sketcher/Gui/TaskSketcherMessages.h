@@ -63,7 +63,7 @@ protected:
 
 private:
     QWidget* proxy;
-    Ui_TaskSketcherMessages* ui;
+    std::unique_ptr<Ui_TaskSketcherMessages> ui;
 };
 
 } //namespace SketcherGui

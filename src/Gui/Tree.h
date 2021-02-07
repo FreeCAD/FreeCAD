@@ -115,6 +115,7 @@ public:
     static bool setupObjectMenu(QMenu &menu, const App::SubObjectT *sobj=nullptr);
     static void restoreDocumentItem(Gui::Document *gdoc, Base::XMLReader &reader);
     static bool saveDocumentItem(const Gui::Document *gdoc, Base::Writer &writer, const char *key);
+    static void synchronizeSelectionCheckBoxes();
 
     static int iconSize();
 
@@ -228,6 +229,7 @@ protected Q_SLOTS:
 
 private Q_SLOTS:
     void onItemSelectionChanged(void);
+    void onItemChanged(QTreeWidgetItem*, int);
     void onItemEntered(QTreeWidgetItem * item);
     void onItemCollapsed(QTreeWidgetItem * item);
     void onItemExpanded(QTreeWidgetItem * item);

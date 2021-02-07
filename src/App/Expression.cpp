@@ -62,6 +62,7 @@
 #include <climits>
 #include "Expression.h"
 #include "ExpressionParser.h"
+#include "ExpressionVisitors.h"
 #include <Base/Unit.h>
 #include <App/PropertyUnits.h>
 #include <App/ObjectIdentifier.h>
@@ -855,6 +856,25 @@ bool isPyMapping(const Py::Object &obj)
     // Python3 consider sequence supporting slicing protocol as mapping as well,
     // but they do not have keys or values.
     return obj.isMapping() && obj.hasAttr("keys") && obj.hasAttr("values");
+}
+
+bool isSimpleExpression(const Expression *expr)
+{
+    GenericExpressionVisitor visitor(
+        [](ExpressionVisitor *, Expression &e) {
+            if (!e.isDerivedFrom(UnitExpression::getClassTypeId())
+                    && !e.isDerivedFrom(OperatorExpression::getClassTypeId())
+                    && !e.isDerivedFrom(ConditionalExpression::getClassTypeId())
+                    && !e.isDerivedFrom(SimpleStatement::getClassTypeId()))
+                throw Base::RuntimeError();
+        });
+
+    try {
+        const_cast<Expression*>(expr)->visit(visitor);
+        return true;
+    } catch (...) {
+        return false;
+    }
 }
 
 } // namespace App

@@ -57,7 +57,7 @@ protected:
     virtual void refresh();
 
 private:
-    Ui_TaskThicknessParameters* ui;
+    std::unique_ptr<Ui_TaskThicknessParameters> ui;
 };
 
 /// simulation dialog for the TaskView

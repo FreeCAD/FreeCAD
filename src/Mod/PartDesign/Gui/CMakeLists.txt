@@ -57,6 +57,7 @@ set(PartDesignGui_MOC_HDRS
     TaskPipeParameters.h
     TaskLoftParameters.h
     TaskWrapParameters.h
+    TaskHelixParameters.h
     Utils.h
 )
 fc_wrap_cpp(PartDesignGui_MOC_SRCS ${PartDesignGui_MOC_HDRS})
@@ -94,6 +95,7 @@ set(PartDesignGui_UIC_SRCS
     TaskLoftParameters.ui
     TaskWrapParameters.ui
     DlgReference.ui
+    TaskHelixParameters.ui
 )
 
 if(BUILD_QT5)
@@ -171,7 +173,9 @@ SET(PartDesignGuiViewProvider_SRCS
     ViewProviderPipe.cpp
     ViewProviderLoft.h
     ViewProviderLoft.cpp
-    ViewProviderBase.h 
+    ViewProviderHelix.h
+    ViewProviderHelix.cpp
+    ViewProviderBase.h
     ViewProviderBase.cpp
     ViewProviderWrap.cpp
     ViewProviderWrap.h
@@ -260,6 +264,9 @@ SET(PartDesignGuiTaskDlgs_SRCS
     TaskWrapParameters.h
     TaskWrapParameters.cpp
     TaskWrapParameters.ui
+    TaskHelixParameters.ui
+    TaskHelixParameters.h
+    TaskHelixParameters.cpp
 )
 SOURCE_GROUP("TaskDialogs" FILES ${PartDesignGuiTaskDlgs_SRCS})
 

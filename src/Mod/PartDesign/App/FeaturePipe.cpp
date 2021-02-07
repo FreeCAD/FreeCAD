@@ -111,11 +111,56 @@ short Pipe::mustExecute() const
     return ProfileBased::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Pipe::execute(void)
+App::DocumentObjectExecReturn *Pipe::execute()
 {
-    TopoShape sketchshape = getVerifiedFace();
+    TopoShape path, auxpath;
+    try {
+        auto invTrsf = getLocation().Inverted().Transformation();
+
+        //build the paths
+        path = buildPipePath(Spine,invTrsf);
+        if(path.isNull())
+            return new App::DocumentObjectExecReturn("Invalid spine");
+
+        // auxiliary
+        if(Mode.getValue()==3) {
+            auxpath = buildPipePath(AuxillerySpine,invTrsf);
+            if(auxpath.isNull())
+                return new App::DocumentObjectExecReturn("invalid auxiliary spine");
+        }
+    } catch (Standard_Failure& e) {
+        return new App::DocumentObjectExecReturn(e.GetMessageString());
+    } catch (const Base::Exception & e) {
+        e.ReportException();
+        return new App::DocumentObjectExecReturn(e.what());
+    } catch (...) {
+        return new App::DocumentObjectExecReturn("Unknown error");
+    }
+
+    return _execute(this,
+                    path,
+                    Transition.getValue(),
+                    auxpath,
+                    AuxilleryCurvelinear.getValue(),
+                    Mode.getValue(),
+                    Binormal.getValue(),
+                    Transformation.getValue(),
+                    Sections.getValues());
+}
+
+App::DocumentObjectExecReturn *Pipe::_execute(ProfileBased *feat,
+                                              const TopoShape &path,
+                                              int transition,
+                                              const TopoShape &auxpath,
+                                              bool auxCurveLinear,
+                                              int mode,
+                                              const Base::Vector3d &binormalVector,
+                                              int transformation,
+                                              const std::vector<App::DocumentObject*> &multisections)
+{
+    TopoShape sketchshape = feat->getVerifiedFace();
     if (sketchshape.isNull())
-        return new App::DocumentObjectExecReturn("Pipe: No valid sketch or face as first section");
+        return new App::DocumentObjectExecReturn("No valid sketch or face as section");
     else {
         //TODO: currently we only allow planar faces. the reason for this is that with other faces in front, we could
         //not use the current simulate approach and build the start and end face from the wires. As the shell
@@ -123,40 +168,25 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         //We would need a method to translate the front shape to match the shell starting position somehow...
         gp_Pln pln;
         if (!sketchshape.findPlane(pln))
-            return new App::DocumentObjectExecReturn("Pipe: Only planar faces supported");
+            return new App::DocumentObjectExecReturn("Only planar faces supported");
     }
     auto wires = sketchshape.getSubTopoShapes(TopAbs_WIRE);
 
     // if the Base property has a valid shape, fuse the pipe into it
     TopoShape base;
     try {
-        base = getBaseShape();
+        base = feat->getBaseShape();
     } catch (const Base::Exception&) {
     }
 
     try {
         //setup the location
-        this->positionByPrevious();
-        TopLoc_Location invObjLoc = this->getLocation().Inverted();
-        auto invTrsf = invObjLoc.Transformation();
+        feat->positionByPrevious();
+        TopLoc_Location invObjLoc = feat->getLocation().Inverted();
         if(!base.isNull())
             base.move(invObjLoc);
 
-        //build the paths
-        auto path = buildPipePath(Spine,invTrsf);
-        if(path.isNull())
-            return new App::DocumentObjectExecReturn("Invalid spine.");
-
-        // auxiliary
-        TopoShape auxpath;
-        if(Mode.getValue()==3) {
-            auxpath = buildPipePath(AuxillerySpine,invTrsf);
-            if(auxpath.isNull())
-                return new App::DocumentObjectExecReturn("invalid auxiliary spine.");
-        }
-
         //build up multisections
-        auto multisections = Sections.getValues();
         std::vector<std::vector<TopoShape>> wiresections;
         wiresections.reserve(wires.size());
         for(TopoShape& wire : wires)
@@ -165,25 +195,25 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         Handle(Law_Function) scalinglaw;
 
         //see if we shall use multiple sections
-        if(Transformation.getValue() == 1) {
+        if(transformation == 1) {
 
             //TODO: we need to order the sections to prevent occ from crahsing, as makepieshell connects
             //the sections in the order of adding
 
             for(App::DocumentObject* obj : multisections) {
-                auto shape = getTopoShape(obj);
+                auto shape = Part::Feature::getTopoShape(obj);
                 if(shape.countSubShapes(TopAbs_WIRE) != wiresections.size())
                     return new App::DocumentObjectExecReturn(
                             "Multisections need to have the same amount of inner wires as the base section");
 
-                if (std::abs(Fit.getValue()) > Precision::Confusion()
-                        || std::abs(InnerFit.getValue()) > Precision::Confusion()) {
+                if (std::abs(feat->Fit.getValue()) > Precision::Confusion()
+                        || std::abs(feat->InnerFit.getValue()) > Precision::Confusion()) {
                     try {
                         auto face = shape.makEFace();
-                        shape = face.makEOffsetFace(Fit.getValue(),
-                                                    InnerFit.getValue(),
-                                                    static_cast<short>(FitJoin.getValue()),
-                                                    static_cast<short>(InnerFitJoin.getValue()));
+                        shape = face.makEOffsetFace(feat->Fit.getValue(),
+                                                    feat->InnerFit.getValue(),
+                                                    static_cast<short>(feat->FitJoin.getValue()),
+                                                    static_cast<short>(feat->InnerFitJoin.getValue()));
                     } catch (Standard_Failure &e) {
                         FC_ERR("Failed to fit wires of section "
                                 << obj->getFullName() << ": " << e.GetMessageString());
@@ -198,7 +228,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
             }
         }
         /*//build the law functions instead
-        else if(Transformation.getValue() == 2) {
+        else if(transformation == 2) {
             if(ScalingData.getValues().size()<1)
                 return new App::DocumentObjectExecReturn("No valid data given for linear scaling mode");
 
@@ -207,7 +237,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
 
             scalinglaw = lin;
         }
-        else if(Transformation.getValue() == 3) {
+        else if(transformation == 3) {
             if(ScalingData.getValues().size()<1)
                 return new App::DocumentObjectExecReturn("No valid data given for S-shape scaling mode");
 
@@ -223,7 +253,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         for(auto& wires : wiresections) {
 
             BRepOffsetAPI_MakePipeShell mkPS(TopoDS::Wire(path.getShape()));
-            setupAlgorithm(mkPS, auxpath);
+            setupAlgorithm(mkPS, mode, binormalVector, transition, auxpath, auxCurveLinear);
 
             if(!scalinglaw) {
                 for(TopoShape& wire : wires) {
@@ -239,9 +269,9 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
             }
 
             if (!mkPS.IsReady())
-                return new App::DocumentObjectExecReturn("Pipe could not be built");
+                return new App::DocumentObjectExecReturn("Shape could not be built");
 
-            TopoShape shell(0,getDocument()->getStringHasher());
+            TopoShape shell(0, feat->getDocument()->getStringHasher());
             shell.makEShape(mkPS,wires);
             shells.push_back(shell);
 
@@ -268,7 +298,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
             }
         }
 
-        TopoShape result(0,getDocument()->getStringHasher());
+        TopoShape result(0,feat->getDocument()->getStringHasher());
 
         if (!frontwires.empty()) {
             // build the end faces, sew the shell and build the final solid
@@ -305,45 +335,45 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         }
 
         //result.Move(invObjLoc);
-        AddSubShape.setValue(result);
-        result.Tag = -getID();
+        feat->AddSubShape.setValue(result);
+        result.Tag = -feat->getID();
 
         if(base.isNull()) {
-            result = refineShapeIfActive(result);
-            Shape.setValue(getSolid(result));
+            result = feat->refineShapeIfActive(result);
+            feat->Shape.setValue(feat->getSolid(result));
             return App::DocumentObject::StdReturn;
         }
 
-        TopoShape boolOp(0,getDocument()->getStringHasher());
+        TopoShape boolOp(0,feat->getDocument()->getStringHasher());
 
-        if(getAddSubType() == FeatureAddSub::Additive) {
+        if(feat->getAddSubType() == FeatureAddSub::Additive) {
             try {
                 boolOp.makEFuse({base,result});
             }catch(Standard_Failure&) {
-                return new App::DocumentObjectExecReturn("Adding the pipe failed");
+                return new App::DocumentObjectExecReturn("Solid adding failed");
             }
-            boolOp = this->getSolid(boolOp);
+            boolOp = feat->getSolid(boolOp);
             // lets check if the result is a solid
             if (boolOp.isNull())
                 return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
 
-            boolOp = refineShapeIfActive(boolOp);
-            Shape.setValue(getSolid(boolOp));
+            boolOp = feat->refineShapeIfActive(boolOp);
+            feat->Shape.setValue(feat->getSolid(boolOp));
         }
-        else if(getAddSubType() == FeatureAddSub::Subtractive) {
+        else if(feat->getAddSubType() == FeatureAddSub::Subtractive) {
             try {
                 boolOp.makECut({base,result});
             }catch(Standard_Failure&) {
-                return new App::DocumentObjectExecReturn("Subtracting the pipe failed");
+                return new App::DocumentObjectExecReturn("Solid subtracting failed");
             }
             // we have to get the solids (fuse sometimes creates compounds)
-            boolOp = this->getSolid(boolOp);
+            boolOp = feat->getSolid(boolOp);
             // lets check if the result is a solid
             if (boolOp.isNull())
                 return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
 
-            boolOp = refineShapeIfActive(boolOp);
-            Shape.setValue(getSolid(boolOp));
+            boolOp = feat->refineShapeIfActive(boolOp);
+            feat->Shape.setValue(feat->getSolid(boolOp));
         }
 
         return App::DocumentObject::StdReturn;
@@ -358,11 +388,16 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
     }
 }
 
-void Pipe::setupAlgorithm(BRepOffsetAPI_MakePipeShell& mkPipeShell, TopoShape& auxshape) {
-
+void Pipe::setupAlgorithm(BRepOffsetAPI_MakePipeShell& mkPipeShell,
+                          int mode,
+                          const Base::Vector3d &bVec,
+                          int transition,
+                          const TopoShape& auxshape,
+                          bool auxCurveLinear)
+{
     mkPipeShell.SetTolerance(Precision::Confusion());
 
-    switch(Transition.getValue()) {
+    switch(transition) {
         case 0:
             mkPipeShell.SetTransitionMode(BRepBuilderAPI_Transformed);
             break;
@@ -375,8 +410,7 @@ void Pipe::setupAlgorithm(BRepOffsetAPI_MakePipeShell& mkPipeShell, TopoShape& a
     }
 
     bool auxiliary = false;
-    const Base::Vector3d& bVec = Binormal.getValue();
-    switch(Mode.getValue()) {
+    switch(mode) {
         case 1:
             mkPipeShell.SetMode(gp_Ax2(gp_Pnt(0,0,0), gp_Dir(0,0,1), gp_Dir(1,0,0)));
             break;
@@ -392,7 +426,7 @@ void Pipe::setupAlgorithm(BRepOffsetAPI_MakePipeShell& mkPipeShell, TopoShape& a
     }
 
     if(auxiliary) {
-        mkPipeShell.SetMode(TopoDS::Wire(auxshape.getShape()), AuxilleryCurvelinear.getValue());
+        mkPipeShell.SetMode(TopoDS::Wire(auxshape.getShape()), auxCurveLinear);
         //mkPipeShell.SetMode(TopoDS::Wire(auxshape), AuxilleryCurvelinear.getValue(), BRepFill_ContactOnBorder);
     }
 }

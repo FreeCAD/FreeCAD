@@ -62,7 +62,7 @@ public:
     void addNewSolidCheckBox(QWidget *widget);
     void addUpdateViewCheckBox(QWidget *widget);
 
-    virtual void refresh();
+    virtual void refresh() {}
 
     void setupTransaction();
 
@@ -71,6 +71,9 @@ protected Q_SLOTS:
     void onUpdateView(bool on);
     void onNewSolidChanged(bool);
     void onUpdateViewTimer();
+
+protected:
+    virtual void _refresh();
 
 private:
     /** Notifies when the object is about to be removed. */

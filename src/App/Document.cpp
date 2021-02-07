@@ -3018,6 +3018,7 @@ void Document::restore(Base::XMLReader &reader,
         throw;
     } catch (const Base::Exception& e) {
         Base::Console().Error("Invalid Document.xml: %s\n", e.what());
+        setStatus(Document::RestoreError, true);
     }
 
     d->partialLoadObjects.clear();

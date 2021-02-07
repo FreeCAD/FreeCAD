@@ -116,6 +116,7 @@ public:
 
 public:
     void open();
+    void closed();
     bool accept();
     bool reject();
 

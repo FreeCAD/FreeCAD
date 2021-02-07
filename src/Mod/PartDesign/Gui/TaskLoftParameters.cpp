@@ -162,11 +162,11 @@ private:
 /* TRANSLATOR PartDesignGui::TaskLoftParameters */
 
 TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView,bool /*newObj*/, QWidget *parent)
-    : TaskSketchBasedParameters(LoftView, parent, "PartDesign_Additive_Loft",tr("Loft parameters"))
+    : TaskSketchBasedParameters(LoftView, parent, "PartDesign_Additive_Loft", tr("Loft parameters"))
+    , ui(new Ui_TaskLoftParameters)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskLoftParameters();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
@@ -219,7 +219,6 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView,bool /*newObj*
 TaskLoftParameters::~TaskLoftParameters()
 {
     exitSelectionMode();
-    delete ui;
 }
 
 void TaskLoftParameters::updateUI()
@@ -272,7 +271,6 @@ void TaskLoftParameters::refresh()
     for (QWidget* child : proxy->findChildren<QWidget*>())
         child->blockSignals(false);
 
-    TaskSketchBasedParameters::refresh();
 }
 
 void TaskLoftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)

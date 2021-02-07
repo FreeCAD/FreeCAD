@@ -40,10 +40,12 @@
 #include <Base/Writer.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
+#include <Base/StdStlTools.h>
 #include <App/ExpressionParser.h>
 #include <App/Application.h>
 #include "Sheet.h"
 #include <iomanip>
+#include <cctype>
 
 Q_DECLARE_METATYPE(Base::Quantity)
 
@@ -303,7 +305,7 @@ void Cell::afterRestore() {
 void Cell::setContent(const char * value, bool eval)
 {
     PropertySheet::AtomicPropertyChange signaller(*owner);
-    ExpressionPtr expr;
+    ExpressionPtr newExpr;
 
     static ParameterGrp::handle hGrp;
     if(!hGrp) {
@@ -320,40 +322,57 @@ void Cell::setContent(const char * value, bool eval)
         }
         if (*value == '=') {
             try {
-                expr = owner->parse(value + 1, 0, true);
+                newExpr = owner->parse(value + 1, 0, true);
             }
             catch (Base::Exception & e) {
-                expr = App::StringExpression::create(owner->sheet(), value);
+                newExpr = App::StringExpression::create(owner->sheet(), value);
                 setParseException(e.what());
             }
         }
         else if (*value == '\'')
-            expr = App::StringExpression::create(owner->sheet(), value + 1);
+            newExpr = App::StringExpression::create(owner->sheet(), value + 1);
         else if (*value != '\0') {
+            // check if value is just a number
             char * end;
             errno = 0;
-            double float_value = strtod(value, &end);
-            if (!*end && errno == 0)
-                expr = App::NumberExpression::create(owner->sheet(), Quantity(float_value));
-            else if (hGrp->GetBool("AutoParseContent", true)) {
-                try {
-                    expr = owner->parse(value);
-                    owner->eval(expr.get());
-                }
-                catch (Base::Exception &e) {
-                    expr.reset();
+            const double float_value = strtod(value, &end);
+            if (errno == 0) {
+                const bool isEndEmpty = *end == '\0' || strspn(end, " \t\n\r") == strlen(end);
+                if (isEndEmpty) {
+                    newExpr = App::NumberExpression::create(owner->sheet(), Quantity(float_value));
                 }
             }
 
-            if(!expr)
-                expr = StringExpression::create(owner->sheet(), value);
+            if (!newExpr && hGrp->GetBool("AutoParseContent", false)) {
+                try {
+                    newExpr = owner->parse(value);
+                    owner->eval(newExpr.get());
+                }
+                catch (Base::Exception &e) {
+                    newExpr.reset();
+                }
+            }
+
+            // if not a float and not auto parse, check if it is a quantity or compatible fraction
+            const bool isStartingWithNumber = value != end;
+            if (!newExpr && isStartingWithNumber) {
+                try {
+                    auto parsedExpr = owner->parse(value + 1, 0, true);
+                    if (App::isSimpleExpression(parsedExpr.get()))
+                        newExpr = std::move(parsedExpr);
+                }
+                catch (...) {}
+            }
         }
+
+        if(!newExpr)
+            newExpr = StringExpression::create(owner->sheet(), value);
     }
 
     try {
-        if(eval && expr)
-            expr = expr->eval();
-        setExpression(std::move(expr));
+        if(eval && newExpr)
+            newExpr = newExpr->eval();
+        setExpression(std::move(newExpr));
         signaller.tryInvoke();
     }
     catch (Base::Exception &e) {
@@ -536,15 +555,22 @@ void Cell::setAlias(const std::string &n)
 
         owner->revAliasProp.erase(alias);
 
-        alias = n;
-
         // Update owner
-        if (alias != "") {
+        if (!n.empty()) {
             owner->aliasProp[address] = n;
             owner->revAliasProp[n] = address;
         }
-        else
+        else {
             owner->aliasProp.erase(address);
+        }
+
+        if (!alias.empty()) {
+            // The property may have been added in Sheet::updateAlias
+            auto * docObj = static_cast<App::DocumentObject*>(owner->getContainer());
+            docObj->removeDynamicProperty(alias.c_str());
+        }
+
+        alias = n;
 
         setUsed(ALIAS_SET, !alias.empty());
         setDirty();

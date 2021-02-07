@@ -73,7 +73,6 @@ SketcherGeneralWidget::SketcherGeneralWidget(QWidget *parent)
 
 SketcherGeneralWidget::~SketcherGeneralWidget()
 {
-    delete ui;
 }
 
 void SketcherGeneralWidget::onToggleGridAutoScale(bool checked)

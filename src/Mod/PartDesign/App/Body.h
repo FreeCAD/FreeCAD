@@ -195,6 +195,9 @@ public:
     virtual int isElementVisible(const char *element) const override;
     virtual int setElementVisible(const char *element, bool visible) override;
 
+    // a body is solid if it has features that are solid according to member isSolidFeature.
+    bool isSolid(void);
+
 protected:
     virtual void onSettingDocument() override;
 

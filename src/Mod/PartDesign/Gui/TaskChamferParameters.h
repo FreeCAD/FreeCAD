@@ -64,7 +64,7 @@ protected:
 private:
     void setUpUI(PartDesign::Chamfer* pcChamfer);
 
-    Ui_TaskChamferParameters* ui;
+    std::unique_ptr<Ui_TaskChamferParameters> ui;
 };
 
 /// simulation dialog for the TaskView

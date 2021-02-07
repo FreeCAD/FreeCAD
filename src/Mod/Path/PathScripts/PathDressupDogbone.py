@@ -1108,6 +1108,7 @@ class CommandDressupDogbone:
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
+
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtGui

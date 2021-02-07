@@ -58,7 +58,7 @@ protected:
 
 private:
     QWidget* proxy;
-    Ui_TaskTransformedMessages* ui;
+    std::unique_ptr<Ui_TaskTransformedMessages> ui;
 };
 
 } //namespace PartDesignGui

@@ -72,7 +72,7 @@ void TaskPadParameters::setupUI(bool newObj)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskPadParameters();
+    ui.reset(new Ui_TaskPadParameters());
     ui->setupUi(proxy);
     if (useElement) {
         ui->buttonFace->setText(tr("Element"));
@@ -618,7 +618,6 @@ QString TaskPadParameters::getFaceName(void) const
 
 TaskPadParameters::~TaskPadParameters()
 {
-    delete ui;
 }
 
 void TaskPadParameters::changeEvent(QEvent *e)

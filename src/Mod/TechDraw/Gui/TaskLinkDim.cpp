@@ -86,7 +86,6 @@ TaskLinkDim::TaskLinkDim(std::vector<App::DocumentObject*> parts, std::vector<st
 
 TaskLinkDim::~TaskLinkDim()
 {
-    delete ui;
 }
 
 void TaskLinkDim::loadAvailDims()

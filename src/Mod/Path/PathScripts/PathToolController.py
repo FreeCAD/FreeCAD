@@ -250,7 +250,8 @@ def Create(name='TC: Default Tool', tool=None, toolNumber=1, assignViewProvider=
             if tool.ViewObject:
                 tool.ViewObject.Visibility = False
 
-    obj.Tool = tool
+    if tool:
+        obj.Tool = tool
     obj.ToolNumber = toolNumber
     return obj
 
@@ -260,7 +261,7 @@ def FromTemplate(template, assignViewProvider=True):
     PathLog.track()
 
     name = template.get(ToolControllerTemplate.Name, ToolControllerTemplate.Label)
-    obj = Create(name, assignViewProvider=True)
+    obj = Create(name, tool=False, assignViewProvider=True)
     obj.Proxy.setFromTemplate(obj, template)
 
     return obj

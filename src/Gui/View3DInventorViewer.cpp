@@ -78,6 +78,7 @@
 # include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/nodes/SoTransparencyType.h>
 # include <Inventor/nodes/SoTexture2.h>
+# include <QApplication>
 # include <QEventLoop>
 # include <QKeyEvent>
 # include <QWheelEvent>
@@ -86,7 +87,6 @@
 # include <QStatusBar>
 # include <QBitmap>
 # include <QMimeData>
-# include <QApplication>
 #endif
 
 #include <Inventor/sensors/SoTimerSensor.h>
@@ -186,8 +186,10 @@ using namespace Gui;
 
 // Disabled as bitmap cursor looks really bad on high DPI screen. Use Qt
 // built-in cursor for now.
-#if 0
+//
+// #define FC_USE_BITMAP_CURSOR
 
+#ifdef FC_USE_BITMAP_CURSOR
 /*** zoom-style cursor ******/
 
 #define ZOOM_WIDTH 16
@@ -254,7 +256,6 @@ static unsigned char rotate_mask_bitmap[ROTATE_BYTES] = {
  0xff,0xff,0x00,0xff,0x00,0xff,0x38,0x7f,0x3c,0xff,0x3f,0xff,0x3f,0xff,0x1f,
  0xf7,0x0f
 };
-
 #endif
 
 /*!
@@ -787,20 +788,18 @@ void View3DInventorViewer::init()
 
     //create the cursors
 
-    // QBitmap cursor = QBitmap::fromData(QSize(ROTATE_WIDTH, ROTATE_HEIGHT), rotate_bitmap);
-    // QBitmap mask = QBitmap::fromData(QSize(ROTATE_WIDTH, ROTATE_HEIGHT), rotate_mask_bitmap);
-    // spinCursor = QCursor(cursor, mask, ROTATE_HOT_X, ROTATE_HOT_Y);
+#ifdef FC_USE_BITMAP_CURSOR
     spinCursor = QCursor(Qt::SizeBDiagCursor);
-
-    // cursor = QBitmap::fromData(QSize(ZOOM_WIDTH, ZOOM_HEIGHT), zoom_bitmap);
-    // mask = QBitmap::fromData(QSize(ZOOM_WIDTH, ZOOM_HEIGHT), zoom_mask_bitmap);
-    // zoomCursor = QCursor(cursor, mask, ZOOM_HOT_X, ZOOM_HOT_Y);
     zoomCursor = QCursor(Qt::SizeVerCursor);
-
-    // cursor = QBitmap::fromData(QSize(PAN_WIDTH, PAN_HEIGHT), pan_bitmap);
-    // mask = QBitmap::fromData(QSize(PAN_WIDTH, PAN_HEIGHT), pan_mask_bitmap);
-    // panCursor = QCursor(cursor, mask, PAN_HOT_X, PAN_HOT_Y);
     panCursor = QCursor(Qt::SizeAllCursor);
+#else
+
+    createStandardCursors(devicePixelRatio());
+#   if (QT_VERSION >= 0x050000)
+    connect(this, &View3DInventorViewer::devicePixelRatioChanged,
+            this, &View3DInventorViewer::createStandardCursors);
+#   endif
+#endif
 
     naviCube = new NaviCube(this);
     naviCubeEnabled = true;
@@ -895,6 +894,40 @@ View3DInventorViewer::~View3DInventorViewer()
     SoGLRenderAction* glAction = this->getSoRenderManager()->getGLRenderAction();
     this->getSoRenderManager()->setGLRenderAction(nullptr);
     delete glAction;
+}
+
+void View3DInventorViewer::createStandardCursors(double dpr)
+{
+#ifdef FC_USE_BITMAP_CURSOR
+    QBitmap cursor = QBitmap::fromData(QSize(ROTATE_WIDTH, ROTATE_HEIGHT), rotate_bitmap);
+    QBitmap mask = QBitmap::fromData(QSize(ROTATE_WIDTH, ROTATE_HEIGHT), rotate_mask_bitmap);
+#   if defined(Q_OS_WIN32)
+    cursor.setDevicePixelRatio(dpr);
+    mask.setDevicePixelRatio(dpr);
+#   else
+    Q_UNUSED(dpr)
+#   endif
+    spinCursor = QCursor(cursor, mask, ROTATE_HOT_X, ROTATE_HOT_Y);
+
+    cursor = QBitmap::fromData(QSize(ZOOM_WIDTH, ZOOM_HEIGHT), zoom_bitmap);
+    mask = QBitmap::fromData(QSize(ZOOM_WIDTH, ZOOM_HEIGHT), zoom_mask_bitmap);
+#   if defined(Q_OS_WIN32)
+    cursor.setDevicePixelRatio(dpr);
+    mask.setDevicePixelRatio(dpr);
+#   endif
+    zoomCursor = QCursor(cursor, mask, ZOOM_HOT_X, ZOOM_HOT_Y);
+
+    cursor = QBitmap::fromData(QSize(PAN_WIDTH, PAN_HEIGHT), pan_bitmap);
+    mask = QBitmap::fromData(QSize(PAN_WIDTH, PAN_HEIGHT), pan_mask_bitmap);
+#   if defined(Q_OS_WIN32)
+    cursor.setDevicePixelRatio(dpr);
+    mask.setDevicePixelRatio(dpr);
+#   endif
+    panCursor = QCursor(cursor, mask, PAN_HOT_X, PAN_HOT_Y);
+
+#else
+    (void)dpr;
+#endif
 }
 
 void View3DInventorViewer::aboutToDestroyGLContext()

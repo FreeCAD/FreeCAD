@@ -60,13 +60,13 @@
 using namespace SketcherGui;
 using namespace Gui::TaskView;
 
-TaskSketcherSolverAdvanced::TaskSketcherSolverAdvanced(ViewProviderSketch *sketchView)
-    : TaskBox(Gui::BitmapFactory().pixmap("document-new"),tr("Advanced solver control"),true, 0)
-    , sketchView(sketchView)
+TaskSketcherSolverAdvanced::TaskSketcherSolverAdvanced(ViewProviderSketch *sketchView) :
+    TaskBox(Gui::BitmapFactory().pixmap("document-new"), tr("Advanced solver control"), true, 0),
+    sketchView(sketchView),
+    ui(new Ui_TaskSketcherSolverAdvanced)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskSketcherSolverAdvanced();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
@@ -90,7 +90,6 @@ TaskSketcherSolverAdvanced::TaskSketcherSolverAdvanced(ViewProviderSketch *sketc
 
 TaskSketcherSolverAdvanced::~TaskSketcherSolverAdvanced()
 {
-    delete ui;
 }
 
 void TaskSketcherSolverAdvanced::updateDefaultMethodParameters(void)

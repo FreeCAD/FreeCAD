@@ -28,7 +28,6 @@
 #endif // #ifndef _PreComp_
 
 #include <Base/Console.h>
-#include <Base/Vector3D.h>
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -41,11 +40,8 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 
-#include <Mod/Part/App/PartFeature.h>
-
 #include <Mod/TechDraw/App/DrawViewBalloon.h>
 #include <Mod/TechDraw/App/DrawPage.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/ArrowPropEnum.h>
 
 #include <Mod/TechDraw/Gui/ui_TaskBalloon.h>
@@ -115,7 +111,6 @@ TaskBalloon::TaskBalloon(QGIViewBalloon *parent, ViewProviderBalloon *balloonVP)
 
 TaskBalloon::~TaskBalloon()
 {
-    delete ui;
 }
 
 bool TaskBalloon::accept()

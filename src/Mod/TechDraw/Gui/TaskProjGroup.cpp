@@ -138,7 +138,6 @@ TaskProjGroup::TaskProjGroup(TechDraw::DrawProjGroup* featView, bool mode) :
 
 TaskProjGroup::~TaskProjGroup()
 {
-    delete ui;
 }
 
 void TaskProjGroup::saveGroupState()

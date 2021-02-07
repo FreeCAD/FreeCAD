@@ -52,6 +52,14 @@ class Exporter
         Exporter();
         virtual ~Exporter() = default;
 
+        /// Add object and all subobjects and links etc. Returns the number of stuff added.
+        /*!
+         * @param obj The object to export. If this is a group like object, its
+         *            sub-objects will be added.
+         * @param tol The tolerance/accuracy with which to generate the triangle mesh
+         * @return The number of objects/subobjects that was exported from the document.
+                   See the parameter `accuracy` of ComplexGeoData::getFaces
+         */
         int addObject(App::DocumentObject *obj, float tol);
 
         virtual bool addMesh(const char *name, const MeshObject & mesh) = 0;
@@ -60,7 +68,7 @@ class Exporter
         /// Does some simple escaping of characters for XML-type exports
         static std::string xmlEscape(const std::string &input);
 
-        std::map<const App::DocumentObject *, std::vector<std::string> > cache;
+        std::map<const App::DocumentObject *, std::vector<std::string> > subObjectNameCache;
         std::map<const App::DocumentObject *, MeshObject> meshCache;
 };
 

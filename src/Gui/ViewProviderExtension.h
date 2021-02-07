@@ -140,13 +140,9 @@ public:
     ViewProviderExtensionPythonT() {
         ExtensionT::m_isPythonExtension = true;
         ExtensionT::initExtensionType(ViewProviderExtensionPythonT::getExtensionClassTypeId());
-
-        EXTENSION_ADD_PROPERTY(ExtensionProxy,(Py::Object()));
     }
     virtual ~ViewProviderExtensionPythonT() {
     }
-
-    App::PropertyPythonObject ExtensionProxy;
 };
 
 typedef ViewProviderExtensionPythonT<Gui::ViewProviderExtension> ViewProviderExtensionPython;

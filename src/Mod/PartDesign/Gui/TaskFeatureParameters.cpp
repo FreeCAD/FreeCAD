@@ -75,15 +75,17 @@ void TaskFeatureParameters::slotDeletedObject(const Gui::ViewProviderDocumentObj
 
 void TaskFeatureParameters::slotUndoDocument(const Gui::Document &)
 {
+    _refresh();
     refresh();
 }
 
 void TaskFeatureParameters::slotRedoDocument(const Gui::Document &)
 {
+    _refresh();
     refresh();
 }
 
-void TaskFeatureParameters::refresh()
+void TaskFeatureParameters::_refresh()
 {
     if (!this->vp || !checkBoxNewSolid)
         return;

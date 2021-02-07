@@ -384,7 +384,7 @@ def export(objectslist, filename, argstring):
 # #\better:   append iff MODAL == False
 #                   if command == lastcommand:
 #                       outstring.pop(0)
-                if c.Parameters >= 1:
+                if len(c.Parameters) >= 1:
                     for param in params:
                         # test   print("param: " + param + ",  command: " + command)
                         if param in c.Parameters:

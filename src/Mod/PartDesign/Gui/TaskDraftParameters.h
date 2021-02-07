@@ -65,7 +65,7 @@ protected:
     void onClear(selectionModes mode);
 
 private:
-    Ui_TaskDraftParameters* ui;
+    std::unique_ptr<Ui_TaskDraftParameters> ui;
 };
 
 /// simulation dialog for the TaskView

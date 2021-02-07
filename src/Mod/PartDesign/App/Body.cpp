@@ -269,9 +269,9 @@ std::vector<App::DocumentObject*> Body::addObject(App::DocumentObject *feature)
 {
     if(!isAllowed(feature))
         throw Base::ValueError("Body: object is not allowed");
-    
+
     //TODO: features should not add all links
-    
+
     //only one group per object. If it is in a body the single feature will be removed
     auto *group = App::GroupExtension::getGroupOfObject(feature);
     if(group && group != getExtendedObject())
@@ -293,10 +293,10 @@ std::vector<App::DocumentObject*> Body::addObject(App::DocumentObject *feature)
 }
 
 std::vector< App::DocumentObject* > Body::addObjects(std::vector< App::DocumentObject* > objs) {
-    
+
     for(auto obj : objs)
         addObject(obj);
-    
+
     return objs;
 }
 
@@ -361,7 +361,7 @@ void Body::insertObject(App::DocumentObject* feature, App::DocumentObject* targe
     if (target && !Group.find(target->getNameInDocument())) {
         throw Base::ValueError("Body: the feature we should insert relative to is not part of that body");
     }
-    
+
     //ensure that all origin links are ok
     relinkToOrigin(feature);
 
@@ -523,7 +523,7 @@ void Body::onSettingDocument() {
 
 void Body::onChanged (const App::Property* prop) {
     // we neither load a project nor perform undo/redo
-    if (!this->isRestoring() 
+    if (!this->isRestoring()
             && this->getDocument()
             && !this->getDocument()->isPerformingTransaction()) {
         if (prop == &BaseFeature) {
@@ -601,7 +601,7 @@ std::vector<std::string> Body::getSubObjects(int reason) const {
     return {};
 }
 
-App::DocumentObject *Body::getSubObject(const char *subname, 
+App::DocumentObject *Body::getSubObject(const char *subname,
         PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const
 {
     // PartDesign::Feature now support grouping sibling features, and the user
@@ -641,8 +641,8 @@ App::DocumentObject *Body::getSubObject(const char *subname,
 
     // We return the shape only if there are feature visible inside
     for(auto obj : Group.getValues()) {
-        if(obj->Visibility.getValue() && 
-           obj->isDerivedFrom(PartDesign::Feature::getClassTypeId())) 
+        if(obj->Visibility.getValue() &&
+           obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
         {
             return Part::BodyBase::getSubObject(subname,pyObj,pmat,transform,depth);
         }
@@ -787,4 +787,15 @@ int Body::setElementVisible(const char *element, bool visible)
         return 1;
     }
     return -1;
+}
+
+// a body is solid if it has features that are solid
+bool Body::isSolid()
+{
+    std::vector<App::DocumentObject *> features = getFullModel();
+    for (auto it = features.begin(); it!=features.end(); ++it){
+        if (isSolidFeature((*it)))
+            return true;
+    }
+    return false;
 }

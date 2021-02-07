@@ -108,7 +108,7 @@ def make_clone(obj, delta=None, forcedraft=False):
     # fall back to Draft clone mode
     if not cl:
         cl = App.ActiveDocument.addObject("Part::FeaturePython","Clone")
-        cl.addExtension("Part::AttachExtensionPython", None)
+        cl.addExtension("Part::AttachExtensionPython")
         cl.Label = prefix + obj[0].Label
     Clone(cl)
     if App.GuiUp:

@@ -323,8 +323,8 @@ class BuildingPart(ArchIFC.IfcProduct):
     def __init__(self,obj):
 
         obj.Proxy = self
-        obj.addExtension('App::GroupExtensionPython', self)
-        #obj.addExtension('App::OriginGroupExtensionPython', self)
+        obj.addExtension('App::GroupExtensionPython')
+        #obj.addExtension('App::OriginGroupExtensionPython')
         self.setProperties(obj)
 
     def setProperties(self,obj):
@@ -488,8 +488,8 @@ class ViewProviderBuildingPart:
 
     def __init__(self,vobj):
 
-        vobj.addExtension("Gui::ViewProviderGroupExtensionPython", self)
-        #vobj.addExtension("Gui::ViewProviderGeoFeatureGroupExtensionPython", self)
+        vobj.addExtension("Gui::ViewProviderGroupExtensionPython")
+        #vobj.addExtension("Gui::ViewProviderGeoFeatureGroupExtensionPython")
         vobj.Proxy = self
         self.setProperties(vobj)
         vobj.ShapeColor = ArchCommands.getDefaultColor("Helpers")

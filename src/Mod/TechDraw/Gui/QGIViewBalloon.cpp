@@ -150,7 +150,15 @@ void QGIBalloonLabel::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 
 void QGIBalloonLabel::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event)
 {
-//    Gui::Control().showDialog(new TaskDlgBalloon(parent));   //only from tree
+    QGIViewBalloon* qgivBalloon = dynamic_cast<QGIViewBalloon*>(parentItem());
+    if (qgivBalloon == nullptr) {
+        return;
+    }
+    auto ViewProvider = static_cast<ViewProviderBalloon*>(qgivBalloon->getViewProvider(qgivBalloon->getViewObject()));
+    if (ViewProvider == nullptr) {
+        return;
+    }
+    Gui::Control().showDialog(new TaskDlgBalloon(qgivBalloon, ViewProvider));
     QGraphicsItem::mouseDoubleClickEvent(event);
 }
 

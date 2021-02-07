@@ -78,12 +78,21 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         # helix angle
         form.HelixAngle = QtGui.QDoubleSpinBox()
-        form.HelixAngle.setMinimum(0.1)
-        form.HelixAngle.setMaximum(90)
-        form.HelixAngle.setSingleStep(0.1)
+        form.HelixAngle.setMinimum(1)
+        form.HelixAngle.setMaximum(89)
+        form.HelixAngle.setSingleStep(1)
         form.HelixAngle.setValue(5)
         form.HelixAngle.setToolTip("Angle of the helix ramp entry")
         formLayout.addRow(QtGui.QLabel("Helix Ramp Angle"), form.HelixAngle)
+
+        # helix cone angle
+        form.HelixConeAngle = QtGui.QDoubleSpinBox()
+        form.HelixConeAngle.setMinimum(0)
+        form.HelixConeAngle.setMaximum(6)
+        form.HelixConeAngle.setSingleStep(1)
+        form.HelixConeAngle.setValue(0)
+        form.HelixConeAngle.setToolTip("Angle of the helix entry cone")
+        formLayout.addRow(QtGui.QLabel("Helix Cone Angle"), form.HelixConeAngle)
 
         # helix diam. limit
         form.HelixDiameterLimit = QtGui.QDoubleSpinBox()
@@ -151,6 +160,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.StepOver.valueChanged)
         signals.append(self.form.Tolerance.valueChanged)
         signals.append(self.form.HelixAngle.valueChanged)
+        signals.append(self.form.HelixConeAngle.valueChanged)
         signals.append(self.form.HelixDiameterLimit.valueChanged)
         signals.append(self.form.LiftDistance.valueChanged)
         signals.append(self.form.KeepToolDownRatio.valueChanged)
@@ -169,6 +179,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.StepOver.setValue(obj.StepOver)
         self.form.Tolerance.setValue(int(obj.Tolerance * 100))
         self.form.HelixAngle.setValue(obj.HelixAngle)
+        self.form.HelixConeAngle.setValue(obj.HelixConeAngle)
         self.form.HelixDiameterLimit.setValue(obj.HelixDiameterLimit)
         self.form.LiftDistance.setValue(obj.LiftDistance)
         if hasattr(obj, 'KeepToolDownRatio'):
@@ -198,6 +209,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         obj.StepOver = self.form.StepOver.value()
         obj.Tolerance = 1.0 * self.form.Tolerance.value() / 100.0
         obj.HelixAngle = self.form.HelixAngle.value()
+        obj.HelixConeAngle = self.form.HelixConeAngle.value()
         obj.HelixDiameterLimit = self.form.HelixDiameterLimit.value()
         obj.LiftDistance = self.form.LiftDistance.value()
 
