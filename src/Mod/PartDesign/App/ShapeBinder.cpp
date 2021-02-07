@@ -339,6 +339,7 @@ SubShapeBinder::SubShapeBinder()
     _CopiedLink.setScope(App::LinkScope::Hidden);
     ADD_PROPERTY_TYPE(_CopiedLink,(0),"Base",(App::PropertyType)(
                 App::Prop_Hidden|App::Prop_ReadOnly|App::Prop_NoPersist), "");
+
 }
 
 SubShapeBinder::~SubShapeBinder() {
@@ -782,7 +783,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
             {
                 if (!result.hasSubShape(TopAbs_SHELL)) {
                     try {
-                            result = result.makEShell();
+                        result = result.makEShell();
                     } catch(Base::Exception & e) {
                         FC_LOG(getFullName() << " Failed to make shell: " << e.what());
                     } catch(Standard_Failure & e) {
@@ -821,9 +822,10 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                     }
                 } else {
                     // wrap the single solid in compound to keep its placement
-                    result.makECompound({solids.front()});
+                    result.makECompound({solids.front().makERefine()});
                 }
-            }
+            } else if (result.hasSubShape(TopAbs_SHELL))
+                result = result.makERefine();
         } 
 
         result.setPlacement(Placement.getValue());
