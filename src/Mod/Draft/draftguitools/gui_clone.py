@@ -75,7 +75,7 @@ class Clone(gui_base_original.Modifier):
         super(Clone, self).Activated(name=translate("draft","Clone"))
         if not Gui.Selection.getSelection():
             if self.ui:
-                self.ui.selectUi()
+                self.ui.selectUi(callback=self.finish)
                 _msg(translate("draft", "Select an object to clone"))
                 self.call = self.view.addEventCallback(
                     "SoEvent",

@@ -1184,11 +1184,12 @@ class DraftToolBar:
             def __init__(self,extra=None,callback=None):
                 if extra:
                     self.form = [extra]
+                self.callback=callback
             def getStandardButtons(self):
                 return int(QtGui.QDialogButtonBox.Close)
             def reject(self):
-                if callback:
-                    callback()
+                if self.callback:
+                    self.callback()
                 return True
         FreeCADGui.Control.closeDialog()
         panel = TaskPanel(extra,callback)

@@ -63,7 +63,7 @@ class Downgrade(gui_base_original.Modifier):
         super(Downgrade, self).Activated(name=translate("draft","Downgrade"))
         if self.ui:
             if not Gui.Selection.getSelection():
-                self.ui.selectUi()
+                self.ui.selectUi(callback=self.finish)
                 _msg(translate("draft", "Select an object to upgrade"))
                 self.call = self.view.addEventCallback(
                     "SoEvent",

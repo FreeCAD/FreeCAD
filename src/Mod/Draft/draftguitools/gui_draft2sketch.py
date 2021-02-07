@@ -62,7 +62,7 @@ class Draft2Sketch(gui_base_original.Modifier):
         super(Draft2Sketch, self).Activated(name=translate("draft","Convert Draft/Sketch"))
         if not Gui.Selection.getSelection():
             if self.ui:
-                self.ui.selectUi()
+                self.ui.selectUi(callback=self.finish)
                 _msg(translate("draft", "Select an object to convert."))
                 self.call = self.view.addEventCallback(
                     "SoEvent",
