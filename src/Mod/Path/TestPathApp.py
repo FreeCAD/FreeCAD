@@ -42,6 +42,7 @@ from PathTests.TestPathSetupSheet import TestPathSetupSheet
 from PathTests.TestPathDeburr  import TestPathDeburr
 from PathTests.TestPathHelix  import TestPathHelix
 from PathTests.TestPathVoronoi  import TestPathVoronoi
+from PathTests.TestPathSlot  import TestPathSlot
 from PathTests.TestPathThreadMilling  import TestPathThreadMilling
 from PathTests.TestPathVcarve  import TestPathVcarve
 
@@ -65,6 +66,7 @@ False if TestPathHelix.__name__ else True
 False if TestPathPreferences.__name__ else True
 False if TestPathToolBit.__name__ else True
 False if TestPathVoronoi.__name__ else True
+False if TestPathSlot.__name__ else True
 False if TestPathThreadMilling.__name__ else True
 False if TestPathVcarve.__name__ else True
 False if TestPathPropertyBag.__name__ else True

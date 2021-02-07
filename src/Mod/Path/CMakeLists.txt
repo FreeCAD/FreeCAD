@@ -205,6 +205,7 @@ SET(PathTests_SRCS
     PathTests/TestPathPreferences.py
     PathTests/TestPathPropertyBag.py
     PathTests/TestPathSetupSheet.py
+    PathTests/TestPathSlot.py
     PathTests/TestPathStock.py
     PathTests/TestPathThreadMilling.py
     PathTests/TestPathTool.py
