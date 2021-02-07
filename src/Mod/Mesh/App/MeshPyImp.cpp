@@ -1678,7 +1678,7 @@ PyObject*  MeshPy::trim(PyObject *args)
 
     polygon = tria.ProjectToFitPlane();
 
-    Base::ViewProjMatrix proj(mat);
+    Base::ViewOrthoProjMatrix proj(mat);
     Base::Polygon2d polygon2d;
     for (std::vector<Base::Vector3f>::const_iterator it = polygon.begin(); it != polygon.end(); ++it)
         polygon2d.Add(Base::Vector2d(it->x, it->y));
