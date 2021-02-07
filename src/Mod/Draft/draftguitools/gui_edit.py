@@ -300,7 +300,7 @@ class Edit(gui_base_original.Modifier):
         if Gui.Selection.getSelection():
             self.proceed()
         else:
-            self.ui.selectUi(callback=self.finish)
+            self.ui.selectUi(on_close_call=self.finish)
             App.Console.PrintMessage(translate("draft", 
                                                "Select a Draft object to edit")
                                                + "\n")
