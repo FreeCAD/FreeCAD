@@ -251,8 +251,8 @@ def suppressAllSpeedsWarning():
     return preferences().GetBool(WarningSuppressAllSpeeds, True)
 
 
-def suppressRapidSpeedsWarning():
-    return suppressAllSpeedsWarning() or preferences().GetBool(WarningSuppressRapidSpeeds, True)
+def suppressRapidSpeedsWarning(user=True):
+    return (user and suppressAllSpeedsWarning()) or preferences().GetBool(WarningSuppressRapidSpeeds, True)
 
 
 def suppressSelectionModeWarning():
@@ -262,6 +262,12 @@ def suppressSelectionModeWarning():
 def suppressOpenCamLibWarning():
     return preferences().GetBool(WarningSuppressOpenCamLib, True)
 
+def setPreferencesAdvanced(experimental, warnSpeeds, warnRapids, warnModes, warnOCL):
+    preferences().SetBool(EnableExperimentalFeatures,   experimental)
+    preferences().SetBool(WarningSuppressAllSpeeds,     warnSpeeds)
+    preferences().SetBool(WarningSuppressRapidSpeeds,   warnRapids)
+    preferences().SetBool(WarningSuppressSelectionMode, warnModes)
+    preferences().SetBool(WarningSuppressOpenCamLib,    warnOCL)
 
 def lastFileToolLibrary():
     filename = preferences().GetString(LastFileToolLibrary)
