@@ -1832,7 +1832,7 @@ CmdMeshSplitComponents::CmdMeshSplitComponents()
     sToolTipText  = QT_TR_NOOP("Split selected mesh into its components");
     sWhatsThis    = "Mesh_SplitComponents";
     sStatusTip    = sToolTipText;
-  //sPixmap       = "Mesh_SplitComponents";
+    sPixmap       = "Mesh_SplitComponents";
 }
 
 void CmdMeshSplitComponents::activated(int)

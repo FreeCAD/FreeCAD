@@ -30,6 +30,7 @@
         <file>icons/Mesh_Segmentation_Best_Fit.svg</file>
         <file>icons/Mesh_Segmentation.svg</file>
         <file>icons/Mesh_Smoothing.svg</file>
+        <file>icons/Mesh_SplitComponents.svg</file>
         <file>icons/Mesh_Tree.svg</file>
         <file>icons/Mesh_Tree_Curvature_Plot.svg</file>
         <file>icons/Mesh_Trim_by_Plane.svg</file>
