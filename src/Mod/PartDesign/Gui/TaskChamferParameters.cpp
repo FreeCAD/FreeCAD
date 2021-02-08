@@ -309,8 +309,14 @@ bool TaskChamferParameters::getFlipDirection(void) const
 
 TaskChamferParameters::~TaskChamferParameters()
 {
-    Gui::Selection().clearSelection();
-    Gui::Selection().rmvSelectionGate();
+    try {
+        Gui::Selection().clearSelection();
+        Gui::Selection().rmvSelectionGate();
+    }
+    catch (const Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
 }
 
 bool TaskChamferParameters::event(QEvent *e)

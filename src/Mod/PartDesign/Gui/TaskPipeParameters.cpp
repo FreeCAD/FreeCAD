@@ -163,6 +163,10 @@ TaskPipeParameters::~TaskPipeParameters()
         // getDocument() may raise an exception
         e.ReportException();
     }
+    catch (const Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
 }
 
 void TaskPipeParameters::updateUI()

@@ -212,8 +212,14 @@ double TaskFilletParameters::getLength(void) const
 
 TaskFilletParameters::~TaskFilletParameters()
 {
-    Gui::Selection().clearSelection(); 
-    Gui::Selection().rmvSelectionGate();
+    try {
+        Gui::Selection().clearSelection();
+        Gui::Selection().rmvSelectionGate();
+    }
+    catch (const Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
 }
 
 bool TaskFilletParameters::event(QEvent *e)
