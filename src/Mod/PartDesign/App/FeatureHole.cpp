@@ -1832,14 +1832,14 @@ const Hole::CutDimensionSet& Hole::find_cutDimensionSet(const CutDimensionKey &k
 }
 
 Hole::CutDimensionSet::CutDimensionSet(const std::string &nme,
-      std::vector<CounterBoreDimension> &&d, CutType cut, ThreadType thread) :
-    bore_data{ std::move(d) }, cut_type{ cut }, thread_type{thread}, name{nme}
+      std::vector<CounterBoreDimension> &&d, CutType cut, ThreadType thread, double a) :
+    bore_data{ std::move(d) }, cut_type{ cut }, thread_type{thread}, name{nme}, angle{a}
 {
 }
 
 Hole::CutDimensionSet::CutDimensionSet(const std::string &nme,
-      std::vector<CounterSinkDimension> &&d, CutType cut, ThreadType thread) :
-    sink_data{ std::move(d) }, cut_type{ cut }, thread_type{thread}, name{nme}
+      std::vector<CounterSinkDimension> &&d, CutType cut, ThreadType thread, double a) :
+    sink_data{ std::move(d) }, cut_type{ cut }, thread_type{thread}, name{nme}, angle{a}
 {
 }
 
