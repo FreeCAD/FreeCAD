@@ -224,13 +224,26 @@ class Scale(gui_base_original.Modifier):
         else:
             _cmd_name = translate("draft", "Scale")
 
+        # the correction translation of the clone placement is
+        # (node[0] - clone.Placement.Base) - (node[0] - clone.Placement.Base)\
+        #   .scale(delta.x,delta.y,delta.z)
+        # equivalent to:
+        # (node[0] - clone.Placement.Base)\
+        #   .scale(1-delta.x,1-delta.y,1-delta.z)
+        str_node0 = DraftVecUtils.toString(self.node[0])
+        str_delta = DraftVecUtils.toString(self.delta)
+        str_delta_corr = DraftVecUtils.toString(App.Vector(1,1,1) - self.delta)
+
         _cmd = 'Draft.clone'
         _cmd += '('
         _cmd += objects + ', '
         _cmd += 'forcedraft=True'
         _cmd += ')'
         _cmd_list = ['clone = ' + _cmd,
-                     'clone.Scale = ' + DraftVecUtils.toString(self.delta),
+                     'clone.Scale = ' + str_delta,
+                     'clone_corr = (' + str_node0 + ' - clone.Placement.Base)'\
+                        + '.scale(*'+ str_delta_corr + ')',
+                     'clone.Placement.move(clone_corr)',
                      'FreeCAD.ActiveDocument.recompute()']
         self.commit(_cmd_name, _cmd_list)
 
