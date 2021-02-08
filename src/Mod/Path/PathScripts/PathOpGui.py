@@ -1094,6 +1094,8 @@ class TaskPanel(object):
         self.selectionFactory = selectionFactory
         self.obj = obj
         self.isdirty = deleteOnReject
+        self.visibility = obj.ViewObject.Visibility
+        obj.ViewObject.Visibility = True
 
     def isDirty(self):
         '''isDirty() ... returns true if the model is not in sync with the UI anymore.'''
@@ -1137,6 +1139,7 @@ class TaskPanel(object):
         PathSelection.clear()
         FreeCADGui.Selection.removeObserver(self)
         self.obj.ViewObject.Proxy.clearTaskPanel()
+        self.obj.ViewObject.Visibility = self.visibility
 
     def cleanup(self, resetEdit):
         '''cleanup() ... implements common cleanup tasks.'''
@@ -1279,6 +1282,7 @@ def Create(res):
     obj = res.objFactory(res.name)
     if obj.Proxy:
         obj.ViewObject.Proxy = ViewProvider(obj.ViewObject, res)
+        obj.ViewObject.Visibility = False
 
         FreeCAD.ActiveDocument.commitTransaction()
         obj.ViewObject.Document.setEdit(obj.ViewObject, 0)
