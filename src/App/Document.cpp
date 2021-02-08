@@ -3484,7 +3484,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
             if(canAbort)
                 seq.reset(new Base::SequencerLauncher("Recompute...", topoSortedObjects.size()));
             FC_LOG("Recompute pass " << passes);
-            for (;idx<topoSortedObjects.size();(seq?seq->next(true):true),++idx) {
+            for (; idx < topoSortedObjects.size(); ++idx) {
                 auto obj = topoSortedObjects[idx];
                 if(!obj->getNameInDocument() || filter.find(obj)!=filter.end())
                     continue;
@@ -3515,6 +3515,8 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
                     for (auto inObjIt : obj->getInList())
                         inObjIt->enforceRecompute();
                 }
+                if (seq)
+                    seq->next(true);
             }
             // check if all objects are recomputed but still thouched
             for (size_t i=0;i<topoSortedObjects.size();++i) {
