@@ -165,11 +165,11 @@ private:
         enum CutType { Counterbore, Countersink };
         enum ThreadType { Metric, MetricFine };
 
-        CutDimensionSet() {}
+        CutDimensionSet():cut_type(Counterbore),thread_type(Metric),angle(0.0) {}
         CutDimensionSet(const std::string &nme,
-              std::vector<CounterBoreDimension> &&d, CutType cut, ThreadType thread);
+              std::vector<CounterBoreDimension> &&d, CutType cut, ThreadType thread, double angle = 0.0);
         CutDimensionSet(const std::string &nme,
-              std::vector<CounterSinkDimension> &&d, CutType cut, ThreadType thread);
+              std::vector<CounterSinkDimension> &&d, CutType cut, ThreadType thread, double angle = 0.0);
 
         const CounterBoreDimension &get_bore(const std::string &t) const;
         const CounterSinkDimension &get_sink(const std::string &t) const;
