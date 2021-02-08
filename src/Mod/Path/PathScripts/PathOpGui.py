@@ -1265,6 +1265,8 @@ class CommandSetStartPoint:
         obj.StartPoint.z = obj.ClearanceHeight.Value
 
     def Activated(self):
+        if not hasattr(FreeCADGui, 'Snapper'):
+            import DraftTools
         FreeCADGui.Snapper.getPoint(callback=self.setpoint)
 
 
