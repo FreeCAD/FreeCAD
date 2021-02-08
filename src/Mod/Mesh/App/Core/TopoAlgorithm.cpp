@@ -1148,7 +1148,7 @@ void MeshTopoAlgorithm::SplitFacet(unsigned long ulFacetPos, const Base::Vector3
       Base::Vector3f cDir = cEnd - cBase;
 
       float fDist = rP2.DistanceToLine(cBase, cDir);
-      if ( fMinDist < fDist )
+      if ( fDist < fMinDist )
       {
         fMinDist = fDist;
         iEdgeNo = i;
@@ -1174,7 +1174,7 @@ void MeshTopoAlgorithm::SplitFacet(unsigned long ulFacetPos, const Base::Vector3
       Base::Vector3f cDir = cEnd - cBase;
 
       float fDist = rP1.DistanceToLine(cBase, cDir);
-      if ( fMinDist < fDist )
+      if ( fDist < fMinDist )
       {
         fMinDist = fDist;
         iEdgeNo = i;
@@ -1201,13 +1201,13 @@ void MeshTopoAlgorithm::SplitFacet(unsigned long ulFacetPos, const Base::Vector3
       Base::Vector3f cDir = cEnd - cBase;
 
       float fDist = rP1.DistanceToLine(cBase, cDir);
-      if ( fMinDist1 < fDist )
+      if ( fDist < fMinDist1 )
       {
         fMinDist1 = fDist;
         iEdgeNo1 = i;
       }
       fDist = rP2.DistanceToLine(cBase, cDir);
-      if ( fMinDist2 < fDist )
+      if ( fDist < fMinDist2 )
       {
         fMinDist2 = fDist;
         iEdgeNo2 = i;
