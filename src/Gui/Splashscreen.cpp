@@ -59,6 +59,8 @@
 #include <App/Application.h>
 #include <Gui/MainWindow.h>
 
+#include "BitmapFactory.h"
+
 
 using namespace Gui;
 using namespace Gui::Dialog;
@@ -243,7 +245,29 @@ AboutDialog::AboutDialog(bool showLic, QWidget* parent)
 #else
     QRect rect = QApplication::desktop()->availableGeometry();
 #endif
-    QPixmap image = getMainWindow()->splashImage();
+
+    QPixmap image;
+
+    // See if we have a custom About screen image set
+    std::string about_path = App::Application::Config()["AboutImage"];
+    if (!about_path.empty()) {
+        QString path = QString::fromUtf8(about_path.c_str());
+        if (QDir(path).isRelative()) {
+            QString home = QString::fromUtf8(App::GetApplication().getHomePath());
+            path = QFileInfo(QDir(home), path).absoluteFilePath();
+        }
+        image.load(path);
+
+        // Now try the icon paths
+        if (image.isNull()) {
+            image = Gui::BitmapFactory().pixmap(about_path.c_str());
+        }
+    }
+
+    // Fallback to the splashscreen image
+    if (image.isNull()) {
+        image = getMainWindow()->splashImage();
+    }
 
     // Make sure the image is not too big
     if (image.height() > rect.height()/2 || image.width() > rect.width()/2) {
