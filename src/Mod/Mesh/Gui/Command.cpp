@@ -442,7 +442,7 @@ CmdMeshImport::CmdMeshImport()
     sToolTipText  = QT_TR_NOOP("Imports a mesh from file");
     sWhatsThis    = "Mesh_Import";
     sStatusTip    = QT_TR_NOOP("Imports a mesh from file");
-    sPixmap       = "Mesh_Import_Mesh";
+    sPixmap       = "Mesh_Import";
 }
 
 void CmdMeshImport::activated(int)
@@ -493,7 +493,7 @@ CmdMeshExport::CmdMeshExport()
     sToolTipText  = QT_TR_NOOP("Exports a mesh to file");
     sWhatsThis    = "Mesh_Export";
     sStatusTip    = QT_TR_NOOP("Exports a mesh to file");
-    sPixmap       = "Mesh_Export_Mesh";
+    sPixmap       = "Mesh_Export";
 }
 
 void CmdMeshExport::activated(int)
@@ -651,7 +651,7 @@ CmdMeshVertexCurvature::CmdMeshVertexCurvature()
     sToolTipText  = QT_TR_NOOP("Calculates the curvature of the vertices of a mesh");
     sWhatsThis    = "Mesh_VertexCurvature";
     sStatusTip    = QT_TR_NOOP("Calculates the curvature of the vertices of a mesh");
-    sPixmap       = "Mesh_Curvature_Plot";
+    sPixmap       = "Mesh_VertexCurvature";
 }
 
 void CmdMeshVertexCurvature::activated(int)
@@ -694,7 +694,7 @@ CmdMeshVertexCurvatureInfo::CmdMeshVertexCurvatureInfo()
     sToolTipText  = QT_TR_NOOP("Information about curvature");
     sWhatsThis    = "Mesh_CurvatureInfo";
     sStatusTip    = QT_TR_NOOP("Information about curvature");
-    sPixmap       = "Mesh_Curvature_Info";
+    sPixmap       = "Mesh_CurvatureInfo";
 }
 
 void CmdMeshVertexCurvatureInfo::activated(int)
@@ -849,7 +849,7 @@ CmdMeshAddFacet::CmdMeshAddFacet()
     sToolTipText  = QT_TR_NOOP("Add triangle manually to a mesh");
     sWhatsThis    = "Mesh_AddFacet";
     sStatusTip    = QT_TR_NOOP("Add triangle manually to a mesh");
-    sPixmap       = "Mesh_Add_Facet";
+    sPixmap       = "Mesh_AddFacet";
 }
 
 void CmdMeshAddFacet::activated(int)
@@ -1075,7 +1075,7 @@ CmdMeshCrossSections::CmdMeshCrossSections()
     sMenuText     = QT_TR_NOOP("Cross-sections...");
     sToolTipText  = QT_TR_NOOP("Cross-sections");
     sStatusTip    = QT_TR_NOOP("Cross-sections");
-    sPixmap       = "Mesh_Cross_Sections";
+    sPixmap       = "Mesh_CrossSections";
 }
 
 void CmdMeshCrossSections::activated(int)
@@ -1364,7 +1364,7 @@ CmdMeshEvaluateSolid::CmdMeshEvaluateSolid()
     sToolTipText  = QT_TR_NOOP("Checks whether the mesh is a solid");
     sWhatsThis    = "Mesh_EvaluateSolid";
     sStatusTip    = QT_TR_NOOP("Checks whether the mesh is a solid");
-    sPixmap       = "Mesh_Evaluate_Solid";
+    sPixmap       = "Mesh_EvaluateSolid";
 }
 
 void CmdMeshEvaluateSolid::activated(int)
@@ -1496,7 +1496,7 @@ CmdMeshHarmonizeNormals::CmdMeshHarmonizeNormals()
     sToolTipText  = QT_TR_NOOP("Harmonizes the normals of the mesh");
     sWhatsThis    = "Mesh_HarmonizeNormals";
     sStatusTip    = QT_TR_NOOP("Harmonizes the normals of the mesh");
-    sPixmap       = "Mesh_Harmonize_Normals";
+    sPixmap       = "Mesh_HarmonizeNormals";
 }
 
 void CmdMeshHarmonizeNormals::activated(int)
@@ -1530,7 +1530,7 @@ CmdMeshFlipNormals::CmdMeshFlipNormals()
     sToolTipText  = QT_TR_NOOP("Flips the normals of the mesh");
     sWhatsThis    = "Mesh_FlipNormals";
     sStatusTip    = QT_TR_NOOP("Flips the normals of the mesh");
-    sPixmap       = "Mesh_Flip_Normals";
+    sPixmap       = "Mesh_FlipNormals";
 }
 
 void CmdMeshFlipNormals::activated(int)
@@ -1564,7 +1564,7 @@ CmdMeshBoundingBox::CmdMeshBoundingBox()
     sToolTipText  = QT_TR_NOOP("Shows the boundings of the selected mesh");
     sWhatsThis    = "Mesh_BoundingBox";
     sStatusTip    = QT_TR_NOOP("Shows the boundings of the selected mesh");
-    sPixmap       = "Mesh_Bounding_Box";
+    sPixmap       = "Mesh_BoundingBox";
 }
 
 void CmdMeshBoundingBox::activated(int)
@@ -1637,7 +1637,7 @@ CmdMeshFillupHoles::CmdMeshFillupHoles()
     sToolTipText  = QT_TR_NOOP("Fill holes of the mesh");
     sWhatsThis    = "Mesh_FillupHoles";
     sStatusTip    = QT_TR_NOOP("Fill holes of the mesh");
-    sPixmap       = "Mesh_Fill_up_Holes";
+    sPixmap       = "Mesh_FillupHoles";
 }
 
 void CmdMeshFillupHoles::activated(int)
