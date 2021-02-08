@@ -288,8 +288,14 @@ int TaskThicknessParameters::getMode(void) const {
 
 TaskThicknessParameters::~TaskThicknessParameters()
 {
-    Gui::Selection().clearSelection();
-    Gui::Selection().rmvSelectionGate();
+    try {
+        Gui::Selection().clearSelection();
+        Gui::Selection().rmvSelectionGate();
+    }
+    catch (const Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
 }
 
 bool TaskThicknessParameters::event(QEvent *e)
