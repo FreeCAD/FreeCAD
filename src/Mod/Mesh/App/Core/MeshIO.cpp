@@ -2515,7 +2515,7 @@ bool MeshOutput::SaveAsymptote(std::ostream &out) const
             for (int i = 0; i < 3; i++) {
                 const App::Color& c = _material->diffuseColor[face._aulPoints[i]];
                 out << "rgb(" << c.r << ", " << c.g << ", " << c.b << ")";
-                if (i < 3)
+                if (i < 2)
                     out << ", ";
             }
             out << "}));\n";
