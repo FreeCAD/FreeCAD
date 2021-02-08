@@ -228,7 +228,14 @@ AboutDialog::AboutDialog(bool showLic, QWidget* parent)
     ui->setupUi(this);
     layout()->setSizeConstraint(QLayout::SetFixedSize);
     QRect rect = QApplication::primaryScreen()->availableGeometry();
-    QPixmap image = getMainWindow()->splashImage();
+
+    // See if we have a custom About screen image set
+    QPixmap image = getMainWindow()->aboutImage();
+
+    // Fallback to the splashscreen image
+    if (image.isNull()) {
+        image = getMainWindow()->splashImage();
+    }
 
     // Make sure the image is not too big
     int denom = 2;

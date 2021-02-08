@@ -1456,6 +1456,28 @@ void MainWindow::stopSplasher(void)
     }
 }
 
+QPixmap MainWindow::aboutImage() const
+{
+    // See if we have a custom About screen image set
+    QPixmap about_image;
+    std::string about_path = App::Application::Config()["AboutImage"];
+    if (!about_path.empty()) {
+        QString path = QString::fromUtf8(about_path.c_str());
+        if (QDir(path).isRelative()) {
+            QString home = QString::fromUtf8(App::GetApplication().getHomePath());
+            path = QFileInfo(QDir(home), path).absoluteFilePath();
+        }
+        about_image.load(path);
+
+        // Now try the icon paths
+        if (about_image.isNull()) {
+            about_image = Gui::BitmapFactory().pixmap(about_path.c_str());
+        }
+    }
+
+    return about_image;
+}
+
 QPixmap MainWindow::splashImage() const
 {
     // search in the UserAppData dir as very first
