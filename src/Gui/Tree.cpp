@@ -2088,6 +2088,12 @@ const QByteArray &treeBranchTag()
     return _tag;
 }
 
+const QByteArray &treeCheckBoxTag()
+{
+    static QByteArray _tag("tree:checkbox");
+    return _tag;
+}
+
 void setTreeViewFocus()
 {
     auto tree = Gui::TreeWidget::instance();
@@ -2344,20 +2350,45 @@ DocumentObjectItem *TreeWidget::Private::itemHitTest(QPoint pos, QByteArray *tag
     if (!tag)
         return objitem;
 
-    QRect rect = master->visualItemRect(item);
+    // Get the tree widget's x position
+    int treeX = master->header()->sectionViewportPosition(0);
+
+    // Get the x coordinate of the root item. It is required in order to calculate
+    // the identation of the item
+    int rootX = master->visualRect(master->rootIndex()).x();
+
+    // Get the rectangle of the viewport occupied by the pressed item
+    QRect rect = master->visualItemRect(objitem);
+
+    // Now we can easily calculate the x coordinate of the item
+    int itemX = treeX + rect.x() - rootX; 
+
+    // Get the checkbox width if its enabled
+    int checkboxWidth = 0;
+    if (TreeParams::CheckBoxesSelection()) {
+        auto style = master->style();
+        checkboxWidth = style->pixelMetric(QStyle::PM_IndicatorWidth)
+            + style->pixelMetric(QStyle::PM_LayoutHorizontalSpacing);
+    }
+
     if (!rect.contains(pos)) {
         if (tag) {
-            if (pos.x() < rect.left())
+            if (pos.x() < itemX)
                 *tag = Gui::treeBranchTag();
             else
                 *tag = Gui::treeNoIconTag();
         }
         return objitem;
     }
+    if (checkboxWidth && pos.x() < itemX + checkboxWidth) {
+        if (tag)
+            *tag = Gui::treeCheckBoxTag();
+        return objitem;
+    }
     float scale = iconSize()/64.0f;
     int offset = 0;
     for (auto &v : objitem->myData->iconInfo) {
-        int ofs = rect.left() + offset*scale;
+        int ofs = itemX + checkboxWidth + offset*scale;
         if (pos.x() > ofs && pos.x() < ofs + v.second*scale) {
             *tag = v.first;
             break;
@@ -4219,6 +4250,8 @@ void TreeWidget::onItemSelectionChanged ()
                     || (firstType==DocumentType && item!=selItems.back()))
             {
                 item->setSelected(false);
+                if (item->type() == ObjectType)
+                    static_cast<DocumentObjectItem*>(item)->setCheckState(false);
                 it = selItems.erase(it);
             } else
                 ++it;
@@ -4297,10 +4330,12 @@ static bool isSelectionCheckBoxesEnabled() {
 void TreeWidget::synchronizeSelectionCheckBoxes() {
     const bool useCheckBoxes = isSelectionCheckBoxesEnabled();
     for (auto tree : TreeWidget::Instances) {
+        QSignalBlocker blocker(tree);
         for (QTreeWidgetItemIterator it(tree); *it; ++it) {
-            if (const auto item = dynamic_cast<DocumentObjectItem*>(*it)) {
+            auto item = *it;
+            if (item->type() == ObjectType) {
                 if (useCheckBoxes)
-                    item->QTreeWidgetItem::setCheckState(0, item->isSelected() ? Qt::Checked : Qt::Unchecked);
+                    item->setCheckState(0, item->isSelected() ? Qt::Checked : Qt::Unchecked);
                 else
                     item->setData(0, Qt::CheckStateRole, QVariant());
             }
@@ -4310,10 +4345,11 @@ void TreeWidget::synchronizeSelectionCheckBoxes() {
 }
 
 void TreeWidget::onItemChanged(QTreeWidgetItem *item, int column) {
-    if (column == 0 && isSelectionCheckBoxesEnabled()) {
+    if (column == 0 && isSelectionCheckBoxesEnabled() && item->type() == ObjectType) {
         bool selected = item->isSelected();
         bool checked = item->checkState(0) == Qt::Checked;
         if (checked != selected) {
+            QSignalBlocker blocker(this);
             item->setSelected(checked);
         }
     }
@@ -4358,14 +4394,15 @@ void TreeWidget::onSelectionChanged(const SelectionChanges& msg)
     case SelectionChanges::ClrSelection: {
         auto sels = selectedItems();
         if (sels.size()) {
+            QSignalBlocker blocker(this);
             for(auto item : sels) {
                 if(item->type() == ObjectType) {
                     auto oitem = static_cast<DocumentObjectItem*>(item);
                     oitem->mySubs.clear();
                     oitem->selected = 0;
+                    oitem->setCheckState(false);
                 }
             }
-            QSignalBlocker blocker(this);
             selectionModel()->clearSelection();
         }
         selectTimer->stop();
@@ -6820,10 +6857,10 @@ App::DocumentObject *DocumentObjectItem::getRelativeParent(
 }
 
 void DocumentObjectItem::setCheckState(bool checked) {
-    if (isSelectionCheckBoxesEnabled())
+    if (isSelectionCheckBoxesEnabled()) {
+        QSignalBlocker blocker(treeWidget());
         QTreeWidgetItem::setCheckState(0, checked ? Qt::Checked : Qt::Unchecked);
-    else
-        setData(0, Qt::CheckStateRole, QVariant());
+    }
 }
 
 DocumentItem *DocumentObjectItem::getParentDocument() const {
