@@ -38,6 +38,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/AutoTransaction.h>
+#include "ViewProviderDocumentObject.h"
 #include "MainWindow.h"
 #include "DlgAddProperty.h"
 #include "PropertyEditor.h"
@@ -202,6 +203,11 @@ void PropertyEditor::setupTransaction(const QModelIndex &index) {
     auto prop = items[0];
     auto parent = prop->getContainer();
     auto obj  = Base::freecad_dynamic_cast<App::DocumentObject>(parent);
+    if (!obj) {
+        auto view  = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(parent);
+        if (view)
+            obj = view->getObject();
+    }
     if(!obj || !obj->getDocument()) {
         FC_LOG("invalid object");
         return;
