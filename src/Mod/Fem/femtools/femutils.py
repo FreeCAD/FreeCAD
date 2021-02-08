@@ -285,11 +285,12 @@ def getBoundBoxOfAllDocumentShapes(doc):
                 bb = o.FemMesh.BoundBox
             except Exception:
                 pass
-        if bb.isValid():
-            if not overalboundbox:
-                overalboundbox = bb
-            else:
-                overalboundbox.add(bb)
+        if bb:
+            if bb.isValid():
+                if not overalboundbox:
+                    overalboundbox = bb
+                else:
+                    overalboundbox.add(bb)
     return overalboundbox
 
 
