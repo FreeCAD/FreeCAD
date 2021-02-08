@@ -1698,7 +1698,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchComponent.py" line="1159"/>
+        <location filename="../../ArchComponent.py" line="1161"/>
         <source>Use the material color as this object&apos;s shape color, if available</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2021,12 +2021,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchComponent.py" line="1942"/>
+        <location filename="../../ArchComponent.py" line="1944"/>
         <source>Components of this object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchComponent.py" line="1947"/>
+        <location filename="../../ArchComponent.py" line="1949"/>
         <source>Axes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2106,27 +2106,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchComponent.py" line="1943"/>
+        <location filename="../../ArchComponent.py" line="1945"/>
         <source>Base component</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchComponent.py" line="1944"/>
+        <location filename="../../ArchComponent.py" line="1946"/>
         <source>Additions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchComponent.py" line="1945"/>
+        <location filename="../../ArchComponent.py" line="1947"/>
         <source>Subtractions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchComponent.py" line="1946"/>
+        <location filename="../../ArchComponent.py" line="1948"/>
         <source>Objects</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchRoof.py" line="1012"/>
+        <location filename="../../ArchRoof.py" line="1013"/>
         <source>Roof</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2136,7 +2136,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchRoof.py" line="825"/>
+        <location filename="../../ArchRoof.py" line="826"/>
         <source>Unable to create a roof</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2256,7 +2256,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchComponent.py" line="1949"/>
+        <location filename="../../ArchComponent.py" line="1951"/>
         <source>Fixtures</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2321,7 +2321,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchComponent.py" line="912"/>
+        <location filename="../../ArchComponent.py" line="913"/>
         <source>Error computing the shape of this object</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2346,17 +2346,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchComponent.py" line="933"/>
+        <location filename="../../ArchComponent.py" line="934"/>
         <source>has no solid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchComponent.py" line="940"/>
+        <location filename="../../ArchComponent.py" line="941"/>
         <source>has an invalid shape</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchComponent.py" line="942"/>
+        <location filename="../../ArchComponent.py" line="943"/>
         <source>has a null shape</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2406,12 +2406,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchRoof.py" line="1014"/>
+        <location filename="../../ArchRoof.py" line="1015"/>
         <source>Id</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchRoof.py" line="1014"/>
+        <location filename="../../ArchRoof.py" line="1015"/>
         <source>IdRel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2436,27 +2436,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchRoof.py" line="1014"/>
+        <location filename="../../ArchRoof.py" line="1015"/>
         <source>Angle (deg)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchRoof.py" line="1014"/>
+        <location filename="../../ArchRoof.py" line="1015"/>
         <source>Run (mm)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchRoof.py" line="1014"/>
+        <location filename="../../ArchRoof.py" line="1015"/>
         <source>Thickness (mm)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchRoof.py" line="1014"/>
+        <location filename="../../ArchRoof.py" line="1015"/>
         <source>Overhang (mm)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchRoof.py" line="1014"/>
+        <location filename="../../ArchRoof.py" line="1015"/>
         <source>Height (mm)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2511,7 +2511,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchComponent.py" line="1950"/>
+        <location filename="../../ArchComponent.py" line="1952"/>
         <source>Group</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2973,7 +2973,7 @@ Site creation aborted.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchComponent.py" line="1951"/>
+        <location filename="../../ArchComponent.py" line="1953"/>
         <source>Hosts</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3039,57 +3039,57 @@ Building creation aborted.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchComponent.py" line="1511"/>
+        <location filename="../../ArchComponent.py" line="1513"/>
         <source>Toggle subcomponents</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchComponent.py" line="1634"/>
+        <location filename="../../ArchComponent.py" line="1636"/>
         <source>Closing Sketch edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchComponent.py" line="1939"/>
+        <location filename="../../ArchComponent.py" line="1941"/>
         <source>Component</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchComponent.py" line="1952"/>
+        <location filename="../../ArchComponent.py" line="1954"/>
         <source>Edit IFC properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchComponent.py" line="1953"/>
+        <location filename="../../ArchComponent.py" line="1955"/>
         <source>Edit standard code</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchComponent.py" line="1999"/>
+        <location filename="../../ArchComponent.py" line="2001"/>
         <source>Property</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchComponent.py" line="2004"/>
+        <location filename="../../ArchComponent.py" line="2006"/>
         <source>Add property...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchComponent.py" line="2005"/>
+        <location filename="../../ArchComponent.py" line="2007"/>
         <source>Add property set...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchComponent.py" line="2005"/>
+        <location filename="../../ArchComponent.py" line="2007"/>
         <source>New...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchComponent.py" line="2147"/>
+        <location filename="../../ArchComponent.py" line="2149"/>
         <source>New property</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchComponent.py" line="2183"/>
+        <location filename="../../ArchComponent.py" line="2185"/>
         <source>New property set</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3659,7 +3659,7 @@ You can change that in the preferences.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchRoof.py" line="1013"/>
+        <location filename="../../ArchRoof.py" line="1014"/>
         <source>Parameters of the roof profiles :
 * Angle : slope in degrees relative to the horizontal.
 * Run : horizontal distance between the wall and the ridge.
