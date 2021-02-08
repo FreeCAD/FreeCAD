@@ -96,6 +96,38 @@
    </Mapping>
 </ButtonMap>
 
+<ButtonMap DeviceName="SpaceMouse Pro">
+   <Mapping>
+      <Map Description="Menu"          KeyCode="0"  DownTime="short" Command=""/>
+      <Map Description="Fit"           KeyCode="1"  DownTime="short" Command="Std_ViewFitAll"/>
+      <Map Description="Top"           KeyCode="2"  DownTime="short" Command="Std_ViewTop"/>
+      <Map Description=""              KeyCode="3"  DownTime="short" Command=""/>
+      <Map Description="Right"         KeyCode="4"  DownTime="short" Command="Std_ViewRight"/>
+      <Map Description="Front"         KeyCode="5"  DownTime="short" Command="Std_ViewFront"/>
+      <Map Description=""              KeyCode="6"  DownTime="short" Command=""/>
+      <Map Description=""              KeyCode="7"  DownTime="short" Command=""/>
+      <Map Description="Clockwise"     KeyCode="8"  DownTime="short" Command=""/>
+      <Map Description=""              KeyCode="9"  DownTime="short" Command=""/>
+      <Map Description=""              KeyCode="10" DownTime="short" Command=""/>
+      <Map Description=""              KeyCode="11" DownTime="short" Command=""/>
+      <Map Description="1"             KeyCode="12" DownTime="short" Command=""/>
+      <Map Description="2"             KeyCode="13" DownTime="short" Command=""/>
+      <Map Description="3"             KeyCode="14" DownTime="short" Command=""/>
+      <Map Description="4"             KeyCode="15" DownTime="short" Command=""/>
+      <Map Description=""              KeyCode="16" DownTime="short" Command=""/>
+      <Map Description=""              KeyCode="17" DownTime="short" Command=""/>
+      <Map Description=""              KeyCode="18" DownTime="short" Command=""/>
+      <Map Description=""              KeyCode="19" DownTime="short" Command=""/>
+      <Map Description=""              KeyCode="20" DownTime="short" Command=""/>
+      <Map Description=""              KeyCode="21" DownTime="short" Command=""/>
+      <Map Description="ESC"           KeyCode="22" DownTime="short" Command=""/>
+      <Map Description="ALT"           KeyCode="23" DownTime="short" Command=""/>
+      <Map Description="SHIFT"         KeyCode="24" DownTime="short" Command=""/>
+      <Map Description="CTRL"          KeyCode="25" DownTime="short" Command=""/>
+      <Map Description="RotationLock"  KeyCode="26" DownTime="short" Command=""/>
+   </Mapping>
+</ButtonMap>
+
 <ButtonMap DeviceName="SpaceMouse Enterprise">
    <Mapping>
       <Map Description="Menu"          KeyCode="0"  DownTime="short" Command=""/>
