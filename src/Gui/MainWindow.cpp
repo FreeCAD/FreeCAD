@@ -636,8 +636,12 @@ static void populateMenu(QMenu *menu, MenuType type)
         for (auto toolbar : mw->findChildren<QToolBar*>()) {
             if (toolbar->parentWidget() == mw) {
                 auto action = toolbar->toggleViewAction();
-                if (action->isVisible())
+                // Some misbehaved code may force the toolbar to be visible
+                // while hiding its action, which causes the user to be unable
+                // to switch it off. We'll just include those actions anyway.
+                if (action->isVisible() || toolbar->isVisible())
                     actions[action->text()] = action;
+                    
             }
         }
         break;
