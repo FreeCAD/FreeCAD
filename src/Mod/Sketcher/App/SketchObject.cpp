@@ -7618,8 +7618,10 @@ void SketchObject::synchroniseGeometryState()
         bool constraintBlockedState = false;
 
         for (auto cstr : Constraints.getValues()) {
-            getInternalTypeState(cstr, constraintInternalAlignment);
-            getBlockedState(cstr, constraintBlockedState);
+            if(cstr->First == int(i)) {
+                getInternalTypeState(cstr, constraintInternalAlignment);
+                getBlockedState(cstr, constraintBlockedState);
+            }
         }
 
         if(constraintInternalAlignment != facadeInternalAlignment)
