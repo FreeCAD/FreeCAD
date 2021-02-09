@@ -709,7 +709,7 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
                         if (view) {
                             const char* ret = nullptr;
                             if (view->onMsg("ViewFit", &ret))
-                                getMainWindow()->updateActions(true);
+                                updateActions(true);
                         }
                     }
                 }
@@ -927,7 +927,7 @@ void Application::slotActiveDocument(const App::Document& Doc)
             }
         }
         signalActiveDocument(*doc->second);
-        getMainWindow()->updateActions();
+        updateActions();
     }
 }
 
@@ -944,7 +944,7 @@ void Application::slotDeletedObject(const ViewProvider& vp)
 void Application::slotChangedObject(const ViewProvider& vp, const App::Property& prop)
 {
     this->signalChangedObject(vp,prop);
-    getMainWindow()->updateActions(true);
+    updateActions(true);
 }
 
 void Application::slotRelabelObject(const ViewProvider& vp)
@@ -955,7 +955,7 @@ void Application::slotRelabelObject(const ViewProvider& vp)
 void Application::slotActivatedObject(const ViewProvider& vp)
 {
     this->signalActivatedObject(vp);
-    getMainWindow()->updateActions();
+    updateActions();
 }
 
 void Application::slotInEdit(const Gui::ViewProviderDocumentObject& vp)
@@ -1011,7 +1011,7 @@ bool Application::sendMsgToActiveView(const char* pMsg, const char** ppReturn)
 {
     MDIView* pView = getMainWindow()->activeWindow();
     bool res = pView ? pView->onMsg(pMsg,ppReturn) : false;
-    getMainWindow()->updateActions(true);
+    updateActions(true);
     return res;
 }
 
@@ -1030,7 +1030,7 @@ bool Application::sendMsgToFocusView(const char* pMsg, const char** ppReturn)
     for(auto focus=qApp->focusWidget();focus;focus=focus->parentWidget()) {
         if(focus == pView) {
             bool res = pView->onMsg(pMsg,ppReturn);
-            getMainWindow()->updateActions(true);
+            updateActions(true);
             return res;
         }
     }
@@ -1104,7 +1104,7 @@ void Application::setEditDocument(Gui::Document *doc) {
     for(auto &v : d->documents)
         v.second->_resetEdit();
     d->editDocument = doc;
-    getMainWindow()->updateActions();
+    updateActions();
 }
 
 void Application::setActiveDocument(Gui::Document* pcDocument)
@@ -1112,7 +1112,7 @@ void Application::setActiveDocument(Gui::Document* pcDocument)
     if (d->activeDocument == pcDocument)
         return; // nothing needs to be done
 
-    getMainWindow()->updateActions();
+    updateActions();
 
     if (pcDocument) {
         // This happens if a document with more than one view is about being
@@ -1262,6 +1262,11 @@ void Application::viewActivated(MDIView* pcView)
 void Application::updateActive(void)
 {
     activeDocument()->onUpdate();
+}
+
+void Application::updateActions(bool delay)
+{
+    getMainWindow()->updateActions(delay);
 }
 
 void Application::tryClose(QCloseEvent * e)
