@@ -2292,7 +2292,16 @@ void Application::logStatus()
 {
     time_t now;
     time(&now);
-    Console().Log("Time = %s", ctime(&now));
+    struct tm timeStruct; 
+#ifdef FC_OS_WIN32
+    localtime_s(&timeStruct, &now);
+#else
+    localtime_s(&now, &timeStruct);
+#endif
+    char timeString[100];
+    if (std::strftime(timeString, sizeof(timeString), "%c", &timeStruct)) {
+        Console().Log("Time = %s\n", timeString);
+    }
 
     for (std::map<std::string,std::string>::iterator It = mConfig.begin();It!= mConfig.end();++It) {
         Console().Log("%s = %s\n",It->first.c_str(),It->second.c_str());

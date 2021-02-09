@@ -66,6 +66,7 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 # include <climits>
 # include <bitset>
 # include <random>
+# include <ctime> 
 #endif
 
 #include <boost/algorithm/string.hpp>
@@ -2481,10 +2482,15 @@ private:
                     std::stringstream str;
                     Base::TimeInfo ti = fi.lastModified();
                     time_t s =ti.getSeconds();
-                    struct tm * timeinfo = localtime(& s);
+                    struct tm timeinfo;
+#ifdef FC_OS_WIN32
+                    localtime_s(&timeinfo, &s);
+#else
+                    localtime_s(&s, &timeinfo);
+#endif
                     char buffer[100];
 
-                    strftime(buffer,sizeof(buffer),saveBackupDateFormat.c_str(),timeinfo);
+                    strftime(buffer,sizeof(buffer),saveBackupDateFormat.c_str(),&timeinfo);
                     str << bn << buffer ;
 
                     fn = str.str();
