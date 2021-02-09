@@ -291,7 +291,8 @@ void MeshGrid::CalculateGridLength (unsigned long ulCtGrid, unsigned long ulMaxG
         else
             fAreaElem = fArea / float(_ulCtElements);
 
-        fGridLen = sqrt(fAreaElem * float(ulCtGrid));
+        float fRepresentativeArea = fAreaElem * static_cast<float>(ulCtGrid);
+        fGridLen = sqrt(fRepresentativeArea);
     }
 
     if (fGridLen > 0) {
