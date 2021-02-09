@@ -1017,7 +1017,7 @@ CmdMeshTrimByPlane::CmdMeshTrimByPlane()
     sMenuText     = QT_TR_NOOP("Trim mesh with a plane");
     sToolTipText  = QT_TR_NOOP("Trims a mesh with a plane");
     sStatusTip    = QT_TR_NOOP("Trims a mesh with a plane");
-    sPixmap       = "Mesh_Trim_by_Plane";
+    sPixmap       = "Mesh_TrimByPlane";
 }
 
 void CmdMeshTrimByPlane::activated(int)
@@ -1046,7 +1046,7 @@ CmdMeshSectionByPlane::CmdMeshSectionByPlane()
     sMenuText     = QT_TR_NOOP("Create section from mesh and plane");
     sToolTipText  = QT_TR_NOOP("Section from mesh and plane");
     sStatusTip    = QT_TR_NOOP("Section from mesh and plane");
-    sPixmap       = "Mesh_Section_by_Plane";
+    sPixmap       = "Mesh_SectionByPlane";
 }
 
 void CmdMeshSectionByPlane::activated(int)
@@ -1753,7 +1753,7 @@ CmdMeshSegmentationBestFit::CmdMeshSegmentationBestFit()
     sToolTipText  = QT_TR_NOOP("Create mesh segments from best-fit surfaces");
     sWhatsThis    = "Mesh_SegmentationBestFit";
     sStatusTip    = QT_TR_NOOP("Create mesh segments from best-fit surfaces");
-    sPixmap       = "Mesh_Segmentation_Best_Fit";
+    sPixmap       = "Mesh_SegmentationBestFit";
 }
 
 void CmdMeshSegmentationBestFit::activated(int)
