@@ -66,6 +66,17 @@ private:
     std::unique_ptr<Ui_TaskBalloon> ui;
     QGIViewBalloon *m_parent;
     ViewProviderBalloon* m_balloonVP;
+    void getParameters();
+    std::string m_origText;
+    double m_origShapeScale;
+    int m_origEndType;
+    double m_origEndTypeScale;
+    int m_origBubbleShape;
+    double m_origKinkLength;
+    double m_origFontSize;
+    App::Color m_origColor;
+    bool m_origLineVisible;
+    double m_origLineWidth;
 };
 
 class TaskDlgBalloon : public Gui::TaskView::TaskDialog

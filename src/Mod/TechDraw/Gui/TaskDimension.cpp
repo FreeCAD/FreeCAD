@@ -124,7 +124,10 @@ TaskDimension::TaskDimension(QGIViewDimension *parent, ViewProviderDimension *di
         connect(ui->qsbFontSize, SIGNAL(valueChanged(double)), this, SLOT(onFontsizeChanged()));
         ui->comboDrawingStyle->setCurrentIndex(dimensionVP->StandardAndStyle.getValue());
         connect(ui->comboDrawingStyle, SIGNAL(currentIndexChanged(int)), this, SLOT(onDrawingStyleChanged()));
-    }  
+    }
+
+    // store the initial values to restore them on reject()
+    getParameters();
 }
 
 TaskDimension::~TaskDimension()
@@ -137,7 +140,6 @@ bool TaskDimension::accept()
     m_parent->dvDimension->EqualTolerance.setValue(ui->cbEqualTolerance->isChecked());
     m_parent->dvDimension->OverTolerance.setValue(ui->qsbOvertolerance->value().getValue());
     m_parent->dvDimension->UnderTolerance.setValue(ui->qsbUndertolerance->value().getValue());
-
     m_parent->dvDimension->FormatSpec.setValue(ui->leFormatSpecifier->text().toUtf8().constData());
     m_parent->dvDimension->Arbitrary.setValue(ui->cbArbitrary->isChecked());
     m_parent->dvDimension->FormatSpecOverTolerance.setValue(ui->leFormatSpecifierOverTolerance->text().toUtf8().constData());
@@ -152,13 +154,54 @@ bool TaskDimension::accept()
     m_dimensionVP->StandardAndStyle.setValue(ui->comboDrawingStyle->currentIndex());
 
     m_parent->updateView(true);
+    recomputeFeature();
 
     return true;
 }
 
 bool TaskDimension::reject()
 {
+    // reset to original values
+    if (m_dimensionVP != nullptr) {
+        m_dimensionVP->FlipArrowheads.setValue(m_origFlipArrowheads);
+        m_dimensionVP->Color.setValue(m_origColor);
+        m_dimensionVP->Fontsize.setValue(m_origFontSize);
+        m_dimensionVP->StandardAndStyle.setValue(m_origStandardAndStyle);
+    }
+
+    if (m_parent->dvDimension != nullptr) {
+        m_parent->dvDimension->TheoreticalExact.setValue(m_origTheoreticalExact);
+        m_parent->dvDimension->EqualTolerance.setValue(m_origEqualTolerance);
+        m_parent->dvDimension->OverTolerance.setValue(m_origOverTolerance);
+        m_parent->dvDimension->UnderTolerance.setValue(m_origUnderTolerance);
+        m_parent->dvDimension->FormatSpec.setValue(m_origFormatSpec);
+        m_parent->dvDimension->Arbitrary.setValue(m_origArbitrary);
+        m_parent->dvDimension->FormatSpecOverTolerance.setValue(m_origFormatSpecOverTolerance);
+        m_parent->dvDimension->FormatSpecUnderTolerance.setValue(m_origFormatSpecUnderTolerance);
+        m_parent->dvDimension->ArbitraryTolerances.setValue(m_origArbitraryTolerances);
+    }
+
+    recomputeFeature();
+
     return false;
+}
+
+void TaskDimension::getParameters()
+{
+    // store values when dialog was opened
+    m_origTheoreticalExact = m_parent->dvDimension->TheoreticalExact.getValue();
+    m_origEqualTolerance = m_parent->dvDimension->EqualTolerance.getValue();
+    m_origOverTolerance = m_parent->dvDimension->OverTolerance.getValue();
+    m_origUnderTolerance = m_parent->dvDimension->UnderTolerance.getValue();
+    m_origFormatSpec = m_parent->dvDimension->FormatSpec.getValue();
+    m_origArbitrary = m_parent->dvDimension->Arbitrary.getValue();
+    m_origFormatSpecOverTolerance = m_parent->dvDimension->FormatSpecOverTolerance.getValue();
+    m_origFormatSpecUnderTolerance = m_parent->dvDimension->FormatSpecUnderTolerance.getValue();
+    m_origArbitraryTolerances = m_parent->dvDimension->ArbitraryTolerances.getValue();
+    m_origFlipArrowheads = m_dimensionVP->FlipArrowheads.getValue();
+    m_origColor = m_dimensionVP->Color.getValue();
+    m_origFontSize = m_dimensionVP->Fontsize.getValue();
+    m_origStandardAndStyle = m_dimensionVP->StandardAndStyle.getValue();
 }
 
 void TaskDimension::recomputeFeature()

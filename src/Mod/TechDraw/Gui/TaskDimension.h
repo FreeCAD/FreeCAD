@@ -68,6 +68,21 @@ private:
     std::unique_ptr<Ui_TaskDimension> ui;
     QGIViewDimension *m_parent;
     ViewProviderDimension *m_dimensionVP;
+    void getParameters();
+    bool m_origTheoreticalExact;
+    bool m_origEqualTolerance;
+    double m_origOverTolerance;
+    double m_origUnderTolerance;
+    std::string m_origFormatSpec;
+    bool m_origArbitrary;
+    std::string m_origFormatSpecOverTolerance;
+    std::string m_origFormatSpecUnderTolerance;
+    bool m_origArbitraryTolerances;
+    bool m_origFlipArrowheads;
+    App::Color m_origColor;
+    double m_origFontSize;
+    int m_origStandardAndStyle;
+
 };
 
 class TaskDlgDimension : public Gui::TaskView::TaskDialog

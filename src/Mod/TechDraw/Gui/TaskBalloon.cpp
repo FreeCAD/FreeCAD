@@ -107,6 +107,9 @@ TaskBalloon::TaskBalloon(QGIViewBalloon *parent, ViewProviderBalloon *balloonVP)
     }
     // new balloons have already the preferences BalloonKink length
     ui->qsbKinkLength->setValue(parent->dvBalloon->KinkLength.getValue());
+
+    // store the initial values to restore them on reject()
+    getParameters();
 }
 
 TaskBalloon::~TaskBalloon()
@@ -127,14 +130,51 @@ bool TaskBalloon::accept()
     m_balloonVP->LineVisible.setValue(ui->comboLineVisible->currentIndex());
     m_balloonVP->LineWidth.setValue(ui->qsbLineWidth->value().getValue());
     m_parent->dvBalloon->KinkLength.setValue(ui->qsbKinkLength->value().getValue());
+
     m_parent->updateView(true);
+    recomputeFeature();
 
     return true;
 }
 
 bool TaskBalloon::reject()
 {
+    // reset to original values
+    if (m_balloonVP != nullptr) {
+        m_balloonVP->Color.setValue(m_origColor);
+        m_balloonVP->Fontsize.setValue(m_origFontSize);
+        m_balloonVP->LineVisible.setValue(m_origLineVisible);
+        m_balloonVP->LineWidth.setValue(m_origLineWidth);
+    }
+
+    if (m_parent->dvBalloon != nullptr) {
+        m_parent->dvBalloon->Text.setValue(m_origText);
+        m_parent->dvBalloon->ShapeScale.setValue(m_origShapeScale);
+        m_parent->dvBalloon->EndType.setValue(m_origEndType);
+        m_parent->dvBalloon->EndTypeScale.setValue(m_origEndTypeScale);
+        m_parent->dvBalloon->BubbleShape.setValue(m_origBubbleShape);
+        m_parent->dvBalloon->KinkLength.setValue(m_origKinkLength);
+    }
+
+    recomputeFeature();
+
     return false;
+}
+
+
+void TaskBalloon::getParameters()
+{
+    // store values when dialog was opened
+    m_origText = m_parent->dvBalloon->Text.getValue();
+    m_origShapeScale = m_parent->dvBalloon->EndTypeScale.getValue();
+    m_origEndType = m_parent->dvBalloon->EndType.getValue();
+    m_origEndTypeScale = m_parent->dvBalloon->EndTypeScale.getValue();
+    m_origBubbleShape = m_parent->dvBalloon->BubbleShape.getValue();
+    m_origKinkLength = m_parent->dvBalloon->KinkLength.getValue();
+    m_origColor = m_balloonVP->Color.getValue();
+    m_origFontSize = m_balloonVP->Fontsize.getValue();
+    m_origLineVisible = m_balloonVP->LineVisible.getValue();
+    m_origLineWidth = m_balloonVP->LineWidth.getValue();
 }
 
 void TaskBalloon::recomputeFeature()
