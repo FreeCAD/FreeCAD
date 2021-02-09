@@ -570,7 +570,7 @@ PyObject* SketchObjectPy::delConstraintOnPoint(PyObject *args)
     if (!PyArg_ParseTuple(args, "i|i", &Index, &pos))
         return 0;
 
-    if (pos>=0 && pos<3) { // Sketcher::none Sketcher::mid
+    if (pos>=0 && pos<=3) { // Sketcher::none Sketcher::mid
         if (this->getSketchObjectPtr()->delConstraintOnPoint(Index,(Sketcher::PointPos)pos)) {
             std::stringstream str;
             str << "Not able to delete a constraint on point with the given index: " << Index
@@ -1118,6 +1118,25 @@ PyObject* SketchObjectPy::extend(PyObject *args)
     PyErr_SetString(PyExc_TypeError, "extend() method accepts:\n"
         "-- int,float,int\n");
     return 0;
+}
+
+PyObject* SketchObjectPy::split(PyObject *args)
+{
+    PyObject *pcObj;
+    int GeoId;
+
+    if (!PyArg_ParseTuple(args, "iO!", &GeoId, &(Base::VectorPy::Type), &pcObj))
+        return 0;
+
+    Base::Vector3d v1 = static_cast<Base::VectorPy*>(pcObj)->value();
+    if (this->getSketchObjectPtr()->split(GeoId,v1)) {
+        std::stringstream str;
+        str << "Not able to split curve with the given index: " << GeoId;
+        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        return 0;
+    }
+
+    Py_Return;
 }
 
 PyObject* SketchObjectPy::addSymmetric(PyObject *args)
