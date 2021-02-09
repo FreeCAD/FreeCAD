@@ -9,6 +9,7 @@ path_classifiers:
   - "src/zipios++/"
   - "src/3rdParty/"
   - "src/Mod/Import/App/SCL"
+  - "src/CXX/"
   template:
   - "src/Tools/examplePy2wiki.py"
   unmaintained:
