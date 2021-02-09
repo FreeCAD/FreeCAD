@@ -393,7 +393,13 @@ TaskCheckGeometryResults::TaskCheckGeometryResults(QWidget *parent) : QWidget(pa
 
 TaskCheckGeometryResults::~TaskCheckGeometryResults()
 {
-    Gui::Selection().clearSelection();
+    try {
+        Gui::Selection().clearSelection();
+    }
+    catch (const Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
 }
 
 void TaskCheckGeometryResults::setupInterface()
