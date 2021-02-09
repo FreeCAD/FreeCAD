@@ -153,7 +153,13 @@ class TestPathSlot(PathTestBase):
         # print("pnts: {}\n".format(pnts))
 
         # Verify point count
-        self.assertEqual(len(pnts), 2)
+        if len(pnts) != 2:
+            for c in slot.Path.Commands:
+                p = c.Parameters
+                k = p.keys()
+                print("Parameters: {}".format(p))
+            self.assertEqual(len(pnts), 2)
+
         # Verify each line-segment point, excluding arcs
         verify_points = ['(7.5, 0.0)', '(7.5, 15.0)']
         for i in range(2):
@@ -195,7 +201,13 @@ class TestPathSlot(PathTestBase):
         # print("pnts: {}\n".format(pnts))
 
         # Verify point count
-        self.assertEqual(len(pnts), 2)
+        if len(pnts) != 2:
+            for c in slot.Path.Commands:
+                p = c.Parameters
+                k = p.keys()
+                print("Parameters: {}".format(p))
+            self.assertEqual(len(pnts), 2)
+
         # Verify each line-segment point, excluding arcs
         verify_points = ['(7.5, 0.0)', '(7.5, 15.0)']
         for i in range(2):
@@ -241,7 +253,13 @@ class TestPathSlot(PathTestBase):
         # print("pnts: {}\n".format(pnts))
 
         # Verify point count
-        self.assertEqual(len(pnts), 2)
+        if len(pnts) != 2:
+            for c in slot.Path.Commands:
+                p = c.Parameters
+                k = p.keys()
+                print("Parameters: {}".format(p))
+            self.assertEqual(len(pnts), 2)
+
         # Verify each line-segment point, excluding arcs
         verify_points = ['(7.5, 0.0)', '(7.5, 15.0)']
         for i in range(2):
