@@ -118,12 +118,7 @@ class TestPathSlot(PathTestBase):
         return "({}, {})".format(x, y)
 
     def test00(self):
-        '''test00()...
-        Test Slot operation with:
-            - horizontal rectangular face selection
-            - ReverseDirection = True
-            - LayerMode = Single-pass
-        '''
+        '''Test Slot on horizontal rectangular face: ReverseDirection=True; LayerMode=Single-pass'''
 
         # Identify base feature(s) to be used for operation's Base Geometry
         base = self.doc.Cut
@@ -145,6 +140,7 @@ class TestPathSlot(PathTestBase):
         slot.ReverseDirection = True
         slot.LayerMode = "Single-pass"
 
+        slot.recompute()
         self.doc.recompute()
         
         pnts = list()
@@ -154,7 +150,7 @@ class TestPathSlot(PathTestBase):
             if "'X', 'Y'" in str(k)[9:]:  # == "(['F', 'X', 'Y'])":
                 pnts.append(self._format_point(p))
         pnts.sort()
-        # self.con.PrintMessage("pnts: {}\n".format(pnts))
+        # print("pnts: {}\n".format(pnts))
 
         # Verify point count
         self.assertEqual(len(pnts), 2)
@@ -164,11 +160,7 @@ class TestPathSlot(PathTestBase):
             self.assertEqual(pnts[i], verify_points[i])
 
     def test01(self):
-        '''test01()...
-        Test Slot operation with:
-            - two horizontal parallel bottom lines
-            - LayerMode = Single-pass
-        '''
+        '''Test Slot on two horizontal parallel bottom lines: LayerMode=Single-pass'''
 
         # Identify base feature to be used for operation's Base Geometry
         base = self.doc.Cut
@@ -190,6 +182,7 @@ class TestPathSlot(PathTestBase):
         # Set Operation
         slot.LayerMode = "Single-pass"
 
+        slot.recompute()
         self.doc.recompute()
         
         pnts = list()
@@ -199,7 +192,7 @@ class TestPathSlot(PathTestBase):
             if "'X', 'Y'" in str(k)[9:]:  # == "(['F', 'X', 'Y'])":
                 pnts.append(self._format_point(p))
         pnts.sort()
-        # self.con.PrintMessage("pnts: {}\n".format(pnts))
+        # print("pnts: {}\n".format(pnts))
 
         # Verify point count
         self.assertEqual(len(pnts), 2)
@@ -209,15 +202,7 @@ class TestPathSlot(PathTestBase):
             self.assertEqual(pnts[i], verify_points[i])
 
     def test02(self):
-        '''test02()...
-        Test Slot operation with:
-            - two vertical parallel rectangular faces selected
-            - ReverseDirection = True
-            - LayerMode = "Single-pass"
-            - PathOrientation = "Perpendicular"
-            - ExtendPathStart.Value = 7.5
-            - ExtendPathEnd.Value = 7.5
-        '''
+        '''Test two vertical parallel rectangular faces: ReverseDirection=True; LayerMode="Single-pass"; PathOrientation = "Perpendicular"; ExtendPathStart.Value=7.5; ExtendPathEnd.Value=7.5'''
 
         # Identify base feature to be used for operation's Base Geometry
         base = self.doc.Cut
@@ -243,6 +228,7 @@ class TestPathSlot(PathTestBase):
         slot.ExtendPathStart.Value = 7.5
         slot.ExtendPathEnd.Value = 7.5
 
+        slot.recompute()
         self.doc.recompute()
         
         pnts = list()
@@ -252,7 +238,7 @@ class TestPathSlot(PathTestBase):
             if "'X', 'Y'" in str(k)[9:]:  # == "(['F', 'X', 'Y'])":
                 pnts.append(self._format_point(p))
         pnts.sort()
-        # self.con.PrintMessage("pnts: {}\n".format(pnts))
+        # print("pnts: {}\n".format(pnts))
 
         # Verify point count
         self.assertEqual(len(pnts), 2)
