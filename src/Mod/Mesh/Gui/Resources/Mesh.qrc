@@ -25,14 +25,14 @@
         <file>icons/Mesh_RemoveCompByHand.svg</file>
         <file>icons/Mesh_RemoveComponents.svg</file>
         <file>icons/Mesh_Scale.svg</file>
-        <file>icons/Mesh_Section_by_Plane.svg</file>
-        <file>icons/Mesh_Segmentation_Best_Fit.svg</file>
+        <file>icons/Mesh_SectionByPlane.svg</file>
+        <file>icons/Mesh_SegmentationBestFit.svg</file>
         <file>icons/Mesh_Segmentation.svg</file>
         <file>icons/Mesh_Smoothing.svg</file>
         <file>icons/Mesh_SplitComponents.svg</file>
         <file>icons/Mesh_Tree.svg</file>
         <file>icons/Mesh_Tree_Curvature_Plot.svg</file>
-        <file>icons/Mesh_Trim_by_Plane.svg</file>
+        <file>icons/Mesh_TrimByPlane.svg</file>
         <file>icons/Mesh_Union.svg</file>
         <file>icons/Mesh_VertexCurvature.svg</file>
         <file>icons/MeshWorkbench.svg</file>
