@@ -93,7 +93,7 @@ public:
 
     static QString formatLinks(App::Document *ownerDoc, QList<App::SubObjectT> links);
 
-    void selectionChanged(const Gui::SelectionChanges& msg);
+    QTreeWidgetItem * selectionChanged(const Gui::SelectionChanges& msg, bool setCurrent=true);
     void detachObserver(Gui::SelectionObserver *);
     void attachObserver(Gui::SelectionObserver *);
 
@@ -117,12 +117,11 @@ private Q_SLOTS:
     void on_searchBox_textChanged(const QString&);
     void onItemExpanded(QTreeWidgetItem * item);
     void onCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*);
-    void onItemSelectionChanged();
+    void onItemChanged(QTreeWidgetItem*, int);
     void onItemEntered(QTreeWidgetItem *item);
     void onItemSearch();
     void onTimer();
     void onClicked(QAbstractButton *);
-    void checkItemSelection();
 
 private:
     QTreeWidgetItem *createItem(App::DocumentObject *obj, QTreeWidgetItem *parent);
@@ -149,8 +148,7 @@ private:
     std::map<App::Document*, QTreeWidgetItem*> docItems;
     std::map<App::DocumentObject*, QTreeWidgetItem*> itemMap;
     std::map<QByteArray, QTreeWidgetItem*> typeItems;
-    std::set<QTreeWidgetItem*> elementSels;
-    QList<QTreeWidgetItem*> selections;
+    std::vector<QTreeWidgetItem *> checkedItems;
     std::set<QByteArray> selectedTypes;
     QList<App::SubObjectT> oldLinks;
     bool allowSubObject = false;
@@ -158,9 +156,10 @@ private:
     bool singleParent = false;
     bool busy = false;
     bool isXLink = false;
-    App::DocumentObject *currentObj = nullptr;
     QTreeWidgetItem *searchItem = nullptr;
     QBrush bgBrush;
+    QBrush selBrush;
+    QFont selFont;
 
     QTime enterTime;
 
