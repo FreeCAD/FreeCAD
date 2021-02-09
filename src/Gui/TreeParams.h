@@ -88,6 +88,16 @@ public:
        QT_TRANSLATE_NOOP("TreeParams", ""))\
     FC_TREE_PARAM(TreeActiveAutoExpand,bool,Bool,true, \
        QT_TRANSLATE_NOOP("TreeParams", ""))\
+    FC_TREE_PARAM(TreeActiveColor,unsigned long, Unsigned, 3873898495, \
+       QT_TRANSLATE_NOOP("TreeParams", ""))\
+    FC_TREE_PARAM(TreeActiveBold,bool, Bool, true, \
+       QT_TRANSLATE_NOOP("TreeParams", ""))\
+    FC_TREE_PARAM(TreeActiveItalic,bool, Bool, false, \
+       QT_TRANSLATE_NOOP("TreeParams", ""))\
+    FC_TREE_PARAM(TreeActiveUnderlined,bool, Bool, false, \
+       QT_TRANSLATE_NOOP("TreeParams", ""))\
+    FC_TREE_PARAM(TreeActiveOverlined,bool, Bool, false, \
+       QT_TRANSLATE_NOOP("TreeParams", ""))\
     FC_TREE_PARAM(Indentation,int,Int,0, \
        QT_TRANSLATE_NOOP("TreeParams", ""))\
     FC_TREE_PARAM(LabelExpression,bool,Bool,false, \

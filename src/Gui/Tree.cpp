@@ -6380,17 +6380,12 @@ void DocumentObjectItem::setHighlight(bool set, Gui::HighlightMode high) {
     {
         QColor color(230,230,255);
         if (set) {
-            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
-            bool bold = hGrp->GetBool("TreeActiveBold",true);
-            bool italic = hGrp->GetBool("TreeActiveItalic",false);
-            bool underlined = hGrp->GetBool("TreeActiveUnderlined",false);
-            bool overlined = hGrp->GetBool("TreeActiveOverlined",false);
-            f.setBold(bold);
-            f.setItalic(italic);
-            f.setUnderline(underlined);
-            f.setOverline(overlined);
+            f.setBold(TreeParams::TreeActiveBold());
+            f.setItalic(TreeParams::TreeActiveItalic());
+            f.setUnderline(TreeParams::TreeActiveUnderlined());
+            f.setOverline(TreeParams::TreeActiveOverlined());
 
-            unsigned long col = hGrp->GetUnsigned("TreeActiveColor",3873898495);
+            unsigned long col = TreeParams::TreeActiveColor();
             color = QColor((col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff);
         }
         else {
