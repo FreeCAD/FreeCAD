@@ -1699,7 +1699,7 @@
       <translation type="unfinished">Turn cutting on when activating this level</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1159"/>
+      <location filename="../../ArchComponent.py" line="1161"/>
       <source>Use the material color as this object's shape color, if available</source>
       <translation type="unfinished">Use the material color as this object's shape color, if available</translation>
     </message>
@@ -2022,12 +2022,12 @@
       <translation type="unfinished">Components</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1942"/>
+      <location filename="../../ArchComponent.py" line="1944"/>
       <source>Components of this object</source>
       <translation>이 객체의 구성 요소</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1947"/>
+      <location filename="../../ArchComponent.py" line="1949"/>
       <source>Axes</source>
       <translation>축</translation>
     </message>
@@ -2107,27 +2107,27 @@
       <translation type="unfinished">Mesh to Shape</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1943"/>
+      <location filename="../../ArchComponent.py" line="1945"/>
       <source>Base component</source>
       <translation>기본 구성 요소</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1944"/>
+      <location filename="../../ArchComponent.py" line="1946"/>
       <source>Additions</source>
       <translation>추가</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1945"/>
+      <location filename="../../ArchComponent.py" line="1947"/>
       <source>Subtractions</source>
       <translation>감산</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1946"/>
+      <location filename="../../ArchComponent.py" line="1948"/>
       <source>Objects</source>
       <translation>오브젝트</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1012"/>
+      <location filename="../../ArchRoof.py" line="1013"/>
       <source>Roof</source>
       <translation>지붕</translation>
     </message>
@@ -2137,7 +2137,7 @@
       <translation>지붕 만들기</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="825"/>
+      <location filename="../../ArchRoof.py" line="826"/>
       <source>Unable to create a roof</source>
       <translation>지붕을 만들 수 없습니다</translation>
     </message>
@@ -2257,7 +2257,7 @@
       <translation>기본 개체를 선택 하십시오</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1949"/>
+      <location filename="../../ArchComponent.py" line="1951"/>
       <source>Fixtures</source>
       <translation type="unfinished">Fixtures</translation>
     </message>
@@ -2289,7 +2289,7 @@
     <message>
       <location filename="../../ArchWall.py" line="488"/>
       <source>Length</source>
-      <translation>돌출 컷(Pocket) 길이</translation>
+      <translation>거리</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="678"/>
@@ -2322,7 +2322,7 @@
       <translation type="unfinished">Distances (mm) and angles (deg) between axes</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="912"/>
+      <location filename="../../ArchComponent.py" line="913"/>
       <source>Error computing the shape of this object</source>
       <translation>이 개체의 모양을 계산하는 데에 오류가 생겼습니다</translation>
     </message>
@@ -2347,17 +2347,17 @@
       <translation type="unfinished">Enabling Brep force flag of object</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="933"/>
+      <location filename="../../ArchComponent.py" line="934"/>
       <source>has no solid</source>
       <translation type="unfinished">has no solid</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="940"/>
+      <location filename="../../ArchComponent.py" line="941"/>
       <source>has an invalid shape</source>
       <translation type="unfinished">has an invalid shape</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="942"/>
+      <location filename="../../ArchComponent.py" line="943"/>
       <source>has a null shape</source>
       <translation type="unfinished">has a null shape</translation>
     </message>
@@ -2407,12 +2407,12 @@
       <translation type="unfinished">Create Panel</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1014"/>
+      <location filename="../../ArchRoof.py" line="1015"/>
       <source>Id</source>
       <translation>Id</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1014"/>
+      <location filename="../../ArchRoof.py" line="1015"/>
       <source>IdRel</source>
       <translation type="unfinished">IdRel</translation>
     </message>
@@ -2437,27 +2437,27 @@
       <translation>전면</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1014"/>
+      <location filename="../../ArchRoof.py" line="1015"/>
       <source>Angle (deg)</source>
       <translation>각도</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1014"/>
+      <location filename="../../ArchRoof.py" line="1015"/>
       <source>Run (mm)</source>
       <translation>실행 (mm)</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1014"/>
+      <location filename="../../ArchRoof.py" line="1015"/>
       <source>Thickness (mm)</source>
       <translation>두께(mm)</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1014"/>
+      <location filename="../../ArchRoof.py" line="1015"/>
       <source>Overhang (mm)</source>
       <translation type="unfinished">Overhang (mm)</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1014"/>
+      <location filename="../../ArchRoof.py" line="1015"/>
       <source>Height (mm)</source>
       <translation>높이(mm)</translation>
     </message>
@@ -2512,7 +2512,7 @@
       <translation>건물 만들기</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1950"/>
+      <location filename="../../ArchComponent.py" line="1952"/>
       <source>Group</source>
       <translation>그룹</translation>
     </message>
@@ -2943,7 +2943,7 @@ Site creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1013"/>
       <source>Clear</source>
-      <translation type="unfinished">Clear</translation>
+      <translation>지우기</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1014"/>
@@ -2976,7 +2976,7 @@ Site creation aborted.</translation>
       <translation>합계</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1951"/>
+      <location filename="../../ArchComponent.py" line="1953"/>
       <source>Hosts</source>
       <translation type="unfinished">Hosts</translation>
     </message>
@@ -3043,57 +3043,57 @@ Building creation aborted.</translation>
       <translation type="unfinished">The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1511"/>
+      <location filename="../../ArchComponent.py" line="1513"/>
       <source>Toggle subcomponents</source>
       <translation type="unfinished">Toggle subcomponents</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1634"/>
+      <location filename="../../ArchComponent.py" line="1636"/>
       <source>Closing Sketch edit</source>
       <translation type="unfinished">Closing Sketch edit</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1939"/>
+      <location filename="../../ArchComponent.py" line="1941"/>
       <source>Component</source>
       <translation type="unfinished">Component</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1952"/>
+      <location filename="../../ArchComponent.py" line="1954"/>
       <source>Edit IFC properties</source>
       <translation type="unfinished">Edit IFC properties</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1953"/>
+      <location filename="../../ArchComponent.py" line="1955"/>
       <source>Edit standard code</source>
       <translation type="unfinished">Edit standard code</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1999"/>
+      <location filename="../../ArchComponent.py" line="2001"/>
       <source>Property</source>
       <translation>속성</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2004"/>
+      <location filename="../../ArchComponent.py" line="2006"/>
       <source>Add property...</source>
       <translation>속성 추가하기</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2005"/>
+      <location filename="../../ArchComponent.py" line="2007"/>
       <source>Add property set...</source>
       <translation type="unfinished">Add property set...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2005"/>
+      <location filename="../../ArchComponent.py" line="2007"/>
       <source>New...</source>
       <translation>신규 ...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2147"/>
+      <location filename="../../ArchComponent.py" line="2149"/>
       <source>New property</source>
       <translation>새로운 속성</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2183"/>
+      <location filename="../../ArchComponent.py" line="2185"/>
       <source>New property set</source>
       <translation type="unfinished">New property set</translation>
     </message>
@@ -3535,7 +3535,7 @@ You can change that in the preferences.</translation>
     <message>
       <location filename="../../ArchWindow.py" line="81"/>
       <source>Window</source>
-      <translation type="unfinished">Window</translation>
+      <translation>작업창</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="327"/>
@@ -3673,7 +3673,7 @@ You can change that in the preferences.</translation>
       <translation type="unfinished">The shapefile python library was not found on your system. Would you like to download it now from &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github.com/GeospatialPython/pyshp&lt;/a&gt;? It will be placed in your macros folder.</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1013"/>
+      <location filename="../../ArchRoof.py" line="1014"/>
       <source>Parameters of the roof profiles :
 * Angle : slope in degrees relative to the horizontal.
 * Run : horizontal distance between the wall and the ridge.
@@ -4557,7 +4557,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchWindow.py" line="154"/>
       <source>Window</source>
-      <translation type="unfinished">Window</translation>
+      <translation>작업창</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="156"/>
@@ -4693,7 +4693,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../ui/ArchSchedule.ui" line="168"/>
       <source>Clear</source>
-      <translation type="unfinished">Clear</translation>
+      <translation>지우기</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="180"/>

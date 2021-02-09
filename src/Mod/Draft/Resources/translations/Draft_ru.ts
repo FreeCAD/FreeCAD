@@ -39,127 +39,127 @@
       <translation>Удалить</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="144"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="164"/>
       <source>Text</source>
       <translation>Текст</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="153"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="173"/>
       <source>Font size</source>
       <translation>Размер шрифта</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="163"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="183"/>
       <source>Line spacing</source>
       <translation>Интервал строки</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="173"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="193"/>
       <source>Font name</source>
       <translation>Шрифт</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="192"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="212"/>
       <source>The font to use for texts and dimensions</source>
       <translation>Шрифт для текстов и размеров</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="219"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="239"/>
       <source>Units</source>
       <translation>Единицы измерения</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="228"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="248"/>
       <source>Scale multiplier</source>
       <translation>Масштабный коэффициент</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="238"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="258"/>
       <source>Decimals</source>
       <translation>Десятичные</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="248"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="268"/>
       <source>Unit override</source>
       <translation>Единица переопределения</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="258"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="278"/>
       <source>Show unit</source>
       <translation>Показать единицы</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="311"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="331"/>
       <source>Line and arrows</source>
       <translation>Линия и стрелки</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="320"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="340"/>
       <source>Line width</source>
       <translation>Ширина линии</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="330"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="350"/>
       <source>Extension overshoot</source>
       <translation>Перекрытие расширения</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="340"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="360"/>
       <source>Arrow size</source>
       <translation>Размер стрелки</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="350"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="370"/>
       <source>Show lines</source>
       <translation>Показать линии</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="360"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="380"/>
       <source>Dimension overshoot</source>
       <translation>Нахлёст размерной линии</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="370"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="390"/>
       <source>Extension lines</source>
       <translation>Выносные линии</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="380"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="400"/>
       <source>Arrow type</source>
       <translation>Тип стрелки</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="390"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="410"/>
       <source>Line / text color</source>
       <translation>Цвет линии/текста</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="413"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="433"/>
       <source>The width of the dimension lines</source>
       <translation>Ширина размерных линий</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="416"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="436"/>
       <source>px</source>
       <translation>пикс.</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="426"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="446"/>
       <source>The color of dimension lines, arrows and texts</source>
       <translation>Цвет размерных линий, стрелок и текста</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="456"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="476"/>
       <source>Dot</source>
       <translation>Точка</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="466"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="486"/>
       <source>Arrow</source>
       <translation>Стрелка</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="471"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="491"/>
       <source>Tick</source>
       <translation>Зацеп</translation>
     </message>
@@ -169,94 +169,84 @@
       <translation>Название Вашего стиля. Существующие имена стилей могут быть изменены.</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="199"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="219"/>
       <source>Font size in the system units</source>
       <translation>Размер шрифта в единицах системы</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="160"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="180"/>
       <source>Line spacing in system units</source>
       <translation>Расстояние между линиями в единицах системы</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="265"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="285"/>
       <source>A multiplier factor that affects the size of texts and markers</source>
       <translation>Множитель, влияющий на размер текстов и маркеров</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="285"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="305"/>
       <source>The number of decimals to show for dimension values</source>
       <translation>Количество десятичных знаков для отображения размеров</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="278"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="298"/>
       <source>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</source>
       <translation>Укажите допустимые единицы длины - мм, дюйм, фут, чтобы заставить отображать размер в этой единице</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="295"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="315"/>
       <source>If it is checked it will show the unit next to the dimension value</source>
       <translation>Если флажок установлен, то единица измерения будет отображена рядом со значением размера</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="514"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="534"/>
       <source>The distance that the extension lines are additionally extended beyond the dimension line</source>
       <translation>Расстояние на которое выносные линии дополнительно расширяют размерную линию</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="484"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="504"/>
       <source>The size of the dimension arrows or markers in system units</source>
       <translation>Размер размерных стрелок или маркеров в системных единицах</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="397"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="417"/>
       <source>If it is checked it will display the dimension line</source>
       <translation>Если флажок установлен, то будет отображена размерная линия</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="494"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="514"/>
       <source>The distance that the dimension line is additionally extended</source>
       <translation>Расстояние, на которое размерная линия дополнительно увеличена</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="504"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="524"/>
       <source>The length of the extension lines</source>
       <translation>Длина выносных линий</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="452"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="472"/>
       <source>The type of arrows or markers to use at the end of dimension lines</source>
       <translation>Тип стрелок или маркеров для использования в конце размерных линий</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="461"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="481"/>
       <source>Circle</source>
       <translation>Окружность</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="476"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="496"/>
       <source>Tick-2</source>
       <translation>Зацепление-2</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="529"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="120"/>
       <source>Import styles from json file</source>
-      <translation type="unfinished">Import styles from json file</translation>
+      <translation>Импорт стилей из json файла</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="532"/>
-      <source>Import...</source>
-      <translation>Импорт...</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="539"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="130"/>
       <source>Export styles to json file</source>
-      <translation type="unfinished">Export styles to json file</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="542"/>
-      <source>Export...</source>
-      <translation type="unfinished">Export...</translation>
+      <translation>Экспорт стилей в json файл</translation>
     </message>
   </context>
   <context>
@@ -1109,7 +1099,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="20"/>
       <source>Lines and faces</source>
-      <translation type="unfinished">Lines and faces</translation>
+      <translation>Линии и грани</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="162"/>
@@ -1119,7 +1109,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="258"/>
       <source>If the unit suffix is shown on dimension texts or not</source>
-      <translation type="unfinished">If the unit suffix is shown on dimension texts or not</translation>
+      <translation>Если суффикс единицы измерения отображается в тексте измерения или нет</translation>
     </message>
   </context>
   <context>
@@ -2487,27 +2477,27 @@ This value is the maximum segment length. </source>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="329"/>
       <source>If set, the grid will have its two main axes colored in red, green or blue when they match global axes</source>
-      <translation type="unfinished">If set, the grid will have its two main axes colored in red, green or blue when they match global axes</translation>
+      <translation>Если задано, две главные оси сетки будут окрашены в красный, зеленый или синий цвет, когда они совпадают с глобальными осями</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="332"/>
       <source>Use colored axes</source>
-      <translation type="unfinished">Use colored axes</translation>
+      <translation>Использовать цветные оси</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="506"/>
       <source>Grid color and transparency</source>
-      <translation type="unfinished">Grid color and transparency</translation>
+      <translation>Цвет и прозрачность сетки</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="526"/>
       <source>The color of the grid</source>
-      <translation type="unfinished">The color of the grid</translation>
+      <translation>Цвет сетки</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="546"/>
       <source>The overall transparency of the grid</source>
-      <translation type="unfinished">The overall transparency of the grid</translation>
+      <translation>Общая прозрачность сетки</translation>
     </message>
   </context>
   <context>

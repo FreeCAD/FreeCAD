@@ -423,7 +423,7 @@
     <message>
       <location filename="../../shipCreateShip/TaskPanel.py" line="220"/>
       <source>Length</source>
-      <translation>돌출 컷(Pocket) 길이</translation>
+      <translation>거리</translation>
     </message>
     <message>
       <location filename="../../shipCreateShip/TaskPanel.py" line="225"/>

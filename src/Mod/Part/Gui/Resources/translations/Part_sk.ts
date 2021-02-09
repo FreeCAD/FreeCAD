@@ -494,7 +494,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
       <source>Edit %1</source>
-      <translation type="unfinished">Edit %1</translation>
+      <translation>Upraviť %1</translation>
     </message>
     <message>
       <location filename="../../AppPartGui.cpp" line="210"/>

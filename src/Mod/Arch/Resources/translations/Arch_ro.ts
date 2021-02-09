@@ -1699,7 +1699,7 @@
       <translation type="unfinished">Turn cutting on when activating this level</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1159"/>
+      <location filename="../../ArchComponent.py" line="1161"/>
       <source>Use the material color as this object's shape color, if available</source>
       <translation type="unfinished">Use the material color as this object's shape color, if available</translation>
     </message>
@@ -2022,12 +2022,12 @@
       <translation>Componente</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1942"/>
+      <location filename="../../ArchComponent.py" line="1944"/>
       <source>Components of this object</source>
       <translation>Componente ale acestui obiect</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1947"/>
+      <location filename="../../ArchComponent.py" line="1949"/>
       <source>Axes</source>
       <translation>Axe</translation>
     </message>
@@ -2107,27 +2107,27 @@
       <translation>Discretizare în forma</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1943"/>
+      <location filename="../../ArchComponent.py" line="1945"/>
       <source>Base component</source>
       <translation>Component de bază</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1944"/>
+      <location filename="../../ArchComponent.py" line="1946"/>
       <source>Additions</source>
       <translation>Completări</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1945"/>
+      <location filename="../../ArchComponent.py" line="1947"/>
       <source>Subtractions</source>
       <translation>Scăderi</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1946"/>
+      <location filename="../../ArchComponent.py" line="1948"/>
       <source>Objects</source>
       <translation>Obiecte</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1012"/>
+      <location filename="../../ArchRoof.py" line="1013"/>
       <source>Roof</source>
       <translation>Acoperiș</translation>
     </message>
@@ -2137,7 +2137,7 @@
       <translation>Crează acoperiș</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="825"/>
+      <location filename="../../ArchRoof.py" line="826"/>
       <source>Unable to create a roof</source>
       <translation>Nu pot crea acoperișul</translation>
     </message>
@@ -2257,7 +2257,7 @@
       <translation>Selectați un obiect de bază</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1949"/>
+      <location filename="../../ArchComponent.py" line="1951"/>
       <source>Fixtures</source>
       <translation>Obiecte fixate</translation>
     </message>
@@ -2322,7 +2322,7 @@
       <translation>Distanţele (mm) şi unghiurile (grade) între axe</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="912"/>
+      <location filename="../../ArchComponent.py" line="913"/>
       <source>Error computing the shape of this object</source>
       <translation>Eroare la calcularea formei acestui obiect</translation>
     </message>
@@ -2347,17 +2347,17 @@
       <translation>Activarea Brep force flag-ul obiectului</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="933"/>
+      <location filename="../../ArchComponent.py" line="934"/>
       <source>has no solid</source>
       <translation>nu are nici un solid</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="940"/>
+      <location filename="../../ArchComponent.py" line="941"/>
       <source>has an invalid shape</source>
       <translation>are o formă nevalidă</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="942"/>
+      <location filename="../../ArchComponent.py" line="943"/>
       <source>has a null shape</source>
       <translation>are o formă nulă</translation>
     </message>
@@ -2407,12 +2407,12 @@
       <translation>Creează panou</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1014"/>
+      <location filename="../../ArchRoof.py" line="1015"/>
       <source>Id</source>
       <translation>Id</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1014"/>
+      <location filename="../../ArchRoof.py" line="1015"/>
       <source>IdRel</source>
       <translation>IdRel</translation>
     </message>
@@ -2437,27 +2437,27 @@
       <translation>Din față</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1014"/>
+      <location filename="../../ArchRoof.py" line="1015"/>
       <source>Angle (deg)</source>
       <translation>Unghiul (grade)</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1014"/>
+      <location filename="../../ArchRoof.py" line="1015"/>
       <source>Run (mm)</source>
       <translation>Distanță (mm)</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1014"/>
+      <location filename="../../ArchRoof.py" line="1015"/>
       <source>Thickness (mm)</source>
       <translation>Grosime (mm)</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1014"/>
+      <location filename="../../ArchRoof.py" line="1015"/>
       <source>Overhang (mm)</source>
       <translation>Streașină (mm)</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1014"/>
+      <location filename="../../ArchRoof.py" line="1015"/>
       <source>Height (mm)</source>
       <translation>Înălțime (mm)</translation>
     </message>
@@ -2512,7 +2512,7 @@
       <translation>Creați o clădire</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1950"/>
+      <location filename="../../ArchComponent.py" line="1952"/>
       <source>Group</source>
       <translation>Grup</translation>
     </message>
@@ -2975,7 +2975,7 @@ Site creation aborted.</source>
       <translation>Total</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1951"/>
+      <location filename="../../ArchComponent.py" line="1953"/>
       <source>Hosts</source>
       <translation>Gazde</translation>
     </message>
@@ -3041,57 +3041,57 @@ Building creation aborted.</source>
       <translation>Obiectul nu posedă atributul IfcProperties. Annulați crearea foii de calcul pentru obiectul:</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1511"/>
+      <location filename="../../ArchComponent.py" line="1513"/>
       <source>Toggle subcomponents</source>
       <translation>Activează/dezactivează subcomponente</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1634"/>
+      <location filename="../../ArchComponent.py" line="1636"/>
       <source>Closing Sketch edit</source>
       <translation>Închide editarea schiței</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1939"/>
+      <location filename="../../ArchComponent.py" line="1941"/>
       <source>Component</source>
       <translation>Componenta</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1952"/>
+      <location filename="../../ArchComponent.py" line="1954"/>
       <source>Edit IFC properties</source>
       <translation>Editarea Proprietăţilor IFC</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1953"/>
+      <location filename="../../ArchComponent.py" line="1955"/>
       <source>Edit standard code</source>
       <translation>Editați codul standard</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1999"/>
+      <location filename="../../ArchComponent.py" line="2001"/>
       <source>Property</source>
       <translation>Proprietate</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2004"/>
+      <location filename="../../ArchComponent.py" line="2006"/>
       <source>Add property...</source>
       <translation>Adăugaţi proprietatea...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2005"/>
+      <location filename="../../ArchComponent.py" line="2007"/>
       <source>Add property set...</source>
       <translation>Adăugați un ansamblu de propreități...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2005"/>
+      <location filename="../../ArchComponent.py" line="2007"/>
       <source>New...</source>
       <translation>Nou...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2147"/>
+      <location filename="../../ArchComponent.py" line="2149"/>
       <source>New property</source>
       <translation>Proprietate nouă</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2183"/>
+      <location filename="../../ArchComponent.py" line="2185"/>
       <source>New property set</source>
       <translation>Ansamblu nou de proprietăți</translation>
     </message>
@@ -3661,7 +3661,7 @@ You can change that in the preferences.</source>
       <translation type="unfinished">The shapefile python library was not found on your system. Would you like to download it now from &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github.com/GeospatialPython/pyshp&lt;/a&gt;? It will be placed in your macros folder.</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1013"/>
+      <location filename="../../ArchRoof.py" line="1014"/>
       <source>Parameters of the roof profiles :
 * Angle : slope in degrees relative to the horizontal.
 * Run : horizontal distance between the wall and the ridge.

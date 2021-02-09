@@ -1699,7 +1699,7 @@
       <translation>Включить резку при активации этого уровня</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1159"/>
+      <location filename="../../ArchComponent.py" line="1161"/>
       <source>Use the material color as this object's shape color, if available</source>
       <translation>Использовать цвет материала как цвет формы этого объекта, если доступно</translation>
     </message>
@@ -1961,57 +1961,57 @@
     <message>
       <location filename="../../ArchRoof.py" line="263"/>
       <source>The list of angles of the roof segments</source>
-      <translation type="unfinished">The list of angles of the roof segments</translation>
+      <translation>Список углов сегментов крыши</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="268"/>
       <source>The list of horizontal length projections of the roof segments</source>
-      <translation type="unfinished">The list of horizontal length projections of the roof segments</translation>
+      <translation>Список проекций сегментов крыши по горизонтали</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="273"/>
       <source>The list of IDs of the relative profiles of the roof segments</source>
-      <translation type="unfinished">The list of IDs of the relative profiles of the roof segments</translation>
+      <translation>Список идентификаторов относительных профилей сегментов крыши</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="278"/>
       <source>The list of thicknesses of the roof segments</source>
-      <translation type="unfinished">The list of thicknesses of the roof segments</translation>
+      <translation>Список толщин сегментов крыши</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="283"/>
       <source>The list of overhangs of the roof segments</source>
-      <translation type="unfinished">The list of overhangs of the roof segments</translation>
+      <translation>Список свесов сегментов крыши</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="288"/>
       <source>The list of calculated heights of the roof segments</source>
-      <translation type="unfinished">The list of calculated heights of the roof segments</translation>
+      <translation>Список расчетных высот сегментов крыши</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="293"/>
       <source>The face number of the base object used to build the roof</source>
-      <translation type="unfinished">The face number of the base object used to build the roof</translation>
+      <translation>Номер грани базового объекта, используемого для построения крыши</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="298"/>
       <source>The total length of the ridges and hips of the roof</source>
-      <translation type="unfinished">The total length of the ridges and hips of the roof</translation>
+      <translation>Общая длина гребней и бедер крыши</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="304"/>
       <source>The total length of the borders of the roof</source>
-      <translation type="unfinished">The total length of the borders of the roof</translation>
+      <translation>Общая длина границ крыши</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="310"/>
       <source>Specifies if the direction of the roof should be flipped</source>
-      <translation type="unfinished">Specifies if the direction of the roof should be flipped</translation>
+      <translation>Указывает, следует ли разворачивать направление крыши</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1022"/>
       <source>Show the label in the 3D view</source>
-      <translation type="unfinished">Show the label in the 3D view</translation>
+      <translation>Отображение метки в представлении 3D</translation>
     </message>
   </context>
   <context>
@@ -2022,12 +2022,12 @@
       <translation>Компоненты</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1942"/>
+      <location filename="../../ArchComponent.py" line="1944"/>
       <source>Components of this object</source>
       <translation>Компоненты этого объекта</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1947"/>
+      <location filename="../../ArchComponent.py" line="1949"/>
       <source>Axes</source>
       <translation>Оси</translation>
     </message>
@@ -2107,27 +2107,27 @@
       <translation>Сетку — в Фигуру</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1943"/>
+      <location filename="../../ArchComponent.py" line="1945"/>
       <source>Base component</source>
       <translation>Базовый компонент</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1944"/>
+      <location filename="../../ArchComponent.py" line="1946"/>
       <source>Additions</source>
       <translation>Дополнения</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1945"/>
+      <location filename="../../ArchComponent.py" line="1947"/>
       <source>Subtractions</source>
       <translation>Вычеты</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1946"/>
+      <location filename="../../ArchComponent.py" line="1948"/>
       <source>Objects</source>
       <translation>Объекты</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1012"/>
+      <location filename="../../ArchRoof.py" line="1013"/>
       <source>Roof</source>
       <translation>Крыша</translation>
     </message>
@@ -2137,7 +2137,7 @@
       <translation>Создать Крышу</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="825"/>
+      <location filename="../../ArchRoof.py" line="826"/>
       <source>Unable to create a roof</source>
       <translation>Невозможно создать крышу</translation>
     </message>
@@ -2257,7 +2257,7 @@
       <translation>Пожалуйста, выберите базовый объект</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1949"/>
+      <location filename="../../ArchComponent.py" line="1951"/>
       <source>Fixtures</source>
       <translation>Зажимы</translation>
     </message>
@@ -2322,7 +2322,7 @@
       <translation>Расстояния (мм) и углы (градусы) между осями</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="912"/>
+      <location filename="../../ArchComponent.py" line="913"/>
       <source>Error computing the shape of this object</source>
       <translation>Ошибка при расчёте формы этого объекта</translation>
     </message>
@@ -2347,17 +2347,17 @@
       <translation>Включение BREP-флага объекта</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="933"/>
+      <location filename="../../ArchComponent.py" line="934"/>
       <source>has no solid</source>
       <translation>не имеет замкнутую форму</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="940"/>
+      <location filename="../../ArchComponent.py" line="941"/>
       <source>has an invalid shape</source>
       <translation>имеет неправильную фигуру</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="942"/>
+      <location filename="../../ArchComponent.py" line="943"/>
       <source>has a null shape</source>
       <translation>имеет пустую форму</translation>
     </message>
@@ -2407,12 +2407,12 @@
       <translation>Создать Панель</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1014"/>
+      <location filename="../../ArchRoof.py" line="1015"/>
       <source>Id</source>
       <translation>№</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1014"/>
+      <location filename="../../ArchRoof.py" line="1015"/>
       <source>IdRel</source>
       <translation>Привязанный №</translation>
     </message>
@@ -2437,27 +2437,27 @@
       <translation>Спереди</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1014"/>
+      <location filename="../../ArchRoof.py" line="1015"/>
       <source>Angle (deg)</source>
       <translation>Угол (градусы)</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1014"/>
+      <location filename="../../ArchRoof.py" line="1015"/>
       <source>Run (mm)</source>
       <translation>Зазор (мм)</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1014"/>
+      <location filename="../../ArchRoof.py" line="1015"/>
       <source>Thickness (mm)</source>
       <translation>Толщина (мм)</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1014"/>
+      <location filename="../../ArchRoof.py" line="1015"/>
       <source>Overhang (mm)</source>
       <translation>Свес крыши (мм)</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1014"/>
+      <location filename="../../ArchRoof.py" line="1015"/>
       <source>Height (mm)</source>
       <translation>Высота (мм)</translation>
     </message>
@@ -2512,7 +2512,7 @@
       <translation>Создать Здание</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1950"/>
+      <location filename="../../ArchComponent.py" line="1952"/>
       <source>Group</source>
       <translation>Группа</translation>
     </message>
@@ -2976,7 +2976,7 @@ Site creation aborted.</source>
       <translation>Итог</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1951"/>
+      <location filename="../../ArchComponent.py" line="1953"/>
       <source>Hosts</source>
       <translation>Источники</translation>
     </message>
@@ -3044,57 +3044,57 @@ Building creation aborted.</source>
       <translation>Объект не имеет атрибута IfcProperties. Отменить создание таблицы для объекта:</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1511"/>
+      <location filename="../../ArchComponent.py" line="1513"/>
       <source>Toggle subcomponents</source>
       <translation>Переключить подкомпоненты</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1634"/>
+      <location filename="../../ArchComponent.py" line="1636"/>
       <source>Closing Sketch edit</source>
       <translation>Закрытие редактирования эскиза</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1939"/>
+      <location filename="../../ArchComponent.py" line="1941"/>
       <source>Component</source>
       <translation>Компонент</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1952"/>
+      <location filename="../../ArchComponent.py" line="1954"/>
       <source>Edit IFC properties</source>
       <translation>Редактировать IFC свойства</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1953"/>
+      <location filename="../../ArchComponent.py" line="1955"/>
       <source>Edit standard code</source>
       <translation>Изменить код компонента</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1999"/>
+      <location filename="../../ArchComponent.py" line="2001"/>
       <source>Property</source>
       <translation>Свойство</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2004"/>
+      <location filename="../../ArchComponent.py" line="2006"/>
       <source>Add property...</source>
       <translation>Добавить свойство...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2005"/>
+      <location filename="../../ArchComponent.py" line="2007"/>
       <source>Add property set...</source>
       <translation>Добавить набор свойств...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2005"/>
+      <location filename="../../ArchComponent.py" line="2007"/>
       <source>New...</source>
       <translation>Создать...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2147"/>
+      <location filename="../../ArchComponent.py" line="2149"/>
       <source>New property</source>
       <translation>Новое свойство</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2183"/>
+      <location filename="../../ArchComponent.py" line="2185"/>
       <source>New property set</source>
       <translation>Новый набор свойств</translation>
     </message>
@@ -3674,7 +3674,7 @@ You can change that in the preferences.</source>
       <translation>Библиотека python shapefile не найдена в вашей системе. Хотите загрузить ее сейчас с &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github. om/GeospatialPython/pyshp&lt;/a&gt;? Она будет помещена в папку макросов.</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1013"/>
+      <location filename="../../ArchRoof.py" line="1014"/>
       <source>Parameters of the roof profiles :
 * Angle : slope in degrees relative to the horizontal.
 * Run : horizontal distance between the wall and the ridge.
@@ -3706,17 +3706,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchWindow.py" line="1168"/>
       <source>This window has no defined opening</source>
-      <translation type="unfinished">This window has no defined opening</translation>
+      <translation>Это окно не имеет определенного открытия</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1649"/>
       <source>Invert opening direction</source>
-      <translation type="unfinished">Invert opening direction</translation>
+      <translation>Инвертировать направление открытия</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1650"/>
       <source>Invert hinge position</source>
-      <translation type="unfinished">Invert hinge position</translation>
+      <translation>Инвертировать положение петель</translation>
     </message>
   </context>
   <context>
@@ -4866,7 +4866,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="29"/>
       <source>Unnamed schedule</source>
-      <translation type="unfinished">Unnamed schedule</translation>
+      <translation>Неназванное расписание</translation>
     </message>
   </context>
   <context>

@@ -1407,12 +1407,12 @@
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="70"/>
       <source>ISO metric coarse profile</source>
-      <translation>ISO metrisches Grobprofil</translation>
+      <translation>metrisches ISO Regelgewinde</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="71"/>
       <source>ISO metric fine profile</source>
-      <translation>ISO metrisches Feinprofil</translation>
+      <translation>metrisches ISO Feingewinde</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="72"/>

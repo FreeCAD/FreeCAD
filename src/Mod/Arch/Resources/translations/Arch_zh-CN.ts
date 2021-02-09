@@ -1406,12 +1406,12 @@
     <message>
       <location filename="../../ArchStairs.py" line="311"/>
       <source>The depth of the treads of these stairs - Enforced regardless of Length or edge's Length</source>
-      <translation type="unfinished">The depth of the treads of these stairs - Enforced regardless of Length or edge's Length</translation>
+      <translation>忽略楼梯踏板的深度长度边缘，全部强制执行</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="313"/>
       <source>The height of the risers of these stairs - Enforced regardless of Height or edge's Height</source>
-      <translation type="unfinished">The height of the risers of these stairs - Enforced regardless of Height or edge's Height</translation>
+      <translation>忽略楼梯竖板的高度或边缘高度，全部强制执行</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="316"/>
@@ -1699,7 +1699,7 @@
       <translation type="unfinished">Turn cutting on when activating this level</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1159"/>
+      <location filename="../../ArchComponent.py" line="1161"/>
       <source>Use the material color as this object's shape color, if available</source>
       <translation type="unfinished">Use the material color as this object's shape color, if available</translation>
     </message>
@@ -1761,7 +1761,7 @@
     <message>
       <location filename="../../ArchCurtainWall.py" line="243"/>
       <source>The number of panels</source>
-      <translation type="unfinished">The number of panels</translation>
+      <translation>面板数量</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="247"/>
@@ -1771,7 +1771,7 @@
     <message>
       <location filename="../../ArchCurtainWall.py" line="251"/>
       <source>Swaps horizontal and vertical lines</source>
-      <translation type="unfinished">Swaps horizontal and vertical lines</translation>
+      <translation>交换水平与垂直线</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="254"/>
@@ -1816,27 +1816,27 @@
     <message>
       <location filename="../../ArchTruss.py" line="152"/>
       <source>The angle of the truss</source>
-      <translation type="unfinished">The angle of the truss</translation>
+      <translation>桁架的角度</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="156"/>
       <source>The slant type of this truss</source>
-      <translation type="unfinished">The slant type of this truss</translation>
+      <translation>这个桁架的倾斜类型</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="160"/>
       <source>The normal direction of this truss</source>
-      <translation type="unfinished">The normal direction of this truss</translation>
+      <translation>桁架的法线方向</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="164"/>
       <source>The height of the truss at the start position</source>
-      <translation type="unfinished">The height of the truss at the start position</translation>
+      <translation>起点位置的桁架高度</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="168"/>
       <source>The height of the truss at the end position</source>
-      <translation type="unfinished">The height of the truss at the end position</translation>
+      <translation>终点位置的桁架高度</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="172"/>
@@ -2022,12 +2022,12 @@
       <translation>组件</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1942"/>
+      <location filename="../../ArchComponent.py" line="1944"/>
       <source>Components of this object</source>
       <translation>此对象的组件</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1947"/>
+      <location filename="../../ArchComponent.py" line="1949"/>
       <source>Axes</source>
       <translation>轴线</translation>
     </message>
@@ -2107,27 +2107,27 @@
       <translation>网格转换为形体</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1943"/>
+      <location filename="../../ArchComponent.py" line="1945"/>
       <source>Base component</source>
       <translation>基础组件</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1944"/>
+      <location filename="../../ArchComponent.py" line="1946"/>
       <source>Additions</source>
       <translation>增补</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1945"/>
+      <location filename="../../ArchComponent.py" line="1947"/>
       <source>Subtractions</source>
       <translation>消减</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1946"/>
+      <location filename="../../ArchComponent.py" line="1948"/>
       <source>Objects</source>
       <translation>对象</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1012"/>
+      <location filename="../../ArchRoof.py" line="1013"/>
       <source>Roof</source>
       <translation>屋顶</translation>
     </message>
@@ -2137,7 +2137,7 @@
       <translation>创建屋顶</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="825"/>
+      <location filename="../../ArchRoof.py" line="826"/>
       <source>Unable to create a roof</source>
       <translation>无法创建屋顶</translation>
     </message>
@@ -2257,7 +2257,7 @@
       <translation>请选择一个基物体</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1949"/>
+      <location filename="../../ArchComponent.py" line="1951"/>
       <source>Fixtures</source>
       <translation>固定装置</translation>
     </message>
@@ -2322,7 +2322,7 @@
       <translation>轴之间的距离 (mm) 和角度 (°)</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="912"/>
+      <location filename="../../ArchComponent.py" line="913"/>
       <source>Error computing the shape of this object</source>
       <translation>计算此对象形状时出的错</translation>
     </message>
@@ -2347,17 +2347,17 @@
       <translation>启用 Brep 对象的强制标志</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="933"/>
+      <location filename="../../ArchComponent.py" line="934"/>
       <source>has no solid</source>
       <translation>没有固体</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="940"/>
+      <location filename="../../ArchComponent.py" line="941"/>
       <source>has an invalid shape</source>
       <translation>形状无效</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="942"/>
+      <location filename="../../ArchComponent.py" line="943"/>
       <source>has a null shape</source>
       <translation>形状无效</translation>
     </message>
@@ -2407,12 +2407,12 @@
       <translation>创建面板</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1014"/>
+      <location filename="../../ArchRoof.py" line="1015"/>
       <source>Id</source>
       <translation>编号</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1014"/>
+      <location filename="../../ArchRoof.py" line="1015"/>
       <source>IdRel</source>
       <translation>关联编号</translation>
     </message>
@@ -2437,27 +2437,27 @@
       <translation>前视</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1014"/>
+      <location filename="../../ArchRoof.py" line="1015"/>
       <source>Angle (deg)</source>
       <translation>角度(度)</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1014"/>
+      <location filename="../../ArchRoof.py" line="1015"/>
       <source>Run (mm)</source>
       <translation>斜边(毫米)</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1014"/>
+      <location filename="../../ArchRoof.py" line="1015"/>
       <source>Thickness (mm)</source>
       <translation>厚度(毫米)</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1014"/>
+      <location filename="../../ArchRoof.py" line="1015"/>
       <source>Overhang (mm)</source>
       <translation>悬垂(毫米)</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1014"/>
+      <location filename="../../ArchRoof.py" line="1015"/>
       <source>Height (mm)</source>
       <translation>高度(毫米)</translation>
     </message>
@@ -2512,7 +2512,7 @@
       <translation>创建建筑物</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1950"/>
+      <location filename="../../ArchComponent.py" line="1952"/>
       <source>Group</source>
       <translation>组</translation>
     </message>
@@ -2975,7 +2975,7 @@ Site creation aborted.</source>
       <translation>总计</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1951"/>
+      <location filename="../../ArchComponent.py" line="1953"/>
       <source>Hosts</source>
       <translation>主机</translation>
     </message>
@@ -3042,57 +3042,57 @@ Building creation aborted.</source>
       <translation>该对象没有 IfcProperties 属性。取消对象的电子表格创建:</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1511"/>
+      <location filename="../../ArchComponent.py" line="1513"/>
       <source>Toggle subcomponents</source>
       <translation>切换子组件</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1634"/>
+      <location filename="../../ArchComponent.py" line="1636"/>
       <source>Closing Sketch edit</source>
       <translation>关闭草绘编辑</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1939"/>
+      <location filename="../../ArchComponent.py" line="1941"/>
       <source>Component</source>
       <translation>组件</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1952"/>
+      <location filename="../../ArchComponent.py" line="1954"/>
       <source>Edit IFC properties</source>
       <translation>编辑IFC属性</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1953"/>
+      <location filename="../../ArchComponent.py" line="1955"/>
       <source>Edit standard code</source>
       <translation>编辑标准签名</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1999"/>
+      <location filename="../../ArchComponent.py" line="2001"/>
       <source>Property</source>
       <translation>属性</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2004"/>
+      <location filename="../../ArchComponent.py" line="2006"/>
       <source>Add property...</source>
       <translation>添加属性</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2005"/>
+      <location filename="../../ArchComponent.py" line="2007"/>
       <source>Add property set...</source>
       <translation>添加属性集...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2005"/>
+      <location filename="../../ArchComponent.py" line="2007"/>
       <source>New...</source>
       <translation>新建...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2147"/>
+      <location filename="../../ArchComponent.py" line="2149"/>
       <source>New property</source>
       <translation>新建属性(&amp;N)</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2183"/>
+      <location filename="../../ArchComponent.py" line="2185"/>
       <source>New property set</source>
       <translation>新属性集</translation>
     </message>
@@ -3672,7 +3672,7 @@ You can change that in the preferences.</translation>
       <translation type="unfinished">The shapefile python library was not found on your system. Would you like to download it now from &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github.com/GeospatialPython/pyshp&lt;/a&gt;? It will be placed in your macros folder.</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1013"/>
+      <location filename="../../ArchRoof.py" line="1014"/>
       <source>Parameters of the roof profiles :
 * Angle : slope in degrees relative to the horizontal.
 * Run : horizontal distance between the wall and the ridge.

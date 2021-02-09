@@ -760,12 +760,12 @@
     <message>
       <location filename="../../Command.cpp" line="383"/>
       <source>Mesh intersection</source>
-      <translation type="unfinished">Mesh intersection</translation>
+      <translation>Interseção de malhas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="469"/>
       <source>Import Mesh</source>
-      <translation type="unfinished">Import Mesh</translation>
+      <translation>Importar Malha</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="665"/>
@@ -776,7 +776,7 @@
       <location filename="../../Command.cpp" line="1414"/>
       <location filename="../../DlgSmoothing.cpp" line="178"/>
       <source>Mesh Smoothing</source>
-      <translation type="unfinished">Mesh Smoothing</translation>
+      <translation>Suavizar Malha</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1505"/>
@@ -836,12 +836,12 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="818"/>
       <source>Remove duplicated faces</source>
-      <translation type="unfinished">Remove duplicated faces</translation>
+      <translation>Remover faces duplicadas</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="883"/>
       <source>Remove duplicated points</source>
-      <translation type="unfinished">Remove duplicated points</translation>
+      <translation>Remover pontos duplicados</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="967"/>
@@ -856,12 +856,12 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1094"/>
       <source>Repair mesh</source>
-      <translation type="unfinished">Repair mesh</translation>
+      <translation>Reparar malha</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.cpp" line="130"/>
       <source>Delete selection</source>
-      <translation type="unfinished">Delete selection</translation>
+      <translation>Eliminar seleção</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="874"/>
@@ -883,7 +883,7 @@
     <message>
       <location filename="../../ViewProvider.cpp" line="1131"/>
       <source>Segment</source>
-      <translation type="unfinished">Segment</translation>
+      <translation>Segmento</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1726"/>

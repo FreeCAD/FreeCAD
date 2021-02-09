@@ -29,7 +29,7 @@
     <message>
       <location filename="../../AddonManager.py" line="200"/>
       <source>Addon manager</source>
-      <translation>アドオン・マネージャー</translation>
+      <translation>アドオンマネージャー</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="202"/>
@@ -134,7 +134,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="653"/>
       <source>Retrieving info from wiki</source>
-      <translation>Wikiからの情報を取り込み中</translation>
+      <translation>Wikiからの情報を取得しています</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="696"/>
@@ -184,7 +184,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="890"/>
       <source>Successfully installed</source>
-      <translation>インストールに成功しました。</translation>
+      <translation>インストールが完了しました</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="310"/>
@@ -264,17 +264,17 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="342"/>
       <source>Appears to be an issue connecting to the Wiki, therefore cannot retrieve Wiki macro list at this time</source>
-      <translation type="unfinished">Appears to be an issue connecting to the Wiki, therefore cannot retrieve Wiki macro list at this time</translation>
+      <translation>Wikiへの接続で問題が発生したため、現時点ではWikiのマクロリストを取得できません。</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="433"/>
       <source>Raw markdown displayed</source>
-      <translation type="unfinished">Raw markdown displayed</translation>
+      <translation>未加工のマークダウンを表示</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="435"/>
       <source>Python Markdown library is missing.</source>
-      <translation type="unfinished">Python Markdown library is missing.</translation>
+      <translation>Python Markdown ライブラリがありません。</translation>
     </message>
   </context>
   <context>

@@ -309,7 +309,7 @@ Klikněte 'Pokračovat' chcete-li přesto prvek vytvořit, nebo "Přerušit" pro
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="283"/>
       <source>Select base object, then the object to embed, and invoke this tool.</source>
-      <translation>Vyberze základní objekt, potom objekt k připojení a nakonec použijte tento nástroj.</translation>
+      <translation>Vyberte základní objekt, potom objekt k připojení a nakonec použijte tento nástroj.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="304"/>

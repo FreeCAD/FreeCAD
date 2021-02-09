@@ -618,12 +618,12 @@
     <message>
       <location filename="../../Command.cpp" line="1831"/>
       <source>Split by components</source>
-      <translation type="unfinished">Split by components</translation>
+      <translation>Dividi in componenti</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1832"/>
       <source>Split selected mesh into its components</source>
-      <translation type="unfinished">Split selected mesh into its components</translation>
+      <translation>Dividi la mesh selezionata nei suoi componenti</translation>
     </message>
   </context>
   <context>
@@ -740,7 +740,7 @@
       <location filename="../../Command.cpp" line="110"/>
       <location filename="../../Command.cpp" line="149"/>
       <source>Mesh Mesh Create</source>
-      <translation type="unfinished">Mesh Mesh Create</translation>
+      <translation>Crea mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="188"/>
@@ -750,7 +750,7 @@
     <message>
       <location filename="../../Command.cpp" line="243"/>
       <source>Mesh union</source>
-      <translation type="unfinished">Mesh union</translation>
+      <translation>Unione mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="312"/>
@@ -765,7 +765,7 @@
     <message>
       <location filename="../../Command.cpp" line="469"/>
       <source>Import Mesh</source>
-      <translation type="unfinished">Import Mesh</translation>
+      <translation>Importa Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="665"/>
@@ -776,42 +776,42 @@
       <location filename="../../Command.cpp" line="1414"/>
       <location filename="../../DlgSmoothing.cpp" line="178"/>
       <source>Mesh Smoothing</source>
-      <translation type="unfinished">Mesh Smoothing</translation>
+      <translation>Leviga la mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1505"/>
       <source>Harmonize mesh normals</source>
-      <translation type="unfinished">Harmonize mesh normals</translation>
+      <translation>Armonizza le normali della mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1539"/>
       <source>Flip mesh normals</source>
-      <translation type="unfinished">Flip mesh normals</translation>
+      <translation>Inverti le normali della mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1650"/>
       <source>Fill up holes</source>
-      <translation type="unfinished">Fill up holes</translation>
+      <translation>Riempi i fori</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1801"/>
       <source>Mesh merge</source>
-      <translation type="unfinished">Mesh merge</translation>
+      <translation>Unisci le mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1844"/>
       <source>Mesh split</source>
-      <translation type="unfinished">Mesh split</translation>
+      <translation>Dividi le mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1896"/>
       <source>Mesh scale</source>
-      <translation type="unfinished">Mesh scale</translation>
+      <translation>Scala la mesh</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.cpp" line="147"/>
       <source>Mesh Decimating</source>
-      <translation type="unfinished">Mesh Decimating</translation>
+      <translation>Decimazione mesh</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="483"/>
@@ -821,27 +821,27 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="586"/>
       <source>Remove non-manifolds</source>
-      <translation type="unfinished">Remove non-manifolds</translation>
+      <translation>Rimuovi non-manifolds</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="685"/>
       <source>Fix indices</source>
-      <translation type="unfinished">Fix indices</translation>
+      <translation>Ripara indici</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="751"/>
       <source>Remove degenerated faces</source>
-      <translation type="unfinished">Remove degenerated faces</translation>
+      <translation>Rimuovi facce degenerate</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="818"/>
       <source>Remove duplicated faces</source>
-      <translation type="unfinished">Remove duplicated faces</translation>
+      <translation>Rimuovi facce duplicate</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="883"/>
       <source>Remove duplicated points</source>
-      <translation type="unfinished">Remove duplicated points</translation>
+      <translation>Rimuovi punti duplicati</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="967"/>
@@ -851,17 +851,17 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1054"/>
       <source>Remove folds</source>
-      <translation type="unfinished">Remove folds</translation>
+      <translation>Rimuovi pieghe</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1094"/>
       <source>Repair mesh</source>
-      <translation type="unfinished">Repair mesh</translation>
+      <translation>Ripara la mesh</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.cpp" line="130"/>
       <source>Delete selection</source>
-      <translation type="unfinished">Delete selection</translation>
+      <translation>Elimina selezione</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="874"/>
@@ -883,7 +883,7 @@
     <message>
       <location filename="../../ViewProvider.cpp" line="1131"/>
       <source>Segment</source>
-      <translation type="unfinished">Segment</translation>
+      <translation>Segmento</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1726"/>
@@ -893,7 +893,7 @@
     <message>
       <location filename="../../ViewProvider.cpp" line="1833"/>
       <source>Fill hole</source>
-      <translation type="unfinished">Fill hole</translation>
+      <translation>Riempi foro</translation>
     </message>
   </context>
   <context>

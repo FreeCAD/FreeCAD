@@ -205,27 +205,27 @@
     <message>
       <location filename="../../Command.cpp" line="190"/>
       <source>Fit plane</source>
-      <translation type="unfinished">Fit plane</translation>
+      <translation>Ajuster le plan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="221"/>
       <source>Fit cylinder</source>
-      <translation type="unfinished">Fit cylinder</translation>
+      <translation>Ajuster le cylindre</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="287"/>
       <source>Fit sphere</source>
-      <translation type="unfinished">Fit sphere</translation>
+      <translation>Ajuster la sphère</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="335"/>
       <source>Fit polynomial surface</source>
-      <translation type="unfinished">Fit polynomial surface</translation>
+      <translation>Ajuster la surface polynomiale</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="601"/>
       <source>View triangulation</source>
-      <translation type="unfinished">View triangulation</translation>
+      <translation>Afficher la triangulation</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="156"/>
@@ -235,12 +235,12 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="228"/>
       <source>Fit B-Spline</source>
-      <translation type="unfinished">Fit B-Spline</translation>
+      <translation>Ajuster la B-Spline</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="101"/>
       <source>Poisson reconstruction</source>
-      <translation type="unfinished">Poisson reconstruction</translation>
+      <translation>Reconstruction de Poisson</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.cpp" line="234"/>

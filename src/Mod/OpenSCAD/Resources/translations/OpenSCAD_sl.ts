@@ -101,7 +101,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="393"/>
       <source>Triangulation settings</source>
-      <translation>Nastavitve triangulacije</translation>
+      <translation>Nastavitve tritrikotenja</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="90"/>

@@ -328,7 +328,7 @@
     </message>
     <message>
       <source>Text</source>
-      <translation type="unfinished">Text</translation>
+      <translation>텍스트</translation>
     </message>
     <message>
       <source>Background</source>

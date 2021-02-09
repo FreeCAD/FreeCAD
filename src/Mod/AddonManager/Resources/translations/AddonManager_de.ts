@@ -269,12 +269,12 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="433"/>
       <source>Raw markdown displayed</source>
-      <translation type="unfinished">Raw markdown displayed</translation>
+      <translation>Unbearbeitetes Markdown angezeigt</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="435"/>
       <source>Python Markdown library is missing.</source>
-      <translation type="unfinished">Python Markdown library is missing.</translation>
+      <translation>Python Markdown Bibliothek fehlt.</translation>
     </message>
   </context>
   <context>

@@ -17,7 +17,7 @@
       <location filename="../../Command.cpp" line="483"/>
       <location filename="../../Command.cpp" line="485"/>
       <source>Inserts an Annotation view in the active drawing</source>
-      <translation>在当前图纸中插入注释视图</translation>
+      <translation>在当前制图中插入注释视图</translation>
     </message>
   </context>
   <context>
@@ -268,96 +268,102 @@
       <translation>高品质抗锯齿(&amp;H)</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="280"/>
+      <location filename="../../DrawingView.cpp" line="284"/>
       <source>Open SVG File</source>
       <translation>打开SVG文件</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="281"/>
+      <location filename="../../DrawingView.cpp" line="285"/>
       <source>Could not open file '%1'.</source>
       <translation>无法打开文件'%1'.</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="368"/>
+      <location filename="../../DrawingView.cpp" line="408"/>
       <source>&amp;Renderer</source>
       <translation>渲染器(&amp;R)</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="473"/>
+      <location filename="../../DrawingView.cpp" line="513"/>
       <source>Export PDF</source>
       <translation>导出PDF</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="474"/>
+      <location filename="../../DrawingView.cpp" line="514"/>
       <source>PDF file</source>
       <translation>PDF 文件</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="490"/>
+      <location filename="../../DrawingView.cpp" line="530"/>
       <source>Page sizes</source>
       <translation>页面大小</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="491"/>
+      <location filename="../../DrawingView.cpp" line="532"/>
+      <location filename="../../DrawingView.cpp" line="545"/>
       <source>A0</source>
       <translation>A0</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="493"/>
+      <location filename="../../DrawingView.cpp" line="534"/>
+      <location filename="../../DrawingView.cpp" line="547"/>
       <source>A1</source>
       <translation>A1</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="495"/>
+      <location filename="../../DrawingView.cpp" line="536"/>
+      <location filename="../../DrawingView.cpp" line="549"/>
       <source>A2</source>
       <translation>A2</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="497"/>
+      <location filename="../../DrawingView.cpp" line="538"/>
+      <location filename="../../DrawingView.cpp" line="551"/>
       <source>A3</source>
       <translation>A3</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="499"/>
+      <location filename="../../DrawingView.cpp" line="540"/>
+      <location filename="../../DrawingView.cpp" line="553"/>
       <source>A4</source>
       <translation>A4</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="501"/>
+      <location filename="../../DrawingView.cpp" line="542"/>
+      <location filename="../../DrawingView.cpp" line="555"/>
       <source>A5</source>
       <translation>A5</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="582"/>
+      <location filename="../../DrawingView.cpp" line="666"/>
       <source>Different orientation</source>
       <translation>不同方向</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="583"/>
+      <location filename="../../DrawingView.cpp" line="667"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
       <translation>打印机和图纸使用了不同的定位位置。你想要继续吗？</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="590"/>
-      <location filename="../../DrawingView.cpp" line="598"/>
+      <location filename="../../DrawingView.cpp" line="674"/>
+      <location filename="../../DrawingView.cpp" line="682"/>
       <source>Different paper size</source>
       <translation>不同的图纸大小</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="591"/>
-      <location filename="../../DrawingView.cpp" line="599"/>
+      <location filename="../../DrawingView.cpp" line="675"/>
+      <location filename="../../DrawingView.cpp" line="683"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>打印机和当前图纸使用了不同大小的图纸，是否继续？</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="610"/>
+      <location filename="../../DrawingView.cpp" line="694"/>
       <source>Opening file failed</source>
       <translation>打开文件失败</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="611"/>
+      <location filename="../../DrawingView.cpp" line="695"/>
       <source>Can't open file '%1' for writing.</source>
       <translation>无法打开文件“%1”进行写入。</translation>
     </message>

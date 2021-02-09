@@ -6,7 +6,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="536"/>
       <source>Installed location</source>
-      <translation type="unfinished">Installed location</translation>
+      <translation>Det gick inte att hämta en beskrivning för det här makrot.</translation>
     </message>
   </context>
   <context>
@@ -29,7 +29,7 @@
     <message>
       <location filename="../../AddonManager.py" line="200"/>
       <source>Addon manager</source>
-      <translation>Tilläggshanterare</translation>
+      <translation>Tilläggs hanterare</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="202"/>
@@ -214,67 +214,67 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="793"/>
       <source>A macro has been installed and is available under Macro -&gt; Macros menu</source>
-      <translation>Ett makro har installerats och är tillgängligt under menyn Makro -> Makron...</translation>
+      <translation>Ett makro har installerats och är tillgängligt under menyn Makro -> Makron</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="548"/>
       <source>This addon is marked as obsolete</source>
-      <translation type="unfinished">This addon is marked as obsolete</translation>
+      <translation>Detta addon är markerat som föråldrat</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="549"/>
       <source>This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</source>
-      <translation type="unfinished">This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</translation>
+      <translation>Det betyder oftast att den inte längre underhålls, och vissa mer avancerade addon i den här listan ger samma funktionalitet.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="870"/>
       <source>Error: Unable to locate zip from</source>
-      <translation type="unfinished">Error: Unable to locate zip from</translation>
+      <translation>Fel: Det gick inte att hitta zip från</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="318"/>
       <source>Something went wrong with the Git Macro Retrieval, possibly the Git executable is not in the path</source>
-      <translation type="unfinished">Something went wrong with the Git Macro Retrieval, possibly the Git executable is not in the path</translation>
+      <translation>Något gick fel med Git Macro Retrieval, möjligen Git körbara är inte i sökvägen</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="560"/>
       <source>This addon is marked as Python 2 Only</source>
-      <translation type="unfinished">This addon is marked as Python 2 Only</translation>
+      <translation>Detta addon är markerat som Endast Python 2</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="561"/>
       <source>This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.</source>
-      <translation type="unfinished">This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.</translation>
+      <translation>Denna arbetsbänk får inte längre underhållas och installera den på ett Python 3-system kommer mer än sannolikt resultera i fel vid start eller när den används.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="721"/>
       <source>User requested updating a Python 2 workbench on a system running Python 3 - </source>
-      <translation type="unfinished">User requested updating a Python 2 workbench on a system running Python 3 - </translation>
+      <translation>Användaren begärde att uppdatera en Python 2-arbetsbänk på ett system som kör Python 3 - </translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="757"/>
       <source>Workbench successfully updated. Please restart FreeCAD to apply the changes.</source>
-      <translation type="unfinished">Workbench successfully updated. Please restart FreeCAD to apply the changes.</translation>
+      <translation>Workbench uppdateras med lyckat resultat. Vänligen starta om FreeCAD för att tillämpa ändringarna.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="765"/>
       <source>User requested installing a Python 2 workbench on a system running Python 3 - </source>
-      <translation type="unfinished">User requested installing a Python 2 workbench on a system running Python 3 - </translation>
+      <translation>Användaren begärde att installera en Python 2-arbetsbänk på ett system som kör Python 3 - </translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="342"/>
       <source>Appears to be an issue connecting to the Wiki, therefore cannot retrieve Wiki macro list at this time</source>
-      <translation type="unfinished">Appears to be an issue connecting to the Wiki, therefore cannot retrieve Wiki macro list at this time</translation>
+      <translation>Verkar vara ett problem som ansluter till Wiki, kan därför inte hämta Wiki makro lista för tillfället</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="433"/>
       <source>Raw markdown displayed</source>
-      <translation type="unfinished">Raw markdown displayed</translation>
+      <translation>Råmarkering visas</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="435"/>
       <source>Python Markdown library is missing.</source>
-      <translation type="unfinished">Python Markdown library is missing.</translation>
+      <translation>Python Markdown-biblioteket saknas.</translation>
     </message>
   </context>
   <context>
@@ -364,51 +364,51 @@
       <source>If this option is selected, when launching the Addon Manager,
 installed addons will be checked for available updates
 (this requires the GitPython package installed on your system)</source>
-      <translation type="unfinished">If this option is selected, when launching the Addon Manager,
-installed addons will be checked for available updates
-(this requires the GitPython package installed on your system)</translation>
+      <translation>Om detta alternativ är markerat, när du startar Addon Manager,
+installerade addons kommer att kontrolleras för tillgängliga uppdateringar
+(detta kräver GitPython paket installerat på ditt system)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="25"/>
       <source>Automatically check for updates at start (requires GitPython)</source>
-      <translation type="unfinished">Automatically check for updates at start (requires GitPython)</translation>
+      <translation>Automatiskt söka efter uppdateringar vid start (kräver GitPython)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="57"/>
       <source>Proxy </source>
-      <translation type="unfinished">Proxy </translation>
+      <translation>Proxy</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="64"/>
       <source>No proxy</source>
-      <translation type="unfinished">No proxy</translation>
+      <translation>Ingen proxy</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="71"/>
       <source>User system proxy</source>
-      <translation type="unfinished">User system proxy</translation>
+      <translation>Proxy för användarsystem</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="78"/>
       <source>User defined proxy :</source>
-      <translation type="unfinished">User defined proxy :</translation>
+      <translation>Användardefinierad proxy :</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="14"/>
       <source>Addon Manager</source>
-      <translation type="unfinished">Addon Manager</translation>
+      <translation>Tilläggshanterare</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="157"/>
       <source>Close the Addon Manager</source>
-      <translation type="unfinished">Close the Addon Manager</translation>
+      <translation>Stäng Addon-hanteraren</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="42"/>
       <source>You can use this window to specify additional addon repositories
 to be scanned for available addons</source>
-      <translation type="unfinished">You can use this window to specify additional addon repositories
-to be scanned for available addons</translation>
+      <translation>Du kan använda det här fönstret för att ange ytterligare addon-databaser
+ska skannas efter tillgängliga addons</translation>
     </message>
   </context>
   <context>
@@ -416,7 +416,7 @@ to be scanned for available addons</translation>
     <message>
       <location filename="../../AddonManager.py" line="70"/>
       <source>&amp;Addon manager</source>
-      <translation>&amp;Tilläggshanterare</translation>
+      <translation>&amp;Tilläggs hanterare</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="71"/>

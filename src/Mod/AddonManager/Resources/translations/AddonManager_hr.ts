@@ -14,12 +14,12 @@
     <message>
       <location filename="../../addonmanager_macro.py" line="157"/>
       <source>Unable to fetch the code of this macro.</source>
-      <translation>Ne može se pribaviti kod ove makro naredbe.</translation>
+      <translation>Neuspijeli pokušaj dohvaćanja koda ove makro naredbe.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_macro.py" line="163"/>
       <source>Unable to retrieve a description for this macro.</source>
-      <translation>Ne može se dobaviti opis ove makro naredbe.</translation>
+      <translation>Neuspijeli pokušaj dohvaćanja opisa ove makro naredbe.</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="80"/>
@@ -39,7 +39,7 @@
     <message>
       <location filename="../../AddonManager.py" line="244"/>
       <source>Checking for updates...</source>
-      <translation>Provjera nadogradnje...</translation>
+      <translation>Provjeri ima li ažuriranja...</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="262"/>
@@ -134,7 +134,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="653"/>
       <source>Retrieving info from wiki</source>
-      <translation>Dohvaćanje informacije od wiki</translation>
+      <translation>Dohvaćanje informacije od wiki-a</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="696"/>
@@ -164,7 +164,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="849"/>
       <source>Missing optional python module (doesn&apos;t prevent installing)</source>
-      <translation>Nedostaje opcionalni python modul (neće se spriječiti instalacija)</translation>
+      <translation>Nedostaje neobvezan python modul (neće se spriječiti instalacija)</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="853"/>
@@ -174,7 +174,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="855"/>
       <source>Please install the missing components first.</source>
-      <translation>Prvo instalirajte nedostajuće komponente.</translation>
+      <translation>Prvo instalirajte nedostajuće dijelove.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="877"/>
@@ -189,7 +189,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="310"/>
       <source>GitPython not installed! Cannot retrieve macros from git</source>
-      <translation>GitPython nije instalirano! Ne mogu se dohvatiti makronaredbe iz git</translation>
+      <translation>GitPython se nije instalirao! Ne mogu se dohvatiti makronaredbe iz git-a</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="565"/>
@@ -229,7 +229,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="870"/>
       <source>Error: Unable to locate zip from</source>
-      <translation>Pogreška: Nije moguće locirati zip od</translation>
+      <translation>Greška: Nije moguće locirati zip od</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="318"/>
@@ -239,7 +239,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="560"/>
       <source>This addon is marked as Python 2 Only</source>
-      <translation>Taj je dodatak označen kao Python 2 Only</translation>
+      <translation>Taj je dodatak označen samo za Python 2</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="561"/>
@@ -270,7 +270,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="342"/>
       <source>Appears to be an issue connecting to the Wiki, therefore cannot retrieve Wiki macro list at this time</source>
-      <translation>Čini se da je problem povezivanje s Wiki-om, stoga trenutačno ne može dohvatiti popis makronaredbi Wiki</translation>
+      <translation>Čini se da je problem povezivanje s Wiki-em, stoga trenutačno ne može dohvatiti popis makronaredbi Wiki-a</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="433"/>
@@ -338,7 +338,7 @@
     <message>
       <location filename="../../AddonManager.ui" line="89"/>
       <source>Sets configuration options for the Addon Manager</source>
-      <translation>Postavlja opcije konfiguracije za Upravljač dodataka</translation>
+      <translation>Postavlja opcije postavki za Upravljač dodataka</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="92"/>
@@ -377,7 +377,7 @@ instalirani dodaci će se provjeriti na dostupna ažuriranja
     <message>
       <location filename="../../AddonManagerOptions.ui" line="25"/>
       <source>Automatically check for updates at start (requires GitPython)</source>
-      <translation>Automatski kod pokretanja provjerite ima li ažuriranja (zahtijeva GitPython)</translation>
+      <translation>Automatski provjeri ima li ažuriranaj prilikom pokretanja(zahtijeva GitPython)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="57"/>
@@ -397,7 +397,7 @@ instalirani dodaci će se provjeriti na dostupna ažuriranja
     <message>
       <location filename="../../AddonManagerOptions.ui" line="78"/>
       <source>User defined proxy :</source>
-      <translation>User defined proxy :</translation>
+      <translation>Korisnički definiran proxy :</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="14"/>

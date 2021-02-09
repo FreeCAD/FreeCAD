@@ -205,22 +205,22 @@
     <message>
       <location filename="../../Command.cpp" line="190"/>
       <source>Fit plane</source>
-      <translation type="unfinished">Fit plane</translation>
+      <translation>Prilagodi ravninu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="221"/>
       <source>Fit cylinder</source>
-      <translation type="unfinished">Fit cylinder</translation>
+      <translation>Prilagodi cilindar</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="287"/>
       <source>Fit sphere</source>
-      <translation type="unfinished">Fit sphere</translation>
+      <translation>Prilagodi kuglu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="335"/>
       <source>Fit polynomial surface</source>
-      <translation type="unfinished">Fit polynomial surface</translation>
+      <translation>Prilagodi polinomnu površinu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="601"/>
@@ -235,7 +235,7 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="228"/>
       <source>Fit B-Spline</source>
-      <translation type="unfinished">Fit B-Spline</translation>
+      <translation>Prilagodi B-spline</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="101"/>

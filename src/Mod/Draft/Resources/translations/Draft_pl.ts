@@ -39,127 +39,127 @@
       <translation>Usuń</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="144"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="164"/>
       <source>Text</source>
       <translation>Tekst</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="153"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="173"/>
       <source>Font size</source>
       <translation>Wielkość czcionki</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="163"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="183"/>
       <source>Line spacing</source>
       <translation>Odstępy między wierszami</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="173"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="193"/>
       <source>Font name</source>
       <translation>Nazwa czcionki</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="192"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="212"/>
       <source>The font to use for texts and dimensions</source>
       <translation>Czcionka używana dla tekstów i wymiarów</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="219"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="239"/>
       <source>Units</source>
       <translation>Jednostki</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="228"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="248"/>
       <source>Scale multiplier</source>
       <translation>Mnożnik skali</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="238"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="258"/>
       <source>Decimals</source>
       <translation>Dziesiętne</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="248"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="268"/>
       <source>Unit override</source>
       <translation>Zastąpienie jednostki</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="258"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="278"/>
       <source>Show unit</source>
-      <translation>Pokaż jednostkę</translation>
+      <translation>Wyświetlaj jednostki</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="311"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="331"/>
       <source>Line and arrows</source>
       <translation>Linia i strzałki</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="320"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="340"/>
       <source>Line width</source>
       <translation>Szerokość linii</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="330"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="350"/>
       <source>Extension overshoot</source>
       <translation>Przedłużenie linii pomocniczej</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="340"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="360"/>
       <source>Arrow size</source>
       <translation>Rozmiar strzałki</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="350"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="370"/>
       <source>Show lines</source>
-      <translation>Pokaż linie</translation>
+      <translation>Wyświetlaj linie</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="360"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="380"/>
       <source>Dimension overshoot</source>
       <translation>Przekroczenie wymiaru</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="370"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="390"/>
       <source>Extension lines</source>
       <translation>Linie pomocnicze</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="380"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="400"/>
       <source>Arrow type</source>
       <translation>Styl strzałki</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="390"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="410"/>
       <source>Line / text color</source>
       <translation>Kolor linii/tekstu</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="413"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="433"/>
       <source>The width of the dimension lines</source>
       <translation>Szerokość linii wymiarowych</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="416"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="436"/>
       <source>px</source>
       <translation>px</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="426"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="446"/>
       <source>The color of dimension lines, arrows and texts</source>
       <translation>Kolor linii wymiarowych, grotów i opisów</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="456"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="476"/>
       <source>Dot</source>
       <translation>Kropka</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="466"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="486"/>
       <source>Arrow</source>
       <translation>Strzałka</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="471"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="491"/>
       <source>Tick</source>
       <translation>Odhacz</translation>
     </message>
@@ -169,94 +169,84 @@
       <translation>Twoja nazwa stylu. Nazwy stylu mogą być edytowane.</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="199"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="219"/>
       <source>Font size in the system units</source>
       <translation>Rozmiar czcionki</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="160"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="180"/>
       <source>Line spacing in system units</source>
       <translation>Odstępy między wierszami</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="265"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="285"/>
       <source>A multiplier factor that affects the size of texts and markers</source>
       <translation>Mnożnik mający wpływ na rozmiar tekstów i znaczników</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="285"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="305"/>
       <source>The number of decimals to show for dimension values</source>
       <translation>Liczba miejsc po przecinku dla wartości wymiarów</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="278"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="298"/>
       <source>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</source>
       <translation>Określ poprawną jednostkę długości, taką jak: mm, m, cal, stopa, aby wyświetlić wartość wymiaru w tej jednostce</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="295"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="315"/>
       <source>If it is checked it will show the unit next to the dimension value</source>
       <translation>Jeśli jest zaznaczone, to pokaże jednostkę obok wartości wymiaru</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="514"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="534"/>
       <source>The distance that the extension lines are additionally extended beyond the dimension line</source>
       <translation>Odległość, którą linie przedłużenia są dodatkowo rozszerzone poza linię wymiarową</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="484"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="504"/>
       <source>The size of the dimension arrows or markers in system units</source>
       <translation>Rozmiar strzałek lub znaczników wymiaru w jednostkach systemowych</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="397"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="417"/>
       <source>If it is checked it will display the dimension line</source>
       <translation>Jeśli jest zaznaczone, wyświetli linię wymiaru</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="494"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="514"/>
       <source>The distance that the dimension line is additionally extended</source>
       <translation>Odległość, na jaką linia wymiarowa jest dodatkowo wydłużona</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="504"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="524"/>
       <source>The length of the extension lines</source>
       <translation>Długość linii przedłużenia</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="452"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="472"/>
       <source>The type of arrows or markers to use at the end of dimension lines</source>
       <translation>Typ strzałek lub znaczników do użycia na końcu linii wymiaru</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="461"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="481"/>
       <source>Circle</source>
       <translation>Okrąg</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="476"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="496"/>
       <source>Tick-2</source>
       <translation>Odhacz-2</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="529"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="120"/>
       <source>Import styles from json file</source>
-      <translation type="unfinished">Import styles from json file</translation>
+      <translation>Importuj style z pliku typu json</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="532"/>
-      <source>Import...</source>
-      <translation>Importowanie...</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="539"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="130"/>
       <source>Export styles to json file</source>
-      <translation type="unfinished">Export styles to json file</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="542"/>
-      <source>Export...</source>
-      <translation type="unfinished">Export...</translation>
+      <translation>Eksportuj style do pliku typu json</translation>
     </message>
   </context>
   <context>
@@ -287,7 +277,7 @@ Proszę zainstalować dodatek bibliotek dxf ręcznie z narzędzi menu -&gt; mene
     <message>
       <location filename="../../InitGui.py" line="107"/>
       <source>Draft utility tools</source>
-      <translation>Narzędzia do rysowania</translation>
+      <translation>Przybory do rysowania</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="110"/>
@@ -368,13 +358,13 @@ Zmień kierunek samej osi w edytorze właściwości.</translation>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="146"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation>Jeśli zaznaczone, wynikowe obiekty w tablicy będą połączone, jeśli dotkną się nawzajem.
-To działa tylko wtedy, gdy "Link tablicy" jest wyłączony.</translation>
+      <translation>Jeżeli opcja jest zaznaczona, obiekty wynikowe w tablicy zostaną połączone, jeżeli będą się stykać.
+Działa to tylko wtedy, gdy opcja "Połącz tablicę" jest wyłączona.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="150"/>
       <source>Fuse</source>
-      <translation>Bezpiecznik</translation>
+      <translation>Suma</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="157"/>
@@ -418,7 +408,8 @@ Nie może być równa zero.</translation>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="250"/>
       <source>Number of circular layers or rings to create, including a copy of the original object.
 It must be at least 2.</source>
-      <translation>Liczba kołowych warstw lub pierścieni do utworzenia, włączając kopię oryginalnego obiektu. Musi wynosić co najmniej 2.</translation>
+      <translation>Liczba warstw kołowych lub pierścieni do utworzenia, w tym kopia oryginalnego obiektu.
+Musi wynosić co najmniej 2.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="254"/>
@@ -441,7 +432,7 @@ It must be at least 2.</source>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="26"/>
       <source>Orthogonal array</source>
-      <translation>Szyk prostokątny</translation>
+      <translation>Szyk prostopadły</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="44"/>
@@ -486,13 +477,13 @@ Przy wartościach ujemnych kopie tworzone będą w kierunku przeciwnym.</transla
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="137"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation>Jeśli zaznaczone, wynikowe obiekty w tablicy będą połączone, jeśli dotkną się nawzajem.
-To działa tylko wtedy, gdy "Link tablicy" jest wyłączony.</translation>
+      <translation>Jeżeli opcja jest zaznaczona, obiekty wynikowe w tablicy zostaną połączone, jeżeli będą się stykać.
+Działa to tylko wtedy, gdy opcja "Połącz tablicę" jest wyłączona.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="141"/>
       <source>Fuse</source>
-      <translation>Bezpiecznik</translation>
+      <translation>Suma</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="148"/>
@@ -566,7 +557,7 @@ Liczba ta musi wynosić co najmniej 1 w każdym kierunku.</translation>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="26"/>
       <source>Polar array</source>
-      <translation>Szyk biegunowy</translation>
+      <translation>Szyk kołowy</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="57"/>
@@ -609,13 +600,13 @@ Zmień kierunek samej osi w edytorze właściwości.</translation>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="146"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation>Jeśli zaznaczone, wynikowe obiekty w tablicy będą połączone, jeśli dotkną się nawzajem.
-To działa tylko wtedy, gdy "Link tablicy" jest wyłączony.</translation>
+      <translation>Jeżeli opcja jest zaznaczona, obiekty wynikowe w tablicy zostaną połączone, jeżeli będą się stykać.
+Działa to tylko wtedy, gdy opcja "Połącz tablicę" jest wyłączona.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="150"/>
       <source>Fuse</source>
-      <translation>Bezpiecznik</translation>
+      <translation>Suma</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="157"/>
@@ -640,14 +631,14 @@ Maksymalna wartość bezwzględna wynosi 360 stopni.</translation>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="180"/>
       <source>Polar angle</source>
-      <translation>Kąt polarny</translation>
+      <translation>Kąt zakresu szyku</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="219"/>
       <source>Number of elements in the array, including a copy of the original object.
 It must be at least 2.</source>
       <translation>Liczba elementów w tablicy, łącznie z kopią oryginalnego obiektu.
-Musi to być co najmniej 2.</translation>
+Musi wynosić co najmniej 2.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="212"/>
@@ -720,7 +711,7 @@ Musi to być co najmniej 2.</translation>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="192"/>
       <source>Reset Point</source>
-      <translation>Zresetuj punkt</translation>
+      <translation>Zresetuj współrzędne punktu</translation>
     </message>
   </context>
   <context>
@@ -728,7 +719,7 @@ Musi to być co najmniej 2.</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="14"/>
       <source>Working plane setup</source>
-      <translation>Ustawienie płaszczyzny roboczej</translation>
+      <translation>Ustawienia płaszczyzny roboczej</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="20"/>
@@ -822,18 +813,18 @@ po naciśnięciu jednego z powyższych przycisków</translation>
       <source>Or select a single vertex to move the current
 working plane without changing its orientation.
 Then, press the button below</source>
-      <translation type="unfinished">Or select a single vertex to move the current
-working plane without changing its orientation.
-Then, press the button below</translation>
+      <translation>Lub wybierz pojedynczy wierzchołek aby przesunąć bieżącą
+płaszczyznę roboczą bez zmiany orientacji.
+Następnie naciśnij przycisk poniżej</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="147"/>
       <source>Moves the working plane without changing its
 orientation. If no point is selected, the plane
 will be moved to the center of the view</source>
-      <translation type="unfinished">Moves the working plane without changing its
-orientation. If no point is selected, the plane
-will be moved to the center of the view</translation>
+      <translation>Przenosi płaszczyznę roboczą bez zmiany jej orientacji. 
+Jeśli nie zaznaczono żadnego punktu, płaszczyzna
+zostanie przeniesiona do środka widoku</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="152"/>
@@ -843,7 +834,7 @@ will be moved to the center of the view</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="171"/>
       <source>The spacing between the smaller grid lines</source>
-      <translation type="unfinished">The spacing between the smaller grid lines</translation>
+      <translation>Odstęp między mniejszymi liniami siatki</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="164"/>
@@ -853,7 +844,7 @@ will be moved to the center of the view</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="191"/>
       <source>The number of squares between each main line of the grid</source>
-      <translation type="unfinished">The number of squares between each main line of the grid</translation>
+      <translation>Liczba kwadratów pomiędzy każdą główną linią siatki</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="184"/>
@@ -865,9 +856,9 @@ will be moved to the center of the view</translation>
       <source>The distance at which a point can be snapped to
 when approaching the mouse. You can also change this
 value by using the [ and ] keys while drawing</source>
-      <translation type="unfinished">The distance at which a point can be snapped to
-when approaching the mouse. You can also change this
-value by using the [ and ] keys while drawing</translation>
+      <translation>Odległość, w której kursor myszki może być przyciągnięty do punktu
+podczas jego zbliżania. Możesz również zmienić tę wartość
+używając klawisza [ i ] podczas rysowania</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="212"/>
@@ -877,7 +868,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="241"/>
       <source>Centers the view on the current working plane</source>
-      <translation type="unfinished">Centers the view on the current working plane</translation>
+      <translation>Wyśrodkowuje widok na aktualnej płaszczyźnie roboczej</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="244"/>
@@ -972,7 +963,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="281"/>
       <source>Show unit</source>
-      <translation>Pokaż jednostkę</translation>
+      <translation>Wyświetlaj jednostki</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="43"/>
@@ -1112,7 +1103,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="20"/>
       <source>Lines and faces</source>
-      <translation type="unfinished">Lines and faces</translation>
+      <translation>Linie i powierzchnie</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="162"/>
@@ -1122,7 +1113,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="258"/>
       <source>If the unit suffix is shown on dimension texts or not</source>
-      <translation type="unfinished">If the unit suffix is shown on dimension texts or not</translation>
+      <translation>Opcja definiuje czy przyrostek jednostki jest pokazany na tekstach wymiarowych, czy nie</translation>
     </message>
   </context>
   <context>
@@ -1130,7 +1121,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/preferences-draft.ui" line="32"/>
       <source>General Draft Settings</source>
-      <translation>Ogólne ustawienia rysunkowe</translation>
+      <translation>Ustawienia ogólne Środowiska pracy Draft</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="427"/>
@@ -1473,7 +1464,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="26"/>
       <source>Visual Settings</source>
-      <translation>Ustawienia Wyglądu</translation>
+      <translation>Ustawienia wyglądu</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="34"/>
@@ -1668,7 +1659,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="26"/>
       <source>Text settings</source>
-      <translation>Ustawienia tekstu</translation>
+      <translation>Ustawienia dla tekstu</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="34"/>
@@ -1908,7 +1899,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="346"/>
       <source>Check this if you want the face names to derive from the originating object name and vice versa while doing downgrade/upgrade (splitFaces and makeShell only)</source>
-      <translation>Zaznacz to pole, jeśli chcesz, aby nazwy powierzchni pochodziły od nazwy obiektu źródłowego i podobnie podczas wykonywania obniżania i podnoszenia (tylko przy dzieleniu ściany i tworzeniu powłoki)</translation>
+      <translation>Zaznacz to pole, jeśli chcesz, aby nazwy powierzchni pochodziły od nazwy obiektu źródłowego i podobnie podczas wykonywania aktualizacji i przywracania (tylko przy dzieleniu ściany i tworzeniu powłoki)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="349"/>
@@ -1949,7 +1940,7 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="../ui/preferences-draft.ui" line="247"/>
       <source>If this option is set, when creating Draft objects on top of an existing face of another object, the "Support" property of the Draft object will be set to the base object. This was the standard behaviour before FreeCAD 0.19</source>
-      <translation type="unfinished">If this option is set, when creating Draft objects on top of an existing face of another object, the "Support" property of the Draft object will be set to the base object. This was the standard behaviour before FreeCAD 0.19</translation>
+      <translation>Jeśli ta opcja jest ustawiona, podczas tworzenia obiektów Szkicu na istniejącej powierzchni innego obiektu, właściwość "Wsparcie" obiektu Szkicu zostanie ustawiona na obiekt podstawowy. Było to standardowe zachowanie przed FreeCAD 0,19</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="372"/>
@@ -2004,7 +1995,7 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="498"/>
       <source>Subelement Mode</source>
-      <translation type="unfinished">Subelement Mode</translation>
+      <translation>Tryb podelementów</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="381"/>
@@ -2044,7 +2035,7 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="403"/>
       <source>Add Hold</source>
-      <translation type="unfinished">Add Hold</translation>
+      <translation>Dodaj uchwyt</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="675"/>
@@ -2084,7 +2075,7 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="257"/>
       <source>Cycle Snap</source>
-      <translation type="unfinished">Cycle Snap</translation>
+      <translation>Przełącz przyciąganie</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="52"/>
@@ -2159,7 +2150,7 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="../ui/preferences-draft.ui" line="197"/>
       <source>Show groups in layers list drop-down button</source>
-      <translation type="unfinished">Show groups in layers list drop-down button</translation>
+      <translation>Pokaż grupy w rozwijanym przycisku listy warstw</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="216"/>
@@ -2170,13 +2161,13 @@ Values with differences below this value will be treated as same. This value wil
       <location filename="../ui/preferences-draft.ui" line="230"/>
       <source>When drawing lines, set focus on Length instead of X coordinate.
 This allows to point the direction and type the distance.</source>
-      <translation type="unfinished">When drawing lines, set focus on Length instead of X coordinate.
-This allows to point the direction and type the distance.</translation>
+      <translation>Podczas rysowania linii ustaw ostrość na długości zamiast na współrzędnej X.
+Pozwala to wskazać kierunek i wprowadzić odległość.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="234"/>
       <source>Set focus on Length instead of X coordinate</source>
-      <translation type="unfinished">Set focus on Length instead of X coordinate</translation>
+      <translation>Ustaw ostrość na długość zamiast na współrzędną X</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="250"/>
@@ -2187,8 +2178,7 @@ This allows to point the direction and type the distance.</translation>
       <location filename="../ui/preferences-draft.ui" line="263"/>
       <source>If this is checked, objects will appear as filled by default.
 Otherwise, they will appear as wireframe</source>
-      <translation type="unfinished">If this is checked, objects will appear as filled by default.
-Otherwise, they will appear as wireframe</translation>
+      <translation>Jeśli ta opcja jest zaznaczona, obiekty pojawią się jako wypełnione domyślnie. W przeciwnym razie pojawią się one jako szkielet</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="283"/>
@@ -2214,12 +2204,12 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="14"/>
       <source>User interface settings</source>
-      <translation>Ustawienia interfejsu</translation>
+      <translation>Ustawienia interfejsu użytkownika</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="884"/>
       <source>Enable draft statusbar customization</source>
-      <translation type="unfinished">Enable draft statusbar customization</translation>
+      <translation>Włącz dostosowywanie paska stanu szkicu roboczego</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="887"/>
@@ -2239,7 +2229,7 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="926"/>
       <source>Enable draft statusbar annotation scale widget</source>
-      <translation type="unfinished">Enable draft statusbar annotation scale widget</translation>
+      <translation>Włącz widżet skali dla adnotacji na pasku stanu</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="929"/>
@@ -2249,7 +2239,7 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="567"/>
       <source>Draft Edit preferences</source>
-      <translation>Ustawienia edycji rysowania</translation>
+      <translation>Ustawienia edycji rysunku roboczego</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="570"/>
@@ -2259,12 +2249,12 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="584"/>
       <source>Maximum number of contemporary edited objects</source>
-      <translation type="unfinished">Maximum number of contemporary edited objects</translation>
+      <translation>Liczba określająca ilość maksymalną aktualnie edytowanych obiektów</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="607"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the maximum number of objects Draft Edit&lt;/p&gt;&lt;p&gt;can process at the same time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the maximum number of objects Draft Edit&lt;/p&gt;&lt;p&gt;can process at the same time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ustawia maksymalną liczbę obiektów Edycja Rysunek roboczy&lt;/p&gt;&lt;p&gt;jaką można przetwarzać w tym samym czasie&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="645"/>
@@ -2274,7 +2264,7 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="668"/>
       <source>Controls pick radius of edit nodes</source>
-      <translation type="unfinished">Controls pick radius of edit nodes</translation>
+      <translation>Kontroluje promień wyszukiwania edytowanych węzłów</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="34"/>
@@ -2465,7 +2455,7 @@ Wartość ta jest maksymalną długością segmentu. </translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="310"/>
       <source>If checked, an additional border is displayed around the grid, showing the main square size in the bottom left border</source>
-      <translation type="unfinished">If checked, an additional border is displayed around the grid, showing the main square size in the bottom left border</translation>
+      <translation>Jeżeli opcja jest zaznaczona, zostanie wyświetlona dodatkowa ramka wokół siatki, pokazująca główny rozmiar kwadratu w lewej dolnej części ramki</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="313"/>
@@ -2500,27 +2490,27 @@ Wartość ta jest maksymalną długością segmentu. </translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="329"/>
       <source>If set, the grid will have its two main axes colored in red, green or blue when they match global axes</source>
-      <translation type="unfinished">If set, the grid will have its two main axes colored in red, green or blue when they match global axes</translation>
+      <translation>Jeśli opcja ta jest ustawiona, siatka będzie miała swoje dwie główne osie oznaczone kolorem czerwonym, zielonym lub niebieskim, jeśli pasują do osi globalnych</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="332"/>
       <source>Use colored axes</source>
-      <translation type="unfinished">Use colored axes</translation>
+      <translation>Użyj kolorowych osi</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="506"/>
       <source>Grid color and transparency</source>
-      <translation type="unfinished">Grid color and transparency</translation>
+      <translation>Kolor i przezroczystość siatki</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="526"/>
       <source>The color of the grid</source>
-      <translation type="unfinished">The color of the grid</translation>
+      <translation>Kolor siatki</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="546"/>
       <source>The overall transparency of the grid</source>
-      <translation type="unfinished">The overall transparency of the grid</translation>
+      <translation>Ogólna przezroczystość siatki</translation>
     </message>
   </context>
   <context>
@@ -2564,7 +2554,7 @@ Wartość ta jest maksymalną długością segmentu. </translation>
     <message>
       <location filename="../../DraftGui.py" line="1894"/>
       <source>Autogroup off</source>
-      <translation>Wyłącz Autogrupowanie</translation>
+      <translation>Wyłącz automatyczne grupowanie</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="610"/>
@@ -2779,7 +2769,7 @@ Wartość ta jest maksymalną długością segmentu. </translation>
     <message>
       <location filename="../../DraftGui.py" line="1073"/>
       <source>Edit</source>
-      <translation>Edytuj</translation>
+      <translation>Edycja</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1124"/>
@@ -2888,7 +2878,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
 To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>Biblioteki importu/eksportu DXF potrzebne FreeCAD do obługi formatu DXF nie zotały znalezione w systemie.
 Proszę albo pozwolić FreeCAD na pobranie tych bibliotek:
- 1 - Załaduj stół warsztatowy szkicowania
+ 1 - Załaduj Środowisko pracy Draft
  2 - Menu Edycja &gt; Ustawienia &gt; Import-Eksport &gt; DXF &gt; Włącz pobieranie
 Lub pobierz te biblioteki ręcznie, jak wyjaśniono na 
 https://github.com/yorikvanhavre/Draft-dxf-importer
@@ -2922,7 +2912,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="../../DraftGui.py" line="62"/>
       <source>Snap On/Off</source>
-      <translation>Przyciągaj wł./wył.</translation>
+      <translation>Przyciąganie włączone/Wyłączone</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="63"/>
@@ -2957,7 +2947,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="../../DraftGui.py" line="69"/>
       <source>Add custom snap point</source>
-      <translation>Dodaj standardowy punkt przyciągania</translation>
+      <translation>Dodaj niestandardowy punkt przyciągania</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="70"/>
@@ -3002,7 +2992,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="../../DraftGui.py" line="634"/>
       <source>Finishes the current drawing or editing operation</source>
-      <translation>Kończy aktualny rysunek lub operację edycji</translation>
+      <translation>Kończy bieżącą operację rysowania lub edycji</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="648"/>
@@ -3102,7 +3092,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="../../DraftGui.py" line="74"/>
       <source>Toggle near snap on/off</source>
-      <translation type="unfinished">Toggle near snap on/off</translation>
+      <translation>Przełącz w pobliżu miejsca przyciągania włącz/wyłącz</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="673"/>
@@ -3112,7 +3102,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="../../DraftGui.py" line="674"/>
       <source>Press this button to create the text object, or finish your text with two blank lines</source>
-      <translation type="unfinished">Press this button to create the text object, or finish your text with two blank lines</translation>
+      <translation>Naciśnij ten przycisk, aby utworzyć obiekt tekstowy, lub zakończ tekst dwiema pustymi liniami</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="862"/>
@@ -3150,12 +3140,12 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="../../importOCA.py" line="359"/>
       <source>OCA error: couldn't determine character encoding</source>
-      <translation type="unfinished">OCA error: couldn't determine character encoding</translation>
+      <translation>Błąd OCA: nie można określić standardu kodowania znaków</translation>
     </message>
     <message>
       <location filename="../../importOCA.py" line="445"/>
       <source>OCA: found no data to export</source>
-      <translation type="unfinished">OCA: found no data to export</translation>
+      <translation>OCA: nie znaleziono danych do eksportu</translation>
     </message>
     <message>
       <location filename="../../importOCA.py" line="490"/>

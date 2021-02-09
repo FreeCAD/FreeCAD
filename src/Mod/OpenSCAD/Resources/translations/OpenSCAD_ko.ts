@@ -159,7 +159,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="348"/>
       <source>Clear</source>
-      <translation type="unfinished">Clear</translation>
+      <translation>지우기</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="349"/>

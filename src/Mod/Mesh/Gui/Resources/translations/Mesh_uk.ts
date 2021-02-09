@@ -791,7 +791,7 @@
     <message>
       <location filename="../../Command.cpp" line="1650"/>
       <source>Fill up holes</source>
-      <translation type="unfinished">Fill up holes</translation>
+      <translation>Заповнити отвори</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1801"/>
@@ -861,7 +861,7 @@
     <message>
       <location filename="../../RemoveComponents.cpp" line="130"/>
       <source>Delete selection</source>
-      <translation type="unfinished">Delete selection</translation>
+      <translation>Видалити обране</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="874"/>

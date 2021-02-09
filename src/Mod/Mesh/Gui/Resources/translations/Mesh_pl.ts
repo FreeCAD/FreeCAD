@@ -618,12 +618,12 @@
     <message>
       <location filename="../../Command.cpp" line="1831"/>
       <source>Split by components</source>
-      <translation type="unfinished">Split by components</translation>
+      <translation>Podziel według komponentów</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1832"/>
       <source>Split selected mesh into its components</source>
-      <translation type="unfinished">Split selected mesh into its components</translation>
+      <translation>Rozdziela wybrane siatki na niezależne składniki</translation>
     </message>
   </context>
   <context>
@@ -740,7 +740,7 @@
       <location filename="../../Command.cpp" line="110"/>
       <location filename="../../Command.cpp" line="149"/>
       <source>Mesh Mesh Create</source>
-      <translation type="unfinished">Mesh Mesh Create</translation>
+      <translation>Tworzenie siatki</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="188"/>
@@ -750,22 +750,22 @@
     <message>
       <location filename="../../Command.cpp" line="243"/>
       <source>Mesh union</source>
-      <translation type="unfinished">Mesh union</translation>
+      <translation>Złączenie siatek</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="312"/>
       <source>Mesh difference</source>
-      <translation type="unfinished">Mesh difference</translation>
+      <translation>Różnica siatki</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="383"/>
       <source>Mesh intersection</source>
-      <translation type="unfinished">Mesh intersection</translation>
+      <translation>Przecięcie siatki</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="469"/>
       <source>Import Mesh</source>
-      <translation type="unfinished">Import Mesh</translation>
+      <translation>Importuj siatkę</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="665"/>
@@ -776,7 +776,7 @@
       <location filename="../../Command.cpp" line="1414"/>
       <location filename="../../DlgSmoothing.cpp" line="178"/>
       <source>Mesh Smoothing</source>
-      <translation type="unfinished">Mesh Smoothing</translation>
+      <translation>Wygładzanie siatki</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1505"/>
@@ -786,7 +786,7 @@
     <message>
       <location filename="../../Command.cpp" line="1539"/>
       <source>Flip mesh normals</source>
-      <translation type="unfinished">Flip mesh normals</translation>
+      <translation>Odwróć wektory normalne siatki</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1650"/>
@@ -796,22 +796,22 @@
     <message>
       <location filename="../../Command.cpp" line="1801"/>
       <source>Mesh merge</source>
-      <translation type="unfinished">Mesh merge</translation>
+      <translation>Scalanie siatki</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1844"/>
       <source>Mesh split</source>
-      <translation type="unfinished">Mesh split</translation>
+      <translation>Rozbicie siatki</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1896"/>
       <source>Mesh scale</source>
-      <translation type="unfinished">Mesh scale</translation>
+      <translation>Scal siatkę</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.cpp" line="147"/>
       <source>Mesh Decimating</source>
-      <translation type="unfinished">Mesh Decimating</translation>
+      <translation>Decymacja siatki</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="483"/>
@@ -831,22 +831,22 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="751"/>
       <source>Remove degenerated faces</source>
-      <translation type="unfinished">Remove degenerated faces</translation>
+      <translation>Usuń zepsute ściany</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="818"/>
       <source>Remove duplicated faces</source>
-      <translation type="unfinished">Remove duplicated faces</translation>
+      <translation>Usuń duplikaty ścian</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="883"/>
       <source>Remove duplicated points</source>
-      <translation type="unfinished">Remove duplicated points</translation>
+      <translation>Usuń duplikaty punktów</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="967"/>
       <source>Fix self-intersections</source>
-      <translation type="unfinished">Fix self-intersections</translation>
+      <translation>Napraw samoprzecięcia</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1054"/>
@@ -856,12 +856,12 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1094"/>
       <source>Repair mesh</source>
-      <translation type="unfinished">Repair mesh</translation>
+      <translation>Napraw siatkę</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.cpp" line="130"/>
       <source>Delete selection</source>
-      <translation type="unfinished">Delete selection</translation>
+      <translation>Usuń zaznaczone</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="874"/>
@@ -883,7 +883,7 @@
     <message>
       <location filename="../../ViewProvider.cpp" line="1131"/>
       <source>Segment</source>
-      <translation type="unfinished">Segment</translation>
+      <translation>Segment</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1726"/>
@@ -893,7 +893,7 @@
     <message>
       <location filename="../../ViewProvider.cpp" line="1833"/>
       <source>Fill hole</source>
-      <translation type="unfinished">Fill hole</translation>
+      <translation>Wypełnij otwór</translation>
     </message>
   </context>
   <context>
@@ -1288,7 +1288,7 @@ Najpierw uruchom polecenie do naprawy zagięć</translation>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="69"/>
       <source>Cl&amp;ose</source>
-      <translation>Zamknij</translation>
+      <translation>Za&amp;mknij</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="72"/>
@@ -1900,7 +1900,7 @@ do gładszego wyglądu.
     <message>
       <location filename="../../RemoveComponents.ui" line="192"/>
       <source>Region options</source>
-      <translation>Opcje</translation>
+      <translation>opcje regionalne</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="198"/>

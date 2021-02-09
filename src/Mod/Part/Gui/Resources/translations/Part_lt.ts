@@ -476,12 +476,12 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../../BasicShapes/Shapes.py" line="85"/>
       <source>Create tube</source>
-      <translation type="unfinished">Create tube</translation>
+      <translation>Sukurti apvalų vamzdį</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/Shapes.py" line="89"/>
       <source>Creates a tube</source>
-      <translation type="unfinished">Creates a tube</translation>
+      <translation>Sukurti apvalų vamzdį</translation>
     </message>
   </context>
   <context>
@@ -489,7 +489,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="51"/>
       <source>Create tube</source>
-      <translation type="unfinished">Create tube</translation>
+      <translation>Sukurti apvalų vamzdį</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
@@ -958,12 +958,12 @@ Ar vistiek norite tęsti?</translation>
     <message>
       <location filename="../../../BasicShapes/Shapes.py" line="59"/>
       <source>Create tube</source>
-      <translation type="unfinished">Create tube</translation>
+      <translation>Sukurti apvalų vamzdį</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/Shapes.py" line="62"/>
       <source>Creates a tube</source>
-      <translation type="unfinished">Creates a tube</translation>
+      <translation>Sukurti apvalų vamzdį</translation>
     </message>
   </context>
   <context>
@@ -1050,7 +1050,7 @@ Ar vistiek norite tęsti?</translation>
       <location filename="../../AttacherTexts.cpp" line="327"/>
       <source>Revolve</source>
       <comment>Attacher reference type</comment>
-      <translation>Sukti</translation>
+      <translation>Sukinys</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="328"/>
@@ -1351,7 +1351,7 @@ Ar vistiek norite tęsti?</translation>
       <location filename="../../AttacherTexts.cpp" line="231"/>
       <source>Align to N vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Lygiuoti pagal kreivos briaunos N vektorių Frenet-Serret koordinačių sistemoje. Pasirinktinai siejama viršūnė apibrėžia vietą.</translation>
+      <translation>Lygiuoti pagal kreivos kraštinės N vektorių Frenet-Serret koordinačių sistemoje. Pasirinktinai siejama viršūnė apibrėžia vietą.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="233"/>
@@ -1363,7 +1363,7 @@ Ar vistiek norite tęsti?</translation>
       <location filename="../../AttacherTexts.cpp" line="234"/>
       <source>Align to B vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Lygiuoti pagal kreivos briaunos B vektorių Frenet-Serret koordinačių sistemoje. Pasirinktinai siejama viršūnė apibrėžia vietą.</translation>
+      <translation>Lygiuoti pagal kreivos kraštinės B vektorių Frenet-Serret koordinačių sistemoje. Pasirinktinai siejama viršūnė apibrėžia vietą.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="236"/>
@@ -1579,7 +1579,7 @@ Ar vistiek norite tęsti?</translation>
       <location filename="../../AttacherTexts.cpp" line="156"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Lygiuoti pagal kreivos briaunos Frenet-Serret koordinates. Pasirinktinai siejama viršūnė apibrėžia vietą.</translation>
+      <translation>Lygiuoti pagal kreivos kraštinės Frenet-Serret koordinates. Pasirinktinai siejama viršūnė apibrėžia vietą.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="152"/>
@@ -1603,7 +1603,7 @@ Ar vistiek norite tęsti?</translation>
       <location filename="../../AttacherTexts.cpp" line="159"/>
       <source>Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Lygiuoti su briaunos ir apskritimo lietimosi plokštuma. Atskaitos taškas yra lygiuojamas su kreivio tašku. Pasirinktinai viršūne apibrėžiama vieta.</translation>
+      <translation>Lygiuoti su kraštinės ir apskritimo lietimosi plokštuma. Atskaitos taškas yra lygiuojamas su kreivio tašku. Pasirinktinai viršūne apibrėžiama vieta.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="161"/>
@@ -1615,7 +1615,7 @@ Ar vistiek norite tęsti?</translation>
       <location filename="../../AttacherTexts.cpp" line="162"/>
       <source>Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Plokštuma yra statmena briaunai, o Y ašis sutampa su prigludusio apskritimo ašimi. Pasirinktinai viršūne apibrėžiama vieta.</translation>
+      <translation>Plokštuma yra statmena kraštinei, o Y ašis sutampa su prigludusio apskritimo ašimi. Pasirinktinai viršūne apibrėžiama vieta.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="164"/>
@@ -1756,7 +1756,7 @@ Ar vistiek norite tęsti?</translation>
       <location filename="../../AttacherTexts.cpp" line="71"/>
       <source>Z tangent to edge</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>briaunos Z liestinė</translation>
+      <translation>Z liečia kraštinę</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="72"/>
@@ -1776,7 +1776,7 @@ Ar vistiek norite tęsti?</translation>
       <location filename="../../AttacherTexts.cpp" line="81"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Lygiuoti pagal kreivos briaunos Frenet-Serret koordinates. Pasirinktinai siejama viršūnė apibrėžia vietą.</translation>
+      <translation>Lygiuoti pagal kreivos kraštinės Frenet-Serret koordinates. Pasirinktinai siejama viršūnė apibrėžia vietą.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="77"/>
@@ -1800,7 +1800,7 @@ Ar vistiek norite tęsti?</translation>
       <location filename="../../AttacherTexts.cpp" line="84"/>
       <source>Align XY plane to osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Lygiuoti XY plokštumą su apskritimu, prigludusiu prie briaunos. Pasirinktinai viršūne apibrėžiama vieta.</translation>
+      <translation>Lygiuoti XY plokštumą su apskritimu, prigludusiu prie kraštinės. Pasirinktinai viršūne apibrėžiama vieta.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="86"/>
@@ -1812,7 +1812,7 @@ Ar vistiek norite tęsti?</translation>
       <location filename="../../AttacherTexts.cpp" line="87"/>
       <source>Align Y' axis to match axis of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Lygiuoti Y' ašį su apskritimo, prigludusio prie briaunos, ašimi. Pasirinktinai viršūne apibrėžiama vieta.</translation>
+      <translation>Lygiuoti Y' ašį su apskritimo, prigludusio prie kraštinės, ašimi. Pasirinktinai viršūne apibrėžiama vieta.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="89"/>
@@ -2336,7 +2336,7 @@ Ar vistiek norite tęsti?</translation>
     <message>
       <location filename="../../Command.cpp" line="1537"/>
       <source>Advanced utility to create shapes</source>
-      <translation>Išplėstinis geometrinių kūnų kūrimo įrankis</translation>
+      <translation>Išplėstinis geometrinių kūnų kūrimas</translation>
     </message>
   </context>
   <context>
@@ -2713,7 +2713,7 @@ Ar vistiek norite tęsti?</translation>
     <message>
       <location filename="../../Command.cpp" line="1143"/>
       <source>Convert to solid</source>
-      <translation>Paversti pilnaviduriu kūnu</translation>
+      <translation>Paversti pilnaviduriu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1144"/>
@@ -2808,7 +2808,7 @@ Ar vistiek norite tęsti?</translation>
     <message>
       <location filename="../../Command.cpp" line="219"/>
       <source>Creation of parametrized geometric primitives</source>
-      <translation>Parametrinių geometrinių kūnų sukūrimas</translation>
+      <translation>Kurti matais apibrėžtą geometrinį kūną</translation>
     </message>
   </context>
   <context>
@@ -2862,7 +2862,7 @@ Ar vistiek norite tęsti?</translation>
     <message>
       <location filename="../../Command.cpp" line="1385"/>
       <source>Revolve a selected shape</source>
-      <translation>Pasirinktos figūros sukinys</translation>
+      <translation>Pasirinkto darinio sukinys</translation>
     </message>
   </context>
   <context>
@@ -2880,7 +2880,7 @@ Ar vistiek norite tęsti?</translation>
     <message>
       <location filename="../../Command.cpp" line="1990"/>
       <source>Create a ruled surface from either two Edges or two wires</source>
-      <translation>Sukurti tiesiškąjį paviršių iš dviejų briaunų arba dviejų laužčių</translation>
+      <translation>Sukurti tiesiškąjį paviršių iš dviejų kraštinių arba dviejų laužčių</translation>
     </message>
   </context>
   <context>
@@ -3323,12 +3323,12 @@ Ar vistiek norite tęsti?</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="35"/>
       <source>Reversed</source>
-      <translation type="unfinished">Reversed</translation>
+      <translation>Apgręžta</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="42"/>
       <source>Specify direction manually using X,Y,Z values.</source>
-      <translation type="unfinished">Specify direction manually using X,Y,Z values.</translation>
+      <translation>Pasirinkti kryptį rankiniu būdu, nurodant krypties X, Y ir Z dedamąsias.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="45"/>
@@ -3343,28 +3343,28 @@ Ar vistiek norite tęsti?</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="55"/>
       <source>Along normal</source>
-      <translation type="unfinished">Along normal</translation>
+      <translation>Išilgai statmens</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="65"/>
       <source>Click to start selecting an edge in 3d view.</source>
-      <translation type="unfinished">Click to start selecting an edge in 3d view.</translation>
+      <translation>Paspauskite, norėdami pradėti kraštinės pasirinkimą erdviniame rodinyje.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="68"/>
       <location filename="../../DlgExtrusion.cpp" line="207"/>
       <source>Select</source>
-      <translation>Pasirinkti</translation>
+      <translation>Parinkti</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="78"/>
       <source>Set direction to match a direction of straight edge. Hint: to account for length of the edge too, set both lengths to zero.</source>
-      <translation type="unfinished">Set direction to match a direction of straight edge. Hint: to account for length of the edge too, set both lengths to zero.</translation>
+      <translation>Nustatyti kryptį, sutampančią su tiesinės kraštinės kryptimi. Patarimas: norint išstumti per kraštinės ilgį, reikia nurodyti abu ilgius, lygius 0.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="81"/>
       <source>Along edge:</source>
-      <translation type="unfinished">Along edge:</translation>
+      <translation>Išilgai kraštinės:</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="99"/>
@@ -3384,37 +3384,37 @@ Ar vistiek norite tęsti?</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="179"/>
       <source>Length</source>
-      <translation type="unfinished">Length</translation>
+      <translation>Ilgis</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="185"/>
       <source>Along:</source>
-      <translation type="unfinished">Along:</translation>
+      <translation>Pirmyn:</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="204"/>
       <source>Length to extrude along direction (can be negative). If both lengths are zero, magnitude of direction is used.</source>
-      <translation type="unfinished">Length to extrude along direction (can be negative). If both lengths are zero, magnitude of direction is used.</translation>
+      <translation>Išstūmimo ilgis nurodyta kryptimi (gali būti neigiamas). Jei abu ilgiai nuliniai, naudojamas krypties vektoriaus ilgis.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="223"/>
       <source>Against:</source>
-      <translation type="unfinished">Against:</translation>
+      <translation>Atgal:</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="242"/>
       <source>Length to extrude against direction (can be negative).</source>
-      <translation type="unfinished">Length to extrude against direction (can be negative).</translation>
+      <translation>Išstūmimo ilgis priešinga nurodytai kryptimi (gali būti neigiamas).</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="261"/>
       <source>Distribute extrusion length equally to both sides.</source>
-      <translation type="unfinished">Distribute extrusion length equally to both sides.</translation>
+      <translation>Išstumia vienodai į abi puses.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="264"/>
       <source>Symmetric</source>
-      <translation type="unfinished">Symmetric</translation>
+      <translation>Vienodai</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="276"/>
@@ -3425,12 +3425,12 @@ Ar vistiek norite tęsti?</translation>
       <location filename="../../DlgExtrusion.ui" line="289"/>
       <location filename="../../DlgExtrusion.ui" line="314"/>
       <source>Apply slope (draft) to extrusion side faces.</source>
-      <translation type="unfinished">Apply slope (draft) to extrusion side faces.</translation>
+      <translation>Padaryti išstumto kūno šonines sienas nuožulniomis.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="335"/>
       <source>If checked, extruding closed wires will give solids, not shells.</source>
-      <translation>Jei pasirinkta, uždaro plokščio kontūro išstūmimas sukuria pilnavidurį (vientisinį), o ne tuščiavidurį kūną.</translation>
+      <translation>Jei pasirinkta, uždarų plokščių kūnų išstūmimas sukuria pilnavidurį kūną, ne kevalą.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="338"/>
@@ -3440,17 +3440,17 @@ Ar vistiek norite tęsti?</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="368"/>
       <source>Shape</source>
-      <translation type="unfinished">Shape</translation>
+      <translation>Geometrinis kūnas</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="181"/>
       <source>Selecting...</source>
-      <translation type="unfinished">Selecting...</translation>
+      <translation>Vyksta parinkimas...</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="422"/>
       <source>The document '%1' doesn't exist.</source>
-      <translation type="unfinished">The document '%1' doesn't exist.</translation>
+      <translation>Dokumento '%1' nėra.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="470"/>
@@ -3458,52 +3458,52 @@ Ar vistiek norite tęsti?</translation>
       <source>Creating Extrusion failed.
 
 %1</source>
-      <translation type="unfinished">Creating Extrusion failed.
+      <translation>Nepavyko išstumti.
 
 %1</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="542"/>
       <source>Object not found: %1</source>
-      <translation type="unfinished">Object not found: %1</translation>
+      <translation>Daiktas nerastas: %1</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="604"/>
       <source>No shapes selected for extrusion. Select some, first.</source>
-      <translation type="unfinished">No shapes selected for extrusion. Select some, first.</translation>
+      <translation>Nepasirinktas kūnas išstūmimui. Pirmiausia kažką pasirinkite.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="625"/>
       <source>Extrusion direction link is invalid.
 
 %1</source>
-      <translation type="unfinished">Extrusion direction link is invalid.
+      <translation>Išstūmimo krypties nuoroda yra bloga.
 
 %1</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="627"/>
       <source>Direction mode is to use an edge, but no edge is linked.</source>
-      <translation type="unfinished">Direction mode is to use an edge, but no edge is linked.</translation>
+      <translation>Pasirinkta išstumti pagal kraštinę, bet kraštinė nenurodyta.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="650"/>
       <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
 
 (%1)</source>
-      <translation type="unfinished">Can't determine normal vector of shape to be extruded. Please use other mode. 
+      <translation>Neįmanoma apibrėžti išstumtino kūno statmens vektoriaus. Prašome pasirinkti kitą būdą. 
 
 (%1)</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="660"/>
       <source>Extrusion direction is zero-length. It must be non-zero.</source>
-      <translation type="unfinished">Extrusion direction is zero-length. It must be non-zero.</translation>
+      <translation>Išstūmimo ilgis negali būti nulinis.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="671"/>
       <source>Total extrusion length is zero (length1 == -length2). It must be nonzero.</source>
-      <translation type="unfinished">Total extrusion length is zero (length1 == -length2). It must be nonzero.</translation>
+      <translation>Nurodytas visas išstūmimo ilgis (ilgis1 lygus -ilgis2) negali būti nulinis.</translation>
     </message>
   </context>
   <context>
@@ -3656,7 +3656,7 @@ Please select a valid shape in the drop-down box first.</translation>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="935"/>
       <source>No edge selected</source>
-      <translation>Nepasirinktos briaunos</translation>
+      <translation>Nepasirinkta kraštinių</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="936"/>
@@ -3827,7 +3827,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgPartBox.ui" line="14"/>
       <source>Box definition</source>
-      <translation type="unfinished">Box definition</translation>
+      <translation>Stačiakampio gretasienio apibrėžtis</translation>
     </message>
     <message>
       <location filename="../../DlgPartBox.ui" line="20"/>
@@ -3862,12 +3862,12 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgPartBox.ui" line="160"/>
       <source>Height:</source>
-      <translation type="unfinished">Height:</translation>
+      <translation>Aukštis:</translation>
     </message>
     <message>
       <location filename="../../DlgPartBox.ui" line="167"/>
       <source>Width:</source>
-      <translation type="unfinished">Width:</translation>
+      <translation>Plotis:</translation>
     </message>
     <message>
       <location filename="../../DlgPartBox.ui" line="174"/>
@@ -3990,7 +3990,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="14"/>
       <source>Geometric Primitives</source>
-      <translation type="unfinished">Geometric Primitives</translation>
+      <translation>Geometriniai kūnai</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="33"/>
@@ -4002,7 +4002,7 @@ Please check one or more edge entities first.</translation>
       <location filename="../../DlgPrimitives.ui" line="42"/>
       <location filename="../../DlgPrimitives.cpp" line="401"/>
       <source>Box</source>
-      <translation type="unfinished">Box</translation>
+      <translation>Stačiakampis gretasienis</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="51"/>
@@ -4096,7 +4096,7 @@ Please check one or more edge entities first.</translation>
       <location filename="../../DlgPrimitives.ui" line="223"/>
       <location filename="../../DlgPrimitives.ui" line="330"/>
       <source>Width:</source>
-      <translation type="unfinished">Width:</translation>
+      <translation>Plotis:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="230"/>
@@ -4111,7 +4111,7 @@ Please check one or more edge entities first.</translation>
       <location filename="../../DlgPrimitives.ui" line="1082"/>
       <location filename="../../DlgPrimitives.ui" line="1321"/>
       <source>Height:</source>
-      <translation type="unfinished">Height:</translation>
+      <translation>Aukštis:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="367"/>
@@ -4323,7 +4323,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="20"/>
       <source>Revolve</source>
-      <translation>Sukti</translation>
+      <translation>Sukinys</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="32"/>
@@ -4353,17 +4353,17 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="119"/>
       <source>Center X:</source>
-      <translation type="unfinished">Center X:</translation>
+      <translation>Vidurio X:</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="139"/>
       <source>Center Y:</source>
-      <translation type="unfinished">Center Y:</translation>
+      <translation>Vidurio Y:</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="159"/>
       <source>Center Z:</source>
-      <translation type="unfinished">Center Z:</translation>
+      <translation>Vidurio Z:</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="201"/>
@@ -4374,23 +4374,23 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="204"/>
       <source>Dir. X:</source>
-      <translation type="unfinished">Dir. X:</translation>
+      <translation>X kryptis:</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="245"/>
       <source>Dir. Y:</source>
-      <translation type="unfinished">Dir. Y:</translation>
+      <translation>Y kryptis:</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="283"/>
       <source>Dir. Z:</source>
-      <translation type="unfinished">Dir. Z:</translation>
+      <translation>Z kryptis:</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="305"/>
       <location filename="../../DlgRevolution.cpp" line="448"/>
       <source>Select reference</source>
-      <translation type="unfinished">Select reference</translation>
+      <translation>Parinkti sukimo ašį arba lanką</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="325"/>
@@ -4400,12 +4400,12 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="328"/>
       <source>Symmetric angle</source>
-      <translation type="unfinished">Symmetric angle</translation>
+      <translation>Kampas vienodai padalintas į abi puses</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="173"/>
       <source>Object not found: %1</source>
-      <translation type="unfinished">Object not found: %1</translation>
+      <translation>Daiktas nerastas: %1</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="254"/>
@@ -4431,7 +4431,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgRevolution.cpp" line="299"/>
       <source>Revolution angle span is zero. It must be non-zero.</source>
-      <translation type="unfinished">Revolution angle span is zero. It must be non-zero.</translation>
+      <translation>Posūkio kampas negali būti lygus nuliui.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="428"/>
@@ -4439,14 +4439,14 @@ Please check one or more edge entities first.</translation>
       <source>Creating Revolve failed.
 
 %1</source>
-      <translation type="unfinished">Creating Revolve failed.
+      <translation>Nepavyko padaryti sukinio.
 
 %1</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="444"/>
       <source>Selecting... (line or arc)</source>
-      <translation type="unfinished">Selecting... (line or arc)</translation>
+      <translation>Vyksta tiesinės atkarpos ar lanko parinkimas...</translation>
     </message>
   </context>
   <context>
@@ -4677,7 +4677,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="180"/>
       <source>At least two vertices, edges, wires or faces are required.</source>
-      <translation>Reikalingos bent dvi viršūnės, briaunos, kontūrai ar sienos.</translation>
+      <translation>Reikalingos bent dvi viršūnės, kraštinės, kontūrai ar sienos.</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="214"/>
@@ -4801,7 +4801,7 @@ Please check one or more edge entities first.</translation>
       <location filename="../../TaskShapeBuilder.cpp" line="208"/>
       <location filename="../../TaskShapeBuilder.cpp" line="227"/>
       <source>Select two vertices</source>
-      <translation type="unfinished">Select two vertices</translation>
+      <translation>Parinkite dvi viršūnes</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="255"/>
@@ -4827,32 +4827,32 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="515"/>
       <source>Select two vertices to create an edge</source>
-      <translation type="unfinished">Select two vertices to create an edge</translation>
+      <translation>Kraštinei sukurti parinkite dvi viršūnes</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="522"/>
       <source>Select adjacent edges</source>
-      <translation type="unfinished">Select adjacent edges</translation>
+      <translation>Parinkite šalia esančias kraštines</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="529"/>
       <source>Select a list of vertices</source>
-      <translation type="unfinished">Select a list of vertices</translation>
+      <translation>Parinkite reikiamas viršūnes</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="536"/>
       <source>Select a closed set of edges</source>
-      <translation type="unfinished">Select a closed set of edges</translation>
+      <translation>Parinkite kraštines, sudarančias kilpą</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="543"/>
       <source>Select adjacent faces</source>
-      <translation type="unfinished">Select adjacent faces</translation>
+      <translation>Parinkite šalia esančias sienas</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="550"/>
       <source>All shape types can be selected</source>
-      <translation type="unfinished">All shape types can be selected</translation>
+      <translation>Visų rūšių kūnai gali būti pasirinkti</translation>
     </message>
   </context>
   <context>
@@ -4877,7 +4877,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="282"/>
       <source>Select one or more connected edges you want to sweep along.</source>
-      <translation>Pasirinkite vieną arba daugiau sujungtų briaunų, palei kurias norite skleisti (pratempti).</translation>
+      <translation>Pasirinkite vieną arba daugiau sujungtų kraštinių, palei kurias norite skleisti (pratempti).</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="310"/>
@@ -4923,7 +4923,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="434"/>
       <source>Vertex/Wire</source>
-      <translation>Viršūnė/briauna</translation>
+      <translation>Viršūnė/kraštinė</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="435"/>
@@ -5246,32 +5246,32 @@ Please check one or more edge entities first.</translation>
       <location filename="../../TaskShapeBuilder.ui" line="14"/>
       <location filename="../../TaskShapeBuilder.ui" line="20"/>
       <source>Create shape</source>
-      <translation type="unfinished">Create shape</translation>
+      <translation>Sukurti kūną</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="26"/>
       <source>Face from vertices</source>
-      <translation type="unfinished">Face from vertices</translation>
+      <translation>Siena iš viršūnių</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="33"/>
       <source>Shell from faces</source>
-      <translation type="unfinished">Shell from faces</translation>
+      <translation>Kevalas iš sienų</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="40"/>
       <source>Edge from vertices</source>
-      <translation type="unfinished">Edge from vertices</translation>
+      <translation>Briauna iš viršūnių</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="47"/>
       <source>Face from edges</source>
-      <translation type="unfinished">Face from edges</translation>
+      <translation>Siena iš kraštinių</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="54"/>
       <source>Solid from shell</source>
-      <translation>Paversti tuščiavidurį kūną į pilnavidurį</translation>
+      <translation>Pilnavidurį iš tuščiavidurio kevalo</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="68"/>
@@ -5296,7 +5296,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="116"/>
       <source>Wire from edges</source>
-      <translation type="unfinished">Wire from edges</translation>
+      <translation>Laužtė iš kraštinių</translation>
     </message>
   </context>
   <context>
@@ -5431,7 +5431,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
       <source>Primitives</source>
-      <translation>Paprastieji daiktai</translation>
+      <translation>Paprastieji geometriniai kūnai</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>

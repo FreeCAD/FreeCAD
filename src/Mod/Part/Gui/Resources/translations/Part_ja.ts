@@ -5400,7 +5400,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../Workbench.cpp" line="37"/>
       <source>&amp;Part</source>
-      <translation>パート(&amp;P)</translation>
+      <translation>部品(&amp;p)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="38"/>

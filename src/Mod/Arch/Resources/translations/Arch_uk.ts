@@ -481,7 +481,7 @@
     <message>
       <location filename="../../ArchProfile.py" line="275"/>
       <source>Thickness of the web</source>
-      <translation type="unfinished">Thickness of the web</translation>
+      <translation>Товщина стрижня</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="276"/>
@@ -496,7 +496,7 @@
     <message>
       <location filename="../../ArchProfile.py" line="363"/>
       <source>Thickness of the webs</source>
-      <translation type="unfinished">Thickness of the webs</translation>
+      <translation>Товщина стрижнів</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="364"/>
@@ -506,42 +506,42 @@
     <message>
       <location filename="../../ArchRebar.py" line="174"/>
       <source>The diameter of the bar</source>
-      <translation type="unfinished">The diameter of the bar</translation>
+      <translation>Діаметр стрижня</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="176"/>
       <source>The distance between the border of the beam and the first bar (concrete cover).</source>
-      <translation type="unfinished">The distance between the border of the beam and the first bar (concrete cover).</translation>
+      <translation>Відстань між межею балки та першим стрижнем (бетонне покриття).</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="178"/>
       <source>The distance between the border of the beam and the last bar (concrete cover).</source>
-      <translation type="unfinished">The distance between the border of the beam and the last bar (concrete cover).</translation>
+      <translation>Відстань між межею балки та останнім стрижнем (бетонне покриття).</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="180"/>
       <source>The amount of bars</source>
-      <translation type="unfinished">The amount of bars</translation>
+      <translation>Кількість стрижнів</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="182"/>
       <source>The spacing between the bars</source>
-      <translation type="unfinished">The spacing between the bars</translation>
+      <translation>Відстань між стрижнями</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="187"/>
       <source>The direction to use to spread the bars. Keep (0,0,0) for automatic direction.</source>
-      <translation type="unfinished">The direction to use to spread the bars. Keep (0,0,0) for automatic direction.</translation>
+      <translation>Напрямок поширення стрижнів. Залишити (0,0,0) для автоматичного напрямку.</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="189"/>
       <source>The fillet to apply to the angle of the base profile. This value is multiplied by the bar diameter.</source>
-      <translation type="unfinished">The fillet to apply to the angle of the base profile. This value is multiplied by the bar diameter.</translation>
+      <translation>Заокруглення наносити на кут базового профілю. Це значення множиться на діаметр бруска.</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="96"/>
       <source>The description column</source>
-      <translation type="unfinished">The description column</translation>
+      <translation>Стовпець опису</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="98"/>
@@ -566,7 +566,7 @@
     <message>
       <location filename="../../ArchSchedule.py" line="108"/>
       <source>The spreadsheet to print the results to</source>
-      <translation type="unfinished">The spreadsheet to print the results to</translation>
+      <translation>Таблиця результатів</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="921"/>
@@ -581,7 +581,7 @@
     <message>
       <location filename="../../ArchSectionPlane.py" line="997"/>
       <source>The display height of this section plane</source>
-      <translation type="unfinished">The display height of this section plane</translation>
+      <translation>Висота відображення цієї площини перерізу</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1003"/>
@@ -611,12 +611,12 @@
     <message>
       <location filename="../../ArchSectionPlane.py" line="1275"/>
       <source>The size of the texts inside this object</source>
-      <translation type="unfinished">The size of the texts inside this object</translation>
+      <translation>Розмір тексту всередині цього об'єкта</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1278"/>
       <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
-      <translation type="unfinished">If checked, source objects are displayed regardless of being visible in the 3D model</translation>
+      <translation>Якщо відмічено, то вихідні об'єкти відображаються, незалежно від того, чи вони видимі в 3D моделі</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="590"/>
@@ -646,12 +646,12 @@
     <message>
       <location filename="../../ArchSite.py" line="606"/>
       <source>Angle between the true North and the North direction in this document</source>
-      <translation type="unfinished">Angle between the true North and the North direction in this document</translation>
+      <translation>Кут між справжньою Північчю та Північним напрямком у цьому документі</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="611"/>
       <source>The elevation of level 0 of this site</source>
-      <translation type="unfinished">The elevation of level 0 of this site</translation>
+      <translation>Висота рівня 0 цієї ділянки</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="621"/>
@@ -671,12 +671,12 @@
     <message>
       <location filename="../../ArchSite.py" line="627"/>
       <source>An extrusion vector to use when performing boolean operations</source>
-      <translation type="unfinished">An extrusion vector to use when performing boolean operations</translation>
+      <translation>Вектор видавлювання, що використовуватиметься під час виконання логічних операцій</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="630"/>
       <source>Remove splitters from the resulting shape</source>
-      <translation type="unfinished">Remove splitters from the resulting shape</translation>
+      <translation>Видалити розділювачі з результуючої форми</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="838"/>
@@ -741,17 +741,17 @@
     <message>
       <location filename="../../ArchSpace.py" line="287"/>
       <source>The number of people who typically occupy this space</source>
-      <translation type="unfinished">The number of people who typically occupy this space</translation>
+      <translation>Кількість людей, які зазвичай займають цей простір</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="289"/>
       <source>The electric power needed to light this space in Watts</source>
-      <translation type="unfinished">The electric power needed to light this space in Watts</translation>
+      <translation>Електроенергія у ватах, необхідна для освітлення цього простору</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="291"/>
       <source>The electric power needed by the equipment of this space in Watts</source>
-      <translation type="unfinished">The electric power needed by the equipment of this space in Watts</translation>
+      <translation>Електроенергія у ватах, необхідна для обладнання цього простору</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="293"/>
@@ -761,7 +761,7 @@
     <message>
       <location filename="../../ArchSpace.py" line="295"/>
       <source>The type of air conditioning of this space</source>
-      <translation type="unfinished">The type of air conditioning of this space</translation>
+      <translation>Тип кондиціонування повітря в цьому просторі</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="506"/>
@@ -896,17 +896,17 @@
     <message>
       <location filename="../../ArchStructure.py" line="620"/>
       <source>The height or extrusion depth of this element. Keep 0 for automatic</source>
-      <translation type="unfinished">The height or extrusion depth of this element. Keep 0 for automatic</translation>
+      <translation>Висота або глибина видавлювання елемента. Задайте 0 для автоматичного визначення</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="626"/>
       <source>A description of the standard profile this element is based upon</source>
-      <translation type="unfinished">A description of the standard profile this element is based upon</translation>
+      <translation>Опис стандартного профілю на якому ґрунтується цей елемент</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="628"/>
       <source>Offset distance between the centerline and the nodes line</source>
-      <translation type="unfinished">Offset distance between the centerline and the nodes line</translation>
+      <translation>Зміщення відстані між центральною лінією і вузлами</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="917"/>
@@ -941,7 +941,7 @@
     <message>
       <location filename="../../ArchStructure.py" line="1215"/>
       <source>The element numbers to exclude when this structure is based on axes</source>
-      <translation type="unfinished">The element numbers to exclude when this structure is based on axes</translation>
+      <translation>Номери виключених елементів при побудові структури на осях</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1216"/>
@@ -956,7 +956,7 @@
     <message>
       <location filename="../../ArchWall.py" line="716"/>
       <source>The width of this wall. Not used if this wall is based on a face</source>
-      <translation type="unfinished">The width of this wall. Not used if this wall is based on a face</translation>
+      <translation>Ширина цієї стіни. Не використовується, якщо стіна розташована на поверхні</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="726"/>
@@ -966,27 +966,27 @@
     <message>
       <location filename="../../ArchWall.py" line="731"/>
       <source>The alignment of this wall on its base object, if applicable</source>
-      <translation type="unfinished">The alignment of this wall on its base object, if applicable</translation>
+      <translation>Вирівнювання стіни на базовому об'єкті, якщо можливо</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="736"/>
       <source>The face number of the base object used to build this wall</source>
-      <translation type="unfinished">The face number of the base object used to build this wall</translation>
+      <translation>Номер поверхні базового об'єкту, що використовується для створення цієї стіни</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="738"/>
       <source>The offset between this wall and its baseline (only for left and right alignments)</source>
-      <translation type="unfinished">The offset between this wall and its baseline (only for left and right alignments)</translation>
+      <translation>Зміщення стіни від базової лінії (тільки для лівого і правого вирівнювання)</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="551"/>
       <source>The normal direction of this window</source>
-      <translation type="unfinished">The normal direction of this window</translation>
+      <translation>Напрямок нормалі цього вікна</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="560"/>
       <source>The area of this window</source>
-      <translation type="unfinished">The area of this window</translation>
+      <translation>Область цього вікна</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="228"/>
@@ -1011,7 +1011,7 @@
     <message>
       <location filename="../../ArchMaterial.py" line="716"/>
       <source>A description for this material</source>
-      <translation type="unfinished">A description for this material</translation>
+      <translation>Опис цього матеріалу</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="292"/>
@@ -1046,7 +1046,7 @@
     <message>
       <location filename="../../ArchSectionPlane.py" line="1282"/>
       <source>The color of the cut faces (if turned on)</source>
-      <translation type="unfinished">The color of the cut faces (if turned on)</translation>
+      <translation>Колір обрізаних граней (якщо увімкнено)</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="1109"/>
@@ -1056,7 +1056,7 @@
     <message>
       <location filename="../../ArchWindow.py" line="1384"/>
       <source>The number of the wire that defines the hole. A value of 0 means automatic</source>
-      <translation type="unfinished">The number of the wire that defines the hole. A value of 0 means automatic</translation>
+      <translation>Число дротів, що визначає отвір. Значення 0 означає автоматичне значення</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="210"/>
@@ -1066,7 +1066,7 @@
     <message>
       <location filename="../../ArchAxis.py" line="330"/>
       <source>If true, show the labels</source>
-      <translation type="unfinished">If true, show the labels</translation>
+      <translation>Якщо істина, відображати мітки</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="332"/>
@@ -1091,17 +1091,17 @@
     <message>
       <location filename="../../ArchFrame.py" line="129"/>
       <source>If true, geometry is fused, otherwise a compound</source>
-      <translation type="unfinished">If true, geometry is fused, otherwise a compound</translation>
+      <translation>Якщо увімкнено, геометрія зливається в іншому випадку - сполучається</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1240"/>
       <source>If True, the object is rendered as a face, if possible.</source>
-      <translation type="unfinished">If True, the object is rendered as a face, if possible.</translation>
+      <translation>Якщо увімкнено, об'єкт представляється як поверхня, якщо це можливо.</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="958"/>
       <source>The allowed angles this object can be rotated to when placed on sheets</source>
-      <translation type="unfinished">The allowed angles this object can be rotated to when placed on sheets</translation>
+      <translation>Дозволені кути повороту цього об’єкта при розміщенні на листі</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1242"/>
@@ -1136,12 +1136,12 @@
     <message>
       <location filename="../../ArchRebar.py" line="193"/>
       <source>The structure object that hosts this rebar</source>
-      <translation type="unfinished">The structure object that hosts this rebar</translation>
+      <translation>Об'єкт структури, що містить цю арматуру</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="195"/>
       <source>The custom spacing of rebar</source>
-      <translation type="unfinished">The custom spacing of rebar</translation>
+      <translation>Користувацький крок армування</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="502"/>
@@ -1196,12 +1196,12 @@
     <message>
       <location filename="../../ArchAxis.py" line="324"/>
       <source>The font to use for texts</source>
-      <translation type="unfinished">The font to use for texts</translation>
+      <translation>Шрифт для тексту</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="327"/>
       <source>The font size</source>
-      <translation type="unfinished">The font size</translation>
+      <translation>Розмір шрифту</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="806"/>
@@ -1216,7 +1216,7 @@
     <message>
       <location filename="../../ArchSectionPlane.py" line="917"/>
       <source>The shape of this object</source>
-      <translation type="unfinished">The shape of this object</translation>
+      <translation>Форма цього об'єкта</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1009"/>
@@ -1251,12 +1251,12 @@
     <message>
       <location filename="../../ArchBuildingPart.py" line="519"/>
       <source>The font to be used for texts</source>
-      <translation type="unfinished">The font to be used for texts</translation>
+      <translation>Шрифт для тексту</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="522"/>
       <source>The font size of texts</source>
-      <translation type="unfinished">The font size of texts</translation>
+      <translation>Розмір шрифту тексту</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="534"/>
@@ -1306,7 +1306,7 @@
     <message>
       <location filename="../../ArchPanel.py" line="1229"/>
       <source>The font file</source>
-      <translation type="unfinished">The font file</translation>
+      <translation>Файл шрифту</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="961"/>
@@ -1316,12 +1316,12 @@
     <message>
       <location filename="../../ArchRebar.py" line="197"/>
       <source>Length of a single rebar</source>
-      <translation type="unfinished">Length of a single rebar</translation>
+      <translation>Довжина одного стрижня</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="200"/>
       <source>Total length of all rebars</source>
-      <translation type="unfinished">Total length of all rebars</translation>
+      <translation>Загальна довжина всіх стрижнів</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="94"/>
@@ -1336,7 +1336,7 @@
     <message>
       <location filename="../../ArchReference.py" line="326"/>
       <source>The latest time stamp of the linked file</source>
-      <translation type="unfinished">The latest time stamp of the linked file</translation>
+      <translation>Остання часова мітка зв'язаного файлу</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="329"/>
@@ -1356,7 +1356,7 @@
     <message>
       <location filename="../../ArchSectionPlane.py" line="1014"/>
       <source>The color of this object</source>
-      <translation type="unfinished">The color of this object</translation>
+      <translation>Колір цього об'єкта</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1019"/>
@@ -1699,7 +1699,7 @@
       <translation type="unfinished">Turn cutting on when activating this level</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1159"/>
+      <location filename="../../ArchComponent.py" line="1161"/>
       <source>Use the material color as this object's shape color, if available</source>
       <translation type="unfinished">Use the material color as this object's shape color, if available</translation>
     </message>
@@ -2022,12 +2022,12 @@
       <translation>Компоненти</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1942"/>
+      <location filename="../../ArchComponent.py" line="1944"/>
       <source>Components of this object</source>
       <translation>Компоненти цього об'єкта</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1947"/>
+      <location filename="../../ArchComponent.py" line="1949"/>
       <source>Axes</source>
       <translation>Вісі</translation>
     </message>
@@ -2107,27 +2107,27 @@
       <translation>Меш у форму</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1943"/>
+      <location filename="../../ArchComponent.py" line="1945"/>
       <source>Base component</source>
       <translation>Основний компонент</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1944"/>
+      <location filename="../../ArchComponent.py" line="1946"/>
       <source>Additions</source>
       <translation>Додавання</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1945"/>
+      <location filename="../../ArchComponent.py" line="1947"/>
       <source>Subtractions</source>
       <translation>Віднімання</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1946"/>
+      <location filename="../../ArchComponent.py" line="1948"/>
       <source>Objects</source>
       <translation>Об'єкти</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1012"/>
+      <location filename="../../ArchRoof.py" line="1013"/>
       <source>Roof</source>
       <translation>Покрівля</translation>
     </message>
@@ -2137,7 +2137,7 @@
       <translation>Створити покрівлю</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="825"/>
+      <location filename="../../ArchRoof.py" line="826"/>
       <source>Unable to create a roof</source>
       <translation>Не вдалося створити покрівлю</translation>
     </message>
@@ -2257,7 +2257,7 @@
       <translation>Будь ласка, виберіть базовий об'єкт</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1949"/>
+      <location filename="../../ArchComponent.py" line="1951"/>
       <source>Fixtures</source>
       <translation>Арматура</translation>
     </message>
@@ -2322,7 +2322,7 @@
       <translation>Відстані (мм) і кути (град) між осями</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="912"/>
+      <location filename="../../ArchComponent.py" line="913"/>
       <source>Error computing the shape of this object</source>
       <translation>Помилка обробки форма цього об'єкту</translation>
     </message>
@@ -2347,17 +2347,17 @@
       <translation>Ввімкнення прапорцю Brep-форсування</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="933"/>
+      <location filename="../../ArchComponent.py" line="934"/>
       <source>has no solid</source>
       <translation>не має суцільного тіла</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="940"/>
+      <location filename="../../ArchComponent.py" line="941"/>
       <source>has an invalid shape</source>
       <translation>має неприпустиму форму</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="942"/>
+      <location filename="../../ArchComponent.py" line="943"/>
       <source>has a null shape</source>
       <translation>має нульову форму</translation>
     </message>
@@ -2407,12 +2407,12 @@
       <translation>Створити панель</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1014"/>
+      <location filename="../../ArchRoof.py" line="1015"/>
       <source>Id</source>
       <translation>Ідентифікатор</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1014"/>
+      <location filename="../../ArchRoof.py" line="1015"/>
       <source>IdRel</source>
       <translation>IdRel</translation>
     </message>
@@ -2437,27 +2437,27 @@
       <translation>Фронт</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1014"/>
+      <location filename="../../ArchRoof.py" line="1015"/>
       <source>Angle (deg)</source>
       <translation>Кут (град.)</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1014"/>
+      <location filename="../../ArchRoof.py" line="1015"/>
       <source>Run (mm)</source>
       <translation type="unfinished">Run (mm)</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1014"/>
+      <location filename="../../ArchRoof.py" line="1015"/>
       <source>Thickness (mm)</source>
       <translation>Товщина (мм)</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1014"/>
+      <location filename="../../ArchRoof.py" line="1015"/>
       <source>Overhang (mm)</source>
       <translation>Навіс (мм)</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1014"/>
+      <location filename="../../ArchRoof.py" line="1015"/>
       <source>Height (mm)</source>
       <translation>Висота (мм)</translation>
     </message>
@@ -2512,7 +2512,7 @@
       <translation>Створити будівлю</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1950"/>
+      <location filename="../../ArchComponent.py" line="1952"/>
       <source>Group</source>
       <translation>Група</translation>
     </message>
@@ -2644,12 +2644,12 @@
     <message>
       <location filename="../../ArchPrecast.py" line="1006"/>
       <source>Height of risers</source>
-      <translation type="unfinished">Height of risers</translation>
+      <translation>Висота підсходинків</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1007"/>
       <source>Depth of treads</source>
-      <translation type="unfinished">Depth of treads</translation>
+      <translation>Глибина східців</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1392"/>
@@ -2976,7 +2976,7 @@ Site creation aborted.</translation>
       <translation>Всього</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1951"/>
+      <location filename="../../ArchComponent.py" line="1953"/>
       <source>Hosts</source>
       <translation type="unfinished">Hosts</translation>
     </message>
@@ -3043,57 +3043,57 @@ Building creation aborted.</translation>
       <translation type="unfinished">The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1511"/>
+      <location filename="../../ArchComponent.py" line="1513"/>
       <source>Toggle subcomponents</source>
       <translation type="unfinished">Toggle subcomponents</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1634"/>
+      <location filename="../../ArchComponent.py" line="1636"/>
       <source>Closing Sketch edit</source>
       <translation type="unfinished">Closing Sketch edit</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1939"/>
+      <location filename="../../ArchComponent.py" line="1941"/>
       <source>Component</source>
       <translation>Компонент</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1952"/>
+      <location filename="../../ArchComponent.py" line="1954"/>
       <source>Edit IFC properties</source>
       <translation type="unfinished">Edit IFC properties</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1953"/>
+      <location filename="../../ArchComponent.py" line="1955"/>
       <source>Edit standard code</source>
       <translation type="unfinished">Edit standard code</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1999"/>
+      <location filename="../../ArchComponent.py" line="2001"/>
       <source>Property</source>
       <translation>Властивість</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2004"/>
+      <location filename="../../ArchComponent.py" line="2006"/>
       <source>Add property...</source>
       <translation type="unfinished">Add property...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2005"/>
+      <location filename="../../ArchComponent.py" line="2007"/>
       <source>Add property set...</source>
       <translation type="unfinished">Add property set...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2005"/>
+      <location filename="../../ArchComponent.py" line="2007"/>
       <source>New...</source>
       <translation>Новий...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2147"/>
+      <location filename="../../ArchComponent.py" line="2149"/>
       <source>New property</source>
       <translation type="unfinished">New property</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2183"/>
+      <location filename="../../ArchComponent.py" line="2185"/>
       <source>New property set</source>
       <translation type="unfinished">New property set</translation>
     </message>
@@ -3673,7 +3673,7 @@ You can change that in the preferences.</translation>
       <translation type="unfinished">The shapefile python library was not found on your system. Would you like to download it now from &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github.com/GeospatialPython/pyshp&lt;/a&gt;? It will be placed in your macros folder.</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1013"/>
+      <location filename="../../ArchRoof.py" line="1014"/>
       <source>Parameters of the roof profiles :
 * Angle : slope in degrees relative to the horizontal.
 * Run : horizontal distance between the wall and the ridge.

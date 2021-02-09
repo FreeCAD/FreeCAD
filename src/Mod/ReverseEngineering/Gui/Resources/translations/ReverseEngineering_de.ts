@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="213"/>
       <source>Approximate a cylinder</source>
-      <translation>Annähernd ein Zylinder</translation>
+      <translation>Einen Zylinder annähern</translation>
     </message>
   </context>
   <context>
@@ -47,12 +47,12 @@
     <message>
       <location filename="../../Command.cpp" line="325"/>
       <source>Polynomial surface</source>
-      <translation>Polynomale Oberfläche</translation>
+      <translation>Polynomfläche</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="326"/>
       <source>Approximate a polynomial surface</source>
-      <translation>Approximiere eine polynomiale Oberfläche</translation>
+      <translation>Eine Polynomfläche annähern</translation>
     </message>
   </context>
   <context>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="279"/>
       <source>Approximate a sphere</source>
-      <translation>Annähernd eine Kugel</translation>
+      <translation>Eine Kugel annähern</translation>
     </message>
   </context>
   <context>
@@ -205,27 +205,27 @@
     <message>
       <location filename="../../Command.cpp" line="190"/>
       <source>Fit plane</source>
-      <translation type="unfinished">Fit plane</translation>
+      <translation>Ebene einpassen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="221"/>
       <source>Fit cylinder</source>
-      <translation type="unfinished">Fit cylinder</translation>
+      <translation>Zylinder einpassen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="287"/>
       <source>Fit sphere</source>
-      <translation type="unfinished">Fit sphere</translation>
+      <translation>Kugel einpassen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="335"/>
       <source>Fit polynomial surface</source>
-      <translation type="unfinished">Fit polynomial surface</translation>
+      <translation>Polynomfläche einpassen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="601"/>
       <source>View triangulation</source>
-      <translation type="unfinished">View triangulation</translation>
+      <translation>Triangulation anzeigen</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="156"/>
@@ -235,12 +235,12 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="228"/>
       <source>Fit B-Spline</source>
-      <translation type="unfinished">Fit B-Spline</translation>
+      <translation>B-Spline einpassen</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="101"/>
       <source>Poisson reconstruction</source>
-      <translation type="unfinished">Poisson reconstruction</translation>
+      <translation>Poisson-Wiederherstellung</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.cpp" line="234"/>
@@ -404,7 +404,7 @@
     <message>
       <location filename="../../Command.cpp" line="625"/>
       <source>View triangulation failed</source>
-      <translation>Ansichts-Triangulation fehlgeschlagen</translation>
+      <translation>Triangulation anzeigen fehlgeschlagen</translation>
     </message>
   </context>
   <context>

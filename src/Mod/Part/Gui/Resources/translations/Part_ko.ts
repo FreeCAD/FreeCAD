@@ -511,7 +511,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../AppPartGui.cpp" line="214"/>
       <source>Display</source>
-      <translation type="unfinished">Display</translation>
+      <translation>화면</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="284"/>
@@ -2123,7 +2123,7 @@ Do you want to continue?</source>
       <location filename="../../Command.cpp" line="2357"/>
       <location filename="../../Command.cpp" line="2359"/>
       <source>Box selection</source>
-      <translation>영역 선택하기</translation>
+      <translation>개체 선택 상자</translation>
     </message>
   </context>
   <context>
@@ -3383,7 +3383,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../DlgExtrusion.ui" line="179"/>
       <source>Length</source>
-      <translation>돌출 컷(Pocket) 길이</translation>
+      <translation>거리</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="185"/>
@@ -3633,7 +3633,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="827"/>
       <source>Length</source>
-      <translation>돌출 컷(Pocket) 길이</translation>
+      <translation>거리</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="829"/>
@@ -5142,7 +5142,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskFaceColors.ui" line="66"/>
       <source>Box selection</source>
-      <translation>영역 선택하기</translation>
+      <translation>개체 선택 상자</translation>
     </message>
   </context>
   <context>

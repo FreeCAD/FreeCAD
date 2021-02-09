@@ -760,7 +760,7 @@
     <message>
       <location filename="../../Command.cpp" line="383"/>
       <source>Mesh intersection</source>
-      <translation type="unfinished">Mesh intersection</translation>
+      <translation>Netz Schnittmenge</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="469"/>

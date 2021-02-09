@@ -11,7 +11,7 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="135"/>
       <source>Distance [mm]</source>
-      <translation type="unfinished">Distance [mm]</translation>
+      <translation>Distância em [mm]</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="136"/>
@@ -26,7 +26,7 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="157"/>
       <source>&lt;font color='red'&gt;Select ImagePlane&lt;/font&gt;</source>
-      <translation>&lt;font color='red'&gt;selecione plano da imagem&lt;/font&gt;</translation>
+      <translation>&lt;font color='red'&gt;Selecione plano da imagem&lt;/font&gt;</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="182"/>
@@ -67,7 +67,7 @@
     <message>
       <location filename="../../Command.cpp" line="103"/>
       <source>Create a planar image in the 3D space</source>
-      <translation>Criar uma imagem planar no espaço 3D</translation>
+      <translation>Criar uma imagem plana no espaço 3D</translation>
     </message>
   </context>
   <context>
@@ -80,12 +80,12 @@
     <message>
       <location filename="../../Command.cpp" line="54"/>
       <source>Open...</source>
-      <translation>Abrir ...</translation>
+      <translation>Abrir...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="55"/>
       <source>Open image view</source>
-      <translation>Abrir a visualização da imagem</translation>
+      <translation>Abrir visualização de imagens</translation>
     </message>
   </context>
   <context>
@@ -103,7 +103,7 @@
     <message>
       <location filename="../../Command.cpp" line="177"/>
       <source>Image Scaling</source>
-      <translation>Dimensionar a imagem</translation>
+      <translation>Dimensionar imagem</translation>
     </message>
   </context>
   <context>
@@ -169,7 +169,7 @@
     <message>
       <location filename="../../ImageView.cpp" line="113"/>
       <source>Stretch the image to fit the view</source>
-      <translation>Esticar a imagem para ajustar a exibição</translation>
+      <translation>Esticar a imagem para ajustar à vista</translation>
     </message>
     <message>
       <location filename="../../ImageView.cpp" line="117"/>
@@ -208,7 +208,7 @@
       <location filename="../../ImageView.cpp" line="600"/>
       <location filename="../../ImageView.cpp" line="605"/>
       <source>zoom</source>
-      <translation>zoom</translation>
+      <translation>ampliação</translation>
     </message>
     <message>
       <location filename="../../ImageView.cpp" line="543"/>
@@ -217,7 +217,7 @@
       <location filename="../../ImageView.cpp" line="584"/>
       <location filename="../../ImageView.cpp" line="600"/>
       <source>outside image</source>
-      <translation>imagem exterior</translation>
+      <translation>imagem externa</translation>
     </message>
   </context>
   <context>
@@ -248,7 +248,7 @@
     <message>
       <location filename="../../Command.cpp" line="129"/>
       <source>Could not load the chosen image</source>
-      <translation>Não foi possível carregar a imagem escolhida</translation>
+      <translation>Não foi possível carregar a imagem selecionada</translation>
     </message>
   </context>
   <context>

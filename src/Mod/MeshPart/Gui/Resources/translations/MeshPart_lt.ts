@@ -167,7 +167,7 @@ This command only works with a 'mesh' object.</translation>
     <message>
       <location filename="../../CrossSections.ui" line="134"/>
       <source>Connect edges if distance less than</source>
-      <translation>Sujungti briaunas, jei atstumas yra mažesnis, nei</translation>
+      <translation>Sujungti kraštines esant atstumui mažesniam, nei</translation>
     </message>
     <message>
       <location filename="../../CrossSections.cpp" line="345"/>

@@ -309,12 +309,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="195"/>
       <source>Mirror Mesh Feature...</source>
-      <translation type="unfinished">Mirror Mesh Feature...</translation>
+      <translation>Espelhar malha...</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="196"/>
       <source>Create Mirror Mesh Feature</source>
-      <translation type="unfinished">Create Mirror Mesh Feature</translation>
+      <translation>Criar Espelhamento de Malha</translation>
     </message>
   </context>
   <context>

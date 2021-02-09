@@ -6,17 +6,17 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="94"/>
       <source>No object named {name}</source>
-      <translation>Nie nazwano obiektu</translation>
+      <translation>Brak nazwy obiektu {name}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="98"/>
       <source>Failed to parse link (more than one colon encountered)</source>
-      <translation>Nie udało się zanalizować linku (napotkano więcej niż jeden dwukropek)</translation>
+      <translation>Nie udało się zanalizować łącza (napotkano więcej niż jeden dwukropek)</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="204"/>
       <source>Object {name} is neither movable nor attachable, can't edit attachment</source>
-      <translation>Obiekt {name} nie jest ani ruchomy, ani dołączalny, nie można edytować załącznika</translation>
+      <translation>Obiekt {name} nie jest ani ruchomy, ani dołączany, nie można edytować załącznika</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="212"/>
@@ -101,7 +101,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="608"/>
       <source>Attachment Offset (in local coordinates):</source>
-      <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
+      <translation>Odsunięcie mocowania (według lokalnych współrzędnych):</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="598"/>
@@ -124,7 +124,7 @@
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="58"/>
       <source>Compound Filter</source>
-      <translation>Filtr kombinacji</translation>
+      <translation>Filtr złożeń</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="59"/>
@@ -159,11 +159,11 @@ do filtrowania według kolizji lub odległości.</translation>
 {err}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Wynik obliczeń nie powiódł się z powodu błędu: 
+      <translation>Obliczenie wyniku nie powiodło się i wystąpił błąd: 
 
 {err}
 
-Kliknij przycisk "Kontynuuj", aby mimo to utworzyć funkcję, lub "Przerwij", aby anulować.</translation>
+Kliknij przycisk "Kontynuuj", aby mimo to utworzyć właściwość, lub "Przerwij", aby anulować.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
@@ -196,7 +196,7 @@ Kliknij "Kontynuuj", aby i tak utworzyć element, lub "Przerwij", aby anulować.
       <source>Split up a compound of shapes into separate objects.
 It will create a 'Compound Filter' for each shape.</source>
       <translation>Rozdziel kształt złożony na osobne obiekty.
-Stworzy to „Filtr kompozytowy” dla każdej kształtu.</translation>
+Stworzy to „Filtr kompozytowy” dla każdego kształtu.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="59"/>
@@ -267,11 +267,11 @@ Stworzy to „Filtr kompozytowy” dla każdej kształtu.</translation>
 {err}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Obliczanie wyniku zakończyły się błędem:
+      <translation>Obliczanie wyniku zakończyło się błędem:
 
 {err}
 
-Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulować.</translation>
+Kliknij "Kontynuuj", aby mimo to utworzyć właściwość, lub "Przerwij", aby anulować.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="373"/>
@@ -294,7 +294,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
 
 {err}
 
-Kliknij "Kontynuuj", aby i tak utworzyć element, lub "Przerwij", aby anulować.</translation>
+Kliknij "Kontynuuj", aby i tak utworzyć funkcję, lub "Przerwij", aby anulować.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
@@ -336,7 +336,7 @@ Kliknij "Kontynuuj", aby i tak utworzyć element, lub "Przerwij", aby anulować.
 {err}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Obliczanie wyniku zakończyły się błędem:
+      <translation>Obliczanie wyniku zakończyło się błędem:
 
 {err}
 
@@ -397,12 +397,12 @@ Do wyodrębnienia poszczególnych wycinków można użyć "filtra złożeń".</t
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
       <source>Slice apart</source>
-      <translation type="unfinished">Slice apart</translation>
+      <translation>Pokrój</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
       <source>Boolean Fragments</source>
-      <translation>Fragmenty boolowskie</translation>
+      <translation>Fragmenty funkcji logicznej</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
@@ -428,8 +428,8 @@ Do wyodrębnienia poszczególnych wycinków można użyć "filtra złożeń".</t
       <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
       <source>Slice a selected object by other objects, and split it apart.
 It will create a 'Compound Filter' for each slice.</source>
-      <translation type="unfinished">Slice a selected object by other objects, and split it apart.
-It will create a 'Compound Filter' for each slice.</translation>
+      <translation>Pokrój wybrany obiekt za pomocą innych obiektów i podziel go na części.
+Dla każdego wycinka zostanie utworzony "Filtr złożeń".</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="446"/>
@@ -442,7 +442,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
 
 {err}
 
-Kliknij przycisk "Kontynuuj", aby mimo to utworzyć funkcję, lub "Przerwij", aby anulować.</translation>
+Kliknij przycisk "Kontynuuj", aby mimo to utworzyć właściwość, lub "Przerwij", aby anulować.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
@@ -452,7 +452,7 @@ Kliknij przycisk "Kontynuuj", aby mimo to utworzyć funkcję, lub "Przerwij", ab
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="478"/>
       <source>Select at least two objects, or one or more compounds, first! If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
-      <translation>Najpierw wybierz co najmniej dwa obiekty lub jeden lub więcej złożeń! Jeśli wybrano tylko jedno złożenie, złożone kształty zostaną przecięte między sobą (w przeciwnym razie związki z przecięciami własnymi są nieważne).</translation>
+      <translation>Najpierw wybierz co najmniej dwa obiekty lub jedno lub więcej złożeń! Jeśli wybrano tylko jedno złożenie, złożone kształty zostaną przecięte między sobą (w przeciwnym razie złożenia z przecięciami własnymi są nieprawidłowe).</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="468"/>
@@ -465,10 +465,10 @@ Kliknij przycisk "Kontynuuj", aby mimo to utworzyć funkcję, lub "Przerwij", ab
 or with the shapes inside a compound.
 This means the overlapping volumes of the shapes will be removed.
 A 'Compound Filter' can be used to extract the remaining pieces.</source>
-      <translation type="unfinished">Perform an 'exclusive OR' boolean operation with two or more selected objects,
-or with the shapes inside a compound.
-This means the overlapping volumes of the shapes will be removed.
-A 'Compound Filter' can be used to extract the remaining pieces.</translation>
+      <translation>Wykonuje operację logiczną 'wyłączne LUB' na dwóch lub więcej wybranych obiektach,
+lub z kształtami wewnątrz bryły złożonej.
+Oznacza to, że nakładające się objętości kształtów zostaną usunięte.
+Do wyodrębnienia pozostałych elementów można użyć 'Filtra złożeń'.</translation>
     </message>
   </context>
   <context>
@@ -534,7 +534,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../Command.cpp" line="397"/>
       <location filename="../../Command.cpp" line="499"/>
       <source>Non-solids selected</source>
-      <translation>Zaznaczone nie są bryłami</translation>
+      <translation>Zaznaczone obiekty nie są bryłami</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="296"/>
@@ -542,17 +542,17 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../Command.cpp" line="500"/>
       <source>The use of non-solids for boolean operations may lead to unexpected results.
 Do you want to continue?</source>
-      <translation>Użycie obiektów nie będących bryłami dla operacji logicznych może doprowadzić do nieoczekiwanych rezultatów. Czy chcesz kontynuować?</translation>
+      <translation>Użycie obiektów nie będących bryłami, do przeprowadzenia operacji logicznych, może doprowadzić do nieoczekiwanych rezultatów. Czy chcesz kontynuować?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="382"/>
       <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</source>
-      <translation>Wybierz dwie lub więcej form. Lub wybierz jeden kształt złożony zawierający dwie lub więcej form by obliczyć wspólną pomiędzy nimi.</translation>
+      <translation>Wybierz dwa lub więcej kształtów. Lub wybierz jedno złożenie z dwóch lub więcej kształtów, aby obliczyć ich część wspólną.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="484"/>
       <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</source>
-      <translation>Wybierz dwie lub więcej form. Lub wybierz jeden kształt złożony zawierający dwie lub więcej form by były połączone.</translation>
+      <translation>Wybierz dwa lub więcej kształtów, proszę. Lub, wybierz jedno złożenie zawierające dwa lub więcej kształtów, które mają być połączone.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="903"/>
@@ -766,7 +766,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="126"/>
       <source>Redundant Face</source>
-      <translation>Nadmierny obszar</translation>
+      <translation>Nadmierna ściana</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="127"/>
@@ -861,7 +861,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="168"/>
       <source>BOPAlgo OperationAborted</source>
-      <translation>Operacja Przerwana BOPAlgo</translation>
+      <translation>Operacja BOPAlgo przerwana</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="169"/>
@@ -1037,13 +1037,13 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="325"/>
       <source>Plane</source>
       <comment>Attacher reference type</comment>
-      <translation>Plan</translation>
+      <translation>Płaszczyzna</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="326"/>
       <source>Sphere</source>
       <comment>Attacher reference type</comment>
-      <translation>Kula</translation>
+      <translation>Sfera</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="327"/>
@@ -1061,7 +1061,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="329"/>
       <source>Torus</source>
       <comment>Attacher reference type</comment>
-      <translation>torus</translation>
+      <translation>Torus</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="330"/>
@@ -1118,7 +1118,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="275"/>
       <source>Focus1</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>Ostrość1</translation>
+      <translation>Ostrość 1</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="276"/>
@@ -1130,7 +1130,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="278"/>
       <source>Focus2</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>Ostrość2</translation>
+      <translation>Ostrość 2</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="279"/>
@@ -1166,13 +1166,13 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="287"/>
       <source>Center of mass</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>Użyć środka ciężkości</translation>
+      <translation>Środek ciężkości</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="288"/>
       <source>Center of mass of all references (equal densities are assumed).</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Centrum masowe wszystkich referencji (równe zawartości są przyjmowane).</translation>
+      <translation>Środek masy wszystkich odniesień (przyjmuje się równe gęstości).</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="290"/>
@@ -1196,7 +1196,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="294"/>
       <source>Put Datum point coincident with another vertex.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Umieść Punkt odniesienia zbieżny z innym wierzchołkiem.</translation>
+      <translation>Umieść punkt odniesienia zbieżny z innym wierzchołkiem.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="296"/>
@@ -1308,7 +1308,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="221"/>
       <source>Asymptote1</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Asymptota1</translation>
+      <translation>Asymptota 1</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="222"/>
@@ -1320,7 +1320,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="224"/>
       <source>Asymptote2</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Asymptota2</translation>
+      <translation>Asymptota 2</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="225"/>
@@ -1871,7 +1871,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="102"/>
       <source>Match origin with first Vertex. Align Z' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Połącz początek z pierwszym wierzchołkiem. Wyrównaj osie Z' i X' do linii wierzchołka/wzdłuż linii.</translation>
+      <translation>Dopasuj odniesienie położenia do pierwszego wierzchołka. Wyrównaj osie Z' i X' w kierunku wierzchołka/wzdłuż linii.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="104"/>
@@ -1883,7 +1883,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="105"/>
       <source>Match origin with first Vertex. Align Z' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Połącz początek z pierwszym wierzchołkiem. Wyrównaj osie Z' i Y' do linii wierzchołka/wzdłuż linii.</translation>
+      <translation>Dopasuj odniesienie położenia do pierwszego wierzchołka. Wyrównaj osie Z' i Y' w kierunku wierzchołka/wzdłuż linii.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="107"/>
@@ -1896,7 +1896,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="108"/>
       <source>Match origin with first Vertex. Align X' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Połącz początek z pierwszym wierzchołkiem. Wyrównaj osie X' i Y' do linii wierzchołka/wzdłuż linii.</translation>
+      <translation>Dopasuj odniesienie położenia do pierwszego wierzchołka. Wyrównaj osie X' i Y' w kierunku wierzchołka/wzdłuż linii.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="110"/>
@@ -1908,7 +1908,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="111"/>
       <source>Match origin with first Vertex. Align X' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Połącz początek z pierwszym wierzchołkiem. Wyrównaj osie X' i Z' do linii wierzchołka/wzdłuż linii.</translation>
+      <translation>Dopasuj odniesienie położenia do pierwszego wierzchołka. Wyrównaj osie X' i Z' w kierunku wierzchołka/wzdłuż linii.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="113"/>
@@ -1920,7 +1920,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="114"/>
       <source>Match origin with first Vertex. Align Y' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Połącz początek z pierwszym wierzchołkiem. Wyrównaj osie Y' i Z' do linii wierzchołka/wzdłuż linii.</translation>
+      <translation>Dopasuj odniesienie położenia do pierwszego wierzchołka. Wyrównaj osie Y' i Z' w kierunku wierzchołka/wzdłuż linii.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="116"/>
@@ -1933,7 +1933,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="117"/>
       <source>Match origin with first Vertex. Align Y' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Połącz początek z pierwszym wierzchołkiem. Wyrównaj osie Y' i X' do linii wierzchołka/wzdłuż linii.</translation>
+      <translation>Dopasuj odniesienie położenia do pierwszego wierzchołka. Wyrównaj osie Y' i X' w kierunku wierzchołka/wzdłuż linii.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="176"/>
@@ -1945,7 +1945,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="177"/>
       <source>Match origin with first Vertex. Align normal and horizontal plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Połącz początek z pierwszym wierzchołkiem. Wyrównaj normalną i horyzontalną płaszczyznę do wierzchołka linii/wzdłuż linii.</translation>
+      <translation>Dopasuj odniesienie położenia do pierwszego wierzchołka. Wyrównaj wektor normalny i oś poziomą płaszczyzny do wierzchołka/wzdłuż linii.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="179"/>
@@ -1957,13 +1957,13 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="180"/>
       <source>Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Połącz początek z pierwszym wierzchołkiem. Wyrównaj normalną i wertykalną płaszczyznę linii wierzchołka/wzdłuż linii.</translation>
+      <translation>Dopasuj odniesienie położenia do pierwszego wierzchołka. Wyrównaj wektor normalny i pionową oś płaszczyzny do wierzchołka/wzdłuż linii.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="183"/>
       <source>Match origin with first Vertex. Align horizontal and vertical plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Połącz początek z pierwszym wierzchołkiem. Wyrównaj horyzontalną i wertykalną płaszczyznę do linii wierzchołka/wzdłuż linii.</translation>
+      <translation>Dopasuj odniesienie połączenia do pierwszego wierzchołka. Wyrównaj osie płaszczyzny poziomej i pionowej w kierunku wierzchołka/wzdłuż linii.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="185"/>
@@ -1975,7 +1975,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="186"/>
       <source>Match origin with first Vertex. Align horizontal plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Połącz początek z pierwszym wierzchołkiem. Wyrównaj horyzontalną płaszczyznę osi i normalną do linii wierzchołka/wzdłuż linii.</translation>
+      <translation>Dopasuj odniesienie połączenia do pierwszego wierzchołka. Wyrównaj oś płaszczyzny poziomej i wektor normalny do wierzchołka/wzdłuż linii.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="188"/>
@@ -1987,13 +1987,13 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="189"/>
       <source>Match origin with first Vertex. Align vertical plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Połącz początek z pierwszym wierzchołkiem. Wyrównaj wertykalną płaszczyznę osi i normalną do linii wierzchołka/wzdłuż linii.</translation>
+      <translation>Dopasuj odniesienie połączenia do pierwszego wierzchołka. Wyrównaj pionową płaszczyznę osi i wektory normalne do linii wierzchołka/wzdłuż linii.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="192"/>
       <source>Match origin with first Vertex. Align vertical and horizontal plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Połącz początek z pierwszym wierzchołkiem. Wyrównaj wertykalną i horyzontalną płaszczyznę osi linii wierzchołka/wzdłuż linii.</translation>
+      <translation>Dopasuj odniesienie połączenia do pierwszego wierzchołka. Wyrównaj pionową i poziomą płaszczyznę osi linii wierzchołka/wzdłuż linii.</translation>
     </message>
   </context>
   <context>
@@ -2060,7 +2060,7 @@ Do you want to continue?</source>
       <location filename="../../DlgBlock.ui" line="93"/>
       <location filename="../../DlgBlock.ui" line="264"/>
       <source>Limit:</source>
-      <translation>Limit:</translation>
+      <translation>Ograniczenie:</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="103"/>
@@ -2261,7 +2261,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="1276"/>
       <source>Run a boolean operation with two shapes selected</source>
-      <translation>Wykonaj operację logiczną na dwóch zaznaczonych obiektach</translation>
+      <translation>Uruchom operację logiczną z dwoma wybranymi kształtami</translation>
     </message>
   </context>
   <context>
@@ -2294,7 +2294,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="136"/>
       <source>Box fix 1</source>
-      <translation>Box fix 1</translation>
+      <translation>Pole poprawki 1</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="137"/>
@@ -2312,7 +2312,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="177"/>
       <source>Box fix 2</source>
-      <translation>Box fix 2</translation>
+      <translation>Pole poprawki 2</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="178"/>
@@ -2371,7 +2371,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="351"/>
       <source>Make an intersection of two shapes</source>
-      <translation>Utwórz iloczyn dwóch obiektów</translation>
+      <translation>Utwórz przecięcie dwóch kształtów</translation>
     </message>
   </context>
   <context>
@@ -2966,7 +2966,7 @@ Do you want to continue?</source>
       <location filename="../../CommandParametric.cpp" line="140"/>
       <location filename="../../CommandParametric.cpp" line="145"/>
       <source>Sphere</source>
-      <translation>Kula</translation>
+      <translation>Sfera</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="130"/>
@@ -3038,7 +3038,7 @@ Do you want to continue?</source>
       <location filename="../../CommandParametric.cpp" line="222"/>
       <location filename="../../CommandParametric.cpp" line="227"/>
       <source>Torus</source>
-      <translation>torus</translation>
+      <translation>Torus</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="212"/>
@@ -3519,7 +3519,7 @@ Wskazówka: aby uwzględnić również długość krawędzi, ustaw obie wartośc
     <message>
       <location filename="../../DlgFilletEdges.ui" line="32"/>
       <source>Selected shape:</source>
-      <translation>Zaznaczono kształt:</translation>
+      <translation>Wybrany kształt:</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="40"/>
@@ -3584,7 +3584,7 @@ Wskazówka: aby uwzględnić również długość krawędzi, ustaw obie wartośc
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="266"/>
       <source>Constant Length</source>
-      <translation>Stała Długość</translation>
+      <translation>Stała długość</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="267"/>
@@ -3627,7 +3627,7 @@ Wskazówka: aby uwzględnić również długość krawędzi, ustaw obie wartośc
       <location filename="../../DlgFilletEdges.cpp" line="684"/>
       <location filename="../../DlgFilletEdges.cpp" line="744"/>
       <source>Edge%1</source>
-      <translation>Krawędź%1</translation>
+      <translation>Krawędź %1</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="827"/>
@@ -3654,7 +3654,7 @@ Wybierz najpierw prawidłowy kształt w polu rozwijanym.</translation>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="935"/>
       <source>No edge selected</source>
-      <translation>Nie zaznaczono krawędzi</translation>
+      <translation>Brak wybranych krawędzi</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="936"/>
@@ -3825,7 +3825,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../DlgPartBox.ui" line="14"/>
       <source>Box definition</source>
-      <translation>Bryła</translation>
+      <translation>Definicja kostki</translation>
     </message>
     <message>
       <location filename="../../DlgPartBox.ui" line="20"/>
@@ -3994,7 +3994,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
       <location filename="../../DlgPrimitives.ui" line="33"/>
       <location filename="../../DlgPrimitives.cpp" line="385"/>
       <source>Plane</source>
-      <translation>Plan</translation>
+      <translation>Płaszczyzna</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="42"/>
@@ -4018,7 +4018,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
       <location filename="../../DlgPrimitives.ui" line="69"/>
       <location filename="../../DlgPrimitives.cpp" line="453"/>
       <source>Sphere</source>
-      <translation>Kula</translation>
+      <translation>Sfera</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="78"/>
@@ -4030,7 +4030,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
       <location filename="../../DlgPrimitives.ui" line="87"/>
       <location filename="../../DlgPrimitives.cpp" line="495"/>
       <source>Torus</source>
-      <translation>torus</translation>
+      <translation>Torus</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="96"/>
@@ -4331,7 +4331,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="35"/>
       <source>Create Solid</source>
-      <translation>Utwórz Bryłę</translation>
+      <translation>Utwórz bryłę</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="52"/>
@@ -4477,7 +4477,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="93"/>
       <source>Maximum deviation depending on the model bounding box</source>
-      <translation>Maksymalne dopuszczalne odchylenie w zależności od obwiedni modelu</translation>
+      <translation>Maksymalne dopuszczalne odchylenie w zależności od ramki zaznaczenia</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="100"/>
@@ -4642,7 +4642,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../Location.ui" line="14"/>
       <source>Location</source>
-      <translation>Lokalizacja</translation>
+      <translation>Położenie</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="23"/>
@@ -4748,12 +4748,12 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../Mirroring.cpp" line="124"/>
       <source>Select a shape for mirroring, first.</source>
-      <translation>Najpierw zaznacz kształt do lustrzanego odbicia.</translation>
+      <translation>Najpierw wybierz kształt do przekształcenia przez odbicie lustrzane.</translation>
     </message>
     <message>
       <location filename="../../Mirroring.cpp" line="131"/>
       <source>No such document '%1'.</source>
-      <translation>Brak dokumentu '%1'.</translation>
+      <translation>Nie ma takiego dokumentu '%1'.</translation>
     </message>
   </context>
   <context>
@@ -4825,7 +4825,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="515"/>
       <source>Select two vertices to create an edge</source>
-      <translation>Aby utworzyć Krawędź zaznacz 2 wierzchołki</translation>
+      <translation>Aby utworzyć krawędź zaznacz 2 wierzchołki</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="522"/>
@@ -4840,7 +4840,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="536"/>
       <source>Select a closed set of edges</source>
-      <translation>Wybierz zamknięty zbiór krawędzi</translation>
+      <translation>Wybierz zamknięty zestaw krawędzi</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="543"/>

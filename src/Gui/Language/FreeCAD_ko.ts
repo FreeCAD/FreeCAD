@@ -137,43 +137,43 @@
     </message>
     <message>
       <source>Paste expressions</source>
-      <translation type="unfinished">Paste expressions</translation>
+      <translation>식 복사하기</translation>
     </message>
     <message>
       <source>Make link group</source>
-      <translation type="unfinished">Make link group</translation>
+      <translation>그룹 링크 만들기</translation>
     </message>
     <message>
       <source>Make link</source>
-      <translation type="unfinished">Make link</translation>
+      <translation>링크 만들기</translation>
     </message>
     <message>
       <source>Make sub-link</source>
-      <translation type="unfinished">Make sub-link</translation>
+      <translation>서브 링크 만들기</translation>
     </message>
     <message>
       <source>Import links</source>
-      <translation type="unfinished">Import links</translation>
+      <translation>중요 링크</translation>
     </message>
     <message>
       <source>Import all links</source>
-      <translation type="unfinished">Import all links</translation>
+      <translation>모든 중요 링크</translation>
     </message>
     <message>
       <source>Insert measurement</source>
-      <translation type="unfinished">Insert measurement</translation>
+      <translation>치수 삽입</translation>
     </message>
     <message>
       <source>Insert text document</source>
-      <translation type="unfinished">Insert text document</translation>
+      <translation>텍스트 문서 삽입</translation>
     </message>
     <message>
       <source>Add a part</source>
-      <translation type="unfinished">Add a part</translation>
+      <translation>파트 생성</translation>
     </message>
     <message>
       <source>Add a group</source>
-      <translation type="unfinished">Add a group</translation>
+      <translation>그룹 생성</translation>
     </message>
     <message>
       <source>Align</source>
@@ -185,11 +185,11 @@
     </message>
     <message>
       <source>Transform</source>
-      <translation type="unfinished">Transform</translation>
+      <translation>변형</translation>
     </message>
     <message>
       <source>Link Transform</source>
-      <translation type="unfinished">Link Transform</translation>
+      <translation>변형 링크</translation>
     </message>
     <message>
       <source>Measure distance</source>
@@ -375,13 +375,13 @@
     </message>
     <message>
       <source>Press middle+left or middle+right button</source>
-      <translation type="unfinished">Press middle+left or middle+right button</translation>
+      <translation>가운데+왼쪽 또는 가운데+오른쪽 버튼을 누르세요</translation>
     </message>
     <message>
       <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation type="unfinished">Scroll middle mouse button or keep middle button depressed
-while doing a left or right click and move the mouse up or down</translation>
+      <translation>마우스 가운데 버튼을 스크롤하거나 가운데 버튼을 누른 상태로 유지합니다.
+마우스 왼쪽 또는 오른쪽 버튼을 클릭하고 마우스를 위 또는 아래로 이동</translation>
     </message>
   </context>
   <context>
@@ -495,7 +495,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
       <source>Collection</source>
-      <translation type="unfinished">Collection</translation>
+      <translation>컬렉션</translation>
     </message>
   </context>
   <context>
@@ -510,11 +510,11 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
       <source> "</source>
-      <translation type="unfinished"> "</translation>
+      <translation> "</translation>
     </message>
     <message>
       <source>"</source>
-      <translation type="unfinished">"</translation>
+      <translation>"</translation>
     </message>
   </context>
   <context>
@@ -529,23 +529,23 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
       <source>Q0</source>
-      <translation type="unfinished">Q0</translation>
+      <translation>Q0</translation>
     </message>
     <message>
       <source>Q1</source>
-      <translation type="unfinished">Q1</translation>
+      <translation>Q1</translation>
     </message>
     <message>
       <source>Q2</source>
-      <translation type="unfinished">Q2</translation>
+      <translation>Q2</translation>
     </message>
     <message>
       <source>Q3</source>
-      <translation type="unfinished">Q3</translation>
+      <translation>Q3</translation>
     </message>
     <message>
       <source>Current view</source>
-      <translation type="unfinished">Current view</translation>
+      <translation>현재 보기</translation>
     </message>
   </context>
   <context>
@@ -580,7 +580,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
       <source>View</source>
-      <translation type="unfinished">View</translation>
+      <translation>보기</translation>
     </message>
     <message>
       <source>Adjust to view direction</source>
@@ -679,7 +679,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <name>Gui::Dialog::DlgAddProperty</name>
     <message>
       <source>Add property</source>
-      <translation type="unfinished">Add property</translation>
+      <translation>값 추가</translation>
     </message>
     <message>
       <source>Type</source>
@@ -695,7 +695,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
       <source>Verbose description of the new property.</source>
-      <translation type="unfinished">Verbose description of the new property.</translation>
+      <translation>새 속성에 대한 자세한 정보 입니다.</translation>
     </message>
     <message>
       <source>Documentation</source>
@@ -707,15 +707,15 @@ In this case the prefix will be automatically trimmed when shown in the property
 However, the property is still used in a script with the full name, like 'obj.Group_Name'.
 
 If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</source>
-      <translation type="unfinished">Prefix the property name with the group name in the form 'Group_Name' to avoid conflicts with an existing property.
-In this case the prefix will be automatically trimmed when shown in the property editor.
-However, the property is still used in a script with the full name, like 'obj.Group_Name'.
+      <translation>기존 속성과 충돌을 방지하려면 속성 이름 앞에 'Group_Name' 형식의 그룹 이름을 입력하세요.
+이 경우 속성 편집기에 표시된 접두사가 자동으로 잘라집니다.
+다만, 이 속성은 'obj'와 같은 전체 이름의 스크립트에서 예로 'Group_Name'입니다.
 
-If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</translation>
+이 옵션을 선택하지 않은 경우 속성 이름을 고유하게 지정해야 하며 'obj.Name'입니다.</translation>
     </message>
     <message>
       <source>Prefix group name</source>
-      <translation type="unfinished">Prefix group name</translation>
+      <translation>접두사 그룹 이름</translation>
     </message>
   </context>
   <context>
@@ -963,7 +963,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Clear</source>
-      <translation type="unfinished">Clear</translation>
+      <translation>지우기</translation>
     </message>
   </context>
   <context>
@@ -990,11 +990,11 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
-      <translation type="unfinished">The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</translation>
+      <translation>단축 '%1'은 두 번 이상 선택되었습니다. 이는 예기치 않은 동작을 초래할 수 있습니다.</translation>
     </message>
     <message>
       <source>The shortcut '%1' is already assigned to '%2'.</source>
-      <translation type="unfinished">The shortcut '%1' is already assigned to '%2'.</translation>
+      <translation>'%1" 단축은 '%2'에 할당되도록 준비 되었습니다.</translation>
     </message>
     <message>
       <source>Do you want to override it?</source>
@@ -1104,7 +1104,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>%1 module not loaded</source>
-      <translation type="unfinished">%1 module not loaded</translation>
+      <translation>%1 모듈 로드 되지 않음</translation>
     </message>
   </context>
   <context>
@@ -1160,11 +1160,11 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <name>Gui::Dialog::DlgDisplayProperties</name>
     <message>
       <source>Display properties</source>
-      <translation type="unfinished">Display properties</translation>
+      <translation>속성 표시</translation>
     </message>
     <message>
       <source>Display</source>
-      <translation type="unfinished">Display</translation>
+      <translation>화면</translation>
     </message>
     <message>
       <source>Transparency:</source>
@@ -1366,15 +1366,15 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Code lines will be numbered </source>
-      <translation type="unfinished">Code lines will be numbered </translation>
+      <translation>선의 코드가 곧 번호화 됩니다</translation>
     </message>
     <message>
       <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
-      <translation type="unfinished">Pressing &lt;Tab&gt; will insert amount of defined indent size</translation>
+      <translation>&lt;Tab&gt;을 누르면 정의된 들여쓰기 크기가 삽입됩니다.</translation>
     </message>
     <message>
       <source>Tabulator raster (how many spaces)</source>
-      <translation type="unfinished">Tabulator raster (how many spaces)</translation>
+      <translation>Tabulator 래스터(공백 수)</translation>
     </message>
     <message>
       <source>How many spaces will be inserted when pressing &lt;Tab&gt;</source>
@@ -1386,7 +1386,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Display items</source>
-      <translation type="unfinished">Display items</translation>
+      <translation>항목 표시</translation>
     </message>
     <message>
       <source>Font size to be used for selected code type</source>
@@ -1457,7 +1457,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Enable word wrap</source>
-      <translation type="unfinished">Enable word wrap</translation>
+      <translation>글자 나누기 사용</translation>
     </message>
     <message>
       <source>Language of the application's user interface</source>
@@ -1944,7 +1944,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Look at</source>
-      <translation type="unfinished">Look at</translation>
+      <translation>방향 보기</translation>
     </message>
     <message>
       <source>Groups</source>
@@ -2194,7 +2194,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Clear</source>
-      <translation type="unfinished">Clear</translation>
+      <translation>지우기</translation>
     </message>
     <message>
       <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
@@ -2825,7 +2825,7 @@ Changing this option requires a restart of the application.</translation>
     </message>
     <message>
       <source>Maximum Undo/Redo steps</source>
-      <translation>최대 단계 취소/다시 실행</translation>
+      <translation>실행 취소/다시 실행 최대 횟수</translation>
     </message>
     <message>
       <source>Using Undo/Redo on documents</source>
@@ -2861,7 +2861,7 @@ Changing this option requires a restart of the application.</translation>
     </message>
     <message>
       <source>FreeArt</source>
-      <translation type="unfinished">FreeArt</translation>
+      <translation>FreeArt</translation>
     </message>
     <message>
       <source>Other</source>
@@ -2873,11 +2873,11 @@ Changing this option requires a restart of the application.</translation>
     </message>
     <message>
       <source>Run AutoRecovery at startup</source>
-      <translation type="unfinished">Run AutoRecovery at startup</translation>
+      <translation>시작 시 자동 복구 실행</translation>
     </message>
     <message>
       <source>Save AutoRecovery information every</source>
-      <translation type="unfinished">Save AutoRecovery information every</translation>
+      <translation>자동 복구 정보 저장 간격</translation>
     </message>
     <message>
       <source>Add the program logo to the generated thumbnail</source>
@@ -2912,12 +2912,12 @@ This feature may slightly increase recomputation time.</translation>
     <message>
       <source>If there is a recovery file available the application will
 automatically run a file recovery when it is started.</source>
-      <translation type="unfinished">If there is a recovery file available the application will
-automatically run a file recovery when it is started.</translation>
+      <translation>복구 파일이 있으면 응용 프로그램 시작 시에
+파일 복구를 자동으로 실행합니다.</translation>
     </message>
     <message>
       <source>How often a recovery file is written</source>
-      <translation type="unfinished">How often a recovery file is written</translation>
+      <translation>얼마나 자주 복구 파일이 저장되는가</translation>
     </message>
     <message>
       <source>A thumbnail will be stored when document is saved</source>
@@ -2953,7 +2953,7 @@ get date suffix according to the specified format</translation>
     </message>
     <message>
       <source>Date format</source>
-      <translation type="unfinished">Date format</translation>
+      <translation>날짜 형식</translation>
     </message>
     <message>
       <source>Allow objects to have same label/name</source>
@@ -3043,7 +3043,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     <name>Gui::Dialog::DlgSettingsEditorImp</name>
     <message>
       <source>Text</source>
-      <translation type="unfinished">Text</translation>
+      <translation>텍스트</translation>
     </message>
     <message>
       <source>Bookmark</source>
@@ -3250,6 +3250,29 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <source>Pixel buffer</source>
       <translation type="unfinished">Pixel buffer</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
+    <message>
+      <source>Unloaded Workbenches</source>
+      <translation type="unfinished">Unloaded Workbenches</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Load Selected</source>
+      <translation type="unfinished">Load Selected</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -3558,6 +3581,33 @@ Mouse tilting is not disabled by this setting.</translation>
     <message>
       <source>Object center</source>
       <translation type="unfinished">Object center</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsSelection</name>
+    <message>
+      <source>Selection</source>
+      <translation>선택</translation>
+    </message>
+    <message>
+      <source>Auto switch to the 3D view containing the selected item</source>
+      <translation type="unfinished">Auto switch to the 3D view containing the selected item</translation>
+    </message>
+    <message>
+      <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
+      <translation type="unfinished">Auto expand tree item when the corresponding object is selected in 3D view</translation>
+    </message>
+    <message>
+      <source>Preselect the object in 3D view when mouse over the tree item</source>
+      <translation type="unfinished">Preselect the object in 3D view when mouse over the tree item</translation>
+    </message>
+    <message>
+      <source>Record selection in tree view in order to go back/forward using navigation button</source>
+      <translation type="unfinished">Record selection in tree view in order to go back/forward using navigation button</translation>
+    </message>
+    <message>
+      <source>Add checkboxes for selection in document tree</source>
+      <translation type="unfinished">Add checkboxes for selection in document tree</translation>
     </message>
   </context>
   <context>
@@ -3945,11 +3995,11 @@ The preference system is the one set in the general preferences.</translation>
     </message>
     <message>
       <source>Not yet recovered</source>
-      <translation type="unfinished">Not yet recovered</translation>
+      <translation>아직 복구 되지 않음</translation>
     </message>
     <message>
       <source>Unknown problem occurred</source>
-      <translation type="unfinished">Unknown problem occurred</translation>
+      <translation>알 수 없는 문제 발생</translation>
     </message>
     <message>
       <source>Failed to recover</source>
@@ -3965,7 +4015,7 @@ The preference system is the one set in the general preferences.</translation>
     </message>
     <message>
       <source>Cleanup...</source>
-      <translation type="unfinished">Cleanup...</translation>
+      <translation>깨끗이 삭제...</translation>
     </message>
     <message>
       <source>Delete</source>
@@ -3973,7 +4023,7 @@ The preference system is the one set in the general preferences.</translation>
     </message>
     <message>
       <source>Cleanup</source>
-      <translation type="unfinished">Cleanup</translation>
+      <translation>깨끗이 삭제</translation>
     </message>
     <message>
       <source>Are you sure you want to delete the selected transient directories?</source>
@@ -3985,27 +4035,27 @@ The preference system is the one set in the general preferences.</translation>
     </message>
     <message>
       <source>Are you sure you want to delete all transient directories?</source>
-      <translation type="unfinished">Are you sure you want to delete all transient directories?</translation>
+      <translation>임시 디렉토리를 모두 삭제하시겠습니까?</translation>
     </message>
     <message>
       <source>Finished</source>
-      <translation type="unfinished">Finished</translation>
+      <translation>완료</translation>
     </message>
     <message>
       <source>Transient directories deleted.</source>
-      <translation type="unfinished">Transient directories deleted.</translation>
+      <translation>임시 디렉토리가 삭제되었습니다.</translation>
     </message>
     <message>
       <source>Press 'Start Recovery' to start the recovery process of the document listed below.
 
 The 'Status' column shows whether the document could be recovered.</source>
-      <translation type="unfinished">Press 'Start Recovery' to start the recovery process of the document listed below.
+      <translation>다음 목록에 표시된 문서의 복구 프로세스를 시작하려면 '복구 시작'을 누르십시오.
 
-The 'Status' column shows whether the document could be recovered.</translation>
+'상태' 컬럼은 문서가 복구 될 수 있는지 표시합니다.</translation>
     </message>
     <message>
       <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
-      <translation type="unfinished">When deleting all transient directories you won't be able to recover any files afterwards.</translation>
+      <translation>임시 디렉토리를 모두 삭제하면 해당 파일은 더 이상 복구할 수 없습니다.</translation>
     </message>
   </context>
   <context>
@@ -4522,7 +4572,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Transform</source>
-      <translation type="unfinished">Transform</translation>
+      <translation>변형</translation>
     </message>
   </context>
   <context>
@@ -4609,7 +4659,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Clear</source>
-      <translation type="unfinished">Clear</translation>
+      <translation>지우기</translation>
     </message>
     <message>
       <source>Save As...</source>
@@ -4727,11 +4777,11 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Mark to recompute</source>
-      <translation type="unfinished">Mark to recompute</translation>
+      <translation>다시 계산 표시</translation>
     </message>
     <message>
       <source>Mark this object to be recomputed</source>
-      <translation type="unfinished">Mark this object to be recomputed</translation>
+      <translation>이 개체가 다시 계산 될 수 있도록 표시합니다.</translation>
     </message>
     <message>
       <source>Selection View</source>
@@ -4781,7 +4831,7 @@ This has been modified outside of the source editor. Do you want to reload it?</
     </message>
     <message>
       <source>Unsaved document</source>
-      <translation type="unfinished">Unsaved document</translation>
+      <translation>저장하지 않은 문서</translation>
     </message>
     <message>
       <source>The document has been modified.
@@ -4791,7 +4841,7 @@ Do you want to save your changes?</translation>
     </message>
     <message>
       <source>Export PDF</source>
-      <translation>PDF 내보내기</translation>
+      <translation>PDF로 내보내기</translation>
     </message>
     <message>
       <source>untitled[*]</source>
@@ -5019,15 +5069,15 @@ Do you want to save your changes?</translation>
     </message>
     <message>
       <source>X</source>
-      <translation type="unfinished">X</translation>
+      <translation>X</translation>
     </message>
     <message>
       <source>Y</source>
-      <translation type="unfinished">Y</translation>
+      <translation>Y</translation>
     </message>
     <message>
       <source>Z</source>
-      <translation type="unfinished">Z</translation>
+      <translation>Z</translation>
     </message>
     <message>
       <source>User defined...</source>
@@ -5092,7 +5142,7 @@ Do you want to save your changes?</translation>
     </message>
     <message>
       <source>Unsaved document</source>
-      <translation type="unfinished">Unsaved document</translation>
+      <translation>저장하지 않은 문서</translation>
     </message>
     <message>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
@@ -5121,7 +5171,7 @@ Do you want to save the document now?</translation>
     </message>
     <message>
       <source>Please, select at least one point in the left and the right view</source>
-      <translation type="unfinished">Please, select at least one point in the left and the right view</translation>
+      <translation>오른쪽 및 왼쪽 보기에서 점을 적어도 하나 이상 선택하십시오</translation>
     </message>
     <message>
       <source>Please, select at least %1 points in the left and the right view</source>
@@ -5318,7 +5368,7 @@ How do you want to proceed?</translation>
     </message>
     <message>
       <source>Add property</source>
-      <translation type="unfinished">Add property</translation>
+      <translation>값 추가</translation>
     </message>
     <message>
       <source>Remove property</source>
@@ -5344,7 +5394,7 @@ How do you want to proceed?</translation>
     <name>Gui::PropertyView</name>
     <message>
       <source>View</source>
-      <translation type="unfinished">View</translation>
+      <translation>보기</translation>
     </message>
     <message>
       <source>Data</source>
@@ -5412,7 +5462,7 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
       <source>&amp;Copy</source>
-      <translation>복사하기(&amp;C)</translation>
+      <translation>복사(&amp;C)</translation>
     </message>
     <message>
       <source>&amp;Paste</source>
@@ -5731,7 +5781,7 @@ Do you want to specify another directory?</translation>
     </message>
     <message>
       <source>Unsaved document</source>
-      <translation type="unfinished">Unsaved document</translation>
+      <translation>저장하지 않은 문서</translation>
     </message>
     <message>
       <source>Do you want to save your changes before closing?</source>
@@ -5982,11 +6032,11 @@ Do you want to specify another directory?</translation>
     </message>
     <message>
       <source>Mark to recompute</source>
-      <translation type="unfinished">Mark to recompute</translation>
+      <translation>다시 계산 표시</translation>
     </message>
     <message>
       <source>Mark this object to be recomputed</source>
-      <translation type="unfinished">Mark this object to be recomputed</translation>
+      <translation>이 개체가 다시 계산 될 수 있도록 표시합니다.</translation>
     </message>
     <message>
       <source>%1, Internal name: %2</source>
@@ -6022,7 +6072,7 @@ Do you want to specify another directory?</translation>
     </message>
     <message>
       <source>Close document</source>
-      <translation type="unfinished">Close document</translation>
+      <translation>문서 닫기</translation>
     </message>
     <message>
       <source>Close the document</source>
@@ -6046,11 +6096,11 @@ Do you want to specify another directory?</translation>
     </message>
     <message>
       <source>Recompute object</source>
-      <translation type="unfinished">Recompute object</translation>
+      <translation>개체 다시 계산</translation>
     </message>
     <message>
       <source>Recompute the selected object</source>
-      <translation type="unfinished">Recompute the selected object</translation>
+      <translation>선택한 개체를 다시 계산합니다</translation>
     </message>
     <message>
       <source> (but must be executed)</source>
@@ -6076,7 +6126,7 @@ Do you want to specify another directory?</translation>
     <name>Gui::View3DInventor</name>
     <message>
       <source>Export PDF</source>
-      <translation>PDF 내보내기</translation>
+      <translation>PDF로 내보내기</translation>
     </message>
     <message>
       <source>PDF file</source>
@@ -6262,7 +6312,7 @@ Do you want to specify another directory?</translation>
     </message>
     <message>
       <source>Display properties</source>
-      <translation type="unfinished">Display properties</translation>
+      <translation>속성 표시</translation>
     </message>
     <message>
       <source>DAG View</source>
@@ -6277,7 +6327,7 @@ Do you want to specify another directory?</translation>
     </message>
     <message>
       <source>Display</source>
-      <translation type="unfinished">Display</translation>
+      <translation>화면</translation>
     </message>
     <message>
       <source>Unknown filetype</source>
@@ -6375,7 +6425,7 @@ Do you want to continue?</translation>
     </message>
     <message>
       <source>Save picture</source>
-      <translation>그림 저장하기</translation>
+      <translation>스크린샷 저장</translation>
     </message>
     <message>
       <source>New sub-group</source>
@@ -6447,7 +6497,7 @@ Do you want to continue?</translation>
     </message>
     <message>
       <source>Unsaved document</source>
-      <translation type="unfinished">Unsaved document</translation>
+      <translation>저장하지 않은 문서</translation>
     </message>
     <message>
       <source>Save Macro</source>
@@ -6459,7 +6509,7 @@ Do you want to continue?</translation>
     </message>
     <message>
       <source>Clear</source>
-      <translation type="unfinished">Clear</translation>
+      <translation>지우기</translation>
     </message>
     <message>
       <source>Cancel</source>
@@ -6519,11 +6569,11 @@ Please open a browser window and type in: http://localhost:%1.</translation>
     </message>
     <message>
       <source>Save %1 Document</source>
-      <translation type="unfinished">Save %1 Document</translation>
+      <translation>%1 문서 저장</translation>
     </message>
     <message>
       <source>%1 document (*.FCStd)</source>
-      <translation type="unfinished">%1 document (*.FCStd)</translation>
+      <translation>%1 문서 (*.FCStd)</translation>
     </message>
     <message>
       <source>Document not closable</source>
@@ -6585,7 +6635,7 @@ Be aware the point where you click matters.</translation>
     </message>
     <message>
       <source>Transform</source>
-      <translation type="unfinished">Transform</translation>
+      <translation>변형</translation>
     </message>
     <message>
       <source>Do you want to close this dialog?</source>
@@ -6593,7 +6643,7 @@ Be aware the point where you click matters.</translation>
     </message>
     <message>
       <source>Do you want to save your changes to document '%1' before closing?</source>
-      <translation type="unfinished">Do you want to save your changes to document '%1' before closing?</translation>
+      <translation>문서를 닫기 전에 변경 내용을 '%1'에 저장하시겠습니까?</translation>
     </message>
     <message>
       <source>If you don't save, your changes will be lost.</source>
@@ -6757,7 +6807,7 @@ underscore, and must not start with a digit.</translation>
     </message>
     <message>
       <source>Add property</source>
-      <translation type="unfinished">Add property</translation>
+      <translation>값 추가</translation>
     </message>
     <message>
       <source>Failed to add property to '%1': %2</source>
@@ -6809,7 +6859,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Drag &amp; drop failed</source>
-      <translation type="unfinished">Drag &amp; drop failed</translation>
+      <translation>드래그 엔 드랍 실패</translation>
     </message>
     <message>
       <source>Override colors...</source>
@@ -6846,18 +6896,32 @@ Pyhsical path: </translation>
     <message>
       <source>
 Document: </source>
-      <translation type="unfinished">
-Document: </translation>
+      <translation>문서:</translation>
     </message>
     <message>
       <source>
   Path: </source>
-      <translation type="unfinished">
-  Path: </translation>
+      <translation> 궤적" </translation>
     </message>
     <message>
       <source>Identical physical path</source>
       <translation type="unfinished">Identical physical path</translation>
+    </message>
+    <message>
+      <source>Error</source>
+      <translation>에러</translation>
+    </message>
+    <message>
+      <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
+      <translation>파일을 불러오는 도중 문제가 생겼습니다. 일부 데이터가 수정되거나 전혀 복구되지 않았을 수 있습니다. 해당 개체에 대한 보다 구체적인 정보를 확인하려면 보고서를 보세요.</translation>
+    </message>
+    <message>
+      <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
+      <translation type="unfinished">There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</translation>
+    </message>
+    <message>
+      <source>Workbenches</source>
+      <translation>워크벤치</translation>
     </message>
   </context>
   <context>
@@ -6875,22 +6939,22 @@ Document: </translation>
     <name>StdBoxElementSelection</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Box element selection</source>
-      <translation type="unfinished">Box element selection</translation>
+      <translation>면 선택 상자</translation>
     </message>
   </context>
   <context>
     <name>StdBoxSelection</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Box selection</source>
-      <translation>영역 선택하기</translation>
+      <translation>개체 선택 상자</translation>
     </message>
   </context>
   <context>
@@ -6927,7 +6991,7 @@ Document: </translation>
     <name>StdCmdActivateNextWindow</name>
     <message>
       <source>Window</source>
-      <translation type="unfinished">Window</translation>
+      <translation>작업창</translation>
     </message>
     <message>
       <source>Ne&amp;xt</source>
@@ -6942,7 +7006,7 @@ Document: </translation>
     <name>StdCmdActivatePrevWindow</name>
     <message>
       <source>Window</source>
-      <translation type="unfinished">Window</translation>
+      <translation>작업창</translation>
     </message>
     <message>
       <source>Pre&amp;vious</source>
@@ -6965,14 +7029,14 @@ Document: </translation>
     </message>
     <message>
       <source>Align the selected objects</source>
-      <translation type="unfinished">Align the selected objects</translation>
+      <translation>선택한 개체를 정렬합니다</translation>
     </message>
   </context>
   <context>
     <name>StdCmdArrangeIcons</name>
     <message>
       <source>Window</source>
-      <translation type="unfinished">Window</translation>
+      <translation>작업창</translation>
     </message>
     <message>
       <source>Arrange &amp;Icons</source>
@@ -6987,7 +7051,7 @@ Document: </translation>
     <name>StdCmdAxisCross</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Toggle axis cross</source>
@@ -6998,7 +7062,7 @@ Document: </translation>
     <name>StdCmdCascadeWindows</name>
     <message>
       <source>Window</source>
-      <translation type="unfinished">Window</translation>
+      <translation>작업창</translation>
     </message>
     <message>
       <source>&amp;Cascade</source>
@@ -7013,7 +7077,7 @@ Document: </translation>
     <name>StdCmdCloseActiveWindow</name>
     <message>
       <source>Window</source>
-      <translation type="unfinished">Window</translation>
+      <translation>작업창</translation>
     </message>
     <message>
       <source>Cl&amp;ose</source>
@@ -7028,7 +7092,7 @@ Document: </translation>
     <name>StdCmdCloseAllWindows</name>
     <message>
       <source>Window</source>
-      <translation type="unfinished">Window</translation>
+      <translation>작업창</translation>
     </message>
     <message>
       <source>Close Al&amp;l</source>
@@ -7062,7 +7126,7 @@ Document: </translation>
     </message>
     <message>
       <source>C&amp;opy</source>
-      <translation>복사하기(&amp;o)</translation>
+      <translation>복사(&amp;O)</translation>
     </message>
     <message>
       <source>Copy operation</source>
@@ -7103,7 +7167,7 @@ Document: </translation>
     <name>StdCmdDemoMode</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>View turntable...</source>
@@ -7197,11 +7261,11 @@ Document: </translation>
     </message>
     <message>
       <source>E&amp;dit parameters ...</source>
-      <translation type="unfinished">E&amp;dit parameters ...</translation>
+      <translation>파라미터 편집(&amp;D) ...</translation>
     </message>
     <message>
       <source>Opens a Dialog to edit the parameters</source>
-      <translation type="unfinished">Opens a Dialog to edit the parameters</translation>
+      <translation>파라미터 편집 대화 상자를 엽니다</translation>
     </message>
   </context>
   <context>
@@ -7223,7 +7287,7 @@ Document: </translation>
     <name>StdCmdDockViewMenu</name>
     <message>
       <source>View</source>
-      <translation type="unfinished">View</translation>
+      <translation>보기</translation>
     </message>
     <message>
       <source>Panels</source>
@@ -7238,7 +7302,7 @@ Document: </translation>
     <name>StdCmdDrawStyle</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Draw style</source>
@@ -7257,7 +7321,7 @@ Document: </translation>
     </message>
     <message>
       <source>Duplicate selection</source>
-      <translation>선택 영역 복사하기</translation>
+      <translation>개체 복제</translation>
     </message>
     <message>
       <source>Put duplicates of the selected objects to the active document</source>
@@ -7280,7 +7344,7 @@ Document: </translation>
     </message>
     <message>
       <source>Activates or Deactivates the selected object's edit mode</source>
-      <translation type="unfinished">Activates or Deactivates the selected object's edit mode</translation>
+      <translation>선택한 개체의 편집 모드를 활성화 또는 비활성화합니다</translation>
     </message>
   </context>
   <context>
@@ -7302,8 +7366,8 @@ Document: </translation>
       <translation>선택 안 함</translation>
     </message>
     <message>
-      <source>Please select first the objects you want to export.</source>
-      <translation>내보낼 개체를 먼저 선택하십시오.</translation>
+      <source>Select the objects to export before choosing Export.</source>
+      <translation type="unfinished">Select the objects to export before choosing Export.</translation>
     </message>
   </context>
   <context>
@@ -7330,6 +7394,21 @@ Document: </translation>
     <message>
       <source>Recompute feature or document</source>
       <translation type="unfinished">Recompute feature or document</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdFreeCADDonation</name>
+    <message>
+      <source>Help</source>
+      <translation>도움말</translation>
+    </message>
+    <message>
+      <source>Donate</source>
+      <translation>기부</translation>
+    </message>
+    <message>
+      <source>Donate to FreeCAD development</source>
+      <translation type="unfinished">Donate to FreeCAD development</translation>
     </message>
   </context>
   <context>
@@ -7423,7 +7502,7 @@ Document: </translation>
     <name>StdCmdFreezeViews</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Freeze display</source>
@@ -7453,7 +7532,7 @@ Document: </translation>
     <name>StdCmdHideObjects</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Hide all objects</source>
@@ -7468,7 +7547,7 @@ Document: </translation>
     <name>StdCmdHideSelection</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Hide selection</source>
@@ -7506,7 +7585,7 @@ Document: </translation>
     <name>StdCmdLinkActions</name>
     <message>
       <source>View</source>
-      <translation type="unfinished">View</translation>
+      <translation>보기</translation>
     </message>
     <message>
       <source>Link actions</source>
@@ -7521,7 +7600,7 @@ Document: </translation>
     </message>
     <message>
       <source>Import links</source>
-      <translation type="unfinished">Import links</translation>
+      <translation>중요 링크</translation>
     </message>
     <message>
       <source>Import selected external link(s)</source>
@@ -7536,7 +7615,7 @@ Document: </translation>
     </message>
     <message>
       <source>Import all links</source>
-      <translation type="unfinished">Import all links</translation>
+      <translation>모든 중요 링크</translation>
     </message>
     <message>
       <source>Import all links of the active document</source>
@@ -7551,7 +7630,7 @@ Document: </translation>
     </message>
     <message>
       <source>Make link</source>
-      <translation type="unfinished">Make link</translation>
+      <translation>링크 만들기</translation>
     </message>
     <message>
       <source>Create a link to the selected object(s)</source>
@@ -7566,7 +7645,7 @@ Document: </translation>
     </message>
     <message>
       <source>Make link group</source>
-      <translation type="unfinished">Make link group</translation>
+      <translation>그룹 링크 만들기</translation>
     </message>
     <message>
       <source>Create a group of links</source>
@@ -7581,7 +7660,7 @@ Document: </translation>
     </message>
     <message>
       <source>Make sub-link</source>
-      <translation type="unfinished">Make sub-link</translation>
+      <translation>서브 링크 만들기</translation>
     </message>
     <message>
       <source>Create a sub-object or sub-element link</source>
@@ -7607,11 +7686,11 @@ Document: </translation>
     <name>StdCmdLinkSelectActions</name>
     <message>
       <source>View</source>
-      <translation type="unfinished">View</translation>
+      <translation>보기</translation>
     </message>
     <message>
       <source>Link navigation</source>
-      <translation type="unfinished">Link navigation</translation>
+      <translation>네비게이션 링크</translation>
     </message>
     <message>
       <source>Link navigation actions</source>
@@ -7671,7 +7750,7 @@ Document: </translation>
     </message>
     <message>
       <source>Unlink</source>
-      <translation type="unfinished">Unlink</translation>
+      <translation>연결 해제</translation>
     </message>
     <message>
       <source>Strip on level of link</source>
@@ -7764,7 +7843,7 @@ Document: </translation>
     <name>StdCmdMeasureDistance</name>
     <message>
       <source>View</source>
-      <translation type="unfinished">View</translation>
+      <translation>보기</translation>
     </message>
     <message>
       <source>Measure distance</source>
@@ -7794,7 +7873,7 @@ Document: </translation>
     </message>
     <message>
       <source>Merge project...</source>
-      <translation>프로젝트 병합하기...</translation>
+      <translation>프로젝트 병합...</translation>
     </message>
     <message>
       <source>Merge project</source>
@@ -7806,7 +7885,7 @@ Document: </translation>
     </message>
     <message>
       <source>%1 document (*.FCStd)</source>
-      <translation type="unfinished">%1 document (*.FCStd)</translation>
+      <translation>%1 문서 (*.FCStd)</translation>
     </message>
   </context>
   <context>
@@ -7927,7 +8006,7 @@ Document: </translation>
     </message>
     <message>
       <source>Place the selected objects</source>
-      <translation>선택된 오브젝트를 가져오기</translation>
+      <translation>선택한 개체를 배치합니다</translation>
     </message>
   </context>
   <context>
@@ -8092,7 +8171,7 @@ Document: </translation>
     </message>
     <message>
       <source>Redoes a previously undone action</source>
-      <translation type="unfinished">Redoes a previously undone action</translation>
+      <translation>실행 취소한 작업을 다시 실행합니다</translation>
     </message>
   </context>
   <context>
@@ -8107,7 +8186,7 @@ Document: </translation>
     </message>
     <message>
       <source>Recomputes the current active document</source>
-      <translation type="unfinished">Recomputes the current active document</translation>
+      <translation>현재 문서를 다시 계산합니다</translation>
     </message>
   </context>
   <context>
@@ -8204,11 +8283,11 @@ Document: </translation>
     <name>StdCmdSelBack</name>
     <message>
       <source>View</source>
-      <translation type="unfinished">View</translation>
+      <translation>보기</translation>
     </message>
     <message>
       <source>&amp;Back</source>
-      <translation type="unfinished">&amp;Back</translation>
+      <translation>&amp;뒤로</translation>
     </message>
     <message>
       <source>Go back to previous selection</source>
@@ -8219,7 +8298,7 @@ Document: </translation>
     <name>StdCmdSelBoundingBox</name>
     <message>
       <source>View</source>
-      <translation type="unfinished">View</translation>
+      <translation>보기</translation>
     </message>
     <message>
       <source>&amp;Bounding box</source>
@@ -8234,11 +8313,11 @@ Document: </translation>
     <name>StdCmdSelForward</name>
     <message>
       <source>View</source>
-      <translation type="unfinished">View</translation>
+      <translation>보기</translation>
     </message>
     <message>
       <source>&amp;Forward</source>
-      <translation type="unfinished">&amp;Forward</translation>
+      <translation>&amp;앞으로</translation>
     </message>
     <message>
       <source>Repeat the backed selection</source>
@@ -8264,7 +8343,7 @@ Document: </translation>
     <name>StdCmdSelectVisibleObjects</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Select visible objects</source>
@@ -8283,18 +8362,18 @@ Document: </translation>
     </message>
     <message>
       <source>&amp;Send to Python Console</source>
-      <translation type="unfinished">&amp;Send to Python Console</translation>
+      <translation>파이썬 콘솔로 보내기(&amp;S)</translation>
     </message>
     <message>
       <source>Sends the selected object to the Python console</source>
-      <translation type="unfinished">Sends the selected object to the Python console</translation>
+      <translation>선택한 개체를 파이썬 콘솔로 보냅니다</translation>
     </message>
   </context>
   <context>
     <name>StdCmdSetAppearance</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Appearance...</source>
@@ -8309,7 +8388,7 @@ Document: </translation>
     <name>StdCmdShowObjects</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Show all objects</source>
@@ -8324,7 +8403,7 @@ Document: </translation>
     <name>StdCmdShowSelection</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Show selection</source>
@@ -8339,7 +8418,7 @@ Document: </translation>
     <name>StdCmdStatusBar</name>
     <message>
       <source>View</source>
-      <translation type="unfinished">View</translation>
+      <translation>보기</translation>
     </message>
     <message>
       <source>Status bar</source>
@@ -8358,11 +8437,11 @@ Document: </translation>
     </message>
     <message>
       <source>Add text document</source>
-      <translation type="unfinished">Add text document</translation>
+      <translation>문서 생성</translation>
     </message>
     <message>
       <source>Add text document to active document</source>
-      <translation type="unfinished">Add text document to active document</translation>
+      <translation>활성화된 문서로 텍스트 문서를 생성하십시오</translation>
     </message>
   </context>
   <context>
@@ -8384,7 +8463,7 @@ Document: </translation>
     <name>StdCmdTileWindows</name>
     <message>
       <source>Window</source>
-      <translation type="unfinished">Window</translation>
+      <translation>작업창</translation>
     </message>
     <message>
       <source>&amp;Tile</source>
@@ -8410,7 +8489,7 @@ Document: </translation>
     <name>StdCmdToggleClipPlane</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Clipping plane</source>
@@ -8425,7 +8504,7 @@ Document: </translation>
     <name>StdCmdToggleNavigation</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Toggle navigation/Edit mode</source>
@@ -8440,7 +8519,7 @@ Document: </translation>
     <name>StdCmdToggleObjects</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Toggle all objects</source>
@@ -8455,7 +8534,7 @@ Document: </translation>
     <name>StdCmdToggleSelectability</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Toggle selectability</source>
@@ -8470,7 +8549,7 @@ Document: </translation>
     <name>StdCmdToggleVisibility</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Toggle visibility</source>
@@ -8485,15 +8564,15 @@ Document: </translation>
     <name>StdCmdToolBarMenu</name>
     <message>
       <source>View</source>
-      <translation type="unfinished">View</translation>
+      <translation>보기</translation>
     </message>
     <message>
       <source>Tool&amp;bars</source>
-      <translation type="unfinished">Tool&amp;bars</translation>
+      <translation>툴&amp;바</translation>
     </message>
     <message>
       <source>Toggles this window</source>
-      <translation type="unfinished">Toggles this window</translation>
+      <translation>이 창 해제</translation>
     </message>
   </context>
   <context>
@@ -8504,7 +8583,7 @@ Document: </translation>
     </message>
     <message>
       <source>Transform...</source>
-      <translation type="unfinished">Transform...</translation>
+      <translation>전환</translation>
     </message>
     <message>
       <source>Transform the geometry of selected objects</source>
@@ -8519,7 +8598,7 @@ Document: </translation>
     </message>
     <message>
       <source>Transform</source>
-      <translation type="unfinished">Transform</translation>
+      <translation>변형</translation>
     </message>
     <message>
       <source>Transform the selected object in the 3d view</source>
@@ -8530,7 +8609,7 @@ Document: </translation>
     <name>StdCmdTreeCollapse</name>
     <message>
       <source>View</source>
-      <translation type="unfinished">View</translation>
+      <translation>보기</translation>
     </message>
     <message>
       <source>Collapse selected item</source>
@@ -8545,7 +8624,7 @@ Document: </translation>
     <name>StdCmdTreeExpand</name>
     <message>
       <source>View</source>
-      <translation type="unfinished">View</translation>
+      <translation>보기</translation>
     </message>
     <message>
       <source>Expand selected item</source>
@@ -8560,7 +8639,7 @@ Document: </translation>
     <name>StdCmdTreeSelectAllInstances</name>
     <message>
       <source>View</source>
-      <translation type="unfinished">View</translation>
+      <translation>보기</translation>
     </message>
     <message>
       <source>Select all instances</source>
@@ -8575,7 +8654,7 @@ Document: </translation>
     <name>StdCmdTreeViewActions</name>
     <message>
       <source>View</source>
-      <translation type="unfinished">View</translation>
+      <translation>보기</translation>
     </message>
     <message>
       <source>TreeView actions</source>
@@ -8598,7 +8677,7 @@ Document: </translation>
     </message>
     <message>
       <source>Undo exactly one action</source>
-      <translation type="unfinished">Undo exactly one action</translation>
+      <translation>작업 하나를 실행 취소합니다</translation>
     </message>
   </context>
   <context>
@@ -8620,11 +8699,11 @@ Document: </translation>
     <name>StdCmdUserInterface</name>
     <message>
       <source>View</source>
-      <translation type="unfinished">View</translation>
+      <translation>보기</translation>
     </message>
     <message>
       <source>Dock views</source>
-      <translation type="unfinished">Dock views</translation>
+      <translation>독 불러오기</translation>
     </message>
     <message>
       <source>Dock all top-level views</source>
@@ -8635,7 +8714,7 @@ Document: </translation>
     <name>StdCmdViewBottom</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Bottom</source>
@@ -8650,11 +8729,11 @@ Document: </translation>
     <name>StdCmdViewCreate</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Create new view</source>
-      <translation>새 뷰 만들기</translation>
+      <translation>새 3D 보기 만들기</translation>
     </message>
     <message>
       <source>Creates a new view window for the active document</source>
@@ -8665,7 +8744,7 @@ Document: </translation>
     <name>StdCmdViewDimetric</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Dimetric</source>
@@ -8680,7 +8759,7 @@ Document: </translation>
     <name>StdCmdViewExample1</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Inventor example #1</source>
@@ -8695,7 +8774,7 @@ Document: </translation>
     <name>StdCmdViewExample2</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Inventor example #2</source>
@@ -8710,7 +8789,7 @@ Document: </translation>
     <name>StdCmdViewExample3</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Inventor example #3</source>
@@ -8725,37 +8804,37 @@ Document: </translation>
     <name>StdCmdViewFitAll</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Fit all</source>
-      <translation>모두 맞추기</translation>
+      <translation>전체 보기</translation>
     </message>
     <message>
       <source>Fits the whole content on the screen</source>
-      <translation type="unfinished">Fits the whole content on the screen</translation>
+      <translation>전체 내용이 화면에 보이도록 조정합니다</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewFitSelection</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Fit selection</source>
-      <translation>선택영역 맞추기</translation>
+      <translation>선택 보기</translation>
     </message>
     <message>
       <source>Fits the selected content on the screen</source>
-      <translation>화면상에 선택된 컨텐츠를 맞추기</translation>
+      <translation>선택한 내용이 화면에 보이도록 조정합니다</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewFront</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Front</source>
@@ -8770,11 +8849,11 @@ Document: </translation>
     <name>StdCmdViewHome</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Home</source>
-      <translation type="unfinished">Home</translation>
+      <translation>홈</translation>
     </message>
     <message>
       <source>Set to default home view</source>
@@ -8785,7 +8864,7 @@ Document: </translation>
     <name>StdCmdViewIsometric</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Isometric</source>
@@ -8800,7 +8879,7 @@ Document: </translation>
     <name>StdCmdViewIvIssueCamPos</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Issue camera position</source>
@@ -8815,7 +8894,7 @@ Document: </translation>
     <name>StdCmdViewIvStereoInterleavedColumns</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Stereo Interleaved Columns</source>
@@ -8830,7 +8909,7 @@ Document: </translation>
     <name>StdCmdViewIvStereoInterleavedRows</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Stereo Interleaved Rows</source>
@@ -8845,7 +8924,7 @@ Document: </translation>
     <name>StdCmdViewIvStereoOff</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Stereo Off</source>
@@ -8860,7 +8939,7 @@ Document: </translation>
     <name>StdCmdViewIvStereoQuadBuff</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Stereo quad buffer</source>
@@ -8875,7 +8954,7 @@ Document: </translation>
     <name>StdCmdViewIvStereoRedGreen</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Stereo red/cyan</source>
@@ -8890,7 +8969,7 @@ Document: </translation>
     <name>StdCmdViewLeft</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Left</source>
@@ -8905,7 +8984,7 @@ Document: </translation>
     <name>StdCmdViewRear</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Rear</source>
@@ -8920,7 +8999,7 @@ Document: </translation>
     <name>StdCmdViewRestoreCamera</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Restore saved camera</source>
@@ -8935,7 +9014,7 @@ Document: </translation>
     <name>StdCmdViewRight</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Right</source>
@@ -8950,7 +9029,7 @@ Document: </translation>
     <name>StdCmdViewRotateLeft</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Rotate Left</source>
@@ -8965,7 +9044,7 @@ Document: </translation>
     <name>StdCmdViewRotateRight</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Rotate Right</source>
@@ -8980,7 +9059,7 @@ Document: </translation>
     <name>StdCmdViewSaveCamera</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Save current camera</source>
@@ -8995,7 +9074,7 @@ Document: </translation>
     <name>StdCmdViewTop</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Top</source>
@@ -9010,7 +9089,7 @@ Document: </translation>
     <name>StdCmdViewTrimetric</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Trimetric</source>
@@ -9025,11 +9104,11 @@ Document: </translation>
     <name>StdCmdViewVR</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>FreeCAD-VR</source>
-      <translation type="unfinished">FreeCAD-VR</translation>
+      <translation>FreeCAD-VR</translation>
     </message>
     <message>
       <source>Extend the FreeCAD 3D Window to a Oculus Rift</source>
@@ -9055,7 +9134,7 @@ Document: </translation>
     <name>StdCmdWindows</name>
     <message>
       <source>Window</source>
-      <translation type="unfinished">Window</translation>
+      <translation>작업창</translation>
     </message>
     <message>
       <source>&amp;Windows...</source>
@@ -9070,18 +9149,18 @@ Document: </translation>
     <name>StdCmdWindowsMenu</name>
     <message>
       <source>Window</source>
-      <translation type="unfinished">Window</translation>
+      <translation>작업창</translation>
     </message>
     <message>
       <source>Activates this window</source>
-      <translation type="unfinished">Activates this window</translation>
+      <translation>다음 창 활성화하기</translation>
     </message>
   </context>
   <context>
     <name>StdCmdWorkbench</name>
     <message>
       <source>View</source>
-      <translation type="unfinished">View</translation>
+      <translation>보기</translation>
     </message>
     <message>
       <source>Workbench</source>
@@ -9096,7 +9175,7 @@ Document: </translation>
     <name>StdMainFullscreen</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Fullscreen</source>
@@ -9111,11 +9190,11 @@ Document: </translation>
     <name>StdOrthographicCamera</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Orthographic view</source>
-      <translation>조감도</translation>
+      <translation>직교투영</translation>
     </message>
     <message>
       <source>Switches to orthographic view mode</source>
@@ -9126,15 +9205,15 @@ Document: </translation>
     <name>StdPerspectiveCamera</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Perspective view</source>
-      <translation>투시도</translation>
+      <translation>원근투영</translation>
     </message>
     <message>
       <source>Switches to perspective view mode</source>
-      <translation>투시도 보기 모드로 전환</translation>
+      <translation>원근 투영 보기 모드로 전환합니다</translation>
     </message>
   </context>
   <context>
@@ -9179,7 +9258,7 @@ Document: </translation>
     </message>
     <message>
       <source>Multi document</source>
-      <translation type="unfinished">Multi document</translation>
+      <translation>다중 문서</translation>
     </message>
   </context>
   <context>
@@ -9280,7 +9359,7 @@ Document: </translation>
     </message>
     <message>
       <source>Sync view</source>
-      <translation type="unfinished">Sync view</translation>
+      <translation>연동화 보기</translation>
     </message>
     <message>
       <source>Auto switch to the 3D view containing the selected item</source>
@@ -9291,7 +9370,7 @@ Document: </translation>
     <name>StdViewBoxZoom</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Box zoom</source>
@@ -9302,11 +9381,11 @@ Document: </translation>
     <name>StdViewDock</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Docked</source>
-      <translation type="unfinished">Docked</translation>
+      <translation>고정</translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
@@ -9317,7 +9396,7 @@ Document: </translation>
     <name>StdViewDockUndockFullscreen</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Document window</source>
@@ -9332,7 +9411,7 @@ Document: </translation>
     <name>StdViewFullscreen</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Fullscreen</source>
@@ -9347,11 +9426,11 @@ Document: </translation>
     <name>StdViewScreenShot</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Save picture...</source>
-      <translation>그림 저장하기...</translation>
+      <translation>스크린샷 저장...</translation>
     </message>
     <message>
       <source>Creates a screenshot of the active view</source>
@@ -9362,11 +9441,11 @@ Document: </translation>
     <name>StdViewUndock</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Undocked</source>
-      <translation type="unfinished">Undocked</translation>
+      <translation>고정 해제</translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
@@ -9377,7 +9456,7 @@ Document: </translation>
     <name>StdViewZoomIn</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Zoom In</source>
@@ -9388,7 +9467,7 @@ Document: </translation>
     <name>StdViewZoomOut</name>
     <message>
       <source>Standard-View</source>
-      <translation>표준 뷰</translation>
+      <translation>표준 보기</translation>
     </message>
     <message>
       <source>Zoom Out</source>
@@ -9427,7 +9506,7 @@ Are you sure you want to continue?
     <name>Std_DrawStyle</name>
     <message>
       <source>As is</source>
-      <translation type="unfinished">As is</translation>
+      <translation>이와</translation>
     </message>
     <message>
       <source>Normal mode</source>
@@ -9545,22 +9624,22 @@ Do you still want to proceed?</translation>
     <name>ViewOrthographicCmd</name>
     <message>
       <source>Orthographic</source>
-      <translation type="unfinished">Orthographic</translation>
+      <translation>직교</translation>
     </message>
     <message>
       <source>Set View to Orthographic mode</source>
-      <translation type="unfinished">Set View to Orthographic mode</translation>
+      <translation>보기를 직각 모드로 설정합니다.</translation>
     </message>
   </context>
   <context>
     <name>ViewPerspectiveCmd</name>
     <message>
       <source>Perspective</source>
-      <translation type="unfinished">Perspective</translation>
+      <translation>원근법</translation>
     </message>
     <message>
       <source>Set View to Perspective mode</source>
-      <translation type="unfinished">Set View to Perspective mode</translation>
+      <translation>보기를 원근법 모드로 설정합니다. </translation>
     </message>
   </context>
   <context>
@@ -9571,7 +9650,7 @@ Do you still want to proceed?</translation>
     </message>
     <message>
       <source>Zoom so that model fills the view</source>
-      <translation type="unfinished">Zoom so that model fills the view</translation>
+      <translation>모델이 보기를 채우도록 확대/축소합니다.</translation>
     </message>
   </context>
   <context>
@@ -9634,11 +9713,11 @@ Do you still want to proceed?</translation>
     </message>
     <message>
       <source>View</source>
-      <translation type="unfinished">View</translation>
+      <translation>보기</translation>
     </message>
     <message>
       <source>Special Ops</source>
-      <translation type="unfinished">Special Ops</translation>
+      <translation>중요 Ops</translation>
     </message>
   </context>
   <context>
@@ -9656,18 +9735,20 @@ p, li { white-space: pre-wrap; }
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;span style=" font-size:12pt;"&gt;Created for Qt 4.3.x&lt;/span&gt;&lt;/p&gt;
 &lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;&lt;/p&gt;
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;www.ii-system.com&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;"&gt;
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-size:20pt; font-weight:600;"&gt;iisTaskPanel&lt;/span&gt;&lt;/p&gt;
 &lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;/p&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;span style=" font-size:12pt;"&gt;Created for Qt 4.3.x&lt;/span&gt;&lt;/p&gt;
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;span style=" font-size:12pt;"&gt;Qt 4.3.x에 의해 생성됨&lt;/span&gt;&lt;/p&gt;
 &lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;&lt;/p&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;www.ii-system.com&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;www.ii-system.com&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+CONTEXTREQUEST
+</translation>
     </message>
     <message>
       <source>Choose the style of the Task Panel</source>
-      <translation type="unfinished">Choose the style of the Task Panel</translation>
+      <translation>테스크 패널의 스타일을 선택하세요</translation>
     </message>
     <message>
       <source>Default</source>

@@ -46,7 +46,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="133"/>
       <source>Maximum number of faces for polygons (fn)</source>
-      <translation>Maksymalna liczba obszarów dla wielokątów (fn)</translation>
+      <translation>Maksymalna liczba ścian dla wielokątów</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="177"/>

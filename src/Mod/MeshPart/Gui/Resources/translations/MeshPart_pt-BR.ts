@@ -35,8 +35,8 @@
       <location filename="../../Command.cpp" line="314"/>
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a 'mesh' object.</source>
-      <translation type="unfinished">Creates an approximated curve on top of a mesh.
-This command only works with a 'mesh' object.</translation>
+      <translation>Cria uma curva aproximada sobre uma malha.
+Este comando só funciona com um objeto do tipo "malha".</translation>
     </message>
   </context>
   <context>

@@ -11,7 +11,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="63"/>
       <source>Zoom</source>
-      <translation>Zumiranje</translation>
+      <translation>Uvećaj</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="64"/>
@@ -26,7 +26,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="66"/>
       <source>Tilt</source>
-      <translation>Rotacija</translation>
+      <translation>Naginjanje</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="67"/>
@@ -36,7 +36,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="68"/>
       <source>Page Up or Page Down key.</source>
-      <translation>Stranica iznad ili Stranica ispod Tipka.</translation>
+      <translation>Tipke Stranica iznad ili Stranica ispod.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="69"/>
@@ -71,7 +71,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="294"/>
       <source>Tooltip</source>
-      <translation>Opis alata</translation>
+      <translation>Naziv alata</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="295"/>
@@ -91,7 +91,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="70"/>
       <source>Middle mouse button or H key.</source>
-      <translation>Srednja tika miša ili tipka H.</translation>
+      <translation>Srednja tipka miša ili tipka H.</translation>
     </message>
   </context>
 </TS>
