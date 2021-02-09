@@ -1179,85 +1179,16 @@ void SketchObject::addGeometryState(const Constraint* cstr) const
 {
     const std::vector< Part::Geometry * > &vals = getInternalGeometry();
 
-    if(cstr->Type == InternalAlignment) {
+    Sketcher::InternalType::InternalType constraintInternalAlignment = InternalType::None;
+    bool constraintBlockedState = false;
 
-        switch(cstr->AlignmentType){
-            case Undef:
-            {
-                auto gf = GeometryFacade::getFacade(vals[cstr->First]);
-                gf->setInternalType(InternalType::None);
-                break;
-            }
-            case EllipseMajorDiameter:
-            {
-                auto gf = GeometryFacade::getFacade(vals[cstr->First]);
-                gf->setInternalType(InternalType::EllipseMajorDiameter);
-                break;
-            }
-            case EllipseMinorDiameter:
-            {
-                auto gf = GeometryFacade::getFacade(vals[cstr->First]);
-                gf->setInternalType(InternalType::EllipseMinorDiameter);
-                break;
-            }
-            case EllipseFocus1:
-            {
-                auto gf = GeometryFacade::getFacade(vals[cstr->First]);
-                gf->setInternalType(InternalType::EllipseFocus1);
-                break;
-            }
-            case EllipseFocus2:
-            {
-                auto gf = GeometryFacade::getFacade(vals[cstr->First]);
-                gf->setInternalType(InternalType::EllipseFocus2);
-                break;
-            }
-            case HyperbolaMajor:
-            {
-                auto gf = GeometryFacade::getFacade(vals[cstr->First]);
-                gf->setInternalType(InternalType::HyperbolaMajor);
-                break;
-            }
-            case HyperbolaMinor:
-            {
-                auto gf = GeometryFacade::getFacade(vals[cstr->First]);
-                gf->setInternalType(InternalType::HyperbolaMinor);
-                break;
-            }
-            case HyperbolaFocus:
-            {
-                auto gf = GeometryFacade::getFacade(vals[cstr->First]);
-                gf->setInternalType(InternalType::HyperbolaFocus);
-                break;
-            }
-            case ParabolaFocus:
-            {
-                auto gf = GeometryFacade::getFacade(vals[cstr->First]);
-                gf->setInternalType(InternalType::ParabolaFocus);
-                break;
-            }
-            case BSplineControlPoint:
-            {
-                auto gf = GeometryFacade::getFacade(vals[cstr->First]);
-                gf->setInternalType(InternalType::BSplineControlPoint);
-
-                // handle constraint as adimensional
-
-                break;
-            }
-            case BSplineKnotPoint:
-            {
-                auto gf = GeometryFacade::getFacade(vals[cstr->First]);
-                gf->setInternalType(InternalType::BSplineKnotPoint);
-                break;
-            }
-        }
-    }
-
-    // Assign Blocked geometry mode
-    if(cstr->Type == Block){
+    if (getInternalTypeState(cstr, constraintInternalAlignment)) {
         auto gf = GeometryFacade::getFacade(vals[cstr->First]);
-        gf->setBlocked();
+        gf->setInternalType(constraintInternalAlignment);
+    }
+    else if (getBlockedState(cstr, constraintBlockedState)) {
+        auto gf = GeometryFacade::getFacade(vals[cstr->First]);
+        gf->setBlocked(constraintBlockedState);
     }
 }
 
@@ -7669,7 +7600,91 @@ void SketchObject::onUndoRedoFinished()
     // such a recompute
     Constraints.checkConstraintIndices(getHighestCurveIndex(),-getExternalGeometryCount()); // in case it is redoing an operation with invalid data.
     acceptGeometry();
+    synchroniseGeometryState();
     solve();
+}
+
+void SketchObject::synchroniseGeometryState()
+{
+    const std::vector< Part::Geometry * > &vals = getInternalGeometry();
+
+    for(size_t i = 0 ; i < vals.size() ; i++) {
+        auto gf = GeometryFacade::getFacade(vals[i]);
+
+        auto facadeInternalAlignment = gf->getInternalType();
+        auto facadeBlockedState = gf->getBlocked();
+
+        Sketcher::InternalType::InternalType constraintInternalAlignment = InternalType::None;
+        bool constraintBlockedState = false;
+
+        for (auto cstr : Constraints.getValues()) {
+            getInternalTypeState(cstr, constraintInternalAlignment);
+            getBlockedState(cstr, constraintBlockedState);
+        }
+
+        if(constraintInternalAlignment != facadeInternalAlignment)
+            gf->setInternalType(constraintInternalAlignment);
+
+        if(constraintBlockedState != facadeBlockedState)
+            gf->setBlocked(constraintBlockedState);
+
+    }
+}
+
+bool SketchObject::getInternalTypeState(const Constraint * cstr, Sketcher::InternalType::InternalType & internaltypestate) const
+{
+    if(cstr->Type == InternalAlignment) {
+
+        switch(cstr->AlignmentType){
+            case Undef:
+                internaltypestate = InternalType::None;
+                break;
+            case EllipseMajorDiameter:
+                internaltypestate = InternalType::EllipseMajorDiameter;
+                break;
+            case EllipseMinorDiameter:
+                internaltypestate = InternalType::EllipseMinorDiameter;
+                break;
+            case EllipseFocus1:
+                internaltypestate = InternalType::EllipseFocus1;
+                break;
+            case EllipseFocus2:
+                internaltypestate = InternalType::EllipseFocus2;
+                break;
+            case HyperbolaMajor:
+                internaltypestate = InternalType::HyperbolaMajor;
+                break;
+            case HyperbolaMinor:
+                internaltypestate = InternalType::HyperbolaMinor;
+                break;
+            case HyperbolaFocus:
+                internaltypestate = InternalType::HyperbolaFocus;
+                break;
+            case ParabolaFocus:
+                internaltypestate = InternalType::ParabolaFocus;
+                break;
+            case BSplineControlPoint:
+                internaltypestate = InternalType::BSplineControlPoint;
+                break;
+            case BSplineKnotPoint:
+                internaltypestate = InternalType::BSplineKnotPoint;
+                break;
+        }
+
+        return true;
+    }
+
+    return false;
+}
+
+bool SketchObject::getBlockedState(const Constraint * cstr, bool & blockedstate) const
+{
+    if(cstr->Type == Block) {
+        blockedstate = true;
+        return true;
+    }
+
+    return false;
 }
 
 void SketchObject::onDocumentRestored()
@@ -7690,6 +7705,7 @@ void SketchObject::restoreFinished()
         validateExternalLinks();
         rebuildExternalGeometry();
         Constraints.acceptGeometry(getCompleteGeometry());
+        synchroniseGeometryState();
         // this may happen when saving a sketch directly in edit mode
         // but never performed a recompute before
         if (Shape.getValue().IsNull() && hasConflicts() == 0) {
