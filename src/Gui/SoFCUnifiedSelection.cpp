@@ -1652,6 +1652,46 @@ bool SoFCSwitch::testTraverseState(TraverseStateFlag flag) {
     return false;
 }
 
+static void
+traverseInPath(SoAction * const action,
+               const SoChildList *children,
+               const int numindices,
+               const int * indices)
+{
+  assert(action->getCurPathCode() == SoAction::IN_PATH);
+
+  // only traverse nodes in path list, and nodes off path that
+  // affects state.
+  int childidx = 0;
+
+  for (int i = 0; i < numindices && !action->hasTerminated(); i++) {
+    int stop = indices[i];
+    // This whole traverseInPath() is copied from SoChildList::traverseInPath()
+    // except the following if statement. Because SoFCSwitch may traverse out
+    // of order with head/tailChild.
+    if (childidx > stop)
+        continue;
+    for (; childidx < stop && !action->hasTerminated(); childidx++) {
+      // we are off path. Check if node affects state before traversing
+      SoNode * node = (*children)[childidx];
+      if (node->affectsState()) {
+        action->pushCurPath(childidx, node);
+        action->traverse(node);
+        action->popCurPath(SoAction::IN_PATH);
+      }
+    }
+
+    if (!action->hasTerminated()) {
+      // here we are in path. Always traverse
+      SoNode * node = (*children)[childidx];
+      action->pushCurPath(childidx, node);
+      action->traverse(node);
+      action->popCurPath(SoAction::IN_PATH);
+      childidx++;
+    }
+  }
+}
+
 void SoFCSwitch::doAction(SoAction *action) {
     auto state = action->getState();
 
@@ -1773,7 +1813,7 @@ void SoFCSwitch::doAction(SoAction *action) {
 
     if(idx == SO_SWITCH_ALL) {
         if (pathcode == SoAction::IN_PATH)
-            this->children->traverseInPath(action, numindices, indices);
+            traverseInPath(action, this->children, numindices, indices);
         else
             this->children->traverse(action);
     } else if (pathcode == SoAction::IN_PATH) {
@@ -3060,6 +3100,8 @@ void SoFCPathAnnotation::GLRender(SoGLRenderAction * action)
 void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction * action)
 {
     if (!path) {
+        if (!getNumChildren())
+            return;
         if (action->isRenderingDelayedPaths()) {
             SbBool zbenabled = glIsEnabled(GL_DEPTH_TEST);
             if (zbenabled) glDisable(GL_DEPTH_TEST);
@@ -3203,6 +3245,8 @@ void SoFCPathAnnotation::GLRenderInPath(SoGLRenderAction * action)
         GLRenderBelowPath(action);
         return;
     }
+    if (!getNumChildren())
+        return;
     if (action->isRenderingDelayedPaths()) {
         SbBool zbenabled = glIsEnabled(GL_DEPTH_TEST);
         if (zbenabled) glDisable(GL_DEPTH_TEST);
@@ -3238,8 +3282,10 @@ void SoFCPathAnnotation::setPath(SoPath *newPath) {
         }
         tmpPath.truncate(0);
     }
-    if(!newPath || !newPath->getLength())
+    if(!newPath || !newPath->getLength()) {
+        coinRemoveAllChildren(this);
         return;
+    }
 
     for(int i=0;i<newPath->getLength();++i) {
         auto node = newPath->getNode(i);

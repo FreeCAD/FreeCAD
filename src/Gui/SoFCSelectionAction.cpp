@@ -55,6 +55,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/Tools.h>
 
 #include "SoFCUnifiedSelection.h"
 #include "SoFCSelectionAction.h"
@@ -94,9 +95,7 @@
 #include <Inventor/nodes/SoSphere.h>
 #include <Inventor/nodes/SoTransformation.h>
 
-
-
-
+FC_LOG_LEVEL_INIT("Gui", true, true);
 
 using namespace Gui;
 
@@ -1026,6 +1025,7 @@ public:
     unsigned delayedpathcount = 0;
     int currentdelayedpath = 0;
     SoPath *dummypath;
+    bool busy = false;
 
     void initBoxGraph();
     void updateBbox(const SoPath * path);
@@ -1445,11 +1445,29 @@ SoBoxSelectionRenderAction::drawBoxes(SoPath * pathtothis, const SoPathList * pa
     thestate->pop();
 }
 
+void SoBoxSelectionRenderAction::beginTraversal(SoNode *node)
+{
+    if (!PRIVATE(this)->busy && PRIVATE(this)->delayedpathcount) {
+        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+            FC_WARN("stray delay path");
+        for (auto &v : PRIVATE(this)->latedelayedpaths)
+            v.second.truncate(0);
+        PRIVATE(this)->delayedpathcount = 0;
+    }
+
+    Base::StateLocker locker(PRIVATE(this)->busy);
+    inherited::beginTraversal(node);
+}
+
 bool SoBoxSelectionRenderAction::addLateDelayedPath(const SoPath *path, bool copy, int priority)
 {
     int current = PRIVATE(this)->currentdelayedpath;
-    if (current && priority <= current)
+    assert(priority != 0 && "priority must not be zero");
+    if (current && priority <= current) {
+        if (!copy)
+            path->unref();
         return false;
+    }
     SoState * thestate = this->getState();
     SoCacheElement::invalidate(thestate);
     if (PRIVATE(this)->delayedpathcount++ == 0 && !isRenderingDelayedPaths()) {
@@ -1457,6 +1475,30 @@ bool SoBoxSelectionRenderAction::addLateDelayedPath(const SoPath *path, bool cop
         this->addDelayedPath(PRIVATE(this)->dummypath);
     }
     auto &pathlist = PRIVATE(this)->latedelayedpaths[priority];
+
+    // The following code is to catch rare crash on added paths with an invalid
+    // order. Note that SoFCSwitch has special handling to specifically allow
+    // arbitary order traversing with its head/tailChild field. Other node will
+    // likely cause crash because of insufficient checking in
+    // SoChildList::traverseInPath() and SoSeparator::GLRenderInPath().
+#if 0
+    if (pathlist.getLength()) {
+        for (int i=1; i<path->getLength(); ++i) {
+            SoNode *node = path->getNode(i-1);
+            int index = path->getIndex(i);
+            for (int j=0; j<pathlist.getLength(); ++j) {
+                auto p = pathlist[j];
+                if (i >= p->getLength() || p->getNode(i-1) != node)
+                    continue;
+                if (p->getIndex(i) > index
+                        && !node->isOfType(SoFCSwitch::getClassTypeId()))
+                {
+                    FC_ERR("found");
+                }
+            }
+        }
+    }
+#endif
     if (copy)
         pathlist.append(path->copy());
     else

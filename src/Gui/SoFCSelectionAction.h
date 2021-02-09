@@ -345,6 +345,9 @@ public:
     int currentLateDelayedPath() const;
 
 protected:
+    virtual void beginTraversal(SoNode * node);
+
+protected:
     SbBool hlVisible;
 
 private:
