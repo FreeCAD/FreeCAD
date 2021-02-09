@@ -26,13 +26,15 @@ import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
 import Path
 import FreeCAD
-import FreeCADGui
 from FreeCAD import Console
 import time
 import json
 import math
 import area
-from pivy import coin
+
+if FreeCAD.GuiUp:
+    from pivy import coin
+    import FreeCADGui
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -380,22 +382,25 @@ def Execute(op,obj):
     global sceneGraph
     global topZ
 
-    sceneGraph = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
+    if FreeCAD.GuiUp:
+        sceneGraph = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
 
     Console.PrintMessage("*** Adaptive toolpath processing started...\n")
 
     #hide old toolpaths during recalculation
     obj.Path = Path.Path("(Calculating...)")
 
-    #store old visibility state
-    job = op.getJob(obj)
-    oldObjVisibility = obj.ViewObject.Visibility
-    oldJobVisibility = job.ViewObject.Visibility
+    if FreeCAD.GuiUp:
+        #store old visibility state
+        job = op.getJob(obj)
+        oldObjVisibility = obj.ViewObject.Visibility
+        oldJobVisibility = job.ViewObject.Visibility
 
-    obj.ViewObject.Visibility = False
-    job.ViewObject.Visibility = False
+        obj.ViewObject.Visibility = False
+        job.ViewObject.Visibility = False
 
-    FreeCADGui.updateGui()
+        FreeCADGui.updateGui()
+
     try:
         helixDiameter = obj.HelixDiameterLimit.Value
         topZ = op.stock.Shape.BoundBox.ZMax
@@ -410,7 +415,7 @@ def Execute(op,obj):
         path2d = convertTo2d(pathArray)
 
         stockPaths = []
-        if op.stock.StockType == "CreateCylinder":
+        if hasattr(op.stock, "StockType") and op.stock.StockType == "CreateCylinder":
             stockPaths.append([discretize(op.stock.Shape.Edges[0])])
 
         else:
@@ -474,14 +479,15 @@ def Execute(op,obj):
 
         # progress callback fn, if return true it will stop processing
         def progressFn(tpaths):
-            for path in tpaths: #path[0] contains the MotionType, #path[1] contains list of points
-                if path[0] == area.AdaptiveMotionType.Cutting:
-                    sceneDrawPath(path[1],(0,0,1))
+            if FreeCAD.GuiUp:
+                for path in tpaths: #path[0] contains the MotionType, #path[1] contains list of points
+                    if path[0] == area.AdaptiveMotionType.Cutting:
+                        sceneDrawPath(path[1],(0,0,1))
 
-                else:
-                    sceneDrawPath(path[1],(1,0,1))
+                    else:
+                        sceneDrawPath(path[1],(1,0,1))
 
-            FreeCADGui.updateGui()
+                FreeCADGui.updateGui()
 
             return  obj.StopProcessing
 
@@ -524,9 +530,10 @@ def Execute(op,obj):
             Console.PrintMessage("*** Processing cancelled (after: %f sec).\n\n" %(time.time()-start))
 
     finally:
-        obj.ViewObject.Visibility = oldObjVisibility
-        job.ViewObject.Visibility = oldJobVisibility
-        sceneClean()
+        if FreeCAD.GuiUp:
+            obj.ViewObject.Visibility = oldObjVisibility
+            job.ViewObject.Visibility = oldJobVisibility
+            sceneClean()
 
 
 def _get_working_edges(op, obj):
