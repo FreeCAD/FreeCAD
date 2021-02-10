@@ -89,6 +89,9 @@ class ObjectOp(PathOp.ObjectOp):
         obj.setEditorMode('PathParams', 2)  # hide
         obj.addProperty("Part::PropertyPartShape", "removalshape", "Path")
         obj.setEditorMode('removalshape', 2)  # hide
+
+        obj.addProperty("App::PropertyBool", "SplitArcs", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Split Arcs into discrete segments"))
+
         # obj.Proxy = self
 
         self.setupAdditionalProperties(obj)
@@ -149,6 +152,9 @@ class ObjectOp(PathOp.ObjectOp):
         for prop in ['AreaParams', 'PathParams', 'removalshape']:
             if hasattr(obj, prop):
                 obj.setEditorMode(prop, 2)
+        if not hasattr(obj, 'SplitArcs'):
+            obj.addProperty("App::PropertyBool", "SplitArcs", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Split Arcs into discrete segments"))
+
 
         self.setupAdditionalProperties(obj)
         self.areaOpOnDocumentRestored(obj)
