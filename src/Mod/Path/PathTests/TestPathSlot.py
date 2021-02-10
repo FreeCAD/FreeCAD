@@ -146,8 +146,8 @@ class TestPathSlot(PathTestBase):
         pnts = list()
         for c in slot.Path.Commands:
             p = c.Parameters
-            k = p.keys()
-            if "'X', 'Y'" in str(k)[9:]:  # == "(['F', 'X', 'Y'])":
+            keys = str(p.keys())[9:]
+            if "'X'" in keys and "'Y'" in keys:
                 pnts.append(self._format_point(p))
         pnts.sort()
         # print("pnts: {}\n".format(pnts))
@@ -156,7 +156,6 @@ class TestPathSlot(PathTestBase):
         if len(pnts) != 2:
             for c in slot.Path.Commands:
                 p = c.Parameters
-                k = p.keys()
                 print("Parameters: {}".format(p))
             self.assertEqual(len(pnts), 2)
 
@@ -194,8 +193,8 @@ class TestPathSlot(PathTestBase):
         pnts = list()
         for c in slot.Path.Commands:
             p = c.Parameters
-            k = p.keys()
-            if "'X', 'Y'" in str(k)[9:]:  # == "(['F', 'X', 'Y'])":
+            keys = str(p.keys())[9:]
+            if "'X'" in keys and "'Y'" in keys:
                 pnts.append(self._format_point(p))
         pnts.sort()
         # print("pnts: {}\n".format(pnts))
@@ -204,7 +203,6 @@ class TestPathSlot(PathTestBase):
         if len(pnts) != 2:
             for c in slot.Path.Commands:
                 p = c.Parameters
-                k = p.keys()
                 print("Parameters: {}".format(p))
             self.assertEqual(len(pnts), 2)
 
@@ -246,8 +244,8 @@ class TestPathSlot(PathTestBase):
         pnts = list()
         for c in slot.Path.Commands:
             p = c.Parameters
-            k = p.keys()
-            if "'X', 'Y'" in str(k)[9:]:  # == "(['F', 'X', 'Y'])":
+            keys = str(p.keys())[9:]
+            if "'X'" in keys and "'Y'" in keys:
                 pnts.append(self._format_point(p))
         pnts.sort()
         # print("pnts: {}\n".format(pnts))
@@ -256,7 +254,6 @@ class TestPathSlot(PathTestBase):
         if len(pnts) != 2:
             for c in slot.Path.Commands:
                 p = c.Parameters
-                k = p.keys()
                 print("Parameters: {}".format(p))
             self.assertEqual(len(pnts), 2)
 
