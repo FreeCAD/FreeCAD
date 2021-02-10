@@ -669,7 +669,7 @@ class Edit(gui_base_original.Modifier):
             self.current_editing_object_gui_tools = None
             self.ghost.finalize()
             self.ghost = None
-        except:
+        except Exception:
             return
 
     # -------------------------------------------------------------------------
@@ -914,7 +914,7 @@ class Edit(gui_base_original.Modifier):
             except AttributeError:
                 try:
                     obj_gui_tools = self.gui_tools_repository.get(utils.get_type(obj))
-                except:
+                except Exception:
                     obj_gui_tools = None
         return obj_gui_tools
 

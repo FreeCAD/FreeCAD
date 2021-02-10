@@ -546,7 +546,7 @@ def calculate_placement(globalRotation,
     try:
         t = edge.tangentAt(get_parameter_from_v0(edge, offset))
         t.normalize()
-    except:
+    except Exception:
         _wrn(_tr("Cannot calculate path tangent. Copy not aligned."))
         return placement
 
@@ -560,7 +560,7 @@ def calculate_placement(globalRotation,
         try:
             b = t.cross(n)
             b.normalize()
-        except:
+        except Exception:
             # weird special case, tangent and normal parallel
             b = nullv
             _wrn(_tr("Tangent and normal are parallel. Copy not aligned."))
@@ -585,7 +585,7 @@ def calculate_placement(globalRotation,
         try:
             b = t.cross(n)
             b.normalize()
-        except:
+        except Exception:
             b = nullv
             _wrn(_tr("Cannot calculate path binormal. Copy not aligned."))
             return placement

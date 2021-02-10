@@ -150,7 +150,7 @@ class ShapeString(DraftObject):
                 # some fonts fail here
                 if face.Surface.Axis.z < 0.0:
                     face.reverse()
-            except:
+            except Exception:
                 pass
             compFaces.append(face)
         ret = Part.Compound(compFaces)

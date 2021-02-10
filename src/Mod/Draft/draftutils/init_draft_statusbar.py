@@ -113,7 +113,7 @@ def label_to_scale(label):
     try :
         scale = float(label)
         return scale
-    except :
+    except Exception:
         if ":" in label:
             f = label.split(":")
         elif "=" in label:
@@ -126,7 +126,7 @@ def label_to_scale(label):
                 den = App.Units.Quantity(f[1]).Value
                 scale = num/den
                 return scale
-            except:
+            except Exception:
                 err = QT_TRANSLATE_NOOP("draft",
                                         "Unable to convert input into a "
                                         "scale factor")

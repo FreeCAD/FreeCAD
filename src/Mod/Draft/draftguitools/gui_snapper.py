@@ -1018,7 +1018,7 @@ class Snapper:
                                     if pt:
                                         for p in pt:
                                             snaps.append([p, 'intersection', self.toWP(p)])
-                                except:
+                                except Exception:
                                     pass
                                     # some curve types yield an error
                                     # when trying to read their types

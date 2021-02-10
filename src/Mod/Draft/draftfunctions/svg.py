@@ -75,7 +75,7 @@ def get_line_style(line_style, scale):
             # scale dashes
             style = ",".join([str(float(d)/scale) for d in style])
             # print("lstyle ", style)
-        except:
+        except Exception:
             # TODO: trap only specific exception; what is the problem?
             # Bad string specification?
             return "none"
