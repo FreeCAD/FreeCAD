@@ -41,6 +41,7 @@
 #include <Gui/DlgEditFileIncludePropertyExternal.h>
 #include <Gui/Action.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/DlgCheckableMessageBox.h>
 
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -2165,8 +2166,12 @@ void CmdSketcherConstrainCoincident::activated(int iMsg)
                 ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
 
                 if(hGrp->GetBool("NotifyConstraintSubstitutions", true)) {
-                    QMessageBox::information(Gui::getMainWindow(), QObject::tr("Constraint Substitution"),
-                                            QObject::tr("Endpoint to endpoint tangency was applied instead."));
+                    Gui::Dialog::DlgCheckableMessageBox::showMessage(
+                        QObject::tr("Sketcher Constraint Substitution"),
+                        QObject::tr("Endpoint to endpoint tangency was applied instead."),
+                        false,
+                        QObject::tr("Don't tell me again")
+                    );
                 }
 
                 getSelection().clearSelection();
@@ -4327,8 +4332,12 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
 
                     if(hGrp->GetBool("NotifyConstraintSubstitutions", true)) {
-                        QMessageBox::information(Gui::getMainWindow(), QObject::tr("Constraint Substitution"),
-                                         QObject::tr("Endpoint to endpoint tangency was applied. The coincident constraint was deleted."));
+                        Gui::Dialog::DlgCheckableMessageBox::showMessage(
+                            QObject::tr("Sketcher Constraint Substitution"),
+                            QObject::tr("Endpoint to endpoint tangency was applied instead."),
+                            false,
+                            QObject::tr("Don't tell me again")
+                        );
                     }
                     getSelection().clearSelection();
                     return;
