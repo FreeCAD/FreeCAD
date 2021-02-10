@@ -5474,14 +5474,21 @@ bool SketchObject::convertToNURBS(int GeoId)
             std::vector< Constraint * > newcVals(cvals);
 
             int index = cvals.size()-1;
-            // delete constraints on this elements other than coincident constraints (bspline does not support them currently)
+            // delete constraints on this elements other than coincident constraints (bspline does not support them currently), except
+            // for coincidents on mid point of the to-be-converted curve.
             for (; index >= 0; index--) {
-                if (cvals[index]->Type != Sketcher::Coincident && ( cvals[index]->First == GeoId || cvals[index]->Second == GeoId || cvals[index]->Third == GeoId)) {
+                auto otherthancoincident =  cvals[index]->Type != Sketcher::Coincident &&
+                                            (cvals[index]->First == GeoId || cvals[index]->Second == GeoId || cvals[index]->Third == GeoId);
 
+                auto coincidentonmidpoint = cvals[index]->Type == Sketcher::Coincident &&
+                                            (   (cvals[index]->First == GeoId && cvals[index]->FirstPos == Sketcher::mid) ||
+                                                (cvals[index]->Second == GeoId && cvals[index]->SecondPos == Sketcher::mid) );
+
+                if (otherthancoincident || coincidentonmidpoint)
                     newcVals.erase(newcVals.begin()+index);
 
-                }
             }
+
             this->Constraints.setValues(std::move(newcVals));
         }
 
