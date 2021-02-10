@@ -147,25 +147,6 @@ Requires to re-enter edit mode to take effect.</string>
         </property>
        </widget>
       </item>
-      <item>
-       <widget class="Gui::PrefCheckBox" name="checkBoxNotifyConstraintSubstitutions">
-        <property name="toolTip">
-         <string>Notifies about automatic constraint substitutions</string>
-        </property>
-        <property name="text">
-         <string>Notify automatic constraint substitutions</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>NotifyConstraintSubstitutions</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Sketcher/General</cstring>
-        </property>
-       </widget>
-      </item>
      </layout>
     </widget>
    </item>
