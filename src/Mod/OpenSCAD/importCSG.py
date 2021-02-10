@@ -944,7 +944,7 @@ def p_cylinder_action(p):
                     try :
                         import Draft
                         mycyl.Base = Draft.makePolygon(n,r1,face=True)
-                    except :
+                    except Exception:
                         # If Draft can't import (probably due to lack of Pivy on Mac and
                         # Linux builds of FreeCAD), this is a fallback.
                         # or old level of FreeCAD
@@ -1182,7 +1182,7 @@ def p_polyhedron_action(p) :
         print(w)
         try:
            f = Part.Face(w)
-        except:
+        except Exception:
             secWireList = w.Edges[:]
             f = Part.makeFilledFace(Part.__sortEdges__(secWireList))
         #f = make_face(v[int(i[0])],v[int(i[1])],v[int(i[2])])
