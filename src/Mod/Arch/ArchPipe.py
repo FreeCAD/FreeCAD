@@ -266,7 +266,7 @@ class _ArchPipe(ArchComponent.Component):
                 for pw in p.Wires:
                     sh = w.makePipeShell([pw],True,False,2)
                     shapes.append(sh)
-        except:
+        except Exception:
             FreeCAD.Console.PrintError(translate("Arch","Unable to build the pipe")+"\n")
         else:
             if len(shapes) == 0:

@@ -859,7 +859,7 @@ class _Roof(ArchComponent.Component):
                     if faceLst:
                         try:
                             shell = Part.Shell(faceLst)
-                        except:
+                        except Exception:
                             pass
                         else:
                             lut={}

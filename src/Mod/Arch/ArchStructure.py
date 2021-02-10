@@ -285,7 +285,7 @@ class _CommandStructure:
         if self.Profile is not None:
             try: # try to update latest precast values - fails if dialog has been destroyed already
                 self.precastvalues = self.precast.getValues()
-            except:
+            except Exception:
                 pass
             if ("Precast" in self.Profile) and self.precastvalues:
                 # precast concrete
@@ -475,7 +475,7 @@ class _CommandStructure:
         if FreeCADGui.Control.activeDialog():
             try: # try to update latest precast values - fails if dialog has been destroyed already
                 self.precastvalues = self.precast.getValues()
-            except:
+            except Exception:
                 pass
             if self.Height >= self.Length:
                 delta = Vector(0,0,self.Height/2)
@@ -762,7 +762,7 @@ class _Structure(ArchComponent.Component):
                             if obj.FaceMaker != "None":
                                 try:
                                     baseface = Part.makeFace(obj.Base.Shape.Wires,"Part::FaceMaker"+str(obj.FaceMaker))
-                                except:
+                                except Exception:
                                     FreeCAD.Console.PrintError(translate("Arch","Facemaker returned an error")+"\n")
                                     return None
                                 if len(baseface.Faces) > 1:

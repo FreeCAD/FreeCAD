@@ -1722,7 +1722,7 @@ class ComponentTaskPanel:
         self.grid.addWidget(self.classButton, 5, 0, 1, 2)
         try:
             import BimClassification
-        except:
+        except Exception:
             self.classButton.hide()
         else:
             import os
@@ -2330,22 +2330,22 @@ if FreeCAD.GuiUp:
                 if "Integer" in editor.objectName():
                     try:
                         editor.setValue(int(index.data()))
-                    except:
+                    except Exception:
                         editor.setValue(0)
                 elif "Real" in editor.objectName():
                     try:
                         editor.setValue(float(index.data()))
-                    except:
+                    except Exception:
                         editor.setValue(0)
                 elif ("Boolean" in editor.objectName()) or ("Logical" in editor.objectName()):
                     try:
                         editor.setCurrentIndex(["true","false"].index(index.data().lower()))
-                    except:
+                    except Exception:
                         editor.setCurrentIndex(1)
                 elif "Measure" in editor.objectName():
                     try:
                         editor.setText(index.data())
-                    except:
+                    except Exception:
                         editor.setValue(0)
                 else:
                     editor.setText(index.data())

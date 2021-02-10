@@ -491,7 +491,7 @@ class _CommandWindow:
                     if path.lower().endswith(".fcstd"):
                         try:
                             import zipfile,tempfile
-                        except:
+                        except Exception:
                             pass
                         else:
                             zfile=zipfile.ZipFile(path)
