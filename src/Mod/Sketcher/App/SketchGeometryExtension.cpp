@@ -67,9 +67,12 @@ void SketchGeometryExtension::restoreAttributes(Base::XMLReader &reader)
     if(reader.hasAttribute("id"))
         Id = reader.getAttributeAsInteger("id");
 
-    InternalGeometryType = (InternalType::InternalType) reader.getAttributeAsInteger("internalGeometryType");
+    InternalGeometryType = (InternalType::InternalType)
+        reader.getAttributeAsInteger("internalGeometryType", "0");
 
-    GeometryModeFlags = GeometryModeFlagType(reader.getAttribute("geometryModeFlags"));
+    if (reader.hasAttribute("geometryModeFlags"))
+        GeometryModeFlags = GeometryModeFlagType(
+                reader.getAttribute("geometryModeFlags"));
 }
 
 void SketchGeometryExtension::saveAttributes(Base::Writer &writer) const
