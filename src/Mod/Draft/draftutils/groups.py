@@ -262,7 +262,7 @@ def get_group_contents(objectslist,
                     if obj is not item:
                         children.append((item[0], item[1]+sub))
                     else:
-                        sobj = obj.getSubObject(sub)
+                        sobj = obj.getSubObject(sub, retType=1)
                         if sobj:
                             children.append(sobj)
                 newlist += get_group_contents(children, walls, False)
