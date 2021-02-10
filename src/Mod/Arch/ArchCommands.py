@@ -484,7 +484,7 @@ def getShapeFromMesh(mesh,fast=True,tolerance=0.001,flat=False,cut=True):
                 pts.append(FreeCAD.Vector(pp[0],pp[1],pp[2]))
             try:
                 f = Part.Face(Part.makePolygon(pts))
-            except:
+            except Exception:
                 print("getShapeFromMesh: error building face from polygon")
                 #pass
             else:
@@ -518,7 +518,7 @@ def getShapeFromMesh(mesh,fast=True,tolerance=0.001,flat=False,cut=True):
                     wires = nwires
                 try:
                     faces.append(makeFace(wires,method=int(cut)+1))
-                except:
+                except Exception:
                     return None
     try:
         se = Part.makeShell(faces)
@@ -684,7 +684,7 @@ def download(url,force=False):
         f = open(filepath,'wb')
         f.write(s)
         f.close()
-    except:
+    except Exception:
         return None
     else:
         return filepath
@@ -1235,7 +1235,7 @@ def rebuildArchShape(objects=None):
                                             if solid.isValid():
                                                 base.Shape = solid
                                                 success = True
-                    except:
+                    except Exception:
                         pass
         if not success:
             print ("Failed to rebuild a valid solid for object ",obj.Name)

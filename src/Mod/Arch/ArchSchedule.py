@@ -289,7 +289,7 @@ class _ArchSchedule:
                                 d = getattr(d,v)
                             if hasattr(d,"Value"):
                                 d = d.Value
-                        except:
+                        except Exception:
                             FreeCAD.Console.PrintWarning(translate("Arch","Unable to retrieve value from object")+": "+o.Name+"."+".".join(vals)+"\n")
                         else:
                             if verbose:

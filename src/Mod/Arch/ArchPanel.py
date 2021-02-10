@@ -534,7 +534,7 @@ class _Panel(ArchComponent.Component):
                             try:
                                 baseprofile = Part.makeFace(base.Wires,"Part::FaceMaker"+str(obj.FaceMaker))
                                 fm = True
-                            except:
+                            except Exception:
                                 FreeCAD.Console.PrintError(translate("Arch","Facemaker returned an error")+"\n")
                                 return
                     if not fm:
