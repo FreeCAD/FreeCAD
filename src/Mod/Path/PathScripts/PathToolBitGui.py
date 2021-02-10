@@ -186,7 +186,7 @@ def isValidFileName(filename):
     try:
         with open(filename, "w") as tempfile:
             return True
-    except:
+    except Exception:
         return False
 
 

@@ -73,7 +73,7 @@ class BaseGUITestRunner:
         self.__rollbackImporter = RollbackImporter()
         try:
             test = unittest.defaultTestLoader.loadTestsFromName(testName)
-        except:
+        except Exception:
             exc_type, exc_value, exc_tb = sys.exc_info()
             traceback.print_exception(*sys.exc_info())
             self.errorDialog("Unable to run test '%s'" % testName,

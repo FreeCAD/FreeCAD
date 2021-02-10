@@ -346,7 +346,7 @@ class TaskPanel(object):
             name, info = self.addCustomProperty(self.obj, dialog)
             try:
                 setattr(obj, nam, val)
-            except:
+            except Exception:
                 # this can happen if the old enumeration value doesn't exist anymore
                 pass
             newVal = PathUtil.getPropertyValueString(obj, nam)

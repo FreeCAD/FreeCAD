@@ -9,7 +9,7 @@ import time, tempfile, math
 # http://python-kurs.eu/threads.php
 try:
     import _thread as thread
-except:
+except Exception:
     import thread
 
 

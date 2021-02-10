@@ -640,10 +640,10 @@ void TaskCheckGeometryResults::buildShapeContent(const QString &baseName, const 
         cmdstream << "if hasattr(_shp,'normalAt'):" << std::endl;
         cmdstream << "    try:" << std::endl;
         cmdstream << "        _result += 'normalAt(0):  '+str([round(vv," << decimals << ") for vv in _shp.normalAt(0)]) +'\\n'" << std::endl;
-        cmdstream << "    except:" << std::endl;
+        cmdstream << "    except Exception:" << std::endl;
         cmdstream << "        try:" << std::endl;
         cmdstream << "            _result += 'normalAt(0,0):  '+str([round(vv," << decimals << ") for vv in _shp.normalAt(0,0)]) +'\\n'" << std::endl;
-        cmdstream << "        except:" << std::endl;
+        cmdstream << "        except Exception:" << std::endl;
         cmdstream << "            pass" << std::endl;
         cmdstream << "if hasattr(_shp, 'isClosed') and ('Wire' in _type or 'Edge' in _type):" << std::endl;
         cmdstream << "    _result += 'isClosed:  '+str(_shp.isClosed())+'\\n'" << std::endl;
