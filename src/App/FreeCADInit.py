@@ -34,18 +34,17 @@ def removeFromPath(module_name):
 	"""removes the module from the sys.path. The entry point for imports
 		will therefore always be FreeCAD.
 		eg.: from FreeCAD.Module.submodule import function"""
-	import sys, os
+	import sys
 	paths = sys.path
 	for path in paths:
 		if module_name in path:
 			sys.path.remove(path)
 			return
-	else:
-		Wrn(module_name + " not found in sys.path\n")
+	Wrn(module_name + " not found in sys.path\n")
 
 def setupSearchPaths(PathExtension):
 	# DLL resolution in Python 3.8 on Windows has changed
-	import sys, os
+	import sys
 	if sys.platform == 'win32' and hasattr(os, "add_dll_directory"):
 		if "FREECAD_LIBPACK_BIN" in os.environ:
 			os.add_dll_directory(os.environ["FREECAD_LIBPACK_BIN"])
@@ -253,7 +252,7 @@ App.__unit_test__ = []
 Log ('Init: starting App::FreeCADInit.py\n')
 
 try:
-    import sys,os,traceback,io,inspect
+    import sys,os,traceback,inspect
     from datetime import datetime
 except ImportError:
     FreeCAD.Console.PrintError("\n\nSeems the python standard libs are not installed, bailing out!\n\n")
@@ -632,7 +631,6 @@ FreeCAD.Logger = FCADLogger
 
 # init every application by importing Init.py
 try:
-	import traceback
 	InitApplications()
 except Exception as e:
 	Err('Error in InitApplications ' + str(e) + '\n')
