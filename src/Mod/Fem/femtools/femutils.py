@@ -268,30 +268,37 @@ def getBoundBoxOfAllDocumentShapes(doc):
      Part and PartDesign objects). If the document contains no such objects or
      no objects at all return ``None``.
     """
-    overalboundbox = None
+    overallboundbox = None
     # netgen mesh obj has an attribute Shape which is an Document obj, which has no BB
     # a FemMesh without a Shape could be clipped too
     # https://forum.freecadweb.org/viewtopic.php?f=18&t=52920
     for o in doc.Objects:
 
         bb = None
-        if hasattr(o, "Shape") and hasattr(o.Shape, "BoundBox"):
-            try:
-                bb = o.Shape.BoundBox
-            except Exception:
-                pass
-        elif hasattr(o, "FemMesh") and hasattr(o.FemMesh, "BoundBox"):
-            try:
-                bb = o.FemMesh.BoundBox
-            except Exception:
-                pass
+        Types = ["Shape", "FemMesh", "Mesh", "Points"]
+
+        for Type in Types:
+            FreeCAD.Console.PrintMessage("trying: " + str(o) + ":" + Type + "\n")   # debug only
+            if hasattr(o, Type):
+                try:
+                    bb = getattr(getattr(o,Type),"BoundBox")
+                    FreeCAD.Console.PrintMessage(str(bb) + "\n")                    # debug only
+                    break
+                except Exception:
+                    FreeCAD.Console.PrintMessage("exception \n")                    # debug only
+                    pass
+
         if bb:
             if bb.isValid():
-                if not overalboundbox:
-                    overalboundbox = bb
+                if not overallboundbox:
+                    overallboundbox = bb
                 else:
-                    overalboundbox.add(bb)
-    return overalboundbox
+                    overallboundbox.add(bb)
+        else:                                                                       # debug only
+            FreeCAD.Console.PrintMessage("no bb\n")                                 # debug only
+
+    FreeCAD.Console.PrintMessage(str(overallboundbox) + "\n")                       # debug only
+    return overallboundbox
 
 
 def getSelectedFace(selectionex):
