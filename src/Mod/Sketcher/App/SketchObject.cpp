@@ -134,6 +134,7 @@ SketchObject::SketchObject()
     lastDoF=0;
     lastHasConflict=false;
     lastHasRedundancies=false;
+    lastHasPartialRedundancies=false;
     lastHasMalformedConstraints=false;
     lastSolverStatus=0;
     lastSolveTime=0;
