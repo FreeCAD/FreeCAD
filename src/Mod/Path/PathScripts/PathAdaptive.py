@@ -600,6 +600,10 @@ class PathAdaptive(PathOp.ObjectOp):
         See documentation of execute() for a list of base functionality provided.
         Should be overwritten by subclasses.'''
         Execute(self,obj)
+    
+    def opOnDocumentRestored(self, obj):
+        if not hasattr(obj, 'HelixConeAngle'):
+            obj.addProperty("App::PropertyAngle", "HelixConeAngle", "Adaptive", "Helix cone angle (degrees)")
 
 
 
