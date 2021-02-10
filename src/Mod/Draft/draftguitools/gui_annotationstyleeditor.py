@@ -201,10 +201,10 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
                             if hasattr(vobj, attr):
                                 try:
                                     getattr(vobj,attr).setValue(attrvalue)
-                                except:
+                                except Exception:
                                     try:
                                         setattr(vobj,attr,attrvalue)
-                                    except:
+                                    except Exception:
                                         unitvalue = U.Quantity(attrvalue, U.Length).Value
                                         setattr(vobj,attr,unitvalue)
                 else:

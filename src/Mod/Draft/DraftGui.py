@@ -1743,7 +1743,7 @@ class DraftToolBar:
                         c = self.panel.form.findChild(QtGui.QCheckBox,"ContinueCmd")
                         if c:
                             c.toggle()
-        except:
+        except Exception:
             pass
 
     def isConstructionMode(self):

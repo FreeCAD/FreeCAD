@@ -132,7 +132,7 @@ class Draft_SetStyle_TaskPanel:
                     if dm in dmodes:
                         try:
                             vobj.DisplayMode = dm
-                        except:
+                        except Exception:
                             pass
                 if "ShapeColor" in vobj.PropertiesList:
                     vobj.ShapeColor = self.form.ShapeColor.property("color").rgb()<<8
