@@ -109,6 +109,11 @@ class ObjectPocket(PathAreaOp.ObjectOp):
 
         Pattern = ['ZigZag', 'Offset', 'Spiral', 'ZigZagOffset', 'Line', 'Grid', 'Triangle']
         params['PocketMode'] = Pattern.index(obj.OffsetPattern) + 1
+
+        if obj.SplitArcs:
+            params['Explode'] = True
+            params['FitArcs'] = False
+
         return params
 
     def areaOpPathParams(self, obj, isHole):

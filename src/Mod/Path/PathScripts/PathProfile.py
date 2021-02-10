@@ -331,6 +331,10 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         if obj.JoinType == "Miter":
             params["MiterLimit"] = obj.MiterLimit
 
+        if obj.SplitArcs:
+            params['Explode'] = True
+            params['FitArcs'] = False
+
         return params
 
     def areaOpPathParams(self, obj, isHole):
