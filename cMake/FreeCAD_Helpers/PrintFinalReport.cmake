@@ -33,7 +33,7 @@ macro(PrintFinalReport)
 
     message(STATUS "ZLIB:                ${ZLIB_VERSION_STRING}")
 
-    message(STATUS "PyCXX:               [${PYCXX_INCLUDE_DIR}]")
+    message(STATUS "PyCXX:               ${PYCXX_VERSION} [${PYCXX_INCLUDE_DIR}]")
 
     message(STATUS "OCC:                 ${OCC_VERSION_STRING} [${OCC_LIBRARIES}] [${OCC_LIBRARY_DIR}] [${OCC_INCLUDE_DIR}]")
 
@@ -42,7 +42,7 @@ macro(PrintFinalReport)
             message(STATUS "SMESH:               ${SMESH_VERSION_MAJOR}.${SMESH_VERSION_MINOR}.${SMESH_VERSION_PATCH}.${SMESH_VERSION_TWEAK}")
         else(FREECAD_USE_EXTERNAL_SMESH)
             message(STATUS "SMESH:               build internal")
-            message(STATUS " MEDFile:            [${MEDFILE_LIBRARIES}] [${MEDFILE_INCLUDE_DIRS}]")
+            message(STATUS " MEDFile:            ${MEDFILE_VERSION} [${MEDFILE_LIBRARIES}] [${MEDFILE_INCLUDE_DIRS}]")
             message(STATUS " HDF5:               ${HDF5_VERSION}")
             message(STATUS " VTK:                ${VTK_VERSION}")
         endif(FREECAD_USE_EXTERNAL_SMESH)
