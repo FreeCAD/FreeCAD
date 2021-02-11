@@ -234,9 +234,7 @@ void SheetView::updateContentLine()
 
     if (i.isValid()) {
         std::string str;
-        Cell * cell = sheet->getCell(CellAddress(i.row(), i.column()));
-
-        if (cell)
+        if (const auto * cell = sheet->getCell(CellAddress(i.row(), i.column())))
             (void)cell->getStringContent(str);
         ui->cellContent->setText(QString::fromUtf8(str.c_str()));
         ui->cellContent->setIndex(i);
@@ -253,9 +251,7 @@ void SheetView::updateAliasLine()
 
     if (i.isValid()) {
         std::string str;
-        Cell * cell = sheet->getCell(CellAddress(i.row(), i.column()));
-
-        if (cell)
+        if (const auto * cell = sheet->getCell(CellAddress(i.row(), i.column())))
             (void)cell->getAlias(str);
         ui->cellAlias->setText(QString::fromUtf8(str.c_str()));
         ui->cellAlias->setIndex(i);
@@ -350,8 +346,7 @@ void SheetView::editingFinished()
         ui->cellAlias->setDocumentObject(sheet);
         ui->cells->model()->setData(i, QVariant(ui->cellContent->text()), Qt::EditRole);
 
-        Cell * cell = sheet->getCell(CellAddress(i.row(), i.column()));
-        if (cell){
+        if (const auto * cell = sheet->getCell(CellAddress(i.row(), i.column()))){
             if (!aliasOkay){
                 //do not show error message if failure to set new alias is because it is already the same string
                 std::string current_alias;
