@@ -166,7 +166,7 @@ macro(PrintFinalReport)
     message(STATUS "OpenGL:              ${OPENGL_gl_LIBRARY}")
     message(STATUS "OpenGLU:             ${OPENGL_glu_LIBRARY} [${OPENGL_glu_LIBRARY}][${OPENGL_INCLUDE_DIR}]")
 
-    message(STATUS "Coin3D:              [${COIN3D_LIBRARIES}] [${COIN3D_INCLUDE_DIRS}]")
+    message(STATUS "Coin3D:              ${COIN3D_VERSION} [${COIN3D_LIBRARIES}] [${COIN3D_INCLUDE_DIRS}]")
 
 
     if (WIN32)
