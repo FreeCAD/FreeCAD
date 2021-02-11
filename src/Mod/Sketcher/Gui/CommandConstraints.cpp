@@ -2166,12 +2166,15 @@ void CmdSketcherConstrainCoincident::activated(int iMsg)
                 ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
 
                 if(hGrp->GetBool("NotifyConstraintSubstitutions", true)) {
+                    auto hChecked = App::GetApplication().GetParameterGroupByPath( QByteArray("User parameter:BaseApp/CheckMessages"));
+                    hChecked->SetBool("Sketcher_Constraint_Substitution", false);
                     Gui::Dialog::DlgCheckableMessageBox::showMessage(
                         QObject::tr("Sketcher Constraint Substitution"),
                         QObject::tr("Endpoint to endpoint tangency was applied instead."),
                         false,
                         QObject::tr("Don't tell me again")
                     );
+                    hGrp->SetBool("NotifyConstraintSubstitutions", !hChecked->GetBool("Sketcher_Constraint_Substitution", true));
                 }
 
                 getSelection().clearSelection();
@@ -4332,12 +4335,15 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
 
                     if(hGrp->GetBool("NotifyConstraintSubstitutions", true)) {
+                        auto hChecked = App::GetApplication().GetParameterGroupByPath( QByteArray("User parameter:BaseApp/CheckMessages"));
+                        hChecked->SetBool("Sketcher_Constraint_Substitution", false);
                         Gui::Dialog::DlgCheckableMessageBox::showMessage(
                             QObject::tr("Sketcher Constraint Substitution"),
                             QObject::tr("Endpoint to endpoint tangency was applied instead."),
                             false,
                             QObject::tr("Don't tell me again")
                         );
+                        hGrp->SetBool("NotifyConstraintSubstitutions", !hChecked->GetBool("Sketcher_Constraint_Substitution", true));
                     }
                     getSelection().clearSelection();
                     return;
