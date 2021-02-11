@@ -113,6 +113,9 @@ public:
     //backwards compatibility: profile property was renamed and has different type now
     virtual void Restore(Base::XMLReader& reader);
 
+    // calculate the through all length
+    double getThroughAllLength() const;
+
 protected:
     void remapSupportShape(const TopoDS_Shape&);
 
@@ -132,14 +135,14 @@ protected:
       * Generate a linear prism
       * It will be a stand-alone solid created with BRepPrimAPI_MakePrism
       */
-    static void generatePrism(TopoDS_Shape& prism,
-                              const TopoDS_Shape& sketchshape,
-                              const std::string& method,
-                              const gp_Dir& direction,
-                              const double L,
-                              const double L2,
-                              const bool midplane,
-                              const bool reversed);
+    void generatePrism(TopoDS_Shape& prism,
+                       const TopoDS_Shape& sketchshape,
+                       const std::string& method,
+                       const gp_Dir& direction,
+                       const double L,
+                       const double L2,
+                       const bool midplane,
+                       const bool reversed);
     /**
       * Generate a linear prism
       * It will be a stand-alone solid created with BRepFeat_MakePrism

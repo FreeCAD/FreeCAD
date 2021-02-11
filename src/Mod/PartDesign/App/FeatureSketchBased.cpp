@@ -543,6 +543,21 @@ void ProfileBased::getUpToFace(TopoDS_Face& upToFace,
     }
 }
 
+double ProfileBased::getThroughAllLength() const
+{
+    TopoDS_Shape profileshape;
+    TopoDS_Shape base;
+    profileshape = getVerifiedFace();
+    base = getBaseShape();
+    Bnd_Box box;
+    BRepBndLib::Add(base, box);
+    BRepBndLib::Add(profileshape, box);
+    box.SetGap(0.0);
+    // The diagonal of the bounding box, plus 1%  extra to eliminate risk of
+    // co-planar issues, gives a length that is guaranteed to go through all.
+    return 1.01 * sqrt(box.SquareExtent());
+}
+
 void ProfileBased::generatePrism(TopoDS_Shape& prism,
                                 const TopoDS_Shape& sketchshape,
                                 const std::string& method,
@@ -556,9 +571,7 @@ void ProfileBased::generatePrism(TopoDS_Shape& prism,
         double Ltotal = L;
         double Loffset = 0.;
         if (method == "ThroughAll")
-            // "ThroughAll" is modelled as a very long, but finite prism to avoid problems with pockets
-            // Note: 1E6 created problems once...
-            Ltotal = 1E4;
+            Ltotal = getThroughAllLength();
 
 
         if (method == "TwoLengths") {
