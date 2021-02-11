@@ -34,6 +34,7 @@ split in separate classes so that they are easier to manage.
 ## \addtogroup draftobjects
 # @{
 import math
+import json
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
@@ -111,6 +112,15 @@ class Array(DraftLink):
                             "Objects",
                             _tip)
             obj.Fuse = False
+
+        if "Skip" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "List of items in pattern to skip")
+            obj.addProperty("App::PropertyString",
+                            "Skip",
+                            "Objects",
+                            _tip)
+            obj.Skip = "[]"
 
     def set_ortho_properties(self, obj):
         """Set orthogonal properties only if they don't exist."""
@@ -379,6 +389,29 @@ class Array(DraftLink):
                            "NumberPolar", "Angle", "IntervalAxis"):
                     obj.setPropertyStatus(pr, "Hidden")
 
+    def parse_skip_list(self, obj):
+        """
+            Parses obj.Skip as a list of integers.
+            The reason for parsing this ourselves instead of using PropertyIntegerList
+            is so that we can handle failure silently
+        """
+        try:
+            skip_list_raw = json.loads(obj.Skip)
+        except json.decoder.JSONDecodeError:
+            return []
+
+        if not isinstance(skip_list_raw, list):
+            return []
+
+        skip_list = []
+
+        for s in skip_list_raw:
+            if isinstance(s, int):
+                skip_list.append(s)
+
+        return skip_list
+
+
     def execute(self, obj):
         """Execture when the object is created or recomputed."""
         if not obj.Base:
@@ -399,6 +432,8 @@ class Array(DraftLink):
                          "reference.")
                 raise TypeError(_info)
 
+        skip_list = self.parse_skip_list(obj)
+
         if obj.ArrayType == "ortho":
             pls = rect_placements(obj.Base.Placement,
                                   obj.IntervalX,
@@ -406,18 +441,20 @@ class Array(DraftLink):
                                   obj.IntervalZ,
                                   obj.NumberX,
                                   obj.NumberY,
-                                  obj.NumberZ)
+                                  obj.NumberZ,
+                                  skip_list)
         elif obj.ArrayType == "polar":
             av = obj.IntervalAxis if hasattr(obj, "IntervalAxis") else None
             pls = polar_placements(obj.Base.Placement,
                                    center, obj.Angle.Value,
-                                   obj.NumberPolar, axis, av)
+                                   obj.NumberPolar, axis, av, skip_list)
         elif obj.ArrayType == "circular":
             pls = circ_placements(obj.Base.Placement,
                                   obj.RadialDistance,
                                   obj.TangentialDistance,
                                   axis, center,
-                                  obj.NumberCircles, obj.Symmetry)
+                                  obj.NumberCircles, obj.Symmetry,
+                                  skip_list)
 
         return super(Array, self).buildShape(obj, pl, pls)
 
@@ -428,42 +465,47 @@ _Array = Array
 
 def rect_placements(base_placement,
                     xvector, yvector, zvector,
-                    xnum, ynum, znum):
+                    xnum, ynum, znum, skip_list):
     """Determine the placements where the rectangular copies will be."""
     pl = base_placement
     placements = [pl.copy()]
-
+    count = 0
     for xcount in range(xnum):
         currentxvector = App.Vector(xvector).multiply(xcount)
         if xcount != 0:
-            npl = pl.copy()
-            npl.translate(currentxvector)
-            placements.append(npl)
+            if count not in skip_list:
+                npl = pl.copy()
+                npl.translate(currentxvector)
+                placements.append(npl)
 
         for ycount in range(ynum):
             currentyvector = App.Vector(currentxvector)
             _y_shift = App.Vector(yvector).multiply(ycount)
             currentyvector = currentyvector.add(_y_shift)
             if ycount != 0:
-                npl = pl.copy()
-                npl.translate(currentyvector)
-                placements.append(npl)
+                if count not in skip_list:
+                    npl = pl.copy()
+                    npl.translate(currentyvector)
+                    placements.append(npl)
 
             for zcount in range(znum):
                 currentzvector = App.Vector(currentyvector)
                 _z_shift = App.Vector(zvector).multiply(zcount)
                 currentzvector = currentzvector.add(_z_shift)
                 if zcount != 0:
-                    npl = pl.copy()
-                    npl.translate(currentzvector)
-                    placements.append(npl)
+                    if count not in skip_list:
+                        npl = pl.copy()
+                        npl.translate(currentzvector)
+                        placements.append(npl)
+                        print("count: ", count)
+                count += 1
 
     return placements
 
 
 def polar_placements(base_placement,
                      center, angle,
-                     number, axis, axisvector):
+                     number, axis, axisvector, skip_list):
     """Determine the placements where the polar copies will be."""
     # print("angle ",angle," num ",num)
     placements = [base_placement.copy()]
@@ -484,6 +526,8 @@ def polar_placements(base_placement,
     axis_tuple = DraftVecUtils.tup(axis)
 
     for i in range(number - 1):
+        if i in skip_list:
+            continue
         currangle = fraction + (i*fraction)
         npl = pl.copy()
         npl.rotate(center_tuple, axis_tuple, currangle)
@@ -510,6 +554,7 @@ def circ_placements(base_placement,
     direction = axis.cross(App.Vector(lead)).normalize()
     placements = [base_placement.copy()]
 
+    count = 0
     for xcount in range(1, circle_number):
         rc = xcount * r_distance
         c = 2 * rc * math.pi
@@ -520,13 +565,15 @@ def circ_placements(base_placement,
 
         angle = 360.0/n
         for ycount in range(0, n):
-            npl = base_placement.copy()
-            trans = App.Vector(direction).multiply(rc)
-            npl.translate(trans)
-            npl.rotate(npl.Rotation.inverted().multVec(center-trans),
-                       axis,
-                       ycount * angle)
-            placements.append(npl)
+            if count not in skip_list:
+                npl = base_placement.copy()
+                trans = App.Vector(direction).multiply(rc)
+                npl.translate(trans)
+                npl.rotate(npl.Rotation.inverted().multVec(center-trans),
+                        axis,
+                        ycount * angle)
+                placements.append(npl)
+            count += 1
 
     return placements
 
