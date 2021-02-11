@@ -184,7 +184,7 @@ bool Sketch::analyseBlockedGeometry( const std::vector<Part::Geometry *> &intern
 
                 auto geoit = std::find(blockedGeoIds.begin(),blockedGeoIds.end(),c->Second);
 
-                if(geoit != blockedGeoIds.end() || onlyblockedGeometry[c->Second]) { // internal alignment geometry found, add to list
+                if(geoit != blockedGeoIds.end() && onlyblockedGeometry[c->Second]) { // internal alignment geometry found, add to list
                     // check if pre-fix or post-analyses
                     bool blockAffectedOnly = true;
 
