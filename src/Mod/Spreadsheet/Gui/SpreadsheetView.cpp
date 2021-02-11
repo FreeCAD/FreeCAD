@@ -237,7 +237,7 @@ void SheetView::updateContentLine()
         Cell * cell = sheet->getCell(CellAddress(i.row(), i.column()));
 
         if (cell)
-            cell->getStringContent(str);
+            (void)cell->getStringContent(str);
         ui->cellContent->setText(QString::fromUtf8(str.c_str()));
         ui->cellContent->setIndex(i);
         ui->cellContent->setEnabled(true);
@@ -256,7 +256,7 @@ void SheetView::updateAliasLine()
         Cell * cell = sheet->getCell(CellAddress(i.row(), i.column()));
 
         if (cell)
-            cell->getAlias(str);
+            (void)cell->getAlias(str);
         ui->cellAlias->setText(QString::fromUtf8(str.c_str()));
         ui->cellAlias->setIndex(i);
         ui->cellAlias->setEnabled(true);
@@ -355,7 +355,7 @@ void SheetView::editingFinished()
             if (!aliasOkay){
                 //do not show error message if failure to set new alias is because it is already the same string
                 std::string current_alias;
-                cell->getAlias(current_alias);
+                (void)cell->getAlias(current_alias);
                 if (str != QString::fromUtf8(current_alias.c_str())){
                     Base::Console().Error("Unable to set alias: %s\n", Base::Tools::toStdString(str).c_str());
                 }
