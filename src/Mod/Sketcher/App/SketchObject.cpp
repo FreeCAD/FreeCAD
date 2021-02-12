@@ -7590,7 +7590,7 @@ void SketchObject::rebuildExternalGeometry(bool defining)
     solverNeedsUpdate=true;
     Constraints.acceptGeometry(getCompleteGeometry());
 
-    if(hasError)
+    if(hasError && this->isRecomputing())
         throw Base::RuntimeError("Missing external geometry reference");
 }
 
