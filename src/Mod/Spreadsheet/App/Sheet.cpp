@@ -241,7 +241,7 @@ bool Sheet::exportToFile(const std::string &filename, char delimiter, char quote
         if (prevRow != -1 && prevRow != i->row()) {
             for (int j = prevRow; j < i->row(); ++j)
                 file << std::endl;
-            prevCol = 0;
+            prevCol = usedCells.begin()->col();
         }
         if (prevCol != -1 && i->col() != prevCol) {
             for (int j = prevCol; j < i->col(); ++j)

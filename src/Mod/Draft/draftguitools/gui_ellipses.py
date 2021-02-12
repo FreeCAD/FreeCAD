@@ -53,12 +53,11 @@ class Ellipse(gui_base_original.Creator):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = "Creates an ellipse. CTRL to snap."
 
         return {'Pixmap': 'Draft_Ellipse',
                 'Accel': "E, L",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Ellipse", "Ellipse"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Ellipse", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Ellipse", "Creates an ellipse. CTRL to snap.")}
 
     def Activated(self):
         """Execute when the command is called."""
