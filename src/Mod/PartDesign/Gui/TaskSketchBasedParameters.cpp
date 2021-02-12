@@ -137,6 +137,7 @@ void TaskSketchBasedParameters::initUI(QWidget *widget) {
     boxLayout->addLayout(layout);
 
     addUpdateViewCheckBox(widget);
+    _refresh();
 }
 
 void TaskSketchBasedParameters::_refresh()
