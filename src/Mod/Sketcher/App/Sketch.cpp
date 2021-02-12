@@ -138,7 +138,9 @@ bool Sketch::analyseBlockedGeometry( const std::vector<Part::Geometry *> &intern
                                      std::vector<bool> &onlyblockedGeometry,
                                      std::vector<int> &blockedGeoIds) const
 {
-    bool isSomethingBlocked = false;
+    // To understand this function read the documentation in Sketch.h
+    // It is important that "onlyblockedGeometry" ONLY identifies blocked geometry
+    // that is not affected by any other driving constraint
     bool doesBlockAffectOtherConstraints = false;
 
     int geoindex = 0;
@@ -152,7 +154,7 @@ bool Sketch::analyseBlockedGeometry( const std::vector<Part::Geometry *> &intern
                 // is block driving
                 if( c->Type == Sketcher::Block && c->isDriving && c->First == geoindex)
                     blockisDriving = true;
-
+                // We have another driving constraint (which may be InternalAlignment)
                 if( c->Type != Sketcher::Block && c->isDriving &&
                     (c->First == geoindex || c->Second == geoindex || c->Third == geoindex) )
                     blockOnly = false;
@@ -161,12 +163,10 @@ bool Sketch::analyseBlockedGeometry( const std::vector<Part::Geometry *> &intern
             if(blockisDriving) {
                 if(blockOnly) {
                     onlyblockedGeometry[geoindex] = true; // we pre-fix this geometry
-                    isSomethingBlocked = true;
                 }
                 else {
                     // we will have to pos-analyse the first diagnose result for these geometries
                     // in order to avoid redundant constraints
-                    isSomethingBlocked = true;
                     doesBlockAffectOtherConstraints = true;
                     blockedGeoIds.push_back(geoindex);
                 }
@@ -174,39 +174,6 @@ bool Sketch::analyseBlockedGeometry( const std::vector<Part::Geometry *> &intern
 
         }
         geoindex++;
-    }
-
-    if(isSomethingBlocked) {
-
-        // look for internal geometry linked IAs
-        for(auto c : constraintList) {
-            if(c->Type == InternalAlignment) {
-
-                auto geoit = std::find(blockedGeoIds.begin(),blockedGeoIds.end(),c->Second);
-
-                if(geoit != blockedGeoIds.end() || onlyblockedGeometry[c->Second]) { // internal alignment geometry found, add to list
-                    // check if pre-fix or post-analyses
-                    bool blockAffectedOnly = true;
-
-                    for(auto ic : constraintList) {
-                        // there is another driving constraint
-                        if( ic->Type != Sketcher::Block && ic->isDriving &&
-                            (ic->First == c->First || ic->Second == c->First || ic->Third == c->First))
-                            blockAffectedOnly = false;
-                    }
-
-                    if(blockAffectedOnly) {
-                        onlyblockedGeometry[c->Second] = true; // we pre-fix this geometry
-                    }
-                    else {
-                        // we will have to post-analyse the first diagnose result for these geometries
-                        // in order to avoid redundant constraints
-                        doesBlockAffectOtherConstraints = true;
-                        blockedGeoIds.push_back(*geoit);
-                    }
-                }
-            }
-        }
     }
 
     return doesBlockAffectOtherConstraints;
@@ -247,19 +214,23 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
 
     Base::Console().Log("\nOnlyBlocked GeoIds:");
     size_t i = 0;
+    bool found = false;
     for(; i < onlyBlockedGeometry.size(); i++) {
-        if(onlyBlockedGeometry[i])
+        if(onlyBlockedGeometry[i]) {
             Base::Console().Log("\n  GeoId=%d", i);
+            found = true;
+        }
     }
-    if( i == 0)
+    if(found)
         Base::Console().Log("\n  None");
 
     Base::Console().Log("\nNotOnlyBlocked GeoIds:");
     i = 0;
     for(; i < blockedGeoIds.size(); i++)
         Base::Console().Log("\n  GeoId=%d", blockedGeoIds[i]);
-    if( i == 0)
+    if(i == 0)
         Base::Console().Log("\n  None");
+    Base::Console().Log("\n");
 #endif //DEBUG_BLOCK_CONSTRAINT
 
     addGeometry(intGeoList,onlyBlockedGeometry);
