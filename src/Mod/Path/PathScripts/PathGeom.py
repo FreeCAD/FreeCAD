@@ -284,29 +284,21 @@ def cmdsForEdge(edge, flip = False, useHelixForBSpline = True, segm = 50, hSpeed
         else:
             # We're dealing with a helix or a more complex shape and it has to get approximated
             # by a number of straight segments
-            eStraight = Part.Edge(Part.LineSegment(p1, p3))
-            esP2 = eStraight.valueAt((eStraight.FirstParameter + eStraight.LastParameter)/2)
-            deviation = (p2 - esP2).Length
-            if isRoughly(deviation, 0):
-                return [ Path.Command('G1', {'X': p3.x, 'Y': p3.y, 'Z': p3.z}) ]
-            # at this point pixellation is all we can do
+            points = edge.discretize(Deflection=0.01)
+            if flip:
+                points = points[::-1]
+
             commands = []
-            segments = int(math.ceil((deviation / eStraight.Length) * segm))
-            #print("**** pixellation with %d segments" % segments)
-            dParameter = (edge.LastParameter - edge.FirstParameter) / segments
-            # starting point
-            p0 = edge.valueAt(edge.LastParameter) if flip else edge.valueAt(edge.FirstParameter)
-            for i in range(0, segments):
-                if flip:
-                    p = edge.valueAt(edge.LastParameter - (i + 1) * dParameter)
-                else:
-                    p = edge.valueAt(edge.FirstParameter + (i + 1) * dParameter)
-                if hSpeed > 0 and vSpeed > 0:
-                    params.update({'F': speedBetweenPoints(p0, p, hSpeed, vSpeed)})
-                cmd = Path.Command('G1', {'X': p.x, 'Y': p.y, 'Z': p.z})
-                #print("***** %s" % cmd)
-                commands.append(cmd)
-                p0 = p
+            if points:
+                p0 =  points[0]
+                for p in points[1:]:
+                    params = {'X': p.x, 'Y': p.y, 'Z': p.z}
+                    if hSpeed > 0 and vSpeed > 0:
+                        params['F'] = speedBetweenPoints(p0, p, hSpeed, vSpeed)
+                    cmd = Path.Command('G1', params)
+                    # print("***** {}".format(cmd))
+                    commands.append(cmd)
+                    p0 = p
     #print commands
     return commands
 
