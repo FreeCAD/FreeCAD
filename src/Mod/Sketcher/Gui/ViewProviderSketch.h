@@ -34,6 +34,7 @@
 #include <Gui/Selection.h>
 #include <Gui/GLPainter.h>
 #include <App/Part.h>
+#include <App/DocumentObserver.h>
 #include <boost_signals2.hpp>
 #include <QCoreApplication>
 #include <Gui/Document.h>
@@ -283,6 +284,8 @@ public:
     /** Observer for parameter group. */
     void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override;
 
+    const App::SubObjectT &getEditingContext() const;
+
 protected:
     Base::Placement getEditingPlacement() const;
 
@@ -490,6 +493,7 @@ protected:
     std::string editDocName;
     std::string editObjName;
     std::string editSubName;
+    App::SubObjectT editObjT;
 
     // Virtual space variables
     bool isShownVirtualSpace; // indicates whether the present virtual space view is the Real Space or the Virtual Space (virtual space 1 or 2)

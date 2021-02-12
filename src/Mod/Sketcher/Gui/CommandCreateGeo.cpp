@@ -5883,6 +5883,14 @@ namespace SketcherGui {
                 case Sketcher::SketchObject::rlCircularReference:
                     this->notAllowedReason = QT_TR_NOOP("Linking this will cause circular dependency.");
                     break;
+
+                    // We'll auto create shapebinder in the following cases.
+#if 1
+                case Sketcher::SketchObject::rlOtherDoc:
+                case Sketcher::SketchObject::rlOtherBody:
+                case Sketcher::SketchObject::rlOtherPart:
+                    return true;
+#else
                 case Sketcher::SketchObject::rlOtherDoc:
                     this->notAllowedReason = QT_TR_NOOP("This object is in another document.");
                     break;
@@ -5892,6 +5900,7 @@ namespace SketcherGui {
                 case Sketcher::SketchObject::rlOtherPart:
                     this->notAllowedReason = QT_TR_NOOP("This object belongs to another part, can't link.");
                     break;
+#endif
                 default:
                     break;
                 }
@@ -6050,6 +6059,7 @@ public:
             App::DocumentObject* obj = sketchgui->getObject()->getDocument()->getObject(msg.pObjectName);
             if (obj == NULL)
                 throw Base::ValueError("Sketcher: External geometry: Invalid object in selection");
+
             std::string subName(msg.pSubName);
             if (obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) ||
                 obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId()) ||
@@ -6058,34 +6068,43 @@ public:
                 (subName.size() > 4 && subName.substr(0,4) == "Face")) {
                 try {
                     if(attaching.size()) {
+                        Gui::Command::openCommand(
+                                QT_TRANSLATE_NOOP("Command", "Attach external geometry"));
                         std::ostringstream ss;
                         ss << '[';
                         for(int geoId : attaching)
                             ss << geoId << ',';
                         ss << ']';
-                        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Attach external geometry"));
                         Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                "attachExternal(%s,\"%s\",\"%s\")",
-                                ss.str(), msg.pObjectName, msg.pSubName);
-                        Gui::Command::commitCommand();
+                                "attachExternal(%s, Part.importExternalObject(%s, %s))",
+                                ss.str(),
+                                msg.Object.getSubObjectPython(false),
+                                sketchgui->getEditingContext().getSubObjectPython(false));
                     } else {
-                        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add external geometry"));
+                        Gui::Command::openCommand(
+                                QT_TRANSLATE_NOOP("Command", "Add external geometry"));
                         Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                "addExternal(\"%s\",\"%s\",%s)",
-                                msg.pObjectName, msg.pSubName, defining?"True":"False");
-                        Gui::Command::commitCommand();
+                                "addExternal(Part.importExternalObject(%s, %s),%s)",
+                                msg.Object.getSubObjectPython(false),
+                                sketchgui->getEditingContext().getSubObjectPython(false),
+                                defining?"True":"False");
                     }
+
+                    Gui::Selection().clearSelection();
+                    if(attaching.size())
+                        sketchgui->purgeHandler();
 
                     // adding external geometry does not require a solve() per se (the DoF is the same),
                     // however a solve is required to update the amount of solver geometry, because we only
                     // redraw a changed Sketch if the solver geometry amount is the same as the SkethObject
                     // geometry amount (as this avoids other issues).
                     // This solver is a very low cost one anyway (there is actually nothing to solve).
-                    tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
-
-                    Gui::Selection().clearSelection();
-                    if(attaching.size())
-                        sketchgui->purgeHandler();
+                    try {
+                        tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
+                    } catch (Base::Exception &e) {
+                        e.ReportException();
+                    }
+                    Gui::Command::commitCommand();
                 }
                 catch (const Base::Exception& e) {
                     Base::Console().Error("Failed to add external geometry: %s\n", e.what());

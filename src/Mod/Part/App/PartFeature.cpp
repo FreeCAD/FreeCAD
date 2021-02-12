@@ -305,6 +305,89 @@ Feature::getElementHistory(App::DocumentObject *feature,
 }
 
 std::vector<std::pair<std::string,std::string> > 
+Feature::getElementFromSource(App::DocumentObject *obj,
+                              const char *subname,
+                              App::DocumentObject *src,
+                              const char *srcSub,
+                              bool single)
+{
+    std::vector<std::pair<std::string,std::string> > res;
+    if (!obj || !src)
+        return res;
+
+    auto shape = getTopoShape(obj, subname); 
+    App::DocumentObject *owner = nullptr;
+    auto srcShape = getTopoShape(src, srcSub, false, nullptr, &owner);
+
+    int tagChanges;
+    std::pair<std::string, std::string> element;
+    const char *checkingSubname = "";
+    std::string sub = Data::ComplexGeoData::noElementName(subname);
+    auto checkHistory = [&](const std::string &name, size_t, long tag) {
+        if (std::abs(tag) == owner->getID()) {
+            if (!tagChanges)
+                tagChanges = 1;
+        } else if (tagChanges && ++tagChanges > 3) {
+            // Once we found the tag, trace no more than 2 addition tag changes
+            // to limited the search depth.
+            return true;
+        }
+        if (name == element.first) {
+            std::pair<std::string, std::string> objElement;
+            std::size_t len = sub.size();
+            sub += checkingSubname;
+            GeoFeature::resolveElement(obj, sub.c_str(), objElement);
+            sub.resize(len);
+            if (objElement.second.size()) {
+                res.push_back(std::move(objElement));
+                return true;
+            }
+        }
+        return false;
+    };
+
+    // obtain both the old and new style element name
+    GeoFeature::resolveElement(src,srcSub,element,false);
+
+    // Strip prefix and indexed based name at the tail of the new style element name
+    element.first = Data::ComplexGeoData::isMappedElement(
+            Data::ComplexGeoData::newElementName(element.first.c_str()).c_str());
+
+    // Use the old style name to obtain the shape type
+    auto type = TopoShape::shapeType(
+            Data::ComplexGeoData::findElementName(element.second.c_str()));
+    // If the given shape has the same number of sub shapes as the source (e.g.
+    // a compound operation), then take a shortcut and assume the element index
+    // remains the same. But we still need to trace the shape history to
+    // confirm.
+    if (shape.countSubShapes(type) == srcShape.countSubShapes(type)) {
+        tagChanges = 0;
+        checkingSubname = element.second.c_str();
+        auto mappedName = shape.getElementName(checkingSubname, Data::ComplexGeoData::MapToNamed);
+        shape.traceElement(mappedName, checkHistory);
+        if (res.size())
+            return res;
+    }
+
+    // No shortcut, need to search every element of the same type. This may
+    // result in multiple matches, e.g. a compound of array of the same
+    // instance.
+    std::string elementName = TopoShape::shapeName(type);
+    std::size_t len = elementName.size();
+    for (int i=0, count=shape.countSubShapes(type); i<count; ++i) {
+        elementName.resize(len);
+        elementName += std::to_string(i+1);
+        checkingSubname = elementName.c_str();
+        auto mappedName = shape.getElementName(checkingSubname, Data::ComplexGeoData::MapToNamed);
+        tagChanges = 0;
+        shape.traceElement(mappedName, checkHistory);
+        if (single && res.size())
+            break;
+    }
+    return res;
+}
+
+std::vector<std::pair<std::string,std::string> > 
 Feature::getRelatedElements(App::DocumentObject *obj, const char *name, bool sameType, bool withCache)
 {
     auto owner = obj;

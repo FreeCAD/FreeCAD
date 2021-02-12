@@ -744,7 +744,10 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
                     switch(vals[ConstrId]->FirstPos)
                     {
                         case Sketcher::none:
-                            ss << "Edge" << vals[ConstrId]->First + 1;
+                            if (vals[ConstrId]->First < 0)
+                                ss << "ExternalEdge" << -vals[ConstrId]->First - 2;
+                            else
+                                ss << "Edge" << vals[ConstrId]->First + 1;
                             break;
                         case Sketcher::start:
                         case Sketcher::end:
@@ -765,7 +768,10 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
                     switch(vals[ConstrId]->SecondPos)
                     {
                         case Sketcher::none:
-                            ss << "Edge" << vals[ConstrId]->Second + 1;
+                            if (vals[ConstrId]->Second < 0)
+                                ss << "ExternalEdge" << -vals[ConstrId]->Second - 2;
+                            else
+                                ss << "Edge" << vals[ConstrId]->Second + 1;
                             break;
                         case Sketcher::start:
                         case Sketcher::end:
@@ -786,7 +792,10 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
                     switch(vals[ConstrId]->ThirdPos)
                     {
                         case Sketcher::none:
-                            ss << "Edge" << vals[ConstrId]->Third + 1;
+                            if (vals[ConstrId]->Third < 0)
+                                ss << "ExternalEdge" << -vals[ConstrId]->Third - 2;
+                            else
+                                ss << "Edge" << vals[ConstrId]->Third + 1;
                             break;
                         case Sketcher::start:
                         case Sketcher::end:

@@ -946,7 +946,7 @@ public:
                 || type.isDerivedFrom(PartDesign::Feature::getClassTypeId())
                 || type.isDerivedFrom(PartDesign::Body::getClassTypeId())
                 || type.isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId())
-                || type.isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId())
+                || type.isDerivedFrom(Part::SubShapeBinder::getClassTypeId())
                 || object.hasExtension(App::LinkBaseExtension::getExtensionClassTypeId()))
             return;
         if (App::GeoFeatureGroupExtension::getGroupOfObject(&object))
@@ -1144,108 +1144,32 @@ public:
     }
 
     App::SubObjectT importExternalObject(const App::SubObjectT &feature, bool report) {
-        App::DocumentObject *topParent;
-        std::string subname;
-
-        PartDesign::Body *body = Base::freecad_dynamic_cast<PartDesign::Body>(
-                editBodyT.getSubObject());
-        if (body) {
-            topParent = editBodyT.getObject();
-            subname = editBodyT.getSubName();
-        } else {
-            body = Base::freecad_dynamic_cast<PartDesign::Body>(
-                    activeBodyT.getSubObject());
-            if (!body) {
-                if (!report)
-                    FC_THROWM(Base::RuntimeError, "No active body found");
-                QMessageBox::critical(Gui::getMainWindow(),
-                        QObject::tr("Failed to import external object"),
-                        QObject::tr("No active body found"));
-                return App::SubObjectT();
-            }
-            topParent = activeBodyT.getObject();
-            subname = activeBodyT.getSubName();
-        }
-        auto sobj = feature.getSubObject();
-        if (!sobj) {
-            if (!report)
-                FC_THROWM(Base::RuntimeError,
-                        "Sub object not found: " << feature.getSubObjectFullName());
-            QMessageBox::critical(Gui::getMainWindow(),
-                    QObject::tr("Failed to import external object"),
-                    QString::fromLatin1("%1: %2").arg(
-                        QObject::tr("Sub object not found"),
-                        QString::fromUtf8(feature.getSubObjectFullName().c_str())));
-            return App::SubObjectT();
-        }
-
-        if (PartDesign::Body::findBodyOf(sobj) == body) 
-            return App::SubObjectT(sobj, feature.getElementName());
-
-        if (body->getInListEx(true).count(sobj)) {
-            if (!report)
-                FC_THROWM(Base::RuntimeError,
-                        "Cyclic reference to: " << feature.getSubObjectFullName());
-            QMessageBox::critical(Gui::getMainWindow(),
-                    QObject::tr("Failed to import external object"),
-                    QString::fromLatin1("%1: %2").arg(
-                        QObject::tr("Cyclic reference to"),
-                        QString::fromUtf8(feature.getSubObjectFullName().c_str())));
-            return App::SubObjectT();
-        }
-
         try {
-            auto link = feature.getObject();
-            std::string linkSub = feature.getSubName();
-            topParent->resolveRelativeLink(subname, link, linkSub);
-
-            App::SubObjectT resolved(link, linkSub.c_str());
-            if (PartDesign::Body::findBodyOf(link) == body)
-                return resolved;
-
-            std::string resolvedSub = resolved.getSubNameNoElement() + resolved.getOldElementName();
-
-            // Try to find an unused import of the same object
-            for (auto o : body->Group.getValues()) {
-                auto binder = Base::freecad_dynamic_cast<PartDesign::SubShapeBinder>(o);
-                if (!binder || !boost::starts_with(o->getNameInDocument(), "Import"))
-                    continue;
-                if (binder->Support.getSize() != 1 || binder->getInList().size() != 1)
-                    continue;
-                const auto &subs = binder->Support.getSubListValues().front().getSubValues(false);
-                if ((resolvedSub.empty() && subs.size())
-                        || subs.size() > 1
-                        || (resolvedSub.size() && subs.empty())
-                        || (!subs.empty() && resolvedSub != subs[0]))
-                    continue;
-                return binder;
+            App::SubObjectT editObjT = this->editBodyT;
+            PartDesign::Body *body = Base::freecad_dynamic_cast<PartDesign::Body>(
+                    editObjT.getSubObject());
+            if (!body) {
+                body = Base::freecad_dynamic_cast<PartDesign::Body>(
+                        activeBodyT.getSubObject());
+                if (!body) {
+                    if (!report)
+                        FC_THROWM(Base::RuntimeError, "No active body found");
+                    QMessageBox::critical(Gui::getMainWindow(),
+                            QObject::tr("Failed to import external object"),
+                            QObject::tr("No active body found"));
+                    return App::SubObjectT();
+                }
+                editObjT = activeBodyT;
             }
-
-            auto binder = static_cast<PartDesign::SubShapeBinder*>(
-                    body->getDocument()->addObject("PartDesign::SubShapeBinder", "Import"));
-            body->addObject(binder);
-            std::map<App::DocumentObject*, std::vector<std::string> > support;
-            auto &supportSubs = support[link];
-            if (linkSub.size())
-                supportSubs.push_back(std::move(linkSub));
-            binder->setLinks(std::move(support));
-            return binder;
-        }
-        catch (Base::Exception &e) {
+            return PartDesign::SubShapeBinder::import(feature, editObjT, true);
+        } catch (Base::Exception & e) {
             if (!report)
                 throw;
             QMessageBox::critical(Gui::getMainWindow(),
                     QObject::tr("Failed to import external object"),
                     QString::fromUtf8(e.what()));
+            return App::SubObjectT();
         }
-        catch (...) {
-            if (!report)
-                throw;
-            QMessageBox::critical(Gui::getMainWindow(),
-                    QObject::tr("Failed to import external object"),
-                    QObject::tr("Unknown exception"));
-        }
-        return App::SubObjectT();
     }
 
 public:

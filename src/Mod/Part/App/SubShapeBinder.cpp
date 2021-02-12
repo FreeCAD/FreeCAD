@@ -1020,3 +1020,116 @@ App::DocumentObject *SubShapeBinder::_getLinkedObject(
 
     return binder->_getLinkedObject(true, mat, false, depth+1);
 }
+
+App::SubObjectT
+SubShapeBinder::import(const App::SubObjectT &feature, 
+                       const App::SubObjectT &editObjT,
+                       bool importWholeObject)
+{
+    App::DocumentObject *editObj = nullptr;
+    App::DocumentObject *container = nullptr;
+    App::DocumentObject *topParent = nullptr;
+    std::string subname;
+
+    editObj = editObjT.getSubObject();
+    if (!editObj)
+        FC_THROWM(Base::RuntimeError, "No editing object");
+    else {
+        std::ostringstream ss;
+        auto objs = editObjT.getSubObjectList();
+        topParent = objs.front();
+        for (auto obj : objs) {
+            ss << obj->getNameInDocument() << ".";
+            if (obj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) {
+                subname = ss.str();
+                container = obj;
+                // No break. We need the last geo group along the path
+            }
+        }
+    }
+    if (!container) {
+        container = Part::BodyBase::findBodyOf(editObj);
+        if (!container) {
+            container = App::Part::getPartOfObject(editObj);
+            if (!container)
+                return feature;
+        }
+    }
+    auto sobj = feature.getSubObject();
+    if (!sobj) {
+        FC_THROWM(Base::RuntimeError,
+                "Sub object not found: " << feature.getSubObjectFullName());
+    }
+
+    if (Part::BodyBase::findBodyOf(sobj) == container
+            || App::Part::getPartOfObject(sobj) == container)
+        return App::SubObjectT(sobj, feature.getElementName());
+
+    if (container->getInListEx(true).count(sobj)) {
+        FC_THROWM(Base::RuntimeError,
+                "Cyclic reference to: " << feature.getSubObjectFullName());
+    }
+
+    auto link = feature.getObject();
+    std::string linkSub = feature.getSubName();
+    topParent->resolveRelativeLink(subname, link, linkSub);
+
+    App::SubObjectT resolved(link, linkSub.c_str());
+    if (Part::BodyBase::findBodyOf(link) == container
+            || App::Part::getPartOfObject(link) == container)
+        return resolved;
+
+    std::string resolvedSub = resolved.getSubNameNoElement();
+    if (!importWholeObject)
+        resolvedSub += resolved.getOldElementName();
+    auto group = container->getExtensionByType<App::GeoFeatureGroupExtension>(true);
+    if (!group)
+        FC_THROWM(Base::RuntimeError, "Invalid container: " << container->getFullName());
+
+    std::string element;
+    if (importWholeObject)
+        element = feature.getNewElementName();
+
+    // Try to find an unused import of the same object
+    for (auto o : group->Group.getValue()) {
+        auto binder = Base::freecad_dynamic_cast<Part::SubShapeBinder>(o);
+        if (!binder || !boost::starts_with(o->getNameInDocument(), "Import"))
+            continue;
+        if (binder->Support.getSize() != 1)
+            continue;
+        const auto &subs = binder->Support.getSubListValues().front().getSubValues(false);
+        if (subs.size() > 1
+                || (resolvedSub.size() && subs.empty())
+                || (!subs.empty() && resolvedSub != subs[0]))
+            continue;
+        if (element.size()) {
+            auto res = Part::Feature::getElementFromSource(binder, "", sobj, element.c_str(), true);
+            if (res.size())
+                return App::SubObjectT(binder, res.front().second.c_str());
+            FC_WARN("Failed to deduce bound geometry from existing import: " << binder->getFullName());
+        } else
+            return binder;
+    }
+
+    auto binder = static_cast<Part::SubShapeBinder*>(
+            container->getDocument()->addObject("Part::SubShapeBinder", "Import"));
+    binder->Visibility.setValue(false);
+    group->addObject(binder);
+    std::map<App::DocumentObject*, std::vector<std::string> > support;
+    auto &supportSubs = support[link];
+    if (resolvedSub.size())
+        supportSubs.push_back(std::move(resolvedSub));
+    binder->setLinks(std::move(support));
+    std::string label = sobj->Label.getValue();
+    if (!boost::starts_with(label, "Import_"))
+        label = std::string("Import_") + label;
+    binder->Label.setValue(label.c_str());
+    if (element.size()) {
+        binder->getDocument()->recomputeFeature(binder);
+        auto res = Part::Feature::getElementFromSource(binder, "", sobj, element.c_str(), true);
+        if (res.size())
+            return App::SubObjectT(binder, res.front().second.c_str());
+        FC_THROWM(Base::RuntimeError, "Failed to deduce bound geometry");
+    }
+    return binder;
+}

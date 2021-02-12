@@ -135,6 +135,7 @@
 #include "PartPyCXX.h"
 #include "TopoShapeOpCode.h"
 #include "modelRefine.h"
+#include "SubShapeBinder.h"
 
 #ifdef FCUseFreeType
 #  include "FT2FC.h"
@@ -571,7 +572,18 @@ public:
             "subElement: old style element name, or '' if none"
         );
         add_varargs_method("joinSubname",&Module::joinSubname,
-            "joinSubname(sub,mapped,subElement) -> subname\n"
+            "joinSubname(sub,mapped,subElement) -> subname"
+        );
+        add_keyword_method("importExternalObject",&Module::importExternalObject,
+            "importExternalObject(obj, editObj, wholeObject = True) -> obj|(obj, subname)\n"
+            "Import an external object reference using SubShapeBinder. If the reference is not\n"
+            "external (i.e. within the same document and coordinate system), the original reference\n"
+            "is returned.\n\n"
+            "obj: the referenced object, or tuple(obj, subname) for sub-object reference.\n"
+            "editObj: the editing object used to determine the parent container that defines a\n"
+            "         coordinate system. It can also be a tuple for a sub-object reference\n"
+            "wholeObject: if True, then import the whole object if necessary, or else just import the\n"
+            "             referenced sub-element."
         );
         initialize("This is a module working with shapes."); // register with Python
 
@@ -2413,6 +2425,27 @@ private:
             subname += element;
         }
         return Py::String(subname);
+    }
+
+    Py::Object importExternalObject(const Py::Tuple& args, const Py::Dict &kwds) {
+        PyObject *pyobj;
+        PyObject *pyeditobj = 0;
+        PyObject *wholeobj = Py_True;
+        static char* kwd_list[] = {"obj", "editObj", "wholeObject", 0};
+        if(!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "OO|O", kwd_list,
+                &pyobj, &pyeditobj, &wholeobj))
+            throw Py::Exception();
+
+        PY_TRY {
+            App::SubObjectT objT;
+            objT.setPyObject(pyobj);
+
+            App::SubObjectT editObjT;
+            editObjT.setPyObject(pyeditobj);
+
+            return Py::asObject(SubShapeBinder::import(
+                        objT, editObjT, PyObject_IsTrue(wholeobj)).getPyObject());
+        } _PY_CATCH_OCC(throw Py::Exception())
     }
 };
 

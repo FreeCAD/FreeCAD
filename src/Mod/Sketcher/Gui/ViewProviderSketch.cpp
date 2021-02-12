@@ -7069,12 +7069,14 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
 
     auto editDoc = Gui::Application::Instance->editDocument();
     editDocName.clear();
+    editObjT = App::SubObjectT();
     if(editDoc) {
         ViewProviderDocumentObject *parent=0;
         editDoc->getInEdit(&parent,&editSubName);
         if(parent) {
             editDocName = editDoc->getDocument()->getName();
             editObjName = parent->getObject()->getNameInDocument();
+            editObjT = App::SubObjectT(parent->getObject(), editSubName.c_str());
         }
     }
     if(editDocName.empty()) {
@@ -7493,6 +7495,11 @@ void ViewProviderSketch::selectElement(const char *element, bool preselect) cons
         Gui::Selection().addSelection2(SEL_PARAMS);
 }
 
+const App::SubObjectT &ViewProviderSketch::getEditingContext() const
+{
+    return editObjT;
+}
+
 // ---------------------------------------------------------
 
 PROPERTY_SOURCE(SketcherGui::ViewProviderSketchExport, PartGui::ViewProvider2DObject)
@@ -7603,4 +7610,3 @@ bool ViewProviderSketchExport::doubleClicked(void) {
     vp->selectElement(name.c_str());
     return true;
 }
-

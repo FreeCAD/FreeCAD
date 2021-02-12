@@ -83,6 +83,10 @@ public:
     App::DocumentObject *_getLinkedObject(bool recurse=true,
             Base::Matrix4D *mat=0, bool transform=false, int depth=0) const;
 
+    static App::SubObjectT import(const App::SubObjectT &feature,
+                                  const App::SubObjectT &editObj,
+                                  bool importWholeObject = true);
+
 protected:
     virtual App::DocumentObjectExecReturn* execute(void) override;
     virtual void onChanged(const App::Property *prop) override;

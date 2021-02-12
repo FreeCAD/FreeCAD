@@ -31,6 +31,7 @@
 #include <App/GeoFeature.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyGeo.h>
+#include <App/FeaturePython.h>
 // includes for findAllFacesCutBy()
 #include <TopoDS_Face.hxx>
 #include <BRep_Builder.hxx>
@@ -86,6 +87,25 @@ public:
 
     static std::vector<std::pair<std::string,std::string> > 
     getRelatedElements(App::DocumentObject *obj, const char *name, bool sameType=true, bool withCache=true);
+
+    /** Obtain the element name from a feature based of the element name of its source feature
+     *
+     * @param obj: current feature
+     * @param subname: sub-object/element reference
+     * @param src: source feature
+     * @param srcSub: sub-object/element reference of the source
+     * @param single: if true, then return upon first match is found, or else
+     *                return all matches. Multiple matches are possible for
+     *                compound of multiple instances of the same source shape.
+     *
+     * @return Return a vector of pair of new style and old style element names.
+     */
+    static std::vector<std::pair<std::string,std::string> >
+    getElementFromSource(App::DocumentObject *obj,
+                         const char *subname,
+                         App::DocumentObject *src,
+                         const char *srcSub,
+                         bool single = false);
 
     TopLoc_Location getLocation() const;
 

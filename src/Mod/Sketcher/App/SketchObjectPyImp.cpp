@@ -40,6 +40,7 @@
 #include <Base/QuantityPy.h>
 #include <App/Document.h>
 #include <App/OriginFeature.h>
+#include <App/DocumentObserver.h>
 #include <CXX/Objects.hxx>
 
 // inclusion of the generated files (generated out of SketchObjectSFPy.xml)
@@ -523,12 +524,22 @@ PyObject* SketchObjectPy::carbonCopy(PyObject *args)
 
 PyObject* SketchObjectPy::addExternal(PyObject *args)
 {
-    char *ObjectName;
-    char *SubName;
+    const char *ObjectName;
+    const char *SubName;
     PyObject *defining = Py_False;
-    if (!PyArg_ParseTuple(args, "ss|O!:Give an object and subelement name", 
-                &ObjectName,&SubName,&PyBool_Type,&defining))
-        return 0;
+    PyObject *pyobj;
+    App::SubObjectT ref;
+
+    if (PyArg_ParseTuple(args, "O|O", &pyobj, &defining)) {
+        ref.setPyObject(pyobj);
+        ObjectName = ref.getObjectName().c_str();
+        SubName = ref.getSubName().c_str();
+    } else {
+        PyErr_Clear();
+        if (!PyArg_ParseTuple(args, "ss|O!:Give an object and subelement name", 
+                    &ObjectName,&SubName,&PyBool_Type,&defining))
+            return 0;
+    }
 
     // get the target object for the external link
     Sketcher::SketchObject* skObj = this->getSketchObjectPtr();
@@ -577,11 +588,21 @@ PyObject* SketchObjectPy::delExternal(PyObject *args)
 PyObject* SketchObjectPy::attachExternal(PyObject *args)
 {
     std::vector<int> geoIds;
-    char *ObjectName;
-    char *SubName;
+    const char *ObjectName;
+    const char *SubName;
     PyObject *pyobj;
-    if (!PyArg_ParseTuple(args, "Oss", &pyobj, &ObjectName, &SubName))
-        return 0;
+    PyObject *pyref;
+    App::SubObjectT ref;
+
+    if (PyArg_ParseTuple(args, "OO", &pyobj, &pyref)) {
+        ref.setPyObject(pyref);
+        ObjectName = ref.getObjectName().c_str();
+        SubName = ref.getSubName().c_str();
+    } else {
+        PyErr_Clear();
+        if (!PyArg_ParseTuple(args, "Oss", &pyobj, &ObjectName, &SubName))
+            return 0;
+    }
 
     std::vector<Py::Object> pyargs;
     Py::Object arg(pyobj);
