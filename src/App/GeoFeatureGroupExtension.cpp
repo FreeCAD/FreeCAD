@@ -307,7 +307,7 @@ void GeoFeatureGroupExtension::extensionOnChanged(const Property* p) {
                         auto iter = objMap.find(link);
                         if(iter == objMap.end() || !iter->second) {
                             const char *action;
-                            if (!DocumentParams::GeoGroupAllowCrossLink())
+                            if (DocumentParams::GeoGroupAllowCrossLink())
                                 action = "Invalid child ";
                             else {
                                 action = "Remove ";
