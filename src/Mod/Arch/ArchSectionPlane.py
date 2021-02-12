@@ -379,7 +379,7 @@ def getSVG(source,
             drafts.append(o)
         elif not o.isDerivedFrom("App::DocumentObjectGroup"):
             nonspaces.append(o)
-        if Draft.getType(o) == "Window":
+        if Draft.getType(o) == "Window":  # (Draft.getType(o.getLinkedObject()) == "Window") or (Draft.
             windows.append(o)
     objs = nonspaces
 
