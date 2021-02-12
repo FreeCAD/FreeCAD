@@ -50,6 +50,7 @@
 #include "QGIViewBalloon.h"
 #include "ViewProviderBalloon.h"
 #include "TaskBalloon.h"
+#include "ui_TaskBalloon.h"
 
 using namespace Gui;
 using namespace TechDraw;
@@ -115,26 +116,24 @@ TaskBalloon::~TaskBalloon()
 
 bool TaskBalloon::accept()
 {
-    m_parent->dvBalloon->Text.setValue(ui->leText->text().toUtf8().constData());
-    App::Color ac;
-    ac.setValue<QColor>(ui->textColor->color());
-    m_balloonVP->Color.setValue(ac);
-    m_balloonVP->Fontsize.setValue(ui->qsbFontSize->value().getValue());
-    m_parent->dvBalloon->ShapeScale.setValue(ui->qsbShapeScale->value().getValue());
-    m_parent->dvBalloon->EndType.setValue(ui->comboEndSymbol->currentIndex());
-    m_parent->dvBalloon->EndTypeScale.setValue(ui->qsbSymbolScale->value().getValue());
-    m_parent->dvBalloon->BubbleShape.setValue(ui->comboBubbleShape->currentIndex());
-    m_balloonVP->LineVisible.setValue(ui->comboLineVisible->currentIndex());
-    m_balloonVP->LineWidth.setValue(ui->qsbLineWidth->value().getValue());
-    m_parent->dvBalloon->KinkLength.setValue(ui->qsbKinkLength->value().getValue());
-    m_parent->updateView(true);
+    Gui::Document* doc = m_balloonVP->getDocument();
+    m_balloonVP->getObject()->purgeTouched();
+    doc->commitCommand();
+    doc->resetEdit();
 
     return true;
 }
 
 bool TaskBalloon::reject()
 {
-    return false;
+    Gui::Document* doc = m_balloonVP->getDocument();
+    doc->abortCommand();
+    recomputeFeature();
+    m_parent->updateView(true);
+    m_balloonVP->getObject()->purgeTouched();
+    doc->resetEdit();
+
+    return true;
 }
 
 void TaskBalloon::recomputeFeature()
