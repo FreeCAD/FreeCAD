@@ -133,32 +133,24 @@ TaskDimension::~TaskDimension()
 
 bool TaskDimension::accept()
 {
-    m_parent->dvDimension->TheoreticalExact.setValue(ui->cbTheoreticallyExact->isChecked());
-    m_parent->dvDimension->EqualTolerance.setValue(ui->cbEqualTolerance->isChecked());
-    m_parent->dvDimension->OverTolerance.setValue(ui->qsbOvertolerance->value().getValue());
-    m_parent->dvDimension->UnderTolerance.setValue(ui->qsbUndertolerance->value().getValue());
-
-    m_parent->dvDimension->FormatSpec.setValue(ui->leFormatSpecifier->text().toUtf8().constData());
-    m_parent->dvDimension->Arbitrary.setValue(ui->cbArbitrary->isChecked());
-    m_parent->dvDimension->FormatSpecOverTolerance.setValue(ui->leFormatSpecifierOverTolerance->text().toUtf8().constData());
-    m_parent->dvDimension->FormatSpecUnderTolerance.setValue(ui->leFormatSpecifierUnderTolerance->text().toUtf8().constData());
-    m_parent->dvDimension->ArbitraryTolerances.setValue(ui->cbArbitraryTolerances->isChecked());
-
-    m_dimensionVP->FlipArrowheads.setValue(ui->cbArrowheads->isChecked());
-    App::Color ac;
-    ac.setValue<QColor>(ui->dimensionColor->color());
-    m_dimensionVP->Color.setValue(ac);
-    m_dimensionVP->Fontsize.setValue(ui->qsbFontSize->value().getValue());
-    m_dimensionVP->StandardAndStyle.setValue(ui->comboDrawingStyle->currentIndex());
-
-    m_parent->updateView(true);
+    Gui::Document* doc = m_dimensionVP->getDocument();
+    m_dimensionVP->getObject()->purgeTouched();
+    doc->commitCommand();
+    doc->resetEdit();
 
     return true;
 }
 
 bool TaskDimension::reject()
 {
-    return false;
+    Gui::Document* doc = m_dimensionVP->getDocument();
+    doc->abortCommand();
+    recomputeFeature();
+    m_parent->updateView(true);
+    m_dimensionVP->getObject()->purgeTouched();
+    doc->resetEdit();
+
+    return true;
 }
 
 void TaskDimension::recomputeFeature()
