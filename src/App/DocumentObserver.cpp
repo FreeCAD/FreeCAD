@@ -30,6 +30,7 @@
 #include <boost_bind_bind.hpp>
 
 #include <Base/Tools.h>
+#include <App/DocumentObjectPy.h>
 #include "Application.h"
 #include "Document.h"
 #include "DocumentObject.h"
@@ -511,6 +512,43 @@ std::string SubObjectT::getSubObjectFullName(const char *docName) const
     if (sobj && sobj->Label.getStrValue() != sobj->getNameInDocument())
         ss << " (" << sobj->Label.getValue() << ")";
     return ss.str();
+}
+
+PyObject *SubObjectT::getPyObject() const
+{
+    auto obj = getObject();
+    if (!obj)
+        return Py::new_reference_to(Py::Object());
+    if (subname.empty())
+        return obj->getPyObject();
+    return Py::new_reference_to(Py::TupleN(
+                Py::asObject(obj->getPyObject()), Py::String(subname)));
+}
+
+void SubObjectT::setPyObject(PyObject *pyobj)
+{
+    try {
+        if (!pyobj)
+            throw Base::ValueError("Invalid object");
+        if (PyObject_TypeCheck(pyobj, &App::DocumentObjectPy::Type)) {
+            this->operator=(static_cast<App::DocumentObjectPy*>(pyobj)->getDocumentObjectPtr());
+            return;
+        } else if (PySequence_Check(pyobj) && PySequence_Size(pyobj)==2) {
+            Py::Sequence seq(pyobj);
+            App::DocumentObject *obj;
+            PropertyString tmp;
+            if (PyObject_TypeCheck(seq[0].ptr(), &App::DocumentObjectPy::Type)) {
+                obj = static_cast<App::DocumentObjectPy*>(seq[0].ptr())->getDocumentObjectPtr();
+                tmp.setPyObject(seq[1].ptr());
+                this->operator=(App::SubObjectT(obj, tmp.getValue()));
+                return;
+            }
+        }
+    } catch (Py::Exception &) {
+        Base::PyException e;
+    } catch (...) {
+    }
+    throw Base::ValueError("Expect either document object or tuple(obj, subname)");
 }
 // -----------------------------------------------------------------------------
 

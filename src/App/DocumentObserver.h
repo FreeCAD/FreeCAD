@@ -252,6 +252,9 @@ public:
     SubObjectT getParent() const;
     SubObjectT getChild(const App::DocumentObject *) const;
 
+    PyObject *getPyObject() const;
+    void setPyObject(PyObject *);
+
 private:
     std::string subname;
 };
