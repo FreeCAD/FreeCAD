@@ -1730,6 +1730,10 @@ int SketchObject::addCopyOfConstraints(const SketchObject &orig)
         }
     }
 
+    if (noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
+        solve();
+
+
     return this->Constraints.getSize()-1;
 }
 
@@ -6374,6 +6378,10 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
         }
     }
 
+    if (noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
+        solve();
+
+
     return svals.size();
 }
 
@@ -8526,7 +8534,11 @@ void SketchObject::onChanged(const App::Property* prop)
         }
     } else if (prop == &ExpressionEngine) {
         auto doc = getDocument();
-        if(!isRestoring() && doc && !doc->isPerformingTransaction() && noRecomputes) {
+        if(!isRestoring()
+                && doc && !doc->isPerformingTransaction()
+                && noRecomputes
+                && !managedoperation)
+        {
             // if we do not have a recompute, the sketch must be solved to
             // update the DoF of the solver, constraints and UI
             try {
