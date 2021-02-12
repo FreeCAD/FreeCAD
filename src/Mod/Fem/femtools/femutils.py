@@ -274,19 +274,25 @@ def getBoundBoxOfAllDocumentShapes(doc):
     # https://forum.freecadweb.org/viewtopic.php?f=18&t=52920
     for o in doc.Objects:
 
+        FreeCAD.Console.PrintMessage(":\n")                                     # debug only
         bb = None
-        Types = ["Shape", "FemMesh", "Mesh", "Points"]
 
-        for Type in Types:
-            FreeCAD.Console.PrintMessage("trying: " + str(o) + ":" + Type + "\n")   # debug only
-            if hasattr(o, Type):
-                try:
-                    bb = getattr(getattr(o,Type),"BoundBox")
-                    FreeCAD.Console.PrintMessage(str(bb) + "\n")                    # debug only
-                    break
-                except Exception:
-                    FreeCAD.Console.PrintMessage("exception \n")                    # debug only
-                    pass
+        try:
+            FreeCAD.Console.PrintMessage("trying: " + str(o.Label) + ": getPropertyOfGeometry()\n")   # debug only
+            bb = o.getPropertyOfGeometry().BoundBox
+            FreeCAD.Console.PrintMessage(str(bb) + "\n")                        # debug only
+        except Exception:
+            FreeCAD.Console.PrintMessage("exception \n")                        # debug only
+            pass
+
+        if bb == None:
+            try:
+                FreeCAD.Console.PrintMessage("trying: " + str(o.Label) + ": FemMesh\n")   # debug only
+                bb = o.FemMesh.BoundBox
+                FreeCAD.Console.PrintMessage(str(bb) + "\n")                    # debug only
+            except Exception:
+                FreeCAD.Console.PrintMessage("exception \n")                    # debug only
+                pass
 
         if bb:
             if bb.isValid():
@@ -294,10 +300,10 @@ def getBoundBoxOfAllDocumentShapes(doc):
                     overallboundbox = bb
                 else:
                     overallboundbox.add(bb)
-        else:                                                                       # debug only
-            FreeCAD.Console.PrintMessage("no bb\n")                                 # debug only
+        else:                                                                   # debug only
+            FreeCAD.Console.PrintMessage("no bb\n")                             # debug only
 
-    FreeCAD.Console.PrintMessage(str(overallboundbox) + "\n")                       # debug only
+    FreeCAD.Console.PrintMessage("overallBB:" + str(overallboundbox) + "\n")    # debug only
     return overallboundbox
 
 
