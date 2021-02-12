@@ -566,6 +566,15 @@ void Document::_resetEdit(void)
         Application::Instance->setEditDocument(0);
 }
 
+App::SubObjectT Document::getInEditT(int *mode) const
+{
+    ViewProviderDocumentObject *parentVp = nullptr;
+    std::string subname;
+    if (!getInEdit(&parentVp, &subname, mode))
+        return App::SubObjectT(parentVp->getObject(), subname.c_str());
+    return App::SubObjectT();
+}
+
 ViewProvider *Document::getInEdit(ViewProviderDocumentObject **parentVp,
         std::string *subname, int *mode, std::string *subelement) const
 {
