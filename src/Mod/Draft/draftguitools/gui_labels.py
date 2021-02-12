@@ -58,25 +58,11 @@ class Label(gui_base_original.Creator):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = ("Creates a label, "
-                "optionally attached to a selected object or subelement.\n"
-                "\n"
-                "First select a vertex, an edge, or a face of an object, "
-                "then call this command,\n"
-                "and then set the position of the leader line "
-                "and the textual label.\n"
-                "The label will be able to display information "
-                "about this object, and about the selected subelement,\n"
-                "if any.\n"
-                "\n"
-                "If many objects or many subelements are selected, "
-                "only the first one in each case\n"
-                "will be used to provide information to the label.")
 
         return {'Pixmap': 'Draft_Label',
                 'Accel': "D, L",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Label", "Label"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Label", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Label", "Creates a label, optionally attached to a selected object or subelement.\n\nFirst select a vertex, an edge, or a face of an object, then call this command,\nand then set the position of the leader line and the textual label.\nThe label will be able to display information about this object, and about the selected subelement,\nif any.\n\nIf many objects or many subelements are selected, only the first one in each case\nwill be used to provide information to the label.")}
 
     def Activated(self):
         """Execute when the command is called."""

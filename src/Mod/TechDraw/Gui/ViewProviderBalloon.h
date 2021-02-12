@@ -58,6 +58,7 @@ public:
     virtual std::vector<std::string> getDisplayModes(void) const;
     virtual void updateData(const App::Property*);
     virtual void onChanged(const App::Property* p);
+    virtual void setupContextMenu(QMenu*, QObject*, const char*);
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
     virtual bool doubleClicked(void);
@@ -68,6 +69,8 @@ public:
 protected:
     virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop);
 
+private:
+    void startDefaultEditMode();
 };
 
 } // namespace TechDrawGui
