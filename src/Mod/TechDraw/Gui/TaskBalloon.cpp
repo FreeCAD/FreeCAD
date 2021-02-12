@@ -89,15 +89,13 @@ TaskBalloon::TaskBalloon(QGIViewBalloon *parent, ViewProviderBalloon *balloonVP)
 
     ui->qsbFontSize->setUnit(Base::Unit::Length);
     ui->qsbFontSize->setMinimum(0);
-    connect(ui->qsbFontSize, SIGNAL(valueChanged(double)), this, SLOT(onFontsizeChanged()));
-    connect(ui->comboLineVisible, SIGNAL(currentIndexChanged(int)), this, SLOT(onLineVisibleChanged()));
+
     ui->qsbLineWidth->setUnit(Base::Unit::Length);
     ui->qsbLineWidth->setSingleStep(0.100);
     ui->qsbLineWidth->setMinimum(0);
-    connect(ui->qsbLineWidth, SIGNAL(valueChanged(double)), this, SLOT(onLineWidthChanged()));
-    ui->qsbKinkLength->setUnit(Base::Unit::Length);
+
     // negative kink length is allowed, thus no minimum
-    connect(ui->qsbKinkLength, SIGNAL(valueChanged(double)), this, SLOT(onKinkLengthChanged()));
+    ui->qsbKinkLength->setUnit(Base::Unit::Length);
 
     if (balloonVP != nullptr) {
         ui->textColor->setColor(balloonVP->Color.getValue().asValue<QColor>());
@@ -108,6 +106,11 @@ TaskBalloon::TaskBalloon(QGIViewBalloon *parent, ViewProviderBalloon *balloonVP)
     }
     // new balloons have already the preferences BalloonKink length
     ui->qsbKinkLength->setValue(parent->dvBalloon->KinkLength.getValue());
+
+    connect(ui->qsbFontSize, SIGNAL(valueChanged(double)), this, SLOT(onFontsizeChanged()));
+    connect(ui->comboLineVisible, SIGNAL(currentIndexChanged(int)), this, SLOT(onLineVisibleChanged()));
+    connect(ui->qsbLineWidth, SIGNAL(valueChanged(double)), this, SLOT(onLineWidthChanged()));
+    connect(ui->qsbKinkLength, SIGNAL(valueChanged(double)), this, SLOT(onKinkLengthChanged()));
 }
 
 TaskBalloon::~TaskBalloon()
