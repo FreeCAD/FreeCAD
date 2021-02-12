@@ -7310,7 +7310,9 @@ void ViewProviderSketch::deleteSelected()
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
-        Base::Console().Warning("Delete: Selection not restricted to one sketch and its subelements");
+        FC_ERR("Delete: Selection not restricted to one sketch and its subelements");
+        Gui::Selection().selStackPush();
+        Gui::Selection().clearSelection();
         return;
     }
 
