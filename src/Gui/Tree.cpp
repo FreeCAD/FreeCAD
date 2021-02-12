@@ -4348,10 +4348,8 @@ void TreeWidget::onItemChanged(QTreeWidgetItem *item, int column) {
     if (column == 0 && isSelectionCheckBoxesEnabled() && item->type() == ObjectType) {
         bool selected = item->isSelected();
         bool checked = item->checkState(0) == Qt::Checked;
-        if (checked != selected) {
-            QSignalBlocker blocker(this);
+        if (checked != selected)
             item->setSelected(checked);
-        }
     }
 }
 
