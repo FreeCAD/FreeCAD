@@ -51,15 +51,11 @@ class Polygon(gui_base_original.Creator):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = ("Creates a regular polygon (triangle, square, "
-                "pentagon, ...), by defining the number of sides "
-                "and the circumscribed radius.\n"
-                "CTRL to snap, SHIFT to constrain")
 
         return {'Pixmap': 'Draft_Polygon',
                 'Accel': "P, G",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Polygon", "Polygon"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Polygon", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Polygon", "Creates a regular polygon (triangle, square, pentagon, ...), by defining the number of sides and the circumscribed radius.\nCTRL to snap, SHIFT to constrain")}
 
     def Activated(self):
         """Execute when the command is called."""

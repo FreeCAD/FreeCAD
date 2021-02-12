@@ -47,7 +47,7 @@ import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_trackers as trackers
 
 from draftutils.messages import _msg
-from draftutils.translate import translate, _tr
+from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
@@ -58,20 +58,15 @@ class Stretch(gui_base_original.Modifier):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = ("Stretches the selected objects.\n"
-                "Select an object, then draw a rectangle "
-                "to pick the vertices that will be stretched,\n"
-                "then draw a line to specify the distance "
-                "and direction of stretching.")
 
         return {'Pixmap': 'Draft_Stretch',
                 'Accel': "S, H",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Stretch", "Stretch"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Stretch", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Stretch", "Stretches the selected objects.\nSelect an object, then draw a rectangle to pick the vertices that will be stretched,\nthen draw a line to specify the distance and direction of stretching.")}
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Stretch, self).Activated(name=_tr("Stretch"))
+        super(Stretch, self).Activated(name=translate("draft","Stretch"))
         if self.ui:
             if not Gui.Selection.getSelection():
                 self.ui.selectUi()

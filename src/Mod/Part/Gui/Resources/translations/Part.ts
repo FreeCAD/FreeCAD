@@ -4,6 +4,16 @@
 <context>
     <name>AttachmentEditor</name>
     <message>
+        <location filename="../../../AttachmentEditor/Commands.py" line="80"/>
+        <source>Attachment...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../AttachmentEditor/Commands.py" line="82"/>
+        <source>Edit attachment of selected object.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="94"/>
         <source>No object named {name}</source>
         <translation type="unfinished"></translation>
@@ -24,13 +34,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="229"/>
-        <source>Attachment</source>
+        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="218"/>
+        <source>Continue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="218"/>
-        <source>Continue</source>
+        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="229"/>
+        <source>Attachment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -99,23 +109,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="608"/>
-        <source>Attachment Offset (in local coordinates):</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="598"/>
         <source>Attachment Offset (inactive - not attached):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../AttachmentEditor/Commands.py" line="80"/>
-        <source>Attachment...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../AttachmentEditor/Commands.py" line="82"/>
-        <source>Edit attachment of selected object.</source>
+        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="608"/>
+        <source>Attachment Offset (in local coordinates):</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -247,87 +247,7 @@ It will create a &apos;Compound Filter&apos; for each shape.</source>
     </message>
 </context>
 <context>
-    <name>Part_JoinFeatures</name>
-    <message>
-        <location filename="../../../BOPTools/JoinFeatures.py" line="86"/>
-        <source>Computing the result failed with an error:
-
-{err}
-
-Click &apos;Continue&apos; to create the feature anyway, or &apos;Abort&apos; to cancel.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../BOPTools/JoinFeatures.py" line="373"/>
-        <source>Bad selection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../BOPTools/JoinFeatures.py" line="89"/>
-        <source>Continue</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../BOPTools/JoinFeatures.py" line="85"/>
-        <source>Computing the result failed with an error: 
-
-{err}
-
- Click &apos;Continue&apos; to create the feature anyway, or &apos;Abort&apos; to cancel.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
-        <source>Select at least two objects, or one or more compounds, first!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../BOPTools/JoinFeatures.py" line="208"/>
-        <source>Select at least two objects, or one or more compounds</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../BOPTools/JoinFeatures.py" line="283"/>
-        <source>Select base object, then the object to embed, and invoke this tool.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../BOPTools/JoinFeatures.py" line="304"/>
-        <source>Select base object, then the object to embed, and then invoke this tool.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
-        <source>Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../BOPTools/JoinFeatures.py" line="399"/>
-        <source>Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>Part_SplitFeatures</name>
-    <message>
-        <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
-        <source>Computing the result failed with an error:
-
-{err}
-
-Click &apos;Continue&apos; to create the feature anyway, or &apos;Abort&apos; to cancel.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
-        <source>Bad selection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
-        <source>Continue</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <location filename="../../../BOPTools/SplitFeatures.py" line="188"/>
         <source>Boolean fragments</source>
@@ -340,43 +260,6 @@ or from the shapes inside a compound.
 This is a boolean union which is then sliced at the intersections
 of the original shapes.
 A &apos;Compound Filter&apos; can be used to extract the individual slices.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../BOPTools/SplitFeatures.py" line="543"/>
-        <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
-        <source>Slice to compound</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
-        <source>Slice a selected object by using other objects as cutting tools.
-The resulting pieces will be stored in a compound.
-A &apos;Compound Filter&apos; can be used to extract the individual slices.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../BOPTools/SplitFeatures.py" line="391"/>
-        <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
-        <source>Slice apart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-        <source>Boolean Fragments</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-        <source>Split objects where they intersect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -395,9 +278,8 @@ A &apos;Compound Filter&apos; can be used to extract the individual slices.</sou
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
-        <source>Slice a selected object by other objects, and split it apart.
-It will create a &apos;Compound Filter&apos; for each slice.</source>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="391"/>
+        <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -420,6 +302,44 @@ Click &apos;Continue&apos; to create the feature anyway, or &apos;Abort&apos; to
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="543"/>
+        <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
+        <source>Slice to compound</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+        <source>Boolean Fragments</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+        <source>Split objects where they intersect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
+        <source>Slice a selected object by using other objects as cutting tools.
+The resulting pieces will be stored in a compound.
+A &apos;Compound Filter&apos; can be used to extract the individual slices.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
+        <source>Slice apart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
+        <source>Slice a selected object by other objects, and split it apart.
+It will create a &apos;Compound Filter&apos; for each slice.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../../BOPTools/SplitFeatures.py" line="468"/>
         <source>Boolean XOR</source>
         <translation type="unfinished"></translation>
@@ -430,6 +350,25 @@ Click &apos;Continue&apos; to create the feature anyway, or &apos;Abort&apos; to
 or with the shapes inside a compound.
 This means the overlapping volumes of the shapes will be removed.
 A &apos;Compound Filter&apos; can be used to extract the remaining pieces.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
+        <source>Bad selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
+        <source>Computing the result failed with an error:
+
+{err}
+
+Click &apos;Continue&apos; to create the feature anyway, or &apos;Abort&apos; to cancel.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
+        <source>Continue</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -911,6 +850,67 @@ Do you want to continue?</source>
     <message>
         <location filename="../../ViewProviderSpline.cpp" line="81"/>
         <source>Show control points</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Part_JoinFeatures</name>
+    <message>
+        <location filename="../../../BOPTools/JoinFeatures.py" line="85"/>
+        <source>Computing the result failed with an error: 
+
+{err}
+
+ Click &apos;Continue&apos; to create the feature anyway, or &apos;Abort&apos; to cancel.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/JoinFeatures.py" line="86"/>
+        <source>Computing the result failed with an error:
+
+{err}
+
+Click &apos;Continue&apos; to create the feature anyway, or &apos;Abort&apos; to cancel.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/JoinFeatures.py" line="89"/>
+        <source>Continue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
+        <source>Select at least two objects, or one or more compounds, first!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/JoinFeatures.py" line="208"/>
+        <source>Select at least two objects, or one or more compounds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/JoinFeatures.py" line="283"/>
+        <source>Select base object, then the object to embed, and invoke this tool.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/JoinFeatures.py" line="304"/>
+        <source>Select base object, then the object to embed, and then invoke this tool.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
+        <source>Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/JoinFeatures.py" line="373"/>
+        <source>Bad selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/JoinFeatures.py" line="399"/>
+        <source>Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
