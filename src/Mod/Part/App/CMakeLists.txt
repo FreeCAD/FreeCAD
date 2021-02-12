@@ -188,6 +188,9 @@ SET(Features_SRCS
     DatumFeature.h
     AttachExtension.h
     AttachExtension.cpp
+    SubShapeBinder.h
+    SubShapeBinder.cpp
+    SubShapeBinderPython.cpp
     PartParams.h
     PartParams.cpp
 )

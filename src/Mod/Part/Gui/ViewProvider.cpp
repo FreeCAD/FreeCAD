@@ -65,6 +65,11 @@ bool ViewProviderPart::doubleClicked(void)
     }
 }
 
+QPixmap ViewProviderPart::getTagIcon() const
+{
+    return QPixmap();
+}
+
 void ViewProviderPart::applyColor(const Part::ShapeHistory& hist,
                                   const std::vector<App::Color>& colBase,
                                   std::vector<App::Color>& colBool)

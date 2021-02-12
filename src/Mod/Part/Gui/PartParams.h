@@ -79,6 +79,7 @@ public:
     FC_PART_PARAM(EditOnTop,bool,Bool,false) \
     FC_PART_PARAM(EditRecomputeWait,int,Int,300) \
     FC_PART_PARAM(AdjustCameraForNewFeature,bool,Bool,true) \
+    FC_PART_PARAM(DefaultDatumColor,unsigned long,Unsigned, 0xFFD70099) \
 
 #undef FC_PART_PARAM
 #define FC_PART_PARAM(_name,_ctype,_type,_def) \

@@ -95,7 +95,7 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
                 found = true;
                 break;
             }
-            if (!tool->isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId()))
+            if (!tool->isDerivedFrom(Part::SubShapeBinder::getClassTypeId()))
                 continue;
             auto binder = static_cast<PartDesign::SubShapeBinder*>(tool);
             for (auto & link : binder->Support.getSubListValues()) {

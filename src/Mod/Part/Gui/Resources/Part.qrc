@@ -29,6 +29,7 @@
         <file>icons/create/Part_Sphere.svg</file>
         <file>icons/create/Part_Torus.svg</file>
         <file>icons/create/Part_Tube.svg</file>
+        <file>icons/create/Part_SubShapeBinder.svg</file>
     </qresource>
     <qresource>
         <file>icons/measure/Part_Measure_Angular.svg</file>

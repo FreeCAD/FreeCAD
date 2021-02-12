@@ -30,6 +30,7 @@
 #include <App/DocumentObserver.h>
 #include <App/FeaturePython.h>
 #include <Mod/Part/App/DatumFeature.h>
+#include <Mod/Part/App/SubShapeBinder.h>
 
 namespace PartDesign
 {
@@ -73,10 +74,10 @@ private:
     Connection connectDocumentChangedObject;
 };
 
-class PartDesignExport SubShapeBinder : public Part::Feature {
+class PartDesignExport SubShapeBinder : public Part::SubShapeBinder {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::SubShapeBinder);
 public:
-    typedef Part::Feature inherited;
+    typedef Part::SubShapeBinder inherited;
 
     SubShapeBinder();
     ~SubShapeBinder();
@@ -84,73 +85,6 @@ public:
     const char* getViewProviderName(void) const override {
         return "PartDesignGui::ViewProviderSubShapeBinder";
     }
-
-    void setLinks(std::map<App::DocumentObject *, std::vector<std::string> > &&values, bool reset=false);
-
-    App::PropertyXLinkSubList Support;
-    App::PropertyBool ClaimChildren;
-    App::PropertyBool Relative;
-    App::PropertyBool Fuse;
-    App::PropertyBool MakeFace;
-    App::PropertyEnumeration FillStyle;
-    App::PropertyEnumeration BindMode;
-    App::PropertyBool PartialLoad;
-    App::PropertyXLink Context;
-    App::PropertyInteger _Version;
-    App::PropertyEnumeration BindCopyOnChange;
-
-    enum UpdateOption {
-        UpdateNone = 0,
-        UpdateInit = 1,
-        UpdateForced = 2,
-    };
-    void update(UpdateOption options = UpdateNone);
-
-    virtual int canLoadPartial() const override {
-        return PartialLoad.getValue()?1:0;
-    }
-
-    virtual bool canLinkProperties() const override {return false;}
-
-    virtual App::DocumentObject *getSubObject(const char *subname, PyObject **pyObj=0, 
-            Base::Matrix4D *mat=0, bool transform=true, int depth=0) const override;
-
-    virtual App::DocumentObject *getElementOwner(const char *element) const override;
-
-    // virtual App::DocumentObject *getLinkedObject(bool recurse=true,
-    //         Base::Matrix4D *mat=0, bool transform=false, int depth=0) const override;
-    App::DocumentObject *_getLinkedObject(bool recurse=true,
-            Base::Matrix4D *mat=0, bool transform=false, int depth=0) const;
-
-protected:
-    virtual App::DocumentObjectExecReturn* execute(void) override;
-    virtual void onChanged(const App::Property *prop) override;
-
-    virtual void handleChangedPropertyType(
-            Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
-
-    virtual void onDocumentRestored() override;
-    virtual void setupObject() override;
-
-    void setupCopyOnChange();
-    void checkCopyOnChange(const App::Property &prop);
-    void clearCopiedObjects();
-
-    void checkPropertyStatus();
-
-    void collapsePartDesignFeatures();
-
-    void slotRecomputedObject(const App::DocumentObject& Obj);
-
-    typedef boost::signals2::scoped_connection Connection;
-    Connection connRecomputedObj;
-    App::Document *contextDoc = 0;
-
-    std::vector<Connection> copyOnChangeConns;
-    bool hasCopyOnChange = true;
-
-    App::PropertyXLinkSub _CopiedLink;
-    std::vector<App::DocumentObjectT> _CopiedObjs;
 };
 
 typedef App::FeaturePythonT<SubShapeBinder> SubShapeBinderPython;

@@ -31,6 +31,7 @@
 
 #include "TaskPadParameters.h"
 #include <Mod/PartDesign/App/FeatureExtrusion.h>
+#include <Mod/Part/Gui/PartParams.h>
 #include "ViewProviderExtrusion.h"
 #include "ViewProviderDatum.h"
 
@@ -44,9 +45,7 @@ ViewProviderExtrusion::ViewProviderExtrusion()
 
     // Default to datum color
     //
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath (
-            "User parameter:BaseApp/Preferences/Mod/PartDesign");
-    unsigned long shcol = hGrp->GetUnsigned ( "DefaultDatumColor", 0xFFD70099 );
+    unsigned long shcol = PartGui::PartParams::DefaultDatumColor();
     App::Color col ( (uint32_t) shcol );
     
     MapFaceColor.setValue(false);

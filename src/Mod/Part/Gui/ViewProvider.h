@@ -53,6 +53,8 @@ public:
     virtual ~ViewProviderPart();
     virtual bool doubleClicked(void);
 
+    virtual QPixmap getTagIcon() const;
+
 protected:
     void applyColor(const Part::ShapeHistory& hist,
                     const std::vector<App::Color>& colBase,

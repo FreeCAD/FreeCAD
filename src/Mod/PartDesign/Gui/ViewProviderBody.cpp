@@ -788,7 +788,7 @@ std::string ViewProviderBody::dropObjectEx(App::DocumentObject *obj,
     if (type.isDerivedFrom(Part::Datum::getClassTypeId())   ||
         type.isDerivedFrom(Part::Part2DObject::getClassTypeId()) ||
         type.isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId()) ||
-        type.isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId()))
+        type.isDerivedFrom(Part::SubShapeBinder::getClassTypeId()))
     {
         body->addObject(obj);
     }

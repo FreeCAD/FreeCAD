@@ -828,7 +828,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
 
         // Collect also shape binders consisting of a single planar face
         auto shapeBinders( getDocument()->getObjectsOfType(PartDesign::ShapeBinder::getClassTypeId()) );
-        auto binders( getDocument()->getObjectsOfType(PartDesign::SubShapeBinder::getClassTypeId()) );
+        auto binders( getDocument()->getObjectsOfType(Part::SubShapeBinder::getClassTypeId()) );
         shapeBinders.insert(shapeBinders.end(),binders.begin(),binders.end());
         for (auto binder : shapeBinders) {
             // Check whether this plane belongs to the active body

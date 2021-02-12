@@ -242,7 +242,7 @@ bool Body::isAllowed(const Base::Type &type)
             // TODO Shouldn't we replace it with Sketcher::SketchObject? (2015-08-13, Fat-Zer)
             type.isDerivedFrom(Part::Part2DObject::getClassTypeId()) ||
             type.isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId()) ||
-            type.isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId()) ||
+            type.isDerivedFrom(Part::SubShapeBinder::getClassTypeId()) ||
             type.isDerivedFrom(PartDesign::AuxGroup::getClassTypeId())
             // TODO Why this lines was here? why should we allow anything of those? (2015-08-13, Fat-Zer)
             //type.isDerivedFrom(Part::FeaturePython::getClassTypeId()) // trouble with this line on Windows!? Linker fails to find getClassTypeId() of the Part::FeaturePython...
@@ -534,7 +534,7 @@ void Body::onChanged (const App::Property* prop) {
                     && !Group.find(BaseFeature.getValue()->getNameInDocument())) {
                 //setup the FeatureBase if needed
                 if (!first || (!first->isDerivedFrom(FeatureBase::getClassTypeId())
-                                && !first->isDerivedFrom(SubShapeBinder::getClassTypeId())))
+                                && !first->isDerivedFrom(Part::SubShapeBinder::getClassTypeId())))
                 {
                     bf = static_cast<FeatureBase*>(getDocument()->addObject("PartDesign::FeatureBase", "BaseFeature"));
                     insertObject(bf, first, false);

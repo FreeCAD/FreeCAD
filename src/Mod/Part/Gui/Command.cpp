@@ -44,6 +44,7 @@
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/DocumentObserver.h>
+#include <App/Part.h>
 #include <Gui/Action.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -58,6 +59,8 @@
 #include <Gui/WaitCursor.h>
 
 #include "../App/PartFeature.h"
+#include "../App/BodyBase.h"
+#include "../App/SubShapeBinder.h"
 #include <Mod/Part/App/Part2DObject.h>
 #include "DlgBooleanOperation.h"
 #include "DlgExtrusion.h"
@@ -2444,6 +2447,145 @@ bool CmdPartProjectionOnSurface::isActive(void)
     return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
 
+//===========================================================================
+// Part_SubShapeBinder
+//===========================================================================
+
+DEF_STD_CMD_A(CmdPartSubShapeBinder)
+
+CmdPartSubShapeBinder::CmdPartSubShapeBinder()
+  :Command("Part_SubShapeBinder")
+{
+    sAppModule      = "Part";
+    sGroup          = QT_TR_NOOP("Part");
+    sMenuText       = QT_TR_NOOP("Create a sub-object(s) shape binder");
+    sToolTipText    = QT_TR_NOOP("Create a sub-object(s) shape binder");
+    sWhatsThis      = "Part_SubShapeBinder";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Part_SubShapeBinder";
+}
+
+void CmdPartSubShapeBinder::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    App::DocumentObject *topParent = 0;
+    std::string parentSub;
+    std::set<const App::DocumentObject *> valueSet;
+    std::map<App::DocumentObject *, std::vector<std::string> > values;
+    for (auto &sel : Gui::Selection().getCompleteSelection(0)) {
+        if (!sel.pObject) continue;
+        auto &subs = values[sel.pObject];
+        if (sel.SubName && sel.SubName[0]) {
+            subs.emplace_back(sel.SubName);
+            valueSet.insert(sel.pObject->getSubObject(sel.SubName));
+        } else
+            valueSet.insert(sel.pObject);
+    }
+
+    auto checkContainer = [&](const App::DocumentObject *container) {
+        // Check the potential container to add in the newly created binder.
+        // We check if the container or any of its parent objects is selected
+        // (i.e. for binding), and exclude the container to avoid cyclic
+        // reference.
+        if (!topParent)
+            return valueSet.count(container) > 0;
+        for (auto obj : topParent->getSubObjectList(parentSub.c_str())) {
+            if (valueSet.count(obj)) {
+                topParent = nullptr;
+                parentSub.clear();
+                return false;
+            }
+        }
+        return true;
+    };
+
+    std::string FeatName;
+    Gui::MDIView *activeView = Gui::Application::Instance->activeView();
+    Part::BodyBase *pcActiveBody = nullptr;
+    if (activeView)
+        pcActiveBody = activeView->getActiveObject<Part::BodyBase*>(
+                PDBODYKEY, &topParent, &parentSub);
+    if (!checkContainer(pcActiveBody))
+        pcActiveBody = nullptr;
+    App::Part *pcActivePart = nullptr;
+    if (!pcActiveBody && activeView) {
+        pcActivePart = activeView->getActiveObject<App::Part*>(
+                PARTKEY, &topParent, &parentSub);
+        if (!checkContainer(pcActivePart))
+            pcActivePart = nullptr;
+    }
+    FeatName = getUniqueObjectName("Binder", pcActiveBody ?
+            static_cast<App::DocumentObject*>(pcActiveBody) : pcActivePart);
+    App::SubObjectT objT(topParent,parentSub.c_str());
+    if (topParent) {
+        decltype(values) links;
+        for (auto &v : values) {
+            App::DocumentObject *obj = v.first;
+            if (v.second.empty()) {
+                links.emplace(obj, v.second);
+                continue;
+            }
+            for (auto &sub : v.second) {
+                auto link = obj;
+                auto linkSub = parentSub;
+                topParent->resolveRelativeLink(linkSub,link,sub);
+                if (link)
+                    links[link].push_back(sub);
+            }
+        }
+        values = std::move(links);
+    }
+
+    Part::SubShapeBinder *binder = 0;
+    try {
+        openCommand(QT_TRANSLATE_NOOP("Command", "Create SubShapeBinder"));
+        if (pcActiveBody) {
+            Gui::cmdAppObject(pcActiveBody, std::ostringstream()
+                    << "newObject('Part::SubShapeBinder', '" << FeatName << "')");
+            binder = static_cast<Part::SubShapeBinder*>(pcActiveBody->getObject(FeatName.c_str()));
+        } else {
+            doCommand(Command::Doc,
+                    "App.ActiveDocument.addObject('Part::SubShapeBinder','%s')",FeatName.c_str());
+            binder = static_cast<Part::SubShapeBinder*>(
+                    App::GetApplication().getActiveDocument()->getObject(FeatName.c_str()));
+            if (pcActivePart)
+                Gui::cmdAppObject(pcActivePart, std::ostringstream()
+                        << "addObject(" << getObjectCmd(binder) << ")");
+        }
+        if (!binder) return;
+        binder->setLinks(std::move(values));
+        updateActive();
+        commitCommand();
+
+        Gui::Selection().selStackPush();
+        Gui::Selection().clearCompleteSelection();
+        if (objT.getObject()) {
+            objT.setSubName(objT.getSubName() + FeatName + ".");
+            if (objT.getSubObject()) {
+                Gui::Selection().addSelection(objT.getDocumentName().c_str(),
+                                              objT.getObjectName().c_str(),
+                                              objT.getSubName().c_str());
+                return;
+            }
+        }
+        Gui::Selection().addSelection(binder->getDocument()->getName(),
+                                      binder->getNameInDocument());
+        Gui::Selection().selStackPush();
+    }catch(Base::Exception &e) {
+        e.ReportException();
+        QMessageBox::critical(Gui::getMainWindow(),
+                QObject::tr("Sub-Shape Binder"), QString::fromUtf8(e.what()));
+        abortCommand();
+    }
+}
+
+bool CmdPartSubShapeBinder::isActive(void) {
+    return hasActiveDocument();
+}
+
+/////////////////////////////////////////////////////////////////////////
+
 void CreatePartCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -2469,6 +2611,7 @@ void CreatePartCommands(void)
     //rcCmdMgr.addCommand(new CmdPartBox2());
     //rcCmdMgr.addCommand(new CmdPartBox3());
     rcCmdMgr.addCommand(new CmdPartPrimitives());
+    rcCmdMgr.addCommand(new CmdPartSubShapeBinder());
 
     rcCmdMgr.addCommand(new CmdPartImport());
     rcCmdMgr.addCommand(new CmdPartExport());

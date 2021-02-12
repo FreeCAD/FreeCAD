@@ -150,6 +150,7 @@
 #include "FaceMaker.h"
 #include "FaceMakerCheese.h"
 #include "FaceMakerBullseye.h"
+#include "SubShapeBinder.h"
 
 namespace Part {
 extern PyObject* initModule();
@@ -404,6 +405,8 @@ PyMOD_INIT_FUNC(Part)
     Part::Thickness             ::init();
     Part::Refine                ::init();
     Part::Reverse               ::init();
+    Part::SubShapeBinder        ::init();
+    Part::SubShapeBinderPython  ::init();
 
     // Geometry types
     Part::GeometryExtension       	::init();

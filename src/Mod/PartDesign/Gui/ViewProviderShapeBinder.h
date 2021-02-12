@@ -27,6 +27,7 @@
 #include <boost/signals2.hpp>
 #include <Gui/ViewProviderPythonFeature.h>
 #include <Mod/Part/Gui/ViewProvider.h>
+#include <Mod/Part/Gui/ViewProviderSubShapeBinder.h>
 
 namespace PartDesignGui {
 
@@ -53,49 +54,14 @@ private:
 
 };
 
-class PartDesignGuiExport ViewProviderSubShapeBinder : public PartGui::ViewProviderPart
+class PartDesignGuiExport ViewProviderSubShapeBinder : public PartGui::ViewProviderSubShapeBinder
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderShapeBinder);
-    typedef PartGui::ViewProviderPart inherited;
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderSubShapeBinder);
+    typedef PartGui::ViewProviderSubShapeBinder inherited;
 
 public:
-    App::PropertyBool UseBinderStyle;
-
     /// Constructor
     ViewProviderSubShapeBinder();
-
-    bool canDropObjects() const override {return true;}
-    bool canDragAndDropObject(App::DocumentObject*) const override {return false;}
-    bool canDropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, 
-            const char *subname, const std::vector<std::string> &elements) const override;
-    std::string dropObjectEx(App::DocumentObject*, App::DocumentObject*, const char *, 
-            const std::vector<std::string> &) override;
-    std::vector<App::DocumentObject*> claimChildren(void) const override;
-
-    virtual bool doubleClicked() override;
-    virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
-    virtual bool setEdit(int ModNum) override;
-    virtual void attach(App::DocumentObject *obj) override;
-    virtual void onChanged(const App::Property *prop) override;
-    virtual void getExtraIcons(std::vector<std::pair<QByteArray, QPixmap> > &) const override;
-    virtual QString getToolTip(const QByteArray &tag) const override;
-    virtual bool iconMouseEvent(QMouseEvent *, const QByteArray &tag) override;
-    virtual void updateData(const App::Property*) override;
-    virtual Gui::ViewProviderDocumentObject *getLinkedViewProvider(
-            std::string *subname=0, bool recursive=false) const override;
-
-private:
-    void updatePlacement(bool transaction);
-    void generateIcons() const;
-
-private:
-    struct IconInfo {
-        std::vector<App::SubObjectT> objs;
-        QPixmap pixmap;
-    };
-    mutable std::map<QByteArray, IconInfo> iconMap;
-    std::vector<boost::signals2::scoped_connection> iconChangeConns;
-    int _dropID = 0;
 };
 
 typedef Gui::ViewProviderPythonFeatureT<ViewProviderSubShapeBinder> ViewProviderSubShapeBinderPython;

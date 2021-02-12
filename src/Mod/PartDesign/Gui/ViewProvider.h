@@ -79,7 +79,7 @@ public:
     virtual bool iconMouseEvent(QMouseEvent *, const QByteArray &tag) override;
     virtual QString getToolTip(const QByteArray &tag) const override;
 
-    QPixmap getTagIcon() const;
+    virtual QPixmap getTagIcon() const override;
 
     virtual bool canDragObjects() const override {return false;}
     virtual bool canDragObject(App::DocumentObject*) const override {return false;}

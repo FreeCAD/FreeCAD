@@ -62,6 +62,7 @@
 #include "ViewProviderSpline.h"
 #include "ViewProviderRegularPolygon.h"
 #include "ViewProviderAttachExtension.h"
+#include "ViewProviderSubShapeBinder.h"
 #include "TaskDimension.h"
 #include "DlgSettingsGeneral.h"
 #include "DlgSettingsObjectColor.h"
@@ -204,6 +205,8 @@ PyMOD_INIT_FUNC(PartGui)
     PartGui::ViewProviderTorusParametric            ::init();
     PartGui::ViewProviderRuledSurface               ::init();
     PartGui::ViewProviderFace                       ::init();
+    PartGui::ViewProviderSubShapeBinder             ::init();
+    PartGui::ViewProviderSubShapeBinderPython       ::init();
     PartGui::DimensionLinear                        ::initClass();
     PartGui::DimensionAngular                       ::initClass();
     PartGui::ArcEngine                              ::initClass();

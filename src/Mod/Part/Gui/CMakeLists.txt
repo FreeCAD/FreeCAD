@@ -238,6 +238,8 @@ SET(PartGui_SRCS
     ViewProviderRuledSurface.h
     ViewProviderPrimitive.cpp
     ViewProviderPrimitive.h
+    ViewProviderSubShapeBinder.cpp
+    ViewProviderSubShapeBinder.h
     Workbench.cpp
     Workbench.h
     # TaskFaceColors.cpp

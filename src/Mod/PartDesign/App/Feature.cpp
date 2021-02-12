@@ -199,7 +199,7 @@ TopoShape Feature::getBaseShape(bool silent, bool force) const {
         }
         if (body->BaseFeature.getValue() != BaseObject
                 && (BaseObject->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId())
-                    || BaseObject->isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId())))
+                    || BaseObject->isDerivedFrom(Part::SubShapeBinder::getClassTypeId())))
         {
             if(silent)
                 return result;
@@ -226,7 +226,7 @@ const TopoDS_Shape& Feature::getBaseShapeOld() const {
 
     if(BaseObject != BaseFeature.getValue()) {
         if (BaseObject->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId()) ||
-            BaseObject->isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId()))
+            BaseObject->isDerivedFrom(Part::SubShapeBinder::getClassTypeId()))
         {
             throw Base::ValueError("Base shape of shape binder cannot be used");
         }
