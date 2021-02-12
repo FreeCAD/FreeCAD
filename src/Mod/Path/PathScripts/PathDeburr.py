@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
-# *   Copyright (c) 2020 Schildkroet                                        *
+# *   Copyright (c) 2020-2021 Schildkroet                                   *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -93,7 +93,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
     '''Proxy class for Deburr operation.'''
 
     def opFeatures(self, obj):
-        return PathOp.FeatureTool | PathOp.FeatureHeights | PathOp.FeatureStepDown | PathOp.FeatureBaseEdges | PathOp.FeatureBaseFaces | PathOp.FeatureCoolant
+        return PathOp.FeatureTool | PathOp.FeatureHeights | PathOp.FeatureStepDown | PathOp.FeatureBaseEdges | PathOp.FeatureBaseFaces | PathOp.FeatureCoolant | PathOp.FeatureBaseGeometry
 
     def initOperation(self, obj):
         PathLog.track(obj.Label)
@@ -139,14 +139,59 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
         for base, subs in obj.Base:
             edges = []
             basewires = []
+            max_h = -99999
+
             for f in subs:
                 sub = base.Shape.getElement(f)
-                if type(sub) == Part.Edge:
+
+                if type(sub) == Part.Edge: # Edge
                     edges.append(sub)
+                
+                elif type(sub) == Part.Face and sub.normalAt(0, 0) != FreeCAD.Vector(0, 0, 1): # Angled face
+                    # Find z value of upper edge
+                    for edge in sub.Edges:
+                        for p0 in edge.Vertexes:
+                            if p0.Point.z > max_h:
+                                max_h = p0.Point.z
+                    
+                    # Search for lower edge and raise it to height of upper edge
+                    for edge in sub.Edges:
+                        if Part.Circle == type(edge.Curve): # Edge is a circle
+                            if edge.Vertexes[0].Point.z < max_h:
+                                
+                                if edge.Closed: # Circle
+                                    v = FreeCAD.Vector(edge.Curve.Center.x, edge.Curve.Center.y, max_h)
+                                    new_edge = Part.makeCircle(edge.Curve.Radius, v, FreeCAD.Vector(0, 0, 1))
+                                    edges.append(new_edge)
+                                    break
+                                else:   # Arc
+                                    if edge.Vertexes[0].Point.z == edge.Vertexes[1].Point.z:
+                                        l1 = math.sqrt((edge.Vertexes[0].Point.x - edge.Curve.Center.x)**2 + (edge.Vertexes[0].Point.y - edge.Curve.Center.y)**2)
+                                        l2 = math.sqrt((edge.Vertexes[1].Point.x - edge.Curve.Center.x)**2 + (edge.Vertexes[1].Point.y - edge.Curve.Center.y)**2)
+                                        
+                                        start_angle = math.acos((edge.Vertexes[0].Point.x - edge.Curve.Center.x) / l1)
+                                        end_angle = math.acos((edge.Vertexes[1].Point.x - edge.Curve.Center.x) / l2)
+
+                                        if edge.Vertexes[0].Point.y < edge.Curve.Center.y:
+                                            start_angle *= -1
+                                        if edge.Vertexes[1].Point.y < edge.Curve.Center.y:
+                                            end_angle *= -1
+
+                                        edge = Part.ArcOfCircle(Part.Circle(edge.Curve.Center, FreeCAD.Vector(0,0,1), edge.Curve.Radius), start_angle, end_angle).toShape()
+                                        break
+
+                        else: # Line
+                            if edge.Vertexes[0].Point.z == edge.Vertexes[1].Point.z and edge.Vertexes[0].Point.z < max_h:
+                                new_edge = Part.Edge(Part.LineSegment(FreeCAD.Vector(edge.Vertexes[0].Point.x, edge.Vertexes[0].Point.y, max_h), FreeCAD.Vector(edge.Vertexes[1].Point.x, edge.Vertexes[1].Point.y, max_h)))
+                                edges.append(new_edge)
+
+                                        
                 elif sub.Wires:
                     basewires.extend(sub.Wires)
-                else:
+                
+                else: # Flat face
                     basewires.append(Part.Wire(sub.Edges))
+
             self.edges = edges  # pylint: disable=attribute-defined-outside-init
             for edgelist in Part.sortEdges(edges):
                 basewires.append(Part.Wire(edgelist))
@@ -159,9 +204,6 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
                 wire = PathOpTools.offsetWire(w, base.Shape, offset, True) #, obj.Side)
                 if wire:
                     wires.append(wire)
-
-        # # Save Outside or Inside
-        # obj.Side = side[0]
 
         # Set direction of op
         forward = (obj.Direction == 'CW')

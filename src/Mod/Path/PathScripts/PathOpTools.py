@@ -166,6 +166,28 @@ def offsetWire(wire, base, offset, forward):#, Side = None):
                 edge = Part.makeCircle(curve.Radius - offset, curve.Center, FreeCAD.Vector(0, 0, -z))
             w = Part.Wire([edge])
             return w
+        
+        if Part.Circle == type(curve) and not wire.isClosed():
+            # Process arc segment
+            z = -1 if forward else 1
+            l1 = math.sqrt((edge.Vertexes[0].Point.x - curve.Center.x)**2 + (edge.Vertexes[0].Point.y - curve.Center.y)**2)
+            l2 = math.sqrt((edge.Vertexes[1].Point.x - curve.Center.x)**2 + (edge.Vertexes[1].Point.y - curve.Center.y)**2)
+            
+            start_angle = math.acos((edge.Vertexes[0].Point.x - curve.Center.x) / l1)
+            end_angle = math.acos((edge.Vertexes[1].Point.x - curve.Center.x) / l2)
+
+            if edge.Vertexes[0].Point.y < curve.Center.y:
+                start_angle *= -1
+            if edge.Vertexes[1].Point.y < curve.Center.y:
+                end_angle *= -1
+
+            if base.isInside(edge.Vertexes[0].Point, offset/2, True):
+                offset *= -1
+
+            edge = Part.ArcOfCircle(Part.Circle(curve.Center, FreeCAD.Vector(0,0,1), curve.Radius+offset), start_angle, end_angle).toShape()
+
+            return Part.Wire([edge])
+        
         if Part.Line == type(curve) or Part.LineSegment == type(curve):
             # offsetting a single edge doesn't work because there is an infinite
             # possible planes into which the edge could be offset
