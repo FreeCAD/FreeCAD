@@ -60,14 +60,10 @@ class Draft_SelectPlane:
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _msg = ("Select the face of solid body to create a working plane "
-                "on which to sketch Draft objects.\n"
-                "You may also select a three vertices or "
-                "a Working Plane Proxy.")
         d = {'Pixmap': 'Draft_SelectPlane',
              'Accel': "W, P",
              'MenuText': QT_TRANSLATE_NOOP("Draft_SelectPlane", "SelectPlane"),
-             'ToolTip': QT_TRANSLATE_NOOP("Draft_SelectPlane", _msg)}
+             'ToolTip': QT_TRANSLATE_NOOP("Draft_SelectPlane", "Select the face of solid body to create a working plane on which to sketch Draft objects.\nYou may also select a three vertices or a Working Plane Proxy.")}
         return d
 
     def IsActive(self):
@@ -89,8 +85,7 @@ class Draft_SelectPlane:
             p = FreeCAD.DraftWorkingPlane
             self.states.append([p.u, p.v, p.axis, p.position])
 
-        m = translate("draft", "Pick a face, 3 vertices "
-                      "or a WP Proxy to define the drawing plane")
+        m = translate("draft", "Pick a face, 3 vertices or a WP Proxy to define the drawing plane")
         _msg(m)
 
         # Create task panel

@@ -57,13 +57,11 @@ class Mirror(gui_base_original.Modifier):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = ("Mirrors the selected objects along a line "
-                "defined by two points.")
 
         return {'Pixmap': 'Draft_Mirror',
                 'Accel': "M, I",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Mirror", "Mirror"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Mirror", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Mirror", "Mirrors the selected objects along a line defined by two points.")}
 
     def Activated(self):
         """Execute when the command is called."""
