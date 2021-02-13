@@ -1299,7 +1299,7 @@ bool ProfileBased::isElementGenerated(const TopoShape &shape, const char *name) 
     // long profileTag = profile->getID();
     bool res = false;
     shape.traceElement(name,
-        [&] (const std::string &, size_t, long tag2) {
+        [&] (const std::string &, size_t, long tag2, long) {
             if (std::abs(tag2) == this->getID()) {
                 res = true;
                 return true;

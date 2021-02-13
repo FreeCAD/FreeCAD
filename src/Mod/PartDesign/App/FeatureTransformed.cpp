@@ -629,7 +629,7 @@ bool Transformed::isElementGenerated(const TopoShape &shape, const char *name) c
     long tag = 0;
     int depth = 2;
     shape.traceElement(name,
-        [&] (const std::string &, size_t, long tag2) {
+        [&] (const std::string &, size_t, long tag2, long) {
             if(tag && std::abs(tag2)!=tag) {
                 if(--depth == 0)
                     return true;

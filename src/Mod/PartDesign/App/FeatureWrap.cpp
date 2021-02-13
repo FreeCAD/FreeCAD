@@ -245,7 +245,7 @@ bool FeatureWrap::isElementGenerated(const TopoShape &shape, const char *name) c
     long wrapTag = feat->getID();
     bool res = false;
     shape.traceElement(name,
-        [&] (const std::string &, size_t, long tag2) {
+        [&] (const std::string &, size_t, long tag2, long) {
             if (tag2 == wrapTag) {
                 res = true;
                 return true;

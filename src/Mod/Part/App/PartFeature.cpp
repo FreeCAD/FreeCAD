@@ -323,7 +323,7 @@ Feature::getElementFromSource(App::DocumentObject *obj,
     std::pair<std::string, std::string> element;
     const char *checkingSubname = "";
     std::string sub = Data::ComplexGeoData::noElementName(subname);
-    auto checkHistory = [&](const std::string &name, size_t, long tag) {
+    auto checkHistory = [&](const std::string &name, size_t, long, long tag) {
         if (std::abs(tag) == owner->getID()) {
             if (!tagChanges)
                 tagChanges = 1;
@@ -349,9 +349,15 @@ Feature::getElementFromSource(App::DocumentObject *obj,
     // obtain both the old and new style element name
     GeoFeature::resolveElement(src,srcSub,element,false);
 
-    // Strip prefix and indexed based name at the tail of the new style element name
-    element.first = Data::ComplexGeoData::isMappedElement(
-            Data::ComplexGeoData::newElementName(element.first.c_str()).c_str());
+    if (element.first.empty())
+        element.first = element.second;
+    else {
+        // Strip prefix and indexed based name at the tail of the new style element name
+        auto mappedName = Data::ComplexGeoData::newElementName(element.first.c_str());
+        auto mapped = Data::ComplexGeoData::isMappedElement(mappedName.c_str());
+        if (mapped)
+            element.first = mapped;
+    }
 
     // Use the old style name to obtain the shape type
     auto type = TopoShape::shapeType(

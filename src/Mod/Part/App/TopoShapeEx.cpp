@@ -3710,7 +3710,7 @@ long TopoShape::isElementGenerated(const char *_name, int depth) const
     long res = 0;
     long tag = 0;
     traceElement(_name,
-        [&] (const std::string &name, size_t offset, long tag2) {
+        [&] (const std::string &name, size_t offset, long tag2, long) {
             if(tag2 < 0)
                 tag2 = -tag2;
             if(tag && tag2!=tag) {

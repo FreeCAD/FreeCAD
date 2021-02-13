@@ -843,7 +843,7 @@ std::vector<std::string> ComplexGeoData::getHigherElements(const char *, bool) c
 
 void ComplexGeoData::traceElement(const char *_name, TraceCallback cb) const
 {
-    long tag = 0;
+    long tag = this->Tag, encodedTag = 0;
     size_t len = 0;
     std::string name;
     auto mapped = isMappedElement(_name);
@@ -854,9 +854,11 @@ void ComplexGeoData::traceElement(const char *_name, TraceCallback cb) const
         name = std::string(_name,dot-_name);
     else
         name = _name;
-    auto pos = findTagInElementName(name,&tag,&len,nullptr,nullptr,true);
-    if(pos == std::string::npos || cb(name, len, tag))
+    auto pos = findTagInElementName(name,&encodedTag,&len,nullptr,nullptr,true);
+    if(cb(name, len, encodedTag, tag) || pos == std::string::npos)
         return;
+
+    tag = encodedTag;
 
     std::string tmp;
     bool first = true;
@@ -872,10 +874,11 @@ void ComplexGeoData::traceElement(const char *_name, TraceCallback cb) const
         }else
             tmp = tmp.substr(0,len);
         tmp = dehashElementName(tmp.c_str());
-        tag = 0;
-        pos = findTagInElementName(tmp,&tag,&len,nullptr,nullptr,true);
-        if(pos==std::string::npos || cb(tmp, len, tag))
+        encodedTag = 0;
+        pos = findTagInElementName(tmp,&encodedTag,&len,nullptr,nullptr,true);
+        if(cb(tmp, len, encodedTag, tag) || pos == std::string::npos)
             return;
+        tag = encodedTag;
     }
 }
 
