@@ -1086,7 +1086,8 @@ App::DocumentObject *SubShapeBinder::_getLinkedObject(
 App::SubObjectT
 SubShapeBinder::import(const App::SubObjectT &feature, 
                        const App::SubObjectT &editObjT,
-                       bool importWholeObject)
+                       bool importWholeObject,
+                       bool noSubObject)
 {
     App::DocumentObject *editObj = nullptr;
     App::DocumentObject *container = nullptr;
@@ -1109,51 +1110,70 @@ SubShapeBinder::import(const App::SubObjectT &feature,
             }
         }
     }
-    if (!container) {
+    if (!container && !feature.hasSubObject()) {
         container = Part::BodyBase::findBodyOf(editObj);
         if (!container) {
             container = App::Part::getPartOfObject(editObj);
-            if (!container)
+            if (!container
+                    && editObjT.getDocumentName() == feature.getDocumentName())
                 return feature;
         }
     }
     auto sobj = feature.getSubObject();
-    if (!sobj) {
+    if (!sobj)
         FC_THROWM(Base::RuntimeError,
                 "Sub object not found: " << feature.getSubObjectFullName());
-    }
-
-    if (Part::BodyBase::findBodyOf(sobj) == container
-            || App::Part::getPartOfObject(sobj) == container)
-        return App::SubObjectT(sobj, feature.getElementName());
-
-    if (container->getInListEx(true).count(sobj)) {
+    if (sobj == editObj || editObj->getInListEx(true).count(sobj))
         FC_THROWM(Base::RuntimeError,
                 "Cyclic reference to: " << feature.getSubObjectFullName());
-    }
-
     auto link = feature.getObject();
-    std::string linkSub = feature.getSubName();
-    topParent->resolveRelativeLink(subname, link, linkSub);
 
-    App::SubObjectT resolved(link, linkSub.c_str());
-    if (Part::BodyBase::findBodyOf(link) == container
-            || App::Part::getPartOfObject(link) == container)
-        return resolved;
+    App::SubObjectT resolved;
+    if (!container)
+        resolved = feature;
+    else {
+        if (Part::BodyBase::findBodyOf(sobj) == container
+                || App::Part::getPartOfObject(sobj) == container)
+            return App::SubObjectT(sobj, feature.getElementName());
+
+        std::string linkSub = feature.getSubName();
+        topParent->resolveRelativeLink(subname, link, linkSub);
+
+        resolved = App::SubObjectT(link, linkSub.c_str());
+        if (Part::BodyBase::findBodyOf(link) == container
+                || App::Part::getPartOfObject(link) == container) {
+            if (!noSubObject || !resolved.hasSubObject())
+                return resolved;
+        }
+    }
 
     std::string resolvedSub = resolved.getSubNameNoElement();
     if (!importWholeObject)
         resolvedSub += resolved.getOldElementName();
-    auto group = container->getExtensionByType<App::GeoFeatureGroupExtension>(true);
-    if (!group)
-        FC_THROWM(Base::RuntimeError, "Invalid container: " << container->getFullName());
-
     std::string element;
     if (importWholeObject)
         element = feature.getNewElementName();
 
+    App::Document *doc;
+    std::vector<App::DocumentObject*> objs;
+
     // Try to find an unused import of the same object
-    for (auto o : group->Group.getValue()) {
+    App::GeoFeatureGroupExtension *group = nullptr;
+    if (container) {
+        doc = container->getDocument();
+        group = container->getExtensionByType<App::GeoFeatureGroupExtension>(true);
+        if (!group)
+            FC_THROWM(Base::RuntimeError, "Invalid container: " << container->getFullName());
+        objs = group->Group.getValue();
+    } else {
+        doc = editObj->getDocument();
+        for (auto obj : doc->getObjectsOfType(SubShapeBinder::getClassTypeId())) {
+            if (obj != editObj && !App::GeoFeatureGroupExtension::getGroupOfObject(obj))
+                objs.push_back(obj);
+        }
+    }
+
+    for (auto o : objs) {
         auto binder = Base::freecad_dynamic_cast<Part::SubShapeBinder>(o);
         if (!binder || !boost::starts_with(o->getNameInDocument(), "Import"))
             continue;
@@ -1174,16 +1194,17 @@ SubShapeBinder::import(const App::SubObjectT &feature,
     }
 
     auto binder = static_cast<Part::SubShapeBinder*>(
-            container->getDocument()->addObject("Part::SubShapeBinder", "Import"));
+            doc->addObject("Part::SubShapeBinder", "Import"));
     binder->Visibility.setValue(false);
-    group->addObject(binder);
+    if (group)
+        group->addObject(binder);
     std::map<App::DocumentObject*, std::vector<std::string> > support;
     auto &supportSubs = support[link];
     if (resolvedSub.size())
         supportSubs.push_back(std::move(resolvedSub));
     binder->setLinks(std::move(support));
     if (element.size()) {
-        binder->getDocument()->recomputeFeature(binder);
+        doc->recomputeFeature(binder);
         auto res = Part::Feature::getElementFromSource(binder, "", sobj, element.c_str(), true);
         if (res.size())
             return App::SubObjectT(binder, res.front().second.c_str());

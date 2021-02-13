@@ -85,7 +85,8 @@ public:
 
     static App::SubObjectT import(const App::SubObjectT &feature,
                                   const App::SubObjectT &editObj,
-                                  bool importWholeObject = true);
+                                  bool importWholeObject = true,
+                                  bool noSubObject = false);
 
 protected:
     virtual App::DocumentObjectExecReturn* execute(void) override;

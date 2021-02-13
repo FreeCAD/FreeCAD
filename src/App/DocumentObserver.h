@@ -231,6 +231,12 @@ public:
     /// Return the sub-element (Face, Edge, etc) of the subname path
     const char *getElementName() const;
 
+    /// Check if there is any sub object reference
+    bool hasSubObject() const;
+
+    /// Check if there is any sub element reference
+    bool hasSubElement() const;
+
     /** Return the new style sub-element name
      *
      * @param fallback: if true, then fallback to old style element name if

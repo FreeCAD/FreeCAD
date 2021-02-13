@@ -409,6 +409,15 @@ const char *SubObjectT::getElementName() const {
     return Data::ComplexGeoData::findElementName(subname.c_str());
 }
 
+bool SubObjectT::hasSubObject() const {
+    return Data::ComplexGeoData::findElementName(subname.c_str()) != subname.c_str();
+}
+
+bool SubObjectT::hasSubElement() const {
+    auto element = getElementName();
+    return element && element[0];
+}
+
 std::string SubObjectT::getNewElementName(bool fallback) const {
     std::pair<std::string, std::string> element;
     auto obj = getObject();
