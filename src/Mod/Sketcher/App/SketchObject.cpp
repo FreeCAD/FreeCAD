@@ -8401,10 +8401,9 @@ void SketchObject::onChanged(const App::Property* prop)
         updateGeoHistory();
     }
 
+    auto doc = getDocument();
+
     if (prop == &Geometry || prop == &Constraints) {
-
-        auto doc = getDocument();
-
         if(doc && doc->isPerformingTransaction()) { // undo/redo
             setStatus(App::PendingTransactionUpdate, true);
         }
@@ -8455,6 +8454,9 @@ void SketchObject::onChanged(const App::Property* prop)
         }
 
     } else if ( prop == &ExternalGeo) {
+        if(doc && doc->isPerformingTransaction())
+            setStatus(App::PendingTransactionUpdate, true);
+
         if (isRestoring() && checkMigration(ExternalGeo)) {
             for( auto g : ExternalGeo.getValues()) {
                 if(g->hasExtension(Part::GeometryMigrationExtension::getClassTypeId())) {
@@ -8527,6 +8529,10 @@ void SketchObject::onChanged(const App::Property* prop)
             ExternalGeometry.setValues(objs,subs);
         }
     } else if( prop == &ExternalGeometry ) {
+
+        if(doc && doc->isPerformingTransaction())
+            setStatus(App::PendingTransactionUpdate, true);
+
         if(!isRestoring()) {
             // must wait till onDocumentRestored() when shadow references are
             // fully restored
@@ -8613,9 +8619,19 @@ void SketchObject::updateGeometryRefs() {
                 }
                 auto it = legacyMap.find(egf->getRef());
                 if (it != legacyMap.end()) {
-                    // FIXME: this is a bug. Find out when and why does this happen
-                    FC_WARN("Update legacy external reference " << egf->getRef() << " -> "
-                            << externalGeoRef[it->second] << " in " << getFullName());
+                    if(getDocument() && !getDocument()->isPerformingTransaction()) {
+                        // FIXME: this is a bug. Find out when and why does this happen
+                        //
+                        // Amendment: maybe the original bug is because of not
+                        // handling external geometry changes during undo/redo,
+                        // which should be considered as normal. So warning only
+                        // if not undo/redo.
+                        //
+                        FC_WARN("Update legacy external reference " << egf->getRef() << " -> "
+                                << externalGeoRef[it->second] << " in " << getFullName());
+                    } else
+                        FC_LOG("Update undo/redo external reference " << egf->getRef() << " -> "
+                                << externalGeoRef[it->second] << " in " << getFullName());
                     touched = true;
                     egf->setRef(externalGeoRef[it->second]);
                 }
