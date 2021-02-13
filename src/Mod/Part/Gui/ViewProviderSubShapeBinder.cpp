@@ -46,6 +46,7 @@
 #include <Gui/ViewParams.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/ActionFunction.h>
+#include <Gui/Command.h>
 
 #include <Mod/Part/App/SubShapeBinder.h>
 #include <Mod/Part/Gui/PartParams.h>
@@ -171,6 +172,19 @@ void ViewProviderSubShapeBinder::updateData(const App::Property *prop)
             }
             this->iconMap.clear();
             signalChangeIcon();
+
+        } else if (prop == &binder->BindMode) {
+            switch(binder->BindMode.getValue()) {
+            case 1:
+                sPixmap = "Part_SubShapeBinder_Frozen.svg";
+                break;
+            case 2:
+                sPixmap = "Part_SubShapeBinder_Detached.svg";
+                break;
+            default:
+                sPixmap = "Part_SubShapeBinder.svg";
+            }
+            signalChangeIcon();
         }
     }
     ViewProviderPart::updateData(prop);
@@ -240,6 +254,7 @@ void ViewProviderSubShapeBinder::setupContextMenu(QMenu* menu, QObject* receiver
                         self->BindMode.setValue((long)1);
                     else
                         self->BindMode.setValue((long)0);
+                    Gui::Command::updateActive();
                 } catch (Base::Exception &e) {
                     e.ReportException();
                 }
@@ -250,6 +265,7 @@ void ViewProviderSubShapeBinder::setupContextMenu(QMenu* menu, QObject* receiver
                 App::AutoTransaction committer("Detach shape binder");
                 try {
                     self->BindMode.setValue((long)2);
+                    Gui::Command::updateActive();
                 } catch (Base::Exception &e) {
                     e.ReportException();
                 }
@@ -260,6 +276,7 @@ void ViewProviderSubShapeBinder::setupContextMenu(QMenu* menu, QObject* receiver
                 App::AutoTransaction committer("Reset bind mode");
                 try {
                     self->BindMode.setValue((long)0);
+                    Gui::Command::updateActive();
                 } catch (Base::Exception &e) {
                     e.ReportException();
                 }
@@ -351,13 +368,12 @@ void ViewProviderSubShapeBinder::updatePlacement(bool transaction) {
         return;
     }
 
-    App::GetApplication().setActiveTransaction("Sync binder");
+    App::AutoTransaction commiter("Sync binder");
     try{
         if(relative)
             self->Context.setValue(parent,parentSub.c_str());
         self->update(Part::SubShapeBinder::UpdateForced);
-        App::GetApplication().closeActiveTransaction();
-        return;
+        Gui::Command::updateActive();
     }catch(Base::Exception &e) {
         e.ReportException();
     }catch(Standard_Failure &e) {
@@ -368,7 +384,6 @@ void ViewProviderSubShapeBinder::updatePlacement(bool transaction) {
         else     {str << "No OCCT Exception Message";}
         FC_ERR(str.str());
     }
-    App::GetApplication().closeActiveTransaction(true);
 }
 
 std::vector<App::DocumentObject*> ViewProviderSubShapeBinder::claimChildren(void) const {
@@ -472,13 +487,19 @@ QString ViewProviderSubShapeBinder::getToolTip(const QByteArray &tag) const
 {
     generateIcons();
 
+    auto self = Base::freecad_dynamic_cast<Part::SubShapeBinder>(getObject());
+    if (!self)
+        return QString();
+
     std::ostringstream ss;
     auto doc = getObject()->getDocument()->getName();
 
     if (tag == Gui::treeMainIconTag()) {
-        auto self = dynamic_cast<Part::SubShapeBinder*>(getObject());
-        if (!self)
+        if (!self->Support.getValue()) {
+            if (self->BindMode.getValue() == 2)
+                return QObject::tr("Detached shape binder");
             return QString();
+        }
         for(auto &link : self->Support.getSubListValues()) {
             auto obj = link.getValue();
             if(!obj || !obj->getNameInDocument())
@@ -504,11 +525,14 @@ QString ViewProviderSubShapeBinder::getToolTip(const QByteArray &tag) const
     if (Gui::isTreeViewDragging()) {
         return QString::fromLatin1("%1\n%2\n%3").arg(
                 QObject::tr("Drop to add more binding, or hold CTRL to clear before assign new bindings."),
-                QObject::tr("Current bound objects:"),
+                self->BindMode.getValue() == 1 ? 
+                    QObject::tr("Frozen bound objects:") : QObject::tr("Current bound objects:"),
                 QString::fromUtf8(ss.str().c_str()));
     }
-    return QString::fromLatin1("%1\n%2").arg(
-            QObject::tr("Bound objects (ALT + click this icon to select)."),
+    return QString::fromLatin1("%1 %2\n%3").arg(
+            self->BindMode.getValue() == 1 ?
+                QObject::tr("Frozen bound objects") : QObject::tr("Bound objects"),
+            QObject::tr("(ALT + click this icon to select):"),
             QString::fromUtf8(ss.str().c_str()));
 }
 
@@ -566,11 +590,6 @@ void ViewProviderSubShapeBinder::generateIcons() const
     if (!binder)
         return;
 
-    static QPixmap myPixmap;
-    if (myPixmap.isNull())
-       myPixmap = Gui::BitmapFactory().pixmap(this->sPixmap).scaled(
-               32, 32, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-
     std::unordered_map<qint64, PixmapInfo> cacheKeys;
     for(auto &l : binder->Support.getSubListValues()) {
         for (auto & sub : l.getSubValues(false)) {
@@ -597,14 +616,25 @@ void ViewProviderSubShapeBinder::generateIcons() const
                 if (prop)
                     tagColor = prop->getValue().getPackedValue();
 
-                auto & pxInfo = cacheKeys[(binder?myPixmap.cacheKey():0) ^ px.cacheKey() ^ tagColor];
+                QPixmap binderIcon;
+                if (binder) {
+                    auto binderVp = Base::freecad_dynamic_cast<ViewProviderSubShapeBinder>(
+                            Gui::Application::Instance->getViewProvider(binder));
+                    if (binderVp)
+                        binderIcon = Gui::BitmapFactory().pixmap(binderVp->sPixmap);
+                }
+
+                auto & pxInfo = cacheKeys[(!binderIcon.isNull()?binderIcon.cacheKey():0)
+                                          ^ px.cacheKey() ^ tagColor];
                 QPixmap pxTag;
                 auto it = iconMap.begin();
                 if (pxInfo.count == 0) {
                     if (iconMap.size() >= 3)
                         break;
-                    if (binder)
-                        px = Gui::BitmapFactory().merge(px, myPixmap, Gui::BitmapFactoryInst::TopLeft);
+                    if (!binderIcon.isNull())
+                        px = Gui::BitmapFactory().merge(px,
+                               binderIcon.scaled(32, 32, Qt::IgnoreAspectRatio, Qt::SmoothTransformation),
+                               Gui::BitmapFactoryInst::TopLeft);
                     if (tagColor) {
                         auto featVp = Base::freecad_dynamic_cast<PartGui::ViewProviderPart>(vp);
                         if (featVp)
