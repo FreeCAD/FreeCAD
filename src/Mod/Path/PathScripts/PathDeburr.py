@@ -86,7 +86,7 @@ def toolDepthAndOffset(width, extraDepth, tool, printInfo):
     extraOffset = -width if angle == 180 else (extraDepth / tan)
     offset = toolOffset + extraOffset
 
-    return (depth, offset, suppressInfo)
+    return (depth, offset, extraOffset, suppressInfo)
 
 
 class ObjectDeburr(PathEngraveBase.ObjectOp):
@@ -123,7 +123,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
         if not hasattr(self, 'printInfo'):
             self.printInfo = True
         try:
-            (depth, offset, suppressInfo) = toolDepthAndOffset(obj.Width.Value, obj.ExtraDepth.Value, self.tool, self.printInfo)
+            (depth, offset, extraOffset, suppressInfo) = toolDepthAndOffset(obj.Width.Value, obj.ExtraDepth.Value, self.tool, self.printInfo)
             self.printInfo = not suppressInfo
         except ValueError as e:
             msg = "{} \n No path will be generated".format(e)
@@ -136,10 +136,13 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
         self.basewires = []  # pylint: disable=attribute-defined-outside-init
         self.adjusted_basewires = []  # pylint: disable=attribute-defined-outside-init
         wires = []
+
         for base, subs in obj.Base:
             edges = []
             basewires = []
             max_h = -99999
+            radius_top = 0
+            radius_bottom = 0
 
             for f in subs:
                 sub = base.Shape.getElement(f)
@@ -148,11 +151,24 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
                     edges.append(sub)
                 
                 elif type(sub) == Part.Face and sub.normalAt(0, 0) != FreeCAD.Vector(0, 0, 1): # Angled face
+                    # If an angled face is selected, the lower edge is projected to the height of the upper edge,
+                    # to simulate an edge
+                    
                     # Find z value of upper edge
                     for edge in sub.Edges:
                         for p0 in edge.Vertexes:
                             if p0.Point.z > max_h:
                                 max_h = p0.Point.z
+
+                    # Find biggest radius for top/bottom
+                    for edge in sub.Edges:    
+                        if Part.Circle == type(edge.Curve):
+                            if edge.Vertexes[0].Point.z == max_h:
+                                if edge.Curve.Radius > radius_top:
+                                    radius_top = edge.Curve.Radius
+                            else:
+                                if edge.Curve.Radius > radius_bottom:
+                                    radius_bottom = edge.Curve.Radius
                     
                     # Search for lower edge and raise it to height of upper edge
                     for edge in sub.Edges:
@@ -160,24 +176,44 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
                             if edge.Vertexes[0].Point.z < max_h:
                                 
                                 if edge.Closed: # Circle
-                                    v = FreeCAD.Vector(edge.Curve.Center.x, edge.Curve.Center.y, max_h)
-                                    new_edge = Part.makeCircle(edge.Curve.Radius, v, FreeCAD.Vector(0, 0, 1))
+                                    # New center
+                                    center = FreeCAD.Vector(edge.Curve.Center.x, edge.Curve.Center.y, max_h)
+                                    new_edge = Part.makeCircle(edge.Curve.Radius, center, FreeCAD.Vector(0, 0, 1))
                                     edges.append(new_edge)
+                                    
+                                    # Modify offset for inner angled faces
+                                    if radius_bottom < radius_top:
+                                        offset -= 2 * extraOffset
+                                    
                                     break
+
                                 else:   # Arc
                                     if edge.Vertexes[0].Point.z == edge.Vertexes[1].Point.z:
+                                        # Arc vertexes are on same layer
                                         l1 = math.sqrt((edge.Vertexes[0].Point.x - edge.Curve.Center.x)**2 + (edge.Vertexes[0].Point.y - edge.Curve.Center.y)**2)
                                         l2 = math.sqrt((edge.Vertexes[1].Point.x - edge.Curve.Center.x)**2 + (edge.Vertexes[1].Point.y - edge.Curve.Center.y)**2)
                                         
+                                        # New center
+                                        center = FreeCAD.Vector(edge.Curve.Center.x, edge.Curve.Center.y, max_h)
+
+                                        # Calculate angles based on x-axis (0 - PI/2)
                                         start_angle = math.acos((edge.Vertexes[0].Point.x - edge.Curve.Center.x) / l1)
                                         end_angle = math.acos((edge.Vertexes[1].Point.x - edge.Curve.Center.x) / l2)
 
+                                        # Angles are based on x-axis (Mirrored on x-axis) -> negative y value means negative angle
                                         if edge.Vertexes[0].Point.y < edge.Curve.Center.y:
                                             start_angle *= -1
                                         if edge.Vertexes[1].Point.y < edge.Curve.Center.y:
                                             end_angle *= -1
 
-                                        edge = Part.ArcOfCircle(Part.Circle(edge.Curve.Center, FreeCAD.Vector(0,0,1), edge.Curve.Radius), start_angle, end_angle).toShape()
+                                        # Create new arc
+                                        new_edge = Part.ArcOfCircle(Part.Circle(center, FreeCAD.Vector(0,0,1), edge.Curve.Radius), start_angle, end_angle).toShape()
+                                        edges.append(new_edge)
+                                        
+                                        # Modify offset for inner angled faces
+                                        if radius_bottom < radius_top:
+                                            offset -= 2 * extraOffset
+
                                         break
 
                         else: # Line
@@ -201,7 +237,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
 
             for w in basewires:
                 self.adjusted_basewires.append(w)
-                wire = PathOpTools.offsetWire(w, base.Shape, offset, True) #, obj.Side)
+                wire = PathOpTools.offsetWire(w, base.Shape, offset, True)
                 if wire:
                     wires.append(wire)
 
@@ -214,6 +250,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
             while z + obj.StepDown.Value < depth:
                 z = z + obj.StepDown.Value
                 zValues.append(z)
+        
         zValues.append(depth)
         PathLog.track(obj.Label, depth, zValues)
 
@@ -250,5 +287,6 @@ def Create(name, obj=None):
     '''Create(name) ... Creates and returns a Deburr operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+    
     obj.Proxy = ObjectDeburr(obj, name)
     return obj
